@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { LogOut } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -68,6 +70,15 @@ function GoogleMark() {
       />
     </svg>
   );
+}
+
+function getInitials(name: string) {
+  return name
+    .split(" ")
+    .map(part => part.trim().charAt(0).toUpperCase())
+    .filter(Boolean)
+    .join("")
+    .slice(0, 2);
 }
 
 async function fetchAuthState(): Promise<AuthResponse> {
@@ -286,6 +297,38 @@ function App() {
               ref={protectedViewRef}
               className={`relative ${isLimitedAccess ? "restricted-view" : ""}`}
             >
+              <div
+                data-no-mask
+                className="fixed top-4 right-4 z-[60] flex items-center gap-2 rounded-full border border-border bg-card/95 px-2 py-1.5 shadow-lg backdrop-blur"
+              >
+                <Avatar className="size-9 border border-border">
+                  {authState.user.picture ? (
+                    <AvatarImage src={authState.user.picture} alt={`${authState.user.name} profile`} />
+                  ) : null}
+                  <AvatarFallback className="text-xs font-semibold">
+                    {getInitials(authState.user.name) || "U"}
+                  </AvatarFallback>
+                </Avatar>
+
+                <div className="hidden sm:flex flex-col pr-1">
+                  <span className="max-w-32 truncate text-xs font-semibold leading-tight">
+                    {authState.user.name}
+                  </span>
+                </div>
+
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-sm"
+                  className="rounded-full"
+                  aria-label="Sign out"
+                  title="Sign out"
+                  onClick={logout}
+                >
+                  <LogOut />
+                </Button>
+              </div>
+
               {isLimitedAccess ? (
                 <div
                   data-no-mask
@@ -301,9 +344,6 @@ function App() {
 
                     <div className="flex items-center gap-2">
                       <Button disabled>Shopier abonelik yakinda</Button>
-                      <Button variant="outline" onClick={logout}>
-                        Cikis yap
-                      </Button>
                     </div>
                   </div>
                 </div>
