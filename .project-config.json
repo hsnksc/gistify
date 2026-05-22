@@ -1,0 +1,35 @@
+{
+  "build_command": "pnpm run build",
+  "capabilities": [],
+  "dev_command": "pnpm run dev",
+  "env_vars": {},
+  "experiments": null,
+  "git_remote": {
+    "repo_url": "s3://vida-prod-gitrepo/webdev-git/310519663682523726/f6iQZ4ZvSyNWxyJ4Djp26f",
+    "access_key_id": "ASIAZV3A2ECZGK5ESBZG",
+    "secret_access_key": "RT6sk3YNzB420tmDeGjFYcTfOCej+lPUTqakVySI",
+    "session_token": "IQoJb3JpZ2luX2VjEDwaCXVzLWVhc3QtMSJHMEUCIFM12TPj1D+TuaGRxTzUtW+lKEM30rLlGUjMLwnDWt0YAiEApBC6pI4sBel26CLUPRlrs7BfrB/dinmOUXHraSGoZTYq9gMIBRAEGgw2NjUzODYwOTg4NjYiDDNh7OFO25a7tLZadSrTA4KHbLQ3Zf3+duxeXCSU3eb7WbVs5A5MKsEVAmk7ojnR7jKmMkH1GEb5ucLheuxKZmo5BMkTXuUl+X5j65bBGQwBLXOya4+sQUufbqNtpwiHZuMp1onIKCo/RiThHJhCq97VsFH2r1Yblen7j8+UrBt6jb1+PGNOvFmaUPDXvDBlTDUfrZPKGP4P5j4BMmYK9VzHzOBBL7VRAxn4VDrjBjwnq0EVknvIlm4qb5iOSJIGwYpjsnLyzfFWpHfVgD2qwcs5UzDCI6M109AnflnXKX8ih+WgMxE6kbTmNo3jK4r6NC6SmUAUf9NC93a3UqR6Ooo44luXsytrXR2q/9cn1ooKkP2fiOlWabTTJjN22MZchnQ1phJWxJTLCOGraXHt9KL13Wa1/+L49nVof5ostOa6kGXeIkZcbe5+SG9N8irZWTUqjcQk3YcqTaN+rLByngKdO9CB+7eweNGHNn0ME6dlDwLhluTqlFOzIBJy/8dIckedlIdnubX+Xi10AQ4NJmon7CBzSsm4tLdjFtG6WKSuirAOn0yMNiLtFFBvfhoE0JKBStlmpSU4WxvzU5AHFmW3YYlgK2Kr5m3YTokeZriPARYiwCjW1p+wMHWYoehFZqS4MKTdu9AGOp0Bmt5/19QzNB1PcxlkvsoRaYPaB0ZixmNCW0OyZW7SqcbitvEa7n8TgSvvkUjyd+38MNfbhck+/A5eIYvVswSxk8QlIi+EddwPdM88pQnU+3l/yZx/q/XDNTgL0jqPxf1PIaetxqH3PIAPVoqrDIdRWJi83EqBeRzDgq7NyvOlIIIcaqDAxAoyoqUjVEqag1i2MXiXwIZvXSNP6ZXO4w==",
+    "expiration": "2026-05-21T23:38:12.000Z"
+  },
+  "name": "earnings_benchmark_report",
+  "path": "/home/ubuntu/earnings_benchmark_report",
+  "port": 3000,
+  "secrets": {
+    "BUILT_IN_FORGE_API_KEY": "3Vidzq3UJK797gkNtsknEw",
+    "BUILT_IN_FORGE_API_URL": "https://forge.manus.ai",
+    "JWT_SECRET": "oComju9xPCh6eHFfKBAZht",
+    "OAUTH_SERVER_URL": "https://api.manus.im",
+    "OWNER_NAME": "hasan.kuscu",
+    "OWNER_OPEN_ID": "LANgHWQ39Tnz4AQPtqhHHW",
+    "VITE_ANALYTICS_ENDPOINT": "https://manus-analytics.com",
+    "VITE_ANALYTICS_WEBSITE_ID": "1c97e861-4ae2-456e-8a4a-9b50aa9759a8",
+    "VITE_APP_ID": "f6iQZ4ZvSyNWxyJ4Djp26f",
+    "VITE_APP_LOGO": "",
+    "VITE_APP_TITLE": "Earnings Öncesi Hisse Benchmark Raporu",
+    "VITE_FRONTEND_FORGE_API_KEY": "VRmvtRqsQs8KX5i6prrNvf",
+    "VITE_FRONTEND_FORGE_API_URL": "https://forge.manus.ai",
+    "VITE_OAUTH_PORTAL_URL": "https://manus.im"
+  },
+  "template_id": "web-static",
+  "test_command": "pnpm test"
+}
