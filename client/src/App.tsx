@@ -510,7 +510,7 @@ function App() {
                 <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2.5">
                   <div className="inline-flex items-center gap-3 rounded-full border border-border bg-card px-2 py-1.5 pr-3">
                     <img
-                      src="/gistifylogo.png"
+                      src="/gistifylogo.png?v=20260522-2"
                       alt="Gistify logo"
                       className="size-9 rounded-full border border-border object-cover"
                     />
