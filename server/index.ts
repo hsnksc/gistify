@@ -43,12 +43,92 @@ interface GoogleUserInfo {
   picture?: string;
 }
 
+type TranslationLanguage = "tr" | "en";
+
+interface TranslationRequestBody {
+  texts?: unknown;
+  source?: unknown;
+  target?: unknown;
+}
+
 const OAUTH_STATE_COOKIE = "google_oauth_state";
 const OAUTH_STATE_TTL_SECONDS = 60 * 10;
 const SESSION_TTL_SECONDS = Math.floor(ONE_YEAR_MS / 1000);
 
 const users = new Map<string, AuthUser>();
 const sessions = new Map<string, SessionRecord>();
+const translationCache = new Map<string, string>();
+
+function getTranslationCacheKey(
+  source: TranslationLanguage,
+  target: TranslationLanguage,
+  text: string
+) {
+  return `${source}:${target}:${text}`;
+}
+
+function extractGoogleTranslation(payload: unknown): string | null {
+  if (!Array.isArray(payload) || !Array.isArray(payload[0])) {
+    return null;
+  }
+
+  const segments = payload[0] as unknown[];
+  const translatedParts = segments
+    .map(segment => {
+      if (!Array.isArray(segment) || typeof segment[0] !== "string") {
+        return "";
+      }
+
+      return segment[0];
+    })
+    .filter(Boolean);
+
+  const combined = translatedParts.join("").trim();
+  return combined || null;
+}
+
+async function translateText(
+  text: string,
+  source: TranslationLanguage,
+  target: TranslationLanguage
+) {
+  const cleanText = text.trim();
+  if (!cleanText || source === target) {
+    return cleanText;
+  }
+
+  const cacheKey = getTranslationCacheKey(source, target, cleanText);
+  const cached = translationCache.get(cacheKey);
+  if (cached) {
+    return cached;
+  }
+
+  const url = new URL("https://translate.googleapis.com/translate_a/single");
+  url.searchParams.set("client", "gtx");
+  url.searchParams.set("sl", source);
+  url.searchParams.set("tl", target);
+  url.searchParams.set("dt", "t");
+  url.searchParams.set("q", cleanText);
+
+  const response = await fetch(url.toString());
+  if (!response.ok) {
+    throw new Error(`Translation failed with status ${response.status}`);
+  }
+
+  const payload = (await response.json()) as unknown;
+  const translated = extractGoogleTranslation(payload) || cleanText;
+
+  translationCache.set(cacheKey, translated);
+  return translated;
+}
+
+function normalizeTranslationLanguage(value: unknown, fallback: TranslationLanguage) {
+  if (value === "tr" || value === "en") {
+    return value;
+  }
+
+  return fallback;
+}
 
 function parseCookies(cookieHeader: string | undefined): Record<string, string> {
   if (!cookieHeader) {
@@ -447,6 +527,47 @@ async function startServer() {
 
     clearCookie(req, res, COOKIE_NAME);
     res.status(204).send();
+  });
+
+  app.post("/api/i18n/translate", async (req, res) => {
+    const body = (req.body ?? {}) as TranslationRequestBody;
+    const source = normalizeTranslationLanguage(body.source, "tr");
+    const target = normalizeTranslationLanguage(body.target, "en");
+
+    const rawTexts = Array.isArray(body.texts) ? body.texts : [];
+    const texts = Array.from(
+      new Set(
+        rawTexts
+          .filter((value): value is string => typeof value === "string")
+          .map(value => value.trim())
+          .filter(Boolean)
+      )
+    ).slice(0, 120);
+
+    if (!texts.length) {
+      res.status(200).json({ translations: {} });
+      return;
+    }
+
+    const translations: Record<string, string> = {};
+
+    await Promise.all(
+      texts.map(async text => {
+        try {
+          translations[text] = await translateText(text, source, target);
+        } catch (error) {
+          console.error("Translation fallback failed", {
+            text,
+            source,
+            target,
+            error,
+          });
+          translations[text] = text;
+        }
+      })
+    );
+
+    res.status(200).json({ translations });
   });
 
   // Serve static files from dist/public in production

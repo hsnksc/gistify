@@ -164,6 +164,10 @@ function App() {
   const appRootRef = useRef<HTMLDivElement | null>(null);
   const protectedViewRef = useRef<HTMLDivElement | null>(null);
   const translationOriginalRef = useRef(new WeakMap<Text, string>());
+  const runtimeTranslationCacheRef = useRef(new Map<string, string>());
+  const pendingRuntimeTranslationRef = useRef(new Set<string>());
+  const runtimeTranslationTimerRef = useRef<number | null>(null);
+  const runtimeTranslationInFlightRef = useRef(false);
   const maskOriginalRef = useRef(new WeakMap<Text, string>());
 
   const isLimitedAccess =
@@ -224,6 +228,15 @@ function App() {
     }
 
     const originalMap = translationOriginalRef.current;
+    const pendingSet = pendingRuntimeTranslationRef.current;
+    let disposed = false;
+
+    const clearPendingTimer = () => {
+      if (runtimeTranslationTimerRef.current !== null) {
+        window.clearTimeout(runtimeTranslationTimerRef.current);
+        runtimeTranslationTimerRef.current = null;
+      }
+    };
 
     const shouldSkipNode = (node: Text) => {
       const parent = node.parentElement;
@@ -234,7 +247,107 @@ function App() {
       return Boolean(parent.closest("[data-no-translate], script, style, textarea, input, pre, code"));
     };
 
-    const translateNode = (node: Text) => {
+    const flushRuntimeTranslations = async () => {
+      if (
+        language !== "en" ||
+        runtimeTranslationInFlightRef.current ||
+        pendingSet.size === 0 ||
+        disposed
+      ) {
+        return;
+      }
+
+      runtimeTranslationInFlightRef.current = true;
+      const batch = Array.from(pendingSet).slice(0, 60);
+      batch.forEach(text => pendingSet.delete(text));
+
+      try {
+        const response = await fetch("/api/i18n/translate", {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            source: "tr",
+            target: "en",
+            texts: batch,
+          }),
+        });
+
+        if (response.ok) {
+          const payload = (await response.json()) as {
+            translations?: Record<string, string>;
+          };
+
+          const translations = payload.translations || {};
+          for (const sourceText of batch) {
+            runtimeTranslationCacheRef.current.set(
+              sourceText,
+              translations[sourceText] || sourceText
+            );
+          }
+        } else {
+          for (const sourceText of batch) {
+            runtimeTranslationCacheRef.current.set(sourceText, sourceText);
+          }
+        }
+      } catch {
+        for (const sourceText of batch) {
+          runtimeTranslationCacheRef.current.set(sourceText, sourceText);
+        }
+      } finally {
+        runtimeTranslationInFlightRef.current = false;
+      }
+
+      if (disposed) {
+        return;
+      }
+
+      walkTextNodes(root, translateNode);
+
+      if (pendingSet.size > 0) {
+        scheduleRuntimeTranslations();
+      }
+    };
+
+    const scheduleRuntimeTranslations = () => {
+      if (
+        language !== "en" ||
+        pendingSet.size === 0 ||
+        runtimeTranslationInFlightRef.current ||
+        runtimeTranslationTimerRef.current !== null ||
+        disposed
+      ) {
+        return;
+      }
+
+      runtimeTranslationTimerRef.current = window.setTimeout(() => {
+        runtimeTranslationTimerRef.current = null;
+        void flushRuntimeTranslations();
+      }, 120);
+    };
+
+    const resolveEnglishTranslation = (source: string) => {
+      const fromStaticDictionary = translateUiText(source, "en");
+      if (fromStaticDictionary !== source) {
+        return fromStaticDictionary;
+      }
+
+      const runtimeValue = runtimeTranslationCacheRef.current.get(source);
+      if (runtimeValue) {
+        return runtimeValue;
+      }
+
+      if (source.length <= 320) {
+        pendingSet.add(source);
+      }
+
+      scheduleRuntimeTranslations();
+      return source;
+    };
+
+    function translateNode(node: Text) {
       if (shouldSkipNode(node)) {
         return;
       }
@@ -249,14 +362,15 @@ function App() {
       }
 
       const source = originalMap.get(node) ?? currentValue;
-      const translated = translateUiText(source, language);
+      const translated = language === "en" ? resolveEnglishTranslation(source) : source;
 
       if (node.nodeValue !== translated) {
         node.nodeValue = translated;
       }
-    };
+    }
 
     walkTextNodes(root, translateNode);
+    scheduleRuntimeTranslations();
 
     const observer = new MutationObserver(mutations => {
       for (const mutation of mutations) {
@@ -274,6 +388,8 @@ function App() {
           walkTextNodes(addedNode, translateNode);
         }
       }
+
+      scheduleRuntimeTranslations();
     });
 
     observer.observe(root, {
@@ -283,6 +399,8 @@ function App() {
     });
 
     return () => {
+      disposed = true;
+      clearPendingTimer();
       observer.disconnect();
     };
   }, [authState.status, language]);

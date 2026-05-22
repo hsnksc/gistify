@@ -135,14 +135,15 @@ function applyEntries(source: string, entries: Array<[string, string]>) {
 }
 
 const TR_TO_EN = sortEntries(TR_TO_EN_ENTRIES);
-const EN_TO_TR = sortEntries(TR_TO_EN_ENTRIES.map(([tr, en]) => [en, tr]));
 
 export function translateUiText(value: string, language: AppLanguage) {
   if (!value || !value.trim()) {
     return value;
   }
 
-  return language === "en"
-    ? applyEntries(value, TR_TO_EN)
-    : applyEntries(value, EN_TO_TR);
+  if (language !== "en") {
+    return value;
+  }
+
+  return applyEntries(value, TR_TO_EN);
 }
