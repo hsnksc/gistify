@@ -508,9 +508,16 @@ function App() {
                 className="sticky top-0 z-[70] border-b border-border bg-background/95 backdrop-blur"
               >
                 <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2.5">
-                  <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground">
-                    <GoogleMark />
-                    {authState.status === "authenticated" ? "Google Account" : "Google OAuth"}
+                  <div className="inline-flex items-center gap-3 rounded-full border border-border bg-card px-2 py-1.5 pr-3">
+                    <img
+                      src="/gistifylogo.png"
+                      alt="Gistify logo"
+                      className="size-9 rounded-full border border-border object-cover"
+                    />
+                    <div className="leading-tight">
+                      <p className="text-sm font-semibold text-foreground">Gistify</p>
+                      <p className="text-[11px] text-muted-foreground">Earnings Intelligence</p>
+                    </div>
                   </div>
 
                   <div className="flex items-center gap-2">
