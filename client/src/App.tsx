@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -31,6 +31,45 @@ type AuthState =
   | { status: "anonymous"; error?: string }
   | { status: "authenticated"; user: AuthUser; membership: AuthResponse["membership"] };
 
+const NUMBER_PATTERN = /\d[\d.,]*/g;
+
+function maskNumericText(value: string) {
+  return value.replace(NUMBER_PATTERN, "*****");
+}
+
+function walkTextNodes(root: Node, callback: (node: Text) => void) {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  let current = walker.nextNode();
+
+  while (current) {
+    callback(current as Text);
+    current = walker.nextNode();
+  }
+}
+
+function GoogleMark() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5">
+      <path
+        fill="#EA4335"
+        d="M12 10.2v3.9h5.5c-.2 1.3-.8 2.3-1.7 3l2.8 2.2c1.6-1.5 2.6-3.8 2.6-6.6 0-.6-.1-1.2-.2-1.8z"
+      />
+      <path
+        fill="#34A853"
+        d="M12 21c2.4 0 4.4-.8 5.9-2.2l-2.8-2.2c-.8.5-1.8.8-3.1.8-2.4 0-4.4-1.6-5.1-3.8l-2.9 2.2C5.5 18.9 8.5 21 12 21z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M6.9 13.6c-.2-.5-.3-1.1-.3-1.6s.1-1.1.3-1.6L4 8.2C3.4 9.4 3 10.7 3 12s.4 2.6 1 3.8z"
+      />
+      <path
+        fill="#4285F4"
+        d="M12 6.6c1.3 0 2.4.4 3.3 1.3L18 5.2C16.4 3.7 14.4 3 12 3 8.5 3 5.5 5.1 4 8.2l2.9 2.2c.7-2.2 2.7-3.8 5.1-3.8z"
+      />
+    </svg>
+  );
+}
+
 async function fetchAuthState(): Promise<AuthResponse> {
   const response = await fetch("/api/auth/me", {
     credentials: "include",
@@ -61,6 +100,11 @@ function App() {
   }, []);
 
   const [authState, setAuthState] = useState<AuthState>({ status: "loading" });
+  const protectedViewRef = useRef<HTMLDivElement | null>(null);
+  const originalTextRef = useRef(new WeakMap<Text, string>());
+
+  const isLimitedAccess =
+    authState.status === "authenticated" && !authState.membership.isSubscribed;
 
   const refreshAuthState = useCallback(async () => {
     try {
@@ -105,6 +149,92 @@ function App() {
     setAuthState({ status: "anonymous" });
   };
 
+  useEffect(() => {
+    const root = protectedViewRef.current;
+    if (!root) {
+      return;
+    }
+
+    const originalMap = originalTextRef.current;
+
+    const shouldSkipNode = (node: Text) => {
+      const parent = node.parentElement;
+      if (!parent) {
+        return true;
+      }
+
+      return Boolean(
+        parent.closest(
+          "[data-no-mask], script, style, textarea, input, pre, code"
+        )
+      );
+    };
+
+    const maskNode = (node: Text) => {
+      if (shouldSkipNode(node)) {
+        return;
+      }
+
+      const currentValue = node.nodeValue ?? "";
+      if (!currentValue.trim()) {
+        return;
+      }
+
+      if (!originalMap.has(node)) {
+        originalMap.set(node, currentValue);
+      }
+
+      const source = originalMap.get(node) ?? currentValue;
+      const masked = maskNumericText(source);
+
+      if (node.nodeValue !== masked) {
+        node.nodeValue = masked;
+      }
+    };
+
+    const restoreNode = (node: Text) => {
+      const original = originalMap.get(node);
+      if (original !== undefined && node.nodeValue !== original) {
+        node.nodeValue = original;
+      }
+    };
+
+    if (!isLimitedAccess) {
+      walkTextNodes(root, restoreNode);
+      return;
+    }
+
+    walkTextNodes(root, maskNode);
+
+    const observer = new MutationObserver(mutations => {
+      for (const mutation of mutations) {
+        if (mutation.type === "characterData" && mutation.target.nodeType === Node.TEXT_NODE) {
+          maskNode(mutation.target as Text);
+          continue;
+        }
+
+        for (const addedNode of Array.from(mutation.addedNodes)) {
+          if (addedNode.nodeType === Node.TEXT_NODE) {
+            maskNode(addedNode as Text);
+            continue;
+          }
+
+          walkTextNodes(addedNode, maskNode);
+        }
+      }
+    });
+
+    observer.observe(root, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [isLimitedAccess]);
+
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="dark">
@@ -121,12 +251,17 @@ function App() {
           ) : null}
 
           {authState.status === "anonymous" ? (
-            <div className="min-h-screen flex items-center justify-center bg-background px-4">
-              <div className="w-full max-w-md rounded-xl border border-border bg-card p-6 text-card-foreground shadow-sm space-y-4">
-                <div className="space-y-1">
-                  <h1 className="text-2xl font-semibold tracking-tight">Giris gerekli</h1>
-                  <p className="text-sm text-muted-foreground">
-                    Raporu goruntulemek icin Google hesabinla giris yap.
+            <div className="min-h-screen flex items-center justify-center bg-background px-4 py-8">
+              <div className="w-full max-w-lg rounded-2xl border border-border bg-card/95 p-7 text-card-foreground shadow-2xl space-y-5">
+                <div className="space-y-2">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
+                    <GoogleMark />
+                    Google OAuth Kimlik Dogrulama
+                  </div>
+                  <h1 className="text-2xl font-semibold tracking-tight">Finans paneline giris yap</h1>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Uyelik durumuna gore erisim acilir. Uye olmayanlar paneli goremez, uye olanlar ise
+                    abonelik olmadan kisitli gorunumde kalir.
                   </p>
                 </div>
 
@@ -134,31 +269,38 @@ function App() {
                   <p className="text-sm text-destructive">{authState.error}</p>
                 ) : null}
 
-                <Button className="w-full" size="lg" onClick={startGoogleLogin}>
-                  Google ile devam et
+                <Button
+                  className="w-full h-11 border border-slate-200 bg-white text-slate-900 hover:bg-slate-100"
+                  size="lg"
+                  onClick={startGoogleLogin}
+                >
+                  <GoogleMark />
+                  Google ile giris yap
                 </Button>
               </div>
             </div>
           ) : null}
 
           {authState.status === "authenticated" ? (
-            <div className="relative">
-              <Router />
-
-              {!authState.membership.isSubscribed ? (
-                <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-                  <div className="w-full max-w-xl rounded-xl border border-border bg-card p-6 text-card-foreground shadow-lg space-y-4">
-                    <div className="space-y-1">
-                      <p className="text-sm text-muted-foreground">Merhaba, {authState.user.name}</p>
-                      <h2 className="text-2xl font-semibold tracking-tight">Aylik abonelik gerekli</h2>
-                      <p className="text-sm text-muted-foreground">
-                        Uyeligin olusturuldu. Su an onizleme modundasin. Tum analizlere erisim icin
-                        Shopier aylik abonelik aktivasyonu gerekiyor.
+            <div
+              ref={protectedViewRef}
+              className={`relative ${isLimitedAccess ? "restricted-view" : ""}`}
+            >
+              {isLimitedAccess ? (
+                <div
+                  data-no-mask
+                  className="sticky top-0 z-40 border-b border-border bg-card/95 backdrop-blur px-4 py-3"
+                >
+                  <div className="mx-auto max-w-7xl flex flex-wrap items-center justify-between gap-3">
+                    <div className="space-y-0.5">
+                      <p className="text-sm font-semibold">Kisitli gorunum aktif</p>
+                      <p className="text-xs text-muted-foreground">
+                        Uye girisi tamamlandi. Rakamlar gizlenir ve grafikler sadece aktif abonelikte acilir.
                       </p>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-2">
-                      <Button disabled>Shopier baglantisi yakinda</Button>
+                    <div className="flex items-center gap-2">
+                      <Button disabled>Shopier abonelik yakinda</Button>
                       <Button variant="outline" onClick={logout}>
                         Cikis yap
                       </Button>
@@ -166,6 +308,8 @@ function App() {
                   </div>
                 </div>
               ) : null}
+
+              <Router />
             </div>
           ) : null}
         </TooltipProvider>

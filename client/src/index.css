@@ -320,4 +320,34 @@
     fill: oklch(0.55 0.015 225) !important;
     font-size: 11px !important;
   }
+
+  /* Restricted member mode: hide charts and show placeholders. */
+  .restricted-view .recharts-responsive-container,
+  .restricted-view .recharts-wrapper,
+  .restricted-view [data-slot="chart"] {
+    display: none !important;
+  }
+
+  .restricted-view .tactical-card:has(.recharts-responsive-container),
+  .restricted-view .tactical-card:has(.recharts-wrapper),
+  .restricted-view div:has(> .recharts-responsive-container) {
+    position: relative;
+    min-height: 12rem;
+    display: grid;
+    place-items: center;
+  }
+
+  .restricted-view .tactical-card:has(.recharts-responsive-container)::after,
+  .restricted-view .tactical-card:has(.recharts-wrapper)::after,
+  .restricted-view div:has(> .recharts-responsive-container)::after {
+    content: "Grafikler sadece aktif abonelerde acik.";
+    border: 1px dashed oklch(0.3 0.03 225);
+    background: oklch(0.12 0.03 225 / 0.8);
+    color: oklch(0.62 0.015 225);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.6rem 0.8rem;
+  }
 }
