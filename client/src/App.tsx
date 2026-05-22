@@ -6,6 +6,11 @@ import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
+import {
+  APP_LANGUAGE_STORAGE_KEY,
+  type AppLanguage,
+  translateUiText,
+} from "@/lib/i18n";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
@@ -104,18 +109,70 @@ function Router() {
   );
 }
 
+function LanguageSelector({
+  language,
+  onChange,
+}: {
+  language: AppLanguage;
+  onChange: (next: AppLanguage) => void;
+}) {
+  return (
+    <div
+      data-no-translate
+      className="inline-flex items-center rounded-full border border-border bg-card p-0.5"
+    >
+      <button
+        type="button"
+        className={`rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
+          language === "tr"
+            ? "bg-primary text-primary-foreground"
+            : "text-muted-foreground hover:text-foreground"
+        }`}
+        onClick={() => onChange("tr")}
+      >
+        TR
+      </button>
+      <button
+        type="button"
+        className={`rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
+          language === "en"
+            ? "bg-primary text-primary-foreground"
+            : "text-muted-foreground hover:text-foreground"
+        }`}
+        onClick={() => onChange("en")}
+      >
+        EN
+      </button>
+    </div>
+  );
+}
+
 function App() {
   const callbackError = useMemo(() => {
     const params = new URLSearchParams(window.location.search);
     return params.get("auth");
   }, []);
 
+  const [language, setLanguage] = useState<AppLanguage>(() => {
+    if (typeof window === "undefined") {
+      return "tr";
+    }
+
+    return window.localStorage.getItem(APP_LANGUAGE_STORAGE_KEY) === "en" ? "en" : "tr";
+  });
   const [authState, setAuthState] = useState<AuthState>({ status: "loading" });
+  const appRootRef = useRef<HTMLDivElement | null>(null);
   const protectedViewRef = useRef<HTMLDivElement | null>(null);
-  const originalTextRef = useRef(new WeakMap<Text, string>());
+  const translationOriginalRef = useRef(new WeakMap<Text, string>());
+  const maskOriginalRef = useRef(new WeakMap<Text, string>());
 
   const isLimitedAccess =
     authState.status === "authenticated" && !authState.membership.isSubscribed;
+
+  useEffect(() => {
+    window.localStorage.setItem(APP_LANGUAGE_STORAGE_KEY, language);
+    document.documentElement.lang = language;
+  }, [language]);
 
   const refreshAuthState = useCallback(async () => {
     try {
@@ -161,12 +218,98 @@ function App() {
   };
 
   useEffect(() => {
+    const root = appRootRef.current;
+    if (!root || authState.status === "loading") {
+      return;
+    }
+
+    const originalMap = translationOriginalRef.current;
+
+    const shouldSkipNode = (node: Text) => {
+      const parent = node.parentElement;
+      if (!parent) {
+        return true;
+      }
+
+      return Boolean(parent.closest("[data-no-translate], script, style, textarea, input, pre, code"));
+    };
+
+    const translateNode = (node: Text) => {
+      if (shouldSkipNode(node)) {
+        return;
+      }
+
+      const currentValue = node.nodeValue ?? "";
+      if (!currentValue.trim()) {
+        return;
+      }
+
+      if (!originalMap.has(node)) {
+        originalMap.set(node, currentValue);
+      }
+
+      const source = originalMap.get(node) ?? currentValue;
+      const translated = translateUiText(source, language);
+
+      if (node.nodeValue !== translated) {
+        node.nodeValue = translated;
+      }
+    };
+
+    walkTextNodes(root, translateNode);
+
+    const observer = new MutationObserver(mutations => {
+      for (const mutation of mutations) {
+        if (mutation.type === "characterData" && mutation.target.nodeType === Node.TEXT_NODE) {
+          translateNode(mutation.target as Text);
+          continue;
+        }
+
+        for (const addedNode of Array.from(mutation.addedNodes)) {
+          if (addedNode.nodeType === Node.TEXT_NODE) {
+            translateNode(addedNode as Text);
+            continue;
+          }
+
+          walkTextNodes(addedNode, translateNode);
+        }
+      }
+    });
+
+    observer.observe(root, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [authState.status, language]);
+
+  useEffect(() => {
     const root = protectedViewRef.current;
     if (!root) {
       return;
     }
 
-    const originalMap = originalTextRef.current;
+    const restoreMap = maskOriginalRef.current;
+
+    const restoreNode = (node: Text) => {
+      const original = restoreMap.get(node);
+      if (original !== undefined && node.nodeValue !== original) {
+        node.nodeValue = original;
+      }
+    };
+
+    if (!isLimitedAccess) {
+      walkTextNodes(root, restoreNode);
+      maskOriginalRef.current = new WeakMap<Text, string>();
+      return;
+    }
+
+    const originalMap = new WeakMap<Text, string>();
+    maskOriginalRef.current = originalMap;
 
     const shouldSkipNode = (node: Text) => {
       const parent = node.parentElement;
@@ -195,25 +338,12 @@ function App() {
         originalMap.set(node, currentValue);
       }
 
-      const source = originalMap.get(node) ?? currentValue;
-      const masked = maskNumericText(source);
+      const masked = maskNumericText(currentValue);
 
       if (node.nodeValue !== masked) {
         node.nodeValue = masked;
       }
     };
-
-    const restoreNode = (node: Text) => {
-      const original = originalMap.get(node);
-      if (original !== undefined && node.nodeValue !== original) {
-        node.nodeValue = original;
-      }
-    };
-
-    if (!isLimitedAccess) {
-      walkTextNodes(root, restoreNode);
-      return;
-    }
 
     walkTextNodes(root, maskNode);
 
@@ -244,114 +374,131 @@ function App() {
     return () => {
       observer.disconnect();
     };
-  }, [isLimitedAccess]);
+  }, [isLimitedAccess, language]);
 
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="dark">
         <TooltipProvider>
-          <Toaster />
+          <div ref={appRootRef} className="min-h-screen bg-background text-foreground">
+            <Toaster />
 
-          {authState.status === "loading" ? (
-            <div className="min-h-screen grid place-items-center bg-background text-foreground px-4 text-center">
-              <div className="space-y-2">
-                <h1 className="text-xl font-semibold">Oturum kontrol ediliyor</h1>
-                <p className="text-sm text-muted-foreground">Birkac saniye surebilir.</p>
-              </div>
-            </div>
-          ) : null}
-
-          {authState.status === "anonymous" ? (
-            <div className="min-h-screen flex items-center justify-center bg-background px-4 py-8">
-              <div className="w-full max-w-lg rounded-2xl border border-border bg-card/95 p-7 text-card-foreground shadow-2xl space-y-5">
-                <div className="space-y-2">
-                  <div className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
+            {authState.status !== "loading" ? (
+              <header
+                data-no-mask
+                data-no-translate
+                className="sticky top-0 z-[70] border-b border-border bg-background/95 backdrop-blur"
+              >
+                <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2.5">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground">
                     <GoogleMark />
-                    Google OAuth Kimlik Dogrulama
+                    {authState.status === "authenticated" ? "Google Account" : "Google OAuth"}
                   </div>
-                  <h1 className="text-2xl font-semibold tracking-tight">Finans paneline giris yap</h1>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Uyelik durumuna gore erisim acilir. Uye olmayanlar paneli goremez, uye olanlar ise
-                    abonelik olmadan kisitli gorunumde kalir.
-                  </p>
-                </div>
 
-                {authState.error ? (
-                  <p className="text-sm text-destructive">{authState.error}</p>
+                  <div className="flex items-center gap-2">
+                    <LanguageSelector language={language} onChange={setLanguage} />
+
+                    {authState.status === "authenticated" ? (
+                      <div className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-1 py-1">
+                        <Avatar className="size-8 border border-border">
+                          {authState.user.picture ? (
+                            <AvatarImage
+                              src={authState.user.picture}
+                              alt={`${authState.user.name} profile`}
+                            />
+                          ) : null}
+                          <AvatarFallback className="text-[10px] font-semibold">
+                            {getInitials(authState.user.name) || "U"}
+                          </AvatarFallback>
+                        </Avatar>
+
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon-sm"
+                          className="rounded-full"
+                          aria-label="Sign out"
+                          title="Sign out"
+                          onClick={logout}
+                        >
+                          <LogOut className="size-4" />
+                        </Button>
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
+              </header>
+            ) : null}
+
+            {authState.status === "loading" ? (
+              <div className="min-h-screen grid place-items-center px-4 text-center">
+                <div className="space-y-2">
+                  <h1 className="text-xl font-semibold">Oturum kontrol ediliyor</h1>
+                  <p className="text-sm text-muted-foreground">Birkac saniye surebilir.</p>
+                </div>
+              </div>
+            ) : null}
+
+            {authState.status === "anonymous" ? (
+              <div className="min-h-screen flex items-center justify-center px-4 py-8">
+                <div className="w-full max-w-lg rounded-2xl border border-border bg-card/95 p-7 text-card-foreground shadow-2xl space-y-5">
+                  <div className="space-y-2">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
+                      <GoogleMark />
+                      Google OAuth Kimlik Dogrulama
+                    </div>
+                    <h1 className="text-2xl font-semibold tracking-tight">Finans paneline giris yap</h1>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Uyelik durumuna gore erisim acilir. Uye olmayanlar paneli goremez, uye olanlar ise
+                      abonelik olmadan kisitli gorunumde kalir.
+                    </p>
+                  </div>
+
+                  {authState.error ? (
+                    <p className="text-sm text-destructive">{authState.error}</p>
+                  ) : null}
+
+                  <Button
+                    className="w-full h-11 border border-slate-200 bg-white text-slate-900 hover:bg-slate-100"
+                    size="lg"
+                    onClick={startGoogleLogin}
+                  >
+                    <GoogleMark />
+                    Google ile giris yap
+                  </Button>
+                </div>
+              </div>
+            ) : null}
+
+            {authState.status === "authenticated" ? (
+              <div
+                ref={protectedViewRef}
+                className={`relative ${isLimitedAccess ? "restricted-view" : ""}`}
+              >
+                {isLimitedAccess ? (
+                  <div
+                    data-no-mask
+                    className="z-40 border-b border-border bg-card/95 backdrop-blur px-4 py-3"
+                  >
+                    <div className="mx-auto max-w-7xl flex flex-wrap items-center justify-between gap-3">
+                      <div className="space-y-0.5">
+                        <p className="text-sm font-semibold">Kisitli gorunum aktif</p>
+                        <p className="text-xs text-muted-foreground">
+                          Uye girisi tamamlandi. Rakamlar gizlenir ve grafikler sadece aktif abonelikte acilir.
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <Button disabled>Shopier abonelik yakinda</Button>
+                      </div>
+                    </div>
+                  </div>
                 ) : null}
 
-                <Button
-                  className="w-full h-11 border border-slate-200 bg-white text-slate-900 hover:bg-slate-100"
-                  size="lg"
-                  onClick={startGoogleLogin}
-                >
-                  <GoogleMark />
-                  Google ile giris yap
-                </Button>
+                <Router />
               </div>
-            </div>
-          ) : null}
-
-          {authState.status === "authenticated" ? (
-            <div
-              ref={protectedViewRef}
-              className={`relative ${isLimitedAccess ? "restricted-view" : ""}`}
-            >
-              <div
-                data-no-mask
-                className="fixed top-4 right-4 z-[60] flex items-center gap-2 rounded-full border border-border bg-card/95 px-2 py-1.5 shadow-lg backdrop-blur"
-              >
-                <Avatar className="size-9 border border-border">
-                  {authState.user.picture ? (
-                    <AvatarImage src={authState.user.picture} alt={`${authState.user.name} profile`} />
-                  ) : null}
-                  <AvatarFallback className="text-xs font-semibold">
-                    {getInitials(authState.user.name) || "U"}
-                  </AvatarFallback>
-                </Avatar>
-
-                <div className="hidden sm:flex flex-col pr-1">
-                  <span className="max-w-32 truncate text-xs font-semibold leading-tight">
-                    {authState.user.name}
-                  </span>
-                </div>
-
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon-sm"
-                  className="rounded-full"
-                  aria-label="Sign out"
-                  title="Sign out"
-                  onClick={logout}
-                >
-                  <LogOut />
-                </Button>
-              </div>
-
-              {isLimitedAccess ? (
-                <div
-                  data-no-mask
-                  className="sticky top-0 z-40 border-b border-border bg-card/95 backdrop-blur px-4 py-3"
-                >
-                  <div className="mx-auto max-w-7xl flex flex-wrap items-center justify-between gap-3">
-                    <div className="space-y-0.5">
-                      <p className="text-sm font-semibold">Kisitli gorunum aktif</p>
-                      <p className="text-xs text-muted-foreground">
-                        Uye girisi tamamlandi. Rakamlar gizlenir ve grafikler sadece aktif abonelikte acilir.
-                      </p>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <Button disabled>Shopier abonelik yakinda</Button>
-                    </div>
-                  </div>
-                </div>
-              ) : null}
-
-              <Router />
-            </div>
-          ) : null}
+            ) : null}
+          </div>
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>
