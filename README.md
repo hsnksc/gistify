@@ -10,6 +10,46 @@ Pure React 19 + Tailwind 4 template with shadcn/ui baked in. **Use this README a
 - Client-only routing powered by React + Wouter.
 - Design tokens live entirely in `client/src/index.css`—keep that file intact.
 
+## Auth + Billing Setup
+
+1. Create `.env` from `.env.example`.
+  - Server reads `.env` / `.env.local` automatically at startup.
+2. Fill Google OAuth values: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_OAUTH_REDIRECT_URL`.
+3. Set `SESSION_SECRET` to a long random string.
+4. Set `BILLING_DB_PATH` for SQLite persistence (default: `./data/billing.sqlite`).
+5. In container deployments, mount this path to a persistent volume.
+6. Configure Shopier values:
+  - `SHOPIER_SUBSCRIPTION_PRODUCT_URL`: public Shopier product URL used for checkout.
+  - `SHOPIER_SUBSCRIPTION_PRODUCT_ID`: recommended product filter for webhook matching.
+  - `SHOPIER_SUBSCRIPTION_PRODUCT_TITLE`: optional fallback filter if product ID is unavailable.
+  - `SHOPIER_SHOP_URL`: optional storefront URL for diagnostics.
+  - `SHOPIER_MONTHLY_PRICE`: optional display/reference amount.
+  - `SHOPIER_CURRENCY`: defaults to `TRY`.
+  - `SHOPIER_WEBHOOK_TOKEN`: HS256 webhook signing token from Shopier.
+  - `SHOPIER_WEBHOOK_MAX_AGE_SECONDS`: max accepted age for `Shopier-Timestamp` (default 300s).
+  - `SHOPIER_ALLOW_ANY_PRODUCT_ORDER`: keep `false` unless you intentionally want any paid order to activate access.
+  - `SHOPIER_PAT`: optional PAT for webhook bootstrap automation and Shopier API diagnostics.
+  - `SHOPIER_APP_CLIENT_ID`, `SHOPIER_APP_CLIENT_SECRET`: optional app credentials for future OAuth app work. Current single-shop billing flow does not require them.
+  - `SHOPIER_AUTO_REGISTER_WEBHOOK`: when `true`, server auto-creates missing `order.created` webhook if `APP_BASE_URL` is a public HTTPS URL.
+  - `SHOPIER_ALLOW_LEGACY_WEBHOOK_TOKEN`: fallback token check without `Shopier-Signature` (keep `false` in production).
+  - `SHOPIER_SUBSCRIPTION_DAYS`: monthly period length (default 30).
+
+Backend billing endpoints:
+- `POST /api/billing/shopier/checkout`
+- `POST /api/billing/shopier/webhook`
+- `GET /api/billing/status`
+
+Persistence notes:
+- Billing state is stored in SQLite (`billing_subscriptions`, `billing_orders`).
+- Managed subscriptions are keyed by buyer email so Shopier webhooks still reconcile after a server restart.
+- Active `SUBSCRIBED_EMAILS` still works as manual pro override.
+- Buyers must use the same email in Shopier checkout as their Google login email in the app.
+
+Webhook verification notes:
+- Shopier webhook authenticity is verified with `Shopier-Signature` using HS256 HMAC over the raw JSON body.
+- Only `order.created` events are used for subscription activation.
+- Orders that do not match the configured Shopier subscription product are ignored.
+
 ## File Structure
 
 ```

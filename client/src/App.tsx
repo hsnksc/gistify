@@ -33,6 +33,13 @@ interface AuthResponse {
   };
 }
 
+interface ShopierCheckoutResponse {
+  provider: "shopier";
+  mode: "link" | "mock";
+  checkoutUrl: string;
+  orderId: string;
+}
+
 type AuthState =
   | { status: "loading" }
   | { status: "anonymous"; error?: string }
@@ -152,6 +159,10 @@ function App() {
     const params = new URLSearchParams(window.location.search);
     return params.get("auth");
   }, []);
+  const billingResult = useMemo(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("billing");
+  }, []);
 
   const [language, setLanguage] = useState<AppLanguage>(() => {
     if (typeof window === "undefined") {
@@ -161,6 +172,19 @@ function App() {
     return window.localStorage.getItem(APP_LANGUAGE_STORAGE_KEY) === "en" ? "en" : "tr";
   });
   const [authState, setAuthState] = useState<AuthState>({ status: "loading" });
+  const [isStartingCheckout, setIsStartingCheckout] = useState(false);
+  const [billingError, setBillingError] = useState<string | null>(null);
+  const [billingNotice, setBillingNotice] = useState<string | null>(() => {
+    if (billingResult === "success") {
+      return "Odeme alindi. Abonelik durumunuz guncelleniyor.";
+    }
+
+    if (billingResult === "cancel") {
+      return "Odeme islemi iptal edildi.";
+    }
+
+    return null;
+  });
   const appRootRef = useRef<HTMLDivElement | null>(null);
   const protectedViewRef = useRef<HTMLDivElement | null>(null);
   const translationOriginalRef = useRef(new WeakMap<Text, string>());
@@ -209,6 +233,21 @@ function App() {
     void refreshAuthState();
   }, [refreshAuthState]);
 
+  useEffect(() => {
+    if (billingResult === "success") {
+      void refreshAuthState();
+    }
+
+    if (!billingResult) {
+      return;
+    }
+
+    const url = new URL(window.location.href);
+    url.searchParams.delete("billing");
+    url.searchParams.delete("order");
+    window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
+  }, [billingResult, refreshAuthState]);
+
   const startGoogleLogin = () => {
     window.location.assign("/api/auth/google");
   };
@@ -220,6 +259,45 @@ function App() {
     });
     setAuthState({ status: "anonymous" });
   };
+
+  const startShopierCheckout = useCallback(async () => {
+    setBillingError(null);
+    setBillingNotice(null);
+    setIsStartingCheckout(true);
+
+    try {
+      const response = await fetch("/api/billing/shopier/checkout", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ plan: "monthly" }),
+      });
+
+      const payload = (await response.json().catch(() => null)) as
+        | (Partial<ShopierCheckoutResponse> & { error?: string })
+        | null;
+
+      if (!response.ok) {
+        throw new Error(payload?.error || "Shopier odeme sayfasina yonlendirme basarisiz oldu.");
+      }
+
+      if (!payload?.checkoutUrl) {
+        throw new Error("Shopier checkout URL uretilmedi.");
+      }
+
+      window.location.assign(payload.checkoutUrl);
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Shopier odeme akisi baslatilamadi. Lutfen tekrar deneyin.";
+      setBillingError(message);
+    } finally {
+      setIsStartingCheckout(false);
+    }
+  }, []);
 
   useEffect(() => {
     const root = appRootRef.current;
@@ -611,10 +689,25 @@ function App() {
                         <p className="text-xs text-muted-foreground">
                           Uye girisi tamamlandi. Rakamlar gizlenir ve grafikler sadece aktif abonelikte acilir.
                         </p>
+                        <p className="text-xs text-muted-foreground">
+                          Shopier odemesinde Google hesabinla ayni e-posta adresini kullan. Odeme tamamlaninca
+                          bu sayfaya donup "Odemeyi kontrol et" butonuna bas.
+                        </p>
+                        {billingNotice ? (
+                          <p className="text-xs text-foreground/80">{billingNotice}</p>
+                        ) : null}
+                        {billingError ? (
+                          <p className="text-xs text-destructive">{billingError}</p>
+                        ) : null}
                       </div>
 
                       <div className="flex items-center gap-2">
-                        <Button disabled>Shopier abonelik yakinda</Button>
+                        <Button type="button" onClick={startShopierCheckout} disabled={isStartingCheckout}>
+                          {isStartingCheckout ? "Yonlendiriliyor..." : "Shopier ile abone ol"}
+                        </Button>
+                        <Button type="button" variant="outline" onClick={() => void refreshAuthState()}>
+                          Odemeyi kontrol et
+                        </Button>
                       </div>
                     </div>
                   </div>
