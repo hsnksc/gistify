@@ -48,6 +48,30 @@ type AuthState =
 const NUMBER_PATTERN = /\d[\d.,]*/g;
 const AUTH_REQUEST_TIMEOUT_MS = 8000;
 
+function readStoredLanguage(): AppLanguage {
+  if (typeof window === "undefined") {
+    return "tr";
+  }
+
+  try {
+    return window.localStorage.getItem(APP_LANGUAGE_STORAGE_KEY) === "en" ? "en" : "tr";
+  } catch {
+    return "tr";
+  }
+}
+
+function persistLanguage(language: AppLanguage) {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  try {
+    window.localStorage.setItem(APP_LANGUAGE_STORAGE_KEY, language);
+  } catch {
+    // Ignore storage failures so auth bootstrap cannot get stuck behind UI preferences.
+  }
+}
+
 function maskNumericText(value: string) {
   return value.replace(NUMBER_PATTERN, "*****");
 }
@@ -174,13 +198,7 @@ function App() {
     return params.get("billing");
   }, []);
 
-  const [language, setLanguage] = useState<AppLanguage>(() => {
-    if (typeof window === "undefined") {
-      return "tr";
-    }
-
-    return window.localStorage.getItem(APP_LANGUAGE_STORAGE_KEY) === "en" ? "en" : "tr";
-  });
+  const [language, setLanguage] = useState<AppLanguage>(() => readStoredLanguage());
   const [authState, setAuthState] = useState<AuthState>({ status: "loading" });
   const [isStartingCheckout, setIsStartingCheckout] = useState(false);
   const [billingError, setBillingError] = useState<string | null>(null);
@@ -208,7 +226,7 @@ function App() {
     authState.status === "authenticated" && !authState.membership.isSubscribed;
 
   useEffect(() => {
-    window.localStorage.setItem(APP_LANGUAGE_STORAGE_KEY, language);
+    persistLanguage(language);
     document.documentElement.lang = language;
   }, [language]);
 
