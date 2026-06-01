@@ -1,11 +1,11 @@
 import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { LogOut } from "lucide-react";
+import { LayoutDashboard, LogOut, Radar } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
+import { Route, Switch, useLocation } from "wouter";
 import {
   APP_LANGUAGE_STORAGE_KEY,
   type AppLanguage,
@@ -15,6 +15,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
 const Home = lazy(() => import("./pages/Home"));
+const Scanner = lazy(() => import("./pages/Scanner"));
 
 type MembershipPlan = "guest" | "member" | "pro";
 
@@ -141,7 +142,7 @@ async function fetchAuthState(): Promise<AuthResponse> {
   return (await response.json()) as AuthResponse;
 }
 
-function Router() {
+function Router({ language }: { language: AppLanguage }) {
   return (
     <Suspense
       fallback={
@@ -157,10 +158,54 @@ function Router() {
     >
       <Switch>
         <Route path={"/"} component={Home} />
+        <Route path={"/scanner"}>{() => <Scanner language={language} />}</Route>
         <Route path={"/404"} component={NotFound} />
         <Route component={NotFound} />
       </Switch>
     </Suspense>
+  );
+}
+
+function AppNavigation({ language }: { language: AppLanguage }) {
+  const [location, setLocation] = useLocation();
+
+  const items = [
+    {
+      href: "/",
+      label: language === "en" ? "Dashboard" : "Panel",
+      icon: LayoutDashboard,
+      active: location === "/",
+    },
+    {
+      href: "/scanner",
+      label: language === "en" ? "Scanner" : "Scanner",
+      icon: Radar,
+      active: location.startsWith("/scanner"),
+    },
+  ];
+
+  return (
+    <nav className="hidden md:flex md:items-center md:gap-1 md:rounded-full md:border md:border-border md:bg-card md:p-1">
+      {items.map(item => {
+        const Icon = item.icon;
+
+        return (
+          <button
+            key={item.href}
+            type="button"
+            onClick={() => setLocation(item.href)}
+            className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
+              item.active
+                ? "bg-primary text-primary-foreground"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Icon className="size-3.5" />
+            {item.label}
+          </button>
+        );
+      })}
+    </nav>
   );
 }
 
@@ -178,14 +223,14 @@ function LimitedAccessPreview() {
                 Tam panel aktif abonelikle acilir
               </h2>
               <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-                Momentum tablolari, earnings takvimi, risk matrisi ve opsiyon ekranlari sadece
+                Momentum scanner, earnings takvimi, risk matrisi ve opsiyon ekranlari sadece
                 aktif Shopier aboneliginde yuklenir.
               </p>
             </div>
 
             <div className="grid min-w-[220px] grid-cols-2 gap-3">
               {[
-                ["Momentum", "Kilitli"],
+                ["Scanner", "Kilitli"],
                 ["Takvim", "Kilitli"],
                 ["Risk", "Kilitli"],
                 ["Opsiyon", "Kilitli"],
@@ -206,7 +251,7 @@ function LimitedAccessPreview() {
 
         <section className="grid gap-4 md:grid-cols-3">
           {[
-            "Canli earnings odak listesi",
+            "Acilis momentumu tarama tablosu",
             "Sektor bazli momentum dagilimi",
             "Opsiyon strateji ve IV crush gorunumu",
           ].map(title => (
@@ -716,16 +761,22 @@ function App() {
                 className="sticky top-0 z-[70] border-b border-border bg-background/95 backdrop-blur"
               >
                 <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2.5">
-                  <div className="inline-flex items-center gap-3 rounded-full border border-border bg-card px-2 py-1.5 pr-3">
-                    <img
-                      src="/gistifylogo.png?v=20260522-2"
-                      alt="Gistify logo"
-                      className="size-9 rounded-full border border-border object-cover"
-                    />
-                    <div className="leading-tight">
-                      <p className="text-sm font-semibold text-foreground">Gistify</p>
-                      <p className="text-[11px] text-muted-foreground">Earnings Intelligence</p>
+                  <div className="flex items-center gap-3">
+                    <div className="inline-flex items-center gap-3 rounded-full border border-border bg-card px-2 py-1.5 pr-3">
+                      <img
+                        src="/gistifylogo.png?v=20260522-2"
+                        alt="Gistify logo"
+                        className="size-9 rounded-full border border-border object-cover"
+                      />
+                      <div className="leading-tight">
+                        <p className="text-sm font-semibold text-foreground">Gistify</p>
+                        <p className="text-[11px] text-muted-foreground">Earnings Intelligence</p>
+                      </div>
                     </div>
+
+                    {authState.status === "authenticated" && !isLimitedAccess ? (
+                      <AppNavigation language={language} />
+                    ) : null}
                   </div>
 
                   <div className="flex items-center gap-2">
@@ -844,7 +895,7 @@ function App() {
                   <LimitedAccessPreview />
                 ) : (
                   <div ref={protectedViewRef}>
-                    <Router />
+                    <Router language={language} />
                   </div>
                 )}
               </div>
