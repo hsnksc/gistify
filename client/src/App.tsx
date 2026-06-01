@@ -164,6 +164,70 @@ function Router() {
   );
 }
 
+function LimitedAccessPreview() {
+  return (
+    <div className="px-4 py-8">
+      <div className="mx-auto max-w-7xl space-y-6">
+        <section className="rounded-3xl border border-border bg-card/95 p-6 shadow-2xl">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="space-y-2">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                Pro Onizleme
+              </p>
+              <h2 className="text-2xl font-semibold tracking-tight">
+                Tam panel aktif abonelikle acilir
+              </h2>
+              <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                Momentum tablolari, earnings takvimi, risk matrisi ve opsiyon ekranlari sadece
+                aktif Shopier aboneliginde yuklenir.
+              </p>
+            </div>
+
+            <div className="grid min-w-[220px] grid-cols-2 gap-3">
+              {[
+                ["Momentum", "Kilitli"],
+                ["Takvim", "Kilitli"],
+                ["Risk", "Kilitli"],
+                ["Opsiyon", "Kilitli"],
+              ].map(([label, value]) => (
+                <div
+                  key={label}
+                  className="rounded-2xl border border-border bg-background/60 p-4 text-center"
+                >
+                  <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
+                    {label}
+                  </p>
+                  <p className="mt-2 text-lg font-semibold">{value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="grid gap-4 md:grid-cols-3">
+          {[
+            "Canli earnings odak listesi",
+            "Sektor bazli momentum dagilimi",
+            "Opsiyon strateji ve IV crush gorunumu",
+          ].map(title => (
+            <div
+              key={title}
+              className="rounded-3xl border border-border bg-card/80 p-5 shadow-xl"
+            >
+              <p className="text-sm font-semibold">{title}</p>
+              <div className="mt-4 space-y-3">
+                <div className="h-3 rounded-full bg-muted/70" />
+                <div className="h-3 w-5/6 rounded-full bg-muted/50" />
+                <div className="h-24 rounded-2xl border border-dashed border-border bg-background/50" />
+              </div>
+            </div>
+          ))}
+        </section>
+      </div>
+    </div>
+  );
+}
+
 function LanguageSelector({
   language,
   onChange,
@@ -740,10 +804,7 @@ function App() {
             ) : null}
 
             {authState.status === "authenticated" ? (
-              <div
-                ref={protectedViewRef}
-                className={`relative ${isLimitedAccess ? "restricted-view" : ""}`}
-              >
+              <div className="relative">
                 {isLimitedAccess ? (
                   <div
                     data-no-mask
@@ -779,7 +840,13 @@ function App() {
                   </div>
                 ) : null}
 
-                <Router />
+                {isLimitedAccess ? (
+                  <LimitedAccessPreview />
+                ) : (
+                  <div ref={protectedViewRef}>
+                    <Router />
+                  </div>
+                )}
               </div>
             ) : null}
           </div>
