@@ -46,6 +46,7 @@ type AuthState =
   | { status: "authenticated"; user: AuthUser; membership: AuthResponse["membership"] };
 
 const NUMBER_PATTERN = /\d[\d.,]*/g;
+const AUTH_REQUEST_TIMEOUT_MS = 8000;
 
 function maskNumericText(value: string) {
   return value.replace(NUMBER_PATTERN, "*****");
@@ -94,10 +95,19 @@ function getInitials(name: string) {
 }
 
 async function fetchAuthState(): Promise<AuthResponse> {
-  const response = await fetch("/api/auth/me", {
-    credentials: "include",
-    cache: "no-store",
-  });
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), AUTH_REQUEST_TIMEOUT_MS);
+
+  let response: Response;
+  try {
+    response = await fetch("/api/auth/me", {
+      credentials: "include",
+      cache: "no-store",
+      signal: controller.signal,
+    });
+  } finally {
+    window.clearTimeout(timeoutId);
+  }
 
   if (!response.ok) {
     throw new Error("Auth state request failed");
@@ -224,7 +234,7 @@ function App() {
     } catch {
       setAuthState({
         status: "anonymous",
-        error: "Oturum kontrolu yapilamadi. Sayfayi yenileyip tekrar deneyin.",
+        error: "Oturum kontrolu tamamlanamadi. Sayfayi yenileyip tekrar deneyin.",
       });
     }
   }, [callbackError]);

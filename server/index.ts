@@ -6,7 +6,9 @@ import path from "path";
 import { fileURLToPath } from "url";
 import {
   createBillingStore,
+  type AuthUserRecord,
   type ShopierOrderRecord,
+  type SessionStoreRecord,
   type SubscriptionRecord,
 } from "./billingStore";
 import { COOKIE_NAME, ONE_YEAR_MS } from "../shared/const";
@@ -19,12 +21,15 @@ interface AuthUser {
   name: string;
   picture?: string;
   createdAt: string;
+  updatedAt: string;
 }
 
 interface SessionRecord {
   id: string;
   userId: string;
   expiresAt: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface AuthPayload {
@@ -149,8 +154,6 @@ const OAUTH_STATE_TTL_SECONDS = 60 * 10;
 const SESSION_TTL_SECONDS = Math.floor(ONE_YEAR_MS / 1000);
 const DEFAULT_SUBSCRIPTION_DAYS = 30;
 
-const users = new Map<string, AuthUser>();
-const sessions = new Map<string, SessionRecord>();
 const translationCache = new Map<string, string>();
 const billingStore = createBillingStore();
 
@@ -296,6 +299,12 @@ function isSecureRequest(req: express.Request) {
   return req.secure || forwardedProto.split(",")[0] === "https";
 }
 
+function setPrivateNoStore(res: express.Response) {
+  res.setHeader("Cache-Control", "private, no-store, max-age=0");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Vary", "Cookie");
+}
+
 function getSessionSecret() {
   return process.env.SESSION_SECRET?.trim() || "dev-session-secret-change-me";
 }
@@ -359,10 +368,13 @@ function isSubscribedEmail(email: string) {
 }
 
 function createSession(userId: string): SessionRecord {
+  const nowIso = new Date().toISOString();
   return {
     id: crypto.randomBytes(24).toString("base64url"),
     userId,
     expiresAt: Date.now() + ONE_YEAR_MS,
+    createdAt: nowIso,
+    updatedAt: nowIso,
   };
 }
 
@@ -391,19 +403,19 @@ function getSessionUser(req: express.Request) {
     return null;
   }
 
-  const session = sessions.get(sessionId);
+  const session = billingStore.getSessionById(sessionId);
   if (!session) {
     return null;
   }
 
   if (session.expiresAt < Date.now()) {
-    sessions.delete(sessionId);
+    billingStore.deleteSession(sessionId);
     return null;
   }
 
-  const user = users.get(session.userId);
+  const user = billingStore.getUserById(session.userId);
   if (!user) {
-    sessions.delete(sessionId);
+    billingStore.deleteSession(sessionId);
     return null;
   }
 
@@ -468,13 +480,7 @@ function getUserByEmail(email: string) {
     return null;
   }
 
-  for (const user of Array.from(users.values())) {
-    if (normalizeEmail(user.email) === normalizedEmail) {
-      return user;
-    }
-  }
-
-  return null;
+  return billingStore.getUserByEmail(normalizedEmail);
 }
 
 function syncManagedSubscriptionUser(user: AuthUser) {
@@ -933,6 +939,7 @@ const __dirname = path.dirname(__filename);
 async function startServer() {
   const app = express();
   const server = createServer(app);
+  billingStore.pruneExpiredSessions();
 
   app.set("trust proxy", 1);
   app.use(
@@ -1050,18 +1057,21 @@ async function startServer() {
         return;
       }
 
-      const existingUser = users.get(userData.sub);
+      const existingUser = billingStore.getUserById(userData.sub);
+      const nowIso = new Date().toISOString();
+      const normalizedEmail = normalizeEmail(userData.email);
       const normalizedUser: AuthUser = {
         id: userData.sub,
-        email: userData.email,
-        name: userData.name || userData.email,
+        email: normalizedEmail || userData.email,
+        name: userData.name || normalizedEmail || userData.email,
         picture: userData.picture,
-        createdAt: existingUser?.createdAt || new Date().toISOString(),
+        createdAt: existingUser?.createdAt || nowIso,
+        updatedAt: nowIso,
       };
-      users.set(normalizedUser.id, normalizedUser);
+      billingStore.upsertUser(normalizedUser as AuthUserRecord);
 
       const session = createSession(normalizedUser.id);
-      sessions.set(session.id, session);
+      billingStore.upsertSession(session as SessionStoreRecord);
 
       const signedSessionValue = `${session.id}.${signValue(session.id)}`;
       setCookie(req, res, COOKIE_NAME, signedSessionValue, {
@@ -1079,6 +1089,7 @@ async function startServer() {
   });
 
   app.get("/api/auth/me", (req, res) => {
+    setPrivateNoStore(res);
     const payload = readAuthPayload(req);
     res.status(200).json(payload);
   });
@@ -1087,7 +1098,7 @@ async function startServer() {
     const cookies = parseCookies(req.headers.cookie);
     const sessionId = parseSessionIdFromCookie(cookies[COOKIE_NAME]);
     if (sessionId) {
-      sessions.delete(sessionId);
+      billingStore.deleteSession(sessionId);
     }
 
     clearCookie(req, res, COOKIE_NAME);
@@ -1095,6 +1106,7 @@ async function startServer() {
   });
 
   app.get("/api/billing/status", (req, res) => {
+    setPrivateNoStore(res);
     const user = getSessionUser(req);
     if (!user) {
       res.status(401).json({ error: "Oturum gerekli." });
