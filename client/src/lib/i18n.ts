@@ -14,6 +14,7 @@ const TR_TO_EN_ENTRIES: Array<[string, string]> = [
   ["Google ile giris yap", "Sign in with Google"],
   ["Google ile giris tamamlanamadi. Lutfen tekrar deneyin.", "Google sign-in failed. Please try again."],
   ["Oturum kontrolu tamamlanamadi. Sayfayi yenileyip tekrar deneyin.", "Session check could not be completed. Refresh and try again."],
+  ["Oturum kontrolu zaman asimina ugradi. Sayfayi yenileyin veya tekrar giris yapin.", "Session check timed out. Refresh the page or sign in again."],
   ["Kisitli gorunum aktif", "Limited view active"],
   [
     "Uye girisi tamamlandi. Rakamlar gizlenir ve grafikler sadece aktif abonelikte acilir.",

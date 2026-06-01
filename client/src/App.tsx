@@ -262,6 +262,30 @@ function App() {
   }, [refreshAuthState]);
 
   useEffect(() => {
+    if (authState.status !== "loading") {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setAuthState(current => {
+        if (current.status !== "loading") {
+          return current;
+        }
+
+        return {
+          status: "anonymous",
+          error:
+            "Oturum kontrolu zaman asimina ugradi. Sayfayi yenileyin veya tekrar giris yapin.",
+        };
+      });
+    }, AUTH_REQUEST_TIMEOUT_MS + 4000);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [authState.status]);
+
+  useEffect(() => {
     if (billingResult === "success") {
       void refreshAuthState();
     }
