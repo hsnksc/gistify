@@ -699,6 +699,391 @@ function getShopierWebhookMaxAgeSeconds() {
   return Math.floor(parsed);
 }
 
+function escapeHtml(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function renderStaticMarketingPage(
+  pageTitle: string,
+  pageDescription: string,
+  bodyHtml: string
+) {
+  const title = escapeHtml(`${pageTitle} | Gistify`);
+  const description = escapeHtml(pageDescription);
+
+  return `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>${title}</title>
+    <meta name="description" content="${description}" />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #071018;
+        --panel: #0d1722;
+        --panel-2: #111f2d;
+        --text: #edf3f8;
+        --muted: #93a4b8;
+        --border: rgba(128, 150, 173, 0.22);
+        --primary: #34d399;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+        background:
+          radial-gradient(circle at top, rgba(52, 211, 153, 0.16), transparent 34%),
+          linear-gradient(180deg, #071018 0%, #09131c 100%);
+        color: var(--text);
+      }
+      a { color: inherit; text-decoration: none; }
+      .wrap { max-width: 1120px; margin: 0 auto; padding: 24px 16px 64px; }
+      .card {
+        background: rgba(13, 23, 34, 0.92);
+        border: 1px solid var(--border);
+        border-radius: 26px;
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+      }
+      header {
+        padding: 18px 22px;
+        display: flex;
+        gap: 16px;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 18px;
+        flex-wrap: wrap;
+      }
+      .brand {
+        font-size: 12px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--primary);
+        font-weight: 700;
+      }
+      .sub {
+        color: var(--muted);
+        font-size: 14px;
+        margin-top: 6px;
+      }
+      nav {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      nav a, .button {
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.02);
+        padding: 10px 14px;
+        border-radius: 999px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .hero {
+        padding: 30px 24px;
+        margin-bottom: 18px;
+      }
+      .eyebrow {
+        color: var(--primary);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 14px 0 12px;
+        font-size: clamp(2rem, 5vw, 3.75rem);
+        line-height: 1.06;
+      }
+      .lead {
+        max-width: 760px;
+        color: var(--muted);
+        line-height: 1.7;
+        font-size: 16px;
+      }
+      .grid {
+        display: grid;
+        gap: 18px;
+      }
+      .two {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+      section, aside {
+        padding: 24px;
+      }
+      h2 {
+        margin: 0 0 14px;
+        font-size: 22px;
+      }
+      h3 {
+        margin: 0 0 8px;
+        font-size: 18px;
+      }
+      p, li {
+        color: var(--muted);
+        line-height: 1.7;
+        font-size: 15px;
+      }
+      ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+      .pill {
+        display: inline-block;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(52, 211, 153, 0.28);
+        background: rgba(52, 211, 153, 0.08);
+        color: #b9f6d8;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .feature, .list-item, .legal-block {
+        background: rgba(17, 31, 45, 0.82);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 16px;
+      }
+      .price {
+        font-size: 44px;
+        font-weight: 700;
+        margin: 12px 0 18px;
+      }
+      footer {
+        margin-top: 18px;
+        padding: 22px 24px;
+        display: flex;
+        gap: 18px;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+      footer p {
+        margin: 0;
+      }
+      .footer-links {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .footer-links a {
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 10px 14px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="card">
+        <div>
+          <div class="brand">Gistify</div>
+          <div class="sub">Earnings intelligence, momentum scanning, pre-earnings research, risk matrix and options views.</div>
+        </div>
+        <nav>
+          <a href="/">Home</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/terms">Terms &amp; Conditions</a>
+          <a href="/privacy">Privacy Policy</a>
+          <a href="/refund">Refund Policy</a>
+          <a href="/app">Open App</a>
+        </nav>
+      </header>
+      ${bodyHtml}
+      <footer class="card">
+        <div>
+          <p><strong>Gistify</strong></p>
+          <p>Support: <a href="mailto:support@gistify.pro">support@gistify.pro</a></p>
+        </div>
+        <div class="footer-links">
+          <a href="/pricing">Pricing</a>
+          <a href="/terms">Terms</a>
+          <a href="/privacy">Privacy</a>
+          <a href="/refund">Refund</a>
+          <a href="/pay">Pay</a>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>`;
+}
+
+function renderLandingPageHtml() {
+  return renderStaticMarketingPage(
+    "Gistify Product Overview",
+    "Gistify is a subscription-based analytics platform for momentum scanning, pre-earnings research, risk matrix views and options analysis.",
+    `
+      <section class="card hero">
+        <div class="eyebrow">Product Overview</div>
+        <h1>Gistify is a subscription-based analytics platform built to speed up pre-earnings decision making.</h1>
+        <p class="lead">The service combines momentum scanning, pre-earnings stock research, sector context, risk matrix screens and options-focused analysis in a single web application.</p>
+      </section>
+      <div class="grid two">
+        <section class="card">
+          <h2>Features included with purchase</h2>
+          <div class="grid">
+            <div class="feature"><h3>Momentum Scanner</h3><p>Scans active names using opening momentum, volume change and sector distribution signals.</p></div>
+            <div class="feature"><h3>Pre-Earnings Analysis</h3><p>Shows expectations, beat probability, sector context and directional analysis before earnings.</p></div>
+            <div class="feature"><h3>Risk and Options View</h3><p>Combines risk matrix screens, IV crush views and options-focused research modules.</p></div>
+          </div>
+        </section>
+        <aside class="card">
+          <span class="pill">Paddle approval pending</span>
+          <h2 style="margin-top:18px;">Pricing Snapshot</h2>
+          <div class="price">250 TRY / month</div>
+          <div class="grid">
+            <div class="list-item">Monthly web access</div>
+            <div class="list-item">Momentum scanner module</div>
+            <div class="list-item">Earnings benchmark dashboard</div>
+            <div class="list-item">Risk matrix and options view</div>
+            <div class="list-item">Support via support@gistify.pro</div>
+          </div>
+        </aside>
+      </div>
+    `
+  );
+}
+
+function renderPricingPageHtml() {
+  return renderStaticMarketingPage(
+    "Pricing",
+    "Gistify Pro pricing and purchase inclusions.",
+    `
+      <section class="card hero">
+        <div class="eyebrow">Pricing</div>
+        <h1>Single monthly subscription</h1>
+        <p class="lead">Gistify runs on a digital subscription model. Our single active plan is priced at 250 TRY per month and includes web access to all analysis modules.</p>
+      </section>
+      <div class="grid two">
+        <section class="card">
+          <h2>Gistify Pro</h2>
+          <div class="price">250 TRY / month</div>
+          <div class="grid">
+            <div class="list-item">Momentum scanner</div>
+            <div class="list-item">Earnings benchmark dashboard</div>
+            <div class="list-item">Pre-earnings stock analysis tabs</div>
+            <div class="list-item">Risk matrix and IV crush views</div>
+            <div class="list-item">Web access and support via support@gistify.pro</div>
+          </div>
+        </section>
+        <aside class="card">
+          <h2>What is being purchased?</h2>
+          <p>This is a digital subscription for access to the Gistify web application. No physical goods are delivered.</p>
+          <p>Refund terms are described on the <a href="/refund">Refund Policy</a> page. Legal information is available on the <a href="/terms">Terms &amp; Conditions</a> and <a href="/privacy">Privacy Policy</a> pages.</p>
+        </aside>
+      </div>
+    `
+  );
+}
+
+function renderTermsPageHtml() {
+  return renderStaticMarketingPage(
+    "Terms & Conditions",
+    "Terms and conditions for the Gistify digital subscription service.",
+    `
+      <section class="card hero">
+        <div class="eyebrow">Terms &amp; Conditions</div>
+        <h1>Terms &amp; Conditions</h1>
+        <p class="lead">These Terms &amp; Conditions govern the use and purchase of the Gistify digital subscription service.</p>
+      </section>
+      <div class="grid">
+        <section class="card legal-block">
+          <h2>1. Parties and service</h2>
+          <p>This website and digital subscription service are provided by <strong>Gistify</strong>. Gistify offers web-based financial analysis screens, momentum scanning tools, pre-earnings research content, risk matrix views and options research modules.</p>
+        </section>
+        <section class="card legal-block">
+          <h2>2. Account and access</h2>
+          <p>Access to the application may change from time to time for technical or operational reasons. Gistify reserves the right to improve the service, update content or suspend certain features when necessary.</p>
+        </section>
+        <section class="card legal-block">
+          <h2>3. Subscription and permitted use</h2>
+          <p>The subscription is a digital access license. Users may use the service only for lawful purposes and for their own internal use. Copying, commercial redistribution or unauthorized sharing of the content is prohibited.</p>
+        </section>
+        <section class="card legal-block">
+          <h2>4. Financial liability limitation</h2>
+          <p>The data and analysis provided on Gistify do not constitute investment advice. All decisions remain the responsibility of the user. Gistify cannot be held liable for direct or indirect losses arising from financial decisions made using the platform content.</p>
+        </section>
+        <section class="card legal-block">
+          <h2>5. Support and contact</h2>
+          <p>Support requests related to the service may be sent to <a href="mailto:support@gistify.pro">support@gistify.pro</a>.</p>
+        </section>
+      </div>
+    `
+  );
+}
+
+function renderPrivacyPageHtml() {
+  return renderStaticMarketingPage(
+    "Privacy Policy",
+    "Privacy policy for Gistify.",
+    `
+      <section class="card hero">
+        <div class="eyebrow">Privacy Policy</div>
+        <h1>Privacy Policy</h1>
+        <p class="lead">This page outlines, at a high level, what user information Gistify may process and for what operational purposes.</p>
+      </section>
+      <div class="grid">
+        <section class="card legal-block">
+          <h2>1. Data collected</h2>
+          <p>Gistify may process limited user information required for account access, support communication and core operations. This may include an email address, account information and technical session data.</p>
+        </section>
+        <section class="card legal-block">
+          <h2>2. How data is used</h2>
+          <p>Collected data is used to provide account access, operate the service, manage billing and support flows, and maintain security monitoring.</p>
+        </section>
+        <section class="card legal-block">
+          <h2>3. Third-party services</h2>
+          <p>Certain functions such as billing, authentication or hosting may rely on third-party providers. These providers may access only the information necessary to deliver their part of the service.</p>
+        </section>
+        <section class="card legal-block">
+          <h2>4. Contact</h2>
+          <p>Questions or requests related to privacy may be sent to <a href="mailto:support@gistify.pro">support@gistify.pro</a>.</p>
+        </section>
+      </div>
+    `
+  );
+}
+
+function renderRefundPageHtml() {
+  return renderStaticMarketingPage(
+    "Refund Policy",
+    "Refund policy for Gistify purchases processed through Paddle.",
+    `
+      <section class="card hero">
+        <div class="eyebrow">Refund Policy</div>
+        <h1>Refund Policy</h1>
+        <p class="lead">Payments for Gistify will be processed through Paddle. This page gives a short summary of the refund framework aligned with Paddle.</p>
+      </section>
+      <div class="grid two">
+        <section class="card">
+          <h2>Core refund rules</h2>
+          <div class="grid">
+            <div class="list-item">Gistify is a digital access subscription service; no physical product is delivered.</div>
+            <div class="list-item">Refund requests must be submitted within <strong>14 calendar days</strong> from the transaction date.</div>
+            <div class="list-item">Refund eligibility and review are handled in line with the Paddle refund policy.</div>
+            <div class="list-item">If a refund is approved, access to the related product or subscription will end.</div>
+            <div class="list-item">Any mandatory consumer rights available under applicable law remain reserved.</div>
+          </div>
+        </section>
+        <aside class="card">
+          <h2>How to request a refund</h2>
+          <p>A refund request should be submitted using the link in the Paddle receipt, from the subscription management screen, or via paddle.net.</p>
+          <p><a href="https://www.paddle.com/legal/refund-policy" target="_blank" rel="noreferrer">View the official Paddle refund policy</a></p>
+        </aside>
+      </div>
+    `
+  );
+}
+
 function allowLegacyWebhookVerification() {
   return process.env.SHOPIER_ALLOW_LEGACY_WEBHOOK_TOKEN === "true";
 }
@@ -1302,6 +1687,26 @@ async function startServer() {
     );
 
     res.status(200).json({ translations });
+  });
+
+  app.get("/", (_req, res) => {
+    res.status(200).type("html").send(renderLandingPageHtml());
+  });
+
+  app.get("/pricing", (_req, res) => {
+    res.status(200).type("html").send(renderPricingPageHtml());
+  });
+
+  app.get("/terms", (_req, res) => {
+    res.status(200).type("html").send(renderTermsPageHtml());
+  });
+
+  app.get("/privacy", (_req, res) => {
+    res.status(200).type("html").send(renderPrivacyPageHtml());
+  });
+
+  app.get("/refund", (_req, res) => {
+    res.status(200).type("html").send(renderRefundPageHtml());
   });
 
   // Serve static files from dist/public in production
