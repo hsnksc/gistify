@@ -5,6 +5,7 @@ import type { AppLanguage } from "@/lib/i18n";
 
 interface PublicShellProps {
   language: AppLanguage;
+  onLanguageChange: (next: AppLanguage) => void;
   eyebrow: string;
   title: string;
   description: string;
@@ -13,17 +14,9 @@ interface PublicShellProps {
   ctaLabel?: string;
 }
 
-const NAV_ITEMS = [
-  { href: "/", label: "Ana Sayfa" },
-  { href: "/pricing", label: "Fiyatlandirma" },
-  { href: "/terms", label: "Kullanim Kosullari" },
-  { href: "/privacy", label: "Gizlilik Politikasi" },
-  { href: "/refund", label: "Iade Politikasi" },
-  { href: "/app", label: "Uygulamayi Ac" },
-];
-
 export default function PublicShell({
   language,
+  onLanguageChange,
   eyebrow,
   title,
   description,
@@ -31,6 +24,25 @@ export default function PublicShell({
   ctaHref,
   ctaLabel,
 }: PublicShellProps) {
+  const navItems =
+    language === "en"
+      ? [
+          { href: "/", label: "Home" },
+          { href: "/pricing", label: "Pricing" },
+          { href: "/terms", label: "Terms" },
+          { href: "/privacy", label: "Privacy" },
+          { href: "/refund", label: "Refund" },
+          { href: "/app", label: "Open App" },
+        ]
+      : [
+          { href: "/", label: "Ana Sayfa" },
+          { href: "/pricing", label: "Fiyatlandirma" },
+          { href: "/terms", label: "Kullanim Kosullari" },
+          { href: "/privacy", label: "Gizlilik Politikasi" },
+          { href: "/refund", label: "Iade Politikasi" },
+          { href: "/app", label: "Uygulamayi Ac" },
+        ];
+
   return (
     <div className="min-h-screen overflow-hidden bg-background text-foreground">
       <div className="pointer-events-none absolute inset-0 tactical-grid opacity-20" />
@@ -44,21 +56,50 @@ export default function PublicShell({
                 Gistify
               </p>
               <p className="text-sm text-muted-foreground">
-                Earnings intelligence and momentum research platform
+                {language === "en"
+                  ? "Earnings intelligence and momentum research platform"
+                  : "Earnings intelligence ve momentum arastirma platformu"}
               </p>
             </div>
 
-            <nav className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-              {NAV_ITEMS.map(item => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  className="rounded-full border border-border bg-background/70 px-3 py-1.5 transition-colors hover:text-foreground"
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="inline-flex items-center rounded-full border border-border bg-background/70 p-0.5 text-xs">
+                <button
+                  type="button"
+                  onClick={() => onLanguageChange("tr")}
+                  className={`rounded-full px-3 py-1.5 font-semibold transition-colors ${
+                    language === "tr"
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
                 >
-                  {item.label}
-                </a>
-              ))}
-            </nav>
+                  TR
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onLanguageChange("en")}
+                  className={`rounded-full px-3 py-1.5 font-semibold transition-colors ${
+                    language === "en"
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  EN
+                </button>
+              </div>
+
+              <nav className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                {navItems.map(item => (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    className="rounded-full border border-border bg-background/70 px-3 py-1.5 transition-colors hover:text-foreground"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </nav>
+            </div>
           </div>
         </header>
 

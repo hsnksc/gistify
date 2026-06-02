@@ -18,7 +18,12 @@ const COPY = {
     helpTitle: "Paddle panelinde ne girmelisin",
     helpBody:
       "Site approval alanina URL degil sadece alan adini gir: gistify.pro. Default payment link ise approval bitince https://gistify.pro/pay olacak.",
-    back: "Panele don",
+    back: "Siteye don",
+    status: "Durum",
+    approvalBody:
+      "gistify.pro domaini public acildi. Paddle live checkout, domain approval biter bitmez bu route uzerinden baglanacak.",
+    nextStepBody:
+      "Bu sayfa deploy edildi; sonraki adim Paddle.js ve webhook aktivasyonu.",
   },
   en: {
     eyebrow: "Gistify Billing",
@@ -34,11 +39,22 @@ const COPY = {
     helpTitle: "What to enter in Paddle",
     helpBody:
       "Enter only the bare domain for site approval, not a URL: gistify.pro. After approval, set the default payment link to https://gistify.pro/pay.",
-    back: "Back to dashboard",
+    back: "Back to site",
+    status: "Status",
+    approvalBody:
+      "The gistify.pro domain is now publicly available. Paddle live checkout will be attached to this route as soon as domain approval is completed.",
+    nextStepBody:
+      "This page is already deployed; the next step is wiring Paddle.js and webhook activation.",
   },
 } as const;
 
-export default function Pay({ language }: { language: AppLanguage }) {
+export default function Pay({
+  language,
+  onLanguageChange,
+}: {
+  language: AppLanguage;
+  onLanguageChange: (next: AppLanguage) => void;
+}) {
   const copy = COPY[language];
   const transactionId = useMemo(() => {
     const params = new URLSearchParams(window.location.search);
@@ -63,12 +79,39 @@ export default function Pay({ language }: { language: AppLanguage }) {
               </p>
             </div>
 
-            <Button asChild variant="outline" className="bg-background/70">
-              <a href="/">
-                <ArrowLeft className="size-4" />
-                {copy.back}
-              </a>
-            </Button>
+            <div className="flex items-center gap-2">
+              <div className="inline-flex items-center rounded-full border border-border bg-background/70 p-0.5 text-xs">
+                <button
+                  type="button"
+                  onClick={() => onLanguageChange("tr")}
+                  className={`rounded-full px-3 py-1.5 font-semibold transition-colors ${
+                    language === "tr"
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  TR
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onLanguageChange("en")}
+                  className={`rounded-full px-3 py-1.5 font-semibold transition-colors ${
+                    language === "en"
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  EN
+                </button>
+              </div>
+
+              <Button asChild variant="outline" className="bg-background/70">
+                <a href="/">
+                  <ArrowLeft className="size-4" />
+                  {copy.back}
+                </a>
+              </Button>
+            </div>
           </div>
 
           <div className="mt-6 grid gap-3 md:grid-cols-3">
@@ -110,21 +153,19 @@ export default function Pay({ language }: { language: AppLanguage }) {
 
           <aside className="rounded-3xl border border-border bg-card/80 p-6 shadow-xl">
             <div className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              Status
+              {copy.status}
             </div>
             <div className="mt-4 space-y-3">
               <div className="rounded-2xl border border-border bg-background/60 p-4">
                 <p className="text-sm font-semibold">{copy.siteApproval}</p>
                 <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                  gistify.pro domaini public acildi. Paddle live checkout,
-                  domain approval biter bitmez bu route uzerinden baglanacak.
+                  {copy.approvalBody}
                 </p>
               </div>
               <div className="rounded-2xl border border-border bg-background/60 p-4">
                 <p className="text-sm font-semibold">{copy.tokenWaiting}</p>
                 <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                  Bu sayfa deploy edildi; sonraki adim Paddle.js ve webhook
-                  aktivasyonu.
+                  {copy.nextStepBody}
                 </p>
               </div>
             </div>

@@ -167,7 +167,13 @@ async function fetchAuthState(): Promise<AuthResponse> {
   return (await response.json()) as AuthResponse;
 }
 
-function Router({ language }: { language: AppLanguage }) {
+function Router({
+  language,
+  onLanguageChange,
+}: {
+  language: AppLanguage;
+  onLanguageChange: (next: AppLanguage) => void;
+}) {
   return (
     <Suspense
       fallback={
@@ -182,13 +188,33 @@ function Router({ language }: { language: AppLanguage }) {
       }
     >
       <Switch>
-        <Route path={"/"}>{() => <Landing language={language} />}</Route>
+        <Route path={"/"}>
+          {() => (
+            <Landing language={language} onLanguageChange={onLanguageChange} />
+          )}
+        </Route>
         <Route path={"/app"} component={Home} />
         <Route path={"/scanner"}>{() => <Scanner language={language} />}</Route>
-        <Route path={"/pricing"}>{() => <Pricing language={language} />}</Route>
-        <Route path={"/terms"}>{() => <Terms language={language} />}</Route>
-        <Route path={"/privacy"}>{() => <Privacy language={language} />}</Route>
-        <Route path={"/refund"}>{() => <Refund language={language} />}</Route>
+        <Route path={"/pricing"}>
+          {() => (
+            <Pricing language={language} onLanguageChange={onLanguageChange} />
+          )}
+        </Route>
+        <Route path={"/terms"}>
+          {() => (
+            <Terms language={language} onLanguageChange={onLanguageChange} />
+          )}
+        </Route>
+        <Route path={"/privacy"}>
+          {() => (
+            <Privacy language={language} onLanguageChange={onLanguageChange} />
+          )}
+        </Route>
+        <Route path={"/refund"}>
+          {() => (
+            <Refund language={language} onLanguageChange={onLanguageChange} />
+          )}
+        </Route>
         <Route path={"/404"} component={NotFound} />
         <Route component={NotFound} />
       </Switch>
@@ -251,14 +277,23 @@ function AppNavigation({ language }: { language: AppLanguage }) {
   );
 }
 
-function SiteFooter() {
-  const links = [
-    { href: "/pricing", label: "Pricing" },
-    { href: "/terms", label: "Terms" },
-    { href: "/privacy", label: "Privacy" },
-    { href: "/refund", label: "Refund" },
-    { href: "/pay", label: "Pay" },
-  ];
+function SiteFooter({ language }: { language: AppLanguage }) {
+  const links =
+    language === "en"
+      ? [
+          { href: "/pricing", label: "Pricing" },
+          { href: "/terms", label: "Terms" },
+          { href: "/privacy", label: "Privacy" },
+          { href: "/refund", label: "Refund" },
+          { href: "/pay", label: "Pay" },
+        ]
+      : [
+          { href: "/pricing", label: "Fiyatlandirma" },
+          { href: "/terms", label: "Kosullar" },
+          { href: "/privacy", label: "Gizlilik" },
+          { href: "/refund", label: "Iade" },
+          { href: "/pay", label: "Odeme" },
+        ];
 
   return (
     <footer className="border-t border-border bg-background/95">
@@ -266,11 +301,12 @@ function SiteFooter() {
         <div className="space-y-1">
           <p className="text-sm font-semibold text-foreground">Gistify</p>
           <p className="text-xs text-muted-foreground">
-            Earnings intelligence platform for momentum scanning, pre-earnings
-            analysis and options research.
+            {language === "en"
+              ? "Earnings intelligence platform for momentum scanning, pre-earnings analysis and options research."
+              : "Momentum tarama, earnings oncesi analiz ve opsiyon arastirmasi icin earnings intelligence platformu."}
           </p>
           <p className="text-xs text-muted-foreground">
-            Support: support@gistify.pro
+            {language === "en" ? "Support" : "Destek"}: support@gistify.pro
           </p>
         </div>
 
@@ -806,7 +842,9 @@ function App() {
           >
             <Toaster />
 
-            {isPaymentRoute ? <Pay language={language} /> : null}
+            {isPaymentRoute ? (
+              <Pay language={language} onLanguageChange={setLanguage} />
+            ) : null}
 
             {authState.status !== "loading" &&
             !isPaymentRoute &&
@@ -983,14 +1021,17 @@ function App() {
                   <LimitedAccessPreview />
                 ) : (
                   <div ref={protectedViewRef}>
-                    <Router language={language} />
+                    <Router
+                      language={language}
+                      onLanguageChange={setLanguage}
+                    />
                   </div>
                 )}
               </div>
             ) : null}
 
             {!isPaymentRoute && authState.status !== "loading" ? (
-              <SiteFooter />
+              <SiteFooter language={language} />
             ) : null}
           </div>
         </TooltipProvider>
