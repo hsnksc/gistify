@@ -6,34 +6,36 @@ const COPY = {
     eyebrow: "Refund Policy",
     title: "Iade politikasi",
     description:
-      "Bu politika, Gistify dijital aboneligi icin uygulanacak temel iade prensiplerini aciklar.",
+      "Gistify odemeleri Paddle uzerinden islenecektir. Bu sayfa, Paddle ile uyumlu iade cercevesinin kisa ozetini verir.",
     ctaLabel: "Fiyatlandirmaya don",
     requestTitle: "Iade talebi nasil gonderilir?",
     requestBody:
-      "Odeme tarihi, kullanilan e-posta adresi ve sorunun kisa aciklamasi ile support@gistify.pro adresine ulas. Talep, odeme kaydi ve hesap erisimi kontrol edilerek degerlendirilir.",
+      "Iade talebi, Paddle dekontundaki baglanti uzerinden, abonelik yonetim ekranindan veya paddle.net uzerinden gonderilmelidir. Resmi detaylar icin Paddle refund policy uygulanir.",
+    policyLabel: "Paddle refund policy",
     points: [
       "Gistify dijital erisim saglayan abonelik hizmetidir; fiziksel urun teslimati yoktur.",
-      "Abonelik aktive edilmeden once yanlis veya cift tahsilat gibi acik teknik odeme hatalari icin iade talebi destek tarafindan degerlendirilir.",
-      "Abonelik aktive olduktan ve hizmete erisim saglandiktan sonra gecmis donemler icin otomatik iade sunulmaz.",
+      "Iade talepleri islem tarihinden itibaren 14 takvim gunu icinde gonderilmelidir.",
+      "Iade degerlendirmesi ve uygunluk kurallari Paddle refund policy uzerinden yurutulur.",
+      "Iade onaylanirsa ilgili urun veya abonelik erisimi sona erer.",
       "Kullanicinin yasal zorunlu tuketici haklari saklidir.",
-      "Iade veya tahsilat inceleme talepleri support@gistify.pro adresine siparis ayrintilariyla birlikte iletilmelidir.",
     ],
   },
   en: {
     eyebrow: "Refund Policy",
     title: "Refund policy",
     description:
-      "This policy outlines the core refund principles for the Gistify digital subscription service.",
+      "Payments for Gistify will be processed through Paddle. This page gives a short summary of the refund framework aligned with Paddle.",
     ctaLabel: "Back to pricing",
     requestTitle: "How do I submit a refund request?",
     requestBody:
-      "Contact support@gistify.pro with the payment date, the email address used for the order and a short description of the issue. The request will be reviewed against the billing record and account access status.",
+      "A refund request should be submitted using the link in the Paddle receipt, from the subscription management screen, or via paddle.net. The official Paddle refund policy applies.",
+    policyLabel: "Paddle refund policy",
     points: [
       "Gistify is a digital access subscription service; no physical product is delivered.",
-      "Before subscription activation, clear technical billing errors such as duplicate or incorrect charges may be reviewed for refund eligibility by support.",
-      "After the subscription has been activated and access to the service has been provided, past billing periods are not automatically refunded.",
+      "Refund requests must be submitted within 14 calendar days from the transaction date.",
+      "Refund eligibility and review are handled in line with the Paddle refund policy.",
+      "If a refund is approved, access to the related product or subscription will end.",
       "Any mandatory consumer rights available under applicable law remain reserved.",
-      "Refund or charge review requests should be sent to support@gistify.pro together with the relevant order details.",
     ],
   },
 } as const;
@@ -75,6 +77,16 @@ export default function Refund({
           <h2 className="text-xl font-semibold">{copy.requestTitle}</h2>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
             {copy.requestBody}
+          </p>
+          <p className="mt-4 text-sm">
+            <a
+              className="text-primary underline"
+              href="https://www.paddle.com/legal/refund-policy"
+              target="_blank"
+              rel="noreferrer"
+            >
+              {copy.policyLabel}
+            </a>
           </p>
         </aside>
       </div>
