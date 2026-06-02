@@ -7,7 +7,13 @@ import {
   useRef,
   useState,
 } from "react";
-import { LayoutDashboard, LogOut, Radar } from "lucide-react";
+import {
+  BadgeDollarSign,
+  Globe2,
+  LayoutDashboard,
+  LogOut,
+  Radar,
+} from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
@@ -22,9 +28,14 @@ import {
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
+const Landing = lazy(() => import("./pages/Landing"));
 const Home = lazy(() => import("./pages/Home"));
 const Scanner = lazy(() => import("./pages/Scanner"));
 const Pay = lazy(() => import("./pages/Pay"));
+const Pricing = lazy(() => import("./pages/Pricing"));
+const Terms = lazy(() => import("./pages/Terms"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const Refund = lazy(() => import("./pages/Refund"));
 
 type MembershipPlan = "guest" | "member" | "pro";
 type AccessMode = "managed" | "public";
@@ -171,8 +182,13 @@ function Router({ language }: { language: AppLanguage }) {
       }
     >
       <Switch>
-        <Route path={"/"} component={Home} />
+        <Route path={"/"}>{() => <Landing language={language} />}</Route>
+        <Route path={"/app"} component={Home} />
         <Route path={"/scanner"}>{() => <Scanner language={language} />}</Route>
+        <Route path={"/pricing"}>{() => <Pricing language={language} />}</Route>
+        <Route path={"/terms"}>{() => <Terms language={language} />}</Route>
+        <Route path={"/privacy"}>{() => <Privacy language={language} />}</Route>
+        <Route path={"/refund"}>{() => <Refund language={language} />}</Route>
         <Route path={"/404"} component={NotFound} />
         <Route component={NotFound} />
       </Switch>
@@ -186,9 +202,21 @@ function AppNavigation({ language }: { language: AppLanguage }) {
   const items = [
     {
       href: "/",
+      label: language === "en" ? "Site" : "Site",
+      icon: Globe2,
+      active: location === "/",
+    },
+    {
+      href: "/pricing",
+      label: language === "en" ? "Pricing" : "Fiyat",
+      icon: BadgeDollarSign,
+      active: location.startsWith("/pricing"),
+    },
+    {
+      href: "/app",
       label: language === "en" ? "Dashboard" : "Panel",
       icon: LayoutDashboard,
-      active: location === "/",
+      active: location.startsWith("/app"),
     },
     {
       href: "/scanner",
@@ -220,6 +248,45 @@ function AppNavigation({ language }: { language: AppLanguage }) {
         );
       })}
     </nav>
+  );
+}
+
+function SiteFooter() {
+  const links = [
+    { href: "/pricing", label: "Pricing" },
+    { href: "/terms", label: "Terms" },
+    { href: "/privacy", label: "Privacy" },
+    { href: "/refund", label: "Refund" },
+    { href: "/pay", label: "Pay" },
+  ];
+
+  return (
+    <footer className="border-t border-border bg-background/95">
+      <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-6 md:flex-row md:items-center md:justify-between">
+        <div className="space-y-1">
+          <p className="text-sm font-semibold text-foreground">Gistify</p>
+          <p className="text-xs text-muted-foreground">
+            Earnings intelligence platform for momentum scanning, pre-earnings
+            analysis and options research.
+          </p>
+          <p className="text-xs text-muted-foreground">
+            Support: support@gistify.pro
+          </p>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+          {links.map(link => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="rounded-full border border-border bg-card px-3 py-1.5 transition-colors hover:text-foreground"
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+      </div>
+    </footer>
   );
 }
 
@@ -346,6 +413,13 @@ function App() {
   const runtimeTranslationInFlightRef = useRef(false);
   const maskOriginalRef = useRef(new WeakMap<Text, string>());
   const isPaymentRoute = location === "/pay";
+  const isMarketingRoute = [
+    "/",
+    "/pricing",
+    "/terms",
+    "/privacy",
+    "/refund",
+  ].includes(location);
 
   const isLimitedAccess =
     authState.status === "authenticated" && !authState.membership.isSubscribed;
@@ -734,7 +808,9 @@ function App() {
 
             {isPaymentRoute ? <Pay language={language} /> : null}
 
-            {authState.status !== "loading" && !isPaymentRoute ? (
+            {authState.status !== "loading" &&
+            !isPaymentRoute &&
+            !isMarketingRoute ? (
               <header
                 data-no-mask
                 data-no-translate
@@ -911,6 +987,10 @@ function App() {
                   </div>
                 )}
               </div>
+            ) : null}
+
+            {!isPaymentRoute && authState.status !== "loading" ? (
+              <SiteFooter />
             ) : null}
           </div>
         </TooltipProvider>
