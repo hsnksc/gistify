@@ -7,48 +7,49 @@ Pure React 19 + Tailwind 4 template with shadcn/ui baked in. **Use this README a
 ---
 
 ## Stack Overview
+
 - Client-only routing powered by React + Wouter.
 - Design tokens live entirely in `client/src/index.css`—keep that file intact.
 
 ## Auth + Billing Setup
 
 1. Create `.env` from `.env.example`.
-  - Server reads `.env` / `.env.local` automatically at startup.
-2. Fill Google OAuth values: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_OAUTH_REDIRECT_URL`.
-3. Set `SESSION_SECRET` to a long random string.
-4. Set `BILLING_DB_PATH` for SQLite persistence (default: `./data/billing.sqlite`).
-5. In container deployments, mount this path to a persistent volume.
-6. Configure Shopier values:
-  - `SHOPIER_SUBSCRIPTION_PRODUCT_URL`: public Shopier product URL used for checkout.
-  - `SHOPIER_SUBSCRIPTION_PRODUCT_ID`: recommended product filter for webhook matching.
-  - `SHOPIER_SUBSCRIPTION_PRODUCT_TITLE`: optional fallback filter if product ID is unavailable.
-  - `SHOPIER_SHOP_URL`: optional storefront URL for diagnostics.
-  - `SHOPIER_MONTHLY_PRICE`: optional display/reference amount.
-  - `SHOPIER_CURRENCY`: defaults to `TRY`.
-  - `SHOPIER_WEBHOOK_TOKEN`: HS256 webhook signing token from Shopier.
-  - `SHOPIER_WEBHOOK_MAX_AGE_SECONDS`: max accepted age for `Shopier-Timestamp` (default 300s).
-  - `SHOPIER_ALLOW_ANY_PRODUCT_ORDER`: keep `false` unless you intentionally want any paid order to activate access.
-  - `SHOPIER_PAT`: optional PAT for webhook bootstrap automation and Shopier API diagnostics.
-  - `SHOPIER_APP_CLIENT_ID`, `SHOPIER_APP_CLIENT_SECRET`: optional app credentials for future OAuth app work. Current single-shop billing flow does not require them.
-  - `SHOPIER_AUTO_REGISTER_WEBHOOK`: when `true`, server auto-creates missing `order.created` webhook if `APP_BASE_URL` is a public HTTPS URL.
-  - `SHOPIER_ALLOW_LEGACY_WEBHOOK_TOKEN`: fallback token check without `Shopier-Signature` (keep `false` in production).
-  - `SHOPIER_SUBSCRIPTION_DAYS`: monthly period length (default 30).
 
-Backend billing endpoints:
-- `POST /api/billing/shopier/checkout`
-- `POST /api/billing/shopier/webhook`
+- Server reads `.env` / `.env.local` automatically at startup.
+
+2. Set `SESSION_SECRET` to a long random string.
+3. Set `BILLING_DB_PATH` for SQLite persistence (default: `./data/billing.sqlite`).
+4. In container deployments, mount this path to a persistent volume.
+5. Control access with `APP_ACCESS_MODE`:
+
+- `public`: the whole app opens without Google login.
+- `managed`: Google OAuth + subscription gating are enabled again.
+
+6. While Paddle approval is pending, keep the app in `public` mode.
+7. Keep Paddle credentials in env so checkout can be wired in the next deployment:
+
+- `PADDLE_ENV`
+- `PADDLE_API_KEY`
+- `PADDLE_CLIENT_TOKEN`
+- `PADDLE_PRODUCT_ID`
+- `PADDLE_PRICE_ID`
+- `PADDLE_WEBHOOK_SECRET`
+- `PADDLE_SUCCESS_URL`
+- `PADDLE_CANCEL_URL`
+
+Current runtime notes:
+
+- Shopier routes are intentionally disabled.
+- Google OAuth routes are bypassed in `public` mode.
+- `/pay` is a public route reserved for Paddle checkout.
+- For Paddle site approval, enter the bare domain name `gistify.pro`, not `https://gistify.pro/`.
+
+Backend endpoints still relevant during the transition:
+
+- `GET /api/auth/me`
 - `GET /api/billing/status`
-
-Persistence notes:
-- Billing state is stored in SQLite (`billing_subscriptions`, `billing_orders`).
-- Managed subscriptions are keyed by buyer email so Shopier webhooks still reconcile after a server restart.
-- Active `SUBSCRIBED_EMAILS` still works as manual pro override.
-- Buyers must use the same email in Shopier checkout as their Google login email in the app.
-
-Webhook verification notes:
-- Shopier webhook authenticity is verified with `Shopier-Signature` using HS256 HMAC over the raw JSON body.
-- Only `order.created` events are used for subscription activation.
-- Orders that do not match the configured Shopier subscription product are ignored.
+- `POST /api/billing/shopier/checkout` returns `410 Gone`
+- `POST /api/billing/shopier/webhook` returns `410 Gone`
 
 ## File Structure
 
@@ -74,6 +75,7 @@ shared/         ← Placeholder for imported template compatibility
 **DO NOT** store images, videos, or large assets in `client/public/` or `client/src/assets/`. Local media files will cause deployment timeouts.
 
 **Required workflow:**
+
 1. Upload assets using the CLI: `manus-upload-file --webdev path/to/image.png`
 2. Use the returned storage path directly in your code: `<img src="/manus-storage/image_a1b2c3d4.png" />`
 3. Store the original local file in `/home/ubuntu/webdev-static-assets/` (outside the project directory)
@@ -91,11 +93,13 @@ Files in `client/public` are available at the root of your site—reference them
 3. **Share primitives** via `client/src/components/`—extend shadcn/ui when needed instead of duplicating markup.
 4. **Keep styling consistent** by relying on existing Tailwind tokens (spacing, colors, typography).
 5. **Fetch external data** with `useEffect` if the site needs dynamic content from public APIs.
+
 ---
 
 ## 🎨 Frontend Development Guidelines
 
 **UI & Styling:**
+
 - Prefer shadcn/ui components for interactions to keep a modern, consistent look; import from `@/components/ui/*` (e.g., `button`, `card`, `dialog`).
 - Compose Tailwind utilities with component variants for layout and states; avoid excessive custom CSS. Use built-in `variant`, `size`, etc. where available.
 - Preserve design tokens: keep the `@layer base` rules in `client/src/index.css`. Utilities like `border-border` and `font-sans` depend on them.
@@ -107,10 +111,12 @@ Files in `client/public` are available at the root of your site—reference them
 - Placeholder UI elements: When adding structural placeholders (nav items, CTAs) for not-yet-implemented features, show toast on click ("Feature coming soon"). Inform user which elements are placeholders when presenting work.
 
 **React Best Practices:**
+
 - Never call setState/navigation in render phase → wrap in `useEffect`
 
 **Customized Defaults:**
 This template customizes some Tailwind/shadcn defaults for simplified usage:
+
 - `.container` is customized to auto-center and add responsive padding (see `index.css`). Use directly without `mx-auto`/`px-*`. For custom widths, use `max-w-*` with `mx-auto px-4`.
 - `.flex` is customized to have `min-width:0` and `min-height:0` by default
 - `button` variant `outline` uses transparent background (not `bg-background`). Add bg color class manually if needed.
@@ -120,6 +126,7 @@ This template customizes some Tailwind/shadcn defaults for simplified usage:
 ## 🎨 Design Guide
 
 When generating frontend UI, avoid generic patterns that lack visual distinction:
+
 - Avoid generic full-page centered layouts—prefer asymmetric/sidebar/grid structures for landing pages and dashboards
 - When user provides vague requirements, make creative design decisions (choose specific color palette, typography, layout approach)
 - Prioritize visual diversity: combine different design systems (e.g., one color scheme + different typography + another layout principle)
@@ -131,6 +138,7 @@ When generating frontend UI, avoid generic patterns that lack visual distinction
 ## Animation Guide
 
 Bake motion taste in from the first line of code. Snappy, physically intuitive interactions are not a polish pass — they are part of the initial build.
+
 - Decide whether to animate at all: keyboard-initiated actions (command palettes, shortcuts) must be instant — never animate them. High-frequency interactions (hover, list nav) should be minimal. Reserve richer motion for occasional events (modals, drawers, toasts) and rare delight moments (onboarding).
 - Keep UI animations under 300ms. A 180ms dropdown feels significantly better than a 400ms one. Typical ranges: button press 100–160ms, tooltips 125–200ms, dropdowns 150–250ms, modals/drawers 200–500ms.
 - Use strong custom easings, not the weak CSS defaults. Default to a snappy ease-out for entering/exiting UI: `--ease-out: cubic-bezier(0.23, 1, 0.32, 1);`. For moving/morphing use `--ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);`. NEVER use `ease-in` for UI animations — it feels sluggish.
@@ -150,6 +158,7 @@ Bake motion taste in from the first line of code. Snappy, physically intuitive i
 Before implementing UI features, check if these components already exist:
 
 Maps:
+
 - `client/src/components/Map.tsx` - Google Maps integration with proxy authentication. Provides MapView component with onMapReady callback for initializing Google Maps services (Places, Geocoder, Directions, Drawing, etc.). All map functionality works directly in the browser.
 
 When implementing features that match these categories, MUST evaluate the component first to decide whether to use or customize it.
@@ -161,6 +170,7 @@ When implementing features that match these categories, MUST evaluate the compon
 **CRITICAL: The Manus proxy provides FULL access to ALL Google Maps features** - including advanced drawing, heatmaps, Street View, all layers, Places API, etc. Do NOT ask users for Google Map API keys - authentication is automatic.
 
 **Implementation:**
+
 - Frontend: Import MapView from `client/src/components/Map.tsx` and initialize ANY Google Maps service (geocoding, directions, places, drawing, visualization, geometry, etc.) in the onMapReady callback. ALL Google Maps JavaScript API features work directly in the browser.
 
 NEVER use external map libraries or request API keys from users - the Manus proxy handles everything automatically with no feature limitations.
@@ -168,6 +178,7 @@ NEVER use external map libraries or request API keys from users - the Manus prox
 ---
 
 ## ✅ Launch Checklist
+
 - [ ] UI layout and navigation structure correct, all image src valid.
 - [ ] Success + error paths verified in the browser
 
@@ -176,6 +187,7 @@ NEVER use external map libraries or request API keys from users - the Manus prox
 ## Core File References
 
 `package.json`
+
 ```tsx
 {
   "name": "earnings_benchmark_report",
@@ -280,6 +292,7 @@ NEVER use external map libraries or request API keys from users - the Manus prox
 ```
 
 `client/src/App.tsx`
+
 ```tsx
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -288,7 +301,6 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
-
 
 function Router() {
   return (
@@ -326,10 +338,11 @@ export default App;
 ```
 
 `client/src/pages/Home.tsx`
+
 ```tsx
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import { Streamdown } from 'streamdown';
+import { Streamdown } from "streamdown";
 
 /**
  * All content in this page are only for example, replace with your own feature implementation
@@ -355,6 +368,7 @@ export default function Home() {
 ```
 
 `client/src/index.css`
+
 ```tsx
 @import "tailwindcss";
 @import "tw-animate-css";
@@ -536,6 +550,7 @@ export default function Home() {
 ```
 
 `client/index.html`
+
 ```tsx
 <!doctype html>
 <html lang="en">
@@ -545,7 +560,7 @@ export default function Home() {
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <title>{{project_title}}</title>    
+    <title>{{project_title}}</title>
     <!-- THIS IS THE START OF A COMMENT BLOCK, BLOCK TO BE DELETED: Google Fonts here, example:
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -566,6 +581,7 @@ export default function Home() {
 ```
 
 `server/index.ts`
+
 ```tsx
 import express from "express";
 import { createServer } from "http";
@@ -601,12 +617,15 @@ async function startServer() {
 
 startServer().catch(console.error);
 ```
+
 ---
 
 ## Common Pitfalls
 
 ### Infinite loading loops from unstable references
+
 **Anti-pattern:** Creating new objects/arrays in render that are used as query inputs
+
 ```tsx
 // ❌ Bad: New Date() creates new reference every render → infinite queries
 const { data } = trpc.items.getByDate.useQuery({
@@ -620,6 +639,7 @@ const { data } = trpc.items.getByIds.useQuery({
 ```
 
 **Correct approach:** Stabilize references with useState/useMemo
+
 ```tsx
 // ✅ Good: Initialize once with useState
 const [date] = useState(() => new Date());
@@ -633,6 +653,7 @@ const { data } = trpc.items.getByIds.useQuery({ ids });
 **Why this happens:** TRPC queries trigger when input references change. Objects/arrays created in render have new references each time, causing infinite re-fetches.
 
 ### Navigation dead-ends in subpages
+
 **Problem:** Creating nested routes without escape routes—no header nav, no sidebar, no back button.
 
 **Root cause:** Implementing individual pages before establishing global layout structure.
@@ -649,6 +670,7 @@ const { data } = trpc.items.getByIds.useQuery({ ids });
 2. **Always pair bg with text:** When using `bg-{semantic}`, MUST also use `text-{semantic}-foreground` (not automatic - text inherits from parent otherwise)
 
 **Quick reference:**
+
 ```tsx
 // ✅ Theme + CSS alignment
 <ThemeProvider defaultTheme="dark">  {/* Must match .dark in index.css */}
@@ -662,13 +684,16 @@ const { data } = trpc.items.getByIds.useQuery({ ids });
 ```
 
 ### Nested anchor tags in Link components
+
 **Problem:** Wrapping `<a>` tags inside another `<a>` or wouter's `<Link>` creates nested anchors and runtime errors.
 
 **Solution:** Pass children directly to Link—it already renders an `<a>` internally.
+
 ```tsx
 // ❌ Bad: <Link><a>...</a></Link> or <a><a>...</a></a>
 // ✅ Good: <Link>...</Link> or just <a>...</a>
 ```
+
 ### Empty `Select.Item` values
 
 **Rule:** Every `<Select.Item>` must have a non-empty `value` prop—never `""`, `undefined`, or omitted.

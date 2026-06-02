@@ -14,6 +14,7 @@ import {
 import { COOKIE_NAME, ONE_YEAR_MS } from "../shared/const";
 
 type MembershipPlan = "guest" | "member" | "pro";
+type AppAccessMode = "managed" | "public";
 
 interface AuthUser {
   id: string;
@@ -39,6 +40,7 @@ interface AuthPayload {
     plan: MembershipPlan;
     isSubscribed: boolean;
   };
+  accessMode: AppAccessMode;
 }
 
 interface GoogleTokenResponse {
@@ -153,6 +155,12 @@ const OAUTH_STATE_COOKIE = "google_oauth_state";
 const OAUTH_STATE_TTL_SECONDS = 60 * 10;
 const SESSION_TTL_SECONDS = Math.floor(ONE_YEAR_MS / 1000);
 const DEFAULT_SUBSCRIPTION_DAYS = 30;
+const DEFAULT_PUBLIC_ACCESS_MODE: AppAccessMode = "public";
+const PUBLIC_ACCESS_USER = {
+  id: "public-access",
+  email: "public@gistify.pro",
+  name: "Public Access",
+} as const;
 
 const translationCache = new Map<string, string>();
 const billingStore = createBillingStore();
@@ -220,7 +228,10 @@ async function translateText(
   return translated;
 }
 
-function normalizeTranslationLanguage(value: unknown, fallback: TranslationLanguage) {
+function normalizeTranslationLanguage(
+  value: unknown,
+  fallback: TranslationLanguage
+) {
   if (value === "tr" || value === "en") {
     return value;
   }
@@ -228,7 +239,9 @@ function normalizeTranslationLanguage(value: unknown, fallback: TranslationLangu
   return fallback;
 }
 
-function parseCookies(cookieHeader: string | undefined): Record<string, string> {
+function parseCookies(
+  cookieHeader: string | undefined
+): Record<string, string> {
   if (!cookieHeader) {
     return {};
   }
@@ -271,7 +284,11 @@ interface CookieOptions {
   sameSite?: "Lax" | "Strict" | "None";
 }
 
-function serializeCookie(name: string, value: string, options: CookieOptions = {}) {
+function serializeCookie(
+  name: string,
+  value: string,
+  options: CookieOptions = {}
+) {
   const parts = [`${name}=${encodeURIComponent(value)}`];
   parts.push(`Path=${options.path ?? "/"}`);
 
@@ -330,7 +347,11 @@ function setCookie(
   appendSetCookie(res, cookie);
 }
 
-function clearCookie(req: express.Request, res: express.Response, name: string) {
+function clearCookie(
+  req: express.Request,
+  res: express.Response,
+  name: string
+) {
   setCookie(req, res, name, "", {
     maxAgeSeconds: 0,
     path: "/",
@@ -423,7 +444,9 @@ function getSessionUser(req: express.Request) {
 }
 
 function getSubscriptionDurationDays() {
-  const configured = Number(process.env.SHOPIER_SUBSCRIPTION_DAYS || DEFAULT_SUBSCRIPTION_DAYS);
+  const configured = Number(
+    process.env.SHOPIER_SUBSCRIPTION_DAYS || DEFAULT_SUBSCRIPTION_DAYS
+  );
 
   if (!Number.isFinite(configured) || configured <= 0) {
     return DEFAULT_SUBSCRIPTION_DAYS;
@@ -468,7 +491,9 @@ function parseCurrencyAmount(value: unknown) {
   const hasComma = clean.includes(",");
   const hasDot = clean.includes(".");
   const normalized =
-    hasComma && hasDot ? clean.replace(/\./g, "").replace(",", ".") : clean.replace(",", ".");
+    hasComma && hasDot
+      ? clean.replace(/\./g, "").replace(",", ".")
+      : clean.replace(",", ".");
   const parsed = Number(normalized);
 
   return Number.isFinite(parsed) ? parsed : 0;
@@ -540,7 +565,28 @@ function resolveMembershipForUser(user: AuthUser) {
   };
 }
 
+function getAppAccessMode(): AppAccessMode {
+  const configuredValue = process.env.APP_ACCESS_MODE?.trim().toLowerCase();
+  return configuredValue === "managed" ? "managed" : DEFAULT_PUBLIC_ACCESS_MODE;
+}
+
+function isPublicAccessMode() {
+  return getAppAccessMode() === "public";
+}
+
 function readAuthPayload(req: express.Request): AuthPayload {
+  if (isPublicAccessMode()) {
+    return {
+      authenticated: true,
+      user: { ...PUBLIC_ACCESS_USER },
+      membership: {
+        plan: "pro",
+        isSubscribed: true,
+      },
+      accessMode: "public",
+    };
+  }
+
   const user = getSessionUser(req);
   if (!user) {
     return {
@@ -550,6 +596,7 @@ function readAuthPayload(req: express.Request): AuthPayload {
         plan: "guest",
         isSubscribed: false,
       },
+      accessMode: "managed",
     };
   }
 
@@ -564,6 +611,7 @@ function readAuthPayload(req: express.Request): AuthPayload {
       picture: user.picture,
     },
     membership,
+    accessMode: "managed",
   };
 }
 
@@ -633,7 +681,9 @@ function isPublicHttpsUrl(value: string) {
     const url = new URL(value);
     return (
       url.protocol === "https:" &&
-      !["localhost", "127.0.0.1", "0.0.0.0"].includes(url.hostname.toLowerCase())
+      !["localhost", "127.0.0.1", "0.0.0.0"].includes(
+        url.hostname.toLowerCase()
+      )
     );
   } catch {
     return false;
@@ -666,7 +716,8 @@ function getShopierLineItems(payload: ShopierWebhookPayload) {
 
 function isConfiguredShopierSubscriptionOrder(payload: ShopierWebhookPayload) {
   const configuredProductId = getShopierSubscriptionProductId();
-  const configuredProductTitle = getShopierSubscriptionProductTitle().toLowerCase();
+  const configuredProductTitle =
+    getShopierSubscriptionProductTitle().toLowerCase();
 
   if (!configuredProductId && !configuredProductTitle) {
     return allowAnyShopierProductOrder();
@@ -690,15 +741,19 @@ function isConfiguredShopierSubscriptionOrder(payload: ShopierWebhookPayload) {
 
 function extractShopierOrderEmail(payload: ShopierWebhookPayload) {
   return (
-    normalizeEmail(payload.billingInfo?.email) || normalizeEmail(payload.shippingInfo?.email) || ""
+    normalizeEmail(payload.billingInfo?.email) ||
+    normalizeEmail(payload.shippingInfo?.email) ||
+    ""
   );
 }
 
 function extractShopierOrderName(payload: ShopierWebhookPayload) {
   const firstName =
-    normalizeString(payload.billingInfo?.firstName) || normalizeString(payload.shippingInfo?.firstName);
+    normalizeString(payload.billingInfo?.firstName) ||
+    normalizeString(payload.shippingInfo?.firstName);
   const lastName =
-    normalizeString(payload.billingInfo?.lastName) || normalizeString(payload.shippingInfo?.lastName);
+    normalizeString(payload.billingInfo?.lastName) ||
+    normalizeString(payload.shippingInfo?.lastName);
 
   return `${firstName} ${lastName}`.trim();
 }
@@ -726,11 +781,21 @@ function upsertShopierOrderFromWebhook(payload: ShopierWebhookPayload) {
       knownUser?.id ||
       buildEmailScopedUserId(email),
     email,
-    name: existingOrder?.name || extractShopierOrderName(payload) || knownUser?.name || email,
+    name:
+      existingOrder?.name ||
+      extractShopierOrderName(payload) ||
+      knownUser?.name ||
+      email,
     amount: parseCurrencyAmount(payload.totals?.total),
-    currency: normalizeString(payload.currency) || existingOrder?.currency || getShopierCurrency(),
+    currency:
+      normalizeString(payload.currency) ||
+      existingOrder?.currency ||
+      getShopierCurrency(),
     status: existingOrder?.status || "pending",
-    createdAt: normalizeString(payload.dateCreated) || existingOrder?.createdAt || nowIso,
+    createdAt:
+      normalizeString(payload.dateCreated) ||
+      existingOrder?.createdAt ||
+      nowIso,
     updatedAt: nowIso,
   };
 
@@ -749,7 +814,10 @@ function activateSubscriptionFromOrder(order: ShopierOrderRecord) {
     Date.parse(currentSubscription.endsAt) > now.getTime()
       ? new Date(currentSubscription.endsAt)
       : null;
-  const endsAt = addDays(currentActiveEndsAt ?? now, getSubscriptionDurationDays());
+  const endsAt = addDays(
+    currentActiveEndsAt ?? now,
+    getSubscriptionDurationDays()
+  );
   const knownUser = getUserByEmail(order.email);
 
   const record: SubscriptionRecord = {
@@ -796,7 +864,10 @@ function safeEqual(valueA: string, valueB: string) {
   return crypto.timingSafeEqual(a, b);
 }
 
-function verifyShopierWebhook(req: express.Request, payload: ShopierWebhookPayload) {
+function verifyShopierWebhook(
+  req: express.Request,
+  payload: ShopierWebhookPayload
+) {
   const expectedToken = process.env.SHOPIER_WEBHOOK_TOKEN?.trim();
 
   if (!expectedToken) {
@@ -824,7 +895,9 @@ function verifyShopierWebhook(req: express.Request, payload: ShopierWebhookPaylo
         return false;
       }
 
-      const ageSeconds = Math.abs(Math.floor(Date.now() / 1000) - Math.floor(webhookTs));
+      const ageSeconds = Math.abs(
+        Math.floor(Date.now() / 1000) - Math.floor(webhookTs)
+      );
       if (ageSeconds > maxAgeSeconds) {
         return false;
       }
@@ -848,7 +921,9 @@ function verifyShopierWebhook(req: express.Request, payload: ShopierWebhookPaylo
     normalizeString(payload.webhook_token),
   ].filter(Boolean);
 
-  return requestTokenCandidates.some(candidate => safeEqual(candidate, expectedToken));
+  return requestTokenCandidates.some(candidate =>
+    safeEqual(candidate, expectedToken)
+  );
 }
 
 async function shopierApiRequest<T>(pathname: string, init: RequestInit = {}) {
@@ -872,14 +947,18 @@ async function shopierApiRequest<T>(pathname: string, init: RequestInit = {}) {
   const responseText = await response.text();
 
   if (!response.ok) {
-    throw new Error(`Shopier API ${response.status}: ${responseText || response.statusText}`);
+    throw new Error(
+      `Shopier API ${response.status}: ${responseText || response.statusText}`
+    );
   }
 
-  return (responseText ? (JSON.parse(responseText) as T) : (null as T));
+  return responseText ? (JSON.parse(responseText) as T) : (null as T);
 }
 
 async function listShopierWebhookSubscriptions() {
-  return shopierApiRequest<ShopierWebhookSubscription[]>("/webhooks?limit=50&page=1&sort=asc");
+  return shopierApiRequest<ShopierWebhookSubscription[]>(
+    "/webhooks?limit=50&page=1&sort=asc"
+  );
 }
 
 async function createShopierWebhookSubscription(event: string, url: string) {
@@ -896,7 +975,9 @@ async function maybeBootstrapShopierWebhook() {
 
   const appBaseUrl = getConfiguredAppBaseUrl();
   if (!isPublicHttpsUrl(appBaseUrl)) {
-    console.warn("Shopier webhook bootstrap skipped: APP_BASE_URL must be a public HTTPS URL.");
+    console.warn(
+      "Shopier webhook bootstrap skipped: APP_BASE_URL must be a public HTTPS URL."
+    );
     return;
   }
 
@@ -918,17 +999,25 @@ async function maybeBootstrapShopierWebhook() {
     return;
   }
 
-  const createdSubscription = await createShopierWebhookSubscription("order.created", webhookUrl);
+  const createdSubscription = await createShopierWebhookSubscription(
+    "order.created",
+    webhookUrl
+  );
   console.log(`Shopier webhook registered at ${webhookUrl}`);
 
   if (createdSubscription.token) {
     const configuredToken = process.env.SHOPIER_WEBHOOK_TOKEN?.trim();
-    if (configuredToken && !safeEqual(configuredToken, createdSubscription.token)) {
+    if (
+      configuredToken &&
+      !safeEqual(configuredToken, createdSubscription.token)
+    ) {
       console.warn(
         "Shopier webhook token differs from SHOPIER_WEBHOOK_TOKEN. Update your runtime secret if needed."
       );
     } else if (!configuredToken) {
-      console.warn("Shopier webhook token created. Save it into SHOPIER_WEBHOOK_TOKEN.");
+      console.warn(
+        "Shopier webhook token created. Save it into SHOPIER_WEBHOOK_TOKEN."
+      );
     }
   }
 }
@@ -963,9 +1052,15 @@ async function startServer() {
   });
 
   app.get("/api/auth/google", (req, res) => {
+    if (isPublicAccessMode()) {
+      res.redirect("/");
+      return;
+    }
+
     if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
       res.status(500).json({
-        error: "Google OAuth ayarlari eksik. GOOGLE_CLIENT_ID ve GOOGLE_CLIENT_SECRET gerekli.",
+        error:
+          "Google OAuth ayarlari eksik. GOOGLE_CLIENT_ID ve GOOGLE_CLIENT_SECRET gerekli.",
       });
       return;
     }
@@ -988,14 +1083,22 @@ async function startServer() {
   });
 
   app.get("/api/auth/google/callback", async (req, res) => {
-    const oauthError = typeof req.query.error === "string" ? req.query.error : undefined;
+    if (isPublicAccessMode()) {
+      res.redirect("/");
+      return;
+    }
+
+    const oauthError =
+      typeof req.query.error === "string" ? req.query.error : undefined;
     if (oauthError) {
       res.redirect("/?auth=denied");
       return;
     }
 
-    const code = typeof req.query.code === "string" ? req.query.code : undefined;
-    const state = typeof req.query.state === "string" ? req.query.state : undefined;
+    const code =
+      typeof req.query.code === "string" ? req.query.code : undefined;
+    const state =
+      typeof req.query.state === "string" ? req.query.state : undefined;
     const cookies = parseCookies(req.headers.cookie);
     const expectedState = cookies[OAUTH_STATE_COOKIE];
 
@@ -1041,11 +1144,14 @@ async function startServer() {
         return;
       }
 
-      const userResponse = await fetch("https://openidconnect.googleapis.com/v1/userinfo", {
-        headers: {
-          Authorization: `Bearer ${tokenData.access_token}`,
-        },
-      });
+      const userResponse = await fetch(
+        "https://openidconnect.googleapis.com/v1/userinfo",
+        {
+          headers: {
+            Authorization: `Bearer ${tokenData.access_token}`,
+          },
+        }
+      );
 
       const userData = (await userResponse.json()) as GoogleUserInfo;
       if (!userResponse.ok || !userData.sub || !userData.email) {
@@ -1095,6 +1201,12 @@ async function startServer() {
   });
 
   app.post("/api/auth/logout", (req, res) => {
+    if (isPublicAccessMode()) {
+      clearCookie(req, res, COOKIE_NAME);
+      res.status(204).send();
+      return;
+    }
+
     const cookies = parseCookies(req.headers.cookie);
     const sessionId = parseSessionIdFromCookie(cookies[COOKIE_NAME]);
     if (sessionId) {
@@ -1107,6 +1219,17 @@ async function startServer() {
 
   app.get("/api/billing/status", (req, res) => {
     setPrivateNoStore(res);
+    if (isPublicAccessMode()) {
+      const payload = readAuthPayload(req);
+      res.status(200).json({
+        membership: payload.membership,
+        allowListOverride: false,
+        managedSubscription: null,
+        accessMode: payload.accessMode,
+      });
+      return;
+    }
+
     const user = getSessionUser(req);
     if (!user) {
       res.status(401).json({ error: "Oturum gerekli." });
@@ -1114,121 +1237,29 @@ async function startServer() {
     }
 
     const membership = resolveMembershipForUser(user);
-    const managedSubscription = billingStore.getSubscriptionByEmail(normalizeEmail(user.email));
+    const managedSubscription = billingStore.getSubscriptionByEmail(
+      normalizeEmail(user.email)
+    );
 
     res.status(200).json({
       membership,
       allowListOverride: isSubscribedEmail(user.email),
       managedSubscription,
+      accessMode: "managed" as AppAccessMode,
     });
   });
 
-  app.post("/api/billing/shopier/checkout", (req, res) => {
-    const user = getSessionUser(req);
-    if (!user) {
-      res.status(401).json({ error: "Checkout icin giris yapmalisiniz." });
-      return;
-    }
-
-    const body = (req.body ?? {}) as ShopierCheckoutRequestBody;
-    const requestedPlan = normalizeString(body.plan || "monthly").toLowerCase() || "monthly";
-
-    if (requestedPlan !== "monthly") {
-      res.status(400).json({ error: "Su an sadece aylik plan destekleniyor." });
-      return;
-    }
-
-    if (getActiveManagedSubscriptionByEmail(user.email)) {
-      res.status(409).json({ error: "Aktif aboneliginiz zaten bulunuyor." });
-      return;
-    }
-
-    const checkoutUrl = getConfiguredShopierCheckoutUrl();
-    if (!checkoutUrl) {
-      res.status(500).json({
-        error:
-          "SHOPIER_SUBSCRIPTION_PRODUCT_URL ayari eksik. Shopier urun veya odeme linkini tanimlayin.",
-      });
-      return;
-    }
-
-    const amount = getShopierMonthlyPrice();
-
-    res.status(200).json({
-      provider: "shopier",
-      mode: "link",
-      checkoutUrl,
-      amount: amount > 0 ? amount : undefined,
-      currency: getShopierCurrency(),
-      productId: getShopierSubscriptionProductId() || undefined,
-      productTitle: getShopierSubscriptionProductTitle() || undefined,
-      requiresMatchingEmail: true,
+  app.post("/api/billing/shopier/checkout", (_req, res) => {
+    res.status(410).json({
+      error:
+        "Shopier odeme akisi kapatildi. Paddle kurulumu tamamlaninca yeni odeme ekrani acilacak.",
     });
   });
 
-  app.post("/api/billing/shopier/webhook", (req, res) => {
-    const payload = (req.body ?? {}) as ShopierWebhookPayload;
-    const shopierEvent = normalizeString(req.header("shopier-event")).toLowerCase();
-
-    if (shopierEvent && shopierEvent !== "order.created") {
-      res.status(200).json({ ok: true, status: "ignored_event", event: shopierEvent });
-      return;
-    }
-
-    if (!verifyShopierWebhook(req, payload)) {
-      res.status(403).json({ error: "Webhook dogrulamasi basarisiz." });
-      return;
-    }
-
-    if (!isPaidShopierOrder(payload)) {
-      res.status(202).json({ ok: true, status: "ignored_unpaid" });
-      return;
-    }
-
-    const orderId = tryExtractOrderId(payload);
-    if (!orderId) {
-      res.status(400).json({ error: "order_id alani eksik." });
-      return;
-    }
-
-    const orderEmail = extractShopierOrderEmail(payload);
-    if (!orderEmail) {
-      res.status(400).json({ error: "Siparis e-posta alani eksik." });
-      return;
-    }
-
-    if (!isConfiguredShopierSubscriptionOrder(payload)) {
-      res.status(200).json({
-        ok: true,
-        status: "ignored_non_subscription_order",
-      });
-      return;
-    }
-
-    const existingOrder = billingStore.getOrderById(orderId);
-    if (existingOrder?.status === "active") {
-      res.status(200).json({ ok: true, status: "already_processed" });
-      return;
-    }
-
-    const existingSubscription = billingStore.getSubscriptionByLastOrderId(orderId);
-    if (existingSubscription?.status === "active") {
-      res.status(200).json({ ok: true, status: "already_processed" });
-      return;
-    }
-
-    const order = upsertShopierOrderFromWebhook(payload);
-    if (!order) {
-      res.status(400).json({ error: "Siparis kaydi olusturulamadi." });
-      return;
-    }
-
-    const activeSubscription = activateSubscriptionFromOrder(order);
-    res.status(200).json({
-      ok: true,
-      status: "active",
-      endsAt: activeSubscription.endsAt,
-      email: orderEmail,
+  app.post("/api/billing/shopier/webhook", (_req, res) => {
+    res.status(410).json({
+      error:
+        "Shopier webhook devre disi. Yeni odeme akisi Paddle uzerinden acilacak.",
     });
   });
 
@@ -1296,9 +1327,10 @@ async function startServer() {
   server.listen(port, () => {
     console.log(`Billing DB initialized at ${billingStore.dbPath}`);
     console.log(`Server running on http://localhost:${port}/`);
-    void maybeBootstrapShopierWebhook().catch(error => {
-      console.error("Shopier webhook bootstrap failed", error);
-    });
+    console.log(`App access mode: ${getAppAccessMode()}`);
+    console.log(
+      "Shopier billing routes disabled. Waiting for Paddle activation."
+    );
   });
 }
 

@@ -1,4 +1,12 @@
-import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  Suspense,
+  lazy,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { LayoutDashboard, LogOut, Radar } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -16,8 +24,10 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 
 const Home = lazy(() => import("./pages/Home"));
 const Scanner = lazy(() => import("./pages/Scanner"));
+const Pay = lazy(() => import("./pages/Pay"));
 
 type MembershipPlan = "guest" | "member" | "pro";
+type AccessMode = "managed" | "public";
 
 interface AuthUser {
   id: string;
@@ -33,19 +43,18 @@ interface AuthResponse {
     plan: MembershipPlan;
     isSubscribed: boolean;
   };
-}
-
-interface ShopierCheckoutResponse {
-  provider: "shopier";
-  mode: "link" | "mock";
-  checkoutUrl: string;
-  orderId: string;
+  accessMode: AccessMode;
 }
 
 type AuthState =
   | { status: "loading" }
   | { status: "anonymous"; error?: string }
-  | { status: "authenticated"; user: AuthUser; membership: AuthResponse["membership"] };
+  | {
+      status: "authenticated";
+      user: AuthUser;
+      membership: AuthResponse["membership"];
+      accessMode: AccessMode;
+    };
 
 const NUMBER_PATTERN = /\d[\d.,]*/g;
 const AUTH_REQUEST_TIMEOUT_MS = 8000;
@@ -56,7 +65,9 @@ function readStoredLanguage(): AppLanguage {
   }
 
   try {
-    return window.localStorage.getItem(APP_LANGUAGE_STORAGE_KEY) === "en" ? "en" : "tr";
+    return window.localStorage.getItem(APP_LANGUAGE_STORAGE_KEY) === "en"
+      ? "en"
+      : "tr";
   } catch {
     return "tr";
   }
@@ -122,7 +133,10 @@ function getInitials(name: string) {
 
 async function fetchAuthState(): Promise<AuthResponse> {
   const controller = new AbortController();
-  const timeoutId = window.setTimeout(() => controller.abort(), AUTH_REQUEST_TIMEOUT_MS);
+  const timeoutId = window.setTimeout(
+    () => controller.abort(),
+    AUTH_REQUEST_TIMEOUT_MS
+  );
 
   let response: Response;
   try {
@@ -223,8 +237,9 @@ function LimitedAccessPreview() {
                 Tam panel aktif abonelikle acilir
               </h2>
               <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-                Momentum scanner, earnings takvimi, risk matrisi ve opsiyon ekranlari sadece
-                aktif Shopier aboneliginde yuklenir.
+                Momentum scanner, earnings takvimi, risk matrisi ve opsiyon
+                ekranlari sadece aktif uyelikte yuklenir. Odeme akisi Paddle
+                gecisi tamamlanana kadar kapali.
               </p>
             </div>
 
@@ -312,30 +327,16 @@ function LanguageSelector({
 }
 
 function App() {
+  const [location] = useLocation();
   const callbackError = useMemo(() => {
     const params = new URLSearchParams(window.location.search);
     return params.get("auth");
   }, []);
-  const billingResult = useMemo(() => {
-    const params = new URLSearchParams(window.location.search);
-    return params.get("billing");
-  }, []);
 
-  const [language, setLanguage] = useState<AppLanguage>(() => readStoredLanguage());
+  const [language, setLanguage] = useState<AppLanguage>(() =>
+    readStoredLanguage()
+  );
   const [authState, setAuthState] = useState<AuthState>({ status: "loading" });
-  const [isStartingCheckout, setIsStartingCheckout] = useState(false);
-  const [billingError, setBillingError] = useState<string | null>(null);
-  const [billingNotice, setBillingNotice] = useState<string | null>(() => {
-    if (billingResult === "success") {
-      return "Odeme alindi. Abonelik durumunuz guncelleniyor.";
-    }
-
-    if (billingResult === "cancel") {
-      return "Odeme islemi iptal edildi.";
-    }
-
-    return null;
-  });
   const appRootRef = useRef<HTMLDivElement | null>(null);
   const protectedViewRef = useRef<HTMLDivElement | null>(null);
   const translationOriginalRef = useRef(new WeakMap<Text, string>());
@@ -344,9 +345,12 @@ function App() {
   const runtimeTranslationTimerRef = useRef<number | null>(null);
   const runtimeTranslationInFlightRef = useRef(false);
   const maskOriginalRef = useRef(new WeakMap<Text, string>());
+  const isPaymentRoute = location === "/pay";
 
   const isLimitedAccess =
     authState.status === "authenticated" && !authState.membership.isSubscribed;
+  const isPublicAccessMode =
+    authState.status === "authenticated" && authState.accessMode === "public";
 
   useEffect(() => {
     persistLanguage(language);
@@ -361,6 +365,7 @@ function App() {
           status: "authenticated",
           user: auth.user,
           membership: auth.membership,
+          accessMode: auth.accessMode,
         });
         return;
       }
@@ -375,16 +380,25 @@ function App() {
     } catch {
       setAuthState({
         status: "anonymous",
-        error: "Oturum kontrolu tamamlanamadi. Sayfayi yenileyip tekrar deneyin.",
+        error:
+          "Oturum kontrolu tamamlanamadi. Sayfayi yenileyip tekrar deneyin.",
       });
     }
   }, [callbackError]);
 
   useEffect(() => {
+    if (isPaymentRoute) {
+      return;
+    }
+
     void refreshAuthState();
-  }, [refreshAuthState]);
+  }, [isPaymentRoute, refreshAuthState]);
 
   useEffect(() => {
+    if (isPaymentRoute) {
+      return;
+    }
+
     if (authState.status !== "loading") {
       return;
     }
@@ -406,28 +420,17 @@ function App() {
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [authState.status]);
-
-  useEffect(() => {
-    if (billingResult === "success") {
-      void refreshAuthState();
-    }
-
-    if (!billingResult) {
-      return;
-    }
-
-    const url = new URL(window.location.href);
-    url.searchParams.delete("billing");
-    url.searchParams.delete("order");
-    window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
-  }, [billingResult, refreshAuthState]);
+  }, [authState.status, isPaymentRoute]);
 
   const startGoogleLogin = () => {
     window.location.assign("/api/auth/google");
   };
 
   const logout = async () => {
+    if (isPublicAccessMode) {
+      return;
+    }
+
     await fetch("/api/auth/logout", {
       method: "POST",
       credentials: "include",
@@ -435,48 +438,9 @@ function App() {
     setAuthState({ status: "anonymous" });
   };
 
-  const startShopierCheckout = useCallback(async () => {
-    setBillingError(null);
-    setBillingNotice(null);
-    setIsStartingCheckout(true);
-
-    try {
-      const response = await fetch("/api/billing/shopier/checkout", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ plan: "monthly" }),
-      });
-
-      const payload = (await response.json().catch(() => null)) as
-        | (Partial<ShopierCheckoutResponse> & { error?: string })
-        | null;
-
-      if (!response.ok) {
-        throw new Error(payload?.error || "Shopier odeme sayfasina yonlendirme basarisiz oldu.");
-      }
-
-      if (!payload?.checkoutUrl) {
-        throw new Error("Shopier checkout URL uretilmedi.");
-      }
-
-      window.location.assign(payload.checkoutUrl);
-    } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : "Shopier odeme akisi baslatilamadi. Lutfen tekrar deneyin.";
-      setBillingError(message);
-    } finally {
-      setIsStartingCheckout(false);
-    }
-  }, []);
-
   useEffect(() => {
     const root = appRootRef.current;
-    if (!root || authState.status === "loading") {
+    if (!root || (authState.status === "loading" && !isPaymentRoute)) {
       return;
     }
 
@@ -497,7 +461,11 @@ function App() {
         return true;
       }
 
-      return Boolean(parent.closest("[data-no-translate], script, style, textarea, input, pre, code"));
+      return Boolean(
+        parent.closest(
+          "[data-no-translate], script, style, textarea, input, pre, code"
+        )
+      );
     };
 
     const flushRuntimeTranslations = async () => {
@@ -615,7 +583,8 @@ function App() {
       }
 
       const source = originalMap.get(node) ?? currentValue;
-      const translated = language === "en" ? resolveEnglishTranslation(source) : source;
+      const translated =
+        language === "en" ? resolveEnglishTranslation(source) : source;
 
       if (node.nodeValue !== translated) {
         node.nodeValue = translated;
@@ -627,7 +596,10 @@ function App() {
 
     const observer = new MutationObserver(mutations => {
       for (const mutation of mutations) {
-        if (mutation.type === "characterData" && mutation.target.nodeType === Node.TEXT_NODE) {
+        if (
+          mutation.type === "characterData" &&
+          mutation.target.nodeType === Node.TEXT_NODE
+        ) {
           translateNode(mutation.target as Text);
           continue;
         }
@@ -656,7 +628,7 @@ function App() {
       clearPendingTimer();
       observer.disconnect();
     };
-  }, [authState.status, language]);
+  }, [authState.status, isPaymentRoute, language]);
 
   useEffect(() => {
     const root = protectedViewRef.current;
@@ -720,7 +692,10 @@ function App() {
 
     const observer = new MutationObserver(mutations => {
       for (const mutation of mutations) {
-        if (mutation.type === "characterData" && mutation.target.nodeType === Node.TEXT_NODE) {
+        if (
+          mutation.type === "characterData" &&
+          mutation.target.nodeType === Node.TEXT_NODE
+        ) {
           maskNode(mutation.target as Text);
           continue;
         }
@@ -751,10 +726,15 @@ function App() {
     <ErrorBoundary>
       <ThemeProvider defaultTheme="dark">
         <TooltipProvider>
-          <div ref={appRootRef} className="min-h-screen bg-background text-foreground">
+          <div
+            ref={appRootRef}
+            className="min-h-screen bg-background text-foreground"
+          >
             <Toaster />
 
-            {authState.status !== "loading" ? (
+            {isPaymentRoute ? <Pay language={language} /> : null}
+
+            {authState.status !== "loading" && !isPaymentRoute ? (
               <header
                 data-no-mask
                 data-no-translate
@@ -769,20 +749,35 @@ function App() {
                         className="size-9 rounded-full border border-border object-cover"
                       />
                       <div className="leading-tight">
-                        <p className="text-sm font-semibold text-foreground">Gistify</p>
-                        <p className="text-[11px] text-muted-foreground">Earnings Intelligence</p>
+                        <p className="text-sm font-semibold text-foreground">
+                          Gistify
+                        </p>
+                        <p className="text-[11px] text-muted-foreground">
+                          Earnings Intelligence
+                        </p>
                       </div>
                     </div>
 
-                    {authState.status === "authenticated" && !isLimitedAccess ? (
+                    {authState.status === "authenticated" &&
+                    !isLimitedAccess ? (
                       <AppNavigation language={language} />
                     ) : null}
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <LanguageSelector language={language} onChange={setLanguage} />
+                    <LanguageSelector
+                      language={language}
+                      onChange={setLanguage}
+                    />
 
-                    {authState.status === "authenticated" ? (
+                    {isPublicAccessMode ? (
+                      <div className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-emerald-300">
+                        Public Preview
+                      </div>
+                    ) : null}
+
+                    {authState.status === "authenticated" &&
+                    !isPublicAccessMode ? (
                       <div className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-1 py-1">
                         <Avatar className="size-8 border border-border">
                           {authState.user.picture ? (
@@ -814,16 +809,30 @@ function App() {
               </header>
             ) : null}
 
-            {authState.status === "loading" ? (
+            {isPublicAccessMode && !isPaymentRoute ? (
+              <div
+                data-no-mask
+                className="border-b border-emerald-500/20 bg-emerald-500/8 px-4 py-2 text-center text-xs text-emerald-200"
+              >
+                Public preview modu acik. Google girisi ve odeme akisi Paddle
+                onayi tamamlanana kadar gecici olarak kapatildi.
+              </div>
+            ) : null}
+
+            {authState.status === "loading" && !isPaymentRoute ? (
               <div className="min-h-screen grid place-items-center px-4 text-center">
                 <div className="space-y-2">
-                  <h1 className="text-xl font-semibold">Oturum kontrol ediliyor</h1>
-                  <p className="text-sm text-muted-foreground">Birkac saniye surebilir.</p>
+                  <h1 className="text-xl font-semibold">
+                    Oturum kontrol ediliyor
+                  </h1>
+                  <p className="text-sm text-muted-foreground">
+                    Birkac saniye surebilir.
+                  </p>
                 </div>
               </div>
             ) : null}
 
-            {authState.status === "anonymous" ? (
+            {authState.status === "anonymous" && !isPaymentRoute ? (
               <div className="min-h-screen flex items-center justify-center px-4 py-8">
                 <div className="w-full max-w-lg rounded-2xl border border-border bg-card/95 p-7 text-card-foreground shadow-2xl space-y-5">
                   <div className="space-y-2">
@@ -831,15 +840,20 @@ function App() {
                       <GoogleMark />
                       Google OAuth Kimlik Dogrulama
                     </div>
-                    <h1 className="text-2xl font-semibold tracking-tight">Finans paneline giris yap</h1>
+                    <h1 className="text-2xl font-semibold tracking-tight">
+                      Finans paneline giris yap
+                    </h1>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Uyelik durumuna gore erisim acilir. Uye olmayanlar paneli goremez, uye olanlar ise
-                      abonelik olmadan kisitli gorunumde kalir.
+                      Uyelik durumuna gore erisim acilir. Uye olmayanlar paneli
+                      goremez, uye olanlar ise abonelik olmadan kisitli
+                      gorunumde kalir.
                     </p>
                   </div>
 
                   {authState.error ? (
-                    <p className="text-sm text-destructive">{authState.error}</p>
+                    <p className="text-sm text-destructive">
+                      {authState.error}
+                    </p>
                   ) : null}
 
                   <Button
@@ -854,7 +868,7 @@ function App() {
               </div>
             ) : null}
 
-            {authState.status === "authenticated" ? (
+            {authState.status === "authenticated" && !isPaymentRoute ? (
               <div className="relative">
                 {isLimitedAccess ? (
                   <div
@@ -863,28 +877,26 @@ function App() {
                   >
                     <div className="mx-auto max-w-7xl flex flex-wrap items-center justify-between gap-3">
                       <div className="space-y-0.5">
-                        <p className="text-sm font-semibold">Kisitli gorunum aktif</p>
-                        <p className="text-xs text-muted-foreground">
-                          Uye girisi tamamlandi. Rakamlar gizlenir ve grafikler sadece aktif abonelikte acilir.
+                        <p className="text-sm font-semibold">
+                          Kisitli gorunum aktif
                         </p>
                         <p className="text-xs text-muted-foreground">
-                          Shopier odemesinde Google hesabinla ayni e-posta adresini kullan. Odeme tamamlaninca
-                          bu sayfaya donup "Odemeyi kontrol et" butonuna bas.
+                          Uye girisi tamamlandi. Rakamlar gizlenir ve grafikler
+                          sadece aktif abonelikte acilir.
                         </p>
-                        {billingNotice ? (
-                          <p className="text-xs text-foreground/80">{billingNotice}</p>
-                        ) : null}
-                        {billingError ? (
-                          <p className="text-xs text-destructive">{billingError}</p>
-                        ) : null}
+                        <p className="text-xs text-muted-foreground">
+                          Odeme akisi Paddle gecisi tamamlanana kadar kapali.
+                          Tam erisim gecici olarak yonetim tarafindan aciliyor.
+                        </p>
                       </div>
 
                       <div className="flex items-center gap-2">
-                        <Button type="button" onClick={startShopierCheckout} disabled={isStartingCheckout}>
-                          {isStartingCheckout ? "Yonlendiriliyor..." : "Shopier ile abone ol"}
-                        </Button>
-                        <Button type="button" variant="outline" onClick={() => void refreshAuthState()}>
-                          Odemeyi kontrol et
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => void refreshAuthState()}
+                        >
+                          Durumu yenile
                         </Button>
                       </div>
                     </div>
