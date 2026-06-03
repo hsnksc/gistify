@@ -181,7 +181,7 @@ function Router({
           <div className="mx-auto max-w-7xl rounded-2xl border border-border bg-card/95 p-6 text-card-foreground shadow-2xl">
             <h2 className="text-lg font-semibold">Panel yukleniyor</h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              Ilk acilista birkaç saniye surebilir.
+              Haftalik raporlar ve analiz sekmeleri hazirlaniyor.
             </p>
           </div>
         </div>
@@ -240,7 +240,7 @@ function AppNavigation({ language }: { language: AppLanguage }) {
     },
     {
       href: "/app",
-      label: language === "en" ? "Dashboard" : "Panel",
+      label: language === "en" ? "Earnings" : "Earnings",
       icon: LayoutDashboard,
       active: location.startsWith("/app"),
     },

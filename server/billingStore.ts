@@ -1,6 +1,16 @@
 import fs from "node:fs";
 import path from "node:path";
 import { DatabaseSync } from "node:sqlite";
+import type {
+  AgentRunRecord,
+  AgentRunStatus,
+  OpportunityRecord,
+  OpportunityStatus,
+  OpportunityTier,
+  OpportunityWindow,
+  WatchlistRecord,
+} from "../shared/opportunities";
+import type { WeeklyReportRecord, WeeklyReportStatus } from "../shared/weeklyReports";
 
 export type SubscriptionProvider = "shopier";
 
@@ -92,6 +102,88 @@ interface SessionDbRow {
   updated_at: string;
 }
 
+interface WeeklyReportDbRow {
+  id: string;
+  slug: string;
+  title: string;
+  week_start: string;
+  week_end: string;
+  analysis_date: string;
+  status: WeeklyReportStatus;
+  author_email: string;
+  created_at: string;
+  updated_at: string;
+  published_at: string | null;
+  content_json: string;
+}
+
+interface OpportunityDbRow {
+  id: string;
+  source_report_id: string | null;
+  source_report_title: string | null;
+  ticker: string;
+  name: string;
+  sector: string;
+  earnings_date: string;
+  earnings_time: string;
+  days_to_earnings: number;
+  opportunity_window: OpportunityWindow;
+  momentum_score: number;
+  price_change_6m: number;
+  rsi_14: number;
+  current_iv: number;
+  historical_iv: number;
+  implied_move_percent: number;
+  expected_iv_crush: number;
+  iv_crush_score: number;
+  beat_rate: number;
+  max_loss_percent: number;
+  target_profit_percent: number;
+  earnings_miss_risk: number;
+  gap_risk: number;
+  composite_score: number;
+  confidence_level: string;
+  directional_bias: string;
+  strategy_type: string;
+  strategy_rating: number;
+  recommended_strategy: string;
+  ai_summary: string;
+  ai_strategy_rationale: string;
+  ai_key_catalysts_json: string;
+  ai_execution_notes: string;
+  risk_warnings_json: string;
+  data_sources_json: string;
+  tier_required: OpportunityTier;
+  status: OpportunityStatus;
+  created_at: string;
+  updated_at: string;
+  expires_at: string;
+}
+
+interface WatchlistDbRow {
+  id: string;
+  user_id: string;
+  email: string;
+  ticker: string;
+  notes: string | null;
+  alert_on_opportunity: number;
+  added_at: string;
+  updated_at: string;
+}
+
+interface AgentRunDbRow {
+  id: string;
+  run_type: string;
+  status: AgentRunStatus;
+  tickers_scanned: number;
+  opportunities_found: number;
+  errors_json: string;
+  log: string;
+  retry_count: number;
+  started_at: string;
+  completed_at: string | null;
+}
+
 function getDatabasePath() {
   const configured = process.env.BILLING_DB_PATH?.trim();
   if (!configured) {
@@ -176,6 +268,97 @@ function mapSessionRow(row: SessionDbRow): SessionStoreRecord {
   };
 }
 
+function mapWeeklyReportRow(row: WeeklyReportDbRow): WeeklyReportRecord {
+  return {
+    id: row.id,
+    slug: row.slug,
+    title: row.title,
+    weekStart: row.week_start,
+    weekEnd: row.week_end,
+    analysisDate: row.analysis_date,
+    status: row.status,
+    authorEmail: row.author_email,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+    publishedAt: row.published_at || undefined,
+    content: JSON.parse(row.content_json) as WeeklyReportRecord["content"],
+  };
+}
+
+function mapOpportunityRow(row: OpportunityDbRow): OpportunityRecord {
+  return {
+    id: row.id,
+    sourceReportId: row.source_report_id || undefined,
+    sourceReportTitle: row.source_report_title || undefined,
+    ticker: row.ticker,
+    name: row.name,
+    sector: row.sector,
+    earningsDate: row.earnings_date,
+    earningsTime: row.earnings_time,
+    daysToEarnings: row.days_to_earnings,
+    opportunityWindow: row.opportunity_window,
+    momentumScore: row.momentum_score,
+    priceChange6M: row.price_change_6m,
+    rsi14: row.rsi_14,
+    currentIV: row.current_iv,
+    historicalIV: row.historical_iv,
+    impliedMovePercent: row.implied_move_percent,
+    expectedIVCrush: row.expected_iv_crush,
+    ivCrushScore: row.iv_crush_score,
+    beatRate: row.beat_rate,
+    maxLossPercent: row.max_loss_percent,
+    targetProfitPercent: row.target_profit_percent,
+    earningsMissRisk: row.earnings_miss_risk,
+    gapRisk: row.gap_risk,
+    compositeScore: row.composite_score,
+    confidenceLevel:
+      row.confidence_level as OpportunityRecord["confidenceLevel"],
+    directionalBias: row.directional_bias,
+    strategyType: row.strategy_type as OpportunityRecord["strategyType"],
+    strategyRating: row.strategy_rating,
+    recommendedStrategy: row.recommended_strategy,
+    aiSummary: row.ai_summary,
+    aiStrategyRationale: row.ai_strategy_rationale,
+    aiKeyCatalysts: JSON.parse(row.ai_key_catalysts_json) as string[],
+    aiExecutionNotes: row.ai_execution_notes,
+    riskWarnings: JSON.parse(row.risk_warnings_json) as string[],
+    dataSources: JSON.parse(row.data_sources_json) as string[],
+    tierRequired: row.tier_required,
+    status: row.status,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+    expiresAt: row.expires_at,
+  };
+}
+
+function mapWatchlistRow(row: WatchlistDbRow): WatchlistRecord {
+  return {
+    id: row.id,
+    userId: row.user_id,
+    email: row.email,
+    ticker: row.ticker,
+    notes: row.notes || undefined,
+    alertOnOpportunity: Boolean(row.alert_on_opportunity),
+    addedAt: row.added_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+function mapAgentRunRow(row: AgentRunDbRow): AgentRunRecord {
+  return {
+    id: row.id,
+    runType: row.run_type,
+    status: row.status,
+    tickersScanned: row.tickers_scanned,
+    opportunitiesFound: row.opportunities_found,
+    errors: JSON.parse(row.errors_json) as string[],
+    log: row.log,
+    retryCount: row.retry_count,
+    startedAt: row.started_at,
+    completedAt: row.completed_at || undefined,
+  };
+}
+
 export function createBillingStore() {
   const dbPath = getDatabasePath();
   fs.mkdirSync(path.dirname(dbPath), { recursive: true });
@@ -223,11 +406,113 @@ export function createBillingStore() {
       updated_at TEXT NOT NULL
     );
 
+    CREATE TABLE IF NOT EXISTS weekly_reports (
+      id TEXT PRIMARY KEY,
+      slug TEXT NOT NULL UNIQUE,
+      title TEXT NOT NULL,
+      week_start TEXT NOT NULL,
+      week_end TEXT NOT NULL,
+      analysis_date TEXT NOT NULL,
+      status TEXT NOT NULL,
+      author_email TEXT NOT NULL,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL,
+      published_at TEXT,
+      content_json TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS opportunities (
+      id TEXT PRIMARY KEY,
+      source_report_id TEXT,
+      source_report_title TEXT,
+      ticker TEXT NOT NULL,
+      name TEXT NOT NULL,
+      sector TEXT NOT NULL,
+      earnings_date TEXT NOT NULL,
+      earnings_time TEXT NOT NULL,
+      days_to_earnings INTEGER NOT NULL,
+      opportunity_window TEXT NOT NULL,
+      momentum_score REAL NOT NULL,
+      price_change_6m REAL NOT NULL,
+      rsi_14 REAL NOT NULL,
+      current_iv REAL NOT NULL,
+      historical_iv REAL NOT NULL,
+      implied_move_percent REAL NOT NULL,
+      expected_iv_crush REAL NOT NULL,
+      iv_crush_score REAL NOT NULL,
+      beat_rate REAL NOT NULL,
+      max_loss_percent REAL NOT NULL,
+      target_profit_percent REAL NOT NULL,
+      earnings_miss_risk REAL NOT NULL,
+      gap_risk REAL NOT NULL,
+      composite_score REAL NOT NULL,
+      confidence_level TEXT NOT NULL,
+      directional_bias TEXT NOT NULL,
+      strategy_type TEXT NOT NULL,
+      strategy_rating REAL NOT NULL,
+      recommended_strategy TEXT NOT NULL,
+      ai_summary TEXT NOT NULL,
+      ai_strategy_rationale TEXT NOT NULL,
+      ai_key_catalysts_json TEXT NOT NULL,
+      ai_execution_notes TEXT NOT NULL,
+      risk_warnings_json TEXT NOT NULL,
+      data_sources_json TEXT NOT NULL,
+      tier_required TEXT NOT NULL,
+      status TEXT NOT NULL,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL,
+      expires_at TEXT NOT NULL,
+      UNIQUE(ticker, earnings_date, opportunity_window)
+    );
+
+    CREATE TABLE IF NOT EXISTS watchlists (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      email TEXT NOT NULL,
+      ticker TEXT NOT NULL,
+      notes TEXT,
+      alert_on_opportunity INTEGER NOT NULL DEFAULT 1,
+      added_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL,
+      UNIQUE(user_id, ticker)
+    );
+
+    CREATE TABLE IF NOT EXISTS agent_runs (
+      id TEXT PRIMARY KEY,
+      run_type TEXT NOT NULL,
+      status TEXT NOT NULL,
+      tickers_scanned INTEGER NOT NULL,
+      opportunities_found INTEGER NOT NULL,
+      errors_json TEXT NOT NULL,
+      log TEXT NOT NULL,
+      retry_count INTEGER NOT NULL DEFAULT 0,
+      started_at TEXT NOT NULL,
+      completed_at TEXT
+    );
+
     CREATE INDEX IF NOT EXISTS idx_auth_sessions_user_id
       ON auth_sessions(user_id);
 
     CREATE INDEX IF NOT EXISTS idx_auth_sessions_expires_at
       ON auth_sessions(expires_at);
+
+    CREATE INDEX IF NOT EXISTS idx_weekly_reports_status_week
+      ON weekly_reports(status, week_start);
+
+    CREATE INDEX IF NOT EXISTS idx_weekly_reports_slug
+      ON weekly_reports(slug);
+
+    CREATE INDEX IF NOT EXISTS idx_opportunities_status_score
+      ON opportunities(status, composite_score DESC);
+
+    CREATE INDEX IF NOT EXISTS idx_opportunities_earnings_date
+      ON opportunities(earnings_date);
+
+    CREATE INDEX IF NOT EXISTS idx_watchlists_user_id
+      ON watchlists(user_id);
+
+    CREATE INDEX IF NOT EXISTS idx_agent_runs_started_at
+      ON agent_runs(started_at DESC);
   `);
 
   const subscriptionTableInfo = db.prepare("PRAGMA table_info(billing_subscriptions)").all() as
@@ -492,6 +777,283 @@ export function createBillingStore() {
     WHERE expires_at < ?
   `);
 
+  const listWeeklyReportsStmt = db.prepare(`
+    SELECT
+      id,
+      slug,
+      title,
+      week_start,
+      week_end,
+      analysis_date,
+      status,
+      author_email,
+      created_at,
+      updated_at,
+      published_at,
+      content_json
+    FROM weekly_reports
+    ORDER BY week_start DESC, updated_at DESC
+  `);
+
+  const getWeeklyReportByIdStmt = db.prepare(`
+    SELECT
+      id,
+      slug,
+      title,
+      week_start,
+      week_end,
+      analysis_date,
+      status,
+      author_email,
+      created_at,
+      updated_at,
+      published_at,
+      content_json
+    FROM weekly_reports
+    WHERE id = ?
+    LIMIT 1
+  `);
+
+  const upsertWeeklyReportStmt = db.prepare(`
+    INSERT INTO weekly_reports (
+      id,
+      slug,
+      title,
+      week_start,
+      week_end,
+      analysis_date,
+      status,
+      author_email,
+      created_at,
+      updated_at,
+      published_at,
+      content_json
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ON CONFLICT(id) DO UPDATE SET
+      slug = excluded.slug,
+      title = excluded.title,
+      week_start = excluded.week_start,
+      week_end = excluded.week_end,
+      analysis_date = excluded.analysis_date,
+      status = excluded.status,
+      author_email = excluded.author_email,
+      created_at = excluded.created_at,
+      updated_at = excluded.updated_at,
+      published_at = excluded.published_at,
+      content_json = excluded.content_json
+  `);
+
+  const listOpportunitiesStmt = db.prepare(`
+    SELECT
+      id,
+      source_report_id,
+      source_report_title,
+      ticker,
+      name,
+      sector,
+      earnings_date,
+      earnings_time,
+      days_to_earnings,
+      opportunity_window,
+      momentum_score,
+      price_change_6m,
+      rsi_14,
+      current_iv,
+      historical_iv,
+      implied_move_percent,
+      expected_iv_crush,
+      iv_crush_score,
+      beat_rate,
+      max_loss_percent,
+      target_profit_percent,
+      earnings_miss_risk,
+      gap_risk,
+      composite_score,
+      confidence_level,
+      directional_bias,
+      strategy_type,
+      strategy_rating,
+      recommended_strategy,
+      ai_summary,
+      ai_strategy_rationale,
+      ai_key_catalysts_json,
+      ai_execution_notes,
+      risk_warnings_json,
+      data_sources_json,
+      tier_required,
+      status,
+      created_at,
+      updated_at,
+      expires_at
+    FROM opportunities
+    ORDER BY composite_score DESC, earnings_date ASC, ticker ASC
+  `);
+
+  const upsertOpportunityStmt = db.prepare(`
+    INSERT INTO opportunities (
+      id,
+      source_report_id,
+      source_report_title,
+      ticker,
+      name,
+      sector,
+      earnings_date,
+      earnings_time,
+      days_to_earnings,
+      opportunity_window,
+      momentum_score,
+      price_change_6m,
+      rsi_14,
+      current_iv,
+      historical_iv,
+      implied_move_percent,
+      expected_iv_crush,
+      iv_crush_score,
+      beat_rate,
+      max_loss_percent,
+      target_profit_percent,
+      earnings_miss_risk,
+      gap_risk,
+      composite_score,
+      confidence_level,
+      directional_bias,
+      strategy_type,
+      strategy_rating,
+      recommended_strategy,
+      ai_summary,
+      ai_strategy_rationale,
+      ai_key_catalysts_json,
+      ai_execution_notes,
+      risk_warnings_json,
+      data_sources_json,
+      tier_required,
+      status,
+      created_at,
+      updated_at,
+      expires_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ON CONFLICT(id) DO UPDATE SET
+      source_report_id = excluded.source_report_id,
+      source_report_title = excluded.source_report_title,
+      ticker = excluded.ticker,
+      name = excluded.name,
+      sector = excluded.sector,
+      earnings_date = excluded.earnings_date,
+      earnings_time = excluded.earnings_time,
+      days_to_earnings = excluded.days_to_earnings,
+      opportunity_window = excluded.opportunity_window,
+      momentum_score = excluded.momentum_score,
+      price_change_6m = excluded.price_change_6m,
+      rsi_14 = excluded.rsi_14,
+      current_iv = excluded.current_iv,
+      historical_iv = excluded.historical_iv,
+      implied_move_percent = excluded.implied_move_percent,
+      expected_iv_crush = excluded.expected_iv_crush,
+      iv_crush_score = excluded.iv_crush_score,
+      beat_rate = excluded.beat_rate,
+      max_loss_percent = excluded.max_loss_percent,
+      target_profit_percent = excluded.target_profit_percent,
+      earnings_miss_risk = excluded.earnings_miss_risk,
+      gap_risk = excluded.gap_risk,
+      composite_score = excluded.composite_score,
+      confidence_level = excluded.confidence_level,
+      directional_bias = excluded.directional_bias,
+      strategy_type = excluded.strategy_type,
+      strategy_rating = excluded.strategy_rating,
+      recommended_strategy = excluded.recommended_strategy,
+      ai_summary = excluded.ai_summary,
+      ai_strategy_rationale = excluded.ai_strategy_rationale,
+      ai_key_catalysts_json = excluded.ai_key_catalysts_json,
+      ai_execution_notes = excluded.ai_execution_notes,
+      risk_warnings_json = excluded.risk_warnings_json,
+      data_sources_json = excluded.data_sources_json,
+      tier_required = excluded.tier_required,
+      status = excluded.status,
+      created_at = excluded.created_at,
+      updated_at = excluded.updated_at,
+      expires_at = excluded.expires_at
+  `);
+
+  const listWatchlistByUserIdStmt = db.prepare(`
+    SELECT
+      id,
+      user_id,
+      email,
+      ticker,
+      notes,
+      alert_on_opportunity,
+      added_at,
+      updated_at
+    FROM watchlists
+    WHERE user_id = ?
+    ORDER BY added_at DESC, ticker ASC
+  `);
+
+  const upsertWatchlistStmt = db.prepare(`
+    INSERT INTO watchlists (
+      id,
+      user_id,
+      email,
+      ticker,
+      notes,
+      alert_on_opportunity,
+      added_at,
+      updated_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    ON CONFLICT(user_id, ticker) DO UPDATE SET
+      email = excluded.email,
+      notes = excluded.notes,
+      alert_on_opportunity = excluded.alert_on_opportunity,
+      updated_at = excluded.updated_at
+  `);
+
+  const deleteWatchlistStmt = db.prepare(`
+    DELETE FROM watchlists
+    WHERE user_id = ? AND ticker = ?
+  `);
+
+  const listAgentRunsStmt = db.prepare(`
+    SELECT
+      id,
+      run_type,
+      status,
+      tickers_scanned,
+      opportunities_found,
+      errors_json,
+      log,
+      retry_count,
+      started_at,
+      completed_at
+    FROM agent_runs
+    ORDER BY started_at DESC
+    LIMIT 50
+  `);
+
+  const upsertAgentRunStmt = db.prepare(`
+    INSERT INTO agent_runs (
+      id,
+      run_type,
+      status,
+      tickers_scanned,
+      opportunities_found,
+      errors_json,
+      log,
+      retry_count,
+      started_at,
+      completed_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ON CONFLICT(id) DO UPDATE SET
+      run_type = excluded.run_type,
+      status = excluded.status,
+      tickers_scanned = excluded.tickers_scanned,
+      opportunities_found = excluded.opportunities_found,
+      errors_json = excluded.errors_json,
+      log = excluded.log,
+      retry_count = excluded.retry_count,
+      started_at = excluded.started_at,
+      completed_at = excluded.completed_at
+  `);
+
   return {
     dbPath,
     pruneExpiredSessions(now = Date.now()) {
@@ -580,6 +1142,117 @@ export function createBillingStore() {
     },
     updateOrderStatus(orderId: string, status: BillingOrderStatus, updatedAt: string) {
       updateOrderStatusStmt.run(status, updatedAt, orderId);
+    },
+    listWeeklyReports() {
+      const rows = listWeeklyReportsStmt.all() as unknown as WeeklyReportDbRow[];
+      return rows.map(mapWeeklyReportRow);
+    },
+    getWeeklyReportById(reportId: string) {
+      const row = getWeeklyReportByIdStmt.get(reportId) as
+        | WeeklyReportDbRow
+        | undefined;
+      return row ? mapWeeklyReportRow(row) : null;
+    },
+    upsertWeeklyReport(record: WeeklyReportRecord) {
+      upsertWeeklyReportStmt.run(
+        record.id,
+        record.slug,
+        record.title,
+        record.weekStart,
+        record.weekEnd,
+        record.analysisDate,
+        record.status,
+        record.authorEmail,
+        record.createdAt,
+        record.updatedAt,
+        record.publishedAt || null,
+        JSON.stringify(record.content)
+      );
+    },
+    listOpportunities() {
+      const rows = listOpportunitiesStmt.all() as unknown as OpportunityDbRow[];
+      return rows.map(mapOpportunityRow);
+    },
+    upsertOpportunity(record: OpportunityRecord) {
+      upsertOpportunityStmt.run(
+        record.id,
+        record.sourceReportId || null,
+        record.sourceReportTitle || null,
+        record.ticker,
+        record.name,
+        record.sector,
+        record.earningsDate,
+        record.earningsTime,
+        record.daysToEarnings,
+        record.opportunityWindow,
+        record.momentumScore,
+        record.priceChange6M,
+        record.rsi14,
+        record.currentIV,
+        record.historicalIV,
+        record.impliedMovePercent,
+        record.expectedIVCrush,
+        record.ivCrushScore,
+        record.beatRate,
+        record.maxLossPercent,
+        record.targetProfitPercent,
+        record.earningsMissRisk,
+        record.gapRisk,
+        record.compositeScore,
+        record.confidenceLevel,
+        record.directionalBias,
+        record.strategyType,
+        record.strategyRating,
+        record.recommendedStrategy,
+        record.aiSummary,
+        record.aiStrategyRationale,
+        JSON.stringify(record.aiKeyCatalysts),
+        record.aiExecutionNotes,
+        JSON.stringify(record.riskWarnings),
+        JSON.stringify(record.dataSources),
+        record.tierRequired,
+        record.status,
+        record.createdAt,
+        record.updatedAt,
+        record.expiresAt
+      );
+    },
+    listWatchlistByUserId(userId: string) {
+      const rows = listWatchlistByUserIdStmt.all(userId) as unknown as WatchlistDbRow[];
+      return rows.map(mapWatchlistRow);
+    },
+    upsertWatchlist(record: WatchlistRecord) {
+      upsertWatchlistStmt.run(
+        record.id,
+        record.userId,
+        record.email,
+        record.ticker,
+        record.notes || null,
+        record.alertOnOpportunity ? 1 : 0,
+        record.addedAt,
+        record.updatedAt
+      );
+    },
+    deleteWatchlist(userId: string, ticker: string) {
+      deleteWatchlistStmt.run(userId, ticker);
+    },
+    listAgentRuns() {
+      const rows = listAgentRunsStmt.all() as unknown as AgentRunDbRow[];
+      return rows.map(mapAgentRunRow);
+    },
+    upsertAgentRun(record: AgentRunRecord) {
+      upsertAgentRunStmt.run(
+        record.id,
+        record.runType,
+        record.status,
+        record.tickersScanned,
+        record.opportunitiesFound,
+        JSON.stringify(record.errors),
+        record.log,
+        record.retryCount,
+        record.startedAt,
+        record.completedAt || null
+      );
     },
   };
 }

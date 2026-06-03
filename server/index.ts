@@ -4,6 +4,23 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import type {
+  AgentRunRecord,
+  OpportunityRecord,
+  OpportunityTier,
+  WatchlistRecord,
+} from "../shared/opportunities";
+import type {
+  WeeklyDirectionalBias,
+  WeeklyEarningsTime,
+  WeeklyIvCrushPotential,
+  WeeklyReportContent,
+  WeeklyReportEntry,
+  WeeklyReportRecord,
+  WeeklyReportStatus,
+  WeeklyRiskLevel,
+  WeeklyStrategyRating,
+} from "../shared/weeklyReports";
 import {
   createBillingStore,
   type AuthUserRecord,
@@ -12,6 +29,7 @@ import {
   type SubscriptionRecord,
 } from "./billingStore";
 import { COOKIE_NAME, ONE_YEAR_MS } from "../shared/const";
+import { buildInitialWeeklyReports } from "./weeklyReportSeeds";
 
 type MembershipPlan = "guest" | "member" | "pro";
 type AppAccessMode = "managed" | "public";
@@ -62,6 +80,21 @@ interface TranslationRequestBody {
   texts?: unknown;
   source?: unknown;
   target?: unknown;
+}
+
+interface WeeklyReportUpsertRequestBody {
+  report?: unknown;
+}
+
+interface WatchlistUpsertRequestBody {
+  ticker?: unknown;
+  notes?: unknown;
+  alertOnOpportunity?: unknown;
+}
+
+interface AgentTriggerRequestBody {
+  agentType?: unknown;
+  tickers?: unknown;
 }
 
 interface ShopierCheckoutRequestBody {
@@ -164,6 +197,19 @@ const PUBLIC_ACCESS_USER = {
 
 const translationCache = new Map<string, string>();
 const billingStore = createBillingStore();
+
+function ensureWeeklyReportSeeds() {
+  if (billingStore.listWeeklyReports().length > 0) {
+    return;
+  }
+
+  for (const report of buildInitialWeeklyReports()) {
+    billingStore.upsertWeeklyReport(report);
+  }
+}
+
+ensureWeeklyReportSeeds();
+ensureOpportunitiesSeed();
 
 function getTranslationCacheKey(
   source: TranslationLanguage,
@@ -613,6 +659,529 @@ function readAuthPayload(req: express.Request): AuthPayload {
     membership,
     accessMode: "managed",
   };
+}
+
+function getWeeklyReportAdminEmail() {
+  return normalizeEmail(process.env.REPORT_ADMIN_EMAIL || "hsnksc@gmail.com");
+}
+
+function getWeeklyReportAdminSecret() {
+  return normalizeString(process.env.REPORT_ADMIN_SECRET);
+}
+
+function normalizeIsoDate(value: unknown, fallback = "2026-06-01") {
+  const raw = normalizeString(value);
+  if (!raw) {
+    return fallback;
+  }
+
+  const match = raw.match(/^\d{4}-\d{2}-\d{2}$/);
+  if (!match) {
+    return fallback;
+  }
+
+  return raw;
+}
+
+function normalizeIsoDateTime(value: unknown, fallback: string) {
+  const raw = normalizeString(value);
+  if (!raw) {
+    return fallback;
+  }
+
+  const parsed = Date.parse(raw);
+  if (!Number.isFinite(parsed)) {
+    return fallback;
+  }
+
+  return new Date(parsed).toISOString();
+}
+
+function normalizeNumber(value: unknown, fallback = 0) {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value;
+  }
+
+  const raw = normalizeString(value);
+  if (!raw) {
+    return fallback;
+  }
+
+  const parsed = Number(raw);
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
+
+function normalizeStringArray(value: unknown) {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map(item => normalizeString(item))
+    .filter(Boolean)
+    .slice(0, 12);
+}
+
+function slugify(value: string) {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80);
+}
+
+function isValidEnumValue<T extends string>(
+  value: string,
+  allowed: readonly T[],
+  fallback: T
+) {
+  return (allowed.includes(value as T) ? value : fallback) as T;
+}
+
+function normalizeWeeklyReportEntry(
+  value: unknown,
+  fallbackTicker: string,
+  index: number
+) {
+  const source =
+    value && typeof value === "object"
+      ? (value as Partial<Record<keyof WeeklyReportEntry, unknown>>)
+      : {};
+  const ticker = normalizeString(source.ticker) || fallbackTicker || `STK${index + 1}`;
+  const earningsDate = normalizeIsoDate(source.earningsDate, "2026-06-01");
+
+  return {
+    id:
+      normalizeString(source.id) ||
+      `${ticker.toLowerCase()}-${earningsDate}-${index + 1}`,
+    ticker,
+    name: normalizeString(source.name) || ticker,
+    sector: normalizeString(source.sector) || "Technology",
+    earningsDate,
+    earningsTime: isValidEnumValue(
+      normalizeString(source.earningsTime),
+      ["AMC", "BMO", "AH", "BH"] as const,
+      "AH"
+    ) as WeeklyEarningsTime,
+    momentumScore: normalizeNumber(source.momentumScore, 70),
+    priceChange6M: normalizeNumber(source.priceChange6M, 0),
+    rsi14: normalizeNumber(source.rsi14, 50),
+    currentIV: normalizeNumber(source.currentIV, 70),
+    historicalIV: normalizeNumber(source.historicalIV, 55),
+    impliedMove: normalizeNumber(source.impliedMove, 8),
+    expectedIVCrush: normalizeNumber(source.expectedIVCrush, 30),
+    ivCrushPotential: isValidEnumValue(
+      normalizeString(source.ivCrushPotential),
+      ["HIGH", "MEDIUM", "LOW"] as const,
+      "MEDIUM"
+    ) as WeeklyIvCrushPotential,
+    callPremiumBuy: normalizeNumber(source.callPremiumBuy, 1.5),
+    callPremiumSell: normalizeNumber(source.callPremiumSell, 4),
+    callGainFromIV: normalizeNumber(source.callGainFromIV, 110),
+    putPremiumBuy: normalizeNumber(source.putPremiumBuy, 1.5),
+    putPremiumSell: normalizeNumber(source.putPremiumSell, 4),
+    putGainFromIV: normalizeNumber(source.putGainFromIV, 110),
+    ivCrushScore: normalizeNumber(source.ivCrushScore, 70),
+    strategyRating: isValidEnumValue(
+      normalizeString(source.strategyRating),
+      ["EXCELLENT", "GOOD", "FAIR", "POOR"] as const,
+      "GOOD"
+    ) as WeeklyStrategyRating,
+    riskLevel: isValidEnumValue(
+      normalizeString(source.riskLevel),
+      ["LOW", "MEDIUM", "HIGH", "VERY_HIGH"] as const,
+      "MEDIUM"
+    ) as WeeklyRiskLevel,
+    earningsMissRisk: normalizeNumber(source.earningsMissRisk, 25),
+    gapRisk: normalizeNumber(source.gapRisk, 25),
+    recommendedStrategy:
+      normalizeString(source.recommendedStrategy) || "Bull Call Spread",
+    targetProfit: normalizeNumber(source.targetProfit, 100),
+    maxLoss: normalizeNumber(source.maxLoss, 25),
+    lastEarningsMove: normalizeNumber(source.lastEarningsMove, 6),
+    historicalIVCrush: normalizeNumber(source.historicalIVCrush, 28),
+    beatRate: normalizeNumber(source.beatRate, 70),
+    thesis: normalizeString(source.thesis) || `${ticker} icin admin notu bekleniyor.`,
+    directionalBias: isValidEnumValue(
+      normalizeString(source.directionalBias),
+      ["Bullish", "Bearish", "Neutral"] as const,
+      "Neutral"
+    ) as WeeklyDirectionalBias,
+  } satisfies WeeklyReportEntry;
+}
+
+function normalizeWeeklyReportContent(value: unknown, title: string) {
+  const source =
+    value && typeof value === "object"
+      ? (value as Partial<Record<keyof WeeklyReportContent, unknown>>)
+      : {};
+  const rawEntries = Array.isArray(source.entries) ? source.entries : [];
+  const entries = rawEntries
+    .map((entry, index) =>
+      normalizeWeeklyReportEntry(entry, `STK${index + 1}`, index)
+    )
+    .sort((left, right) => right.ivCrushScore - left.ivCrushScore);
+
+  return {
+    headline:
+      normalizeString(source.headline) ||
+      `${title} icin haftalik earnings ve IV crush oyunu`,
+    summary:
+      normalizeString(source.summary) ||
+      "Haftalik rapor yayina alinmadi. Admin ozet notlarini girecek.",
+    marketContext:
+      normalizeString(source.marketContext) ||
+      "Makro baglam notlari admin tarafindan guncellenecek.",
+    executionNotes:
+      normalizeString(source.executionNotes) ||
+      "Pozisyon boyutu ve risk limiti notlari admin tarafindan guncellenecek.",
+    keyCatalysts: normalizeStringArray(source.keyCatalysts),
+    entries,
+  } satisfies WeeklyReportContent;
+}
+
+function normalizeWeeklyReportRecordInput(
+  value: unknown,
+  previousRecord?: WeeklyReportRecord | null
+) {
+  const nowIso = new Date().toISOString();
+  const source =
+    value && typeof value === "object"
+      ? (value as Partial<Record<keyof WeeklyReportRecord, unknown>>)
+      : {};
+
+  const weekStart = normalizeIsoDate(
+    source.weekStart,
+    previousRecord?.weekStart || "2026-06-01"
+  );
+  const weekEnd = normalizeIsoDate(
+    source.weekEnd,
+    previousRecord?.weekEnd || weekStart
+  );
+  const title =
+    normalizeString(source.title) || previousRecord?.title || "Yeni Haftalik Rapor";
+  const status = isValidEnumValue(
+    normalizeString(source.status),
+    ["draft", "published"] as const,
+    previousRecord?.status || "draft"
+  ) as WeeklyReportStatus;
+  const content = normalizeWeeklyReportContent(
+    source.content,
+    title
+  );
+  const publishedAt =
+    status === "published"
+      ? normalizeIsoDateTime(
+          source.publishedAt,
+          previousRecord?.publishedAt || nowIso
+        )
+      : undefined;
+
+  return {
+    id:
+      normalizeString(source.id) ||
+      previousRecord?.id ||
+      crypto.randomUUID(),
+    slug:
+      normalizeString(source.slug) ||
+      previousRecord?.slug ||
+      slugify(`${weekStart}-${title}`),
+    title,
+    weekStart,
+    weekEnd,
+    analysisDate: normalizeIsoDateTime(
+      source.analysisDate,
+      previousRecord?.analysisDate || nowIso
+    ),
+    status,
+    authorEmail:
+      previousRecord?.authorEmail || getWeeklyReportAdminEmail(),
+    createdAt: previousRecord?.createdAt || nowIso,
+    updatedAt: nowIso,
+    publishedAt,
+    content,
+  } satisfies WeeklyReportRecord;
+}
+
+function getReportAdminRequestSecret(req: express.Request) {
+  return normalizeString(req.header("x-gistify-admin-secret"));
+}
+
+function isWeeklyReportAdminRequest(req: express.Request) {
+  const adminEmail = getWeeklyReportAdminEmail();
+  const sessionUser = getSessionUser(req);
+
+  if (sessionUser && normalizeEmail(sessionUser.email) === adminEmail) {
+    return true;
+  }
+
+  const configuredSecret = getWeeklyReportAdminSecret();
+  const requestSecret = getReportAdminRequestSecret(req);
+  if (!configuredSecret || !requestSecret) {
+    return false;
+  }
+
+  return safeEqual(configuredSecret, requestSecret);
+}
+
+function requireWeeklyReportAdmin(
+  req: express.Request,
+  res: express.Response
+) {
+  if (isWeeklyReportAdminRequest(req)) {
+    return true;
+  }
+
+  res.status(403).json({
+    error: "Admin yetkisi gerekli.",
+    adminEmail: getWeeklyReportAdminEmail(),
+  });
+  return false;
+}
+
+function getCurrentWeekStart(referenceDate = new Date()) {
+  const next = new Date(referenceDate);
+  next.setUTCHours(0, 0, 0, 0);
+  const day = next.getUTCDay() || 7;
+  next.setUTCDate(next.getUTCDate() - day + 1);
+  return next;
+}
+
+function getViewerWeeklyReports(referenceDate = new Date()) {
+  const currentWeekStart = getCurrentWeekStart(referenceDate);
+  const candidates = billingStore
+    .listWeeklyReports()
+    .filter(report => report.status === "published")
+    .filter(report => Date.parse(`${report.weekEnd}T23:59:59Z`) >= currentWeekStart.getTime())
+    .sort(
+      (left, right) =>
+        Date.parse(`${left.weekStart}T00:00:00Z`) -
+        Date.parse(`${right.weekStart}T00:00:00Z`)
+    )
+    .slice(0, 2);
+
+  return candidates.sort(
+    (left, right) =>
+      Date.parse(`${right.weekStart}T00:00:00Z`) -
+      Date.parse(`${left.weekStart}T00:00:00Z`)
+  );
+}
+
+function getRequestActor(req: express.Request) {
+  const payload = readAuthPayload(req);
+  if (!payload.authenticated || !payload.user) {
+    return null;
+  }
+
+  return {
+    id: payload.user.id,
+    email: payload.user.email,
+    name: payload.user.name,
+    accessMode: payload.accessMode,
+    membership: payload.membership,
+  };
+}
+
+function getTierLevel(tier: OpportunityTier) {
+  if (tier === "elite") {
+    return 2;
+  }
+
+  if (tier === "pro") {
+    return 1;
+  }
+
+  return 0;
+}
+
+function resolveOpportunityTier(req: express.Request): OpportunityTier {
+  const actor = getRequestActor(req);
+  if (isWeeklyReportAdminRequest(req)) {
+    return "elite";
+  }
+
+  if (!actor) {
+    return "free";
+  }
+
+  if (getEliteEmailSet().has(normalizeEmail(actor.email))) {
+    return "elite";
+  }
+
+  return actor.membership.isSubscribed ? "pro" : "free";
+}
+
+function getEliteEmailSet() {
+  return new Set(
+    (process.env.ELITE_EMAILS || "")
+      .split(",")
+      .map(value => value.trim().toLowerCase())
+      .filter(Boolean)
+  );
+}
+
+function resolveOpportunityTierRequired(ivCrushScore: number): OpportunityTier {
+  if (ivCrushScore >= 92) {
+    return "elite";
+  }
+
+  if (ivCrushScore >= 78) {
+    return "pro";
+  }
+
+  return "free";
+}
+
+function resolveOpportunityWindow(daysToEarnings: number) {
+  if (daysToEarnings <= 1) {
+    return "pre_earnings_1d" as const;
+  }
+
+  if (daysToEarnings <= 3) {
+    return "pre_earnings_3d" as const;
+  }
+
+  return "pre_earnings_7d" as const;
+}
+
+function resolveOpportunityConfidence(compositeScore: number) {
+  if (compositeScore >= 85) {
+    return "high" as const;
+  }
+
+  if (compositeScore >= 70) {
+    return "medium" as const;
+  }
+
+  return "low" as const;
+}
+
+function calculateOpportunityCompositeScore(entry: WeeklyReportEntry) {
+  const momentum = Math.max(0, Math.min(100, entry.momentumScore));
+  const iv = Math.max(
+    0,
+    Math.min(100, entry.ivCrushScore * 0.55 + entry.expectedIVCrush * 0.45)
+  );
+  const earningsQuality = Math.max(
+    0,
+    Math.min(100, entry.beatRate * 0.7 + (100 - entry.earningsMissRisk) * 0.3)
+  );
+  const riskAdjusted = Math.max(
+    0,
+    Math.min(100, 100 - entry.gapRisk * 0.55 - entry.maxLoss * 0.45)
+  );
+
+  return Math.round(
+    momentum * 0.3 +
+      iv * 0.3 +
+      earningsQuality * 0.2 +
+      riskAdjusted * 0.2
+  );
+}
+
+function buildOpportunityFromWeeklyEntry(
+  report: WeeklyReportRecord,
+  entry: WeeklyReportEntry,
+  referenceDate = new Date()
+) {
+  const earningsTimestamp = Date.parse(`${entry.earningsDate}T00:00:00Z`);
+  const nowTimestamp = Date.parse(
+    `${referenceDate.toISOString().slice(0, 10)}T00:00:00Z`
+  );
+  const daysToEarnings = Math.max(
+    0,
+    Math.round((earningsTimestamp - nowTimestamp) / (1000 * 60 * 60 * 24))
+  );
+  const compositeScore = calculateOpportunityCompositeScore(entry);
+  const nowIso = new Date().toISOString();
+
+  return {
+    id: `opp-${report.id}-${entry.ticker.toLowerCase()}`,
+    sourceReportId: report.id,
+    sourceReportTitle: report.title,
+    ticker: entry.ticker,
+    name: entry.name,
+    sector: entry.sector,
+    earningsDate: entry.earningsDate,
+    earningsTime: entry.earningsTime,
+    daysToEarnings,
+    opportunityWindow: resolveOpportunityWindow(daysToEarnings),
+    momentumScore: entry.momentumScore,
+    priceChange6M: entry.priceChange6M,
+    rsi14: entry.rsi14,
+    currentIV: entry.currentIV,
+    historicalIV: entry.historicalIV,
+    impliedMovePercent: entry.impliedMove,
+    expectedIVCrush: entry.expectedIVCrush,
+    ivCrushScore: entry.ivCrushScore,
+    beatRate: entry.beatRate,
+    maxLossPercent: entry.maxLoss,
+    targetProfitPercent: entry.targetProfit,
+    earningsMissRisk: entry.earningsMissRisk,
+    gapRisk: entry.gapRisk,
+    compositeScore,
+    confidenceLevel: resolveOpportunityConfidence(compositeScore),
+    directionalBias: entry.directionalBias,
+    strategyType: "iv_crush",
+    strategyRating: entry.ivCrushScore,
+    recommendedStrategy: entry.recommendedStrategy,
+    aiSummary: report.content.summary,
+    aiStrategyRationale: entry.thesis,
+    aiKeyCatalysts: report.content.keyCatalysts,
+    aiExecutionNotes: report.content.executionNotes,
+    riskWarnings: [
+      `${entry.ticker} gap risk: ${entry.gapRisk}%`,
+      `${entry.ticker} earnings miss risk: ${entry.earningsMissRisk}%`,
+    ],
+    dataSources: ["weekly_report_manual"],
+    tierRequired: resolveOpportunityTierRequired(entry.ivCrushScore),
+    status:
+      Date.parse(`${report.weekEnd}T23:59:59Z`) < Date.now()
+        ? "expired"
+        : "active",
+    createdAt: nowIso,
+    updatedAt: nowIso,
+    expiresAt: `${report.weekEnd}T23:59:59.000Z`,
+  } satisfies OpportunityRecord;
+}
+
+function syncOpportunitiesFromPublishedWeeklyReports(options?: {
+  tickers?: Set<string>;
+}) {
+  const reports = billingStore
+    .listWeeklyReports()
+    .filter(report => report.status === "published");
+  let count = 0;
+
+  for (const report of reports) {
+    for (const entry of report.content.entries) {
+      if (options?.tickers?.size && !options.tickers.has(entry.ticker)) {
+        continue;
+      }
+
+      billingStore.upsertOpportunity(
+        buildOpportunityFromWeeklyEntry(report, entry)
+      );
+      count += 1;
+    }
+  }
+
+  return count;
+}
+
+function filterOpportunitiesForTier(
+  opportunities: OpportunityRecord[],
+  tier: OpportunityTier
+) {
+  const tierLevel = getTierLevel(tier);
+  return opportunities.filter(
+    opportunity => getTierLevel(opportunity.tierRequired) <= tierLevel
+  );
+}
+
+function ensureOpportunitiesSeed() {
+  syncOpportunitiesFromPublishedWeeklyReports();
 }
 
 function buildGoogleAuthUrl(req: express.Request, state: string) {
@@ -1631,6 +2200,354 @@ async function startServer() {
       allowListOverride: isSubscribedEmail(user.email),
       managedSubscription,
       accessMode: "managed" as AppAccessMode,
+    });
+  });
+
+  app.get("/api/opportunities", (req, res) => {
+    setPrivateNoStore(res);
+    const tier = resolveOpportunityTier(req);
+    const minScore = normalizeNumber(req.query.minScore, 0);
+    const strategy = normalizeString(req.query.strategy);
+    const sector = normalizeString(req.query.sector);
+    const days = normalizeNumber(req.query.days, 0);
+    const page = Math.max(1, normalizeNumber(req.query.page, 1));
+    const limit = Math.min(50, Math.max(1, normalizeNumber(req.query.limit, 20)));
+    const offset = (page - 1) * limit;
+
+    const filtered = filterOpportunitiesForTier(
+      billingStore
+        .listOpportunities()
+        .filter(opportunity => opportunity.status === "active")
+        .filter(opportunity => opportunity.compositeScore >= minScore)
+        .filter(opportunity =>
+          strategy ? opportunity.strategyType === strategy : true
+        )
+        .filter(opportunity => (sector ? opportunity.sector === sector : true))
+        .filter(opportunity =>
+          days > 0 ? opportunity.daysToEarnings <= days : true
+        ),
+      tier
+    );
+
+    const items = filtered.slice(offset, offset + limit);
+    res.status(200).json({
+      data: items,
+      meta: {
+        total: filtered.length,
+        page,
+        limit,
+        hasMore: filtered.length > offset + items.length,
+        tier,
+      },
+    });
+  });
+
+  app.get("/api/opportunities/:id/related", (req, res) => {
+    setPrivateNoStore(res);
+    const tier = resolveOpportunityTier(req);
+    const opportunityId = normalizeString(req.params.id);
+    const opportunity = billingStore
+      .listOpportunities()
+      .find(item => item.id === opportunityId);
+
+    if (!opportunity) {
+      res.status(404).json({ error: "Firsat bulunamadi." });
+      return;
+    }
+
+    const allowedItems = filterOpportunitiesForTier(
+      billingStore
+        .listOpportunities()
+        .filter(item => item.status === "active")
+        .filter(item => item.id !== opportunity.id)
+        .filter(item => item.sector === opportunity.sector)
+        .sort((left, right) => right.compositeScore - left.compositeScore),
+      tier
+    ).slice(0, 4);
+
+    res.status(200).json({
+      data: allowedItems,
+      meta: {
+        tier,
+        sourceOpportunityId: opportunity.id,
+      },
+    });
+  });
+
+  app.get("/api/opportunities/:id", (req, res) => {
+    setPrivateNoStore(res);
+    const tier = resolveOpportunityTier(req);
+    const opportunityId = normalizeString(req.params.id);
+    const opportunity = billingStore
+      .listOpportunities()
+      .find(item => item.id === opportunityId);
+
+    if (!opportunity) {
+      res.status(404).json({ error: "Firsat bulunamadi." });
+      return;
+    }
+
+    const allowedItems = filterOpportunitiesForTier([opportunity], tier);
+    if (!allowedItems.length) {
+      res.status(403).json({
+        error: "Bu firsat daha yuksek uyelik seviyesi gerektiriyor.",
+        required: opportunity.tierRequired,
+        current: tier,
+      });
+      return;
+    }
+
+    res.status(200).json({
+      data: opportunity,
+      meta: {
+        tier,
+      },
+    });
+  });
+
+  app.get(["/api/watchlist", "/api/me/watchlist"], (req, res) => {
+    setPrivateNoStore(res);
+    const actor = getRequestActor(req);
+    if (!actor) {
+      res.status(401).json({ error: "Oturum gerekli." });
+      return;
+    }
+
+    res.status(200).json({
+      items: billingStore.listWatchlistByUserId(actor.id),
+    });
+  });
+
+  app.post(["/api/watchlist", "/api/me/watchlist"], (req, res) => {
+    setPrivateNoStore(res);
+    const actor = getRequestActor(req);
+    if (!actor) {
+      res.status(401).json({ error: "Oturum gerekli." });
+      return;
+    }
+
+    const body = (req.body ?? {}) as WatchlistUpsertRequestBody;
+    const ticker = normalizeString(body.ticker).toUpperCase();
+    if (!ticker) {
+      res.status(400).json({ error: "Ticker gerekli." });
+      return;
+    }
+
+    const nowIso = new Date().toISOString();
+    const record: WatchlistRecord = {
+      id: crypto.randomUUID(),
+      userId: actor.id,
+      email: actor.email,
+      ticker,
+      notes: normalizeString(body.notes) || undefined,
+      alertOnOpportunity: body.alertOnOpportunity !== false,
+      addedAt: nowIso,
+      updatedAt: nowIso,
+    };
+
+    billingStore.upsertWatchlist(record);
+    res.status(201).json({
+      item: record,
+      items: billingStore.listWatchlistByUserId(actor.id),
+    });
+  });
+
+  app.patch(
+    ["/api/watchlist/:ticker", "/api/me/watchlist/:ticker"],
+    (req, res) => {
+      setPrivateNoStore(res);
+      const actor = getRequestActor(req);
+      if (!actor) {
+        res.status(401).json({ error: "Oturum gerekli." });
+        return;
+      }
+
+      const ticker = normalizeString(req.params.ticker).toUpperCase();
+      if (!ticker) {
+        res.status(400).json({ error: "Ticker gerekli." });
+        return;
+      }
+
+      const existing = billingStore
+        .listWatchlistByUserId(actor.id)
+        .find(item => item.ticker === ticker);
+      if (!existing) {
+        res.status(404).json({ error: "Watchlist kaydi bulunamadi." });
+        return;
+      }
+
+      const body = (req.body ?? {}) as WatchlistUpsertRequestBody;
+      const updatedRecord: WatchlistRecord = {
+        ...existing,
+        notes: normalizeString(body.notes) || undefined,
+        alertOnOpportunity: body.alertOnOpportunity !== false,
+        updatedAt: new Date().toISOString(),
+      };
+
+      billingStore.upsertWatchlist(updatedRecord);
+      res.status(200).json({
+        item: updatedRecord,
+        items: billingStore.listWatchlistByUserId(actor.id),
+      });
+    }
+  );
+
+  app.delete(
+    ["/api/watchlist/:ticker", "/api/me/watchlist/:ticker"],
+    (req, res) => {
+      setPrivateNoStore(res);
+      const actor = getRequestActor(req);
+      if (!actor) {
+        res.status(401).json({ error: "Oturum gerekli." });
+        return;
+      }
+
+      const ticker = normalizeString(req.params.ticker).toUpperCase();
+      if (!ticker) {
+        res.status(400).json({ error: "Ticker gerekli." });
+        return;
+      }
+
+      billingStore.deleteWatchlist(actor.id, ticker);
+      res.status(200).json({
+        items: billingStore.listWatchlistByUserId(actor.id),
+      });
+    }
+  );
+
+  app.get("/api/admin/agents/runs", (req, res) => {
+    setPrivateNoStore(res);
+    if (!requireWeeklyReportAdmin(req, res)) {
+      return;
+    }
+
+    res.status(200).json({
+      runs: billingStore.listAgentRuns(),
+    });
+  });
+
+  app.post("/api/admin/agents/trigger", (req, res) => {
+    setPrivateNoStore(res);
+    if (!requireWeeklyReportAdmin(req, res)) {
+      return;
+    }
+
+    const body = (req.body ?? {}) as AgentTriggerRequestBody;
+    const agentType = normalizeString(body.agentType) || "full_scan";
+    const tickerList = Array.isArray(body.tickers)
+      ? body.tickers
+          .filter((value): value is string => typeof value === "string")
+          .map(value => normalizeString(value).toUpperCase())
+          .filter(Boolean)
+      : [];
+    const tickerSet = tickerList.length ? new Set(tickerList) : undefined;
+    const startedAt = new Date().toISOString();
+    const runId = crypto.randomUUID();
+
+    const runningRecord: AgentRunRecord = {
+      id: runId,
+      runType: agentType,
+      status: "running",
+      tickersScanned: tickerSet?.size || 0,
+      opportunitiesFound: 0,
+      errors: [],
+      log:
+        tickerList.length > 0
+          ? `Manual ${agentType} run for tickers: ${tickerList.join(", ")}`
+          : `Manual ${agentType} run for published weekly reports`,
+      retryCount: 0,
+      startedAt,
+    };
+
+    billingStore.upsertAgentRun(runningRecord);
+
+    try {
+      const opportunitiesFound = syncOpportunitiesFromPublishedWeeklyReports({
+        tickers: tickerSet,
+      });
+      const completedRecord: AgentRunRecord = {
+        ...runningRecord,
+        status: "success",
+        tickersScanned: tickerSet?.size || opportunitiesFound,
+        opportunitiesFound,
+        log: `${runningRecord.log}. Projection sync completed successfully.`,
+        completedAt: new Date().toISOString(),
+      };
+
+      billingStore.upsertAgentRun(completedRecord);
+      res.status(201).json({
+        run: completedRecord,
+        runs: billingStore.listAgentRuns(),
+      });
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Agent run basarisiz oldu.";
+      const failedRecord: AgentRunRecord = {
+        ...runningRecord,
+        status: "failed",
+        errors: [message],
+        log: `${runningRecord.log}. Projection sync failed.`,
+        completedAt: new Date().toISOString(),
+      };
+
+      billingStore.upsertAgentRun(failedRecord);
+      res.status(500).json({
+        error: message,
+        run: failedRecord,
+      });
+    }
+  });
+
+  app.get("/api/reports/weekly", (req, res) => {
+    setPrivateNoStore(res);
+    res.status(200).json({
+      reports: getViewerWeeklyReports(),
+      admin: {
+        authorized: isWeeklyReportAdminRequest(req),
+        email: getWeeklyReportAdminEmail(),
+      },
+    });
+  });
+
+  app.get("/api/admin/reports/weekly", (req, res) => {
+    setPrivateNoStore(res);
+    if (!requireWeeklyReportAdmin(req, res)) {
+      return;
+    }
+
+    res.status(200).json({
+      reports: billingStore.listWeeklyReports(),
+      admin: {
+        authorized: true,
+        email: getWeeklyReportAdminEmail(),
+      },
+    });
+  });
+
+  app.post("/api/admin/reports/weekly", (req, res) => {
+    setPrivateNoStore(res);
+    if (!requireWeeklyReportAdmin(req, res)) {
+      return;
+    }
+
+    const body = (req.body ?? {}) as WeeklyReportUpsertRequestBody;
+    const rawReport = body.report;
+    const draftSource =
+      rawReport && typeof rawReport === "object"
+        ? (rawReport as Partial<Record<keyof WeeklyReportRecord, unknown>>)
+        : undefined;
+    const reportId = draftSource ? normalizeString(draftSource.id) : "";
+    const previousRecord = reportId
+      ? billingStore.getWeeklyReportById(reportId)
+      : null;
+    const report = normalizeWeeklyReportRecordInput(rawReport, previousRecord);
+
+    billingStore.upsertWeeklyReport(report);
+    syncOpportunitiesFromPublishedWeeklyReports();
+
+    res.status(previousRecord ? 200 : 201).json({
+      report,
+      reports: billingStore.listWeeklyReports(),
     });
   });
 
