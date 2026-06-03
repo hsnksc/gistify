@@ -29,7 +29,10 @@ import {
   type SubscriptionRecord,
 } from "./billingStore";
 import { COOKIE_NAME, ONE_YEAR_MS } from "../shared/const";
-import { buildInitialWeeklyReports } from "./weeklyReportSeeds";
+import {
+  buildInitialWeeklyReports,
+  buildSystemSuggestedWeeklyReports,
+} from "./weeklyReportSeeds";
 
 type MembershipPlan = "guest" | "member" | "pro";
 type AppAccessMode = "managed" | "public";
@@ -2521,6 +2524,19 @@ async function startServer() {
         authorized: true,
         email: getWeeklyReportAdminEmail(),
       },
+    });
+  });
+
+  app.get("/api/admin/reports/weekly/suggestions", (req, res) => {
+    setPrivateNoStore(res);
+    if (!requireWeeklyReportAdmin(req, res)) {
+      return;
+    }
+
+    res.status(200).json({
+      suggestions: buildSystemSuggestedWeeklyReports(
+        billingStore.listWeeklyReports()
+      ),
     });
   });
 

@@ -21,6 +21,12 @@ interface WeeklyReportsApiResponse {
   };
 }
 
+interface WeeklyReportSuggestion {
+  report: WeeklyReportRecord;
+  source: "seed" | "carry_forward";
+  alreadyExists: boolean;
+}
+
 function readStoredAdminSecret() {
   if (typeof window === "undefined") {
     return "";
@@ -60,6 +66,7 @@ export default function ReportsAdmin() {
   const [adminBusy, setAdminBusy] = useState(false);
   const [adminError, setAdminError] = useState("");
   const [reports, setReports] = useState<WeeklyReportRecord[]>([]);
+  const [suggestions, setSuggestions] = useState<WeeklyReportSuggestion[]>([]);
   const [selectedReportId, setSelectedReportId] = useState("");
   const [draftReport, setDraftReport] = useState<WeeklyReportRecord | null>(null);
 
@@ -122,6 +129,26 @@ export default function ReportsAdmin() {
     [buildAdminHeaders, syncDraft]
   );
 
+  const loadSuggestions = useCallback(
+    async (secretOverride?: string) => {
+      const response = await fetch("/api/admin/reports/weekly/suggestions", {
+        credentials: "include",
+        cache: "no-store",
+        headers: buildAdminHeaders(secretOverride),
+      });
+
+      if (!response.ok) {
+        throw new Error("Sistem onerileri yuklenemedi.");
+      }
+
+      const payload = (await response.json()) as {
+        suggestions?: WeeklyReportSuggestion[];
+      };
+      setSuggestions(payload.suggestions || []);
+    },
+    [buildAdminHeaders]
+  );
+
   const refreshPage = useCallback(
     async (secretOverride = "", preferredId?: string) => {
       setLoading(true);
@@ -131,6 +158,7 @@ export default function ReportsAdmin() {
         const payload = await loadViewerMeta(secretOverride);
         if (payload.admin?.authorized || secretOverride.trim()) {
           await loadAdminReports(secretOverride, preferredId);
+          await loadSuggestions(secretOverride);
         }
       } catch (error) {
         setPageError(
@@ -142,7 +170,7 @@ export default function ReportsAdmin() {
         setLoading(false);
       }
     },
-    [loadAdminReports, loadViewerMeta]
+    [loadAdminReports, loadSuggestions, loadViewerMeta]
   );
 
   useEffect(() => {
@@ -157,6 +185,7 @@ export default function ReportsAdmin() {
       await loadAdminReports(adminSecret, selectedReportId);
       writeStoredAdminSecret(adminSecret);
       await loadViewerMeta(adminSecret);
+      await loadSuggestions(adminSecret);
     } catch (error) {
       writeStoredAdminSecret("");
       setAdminAuthorized(false);
@@ -173,6 +202,7 @@ export default function ReportsAdmin() {
     setAdminSecret("");
     setAdminAuthorized(false);
     setReports([]);
+    setSuggestions([]);
     setSelectedReportId("");
     setDraftReport(null);
     setAdminError("");
@@ -220,8 +250,11 @@ export default function ReportsAdmin() {
     });
   };
 
-  const persistAdminReport = async (status: WeeklyReportRecord["status"]) => {
-    if (!draftReport) {
+  const persistAdminReport = async (
+    status: WeeklyReportRecord["status"],
+    sourceReport = draftReport
+  ) => {
+    if (!sourceReport) {
       return;
     }
 
@@ -230,11 +263,11 @@ export default function ReportsAdmin() {
 
     try {
       const reportToSave: WeeklyReportRecord = {
-        ...draftReport,
+        ...sourceReport,
         status,
         publishedAt:
           status === "published"
-            ? draftReport.publishedAt || new Date().toISOString()
+            ? sourceReport.publishedAt || new Date().toISOString()
             : undefined,
       };
 
@@ -261,6 +294,7 @@ export default function ReportsAdmin() {
       setSelectedReportId(savedReport.id);
       setDraftReport(deepCloneReport(savedReport));
       await loadViewerMeta(adminSecret);
+      await loadSuggestions(adminSecret);
     } catch (error) {
       setAdminError(
         error instanceof Error ? error.message : "Rapor kaydedilemedi."
@@ -372,10 +406,10 @@ export default function ReportsAdmin() {
           <div className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
             <div className="flex items-center gap-2">
               <FileSpreadsheet className="size-4 text-emerald-300" />
-              <p className="text-sm font-semibold text-foreground">Planlama</p>
+              <p className="text-sm font-semibold text-foreground">Sistem onerisi</p>
             </div>
             <p className="mt-3 text-sm text-muted-foreground">
-              Yeni hafta olustur, tarihleri kaydir ve mevcut yapidan draft turet.
+              Hedef akista sistem haftalari ve hisseleri hazirlar; admin sadece onaylar.
             </p>
           </div>
           <div className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
@@ -399,6 +433,141 @@ export default function ReportsAdmin() {
             </p>
           </div>
         </section>
+
+        <section className="rounded-[2rem] border border-border bg-card/95 p-6 shadow-2xl">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="space-y-2">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                1. Sistem Onerileri
+              </p>
+              <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+                Admin sadece onaylasin diye hazirlanan haftalar
+              </h2>
+              <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
+                Sistem onumuzdeki iki hafta icin taslak haftalari ve aday hisseleri
+                hazirlar. Senin ana aksiyonun bunlari gozden gecirip taslak olarak
+                almak ya da direkt yayinlamaktir.
+              </p>
+            </div>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => void loadSuggestions(adminSecret)}
+              disabled={adminBusy || !adminAuthorized}
+            >
+              <Sparkles className="size-4" />
+              Onerileri yenile
+            </Button>
+          </div>
+
+          <div className="mt-5 grid gap-4 xl:grid-cols-2">
+            {suggestions.map(suggestion => {
+              const topTickers = suggestion.report.content.entries
+                .slice(0, 4)
+                .map(entry => entry.ticker)
+                .join(", ");
+
+              return (
+                <article
+                  key={`${suggestion.report.id}-${suggestion.source}`}
+                  className="rounded-[2rem] border border-border bg-background/60 p-5"
+                >
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div className="space-y-2">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                          {formatWeekRange(suggestion.report)}
+                        </span>
+                        <span className="rounded-full border border-border bg-card px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                          {suggestion.source === "seed" ? "curated" : "auto"}
+                        </span>
+                        {suggestion.alreadyExists ? (
+                          <span className="rounded-full border border-sky-500/30 bg-sky-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
+                            mevcut
+                          </span>
+                        ) : null}
+                      </div>
+                      <h3 className="text-xl font-semibold text-foreground">
+                        {suggestion.report.title}
+                      </h3>
+                      <p className="text-sm leading-relaxed text-muted-foreground">
+                        {suggestion.report.content.summary}
+                      </p>
+                    </div>
+
+                    <div className="rounded-2xl border border-border bg-card/80 px-4 py-3">
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                        Entry
+                      </p>
+                      <p className="mt-2 text-2xl font-semibold text-foreground">
+                        {suggestion.report.content.entries.length}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 rounded-2xl border border-border bg-card/70 p-4">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                      One cikan tickerlar
+                    </p>
+                    <p className="mt-2 text-sm text-foreground">{topTickers || "-"}</p>
+                  </div>
+
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {suggestion.alreadyExists ? (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => handleSelectReport(suggestion.report.id)}
+                      >
+                        Mevcut raporu ac
+                      </Button>
+                    ) : (
+                      <>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => void persistAdminReport("draft", suggestion.report)}
+                          disabled={adminBusy}
+                        >
+                          Taslak olarak al
+                        </Button>
+                        <Button
+                          type="button"
+                          onClick={() => void persistAdminReport("published", suggestion.report)}
+                          disabled={adminBusy}
+                        >
+                          Direkt yayinla
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+
+          {!suggestions.length ? (
+            <div className="mt-5 rounded-[2rem] border border-dashed border-border bg-background/50 p-5 text-sm text-muted-foreground">
+              {adminAuthorized
+                ? "Bu an icin sistem oneri uretmedi. Onerileri yenileyebilir veya gelismis duzenlemeye gecebilirsin."
+                : "Sistem onerilerini gormek icin once admin kilidini ac."}
+            </div>
+          ) : null}
+        </section>
+
+        <section className="space-y-3">
+          <div className="space-y-1">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+              2. Gelismis Duzenleme
+            </p>
+            <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+              Gerekirse ince ayar yap
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Ideal akista buraya nadiren inersin. Sistem onerisi yetmezse
+              detayli duzenleme bu bolumde kalir.
+            </p>
+          </div>
 
         <WeeklyReportAdminPanel
           adminEmail={adminEmail}
@@ -424,6 +593,7 @@ export default function ReportsAdmin() {
           onSaveDraft={() => void persistAdminReport("draft")}
           onPublish={() => void persistAdminReport("published")}
         />
+        </section>
       </div>
     </div>
   );

@@ -7,6 +7,20 @@ import type {
 } from "../shared/weeklyReports";
 
 const ADMIN_EMAIL = "hsnksc@gmail.com";
+const TURKISH_MONTHS = [
+  "Ocak",
+  "Subat",
+  "Mart",
+  "Nisan",
+  "Mayis",
+  "Haziran",
+  "Temmuz",
+  "Agustos",
+  "Eylul",
+  "Ekim",
+  "Kasim",
+  "Aralik",
+] as const;
 
 interface SeedEntry {
   ticker: string;
@@ -541,4 +555,173 @@ export function buildInitialWeeklyReports() {
       secondWeekEntries
     ),
   ];
+}
+
+export interface SuggestedWeeklyReport {
+  report: WeeklyReportRecord;
+  source: "seed" | "carry_forward";
+  alreadyExists: boolean;
+}
+
+function toIsoDate(date: Date) {
+  return date.toISOString().slice(0, 10);
+}
+
+function addDays(date: Date, days: number) {
+  const next = new Date(date);
+  next.setUTCDate(next.getUTCDate() + days);
+  return next;
+}
+
+function startOfWeekUtc(date: Date) {
+  const next = new Date(date);
+  next.setUTCHours(0, 0, 0, 0);
+  const day = next.getUTCDay() || 7;
+  next.setUTCDate(next.getUTCDate() - day + 1);
+  return next;
+}
+
+function buildWeekTitle(weekStartIso: string, weekEndIso: string) {
+  const start = new Date(`${weekStartIso}T00:00:00Z`);
+  const end = new Date(`${weekEndIso}T00:00:00Z`);
+  const startDay = start.getUTCDate().toString().padStart(2, "0");
+  const endDay = end.getUTCDate().toString().padStart(2, "0");
+  const startMonth = TURKISH_MONTHS[start.getUTCMonth()];
+  const endMonth = TURKISH_MONTHS[end.getUTCMonth()];
+
+  if (startMonth === endMonth) {
+    return `${startDay} - ${endDay} ${startMonth} Earnings Plan`;
+  }
+
+  return `${startDay} ${startMonth} - ${endDay} ${endMonth} Earnings Plan`;
+}
+
+function cloneReportForDraft(
+  source: WeeklyReportRecord,
+  weekStartIso: string,
+  sourceLabel: "seed" | "carry_forward"
+) {
+  const weekStartDate = new Date(`${weekStartIso}T00:00:00Z`);
+  const weekEndIso = toIsoDate(addDays(weekStartDate, 6));
+  const sourceStartDate = new Date(`${source.weekStart}T00:00:00Z`);
+  const shiftDays = Math.round(
+    (weekStartDate.getTime() - sourceStartDate.getTime()) / (1000 * 60 * 60 * 24)
+  );
+  const nowIso = new Date().toISOString();
+
+  return {
+    id: `system-${weekStartIso}`,
+    slug: `${weekStartIso}-system-draft`,
+    title: buildWeekTitle(weekStartIso, weekEndIso),
+    weekStart: weekStartIso,
+    weekEnd: weekEndIso,
+    analysisDate: nowIso,
+    status: "draft",
+    authorEmail: ADMIN_EMAIL,
+    createdAt: nowIso,
+    updatedAt: nowIso,
+    publishedAt: undefined,
+    content: {
+      headline:
+        sourceLabel === "seed"
+          ? source.content.headline
+          : `${buildWeekTitle(weekStartIso, weekEndIso)} icin sistem tarafindan olusturulan on taslak`,
+      summary:
+        sourceLabel === "seed"
+          ? source.content.summary
+          : "Bu taslak onceki haftanin yapisini kullanarak sistem tarafindan olusturuldu. Admin sadece hisseleri gozden gecirip onaylayabilir.",
+      marketContext:
+        sourceLabel === "seed"
+          ? source.content.marketContext
+          : "Makro baglam sistem tarafindan onceki hafta sablonundan tasindi. Gerekirse kisa bir duzeltme yapilabilir.",
+      executionNotes:
+        sourceLabel === "seed"
+          ? source.content.executionNotes
+          : "Temel pozisyonlama notlari otomatik tasindi. Admin sadece son kontrol yapar.",
+      keyCatalysts:
+        sourceLabel === "seed"
+          ? source.content.keyCatalysts
+          : [
+              "Bu hafta earnings takvimi sistem tarafindan on taslak olarak derlendi.",
+              "Yuksek iv crush ve momentum skorlari ustte siralandi.",
+              "Onay oncesi sadece kritik isimler manuel kontrol edilmeli.",
+            ],
+      entries: source.content.entries.map((entry, index) => {
+        const earningsDate = toIsoDate(
+          addDays(new Date(`${entry.earningsDate}T00:00:00Z`), shiftDays)
+        );
+
+        return {
+          ...entry,
+          id: `${entry.ticker.toLowerCase()}-${earningsDate}-${index + 1}`,
+          earningsDate,
+          thesis:
+            sourceLabel === "seed"
+              ? entry.thesis
+              : `${entry.ticker} sistem tarafindan onceki haftanin profilinden turetildi. Admin sadece uygunluk ve tarih kontrolu yapmali.`,
+        };
+      }),
+    },
+  } satisfies WeeklyReportRecord;
+}
+
+export function buildSystemSuggestedWeeklyReports(
+  existingReports: WeeklyReportRecord[],
+  referenceDate = new Date(),
+  count = 2
+) {
+  const initialReports = buildInitialWeeklyReports();
+  const existingByWeek = new Map(
+    existingReports.map(report => [report.weekStart, report])
+  );
+  const initialByWeek = new Map(
+    initialReports.map(report => [report.weekStart, report])
+  );
+  const suggestions: SuggestedWeeklyReport[] = [];
+  let sourceForCarry =
+    [...existingReports, ...initialReports].sort((left, right) =>
+      right.weekStart.localeCompare(left.weekStart)
+    )[0] || initialReports[0];
+
+  const firstWeekStart = startOfWeekUtc(referenceDate);
+
+  for (let index = 0; index < count; index += 1) {
+    const targetWeekStart = toIsoDate(addDays(firstWeekStart, index * 7));
+    const existing = existingByWeek.get(targetWeekStart);
+    if (existing) {
+      suggestions.push({
+        report: existing,
+        source: initialByWeek.has(targetWeekStart) ? "seed" : "carry_forward",
+        alreadyExists: true,
+      });
+      sourceForCarry = existing;
+      continue;
+    }
+
+    const seedReport = initialByWeek.get(targetWeekStart);
+    if (seedReport) {
+      const generated = cloneReportForDraft(seedReport, targetWeekStart, "seed");
+      suggestions.push({
+        report: generated,
+        source: "seed",
+        alreadyExists: false,
+      });
+      sourceForCarry = seedReport;
+      continue;
+    }
+
+    const generated = cloneReportForDraft(
+      sourceForCarry,
+      targetWeekStart,
+      "carry_forward"
+    );
+    suggestions.push({
+      report: generated,
+      source: "carry_forward",
+      alreadyExists: false,
+    });
+    sourceForCarry = generated;
+  }
+
+  return suggestions;
 }
