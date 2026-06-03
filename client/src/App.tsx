@@ -8,8 +8,6 @@ import {
   useState,
 } from "react";
 import {
-  BadgeDollarSign,
-  Globe2,
   LayoutDashboard,
   LogOut,
   Radar,
@@ -182,7 +180,7 @@ function Router({
           <div className="mx-auto max-w-7xl rounded-2xl border border-border bg-card/95 p-6 text-card-foreground shadow-2xl">
             <h2 className="text-lg font-semibold">Panel yukleniyor</h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              Haftalik raporlar ve analiz sekmeleri hazirlaniyor.
+              Earnings benchmark ve momentum workspace hazirlaniyor.
             </p>
           </div>
         </div>
@@ -196,6 +194,9 @@ function Router({
         </Route>
         <Route path={"/app/admin"} component={ReportsAdmin} />
         <Route path={"/app"} component={Home} />
+        <Route path={"/momentum"}>
+          {() => <Scanner language={language} />}
+        </Route>
         <Route path={"/scanner"}>{() => <Scanner language={language} />}</Route>
         <Route path={"/pricing"}>
           {() => (
@@ -229,28 +230,17 @@ function AppNavigation({ language }: { language: AppLanguage }) {
 
   const items = [
     {
-      href: "/",
-      label: language === "en" ? "Site" : "Site",
-      icon: Globe2,
-      active: location === "/",
-    },
-    {
-      href: "/pricing",
-      label: language === "en" ? "Pricing" : "Fiyat",
-      icon: BadgeDollarSign,
-      active: location.startsWith("/pricing"),
-    },
-    {
       href: "/app",
-      label: language === "en" ? "Earnings" : "Earnings",
+      label: language === "en" ? "Benchmark" : "Benchmark",
       icon: LayoutDashboard,
       active: location.startsWith("/app"),
     },
     {
-      href: "/scanner",
-      label: language === "en" ? "Scanner" : "Scanner",
+      href: "/momentum",
+      label: language === "en" ? "Momentum" : "Momentum",
       icon: Radar,
-      active: location.startsWith("/scanner"),
+      active:
+        location.startsWith("/momentum") || location.startsWith("/scanner"),
     },
   ];
 
