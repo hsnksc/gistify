@@ -34,14 +34,9 @@ import type {
   WatchlistRecord,
 } from "@shared/opportunities";
 import type { WeeklyReportEntry, WeeklyReportRecord } from "@shared/weeklyReports";
-import WeeklyReportAdminPanel from "@/components/reports/WeeklyReportAdminPanel";
 import { Button } from "@/components/ui/button";
 import {
-  REPORT_ADMIN_SECRET_STORAGE_KEY,
   biasLabels,
-  createEmptyEntry,
-  createNextWeeklyReportDraft,
-  deepCloneReport,
   formatAnalysisDate,
   formatCalendarDay,
   formatWeekRange,
@@ -51,6 +46,7 @@ import {
   sortReportsNewestFirst,
   strategyPresentation,
 } from "@/lib/weeklyReports";
+import { useLocation } from "wouter";
 
 type ReportTabId =
   | "overview"
@@ -92,35 +88,6 @@ const REPORT_TABS: Array<{
   { id: "options", label: "Opsiyon Plani", icon: WalletCards },
   { id: "signals", label: "Firsatlar", icon: Target },
 ];
-
-function readStoredAdminSecret() {
-  if (typeof window === "undefined") {
-    return "";
-  }
-
-  try {
-    return window.localStorage.getItem(REPORT_ADMIN_SECRET_STORAGE_KEY) || "";
-  } catch {
-    return "";
-  }
-}
-
-function writeStoredAdminSecret(value: string) {
-  if (typeof window === "undefined") {
-    return;
-  }
-
-  try {
-    if (!value.trim()) {
-      window.localStorage.removeItem(REPORT_ADMIN_SECRET_STORAGE_KEY);
-      return;
-    }
-
-    window.localStorage.setItem(REPORT_ADMIN_SECRET_STORAGE_KEY, value);
-  } catch {
-    // Ignore storage errors.
-  }
-}
 
 function SectionHeading({
   eyebrow,
@@ -1024,6 +991,7 @@ function OptionDetailPanel({
 }
 
 export default function Home() {
+  const [, setLocation] = useLocation();
   const [reports, setReports] = useState<WeeklyReportRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -1038,15 +1006,7 @@ export default function Home() {
   const [watchlistItems, setWatchlistItems] = useState<WatchlistRecord[]>([]);
   const [watchlistBusyTicker, setWatchlistBusyTicker] = useState("");
 
-  const [adminPanelOpen, setAdminPanelOpen] = useState(false);
   const [adminEmail, setAdminEmail] = useState("hsnksc@gmail.com");
-  const [adminAuthorized, setAdminAuthorized] = useState(false);
-  const [adminSecret, setAdminSecret] = useState(() => readStoredAdminSecret());
-  const [adminBusy, setAdminBusy] = useState(false);
-  const [adminError, setAdminError] = useState("");
-  const [adminReports, setAdminReports] = useState<WeeklyReportRecord[]>([]);
-  const [adminSelectedReportId, setAdminSelectedReportId] = useState("");
-  const [adminDraftReport, setAdminDraftReport] = useState<WeeklyReportRecord | null>(null);
 
   const selectedReport = useMemo(() => {
     if (!reports.length) {
@@ -1072,30 +1032,11 @@ export default function Home() {
     [watchlistItems]
   );
 
-  const buildAdminHeaders = useCallback(
-    (secretOverride?: string): Record<string, string> => {
-      const secret = (secretOverride ?? adminSecret).trim();
-      return secret ? { "x-gistify-admin-secret": secret } : {};
-    },
-    [adminSecret]
-  );
-
-  const syncAdminDraft = useCallback(
-    (nextReports: WeeklyReportRecord[], preferredId?: string) => {
-      const target =
-        nextReports.find(report => report.id === preferredId) || nextReports[0] || null;
-      setAdminSelectedReportId(target?.id || "");
-      setAdminDraftReport(target ? deepCloneReport(target) : null);
-    },
-    []
-  );
-
   const loadViewerReports = useCallback(
-    async (secretOverride?: string) => {
+    async () => {
       const response = await fetch("/api/reports/weekly", {
         credentials: "include",
         cache: "no-store",
-        headers: buildAdminHeaders(secretOverride),
       });
 
       if (!response.ok) {
@@ -1106,32 +1047,10 @@ export default function Home() {
       const nextReports = sortReportsNewestFirst(payload.reports || []);
       setReports(nextReports);
       setAdminEmail(payload.admin?.email || "hsnksc@gmail.com");
-      setAdminAuthorized(Boolean(payload.admin?.authorized));
 
       return payload;
     },
-    [buildAdminHeaders]
-  );
-
-  const loadAdminReports = useCallback(
-    async (secretOverride?: string, preferredId?: string) => {
-      const response = await fetch("/api/admin/reports/weekly", {
-        credentials: "include",
-        cache: "no-store",
-        headers: buildAdminHeaders(secretOverride),
-      });
-
-      if (!response.ok) {
-        throw new Error("Admin raporlari yuklenemedi.");
-      }
-
-      const payload = (await response.json()) as WeeklyReportsApiResponse;
-      const nextReports = sortReportsNewestFirst(payload.reports || []);
-      setAdminReports(nextReports);
-      syncAdminDraft(nextReports, preferredId);
-      setAdminAuthorized(true);
-    },
-    [buildAdminHeaders, syncAdminDraft]
+    []
   );
 
   const loadOpportunityWorkspace = useCallback(async () => {
@@ -1175,19 +1094,12 @@ export default function Home() {
   }, []);
 
   const refreshWorkspace = useCallback(
-    async (secretOverride = "", preferredAdminReportId?: string) => {
+    async () => {
       setLoading(true);
       setError("");
 
       try {
-        const payload = await loadViewerReports(secretOverride);
-        if (payload.admin?.authorized || secretOverride.trim()) {
-          try {
-            await loadAdminReports(secretOverride, preferredAdminReportId);
-          } catch {
-            // Viewer should still render even if admin refresh fails.
-          }
-        }
+        await loadViewerReports();
         await loadOpportunityWorkspace();
       } catch (refreshError) {
         setError(
@@ -1199,11 +1111,11 @@ export default function Home() {
         setLoading(false);
       }
     },
-    [loadAdminReports, loadOpportunityWorkspace, loadViewerReports]
+    [loadOpportunityWorkspace, loadViewerReports]
   );
 
   useEffect(() => {
-    void refreshWorkspace(readStoredAdminSecret());
+    void refreshWorkspace();
   }, [refreshWorkspace]);
 
   useEffect(() => {
@@ -1230,122 +1142,6 @@ export default function Home() {
       setSelectedTicker(selectedReport.content.entries[0].ticker);
     }
   }, [selectedReport, selectedTicker]);
-
-  const handleAdminUnlock = async () => {
-    setAdminBusy(true);
-    setAdminError("");
-
-    try {
-      await loadAdminReports(adminSecret, adminSelectedReportId);
-      writeStoredAdminSecret(adminSecret);
-      await loadViewerReports(adminSecret);
-    } catch (unlockError) {
-      writeStoredAdminSecret("");
-      setAdminAuthorized(false);
-      setAdminError(
-        unlockError instanceof Error
-          ? unlockError.message
-          : "Admin kilidi acilamadi."
-      );
-    } finally {
-      setAdminBusy(false);
-    }
-  };
-
-  const handleSelectAdminReport = (reportId: string) => {
-    setAdminSelectedReportId(reportId);
-    const next = adminReports.find(report => report.id === reportId) || null;
-    setAdminDraftReport(next ? deepCloneReport(next) : null);
-  };
-
-  const handleCreateNextWeek = () => {
-    const nextDraft = createNextWeeklyReportDraft(adminDraftReport || adminReports[0]);
-    setAdminDraftReport(nextDraft);
-    setAdminSelectedReportId(nextDraft.id);
-    setAdminReports(current => sortReportsNewestFirst([nextDraft, ...current]));
-  };
-
-  const handleAddEntry = () => {
-    if (!adminDraftReport) {
-      return;
-    }
-
-    const nextEntry = createEmptyEntry(adminDraftReport.content.entries.length);
-    setAdminDraftReport({
-      ...adminDraftReport,
-      content: {
-        ...adminDraftReport.content,
-        entries: [...adminDraftReport.content.entries, nextEntry],
-      },
-    });
-  };
-
-  const handleRemoveEntry = (entryId: string) => {
-    if (!adminDraftReport) {
-      return;
-    }
-
-    setAdminDraftReport({
-      ...adminDraftReport,
-      content: {
-        ...adminDraftReport.content,
-        entries: adminDraftReport.content.entries.filter(entry => entry.id !== entryId),
-      },
-    });
-  };
-
-  const persistAdminReport = async (status: WeeklyReportRecord["status"]) => {
-    if (!adminDraftReport) {
-      return;
-    }
-
-    setAdminBusy(true);
-    setAdminError("");
-
-    try {
-      const reportToSave: WeeklyReportRecord = {
-        ...adminDraftReport,
-        status,
-        publishedAt:
-          status === "published"
-            ? adminDraftReport.publishedAt || new Date().toISOString()
-            : undefined,
-      };
-
-      const response = await fetch("/api/admin/reports/weekly", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          ...buildAdminHeaders(),
-        },
-        body: JSON.stringify({ report: reportToSave }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Rapor kaydedilemedi.");
-      }
-
-      const payload = (await response.json()) as {
-        report?: WeeklyReportRecord;
-        reports?: WeeklyReportRecord[];
-      };
-      const nextAdminReports = sortReportsNewestFirst(payload.reports || []);
-      setAdminReports(nextAdminReports);
-
-      const savedReport = payload.report || reportToSave;
-      setAdminSelectedReportId(savedReport.id);
-      setAdminDraftReport(deepCloneReport(savedReport));
-      await loadViewerReports();
-      await loadOpportunityWorkspace();
-    } catch (saveError) {
-      setAdminError(
-        saveError instanceof Error ? saveError.message : "Rapor kaydedilemedi."
-      );
-    } finally {
-      setAdminBusy(false);
-    }
-  };
 
   const handleToggleWatchlist = async (opportunity: OpportunityRecord) => {
     const ticker = opportunity.ticker;
@@ -1453,6 +1249,19 @@ export default function Home() {
                     `v2` mantigi artik kalici hale geldi. Admin haftalik analiz
                     yapip yayina aldikca ustte haftalar gorunur, sol tarafta ise
                     secili haftanin sekmeleri acilir.
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center gap-3">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setLocation("/app/admin")}
+                  >
+                    <Shield className="size-4" />
+                    Admin workspace
+                  </Button>
+                  <p className="text-xs text-muted-foreground">
+                    Editor artik ayri sayfada acilir.
                   </p>
                 </div>
               </div>
@@ -1615,43 +1424,6 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="fixed right-6 bottom-6 z-40">
-        <Button
-          type="button"
-          size="lg"
-          className="rounded-full shadow-2xl"
-          onClick={() => setAdminPanelOpen(true)}
-        >
-          <Shield className="size-4" />
-          Admin
-        </Button>
-      </div>
-
-      <WeeklyReportAdminPanel
-        open={adminPanelOpen}
-        onOpenChange={setAdminPanelOpen}
-        adminEmail={adminEmail}
-        adminAuthorized={adminAuthorized}
-        adminSecret={adminSecret}
-        adminBusy={adminBusy}
-        adminError={adminError}
-        reports={adminReports}
-        selectedReportId={adminSelectedReportId}
-        onSelectReport={handleSelectAdminReport}
-        draftReport={adminDraftReport}
-        onDraftReportChange={setAdminDraftReport}
-        onAdminSecretChange={value => {
-          setAdminSecret(value);
-          setAdminError("");
-        }}
-        onUnlock={() => void handleAdminUnlock()}
-        onRefresh={() => void loadAdminReports(undefined, adminSelectedReportId)}
-        onCreateNextWeek={handleCreateNextWeek}
-        onAddEntry={handleAddEntry}
-        onRemoveEntry={handleRemoveEntry}
-        onSaveDraft={() => void persistAdminReport("draft")}
-        onPublish={() => void persistAdminReport("published")}
-      />
     </>
   );
 }

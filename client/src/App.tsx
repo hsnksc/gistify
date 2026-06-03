@@ -30,6 +30,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 
 const Landing = lazy(() => import("./pages/Landing"));
 const Home = lazy(() => import("./pages/Home"));
+const ReportsAdmin = lazy(() => import("./pages/ReportsAdmin"));
 const Scanner = lazy(() => import("./pages/Scanner"));
 const Pay = lazy(() => import("./pages/Pay"));
 const Pricing = lazy(() => import("./pages/Pricing"));
@@ -193,6 +194,7 @@ function Router({
             <Landing language={language} onLanguageChange={onLanguageChange} />
           )}
         </Route>
+        <Route path={"/app/admin"} component={ReportsAdmin} />
         <Route path={"/app"} component={Home} />
         <Route path={"/scanner"}>{() => <Scanner language={language} />}</Route>
         <Route path={"/pricing"}>

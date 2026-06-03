@@ -89,10 +89,12 @@ Onemli dosyalar:
   - header / footer / global navigation
 - `client/src/pages/Home.tsx`
   - haftalik earnings workspace
+- `client/src/pages/ReportsAdmin.tsx`
+  - tam sayfa weekly report admin route'u
 - `client/src/pages/Scanner.tsx`
   - scanner route'u
 - `client/src/components/reports/WeeklyReportAdminPanel.tsx`
-  - admin editor popup'i
+  - admin editorun reusable sayfa icerigi
 - `client/src/lib/weeklyReports.ts`
   - frontend tarafindaki helper'lar
 - `server/index.ts`
@@ -128,6 +130,8 @@ Ana route'lar `client/src/App.tsx` icinde tanimlidir.
 
 - `/app`
   - haftalik earnings / IV crush workspace
+- `/app/admin`
+  - haftalik rapor admin editoru
 - `/scanner`
   - momentum scanner modulu
 
