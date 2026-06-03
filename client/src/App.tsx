@@ -8,6 +8,7 @@ import {
   useState,
 } from "react";
 import {
+  FileText,
   LayoutDashboard,
   LogOut,
   Radar,
@@ -30,6 +31,7 @@ const Landing = lazy(() => import("./pages/Landing"));
 const Home = lazy(() => import("./pages/Home"));
 const ReportsAdmin = lazy(() => import("./pages/ReportsAdmin"));
 const Scanner = lazy(() => import("./pages/Scanner"));
+const DailyReport = lazy(() => import("./pages/DailyReport"));
 const Pay = lazy(() => import("./pages/Pay"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const Terms = lazy(() => import("./pages/Terms"));
@@ -197,6 +199,7 @@ function Router({
         <Route path={"/momentum"}>
           {() => <Scanner language={language} />}
         </Route>
+        <Route path={"/daily-report"} component={DailyReport} />
         <Route path={"/scanner"}>{() => <Scanner language={language} />}</Route>
         <Route path={"/pricing"}>
           {() => (
@@ -241,6 +244,12 @@ function AppNavigation({ language }: { language: AppLanguage }) {
       icon: Radar,
       active:
         location.startsWith("/momentum") || location.startsWith("/scanner"),
+    },
+    {
+      href: "/daily-report",
+      label: language === "en" ? "Daily" : "Daily",
+      icon: FileText,
+      active: location.startsWith("/daily-report"),
     },
   ];
 

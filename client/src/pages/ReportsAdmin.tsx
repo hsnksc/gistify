@@ -2,14 +2,20 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ArrowLeft,
   ChartCandlestick,
+  FileText,
   FileSpreadsheet,
   Radar,
   RefreshCw,
   Shield,
   Sparkles,
 } from "lucide-react";
+import type {
+  DailyReportRecord,
+  DailyReportSourcePackage,
+} from "@shared/dailyReports";
 import type { MomentumReportRecord } from "@shared/momentumReports";
 import type { WeeklyReportRecord } from "@shared/weeklyReports";
+import DailyReportAdminPanel from "@/components/reports/DailyReportAdminPanel";
 import MomentumReportAdminPanel from "@/components/reports/MomentumReportAdminPanel";
 import WeeklyReportAdminPanel from "@/components/reports/WeeklyReportAdminPanel";
 import { Button } from "@/components/ui/button";
@@ -23,9 +29,13 @@ import {
   sortReportsNewestFirst,
 } from "@/lib/weeklyReports";
 import { createEmptyMomentumReportDraft } from "@/lib/momentumReports";
+import {
+  createDailyReportDraftFromSource,
+  sortDailyReportsNewestFirst,
+} from "@/lib/dailyReports";
 import { useLocation } from "wouter";
 
-type WorkspaceKey = "earnings" | "momentum";
+type WorkspaceKey = "earnings" | "momentum" | "daily";
 
 interface WeeklyReportsApiResponse {
   reports?: WeeklyReportRecord[];
@@ -38,6 +48,16 @@ interface WeeklyReportsApiResponse {
 interface MomentumReportsApiResponse {
   reports?: MomentumReportRecord[];
   latestPublished?: MomentumReportRecord | null;
+}
+
+interface DailyReportsApiResponse {
+  reports?: DailyReportRecord[];
+  latestPublished?: DailyReportRecord | null;
+}
+
+interface DailyReportSourcesApiResponse {
+  sources?: DailyReportSourcePackage[];
+  source?: DailyReportSourcePackage | null;
 }
 
 interface WeeklyReportSuggestion {
@@ -212,6 +232,18 @@ export default function ReportsAdmin() {
   const [selectedMomentumReportId, setSelectedMomentumReportId] = useState("");
   const [draftMomentumReport, setDraftMomentumReport] =
     useState<MomentumReportRecord | null>(null);
+  const [dailySourcePackages, setDailySourcePackages] = useState<
+    DailyReportSourcePackage[]
+  >([]);
+  const [selectedDailySourceId, setSelectedDailySourceId] = useState("");
+  const [selectedDailySource, setSelectedDailySource] =
+    useState<DailyReportSourcePackage | null>(null);
+  const [dailyReports, setDailyReports] = useState<DailyReportRecord[]>([]);
+  const [latestPublishedDaily, setLatestPublishedDaily] =
+    useState<DailyReportRecord | null>(null);
+  const [selectedDailyReportId, setSelectedDailyReportId] = useState("");
+  const [draftDailyReport, setDraftDailyReport] =
+    useState<DailyReportRecord | null>(null);
 
   const buildAdminHeaders = useCallback(
     (secretOverride?: string): Record<string, string> => {
@@ -237,6 +269,16 @@ export default function ReportsAdmin() {
         nextReports.find(report => report.id === preferredId) || nextReports[0] || null;
       setSelectedMomentumReportId(target?.id || "");
       setDraftMomentumReport(target ? JSON.parse(JSON.stringify(target)) : null);
+    },
+    []
+  );
+
+  const syncDailyDraft = useCallback(
+    (nextReports: DailyReportRecord[], preferredId?: string) => {
+      const target =
+        nextReports.find(report => report.id === preferredId) || nextReports[0] || null;
+      setSelectedDailyReportId(target?.id || "");
+      setDraftDailyReport(target ? JSON.parse(JSON.stringify(target)) : null);
     },
     []
   );
@@ -343,27 +385,111 @@ export default function ReportsAdmin() {
     [buildAdminHeaders, syncMomentumDraft]
   );
 
+  const loadDailyReportSources = useCallback(
+    async (secretOverride?: string) => {
+      const response = await fetch("/api/admin/daily-report-sources", {
+        credentials: "include",
+        cache: "no-store",
+        headers: buildAdminHeaders(secretOverride),
+      });
+
+      if (!response.ok) {
+        throw new Error("Daily report source paketleri yuklenemedi.");
+      }
+
+      const payload = (await response.json()) as DailyReportSourcesApiResponse;
+      const nextSources = [...(payload.sources || [])].sort((left, right) =>
+        right.reportDate.localeCompare(left.reportDate)
+      );
+      setDailySourcePackages(nextSources);
+      setSelectedDailySourceId(current =>
+        current && nextSources.some(source => source.id === current)
+          ? current
+          : nextSources[0]?.id || ""
+      );
+    },
+    [buildAdminHeaders]
+  );
+
+  const loadDailyReportSourceDetail = useCallback(
+    async (sourceId: string, secretOverride?: string) => {
+      if (!sourceId) {
+        setSelectedDailySource(null);
+        return;
+      }
+
+      const response = await fetch(
+        `/api/admin/daily-report-sources/${encodeURIComponent(sourceId)}`,
+        {
+          credentials: "include",
+          cache: "no-store",
+          headers: buildAdminHeaders(secretOverride),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Daily report source detayi yuklenemedi.");
+      }
+
+      const payload = (await response.json()) as DailyReportSourcesApiResponse;
+      setSelectedDailySource(payload.source || null);
+    },
+    [buildAdminHeaders]
+  );
+
+  const loadDailyReports = useCallback(
+    async (secretOverride?: string, preferredId?: string) => {
+      const response = await fetch("/api/admin/daily-reports", {
+        credentials: "include",
+        cache: "no-store",
+        headers: buildAdminHeaders(secretOverride),
+      });
+
+      if (!response.ok) {
+        throw new Error("Daily report kayitlari yuklenemedi.");
+      }
+
+      const payload = (await response.json()) as DailyReportsApiResponse;
+      const nextReports = sortDailyReportsNewestFirst(payload.reports || []);
+      setDailyReports(nextReports);
+      setLatestPublishedDaily(payload.latestPublished || null);
+      syncDailyDraft(nextReports, preferredId);
+    },
+    [buildAdminHeaders, syncDailyDraft]
+  );
+
   const loadAuthorizedWorkspace = useCallback(
     async (
       secretOverride?: string,
       preferredWeeklyId?: string,
-      preferredMomentumId?: string
+      preferredMomentumId?: string,
+      preferredDailyId?: string
     ) => {
       await Promise.all([
         loadWorkspaceStatus(secretOverride),
         loadAdminReports(secretOverride, preferredWeeklyId),
         loadSuggestions(secretOverride),
         loadMomentumReports(secretOverride, preferredMomentumId),
+        loadDailyReportSources(secretOverride),
+        loadDailyReports(secretOverride, preferredDailyId),
       ]);
     },
-    [loadAdminReports, loadMomentumReports, loadSuggestions, loadWorkspaceStatus]
+    [
+      loadAdminReports,
+      loadDailyReportSources,
+      loadDailyReports,
+      loadMomentumReports,
+      loadSuggestions,
+      loadWorkspaceStatus,
+    ]
   );
 
   const refreshPage = useCallback(
     async (
       secretOverride = "",
       preferredWeeklyId?: string,
-      preferredMomentumId?: string
+      preferredMomentumId?: string,
+      preferredDailyId?: string
     ) => {
       setLoading(true);
       setPageError("");
@@ -379,7 +505,8 @@ export default function ReportsAdmin() {
             await loadAuthorizedWorkspace(
               secretOverride,
               preferredWeeklyId,
-              preferredMomentumId
+              preferredMomentumId,
+              preferredDailyId
             );
           } catch (error) {
             setAdminAuthorized(false);
@@ -409,6 +536,22 @@ export default function ReportsAdmin() {
     void refreshPage(readStoredAdminSecret());
   }, [refreshPage]);
 
+  useEffect(() => {
+    if (!adminAuthorized || !selectedDailySourceId) {
+      if (!selectedDailySourceId) {
+        setSelectedDailySource(null);
+      }
+      return;
+    }
+
+    void loadDailyReportSourceDetail(selectedDailySourceId, adminSecret);
+  }, [
+    adminAuthorized,
+    adminSecret,
+    loadDailyReportSourceDetail,
+    selectedDailySourceId,
+  ]);
+
   const handleUnlock = async () => {
     setAdminBusy(true);
     setAdminError("");
@@ -424,7 +567,8 @@ export default function ReportsAdmin() {
       await loadAuthorizedWorkspace(
         adminSecret,
         selectedReportId,
-        selectedMomentumReportId
+        selectedMomentumReportId,
+        selectedDailyReportId
       );
       writeStoredAdminSecret(adminSecret);
       setAdminAuthorized(true);
@@ -453,6 +597,13 @@ export default function ReportsAdmin() {
     setLatestPublishedMomentum(null);
     setSelectedMomentumReportId("");
     setDraftMomentumReport(null);
+    setDailySourcePackages([]);
+    setSelectedDailySourceId("");
+    setSelectedDailySource(null);
+    setDailyReports([]);
+    setLatestPublishedDaily(null);
+    setSelectedDailyReportId("");
+    setDraftDailyReport(null);
   };
 
   const handleSelectReport = (reportId: string) => {
@@ -480,6 +631,35 @@ export default function ReportsAdmin() {
     setSelectedMomentumReportId(nextDraft.id);
     setMomentumReports(current =>
       sortMomentumReportsNewestFirst([
+        nextDraft,
+        ...current.filter(report => report.id !== nextDraft.id),
+      ])
+    );
+  };
+
+  const handleSelectDailyReport = (reportId: string) => {
+    setSelectedDailyReportId(reportId);
+    const next = dailyReports.find(report => report.id === reportId) || null;
+    setDraftDailyReport(next ? JSON.parse(JSON.stringify(next)) : null);
+  };
+
+  const handleCreateDailyDraftFromSource = () => {
+    if (!selectedDailySource) {
+      return;
+    }
+
+    const existing =
+      dailyReports.find(report => report.sourceFolder === selectedDailySource.folderName) ||
+      null;
+    const nextDraft = createDailyReportDraftFromSource(
+      selectedDailySource,
+      adminEmail,
+      existing
+    );
+    setDraftDailyReport(nextDraft);
+    setSelectedDailyReportId(nextDraft.id);
+    setDailyReports(current =>
+      sortDailyReportsNewestFirst([
         nextDraft,
         ...current.filter(report => report.id !== nextDraft.id),
       ])
@@ -625,6 +805,59 @@ export default function ReportsAdmin() {
     }
   };
 
+  const persistDailyReport = async (
+    status: DailyReportRecord["status"],
+    sourceReport = draftDailyReport
+  ) => {
+    if (!sourceReport) {
+      return;
+    }
+
+    setAdminBusy(true);
+    setAdminError("");
+
+    try {
+      const reportToSave: DailyReportRecord = {
+        ...sourceReport,
+        status,
+        publishedAt:
+          status === "published"
+            ? sourceReport.publishedAt || new Date().toISOString()
+            : undefined,
+      };
+
+      const response = await fetch("/api/admin/daily-reports", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          ...buildAdminHeaders(),
+        },
+        body: JSON.stringify({ report: reportToSave }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Daily report kaydedilemedi.");
+      }
+
+      const payload = (await response.json()) as DailyReportsApiResponse & {
+        report?: DailyReportRecord;
+      };
+      const nextReports = sortDailyReportsNewestFirst(payload.reports || []);
+      const savedReport = payload.report || reportToSave;
+      setDailyReports(nextReports);
+      setLatestPublishedDaily(payload.latestPublished || null);
+      setSelectedDailyReportId(savedReport.id);
+      setDraftDailyReport(JSON.parse(JSON.stringify(savedReport)));
+    } catch (error) {
+      setAdminError(
+        error instanceof Error ? error.message : "Daily report kaydedilemedi."
+      );
+    } finally {
+      setAdminBusy(false);
+    }
+  };
+
   const earningsStats = useMemo(() => {
     const published = reports.filter(report => report.status === "published");
     const totalEntries = reports.reduce(
@@ -656,6 +889,19 @@ export default function ReportsAdmin() {
         : "-",
     };
   }, [latestPublishedMomentum, momentumReports]);
+
+  const dailyStats = useMemo(() => {
+    const published = dailyReports.filter(report => report.status === "published");
+
+    return {
+      totalReports: dailyReports.length,
+      publishedReports: published.length,
+      sourcePackages: dailySourcePackages.length,
+      latestDate: latestPublishedDaily?.reportDate
+        ? formatIsoDate(latestPublishedDaily.reportDate)
+        : "-",
+    };
+  }, [dailySourcePackages, dailyReports, latestPublishedDaily]);
 
   if (loading) {
     return (
@@ -722,7 +968,7 @@ export default function ReportsAdmin() {
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              {(["earnings", "momentum"] as WorkspaceKey[]).map(workspace => (
+              {(["earnings", "momentum", "daily"] as WorkspaceKey[]).map(workspace => (
                 <Button
                   key={workspace}
                   type="button"
@@ -731,12 +977,16 @@ export default function ReportsAdmin() {
                 >
                   {workspace === "earnings" ? (
                     <FileSpreadsheet className="size-4" />
-                  ) : (
+                  ) : workspace === "momentum" ? (
                     <Radar className="size-4" />
+                  ) : (
+                    <FileText className="size-4" />
                   )}
                   {workspace === "earnings"
                     ? "Earnings Workspace"
-                    : "Momentum Workspace"}
+                    : workspace === "momentum"
+                      ? "Momentum Workspace"
+                      : "Daily Report"}
                 </Button>
               ))}
             </div>
@@ -767,7 +1017,7 @@ export default function ReportsAdmin() {
                 description="Editor acilisinda ustte gorunen hafta"
               />
             </>
-          ) : (
+          ) : selectedWorkspace === "momentum" ? (
             <>
               <SectionCard
                 title="Toplam snapshot"
@@ -788,6 +1038,29 @@ export default function ReportsAdmin() {
                 title="Son yayin"
                 value={momentumStats.latestDate}
                 description="Latest published momentum snapshot"
+              />
+            </>
+          ) : (
+            <>
+              <SectionCard
+                title="Toplam daily"
+                value={String(dailyStats.totalReports)}
+                description="Kayitli daily report yayinlari"
+              />
+              <SectionCard
+                title="Published"
+                value={String(dailyStats.publishedReports)}
+                description="Canliya alinmis gunluk raporlar"
+              />
+              <SectionCard
+                title="Source package"
+                value={String(dailyStats.sourcePackages)}
+                description="dailyreport klasorunde hazir paketler"
+              />
+              <SectionCard
+                title="Son yayin"
+                value={dailyStats.latestDate}
+                description="Latest published daily report"
               />
             </>
           )}
@@ -859,6 +1132,10 @@ export default function ReportsAdmin() {
                     `VITE_SCANNER_MASSIVE_API_KEY`, `VITE_SCANNER_TWELVEDATA_API_KEY`,
                     `VITE_SCANNER_ALPHAVANTAGE_API_KEY`: momentum scanner fallback'i
                     icin opsiyonel
+                  </p>
+                  <p>
+                    Daily report icin ek API key gerekmiyor. Yeni paketleri sadece
+                    `dailyreport/DDMMYYYY` altina birakman yeterli.
                   </p>
                 </div>
               </div>
@@ -1210,6 +1487,113 @@ export default function ReportsAdmin() {
                 }
                 onSaveDraft={() => void persistMomentumReport("draft")}
                 onPublish={() => void persistMomentumReport("published")}
+              />
+            </section>
+          </>
+        ) : null}
+
+        {adminAuthorized && selectedWorkspace === "daily" ? (
+          <>
+            <section className="grid gap-4 lg:grid-cols-3">
+              <ProviderCard
+                title="Source root"
+                provider="dailyreport/"
+                configured={dailySourcePackages.length > 0}
+                mode={dailySourcePackages.length > 0 ? "live" : "empty"}
+                note="Bu workspace yerel `dailyreport/<tarih>` klasorlerinden paket okur. Sen yeni gunluk paketi bu path'e biraktikca admin preview edip publish eder."
+              />
+              <ProviderCard
+                title="Package count"
+                provider="local filesystem"
+                configured={dailySourcePackages.length > 0}
+                mode={`${dailySourcePackages.length} package`}
+                note="Her klasor tek bir gunluk source package olarak algilanir."
+              />
+              <ProviderCard
+                title="Latest published"
+                provider="daily report viewer"
+                configured={Boolean(latestPublishedDaily)}
+                mode={latestPublishedDaily ? "published" : "draft-only"}
+                note={
+                  latestPublishedDaily
+                    ? `${latestPublishedDaily.title} son canli gunluk rapor.`
+                    : "Henuz yayinlanmis daily report yok."
+                }
+              />
+            </section>
+
+            <section className="rounded-[2rem] border border-border bg-card/95 p-6 shadow-2xl">
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div className="space-y-2">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                    1. Source Packages
+                  </p>
+                  <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+                    Klasore birakilan gunluk paketler
+                  </h2>
+                  <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
+                    Yeni klasoru `dailyreport/` altina birakman yeterli. Sistem paketi
+                    listeler, admin preview eder ve tek tikla daily report draft'i olusturur.
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => void loadDailyReportSources(adminSecret)}
+                    disabled={adminBusy}
+                  >
+                    <RefreshCw className="size-4" />
+                    Source'lari yenile
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => void loadDailyReports(adminSecret, selectedDailyReportId)}
+                    disabled={adminBusy}
+                  >
+                    <RefreshCw className="size-4" />
+                    Kayitlari yenile
+                  </Button>
+                </div>
+              </div>
+            </section>
+
+            <section className="space-y-3">
+              <div className="space-y-1">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                  2. Preview ve Publish
+                </p>
+                <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+                  Daily report publish hatti
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  Source package'i sec, sistemin cikardigi taslagi kontrol et ve
+                  yayina al. Istersen baslik ve executive summary duzeltmesi yap.
+                </p>
+              </div>
+
+              <DailyReportAdminPanel
+                adminAuthorized={adminAuthorized}
+                adminBusy={adminBusy}
+                adminError={adminError}
+                sources={dailySourcePackages}
+                selectedSourceId={selectedDailySourceId}
+                selectedSource={selectedDailySource}
+                onSelectSource={setSelectedDailySourceId}
+                onRefreshSources={() => void loadDailyReportSources(adminSecret)}
+                onCreateDraftFromSource={handleCreateDailyDraftFromSource}
+                reports={dailyReports}
+                selectedReportId={selectedDailyReportId}
+                draftReport={draftDailyReport}
+                onSelectReport={handleSelectDailyReport}
+                onDraftReportChange={setDraftDailyReport}
+                onRefreshReports={() =>
+                  void loadDailyReports(adminSecret, selectedDailyReportId)
+                }
+                onSaveDraft={() => void persistDailyReport("draft")}
+                onPublish={() => void persistDailyReport("published")}
               />
             </section>
           </>

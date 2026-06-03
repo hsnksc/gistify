@@ -11,6 +11,10 @@ import type {
   WatchlistRecord,
 } from "../shared/opportunities";
 import type {
+  DailyReportRecord,
+  DailyReportStatus,
+} from "../shared/dailyReports";
+import type {
   MomentumReportRecord,
   MomentumReportStatus,
 } from "../shared/momentumReports";
@@ -195,6 +199,20 @@ interface MomentumReportDbRow {
   report_date: string;
   status: MomentumReportStatus;
   author_email: string;
+  created_at: string;
+  updated_at: string;
+  published_at: string | null;
+  content_json: string;
+}
+
+interface DailyReportDbRow {
+  id: string;
+  slug: string;
+  title: string;
+  report_date: string;
+  status: DailyReportStatus;
+  author_email: string;
+  source_folder: string;
   created_at: string;
   updated_at: string;
   published_at: string | null;
@@ -391,6 +409,22 @@ function mapMomentumReportRow(row: MomentumReportDbRow): MomentumReportRecord {
   };
 }
 
+function mapDailyReportRow(row: DailyReportDbRow): DailyReportRecord {
+  return {
+    id: row.id,
+    slug: row.slug,
+    title: row.title,
+    reportDate: row.report_date,
+    status: row.status,
+    authorEmail: row.author_email,
+    sourceFolder: row.source_folder,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+    publishedAt: row.published_at || undefined,
+    content: JSON.parse(row.content_json) as DailyReportRecord["content"],
+  };
+}
+
 export function createBillingStore() {
   const dbPath = getDatabasePath();
   fs.mkdirSync(path.dirname(dbPath), { recursive: true });
@@ -535,6 +569,20 @@ export function createBillingStore() {
       content_json TEXT NOT NULL
     );
 
+    CREATE TABLE IF NOT EXISTS daily_reports (
+      id TEXT PRIMARY KEY,
+      slug TEXT NOT NULL UNIQUE,
+      title TEXT NOT NULL,
+      report_date TEXT NOT NULL,
+      status TEXT NOT NULL,
+      author_email TEXT NOT NULL,
+      source_folder TEXT NOT NULL,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL,
+      published_at TEXT,
+      content_json TEXT NOT NULL
+    );
+
     CREATE INDEX IF NOT EXISTS idx_auth_sessions_user_id
       ON auth_sessions(user_id);
 
@@ -561,6 +609,9 @@ export function createBillingStore() {
 
     CREATE INDEX IF NOT EXISTS idx_momentum_reports_status_date
       ON momentum_reports(status, report_date DESC);
+
+    CREATE INDEX IF NOT EXISTS idx_daily_reports_status_date
+      ON daily_reports(status, report_date DESC);
   `);
 
   const subscriptionTableInfo = db.prepare("PRAGMA table_info(billing_subscriptions)").all() as
@@ -1178,6 +1229,87 @@ export function createBillingStore() {
       content_json = excluded.content_json
   `);
 
+  const listDailyReportsStmt = db.prepare(`
+    SELECT
+      id,
+      slug,
+      title,
+      report_date,
+      status,
+      author_email,
+      source_folder,
+      created_at,
+      updated_at,
+      published_at,
+      content_json
+    FROM daily_reports
+    ORDER BY report_date DESC, updated_at DESC
+  `);
+
+  const getDailyReportByIdStmt = db.prepare(`
+    SELECT
+      id,
+      slug,
+      title,
+      report_date,
+      status,
+      author_email,
+      source_folder,
+      created_at,
+      updated_at,
+      published_at,
+      content_json
+    FROM daily_reports
+    WHERE id = ?
+    LIMIT 1
+  `);
+
+  const getLatestPublishedDailyReportStmt = db.prepare(`
+    SELECT
+      id,
+      slug,
+      title,
+      report_date,
+      status,
+      author_email,
+      source_folder,
+      created_at,
+      updated_at,
+      published_at,
+      content_json
+    FROM daily_reports
+    WHERE status = 'published'
+    ORDER BY report_date DESC, published_at DESC, updated_at DESC
+    LIMIT 1
+  `);
+
+  const upsertDailyReportStmt = db.prepare(`
+    INSERT INTO daily_reports (
+      id,
+      slug,
+      title,
+      report_date,
+      status,
+      author_email,
+      source_folder,
+      created_at,
+      updated_at,
+      published_at,
+      content_json
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ON CONFLICT(id) DO UPDATE SET
+      slug = excluded.slug,
+      title = excluded.title,
+      report_date = excluded.report_date,
+      status = excluded.status,
+      author_email = excluded.author_email,
+      source_folder = excluded.source_folder,
+      created_at = excluded.created_at,
+      updated_at = excluded.updated_at,
+      published_at = excluded.published_at,
+      content_json = excluded.content_json
+  `);
+
   return {
     dbPath,
     pruneExpiredSessions(now = Date.now()) {
@@ -1402,6 +1534,37 @@ export function createBillingStore() {
         record.reportDate,
         record.status,
         record.authorEmail,
+        record.createdAt,
+        record.updatedAt,
+        record.publishedAt || null,
+        JSON.stringify(record.content)
+      );
+    },
+    listDailyReports() {
+      const rows = listDailyReportsStmt.all() as unknown as DailyReportDbRow[];
+      return rows.map(mapDailyReportRow);
+    },
+    getDailyReportById(reportId: string) {
+      const row = getDailyReportByIdStmt.get(reportId) as
+        | DailyReportDbRow
+        | undefined;
+      return row ? mapDailyReportRow(row) : null;
+    },
+    getLatestPublishedDailyReport() {
+      const row = getLatestPublishedDailyReportStmt.get() as
+        | DailyReportDbRow
+        | undefined;
+      return row ? mapDailyReportRow(row) : null;
+    },
+    upsertDailyReport(record: DailyReportRecord) {
+      upsertDailyReportStmt.run(
+        record.id,
+        record.slug,
+        record.title,
+        record.reportDate,
+        record.status,
+        record.authorEmail,
+        record.sourceFolder,
         record.createdAt,
         record.updatedAt,
         record.publishedAt || null,

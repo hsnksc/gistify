@@ -11,6 +11,10 @@ import type {
   WatchlistRecord,
 } from "../shared/opportunities";
 import type {
+  DailyReportContent,
+  DailyReportRecord,
+} from "../shared/dailyReports";
+import type {
   MomentumReportContent,
   MomentumReportEntry,
   MomentumReportRecord,
@@ -43,6 +47,12 @@ import {
   getAdminMarketDataStatus,
   isFmpConfigured,
 } from "./adminMarketData";
+import {
+  buildDailyReportRecordFromSource,
+  getDailyReportRootPath,
+  getDailyReportSourcePackage,
+  listDailyReportSourcePackages,
+} from "./dailyReportSources";
 
 type MembershipPlan = "guest" | "member" | "pro";
 type AppAccessMode = "managed" | "public";
@@ -100,6 +110,10 @@ interface WeeklyReportUpsertRequestBody {
 }
 
 interface MomentumReportUpsertRequestBody {
+  report?: unknown;
+}
+
+interface DailyReportUpsertRequestBody {
   report?: unknown;
 }
 
@@ -1024,6 +1038,97 @@ function normalizeMomentumReportRecordInput(
   } satisfies MomentumReportRecord;
 }
 
+function normalizeDailyReportContent(value: unknown, title: string) {
+  const source =
+    value && typeof value === "object"
+      ? (value as Partial<Record<keyof DailyReportContent, unknown>>)
+      : {};
+
+  const executiveSummary = Array.isArray(source.executiveSummary)
+    ? source.executiveSummary
+        .filter((item): item is string => typeof item === "string")
+        .map(item => item.trim())
+        .filter(Boolean)
+    : [];
+  const sectionFiles = Array.isArray(source.sectionFiles)
+    ? source.sectionFiles
+        .filter((item): item is string => typeof item === "string")
+        .map(item => item.trim())
+        .filter(Boolean)
+    : [];
+  const figureFiles = Array.isArray(source.figureFiles)
+    ? source.figureFiles
+        .filter((item): item is string => typeof item === "string")
+        .map(item => item.trim())
+        .filter(Boolean)
+    : [];
+  const tickerUniverse = Array.isArray(source.tickerUniverse)
+    ? source.tickerUniverse
+        .filter((item): item is string => typeof item === "string")
+        .map(item => item.trim().toUpperCase())
+        .filter(Boolean)
+    : [];
+
+  return {
+    headline:
+      normalizeString(source.headline) || `${title} icin yayinlanmis daily report`,
+    author: normalizeString(source.author) || undefined,
+    coverage: normalizeString(source.coverage) || undefined,
+    methodology: normalizeString(source.methodology) || undefined,
+    executiveSummary,
+    markdown: normalizeString(source.markdown),
+    sectionFiles,
+    figureFiles,
+    tickerUniverse,
+    researchFileCount: normalizeNumber(source.researchFileCount, 0),
+  } satisfies DailyReportContent;
+}
+
+function normalizeDailyReportRecordInput(
+  value: unknown,
+  previousRecord?: DailyReportRecord | null
+) {
+  const nowIso = new Date().toISOString();
+  const source =
+    value && typeof value === "object"
+      ? (value as Partial<Record<keyof DailyReportRecord, unknown>>)
+      : {};
+  const title =
+    normalizeString(source.title) || previousRecord?.title || "Daily Report";
+  const status = isValidEnumValue(
+    normalizeString(source.status),
+    ["draft", "published"] as const,
+    previousRecord?.status || "draft"
+  ) as DailyReportRecord["status"];
+
+  return {
+    id: normalizeString(source.id) || previousRecord?.id || crypto.randomUUID(),
+    slug:
+      normalizeString(source.slug) ||
+      previousRecord?.slug ||
+      slugify(title),
+    title,
+    reportDate: normalizeIsoDate(
+      source.reportDate,
+      previousRecord?.reportDate || nowIso.slice(0, 10)
+    ),
+    status,
+    authorEmail: previousRecord?.authorEmail || getWeeklyReportAdminEmail(),
+    sourceFolder:
+      normalizeString(source.sourceFolder) || previousRecord?.sourceFolder || "",
+    createdAt: previousRecord?.createdAt || nowIso,
+    updatedAt: nowIso,
+    publishedAt:
+      status === "published"
+        ? normalizeIsoDateTime(
+            source.publishedAt,
+            previousRecord?.publishedAt || nowIso
+          )
+        : undefined,
+    content: normalizeDailyReportContent(source.content, title),
+  } satisfies DailyReportRecord;
+}
+
 function getReportAdminRequestSecret(req: express.Request) {
   return normalizeString(req.header("x-gistify-admin-secret"));
 }
@@ -1086,6 +1191,14 @@ function getViewerWeeklyReports(referenceDate = new Date()) {
       Date.parse(`${right.weekStart}T00:00:00Z`) -
       Date.parse(`${left.weekStart}T00:00:00Z`)
   );
+}
+
+function getViewerDailyReports(limit = 10) {
+  return billingStore
+    .listDailyReports()
+    .filter(report => report.status === "published")
+    .sort((left, right) => right.reportDate.localeCompare(left.reportDate))
+    .slice(0, limit);
 }
 
 function getRequestActor(req: express.Request) {
@@ -2120,6 +2233,14 @@ async function startServer() {
       },
     })
   );
+  app.use(
+    "/api/daily-report/assets",
+    express.static(getDailyReportRootPath(), {
+      fallthrough: false,
+      index: false,
+      redirect: false,
+    })
+  );
 
   app.get("/api/health", (_req, res) => {
     res.status(200).json({ ok: true });
@@ -2616,6 +2737,100 @@ async function startServer() {
         run: failedRecord,
       });
     }
+  });
+
+  app.get("/api/daily-reports", (_req, res) => {
+    setPrivateNoStore(res);
+    res.status(200).json({
+      reports: getViewerDailyReports(),
+    });
+  });
+
+  app.get("/api/daily-reports/latest", (_req, res) => {
+    setPrivateNoStore(res);
+    res.status(200).json({
+      report: billingStore.getLatestPublishedDailyReport(),
+    });
+  });
+
+  app.get("/api/admin/daily-report-sources", (req, res) => {
+    setPrivateNoStore(res);
+    if (!requireWeeklyReportAdmin(req, res)) {
+      return;
+    }
+
+    res.status(200).json({
+      sources: listDailyReportSourcePackages().map(source => ({
+        id: source.id,
+        folderName: source.folderName,
+        reportDate: source.reportDate,
+        title: source.title,
+        headline: source.headline,
+        author: source.author,
+        coverage: source.coverage,
+        methodology: source.methodology,
+        executiveSummary: source.executiveSummary,
+        sectionFiles: source.sectionFiles,
+        figureFiles: source.figureFiles,
+        tickerUniverse: source.tickerUniverse,
+        researchFileCount: source.researchFileCount,
+        updatedAt: source.updatedAt,
+      })),
+    });
+  });
+
+  app.get("/api/admin/daily-report-sources/:folderName", (req, res) => {
+    setPrivateNoStore(res);
+    if (!requireWeeklyReportAdmin(req, res)) {
+      return;
+    }
+
+    const folderName = normalizeString(req.params.folderName);
+    const source = getDailyReportSourcePackage(folderName);
+    if (!source) {
+      res.status(404).json({ error: "Daily report source bulunamadi." });
+      return;
+    }
+
+    res.status(200).json({ source });
+  });
+
+  app.get("/api/admin/daily-reports", (req, res) => {
+    setPrivateNoStore(res);
+    if (!requireWeeklyReportAdmin(req, res)) {
+      return;
+    }
+
+    res.status(200).json({
+      reports: billingStore.listDailyReports(),
+      latestPublished: billingStore.getLatestPublishedDailyReport(),
+    });
+  });
+
+  app.post("/api/admin/daily-reports", (req, res) => {
+    setPrivateNoStore(res);
+    if (!requireWeeklyReportAdmin(req, res)) {
+      return;
+    }
+
+    const body = (req.body ?? {}) as DailyReportUpsertRequestBody;
+    const rawReport = body.report;
+    const draftSource =
+      rawReport && typeof rawReport === "object"
+        ? (rawReport as Partial<Record<keyof DailyReportRecord, unknown>>)
+        : undefined;
+    const reportId = draftSource ? normalizeString(draftSource.id) : "";
+    const previousRecord = reportId
+      ? billingStore.getDailyReportById(reportId)
+      : null;
+    const report = normalizeDailyReportRecordInput(rawReport, previousRecord);
+
+    billingStore.upsertDailyReport(report);
+    res.status(previousRecord ? 200 : 201).json({
+      report,
+      reports: billingStore.listDailyReports(),
+      latestPublished: billingStore.getLatestPublishedDailyReport(),
+    });
   });
 
   app.get("/api/reports/weekly", (req, res) => {
