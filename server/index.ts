@@ -11,6 +11,11 @@ import type {
   WatchlistRecord,
 } from "../shared/opportunities";
 import type {
+  MomentumReportContent,
+  MomentumReportEntry,
+  MomentumReportRecord,
+} from "../shared/momentumReports";
+import type {
   WeeklyDirectionalBias,
   WeeklyEarningsTime,
   WeeklyIvCrushPotential,
@@ -33,6 +38,11 @@ import {
   buildInitialWeeklyReports,
   buildSystemSuggestedWeeklyReports,
 } from "./weeklyReportSeeds";
+import {
+  buildLiveWeeklyReportSuggestions,
+  getAdminMarketDataStatus,
+  isFmpConfigured,
+} from "./adminMarketData";
 
 type MembershipPlan = "guest" | "member" | "pro";
 type AppAccessMode = "managed" | "public";
@@ -86,6 +96,10 @@ interface TranslationRequestBody {
 }
 
 interface WeeklyReportUpsertRequestBody {
+  report?: unknown;
+}
+
+interface MomentumReportUpsertRequestBody {
   report?: unknown;
 }
 
@@ -905,6 +919,109 @@ function normalizeWeeklyReportRecordInput(
     publishedAt,
     content,
   } satisfies WeeklyReportRecord;
+}
+
+function normalizeMomentumReportEntry(
+  value: unknown,
+  index: number
+) {
+  const source =
+    value && typeof value === "object"
+      ? (value as Partial<Record<keyof MomentumReportEntry, unknown>>)
+      : {};
+  const ticker = normalizeString(source.ticker).toUpperCase() || `STK${index + 1}`;
+
+  return {
+    id:
+      normalizeString(source.id) || `${ticker.toLowerCase()}-${index + 1}`,
+    ticker,
+    name: normalizeString(source.name) || ticker,
+    sector: normalizeString(source.sector) || "Technology",
+    currentPrice: normalizeNumber(source.currentPrice, 0),
+    priceChangePct: normalizeNumber(source.priceChangePct, 0),
+    volumeRatio: normalizeNumber(source.volumeRatio, 1),
+    rsi: normalizeNumber(source.rsi, 50),
+    score: normalizeNumber(source.score, 50),
+    signal: normalizeString(source.signal) || "NEUTRAL",
+    confidenceScore: normalizeNumber(source.confidenceScore, 0),
+    targetPrice: normalizeNumber(source.targetPrice, 0) || undefined,
+    catalystSummary: normalizeString(source.catalystSummary) || undefined,
+    adminNote: normalizeString(source.adminNote) || undefined,
+  } satisfies MomentumReportEntry;
+}
+
+function normalizeMomentumReportContent(value: unknown, title: string) {
+  const source =
+    value && typeof value === "object"
+      ? (value as Partial<Record<keyof MomentumReportContent, unknown>>)
+      : {};
+  const rawEntries = Array.isArray(source.featuredEntries)
+    ? source.featuredEntries
+    : [];
+
+  return {
+    headline:
+      normalizeString(source.headline) ||
+      `${title} icin yayinlanmis momentum snapshot`,
+    summary:
+      normalizeString(source.summary) ||
+      "Momentum workspace yayina alinmadi. Admin ozet notlari girecek.",
+    marketContext:
+      normalizeString(source.marketContext) ||
+      "Piyasa baglami admin tarafindan doldurulacak.",
+    executionNotes:
+      normalizeString(source.executionNotes) ||
+      "Execution notlari admin tarafindan doldurulacak.",
+    scannerUniverse:
+      normalizeString(source.scannerUniverse) || "Default liquid universe",
+    scanTime: normalizeString(source.scanTime) || undefined,
+    featuredEntries: rawEntries
+      .map((entry, index) => normalizeMomentumReportEntry(entry, index))
+      .sort((left, right) => right.score - left.score),
+  } satisfies MomentumReportContent;
+}
+
+function normalizeMomentumReportRecordInput(
+  value: unknown,
+  previousRecord?: MomentumReportRecord | null
+) {
+  const nowIso = new Date().toISOString();
+  const source =
+    value && typeof value === "object"
+      ? (value as Partial<Record<keyof MomentumReportRecord, unknown>>)
+      : {};
+  const title =
+    normalizeString(source.title) || previousRecord?.title || "Momentum Snapshot";
+  const status = isValidEnumValue(
+    normalizeString(source.status),
+    ["draft", "published"] as const,
+    previousRecord?.status || "draft"
+  ) as MomentumReportRecord["status"];
+
+  return {
+    id: normalizeString(source.id) || previousRecord?.id || crypto.randomUUID(),
+    slug:
+      normalizeString(source.slug) ||
+      previousRecord?.slug ||
+      slugify(title),
+    title,
+    reportDate: normalizeIsoDate(
+      source.reportDate,
+      previousRecord?.reportDate || nowIso.slice(0, 10)
+    ),
+    status,
+    authorEmail: previousRecord?.authorEmail || getWeeklyReportAdminEmail(),
+    createdAt: previousRecord?.createdAt || nowIso,
+    updatedAt: nowIso,
+    publishedAt:
+      status === "published"
+        ? normalizeIsoDateTime(
+            source.publishedAt,
+            previousRecord?.publishedAt || nowIso
+          )
+        : undefined,
+    content: normalizeMomentumReportContent(source.content, title),
+  } satisfies MomentumReportRecord;
 }
 
 function getReportAdminRequestSecret(req: express.Request) {
@@ -2527,16 +2644,50 @@ async function startServer() {
     });
   });
 
-  app.get("/api/admin/reports/weekly/suggestions", (req, res) => {
+  app.get("/api/admin/workspace/status", (req, res) => {
     setPrivateNoStore(res);
     if (!requireWeeklyReportAdmin(req, res)) {
       return;
     }
 
     res.status(200).json({
-      suggestions: buildSystemSuggestedWeeklyReports(
-        billingStore.listWeeklyReports()
-      ),
+      providers: getAdminMarketDataStatus(),
+      env: {
+        fmpConfigured: isFmpConfigured(),
+      },
+    });
+  });
+
+  app.get("/api/admin/reports/weekly/suggestions", async (req, res) => {
+    setPrivateNoStore(res);
+    if (!requireWeeklyReportAdmin(req, res)) {
+      return;
+    }
+
+    const existingReports = billingStore.listWeeklyReports();
+
+    try {
+      const liveSuggestions = await buildLiveWeeklyReportSuggestions(
+        existingReports,
+        getWeeklyReportAdminEmail()
+      );
+
+      if (liveSuggestions.length > 0) {
+        res.status(200).json({
+          suggestions: liveSuggestions,
+          providers: getAdminMarketDataStatus(),
+          mode: "live",
+        });
+        return;
+      }
+    } catch (error) {
+      console.error("Live weekly report suggestion build failed", error);
+    }
+
+    res.status(200).json({
+      suggestions: buildSystemSuggestedWeeklyReports(existingReports),
+      providers: getAdminMarketDataStatus(),
+      mode: "fallback",
     });
   });
 
@@ -2564,6 +2715,51 @@ async function startServer() {
     res.status(previousRecord ? 200 : 201).json({
       report,
       reports: billingStore.listWeeklyReports(),
+    });
+  });
+
+  app.get("/api/momentum/reports/latest", (req, res) => {
+    setPrivateNoStore(res);
+    res.status(200).json({
+      report: billingStore.getLatestPublishedMomentumReport(),
+    });
+  });
+
+  app.get("/api/admin/momentum/reports", (req, res) => {
+    setPrivateNoStore(res);
+    if (!requireWeeklyReportAdmin(req, res)) {
+      return;
+    }
+
+    res.status(200).json({
+      reports: billingStore.listMomentumReports(),
+      latestPublished: billingStore.getLatestPublishedMomentumReport(),
+    });
+  });
+
+  app.post("/api/admin/momentum/reports", (req, res) => {
+    setPrivateNoStore(res);
+    if (!requireWeeklyReportAdmin(req, res)) {
+      return;
+    }
+
+    const body = (req.body ?? {}) as MomentumReportUpsertRequestBody;
+    const rawReport = body.report;
+    const draftSource =
+      rawReport && typeof rawReport === "object"
+        ? (rawReport as Partial<Record<keyof MomentumReportRecord, unknown>>)
+        : undefined;
+    const reportId = draftSource ? normalizeString(draftSource.id) : "";
+    const previousRecord = reportId
+      ? billingStore.getMomentumReportById(reportId)
+      : null;
+    const report = normalizeMomentumReportRecordInput(rawReport, previousRecord);
+
+    billingStore.upsertMomentumReport(report);
+    res.status(previousRecord ? 200 : 201).json({
+      report,
+      reports: billingStore.listMomentumReports(),
+      latestPublished: billingStore.getLatestPublishedMomentumReport(),
     });
   });
 

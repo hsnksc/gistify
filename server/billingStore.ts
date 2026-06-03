@@ -10,6 +10,10 @@ import type {
   OpportunityWindow,
   WatchlistRecord,
 } from "../shared/opportunities";
+import type {
+  MomentumReportRecord,
+  MomentumReportStatus,
+} from "../shared/momentumReports";
 import type { WeeklyReportRecord, WeeklyReportStatus } from "../shared/weeklyReports";
 
 export type SubscriptionProvider = "shopier";
@@ -182,6 +186,19 @@ interface AgentRunDbRow {
   retry_count: number;
   started_at: string;
   completed_at: string | null;
+}
+
+interface MomentumReportDbRow {
+  id: string;
+  slug: string;
+  title: string;
+  report_date: string;
+  status: MomentumReportStatus;
+  author_email: string;
+  created_at: string;
+  updated_at: string;
+  published_at: string | null;
+  content_json: string;
 }
 
 function getDatabasePath() {
@@ -359,6 +376,21 @@ function mapAgentRunRow(row: AgentRunDbRow): AgentRunRecord {
   };
 }
 
+function mapMomentumReportRow(row: MomentumReportDbRow): MomentumReportRecord {
+  return {
+    id: row.id,
+    slug: row.slug,
+    title: row.title,
+    reportDate: row.report_date,
+    status: row.status,
+    authorEmail: row.author_email,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+    publishedAt: row.published_at || undefined,
+    content: JSON.parse(row.content_json) as MomentumReportRecord["content"],
+  };
+}
+
 export function createBillingStore() {
   const dbPath = getDatabasePath();
   fs.mkdirSync(path.dirname(dbPath), { recursive: true });
@@ -490,6 +522,19 @@ export function createBillingStore() {
       completed_at TEXT
     );
 
+    CREATE TABLE IF NOT EXISTS momentum_reports (
+      id TEXT PRIMARY KEY,
+      slug TEXT NOT NULL UNIQUE,
+      title TEXT NOT NULL,
+      report_date TEXT NOT NULL,
+      status TEXT NOT NULL,
+      author_email TEXT NOT NULL,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL,
+      published_at TEXT,
+      content_json TEXT NOT NULL
+    );
+
     CREATE INDEX IF NOT EXISTS idx_auth_sessions_user_id
       ON auth_sessions(user_id);
 
@@ -513,6 +558,9 @@ export function createBillingStore() {
 
     CREATE INDEX IF NOT EXISTS idx_agent_runs_started_at
       ON agent_runs(started_at DESC);
+
+    CREATE INDEX IF NOT EXISTS idx_momentum_reports_status_date
+      ON momentum_reports(status, report_date DESC);
   `);
 
   const subscriptionTableInfo = db.prepare("PRAGMA table_info(billing_subscriptions)").all() as
@@ -1054,6 +1102,82 @@ export function createBillingStore() {
       completed_at = excluded.completed_at
   `);
 
+  const listMomentumReportsStmt = db.prepare(`
+    SELECT
+      id,
+      slug,
+      title,
+      report_date,
+      status,
+      author_email,
+      created_at,
+      updated_at,
+      published_at,
+      content_json
+    FROM momentum_reports
+    ORDER BY report_date DESC, updated_at DESC
+  `);
+
+  const getMomentumReportByIdStmt = db.prepare(`
+    SELECT
+      id,
+      slug,
+      title,
+      report_date,
+      status,
+      author_email,
+      created_at,
+      updated_at,
+      published_at,
+      content_json
+    FROM momentum_reports
+    WHERE id = ?
+    LIMIT 1
+  `);
+
+  const getLatestPublishedMomentumReportStmt = db.prepare(`
+    SELECT
+      id,
+      slug,
+      title,
+      report_date,
+      status,
+      author_email,
+      created_at,
+      updated_at,
+      published_at,
+      content_json
+    FROM momentum_reports
+    WHERE status = 'published'
+    ORDER BY report_date DESC, published_at DESC, updated_at DESC
+    LIMIT 1
+  `);
+
+  const upsertMomentumReportStmt = db.prepare(`
+    INSERT INTO momentum_reports (
+      id,
+      slug,
+      title,
+      report_date,
+      status,
+      author_email,
+      created_at,
+      updated_at,
+      published_at,
+      content_json
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ON CONFLICT(id) DO UPDATE SET
+      slug = excluded.slug,
+      title = excluded.title,
+      report_date = excluded.report_date,
+      status = excluded.status,
+      author_email = excluded.author_email,
+      created_at = excluded.created_at,
+      updated_at = excluded.updated_at,
+      published_at = excluded.published_at,
+      content_json = excluded.content_json
+  `);
+
   return {
     dbPath,
     pruneExpiredSessions(now = Date.now()) {
@@ -1252,6 +1376,36 @@ export function createBillingStore() {
         record.retryCount,
         record.startedAt,
         record.completedAt || null
+      );
+    },
+    listMomentumReports() {
+      const rows = listMomentumReportsStmt.all() as unknown as MomentumReportDbRow[];
+      return rows.map(mapMomentumReportRow);
+    },
+    getMomentumReportById(reportId: string) {
+      const row = getMomentumReportByIdStmt.get(reportId) as
+        | MomentumReportDbRow
+        | undefined;
+      return row ? mapMomentumReportRow(row) : null;
+    },
+    getLatestPublishedMomentumReport() {
+      const row = getLatestPublishedMomentumReportStmt.get() as
+        | MomentumReportDbRow
+        | undefined;
+      return row ? mapMomentumReportRow(row) : null;
+    },
+    upsertMomentumReport(record: MomentumReportRecord) {
+      upsertMomentumReportStmt.run(
+        record.id,
+        record.slug,
+        record.title,
+        record.reportDate,
+        record.status,
+        record.authorEmail,
+        record.createdAt,
+        record.updatedAt,
+        record.publishedAt || null,
+        JSON.stringify(record.content)
       );
     },
   };

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Activity,
   BarChart3,
@@ -6,6 +7,7 @@ import {
   ShieldCheck,
   TrendingUp,
 } from "lucide-react";
+import type { MomentumReportRecord } from "@shared/momentumReports";
 import ScannerPage from "@/scanner/components/ScannerPage";
 import type { AppLanguage } from "@/lib/i18n";
 
@@ -13,7 +15,42 @@ interface ScannerRoutePageProps {
   language: AppLanguage;
 }
 
+interface MomentumLatestResponse {
+  report?: MomentumReportRecord | null;
+}
+
 export default function Scanner({ language }: ScannerRoutePageProps) {
+  const [publishedReport, setPublishedReport] =
+    useState<MomentumReportRecord | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    void (async () => {
+      try {
+        const response = await fetch("/api/momentum/reports/latest", {
+          credentials: "include",
+          cache: "no-store",
+        });
+
+        if (!response.ok) {
+          return;
+        }
+
+        const payload = (await response.json()) as MomentumLatestResponse;
+        if (!cancelled) {
+          setPublishedReport(payload.report || null);
+        }
+      } catch {
+        // Keep the live scanner available even if the published snapshot cannot be loaded.
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const copy =
     language === "en"
       ? {
@@ -175,6 +212,97 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
               </article>
             );
           })}
+        </section>
+
+        <section className="rounded-none border border-border bg-card/80 p-5 shadow-xl">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                {language === "en" ? "Published snapshot" : "Yayinlanan snapshot"}
+              </p>
+              <h2 className="mt-2 heading-condensed text-2xl text-foreground">
+                {publishedReport
+                  ? publishedReport.title
+                  : language === "en"
+                    ? "No published momentum snapshot yet"
+                    : "Henuz yayinlanmis momentum snapshot yok"}
+              </h2>
+              <p className="mt-2 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+                {publishedReport
+                  ? publishedReport.content.summary
+                  : language === "en"
+                    ? "Once the admin publishes a snapshot, the curated momentum setups will appear here above the live scanner."
+                    : "Admin yayinladiginda curate edilmis momentum setup'lari burada, canli scanner'in ustunde gorunecek."}
+              </p>
+            </div>
+
+            {publishedReport ? (
+              <div className="rounded-none border border-border bg-background/60 px-4 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  {language === "en" ? "Report date" : "Rapor tarihi"}
+                </p>
+                <p className="mt-2 text-sm font-semibold text-foreground">
+                  {new Intl.DateTimeFormat(language === "en" ? "en-US" : "tr-TR", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                  }).format(new Date(`${publishedReport.reportDate}T00:00:00Z`))}
+                </p>
+              </div>
+            ) : null}
+          </div>
+
+          {publishedReport?.content.featuredEntries.length ? (
+            <div className="mt-4 grid gap-3 xl:grid-cols-2">
+              {publishedReport.content.featuredEntries.slice(0, 6).map(entry => (
+                <article
+                  key={entry.id}
+                  className="rounded-none border border-border bg-background/60 p-4"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-sm font-semibold text-foreground">
+                        {entry.ticker} · {entry.name}
+                      </p>
+                      <p className="text-xs text-muted-foreground">{entry.sector}</p>
+                    </div>
+                    <span className="data-mono text-lg font-bold text-emerald-300">
+                      {entry.score}
+                    </span>
+                  </div>
+
+                  <div className="mt-3 grid grid-cols-4 gap-2 text-xs">
+                    <div>
+                      <p className="text-muted-foreground">Move</p>
+                      <p className="font-semibold text-foreground">
+                        {entry.priceChangePct.toFixed(2)}%
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-muted-foreground">RVOL</p>
+                      <p className="font-semibold text-foreground">
+                        {entry.volumeRatio.toFixed(2)}x
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-muted-foreground">RSI</p>
+                      <p className="font-semibold text-foreground">{entry.rsi}</p>
+                    </div>
+                    <div>
+                      <p className="text-muted-foreground">Signal</p>
+                      <p className="font-semibold text-foreground">{entry.signal}</p>
+                    </div>
+                  </div>
+
+                  {entry.adminNote || entry.catalystSummary ? (
+                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                      {entry.adminNote || entry.catalystSummary}
+                    </p>
+                  ) : null}
+                </article>
+              ))}
+            </div>
+          ) : null}
         </section>
 
         <section className="overflow-hidden rounded-none border border-border bg-card/80 shadow-2xl">

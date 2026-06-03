@@ -559,7 +559,7 @@ export function buildInitialWeeklyReports() {
 
 export interface SuggestedWeeklyReport {
   report: WeeklyReportRecord;
-  source: "seed" | "carry_forward";
+  source: "seed" | "carry_forward" | "fmp_live";
   alreadyExists: boolean;
 }
 

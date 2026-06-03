@@ -7,8 +7,14 @@ import {
   Shield,
 } from "lucide-react";
 import { useLocation } from "wouter";
+import type { WeeklyReportRecord } from "@shared/weeklyReports";
 import { Button } from "@/components/ui/button";
 import { earningsCalendar, signalConfig, stocksData } from "@/lib/stockData";
+import {
+  formatAnalysisDate,
+  formatWeekRange,
+  getReportSummary,
+} from "@/lib/weeklyReports";
 import CalendarTab from "@/components/tabs/CalendarTab";
 import IVCrushTab from "@/components/tabs/IVCrushTab";
 import MomentumTab from "@/components/tabs/MomentumTab";
@@ -39,6 +45,10 @@ const tabs: Array<{ id: TabId; label: string; icon: string }> = [
   { id: "optiondetail", label: "Opsiyon Detay", icon: "📊" },
 ];
 
+interface WeeklyReportsResponse {
+  reports?: WeeklyReportRecord[];
+}
+
 function SummaryCard({
   label,
   value,
@@ -68,16 +78,79 @@ export default function Home() {
     stocksData[0]?.ticker ?? null
   );
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [publishedReports, setPublishedReports] = useState<WeeklyReportRecord[]>([]);
+  const [selectedPublishedReportId, setSelectedPublishedReportId] = useState("");
   const contentRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     contentRef.current?.scrollTo({ top: 0, behavior: "auto" });
   }, [activeTab]);
 
+  useEffect(() => {
+    let cancelled = false;
+
+    void (async () => {
+      try {
+        const response = await fetch("/api/reports/weekly", {
+          credentials: "include",
+          cache: "no-store",
+        });
+
+        if (!response.ok) {
+          return;
+        }
+
+        const payload = (await response.json()) as WeeklyReportsResponse;
+        if (cancelled) {
+          return;
+        }
+
+        const nextReports = payload.reports || [];
+        setPublishedReports(nextReports);
+        setSelectedPublishedReportId(current =>
+          current && nextReports.some(report => report.id === current)
+            ? current
+            : nextReports[0]?.id || ""
+        );
+      } catch {
+        // Leave the benchmark page usable with static fallback data.
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const sortedByMomentum = useMemo(
     () => [...stocksData].sort((a, b) => b.momentumScore - a.momentumScore),
     []
   );
+  const selectedPublishedReport = useMemo(
+    () =>
+      publishedReports.find(report => report.id === selectedPublishedReportId) ||
+      publishedReports[0] ||
+      null,
+    [publishedReports, selectedPublishedReportId]
+  );
+  const publishedReportSummary = useMemo(
+    () => (selectedPublishedReport ? getReportSummary(selectedPublishedReport) : null),
+    [selectedPublishedReport]
+  );
+  const publishedTopEntries = useMemo(
+    () => selectedPublishedReport?.content.entries.slice(0, 4) || [],
+    [selectedPublishedReport]
+  );
+  const publishedAvgBeat = useMemo(() => {
+    const entries = selectedPublishedReport?.content.entries || [];
+    if (!entries.length) {
+      return 0;
+    }
+
+    return Math.round(
+      entries.reduce((sum, entry) => sum + entry.beatRate, 0) / entries.length
+    );
+  }, [selectedPublishedReport]);
   const topPicks = useMemo(
     () =>
       sortedByMomentum
@@ -101,9 +174,14 @@ export default function Home() {
     stocksData.reduce((sum, stock) => sum + stock.momentumScore, 0) /
       stocksData.length
   );
-  const reportWindow = `${earningsCalendar[0]?.date || "-"} - ${
-    earningsCalendar[earningsCalendar.length - 1]?.date || "-"
-  }`;
+  const reportWindow = selectedPublishedReport
+    ? formatWeekRange(selectedPublishedReport)
+    : `${earningsCalendar[0]?.date || "-"} - ${
+        earningsCalendar[earningsCalendar.length - 1]?.date || "-"
+      }`;
+  const analysisDate = selectedPublishedReport
+    ? formatAnalysisDate(selectedPublishedReport.analysisDate)
+    : "21.05.2026";
 
   const handleStockClick = (ticker: string) => {
     setSelectedTicker(ticker);
@@ -203,7 +281,7 @@ export default function Home() {
                 ANALIZ
               </p>
               <p className="data-mono text-xs font-semibold text-foreground">
-                21.05.2026
+                {analysisDate}
               </p>
             </div>
           </div>
@@ -284,22 +362,148 @@ export default function Home() {
           <div className="grid gap-3 sm:grid-cols-3 xl:grid-cols-1">
             <SummaryCard
               label="Top pick"
-              value={topPicks[0]?.ticker || "-"}
-              hint={topPicks[0]?.name || "En yuksek momentum ve beat setup"}
+              value={
+                publishedReportSummary?.topPick?.ticker || topPicks[0]?.ticker || "-"
+              }
+              hint={
+                publishedReportSummary?.topPick?.name ||
+                topPicks[0]?.name ||
+                "En yuksek momentum ve beat setup"
+              }
             />
             <SummaryCard
               label="Ort. beat"
-              value={`%${avgBeatProbability}`}
-              hint="Benchmark evrenindeki ortalama beat ihtimali"
+              value={`%${publishedAvgBeat || avgBeatProbability}`}
+              hint={
+                selectedPublishedReport
+                  ? "Published rapordaki ortalama beat ihtimali"
+                  : "Benchmark evrenindeki ortalama beat ihtimali"
+              }
             />
             <SummaryCard
               label="Ort. momentum"
-              value={String(avgMomentumScore)}
-              hint="Tum benchmark hisseleri icin ortalama skor"
+              value={String(publishedReportSummary?.avgMomentum || avgMomentumScore)}
+              hint={
+                selectedPublishedReport
+                  ? "Published rapordaki ortalama momentum skoru"
+                  : "Tum benchmark hisseleri icin ortalama skor"
+              }
             />
           </div>
         </div>
       </section>
+
+      {publishedReports.length ? (
+        <section
+          className="border-b px-4 py-5 lg:px-6"
+          style={{
+            borderColor: "oklch(0.22 0.03 225)",
+            background: "oklch(0.105 0.025 230)",
+          }}
+        >
+          <div className="space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                  Published Earnings Haftalari
+                </p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Admin yayinladikca haftalar burada gorunur. En solda en yeni hafta yer alir.
+                </p>
+              </div>
+              <Button
+                type="button"
+                variant="outline"
+                className="rounded-none"
+                onClick={() => setLocation("/app/admin")}
+              >
+                <Shield className="h-4 w-4" />
+                Admin Workspace
+              </Button>
+            </div>
+
+            <div className="flex gap-2 overflow-x-auto pb-1">
+              {publishedReports.map(report => (
+                <button
+                  key={report.id}
+                  type="button"
+                  onClick={() => setSelectedPublishedReportId(report.id)}
+                  className={`shrink-0 rounded-none border px-3 py-2 text-left ${
+                    selectedPublishedReport?.id === report.id
+                      ? "border-emerald-400/50 bg-emerald-500/10 text-emerald-300"
+                      : "border-border bg-card/70 text-muted-foreground"
+                  }`}
+                >
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.18em]">
+                    {formatWeekRange(report)}
+                  </div>
+                  <div className="mt-1 text-xs">{report.content.entries.length} hisse</div>
+                </button>
+              ))}
+            </div>
+
+            {selectedPublishedReport ? (
+              <div className="grid gap-4 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+                <div className="rounded-none border border-border bg-card/80 p-5">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                    Hafta Ozeti
+                  </p>
+                  <h2 className="mt-2 text-2xl font-semibold text-foreground">
+                    {selectedPublishedReport.content.headline}
+                  </h2>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    {selectedPublishedReport.content.summary}
+                  </p>
+                  <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                    {selectedPublishedReport.content.marketContext}
+                  </p>
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {publishedTopEntries.map(entry => (
+                    <article
+                      key={entry.id}
+                      className="rounded-none border border-border bg-card/80 p-4"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <p className="text-sm font-semibold text-foreground">
+                            {entry.ticker}
+                          </p>
+                          <p className="text-xs text-muted-foreground">{entry.name}</p>
+                        </div>
+                        <span className="data-mono text-lg font-bold text-emerald-300">
+                          {entry.ivCrushScore}
+                        </span>
+                      </div>
+                      <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
+                        <div>
+                          <p className="text-muted-foreground">Momentum</p>
+                          <p className="font-semibold text-foreground">
+                            {entry.momentumScore}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-muted-foreground">IV Crush</p>
+                          <p className="font-semibold text-foreground">
+                            %{entry.expectedIVCrush}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-muted-foreground">Beat</p>
+                          <p className="font-semibold text-foreground">
+                            %{entry.beatRate}
+                          </p>
+                        </div>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
 
       <div className="flex flex-1 overflow-hidden">
         {sidebarOpen ? (
