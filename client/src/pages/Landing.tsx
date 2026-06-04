@@ -10,9 +10,9 @@ const COPY = {
       "Gistify, earnings oncesi karar surecini hizlandiran abonelik tabanli analiz platformudur.",
     description:
       "Platform; momentum tarama, earnings oncesi hisse incelemesi, sektor bazli baglam, risk matrisi ve opsiyon arastirma ekranlarini tek bir web uygulamasinda sunar.",
-    ctaLabel: "Fiyati incele",
+    ctaLabel: "Aboneligi baslat",
     pricingSnapshot: "Fiyat Ozeti",
-    approvalPending: "Paddle onayi bekleniyor",
+    approvalPending: "Paddle checkout aktif",
     openApp: "Uygulamayi ac",
     pricingDetails: "Detayli fiyat bilgisi",
     priceSuffix: "TRY / ay",
@@ -50,9 +50,9 @@ const COPY = {
       "Gistify is a subscription-based analytics platform built to speed up pre-earnings decision making.",
     description:
       "The platform brings momentum scanning, pre-earnings stock research, sector context, risk matrix views and options research together in a single web app.",
-    ctaLabel: "View pricing",
+    ctaLabel: "Start subscription",
     pricingSnapshot: "Pricing Snapshot",
-    approvalPending: "Paddle approval pending",
+    approvalPending: "Paddle checkout live",
     openApp: "Open app",
     pricingDetails: "Detailed pricing",
     priceSuffix: "TRY / month",
@@ -102,7 +102,7 @@ export default function Landing({
       eyebrow={copy.eyebrow}
       title={copy.title}
       description={copy.description}
-      ctaHref="/pricing"
+      ctaHref="/pay"
       ctaLabel={copy.ctaLabel}
     >
       <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">

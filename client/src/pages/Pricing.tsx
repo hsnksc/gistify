@@ -14,7 +14,7 @@ const COPY = {
     note1:
       "Abonelik, web uygulamasina erisim icin kullanilir. Fiziksel urun gonderimi yoktur; teslimat tamamen dijitaldir.",
     note2:
-      "Fiyat TRY uzerinden gosterilir. Paddle canli odeme aktivasyonu tamamlandiginda checkout bu site uzerinden calisacaktir.",
+      "Fiyat TRY uzerinden gosterilir. Checkout ve abonelik yonetimi Paddle uzerinden bu siteye baglandi.",
     note3Prefix: "Guncel iade kosullari icin ",
     note3Middle: ", diger hukuki sartlar icin ",
     note3Suffix: " sayfalarina bak.",
@@ -41,7 +41,7 @@ const COPY = {
     note1:
       "The subscription is used for access to the web application. No physical product is shipped; delivery is fully digital.",
     note2:
-      "Pricing is shown in TRY. Once Paddle live billing is activated, checkout will run directly through this site.",
+      "Pricing is shown in TRY. Checkout and subscription management are wired through Paddle on this site.",
     note3Prefix: "For current refund terms, see the ",
     note3Middle: ". For other legal terms, review the ",
     note3Suffix: ".",

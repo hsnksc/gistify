@@ -342,9 +342,18 @@ function LimitedAccessPreview() {
               </h2>
               <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
                 Momentum scanner, earnings takvimi, risk matrisi ve opsiyon
-                ekranlari sadece aktif uyelikte yuklenir. Odeme akisi Paddle
-                gecisi tamamlanana kadar kapali.
+                ekranlari sadece aktif abonelikte acilir. Google girisi
+                tamamlandiktan sonra Paddle ile abonelik baslatip tum
+                modulleri aktif edebilirsin.
               </p>
+              <div className="flex flex-wrap gap-3 pt-2">
+                <Button asChild>
+                  <a href="/pay">Paddle ile abone ol</a>
+                </Button>
+                <Button asChild variant="outline" className="bg-background/70">
+                  <a href="/pricing">Plan detaylari</a>
+                </Button>
+              </div>
             </div>
 
             <div className="grid min-w-[220px] grid-cols-2 gap-3">
@@ -498,18 +507,10 @@ function App() {
   }, [callbackError]);
 
   useEffect(() => {
-    if (isPaymentRoute) {
-      return;
-    }
-
     void refreshAuthState();
-  }, [isPaymentRoute, refreshAuthState]);
+  }, [refreshAuthState]);
 
   useEffect(() => {
-    if (isPaymentRoute) {
-      return;
-    }
-
     if (authState.status !== "loading") {
       return;
     }
@@ -531,7 +532,7 @@ function App() {
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [authState.status, isPaymentRoute]);
+  }, [authState.status]);
 
   const startGoogleLogin = () => {
     window.location.assign("/api/auth/google");
@@ -844,7 +845,17 @@ function App() {
             <Toaster />
 
             {isPaymentRoute ? (
-              <Pay language={language} onLanguageChange={setLanguage} />
+              <Pay
+                language={language}
+                onLanguageChange={setLanguage}
+                authState={authState}
+                onSignIn={startGoogleLogin}
+                onRefreshAuthState={refreshAuthState}
+              />
+            ) : null}
+
+            {!isPaymentRoute && isMarketingRoute ? (
+              <Router language={language} onLanguageChange={setLanguage} />
             ) : null}
 
             {authState.status !== "loading" &&
@@ -929,12 +940,14 @@ function App() {
                 data-no-mask
                 className="border-b border-emerald-500/20 bg-emerald-500/8 px-4 py-2 text-center text-xs text-emerald-200"
               >
-                Public preview modu acik. Google girisi ve odeme akisi Paddle
-                onayi tamamlanana kadar gecici olarak kapatildi.
+                Public preview modu acik. Google girisi ve Paddle billing tekrar
+                acildiysa bu modu kapatip `APP_ACCESS_MODE=managed` kullan.
               </div>
             ) : null}
 
-            {authState.status === "loading" && !isPaymentRoute ? (
+            {authState.status === "loading" &&
+            !isPaymentRoute &&
+            !isMarketingRoute ? (
               <div className="min-h-screen grid place-items-center px-4 text-center">
                 <div className="space-y-2">
                   <h1 className="text-xl font-semibold">
@@ -947,7 +960,9 @@ function App() {
               </div>
             ) : null}
 
-            {authState.status === "anonymous" && !isPaymentRoute ? (
+            {authState.status === "anonymous" &&
+            !isPaymentRoute &&
+            !isMarketingRoute ? (
               <div className="min-h-screen flex items-center justify-center px-4 py-8">
                 <div className="w-full max-w-lg rounded-2xl border border-border bg-card/95 p-7 text-card-foreground shadow-2xl space-y-5">
                   <div className="space-y-2">
@@ -983,7 +998,9 @@ function App() {
               </div>
             ) : null}
 
-            {authState.status === "authenticated" && !isPaymentRoute ? (
+            {authState.status === "authenticated" &&
+            !isPaymentRoute &&
+            !isMarketingRoute ? (
               <div className="relative">
                 {isLimitedAccess ? (
                   <div
@@ -1000,12 +1017,16 @@ function App() {
                           sadece aktif abonelikte acilir.
                         </p>
                         <p className="text-xs text-muted-foreground">
-                          Odeme akisi Paddle gecisi tamamlanana kadar kapali.
-                          Tam erisim gecici olarak yonetim tarafindan aciliyor.
+                          Abonelik acik degil. `/pay` ekranindan Paddle
+                          checkout ile uyeligi aktif edip tum modulleri
+                          acabilirsin.
                         </p>
                       </div>
 
                       <div className="flex items-center gap-2">
+                        <Button asChild>
+                          <a href="/pay">Aboneligi ac</a>
+                        </Button>
                         <Button
                           type="button"
                           variant="outline"
@@ -1031,7 +1052,7 @@ function App() {
               </div>
             ) : null}
 
-            {!isPaymentRoute && authState.status !== "loading" ? (
+            {!isPaymentRoute ? (
               <SiteFooter language={language} />
             ) : null}
           </div>

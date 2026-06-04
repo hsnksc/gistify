@@ -20,7 +20,7 @@ import type {
 } from "../shared/momentumReports";
 import type { WeeklyReportRecord, WeeklyReportStatus } from "../shared/weeklyReports";
 
-export type SubscriptionProvider = "shopier";
+export type SubscriptionProvider = "shopier" | "paddle";
 
 export type SubscriptionStatus = "pending" | "active" | "cancelled" | "expired";
 

@@ -36,6 +36,7 @@ import {
   type ShopierOrderRecord,
   type SessionStoreRecord,
   type SubscriptionRecord,
+  type SubscriptionStatus,
 } from "./billingStore";
 import { COOKIE_NAME, ONE_YEAR_MS } from "../shared/const";
 import {
@@ -168,6 +169,48 @@ interface ShopierWebhookSubscription {
   token?: string;
 }
 
+type PaddleEnvironment = "live" | "sandbox";
+
+interface PaddleManagementUrls {
+  update_payment_method?: unknown;
+  cancel?: unknown;
+}
+
+interface PaddleSubscriptionPeriod {
+  starts_at?: unknown;
+  ends_at?: unknown;
+}
+
+interface PaddleSubscriptionEntity {
+  id?: unknown;
+  status?: unknown;
+  customer_id?: unknown;
+  transaction_id?: unknown;
+  started_at?: unknown;
+  first_billed_at?: unknown;
+  next_billed_at?: unknown;
+  canceled_at?: unknown;
+  paused_at?: unknown;
+  current_billing_period?: PaddleSubscriptionPeriod | null;
+  custom_data?: unknown;
+  management_urls?: PaddleManagementUrls | null;
+}
+
+interface PaddleWebhookPayload {
+  event_type?: unknown;
+  data?: unknown;
+}
+
+interface PaddleCustomerResponse {
+  data?: {
+    email?: unknown;
+  };
+}
+
+interface PaddleSubscriptionResponse {
+  data?: PaddleSubscriptionEntity;
+}
+
 type RequestWithRawBody = express.Request & {
   rawBody?: string;
 };
@@ -219,7 +262,7 @@ const OAUTH_STATE_COOKIE = "google_oauth_state";
 const OAUTH_STATE_TTL_SECONDS = 60 * 10;
 const SESSION_TTL_SECONDS = Math.floor(ONE_YEAR_MS / 1000);
 const DEFAULT_SUBSCRIPTION_DAYS = 30;
-const DEFAULT_PUBLIC_ACCESS_MODE: AppAccessMode = "public";
+const DEFAULT_APP_ACCESS_MODE: AppAccessMode = "managed";
 const PUBLIC_ACCESS_USER = {
   id: "public-access",
   email: "public@gistify.pro",
@@ -550,6 +593,14 @@ function normalizeEmail(value: unknown) {
   return normalizeString(value).toLowerCase();
 }
 
+function extractObjectRecord(value: unknown): Record<string, unknown> | null {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return null;
+  }
+
+  return value as Record<string, unknown>;
+}
+
 function buildEmailScopedUserId(email: string) {
   return `email:${normalizeEmail(email)}`;
 }
@@ -644,7 +695,15 @@ function resolveMembershipForUser(user: AuthUser) {
 
 function getAppAccessMode(): AppAccessMode {
   const configuredValue = process.env.APP_ACCESS_MODE?.trim().toLowerCase();
-  return configuredValue === "managed" ? "managed" : DEFAULT_PUBLIC_ACCESS_MODE;
+  if (configuredValue === "public") {
+    return "public";
+  }
+
+  if (configuredValue === "managed") {
+    return "managed";
+  }
+
+  return DEFAULT_APP_ACCESS_MODE;
 }
 
 function isPublicAccessMode() {
@@ -723,6 +782,20 @@ function normalizeIsoDateTime(value: unknown, fallback: string) {
   const parsed = Date.parse(raw);
   if (!Number.isFinite(parsed)) {
     return fallback;
+  }
+
+  return new Date(parsed).toISOString();
+}
+
+function normalizeOptionalIsoDateTime(value: unknown) {
+  const raw = normalizeString(value);
+  if (!raw) {
+    return undefined;
+  }
+
+  const parsed = Date.parse(raw);
+  if (!Number.isFinite(parsed)) {
+    return undefined;
   }
 
   return new Date(parsed).toISOString();
@@ -1541,6 +1614,312 @@ function getConfiguredAppBaseUrl() {
   return process.env.APP_BASE_URL?.trim() || "";
 }
 
+function getPaddleEnvironment(): PaddleEnvironment {
+  return process.env.PADDLE_ENV?.trim().toLowerCase() === "sandbox"
+    ? "sandbox"
+    : "live";
+}
+
+function getPaddleApiBaseUrl() {
+  return getPaddleEnvironment() === "sandbox"
+    ? "https://sandbox-api.paddle.com"
+    : "https://api.paddle.com";
+}
+
+function getPaddleApiKey() {
+  return normalizeString(process.env.PADDLE_API_KEY);
+}
+
+function getPaddleClientToken() {
+  return normalizeString(process.env.PADDLE_CLIENT_TOKEN);
+}
+
+function getPaddlePriceId() {
+  return normalizeString(process.env.PADDLE_PRICE_ID);
+}
+
+function getPaddleWebhookSecret() {
+  return normalizeString(process.env.PADDLE_WEBHOOK_SECRET);
+}
+
+function getPaddleSuccessUrl() {
+  const configured = normalizeString(process.env.PADDLE_SUCCESS_URL);
+  if (configured) {
+    return configured;
+  }
+
+  const appBaseUrl = getConfiguredAppBaseUrl().replace(/\/+$/, "");
+  return appBaseUrl ? `${appBaseUrl}/pay?billing=success` : "";
+}
+
+function getPaddleCancelUrl() {
+  const configured = normalizeString(process.env.PADDLE_CANCEL_URL);
+  if (configured) {
+    return configured;
+  }
+
+  const appBaseUrl = getConfiguredAppBaseUrl().replace(/\/+$/, "");
+  return appBaseUrl ? `${appBaseUrl}/pay?billing=cancel` : "";
+}
+
+function getPaddleWebhookToleranceSeconds() {
+  const parsed = Number(process.env.PADDLE_WEBHOOK_TOLERANCE_SECONDS || 5);
+  if (!Number.isFinite(parsed) || parsed < 0) {
+    return 5;
+  }
+
+  return Math.floor(parsed);
+}
+
+function getPaddleCheckoutConfigIssues() {
+  const issues: string[] = [];
+
+  if (!getPaddleClientToken()) {
+    issues.push("PADDLE_CLIENT_TOKEN");
+  }
+
+  if (!getPaddlePriceId()) {
+    issues.push("PADDLE_PRICE_ID");
+  }
+
+  if (!getPaddleSuccessUrl()) {
+    issues.push("PADDLE_SUCCESS_URL or APP_BASE_URL");
+  }
+
+  return issues;
+}
+
+function getPaddleServerConfigIssues() {
+  const issues: string[] = [];
+
+  if (!getPaddleApiKey()) {
+    issues.push("PADDLE_API_KEY");
+  }
+
+  if (!getPaddleWebhookSecret()) {
+    issues.push("PADDLE_WEBHOOK_SECRET");
+  }
+
+  return issues;
+}
+
+async function paddleApiRequest<T>(pathname: string, init: RequestInit = {}) {
+  const apiKey = getPaddleApiKey();
+  if (!apiKey) {
+    throw new Error("PADDLE_API_KEY ayari eksik.");
+  }
+
+  const headers = new Headers(init.headers);
+  headers.set("Authorization", `Bearer ${apiKey}`);
+  headers.set("Accept", "application/json");
+
+  if (init.body && !headers.has("Content-Type")) {
+    headers.set("Content-Type", "application/json");
+  }
+
+  const response = await fetch(`${getPaddleApiBaseUrl()}${pathname}`, {
+    ...init,
+    headers,
+  });
+  const responseText = await response.text();
+
+  if (!response.ok) {
+    throw new Error(
+      `Paddle API ${response.status}: ${responseText || response.statusText}`
+    );
+  }
+
+  return responseText ? (JSON.parse(responseText) as T) : (null as T);
+}
+
+function parsePaddleSignatureHeader(headerValue: string) {
+  let timestamp = "";
+  const signatures: string[] = [];
+
+  for (const part of headerValue.split(";")) {
+    const [rawKey, rawValue] = part.split("=");
+    const key = normalizeString(rawKey).toLowerCase();
+    const value = normalizeString(rawValue);
+
+    if (!key || !value) {
+      continue;
+    }
+
+    if (key === "ts") {
+      timestamp = value;
+      continue;
+    }
+
+    if (key === "h1") {
+      signatures.push(value);
+    }
+  }
+
+  return {
+    timestamp,
+    signatures,
+  };
+}
+
+function verifyPaddleWebhook(req: express.Request) {
+  const secret = getPaddleWebhookSecret();
+  const signatureHeader = normalizeString(req.header("Paddle-Signature"));
+  const rawBody = (req as RequestWithRawBody).rawBody;
+
+  if (!secret || !signatureHeader || !rawBody) {
+    return false;
+  }
+
+  const { timestamp, signatures } = parsePaddleSignatureHeader(signatureHeader);
+  if (!timestamp || signatures.length === 0) {
+    return false;
+  }
+
+  const webhookTimestamp = Number(timestamp);
+  if (!Number.isFinite(webhookTimestamp)) {
+    return false;
+  }
+
+  const ageSeconds = Math.abs(
+    Math.floor(Date.now() / 1000) - Math.floor(webhookTimestamp)
+  );
+  if (ageSeconds > getPaddleWebhookToleranceSeconds()) {
+    return false;
+  }
+
+  const expectedSignature = crypto
+    .createHmac("sha256", secret)
+    .update(`${timestamp}:${rawBody}`)
+    .digest("hex");
+
+  return signatures.some(signature => safeEqual(signature, expectedSignature));
+}
+
+function resolvePaddleAccessStatus(
+  status: string,
+  fallbackStatus: SubscriptionStatus = "pending"
+): SubscriptionStatus {
+  switch (status) {
+    case "active":
+    case "trialing":
+      return "active";
+    case "canceled":
+      return "cancelled";
+    case "past_due":
+    case "paused":
+      return "expired";
+    default:
+      return fallbackStatus;
+  }
+}
+
+function readPaddleCustomValue(
+  customData: Record<string, unknown> | null,
+  candidates: string[]
+) {
+  if (!customData) {
+    return "";
+  }
+
+  for (const key of candidates) {
+    const value = normalizeString(customData[key]);
+    if (value) {
+      return value;
+    }
+  }
+
+  return "";
+}
+
+function resolvePaddleSubscriptionEndsAt(entity: PaddleSubscriptionEntity) {
+  return (
+    normalizeOptionalIsoDateTime(entity.current_billing_period?.ends_at) ||
+    normalizeOptionalIsoDateTime(entity.next_billed_at) ||
+    normalizeOptionalIsoDateTime(entity.canceled_at) ||
+    normalizeOptionalIsoDateTime(entity.paused_at)
+  );
+}
+
+async function getPaddleCustomerEmail(customerId: string) {
+  const payload = await paddleApiRequest<PaddleCustomerResponse>(
+    `/customers/${customerId}`
+  );
+
+  return normalizeEmail(payload.data?.email);
+}
+
+async function upsertPaddleSubscriptionFromEntity(entity: PaddleSubscriptionEntity) {
+  const subscriptionId = normalizeString(entity.id);
+  if (!subscriptionId) {
+    throw new Error("Paddle subscription payload missing id.");
+  }
+
+  const customData = extractObjectRecord(entity.custom_data);
+  const customerId = normalizeString(entity.customer_id);
+  let email =
+    normalizeEmail(
+      readPaddleCustomValue(customData, ["email", "userEmail", "user_email"])
+    ) || "";
+
+  if (!email && customerId) {
+    email = await getPaddleCustomerEmail(customerId);
+  }
+
+  if (!email) {
+    throw new Error(
+      `Paddle subscription ${subscriptionId} e-posta ile eslestirilemedi.`
+    );
+  }
+
+  const userId =
+    readPaddleCustomValue(customData, [
+      "userId",
+      "user_id",
+      "authUserId",
+      "auth_user_id",
+    ]) ||
+    getUserByEmail(email)?.id ||
+    undefined;
+  const currentRecord = billingStore.getSubscriptionByEmail(email);
+  const normalizedStatus = resolvePaddleAccessStatus(
+    normalizeString(entity.status).toLowerCase(),
+    currentRecord?.status || "pending"
+  );
+  const nowIso = new Date().toISOString();
+
+  const updatedRecord: SubscriptionRecord = {
+    userId: userId || currentRecord?.userId,
+    email,
+    provider: "paddle",
+    status: normalizedStatus,
+    plan: "monthly",
+    startedAt:
+      normalizeOptionalIsoDateTime(entity.started_at) ||
+      normalizeOptionalIsoDateTime(entity.first_billed_at) ||
+      currentRecord?.startedAt,
+    endsAt:
+      resolvePaddleSubscriptionEndsAt(entity) || currentRecord?.endsAt,
+    updatedAt: nowIso,
+    lastOrderId: subscriptionId,
+  };
+
+  billingStore.upsertSubscription(updatedRecord);
+  return updatedRecord;
+}
+
+async function getPaddleManagementUrls(subscriptionId: string) {
+  const payload = await paddleApiRequest<PaddleSubscriptionResponse>(
+    `/subscriptions/${subscriptionId}`
+  );
+  const managementUrls = payload.data?.management_urls;
+
+  return {
+    updatePaymentMethod:
+      normalizeString(managementUrls?.update_payment_method) || undefined,
+    cancel: normalizeString(managementUrls?.cancel) || undefined,
+  };
+}
+
 function isPublicHttpsUrl(value: string) {
   try {
     const url = new URL(value);
@@ -1802,7 +2181,7 @@ function renderLandingPageHtml() {
           </div>
         </section>
         <aside class="card">
-          <span class="pill">Paddle approval pending</span>
+          <span class="pill">Paddle checkout live</span>
           <h2 style="margin-top:18px;">Pricing Snapshot</h2>
           <div class="price">250 TRY / month</div>
           <div class="grid">
@@ -2507,6 +2886,72 @@ async function startServer() {
     });
   });
 
+  app.get("/api/billing/paddle/public-config", (_req, res) => {
+    setPrivateNoStore(res);
+    const issues = getPaddleCheckoutConfigIssues();
+
+    res.status(200).json({
+      enabled: issues.length === 0,
+      environment: getPaddleEnvironment(),
+      clientToken: issues.length === 0 ? getPaddleClientToken() : null,
+      priceId: issues.length === 0 ? getPaddlePriceId() : null,
+      successUrl: getPaddleSuccessUrl() || null,
+      cancelUrl: getPaddleCancelUrl() || null,
+      issues,
+    });
+  });
+
+  app.get("/api/billing/paddle/manage", async (req, res) => {
+    setPrivateNoStore(res);
+    if (isPublicAccessMode()) {
+      res.status(409).json({
+        error:
+          "Public preview modu acik. Paddle abonelik yonetimi icin APP_ACCESS_MODE=managed olmalidir.",
+        managementUrls: null,
+      });
+      return;
+    }
+
+    const user = getSessionUser(req);
+    if (!user) {
+      res.status(401).json({ error: "Oturum gerekli.", managementUrls: null });
+      return;
+    }
+
+    const localSubscription = billingStore.getSubscriptionByEmail(
+      normalizeEmail(user.email)
+    );
+    if (
+      !localSubscription ||
+      localSubscription.provider !== "paddle" ||
+      !localSubscription.lastOrderId
+    ) {
+      res.status(200).json({
+        subscription: localSubscription,
+        managementUrls: null,
+      });
+      return;
+    }
+
+    try {
+      const managementUrls = await getPaddleManagementUrls(
+        localSubscription.lastOrderId
+      );
+
+      res.status(200).json({
+        subscription: localSubscription,
+        managementUrls,
+      });
+    } catch (error) {
+      console.error("Paddle management URL fetch failed", error);
+      res.status(502).json({
+        error: "Paddle abonelik yonetim linkleri alinamadi.",
+        subscription: localSubscription,
+        managementUrls: null,
+      });
+    }
+  });
+
   app.get("/api/opportunities", (req, res) => {
     setPrivateNoStore(res);
     const tier = resolveOpportunityTier(req);
@@ -3044,6 +3489,57 @@ async function startServer() {
     });
   });
 
+  app.post("/api/billing/paddle/webhook", async (req, res) => {
+    if (getPaddleServerConfigIssues().length > 0) {
+      res.status(503).json({
+        error:
+          "Paddle webhook hazir degil. PADDLE_API_KEY ve PADDLE_WEBHOOK_SECRET gerekli.",
+      });
+      return;
+    }
+
+    if (!verifyPaddleWebhook(req)) {
+      res.status(401).json({ error: "Paddle imzasi dogrulanamadi." });
+      return;
+    }
+
+    const payload = extractObjectRecord((req.body ?? {}) as PaddleWebhookPayload);
+    const eventType = normalizeString(payload?.event_type).toLowerCase();
+    const data = extractObjectRecord(payload?.data);
+
+    if (!eventType || !data) {
+      res.status(200).json({ received: true, ignored: true });
+      return;
+    }
+
+    try {
+      switch (eventType) {
+        case "subscription.created":
+        case "subscription.activated":
+        case "subscription.updated":
+        case "subscription.trialing":
+        case "subscription.resumed":
+        case "subscription.canceled":
+        case "subscription.past_due":
+        case "subscription.paused":
+          await upsertPaddleSubscriptionFromEntity(
+            data as PaddleSubscriptionEntity
+          );
+          break;
+        default:
+          break;
+      }
+
+      res.status(200).json({ received: true });
+    } catch (error) {
+      console.error("Paddle webhook processing failed", {
+        eventType,
+        error,
+      });
+      res.status(500).json({ error: "Paddle webhook islenemedi." });
+    }
+  });
+
   app.post("/api/billing/shopier/checkout", (_req, res) => {
     res.status(410).json({
       error:
@@ -3144,7 +3640,7 @@ async function startServer() {
     console.log(`Server running on http://localhost:${port}/`);
     console.log(`App access mode: ${getAppAccessMode()}`);
     console.log(
-      "Shopier billing routes disabled. Waiting for Paddle activation."
+      `Paddle checkout issues: ${getPaddleCheckoutConfigIssues().join(", ") || "none"}`
     );
   });
 }

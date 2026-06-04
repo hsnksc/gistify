@@ -23,10 +23,10 @@ Pure React 19 + Tailwind 4 template with shadcn/ui baked in. **Use this README a
 5. Control access with `APP_ACCESS_MODE`:
 
 - `public`: the whole app opens without Google login.
-- `managed`: Google OAuth + subscription gating are enabled again.
+- `managed`: Google OAuth + subscription gating are enabled.
 
-6. While Paddle approval is pending, keep the app in `public` mode.
-7. Keep Paddle credentials in env so checkout can be wired in the next deployment:
+6. Use `managed` as the default mode now that Paddle is approved.
+7. Keep Paddle credentials in env so checkout + webhook sync can run:
 
 - `PADDLE_ENV`
 - `PADDLE_API_KEY`
@@ -37,17 +37,25 @@ Pure React 19 + Tailwind 4 template with shadcn/ui baked in. **Use this README a
 - `PADDLE_SUCCESS_URL`
 - `PADDLE_CANCEL_URL`
 
+Paddle API key permissions needed by the current integration:
+
+- `customer.read`
+- `subscription.read`
+
 Current runtime notes:
 
 - Shopier routes are intentionally disabled.
-- Google OAuth routes are bypassed in `public` mode.
-- `/pay` is a public route reserved for Paddle checkout.
-- For Paddle site approval, enter the bare domain name `gistify.pro`, not `https://gistify.pro/`.
+- Google OAuth routes are bypassed only in `public` mode.
+- `/pay` stays public, but checkout expects a signed-in Google account when `managed` mode is active.
+- Paddle checkout uses the signed-in user email and waits for webhook-based subscription activation.
 
-Backend endpoints still relevant during the transition:
+Backend endpoints:
 
 - `GET /api/auth/me`
 - `GET /api/billing/status`
+- `GET /api/billing/paddle/public-config`
+- `GET /api/billing/paddle/manage`
+- `POST /api/billing/paddle/webhook`
 - `POST /api/billing/shopier/checkout` returns `410 Gone`
 - `POST /api/billing/shopier/webhook` returns `410 Gone`
 
