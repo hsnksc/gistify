@@ -1081,6 +1081,10 @@ function normalizeDailyReportContent(value: unknown, title: string) {
     figureFiles,
     tickerUniverse,
     researchFileCount: normalizeNumber(source.researchFileCount, 0),
+    sourceKind:
+      normalizeString(source.sourceKind) === "file" ? "file" : "folder",
+    sourceLabel: normalizeString(source.sourceLabel) || undefined,
+    assetBasePath: normalizeString(source.assetBasePath) || undefined,
   } satisfies DailyReportContent;
 }
 
@@ -1194,10 +1198,69 @@ function getViewerWeeklyReports(referenceDate = new Date()) {
 }
 
 function getViewerDailyReports(limit = 10) {
-  return billingStore
+  const publishedReports = billingStore
     .listDailyReports()
     .filter(report => report.status === "published")
-    .sort((left, right) => right.reportDate.localeCompare(left.reportDate))
+    .sort((left, right) => right.reportDate.localeCompare(left.reportDate));
+  const publishedBySource = new Map(
+    publishedReports.map(report => [report.sourceFolder, report])
+  );
+  const sourcePackages = listDailyReportSourcePackages();
+  const sourcedReports = sourcePackages.map(source => {
+    const existing = publishedBySource.get(source.folderName);
+    const sourceRecord = buildDailyReportRecordFromSource(
+      source,
+      existing?.authorEmail || getWeeklyReportAdminEmail(),
+      existing
+    );
+
+    if (!existing) {
+      return {
+        ...sourceRecord,
+        status: "published" as const,
+        updatedAt: source.updatedAt,
+        publishedAt: source.updatedAt,
+      };
+    }
+
+    return {
+      ...sourceRecord,
+      id: existing.id,
+      slug: existing.slug,
+      title: existing.title || sourceRecord.title,
+      reportDate: existing.reportDate || sourceRecord.reportDate,
+      status: "published" as const,
+      authorEmail: existing.authorEmail,
+      createdAt: existing.createdAt,
+      updatedAt:
+        existing.updatedAt > source.updatedAt ? existing.updatedAt : source.updatedAt,
+      publishedAt: existing.publishedAt || source.updatedAt,
+      content: {
+        ...sourceRecord.content,
+        headline: normalizeString(existing.content.headline) || sourceRecord.content.headline,
+        author: existing.content.author || sourceRecord.content.author,
+        coverage: existing.content.coverage || sourceRecord.content.coverage,
+        methodology: existing.content.methodology || sourceRecord.content.methodology,
+        executiveSummary: existing.content.executiveSummary.length
+          ? existing.content.executiveSummary
+          : sourceRecord.content.executiveSummary,
+      },
+    } satisfies DailyReportRecord;
+  });
+  const sourcedKeys = new Set(sourcePackages.map(source => source.folderName));
+  const archivedPublished = publishedReports.filter(
+    report => report.sourceFolder && !sourcedKeys.has(report.sourceFolder)
+  );
+
+  return [...sourcedReports, ...archivedPublished]
+    .sort((left, right) => {
+      const byDate = right.reportDate.localeCompare(left.reportDate);
+      if (byDate !== 0) {
+        return byDate;
+      }
+
+      return right.updatedAt.localeCompare(left.updatedAt);
+    })
     .slice(0, limit);
 }
 
@@ -2749,7 +2812,7 @@ async function startServer() {
   app.get("/api/daily-reports/latest", (_req, res) => {
     setPrivateNoStore(res);
     res.status(200).json({
-      report: billingStore.getLatestPublishedDailyReport(),
+      report: getViewerDailyReports(1)[0] || null,
     });
   });
 
@@ -2775,6 +2838,9 @@ async function startServer() {
         tickerUniverse: source.tickerUniverse,
         researchFileCount: source.researchFileCount,
         updatedAt: source.updatedAt,
+        sourceKind: source.sourceKind,
+        sourceLabel: source.sourceLabel,
+        assetBasePath: source.assetBasePath,
       })),
     });
   });

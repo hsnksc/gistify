@@ -104,7 +104,7 @@ export default function DailyReportAdminPanel({
             <SelectContent>
               {sources.map(source => (
                 <SelectItem key={source.id} value={source.id}>
-                  {source.folderName} · {source.title}
+                  {source.sourceLabel} · {source.title}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -244,8 +244,11 @@ export default function DailyReportAdminPanel({
                     }
                   />
                 </Field>
-                <Field label="Source folder">
-                  <Input value={draftReport.sourceFolder} readOnly />
+                <Field label="Source package">
+                  <Input
+                    value={draftReport.content.sourceLabel || draftReport.sourceFolder}
+                    readOnly
+                  />
                 </Field>
               </div>
 
@@ -321,6 +324,9 @@ export default function DailyReportAdminPanel({
               figureFiles: selectedSource.figureFiles,
               tickerUniverse: selectedSource.tickerUniverse,
               researchFileCount: selectedSource.researchFileCount,
+              sourceKind: selectedSource.sourceKind,
+              sourceLabel: selectedSource.sourceLabel,
+              assetBasePath: selectedSource.assetBasePath,
             }}
           />
         ) : null}

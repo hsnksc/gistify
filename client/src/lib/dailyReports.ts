@@ -52,10 +52,33 @@ export function createDailyReportDraftFromSource(
       figureFiles: source.figureFiles,
       tickerUniverse: source.tickerUniverse,
       researchFileCount: source.researchFileCount,
+      sourceKind: source.sourceKind,
+      sourceLabel: source.sourceLabel,
+      assetBasePath: source.assetBasePath,
     },
   } satisfies DailyReportRecord;
 }
 
-export function getDailyReportAssetUrl(sourceFolder: string, fileName: string) {
-  return `/api/daily-report/assets/${encodeURIComponent(sourceFolder)}/${encodeURIComponent(fileName)}`;
+function encodeAssetPath(value: string) {
+  return value
+    .replace(/\\/g, "/")
+    .split("/")
+    .map(segment => segment.trim())
+    .filter(Boolean)
+    .map(segment => encodeURIComponent(segment))
+    .join("/");
+}
+
+export function getDailyReportAssetUrl(
+  assetBasePath: string | undefined,
+  fileName: string
+) {
+  const normalizedFileName = encodeAssetPath(fileName.replace(/^\.\//, ""));
+  const normalizedBasePath = encodeAssetPath(assetBasePath || "");
+
+  if (!normalizedBasePath) {
+    return `/api/daily-report/assets/${normalizedFileName}`;
+  }
+
+  return `/api/daily-report/assets/${normalizedBasePath}/${normalizedFileName}`;
 }

@@ -1,4 +1,5 @@
 export type DailyReportStatus = "draft" | "published";
+export type DailyReportSourceKind = "folder" | "file";
 
 export interface DailyReportContent {
   headline: string;
@@ -11,6 +12,9 @@ export interface DailyReportContent {
   figureFiles: string[];
   tickerUniverse: string[];
   researchFileCount: number;
+  sourceKind?: DailyReportSourceKind;
+  sourceLabel?: string;
+  assetBasePath?: string;
 }
 
 export interface DailyReportRecord {
@@ -43,4 +47,7 @@ export interface DailyReportSourcePackage {
   tickerUniverse: string[];
   researchFileCount: number;
   updatedAt: string;
+  sourceKind: DailyReportSourceKind;
+  sourceLabel: string;
+  assetBasePath: string;
 }
