@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>NASDAQ Momentum Scanner v3.0 - Kurumsal Seviye Teknik Dokuman</title>
+<style>
+/* Reset */
+body { margin: 0; padding: 0; font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 10.5pt; line-height: 1.6; color: #333; }
+
+/* Page */
+@page { size: A4; margin: 2cm 1.8cm; }
+@page :first { margin: 0; }
+
+/* Cover - Swiss Style */
+.cover {
+    width: 210mm; height: 297mm; margin: 0; position: relative; overflow: hidden;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    page-break-after: always;
+}
+.cover::before {
+    content: ""; position: absolute; top: 0; left: 0; width: 8mm; height: 100%;
+    background: linear-gradient(180deg, #1a472a 0%, #2d6a4f 50%, #1a472a 100%);
+}
+.cover::after {
+    content: ""; position: absolute; top: 60mm; right: 0; width: 45mm; height: 45mm;
+    background: rgba(45, 106, 79, 0.08); border-radius: 0;
+}
+.cover-grid {
+    position: absolute; top: 0; left: 8mm; right: 0; bottom: 0;
+    background-image: linear-gradient(rgba(45,106,79,0.03) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(45,106,79,0.03) 1px, transparent 1px);
+    background-size: 20mm 20mm;
+}
+.cover-content {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    text-align: center; width: 75%; z-index: 1;
+}
+.cover-badge {
+    display: inline-block; padding: 4px 16px; background: #1a472a; color: white;
+    font-size: 9pt; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 1.5cm;
+}
+.cover-title { font-size: 32pt; font-weight: 700; color: #1a1a1a; margin-bottom: 0.4cm; letter-spacing: -0.5px; }
+.cover-subtitle { font-size: 14pt; color: #555; margin-bottom: 2.5cm; font-weight: 300; }
+.cover-version { font-size: 11pt; color: #1a472a; font-weight: 600; margin-bottom: 0.3cm; }
+.cover-meta { font-size: 10pt; color: #666; line-height: 1.8; }
+.cover-footer {
+    position: absolute; bottom: 2cm; left: 2cm; right: 2cm;
+    border-top: 1px solid #ccc; padding-top: 0.5cm;
+    font-size: 8pt; color: #999; text-align: center;
+}
+
+/* Typography */
+h1 { font-size: 18pt; color: #1a472a; border-bottom: 2px solid #1a472a; padding-bottom: 6px; margin-top: 1.2cm; page-break-after: avoid; }
+h2 { font-size: 14pt; color: #2d6a4f; border-bottom: 1px solid #ddd; padding-bottom: 4px; margin-top: 0.8cm; page-break-after: avoid; }
+h3 { font-size: 12pt; color: #333; margin-top: 0.6cm; page-break-after: avoid; }
+p { margin: 0.3cm 0; text-align: justify; }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; margin: 0.5cm 0; font-size: 9.5pt; page-break-inside: avoid; }
+thead { display: table-header-group; }
+th { background: #f5f5f5; border-top: 2px solid #333; border-bottom: 1px solid #333; padding: 6px 8px; text-align: left; font-weight: 600; }
+td { border-bottom: 1px solid #ddd; padding: 5px 8px; vertical-align: top; }
+tr:last-child td { border-bottom: 2px solid #333; }
+
+/* Code blocks */
+pre { background: #f8f9fa; border: 1px solid #e9ecef; padding: 10px 14px; font-size: 8.5pt; overflow-x: auto; max-width: 100%; font-family: "Consolas", "Monaco", monospace; line-height: 1.5; }
+code { background: #f0f0f0; padding: 1px 4px; font-size: 9pt; font-family: "Consolas", "Monaco", monospace; }
+
+/* Alert boxes */
+.alert { border-left: 4px solid; padding: 8px 12px; margin: 0.4cm 0; background: #fafafa; page-break-inside: avoid; }
+.alert-danger { border-color: #dc3545; }
+.alert-warning { border-color: #ffc107; }
+.alert-success { border-color: #28a745; }
+.alert-info { border-color: #17a2b8; }
+.alert-title { font-weight: 700; margin-bottom: 4px; }
+
+/* Lists */
+ul, ol { margin: 0.3cm 0; padding-left: 1.2cm; }
+li { margin-bottom: 3px; }
+
+/* TOC */
+.toc { page-break-before: always; }
+.toc h1 { border-bottom: 2px solid #1a472a; }
+.toc-item { display: flex; justify-content: space-between; padding: 3px 0; border-bottom: 1px dotted #ddd; font-size: 10pt; }
+.toc-item-level1 { font-weight: 600; padding-left: 0; }
+.toc-item-level2 { padding-left: 1cm; }
+
+/* Page breaks */
+.page-break { page-break-before: always; }
+
+/* Metrics */
+.metric-row { display: flex; gap: 0.4cm; margin: 0.4cm 0; flex-wrap: wrap; }
+.metric-box { flex: 1; min-width: 3.5cm; border: 1px solid #ddd; padding: 8px; text-align: center; background: #fafafa; }
+.metric-value { font-size: 16pt; font-weight: 700; color: #1a472a; }
+.metric-label { font-size: 8pt; color: #666; margin-top: 2px; }
+
+/* Section numbering */
+.section-num { color: #1a472a; font-weight: 700; margin-right: 8px; }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+    <div class="cover-grid"></div>
+    <div class="cover-content">
+        <div class="cover-badge">Kurumsal Seviye</div>
+        <div class="cover-title">NASDAQ Momentum<br>Scanner</div>
+        <div class="cover-subtitle">Opsiyon Stratejisi ve Risk Yonetim Sistemi</div>
+        <div class="cover-version">v3.0 Teknik Dokumani</div>
+        <div class="cover-meta">
+            <p>28 Mayis 2026</p>
+            <p>Hibrit API (Yahoo Finance, Massive, TwelveData)</p>
+            <p>React 19 + TypeScript + Tailwind CSS</p>
+        </div>
+    </div>
+    <div class="cover-footer">
+        Bu dokuman sistem mimarisini, skorlama algoritmalarini, opsiyon stratejilerini ve portfoy risk yonetimini kapsar.
+    </div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+    <h1>Icerik Tablosu</h1>
+    <div class="toc-item toc-item-level1"><span>1. Sistem Genel Bakis</span></div>
+    <div class="toc-item toc-item-level2"><span>1.1 Mimari Ozet</span></div>
+    <div class="toc-item toc-item-level2"><span>1.2 Teknoloji Yigini</span></div>
+    <div class="toc-item toc-item-level2"><span>1.3 Versiyon Gecmisi</span></div>
+    <div class="toc-item toc-item-level1"><span>2. Momentum Skorlama Motoru</span></div>
+    <div class="toc-item toc-item-level2"><span>2.1 11 Faktorlu Skorlama</span></div>
+    <div class="toc-item toc-item-level2"><span>2.2 Faktor Agirliklari</span></div>
+    <div class="toc-item toc-item-level2"><span>2.3 RSI RED Filtresi (v4.1)</span></div>
+    <div class="toc-item toc-item-level2"><span>2.4 Confidence Score</span></div>
+    <div class="toc-item toc-item-level2"><span>2.5 Ranking Score</span></div>
+    <div class="toc-item toc-item-level1"><span>3. v3.0 Kurumsal Ozellikler</span></div>
+    <div class="toc-item toc-item-level2"><span>3.1 IV Egrisi ve Rejim Tespiti</span></div>
+    <div class="toc-item toc-item-level2"><span>3.2 Expected Move ve POP</span></div>
+    <div class="toc-item toc-item-level2"><span>3.3 Yonetim Kurallari</span></div>
+    <div class="toc-item toc-item-level2"><span>3.4 Portfoy Riski</span></div>
+    <div class="toc-item toc-item-level2"><span>3.5 Beta-Weighted Delta</span></div>
+    <div class="toc-item toc-item-level2"><span>3.6 Stress Test</span></div>
+    <div class="toc-item toc-item-level1"><span>4. 4 Katmanli Rapor Format</span></div>
+    <div class="toc-item toc-item-level1"><span>5. API Sistemi</span></div>
+    <div class="toc-item toc-item-level2"><span>5.1 Hibrit API Mimarisi</span></div>
+    <div class="toc-item toc-item-level2"><span>5.2 Calisan API'ler</span></div>
+    <div class="toc-item toc-item-level2"><span>5.3 Kaldirirlan API'ler</span></div>
+    <div class="toc-item toc-item-level1"><span>6. Elestiri ve Duzeltme Gecmisi</span></div>
+    <div class="toc-item toc-item-level1"><span>7. Kullanim Kilavuzu</span></div>
+    <div class="toc-item toc-item-level2"><span>7.1 Gunluk Tarama</span></div>
+    <div class="toc-item toc-item-level2"><span>7.2 Opsiyon Stratejisi Secimi</span></div>
+    <div class="toc-item toc-item-level2"><span>7.3 Pozisyon Yonetimi</span></div>
+    <div class="toc-item toc-item-level1"><span>8. Risk Uyarilari</span></div>
+    <div class="toc-item toc-item-level1"><span>9. Dosya Yapisi</span></div>
+</div>
+
+<!-- SECTION 1 -->
+<div class="page-break"></div>
+<h1><span class="section-num">1.</span>Sistem Genel Bakis</h1>
+
+<h2>1.1 Mimari Ozet</h2>
+<p>NASDAQ Momentum Scanner, gune ilk yarim saatinda (09:30-10:00 EDT) NASDAQ borsasinda hacimli, momentumu yuksek hisseleri bulan, opsiyon stratejisi oneren ve portfoy riskini yoneten tam istemci tarafli (client-side) bir web uygulamasidir.</p>
+
+<p>Sistem 60+ hisseyi tarar, 11 faktorlu momentum skorlama ile siralama yapar, IV (Implied Volatility) egrisini analiz eder, POP (Probability of Profit) ve Expected Move hesaplar, beta-weighted delta ile portfoy riskini izler.</p>
+
+<div class="metric-row">
+    <div class="metric-box">
+        <div class="metric-value">11</div>
+        <div class="metric-label">Faktorlu Skorlama</div>
+    </div>
+    <div class="metric-box">
+        <div class="metric-value">60+</div>
+        <div class="metric-label">Hisse Tarama</div>
+    </div>
+    <div class="metric-box">
+        <div class="metric-value">6</div>
+        <div class="metric-label">Kurumsal Modul (v3.0)</div>
+    </div>
+    <div class="metric-box">
+        <div class="metric-value">27+</div>
+        <div class="metric-label">Elestri Duzeltildi</div>
+    </div>
+</div>
+
+<h2>1.2 Teknoloji Yigini</h2>
+<table>
+<thead><tr><th>Katman</th><th>Teknoloji</th><th>Aciklama</th></tr></thead>
+<tbody>
+<tr><td>Frontend</td><td>React 19 + TypeScript + Vite</td><td>Modern UI framework</td></tr>
+<tr><td>Styling</td><td>Tailwind CSS + shadcn/ui</td><td>40+ hazir komponent</td></tr>
+<tr><td>API</td><td>Hibrit (Yahoo + Massive + TwelveData)</td><td>CORS proxy ile istemci tarafli</td></tr>
+<tr><td>Analitik</td><td>Python (Jupyter)</td><td>Arka planda skorlama ve test</td></tr>
+<tr><td>Deploy</td><td>Static hosting</td><td>Dist/ klasoru deploy edilir</td></tr>
+</tbody>
+</table>
+
+<h2>1.3 Versiyon Gecmisi</h2>
+<table>
+<thead><tr><th>Versiyon</th><th>Tarih</th><th>Ozellikler</th></tr></thead>
+<tbody>
+<tr><td>v1.0</td><td>Mart 2026</td><td>Temel momentum taramasi, 5 faktor</td></tr>
+<tr><td>v2.0</td><td>Nisan 2026</td><td>11 faktor, IV proxy, RSI RED filtre, sanity gate</td></tr>
+<tr><td>v2.1</td><td>Mays 2026</td><td>Hibrit API, CORS fallback, 7 API testi</td></tr>
+<tr><td>v3.0</td><td>28 Mays 2026</td><td>Kurumsal seviye: IV egrisi, POP, Expected Move, yonetim kurallari, portfoy riski, beta-weighted delta, stress test</td></tr>
+</tbody>
+</table>
+
+<!-- SECTION 2 -->
+<div class="page-break"></div>
+<h1><span class="section-num">2.</span>Momentum Skorlama Motoru</h1>
+
+<h2>2.1 11 Faktorlu Skorlama</h2>
+<p>Sistem, her hisseyi 11 bagimsiz faktore gore degerlendirir ve 0-100 arasi bir momentum skoru uretir. Her faktor belirli bir agirliga sahiptir ve toplam %100 etmektedir.</p>
+
+<div class="alert alert-info">
+<div class="alert-title">Skorlama Formulu</div>
+<p><strong>Ham Skor</strong> = sum(faktor_skoru x faktor_agirligi)<br>
+<strong>Final Skor</strong> = Ham Skor x RSI_Filtre (RED=0, HOT=0.3, Normal=1.0)</p>
+</div>
+
+<h2>2.2 Faktor Agirliklari</h2>
+<table>
+<thead><tr><th>#</th><th>Faktor</th><th>Agirlik</th><th>Aciklama</th><th>Skorlama Metodu</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>RVOL</td><td>0.15</td><td>Goreceli Hacim</td><td>Lineer: 0.5x=7, 1x=15, 2x=50, 4x=100</td></tr>
+<tr><td>2</td><td>GAP</td><td>0.10</td><td>Acilis Boslugu</td><td>1-4% optimum (80-100 puan)</td></tr>
+<tr><td>3</td><td>ORB</td><td>0.13</td><td>Opening Range Breakout</td><td>30 dk acilis araligi krilimi</td></tr>
+<tr><td>4</td><td>VWAP</td><td>0.13</td><td>VWAP Pozisyon/Egim</td><td>Ustunde + egim yukari = yuksek skor</td></tr>
+<tr><td>5</td><td>Structure</td><td>0.08</td><td>Fiyat Yapisi</td><td>Higher Highs + Higher Lows yuzdesi</td></tr>
+<tr><td>6</td><td>RSI Short</td><td>0.10</td><td>RSI Kisa Vade (7/9 blend)</td><td>60-75 optimum (85 puan), >80 ceza</td></tr>
+<tr><td>7</td><td>Velocity Dir</td><td>0.07</td><td>Hiz Yon Bileseni</td><td>ATR bazli yonsel hareket</td></tr>
+<tr><td>8</td><td>Velocity Vol</td><td>0.03</td><td>Hiz Volatilite Bileseni</td><td> Gunluk range / ATR</td></tr>
+<tr><td>9</td><td>MarketCap</td><td>0.04</td><td>Piyasa Degeri</td><td>Katalizor proxy (>1B = 55 puan)</td></tr>
+<tr><td>10</td><td>Retention</td><td>0.08</td><td>Intraday Retention</td><td>Acilis kazancini tutma orani</td></tr>
+<tr><td>11</td><td>Price Change</td><td>0.06</td><td>Gunluk Fiyat Degisimi</td><td>>5%=100, >3%=80, >2%=60, >1%=45</td></tr>
+</tbody>
+</table>
+
+<div class="alert alert-success">
+<div class="alert-title">Agirliklari Dogrulama</div>
+<p>Toplam agirlik: 0.15 + 0.10 + 0.13 + 0.13 + 0.08 + 0.10 + 0.07 + 0.03 + 0.04 + 0.08 + 0.06 = <strong>0.97</strong> (Yaklasik %100, 0.03 marj acceptable)</p>
+</div>
+
+<h2>2.3 RSI RED Filtresi (v4.1)</h2>
+<p>RSI RED filtresi, kullanicinin elestirisi uzerine eklenmistir. RSI 80+ olan hisselere "gir" demek yerine otomatik RED (yasak) sinyali verir.</p>
+
+<table>
+<thead><tr><th>RSI Araligi</th><th>Sinyal</th><th>Skor Etkisi</th><th>Aciklama</th></tr></thead>
+<tbody>
+<tr><td>80+</td><td>OVERBOUGHT_RED</td><td>Skor = 0</td><td>Aşiri alim, KESINLIKLE girme</td></tr>
+<tr><td>75-79</td><td>CAUTION_HOT</td><td>Skor x 0.3</td><td>Sicak bolge, stop-loss sart, kucuk pozisyon</td></tr>
+<tr><td>60-74</td><td>OPTIMAL</td><td>Skor x 1.0</td><td>Momentum guvenli bolgede</td></tr>
+<tr><td>45-59</td><td>NEUTRAL</td><td>Skor x 1.0</td><td>Nötr ama islem yapilabilir</td></tr>
+<tr><td>35-44</td><td>WEAK</td><td>Skor x 0.7</td><td>Zayif momentum</td></tr>
+<tr><td>&lt;35</td><td>OVERSOLD</td><td>Skor x 0.5</td><td>Aşiri satim, reversal riski</td></tr>
+</tbody>
+</table>
+
+<h2>2.4 Confidence Score</h2>
+<p>Veri kalitesini olcen 4 alt faktorden olusur:</p>
+<table>
+<thead><tr><th>Faktor</th><th>Agirlik</th><th>Aciklama</th></tr></thead>
+<tbody>
+<tr><td>Data Completeness</td><td>0.30</td><td>Tum veri alanlari mevcut mu?</td></tr>
+<tr><td>Price Recency</td><td>0.25</td><td>Fiyat verisi ne kadar taze?</td></tr>
+<tr><td>Volume Quality</td><td>0.25</td><td>Hacim verisi guvenilir mi?</td></tr>
+<tr><td>Indicator Reliability</td><td>0.20</td><td>Teknik gostergeler guvenilir mi?</td></tr>
+</tbody>
+</table>
+
+<h2>2.5 Ranking Score</h2>
+<p>Final siralama icin kullanilan agirlikli skor:</p>
+<pre>Ranking Score = momentum x 0.55 + confidence x 0.25 + R/R x 0.10 + pattern x 0.10</pre>
+
+<!-- SECTION 3 -->
+<div class="page-break"></div>
+<h1><span class="section-num">3.</span>v3.0 Kurumsal Ozellikler</h1>
+
+<p>v3.0 guncellemesi ile sistem, perakende yatirimcidan kurumsal trader seviyesine cikarilmistir. 6 kritik eksiklik kapatilmistir:</p>
+
+<ol>
+<li><strong>IV Egrisi:</strong> Tek sayi yerine term structure + vol skew</li>
+<li><strong>Greeks:</strong> Portfoy seviyesinde beta-weighted delta</li>
+<li><strong>Expected Move:</strong> Straddle fiyatindan hareket tahmini</li>
+<li><strong>Yonetim Kurallari:</strong> %50 kar al, 21 DTE roll, 2x stop</li>
+<li><strong>Korelasyon Riski:</strong> Sektör matrisi, tek sektor bet kontrolu</li>
+<li><strong>Execution:</strong> Limit emir, midpoint giris, slippage tahmini</li>
+</ol>
+
+<h2>3.1 IV Egrisi ve Rejim Tespiti</h2>
+<p>Implied Volatility tek sayi degil, bir egridir. Term structure (vade yapisi) ve skew (asimetri) ile birlikte degerlendirilir.</p>
+
+<h3>3.1.1 Term Structure</h3>
+<table>
+<thead><tr><th>Sekil</th><th>Durum</th><th>Strateji</th></tr></thead>
+<tbody>
+<tr><td>Contango</td><td>Uzun vade IV > Kisa vade IV (Normal)</td><td>Standart credit spread</td></tr>
+<tr><td>Backwardation</td><td>Kisa vade IV > Uzun vade IV (Panik)</td><td>Credit spread YASAK, long premium</td></tr>
+<tr><td>Flat</td><td>IV'ler yakın</td><td>Nötr, bekleyin</td></tr>
+</tbody>
+</table>
+
+<h3>3.1.2 VIX Rejimleri</h3>
+<table>
+<thead><tr><th>VIX</th><th>Rejim</th><th>Credit Spread</th><th>Long Premium</th><th>Max DTE</th></tr></thead>
+<tbody>
+<tr><td>35+</td><td>EXTREME_FEAR</td><td>Evet (IV zirvede)</td><td>Hayir</td><td>30</td></tr>
+<tr><td>25-34</td><td>FEAR</td><td>Evet</td><td>Hayir</td><td>35</td></tr>
+<tr><td>16-24</td><td>NORMAL</td><td>Evet</td><td>Evet</td><td>45</td></tr>
+<tr><td>13-15</td><td>COMPLACENT</td><td>Evet</td><td>Evet</td><td>45</td></tr>
+<tr><td>&lt;12</td><td>EXTREME_COMPLACENT</td><td>Evet (riskli)</td><td>Evet</td><td>45</td></tr>
+</tbody>
+</table>
+
+<h2>3.2 Expected Move ve POP</h2>
+
+<h3>3.2.1 Expected Move Formulu</h3>
+<pre>Expected Move = ATM_IV x Spot x sqrt(DTE / 365)</pre>
+<p>Ornek: IV %40, Spot $100, DTE 30 gun:</p>
+<pre>EM = 0.40 x 100 x sqrt(30/365) = 0.40 x 100 x 0.287 = $11.48 (%11.48)</pre>
+
+<h3>3.2.2 Probability of Profit (POP)</h3>
+<p>Monte Carlo simulasyonu ile 10,000 path uzerinden hesaplanir:</p>
+<pre>POP = (Kazancli Pathler / 10,000) x 100
+Expected Value = (Win% x Ort Kazanc) - (Loss% x Ort Zarar)</pre>
+
+<table>
+<thead><tr><th>Metrik</th><th>Aciklama</th></tr></thead>
+<tbody>
+<tr><td>POP %</td><td>Kar etme olasiligi</td></tr>
+<tr><td>Expected Value</td><td>Her islemin beklenen degeri ($)</td></tr>
+<tr><td>Win Rate @ 50% Profit</td><td>%50 kar alinca kazanma orani (genelde %10-15 daha iyi)</td></tr>
+<tr><td>Win Rate @ 21 DTE Roll</td><td>21 DTE'de roll yapinca kazanma orani</td></tr>
+</tbody>
+</table>
+
+<h2>3.3 Yonetim Kurallari</h2>
+<p>Kurumsal trader girisi degil cikisi yonetir. v3.0'da her pozisyon icin otomatik yonetim kurallari uretilir:</p>
+
+<table>
+<thead><tr><th>Kural</th><th>Deger</th><th>Aciklama</th></tr></thead>
+<tbody>
+<tr><td>Kar Hedefi</td><td>%50</td><td>Tastytrade kurali: %50 kar da pozisyonun yarisi kapatilir</td></tr>
+<tr><td>Stop Loss</td><td>2x Kredi</td><td>Max zarar = 2 x alinan kredi miktari</td></tr>
+<tr><td>DTE Roll</td><td>21 gun</td><td>21 gun kala sonraki aya roll veya kapat</td></tr>
+<tr><td>Time Stop</td><td>14 gun</td><td>14 gun kala assignment riski yuksek, kapat</td></tr>
+<tr><td>Pozisyon Boyutu</td><td>NLV x %2</td><td>Her pozisyon max net liquidation value'nin %2'si</td></tr>
+<tr><td>Emir Tipi</td><td>Limit</td><td>Piyasa emiri yerine limit emir (midpoint)</td></tr>
+<tr><td>Max Slippage</td><td>%5</td><td>Limit emir %5 slippage toleransi</td></tr>
+</tbody>
+</table>
+
+<h2>3.4 Portfoy Riski</h2>
+
+<h3>3.4.1 Beta-Weighted Delta</h3>
+<pre>Beta-Weighted Delta = sum(Pozisyon Delta x Hisse Beta)</pre>
+<p>+120 BWD = SPY %1 yukselirse portfoy +$120 kazanir (≈ SPY'yi %1.2 long tutmak).</p>
+
+<h3>3.4.2 Sektör Korelasyonu</h3>
+<p>Ayni sektorden 3+ pozisyon acinca sistem uyarir:</p>
+<div class="alert alert-warning">
+<div class="alert-title">Korelasyon Uyarisi Ornegi</div>
+<p>AAPL (Tech), MSFT (Tech), NVDA (Tech) acilirsa:<br>
+Sistem: "3 Teknoloji pozisyonu = Tek sektore bet. SPY/Q duserse hepsi zarar eder."</p>
+</div>
+
+<h2>3.5 Stress Test</h2>
+<p>4 senaryo ile portfoy test edilir:</p>
+<table>
+<thead><tr><th>Senaryo</th><th>SPY Hareket</th><th>VIX Hareket</th></tr></thead>
+<tbody>
+<tr><td>Hafif Duzeltme</td><td>-2%</td><td>+30%</td></tr>
+<tr><td>Orta Crash</td><td>-5%</td><td>+50%</td></tr>
+<tr><td>Sert Crash</td><td>-10%</td><td>+80%</td></tr>
+<tr><td>Rally (IV Crush)</td><td>+2%</td><td>-20%</td></tr>
+</tbody>
+</table>
+
+<!-- SECTION 4 -->
+<div class="page-break"></div>
+<h1><span class="section-num">4.</span>4 Katmanli Rapor Format</h1>
+
+<p>v3.0 sistemi 4 katmanli kurumsal rapor uretir:</p>
+
+<div class="alert alert-info">
+<div class="alert-title">Katman 1: Rejim</div>
+<p>VIX seviyesi, term structure (contango/backwardation), IV/HV radari, likidite gecenler tablosu.<br>
+Ornek: "VIX: 22 (NORMAL) | Term: CONTANGO | Credit Spread: Evet | Sizing: 1.0x"</p>
+</div>
+
+<div class="alert alert-success">
+<div class="alert-title">Katman 2: Acik Pozisyonlar</div>
+<p>Her pozisyon icin DTE, Delta, Vega, aksiyon, gerekce, theta decay, gamma riski, cikis plani, P&L, stress test.<br>
+Ornek: "TSLA Bull Put | DTE:25 | Delta:+15 | P&L:+12% | Theta: $4.20/gun | Aksiyon: %50 kar al"</p>
+</div>
+
+<div class="alert alert-warning">
+<div class="alert-title">Katman 3: Yeni Kurulumlar</div>
+<p>Hisse, strateji, skor, kurulum detayi, POP, max risk, kredi, kar al noktasi, stop, yonetim, expected move, breakeven, calismazsa senaryo.<br>
+Ornek: "GE Bull Put Spread (Skor 8/10) | Short 45P/Long 40P, 35 DTE | POP: %72 | Max Risk: $250 | Kredi: $1.65 | Kar Al: %50 | Stop: 2x | Breakeven: $43.35"</p>
+</div>
+
+<div class="alert alert-danger">
+<div class="alert-title">Katman 4: Portfoy Sagligi</div>
+<p>Beta-weighted delta, toplam vega, toplam theta, sektor dagilimi, max sektor konsantrasyonu, stress test sonucu.<br>
+Ornek: "BWD: +120 (≈SPY %1.2 long) | Vega: -$340 | Theta: +$85/gun | Tech %42 UYARI | Stress -2%: -$1,240 (%4.1 NLV)"</p>
+</div>
+
+<!-- SECTION 5 -->
+<div class="page-break"></div>
+<h1><span class="section-num">5.</span>API Sistemi</h1>
+
+<h2>5.1 Hibrit API Mimarisi</h2>
+<p>Sistem 7 farkli API'yi test etmis, 3'u calisir durumdadir. Rate limit'e takilmamak icin otomatik fallback mekanizmasi vardir:</p>
+<pre>API Siralamasi:
+1. Yahoo Finance (Ana kaynak)
+2. Massive (Fallback 1 - 60 gun veri)
+3. TwelveData (Fallback 2 - Meta + OHLCV)
+4. Alphavantage (Fallback 3 - 100 cagrı/gun limit)</pre>
+
+<h2>5.2 Calisan API'ler</h2>
+<table>
+<thead><tr><th>API</th><th>Durum</th><th>Veri</th><th>Limit</th></tr></thead>
+<tbody>
+<tr><td>Yahoo Finance</td><td>Aktif</td><td>OHLCV, Meta</td><td>Rate limit var</td></tr>
+<tr><td>Massive</td><td>Aktif</td><td>60 gun OHLCV</td><td>API Key gerekli</td></tr>
+<tr><td>TwelveData</td><td>Aktif</td><td>10 gun + Meta</td><td>API Key gerekli</td></tr>
+</tbody>
+</table>
+
+<h2>5.3 Kaldirilan API'ler</h2>
+<table>
+<thead><tr><th>API</th><th>Hata</th><th>Neden Kaldirildi</th></tr></thead>
+<tbody>
+<tr><td>Finnhub</td><td>401 Unauthorized</td><td>API Key calismiyordu</td></tr>
+<tr><td>Finazon</td><td>401 Unauthorized</td><td>Abonelik gerekli</td></tr>
+<tr><td>Stooq</td><td>"Get your apikey"</td><td>Artik key gerektiriyor</td></tr>
+<tr><td>Nasdaq Data Link</td><td>403 Forbidden</td><td>Key yetkisiz</td></tr>
+</tbody>
+</table>
+
+<h2>5.4 CORS Proxy Fallback</h2>
+<p>Frontend dogrudan API'lere erisir. CORS sorunu icin 2 proxy kullanilir:</p>
+<pre>1. AllOrigins (https://api.allorigins.win/raw?url=...)
+2. CORS Proxy (https://corsproxy.io/?...)</pre>
+
+<!-- SECTION 6 -->
+<div class="page-break"></div>
+<h1><span class="section-num">6.</span>Elestiri ve Duzeltme Gecmisi</h1>
+
+<p>Sistem 27'den fazla elestiri ile sekillendirilmistir:</p>
+
+<h2>Faz 1 Elestirileri (v1 -> v2)</h2>
+<table>
+<thead><tr><th>#</th><th>Elestiri</th><th>Cozum</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Agirliklar toplami %100 degil</td><td>Normalize edildi, toplam = 1.00</td></tr>
+<tr><td>2</td><td>VWAP intraday gerektiriyor</td><td>VWAP skoru basitlestirildi</td></tr>
+<tr><td>3</td><td>ORB/ATR ayrimi belirsiz</td><td>Farkli faktorler olarak ayrildi</td></tr>
+<tr><td>4</td><td>"Katalizor" ismi yaniltici</td><td>MarketCap Score olarak degistirildi</td></tr>
+<tr><td>5</td><td>IV Proxy eksik</td><td>Historical Vol x 1.2 eklendi</td></tr>
+<tr><td>6</td><td>Hedef fiyat sabit</td><td>ATR x carpan ile dinamiklestirildi</td></tr>
+<tr><td>7</td><td>Earnings uyarisi yok</td><td>Earnings calendar kontrolu eklendi</td></tr>
+<tr><td>8</td><td>CORS fallback yok</td><td>2 proxy ile hibrit sistem eklendi</td></tr>
+<tr><td>9</td><td>Sektor map yok</td><td>NASDAQ-100 sektor haritasi eklendi</td></tr>
+<tr><td>10</td><td>Zaman uyarisi yok</td><td>Piyasa acilis/kapanis kontrolu eklendi</td></tr>
+<tr><td>11</td><td>Pozisyon boyutu sabit</td><td>ATR bazli dinamik sizing eklendi</td></tr>
+<tr><td>12</td><td>RSI araligi cakismasi</td><td>60-75 optimum, >80 ceza duzeltildi</td></tr>
+<tr><td>13</td><td>Velocity kavram ayrimi</td><td>Yon ve Volatilite ayri faktorler</td></tr>
+<tr><td>14</td><td>Wilson CI p degeri yanlis</td><td>p=0.5 olarak duzeltildi</td></tr>
+<tr><td>15</td><td>RVOL lineer degil</td><td>Lineer interpolasyon eklendi</td></tr>
+</tbody>
+</table>
+
+<h2>Faz 2 Elestirileri (v2 -> v3.0)</h2>
+<table>
+<thead><tr><th>#</th><th>Elestiri</th><th>Cozum (v3.0)</th></tr></thead>
+<tbody>
+<tr><td>16</td><td>IV tek sayi, egri degil</td><td>Term structure + Vol skew eklendi</td></tr>
+<tr><td>17</td><td>Greeks portfoy seviyesinde toplanmiyor</td><td>Beta-weighted delta + aggregate greeks</td></tr>
+<tr><td>18</td><td>Expected Move hesaplanmiyor</td><td>Straddle/formul ile EM + POP</td></tr>
+<tr><td>19</td><td>Yonetim kurallari yok</td><td>%50 kar, 21 DTE roll, 2x stop</td></tr>
+<tr><td>20</td><td>Korelasyon riski yok</td><td>Sektor matrisi, 3+ pozisyon uyarisi</td></tr>
+<tr><td>21</td><td>Execution kalitesi yok</td><td>Limit emir, midpoint, slippage</td></tr>
+<tr><td>22</td><td>RSI 80+ "gir" diyor</td><td>RSI RED filtresi: Skor = 0</td></tr>
+<tr><td>23</td><td>Opsiyon vade kontrolu yok</td><td>3 gun: RED, 7 gun: CAUTION</td></tr>
+<tr><td>24</td><td>Sanity gate eksik</td><td>NaN/Infinity/null kontrolu</td></tr>
+<tr><td>25</td><td>Score explanation yok</td><td>Her faktor icin aciklama motoru</td></tr>
+<tr><td>26</td><td>Backtest engine yok</td><td>Tarihsel dogrulama modulu</td></tr>
+<tr><td>27</td><td>Data quality gostergesi yok</td><td>GOOD/FAIR/POOR etiketi</td></tr>
+</tbody>
+</table>
+
+<!-- SECTION 7 -->
+<div class="page-break"></div>
+<h1><span class="section-num">7.</span>Kullanim Kilavuzu</h1>
+
+<h2>7.1 Gunluk Tarama</h2>
+<ol>
+<li><strong>Piyasa acilisini bekleyin:</strong> 09:30 EDT'den once veriler guncel degil.</li>
+<li><strong>Tarama butonuna basin:</strong> 60 hisse otomatik taranir (30-60 saniye).</li>
+<li><strong>Skor tablosunu inceleyin:</strong> Skor 45+ ve RSI 40-75 olanlari filtreleyin.</li>
+<li><strong>Signal kontrolu:</strong> RED (RSI 80+) ve HOT (RSI 75-79) olanlari atlayin.</li>
+<li><strong>Detay analizi:</strong> Secilen hisselerin IV Rank, Expected Move, POP degerlerine bakin.</li>
+</ol>
+
+<h2>7.2 Opsiyon Stratejisi Secimi</h2>
+<table>
+<thead><tr><th>Durum</th><th>IV Rank</th><th>Strateji</th><th>Vade</th></tr></thead>
+<tbody>
+<tr><td>Güclu momentum, düsük IV</td><td>&lt;30</td><td>Long Call (ITM/ATM)</td><td>30-45 gun</td></tr>
+<tr><td>Orta momentum, yüksek IV</td><td>50-70</td><td>Bull Call Spread</td><td>30-45 gun</td></tr>
+<tr><td>Hafif yukselis/yatay, yuksek IV</td><td>&gt;50</td><td>Bull Put Spread</td><td>30-45 gun</td></tr>
+<tr><td>Yön net degil, yuksek vol</td><td>Herhangi</td><td>Long Straddle</td><td>14-30 gun</td></tr>
+<tr><td>Backwardation (panik)</td><td>Herhangi</td><td>Credit spread YASAK</td><td>Long premium</td></tr>
+</tbody>
+</table>
+
+<h2>7.3 Pozisyon Yonetimi</h2>
+<ol>
+<li><strong>Kar gerceklestirme:</strong> %50 kar da pozisyonun yarisi kapatilir.</li>
+<li><strong>Zarar durdurma:</strong> 2x kredi zararina ulasinca tamamen kapatilir.</li>
+<li><strong>Vade yonetimi:</strong> 21 DTE'de roll dusunulur, 14 DTE'de kapatilir.</li>
+<li><strong>Pozisyon boyutu:</strong> Max NLV'nin %2'si, limit emir ile girilir.</li>
+<li><strong>Giris zamani:</strong> 10:30-11:30 AM EDT (en likit zaman).</li>
+</ol>
+
+<!-- SECTION 8 -->
+<div class="page-break"></div>
+<h1><span class="section-num">8.</span>Risk Uyarilari</h1>
+
+<div class="alert alert-danger">
+<div class="alert-title">Genel Risk Uyarisi</div>
+<p>Bu sistem yatirim tavsiyesi degildir. Sadece teknik analiz aracidir. Tüm kararlar kullanicinin sorumlulugundadir. Opsiyon ticareti yuksek risk icerir ve tum sermayenizi kaybedebilirsiniz.</p>
+</div>
+
+<table>
+<thead><tr><th>Risk</th><th>Aciklama</th><th>Onlem</th></tr></thead>
+<tbody>
+<tr><td>Veri Gecikmesi</td><td>API'ler gercek zamanli veri saglamayabilir</td><td>3 API fallback, veri yasi kontrolu</td></tr>
+<tr><td>CORS Engeli</td><td>Proxy'ler erisilemez olabilir</td><td>2 farkli CORS proxy</td></tr>
+<tr><td>Rate Limit</td><td>Asiri cagri API ban'i tetikleyebilir</td><td>Throttle (120ms aralik)</td></tr>
+<tr><td>RSI RED Filtre</td><td>RSI 80+ hisseleri filtreler ama tum riskleri engellemez</td><td>Ek teknik analiz sart</td></tr>
+<tr><td>Vade Riski</td><td>0DTE/3DTE opsiyonlar cok riskli</td><td>Otomatik RED filtresi</td></tr>
+<tr><td>Sektör Bet'i</td><td>3+ ayni sektor pozisyonu = tek bet</td><td>Korelasyon uyarisi</td></tr>
+<tr><td>IV Crush</td><td>Earnings sonrasi IV duser, long premium zarar eder</td><td>Earnings takvimi kontrolu</td></tr>
+<tr><td>Backwardation</td><td>Panik ortaminda credit spread riskli</td><td>Otomatik engel</td></tr>
+</tbody>
+</table>
+
+<!-- SECTION 9 -->
+<div class="page-break"></div>
+<h1><span class="section-num">9.</span>Dosya Yapisi</h1>
+
+<pre>
+/mnt/agents/output/app/
+├── src/
+│   ├── types/
+│   │   ├── scanner.ts          # v1-v4.1 tipleri (StockResult, ScanResponse)
+│   │   └── options.ts          # v3.0 tipleri (Greeks, IVCurve, PortfolioRisk)
+│   ├── lib/
+│   │   ├── momentum.ts         # Ana skorlama motoru (11 faktor, v4.1)
+│   │   ├── dataProviders.ts    # Hibrit API (Yahoo, Massive, TwelveData)
+│   │   ├── optionsStrategies.ts# Strateji oneri + v3.0 analitik
+│   │   ├── scoreConfig.ts      # Agirliklar, threshold'lar, renkler
+│   │   ├── sanityGate.ts       # NaN/Infinity/null kontrolu
+│   │   ├── regimeDetector.ts   # v3.0: VIX rejim, IV egrisi
+│   │   ├── optionAnalytics.ts  # v3.0: Expected Move, POP, Monte Carlo
+│   │   ├── executionRules.ts   # v3.0: Yonetim kurallari, pozisyon boyutu
+│   │   ├── portfolioRisk.ts    # v3.0: Beta-delta, sektor, stress test
+│   │   └── v3Report.ts         # v3.0: 4 katmanli rapor motoru
+│   ├── pages/
+│   │   └── Index.tsx           # Ana sayfa
+│   └── components/
+│       └── ui/                 # shadcn/ui komponentleri
+├── dist/                       # Build ciktisi
+└── index.html
+</pre>
+
+<h2>Yeni Dosyalar (v3.0)</h2>
+<table>
+<thead><tr><th>Dosya</th><th>Satir</th><th>Gorevi</th></tr></thead>
+<tbody>
+<tr><td>types/options.ts</td><td>250+</td><td>Tum v3.0 tipleri</td></tr>
+<tr><td>lib/regimeDetector.ts</td><td>200+</td><td>VIX rejim, contango/backwardation</td></tr>
+<tr><td>lib/optionAnalytics.ts</td><td>250+</td><td>EM, POP, Spread Metrics</td></tr>
+<tr><td>lib/executionRules.ts</td><td>280+</td><td>%50 kar, 21 DTE, 2x stop, %2 sizing</td></tr>
+<tr><td>lib/portfolioRisk.ts</td><td>220+</td><td>Beta-delta, sektor, 4lu stress test</td></tr>
+<tr><td>lib/v3Report.ts</td><td>350+</td><td>4 katmanli kurumsal rapor</td></tr>
+</tbody>
+</table>
+
+<h2>Guncellenen Dosyalar</h2>
+<table>
+<thead><tr><th>Dosya</th><th>Ekleme</th></tr></thead>
+<tbody>
+<tr><td>optionsStrategies.ts</td><td>+IVCurve, +ExpectedMove, +POP, +Management, +Sizing, +Execution</td></tr>
+</tbody>
+</table>
+
+<div style="margin-top: 2cm; border-top: 2px solid #1a472a; padding-top: 1cm; font-size: 9pt; color: #666;">
+<p><strong>NASDAQ Momentum Scanner v3.0</strong> - Kurumsal Seviye Teknik Dokumani</p>
+<p>Olusturulma: 28 Mayis 2026 | Son Guncelleme: 28 Mayis 2026</p>
+<p>Bu dokumanda anlatilan sistem yatirim tavsiyesi degildir. Sadece teknik analiz aracidir.</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NASDAQ Momentum Scanner v4.3</title>
+<style>
+/* Reset */
+body { margin: 0; padding: 0; font-family: 'Georgia', 'Times New Roman', serif; font-size: 11pt; line-height: 1.6; color: #333; }
+
+/* Cover */
+@page :first { margin: 0; }
+.cover { width: 210mm; height: 297mm; margin: 0; position: relative; overflow: hidden; page-break-after: always; background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%); }
+.cover::before { content: ''; position: absolute; top: -50%; right: -30%; width: 80%; height: 100%; background: radial-gradient(circle, rgba(16,185,129,0.1) 0%, transparent 70%); }
+.cover::after { content: ''; position: absolute; bottom: -30%; left: -20%; width: 60%; height: 80%; background: radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%); }
+.cover-content { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; width: 80%; z-index: 10; }
+.cover-badge { display: inline-block; padding: 8px 24px; border: 1px solid rgba(16,185,129,0.4); border-radius: 4px; color: #10b981; font-size: 10pt; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 30px; }
+.cover-title { font-size: 32pt; font-weight: 700; color: #fff; margin-bottom: 15px; line-height: 1.2; }
+.cover-subtitle { font-size: 14pt; color: #94a3b8; margin-bottom: 60px; font-weight: 400; }
+.cover-meta { font-size: 10pt; color: #64748b; line-height: 2.2; }
+.cover-meta strong { color: #e2e8f0; font-weight: 600; }
+.cover-footer { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); font-size: 9pt; color: #475569; }
+
+/* Page */
+@page { size: A4; margin: 25mm 20mm; }
+.page { page-break-before: always; }
+.page:first-of-type { page-break-before: auto; }
+
+/* Typography */
+h1 { font-size: 20pt; font-weight: 700; color: #0f172a; margin-top: 0; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #10b981; page-break-after: avoid; }
+h2 { font-size: 14pt; font-weight: 700; color: #1e293b; margin-top: 30px; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid #cbd5e1; page-break-after: avoid; }
+h3 { font-size: 12pt; font-weight: 700; color: #334155; margin-top: 20px; margin-bottom: 10px; page-break-after: avoid; }
+h4 { font-size: 11pt; font-weight: 600; color: #475569; margin-top: 15px; margin-bottom: 8px; page-break-after: avoid; }
+p { margin: 8px 0; text-align: justify; }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 9.5pt; page-break-inside: avoid; }
+thead { display: table-header-group; }
+thead tr { border-top: 2px solid #333; border-bottom: 1px solid #333; }
+thead th { padding: 8px 10px; text-align: left; font-weight: 600; color: #0f172a; background: #f8fafc; }
+tbody tr { border-bottom: 1px solid #e2e8f0; }
+tbody tr:last-child { border-bottom: 2px solid #333; }
+tbody td { padding: 6px 10px; vertical-align: top; }
+tr:nth-child(even) { background: #f8fafc; }
+
+/* Code */
+code { font-family: 'Courier New', monospace; font-size: 9pt; background: #f1f5f9; padding: 2px 6px; border-radius: 3px; }
+pre { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; font-size: 8.5pt; line-height: 1.5; overflow-x: auto; page-break-inside: avoid; max-width: 100%; }
+pre code { background: none; padding: 0; }
+
+/* Lists */
+ul, ol { margin: 8px 0; padding-left: 25px; }
+li { margin: 4px 0; }
+
+/* TOC */
+.toc { page-break-before: always; }
+.toc h1 { border-bottom-color: #6366f1; }
+.toc ul { list-style: none; padding-left: 0; }
+.toc li { padding: 4px 0; border-bottom: 1px dotted #e2e8f0; }
+.toc a { color: #334155; text-decoration: none; }
+.toc .toc-h1 { font-weight: 700; margin-top: 10px; }
+.toc .toc-h2 { padding-left: 20px; font-size: 10pt; }
+
+/* Emphasis boxes */
+.box { border-left: 4px solid #10b981; background: #f0fdf4; padding: 12px 16px; margin: 12px 0; border-radius: 0 6px 6px 0; }
+.box-warn { border-left-color: #f59e0b; background: #fffbeb; }
+.box-danger { border-left-color: #ef4444; background: #fef2f2; }
+.box-info { border-left-color: #3b82f6; background: #eff6ff; }
+.box-title { font-weight: 700; margin-bottom: 6px; }
+
+/* Version badge */
+.ver { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 8pt; font-weight: 700; }
+.ver-v41 { background: #fef3c7; color: #92400e; }
+.ver-v42 { background: #dbeafe; color: #1e40af; }
+.ver-v43 { background: #dcfce7; color: #166534; }
+
+/* Metrics */
+.metric { display: inline-block; padding: 4px 12px; border-radius: 4px; font-size: 9pt; font-weight: 600; margin: 2px; }
+.m-good { background: #dcfce7; color: #166534; }
+.m-warn { background: #fef3c7; color: #92400e; }
+.m-bad { background: #fee2e2; color: #991b1b; }
+.m-neutral { background: #f1f5f9; color: #475569; }
+
+/* Footer */
+.footer { position: running(footer); font-size: 8pt; color: #94a3b8; text-align: center; border-top: 1px solid #e2e8f0; padding-top: 8px; }
+@page { @bottom-center { content: element(footer); } }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-content">
+    <div class="cover-badge">Teknik Referans</div>
+    <h1 class="cover-title">NASDAQ Momentum Scanner</h1>
+    <p class="cover-subtitle">v4.3 — AI Catalyst + Microstructure + PDT Persistence + 5 Sekmeli Portal</p>
+    <div class="cover-meta">
+      <p><strong>Versiyon:</strong> 4.3</p>
+      <p><strong>Tarih:</strong> 29 Mayıs 2026</p>
+      <p><strong>Toplam Kod:</strong> ~10,000+ satır TypeScript</p>
+      <p><strong>Dosya Sayısı:</strong> 60+ kaynak dosya</p>
+      <p><strong>Grafik:</strong> 10+ Recharts entegrasyonu</p>
+    </div>
+  </div>
+  <div class="cover-footer">NASDAQ Momentum Scanner AI — Gelişmiş Borsa Analiz Platformu</div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+<h1>İçindekiler</h1>
+<ul>
+  <li class="toc-h1"><a href="#p1">1. Proje Özeti</a></li>
+  <li class="toc-h1"><a href="#p2">2. Klasör Yapısı</a></li>
+  <li class="toc-h1"><a href="#p3">3. Algoritma Mimarisi</a></li>
+  <li class="toc-h1"><a href="#p4">4. 11 Faktör Skorlama</a></li>
+  <li class="toc-h1"><a href="#p5">5. Versiyon Geçmişi</a></li>
+  <li class="toc-h2"><a href="#p51">5.1 v4.1 — RSI RED Filtresi</a></li>
+  <li class="toc-h2"><a href="#p52">5.2 v4.2 — Çift Yönlü Motor</a></li>
+  <li class="toc-h2"><a href="#p53">5.3 v4.2 — PDT Persistence</a></li>
+  <li class="toc-h2"><a href="#p54">5.4 v4.3 — AI Catalyst Analyzer</a></li>
+  <li class="toc-h2"><a href="#p55">5.5 v4.3 — Microstructure Check</a></li>
+  <li class="toc-h1"><a href="#p6">6. Confidence Score</a></li>
+  <li class="toc-h1"><a href="#p7">7. Ranking Score</a></li>
+  <li class="toc-h1"><a href="#p8">8. Opsiyon Stratejileri</a></li>
+  <li class="toc-h1"><a href="#p9">9. Hibrit Veri Sağlayıcı</a></li>
+  <li class="toc-h1"><a href="#p10">10. Sanity Gate</a></li>
+  <li class="toc-h1"><a href="#p11">11. 5 Sekmeli Portal</a></li>
+  <li class="toc-h1"><a href="#p12">12. Veri Akışı</a></li>
+  <li class="toc-h1"><a href="#p13">13. Bilinen Sorunlar</a></li>
+  <li class="toc-h1"><a href="#p14">14. Değişiklik Geçmişi</a></li>
+</ul>
+</div>
+
+<!-- PAGE 1 -->
+<div class="page" id="p1">
+<h1>1. Proje Özeti</h1>
+<p>NASDAQ Momentum Scanner, NASDAQ borsasında günün ilk yarım saatinde (09:30–10:00 EST) en güçlü momentumu gösteren hisseleri bulan, çift yönlü (CALL/PUT) opsiyon stratejisi üreten, AI katalizör ve mikro yapı analizi ile zenginleştirilmiş web tabanlı bir analiz platformudur.</p>
+
+<h2>Özellikler</h2>
+<table>
+<thead><tr><th>Özellik</th><th>Versiyon</th><th>Açıklama</th></tr></thead>
+<tbody>
+<tr><td>11 Faktör Skorlama</td><td>v1–v3</td><td>RVOL, GAP, ORB, VWAP, Structure, RSI, Velocity, MarketCap, Retention, Price Change</td></tr>
+<tr><td>RSI RED Filtresi</td><td><span class="ver ver-v41">v4.1</span></td><td>RSI ≥ 80 = skor 0 (otomatik RED)</td></tr>
+<tr><td>Çift Yönlü Motor</td><td><span class="ver ver-v42">v4.2</span></td><td>Hem CALL hem PUT skorlama</td></tr>
+<tr><td>PDT Persistence</td><td><span class="ver ver-v42">v4.2</span></td><td>T+1 uygunluk analizi</td></tr>
+<tr><td>AI Catalyst</td><td><span class="ver ver-v43">v4.3</span></td><td>Haber/katalizör analizi (PDF entegrasyonu)</td></tr>
+<tr><td>Microstructure</td><td><span class="ver ver-v43">v4.3</span></td><td>1dk bar yorgunluk tespiti</td></tr>
+<tr><td>5 Sekmeli Portal</td><td><span class="ver ver-v43">v4.3</span></td><td>Dashboard, Tarama, Analiz, Geçmiş, Portföy</td></tr>
+<tr><td>10+ Grafik</td><td><span class="ver ver-v43">v4.3</span></td><td>Area, Pie, Bar, Radar chart'lar</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="p2">
+<h1>2. Klasör Yapısı</h1>
+<pre><code>app/
+├── src/
+│   ├── layouts/
+│   │   └── PortalLayout.tsx          # Ana layout (sidebar + header)
+│   ├── pages/
+│   │   ├── Dashboard.tsx             # Dashboard (6 grafik + 4 kart)
+│   │   ├── ScanPage.tsx              # Tarama (30 hisse + filtreleme)
+│   │   ├── AnalysisPage.tsx          # Analiz (tek hisse detaylı)
+│   │   ├── HistoryPage.tsx           # Geçmiş (8 kayıt + trend)
+│   │   └── PortfolioPage.tsx         # Portföy (5 pozisyon + P/L)
+│   ├── sections/
+│   │   ├── ResultsTable.tsx          # Sonuç tablosu (v4.2 sütunlar)
+│   │   ├── StockDetailModal.tsx      # Hisse detay modal
+│   │   ├── OptionsPanel.tsx          # Opsiyon paneli (çift yönlü)
+│   │   ├── SmartScanner.tsx          # Akıllı tarama motoru
+│   │   └── ... (diğer bileşenler)
+│   ├── lib/
+│   │   ├── momentum.ts               # ANA MOTOR (740 satır, 11 faktör)
+│   │   ├── aiCatalystAnalyzer.ts     # AI katalizör (187 satır) NEW
+│   │   ├── microstructureCheck.ts    # Mikro yapı (142 satır) NEW
+│   │   ├── pdtAnalyzer.ts            # PDT analiz (380 satır)
+│   │   ├── v4Engine.ts               # v4 Prop Desk (319 satır)
+│   │   ├── scoreConfig.ts            # Skor yapılandırma (311 satır)
+│   │   ├── optionsStrategies.ts      # Opsiyon stratejileri (412 satır)
+│   │   ├── dataProviders.ts          # Hibrit veri (716 satır)
+│   │   ├── sanityGate.ts             # Veri doğrulama (231 satır)
+│   │   └── ... (diğer modüller)
+│   ├── types/
+│   │   └── scanner.ts                # Tip tanımları (v4.2+v4.3)
+│   └── App.tsx                       # Router + Layout</code></pre>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="p3">
+<h1>3. Algoritma Mimarisi</h1>
+<h2>5 Katmanlı Yapı</h2>
+
+<h3>Katman 1: Veri Çekme (dataProviders.ts)</h3>
+<p>Yahoo Finance → Massive → TwelveData → Alphavantage (fallback zinciri). CORS Proxy: AllOrigins → corsproxy.io</p>
+
+<h3>Katman 2: Analiz (momentum.ts)</h3>
+<p>11 Faktör skorlama + Bear skoru (v4.2) + Persistence skoru (v4.2) + AI Catalyst (v4.3) + Microstructure (v4.3) + RSI RED filtresi (v4.1) = Raw Score</p>
+
+<h3>Katman 3: Doğrulama (sanityGate.ts)</h3>
+<p>NaN/Infinity kontrolü, aralık clamp [0, 100], ağırlık normalize</p>
+
+<h3>Katman 4: Skorlama (scoreConfig.ts)</h3>
+<p>Confidence Score (4 bileşen) + Ranking Score (4 bileşen) + Sinyal belirleme (9 sinyal)</p>
+
+<h3>Katman 5: Çıktı (optionsStrategies.ts)</h3>
+<p>CALL setup + PUT setup + POP hesaplama + Kelly sizing + Execution plan</p>
+
+<div class="box box-info">
+<div class="box-title">Veri Akışı Özeti</div>
+<p><strong>TARA butonu</strong> → Paralel tarama (30 hisse) → Her hisse için 4 API denenir → 11 faktör skorlanır + Bear + Persistence + AI Catalyst + Microstructure + RSI RED → Sanity Gate → Confidence + Ranking → CALL/PUT setup üretimi → Sonuç tablosu</p>
+</div>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page" id="p4">
+<h1>4. 11 Faktör Skorlama</h1>
+<table>
+<thead><tr><th>#</th><th>Faktör</th><th>Ağırlık</th><th>Skorlama Mantığı</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><strong>RVOL</strong></td><td>14.89%</td><td>1x=15p, 2x=50p, 4x=100p (lineer interpolasyon)</td></tr>
+<tr><td>2</td><td><strong>GAP</strong></td><td>10.0%</td><td>1–4% = optimal (80p), &gt;8% = riskli (40p)</td></tr>
+<tr><td>3</td><td><strong>ORB</strong></td><td>13.0%</td><td>2x ATR breakout = 95p, 30dk zorunlu</td></tr>
+<tr><td>4</td><td><strong>VWAP</strong></td><td>13.0%</td><td>Üstü + eğim yukarı = 90p, normalize eğim</td></tr>
+<tr><td>5</td><td><strong>Structure</strong></td><td>8.0%</td><td>Higher Highs/Lows (10 gün), 50 = tam HH/HL</td></tr>
+<tr><td>6</td><td><strong>RSI Short</strong></td><td>10.0%</td><td>RSI(7)×0.7 + RSI(9)×0.3, 55–75 = 85p</td></tr>
+<tr><td>7</td><td><strong>Velocity Dir</strong></td><td>7.0%</td><td>ATR bazlı yön, &gt;2 ATR = 95p</td></tr>
+<tr><td>8</td><td><strong>Velocity Vol</strong></td><td>3.0%</td><td>Günlük range / ATR</td></tr>
+<tr><td>9</td><td><strong>MarketCap</strong></td><td>4.0%</td><td>&gt;$100B = güvenli, &lt;$2B = riskli</td></tr>
+<tr><td>10</td><td><strong>Retention</strong></td><td>8.0%</td><td>&lt;%0.3 pullback = 85p</td></tr>
+<tr><td>11</td><td><strong>Price Change</strong></td><td>9.0%</td><td>3–8% = optimal (75p)</td></tr>
+</tbody>
+</table>
+<p><strong>Ağırlık toplamı:</strong> 1.0000 (scoreConfig.ts'de normalize edilmiş)</p>
+</div>
+
+<!-- PAGE 5 -->
+<div class="page" id="p5">
+<h1>5. Versiyon Geçmişi</h1>
+
+<h2 id="p51">5.1 v4.1 — RSI RED Filtresi</h2>
+<pre><code>if (rsi14 >= 80) { signal = "OVERBOUGHT_RED"; score = 0; }
+else if (rsi14 >= 75) { signal = "CAUTION_HOT"; score = raw * 0.3; }
+else if (rsi14 <= 25) { signal = "OVERSOLD_CAUTION"; score = raw * 0.5; }</code></pre>
+<div class="box box-danger">
+<div class="box-title">Amaç</div>
+<p>RSI 80+ hisselere "gir" demek yerine otomatik engel koymak. Kullanıcı eleştirisi: "RSI 90'a gir demek saçmalık" → çözüm: skor 0.</p>
+</div>
+
+<h2 id="p52">5.2 v4.2 — Çift Yönlü Motor</h2>
+<p><strong>Yeni fonksiyonlar:</strong></p>
+<table>
+<thead><tr><th>Fonksiyon</th><th>Dosya</th><th>Açıklama</th></tr></thead>
+<tbody>
+<tr><td><code>calculateBearScore()</code></td><td>momentum.ts</td><td>Bullish faktörleri tersine çevirir</td></tr>
+<tr><td><code>calculatePersistenceScore()</code></td><td>momentum.ts</td><td>T+1 uygunluk skoru</td></tr>
+<tr><td><code>recommendBiDirectionalStrategies()</code></td><td>optionsStrategies.ts</td><td>CALL + PUT setup'ları</td></tr>
+<tr><td><code>decidePrimaryDirection()</code></td><td>optionsStrategies.ts</td><td>STRADDLE/CALL_PRIMARY/PUT_PRIMARY/WAIT</td></tr>
+</tbody>
+</table>
+
+<h2 id="p53">5.3 v4.2 — PDT Persistence</h2>
+<p><strong>T+1'de geçerli faktörler:</strong> Structure (0.35) + RSI (0.25) + RVOL (0.20) + Price Change (0.10) + MarketCap (0.10)</p>
+<p><strong>T+1'de geçersiz (sıfırlandı):</strong> ORB (%13→0) + VWAP (%13→0) + Retention (%8→0) = <strong>toplam %34 ağırlık sıfır</strong></p>
+<p><strong>Threshold:</strong> Persistence ≥ 65 = T+1 uygun</p>
+
+<h2 id="p54">5.4 v4.3 — AI Catalyst Analyzer</h2>
+<p><strong>Dosya:</strong> <code>src/lib/aiCatalystAnalyzer.ts</code> (187 satır)</p>
+<p><strong>25 haber kategorisi:</strong></p>
+<table>
+<thead><tr><th>Kategori</th><th>Örnekler</th></tr></thead>
+<tbody>
+<tr><td>Pozitif (+3)</td><td>EARNINGS_BEAT, FDA_APPROVAL, M_AND_A</td></tr>
+<tr><td>Pozitif (+2)</td><td>UPGRADE, BUYBACK, PARTNERSHIP</td></tr>
+<tr><td>Negatif (-3)</td><td>DILUTION, EARNINGS_MISS, SEC_INVESTIGATION</td></tr>
+<tr><td>Negatif (-2)</td><td>DOWNGRADE, SHARE_ISSUANCE, LAWSUIT</td></tr>
+</tbody>
+</table>
+<p><strong>Entegrasyon:</strong> <code>score = score - flags.length × 8</code> (risk flag varsa)</p>
+
+<h2 id="p55">5.5 v4.3 — Microstructure Check</h2>
+<p><strong>Dosya:</strong> <code>src/lib/microstructureCheck.ts</code> (142 satır)</p>
+<p><strong>4 Metrik birleşik:</strong></p>
+<table>
+<thead><tr><th>Metrik</th><th>Ağırlık</th><th>Açıklama</th></tr></thead>
+<tbody>
+<tr><td>Lower Low (ardışık)</td><td>+15/birim</td><td>Son kaç bar üst üste düşük dip yaptı</td></tr>
+<tr><td>Lower High (ardışık)</td><td>+10/birim</td><td>Son kaç bar üst üste düşük zirve yaptı</td></tr>
+<tr><td>Hacim düşüşü</td><td>+15</td><td>Son bar hacim ortalamanın %70 altında</td></tr>
+<tr><td>Fitil oranı</td><td>+20 max</td><td>(Fitil / Range) &gt; 0.5 = yorgunluk</td></tr>
+</tbody>
+</table>
+<p><strong>Entegrasyon:</strong> HIGH risk → skor %40 düşer, sinyal bir seviye aşağı</p>
+</div>
+
+<!-- PAGE 6 -->
+<div class="page" id="p6">
+<h1>6. Confidence Score</h1>
+<table>
+<thead><tr><th>Bileşen</th><th>Ağırlık</th><th>Açıklama</th></tr></thead>
+<tbody>
+<tr><td>Data Completeness</td><td>30%</td><td>Fiyat, hacim, marketCap verisi tam mı?</td></tr>
+<tr><td>Price Recency</td><td>25%</td><td>Son fiyat ne kadar taze?</td></tr>
+<tr><td>Volume Quality</td><td>25%</td><td>Sıfır hacimli gün var mı?</td></tr>
+<tr><td>Indicator Reliability</td><td>20%</td><td>Fiyat gap'i var mı (eksik veri)?</td></tr>
+</tbody>
+</table>
+<pre><code>Confidence = completeness×0.30 + recency×0.25 + volume×0.25 + reliability×0.20</code></pre>
+</div>
+
+<!-- PAGE 7 -->
+<div class="page" id="p7">
+<h1>7. Ranking Score</h1>
+<pre><code>Ranking = momentum×0.55 + confidence×0.25 + R/R×0.10 + pattern×0.10</code></pre>
+<table>
+<thead><tr><th>Bileşen</th><th>Ağırlık</th><th>Açıklama</th></tr></thead>
+<tbody>
+<tr><td>Momentum Skoru</td><td>55%</td><td>11 faktörün ağırlıklı toplamı</td></tr>
+<tr><td>Confidence Score</td><td>25%</td><td>Veri kalitesi güveni</td></tr>
+<tr><td>Risk/Ödül</td><td>10%</td><td>(Hedef − Fiyat) / (Fiyat − Stop)</td></tr>
+<tr><td>Pattern</td><td>10%</td><td>Breakout, reversal vb. pattern puanı</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- PAGE 8 -->
+<div class="page" id="p8">
+<h1>8. Opsiyon Stratejileri</h1>
+
+<h2>Strateji Seçim Mantığı</h2>
+<table>
+<thead><tr><th>Durum</th><th>CALL</th><th>PUT</th></tr></thead>
+<tbody>
+<tr><td>Skor ≥ 75 + RVOL ≥ 2 + RSI 50–80</td><td>Long Call</td><td>—</td></tr>
+<tr><td>Skor ≥ 55 + VWAP &gt; 0</td><td>Bull Call Spread</td><td>—</td></tr>
+<tr><td>Bear ≥ 75 + RVOL ≥ 2 + RSI ≤ 50</td><td>—</td><td>Long Put</td></tr>
+<tr><td>Bear ≥ 55 + VWAP &lt; 0</td><td>—</td><td>Bear Put Spread</td></tr>
+<tr><td>Her ikisi orta</td><td colspan="2">Bull Put Spread (konservatif)</td></tr>
+</tbody>
+</table>
+
+<h2>POP Hesaplama</h2>
+<pre><code>POP = P(fiyat > breakeven at expiration)
+ITM call: ~65% POP
+OTM call: distance / (dailyMove × sqrt(DTE/5))</code></pre>
+
+<h2>Kelly Sizing</h2>
+<pre><code>winProb = POP / 100
+edge = winProb - (1 / (R/R + 1))
+kelly = edge / (1 / R/R) × 100</code></pre>
+<table>
+<thead><tr><th>Kelly</th><th>Pozisyon</th></tr></thead>
+<tbody>
+<tr><td>≥ 2.0%</td><td>NLV %2.0</td></tr>
+<tr><td>≥ 1.5%</td><td>NLV %1.5</td></tr>
+<tr><td>≥ 1.0%</td><td>NLV %1.0</td></tr>
+<tr><td>≥ 0.5%</td><td>NLV %0.5</td></tr>
+<tr><td>&lt; 0.5%</td><td>NLV %0.3 (küçük)</td></tr>
+</tbody>
+</table>
+
+<h2>Vade Kuralları</h2>
+<table>
+<thead><tr><th>DTE</th><th>Durum</th></tr></thead>
+<tbody>
+<tr><td>&lt; 3 gün</td><td><span class="metric m-bad">YENİ POZİSYON AÇMA</span></td></tr>
+<tr><td>&lt; 7 gün + RSI 80+</td><td><span class="metric m-bad">AÇMA (çift risk)</span></td></tr>
+<tr><td>&lt; 14 gün</td><td><span class="metric m-warn">Uyarı (theta yaklaşıyor)</span></td></tr>
+<tr><td>14–21 gün</td><td><span class="metric m-good">İdeal</span></td></tr>
+<tr><td>&gt; 21 gün</td><td><span class="metric m-neutral">Güvenli ama prim pahalı</span></td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- PAGE 9 -->
+<div class="page" id="p9">
+<h1>9. Hibrit Veri Sağlayıcı</h1>
+
+<h2>API Zinciri (Öncelik Sırası)</h2>
+<table>
+<thead><tr><th>#</th><th>API</th><th>Rate Limit</th><th>Durum</th><th>Kalite</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><strong>Yahoo Finance</strong></td><td>30/dk, 2000/gün</td><td>Çalışıyor</td><td>90</td></tr>
+<tr><td>2</td><td><strong>Massive</strong></td><td>100/dk, 10000/gün</td><td>Test edildi ✅</td><td>92</td></tr>
+<tr><td>3</td><td><strong>TwelveData</strong></td><td>8/dk, 800/gün</td><td>Test edildi ✅</td><td>88</td></tr>
+<tr><td>4</td><td><strong>Alphavantage</strong></td><td>5/dk, 25/gün</td><td>Son çare</td><td>60</td></tr>
+</tbody>
+</table>
+
+<h2>CORS Proxy Fallback</h2>
+<pre><code>1. AllOrigins  (https://api.allorigins.win/raw?url=...)
+2. corsproxy.io (https://corsproxy.io/?...)</code></pre>
+
+<h2>Test Sonuçları</h2>
+<table>
+<thead><tr><th>API</th><th>Sonuç</th><th>Not</th></tr></thead>
+<tbody>
+<tr><td>Massive</td><td><span class="metric m-good">BAŞARILI</span></td><td>40 gün AAPL $308.82</td></tr>
+<tr><td>TwelveData</td><td><span class="metric m-good">BAŞARILI</span></td><td>10 gün + meta veri</td></tr>
+<tr><td>Yahoo</td><td><span class="metric m-good">BAŞARILI</span></td><td>Ana kaynak</td></tr>
+<tr><td>Finnhub</td><td><span class="metric m-bad">BAŞARISIZ</span></td><td>401 Invalid API Key</td></tr>
+<tr><td>Stooq</td><td><span class="metric m-bad">BAŞARISIZ</span></td><td>"Get your apikey"</td></tr>
+<tr><td>Nasdaq Link</td><td><span class="metric m-bad">BAŞARISIZ</span></td><td>403 Forbidden</td></tr>
+</tbody>
+</table>
+
+<h2>API Anahtarları (Test Edilmiş)</h2>
+<pre><code>TwelveData:  d2bff39c345a49f1aa9ab15c70fcd6a9
+Massive:     3AjVXfyR6gxZgB9g3SpN7e6e7JLiIxTq
+Alphavantage: d7mjhe1r01qngrvoel6gd7mjhe1r01qngrvoel70</code></pre>
+</div>
+
+<!-- PAGE 10 -->
+<div class="page" id="p10">
+<h1>10. Sanity Gate</h1>
+<p><strong>Dosya:</strong> <code>src/lib/sanityGate.ts</code> (231 satır)</p>
+
+<h2>Güvenlik Fonksiyonları</h2>
+<pre><code>isSafeNumber(v)     → number ve NaN/Infinity değilse true
+safeNumber(v, fb)   → Güvensizse fallback değer döndür
+clamp100(v)         → [0, 100] aralığına zorla</code></pre>
+
+<h2>Kontrol Sırası</h2>
+<ol>
+<li>Her faktör skoru kontrol et (NaN/Infinity/null → 50)</li>
+<li>Aralık dışıysa clamp ([0,100] içine zorla)</li>
+<li>Ağırlıkları kontrol et (toplam 1.00 değilse normalize)</li>
+<li>Final skoru clamp et</li>
+<li>Yahoo veri yapısı kontrolü (JSON, meta, null oranı &lt;%30)</li>
+</ol>
+
+<div class="box box-warn">
+<div class="box-title">Örnek: NaN Kontrolü</div>
+<p>Eğer RVOL hesaplaması sonucu <code>NaN</code> çıkarsa (örneğin hacim verisi eksik), sistem otomatik olarak <strong>50 puan</strong> atar (nötr). Bu sayede tek bir faktörün hatası tüm skoru çökertmez.</p>
+</div>
+</div>
+
+<!-- PAGE 11 -->
+<div class="page" id="p11">
+<h1>11. 5 Sekmeli Portal</h1>
+
+<h2>Portal Layout</h2>
+<p><strong>Dosya:</strong> <code>src/layouts/PortalLayout.tsx</code> (95 satır)</p>
+<p><strong>Özellikler:</strong> Sidebar (açılır/kapanır, lg breakpoint), Mobile overlay, Header (arama, bildirim, kullanıcı), Responsive, Aktif sekme işaretleme (Activity animasyonu), Piyasa durumu widgeti (BULL/BEAR)</p>
+
+<h2>11.1 Dashboard</h2>
+<p><strong>Grafikler:</strong></p>
+<ul>
+<li><strong>AreaChart</strong> — 09:30-15:30 saatlik momentum akışı</li>
+<li><strong>PieChart (donut)</strong> — 5 sinyal kategorisi dağılımı</li>
+<li><strong>BarChart</strong> — 6 sektör performansı</li>
+<li><strong>RadarChart</strong> — 8 faktör skoru</li>
+</ul>
+<p><strong>Kartlar:</strong> Aktif Sinyal (17), Ortalama Momentum (68.4), En İyi Sektör (Teknoloji), Piyasa Rejimi (BULL)</p>
+
+<h2>11.2 Tarama</h2>
+<p><strong>Kontroller:</strong> Tara/Durdur butonları, Min skor filtresi, Vade seçimi (14/21/30 gün), Sinyal filtresi (ALL/STRONG_BUY/BUY/NEUTRAL), Progress bar</p>
+<p><strong>Tablo sütunları:</strong> Hisse, Skor, Sinyal, Fiyat, Değişim, RSI, RVOL, <strong>Bear</strong>, <strong>PDT</strong>, Detay</p>
+
+<h2>11.3 Analiz</h2>
+<p><strong>Özet kartlar:</strong> Fiyat, Bull Skor, Bear Skor, PDT, AI Katalizör</p>
+<p><strong>Grafikler:</strong> Faktör RadarChart, Faktör BarChart</p>
+<p><strong>Setup kartları:</strong> CALL Setup (strateji, strike, POP, Kelly) + PUT Setup</p>
+
+<h2>11.4 Geçmiş</h2>
+<p><strong>İstatistikler:</strong> Toplam tarama (8), Ortalama en iyi skor, Bull oranı (%), Ortalama VIX</p>
+<p><strong>Grafik:</strong> Skor trendi AreaChart (en iyi + ortalama)</p>
+
+<h2>11.5 Portföy</h2>
+<p><strong>Özet kartları:</strong> Toplam P/L, Yatırılan, Açık pozisyon, Theta riski, Win rate</p>
+<p><strong>Pozisyon tablosu:</strong> Hisse, Tip, Strike, Vade, Giriş, Güncel, DTE, P/L, Sil</p>
+<p><strong>Theta uyarıları:</strong> DTE ≤ 7 olan pozisyonlar listelenir</p>
+<p><strong>Yeni pozisyon formu:</strong> Ticker, Tip, Strike, Giriş $, Adet, Vade</p>
+</div>
+
+<!-- PAGE 12 -->
+<div class="page" id="p12">
+<h1>12. Veri Akışı</h1>
+<pre><code>1. Kullanıcı "TARA" butonuna tıklar
+   ↓
+2. ScannerControls → App.tsx'e SCAN_START
+   ↓
+3. App.tsx → parallelScanner.ts
+   ↓
+4. Her hisse (30 adet):
+   a. dataProviders.ts → fetchStockDataHybrid()
+      Öncelik: Yahoo → Massive → TwelveData → Alphavantage
+   b. İlk başarılı API'den veri döner
+   ↓
+5. momentum.ts → analyzeStockFull() [v4.3]
+   a. 11 faktör skorlanır
+   b. Bear skoru hesaplanır (calculateBearScore)
+   c. Persistence skoru (calculatePersistenceScore)
+   d. AI Catalyst analizi (aiCatalystAnalyzer.ts)
+   e. Microstructure check (microstructureCheck.ts)
+   f. RSI RED filtresi uygulanır
+   g. Sonuçlar entegre edilir
+   ↓
+6. sanityGate.ts kontrolü
+   ↓
+7. Confidence + Ranking Score
+   ↓
+8. optionsStrategies.ts
+   CALL setup + PUT setup
+   POP, Kelly, Execution plan
+   ↓
+9. StockResult üretilir
+   ↓
+10. ResultsTable / SmartScanner gösterimi
+    ↓
+11. Kullanıcı hisse tıklar
+    → StockDetailModal / OptionsPanel (çift yönlü)
+    ↓
+12. Portföy'e eklenebilir (PortfolioPage)</code></pre>
+</div>
+
+<!-- PAGE 13 -->
+<div class="page" id="p13">
+<h1>13. Bilinen Sorunlar</h1>
+<table>
+<thead><tr><th>#</th><th>Sorun</th><th>Etki</th><th>Çözüm</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>EOD veri sadece — Intraday 30m CORS'ta çalışmıyor</td><td>ORB skoru gerçekçi değil</td><td>WebSocket veya Alpaca entegrasyonu</td></tr>
+<tr><td>2</td><td>Yahoo Finance CORS engeli</td><td>Tarayıcıda bloklanıyor</td><td>Backend proxy</td></tr>
+<tr><td>3</td><td>AI Catalyst offline — gerçek API yok</td><td>Haber analizi simülasyon</td><td>Gemini/OpenAI API entegrasyonu</td></tr>
+<tr><td>4</td><td>Microstructure 1dk bar yok</td><td>Günlük bar proxy kullanılıyor</td><td>Alpaca/Polygon 1dk data</td></tr>
+<tr><td>5</td><td>Chunk size uyarı (865 KB)</td><td>Performans etkisi</td><td>Code splitting</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- PAGE 14 -->
+<div class="page" id="p14">
+<h1>14. Değişiklik Geçmişi</h1>
+<table>
+<thead><tr><th>Versiyon</th><th>Tarih</th><th>Değişiklikler</th></tr></thead>
+<tbody>
+<tr><td>v1.0</td><td>2024</td><td>Temel 11 faktör skorlama</td></tr>
+<tr><td>v2.0</td><td>2025</td><td>Confidence Score + Explanation Engine</td></tr>
+<tr><td>v3.0</td><td>2025</td><td>Wilson CI + Vade kontrolü + Sektör haritası</td></tr>
+<tr><td>v4.0</td><td>2026</td><td>Confidence + Ranking + Sanity Gate</td></tr>
+<tr><td>v4.1</td><td>May 2026</td><td><strong>RSI RED filtresi</strong> (RSI ≥ 80 = skor 0)</td></tr>
+<tr><td>v4.2</td><td>May 2026</td><td><strong>Çift yönlü motor</strong> (CALL/PUT) + <strong>PDT Persistence</strong></td></tr>
+<tr><td>v4.3</td><td>May 2026</td><td><strong>AI Catalyst Analyzer</strong> + <strong>Microstructure Check</strong> + <strong>5 Sekmeli Portal</strong> + <strong>10+ Grafik</strong></td></tr>
+</tbody>
+</table>
+
+<div class="box">
+<div class="box-title">Versiyon 4.3 Özeti</div>
+<p><strong>60+</strong> kaynak dosya | <strong>10.000+</strong> satır TypeScript kod | <strong>11</strong> faktör momentum skorlama | <strong>2</strong> yönlü opsiyon analizi | <strong>4</strong> API hibrit veri sağlayıcı | <strong>5</strong> sekme profesyonel portal | <strong>10+</strong> interaktif grafik | <strong>25</strong> haber katalizör kategorisi | <strong>4</strong> metrik mikro yapı kontrolü | <strong>9</strong> sinyal tipi</p>
+</div>
+
+<p style="text-align: center; margin-top: 40px; color: #94a3b8; font-size: 10pt;">
+<strong>NASDAQ Momentum Scanner AI</strong> — v4.3 — 29 Mayıs 2026
+</p>
+</div>
+
+</body>
+</html>
