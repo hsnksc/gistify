@@ -51,10 +51,6 @@ import {
 } from "./billingStore";
 import { COOKIE_NAME, ONE_YEAR_MS } from "../shared/const";
 import {
-  buildInitialWeeklyReports,
-  buildSystemSuggestedWeeklyReports,
-} from "./weeklyReportSeeds";
-import {
   buildLiveWeeklyReportSuggestions,
   getAdminMarketDataStatus,
   isFmpConfigured,
@@ -65,6 +61,14 @@ import {
   getDailyReportSourcePackage,
   listDailyReportSourcePackages,
 } from "./dailyReportSources";
+import {
+  getEarningReportSource,
+  listEarningReportSourceSummaries,
+} from "./earningReportSources";
+import {
+  getMomentumReportSource,
+  listMomentumReportSourceSummaries,
+} from "./momentumReportSources";
 
 type MembershipPlan = "guest" | "member" | "pro";
 type AppAccessMode = "managed" | "public";
@@ -291,17 +295,20 @@ const PUBLIC_ACCESS_USER = {
 const translationCache = new Map<string, string>();
 const billingStore = createBillingStore();
 
-function ensureWeeklyReportSeeds() {
-  if (billingStore.listWeeklyReports().length > 0) {
-    return;
+const LEGACY_WEEKLY_SEED_SIGNATURES = new Map<string, string>([
+  ["weekly-report-2026-06-01", "2026-06-02T08:30:00.000Z"],
+  ["weekly-report-2026-06-08", "2026-06-06T08:30:00.000Z"],
+]);
+
+function isLegacyWeeklySeedReport(report: WeeklyReportRecord) {
+  const publishedAt = LEGACY_WEEKLY_SEED_SIGNATURES.get(report.id);
+  if (!publishedAt) {
+    return false;
   }
 
-  for (const report of buildInitialWeeklyReports()) {
-    billingStore.upsertWeeklyReport(report);
-  }
+  return report.publishedAt === publishedAt && report.updatedAt === publishedAt;
 }
 
-ensureWeeklyReportSeeds();
 ensureOpportunitiesSeed();
 
 function getTranslationCacheKey(
@@ -1274,6 +1281,7 @@ function getViewerWeeklyReports(referenceDate = new Date()) {
   const candidates = billingStore
     .listWeeklyReports()
     .filter(report => report.status === "published")
+    .filter(report => !isLegacyWeeklySeedReport(report))
     .filter(report => Date.parse(`${report.weekEnd}T23:59:59Z`) >= currentWeekStart.getTime())
     .sort(
       (left, right) =>
@@ -2060,7 +2068,8 @@ function syncOpportunitiesFromPublishedWeeklyReports(options?: {
 }) {
   const reports = billingStore
     .listWeeklyReports()
-    .filter(report => report.status === "published");
+    .filter(report => report.status === "published")
+    .filter(report => !isLegacyWeeklySeedReport(report));
   let count = 0;
 
   for (const report of reports) {
@@ -3946,6 +3955,60 @@ async function startServer() {
     });
   });
 
+  app.get("/api/earning-reports", (_req, res) => {
+    setPrivateNoStore(res);
+    res.status(200).json({
+      reports: listEarningReportSourceSummaries(),
+    });
+  });
+
+  app.get("/api/earning-reports/latest", (_req, res) => {
+    setPrivateNoStore(res);
+    res.status(200).json({
+      report: listEarningReportSourceSummaries()[0] || null,
+    });
+  });
+
+  app.get("/api/earning-reports/:sourceId", (req, res) => {
+    setPrivateNoStore(res);
+
+    const sourceId = normalizeString(req.params.sourceId);
+    const report = getEarningReportSource(sourceId);
+    if (!report) {
+      res.status(404).json({ error: "Earning report source bulunamadi." });
+      return;
+    }
+
+    res.status(200).json({ report });
+  });
+
+  app.get("/api/momentum/sources", (_req, res) => {
+    setPrivateNoStore(res);
+    res.status(200).json({
+      reports: listMomentumReportSourceSummaries(),
+    });
+  });
+
+  app.get("/api/momentum/sources/latest", (_req, res) => {
+    setPrivateNoStore(res);
+    res.status(200).json({
+      report: listMomentumReportSourceSummaries()[0] || null,
+    });
+  });
+
+  app.get("/api/momentum/sources/:sourceId", (req, res) => {
+    setPrivateNoStore(res);
+
+    const sourceId = normalizeString(req.params.sourceId);
+    const report = getMomentumReportSource(sourceId);
+    if (!report) {
+      res.status(404).json({ error: "Momentum report source bulunamadi." });
+      return;
+    }
+
+    res.status(200).json({ report });
+  });
+
   app.get("/api/admin/daily-report-sources", (req, res) => {
     setPrivateNoStore(res);
     if (!requireWeeklyReportAdmin(req, res)) {
@@ -4096,9 +4159,9 @@ async function startServer() {
     }
 
     res.status(200).json({
-      suggestions: buildSystemSuggestedWeeklyReports(existingReports),
+      suggestions: [],
       providers: getAdminMarketDataStatus(),
-      mode: "fallback",
+      mode: "empty",
     });
   });
 

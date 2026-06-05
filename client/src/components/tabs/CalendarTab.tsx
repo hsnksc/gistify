@@ -3,7 +3,7 @@
  * Earnings calendar with signal indicators
  */
 
-import { earningsCalendar, stocksData, signalConfig, type StockData } from '@/lib/stockData';
+import { signalConfig, type StockData } from '@/lib/stockData';
 import type { StrategyCalendarItem } from '@/lib/earningStrategyData';
 
 interface Props {
@@ -11,24 +11,36 @@ interface Props {
   stocks?: StockData[];
   calendar?: StrategyCalendarItem[];
   reportWindow?: string;
+  showFinancialExpectations?: boolean;
 }
-
-const staticCalendarData: StrategyCalendarItem[] = earningsCalendar.map((item, index) => ({
-  id: `${item.ticker}-${index + 1}`,
-  sortDate: `${String(index + 1).padStart(2, '0')}-${item.ticker}`,
-  label: item.date,
-  ticker: item.ticker,
-  name: item.name,
-  time: item.time,
-  signal: item.signal,
-}));
 
 export default function CalendarTab({
   onStockClick,
-  stocks = stocksData,
-  calendar = staticCalendarData,
+  stocks = [],
+  calendar = [],
   reportWindow = 'Aktif hafta',
+  showFinancialExpectations = true,
 }: Props) {
+  if (!calendar.length) {
+    return (
+      <div className="p-6">
+        <section className="rounded-none border border-border bg-card/80 p-6">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300">
+            Published Calendar Bekleniyor
+          </p>
+          <h1 className="mt-3 heading-condensed text-3xl text-foreground">
+            Gosterilecek earnings takvimi yok
+          </h1>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Bu sekme artik static earnings seed kullanmiyor. Admin tarafinda
+            publish edilmis haftalik rapor olustugunda takvim burada tarih
+            sirali olarak gorunur.
+          </p>
+        </section>
+      </div>
+    );
+  }
+
   const grouped = calendar.reduce((acc, item) => {
     if (!acc[item.sortDate]) {
       acc[item.sortDate] = { label: item.label, items: [] as StrategyCalendarItem[] };
@@ -81,7 +93,6 @@ export default function CalendarTab({
                 {grouped[date].items.map((item) => {
                   const stock = stocks.find(s => s.ticker === item.ticker);
                   const cfg = signalConfig[item.signal];
-                  if (!stock) return null;
                   return (
                     <button
                       key={item.ticker}
@@ -93,17 +104,21 @@ export default function CalendarTab({
                         <div className="flex items-center gap-3">
                           <span className="data-mono text-base font-bold" style={{ color: 'oklch(0.92 0.01 220)' }}>{item.ticker}</span>
                           <span className="text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>{item.name}</span>
-                          <span className="text-xs" style={{ color: 'oklch(0.45 0.015 225)' }}>{stock.sector}</span>
+                          <span className="text-xs" style={{ color: 'oklch(0.45 0.015 225)' }}>{stock?.sector || '-'}</span>
                         </div>
                         <div className="flex items-center gap-3">
+                          {showFinancialExpectations ? (
+                            <>
+                              <span className="data-mono text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>
+                                EPS: <span style={{ color: 'oklch(0.75 0.01 220)' }}>{stock ? `$${stock.epsEstimate}` : '-'}</span>
+                              </span>
+                              <span className="data-mono text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>
+                                Gelir: <span style={{ color: 'oklch(0.75 0.01 220)' }}>{stock?.revenueEstimate || '-'}</span>
+                              </span>
+                            </>
+                          ) : null}
                           <span className="data-mono text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>
-                            EPS: <span style={{ color: 'oklch(0.75 0.01 220)' }}>${stock.epsEstimate}</span>
-                          </span>
-                          <span className="data-mono text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>
-                            Gelir: <span style={{ color: 'oklch(0.75 0.01 220)' }}>{stock.revenueEstimate}</span>
-                          </span>
-                          <span className="data-mono text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>
-                            Beat İht: <span style={{ color: 'oklch(0.78 0.18 160)' }}>%{stock.earningsBeatProbability}</span>
+                            Beat İht: <span style={{ color: 'oklch(0.78 0.18 160)' }}>{stock ? `%${stock.earningsBeatProbability}` : '-'}</span>
                           </span>
                           <span className={`text-xs font-bold px-2 py-0.5 border ${cfg.bgClass} ${cfg.textClass} ${cfg.borderClass}`} style={{ borderRadius: 0 }}>
                             {cfg.label}
@@ -115,19 +130,19 @@ export default function CalendarTab({
                           <span className="text-xs" style={{ color: 'oklch(0.4 0.015 225)' }}>Momentum:</span>
                           <div style={{ width: '60px', height: '3px', background: 'oklch(0.2 0.03 225)' }}>
                             <div style={{
-                              width: `${stock.momentumScore}%`,
+                              width: `${stock?.momentumScore || 0}%`,
                               height: '100%',
                               background: cfg.color,
                             }} />
                           </div>
-                          <span className="data-mono text-xs font-bold" style={{ color: cfg.color }}>{stock.momentumScore}</span>
+                          <span className="data-mono text-xs font-bold" style={{ color: cfg.color }}>{stock?.momentumScore ?? '-'}</span>
                         </div>
                         <span className="text-xs" style={{ color: 'oklch(0.4 0.015 225)' }}>
-                          Implied Move: <span className="data-mono font-semibold" style={{ color: 'oklch(0.75 0.15 75)' }}>±{stock.impliedMove}%</span>
+                          Implied Move: <span className="data-mono font-semibold" style={{ color: 'oklch(0.75 0.15 75)' }}>{stock ? `±${stock.impliedMove}%` : '-'}</span>
                         </span>
                         <span className="text-xs" style={{ color: 'oklch(0.4 0.015 225)' }}>
-                          6A: <span className="data-mono font-semibold" style={{ color: stock.priceChange6M > 0 ? 'oklch(0.78 0.18 160)' : 'oklch(0.65 0.22 25)' }}>
-                            {stock.priceChange6M > 0 ? '+' : ''}{stock.priceChange6M}%
+                          6A: <span className="data-mono font-semibold" style={{ color: (stock?.priceChange6M ?? 0) > 0 ? 'oklch(0.78 0.18 160)' : 'oklch(0.65 0.22 25)' }}>
+                            {stock ? `${stock.priceChange6M > 0 ? '+' : ''}${stock.priceChange6M}%` : '-'}
                           </span>
                         </span>
                       </div>
@@ -152,7 +167,15 @@ export default function CalendarTab({
           <table className="w-full text-sm">
             <thead>
               <tr style={{ borderBottom: '2px solid oklch(0.22 0.03 225)', background: 'oklch(0.13 0.025 230)' }}>
-                {['Tarih', 'Hisse', 'Sektör', 'EPS Beklenti', 'Gelir Beklenti', 'Gelir Büyümesi', 'Beat İhtimali', 'Implied Move', 'Sinyal'].map(h => (
+                {[
+                  'Tarih',
+                  'Hisse',
+                  'Sektör',
+                  ...(showFinancialExpectations ? ['EPS Beklenti', 'Gelir Beklenti', 'Gelir Büyümesi'] : []),
+                  'Beat İhtimali',
+                  'Implied Move',
+                  'Sinyal',
+                ].map(h => (
                   <th key={h} className="px-3 py-2 text-left heading-condensed text-xs tracking-wider" style={{ color: 'oklch(0.55 0.015 225)' }}>
                     {h}
                   </th>
@@ -163,7 +186,6 @@ export default function CalendarTab({
               {calendar.map((item, i) => {
                 const stock = stocks.find(s => s.ticker === item.ticker);
                 const cfg = signalConfig[item.signal];
-                if (!stock) return null;
                 return (
                   <tr
                     key={item.ticker}
@@ -178,12 +200,16 @@ export default function CalendarTab({
                   >
                     <td className="px-3 py-2.5 data-mono text-xs" style={{ color: 'oklch(0.75 0.15 75)' }}>{item.label}</td>
                     <td className="px-3 py-2.5 data-mono text-sm font-bold" style={{ color: 'oklch(0.92 0.01 220)' }}>{item.ticker}</td>
-                    <td className="px-3 py-2.5 text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>{stock.sector}</td>
-                    <td className="px-3 py-2.5 data-mono text-xs" style={{ color: 'oklch(0.75 0.01 220)' }}>${stock.epsEstimate}</td>
-                    <td className="px-3 py-2.5 data-mono text-xs" style={{ color: 'oklch(0.75 0.01 220)' }}>{stock.revenueEstimate}</td>
-                    <td className="px-3 py-2.5 data-mono text-xs" style={{ color: 'oklch(0.78 0.18 160)' }}>+{stock.revenueGrowthYoY}%</td>
-                    <td className="px-3 py-2.5 data-mono text-xs font-semibold" style={{ color: 'oklch(0.78 0.18 160)' }}>%{stock.earningsBeatProbability}</td>
-                    <td className="px-3 py-2.5 data-mono text-xs" style={{ color: 'oklch(0.75 0.15 75)' }}>±{stock.impliedMove}%</td>
+                    <td className="px-3 py-2.5 text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>{stock?.sector || '-'}</td>
+                    {showFinancialExpectations ? (
+                      <>
+                        <td className="px-3 py-2.5 data-mono text-xs" style={{ color: 'oklch(0.75 0.01 220)' }}>{stock ? `$${stock.epsEstimate}` : '-'}</td>
+                        <td className="px-3 py-2.5 data-mono text-xs" style={{ color: 'oklch(0.75 0.01 220)' }}>{stock?.revenueEstimate || '-'}</td>
+                        <td className="px-3 py-2.5 data-mono text-xs" style={{ color: 'oklch(0.78 0.18 160)' }}>{stock ? `+${stock.revenueGrowthYoY}%` : '-'}</td>
+                      </>
+                    ) : null}
+                    <td className="px-3 py-2.5 data-mono text-xs font-semibold" style={{ color: 'oklch(0.78 0.18 160)' }}>{stock ? `%${stock.earningsBeatProbability}` : '-'}</td>
+                    <td className="px-3 py-2.5 data-mono text-xs" style={{ color: 'oklch(0.75 0.15 75)' }}>{stock ? `±${stock.impliedMove}%` : '-'}</td>
                     <td className="px-3 py-2.5">
                       <span className={`text-xs font-bold px-2 py-0.5 border ${cfg.bgClass} ${cfg.textClass} ${cfg.borderClass}`} style={{ borderRadius: 0 }}>
                         {cfg.label}

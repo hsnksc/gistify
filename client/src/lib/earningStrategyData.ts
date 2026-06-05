@@ -246,7 +246,9 @@ function buildStockFromEntry(
   entry: WeeklyReportEntry,
   report?: WeeklyReportRecord
 ): StockData {
-  const base = staticStocks.find(stock => stock.ticker === entry.ticker);
+  const base = report
+    ? undefined
+    : staticStocks.find(stock => stock.ticker === entry.ticker);
   const signal = mapStrategyToSignal(entry);
   const volumeStatus = deriveVolumeStatus(entry);
   const riskLevel = deriveRiskLevel(entry);
@@ -333,12 +335,10 @@ function buildStockFromEntry(
 function buildOptionFromEntry(
   entry: WeeklyReportEntry
 ): OptionStrategy {
-  const base = staticOptions.find(option => option.ticker === entry.ticker);
-
   return {
     ticker: entry.ticker,
     name: entry.name,
-    sector: entry.sector || base?.sector || "Technology",
+    sector: entry.sector || "Technology",
     earningsDate: formatDisplayDate(entry.earningsDate),
     momentumScore: entry.momentumScore,
     priceChange6M: entry.priceChange6M,
@@ -355,19 +355,17 @@ function buildOptionFromEntry(
     putPremiumSell: entry.putPremiumSell,
     putGainFromIV: entry.putGainFromIV,
     directionalBias: mapBiasToOptionDirection(entry.directionalBias),
-    biasReason: entry.thesis || base?.biasReason || entry.recommendedStrategy,
-    biasStrength:
-      base?.biasStrength ??
-      clamp(
-        entry.momentumScore +
-          (entry.directionalBias === "Bullish"
-            ? 8
-            : entry.directionalBias === "Bearish"
-              ? 4
-              : -5),
-        35,
-        95
-      ),
+    biasReason: entry.thesis || entry.recommendedStrategy,
+    biasStrength: clamp(
+      entry.momentumScore +
+        (entry.directionalBias === "Bullish"
+          ? 8
+          : entry.directionalBias === "Bearish"
+            ? 4
+            : -5),
+      35,
+      95
+    ),
     ivCrushScore: entry.ivCrushScore,
     strategyRating: entry.strategyRating,
     riskLevel: entry.riskLevel,
@@ -663,10 +661,10 @@ export function buildEarningStrategyDataset(
 ): EarningStrategyDataset {
   if (!report?.content.entries.length) {
     return {
-      source: "static",
-      stocks: staticStocks,
-      options: staticOptions,
-      calendar: buildStaticCalendar(),
+      source: "published",
+      stocks: [],
+      options: [],
+      calendar: [],
     };
   }
 
@@ -688,49 +686,32 @@ export function buildEarningStrategyUniverse(
       report.content.entries.map(entry => ({ entry, report }))
     ) || [];
 
-  const publishedStocks =
-    publishedPairs.length > 0
-      ? publishedPairs
-          .sort((left, right) => left.entry.earningsDate.localeCompare(right.entry.earningsDate))
-          .map(({ entry, report }) => buildStockFromEntry(entry, report))
-      : [...staticStocks].sort((left, right) =>
-          resolveSortDate(left.earningsDate).localeCompare(resolveSortDate(right.earningsDate))
-        );
+  if (!publishedPairs.length) {
+    return {
+      source: "published",
+      stocks: [],
+      options: [],
+      calendar: [],
+    };
+  }
 
-  const publishedOptions =
-    publishedPairs.length > 0
-      ? publishedPairs
-          .sort((left, right) => left.entry.earningsDate.localeCompare(right.entry.earningsDate))
-          .map(({ entry }) => buildOptionFromEntry(entry))
-      : [...staticOptions].sort((left, right) =>
-          resolveSortDate(left.earningsDate).localeCompare(resolveSortDate(right.earningsDate))
-        );
-
-  const publishedCalendar =
-    publishedPairs.length > 0
-      ? buildCalendarFromEntries(publishedPairs.map(item => item.entry))
-      : buildStaticCalendar();
-
-  const juneStocks = juneEarningsData.map(buildStockFromJuneEntry);
-  const juneOptions = juneEarningsData.map(buildOptionFromJuneEntry);
-  const juneCalendar = buildCalendarFromJuneEntries(juneEarningsData);
-
-  const calendar = dedupeByTicker(
-    [...publishedCalendar, ...juneCalendar].sort((left, right) =>
-      left.sortDate.localeCompare(right.sortDate)
-    )
+  const sortedPairs = [...publishedPairs].sort((left, right) =>
+    left.entry.earningsDate.localeCompare(right.entry.earningsDate)
   );
+  const calendar = buildCalendarFromEntries(sortedPairs.map(item => item.entry));
   const stocks = sortStocksByCalendar(
-    dedupeByTicker([...publishedStocks, ...juneStocks]),
+    dedupeByTicker(
+      sortedPairs.map(({ entry, report }) => buildStockFromEntry(entry, report))
+    ),
     calendar
   );
   const options = sortOptionsByCalendar(
-    dedupeByTicker([...publishedOptions, ...juneOptions]),
+    dedupeByTicker(sortedPairs.map(({ entry }) => buildOptionFromEntry(entry))),
     calendar
   );
 
   return {
-    source: publishedPairs.length > 0 ? "published" : "static",
+    source: "published",
     stocks,
     options,
     calendar,

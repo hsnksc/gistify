@@ -1,5 +1,3 @@
-import reportMarkdown from "../../../earningreport/PreEarnings_IV_Expansion_Stratejileri_Haziran2026.md?raw";
-
 export interface MarkdownTable {
   headers: string[];
   rows: string[][];
@@ -718,7 +716,10 @@ function parsePositionSection(
   } satisfies EarningsPosition;
 }
 
-function buildReport(markdown: string): EarningReportSource {
+export function parseEarningReportMarkdown(
+  markdown: string,
+  sourceFile = "earningreport/source.md"
+): EarningReportSource {
   const lines = splitLines(markdown);
   const firstDivider = findLineIndex(lines, /^---$/);
   const metaLines = firstDivider >= 0 ? lines.slice(0, firstDivider) : lines.slice(0, 12);
@@ -790,7 +791,7 @@ function buildReport(markdown: string): EarningReportSource {
       : "";
 
   return {
-    sourceFile: "earningreport/PreEarnings_IV_Expansion_Stratejileri_Haziran2026.md",
+    sourceFile,
     rawMarkdown: markdown,
     title,
     subtitle,
@@ -810,5 +811,3 @@ function buildReport(markdown: string): EarningReportSource {
     disclaimer,
   };
 }
-
-export const juneEarningReport = buildReport(reportMarkdown);

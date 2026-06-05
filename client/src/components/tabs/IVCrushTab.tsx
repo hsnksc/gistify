@@ -3,7 +3,7 @@
  * Buy low IV, sell high IV before earnings
  */
 
-import { optionStrategyData, strategyConfig, riskLevelConfig, type OptionStrategy } from '@/lib/optionStrategyData';
+import { strategyConfig, riskLevelConfig, type OptionStrategy } from '@/lib/optionStrategyData';
 import { getTooltipLabel } from '@/lib/chartTooltip';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell,
@@ -17,8 +17,28 @@ interface Props {
 
 export default function IVCrushTab({
   onStockClick,
-  strategies = optionStrategyData,
+  strategies = [],
 }: Props) {
+  if (!strategies.length) {
+    return (
+      <div className="p-6">
+        <section className="rounded-none border border-border bg-card/80 p-6">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300">
+            Published Options Layer Bekleniyor
+          </p>
+          <h1 className="mt-3 heading-condensed text-3xl text-foreground">
+            Gosterilecek opsiyon setup verisi yok
+          </h1>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Bu sekme artik static IV crush fallback gostermiyor. Publish edilmis
+            weekly report icinde opsiyon/IV katmani geldikce burada siralama ve
+            grafikler olusur.
+          </p>
+        </section>
+      </div>
+    );
+  }
+
   const sorted = [...strategies].sort((a, b) => b.ivCrushScore - a.ivCrushScore);
 
   const scatterData = strategies.map(s => ({

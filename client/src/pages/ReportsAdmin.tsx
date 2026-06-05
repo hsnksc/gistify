@@ -220,8 +220,8 @@ export default function ReportsAdmin() {
 
   const [reports, setReports] = useState<WeeklyReportRecord[]>([]);
   const [suggestions, setSuggestions] = useState<WeeklyReportSuggestion[]>([]);
-  const [suggestionMode, setSuggestionMode] = useState<"live" | "fallback">(
-    "fallback"
+  const [suggestionMode, setSuggestionMode] = useState<"live" | "empty">(
+    "empty"
   );
   const [selectedReportId, setSelectedReportId] = useState("");
   const [draftReport, setDraftReport] = useState<WeeklyReportRecord | null>(null);
@@ -356,10 +356,10 @@ export default function ReportsAdmin() {
 
       const payload = (await response.json()) as {
         suggestions?: WeeklyReportSuggestion[];
-        mode?: "live" | "fallback";
+        mode?: "live" | "empty";
       };
       setSuggestions(payload.suggestions || []);
-      setSuggestionMode(payload.mode || "fallback");
+      setSuggestionMode(payload.mode || "empty");
     },
     [buildAdminHeaders]
   );
@@ -1154,7 +1154,7 @@ export default function ReportsAdmin() {
                 note={
                   workspaceStatus?.providers.earningsImport.configured
                     ? "Onumuzdeki iki hafta icin gercek earnings takvimi ve fiyat verisi cekiliyor."
-                    : "Canli import kapali. `FMP_API_KEY` eklenmezse sadece fallback taslaklar gelir."
+                    : "Canli import kapali. `FMP_API_KEY` eklenmezse weekly suggestion listesi bos kalir."
                 }
               />
               <ProviderCard
@@ -1295,8 +1295,9 @@ export default function ReportsAdmin() {
 
               {!suggestions.length ? (
                 <div className="mt-5 rounded-[2rem] border border-dashed border-border bg-background/50 p-5 text-sm text-muted-foreground">
-                  Bu an icin sistem oneri uretmedi. `FMP_API_KEY` tanimli degilse
-                  veya provider cevap vermediyse fallback taslaklara dusersin.
+                  Bu an icin sistem oneri uretmedi. Static seed fallback kapali;
+                  `FMP_API_KEY` tanimli degilse veya provider veri donmezse bu
+                  alan bilerek bos kalir.
                 </div>
               ) : null}
             </section>

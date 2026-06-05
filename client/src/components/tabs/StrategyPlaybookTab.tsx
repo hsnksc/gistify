@@ -56,6 +56,26 @@ export default function StrategyPlaybookTab({
     target?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [selectedTicker]);
 
+  if (!entries.length) {
+    return (
+      <div className="p-6">
+        <section className="rounded-none border border-border bg-card/80 p-6">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300">
+            Published Data Bekleniyor
+          </p>
+          <h1 className="mt-3 heading-condensed text-3xl text-foreground">
+            Gosterilecek earning benchmark verisi yok
+          </h1>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Bu ekran artik static seed veya uydurma fallback gostermiyor. Admin
+            workspace uzerinden gercek weekly report publish edilince benchmark
+            burada gorunur.
+          </p>
+        </section>
+      </div>
+    );
+  }
+
   return (
     <div className="p-6 space-y-6">
       <section className="rounded-none border border-border bg-card/80 p-5">
@@ -256,12 +276,12 @@ export default function StrategyPlaybookTab({
                   <div className="space-y-2 text-sm">
                     {[
                       ["Earnings tarihi", stock.earningsDate],
-                      ["Mevcut fiyat", `$${stock.currentPrice.toLocaleString()}`],
                       ["6A performans", `${stock.priceChange6M > 0 ? "+" : ""}${stock.priceChange6M}%`],
                       ["1A performans", `${stock.priceChange1M > 0 ? "+" : ""}${stock.priceChange1M}%`],
                       ["RSI 14", String(stock.rsi14)],
-                      ["Analist buy", `%${stock.analystBuyConsensus}`],
-                      ["Hedef fiyat", `$${stock.priceTarget}`],
+                      ["Current IV", option ? String(option.currentIV) : "-"],
+                      ["Historical IV", option ? String(option.historicalIV) : "-"],
+                      ["Tarihsel move", option ? `%${option.lastEarningsMove}` : "-"],
                       ["Risk seviyesi", stockRisk.label],
                     ].map(([label, value]) => (
                       <div

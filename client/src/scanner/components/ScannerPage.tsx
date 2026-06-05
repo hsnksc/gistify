@@ -1,18 +1,23 @@
 import { Fragment, useCallback, useEffect, useState } from "react";
 import {
   Activity,
+  BarChart3,
   ChevronDown,
   ChevronUp,
   Clock,
+  FileText,
   Filter,
   Loader2,
   Radar,
+  Shield,
+  TrendingUp,
 } from "lucide-react";
 import { runMomentumScan } from "@/scanner";
 import { useScannerI18n } from "@/scanner/useScannerI18n";
 import { scoreColor, signalBg, signalLabel } from "@/scanner/lib/scoreConfig";
 import { getScanTimingWarning } from "@/scanner/lib/momentum";
 import type { ScanResponse, StockResult } from "@/scanner/types";
+import EnterpriseReport from "./EnterpriseReport";
 import OptionStrategyPanel from "./OptionStrategyPanel";
 
 interface ScannerPageProps {
@@ -47,6 +52,7 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
     current: "",
   });
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
+  const [showReport, setShowReport] = useState(false);
   const [minScore, setMinScore] = useState("35");
   const [filterSignal, setFilterSignal] = useState("ALL");
   const [sortKey, setSortKey] = useState<keyof StockResult>("score");
@@ -151,6 +157,16 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
             )}
           </button>
 
+          {results.length > 0 && !isScanning ? (
+            <button
+              onClick={() => setShowReport(!showReport)}
+              className="flex items-center gap-2 rounded-lg border border-slate-600 bg-slate-800 px-4 py-2.5 text-sm font-medium text-slate-300 transition-all hover:bg-slate-700 hover:text-white"
+            >
+              <FileText className="h-4 w-4" />
+              {showReport ? "Raporu Gizle" : "Kurumsal Rapor"}
+            </button>
+          ) : null}
+
           <div>
             <label className="mb-1 block text-xs text-slate-500">{t("Min Skor")}</label>
             <input
@@ -234,6 +250,13 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
           </div>
         ) : null}
       </div>
+
+      {showReport && filtered.length > 0 ? (
+        <EnterpriseReport
+          stocks={filtered}
+          scanTime={scanResponse?.scanTime || new Date().toISOString()}
+        />
+      ) : null}
 
       {filtered.length > 0 ? (
         <div className="overflow-hidden rounded-xl border border-slate-800/60 bg-slate-900/60">
