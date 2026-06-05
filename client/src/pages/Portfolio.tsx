@@ -79,21 +79,44 @@ function createEmptyDraft(): PositionDraft {
   };
 }
 
+function resolveSafeDate(value: string) {
+  const normalized = value.trim();
+  if (!normalized) {
+    return null;
+  }
+
+  const parsed = /^\d{4}-\d{2}-\d{2}$/.test(normalized)
+    ? new Date(`${normalized}T00:00:00Z`)
+    : new Date(normalized);
+
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
 function formatReportDate(dateValue: string) {
+  const parsed = resolveSafeDate(dateValue);
+  if (!parsed) {
+    return dateValue || "-";
+  }
+
   return new Intl.DateTimeFormat("tr-TR", {
     day: "2-digit",
     month: "short",
     year: "numeric",
-  }).format(new Date(`${dateValue}T00:00:00Z`));
+  }).format(parsed);
 }
 
 function formatTimestamp(timestamp: string) {
+  const parsed = resolveSafeDate(timestamp);
+  if (!parsed) {
+    return timestamp || "-";
+  }
+
   return new Intl.DateTimeFormat("tr-TR", {
     day: "2-digit",
     month: "short",
     hour: "2-digit",
     minute: "2-digit",
-  }).format(new Date(timestamp));
+  }).format(parsed);
 }
 
 function ModuleStack({
