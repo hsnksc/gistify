@@ -3,8 +3,8 @@
  * Full stock analysis with radar chart, historical moves, catalysts/risks
  */
 
-import { useState } from 'react';
-import { stocksData, signalConfig, riskConfig } from '@/lib/stockData';
+import { stocksData, signalConfig, riskConfig, type StockData } from '@/lib/stockData';
+import { getTooltipLabel } from '@/lib/chartTooltip';
 import {
   RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer,
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell, ReferenceLine,
@@ -13,14 +13,17 @@ import {
 interface Props {
   selectedTicker: string | null;
   onSelectTicker: (ticker: string) => void;
+  stocks?: StockData[];
 }
 
-const RADAR_URL = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663682523726/f6iQZ4ZvSyNWxyJ4Djp26f/stock_radar-eVpBHWbayD8i3o7kXtFyun.webp';
-
-export default function StockDetailTab({ selectedTicker, onSelectTicker }: Props) {
+export default function StockDetailTab({
+  selectedTicker,
+  onSelectTicker,
+  stocks = stocksData,
+}: Props) {
   const stock = selectedTicker
-    ? stocksData.find(s => s.ticker === selectedTicker) || stocksData[0]
-    : stocksData[0];
+    ? stocks.find(s => s.ticker === selectedTicker) || stocks[0]
+    : stocks[0];
 
   const cfg = signalConfig[stock.signal];
   const rCfg = riskConfig[stock.riskLevel];
@@ -43,7 +46,7 @@ export default function StockDetailTab({ selectedTicker, onSelectTicker }: Props
     <div className="p-6 space-y-4">
       {/* Stock Selector */}
       <div className="flex flex-wrap gap-2 mb-4">
-        {stocksData.map(s => {
+        {stocks.map(s => {
           const c = signalConfig[s.signal];
           const isSelected = s.ticker === stock.ticker;
           return (
@@ -173,12 +176,22 @@ export default function StockDetailTab({ selectedTicker, onSelectTicker }: Props
                   <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.22 0.03 225)" />
                   <XAxis dataKey="quarter" tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 9, fontFamily: 'JetBrains Mono' }} />
                   <YAxis tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 9, fontFamily: 'JetBrains Mono' }} unit="%" />
-                  <Tooltip
-                    formatter={(v: any) => [`${v}%`, 'Hareket']}
-                    contentStyle={{ background: 'oklch(0.15 0.03 225)', border: '1px solid oklch(0.25 0.03 225)', borderRadius: 0 }}
-                    labelStyle={{ color: 'oklch(0.78 0.18 160)', fontFamily: 'JetBrains Mono', fontSize: 11 }}
-                    itemStyle={{ color: 'oklch(0.75 0.01 220)', fontFamily: 'JetBrains Mono', fontSize: 11 }}
-                  />
+                  <Tooltip content={({ active, payload, label }) => {
+                    if (active && payload && payload.length) {
+                      const resolvedLabel = getTooltipLabel(payload, label, ['quarter']);
+                      return (
+                        <div className="px-3 py-2 border" style={{ background: 'oklch(0.15 0.03 225)', borderColor: 'oklch(0.25 0.03 225)', borderRadius: 0 }}>
+                          <p className="data-mono text-xs font-bold" style={{ color: 'oklch(0.78 0.18 160)' }}>{resolvedLabel}</p>
+                          {payload.map((item: any, index: number) => (
+                            <p key={index} className="data-mono text-xs" style={{ color: item.color || item.fill }}>
+                              Hareket: {item.value}%
+                            </p>
+                          ))}
+                        </div>
+                      );
+                    }
+                    return null;
+                  }} />
                   <ReferenceLine y={0} stroke="oklch(0.35 0.03 225)" />
                   <Bar dataKey="hareket" maxBarSize={24}>
                     {historicalData.map((entry, i) => (

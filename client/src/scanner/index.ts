@@ -29,7 +29,7 @@ export async function runMomentumScan(
   const { scanParallel } = await import("./lib/parallelScanner");
   const response = await scanParallel({
     tickers,
-    minScore: opts.minScore ?? 45,
+    minScore: opts.minScore ?? 35,
     maxResults: tickers.length,
     onProgress: opts.onProgress,
   });

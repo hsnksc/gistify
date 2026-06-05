@@ -54,7 +54,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
   const copy =
     language === "en"
       ? {
-          eyebrow: "Momentum Scrapper",
+          eyebrow: "Momentum Scanner",
           title: "Opening-drive momentum workspace",
           description:
             "This section scans liquid US names through structure, relative volume, RSI health and intraday retention so the strongest opening moves surface in one table.",
@@ -103,7 +103,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
           ],
         }
       : {
-          eyebrow: "Momentum Scrapper",
+          eyebrow: "Momentum Scanner",
           title: "Acilis momentumu workspace'i",
           description:
             "Bu bolum likit ABD hisselerini fiyat yapisi, goreceli hacim, RSI sagligi ve intraday tutunma gucu ile tarar. Amac ilk guclu acilis hareketlerini tek tabloda ayirmak.",

@@ -3,22 +3,25 @@
  * Deep dive into each stock's option strategy
  */
 
-import { useState } from 'react';
-import { optionStrategyData, strategyConfig, riskLevelConfig } from '@/lib/optionStrategyData';
+import { optionStrategyData, strategyConfig, riskLevelConfig, type OptionStrategy } from '@/lib/optionStrategyData';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  BarChart, Bar, Cell,
 } from 'recharts';
 
 interface Props {
   selectedTicker: string | null;
   onSelectTicker: (ticker: string) => void;
+  strategies?: OptionStrategy[];
 }
 
-export default function OptionDetailTab({ selectedTicker, onSelectTicker }: Props) {
+export default function OptionDetailTab({
+  selectedTicker,
+  onSelectTicker,
+  strategies = optionStrategyData,
+}: Props) {
   const stock = selectedTicker
-    ? optionStrategyData.find(s => s.ticker === selectedTicker) || optionStrategyData[0]
-    : optionStrategyData[0];
+    ? strategies.find(s => s.ticker === selectedTicker) || strategies[0]
+    : strategies[0];
 
   const cfg = strategyConfig[stock.strategyRating];
   const rCfg = riskLevelConfig[stock.riskLevel];
@@ -37,7 +40,7 @@ export default function OptionDetailTab({ selectedTicker, onSelectTicker }: Prop
     <div className="p-6 space-y-4">
       {/* Stock Selector */}
       <div className="flex flex-wrap gap-2 mb-4">
-        {optionStrategyData.map(s => {
+        {strategies.map(s => {
           const c = strategyConfig[s.strategyRating];
           const isSelected = s.ticker === stock.ticker;
           return (

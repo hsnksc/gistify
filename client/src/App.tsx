@@ -182,7 +182,7 @@ function Router({
           <div className="mx-auto max-w-7xl rounded-2xl border border-border bg-card/95 p-6 text-card-foreground shadow-2xl">
             <h2 className="text-lg font-semibold">Panel yukleniyor</h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              Earnings benchmark ve momentum workspace hazirlaniyor.
+              Earning strategy ve momentum workspace hazirlaniyor.
             </p>
           </div>
         </div>
@@ -234,7 +234,7 @@ function AppNavigation({ language }: { language: AppLanguage }) {
   const items = [
     {
       href: "/app",
-      label: language === "en" ? "Benchmark" : "Benchmark",
+      label: language === "en" ? "Earning Strategy" : "Earning Strategy",
       icon: LayoutDashboard,
       active: location.startsWith("/app"),
     },

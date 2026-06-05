@@ -3,7 +3,8 @@
  * Full momentum scoring table + scatter chart + volume analysis
  */
 
-import { stocksData, signalConfig, riskConfig } from '@/lib/stockData';
+import { stocksData, signalConfig, riskConfig, type StockData } from '@/lib/stockData';
+import { getTooltipLabel } from '@/lib/chartTooltip';
 import {
   ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell,
   BarChart, Bar, Legend,
@@ -11,6 +12,7 @@ import {
 
 interface Props {
   onStockClick: (ticker: string) => void;
+  stocks?: StockData[];
 }
 
 const CustomTooltip = ({ active, payload }: any) => {
@@ -28,10 +30,10 @@ const CustomTooltip = ({ active, payload }: any) => {
   return null;
 };
 
-export default function MomentumTab({ onStockClick }: Props) {
-  const sorted = [...stocksData].sort((a, b) => b.momentumScore - a.momentumScore);
+export default function MomentumTab({ onStockClick, stocks = stocksData }: Props) {
+  const sorted = [...stocks].sort((a, b) => b.momentumScore - a.momentumScore);
 
-  const scatterData = stocksData.map(s => ({
+  const scatterData = stocks.map(s => ({
     ticker: s.ticker,
     x: s.priceChange6M,
     y: s.momentumScore,
@@ -39,7 +41,7 @@ export default function MomentumTab({ onStockClick }: Props) {
     signal: s.signal,
   }));
 
-  const volumeData = stocksData.map(s => ({
+  const volumeData = stocks.map(s => ({
     ticker: s.ticker,
     mevcut: s.volumeCurrent,
     ortalama: s.volumeAvg3M,
@@ -270,9 +272,10 @@ export default function MomentumTab({ onStockClick }: Props) {
                 <YAxis tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 10, fontFamily: 'JetBrains Mono' }} />
                 <Tooltip content={({ active, payload, label }) => {
                   if (active && payload && payload.length) {
+                    const resolvedLabel = getTooltipLabel(payload, label);
                     return (
                       <div className="px-3 py-2 border" style={{ background: 'oklch(0.15 0.03 225)', borderColor: 'oklch(0.25 0.03 225)', borderRadius: 0 }}>
-                        <p className="data-mono text-xs font-bold" style={{ color: 'oklch(0.78 0.18 160)' }}>{label}</p>
+                        <p className="data-mono text-xs font-bold" style={{ color: 'oklch(0.78 0.18 160)' }}>{resolvedLabel}</p>
                         {payload.map((p: any, i: number) => (
                           <p key={i} className="data-mono text-xs" style={{ color: p.fill }}>{p.name}: {p.value}M</p>
                         ))}

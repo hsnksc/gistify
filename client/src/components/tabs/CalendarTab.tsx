@@ -3,21 +3,41 @@
  * Earnings calendar with signal indicators
  */
 
-import { earningsCalendar, stocksData, signalConfig } from '@/lib/stockData';
+import { earningsCalendar, stocksData, signalConfig, type StockData } from '@/lib/stockData';
+import type { StrategyCalendarItem } from '@/lib/earningStrategyData';
 
 interface Props {
   onStockClick: (ticker: string) => void;
+  stocks?: StockData[];
+  calendar?: StrategyCalendarItem[];
+  reportWindow?: string;
 }
 
-export default function CalendarTab({ onStockClick }: Props) {
-  // Group by date
-  const grouped = earningsCalendar.reduce((acc, item) => {
-    if (!acc[item.date]) acc[item.date] = [];
-    acc[item.date].push(item);
-    return acc;
-  }, {} as Record<string, typeof earningsCalendar>);
+const staticCalendarData: StrategyCalendarItem[] = earningsCalendar.map((item, index) => ({
+  id: `${item.ticker}-${index + 1}`,
+  sortDate: `${String(index + 1).padStart(2, '0')}-${item.ticker}`,
+  label: item.date,
+  ticker: item.ticker,
+  name: item.name,
+  time: item.time,
+  signal: item.signal,
+}));
 
-  const dates = Object.keys(grouped);
+export default function CalendarTab({
+  onStockClick,
+  stocks = stocksData,
+  calendar = staticCalendarData,
+  reportWindow = 'Aktif hafta',
+}: Props) {
+  const grouped = calendar.reduce((acc, item) => {
+    if (!acc[item.sortDate]) {
+      acc[item.sortDate] = { label: item.label, items: [] as StrategyCalendarItem[] };
+    }
+    acc[item.sortDate].items.push(item);
+    return acc;
+  }, {} as Record<string, { label: string; items: StrategyCalendarItem[] }>);
+
+  const dates = Object.keys(grouped).sort((left, right) => left.localeCompare(right));
 
   return (
     <div className="p-6 space-y-6">
@@ -30,7 +50,7 @@ export default function CalendarTab({ onStockClick }: Props) {
           </h1>
         </div>
         <p className="text-sm ml-3" style={{ color: 'oklch(0.5 0.015 225)' }}>
-          27 Mayıs — 3 Haziran 2026 · Tüm raporlar piyasa kapanışı sonrası (AMC)
+          {reportWindow} · Tarih seçimi değiştiğinde tüm earning strategy akışı buna göre güncellenir
         </p>
       </div>
 
@@ -44,8 +64,8 @@ export default function CalendarTab({ onStockClick }: Props) {
             <div key={date} className="flex gap-0">
               {/* Date label */}
               <div className="w-[140px] flex-shrink-0 pr-4 pt-1 text-right">
-                <div className="data-mono text-xs font-bold" style={{ color: 'oklch(0.75 0.15 75)' }}>{date}</div>
-                <div className="text-xs" style={{ color: 'oklch(0.4 0.015 225)' }}>AMC</div>
+                <div className="data-mono text-xs font-bold" style={{ color: 'oklch(0.75 0.15 75)' }}>{grouped[date].label}</div>
+                <div className="text-xs" style={{ color: 'oklch(0.4 0.015 225)' }}>{grouped[date].items[0]?.time || 'AMC'}</div>
               </div>
 
               {/* Dot */}
@@ -58,8 +78,8 @@ export default function CalendarTab({ onStockClick }: Props) {
 
               {/* Cards */}
               <div className="flex-1 pl-6 space-y-2">
-                {grouped[date].map((item) => {
-                  const stock = stocksData.find(s => s.ticker === item.ticker);
+                {grouped[date].items.map((item) => {
+                  const stock = stocks.find(s => s.ticker === item.ticker);
                   const cfg = signalConfig[item.signal];
                   if (!stock) return null;
                   return (
@@ -140,8 +160,8 @@ export default function CalendarTab({ onStockClick }: Props) {
               </tr>
             </thead>
             <tbody>
-              {earningsCalendar.map((item, i) => {
-                const stock = stocksData.find(s => s.ticker === item.ticker);
+              {calendar.map((item, i) => {
+                const stock = stocks.find(s => s.ticker === item.ticker);
                 const cfg = signalConfig[item.signal];
                 if (!stock) return null;
                 return (
@@ -156,7 +176,7 @@ export default function CalendarTab({ onStockClick }: Props) {
                     onMouseEnter={e => (e.currentTarget.style.background = 'oklch(0.78 0.18 160 / 0.05)')}
                     onMouseLeave={e => (e.currentTarget.style.background = i % 2 === 0 ? 'transparent' : 'oklch(0.13 0.025 230 / 0.5)')}
                   >
-                    <td className="px-3 py-2.5 data-mono text-xs" style={{ color: 'oklch(0.75 0.15 75)' }}>{item.date}</td>
+                    <td className="px-3 py-2.5 data-mono text-xs" style={{ color: 'oklch(0.75 0.15 75)' }}>{item.label}</td>
                     <td className="px-3 py-2.5 data-mono text-sm font-bold" style={{ color: 'oklch(0.92 0.01 220)' }}>{item.ticker}</td>
                     <td className="px-3 py-2.5 text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>{stock.sector}</td>
                     <td className="px-3 py-2.5 data-mono text-xs" style={{ color: 'oklch(0.75 0.01 220)' }}>${stock.epsEstimate}</td>

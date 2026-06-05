@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as RechartsPrimitive from "recharts";
 
+import { getTooltipDatum, getTooltipLabel } from "@/lib/chartTooltip";
 import { cn } from "@/lib/utils";
 
 // Format: { THEME_NAME: CSS_SELECTOR }
@@ -134,10 +135,18 @@ function ChartTooltipContent({
     const [item] = payload;
     const key = `${labelKey || item?.dataKey || item?.name || "value"}`;
     const itemConfig = getPayloadConfigFromPayload(config, item, key);
+    const datum = getTooltipDatum(payload);
     const value =
-      !labelKey && typeof label === "string"
-        ? config[label as keyof typeof config]?.label || label
-        : itemConfig?.label;
+      itemConfig?.label ||
+      (!labelKey
+        ? config[
+            getTooltipLabel(payload as never, label) as keyof typeof config
+          ]?.label
+        : undefined) ||
+      (datum && typeof datum[labelKey || "label"] === "string"
+        ? (datum[labelKey || "label"] as string)
+        : undefined) ||
+      getTooltipLabel(payload as never, label);
 
     if (labelFormatter) {
       return (

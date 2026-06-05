@@ -56,7 +56,7 @@ const COPY = {
     eyebrow: "Gistify Billing",
     title: "Google hesabinla gir, Paddle ile aboneligi ac",
     description:
-      "Odeme akisi artik hazir. Uyelik hesabina bagli olarak Paddle checkout ile scanner, daily ve benchmark modullerini acabilirsin.",
+      "Odeme akisi artik hazir. Uyelik hesabina bagli olarak Paddle checkout ile scanner, daily ve earning strategy modullerini acabilirsin.",
     secure: "Paddle checkout aktif",
     accountLinked: "Hesap bazli erisim",
     webhookSync: "Webhook senkronu",
@@ -116,7 +116,7 @@ const COPY = {
     eyebrow: "Gistify Billing",
     title: "Sign in with Google, then activate your subscription with Paddle",
     description:
-      "Billing is now ready. You can unlock the scanner, daily, and benchmark modules through Paddle checkout tied to your account.",
+      "Billing is now ready. You can unlock the scanner, daily, and earning strategy modules through Paddle checkout tied to your account.",
     secure: "Paddle checkout live",
     accountLinked: "Account-linked access",
     webhookSync: "Webhook sync",

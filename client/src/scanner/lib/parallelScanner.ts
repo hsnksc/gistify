@@ -4,8 +4,13 @@
  * Hibrit veri saglayici (Yahoo + Finnhub + Alphavantage)
  */
 
-import { NASDAQ_TICKERS, type StockData } from "./yahooFinance";
-import { fetchStockDataHybrid, type ProviderName, type HybridFetchResult, getProviderStatuses } from "./dataProviders";
+import { NASDAQ_TICKERS } from "./yahooFinance";
+import {
+  fetchStockDataHybrid,
+  type ProviderName,
+  type HybridFetchResult,
+  type ScannerStockData,
+} from "./dataProviders";
 import { analyzeStock } from "./momentum";
 import type { StockResult } from "@/scanner/types";
 
@@ -49,7 +54,7 @@ async function fetchWithRetry(
   ticker: string,
   attempt = 0,
   stats?: ScanStats
-): Promise<{ data: StockData | null; provider: ProviderName | null }> {
+): Promise<{ data: ScannerStockData | null; provider: ProviderName | null }> {
   try {
     const result = await fetchStockDataHybrid(ticker);
 
@@ -126,9 +131,7 @@ export async function scanParallel(opts: ScanOptions) {
       scanned++;
 
       if (s.status === "fulfilled" && s.value.data) {
-        // Intraday verisi var mi kontrol et
-        const hasIntraday = false; // Simdilik basitlestirilmis
-        const analysis = analyzeStock(s.value.data);
+        const analysis = analyzeStock(s.value.data, s.value.data.intraday);
         if (analysis && analysis.score >= minScore) {
           results.push(analysis);
           onChunkDone?.([analysis]);

@@ -46,7 +46,7 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
     current: "",
   });
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
-  const [minScore, setMinScore] = useState("45");
+  const [minScore, setMinScore] = useState("35");
   const [filterSignal, setFilterSignal] = useState("ALL");
   const [sortKey, setSortKey] = useState<keyof StockResult>("score");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
@@ -72,7 +72,7 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
 
     try {
       const response = await runMomentumScan(DEFAULT_TICKERS, {
-        minScore: parseInt(minScore, 10) || 45,
+        minScore: parseInt(minScore, 10) || 35,
         signalFilter: filterSignal,
         onProgress: (scanned, total, current) => {
           setScanProgress({ scanned, total, current });

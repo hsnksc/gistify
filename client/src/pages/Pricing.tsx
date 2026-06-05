@@ -23,7 +23,7 @@ const COPY = {
     privacy: "gizlilik politikasi",
     items: [
       "Momentum scanner",
-      "Earnings benchmark paneli",
+      "Earning strategy paneli",
       "Pre-earnings stock analysis tabs",
       "Risk matrisi ve IV crush gorunumu",
       "Web erisimi ve support@gistify.pro destegi",
@@ -50,7 +50,7 @@ const COPY = {
     privacy: "privacy policy",
     items: [
       "Momentum scanner",
-      "Earnings benchmark dashboard",
+      "Earning strategy dashboard",
       "Pre-earnings stock analysis tabs",
       "Risk matrix and IV crush views",
       "Web access and support via support@gistify.pro",

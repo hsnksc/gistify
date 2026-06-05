@@ -3,27 +3,33 @@
  * Hero banner + summary stats + top picks grid + macro context
  */
 
-import { stocksData, sectorMacroData, signalConfig, earningsCalendar } from '@/lib/stockData';
+import { stocksData, sectorMacroData, signalConfig, type StockData } from '@/lib/stockData';
+import { getTooltipLabel } from '@/lib/chartTooltip';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell,
-  RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend,
 } from 'recharts';
 
 const HERO_URL = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663682523726/f6iQZ4ZvSyNWxyJ4Djp26f/hero_banner-iCqwWxUrnD74QRvdzpTN5G.webp';
 
 interface Props {
   onStockClick: (ticker: string) => void;
+  stocks?: StockData[];
+  reportWindow?: string;
+  analysisDateLabel?: string;
+  headline?: string;
+  summary?: string;
 }
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
+    const resolvedLabel = getTooltipLabel(payload, label);
     return (
       <div className="px-3 py-2 border" style={{
         background: 'oklch(0.15 0.03 225)',
         borderColor: 'oklch(0.25 0.03 225)',
         borderRadius: 0,
       }}>
-        <p className="data-mono text-xs font-bold" style={{ color: 'oklch(0.78 0.18 160)' }}>{label}</p>
+        <p className="data-mono text-xs font-bold" style={{ color: 'oklch(0.78 0.18 160)' }}>{resolvedLabel}</p>
         {payload.map((p: any, i: number) => (
           <p key={i} className="data-mono text-xs" style={{ color: p.color }}>
             {p.name}: {p.value}
@@ -35,24 +41,40 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-export default function OverviewTab({ onStockClick }: Props) {
-  const topPicks = stocksData.filter(s => s.signal === 'STRONG_BUY' || s.signal === 'BUY').slice(0, 5);
-  const momentumChartData = stocksData
+export default function OverviewTab({
+  onStockClick,
+  stocks = stocksData,
+  reportWindow = 'Haftalik gorunum',
+  analysisDateLabel = 'Canli',
+  headline,
+  summary,
+}: Props) {
+  const topPicks = stocks.filter(s => s.signal === 'STRONG_BUY' || s.signal === 'BUY').slice(0, 5);
+  const momentumChartData = [...stocks]
     .sort((a, b) => b.momentumScore - a.momentumScore)
     .map(s => ({
       ticker: s.ticker,
       score: s.momentumScore,
       beat: s.earningsBeatProbability,
     }));
-
-  const radarData = topPicks.slice(0, 3).map(s => ({
-    subject: s.ticker,
-    Momentum: s.momentumScore,
-    'Beat İhtimali': s.earningsBeatProbability,
-    'Analist Konsensüs': s.analystBuyConsensus,
-    'Hacim Gücü': s.volumeStatus === 'VERY_HIGH' ? 95 : s.volumeStatus === 'HIGH' ? 75 : 50,
-    'Sektör Uyumu': s.sectorTrend === 'BULLISH' ? 90 : 60,
-  }));
+  const strongBuyCount = stocks.filter(stock => stock.signal === 'STRONG_BUY').length;
+  const neutralCount = stocks.filter(stock => stock.signal === 'NEUTRAL').length;
+  const watchCount = Math.max(0, stocks.length - strongBuyCount - neutralCount);
+  const avgBeat = stocks.length
+    ? Math.round(
+        stocks.reduce((sum, stock) => sum + stock.earningsBeatProbability, 0) /
+          stocks.length
+      )
+    : 0;
+  const avgMomentum = stocks.length
+    ? Math.round(
+        stocks.reduce((sum, stock) => sum + stock.momentumScore, 0) /
+          stocks.length
+      )
+    : 0;
+  const leadSector =
+    [...stocks].sort((left, right) => right.momentumScore - left.momentumScore)[0]?.sector ||
+    'Technology';
 
   return (
     <div className="p-0">
@@ -71,22 +93,24 @@ export default function OverviewTab({ onStockClick }: Props) {
           <div className="flex items-center gap-2 mb-3">
             <div className="w-1.5 h-1.5 rounded-full pulse-live" style={{ background: 'oklch(0.78 0.18 160)' }} />
             <span className="data-mono text-xs tracking-widest" style={{ color: 'oklch(0.78 0.18 160)' }}>
-              CANLI ANALİZ — 21 MAYIS 2026
+              {analysisDateLabel.toUpperCase()} · {reportWindow.toUpperCase()}
             </span>
           </div>
           <h1 className="heading-condensed mb-2" style={{ fontSize: '2.8rem', lineHeight: 1.1, color: 'oklch(0.95 0.01 220)' }}>
-            EARNINGS ÖNCESİ<br />
+            EARNING STRATEGY<br />
             <span style={{ color: 'oklch(0.78 0.18 160)' }}>DERİN ANALİZ</span>
           </h1>
-          <p className="text-sm max-w-lg" style={{ color: 'oklch(0.65 0.015 225)', lineHeight: 1.6 }}>
-            10 hisse · Hacim + Sektör + Korelasyon + Analist Konsensüsü · 
-            Earnings döneminde en yüksek olasılıklı pozisyonlar
+          <p className="text-sm max-w-xl" style={{ color: 'oklch(0.65 0.015 225)', lineHeight: 1.6 }}>
+            {headline || 'Secili haftanin en iyi momentum, beat ve IV crush kurulumlari burada toplanir.'}
+          </p>
+          <p className="mt-2 text-sm max-w-2xl" style={{ color: 'oklch(0.56 0.015 225)', lineHeight: 1.6 }}>
+            {summary || 'Her hisse ayni akista momentum, hacim kalitesi, earnings zamanlamasi ve opsiyon senaryosuyla okunur.'}
           </p>
           <div className="flex items-center gap-4 mt-4">
             <div className="flex items-center gap-2">
-              <span className="badge-strong">2 GÜÇLÜ AL</span>
-              <span className="badge-warning">3 NÖTR</span>
-              <span className="badge-danger">2 GÜÇLÜ SAT</span>
+              <span className="badge-strong">{strongBuyCount} GÜÇLÜ AL</span>
+              <span className="badge-warning">{neutralCount} NÖTR</span>
+              <span className="badge-danger">{watchCount} İZLE</span>
             </div>
           </div>
         </div>
@@ -96,10 +120,10 @@ export default function OverviewTab({ onStockClick }: Props) {
         {/* KPI Row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            { label: 'Analiz Edilen Hisse', value: '10', sub: 'Mayıs-Haziran 2026', color: 'oklch(0.78 0.18 160)' },
-            { label: 'Güçlü Al Sinyali', value: '2', sub: 'MRVL · CRWD', color: 'oklch(0.78 0.18 160)' },
-            { label: 'Ort. Beat İhtimali', value: '%62', sub: 'Top 3 hisse', color: 'oklch(0.75 0.15 75)' },
-            { label: 'Sektör Büyümesi', value: '+22%', sub: 'AI Yarı İletken YoY', color: 'oklch(0.75 0.15 75)' },
+            { label: 'Analiz Edilen Hisse', value: String(stocks.length), sub: reportWindow, color: 'oklch(0.78 0.18 160)' },
+            { label: 'Öne Çıkan Kurulum', value: String(topPicks.length), sub: topPicks.map(stock => stock.ticker).join(' · ') || 'Watchlist', color: 'oklch(0.78 0.18 160)' },
+            { label: 'Ort. Beat İhtimali', value: `%${avgBeat}`, sub: 'Secili hafta ortalamasi', color: 'oklch(0.75 0.15 75)' },
+            { label: 'Ort. Momentum', value: String(avgMomentum), sub: leadSector, color: 'oklch(0.75 0.15 75)' },
           ].map((kpi, i) => (
             <div key={i} className="tactical-card p-4">
               <div className="text-xs mb-1 tracking-wide uppercase font-semibold" style={{ color: 'oklch(0.45 0.015 225)' }}>

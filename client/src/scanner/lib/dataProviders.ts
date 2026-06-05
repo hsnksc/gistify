@@ -73,6 +73,19 @@ export interface ProviderStatus {
   blockRemainingMs: number;
 }
 
+export interface IntradaySeries {
+  timestamps: number[];
+  open: number[];
+  high: number[];
+  low: number[];
+  close: number[];
+  volume: number[];
+}
+
+export type ScannerStockData = StockData & {
+  intraday?: IntradaySeries;
+};
+
 export function getProviderStatuses(): ProviderStatus[] {
   const now = Date.now();
   return Object.entries(RATE_LIMITS).map(([name, limits]) => {
@@ -211,7 +224,7 @@ const SECTOR_MAP: Record<string, string> = {
 // # YAHOO FINANCE CLIENT (Mevcut, refactor edilmis)
 // #############################################################################
 
-async function fetchYahooCandles(ticker: string): Promise<StockData | null> {
+async function fetchYahooCandles(ticker: string): Promise<ScannerStockData | null> {
   if (!canCall("yahoo")) return null;
 
   const dailyUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1d&range=60d&includeAdjustedClose=true`;
@@ -303,6 +316,16 @@ async function fetchYahooCandles(ticker: string): Promise<StockData | null> {
       marketCap: meta.marketCap ?? 0,
       dataQuality: 90,
       lastUpdated: Date.now(),
+      intraday: iTimestamps.length
+        ? {
+            timestamps: iTimestamps,
+            open: iOpen,
+            high: iHigh,
+            low: iLow,
+            close: iClose,
+            volume: iVolume,
+          }
+        : undefined,
     };
   } catch {
     return null;
@@ -320,7 +343,7 @@ async function fetchYahooCandles(ticker: string): Promise<StockData | null> {
  * t = epoch milliseconds
  * TEST: AAPL 40 gun veri, son kapanis $308.82 ✅
  */
-async function fetchMassiveCandles(ticker: string): Promise<StockData | null> {
+async function fetchMassiveCandles(ticker: string): Promise<ScannerStockData | null> {
   if (!isProviderConfigured("massive")) return null;
   if (!canCall("massive")) return null;
 
@@ -428,7 +451,7 @@ interface AVTimeSeriesDaily {
   "Information"?: string; // Error message
 }
 
-async function fetchAlphavantageCandles(ticker: string): Promise<StockData | null> {
+async function fetchAlphavantageCandles(ticker: string): Promise<ScannerStockData | null> {
   if (!isProviderConfigured("alphavantage")) return null;
   if (!canCall("alphavantage")) return null;
 
@@ -534,7 +557,7 @@ async function fetchAlphavantageCandles(ticker: string): Promise<StockData | nul
  * - JSON format
  * - CORS proxy gerekli
  */
-async function fetchTwelveDataCandles(ticker: string): Promise<StockData | null> {
+async function fetchTwelveDataCandles(ticker: string): Promise<ScannerStockData | null> {
   if (!isProviderConfigured("twelvedata")) return null;
   if (!canCall("twelvedata")) return null;
 
@@ -637,7 +660,7 @@ async function fetchTwelveDataCandles(ticker: string): Promise<StockData | null>
 export type ProviderName = "yahoo" | "massive" | "twelvedata" | "alphavantage";
 
 export interface HybridFetchResult {
-  data: StockData | null;
+  data: ScannerStockData | null;
   provider: ProviderName | null;
   attempts: { provider: ProviderName; success: boolean; error?: string }[];
 }
@@ -725,7 +748,7 @@ export async function fetchStockDataHybrid(ticker: string): Promise<HybridFetchR
 export async function fetchStockDataFromProvider(
   ticker: string,
   provider: ProviderName
-): Promise<StockData | null> {
+): Promise<ScannerStockData | null> {
   switch (provider) {
     case "yahoo": return fetchYahooCandles(ticker);
     case "massive": return fetchMassiveCandles(ticker);
@@ -736,7 +759,7 @@ export async function fetchStockDataFromProvider(
 }
 
 // Geriye uyumluluk: Eski fetchStockData imzasi
-export async function fetchStockData(ticker: string): Promise<StockData | null> {
+export async function fetchStockData(ticker: string): Promise<ScannerStockData | null> {
   const result = await fetchStockDataHybrid(ticker);
   return result.data;
 }

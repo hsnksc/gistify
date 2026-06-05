@@ -3,7 +3,8 @@
  * Buy low IV, sell high IV before earnings
  */
 
-import { optionStrategyData, strategyConfig, riskLevelConfig } from '@/lib/optionStrategyData';
+import { optionStrategyData, strategyConfig, riskLevelConfig, type OptionStrategy } from '@/lib/optionStrategyData';
+import { getTooltipLabel } from '@/lib/chartTooltip';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell,
   ScatterChart, Scatter, Legend,
@@ -11,12 +12,16 @@ import {
 
 interface Props {
   onStockClick: (ticker: string) => void;
+  strategies?: OptionStrategy[];
 }
 
-export default function IVCrushTab({ onStockClick }: Props) {
-  const sorted = [...optionStrategyData].sort((a, b) => b.ivCrushScore - a.ivCrushScore);
+export default function IVCrushTab({
+  onStockClick,
+  strategies = optionStrategyData,
+}: Props) {
+  const sorted = [...strategies].sort((a, b) => b.ivCrushScore - a.ivCrushScore);
 
-  const scatterData = optionStrategyData.map(s => ({
+  const scatterData = strategies.map(s => ({
     ticker: s.ticker,
     x: s.currentIV,
     y: s.momentumScore,
@@ -24,7 +29,7 @@ export default function IVCrushTab({ onStockClick }: Props) {
     rating: s.strategyRating,
   }));
 
-  const profitData = optionStrategyData.map(s => ({
+  const profitData = strategies.map(s => ({
     ticker: s.ticker,
     callGain: s.callGainFromIV,
     putGain: s.putGainFromIV,
@@ -242,9 +247,10 @@ export default function IVCrushTab({ onStockClick }: Props) {
                 <YAxis tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 10, fontFamily: 'JetBrains Mono' }} unit="%" />
                 <Tooltip content={({ active, payload, label }) => {
                   if (active && payload && payload.length) {
+                    const resolvedLabel = getTooltipLabel(payload, label);
                     return (
                       <div className="px-3 py-2 border" style={{ background: 'oklch(0.15 0.03 225)', borderColor: 'oklch(0.25 0.03 225)', borderRadius: 0 }}>
-                        <p className="data-mono text-xs font-bold" style={{ color: 'oklch(0.78 0.18 160)' }}>{label}</p>
+                        <p className="data-mono text-xs font-bold" style={{ color: 'oklch(0.78 0.18 160)' }}>{resolvedLabel}</p>
                         {payload.map((p: any, i: number) => (
                           <p key={i} className="data-mono text-xs" style={{ color: p.fill }}>
                             {p.name}: +{p.value}%

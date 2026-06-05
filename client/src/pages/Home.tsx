@@ -10,6 +10,7 @@ import { useLocation } from "wouter";
 import type { WeeklyReportRecord } from "@shared/weeklyReports";
 import { Button } from "@/components/ui/button";
 import { earningsCalendar, signalConfig, stocksData } from "@/lib/stockData";
+import { buildEarningStrategyDataset } from "@/lib/earningStrategyData";
 import {
   formatAnalysisDate,
   formatWeekRange,
@@ -113,7 +114,7 @@ export default function Home() {
             : nextReports[0]?.id || ""
         );
       } catch {
-        // Leave the benchmark page usable with static fallback data.
+        // Leave the earning strategy page usable with static fallback data.
       }
     })();
 
@@ -122,10 +123,6 @@ export default function Home() {
     };
   }, []);
 
-  const sortedByMomentum = useMemo(
-    () => [...stocksData].sort((a, b) => b.momentumScore - a.momentumScore),
-    []
-  );
   const selectedPublishedReport = useMemo(
     () =>
       publishedReports.find(report => report.id === selectedPublishedReportId) ||
@@ -137,20 +134,31 @@ export default function Home() {
     () => (selectedPublishedReport ? getReportSummary(selectedPublishedReport) : null),
     [selectedPublishedReport]
   );
+  const strategyData = useMemo(
+    () => buildEarningStrategyDataset(selectedPublishedReport),
+    [selectedPublishedReport]
+  );
+  const activeStocks = strategyData.stocks;
+  const activeOptions = strategyData.options;
+  const activeCalendar = strategyData.calendar;
+  const sortedByMomentum = useMemo(
+    () => [...activeStocks].sort((a, b) => b.momentumScore - a.momentumScore),
+    [activeStocks]
+  );
   const publishedTopEntries = useMemo(
     () => selectedPublishedReport?.content.entries.slice(0, 4) || [],
     [selectedPublishedReport]
   );
   const publishedAvgBeat = useMemo(() => {
-    const entries = selectedPublishedReport?.content.entries || [];
-    if (!entries.length) {
+    if (!activeStocks.length) {
       return 0;
     }
 
     return Math.round(
-      entries.reduce((sum, entry) => sum + entry.beatRate, 0) / entries.length
+      activeStocks.reduce((sum, entry) => sum + entry.earningsBeatProbability, 0) /
+        activeStocks.length
     );
-  }, [selectedPublishedReport]);
+  }, [activeStocks]);
   const topPicks = useMemo(
     () =>
       sortedByMomentum
@@ -159,20 +167,20 @@ export default function Home() {
     [sortedByMomentum]
   );
 
-  const strongBuyCount = stocksData.filter(
+  const strongBuyCount = activeStocks.filter(
     stock => stock.signal === "STRONG_BUY"
   ).length;
-  const buyCount = stocksData.filter(stock => stock.signal === "BUY").length;
-  const sellCount = stocksData.filter(
+  const buyCount = activeStocks.filter(stock => stock.signal === "BUY").length;
+  const sellCount = activeStocks.filter(
     stock => stock.signal === "SELL" || stock.signal === "STRONG_SELL"
   ).length;
   const avgBeatProbability = Math.round(
-    stocksData.reduce((sum, stock) => sum + stock.earningsBeatProbability, 0) /
-      stocksData.length
+    activeStocks.reduce((sum, stock) => sum + stock.earningsBeatProbability, 0) /
+      Math.max(activeStocks.length, 1)
   );
   const avgMomentumScore = Math.round(
-    stocksData.reduce((sum, stock) => sum + stock.momentumScore, 0) /
-      stocksData.length
+    activeStocks.reduce((sum, stock) => sum + stock.momentumScore, 0) /
+      Math.max(activeStocks.length, 1)
   );
   const reportWindow = selectedPublishedReport
     ? formatWeekRange(selectedPublishedReport)
@@ -183,6 +191,19 @@ export default function Home() {
     ? formatAnalysisDate(selectedPublishedReport.analysisDate)
     : "21.05.2026";
 
+  useEffect(() => {
+    if (!activeStocks.length) {
+      setSelectedTicker(null);
+      return;
+    }
+
+    setSelectedTicker(current =>
+      current && activeStocks.some(stock => stock.ticker === current)
+        ? current
+        : activeStocks[0].ticker
+    );
+  }, [activeStocks]);
+
   const handleStockClick = (ticker: string) => {
     setSelectedTicker(ticker);
     setActiveTab("stocks");
@@ -191,33 +212,60 @@ export default function Home() {
   const renderActiveTab = () => {
     switch (activeTab) {
       case "overview":
-        return <OverviewTab onStockClick={handleStockClick} />;
+        return (
+          <OverviewTab
+            onStockClick={handleStockClick}
+            stocks={activeStocks}
+            reportWindow={reportWindow}
+            analysisDateLabel={analysisDate}
+            headline={selectedPublishedReport?.content.headline}
+            summary={selectedPublishedReport?.content.summary}
+          />
+        );
       case "momentum":
-        return <MomentumTab onStockClick={handleStockClick} />;
+        return <MomentumTab onStockClick={handleStockClick} stocks={activeStocks} />;
       case "stocks":
         return (
           <StockDetailTab
             selectedTicker={selectedTicker}
             onSelectTicker={setSelectedTicker}
+            stocks={activeStocks}
           />
         );
       case "calendar":
-        return <CalendarTab onStockClick={handleStockClick} />;
+        return (
+          <CalendarTab
+            onStockClick={handleStockClick}
+            stocks={activeStocks}
+            calendar={activeCalendar}
+            reportWindow={reportWindow}
+          />
+        );
       case "sector":
-        return <SectorTab />;
+        return <SectorTab stocks={activeStocks} />;
       case "risk":
-        return <RiskTab onStockClick={handleStockClick} />;
+        return <RiskTab onStockClick={handleStockClick} stocks={activeStocks} />;
       case "ivcrush":
-        return <IVCrushTab onStockClick={handleStockClick} />;
+        return <IVCrushTab onStockClick={handleStockClick} strategies={activeOptions} />;
       case "optiondetail":
         return (
           <OptionDetailTab
             selectedTicker={selectedTicker}
             onSelectTicker={setSelectedTicker}
+            strategies={activeOptions}
           />
         );
       default:
-        return <OverviewTab onStockClick={handleStockClick} />;
+        return (
+          <OverviewTab
+            onStockClick={handleStockClick}
+            stocks={activeStocks}
+            reportWindow={reportWindow}
+            analysisDateLabel={analysisDate}
+            headline={selectedPublishedReport?.content.headline}
+            summary={selectedPublishedReport?.content.summary}
+          />
+        );
     }
   };
 
@@ -258,10 +306,10 @@ export default function Home() {
                   className="heading-condensed text-sm"
                   style={{ color: "oklch(0.78 0.18 160)" }}
                 >
-                  Earnings Benchmark Raporu
+                  Earning Strategy Workspace
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  Precision Finance benchmark akisi
+                  Precision Finance strateji akisi
                 </p>
               </div>
             </div>
@@ -294,7 +342,7 @@ export default function Home() {
               onClick={() => setLocation("/momentum")}
             >
               <Radar className="h-4 w-4" />
-              Momentum Scrapper
+              Momentum Scanner
             </Button>
             <Button
               type="button"
@@ -322,7 +370,7 @@ export default function Home() {
             <div className="flex flex-wrap items-center gap-2">
               <span className="badge-strong">{strongBuyCount} guclu al</span>
               <span className="badge-warning">
-                {stocksData.filter(stock => stock.signal === "NEUTRAL").length} notr
+                {activeStocks.filter(stock => stock.signal === "NEUTRAL").length} notr
               </span>
               <span className="badge-danger">{sellCount} sat</span>
             </div>
@@ -335,20 +383,20 @@ export default function Home() {
                 Earnings oncesi
                 <br />
                 <span style={{ color: "oklch(0.78 0.18 160)" }}>
-                  benchmark raporu
+                  earning strategy
                 </span>
               </h1>
               <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
-                `benchmark/` referansindaki yapiya gore sadeleştirildi. Bu
-                sayfa artik haftalik editor yerine tek bir benchmark raporu
-                olarak calisiyor: momentum, takvim, risk matrisi, hisse
-                detaylari ve IV crush analizleri ayni rapor akisi icinde.
+                Secilen hafta artik sadece ust kartlarda degil, tum sekmelerde
+                ayni veriyle akar. Momentum, takvim, risk matrisi, hisse
+                detaylari ve IV crush analizleri ayni earning strategy
+                datasetini paylasir.
               </p>
             </div>
 
             <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
               <span className="rounded-none border border-border bg-card/60 px-3 py-1.5">
-                10 analiz edilen hisse
+                {activeStocks.length} analiz edilen hisse
               </span>
               <span className="rounded-none border border-border bg-card/60 px-3 py-1.5">
                 AI chips + cybersecurity + software
@@ -377,7 +425,7 @@ export default function Home() {
               hint={
                 selectedPublishedReport
                   ? "Published rapordaki ortalama beat ihtimali"
-                  : "Benchmark evrenindeki ortalama beat ihtimali"
+                  : "Workspace evrenindeki ortalama beat ihtimali"
               }
             />
             <SummaryCard
@@ -386,7 +434,7 @@ export default function Home() {
               hint={
                 selectedPublishedReport
                   ? "Published rapordaki ortalama momentum skoru"
-                  : "Tum benchmark hisseleri icin ortalama skor"
+                  : "Tum earning strategy hisseleri icin ortalama skor"
               }
             />
           </div>
@@ -405,10 +453,10 @@ export default function Home() {
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                  Published Earnings Haftalari
+                  Published Earnings Weeks
                 </p>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Admin yayinladikca haftalar burada gorunur. En solda en yeni hafta yer alir.
+                  Buradan haftayi degistirdiginde alt sekmelerin tamami ayni dataset ile yenilenir.
                 </p>
               </div>
               <Button
@@ -517,7 +565,7 @@ export default function Home() {
             <nav className="flex-1 p-3">
               <div className="mb-3 px-2">
                 <span className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  Benchmark Sekmeleri
+                  Earning Strategy Sekmeleri
                 </span>
               </div>
               <div className="space-y-0.5">
@@ -567,7 +615,7 @@ export default function Home() {
                   },
                   {
                     label: "Notr",
-                    value: stocksData.filter(stock => stock.signal === "NEUTRAL").length,
+                    value: activeStocks.filter(stock => stock.signal === "NEUTRAL").length,
                     color: "text-amber-400",
                   },
                   {
@@ -667,10 +715,10 @@ export default function Home() {
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
               <div>
                 <p className="heading-condensed text-sm text-foreground">
-                  Ikinci bolum: momentum scrapper
+                  Sonraki adim: momentum scanner
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  Benchmark raporundan sonra acilis momentumu scanner alanina
+                  Earning strategy akisini okuduktan sonra acilis momentumu scanner alanina
                   gecebilirsin.
                 </p>
               </div>
@@ -679,7 +727,7 @@ export default function Home() {
                 className="rounded-none"
                 onClick={() => setLocation("/momentum")}
               >
-                Momentum Scrapper'a git
+                Momentum Scanner'a git
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </div>

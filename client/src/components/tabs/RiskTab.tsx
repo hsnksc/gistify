@@ -3,14 +3,14 @@
  * 2D risk matrix, risk breakdown, portfolio strategy
  */
 
-import { stocksData, signalConfig, riskConfig } from '@/lib/stockData';
+import { stocksData, signalConfig, riskConfig, type StockData } from '@/lib/stockData';
 import {
   ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell,
-  RadarChart, PolarGrid, PolarAngleAxis, Radar,
 } from 'recharts';
 
 interface Props {
   onStockClick: (ticker: string) => void;
+  stocks?: StockData[];
 }
 
 const riskOrder = { LOW: 1, MEDIUM: 2, HIGH: 3, VERY_HIGH: 4 };
@@ -30,8 +30,8 @@ const CustomTooltip = ({ active, payload }: any) => {
   return null;
 };
 
-export default function RiskTab({ onStockClick }: Props) {
-  const matrixData = stocksData.map(s => ({
+export default function RiskTab({ onStockClick, stocks = stocksData }: Props) {
+  const matrixData = stocks.map(s => ({
     ticker: s.ticker,
     x: s.earningsBeatProbability,
     y: s.momentumScore,
@@ -48,10 +48,10 @@ export default function RiskTab({ onStockClick }: Props) {
   };
 
   // Portfolio strategy groups
-  const strongBuy = stocksData.filter(s => s.signal === 'STRONG_BUY');
-  const buy = stocksData.filter(s => s.signal === 'BUY');
-  const neutral = stocksData.filter(s => s.signal === 'NEUTRAL');
-  const sell = stocksData.filter(s => s.signal === 'SELL' || s.signal === 'STRONG_SELL');
+  const strongBuy = stocks.filter(s => s.signal === 'STRONG_BUY');
+  const buy = stocks.filter(s => s.signal === 'BUY');
+  const neutral = stocks.filter(s => s.signal === 'NEUTRAL');
+  const sell = stocks.filter(s => s.signal === 'SELL' || s.signal === 'STRONG_SELL');
 
   return (
     <div className="p-6 space-y-6">
@@ -123,7 +123,7 @@ export default function RiskTab({ onStockClick }: Props) {
             </h2>
           </div>
           <div className="space-y-2">
-            {stocksData.sort((a, b) => riskOrder[a.riskLevel] - riskOrder[b.riskLevel]).map(stock => {
+            {[...stocks].sort((a, b) => riskOrder[a.riskLevel] - riskOrder[b.riskLevel]).map(stock => {
               const cfg = signalConfig[stock.signal];
               const rCfg = riskConfig[stock.riskLevel];
               return (

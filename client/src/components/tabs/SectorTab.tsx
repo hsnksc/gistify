@@ -3,10 +3,10 @@
  * Macro sector analysis, IT spending breakdown, growth drivers
  */
 
-import { sectorMacroData, stocksData } from '@/lib/stockData';
+import { sectorMacroData, stocksData, type StockData } from '@/lib/stockData';
+import { getTooltipLabel } from '@/lib/chartTooltip';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell,
-  PieChart, Pie, Legend,
 } from 'recharts';
 
 const itSpendingData = [
@@ -26,9 +26,10 @@ const sectorStockMap = [
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
+    const resolvedLabel = getTooltipLabel(payload, label);
     return (
       <div className="px-3 py-2 border" style={{ background: 'oklch(0.15 0.03 225)', borderColor: 'oklch(0.25 0.03 225)', borderRadius: 0 }}>
-        <p className="data-mono text-xs font-bold" style={{ color: 'oklch(0.78 0.18 160)' }}>{label}</p>
+        <p className="data-mono text-xs font-bold" style={{ color: 'oklch(0.78 0.18 160)' }}>{resolvedLabel}</p>
         {payload.map((p: any, i: number) => (
           <p key={i} className="data-mono text-xs" style={{ color: p.fill || p.color }}>{p.name}: {p.value}{p.unit || ''}</p>
         ))}
@@ -38,10 +39,16 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-export default function SectorTab() {
+interface Props {
+  stocks?: StockData[];
+}
+
+export default function SectorTab({ stocks = stocksData }: Props) {
   const avgMomentumBySector = sectorStockMap.map(s => {
-    const stocks = stocksData.filter(st => s.tickers.includes(st.ticker));
-    const avg = stocks.reduce((sum, st) => sum + st.momentumScore, 0) / stocks.length;
+    const sectorStocks = stocks.filter(st => s.tickers.includes(st.ticker));
+    const avg = sectorStocks.length
+      ? sectorStocks.reduce((sum, st) => sum + st.momentumScore, 0) / sectorStocks.length
+      : 0;
     return { sector: s.sector, momentum: Math.round(avg), color: s.color };
   });
 

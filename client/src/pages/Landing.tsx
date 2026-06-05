@@ -39,7 +39,7 @@ const COPY = {
     included: [
       "Aylik web erisimi",
       "Momentum scanner modulu",
-      "Earnings benchmark paneli",
+      "Earning strategy paneli",
       "Risk matrisi ve opsiyon gorunumu",
       "E-posta destek: support@gistify.pro",
     ],
@@ -79,7 +79,7 @@ const COPY = {
     included: [
       "Monthly web access",
       "Momentum scanner module",
-      "Earnings benchmark dashboard",
+      "Earning strategy dashboard",
       "Risk matrix and options view",
       "Email support: support@gistify.pro",
     ],
