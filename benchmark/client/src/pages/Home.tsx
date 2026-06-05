@@ -29,8 +29,8 @@ const tabs: { id: TabId; label: string; icon: string }[] = [
   { id: 'risk', label: 'Risk Matrisi', icon: '◉' },
   { id: 'ivcrush', label: 'IV Crush Stratejisi', icon: '💰' },
   { id: 'optiondetail', label: 'Opsiyon Detay', icon: '📊' },
-  { id: 'juneearnings', label: 'Haziran Earnings', icon: '📈' },
-  { id: 'juneoptiondetail', label: 'Haziran Opsiyon', icon: '🎯' },
+  { id: 'juneearnings', label: '8-19 Haziran Setupları', icon: '📈' },
+  { id: 'juneoptiondetail', label: '8-19 Haziran Detay', icon: '🎯' },
 ];
 
 export default function Home() {
@@ -81,7 +81,7 @@ export default function Home() {
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-1.5">
             <span className="data-mono text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>DÖNEM</span>
-            <span className="data-mono text-xs font-semibold" style={{ color: 'oklch(0.78 0.18 160)' }}>27 MAY — 3 HAZ 2026</span>
+            <span className="data-mono text-xs font-semibold" style={{ color: 'oklch(0.78 0.18 160)' }}>8 — 19 HAZ 2026</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="data-mono text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>ANALİZ</span>

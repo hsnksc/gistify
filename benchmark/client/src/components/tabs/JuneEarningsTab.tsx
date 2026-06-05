@@ -1,6 +1,6 @@
 /*
- * DESIGN: "Precision Finance" — June Earnings IV Crush Strategy Tab
- * Same structure as May-June but for June 1-12 earnings
+ * DESIGN: "Precision Finance" — June 8-19 Earnings IV Crush & Momentum Strategy Tab
+ * 8-19 June window: ORCL, LEN, ADBE earnings + FOMC 16-17 + Juneteenth 19
  */
 
 import { juneEarningsData, juneStrategyConfig } from '@/lib/juneEarningsData';
@@ -45,32 +45,35 @@ export default function JuneEarningsTab({ onStockClick }: Props) {
         <div className="flex items-center gap-2 mb-1">
           <div className="w-1 h-5" style={{ background: 'oklch(0.78 0.18 160)' }} />
           <h1 className="heading-condensed text-xl" style={{ color: 'oklch(0.92 0.01 220)' }}>
-            HAZIRAN 1-12 EARNINGS IV CRUSH STRATEJİSİ
+            8-19 HAZİRAN EARNINGS & MOMENTUM SETUPLARI
           </h1>
         </div>
         <p className="text-sm ml-3" style={{ color: 'oklch(0.5 0.015 225)' }}>
-          Tech mega-cap earnings · NVDA, AMD, TSLA, META, GOOGL, MSFT · Yüksek IV crush potansiyeli
+          ORCL (10 Haz), LEN + ADBE (11 Haz) · FOMC Dot Plot (16-17 Haz) · Juneteenth (19 Haz) · IV Crush + Momentum
         </p>
       </div>
 
-      {/* Strategy Explanation */}
+      {/* Macro Calendar */}
       <div className="tactical-card p-5" style={{ borderLeftColor: 'oklch(0.78 0.18 160)', borderLeftWidth: '4px' }}>
         <div className="heading-condensed text-base mb-3" style={{ color: 'oklch(0.78 0.18 160)' }}>
-          💡 Haziran Earnings Stratejisi
+          📅 8-19 Haziran Makro Takvim
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
           <div>
-            <div className="font-semibold mb-1" style={{ color: 'oklch(0.85 0.01 220)' }}>Mega-Cap Tech Dominansı</div>
-            <div style={{ color: 'oklch(0.65 0.015 225)' }}>NVDA, AMD, TSLA, META, GOOGL, MSFT earnings 3-9 Haziran'da. Yüksek IV crush potansiyeli.</div>
+            <div className="font-semibold mb-1" style={{ color: 'oklch(0.85 0.01 220)' }}>10 Haziran — ORCL Q4 FY2026</div>
+            <div style={{ color: 'oklch(0.65 0.015 225)' }}>Kapanış sonrası. Cloud/AI revenue guidance binary event. FY2026 kapanışı.</div>
           </div>
           <div>
-            <div className="font-semibold mb-1" style={{ color: 'oklch(0.85 0.01 220)' }}>Extreme Momentum</div>
-            <div style={{ color: 'oklch(0.65 0.015 225)' }}>NVDA (98), AMD (92), TSLA (85) momentum skoru. AI yarı iletken rüzgarı güçlü.</div>
+            <div className="font-semibold mb-1" style={{ color: 'oklch(0.85 0.01 220)' }}>11 Haziran — LEN + ADBE Q2 2026</div>
+            <div style={{ color: 'oklch(0.65 0.015 225)' }}>İki büyük hisse aynı gün. LEN: ~4.3% implied move, EVR 2.1. ADBE: AI-first ARR 3x büyüme.</div>
           </div>
           <div>
-            <div className="font-semibold mb-1" style={{ color: 'oklch(0.85 0.01 220)' }}>Kar Potansiyeli</div>
-            <div style={{ color: 'oklch(0.65 0.015 225)' }}>NVDA +144% call kazancı, TSLA +143%, AMD +154%. IV crush'tan maksimum faydalanma.</div>
+            <div className="font-semibold mb-1" style={{ color: 'oklch(0.85 0.01 220)' }}>16-17 Haziran — FOMC + Dot Plot</div>
+            <div style={{ color: 'oklch(0.65 0.015 225)' }}>Quarterly SEP meeting. SPY range 2.0-2.5%. VIX consistently düşer. 66.7% next day DOWN.</div>
           </div>
+        </div>
+        <div className="mt-3 text-sm" style={{ color: 'oklch(0.65 0.22 25)' }}>
+          <strong>⚠️ 19 Haziran Juneteenth:</strong> Piyasalar KAPALI. 18 Haziran kapanışta tüm pozisyonları review et.
         </div>
       </div>
 
@@ -79,7 +82,7 @@ export default function JuneEarningsTab({ onStockClick }: Props) {
         <div className="flex items-center gap-2 mb-3">
           <div className="w-1 h-4" style={{ background: 'oklch(0.78 0.18 160)' }} />
           <h2 className="heading-condensed text-base" style={{ color: 'oklch(0.92 0.01 220)' }}>
-            HAZIRAN EARNINGS FIRASAT SIRALAMASI
+            8-19 HAZİRAN FIRASAT SIRALAMASI
           </h2>
         </div>
         <div className="overflow-x-auto">
@@ -176,7 +179,7 @@ export default function JuneEarningsTab({ onStockClick }: Props) {
           <div className="flex items-center gap-2 mb-3">
             <div className="w-1 h-4" style={{ background: 'oklch(0.6 0.12 250)' }} />
             <h2 className="heading-condensed text-base" style={{ color: 'oklch(0.92 0.01 220)' }}>
-              MEVCUT IV vs MOMENTUM (HAZIRAN)
+              MEVCUT IV vs MOMENTUM (8-19 HAZİRAN)
             </h2>
           </div>
           <div className="tactical-card p-4" style={{ height: '300px' }}>
@@ -225,7 +228,7 @@ export default function JuneEarningsTab({ onStockClick }: Props) {
           <div className="flex items-center gap-2 mb-3">
             <div className="w-1 h-4" style={{ background: 'oklch(0.75 0.15 75)' }} />
             <h2 className="heading-condensed text-base" style={{ color: 'oklch(0.92 0.01 220)' }}>
-              CALL vs PUT KAR POTANSİYELİ (HAZIRAN)
+              CALL vs PUT KAR POTANSİYELİ (8-19 HAZİRAN)
             </h2>
           </div>
           <div className="tactical-card p-4" style={{ height: '300px' }}>
@@ -263,7 +266,7 @@ export default function JuneEarningsTab({ onStockClick }: Props) {
         <div className="flex items-center gap-2 mb-3">
           <div className="w-1 h-4" style={{ background: 'oklch(0.78 0.18 160)' }} />
           <h2 className="heading-condensed text-base" style={{ color: 'oklch(0.92 0.01 220)' }}>
-            EN İYİ HAZIRAN FIRASAT HISSELER
+            EN İYİ 8-19 HAZİRAN FIRASAT HISSELER
           </h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -313,20 +316,20 @@ export default function JuneEarningsTab({ onStockClick }: Props) {
       {/* Risk Warning */}
       <div className="tactical-card p-4" style={{ borderLeftColor: 'oklch(0.65 0.22 25)', borderLeftWidth: '4px' }}>
         <div className="heading-condensed text-sm mb-2" style={{ color: 'oklch(0.65 0.22 25)' }}>
-          ⚠ HAZIRAN EARNINGS RİSK UYARISI
+          ⚠ 8-19 HAZİRAN RİSK UYARISI
         </div>
         <div className="text-sm space-y-1.5" style={{ color: 'oklch(0.65 0.015 225)' }}>
           <p>
-            <strong>Mega-Cap Volatility:</strong> NVDA, TSLA, META çok yüksek IV'ye sahip. IV crush çok agresif olabilir. Spread stratejileri (Bull Call Spread) tercih edin.
+            <strong>FOMC Dot Plot (16-17 Haz):</strong> Yılın en volatil günlerinden biri. SPY range 2.0-2.5%. 14:00 ET rate decision (fakeout risk), 14:30 ET press conference (asıl hareket).
           </p>
           <p>
-            <strong>Consecutive Earnings:</strong> 3-9 Haziran'da 6 mega-cap earnings arka arkaya. Market volatility yüksek, gap riski artmış.
+            <strong>LEN + ADBE Same Day (11 Haz):</strong> Aynı gün 2 büyük hisse = correlation risk. Pozisyonları küçült veya birini seç. LEN: FOMC öncesi mortgage rate sensitivity.
           </p>
           <p>
-            <strong>AI Sentiment Risk:</strong> Tüm hisseler AI rüzgarından faydalanıyor. Negatif AI haberi tüm sektörü etkileyebilir.
+            <strong>Juneteenth (19 Haz):</strong> Piyasalar kapalı. 18 Haziran kapanışta tüm pozisyonları review et. 3 günlük weekend gap riski.
           </p>
           <p>
-            <strong>Position Sizing:</strong> Küçük pozisyonlar tutun. NVDA, TSLA gibi extreme volatility hisseler için %1-2 risk limitini aşmayın.
+            <strong>Position Sizing:</strong> Her setup maksimum portföyün 1-2% riski. Dot plot meeting'lerde normalden %50 daha küçük pozisyon.
           </p>
         </div>
       </div>

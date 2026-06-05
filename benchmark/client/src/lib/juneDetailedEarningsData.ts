@@ -1,7 +1,7 @@
 /*
- * DESIGN: "Precision Finance" — June Detailed Earnings Data
+ * DESIGN: "Precision Finance" — June 8-19 Detailed Earnings Data
  * Real earnings dates from actual calendar (Q2 2026 earnings season)
- * Detailed structure matching May-June report
+ * Detailed structure matching 8-19 June window
  */
 
 export interface JuneDetailedStock {
@@ -54,140 +54,100 @@ export interface JuneDetailedStock {
 
 export const juneDetailedEarningsData: JuneDetailedStock[] = [
   {
-    ticker: 'LRCX',
-    name: 'Lam Research Corporation',
-    sector: 'Semiconductors',
-    earningsDate: '3 June 2026',
-    earningsTime: 'AH',
+    ticker: 'ORCL',
+    name: 'Oracle Corporation',
+    sector: 'Software',
+    earningsDate: '10 June 2026',
+    earningsTime: 'AMC',
     
-    momentumScore: 92,
-    priceChange6M: 145,
-    rsi14: 74,
+    momentumScore: 78,
+    priceChange6M: 48,
+    rsi14: 62,
     
-    currentIV: 95,
-    historicalIV: 68,
-    impliedMove: 13.2,
-    expectedIVCrush: 42,
-    ivCrushPotential: 'HIGH',
+    currentIV: 72,
+    historicalIV: 52,
+    impliedMove: 5.5,
+    expectedIVCrush: 32,
+    ivCrushPotential: 'MEDIUM',
     
-    callPremiumBuy: 2.80,
-    callPremiumSell: 6.80,
-    callGainFromIV: 143,
+    callPremiumBuy: 1.80,
+    callPremiumSell: 4.20,
+    callGainFromIV: 133,
     
-    putPremiumBuy: 2.60,
-    putPremiumSell: 6.50,
-    putGainFromIV: 150,
+    putPremiumBuy: 1.70,
+    putPremiumSell: 4.00,
+    putGainFromIV: 135,
     
-    ivCrushScore: 92,
-    strategyRating: 'EXCELLENT',
-    
-    riskLevel: 'HIGH',
-    earningsMissRisk: 26,
-    gapRisk: 35,
-    
-    recommendedStrategy: 'Bull Call Spread (High IV, strong momentum)',
-    targetProfit: 140,
-    maxLoss: 28,
-    
-    lastEarningsMove: 15.2,
-    historicalIVCrush: 40,
-    beatRate: 86,
-  },
-  {
-    ticker: 'ASML',
-    name: 'ASML Holding N.V.',
-    sector: 'Semiconductors',
-    earningsDate: '4 June 2026',
-    earningsTime: 'BMO',
-    
-    momentumScore: 88,
-    priceChange6M: 128,
-    rsi14: 71,
-    
-    currentIV: 88,
-    historicalIV: 62,
-    impliedMove: 11.8,
-    expectedIVCrush: 38,
-    ivCrushPotential: 'HIGH',
-    
-    callPremiumBuy: 2.50,
-    callPremiumSell: 6.00,
-    callGainFromIV: 140,
-    
-    putPremiumBuy: 2.30,
-    putPremiumSell: 5.70,
-    putGainFromIV: 148,
-    
-    ivCrushScore: 88,
+    ivCrushScore: 82,
     strategyRating: 'EXCELLENT',
     
     riskLevel: 'MEDIUM',
-    earningsMissRisk: 22,
-    gapRisk: 28,
+    earningsMissRisk: 20,
+    gapRisk: 24,
     
-    recommendedStrategy: 'Long Call (Strong momentum, good IV crush)',
-    targetProfit: 130,
-    maxLoss: 25,
+    recommendedStrategy: 'Long Call + Bull Call Spread (Cloud/AI guidance binary event)',
+    targetProfit: 120,
+    maxLoss: 22,
     
-    lastEarningsMove: 12.5,
-    historicalIVCrush: 36,
-    beatRate: 84,
+    lastEarningsMove: 5.5,
+    historicalIVCrush: 30,
+    beatRate: 85,
   },
   {
-    ticker: 'MCHP',
-    name: 'Microchip Technology Inc.',
-    sector: 'Semiconductors',
-    earningsDate: '5 June 2026',
-    earningsTime: 'AH',
+    ticker: 'LEN',
+    name: 'Lennar Corporation',
+    sector: 'Homebuilders',
+    earningsDate: '11 June 2026',
+    earningsTime: 'AMC',
     
-    momentumScore: 76,
-    priceChange6M: 92,
-    rsi14: 67,
+    momentumScore: 65,
+    priceChange6M: 22,
+    rsi14: 55,
     
-    currentIV: 78,
-    historicalIV: 58,
-    impliedMove: 10.2,
-    expectedIVCrush: 35,
+    currentIV: 58,
+    historicalIV: 42,
+    impliedMove: 4.3,
+    expectedIVCrush: 26,
     ivCrushPotential: 'MEDIUM',
     
-    callPremiumBuy: 2.10,
-    callPremiumSell: 5.00,
-    callGainFromIV: 138,
+    callPremiumBuy: 1.40,
+    callPremiumSell: 3.20,
+    callGainFromIV: 129,
     
-    putPremiumBuy: 1.95,
-    putPremiumSell: 4.80,
-    putGainFromIV: 146,
+    putPremiumBuy: 1.30,
+    putPremiumSell: 3.00,
+    putGainFromIV: 131,
     
-    ivCrushScore: 80,
+    ivCrushScore: 68,
     strategyRating: 'GOOD',
     
     riskLevel: 'MEDIUM',
     earningsMissRisk: 28,
-    gapRisk: 32,
+    gapRisk: 30,
     
-    recommendedStrategy: 'Bull Call Spread (Moderate momentum)',
-    targetProfit: 115,
-    maxLoss: 22,
+    recommendedStrategy: 'Iron Condor (Low EVR 2.1, mortgage rate sensitive, FOMC pre-event)',
+    targetProfit: 95,
+    maxLoss: 20,
     
-    lastEarningsMove: 9.8,
-    historicalIVCrush: 33,
-    beatRate: 79,
+    lastEarningsMove: 4.3,
+    historicalIVCrush: 25,
+    beatRate: 72,
   },
   {
-    ticker: 'NXPI',
-    name: 'NXP Semiconductors N.V.',
-    sector: 'Semiconductors',
-    earningsDate: '6 June 2026',
-    earningsTime: 'BMO',
+    ticker: 'ADBE',
+    name: 'Adobe Inc.',
+    sector: 'Software',
+    earningsDate: '11 June 2026',
+    earningsTime: 'AMC',
     
     momentumScore: 85,
-    priceChange6M: 115,
-    rsi14: 70,
+    priceChange6M: 35,
+    rsi14: 68,
     
-    currentIV: 85,
-    historicalIV: 60,
-    impliedMove: 11.5,
-    expectedIVCrush: 40,
+    currentIV: 82,
+    historicalIV: 58,
+    impliedMove: 6.2,
+    expectedIVCrush: 38,
     ivCrushPotential: 'HIGH',
     
     callPremiumBuy: 2.40,
@@ -202,211 +162,171 @@ export const juneDetailedEarningsData: JuneDetailedStock[] = [
     strategyRating: 'EXCELLENT',
     
     riskLevel: 'MEDIUM',
-    earningsMissRisk: 24,
-    gapRisk: 30,
+    earningsMissRisk: 22,
+    gapRisk: 26,
     
-    recommendedStrategy: 'Long Call (Good momentum, high IV crush)',
-    targetProfit: 135,
+    recommendedStrategy: 'Short Premium (AI hype = high IV) or Long Straddle if IV Rank < 20',
+    targetProfit: 130,
     maxLoss: 24,
     
-    lastEarningsMove: 11.2,
-    historicalIVCrush: 38,
-    beatRate: 82,
+    lastEarningsMove: 8.2,
+    historicalIVCrush: 35,
+    beatRate: 88,
   },
   {
-    ticker: 'AMAT',
-    name: 'Applied Materials Inc.',
-    sector: 'Semiconductors',
-    earningsDate: '7 June 2026',
+    ticker: 'SPY',
+    name: 'SPDR S&P 500 ETF',
+    sector: 'Macro / FOMC',
+    earningsDate: '16-17 June 2026',
     earningsTime: 'AH',
     
-    momentumScore: 90,
-    priceChange6M: 138,
-    rsi14: 73,
+    momentumScore: 70,
+    priceChange6M: 12,
+    rsi14: 58,
     
-    currentIV: 92,
-    historicalIV: 65,
-    impliedMove: 12.8,
-    expectedIVCrush: 44,
+    currentIV: 28,
+    historicalIV: 18,
+    impliedMove: 2.5,
+    expectedIVCrush: 22,
+    ivCrushPotential: 'MEDIUM',
+    
+    callPremiumBuy: 0.80,
+    callPremiumSell: 1.80,
+    callGainFromIV: 125,
+    
+    putPremiumBuy: 0.75,
+    putPremiumSell: 1.70,
+    putGainFromIV: 127,
+    
+    ivCrushScore: 75,
+    strategyRating: 'GOOD',
+    
+    riskLevel: 'MEDIUM',
+    earningsMissRisk: 15,
+    gapRisk: 20,
+    
+    recommendedStrategy: 'Iron Condor / 0DTE Credit Spread (FOMC Dot Plot IV crush)',
+    targetProfit: 110,
+    maxLoss: 18,
+    
+    lastEarningsMove: 2.5,
+    historicalIVCrush: 20,
+    beatRate: 90,
+  },
+  {
+    ticker: 'QQQ',
+    name: 'Invesco QQQ Trust',
+    sector: 'Macro / FOMC',
+    earningsDate: '16-17 June 2026',
+    earningsTime: 'AH',
+    
+    momentumScore: 82,
+    priceChange6M: 18,
+    rsi14: 62,
+    
+    currentIV: 32,
+    historicalIV: 22,
+    impliedMove: 3.2,
+    expectedIVCrush: 25,
+    ivCrushPotential: 'MEDIUM',
+    
+    callPremiumBuy: 1.00,
+    callPremiumSell: 2.40,
+    callGainFromIV: 140,
+    
+    putPremiumBuy: 0.95,
+    putPremiumSell: 2.30,
+    putGainFromIV: 142,
+    
+    ivCrushScore: 80,
+    strategyRating: 'EXCELLENT',
+    
+    riskLevel: 'MEDIUM',
+    earningsMissRisk: 18,
+    gapRisk: 22,
+    
+    recommendedStrategy: 'Short VIX / QQQ Iron Condor (FOMC day VIX consistently drops)',
+    targetProfit: 125,
+    maxLoss: 20,
+    
+    lastEarningsMove: 3.2,
+    historicalIVCrush: 22,
+    beatRate: 88,
+  },
+  {
+    ticker: 'NVDA',
+    name: 'NVIDIA Corporation',
+    sector: 'Semiconductors',
+    earningsDate: '8-19 June Momentum',
+    earningsTime: 'BMO',
+    
+    momentumScore: 98,
+    priceChange6M: 185,
+    rsi14: 78,
+    
+    currentIV: 65,
+    historicalIV: 48,
+    impliedMove: 8.5,
+    expectedIVCrush: 30,
     ivCrushPotential: 'HIGH',
     
-    callPremiumBuy: 2.70,
+    callPremiumBuy: 2.80,
     callPremiumSell: 6.50,
-    callGainFromIV: 141,
+    callGainFromIV: 132,
     
-    putPremiumBuy: 2.50,
+    putPremiumBuy: 2.60,
     putPremiumSell: 6.20,
-    putGainFromIV: 148,
+    putGainFromIV: 138,
     
-    ivCrushScore: 90,
+    ivCrushScore: 92,
     strategyRating: 'EXCELLENT',
     
     riskLevel: 'HIGH',
     earningsMissRisk: 25,
-    gapRisk: 33,
+    gapRisk: 35,
     
-    recommendedStrategy: 'Bull Call Spread (Extreme momentum)',
-    targetProfit: 138,
-    maxLoss: 26,
+    recommendedStrategy: 'Momentum Long (AI infrastructure leader, 8-19 window trend play)',
+    targetProfit: 140,
+    maxLoss: 32,
     
-    lastEarningsMove: 13.5,
-    historicalIVCrush: 42,
-    beatRate: 85,
-  },
-  {
-    ticker: 'SNPS',
-    name: 'Synopsys Inc.',
-    sector: 'Software',
-    earningsDate: '8 June 2026',
-    earningsTime: 'AH',
-    
-    momentumScore: 82,
-    priceChange6M: 105,
-    rsi14: 69,
-    
-    currentIV: 75,
-    historicalIV: 55,
-    impliedMove: 9.8,
-    expectedIVCrush: 32,
-    ivCrushPotential: 'MEDIUM',
-    
-    callPremiumBuy: 2.00,
-    callPremiumSell: 4.80,
-    callGainFromIV: 140,
-    
-    putPremiumBuy: 1.85,
-    putPremiumSell: 4.60,
-    putGainFromIV: 149,
-    
-    ivCrushScore: 82,
-    strategyRating: 'GOOD',
-    
-    riskLevel: 'LOW',
-    earningsMissRisk: 18,
-    gapRisk: 22,
-    
-    recommendedStrategy: 'Long Call (Stable, consistent)',
-    targetProfit: 125,
-    maxLoss: 20,
-    
-    lastEarningsMove: 8.5,
-    historicalIVCrush: 30,
-    beatRate: 87,
-  },
-  {
-    ticker: 'CDNS',
-    name: 'Cadence Design Systems Inc.',
-    sector: 'Software',
-    earningsDate: '9 June 2026',
-    earningsTime: 'BMO',
-    
-    momentumScore: 80,
-    priceChange6M: 98,
-    rsi14: 68,
-    
-    currentIV: 72,
-    historicalIV: 52,
-    impliedMove: 9.2,
-    expectedIVCrush: 30,
-    ivCrushPotential: 'MEDIUM',
-    
-    callPremiumBuy: 1.90,
-    callPremiumSell: 4.50,
-    callGainFromIV: 137,
-    
-    putPremiumBuy: 1.75,
-    putPremiumSell: 4.30,
-    putGainFromIV: 146,
-    
-    ivCrushScore: 78,
-    strategyRating: 'GOOD',
-    
-    riskLevel: 'LOW',
-    earningsMissRisk: 16,
-    gapRisk: 20,
-    
-    recommendedStrategy: 'Bull Call Spread (Safe play)',
-    targetProfit: 120,
-    maxLoss: 18,
-    
-    lastEarningsMove: 7.8,
-    historicalIVCrush: 28,
+    lastEarningsMove: 18.5,
+    historicalIVCrush: 45,
     beatRate: 88,
-  },
-  {
-    ticker: 'ACLS',
-    name: 'Axcelis Technologies Inc.',
-    sector: 'Semiconductors',
-    earningsDate: '10 June 2026',
-    earningsTime: 'BMO',
-    
-    momentumScore: 72,
-    priceChange6M: 68,
-    rsi14: 64,
-    
-    currentIV: 68,
-    historicalIV: 50,
-    impliedMove: 8.5,
-    expectedIVCrush: 28,
-    ivCrushPotential: 'LOW',
-    
-    callPremiumBuy: 1.70,
-    callPremiumSell: 4.00,
-    callGainFromIV: 135,
-    
-    putPremiumBuy: 1.60,
-    putPremiumSell: 3.85,
-    putGainFromIV: 141,
-    
-    ivCrushScore: 72,
-    strategyRating: 'FAIR',
-    
-    riskLevel: 'MEDIUM',
-    earningsMissRisk: 32,
-    gapRisk: 36,
-    
-    recommendedStrategy: 'Iron Condor (Moderate IV crush)',
-    targetProfit: 95,
-    maxLoss: 20,
-    
-    lastEarningsMove: 6.2,
-    historicalIVCrush: 26,
-    beatRate: 75,
   },
   {
     ticker: 'AVGO',
     name: 'Broadcom Inc.',
     sector: 'Semiconductors',
-    earningsDate: '11 June 2026',
-    earningsTime: 'AH',
+    earningsDate: '8-19 June Momentum',
+    earningsTime: 'BMO',
     
     momentumScore: 88,
     priceChange6M: 125,
     rsi14: 72,
     
-    currentIV: 90,
-    historicalIV: 63,
-    impliedMove: 12.2,
-    expectedIVCrush: 41,
-    ivCrushPotential: 'HIGH',
+    currentIV: 55,
+    historicalIV: 40,
+    impliedMove: 6.8,
+    expectedIVCrush: 28,
+    ivCrushPotential: 'MEDIUM',
     
-    callPremiumBuy: 2.60,
-    callPremiumSell: 6.30,
-    callGainFromIV: 142,
+    callPremiumBuy: 2.20,
+    callPremiumSell: 5.20,
+    callGainFromIV: 136,
     
-    putPremiumBuy: 2.40,
-    putPremiumSell: 6.00,
-    putGainFromIV: 150,
+    putPremiumBuy: 2.00,
+    putPremiumSell: 4.90,
+    putGainFromIV: 145,
     
-    ivCrushScore: 89,
+    ivCrushScore: 85,
     strategyRating: 'EXCELLENT',
     
     riskLevel: 'MEDIUM',
     earningsMissRisk: 23,
     gapRisk: 29,
     
-    recommendedStrategy: 'Long Call (Strong momentum, high IV crush)',
-    targetProfit: 135,
+    recommendedStrategy: 'Momentum Long (AI chip cycle, strong relative strength vs SPY)',
+    targetProfit: 130,
     maxLoss: 26,
     
     lastEarningsMove: 11.8,
@@ -414,44 +334,124 @@ export const juneDetailedEarningsData: JuneDetailedStock[] = [
     beatRate: 83,
   },
   {
-    ticker: 'SLAB',
-    name: 'Silicon Laboratories Inc.',
-    sector: 'Semiconductors',
-    earningsDate: '12 June 2026',
+    ticker: 'AMZN',
+    name: 'Amazon.com Inc.',
+    sector: 'Technology',
+    earningsDate: '8-19 June Momentum',
     earningsTime: 'BMO',
     
-    momentumScore: 75,
-    priceChange6M: 82,
-    rsi14: 66,
+    momentumScore: 85,
+    priceChange6M: 95,
+    rsi14: 70,
     
-    currentIV: 70,
-    historicalIV: 52,
-    impliedMove: 9.0,
-    expectedIVCrush: 32,
+    currentIV: 42,
+    historicalIV: 32,
+    impliedMove: 4.5,
+    expectedIVCrush: 24,
     ivCrushPotential: 'MEDIUM',
     
-    callPremiumBuy: 1.95,
-    callPremiumSell: 4.60,
-    callGainFromIV: 136,
+    callPremiumBuy: 1.60,
+    callPremiumSell: 3.80,
+    callGainFromIV: 138,
     
-    putPremiumBuy: 1.80,
-    putPremiumSell: 4.40,
-    putGainFromIV: 144,
+    putPremiumBuy: 1.50,
+    putPremiumSell: 3.60,
+    putGainFromIV: 140,
     
-    ivCrushScore: 76,
+    ivCrushScore: 78,
+    strategyRating: 'GOOD',
+    
+    riskLevel: 'LOW',
+    earningsMissRisk: 18,
+    gapRisk: 22,
+    
+    recommendedStrategy: 'Momentum Long (AWS AI capex $200B guidance tailwind)',
+    targetProfit: 115,
+    maxLoss: 20,
+    
+    lastEarningsMove: 8.5,
+    historicalIVCrush: 28,
+    beatRate: 87,
+  },
+  {
+    ticker: 'DHI',
+    name: 'D.R. Horton Inc.',
+    sector: 'Homebuilders',
+    earningsDate: '8-19 June Momentum',
+    earningsTime: 'BMO',
+    
+    momentumScore: 72,
+    priceChange6M: 28,
+    rsi14: 58,
+    
+    currentIV: 48,
+    historicalIV: 38,
+    impliedMove: 4.8,
+    expectedIVCrush: 22,
+    ivCrushPotential: 'LOW',
+    
+    callPremiumBuy: 1.20,
+    callPremiumSell: 2.80,
+    callGainFromIV: 133,
+    
+    putPremiumBuy: 1.10,
+    putPremiumSell: 2.60,
+    putGainFromIV: 136,
+    
+    ivCrushScore: 70,
     strategyRating: 'GOOD',
     
     riskLevel: 'MEDIUM',
     earningsMissRisk: 30,
+    gapRisk: 32,
+    
+    recommendedStrategy: 'Momentum Long (Homebuilder correlation with LEN, FOMC rate sensitivity)',
+    targetProfit: 100,
+    maxLoss: 20,
+    
+    lastEarningsMove: 5.2,
+    historicalIVCrush: 22,
+    beatRate: 75,
+  },
+  {
+    ticker: 'TOL',
+    name: 'Toll Brothers Inc.',
+    sector: 'Homebuilders',
+    earningsDate: '8-19 June Momentum',
+    earningsTime: 'BMO',
+    
+    momentumScore: 70,
+    priceChange6M: 25,
+    rsi14: 56,
+    
+    currentIV: 52,
+    historicalIV: 40,
+    impliedMove: 5.2,
+    expectedIVCrush: 24,
+    ivCrushPotential: 'LOW',
+    
+    callPremiumBuy: 1.30,
+    callPremiumSell: 3.00,
+    callGainFromIV: 131,
+    
+    putPremiumBuy: 1.20,
+    putPremiumSell: 2.80,
+    putGainFromIV: 133,
+    
+    ivCrushScore: 72,
+    strategyRating: 'GOOD',
+    
+    riskLevel: 'MEDIUM',
+    earningsMissRisk: 32,
     gapRisk: 34,
     
-    recommendedStrategy: 'Bull Call Spread (Moderate)',
-    targetProfit: 118,
+    recommendedStrategy: 'Momentum Long (Luxury homebuilder, mortgage rate pivot play)',
+    targetProfit: 98,
     maxLoss: 21,
     
-    lastEarningsMove: 8.2,
-    historicalIVCrush: 30,
-    beatRate: 78,
+    lastEarningsMove: 4.8,
+    historicalIVCrush: 24,
+    beatRate: 72,
   },
 ];
 

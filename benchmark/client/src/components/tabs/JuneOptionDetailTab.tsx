@@ -196,16 +196,16 @@ export default function JuneOptionDetailTab({ selectedTicker, onSelectTicker }: 
         </div>
         <div className="text-sm font-semibold mb-2" style={{ color: cfg.color }}>{stock.recommendedStrategy}</div>
         <p className="text-sm leading-relaxed" style={{ color: 'oklch(0.65 0.015 225)' }}>
-          {stock.ticker === 'NVDA' && 'Extreme momentum (98) + Extreme IV crush (48%). Long Call veya Bull Call Spread. IV expansion\'dan maksimum faydalanma. Risk yüksek, ödül çok yüksek.'}
-          {stock.ticker === 'AMD' && 'Yüksek momentum (92) + Yüksek IV crush (44%). Bull Call Spread tercih edilir. Maliyeti kontrol et, kar potansiyeli 150%+.'}
-          {stock.ticker === 'INTC' && 'Zayıf momentum (58) + Orta IV crush (38%). Iron Condor tercih edilir. Earnings miss riski yüksek, directional risk\'ten kaçın.'}
-          {stock.ticker === 'TSLA' && 'Yüksek momentum (85) + Extreme IV crush (50%). Extreme volatility. Long Call veya Straddle. Risk yönetimi kritik.'}
-          {stock.ticker === 'META' && 'Güçlü momentum (88) + Yüksek IV crush (42%). Long Call optimal. Stabil hisse, IV crush play için ideal.'}
-          {stock.ticker === 'GOOGL' && 'İyi momentum (82) + Orta IV crush (38%). Long Call tercih edilir. Güvenli play, consistent earnings beater.'}
-          {stock.ticker === 'MSFT' && 'İyi momentum (80) + Orta IV crush (35%). Long Call tercih edilir. En stabil mega-cap, düşük risk.'}
-          {stock.ticker === 'ORCL' && 'Orta momentum (72) + Orta IV crush (32%). Bull Call Spread tercih edilir. Moderate risk/reward.'}
-          {stock.ticker === 'IBM' && 'Zayıf momentum (55) + Düşük IV crush (28%). Iron Condor tercih edilir. Kaçın veya çok küçük pozisyon.'}
-          {stock.ticker === 'QCOM' && 'Güçlü momentum (84) + Yüksek IV crush (40%). Long Call tercih edilir. Semi sector rüzgarı güçlü.'}
+          {stock.ticker === 'ORCL' && 'FY2026 kapanışı. Cloud/AI revenue guidance binary event. IV Rank > 60 ise Iron Condor (short premium); IV Rank < 20 ise Long Straddle. Büyük tech hisselerinde kazanç sonrası IV genellikle %40-55 düşer. OCI (Oracle Cloud Infrastructure) büyüme oranı kritik.'}
+          {stock.ticker === 'LEN' && 'Homebuilder sektörü mortgage rate\'e ultra-sensitiv. FOMC 16-17 Haziran\'dan 5 gün önce kazanç açıklıyor — bu timing kritik. EVR 2.1 düşük volatilite hissi. Iron Condor around ±4.5% move. FOMC öncesi pozisyonu kapat veya hedge\'le.'}
+          {stock.ticker === 'ADBE' && 'AI-first offerings ARR 3x büyüdü (Q1). Creative Cloud 850M+ MAU. Firefly Enterprise müşteri edinimi %50 arttı. AI hype güçlü → IV Rank muhtemelen yüksek → Short premium (Iron Condor, Credit Spread) daha uygun. Analyst price target ortalaması $383. Mevcut fiyat $262 → upside potansiyel var ama guidance riski de yüksek.'}
+          {stock.ticker === 'SPY' && 'FOMC 16-17 Haziran Dot Plot Meeting. Yılın en volatil günlerinden biri. SPY range 2.0-2.5% (dot plot shift 25bps+ ise). VIX consistently FOMC günü DÜŞER. 0DTE SPX Credit Spread: 17 Haziran sabahı 1% OTM aç, FOMC sonrası kapan. Iron Condor: FOMC öncesi IV zirvedeyken aç, event sonrası IV çöker.'}
+          {stock.ticker === 'QQQ' && 'FOMC Dot Plot QQQ Iron Condor. Tech-heavy ETF, FOMC sonrası directional bias 66.7% DOWN. Short VIX / QQQ Iron Condor. VIX term structure takip et. 14:00 ET rate decision genellikle fakeout, 14:30 ET press conference asıl hareket.'}
+          {stock.ticker === 'NVDA' && 'Extreme momentum (98) + AI infrastructure leader. 8-19 Haziran aralığında momentum play. Long Call veya Bull Call Spread. IV expansion\'dan maksimum faydalanma. Risk yüksek, ödül çok yüksek. AI chip cycle rüzgarı güçlü.'}
+          {stock.ticker === 'AVGO' && 'Yüksek momentum (88) + AI chip cycle. Strong relative strength vs SPY. Long Call veya Bull Call Spread tercih edilir. Maliyeti kontrol et, kar potansiyeli yüksek. Semi sector rüzgarı güçlü.'}
+          {stock.ticker === 'AMZN' && 'Güçlü momentum (85) + AWS AI capex $200B guidance tailwind. Long Call tercih edilir. Stabil hisse, consistent earnings beater. Cloud backlog 55% QoQ arttı. Düşük risk, iyi ödül.'}
+          {stock.ticker === 'DHI' && 'Homebuilder momentum play. LEN ile correlation. FOMC rate sensitivity. Mortgage rate pivot play. Long Call veya Bull Call Spread. Orta risk, orta ödül.'}
+          {stock.ticker === 'TOL' && 'Luxury homebuilder momentum. Mortgage rate pivot play. LEN kazancı 11 Haziran\'da — sektör genel etki. Long Call veya Bull Call Spread. Orta risk, orta ödül.'}
         </p>
       </div>
 

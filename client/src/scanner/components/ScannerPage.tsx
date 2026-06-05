@@ -13,6 +13,7 @@ import { useScannerI18n } from "@/scanner/useScannerI18n";
 import { scoreColor, signalBg, signalLabel } from "@/scanner/lib/scoreConfig";
 import { getScanTimingWarning } from "@/scanner/lib/momentum";
 import type { ScanResponse, StockResult } from "@/scanner/types";
+import OptionStrategyPanel from "./OptionStrategyPanel";
 
 interface ScannerPageProps {
   lang: "tr" | "en";
@@ -422,6 +423,8 @@ function StockDetail({ stock, t }: { stock: StockResult; t: (key: string) => str
           <p className="mt-1 text-xs text-slate-400">{stock.rsiWarning}</p>
         </div>
       ) : null}
+
+      <OptionStrategyPanel stock={stock} />
     </div>
   );
 }

@@ -98,3 +98,53 @@ export const NYSE_TICKERS = [
 ];
 
 export const ALL_TICKERS = [...NASDAQ_TICKERS, ...NYSE_TICKERS];
+
+// ─── Geriye Uyumlu Fetch Fonksiyonları (Kimi v4.0 dosyaları için) ───
+
+import { fetchStockDataHybrid } from "./dataProviders";
+import type { ScannerStockData } from "./dataProviders";
+
+/**
+ * fetchYF — Raw Yahoo Finance response formatında döndürür
+ * Kimi v4.0 dosyaları (backtestEngine.ts, earningsMomentum.ts) bunu kullanıyor
+ */
+export async function fetchYF(ticker: string, _interval?: string, _range?: string): Promise<any> {
+  const result = await fetchStockDataHybrid(ticker);
+  if (!result.data) return null;
+  const d = result.data;
+  return {
+    chart: {
+      result: [{
+        meta: {
+          regularMarketPrice: d.currentPrice,
+          previousClose: d.prevClose,
+          shortName: d.name,
+          symbol: d.ticker,
+        },
+        indicators: {
+          quote: [{
+            open: d.open,
+            high: d.high,
+            low: d.low,
+            close: d.close,
+            volume: d.volume,
+          }]
+        },
+        timestamp: d.timestamps,
+      }]
+    }
+  };
+}
+
+/**
+ * fetchStockData — StockData formatında döndürür
+ * Kimi v4.0 dosyaları (advancedPattern.ts, patternEngine.ts) bunu kullanıyor
+ */
+export async function fetchStockData(ticker: string): Promise<StockData | null> {
+  const result = await fetchStockDataHybrid(ticker);
+  return result.data || null;
+}
+
+// Re-export modern API
+export { fetchStockDataHybrid, fetchStockDataFromProvider } from "./dataProviders";
+export type { ScannerStockData } from "./dataProviders";

@@ -113,6 +113,31 @@ export interface BiDirectionalSetup {
   recommendation: string;
 }
 
+export interface ScanStats {
+  yahooSuccess: number;
+  massiveSuccess: number;
+  twelvedataSuccess: number;
+  alphavantageSuccess: number;
+  totalFallbacks: number;
+  rateLimitHits: number;
+}
+
+export interface T1SuitabilityResult {
+  suitable: boolean;
+  score: number;
+  reasons: string[];
+  warnings: string[];
+  persistenceScore?: number;
+}
+
+export interface DirectionRecommendation {
+  direction: "BULLISH" | "BEARISH" | "NEUTRAL";
+  confidence: number;
+  reasons: string[];
+  primaryStrategy: string;
+  alternativeStrategies: string[];
+}
+
 export interface ScanResponse {
   scanTime: string;
   totalScanned: number;

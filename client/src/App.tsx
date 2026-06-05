@@ -13,6 +13,7 @@ import {
   LogOut,
   Radar,
   WalletCards,
+  Bot,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -34,6 +35,7 @@ const ReportsAdmin = lazy(() => import("./pages/ReportsAdmin"));
 const Scanner = lazy(() => import("./pages/Scanner"));
 const DailyReport = lazy(() => import("./pages/DailyReport"));
 const Portfolio = lazy(() => import("./pages/Portfolio"));
+const AgentContent = lazy(() => import("./pages/AgentContent"));
 const Pay = lazy(() => import("./pages/Pay"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const Terms = lazy(() => import("./pages/Terms"));
@@ -206,6 +208,7 @@ function Router({
         </Route>
         <Route path={"/daily-report"} component={DailyReport} />
         <Route path={"/portfolio"} component={Portfolio} />
+        <Route path={"/agent-content"} component={AgentContent} />
         <Route path={"/scanner"}>{() => <Scanner language={language} />}</Route>
         <Route path={"/pricing"}>
           {() => (
@@ -262,6 +265,12 @@ function AppNavigation({ language }: { language: AppLanguage }) {
       label: language === "en" ? "Portfolio" : "Portfolio",
       icon: WalletCards,
       active: location.startsWith("/portfolio"),
+    },
+    {
+      href: "/agent-content",
+      label: language === "en" ? "Agent" : "Agent",
+      icon: Bot,
+      active: location.startsWith("/agent-content"),
     },
   ];
 
