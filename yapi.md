@@ -1,708 +1,578 @@
-# Gistify Yapi Dokumani
+# Gistify Mimari Dokumani
 
-Bu dosya, projedeki mevcut yapinin tamamini teknik ve operasyonel olarak anlatir.
-Amac, projeye daha sonra bakan birinin:
+Bu dosya, mevcut kod tabaninin dogru mimari ozetidir.
+Eski "Earnings Benchmark" anlatimi artik bire bir gecerli degildir.
+Uygulamanin kullaniciya donuk adi artik:
 
-- uygulamanin ne oldugunu
-- hangi katmanlardan olustugunu
-- hangi route'larin ne yaptigini
-- auth ve admin akisinin nasil calistigini
-- haftalik earnings / IV crush sisteminin nasil modellendigini
-- hangi env degiskenlerinin gerekli oldugunu
-- deploy sirasinda neye dikkat edilmesi gerektigini
+- `Earning Strategy`
+- `Momentum`
+- `Daily Report`
 
-tek bir yerden anlayabilmesidir.
+Legacy referans klasorleri:
+
+- `benchmark/`
+- `v2/`
+
+Bu klasorler halen repoda durur ama canli uygulamanin source-of-truth'u degildir.
+
+---
 
 ## 1. Uygulamanin Ozeti
 
-Gistify, earnings odakli bir finansal analiz platformudur.
-Mevcut ana urun akisi iki bolumden olusur:
+Gistify, earnings odakli analiz platformudur. Mevcut urun yuzeyi 3 ana deneyimden olusur:
 
-1. Haftalik earnings / IV crush analiz workspace'i
-2. Momentum scanner modulu
+1. `Earning Strategy` workspace'i (`/app`)
+2. `Momentum Scanner` workspace'i (`/momentum` ve `/scanner`)
+3. `Daily Report Library` (`/daily-report`)
 
-Su an ana uygulama mantigi `/app` route'u altinda haftalik rapor workspace'i olarak calisir.
-Bu workspace, `v2` referans yapisindan esinlenerek tekrar tasarlanmistir:
+Bunlara ek olarak:
 
-- ustte haftalik rapor tab'lari
-- solda secili haftanin analiz sekmeleri
-- icerikte o haftaya ait earnings, hisse analizi, IV crush ve opsiyon plani
-- admin tarafinda haftalik draft olusturma, duzenleme ve publish etme akisi
+- marketing ve billing sayfalari vardir
+- Google auth + Paddle subscription gating vardir
+- admin tarafinda 3 ayri yayinlama workspace'i vardir:
+  - weekly earnings reports
+  - momentum snapshots
+  - daily report packages
 
-## 2. Teknoloji Yigini
+Kullanicinin gordugu ana bilgi mimarisi soyledir:
 
-Projede kullanilan ana teknolojiler:
+- `/app` secili haftanin published weekly report'unu gosterir
+- `/momentum` canli tarama yapar ve gerekirse latest published momentum snapshot ile birlikte calisir
+- `/daily-report` `dailyreport/` klasorundeki paketleri ve publish kayitlarini birlestirir
 
-- Frontend: React 19
+---
+
+## 2. Urun Adlandirmasi
+
+Kod tabaninda tarihsel nedenlerle hala `benchmark` adini tasiyan parcalar vardir:
+
+- `package.json` name: `earnings_benchmark_report`
+- `benchmark/` klasoru
+- bazi seed/metin/artifact referanslari
+
+Ancak gecerli kullanici adi:
+
+- weekly workspace icin `Earning Strategy`
+
+Bu nedenle yeni gelistirmelerde product adlandirmasi olarak `benchmark` degil `Earning Strategy` kullanilmalidir.
+
+---
+
+## 3. Teknoloji Yigini
+
+- Frontend: React 19 + TypeScript
 - Router: Wouter
-- UI: Tailwind + Radix UI tabanli component seti
+- UI: Tailwind CSS + Radix tabanli component seti
 - Grafikler: Recharts
 - Server: Express
 - Build:
   - frontend icin Vite
-  - server bundle icin esbuild
-- Veritabani: SQLite (`node:sqlite`, `DatabaseSync`)
-- Dil:
-  - frontend/runtime: TypeScript
-  - backend: TypeScript
+  - backend bundle icin esbuild
+- Persistence: SQLite (`server/billingStore.ts`)
+- Billing: Paddle
+- Auth: Google OAuth + session cookie
 
 Ana script'ler:
 
-- `pnpm dev`: lokal gelistirme
-- `pnpm check`: TypeScript kontrolu
-- `pnpm build`: production build
-- `pnpm start`: production server
+- `pnpm dev`
+- `pnpm exec tsc --noEmit`
+- `pnpm build`
+- `pnpm start`
 
-## 3. Ust Seviye Dizin Yapisi
+---
 
-Ana klasorler:
+## 4. Ust Seviye Dizin Yapisi
 
 ```text
 client/
   src/
     components/
+      reports/
+      tabs/
+      ui/
     contexts/
+    hooks/
     lib/
     pages/
     scanner/
+    App.tsx
+    main.tsx
+    index.css
 
 server/
   index.ts
   billingStore.ts
   weeklyReportSeeds.ts
+  adminMarketData.ts
+  dailyReportSources.ts
 
 shared/
-  const.ts
   weeklyReports.ts
+  momentumReports.ts
+  dailyReports.ts
+  opportunities.ts
+  const.ts
 
-dist/
-  public/
-  index.js
+dailyreport/
+  DDMMYYYY/
+  DDMMYYYY.md
 ```
 
 Onemli dosyalar:
 
 - `client/src/App.tsx`
-  - uygulamanin ana shell'i
-  - route tanimlari
+  - route shell
   - auth bootstrap
-  - header / footer / global navigation
+  - language/runtime translation
+  - top navigation
 - `client/src/pages/Home.tsx`
-  - haftalik earnings workspace
-- `client/src/pages/ReportsAdmin.tsx`
-  - tam sayfa weekly report admin route'u
+  - Earning Strategy viewer
+- `client/src/lib/earningStrategyData.ts`
+  - published weekly report -> tab dataset adapter
 - `client/src/pages/Scanner.tsx`
-  - scanner route'u
-- `client/src/components/reports/WeeklyReportAdminPanel.tsx`
-  - admin editorun reusable sayfa icerigi
-- `client/src/lib/weeklyReports.ts`
-  - frontend tarafindaki helper'lar
+  - momentum workspace shell
+- `client/src/scanner/components/ScannerPage.tsx`
+  - scanner UI
+- `client/src/scanner/lib/parallelScanner.ts`
+  - tarama motoru
+- `client/src/scanner/lib/dataProviders.ts`
+  - Yahoo + fallback provider katmani
+- `client/src/pages/DailyReport.tsx`
+  - daily report library viewer
+- `client/src/pages/ReportsAdmin.tsx`
+  - 3 workspace'li admin ekran
 - `server/index.ts`
-  - tum HTTP route'lari
-  - auth, static page, weekly report API, translation API
+  - tum API route'lari ve auth/billing davranisi
 - `server/billingStore.ts`
   - SQLite store
-- `server/weeklyReportSeeds.ts`
-  - ilk iki haftalik rapor seed verisi
-- `shared/weeklyReports.ts`
-  - haftalik rapor veri kontratlari
+- `server/dailyReportSources.ts`
+  - `dailyreport/` source package parser
 
-## 4. Frontend Route Yapisi
+---
 
-Ana route'lar `client/src/App.tsx` icinde tanimlidir.
+## 5. Frontend Route Yapisi
 
-### Public route'lar
+`client/src/App.tsx` icindeki aktif route'lar:
+
+### Public / marketing
 
 - `/`
-  - landing page
 - `/pricing`
-  - fiyat sayfasi
 - `/terms`
-  - kosullar
 - `/privacy`
-  - gizlilik
 - `/refund`
-  - iade
 - `/pay`
-  - Paddle odeme sayfasi icin ayrilmis route
 
-### Uygulama route'lari
+### Product routes
 
 - `/app`
-  - haftalik earnings / IV crush workspace
-- `/app/admin`
-  - haftalik rapor admin editoru
+  - Earning Strategy workspace
+- `/momentum`
+  - scanner page
 - `/scanner`
-  - momentum scanner modulu
+  - `/momentum` alias'i
+- `/daily-report`
+  - daily report library
+- `/app/admin`
+  - admin workspace
 
-### Teknik not
+### Teknik davranis
 
-App shell, marketing route'lari ile protected/application route'larini ayirir.
-`/pay` route'u auth bootstrap'ten ayri ele alinir.
+- marketing route'lari auth-gated degildir
+- `/pay` public kalir ama `managed` modda checkout icin login bekler
+- product route'lari auth durumuna gore shell icinde render edilir
 
-## 5. Access Modu ve Auth Mimarisi
+---
 
-Sistemde iki access modu vardir:
+## 6. Access Mode, Auth ve Billing
 
-- `managed`
-- `public`
+### Access mode
 
-Bu deger `APP_ACCESS_MODE` env'i ile belirlenir.
+`server/index.ts` icinde:
 
-### `managed` mod
+- varsayilan access mode: `managed`
+- `APP_ACCESS_MODE=public` verilirse public preview davranisi acilir
 
-Bu modda:
+### `managed`
 
-- Google OAuth aktif olur
-- session cookie uzerinden kullanici taninir
-- `auth_users` ve `auth_sessions` tablolari kullanilir
-- subscription/membership mantigi calisir
+- Google OAuth aktif
+- session tabanli kullanici okunur
+- Paddle subscription durumu resolve edilir
+- `membership.isSubscribed` gating icin kullanilir
 
-### `public` mod
+### `public`
 
-Su an varsayilan ve aktif kullanilan mod budur.
-
-Bu modda:
-
-- uygulama sahte/public bir user payload dondurur
-- Google login akisi root'a redirect olur
-- uygulama genel olarak acik gorunur
-- haftalik report editor'u session ile degil `REPORT_ADMIN_SECRET` ile acilir
-
-Bu davranis `server/index.ts` icindeki `readAuthPayload()` ve `isPublicAccessMode()` uzerinden kontrol edilir.
-
-## 6. Haftalik Earnings Workspace
-
-Mevcut ana urun deneyimi `client/src/pages/Home.tsx` icindedir.
-
-Bu ekranin mantigi:
-
-- ustte haftalik rapor kart/tab listesi vardir
-- en solda en yeni hafta gorunur
-- secili haftaya gore solda sekme menusu degisir
-- icerikte o haftanin raporu render edilir
-
-### Ustteki haftalik tab mantigi
-
-Viewer tarafinda sadece publish edilmis raporlar kullanilir.
-Server tarafinda `GET /api/reports/weekly` su filtreyi uygular:
-
-- sadece `published`
-- aktif hafta ve onu takip eden pencere
-- maksimum 2 haftalik gosterim
-- response, frontend'de en yeni hafta solda olacak sekilde render edilir
-
-### Sol sekmeler
-
-Mevcut sekmeler:
-
-- `overview`
-- `calendar`
-- `ivcrush`
-- `stocks`
-- `options`
-
-### Icerik mantigi
-
-#### Overview
-
-- haftalik headline
-- summary
-- market context
-- KPI kartlari
-- top picks
-- sektor bazli skor dagilimi
-- execution notlari
-
-#### Calendar
-
-- earnings tarihine gore gruplanmis ticker listesi
-- gun bazli dagilim
-
-#### IV Crush
-
-- firsat siralamasi
-- chart ve tablo
-
-#### Stocks
-
-- secili ticker detay analizi
-- radar chart
-- risk / beat / IV / tarihsel okuma
-
-#### Options
-
-- call / put premium oyunu
-- reward / risk hesaplari
-- onerilen strateji
-
-## 7. Admin Weekly Report Akisi
-
-Admin paneli `client/src/components/reports/WeeklyReportAdminPanel.tsx` icindedir.
-
-UI davranisi:
-
-- `/app` ekraninda sag altta `Admin` butonu vardir
-- buna basinca editor popup'i acilir
-- editor acilmak icin `REPORT_ADMIN_SECRET` ister
-- secret basarili ise admin raporlari yuklenir
-
-### Admin yetkilendirme kurali
-
-Backend tarafinda admin olmak icin iki yol vardir:
-
-1. `managed` modda session user e-postasi `REPORT_ADMIN_EMAIL` ile eslesir
-2. `public` modda request header:
-   - `x-gistify-admin-secret`
-   - bu deger `REPORT_ADMIN_SECRET` ile eslesir
-
-### Admin panelinin yaptiklari
-
-- mevcut raporlari listeler
-- secili raporu draft olarak acip duzenler
-- yeni hafta taslagi olusturur
-- rapora ticker ekler / siler
-- headline, summary, market context, execution notes duzenler
-- entry seviyesinde ticker bazli tum alanlari duzenler
-- draft kaydeder
-- publish eder
-
-### Publish sonucu
-
-Bir rapor `published` olunca:
-
-- viewer API icine dahil olur
-- eger aktif / gelecek 2 haftalik pencereye giriyorsa `/app` ustunde gorunur
-- yeni hafta solda olacak sekilde tab listesine eklenir
-
-## 8. Weekly Report Veri Modeli
-
-Ortak tipler `shared/weeklyReports.ts` icindedir.
-
-Ana tip:
-
-- `WeeklyReportRecord`
-
-Alanlari:
-
-- `id`
-- `slug`
-- `title`
-- `weekStart`
-- `weekEnd`
-- `analysisDate`
-- `status`
-  - `draft`
-  - `published`
-- `authorEmail`
-- `createdAt`
-- `updatedAt`
-- `publishedAt`
-- `content`
-
-`content` alani:
-
-- `headline`
-- `summary`
-- `marketContext`
-- `executionNotes`
-- `keyCatalysts`
-- `entries`
-
-`entries` icindeki her `WeeklyReportEntry` sunlari tasir:
-
-- temel hisse alanlari
-  - `ticker`
-  - `name`
-  - `sector`
-  - `earningsDate`
-  - `earningsTime`
-- momentum alanlari
-  - `momentumScore`
-  - `priceChange6M`
-  - `rsi14`
-- IV alanlari
-  - `currentIV`
-  - `historicalIV`
-  - `impliedMove`
-  - `expectedIVCrush`
-  - `ivCrushPotential`
-- opsiyon alanlari
-  - `callPremiumBuy`
-  - `callPremiumSell`
-  - `callGainFromIV`
-  - `putPremiumBuy`
-  - `putPremiumSell`
-  - `putGainFromIV`
-- skor ve risk alanlari
-  - `ivCrushScore`
-  - `strategyRating`
-  - `riskLevel`
-  - `earningsMissRisk`
-  - `gapRisk`
-- trade / analiz alanlari
-  - `recommendedStrategy`
-  - `targetProfit`
-  - `maxLoss`
-  - `lastEarningsMove`
-  - `historicalIVCrush`
-  - `beatRate`
-  - `thesis`
-  - `directionalBias`
-
-## 9. Seed Raporlar
-
-Ilk acilista weekly report tablosu bos ise server seed data yukler.
-
-Bu seed mantigi:
-
-- `server/weeklyReportSeeds.ts`
-- iki haftalik rapor uretir
-- `v2` mantigindaki haziran earnings setini kullanir
-- artik `v2/` klasorune runtime bagimliligi yoktur
-
-Seed haftalar:
-
-- 01 - 07 Haziran
-- 08 - 14 Haziran
-
-Bu sayede sistem ilk deploy'da bos gelmez.
-
-## 10. Veritabani Yapisi
-
-Veritabani dosyasi:
-
-- env verilmezse: `./data/billing.sqlite`
-- production/Coolify icin tipik deger: `/app/data/billing.sqlite`
-
-DB mantigi `server/billingStore.ts` icindedir.
-
-### Tablolar
-
-#### `billing_subscriptions`
-
-Uyelik kayitlari.
-Eski Shopier/billing mimarisinden kalan subscription tablosudur.
-
-#### `billing_orders`
-
-Eski order tablosu.
-Shopier gecmisi icin kalmis durumda.
-
-#### `auth_users`
-
-Google login ile olusan user kayitlari.
-
-#### `auth_sessions`
-
-Session kayitlari.
-Cookie ile baglantili.
-
-#### `weekly_reports`
-
-Yeni weekly earnings sistemi icin ana tablo.
-
-Alanlar:
-
-- `id`
-- `slug`
-- `title`
-- `week_start`
-- `week_end`
-- `analysis_date`
-- `status`
-- `author_email`
-- `created_at`
-- `updated_at`
-- `published_at`
-- `content_json`
-
-`content_json` tum rapor govdesini JSON olarak tutar.
-
-## 11. Server API Yapisi
-
-Server route'lari `server/index.ts` icindedir.
-
-### Saglik
-
-- `GET /api/health`
-
-### Auth
-
-- `GET /api/auth/google`
-- `GET /api/auth/google/callback`
-- `GET /api/auth/me`
-- `POST /api/auth/logout`
+- fake/public auth payload doner
+- tum uygulama pro erisimi acikmis gibi davranir
+- bu mod esasen demo/preview amaclidir
 
 ### Billing
 
-- `GET /api/billing/status`
+Aktif entegrasyon Paddle'dir.
+Ilgili route'lar:
 
-### Weekly reports
+- `GET /api/auth/me`
+- `GET /api/billing/paddle/public-config`
+- `GET /api/billing/paddle/manage`
+- `POST /api/billing/paddle/webhook`
 
-- `GET /api/reports/weekly`
-  - viewer icin publish edilmis haftalari dondurur
+Shopier route'lari bilincli olarak `410 Gone` doner.
+
+---
+
+## 7. Earning Strategy Workspace (`/app`)
+
+### Amac
+
+Bu ekran, published weekly report verisini tek bir analiz deneyimine donusturur.
+Eski yapidaki gibi "5 sabit rapor" mantigi yoktur.
+Canli viewer:
+
+- server'dan published weekly report listesi ceker
+- secili haftayi aktif dataset'e cevirir
+- butun sekmelere ayni dataset'i dagitir
+
+### Veri akisi
+
+```text
+/app
+  -> GET /api/reports/weekly
+  -> selectedPublishedReport
+  -> buildEarningStrategyDataset(report)
+  -> activeStocks / activeOptions / activeCalendar
+  -> tab bileşenleri
+```
+
+### Viewer report secimi
+
+`server/index.ts` icindeki `getViewerWeeklyReports()` su davranisi uygular:
+
+- sadece `published` raporlari alir
+- `weekEnd >= currentWeekStart` filtresi uygular
+- en fazla 2 hafta dondurur
+- frontend bunlari en yeni solda olacak sekilde render eder
+
+### Static fallback
+
+Published report gelmezse viewer calismaya devam eder:
+
+- `client/src/lib/stockData.ts`
+- `client/src/lib/optionStrategyData.ts`
+- `earningsCalendar`
+
+Bu fallback sadece bos kalmamasi icindir; asil source-of-truth published weekly report kayitlaridir.
+
+### Sekmeler
+
+Aktif sekme yapisi:
+
+1. `overview`
+2. `momentum`
+3. `stocks`
+4. `calendar`
+5. `sector`
+6. `risk`
+7. `ivcrush`
+8. `optiondetail`
+
+### Sekme veri modeli
+
+`buildEarningStrategyDataset()` published weekly report'taki `entries[]` verisini 3 forma donusturur:
+
+- `stocks`
+  - overview / momentum / risk / stock detail icin
+- `options`
+  - IV crush / option detail icin
+- `calendar`
+  - earnings takvimi icin
+
+Boylece ustte hafta degistiginde tum sekmeler ayni dataset ile degisir.
+
+### Tooltip davranisi
+
+Chart tooltip etiketleri icin ortak helper:
+
+- `client/src/lib/chartTooltip.ts`
+
+Bu katman, bar/label mismatch sorunlarini azaltir.
+
+---
+
+## 8. Weekly Report Veri Modeli
+
+Weekly report kontrati:
+
+- `shared/weeklyReports.ts`
+
+Ana tipler:
+
+- `WeeklyReportRecord`
+- `WeeklyReportContent`
+- `WeeklyReportEntry`
+
+`WeeklyReportEntry` alanlari sunlari kapsar:
+
+- ticker ve earnings metadata
+- momentum / RSI / price change
+- IV crush metrikleri
+- call/put premium senaryolari
+- risk ve strategy rating
+- thesis ve directional bias
+
+Bu model hem viewer hem admin editor hem de opportunity sync tarafinda kullanilir.
+
+---
+
+## 9. Momentum Workspace
+
+### Amac
+
+Scanner modulu acilis momentumu tarar ve kullaniciya canli sonuc tablosu sunar.
+
+### UI akisi
+
+```text
+/momentum
+  -> Scanner.tsx
+  -> ScannerPage.tsx
+  -> runMomentumScan()
+  -> scanParallel()
+  -> fetchStockDataHybrid()
+  -> analyzeStock()
+```
+
+### Scanner veri akisi
+
+1. `ScannerPage.tsx` universe'i baslatir
+2. `runMomentumScan()` scanner facade'idir
+3. `parallelScanner.ts` chunk'li tarama yapar
+4. `dataProviders.ts`
+   - once Yahoo
+   - sonra optional fallback provider'lar
+5. `momentum.ts`
+   - skor, confidence ve ranking uretir
+
+### Duzeltilmis teknik not
+
+Intraday veri artik provider katmanindan scanner analizine tasinir.
+Yani Yahoo'dan gelen intraday seriler artik `analyzeStock()` icine gecmektedir.
+
+### Published momentum snapshot
+
+Viewer tarafinda:
+
+- `GET /api/momentum/reports/latest`
+
+Admin tarafinda:
+
+- `GET /api/admin/momentum/reports`
+- `POST /api/admin/momentum/reports`
+
+Momentum report veri kontrati:
+
+- `shared/momentumReports.ts`
+
+---
+
+## 10. Daily Report Library
+
+### Amac
+
+Gunluk markdown / klasor paketlerini kullaniciya kutuphane mantigiyla gostermek.
+
+### Kaynaklar
+
+`dailyreport/` altinda iki format desteklenir:
+
+1. klasor paket
+   - `dailyreport/DDMMYYYY/...`
+2. tek markdown dosya
+   - `dailyreport/DDMMYYYY.md`
+
+### Viewer akisi
+
+```text
+/daily-report
+  -> GET /api/daily-reports
+  -> source package + published DB kayitlari birlesir
+  -> DailyReportViewer
+```
+
+### Onemli davranis
+
+Publish DB kaydi olmasa bile `dailyreport/` altindaki source package viewer'da gorunebilir.
+Yani runtime dosya kaynagi da aktif source'tur.
+
+### API'ler
+
+- `GET /api/daily-reports`
+- `GET /api/daily-reports/latest`
+- `GET /api/daily-report/assets/*`
+
+### Veri kontrati
+
+- `shared/dailyReports.ts`
+
+### Admin taraf
+
+- `GET /api/admin/daily-report-sources`
+- `GET /api/admin/daily-report-sources/:folderName`
+- `GET /api/admin/daily-reports`
+- `POST /api/admin/daily-reports`
+
+---
+
+## 11. Admin Workspace (`/app/admin`)
+
+Admin ekran artik popup degil, tam sayfa workspace'tir.
+
+### Workspace bolumleri
+
+`client/src/pages/ReportsAdmin.tsx` 3 mod icinde calisir:
+
+1. `earnings`
+2. `momentum`
+3. `daily`
+
+### Earnings workspace
+
+- weekly report listesi
+- draft editor
+- live/fallback suggestion akisi
+- publish/save
+
+Ilgili endpoint'ler:
+
 - `GET /api/admin/reports/weekly`
-  - admin tum raporlari gorur
+- `GET /api/admin/reports/weekly/suggestions`
 - `POST /api/admin/reports/weekly`
-  - admin draft kaydeder veya publish eder
 
-### Opportunities ve watchlist
+### Momentum workspace
 
-- `GET /api/opportunities`
-  - publish edilmis weekly report'lardan turetilen aktif firsatlari tier filtreli dondurur
-- `GET /api/opportunities/:id`
-  - tekil firsat detayi
-- `GET /api/opportunities/:id/related`
-  - ayni sektorden benzer firsatlar
-- `GET /api/watchlist`
-- `POST /api/watchlist`
-- `PATCH /api/watchlist/:ticker`
-- `DELETE /api/watchlist/:ticker`
-- `GET /api/me/watchlist`
-- `POST /api/me/watchlist`
-- `PATCH /api/me/watchlist/:ticker`
-- `DELETE /api/me/watchlist/:ticker`
+- admin scanner snapshot secimi
+- published momentum report yonetimi
 
-Bu katman, `v3` gelistirme dokumanindaki genis agent yapisinin ilk uygulanmis parcasi olarak durur.
-Su an gercek zamanli agent yoktur; bunun yerine admin tarafindan publish edilen weekly report verileri
-`opportunities` tablosuna projection olarak yazilir.
+### Daily workspace
 
-### Admin agent projection kontrolu
+- `dailyreport/` source package listesi
+- source preview
+- draft/publish daily report kaydi
 
-- `GET /api/admin/agents/runs`
-  - manuel projection run loglarini listeler
-- `POST /api/admin/agents/trigger`
-  - published raporlardan firsat projection senkronizasyonunu manuel tetikler
+### Yetkilendirme
 
-### Translation
+Admin yetkisi 2 sekilde saglanir:
 
-- `POST /api/i18n/translate`
-  - runtime TR -> EN UI cevirisi icin kullanilir
+1. `managed` modda session user email'i `REPORT_ADMIN_EMAIL` ile eslesir
+2. `x-gistify-admin-secret` header'i `REPORT_ADMIN_SECRET` ile eslesir
 
-### Legacy / kapali route'lar
+---
 
-- `POST /api/billing/shopier/checkout`
-- `POST /api/billing/shopier/webhook`
+## 12. Backend Veri Katmani
 
-Bu iki endpoint su an `410` dondurur.
-Yani Shopier akisi pratikte kapatilmis durumdadir.
+Ana persistent store:
 
-### Static marketing HTML
+- `server/billingStore.ts`
 
-Server, crawler / review uyumu icin su sayfalari ham HTML olarak da servis eder:
+Bu katman su kayitlari tutar:
 
-- `/`
-- `/pricing`
-- `/terms`
-- `/privacy`
-- `/refund`
+- auth users / sessions
+- managed subscriptions
+- weekly reports
+- momentum reports
+- daily reports
+- opportunities
 
-Bu ozellikle Paddle domain review gibi akislarda kullanislidir.
+Yani dosya sistemi ve SQLite birlikte kullanilir:
 
-## 12. Scanner Modulu
+- SQLite -> publish kayitlari ve auth/billing state
+- `dailyreport/` -> gunluk rapor source package'lari
 
-Scanner route'u:
+---
 
-- `/scanner`
+## 13. Opportunity Sync
 
-Ana dosya:
+Published weekly reports'tan kullaniciya donuk firsat kayitlari turetilir.
 
-- `client/src/pages/Scanner.tsx`
+Server tarafinda:
 
-Ic mantik:
+- `syncOpportunitiesFromPublishedWeeklyReports()`
 
-- scanner UI ayri bir modul olarak acilir
-- ana data source Yahoo onceliklidir
-- opsiyonel fallback API'ler env ile verilebilir
+Bu islem weekly report publish edildiginde ilgili opportunity tablosunu gunceller.
 
-Opsiyonel env'ler:
+Bu kisim viewer UX'in merkezinde degil ama downstream urun mantigi icin onemlidir.
 
-- `VITE_SCANNER_MASSIVE_API_KEY`
-- `VITE_SCANNER_TWELVEDATA_API_KEY`
-- `VITE_SCANNER_ALPHAVANTAGE_API_KEY`
+---
 
-Scanner weekly report sisteminden bagimsizdir ama ayni genel shell ve tema icinde calisir.
+## 14. Deploy ve Runtime Notlari
 
-## 13. Public Sayfalar ve Paddle Hazirligi
+### Onemli env'ler
 
-Public marketing sayfalari:
-
-- landing
-- pricing
-- terms
-- privacy
-- refund
-- pay
-
-Bu alanlar iki amaca hizmet eder:
-
-1. kullaniciya urun/fiyat/yasal bilgi vermek
-2. Paddle domain review icin gorunur ve erisilebilir bir website sunmak
-
-Su an Paddle env placeholder'lari mevcuttur fakat gercek odeme akisi kodda tamamlanmis degildir.
-`/pay` route'u ayrilmistir, fakat billing tarafinda gecis su anda tamamlanmamis hazirlik modundadir.
-
-## 14. UI / Tema Yonu
-
-Genel tasarim dili:
-
-- koyu tactical finance temasi
-- emerald / green vurgu rengi
-- yuvarlak kartlar
-- analytics / terminal hissi veren veri panelleri
-
-`v2`'den alinan temel tasarim ilkeleri:
-
-- report-merkezli dusunme
-- haftayi sec, sonra haftanin analiz sekmeleri icinde ilerle
-- ticker bazli drill-down
-- admin tarafinda rapor olustur / yayinla
-
-## 15. Dil Yapisi
-
-UI tarafinda TR ana dil kabul edilir.
-Runtime ceviri mantigi vardir:
-
-- `client/src/lib/i18n.ts`
-- `POST /api/i18n/translate`
-
-Sistem tamamen klasik i18n dosya bazli degil; runtime translation yardimiyla TR -> EN cevirisi yapar.
-Public shell tarafinda TR / EN toggle vardir.
-
-## 16. Onemli Env Degiskenleri
-
-Ornekler `.env.example` icindedir.
-
-### Core
-
-- `PORT`
-- `NODE_ENV`
-- `APP_BASE_URL`
 - `APP_ACCESS_MODE`
 - `SESSION_SECRET`
 - `BILLING_DB_PATH`
-
-### Google OAuth
-
 - `GOOGLE_CLIENT_ID`
 - `GOOGLE_CLIENT_SECRET`
-- `GOOGLE_OAUTH_REDIRECT_URL`
-
-### Weekly report admin
-
+- `GOOGLE_CALLBACK_URL`
 - `REPORT_ADMIN_EMAIL`
 - `REPORT_ADMIN_SECRET`
-
-### Manual subscription override
-
-- `SUBSCRIBED_EMAILS`
-- `ELITE_EMAILS`
-
-### Paddle placeholders
-
 - `PADDLE_ENV`
 - `PADDLE_API_KEY`
 - `PADDLE_CLIENT_TOKEN`
-- `PADDLE_PRODUCT_ID`
 - `PADDLE_PRICE_ID`
 - `PADDLE_WEBHOOK_SECRET`
 - `PADDLE_SUCCESS_URL`
 - `PADDLE_CANCEL_URL`
-
-### Analytics placeholders
-
-- `VITE_ANALYTICS_ENDPOINT`
-- `VITE_ANALYTICS_WEBSITE_ID`
-
-### Scanner provider keys
-
+- `FMP_API_KEY`
 - `VITE_SCANNER_MASSIVE_API_KEY`
 - `VITE_SCANNER_TWELVEDATA_API_KEY`
 - `VITE_SCANNER_ALPHAVANTAGE_API_KEY`
 
-## 17. Coolify / Production Notlari
+### Docker/runtime notu
 
-Production deploy icin tipik gereksinimler:
+Daily report viewer'in bos kalmamasi icin runtime image'a `dailyreport/` klasorunun kopyalanmasi gerekir.
+Bu davranis Dockerfile'da ayrica ele alinmistir.
 
-- domain:
-  - `APP_BASE_URL=https://senin-domainin`
-- SQLite persistence:
-  - volume: `/app/data`
-  - `BILLING_DB_PATH=/app/data/billing.sqlite`
-- admin editor:
-  - `REPORT_ADMIN_SECRET` mutlaka set edilmeli
+### Analytics notu
 
-### Onerilen minimum production env
+Build sirasinda su placeholder'lar tanimli degilse warning gorulebilir:
 
-```env
-NODE_ENV=production
-PORT=3000
-APP_BASE_URL=https://gistify.pro
-APP_ACCESS_MODE=public
-SESSION_SECRET=uzun-ve-rastgele-bir-secret
-BILLING_DB_PATH=/app/data/billing.sqlite
+- `%VITE_ANALYTICS_ENDPOINT%`
+- `%VITE_ANALYTICS_WEBSITE_ID%`
 
-REPORT_ADMIN_EMAIL=hsnksc@gmail.com
-REPORT_ADMIN_SECRET=guclu-bir-admin-secret
-```
+Bu warning build'i kirmasa da deploy kalitesini etkiler.
 
-### Public mod sonucu
+---
 
-`APP_ACCESS_MODE=public` ise:
+## 15. Eski Dokumanla Farklar
 
-- genel kullanici tarafi acik kalir
-- admin editor secret ile acilir
-- Google auth zorunlu olmaz
+Asagidaki maddeler, eski "Earnings Benchmark Raporu" anlatisinin neden artik dogru olmadigini ozetler:
 
-### Managed mod sonucu
+1. Sistem artik 5 sabit rapora dayali degil; published weekly report kayitlarina dayali.
+2. Weekly viewer artik 8 sekme kullanir ve hepsi ayni secili haftaya baglidir.
+3. Admin panel popup degil, `/app/admin` altinda tam sayfa workspace'tir.
+4. Admin sadece weekly reports degil, momentum ve daily report yayinlarini da yonetir.
+5. Daily report library artik urunun birinci sinif parcasi haline gelmistir.
+6. Auth varsayilani artik `managed` moddur; `public` sadece preview icindir.
+7. Paddle aktif billing katmanidir; Shopier legacy/disabed durumdadir.
+8. `benchmark/` ve `v2/` klasorleri canli mimari degil, tarihsel referanstir.
 
-`APP_ACCESS_MODE=managed` olursa:
+---
 
-- Google login tekrar zorunlu hale gelir
-- weekly report admin, `REPORT_ADMIN_EMAIL` ile oturum acmis kullanici uzerinden de calisabilir
+## 16. Source-of-Truth Dosyalari
 
-## 18. Bilinen Durumlar ve Kisitlar
+Mimariyi anlamak icin once su dosyalara bakilmalidir:
 
-Su anki bilinen noktalar:
+- `client/src/App.tsx`
+- `client/src/pages/Home.tsx`
+- `client/src/lib/earningStrategyData.ts`
+- `client/src/pages/Scanner.tsx`
+- `client/src/scanner/components/ScannerPage.tsx`
+- `client/src/pages/DailyReport.tsx`
+- `client/src/pages/ReportsAdmin.tsx`
+- `server/index.ts`
+- `server/billingStore.ts`
+- `shared/weeklyReports.ts`
+- `shared/momentumReports.ts`
+- `shared/dailyReports.ts`
 
-1. Shopier akisi devre disi
-2. Paddle route/env hazirliklari var ama production billing akisi tamamlanmis degil
-3. Weekly report sistemi aktif ve kalici
-4. Viewer tarafinda sadece publish edilmis raporlar gorunur
-5. Admin tarafi secret'a bagli
-6. Opportunities katmani su an weekly report projection mantigiyla beslenir; gercek zamanli market ingestion henuz yoktur
-7. Build sirasinda analytics placeholder uyarilari gorulebilir
-8. `Home` chunk'i buyuktur; ileride code-splitting yapilabilir
-
-## 19. Haftalik Report Is Akisi
-
-Bugunku operasyonel is akisi su sekildedir:
-
-1. Admin `/app` ekranina gelir
-2. Sag alttaki `Admin` butonuna basar
-3. `REPORT_ADMIN_SECRET` girer
-4. Mevcut haftayi acar veya yeni hafta taslagi olusturur
-5. Hisseleri, headline'i, summary'yi, market context'i ve trade notlarini duzenler
-6. Once `draft` olarak kaydedebilir
-7. Hazirsa `publish` eder
-8. Publish edilen hafta viewer tarafinda ust tab olarak gorunur
-9. En yeni hafta solda yer alir
-
-## 20. Sonuc
-
-Projenin mevcut cekirdegi artik su uclu bir yapiya oturmus durumdadir:
-
-- marketing/public website
-- haftalik report-merkezli earnings workspace
-- admin tarafinda kalici weekly report editoru
-
-Bu, `v2`'deki fikirlerin artik dosya ici demo olmaktan cikarak:
-
-- SQLite ile kalici
-- API ile yonetilen
-- admin publish mantigi olan
-- deploy edilebilir
-- operasyonel olarak bakilabilir
-
-bir urun yapisina donusturulmus halidir.
+Bu dosya (`yapi.md`) bu kod durumunu baz alir.

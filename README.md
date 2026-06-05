@@ -1,3 +1,19 @@
+# Gistify
+
+Current product source-of-truth:
+
+- architecture: `yapi.md`
+- app shell: `client/src/App.tsx`
+- product viewer routes: `client/src/pages/Home.tsx`, `client/src/pages/Scanner.tsx`, `client/src/pages/DailyReport.tsx`
+- backend routes: `server/index.ts`
+
+Important:
+
+- the live product name is `Earning Strategy`, not the old `Earnings Benchmark`
+- `benchmark/` and `v2/` are legacy reference folders, not the current runtime architecture
+
+---
+
 # Web App Template (Static Frontend)
 
 Pure React 19 + Tailwind 4 template with shadcn/ui baked in. **Use this README as the checklist for shipping static experiences.**

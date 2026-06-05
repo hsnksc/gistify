@@ -1,3 +1,18 @@
+# Legacy Reference
+
+This folder is a historical reference snapshot.
+It is not the current live Gistify architecture.
+
+Use these files as inspiration only.
+Current source-of-truth:
+
+- `../yapi.md`
+- `../client/src/App.tsx`
+- `../client/src/pages/Home.tsx`
+- `../server/index.ts`
+
+---
+
 # Web App Template (Static Frontend)
 
 Pure React 19 + Tailwind 4 template with shadcn/ui baked in. **Use this README as the checklist for shipping static experiences.**
