@@ -9,48 +9,23 @@ import {
 import { useLocation } from "wouter";
 import type { WeeklyReportRecord } from "@shared/weeklyReports";
 import { Button } from "@/components/ui/button";
-import { earningsCalendar, signalConfig, stocksData } from "@/lib/stockData";
-import { buildEarningStrategyDataset } from "@/lib/earningStrategyData";
+import { signalConfig } from "@/lib/stockData";
 import {
-  formatAnalysisDate,
-  formatWeekRange,
-  getReportSummary,
-} from "@/lib/weeklyReports";
+  buildEarningStrategyUniverse,
+} from "@/lib/earningStrategyData";
+import { formatAnalysisDate } from "@/lib/weeklyReports";
 import CalendarTab from "@/components/tabs/CalendarTab";
 import IVCrushTab from "@/components/tabs/IVCrushTab";
-import JuneEarningsTab from "@/components/tabs/JuneEarningsTab";
-import JuneOptionDetailTab from "@/components/tabs/JuneOptionDetailTab";
 import MomentumTab from "@/components/tabs/MomentumTab";
-import OptionDetailTab from "@/components/tabs/OptionDetailTab";
-import OverviewTab from "@/components/tabs/OverviewTab";
-import RiskTab from "@/components/tabs/RiskTab";
-import SectorTab from "@/components/tabs/SectorTab";
-import StockDetailTab from "@/components/tabs/StockDetailTab";
-import { juneEarningsData } from "@/lib/juneEarningsData";
+import StrategyPlaybookTab from "@/components/tabs/StrategyPlaybookTab";
 
-type TabId =
-  | "overview"
-  | "momentum"
-  | "stocks"
-  | "calendar"
-  | "sector"
-  | "risk"
-  | "ivcrush"
-  | "optiondetail"
-  | "juneearnings"
-  | "juneoptiondetail";
+type TabId = "playbook" | "momentum" | "calendar" | "ivcrush";
 
 const tabs: Array<{ id: TabId; label: string; icon: string }> = [
-  { id: "overview", label: "Genel Bakis", icon: "◈" },
+  { id: "playbook", label: "Playbook", icon: "◈" },
   { id: "momentum", label: "Momentum", icon: "⚡" },
-  { id: "stocks", label: "Hisse Analizi", icon: "◎" },
   { id: "calendar", label: "Takvim", icon: "◷" },
-  { id: "sector", label: "Sektorel", icon: "⬡" },
-  { id: "risk", label: "Risk Matrisi", icon: "◉" },
-  { id: "ivcrush", label: "IV Crush", icon: "💰" },
-  { id: "optiondetail", label: "Opsiyon Detay", icon: "📊" },
-  { id: "juneearnings", label: "8-19 Haziran Setuplari", icon: "▣" },
-  { id: "juneoptiondetail", label: "8-19 Haziran Detay", icon: "⌁" },
+  { id: "ivcrush", label: "Opsiyon", icon: "💰" },
 ];
 
 interface WeeklyReportsResponse {
@@ -81,16 +56,10 @@ function SummaryCard({
 
 export default function Home() {
   const [, setLocation] = useLocation();
-  const [activeTab, setActiveTab] = useState<TabId>("overview");
-  const [selectedTicker, setSelectedTicker] = useState<string | null>(
-    stocksData[0]?.ticker ?? null
-  );
-  const [selectedJuneTicker, setSelectedJuneTicker] = useState<string | null>(
-    juneEarningsData[0]?.ticker ?? null
-  );
+  const [activeTab, setActiveTab] = useState<TabId>("playbook");
+  const [selectedTicker, setSelectedTicker] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [publishedReports, setPublishedReports] = useState<WeeklyReportRecord[]>([]);
-  const [selectedPublishedReportId, setSelectedPublishedReportId] = useState("");
   const contentRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -116,15 +85,9 @@ export default function Home() {
           return;
         }
 
-        const nextReports = payload.reports || [];
-        setPublishedReports(nextReports);
-        setSelectedPublishedReportId(current =>
-          current && nextReports.some(report => report.id === current)
-            ? current
-            : nextReports[0]?.id || ""
-        );
+        setPublishedReports(payload.reports || []);
       } catch {
-        // Leave the earning strategy page usable with static fallback data.
+        // Static fallback keeps the workspace usable without published reports.
       }
     })();
 
@@ -133,73 +96,13 @@ export default function Home() {
     };
   }, []);
 
-  const selectedPublishedReport = useMemo(
-    () =>
-      publishedReports.find(report => report.id === selectedPublishedReportId) ||
-      publishedReports[0] ||
-      null,
-    [publishedReports, selectedPublishedReportId]
-  );
-  const publishedReportSummary = useMemo(
-    () => (selectedPublishedReport ? getReportSummary(selectedPublishedReport) : null),
-    [selectedPublishedReport]
-  );
   const strategyData = useMemo(
-    () => buildEarningStrategyDataset(selectedPublishedReport),
-    [selectedPublishedReport]
+    () => buildEarningStrategyUniverse(publishedReports),
+    [publishedReports]
   );
   const activeStocks = strategyData.stocks;
   const activeOptions = strategyData.options;
   const activeCalendar = strategyData.calendar;
-  const sortedByMomentum = useMemo(
-    () => [...activeStocks].sort((a, b) => b.momentumScore - a.momentumScore),
-    [activeStocks]
-  );
-  const publishedTopEntries = useMemo(
-    () => selectedPublishedReport?.content.entries.slice(0, 4) || [],
-    [selectedPublishedReport]
-  );
-  const publishedAvgBeat = useMemo(() => {
-    if (!activeStocks.length) {
-      return 0;
-    }
-
-    return Math.round(
-      activeStocks.reduce((sum, entry) => sum + entry.earningsBeatProbability, 0) /
-        activeStocks.length
-    );
-  }, [activeStocks]);
-  const topPicks = useMemo(
-    () =>
-      sortedByMomentum
-        .filter(stock => stock.signal === "STRONG_BUY" || stock.signal === "BUY")
-        .slice(0, 3),
-    [sortedByMomentum]
-  );
-
-  const strongBuyCount = activeStocks.filter(
-    stock => stock.signal === "STRONG_BUY"
-  ).length;
-  const buyCount = activeStocks.filter(stock => stock.signal === "BUY").length;
-  const sellCount = activeStocks.filter(
-    stock => stock.signal === "SELL" || stock.signal === "STRONG_SELL"
-  ).length;
-  const avgBeatProbability = Math.round(
-    activeStocks.reduce((sum, stock) => sum + stock.earningsBeatProbability, 0) /
-      Math.max(activeStocks.length, 1)
-  );
-  const avgMomentumScore = Math.round(
-    activeStocks.reduce((sum, stock) => sum + stock.momentumScore, 0) /
-      Math.max(activeStocks.length, 1)
-  );
-  const reportWindow = selectedPublishedReport
-    ? formatWeekRange(selectedPublishedReport)
-    : `${earningsCalendar[0]?.date || "-"} - ${
-        earningsCalendar[earningsCalendar.length - 1]?.date || "-"
-      }`;
-  const analysisDate = selectedPublishedReport
-    ? formatAnalysisDate(selectedPublishedReport.analysisDate)
-    : "21.05.2026";
 
   useEffect(() => {
     if (!activeStocks.length) {
@@ -214,39 +117,82 @@ export default function Home() {
     );
   }, [activeStocks]);
 
+  const sortedByMomentum = useMemo(
+    () => [...activeStocks].sort((a, b) => b.momentumScore - a.momentumScore),
+    [activeStocks]
+  );
+  const topPicks = useMemo(
+    () =>
+      sortedByMomentum
+        .filter(stock => stock.signal === "STRONG_BUY" || stock.signal === "BUY")
+        .slice(0, 4),
+    [sortedByMomentum]
+  );
+
+  const latestPublishedReport = useMemo(() => {
+    if (!publishedReports.length) {
+      return null;
+    }
+
+    return [...publishedReports].sort((left, right) =>
+      right.analysisDate.localeCompare(left.analysisDate)
+    )[0];
+  }, [publishedReports]);
+
+  const reportWindow =
+    activeCalendar.length > 0
+      ? `${activeCalendar[0].label} -> ${
+          activeCalendar[activeCalendar.length - 1].label
+        }`
+      : "Canli coverage";
+  const analysisDate = latestPublishedReport
+    ? formatAnalysisDate(latestPublishedReport.analysisDate)
+    : "Canli";
+
+  const strongBuyCount = activeStocks.filter(
+    stock => stock.signal === "STRONG_BUY"
+  ).length;
+  const buyCount = activeStocks.filter(stock => stock.signal === "BUY").length;
+  const neutralCount = activeStocks.filter(
+    stock => stock.signal === "NEUTRAL"
+  ).length;
+  const sellCount = activeStocks.filter(
+    stock => stock.signal === "SELL" || stock.signal === "STRONG_SELL"
+  ).length;
+  const avgBeatProbability = Math.round(
+    activeStocks.reduce((sum, stock) => sum + stock.earningsBeatProbability, 0) /
+      Math.max(activeStocks.length, 1)
+  );
+  const avgMomentumScore = Math.round(
+    activeStocks.reduce((sum, stock) => sum + stock.momentumScore, 0) /
+      Math.max(activeStocks.length, 1)
+  );
+  const topTicker = topPicks[0]?.ticker || activeStocks[0]?.ticker || "-";
+  const coverageHint = publishedReports.length
+    ? `${publishedReports.length} published week + live setup coverage`
+    : "Static benchmark + live setup coverage";
+
   const handleStockClick = (ticker: string) => {
     setSelectedTicker(ticker);
-    setActiveTab("stocks");
-  };
-
-  const handleJuneStockClick = (ticker: string) => {
-    setSelectedJuneTicker(ticker);
-    setActiveTab("juneoptiondetail");
+    setActiveTab("playbook");
   };
 
   const renderActiveTab = () => {
     switch (activeTab) {
-      case "overview":
+      case "playbook":
         return (
-          <OverviewTab
-            onStockClick={handleStockClick}
+          <StrategyPlaybookTab
             stocks={activeStocks}
+            strategies={activeOptions}
+            calendar={activeCalendar}
+            selectedTicker={selectedTicker}
+            onSelectTicker={setSelectedTicker}
             reportWindow={reportWindow}
             analysisDateLabel={analysisDate}
-            headline={selectedPublishedReport?.content.headline}
-            summary={selectedPublishedReport?.content.summary}
           />
         );
       case "momentum":
         return <MomentumTab onStockClick={handleStockClick} stocks={activeStocks} />;
-      case "stocks":
-        return (
-          <StockDetailTab
-            selectedTicker={selectedTicker}
-            onSelectTicker={setSelectedTicker}
-            stocks={activeStocks}
-          />
-        );
       case "calendar":
         return (
           <CalendarTab
@@ -256,38 +202,18 @@ export default function Home() {
             reportWindow={reportWindow}
           />
         );
-      case "sector":
-        return <SectorTab stocks={activeStocks} />;
-      case "risk":
-        return <RiskTab onStockClick={handleStockClick} stocks={activeStocks} />;
       case "ivcrush":
         return <IVCrushTab onStockClick={handleStockClick} strategies={activeOptions} />;
-      case "optiondetail":
-        return (
-          <OptionDetailTab
-            selectedTicker={selectedTicker}
-            onSelectTicker={setSelectedTicker}
-            strategies={activeOptions}
-          />
-        );
-      case "juneearnings":
-        return <JuneEarningsTab onStockClick={handleJuneStockClick} />;
-      case "juneoptiondetail":
-        return (
-          <JuneOptionDetailTab
-            selectedTicker={selectedJuneTicker}
-            onSelectTicker={setSelectedJuneTicker}
-          />
-        );
       default:
         return (
-          <OverviewTab
-            onStockClick={handleStockClick}
+          <StrategyPlaybookTab
             stocks={activeStocks}
+            strategies={activeOptions}
+            calendar={activeCalendar}
+            selectedTicker={selectedTicker}
+            onSelectTicker={setSelectedTicker}
             reportWindow={reportWindow}
             analysisDateLabel={analysisDate}
-            headline={selectedPublishedReport?.content.headline}
-            summary={selectedPublishedReport?.content.summary}
           />
         );
     }
@@ -333,7 +259,7 @@ export default function Home() {
                   Earning Strategy Workspace
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  Precision Finance strateji akisi
+                  Tarih sirali benchmark playbook
                 </p>
               </div>
             </div>
@@ -393,9 +319,7 @@ export default function Home() {
           <div className="space-y-4">
             <div className="flex flex-wrap items-center gap-2">
               <span className="badge-strong">{strongBuyCount} guclu al</span>
-              <span className="badge-warning">
-                {activeStocks.filter(stock => stock.signal === "NEUTRAL").length} notr
-              </span>
+              <span className="badge-warning">{neutralCount} notr</span>
               <span className="badge-danger">{sellCount} sat</span>
             </div>
 
@@ -404,17 +328,17 @@ export default function Home() {
                 className="heading-condensed text-3xl leading-none md:text-5xl"
                 style={{ color: "oklch(0.95 0.01 220)" }}
               >
-                Earnings oncesi
+                Earnings benchmark,
                 <br />
                 <span style={{ color: "oklch(0.78 0.18 160)" }}>
-                  earning strategy
+                  hisse hisse playbook
                 </span>
               </h1>
               <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
-                Secilen hafta artik sadece ust kartlarda degil, tum sekmelerde
-                ayni veriyle akar. Momentum, takvim, risk matrisi, hisse
-                detaylari ve IV crush analizleri ayni earning strategy
-                datasetini paylasir.
+                Ayrik haftalar ve setup bloklari yerine, tum coverage tek timeline
+                icinde birlestirildi. Artik her hisse earning tarihine gore
+                siralanir ve ayni kartta momentum, tez, risk ve opsiyon plani
+                okunur.
               </p>
             </div>
 
@@ -423,187 +347,44 @@ export default function Home() {
                 {activeStocks.length} analiz edilen hisse
               </span>
               <span className="rounded-none border border-border bg-card/60 px-3 py-1.5">
-                AI chips + cybersecurity + software
+                {coverageHint}
               </span>
               <span className="rounded-none border border-border bg-card/60 px-3 py-1.5">
                 Sources: Yahoo, Gartner, Deloitte
               </span>
             </div>
 
-            <div className="grid gap-3 pt-1 md:grid-cols-[minmax(0,1fr)_auto_auto] md:items-center">
-              <div className="rounded-none border border-emerald-400/25 bg-emerald-500/5 px-4 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                  June Setup Pack
-                </p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  8-19 Haziran setup akisi artik bu workspace icinde. ORCL,
-                  LEN, ADBE ve FOMC odakli pencereyi canli sekmelerden ac.
-                </p>
-              </div>
-              <Button
-                type="button"
-                variant="outline"
-                className="rounded-none"
-                onClick={() => setActiveTab("juneearnings")}
-              >
-                8-19 Haziran Setuplari
-              </Button>
-              <Button
-                type="button"
-                variant="secondary"
-                className="rounded-none"
-                onClick={() => setActiveTab("juneoptiondetail")}
-              >
-                Opsiyon Detay
-              </Button>
+            <div className="rounded-none border border-emerald-400/25 bg-emerald-500/5 px-4 py-3">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                Yeni Okuma Mantigi
+              </p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Ana akıs simdi dogrudan `Playbook` sekmesinden baslar. Oradan
+                hisse sec, sonra gerekirse ayni evreni momentum, takvim ve opsiyon
+                kesitlerinde yan gorunum olarak ac.
+              </p>
             </div>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-3 xl:grid-cols-1">
             <SummaryCard
-              label="Top pick"
-              value={
-                publishedReportSummary?.topPick?.ticker || topPicks[0]?.ticker || "-"
-              }
-              hint={
-                publishedReportSummary?.topPick?.name ||
-                topPicks[0]?.name ||
-                "En yuksek momentum ve beat setup"
-              }
+              label="Top ticker"
+              value={topTicker}
+              hint={topPicks[0]?.name || "En guclu ilk kurulum"}
             />
             <SummaryCard
               label="Ort. beat"
-              value={`%${publishedAvgBeat || avgBeatProbability}`}
-              hint={
-                selectedPublishedReport
-                  ? "Published rapordaki ortalama beat ihtimali"
-                  : "Workspace evrenindeki ortalama beat ihtimali"
-              }
+              value={`%${avgBeatProbability}`}
+              hint="Toplu benchmark evreni ortalamasi"
             />
             <SummaryCard
               label="Ort. momentum"
-              value={String(publishedReportSummary?.avgMomentum || avgMomentumScore)}
-              hint={
-                selectedPublishedReport
-                  ? "Published rapordaki ortalama momentum skoru"
-                  : "Tum earning strategy hisseleri icin ortalama skor"
-              }
+              value={String(avgMomentumScore)}
+              hint="Tek timeline icindeki ortalama skor"
             />
           </div>
         </div>
       </section>
-
-      {publishedReports.length ? (
-        <section
-          className="border-b px-4 py-5 lg:px-6"
-          style={{
-            borderColor: "oklch(0.22 0.03 225)",
-            background: "oklch(0.105 0.025 230)",
-          }}
-        >
-          <div className="space-y-4">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                  Published Earnings Weeks
-                </p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Buradan haftayi degistirdiginde alt sekmelerin tamami ayni dataset ile yenilenir.
-                </p>
-              </div>
-              <Button
-                type="button"
-                variant="outline"
-                className="rounded-none"
-                onClick={() => setLocation("/app/admin")}
-              >
-                <Shield className="h-4 w-4" />
-                Admin Workspace
-              </Button>
-            </div>
-
-            <div className="flex gap-2 overflow-x-auto pb-1">
-              {publishedReports.map(report => (
-                <button
-                  key={report.id}
-                  type="button"
-                  onClick={() => setSelectedPublishedReportId(report.id)}
-                  className={`shrink-0 rounded-none border px-3 py-2 text-left ${
-                    selectedPublishedReport?.id === report.id
-                      ? "border-emerald-400/50 bg-emerald-500/10 text-emerald-300"
-                      : "border-border bg-card/70 text-muted-foreground"
-                  }`}
-                >
-                  <div className="text-[11px] font-semibold uppercase tracking-[0.18em]">
-                    {formatWeekRange(report)}
-                  </div>
-                  <div className="mt-1 text-xs">{report.content.entries.length} hisse</div>
-                </button>
-              ))}
-            </div>
-
-            {selectedPublishedReport ? (
-              <div className="grid gap-4 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
-                <div className="rounded-none border border-border bg-card/80 p-5">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                    Hafta Ozeti
-                  </p>
-                  <h2 className="mt-2 text-2xl font-semibold text-foreground">
-                    {selectedPublishedReport.content.headline}
-                  </h2>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                    {selectedPublishedReport.content.summary}
-                  </p>
-                  <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                    {selectedPublishedReport.content.marketContext}
-                  </p>
-                </div>
-
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {publishedTopEntries.map(entry => (
-                    <article
-                      key={entry.id}
-                      className="rounded-none border border-border bg-card/80 p-4"
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div>
-                          <p className="text-sm font-semibold text-foreground">
-                            {entry.ticker}
-                          </p>
-                          <p className="text-xs text-muted-foreground">{entry.name}</p>
-                        </div>
-                        <span className="data-mono text-lg font-bold text-emerald-300">
-                          {entry.ivCrushScore}
-                        </span>
-                      </div>
-                      <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
-                        <div>
-                          <p className="text-muted-foreground">Momentum</p>
-                          <p className="font-semibold text-foreground">
-                            {entry.momentumScore}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-muted-foreground">IV Crush</p>
-                          <p className="font-semibold text-foreground">
-                            %{entry.expectedIVCrush}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-muted-foreground">Beat</p>
-                          <p className="font-semibold text-foreground">
-                            %{entry.beatRate}
-                          </p>
-                        </div>
-                      </div>
-                    </article>
-                  ))}
-                </div>
-              </div>
-            ) : null}
-          </div>
-        </section>
-      ) : null}
 
       <div className="flex flex-1 overflow-hidden">
         {sidebarOpen ? (
@@ -667,7 +448,7 @@ export default function Home() {
                   },
                   {
                     label: "Notr",
-                    value: activeStocks.filter(stock => stock.signal === "NEUTRAL").length,
+                    value: neutralCount,
                     color: "text-amber-400",
                   },
                   {
@@ -770,8 +551,8 @@ export default function Home() {
                   Sonraki adim: momentum scanner
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  Earning strategy akisini okuduktan sonra acilis momentumu scanner alanina
-                  gecebilirsin.
+                  Playbook icindeki kurulumlari okuduktan sonra ayni evrende
+                  anlik tarama yapmak icin scanner alanina gecebilirsin.
                 </p>
               </div>
               <Button

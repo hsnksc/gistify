@@ -7,6 +7,7 @@ export interface JuneEarningsStock {
   ticker: string;
   name: string;
   sector: string;
+  sortDate: string;
   earningsDate: string;
   momentumScore: number;
   priceChange6M: number;
@@ -40,6 +41,7 @@ export const juneEarningsData: JuneEarningsStock[] = [
     ticker: "ORCL",
     name: "Oracle Corporation",
     sector: "Software",
+    sortDate: "2026-06-10",
     earningsDate: "10 June 2026",
     momentumScore: 78,
     priceChange6M: 48,
@@ -71,6 +73,7 @@ export const juneEarningsData: JuneEarningsStock[] = [
     ticker: "LEN",
     name: "Lennar Corporation",
     sector: "Homebuilders",
+    sortDate: "2026-06-11",
     earningsDate: "11 June 2026",
     momentumScore: 65,
     priceChange6M: 22,
@@ -102,6 +105,7 @@ export const juneEarningsData: JuneEarningsStock[] = [
     ticker: "ADBE",
     name: "Adobe Inc.",
     sector: "Software",
+    sortDate: "2026-06-11",
     earningsDate: "11 June 2026",
     momentumScore: 85,
     priceChange6M: 35,
@@ -133,6 +137,7 @@ export const juneEarningsData: JuneEarningsStock[] = [
     ticker: "SPY",
     name: "SPDR S&P 500 ETF",
     sector: "Macro / FOMC",
+    sortDate: "2026-06-16",
     earningsDate: "16-17 June 2026",
     momentumScore: 70,
     priceChange6M: 12,
@@ -164,6 +169,7 @@ export const juneEarningsData: JuneEarningsStock[] = [
     ticker: "QQQ",
     name: "Invesco QQQ Trust",
     sector: "Macro / FOMC",
+    sortDate: "2026-06-17",
     earningsDate: "16-17 June 2026",
     momentumScore: 82,
     priceChange6M: 18,
@@ -195,6 +201,7 @@ export const juneEarningsData: JuneEarningsStock[] = [
     ticker: "NVDA",
     name: "NVIDIA Corporation",
     sector: "Semiconductors",
+    sortDate: "2026-06-08",
     earningsDate: "8-19 June Momentum",
     momentumScore: 98,
     priceChange6M: 185,
@@ -226,6 +233,7 @@ export const juneEarningsData: JuneEarningsStock[] = [
     ticker: "AVGO",
     name: "Broadcom Inc.",
     sector: "Semiconductors",
+    sortDate: "2026-06-09",
     earningsDate: "8-19 June Momentum",
     momentumScore: 88,
     priceChange6M: 125,
@@ -257,6 +265,7 @@ export const juneEarningsData: JuneEarningsStock[] = [
     ticker: "AMZN",
     name: "Amazon.com Inc.",
     sector: "Technology",
+    sortDate: "2026-06-12",
     earningsDate: "8-19 June Momentum",
     momentumScore: 85,
     priceChange6M: 95,
@@ -288,6 +297,7 @@ export const juneEarningsData: JuneEarningsStock[] = [
     ticker: "DHI",
     name: "D.R. Horton Inc.",
     sector: "Homebuilders",
+    sortDate: "2026-06-18",
     earningsDate: "8-19 June Momentum",
     momentumScore: 72,
     priceChange6M: 35,
@@ -319,6 +329,7 @@ export const juneEarningsData: JuneEarningsStock[] = [
     ticker: "TOL",
     name: "Toll Brothers Inc.",
     sector: "Homebuilders",
+    sortDate: "2026-06-18",
     earningsDate: "8-19 June Momentum",
     momentumScore: 68,
     priceChange6M: 28,

@@ -16,6 +16,10 @@ import {
   optionStrategyData as staticOptions,
   type OptionStrategy,
 } from "@/lib/optionStrategyData";
+import {
+  juneEarningsData,
+  type JuneEarningsStock,
+} from "@/lib/juneEarningsData";
 
 export interface StrategyCalendarItem {
   id: string;
@@ -34,6 +38,33 @@ export interface EarningStrategyDataset {
   calendar: StrategyCalendarItem[];
 }
 
+const MONTH_LOOKUP: Record<string, number> = {
+  jan: 0,
+  january: 0,
+  feb: 1,
+  february: 1,
+  mar: 2,
+  march: 2,
+  apr: 3,
+  april: 3,
+  may: 4,
+  jun: 5,
+  june: 5,
+  jul: 6,
+  july: 6,
+  aug: 7,
+  august: 7,
+  sep: 8,
+  sept: 8,
+  september: 8,
+  oct: 9,
+  october: 9,
+  nov: 10,
+  november: 10,
+  dec: 11,
+  december: 11,
+};
+
 function clamp(value: number, min: number, max: number) {
   return Math.max(min, Math.min(max, value));
 }
@@ -41,6 +72,34 @@ function clamp(value: number, min: number, max: number) {
 function round(value: number, digits = 1) {
   const factor = 10 ** digits;
   return Math.round(value * factor) / factor;
+}
+
+function parseLooseDate(value: string) {
+  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return new Date(`${value}T00:00:00Z`);
+  }
+
+  const rangeMatch = value.match(/^(\d{1,2})(?:-\d{1,2})?\s+([A-Za-z]+)\s+(\d{4})$/);
+  if (rangeMatch) {
+    const day = Number(rangeMatch[1]);
+    const month = MONTH_LOOKUP[rangeMatch[2].toLowerCase()];
+    const year = Number(rangeMatch[3]);
+
+    if (Number.isInteger(day) && Number.isInteger(month) && Number.isInteger(year)) {
+      return new Date(Date.UTC(year, month, day));
+    }
+  }
+
+  const timestamp = Date.parse(`${value} UTC`);
+  if (Number.isFinite(timestamp)) {
+    return new Date(timestamp);
+  }
+
+  return new Date("2100-12-31T00:00:00Z");
+}
+
+function resolveSortDate(value: string) {
+  return parseLooseDate(value).toISOString().slice(0, 10);
 }
 
 function formatDisplayDate(value: string) {
@@ -338,15 +397,265 @@ function buildCalendarFromEntries(entries: WeeklyReportEntry[]) {
 }
 
 function buildStaticCalendar(): StrategyCalendarItem[] {
-  return staticCalendar.map((item, index) => ({
+  return [...staticCalendar]
+    .sort((left, right) => resolveSortDate(left.date).localeCompare(resolveSortDate(right.date)))
+    .map((item, index) => ({
     id: `${item.ticker}-${index + 1}`,
-    sortDate: `2026-${String(index + 5).padStart(2, "0")}-01`,
+    sortDate: resolveSortDate(item.date),
     label: item.date,
     ticker: item.ticker,
     name: item.name,
     time: item.time,
     signal: item.signal,
   }));
+}
+
+function buildJuneSignal(entry: JuneEarningsStock): SignalLevel {
+  if (entry.strategyRating === "POOR") {
+    return "SELL";
+  }
+
+  if (entry.sector.includes("Macro") && entry.ticker === "QQQ") {
+    return "SELL";
+  }
+
+  if (entry.strategyRating === "EXCELLENT") {
+    return entry.momentumScore >= 85 ? "STRONG_BUY" : "BUY";
+  }
+
+  if (entry.strategyRating === "GOOD") {
+    return "BUY";
+  }
+
+  return "NEUTRAL";
+}
+
+function buildJuneDirectionalBias(
+  entry: JuneEarningsStock
+): OptionStrategy["directionalBias"] {
+  if (entry.ticker === "QQQ") {
+    return "PUT";
+  }
+
+  if (
+    entry.recommendedStrategy.includes("Long Call") ||
+    entry.recommendedStrategy.includes("Bull Call") ||
+    entry.recommendedStrategy.includes("Momentum Long")
+  ) {
+    return "CALL";
+  }
+
+  if (entry.recommendedStrategy.includes("Put")) {
+    return "PUT";
+  }
+
+  return "NEUTRAL";
+}
+
+function buildJuneCatalysts(entry: JuneEarningsStock) {
+  const base = [
+    `${entry.earningsDate} odakli setup penceresi.`,
+    `Momentum skoru ${entry.momentumScore} ve IV seviyesi ${entry.currentIV}.`,
+    `Beklenen IV crush: %${entry.expectedIVCrush}.`,
+    `Onerilen yapi: ${entry.recommendedStrategy}`,
+  ];
+
+  if (entry.ticker === "ORCL") {
+    base.unshift("Cloud ve AI guidance yorumu fiyatlamanin ana belirleyicisi.");
+  }
+  if (entry.ticker === "LEN" || entry.ticker === "DHI" || entry.ticker === "TOL") {
+    base.unshift("Mortgage rate hassasiyeti nedeniyle FOMC tonu kritik.");
+  }
+  if (entry.ticker === "SPY" || entry.ticker === "QQQ") {
+    base.unshift("FOMC ve dot plot oynakligi event odakli prim yaratir.");
+  }
+
+  return base;
+}
+
+function buildJuneRisks(entry: JuneEarningsStock) {
+  return [
+    `Gap riski: %${entry.gapRisk}`,
+    `Miss veya event riski: %${entry.earningsMissRisk}`,
+    entry.riskLevel === "HIGH" || entry.riskLevel === "VERY_HIGH"
+      ? "Pozisyon boyutu kucuk tutulmali, implied move ile hizalanmali."
+      : "Kar al ve zarar kes seviyeleri earnings oncesinde netlestirilmeli.",
+  ];
+}
+
+function buildJuneThesis(entry: JuneEarningsStock) {
+  const direction = buildJuneDirectionalBias(entry);
+
+  if (entry.ticker === "SPY" || entry.ticker === "QQQ") {
+    return `${entry.earningsDate} penceresinde makro event oynakligi fiyatlamayi yonlendirir. ${entry.recommendedStrategy} yapisi, iv expansion ve event sonrasi normalizasyonu birlikte okumak icin kuruldu.`;
+  }
+
+  return `${entry.name} icin ${entry.earningsDate} setup'i, ${direction} agirlikli bir planla okunuyor. Momentum ${entry.momentumScore}, beklenen iv crush %${entry.expectedIVCrush} ve hedef kar %${entry.targetProfit} seviyesinde.`;
+}
+
+function buildStockFromJuneEntry(entry: JuneEarningsStock): StockData {
+  const signal = buildJuneSignal(entry);
+  const volumeStatus: VolumeStatus =
+    entry.momentumScore >= 85 ? "VERY_HIGH" : entry.momentumScore >= 70 ? "HIGH" : "NORMAL";
+  const currentPrice = round(
+    Math.max(25, (entry.callPremiumSell + entry.putPremiumSell) * 11),
+    2
+  );
+  const priceTargetUpside = clamp(round(entry.targetProfit * 0.18, 1), -12, 28);
+
+  return {
+    ticker: entry.ticker,
+    name: entry.name,
+    sector: entry.sector,
+    earningsDate: formatDisplayDate(entry.sortDate),
+    earningsTime: entry.ticker === "ORCL" || entry.ticker === "ADBE" || entry.ticker === "LEN" ? "AMC" : "BMO",
+    currentPrice,
+    priceChange6M: entry.priceChange6M,
+    priceChange1M: round(entry.priceChange6M / 6, 1),
+    epsEstimate: round(entry.callPremiumBuy / 2, 2),
+    epsLastQuarter: round(entry.callPremiumBuy / 2.3, 2),
+    revenueEstimate: `${round(currentPrice / 12, 2)}B`,
+    revenueGrowthYoY: clamp(Math.round(entry.beatRate / 2), 4, 38),
+    beatRateLast4Q: entry.beatRate,
+    avgEpsBeat: round(entry.beatRate / 8, 1),
+    rsi14: entry.rsi14,
+    volumeCurrent: round(Math.max(1.5, entry.currentIV / 5.5), 1),
+    volumeAvg3M: round(Math.max(1, entry.historicalIV / 6.5), 1),
+    volumeStatus,
+    volumePriceFit: signal === "SELL" ? "RISKY" : "ALIGNED",
+    etfBenchmark:
+      entry.sector.includes("Semiconductors")
+        ? "SOXX"
+        : entry.sector.includes("Homebuilders")
+          ? "XHB"
+          : entry.ticker === "SPY"
+            ? "SPY"
+            : "QQQ",
+    sectorBeta: round(1 + entry.momentumScore / 250, 2),
+    sectorTrend:
+      signal === "SELL" ? "BEARISH" : entry.momentumScore >= 65 ? "BULLISH" : "NEUTRAL",
+    analystBuyConsensus: clamp(40 + Math.round(entry.beatRate * 0.45), 28, 90),
+    analystCount: clamp(Math.round(entry.beatRate / 4), 8, 40),
+    priceTarget: round(currentPrice * (1 + priceTargetUpside / 100), 2),
+    priceTargetUpside,
+    catalysts: buildJuneCatalysts(entry),
+    risks: buildJuneRisks(entry),
+    momentumScore: entry.momentumScore,
+    earningsBeatProbability: entry.beatRate,
+    signal,
+    riskLevel: entry.riskLevel,
+    thesis: buildJuneThesis(entry),
+    keyMetric: entry.sector.includes("Macro") ? "Event Catalyst" : "IV Crush Potansiyeli",
+    keyMetricValue:
+      entry.sector.includes("Macro")
+        ? entry.earningsDate
+        : `-%${entry.expectedIVCrush}`,
+    historicalMoves: [
+      round(entry.lastEarningsMove, 1),
+      round(entry.lastEarningsMove * 0.6, 1),
+      round(entry.targetProfit / 14, 1),
+      round(-entry.gapRisk / 9, 1),
+    ],
+    impliedMove: entry.impliedMove,
+  };
+}
+
+function buildOptionFromJuneEntry(entry: JuneEarningsStock): OptionStrategy {
+  const directionalBias = buildJuneDirectionalBias(entry);
+
+  return {
+    ticker: entry.ticker,
+    name: entry.name,
+    sector: entry.sector,
+    earningsDate: formatDisplayDate(entry.sortDate),
+    momentumScore: entry.momentumScore,
+    priceChange6M: entry.priceChange6M,
+    rsi14: entry.rsi14,
+    currentIV: entry.currentIV,
+    historicalIV: entry.historicalIV,
+    impliedMove: entry.impliedMove,
+    expectedIVCrush: entry.expectedIVCrush,
+    ivCrushPotential: entry.ivCrushPotential,
+    callPremiumBuy: entry.callPremiumBuy,
+    callPremiumSell: entry.callPremiumSell,
+    callGainFromIV: entry.callGainFromIV,
+    putPremiumBuy: entry.putPremiumBuy,
+    putPremiumSell: entry.putPremiumSell,
+    putGainFromIV: entry.putGainFromIV,
+    directionalBias,
+    biasReason: buildJuneThesis(entry),
+    biasStrength: clamp(
+      entry.momentumScore +
+        (directionalBias === "CALL" ? 8 : directionalBias === "PUT" ? 4 : -6),
+      35,
+      96
+    ),
+    ivCrushScore: entry.ivCrushScore,
+    strategyRating: entry.strategyRating,
+    riskLevel: entry.riskLevel,
+    earningsMissRisk: entry.earningsMissRisk,
+    gapRisk: entry.gapRisk,
+    recommendedStrategy: entry.recommendedStrategy,
+    targetProfit: entry.targetProfit,
+    maxLoss: entry.maxLoss,
+    lastEarningsMove: entry.lastEarningsMove,
+    historicalIVCrush: entry.historicalIVCrush,
+    beatRate: entry.beatRate,
+  };
+}
+
+function buildCalendarFromJuneEntries(entries: JuneEarningsStock[]) {
+  return [...entries]
+    .sort((left, right) => left.sortDate.localeCompare(right.sortDate))
+    .map(entry => ({
+      id: `june-${entry.ticker.toLowerCase()}`,
+      sortDate: entry.sortDate,
+      label: formatCalendarLabel(entry.sortDate),
+      ticker: entry.ticker,
+      name: entry.name,
+      time:
+        entry.ticker === "SPY" || entry.ticker === "QQQ"
+          ? "EVENT"
+          : entry.earningsDate.includes("Momentum")
+            ? "WATCH"
+            : "AMC",
+      signal: buildJuneSignal(entry),
+    }));
+}
+
+function sortStocksByCalendar(
+  stocks: StockData[],
+  calendar: StrategyCalendarItem[]
+) {
+  const order = new Map(calendar.map((item, index) => [item.ticker, index]));
+  return [...stocks].sort(
+    (left, right) => (order.get(left.ticker) ?? 999) - (order.get(right.ticker) ?? 999)
+  );
+}
+
+function sortOptionsByCalendar(
+  options: OptionStrategy[],
+  calendar: StrategyCalendarItem[]
+) {
+  const order = new Map(calendar.map((item, index) => [item.ticker, index]));
+  return [...options].sort(
+    (left, right) => (order.get(left.ticker) ?? 999) - (order.get(right.ticker) ?? 999)
+  );
+}
+
+function dedupeByTicker<T extends { ticker: string }>(items: T[]) {
+  const seen = new Set<string>();
+  const deduped: T[] = [];
+
+  for (const item of items) {
+    if (seen.has(item.ticker)) {
+      continue;
+    }
+    seen.add(item.ticker);
+    deduped.push(item);
+  }
+
+  return deduped;
 }
 
 export function buildEarningStrategyDataset(
@@ -368,5 +677,62 @@ export function buildEarningStrategyDataset(
     stocks: entries.map(entry => buildStockFromEntry(entry, report)),
     options: entries.map(buildOptionFromEntry),
     calendar: buildCalendarFromEntries(entries),
+  };
+}
+
+export function buildEarningStrategyUniverse(
+  reports?: WeeklyReportRecord[] | null
+): EarningStrategyDataset {
+  const publishedPairs =
+    reports?.flatMap(report =>
+      report.content.entries.map(entry => ({ entry, report }))
+    ) || [];
+
+  const publishedStocks =
+    publishedPairs.length > 0
+      ? publishedPairs
+          .sort((left, right) => left.entry.earningsDate.localeCompare(right.entry.earningsDate))
+          .map(({ entry, report }) => buildStockFromEntry(entry, report))
+      : [...staticStocks].sort((left, right) =>
+          resolveSortDate(left.earningsDate).localeCompare(resolveSortDate(right.earningsDate))
+        );
+
+  const publishedOptions =
+    publishedPairs.length > 0
+      ? publishedPairs
+          .sort((left, right) => left.entry.earningsDate.localeCompare(right.entry.earningsDate))
+          .map(({ entry }) => buildOptionFromEntry(entry))
+      : [...staticOptions].sort((left, right) =>
+          resolveSortDate(left.earningsDate).localeCompare(resolveSortDate(right.earningsDate))
+        );
+
+  const publishedCalendar =
+    publishedPairs.length > 0
+      ? buildCalendarFromEntries(publishedPairs.map(item => item.entry))
+      : buildStaticCalendar();
+
+  const juneStocks = juneEarningsData.map(buildStockFromJuneEntry);
+  const juneOptions = juneEarningsData.map(buildOptionFromJuneEntry);
+  const juneCalendar = buildCalendarFromJuneEntries(juneEarningsData);
+
+  const calendar = dedupeByTicker(
+    [...publishedCalendar, ...juneCalendar].sort((left, right) =>
+      left.sortDate.localeCompare(right.sortDate)
+    )
+  );
+  const stocks = sortStocksByCalendar(
+    dedupeByTicker([...publishedStocks, ...juneStocks]),
+    calendar
+  );
+  const options = sortOptionsByCalendar(
+    dedupeByTicker([...publishedOptions, ...juneOptions]),
+    calendar
+  );
+
+  return {
+    source: publishedPairs.length > 0 ? "published" : "static",
+    stocks,
+    options,
+    calendar,
   };
 }
