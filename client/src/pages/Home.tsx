@@ -18,12 +18,15 @@ import {
 } from "@/lib/weeklyReports";
 import CalendarTab from "@/components/tabs/CalendarTab";
 import IVCrushTab from "@/components/tabs/IVCrushTab";
+import JuneEarningsTab from "@/components/tabs/JuneEarningsTab";
+import JuneOptionDetailTab from "@/components/tabs/JuneOptionDetailTab";
 import MomentumTab from "@/components/tabs/MomentumTab";
 import OptionDetailTab from "@/components/tabs/OptionDetailTab";
 import OverviewTab from "@/components/tabs/OverviewTab";
 import RiskTab from "@/components/tabs/RiskTab";
 import SectorTab from "@/components/tabs/SectorTab";
 import StockDetailTab from "@/components/tabs/StockDetailTab";
+import { juneEarningsData } from "@/lib/juneEarningsData";
 
 type TabId =
   | "overview"
@@ -33,7 +36,9 @@ type TabId =
   | "sector"
   | "risk"
   | "ivcrush"
-  | "optiondetail";
+  | "optiondetail"
+  | "juneearnings"
+  | "juneoptiondetail";
 
 const tabs: Array<{ id: TabId; label: string; icon: string }> = [
   { id: "overview", label: "Genel Bakis", icon: "◈" },
@@ -44,6 +49,8 @@ const tabs: Array<{ id: TabId; label: string; icon: string }> = [
   { id: "risk", label: "Risk Matrisi", icon: "◉" },
   { id: "ivcrush", label: "IV Crush", icon: "💰" },
   { id: "optiondetail", label: "Opsiyon Detay", icon: "📊" },
+  { id: "juneearnings", label: "8-19 Haziran Setuplari", icon: "▣" },
+  { id: "juneoptiondetail", label: "8-19 Haziran Detay", icon: "⌁" },
 ];
 
 interface WeeklyReportsResponse {
@@ -77,6 +84,9 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<TabId>("overview");
   const [selectedTicker, setSelectedTicker] = useState<string | null>(
     stocksData[0]?.ticker ?? null
+  );
+  const [selectedJuneTicker, setSelectedJuneTicker] = useState<string | null>(
+    juneEarningsData[0]?.ticker ?? null
   );
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [publishedReports, setPublishedReports] = useState<WeeklyReportRecord[]>([]);
@@ -209,6 +219,11 @@ export default function Home() {
     setActiveTab("stocks");
   };
 
+  const handleJuneStockClick = (ticker: string) => {
+    setSelectedJuneTicker(ticker);
+    setActiveTab("juneoptiondetail");
+  };
+
   const renderActiveTab = () => {
     switch (activeTab) {
       case "overview":
@@ -253,6 +268,15 @@ export default function Home() {
             selectedTicker={selectedTicker}
             onSelectTicker={setSelectedTicker}
             strategies={activeOptions}
+          />
+        );
+      case "juneearnings":
+        return <JuneEarningsTab onStockClick={handleJuneStockClick} />;
+      case "juneoptiondetail":
+        return (
+          <JuneOptionDetailTab
+            selectedTicker={selectedJuneTicker}
+            onSelectTicker={setSelectedJuneTicker}
           />
         );
       default:
@@ -404,6 +428,34 @@ export default function Home() {
               <span className="rounded-none border border-border bg-card/60 px-3 py-1.5">
                 Sources: Yahoo, Gartner, Deloitte
               </span>
+            </div>
+
+            <div className="grid gap-3 pt-1 md:grid-cols-[minmax(0,1fr)_auto_auto] md:items-center">
+              <div className="rounded-none border border-emerald-400/25 bg-emerald-500/5 px-4 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                  June Setup Pack
+                </p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  8-19 Haziran setup akisi artik bu workspace icinde. ORCL,
+                  LEN, ADBE ve FOMC odakli pencereyi canli sekmelerden ac.
+                </p>
+              </div>
+              <Button
+                type="button"
+                variant="outline"
+                className="rounded-none"
+                onClick={() => setActiveTab("juneearnings")}
+              >
+                8-19 Haziran Setuplari
+              </Button>
+              <Button
+                type="button"
+                variant="secondary"
+                className="rounded-none"
+                onClick={() => setActiveTab("juneoptiondetail")}
+              >
+                Opsiyon Detay
+              </Button>
             </div>
           </div>
 
