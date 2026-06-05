@@ -1,36 +1,32 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
+  AlertTriangle,
   ArrowRight,
+  CalendarDays,
+  ClipboardList,
   PanelLeftClose,
   PanelLeftOpen,
   Radar,
   Shield,
 } from "lucide-react";
 import { useLocation } from "wouter";
-import type { WeeklyReportRecord } from "@shared/weeklyReports";
 import { Button } from "@/components/ui/button";
-import { signalConfig } from "@/lib/stockData";
-import {
-  buildEarningStrategyUniverse,
-} from "@/lib/earningStrategyData";
-import { formatAnalysisDate } from "@/lib/weeklyReports";
-import CalendarTab from "@/components/tabs/CalendarTab";
-import IVCrushTab from "@/components/tabs/IVCrushTab";
-import MomentumTab from "@/components/tabs/MomentumTab";
-import StrategyPlaybookTab from "@/components/tabs/StrategyPlaybookTab";
+import EarningReportCalendarTab from "@/components/tabs/EarningReportCalendarTab";
+import EarningReportPlaybookTab from "@/components/tabs/EarningReportPlaybookTab";
+import EarningReportRiskTab from "@/components/tabs/EarningReportRiskTab";
+import { juneEarningReport } from "@/lib/earningReportSource";
 
-type TabId = "playbook" | "momentum" | "calendar" | "ivcrush";
+type TabId = "playbook" | "calendar" | "risk";
 
-const tabs: Array<{ id: TabId; label: string; icon: string }> = [
-  { id: "playbook", label: "Playbook", icon: "◈" },
-  { id: "momentum", label: "Momentum", icon: "⚡" },
-  { id: "calendar", label: "Takvim", icon: "◷" },
-  { id: "ivcrush", label: "Opsiyon", icon: "💰" },
+const tabs: Array<{
+  id: TabId;
+  label: string;
+  icon: typeof ClipboardList;
+}> = [
+  { id: "playbook", label: "Playbook", icon: ClipboardList },
+  { id: "calendar", label: "Takvim", icon: CalendarDays },
+  { id: "risk", label: "Risk", icon: AlertTriangle },
 ];
-
-interface WeeklyReportsResponse {
-  reports?: WeeklyReportRecord[];
-}
 
 function SummaryCard({
   label,
@@ -59,120 +55,65 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<TabId>("playbook");
   const [selectedTicker, setSelectedTicker] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [publishedReports, setPublishedReports] = useState<WeeklyReportRecord[]>([]);
   const contentRef = useRef<HTMLDivElement | null>(null);
+  const report = juneEarningReport;
 
   useEffect(() => {
     contentRef.current?.scrollTo({ top: 0, behavior: "auto" });
   }, [activeTab]);
 
-  useEffect(() => {
-    let cancelled = false;
-
-    void (async () => {
-      try {
-        const response = await fetch("/api/reports/weekly", {
-          credentials: "include",
-          cache: "no-store",
-        });
-
-        if (!response.ok) {
-          return;
+  const positions = useMemo(
+    () =>
+      [...report.positions].sort((left, right) => {
+        if (left.daysLeft !== right.daysLeft) {
+          return left.daysLeft - right.daysLeft;
         }
 
-        const payload = (await response.json()) as WeeklyReportsResponse;
-        if (cancelled) {
-          return;
-        }
-
-        setPublishedReports(payload.reports || []);
-      } catch {
-        // Static fallback keeps the workspace usable without published reports.
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  const strategyData = useMemo(
-    () => buildEarningStrategyUniverse(publishedReports),
-    [publishedReports]
+        return left.order - right.order;
+      }),
+    [report.positions]
   );
-  const activeStocks = strategyData.stocks;
-  const activeOptions = strategyData.options;
-  const activeCalendar = strategyData.calendar;
 
   useEffect(() => {
-    if (!activeStocks.length) {
+    if (!positions.length) {
       setSelectedTicker(null);
       return;
     }
 
     setSelectedTicker(current =>
-      current && activeStocks.some(stock => stock.ticker === current)
+      current && positions.some(position => position.ticker === current)
         ? current
-        : activeStocks[0].ticker
+        : positions[0].ticker
     );
-  }, [activeStocks]);
+  }, [positions]);
 
-  const sortedByMomentum = useMemo(
-    () => [...activeStocks].sort((a, b) => b.momentumScore - a.momentumScore),
-    [activeStocks]
-  );
-  const topPicks = useMemo(
-    () =>
-      sortedByMomentum
-        .filter(stock => stock.signal === "STRONG_BUY" || stock.signal === "BUY")
-        .slice(0, 4),
-    [sortedByMomentum]
-  );
-
-  const latestPublishedReport = useMemo(() => {
-    if (!publishedReports.length) {
-      return null;
+  const avgIvRank = useMemo(() => {
+    const valid = positions.filter(position => position.ivRank !== null);
+    if (!valid.length) {
+      return "-";
     }
 
-    return [...publishedReports].sort((left, right) =>
-      right.analysisDate.localeCompare(left.analysisDate)
-    )[0];
-  }, [publishedReports]);
+    const total = valid.reduce((sum, position) => sum + (position.ivRank || 0), 0);
+    return `%${Math.round(total / valid.length)}`;
+  }, [positions]);
 
-  const reportWindow =
-    activeCalendar.length > 0
-      ? `${activeCalendar[0].label} -> ${
-          activeCalendar[activeCalendar.length - 1].label
-        }`
-      : "Canli coverage";
-  const analysisDate = latestPublishedReport
-    ? formatAnalysisDate(latestPublishedReport.analysisDate)
-    : "Canli";
-
-  const strongBuyCount = activeStocks.filter(
-    stock => stock.signal === "STRONG_BUY"
-  ).length;
-  const buyCount = activeStocks.filter(stock => stock.signal === "BUY").length;
-  const neutralCount = activeStocks.filter(
-    stock => stock.signal === "NEUTRAL"
-  ).length;
-  const sellCount = activeStocks.filter(
-    stock => stock.signal === "SELL" || stock.signal === "STRONG_SELL"
-  ).length;
-  const avgBeatProbability = Math.round(
-    activeStocks.reduce((sum, stock) => sum + stock.earningsBeatProbability, 0) /
-      Math.max(activeStocks.length, 1)
+  const nextEvent = positions[0] || null;
+  const bullishCount = positions.filter(position => {
+    const callWeight = position.blueprint.callWeight ?? 0;
+    const putWeight = position.blueprint.putWeight ?? 0;
+    return callWeight > putWeight;
+  }).length;
+  const bearishCount = positions.filter(position => {
+    const callWeight = position.blueprint.callWeight ?? 0;
+    const putWeight = position.blueprint.putWeight ?? 0;
+    return putWeight > callWeight;
+  }).length;
+  const balancedCount = positions.length - bullishCount - bearishCount;
+  const activeMeta = report.meta.filter(
+    item => item.label !== "Rapor Tarihi" && item.label !== "VIX"
   );
-  const avgMomentumScore = Math.round(
-    activeStocks.reduce((sum, stock) => sum + stock.momentumScore, 0) /
-      Math.max(activeStocks.length, 1)
-  );
-  const topTicker = topPicks[0]?.ticker || activeStocks[0]?.ticker || "-";
-  const coverageHint = publishedReports.length
-    ? `${publishedReports.length} published week + live setup coverage`
-    : "Static benchmark + live setup coverage";
 
-  const handleStockClick = (ticker: string) => {
+  const handleTickerSelect = (ticker: string) => {
     setSelectedTicker(ticker);
     setActiveTab("playbook");
   };
@@ -181,39 +122,27 @@ export default function Home() {
     switch (activeTab) {
       case "playbook":
         return (
-          <StrategyPlaybookTab
-            stocks={activeStocks}
-            strategies={activeOptions}
-            calendar={activeCalendar}
+          <EarningReportPlaybookTab
+            report={report}
             selectedTicker={selectedTicker}
             onSelectTicker={setSelectedTicker}
-            reportWindow={reportWindow}
-            analysisDateLabel={analysisDate}
           />
         );
-      case "momentum":
-        return <MomentumTab onStockClick={handleStockClick} stocks={activeStocks} />;
       case "calendar":
         return (
-          <CalendarTab
-            onStockClick={handleStockClick}
-            stocks={activeStocks}
-            calendar={activeCalendar}
-            reportWindow={reportWindow}
+          <EarningReportCalendarTab
+            report={report}
+            onOpenTicker={handleTickerSelect}
           />
         );
-      case "ivcrush":
-        return <IVCrushTab onStockClick={handleStockClick} strategies={activeOptions} />;
+      case "risk":
+        return <EarningReportRiskTab report={report} />;
       default:
         return (
-          <StrategyPlaybookTab
-            stocks={activeStocks}
-            strategies={activeOptions}
-            calendar={activeCalendar}
+          <EarningReportPlaybookTab
+            report={report}
             selectedTicker={selectedTicker}
             onSelectTicker={setSelectedTicker}
-            reportWindow={reportWindow}
-            analysisDateLabel={analysisDate}
           />
         );
     }
@@ -259,7 +188,7 @@ export default function Home() {
                   Earning Strategy Workspace
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  Tarih sirali benchmark playbook
+                  Haziran 2026 IV expansion playbook
                 </p>
               </div>
             </div>
@@ -268,18 +197,18 @@ export default function Home() {
           <div className="hidden items-center gap-5 md:flex">
             <div className="text-right">
               <p className="data-mono text-[11px] text-muted-foreground">
-                DONEM
+                RAPOR
               </p>
               <p className="data-mono text-xs font-semibold text-emerald-300">
-                {reportWindow}
+                {report.reportDate}
               </p>
             </div>
             <div className="text-right">
               <p className="data-mono text-[11px] text-muted-foreground">
-                ANALIZ
+                VIX
               </p>
               <p className="data-mono text-xs font-semibold text-foreground">
-                {analysisDate}
+                {report.vixLabel}
               </p>
             </div>
           </div>
@@ -318,9 +247,9 @@ export default function Home() {
         <div className="grid gap-5 xl:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)]">
           <div className="space-y-4">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="badge-strong">{strongBuyCount} guclu al</span>
-              <span className="badge-warning">{neutralCount} notr</span>
-              <span className="badge-danger">{sellCount} sat</span>
+              <span className="badge-strong">{bullishCount} bullish bias</span>
+              <span className="badge-danger">{bearishCount} bearish bias</span>
+              <span className="badge-warning">{balancedCount} dengeli</span>
             </div>
 
             <div className="space-y-2">
@@ -328,59 +257,71 @@ export default function Home() {
                 className="heading-condensed text-3xl leading-none md:text-5xl"
                 style={{ color: "oklch(0.95 0.01 220)" }}
               >
-                Earnings benchmark,
+                Pre-earnings IV expansion,
                 <br />
                 <span style={{ color: "oklch(0.78 0.18 160)" }}>
                   hisse hisse playbook
                 </span>
               </h1>
               <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
-                Ayrik haftalar ve setup bloklari yerine, tum coverage tek timeline
-                icinde birlestirildi. Artik her hisse earning tarihine gore
-                siralanir ve ayni kartta momentum, tez, risk ve opsiyon plani
-                okunur.
+                Bu sayfa tek kaynak olarak{" "}
+                <span className="data-mono text-foreground">{report.sourceFile}</span>{" "}
+                dosyasini kullanir. Setup, takvim, risk ve opsiyon plani
+                bolumleri dosyadaki gercek basliklardan uretilir; mock benchmark
+                metrikleri kullanilmaz.
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-              <span className="rounded-none border border-border bg-card/60 px-3 py-1.5">
-                {activeStocks.length} analiz edilen hisse
-              </span>
-              <span className="rounded-none border border-border bg-card/60 px-3 py-1.5">
-                {coverageHint}
-              </span>
-              <span className="rounded-none border border-border bg-card/60 px-3 py-1.5">
-                Sources: Yahoo, Gartner, Deloitte
-              </span>
+            <div className="grid gap-3 md:grid-cols-2">
+              {activeMeta.map(item => (
+                <div
+                  key={item.label}
+                  className="rounded-none border border-border bg-card/60 px-4 py-3"
+                >
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                    {item.label}
+                  </p>
+                  <p className="mt-2 text-sm leading-relaxed text-foreground">
+                    {item.value}
+                  </p>
+                </div>
+              ))}
             </div>
 
             <div className="rounded-none border border-emerald-400/25 bg-emerald-500/5 px-4 py-3">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                Yeni Okuma Mantigi
+                Ana pencere
               </p>
               <p className="mt-1 text-sm text-muted-foreground">
-                Ana akıs simdi dogrudan `Playbook` sekmesinden baslar. Oradan
-                hisse sec, sonra gerekirse ayni evreni momentum, takvim ve opsiyon
-                kesitlerinde yan gorunum olarak ac.
+                {report.coreWindow}
               </p>
             </div>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-3 xl:grid-cols-1">
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
             <SummaryCard
-              label="Top ticker"
-              value={topTicker}
-              hint={topPicks[0]?.name || "En guclu ilk kurulum"}
+              label="Setup sayisi"
+              value={String(positions.length)}
+              hint="Dosyadan parse edilen toplam hisse"
             />
             <SummaryCard
-              label="Ort. beat"
-              value={`%${avgBeatProbability}`}
-              hint="Toplu benchmark evreni ortalamasi"
+              label="Ort. IV Rank"
+              value={avgIvRank}
+              hint="Yalnizca dosyadaki IV Rank alanlari"
             />
             <SummaryCard
-              label="Ort. momentum"
-              value={String(avgMomentumScore)}
-              hint="Tek timeline icindeki ortalama skor"
+              label="Yakin event"
+              value={nextEvent?.ticker || "-"}
+              hint={
+                nextEvent
+                  ? `${nextEvent.earningsDate} · ${nextEvent.daysLeft} gun`
+                  : "En yakin earnings setup"
+              }
+            />
+            <SummaryCard
+              label="Rejim"
+              value={report.vixLabel}
+              hint="Makro giris filtresi"
             />
           </div>
         </div>
@@ -389,7 +330,7 @@ export default function Home() {
       <div className="flex flex-1 overflow-hidden">
         {sidebarOpen ? (
           <aside
-            className="hidden border-r lg:flex lg:w-[250px] lg:min-w-[250px] lg:flex-col"
+            className="hidden border-r lg:flex lg:w-[260px] lg:min-w-[260px] lg:flex-col"
             style={{
               background: "oklch(0.09 0.025 230)",
               borderColor: "oklch(0.22 0.03 225)",
@@ -423,7 +364,7 @@ export default function Home() {
                           : "oklch(0.55 0.015 225)",
                     }}
                   >
-                    <span className="mr-2">{tab.icon}</span>
+                    <tab.icon className="mr-2 inline-flex h-4 w-4" />
                     {tab.label}
                   </button>
                 ))}
@@ -432,38 +373,20 @@ export default function Home() {
 
             <div className="border-t p-3" style={{ borderColor: "oklch(0.22 0.03 225)" }}>
               <div className="mb-2 px-1 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                Ozet
+                Coverage
               </div>
               <div className="space-y-2">
                 {[
-                  {
-                    label: "Guclu Al",
-                    value: strongBuyCount,
-                    color: "text-emerald-400",
-                  },
-                  {
-                    label: "Al",
-                    value: buyCount,
-                    color: "text-green-400",
-                  },
-                  {
-                    label: "Notr",
-                    value: neutralCount,
-                    color: "text-amber-400",
-                  },
-                  {
-                    label: "Sat",
-                    value: sellCount,
-                    color: "text-red-400",
-                  },
+                  { label: "Bullish", value: bullishCount, color: "text-emerald-400" },
+                  { label: "Bearish", value: bearishCount, color: "text-red-400" },
+                  { label: "Dengeli", value: balancedCount, color: "text-amber-400" },
+                  { label: "Setup", value: positions.length, color: "text-sky-300" },
                 ].map(item => (
                   <div
                     key={item.label}
                     className="flex items-center justify-between px-2"
                   >
-                    <span className="text-xs text-muted-foreground">
-                      {item.label}
-                    </span>
+                    <span className="text-xs text-muted-foreground">{item.label}</span>
                     <span className={`data-mono text-sm font-bold ${item.color}`}>
                       {item.value}
                     </span>
@@ -474,41 +397,37 @@ export default function Home() {
 
             <div className="border-t p-3" style={{ borderColor: "oklch(0.22 0.03 225)" }}>
               <div className="mb-2 px-1 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                Top Secimler
+                Haziran Coverage
               </div>
               <div className="space-y-1">
-                {topPicks.map((stock, index) => {
-                  const signal = signalConfig[stock.signal];
-
-                  return (
-                    <button
-                      key={stock.ticker}
-                      type="button"
-                      onClick={() => handleStockClick(stock.ticker)}
-                      className="flex w-full items-center justify-between px-2 py-2 text-left transition-opacity hover:opacity-80"
-                    >
-                      <div className="min-w-0">
-                        <div className="flex items-center gap-2">
-                          <span className="data-mono text-xs font-bold text-muted-foreground">
-                            #{index + 1}
-                          </span>
-                          <span
-                            className="data-mono text-xs font-bold"
-                            style={{ color: signal.color }}
-                          >
-                            {stock.ticker}
-                          </span>
-                        </div>
-                        <p className="truncate text-xs text-muted-foreground">
-                          {stock.name}
-                        </p>
+                {positions.map(position => (
+                  <button
+                    key={position.ticker}
+                    type="button"
+                    onClick={() => handleTickerSelect(position.ticker)}
+                    className="flex w-full items-center justify-between px-2 py-2 text-left transition-opacity hover:opacity-80"
+                  >
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span
+                          className="data-mono text-xs font-bold"
+                          style={{ color: "oklch(0.92 0.01 220)" }}
+                        >
+                          {position.ticker}
+                        </span>
+                        <span className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+                          {position.earningsTime}
+                        </span>
                       </div>
-                      <span className="data-mono text-xs font-bold text-emerald-300">
-                        {stock.momentumScore}
-                      </span>
-                    </button>
-                  );
-                })}
+                      <p className="truncate text-xs text-muted-foreground">
+                        {position.earningsDate}
+                      </p>
+                    </div>
+                    <span className="data-mono text-[11px] font-bold text-emerald-300">
+                      {position.blueprint.ratioText || "-"}
+                    </span>
+                  </button>
+                ))}
               </div>
             </div>
           </aside>
@@ -535,8 +454,25 @@ export default function Home() {
                       : "border-border bg-card/70 text-muted-foreground"
                   }`}
                 >
-                  <span className="mr-2">{tab.icon}</span>
+                  <tab.icon className="mr-2 inline-flex h-4 w-4" />
                   {tab.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
+              {positions.map(position => (
+                <button
+                  key={position.ticker}
+                  type="button"
+                  onClick={() => handleTickerSelect(position.ticker)}
+                  className={`shrink-0 rounded-none border px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] ${
+                    selectedTicker === position.ticker
+                      ? "border-emerald-400/50 bg-emerald-500/10 text-emerald-300"
+                      : "border-border bg-card/70 text-muted-foreground"
+                  }`}
+                >
+                  {position.ticker}
                 </button>
               ))}
             </div>
@@ -551,8 +487,8 @@ export default function Home() {
                   Sonraki adim: momentum scanner
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  Playbook icindeki kurulumlari okuduktan sonra ayni evrende
-                  anlik tarama yapmak icin scanner alanina gecebilirsin.
+                  Buradaki playbook yapisini okuduktan sonra ayni tema icinde
+                  anlik tarama icin scanner alanina gecebilirsin.
                 </p>
               </div>
               <Button
