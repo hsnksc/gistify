@@ -12,6 +12,7 @@ import {
   LayoutDashboard,
   LogOut,
   Radar,
+  WalletCards,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -32,6 +33,7 @@ const Home = lazy(() => import("./pages/Home"));
 const ReportsAdmin = lazy(() => import("./pages/ReportsAdmin"));
 const Scanner = lazy(() => import("./pages/Scanner"));
 const DailyReport = lazy(() => import("./pages/DailyReport"));
+const Portfolio = lazy(() => import("./pages/Portfolio"));
 const Pay = lazy(() => import("./pages/Pay"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const Terms = lazy(() => import("./pages/Terms"));
@@ -184,6 +186,9 @@ function Router({
             <p className="mt-2 text-sm text-muted-foreground">
               Earning strategy ve momentum workspace hazirlaniyor.
             </p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Daily ve portfolio modulleri de baglaniyor.
+            </p>
           </div>
         </div>
       }
@@ -200,6 +205,7 @@ function Router({
           {() => <Scanner language={language} />}
         </Route>
         <Route path={"/daily-report"} component={DailyReport} />
+        <Route path={"/portfolio"} component={Portfolio} />
         <Route path={"/scanner"}>{() => <Scanner language={language} />}</Route>
         <Route path={"/pricing"}>
           {() => (
@@ -250,6 +256,12 @@ function AppNavigation({ language }: { language: AppLanguage }) {
       label: language === "en" ? "Daily" : "Daily",
       icon: FileText,
       active: location.startsWith("/daily-report"),
+    },
+    {
+      href: "/portfolio",
+      label: language === "en" ? "Portfolio" : "Portfolio",
+      icon: WalletCards,
+      active: location.startsWith("/portfolio"),
     },
   ];
 
@@ -362,6 +374,7 @@ function LimitedAccessPreview() {
                 ["Takvim", "Kilitli"],
                 ["Risk", "Kilitli"],
                 ["Opsiyon", "Kilitli"],
+                ["Portfolio", "Kilitli"],
               ].map(([label, value]) => (
                 <div
                   key={label}

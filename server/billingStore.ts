@@ -18,6 +18,10 @@ import type {
   MomentumReportRecord,
   MomentumReportStatus,
 } from "../shared/momentumReports";
+import type {
+  PortfolioPositionRecord,
+  PortfolioAssetType,
+} from "../shared/portfolio";
 import type { WeeklyReportRecord, WeeklyReportStatus } from "../shared/weeklyReports";
 
 export type SubscriptionProvider = "shopier" | "paddle";
@@ -217,6 +221,22 @@ interface DailyReportDbRow {
   updated_at: string;
   published_at: string | null;
   content_json: string;
+}
+
+interface PortfolioPositionDbRow {
+  id: string;
+  user_id: string;
+  email: string;
+  ticker: string;
+  asset_type: PortfolioAssetType;
+  quantity: number;
+  entry_price: number;
+  entry_date: string;
+  strike_price: number | null;
+  expiry_date: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
 function getDatabasePath() {
@@ -425,6 +445,26 @@ function mapDailyReportRow(row: DailyReportDbRow): DailyReportRecord {
   };
 }
 
+function mapPortfolioPositionRow(
+  row: PortfolioPositionDbRow
+): PortfolioPositionRecord {
+  return {
+    id: row.id,
+    userId: row.user_id,
+    email: row.email,
+    ticker: row.ticker,
+    assetType: row.asset_type,
+    quantity: row.quantity,
+    entryPrice: row.entry_price,
+    entryDate: row.entry_date,
+    strikePrice: row.strike_price ?? undefined,
+    expiryDate: row.expiry_date ?? undefined,
+    notes: row.notes ?? undefined,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
 export function createBillingStore() {
   const dbPath = getDatabasePath();
   fs.mkdirSync(path.dirname(dbPath), { recursive: true });
@@ -583,6 +623,22 @@ export function createBillingStore() {
       content_json TEXT NOT NULL
     );
 
+    CREATE TABLE IF NOT EXISTS portfolio_positions (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      email TEXT NOT NULL,
+      ticker TEXT NOT NULL,
+      asset_type TEXT NOT NULL,
+      quantity REAL NOT NULL,
+      entry_price REAL NOT NULL,
+      entry_date TEXT NOT NULL,
+      strike_price REAL,
+      expiry_date TEXT,
+      notes TEXT,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+
     CREATE INDEX IF NOT EXISTS idx_auth_sessions_user_id
       ON auth_sessions(user_id);
 
@@ -612,6 +668,9 @@ export function createBillingStore() {
 
     CREATE INDEX IF NOT EXISTS idx_daily_reports_status_date
       ON daily_reports(status, report_date DESC);
+
+    CREATE INDEX IF NOT EXISTS idx_portfolio_positions_user_id
+      ON portfolio_positions(user_id, updated_at DESC);
   `);
 
   const subscriptionTableInfo = db.prepare("PRAGMA table_info(billing_subscriptions)").all() as
@@ -1310,6 +1369,82 @@ export function createBillingStore() {
       content_json = excluded.content_json
   `);
 
+  const listPortfolioPositionsByUserIdStmt = db.prepare(`
+    SELECT
+      id,
+      user_id,
+      email,
+      ticker,
+      asset_type,
+      quantity,
+      entry_price,
+      entry_date,
+      strike_price,
+      expiry_date,
+      notes,
+      created_at,
+      updated_at
+    FROM portfolio_positions
+    WHERE user_id = ?
+    ORDER BY updated_at DESC, created_at DESC
+  `);
+
+  const getPortfolioPositionByIdStmt = db.prepare(`
+    SELECT
+      id,
+      user_id,
+      email,
+      ticker,
+      asset_type,
+      quantity,
+      entry_price,
+      entry_date,
+      strike_price,
+      expiry_date,
+      notes,
+      created_at,
+      updated_at
+    FROM portfolio_positions
+    WHERE id = ?
+    LIMIT 1
+  `);
+
+  const upsertPortfolioPositionStmt = db.prepare(`
+    INSERT INTO portfolio_positions (
+      id,
+      user_id,
+      email,
+      ticker,
+      asset_type,
+      quantity,
+      entry_price,
+      entry_date,
+      strike_price,
+      expiry_date,
+      notes,
+      created_at,
+      updated_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ON CONFLICT(id) DO UPDATE SET
+      user_id = excluded.user_id,
+      email = excluded.email,
+      ticker = excluded.ticker,
+      asset_type = excluded.asset_type,
+      quantity = excluded.quantity,
+      entry_price = excluded.entry_price,
+      entry_date = excluded.entry_date,
+      strike_price = excluded.strike_price,
+      expiry_date = excluded.expiry_date,
+      notes = excluded.notes,
+      created_at = excluded.created_at,
+      updated_at = excluded.updated_at
+  `);
+
+  const deletePortfolioPositionStmt = db.prepare(`
+    DELETE FROM portfolio_positions
+    WHERE user_id = ? AND id = ?
+  `);
+
   return {
     dbPath,
     pruneExpiredSessions(now = Date.now()) {
@@ -1570,6 +1705,37 @@ export function createBillingStore() {
         record.publishedAt || null,
         JSON.stringify(record.content)
       );
+    },
+    listPortfolioPositionsByUserId(userId: string) {
+      const rows = listPortfolioPositionsByUserIdStmt.all(userId) as unknown as
+        PortfolioPositionDbRow[];
+      return rows.map(mapPortfolioPositionRow);
+    },
+    getPortfolioPositionById(positionId: string) {
+      const row = getPortfolioPositionByIdStmt.get(positionId) as
+        | PortfolioPositionDbRow
+        | undefined;
+      return row ? mapPortfolioPositionRow(row) : null;
+    },
+    upsertPortfolioPosition(record: PortfolioPositionRecord) {
+      upsertPortfolioPositionStmt.run(
+        record.id,
+        record.userId,
+        record.email,
+        record.ticker,
+        record.assetType,
+        record.quantity,
+        record.entryPrice,
+        record.entryDate,
+        record.strikePrice ?? null,
+        record.expiryDate ?? null,
+        record.notes ?? null,
+        record.createdAt,
+        record.updatedAt
+      );
+    },
+    deletePortfolioPosition(userId: string, positionId: string) {
+      deletePortfolioPositionStmt.run(userId, positionId);
     },
   };
 }
