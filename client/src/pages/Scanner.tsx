@@ -48,6 +48,24 @@ interface MomentumReportDetailResponse {
   report?: MomentumSourceRecord | null;
 }
 
+function formatMomentumUpdateStamp(value: string) {
+  if (!value) {
+    return "-";
+  }
+
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) {
+    return value;
+  }
+
+  return new Intl.DateTimeFormat("tr-TR", {
+    day: "2-digit",
+    month: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(parsed);
+}
+
 function SummaryCard({
   label,
   value,
@@ -356,8 +374,9 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
               </h1>
               <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
                 `momentum/` altina yeni `.md` dosyasi biraktiginda sistem onu otomatik
-                indeksler, tarihine gore siralar ve ayni tema icinde chart destekli
-                analiz ekranina cevirir. Scanner artik raporun alt katmani.
+                indeksler, ayni gunde birden fazla update gelse bile zaman damgasina
+                gore siralar ve ayni tema icinde chart destekli analiz ekranina
+                cevirir. Scanner artik raporun alt katmani.
               </p>
             </div>
 
@@ -391,6 +410,11 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
               label="Rapor adedi"
               value={String(reports.length)}
               hint="momentum kutuphanesi"
+            />
+            <SummaryCard
+              label="Son update"
+              value={formatMomentumUpdateStamp(selectedSummary?.updatedAt || "")}
+              hint="Dosyanin son degisiklik zamani"
             />
             <SummaryCard
               label="Session"
@@ -472,7 +496,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                     Report Index
                   </p>
                   <p className="mt-1 text-xs text-muted-foreground">
-                    Tarih bazli secim
+                    Tarih + update zamani
                   </p>
                 </div>
                 {loadingReports ? (
@@ -516,6 +540,9 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                       <div className="mt-3 flex flex-wrap gap-2">
                         <span className="rounded-full border border-white/10 px-2 py-1 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
                           {report.targetDateLabel || report.reportDateLabel}
+                        </span>
+                        <span className="rounded-full border border-white/10 px-2 py-1 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+                          {formatMomentumUpdateStamp(report.updatedAt)}
                         </span>
                         <span className="rounded-full border border-white/10 px-2 py-1 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
                           {report.fileName}
@@ -619,6 +646,14 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                     </p>
                     <p className="mt-2 data-mono text-sm font-bold text-foreground">
                       {selectedSummary?.fileName || "-"}
+                    </p>
+                  </div>
+                  <div className="rounded-none border border-border bg-background/50 p-3 sm:col-span-3">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                      Update stamp
+                    </p>
+                    <p className="mt-2 data-mono text-sm font-bold text-emerald-300">
+                      {formatMomentumUpdateStamp(selectedSummary?.updatedAt || "")}
                     </p>
                   </div>
                 </div>

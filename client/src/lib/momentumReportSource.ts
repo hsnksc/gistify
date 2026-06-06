@@ -191,8 +191,18 @@ function isDividerRow(cells: string[]) {
 }
 
 function parseTable(lines: string[], startIndex: number) {
-  const tableLines: string[] = [];
   let index = startIndex;
+
+  while (index < lines.length) {
+    const trimmed = (lines[index] || "").trim();
+    if (trimmed.startsWith("|")) {
+      break;
+    }
+
+    index += 1;
+  }
+
+  const tableLines: string[] = [];
 
   while (index < lines.length && (lines[index] || "").trim().startsWith("|")) {
     tableLines.push((lines[index] || "").trim());
