@@ -66,6 +66,11 @@ function formatMomentumUpdateStamp(value: string) {
   }).format(parsed);
 }
 
+function hasDisplayValue(value: string | null | undefined) {
+  const normalized = String(value || "").trim();
+  return Boolean(normalized && normalized !== "-" && normalized !== "momentum/");
+}
+
 function SummaryCard({
   label,
   value,
@@ -193,6 +198,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
     () => reports.find(report => report.id === selectedReportId) || reports[0] || null,
     [reports, selectedReportId]
   );
+  const activeSummary = selectedSummary || activeReport;
 
   const parsedReport = useMemo(() => {
     if (!activeReport) {
@@ -214,6 +220,153 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
 
   const negativeIndices = parsedReport?.indexRows.filter(row => (row.pctChange || 0) < 0).length || 0;
   const regimeCount = parsedReport?.regimeFactors.length || 0;
+
+  const reportBadges = useMemo(() => {
+    const items: Array<{ key: string; label: string; tone: string }> = [];
+
+    if (negativeIndices > 0) {
+      items.push({
+        key: "negative",
+        label: `${negativeIndices} negatif endeks`,
+        tone: "badge-danger",
+      });
+    }
+
+    if (regimeCount > 0) {
+      items.push({
+        key: "regime",
+        label: `${regimeCount} rejim faktoru`,
+        tone: "badge-strong",
+      });
+    }
+
+    if (reports.length > 1) {
+      items.push({
+        key: "archive",
+        label: `${reports.length} rapor arsivi`,
+        tone: "badge-warning",
+      });
+    }
+
+    return items;
+  }, [negativeIndices, regimeCount, reports.length]);
+
+  const summaryCards = useMemo(() => {
+    const items: Array<{ label: string; value: string; hint: string }> = [];
+
+    if (reports.length > 0) {
+      items.push({
+        label: "Rapor adedi",
+        value: String(reports.length),
+        hint: "momentum kutuphanesi",
+      });
+    }
+
+    const updateStamp = formatMomentumUpdateStamp(activeSummary?.updatedAt || "");
+    if (hasDisplayValue(updateStamp)) {
+      items.push({
+        label: "Son update",
+        value: updateStamp,
+        hint: "Dosyanin son degisiklik zamani",
+      });
+    }
+
+    if (hasDisplayValue(activeSummary?.sessionDateLabel)) {
+      items.push({
+        label: "Session",
+        value: activeSummary?.sessionDateLabel || "",
+        hint: "Referans seans tarihi",
+      });
+    }
+
+    if (hasDisplayValue(activeSummary?.targetDateLabel)) {
+      items.push({
+        label: "Target",
+        value: activeSummary?.targetDateLabel || "",
+        hint: "Raporun aksiyon gunu",
+      });
+    }
+
+    if (hasDisplayValue(activeSummary?.vixLabel)) {
+      items.push({
+        label: "VIX",
+        value: activeSummary?.vixLabel || "",
+        hint: "Secili rapor volatilite bandi",
+      });
+    }
+
+    if (topSetup?.ticker || topSetup?.name) {
+      items.push({
+        label: "Top setup",
+        value: topSetup?.ticker || topSetup?.name || "",
+        hint: topSetup?.scoreLabel || "Momentum skoru",
+      });
+    }
+
+    if (hasDisplayValue(activeSummary?.readingTimeLabel)) {
+      items.push({
+        label: "Okuma",
+        value: activeSummary?.readingTimeLabel || "",
+        hint: "Rapor icindeki tahmini sure",
+      });
+    }
+
+    return items;
+  }, [activeSummary, reports.length, topSetup]);
+
+  const selectedSourceLabel = useMemo(() => {
+    return (
+      activeSummary?.sourceFile ||
+      parsedReport?.sourceFile ||
+      ""
+    );
+  }, [activeSummary, parsedReport]);
+
+  const selectedSubtitle = useMemo(() => {
+    return (
+      activeSummary?.subtitle ||
+      activeSummary?.headline ||
+      parsedReport?.subtitle ||
+      ""
+    );
+  }, [activeSummary, parsedReport]);
+
+  const detailCards = useMemo(() => {
+    const items: Array<{ label: string; value: string; tone?: string }> = [];
+
+    if (hasDisplayValue(activeSummary?.sessionDateLabel)) {
+      items.push({
+        label: "Session",
+        value: activeSummary?.sessionDateLabel || "",
+      });
+    }
+
+    if (hasDisplayValue(activeSummary?.targetDateLabel)) {
+      items.push({
+        label: "Hedef",
+        value: activeSummary?.targetDateLabel || "",
+        tone: "text-amber-300",
+      });
+    }
+
+    if (hasDisplayValue(activeSummary?.fileName)) {
+      items.push({
+        label: "Kaynak",
+        value: activeSummary?.fileName || "",
+      });
+    }
+
+    const updateStamp = formatMomentumUpdateStamp(activeSummary?.updatedAt || "");
+    if (hasDisplayValue(updateStamp)) {
+      items.push({
+        label: "Update stamp",
+        value: updateStamp,
+        tone: "text-emerald-300",
+      });
+    }
+
+    return items;
+  }, [activeSummary]);
 
   const renderActiveTab = () => {
     if (activeTab === "scanner") {
@@ -353,13 +506,23 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
             "linear-gradient(180deg, oklch(0.13 0.03 225) 0%, oklch(0.11 0.025 230) 100%)",
         }}
       >
-        <div className="grid gap-5 xl:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)]">
+        <div
+          className={`grid gap-5 ${
+            summaryCards.length
+              ? "xl:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)]"
+              : ""
+          }`}
+        >
           <div className="space-y-4">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="badge-danger">{negativeIndices} negatif endeks</span>
-              <span className="badge-strong">{regimeCount} rejim faktoru</span>
-              <span className="badge-warning">{reports.length} rapor arsivi</span>
-            </div>
+            {reportBadges.length ? (
+              <div className="flex flex-wrap items-center gap-2">
+                {reportBadges.map(item => (
+                  <span key={item.key} className={item.tone}>
+                    {item.label}
+                  </span>
+                ))}
+              </div>
+            ) : null}
 
             <div className="space-y-2">
               <h1
@@ -380,18 +543,18 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
               </p>
             </div>
 
-            <div className="rounded-none border border-emerald-400/25 bg-emerald-500/5 px-4 py-3">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                Selected source
-              </p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                <span className="data-mono text-foreground">
-                  {selectedSummary?.sourceFile || "momentum/"}
-                </span>{" "}
-                dosyasi secili. En yeni rapor varsayilan secim olur, onceki gunler
-                arsivde kalir.
-              </p>
-            </div>
+            {hasDisplayValue(selectedSourceLabel) ? (
+              <div className="rounded-none border border-emerald-400/25 bg-emerald-500/5 px-4 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                  Selected source
+                </p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  <span className="data-mono text-foreground">{selectedSourceLabel}</span>{" "}
+                  dosyasi secili. En yeni rapor varsayilan secim olur, onceki gunler
+                  arsivde kalir.
+                </p>
+              </div>
+            ) : null}
 
             {parsedReport?.executiveSummary ? (
               <div className="rounded-[1.5rem] border border-border bg-card/65 px-5 py-4">
@@ -405,43 +568,18 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
             ) : null}
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
-            <SummaryCard
-              label="Rapor adedi"
-              value={String(reports.length)}
-              hint="momentum kutuphanesi"
-            />
-            <SummaryCard
-              label="Son update"
-              value={formatMomentumUpdateStamp(selectedSummary?.updatedAt || "")}
-              hint="Dosyanin son degisiklik zamani"
-            />
-            <SummaryCard
-              label="Session"
-              value={selectedSummary?.sessionDateLabel || "-"}
-              hint="Referans seans tarihi"
-            />
-            <SummaryCard
-              label="Target"
-              value={selectedSummary?.targetDateLabel || "-"}
-              hint="Raporun aksiyon gunu"
-            />
-            <SummaryCard
-              label="VIX"
-              value={selectedSummary?.vixLabel || "-"}
-              hint="Secili rapor volatilite bandi"
-            />
-            <SummaryCard
-              label="Top setup"
-              value={topSetup?.ticker || topSetup?.name || "-"}
-              hint={topSetup ? topSetup.scoreLabel : "Momentum skoru"}
-            />
-            <SummaryCard
-              label="Okuma"
-              value={selectedSummary?.readingTimeLabel || "-"}
-              hint="Rapor icindeki tahmini sure"
-            />
-          </div>
+          {summaryCards.length ? (
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
+              {summaryCards.map(card => (
+                <SummaryCard
+                  key={card.label}
+                  label={card.label}
+                  value={card.value}
+                  hint={card.hint}
+                />
+              ))}
+            </div>
+          ) : null}
         </div>
       </section>
 
@@ -616,47 +754,34 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                     Selected report
                   </p>
                   <h2 className="heading-condensed text-3xl text-foreground">
-                    {selectedSummary?.title || "Momentum report bekleniyor"}
+                    {activeSummary?.title || parsedReport?.title || "Momentum report bekleniyor"}
                   </h2>
                   <p className="text-sm leading-relaxed text-muted-foreground">
-                    {selectedSummary?.subtitle || selectedSummary?.headline || "Secili raporun alt basligi burada gorunur."}
+                    {selectedSubtitle || "Secili raporun alt basligi burada gorunur."}
                   </p>
                 </div>
 
-                <div className="grid gap-3 sm:grid-cols-3 xl:min-w-[420px]">
-                  <div className="rounded-none border border-border bg-background/50 p-3">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Session
-                    </p>
-                    <p className="mt-2 data-mono text-sm font-bold text-foreground">
-                      {selectedSummary?.sessionDateLabel || "-"}
-                    </p>
+                {detailCards.length ? (
+                  <div className="grid gap-3 sm:grid-cols-2 xl:min-w-[420px]">
+                    {detailCards.map(card => (
+                      <div
+                        key={card.label}
+                        className={`rounded-none border border-border bg-background/50 p-3 ${
+                          detailCards.length % 2 === 1 && card.label === "Update stamp"
+                            ? "sm:col-span-2"
+                            : ""
+                        }`}
+                      >
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                          {card.label}
+                        </p>
+                        <p className={`mt-2 data-mono text-sm font-bold ${card.tone || "text-foreground"}`}>
+                          {card.value}
+                        </p>
+                      </div>
+                    ))}
                   </div>
-                  <div className="rounded-none border border-border bg-background/50 p-3">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Hedef
-                    </p>
-                    <p className="mt-2 data-mono text-sm font-bold text-amber-300">
-                      {selectedSummary?.targetDateLabel || "-"}
-                    </p>
-                  </div>
-                  <div className="rounded-none border border-border bg-background/50 p-3">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Kaynak
-                    </p>
-                    <p className="mt-2 data-mono text-sm font-bold text-foreground">
-                      {selectedSummary?.fileName || "-"}
-                    </p>
-                  </div>
-                  <div className="rounded-none border border-border bg-background/50 p-3 sm:col-span-3">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Update stamp
-                    </p>
-                    <p className="mt-2 data-mono text-sm font-bold text-emerald-300">
-                      {formatMomentumUpdateStamp(selectedSummary?.updatedAt || "")}
-                    </p>
-                  </div>
-                </div>
+                ) : null}
               </div>
             </div>
           </div>
