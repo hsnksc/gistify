@@ -19,7 +19,11 @@ import { Button } from "@/components/ui/button";
 import EarningReportCalendarTab from "@/components/tabs/EarningReportCalendarTab";
 import EarningReportPlaybookTab from "@/components/tabs/EarningReportPlaybookTab";
 import EarningReportRiskTab from "@/components/tabs/EarningReportRiskTab";
-import { formatEarningReportDate, sortEarningReportsNewestFirst } from "@/lib/earningReports";
+import {
+  formatEarningReportDate,
+  formatEarningReportDateTime,
+  sortEarningReportsNewestFirst,
+} from "@/lib/earningReports";
 import { parseEarningReportMarkdown } from "@/lib/earningReportSource";
 
 type TabId = "playbook" | "calendar" | "risk";
@@ -170,6 +174,9 @@ export default function Home() {
     () => reports.find(report => report.id === selectedReportId) || reports[0] || null,
     [reports, selectedReportId]
   );
+  const selectedUploadLabel = selectedSummary
+    ? formatEarningReportDateTime(selectedSummary.updatedAt)
+    : "-";
 
   const parsedReport = useMemo(() => {
     if (!activeReport) {
@@ -208,6 +215,9 @@ export default function Home() {
 
   const latestReport = reports[0] || null;
   const nextEvent = positions[0] || null;
+  const latestUploadLabel = latestReport
+    ? formatEarningReportDateTime(latestReport.updatedAt)
+    : "-";
   const avgIvRank = useMemo(() => {
     const valid = positions.filter(position => position.ivRank !== null);
     if (!valid.length) {
@@ -229,12 +239,6 @@ export default function Home() {
     return putWeight > callWeight;
   }).length;
   const balancedCount = positions.length - bullishCount - bearishCount;
-  const activeMeta = parsedReport
-    ? parsedReport.meta.filter(
-        item => item.label !== "Rapor Tarihi" && item.label !== "VIX"
-      )
-    : [];
-
   const handleTickerSelect = (ticker: string) => {
     setSelectedTicker(ticker);
     setActiveTab("playbook");
@@ -247,7 +251,7 @@ export default function Home() {
 
     if (!parsedReport) {
       return (
-        <LoadingState label="Henuz goruntulenebilir bir earning report yok. `earningreport/` altina yeni `.md` dosyasi eklendiginde burada otomatik listelenecek." />
+        <LoadingState label="Henuz goruntulenebilir bir earnings raporu yok. `earningreport/` klasorune yeni rapor yuklendiginde burada otomatik listelenecek." />
       );
     }
 
@@ -255,9 +259,10 @@ export default function Home() {
       case "playbook":
         return (
           <EarningReportPlaybookTab
+            key={`${selectedReportId}:${selectedTicker || "none"}`}
             report={parsedReport}
             selectedTicker={selectedTicker}
-            onSelectTicker={setSelectedTicker}
+            onSelectTicker={handleTickerSelect}
           />
         );
       case "calendar":
@@ -272,9 +277,10 @@ export default function Home() {
       default:
         return (
           <EarningReportPlaybookTab
+            key={`${selectedReportId}:${selectedTicker || "none"}`}
             report={parsedReport}
             selectedTicker={selectedTicker}
-            onSelectTicker={setSelectedTicker}
+            onSelectTicker={handleTickerSelect}
           />
         );
     }
@@ -329,10 +335,10 @@ export default function Home() {
           <div className="hidden items-center gap-5 md:flex">
             <div className="text-right">
               <p className="data-mono text-[11px] text-muted-foreground">
-                SON RAPOR
+                YUKLENDI
               </p>
               <p className="data-mono text-xs font-semibold text-emerald-300">
-                {selectedSummary?.reportDateLabel || "-"}
+                {selectedUploadLabel}
               </p>
             </div>
             <div className="text-right">
@@ -398,48 +404,26 @@ export default function Home() {
                 className="heading-condensed text-3xl leading-none md:text-5xl"
                 style={{ color: "oklch(0.95 0.01 220)" }}
               >
-                Earning report library,
+                En yeni yuklenen earnings raporu,
                 <br />
-                <span style={{ color: "oklch(0.78 0.18 160)" }}>
-                  gunden gune guncel playbook
-                </span>
+                <span style={{ color: "oklch(0.78 0.18 160)" }}>solda en ustte</span>
               </h1>
               <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
-                `earningreport/` altina yeni `.md` dosyasi biraktiginda sistem onu
-                otomatik indeksler, tarihine gore siralar ve en yeniyi current
-                source-of-truth olarak acar. Onceki dosyalar arsivde kalir; her
-                yeni rapor bir oncekinin guncellenmis devamidir.
+                `earningreport/` klasorune yuklenen her rapor burada yuklenme
+                zamaniyla listelenir. En yeni yukleme otomatik secilir, onceki
+                raporlar solda arsiv olarak kalir.
               </p>
             </div>
 
             <div className="rounded-none border border-emerald-400/25 bg-emerald-500/5 px-4 py-3">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                Source path
+                Secim mantigi
               </p>
               <p className="mt-1 text-sm text-muted-foreground">
-                <span className="data-mono text-foreground">earningreport/</span>{" "}
-                klasorundeki markdown dosyalari runtime’da okunur. En yeni rapor
-                varsayilan secim olur, onceki gunler de arsivde kalir.
+                Soldaki liste yuklenme tarihi ve saatine gore siralanir. Dosya
+                adlari gizlenir; raporlar daha sade sekilde secilir.
               </p>
             </div>
-
-            {activeMeta.length ? (
-              <div className="grid gap-3 md:grid-cols-2">
-                {activeMeta.map(item => (
-                  <div
-                    key={item.label}
-                    className="rounded-none border border-border bg-card/60 px-4 py-3"
-                  >
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      {item.label}
-                    </p>
-                    <p className="mt-2 text-sm leading-relaxed text-foreground">
-                      {item.value}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            ) : null}
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
@@ -449,9 +433,9 @@ export default function Home() {
               hint="earningreport kutuphanesi"
             />
             <SummaryCard
-              label="Son tarih"
-              value={latestReport ? formatEarningReportDate(latestReport.reportDate) : "-"}
-              hint="En yeni indekslenen rapor"
+              label="Son yukleme"
+              value={latestUploadLabel}
+              hint="Solda en ustte gorunen rapor"
             />
             <SummaryCard
               label="Aktif setup"
@@ -524,10 +508,10 @@ export default function Home() {
               <div className="mb-3 flex items-center justify-between gap-3 px-2">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                    Update Chain
+                    Rapor Arsivi
                   </p>
                   <p className="mt-1 text-xs text-muted-foreground">
-                    En yeni rapor current, eskiler arsiv
+                    En yeni yukleme en ustte
                   </p>
                 </div>
                 {loadingReports ? (
@@ -538,8 +522,10 @@ export default function Home() {
               </div>
 
               <div className="space-y-3">
-                {reports.map(report => {
+                {reports.map((report, index) => {
                   const active = report.id === selectedReportId;
+                  const uploadLabel = formatEarningReportDateTime(report.updatedAt);
+                  const stateLabel = index === 0 ? "EN YENI" : "ARSIV";
 
                   return (
                     <button
@@ -554,26 +540,23 @@ export default function Home() {
                     >
                       <div className="flex items-center justify-between gap-3">
                         <span className="rounded-full border border-white/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                          {formatEarningReportDate(report.reportDate)}
+                          {stateLabel}
                         </span>
                         <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300">
                           {report.vixLabel || "VIX -"}
                         </span>
                       </div>
 
-                      <h2 className="mt-3 line-clamp-2 text-base font-semibold leading-6 text-foreground">
-                        {report.title}
+                      <h2 className="mt-3 text-base font-semibold leading-6 text-foreground">
+                        {uploadLabel}
                       </h2>
-                      <p className="mt-2 line-clamp-2 text-sm leading-6 text-muted-foreground">
-                        {report.subtitle || report.headline}
+                      <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                        Rapor tarihi: {report.reportDateLabel || formatEarningReportDate(report.reportDate)}
                       </p>
 
-                      <div className="mt-3 flex flex-wrap gap-2">
+                      <div className="mt-3 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
                         <span className="rounded-full border border-white/10 px-2 py-1 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-                          {report.reportDateLabel}
-                        </span>
-                        <span className="rounded-full border border-white/10 px-2 py-1 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-                          {report.fileName}
+                          {report.headline || "Earning report"}
                         </span>
                       </div>
                     </button>
@@ -583,7 +566,7 @@ export default function Home() {
 
               {!loadingReports && !reports.length ? (
                 <div className="rounded-[1.5rem] border border-dashed border-border bg-background/40 p-4 text-sm leading-6 text-muted-foreground">
-                  `earningreport/` altina yeni `.md` dosyasi eklendiginde burada
+                  `earningreport/` klasorune yeni rapor yuklendiginde burada
                   otomatik gorunecek.
                 </div>
               ) : null}
@@ -630,7 +613,7 @@ export default function Home() {
                       : "border-border bg-card/70 text-muted-foreground"
                   }`}
                 >
-                  {report.title}
+                  {formatEarningReportDateTime(report.updatedAt)}
                 </button>
               ))}
             </div>
@@ -641,20 +624,21 @@ export default function Home() {
               <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
                 <div className="space-y-2">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                    Selected report
+                    Secili rapor
                   </p>
                   <h2 className="heading-condensed text-3xl text-foreground">
-                    {selectedSummary?.title || "Earning report bekleniyor"}
+                    {selectedUploadLabel}
                   </h2>
                   <p className="text-sm leading-relaxed text-muted-foreground">
-                    {selectedSummary?.subtitle || selectedSummary?.headline || "Secili raporun alt basligi burada gorunur."}
+                    En yeni yukleme varsayilan olarak acilir. Ayni gun icinde birden
+                    fazla rapor varsa saat bilgisiyle ayristirilir.
                   </p>
                 </div>
 
                 <div className="grid gap-3 sm:grid-cols-3 xl:min-w-[420px]">
                   <div className="rounded-none border border-border bg-background/50 p-3">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Tarih
+                      Rapor tarihi
                     </p>
                     <p className="mt-2 data-mono text-sm font-bold text-foreground">
                       {selectedSummary?.reportDateLabel || "-"}
@@ -670,10 +654,10 @@ export default function Home() {
                   </div>
                   <div className="rounded-none border border-border bg-background/50 p-3">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Kaynak
+                      Yuklenme
                     </p>
                     <p className="mt-2 data-mono text-sm font-bold text-foreground">
-                      {selectedSummary?.fileName || "-"}
+                      {selectedUploadLabel}
                     </p>
                   </div>
                 </div>

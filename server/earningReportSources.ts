@@ -242,11 +242,11 @@ export function listEarningReportSources() {
     .map(entry => buildSourceRecord(entry.name))
     .filter((entry): entry is EarningReportSourceRecord => Boolean(entry))
     .sort((left, right) => {
-      if (left.reportDate !== right.reportDate) {
-        return right.reportDate.localeCompare(left.reportDate);
+      if (left.updatedAt !== right.updatedAt) {
+        return right.updatedAt.localeCompare(left.updatedAt);
       }
 
-      return right.updatedAt.localeCompare(left.updatedAt);
+      return right.reportDate.localeCompare(left.reportDate);
     });
 }
 

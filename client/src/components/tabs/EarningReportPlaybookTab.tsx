@@ -250,7 +250,7 @@ export default function EarningReportPlaybookTab({
         <div className="grid gap-5 xl:grid-cols-[minmax(0,1.1fr)_minmax(360px,0.9fr)]">
           <div className="space-y-3">
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-              Latest intelligence board
+              Rapor ozeti
             </p>
             <h1 className="heading-condensed text-3xl leading-none text-foreground md:text-4xl">
               {report.title}
@@ -291,7 +291,7 @@ export default function EarningReportPlaybookTab({
         <div className="flex items-center gap-2">
           <div className="h-4 w-1 bg-emerald-400" />
           <h2 className="heading-condensed text-base text-foreground">
-            Ticker command strip
+            Hisse secimi
           </h2>
         </div>
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
@@ -333,6 +333,7 @@ export default function EarningReportPlaybookTab({
         </div>
       </section>
 
+      <div key={activePosition.ticker} className="space-y-6">
       <section className="rounded-none border border-emerald-400/30 bg-card/85 p-5">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
           <div className="space-y-3">
@@ -427,7 +428,7 @@ export default function EarningReportPlaybookTab({
         <article className="rounded-none border border-border bg-card/80 p-4">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-              Strategy board
+              Strateji ozeti
             </p>
             <h4 className={`mt-2 text-sm font-semibold ${getBiasTone(activePosition)}`}>
               {activePosition.strategyTitle}
@@ -523,7 +524,7 @@ export default function EarningReportPlaybookTab({
               Haberler ve catalystler
             </p>
             <h4 className="mt-2 text-sm font-semibold text-foreground">
-              Secili hisse intelligence stream
+              Secili hisse akisi
             </h4>
           </div>
 
@@ -661,6 +662,7 @@ export default function EarningReportPlaybookTab({
           )}
         </article>
       </section>
+      </div>
     </div>
   );
 }
