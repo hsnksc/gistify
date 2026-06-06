@@ -888,19 +888,19 @@ function App() {
                 data-no-translate
                 className="sticky top-0 z-[70] border-b border-border bg-background/95 backdrop-blur"
               >
-                <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3.5">
-                  <div className="flex items-center gap-4">
-                    <div className="inline-flex items-center gap-4 rounded-[1.6rem] border border-border bg-card px-3 py-2 pr-4 shadow-[0_12px_30px_rgba(0,0,0,0.12)]">
+                <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4.5">
+                  <div className="flex items-center gap-5">
+                    <div className="inline-flex items-center gap-5 rounded-[2rem] border border-border bg-card px-4 py-3.5 pr-5 shadow-[0_18px_44px_rgba(0,0,0,0.16)]">
                       <img
                         src="/gistifylogo.jpeg?v=20260606-1"
                         alt="Gistify logo"
-                        className="size-12 rounded-full border border-border object-cover md:size-14"
+                        className="size-16 rounded-full border border-border object-cover md:size-20"
                       />
                       <div className="leading-tight">
-                        <p className="text-base font-semibold text-foreground md:text-lg">
+                        <p className="text-xl font-semibold text-foreground md:text-2xl">
                           Gistify
                         </p>
-                        <p className="mt-1 text-xs text-muted-foreground md:text-[13px]">
+                        <p className="mt-1.5 text-sm text-muted-foreground md:text-[15px]">
                           Earnings Intelligence
                         </p>
                       </div>
