@@ -49,7 +49,7 @@ function listFiles(folderPath: string) {
 
 function readMarkdownField(markdown: string, label: string) {
   const match = markdown.match(
-    new RegExp(`\\*\\*${label}:\\*\\*\\s*(.+)`, "i")
+    new RegExp(`(?:^|\\n)(?:>\\s*)?\\*\\*${label}:\\*\\*\\s*([^\\n]+)`, "i")
   );
   return normalizeString(match?.[1]);
 }
@@ -127,15 +127,22 @@ function extractMetadata(markdown: string, fileName: string, updatedAt: string) 
   const title = readHeading(markdown, "#") || fileName;
   const subtitle = readHeading(markdown, "##") || "";
   const headline =
+    readMarkdownField(markdown, "Strateji Tipi") ||
+    readMarkdownField(markdown, "Mekanizma") ||
     readMarkdownField(markdown, "Strateji") ||
     subtitle ||
     title;
-  const reportDateLabel = readMarkdownField(markdown, "Rapor Tarihi");
+  const rawReportDateLabel = readMarkdownField(markdown, "Rapor Tarihi");
+  const reportDateLabel = normalizeString(rawReportDateLabel.split("|")[0] || "");
   const reportDate =
     parseTurkishDateLabel(reportDateLabel) ||
     toIsoDateFromKey(path.basename(fileName, path.extname(fileName))) ||
     updatedAt.slice(0, 10);
-  const vixLabel = readMarkdownField(markdown, "VIX");
+  const vixLabel =
+    readMarkdownField(markdown, "VIX") ||
+    normalizeString(
+      rawReportDateLabel.match(/\bVIX:\s*(.+)$/i)?.[1] || ""
+    );
 
   return {
     title,

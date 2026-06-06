@@ -159,6 +159,10 @@ function isDividerRow(cells: string[]) {
 }
 
 function parseTable(lines: string[], startIndex: number) {
+  if (startIndex < 0 || startIndex >= lines.length) {
+    return { table: null, nextIndex: Math.max(startIndex, 0) };
+  }
+
   const tableLines: string[] = [];
   let index = startIndex;
 
@@ -182,6 +186,11 @@ function parseTable(lines: string[], startIndex: number) {
     table: { headers, rows } satisfies MarkdownTable,
     nextIndex: index,
   };
+}
+
+function parseFirstTable(lines: string[]) {
+  const startIndex = findLineIndex(lines, /^\|/);
+  return startIndex >= 0 ? parseTable(lines, startIndex).table : null;
 }
 
 function parsePercent(value: string) {
@@ -214,15 +223,32 @@ function parseNumber(value: string) {
 function parseHeadingMeta(lines: string[]) {
   const meta: ReportMetaItem[] = [];
 
-  for (const line of lines) {
-    const match = line.match(/^\*\*(.+?):\*\*\s*(.+)$/);
+  for (const rawLine of lines) {
+    const line = (rawLine || "").trim();
+    const match = line.match(/^(?:>\s*)?\*\*(.+?):\*\*\s*(.+)$/);
     if (!match) {
       continue;
     }
 
+    const label = cleanText(match[1] || "");
+    const value = cleanText(match[2] || "");
+
+    if (label.toLowerCase() === "rapor tarihi" && /\|\s*VIX:/i.test(value)) {
+      const [reportDatePart, vixPart] = value.split("|");
+      meta.push({
+        label,
+        value: cleanText(reportDatePart || ""),
+      });
+      meta.push({
+        label: "VIX",
+        value: cleanText((vixPart || "").replace(/^VIX:\s*/i, "")),
+      });
+      continue;
+    }
+
     meta.push({
-      label: cleanText(match[1] || ""),
-      value: cleanText(match[2] || ""),
+      label,
+      value,
     });
   }
 
@@ -311,6 +337,89 @@ function findLineIndex(lines: string[], matcher: RegExp, startIndex = 0) {
   return -1;
 }
 
+function splitSections(lines: string[], headingRegex: RegExp) {
+  const indexes = lines
+    .map((line, index) => (headingRegex.test((line || "").trim()) ? index : -1))
+    .filter(index => index >= 0);
+
+  const sections = new Map<string, string[]>();
+  for (let index = 0; index < indexes.length; index += 1) {
+    const start = indexes[index];
+    const end = indexes[index + 1] ?? lines.length;
+    const key = cleanText(lines[start] || "");
+    sections.set(key, lines.slice(start + 1, end));
+  }
+
+  return sections;
+}
+
+function collectNarrativeLines(lines: string[]) {
+  const items: string[] = [];
+  let index = 0;
+
+  while (index < lines.length) {
+    const trimmed = (lines[index] || "").trim();
+    if (!trimmed) {
+      index += 1;
+      continue;
+    }
+
+    if (/^```/.test(trimmed)) {
+      const fence = readCodeFence(lines, index);
+      const codeLines = fence.lines
+        .map(line => cleanText(line))
+        .filter(Boolean)
+        .filter(line => !/^%%\{/.test(line));
+      if (codeLines.length && !/^(flowchart|timeline|xychart|pie)\b/i.test(codeLines[0] || "")) {
+        items.push(...codeLines);
+      }
+      index = fence.nextIndex;
+      continue;
+    }
+
+    if (trimmed.startsWith("|")) {
+      const parsed = parseTable(lines, index);
+      if (parsed.table) {
+        for (const row of parsed.table.rows) {
+          const rowText = parsed.table.headers
+            .map((header, cellIndex) => `${header}: ${row[cellIndex] || "-"}`)
+            .join(" | ");
+          items.push(rowText);
+        }
+      }
+      index = parsed.nextIndex;
+      continue;
+    }
+
+    if (/^(###|####)\s+/.test(trimmed) || trimmed === "---") {
+      index += 1;
+      continue;
+    }
+
+    items.push(cleanText(trimmed));
+    index += 1;
+  }
+
+  return Array.from(new Set(items.filter(Boolean)));
+}
+
+function parseSectionNotes(sectionLines: string[], fallbackTitle: string) {
+  const subsectionMap = splitSections(sectionLines, /^####\s+/);
+  if (!subsectionMap.size) {
+    const lines = collectNarrativeLines(sectionLines);
+    return lines.length
+      ? [{ title: fallbackTitle, lines }] satisfies StrategyNote[]
+      : [];
+  }
+
+  return Array.from(subsectionMap.entries())
+    .map(([key, lines]) => ({
+      title: cleanText(key.replace(/^####\s*/, "")),
+      lines: collectNarrativeLines(lines),
+    }))
+    .filter(note => note.lines.length > 0);
+}
+
 function tableToKeyValueRows(table: MarkdownTable | null) {
   if (!table) {
     return [];
@@ -324,7 +433,7 @@ function tableToKeyValueRows(table: MarkdownTable | null) {
     .filter(row => row.label && row.value);
 }
 
-function parseGainDrivers(table: MarkdownTable | null) {
+function parseGainDriversFromTable(table: MarkdownTable | null) {
   if (!table) {
     return [];
   }
@@ -338,6 +447,22 @@ function parseGainDrivers(table: MarkdownTable | null) {
     .filter(row => row.factor);
 }
 
+function parseFormulaGainDrivers(lines: string[]) {
+  return lines
+    .map(line => cleanText(line))
+    .filter(line => line.startsWith("- "))
+    .map(line => {
+      const content = cleanText(line.slice(2));
+      const [factor, ...rest] = content.split(":");
+      return {
+        factor: cleanText(factor || ""),
+        impact: cleanText(rest.join(":") || ""),
+        assessment: cleanText(rest.join(":") || ""),
+      } satisfies GainDriver;
+    })
+    .filter(driver => driver.factor);
+}
+
 function parseAllocations(table: MarkdownTable | null) {
   if (!table) {
     return [];
@@ -347,7 +472,24 @@ function parseAllocations(table: MarkdownTable | null) {
     .map(row => ({
       ticker: row[0] || "",
       capital: row[1] || "",
-      riskLevel: row[2] || "",
+      riskLevel: row[5] || row[2] || "",
+    }))
+    .filter(row => row.ticker);
+}
+
+function parsePositionSizing(table: MarkdownTable | null) {
+  if (!table) {
+    return [];
+  }
+
+  return table.rows
+    .map(row => ({
+      ticker: row[0] || "",
+      capital: row[1] || "",
+      contracts:
+        row.length >= 4
+          ? `Call: ${row[2] || "-"} | Put: ${row[3] || "-"}`
+          : row[2] || "",
     }))
     .filter(row => row.ticker);
 }
@@ -357,14 +499,42 @@ function parseTradeSchedule(table: MarkdownTable | null) {
     return [];
   }
 
-  return table.rows
-    .map(row => ({
-      date: row[0] || "",
-      ticker: row[1] || "",
-      action: row[2] || "",
-      note: row[3] || "",
-    }))
-    .filter(row => row.date);
+  const rows: TradeScheduleRow[] = [];
+  for (const row of table.rows) {
+    const ticker = row[0] || row[1] || "";
+    const earnings = row[1] || "";
+    const entry = row[8] || row[2] || "";
+    const exit = row[9] || row[3] || "";
+
+    if (entry) {
+      rows.push({
+        date: entry,
+        ticker,
+        action: "GIRIS",
+        note: earnings || "Planlanan giris",
+      });
+    }
+
+    if (exit) {
+      rows.push({
+        date: exit,
+        ticker,
+        action: "CIKIS",
+        note: earnings || "Planlanan cikis",
+      });
+    }
+
+    if (earnings) {
+      rows.push({
+        date: earnings,
+        ticker,
+        action: "EARNINGS",
+        note: "Earnings eventi",
+      });
+    }
+  }
+
+  return rows;
 }
 
 function parseRiskEntries(table: MarkdownTable | null) {
@@ -382,18 +552,16 @@ function parseRiskEntries(table: MarkdownTable | null) {
     .filter(row => row.risk);
 }
 
-function parsePositionSizing(table: MarkdownTable | null) {
-  if (!table) {
+function getSectionBody(lines: string[], headingIndex: number) {
+  if (headingIndex < 0) {
     return [];
   }
 
-  return table.rows
-    .map(row => ({
-      ticker: row[0] || "",
-      capital: row[1] || "",
-      contracts: row[2] || "",
-    }))
-    .filter(row => row.ticker);
+  const nextLevelTwo = findLineIndex(lines, /^##\s+/, headingIndex + 1);
+  const nextLevelThree = findLineIndex(lines, /^###\s+/, headingIndex + 1);
+  const candidates = [nextLevelTwo, nextLevelThree].filter(index => index >= 0);
+  const end = candidates.length ? Math.min(...candidates) : lines.length;
+  return lines.slice(headingIndex + 1, end);
 }
 
 function parseTimelineSteps(codeLines: string[]) {
@@ -407,6 +575,25 @@ function parseTimelineSteps(codeLines: string[]) {
         label: cleanText(rest.join(":")),
       };
     });
+}
+
+function buildFallbackTimeline(coreWindow: string) {
+  const core = cleanText(coreWindow);
+  const fallback = [
+    { phase: "Bias", label: "Haber ve catalyst akisini okuyup yon belirle." },
+    { phase: "Oran", label: "Call / Put oranini ticker bazinda ayarla." },
+    { phase: "Giris", label: "E-7 ile E-3 arasinda kademeli giris yap." },
+    { phase: "Bekle", label: "IV expansion surerken pozisyonu yonet." },
+    { phase: "Cikis", label: "Earnings oncesi cikip IV crush riskini kapat." },
+  ] satisfies TimelineStep[];
+
+  if (!core) {
+    return fallback;
+  }
+
+  return fallback.map((step, index) =>
+    index === 0 ? { ...step, label: core } : step
+  );
 }
 
 function parseNewsBuckets(items: string[]) {
@@ -458,88 +645,60 @@ function parseWeights(value: string) {
   };
 }
 
-function parseBlueprint(codeLines: string[]) {
-  const rawLines = codeLines.map(line => line.replace(/\s+$/g, "")).filter(line => cleanText(line));
-  const ratioLine = rawLines.find(line => cleanText(line).startsWith("Call/Put Orani:")) || "";
-  const ratioText = cleanText(ratioLine.split(":").slice(1).join(":"));
-  const { callWeight, putWeight } = parseWeights(ratioText);
-  const biasLine =
-    rawLines.find(
-      line =>
-        /bias/i.test(line) &&
-        !cleanText(line).startsWith("Call/Put Orani:")
-    ) || "";
+function parseBlueprint(sourceLines: string[]) {
+  const codeLines = readCodeFence(sourceLines, 0).lines;
+  const rawLines = (codeLines.length ? codeLines : sourceLines)
+    .map(line => line.replace(/\s+$/g, ""))
+    .map(line => cleanText(line))
+    .filter(Boolean);
 
-  const callHeading =
-    rawLines.find(line => cleanText(line).startsWith("CALL"))?.trim() || "CALL";
-  const putHeading =
-    rawLines.find(line => cleanText(line).startsWith("PUT"))?.trim() || "PUT";
+  const ratioLine =
+    rawLines.find(line => /^Call\/Put Orani:/i.test(line)) ||
+    rawLines.find(line => /^Oran:/i.test(line)) ||
+    rawLines.find(line => /%\d+.*Call.*%\d+.*Put/i.test(line)) ||
+    "";
+  const ratioText = cleanText(
+    ratioLine
+      .replace(/^Call\/Put Orani:\s*/i, "")
+      .replace(/^Oran:\s*/i, "")
+  );
+  const { callWeight, putWeight } = parseWeights(ratioText);
 
   const callItems: string[] = [];
   const putItems: string[] = [];
   const expiryLines: string[] = [];
   let entry = "";
   let exit = "";
-  let currentBucket: "call" | "put" | null = null;
+  let biasLine = "";
 
-  for (let index = 0; index < rawLines.length; index += 1) {
-    const line = rawLines[index];
-    const trimmed = cleanText(line);
-
-    if (trimmed.startsWith("CALL")) {
-      currentBucket = "call";
+  for (const line of rawLines) {
+    if (/^Call Strike:/i.test(line) || /^Call\b/i.test(line)) {
+      callItems.push(line);
       continue;
     }
 
-    if (trimmed.startsWith("PUT")) {
-      currentBucket = "put";
+    if (/^Put Strike:/i.test(line) || /^Put\b/i.test(line)) {
+      putItems.push(line);
       continue;
     }
 
-    if (trimmed.startsWith("Expiry:")) {
-      expiryLines.push(cleanText(trimmed.replace(/^Expiry:\s*/i, "")));
-      for (let inner = index + 1; inner < rawLines.length; inner += 1) {
-        const next = rawLines[inner];
-        const nextTrimmed = cleanText(next);
-        if (
-          /^([A-Za-z][^:]*):/.test(nextTrimmed) ||
-          nextTrimmed.startsWith("CALL") ||
-          nextTrimmed.startsWith("PUT")
-        ) {
-          break;
-        }
-
-        expiryLines.push(nextTrimmed);
-        index = inner;
-      }
-      currentBucket = null;
+    if (/^Expiry:/i.test(line)) {
+      expiryLines.push(cleanText(line.replace(/^Expiry:\s*/i, "")));
       continue;
     }
 
-    if (trimmed.startsWith("Giris:")) {
-      entry = cleanText(trimmed.replace(/^Giris:\s*/i, ""));
-      currentBucket = null;
+    if (/^Giris:/i.test(line)) {
+      entry = cleanText(line.replace(/^Giris:\s*/i, ""));
       continue;
     }
 
-    if (trimmed.startsWith("Cikis:")) {
-      exit = cleanText(trimmed.replace(/^Cikis:\s*/i, ""));
-      currentBucket = null;
+    if (/^Cikis:/i.test(line)) {
+      exit = cleanText(line.replace(/^Cikis:\s*/i, ""));
       continue;
     }
 
-    if (trimmed.startsWith("Call/Put Orani:") || /bias/i.test(trimmed)) {
-      currentBucket = null;
-      continue;
-    }
-
-    if (currentBucket === "call") {
-      callItems.push(trimmed);
-      continue;
-    }
-
-    if (currentBucket === "put") {
-      putItems.push(trimmed);
+    if (/bias/i.test(line) || /bullish|bearish|mixed/i.test(line)) {
+      biasLine = line;
     }
   }
 
@@ -549,9 +708,9 @@ function parseBlueprint(codeLines: string[]) {
     callWeight,
     putWeight,
     biasLine: cleanText(biasLine),
-    callHeading: cleanText(callHeading.replace(/:$/, "")),
+    callHeading: "Call leg",
     callItems,
-    putHeading: cleanText(putHeading.replace(/:$/, "")),
+    putHeading: "Put leg",
     putItems,
     expiryLines,
     entry,
@@ -603,6 +762,41 @@ function parseEarningsLabel(value: string) {
   };
 }
 
+function collectAlertLines(lines: string[]) {
+  const alerts: string[] = [];
+  const quoteStart = findLineIndex(lines, /^>/);
+  if (quoteStart >= 0) {
+    alerts.push(...readQuoteBlock(lines, quoteStart).items);
+  }
+
+  for (const rawLine of lines) {
+    const line = cleanText(rawLine || "");
+    if (/^(Kritik Uyari|Onemli|Avantaj|FOMC UYARISI):/i.test(line)) {
+      alerts.push(line);
+    }
+  }
+
+  return Array.from(new Set(alerts.filter(Boolean)));
+}
+
+function normalizeStrategyTitle(
+  strategyReasonHeading: string,
+  blueprint: StrategyBlueprint
+) {
+  const normalizedHeading = cleanText(
+    strategyReasonHeading
+      .replace(/^###\s*/, "")
+      .replace(/^Strateji Dayanagi\s*-\s*/i, "")
+      .replace(/^Strateji:\s*/i, "")
+  );
+
+  if (normalizedHeading) {
+    return normalizedHeading;
+  }
+
+  return blueprint.ratioText || "Strategy";
+}
+
 function parsePositionSection(
   lines: string[],
   allocationMap: Map<string, AllocationEntry>
@@ -624,72 +818,90 @@ function parsePositionSection(
   const { earningsDate, earningsTime } = parseEarningsLabel(earningsLabel);
   const allocation = allocationMap.get(ticker);
 
-  const subsectionIndexes = lines
-    .map((line, index) => (/^###\s+/.test((line || "").trim()) ? index : -1))
-    .filter(index => index >= 0);
-
-  const sections = new Map<string, string[]>();
-  for (let index = 0; index < subsectionIndexes.length; index += 1) {
-    const start = subsectionIndexes[index];
-    const end = subsectionIndexes[index + 1] ?? lines.length;
-    const headingText = cleanText(lines[start] || "");
-    sections.set(headingText, lines.slice(start + 1, end));
-  }
-  const sectionEntries = Array.from(sections.entries());
+  const sections = splitSections(lines.slice(1), /^###\s+/);
+  const entries = Array.from(sections.entries());
 
   const metricsSection =
-    sectionEntries.find(([key]) => key.startsWith("### Hisse Durumu"))?.[1] || [];
-  const metricsTable = parseTable(metricsSection, 0).table;
+    entries.find(([key]) => /Hisse Durumu|Sirket Profili/i.test(key))?.[1] || [];
+  const metricsTable = parseFirstTable(metricsSection);
   const metrics = tableToKeyValueRows(metricsTable);
 
   const newsSection =
-    sectionEntries.find(([key]) => key.startsWith("### Haber Analizi"))?.[1] || [];
-  const newsItems = readBulletList(newsSection, 0).items;
-  const news = parseNewsBuckets(newsItems);
+    entries.find(([key]) => /Haber Analizi|Detayli Haber Analizi/i.test(key))?.[1] || [];
+  const newsBullets = readBulletList(newsSection, 0).items;
+  const news = parseNewsBuckets(newsBullets);
+  const newsNotes = parseSectionNotes(newsSection, "Haber ozeti");
+
+  const strategyReasonEntry =
+    entries.find(([key]) => /Strateji Dayanagi/i.test(key)) || null;
+  const strategyReasonHeading = strategyReasonEntry?.[0] || "";
+  const strategyReasonNotes = strategyReasonEntry
+    ? parseSectionNotes(strategyReasonEntry[1], "Strateji dayanaklari")
+    : [];
+  const strategyReasonTable = strategyReasonEntry
+    ? parseFirstTable(strategyReasonEntry[1])
+    : null;
+  if (strategyReasonTable) {
+    const linesFromTable = strategyReasonTable.rows.map(
+      row =>
+        `${strategyReasonTable.headers[0]}: ${row[0] || "-"} | ${strategyReasonTable.headers[1]}: ${row[1] || "-"} | ${strategyReasonTable.headers[2]}: ${row[2] || "-"}`
+    );
+    if (linesFromTable.length) {
+      strategyReasonNotes.push({
+        title: "Bias matrisi",
+        lines: linesFromTable,
+      });
+    }
+  }
 
   const strategyEntry =
-    sectionEntries.find(([key]) => key.startsWith("### Strateji:")) || null;
-  const strategyTitle = strategyEntry
-    ? cleanText((strategyEntry[0] || "").replace(/^### Strateji:\s*/i, ""))
-    : "Strategy";
-  const blueprint = parseBlueprint(readCodeFence(strategyEntry?.[1] || [], 0).lines);
+    entries.find(([key]) => /^###\s+Strateji:/i.test(key)) ||
+    entries.find(([key]) => /Strateji Detayi/i.test(key)) ||
+    null;
+  const strategyTitle = normalizeStrategyTitle(
+    strategyReasonHeading,
+    parseBlueprint(strategyEntry?.[1] || [])
+  );
+  const blueprint = parseBlueprint(strategyEntry?.[1] || []);
 
   const greeksSection =
-    sectionEntries.find(([key]) => key.startsWith("### Greeks Tahmini"))?.[1] || [];
-  const greeks = parseGreekRows(parseTable(greeksSection, 0).table);
+    entries.find(([key]) => /Greeks Tahmini/i.test(key))?.[1] || [];
+  const greeks = parseGreekRows(parseFirstTable(greeksSection));
 
   const scenarioSection =
-    sectionEntries.find(([key]) => key.startsWith("### Kar/Zarar Senaryolari"))?.[1] || [];
-  const scenarios = parseScenarioRows(parseTable(scenarioSection, 0).table);
+    entries.find(([key]) => /Kar\/Zarar Senaryolari/i.test(key))?.[1] || [];
+  const scenarios = parseScenarioRows(parseFirstTable(scenarioSection));
 
   const warningSection =
-    sectionEntries.find(([key]) => key.startsWith("### Kritik Uyarilar"))?.[1] || [];
-  const warnings = readBulletList(warningSection, 0).items;
+    entries.find(([key]) => /Kritik Uyarilar/i.test(key))?.[1] || [];
+  const warnings = Array.from(
+    new Set([
+      ...readBulletList(warningSection, 0).items,
+      ...collectAlertLines(strategyEntry?.[1] || []),
+      ...collectAlertLines(strategyReasonEntry?.[1] || []),
+    ].filter(Boolean))
+  );
 
-  const notes = sectionEntries
+  const notes = entries
     .filter(([key]) => {
       return (
-        !key.startsWith("### Hisse Durumu") &&
-        !key.startsWith("### Haber Analizi") &&
-        !key.startsWith("### Strateji:") &&
-        !key.startsWith("### Greeks Tahmini") &&
-        !key.startsWith("### Kar/Zarar Senaryolari") &&
-        !key.startsWith("### Kritik Uyarilar")
+        !/Hisse Durumu|Sirket Profili/i.test(key) &&
+        !/Haber Analizi|Detayli Haber Analizi/i.test(key) &&
+        !/^###\s+Strateji:/i.test(key) &&
+        !/Strateji Detayi/i.test(key) &&
+        !/Strateji Dayanagi/i.test(key) &&
+        !/Greeks Tahmini/i.test(key) &&
+        !/Kar\/Zarar Senaryolari/i.test(key) &&
+        !/Kritik Uyarilar/i.test(key)
       );
     })
     .map(([key, value]) => ({
       title: cleanText(key.replace(/^###\s*/, "")),
-      lines: (() => {
-        const quotes = readQuoteBlock(value, 0).items;
-        if (quotes.length) {
-          return quotes;
-        }
-
-        return value.map((line: string) => cleanText(line)).filter(Boolean);
-      })(),
+      lines: collectNarrativeLines(value),
     }))
     .filter(note => note.lines.length > 0);
 
+  const mergedNotes = [...newsNotes, ...strategyReasonNotes, ...notes];
   const metricsMap = new Map(metrics.map(row => [row.label.toLowerCase(), row.value]));
 
   return {
@@ -709,11 +921,15 @@ function parsePositionSection(
     greeks,
     scenarios,
     warnings,
-    notes,
+    notes: mergedNotes,
     price: parseNumber(metricsMap.get("fiyat") || ""),
     ivRank: parsePercent(metricsMap.get("iv rank") || ""),
     expectedMove: parsePercent(metricsMap.get("expected move") || ""),
   } satisfies EarningsPosition;
+}
+
+function findMetaValue(meta: ReportMetaItem[], label: string) {
+  return meta.find(item => item.label.toLowerCase() === label.toLowerCase())?.value || "";
 }
 
 export function parseEarningReportMarkdown(
@@ -722,29 +938,56 @@ export function parseEarningReportMarkdown(
 ): EarningReportSource {
   const lines = splitLines(markdown);
   const firstDivider = findLineIndex(lines, /^---$/);
-  const metaLines = firstDivider >= 0 ? lines.slice(0, firstDivider) : lines.slice(0, 12);
+  const metaLines = firstDivider >= 0 ? lines.slice(0, firstDivider) : lines.slice(0, 16);
   const title = cleanText((metaLines[0] || "").replace(/^#\s*/, ""));
   const subtitle = cleanText((metaLines[1] || "").replace(/^##\s*/, ""));
   const meta = parseHeadingMeta(metaLines);
-  const reportDate = meta.find(item => item.label === "Rapor Tarihi")?.value || "-";
-  const vixLabel = meta.find(item => item.label === "VIX")?.value || "-";
+  const reportDate = findMetaValue(meta, "Rapor Tarihi") || "-";
+  const vixLabel = findMetaValue(meta, "VIX") || "-";
+  const mechanism = findMetaValue(meta, "Mekanizma");
+  const strategyType = findMetaValue(meta, "Strateji Tipi");
 
-  const principleIndex = findLineIndex(lines, /^##\s+STRATEJI PRENSIBI$/i);
+  const principleIndex = findLineIndex(lines, /^##\s+Strateji Prensibi/i);
+  const principleLines =
+    principleIndex >= 0
+      ? lines.slice(
+          principleIndex + 1,
+          findLineIndex(lines, /^##\s+\d+\./, principleIndex + 1) >= 0
+            ? findLineIndex(lines, /^##\s+\d+\./, principleIndex + 1)
+            : lines.length
+        )
+      : [];
   const principleCode = principleIndex >= 0 ? readCodeFence(lines, principleIndex) : { lines: [] as string[] };
   const timelineSteps = parseTimelineSteps(principleCode.lines);
   const coreWindow =
-    metaLines
-      .concat(lines.slice(principleIndex, principleIndex + 40))
-      .map(line => cleanText(line))
-      .find(line => line.startsWith("Bizim Stratejimiz:"))
-      ?.replace(/^Bizim Stratejimiz:\s*/i, "") || "";
+    mechanism ||
+    collectNarrativeLines(principleLines).find(line =>
+      /IV.*sisme|sisme surecine girer/i.test(line)
+    ) ||
+    strategyType;
 
   const gainIndex = findLineIndex(lines, /^###\s+Nasil Kazaniriz\?/i);
-  const gainDrivers = gainIndex >= 0 ? parseGainDrivers(parseTable(lines, gainIndex + 1).table) : [];
+  const gainDrivers =
+    gainIndex >= 0
+      ? parseGainDriversFromTable(parseFirstTable(getSectionBody(lines, gainIndex)))
+      : parseFormulaGainDrivers(principleLines);
 
-  const allocationIndex = findLineIndex(lines, /^###\s+Portfoy Dagilimi$/i);
-  const allocations =
-    allocationIndex >= 0 ? parseAllocations(parseTable(lines, allocationIndex + 1).table) : [];
+  const allocationIndex =
+    findLineIndex(lines, /^###\s+Portfoy Dagilimi/i) >= 0
+      ? findLineIndex(lines, /^###\s+Portfoy Dagilimi/i)
+      : findLineIndex(lines, /^##\s+Portfoy Dagilimi/i);
+  const allocationSection =
+    allocationIndex >= 0
+      ? lines.slice(
+          allocationIndex + 1,
+          findLineIndex(lines, /^##\s+Risk Yonetimi/i, allocationIndex + 1) >= 0
+            ? findLineIndex(lines, /^##\s+Risk Yonetimi/i, allocationIndex + 1)
+            : lines.length
+        )
+      : [];
+  const allocationTable = allocationSection.length ? parseFirstTable(allocationSection) : null;
+  const allocations = parseAllocations(allocationTable);
+  const positionSizing = parsePositionSizing(allocationTable);
   const allocationMap = new Map(allocations.map(entry => [entry.ticker, entry]));
 
   const allLevelTwoHeadings = lines
@@ -755,36 +998,82 @@ export function parseEarningReportMarkdown(
   );
 
   const positions = positionHeadingIndexes
-    .map((start, index) => {
+    .map(start => {
       const end = allLevelTwoHeadings.find(candidate => candidate > start) ?? lines.length;
       return parsePositionSection(lines.slice(start, end), allocationMap);
     })
     .filter((position): position is EarningsPosition => Boolean(position));
 
   const scheduleIndex = findLineIndex(lines, /^##\s+GIRIS\/CIKIS TAKVIMI$/i);
-  const tradeSchedule =
-    scheduleIndex >= 0 ? parseTradeSchedule(parseTable(lines, scheduleIndex + 1).table) : [];
+  let tradeSchedule =
+    scheduleIndex >= 0
+      ? parseTradeSchedule(parseFirstTable(getSectionBody(lines, scheduleIndex)))
+      : [];
+  if (!tradeSchedule.length) {
+    const summaryIndex = findLineIndex(lines, /^##\s+Ozet Tablo/i);
+    if (summaryIndex >= 0) {
+      const summaryTable = parseFirstTable(getSectionBody(lines, summaryIndex));
+      tradeSchedule = parseTradeSchedule(summaryTable);
+    }
+  }
+  if (!tradeSchedule.length) {
+    tradeSchedule = positions.flatMap(position => {
+      const rows: TradeScheduleRow[] = [];
+      if (position.blueprint.entry) {
+        rows.push({
+          date: position.blueprint.entry,
+          ticker: position.ticker,
+          action: "GIRIS",
+          note: position.strategyTitle,
+        });
+      }
+      rows.push({
+        date: `${position.earningsDate} ${position.earningsTime}`.trim(),
+        ticker: position.ticker,
+        action: "EARNINGS",
+        note: position.company,
+      });
+      if (position.blueprint.exit) {
+        rows.push({
+          date: position.blueprint.exit,
+          ticker: position.ticker,
+          action: "CIKIS",
+          note: position.strategyTitle,
+        });
+      }
+      return rows;
+    });
+  }
 
   const riskIndex = findLineIndex(lines, /^###\s+Ana Riskler$/i);
-  const risks = riskIndex >= 0 ? parseRiskEntries(parseTable(lines, riskIndex + 1).table) : [];
+  const risks =
+    riskIndex >= 0
+      ? parseRiskEntries(parseFirstTable(getSectionBody(lines, riskIndex)))
+      : [];
 
-  const sizingIndex = findLineIndex(lines, /^###\s+Pozisyon Buyuklugu/i);
-  const positionSizing =
-    sizingIndex >= 0 ? parsePositionSizing(parseTable(lines, sizingIndex + 1).table) : [];
-
-  const goldenRulesIndex = findLineIndex(lines, /^###\s+Golden Rules$/i);
+  const goldenRulesIndex =
+    findLineIndex(lines, /^###\s+Golden Rules$/i) >= 0
+      ? findLineIndex(lines, /^###\s+Golden Rules$/i)
+      : findLineIndex(lines, /^###\s+\d+\s+Altin Kural/i);
   const goldenRules =
     goldenRulesIndex >= 0 ? readOrderedList(lines, goldenRulesIndex + 1).items : [];
 
   const checklistIndex = findLineIndex(lines, /^##\s+GUNLUK TAKIP KONTROL LISTESI$/i);
-  const checklistCode =
-    checklistIndex >= 0 ? readCodeFence(lines, checklistIndex) : { lines: [] as string[] };
-  const checklist = checklistCode.lines
-    .map(line => cleanText(line))
-    .filter(line => line.startsWith("[]"))
-    .map(line => cleanText(line.replace(/^\[\]\s*/, "")));
+  let checklist: string[] = [];
+  if (checklistIndex >= 0) {
+    const checklistCode = readCodeFence(lines, checklistIndex);
+    checklist = checklistCode.lines
+      .map(line => cleanText(line))
+      .filter(line => line.startsWith("[]"))
+      .map(line => cleanText(line.replace(/^\[\]\s*/, "")));
+  }
+  if (!checklist.length) {
+    checklist = goldenRules.slice(0, 6);
+  }
 
-  const disclaimerQuoteIndex = lines.findIndex(line => (line || "").trim().startsWith("> **YASAL UYARI:**"));
+  const disclaimerQuoteIndex = lines.findIndex(line =>
+    (line || "").trim().startsWith("> **YASAL UYARI:**")
+  );
   const disclaimer =
     disclaimerQuoteIndex >= 0
       ? readQuoteBlock(lines, disclaimerQuoteIndex).items.join(" ")
@@ -798,8 +1087,8 @@ export function parseEarningReportMarkdown(
     meta,
     reportDate,
     vixLabel,
-    coreWindow,
-    timelineSteps,
+    coreWindow: coreWindow || "",
+    timelineSteps: timelineSteps.length ? timelineSteps : buildFallbackTimeline(coreWindow || ""),
     gainDrivers,
     allocations,
     positions,

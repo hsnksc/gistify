@@ -406,8 +406,9 @@ export default function Home() {
               </h1>
               <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
                 `earningreport/` altina yeni `.md` dosyasi biraktiginda sistem onu
-                otomatik indeksler, tarihine gore siralar ve ayni tab yapisinda
-                analiz eder. Build’e gomulu tek rapor mantigi kapatildi.
+                otomatik indeksler, tarihine gore siralar ve en yeniyi current
+                source-of-truth olarak acar. Onceki dosyalar arsivde kalir; her
+                yeni rapor bir oncekinin guncellenmis devamidir.
               </p>
             </div>
 
@@ -523,10 +524,10 @@ export default function Home() {
               <div className="mb-3 flex items-center justify-between gap-3 px-2">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                    Report Index
+                    Update Chain
                   </p>
                   <p className="mt-1 text-xs text-muted-foreground">
-                    Tarih bazli secim
+                    En yeni rapor current, eskiler arsiv
                   </p>
                 </div>
                 {loadingReports ? (

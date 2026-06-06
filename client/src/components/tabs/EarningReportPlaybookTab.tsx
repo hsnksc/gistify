@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useMemo } from "react";
 import type {
   EarningReportSource,
   EarningsPosition,
@@ -87,11 +87,11 @@ function noteTone(note: StrategyNote) {
     return "border-red-400/30 bg-red-500/6";
   }
 
-  if (title.includes("AVANTAJ")) {
+  if (title.includes("AVANTAJ") || title.includes("BULL")) {
     return "border-emerald-400/30 bg-emerald-500/6";
   }
 
-  if (title.includes("FOMC")) {
+  if (title.includes("FOMC") || title.includes("MIXED")) {
     return "border-amber-400/30 bg-amber-500/6";
   }
 
@@ -127,7 +127,7 @@ function WeightMeter({ position }: { position: EarningsPosition }) {
   if (callWeight === null || putWeight === null) {
     return (
       <div className="rounded-none border border-border bg-background/40 px-3 py-2 text-sm text-muted-foreground">
-        {position.blueprint.ratioText || "Call/Put orani belirtilmedi"}
+        {position.blueprint.ratioText || "Call / Put orani belirtilmedi"}
       </div>
     );
   }
@@ -157,29 +157,36 @@ function WeightMeter({ position }: { position: EarningsPosition }) {
   );
 }
 
+function NoteCard({ note }: { note: StrategyNote }) {
+  return (
+    <div className={`rounded-none border p-4 ${noteTone(note)}`}>
+      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-foreground">
+        {note.title}
+      </p>
+      <div className="mt-3 space-y-2 text-sm leading-relaxed text-muted-foreground">
+        {note.lines.map(line => (
+          <p key={`${note.title}-${line}`}>{line}</p>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function EarningReportPlaybookTab({
   report,
   selectedTicker,
   onSelectTicker,
 }: Props) {
   const positions = useMemo(() => sortPositions(report.positions), [report.positions]);
-  const hasInitialSelection = useRef(false);
+  const activePosition = useMemo(
+    () =>
+      positions.find(position => position.ticker === selectedTicker) ||
+      positions[0] ||
+      null,
+    [positions, selectedTicker]
+  );
 
-  useEffect(() => {
-    if (!selectedTicker) {
-      return;
-    }
-
-    if (!hasInitialSelection.current) {
-      hasInitialSelection.current = true;
-      return;
-    }
-
-    const target = document.getElementById(`earning-playbook-${selectedTicker}`);
-    target?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, [selectedTicker]);
-
-  if (!positions.length) {
+  if (!positions.length || !activePosition) {
     return (
       <div className="p-6">
         <section className="rounded-none border border-border bg-card/80 p-6">
@@ -203,7 +210,7 @@ export default function EarningReportPlaybookTab({
         <div className="grid gap-5 xl:grid-cols-[minmax(0,1.1fr)_minmax(360px,0.9fr)]">
           <div className="space-y-3">
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-              Source-of-truth playbook
+              Latest intelligence board
             </p>
             <h1 className="heading-condensed text-3xl leading-none text-foreground md:text-4xl">
               {report.title}
@@ -220,7 +227,7 @@ export default function EarningReportPlaybookTab({
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2">
-            {report.gainDrivers.map(driver => (
+            {report.gainDrivers.slice(0, 4).map(driver => (
               <div
                 key={driver.factor}
                 className="rounded-none border border-border bg-background/50 p-3"
@@ -244,349 +251,352 @@ export default function EarningReportPlaybookTab({
         <div className="flex items-center gap-2">
           <div className="h-4 w-1 bg-emerald-400" />
           <h2 className="heading-condensed text-base text-foreground">
-            Hisse atlama menusu
+            Ticker command strip
           </h2>
         </div>
-        <div className="flex gap-2 overflow-x-auto pb-1">
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
           {positions.map(position => (
             <button
               key={position.ticker}
               type="button"
               onClick={() => onSelectTicker(position.ticker)}
-              className={`shrink-0 rounded-none border px-3 py-2 text-left ${
-                selectedTicker === position.ticker
-                  ? "border-emerald-400/50 bg-emerald-500/10 text-emerald-300"
-                  : "border-border bg-card/70 text-muted-foreground"
+              className={`rounded-none border p-4 text-left transition-colors ${
+                activePosition.ticker === position.ticker
+                  ? "border-emerald-400/50 bg-emerald-500/10"
+                  : "border-border bg-card/70 hover:border-white/15"
               }`}
             >
-              <div className="data-mono text-xs font-bold">{position.ticker}</div>
-              <div className="mt-1 text-[11px]">
-                {position.earningsDate} · {position.earningsTime}
+              <div className="flex items-center justify-between gap-3">
+                <span className="heading-condensed text-2xl text-foreground">
+                  {position.ticker}
+                </span>
+                <span className={`text-xs font-semibold ${getBiasTone(position)}`}>
+                  {position.blueprint.ratioText || position.strategyTitle}
+                </span>
+              </div>
+              <p className="mt-2 text-sm text-muted-foreground">{position.company}</p>
+              <div className="mt-3 flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+                <span>{position.earningsDate}</span>
+                <span>{position.earningsTime}</span>
+                <span>{position.daysLeft} gun</span>
               </div>
             </button>
           ))}
         </div>
       </section>
 
-      <section className="space-y-6">
-        {positions.map(position => (
-          <article
-            key={position.ticker}
-            id={`earning-playbook-${position.ticker}`}
-            className={`rounded-none border bg-card/80 p-5 transition-colors ${
-              selectedTicker === position.ticker
-                ? "border-emerald-400/50"
-                : "border-border"
-            }`}
-          >
-            <div className="flex flex-col gap-5">
-              <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
-                <div className="space-y-3">
-                  <div className="flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                    <span>#{position.order}</span>
-                    <span>{position.earningsDate}</span>
-                    <span className="rounded-none border border-border bg-background/60 px-2 py-1">
-                      {position.earningsTime}
-                    </span>
-                    <span className="rounded-none border border-border bg-background/60 px-2 py-1">
-                      {position.daysLeft} gun kaldi
-                    </span>
-                  </div>
-
-                  <div>
-                    <div className="flex flex-wrap items-center gap-3">
-                      <h3 className="heading-condensed text-3xl leading-none text-foreground">
-                        {position.ticker}
-                      </h3>
-                      <span className={`text-sm font-semibold ${getBiasTone(position)}`}>
-                        {position.strategyTitle}
-                      </span>
-                    </div>
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      {position.company}
-                    </p>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2 text-xs">
-                    <span className="rounded-none border border-border bg-background/60 px-3 py-1.5 text-muted-foreground">
-                      Sermaye:{" "}
-                      <span className="data-mono font-semibold text-foreground">
-                        {position.allocationCapital}
-                      </span>
-                    </span>
-                    <span className="rounded-none border border-border bg-background/60 px-3 py-1.5 text-muted-foreground">
-                      Risk:{" "}
-                      <span className="data-mono font-semibold text-foreground">
-                        {position.allocationRisk}
-                      </span>
-                    </span>
-                  </div>
-                </div>
-
-                <div className="grid gap-3 sm:grid-cols-2 xl:w-[460px]">
-                  <SummaryMetric
-                    label="Fiyat"
-                    value={findMetricValue(position, "Fiyat")}
-                    hint="Rapor anindaki spot"
-                  />
-                  <SummaryMetric
-                    label="IV Rank"
-                    value={findMetricValue(position, "IV Rank")}
-                    hint="Opsiyon maliyet rejimi"
-                    accentClass="text-amber-300"
-                  />
-                  <SummaryMetric
-                    label="Expected Move"
-                    value={findMetricValue(position, "Expected Move")}
-                    hint="Beklenen band"
-                  />
-                  <SummaryMetric
-                    label="Surprise / EPS"
-                    value={
-                      findMetricValue(position, "Surprise Pot.") !== "-"
-                        ? findMetricValue(position, "Surprise Pot.")
-                        : findMetricValue(position, "EPS Beklenti")
-                    }
-                    hint="Dosyadaki ana beklenti"
-                    accentClass="text-emerald-300"
-                  />
-                </div>
-              </div>
-
-              <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(280px,0.85fr)]">
-                <section className="space-y-4 rounded-none border border-border bg-background/40 p-4">
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Setup blueprint
-                    </p>
-                    <h4 className={`mt-2 text-sm font-semibold ${getBiasTone(position)}`}>
-                      {position.strategyTitle}
-                    </h4>
-                  </div>
-
-                  <WeightMeter position={position} />
-
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    <div className="rounded-none border border-emerald-400/20 bg-emerald-500/5 p-3">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                        {position.blueprint.callHeading}
-                      </p>
-                      <ul className="mt-2 space-y-1 text-sm leading-relaxed text-muted-foreground">
-                        {position.blueprint.callItems.map(item => (
-                          <li key={`${position.ticker}-call-${item}`}>{item}</li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="rounded-none border border-red-400/20 bg-red-500/5 p-3">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-red-300">
-                        {position.blueprint.putHeading}
-                      </p>
-                      <ul className="mt-2 space-y-1 text-sm leading-relaxed text-muted-foreground">
-                        {position.blueprint.putItems.map(item => (
-                          <li key={`${position.ticker}-put-${item}`}>{item}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-
-                  <div className="grid gap-3 sm:grid-cols-3">
-                    <div className="rounded-none border border-border bg-background/60 p-3">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                        Giris
-                      </p>
-                      <p className="mt-2 text-sm text-foreground">
-                        {position.blueprint.entry || "-"}
-                      </p>
-                    </div>
-                    <div className="rounded-none border border-border bg-background/60 p-3">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                        Cikis
-                      </p>
-                      <p className="mt-2 text-sm text-foreground">
-                        {position.blueprint.exit || "-"}
-                      </p>
-                    </div>
-                    <div className="rounded-none border border-border bg-background/60 p-3">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                        Expiry
-                      </p>
-                      <div className="mt-2 space-y-1 text-sm text-foreground">
-                        {position.blueprint.expiryLines.length ? (
-                          position.blueprint.expiryLines.map(line => (
-                            <p key={`${position.ticker}-expiry-${line}`}>{line}</p>
-                          ))
-                        ) : (
-                          <p>-</p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </section>
-
-                <section className="space-y-3 rounded-none border border-border bg-background/40 p-4">
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Haber analizi
-                    </p>
-                    <h4 className="mt-2 text-sm font-semibold text-foreground">
-                      Bias belirleyici akis
-                    </h4>
-                  </div>
-
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    {position.news.map(bucket => (
-                      <div
-                        key={`${position.ticker}-${bucket.key}`}
-                        className={`rounded-none border p-3 ${getBucketTone(bucket.key)}`}
-                      >
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.18em]">
-                          {bucket.label}
-                        </p>
-                        <ul className="mt-2 space-y-1 text-sm leading-relaxed text-current/80">
-                          {bucket.items.map(item => (
-                            <li key={`${position.ticker}-${bucket.key}-${item}`}>{item}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-
-                <section className="space-y-4 rounded-none border border-border bg-background/40 p-4">
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Rapor metrikleri
-                    </p>
-                    <h4 className="mt-2 text-sm font-semibold text-foreground">
-                      Hisse durumu + Greeks
-                    </h4>
-                  </div>
-
-                  <div className="space-y-2">
-                    {remainingMetrics(position).map(metric => (
-                      <div
-                        key={`${position.ticker}-${metric.label}`}
-                        className="flex items-start justify-between gap-3 border-b border-border/60 pb-2 text-sm last:border-b-0 last:pb-0"
-                      >
-                        <span className="text-muted-foreground">{metric.label}</span>
-                        <span className="data-mono text-right text-foreground">
-                          {metric.value}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="border-b border-border/80 text-left text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                          <th className="pb-2">Greek</th>
-                          <th className="pb-2">Deger</th>
-                          <th className="pb-2">Aciklama</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {position.greeks.map(row => (
-                          <tr key={`${position.ticker}-${row.greek}`} className="border-b border-border/50 last:border-b-0">
-                            <td className="py-2 data-mono font-semibold text-foreground">
-                              {row.greek}
-                            </td>
-                            <td className="py-2 data-mono text-amber-300">{row.value}</td>
-                            <td className="py-2 text-muted-foreground">{row.description}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </section>
-              </div>
-
-              <section className="rounded-none border border-border bg-background/40 p-4">
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Kar / zarar senaryolari
-                    </p>
-                    <h4 className="mt-2 text-sm font-semibold text-foreground">
-                      Dosyadaki senaryo matrisi
-                    </h4>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => onSelectTicker(position.ticker)}
-                    className="rounded-none border border-border bg-background/50 px-3 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    Secili hisse yap
-                  </button>
-                </div>
-
-                <div className="mt-4 overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-border/80 text-left text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                        <th className="pb-2">Senaryo</th>
-                        <th className="pb-2">IV degisimi</th>
-                        <th className="pb-2">Hisse hareketi</th>
-                        <th className="pb-2">Est. P/L</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {position.scenarios.map(row => (
-                        <tr key={`${position.ticker}-${row.scenario}`} className="border-b border-border/50 last:border-b-0">
-                          <td className="py-2 text-foreground">{row.scenario}</td>
-                          <td className="py-2 data-mono text-muted-foreground">
-                            {row.ivChange}
-                          </td>
-                          <td className="py-2 data-mono text-muted-foreground">
-                            {row.stockMove}
-                          </td>
-                          <td className={`py-2 data-mono font-semibold ${getScenarioTone(row.pnl)}`}>
-                            {row.pnl}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </section>
-
-              {position.warnings.length || position.notes.length ? (
-                <section className="grid gap-3 xl:grid-cols-2">
-                  {position.warnings.length ? (
-                    <div className="rounded-none border border-red-400/30 bg-red-500/6 p-4">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-red-300">
-                        Kritik uyarilar
-                      </p>
-                      <ul className="mt-3 space-y-2 text-sm leading-relaxed text-red-100/90">
-                        {position.warnings.map(warning => (
-                          <li key={`${position.ticker}-warning-${warning}`}>{warning}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  ) : null}
-
-                  <div className="grid gap-3">
-                    {position.notes.map(note => (
-                      <div
-                        key={`${position.ticker}-${note.title}`}
-                        className={`rounded-none border p-4 ${noteTone(note)}`}
-                      >
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-foreground">
-                          {note.title}
-                        </p>
-                        <div className="mt-3 space-y-2 text-sm leading-relaxed text-muted-foreground">
-                          {note.lines.map(line => (
-                            <p key={`${position.ticker}-${note.title}-${line}`}>{line}</p>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              ) : null}
+      <section className="rounded-none border border-emerald-400/30 bg-card/85 p-5">
+        <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+          <div className="space-y-3">
+            <div className="flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              <span>#{activePosition.order}</span>
+              <span>{activePosition.earningsDate}</span>
+              <span className="rounded-none border border-border bg-background/60 px-2 py-1">
+                {activePosition.earningsTime}
+              </span>
+              <span className="rounded-none border border-border bg-background/60 px-2 py-1">
+                {activePosition.daysLeft} gun kaldi
+              </span>
             </div>
-          </article>
-        ))}
+
+            <div>
+              <div className="flex flex-wrap items-center gap-3">
+                <h3 className="heading-condensed text-4xl leading-none text-foreground">
+                  {activePosition.ticker}
+                </h3>
+                <span className={`text-sm font-semibold ${getBiasTone(activePosition)}`}>
+                  {activePosition.strategyTitle}
+                </span>
+              </div>
+              <p className="mt-2 text-sm text-muted-foreground">
+                {activePosition.company}
+              </p>
+            </div>
+
+            <div className="flex flex-wrap gap-2 text-xs">
+              <span className="rounded-none border border-border bg-background/60 px-3 py-1.5 text-muted-foreground">
+                Sermaye:{" "}
+                <span className="data-mono font-semibold text-foreground">
+                  {activePosition.allocationCapital}
+                </span>
+              </span>
+              <span className="rounded-none border border-border bg-background/60 px-3 py-1.5 text-muted-foreground">
+                Risk:{" "}
+                <span className="data-mono font-semibold text-foreground">
+                  {activePosition.allocationRisk}
+                </span>
+              </span>
+            </div>
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-2 xl:w-[460px]">
+            <SummaryMetric
+              label="Fiyat"
+              value={findMetricValue(activePosition, "Fiyat")}
+              hint="Rapor anindaki spot"
+            />
+            <SummaryMetric
+              label="IV Rank"
+              value={findMetricValue(activePosition, "IV Rank")}
+              hint="Opsiyon maliyet rejimi"
+              accentClass="text-amber-300"
+            />
+            <SummaryMetric
+              label="Expected Move"
+              value={findMetricValue(activePosition, "Expected Move")}
+              hint="Beklenen band"
+            />
+            <SummaryMetric
+              label="EPS / Surprise"
+              value={
+                findMetricValue(activePosition, "Surprise Pot.") !== "-"
+                  ? findMetricValue(activePosition, "Surprise Pot.")
+                  : findMetricValue(activePosition, "EPS Beklenti")
+              }
+              hint="Dosyadaki ana beklenti"
+              accentClass="text-emerald-300"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="grid gap-4 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
+        <article className="rounded-none border border-border bg-card/80 p-4">
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+              Strategy board
+            </p>
+            <h4 className={`mt-2 text-sm font-semibold ${getBiasTone(activePosition)}`}>
+              {activePosition.strategyTitle}
+            </h4>
+          </div>
+
+          <div className="mt-4 space-y-4">
+            <WeightMeter position={activePosition} />
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="rounded-none border border-emerald-400/20 bg-emerald-500/5 p-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                  {activePosition.blueprint.callHeading}
+                </p>
+                <ul className="mt-2 space-y-1 text-sm leading-relaxed text-muted-foreground">
+                  {activePosition.blueprint.callItems.length ? (
+                    activePosition.blueprint.callItems.map(item => (
+                      <li key={`${activePosition.ticker}-call-${item}`}>{item}</li>
+                    ))
+                  ) : (
+                    <li>Call leg detayi belirtilmedi.</li>
+                  )}
+                </ul>
+              </div>
+
+              <div className="rounded-none border border-red-400/20 bg-red-500/5 p-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-red-300">
+                  {activePosition.blueprint.putHeading}
+                </p>
+                <ul className="mt-2 space-y-1 text-sm leading-relaxed text-muted-foreground">
+                  {activePosition.blueprint.putItems.length ? (
+                    activePosition.blueprint.putItems.map(item => (
+                      <li key={`${activePosition.ticker}-put-${item}`}>{item}</li>
+                    ))
+                  ) : (
+                    <li>Put leg detayi belirtilmedi.</li>
+                  )}
+                </ul>
+              </div>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-3">
+              <div className="rounded-none border border-border bg-background/60 p-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  Giris
+                </p>
+                <p className="mt-2 text-sm text-foreground">
+                  {activePosition.blueprint.entry || "-"}
+                </p>
+              </div>
+              <div className="rounded-none border border-border bg-background/60 p-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  Cikis
+                </p>
+                <p className="mt-2 text-sm text-foreground">
+                  {activePosition.blueprint.exit || "-"}
+                </p>
+              </div>
+              <div className="rounded-none border border-border bg-background/60 p-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  Expiry
+                </p>
+                <div className="mt-2 space-y-1 text-sm text-foreground">
+                  {activePosition.blueprint.expiryLines.length ? (
+                    activePosition.blueprint.expiryLines.map(line => (
+                      <p key={`${activePosition.ticker}-expiry-${line}`}>{line}</p>
+                    ))
+                  ) : (
+                    <p>-</p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {activePosition.warnings.length ? (
+              <div className="rounded-none border border-red-400/30 bg-red-500/6 p-4">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-red-300">
+                  Kritik uyarilar
+                </p>
+                <div className="mt-3 space-y-2 text-sm leading-relaxed text-red-100/90">
+                  {activePosition.warnings.map(warning => (
+                    <p key={`${activePosition.ticker}-warning-${warning}`}>{warning}</p>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </article>
+
+        <article className="rounded-none border border-border bg-card/80 p-4">
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-200">
+              Haberler ve catalystler
+            </p>
+            <h4 className="mt-2 text-sm font-semibold text-foreground">
+              Secili hisse intelligence stream
+            </h4>
+          </div>
+
+          <div className="mt-4 space-y-3">
+            {activePosition.news.length ? (
+              <div className="grid gap-3">
+                {activePosition.news.map(bucket => (
+                  <div
+                    key={`${activePosition.ticker}-${bucket.key}`}
+                    className={`rounded-none border p-3 ${getBucketTone(bucket.key)}`}
+                  >
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em]">
+                      {bucket.label}
+                    </p>
+                    <ul className="mt-2 space-y-1 text-sm leading-relaxed text-current/80">
+                      {bucket.items.map(item => (
+                        <li key={`${activePosition.ticker}-${bucket.key}-${item}`}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            ) : null}
+
+            <div className="grid gap-3">
+              {activePosition.notes.length ? (
+                activePosition.notes.map(note => (
+                  <NoteCard key={`${activePosition.ticker}-${note.title}`} note={note} />
+                ))
+              ) : (
+                <div className="rounded-none border border-border bg-background/50 p-4 text-sm leading-relaxed text-muted-foreground">
+                  Bu hissede ek haber notu parse edilmedi.
+                </div>
+              )}
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section className="grid gap-4 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+        <article className="rounded-none border border-border bg-card/80 p-4">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            Metrik kartlari
+          </p>
+          <div className="mt-4 space-y-2">
+            {remainingMetrics(activePosition).length ? (
+              remainingMetrics(activePosition).map(metric => (
+                <div
+                  key={`${activePosition.ticker}-${metric.label}`}
+                  className="flex items-start justify-between gap-3 border-b border-border/60 pb-2 text-sm last:border-b-0 last:pb-0"
+                >
+                  <span className="text-muted-foreground">{metric.label}</span>
+                  <span className="data-mono text-right text-foreground">
+                    {metric.value}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <div className="text-sm text-muted-foreground">
+                Ek metrik bulunmuyor.
+              </div>
+            )}
+          </div>
+
+          {activePosition.greeks.length ? (
+            <div className="mt-5 overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border/80 text-left text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                    <th className="pb-2">Greek</th>
+                    <th className="pb-2">Deger</th>
+                    <th className="pb-2">Aciklama</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {activePosition.greeks.map(row => (
+                    <tr
+                      key={`${activePosition.ticker}-${row.greek}`}
+                      className="border-b border-border/50 last:border-b-0"
+                    >
+                      <td className="py-2 data-mono font-semibold text-foreground">
+                        {row.greek}
+                      </td>
+                      <td className="py-2 data-mono text-amber-300">{row.value}</td>
+                      <td className="py-2 text-muted-foreground">{row.description}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : null}
+        </article>
+
+        <article className="rounded-none border border-border bg-card/80 p-4">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            Kar / zarar senaryolari
+          </p>
+          {activePosition.scenarios.length ? (
+            <div className="mt-4 overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border/80 text-left text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                    <th className="pb-2">Senaryo</th>
+                    <th className="pb-2">IV degisimi</th>
+                    <th className="pb-2">Hisse hareketi</th>
+                    <th className="pb-2">Est. P/L</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {activePosition.scenarios.map(row => (
+                    <tr
+                      key={`${activePosition.ticker}-${row.scenario}`}
+                      className="border-b border-border/50 last:border-b-0"
+                    >
+                      <td className="py-2 text-foreground">{row.scenario}</td>
+                      <td className="py-2 data-mono text-muted-foreground">
+                        {row.ivChange}
+                      </td>
+                      <td className="py-2 data-mono text-muted-foreground">
+                        {row.stockMove}
+                      </td>
+                      <td className={`py-2 data-mono font-semibold ${getScenarioTone(row.pnl)}`}>
+                        {row.pnl}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="mt-4 rounded-none border border-border bg-background/50 p-4 text-sm leading-relaxed text-muted-foreground">
+              Bu rapor versiyonunda tablo bazli P/L senaryosu verilmedi. Ana yon,
+              call/put orani ve giris/cikis penceresi strategy board ustunden okunmali.
+            </div>
+          )}
+        </article>
       </section>
     </div>
   );
