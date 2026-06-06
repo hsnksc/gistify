@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import type { DailyReportContent } from "@shared/dailyReports";
 import {
   Activity,
@@ -28,6 +28,12 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   buildDailyReportInsights,
   type MarkdownBlock,
@@ -185,14 +191,102 @@ function Panel({
   );
 }
 
+interface ReportFigure {
+  fileName: string;
+  label: string;
+  src: string;
+}
+
+function FigureCard({
+  figure,
+  variant = "deck",
+  onOpen,
+}: {
+  figure: ReportFigure;
+  variant?: "hero" | "deck" | "inline";
+  onOpen: (figure: ReportFigure) => void;
+}) {
+  const mediaHeight =
+    variant === "hero"
+      ? "min-h-[320px] md:min-h-[380px]"
+      : variant === "inline"
+        ? "min-h-[280px] md:min-h-[360px]"
+        : "min-h-[240px] md:min-h-[300px]";
+
+  return (
+    <figure className="group overflow-hidden rounded-[1.9rem] border border-white/10 bg-[#07161d]/92 shadow-[0_24px_80px_rgba(0,0,0,0.24)]">
+      <div className="flex items-center justify-between gap-3 border-b border-white/10 px-4 py-3">
+        <div className="min-w-0">
+          <p className="truncate text-sm font-semibold text-foreground">{figure.label}</p>
+          <p className="mt-1 truncate text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+            {figure.fileName}
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => onOpen(figure)}
+          className="shrink-0 rounded-full border border-emerald-400/25 bg-emerald-500/10 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-300 transition-colors hover:border-emerald-300/45 hover:bg-emerald-500/16"
+        >
+          Full size
+        </button>
+      </div>
+
+      <button
+        type="button"
+        onClick={() => onOpen(figure)}
+        className="block w-full text-left"
+      >
+        <div
+          className={`relative overflow-hidden bg-[linear-gradient(180deg,rgba(10,23,32,0.96),rgba(5,14,20,1))] ${mediaHeight}`}
+        >
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(16,185,129,0.16),transparent_38%),linear-gradient(180deg,transparent,rgba(6,19,27,0.48))]" />
+          <div className="absolute inset-0 tactical-grid opacity-[0.16]" />
+          <div className="absolute inset-x-4 top-4 flex items-center justify-between gap-3">
+            <span className="rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground backdrop-blur-sm">
+              {variant === "hero"
+                ? "Featured chart"
+                : variant === "inline"
+                  ? "Inline visual"
+                  : "Chart panel"}
+            </span>
+            <span className="rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground backdrop-blur-sm">
+              Tap to zoom
+            </span>
+          </div>
+          <div className="relative flex h-full items-center justify-center p-4 md:p-6">
+            <img
+              src={figure.src}
+              alt={figure.label}
+              className="max-h-full w-full rounded-[1.25rem] object-contain shadow-[0_20px_60px_rgba(0,0,0,0.38)] transition-transform duration-300 group-hover:scale-[1.01]"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </button>
+
+      <figcaption className="border-t border-white/10 px-4 py-3">
+        <p className="text-sm leading-6 text-foreground/90">
+          Grafik kaynagi orijinal haliyle korunur; burada yalnizca okunabilir bir panel
+          sunumu uygulanir.
+        </p>
+      </figcaption>
+    </figure>
+  );
+}
+
 export default function DailyReportViewer({
   title,
   reportDate,
   sourceFolder,
   content,
 }: DailyReportViewerProps) {
+  const [activeFigure, setActiveFigure] = useState<ReportFigure | null>(null);
   const insights = buildDailyReportInsights(content);
   const assetBasePath = content.assetBasePath || sourceFolder;
+  const resolvedFigures = insights.figureCards.map(figure => ({
+    ...figure,
+    src: getDailyReportAssetUrl(assetBasePath, figure.fileName),
+  }));
   const statCards = [
     {
       label: "Sections",
@@ -230,7 +324,7 @@ export default function DailyReportViewer({
     }
   });
 
-  const heroFigure = insights.figureCards[0] || null;
+  const heroFigure = resolvedFigures[0] || null;
 
   return (
     <div className="space-y-6">
@@ -278,21 +372,7 @@ export default function DailyReportViewer({
 
           <div className="space-y-4">
             {heroFigure ? (
-              <figure className="overflow-hidden rounded-[2rem] border border-white/10 bg-background/65 backdrop-blur-sm">
-                <img
-                  src={getDailyReportAssetUrl(assetBasePath, heroFigure.fileName)}
-                  alt={heroFigure.label}
-                  className="h-[230px] w-full object-cover"
-                  loading="lazy"
-                />
-                <figcaption className="border-t border-white/10 px-4 py-3">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                    Briefing Figure
-                  </p>
-                  <p className="mt-1 text-sm font-semibold text-foreground">{heroFigure.label}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">{heroFigure.fileName}</p>
-                </figcaption>
-              </figure>
+              <FigureCard figure={heroFigure} variant="hero" onOpen={setActiveFigure} />
             ) : null}
 
             <div className="rounded-[2rem] border border-white/10 bg-background/65 p-5 backdrop-blur-sm">
@@ -383,26 +463,17 @@ export default function DailyReportViewer({
       ) : null}
 
       {insights.figureCards.length ? (
-        <Panel eyebrow="Figure Deck" title="Kaynak gorseller ve grafik seti">
+        <Panel eyebrow="Figure Deck" title="Grafikler okunabilir panel duzeninde">
           <div className="grid gap-4 lg:grid-cols-2">
-            {insights.figureCards.map((figure, index) => (
-              <figure
+            {resolvedFigures.map((figure, index) => (
+              <div
                 key={figure.fileName}
                 className={`overflow-hidden rounded-[1.8rem] border border-border bg-background/55 ${
                   index === 0 ? "lg:col-span-2" : ""
                 }`}
               >
-                <img
-                  src={getDailyReportAssetUrl(assetBasePath, figure.fileName)}
-                  alt={figure.label}
-                  className={`w-full object-cover ${index === 0 ? "max-h-[440px]" : "max-h-[320px]"}`}
-                  loading="lazy"
-                />
-                <figcaption className="border-t border-border px-4 py-3">
-                  <p className="text-sm font-semibold text-foreground">{figure.label}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">{figure.fileName}</p>
-                </figcaption>
-              </figure>
+                <FigureCard figure={figure} onOpen={setActiveFigure} />
+              </div>
             ))}
           </div>
         </Panel>
@@ -674,23 +745,19 @@ export default function DailyReportViewer({
             }
 
             if (block.type === "image") {
+              const inlineFigure = {
+                fileName: normalizeRelativeAssetPath(block.src),
+                label: block.alt || "Report figure",
+                src: resolveAssetSrc(assetBasePath, block.src),
+              };
+
               return (
-                <figure
+                <FigureCard
                   key={`${block.type}-${index}`}
-                  className="overflow-hidden rounded-[1.75rem] border border-border bg-background/55"
-                >
-                  <img
-                    src={resolveAssetSrc(assetBasePath, block.src)}
-                    alt={block.alt || "Report figure"}
-                    className="w-full object-cover"
-                    loading="lazy"
-                  />
-                  {block.alt ? (
-                    <figcaption className="border-t border-border px-4 py-3 text-xs text-muted-foreground">
-                      {block.alt}
-                    </figcaption>
-                  ) : null}
-                </figure>
+                  figure={inlineFigure}
+                  variant="inline"
+                  onOpen={setActiveFigure}
+                />
               );
             }
 
@@ -746,6 +813,36 @@ export default function DailyReportViewer({
           </div>
         </div>
       </section>
+
+      <Dialog open={Boolean(activeFigure)} onOpenChange={open => !open && setActiveFigure(null)}>
+        <DialogContent
+          className="max-w-[min(1320px,calc(100%-2rem))] border-white/10 bg-[#041118]/98 p-0 shadow-[0_40px_140px_rgba(0,0,0,0.6)]"
+          showCloseButton
+        >
+          {activeFigure ? (
+            <div className="overflow-hidden rounded-[1.6rem]">
+              <div className="border-b border-white/10 px-6 py-5">
+                <DialogTitle className="text-xl font-semibold text-foreground">
+                  {activeFigure.label}
+                </DialogTitle>
+                <DialogDescription className="mt-2 text-sm leading-6 text-muted-foreground">
+                  {activeFigure.fileName}
+                </DialogDescription>
+              </div>
+              <div className="relative bg-[linear-gradient(180deg,rgba(10,23,32,0.98),rgba(4,14,20,1))] p-4 md:p-6">
+                <div className="absolute inset-0 tactical-grid opacity-[0.14]" />
+                <div className="relative flex min-h-[60vh] items-center justify-center">
+                  <img
+                    src={activeFigure.src}
+                    alt={activeFigure.label}
+                    className="max-h-[78vh] w-full rounded-[1.4rem] object-contain shadow-[0_24px_90px_rgba(0,0,0,0.48)]"
+                  />
+                </div>
+              </div>
+            </div>
+          ) : null}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
