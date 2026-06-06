@@ -10,6 +10,21 @@ function normalizeString(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
 }
 
+function cleanMarkdownText(value: string) {
+  return normalizeString(value).replace(/\*\*/g, "");
+}
+
+function normalizeSearchString(value: string) {
+  return cleanMarkdownText(value)
+    .toLocaleLowerCase("tr-TR")
+    .replace(/ç/g, "c")
+    .replace(/ğ/g, "g")
+    .replace(/ı/g, "i")
+    .replace(/ö/g, "o")
+    .replace(/ş/g, "s")
+    .replace(/ü/g, "u");
+}
+
 function slugify(value: string) {
   return value
     .trim()
@@ -52,6 +67,29 @@ function readMarkdownField(markdown: string, label: string) {
     new RegExp(`(?:^|\\n)(?:>\\s*)?\\*\\*${label}:\\*\\*\\s*([^\\n]+)`, "i")
   );
   return normalizeString(match?.[1]);
+}
+
+function readSummaryTableField(markdown: string, label: string) {
+  const needle = normalizeSearchString(label);
+
+  for (const line of markdown.split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (!trimmed.startsWith("|")) {
+      continue;
+    }
+
+    const cells = trimmed
+      .replace(/^\|/, "")
+      .replace(/\|$/, "")
+      .split("|")
+      .map(cell => cleanMarkdownText(cell));
+
+    if (normalizeSearchString(cells[0] || "") === needle) {
+      return normalizeString(cells[1]);
+    }
+  }
+
+  return "";
 }
 
 function readHeading(markdown: string, prefix: "#" | "##") {
@@ -130,9 +168,12 @@ function extractMetadata(markdown: string, fileName: string, updatedAt: string) 
     readMarkdownField(markdown, "Strateji Tipi") ||
     readMarkdownField(markdown, "Mekanizma") ||
     readMarkdownField(markdown, "Strateji") ||
+    readSummaryTableField(markdown, "En Buyuk Firsat") ||
     subtitle ||
     title;
-  const rawReportDateLabel = readMarkdownField(markdown, "Rapor Tarihi");
+  const rawReportDateLabel =
+    readMarkdownField(markdown, "Rapor Tarihi") ||
+    readSummaryTableField(markdown, "Analiz Tarihi");
   const reportDateLabel = normalizeString(rawReportDateLabel.split("|")[0] || "");
   const reportDate =
     parseTurkishDateLabel(reportDateLabel) ||
@@ -140,6 +181,7 @@ function extractMetadata(markdown: string, fileName: string, updatedAt: string) 
     updatedAt.slice(0, 10);
   const vixLabel =
     readMarkdownField(markdown, "VIX") ||
+    readSummaryTableField(markdown, "VIX") ||
     normalizeString(
       rawReportDateLabel.match(/\bVIX:\s*(.+)$/i)?.[1] || ""
     );

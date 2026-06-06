@@ -68,16 +68,56 @@ function getScenarioTone(pnl: string) {
   return "text-foreground";
 }
 
-function findMetricValue(position: EarningsPosition, label: string) {
-  return (
-    position.metrics.find(metric => metric.label.toLowerCase() === label.toLowerCase())
-      ?.value || "-"
-  );
+function normalizeMetricLabel(value: string) {
+  return value
+    .toLocaleLowerCase("tr-TR")
+    .replace(/ç/g, "c")
+    .replace(/ğ/g, "g")
+    .replace(/ı/g, "i")
+    .replace(/ö/g, "o")
+    .replace(/ş/g, "s")
+    .replace(/ü/g, "u")
+    .trim();
+}
+
+function findMetricValue(position: EarningsPosition, labels: string | string[]) {
+  const aliases = Array.isArray(labels) ? labels : [labels];
+  const metrics = position.metrics.map(metric => ({
+    ...metric,
+    normalizedLabel: normalizeMetricLabel(metric.label),
+  }));
+
+  for (const label of aliases) {
+    const normalized = normalizeMetricLabel(label);
+    const exact = metrics.find(metric => metric.normalizedLabel === normalized);
+    if (exact?.value) {
+      return exact.value;
+    }
+  }
+
+  for (const label of aliases) {
+    const normalized = normalizeMetricLabel(label);
+    const partial = metrics.find(metric => metric.normalizedLabel.includes(normalized));
+    if (partial?.value) {
+      return partial.value;
+    }
+  }
+
+  return "-";
 }
 
 function remainingMetrics(position: EarningsPosition) {
-  const hidden = new Set(["fiyat", "iv rank", "expected move"]);
-  return position.metrics.filter(metric => !hidden.has(metric.label.toLowerCase()));
+  const hidden = new Set([
+    "fiyat",
+    "son fiyat",
+    "iv rank",
+    "expected move",
+    "beklenen hareket",
+    "beklenen hareket (em)",
+  ]);
+  return position.metrics.filter(
+    metric => !hidden.has(normalizeMetricLabel(metric.label))
+  );
 }
 
 function noteTone(note: StrategyNote) {
@@ -280,6 +320,14 @@ export default function EarningReportPlaybookTab({
                 <span>{position.earningsTime}</span>
                 <span>{position.daysLeft} gun</span>
               </div>
+              <div className="mt-3 flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.16em]">
+                <span className="rounded-none border border-border bg-background/60 px-2 py-1 text-muted-foreground">
+                  {findMetricValue(position, ["Katalist Skoru"])}
+                </span>
+                <span className="rounded-none border border-border bg-background/60 px-2 py-1 text-muted-foreground">
+                  {findMetricValue(position, ["EarningsPlay Aksiyon"])}
+                </span>
+              </div>
             </button>
           ))}
         </div>
@@ -307,6 +355,9 @@ export default function EarningReportPlaybookTab({
                 <span className={`text-sm font-semibold ${getBiasTone(activePosition)}`}>
                   {activePosition.strategyTitle}
                 </span>
+                <span className="rounded-none border border-border bg-background/60 px-2 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-amber-300">
+                  {findMetricValue(activePosition, ["Katalist Skoru"])}
+                </span>
               </div>
               <p className="mt-2 text-sm text-muted-foreground">
                 {activePosition.company}
@@ -332,28 +383,40 @@ export default function EarningReportPlaybookTab({
           <div className="grid gap-3 sm:grid-cols-2 xl:w-[460px]">
             <SummaryMetric
               label="Fiyat"
-              value={findMetricValue(activePosition, "Fiyat")}
+              value={findMetricValue(activePosition, ["Fiyat", "Son Fiyat"])}
               hint="Rapor anindaki spot"
             />
             <SummaryMetric
               label="IV Rank"
-              value={findMetricValue(activePosition, "IV Rank")}
+              value={findMetricValue(activePosition, ["IV Rank"])}
               hint="Opsiyon maliyet rejimi"
               accentClass="text-amber-300"
             />
             <SummaryMetric
               label="Expected Move"
-              value={findMetricValue(activePosition, "Expected Move")}
+              value={findMetricValue(activePosition, [
+                "Expected Move",
+                "Beklenen Hareket (EM)",
+                "Beklenen Hareket",
+              ])}
               hint="Beklenen band"
             />
             <SummaryMetric
-              label="EPS / Surprise"
+              label="EPS"
               value={
-                findMetricValue(activePosition, "Surprise Pot.") !== "-"
-                  ? findMetricValue(activePosition, "Surprise Pot.")
-                  : findMetricValue(activePosition, "EPS Beklenti")
+                findMetricValue(activePosition, [
+                  "Surprise Pot.",
+                  "EPS Beklenti",
+                  "EPS Tahmini",
+                ]) !== "-"
+                  ? findMetricValue(activePosition, [
+                      "Surprise Pot.",
+                      "EPS Beklenti",
+                      "EPS Tahmini",
+                    ])
+                  : findMetricValue(activePosition, ["Gelir Tahmini"])
               }
-              hint="Dosyadaki ana beklenti"
+              hint="Ana beklenti snapshot"
               accentClass="text-emerald-300"
             />
           </div>

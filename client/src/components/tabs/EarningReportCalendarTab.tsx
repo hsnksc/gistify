@@ -125,8 +125,8 @@ export default function EarningReportCalendarTab({
               Giris ve cikis takvimi
             </h1>
             <p className="text-sm leading-relaxed text-muted-foreground">
-              Bu sekme, dosyadaki global IV takvimi ile hisse bazli giris/cikis
-              planini ayni yerde toplar.
+              Bu sekme, haftalik action plan, makro carpisma tarihleri ve hisse
+              bazli giris/cikis pencerelerini tek timeline'da toplar.
             </p>
             <div className="rounded-none border border-amber-400/20 bg-amber-500/5 px-4 py-3">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300">
@@ -163,7 +163,7 @@ export default function EarningReportCalendarTab({
         <div className="flex items-center gap-2">
           <div className="h-4 w-1 bg-amber-400" />
           <h2 className="heading-condensed text-base text-foreground">
-            Tipik IV takvimi
+            Haftalik checkpoints
           </h2>
         </div>
 
