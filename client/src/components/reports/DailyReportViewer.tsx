@@ -75,6 +75,16 @@ function resolveAssetSrc(assetBasePath: string | undefined, src: string) {
   return getDailyReportAssetUrl(assetBasePath, normalized);
 }
 
+function slugifyFragment(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .slice(0, 80);
+}
+
 function renderMarkdownTable(block: Extract<MarkdownBlock, { type: "table" }>, key: string) {
   return (
     <div
@@ -209,6 +219,18 @@ export default function DailyReportViewer({
       icon: <BookOpen className="size-4" />,
     },
   ];
+  const sectionAnchors = new Map<number, string>();
+  const sectionLinks: Array<{ id: string; label: string }> = [];
+
+  insights.blocks.forEach((block, index) => {
+    if (block.type === "heading" && block.level === 2) {
+      const id = `daily-section-${index}-${slugifyFragment(block.text)}`;
+      sectionAnchors.set(index, id);
+      sectionLinks.push({ id, label: block.text });
+    }
+  });
+
+  const heroFigure = insights.figureCards[0] || null;
 
   return (
     <div className="space-y-6">
@@ -216,7 +238,7 @@ export default function DailyReportViewer({
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.16),transparent_32%),radial-gradient(circle_at_bottom_left,rgba(245,158,11,0.12),transparent_28%)]" />
         <div className="absolute inset-0 tactical-grid opacity-20" />
 
-        <div className="relative grid gap-6 p-6 lg:grid-cols-[minmax(0,1.45fr)_360px]">
+        <div className="relative grid gap-6 p-6 lg:grid-cols-[minmax(0,1.4fr)_380px]">
           <div className="space-y-5">
             <div className="flex flex-wrap items-center gap-2">
               <span className="rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
@@ -254,52 +276,72 @@ export default function DailyReportViewer({
             </div>
           </div>
 
-          <div className="rounded-[2rem] border border-white/10 bg-background/65 p-5 backdrop-blur-sm">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  Rapor tarihi
-                </p>
-                <p className="mt-2 text-2xl font-semibold text-foreground">
-                  {formatReportDate(reportDate)}
-                </p>
-              </div>
-              <div className="rounded-2xl border border-emerald-500/25 bg-emerald-500/10 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                Signal map
-              </div>
-            </div>
+          <div className="space-y-4">
+            {heroFigure ? (
+              <figure className="overflow-hidden rounded-[2rem] border border-white/10 bg-background/65 backdrop-blur-sm">
+                <img
+                  src={getDailyReportAssetUrl(assetBasePath, heroFigure.fileName)}
+                  alt={heroFigure.label}
+                  className="h-[230px] w-full object-cover"
+                  loading="lazy"
+                />
+                <figcaption className="border-t border-white/10 px-4 py-3">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                    Briefing Figure
+                  </p>
+                  <p className="mt-1 text-sm font-semibold text-foreground">{heroFigure.label}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">{heroFigure.fileName}</p>
+                </figcaption>
+              </figure>
+            ) : null}
 
-            {insights.macroSignals.length ? (
-              <div className="mt-5 space-y-3">
-                {insights.macroSignals.map(signal => (
-                  <div
-                    key={`${signal.label}-${signal.value}`}
-                    className="rounded-[1.35rem] border border-white/8 bg-white/[0.03] px-4 py-3"
-                  >
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground">
-                          {signal.label}
-                        </p>
-                        <p className="mt-1 text-sm font-semibold text-foreground">
-                          {signal.value}
-                        </p>
+            <div className="rounded-[2rem] border border-white/10 bg-background/65 p-5 backdrop-blur-sm">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                    Rapor tarihi
+                  </p>
+                  <p className="mt-2 text-2xl font-semibold text-foreground">
+                    {formatReportDate(reportDate)}
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-emerald-500/25 bg-emerald-500/10 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                  Signal map
+                </div>
+              </div>
+
+              {insights.macroSignals.length ? (
+                <div className="mt-5 space-y-3">
+                  {insights.macroSignals.map(signal => (
+                    <div
+                      key={`${signal.label}-${signal.value}`}
+                      className="rounded-[1.35rem] border border-white/8 bg-white/[0.03] px-4 py-3"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground">
+                            {signal.label}
+                          </p>
+                          <p className="mt-1 text-sm font-semibold text-foreground">
+                            {signal.value}
+                          </p>
+                        </div>
+                        {signal.status ? (
+                          <span className="rounded-full border border-white/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                            {signal.status}
+                          </span>
+                        ) : null}
                       </div>
-                      {signal.status ? (
-                        <span className="rounded-full border border-white/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                          {signal.status}
-                        </span>
-                      ) : null}
                     </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="mt-5 rounded-[1.4rem] border border-white/8 bg-white/[0.03] p-4 text-sm leading-relaxed text-muted-foreground">
-                Bu raporda ayrik makro rejim tablosu bulunmuyor. Yine de asagidaki dashboard,
-                markdown tablolarindan otomatik olarak okunabilen sinyalleri ozetliyor.
-              </div>
-            )}
+                  ))}
+                </div>
+              ) : (
+                <div className="mt-5 rounded-[1.4rem] border border-white/8 bg-white/[0.03] p-4 text-sm leading-relaxed text-muted-foreground">
+                  Bu raporda ayrik makro rejim tablosu bulunmuyor. Yine de asagidaki dashboard,
+                  markdown tablolarindan otomatik olarak okunabilen sinyalleri ozetliyor.
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </section>
@@ -319,6 +361,48 @@ export default function DailyReportViewer({
                   <p className="text-sm leading-7 text-foreground/90">{theme}</p>
                 </div>
               </article>
+            ))}
+          </div>
+        </Panel>
+      ) : null}
+
+      {sectionLinks.length ? (
+        <Panel eyebrow="Report Map" title="Bolumler arasi hizli gecis">
+          <div className="flex flex-wrap gap-2">
+            {sectionLinks.map(section => (
+              <a
+                key={section.id}
+                href={`#${section.id}`}
+                className="rounded-full border border-white/10 bg-background/55 px-3 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:border-emerald-400/35 hover:text-emerald-300"
+              >
+                {section.label}
+              </a>
+            ))}
+          </div>
+        </Panel>
+      ) : null}
+
+      {insights.figureCards.length ? (
+        <Panel eyebrow="Figure Deck" title="Kaynak gorseller ve grafik seti">
+          <div className="grid gap-4 lg:grid-cols-2">
+            {insights.figureCards.map((figure, index) => (
+              <figure
+                key={figure.fileName}
+                className={`overflow-hidden rounded-[1.8rem] border border-border bg-background/55 ${
+                  index === 0 ? "lg:col-span-2" : ""
+                }`}
+              >
+                <img
+                  src={getDailyReportAssetUrl(assetBasePath, figure.fileName)}
+                  alt={figure.label}
+                  className={`w-full object-cover ${index === 0 ? "max-h-[440px]" : "max-h-[320px]"}`}
+                  loading="lazy"
+                />
+                <figcaption className="border-t border-border px-4 py-3">
+                  <p className="text-sm font-semibold text-foreground">{figure.label}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">{figure.fileName}</p>
+                </figcaption>
+              </figure>
             ))}
           </div>
         </Panel>
@@ -536,32 +620,6 @@ export default function DailyReportViewer({
         </section>
       ) : null}
 
-      {insights.figureCards.length ? (
-        <Panel eyebrow="Figure Deck" title="Kaynak gorseller ve grafik seti">
-          <div className="grid gap-4 lg:grid-cols-2">
-            {insights.figureCards.slice(0, 6).map((figure, index) => (
-              <figure
-                key={figure.fileName}
-                className={`overflow-hidden rounded-[1.8rem] border border-border bg-background/55 ${
-                  index === 0 ? "lg:col-span-2" : ""
-                }`}
-              >
-                <img
-                  src={getDailyReportAssetUrl(assetBasePath, figure.fileName)}
-                  alt={figure.label}
-                  className={`w-full object-cover ${index === 0 ? "max-h-[420px]" : "max-h-[300px]"}`}
-                  loading="lazy"
-                />
-                <figcaption className="border-t border-border px-4 py-3">
-                  <p className="text-sm font-semibold text-foreground">{figure.label}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">{figure.fileName}</p>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-        </Panel>
-      ) : null}
-
       <Panel eyebrow="Full Report" title="Tam rapor akisi">
         <div className="space-y-4">
           {insights.blocks.map((block, index) => {
@@ -574,7 +632,11 @@ export default function DailyReportViewer({
                     : "pt-3 text-lg font-semibold text-foreground";
 
               return (
-                <h4 key={`${block.type}-${index}`} className={className}>
+                <h4
+                  key={`${block.type}-${index}`}
+                  id={sectionAnchors.get(index)}
+                  className={`${className} scroll-mt-24`}
+                >
                   {block.text}
                 </h4>
               );

@@ -138,15 +138,36 @@ function listSectionFiles(folderPath: string) {
     .sort((left, right) => left.localeCompare(right));
 }
 
+function listRelativeFilesRecursive(
+  folderPath: string,
+  predicate: (filePath: string) => boolean,
+  basePath = folderPath
+) {
+  if (!fs.existsSync(folderPath)) {
+    return [];
+  }
+
+  const items: string[] = [];
+
+  for (const entry of fs.readdirSync(folderPath, { withFileTypes: true })) {
+    const entryPath = path.join(folderPath, entry.name);
+    if (entry.isDirectory()) {
+      items.push(...listRelativeFilesRecursive(entryPath, predicate, basePath));
+      continue;
+    }
+
+    if (entry.isFile() && predicate(entryPath)) {
+      items.push(path.relative(basePath, entryPath).replace(/\\/g, "/"));
+    }
+  }
+
+  return items.sort((left, right) => left.localeCompare(right));
+}
+
 function listFigureFiles(folderPath: string) {
-  return listFiles(folderPath)
-    .filter(
-      entry =>
-        entry.isFile() &&
-        /\.(png|jpg|jpeg|webp)$/i.test(entry.name)
-    )
-    .map(entry => entry.name)
-    .sort((left, right) => left.localeCompare(right));
+  return listRelativeFilesRecursive(folderPath, filePath =>
+    /\.(png|jpg|jpeg|webp)$/i.test(filePath)
+  );
 }
 
 function listRootFigureFiles(rootPath: string, baseName: string) {
@@ -171,6 +192,13 @@ function listTickerUniverse(researchPath: string) {
     .filter(entry => entry.isFile() && /_info\.csv$/i.test(entry.name))
     .map(entry => entry.name.replace(/_info\.csv$/i, "").toUpperCase())
     .sort((left, right) => left.localeCompare(right));
+}
+
+function countResearchFiles(researchPath: string) {
+  return listRelativeFilesRecursive(
+    researchPath,
+    filePath => /\.(md|csv)$/i.test(filePath)
+  ).length;
 }
 
 export function getDailyReportRootPath() {
@@ -210,11 +238,7 @@ function buildFolderSourcePackage(folderName: string) {
     sectionFiles: listSectionFiles(folderPath),
     figureFiles: listFigureFiles(folderPath),
     tickerUniverse: listTickerUniverse(researchPath),
-    researchFileCount: fs.existsSync(researchPath)
-      ? fs
-          .readdirSync(researchPath)
-          .filter(file => file.endsWith(".md") || file.endsWith(".csv")).length
-      : 0,
+    researchFileCount: countResearchFiles(researchPath),
     updatedAt: new Date(stats.mtimeMs).toISOString(),
     sourceKind: "folder",
     sourceLabel: folderName,

@@ -228,9 +228,12 @@ function getColumnIndex(headers: string[], candidates: string[]) {
 }
 
 function prettifyFigureLabel(fileName: string) {
-  return fileName
+  const baseName = fileName.split(/[\\/]/).pop() || fileName;
+
+  return baseName
     .replace(/\.[a-z0-9]+$/i, "")
     .replace(/^fig[_-]?/i, "")
+    .replace(/^chart\d+[_-]?/i, "")
     .replace(/^sec\d+[_-]?/i, "")
     .replace(/[_-]+/g, " ")
     .trim()
