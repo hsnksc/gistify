@@ -17,6 +17,7 @@ import type { MomentumReportRecord } from "@shared/momentumReports";
 import type { WeeklyReportRecord } from "@shared/weeklyReports";
 import DailyReportAdminPanel from "@/components/reports/DailyReportAdminPanel";
 import MomentumReportAdminPanel from "@/components/reports/MomentumReportAdminPanel";
+import OpenAiImageAdminPanel from "@/components/reports/OpenAiImageAdminPanel";
 import WeeklyReportAdminPanel from "@/components/reports/WeeklyReportAdminPanel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,7 +36,7 @@ import {
 } from "@/lib/dailyReports";
 import { useLocation } from "wouter";
 
-type WorkspaceKey = "earnings" | "momentum" | "daily";
+type WorkspaceKey = "earnings" | "momentum" | "daily" | "images";
 
 interface WeeklyReportsApiResponse {
   reports?: WeeklyReportRecord[];
@@ -957,38 +958,45 @@ export default function ReportsAdmin() {
 
               <div className="space-y-2">
                 <h1 className="text-4xl font-semibold tracking-tight text-foreground">
-                  Earnings ve Momentum Yonetimi
+                  Earnings, Daily ve Image Yonetimi
                 </h1>
                 <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
                   Sistem earnings haftalarini ve aday hisseleri bulur, momentum
                   scanner ise yayinlanabilir setup listesini uretir. Admin burada
-                  sadece gozden gecirir, ince ayar yapar ve yayina alir.
+                  sadece gozden gecirir, ince ayar yapar, yayina alir ve gerekirse
+                  referans gorsellerden yeni image uretir.
                 </p>
               </div>
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              {(["earnings", "momentum", "daily"] as WorkspaceKey[]).map(workspace => (
-                <Button
-                  key={workspace}
-                  type="button"
-                  variant={selectedWorkspace === workspace ? "default" : "outline"}
-                  onClick={() => setSelectedWorkspace(workspace)}
-                >
-                  {workspace === "earnings" ? (
-                    <FileSpreadsheet className="size-4" />
-                  ) : workspace === "momentum" ? (
-                    <Radar className="size-4" />
-                  ) : (
-                    <FileText className="size-4" />
-                  )}
-                  {workspace === "earnings"
-                    ? "Earnings Workspace"
-                    : workspace === "momentum"
-                      ? "Momentum Workspace"
-                      : "Daily Report"}
-                </Button>
-              ))}
+              {(["earnings", "momentum", "daily", "images"] as WorkspaceKey[]).map(
+                workspace => (
+                  <Button
+                    key={workspace}
+                    type="button"
+                    variant={selectedWorkspace === workspace ? "default" : "outline"}
+                    onClick={() => setSelectedWorkspace(workspace)}
+                  >
+                    {workspace === "earnings" ? (
+                      <FileSpreadsheet className="size-4" />
+                    ) : workspace === "momentum" ? (
+                      <Radar className="size-4" />
+                    ) : workspace === "daily" ? (
+                      <FileText className="size-4" />
+                    ) : (
+                      <Sparkles className="size-4" />
+                    )}
+                    {workspace === "earnings"
+                      ? "Earnings Workspace"
+                      : workspace === "momentum"
+                        ? "Momentum Workspace"
+                        : workspace === "daily"
+                          ? "Daily Report"
+                          : "Image Studio"}
+                  </Button>
+                )
+              )}
             </div>
           </div>
         </section>
@@ -1038,6 +1046,29 @@ export default function ReportsAdmin() {
                 title="Son yayin"
                 value={momentumStats.latestDate}
                 description="Latest published momentum snapshot"
+              />
+            </>
+          ) : selectedWorkspace === "images" ? (
+            <>
+              <SectionCard
+                title="Provider"
+                value="OpenAI"
+                description="Server-side image generation"
+              />
+              <SectionCard
+                title="Auth"
+                value="Server env"
+                description="API key frontend'e verilmez"
+              />
+              <SectionCard
+                title="Referans limit"
+                value="4"
+                description="Tek seferde en fazla gorsel"
+              />
+              <SectionCard
+                title="Cikis"
+                value="PNG"
+                description="Preview ve indirme ayni panelde"
               />
             </>
           ) : (
@@ -1128,6 +1159,10 @@ export default function ReportsAdmin() {
                     `REPORT_ADMIN_SECRET`: admin publish kilidi icin zorunlu
                   </p>
                   <p>`FMP_API_KEY`: gercek earnings takvimi ve hisse verisi icin zorunlu</p>
+                  <p>
+                    `OPENAI_API_KEY`: Image Studio ile referans gorselden yeni image
+                    uretmek icin zorunlu
+                  </p>
                   <p>
                     `VITE_SCANNER_MASSIVE_API_KEY`, `VITE_SCANNER_TWELVEDATA_API_KEY`,
                     `VITE_SCANNER_ALPHAVANTAGE_API_KEY`: momentum scanner fallback'i
@@ -1598,6 +1633,10 @@ export default function ReportsAdmin() {
               />
             </section>
           </>
+        ) : null}
+
+        {adminAuthorized && selectedWorkspace === "images" ? (
+          <OpenAiImageAdminPanel adminSecret={adminSecret} />
         ) : null}
 
         {adminAuthorized ? (

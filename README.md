@@ -53,6 +53,11 @@ Pure React 19 + Tailwind 4 template with shadcn/ui baked in. **Use this README a
 - `PADDLE_SUCCESS_URL`
 - `PADDLE_CANCEL_URL`
 
+Optional OpenAI image studio env:
+
+- `OPENAI_API_KEY`
+- `OPENAI_IMAGE_MAIN_MODEL` defaults to `gpt-4.1`
+
 Paddle API key permissions needed by the current integration:
 
 - `customer.read`

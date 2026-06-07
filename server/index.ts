@@ -69,6 +69,11 @@ import {
   getMomentumReportSource,
   listMomentumReportSourceSummaries,
 } from "./momentumReportSources";
+import {
+  generateOpenAiImage,
+  isOpenAiImageStudioConfigured,
+  normalizeOpenAiImageGenerateRequest,
+} from "./openaiImageStudio";
 
 type MembershipPlan = "guest" | "member" | "pro";
 type AppAccessMode = "managed" | "public";
@@ -3211,6 +3216,7 @@ async function startServer() {
   app.set("trust proxy", 1);
   app.use(
     express.json({
+      limit: "20mb",
       verify: (req, _res, buffer) => {
         (req as RequestWithRawBody).rawBody = buffer.toString("utf8");
       },
@@ -3219,6 +3225,7 @@ async function startServer() {
   app.use(
     express.urlencoded({
       extended: true,
+      limit: "20mb",
       verify: (req, _res, buffer) => {
         (req as RequestWithRawBody).rawBody = buffer.toString("utf8");
       },
@@ -4341,6 +4348,39 @@ async function startServer() {
     );
 
     res.status(200).json({ translations });
+  });
+
+  app.post("/api/admin/openai/image-generate", async (req, res) => {
+    setPrivateNoStore(res);
+    if (!requireWeeklyReportAdmin(req, res)) {
+      return;
+    }
+
+    if (!isOpenAiImageStudioConfigured()) {
+      res.status(503).json({
+        error: "OpenAI image studio hazir degil. OPENAI_API_KEY gerekli.",
+      });
+      return;
+    }
+
+    const payload = normalizeOpenAiImageGenerateRequest(req.body);
+    if (!payload.prompt) {
+      res.status(400).json({ error: "Prompt gerekli." });
+      return;
+    }
+
+    try {
+      const result = await generateOpenAiImage(payload);
+      res.status(200).json(result);
+    } catch (error) {
+      console.error("OpenAI image generation failed", error);
+      res.status(502).json({
+        error:
+          error instanceof Error
+            ? error.message
+            : "OpenAI image olusturma istegi tamamlanamadi.",
+      });
+    }
   });
 
   app.get("/", (_req, res) => {
