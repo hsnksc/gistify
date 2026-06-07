@@ -488,6 +488,10 @@ function App() {
     "/privacy",
     "/refund",
   ].includes(location);
+  const hasStandaloneWorkspaceHeader =
+    location === "/app" ||
+    location.startsWith("/momentum") ||
+    location.startsWith("/scanner");
 
   const isLimitedAccess =
     authState.status === "authenticated" && !authState.membership.isSubscribed;
@@ -886,21 +890,25 @@ function App() {
               <header
                 data-no-mask
                 data-no-translate
-                className="sticky top-0 z-[70] border-b border-border bg-background/95 backdrop-blur"
+                className={`border-b border-border bg-background/95 backdrop-blur ${
+                  hasStandaloneWorkspaceHeader
+                    ? "relative z-[30]"
+                    : "sticky top-0 z-[70]"
+                }`}
               >
-                <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-5">
-                  <div className="flex items-center gap-6">
-                    <div className="inline-flex items-center gap-6 rounded-[2.25rem] border border-border bg-card px-5 py-4.5 pr-6 shadow-[0_22px_52px_rgba(0,0,0,0.18)]">
+                <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3">
+                  <div className="flex min-w-0 items-center gap-3 md:gap-4">
+                    <div className="inline-flex shrink-0 items-center gap-3 rounded-full border border-border bg-card/90 px-3 py-2 shadow-[0_12px_28px_rgba(0,0,0,0.14)]">
                       <img
                         src="/gistifylogo.jpeg?v=20260606-1"
                         alt="Gistify logo"
-                        className="size-20 rounded-full border border-border object-cover md:size-24"
+                        className="size-10 rounded-full border border-border object-cover md:size-11"
                       />
-                      <div className="leading-tight">
-                        <p className="text-2xl font-semibold text-foreground md:text-3xl">
+                      <div className="min-w-0 leading-tight">
+                        <p className="text-sm font-semibold text-foreground md:text-base">
                           Gistify
                         </p>
-                        <p className="mt-2 text-base text-muted-foreground md:text-lg">
+                        <p className="text-[11px] text-muted-foreground md:text-xs">
                           Earnings Intelligence
                         </p>
                       </div>
