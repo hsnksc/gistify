@@ -23,6 +23,10 @@ export default function DailyReportPage() {
   const [reports, setReports] = useState<DailyReportRecord[]>([]);
   const [selectedReportId, setSelectedReportId] = useState("");
   const [loading, setLoading] = useState(true);
+  const getFigureFiles = (report: DailyReportRecord) =>
+    Array.isArray(report.content.figureFiles) ? report.content.figureFiles : [];
+  const getTickerUniverse = (report: DailyReportRecord) =>
+    Array.isArray(report.content.tickerUniverse) ? report.content.tickerUniverse : [];
 
   useEffect(() => {
     let cancelled = false;
@@ -75,11 +79,11 @@ export default function DailyReportPage() {
 
   const libraryStats = useMemo(() => {
     const totalFigures = reports.reduce(
-      (sum, report) => sum + report.content.figureFiles.length,
+      (sum, report) => sum + getFigureFiles(report).length,
       0
     );
     const totalTickers = reports.reduce(
-      (sum, report) => sum + report.content.tickerUniverse.length,
+      (sum, report) => sum + getTickerUniverse(report).length,
       0
     );
 
@@ -243,10 +247,10 @@ export default function DailyReportPage() {
 
                     <div className="mt-3 flex flex-wrap gap-2">
                       <span className="rounded-full border border-white/10 px-2 py-1 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-                        {report.content.figureFiles.length} figure
+                        {getFigureFiles(report).length} figure
                       </span>
                       <span className="rounded-full border border-white/10 px-2 py-1 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-                        {report.content.tickerUniverse.length} ticker
+                        {getTickerUniverse(report).length} ticker
                       </span>
                       <span className="rounded-full border border-white/10 px-2 py-1 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
                         {report.content.sourceLabel || report.sourceFolder}

@@ -327,7 +327,25 @@ function buildSignalRadar(
 }
 
 export function buildDailyReportInsights(content: DailyReportContent): DailyReportInsights {
-  const blocks = parseDailyReportMarkdown(content.markdown);
+  const normalizedContent = {
+    ...content,
+    markdown: typeof content.markdown === "string" ? content.markdown : "",
+    executiveSummary: Array.isArray(content.executiveSummary)
+      ? content.executiveSummary.filter((item): item is string => typeof item === "string")
+      : [],
+    figureFiles: Array.isArray(content.figureFiles)
+      ? content.figureFiles.filter((item): item is string => typeof item === "string")
+      : [],
+    tickerUniverse: Array.isArray(content.tickerUniverse)
+      ? content.tickerUniverse.filter((item): item is string => typeof item === "string")
+      : [],
+    researchFileCount:
+      typeof content.researchFileCount === "number" &&
+      Number.isFinite(content.researchFileCount)
+        ? content.researchFileCount
+        : 0,
+  } satisfies DailyReportContent;
+  const blocks = parseDailyReportMarkdown(normalizedContent.markdown);
   const tables = blocks.filter(
     (block): block is Extract<MarkdownBlock, { type: "table" }> => block.type === "table"
   );
@@ -502,8 +520,8 @@ export function buildDailyReportInsights(content: DailyReportContent): DailyRepo
       .filter((item): item is NonNullable<typeof item> => Boolean(item))
       .slice(0, 5) || [];
 
-  const keyThemes = (content.executiveSummary.length
-    ? content.executiveSummary
+  const keyThemes = (normalizedContent.executiveSummary.length
+    ? normalizedContent.executiveSummary
     : blocks
         .filter((block): block is Extract<MarkdownBlock, { type: "paragraph" }> => block.type === "paragraph")
         .map(block => block.text)
@@ -518,10 +536,10 @@ export function buildDailyReportInsights(content: DailyReportContent): DailyRepo
     marketPerformance: marketRows,
     sectorStrength,
     momentumLeaders,
-    breadthStats: extractBreadthStats(content.markdown),
+    breadthStats: extractBreadthStats(normalizedContent.markdown),
     macroSignals,
-    signalRadar: buildSignalRadar(content, sectionTitles, tables),
-    figureCards: content.figureFiles.map(fileName => ({
+    signalRadar: buildSignalRadar(normalizedContent, sectionTitles, tables),
+    figureCards: normalizedContent.figureFiles.map(fileName => ({
       fileName,
       label: prettifyFigureLabel(fileName),
     })),

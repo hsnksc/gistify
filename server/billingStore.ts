@@ -430,6 +430,20 @@ function mapMomentumReportRow(row: MomentumReportDbRow): MomentumReportRecord {
 }
 
 function mapDailyReportRow(row: DailyReportDbRow): DailyReportRecord {
+  const content =
+    row.content_json && row.content_json.trim()
+      ? (JSON.parse(row.content_json) as Record<string, unknown>)
+      : {};
+  const normalizeOptionalString = (value: unknown) =>
+    typeof value === "string" && value.trim() ? value.trim() : undefined;
+  const normalizeStringArray = (value: unknown, transform?: (item: string) => string) =>
+    Array.isArray(value)
+      ? value
+          .filter((item): item is string => typeof item === "string")
+          .map(item => (transform ? transform(item) : item).trim())
+          .filter(Boolean)
+      : [];
+
   return {
     id: row.id,
     slug: row.slug,
@@ -441,7 +455,30 @@ function mapDailyReportRow(row: DailyReportDbRow): DailyReportRecord {
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     publishedAt: row.published_at || undefined,
-    content: JSON.parse(row.content_json) as DailyReportRecord["content"],
+    content: {
+      headline:
+        (typeof content.headline === "string" && content.headline.trim()) ||
+        `${row.title} icin yayinlanmis daily report`,
+      author: normalizeOptionalString(content.author),
+      coverage: normalizeOptionalString(content.coverage),
+      methodology: normalizeOptionalString(content.methodology),
+      executiveSummary: normalizeStringArray(content.executiveSummary),
+      markdown: typeof content.markdown === "string" ? content.markdown : "",
+      sectionFiles: normalizeStringArray(content.sectionFiles),
+      figureFiles: normalizeStringArray(content.figureFiles),
+      openAiFigureFiles: normalizeStringArray(content.openAiFigureFiles),
+      tickerUniverse: normalizeStringArray(content.tickerUniverse, item =>
+        item.toUpperCase()
+      ),
+      researchFileCount:
+        typeof content.researchFileCount === "number" &&
+        Number.isFinite(content.researchFileCount)
+          ? content.researchFileCount
+          : 0,
+      sourceKind: content.sourceKind === "file" ? "file" : "folder",
+      sourceLabel: normalizeOptionalString(content.sourceLabel),
+      assetBasePath: normalizeOptionalString(content.assetBasePath),
+    },
   };
 }
 

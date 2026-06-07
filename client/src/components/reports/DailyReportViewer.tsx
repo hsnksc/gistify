@@ -323,9 +323,30 @@ export default function DailyReportViewer({
   content,
 }: DailyReportViewerProps) {
   const [activeFigure, setActiveFigure] = useState<ReportFigure | null>(null);
-  const insights = buildDailyReportInsights(content);
-  const assetBasePath = content.assetBasePath || sourceFolder;
-  const openAiFigureFiles = content.openAiFigureFiles || [];
+  const normalizedContent = {
+    ...content,
+    markdown: typeof content.markdown === "string" ? content.markdown : "",
+    executiveSummary: Array.isArray(content.executiveSummary)
+      ? content.executiveSummary.filter((item): item is string => typeof item === "string")
+      : [],
+    figureFiles: Array.isArray(content.figureFiles)
+      ? content.figureFiles.filter((item): item is string => typeof item === "string")
+      : [],
+    openAiFigureFiles: Array.isArray(content.openAiFigureFiles)
+      ? content.openAiFigureFiles.filter((item): item is string => typeof item === "string")
+      : [],
+    tickerUniverse: Array.isArray(content.tickerUniverse)
+      ? content.tickerUniverse.filter((item): item is string => typeof item === "string")
+      : [],
+    researchFileCount:
+      typeof content.researchFileCount === "number" &&
+      Number.isFinite(content.researchFileCount)
+        ? content.researchFileCount
+        : 0,
+  } satisfies DailyReportContent;
+  const insights = buildDailyReportInsights(normalizedContent);
+  const assetBasePath = normalizedContent.assetBasePath || sourceFolder;
+  const openAiFigureFiles = normalizedContent.openAiFigureFiles;
   const resolvedFigures = insights.figureCards.map(figure => {
     const preferred = resolvePreferredFigureFileName(
       figure.fileName,
@@ -347,19 +368,19 @@ export default function DailyReportViewer({
     },
     {
       label: "Tickers",
-      value: formatCompactNumber(content.tickerUniverse.length),
+      value: formatCompactNumber(normalizedContent.tickerUniverse.length),
       hint: "Izlenen sembol sayisi",
       icon: <Target className="size-4" />,
     },
     {
       label: "Figures",
-      value: formatCompactNumber(content.figureFiles.length),
+      value: formatCompactNumber(normalizedContent.figureFiles.length),
       hint: "Kaynakta bulunan grafik/gorsel",
       icon: <GalleryHorizontal className="size-4" />,
     },
     {
       label: "Research",
-      value: formatCompactNumber(content.researchFileCount),
+      value: formatCompactNumber(normalizedContent.researchFileCount),
       hint: "Destekleyici dosya adedi",
       icon: <BookOpen className="size-4" />,
     },
@@ -390,11 +411,13 @@ export default function DailyReportViewer({
                 Daily Report
               </span>
               <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                {content.sourceKind === "file" ? "Live markdown feed" : "Research package"}
+                {normalizedContent.sourceKind === "file"
+                  ? "Live markdown feed"
+                  : "Research package"}
               </span>
-              {content.sourceLabel ? (
+              {normalizedContent.sourceLabel ? (
                 <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  {content.sourceLabel}
+                  {normalizedContent.sourceLabel}
                 </span>
               ) : null}
             </div>
@@ -404,7 +427,7 @@ export default function DailyReportViewer({
                 {title}
               </h2>
               <p className="max-w-4xl text-sm leading-7 text-muted-foreground md:text-[15px]">
-                {content.headline}
+                {normalizedContent.headline}
               </p>
             </div>
 
@@ -832,7 +855,7 @@ export default function DailyReportViewer({
                 Coverage
               </p>
               <p className="mt-1 text-sm text-foreground">
-                {content.coverage || "Kaynakta acik kapsama notu yok"}
+                {normalizedContent.coverage || "Kaynakta acik kapsama notu yok"}
               </p>
             </div>
           </div>
@@ -847,7 +870,7 @@ export default function DailyReportViewer({
                 Method
               </p>
               <p className="mt-1 text-sm text-foreground">
-                {content.methodology || "Metodoloji notu belirtilmemis"}
+                {normalizedContent.methodology || "Metodoloji notu belirtilmemis"}
               </p>
             </div>
           </div>
@@ -862,7 +885,7 @@ export default function DailyReportViewer({
                 Source
               </p>
               <p className="mt-1 text-sm text-foreground">
-                {content.sourceLabel || sourceFolder || "Daily report source"}
+                {normalizedContent.sourceLabel || sourceFolder || "Daily report source"}
               </p>
             </div>
           </div>

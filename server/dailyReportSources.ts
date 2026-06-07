@@ -283,7 +283,12 @@ function extractMetadata(markdown: string) {
 
 function listSectionFiles(folderPath: string) {
   return listFiles(folderPath)
-    .filter(entry => entry.isFile() && /^momentum_raporu_sec\d+\.md$/i.test(entry.name))
+    .filter(
+      entry =>
+        entry.isFile() &&
+        (/^momentum_raporu_sec\d+\.md$/i.test(entry.name) ||
+          /_sec\d+\.md$/i.test(entry.name))
+    )
     .map(entry => entry.name)
     .sort((left, right) => left.localeCompare(right));
 }
@@ -368,26 +373,44 @@ function buildResearchFolderNameCandidates(reportDate: string) {
   ].map(value => value.toLowerCase());
 }
 
-function findResearchScopedFigureFiles(folderPath: string, reportDate: string) {
+function findResearchScopedFolderPath(folderPath: string, reportDate: string) {
   const researchPath = path.join(folderPath, "research");
   if (!fs.existsSync(researchPath)) {
-    return [];
+    return null;
   }
 
   const candidateTokens = new Set(buildResearchFolderNameCandidates(reportDate));
   if (!candidateTokens.size) {
-    return [];
+    return null;
   }
 
   const matchedFolder = listFiles(researchPath).find(
     entry => entry.isDirectory() && candidateTokens.has(entry.name.toLowerCase())
   );
   if (!matchedFolder) {
+    return null;
+  }
+
+  return path.join(researchPath, matchedFolder.name);
+}
+
+function resolveResearchDataPath(folderPath: string, reportDate: string) {
+  const researchPath = path.join(folderPath, "research");
+  if (!fs.existsSync(researchPath)) {
+    return null;
+  }
+
+  return findResearchScopedFolderPath(folderPath, reportDate) || researchPath;
+}
+
+function findResearchScopedFigureFiles(folderPath: string, reportDate: string) {
+  const scopedResearchPath = findResearchScopedFolderPath(folderPath, reportDate);
+  if (!scopedResearchPath) {
     return [];
   }
 
   return listRelativeFilesRecursive(
-    path.join(researchPath, matchedFolder.name),
+    scopedResearchPath,
     filePath => FIGURE_FILE_PATTERN.test(filePath) && !OPENAI_FIGURE_PATTERN.test(filePath),
     folderPath
   );
@@ -425,19 +448,58 @@ function listRootFigureFiles(
     .sort((left, right) => left.localeCompare(right));
 }
 
+function isLikelyTickerToken(value: string) {
+  if (!value || !/^[A-Z]{1,5}(?:\.[A-Z]{1,2})?$/.test(value)) {
+    return false;
+  }
+
+  const normalized = value.toLowerCase();
+  if (MONTH_TOKENS.has(normalized)) {
+    return false;
+  }
+
+  return ![
+    "chart",
+    "daily",
+    "report",
+    "research",
+    "plan",
+    "final",
+    "guncel",
+    "nihai",
+    "insight",
+  ].includes(normalized);
+}
+
+function extractTickerCandidateFromFile(filePath: string) {
+  const baseName = path.basename(filePath, path.extname(filePath));
+  if (!baseName || /^chart\d+/i.test(baseName)) {
+    return "";
+  }
+
+  const firstToken = baseName.split(/[_-]/)[0]?.trim().toUpperCase() || "";
+  return isLikelyTickerToken(firstToken) ? firstToken : "";
+}
+
 function listTickerUniverse(researchPath: string) {
   if (!fs.existsSync(researchPath)) {
     return [];
   }
 
-  return fs
-    .readdirSync(researchPath, { withFileTypes: true })
-    .filter(entry => entry.isFile() && /_info\.csv$/i.test(entry.name))
-    .map(entry => entry.name.replace(/_info\.csv$/i, "").toUpperCase())
-    .sort((left, right) => left.localeCompare(right));
+  const tickerSet = new Set(
+    listRelativeFilesRecursive(researchPath, filePath => /\.csv$/i.test(filePath))
+      .map(extractTickerCandidateFromFile)
+      .filter(Boolean)
+  );
+
+  return Array.from(tickerSet).sort((left, right) => left.localeCompare(right));
 }
 
 function countResearchFiles(researchPath: string) {
+  if (!fs.existsSync(researchPath)) {
+    return 0;
+  }
+
   return listRelativeFilesRecursive(
     researchPath,
     filePath => /\.(md|csv)$/i.test(filePath)
@@ -472,6 +534,8 @@ function buildFolderSourcePackage(folderName: string) {
     extractMarkdownFigureFiles(markdown)
   );
   const researchScopedFigureFiles = findResearchScopedFigureFiles(folderPath, reportDate);
+  const researchDataPath =
+    resolveResearchDataPath(folderPath, reportDate) || researchPath;
   const figureFiles = markdownFigureFiles.length
     ? markdownFigureFiles
     : researchScopedFigureFiles.length
@@ -495,8 +559,8 @@ function buildFolderSourcePackage(folderName: string) {
       folderPath,
       figureFiles.map(fileName => buildDailyReportOpenAiFigureFileName(fileName))
     ),
-    tickerUniverse: listTickerUniverse(researchPath),
-    researchFileCount: countResearchFiles(researchPath),
+    tickerUniverse: listTickerUniverse(researchDataPath),
+    researchFileCount: countResearchFiles(researchDataPath),
     updatedAt: new Date(stats.mtimeMs).toISOString(),
     sourceKind: "folder",
     sourceLabel: folderName,
