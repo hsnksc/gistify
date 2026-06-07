@@ -72,13 +72,53 @@ function normalizeRelativeAssetPath(value: string) {
   return value.replace(/^\.\/+/, "").trim();
 }
 
-function resolveAssetSrc(assetBasePath: string | undefined, src: string) {
-  const normalized = normalizeRelativeAssetPath(src);
-  if (/^(https?:)?\/\//i.test(normalized) || normalized.startsWith("data:")) {
-    return normalized;
+function buildOpenAiFigureFileName(fileName: string) {
+  const normalized = normalizeRelativeAssetPath(fileName);
+  const match = normalized.match(/^(.*?)(\.[a-z0-9]+)$/i);
+  if (!match) {
+    return normalized ? `${normalized}.openai.png` : "";
   }
 
-  return getDailyReportAssetUrl(assetBasePath, normalized);
+  return `${match[1].replace(/\.openai$/i, "")}.openai.png`;
+}
+
+function resolvePreferredFigureFileName(
+  fileName: string,
+  openAiFigureFiles: string[]
+) {
+  const normalized = normalizeRelativeAssetPath(fileName);
+  const openAiVariant = buildOpenAiFigureFileName(normalized);
+  if (openAiVariant && openAiFigureFiles.includes(openAiVariant)) {
+    return {
+      fileName: openAiVariant,
+      aiEnhanced: true,
+    };
+  }
+
+  return {
+    fileName: normalized,
+    aiEnhanced: false,
+  };
+}
+
+function resolveAssetSrc(
+  assetBasePath: string | undefined,
+  src: string,
+  openAiFigureFiles: string[]
+) {
+  const normalized = normalizeRelativeAssetPath(src);
+  if (/^(https?:)?\/\//i.test(normalized) || normalized.startsWith("data:")) {
+    return {
+      src: normalized,
+      aiEnhanced: false,
+    };
+  }
+
+  const preferred = resolvePreferredFigureFileName(normalized, openAiFigureFiles);
+  return {
+    src: getDailyReportAssetUrl(assetBasePath, preferred.fileName),
+    aiEnhanced: preferred.aiEnhanced,
+  };
 }
 
 function slugifyFragment(value: string) {
@@ -195,6 +235,7 @@ interface ReportFigure {
   fileName: string;
   label: string;
   src: string;
+  aiEnhanced: boolean;
 }
 
 function FigureCard({
@@ -266,8 +307,9 @@ function FigureCard({
 
       <figcaption className="border-t border-white/10 px-4 py-3">
         <p className="text-sm leading-6 text-foreground/90">
-          Grafik kaynagi orijinal haliyle korunur; burada yalnizca okunabilir bir panel
-          sunumu uygulanir.
+          {figure.aiEnhanced
+            ? "OpenAI tarafindan yeniden uretilmis gorsel varyanti gosteriliyor; kaynak veri daily report paketindeki orijinal chart'a dayanir."
+            : "Grafik kaynagi orijinal haliyle korunur; burada yalnizca okunabilir bir panel sunumu uygulanir."}
         </p>
       </figcaption>
     </figure>
@@ -283,10 +325,19 @@ export default function DailyReportViewer({
   const [activeFigure, setActiveFigure] = useState<ReportFigure | null>(null);
   const insights = buildDailyReportInsights(content);
   const assetBasePath = content.assetBasePath || sourceFolder;
-  const resolvedFigures = insights.figureCards.map(figure => ({
-    ...figure,
-    src: getDailyReportAssetUrl(assetBasePath, figure.fileName),
-  }));
+  const openAiFigureFiles = content.openAiFigureFiles || [];
+  const resolvedFigures = insights.figureCards.map(figure => {
+    const preferred = resolvePreferredFigureFileName(
+      figure.fileName,
+      openAiFigureFiles
+    );
+
+    return {
+      ...figure,
+      src: getDailyReportAssetUrl(assetBasePath, preferred.fileName),
+      aiEnhanced: preferred.aiEnhanced,
+    };
+  });
   const statCards = [
     {
       label: "Sections",
@@ -748,7 +799,11 @@ export default function DailyReportViewer({
               const inlineFigure = {
                 fileName: normalizeRelativeAssetPath(block.src),
                 label: block.alt || "Report figure",
-                src: resolveAssetSrc(assetBasePath, block.src),
+                ...resolveAssetSrc(
+                  assetBasePath,
+                  block.src,
+                  openAiFigureFiles
+                ),
               };
 
               return (

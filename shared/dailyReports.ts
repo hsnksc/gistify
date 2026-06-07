@@ -10,6 +10,7 @@ export interface DailyReportContent {
   markdown: string;
   sectionFiles: string[];
   figureFiles: string[];
+  openAiFigureFiles: string[];
   tickerUniverse: string[];
   researchFileCount: number;
   sourceKind?: DailyReportSourceKind;
@@ -44,6 +45,7 @@ export interface DailyReportSourcePackage {
   markdown: string;
   sectionFiles: string[];
   figureFiles: string[];
+  openAiFigureFiles: string[];
   tickerUniverse: string[];
   researchFileCount: number;
   updatedAt: string;

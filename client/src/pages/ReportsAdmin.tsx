@@ -13,6 +13,7 @@ import type {
   DailyReportRecord,
   DailyReportSourcePackage,
 } from "@shared/dailyReports";
+import type { DailyReportOpenAiChartGenerateResponse } from "@shared/dailyReportOpenAiCharts";
 import type { MomentumReportRecord } from "@shared/momentumReports";
 import type { WeeklyReportRecord } from "@shared/weeklyReports";
 import DailyReportAdminPanel from "@/components/reports/DailyReportAdminPanel";
@@ -32,6 +33,7 @@ import {
 import { createEmptyMomentumReportDraft } from "@/lib/momentumReports";
 import {
   createDailyReportDraftFromSource,
+  syncDailyReportDraftWithSource,
   sortDailyReportsNewestFirst,
 } from "@/lib/dailyReports";
 import { useLocation } from "wouter";
@@ -59,6 +61,10 @@ interface DailyReportsApiResponse {
 interface DailyReportSourcesApiResponse {
   sources?: DailyReportSourcePackage[];
   source?: DailyReportSourcePackage | null;
+}
+
+interface DailyReportOpenAiChartErrorResponse {
+  error?: string;
 }
 
 interface WeeklyReportSuggestion {
@@ -139,6 +145,17 @@ function formatIsoDate(value?: string) {
 
 function sortMomentumReportsNewestFirst(reports: MomentumReportRecord[]) {
   return [...reports].sort((left, right) => {
+    const byDate = right.reportDate.localeCompare(left.reportDate);
+    if (byDate !== 0) {
+      return byDate;
+    }
+
+    return right.updatedAt.localeCompare(left.updatedAt);
+  });
+}
+
+function sortDailySourcesNewestFirst(sources: DailyReportSourcePackage[]) {
+  return [...sources].sort((left, right) => {
     const byDate = right.reportDate.localeCompare(left.reportDate);
     if (byDate !== 0) {
       return byDate;
@@ -245,6 +262,13 @@ export default function ReportsAdmin() {
   const [selectedDailyReportId, setSelectedDailyReportId] = useState("");
   const [draftDailyReport, setDraftDailyReport] =
     useState<DailyReportRecord | null>(null);
+  const [dailyOpenAiChartPrompt, setDailyOpenAiChartPrompt] = useState(
+    "Kaynak market chart'i daha premium ve yuksek okunabilirlikte yeniden uret. Tum sayisal iliskileri, etiketleri, zaman akisini ve yon oklarini koru. Ek veri uydurma."
+  );
+  const [selectedDailyFigureFile, setSelectedDailyFigureFile] = useState("");
+  const [dailyOpenAiChartBusy, setDailyOpenAiChartBusy] = useState(false);
+  const [dailyOpenAiChartError, setDailyOpenAiChartError] = useState("");
+  const [dailyOpenAiChartMessage, setDailyOpenAiChartMessage] = useState("");
 
   const buildAdminHeaders = useCallback(
     (secretOverride?: string): Record<string, string> => {
@@ -399,9 +423,7 @@ export default function ReportsAdmin() {
       }
 
       const payload = (await response.json()) as DailyReportSourcesApiResponse;
-      const nextSources = [...(payload.sources || [])].sort((left, right) =>
-        right.reportDate.localeCompare(left.reportDate)
-      );
+      const nextSources = sortDailySourcesNewestFirst(payload.sources || []);
       setDailySourcePackages(nextSources);
       setSelectedDailySourceId(current =>
         current && nextSources.some(source => source.id === current)
@@ -553,6 +575,19 @@ export default function ReportsAdmin() {
     selectedDailySourceId,
   ]);
 
+  useEffect(() => {
+    if (!selectedDailySource?.figureFiles.length) {
+      setSelectedDailyFigureFile("");
+      return;
+    }
+
+    setSelectedDailyFigureFile(current =>
+      current && selectedDailySource.figureFiles.includes(current)
+        ? current
+        : selectedDailySource.figureFiles[0] || ""
+    );
+  }, [selectedDailySource]);
+
   const handleUnlock = async () => {
     setAdminBusy(true);
     setAdminError("");
@@ -605,6 +640,10 @@ export default function ReportsAdmin() {
     setLatestPublishedDaily(null);
     setSelectedDailyReportId("");
     setDraftDailyReport(null);
+    setDailyOpenAiChartError("");
+    setDailyOpenAiChartMessage("");
+    setDailyOpenAiChartBusy(false);
+    setSelectedDailyFigureFile("");
   };
 
   const handleSelectReport = (reportId: string) => {
@@ -856,6 +895,85 @@ export default function ReportsAdmin() {
       );
     } finally {
       setAdminBusy(false);
+    }
+  };
+
+  const generateDailyOpenAiCharts = async (figureFileNames?: string[]) => {
+    if (!selectedDailySource) {
+      return;
+    }
+
+    const nextFigureFileNames =
+      figureFileNames?.length && figureFileNames[0]
+        ? figureFileNames
+        : selectedDailySource.figureFiles;
+    if (!nextFigureFileNames.length) {
+      setDailyOpenAiChartError("Kaynak grafik bulunamadi.");
+      return;
+    }
+
+    const normalizedPrompt = dailyOpenAiChartPrompt.trim();
+    if (!normalizedPrompt) {
+      setDailyOpenAiChartError("OpenAI chart prompt gerekli.");
+      return;
+    }
+
+    setDailyOpenAiChartBusy(true);
+    setDailyOpenAiChartError("");
+    setDailyOpenAiChartMessage("");
+
+    try {
+      const response = await fetch("/api/admin/daily-report-charts/openai", {
+        method: "POST",
+        credentials: "include",
+        cache: "no-store",
+        headers: {
+          "Content-Type": "application/json",
+          ...buildAdminHeaders(),
+        },
+        body: JSON.stringify({
+          sourceId: selectedDailySource.id,
+          prompt: normalizedPrompt,
+          figureFileNames: nextFigureFileNames,
+        }),
+      });
+
+      const payload = (await response.json()) as
+        | DailyReportOpenAiChartGenerateResponse
+        | DailyReportOpenAiChartErrorResponse;
+
+      if (!response.ok) {
+        throw new Error(
+          "error" in payload && payload.error
+            ? payload.error
+            : "OpenAI chart generation basarisiz oldu."
+        );
+      }
+
+      const result = payload as DailyReportOpenAiChartGenerateResponse;
+      setSelectedDailySource(result.source);
+      setDailySourcePackages(current =>
+        sortDailySourcesNewestFirst([
+          result.source,
+          ...current.filter(source => source.id !== result.source.id),
+        ])
+      );
+      setDraftDailyReport(current =>
+        current?.sourceFolder === result.source.folderName
+          ? syncDailyReportDraftWithSource(current, result.source)
+          : current
+      );
+      setDailyOpenAiChartMessage(
+        `${result.generatedFiles.length} grafik icin OpenAI varyanti uretildi.`
+      );
+    } catch (error) {
+      setDailyOpenAiChartError(
+        error instanceof Error
+          ? error.message
+          : "OpenAI chart generation tamamlanamadi."
+      );
+    } finally {
+      setDailyOpenAiChartBusy(false);
     }
   };
 
@@ -1617,9 +1735,34 @@ export default function ReportsAdmin() {
                 sources={dailySourcePackages}
                 selectedSourceId={selectedDailySourceId}
                 selectedSource={selectedDailySource}
-                onSelectSource={setSelectedDailySourceId}
+                onSelectSource={value => {
+                  setSelectedDailySourceId(value);
+                  setDailyOpenAiChartError("");
+                  setDailyOpenAiChartMessage("");
+                }}
                 onRefreshSources={() => void loadDailyReportSources(adminSecret)}
                 onCreateDraftFromSource={handleCreateDailyDraftFromSource}
+                openAiChartBusy={dailyOpenAiChartBusy}
+                openAiChartError={dailyOpenAiChartError}
+                openAiChartMessage={dailyOpenAiChartMessage}
+                openAiChartPrompt={dailyOpenAiChartPrompt}
+                selectedOpenAiFigureFile={selectedDailyFigureFile}
+                onOpenAiChartPromptChange={value => {
+                  setDailyOpenAiChartPrompt(value);
+                  setDailyOpenAiChartError("");
+                  setDailyOpenAiChartMessage("");
+                }}
+                onSelectOpenAiFigureFile={value => {
+                  setSelectedDailyFigureFile(value);
+                  setDailyOpenAiChartError("");
+                  setDailyOpenAiChartMessage("");
+                }}
+                onGenerateSelectedOpenAiChart={() =>
+                  void generateDailyOpenAiCharts(
+                    selectedDailyFigureFile ? [selectedDailyFigureFile] : []
+                  )
+                }
+                onGenerateAllOpenAiCharts={() => void generateDailyOpenAiCharts()}
                 reports={dailyReports}
                 selectedReportId={selectedDailyReportId}
                 draftReport={draftDailyReport}

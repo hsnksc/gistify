@@ -50,11 +50,38 @@ export function createDailyReportDraftFromSource(
       markdown: source.markdown,
       sectionFiles: source.sectionFiles,
       figureFiles: source.figureFiles,
+      openAiFigureFiles: source.openAiFigureFiles,
       tickerUniverse: source.tickerUniverse,
       researchFileCount: source.researchFileCount,
       sourceKind: source.sourceKind,
       sourceLabel: source.sourceLabel,
       assetBasePath: source.assetBasePath,
+    },
+  } satisfies DailyReportRecord;
+}
+
+export function syncDailyReportDraftWithSource(
+  report: DailyReportRecord,
+  source: DailyReportSourcePackage
+) {
+  return {
+    ...report,
+    sourceFolder: source.folderName,
+    updatedAt: new Date().toISOString(),
+    content: {
+      ...report.content,
+      markdown: source.markdown,
+      sectionFiles: source.sectionFiles,
+      figureFiles: source.figureFiles,
+      openAiFigureFiles: source.openAiFigureFiles,
+      tickerUniverse: source.tickerUniverse,
+      researchFileCount: source.researchFileCount,
+      sourceKind: source.sourceKind,
+      sourceLabel: source.sourceLabel,
+      assetBasePath: source.assetBasePath,
+      author: report.content.author || source.author,
+      coverage: report.content.coverage || source.coverage,
+      methodology: report.content.methodology || source.methodology,
     },
   } satisfies DailyReportRecord;
 }

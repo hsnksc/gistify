@@ -14,6 +14,7 @@ import type {
   DailyReportContent,
   DailyReportRecord,
 } from "../shared/dailyReports";
+import type { DailyReportOpenAiChartGenerateResponse } from "../shared/dailyReportOpenAiCharts";
 import type {
   MomentumReportContent,
   MomentumReportEntry,
@@ -61,6 +62,10 @@ import {
   getDailyReportSourcePackage,
   listDailyReportSourcePackages,
 } from "./dailyReportSources";
+import {
+  generateDailyReportOpenAiCharts,
+  normalizeDailyReportOpenAiChartGenerateRequest,
+} from "./dailyReportOpenAiCharts";
 import {
   getEarningReportSource,
   listEarningReportSourceSummaries,
@@ -1166,6 +1171,12 @@ function normalizeDailyReportContent(value: unknown, title: string) {
         .map(item => item.trim())
         .filter(Boolean)
     : [];
+  const openAiFigureFiles = Array.isArray(source.openAiFigureFiles)
+    ? source.openAiFigureFiles
+        .filter((item): item is string => typeof item === "string")
+        .map(item => item.trim())
+        .filter(Boolean)
+    : [];
   const tickerUniverse = Array.isArray(source.tickerUniverse)
     ? source.tickerUniverse
         .filter((item): item is string => typeof item === "string")
@@ -1183,6 +1194,7 @@ function normalizeDailyReportContent(value: unknown, title: string) {
     markdown: normalizeString(source.markdown),
     sectionFiles,
     figureFiles,
+    openAiFigureFiles,
     tickerUniverse,
     researchFileCount: normalizeNumber(source.researchFileCount, 0),
     sourceKind:
@@ -4035,6 +4047,7 @@ async function startServer() {
         executiveSummary: source.executiveSummary,
         sectionFiles: source.sectionFiles,
         figureFiles: source.figureFiles,
+        openAiFigureFiles: source.openAiFigureFiles,
         tickerUniverse: source.tickerUniverse,
         researchFileCount: source.researchFileCount,
         updatedAt: source.updatedAt,
@@ -4379,6 +4392,44 @@ async function startServer() {
           error instanceof Error
             ? error.message
             : "OpenAI image olusturma istegi tamamlanamadi.",
+      });
+    }
+  });
+
+  app.post("/api/admin/daily-report-charts/openai", async (req, res) => {
+    setPrivateNoStore(res);
+    if (!requireWeeklyReportAdmin(req, res)) {
+      return;
+    }
+
+    if (!isOpenAiImageStudioConfigured()) {
+      res.status(503).json({
+        error: "OpenAI chart workflow hazir degil. OPENAI_API_KEY gerekli.",
+      });
+      return;
+    }
+
+    const payload = normalizeDailyReportOpenAiChartGenerateRequest(req.body);
+    if (!payload.sourceId) {
+      res.status(400).json({ error: "Source secimi gerekli." });
+      return;
+    }
+
+    if (!payload.prompt) {
+      res.status(400).json({ error: "Prompt gerekli." });
+      return;
+    }
+
+    try {
+      const result = await generateDailyReportOpenAiCharts(payload);
+      res.status(200).json(result satisfies DailyReportOpenAiChartGenerateResponse);
+    } catch (error) {
+      console.error("Daily report OpenAI chart generation failed", error);
+      res.status(502).json({
+        error:
+          error instanceof Error
+            ? error.message
+            : "Daily report OpenAI chart generation tamamlanamadi.",
       });
     }
   });

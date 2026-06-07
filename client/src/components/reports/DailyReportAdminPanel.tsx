@@ -25,6 +25,15 @@ interface DailyReportAdminPanelProps {
   onSelectSource: (sourceId: string) => void;
   onRefreshSources: () => void;
   onCreateDraftFromSource: () => void;
+  openAiChartBusy: boolean;
+  openAiChartError?: string;
+  openAiChartMessage?: string;
+  openAiChartPrompt: string;
+  selectedOpenAiFigureFile: string;
+  onOpenAiChartPromptChange: (prompt: string) => void;
+  onSelectOpenAiFigureFile: (fileName: string) => void;
+  onGenerateSelectedOpenAiChart: () => void;
+  onGenerateAllOpenAiCharts: () => void;
   reports: DailyReportRecord[];
   selectedReportId: string;
   draftReport: DailyReportRecord | null;
@@ -60,6 +69,15 @@ export default function DailyReportAdminPanel({
   onSelectSource,
   onRefreshSources,
   onCreateDraftFromSource,
+  openAiChartBusy,
+  openAiChartError,
+  openAiChartMessage,
+  openAiChartPrompt,
+  selectedOpenAiFigureFile,
+  onOpenAiChartPromptChange,
+  onSelectOpenAiFigureFile,
+  onGenerateSelectedOpenAiChart,
+  onGenerateAllOpenAiCharts,
   reports,
   selectedReportId,
   draftReport,
@@ -298,6 +316,71 @@ export default function DailyReportAdminPanel({
                 Bu source'u kullan
               </Button>
             </div>
+
+            <div className="mt-5 grid gap-4 lg:grid-cols-[minmax(0,1fr)_220px_auto]">
+              <Field label="OpenAI chart prompt">
+                <Textarea
+                  rows={5}
+                  value={openAiChartPrompt}
+                  onChange={event => onOpenAiChartPromptChange(event.target.value)}
+                  placeholder="Grafikleri daha okunabilir, premium ve editorial bir formatta yeniden uret."
+                />
+              </Field>
+
+              <Field label="Secili grafik">
+                <Select
+                  value={selectedOpenAiFigureFile}
+                  onValueChange={onSelectOpenAiFigureFile}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Grafik sec" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {selectedSource.figureFiles.map(fileName => (
+                      <SelectItem key={fileName} value={fileName}>
+                        {fileName}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </Field>
+
+              <div className="flex flex-col gap-2 pt-6">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={onGenerateSelectedOpenAiChart}
+                  disabled={
+                    openAiChartBusy ||
+                    !selectedSource.figureFiles.length ||
+                    !selectedOpenAiFigureFile
+                  }
+                >
+                  Secili grafigi uret
+                </Button>
+                <Button
+                  type="button"
+                  onClick={onGenerateAllOpenAiCharts}
+                  disabled={openAiChartBusy || !selectedSource.figureFiles.length}
+                >
+                  Tum grafikleri uret
+                </Button>
+              </div>
+            </div>
+
+            <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+              <span>
+                OpenAI varyantlari: {selectedSource.openAiFigureFiles.length} /{" "}
+                {selectedSource.figureFiles.length}
+              </span>
+              {openAiChartBusy ? <span>Uretim suruyor...</span> : null}
+              {openAiChartMessage ? (
+                <span className="text-emerald-300">{openAiChartMessage}</span>
+              ) : null}
+              {openAiChartError ? (
+                <span className="text-destructive">{openAiChartError}</span>
+              ) : null}
+            </div>
           </section>
         ) : null}
 
@@ -322,6 +405,7 @@ export default function DailyReportAdminPanel({
               markdown: selectedSource.markdown,
               sectionFiles: selectedSource.sectionFiles,
               figureFiles: selectedSource.figureFiles,
+              openAiFigureFiles: selectedSource.openAiFigureFiles,
               tickerUniverse: selectedSource.tickerUniverse,
               researchFileCount: selectedSource.researchFileCount,
               sourceKind: selectedSource.sourceKind,
