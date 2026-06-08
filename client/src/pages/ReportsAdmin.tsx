@@ -967,55 +967,94 @@ export default function ReportsAdmin() {
     setDailyOpenAiChartBusy(true);
     setDailyOpenAiChartError("");
     setDailyOpenAiChartMessage("");
+    let completed = 0;
+    const total = nextFigureFileNames.length;
+    let currentFigureFileName = "";
 
     try {
-      const response = await fetch("/api/admin/daily-report-charts/openai", {
-        method: "POST",
-        credentials: "include",
-        cache: "no-store",
-        headers: {
-          "Content-Type": "application/json",
-          ...buildAdminHeaders(),
-        },
-        body: JSON.stringify({
-          sourceId: selectedDailySource.id,
-          prompt: normalizedPrompt,
-          figureFileNames: nextFigureFileNames,
-        }),
-      });
+      const requestChartGeneration = async (
+        targetFigureFileNames: string[]
+      ): Promise<DailyReportOpenAiChartGenerateResponse> => {
+        const response = await fetch("/api/admin/daily-report-charts/openai", {
+          method: "POST",
+          credentials: "include",
+          cache: "no-store",
+          headers: {
+            "Content-Type": "application/json",
+            ...buildAdminHeaders(),
+          },
+          body: JSON.stringify({
+            sourceId: selectedDailySource.id,
+            prompt: normalizedPrompt,
+            figureFileNames: targetFigureFileNames,
+          }),
+        });
 
-      const payload = await readJsonResponse<
-        | DailyReportOpenAiChartGenerateResponse
-        | DailyReportOpenAiChartErrorResponse
-      >(response, "Daily report OpenAI chart uretimi");
+        const payload = await readJsonResponse<
+          | DailyReportOpenAiChartGenerateResponse
+          | DailyReportOpenAiChartErrorResponse
+        >(response, "Daily report OpenAI chart uretimi");
 
-      if (!response.ok) {
-        throw new Error(
-          extractApiErrorMessage(payload, "OpenAI chart generation basarisiz oldu.")
+        if (!response.ok) {
+          throw new Error(
+            extractApiErrorMessage(payload, "OpenAI chart generation basarisiz oldu.")
+          );
+        }
+
+        return payload as DailyReportOpenAiChartGenerateResponse;
+      };
+
+      const applyGeneratedSource = (
+        result: DailyReportOpenAiChartGenerateResponse
+      ) => {
+        setSelectedDailySource(result.source);
+        setDailySourcePackages(current =>
+          sortDailySourcesNewestFirst([
+            result.source,
+            ...current.filter(source => source.id !== result.source.id),
+          ])
         );
+        setDraftDailyReport(current =>
+          current?.sourceFolder === result.source.folderName
+            ? syncDailyReportDraftWithSource(current, result.source)
+            : current
+        );
+      };
+
+      if (nextFigureFileNames.length === 1) {
+        const result = await requestChartGeneration(nextFigureFileNames);
+        applyGeneratedSource(result);
+        setDailyOpenAiChartMessage(
+          `${result.generatedFiles.length} grafik icin OpenAI varyanti uretildi.`
+        );
+        return;
       }
 
-      const result = payload as DailyReportOpenAiChartGenerateResponse;
-      setSelectedDailySource(result.source);
-      setDailySourcePackages(current =>
-        sortDailySourcesNewestFirst([
-          result.source,
-          ...current.filter(source => source.id !== result.source.id),
-        ])
-      );
-      setDraftDailyReport(current =>
-        current?.sourceFolder === result.source.folderName
-          ? syncDailyReportDraftWithSource(current, result.source)
-          : current
-      );
-      setDailyOpenAiChartMessage(
-        `${result.generatedFiles.length} grafik icin OpenAI varyanti uretildi.`
-      );
+      for (const figureFileName of nextFigureFileNames) {
+        currentFigureFileName = figureFileName;
+        setDailyOpenAiChartMessage(
+          `${completed}/${total} tamamlandi. Siradaki grafik: ${figureFileName}`
+        );
+        const result = await requestChartGeneration([figureFileName]);
+        applyGeneratedSource(result);
+        completed += 1;
+        setDailyOpenAiChartMessage(
+          `${completed}/${total} grafik tek tek uretildi.`
+        );
+      }
     } catch (error) {
       setDailyOpenAiChartError(
-        error instanceof Error
-          ? error.message
-          : "OpenAI chart generation tamamlanamadi."
+        completed > 0
+          ? `${completed}/${total} grafik uretildi. ${
+              currentFigureFileName ? `${currentFigureFileName} asamasinda ` : ""
+            }${
+              error instanceof Error
+                ? error.message
+                : "OpenAI chart generation tamamlanamadi."
+            }`
+          : error instanceof Error
+            ? error.message
+            : "OpenAI chart generation tamamlanamadi."
       );
     } finally {
       setDailyOpenAiChartBusy(false);

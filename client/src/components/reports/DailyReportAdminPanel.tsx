@@ -377,7 +377,7 @@ export default function DailyReportAdminPanel({
               </Field>
               <div className="flex flex-col gap-2 pt-6">
                 <Button type="button" variant="outline" onClick={onGenerateSelectedOpenAiChart} disabled={openAiChartBusy || !selectedSource.figureFiles.length || !selectedOpenAiFigureFile}>Secili grafigi uret</Button>
-                <Button type="button" onClick={onGenerateAllOpenAiCharts} disabled={openAiChartBusy || !selectedSource.figureFiles.length}>Tum grafikleri uret</Button>
+                <Button type="button" onClick={onGenerateAllOpenAiCharts} disabled={openAiChartBusy || !selectedSource.figureFiles.length}>Tum grafikleri tek tek uret</Button>
               </div>
             </div>
             <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
