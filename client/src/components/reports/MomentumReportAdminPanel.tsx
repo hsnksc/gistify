@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Radar, RefreshCw, Save, Upload } from "lucide-react";
 import type { MomentumReportEntry, MomentumReportRecord } from "@shared/momentumReports";
 import { runMomentumScan } from "@/scanner";
@@ -82,6 +82,13 @@ export default function MomentumReportAdminPanel({
   const [scanBusy, setScanBusy] = useState(false);
   const [scanError, setScanError] = useState("");
   const [scanResults, setScanResults] = useState<StockResult[]>([]);
+  const [rawReportJson, setRawReportJson] = useState("");
+  const [rawReportError, setRawReportError] = useState("");
+
+  useEffect(() => {
+    setRawReportJson(draftReport ? JSON.stringify(draftReport, null, 2) : "");
+    setRawReportError("");
+  }, [draftReport?.id]);
 
   const selectedEntries = draftReport?.content.featuredEntries || [];
   const scanUniverseLabel = useMemo(() => {
@@ -198,6 +205,38 @@ export default function MomentumReportAdminPanel({
         ),
       },
     });
+  };
+
+  const handleApplyRawJson = () => {
+    if (!draftReport) {
+      return;
+    }
+
+    try {
+      const parsed = JSON.parse(rawReportJson) as Partial<MomentumReportRecord>;
+      const nextContent =
+        parsed.content && typeof parsed.content === "object"
+          ? (parsed.content as Partial<MomentumReportRecord["content"]>)
+          : {};
+      const nextReport: MomentumReportRecord = {
+        ...draftReport,
+        ...parsed,
+        content: {
+          ...draftReport.content,
+          ...nextContent,
+          featuredEntries: Array.isArray(nextContent.featuredEntries)
+            ? nextContent.featuredEntries
+            : draftReport.content.featuredEntries,
+        },
+      };
+      onDraftReportChange(nextReport);
+      setRawReportJson(JSON.stringify(nextReport, null, 2));
+      setRawReportError("");
+    } catch (error) {
+      setRawReportError(
+        error instanceof Error ? error.message : "Raw JSON uygulanamadi."
+      );
+    }
   };
 
   if (!adminAuthorized) {
@@ -557,6 +596,50 @@ export default function MomentumReportAdminPanel({
             )}
           </div>
         </section>
+
+        {draftReport ? (
+          <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                  Advanced JSON
+                </p>
+                <h3 className="mt-1 text-xl font-semibold text-foreground">
+                  Tum report payload'i
+                </h3>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() =>
+                    setRawReportJson(JSON.stringify(draftReport, null, 2))
+                  }
+                >
+                  Guncel taslagi yukle
+                </Button>
+                <Button type="button" onClick={handleApplyRawJson}>
+                  JSON'i uygula
+                </Button>
+              </div>
+            </div>
+
+            <Textarea
+              className="mt-4 min-h-[260px] font-mono text-xs"
+              value={rawReportJson}
+              onChange={event => setRawReportJson(event.target.value)}
+            />
+
+            {rawReportError ? (
+              <p className="mt-3 text-sm text-destructive">{rawReportError}</p>
+            ) : (
+              <p className="mt-3 text-xs text-muted-foreground">
+                Featured entry listesi dahil tum momentum raporunu tek editorle
+                degistirmek icin kullan.
+              </p>
+            )}
+          </section>
+        ) : null}
       </div>
     </div>
   );

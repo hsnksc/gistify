@@ -36,6 +36,7 @@ import {
   syncDailyReportDraftWithSource,
   sortDailyReportsNewestFirst,
 } from "@/lib/dailyReports";
+import { extractApiErrorMessage, readJsonResponse } from "@/lib/api";
 import { useLocation } from "wouter";
 
 type WorkspaceKey = "earnings" | "momentum" | "daily" | "images";
@@ -320,7 +321,10 @@ export default function ReportsAdmin() {
         throw new Error("Admin meta yuklenemedi.");
       }
 
-      const payload = (await response.json()) as WeeklyReportsApiResponse;
+      const payload = await readJsonResponse<WeeklyReportsApiResponse>(
+        response,
+        "Admin meta"
+      );
       setAdminEmail(payload.admin?.email || "hsnksc@gmail.com");
       setAdminAuthorized(Boolean(payload.admin?.authorized));
       return payload;
@@ -340,7 +344,10 @@ export default function ReportsAdmin() {
         throw new Error("Workspace provider durumlari yuklenemedi.");
       }
 
-      const payload = (await response.json()) as AdminMarketDataStatus;
+      const payload = await readJsonResponse<AdminMarketDataStatus>(
+        response,
+        "Workspace provider durumu"
+      );
       setWorkspaceStatus(payload);
     },
     [buildAdminHeaders]
@@ -358,7 +365,10 @@ export default function ReportsAdmin() {
         throw new Error("Earnings raporlari yuklenemedi.");
       }
 
-      const payload = (await response.json()) as WeeklyReportsApiResponse;
+      const payload = await readJsonResponse<WeeklyReportsApiResponse>(
+        response,
+        "Earnings raporlari"
+      );
       const nextReports = sortReportsNewestFirst(payload.reports || []);
       setReports(nextReports);
       setAdminAuthorized(true);
@@ -379,10 +389,10 @@ export default function ReportsAdmin() {
         throw new Error("Canli earnings onerileri yuklenemedi.");
       }
 
-      const payload = (await response.json()) as {
+      const payload = await readJsonResponse<{
         suggestions?: WeeklyReportSuggestion[];
         mode?: "live" | "empty";
-      };
+      }>(response, "Canli earnings onerileri");
       setSuggestions(payload.suggestions || []);
       setSuggestionMode(payload.mode || "empty");
     },
@@ -401,7 +411,10 @@ export default function ReportsAdmin() {
         throw new Error("Momentum raporlari yuklenemedi.");
       }
 
-      const payload = (await response.json()) as MomentumReportsApiResponse;
+      const payload = await readJsonResponse<MomentumReportsApiResponse>(
+        response,
+        "Momentum raporlari"
+      );
       const nextReports = sortMomentumReportsNewestFirst(payload.reports || []);
       setMomentumReports(nextReports);
       setLatestPublishedMomentum(payload.latestPublished || null);
@@ -422,7 +435,10 @@ export default function ReportsAdmin() {
         throw new Error("Daily report source paketleri yuklenemedi.");
       }
 
-      const payload = (await response.json()) as DailyReportSourcesApiResponse;
+      const payload = await readJsonResponse<DailyReportSourcesApiResponse>(
+        response,
+        "Daily report source paketleri"
+      );
       const nextSources = sortDailySourcesNewestFirst(payload.sources || []);
       setDailySourcePackages(nextSources);
       setSelectedDailySourceId(current =>
@@ -454,7 +470,10 @@ export default function ReportsAdmin() {
         throw new Error("Daily report source detayi yuklenemedi.");
       }
 
-      const payload = (await response.json()) as DailyReportSourcesApiResponse;
+      const payload = await readJsonResponse<DailyReportSourcesApiResponse>(
+        response,
+        "Daily report source detayi"
+      );
       setSelectedDailySource(payload.source || null);
     },
     [buildAdminHeaders]
@@ -472,7 +491,10 @@ export default function ReportsAdmin() {
         throw new Error("Daily report kayitlari yuklenemedi.");
       }
 
-      const payload = (await response.json()) as DailyReportsApiResponse;
+      const payload = await readJsonResponse<DailyReportsApiResponse>(
+        response,
+        "Daily report kayitlari"
+      );
       const nextReports = sortDailyReportsNewestFirst(payload.reports || []);
       setDailyReports(nextReports);
       setLatestPublishedDaily(payload.latestPublished || null);
@@ -766,15 +788,23 @@ export default function ReportsAdmin() {
         body: JSON.stringify({ report: reportToSave }),
       });
 
+      const payload = await readJsonResponse<
+        WeeklyReportsApiResponse & {
+          report?: WeeklyReportRecord;
+        }
+      >(response, "Earnings raporu kaydi");
+
       if (!response.ok) {
-        throw new Error("Earnings raporu kaydedilemedi.");
+        throw new Error(
+          extractApiErrorMessage(payload, "Earnings raporu kaydedilemedi.")
+        );
       }
 
-      const payload = (await response.json()) as WeeklyReportsApiResponse & {
+      const nextPayload = payload as WeeklyReportsApiResponse & {
         report?: WeeklyReportRecord;
       };
-      const nextReports = sortReportsNewestFirst(payload.reports || []);
-      const savedReport = payload.report || reportToSave;
+      const nextReports = sortReportsNewestFirst(nextPayload.reports || []);
+      const savedReport = nextPayload.report || reportToSave;
       setReports(nextReports);
       setSelectedReportId(savedReport.id);
       setDraftReport(deepCloneReport(savedReport));
@@ -821,17 +851,25 @@ export default function ReportsAdmin() {
         body: JSON.stringify({ report: reportToSave }),
       });
 
+      const payload = await readJsonResponse<
+        MomentumReportsApiResponse & {
+          report?: MomentumReportRecord;
+        }
+      >(response, "Momentum raporu kaydi");
+
       if (!response.ok) {
-        throw new Error("Momentum raporu kaydedilemedi.");
+        throw new Error(
+          extractApiErrorMessage(payload, "Momentum raporu kaydedilemedi.")
+        );
       }
 
-      const payload = (await response.json()) as MomentumReportsApiResponse & {
+      const nextPayload = payload as MomentumReportsApiResponse & {
         report?: MomentumReportRecord;
       };
-      const nextReports = sortMomentumReportsNewestFirst(payload.reports || []);
-      const savedReport = payload.report || reportToSave;
+      const nextReports = sortMomentumReportsNewestFirst(nextPayload.reports || []);
+      const savedReport = nextPayload.report || reportToSave;
       setMomentumReports(nextReports);
-      setLatestPublishedMomentum(payload.latestPublished || null);
+      setLatestPublishedMomentum(nextPayload.latestPublished || null);
       setSelectedMomentumReportId(savedReport.id);
       setDraftMomentumReport(JSON.parse(JSON.stringify(savedReport)));
     } catch (error) {
@@ -876,17 +914,25 @@ export default function ReportsAdmin() {
         body: JSON.stringify({ report: reportToSave }),
       });
 
+      const payload = await readJsonResponse<
+        DailyReportsApiResponse & {
+          report?: DailyReportRecord;
+        }
+      >(response, "Daily report kaydi");
+
       if (!response.ok) {
-        throw new Error("Daily report kaydedilemedi.");
+        throw new Error(
+          extractApiErrorMessage(payload, "Daily report kaydedilemedi.")
+        );
       }
 
-      const payload = (await response.json()) as DailyReportsApiResponse & {
+      const nextPayload = payload as DailyReportsApiResponse & {
         report?: DailyReportRecord;
       };
-      const nextReports = sortDailyReportsNewestFirst(payload.reports || []);
-      const savedReport = payload.report || reportToSave;
+      const nextReports = sortDailyReportsNewestFirst(nextPayload.reports || []);
+      const savedReport = nextPayload.report || reportToSave;
       setDailyReports(nextReports);
-      setLatestPublishedDaily(payload.latestPublished || null);
+      setLatestPublishedDaily(nextPayload.latestPublished || null);
       setSelectedDailyReportId(savedReport.id);
       setDraftDailyReport(JSON.parse(JSON.stringify(savedReport)));
     } catch (error) {
@@ -938,15 +984,14 @@ export default function ReportsAdmin() {
         }),
       });
 
-      const payload = (await response.json()) as
+      const payload = await readJsonResponse<
         | DailyReportOpenAiChartGenerateResponse
-        | DailyReportOpenAiChartErrorResponse;
+        | DailyReportOpenAiChartErrorResponse
+      >(response, "Daily report OpenAI chart uretimi");
 
       if (!response.ok) {
         throw new Error(
-          "error" in payload && payload.error
-            ? payload.error
-            : "OpenAI chart generation basarisiz oldu."
+          extractApiErrorMessage(payload, "OpenAI chart generation basarisiz oldu.")
         );
       }
 

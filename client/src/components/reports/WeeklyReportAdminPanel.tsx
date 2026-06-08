@@ -96,6 +96,8 @@ export default function WeeklyReportAdminPanel({
   onPublish,
 }: WeeklyReportAdminPanelProps) {
   const [selectedEntryId, setSelectedEntryId] = useState("");
+  const [rawReportJson, setRawReportJson] = useState("");
+  const [rawReportError, setRawReportError] = useState("");
 
   const selectedEntry = useMemo(
     () =>
@@ -118,6 +120,11 @@ export default function WeeklyReportAdminPanel({
       setSelectedEntryId(draftReport.content.entries[0]?.id || "");
     }
   }, [draftReport, selectedEntryId]);
+
+  useEffect(() => {
+    setRawReportJson(draftReport ? JSON.stringify(draftReport, null, 2) : "");
+    setRawReportError("");
+  }, [draftReport?.id]);
 
   const updateReportField = (
     patch:
@@ -158,6 +165,41 @@ export default function WeeklyReportAdminPanel({
     }
 
     onDraftReportChange(updateEntryField(draftReport, selectedEntry.id, patch));
+  };
+
+  const handleApplyRawJson = () => {
+    if (!draftReport) {
+      return;
+    }
+
+    try {
+      const parsed = JSON.parse(rawReportJson) as Partial<WeeklyReportRecord>;
+      const nextContent =
+        parsed.content && typeof parsed.content === "object"
+          ? (parsed.content as Partial<WeeklyReportRecord["content"]>)
+          : {};
+      const nextReport: WeeklyReportRecord = {
+        ...draftReport,
+        ...parsed,
+        content: {
+          ...draftReport.content,
+          ...nextContent,
+          keyCatalysts: Array.isArray(nextContent.keyCatalysts)
+            ? nextContent.keyCatalysts
+            : draftReport.content.keyCatalysts,
+          entries: Array.isArray(nextContent.entries)
+            ? nextContent.entries
+            : draftReport.content.entries,
+        },
+      };
+      onDraftReportChange(nextReport);
+      setRawReportJson(JSON.stringify(nextReport, null, 2));
+      setRawReportError("");
+    } catch (error) {
+      setRawReportError(
+        error instanceof Error ? error.message : "Raw JSON uygulanamadi."
+      );
+    }
   };
 
   if (!adminAuthorized) {
@@ -810,6 +852,42 @@ export default function WeeklyReportAdminPanel({
                   Bu raporda duzenlenecek hisse yok.
                 </p>
               )}
+            </div>
+
+            <div className="space-y-3 rounded-3xl border border-border bg-background/60 p-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <SectionLabel>Advanced JSON</SectionLabel>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Tum weekly report payload'ina tek editorle mudahale et.
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() =>
+                      setRawReportJson(JSON.stringify(draftReport, null, 2))
+                    }
+                  >
+                    Guncel taslagi yukle
+                  </Button>
+                  <Button type="button" onClick={handleApplyRawJson}>
+                    JSON'i uygula
+                  </Button>
+                </div>
+              </div>
+
+              <Textarea
+                className="min-h-[260px] font-mono text-xs"
+                value={rawReportJson}
+                onChange={event => setRawReportJson(event.target.value)}
+              />
+
+              {rawReportError ? (
+                <p className="text-sm text-destructive">{rawReportError}</p>
+              ) : null}
             </div>
           </div>
         ) : (

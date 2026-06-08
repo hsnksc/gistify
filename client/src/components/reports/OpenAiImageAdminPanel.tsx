@@ -7,6 +7,7 @@ import type {
 import { OPENAI_IMAGE_MAX_REFERENCES } from "@shared/openaiImageStudio";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { extractApiErrorMessage, readJsonResponse } from "@/lib/api";
 
 interface OpenAiImageAdminPanelProps {
   adminSecret: string;
@@ -132,15 +133,13 @@ export default function OpenAiImageAdminPanel({
         }),
       });
 
-      const payload = (await response.json()) as
-        | OpenAiImageGenerateResponse
-        | { error?: string };
+      const payload = await readJsonResponse<
+        OpenAiImageGenerateResponse | { error?: string }
+      >(response, "OpenAI image studio");
 
       if (!response.ok) {
         throw new Error(
-          payload && "error" in payload && payload.error
-            ? payload.error
-            : "OpenAI image cagrisi basarisiz oldu."
+          extractApiErrorMessage(payload, "OpenAI image cagrisi basarisiz oldu.")
         );
       }
 
