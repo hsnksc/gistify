@@ -141,6 +141,10 @@ function readHeading(markdown: string, prefix: "#" | "##") {
   return normalizeString(match?.[1]);
 }
 
+function looksLikeSectionHeading(value: string) {
+  return /^\d+(?:[.)]|\s)/.test(normalizeString(value));
+}
+
 function toIsoDateFromKey(sourceKey: string) {
   const ddmmyyyy = sourceKey.match(/^(\d{2})(\d{2})(\d{4})$/);
   if (ddmmyyyy) {
@@ -155,6 +159,68 @@ function toIsoDateFromKey(sourceKey: string) {
   }
 
   return "";
+}
+
+function parseCompactTurkishDateToken(value: string) {
+  const match = normalizeString(value).match(
+    /(\d{1,2})\s*(ocak|subat|şubat|mart|nisan|mayis|mayıs|haziran|temmuz|agustos|ağustos|eylul|eylül|ekim|kasim|kasım|aralik|aralık)\s*(\d{4})/i
+  );
+  if (!match) {
+    return "";
+  }
+
+  const [, dayToken, monthToken, year] = match;
+  const normalizedMonth = normalizeSearchString(monthToken);
+  const monthMap: Record<string, string> = {
+    ocak: "01",
+    subat: "02",
+    mart: "03",
+    nisan: "04",
+    mayis: "05",
+    haziran: "06",
+    temmuz: "07",
+    agustos: "08",
+    eylul: "09",
+    ekim: "10",
+    kasim: "11",
+    aralik: "12",
+  };
+  const month = monthMap[normalizedMonth] || "";
+  if (!month) {
+    return "";
+  }
+
+  const day = String(Number(dayToken)).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function formatTurkishDateLabel(isoDate: string) {
+  const match = normalizeString(isoDate).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) {
+    return "";
+  }
+
+  const [, year, month, day] = match;
+  const monthMap: Record<string, string> = {
+    "01": "Ocak",
+    "02": "Subat",
+    "03": "Mart",
+    "04": "Nisan",
+    "05": "Mayis",
+    "06": "Haziran",
+    "07": "Temmuz",
+    "08": "Agustos",
+    "09": "Eylul",
+    "10": "Ekim",
+    "11": "Kasim",
+    "12": "Aralik",
+  };
+  const monthLabel = monthMap[month] || "";
+  if (!monthLabel) {
+    return "";
+  }
+
+  return `${Number(day)} ${monthLabel} ${year}`;
 }
 
 function parseTurkishDateLabel(value: string) {
@@ -204,8 +270,14 @@ function parseTurkishDateLabel(value: string) {
 
 function extractMetadata(markdown: string, fileName: string, updatedAt: string) {
   const title = readHeading(markdown, "#") || fileName;
-  const subtitle = readHeading(markdown, "##") || "";
+  const secondaryHeading = readHeading(markdown, "##");
+  const subtitle =
+    (!looksLikeSectionHeading(secondaryHeading) ? secondaryHeading : "") ||
+    readMarkdownField(markdown, "Rapor Versiyonu") ||
+    "";
+  const sourceFileLabel = readMarkdownField(markdown, "Kaynak Dosya");
   const headline =
+    readMarkdownField(markdown, "Kapsam") ||
     readMarkdownField(markdown, "Strateji Tipi") ||
     readMarkdownField(markdown, "Mekanizma") ||
     readMarkdownField(markdown, "Strateji") ||
@@ -214,10 +286,12 @@ function extractMetadata(markdown: string, fileName: string, updatedAt: string) 
     title;
   const rawReportDateLabel =
     readMarkdownField(markdown, "Rapor Tarihi") ||
-    readSummaryTableField(markdown, "Analiz Tarihi");
+    readSummaryTableField(markdown, "Analiz Tarihi") ||
+    formatTurkishDateLabel(parseCompactTurkishDateToken(sourceFileLabel));
   const reportDateLabel = normalizeString(rawReportDateLabel.split("|")[0] || "");
   const reportDate =
     parseTurkishDateLabel(reportDateLabel) ||
+    parseCompactTurkishDateToken(sourceFileLabel) ||
     toIsoDateFromKey(path.basename(fileName, path.extname(fileName))) ||
     updatedAt.slice(0, 10);
   const vixLabel =
@@ -233,7 +307,7 @@ function extractMetadata(markdown: string, fileName: string, updatedAt: string) 
     subtitle,
     headline,
     reportDate,
-    reportDateLabel: reportDateLabel || reportDate,
+    reportDateLabel: reportDateLabel || formatTurkishDateLabel(reportDate) || reportDate,
     vixLabel,
   };
 }

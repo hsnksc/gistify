@@ -2647,6 +2647,599 @@ function parseDailyUpdateEarningReportMarkdown(
   };
 }
 
+interface PlanTickerFallback {
+  company: string;
+  earningsDate: string;
+  earningsTime: "AMC" | "BMO";
+}
+
+const PLAN_TICKER_FALLBACKS: Record<string, PlanTickerFallback> = {
+  ORCL: {
+    company: "Oracle",
+    earningsDate: "10 Haziran 2026",
+    earningsTime: "AMC",
+  },
+  CHWY: {
+    company: "Chewy",
+    earningsDate: "10 Haziran 2026",
+    earningsTime: "BMO",
+  },
+  ADBE: {
+    company: "Adobe",
+    earningsDate: "11 Haziran 2026",
+    earningsTime: "AMC",
+  },
+  FDX: {
+    company: "FedEx",
+    earningsDate: "23 Haziran 2026",
+    earningsTime: "AMC",
+  },
+  MU: {
+    company: "Micron",
+    earningsDate: "24 Haziran 2026",
+    earningsTime: "AMC",
+  },
+};
+
+const QUALITY_SCORE_MAP: Record<string, string> = {
+  yuksek: "5/5",
+  "orta-yuksek": "4/5",
+  orta: "3/5",
+  "orta-dusuk": "2/5",
+  dusuk: "1/5",
+};
+
+function parseCompactTurkishDateToken(value: string) {
+  const normalized = normalizeForSearch(value);
+  const match = normalized.match(
+    /(\d{1,2})(ocak|subat|mart|nisan|mayis|haziran|temmuz|agustos|eylul|ekim|kasim|aralik)(\d{4})/
+  );
+  if (!match) {
+    return "";
+  }
+
+  const day = String(Number(match[1])).padStart(2, "0");
+  const monthMap: Record<string, string> = {
+    ocak: "01",
+    subat: "02",
+    mart: "03",
+    nisan: "04",
+    mayis: "05",
+    haziran: "06",
+    temmuz: "07",
+    agustos: "08",
+    eylul: "09",
+    ekim: "10",
+    kasim: "11",
+    aralik: "12",
+  };
+  const month = monthMap[match[2]] || "";
+  const year = match[3];
+
+  return month ? `${year}-${month}-${day}` : "";
+}
+
+function formatTurkishDateFromIso(isoDate: string) {
+  const match = isoDate.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) {
+    return "";
+  }
+
+  const monthNames = [
+    "Ocak",
+    "Subat",
+    "Mart",
+    "Nisan",
+    "Mayis",
+    "Haziran",
+    "Temmuz",
+    "Agustos",
+    "Eylul",
+    "Ekim",
+    "Kasim",
+    "Aralik",
+  ];
+  const monthIndex = Number(match[2]) - 1;
+  if (monthIndex < 0 || monthIndex >= monthNames.length) {
+    return "";
+  }
+
+  return `${Number(match[3])} ${monthNames[monthIndex]} ${match[1]}`;
+}
+
+function parsePlanRatioWeights(value: string, strategyTitle: string) {
+  const normalized = cleanText(value);
+  const rangeMatch = Array.from(
+    normalized.matchAll(/%(\d+(?:[.,]\d+)?)(?:\s*-\s*(\d+(?:[.,]\d+)?))?\s+(call|put|nakit|hedge)/gi)
+  );
+
+  const average = (left: string, right?: string) => {
+    const start = Number(left.replace(",", "."));
+    const end = right ? Number(right.replace(",", ".")) : start;
+    return Number.isFinite(start) && Number.isFinite(end) ? Math.round((start + end) / 2) : null;
+  };
+
+  if (rangeMatch.length) {
+    let callWeight: number | null = null;
+    let putWeight: number | null = null;
+
+    for (const match of rangeMatch) {
+      const nextValue = average(match[1] || "", match[2] || undefined);
+      if (nextValue === null) {
+        continue;
+      }
+
+      const bucket = normalizeForSearch(match[3] || "");
+      if (bucket === "call") {
+        callWeight = nextValue;
+      } else if (bucket === "put") {
+        putWeight = nextValue;
+      } else if (bucket === "nakit" || bucket === "hedge") {
+        putWeight = putWeight ?? nextValue;
+      }
+    }
+
+    if (callWeight !== null || putWeight !== null) {
+      const safeCall = callWeight ?? Math.max(0, 100 - (putWeight ?? 50));
+      const safePut = putWeight ?? Math.max(0, 100 - safeCall);
+      return {
+        callWeight: Math.min(100, Math.max(0, safeCall)),
+        putWeight: Math.min(100, Math.max(0, safePut)),
+      };
+    }
+  }
+
+  return inferStrategyWeights(strategyTitle, value);
+}
+
+function buildPlanRankingMap(lines: string[]) {
+  const rankingTable = parseFirstTable(
+    getSectionBodyBySearchText(lines, "nihai hisse siralamasi ve uygulanabilir strateji")
+  );
+
+  return new Map(
+    (rankingTable?.rows || [])
+      .map(row => {
+        const ticker = cleanText(row[1] || "");
+        if (!ticker) {
+          return null;
+        }
+
+        return [
+          ticker,
+          {
+            rank: parseNumber(row[0] || "") || 0,
+            oldStrategy: cleanText(row[2] || ""),
+            newStrategy: cleanText(row[3] || ""),
+            quality: cleanText(row[4] || ""),
+            note: cleanText(row[5] || ""),
+          },
+        ] as const;
+      })
+      .filter(
+        (
+          entry
+        ): entry is readonly [
+          string,
+          {
+            rank: number;
+            oldStrategy: string;
+            newStrategy: string;
+            quality: string;
+            note: string;
+          },
+        ] => Boolean(entry)
+      )
+  );
+}
+
+function buildPlanTimingGuide(lines: string[]) {
+  const table = parseFirstTable(getSectionBodyBySearchText(lines, "giris ve cikis kurallari"));
+  return new Map(
+    (table?.rows || [])
+      .map(row => {
+        const key = normalizeForSearch(row[0] || "");
+        if (!key) {
+          return null;
+        }
+
+        return [
+          key,
+          {
+            label: cleanText(row[0] || ""),
+            entry: cleanText(row[1] || ""),
+            exit: cleanText(row[2] || ""),
+            note: cleanText(row[3] || ""),
+          },
+        ] as const;
+      })
+      .filter(
+        (
+          entry
+        ): entry is readonly [
+          string,
+          { label: string; entry: string; exit: string; note: string }
+        ] => Boolean(entry)
+      )
+  );
+}
+
+function buildPlanSummaryTable(lines: string[]) {
+  const table = parseFirstTable(getSectionBodyBySearchText(lines, "yonetici ozeti"));
+  return table;
+}
+
+function buildPlanChecklistTable(lines: string[]) {
+  return parseFirstTable(
+    getSectionBodyBySearchText(lines, "earnings oncesi uygulanacak mekanik kontrol listesi")
+  );
+}
+
+function buildPlanCorrectionsTable(lines: string[]) {
+  return parseFirstTable(getSectionBodyBySearchText(lines, "mevcut raporun kritik duzeltmeleri"));
+}
+
+function derivePlanReportMeta(lines: string[]) {
+  const dividerIndex = findLineIndex(lines, /^---$/);
+  const metaLines = lines.slice(0, dividerIndex >= 0 ? dividerIndex : 16);
+  const metaPairs = parseHeadingMeta(metaLines);
+  const sourceFileLabel = findMetaValue(metaPairs, "Kaynak Dosya");
+  const reportDateIso =
+    parseCompactTurkishDateToken(sourceFileLabel) ||
+    parseTurkishDateLabelClient(findMetaValue(metaPairs, "Rapor Tarihi"));
+  const reportDateLabel =
+    formatTurkishDateFromIso(reportDateIso) ||
+    findMetaValue(metaPairs, "Rapor Tarihi") ||
+    "-";
+  const versionLabel = findMetaValue(metaPairs, "Rapor Versiyonu");
+  const subtitle = versionLabel || cleanText((lines[1] || "").replace(/^##\s*/, ""));
+  const disclaimer = findMetaValue(metaPairs, "Yasal Uyari");
+  const summaryTable = buildPlanSummaryTable(lines);
+  const coreWindow = tableToRowSummaries(summaryTable, 2).join(" | ");
+
+  return {
+    meta: metaPairs,
+    reportDateIso,
+    reportDateLabel,
+    subtitle,
+    disclaimer,
+    coreWindow,
+  };
+}
+
+function derivePlanStrategyTitle(
+  rankingStrategy: string,
+  setupValue: string,
+  quality: string
+) {
+  if (rankingStrategy) {
+    return rankingStrategy;
+  }
+
+  const firstClause = cleanText(setupValue.split(";")[0] || setupValue);
+  if (firstClause) {
+    return firstClause;
+  }
+
+  return quality || "Strategy";
+}
+
+function extractPlanMetricFromNarrative(lines: string[], pattern: RegExp) {
+  const joined = collectNarrativeLines(lines).join(" ");
+  return cleanText(joined.match(pattern)?.[1] || "");
+}
+
+function choosePlanTimingRule(
+  ticker: string,
+  daysLeft: number,
+  earningsTime: string,
+  timingGuide: Map<string, { label: string; entry: string; exit: string; note: string }>
+) {
+  if (daysLeft >= 14) {
+    return timingGuide.get("14+ dte earnings") || null;
+  }
+
+  if (ticker === "CHWY" || earningsTime === "BMO") {
+    return timingGuide.get("bmo") || null;
+  }
+
+  return timingGuide.get("amc") || null;
+}
+
+function parseStrategicPlanPositionSection(
+  heading: string,
+  sectionLines: string[],
+  reportDateIso: string,
+  rankingMap: Map<
+    string,
+    { rank: number; oldStrategy: string; newStrategy: string; quality: string; note: string }
+  >,
+  timingGuide: Map<string, { label: string; entry: string; exit: string; note: string }>
+): ModernPositionParseResult | null {
+  const match = heading.match(/^###\s+5\.(\d+)\s+([A-Z]+)\s+[—-]\s+(.+)$/);
+  if (!match) {
+    return null;
+  }
+
+  const sectionOrder = Number(match[1]);
+  const ticker = cleanText(match[2] || "");
+  const thesisTitle = cleanText(match[3] || "");
+  const fallback = PLAN_TICKER_FALLBACKS[ticker];
+  if (!fallback) {
+    return null;
+  }
+
+  const table = parseFirstTable(sectionLines);
+  const valueMap = buildTableValueMap(table);
+  const ranking = rankingMap.get(ticker);
+  const company = fallback.company;
+  const earningsDate = fallback.earningsDate;
+  const earningsTime = fallback.earningsTime;
+  const earningsDateIso = parseTurkishDateLabelClient(earningsDate);
+  const daysLeft = diffCalendarDays(reportDateIso, earningsDateIso);
+  const strategyTitle = derivePlanStrategyTitle(
+    ranking?.newStrategy || "",
+    valueMap.get("en iyi yapi") || "",
+    valueMap.get("ana gorus") || thesisTitle
+  );
+  const qualityLabel = ranking?.quality || "";
+  const qualityScore =
+    QUALITY_SCORE_MAP[normalizeForSearch(qualityLabel)] || "";
+  const ratioValue = valueMap.get("call/put orani") || valueMap.get("call put orani") || "";
+  const weights = parsePlanRatioWeights(ratioValue, strategyTitle);
+  const introParagraphs = collectNarrativeLines(sectionLines).slice(0, 6);
+  const resultsLine = introParagraphs.find(line =>
+    normalizeForSearch(line).startsWith("sonuc")
+  );
+  const riskValue =
+    valueMap.get("ana risk") ||
+    valueMap.get("kacinilacak yapi") ||
+    valueMap.get("giris sarti") ||
+    "";
+  const positionSize = valueMap.get("pozisyon boyutu") || "-";
+  const timingRule = choosePlanTimingRule(ticker, daysLeft, earningsTime, timingGuide);
+
+  const metrics: StrategyMetrics[] = [
+    { label: "Ana Görüş", value: valueMap.get("ana gorus") || thesisTitle },
+    ...(valueMap.get("pcr yorumu")
+      ? [{ label: "PCR Yorumu", value: valueMap.get("pcr yorumu") || "" }]
+      : []),
+    ...(valueMap.get("en iyi yapi")
+      ? [{ label: "En Iyi Yapi", value: valueMap.get("en iyi yapi") || "" }]
+      : []),
+    ...(ratioValue ? [{ label: "Call/Put Orani", value: ratioValue }] : []),
+    ...(qualityScore ? [{ label: "Katalist Skoru", value: qualityScore }] : []),
+    { label: "EarningsPlay Aksiyon", value: strategyTitle },
+    ...(positionSize ? [{ label: "Pozisyon Boyutu", value: positionSize }] : []),
+    ...(extractPlanMetricFromNarrative(sectionLines, /volume pcr[^0-9]*([0-9.,-]+)/i)
+      ? [
+          {
+            label: "Volume PCR",
+            value: extractPlanMetricFromNarrative(sectionLines, /volume pcr[^0-9]*([0-9.,-]+)/i),
+          },
+        ]
+      : []),
+    ...(extractPlanMetricFromNarrative(sectionLines, /oi pcr[^0-9]*([0-9.,-]+)/i)
+      ? [
+          {
+            label: "OI PCR",
+            value: extractPlanMetricFromNarrative(sectionLines, /oi pcr[^0-9]*([0-9.,-]+)/i),
+          },
+        ]
+      : []),
+    ...(extractPlanMetricFromNarrative(sectionLines, /iv rank[^0-9%]*%?([0-9.,]+)/i)
+      ? [
+          {
+            label: "IV Rank",
+            value: `%${extractPlanMetricFromNarrative(sectionLines, /iv rank[^0-9%]*%?([0-9.,]+)/i)}`,
+          },
+        ]
+      : []),
+  ];
+
+  const warnings = dedupeItems(
+    [
+      riskValue,
+      ranking?.note || "",
+      ...introParagraphs.filter(line => /risk|kalabalik|crowded|uyari|pas gec|beta|pahali/i.test(normalizeForSearch(line))),
+      ...(timingRule?.note ? [timingRule.note] : []),
+    ].filter(Boolean)
+  ).slice(0, 8);
+
+  const newsItems = dedupeItems(
+    [
+      ...introParagraphs,
+      valueMap.get("pcr yorumu") || "",
+      valueMap.get("giris sarti") || "",
+      resultsLine || "",
+    ].filter(Boolean)
+  );
+
+  const scheduleRows: TradeScheduleRow[] = [
+    {
+      date: earningsDate,
+      ticker,
+      action: "Planli giris",
+      note: timingRule?.entry || valueMap.get("giris sarti") || "Giris kosulu rapor notuna bagli.",
+    },
+    {
+      date: earningsDate,
+      ticker,
+      action: "Planli cikis",
+      note: timingRule?.exit || "Earnings sonrasi IV crush penceresinde parcali cikis.",
+    },
+  ];
+
+  return {
+    position: {
+      order: ranking?.rank || sectionOrder,
+      ticker,
+      company,
+      earningsLabel: `${earningsDate} ${earningsTime}`.trim(),
+      earningsDate,
+      earningsTime,
+      daysLeft,
+      strategyTitle,
+      allocationCapital: positionSize,
+      allocationRisk: qualityLabel || valueMap.get("ana gorus") || thesisTitle,
+      metrics,
+      news: buildNewsBucketsFromItems(newsItems.length ? newsItems : [strategyTitle]),
+      blueprint: {
+        rawLines: dedupeItems([
+          strategyTitle,
+          valueMap.get("en iyi yapi") || "",
+          ratioValue,
+          valueMap.get("giris sarti") || "",
+        ]),
+        ratioText: `${weights.callWeight}% call / ${weights.putWeight}% put`,
+        callWeight: weights.callWeight,
+        putWeight: weights.putWeight,
+        biasLine: valueMap.get("ana gorus") || thesisTitle,
+        callHeading: "Primary setup",
+        callItems: dedupeItems([
+          valueMap.get("en iyi yapi") || "",
+          ratioValue,
+          valueMap.get("giris sarti") || "",
+        ]).slice(0, 6),
+        putHeading: "Risk / sizing",
+        putItems: dedupeItems([
+          riskValue,
+          positionSize,
+          ranking?.note || "",
+          timingRule?.note || "",
+        ]).slice(0, 6),
+        expiryLines: [],
+        entry: timingRule?.entry || valueMap.get("giris sarti") || "",
+        exit: timingRule?.exit || "",
+      },
+      greeks: [],
+      scenarios: [],
+      warnings,
+      notes: [
+        createNote("Tez özeti", [
+          valueMap.get("ana gorus") || thesisTitle,
+          valueMap.get("pcr yorumu") || "",
+          valueMap.get("en iyi yapi") || "",
+        ]),
+        createNote("Plan notlari", [
+          valueMap.get("giris sarti") || "",
+          valueMap.get("pozisyon boyutu") || "",
+          resultsLine || "",
+        ]),
+        createNote("Siralama notu", [
+          ranking?.oldStrategy ? `Eski strateji: ${ranking.oldStrategy}` : "",
+          ranking?.newStrategy ? `Yeni strateji: ${ranking.newStrategy}` : "",
+          ranking?.note || "",
+        ]),
+      ].filter((note): note is StrategyNote => Boolean(note)),
+      price: null,
+      ivRank: parsePercent(findMetricValueByAliases(metrics, ["iv rank"])),
+      expectedMove: null,
+    },
+    scheduleRows,
+  };
+}
+
+function parseStrategicPlanEarningReportMarkdown(
+  markdown: string,
+  sourceFile = "earningreport/source.md"
+): EarningReportSource {
+  const lines = splitLines(markdown);
+  const title = cleanText((lines[0] || "").replace(/^#\s*/, ""));
+  const metaState = derivePlanReportMeta(lines);
+  const rankingMap = buildPlanRankingMap(lines);
+  const timingGuide = buildPlanTimingGuide(lines);
+  const positionSections = Array.from(splitSections(lines, /^###\s+5\.\d+\s+[A-Z]+/).entries());
+  const parsedPositions = positionSections
+    .map(([heading, sectionLines]) =>
+      parseStrategicPlanPositionSection(
+        heading,
+        sectionLines,
+        metaState.reportDateIso,
+        rankingMap,
+        timingGuide
+      )
+    )
+    .filter((entry): entry is ModernPositionParseResult => Boolean(entry));
+  const positions = parsedPositions
+    .map(entry => entry.position)
+    .sort((left, right) => left.order - right.order);
+  const knownTickers = positions.map(position => position.ticker);
+  const summaryTable = buildPlanSummaryTable(lines);
+  const checklistTable = buildPlanChecklistTable(lines);
+  const correctionsTable = buildPlanCorrectionsTable(lines);
+
+  return {
+    sourceFile,
+    rawMarkdown: markdown,
+    title,
+    subtitle: metaState.subtitle,
+    meta: metaState.meta,
+    reportDate: metaState.reportDateLabel,
+    vixLabel: findMetaValue(metaState.meta, "VIX") || "-",
+    coreWindow:
+      metaState.coreWindow ||
+      "PCR/POIR, IV crush ve defined-risk spread optimizasyonu odakta.",
+    timelineSteps:
+      Array.from(timingGuide.values()).map(step => ({
+        phase: step.label,
+        label: [step.entry, step.exit, step.note].filter(Boolean).join(" | "),
+      })) || [],
+    gainDrivers: (summaryTable?.rows || []).slice(0, 5).map(row => ({
+      factor: cleanText(row[0] || ""),
+      impact: cleanText(row[2] || row[1] || ""),
+      assessment: cleanText(row[1] || row[2] || ""),
+    })),
+    allocations: positions.map(position => ({
+      ticker: position.ticker,
+      capital: findMetricValueByAliases(position.metrics, ["pozisyon boyutu"]) || position.allocationCapital,
+      riskLevel: position.allocationRisk,
+    })),
+    positions,
+    tradeSchedule: Array.from(
+      new Map(
+        [
+          ...parsedPositions.flatMap(entry => entry.scheduleRows),
+          ...positions.flatMap(position => [
+            {
+              date: position.earningsDate,
+              ticker: position.ticker,
+              action: position.earningsTime === "BMO" ? "BMO hazirligi" : "AMC hazirligi",
+              note:
+                choosePlanTimingRule(
+                  position.ticker,
+                  position.daysLeft,
+                  position.earningsTime,
+                  timingGuide
+                )?.note || position.strategyTitle,
+            },
+          ]),
+        ].map(row => [`${row.date}-${row.ticker}-${row.action}-${row.note}`, row] as const)
+      ).values()
+    ),
+    risks: (correctionsTable?.rows || []).map(row => ({
+      risk: cleanText(row[0] || ""),
+      probability: /pozisyon|mu ic|vade/i.test(normalizeForSearch(row[0] || "")) ? "Yuksek" : "Orta",
+      impact: cleanText(row[1] || ""),
+      mitigation: cleanText(row[2] || ""),
+    })),
+    positionSizing: positions.map(position => ({
+      ticker: position.ticker,
+      capital: findMetricValueByAliases(position.metrics, ["pozisyon boyutu"]) || position.allocationCapital,
+      contracts: "-",
+    })),
+    goldenRules: (checklistTable?.rows || []).map(
+      row => `${cleanText(row[0] || "")}: ${cleanText(row[2] || row[1] || "")}`
+    ),
+    checklist: (checklistTable?.rows || []).map(
+      row => `${cleanText(row[0] || "")} | ${cleanText(row[1] || "")} | ${cleanText(row[2] || "")}`
+    ),
+    disclaimer:
+      metaState.disclaimer ||
+      "Bu calisma yalnizca egitim ve arastirma amacli hazirlanmistir.",
+  };
+}
+
 function parseModernEarningReportMarkdown(
   markdown: string,
   sourceFile = "earningreport/source.md"
@@ -2716,6 +3309,14 @@ export function parseEarningReportMarkdown(
   const lines = splitLines(markdown);
   const modernPositionIndex = findLineIndex(lines, /^###\s+3\.\d+\s+[A-Z]+/);
   const updatePositionIndex = findLineIndex(lines, /^###\s+\d+\.\s+[A-Z]+\s+\(/);
+  const strategicPlanIndex = findLineIndexByText(
+    lines,
+    "hisse bazli iyilestirilmis strateji plani"
+  );
+
+  if (strategicPlanIndex >= 0 && findLineIndex(lines, /^###\s+5\.\d+\s+[A-Z]+/) >= 0) {
+    return parseStrategicPlanEarningReportMarkdown(markdown, sourceFile);
+  }
 
   if (
     updatePositionIndex >= 0 &&
