@@ -28,19 +28,13 @@ export default function PublicShell({
     language === "en"
       ? [
           { href: "/", label: "Home" },
-          { href: "/pricing", label: "Pricing" },
-          { href: "/terms", label: "Terms" },
-          { href: "/privacy", label: "Privacy" },
-          { href: "/refund", label: "Refund" },
           { href: "/app", label: "Open App" },
+          { href: "/pricing", label: "Pricing" },
         ]
       : [
           { href: "/", label: "Ana Sayfa" },
-          { href: "/pricing", label: "Fiyatlandirma" },
-          { href: "/terms", label: "Kullanim Kosullari" },
-          { href: "/privacy", label: "Gizlilik Politikasi" },
-          { href: "/refund", label: "Iade Politikasi" },
           { href: "/app", label: "Uygulamayi Ac" },
+          { href: "/pricing", label: "Fiyatlandirma" },
         ];
 
   return (
@@ -51,15 +45,22 @@ export default function PublicShell({
       <div className="relative mx-auto flex max-w-7xl flex-col gap-6 px-4 py-8">
         <header className="rounded-3xl border border-border bg-card/85 p-4 shadow-2xl">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div className="space-y-1">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-                Gistify
-              </p>
-              <p className="text-sm text-muted-foreground">
-                {language === "en"
-                  ? "Earnings intelligence and momentum research platform"
-                  : "Earnings intelligence ve momentum arastirma platformu"}
-              </p>
+            <div className="flex items-center gap-3">
+              <img
+                src="/gistifylogo.jpeg?v=20260606-1"
+                alt="Gistify logo"
+                className="size-12 rounded-2xl border border-border object-cover shadow-[0_12px_30px_rgba(0,0,0,0.18)]"
+              />
+              <div className="space-y-1">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+                  Gistify
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {language === "en"
+                    ? "Earnings intelligence and momentum research platform"
+                    : "Earnings intelligence ve momentum arastirma platformu"}
+                </p>
+              </div>
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
@@ -88,16 +89,24 @@ export default function PublicShell({
                 </button>
               </div>
 
-              <nav className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                {navItems.map(item => (
-                  <a
-                    key={item.href}
-                    href={item.href}
-                    className="rounded-full border border-border bg-background/70 px-3 py-1.5 transition-colors hover:text-foreground"
-                  >
-                    {item.label}
-                  </a>
-                ))}
+              <nav className="flex flex-wrap items-center gap-2 text-xs">
+                {navItems.map(item => {
+                  const primary = item.href === "/app";
+
+                  return (
+                    <a
+                      key={item.href}
+                      href={item.href}
+                      className={
+                        primary
+                          ? "rounded-full border border-emerald-500/30 bg-emerald-500/12 px-4 py-1.5 font-semibold text-emerald-200 shadow-[0_12px_28px_rgba(16,185,129,0.16)] transition-colors hover:border-emerald-400/45 hover:bg-emerald-500/18"
+                          : "rounded-full border border-border bg-background/70 px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground"
+                      }
+                    >
+                      {item.label}
+                    </a>
+                  );
+                })}
               </nav>
             </div>
           </div>
