@@ -1,13 +1,25 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 import {
   Activity,
+  ArrowRight,
   CandlestickChart,
+  Clock3,
   PanelLeftClose,
   PanelLeftOpen,
   Radar,
   RefreshCw,
   ShieldCheck,
+  Target,
+  TrendingDown,
   TrendingUp,
+  Zap,
 } from "lucide-react";
 import { useLocation } from "wouter";
 import type {
@@ -15,7 +27,10 @@ import type {
   MomentumSourceSummary,
 } from "@shared/momentumSources";
 import { Button } from "@/components/ui/button";
-import { formatMomentumReportDate, sortMomentumReportsNewestFirst } from "@/lib/momentumReportLibrary";
+import {
+  formatMomentumReportDate,
+  sortMomentumReportsNewestFirst,
+} from "@/lib/momentumReportLibrary";
 import { parseMomentumReportMarkdown } from "@/lib/momentumReportSource";
 import type { AppLanguage } from "@/lib/i18n";
 import MomentumMarketTab from "@/scanner/components/MomentumMarketTab";
@@ -24,6 +39,7 @@ import MomentumStrategyTab from "@/scanner/components/MomentumStrategyTab";
 import ScannerPage from "@/scanner/components/ScannerPage";
 
 type TabId = "market" | "setups" | "strategy" | "scanner";
+type SummaryTone = "bull" | "bear" | "caution" | "info";
 
 const tabs: Array<{
   id: TabId;
@@ -75,27 +91,45 @@ function SummaryCard({
   label,
   value,
   hint,
+  icon: Icon,
+  tone = "info",
 }: {
   label: string;
   value: string;
   hint: string;
+  icon: typeof CandlestickChart;
+  tone?: SummaryTone;
 }) {
+  const toneClasses: Record<SummaryTone, string> = {
+    bull: "border-emerald-500/22 bg-emerald-500/10 text-emerald-300",
+    bear: "border-red-500/22 bg-red-500/10 text-red-300",
+    caution: "border-amber-500/22 bg-amber-500/10 text-amber-300",
+    info: "border-indigo-500/22 bg-indigo-500/10 text-indigo-300",
+  };
+
   return (
-    <div className="rounded-none border border-border bg-card/80 p-4">
-      <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-        {label}
+    <div className="workspace-card p-4">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            {label}
+          </p>
+          <p className="data-mono mt-2 text-2xl font-bold text-foreground">
+            {value}
+          </p>
+          <p className="mt-1 text-xs leading-5 text-muted-foreground">{hint}</p>
+        </div>
+        <div className={`rounded-xl border p-2 ${toneClasses[tone]}`}>
+          <Icon className="size-4" />
+        </div>
       </div>
-      <div className="data-mono mt-2 text-2xl font-bold text-foreground">
-        {value}
-      </div>
-      <div className="mt-1 text-xs text-muted-foreground">{hint}</div>
     </div>
   );
 }
 
 function LoadingState({ label }: { label: string }) {
   return (
-    <section className="rounded-[2rem] border border-border bg-card/90 p-6 text-sm leading-7 text-muted-foreground shadow-xl">
+    <section className="workspace-card p-6 text-sm leading-7 text-muted-foreground">
       {label}
     </section>
   );
@@ -110,6 +144,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
   const [activeReport, setActiveReport] = useState<MomentumSourceRecord | null>(null);
   const [loadingReports, setLoadingReports] = useState(true);
   const [loadingDetail, setLoadingDetail] = useState(false);
+  const [isTabPending, startTabTransition] = useTransition();
   const contentRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -160,10 +195,13 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
       setLoadingDetail(true);
 
       try {
-        const response = await fetch(`/api/momentum/sources/${encodeURIComponent(selectedReportId)}`, {
-          credentials: "include",
-          cache: "no-store",
-        });
+        const response = await fetch(
+          `/api/momentum/sources/${encodeURIComponent(selectedReportId)}`,
+          {
+            credentials: "include",
+            cache: "no-store",
+          }
+        );
 
         if (!response.ok) {
           if (!cancelled) {
@@ -218,72 +256,36 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
     )[0] || null;
   }, [parsedReport]);
 
-  const negativeIndices = parsedReport?.indexRows.filter(row => (row.pctChange || 0) < 0).length || 0;
+  const negativeIndices =
+    parsedReport?.indexRows.filter(row => (row.pctChange || 0) < 0).length || 0;
   const regimeCount = parsedReport?.regimeFactors.length || 0;
-
-  const reportBadges = useMemo(() => {
-    const items: Array<{ key: string; label: string; tone: string }> = [];
-
-    if (negativeIndices > 0) {
-      items.push({
-        key: "negative",
-        label: `${negativeIndices} negatif endeks`,
-        tone: "badge-danger",
-      });
-    }
-
-    if (regimeCount > 0) {
-      items.push({
-        key: "regime",
-        label: `${regimeCount} rejim faktoru`,
-        tone: "badge-strong",
-      });
-    }
-
-    if (reports.length > 1) {
-      items.push({
-        key: "archive",
-        label: `${reports.length} rapor arsivi`,
-        tone: "badge-warning",
-      });
-    }
-
-    return items;
-  }, [negativeIndices, regimeCount, reports.length]);
+  const positiveIndices = (parsedReport?.indexRows.length || 0) - negativeIndices;
 
   const summaryCards = useMemo(() => {
-    const items: Array<{ label: string; value: string; hint: string }> = [];
+    const items: Array<{
+      label: string;
+      value: string;
+      hint: string;
+      icon: typeof CandlestickChart;
+      tone?: SummaryTone;
+    }> = [];
 
-    if (reports.length > 0) {
-      items.push({
-        label: "Rapor adedi",
-        value: String(reports.length),
-        hint: "momentum kutuphanesi",
-      });
-    }
+    items.push({
+      label: "Rapor adedi",
+      value: String(reports.length),
+      hint: "momentum kutuphanesi",
+      icon: Radar,
+      tone: "info",
+    });
 
     const updateStamp = formatMomentumUpdateStamp(activeSummary?.updatedAt || "");
     if (hasDisplayValue(updateStamp)) {
       items.push({
         label: "Son update",
         value: updateStamp,
-        hint: "Dosyanin son degisiklik zamani",
-      });
-    }
-
-    if (hasDisplayValue(activeSummary?.sessionDateLabel)) {
-      items.push({
-        label: "Session",
-        value: activeSummary?.sessionDateLabel || "",
-        hint: "Referans seans tarihi",
-      });
-    }
-
-    if (hasDisplayValue(activeSummary?.targetDateLabel)) {
-      items.push({
-        label: "Target",
-        value: activeSummary?.targetDateLabel || "",
-        hint: "Raporun aksiyon gunu",
+        hint: "Kaynak degisiklik zamani",
+        icon: RefreshCw,
+        tone: "bull",
       });
     }
 
@@ -291,7 +293,9 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
       items.push({
         label: "VIX",
         value: activeSummary?.vixLabel || "",
-        hint: "Secili rapor volatilite bandi",
+        hint: "Secili rapor volatilite baglami",
+        icon: Zap,
+        tone: "caution",
       });
     }
 
@@ -300,14 +304,8 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
         label: "Top setup",
         value: topSetup?.ticker || topSetup?.name || "",
         hint: topSetup?.scoreLabel || "Momentum skoru",
-      });
-    }
-
-    if (hasDisplayValue(activeSummary?.readingTimeLabel)) {
-      items.push({
-        label: "Okuma",
-        value: activeSummary?.readingTimeLabel || "",
-        hint: "Rapor icindeki tahmini sure",
+        icon: Target,
+        tone: "bull",
       });
     }
 
@@ -315,72 +313,37 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
   }, [activeSummary, reports.length, topSetup]);
 
   const selectedSourceLabel = useMemo(() => {
-    return (
-      activeSummary?.sourceFile ||
-      parsedReport?.sourceFile ||
-      ""
-    );
+    return activeSummary?.sourceFile || parsedReport?.sourceFile || "";
   }, [activeSummary, parsedReport]);
 
   const selectedSubtitle = useMemo(() => {
-    return (
-      activeSummary?.subtitle ||
-      activeSummary?.headline ||
-      parsedReport?.subtitle ||
-      ""
-    );
+    return activeSummary?.subtitle || activeSummary?.headline || parsedReport?.subtitle || "";
   }, [activeSummary, parsedReport]);
 
-  const detailCards = useMemo(() => {
-    const items: Array<{ label: string; value: string; tone?: string }> = [];
+  const selectedUpdateLabel = formatMomentumUpdateStamp(activeSummary?.updatedAt || "");
+  const selectedTitle =
+    activeSummary?.title || parsedReport?.title || "Momentum report bekleniyor";
 
-    if (hasDisplayValue(activeSummary?.sessionDateLabel)) {
-      items.push({
-        label: "Session",
-        value: activeSummary?.sessionDateLabel || "",
-      });
-    }
-
-    if (hasDisplayValue(activeSummary?.targetDateLabel)) {
-      items.push({
-        label: "Hedef",
-        value: activeSummary?.targetDateLabel || "",
-        tone: "text-amber-300",
-      });
-    }
-
-    if (hasDisplayValue(activeSummary?.fileName)) {
-      items.push({
-        label: "Kaynak",
-        value: activeSummary?.fileName || "",
-      });
-    }
-
-    const updateStamp = formatMomentumUpdateStamp(activeSummary?.updatedAt || "");
-    if (hasDisplayValue(updateStamp)) {
-      items.push({
-        label: "Update stamp",
-        value: updateStamp,
-        tone: "text-emerald-300",
-      });
-    }
-
-    return items;
-  }, [activeSummary]);
+  const handleTabChange = (tab: TabId) => {
+    startTabTransition(() => {
+      setActiveTab(tab);
+    });
+  };
 
   const renderActiveTab = () => {
     if (activeTab === "scanner") {
       return (
-        <section className="overflow-hidden rounded-[2rem] border border-border bg-card/95 shadow-xl">
+        <section className="workspace-card overflow-hidden">
           <div className="border-b border-border px-5 py-4">
             <div className="flex items-center gap-2">
-              <Radar className="h-4 w-4 text-emerald-400" />
+              <Radar className="size-4 text-indigo-300" />
               <p className="heading-condensed text-sm text-foreground">
-                Live Scanner Workspace
+                Live scanner workspace
               </p>
             </div>
             <p className="mt-1 text-xs text-muted-foreground">
-              Raporu okuduktan sonra anlik tarama ve score breakdown burada devam eder.
+              Momentum raporundan sonra canli tarama, filtreleme ve option breakdown
+              ayni panelde devam eder.
             </p>
           </div>
           <ScannerPage lang={language} />
@@ -411,241 +374,61 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
   };
 
   return (
-    <div
-      className="min-h-screen flex flex-col"
-      style={{ background: "oklch(0.11 0.025 230)" }}
-    >
-      <header
-        className="sticky top-0 z-40 border-b"
-        style={{
-          borderColor: "oklch(0.22 0.03 225)",
-          background: "oklch(0.09 0.025 230 / 0.97)",
-        }}
-      >
-        <div className="flex items-center justify-between gap-4 px-4 py-3 lg:px-6">
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => setSidebarOpen(current => !current)}
-              className="hidden rounded-none border border-border bg-card/80 p-2 text-muted-foreground transition-colors hover:text-foreground lg:inline-flex"
-              aria-label={sidebarOpen ? "Sidebar gizle" : "Sidebar goster"}
-            >
-              {sidebarOpen ? (
-                <PanelLeftClose className="h-4 w-4" />
-              ) : (
-                <PanelLeftOpen className="h-4 w-4" />
-              )}
-            </button>
-
-            <div className="flex items-center gap-3">
-              <div
-                className="h-2 w-2 rounded-full pulse-live"
-                style={{ background: "oklch(0.78 0.18 160)" }}
-              />
-              <div className="leading-tight">
-                <p
-                  className="heading-condensed text-sm"
-                  style={{ color: "oklch(0.78 0.18 160)" }}
-                >
-                  Momentum Report Workspace
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  Runtime markdown library + live scanner
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="hidden items-center gap-5 md:flex">
-            <div className="text-right">
-              <p className="data-mono text-[11px] text-muted-foreground">
-                SON RAPOR
-              </p>
-              <p className="data-mono text-xs font-semibold text-emerald-300">
-                {selectedSummary?.reportDateLabel || "-"}
-              </p>
-            </div>
-            <div className="text-right">
-              <p className="data-mono text-[11px] text-muted-foreground">
-                HEDEF
-              </p>
-              <p className="data-mono text-xs font-semibold text-foreground">
-                {selectedSummary?.targetDateLabel || "-"}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              className="rounded-none"
-              onClick={() => void loadReports()}
-            >
-              <RefreshCw className="h-4 w-4" />
-              Yenile
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              className="rounded-none"
-              onClick={() => setLocation("/daily-report")}
-            >
-              <Activity className="h-4 w-4" />
-              Daily
-            </Button>
-          </div>
-        </div>
-      </header>
-
-      <section
-        className="border-b px-4 py-5 lg:px-6"
-        style={{
-          borderColor: "oklch(0.22 0.03 225)",
-          background:
-            "linear-gradient(180deg, oklch(0.13 0.03 225) 0%, oklch(0.11 0.025 230) 100%)",
-        }}
-      >
-        <div
-          className={`grid gap-5 ${
-            summaryCards.length
-              ? "xl:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)]"
-              : ""
-          }`}
-        >
-          <div className="space-y-4">
-            {reportBadges.length ? (
-              <div className="flex flex-wrap items-center gap-2">
-                {reportBadges.map(item => (
-                  <span key={item.key} className={item.tone}>
-                    {item.label}
-                  </span>
-                ))}
-              </div>
-            ) : null}
-
-            <div className="space-y-2">
-              <h1
-                className="heading-condensed text-3xl leading-none md:text-5xl"
-                style={{ color: "oklch(0.95 0.01 220)" }}
-              >
-                Momentum rapor kutuphanesi,
-                <br />
-                <span style={{ color: "oklch(0.78 0.18 160)" }}>
-                  gunden gune guncel analiz workspace'i
-                </span>
-              </h1>
-              <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
-                `momentum/` altina yeni `.md` dosyasi biraktiginda sistem onu otomatik
-                indeksler, ayni gunde birden fazla update gelse bile zaman damgasina
-                gore siralar ve ayni tema icinde chart destekli analiz ekranina
-                cevirir. Scanner artik raporun alt katmani.
-              </p>
-            </div>
-
-            {hasDisplayValue(selectedSourceLabel) ? (
-              <div className="rounded-none border border-emerald-400/25 bg-emerald-500/5 px-4 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                  Selected source
-                </p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  <span className="data-mono text-foreground">{selectedSourceLabel}</span>{" "}
-                  dosyasi secili. En yeni rapor varsayilan secim olur, onceki gunler
-                  arsivde kalir.
-                </p>
-              </div>
-            ) : null}
-
-            {parsedReport?.executiveSummary ? (
-              <div className="rounded-[1.5rem] border border-border bg-card/65 px-5 py-4">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  Executive Summary
-                </p>
-                <p className="mt-2 text-sm leading-relaxed text-foreground">
-                  {parsedReport.executiveSummary}
-                </p>
-              </div>
-            ) : null}
-          </div>
-
-          {summaryCards.length ? (
-            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
-              {summaryCards.map(card => (
-                <SummaryCard
-                  key={card.label}
-                  label={card.label}
-                  value={card.value}
-                  hint={card.hint}
-                />
-              ))}
-            </div>
-          ) : null}
-        </div>
-      </section>
-
-      <div className="flex flex-1 overflow-hidden">
-        {sidebarOpen ? (
-          <aside
-            className="hidden border-r lg:flex lg:w-[320px] lg:min-w-[320px] lg:flex-col"
-            style={{
-              background: "oklch(0.09 0.025 230)",
-              borderColor: "oklch(0.22 0.03 225)",
-            }}
-          >
-            <nav className="border-b p-3" style={{ borderColor: "oklch(0.22 0.03 225)" }}>
-              <div className="mb-3 px-2">
-                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  Workspace Sekmeleri
-                </span>
-              </div>
-              <div className="space-y-0.5">
-                {tabs.map(tab => (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    onClick={() => setActiveTab(tab.id)}
-                    className="w-full px-3 py-2 text-left text-xs font-semibold uppercase tracking-[0.08em] transition-all"
-                    style={{
-                      background:
-                        activeTab === tab.id
-                          ? "oklch(0.78 0.18 160 / 0.12)"
-                          : "transparent",
-                      borderLeft:
-                        activeTab === tab.id
-                          ? "2px solid oklch(0.78 0.18 160)"
-                          : "2px solid transparent",
-                      color:
-                        activeTab === tab.id
-                          ? "oklch(0.78 0.18 160)"
-                          : "oklch(0.55 0.015 225)",
-                    }}
-                  >
-                    <tab.icon className="mr-2 inline-flex h-4 w-4" />
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
-            </nav>
-
-            <div className="flex-1 overflow-y-auto p-3">
-              <div className="mb-3 flex items-center justify-between gap-3 px-2">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                    Report Index
-                  </p>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    Tarih + update zamani
-                  </p>
+    <div className="min-h-screen bg-background">
+      <div className="container py-6 md:py-8">
+        <section className="workspace-panel overflow-hidden">
+          <div className="relative overflow-hidden px-5 py-5 md:px-6 md:py-6">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.22),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.14),transparent_26%)]" />
+            <div className="relative space-y-5">
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                <div className="space-y-3">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="badge-strong">{positiveIndices} pozitif endeks</span>
+                    <span className="badge-danger">{negativeIndices} negatif endeks</span>
+                    <span className="badge-warning">{regimeCount} rejim faktor</span>
+                  </div>
+                  <div className="space-y-2">
+                    <p className="heading-condensed text-sm uppercase tracking-[0.18em] text-indigo-300">
+                      Momentum Scanner Workspace
+                    </p>
+                    <h1 className="heading-condensed max-w-4xl text-3xl leading-none text-foreground md:text-5xl">
+                      Gunluk momentum analizini,
+                      <span className="text-glow-accent text-indigo-300"> rapor + scanner</span>
+                      {" "}ikilisinde tut.
+                    </h1>
+                    <p className="max-w-3xl text-sm leading-7 text-muted-foreground md:text-[15px]">
+                      Ustte zaman damgali report seridi, ortada secili raporun piyasa
+                      ozetleri, altta ise market tabs ve live scanner ayni duzende acilir.
+                    </p>
+                  </div>
                 </div>
-                {loadingReports ? (
-                  <span className="rounded-full border border-white/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                    Loading
-                  </span>
-                ) : null}
+
+                <div className="flex flex-wrap items-center gap-2">
+                  <Button type="button" variant="outline" onClick={() => void loadReports()}>
+                    <RefreshCw className="size-4" />
+                    Yenile
+                  </Button>
+                  <Button type="button" variant="outline" onClick={() => setLocation("/daily-report")}>
+                    <Activity className="size-4" />
+                    Daily
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setSidebarOpen(current => !current)}
+                  >
+                    {sidebarOpen ? (
+                      <PanelLeftClose className="size-4" />
+                    ) : (
+                      <PanelLeftOpen className="size-4" />
+                    )}
+                    Arsiv
+                  </Button>
+                </div>
               </div>
 
-              <div className="space-y-3">
-                {reports.map(report => {
+              <div className="flex items-center gap-2 overflow-x-auto terminal-scrollbar pb-2">
+                {reports.map((report, index) => {
                   const active = report.id === selectedReportId;
 
                   return (
@@ -653,141 +436,272 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                       key={report.id}
                       type="button"
                       onClick={() => setSelectedReportId(report.id)}
-                      className={`w-full rounded-[1.5rem] border p-4 text-left transition-all ${
+                      className={`min-w-[220px] shrink-0 rounded-xl border px-4 py-3 text-left transition-all duration-150 ${
                         active
-                          ? "border-emerald-400/35 bg-emerald-500/10 shadow-[0_0_0_1px_rgba(16,185,129,0.08)]"
-                          : "border-border bg-background/45 hover:border-white/12 hover:bg-background/65"
+                          ? "border-indigo-400/45 bg-indigo-500/14 shadow-[0_0_18px_rgba(99,102,241,0.16)]"
+                          : "border-border bg-card/80 hover:border-border hover:bg-[rgba(35,45,66,0.72)]"
                       }`}
                     >
                       <div className="flex items-center justify-between gap-3">
-                        <span className="rounded-full border border-white/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                          {formatMomentumReportDate(report.reportDate)}
+                        <span className="data-mono text-[11px] text-muted-foreground">
+                          {index === 0 ? "LATEST" : "ARCHIVE"}
                         </span>
-                        <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300">
+                        <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-amber-300">
                           {report.vixLabel || "VIX -"}
                         </span>
                       </div>
-
-                      <h2 className="mt-3 line-clamp-2 text-base font-semibold leading-6 text-foreground">
+                      <p className="mt-2 text-sm font-semibold text-foreground">
                         {report.title}
-                      </h2>
-                      <p className="mt-2 line-clamp-2 text-sm leading-6 text-muted-foreground">
-                        {report.subtitle || report.headline}
                       </p>
-
-                      <div className="mt-3 flex flex-wrap gap-2">
-                        <span className="rounded-full border border-white/10 px-2 py-1 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-                          {report.targetDateLabel || report.reportDateLabel}
-                        </span>
-                        <span className="rounded-full border border-white/10 px-2 py-1 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-                          {formatMomentumUpdateStamp(report.updatedAt)}
-                        </span>
-                        <span className="rounded-full border border-white/10 px-2 py-1 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-                          {report.fileName}
-                        </span>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {report.targetDateLabel || formatMomentumReportDate(report.reportDate)}
+                      </p>
+                      <div className="mt-3 flex items-center gap-2 text-[11px] text-muted-foreground">
+                        <Clock3 className="size-3.5" />
+                        <span>{formatMomentumUpdateStamp(report.updatedAt)}</span>
                       </div>
                     </button>
                   );
                 })}
               </div>
 
-              {!loadingReports && !reports.length ? (
-                <div className="rounded-[1.5rem] border border-dashed border-border bg-background/40 p-4 text-sm leading-6 text-muted-foreground">
-                  `momentum/` altina yeni `.md` dosyasi eklendiginde burada otomatik
-                  gorunecek.
-                </div>
-              ) : null}
-            </div>
-          </aside>
-        ) : null}
-
-        <main
-          ref={contentRef}
-          className="min-w-0 flex-1 overflow-y-auto"
-          style={{ background: "oklch(0.11 0.025 230)" }}
-        >
-          <div
-            className="border-b px-4 py-3 lg:hidden"
-            style={{ borderColor: "oklch(0.22 0.03 225)" }}
-          >
-            <div className="flex gap-2 overflow-x-auto pb-1">
-              {tabs.map(tab => (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`shrink-0 rounded-none border px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] ${
-                    activeTab === tab.id
-                      ? "border-emerald-400/50 bg-emerald-500/10 text-emerald-300"
-                      : "border-border bg-card/70 text-muted-foreground"
-                  }`}
-                >
-                  <tab.icon className="mr-2 inline-flex h-4 w-4" />
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-
-            <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
-              {reports.map(report => (
-                <button
-                  key={report.id}
-                  type="button"
-                  onClick={() => setSelectedReportId(report.id)}
-                  className={`shrink-0 rounded-none border px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] ${
-                    selectedReportId === report.id
-                      ? "border-emerald-400/50 bg-emerald-500/10 text-emerald-300"
-                      : "border-border bg-card/70 text-muted-foreground"
-                  }`}
-                >
-                  {report.title}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="p-6">
-            <div className="rounded-[2rem] border border-border bg-card/95 p-5 shadow-xl">
-              <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
-                <div className="space-y-2">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                    Selected report
-                  </p>
-                  <h2 className="heading-condensed text-3xl text-foreground">
-                    {activeSummary?.title || parsedReport?.title || "Momentum report bekleniyor"}
-                  </h2>
-                  <p className="text-sm leading-relaxed text-muted-foreground">
-                    {selectedSubtitle || "Secili raporun alt basligi burada gorunur."}
-                  </p>
-                </div>
-
-                {detailCards.length ? (
-                  <div className="grid gap-3 sm:grid-cols-2 xl:min-w-[420px]">
-                    {detailCards.map(card => (
-                      <div
-                        key={card.label}
-                        className={`rounded-none border border-border bg-background/50 p-3 ${
-                          detailCards.length % 2 === 1 && card.label === "Update stamp"
-                            ? "sm:col-span-2"
-                            : ""
-                        }`}
-                      >
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                          {card.label}
-                        </p>
-                        <p className={`mt-2 data-mono text-sm font-bold ${card.tone || "text-foreground"}`}>
-                          {card.value}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                ) : null}
+              <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1.5">
+                  <CandlestickChart className="size-3.5 text-sky-300" />
+                  {parsedReport?.indexRows.length || 0} index row
+                </span>
+                <span className="h-3 w-px bg-border" />
+                <span className="flex items-center gap-1.5">
+                  <TrendingUp className="size-3.5 text-emerald-300" />
+                  {parsedReport?.candidates.length || 0} setup
+                </span>
+                <span className="h-3 w-px bg-border" />
+                <span className="flex items-center gap-1.5">
+                  <TrendingDown className="size-3.5 text-red-300" />
+                  {negativeIndices} negative breadth
+                </span>
+                <span className="h-3 w-px bg-border" />
+                <span className="flex items-center gap-1.5">
+                  <Target className="size-3.5 text-indigo-300" />
+                  {topSetup?.ticker || "Top setup bekleniyor"}
+                </span>
               </div>
             </div>
           </div>
+        </section>
 
-          {renderActiveTab()}
-        </main>
+        <div
+          className={`mt-6 grid gap-6 ${
+            sidebarOpen ? "xl:grid-cols-[minmax(0,1.55fr)_340px]" : ""
+          }`}
+        >
+          <main ref={contentRef} className="min-w-0 space-y-6">
+            <section className="workspace-panel p-4 md:p-5">
+              <div className="flex flex-col gap-4 border-b border-border pb-4 md:flex-row md:items-end md:justify-between">
+                <div className="space-y-2">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-indigo-300">
+                    Selected report
+                  </p>
+                  <h2 className="heading-condensed text-2xl text-foreground md:text-3xl">
+                    {selectedTitle}
+                  </h2>
+                  <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
+                    {selectedSubtitle || "Secili raporun alt basligi burada gorunur."}
+                  </p>
+                  {hasDisplayValue(selectedSourceLabel) ? (
+                    <p className="data-mono text-xs text-muted-foreground">
+                      Source: {selectedSourceLabel}
+                    </p>
+                  ) : null}
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-3 md:min-w-[420px]">
+                  <SummaryCard
+                    label="Rapor tarihi"
+                    value={activeSummary?.reportDateLabel || "-"}
+                    hint="Momentum source takvimi"
+                    icon={CandlestickChart}
+                    tone="info"
+                  />
+                  <SummaryCard
+                    label="Target"
+                    value={activeSummary?.targetDateLabel || "-"}
+                    hint="Aksiyon / hedef seans"
+                    icon={Target}
+                    tone="caution"
+                  />
+                  <SummaryCard
+                    label="Update"
+                    value={selectedUpdateLabel}
+                    hint="Dosya degisiklik damgasi"
+                    icon={Clock3}
+                    tone="bull"
+                  />
+                </div>
+              </div>
+
+              {parsedReport?.executiveSummary ? (
+                <div className="mt-4 workspace-card p-4">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                    Executive Summary
+                  </p>
+                  <p className="mt-2 text-sm leading-7 text-foreground/90">
+                    {parsedReport.executiveSummary}
+                  </p>
+                </div>
+              ) : null}
+
+              <div className="mt-4 flex flex-wrap gap-2 rounded-xl border border-border bg-background/45 p-1">
+                {tabs.map(tab => {
+                  const active = activeTab === tab.id;
+                  const hasAlert = tab.id === "scanner" && negativeIndices > 0;
+
+                  return (
+                    <button
+                      key={tab.id}
+                      type="button"
+                      onClick={() => handleTabChange(tab.id)}
+                      className={`workspace-tab relative inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold ${
+                        active ? "active" : ""
+                      }`}
+                    >
+                      <tab.icon className="size-3.5" />
+                      {tab.label}
+                      {hasAlert ? (
+                        <span className="absolute -right-1 -top-1 size-2 rounded-full bg-amber-400" />
+                      ) : null}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="mt-5 space-y-5">
+                {isTabPending ? (
+                  <div className="rounded-xl border border-indigo-500/18 bg-indigo-500/10 px-3 py-2 text-xs text-indigo-200">
+                    Gorunum degisiyor...
+                  </div>
+                ) : null}
+                {renderActiveTab()}
+              </div>
+            </section>
+
+            <section className="workspace-panel p-5">
+              <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <p className="heading-condensed text-sm text-foreground">
+                    Sonraki akis: daily intelligence
+                  </p>
+                  <p className="mt-1 text-xs leading-6 text-muted-foreground">
+                    Momentum raporundaki market rejimi ile daily report tarafindaki
+                    uzun form analizleri ayni gorunur duzende birbirine bagla.
+                  </p>
+                </div>
+                <Button type="button" onClick={() => setLocation("/daily-report")}>
+                  Daily Report
+                  <ArrowRight className="size-4" />
+                </Button>
+              </div>
+            </section>
+          </main>
+
+          {sidebarOpen ? (
+            <aside className="hidden min-w-0 space-y-6 xl:block">
+              <section className="workspace-panel p-5">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                      Snapshot
+                    </p>
+                    <h3 className="mt-2 heading-condensed text-xl text-foreground">
+                      {activeSummary?.targetDateLabel || activeSummary?.reportDateLabel || "-"}
+                    </h3>
+                  </div>
+                  <span className="badge-strong">scanner ready</span>
+                </div>
+
+                <div className="mt-4 space-y-3">
+                  {summaryCards.map(card => (
+                    <SummaryCard
+                      key={card.label}
+                      label={card.label}
+                      value={card.value}
+                      hint={card.hint}
+                      icon={card.icon}
+                      tone={card.tone}
+                    />
+                  ))}
+                </div>
+              </section>
+
+              <section className="workspace-panel p-5">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                      Archive
+                    </p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      Zaman damgali report indeks listesi.
+                    </p>
+                  </div>
+                  {loadingReports ? (
+                    <span className="rounded-full border border-border bg-background/70 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                      Loading
+                    </span>
+                  ) : null}
+                </div>
+
+                <div className="terminal-scrollbar mt-4 max-h-[680px] space-y-3 overflow-y-auto pr-1">
+                  {reports.map((report, index) => {
+                    const active = report.id === selectedReportId;
+
+                    return (
+                      <button
+                        key={report.id}
+                        type="button"
+                        onClick={() => setSelectedReportId(report.id)}
+                        className={`w-full rounded-xl border p-4 text-left transition-all ${
+                          active
+                            ? "border-indigo-400/45 bg-indigo-500/12 shadow-[0_0_18px_rgba(99,102,241,0.12)]"
+                            : "border-border bg-background/45 hover:border-border hover:bg-[rgba(35,45,66,0.72)]"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between gap-3">
+                          <span className="data-mono text-[11px] text-muted-foreground">
+                            {index === 0 ? "LATEST" : "ARCHIVE"}
+                          </span>
+                          <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-amber-300">
+                            {report.vixLabel || "VIX -"}
+                          </span>
+                        </div>
+                        <p className="mt-3 line-clamp-2 text-sm font-semibold text-foreground">
+                          {report.title}
+                        </p>
+                        <p className="mt-1 text-xs text-muted-foreground">
+                          {report.targetDateLabel || report.reportDateLabel}
+                        </p>
+                        <div className="mt-3 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+                          <span className="rounded-full border border-border bg-background/70 px-2 py-1">
+                            {formatMomentumUpdateStamp(report.updatedAt)}
+                          </span>
+                          <span className="rounded-full border border-border bg-background/70 px-2 py-1">
+                            {report.readingTimeLabel || "report"}
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })}
+
+                  {!loadingReports && !reports.length ? (
+                    <div className="rounded-xl border border-dashed border-border bg-background/45 p-4 text-sm leading-6 text-muted-foreground">
+                      `momentum/` altina yeni `.md` dosyasi eklendiginde burada otomatik
+                      gorunecek.
+                    </div>
+                  ) : null}
+                </div>
+              </section>
+            </aside>
+          ) : null}
+        </div>
       </div>
     </div>
   );
