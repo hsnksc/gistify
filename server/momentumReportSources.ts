@@ -47,6 +47,19 @@ function listFiles(folderPath: string) {
   return fs.readdirSync(folderPath, { withFileTypes: true });
 }
 
+function isMomentumSourceCandidateFile(fileName: string) {
+  const ext = path.extname(fileName).toLowerCase();
+  return ext === ".md" || ext === "";
+}
+
+function getMomentumSourceDedupKey(fileName: string) {
+  return path.basename(fileName, path.extname(fileName)).toLocaleLowerCase("tr-TR");
+}
+
+function getMomentumSourceFilePriority(fileName: string) {
+  return path.extname(fileName).toLowerCase() === "" ? 2 : 1;
+}
+
 function readHeading(markdown: string, prefix: "#" | "##") {
   const pattern = prefix === "#" ? /^#\s+(.+)$/m : /^##\s+(.+)$/m;
   const match = markdown.match(pattern);
@@ -184,7 +197,7 @@ function buildSourceRecord(fileName: string) {
     return null;
   }
 
-  if (!/\.md$/i.test(path.extname(fileName))) {
+  if (!isMomentumSourceCandidateFile(fileName)) {
     return null;
   }
 
@@ -221,9 +234,45 @@ export function listMomentumReportSources() {
     return [];
   }
 
-  return listFiles(rootPath)
-    .filter(entry => entry.isFile() && /\.md$/i.test(entry.name))
-    .map(entry => buildSourceRecord(entry.name))
+  const candidateFiles = listFiles(rootPath)
+    .filter(entry => entry.isFile() && isMomentumSourceCandidateFile(entry.name))
+    .map(entry => entry.name);
+
+  const dedupedFiles = Array.from(
+    candidateFiles.reduce((map, fileName) => {
+      const nextPath = path.join(rootPath, fileName);
+      const nextStats = fs.statSync(nextPath);
+      const key = getMomentumSourceDedupKey(fileName);
+      const current = map.get(key);
+
+      if (!current) {
+        map.set(key, {
+          fileName,
+          priority: getMomentumSourceFilePriority(fileName),
+          updatedAtMs: nextStats.mtimeMs,
+        });
+        return map;
+      }
+
+      const nextPriority = getMomentumSourceFilePriority(fileName);
+      if (
+        nextPriority > current.priority ||
+        (nextPriority === current.priority && nextStats.mtimeMs > current.updatedAtMs)
+      ) {
+        map.set(key, {
+          fileName,
+          priority: nextPriority,
+          updatedAtMs: nextStats.mtimeMs,
+        });
+      }
+
+      return map;
+    }, new Map<string, { fileName: string; priority: number; updatedAtMs: number }>())
+      .values()
+  ).map(entry => entry.fileName);
+
+  return dedupedFiles
+    .map(fileName => buildSourceRecord(fileName))
     .filter((entry): entry is MomentumSourceRecord => Boolean(entry))
     .sort((left, right) => {
       if (left.reportDate !== right.reportDate) {

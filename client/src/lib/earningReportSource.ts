@@ -2110,6 +2110,543 @@ function parseModernPositionSection(
   };
 }
 
+function stripUpdateDaySuffix(value: string) {
+  return cleanText(value).replace(/\s*\([^)]+\)\s*$/, "").trim();
+}
+
+function getSectionBodyBySearchText(lines: string[], searchText: string) {
+  const sectionIndex = findLineIndexByText(lines, searchText);
+  return sectionIndex >= 0 ? getSectionBody(lines, sectionIndex) : [];
+}
+
+function parseUpdateComparisonValue(table: MarkdownTable | null, label: string) {
+  if (!table) {
+    return "";
+  }
+
+  const needle = normalizeForSearch(label);
+  const row = table.rows.find(item => normalizeForSearch(item[0] || "") === needle);
+  if (!row) {
+    return "";
+  }
+
+  return cleanText(row[2] || row[1] || "");
+}
+
+function tableToUpdateMetrics(table: MarkdownTable | null) {
+  if (!table) {
+    return [] as StrategyMetrics[];
+  }
+
+  return table.rows
+    .map(row => ({
+      label: cleanText(row[0] || ""),
+      value: cleanText(row[2] || row[1] || ""),
+    }))
+    .filter(row => row.label && row.value);
+}
+
+function extractUpdateStrategyChoice(lines: string[]) {
+  const labeledChoice = lines
+    .flatMap(line => extractBoldLabelPairs(line))
+    .find(item => normalizeForSearch(item.label) === "yeni strateji");
+
+  const rawValue =
+    labeledChoice?.value ||
+    cleanText(
+      (lines[0] || "")
+        .replace(/^####\s*/i, "")
+        .replace(/^Strateji Kar[ai]r[ıi]:\s*/i, "")
+    );
+
+  return cleanText(rawValue.split(/\s+\/\s+/)[0] || rawValue)
+    .replace(/\b(FAV|ALT)\b/gi, "")
+    .replace(/\(\s*degisiklik yok\s*\)/i, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
+function extractUpdateCatalystScore(lines: string[]) {
+  const joined = lines.map(line => cleanText(line)).join(" ");
+  const match = joined.match(/katalist[^0-9]*([0-9]+\/[0-9]+)/i);
+  return match?.[1] || "";
+}
+
+function parseUpdatePositionSchedule(table: MarkdownTable | null, ticker: string) {
+  if (!table) {
+    return [] as TradeScheduleRow[];
+  }
+
+  return table.rows
+    .map(row => {
+      const date = [cleanText(row[0] || ""), cleanText(row[1] || "")]
+        .filter(Boolean)
+        .join(" ");
+      const action = cleanText(row[2] || row[0] || "");
+      const note = cleanText(row[3] || row[4] || ticker);
+
+      if (!date || !action) {
+        return null;
+      }
+
+      return {
+        date,
+        ticker,
+        action,
+        note,
+      } satisfies TradeScheduleRow;
+    })
+    .filter((row): row is TradeScheduleRow => Boolean(row));
+}
+
+function parseUpdateScenarios(lines: string[]) {
+  const scenarioTable = parseAllTables(lines).find(table => table.rows.some(row => row.length >= 4));
+  if (!scenarioTable) {
+    return [] as ScenarioRow[];
+  }
+
+  return scenarioTable.rows.map(row => ({
+    scenario: cleanText(row[0] || ""),
+    ivChange: cleanText(row[1] || ""),
+    stockMove: cleanText(row[2] || ""),
+    pnl: [cleanText(row[3] || ""), cleanText(row[4] || "")]
+      .filter(Boolean)
+      .join(" | "),
+  }));
+}
+
+function buildUpdateExpiryMap(lines: string[]) {
+  const table = parseFirstTable(getSectionBodyBySearchText(lines, "vade secimi tablosu"));
+  return new Map(
+    (table?.rows || [])
+      .map(row => [cleanText(row[0] || ""), cleanText(row[1] || "")] as const)
+      .filter(([ticker, expiry]) => ticker && expiry)
+  );
+}
+
+function buildUpdateMeta(lines: string[]) {
+  const dividerIndex = findLineIndex(lines, /^---$/);
+  const metaLines = lines.slice(0, dividerIndex >= 0 ? dividerIndex : 16);
+  const headingMeta = parseHeadingMeta(metaLines);
+  const reportDateLabel = stripUpdateDaySuffix(findMetaValue(headingMeta, "Rapor Tarihi")) || "-";
+  const reportDateIso = parseTurkishDateLabelClient(reportDateLabel);
+  const vixTable = parseFirstTable(getSectionBodyBySearchText(lines, "vix rejim degisimi"));
+  const vixLabel = parseUpdateComparisonValue(vixTable, "vix") || findMetaValue(headingMeta, "VIX") || "-";
+  const regimeHeading = cleanText(
+    ((lines[findLineIndexByText(lines, "vix rejim degisimi")] || "")
+      .replace(/^###\s*/, "")
+      .replace(/^VIX\s*/i, "VIX "))
+  );
+  const summaryBullets = collectBulletItemsAnywhere(
+    getSectionBodyBySearchText(lines, "strateji degisiklik ozeti")
+  );
+  const meta: ReportMetaItem[] = [];
+  const seen = new Set<string>();
+
+  const pushMeta = (label: string, value: string) => {
+    const cleanLabel = cleanText(label);
+    const cleanValue = cleanText(value);
+    if (!cleanLabel || !cleanValue) {
+      return;
+    }
+
+    const key = `${normalizeForSearch(cleanLabel)}::${normalizeForSearch(cleanValue)}`;
+    if (seen.has(key)) {
+      return;
+    }
+
+    seen.add(key);
+    meta.push({ label: cleanLabel, value: cleanValue });
+  };
+
+  pushMeta("Rapor Tarihi", reportDateLabel);
+  pushMeta("VIX", vixLabel);
+  for (const item of headingMeta) {
+    pushMeta(item.label, item.value);
+  }
+
+  return {
+    meta,
+    reportDate: reportDateLabel || "-",
+    reportDateIso,
+    vixLabel,
+    coreWindow: [regimeHeading && `Piyasa modu: ${regimeHeading}`, vixLabel !== "-" && `VIX ${vixLabel}`, summaryBullets[0]]
+      .filter(Boolean)
+      .join(" | "),
+    disclaimer: findMetaValue(headingMeta, "Yasal Uyari"),
+  };
+}
+
+function parseUpdateAllocations(lines: string[]) {
+  const sizingTable = parseFirstTable(getSectionBodyBySearchText(lines, "pozisyon buyuklugu karari"));
+
+  return {
+    allocations: (sizingTable?.rows || [])
+      .map(row => ({
+        ticker: cleanText(row[0] || ""),
+        capital: cleanText(row[2] || row[1] || ""),
+        riskLevel: cleanText(row[3] || row[2] || row[1] || ""),
+      }))
+      .filter(entry => entry.ticker),
+    positionSizing: (sizingTable?.rows || [])
+      .map(row => ({
+        ticker: cleanText(row[0] || ""),
+        capital: cleanText(row[2] || row[1] || ""),
+        contracts: "-",
+      }))
+      .filter(entry => entry.ticker),
+  };
+}
+
+function parseUpdateGainDrivers(lines: string[]) {
+  const summaryTable = parseFirstTable(getSectionBodyBySearchText(lines, "executive summary"));
+  if (!summaryTable) {
+    return [] as GainDriver[];
+  }
+
+  return summaryTable.rows.map(row => ({
+    factor: cleanText(row[0] || ""),
+    impact: [cleanText(row[2] || row[1] || ""), cleanText(row[3] || "")]
+      .filter(Boolean)
+      .join(" | "),
+    assessment: cleanText(row[4] || row[3] || row[2] || ""),
+  }));
+}
+
+function parseUpdateTimelineSteps(lines: string[]) {
+  const planTable = parseFirstTable(getSectionBodyBySearchText(lines, "gunun aksiyon plani"));
+  if (!planTable) {
+    return [] as TimelineStep[];
+  }
+
+  return planTable.rows.slice(0, 8).map(row => ({
+    phase: cleanText(row[0] || ""),
+    label: [cleanText(row[1] || ""), cleanText(row[2] || ""), cleanText(row[4] || "")]
+      .filter(Boolean)
+      .join(" | "),
+  }));
+}
+
+function parseUpdateRiskEntries(lines: string[]) {
+  const riskSection = getSectionBodyBySearchText(lines, "kritik uyarilar");
+  if (!riskSection.length) {
+    return [] as RiskEntry[];
+  }
+
+  return Array.from(splitSections(riskSection, /^###\s+/).entries())
+    .map(([title, sectionLines]) => {
+      const narrative = collectNarrativeLines(sectionLines);
+      const table = parseFirstTable(sectionLines);
+      const impact =
+        narrative[0] ||
+        tableToRowSummaries(table, 1)[0] ||
+        "Risk basligi altinda ek not bulunuyor.";
+      const mitigation = [
+        ...narrative.slice(1, 3),
+        ...tableToRowSummaries(table, 2),
+      ]
+        .filter(item => item && item !== impact)
+        .slice(0, 3)
+        .join(" | ");
+      const normalizedTitle = normalizeForSearch(title);
+
+      return {
+        risk: cleanText(title.replace(/^###\s*/, "")),
+        probability:
+          normalizedTitle.includes("firtinasi") || normalizedTitle.includes("risk")
+            ? "Yuksek"
+            : normalizedTitle.includes("cift")
+              ? "Orta"
+              : "Izle",
+        impact: cleanText(impact),
+        mitigation: mitigation || cleanText(impact),
+      } satisfies RiskEntry;
+    })
+    .filter(entry => entry.risk);
+}
+
+function parseUpdateGoldenRules(lines: string[]) {
+  const rules = [
+    ...collectOrderedItemsAnywhere(getSectionBodyBySearchText(lines, "vix dususunun etkileri")),
+    ...collectOrderedItemsAnywhere(getSectionBodyBySearchText(lines, "sonuc")),
+  ];
+
+  const normalized = dedupeItems(
+    rules.map(rule => cleanText(rule)).filter(Boolean)
+  );
+
+  return normalized.length
+    ? normalized
+    : [
+        "VIX 15-25 bandinda sizing normal, fakat korku rejiminde secici kal.",
+        "CPI ve earnings ayni gune yigildiginda pozisyon boyutunu dusur.",
+        "%50 kar kurali ile mekanik cikis disiplinini koru.",
+      ];
+}
+
+function parseUpdateChecklist(lines: string[]) {
+  const sections = Array.from(splitSections(lines, /^###\s+\d+\.\s+[A-Z]+\s+\(/).entries());
+
+  return sections.flatMap(([heading, sectionLines]) => {
+    const tickerMatch = heading.match(/^###\s+\d+\.\s+([A-Z]+)/);
+    const ticker = cleanText(tickerMatch?.[1] || "");
+    const checklistSection = Array.from(splitSections(sectionLines, /^####\s+/).entries()).find(
+      ([title]) => normalizeForSearch(title).includes("kontrol listesi")
+    );
+    const table = parseFirstTable(checklistSection?.[1] || []);
+
+    return (table?.rows || []).map(row =>
+      `${ticker}: ${cleanText(row[0] || "")} | ${cleanText(row[1] || "")} | ${cleanText(row[2] || "")}`
+    );
+  });
+}
+
+function parseUpdateGlobalTradeSchedule(lines: string[], knownTickers: string[]) {
+  const planTable = parseFirstTable(getSectionBodyBySearchText(lines, "gunun aksiyon plani"));
+  if (!planTable) {
+    return [] as TradeScheduleRow[];
+  }
+
+  return planTable.rows
+    .map(row => {
+      const action = cleanText(row[1] || "");
+      const tickerCell = cleanText(row[2] || "");
+      const note = [tickerCell, cleanText(row[3] || ""), cleanText(row[4] || "")]
+        .filter(Boolean)
+        .join(" | ");
+      if (!action) {
+        return null;
+      }
+
+      return {
+        date: cleanText(row[0] || ""),
+        ticker: extractTickerReferences(tickerCell, knownTickers) || tickerCell,
+        action,
+        note: note || action,
+      } satisfies TradeScheduleRow;
+    })
+    .filter((row): row is TradeScheduleRow => Boolean(row));
+}
+
+function parseUpdatePositionSection(
+  lines: string[],
+  reportDateIso: string,
+  allocationMap: Map<string, AllocationEntry>,
+  expiryMap: Map<string, string>
+): ModernPositionParseResult | null {
+  const rawHeading = (lines[0] || "").replace(/[\u2013\u2014]/g, "-");
+  const match = rawHeading.match(
+    /^###\s+(\d+)\.\s+([A-Z]+)\s+\(([^)]+)\)\s+-\s+(\d{1,2}\s+[A-Za-zÇĞİÖŞÜçğıöşü]+)\s+(AMC|BMO)(?:\s+-\s+.*)?$/i
+  );
+  if (!match) {
+    return null;
+  }
+
+  const order = Number(match[1]);
+  const ticker = cleanText(match[2] || "");
+  const company = cleanText(match[3] || "");
+  const earningsDate = cleanText(match[4] || "");
+  const earningsTime = cleanText(match[5] || "").toUpperCase();
+  const earningsDateIso = parseTurkishDateLabelClient(earningsDate);
+  const daysLeft = diffCalendarDays(reportDateIso, earningsDateIso);
+  const allocation = allocationMap.get(ticker);
+  const sections = Array.from(splitSections(lines.slice(1), /^####\s+/).entries());
+
+  const priceEntry = sections.find(([title]) =>
+    normalizeForSearch(title).includes("fiyat ve teknik durum guncellemesi")
+  );
+  const strategyEntry = sections.find(([title]) =>
+    normalizeForSearch(title).includes("strateji kar")
+  );
+  const checklistEntry = sections.find(([title]) =>
+    normalizeForSearch(title).includes("kontrol listesi")
+  );
+  const scheduleEntry = sections.find(([title]) =>
+    normalizeForSearch(title).includes("giris-cikis takvimi")
+  );
+  const scenarioEntry = sections.find(([title]) => {
+    const normalized = normalizeForSearch(title);
+    return normalized.includes("senaryo") || normalized.includes("iv crush");
+  });
+  const narrativeEntries = sections.filter(([title]) => {
+    const normalized = normalizeForSearch(title);
+    return (
+      !normalized.includes("fiyat ve teknik durum guncellemesi") &&
+      !normalized.includes("strateji kar") &&
+      !normalized.includes("kontrol listesi") &&
+      !normalized.includes("giris-cikis takvimi")
+    );
+  });
+
+  const priceMetrics = tableToUpdateMetrics(parseFirstTable(priceEntry?.[1] || []));
+  const strategyLines = strategyEntry?.[1] || [];
+  const checklistLines = checklistEntry?.[1] || [];
+  const scheduleLines = scheduleEntry?.[1] || [];
+  const scheduleRows = parseUpdatePositionSchedule(parseFirstTable(scheduleLines), ticker);
+  const strategyChoice = extractUpdateStrategyChoice([strategyEntry?.[0] || "", ...strategyLines]) || "Strategy";
+  const strategyActionLine = strategyLines
+    .flatMap(line => extractBoldLabelPairs(line))
+    .find(item => normalizeForSearch(item.label) === "yeni strateji");
+  const actionLine = strategyActionLine
+    ? `Yeni Strateji: ${strategyActionLine.value}`
+    : strategyChoice;
+  const catalystScore = extractUpdateCatalystScore([
+    ...(checklistLines || []),
+    ...narrativeEntries.flatMap(([, section]) => section),
+  ]);
+  const weights = inferStrategyWeights(strategyChoice, actionLine);
+  const strategyTables = parseAllTables(strategyLines);
+  const primaryTable = strategyTables[0] || null;
+  const altTable = strategyTables[1] || null;
+  const warnings = dedupeItems([
+    ...collectWarningHighlights(strategyLines),
+    ...collectWarningHighlights(scheduleLines),
+    ...collectNarrativeLines(strategyLines).filter(line => /uyari|risk|dikkat|krıtik|kritik/i.test(normalizeForSearch(line))),
+    ...collectNarrativeLines(scheduleLines).filter(line => /uyari|risk|dikkat|kritik/i.test(normalizeForSearch(line))),
+  ]).slice(0, 8);
+
+  const metrics: StrategyMetrics[] = [
+    ...priceMetrics,
+    ...(catalystScore ? [{ label: "Katalist Skoru", value: catalystScore }] : []),
+    { label: "EarningsPlay Aksiyon", value: strategyChoice },
+  ];
+
+  const newsItems = narrativeEntries.flatMap(([, section]) =>
+    collectNarrativeLines(section).slice(0, 4)
+  );
+  const notes = [
+    createNote("Analiz notlari", newsItems.slice(0, 6)),
+    createNote("Strateji detayi", [
+      strategyActionLine?.value || strategyChoice,
+      ...tableToRowSummaries(primaryTable, 5),
+      ...tableToRowSummaries(altTable, 3),
+    ]),
+    createNote("Kontrol listesi", tableToRowSummaries(parseFirstTable(checklistLines), 6)),
+    createNote(
+      "Senaryo matrisi",
+      tableToRowSummaries(parseFirstTable(scenarioEntry?.[1] || []), 4)
+    ),
+  ].filter((note): note is StrategyNote => Boolean(note));
+
+  return {
+    position: {
+      order: Number.isFinite(order) ? order : 0,
+      ticker,
+      company,
+      earningsLabel: `${earningsDate} ${earningsTime}`.trim(),
+      earningsDate,
+      earningsTime,
+      daysLeft,
+      strategyTitle: strategyChoice,
+      allocationCapital: allocation?.capital || "-",
+      allocationRisk: allocation?.riskLevel || "-",
+      metrics,
+      news: buildNewsBucketsFromItems(newsItems.length ? newsItems : [strategyChoice]),
+      blueprint: {
+        rawLines: dedupeItems([actionLine, strategyChoice, ...collectNarrativeLines(strategyLines).slice(0, 3)]),
+        ratioText: `${weights.callWeight}% call / ${weights.putWeight}% put`,
+        callWeight: weights.callWeight,
+        putWeight: weights.putWeight,
+        biasLine: actionLine,
+        callHeading:
+          weights.callWeight > weights.putWeight
+            ? "Bullish setup"
+            : weights.putWeight > weights.callWeight
+              ? "Bearish setup"
+              : "Primary setup",
+        callItems: dedupeItems([
+          ...paramTableItems(primaryTable, [
+            "Long Call Strike",
+            "Short Call Strike",
+            "Short Put",
+            "Short Call",
+            "Tahmini Maliyet",
+            "Tahmini Kredi",
+            "Max Kar",
+            "Max Risk",
+            "Breakeven",
+            "K.O.",
+          ]),
+          ...tableToRowSummaries(primaryTable, 3),
+        ]).slice(0, 6),
+        putHeading: "Execution / risk",
+        putItems: dedupeItems([
+          ...tableToRowSummaries(parseFirstTable(scheduleLines), 3),
+          ...warnings,
+        ]).slice(0, 6),
+        expiryLines: expiryMap.get(ticker) ? [expiryMap.get(ticker) || ""] : [],
+        entry: pickScheduleCheckpoint(scheduleRows, "entry"),
+        exit: pickScheduleCheckpoint(scheduleRows, "exit"),
+      },
+      greeks: [],
+      scenarios: parseUpdateScenarios(scenarioEntry?.[1] || []),
+      warnings,
+      notes,
+      price: parseNumber(findMetricValueByAliases(metrics, ["fiyat", "son fiyat"])),
+      ivRank: parsePercent(findMetricValueByAliases(metrics, ["iv rank"])),
+      expectedMove: parsePercent(
+        findMetricValueByAliases(metrics, ["implied move", "beklenen hareket", "expected move"])
+      ),
+    },
+    scheduleRows,
+  };
+}
+
+function parseDailyUpdateEarningReportMarkdown(
+  markdown: string,
+  sourceFile = "earningreport/source.md"
+): EarningReportSource {
+  const lines = splitLines(markdown);
+  const title = cleanText((lines[0] || "").replace(/^#\s*/, ""));
+  const subtitle = cleanText((lines[1] || "").replace(/^##\s*/, ""));
+  const metaState = buildUpdateMeta(lines);
+  const { allocations, positionSizing } = parseUpdateAllocations(lines);
+  const allocationMap = new Map(allocations.map(entry => [entry.ticker, entry]));
+  const expiryMap = buildUpdateExpiryMap(lines);
+  const positionSections = Array.from(splitSections(lines, /^###\s+\d+\.\s+[A-Z]+\s+\(/).entries());
+  const parsedPositions = positionSections
+    .map(([heading, sectionLines]) =>
+      parseUpdatePositionSection(
+        [heading, ...sectionLines],
+        metaState.reportDateIso,
+        allocationMap,
+        expiryMap
+      )
+    )
+    .filter((entry): entry is ModernPositionParseResult => Boolean(entry));
+  const positions = parsedPositions.map(entry => entry.position);
+  const knownTickers = positions.map(position => position.ticker);
+  const tradeSchedule = Array.from(
+    new Map(
+      [
+        ...parseUpdateGlobalTradeSchedule(lines, knownTickers),
+        ...parsedPositions.flatMap(entry => entry.scheduleRows),
+      ].map(row => [`${row.date}-${row.ticker}-${row.action}-${row.note}`, row] as const)
+    ).values()
+  );
+
+  return {
+    sourceFile,
+    rawMarkdown: markdown,
+    title,
+    subtitle,
+    meta: metaState.meta,
+    reportDate: metaState.reportDate,
+    vixLabel: metaState.vixLabel,
+    coreWindow: metaState.coreWindow,
+    timelineSteps: parseUpdateTimelineSteps(lines),
+    gainDrivers: parseUpdateGainDrivers(lines),
+    allocations,
+    positions,
+    tradeSchedule,
+    risks: parseUpdateRiskEntries(lines),
+    positionSizing,
+    goldenRules: parseUpdateGoldenRules(lines),
+    checklist: parseUpdateChecklist(lines),
+    disclaimer: metaState.disclaimer,
+  };
+}
+
 function parseModernEarningReportMarkdown(
   markdown: string,
   sourceFile = "earningreport/source.md"
@@ -2178,6 +2715,14 @@ export function parseEarningReportMarkdown(
 ): EarningReportSource {
   const lines = splitLines(markdown);
   const modernPositionIndex = findLineIndex(lines, /^###\s+3\.\d+\s+[A-Z]+/);
+  const updatePositionIndex = findLineIndex(lines, /^###\s+\d+\.\s+[A-Z]+\s+\(/);
+
+  if (
+    updatePositionIndex >= 0 &&
+    findLineIndexByText(lines, "hisse basi guncel analiz") >= 0
+  ) {
+    return parseDailyUpdateEarningReportMarkdown(markdown, sourceFile);
+  }
 
   if (modernPositionIndex >= 0 && findLineIndexByText(lines, "hizli erisim ozeti") >= 0) {
     return parseModernEarningReportMarkdown(markdown, sourceFile);

@@ -92,6 +92,46 @@ function readSummaryTableField(markdown: string, label: string) {
   return "";
 }
 
+function readLatestComparisonTableField(markdown: string, label: string) {
+  const needle = normalizeSearchString(label);
+
+  for (const rawBlock of markdown.split(/\r?\n\r?\n/)) {
+    const blockLines = rawBlock
+      .split(/\r?\n/)
+      .map(line => line.trim())
+      .filter(line => line.startsWith("|"));
+
+    if (blockLines.length < 2) {
+      continue;
+    }
+
+    const rows = blockLines.map(line =>
+      line
+        .replace(/^\|/, "")
+        .replace(/\|$/, "")
+        .split("|")
+        .map(cell => cleanMarkdownText(cell))
+    );
+    const [headers, ...dataRows] = rows;
+
+    if (
+      headers.length < 3 ||
+      normalizeSearchString(headers[0] || "") !== "gosterge"
+    ) {
+      continue;
+    }
+
+    const match = dataRows.find(row => normalizeSearchString(row[0] || "") === needle);
+    if (!match) {
+      continue;
+    }
+
+    return normalizeString(match[2] || match[1] || "");
+  }
+
+  return "";
+}
+
 function readHeading(markdown: string, prefix: "#" | "##") {
   const pattern =
     prefix === "#"
@@ -119,6 +159,7 @@ function toIsoDateFromKey(sourceKey: string) {
 
 function parseTurkishDateLabel(value: string) {
   const normalized = normalizeString(value)
+    .replace(/\s*\([^)]+\)\s*$/, "")
     .toLocaleLowerCase("tr-TR")
     .replace(/\./g, "")
     .replace(/\s+/g, " ");
@@ -180,6 +221,7 @@ function extractMetadata(markdown: string, fileName: string, updatedAt: string) 
     toIsoDateFromKey(path.basename(fileName, path.extname(fileName))) ||
     updatedAt.slice(0, 10);
   const vixLabel =
+    readLatestComparisonTableField(markdown, "VIX") ||
     readMarkdownField(markdown, "VIX") ||
     readSummaryTableField(markdown, "VIX") ||
     normalizeString(
