@@ -217,7 +217,10 @@ export default function DailyReportPage() {
                           Gunluk Rapor Secimi
                         </p>
                         <div className="w-full md:max-w-[360px]">
-                          <Select value={selectedReport?.id || ""} onValueChange={setSelectedReportId}>
+                          <Select
+                            value={selectedReportId || selectedReport?.id || ""}
+                            onValueChange={setSelectedReportId}
+                          >
                             <SelectTrigger className="w-full">
                               <SelectValue placeholder="Bir daily report sec" />
                             </SelectTrigger>
@@ -328,6 +331,7 @@ export default function DailyReportPage() {
           <div className="p-4 md:p-6">
             {selectedReport ? (
               <DailyReportViewer
+                key={selectedReport.id}
                 title={selectedReport.title}
                 reportDate={selectedReport.reportDate}
                 sourceFolder={selectedReport.sourceFolder}

@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import type { DailyReportContent } from "@shared/dailyReports";
 import {
   Activity,
@@ -335,6 +335,11 @@ export default function DailyReportViewer({
   content,
 }: DailyReportViewerProps) {
   const [activeFigure, setActiveFigure] = useState<ReportFigure | null>(null);
+
+  useEffect(() => {
+    setActiveFigure(null);
+  }, [title, reportDate, sourceFolder]);
+
   const normalizedContent = {
     ...content,
     markdown: typeof content.markdown === "string" ? content.markdown : "",
