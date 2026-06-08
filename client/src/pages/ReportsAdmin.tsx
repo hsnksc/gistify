@@ -263,7 +263,7 @@ export default function ReportsAdmin() {
   const [draftDailyReport, setDraftDailyReport] =
     useState<DailyReportRecord | null>(null);
   const [dailyOpenAiChartPrompt, setDailyOpenAiChartPrompt] = useState(
-    "Kaynak market chart'i daha premium ve yuksek okunabilirlikte yeniden uret. Tum sayisal iliskileri, etiketleri, zaman akisini ve yon oklarini koru. Ek veri uydurma."
+    "Kaynak chart'i premium institutional research kalitesinde yeniden uret. Tum sayisal iliskileri, eksenleri, tarihleri, anotasyonlari, ok yonlerini, legend'i ve veri hiyerarsisini birebir koru. Yalnizca netlik, tipografi, kontrast ve okunabilirligi iyilestir; veri uydurma veya yorum ekleme."
   );
   const [selectedDailyFigureFile, setSelectedDailyFigureFile] = useState("");
   const [dailyOpenAiChartBusy, setDailyOpenAiChartBusy] = useState(false);

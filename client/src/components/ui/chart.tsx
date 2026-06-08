@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const;
+type TooltipProps = React.ComponentProps<typeof RechartsPrimitive.Tooltip>;
 
 export type ChartConfig = {
   [k in string]: {
@@ -101,7 +102,54 @@ ${colorConfig
   );
 };
 
-const ChartTooltip = RechartsPrimitive.Tooltip;
+function stringifyTooltipValue(value: unknown) {
+  if (typeof value === "string" || typeof value === "number") {
+    return String(value);
+  }
+
+  return "";
+}
+
+function buildTooltipReactKey(payload?: TooltipProps["payload"], label?: unknown) {
+  const derivedLabel = getTooltipLabel(payload as never, label);
+  const payloadSignature =
+    payload
+      ?.map(item =>
+        [
+          stringifyTooltipValue(item?.dataKey),
+          stringifyTooltipValue(item?.name),
+          stringifyTooltipValue(item?.value),
+          stringifyTooltipValue((item?.payload as Record<string, unknown> | undefined)?.label),
+          stringifyTooltipValue((item?.payload as Record<string, unknown> | undefined)?.ticker),
+          stringifyTooltipValue((item?.payload as Record<string, unknown> | undefined)?.subject),
+        ]
+          .filter(Boolean)
+          .join(":")
+      )
+      .filter(Boolean)
+      .join("|") || "tooltip";
+
+  return [derivedLabel, payloadSignature].filter(Boolean).join("|");
+}
+
+function ChartTooltip({
+  content,
+  ...props
+}: React.ComponentProps<typeof RechartsPrimitive.Tooltip>) {
+  const wrappedContent = React.useMemo(() => {
+    if (!React.isValidElement(content)) {
+      return content;
+    }
+
+    return (tooltipProps: TooltipProps) =>
+      React.cloneElement(content as React.ReactElement, {
+        ...tooltipProps,
+        key: buildTooltipReactKey(tooltipProps.payload, tooltipProps.label),
+      });
+  }, [content]);
+
+  return <RechartsPrimitive.Tooltip {...props} content={wrappedContent} />;
+}
 
 function ChartTooltipContent({
   active,
@@ -127,11 +175,12 @@ function ChartTooltipContent({
   }) {
   const { config } = useChart();
 
-  const tooltipLabel = React.useMemo(() => {
-    if (hideLabel || !payload?.length) {
-      return null;
-    }
+  if (!active || !payload?.length) {
+    return null;
+  }
 
+  let tooltipLabel: React.ReactNode = null;
+  if (!hideLabel && payload.length) {
     const [item] = payload;
     const key = `${labelKey || item?.dataKey || item?.name || "value"}`;
     const itemConfig = getPayloadConfigFromPayload(config, item, key);
@@ -149,33 +198,20 @@ function ChartTooltipContent({
       getTooltipLabel(payload as never, label);
 
     if (labelFormatter) {
-      return (
+      tooltipLabel = (
         <div className={cn("font-medium", labelClassName)}>
           {labelFormatter(value, payload)}
         </div>
       );
+    } else if (value) {
+      tooltipLabel = (
+        <div className={cn("font-medium", labelClassName)}>{value}</div>
+      );
     }
-
-    if (!value) {
-      return null;
-    }
-
-    return <div className={cn("font-medium", labelClassName)}>{value}</div>;
-  }, [
-    label,
-    labelFormatter,
-    payload,
-    hideLabel,
-    labelClassName,
-    config,
-    labelKey,
-  ]);
-
-  if (!active || !payload?.length) {
-    return null;
   }
 
   const nestLabel = payload.length === 1 && indicator !== "dot";
+  const tooltipKey = buildTooltipReactKey(payload, label);
 
   return (
     <div
@@ -195,7 +231,7 @@ function ChartTooltipContent({
 
             return (
               <div
-                key={item.dataKey}
+                key={`${tooltipKey}-${item.dataKey || item.name || index}-${index}`}
                 className={cn(
                   "[&>svg]:text-muted-foreground flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5",
                   indicator === "dot" && "items-center"
@@ -241,7 +277,7 @@ function ChartTooltipContent({
                           {itemConfig?.label || item.name}
                         </span>
                       </div>
-                      {item.value && (
+                      {item.value !== undefined && item.value !== null && (
                         <span className="text-foreground font-mono font-medium tabular-nums">
                           {item.value.toLocaleString()}
                         </span>

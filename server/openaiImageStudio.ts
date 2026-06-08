@@ -1,6 +1,11 @@
 import {
   OPENAI_IMAGE_MAX_REFERENCES,
+  type OpenAiImageBackground,
   type OpenAiImageGenerateRequest,
+  type OpenAiImageInputFidelity,
+  type OpenAiImageOutputFormat,
+  type OpenAiImageOutputSize,
+  type OpenAiImageQuality,
   type OpenAiImageGenerateResponse,
   type OpenAiImageReferencePayload,
 } from "../shared/openaiImageStudio";
@@ -44,6 +49,81 @@ function normalizeReferenceImage(
   };
 }
 
+function normalizeImageSize(value: unknown): OpenAiImageOutputSize | undefined {
+  switch (normalizeString(value)) {
+    case "auto":
+    case "1024x1024":
+    case "1536x1024":
+    case "1024x1536":
+      return normalizeString(value) as OpenAiImageOutputSize;
+    default:
+      return undefined;
+  }
+}
+
+function normalizeImageQuality(value: unknown): OpenAiImageQuality | undefined {
+  switch (normalizeString(value)) {
+    case "auto":
+    case "low":
+    case "medium":
+    case "high":
+      return normalizeString(value) as OpenAiImageQuality;
+    default:
+      return undefined;
+  }
+}
+
+function normalizeImageBackground(
+  value: unknown
+): OpenAiImageBackground | undefined {
+  switch (normalizeString(value)) {
+    case "auto":
+    case "opaque":
+    case "transparent":
+      return normalizeString(value) as OpenAiImageBackground;
+    default:
+      return undefined;
+  }
+}
+
+function normalizeImageOutputFormat(
+  value: unknown
+): OpenAiImageOutputFormat | undefined {
+  switch (normalizeString(value)) {
+    case "png":
+    case "jpeg":
+    case "webp":
+      return normalizeString(value) as OpenAiImageOutputFormat;
+    default:
+      return undefined;
+  }
+}
+
+function normalizeImageInputFidelity(
+  value: unknown
+): OpenAiImageInputFidelity | undefined {
+  switch (normalizeString(value)) {
+    case "low":
+    case "high":
+      return normalizeString(value) as OpenAiImageInputFidelity;
+    default:
+      return undefined;
+  }
+}
+
+function normalizeCompression(value: unknown) {
+  if (typeof value !== "number" || !Number.isFinite(value)) {
+    return undefined;
+  }
+
+  const normalized = Math.round(value);
+  if (normalized < 0 || normalized > 100) {
+    return undefined;
+  }
+
+  return normalized;
+}
+
 export function getOpenAiImageApiKey() {
   return normalizeString(process.env.OPENAI_API_KEY);
 }
@@ -75,6 +155,12 @@ export function normalizeOpenAiImageGenerateRequest(
   return {
     prompt,
     referenceImages,
+    size: normalizeImageSize(source.size),
+    quality: normalizeImageQuality(source.quality),
+    background: normalizeImageBackground(source.background),
+    outputFormat: normalizeImageOutputFormat(source.outputFormat),
+    outputCompression: normalizeCompression(source.outputCompression),
+    inputFidelity: normalizeImageInputFidelity(source.inputFidelity),
   };
 }
 
@@ -132,6 +218,7 @@ export async function generateOpenAiImage(
     },
     body: JSON.stringify({
       model: getOpenAiImageMainModel(),
+      tool_choice: { type: "image_generation" },
       input: [
         {
           role: "user",
@@ -151,6 +238,16 @@ export async function generateOpenAiImage(
         {
           type: "image_generation",
           action: payload.referenceImages.length ? "edit" : "generate",
+          size: payload.size || "auto",
+          quality: payload.quality || "auto",
+          background: payload.background || "auto",
+          output_format: payload.outputFormat || "png",
+          ...(payload.outputCompression !== undefined
+            ? { output_compression: payload.outputCompression }
+            : {}),
+          ...(payload.referenceImages.length
+            ? { input_fidelity: payload.inputFidelity || "high" }
+            : {}),
         },
       ],
     }),

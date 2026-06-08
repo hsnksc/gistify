@@ -13,6 +13,17 @@ import { generateOpenAiImage } from "./openaiImageStudio";
 
 const MAX_PROMPT_LENGTH = 4_000;
 const FIGURE_FILE_LIMIT = 12;
+const DAILY_CHART_OPENAI_SIZE = "1536x1024";
+const DAILY_CHART_QUALITY = "high";
+
+function buildDailyChartPrompt(prompt: string) {
+  return [
+    "Rebuild the attached market chart as a premium institutional research graphic.",
+    "Preserve every numeric relationship, axis scale, date, annotation, legend, arrow, label, and panel structure from the reference image.",
+    "Do not invent, omit, smooth, or re-interpret any datapoint. Improve only clarity, typography, spacing, contrast, and line sharpness.",
+    prompt,
+  ].join("\n\n");
+}
 
 function normalizeString(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
@@ -125,13 +136,18 @@ export async function generateDailyReportOpenAiCharts(
       path.resolve(path.dirname(sourceAssetPath), path.basename(outputFileName));
 
     const result = await generateOpenAiImage({
-      prompt,
+      prompt: buildDailyChartPrompt(prompt),
       referenceImages: [
         {
           name: path.basename(figureFileName),
           dataUrl: readImageAsDataUrl(sourceAssetPath),
         },
       ],
+      size: DAILY_CHART_OPENAI_SIZE,
+      quality: DAILY_CHART_QUALITY,
+      background: "opaque",
+      outputFormat: "png",
+      inputFidelity: "high",
     });
 
     writeDataUrlToPng(destinationPath, result.imageDataUrl);

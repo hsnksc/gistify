@@ -13,8 +13,6 @@ import {
   CalendarDays,
   ClipboardList,
   Clock3,
-  PanelLeftClose,
-  PanelLeftOpen,
   Radar,
   RefreshCw,
   Shield,
@@ -113,7 +111,6 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<TabId>("playbook");
   const [selectedReportId, setSelectedReportId] = useState("");
   const [selectedTicker, setSelectedTicker] = useState<string | null>(null);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [reports, setReports] = useState<EarningReportSourceSummary[]>([]);
   const [activeReport, setActiveReport] = useState<EarningReportSourceRecord | null>(null);
   const [loadingReports, setLoadingReports] = useState(true);
@@ -141,11 +138,7 @@ export default function Home() {
       const payload = (await response.json()) as EarningReportsListResponse;
       const nextReports = sortEarningReportsNewestFirst(payload.reports || []);
       setReports(nextReports);
-      setSelectedReportId(current =>
-        current && nextReports.some(report => report.id === current)
-          ? current
-          : nextReports[0]?.id || ""
-      );
+      setSelectedReportId(nextReports[0]?.id || "");
     } catch {
       // Leave page in honest empty state.
     } finally {
@@ -206,9 +199,14 @@ export default function Home() {
     };
   }, [selectedReportId]);
 
+  const visibleReports = useMemo(() => reports.slice(0, 1), [reports]);
+
   const selectedSummary = useMemo(
-    () => reports.find(report => report.id === selectedReportId) || reports[0] || null,
-    [reports, selectedReportId]
+    () =>
+      visibleReports.find(report => report.id === selectedReportId) ||
+      visibleReports[0] ||
+      null,
+    [visibleReports, selectedReportId]
   );
 
   const parsedReport = useMemo(() => {
@@ -246,8 +244,9 @@ export default function Home() {
     );
   }, [positions]);
 
-  const latestReport = reports[0] || null;
-  const hasReports = reports.length > 0;
+  const latestReport = visibleReports[0] || null;
+  const hasReports = visibleReports.length > 0;
+  const sidebarOpen = true;
   const latestUploadLabel = latestReport
     ? formatEarningReportDateTime(latestReport.updatedAt)
     : "-";
@@ -367,14 +366,14 @@ export default function Home() {
                       Earning Strategy Workspace
                     </p>
                     <h1 className="heading-condensed max-w-4xl text-3xl leading-none text-foreground md:text-5xl">
-                      Haftalik earnings akisini sade,
+                      Son earnings raporunu sade,
                       <span className="text-glow-accent text-indigo-300"> hizli ve taranabilir</span>
                       {" "}bir panelde tut.
                     </h1>
                     <p className="max-w-3xl text-sm leading-7 text-muted-foreground md:text-[15px]">
-                      En yeni yuklenen rapor ustte acilir. Altinda zaman sirali rapor
-                      seridi, hizli stat bar ve strategy tabs ayni ekranda kalir;
-                      dosya adlari yerine yuklenme zamani ve rapor tarihi gorunur.
+                      Simdilik yalnizca en son yuklenen earnings raporu acilir. Workspace
+                      tek aktif source uzerinden stat bar, strategy tabs ve ticker
+                      secimini temiz bir akista tutar.
                     </p>
                   </div>
                 </div>
@@ -392,23 +391,11 @@ export default function Home() {
                     <Shield className="size-4" />
                     Admin
                   </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setSidebarOpen(current => !current)}
-                  >
-                    {sidebarOpen ? (
-                      <PanelLeftClose className="size-4" />
-                    ) : (
-                      <PanelLeftOpen className="size-4" />
-                    )}
-                    Arsiv
-                  </Button>
                 </div>
               </div>
 
               <div className="flex items-center gap-2 overflow-x-auto terminal-scrollbar pb-2">
-                {reports.map((report, index) => {
+                {visibleReports.map((report, index) => {
                   const active = report.id === selectedReportId;
 
                   return (
@@ -424,7 +411,7 @@ export default function Home() {
                     >
                       <div className="flex items-center justify-between gap-3">
                         <span className="data-mono text-[11px] text-muted-foreground">
-                          {index === 0 ? "LATEST" : "ARCHIVE"}
+                          {index === 0 ? "LIVE" : "ARCHIVE"}
                         </span>
                         <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-amber-300">
                           {report.vixLabel || "VIX -"}
@@ -608,8 +595,8 @@ export default function Home() {
                   <div className="mt-4 space-y-3">
                     <SummaryCard
                       label="Rapor adedi"
-                      value={String(reports.length)}
-                      hint="earningreport kutuphanesi"
+                      value={String(visibleReports.length)}
+                      hint="Su an yalnizca son rapor gorunur"
                       icon={BarChart3}
                       tone="info"
                     />
@@ -646,68 +633,6 @@ export default function Home() {
                       : "Rapor gelmeden ozet kartlari bos gosterilmeyecek; veri geldiginde burada dolacak."}
                   </div>
                 )}
-              </section>
-
-              <section className="workspace-panel p-5">
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Archive
-                    </p>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      En son yuklenen rapor en ustte.
-                    </p>
-                  </div>
-                  {loadingReports ? (
-                    <span className="rounded-full border border-border bg-background/70 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                      Loading
-                    </span>
-                  ) : null}
-                </div>
-
-                <div className="terminal-scrollbar mt-4 max-h-[680px] space-y-3 overflow-y-auto pr-1">
-                  {reports.map((report, index) => {
-                    const active = report.id === selectedReportId;
-
-                    return (
-                      <button
-                        key={report.id}
-                        type="button"
-                        onClick={() => setSelectedReportId(report.id)}
-                        className={`w-full rounded-xl border p-4 text-left transition-all ${
-                          active
-                            ? "border-indigo-400/45 bg-indigo-500/12 shadow-[0_0_18px_rgba(99,102,241,0.12)]"
-                            : "border-border bg-background/45 hover:border-border hover:bg-[rgba(35,45,66,0.72)]"
-                        }`}
-                      >
-                        <div className="flex items-center justify-between gap-3">
-                          <span className="data-mono text-[11px] text-muted-foreground">
-                            {index === 0 ? "LATEST" : "ARCHIVE"}
-                          </span>
-                          <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-amber-300">
-                            {report.vixLabel || "VIX -"}
-                          </span>
-                        </div>
-                        <p className="data-mono mt-3 text-sm font-semibold text-foreground">
-                          {formatEarningReportDateTime(report.updatedAt)}
-                        </p>
-                        <p className="mt-1 text-xs text-muted-foreground">
-                          {report.reportDateLabel || formatEarningReportDate(report.reportDate)}
-                        </p>
-                        <p className="mt-3 line-clamp-2 text-sm leading-6 text-muted-foreground">
-                          {report.headline || "Earnings strategy source"}
-                        </p>
-                      </button>
-                    );
-                  })}
-
-                  {!loadingReports && !reports.length ? (
-                    <div className="rounded-xl border border-dashed border-border bg-background/45 p-4 text-sm leading-6 text-muted-foreground">
-                      `earningreport/` klasorune yeni rapor yuklendiginde burada otomatik
-                      gorunecek.
-                    </div>
-                  ) : null}
-                </div>
               </section>
             </aside>
           ) : null}
