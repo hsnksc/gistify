@@ -187,20 +187,31 @@ function InfoCard({
 }) {
   return (
     <div className="rounded-[1.6rem] border border-white/8 bg-white/[0.03] p-4 backdrop-blur-sm">
-      <div className="flex items-center gap-3">
-        <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-2 text-emerald-300">
-          {icon}
+      <div className="flex min-h-[132px] flex-col justify-between gap-4">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              {label}
+            </p>
+            <p className="mt-2 text-2xl font-semibold text-foreground">{value}</p>
+          </div>
+          <div className="shrink-0 rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-2 text-emerald-300">
+            {icon}
+          </div>
         </div>
-        <div className="min-w-0">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            {label}
-          </p>
-          <p className="mt-1 text-xl font-semibold text-foreground">{value}</p>
-          {hint ? (
-            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{hint}</p>
-          ) : null}
-        </div>
+        {hint ? (
+          <p className="text-xs leading-relaxed text-muted-foreground">{hint}</p>
+        ) : null}
       </div>
+    </div>
+  );
+}
+
+function EmptyReportCallout({ title, body }: { title: string; body: string }) {
+  return (
+    <div className="rounded-[1.6rem] border border-dashed border-border bg-background/40 p-5">
+      <p className="text-sm font-semibold text-foreground">{title}</p>
+      <p className="mt-2 text-sm leading-7 text-muted-foreground">{body}</p>
     </div>
   );
 }
@@ -404,7 +415,7 @@ export default function DailyReportViewer({
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.16),transparent_32%),radial-gradient(circle_at_bottom_left,rgba(245,158,11,0.12),transparent_28%)]" />
         <div className="absolute inset-0 tactical-grid opacity-20" />
 
-        <div className="relative grid gap-6 p-6 lg:grid-cols-[minmax(0,1.4fr)_380px]">
+        <div className="relative grid gap-6 p-6 2xl:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]">
           <div className="space-y-5">
             <div className="flex flex-wrap items-center gap-2">
               <span className="rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
@@ -431,17 +442,24 @@ export default function DailyReportViewer({
               </p>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-              {statCards.map(card => (
-                <InfoCard
-                  key={card.label}
-                  icon={card.icon}
-                  label={card.label}
-                  value={card.value}
-                  hint={card.hint}
-                />
-              ))}
-            </div>
+            {statCards.length ? (
+              <div className="grid gap-3 sm:grid-cols-2 2xl:grid-cols-4">
+                {statCards.map(card => (
+                  <InfoCard
+                    key={card.label}
+                    icon={card.icon}
+                    label={card.label}
+                    value={card.value}
+                    hint={card.hint}
+                  />
+                ))}
+              </div>
+            ) : (
+              <EmptyReportCallout
+                title="Stat bloklari hazirlaniyor"
+                body="Bu raporun section, ticker ve figure dagilimi yorumlandikca ustteki ozet kartlari otomatik dolacak."
+              />
+            )}
           </div>
 
           <div className="space-y-4">
@@ -894,11 +912,11 @@ export default function DailyReportViewer({
 
       <Dialog open={Boolean(activeFigure)} onOpenChange={open => !open && setActiveFigure(null)}>
         <DialogContent
-          className="max-w-[min(1320px,calc(100%-2rem))] border-white/10 bg-[#041118]/98 p-0 shadow-[0_40px_140px_rgba(0,0,0,0.6)]"
+          className="h-[94vh] w-[min(96vw,1600px)] max-w-[calc(100vw-1rem)] overflow-hidden border-white/10 bg-[#041118]/98 p-0 shadow-[0_40px_140px_rgba(0,0,0,0.6)] sm:max-w-[min(96vw,1600px)]"
           showCloseButton
         >
           {activeFigure ? (
-            <div className="overflow-hidden rounded-[1.6rem]">
+            <div className="flex h-full flex-col overflow-hidden rounded-[1.6rem]">
               <div className="border-b border-white/10 px-6 py-5">
                 <DialogTitle className="text-xl font-semibold text-foreground">
                   {activeFigure.label}
@@ -907,13 +925,13 @@ export default function DailyReportViewer({
                   {activeFigure.fileName}
                 </DialogDescription>
               </div>
-              <div className="relative bg-[linear-gradient(180deg,rgba(10,23,32,0.98),rgba(4,14,20,1))] p-4 md:p-6">
+              <div className="relative min-h-0 flex-1 overflow-auto bg-[linear-gradient(180deg,rgba(10,23,32,0.98),rgba(4,14,20,1))] p-3 md:p-5">
                 <div className="absolute inset-0 tactical-grid opacity-[0.14]" />
-                <div className="relative flex min-h-[60vh] items-center justify-center">
+                <div className="relative flex min-h-full items-center justify-center">
                   <img
                     src={activeFigure.src}
                     alt={activeFigure.label}
-                    className="max-h-[78vh] w-full rounded-[1.4rem] object-contain shadow-[0_24px_90px_rgba(0,0,0,0.48)]"
+                    className="mx-auto max-h-full max-w-full rounded-[1.4rem] object-contain shadow-[0_24px_90px_rgba(0,0,0,0.48)]"
                   />
                 </div>
               </div>

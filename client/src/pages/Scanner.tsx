@@ -323,6 +323,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
   const selectedUpdateLabel = formatMomentumUpdateStamp(activeSummary?.updatedAt || "");
   const selectedTitle =
     activeSummary?.title || parsedReport?.title || "Momentum report bekleniyor";
+  const hasReports = reports.length > 0;
 
   const handleTabChange = (tab: TabId) => {
     startTabTransition(() => {
@@ -465,27 +466,35 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                 })}
               </div>
 
-              <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-                <span className="flex items-center gap-1.5">
-                  <CandlestickChart className="size-3.5 text-sky-300" />
-                  {parsedReport?.indexRows.length || 0} index row
-                </span>
-                <span className="h-3 w-px bg-border" />
-                <span className="flex items-center gap-1.5">
-                  <TrendingUp className="size-3.5 text-emerald-300" />
-                  {parsedReport?.candidates.length || 0} setup
-                </span>
-                <span className="h-3 w-px bg-border" />
-                <span className="flex items-center gap-1.5">
-                  <TrendingDown className="size-3.5 text-red-300" />
-                  {negativeIndices} negative breadth
-                </span>
-                <span className="h-3 w-px bg-border" />
-                <span className="flex items-center gap-1.5">
-                  <Target className="size-3.5 text-indigo-300" />
-                  {topSetup?.ticker || "Top setup bekleniyor"}
-                </span>
-              </div>
+              {hasReports ? (
+                <div className="inline-flex max-w-full flex-wrap items-center gap-3 rounded-xl border border-border bg-background/40 px-4 py-3 text-xs text-muted-foreground">
+                  <span className="flex items-center gap-1.5">
+                    <CandlestickChart className="size-3.5 text-sky-300" />
+                    {parsedReport?.indexRows.length || 0} index row
+                  </span>
+                  <span className="h-3 w-px bg-border" />
+                  <span className="flex items-center gap-1.5">
+                    <TrendingUp className="size-3.5 text-emerald-300" />
+                    {parsedReport?.candidates.length || 0} setup
+                  </span>
+                  <span className="h-3 w-px bg-border" />
+                  <span className="flex items-center gap-1.5">
+                    <TrendingDown className="size-3.5 text-red-300" />
+                    {negativeIndices} negative breadth
+                  </span>
+                  <span className="h-3 w-px bg-border" />
+                  <span className="flex items-center gap-1.5">
+                    <Target className="size-3.5 text-indigo-300" />
+                    {topSetup?.ticker || "Top setup bekleniyor"}
+                  </span>
+                </div>
+              ) : (
+                <div className="inline-flex max-w-full flex-wrap items-center gap-2 rounded-xl border border-dashed border-border bg-background/35 px-4 py-3 text-xs text-muted-foreground">
+                  {loadingReports
+                    ? "Momentum report listesi yukleniyor."
+                    : "`momentum/` source geldikten sonra piyasa stat bar otomatik dolacak."}
+                </div>
+              )}
             </div>
           </div>
         </section>
@@ -497,48 +506,56 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
         >
           <main ref={contentRef} className="min-w-0 space-y-6">
             <section className="workspace-panel p-4 md:p-5">
-              <div className="flex flex-col gap-4 border-b border-border pb-4 md:flex-row md:items-end md:justify-between">
-                <div className="space-y-2">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-indigo-300">
-                    Selected report
-                  </p>
-                  <h2 className="heading-condensed text-2xl text-foreground md:text-3xl">
-                    {selectedTitle}
-                  </h2>
-                  <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-                    {selectedSubtitle || "Secili raporun alt basligi burada gorunur."}
-                  </p>
-                  {hasDisplayValue(selectedSourceLabel) ? (
-                    <p className="data-mono text-xs text-muted-foreground">
-                      Source: {selectedSourceLabel}
+              {hasReports ? (
+                <div className="flex flex-col gap-4 border-b border-border pb-4 md:flex-row md:items-end md:justify-between">
+                  <div className="space-y-2">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-indigo-300">
+                      Selected report
                     </p>
-                  ) : null}
-                </div>
+                    <h2 className="heading-condensed text-2xl text-foreground md:text-3xl">
+                      {selectedTitle}
+                    </h2>
+                    <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
+                      {selectedSubtitle || "Secili raporun alt basligi burada gorunur."}
+                    </p>
+                    {hasDisplayValue(selectedSourceLabel) ? (
+                      <p className="data-mono text-xs text-muted-foreground">
+                        Source: {selectedSourceLabel}
+                      </p>
+                    ) : null}
+                  </div>
 
-                <div className="grid gap-3 sm:grid-cols-3 md:min-w-[420px]">
-                  <SummaryCard
-                    label="Rapor tarihi"
-                    value={activeSummary?.reportDateLabel || "-"}
-                    hint="Momentum source takvimi"
-                    icon={CandlestickChart}
-                    tone="info"
-                  />
-                  <SummaryCard
-                    label="Target"
-                    value={activeSummary?.targetDateLabel || "-"}
-                    hint="Aksiyon / hedef seans"
-                    icon={Target}
-                    tone="caution"
-                  />
-                  <SummaryCard
-                    label="Update"
-                    value={selectedUpdateLabel}
-                    hint="Dosya degisiklik damgasi"
-                    icon={Clock3}
-                    tone="bull"
-                  />
+                  <div className="grid gap-3 sm:grid-cols-3 md:min-w-[420px]">
+                    <SummaryCard
+                      label="Rapor tarihi"
+                      value={activeSummary?.reportDateLabel || "-"}
+                      hint="Momentum source takvimi"
+                      icon={CandlestickChart}
+                      tone="info"
+                    />
+                    <SummaryCard
+                      label="Target"
+                      value={activeSummary?.targetDateLabel || "-"}
+                      hint="Aksiyon / hedef seans"
+                      icon={Target}
+                      tone="caution"
+                    />
+                    <SummaryCard
+                      label="Update"
+                      value={selectedUpdateLabel}
+                      hint="Dosya degisiklik damgasi"
+                      icon={Clock3}
+                      tone="bull"
+                    />
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="rounded-xl border border-dashed border-border bg-background/35 p-4 text-sm leading-7 text-muted-foreground">
+                  {loadingReports
+                    ? "Secili momentum raporu yukleniyor."
+                    : "Henuz secilebilir bir momentum raporu yok. Yeni source geldikten sonra bu alan otomatik dolacak."}
+                </div>
+              )}
 
               {parsedReport?.executiveSummary ? (
                 <div className="mt-4 workspace-card p-4">
@@ -619,18 +636,26 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                   <span className="badge-strong">scanner ready</span>
                 </div>
 
-                <div className="mt-4 space-y-3">
-                  {summaryCards.map(card => (
-                    <SummaryCard
-                      key={card.label}
-                      label={card.label}
-                      value={card.value}
-                      hint={card.hint}
-                      icon={card.icon}
-                      tone={card.tone}
-                    />
-                  ))}
-                </div>
+                {hasReports ? (
+                  <div className="mt-4 space-y-3">
+                    {summaryCards.map(card => (
+                      <SummaryCard
+                        key={card.label}
+                        label={card.label}
+                        value={card.value}
+                        hint={card.hint}
+                        icon={card.icon}
+                        tone={card.tone}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="mt-4 rounded-xl border border-dashed border-border bg-background/35 p-4 text-sm leading-6 text-muted-foreground">
+                    {loadingReports
+                      ? "Sidebar snapshot hazirlaniyor."
+                      : "Rapor gelmeden ozet kartlari bos gosterilmeyecek; veri geldiginde burada dolacak."}
+                  </div>
+                )}
               </section>
 
               <section className="workspace-panel p-5">

@@ -165,6 +165,7 @@ export default function DailyReportPage() {
         updatedAt: formatUpdateStamp(selectedReport.updatedAt),
       }
     : null;
+  const hasReports = reports.length > 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -208,43 +209,51 @@ export default function DailyReportPage() {
                 </div>
               </div>
 
-              <div className="grid gap-3 md:grid-cols-4">
-                <SummaryCard
-                  label="Son rapor"
-                  value={libraryStats.latestDate}
-                  hint="Arsivde ustte gorunen tarih"
-                  icon={CalendarRange}
-                  tone="info"
-                />
-                <SummaryCard
-                  label="Rapor adedi"
-                  value={String(libraryStats.reports)}
-                  hint="Toplam daily source"
-                  icon={DatabaseZap}
-                  tone="bull"
-                />
-                <SummaryCard
-                  label="Figure"
-                  value={String(libraryStats.figures)}
-                  hint="Kaynak chart / gorsel"
-                  icon={GalleryHorizontal}
-                  tone="caution"
-                />
-                <SummaryCard
-                  label="AI set"
-                  value={String(libraryStats.aiEnhancedReports)}
-                  hint="OpenAI varyanti olan rapor"
-                  icon={Sparkles}
-                  tone="info"
-                />
-              </div>
+              {hasReports ? (
+                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                  <SummaryCard
+                    label="Son rapor"
+                    value={libraryStats.latestDate}
+                    hint="Arsivde ustte gorunen tarih"
+                    icon={CalendarRange}
+                    tone="info"
+                  />
+                  <SummaryCard
+                    label="Rapor adedi"
+                    value={String(libraryStats.reports)}
+                    hint="Toplam daily source"
+                    icon={DatabaseZap}
+                    tone="bull"
+                  />
+                  <SummaryCard
+                    label="Figure"
+                    value={String(libraryStats.figures)}
+                    hint="Kaynak chart / gorsel"
+                    icon={GalleryHorizontal}
+                    tone="caution"
+                  />
+                  <SummaryCard
+                    label="AI set"
+                    value={String(libraryStats.aiEnhancedReports)}
+                    hint="OpenAI varyanti olan rapor"
+                    icon={Sparkles}
+                    tone="info"
+                  />
+                </div>
+              ) : (
+                <div className="inline-flex max-w-full flex-wrap items-center gap-2 rounded-xl border border-dashed border-border bg-background/35 px-4 py-3 text-xs text-muted-foreground">
+                  {loading
+                    ? "Daily report kutuphanesi yukleniyor."
+                    : "`dailyreport/` source geldikten sonra library istatistikleri burada dolacak."}
+                </div>
+              )}
             </div>
           </div>
         </section>
 
-        <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(320px,0.42fr)_minmax(0,0.58fr)]">
-          <aside className="min-w-0 space-y-6 xl:sticky xl:top-6 xl:h-[calc(100vh-3rem)] xl:overflow-hidden">
-            <section className="workspace-panel flex h-full flex-col p-5">
+        <div className="mt-6 grid gap-6 xl:grid-cols-[360px_minmax(0,1fr)]">
+          <aside className="min-w-0 space-y-6 xl:sticky xl:top-6 xl:self-start">
+            <section className="workspace-panel p-5">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
@@ -297,7 +306,7 @@ export default function DailyReportPage() {
                 </div>
               ) : null}
 
-              <div className="terminal-scrollbar mt-5 flex-1 space-y-3 overflow-y-auto pr-1">
+              <div className="terminal-scrollbar mt-5 space-y-3 overflow-y-auto pr-1 xl:max-h-[calc(100vh-28rem)]">
                 {reports.map((report, index) => {
                   const active = selectedReport?.id === report.id;
                   const figureCount = getFigureFiles(report).length;
@@ -405,7 +414,7 @@ export default function DailyReportPage() {
               </div>
             </div>
 
-            <div className="terminal-scrollbar max-h-[calc(100vh-14rem)] overflow-y-auto p-4 md:p-6">
+            <div className="p-4 md:p-6">
               {selectedReport ? (
                 <DailyReportViewer
                   title={selectedReport.title}

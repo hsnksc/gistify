@@ -247,6 +247,7 @@ export default function Home() {
   }, [positions]);
 
   const latestReport = reports[0] || null;
+  const hasReports = reports.length > 0;
   const latestUploadLabel = latestReport
     ? formatEarningReportDateTime(latestReport.updatedAt)
     : "-";
@@ -444,32 +445,40 @@ export default function Home() {
                 })}
               </div>
 
-              <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-                <span className="flex items-center gap-1.5">
-                  <BarChart3 className="size-3.5 text-sky-300" />
-                  {positions.length} earnings event
-                </span>
-                <span className="h-3 w-px bg-border" />
-                <span className="flex items-center gap-1.5">
-                  <TrendingUp className="size-3.5 text-emerald-300" />
-                  {bullishCount} bullish
-                </span>
-                <span className="h-3 w-px bg-border" />
-                <span className="flex items-center gap-1.5">
-                  <TrendingDown className="size-3.5 text-red-300" />
-                  {bearishCount} bearish
-                </span>
-                <span className="h-3 w-px bg-border" />
-                <span className="flex items-center gap-1.5">
-                  <Zap className="size-3.5 text-amber-300" />
-                  Avg IV Rank {avgIvRank}
-                </span>
-                <span className="h-3 w-px bg-border" />
-                <span className="flex items-center gap-1.5">
-                  <Target className="size-3.5 text-indigo-300" />
-                  Avg move {avgExpectedMove}
-                </span>
-              </div>
+              {hasReports ? (
+                <div className="inline-flex max-w-full flex-wrap items-center gap-3 rounded-xl border border-border bg-background/40 px-4 py-3 text-xs text-muted-foreground">
+                  <span className="flex items-center gap-1.5">
+                    <BarChart3 className="size-3.5 text-sky-300" />
+                    {positions.length} earnings event
+                  </span>
+                  <span className="h-3 w-px bg-border" />
+                  <span className="flex items-center gap-1.5">
+                    <TrendingUp className="size-3.5 text-emerald-300" />
+                    {bullishCount} bullish
+                  </span>
+                  <span className="h-3 w-px bg-border" />
+                  <span className="flex items-center gap-1.5">
+                    <TrendingDown className="size-3.5 text-red-300" />
+                    {bearishCount} bearish
+                  </span>
+                  <span className="h-3 w-px bg-border" />
+                  <span className="flex items-center gap-1.5">
+                    <Zap className="size-3.5 text-amber-300" />
+                    Avg IV Rank {avgIvRank}
+                  </span>
+                  <span className="h-3 w-px bg-border" />
+                  <span className="flex items-center gap-1.5">
+                    <Target className="size-3.5 text-indigo-300" />
+                    Avg move {avgExpectedMove}
+                  </span>
+                </div>
+              ) : (
+                <div className="inline-flex max-w-full flex-wrap items-center gap-2 rounded-xl border border-dashed border-border bg-background/35 px-4 py-3 text-xs text-muted-foreground">
+                  {loadingReports
+                    ? "Earnings report listesi yukleniyor."
+                    : "`earningreport/` kaynagi gelince stat bar otomatik dolacak."}
+                </div>
+              )}
             </div>
           </div>
         </section>
@@ -481,43 +490,51 @@ export default function Home() {
         >
           <main ref={contentRef} className="min-w-0 space-y-6">
             <section className="workspace-panel p-4 md:p-5">
-              <div className="flex flex-col gap-4 border-b border-border pb-4 md:flex-row md:items-end md:justify-between">
-                <div className="space-y-2">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-indigo-300">
-                    Selected report
-                  </p>
-                  <h2 className="heading-condensed text-2xl text-foreground md:text-3xl">
-                    {selectedUploadLabel}
-                  </h2>
-                  <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-                    {selectedHeadline}
-                  </p>
-                </div>
+              {hasReports ? (
+                <div className="flex flex-col gap-4 border-b border-border pb-4 md:flex-row md:items-end md:justify-between">
+                  <div className="space-y-2">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-indigo-300">
+                      Selected report
+                    </p>
+                    <h2 className="heading-condensed text-2xl text-foreground md:text-3xl">
+                      {selectedUploadLabel}
+                    </h2>
+                    <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
+                      {selectedHeadline}
+                    </p>
+                  </div>
 
-                <div className="grid gap-3 sm:grid-cols-3 md:min-w-[420px]">
-                  <SummaryCard
-                    label="Rapor tarihi"
-                    value={selectedSummary?.reportDateLabel || "-"}
-                    hint="Parser ile okunan ana tarih"
-                    icon={CalendarDays}
-                    tone="info"
-                  />
-                  <SummaryCard
-                    label="VIX"
-                    value={selectedSummary?.vixLabel || "-"}
-                    hint="Secili rapor volatilite baglami"
-                    icon={Zap}
-                    tone="caution"
-                  />
-                  <SummaryCard
-                    label="Yuklenme"
-                    value={selectedUploadLabel}
-                    hint="Liste siralamasi bu zamana gore"
-                    icon={Clock3}
-                    tone="bull"
-                  />
+                  <div className="grid gap-3 sm:grid-cols-3 md:min-w-[420px]">
+                    <SummaryCard
+                      label="Rapor tarihi"
+                      value={selectedSummary?.reportDateLabel || "-"}
+                      hint="Parser ile okunan ana tarih"
+                      icon={CalendarDays}
+                      tone="info"
+                    />
+                    <SummaryCard
+                      label="VIX"
+                      value={selectedSummary?.vixLabel || "-"}
+                      hint="Secili rapor volatilite baglami"
+                      icon={Zap}
+                      tone="caution"
+                    />
+                    <SummaryCard
+                      label="Yuklenme"
+                      value={selectedUploadLabel}
+                      hint="Liste siralamasi bu zamana gore"
+                      icon={Clock3}
+                      tone="bull"
+                    />
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="rounded-xl border border-dashed border-border bg-background/35 p-4 text-sm leading-7 text-muted-foreground">
+                  {loadingReports
+                    ? "Secili earnings raporu yukleniyor."
+                    : "Henuz secilebilir bir earnings raporu yok. Yeni source geldikten sonra bu alan otomatik dolacak."}
+                </div>
+              )}
 
               <div className="mt-4 flex flex-wrap gap-2 rounded-xl border border-border bg-background/45 p-1">
                 {tabs.map(tab => {
@@ -587,40 +604,48 @@ export default function Home() {
                   <span className="badge-strong">live index</span>
                 </div>
 
-                <div className="mt-4 space-y-3">
-                  <SummaryCard
-                    label="Rapor adedi"
-                    value={String(reports.length)}
-                    hint="earningreport kutuphanesi"
-                    icon={BarChart3}
-                    tone="info"
-                  />
-                  <SummaryCard
-                    label="Son yukleme"
-                    value={latestUploadLabel}
-                    hint="Varsayilan acilan rapor"
-                    icon={RefreshCw}
-                    tone="bull"
-                  />
-                  <SummaryCard
-                    label="Aktif setup"
-                    value={String(positions.length)}
-                    hint="Secili rapordaki ticker"
-                    icon={Target}
-                    tone="info"
-                  />
-                  <SummaryCard
-                    label="Yakin event"
-                    value={nextEvent?.ticker || "-"}
-                    hint={
-                      nextEvent
-                        ? `${nextEvent.earningsDate} · ${nextEvent.daysLeft} gun`
-                        : "Secili rapordan"
-                    }
-                    icon={CalendarDays}
-                    tone="caution"
-                  />
-                </div>
+                {hasReports ? (
+                  <div className="mt-4 space-y-3">
+                    <SummaryCard
+                      label="Rapor adedi"
+                      value={String(reports.length)}
+                      hint="earningreport kutuphanesi"
+                      icon={BarChart3}
+                      tone="info"
+                    />
+                    <SummaryCard
+                      label="Son yukleme"
+                      value={latestUploadLabel}
+                      hint="Varsayilan acilan rapor"
+                      icon={RefreshCw}
+                      tone="bull"
+                    />
+                    <SummaryCard
+                      label="Aktif setup"
+                      value={String(positions.length)}
+                      hint="Secili rapordaki ticker"
+                      icon={Target}
+                      tone="info"
+                    />
+                    <SummaryCard
+                      label="Yakin event"
+                      value={nextEvent?.ticker || "-"}
+                      hint={
+                        nextEvent
+                          ? `${nextEvent.earningsDate} · ${nextEvent.daysLeft} gun`
+                          : "Secili rapordan"
+                      }
+                      icon={CalendarDays}
+                      tone="caution"
+                    />
+                  </div>
+                ) : (
+                  <div className="mt-4 rounded-xl border border-dashed border-border bg-background/35 p-4 text-sm leading-6 text-muted-foreground">
+                    {loadingReports
+                      ? "Sidebar snapshot hazirlaniyor."
+                      : "Rapor gelmeden ozet kartlari bos gosterilmeyecek; veri geldiginde burada dolacak."}
+                  </div>
+                )}
               </section>
 
               <section className="workspace-panel p-5">
