@@ -8,7 +8,6 @@ import {
 } from "react";
 import {
   Activity,
-  ArrowRight,
   CandlestickChart,
   Clock3,
   PanelLeftClose,
@@ -393,13 +392,11 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                       Momentum Scanner Workspace
                     </p>
                     <h1 className="heading-condensed max-w-4xl text-3xl leading-none text-foreground md:text-5xl">
-                      Gunluk momentum analizini,
-                      <span className="text-glow-accent text-indigo-300"> rapor + scanner</span>
-                      {" "}ikilisinde tut.
+                      Momentum report ve live scanner
                     </h1>
                     <p className="max-w-3xl text-sm leading-7 text-muted-foreground md:text-[15px]">
-                      Ustte zaman damgali report seridi, ortada secili raporun piyasa
-                      ozetleri, altta ise market tabs ve live scanner ayni duzende acilir.
+                      En guncel momentum raporu ustten secilir. Market pulse, setup,
+                      strategy ve live scanner ayni workspace icinde acilir.
                     </p>
                   </div>
                 </div>
@@ -599,24 +596,6 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                   </div>
                 ) : null}
                 {renderActiveTab()}
-              </div>
-            </section>
-
-            <section className="workspace-panel p-5">
-              <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                <div>
-                  <p className="heading-condensed text-sm text-foreground">
-                    Sonraki akis: daily intelligence
-                  </p>
-                  <p className="mt-1 text-xs leading-6 text-muted-foreground">
-                    Momentum raporundaki market rejimi ile daily report tarafindaki
-                    uzun form analizleri ayni gorunur duzende birbirine bagla.
-                  </p>
-                </div>
-                <Button type="button" onClick={() => setLocation("/daily-report")}>
-                  Daily Report
-                  <ArrowRight className="size-4" />
-                </Button>
               </div>
             </section>
           </main>

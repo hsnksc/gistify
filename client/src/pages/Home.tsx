@@ -8,7 +8,6 @@ import {
 } from "react";
 import {
   AlertTriangle,
-  ArrowRight,
   BarChart3,
   CalendarDays,
   ClipboardList,
@@ -366,14 +365,11 @@ export default function Home() {
                       Earning Strategy Workspace
                     </p>
                     <h1 className="heading-condensed max-w-4xl text-3xl leading-none text-foreground md:text-5xl">
-                      Son earnings raporunu sade,
-                      <span className="text-glow-accent text-indigo-300"> hizli ve taranabilir</span>
-                      {" "}bir panelde tut.
+                      Guncel earnings strateji paneli
                     </h1>
                     <p className="max-w-3xl text-sm leading-7 text-muted-foreground md:text-[15px]">
-                      Simdilik yalnizca en son yuklenen earnings raporu acilir. Workspace
-                      tek aktif source uzerinden stat bar, strategy tabs ve ticker
-                      secimini temiz bir akista tutar.
+                      Yalnizca en son earnings raporu gorunur. Ticker secimi, playbook,
+                      takvim ve risk panelleri tek source uzerinden acilir.
                     </p>
                   </div>
                 </div>
@@ -554,24 +550,6 @@ export default function Home() {
                   </div>
                 ) : null}
                 {renderActiveTab()}
-              </div>
-            </section>
-
-            <section className="workspace-panel p-5">
-              <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                <div>
-                  <p className="heading-condensed text-sm text-foreground">
-                    Sonraki akim: momentum scanner
-                  </p>
-                  <p className="mt-1 text-xs leading-6 text-muted-foreground">
-                    Earnings strateji taramasindan sonra ayni arayuz dilinde gunluk momentum
-                    akisini ve live scanner sonucunu ac.
-                  </p>
-                </div>
-                <Button type="button" onClick={() => setLocation("/momentum")}>
-                  Momentum Scanner
-                  <ArrowRight className="size-4" />
-                </Button>
               </div>
             </section>
           </main>
