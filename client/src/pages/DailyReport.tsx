@@ -204,7 +204,7 @@ export default function DailyReportPage() {
                     Yenile
                   </Button>
                   <Button type="button" variant="outline" onClick={() => setLocation("/app/admin")}>
-                    Admin Workspace
+                    Admin / Chart Studio
                   </Button>
                 </div>
               </div>
@@ -251,9 +251,9 @@ export default function DailyReportPage() {
           </div>
         </section>
 
-        <div className="mt-6 grid gap-6 xl:grid-cols-[360px_minmax(0,1fr)]">
-          <aside className="min-w-0 space-y-6 xl:sticky xl:top-6 xl:self-start">
-            <section className="workspace-panel p-5">
+        <div className="mt-6 grid gap-6 xl:grid-cols-[360px_minmax(0,1fr)] xl:items-start">
+          <aside className="min-w-0 space-y-6 xl:sticky xl:top-24 xl:self-start">
+            <section className="workspace-panel p-5 xl:flex xl:h-[calc(100vh-8rem)] xl:flex-col">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
@@ -306,7 +306,7 @@ export default function DailyReportPage() {
                 </div>
               ) : null}
 
-              <div className="terminal-scrollbar mt-5 space-y-3 overflow-y-auto pr-1 xl:max-h-[calc(100vh-28rem)]">
+              <div className="terminal-scrollbar mt-5 space-y-3 overflow-y-auto pr-1 xl:min-h-0 xl:flex-1">
                 {reports.map((report, index) => {
                   const active = selectedReport?.id === report.id;
                   const figureCount = getFigureFiles(report).length;
@@ -370,7 +370,7 @@ export default function DailyReportPage() {
             </section>
           </aside>
 
-          <section className="workspace-panel min-w-0 overflow-hidden">
+          <section className="workspace-panel min-w-0 overflow-hidden xl:sticky xl:top-24 xl:flex xl:h-[calc(100vh-8rem)] xl:flex-col">
             <div className="border-b border-border px-5 py-4 md:px-6">
               <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                 <div className="space-y-2">
@@ -414,7 +414,7 @@ export default function DailyReportPage() {
               </div>
             </div>
 
-            <div className="p-4 md:p-6">
+            <div className="terminal-scrollbar p-4 md:p-6 xl:min-h-0 xl:flex-1 xl:overflow-y-auto">
               {selectedReport ? (
                 <DailyReportViewer
                   title={selectedReport.title}

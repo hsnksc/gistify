@@ -12,6 +12,7 @@ import {
   LayoutDashboard,
   LogOut,
   Radar,
+  Shield,
   WalletCards,
   Bot,
 } from "lucide-react";
@@ -245,7 +246,13 @@ function AppNavigation({ language }: { language: AppLanguage }) {
       href: "/app",
       label: language === "en" ? "Earning Strategy" : "Earning Strategy",
       icon: LayoutDashboard,
-      active: location.startsWith("/app"),
+      active: location === "/app",
+    },
+    {
+      href: "/app/admin",
+      label: language === "en" ? "Admin" : "Admin",
+      icon: Shield,
+      active: location.startsWith("/app/admin"),
     },
     {
       href: "/momentum",

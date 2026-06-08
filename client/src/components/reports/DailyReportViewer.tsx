@@ -8,6 +8,7 @@ import {
   ShieldAlert,
   Target,
   TrendingUp,
+  X,
 } from "lucide-react";
 import {
   Bar,
@@ -918,12 +919,24 @@ export default function DailyReportViewer({
           {activeFigure ? (
             <div className="flex h-full flex-col overflow-hidden rounded-[1.6rem]">
               <div className="border-b border-white/10 px-6 py-5">
-                <DialogTitle className="text-xl font-semibold text-foreground">
-                  {activeFigure.label}
-                </DialogTitle>
-                <DialogDescription className="mt-2 text-sm leading-6 text-muted-foreground">
-                  {activeFigure.fileName}
-                </DialogDescription>
+                <div className="flex items-start justify-between gap-4">
+                  <div className="min-w-0">
+                    <DialogTitle className="text-xl font-semibold text-foreground">
+                      {activeFigure.label}
+                    </DialogTitle>
+                    <DialogDescription className="mt-2 text-sm leading-6 text-muted-foreground">
+                      {activeFigure.fileName}
+                    </DialogDescription>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setActiveFigure(null)}
+                    className="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-foreground transition-colors hover:border-white/24 hover:bg-white/[0.08]"
+                  >
+                    <X className="size-3.5" />
+                    Kapat
+                  </button>
+                </div>
               </div>
               <div className="relative min-h-0 flex-1 overflow-auto bg-[linear-gradient(180deg,rgba(10,23,32,0.98),rgba(4,14,20,1))] p-3 md:p-5">
                 <div className="absolute inset-0 tactical-grid opacity-[0.14]" />
