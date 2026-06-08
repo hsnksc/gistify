@@ -1,9 +1,11 @@
 # HAZİRAN 2026 EARNINGS OPSİYON STRATEJİ RAPORU — GÜNCELLEME v2
-## EarningsPlay v4 Metodolojisi + Güncel Haber Entegrasyonu | 7 Haziran 2026
+## EarningsPlay v4 Metodolojisi + Güncel Haber Entegrasyonu | 8 Haziran 2026
 
 > **YASAL UYARI:** Bu rapor yalnızca eğitim ve araştırma amaçlıdır. Finansal tavsiye niteliğinde değildir. Hisse senedi ve opsiyon ticareti yüksek risk içerir ve yatırımcıların tüm sermayesini kaybetmesine neden olabilir. Yatırım kararı almadan önce profesyonel danışmana başvurunuz.
 
-> **RAPOR VERSIYONU:** v2.0 | **Önceki Rapor:** v1.0 (6 Haziran 2026) | **Değişiklik:** EarningsPlay v4 kuralları + Güncel haber entegrasyonu
+> **RAPOR VERSIYONU:** v2.1 | **Önceki Rapor:** v2.0 (7 Haziran 2026) | **Değişiklik:** 8 Haziran piyasa rejimi, VIX ve takvim güncellemesi
+
+> **8 HAZİRAN GÜNLÜK NOTU:** 5 Haziran satışının ardından 8 Haziran sabahında VIX 19.98'e geriledi; S&P 500 ve Nasdaq vadelileri hafif pozitif açılışa işaret ediyor. Bu revizyon, şok sonrası soğuma ve CPI öncesi denge arayışı senaryosuna göre güncellenmiştir.
 
 ---
 
@@ -11,13 +13,13 @@
 
 | Metrik | Değer |
 |--------|-------|
-| **Analiz Tarihi** | 7 Haziran 2026 (Pazar) |
-| **Piyasa Rejimi** | Risk-On / Geçiş (Zayıflıyor) |
-| **VIX** | 21.51 (%+39.7 artış) |
+| **Analiz Tarihi** | 8 Haziran 2026 (Pazartesi) |
+| **Piyasa Rejimi** | Risk-On Tepkisi / Denge Arayışı |
+| **VIX** | 19.98 (15.40 tabanına göre %+29.7, Cuma şokuna göre gevşeme) |
 | **VIX Rejim Uyumu** | ✅ UYGUN (<%35) — %100 normal pozisyon |
 | **Analiz Edilen Hisse** | 5 (ORCL, ADBE, CHWY, FDX, MU) |
 | **Earnings Sezonu** | 8-30 Haziran 2026 |
-| **En Yakın Earnings** | ORCL & CHWY (10 Haziran — 3 gün kaldı) |
+| **En Yakın Earnings** | ORCL & CHWY (10 Haziran — 2 gün kaldı) |
 | **En Yüksek Katalist Skoru** | CHWY: 5/5 (Short Squeeze) |
 | **En İyi EarningsPlay Uyumu** | ADBE Iron Condor (IV %100, Katalist 4/5) |
 | **En Büyük Fırsat** | CHWY Long Call/Call Spread (Short Squeeze + %88 analist potansiyeli) |
@@ -48,7 +50,7 @@
 | Kural | Durum | Aksiyon |
 |-------|-------|---------|
 | IV Rank >%50 (IC için) | ✅ Tüm hisselerde sağlanıyor | IC stratejileri aktif |
-| VIX <35 | ✅ 21.51 — Uygun | %100 normal pozisyon |
+| VIX <35 | ✅ 19.98 — Uygun | %100 normal pozisyon |
 | %50 kar kuralı (mekanik) | ✅ Tüm stratejilerde uygulanacak | Kar al: Toplanan kredinin %50'si |
 | 21 DTE kuralı (mekanik) | ⚠️ Mevcut durum 0-7 DTE | Gamma riski yüksek — pozisyon küçült |
 | Wing width = Fiyat/10 | ✅ Tüm IC önerilerinde hesaplandı | Otomatik uygula |
@@ -102,7 +104,7 @@
 **EarningsPlay Uyumu:**
 - ✅ IV Rank %82.8 > %50 — Iron Condor uygun ama katalist nedeniyle ÖNERİLMEZ
 - ⚠️ Short strikes EM %10-15 dışı olmalı — EM ~%7.5, yani 198-231 aralığı
-- ✅ VIX 21.51 <%35 — Normal pozisyon
+- ✅ VIX 19.98 <%35 — Normal pozisyon
 - ✅ Wing width = $213.68/10 ≈ $21.4 → ~$20-22 seçilecek
 
 ---
@@ -150,7 +152,7 @@
 **EarningsPlay Uyumu:**
 - ✅ IV Rank %100 > %50 — Iron Condor MÜKEMMEL uyum
 - ✅ Wing width = $251.44/10 ≈ $25 → ~$25 seçilecek
-- ✅ VIX 21.51 <%35 — Normal pozisyon
+- ✅ VIX 19.98 <%35 — Normal pozisyon
 - ✅ Short strikes = EM %10-15 dışı — EM ~%6.7, yani ~$232-$273 aralığı
 - ✅ Max loss = 2.0x kredi — kontrol edilecek
 - 🚫 Long Straddle KAÇINILMALI — IV %100, prim aşırı pahalı
@@ -272,7 +274,7 @@
 - ✅ IV Rank %76.3 > %50 — Iron Condor uygun
 - ✅ Wing width = $331/10 ≈ $33 → ~$30-35 seçilecek
 - ✅ RSI 71.2 = range-bound doğrulayıcı
-- ✅ VIX 21.51 <%35 — Normal pozisyon
+- ✅ VIX 19.98 <%35 — Normal pozisyon
 - ⚠️ Earnings'e 17 gün var — zaman decay yavaş
 
 ---
@@ -325,7 +327,7 @@
 **EarningsPlay Uyumu:**
 - ✅ IV Rank %100 > %50 — Iron Condor MÜKEMMEL
 - ✅ Wing width = $864/10 ≈ $86 → ~$85-90 seçilecek
-- ✅ VIX 21.51 <%35 — Normal pozisyon
+- ✅ VIX 19.98 <%35 — Normal pozisyon
 - ✅ Max loss = 2.0x kredi — $3,586 max risk
 - ✅ Beta 2.17 = geniş wing gerekçesi
 - 🚫 Long Straddle KESİNLİKLE YASAK — IV çok pahalı
@@ -351,19 +353,21 @@
 
 | Gösterge | Değer | Bir Önceki | Değişim | Trend | Earnings Etkisi |
 |----------|-------|-----------|---------|-------|-----------------|
-| **VIX** | 21.51 | 15.40 | +39.7% | Yükseliyor (Endişe) | Volatilite artıyor = primler pahalı |
+| **VIX** | 19.98 | 15.40 | +29.7% | Geri çekiliyor (Soğuma) | Primler hâlâ pahalı ama panik azalıyor |
 | **Fear & Greed Index** | 57 | 69 | -12 puan | Nötr/Greed sınırı | Nötr sentiment |
 | **10Y Treasury Yield** | 4.54% | 4.48% | +6 bps | Yükseliyor | Faiz baskısı |
 | **DXY (US Dollar Index)** | 100.07 | 99.41 | +0.66% | Güçleniyor | Dolar güçleniyor = ihracatçı baskı |
 | **Put/Call Ratio (Equity)** | 0.67 | 0.44 | — | Nötr-Bullish | Hafif bullish eğilim |
 | **HY Credit Spreads (OAS)** | 275 bps | 272 bps | +3 bps | Düşük/Sıkı | Kredi piyasası sağlıklı |
-| **S&P 500** | 7,384 | 7,584 | -2.64% | 200MA üstünde | Trend korunuyor |
+| **S&P 500** | 7,384 kapanış | 7,584 | -2.64% | 200MA üstünde | Trend korunuyor, vadelide tepki var |
+
+> **8 Haziran sabah güncellemesi:** Reuters akışına göre ABD endeks vadeli işlemleri haftaya toparlanmayla başlıyor; Yahoo Finance ekranında VIX 19.98, S&P 500 vadeli kontratı yaklaşık %+0.28 ve Nasdaq vadeli kontratı yaklaşık %+0.53 seyrediyor. Bu tablo, 5 Haziran satış şokunun panik fazından temkinli tepki fazına geçildiğine işaret ediyor.
 
 ### 1.2 Piyasa Rejimi Tespiti
 
 | Gösterge | Değer | Eşik | Yön | Puan |
 |----------|-------|------|-----|------|
-| VIX | 21.51 | <14 Bullish, >25 Bearish | 14-25 arası | NÖTR |
+| VIX | 19.98 | <14 Bullish, >25 Bearish | 14-25 arası | NÖTR |
 | SPX/200MA | 7,384 / 6,854 | Üzerinde Bullish | ÜZERİNDE | BULLISH |
 | 10Y Yield | 4.54% | <3.75% Bull, >4.75% Bear | 3.75-4.75 arası | NÖTR |
 | DXY | 100.07 | Zayıflayan Bull, Güçlenen Bear | Güçleniyor | BEARISH |
@@ -371,11 +375,11 @@
 | Put/Call Ratio | 0.67 | <0.72 Bull, >1.23 Bear | <0.72 | BULLISH |
 | S&P 500 Trend | 7,384 | 50MA üzeri mi? | ÜZERİNDE | BULLISH |
 
-**PIYASA REJİMİ: RISK-ON / GEÇİŞ (Mixed)**
+**PIYASA REJİMİ: RISK-ON TEPKİSİ / DENGE ARAYIŞI**
 
-- **Bullish sinyaller (3):** SPX 200MA üzerinde, kredi spreadleri dar, Put/Call oranı düşük
-- **Nötr sinyaller (2):** VIX nötr-çizgide, 10Y Yield nötr bandında
-- **Bearish sinyaller (1):** Dolar güçleniyor
+- **Bullish sinyaller (4):** SPX 200MA üzerinde, kredi spreadleri dar, Put/Call oranı düşük, vadeliler haftaya pozitif başlıyor
+- **Nötr sinyaller (2):** VIX panik seviyesinden geri çekildi ama hâlâ sakin rejime inmedi, 10Y Yield nötr-yüksek bantta
+- **Bearish sinyaller (1):** Dolar güçlü ve Çarşamba CPI verisi hâlâ ana kırılma riski
 
 ### 1.3 Jeopolitik Riskler
 
@@ -404,12 +408,12 @@
 | VIX Değeri | Pozisyon | Etki | Mevcut Durum |
 |------------|----------|------|-------------|
 | <15 | %100 normal | IV düşük = ucuz prim | — |
-| 15-25 | %100 normal | Normal rejim | ✅ **21.51 = %100 normal** |
+| 15-25 | %100 normal | Normal rejim | ✅ **19.98 = %100 normal** |
 | 25-35 | %50 azaltma | IV yükseliyor = pahalı prim | Yakın takip |
 | 35-45 | %25 azaltma veya kaçın | Yüksek volatilite | Pozisyon küçült |
 | >45 | İşlem yapma | Kriz modu | Tamamen kaçın |
 
-**Mevcut VIX 21.51 → %100 normal pozisyon uygulanıyor.**
+**Mevcut VIX 19.98 → %100 normal pozisyon uygulanıyor.**
 
 
 
@@ -520,7 +524,7 @@
 | **Kazanma Olasılığı** | ~%61-65 | Backtest verisi |
 | **Kâr Hedefi** | Toplanan kredinin %50'si | ✅ MEKANİK EXIT |
 | **Stop-Loss** | 2.0x toplanan kredi | ✅ MEKANİK STOP |
-| **Pozisyon Büyüklüğü** | Hesabın %1-2'si | ✅ VIX 21.51 <%35 |
+| **Pozisyon Büyüklüğü** | Hesabın %1-2'si | ✅ VIX 19.98 <%35 |
 
 **ORCL IC Önerisi:** 195/235 Short, 174/256 Long → ~$4.00 kredi, max risk ~$17.00, breakeven $199/$231.
 
@@ -578,11 +582,11 @@
 
 | Aksiyon | Tarih | Saat | Not | EarningsPlay Kuralı |
 |---------|-------|------|-----|---------------------|
-| Pozisyon Girişi | 9 Haziran (Pzt) | 15:30 ET | Son gün, en yüksek gamma | Entry: Earnings'ten 1-2 gün önce |
+| Pozisyon Girişi | 9 Haziran (Sal) | 15:30 ET | Son gün, en yüksek gamma | Entry: Earnings'ten 1-2 gün önce |
 | CPI Verisi | 10 Haziran (Çar) | 8:30 ET | Çifte volatilite başlar | ⚠️ Üçlü volatilite uyarısı |
 | Son Giriş | 10 Haziran (Çar) | 15:45 ET | Market kapanış öncesi son şans | Earnings AMC = son giriş 15:45 |
 | Earnings Açıklaması | 10 Haziran (Çar) | 16:05 ET | AMC = After Market Close | — |
-| IV Crush Beklenen | 11 Haziran (Cum) | 09:30 ET | Market açılışı ile başlar | — |
+| IV Crush Beklenen | 11 Haziran (Per) | 09:30 ET | Market açılışı ile başlar | — |
 | **Kâr Al (%50 Kuralı)** | 11-12 Haziran | 09:30-10:00 ET | IC: Kredinin %50'si | ✅ MEKANİK EXIT |
 | **Kesin Çıkış (21 DTE)** | 11-12 Haziran | — | 24-48 saat içinde kapat | ✅ Gamma risk önleme |
 
@@ -663,7 +667,7 @@
 | **Kazanma Olasılığı** | ~%60-65 | Backtest verisi |
 | **Kâr Hedefi** | Toplanan kredinin %50'si (~$4) | ✅ MEKANİK EXIT |
 | **Stop-Loss** | 2.0x toplanan kredi (~$17) | ✅ MEKANİK STOP |
-| **Pozisyon Büyüklüğü** | Hesabın %1-2'si | ✅ VIX 21.51 <%35 |
+| **Pozisyon Büyüklüğü** | Hesabın %1-2'si | ✅ VIX 19.98 <%35 |
 | **21 DTE Kuralı** | Jun 12 expiry → 0-5 DTE | ⚠️ Gamma riski YÜKSEK, pozisyon küçült |
 
 **ADBE IC Önerisi:** 230/275 Short, 205/300 Long → ~$8.00 kredi, max risk ~$17.00, breakeven $238/$268.
@@ -876,12 +880,12 @@
 | Aksiyon | Tarih | Saat | Not | EarningsPlay Kuralı |
 |---------|-------|------|-----|---------------------|
 | Erken Giriş | 6-8 Haziran | 09:30 ET | Primler $0.02 — çok ucuz | Entry: 1-2 gün önce |
-| **🚨 SON GİRİŞ** | **9 Haziran (Pzt)** | **15:45 ET** | **BMO = önceki gün kapanışta!** | ✅ Earnings BMO |
-| Pozisyon Kilitli | 9 Haziran (Pzt) | 16:00 ET | Artık işlem yok | — |
-| Earnings Açıklaması | 10 Haziran (Sal) | 06:00-08:00 ET | Pre-market sonuçlar | — |
-| **Short Squeeze İzleme** | 10 Haziran (Sal) | 09:30-10:00 ET | Hisse $25+ olursa squeeze başladı | Chase the Gap |
-| **Kâr Al (%50 Kuralı)** | 10 Haziran (Sal) | 10:00-10:30 ET | CS: Max karın %50'si | ✅ MEKANİK EXIT |
-| **Kesin Çıkış** | 10 Haziran (Sal) | 11:00 ET | Squeeze bitmeden çık | ✅ 21 DTE kuralı |
+| **🚨 SON GİRİŞ** | **9 Haziran (Sal)** | **15:45 ET** | **BMO = önceki gün kapanışta!** | ✅ Earnings BMO |
+| Pozisyon Kilitli | 9 Haziran (Sal) | 16:00 ET | Artık işlem yok | — |
+| Earnings Açıklaması | 10 Haziran (Çar) | 06:00-08:00 ET | Pre-market sonuçlar | — |
+| **Short Squeeze İzleme** | 10 Haziran (Çar) | 09:30-10:00 ET | Hisse $25+ olursa squeeze başladı | Chase the Gap |
+| **Kâr Al (%50 Kuralı)** | 10 Haziran (Çar) | 10:00-10:30 ET | CS: Max karın %50'si | ✅ MEKANİK EXIT |
+| **Kesin Çıkış** | 10 Haziran (Çar) | 11:00 ET | Squeeze bitmeden çık | ✅ 21 DTE kuralı |
 
 **⚠️ Short Squeeze Yönetimi:**
 - Eğer hisse pre-market'te $24+ açılırsa = Mini Squeeze başladı
@@ -976,7 +980,7 @@
 | **Kazanma Olasılığı** | ~%57-62 | Backtest verisi |
 | **Kâr Hedefi** | Toplanan kredinin %50'si (~$3) | ✅ MEKANİK EXIT |
 | **Stop-Loss** | 2.0x toplanan kredi (~$13) | ✅ MEKANİK STOP |
-| **Pozisyon Büyüklüğü** | Hesabın %1-2'si | ✅ VIX 21.51 <%35 |
+| **Pozisyon Büyüklüğü** | Hesabın %1-2'si | ✅ VIX 19.98 <%35 |
 | **21 DTE Kuralı** | Jun 27 expiry | ⚠️ Earnings'e 17 gün var, theta yavaş |
 
 **FDX IC Önerisi:** 300/365 Short, 267/398 Long → ~$6.00 kredi, max risk ~$27.00, breakeven $307/$359.
@@ -1127,7 +1131,7 @@
 | **Kazanma Olasılığı** | ~%55-60 | Backtest verisi |
 | **Kâr Hedefi** | Toplanan kredinin %50'si (~$8-9) | ✅ MEKANİK EXIT |
 | **Stop-Loss** | 2.0x toplanan kredi (~$32-36) | ✅ MEKANİK STOP |
-| **Pozisyon Büyüklüğü** | Hesabın %1-2'si | ✅ VIX 21.51 <%35 |
+| **Pozisyon Büyüklüğü** | Hesabın %1-2'si | ✅ VIX 19.98 <%35 |
 | **Beta Düzeltmesi** | 2.17x = Normal pozisyonun yarısı | Risk azaltma |
 
 **MU IC Önerisi:** 735/995 Short, 649/1081 Long → ~$17.00 kredi, max risk ~$69.00, breakeven $752/$978.
@@ -1300,12 +1304,12 @@
 | VIX | Mevcut Pozisyon | Pozisyon Büyüklüğü | Etki |
 |-----|----------------|-------------------|------|
 | <15 | — | %100 normal | — |
-| 15-25 | ✅ **21.51** | **%100 normal** | Tüm pozisyonlar normal büyüklükte |
+| 15-25 | ✅ **19.98** | **%100 normal** | Tüm pozisyonlar normal büyüklükte |
 | 25-35 | — | %50 azaltma | Pozisyonları yarıya indir |
 | 35-45 | — | %25 azaltma | Pozisyonları çeyreğe indir |
 | >45 | — | İşlem yapma | Tamamen nakite geç |
 
-**Mevcut Uygulama:** VIX 21.51 → **%100 normal pozisyon**
+**Mevcut Uygulama:** VIX 19.98 → **%100 normal pozisyon**
 
 | Hisse | Strateji | Kontrat | Bütçe | Hesap %'si (VIX<%25) |
 |-------|----------|---------|-------|---------------------|
@@ -1408,16 +1412,16 @@
 
 | Tarih | Olay | Aksiyon | Öncelik | EarningsPlay Kuralı |
 |-------|------|---------|---------|---------------------|
-| **7 Haz (Pzt)** | Raporlama günü | Stratejileri belirle, izleme listesi oluştur | — | — |
-| **8 Haz (Sal)** | Piyasa açılışı | ORCL ve CHWY pozisyon araştırması | 🟡 Orta | Entry: 1-2 gün önce |
-| **9 Haz (Çar)** | Earnings öncesi son gün | **CHWY pozisyonunu aç (BMO! SON GÜN)** | 🔴🔴 KRİTİK | BMO = önceki gün kapanış |
-| **9 Haz (Çar)** | Earnings öncesi | **ORCL pozisyonunu aç** | 🔴🔴 KRİTİK | Entry: 1-2 gün önce |
-| **10 Haz (Per)** | **CPI (8:30) + CHWY(BMO) + ORCL(AMC)** | ⚠️ Üçlü volatilite! CHWY squeeze izle | 🔴🔴🔴 KRİTİK | %50 pozisyon, mekanik exit |
-| **11 Haz (Cum)** | ADBE earnings (AMC) | ADBE IC veya Call Spread aç | 🔴 Yüksek | Entry: 1-2 gün önce |
-| **12 Haz (Cmt)** | Hafta sonu öncesi | ORCL/ADBE pozisyonlarını kapat | 🔴 Yüksek | 21 DTE kuralı, %50 kar |
-| **17 Haz (Sal)** | FOMC Kararı + Basın Top. | FDX/MU pozisyonları için risk azalt | 🟡 Orta | VIX spike riski |
-| **23 Haz (Pzt)** | FDX earnings (AMC) | FDX IC pozisyonu aç | 🟡 Orta | Entry: 1-2 gün önce |
-| **24 Haz (Sal)** | MU earnings (AMC) | MU IC pozisyonu aç, FDX değerlendirmesi | 🔴 Yüksek | ASLA Long Straddle |
+| **8 Haz (Pzt)** | Raporlama günü | Stratejileri belirle, izleme listesi oluştur | — | — |
+| **8 Haz (Pzt)** | Piyasa açılışı | ORCL ve CHWY pozisyon araştırması | 🟡 Orta | Entry: 1-2 gün önce |
+| **9 Haz (Sal)** | Earnings öncesi son gün | **CHWY pozisyonunu aç (BMO! SON GÜN)** | 🔴🔴 KRİTİK | BMO = önceki gün kapanış |
+| **9 Haz (Sal)** | Earnings öncesi | **ORCL pozisyonunu aç** | 🔴🔴 KRİTİK | Entry: 1-2 gün önce |
+| **10 Haz (Çar)** | **CPI (8:30) + CHWY(BMO) + ORCL(AMC)** | ⚠️ Üçlü volatilite! CHWY squeeze izle | 🔴🔴🔴 KRİTİK | %50 pozisyon, mekanik exit |
+| **11 Haz (Per)** | ADBE earnings (AMC) | ADBE IC veya Call Spread aç | 🔴 Yüksek | Entry: 1-2 gün önce |
+| **12 Haz (Cum)** | Hafta sonu öncesi | ORCL/ADBE pozisyonlarını kapat | 🔴 Yüksek | 21 DTE kuralı, %50 kar |
+| **17 Haz (Çar)** | FOMC Kararı + Basın Top. | FDX/MU pozisyonları için risk azalt | 🟡 Orta | VIX spike riski |
+| **23 Haz (Sal)** | FDX earnings (AMC) | FDX IC pozisyonu aç | 🟡 Orta | Entry: 1-2 gün önce |
+| **24 Haz (Çar)** | MU earnings (AMC) | MU IC pozisyonu aç, FDX değerlendirmesi | 🔴 Yüksek | ASLA Long Straddle |
 | **25-26 Haz** | Earnings sonrası | Tüm pozisyonları kapat, kar/zarar analizi | 🟡 Orta | %50 kar, 21 DTE |
 
 ### 6.2 EarningsPlay Portföy Önerileri — 4 Bütçe Seviyesi
@@ -1495,7 +1499,7 @@
 
 | # | Kontrol | Durum | Onay |
 |---|---------|-------|------|
-| 1 | VIX < 35? | ✅ 21.51 | 🟢 |
+| 1 | VIX < 35? | ✅ 19.98 | 🟢 |
 | 2 | IV Rank > %50 (IC stratejileri için)? | ✅ Tüm hisselerde | 🟢 |
 | 3 | Katalist skoru belirlendi mi? | ✅ Tüm hisselerde | 🟢 |
 | 4 | Wing width = Fiyat/10 hesaplandı mı? | ✅ Tüm IC önerilerinde | 🟢 |
@@ -1647,7 +1651,7 @@
 |----------------|-------|---------|
 | **Toplam Açık Risk** | ~$5,000 (tüm pozisyonlar) | Hesabın %10'u (kabul edilebilir) |
 | **Max Tek Pozisyon Riski** | $2,507 (MU IC) | Hesabın %5'i (sınırda) |
-| **VIX Riski** | 21.51 → spike potansiyeli | VIX >25'te pozisyonları %50'ye indir |
+| **VIX Riski** | 19.98 → spike potansiyeli | VIX >25'te pozisyonları %50'ye indir |
 | **Gamma Riski** | 0-7 DTE = yüksek gamma | Earnings günü erken kar al |
 | **Katalist Riski** | CHWY 5/5 = en yüksek | Squeeze protokolünü takip et |
 | **Beta Riski** | MU 2.17 = çifte risk | Pozisyon normalden %50 küçük |
@@ -1655,7 +1659,7 @@
 ### 7.6 Kritik Başarı Faktörleri — EarningsPlay v4
 
 1. **🎯 Zamanlama:** CHWY için 9 Haziran kapanış (BMO!). ADBE/ORCL için earnings günü sabah. FDX/MU için son 1-2 gün.
-2. **🎯 Pozisyon Boyutu:** Toplam risk portföyün %10'unu geçmemeli. Max 2-3 earnings pozisyonu aynı anda. VIX 21.51 = %100 normal pozisyon.
+2. **🎯 Pozisyon Boyutu:** Toplam risk portföyün %10'unu geçmemeli. Max 2-3 earnings pozisyonu aynı anda. VIX 19.98 = %100 normal pozisyon.
 3. **🎯 IV Crush Yönetimi:** IC pozisyonlarını earnings sonrası 24-48 saat tut. Long pozisyonları 30-60 dk içinde değerlendir.
 4. **🎯 %50 Kar Kuralı (MEKANİK):** IC: Kredinin %50'si hedefinde KAÇINILMAZ çıkış. Call Spread: Max karın %50'si.
 5. **🎯 2.0x Stop-Loss (MEKANİK):** Zarar 2.0x krediyi aşarsa KAÇINILMAZ kapanış. Duygusal karar yok.
@@ -1726,9 +1730,8 @@ Bu rapor aşağıdaki kaynaklardan derlenmiştir:
 
 ---
 
-*Rapor Tarihi: 7 Haziran 2026*  
-*Bir Sonraki Güncelleme: 14 Haziran 2026*  
+*Rapor Tarihi: 8 Haziran 2026*  
+*Bir Sonraki Güncelleme: 9 Haziran 2026 veya CPI öncesi ek revizyon*  
 *Hazırlayan: AI Agent Swarm — EarningsPlay v4 Metodolojisi + Güncel Haber Entegrasyonu*  
-*Versiyon: 2.0*  
-*Önceki Versiyon: 1.0 (6 Haziran 2026)*
-
+*Versiyon: 2.1*  
+*Önceki Versiyon: 2.0 (7 Haziran 2026)*
