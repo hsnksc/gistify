@@ -13,8 +13,6 @@ import {
   LogOut,
   Radar,
   Shield,
-  WalletCards,
-  Bot,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -35,8 +33,6 @@ const Home = lazy(() => import("./pages/Home"));
 const ReportsAdmin = lazy(() => import("./pages/ReportsAdmin"));
 const Scanner = lazy(() => import("./pages/Scanner"));
 const DailyReport = lazy(() => import("./pages/DailyReport"));
-const Portfolio = lazy(() => import("./pages/Portfolio"));
-const AgentContent = lazy(() => import("./pages/AgentContent"));
 const Pay = lazy(() => import("./pages/Pay"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const Terms = lazy(() => import("./pages/Terms"));
@@ -224,8 +220,6 @@ function Router({
         <Route path={"/daily-report"}>
           {() => <DailyReport language={language} />}
         </Route>
-        <Route path={"/portfolio"} component={Portfolio} />
-        <Route path={"/agent-content"} component={AgentContent} />
         <Route path={"/scanner"}>{() => <Scanner language={language} />}</Route>
         <Route path={"/pricing"}>
           {() => (
@@ -282,18 +276,6 @@ function AppNavigation({ language }: { language: AppLanguage }) {
       label: language === "en" ? "Daily" : "Daily",
       icon: FileText,
       active: location.startsWith("/daily-report"),
-    },
-    {
-      href: "/portfolio",
-      label: language === "en" ? "Portfolio" : "Portfolio",
-      icon: WalletCards,
-      active: location.startsWith("/portfolio"),
-    },
-    {
-      href: "/agent-content",
-      label: language === "en" ? "Agent" : "Agent",
-      icon: Bot,
-      active: location.startsWith("/agent-content"),
     },
   ];
 
@@ -415,7 +397,6 @@ function LimitedAccessPreview({ language }: { language: AppLanguage }) {
                 [copy(language, "Takvim", "Calendar"), copy(language, "Kilitli", "Locked")],
                 [copy(language, "Risk", "Risk"), copy(language, "Kilitli", "Locked")],
                 [copy(language, "Opsiyon", "Options"), copy(language, "Kilitli", "Locked")],
-                ["Portfolio", copy(language, "Kilitli", "Locked")],
               ].map(([label, value]) => (
                 <div
                   key={label}
