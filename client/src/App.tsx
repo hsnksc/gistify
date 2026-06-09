@@ -700,11 +700,6 @@ function App() {
     };
 
     const resolveEnglishTranslation = (source: string) => {
-      const fromStaticDictionary = translateUiText(source, "en");
-      if (fromStaticDictionary !== source) {
-        return fromStaticDictionary;
-      }
-
       const runtimeValue = runtimeTranslationCacheRef.current.get(source);
       if (runtimeValue) {
         return runtimeValue;
