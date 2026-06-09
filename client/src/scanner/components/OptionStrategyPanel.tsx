@@ -1,4 +1,6 @@
 import type { StockResult } from "@/scanner/types";
+import { copy } from "@/lib/i18n";
+import type { AppLanguage } from "@/lib/i18n";
 import {
   TrendingUp,
   TrendingDown,
@@ -14,6 +16,7 @@ import {
 
 interface OptionStrategyPanelProps {
   stock: StockResult;
+  language: AppLanguage;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -41,7 +44,7 @@ interface v4Metrics {
   managementRules: string[];     // %50 kar al, 21 DTE roll, 2x stop
 }
 
-function calculateV4Metrics(stock: StockResult): v4Metrics {
+function calculateV4Metrics(stock: StockResult, language: AppLanguage): v4Metrics {
   const price = stock.currentPrice;
   const atr = stock.atr14d || price * 0.02;
   const rsi = stock.rsi;
@@ -74,13 +77,13 @@ function calculateV4Metrics(stock: StockResult): v4Metrics {
   let ivSignalLabel: string;
   if (iv > 60) {
     ivSignal = "SELL_PREMIUM";
-    ivSignalLabel = "Premium Satışı (IV Yüksek)";
+    ivSignalLabel = copy(language, "Premium Satışı (IV Yüksek)", "Premium Sale (High IV)");
   } else if (iv < 30) {
     ivSignal = "BUY_PREMIUM";
-    ivSignalLabel = "Premium Alımı (IV Düşük)";
+    ivSignalLabel = copy(language, "Premium Alımı (IV Düşük)", "Premium Purchase (Low IV)");
   } else {
     ivSignal = "NEUTRAL";
-    ivSignalLabel = "IV Nötr";
+    ivSignalLabel = copy(language, "IV Nötr", "IV Neutral");
   }
 
   // ─── SPREAD METRİKLERİ ───
@@ -108,17 +111,19 @@ function calculateV4Metrics(stock: StockResult): v4Metrics {
   const rReturn = maxLoss > 0 ? (pop / 100 * maxProfit - (1 - pop / 100) * maxLoss) / maxLoss : 0;
 
   // ─── EXECUTION ───
-  const entryWindow = iv > 50 ? "10:30-11:00 AM (volatilite yüksek, sabah bekle)" : "10:30-11:30 AM";
+  const entryWindow = iv > 50
+    ? copy(language, "10:30-11:00 AM (volatilite yüksek, sabah bekle)", "10:30-11:00 AM (volatility high, wait for morning)")
+    : copy(language, "10:30-11:30 AM", "10:30-11:30 AM");
   const orderType = "MIDPOINT LIMIT";
   const slippageEstimate = rvol > 2 ? 3 : rvol > 1 ? 2 : 1;
 
   // ─── YÖNETİM KURALLARI ───
   const managementRules = [
-    `✅ %50 kârda ($${(maxProfit * 0.5).toFixed(2)}) → yarısını kapat`,
-    `📅 21 DTE'de roll düşün (vade: ${dte} gün)`,
-    `🛑 2x kredi ($${(maxLoss * 2).toFixed(2)}) → zararda kapat`,
-    `⏰ 14 DTE time stop → zaman değeri eriyor`,
-    `📊 Limit emir: Midpoint giriş, slippage ≤%${slippageEstimate}`,
+    copy(language, `✅ %50 kârda ($${(maxProfit * 0.5).toFixed(2)}) → yarısını kapat`, `✅ At 50% profit ($${(maxProfit * 0.5).toFixed(2)}) → close half`),
+    copy(language, `📅 21 DTE'de roll düşün (vade: ${dte} gün)`, `📅 Consider roll at 21 DTE (term: ${dte} days)`),
+    copy(language, `🛑 2x kredi ($${(maxLoss * 2).toFixed(2)}) → zararda kapat`, `🛑 2x credit ($${(maxLoss * 2).toFixed(2)}) → close at loss`),
+    copy(language, `⏰ 14 DTE time stop → zaman değeri eriyor`, `⏰ 14 DTE time stop → time value eroding`),
+    copy(language, `📊 Limit emir: Midpoint giriş, slippage ≤%${slippageEstimate}`, `📊 Limit order: Midpoint entry, slippage ≤%${slippageEstimate}`),
   ];
 
   return {
@@ -163,14 +168,14 @@ interface StrategySuggestion {
   metrics: v4Metrics;
 }
 
-function suggestStrategy(stock: StockResult): StrategySuggestion {
+function suggestStrategy(stock: StockResult, language: AppLanguage): StrategySuggestion {
   const price = stock.currentPrice;
   const atr = stock.atr14d || price * 0.02;
   const rsi = stock.rsi;
   const change = stock.priceChangePct;
   const signal = stock.signal;
   const iv = stock.ivProxy || 50;
-  const metrics = calculateV4Metrics(stock);
+  const metrics = calculateV4Metrics(stock, language);
 
   // DTE
   const dte = iv > 60 ? 14 : iv > 40 ? 21 : 30;
@@ -205,9 +210,9 @@ function suggestStrategy(stock: StockResult): StrategySuggestion {
       ],
       warnings: [
         stock.earningsWarning || null,
-        rsi >= 80 ? `🚨 RSI ${rsi.toFixed(1)} — Aşırı alım, geri çekilme yakın` : null,
-        change > 5 ? `⚠️ Gün içi %${change.toFixed(1)} — Slippage riski yüksek` : null,
-        metrics.ivSignal === "SELL_PREMIUM" ? "✅ IV yüksek — Premium satışı mantıklı" : null,
+        rsi >= 80 ? copy(language, `🚨 RSI ${rsi.toFixed(1)} — Aşırı alım, geri çekilme yakın`, `🚨 RSI ${rsi.toFixed(1)} — Overbought, pullback near`) : null,
+        change > 5 ? copy(language, `⚠️ Gün içi %${change.toFixed(1)} — Slippage riski yüksek`, `⚠️ Intraday %${change.toFixed(1)} — Slippage risk high`) : null,
+        metrics.ivSignal === "SELL_PREMIUM" ? copy(language, "✅ IV yüksek — Premium satışı mantıklı", "✅ High IV — Premium sale makes sense") : null,
       ].filter(Boolean) as string[],
       color: "text-red-400",
       metrics,
@@ -238,8 +243,8 @@ function suggestStrategy(stock: StockResult): StrategySuggestion {
       ],
       warnings: [
         stock.earningsWarning || null,
-        `⚠️ RSI ${rsi.toFixed(1)} — Aşırı satım, dönüş potansiyeli ama riskli`,
-        metrics.ivSignal === "BUY_PREMIUM" ? "✅ IV düşük — Long premium mantıklı" : null,
+        copy(language, `⚠️ RSI ${rsi.toFixed(1)} — Aşırı satım, dönüş potansiyeli ama riskli`, `⚠️ RSI ${rsi.toFixed(1)} — Oversold, reversal potential but risky`),
+        metrics.ivSignal === "BUY_PREMIUM" ? copy(language, "✅ IV düşük — Long premium mantıklı", "✅ Low IV — Long premium makes sense") : null,
       ].filter(Boolean) as string[],
       color: "text-amber-400",
       metrics,
@@ -269,8 +274,8 @@ function suggestStrategy(stock: StockResult): StrategySuggestion {
       warnings: [
         stock.earningsWarning || null,
         stock.rsiWarning || null,
-        stock.volumeRatio < 1 ? "⚠️ Düşük hacim — Büyük pozisyonlardan kaçının" : null,
-        metrics.ivSignal === "SELL_PREMIUM" ? "⚠️ IV yüksek — Debit spread pahalı olabilir, credit düşün" : null,
+        stock.volumeRatio < 1 ? copy(language, "⚠️ Düşük hacim — Büyük pozisyonlardan kaçının", "⚠️ Low volume — Avoid large positions") : null,
+        metrics.ivSignal === "SELL_PREMIUM" ? copy(language, "⚠️ IV yüksek — Debit spread pahalı olabilir, credit düşün", "⚠️ High IV — Debit spread may be expensive, consider credit") : null,
       ].filter(Boolean) as string[],
       color: "text-emerald-400",
       metrics,
@@ -282,16 +287,16 @@ function suggestStrategy(stock: StockResult): StrategySuggestion {
     name: "No Setup",
     nameTr: "Uygun Setup Yok",
     direction: "NEUTRAL",
-    setup: "Bekle",
+    setup: copy(language, "Bekle", "Wait"),
     strikes: "—",
     dte: 0,
     popEstimate: "—",
     maxRisk: "—",
     breakeven: "—",
     notes: [
-      `Sinyal: ${signal} — Momentum zayıf`,
-      "Bugün için opsiyon setup'ı önerilmiyor",
-      "Yarın tekrar tarama yapın",
+      copy(language, `Sinyal: ${signal} — Momentum zayıf`, `Signal: ${signal} — Momentum weak`),
+      copy(language, "Bugün için opsiyon setup'ı önerilmiyor", "No option setup recommended for today"),
+      copy(language, "Yarın tekrar tarama yapın", "Scan again tomorrow"),
     ],
     warnings: [],
     color: "text-slate-400",
@@ -303,15 +308,21 @@ function suggestStrategy(stock: StockResult): StrategySuggestion {
 // RENDER
 // ═══════════════════════════════════════════════════════════════════════════════
 
-export default function OptionStrategyPanel({ stock }: OptionStrategyPanelProps) {
-  const strategy = suggestStrategy(stock);
+export default function OptionStrategyPanel({ stock, language }: OptionStrategyPanelProps) {
+  const strategy = suggestStrategy(stock, language);
   const m = strategy.metrics;
 
   if (strategy.direction === "NEUTRAL") {
     return (
       <div className="rounded-lg border border-slate-700/50 bg-slate-800/20 p-3">
-        <p className="text-xs text-slate-500">Opsiyon Stratejisi</p>
-        <p className="mt-1 text-sm text-slate-400">{strategy.nameTr} — Bugün için uygun setup yok</p>
+        <p className="text-xs text-slate-500">{copy(language, "Opsiyon Stratejisi", "Option Strategy")}</p>
+        <p className="mt-1 text-sm text-slate-400">
+          {copy(
+            language,
+            `${strategy.nameTr} — Bugün için uygun setup yok`,
+            `${strategy.name} — No suitable setup for today`
+          )}
+        </p>
       </div>
     );
   }
@@ -325,18 +336,22 @@ export default function OptionStrategyPanel({ stock }: OptionStrategyPanelProps)
         ) : (
           <TrendingDown className="h-3.5 w-3.5 text-red-400" />
         )}
-        v4.0 Kurumsal Opsiyon Analizi — {strategy.nameTr}
+        {copy(
+          language,
+          `v4.0 Kurumsal Opsiyon Analizi — ${strategy.nameTr}`,
+          `v4.0 Enterprise Option Analysis — ${strategy.name}`
+        )}
       </h4>
 
       {/* Primary Metrics Grid */}
       <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
         <div className="rounded-lg border border-slate-700/50 bg-slate-800/30 p-2.5">
-          <p className="text-[10px] text-slate-500">Kurulum</p>
+          <p className="text-[10px] text-slate-500">{copy(language, "Kurulum", "Setup")}</p>
           <p className={`text-sm font-bold ${strategy.color}`}>{strategy.setup}</p>
         </div>
         <div className="rounded-lg border border-slate-700/50 bg-slate-800/30 p-2.5">
-          <p className="text-[10px] text-slate-500">Vade (DTE)</p>
-          <p className="text-sm font-bold text-white">{strategy.dte} gün</p>
+          <p className="text-[10px] text-slate-500">{copy(language, "Vade (DTE)", "Term (DTE)")}</p>
+          <p className="text-sm font-bold text-white">{strategy.dte} {copy(language, "gün", "days")}</p>
         </div>
         <div className="rounded-lg border border-slate-700/50 bg-slate-800/30 p-2.5">
           <p className="text-[10px] text-slate-500">POP</p>
@@ -360,7 +375,7 @@ export default function OptionStrategyPanel({ stock }: OptionStrategyPanelProps)
         <div className="rounded-lg border border-slate-700/50 bg-slate-800/30 p-2.5">
           <div className="flex items-center gap-1.5 text-[10px] text-slate-500">
             <Clock className="h-3 w-3" />
-            Giriş Penceresi
+            {copy(language, "Giriş Penceresi", "Entry Window")}
           </div>
           <p className="text-sm font-bold text-white">{m.entryWindow}</p>
         </div>
@@ -377,7 +392,7 @@ export default function OptionStrategyPanel({ stock }: OptionStrategyPanelProps)
       <div className="rounded-lg border border-slate-700/30 bg-slate-800/20 p-3">
         <h5 className="mb-2 flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-slate-400">
           <BarChart3 className="h-3 w-3" />
-          v4.0 Kurumsal Metrikler
+          {copy(language, "v4.0 Kurumsal Metrikler", "v4.0 Enterprise Metrics")}
         </h5>
         <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
           <div>
@@ -385,7 +400,7 @@ export default function OptionStrategyPanel({ stock }: OptionStrategyPanelProps)
             <p className="text-xs font-bold text-white">${m.expectedMove.toFixed(2)} ({m.expectedMovePct.toFixed(1)}%)</p>
           </div>
           <div>
-            <p className="text-[10px] text-slate-500">IV Sinyali</p>
+            <p className="text-[10px] text-slate-500">{copy(language, "IV Sinyali", "IV Signal")}</p>
             <p className={`text-xs font-bold ${m.ivSignal === "SELL_PREMIUM" ? "text-emerald-400" : m.ivSignal === "BUY_PREMIUM" ? "text-amber-400" : "text-slate-400"}`}>
               {m.ivSignalLabel}
             </p>
@@ -418,7 +433,7 @@ export default function OptionStrategyPanel({ stock }: OptionStrategyPanelProps)
         <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-3">
           <h5 className="mb-2 flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-emerald-400">
             <Activity className="h-3 w-3" />
-            Yönetim Kuralları (Kurumsal Disiplin)
+            {copy(language, "Yönetim Kuralları (Kurumsal Disiplin)", "Management Rules (Enterprise Discipline)")}
           </h5>
           <div className="space-y-1">
             {m.managementRules.map((rule, i) => (

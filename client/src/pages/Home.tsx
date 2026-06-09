@@ -26,6 +26,7 @@ import type {
   EarningReportSourceSummary,
 } from "@shared/earningReports";
 import type { AppLanguage } from "@/lib/i18n";
+import { copy } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import EarningReportCalendarTab from "@/components/tabs/EarningReportCalendarTab";
 import EarningReportPlaybookTab from "@/components/tabs/EarningReportPlaybookTab";
@@ -40,15 +41,13 @@ import { parseEarningReportMarkdown } from "@/lib/earningReportSource";
 type TabId = "playbook" | "calendar" | "risk";
 type SummaryTone = "bull" | "bear" | "caution" | "info";
 
-const tabs: Array<{
-  id: TabId;
-  label: string;
-  icon: typeof ClipboardList;
-}> = [
-  { id: "playbook", label: "Playbook", icon: ClipboardList },
-  { id: "calendar", label: "Takvim", icon: CalendarDays },
-  { id: "risk", label: "Risk", icon: AlertTriangle },
-];
+function getTabs(language: AppLanguage) {
+  return [
+    { id: "playbook" as const, label: "Playbook", icon: ClipboardList },
+    { id: "calendar" as const, label: copy(language, "Takvim", "Calendar"), icon: CalendarDays },
+    { id: "risk" as const, label: copy(language, "Risk", "Risk"), icon: AlertTriangle },
+  ];
+}
 
 interface EarningReportsListResponse {
   reports?: EarningReportSourceSummary[];
@@ -104,10 +103,6 @@ function LoadingState({ label }: { label: string }) {
       {label}
     </section>
   );
-}
-
-function copy(language: AppLanguage, tr: string, en: string) {
-  return language === "en" ? en : tr;
 }
 
 export default function Home({ language }: { language: AppLanguage }) {
@@ -548,7 +543,7 @@ export default function Home({ language }: { language: AppLanguage }) {
               )}
 
               <div className="mt-4 flex flex-wrap gap-2 rounded-xl border border-border bg-background/45 p-1">
-                {tabs.map(tab => {
+                {getTabs(language).map(tab => {
                   const active = activeTab === tab.id;
                   const hasAlert = tab.id === "risk" && balancedCount < positions.length;
 

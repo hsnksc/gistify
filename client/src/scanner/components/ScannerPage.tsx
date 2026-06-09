@@ -17,11 +17,13 @@ import { useScannerI18n } from "@/scanner/useScannerI18n";
 import { scoreColor, signalBg, signalLabel } from "@/scanner/lib/scoreConfig";
 import { getScanTimingWarning } from "@/scanner/lib/momentum";
 import type { ScanResponse, StockResult } from "@/scanner/types";
+import { copy } from "@/lib/i18n";
+import type { AppLanguage } from "@/lib/i18n";
 import EnterpriseReport from "./EnterpriseReport";
 import OptionStrategyPanel from "./OptionStrategyPanel";
 
 interface ScannerPageProps {
-  lang: "tr" | "en";
+  lang: AppLanguage;
 }
 
 const DEFAULT_TICKERS = [
@@ -33,11 +35,11 @@ const DEFAULT_TICKERS = [
   "LCID", "RIVN", "NIO", "XPEV", "FSR", "PLUG", "ENPH", "SEDG", "RUN", "MAXN",
 ];
 
-function getFilterLabel(signal: string, lang: "tr" | "en") {
-  if (signal === "ALL") return lang === "en" ? "All" : "Tümü";
-  if (signal === "STRONG_BUY") return lang === "en" ? "Strong Buy" : "Guclu Al";
-  if (signal === "BUY") return lang === "en" ? "Buy" : "Al";
-  if (signal === "NEUTRAL") return lang === "en" ? "Neutral" : "Notr";
+function getFilterLabel(signal: string, lang: AppLanguage) {
+  if (signal === "ALL") return copy(lang, "Tümü", "All");
+  if (signal === "STRONG_BUY") return copy(lang, "Guclu Al", "Strong Buy");
+  if (signal === "BUY") return copy(lang, "Al", "Buy");
+  if (signal === "NEUTRAL") return copy(lang, "Notr", "Neutral");
   return signal;
 }
 
@@ -163,7 +165,9 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
               className="flex items-center gap-2 rounded-lg border border-border bg-background/70 px-4 py-2.5 text-sm font-medium text-muted-foreground transition-all hover:bg-[rgba(35,45,66,0.72)] hover:text-foreground"
             >
               <FileText className="h-4 w-4" />
-              {showReport ? "Raporu Gizle" : "Kurumsal Rapor"}
+              {showReport
+                ? copy(lang, "Raporu Gizle", "Hide Report")
+                : copy(lang, "Kurumsal Rapor", "Enterprise Report")}
             </button>
           ) : null}
 
@@ -211,10 +215,8 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
             </div>
             <p className="text-xs text-muted-foreground">
               {scanProgress.current
-                ? `${scanProgress.current} ${lang === "en" ? "is being analyzed" : "analiz ediliyor"}`
-                : lang === "en"
-                  ? "Universe is being scanned."
-                  : "Tarama evreni isleniyor."}
+                ? `${scanProgress.current} ${copy(lang, "analiz ediliyor", "is being analyzed")}`
+                : copy(lang, "Tarama evreni isleniyor.", "Universe is being scanned.")}
             </p>
           </div>
         ) : null}
@@ -224,20 +226,22 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-sm font-semibold text-foreground">
-                  {lang === "en" ? "Premarket and opening-drive radar" : "Acilis ivmesi radar paneli"}
+                  {copy(lang, "Acilis ivmesi radar paneli", "Premarket and opening-drive radar")}
                 </p>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  {lang === "en"
-                    ? "The scanner ranks 60 liquid names by momentum, volume expansion, structure and intraday retention."
-                    : "Tarayici 60 likit hisseyi momentum, hacim patlamasi, yapi ve intraday retention ile siralar."}
+                  {copy(
+                    lang,
+                    "Tarayici 60 likit hisseyi momentum, hacim patlamasi, yapi ve intraday retention ile siralar.",
+                    "The scanner ranks 60 liquid names by momentum, volume expansion, structure and intraday retention."
+                  )}
                 </p>
               </div>
               <div className="flex flex-wrap gap-2 text-[11px] text-muted-foreground">
                 <span className="rounded-full border border-border bg-background/70 px-3 py-1">
-                  {lang === "en" ? "Universe: 60 names" : "Evren: 60 hisse"}
+                  {copy(lang, "Evren: 60 hisse", "Universe: 60 names")}
                 </span>
                 <span className="rounded-full border border-border bg-background/70 px-3 py-1">
-                  {lang === "en" ? "Primary feed: Yahoo" : "Ana veri: Yahoo"}
+                  {copy(lang, "Ana veri: Yahoo", "Primary feed: Yahoo")}
                 </span>
               </div>
             </div>
@@ -255,6 +259,7 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
         <EnterpriseReport
           stocks={filtered}
           scanTime={scanResponse?.scanTime || new Date().toISOString()}
+          language={lang}
         />
       ) : null}
 
@@ -355,7 +360,7 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
                     {expandedRow === stock.ticker ? (
                       <tr>
                         <td colSpan={9} className="bg-background/70 px-4 py-4">
-                          <StockDetail stock={stock} t={t} />
+                          <StockDetail stock={stock} t={t} lang={lang} />
                         </td>
                       </tr>
                     ) : null}
@@ -378,7 +383,7 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
   );
 }
 
-function StockDetail({ stock, t }: { stock: StockResult; t: (key: string) => string }) {
+function StockDetail({ stock, t, lang }: { stock: StockResult; t: (key: string) => string; lang: AppLanguage }) {
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
@@ -443,13 +448,15 @@ function StockDetail({ stock, t }: { stock: StockResult; t: (key: string) => str
               stock.signal === "OVERBOUGHT_RED" ? "text-red-400" : "text-orange-400"
             }`}
           >
-            {stock.signal === "OVERBOUGHT_RED" ? "🚨 AŞIRI ALIM" : "⚠️ SICAK BÖLGE"}
+            {stock.signal === "OVERBOUGHT_RED"
+              ? copy(lang, "🚨 AŞIRI ALIM", "🚨 OVERBOUGHT")
+              : copy(lang, "⚠️ SICAK BÖLGE", "⚠️ HOT ZONE")}
           </p>
           <p className="mt-1 text-xs text-muted-foreground">{stock.rsiWarning}</p>
         </div>
       ) : null}
 
-      <OptionStrategyPanel stock={stock} />
+      <OptionStrategyPanel stock={stock} language={lang} />
     </div>
   );
 }

@@ -383,13 +383,13 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
 
     switch (activeTab) {
       case "market":
-        return <MomentumMarketTab report={parsedReport} />;
+        return <MomentumMarketTab report={parsedReport} language={language} />;
       case "setups":
-        return <MomentumSetupsTab report={parsedReport} />;
+        return <MomentumSetupsTab report={parsedReport} language={language} />;
       case "strategy":
-        return <MomentumStrategyTab report={parsedReport} />;
+        return <MomentumStrategyTab report={parsedReport} language={language} />;
       default:
-        return <MomentumMarketTab report={parsedReport} />;
+        return <MomentumMarketTab report={parsedReport} language={language} />;
     }
   };
 

@@ -5,6 +5,8 @@
 
 import { stocksData, sectorMacroData, signalConfig, type StockData } from '@/lib/stockData';
 import { getTooltipLabel } from '@/lib/chartTooltip';
+import { copy } from '@/lib/i18n';
+import type { AppLanguage } from '@/lib/i18n';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell,
 } from 'recharts';
@@ -18,6 +20,7 @@ interface Props {
   analysisDateLabel?: string;
   headline?: string;
   summary?: string;
+  language: AppLanguage;
 }
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -44,10 +47,11 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 export default function OverviewTab({
   onStockClick,
   stocks = stocksData,
-  reportWindow = 'Haftalik gorunum',
-  analysisDateLabel = 'Canli',
+  reportWindow = 'Weekly view',
+  analysisDateLabel = 'Live',
   headline,
   summary,
+  language,
 }: Props) {
   const topPicks = stocks.filter(s => s.signal === 'STRONG_BUY' || s.signal === 'BUY').slice(0, 5);
   const momentumChartData = [...stocks]
@@ -98,19 +102,19 @@ export default function OverviewTab({
           </div>
           <h1 className="heading-condensed mb-2" style={{ fontSize: '2.8rem', lineHeight: 1.1, color: 'oklch(0.95 0.01 220)' }}>
             EARNING STRATEGY<br />
-            <span style={{ color: 'oklch(0.78 0.18 160)' }}>DERİN ANALİZ</span>
+            <span style={{ color: 'oklch(0.78 0.18 160)' }}>{copy(language, 'DERİN ANALİZ', 'DEEP ANALYSIS')}</span>
           </h1>
           <p className="text-sm max-w-xl" style={{ color: 'oklch(0.65 0.015 225)', lineHeight: 1.6 }}>
-            {headline || 'Secili haftanin en iyi momentum, beat ve IV crush kurulumlari burada toplanir.'}
+            {headline || copy(language, 'Secili haftanin en iyi momentum, beat ve IV crush kurulumlari burada toplanir.', 'The best momentum, beat and IV crush setups of the selected week are gathered here.')}
           </p>
           <p className="mt-2 text-sm max-w-2xl" style={{ color: 'oklch(0.56 0.015 225)', lineHeight: 1.6 }}>
-            {summary || 'Her hisse ayni akista momentum, hacim kalitesi, earnings zamanlamasi ve opsiyon senaryosuyla okunur.'}
+            {summary || copy(language, 'Her hisse ayni akista momentum, hacim kalitesi, earnings zamanlamasi ve opsiyon senaryosuyla okunur.', 'Each stock is read with the same flow: momentum, volume quality, earnings timing and option scenario.')}
           </p>
           <div className="flex items-center gap-4 mt-4">
             <div className="flex items-center gap-2">
-              <span className="badge-strong">{strongBuyCount} GÜÇLÜ AL</span>
-              <span className="badge-warning">{neutralCount} NÖTR</span>
-              <span className="badge-danger">{watchCount} İZLE</span>
+              <span className="badge-strong">{strongBuyCount} {copy(language, 'GÜÇLÜ AL', 'STRONG BUY')}</span>
+              <span className="badge-warning">{neutralCount} {copy(language, 'NÖTR', 'NEUTRAL')}</span>
+              <span className="badge-danger">{watchCount} {copy(language, 'İZLE', 'WATCH')}</span>
             </div>
           </div>
         </div>
@@ -120,10 +124,10 @@ export default function OverviewTab({
         {/* KPI Row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            { label: 'Analiz Edilen Hisse', value: String(stocks.length), sub: reportWindow, color: 'oklch(0.78 0.18 160)' },
-            { label: 'Öne Çıkan Kurulum', value: String(topPicks.length), sub: topPicks.map(stock => stock.ticker).join(' · ') || 'Watchlist', color: 'oklch(0.78 0.18 160)' },
-            { label: 'Ort. Beat İhtimali', value: `%${avgBeat}`, sub: 'Secili hafta ortalamasi', color: 'oklch(0.75 0.15 75)' },
-            { label: 'Ort. Momentum', value: String(avgMomentum), sub: leadSector, color: 'oklch(0.75 0.15 75)' },
+            { label: copy(language, 'Analiz Edilen Hisse', 'Analyzed Stocks'), value: String(stocks.length), sub: reportWindow, color: 'oklch(0.78 0.18 160)' },
+            { label: copy(language, 'Öne Çıkan Kurulum', 'Featured Setup'), value: String(topPicks.length), sub: topPicks.map(stock => stock.ticker).join(' · ') || copy(language, 'İzleme Listesi', 'Watchlist'), color: 'oklch(0.78 0.18 160)' },
+            { label: copy(language, 'Ort. Beat İhtimali', 'Avg. Beat Probability'), value: `%${avgBeat}`, sub: copy(language, 'Secili hafta ortalamasi', 'Selected week average'), color: 'oklch(0.75 0.15 75)' },
+            { label: copy(language, 'Ort. Momentum', 'Avg. Momentum'), value: String(avgMomentum), sub: leadSector, color: 'oklch(0.75 0.15 75)' },
           ].map((kpi, i) => (
             <div key={i} className="tactical-card p-4">
               <div className="text-xs mb-1 tracking-wide uppercase font-semibold" style={{ color: 'oklch(0.45 0.015 225)' }}>
@@ -144,7 +148,7 @@ export default function OverviewTab({
             <div className="flex items-center gap-2 mb-3">
               <div className="w-1 h-4" style={{ background: 'oklch(0.78 0.18 160)' }} />
               <h2 className="heading-condensed text-base" style={{ color: 'oklch(0.92 0.01 220)' }}>
-                EN İYİ OLASILILIKLI HİSSELER
+                {copy(language, 'EN İYİ OLASILILIKLI HİSSELER', 'TOP PROBABILITY STOCKS')}
               </h2>
             </div>
             <div className="space-y-2">
@@ -173,15 +177,15 @@ export default function OverviewTab({
                     </div>
                     <div className="flex items-center gap-4 mb-2">
                       <div>
-                        <span className="text-xs" style={{ color: 'oklch(0.45 0.015 225)' }}>Earnings: </span>
+                        <span className="text-xs" style={{ color: 'oklch(0.45 0.015 225)' }}>{copy(language, 'Earnings:', 'Earnings:')}</span>
                         <span className="data-mono text-xs font-semibold" style={{ color: 'oklch(0.75 0.15 75)' }}>{stock.earningsDate}</span>
                       </div>
                       <div>
-                        <span className="text-xs" style={{ color: 'oklch(0.45 0.015 225)' }}>Beat İht: </span>
+                        <span className="text-xs" style={{ color: 'oklch(0.45 0.015 225)' }}>{copy(language, 'Beat İht:', 'Beat Prob:')}</span>
                         <span className="data-mono text-xs font-semibold" style={{ color: 'oklch(0.78 0.18 160)' }}>%{stock.earningsBeatProbability}</span>
                       </div>
                       <div>
-                        <span className="text-xs" style={{ color: 'oklch(0.45 0.015 225)' }}>6A: </span>
+                        <span className="text-xs" style={{ color: 'oklch(0.45 0.015 225)' }}>{copy(language, '6A:', '6M:')}</span>
                         <span className="data-mono text-xs font-semibold" style={{ color: stock.priceChange6M > 0 ? 'oklch(0.78 0.18 160)' : 'oklch(0.65 0.22 25)' }}>
                           {stock.priceChange6M > 0 ? '+' : ''}{stock.priceChange6M}%
                         </span>
@@ -213,7 +217,7 @@ export default function OverviewTab({
             <div className="flex items-center gap-2 mb-3">
               <div className="w-1 h-4" style={{ background: 'oklch(0.75 0.15 75)' }} />
               <h2 className="heading-condensed text-base" style={{ color: 'oklch(0.92 0.01 220)' }}>
-                MOMENTUM SKORU SIRALAMASI
+                {copy(language, 'MOMENTUM SKORU SIRALAMASI', 'MOMENTUM SCORE RANKING')}
               </h2>
             </div>
             <div className="tactical-card p-4" style={{ height: '340px' }}>
@@ -223,7 +227,7 @@ export default function OverviewTab({
                   <XAxis type="number" domain={[0, 100]} tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 10, fontFamily: 'JetBrains Mono' }} />
                   <YAxis type="category" dataKey="ticker" tick={{ fill: 'oklch(0.75 0.01 220)', fontSize: 11, fontFamily: 'JetBrains Mono', fontWeight: 600 }} width={40} />
                   <Tooltip content={<CustomTooltip />} />
-                  <Bar dataKey="score" name="Momentum" radius={[0, 0, 0, 0]} maxBarSize={18}>
+                  <Bar dataKey="score" name={copy(language, 'Momentum', 'Momentum')} radius={[0, 0, 0, 0]} maxBarSize={18}>
                     {momentumChartData.map((entry) => (
                       <Cell
                         key={entry.ticker}
@@ -247,7 +251,7 @@ export default function OverviewTab({
           <div className="flex items-center gap-2 mb-3">
             <div className="w-1 h-4" style={{ background: 'oklch(0.6 0.12 250)' }} />
             <h2 className="heading-condensed text-base" style={{ color: 'oklch(0.92 0.01 220)' }}>
-              MAKRO BAĞLAM — SEKTÖREL BÜYÜME 2026
+              {copy(language, 'MAKRO BAĞLAM — SEKTÖREL BÜYÜME 2026', 'MACRO CONTEXT — SECTORAL GROWTH 2026')}
             </h2>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -280,10 +284,12 @@ export default function OverviewTab({
         {/* Disclaimer */}
         <div className="p-4 border" style={{ borderColor: 'oklch(0.22 0.03 225)', background: 'oklch(0.13 0.025 230)' }}>
           <p className="text-xs" style={{ color: 'oklch(0.4 0.015 225)', lineHeight: 1.7 }}>
-            <span className="font-semibold" style={{ color: 'oklch(0.65 0.22 25)' }}>⚠ YASAL UYARI:</span>{' '}
-            Bu rapor yalnızca bilgilendirme amaçlıdır ve yatırım tavsiyesi niteliği taşımaz. Geçmiş performans gelecekteki sonuçları garanti etmez. 
-            Hisse senedi yatırımları risk içerir. Yatırım kararlarınızı vermeden önce lisanslı bir finansal danışmana başvurmanız önerilir. 
-            Veriler: Yahoo Finance, MarketBeat, ChartMill, Gartner, Deloitte kaynaklarından derlenmiştir.
+            <span className="font-semibold" style={{ color: 'oklch(0.65 0.22 25)' }}>{copy(language, '⚠ YASAL UYARI:', '⚠ LEGAL DISCLAIMER:')}</span>{' '}
+            {copy(
+              language,
+              'Bu rapor yalnızca bilgilendirme amaçlıdır ve yatırım tavsiyesi niteliği taşımaz. Geçmiş performans gelecekteki sonuçları garanti etmez. Hisse senedi yatırımları risk içerir. Yatırım kararlarınızı vermeden önce lisanslı bir finansal danışmana başvurmanız önerilir. Veriler: Yahoo Finance, MarketBeat, ChartMill, Gartner, Deloitte kaynaklarından derlenmiştir.',
+              'This report is for informational purposes only and does not constitute investment advice. Past performance does not guarantee future results. Stock investments involve risk. It is recommended to consult a licensed financial advisor before making investment decisions. Data compiled from Yahoo Finance, MarketBeat, ChartMill, Gartner, Deloitte sources.'
+            )}
           </p>
         </div>
       </div>

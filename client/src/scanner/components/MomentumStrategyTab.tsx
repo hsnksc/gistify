@@ -1,5 +1,7 @@
 import { AlertTriangle, Route, Shield, Target } from "lucide-react";
 import type { MomentumReportSource } from "@/lib/momentumReportSource";
+import { copy } from "@/lib/i18n";
+import type { AppLanguage } from "@/lib/i18n";
 
 function TableSection({
   title,
@@ -51,8 +53,10 @@ function TableSection({
 
 export default function MomentumStrategyTab({
   report,
+  language,
 }: {
   report: MomentumReportSource;
+  language: AppLanguage;
 }) {
   return (
     <div className="space-y-6 px-6 pb-8">
@@ -61,7 +65,7 @@ export default function MomentumStrategyTab({
           <div className="flex items-center gap-2">
             <Route className="h-4 w-4 text-emerald-400" />
             <p className="heading-condensed text-lg text-foreground">
-              Pozisyonlama Matrisi
+              {copy(language, "Pozisyonlama Matrisi", "Positioning Matrix")}
             </p>
           </div>
           <div className="mt-4 space-y-3">
@@ -88,13 +92,13 @@ export default function MomentumStrategyTab({
           <div className="flex items-center gap-2">
             <Shield className="h-4 w-4 text-cyan-400" />
             <p className="heading-condensed text-lg text-foreground">
-              Teknik ve Rejim Notlari
+              {copy(language, "Teknik ve Rejim Notlari", "Technical and Regime Notes")}
             </p>
           </div>
           <div className="mt-4 space-y-3">
             <div className="rounded-none border border-border bg-background/55 p-4">
               <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                QQQ Teknik Seviyeler
+                {copy(language, "QQQ Teknik Seviyeler", "QQQ Technical Levels")}
               </p>
               <div className="mt-3 space-y-2">
                 {report.qqqLevels.map(row => (
@@ -113,7 +117,7 @@ export default function MomentumStrategyTab({
 
             <div className="rounded-none border border-border bg-background/55 p-4">
               <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                SPY Seviyeleri
+                {copy(language, "SPY Seviyeleri", "SPY Levels")}
               </p>
               <div className="mt-3 grid gap-2 md:grid-cols-2">
                 {report.technicalLevels.map(level => (
@@ -139,13 +143,13 @@ export default function MomentumStrategyTab({
 
             <div className="rounded-none border border-amber-400/20 bg-amber-500/5 px-4 py-3">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300">
-                VIX Teknik Notu
+                {copy(language, "VIX Teknik Notu", "VIX Technical Note")}
               </p>
               <div className="mt-2 space-y-2 text-sm leading-relaxed text-muted-foreground">
                 {report.vixTechnicalCommentary.length ? (
                   report.vixTechnicalCommentary.map(line => <p key={line}>{line}</p>)
                 ) : (
-                  <p>Bu raporda ek VIX teknik notu bulunmuyor.</p>
+                  <p>{copy(language, "Bu raporda ek VIX teknik notu bulunmuyor.", "No additional VIX technical notes in this report.")}</p>
                 )}
               </div>
             </div>
@@ -154,14 +158,22 @@ export default function MomentumStrategyTab({
       </section>
 
       <TableSection
-        title="Pazartesi Senaryolari"
-        headers={["Senaryo", "Olasilik", "Aksiyon"]}
+        title={copy(language, "Pazartesi Senaryolari", "Monday Scenarios")}
+        headers={[
+          copy(language, "Senaryo", "Scenario"),
+          copy(language, "Olasilik", "Probability"),
+          copy(language, "Aksiyon", "Action"),
+        ]}
         rows={report.scenarios.map(row => [row.scenario, row.probabilityLabel, row.action])}
       />
 
       <TableSection
-        title="Opsiyon Planlari"
-        headers={["Strateji", "Kosul", "Hedef"]}
+        title={copy(language, "Opsiyon Planlari", "Option Plans")}
+        headers={[
+          copy(language, "Strateji", "Strategy"),
+          copy(language, "Kosul", "Condition"),
+          copy(language, "Hedef", "Target"),
+        ]}
         rows={report.optionStrategies.map(row => [row.strategy, row.condition, row.target])}
       />
 
@@ -170,7 +182,7 @@ export default function MomentumStrategyTab({
           <div className="flex items-center gap-2">
             <AlertTriangle className="h-4 w-4 text-rose-400" />
             <p className="heading-condensed text-lg text-foreground">
-              Kritik Riskler
+              {copy(language, "Kritik Riskler", "Critical Risks")}
             </p>
           </div>
           <div className="mt-4 space-y-3">
@@ -192,7 +204,7 @@ export default function MomentumStrategyTab({
           <div className="flex items-center gap-2">
             <Shield className="h-4 w-4 text-cyan-400" />
             <p className="heading-condensed text-lg text-foreground">
-              Tetik Seviyeleri
+              {copy(language, "Tetik Seviyeleri", "Trigger Levels")}
             </p>
           </div>
           <div className="mt-4 space-y-3">
@@ -219,7 +231,7 @@ export default function MomentumStrategyTab({
       <section className="rounded-[2rem] border border-border bg-card/90 p-6 shadow-xl">
         <div className="flex items-center gap-2">
           <Target className="h-4 w-4 text-emerald-400" />
-          <p className="heading-condensed text-lg text-foreground">Sonuc</p>
+          <p className="heading-condensed text-lg text-foreground">{copy(language, "Sonuc", "Conclusion")}</p>
         </div>
         <div className="mt-4 space-y-3 text-sm leading-relaxed text-muted-foreground">
           {report.conclusionParagraphs.map(paragraph => (

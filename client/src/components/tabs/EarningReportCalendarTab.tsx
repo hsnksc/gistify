@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { AppLanguage } from "@/lib/i18n";
+import { copy, type AppLanguage } from "@/lib/i18n";
 import type {
   EarningReportSource,
   EarningsPosition,
@@ -10,10 +10,6 @@ interface Props {
   report: EarningReportSource;
   language?: AppLanguage;
   onOpenTicker: (ticker: string) => void;
-}
-
-function copy(language: AppLanguage, tr: string, en: string) {
-  return language === "en" ? en : tr;
 }
 
 function sortPositions(positions: EarningsPosition[]) {

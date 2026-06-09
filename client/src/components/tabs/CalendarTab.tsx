@@ -3,6 +3,7 @@
  * Earnings calendar with signal indicators
  */
 
+import { copy, type AppLanguage } from '@/lib/i18n';
 import { signalConfig, type StockData } from '@/lib/stockData';
 import type { StrategyCalendarItem } from '@/lib/earningStrategyData';
 
@@ -12,13 +13,15 @@ interface Props {
   calendar?: StrategyCalendarItem[];
   reportWindow?: string;
   showFinancialExpectations?: boolean;
+  language: AppLanguage;
 }
 
 export default function CalendarTab({
   onStockClick,
   stocks = [],
   calendar = [],
-  reportWindow = 'Aktif hafta',
+  language,
+  reportWindow = copy(language, 'Aktif hafta', 'Active week'),
   showFinancialExpectations = true,
 }: Props) {
   if (!calendar.length) {
@@ -26,15 +29,17 @@ export default function CalendarTab({
       <div className="p-6">
         <section className="rounded-none border border-border bg-card/80 p-6">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300">
-            Published Calendar Bekleniyor
+            {copy(language, "Yayınlanan Takvim Bekleniyor", "Published Calendar Pending")}
           </p>
           <h1 className="mt-3 heading-condensed text-3xl text-foreground">
-            Gosterilecek earnings takvimi yok
+            {copy(language, "Gösterilecek earnings takvimi yok", "No earnings calendar to display")}
           </h1>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Bu sekme artik static earnings seed kullanmiyor. Admin tarafinda
-            publish edilmis haftalik rapor olustugunda takvim burada tarih
-            sirali olarak gorunur.
+            {copy(
+              language,
+              "Bu sekme artik static earnings seed kullanmiyor. Admin tarafinda publish edilmis haftalik rapor olustugunda takvim burada tarih sirali olarak gorunur.",
+              "This tab no longer uses static earnings seeds. When a weekly report is published on the admin side, the calendar will appear here sorted by date."
+            )}
           </p>
         </section>
       </div>
@@ -58,11 +63,11 @@ export default function CalendarTab({
         <div className="flex items-center gap-2 mb-1">
           <div className="w-1 h-5" style={{ background: 'oklch(0.75 0.15 75)' }} />
           <h1 className="heading-condensed text-xl" style={{ color: 'oklch(0.92 0.01 220)' }}>
-            EARNINGS TAKVİMİ
+            {copy(language, "EARNINGS TAKVİMİ", "EARNINGS CALENDAR")}
           </h1>
         </div>
         <p className="text-sm ml-3" style={{ color: 'oklch(0.5 0.015 225)' }}>
-          {reportWindow} · Tarih seçimi değiştiğinde tüm earning strategy akışı buna göre güncellenir
+          {reportWindow} · {copy(language, "Tarih seçimi değiştiğinde tüm earning strategy akışı buna göre güncellenir", "When the date selection changes, the entire earnings strategy flow updates accordingly")}
         </p>
       </div>
 
@@ -113,12 +118,12 @@ export default function CalendarTab({
                                 EPS: <span style={{ color: 'oklch(0.75 0.01 220)' }}>{stock ? `$${stock.epsEstimate}` : '-'}</span>
                               </span>
                               <span className="data-mono text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>
-                                Gelir: <span style={{ color: 'oklch(0.75 0.01 220)' }}>{stock?.revenueEstimate || '-'}</span>
+                                {copy(language, "Gelir", "Revenue")}: <span style={{ color: 'oklch(0.75 0.01 220)' }}>{stock?.revenueEstimate || '-'}</span>
                               </span>
                             </>
                           ) : null}
                           <span className="data-mono text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>
-                            Beat İht: <span style={{ color: 'oklch(0.78 0.18 160)' }}>{stock ? `%${stock.earningsBeatProbability}` : '-'}</span>
+                            {copy(language, "Beat İht", "Beat Prob")}: <span style={{ color: 'oklch(0.78 0.18 160)' }}>{stock ? `%${stock.earningsBeatProbability}` : '-'}</span>
                           </span>
                           <span className={`text-xs font-bold px-2 py-0.5 border ${cfg.bgClass} ${cfg.textClass} ${cfg.borderClass}`} style={{ borderRadius: 0 }}>
                             {cfg.label}
@@ -127,7 +132,7 @@ export default function CalendarTab({
                       </div>
                       <div className="mt-1.5 flex items-center gap-4">
                         <div className="flex items-center gap-1">
-                          <span className="text-xs" style={{ color: 'oklch(0.4 0.015 225)' }}>Momentum:</span>
+                          <span className="text-xs" style={{ color: 'oklch(0.4 0.015 225)' }}>{copy(language, "Momentum", "Momentum")}:</span>
                           <div style={{ width: '60px', height: '3px', background: 'oklch(0.2 0.03 225)' }}>
                             <div style={{
                               width: `${stock?.momentumScore || 0}%`,
@@ -141,7 +146,7 @@ export default function CalendarTab({
                           Implied Move: <span className="data-mono font-semibold" style={{ color: 'oklch(0.75 0.15 75)' }}>{stock ? `±${stock.impliedMove}%` : '-'}</span>
                         </span>
                         <span className="text-xs" style={{ color: 'oklch(0.4 0.015 225)' }}>
-                          6A: <span className="data-mono font-semibold" style={{ color: (stock?.priceChange6M ?? 0) > 0 ? 'oklch(0.78 0.18 160)' : 'oklch(0.65 0.22 25)' }}>
+                          {copy(language, "6A", "6M")}: <span className="data-mono font-semibold" style={{ color: (stock?.priceChange6M ?? 0) > 0 ? 'oklch(0.78 0.18 160)' : 'oklch(0.65 0.22 25)' }}>
                             {stock ? `${stock.priceChange6M > 0 ? '+' : ''}${stock.priceChange6M}%` : '-'}
                           </span>
                         </span>
@@ -160,7 +165,7 @@ export default function CalendarTab({
         <div className="flex items-center gap-2 mb-3">
           <div className="w-1 h-4" style={{ background: 'oklch(0.6 0.12 250)' }} />
           <h2 className="heading-condensed text-base" style={{ color: 'oklch(0.92 0.01 220)' }}>
-            TAKVİM ÖZET TABLOSU
+            {copy(language, "TAKVİM ÖZET TABLOSU", "CALENDAR SUMMARY TABLE")}
           </h2>
         </div>
         <div className="overflow-x-auto">
@@ -168,13 +173,17 @@ export default function CalendarTab({
             <thead>
               <tr style={{ borderBottom: '2px solid oklch(0.22 0.03 225)', background: 'oklch(0.13 0.025 230)' }}>
                 {[
-                  'Tarih',
-                  'Hisse',
-                  'Sektör',
-                  ...(showFinancialExpectations ? ['EPS Beklenti', 'Gelir Beklenti', 'Gelir Büyümesi'] : []),
-                  'Beat İhtimali',
+                  copy(language, 'Tarih', 'Date'),
+                  copy(language, 'Hisse', 'Ticker'),
+                  copy(language, 'Sektör', 'Sector'),
+                  ...(showFinancialExpectations ? [
+                    copy(language, 'EPS Beklenti', 'EPS Estimate'),
+                    copy(language, 'Gelir Beklenti', 'Revenue Estimate'),
+                    copy(language, 'Gelir Büyümesi', 'Revenue Growth'),
+                  ] : []),
+                  copy(language, 'Beat İhtimali', 'Beat Probability'),
                   'Implied Move',
-                  'Sinyal',
+                  copy(language, 'Sinyal', 'Signal'),
                 ].map(h => (
                   <th key={h} className="px-3 py-2 text-left heading-condensed text-xs tracking-wider" style={{ color: 'oklch(0.55 0.015 225)' }}>
                     {h}

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { AppLanguage } from "@/lib/i18n";
+import { copy, type AppLanguage } from "@/lib/i18n";
 import type {
   EarningReportSource,
   EarningsPosition,
@@ -12,10 +12,6 @@ interface Props {
   language?: AppLanguage;
   selectedTicker: string | null;
   onSelectTicker: (ticker: string) => void;
-}
-
-function copy(language: AppLanguage, tr: string, en: string) {
-  return language === "en" ? en : tr;
 }
 
 function sortPositions(positions: EarningsPosition[]) {
@@ -67,7 +63,7 @@ function getScenarioTone(pnl: string) {
     return "text-emerald-300";
   }
 
-  if (/-\$/.test(pnl)) {
+  if (/\-\$/.test(pnl)) {
     return "text-red-300";
   }
 
@@ -387,7 +383,7 @@ export default function EarningReportPlaybookTab({
 
             <div className="flex flex-wrap gap-2 text-xs">
               <span className="rounded-none border border-border bg-background/60 px-3 py-1.5 text-muted-foreground">
-                Sermaye:{" "}
+                {copy(language, "Sermaye", "Capital")}:{" "}
                 <span className="data-mono font-semibold text-foreground">
                   {activePosition.allocationCapital}
                 </span>
@@ -644,16 +640,16 @@ export default function EarningReportPlaybookTab({
 
         <article className="rounded-none border border-border bg-card/80 p-4">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            Kar / zarar senaryolari
+            {copy(language, "Kar / zarar senaryolari", "P/L scenarios")}
           </p>
           {activePosition.scenarios.length ? (
             <div className="mt-4 overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-border/80 text-left text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                    <th className="pb-2">Senaryo</th>
-                    <th className="pb-2">IV degisimi</th>
-                    <th className="pb-2">Hisse hareketi</th>
+                    <th className="pb-2">{copy(language, "Senaryo", "Scenario")}</th>
+                    <th className="pb-2">{copy(language, "IV degisimi", "IV change")}</th>
+                    <th className="pb-2">{copy(language, "Hisse hareketi", "Stock move")}</th>
                     <th className="pb-2">Est. P/L</th>
                   </tr>
                 </thead>
@@ -680,8 +676,11 @@ export default function EarningReportPlaybookTab({
             </div>
           ) : (
             <div className="mt-4 rounded-none border border-border bg-background/50 p-4 text-sm leading-relaxed text-muted-foreground">
-              Bu rapor versiyonunda tablo bazli P/L senaryosu verilmedi. Ana yon,
-              call/put orani ve giris/cikis penceresi strategy board ustunden okunmali.
+              {copy(
+                language,
+                "Bu rapor versiyonunda tablo bazli P/L senaryosu verilmedi. Ana yon, call/put orani ve giris/cikis penceresi strategy board ustunden okunmali.",
+                "No table-based P/L scenario was provided in this report version. Main direction, call/put ratio and entry/exit window should be read from the strategy board."
+              )}
             </div>
           )}
         </article>

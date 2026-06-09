@@ -5,24 +5,16 @@
 
 import { sectorMacroData, stocksData, type StockData } from '@/lib/stockData';
 import { getTooltipLabel } from '@/lib/chartTooltip';
+import { copy } from '@/lib/i18n';
+import type { AppLanguage } from '@/lib/i18n';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell,
 } from 'recharts';
 
-const itSpendingData = [
-  { name: 'Veri Merkezi', value: 653, growth: 31.7, color: 'oklch(0.78 0.18 160)' },
-  { name: 'Yazılım', value: 1434, growth: 14.7, color: '#4ade80' },
-  { name: 'BT Hizmetleri', value: 1867, growth: 8.7, color: 'oklch(0.75 0.15 75)' },
-  { name: 'Cihazlar', value: 836, growth: 6.1, color: 'oklch(0.6 0.12 250)' },
-  { name: 'İletişim', value: 1365, growth: 4.7, color: 'oklch(0.7 0.15 300)' },
-];
-
-const sectorStockMap = [
-  { sector: 'AI Yarı İletken', tickers: ['MRVL', 'AVGO', 'DELL'], color: 'oklch(0.78 0.18 160)' },
-  { sector: 'Siber Güvenlik', tickers: ['CRWD', 'PANW', 'ZS'], color: '#4ade80' },
-  { sector: 'Bulut Yazılım', tickers: ['SNOW', 'CRM', 'ADSK'], color: 'oklch(0.75 0.15 75)' },
-  { sector: 'Defansif', tickers: ['COST'], color: 'oklch(0.6 0.12 250)' },
-];
+interface Props {
+  stocks?: StockData[];
+  language: AppLanguage;
+}
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
@@ -39,11 +31,22 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-interface Props {
-  stocks?: StockData[];
-}
+export default function SectorTab({ stocks = stocksData, language }: Props) {
+  const itSpendingData = [
+    { name: copy(language, 'Veri Merkezi', 'Data Center'), value: 653, growth: 31.7, color: 'oklch(0.78 0.18 160)' },
+    { name: copy(language, 'Yazılım', 'Software'), value: 1434, growth: 14.7, color: '#4ade80' },
+    { name: copy(language, 'BT Hizmetleri', 'IT Services'), value: 1867, growth: 8.7, color: 'oklch(0.75 0.15 75)' },
+    { name: copy(language, 'Cihazlar', 'Devices'), value: 836, growth: 6.1, color: 'oklch(0.6 0.12 250)' },
+    { name: copy(language, 'İletişim', 'Communications'), value: 1365, growth: 4.7, color: 'oklch(0.7 0.15 300)' },
+  ];
 
-export default function SectorTab({ stocks = stocksData }: Props) {
+  const sectorStockMap = [
+    { sector: copy(language, 'AI Yarı İletken', 'AI Semiconductor'), tickers: ['MRVL', 'AVGO', 'DELL'], color: 'oklch(0.78 0.18 160)' },
+    { sector: copy(language, 'Siber Güvenlik', 'Cybersecurity'), tickers: ['CRWD', 'PANW', 'ZS'], color: '#4ade80' },
+    { sector: copy(language, 'Bulut Yazılım', 'Cloud Software'), tickers: ['SNOW', 'CRM', 'ADSK'], color: 'oklch(0.75 0.15 75)' },
+    { sector: copy(language, 'Defansif', 'Defensive'), tickers: ['COST'], color: 'oklch(0.6 0.12 250)' },
+  ];
+
   const avgMomentumBySector = sectorStockMap.map(s => {
     const sectorStocks = stocks.filter(st => s.tickers.includes(st.ticker));
     const avg = sectorStocks.length
@@ -59,11 +62,11 @@ export default function SectorTab({ stocks = stocksData }: Props) {
         <div className="flex items-center gap-2 mb-1">
           <div className="w-1 h-5" style={{ background: 'oklch(0.6 0.12 250)' }} />
           <h1 className="heading-condensed text-xl" style={{ color: 'oklch(0.92 0.01 220)' }}>
-            SEKTÖREL MAKRO ANALİZ
+            {copy(language, 'SEKTÖREL MAKRO ANALİZ', 'SECTORAL MACRO ANALYSIS')}
           </h1>
         </div>
         <p className="text-sm ml-3" style={{ color: 'oklch(0.5 0.015 225)' }}>
-          Gartner & Deloitte 2026 Tahminleri · Küresel BT Harcamaları $6.15T
+          {copy(language, 'Gartner & Deloitte 2026 Tahminleri · Küresel BT Harcamaları $6.15T', 'Gartner & Deloitte 2026 Forecasts · Global IT Spending $6.15T')}
         </p>
       </div>
 
@@ -72,13 +75,13 @@ export default function SectorTab({ stocks = stocksData }: Props) {
         <div className="flex items-center gap-2 mb-3">
           <div className="w-1 h-4" style={{ background: 'oklch(0.78 0.18 160)' }} />
           <h2 className="heading-condensed text-base" style={{ color: 'oklch(0.92 0.01 220)' }}>
-            KÜRESEL BT HARCAMALARI 2026 (GARTNER)
+            {copy(language, 'KÜRESEL BT HARCAMALARI 2026 (GARTNER)', 'GLOBAL IT SPENDING 2026 (GARTNER)')}
           </h2>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div className="tactical-card p-4" style={{ height: '300px' }}>
             <div className="text-xs font-semibold tracking-widest uppercase mb-2" style={{ color: 'oklch(0.45 0.015 225)' }}>
-              Harcama Büyüklüğü ($M)
+              {copy(language, 'Harcama Büyüklüğü ($M)', 'Spending Size ($M)')}
             </div>
             <ResponsiveContainer width="100%" height="90%">
               <BarChart data={itSpendingData} margin={{ top: 5, right: 10, bottom: 20, left: 10 }}>
@@ -86,7 +89,7 @@ export default function SectorTab({ stocks = stocksData }: Props) {
                 <XAxis dataKey="name" tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 9, fontFamily: 'JetBrains Mono' }} angle={-20} textAnchor="end" />
                 <YAxis tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 9, fontFamily: 'JetBrains Mono' }} />
                 <Tooltip content={<CustomTooltip />} />
-                <Bar dataKey="value" name="Harcama ($M)" maxBarSize={40}>
+                <Bar dataKey="value" name={copy(language, 'Harcama ($M)', 'Spending ($M)')} maxBarSize={40}>
                   {itSpendingData.map((entry, i) => (
                     <Cell key={i} fill={entry.color} />
                   ))}
@@ -96,7 +99,7 @@ export default function SectorTab({ stocks = stocksData }: Props) {
           </div>
           <div className="tactical-card p-4" style={{ height: '300px' }}>
             <div className="text-xs font-semibold tracking-widest uppercase mb-2" style={{ color: 'oklch(0.45 0.015 225)' }}>
-              YoY Büyüme Oranları (%)
+              {copy(language, 'YoY Büyüme Oranları (%)', 'YoY Growth Rates (%)')}
             </div>
             <ResponsiveContainer width="100%" height="90%">
               <BarChart data={itSpendingData} layout="vertical" margin={{ top: 5, right: 30, bottom: 5, left: 60 }}>
@@ -104,7 +107,7 @@ export default function SectorTab({ stocks = stocksData }: Props) {
                 <XAxis type="number" unit="%" tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 9, fontFamily: 'JetBrains Mono' }} />
                 <YAxis type="category" dataKey="name" tick={{ fill: 'oklch(0.65 0.01 220)', fontSize: 10, fontFamily: 'JetBrains Mono' }} width={70} />
                 <Tooltip content={<CustomTooltip />} />
-                <Bar dataKey="growth" name="Büyüme (%)" maxBarSize={18}>
+                <Bar dataKey="growth" name={copy(language, 'Büyüme (%)', 'Growth (%)')} maxBarSize={18}>
                   {itSpendingData.map((entry, i) => (
                     <Cell key={i} fill={entry.color} />
                   ))}
@@ -120,7 +123,7 @@ export default function SectorTab({ stocks = stocksData }: Props) {
         <div className="flex items-center gap-2 mb-3">
           <div className="w-1 h-4" style={{ background: 'oklch(0.75 0.15 75)' }} />
           <h2 className="heading-condensed text-base" style={{ color: 'oklch(0.92 0.01 220)' }}>
-            SEKTÖR BAZLI GÖRÜNÜM
+            {copy(language, 'SEKTÖR BAZLI GÖRÜNÜM', 'SECTOR-BASED OUTLOOK')}
           </h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -132,24 +135,24 @@ export default function SectorTab({ stocks = stocksData }: Props) {
                   sector.outlook === 'BULLISH' ? 'badge-strong' :
                   sector.outlook === 'NEUTRAL' ? 'badge-warning' : 'badge-danger'
                 }`}>
-                  {sector.outlook === 'BULLISH' ? '↑ YÜKSELIŞ' : sector.outlook === 'NEUTRAL' ? '→ NÖTR' : '↓ DÜŞÜŞ'}
+                  {sector.outlook === 'BULLISH' ? copy(language, '↑ YÜKSELIŞ', '↑ BULLISH') : sector.outlook === 'NEUTRAL' ? copy(language, '→ NÖTR', '→ NEUTRAL') : copy(language, '↓ DÜŞÜŞ', '↓ BEARISH')}
                 </span>
               </div>
               <div className="grid grid-cols-2 gap-3 mb-3">
                 <div>
-                  <div className="text-xs" style={{ color: 'oklch(0.45 0.015 225)' }}>Pazar Büyüklüğü 2026</div>
+                  <div className="text-xs" style={{ color: 'oklch(0.45 0.015 225)' }}>{copy(language, 'Pazar Büyüklüğü 2026', 'Market Size 2026')}</div>
                   <div className="data-mono text-xl font-bold" style={{ color: 'oklch(0.78 0.18 160)' }}>{sector.marketSize2026}</div>
                 </div>
                 <div>
-                  <div className="text-xs" style={{ color: 'oklch(0.45 0.015 225)' }}>Büyüme Oranı</div>
+                  <div className="text-xs" style={{ color: 'oklch(0.45 0.015 225)' }}>{copy(language, 'Büyüme Oranı', 'Growth Rate')}</div>
                   <div className="data-mono text-xl font-bold" style={{ color: 'oklch(0.75 0.15 75)' }}>{sector.growthRate}</div>
                 </div>
               </div>
               <div className="mb-2">
-                <div className="text-xs" style={{ color: 'oklch(0.45 0.015 225)' }}>Ana Sürücü</div>
+                <div className="text-xs" style={{ color: 'oklch(0.45 0.015 225)' }}>{copy(language, 'Ana Sürücü', 'Main Driver')}</div>
                 <div className="text-sm" style={{ color: 'oklch(0.7 0.01 220)' }}>{sector.keyDriver}</div>
               </div>
-              <div className="text-xs italic" style={{ color: 'oklch(0.38 0.015 225)' }}>Kaynak: {sector.source}</div>
+              <div className="text-xs italic" style={{ color: 'oklch(0.38 0.015 225)' }}>{copy(language, 'Kaynak:', 'Source:')} {sector.source}</div>
             </div>
           ))}
         </div>
@@ -160,7 +163,7 @@ export default function SectorTab({ stocks = stocksData }: Props) {
         <div className="flex items-center gap-2 mb-3">
           <div className="w-1 h-4" style={{ background: 'oklch(0.7 0.15 300)' }} />
           <h2 className="heading-condensed text-base" style={{ color: 'oklch(0.92 0.01 220)' }}>
-            SEKTÖR BAZLI ORT. MOMENTUM SKORU
+            {copy(language, 'SEKTÖR BAZLI ORT. MOMENTUM SKORU', 'SECTOR-BASED AVG. MOMENTUM SCORE')}
           </h2>
         </div>
         <div className="tactical-card p-4" style={{ height: '220px' }}>
@@ -170,7 +173,7 @@ export default function SectorTab({ stocks = stocksData }: Props) {
               <XAxis dataKey="sector" tick={{ fill: 'oklch(0.55 0.015 225)', fontSize: 10, fontFamily: 'JetBrains Mono' }} />
               <YAxis domain={[0, 100]} tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 10, fontFamily: 'JetBrains Mono' }} />
               <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="momentum" name="Ort. Momentum" maxBarSize={60}>
+              <Bar dataKey="momentum" name={copy(language, 'Ort. Momentum', 'Avg. Momentum')} maxBarSize={60}>
                 {avgMomentumBySector.map((entry, i) => (
                   <Cell key={i} fill={entry.color} />
                 ))}
@@ -184,31 +187,32 @@ export default function SectorTab({ stocks = stocksData }: Props) {
       <div className="tactical-card p-5" style={{ borderLeftColor: 'oklch(0.78 0.18 160)', borderLeftWidth: '4px' }}>
         <div className="flex items-center gap-2 mb-3">
           <span className="heading-condensed text-base" style={{ color: 'oklch(0.78 0.18 160)' }}>
-            ◈ AI YARI İLETKEN — DERİN BAĞLAM
+            {copy(language, '◈ AI YARI İLETKEN — DERİN BAĞLAM', '◈ AI SEMICONDUCTOR — DEEP CONTEXT')}
           </span>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <div className="text-xs font-semibold mb-1" style={{ color: 'oklch(0.45 0.015 225)' }}>Deloitte 2026 Tahmini</div>
+            <div className="text-xs font-semibold mb-1" style={{ color: 'oklch(0.45 0.015 225)' }}>{copy(language, 'Deloitte 2026 Tahmini', 'Deloitte 2026 Forecast')}</div>
             <div className="data-mono text-lg font-bold" style={{ color: 'oklch(0.78 0.18 160)' }}>~$500B</div>
-            <div className="text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>AI çip geliri (küresel yarı iletken pazarının ~%50'si)</div>
+            <div className="text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>{copy(language, "AI çip geliri (küresel yarı iletken pazarının ~%50'si)", 'AI chip revenue (~50% of global semiconductor market)')}</div>
           </div>
           <div>
-            <div className="text-xs font-semibold mb-1" style={{ color: 'oklch(0.45 0.015 225)' }}>Sunucu Harcaması Büyümesi</div>
+            <div className="text-xs font-semibold mb-1" style={{ color: 'oklch(0.45 0.015 225)' }}>{copy(language, 'Sunucu Harcaması Büyümesi', 'Server Spending Growth')}</div>
             <div className="data-mono text-lg font-bold" style={{ color: 'oklch(0.75 0.15 75)' }}>+36.9%</div>
-            <div className="text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>AI workload sunucuları (Gartner 2026)</div>
+            <div className="text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>{copy(language, 'AI workload sunucuları (Gartner 2026)', 'AI workload servers (Gartner 2026)')}</div>
           </div>
           <div>
-            <div className="text-xs font-semibold mb-1" style={{ color: 'oklch(0.45 0.015 225)' }}>Hyperscaler AI CAPEX</div>
-            <div className="data-mono text-lg font-bold" style={{ color: 'oklch(0.78 0.18 160)' }}>Hızlanıyor</div>
-            <div className="text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>ASML: "Çip talebi arzı geçiyor" — Nisan 2026</div>
+            <div className="text-xs font-semibold mb-1" style={{ color: 'oklch(0.45 0.015 225)' }}>{copy(language, 'Hyperscaler AI CAPEX', 'Hyperscaler AI CAPEX')}</div>
+            <div className="data-mono text-lg font-bold" style={{ color: 'oklch(0.78 0.18 160)' }}>{copy(language, 'Hızlanıyor', 'Accelerating')}</div>
+            <div className="text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>{copy(language, 'ASML: "Çip talebi arzı geçiyor" — Nisan 2026', 'ASML: "Chip demand is exceeding supply" — April 2026')}</div>
           </div>
         </div>
         <div className="mt-3 text-sm leading-relaxed" style={{ color: 'oklch(0.65 0.015 225)' }}>
-          Yapay zeka altyapısına yönelik küresel yatırım ivmesi 2026'da da sürmektedir. Hyperscaler bulut sağlayıcıları 
-          (Amazon, Google, Microsoft, Meta) kendi özel AI çiplerini tasarlatmakta; bu durum MRVL ve AVGO gibi özel ASIC 
-          tasarım şirketlerine güçlü bir yapısal talep yaratmaktadır. ASML CEO'su Nisan 2026'da "çip talebinin arzı geçtiğini" 
-          açıkça ifade etmiştir — bu, sektörün döngüsel değil yapısal bir büyüme içinde olduğunun en güçlü sinyalidir.
+          {copy(
+            language,
+            "Yapay zeka altyapısına yönelik küresel yatırım ivmesi 2026'da da sürmektedir. Hyperscaler bulut sağlayıcıları (Amazon, Google, Microsoft, Meta) kendi özel AI çiplerini tasarlatmakta; bu durum MRVL ve AVGO gibi özel ASIC tasarım şirketlerine güçlü bir yapısal talep yaratmaktadır. ASML CEO'su Nisan 2026'da \"çip talebinin arzı geçtiğini\" açıkça ifade etmiştir — bu, sektörün döngüsel değil yapısal bir büyüme içinde olduğunun en güçlü sinyalidir.",
+            'Global investment momentum towards AI infrastructure continues in 2026. Hyperscaler cloud providers (Amazon, Google, Microsoft, Meta) are designing their own custom AI chips; this creates strong structural demand for custom ASIC design companies like MRVL and AVGO. ASML\'s CEO clearly stated in April 2026 that "chip demand is exceeding supply" — this is the strongest signal that the sector is in structural rather than cyclical growth.'
+          )}
         </div>
       </div>
     </div>

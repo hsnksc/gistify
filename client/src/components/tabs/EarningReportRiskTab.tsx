@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { AppLanguage } from "@/lib/i18n";
+import { copy, type AppLanguage } from "@/lib/i18n";
 import type {
   AllocationEntry,
   EarningReportSource,
@@ -10,10 +10,6 @@ import type {
 interface Props {
   report: EarningReportSource;
   language?: AppLanguage;
-}
-
-function copy(language: AppLanguage, tr: string, en: string) {
-  return language === "en" ? en : tr;
 }
 
 function sortPositions(positions: EarningsPosition[]) {
@@ -325,7 +321,7 @@ export default function EarningReportRiskTab({ report, language = "tr" }: Props)
 
       <section className="rounded-none border border-border bg-card/80 p-4">
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-          Yasal uyari
+          {copy(language, "Yasal uyari", "Disclaimer")}
         </p>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
           {report.disclaimer}

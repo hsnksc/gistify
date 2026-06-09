@@ -23,7 +23,6 @@ import { Route, Switch, useLocation } from "wouter";
 import {
   APP_LANGUAGE_STORAGE_KEY,
   type AppLanguage,
-  translateUiText,
 } from "@/lib/i18n";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
@@ -212,7 +211,7 @@ function Router({
             <Landing language={language} onLanguageChange={onLanguageChange} />
           )}
         </Route>
-        <Route path={"/app/admin"} component={ReportsAdmin} />
+        <Route path={"/app/admin"}>{() => <ReportsAdmin language={language} />}</Route>
         <Route path={"/app"}>{() => <Home language={language} />}</Route>
         <Route path={"/momentum"}>
           {() => <Scanner language={language} />}

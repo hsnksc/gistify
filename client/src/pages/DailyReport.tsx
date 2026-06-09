@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { sortDailyReportsNewestFirst } from "@/lib/dailyReports";
-import type { AppLanguage } from "@/lib/i18n";
+import { copy, type AppLanguage } from "@/lib/i18n";
 
 interface DailyReportsResponse {
   reports?: DailyReportRecord[];
@@ -105,10 +105,6 @@ function ReportSelectorCard({
       </p>
     </button>
   );
-}
-
-function copy(language: AppLanguage, tr: string, en: string) {
-  return language === "en" ? en : tr;
 }
 
 export default function DailyReportPage({ language }: { language: AppLanguage }) {

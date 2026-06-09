@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { type AppLanguage, translateUiText } from "@/lib/i18n";
+import { type AppLanguage } from "@/lib/i18n";
 import { scannerTR } from "./locales/tr";
 import { scannerEN } from "./locales/en";
 

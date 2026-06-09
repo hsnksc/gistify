@@ -10,14 +10,16 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { copy } from "@/lib/i18n";
+import type { AppLanguage } from "@/lib/i18n";
 
-function groupLabel(group: MomentumCandidateGroup) {
+function groupLabel(group: MomentumCandidateGroup, language: AppLanguage) {
   if (group === "upside") {
-    return "Oversold Donus";
+    return copy(language, "Oversold Donus", "Oversold Reversal");
   }
 
   if (group === "downside") {
-    return "Asagi Momentum";
+    return copy(language, "Asagi Momentum", "Downside Momentum");
   }
 
   return "Defensive";
@@ -35,7 +37,7 @@ function groupColor(group: MomentumCandidateGroup) {
   return "oklch(0.75 0.15 75)";
 }
 
-function CandidateCard({ row }: { row: MomentumCandidateRow }) {
+function CandidateCard({ row, language }: { row: MomentumCandidateRow; language: AppLanguage }) {
   return (
     <article className="rounded-none border border-border bg-background/55 p-4">
       <div className="flex items-start justify-between gap-3">
@@ -45,7 +47,7 @@ function CandidateCard({ row }: { row: MomentumCandidateRow }) {
             {row.ticker && row.ticker !== row.name ? ` · ${row.ticker}` : ""}
           </p>
           <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-            {groupLabel(row.group)}
+            {groupLabel(row.group, language)}
           </p>
         </div>
         <span className="data-mono text-lg font-bold text-foreground">
@@ -56,7 +58,7 @@ function CandidateCard({ row }: { row: MomentumCandidateRow }) {
       <div className="mt-4 grid gap-3 md:grid-cols-2">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-            Tez
+            {copy(language, "Tez", "Thesis")}
           </p>
           <p className="mt-1 text-sm leading-relaxed text-foreground">{row.reason}</p>
         </div>
@@ -75,14 +77,16 @@ function CandidateCard({ row }: { row: MomentumCandidateRow }) {
 
 export default function MomentumSetupsTab({
   report,
+  language,
 }: {
   report: MomentumReportSource;
+  language: AppLanguage;
 }) {
   const candidateChartData = report.candidates.map(row => ({
     subject: row.ticker || row.name,
     label: row.name,
     score: row.score || 0,
-    group: groupLabel(row.group),
+    group: groupLabel(row.group, language),
     reason: row.reason,
     risk: row.risk,
     rawGroup: row.group,
@@ -103,32 +107,32 @@ export default function MomentumSetupsTab({
       <section className="grid gap-4 xl:grid-cols-4">
         <div className="rounded-none border border-emerald-400/20 bg-emerald-500/5 p-4">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-            Piyasa Rejimi
+            {copy(language, "Piyasa Rejimi", "Market Regime")}
           </p>
           <p className="mt-2 heading-condensed text-2xl text-foreground">
             {report.regimeLabel}
           </p>
           <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-            Setup okumasinin tumu bu rejim taniminin ustune kurulu.
+            {copy(language, "Setup okumasinin tumu bu rejim taniminin ustune kurulu.", "All setup reading is built on top of this regime definition.")}
           </p>
         </div>
         <div className="rounded-none border border-border bg-card/80 p-4">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            Yukari Setup
+            {copy(language, "Yukari Setup", "Bullish Setup")}
           </p>
           <p className="mt-2 data-mono text-2xl font-bold text-emerald-300">
             {bullishCount}
           </p>
-          <p className="mt-1 text-xs text-muted-foreground">Oversold donus listesi</p>
+          <p className="mt-1 text-xs text-muted-foreground">{copy(language, "Oversold donus listesi", "Oversold reversal list")}</p>
         </div>
         <div className="rounded-none border border-border bg-card/80 p-4">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            Asagi Setup
+            {copy(language, "Asagi Setup", "Bearish Setup")}
           </p>
           <p className="mt-2 data-mono text-2xl font-bold text-rose-300">
             {bearishCount}
           </p>
-          <p className="mt-1 text-xs text-muted-foreground">Trend devami adaylari</p>
+          <p className="mt-1 text-xs text-muted-foreground">{copy(language, "Trend devami adaylari", "Trend continuation candidates")}</p>
         </div>
         <div className="rounded-none border border-border bg-card/80 p-4">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
@@ -137,7 +141,7 @@ export default function MomentumSetupsTab({
           <p className="mt-2 data-mono text-2xl font-bold text-amber-300">
             {defensiveCount}
           </p>
-          <p className="mt-1 text-xs text-muted-foreground">Koruyucu rota</p>
+          <p className="mt-1 text-xs text-muted-foreground">{copy(language, "Koruyucu rota", "Protective route")}</p>
         </div>
       </section>
 
@@ -146,17 +150,17 @@ export default function MomentumSetupsTab({
           <div className="flex items-center gap-2">
             <Radar className="h-4 w-4 text-emerald-400" />
             <p className="heading-condensed text-lg text-foreground">
-              Momentum Setup Skor Haritasi
+              {copy(language, "Momentum Setup Skor Haritasi", "Momentum Setup Score Map")}
             </p>
           </div>
           <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-            Tek tabloda yukari donus, asagi devam ve defensive bloklar birlesiyor.
+            {copy(language, "Tek tabloda yukari donus, asagi devam ve defensive bloklar birlesiyor.", "Bullish reversal, bearish continuation and defensive blocks come together in a single table.")}
           </p>
           <div className="mt-5">
             <ChartContainer
               className="h-[380px] w-full"
               config={{
-                score: { label: "Momentum skoru", color: "oklch(0.78 0.18 160)" },
+                score: { label: copy(language, "Momentum skoru", "Momentum score"), color: "oklch(0.78 0.18 160)" },
               }}
             >
               <BarChart data={candidateChartData} layout="vertical" margin={{ top: 0, right: 12, left: 0, bottom: 0 }}>
@@ -210,7 +214,7 @@ export default function MomentumSetupsTab({
           <div className="rounded-[1.5rem] border border-border bg-card/90 p-5 shadow-xl">
             <div className="flex items-center gap-2">
               <Gauge className="h-4 w-4 text-cyan-400" />
-              <h3 className="heading-condensed text-lg text-foreground">RSI Haritasi</h3>
+              <h3 className="heading-condensed text-lg text-foreground">{copy(language, "RSI Haritasi", "RSI Map")}</h3>
             </div>
             <div className="mt-4 space-y-3">
               {report.rsiRows.map(row => (
@@ -236,30 +240,30 @@ export default function MomentumSetupsTab({
             <div className="flex items-center gap-2">
               <TrendingUp className="h-4 w-4 text-emerald-400" />
               <h3 className="heading-condensed text-lg text-foreground">
-                RSI Ekstremi
+                {copy(language, "RSI Ekstremi", "RSI Extremes")}
               </h3>
             </div>
             <div className="mt-4 grid gap-3 md:grid-cols-2">
               <div className="rounded-none border border-border bg-background/55 p-4">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                  En guclu bounce adayi
+                  {copy(language, "En guclu bounce adayi", "Strongest bounce candidate")}
                 </p>
                 <p className="mt-2 text-sm font-semibold text-foreground">
                   {weakestRsi?.subject || "-"}
                 </p>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  {weakestRsi?.status || "Veri yok"}
+                  {weakestRsi?.status || copy(language, "Veri yok", "No data")}
                 </p>
               </div>
               <div className="rounded-none border border-border bg-background/55 p-4">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                  En sicak bolge
+                  {copy(language, "En sicak bolge", "Hottest zone")}
                 </p>
                 <p className="mt-2 text-sm font-semibold text-foreground">
                   {hottestRsi?.subject || "-"}
                 </p>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  {hottestRsi?.status || "Veri yok"}
+                  {hottestRsi?.status || copy(language, "Veri yok", "No data")}
                 </p>
               </div>
             </div>
@@ -272,14 +276,14 @@ export default function MomentumSetupsTab({
           <div className="flex items-center gap-2">
             <TrendingUp className="h-4 w-4 text-emerald-400" />
             <h3 className="heading-condensed text-lg text-foreground">
-              Oversold Donus
+              {copy(language, "Oversold Donus", "Oversold Reversal")}
             </h3>
           </div>
           <div className="mt-4 space-y-3">
             {report.candidates
               .filter(row => row.group === "upside")
               .map(row => (
-                <CandidateCard key={`${row.group}-${row.name}`} row={row} />
+                <CandidateCard key={`${row.group}-${row.name}`} row={row} language={language} />
               ))}
           </div>
         </div>
@@ -288,14 +292,14 @@ export default function MomentumSetupsTab({
           <div className="flex items-center gap-2">
             <TrendingDown className="h-4 w-4 text-rose-400" />
             <h3 className="heading-condensed text-lg text-foreground">
-              Trend Devami
+              {copy(language, "Trend Devami", "Trend Continuation")}
             </h3>
           </div>
           <div className="mt-4 space-y-3">
             {report.candidates
               .filter(row => row.group === "downside")
               .map(row => (
-                <CandidateCard key={`${row.group}-${row.name}`} row={row} />
+                <CandidateCard key={`${row.group}-${row.name}`} row={row} language={language} />
               ))}
           </div>
         </div>
@@ -304,14 +308,14 @@ export default function MomentumSetupsTab({
           <div className="flex items-center gap-2">
             <Gauge className="h-4 w-4 text-amber-400" />
             <h3 className="heading-condensed text-lg text-foreground">
-              Defensive Basket
+              {copy(language, "Defensive Basket", "Defensive Basket")}
             </h3>
           </div>
           <div className="mt-4 space-y-3">
             {report.candidates
               .filter(row => row.group === "defensive")
               .map(row => (
-                <CandidateCard key={`${row.group}-${row.name}`} row={row} />
+                <CandidateCard key={`${row.group}-${row.name}`} row={row} language={language} />
               ))}
           </div>
         </div>
@@ -322,16 +326,16 @@ export default function MomentumSetupsTab({
           <div className="flex items-center gap-2">
             <CalendarClock className="h-4 w-4 text-cyan-400" />
             <p className="heading-condensed text-lg text-foreground">
-              8-12 Haziran Takvim Katalizorleri
+              {copy(language, "8-12 Haziran Takvim Katalizorleri", "Jun 8-12 Calendar Catalysts")}
             </p>
           </div>
           <div className="mt-4 overflow-hidden rounded-none border border-border bg-background/45">
             <table className="w-full text-sm">
               <thead className="border-b border-border bg-background/65 text-left text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
                 <tr>
-                  <th className="px-4 py-3">Tarih</th>
-                  <th className="px-4 py-3">Olay</th>
-                  <th className="px-4 py-3">Etki</th>
+                  <th className="px-4 py-3">{copy(language, "Tarih", "Date")}</th>
+                  <th className="px-4 py-3">{copy(language, "Olay", "Event")}</th>
+                  <th className="px-4 py-3">{copy(language, "Etki", "Impact")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -354,7 +358,7 @@ export default function MomentumSetupsTab({
           <div className="flex items-center gap-2">
             <Radar className="h-4 w-4 text-amber-400" />
             <p className="heading-condensed text-lg text-foreground">
-              Ek Baskilar
+              {copy(language, "Ek Baskilar", "Additional Pressures")}
             </p>
           </div>
           <div className="mt-4 space-y-3">
@@ -369,7 +373,7 @@ export default function MomentumSetupsTab({
               ))
             ) : (
               <div className="rounded-none border border-border bg-background/55 px-4 py-3 text-sm text-muted-foreground">
-                Bu raporda ek katalizor notu bulunmuyor.
+                {copy(language, "Bu raporda ek katalizor notu bulunmuyor.", "No additional catalyst notes in this report.")}
               </div>
             )}
           </div>

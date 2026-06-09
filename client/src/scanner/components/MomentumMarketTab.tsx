@@ -16,6 +16,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { copy } from "@/lib/i18n";
+import type { AppLanguage } from "@/lib/i18n";
 
 function DataCard({
   label,
@@ -112,13 +114,13 @@ function MoversCard({
   );
 }
 
-function HavensCard({ rows }: { rows: MomentumHavenRow[] }) {
+function HavensCard({ title, rows }: { title: string; rows: MomentumHavenRow[] }) {
   return (
     <section className="rounded-[1.5rem] border border-border bg-card/80 p-5 shadow-xl">
       <div className="flex items-center gap-2">
         <ShieldAlert className="h-4 w-4 text-amber-400" />
         <h3 className="heading-condensed text-lg text-foreground">
-          Guvenli Liman Akisi
+          {title}
         </h3>
       </div>
       <div className="mt-4 grid gap-3">
@@ -149,8 +151,10 @@ function HavensCard({ rows }: { rows: MomentumHavenRow[] }) {
 
 export default function MomentumMarketTab({
   report,
+  language,
 }: {
   report: MomentumReportSource;
+  language: AppLanguage;
 }) {
   const indexChartData = report.indexRows.map(row => ({
     subject: row.index,
@@ -179,18 +183,21 @@ export default function MomentumMarketTab({
           <div className="flex items-center gap-2">
             <CandlestickChart className="h-4 w-4 text-emerald-400" />
             <p className="heading-condensed text-lg text-foreground">
-              Ana Endeks Darbesi
+              {copy(language, "Ana Endeks Darbesi", "Main Index Pulse")}
             </p>
           </div>
           <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-            Seansin sertligini once endeks seviyesinde oku. Bar yapisi gunluk
-            hasari, tooltip ise yorum katmanini tasiyor.
+            {copy(
+              language,
+              "Seansin sertligini once endeks seviyesinde oku. Bar yapisi gunluk hasari, tooltip ise yorum katmanini tasiyor.",
+              "Read the session's strength first at the index level. Bar structure shows daily damage, tooltip carries the commentary layer."
+            )}
           </p>
           <div className="mt-5">
             <ChartContainer
               className="h-[320px] w-full"
               config={{
-                move: { label: "Degisim", color: "oklch(0.78 0.18 160)" },
+                move: { label: copy(language, "Degisim", "Change"), color: "oklch(0.78 0.18 160)" },
               }}
             >
               <BarChart data={indexChartData} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
@@ -241,30 +248,30 @@ export default function MomentumMarketTab({
 
         <div className="grid gap-4">
           <DataCard
-            label="VIX Kapanis"
+            label={copy(language, "VIX Kapanis", "VIX Close")}
             value={vixClose?.value || report.vixRows[0]?.value || "-"}
-            note={vixClose?.comment || report.vixCommentary[0] || "Volatilite rejimi secili rapordan okunuyor."}
+            note={vixClose?.comment || report.vixCommentary[0] || copy(language, "Volatilite rejimi secili rapordan okunuyor.", "Volatility regime read from selected report.")}
           />
           <div className="grid gap-4 sm:grid-cols-2">
             <DataCard
-              label="Gunluk VIX"
+              label={copy(language, "Gunluk VIX", "Daily VIX")}
               value={vixChange?.value || "-"}
-              note={vixChange?.comment || "Kisa vadeli korku ivmesi"}
+              note={vixChange?.comment || copy(language, "Kisa vadeli korku ivmesi", "Short-term fear momentum")}
             />
             <DataCard
-              label="1 Haftalik"
+              label={copy(language, "1 Haftalik", "1 Week")}
               value={weeklyVix?.value || "-"}
-              note={weeklyVix?.comment || "Haftalik trend"}
+              note={weeklyVix?.comment || copy(language, "Haftalik trend", "Weekly trend")}
             />
             <DataCard
-              label="1 Aylik"
+              label={copy(language, "1 Aylik", "1 Month")}
               value={monthlyVix?.value || "-"}
-              note={monthlyVix?.comment || "Aylik denge"}
+              note={monthlyVix?.comment || copy(language, "Aylik denge", "Monthly balance")}
             />
             <DataCard
-              label="Okuma Suresi"
+              label={copy(language, "Okuma Suresi", "Reading Time")}
               value={report.readingTimeLabel || "-"}
-              note="Report executive summary icindeki tahmini sure"
+              note={copy(language, "Report executive summary icindeki tahmini sure", "Estimated time within report executive summary")}
             />
           </div>
         </div>
@@ -275,18 +282,21 @@ export default function MomentumMarketTab({
           <div className="flex items-center gap-2">
             <Waves className="h-4 w-4 text-cyan-400" />
             <p className="heading-condensed text-lg text-foreground">
-              Sektor Dagilimi
+              {copy(language, "Sektor Dagilimi", "Sector Distribution")}
             </p>
           </div>
           <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-            Teknoloji darbesi ile defensive rotasyon ayni tabloda okunuyor. Bar
-            gunluk hareketi, sag panel ise sektor bazli yorumu tasiyor.
+            {copy(
+              language,
+              "Teknoloji darbesi ile defensive rotasyon ayni tabloda okunuyor. Bar gunluk hareketi, sag panel ise sektor bazli yorumu tasiyor.",
+              "Tech hit and defensive rotation read in the same table. Bar shows daily move, right panel carries sector-based commentary."
+            )}
           </p>
           <div className="mt-5">
             <ChartContainer
               className="h-[340px] w-full"
               config={{
-                move: { label: "Gunluk performans", color: "oklch(0.75 0.15 75)" },
+                move: { label: copy(language, "Gunluk performans", "Daily performance"), color: "oklch(0.75 0.15 75)" },
               }}
             >
               <BarChart data={sectorChartData} layout="vertical" margin={{ top: 0, right: 16, left: 0, bottom: 0 }}>
@@ -310,10 +320,10 @@ export default function MomentumMarketTab({
                             {String(item.payload.subject)}
                           </span>
                           <span className="text-muted-foreground">
-                            Gunluk: {String(item.payload.label)}
+                            {copy(language, "Gunluk", "Daily")}: {String(item.payload.label)}
                           </span>
                           <span className="text-muted-foreground">
-                            Haftalik: {String(item.payload.weekly)}
+                            {copy(language, "Haftalik", "Weekly")}: {String(item.payload.weekly)}
                           </span>
                           <span className="text-xs text-muted-foreground">
                             {String(item.payload.comment)}
@@ -340,7 +350,7 @@ export default function MomentumMarketTab({
           <div className="flex items-center gap-2">
             <ShieldAlert className="h-4 w-4 text-amber-400" />
             <p className="heading-condensed text-lg text-foreground">
-              VIX Yorumu
+              {copy(language, "VIX Yorumu", "VIX Commentary")}
             </p>
           </div>
           <div className="mt-4 space-y-3">
@@ -355,7 +365,7 @@ export default function MomentumMarketTab({
               ))
             ) : (
               <div className="rounded-none border border-border bg-background/50 px-4 py-3 text-sm text-muted-foreground">
-                Bu raporda ek VIX yorumu bulunmuyor.
+                {copy(language, "Bu raporda ek VIX yorumu bulunmuyor.", "No additional VIX commentary in this report.")}
               </div>
             )}
           </div>
@@ -364,24 +374,27 @@ export default function MomentumMarketTab({
 
       <section className="grid gap-6 xl:grid-cols-3">
         <MoversCard
-          title="En Cok Dusenler"
+          title={copy(language, "En Cok Dusenler", "Biggest Losers")}
           icon={CandlestickChart}
           rows={report.loserRows}
           accentClassName="text-rose-400"
         />
         <MoversCard
-          title="En Cok Yukselenler"
+          title={copy(language, "En Cok Yukselenler", "Biggest Gainers")}
           icon={Activity}
           rows={report.gainerRows}
           accentClassName="text-emerald-400"
         />
-        <HavensCard rows={report.havenRows} />
+        <HavensCard
+          title={copy(language, "Guvenli Liman Akisi", "Safe Haven Flow")}
+          rows={report.havenRows}
+        />
       </section>
 
       <section className="grid gap-6 xl:grid-cols-3">
-        <MacroTable title="Faiz Politikasi" rows={report.rateRows} />
-        <MacroTable title="Buyume Resmi" rows={report.growthRows} />
-        <MacroTable title="Street Tahminleri" rows={report.forecastRows} />
+        <MacroTable title={copy(language, "Faiz Politikasi", "Interest Policy")} rows={report.rateRows} />
+        <MacroTable title={copy(language, "Buyume Resmi", "Growth Picture")} rows={report.growthRows} />
+        <MacroTable title={copy(language, "Street Tahminleri", "Street Forecasts")} rows={report.forecastRows} />
       </section>
     </div>
   );

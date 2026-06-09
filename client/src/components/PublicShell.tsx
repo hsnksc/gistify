@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { AppLanguage } from "@/lib/i18n";
+import { copy, type AppLanguage } from "@/lib/i18n";
 
 interface PublicShellProps {
   language: AppLanguage;
@@ -24,18 +24,11 @@ export default function PublicShell({
   ctaHref,
   ctaLabel,
 }: PublicShellProps) {
-  const navItems =
-    language === "en"
-      ? [
-          { href: "/", label: "Home" },
-          { href: "/app", label: "Open App" },
-          { href: "/pricing", label: "Pricing" },
-        ]
-      : [
-          { href: "/", label: "Ana Sayfa" },
-          { href: "/app", label: "Uygulamayi Ac" },
-          { href: "/pricing", label: "Fiyatlandirma" },
-        ];
+  const navItems = [
+    { href: "/", label: copy(language, "Ana Sayfa", "Home") },
+    { href: "/app", label: copy(language, "Uygulamayi Ac", "Open App") },
+    { href: "/pricing", label: copy(language, "Fiyatlandirma", "Pricing") },
+  ];
 
   return (
     <div className="min-h-screen overflow-hidden bg-background text-foreground">
@@ -56,9 +49,7 @@ export default function PublicShell({
                   Gistify
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {language === "en"
-                    ? "Earnings intelligence and momentum research platform"
-                    : "Earnings intelligence ve momentum arastirma platformu"}
+                  {copy(language, "Earnings intelligence ve momentum arastirma platformu", "Earnings intelligence and momentum research platform")}
                 </p>
               </div>
             </div>
