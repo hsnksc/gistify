@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import type { AppLanguage } from "@/lib/i18n";
 import type {
   EarningReportSource,
   EarningsPosition,
@@ -7,7 +8,12 @@ import type {
 
 interface Props {
   report: EarningReportSource;
+  language?: AppLanguage;
   onOpenTicker: (ticker: string) => void;
+}
+
+function copy(language: AppLanguage, tr: string, en: string) {
+  return language === "en" ? en : tr;
 }
 
 function sortPositions(positions: EarningsPosition[]) {
@@ -94,6 +100,7 @@ function ScheduleCard({
 
 export default function EarningReportCalendarTab({
   report,
+  language = "tr",
   onOpenTicker,
 }: Props) {
   const positions = useMemo(() => sortPositions(report.positions), [report.positions]);
@@ -103,10 +110,10 @@ export default function EarningReportCalendarTab({
       <div className="p-6">
         <section className="rounded-none border border-border bg-card/80 p-6">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300">
-            Takvim verisi bulunamadi
+            {copy(language, "Takvim verisi bulunamadi", "Calendar data unavailable")}
           </p>
           <h1 className="mt-3 heading-condensed text-3xl text-foreground">
-            Gosterilecek execution takvimi yok
+            {copy(language, "Gosterilecek execution takvimi yok", "No execution calendar to display")}
           </h1>
         </section>
       </div>
@@ -122,15 +129,18 @@ export default function EarningReportCalendarTab({
               Execution window
             </p>
             <h1 className="heading-condensed text-3xl leading-none text-foreground md:text-4xl">
-              Giris ve cikis takvimi
+              {copy(language, "Giris ve cikis takvimi", "Entry and exit calendar")}
             </h1>
             <p className="text-sm leading-relaxed text-muted-foreground">
-              Bu sekme, haftalik action plan, makro carpisma tarihleri ve hisse
-              bazli giris/cikis pencerelerini tek timeline'da toplar.
+              {copy(
+                language,
+                "Bu sekme, haftalik action plan, makro carpisma tarihleri ve hisse bazli giris/cikis pencerelerini tek timeline'da toplar.",
+                "This tab combines the weekly action plan, macro conflict dates, and ticker-specific entry and exit windows into a single timeline."
+              )}
             </p>
             <div className="rounded-none border border-amber-400/20 bg-amber-500/5 px-4 py-3">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300">
-                Strateji penceresi
+                {copy(language, "Strateji penceresi", "Strategy window")}
               </p>
               <p className="mt-1 text-sm text-muted-foreground">
                 {report.coreWindow}
@@ -163,7 +173,7 @@ export default function EarningReportCalendarTab({
         <div className="flex items-center gap-2">
           <div className="h-4 w-1 bg-amber-400" />
           <h2 className="heading-condensed text-base text-foreground">
-            Haftalik checkpoints
+            {copy(language, "Haftalik checkpoints", "Weekly checkpoints")}
           </h2>
         </div>
 
@@ -188,7 +198,7 @@ export default function EarningReportCalendarTab({
         <div className="flex items-center gap-2">
           <div className="h-4 w-1 bg-sky-400" />
           <h2 className="heading-condensed text-base text-foreground">
-            Tarih bazli islem akisi
+            {copy(language, "Tarih bazli islem akisi", "Date-based execution flow")}
           </h2>
         </div>
         <div className="space-y-3">
@@ -206,7 +216,7 @@ export default function EarningReportCalendarTab({
         <div className="flex items-center gap-2">
           <div className="h-4 w-1 bg-emerald-400" />
           <h2 className="heading-condensed text-base text-foreground">
-            Hisse bazli pencere
+            {copy(language, "Hisse bazli pencere", "Ticker-specific window")}
           </h2>
         </div>
 
@@ -236,7 +246,7 @@ export default function EarningReportCalendarTab({
                     onClick={() => onOpenTicker(position.ticker)}
                     className="rounded-none border border-border bg-background/50 px-3 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground transition-colors hover:text-foreground"
                   >
-                    Playbook
+                    {copy(language, "Playbook", "Playbook")}
                   </button>
                 </div>
 
@@ -251,7 +261,7 @@ export default function EarningReportCalendarTab({
                   </div>
                   <div className="rounded-none border border-border bg-background/50 p-3">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Giris
+                      {copy(language, "Giris", "Entry")}
                     </p>
                     <p className="mt-2 text-sm text-foreground">
                       {position.blueprint.entry || "-"}
@@ -259,7 +269,7 @@ export default function EarningReportCalendarTab({
                   </div>
                   <div className="rounded-none border border-border bg-background/50 p-3">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Cikis
+                      {copy(language, "Cikis", "Exit")}
                     </p>
                     <p className="mt-2 text-sm text-foreground">
                       {position.blueprint.exit || "-"}
@@ -269,7 +279,7 @@ export default function EarningReportCalendarTab({
 
                 <div className="rounded-none border border-border bg-background/40 p-3">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                    Expiry secenekleri
+                    {copy(language, "Expiry secenekleri", "Expiry options")}
                   </p>
                   <div className="mt-2 space-y-1 text-sm leading-relaxed text-muted-foreground">
                     {position.blueprint.expiryLines.map(line => (
@@ -281,7 +291,7 @@ export default function EarningReportCalendarTab({
                 <div className="grid gap-3 sm:grid-cols-2">
                   <div className="rounded-none border border-emerald-400/20 bg-emerald-500/5 p-3">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                      Call / Put orani
+                      {copy(language, "Call / Put orani", "Call / Put ratio")}
                     </p>
                     <p className="mt-2 data-mono text-sm font-bold text-foreground">
                       {position.blueprint.ratioText || "-"}
@@ -289,10 +299,10 @@ export default function EarningReportCalendarTab({
                   </div>
                   <div className="rounded-none border border-border bg-background/50 p-3">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Gun sayaci
+                      {copy(language, "Gun sayaci", "Day counter")}
                     </p>
                     <p className="mt-2 data-mono text-sm font-bold text-amber-300">
-                      {position.daysLeft} gun kaldi
+                      {position.daysLeft} {copy(language, "gun kaldi", "days left")}
                     </p>
                   </div>
                 </div>

@@ -40,31 +40,37 @@ import {
   type MarkdownBlock,
 } from "@/lib/dailyReportInsights";
 import { getDailyReportAssetUrl } from "@/lib/dailyReports";
+import type { AppLanguage } from "@/lib/i18n";
 
 interface DailyReportViewerProps {
+  language?: AppLanguage;
   title: string;
   reportDate: string;
   sourceFolder: string;
   content: DailyReportContent;
 }
 
-function formatReportDate(reportDate: string) {
-  return new Intl.DateTimeFormat("tr-TR", {
+function copy(language: AppLanguage, tr: string, en: string) {
+  return language === "en" ? en : tr;
+}
+
+function formatReportDate(reportDate: string, locale = "tr-TR") {
+  return new Intl.DateTimeFormat(locale, {
     day: "2-digit",
     month: "short",
     year: "numeric",
   }).format(new Date(`${reportDate}T00:00:00Z`));
 }
 
-function formatCompactNumber(value: number) {
+function formatCompactNumber(value: number, locale = "tr-TR") {
   if (value >= 1000) {
-    return new Intl.NumberFormat("tr-TR", {
+    return new Intl.NumberFormat(locale, {
       notation: "compact",
       maximumFractionDigits: 1,
     }).format(value);
   }
 
-  return new Intl.NumberFormat("tr-TR", {
+  return new Intl.NumberFormat(locale, {
     maximumFractionDigits: value % 1 === 0 ? 0 : 1,
   }).format(value);
 }
@@ -251,10 +257,12 @@ interface ReportFigure {
 }
 
 function FigureCard({
+  language,
   figure,
   variant = "deck",
   onOpen,
 }: {
+  language: AppLanguage;
   figure: ReportFigure;
   variant?: "hero" | "deck" | "inline";
   onOpen: (figure: ReportFigure) => void;
@@ -280,7 +288,7 @@ function FigureCard({
           onClick={() => onOpen(figure)}
           className="shrink-0 rounded-full border border-emerald-400/25 bg-emerald-500/10 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-300 transition-colors hover:border-emerald-300/45 hover:bg-emerald-500/16"
         >
-          Full size
+          {copy(language, "Tam boyut", "Full size")}
         </button>
       </div>
 
@@ -297,13 +305,13 @@ function FigureCard({
           <div className="absolute inset-x-4 top-4 flex items-center justify-between gap-3">
             <span className="rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground backdrop-blur-sm">
               {variant === "hero"
-                ? "Featured chart"
+                ? copy(language, "One cikan grafik", "Featured chart")
                 : variant === "inline"
-                  ? "Inline visual"
-                  : "Chart panel"}
+                  ? copy(language, "Satir ici gorsel", "Inline visual")
+                  : copy(language, "Grafik paneli", "Chart panel")}
             </span>
             <span className="rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground backdrop-blur-sm">
-              Tap to zoom
+              {copy(language, "Buyutmek icin tikla", "Tap to zoom")}
             </span>
           </div>
           <div className="relative flex h-full items-center justify-center p-4 md:p-6">
@@ -320,8 +328,16 @@ function FigureCard({
       <figcaption className="border-t border-white/10 px-4 py-3">
         <p className="text-sm leading-6 text-foreground/90">
           {figure.aiEnhanced
-            ? "OpenAI tarafindan yeniden uretilmis gorsel varyanti gosteriliyor; kaynak veri daily report paketindeki orijinal chart'a dayanir."
-            : "Grafik kaynagi orijinal haliyle korunur; burada yalnizca okunabilir bir panel sunumu uygulanir."}
+            ? copy(
+                language,
+                "OpenAI tarafindan yeniden uretilmis gorsel varyanti gosteriliyor; kaynak veri daily report paketindeki orijinal chart'a dayanir.",
+                "The OpenAI-regenerated visual variant is shown here; the underlying data still comes from the original chart in the daily report package."
+              )
+            : copy(
+                language,
+                "Grafik kaynagi orijinal haliyle korunur; burada yalnizca okunabilir bir panel sunumu uygulanir.",
+                "The chart source is kept in its original form; only a cleaner panel presentation is applied here."
+              )}
         </p>
       </figcaption>
     </figure>
@@ -329,12 +345,14 @@ function FigureCard({
 }
 
 export default function DailyReportViewer({
+  language = "tr",
   title,
   reportDate,
   sourceFolder,
   content,
 }: DailyReportViewerProps) {
   const [activeFigure, setActiveFigure] = useState<ReportFigure | null>(null);
+  const locale = language === "en" ? "en-US" : "tr-TR";
 
   useEffect(() => {
     setActiveFigure(null);
@@ -378,27 +396,27 @@ export default function DailyReportViewer({
   });
   const statCards = [
     {
-      label: "Sections",
+      label: copy(language, "Bolumler", "Sections"),
       value: String(insights.sectionTitles.length || 0),
-      hint: "Ana bolum sayisi",
+      hint: copy(language, "Ana bolum sayisi", "Primary section count"),
       icon: <Layers3 className="size-4" />,
     },
     {
-      label: "Tickers",
-      value: formatCompactNumber(normalizedContent.tickerUniverse.length),
-      hint: "Izlenen sembol sayisi",
+      label: copy(language, "Tickerlar", "Tickers"),
+      value: formatCompactNumber(normalizedContent.tickerUniverse.length, locale),
+      hint: copy(language, "Izlenen sembol sayisi", "Tracked symbol count"),
       icon: <Target className="size-4" />,
     },
     {
-      label: "Figures",
-      value: formatCompactNumber(normalizedContent.figureFiles.length),
-      hint: "Kaynakta bulunan grafik/gorsel",
+      label: copy(language, "Grafikler", "Figures"),
+      value: formatCompactNumber(normalizedContent.figureFiles.length, locale),
+      hint: copy(language, "Kaynakta bulunan grafik/gorsel", "Charts and visuals found in source"),
       icon: <GalleryHorizontal className="size-4" />,
     },
     {
-      label: "Research",
-      value: formatCompactNumber(normalizedContent.researchFileCount),
-      hint: "Destekleyici dosya adedi",
+      label: copy(language, "Arastirma", "Research"),
+      value: formatCompactNumber(normalizedContent.researchFileCount, locale),
+      hint: copy(language, "Destekleyici dosya adedi", "Supporting file count"),
       icon: <BookOpen className="size-4" />,
     },
   ];
@@ -462,29 +480,33 @@ export default function DailyReportViewer({
               </div>
             ) : (
               <EmptyReportCallout
-                title="Stat bloklari hazirlaniyor"
-                body="Bu raporun section, ticker ve figure dagilimi yorumlandikca ustteki ozet kartlari otomatik dolacak."
+                title={copy(language, "Stat bloklari hazirlaniyor", "Summary cards are loading")}
+                body={copy(
+                  language,
+                  "Bu raporun section, ticker ve figure dagilimi yorumlandikca ustteki ozet kartlari otomatik dolacak.",
+                  "As the report's section, ticker, and figure distribution is interpreted, the summary cards above will fill automatically."
+                )}
               />
             )}
           </div>
 
           <div className="space-y-4">
             {heroFigure ? (
-              <FigureCard figure={heroFigure} variant="hero" onOpen={setActiveFigure} />
+              <FigureCard language={language} figure={heroFigure} variant="hero" onOpen={setActiveFigure} />
             ) : null}
 
             <div className="rounded-[2rem] border border-white/10 bg-background/65 p-5 backdrop-blur-sm">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                    Rapor tarihi
+                    {copy(language, "Rapor tarihi", "Report date")}
                   </p>
                   <p className="mt-2 text-2xl font-semibold text-foreground">
-                    {formatReportDate(reportDate)}
+                    {formatReportDate(reportDate, locale)}
                   </p>
                 </div>
                 <div className="rounded-2xl border border-emerald-500/25 bg-emerald-500/10 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                  Signal map
+                  {copy(language, "Sinyal haritasi", "Signal map")}
                 </div>
               </div>
 
@@ -515,8 +537,11 @@ export default function DailyReportViewer({
                 </div>
               ) : (
                 <div className="mt-5 rounded-[1.4rem] border border-white/8 bg-white/[0.03] p-4 text-sm leading-relaxed text-muted-foreground">
-                  Bu raporda ayrik makro rejim tablosu bulunmuyor. Yine de asagidaki dashboard,
-                  markdown tablolarindan otomatik olarak okunabilen sinyalleri ozetliyor.
+                  {copy(
+                    language,
+                    "Bu raporda ayrik makro rejim tablosu bulunmuyor. Yine de asagidaki dashboard, markdown tablolarindan otomatik olarak okunabilen sinyalleri ozetliyor.",
+                    "This report does not contain a separate macro regime table. The dashboard below still summarizes signals that can be read automatically from the markdown tables."
+                  )}
                 </div>
               )}
             </div>
@@ -525,7 +550,10 @@ export default function DailyReportViewer({
       </section>
 
       {insights.keyThemes.length ? (
-        <Panel eyebrow="Key Themes" title="Raporun merkezindeki ana fikirler">
+        <Panel
+          eyebrow={copy(language, "Ana Temalar", "Key Themes")}
+          title={copy(language, "Raporun merkezindeki ana fikirler", "Core ideas at the center of the report")}
+        >
           <div className="grid gap-3 lg:grid-cols-2">
             {insights.keyThemes.map((theme, index) => (
               <article
@@ -545,7 +573,10 @@ export default function DailyReportViewer({
       ) : null}
 
       {sectionLinks.length ? (
-        <Panel eyebrow="Report Map" title="Bolumler arasi hizli gecis">
+        <Panel
+          eyebrow={copy(language, "Rapor Haritasi", "Report Map")}
+          title={copy(language, "Bolumler arasi hizli gecis", "Quick navigation across sections")}
+        >
           <div className="flex flex-wrap gap-2">
             {sectionLinks.map(section => (
               <a
@@ -561,7 +592,10 @@ export default function DailyReportViewer({
       ) : null}
 
       {insights.figureCards.length ? (
-        <Panel eyebrow="Figure Deck" title="Grafikler okunabilir panel duzeninde">
+        <Panel
+          eyebrow={copy(language, "Grafik Destesi", "Figure Deck")}
+          title={copy(language, "Grafikler okunabilir panel duzeninde", "Charts in a readable panel layout")}
+        >
           <div className="grid gap-4 lg:grid-cols-2">
             {resolvedFigures.map((figure, index) => (
               <div
@@ -570,7 +604,7 @@ export default function DailyReportViewer({
                   index === 0 ? "lg:col-span-2" : ""
                 }`}
               >
-                <FigureCard figure={figure} onOpen={setActiveFigure} />
+                <FigureCard language={language} figure={figure} onOpen={setActiveFigure} />
               </div>
             ))}
           </div>
@@ -584,7 +618,10 @@ export default function DailyReportViewer({
         insights.signalRadar.length) ? (
         <section className="grid gap-6 xl:grid-cols-2">
           {insights.marketPerformance.length ? (
-            <Panel eyebrow="Market Pulse" title="Ana endeks hareketleri">
+            <Panel
+              eyebrow={copy(language, "Piyasa Nabzi", "Market Pulse")}
+              title={copy(language, "Ana endeks hareketleri", "Major index moves")}
+            >
               <ChartContainer
                 className="h-[290px] w-full"
                 config={{
@@ -626,7 +663,10 @@ export default function DailyReportViewer({
           ) : null}
 
           {insights.sectorStrength.length ? (
-            <Panel eyebrow="Sector Map" title="Sektor liderligi">
+            <Panel
+              eyebrow={copy(language, "Sektor Haritasi", "Sector Map")}
+              title={copy(language, "Sektor liderligi", "Sector leadership")}
+            >
               <ChartContainer
                 className="h-[290px] w-full"
                 config={{
@@ -654,14 +694,17 @@ export default function DailyReportViewer({
           ) : null}
 
           {insights.breadthStats.length ? (
-            <Panel eyebrow="Breadth Split" title="Genislik dengesi">
+            <Panel
+              eyebrow={copy(language, "Genislik Dagilimi", "Breadth Split")}
+              title={copy(language, "Genislik dengesi", "Breadth balance")}
+            >
               <div className="grid gap-4 lg:grid-cols-[260px_minmax(0,1fr)]">
                 <ChartContainer
                   className="mx-auto h-[240px] max-w-[260px]"
                   config={{
-                    positive: { label: "Pozitif", color: "oklch(0.78 0.18 160)" },
-                    negative: { label: "Negatif", color: "oklch(0.65 0.22 25)" },
-                    neutral: { label: "Notr", color: "oklch(0.75 0.15 75)" },
+                    positive: { label: copy(language, "Pozitif", "Positive"), color: "oklch(0.78 0.18 160)" },
+                    negative: { label: copy(language, "Negatif", "Negative"), color: "oklch(0.65 0.22 25)" },
+                    neutral: { label: copy(language, "Notr", "Neutral"), color: "oklch(0.75 0.15 75)" },
                   }}
                 >
                   <PieChart>
@@ -699,7 +742,7 @@ export default function DailyReportViewer({
                       <div className="flex items-center justify-between gap-3">
                         <p className="text-sm font-semibold text-foreground">{stat.label}</p>
                         <span className="data-mono text-sm text-muted-foreground">
-                          {formatCompactNumber(stat.value)}
+                          {formatCompactNumber(stat.value, locale)}
                         </span>
                       </div>
                     </div>
@@ -710,7 +753,10 @@ export default function DailyReportViewer({
           ) : null}
 
           {insights.signalRadar.length ? (
-            <Panel eyebrow="Signal Density" title="Rapor yogunluk haritasi">
+            <Panel
+              eyebrow={copy(language, "Sinyal Yogunlugu", "Signal Density")}
+              title={copy(language, "Rapor yogunluk haritasi", "Report signal density map")}
+            >
               <ChartContainer
                 className="h-[290px] w-full"
                 config={{
@@ -736,12 +782,16 @@ export default function DailyReportViewer({
           ) : null}
 
           {insights.momentumLeaders.length ? (
-            <Panel eyebrow="Leaders" title="En guclu momentum isimleri" className="xl:col-span-2">
+            <Panel
+              eyebrow={copy(language, "Liderler", "Leaders")}
+              title={copy(language, "En guclu momentum isimleri", "Strongest momentum names")}
+              className="xl:col-span-2"
+            >
               <ChartContainer
                 className="h-[340px] w-full"
                 config={{
                   change: {
-                    label: "Gunluk %",
+                    label: copy(language, "Gunluk %", "Daily %"),
                     color: "oklch(0.78 0.18 160)",
                   },
                 }}
@@ -789,7 +839,10 @@ export default function DailyReportViewer({
         </section>
       ) : null}
 
-      <Panel eyebrow="Full Report" title="Tam rapor akisi">
+      <Panel
+        eyebrow={copy(language, "Tam Rapor", "Full Report")}
+        title={copy(language, "Tam rapor akisi", "Full report flow")}
+      >
         <div className="space-y-4">
           {insights.blocks.map((block, index) => {
             if (block.type === "heading") {
@@ -845,7 +898,7 @@ export default function DailyReportViewer({
             if (block.type === "image") {
               const inlineFigure = {
                 fileName: normalizeRelativeAssetPath(block.src),
-                label: block.alt || "Report figure",
+                label: block.alt || copy(language, "Rapor figuru", "Report figure"),
                 ...resolveAssetSrc(
                   assetBasePath,
                   block.src,
@@ -856,6 +909,7 @@ export default function DailyReportViewer({
               return (
                 <FigureCard
                   key={`${block.type}-${index}`}
+                  language={language}
                   figure={inlineFigure}
                   variant="inline"
                   onOpen={setActiveFigure}
@@ -879,7 +933,8 @@ export default function DailyReportViewer({
                 Coverage
               </p>
               <p className="mt-1 text-sm text-foreground">
-                {normalizedContent.coverage || "Kaynakta acik kapsama notu yok"}
+                {normalizedContent.coverage ||
+                  copy(language, "Kaynakta acik kapsama notu yok", "No explicit coverage note in the source")}
               </p>
             </div>
           </div>
@@ -894,7 +949,8 @@ export default function DailyReportViewer({
                 Method
               </p>
               <p className="mt-1 text-sm text-foreground">
-                {normalizedContent.methodology || "Metodoloji notu belirtilmemis"}
+                {normalizedContent.methodology ||
+                  copy(language, "Metodoloji notu belirtilmemis", "Methodology note not specified")}
               </p>
             </div>
           </div>
@@ -939,7 +995,7 @@ export default function DailyReportViewer({
                     className="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-foreground transition-colors hover:border-white/24 hover:bg-white/[0.08]"
                   >
                     <X className="size-3.5" />
-                    Kapat
+                    {copy(language, "Kapat", "Close")}
                   </button>
                 </div>
               </div>

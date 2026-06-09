@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import type { AppLanguage } from "@/lib/i18n";
 import type {
   AllocationEntry,
   EarningReportSource,
@@ -8,6 +9,11 @@ import type {
 
 interface Props {
   report: EarningReportSource;
+  language?: AppLanguage;
+}
+
+function copy(language: AppLanguage, tr: string, en: string) {
+  return language === "en" ? en : tr;
 }
 
 function sortPositions(positions: EarningsPosition[]) {
@@ -63,7 +69,7 @@ function noteTone(title: string) {
   return "border-border bg-background/40";
 }
 
-export default function EarningReportRiskTab({ report }: Props) {
+export default function EarningReportRiskTab({ report, language = "tr" }: Props) {
   const positions = useMemo(() => sortPositions(report.positions), [report.positions]);
   const sizingMap = useMemo(() => buildSizingMap(report.positionSizing), [report.positionSizing]);
   const allocationMap = useMemo(
@@ -80,25 +86,27 @@ export default function EarningReportRiskTab({ report }: Props) {
               Risk framework
             </p>
             <h1 className="heading-condensed text-3xl leading-none text-foreground md:text-4xl">
-              Risk yonetimi ve pozisyon yapisi
+              {copy(language, "Risk yonetimi ve pozisyon yapisi", "Risk management and position structure")}
             </h1>
             <p className="text-sm leading-relaxed text-muted-foreground">
-              Bu alan, markdown dosyasindaki global risk matrisi, pozisyon
-              buyuklugu, golden rules ve gunluk kontrol listesi bloklarini tek
-              bir yonetim katmanina cevirir.
+              {copy(
+                language,
+                "Bu alan, markdown dosyasindaki global risk matrisi, pozisyon buyuklugu, golden rules ve gunluk kontrol listesi bloklarini tek bir yonetim katmanina cevirir.",
+                "This section turns the global risk matrix, position sizing, golden rules, and daily checklist blocks from the markdown file into a single management layer."
+              )}
             </p>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2">
             <div className="rounded-none border border-border bg-background/50 p-3">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                VIX rejimi
+                {copy(language, "VIX rejimi", "VIX regime")}
               </p>
               <p className="mt-2 data-mono text-lg font-bold text-amber-300">
                 {report.vixLabel}
               </p>
               <p className="mt-1 text-xs text-muted-foreground">
-                Kural: VIX &gt;25 ise girisleri durdur
+                {copy(language, "Kural: VIX >25 ise girisleri durdur", "Rule: stop new entries when VIX > 25")}
               </p>
             </div>
             <div className="rounded-none border border-border bg-background/50 p-3">
@@ -117,7 +125,8 @@ export default function EarningReportRiskTab({ report }: Props) {
                 Golden rule
               </p>
               <p className="mt-2 text-sm font-semibold text-foreground">
-                {report.goldenRules[0] || "Earnings aciklanmadan once cik"}
+                {report.goldenRules[0] ||
+                  copy(language, "Earnings aciklanmadan once cik", "Exit before earnings are released")}
               </p>
             </div>
           </div>
@@ -128,7 +137,7 @@ export default function EarningReportRiskTab({ report }: Props) {
         <div className="flex items-center gap-2">
           <div className="h-4 w-1 bg-red-400" />
           <h2 className="heading-condensed text-base text-foreground">
-            Ana riskler
+            {copy(language, "Ana riskler", "Primary risks")}
           </h2>
         </div>
         <div className="grid gap-4 xl:grid-cols-2">
@@ -148,7 +157,7 @@ export default function EarningReportRiskTab({ report }: Props) {
               <p className="mt-3 text-sm text-muted-foreground">{entry.impact}</p>
               <div className="mt-3 rounded-none border border-border bg-background/50 p-3">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  Onlem
+                  {copy(language, "Onlem", "Mitigation")}
                 </p>
                 <p className="mt-2 text-sm text-foreground">{entry.mitigation}</p>
               </div>
@@ -161,7 +170,7 @@ export default function EarningReportRiskTab({ report }: Props) {
         <div className="flex items-center gap-2">
           <div className="h-4 w-1 bg-emerald-400" />
           <h2 className="heading-condensed text-base text-foreground">
-            Portfoy dagilimi
+            {copy(language, "Portfoy dagilimi", "Portfolio allocation")}
           </h2>
         </div>
 
@@ -192,7 +201,7 @@ export default function EarningReportRiskTab({ report }: Props) {
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">
                   <div className="rounded-none border border-border bg-background/50 p-3">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Sermaye
+                      {copy(language, "Sermaye", "Capital")}
                     </p>
                     <p className="mt-2 data-mono text-sm font-bold text-foreground">
                       {allocation?.capital || position.allocationCapital}
@@ -200,7 +209,7 @@ export default function EarningReportRiskTab({ report }: Props) {
                   </div>
                   <div className="rounded-none border border-border bg-background/50 p-3">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Kontrat
+                      {copy(language, "Kontrat", "Contracts")}
                     </p>
                     <p className="mt-2 data-mono text-sm font-bold text-foreground">
                       {sizing?.contracts || "-"}
@@ -208,7 +217,7 @@ export default function EarningReportRiskTab({ report }: Props) {
                   </div>
                   <div className="rounded-none border border-border bg-background/50 p-3 sm:col-span-2">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Allocation notu
+                      {copy(language, "Allocation notu", "Allocation note")}
                     </p>
                     <p className="mt-2 text-sm text-muted-foreground">
                       {allocation?.riskLevel || position.allocationRisk}
@@ -240,7 +249,7 @@ export default function EarningReportRiskTab({ report }: Props) {
 
         <article className="rounded-none border border-border bg-card/80 p-4">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-200">
-            Gunluk kontrol listesi
+            {copy(language, "Gunluk kontrol listesi", "Daily checklist")}
           </p>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
             {report.checklist.map(item => (
@@ -259,7 +268,7 @@ export default function EarningReportRiskTab({ report }: Props) {
         <div className="flex items-center gap-2">
           <div className="h-4 w-1 bg-amber-400" />
           <h2 className="heading-condensed text-base text-foreground">
-            Ticker notlari ve uyarilar
+            {copy(language, "Ticker notlari ve uyarilar", "Ticker notes and warnings")}
           </h2>
         </div>
 
@@ -279,7 +288,7 @@ export default function EarningReportRiskTab({ report }: Props) {
                   </p>
                 </div>
                 <span className="rounded-none border border-border bg-background/50 px-2 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  {position.daysLeft} gun
+                  {position.daysLeft} {copy(language, "gun", "days")}
                 </span>
               </div>
 

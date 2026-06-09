@@ -10,16 +10,22 @@ export function sortEarningReportsNewestFirst(reports: EarningReportSourceSummar
   });
 }
 
-export function formatEarningReportDate(reportDate: string) {
-  return new Intl.DateTimeFormat("tr-TR", {
+export function formatEarningReportDate(
+  reportDate: string,
+  locale = "tr-TR"
+) {
+  return new Intl.DateTimeFormat(locale, {
     day: "2-digit",
     month: "short",
     year: "numeric",
   }).format(new Date(`${reportDate}T00:00:00Z`));
 }
 
-export function formatEarningReportDateTime(updatedAt: string) {
-  return new Intl.DateTimeFormat("tr-TR", {
+export function formatEarningReportDateTime(
+  updatedAt: string,
+  locale = "tr-TR"
+) {
+  return new Intl.DateTimeFormat(locale, {
     day: "2-digit",
     month: "short",
     year: "numeric",

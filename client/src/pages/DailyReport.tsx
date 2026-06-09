@@ -18,20 +18,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { sortDailyReportsNewestFirst } from "@/lib/dailyReports";
+import type { AppLanguage } from "@/lib/i18n";
 
 interface DailyReportsResponse {
   reports?: DailyReportRecord[];
 }
 
-function formatReportDate(reportDate: string) {
-  return new Intl.DateTimeFormat("tr-TR", {
+function formatReportDate(reportDate: string, locale = "tr-TR") {
+  return new Intl.DateTimeFormat(locale, {
     day: "2-digit",
     month: "short",
     year: "numeric",
   }).format(new Date(`${reportDate}T00:00:00Z`));
 }
 
-function formatUpdateStamp(value: string) {
+function formatUpdateStamp(value: string, locale = "tr-TR") {
   if (!value) {
     return "-";
   }
@@ -41,7 +42,7 @@ function formatUpdateStamp(value: string) {
     return value;
   }
 
-  return new Intl.DateTimeFormat("tr-TR", {
+  return new Intl.DateTimeFormat(locale, {
     day: "2-digit",
     month: "2-digit",
     hour: "2-digit",
@@ -71,10 +72,12 @@ function ReportSelectorCard({
   report,
   active,
   onSelect,
+  locale,
 }: {
   report: DailyReportRecord;
   active: boolean;
   onSelect: (reportId: string) => void;
+  locale: string;
 }) {
   return (
     <button
@@ -88,10 +91,10 @@ function ReportSelectorCard({
     >
       <div className="flex items-center justify-between gap-3">
         <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-indigo-300">
-          {formatReportDate(report.reportDate)}
+          {formatReportDate(report.reportDate, locale)}
         </span>
         <span className="text-[11px] text-muted-foreground">
-          {formatUpdateStamp(report.updatedAt)}
+          {formatUpdateStamp(report.updatedAt, locale)}
         </span>
       </div>
       <p className="mt-2 line-clamp-2 text-sm font-semibold text-foreground">
@@ -104,10 +107,15 @@ function ReportSelectorCard({
   );
 }
 
-export default function DailyReportPage() {
+function copy(language: AppLanguage, tr: string, en: string) {
+  return language === "en" ? en : tr;
+}
+
+export default function DailyReportPage({ language }: { language: AppLanguage }) {
   const [reports, setReports] = useState<DailyReportRecord[]>([]);
   const [selectedReportId, setSelectedReportId] = useState("");
   const [loading, setLoading] = useState(true);
+  const locale = language === "en" ? "en-US" : "tr-TR";
 
   const getFigureFiles = (report: DailyReportRecord) =>
     Array.isArray(report.content.figureFiles) ? report.content.figureFiles : [];
@@ -161,7 +169,7 @@ export default function DailyReportPage() {
         figures: getFigureFiles(selectedReport).length,
         aiFigures: getOpenAiFigures(selectedReport).length,
         tickers: getTickerUniverse(selectedReport).length,
-        updatedAt: formatUpdateStamp(selectedReport.updatedAt),
+        updatedAt: formatUpdateStamp(selectedReport.updatedAt, locale),
       }
     : null;
 
@@ -177,18 +185,21 @@ export default function DailyReportPage() {
                     Daily Report
                   </p>
                   <h1 className="heading-condensed text-3xl leading-none text-foreground md:text-5xl">
-                    {selectedReport?.title || "Gunluk raporlar"}
+                    {selectedReport?.title || copy(language, "Gunluk raporlar", "Daily reports")}
                   </h1>
                   <p className="max-w-3xl text-sm leading-7 text-muted-foreground md:text-[15px]">
-                    En guncel rapor ustte acilir. Buradan tarih secerek daily reader
-                    panelini degistirebilirsin.
+                    {copy(
+                      language,
+                      "En guncel rapor ustte acilir. Buradan tarih secerek daily reader panelini degistirebilirsin.",
+                      "The latest report opens first. Select a date here to switch the daily reader panel."
+                    )}
                   </p>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
                   <Button type="button" variant="outline" onClick={() => void loadReports()}>
                     <RefreshCw className="size-4" />
-                    Yenile
+                    {copy(language, "Yenile", "Refresh")}
                   </Button>
                 </div>
               </div>
@@ -198,23 +209,23 @@ export default function DailyReportPage() {
                   <div className="grid gap-4 xl:grid-cols-[320px_minmax(0,1fr)]">
                     <div className="rounded-[1.75rem] border border-border bg-background/45 p-4">
                       <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                        En Guncel
+                        {copy(language, "En Guncel", "Latest")}
                       </p>
                       <p className="mt-2 text-lg font-semibold text-foreground">
                         {latestReport?.title || "-"}
                       </p>
                       <p className="mt-1 text-sm text-muted-foreground">
                         {latestReport?.reportDate
-                          ? formatReportDate(latestReport.reportDate)
+                          ? formatReportDate(latestReport.reportDate, locale)
                           : "-"}{" "}
-                        · {latestReport ? formatUpdateStamp(latestReport.updatedAt) : "-"}
+                        · {latestReport ? formatUpdateStamp(latestReport.updatedAt, locale) : "-"}
                       </p>
                     </div>
 
                     <div className="space-y-3 rounded-[1.75rem] border border-border bg-background/45 p-4">
                       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                          Gunluk Rapor Secimi
+                          {copy(language, "Gunluk Rapor Secimi", "Daily report selection")}
                         </p>
                         <div className="w-full md:max-w-[360px]">
                           <Select
@@ -222,12 +233,12 @@ export default function DailyReportPage() {
                             onValueChange={setSelectedReportId}
                           >
                             <SelectTrigger className="w-full">
-                              <SelectValue placeholder="Bir daily report sec" />
+                              <SelectValue placeholder={copy(language, "Bir daily report sec", "Select a daily report")} />
                             </SelectTrigger>
                             <SelectContent>
                               {reports.map(report => (
                                 <SelectItem key={report.id} value={report.id}>
-                                  {formatReportDate(report.reportDate)} · {report.title}
+                                  {formatReportDate(report.reportDate, locale)} · {report.title}
                                 </SelectItem>
                               ))}
                             </SelectContent>
@@ -242,6 +253,7 @@ export default function DailyReportPage() {
                             report={report}
                             active={report.id === selectedReport?.id}
                             onSelect={setSelectedReportId}
+                            locale={locale}
                           />
                         ))}
                       </div>
@@ -252,13 +264,13 @@ export default function DailyReportPage() {
                     <div className="flex flex-wrap gap-2">
                       <MetaPill
                         icon={BookOpen}
-                        label="Kaynak"
+                        label={copy(language, "Kaynak", "Source")}
                         value={selectedReport.content.sourceLabel || selectedReport.sourceFolder}
                       />
                       <MetaPill
                         icon={CalendarRange}
-                        label="Rapor Tarihi"
-                        value={formatReportDate(selectedReport.reportDate)}
+                        label={copy(language, "Rapor Tarihi", "Report date")}
+                        value={formatReportDate(selectedReport.reportDate, locale)}
                       />
                       <MetaPill
                         icon={GalleryHorizontal}
@@ -281,8 +293,8 @@ export default function DailyReportPage() {
               ) : (
                 <div className="rounded-xl border border-dashed border-border bg-background/35 px-4 py-3 text-sm text-muted-foreground">
                   {loading
-                    ? "Daily report kutuphanesi yukleniyor."
-                    : "`dailyreport/` icinde gosterilebilir bir rapor bulunamadi."}
+                    ? copy(language, "Daily report kutuphanesi yukleniyor.", "Loading daily report library.")
+                    : copy(language, "`dailyreport/` icinde gosterilebilir bir rapor bulunamadi.", "No displayable report was found inside `dailyreport/`.")}
                 </div>
               )}
             </div>
@@ -304,11 +316,11 @@ export default function DailyReportPage() {
                   ) : null}
                 </div>
                 <h2 className="heading-condensed text-2xl text-foreground md:text-3xl">
-                  {selectedReport?.title || "Daily report sec"}
+                  {selectedReport?.title || copy(language, "Daily report sec", "Select a daily report")}
                 </h2>
                 <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
                   {selectedReport?.content.headline ||
-                    "Ustteki secim alanindan bir daily report secildiginde okuma paneli burada acilir."}
+                    copy(language, "Ustteki secim alanindan bir daily report secildiginde okuma paneli burada acilir.", "The reading panel opens here when you select a daily report above.")}
                 </p>
               </div>
 
@@ -332,6 +344,7 @@ export default function DailyReportPage() {
             {selectedReport ? (
               <DailyReportViewer
                 key={selectedReport.id}
+                language={language}
                 title={selectedReport.title}
                 reportDate={selectedReport.reportDate}
                 sourceFolder={selectedReport.sourceFolder}
@@ -342,8 +355,11 @@ export default function DailyReportPage() {
                 <div className="text-center">
                   <BookOpen className="mx-auto size-10 text-muted-foreground" />
                   <p className="mt-4 text-sm text-muted-foreground">
-                    Ustteki secim alanindan bir daily report secildiginde okuma
-                    paneli burada acilacak.
+                    {copy(
+                      language,
+                      "Ustteki secim alanindan bir daily report secildiginde okuma paneli burada acilacak.",
+                      "The reading panel will open here when you select a daily report above."
+                    )}
                   </p>
                 </div>
               </div>

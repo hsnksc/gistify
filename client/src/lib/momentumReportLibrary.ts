@@ -10,7 +10,10 @@ export function sortMomentumReportsNewestFirst(reports: MomentumSourceSummary[])
   });
 }
 
-export function formatMomentumReportDate(reportDate: string) {
+export function formatMomentumReportDate(
+  reportDate: string,
+  locale = "tr-TR"
+) {
   if (!reportDate) {
     return "-";
   }
@@ -20,7 +23,7 @@ export function formatMomentumReportDate(reportDate: string) {
     return reportDate;
   }
 
-  return new Intl.DateTimeFormat("tr-TR", {
+  return new Intl.DateTimeFormat(locale, {
     day: "2-digit",
     month: "short",
     year: "numeric",

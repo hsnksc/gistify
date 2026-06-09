@@ -173,6 +173,10 @@ async function fetchAuthState(): Promise<AuthResponse> {
   return (await response.json()) as AuthResponse;
 }
 
+function copy(language: AppLanguage, tr: string, en: string) {
+  return language === "en" ? en : tr;
+}
+
 function Router({
   language,
   onLanguageChange,
@@ -185,12 +189,22 @@ function Router({
       fallback={
         <div className="px-4 py-8">
           <div className="mx-auto max-w-7xl rounded-2xl border border-border bg-card/95 p-6 text-card-foreground shadow-2xl">
-            <h2 className="text-lg font-semibold">Panel yukleniyor</h2>
+            <h2 className="text-lg font-semibold">
+              {copy(language, "Panel yukleniyor", "Loading workspace")}
+            </h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              Earning strategy ve momentum workspace hazirlaniyor.
+              {copy(
+                language,
+                "Earnings strateji ve momentum workspace hazirlaniyor.",
+                "The earnings strategy and momentum workspaces are loading."
+              )}
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
-              Daily ve portfolio modulleri de baglaniyor.
+              {copy(
+                language,
+                "Daily ve portfolio modulleri de baglaniyor.",
+                "Daily and portfolio modules are connecting as well."
+              )}
             </p>
           </div>
         </div>
@@ -203,11 +217,13 @@ function Router({
           )}
         </Route>
         <Route path={"/app/admin"} component={ReportsAdmin} />
-        <Route path={"/app"} component={Home} />
+        <Route path={"/app"}>{() => <Home language={language} />}</Route>
         <Route path={"/momentum"}>
           {() => <Scanner language={language} />}
         </Route>
-        <Route path={"/daily-report"} component={DailyReport} />
+        <Route path={"/daily-report"}>
+          {() => <DailyReport language={language} />}
+        </Route>
         <Route path={"/portfolio"} component={Portfolio} />
         <Route path={"/agent-content"} component={AgentContent} />
         <Route path={"/scanner"}>{() => <Scanner language={language} />}</Route>
@@ -355,7 +371,7 @@ function SiteFooter({ language }: { language: AppLanguage }) {
   );
 }
 
-function LimitedAccessPreview() {
+function LimitedAccessPreview({ language }: { language: AppLanguage }) {
   return (
     <div className="px-4 py-8">
       <div className="mx-auto max-w-7xl space-y-6">
@@ -363,34 +379,43 @@ function LimitedAccessPreview() {
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="space-y-2">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                Pro Onizleme
+                {copy(language, "Pro Onizleme", "Pro Preview")}
               </p>
               <h2 className="text-2xl font-semibold tracking-tight">
-                Tam panel aktif abonelikle acilir
+                {copy(
+                  language,
+                  "Tam panel aktif abonelikle acilir",
+                  "The full panel opens with an active subscription"
+                )}
               </h2>
               <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-                Momentum scanner, earnings takvimi, risk matrisi ve opsiyon
-                ekranlari sadece aktif abonelikte acilir. Google girisi
-                tamamlandiktan sonra Paddle ile abonelik baslatip tum
-                modulleri aktif edebilirsin.
+                {copy(
+                  language,
+                  "Momentum scanner, earnings takvimi, risk matrisi ve opsiyon ekranlari sadece aktif abonelikte acilir. Google girisi tamamlandiktan sonra Paddle ile abonelik baslatip tum modulleri aktif edebilirsin.",
+                  "Momentum scanner, earnings calendar, risk matrix and options screens are available only with an active subscription. After signing in with Google, you can activate all modules by starting a Paddle subscription."
+                )}
               </p>
               <div className="flex flex-wrap gap-3 pt-2">
                 <Button asChild>
-                  <a href="/pay">Paddle ile abone ol</a>
+                  <a href="/pay">
+                    {copy(language, "Paddle ile abone ol", "Subscribe with Paddle")}
+                  </a>
                 </Button>
                 <Button asChild variant="outline" className="bg-background/70">
-                  <a href="/pricing">Plan detaylari</a>
+                  <a href="/pricing">
+                    {copy(language, "Plan detaylari", "View plan details")}
+                  </a>
                 </Button>
               </div>
             </div>
 
             <div className="grid min-w-[220px] grid-cols-2 gap-3">
               {[
-                ["Scanner", "Kilitli"],
-                ["Takvim", "Kilitli"],
-                ["Risk", "Kilitli"],
-                ["Opsiyon", "Kilitli"],
-                ["Portfolio", "Kilitli"],
+                ["Scanner", copy(language, "Kilitli", "Locked")],
+                [copy(language, "Takvim", "Calendar"), copy(language, "Kilitli", "Locked")],
+                [copy(language, "Risk", "Risk"), copy(language, "Kilitli", "Locked")],
+                [copy(language, "Opsiyon", "Options"), copy(language, "Kilitli", "Locked")],
+                ["Portfolio", copy(language, "Kilitli", "Locked")],
               ].map(([label, value]) => (
                 <div
                   key={label}
@@ -408,9 +433,9 @@ function LimitedAccessPreview() {
 
         <section className="grid gap-4 md:grid-cols-3">
           {[
-            "Acilis momentumu tarama tablosu",
-            "Sektor bazli momentum dagilimi",
-            "Opsiyon strateji ve IV crush gorunumu",
+            copy(language, "Acilis momentumu tarama tablosu", "Opening momentum scan table"),
+            copy(language, "Sektor bazli momentum dagilimi", "Sector-based momentum distribution"),
+            copy(language, "Opsiyon strateji ve IV crush gorunumu", "Options strategy and IV crush view"),
           ].map(title => (
             <div
               key={title}
@@ -977,8 +1002,11 @@ function App() {
                 data-no-mask
                 className="border-b border-emerald-500/20 bg-emerald-500/8 px-4 py-2 text-center text-xs text-emerald-200"
               >
-                Public preview modu acik. Google girisi ve Paddle billing tekrar
-                acildiysa bu modu kapatip `APP_ACCESS_MODE=managed` kullan.
+                {copy(
+                  language,
+                  "Public preview modu acik. Google girisi ve Paddle billing tekrar acildiysa bu modu kapatip `APP_ACCESS_MODE=managed` kullan.",
+                  "Public preview mode is active. If Google sign-in and Paddle billing are enabled again, turn this off and use `APP_ACCESS_MODE=managed`."
+                )}
               </div>
             ) : null}
 
@@ -988,10 +1016,10 @@ function App() {
               <div className="min-h-screen grid place-items-center px-4 text-center">
                 <div className="space-y-2">
                   <h1 className="text-xl font-semibold">
-                    Oturum kontrol ediliyor
+                    {copy(language, "Oturum kontrol ediliyor", "Checking session")}
                   </h1>
                   <p className="text-sm text-muted-foreground">
-                    Birkac saniye surebilir.
+                    {copy(language, "Birkac saniye surebilir.", "This may take a few seconds.")}
                   </p>
                 </div>
               </div>
@@ -1005,15 +1033,17 @@ function App() {
                   <div className="space-y-2">
                     <div className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
                       <GoogleMark />
-                      Google OAuth Kimlik Dogrulama
+                      {copy(language, "Google OAuth Kimlik Dogrulama", "Google OAuth Authentication")}
                     </div>
                     <h1 className="text-2xl font-semibold tracking-tight">
-                      Finans paneline giris yap
+                      {copy(language, "Finans paneline giris yap", "Sign in to the finance dashboard")}
                     </h1>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Uyelik durumuna gore erisim acilir. Uye olmayanlar paneli
-                      goremez, uye olanlar ise abonelik olmadan kisitli
-                      gorunumde kalir.
+                      {copy(
+                        language,
+                        "Uyelik durumuna gore erisim acilir. Uye olmayanlar paneli goremez, uye olanlar ise abonelik olmadan kisitli gorunumde kalir.",
+                        "Access opens based on membership status. Non-members cannot view the panel, and members without a subscription stay in limited mode."
+                      )}
                     </p>
                   </div>
 
@@ -1029,7 +1059,7 @@ function App() {
                     onClick={startGoogleLogin}
                   >
                     <GoogleMark />
-                    Google ile giris yap
+                    {copy(language, "Google ile giris yap", "Sign in with Google")}
                   </Button>
                 </div>
               </div>
@@ -1047,29 +1077,36 @@ function App() {
                     <div className="mx-auto max-w-7xl flex flex-wrap items-center justify-between gap-3">
                       <div className="space-y-0.5">
                         <p className="text-sm font-semibold">
-                          Kisitli gorunum aktif
+                          {copy(language, "Kisitli gorunum aktif", "Limited view active")}
                         </p>
                         <p className="text-xs text-muted-foreground">
-                          Uye girisi tamamlandi. Rakamlar gizlenir ve grafikler
-                          sadece aktif abonelikte acilir.
+                          {copy(
+                            language,
+                            "Uye girisi tamamlandi. Rakamlar gizlenir ve grafikler sadece aktif abonelikte acilir.",
+                            "Member sign-in completed. Numbers are masked and charts are available only for active subscribers."
+                          )}
                         </p>
                         <p className="text-xs text-muted-foreground">
-                          Abonelik acik degil. `/pay` ekranindan Paddle
-                          checkout ile uyeligi aktif edip tum modulleri
-                          acabilirsin.
+                          {copy(
+                            language,
+                            "Abonelik acik degil. `/pay` ekranindan Paddle checkout ile uyeligi aktif edip tum modulleri acabilirsin.",
+                            "Subscription is not active. You can enable it from `/pay` with Paddle checkout and unlock all modules."
+                          )}
                         </p>
                       </div>
 
                       <div className="flex items-center gap-2">
                         <Button asChild>
-                          <a href="/pay">Aboneligi ac</a>
+                          <a href="/pay">
+                            {copy(language, "Aboneligi ac", "Unlock subscription")}
+                          </a>
                         </Button>
                         <Button
                           type="button"
                           variant="outline"
                           onClick={() => void refreshAuthState()}
                         >
-                          Durumu yenile
+                          {copy(language, "Durumu yenile", "Refresh status")}
                         </Button>
                       </div>
                     </div>
@@ -1077,7 +1114,7 @@ function App() {
                 ) : null}
 
                 {isLimitedAccess ? (
-                  <LimitedAccessPreview />
+                  <LimitedAccessPreview language={language} />
                 ) : (
                   <div ref={protectedViewRef}>
                     <Router

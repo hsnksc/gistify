@@ -63,7 +63,7 @@ interface MomentumReportDetailResponse {
   report?: MomentumSourceRecord | null;
 }
 
-function formatMomentumUpdateStamp(value: string) {
+function formatMomentumUpdateStamp(value: string, locale = "tr-TR") {
   if (!value) {
     return "-";
   }
@@ -73,7 +73,7 @@ function formatMomentumUpdateStamp(value: string) {
     return value;
   }
 
-  return new Intl.DateTimeFormat("tr-TR", {
+  return new Intl.DateTimeFormat(locale, {
     day: "2-digit",
     month: "2-digit",
     hour: "2-digit",
@@ -134,6 +134,10 @@ function LoadingState({ label }: { label: string }) {
   );
 }
 
+function copy(language: AppLanguage, tr: string, en: string) {
+  return language === "en" ? en : tr;
+}
+
 export default function Scanner({ language }: ScannerRoutePageProps) {
   const [, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState<TabId>("market");
@@ -145,6 +149,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
   const [loadingDetail, setLoadingDetail] = useState(false);
   const [isTabPending, startTabTransition] = useTransition();
   const contentRef = useRef<HTMLDivElement | null>(null);
+  const locale = language === "en" ? "en-US" : "tr-TR";
 
   useEffect(() => {
     contentRef.current?.scrollTo({ top: 0, behavior: "auto" });
@@ -270,19 +275,19 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
     }> = [];
 
     items.push({
-      label: "Rapor adedi",
+      label: copy(language, "Rapor adedi", "Report count"),
       value: String(reports.length),
-      hint: "momentum kutuphanesi",
+      hint: copy(language, "momentum kutuphanesi", "Momentum library"),
       icon: Radar,
       tone: "info",
     });
 
-    const updateStamp = formatMomentumUpdateStamp(activeSummary?.updatedAt || "");
+    const updateStamp = formatMomentumUpdateStamp(activeSummary?.updatedAt || "", locale);
     if (hasDisplayValue(updateStamp)) {
       items.push({
-        label: "Son update",
+        label: copy(language, "Son update", "Latest update"),
         value: updateStamp,
-        hint: "Kaynak degisiklik zamani",
+        hint: copy(language, "Kaynak degisiklik zamani", "Source change timestamp"),
         icon: RefreshCw,
         tone: "bull",
       });
@@ -292,7 +297,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
       items.push({
         label: "VIX",
         value: activeSummary?.vixLabel || "",
-        hint: "Secili rapor volatilite baglami",
+        hint: copy(language, "Secili rapor volatilite baglami", "Volatility context for the selected report"),
         icon: Zap,
         tone: "caution",
       });
@@ -302,14 +307,14 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
       items.push({
         label: "Top setup",
         value: topSetup?.ticker || topSetup?.name || "",
-        hint: topSetup?.scoreLabel || "Momentum skoru",
+        hint: topSetup?.scoreLabel || copy(language, "Momentum skoru", "Momentum score"),
         icon: Target,
         tone: "bull",
       });
     }
 
     return items;
-  }, [activeSummary, reports.length, topSetup]);
+  }, [activeSummary, language, locale, reports.length, topSetup]);
 
   const selectedSourceLabel = useMemo(() => {
     return activeSummary?.sourceFile || parsedReport?.sourceFile || "";
@@ -319,9 +324,11 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
     return activeSummary?.subtitle || activeSummary?.headline || parsedReport?.subtitle || "";
   }, [activeSummary, parsedReport]);
 
-  const selectedUpdateLabel = formatMomentumUpdateStamp(activeSummary?.updatedAt || "");
+  const selectedUpdateLabel = formatMomentumUpdateStamp(activeSummary?.updatedAt || "", locale);
   const selectedTitle =
-    activeSummary?.title || parsedReport?.title || "Momentum report bekleniyor";
+    activeSummary?.title ||
+    parsedReport?.title ||
+    copy(language, "Momentum report bekleniyor", "Momentum report pending");
   const hasReports = reports.length > 0;
 
   const handleTabChange = (tab: TabId) => {
@@ -342,8 +349,11 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
               </p>
             </div>
             <p className="mt-1 text-xs text-muted-foreground">
-              Momentum raporundan sonra canli tarama, filtreleme ve option breakdown
-              ayni panelde devam eder.
+              {copy(
+                language,
+                "Momentum raporundan sonra canli tarama, filtreleme ve option breakdown ayni panelde devam eder.",
+                "After the momentum report, live scanning, filtering and option breakdown continue in the same panel."
+              )}
             </p>
           </div>
           <ScannerPage lang={language} />
@@ -352,12 +362,22 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
     }
 
     if (loadingReports || loadingDetail) {
-      return <LoadingState label="Momentum report workspace yukleniyor." />;
+      return (
+        <LoadingState
+          label={copy(language, "Momentum report workspace yukleniyor.", "Loading momentum workspace.")}
+        />
+      );
     }
 
     if (!parsedReport) {
       return (
-        <LoadingState label="Henuz goruntulenebilir bir momentum report yok. `momentum/` altina yeni `.md` dosyasi eklendiginde burada otomatik listelenecek." />
+        <LoadingState
+          label={copy(
+            language,
+            "Henuz goruntulenebilir bir momentum report yok. `momentum/` altina yeni `.md` dosyasi eklendiginde burada otomatik listelenecek.",
+            "There is no viewable momentum report yet. When a new `.md` file is added under `momentum/`, it will appear here automatically."
+          )}
+        />
       );
     }
 
@@ -383,20 +403,29 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
               <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                 <div className="space-y-3">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="badge-strong">{positiveIndices} pozitif endeks</span>
-                    <span className="badge-danger">{negativeIndices} negatif endeks</span>
-                    <span className="badge-warning">{regimeCount} rejim faktor</span>
+                    <span className="badge-strong">
+                      {positiveIndices} {copy(language, "pozitif endeks", "positive indices")}
+                    </span>
+                    <span className="badge-danger">
+                      {negativeIndices} {copy(language, "negatif endeks", "negative indices")}
+                    </span>
+                    <span className="badge-warning">
+                      {regimeCount} {copy(language, "rejim faktor", "regime factors")}
+                    </span>
                   </div>
                   <div className="space-y-2">
                     <p className="heading-condensed text-sm uppercase tracking-[0.18em] text-indigo-300">
                       Momentum Scanner Workspace
                     </p>
                     <h1 className="heading-condensed max-w-4xl text-3xl leading-none text-foreground md:text-5xl">
-                      Momentum report ve live scanner
+                      {copy(language, "Momentum report ve live scanner", "Momentum report and live scanner")}
                     </h1>
                     <p className="max-w-3xl text-sm leading-7 text-muted-foreground md:text-[15px]">
-                      En guncel momentum raporu ustten secilir. Market pulse, setup,
-                      strategy ve live scanner ayni workspace icinde acilir.
+                      {copy(
+                        language,
+                        "En guncel momentum raporu ustten secilir. Market pulse, setup, strategy ve live scanner ayni workspace icinde acilir.",
+                        "Select the latest momentum report from the strip above. Market pulse, setup, strategy and live scanner open inside the same workspace."
+                      )}
                     </p>
                   </div>
                 </div>
@@ -404,7 +433,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                 <div className="flex flex-wrap items-center gap-2">
                   <Button type="button" variant="outline" onClick={() => void loadReports()}>
                     <RefreshCw className="size-4" />
-                    Yenile
+                    {copy(language, "Yenile", "Refresh")}
                   </Button>
                   <Button type="button" variant="outline" onClick={() => setLocation("/daily-report")}>
                     <Activity className="size-4" />
@@ -420,7 +449,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                     ) : (
                       <PanelLeftOpen className="size-4" />
                     )}
-                    Arsiv
+                    {copy(language, "Arsiv", "Archive")}
                   </Button>
                 </div>
               </div>
@@ -452,11 +481,11 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                         {report.title}
                       </p>
                       <p className="mt-1 text-xs text-muted-foreground">
-                        {report.targetDateLabel || formatMomentumReportDate(report.reportDate)}
+                        {report.targetDateLabel || formatMomentumReportDate(report.reportDate, locale)}
                       </p>
                       <div className="mt-3 flex items-center gap-2 text-[11px] text-muted-foreground">
                         <Clock3 className="size-3.5" />
-                        <span>{formatMomentumUpdateStamp(report.updatedAt)}</span>
+                        <span>{formatMomentumUpdateStamp(report.updatedAt, locale)}</span>
                       </div>
                     </button>
                   );
@@ -482,14 +511,14 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                   <span className="h-3 w-px bg-border" />
                   <span className="flex items-center gap-1.5">
                     <Target className="size-3.5 text-indigo-300" />
-                    {topSetup?.ticker || "Top setup bekleniyor"}
+                    {topSetup?.ticker || copy(language, "Top setup bekleniyor", "Top setup pending")}
                   </span>
                 </div>
               ) : (
                 <div className="inline-flex max-w-full flex-wrap items-center gap-2 rounded-xl border border-dashed border-border bg-background/35 px-4 py-3 text-xs text-muted-foreground">
                   {loadingReports
-                    ? "Momentum report listesi yukleniyor."
-                    : "`momentum/` source geldikten sonra piyasa stat bar otomatik dolacak."}
+                    ? copy(language, "Momentum report listesi yukleniyor.", "Loading momentum report list.")
+                    : copy(language, "`momentum/` source geldikten sonra piyasa stat bar otomatik dolacak.", "The market stat bar will populate automatically when a `momentum/` source is available.")}
                 </div>
               )}
             </div>
@@ -513,7 +542,12 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                       {selectedTitle}
                     </h2>
                     <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-                      {selectedSubtitle || "Secili raporun alt basligi burada gorunur."}
+                      {selectedSubtitle ||
+                        copy(
+                          language,
+                          "Secili raporun alt basligi burada gorunur.",
+                          "The subtitle for the selected report appears here."
+                        )}
                     </p>
                     {hasDisplayValue(selectedSourceLabel) ? (
                       <p className="data-mono text-xs text-muted-foreground">
@@ -524,23 +558,23 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
 
                   <div className="grid gap-3 sm:grid-cols-3 md:min-w-[420px]">
                     <SummaryCard
-                      label="Rapor tarihi"
+                      label={copy(language, "Rapor tarihi", "Report date")}
                       value={activeSummary?.reportDateLabel || "-"}
-                      hint="Momentum source takvimi"
+                      hint={copy(language, "Momentum source takvimi", "Momentum source calendar")}
                       icon={CandlestickChart}
                       tone="info"
                     />
                     <SummaryCard
                       label="Target"
                       value={activeSummary?.targetDateLabel || "-"}
-                      hint="Aksiyon / hedef seans"
+                      hint={copy(language, "Aksiyon / hedef seans", "Action / target session")}
                       icon={Target}
                       tone="caution"
                     />
                     <SummaryCard
                       label="Update"
                       value={selectedUpdateLabel}
-                      hint="Dosya degisiklik damgasi"
+                      hint={copy(language, "Dosya degisiklik damgasi", "File update timestamp")}
                       icon={Clock3}
                       tone="bull"
                     />
@@ -549,8 +583,8 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
               ) : (
                 <div className="rounded-xl border border-dashed border-border bg-background/35 p-4 text-sm leading-7 text-muted-foreground">
                   {loadingReports
-                    ? "Secili momentum raporu yukleniyor."
-                    : "Henuz secilebilir bir momentum raporu yok. Yeni source geldikten sonra bu alan otomatik dolacak."}
+                    ? copy(language, "Secili momentum raporu yukleniyor.", "Loading selected momentum report.")
+                    : copy(language, "Henuz secilebilir bir momentum raporu yok. Yeni source geldikten sonra bu alan otomatik dolacak.", "There is no selectable momentum report yet. This area will populate automatically when a new source arrives.")}
                 </div>
               )}
 
@@ -592,7 +626,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
               <div className="mt-5 space-y-5">
                 {isTabPending ? (
                   <div className="rounded-xl border border-indigo-500/18 bg-indigo-500/10 px-3 py-2 text-xs text-indigo-200">
-                    Gorunum degisiyor...
+                    {copy(language, "Gorunum degisiyor...", "Switching view...")}
                   </div>
                 ) : null}
                 {renderActiveTab()}
@@ -631,8 +665,8 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                 ) : (
                   <div className="mt-4 rounded-xl border border-dashed border-border bg-background/35 p-4 text-sm leading-6 text-muted-foreground">
                     {loadingReports
-                      ? "Sidebar snapshot hazirlaniyor."
-                      : "Rapor gelmeden ozet kartlari bos gosterilmeyecek; veri geldiginde burada dolacak."}
+                      ? copy(language, "Sidebar snapshot hazirlaniyor.", "Preparing sidebar snapshot.")
+                      : copy(language, "Rapor gelmeden ozet kartlari bos gosterilmeyecek; veri geldiginde burada dolacak.", "Summary cards stay hidden until data is available and will populate automatically.")}
                   </div>
                 )}
               </section>
@@ -644,7 +678,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                       Archive
                     </p>
                     <p className="mt-1 text-xs text-muted-foreground">
-                      Zaman damgali report indeks listesi.
+                      {copy(language, "Zaman damgali report indeks listesi.", "Timestamped report index list.")}
                     </p>
                   </div>
                   {loadingReports ? (
@@ -685,7 +719,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                         </p>
                         <div className="mt-3 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
                           <span className="rounded-full border border-border bg-background/70 px-2 py-1">
-                            {formatMomentumUpdateStamp(report.updatedAt)}
+                            {formatMomentumUpdateStamp(report.updatedAt, locale)}
                           </span>
                           <span className="rounded-full border border-border bg-background/70 px-2 py-1">
                             {report.readingTimeLabel || "report"}
@@ -697,8 +731,11 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
 
                   {!loadingReports && !reports.length ? (
                     <div className="rounded-xl border border-dashed border-border bg-background/45 p-4 text-sm leading-6 text-muted-foreground">
-                      `momentum/` altina yeni `.md` dosyasi eklendiginde burada otomatik
-                      gorunecek.
+                      {copy(
+                        language,
+                        "`momentum/` altina yeni `.md` dosyasi eklendiginde burada otomatik gorunecek.",
+                        "When a new `.md` file is added under `momentum/`, it will appear here automatically."
+                      )}
                     </div>
                   ) : null}
                 </div>

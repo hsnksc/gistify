@@ -25,6 +25,7 @@ import type {
   EarningReportSourceRecord,
   EarningReportSourceSummary,
 } from "@shared/earningReports";
+import type { AppLanguage } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import EarningReportCalendarTab from "@/components/tabs/EarningReportCalendarTab";
 import EarningReportPlaybookTab from "@/components/tabs/EarningReportPlaybookTab";
@@ -105,7 +106,11 @@ function LoadingState({ label }: { label: string }) {
   );
 }
 
-export default function Home() {
+function copy(language: AppLanguage, tr: string, en: string) {
+  return language === "en" ? en : tr;
+}
+
+export default function Home({ language }: { language: AppLanguage }) {
   const [, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState<TabId>("playbook");
   const [selectedReportId, setSelectedReportId] = useState("");
@@ -246,11 +251,12 @@ export default function Home() {
   const latestReport = visibleReports[0] || null;
   const hasReports = visibleReports.length > 0;
   const sidebarOpen = true;
+  const locale = language === "en" ? "en-US" : "tr-TR";
   const latestUploadLabel = latestReport
-    ? formatEarningReportDateTime(latestReport.updatedAt)
+    ? formatEarningReportDateTime(latestReport.updatedAt, locale)
     : "-";
   const selectedUploadLabel = selectedSummary
-    ? formatEarningReportDateTime(selectedSummary.updatedAt)
+    ? formatEarningReportDateTime(selectedSummary.updatedAt, locale)
     : "-";
   const nextEvent = positions[0] || null;
   const bullishCount = positions.filter(position => {
@@ -291,7 +297,11 @@ export default function Home() {
   const selectedHeadline =
     parsedReport?.subtitle ||
     selectedSummary?.headline ||
-    "Secili earnings raporunun ana tezleri, strateji setleri ve takvim akisi.";
+    copy(
+      language,
+      "Secili earnings raporunun ana tezleri, strateji setleri ve takvim akisi.",
+      "Core thesis, strategy sets and calendar flow for the selected earnings report."
+    );
 
   const handleTickerSelect = (ticker: string) => {
     setSelectedTicker(ticker);
@@ -306,12 +316,22 @@ export default function Home() {
 
   const renderActiveTab = () => {
     if (loadingReports || loadingDetail) {
-      return <LoadingState label="Earning report workspace yukleniyor." />;
+      return (
+        <LoadingState
+          label={copy(language, "Earning report workspace yukleniyor.", "Loading earnings workspace.")}
+        />
+      );
     }
 
     if (!parsedReport) {
       return (
-        <LoadingState label="Henuz goruntulenebilir bir earnings raporu yok. `earningreport/` klasorune yeni rapor yuklendiginde burada otomatik listelenecek." />
+        <LoadingState
+          label={copy(
+            language,
+            "Henuz goruntulenebilir bir earnings raporu yok. `earningreport/` klasorune yeni rapor yuklendiginde burada otomatik listelenecek.",
+            "There is no viewable earnings report yet. When a new report is added under `earningreport/`, it will appear here automatically."
+          )}
+        />
       );
     }
 
@@ -321,6 +341,7 @@ export default function Home() {
           <EarningReportPlaybookTab
             key={`${selectedReportId}:${selectedTicker || "none"}`}
             report={parsedReport}
+            language={language}
             selectedTicker={selectedTicker}
             onSelectTicker={handleTickerSelect}
           />
@@ -329,16 +350,18 @@ export default function Home() {
         return (
           <EarningReportCalendarTab
             report={parsedReport}
+            language={language}
             onOpenTicker={handleTickerSelect}
           />
         );
       case "risk":
-        return <EarningReportRiskTab report={parsedReport} />;
+        return <EarningReportRiskTab report={parsedReport} language={language} />;
       default:
         return (
           <EarningReportPlaybookTab
             key={`${selectedReportId}:${selectedTicker || "none"}`}
             report={parsedReport}
+            language={language}
             selectedTicker={selectedTicker}
             onSelectTicker={handleTickerSelect}
           />
@@ -358,18 +381,23 @@ export default function Home() {
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="badge-strong">{bullishCount} bullish bias</span>
                     <span className="badge-danger">{bearishCount} bearish bias</span>
-                    <span className="badge-warning">{balancedCount} dengeli</span>
+                    <span className="badge-warning">
+                      {balancedCount} {copy(language, "dengeli", "balanced")}
+                    </span>
                   </div>
                   <div className="space-y-2">
                     <p className="heading-condensed text-sm uppercase tracking-[0.18em] text-indigo-300">
-                      Earning Strategy Workspace
+                      {copy(language, "Earning Strategy Workspace", "Earnings Strategy Workspace")}
                     </p>
                     <h1 className="heading-condensed max-w-4xl text-3xl leading-none text-foreground md:text-5xl">
-                      Guncel earnings strateji paneli
+                      {copy(language, "Guncel earnings strateji paneli", "Current earnings strategy panel")}
                     </h1>
                     <p className="max-w-3xl text-sm leading-7 text-muted-foreground md:text-[15px]">
-                      Yalnizca en son earnings raporu gorunur. Ticker secimi, playbook,
-                      takvim ve risk panelleri tek source uzerinden acilir.
+                      {copy(
+                        language,
+                        "Yalnizca en son earnings raporu gorunur. Ticker secimi, playbook, takvim ve risk panelleri tek source uzerinden acilir.",
+                        "Only the latest earnings report is shown. Ticker selection, playbook, calendar and risk panels open from a single active source."
+                      )}
                     </p>
                   </div>
                 </div>
@@ -377,7 +405,7 @@ export default function Home() {
                 <div className="flex flex-wrap items-center gap-2">
                   <Button type="button" variant="outline" onClick={() => void loadReports()}>
                     <RefreshCw className="size-4" />
-                    Yenile
+                    {copy(language, "Yenile", "Refresh")}
                   </Button>
                   <Button type="button" variant="outline" onClick={() => setLocation("/momentum")}>
                     <Radar className="size-4" />
@@ -417,7 +445,7 @@ export default function Home() {
                         {formatEarningReportDateTime(report.updatedAt)}
                       </p>
                       <p className="mt-1 text-xs text-muted-foreground">
-                        {report.reportDateLabel || formatEarningReportDate(report.reportDate)}
+                        {report.reportDateLabel || formatEarningReportDate(report.reportDate, locale)}
                       </p>
                       <div className="mt-3 flex items-center gap-2 text-[11px] text-muted-foreground">
                         <Clock3 className="size-3.5" />
@@ -458,8 +486,8 @@ export default function Home() {
               ) : (
                 <div className="inline-flex max-w-full flex-wrap items-center gap-2 rounded-xl border border-dashed border-border bg-background/35 px-4 py-3 text-xs text-muted-foreground">
                   {loadingReports
-                    ? "Earnings report listesi yukleniyor."
-                    : "`earningreport/` kaynagi gelince stat bar otomatik dolacak."}
+                    ? copy(language, "Earnings report listesi yukleniyor.", "Loading earnings report list.")
+                    : copy(language, "`earningreport/` kaynagi gelince stat bar otomatik dolacak.", "The stat bar will populate automatically when an `earningreport/` source is available.")}
                 </div>
               )}
             </div>
@@ -489,23 +517,23 @@ export default function Home() {
 
                   <div className="grid gap-3 sm:grid-cols-3 md:min-w-[420px]">
                     <SummaryCard
-                      label="Rapor tarihi"
+                      label={copy(language, "Rapor tarihi", "Report date")}
                       value={selectedSummary?.reportDateLabel || "-"}
-                      hint="Parser ile okunan ana tarih"
+                      hint={copy(language, "Parser ile okunan ana tarih", "Primary date parsed from the report")}
                       icon={CalendarDays}
                       tone="info"
                     />
                     <SummaryCard
                       label="VIX"
                       value={selectedSummary?.vixLabel || "-"}
-                      hint="Secili rapor volatilite baglami"
+                      hint={copy(language, "Secili rapor volatilite baglami", "Volatility context for the selected report")}
                       icon={Zap}
                       tone="caution"
                     />
                     <SummaryCard
-                      label="Yuklenme"
+                      label={copy(language, "Yuklenme", "Loaded")}
                       value={selectedUploadLabel}
-                      hint="Liste siralamasi bu zamana gore"
+                      hint={copy(language, "Liste siralamasi bu zamana gore", "List ordering uses this timestamp")}
                       icon={Clock3}
                       tone="bull"
                     />
@@ -514,8 +542,8 @@ export default function Home() {
               ) : (
                 <div className="rounded-xl border border-dashed border-border bg-background/35 p-4 text-sm leading-7 text-muted-foreground">
                   {loadingReports
-                    ? "Secili earnings raporu yukleniyor."
-                    : "Henuz secilebilir bir earnings raporu yok. Yeni source geldikten sonra bu alan otomatik dolacak."}
+                    ? copy(language, "Secili earnings raporu yukleniyor.", "Loading selected earnings report.")
+                    : copy(language, "Henuz secilebilir bir earnings raporu yok. Yeni source geldikten sonra bu alan otomatik dolacak.", "There is no selectable earnings report yet. This area will populate automatically when a new source arrives.")}
                 </div>
               )}
 
@@ -546,7 +574,7 @@ export default function Home() {
               <div className="mt-5 space-y-5">
                 {isTabPending ? (
                   <div className="rounded-xl border border-indigo-500/18 bg-indigo-500/10 px-3 py-2 text-xs text-indigo-200">
-                    Gorunum degisiyor...
+                    {copy(language, "Gorunum degisiyor...", "Switching view...")}
                   </div>
                 ) : null}
                 {renderActiveTab()}
@@ -572,33 +600,33 @@ export default function Home() {
                 {hasReports ? (
                   <div className="mt-4 space-y-3">
                     <SummaryCard
-                      label="Rapor adedi"
+                      label={copy(language, "Rapor adedi", "Report count")}
                       value={String(visibleReports.length)}
-                      hint="Su an yalnizca son rapor gorunur"
+                      hint={copy(language, "Su an yalnizca son rapor gorunur", "Only the latest report is visible right now")}
                       icon={BarChart3}
                       tone="info"
                     />
                     <SummaryCard
-                      label="Son yukleme"
+                      label={copy(language, "Son yukleme", "Latest load")}
                       value={latestUploadLabel}
-                      hint="Varsayilan acilan rapor"
+                      hint={copy(language, "Varsayilan acilan rapor", "Default report opened on entry")}
                       icon={RefreshCw}
                       tone="bull"
                     />
                     <SummaryCard
-                      label="Aktif setup"
+                      label={copy(language, "Aktif setup", "Active setups")}
                       value={String(positions.length)}
-                      hint="Secili rapordaki ticker"
+                      hint={copy(language, "Secili rapordaki ticker", "Tickers in the selected report")}
                       icon={Target}
                       tone="info"
                     />
                     <SummaryCard
-                      label="Yakin event"
+                      label={copy(language, "Yakin event", "Nearest event")}
                       value={nextEvent?.ticker || "-"}
                       hint={
                         nextEvent
-                          ? `${nextEvent.earningsDate} · ${nextEvent.daysLeft} gun`
-                          : "Secili rapordan"
+                          ? `${nextEvent.earningsDate} · ${nextEvent.daysLeft} ${copy(language, "gun", "days")}`
+                          : copy(language, "Secili rapordan", "From the selected report")
                       }
                       icon={CalendarDays}
                       tone="caution"
@@ -607,8 +635,8 @@ export default function Home() {
                 ) : (
                   <div className="mt-4 rounded-xl border border-dashed border-border bg-background/35 p-4 text-sm leading-6 text-muted-foreground">
                     {loadingReports
-                      ? "Sidebar snapshot hazirlaniyor."
-                      : "Rapor gelmeden ozet kartlari bos gosterilmeyecek; veri geldiginde burada dolacak."}
+                      ? copy(language, "Sidebar snapshot hazirlaniyor.", "Preparing sidebar snapshot.")
+                      : copy(language, "Rapor gelmeden ozet kartlari bos gosterilmeyecek; veri geldiginde burada dolacak.", "Summary cards stay hidden until data is available and will populate automatically.")}
                   </div>
                 )}
               </section>

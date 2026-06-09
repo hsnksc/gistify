@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import type { AppLanguage } from "@/lib/i18n";
 import type {
   EarningReportSource,
   EarningsPosition,
@@ -8,8 +9,13 @@ import type {
 
 interface Props {
   report: EarningReportSource;
+  language?: AppLanguage;
   selectedTicker: string | null;
   onSelectTicker: (ticker: string) => void;
+}
+
+function copy(language: AppLanguage, tr: string, en: string) {
+  return language === "en" ? en : tr;
 }
 
 function sortPositions(positions: EarningsPosition[]) {
@@ -160,14 +166,21 @@ function SummaryMetric({
   );
 }
 
-function WeightMeter({ position }: { position: EarningsPosition }) {
+function WeightMeter({
+  language,
+  position,
+}: {
+  language: AppLanguage;
+  position: EarningsPosition;
+}) {
   const callWeight = position.blueprint.callWeight;
   const putWeight = position.blueprint.putWeight;
 
   if (callWeight === null || putWeight === null) {
     return (
       <div className="rounded-none border border-border bg-background/40 px-3 py-2 text-sm text-muted-foreground">
-        {position.blueprint.ratioText || "Call / Put orani belirtilmedi"}
+        {position.blueprint.ratioText ||
+          copy(language, "Call / Put orani belirtilmedi", "Call / Put ratio not specified")}
       </div>
     );
   }
@@ -175,7 +188,7 @@ function WeightMeter({ position }: { position: EarningsPosition }) {
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-        <span>Call / Put orani</span>
+        <span>{copy(language, "Call / Put orani", "Call / Put ratio")}</span>
         <span className="data-mono text-foreground">
           {callWeight}% / {putWeight}%
         </span>
@@ -214,6 +227,7 @@ function NoteCard({ note }: { note: StrategyNote }) {
 
 export default function EarningReportPlaybookTab({
   report,
+  language = "tr",
   selectedTicker,
   onSelectTicker,
 }: Props) {
@@ -231,13 +245,17 @@ export default function EarningReportPlaybookTab({
       <div className="p-6">
         <section className="rounded-none border border-border bg-card/80 p-6">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300">
-            Rapor verisi bulunamadi
+            {copy(language, "Rapor verisi bulunamadi", "Report data unavailable")}
           </p>
           <h1 className="mt-3 heading-condensed text-3xl text-foreground">
-            Playbook olusturulacak setup yok
+            {copy(language, "Playbook olusturulacak setup yok", "No setup available for playbook")}
           </h1>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Kaynak markdown dosyasinda parse edilebilen hisse setup bloku yok.
+            {copy(
+              language,
+              "Kaynak markdown dosyasinda parse edilebilen hisse setup bloku yok.",
+              "No parseable stock setup block was found in the source markdown file."
+            )}
           </p>
         </section>
       </div>
@@ -250,7 +268,7 @@ export default function EarningReportPlaybookTab({
         <div className="grid gap-5 xl:grid-cols-[minmax(0,1.1fr)_minmax(360px,0.9fr)]">
           <div className="space-y-3">
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-              Rapor ozeti
+              {copy(language, "Rapor ozeti", "Report summary")}
             </p>
             <h1 className="heading-condensed text-3xl leading-none text-foreground md:text-4xl">
               {report.title}
@@ -258,7 +276,7 @@ export default function EarningReportPlaybookTab({
             <p className="text-sm text-muted-foreground">{report.subtitle}</p>
             <div className="rounded-none border border-emerald-400/20 bg-emerald-500/5 px-4 py-3">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                Ana pencere
+                {copy(language, "Ana pencere", "Core window")}
               </p>
               <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
                 {report.coreWindow}
@@ -291,7 +309,7 @@ export default function EarningReportPlaybookTab({
         <div className="flex items-center gap-2">
           <div className="h-4 w-1 bg-emerald-400" />
           <h2 className="heading-condensed text-base text-foreground">
-            Hisse secimi
+            {copy(language, "Hisse secimi", "Ticker selection")}
           </h2>
         </div>
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
@@ -318,7 +336,9 @@ export default function EarningReportPlaybookTab({
               <div className="mt-3 flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
                 <span>{position.earningsDate}</span>
                 <span>{position.earningsTime}</span>
-                <span>{position.daysLeft} gun</span>
+                <span>
+                  {position.daysLeft} {copy(language, "gun", "days")}
+                </span>
               </div>
               <div className="mt-3 flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.16em]">
                 <span className="rounded-none border border-border bg-background/60 px-2 py-1 text-muted-foreground">
@@ -344,7 +364,7 @@ export default function EarningReportPlaybookTab({
                 {activePosition.earningsTime}
               </span>
               <span className="rounded-none border border-border bg-background/60 px-2 py-1">
-                {activePosition.daysLeft} gun kaldi
+                {activePosition.daysLeft} {copy(language, "gun kaldi", "days left")}
               </span>
             </div>
 
@@ -373,7 +393,7 @@ export default function EarningReportPlaybookTab({
                 </span>
               </span>
               <span className="rounded-none border border-border bg-background/60 px-3 py-1.5 text-muted-foreground">
-                Risk:{" "}
+                {copy(language, "Risk", "Risk")}:{" "}
                 <span className="data-mono font-semibold text-foreground">
                   {activePosition.allocationRisk}
                 </span>
@@ -383,14 +403,14 @@ export default function EarningReportPlaybookTab({
 
           <div className="grid gap-3 sm:grid-cols-2 xl:w-[460px]">
             <SummaryMetric
-              label="Fiyat"
+              label={copy(language, "Fiyat", "Price")}
               value={findMetricValue(activePosition, ["Fiyat", "Son Fiyat"])}
-              hint="Rapor anindaki spot"
+              hint={copy(language, "Rapor anindaki spot", "Spot price at report time")}
             />
             <SummaryMetric
               label="IV Rank"
               value={findMetricValue(activePosition, ["IV Rank"])}
-              hint="Opsiyon maliyet rejimi"
+              hint={copy(language, "Opsiyon maliyet rejimi", "Options cost regime")}
               accentClass="text-amber-300"
             />
             <SummaryMetric
@@ -400,7 +420,7 @@ export default function EarningReportPlaybookTab({
                 "Beklenen Hareket (EM)",
                 "Beklenen Hareket",
               ])}
-              hint="Beklenen band"
+              hint={copy(language, "Beklenen band", "Expected range")}
             />
             <SummaryMetric
               label="EPS"
@@ -417,7 +437,7 @@ export default function EarningReportPlaybookTab({
                     ])
                   : findMetricValue(activePosition, ["Gelir Tahmini"])
               }
-              hint="Ana beklenti snapshot"
+              hint={copy(language, "Ana beklenti snapshot", "Primary expectation snapshot")}
               accentClass="text-emerald-300"
             />
           </div>
@@ -428,7 +448,7 @@ export default function EarningReportPlaybookTab({
         <article className="rounded-none border border-border bg-card/80 p-4">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-              Strateji ozeti
+              {copy(language, "Strateji ozeti", "Strategy summary")}
             </p>
             <h4 className={`mt-2 text-sm font-semibold ${getBiasTone(activePosition)}`}>
               {activePosition.strategyTitle}
@@ -436,7 +456,7 @@ export default function EarningReportPlaybookTab({
           </div>
 
           <div className="mt-4 space-y-4">
-            <WeightMeter position={activePosition} />
+            <WeightMeter language={language} position={activePosition} />
 
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="rounded-none border border-emerald-400/20 bg-emerald-500/5 p-3">
@@ -449,7 +469,7 @@ export default function EarningReportPlaybookTab({
                       <li key={`${activePosition.ticker}-call-${item}`}>{item}</li>
                     ))
                   ) : (
-                    <li>Call leg detayi belirtilmedi.</li>
+                    <li>{copy(language, "Call leg detayi belirtilmedi.", "Call leg detail not specified.")}</li>
                   )}
                 </ul>
               </div>
@@ -464,7 +484,7 @@ export default function EarningReportPlaybookTab({
                       <li key={`${activePosition.ticker}-put-${item}`}>{item}</li>
                     ))
                   ) : (
-                    <li>Put leg detayi belirtilmedi.</li>
+                    <li>{copy(language, "Put leg detayi belirtilmedi.", "Put leg detail not specified.")}</li>
                   )}
                 </ul>
               </div>
@@ -473,7 +493,7 @@ export default function EarningReportPlaybookTab({
             <div className="grid gap-3 sm:grid-cols-3">
               <div className="rounded-none border border-border bg-background/60 p-3">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  Giris
+                  {copy(language, "Giris", "Entry")}
                 </p>
                 <p className="mt-2 text-sm text-foreground">
                   {activePosition.blueprint.entry || "-"}
@@ -481,7 +501,7 @@ export default function EarningReportPlaybookTab({
               </div>
               <div className="rounded-none border border-border bg-background/60 p-3">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  Cikis
+                  {copy(language, "Cikis", "Exit")}
                 </p>
                 <p className="mt-2 text-sm text-foreground">
                   {activePosition.blueprint.exit || "-"}
@@ -506,7 +526,7 @@ export default function EarningReportPlaybookTab({
             {activePosition.warnings.length ? (
               <div className="rounded-none border border-red-400/30 bg-red-500/6 p-4">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-red-300">
-                  Kritik uyarilar
+                  {copy(language, "Kritik uyarilar", "Critical warnings")}
                 </p>
                 <div className="mt-3 space-y-2 text-sm leading-relaxed text-red-100/90">
                   {activePosition.warnings.map(warning => (
@@ -521,10 +541,10 @@ export default function EarningReportPlaybookTab({
         <article className="rounded-none border border-border bg-card/80 p-4">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-200">
-              Haberler ve catalystler
+              {copy(language, "Haberler ve catalystler", "News and catalysts")}
             </p>
             <h4 className="mt-2 text-sm font-semibold text-foreground">
-              Secili hisse akisi
+              {copy(language, "Secili hisse akisi", "Selected ticker flow")}
             </h4>
           </div>
 
@@ -556,7 +576,11 @@ export default function EarningReportPlaybookTab({
                 ))
               ) : (
                 <div className="rounded-none border border-border bg-background/50 p-4 text-sm leading-relaxed text-muted-foreground">
-                  Bu hissede ek haber notu parse edilmedi.
+                  {copy(
+                    language,
+                    "Bu hissede ek haber notu parse edilmedi.",
+                    "No additional news notes were parsed for this ticker."
+                  )}
                 </div>
               )}
             </div>
@@ -567,7 +591,7 @@ export default function EarningReportPlaybookTab({
       <section className="grid gap-4 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
         <article className="rounded-none border border-border bg-card/80 p-4">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            Metrik kartlari
+            {copy(language, "Metrik kartlari", "Metric cards")}
           </p>
           <div className="mt-4 space-y-2">
             {remainingMetrics(activePosition).length ? (
@@ -584,7 +608,7 @@ export default function EarningReportPlaybookTab({
               ))
             ) : (
               <div className="text-sm text-muted-foreground">
-                Ek metrik bulunmuyor.
+                {copy(language, "Ek metrik bulunmuyor.", "No additional metrics available.")}
               </div>
             )}
           </div>
@@ -595,8 +619,8 @@ export default function EarningReportPlaybookTab({
                 <thead>
                   <tr className="border-b border-border/80 text-left text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                     <th className="pb-2">Greek</th>
-                    <th className="pb-2">Deger</th>
-                    <th className="pb-2">Aciklama</th>
+                    <th className="pb-2">{copy(language, "Deger", "Value")}</th>
+                    <th className="pb-2">{copy(language, "Aciklama", "Notes")}</th>
                   </tr>
                 </thead>
                 <tbody>
