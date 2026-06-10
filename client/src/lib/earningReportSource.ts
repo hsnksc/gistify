@@ -2113,13 +2113,14 @@ function parseModernPositionSection(
 function parseCprPositionSection(
   lines: string[],
   startIdx: number
-): EarningsPosition | null {
+): (EarningsPosition & { schedule: Array<{ date: string; action: string }> }) | null {
   const heading = lines[startIdx];
   const headingMatch = heading.match(/^###\s+(\d+\.\d+)\s+([A-Z]{1,5})/);
-  if (!headingMatch) return null;
+  const subStockMatch = heading.match(/^####\s+([A-Z]{1,5})/);
+  if (!headingMatch && !subStockMatch) return null;
 
-  const order = parseFloat(headingMatch[1]);
-  const ticker = headingMatch[2];
+  const order = headingMatch ? parseFloat(headingMatch[1]) : 0;
+  const ticker = headingMatch ? headingMatch[2] : (subStockMatch ? subStockMatch[1] : "");
 
   const parts = heading.split(/[\u2014\u2013]/);
   let price = "";
@@ -2134,6 +2135,11 @@ function parseCprPositionSection(
   let endIdx = lines.length;
   for (let i = startIdx + 1; i < lines.length; i++) {
     if (lines[i].match(/^###\s+\d+\.\d+\s+[A-Z]/)) {
+      endIdx = i;
+      break;
+    }
+    // Sub-stocks (####) should also stop at next #### or ###
+    if (lines[startIdx].match(/^####/) && lines[i].match(/^#{3,4}\s/)) {
       endIdx = i;
       break;
     }
@@ -2239,8 +2245,9 @@ function parseCprPositionSection(
     ],
     price: parseFloat(price) || null,
     ivRank: parseFloat(params["IV Rank"]?.replace(/[^\d.]/g, "")) || null,
-    expectedMove: null
-  };
+    expectedMove: null,
+    schedule
+  } as EarningsPosition & { schedule: Array<{ date: string; action: string }> };
 }
 
 function stripUpdateDaySuffix(value: string) {
@@ -3476,7 +3483,23 @@ function parseCprEarningReportMarkdown(
       const pos = parseCprPositionSection(lines, i);
       if (pos) {
         positions.push(pos);
-        for (const s of (pos as any).schedule || []) {
+        for (const s of pos.schedule || []) {
+          tradeSchedule.push({
+            date: s.date.replace(/\*\*/g, ""),
+            ticker: pos.ticker,
+            action: s.action,
+            note: pos.strategyTitle
+          });
+        }
+      }
+    }
+    // Handle sub-stocks under section 8.3 (#### TICKER — $PRICE — CPR: X.XX)
+    const subStockMatch = lines[i].match(/^####\s+([A-Z]{1,5})\s+.*\$.*CPR:/);
+    if (subStockMatch) {
+      const pos = parseCprPositionSection(lines, i);
+      if (pos) {
+        positions.push(pos);
+        for (const s of pos.schedule || []) {
           tradeSchedule.push({
             date: s.date.replace(/\*\*/g, ""),
             ticker: pos.ticker,

@@ -198,7 +198,7 @@ export default function Home({ language }: { language: AppLanguage }) {
     };
   }, [selectedReportId]);
 
-  const visibleReports = useMemo(() => reports.slice(0, 1), [reports]);
+  const visibleReports = useMemo(() => reports.slice(0, 2), [reports]);
 
   const selectedSummary = useMemo(
     () =>
@@ -391,7 +391,7 @@ export default function Home({ language }: { language: AppLanguage }) {
                       {copy(
                         language,
                         "Yalnizca en son earnings raporu gorunur. Ticker secimi, playbook, takvim ve risk panelleri tek source uzerinden acilir.",
-                        "Only the latest earnings report is shown. Ticker selection, playbook, calendar and risk panels open from a single active source."
+                        "Latest 2 earnings reports are shown. Ticker selection, playbook, calendar and risk panels open from a single active source."
                       )}
                     </p>
                   </div>
@@ -597,7 +597,7 @@ export default function Home({ language }: { language: AppLanguage }) {
                     <SummaryCard
                       label={copy(language, "Rapor adedi", "Report count")}
                       value={String(visibleReports.length)}
-                      hint={copy(language, "Su an yalnizca son rapor gorunur", "Only the latest report is visible right now")}
+                      hint={copy(language, "Su an son 2 rapor gorunur", "Latest 2 reports are visible")}
                       icon={BarChart3}
                       tone="info"
                     />
