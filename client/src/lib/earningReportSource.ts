@@ -2110,6 +2110,139 @@ function parseModernPositionSection(
   };
 }
 
+function parseCprPositionSection(
+  lines: string[],
+  startIdx: number
+): EarningsPosition | null {
+  const heading = lines[startIdx];
+  const headingMatch = heading.match(/^###\s+(\d+\.\d+)\s+([A-Z]{1,5})/);
+  if (!headingMatch) return null;
+
+  const order = parseFloat(headingMatch[1]);
+  const ticker = headingMatch[2];
+
+  const parts = heading.split(/[\u2014\u2013]/);
+  let price = "";
+  let cpr = "";
+  if (parts.length >= 3) {
+    const priceMatch = parts[1].trim().match(/\$?([~\d,.]+)/);
+    if (priceMatch) price = priceMatch[1];
+    const cprMatch = parts[2].match(/CPR:\s+([\d.~]+)/);
+    if (cprMatch) cpr = cprMatch[1];
+  }
+
+  let endIdx = lines.length;
+  for (let i = startIdx + 1; i < lines.length; i++) {
+    if (lines[i].match(/^###\s+\d+\.\d+\s+[A-Z]/)) {
+      endIdx = i;
+      break;
+    }
+  }
+
+  const params: Record<string, string> = {};
+  let inParams = false;
+  for (let i = startIdx; i < endIdx; i++) {
+    if (lines[i].match(/^\|\s*Parametre\s*\|\s*Değer\s*\|/)) {
+      inParams = true;
+      continue;
+    }
+    if (inParams && lines[i].match(/^\|[-\s|]+\|/)) continue;
+    if (inParams && lines[i].match(/^\|/)) {
+      const cells = lines[i].split("|").map(c => c.trim()).filter(c => c);
+      if (cells.length >= 2) {
+        const key = cells[0].replace(/\*\*/g, "").trim();
+        params[key] = cells[1];
+      }
+    }
+    if (inParams && !lines[i].match(/^\|/) && lines[i].trim() !== "") break;
+  }
+
+  let strategy = "";
+  for (let i = startIdx; i < endIdx; i++) {
+    const sm = lines[i].match(/^####\s+(?:Ana Strateji|Strateji 1):\s+(.+)/);
+    if (sm) {
+      strategy = sm[1].trim();
+      break;
+    }
+  }
+
+  const budget: Array<{ budget: string; strategy: string; cost: string; maxProfit: string }> = [];
+  let inBudget = false;
+  for (let i = startIdx; i < endIdx; i++) {
+    if (lines[i].includes("Bütçe Dostu")) {
+      inBudget = true;
+      continue;
+    }
+    if (inBudget && lines[i].match(/^\|[-\s|]+\|/)) continue;
+    if (inBudget && lines[i].match(/^\|/)) {
+      const cells = lines[i].split("|").map(c => c.trim()).filter(c => c);
+      if (cells.length >= 3 && !cells[0].includes("Bütçe")) {
+        budget.push({ budget: cells[0], strategy: cells[1], cost: cells[2], maxProfit: cells[3] || "" });
+      }
+    }
+    if (inBudget && !lines[i].match(/^\|/) && lines[i].trim() !== "") break;
+  }
+
+  const schedule: Array<{ date: string; action: string }> = [];
+  let inSchedule = false;
+  for (let i = startIdx; i < endIdx; i++) {
+    if (lines[i].includes("Giriş-Çıkış Takvimi")) {
+      inSchedule = true;
+      continue;
+    }
+    if (inSchedule && lines[i].match(/^\|[-\s|]+\|/)) continue;
+    if (inSchedule && lines[i].match(/^\|/)) {
+      const cells = lines[i].split("|").map(c => c.trim()).filter(c => c);
+      if (cells.length >= 2 && !cells[0].includes("Tarih")) {
+        schedule.push({ date: cells[0], action: cells[1] });
+      }
+    }
+    if (inSchedule && !lines[i].match(/^\|/) && lines[i].trim() !== "") break;
+  }
+
+  const metrics = Object.entries(params).map(([label, value]) => ({ label, value }));
+  const strategyTitle = strategy || "Strategy";
+
+  return {
+    order: Number.isFinite(order) ? order : 0,
+    ticker,
+    company: ticker,
+    earningsLabel: params["Earnings"] || "-",
+    earningsDate: params["Earnings"] || "-",
+    earningsTime: "-",
+    daysLeft: 0,
+    strategyTitle,
+    allocationCapital: "-",
+    allocationRisk: "-",
+    metrics,
+    news: [],
+    blueprint: {
+      rawLines: [strategyTitle],
+      ratioText: "50% call / 50% put",
+      callWeight: 50,
+      putWeight: 50,
+      biasLine: strategyTitle,
+      callHeading: "Primary setup",
+      callItems: budget.map(b => b.budget + ": " + b.strategy),
+      putHeading: "Risk / sizing",
+      putItems: schedule.map(s => s.date + ": " + s.action),
+      expiryLines: [],
+      entry: "",
+      exit: ""
+    },
+    greeks: [],
+    scenarios: [],
+    warnings: [],
+    notes: [
+      { title: "Params", lines: Object.entries(params).map(([k, v]) => k + ": " + v) },
+      { title: "Budget", lines: budget.map(b => b.budget + ": " + b.strategy + " (" + b.cost + ")") }
+    ],
+    price: parseFloat(price) || null,
+    ivRank: parseFloat(params["IV Rank"]?.replace(/[^\d.]/g, "")) || null,
+    expectedMove: null
+  };
+}
+
 function stripUpdateDaySuffix(value: string) {
   return cleanText(value).replace(/\s*\([^)]+\)\s*$/, "").trim();
 }
@@ -3302,6 +3435,133 @@ function parseModernEarningReportMarkdown(
   };
 }
 
+function parseCprEarningReportMarkdown(
+  markdown: string,
+  sourceFile = "earningreport/source.md"
+): EarningReportSource {
+  const lines = splitLines(markdown);
+  const title = cleanText((lines[0] || "").replace(/^#\s*/, ""));
+  const subtitle = cleanText((lines[1] || "").replace(/^##\s*/, ""));
+
+  const metaLine = cleanText((lines[2] || "").replace(/^###\s*/, ""));
+  const meta: Array<{ label: string; value: string }> = [];
+  const metaParts = metaLine.split("|").map(p => p.trim());
+  for (const part of metaParts) {
+    const m = part.match(/(.+?):\s*(.+)/);
+    if (m) {
+      meta.push({ label: m[1].trim(), value: m[2].trim() });
+    }
+  }
+
+  const reportDateItem = meta.find(m => m.label.includes("Tarihi"));
+  const reportDate = reportDateItem ? reportDateItem.value : "-";
+
+  let vixLabel = "-";
+  for (const line of lines) {
+    if (line.match(/^\|.*VIX.*\|/)) {
+      const cells = line.split("|").map(c => c.trim()).filter(c => c);
+      if (cells.length >= 2) {
+        vixLabel = cells[1].replace(/\*\*/g, "");
+        break;
+      }
+    }
+  }
+
+  const positions: EarningsPosition[] = [];
+  const tradeSchedule: TradeScheduleRow[] = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    const headingMatch = lines[i].match(/^###\s+(\d+\.\d+)\s+([A-Z]{1,5})/);
+    if (headingMatch && lines[i].includes("$") && lines[i].includes("CPR:")) {
+      const pos = parseCprPositionSection(lines, i);
+      if (pos) {
+        positions.push(pos);
+        for (const s of (pos as any).schedule || []) {
+          tradeSchedule.push({
+            date: s.date.replace(/\*\*/g, ""),
+            ticker: pos.ticker,
+            action: s.action,
+            note: pos.strategyTitle
+          });
+        }
+      }
+    }
+  }
+
+  const timelineSteps: Array<{ phase: string; label: string }> = [];
+  const calIdx = lines.findIndex(l => l.match(/^###\s+3\.1\s+Günlük Detaylı Takvim/));
+  if (calIdx >= 0) {
+    for (let i = calIdx; i < lines.length; i++) {
+      if (lines[i].match(/^####\s+🔷/)) {
+        const m = lines[i].match(/^####\s+🔷\s+(.+)/);
+        if (m) timelineSteps.push({ phase: m[1], label: "" });
+      }
+    }
+  }
+
+  const gainDrivers: Array<{ factor: string; impact: string; assessment: string }> = [];
+  const execIdx = lines.findIndex(l => l.match(/^##\s+1\.\s*Executive Summary/i));
+  if (execIdx >= 0) {
+    for (let i = execIdx; i < execIdx + 50 && i < lines.length; i++) {
+      if (lines[i].match(/^\|.*Sıra.*\|/)) {
+        for (let j = i + 2; j < i + 10 && j < lines.length; j++) {
+          if (!lines[j].match(/^\|/)) break;
+          const cells = lines[j].split("|").map(c => c.trim()).filter(c => c);
+          if (cells.length >= 5 && !cells[0].includes("Sıra")) {
+            gainDrivers.push({
+              factor: cells[1].replace(/\*\*/g, ""),
+              impact: cells[2],
+              assessment: cells[3] + " | " + cells[4]
+            });
+          }
+        }
+        break;
+      }
+    }
+  }
+
+  const risks: Array<{ risk: string; probability: string; impact: string; mitigation: string }> = [];
+  for (const line of lines) {
+    if (line.match(/^>\s+\*\*FOMC KRİTİK UYARI:/)) {
+      risks.push({
+        risk: "FOMC Kritik Uyarı",
+        probability: "Yüksek",
+        impact: line.replace(/^>\s+\*\*FOMC KRİTİK UYARI:\*\*\s*/, ""),
+        mitigation: "21-27 Temmuz arasında pozisyonları %50 azaltın"
+      });
+    }
+  }
+
+  let disclaimer = "";
+  for (const line of lines) {
+    if (line.match(/^>\s+\*\*YASAL UYARI:/)) {
+      disclaimer = line.replace(/^>\s+/, "");
+      break;
+    }
+  }
+
+  return {
+    sourceFile,
+    rawMarkdown: markdown,
+    title,
+    subtitle,
+    meta,
+    reportDate,
+    vixLabel,
+    coreWindow: subtitle,
+    timelineSteps,
+    gainDrivers,
+    allocations: [],
+    positions,
+    tradeSchedule,
+    risks,
+    positionSizing: [],
+    goldenRules: [],
+    checklist: [],
+    disclaimer
+  };
+}
+
 export function parseEarningReportMarkdown(
   markdown: string,
   sourceFile = "earningreport/source.md"
@@ -3313,6 +3573,9 @@ export function parseEarningReportMarkdown(
     lines,
     "hisse bazli iyilestirilmis strateji plani"
   );
+  const cprFormatIndex = lines.findIndex(line =>
+    /^###\s+\d+\.\d+\s+[A-Z]{1,5}\s+.*CPR:/.test(line) && line.includes("$")
+  );
 
   if (strategicPlanIndex >= 0 && findLineIndex(lines, /^###\s+5\.\d+\s+[A-Z]+/) >= 0) {
     return parseStrategicPlanEarningReportMarkdown(markdown, sourceFile);
@@ -3323,6 +3586,10 @@ export function parseEarningReportMarkdown(
     findLineIndexByText(lines, "hisse basi guncel analiz") >= 0
   ) {
     return parseDailyUpdateEarningReportMarkdown(markdown, sourceFile);
+  }
+
+  if (cprFormatIndex >= 0) {
+    return parseCprEarningReportMarkdown(markdown, sourceFile);
   }
 
   if (modernPositionIndex >= 0 && findLineIndexByText(lines, "hizli erisim ozeti") >= 0) {
