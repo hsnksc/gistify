@@ -358,7 +358,13 @@ export function buildDailyReportInsights(content: DailyReportContent): DailyRepo
   const marketTable = tables.find(table => {
     const normalizedHeaders = table.headers.map(normalizeForMatch);
     return (
-      normalizedHeaders.some(header => header.includes("endeks") || header.includes("index")) &&
+      normalizedHeaders.some(
+        header =>
+          header.includes("endeks") ||
+          header.includes("index") ||
+          header.includes("varlik") ||
+          header.includes("asset")
+      ) &&
       normalizedHeaders.some(header => header.includes("degisim") || header.includes("change"))
     );
   });
@@ -396,7 +402,10 @@ export function buildDailyReportInsights(content: DailyReportContent): DailyRepo
           header.includes("guc skoru") ||
           header.includes("guc") ||
           header.includes("score") ||
-          header.includes("ytd")
+          header.includes("ytd") ||
+          header.includes("gunluk performans") ||
+          header.includes("daily performance") ||
+          header.includes("performans")
       )
     );
   });
@@ -410,11 +419,16 @@ export function buildDailyReportInsights(content: DailyReportContent): DailyRepo
           "guc",
           "score",
           "ytd",
+          "gunluk performans",
+          "daily performance",
+          "performans",
         ]);
         const leadersIndex = getColumnIndex(sectorTable.headers, [
           "one cikan",
           "one cikan hisseler",
           "leaders",
+          "yorum",
+          "teknik / temel yorum",
         ]);
 
         if (labelIndex < 0 || scoreIndex < 0) {
@@ -445,10 +459,16 @@ export function buildDailyReportInsights(content: DailyReportContent): DailyRepo
           header === "#" ||
           header.includes("hisse") ||
           header.includes("ticker") ||
-          header.includes("stock")
+          header.includes("stock") ||
+          header.includes("varlik") ||
+          header.includes("asset")
       ) &&
       normalizedHeaders.some(
-        header => header.includes("gunluk") || header.includes("daily") || header.includes("degisim")
+        header =>
+          header.includes("gunluk") ||
+          header.includes("daily") ||
+          header.includes("degisim") ||
+          header.includes("performans")
       )
     );
   });
@@ -456,12 +476,20 @@ export function buildDailyReportInsights(content: DailyReportContent): DailyRepo
   const momentumLeaders =
     leadersTable
       ?.rows.map(row => {
-        const tickerIndex = getColumnIndex(leadersTable.headers, ["hisse", "ticker", "stock"]);
+        const tickerIndex = getColumnIndex(leadersTable.headers, [
+          "hisse",
+          "ticker",
+          "stock",
+          "varlik",
+          "asset",
+        ]);
         const companyIndex = getColumnIndex(leadersTable.headers, ["sirket", "company", "name"]);
         const changeIndex = getColumnIndex(leadersTable.headers, [
           "gunluk",
           "daily",
           "degisim",
+          "performans",
+          "fiyat / performans",
         ]);
         const sectorIndex = getColumnIndex(leadersTable.headers, ["sektor", "sector"]);
 
@@ -474,8 +502,11 @@ export function buildDailyReportInsights(content: DailyReportContent): DailyRepo
           return null;
         }
 
+        const assetLabel = row[tickerIndex] || "N/A";
+        const tickerMatch = assetLabel.match(/\b[A-Z]{2,5}\b/);
+
         return {
-          ticker: row[tickerIndex] || "N/A",
+          ticker: tickerMatch?.[0] || assetLabel,
           company: companyIndex >= 0 ? row[companyIndex] : undefined,
           change,
           sector: sectorIndex >= 0 ? row[sectorIndex] : undefined,
@@ -491,7 +522,10 @@ export function buildDailyReportInsights(content: DailyReportContent): DailyRepo
       header =>
         header.includes("rejim gostergesi") ||
         header.includes("regime") ||
-        header.includes("faktor")
+        header.includes("faktor") ||
+        header.includes("gosterge") ||
+        header.includes("metric") ||
+        header.includes("metrik")
     );
   });
 
@@ -503,9 +537,28 @@ export function buildDailyReportInsights(content: DailyReportContent): DailyRepo
           "faktor",
           "factor",
           "regime",
+          "gosterge",
+          "metric",
+          "metrik",
         ]);
-        const valueIndex = getColumnIndex(macroTable.headers, ["deger", "value", "bugun", "today"]);
-        const statusIndex = getColumnIndex(macroTable.headers, ["durum", "status"]);
+        const valueIndex = getColumnIndex(macroTable.headers, [
+          "deger",
+          "value",
+          "bugun",
+          "today",
+          "seviye",
+          "kapanis",
+          "close",
+          "fiyat / performans",
+          "performans",
+        ]);
+        const statusIndex = getColumnIndex(macroTable.headers, [
+          "durum",
+          "status",
+          "yorum",
+          "rejim yorumu",
+          "note",
+        ]);
 
         if (labelIndex < 0 || valueIndex < 0) {
           return null;
@@ -527,6 +580,7 @@ export function buildDailyReportInsights(content: DailyReportContent): DailyRepo
         .map(block => block.text)
   )
     .filter(Boolean)
+    .filter(item => !item.startsWith("```"))
     .slice(0, 4);
 
   return {

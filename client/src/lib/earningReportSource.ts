@@ -3563,6 +3563,112 @@ function parseCprEarningReportMarkdown(
     }
   }
 
+  const reductionSection = getSectionBody(lines, findLineIndex(lines, /^###\s+10\.2\s+/));
+  const reductionTable = parseFirstTable(reductionSection);
+  const reductionSchedule = (reductionTable?.rows || []).map(row => ({
+    date: cleanText(row[0] || ""),
+    ticker: "PORTFOY",
+    action: cleanText(row[1] || ""),
+    note: cleanText(row[2] || ""),
+  }));
+
+  const globalRiskTable = parseFirstTable(
+    getSectionBody(lines, findLineIndex(lines, /^###\s+10\.6\s+/))
+  );
+  const matrixRisks = (globalRiskTable?.rows || []).map(row => ({
+    risk: cleanText(row[0] || ""),
+    probability: cleanText(row[1] || ""),
+    impact: cleanText(row[2] || ""),
+    mitigation: cleanText(row[3] || ""),
+  }));
+
+  const fomcRiskTable = parseFirstTable(
+    getSectionBody(lines, findLineIndex(lines, /^###\s+10\.3\s+/))
+  );
+  const fomcRisks = (fomcRiskTable?.rows || []).map(row => ({
+    risk: cleanText(row[0] || ""),
+    probability: cleanText(row[2] || row[1] || ""),
+    impact: cleanText(row[1] || ""),
+    mitigation: cleanText(row[3] || ""),
+  }));
+
+  const goldenRuleTable = parseFirstTable(
+    getSectionBody(lines, findLineIndex(lines, /^###\s+10\.5\s+/))
+  );
+  const goldenRules = (goldenRuleTable?.rows || []).map(
+    row => `${cleanText(row[0] || "")}: ${cleanText(row[1] || "")}`
+  );
+
+  const checklistMatch = markdown.match(
+    /###\s+12\.2[\s\S]*?```([\s\S]*?)```/i
+  );
+  const checklist = (checklistMatch?.[1] || "")
+    .split(/\r?\n/)
+    .map(line => cleanText(line.replace(/^\[[^\]]*\]\s*/, "")))
+    .filter(Boolean);
+
+  const allocationSections = [
+    /^###\s+11\.4\s+/,
+    /^###\s+11\.3\s+/,
+    /^###\s+11\.2\s+/,
+    /^###\s+11\.1\s+/,
+  ];
+  const allocationsMap = new Map<string, AllocationEntry>();
+  for (const matcher of allocationSections) {
+    const table = parseFirstTable(getSectionBody(lines, findLineIndex(lines, matcher)));
+    for (const row of table?.rows || []) {
+      const ticker = cleanText((row[0] || "").match(/[A-Z]{1,5}/)?.[0] || "");
+      if (!ticker || ticker === "TOPLAM" || ticker === "NAKIT" || allocationsMap.has(ticker)) {
+        continue;
+      }
+
+      allocationsMap.set(ticker, {
+        ticker,
+        capital: cleanText(row[2] || row[3] || "-"),
+        riskLevel: cleanText(row[1] || row[3] || "-"),
+      });
+    }
+  }
+
+  const positionSizingTable = parseFirstTable(
+    getSectionBody(lines, findLineIndex(lines, /^###\s+11\.5\s+/))
+  );
+  const positionSizing: PositionSizingEntry[] = positions.map(position => ({
+    ticker: position.ticker,
+    capital:
+      allocationsMap.get(position.ticker)?.capital ||
+      cleanText(position.metrics.find(metric => /Pozisyon Boyutu/i.test(metric.label))?.value || "-"),
+    contracts: "-",
+  }));
+  const exampleRows = positionSizingTable?.rows || [];
+  for (const row of exampleRows) {
+    const maxPerTicker = cleanText(row[1] || "");
+    const examples: Array<[string, number]> = [
+      ["UNH", 2],
+      ["BA", 3],
+      ["XOM", 4],
+    ];
+    for (const [ticker, index] of examples) {
+      const entry = positionSizing.find(item => item.ticker === ticker);
+      if (entry && cleanText(row[index] || "")) {
+        entry.contracts = `${cleanText(row[index] || "")} (max ${maxPerTicker})`;
+      }
+    }
+  }
+
+  const weeklySectionLines = getSectionBody(lines, findLineIndex(lines, /^##\s+12\./));
+  for (const rawLine of weeklySectionLines) {
+    const headingMatch = rawLine.match(/^####\s+(.+)/);
+    if (headingMatch) {
+      timelineSteps.push({
+        phase: cleanText(headingMatch[1] || ""),
+        label: "",
+      });
+    }
+  }
+
+  tradeSchedule.push(...reductionSchedule);
+
   return {
     sourceFile,
     rawMarkdown: markdown,
@@ -3574,13 +3680,18 @@ function parseCprEarningReportMarkdown(
     coreWindow: subtitle,
     timelineSteps,
     gainDrivers,
-    allocations: [],
+    allocations:
+      positions.map(position => ({
+        ticker: position.ticker,
+        capital: allocationsMap.get(position.ticker)?.capital || "-",
+        riskLevel: allocationsMap.get(position.ticker)?.riskLevel || position.strategyTitle,
+      })) || [],
     positions,
     tradeSchedule,
-    risks,
-    positionSizing: [],
-    goldenRules: [],
-    checklist: [],
+    risks: [...risks, ...fomcRisks, ...matrixRisks],
+    positionSizing,
+    goldenRules,
+    checklist,
     disclaimer
   };
 }

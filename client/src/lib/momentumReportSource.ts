@@ -699,10 +699,515 @@ function findFooterNote(lines: string[]) {
   return "";
 }
 
+function createEmptyMomentumReport(
+  markdown: string,
+  sourceFile: string,
+  overrides: Partial<MomentumReportSource>
+): MomentumReportSource {
+  return {
+    sourceFile,
+    rawMarkdown: markdown,
+    title: overrides.title || cleanText(sourceFile.split(/[\\/]/).pop() || "Momentum Report"),
+    subtitle: overrides.subtitle || "",
+    reportDate: overrides.reportDate || "",
+    reportDateLabel: overrides.reportDateLabel || overrides.reportDate || "",
+    sessionDateLabel: overrides.sessionDateLabel || "",
+    targetDateLabel: overrides.targetDateLabel || "",
+    readingTimeLabel: overrides.readingTimeLabel || "-",
+    executiveSummary: overrides.executiveSummary || "",
+    indexRows: overrides.indexRows || [],
+    vixRows: overrides.vixRows || [],
+    vixCommentary: overrides.vixCommentary || [],
+    sectorRows: overrides.sectorRows || [],
+    loserRows: overrides.loserRows || [],
+    gainerRows: overrides.gainerRows || [],
+    havenRows: overrides.havenRows || [],
+    rateRows: overrides.rateRows || [],
+    growthRows: overrides.growthRows || [],
+    forecastRows: overrides.forecastRows || [],
+    technicalLevels: overrides.technicalLevels || [],
+    qqqLevels: overrides.qqqLevels || [],
+    vixTechnicalRows: overrides.vixTechnicalRows || [],
+    vixTechnicalCommentary: overrides.vixTechnicalCommentary || [],
+    regimeFactors: overrides.regimeFactors || [],
+    regimeLabel: overrides.regimeLabel || "-",
+    rsiRows: overrides.rsiRows || [],
+    rvolRows: overrides.rvolRows || [],
+    candidates: overrides.candidates || [],
+    calendarEvents: overrides.calendarEvents || [],
+    specialCatalysts: overrides.specialCatalysts || [],
+    strategyBands: overrides.strategyBands || [],
+    scenarios: overrides.scenarios || [],
+    optionStrategies: overrides.optionStrategies || [],
+    riskFactors: overrides.riskFactors || [],
+    criticalLevels: overrides.criticalLevels || [],
+    conclusionParagraphs: overrides.conclusionParagraphs || [],
+    footerNote: overrides.footerNote || "",
+  };
+}
+
+function extractDateInfoFromText(value: string) {
+  const label = cleanText(
+    value.match(/\d{1,2}\s+[A-Za-zÇĞİÖŞÜçğıöşü]+\s+\d{4}/)?.[0] || ""
+  );
+  return {
+    label,
+    iso: label ? extractTurkishDate(label) : "",
+  };
+}
+
+function parseBoxTable(lines: string[], startIndex: number) {
+  let index = startIndex;
+  while (index < lines.length && !(lines[index] || "").includes("┌")) {
+    index += 1;
+  }
+
+  if (index >= lines.length) {
+    return null;
+  }
+
+  index += 1;
+  const rows: string[][] = [];
+
+  while (index < lines.length && !(lines[index] || "").includes("└")) {
+    const rawLine = lines[index] || "";
+    if (rawLine.includes("│")) {
+      const cells = rawLine
+        .split("│")
+        .slice(1, -1)
+        .map(cell => cleanText(cell));
+      if (
+        cells.length &&
+        cells.some(Boolean) &&
+        !cells.every(cell => /^[-─]+$/.test(cell.replace(/\s+/g, "")))
+      ) {
+        rows.push(cells);
+      }
+    }
+    index += 1;
+  }
+
+  if (rows.length < 2) {
+    return null;
+  }
+
+  const [headers, ...dataRows] = rows;
+  return { headers, rows: dataRows } satisfies MarkdownTable;
+}
+
+function parseLayeredMomentumReportMarkdown(
+  markdown: string,
+  sourceFile: string
+): MomentumReportSource {
+  const lines = splitLines(markdown);
+  const titleLine =
+    lines.find(line => /g[uü]nl[uü]k momentum tarama raporu/i.test(line)) ||
+    lines.find(line => /haziran\s+2026/i.test(line)) ||
+    "";
+  const dateInfo = extractDateInfoFromText(titleLine);
+  const title = cleanText(
+    titleLine
+      .replace(/\d{1,2}\s+[A-Za-zÇĞİÖŞÜçğıöşü]+\s+\d{4}/, "")
+      .replace(/^[^A-Za-zÇĞİÖŞÜçğıöşü0-9]+/, "")
+      .replace(/^[—–-]+|[—–-]+$/g, "")
+  ) || "Gunluk Momentum Tarama Raporu";
+  const footerLine = lines.find(line => /^\s*Tarih:\s*/i.test(line)) || "";
+  const footerDateInfo = extractDateInfoFromText(footerLine);
+  const reportDateLabel = footerDateInfo.label || dateInfo.label;
+  const reportDate = footerDateInfo.iso || dateInfo.iso;
+  const readingTimeLabel =
+    cleanText(markdown.match(/Tahmini okuma suresi:\s*([^.*]+?)(?:\.|\n|$)/i)?.[1] || "") ||
+    "-";
+  const executiveSummary = [
+    lines.find(line => /KR[Iİ]Z T[Iİ]P[Iİ]:/i.test(line)) || "",
+    lines.find(line => /[Iİ][ŞS]LEM [ÖO]NER[Iİ]S[Iİ]:/i.test(line)) || "",
+  ]
+    .map(line => cleanText(line))
+    .filter(Boolean)
+    .join(" ");
+
+  const indexRows: MomentumIndexRow[] = [];
+  for (const line of lines) {
+    const matches = Array.from(line.matchAll(
+      /([A-Z]{2,5})\s*:\s*\$?([0-9.,]+)\s*\(([+-]?[0-9.,]+%)\)/g
+    ));
+    for (const match of matches) {
+      indexRows.push({
+        index: match[1] || "",
+        closeLabel: match[2] || "",
+        changeLabel: match[3] || "",
+        pctChangeLabel: match[3] || "",
+        pctChange: parsePercent(match[3] || ""),
+        comment: "",
+      });
+    }
+    if (indexRows.length) {
+      break;
+    }
+  }
+
+  const vixRows: MomentumMetricRow[] = [];
+  const vixLine = lines.find(line => /^\s*VIX:\s*/i.test(line)) || "";
+  const vixMatch = vixLine.match(
+    /VIX:\s*([0-9.,]+)\s*.+?G[üu]nl[üu]k:\s*([+-]?[0-9.,]+%)\s*\|\s*[ÖO]nceki:\s*([0-9.,]+)/i
+  );
+  if (vixMatch) {
+    vixRows.push({
+      label: "VIX Kapanis",
+      value: cleanText(vixMatch[1] || ""),
+      comment: cleanText(vixLine.split("→")[1] || ""),
+      numericValue: parseNumber(vixMatch[1] || ""),
+    });
+    vixRows.push({
+      label: "Gunluk Degisim",
+      value: cleanText(vixMatch[2] || ""),
+      comment: `Onceki ${cleanText(vixMatch[3] || "")}`,
+      numericValue: parsePercent(vixMatch[2] || ""),
+    });
+  }
+
+  for (const label of ["VIX9D/VIX", "VVIX/VIX", "Fear & Greed"]) {
+    const line = lines.find(item => item.includes(label));
+    if (!line) {
+      continue;
+    }
+    const [, valuePart = "", commentPart = ""] = line.split("→");
+    vixRows.push({
+      label,
+      value: cleanText(valuePart.split("(")[0] || valuePart),
+      comment: cleanText(commentPart || line.split("|").slice(1).join(" | ")),
+      numericValue: parseNumber(valuePart),
+    });
+  }
+
+  const macroTable = parseBoxTable(
+    lines,
+    findLineIndex(lines, /^MAKRO VER[Iİ]:/i)
+  );
+  const rateRows: MacroRow[] =
+    macroTable?.rows.map(row => ({
+      metric: row[1] || row[0] || "",
+      value: row[2] || "",
+      comment: row[0] || "",
+    })) || [];
+
+  const scenarioTable = parseBoxTable(
+    lines,
+    findLineIndex(lines, /^STRESS TEST:?/i)
+  );
+  const scenarios: ScenarioRow[] =
+    scenarioTable?.rows.map(row => ({
+      scenario: row[0] || "",
+      probabilityLabel: row[2] || "",
+      probability: parsePercent(row[2] || ""),
+      action: row[4] || row[3] || "",
+    })) || [];
+
+  const strategyBands: StrategyBandRow[] = [];
+  const positionLine = lines.find(line => /POZ[Iİ]SYON/i.test(line) && /%/.test(line)) || "";
+  if (positionLine) {
+    strategyBands.push({
+      regime: cleanText(vixLine.split("→")[1] || "Sari rejim"),
+      strategy: cleanText(positionLine),
+      position: cleanText(positionLine.match(/%[0-9]+/i)?.[0] || "%75"),
+    });
+  }
+  strategyBands.push(
+    {
+      regime: "CPI oncesi",
+      strategy: "Buyuk pozisyon acma, mevcutlari azalt",
+      position: "%50 veya daha az",
+    },
+    {
+      regime: "Hedge",
+      strategy: "QQQ put veya VIX call ile delta ve vega korumasi",
+      position: "Koruma aktif",
+    }
+  );
+
+  const optionStrategies = (
+    lines
+      .slice(findLineIndex(lines, /^HEDGE [ÖO]NER[Iİ]S[Iİ]:/i))
+      .filter(line => /^\s*[•-]\s+/.test(line))
+      .map(line => cleanText(line.replace(/^\s*[•-]\s+/, "")))
+  )
+    .slice(0, 4)
+    .map(item => ({
+      strategy: item.split("(")[0] || item,
+      condition: "Makro stres / CPI oncesi",
+      target: item,
+    }));
+
+  const riskFactors = [
+    ...lines
+      .slice(findLineIndex(lines, /^PORTF[ÖO]Y SA[ĞG]LIK SKORU:/i))
+      .filter(line => /^\s*│\s*•/.test(line))
+      .map(line => cleanText(line.replace(/^\s*│\s*•\s*/, "")))
+      .map(item => ({
+        title: item.split("=").at(0)?.split(":").at(0)?.trim() || item,
+        detail: item,
+      })),
+    ...lines
+      .slice(findLineIndex(lines, /^📌\s*3 KR[Iİ]T[Iİ]K [ÖO]NCEL[Iİ]K/i))
+      .filter(line =>
+        ["🚨", "⚠️", "✅"].some(icon => cleanText(line).startsWith(icon))
+      )
+      .map(line => cleanText(line))
+      .map(item => ({
+        title: item.replace(/^\[[0-9]+\]\s*/, "").split("→")[0] || item,
+        detail: item,
+      })),
+  ].slice(0, 6);
+
+  const specialCatalysts = lines
+    .slice(findLineIndex(lines, /^📌\s*3 KR[Iİ]T[Iİ]K [ÖO]NCEL[Iİ]K/i))
+    .filter(line =>
+      ["🚨", "⚠️", "✅"].some(icon => cleanText(line).startsWith(icon))
+    )
+    .map(line => cleanText(line))
+    .slice(0, 4);
+
+  const calendarEvents = rateRows
+    .filter(row => /\d{1,2}:\d{2}|haziran|cpi|fomc/i.test(row.metric))
+    .map(row => ({
+      date: row.comment || row.metric,
+      event: row.metric,
+      impact: row.value,
+    }))
+    .slice(0, 6);
+
+  const gainerRows: MomentumMoverRow[] = [];
+  const candidates: MomentumCandidateRow[] = [];
+  let candidateGroup: MomentumCandidateGroup = "upside";
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = cleanText(lines[index] || "");
+    if (!line) {
+      continue;
+    }
+
+    if (/A\+?\s*TIER/i.test(line) || /G[ÜU][ÇC]L[ÜU] SETUP/i.test(line)) {
+      candidateGroup = "upside";
+      continue;
+    }
+    if (/B TIER/i.test(line) || /G[ÖO]ZLEM/i.test(line)) {
+      candidateGroup = "defensive";
+      continue;
+    }
+    if (/C TIER/i.test(line) || /ZAYIF/i.test(line)) {
+      candidateGroup = "downside";
+      continue;
+    }
+
+    const match = line.match(
+      /^\[(\d+)\]\s+([A-Z][A-Z0-9.-]+)\s+[—-]\s+([A-ZÇĞİÖŞÜ_ ]+)\s+\(Skor:\s*([0-9.]+)\/10\)/i
+    );
+    if (!match) {
+      continue;
+    }
+
+    const ticker = cleanText(match[2] || "");
+    const direction = cleanText(match[3] || "");
+    const rawScore = Number(match[4] || "0");
+    const details: string[] = [];
+    let cursor = index + 1;
+    while (cursor < lines.length && !(lines[cursor] || "").includes("└")) {
+      details.push(cleanText(lines[cursor] || ""));
+      cursor += 1;
+    }
+    const catalyst =
+      details.find(item => /Katalist:|Strateji:/i.test(item)) ||
+      details.find(item => /Trend:|POP:|R\/R:/i.test(item)) ||
+      "";
+    const risk =
+      details.find(item => /⚠|Stop:|risk/i.test(item)) ||
+      details.find(item => /Not:/i.test(item)) ||
+      "";
+    const score = rawScore <= 10 ? Math.round(rawScore * 10) : Math.round(rawScore);
+    const group =
+      /SHORT/i.test(direction) ? "downside" : candidateGroup;
+
+    candidates.push({
+      group,
+      name: ticker,
+      ticker,
+      reason: catalyst || `${direction} setup`,
+      risk: risk || "Disiplinli stop gerekli",
+      scoreLabel: String(score),
+      score,
+    });
+
+    if (group === "upside") {
+      const moveLine = details.find(item => /G[üu]nl[üu]k:/i.test(item)) || "";
+      gainerRows.push({
+        name: ticker,
+        ticker,
+        moveLabel: cleanText(moveLine.match(/[+-]?[0-9.,]+%/)?.[0] || `${score}/100`),
+        movePct: parsePercent(moveLine),
+        catalyst: catalyst || direction,
+      });
+    }
+  }
+
+  const havenRows: MomentumHavenRow[] = [];
+  const replacementLine = lines.find(line => /Yerine:/i.test(line)) || "";
+  for (const token of cleanText(replacementLine.replace(/^.*Yerine:\s*/i, "")).split(",")) {
+    const symbol = cleanText(token);
+    if (!symbol) {
+      continue;
+    }
+    havenRows.push({
+      symbol,
+      performanceLabel: "Hedge",
+      performance: null,
+      role: "Risk azaltma",
+    });
+  }
+
+  const conclusionParagraphs = lines
+    .slice(findLineIndex(lines, /^🏁\s*SONU[CÇ]/i))
+    .map(line => cleanText(line))
+    .filter(Boolean)
+    .filter(line => !/^[━─=-]+$/.test(line.replace(/\s+/g, "")))
+    .slice(1, 8);
+
+  return createEmptyMomentumReport(markdown, sourceFile, {
+    title,
+    reportDate,
+    reportDateLabel,
+    readingTimeLabel,
+    executiveSummary,
+    indexRows,
+    vixRows,
+    vixCommentary: [
+      cleanText(vixLine),
+      ...specialCatalysts.slice(0, 2),
+    ].filter(Boolean),
+    gainerRows: gainerRows.slice(0, 6),
+    havenRows,
+    rateRows: rateRows.slice(0, 6),
+    growthRows: rateRows.slice(0, 4),
+    forecastRows: riskFactors.slice(0, 4).map(item => ({
+      metric: item.title,
+      value: "Aktif",
+      comment: item.detail,
+    })),
+    qqqLevels: indexRows
+      .filter(row => /SPY|QQQ/i.test(row.index))
+      .map(row => ({
+        label: row.index,
+        value: row.closeLabel,
+        comment: row.changeLabel,
+        numericValue: parseNumber(row.closeLabel),
+      })),
+    vixTechnicalRows: vixRows.slice(0, 4),
+    vixTechnicalCommentary: specialCatalysts.slice(0, 3),
+    regimeFactors: [
+      {
+        factor: "VIX",
+        value: cleanText(vixMatch?.[1] || ""),
+        comment: cleanText(vixLine.split("→")[1] || ""),
+      },
+      {
+        factor: "Fear & Greed",
+        value: cleanText(lines.find(line => /Fear & Greed:/i.test(line))?.match(/[0-9.]+\/100/)?.[0] || ""),
+        comment: cleanText(lines.find(line => /Fear & Greed:/i.test(line)) || ""),
+      },
+      {
+        factor: "CPI",
+        value: "Yarin 08:30",
+        comment: "Makro ana risk",
+      },
+    ].filter(item => item.value || item.comment),
+    regimeLabel: cleanText(vixLine.split("→")[1] || "Sari rejim"),
+    rvolRows: candidates.slice(0, 4).map(item => ({
+      label: item.ticker,
+      value: item.scoreLabel,
+    })),
+    candidates,
+    calendarEvents,
+    specialCatalysts,
+    strategyBands,
+    scenarios,
+    optionStrategies,
+    riskFactors,
+    conclusionParagraphs,
+    footerNote: cleanText(footerLine),
+  });
+}
+
+function parseCompactMomentumSummaryMarkdown(
+  markdown: string,
+  sourceFile: string
+): MomentumReportSource {
+  const lines = splitLines(markdown);
+  const title = cleanText((lines[0] || "").replace(/^#\s*/, "")) || "Momentum Summary";
+  const executiveSummary = collectParagraphs(lines.slice(1, 8)).join(" ");
+  const candidates: MomentumCandidateRow[] = [];
+  const firstLeader = markdown.match(/##\s+.*LIDERI:\s*([A-Z]{2,5})/i);
+  if (firstLeader) {
+    candidates.push({
+      group: "upside",
+      name: firstLeader[1],
+      ticker: firstLeader[1],
+      reason: "Gun sonu liderlik okumasinda one cikti",
+      risk: "Bearish reversal riski yakindan izlenmeli",
+      scoreLabel: "66.05",
+      score: 66.05,
+    });
+  }
+
+  const itemMatches = Array.from(markdown.matchAll(
+    /\d+\.\s+\*\*([A-Z]{2,5})\s+\(([^)]+)\)\*\*[\s\S]*?\*\*Skor:\*\*\s*\*\*([0-9.]+)\*\*[\s\S]*?\*\*Not:\*\*\s*([^\n]+)/g
+  ));
+  for (const match of itemMatches) {
+    candidates.push({
+      group: "upside",
+      name: cleanText(match[2] || match[1] || ""),
+      ticker: cleanText(match[1] || ""),
+      reason: cleanText(match[4] || ""),
+      risk: "Mikro yapi teyidi beklenmeli",
+      scoreLabel: cleanText(match[3] || ""),
+      score: parseNumber(match[3] || ""),
+    });
+  }
+
+  const riskParagraph = collectParagraphs(lines).find(line => /Genel Uyari/i.test(line)) || "";
+
+  return createEmptyMomentumReport(markdown, sourceFile, {
+    title,
+    executiveSummary,
+    candidates,
+    riskFactors: riskParagraph
+      ? [
+          {
+            title: "Genel uyari",
+            detail: riskParagraph,
+          },
+        ]
+      : [],
+    strategyBands: [
+      {
+        regime: "Secici momentum",
+        strategy: "Lider isimlerde teyitli giris, zayif isimlerde stop disiplini",
+        position: "Kucuk-orta boy",
+      },
+    ],
+    conclusionParagraphs: collectParagraphs(lines).slice(-2),
+  });
+}
+
 export function parseMomentumReportMarkdown(
   markdown: string,
   sourceFile = "momentum/source.md"
 ): MomentumReportSource {
+  if (/KATMAN 1:\s*REJ[İI]M/i.test(markdown)) {
+    return parseLayeredMomentumReportMarkdown(markdown, sourceFile);
+  }
+
+  if (/G[ÜU]N[ÜU]N MUTLAK L[İI]DER[İI]/i.test(markdown)) {
+    return parseCompactMomentumSummaryMarkdown(markdown, sourceFile);
+  }
+
   const lines = splitLines(markdown);
   const title = cleanText((lines[0] || "").replace(/^#\s*/, ""));
   const subtitle = cleanText((lines[1] || "").replace(/^##\s*/, ""));

@@ -227,6 +227,35 @@ function normalizeParagraph(value: string) {
     .trim();
 }
 
+function cleanMarkdownText(value: string) {
+  return normalizeString(value)
+    .replace(/\*\*/g, "")
+    .replace(/`/g, "")
+    .trim();
+}
+
+function parseDateTokenFromText(value: string) {
+  const normalized = cleanMarkdownText(value)
+    .toLowerCase()
+    .replace(/[.,]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  const match = normalized.match(
+    /(\d{1,2})\s+(january|jan|ocak|february|feb|subat|march|mar|mart|april|apr|nisan|may|mayis|june|jun|haziran|july|jul|temmuz|august|aug|agustos|september|sep|sept|eylul|october|oct|ekim|november|nov|kasim|december|dec|aralik)\s+(\d{4})/i
+  );
+  if (!match) {
+    return "";
+  }
+
+  const [, dayToken, monthToken, year] = match;
+  const month = MONTH_TOKENS.get(monthToken.toLowerCase());
+  if (!month) {
+    return "";
+  }
+
+  return `${year}-${month}-${String(Number(dayToken)).padStart(2, "0")}`;
+}
+
 function extractNarrativeParagraphs(markdown: string, limit = 4) {
   return markdown
     .split(/\r?\n\s*\r?\n/)
@@ -252,6 +281,11 @@ function extractMetadata(markdown: string) {
   const title =
     lines.find(line => line.trim().startsWith("# "))?.replace(/^#\s+/, "").trim() ||
     "Daily Report";
+  const titleDateMatch = cleanMarkdownText(title).match(
+    /\d{1,2}\s+[A-Za-zÇĞİÖŞÜçğıöşü]+\s+\d{4}/
+  );
+  const timestampMatch = markdown.match(/\*\*Zaman damgas[ıi]:\*\*\s*(.+)/i);
+  const reportDateFieldMatch = markdown.match(/\*\*Tarih:\*\*\s*(.+)/i);
   const authorMatch = markdown.match(/\*\*Haz[ıi]rlayan:\*\*\s*(.+)/i);
   const coverageMatch = markdown.match(/\*\*Kapsam:\*\*\s*(.+)/i);
   const methodologyMatch = markdown.match(/\*\*Metodoloji:\*\*\s*(.+)/i);
@@ -270,6 +304,10 @@ function extractMetadata(markdown: string) {
     : narrativeParagraphs;
 
   const headline = normalizedSummary[0] || title;
+  const reportDateLabel =
+    cleanMarkdownText(titleDateMatch?.[0] || "") ||
+    cleanMarkdownText(reportDateFieldMatch?.[1] || "") ||
+    cleanMarkdownText(timestampMatch?.[1] || "");
 
   return {
     title,
@@ -278,6 +316,7 @@ function extractMetadata(markdown: string) {
     coverage: normalizeString(coverageMatch?.[1]),
     methodology: normalizeString(methodologyMatch?.[1]),
     executiveSummary: normalizedSummary,
+    reportDate: parseDateTokenFromText(reportDateLabel),
   };
 }
 
@@ -526,6 +565,7 @@ function buildFolderSourcePackage(folderName: string) {
   const researchPath = path.join(folderPath, "research");
   const stats = fs.statSync(mainMarkdownPath);
   const reportDate =
+    metadata.reportDate ||
     parseDateTokenFromFileName(path.basename(mainMarkdownPath)) ||
     toIsoDateFromKey(folderName) ||
     new Date(stats.mtimeMs).toISOString().slice(0, 10);
@@ -585,6 +625,7 @@ function buildFileSourcePackage(fileName: string) {
   const metadata = extractMetadata(markdown);
   const stats = fs.statSync(filePath);
   const reportDate =
+    metadata.reportDate ||
     toIsoDateFromKey(sourceKey) ||
     new Date(stats.mtimeMs).toISOString().slice(0, 10);
 

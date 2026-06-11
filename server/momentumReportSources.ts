@@ -10,6 +10,13 @@ function normalizeString(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
 }
 
+function cleanText(value: string) {
+  return normalizeString(value)
+    .replace(/\*\*/g, "")
+    .replace(/`/g, "")
+    .replace(/\s+/g, " ");
+}
+
 function slugify(value: string) {
   return value
     .trim()
@@ -66,6 +73,21 @@ function readHeading(markdown: string, prefix: "#" | "##") {
   return normalizeString(match?.[1]);
 }
 
+function isDecorativeLine(value: string) {
+  const normalized = normalizeString(value).replace(/\s+/g, "");
+  return Boolean(
+    normalized &&
+      (/^[━─=-]+$/.test(normalized) || /^[┌┐└┘├┤┬┴┼│]+$/.test(normalized))
+  );
+}
+
+function findMeaningfulLines(markdown: string) {
+  return markdown
+    .split(/\r?\n/)
+    .map(line => cleanText(line))
+    .filter(line => line && !isDecorativeLine(line));
+}
+
 function parseTurkishDateLabel(value: string) {
   const normalized = normalizeString(value)
     .toLocaleLowerCase("tr-TR")
@@ -108,6 +130,13 @@ function parseTurkishDateLabel(value: string) {
   return `${year}-${month}-${day}`;
 }
 
+function extractTurkishDateLabel(value: string) {
+  const match = cleanText(value).match(
+    /\d{1,2}\s+[A-Za-zÇĞİÖŞÜçğıöşü]+\s+\d{4}/
+  );
+  return normalizeString(match?.[0]);
+}
+
 function toIsoDateFromKey(sourceKey: string) {
   const ddmmyyyy = sourceKey.match(/^(\d{2})(\d{2})(\d{4})$/);
   if (ddmmyyyy) {
@@ -139,7 +168,12 @@ function extractSubtitleDates(subtitle: string) {
 
 function extractVixLabel(markdown: string) {
   const match = markdown.match(/\|\s*\*{0,2}VIX Kapanis\*{0,2}\s*\|\s*([^|]+?)\s*\|/i);
-  return normalizeString(match?.[1]);
+  if (match) {
+    return normalizeString(match[1]);
+  }
+
+  const inlineMatch = markdown.match(/\bVIX:\s*([0-9.,-]+)/i);
+  return normalizeString(inlineMatch?.[1]);
 }
 
 function extractReadingTime(markdown: string) {
@@ -164,12 +198,34 @@ function extractExecutiveHeadline(markdown: string) {
 }
 
 function extractMetadata(markdown: string, fileName: string, updatedAt: string) {
-  const title = readHeading(markdown, "#") || fileName;
-  const subtitle = readHeading(markdown, "##") || "";
+  const meaningfulLines = findMeaningfulLines(markdown);
+  const headingTitle = readHeading(markdown, "#");
+  const fallbackTitleLine =
+    meaningfulLines.find(line => /momentum|scanner|rapor|aday/i.test(line)) ||
+    meaningfulLines[0] ||
+    fileName;
+  const combinedTitle = headingTitle || fallbackTitleLine;
+  const combinedDateLabel = extractTurkishDateLabel(combinedTitle);
+  const title = combinedDateLabel
+    ? cleanText(
+        combinedTitle
+          .replace(combinedDateLabel, "")
+          .replace(/^[^A-Za-zÇĞİÖŞÜçğıöşü0-9]+/, "")
+          .replace(/^[—–-]+|[—–-]+$/g, "")
+      )
+    : combinedTitle;
+  const rawSubtitle =
+    readHeading(markdown, "##") ||
+    (headingTitle ? meaningfulLines[1] || "" : meaningfulLines[0] === fallbackTitleLine ? meaningfulLines[1] || "" : "");
+  const subtitle = /KATMAN\s+\d+|OZET EXECUTIVE SUMMARY/i.test(rawSubtitle)
+    ? ""
+    : rawSubtitle;
   const { sessionDateLabel, targetDateLabel } = extractSubtitleDates(subtitle);
-  const reportDateLabel = extractFooterDate(markdown) || sessionDateLabel || subtitle || fileName;
+  const reportDateLabel =
+    extractFooterDate(markdown) || combinedDateLabel || sessionDateLabel || subtitle || fileName;
   const reportDate =
     parseTurkishDateLabel(reportDateLabel) ||
+    parseTurkishDateLabel(combinedDateLabel) ||
     parseTurkishDateLabel(sessionDateLabel) ||
     toIsoDateFromKey(path.basename(fileName, path.extname(fileName))) ||
     updatedAt.slice(0, 10);
