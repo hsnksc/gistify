@@ -423,6 +423,19 @@ function mapDailyReportRow(row: DailyReportDbRow): DailyReportRecord {
           .map(item => (transform ? transform(item) : item).trim())
           .filter(Boolean)
       : [];
+  const normalizeMetadataItems = (value: unknown) =>
+    Array.isArray(value)
+      ? value
+          .filter(
+            (item): item is { label?: unknown; value?: unknown } =>
+              Boolean(item) && typeof item === "object"
+          )
+          .map(item => ({
+            label: normalizeOptionalString(item.label) || "",
+            value: normalizeOptionalString(item.value) || "",
+          }))
+          .filter(item => item.label && item.value)
+      : [];
 
   return {
     id: row.id,
@@ -442,6 +455,7 @@ function mapDailyReportRow(row: DailyReportDbRow): DailyReportRecord {
       author: normalizeOptionalString(content.author),
       coverage: normalizeOptionalString(content.coverage),
       methodology: normalizeOptionalString(content.methodology),
+      metadataItems: normalizeMetadataItems(content.metadataItems),
       executiveSummary: normalizeStringArray(content.executiveSummary),
       markdown: typeof content.markdown === "string" ? content.markdown : "",
       sectionFiles: normalizeStringArray(content.sectionFiles),

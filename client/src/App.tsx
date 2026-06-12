@@ -10,6 +10,7 @@ import {
 import {
   FileText,
   LayoutDashboard,
+  Layers3,
   LogOut,
   Radar,
   Shield,
@@ -32,6 +33,7 @@ const Home = lazy(() => import("./pages/Home"));
 const ReportsAdmin = lazy(() => import("./pages/ReportsAdmin"));
 const Scanner = lazy(() => import("./pages/Scanner"));
 const DailyReport = lazy(() => import("./pages/DailyReport"));
+const FlowReports = lazy(() => import("./pages/FlowReports"));
 const Pay = lazy(() => import("./pages/Pay"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const Terms = lazy(() => import("./pages/Terms"));
@@ -219,6 +221,9 @@ function Router({
         <Route path={"/daily-report"}>
           {() => <DailyReport language={language} />}
         </Route>
+        <Route path={"/flow"}>
+          {() => <FlowReports language={language} />}
+        </Route>
         <Route path={"/scanner"}>{() => <Scanner language={language} />}</Route>
         <Route path={"/pricing"}>
           {() => (
@@ -275,6 +280,12 @@ function AppNavigation({ language }: { language: AppLanguage }) {
       label: language === "en" ? "Daily" : "Daily",
       icon: FileText,
       active: location.startsWith("/daily-report"),
+    },
+    {
+      href: "/flow",
+      label: language === "en" ? "Flow" : "Flow",
+      icon: Layers3,
+      active: location.startsWith("/flow"),
     },
   ];
 

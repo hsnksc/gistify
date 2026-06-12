@@ -46,6 +46,7 @@ interface DailyReportViewerProps {
   language?: AppLanguage;
   title: string;
   reportDate: string;
+  updatedAt?: string;
   sourceFolder: string;
   content: DailyReportContent;
 }
@@ -73,6 +74,25 @@ function formatCompactNumber(value: number, locale = "tr-TR") {
   return new Intl.NumberFormat(locale, {
     maximumFractionDigits: value % 1 === 0 ? 0 : 1,
   }).format(value);
+}
+
+function formatUpdateStamp(value: string, locale = "tr-TR") {
+  if (!value) {
+    return "-";
+  }
+
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) {
+    return value;
+  }
+
+  return new Intl.DateTimeFormat(locale, {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(parsed);
 }
 
 function normalizeRelativeAssetPath(value: string) {
@@ -348,6 +368,7 @@ export default function DailyReportViewer({
   language = "tr",
   title,
   reportDate,
+  updatedAt = "",
   sourceFolder,
   content,
 }: DailyReportViewerProps) {
@@ -370,6 +391,16 @@ export default function DailyReportViewer({
     openAiFigureFiles: Array.isArray(content.openAiFigureFiles)
       ? content.openAiFigureFiles.filter((item): item is string => typeof item === "string")
       : [],
+    metadataItems: Array.isArray(content.metadataItems)
+      ? content.metadataItems.filter(
+          (item): item is { label: string; value: string } =>
+            Boolean(item) &&
+            typeof item.label === "string" &&
+            typeof item.value === "string" &&
+            item.label.trim().length > 0 &&
+            item.value.trim().length > 0
+        )
+      : [],
     tickerUniverse: Array.isArray(content.tickerUniverse)
       ? content.tickerUniverse.filter((item): item is string => typeof item === "string")
       : [],
@@ -382,6 +413,7 @@ export default function DailyReportViewer({
   const insights = buildDailyReportInsights(normalizedContent);
   const assetBasePath = normalizedContent.assetBasePath || sourceFolder;
   const openAiFigureFiles = normalizedContent.openAiFigureFiles;
+  const metadataHighlights = normalizedContent.metadataItems.slice(0, 6);
   const resolvedFigures = insights.figureCards.map(figure => {
     const preferred = resolvePreferredFigureFileName(
       figure.fileName,
@@ -509,6 +541,33 @@ export default function DailyReportViewer({
                   {copy(language, "Sinyal haritasi", "Signal map")}
                 </div>
               </div>
+
+              <div className="mt-4 rounded-[1.35rem] border border-white/8 bg-white/[0.03] px-4 py-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground">
+                  {copy(language, "Yuklenme zamani", "Loaded at")}
+                </p>
+                <p className="mt-1 text-sm font-semibold text-foreground">
+                  {formatUpdateStamp(updatedAt, locale)}
+                </p>
+              </div>
+
+              {metadataHighlights.length ? (
+                <div className="mt-4 grid gap-3">
+                  {metadataHighlights.map(item => (
+                    <div
+                      key={`${item.label}-${item.value}`}
+                      className="rounded-[1.35rem] border border-white/8 bg-white/[0.03] px-4 py-3"
+                    >
+                      <p className="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground">
+                        {item.label}
+                      </p>
+                      <p className="mt-1 text-sm font-semibold text-foreground">
+                        {item.value}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
 
               {insights.macroSignals.length ? (
                 <div className="mt-5 space-y-3">

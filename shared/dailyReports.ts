@@ -1,11 +1,17 @@
 export type DailyReportStatus = "draft" | "published";
 export type DailyReportSourceKind = "folder" | "file";
 
+export interface DailyReportMetadataItem {
+  label: string;
+  value: string;
+}
+
 export interface DailyReportContent {
   headline: string;
   author?: string;
   coverage?: string;
   methodology?: string;
+  metadataItems?: DailyReportMetadataItem[];
   executiveSummary: string[];
   markdown: string;
   sectionFiles: string[];
@@ -41,6 +47,7 @@ export interface DailyReportSourcePackage {
   author?: string;
   coverage?: string;
   methodology?: string;
+  metadataItems: DailyReportMetadataItem[];
   executiveSummary: string[];
   markdown: string;
   sectionFiles: string[];

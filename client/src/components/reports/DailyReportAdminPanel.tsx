@@ -69,6 +69,22 @@ const normalizeStringArray = (value: unknown, fallback: string[]) =>
         .map(item => item.trim())
         .filter(Boolean)
     : fallback;
+const normalizeMetadataItems = (
+  value: unknown,
+  fallback: NonNullable<DailyReportContent["metadataItems"]>
+) =>
+  Array.isArray(value)
+    ? value
+        .filter(
+          (item): item is { label?: unknown; value?: unknown } =>
+            Boolean(item) && typeof item === "object"
+        )
+        .map(item => ({
+          label: typeof item.label === "string" ? item.label.trim() : "",
+          value: typeof item.value === "string" ? item.value.trim() : "",
+        }))
+        .filter(item => item.label && item.value)
+    : fallback;
 
 function mergeContent(
   current: DailyReportContent,
@@ -130,6 +146,10 @@ function hydrateDailyReportFromRaw(
       tickerUniverse: normalizeStringArray(
         rawContent.tickerUniverse,
         current.content.tickerUniverse
+      ),
+      metadataItems: normalizeMetadataItems(
+        rawContent.metadataItems,
+        current.content.metadataItems || []
       ),
     },
   };
@@ -390,17 +410,25 @@ export default function DailyReportAdminPanel({
         ) : null}
 
         {draftReport ? (
-          <DailyReportViewer title={draftReport.title} reportDate={draftReport.reportDate} sourceFolder={draftReport.sourceFolder} content={draftReport.content} />
+          <DailyReportViewer
+            title={draftReport.title}
+            reportDate={draftReport.reportDate}
+            updatedAt={draftReport.updatedAt}
+            sourceFolder={draftReport.sourceFolder}
+            content={draftReport.content}
+          />
         ) : selectedSource ? (
           <DailyReportViewer
             title={selectedSource.title}
             reportDate={selectedSource.reportDate}
+            updatedAt={selectedSource.updatedAt}
             sourceFolder={selectedSource.folderName}
             content={{
               headline: selectedSource.headline,
               author: selectedSource.author,
               coverage: selectedSource.coverage,
               methodology: selectedSource.methodology,
+              metadataItems: selectedSource.metadataItems,
               executiveSummary: selectedSource.executiveSummary,
               markdown: selectedSource.markdown,
               sectionFiles: selectedSource.sectionFiles,

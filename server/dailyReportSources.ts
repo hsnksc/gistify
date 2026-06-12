@@ -264,6 +264,168 @@ function cleanMarkdownText(value: string) {
     .trim();
 }
 
+function normalizeMetadataKey(value: string) {
+  return cleanMarkdownText(value)
+    .toLowerCase()
+    .replace(/[ç]/g, "c")
+    .replace(/[ğ]/g, "g")
+    .replace(/[ı]/g, "i")
+    .replace(/[İ]/g, "i")
+    .replace(/[ö]/g, "o")
+    .replace(/[ş]/g, "s")
+    .replace(/[ü]/g, "u")
+    .replace(/[^\w\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function appendMetadataItem(
+  items: { label: string; value: string }[],
+  label: string,
+  value: string
+) {
+  const nextLabel = cleanMarkdownText(label);
+  const nextValue = cleanMarkdownText(value);
+  if (!nextLabel || !nextValue) {
+    return;
+  }
+
+  const duplicate = items.some(
+    item =>
+      normalizeMetadataKey(item.label) === normalizeMetadataKey(nextLabel) &&
+      item.value === nextValue
+  );
+  if (!duplicate) {
+    items.push({ label: nextLabel, value: nextValue });
+  }
+}
+
+function parseHeaderMetadata(markdown: string) {
+  const metadataItems: { label: string; value: string }[] = [];
+  const lines = markdown.split(/\r?\n/);
+  const headerLines: string[] = [];
+
+  for (const rawLine of lines) {
+    const trimmed = rawLine.trim();
+    if (!trimmed) {
+      if (headerLines.length >= 3) {
+        break;
+      }
+      continue;
+    }
+
+    headerLines.push(trimmed);
+    if (/^---+$/.test(trimmed) || headerLines.length >= 18) {
+      break;
+    }
+  }
+
+  let author = "";
+  let coverage = "";
+  let methodology = "";
+  let reportDateLabel = "";
+  let topic = "";
+
+  for (const rawLine of headerLines) {
+    const trimmed = rawLine.trim();
+    if (!trimmed || /^#\s+/.test(trimmed)) {
+      continue;
+    }
+
+    const cleanedLine = cleanMarkdownText(
+      trimmed.replace(/^>\s*/, "").replace(/^#{2,6}\s+/, "")
+    );
+    if (!cleanedLine) {
+      continue;
+    }
+
+    if (
+      !topic &&
+      /^##\s+/.test(trimmed) &&
+      !/^(executive summary|ozet|özet|icindekiler|içindekiler)\b/i.test(cleanedLine)
+    ) {
+      topic = cleanedLine;
+      appendMetadataItem(metadataItems, "Konu", topic);
+    }
+
+    const segments = cleanedLine
+      .split("|")
+      .map(segment => cleanMarkdownText(segment))
+      .filter(Boolean);
+    for (const segment of segments) {
+      const match = segment.match(/^([^:]{2,40}):\s*(.+)$/);
+      if (!match) {
+        continue;
+      }
+
+      const rawLabel = cleanMarkdownText(match[1]);
+      const rawValue = cleanMarkdownText(match[2]);
+      const normalizedLabel = normalizeMetadataKey(rawLabel);
+
+      if (!rawLabel || !rawValue) {
+        continue;
+      }
+
+      if (
+        ["hazirlayan", "prepared by", "author"].includes(normalizedLabel)
+      ) {
+        author ||= rawValue;
+        appendMetadataItem(metadataItems, "Hazirlayan", rawValue);
+        continue;
+      }
+
+      if (
+        ["tarih", "rapor tarihi", "report date", "zaman damgasi", "timestamp"].includes(
+          normalizedLabel
+        )
+      ) {
+        reportDateLabel ||= rawValue;
+        appendMetadataItem(metadataItems, "Rapor Tarihi", rawValue);
+        continue;
+      }
+
+      if (["kapsam", "coverage"].includes(normalizedLabel)) {
+        coverage ||= rawValue;
+        appendMetadataItem(metadataItems, "Kapsam", rawValue);
+        continue;
+      }
+
+      if (["metodoloji", "methodology"].includes(normalizedLabel)) {
+        methodology ||= rawValue;
+        appendMetadataItem(metadataItems, "Metodoloji", rawValue);
+        continue;
+      }
+
+      if (["konu", "tema", "subject", "topic"].includes(normalizedLabel)) {
+        topic ||= rawValue;
+        appendMetadataItem(metadataItems, "Konu", rawValue);
+        continue;
+      }
+
+      if (["guncelleme", "son guncelleme", "version", "versiyon"].includes(normalizedLabel)) {
+        appendMetadataItem(metadataItems, "Guncelleme", rawValue);
+        continue;
+      }
+
+      if (["kaynaklar", "sources", "source"].includes(normalizedLabel)) {
+        appendMetadataItem(metadataItems, "Kaynaklar", rawValue);
+        continue;
+      }
+
+      appendMetadataItem(metadataItems, rawLabel, rawValue);
+    }
+  }
+
+  return {
+    author,
+    coverage,
+    methodology,
+    reportDateLabel,
+    topic,
+    metadataItems,
+  };
+}
+
 function parseDateTokenFromText(value: string) {
   const normalized = cleanMarkdownText(value)
     .toLowerCase()
@@ -308,6 +470,7 @@ function extractNarrativeParagraphs(markdown: string, limit = 4) {
 
 function extractMetadata(markdown: string) {
   const lines = markdown.split(/\r?\n/);
+  const headerMetadata = parseHeaderMetadata(markdown);
   const title =
     lines.find(line => line.trim().startsWith("# "))?.replace(/^#\s+/, "").trim() ||
     "Daily Report";
@@ -333,18 +496,22 @@ function extractMetadata(markdown: string) {
     ? executiveSummary
     : narrativeParagraphs;
 
-  const headline = normalizedSummary[0] || title;
+  const headline =
+    normalizedSummary[0] || headerMetadata.topic || cleanMarkdownText(title) || title;
   const reportDateLabel =
     cleanMarkdownText(titleDateMatch?.[0] || "") ||
     cleanMarkdownText(reportDateFieldMatch?.[1] || "") ||
-    cleanMarkdownText(timestampMatch?.[1] || "");
+    cleanMarkdownText(timestampMatch?.[1] || "") ||
+    cleanMarkdownText(headerMetadata.reportDateLabel);
 
   return {
     title,
     headline,
-    author: normalizeString(authorMatch?.[1]),
-    coverage: normalizeString(coverageMatch?.[1]),
-    methodology: normalizeString(methodologyMatch?.[1]),
+    author: headerMetadata.author || normalizeString(authorMatch?.[1]),
+    coverage: headerMetadata.coverage || normalizeString(coverageMatch?.[1]),
+    methodology:
+      headerMetadata.methodology || normalizeString(methodologyMatch?.[1]),
+    metadataItems: headerMetadata.metadataItems,
     executiveSummary: normalizedSummary,
     reportDate: parseDateTokenFromText(reportDateLabel),
   };
@@ -644,6 +811,7 @@ function buildFolderSourcePackage(folderName: string) {
     author: metadata.author || undefined,
     coverage: metadata.coverage || undefined,
     methodology: metadata.methodology || undefined,
+    metadataItems: metadata.metadataItems,
     executiveSummary: metadata.executiveSummary,
     markdown,
     sectionFiles: listSectionFiles(folderPath),
@@ -719,6 +887,7 @@ function buildFileSourcePackage({
     author: metadata.author || undefined,
     coverage: metadata.coverage || undefined,
     methodology: metadata.methodology || undefined,
+    metadataItems: metadata.metadataItems,
     executiveSummary: metadata.executiveSummary,
     markdown,
     sectionFiles: [],
@@ -830,6 +999,7 @@ export function buildDailyReportRecordFromSource(
       author: source.author,
       coverage: source.coverage,
       methodology: source.methodology,
+      metadataItems: source.metadataItems,
       executiveSummary: source.executiveSummary,
       markdown: source.markdown,
       sectionFiles: source.sectionFiles,

@@ -24,6 +24,14 @@ interface DailyReportsResponse {
   reports?: DailyReportRecord[];
 }
 
+function isFlowReport(report: DailyReportRecord) {
+  const sourceLabel =
+    typeof report.content.sourceLabel === "string"
+      ? report.content.sourceLabel.trim().toLowerCase()
+      : "";
+  return sourceLabel.startsWith("flow/");
+}
+
 function formatReportDate(reportDate: string, locale = "tr-TR") {
   return new Intl.DateTimeFormat(locale, {
     day: "2-digit",
@@ -107,11 +115,18 @@ function ReportSelectorCard({
   );
 }
 
-export default function DailyReportPage({ language }: { language: AppLanguage }) {
+export default function DailyReportPage({
+  language,
+  mode = "daily",
+}: {
+  language: AppLanguage;
+  mode?: "daily" | "flow";
+}) {
   const [reports, setReports] = useState<DailyReportRecord[]>([]);
   const [selectedReportId, setSelectedReportId] = useState("");
   const [loading, setLoading] = useState(true);
   const locale = language === "en" ? "en-US" : "tr-TR";
+  const isFlowMode = mode === "flow";
 
   const getFigureFiles = (report: DailyReportRecord) =>
     Array.isArray(report.content.figureFiles) ? report.content.figureFiles : [];
@@ -126,7 +141,7 @@ export default function DailyReportPage({ language }: { language: AppLanguage })
     setLoading(true);
 
     try {
-      const response = await fetch("/api/daily-reports", {
+      const response = await fetch(isFlowMode ? "/api/flow-reports" : "/api/daily-reports", {
         credentials: "include",
         cache: "no-store",
       });
@@ -136,7 +151,11 @@ export default function DailyReportPage({ language }: { language: AppLanguage })
       }
 
       const payload = (await response.json()) as DailyReportsResponse;
-      const nextReports = sortDailyReportsNewestFirst(payload.reports || []);
+      const nextReports = sortDailyReportsNewestFirst(
+        (payload.reports || []).filter(report =>
+          isFlowMode ? isFlowReport(report) : !isFlowReport(report)
+        )
+      );
       setReports(nextReports);
       setSelectedReportId(current =>
         current && nextReports.some(report => report.id === current)
@@ -148,7 +167,7 @@ export default function DailyReportPage({ language }: { language: AppLanguage })
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [isFlowMode]);
 
   useEffect(() => {
     void loadReports();
@@ -178,16 +197,25 @@ export default function DailyReportPage({ language }: { language: AppLanguage })
               <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
                 <div className="space-y-2">
                   <p className="heading-condensed text-sm uppercase tracking-[0.18em] text-indigo-300">
-                    Daily Report
+                    {isFlowMode ? "Flow" : "Daily Report"}
                   </p>
                   <h1 className="heading-condensed text-3xl leading-none text-foreground md:text-5xl">
-                    {selectedReport?.title || copy(language, "Gunluk raporlar", "Daily reports")}
+                    {selectedReport?.title ||
+                      copy(
+                        language,
+                        isFlowMode ? "Flow raporlari" : "Gunluk raporlar",
+                        isFlowMode ? "Flow reports" : "Daily reports"
+                      )}
                   </h1>
                   <p className="max-w-3xl text-sm leading-7 text-muted-foreground md:text-[15px]">
                     {copy(
                       language,
-                      "En guncel rapor ustte acilir. Buradan tarih secerek daily reader panelini degistirebilirsin.",
-                      "The latest report opens first. Select a date here to switch the daily reader panel."
+                      isFlowMode
+                        ? "Flow kutuphanesindeki en guncel rapor ustte acilir. Buradan tarih secerek farkli flow analizlerine gecis yapabilirsin."
+                        : "En guncel rapor ustte acilir. Buradan tarih secerek daily reader panelini degistirebilirsin.",
+                      isFlowMode
+                        ? "The latest flow report opens first. Select a date here to switch between flow analyses."
+                        : "The latest report opens first. Select a date here to switch the daily reader panel."
                     )}
                   </p>
                 </div>
@@ -221,16 +249,26 @@ export default function DailyReportPage({ language }: { language: AppLanguage })
                     <div className="space-y-3 rounded-[1.75rem] border border-border bg-background/45 p-4">
                       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                          {copy(language, "Gunluk Rapor Secimi", "Daily report selection")}
+                          {copy(
+                            language,
+                            isFlowMode ? "Flow Rapor Secimi" : "Gunluk Rapor Secimi",
+                            isFlowMode ? "Flow report selection" : "Daily report selection"
+                          )}
                         </p>
                         <div className="w-full md:max-w-[360px]">
-                          <Select
-                            value={selectedReportId || selectedReport?.id || ""}
-                            onValueChange={setSelectedReportId}
-                          >
-                            <SelectTrigger className="w-full">
-                              <SelectValue placeholder={copy(language, "Bir daily report sec", "Select a daily report")} />
-                            </SelectTrigger>
+                            <Select
+                              value={selectedReportId || selectedReport?.id || ""}
+                              onValueChange={setSelectedReportId}
+                            >
+                              <SelectTrigger className="w-full">
+                              <SelectValue
+                                placeholder={copy(
+                                  language,
+                                  isFlowMode ? "Bir flow raporu sec" : "Bir daily report sec",
+                                  isFlowMode ? "Select a flow report" : "Select a daily report"
+                                )}
+                              />
+                              </SelectTrigger>
                             <SelectContent>
                               {reports.map(report => (
                                 <SelectItem key={report.id} value={report.id}>
@@ -289,8 +327,24 @@ export default function DailyReportPage({ language }: { language: AppLanguage })
               ) : (
                 <div className="rounded-xl border border-dashed border-border bg-background/35 px-4 py-3 text-sm text-muted-foreground">
                   {loading
-                    ? copy(language, "Daily report kutuphanesi yukleniyor.", "Loading daily report library.")
-                    : copy(language, "`dailyreport/` veya `flow/` icinde gosterilebilir bir rapor bulunamadi.", "No displayable report was found inside `dailyreport/` or `flow/`.")}
+                    ? copy(
+                        language,
+                        isFlowMode
+                          ? "Flow kutuphanesi yukleniyor."
+                          : "Daily report kutuphanesi yukleniyor.",
+                        isFlowMode
+                          ? "Loading flow report library."
+                          : "Loading daily report library."
+                      )
+                    : copy(
+                        language,
+                        isFlowMode
+                          ? "`flow/` icinde gosterilebilir bir rapor bulunamadi."
+                          : "`dailyreport/` icinde gosterilebilir bir rapor bulunamadi.",
+                        isFlowMode
+                          ? "No displayable report was found inside `flow/`."
+                          : "No displayable report was found inside `dailyreport/`."
+                      )}
                 </div>
               )}
             </div>
@@ -303,7 +357,7 @@ export default function DailyReportPage({ language }: { language: AppLanguage })
               <div className="space-y-2">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="rounded-full border border-indigo-500/25 bg-indigo-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-indigo-300">
-                    Daily intelligence
+                    {isFlowMode ? "Flow intelligence" : "Daily intelligence"}
                   </span>
                   {selectedStats?.aiFigures ? (
                     <span className="rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
@@ -312,11 +366,24 @@ export default function DailyReportPage({ language }: { language: AppLanguage })
                   ) : null}
                 </div>
                 <h2 className="heading-condensed text-2xl text-foreground md:text-3xl">
-                  {selectedReport?.title || copy(language, "Daily report sec", "Select a daily report")}
+                  {selectedReport?.title ||
+                    copy(
+                      language,
+                      isFlowMode ? "Flow raporu sec" : "Daily report sec",
+                      isFlowMode ? "Select a flow report" : "Select a daily report"
+                    )}
                 </h2>
                 <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
                   {selectedReport?.content.headline ||
-                    copy(language, "Ustteki secim alanindan bir daily report secildiginde okuma paneli burada acilir.", "The reading panel opens here when you select a daily report above.")}
+                    copy(
+                      language,
+                      isFlowMode
+                        ? "Ustteki secim alanindan bir flow raporu secildiginde okuma paneli burada acilir."
+                        : "Ustteki secim alanindan bir daily report secildiginde okuma paneli burada acilir.",
+                      isFlowMode
+                        ? "The reading panel opens here when you select a flow report above."
+                        : "The reading panel opens here when you select a daily report above."
+                    )}
                 </p>
               </div>
 
@@ -343,6 +410,7 @@ export default function DailyReportPage({ language }: { language: AppLanguage })
                 language={language}
                 title={selectedReport.title}
                 reportDate={selectedReport.reportDate}
+                updatedAt={selectedReport.updatedAt}
                 sourceFolder={selectedReport.sourceFolder}
                 content={selectedReport.content}
               />
@@ -353,8 +421,12 @@ export default function DailyReportPage({ language }: { language: AppLanguage })
                   <p className="mt-4 text-sm text-muted-foreground">
                     {copy(
                       language,
-                      "Ustteki secim alanindan bir daily report secildiginde okuma paneli burada acilacak.",
-                      "The reading panel will open here when you select a daily report above."
+                      isFlowMode
+                        ? "Ustteki secim alanindan bir flow raporu secildiginde okuma paneli burada acilacak."
+                        : "Ustteki secim alanindan bir daily report secildiginde okuma paneli burada acilacak.",
+                      isFlowMode
+                        ? "The reading panel will open here when you select a flow report above."
+                        : "The reading panel will open here when you select a daily report above."
                     )}
                   </p>
                 </div>

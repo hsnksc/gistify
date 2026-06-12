@@ -769,6 +769,24 @@ function normalizeStringArray(value: unknown) {
     .slice(0, 12);
 }
 
+function normalizeDailyMetadataItems(value: unknown) {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .filter(
+      (item): item is { label?: unknown; value?: unknown } =>
+        Boolean(item) && typeof item === "object"
+    )
+    .map(item => ({
+      label: normalizeString(item.label),
+      value: normalizeString(item.value),
+    }))
+    .filter(item => item.label && item.value)
+    .slice(0, 8);
+}
+
 function slugify(value: string) {
   return value
     .trim()
@@ -1097,6 +1115,7 @@ function normalizeDailyReportContent(value: unknown, title: string) {
     author: normalizeString(source.author) || undefined,
     coverage: normalizeString(source.coverage) || undefined,
     methodology: normalizeString(source.methodology) || undefined,
+    metadataItems: normalizeDailyMetadataItems(source.metadataItems),
     executiveSummary,
     markdown: normalizeString(source.markdown),
     sectionFiles,
@@ -1221,7 +1240,18 @@ function getViewerWeeklyReports(referenceDate = new Date()) {
   );
 }
 
-function getViewerDailyReports(limit = 10) {
+function isFlowSourceLabel(value: string) {
+  return normalizeString(value).toLowerCase().startsWith("flow/");
+}
+
+function isFlowDailyReport(report: DailyReportRecord) {
+  return (
+    isFlowSourceLabel(report.content.sourceLabel || "") ||
+    normalizeString(report.sourceFolder).toLowerCase().startsWith("flow-")
+  );
+}
+
+function buildViewerDailyReportCatalog() {
   const publishedReports = billingStore
     .listDailyReports()
     .filter(report => report.status === "published")
@@ -1284,7 +1314,18 @@ function getViewerDailyReports(limit = 10) {
       }
 
       return right.updatedAt.localeCompare(left.updatedAt);
-    })
+    });
+}
+
+function getViewerDailyReports(limit = 10) {
+  return buildViewerDailyReportCatalog()
+    .filter(report => !isFlowDailyReport(report))
+    .slice(0, limit);
+}
+
+function getViewerFlowReports(limit = 25) {
+  return buildViewerDailyReportCatalog()
+    .filter(isFlowDailyReport)
     .slice(0, limit);
 }
 
@@ -3266,6 +3307,20 @@ async function startServer() {
     setPrivateNoStore(res);
     res.status(200).json({
       report: getViewerDailyReports(1)[0] || null,
+    });
+  });
+
+  app.get("/api/flow-reports", (_req, res) => {
+    setPrivateNoStore(res);
+    res.status(200).json({
+      reports: getViewerFlowReports(),
+    });
+  });
+
+  app.get("/api/flow-reports/latest", (_req, res) => {
+    setPrivateNoStore(res);
+    res.status(200).json({
+      report: getViewerFlowReports(1)[0] || null,
     });
   });
 
