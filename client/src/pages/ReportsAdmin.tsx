@@ -1367,7 +1367,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                     copy(language, "`VITE_SCANNER_MASSIVE_API_KEY`, `VITE_SCANNER_TWELVEDATA_API_KEY`, `VITE_SCANNER_ALPHAVANTAGE_API_KEY`: momentum scanner fallback'i icin opsiyonel", "`VITE_SCANNER_MASSIVE_API_KEY`, `VITE_SCANNER_TWELVEDATA_API_KEY`, `VITE_SCANNER_ALPHAVANTAGE_API_KEY`: optional for momentum scanner fallback")
                   </p>
                   <p>
-                    copy(language, "Daily report icin ek API key gerekmiyor. Yeni paketleri `dailyreport/DDMMYYYY/` klasorune veya `flow/*.md` olarak birakman yeterli.", "No extra API key needed for Daily report. Just drop new packages into `dailyreport/DDMMYYYY/` folders or as `flow/*.md` files.")
+                    copy(language, "Daily report icin ek API key gerekmiyor. Yeni paketleri `dailyreport/DDMMYYYY/` klasorune veya `flow/**.md` olarak birakman yeterli.", "No extra API key needed for Daily report. Just drop new packages into `dailyreport/DDMMYYYY/` folders or as `flow/**.md` files.")
                   </p>
                 </div>
               </div>
@@ -1725,7 +1725,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                 provider="dailyreport/ + flow/"
                 configured={dailySourcePackages.length > 0}
                 mode={dailySourcePackages.length > 0 ? "live" : "empty"}
-                note={copy(language, "Bu workspace yerel `dailyreport/<tarih>` klasorlerini ve `flow/*.md` dosyalarini source package olarak okur. Sen yeni gunluk paketi bu path'lere biraktikca admin preview edip publish eder.", "This workspace reads local `dailyreport/<date>` folders and `flow/*.md` files as source packages. As you drop new daily packages into those paths, the admin previews and publishes them.")}
+                note={copy(language, "Bu workspace yerel `dailyreport/<tarih>` klasorlerini ve `flow/**.md` dosyalarini source package olarak okur. Sen yeni gunluk paketi bu path'lere biraktikca admin preview edip publish eder.", "This workspace reads local `dailyreport/<date>` folders and `flow/**.md` files as source packages. As you drop new daily packages into those paths, the admin previews and publishes them.")}
               />
               <ProviderCard
                 title="Package count"
