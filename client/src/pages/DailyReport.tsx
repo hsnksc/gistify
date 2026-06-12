@@ -290,7 +290,7 @@ export default function DailyReportPage({ language }: { language: AppLanguage })
                 <div className="rounded-xl border border-dashed border-border bg-background/35 px-4 py-3 text-sm text-muted-foreground">
                   {loading
                     ? copy(language, "Daily report kutuphanesi yukleniyor.", "Loading daily report library.")
-                    : copy(language, "`dailyreport/` icinde gosterilebilir bir rapor bulunamadi.", "No displayable report was found inside `dailyreport/`.")}
+                    : copy(language, "`dailyreport/` veya `flow/` icinde gosterilebilir bir rapor bulunamadi.", "No displayable report was found inside `dailyreport/` or `flow/`.")}
                 </div>
               )}
             </div>

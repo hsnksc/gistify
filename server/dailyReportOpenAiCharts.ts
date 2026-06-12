@@ -91,8 +91,8 @@ export async function generateDailyReportOpenAiCharts(
   payload: DailyReportOpenAiChartGenerateRequest
 ): Promise<DailyReportOpenAiChartGenerateResponse> {
   const source = getDailyReportSourcePackage(payload.sourceId);
-  if (!source || source.sourceKind !== "folder") {
-    throw new Error("OpenAI chart generation icin folder source gerekli.");
+  if (!source) {
+    throw new Error("OpenAI chart generation icin gecerli bir source gerekli.");
   }
 
   const prompt = normalizeString(payload.prompt);

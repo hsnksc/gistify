@@ -48,6 +48,7 @@ import {
 import {
   buildDailyReportRecordFromSource,
   getDailyReportRootPath,
+  getFlowReportRootPath,
   getDailyReportSourcePackage,
   listDailyReportSourcePackages,
 } from "./dailyReportSources";
@@ -2672,6 +2673,14 @@ async function startServer() {
       verify: (req, _res, buffer) => {
         (req as RequestWithRawBody).rawBody = buffer.toString("utf8");
       },
+    })
+  );
+  app.use(
+    "/api/daily-report/assets/flow",
+    express.static(getFlowReportRootPath(), {
+      fallthrough: false,
+      index: false,
+      redirect: false,
     })
   );
   app.use(

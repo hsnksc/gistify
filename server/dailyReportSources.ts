@@ -18,6 +18,10 @@ function getConfiguredRootPath() {
   return path.resolve(process.cwd(), configured);
 }
 
+function getConfiguredFlowRootPath() {
+  return path.resolve(process.cwd(), "flow");
+}
+
 function normalizeString(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
 }
@@ -29,6 +33,21 @@ function slugify(value: string) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")
     .slice(0, 100);
+}
+
+function buildStableKey(value: string) {
+  const slug = slugify(value);
+  if (slug) {
+    return slug;
+  }
+
+  const fallback = Buffer.from(value).toString("hex").slice(0, 16);
+  return fallback ? `report-${fallback}` : "report";
+}
+
+function buildNamespacedSourceKey(namespace: string, value: string) {
+  const normalizedNamespace = slugify(namespace) || "source";
+  return `${normalizedNamespace}-${buildStableKey(value)}`;
 }
 
 function toIsoDateFromKey(sourceKey: string) {
@@ -177,6 +196,16 @@ function isExcludedMarkdownCandidate(fileName: string) {
     /^plan(?:[_-]|$)/i.test(fileName) ||
     /\.outline\.md$/i.test(fileName) ||
     /_sec\d+\.md$/i.test(fileName)
+  );
+}
+
+function isExcludedFlowMarkdownFile(fileName: string) {
+  return (
+    !/\.md$/i.test(fileName) ||
+    /^readme\.md$/i.test(fileName) ||
+    /^_template\.md$/i.test(fileName) ||
+    /^example\.md$/i.test(fileName) ||
+    /^plan(?:[_-]|$)/i.test(fileName)
   );
 }
 
@@ -549,6 +578,10 @@ export function getDailyReportRootPath() {
   return getConfiguredRootPath();
 }
 
+export function getFlowReportRootPath() {
+  return getConfiguredFlowRootPath();
+}
+
 function buildFolderSourcePackage(folderName: string) {
   const folderPath = path.join(getDailyReportRootPath(), folderName);
   if (!fs.existsSync(folderPath) || !fs.statSync(folderPath).isDirectory()) {
@@ -608,8 +641,19 @@ function buildFolderSourcePackage(folderName: string) {
   } satisfies DailyReportSourcePackage;
 }
 
-function buildFileSourcePackage(fileName: string) {
-  const rootPath = getDailyReportRootPath();
+function buildFileSourcePackage({
+  rootPath,
+  fileName,
+  namespace,
+  sourceLabelPrefix,
+  assetBasePath = "",
+}: {
+  rootPath: string;
+  fileName: string;
+  namespace?: string;
+  sourceLabelPrefix?: string;
+  assetBasePath?: string;
+}) {
   const filePath = path.join(rootPath, fileName);
   if (!fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) {
     return null;
@@ -624,14 +668,27 @@ function buildFileSourcePackage(fileName: string) {
   const markdown = fs.readFileSync(filePath, "utf8");
   const metadata = extractMetadata(markdown);
   const stats = fs.statSync(filePath);
+  const normalizedSourceKey = namespace
+    ? buildNamespacedSourceKey(namespace, sourceKey)
+    : sourceKey;
   const reportDate =
     metadata.reportDate ||
     toIsoDateFromKey(sourceKey) ||
     new Date(stats.mtimeMs).toISOString().slice(0, 10);
+  const markdownFigureFiles = filterAvailableFigureFiles(
+    rootPath,
+    extractMarkdownFigureFiles(markdown)
+  );
+  const figureFiles = markdownFigureFiles.length
+    ? markdownFigureFiles
+    : listRootFigureFiles(rootPath, sourceKey);
+  const sourceLabel = sourceLabelPrefix
+    ? `${sourceLabelPrefix}/${fileName}`
+    : fileName;
 
   return {
-    id: sourceKey,
-    folderName: sourceKey,
+    id: normalizedSourceKey,
+    folderName: normalizedSourceKey,
     reportDate,
     title: metadata.title,
     headline: metadata.headline,
@@ -641,42 +698,63 @@ function buildFileSourcePackage(fileName: string) {
     executiveSummary: metadata.executiveSummary,
     markdown,
     sectionFiles: [],
-    figureFiles: listRootFigureFiles(rootPath, sourceKey),
-    openAiFigureFiles: listRootFigureFiles(rootPath, sourceKey, true),
+    figureFiles,
+    openAiFigureFiles: filterAvailableFigureFiles(
+      rootPath,
+      figureFiles.map(fileName => buildDailyReportOpenAiFigureFileName(fileName))
+    ),
     tickerUniverse: [],
     researchFileCount: 0,
     updatedAt: new Date(stats.mtimeMs).toISOString(),
     sourceKind: "file",
-    sourceLabel: fileName,
-    assetBasePath: "",
+    sourceLabel,
+    assetBasePath,
   } satisfies DailyReportSourcePackage;
 }
 
 export function listDailyReportSourcePackages() {
   const rootPath = getDailyReportRootPath();
-  if (!fs.existsSync(rootPath)) {
-    return [];
-  }
-
-  const entries = fs.readdirSync(rootPath, { withFileTypes: true });
-  const folders = entries.filter(entry => entry.isDirectory()).map(entry => entry.name);
-  const rootMarkdownFiles = entries
-    .filter(entry => entry.isFile() && /^\d{8}\.md$/i.test(entry.name))
-    .map(entry => entry.name);
-
   const packages: DailyReportSourcePackage[] = [];
+  if (fs.existsSync(rootPath)) {
+    const entries = fs.readdirSync(rootPath, { withFileTypes: true });
+    const folders = entries.filter(entry => entry.isDirectory()).map(entry => entry.name);
+    const rootMarkdownFiles = entries
+      .filter(entry => entry.isFile() && /^\d{8}\.md$/i.test(entry.name))
+      .map(entry => entry.name);
 
-  for (const folderName of folders) {
-    const source = buildFolderSourcePackage(folderName);
-    if (source) {
-      packages.push(source);
+    for (const folderName of folders) {
+      const source = buildFolderSourcePackage(folderName);
+      if (source) {
+        packages.push(source);
+      }
+    }
+
+    for (const fileName of rootMarkdownFiles) {
+      const source = buildFileSourcePackage({ rootPath, fileName });
+      if (source) {
+        packages.push(source);
+      }
     }
   }
 
-  for (const fileName of rootMarkdownFiles) {
-    const source = buildFileSourcePackage(fileName);
-    if (source) {
-      packages.push(source);
+  const flowRootPath = getFlowReportRootPath();
+  if (fs.existsSync(flowRootPath)) {
+    const flowMarkdownFiles = fs
+      .readdirSync(flowRootPath, { withFileTypes: true })
+      .filter(entry => entry.isFile() && !isExcludedFlowMarkdownFile(entry.name))
+      .map(entry => entry.name);
+
+    for (const fileName of flowMarkdownFiles) {
+      const source = buildFileSourcePackage({
+        rootPath: flowRootPath,
+        fileName,
+        namespace: "flow",
+        sourceLabelPrefix: "flow",
+        assetBasePath: "flow",
+      });
+      if (source) {
+        packages.push(source);
+      }
     }
   }
 
@@ -691,17 +769,14 @@ export function listDailyReportSourcePackages() {
 }
 
 export function getDailyReportSourcePackage(sourceId: string) {
-  const safeSourceId = normalizeString(sourceId).replace(/[^0-9a-z_-]/gi, "");
+  const safeSourceId = normalizeString(sourceId);
   if (!safeSourceId) {
     return null;
   }
 
-  const folderSource = buildFolderSourcePackage(safeSourceId);
-  if (folderSource) {
-    return folderSource;
-  }
-
-  return buildFileSourcePackage(`${safeSourceId}.md`);
+  return (
+    listDailyReportSourcePackages().find(source => source.id === safeSourceId) || null
+  );
 }
 
 export function buildDailyReportRecordFromSource(
@@ -759,7 +834,7 @@ export function resolveDailyReportSourceAssetPath(
   relativeAssetPath: string
 ) {
   const source = getDailyReportSourcePackage(sourceId);
-  if (!source || source.sourceKind !== "folder") {
+  if (!source) {
     return null;
   }
 
@@ -768,9 +843,14 @@ export function resolveDailyReportSourceAssetPath(
     return null;
   }
 
-  const folderPath = path.join(getDailyReportRootPath(), source.folderName);
-  const resolvedPath = path.resolve(folderPath, normalized);
-  const relative = path.relative(folderPath, resolvedPath);
+  const assetRootPath =
+    source.sourceKind === "folder"
+      ? path.join(getDailyReportRootPath(), source.folderName)
+      : source.assetBasePath.split("/")[0] === "flow"
+        ? getFlowReportRootPath()
+        : getDailyReportRootPath();
+  const resolvedPath = path.resolve(assetRootPath, normalized);
+  const relative = path.relative(assetRootPath, resolvedPath);
 
   if (relative.startsWith("..") || path.isAbsolute(relative)) {
     return null;

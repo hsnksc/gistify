@@ -1367,7 +1367,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                     copy(language, "`VITE_SCANNER_MASSIVE_API_KEY`, `VITE_SCANNER_TWELVEDATA_API_KEY`, `VITE_SCANNER_ALPHAVANTAGE_API_KEY`: momentum scanner fallback'i icin opsiyonel", "`VITE_SCANNER_MASSIVE_API_KEY`, `VITE_SCANNER_TWELVEDATA_API_KEY`, `VITE_SCANNER_ALPHAVANTAGE_API_KEY`: optional for momentum scanner fallback")
                   </p>
                   <p>
-                    copy(language, "Daily report icin ek API key gerekmiyor. Yeni paketleri sadece `dailyreport/DDMMYYYY` altina birakman yeterli.", "No extra API key needed for Daily report. Just drop new packages under `dailyreport/DDMMYYYY`.")
+                    copy(language, "Daily report icin ek API key gerekmiyor. Yeni paketleri `dailyreport/DDMMYYYY/` klasorune veya `flow/*.md` olarak birakman yeterli.", "No extra API key needed for Daily report. Just drop new packages into `dailyreport/DDMMYYYY/` folders or as `flow/*.md` files.")
                   </p>
                 </div>
               </div>
@@ -1722,17 +1722,17 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
             <section className="grid gap-4 lg:grid-cols-3">
               <ProviderCard
                 title="Source root"
-                provider="dailyreport/"
+                provider="dailyreport/ + flow/"
                 configured={dailySourcePackages.length > 0}
                 mode={dailySourcePackages.length > 0 ? "live" : "empty"}
-                note={copy(language, "Bu workspace yerel `dailyreport/<tarih>` klasorlerinden paket okur. Sen yeni gunluk paketi bu path'e biraktikca admin preview edip publish eder.", "This workspace reads packages from local `dailyreport/<date>` folders. As you drop new daily packages into this path, the admin previews and publishes them.")}
+                note={copy(language, "Bu workspace yerel `dailyreport/<tarih>` klasorlerini ve `flow/*.md` dosyalarini source package olarak okur. Sen yeni gunluk paketi bu path'lere biraktikca admin preview edip publish eder.", "This workspace reads local `dailyreport/<date>` folders and `flow/*.md` files as source packages. As you drop new daily packages into those paths, the admin previews and publishes them.")}
               />
               <ProviderCard
                 title="Package count"
                 provider="local filesystem"
                 configured={dailySourcePackages.length > 0}
                 mode={`${dailySourcePackages.length} package`}
-                note={copy(language, "Her klasor tek bir gunluk source package olarak algilanir.", "Each folder is treated as a single daily source package.")}
+                note={copy(language, "Her klasor veya markdown dosyasi tek bir gunluk source package olarak algilanir.", "Each folder or markdown file is treated as a single daily source package.")}
               />
               <ProviderCard
                 title="Latest published"
@@ -1754,10 +1754,10 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                     {copy(language, "1. Source Packages", "1. Source Packages")}
                   </p>
                   <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-                    {copy(language, "Klasore birakilan gunluk paketler", "Daily packages dropped in folder")}
+                    {copy(language, "Yerel gunluk source paketleri", "Local daily source packages")}
                   </h2>
                   <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
-                    {copy(language, "Yeni klasoru `dailyreport/` altina birakman yeterli. Sistem paketi listeler, admin preview eder ve tek tikla daily report draft'i olusturur.", "Just drop the new folder under `dailyreport/`. The system lists the package, the admin previews it and creates a daily report draft with one click.")}
+                    {copy(language, "Yeni klasoru `dailyreport/` altina veya yeni markdown dosyasini `flow/` altina birakman yeterli. Sistem source'u listeler, admin preview eder ve tek tikla daily report draft'i olusturur.", "Just drop the new folder under `dailyreport/` or the new markdown file under `flow/`. The system lists the source, the admin previews it and creates a daily report draft with one click.")}
                   </p>
                 </div>
 
