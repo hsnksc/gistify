@@ -72,6 +72,9 @@ type AuthState =
 
 const NUMBER_PATTERN = /\d[\d.,]*/g;
 const AUTH_REQUEST_TIMEOUT_MS = 8000;
+const MAX_RUNTIME_TRANSLATION_TEXT_LENGTH = 1800;
+const MAX_RUNTIME_TRANSLATION_BATCH_SIZE = 18;
+const MAX_RUNTIME_TRANSLATION_BATCH_CHARS = 12000;
 
 function readStoredLanguage(): AppLanguage {
   if (typeof window === "undefined") {
@@ -640,7 +643,25 @@ function App() {
       }
 
       runtimeTranslationInFlightRef.current = true;
-      const batch = Array.from(pendingSet).slice(0, 60);
+      const batch: string[] = [];
+      let batchCharCount = 0;
+
+      for (const text of Array.from(pendingSet)) {
+        const wouldExceedChars =
+          batch.length > 0 &&
+          batchCharCount + text.length > MAX_RUNTIME_TRANSLATION_BATCH_CHARS;
+
+        if (
+          batch.length >= MAX_RUNTIME_TRANSLATION_BATCH_SIZE ||
+          wouldExceedChars
+        ) {
+          break;
+        }
+
+        batch.push(text);
+        batchCharCount += text.length;
+      }
+
       batch.forEach(text => pendingSet.delete(text));
 
       try {
@@ -716,7 +737,7 @@ function App() {
         return runtimeValue;
       }
 
-      if (source.length <= 320) {
+      if (source.length <= MAX_RUNTIME_TRANSLATION_TEXT_LENGTH) {
         pendingSet.add(source);
       }
 

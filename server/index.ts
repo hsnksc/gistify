@@ -69,6 +69,10 @@ import {
   isOpenAiImageStudioConfigured,
   normalizeOpenAiImageGenerateRequest,
 } from "./openaiImageStudio";
+import {
+  normalizeTranslationTexts,
+  translateTurkishTextsToEnglish,
+} from "./openaiTranslation";
 
 type MembershipPlan = "guest" | "member" | "pro";
 type AppAccessMode = "managed" | "public";
@@ -123,6 +127,12 @@ interface MomentumReportUpsertRequestBody {
 
 interface DailyReportUpsertRequestBody {
   report?: unknown;
+}
+
+interface TranslateRequestBody {
+  source?: unknown;
+  target?: unknown;
+  texts?: unknown;
 }
 
 interface PortfolioPositionUpsertRequestBody {
@@ -3322,6 +3332,40 @@ async function startServer() {
     res.status(200).json({
       report: getViewerFlowReports(1)[0] || null,
     });
+  });
+
+  app.post("/api/i18n/translate", async (req, res) => {
+    setPrivateNoStore(res);
+
+    const body =
+      req.body && typeof req.body === "object"
+        ? (req.body as TranslateRequestBody)
+        : {};
+
+    const source = normalizeString(body.source).toLowerCase();
+    const target = normalizeString(body.target).toLowerCase();
+    const texts = normalizeTranslationTexts(body.texts);
+
+    if (!texts.length) {
+      res.status(200).json({ translations: {} });
+      return;
+    }
+
+    if (source !== "tr" || target !== "en") {
+      res.status(200).json({
+        translations: Object.fromEntries(texts.map(text => [text, text])),
+      });
+      return;
+    }
+
+    try {
+      const translations = await translateTurkishTextsToEnglish(texts);
+      res.status(200).json({ translations });
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Ceviri istegi basarisiz oldu.";
+      res.status(500).json({ error: message });
+    }
   });
 
   app.get("/api/earning-reports", (_req, res) => {
