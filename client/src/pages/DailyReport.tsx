@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { DailyReportRecord } from "@shared/dailyReports";
+import type {
+  DailyReportContent,
+  DailyReportSourcePackage,
+} from "@shared/dailyReports";
 import {
   BookOpen,
   CalendarRange,
@@ -17,19 +20,65 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { sortDailyReportsNewestFirst } from "@/lib/dailyReports";
 import { copy, type AppLanguage } from "@/lib/i18n";
 
 interface DailyReportsResponse {
-  reports?: DailyReportRecord[];
+  sources?: DailyReportSourcePackage[];
 }
 
-function isFlowReport(report: DailyReportRecord) {
+interface ViewerReport {
+  id: string;
+  title: string;
+  reportDate: string;
+  updatedAt: string;
+  sourceFolder: string;
+  content: DailyReportContent;
+}
+
+function isFlowSource(source: DailyReportSourcePackage) {
   const sourceLabel =
-    typeof report.content.sourceLabel === "string"
-      ? report.content.sourceLabel.trim().toLowerCase()
+    typeof source.sourceLabel === "string"
+      ? source.sourceLabel.trim().toLowerCase()
       : "";
   return sourceLabel.startsWith("flow/");
+}
+
+function sortSourcePackagesNewestFirst(sources: DailyReportSourcePackage[]) {
+  return [...sources].sort((left, right) => {
+    const byDate = right.reportDate.localeCompare(left.reportDate);
+    if (byDate !== 0) {
+      return byDate;
+    }
+
+    return right.updatedAt.localeCompare(left.updatedAt);
+  });
+}
+
+function mapSourceToViewerReport(source: DailyReportSourcePackage): ViewerReport {
+  return {
+    id: source.id,
+    title: source.title,
+    reportDate: source.reportDate,
+    updatedAt: source.updatedAt,
+    sourceFolder: source.folderName,
+    content: {
+      headline: source.headline,
+      author: source.author,
+      coverage: source.coverage,
+      methodology: source.methodology,
+      metadataItems: source.metadataItems,
+      executiveSummary: source.executiveSummary,
+      markdown: source.markdown,
+      sectionFiles: source.sectionFiles,
+      figureFiles: source.figureFiles,
+      openAiFigureFiles: source.openAiFigureFiles,
+      tickerUniverse: source.tickerUniverse,
+      researchFileCount: source.researchFileCount,
+      sourceKind: source.sourceKind,
+      sourceLabel: source.sourceLabel,
+      assetBasePath: source.assetBasePath,
+    },
+  };
 }
 
 function formatReportDate(reportDate: string, locale = "tr-TR") {
@@ -82,7 +131,7 @@ function ReportSelectorCard({
   onSelect,
   locale,
 }: {
-  report: DailyReportRecord;
+  report: ViewerReport;
   active: boolean;
   onSelect: (reportId: string) => void;
   locale: string;
@@ -122,17 +171,17 @@ export default function DailyReportPage({
   language: AppLanguage;
   mode?: "daily" | "flow";
 }) {
-  const [reports, setReports] = useState<DailyReportRecord[]>([]);
+  const [reports, setReports] = useState<ViewerReport[]>([]);
   const [selectedReportId, setSelectedReportId] = useState("");
   const [loading, setLoading] = useState(true);
   const locale = language === "en" ? "en-US" : "tr-TR";
   const isFlowMode = mode === "flow";
 
-  const getFigureFiles = (report: DailyReportRecord) =>
+  const getFigureFiles = (report: ViewerReport) =>
     Array.isArray(report.content.figureFiles) ? report.content.figureFiles : [];
-  const getTickerUniverse = (report: DailyReportRecord) =>
+  const getTickerUniverse = (report: ViewerReport) =>
     Array.isArray(report.content.tickerUniverse) ? report.content.tickerUniverse : [];
-  const getOpenAiFigures = (report: DailyReportRecord) =>
+  const getOpenAiFigures = (report: ViewerReport) =>
     Array.isArray(report.content.openAiFigureFiles)
       ? report.content.openAiFigureFiles
       : [];
@@ -141,21 +190,22 @@ export default function DailyReportPage({
     setLoading(true);
 
     try {
-      const response = await fetch(isFlowMode ? "/api/flow-reports" : "/api/daily-reports", {
-        credentials: "include",
-        cache: "no-store",
-      });
+      const response = await fetch(
+        isFlowMode ? "/api/flow-sources" : "/api/daily-report-sources",
+        {
+          credentials: "include",
+          cache: "no-store",
+        }
+      );
 
       if (!response.ok) {
         return;
       }
 
       const payload = (await response.json()) as DailyReportsResponse;
-      const nextReports = sortDailyReportsNewestFirst(
-        (payload.reports || []).filter(report =>
-          isFlowMode ? isFlowReport(report) : !isFlowReport(report)
-        )
-      );
+      const nextReports = sortSourcePackagesNewestFirst(payload.sources || [])
+        .filter(source => (isFlowMode ? isFlowSource(source) : !isFlowSource(source)))
+        .map(mapSourceToViewerReport);
       setReports(nextReports);
       setSelectedReportId(current =>
         current && nextReports.some(report => report.id === current)
@@ -211,11 +261,11 @@ export default function DailyReportPage({
                     {copy(
                       language,
                       isFlowMode
-                        ? "Flow kutuphanesindeki en guncel rapor ustte acilir. Buradan tarih secerek farkli flow analizlerine gecis yapabilirsin."
-                        : "En guncel rapor ustte acilir. Buradan tarih secerek daily reader panelini degistirebilirsin.",
+                        ? "Flow kutuphanesindeki yuklu markdown dosyalari burada dogrudan gorunur. Tarih secerek farkli flow analizlerine gecis yapabilirsin."
+                        : "Yuklenen daily source paketleri burada dogrudan gorunur. Tarih secerek okuma panelini degistirebilirsin.",
                       isFlowMode
-                        ? "The latest flow report opens first. Select a date here to switch between flow analyses."
-                        : "The latest report opens first. Select a date here to switch the daily reader panel."
+                        ? "Uploaded markdown files in the flow library appear here directly. Select a date to switch between flow analyses."
+                        : "Uploaded daily source packages appear here directly. Select a date to switch the reading panel."
                     )}
                   </p>
                 </div>

@@ -12,6 +12,7 @@ import {
   CalendarDays,
   ClipboardList,
   Clock3,
+  FileText,
   Radar,
   RefreshCw,
   Shield,
@@ -32,6 +33,7 @@ import WorkspaceHeroPanel from "@/components/workspace/WorkspaceHeroPanel";
 import WorkspaceLoadingState from "@/components/workspace/WorkspaceLoadingState";
 import WorkspaceSummaryCard from "@/components/workspace/WorkspaceSummaryCard";
 import EarningReportCalendarTab from "@/components/tabs/EarningReportCalendarTab";
+import EarningReportDocumentTab from "@/components/tabs/EarningReportDocumentTab";
 import EarningReportPlaybookTab from "@/components/tabs/EarningReportPlaybookTab";
 import EarningReportRiskTab from "@/components/tabs/EarningReportRiskTab";
 import {
@@ -41,13 +43,14 @@ import {
 } from "@/lib/earningReports";
 import { parseEarningReportMarkdown } from "@/lib/earningReportSource";
 
-type TabId = "playbook" | "calendar" | "risk";
+type TabId = "playbook" | "calendar" | "risk" | "document";
 
 function getTabs(language: AppLanguage) {
   return [
     { id: "playbook" as const, label: "Playbook", icon: ClipboardList },
     { id: "calendar" as const, label: copy(language, "Takvim", "Calendar"), icon: CalendarDays },
     { id: "risk" as const, label: copy(language, "Risk", "Risk"), icon: AlertTriangle },
+    { id: "document" as const, label: copy(language, "Dokuman", "Document"), icon: FileText },
   ];
 }
 
@@ -91,7 +94,11 @@ export default function Home({ language }: { language: AppLanguage }) {
       const payload = (await response.json()) as EarningReportsListResponse;
       const nextReports = sortEarningReportsNewestFirst(payload.reports || []);
       setReports(nextReports);
-      setSelectedReportId(nextReports[0]?.id || "");
+      setSelectedReportId(current =>
+        current && nextReports.some(report => report.id === current)
+          ? current
+          : nextReports[0]?.id || ""
+      );
     } catch {
       // Leave page in honest empty state.
     } finally {
@@ -152,7 +159,7 @@ export default function Home({ language }: { language: AppLanguage }) {
     };
   }, [selectedReportId]);
 
-  const visibleReports = useMemo(() => reports.slice(0, 2), [reports]);
+  const visibleReports = useMemo(() => reports, [reports]);
 
   const selectedSummary = useMemo(
     () =>
@@ -305,6 +312,8 @@ export default function Home({ language }: { language: AppLanguage }) {
         );
       case "risk":
         return <EarningReportRiskTab report={parsedReport} language={language} />;
+      case "document":
+        return <EarningReportDocumentTab report={parsedReport} language={language} />;
       default:
         return (
           <EarningReportPlaybookTab
@@ -336,8 +345,8 @@ export default function Home({ language }: { language: AppLanguage }) {
           title={copy(language, "Guncel earnings strateji paneli", "Current earnings strategy panel")}
           description={copy(
             language,
-            "Yalnizca en son earnings raporu gorunur. Ticker secimi, playbook, takvim ve risk panelleri tek source uzerinden acilir.",
-            "Latest 2 earnings reports are shown. Ticker selection, playbook, calendar and risk panels open from a single active source."
+            "Tum yuklenen earnings markdown dosyalari arsivde tutulur. Secili rapor icin playbook, takvim, risk ve tam kaynak dokuman ayni workspace icinde acilir.",
+            "Every uploaded earnings markdown file stays in the archive. For the selected report, the playbook, calendar, risk view and full source document open inside the same workspace."
           )}
           actions={
             <>
@@ -540,7 +549,7 @@ export default function Home({ language }: { language: AppLanguage }) {
                     <WorkspaceSummaryCard
                       label={copy(language, "Rapor adedi", "Report count")}
                       value={String(visibleReports.length)}
-                      hint={copy(language, "Su an son 2 rapor gorunur", "Latest 2 reports are visible")}
+                      hint={copy(language, "Tum yuklenen raporlar arsivde listelenir", "All uploaded reports stay listed in the archive")}
                       icon={BarChart3}
                       tone="info"
                     />

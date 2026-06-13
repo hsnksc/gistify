@@ -1,77 +1,166 @@
 import { CalendarClock, Gauge, Radar, TrendingDown, TrendingUp } from "lucide-react";
-import { Bar, BarChart, CartesianGrid, Cell, ReferenceLine, XAxis, YAxis } from "recharts";
 import type {
   MomentumCandidateGroup,
   MomentumCandidateRow,
   MomentumReportSource,
 } from "@/lib/momentumReportSource";
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
 import { copy } from "@/lib/i18n";
 import type { AppLanguage } from "@/lib/i18n";
 
 function groupLabel(group: MomentumCandidateGroup, language: AppLanguage) {
   if (group === "upside") {
-    return copy(language, "Oversold Donus", "Oversold Reversal");
+    return copy(language, "Yukari Donus", "Upside Reversal");
   }
 
   if (group === "downside") {
     return copy(language, "Asagi Momentum", "Downside Momentum");
   }
 
-  return "Defensive";
+  return copy(language, "Defensive", "Defensive");
 }
 
-function groupColor(group: MomentumCandidateGroup) {
+function groupTone(group: MomentumCandidateGroup) {
   if (group === "upside") {
-    return "oklch(0.78 0.18 160)";
+    return "border-emerald-400/25 bg-emerald-500/8";
   }
 
   if (group === "downside") {
-    return "oklch(0.63 0.22 25)";
+    return "border-red-400/25 bg-red-500/8";
   }
 
-  return "oklch(0.75 0.15 75)";
+  return "border-amber-400/25 bg-amber-500/8";
 }
 
-function CandidateCard({ row, language }: { row: MomentumCandidateRow; language: AppLanguage }) {
+function SetupStat({
+  label,
+  value,
+  hint,
+  accentClassName,
+}: {
+  label: string;
+  value: string;
+  hint: string;
+  accentClassName: string;
+}) {
   return (
-    <article className="rounded-none border border-border bg-background/55 p-4">
+    <div className="rounded-[1.45rem] border border-border bg-background/55 p-4">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+        {label}
+      </p>
+      <p className={`mt-2 data-mono text-2xl font-bold ${accentClassName}`}>{value}</p>
+      <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{hint}</p>
+    </div>
+  );
+}
+
+function EmptyPanel({ message }: { message: string }) {
+  return (
+    <div className="rounded-[1.45rem] border border-dashed border-border bg-background/35 p-4 text-sm leading-7 text-muted-foreground">
+      {message}
+    </div>
+  );
+}
+
+function CandidateCard({
+  row,
+  language,
+}: {
+  row: MomentumCandidateRow;
+  language: AppLanguage;
+}) {
+  return (
+    <article className={`rounded-[1.45rem] border p-4 ${groupTone(row.group)}`}>
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-sm font-semibold text-foreground">
-            {row.name}
-            {row.ticker && row.ticker !== row.name ? ` · ${row.ticker}` : ""}
+            {row.ticker || row.name}
+            {row.name && row.ticker && row.name !== row.ticker ? ` · ${row.name}` : ""}
           </p>
           <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
             {groupLabel(row.group, language)}
           </p>
         </div>
         <span className="data-mono text-lg font-bold text-foreground">
-          {row.scoreLabel}
+          {row.scoreLabel || "-"}
         </span>
       </div>
-
-      <div className="mt-4 grid gap-3 md:grid-cols-2">
+      <div className="mt-4 space-y-3 text-sm leading-7">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
             {copy(language, "Tez", "Thesis")}
           </p>
-          <p className="mt-1 text-sm leading-relaxed text-foreground">{row.reason}</p>
+          <p className="mt-1 text-foreground">{row.reason}</p>
         </div>
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
             Risk
           </p>
-          <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-            {row.risk}
-          </p>
+          <p className="mt-1 text-muted-foreground">{row.risk}</p>
         </div>
       </div>
     </article>
+  );
+}
+
+function CandidateTable({
+  report,
+  language,
+}: {
+  report: MomentumReportSource;
+  language: AppLanguage;
+}) {
+  if (!report.candidates.length) {
+    return (
+      <EmptyPanel
+        message={copy(
+          language,
+          "Bu raporda parse edilen setup bulunmuyor.",
+          "No parsed setups are available in this report."
+        )}
+      />
+    );
+  }
+
+  return (
+    <div className="overflow-hidden rounded-[1.45rem] border border-border bg-background/45">
+      <div className="overflow-x-auto">
+        <table className="min-w-full text-left text-sm">
+          <thead className="border-b border-border bg-background/70">
+            <tr>
+              {[
+                copy(language, "Ticker", "Ticker"),
+                copy(language, "Grup", "Group"),
+                copy(language, "Skor", "Score"),
+                copy(language, "Tez", "Thesis"),
+                "Risk",
+              ].map(header => (
+                <th
+                  key={header}
+                  className="px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground"
+                >
+                  {header}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {report.candidates.map((row, rowIndex) => (
+              <tr key={`${row.ticker}-${rowIndex}`} className="border-b border-border/60 last:border-b-0">
+                <td className="px-4 py-3 font-semibold text-foreground">
+                  {row.ticker || row.name}
+                </td>
+                <td className="px-4 py-3 text-muted-foreground">
+                  {groupLabel(row.group, language)}
+                </td>
+                <td className="px-4 py-3 data-mono text-foreground">{row.scoreLabel || "-"}</td>
+                <td className="px-4 py-3 text-muted-foreground">{row.reason}</td>
+                <td className="px-4 py-3 text-muted-foreground">{row.risk}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 }
 
@@ -82,16 +171,6 @@ export default function MomentumSetupsTab({
   report: MomentumReportSource;
   language: AppLanguage;
 }) {
-  const candidateChartData = report.candidates.map(row => ({
-    subject: row.ticker || row.name,
-    label: row.name,
-    score: row.score || 0,
-    group: groupLabel(row.group, language),
-    reason: row.reason,
-    risk: row.risk,
-    rawGroup: row.group,
-  }));
-
   const bullishCount = report.candidates.filter(row => row.group === "upside").length;
   const bearishCount = report.candidates.filter(row => row.group === "downside").length;
   const defensiveCount = report.candidates.filter(row => row.group === "defensive").length;
@@ -104,280 +183,243 @@ export default function MomentumSetupsTab({
 
   return (
     <div className="space-y-6 px-6 pb-8">
-      <section className="grid gap-4 xl:grid-cols-4">
-        <div className="rounded-none border border-emerald-400/20 bg-emerald-500/5 p-4">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-            {copy(language, "Piyasa Rejimi", "Market Regime")}
-          </p>
-          <p className="mt-2 heading-condensed text-2xl text-foreground">
-            {report.regimeLabel}
-          </p>
-          <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-            {copy(language, "Setup okumasinin tumu bu rejim taniminin ustune kurulu.", "All setup reading is built on top of this regime definition.")}
-          </p>
-        </div>
-        <div className="rounded-none border border-border bg-card/80 p-4">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            {copy(language, "Yukari Setup", "Bullish Setup")}
-          </p>
-          <p className="mt-2 data-mono text-2xl font-bold text-emerald-300">
-            {bullishCount}
-          </p>
-          <p className="mt-1 text-xs text-muted-foreground">{copy(language, "Oversold donus listesi", "Oversold reversal list")}</p>
-        </div>
-        <div className="rounded-none border border-border bg-card/80 p-4">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            {copy(language, "Asagi Setup", "Bearish Setup")}
-          </p>
-          <p className="mt-2 data-mono text-2xl font-bold text-rose-300">
-            {bearishCount}
-          </p>
-          <p className="mt-1 text-xs text-muted-foreground">{copy(language, "Trend devami adaylari", "Trend continuation candidates")}</p>
-        </div>
-        <div className="rounded-none border border-border bg-card/80 p-4">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            Defensive
-          </p>
-          <p className="mt-2 data-mono text-2xl font-bold text-amber-300">
-            {defensiveCount}
-          </p>
-          <p className="mt-1 text-xs text-muted-foreground">{copy(language, "Koruyucu rota", "Protective route")}</p>
+      <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+        <div className="flex items-start gap-3">
+          <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-2 text-emerald-300">
+            <Radar className="size-4" />
+          </div>
+          <div className="space-y-2">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+              {copy(language, "Setup Library", "Setup Library")}
+            </p>
+            <h2 className="heading-condensed text-3xl text-foreground">
+              {copy(language, "Sade setup gorunumu", "Simplified setup view")}
+            </h2>
+            <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
+              {copy(
+                language,
+                "Skor grafiklerini kaldirip butun setup'lari tez, risk ve grup bazinda dogrudan okunabilir kart ve tablolarla gosteriyoruz.",
+                "The score charts are removed and every setup is shown through directly readable cards and tables grouped by thesis, risk and bucket."
+              )}
+            </p>
+          </div>
         </div>
       </section>
 
-      <section className="grid gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
-        <article className="rounded-[2rem] border border-border bg-card/90 p-6 shadow-xl">
-          <div className="flex items-center gap-2">
-            <Radar className="h-4 w-4 text-emerald-400" />
-            <p className="heading-condensed text-lg text-foreground">
-              {copy(language, "Momentum Setup Skor Haritasi", "Momentum Setup Score Map")}
-            </p>
-          </div>
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-            {copy(language, "Tek tabloda yukari donus, asagi devam ve defensive bloklar birlesiyor.", "Bullish reversal, bearish continuation and defensive blocks come together in a single table.")}
-          </p>
-          <div className="mt-5">
-            <ChartContainer
-              className="h-[380px] w-full"
-              config={{
-                score: { label: copy(language, "Momentum skoru", "Momentum score"), color: "oklch(0.78 0.18 160)" },
-              }}
-            >
-              <BarChart data={candidateChartData} layout="vertical" margin={{ top: 0, right: 12, left: 0, bottom: 0 }}>
-                <CartesianGrid horizontal={false} strokeDasharray="3 3" />
-                <XAxis type="number" tickLine={false} axisLine={false} />
-                <YAxis
-                  type="category"
-                  dataKey="subject"
-                  tickLine={false}
-                  axisLine={false}
-                  width={86}
-                />
-                <ReferenceLine x={50} stroke="rgba(148,163,184,0.35)" />
-                <ChartTooltip
-                  cursor={false}
-                  content={
-                    <ChartTooltipContent
-                      formatter={(_value, _name, item) => (
-                        <div className="grid gap-1.5">
-                          <span className="font-medium text-foreground">
-                            {String(item.payload.label)}
-                          </span>
-                          <span className="text-muted-foreground">
-                            {String(item.payload.group)} · {String(item.payload.score)}
-                          </span>
-                          <span className="text-xs text-muted-foreground">
-                            {String(item.payload.reason)}
-                          </span>
-                          <span className="text-xs text-muted-foreground">
-                            Risk: {String(item.payload.risk)}
-                          </span>
-                        </div>
-                      )}
-                    />
-                  }
-                />
-                <Bar dataKey="score" radius={[0, 0, 0, 0]}>
-                  {candidateChartData.map(row => (
-                    <Cell
-                      key={`${row.subject}-${row.group}`}
-                      fill={groupColor(row.rawGroup)}
-                    />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ChartContainer>
-          </div>
-        </article>
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <SetupStat
+          label={copy(language, "Piyasa Rejimi", "Market Regime")}
+          value={report.regimeLabel || "-"}
+          hint={copy(language, "Setup seciminde ana baglam.", "Primary context for setup selection.")}
+          accentClassName="text-foreground"
+        />
+        <SetupStat
+          label={copy(language, "Yukari Setup", "Bullish Setup")}
+          value={String(bullishCount)}
+          hint={copy(language, "Donus / tepki adaylari.", "Reversal / bounce candidates.")}
+          accentClassName="text-emerald-300"
+        />
+        <SetupStat
+          label={copy(language, "Asagi Setup", "Bearish Setup")}
+          value={String(bearishCount)}
+          hint={copy(language, "Asagi devam adaylari.", "Downside continuation candidates.")}
+          accentClassName="text-red-300"
+        />
+        <SetupStat
+          label="Defensive"
+          value={String(defensiveCount)}
+          hint={copy(language, "Koruyucu rota ve dusuk beta blok.", "Protective route and lower beta block.")}
+          accentClassName="text-amber-300"
+        />
+      </section>
 
-        <div className="grid gap-4">
-          <div className="rounded-[1.5rem] border border-border bg-card/90 p-5 shadow-xl">
-            <div className="flex items-center gap-2">
-              <Gauge className="h-4 w-4 text-cyan-400" />
-              <h3 className="heading-condensed text-lg text-foreground">{copy(language, "RSI Haritasi", "RSI Map")}</h3>
+      <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+        <div className="flex items-center gap-2">
+          <Radar className="size-4 text-emerald-300" />
+          <h3 className="heading-condensed text-xl text-foreground">
+            {copy(language, "Tum setup tablosu", "All setups table")}
+          </h3>
+        </div>
+        <div className="mt-4">
+          <CandidateTable report={report} language={language} />
+        </div>
+      </section>
+
+      <section className="grid gap-6 xl:grid-cols-3">
+        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+          <div className="flex items-center gap-2">
+            <TrendingUp className="size-4 text-emerald-300" />
+            <h3 className="heading-condensed text-xl text-foreground">
+              {copy(language, "Yukari Donus", "Upside Reversal")}
+            </h3>
+          </div>
+          <div className="mt-4 space-y-3">
+            {report.candidates.filter(row => row.group === "upside").length ? (
+              report.candidates
+                .filter(row => row.group === "upside")
+                .map(row => (
+                  <CandidateCard key={`${row.group}-${row.ticker}-${row.name}`} row={row} language={language} />
+                ))
+            ) : (
+              <EmptyPanel message={copy(language, "Bu raporda yukari donus setup'i yok.", "This report has no upside reversal setup.")} />
+            )}
+          </div>
+        </section>
+
+        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+          <div className="flex items-center gap-2">
+            <TrendingDown className="size-4 text-red-300" />
+            <h3 className="heading-condensed text-xl text-foreground">
+              {copy(language, "Asagi Momentum", "Downside Momentum")}
+            </h3>
+          </div>
+          <div className="mt-4 space-y-3">
+            {report.candidates.filter(row => row.group === "downside").length ? (
+              report.candidates
+                .filter(row => row.group === "downside")
+                .map(row => (
+                  <CandidateCard key={`${row.group}-${row.ticker}-${row.name}`} row={row} language={language} />
+                ))
+            ) : (
+              <EmptyPanel message={copy(language, "Bu raporda asagi momentum setup'i yok.", "This report has no downside momentum setup.")} />
+            )}
+          </div>
+        </section>
+
+        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+          <div className="flex items-center gap-2">
+            <Gauge className="size-4 text-amber-300" />
+            <h3 className="heading-condensed text-xl text-foreground">Defensive</h3>
+          </div>
+          <div className="mt-4 space-y-3">
+            {report.candidates.filter(row => row.group === "defensive").length ? (
+              report.candidates
+                .filter(row => row.group === "defensive")
+                .map(row => (
+                  <CandidateCard key={`${row.group}-${row.ticker}-${row.name}`} row={row} language={language} />
+                ))
+            ) : (
+              <EmptyPanel message={copy(language, "Bu raporda defensive setup yok.", "This report has no defensive setup.")} />
+            )}
+          </div>
+        </section>
+      </section>
+
+      <section className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(320px,0.9fr)]">
+        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+          <div className="flex items-center gap-2">
+            <CalendarClock className="size-4 text-cyan-300" />
+            <h3 className="heading-condensed text-xl text-foreground">
+              {copy(language, "Takvim Katalizorleri", "Calendar Catalysts")}
+            </h3>
+          </div>
+          <div className="mt-4 overflow-hidden rounded-[1.45rem] border border-border bg-background/45">
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-left text-sm">
+                <thead className="border-b border-border bg-background/70">
+                  <tr>
+                    {[copy(language, "Tarih", "Date"), copy(language, "Olay", "Event"), copy(language, "Etki", "Impact")].map(header => (
+                      <th
+                        key={header}
+                        className="px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground"
+                      >
+                        {header}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {report.calendarEvents.length ? (
+                    report.calendarEvents.map(row => (
+                      <tr key={`${row.date}-${row.event}`} className="border-b border-border/60 last:border-b-0">
+                        <td className="px-4 py-3 font-semibold text-foreground">{row.date}</td>
+                        <td className="px-4 py-3 text-muted-foreground">{row.event}</td>
+                        <td className="px-4 py-3 text-muted-foreground">{row.impact}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td className="px-4 py-4 text-sm text-muted-foreground" colSpan={3}>
+                        {copy(language, "Bu raporda takvim katalizoru parse edilemedi.", "Calendar catalysts could not be parsed from this report.")}
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
-            <div className="mt-4 space-y-3">
-              {report.rsiRows.map(row => (
-                <div
+          </div>
+        </section>
+
+        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+          <div className="flex items-center gap-2">
+            <Gauge className="size-4 text-cyan-300" />
+            <h3 className="heading-condensed text-xl text-foreground">
+              {copy(language, "RSI ve Katalizor Notlari", "RSI and Catalyst Notes")}
+            </h3>
+          </div>
+          <div className="mt-4 space-y-3">
+            {report.rsiRows.length ? (
+              report.rsiRows.map(row => (
+                <article
                   key={row.subject}
-                  className="rounded-none border border-border bg-background/55 px-4 py-3"
+                  className="rounded-[1.45rem] border border-border bg-background/55 p-4"
                 >
-                  <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-start justify-between gap-3">
                     <p className="text-sm font-semibold text-foreground">{row.subject}</p>
-                    <span className="data-mono text-sm font-bold text-foreground">
+                    <span className="data-mono text-sm font-semibold text-foreground">
                       {row.rsiLabel}
                     </span>
                   </div>
                   <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
                     {row.status}
                   </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="rounded-[1.5rem] border border-border bg-card/90 p-5 shadow-xl">
-            <div className="flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-emerald-400" />
-              <h3 className="heading-condensed text-lg text-foreground">
-                {copy(language, "RSI Ekstremi", "RSI Extremes")}
-              </h3>
-            </div>
-            <div className="mt-4 grid gap-3 md:grid-cols-2">
-              <div className="rounded-none border border-border bg-background/55 p-4">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                  {copy(language, "En guclu bounce adayi", "Strongest bounce candidate")}
-                </p>
-                <p className="mt-2 text-sm font-semibold text-foreground">
-                  {weakestRsi?.subject || "-"}
-                </p>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {weakestRsi?.status || copy(language, "Veri yok", "No data")}
-                </p>
-              </div>
-              <div className="rounded-none border border-border bg-background/55 p-4">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                  {copy(language, "En sicak bolge", "Hottest zone")}
-                </p>
-                <p className="mt-2 text-sm font-semibold text-foreground">
-                  {hottestRsi?.subject || "-"}
-                </p>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {hottestRsi?.status || copy(language, "Veri yok", "No data")}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="grid gap-6 xl:grid-cols-3">
-        <div className="rounded-[1.5rem] border border-border bg-card/90 p-5 shadow-xl">
-          <div className="flex items-center gap-2">
-            <TrendingUp className="h-4 w-4 text-emerald-400" />
-            <h3 className="heading-condensed text-lg text-foreground">
-              {copy(language, "Oversold Donus", "Oversold Reversal")}
-            </h3>
-          </div>
-          <div className="mt-4 space-y-3">
-            {report.candidates
-              .filter(row => row.group === "upside")
-              .map(row => (
-                <CandidateCard key={`${row.group}-${row.name}`} row={row} language={language} />
-              ))}
-          </div>
-        </div>
-
-        <div className="rounded-[1.5rem] border border-border bg-card/90 p-5 shadow-xl">
-          <div className="flex items-center gap-2">
-            <TrendingDown className="h-4 w-4 text-rose-400" />
-            <h3 className="heading-condensed text-lg text-foreground">
-              {copy(language, "Trend Devami", "Trend Continuation")}
-            </h3>
-          </div>
-          <div className="mt-4 space-y-3">
-            {report.candidates
-              .filter(row => row.group === "downside")
-              .map(row => (
-                <CandidateCard key={`${row.group}-${row.name}`} row={row} language={language} />
-              ))}
-          </div>
-        </div>
-
-        <div className="rounded-[1.5rem] border border-border bg-card/90 p-5 shadow-xl">
-          <div className="flex items-center gap-2">
-            <Gauge className="h-4 w-4 text-amber-400" />
-            <h3 className="heading-condensed text-lg text-foreground">
-              {copy(language, "Defensive Basket", "Defensive Basket")}
-            </h3>
-          </div>
-          <div className="mt-4 space-y-3">
-            {report.candidates
-              .filter(row => row.group === "defensive")
-              .map(row => (
-                <CandidateCard key={`${row.group}-${row.name}`} row={row} language={language} />
-              ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(300px,0.9fr)]">
-        <article className="rounded-[2rem] border border-border bg-card/90 p-6 shadow-xl">
-          <div className="flex items-center gap-2">
-            <CalendarClock className="h-4 w-4 text-cyan-400" />
-            <p className="heading-condensed text-lg text-foreground">
-              {copy(language, "8-12 Haziran Takvim Katalizorleri", "Jun 8-12 Calendar Catalysts")}
-            </p>
-          </div>
-          <div className="mt-4 overflow-hidden rounded-none border border-border bg-background/45">
-            <table className="w-full text-sm">
-              <thead className="border-b border-border bg-background/65 text-left text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                <tr>
-                  <th className="px-4 py-3">{copy(language, "Tarih", "Date")}</th>
-                  <th className="px-4 py-3">{copy(language, "Olay", "Event")}</th>
-                  <th className="px-4 py-3">{copy(language, "Etki", "Impact")}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {report.calendarEvents.map(event => (
-                  <tr
-                    key={`${event.date}-${event.event}`}
-                    className="border-t border-border/70"
-                  >
-                    <td className="px-4 py-3 text-foreground">{event.date}</td>
-                    <td className="px-4 py-3 text-foreground">{event.event}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{event.impact}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </article>
-
-        <article className="rounded-[2rem] border border-border bg-card/90 p-6 shadow-xl">
-          <div className="flex items-center gap-2">
-            <Radar className="h-4 w-4 text-amber-400" />
-            <p className="heading-condensed text-lg text-foreground">
-              {copy(language, "Ek Baskilar", "Additional Pressures")}
-            </p>
-          </div>
-          <div className="mt-4 space-y-3">
-            {report.specialCatalysts.length ? (
-              report.specialCatalysts.map(line => (
-                <div
-                  key={line}
-                  className="rounded-none border border-amber-400/20 bg-amber-500/5 px-4 py-3 text-sm leading-relaxed text-muted-foreground"
-                >
-                  {line}
-                </div>
+                </article>
               ))
             ) : (
-              <div className="rounded-none border border-border bg-background/55 px-4 py-3 text-sm text-muted-foreground">
-                {copy(language, "Bu raporda ek katalizor notu bulunmuyor.", "No additional catalyst notes in this report.")}
-              </div>
+              <EmptyPanel message={copy(language, "RSI bloklari bu raporda yok.", "RSI blocks are missing in this report.")} />
             )}
+
+            {(weakestRsi || hottestRsi) ? (
+              <div className="grid gap-3 md:grid-cols-2">
+                <article className="rounded-[1.45rem] border border-border bg-background/55 p-4">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    {copy(language, "En zayif RSI", "Weakest RSI")}
+                  </p>
+                  <p className="mt-2 text-sm font-semibold text-foreground">
+                    {weakestRsi?.subject || "-"}
+                  </p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {weakestRsi?.status || "-"}
+                  </p>
+                </article>
+                <article className="rounded-[1.45rem] border border-border bg-background/55 p-4">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    {copy(language, "En guclu RSI", "Strongest RSI")}
+                  </p>
+                  <p className="mt-2 text-sm font-semibold text-foreground">
+                    {hottestRsi?.subject || "-"}
+                  </p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {hottestRsi?.status || "-"}
+                  </p>
+                </article>
+              </div>
+            ) : null}
+
+            {report.specialCatalysts.length ? (
+              <div className="rounded-[1.45rem] border border-emerald-500/20 bg-emerald-500/8 p-4">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                  {copy(language, "Ozel Katalizorler", "Special Catalysts")}
+                </p>
+                <div className="mt-2 space-y-2 text-sm leading-7 text-foreground/90">
+                  {report.specialCatalysts.map(item => (
+                    <p key={item}>{item}</p>
+                  ))}
+                </div>
+              </div>
+            ) : null}
           </div>
-        </article>
+        </section>
       </section>
     </div>
   );

@@ -10,6 +10,7 @@ import {
   Activity,
   CandlestickChart,
   Clock3,
+  FileText,
   PanelLeftClose,
   PanelLeftOpen,
   Radar,
@@ -31,6 +32,7 @@ import WorkspaceLoadingState from "@/components/workspace/WorkspaceLoadingState"
 import WorkspaceSummaryCard, {
   type SummaryTone,
 } from "@/components/workspace/WorkspaceSummaryCard";
+import MomentumReportDocumentTab from "@/components/tabs/MomentumReportDocumentTab";
 import {
   formatMomentumReportDate,
   sortMomentumReportsNewestFirst,
@@ -42,7 +44,7 @@ import MomentumSetupsTab from "@/scanner/components/MomentumSetupsTab";
 import MomentumStrategyTab from "@/scanner/components/MomentumStrategyTab";
 import ScannerPage from "@/scanner/components/ScannerPage";
 
-type TabId = "market" | "setups" | "strategy" | "scanner";
+type TabId = "market" | "setups" | "strategy" | "document" | "scanner";
 
 const tabs: Array<{
   id: TabId;
@@ -52,6 +54,7 @@ const tabs: Array<{
   { id: "market", label: "Market Pulse", icon: CandlestickChart },
   { id: "setups", label: "Setups", icon: TrendingUp },
   { id: "strategy", label: "Strategy", icon: ShieldCheck },
+  { id: "document", label: "Document", icon: FileText },
   { id: "scanner", label: "Live Scanner", icon: Radar },
 ];
 
@@ -344,6 +347,8 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
         return <MomentumSetupsTab report={parsedReport} language={language} />;
       case "strategy":
         return <MomentumStrategyTab report={parsedReport} language={language} />;
+      case "document":
+        return <MomentumReportDocumentTab report={parsedReport} language={language} />;
       default:
         return <MomentumMarketTab report={parsedReport} language={language} />;
     }
@@ -371,8 +376,8 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
           title={copy(language, "Momentum report ve live scanner", "Momentum report and live scanner")}
           description={copy(
             language,
-            "En guncel momentum raporu ustten secilir. Market pulse, setup, strategy ve live scanner ayni workspace icinde acilir.",
-            "Select the latest momentum report from the strip above. Market pulse, setup, strategy and live scanner open inside the same workspace."
+            "Tum yuklenen momentum markdown dosyalari bu arsivde gorunur. Secili rapor icin sade market, setup, strategy, tam dokuman ve live scanner akislari ayni workspace icinde acilir.",
+            "Every uploaded momentum markdown file appears in this archive. For the selected report, the simplified market, setup, strategy, full document and live scanner flows open in the same workspace."
           )}
           actions={
             <>

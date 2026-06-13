@@ -3313,6 +3313,15 @@ async function startServer() {
     });
   });
 
+  app.get("/api/daily-report-sources", (_req, res) => {
+    setPrivateNoStore(res);
+    res.status(200).json({
+      sources: listDailyReportSourcePackages().filter(
+        source => !isFlowSourceLabel(source.sourceLabel || source.folderName)
+      ),
+    });
+  });
+
   app.get("/api/daily-reports/latest", (_req, res) => {
     setPrivateNoStore(res);
     res.status(200).json({
@@ -3324,6 +3333,15 @@ async function startServer() {
     setPrivateNoStore(res);
     res.status(200).json({
       reports: getViewerFlowReports(),
+    });
+  });
+
+  app.get("/api/flow-sources", (_req, res) => {
+    setPrivateNoStore(res);
+    res.status(200).json({
+      sources: listDailyReportSourcePackages().filter(source =>
+        isFlowSourceLabel(source.sourceLabel || source.folderName)
+      ),
     });
   });
 

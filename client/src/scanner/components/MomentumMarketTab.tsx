@@ -2,24 +2,21 @@ import {
   Activity,
   CandlestickChart,
   ShieldAlert,
+  TrendingDown,
+  TrendingUp,
   Waves,
 } from "lucide-react";
-import { Bar, BarChart, CartesianGrid, Cell, ReferenceLine, XAxis, YAxis } from "recharts";
 import type {
   MacroRow,
   MomentumHavenRow,
   MomentumMoverRow,
   MomentumReportSource,
+  MomentumSectorRow,
 } from "@/lib/momentumReportSource";
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
 import { copy } from "@/lib/i18n";
 import type { AppLanguage } from "@/lib/i18n";
 
-function DataCard({
+function SimpleMetricCard({
   label,
   value,
   note,
@@ -29,7 +26,7 @@ function DataCard({
   note: string;
 }) {
   return (
-    <div className="rounded-none border border-border bg-background/60 p-4">
+    <div className="rounded-[1.45rem] border border-border bg-background/55 p-4">
       <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
         {label}
       </p>
@@ -39,114 +36,206 @@ function DataCard({
   );
 }
 
-function MacroTable({ title, rows }: { title: string; rows: MacroRow[] }) {
+function EmptyPanel({ message }: { message: string }) {
   return (
-    <section className="rounded-[1.5rem] border border-border bg-card/80 p-5 shadow-xl">
-      <div className="flex items-center gap-2">
-        <Activity className="h-4 w-4 text-emerald-400" />
-        <h3 className="heading-condensed text-lg text-foreground">{title}</h3>
-      </div>
-      <div className="mt-4 space-y-3">
-        {rows.map(row => (
-          <div
-            key={`${title}-${row.metric}`}
-            className="rounded-none border border-border bg-background/50 px-4 py-3"
-          >
-            <div className="flex items-center justify-between gap-3">
-              <p className="text-sm font-semibold text-foreground">{row.metric}</p>
-              <span className="data-mono text-sm font-bold text-emerald-300">
-                {row.value}
-              </span>
-            </div>
-            {row.comment ? (
-              <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                {row.comment}
-              </p>
-            ) : null}
-          </div>
-        ))}
-      </div>
-    </section>
+    <div className="rounded-[1.45rem] border border-dashed border-border bg-background/35 p-4 text-sm leading-7 text-muted-foreground">
+      {message}
+    </div>
   );
 }
 
-function MoversCard({
+function DataTable({
   title,
-  icon: Icon,
+  eyebrow,
+  headers,
   rows,
-  accentClassName,
 }: {
   title: string;
-  icon: typeof CandlestickChart;
-  rows: MomentumMoverRow[];
-  accentClassName: string;
+  eyebrow: string;
+  headers: string[];
+  rows: string[][];
 }) {
   return (
-    <section className="rounded-[1.5rem] border border-border bg-card/80 p-5 shadow-xl">
-      <div className="flex items-center gap-2">
-        <Icon className={`h-4 w-4 ${accentClassName}`} />
-        <h3 className="heading-condensed text-lg text-foreground">{title}</h3>
-      </div>
-      <div className="mt-4 space-y-3">
-        {rows.map(row => (
-          <article
-            key={`${title}-${row.ticker}-${row.name}`}
-            className="rounded-none border border-border bg-background/50 p-4"
-          >
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <p className="text-sm font-semibold text-foreground">
-                  {row.name}
-                  {row.ticker ? ` · ${row.ticker}` : ""}
-                </p>
-                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                  {row.catalyst}
-                </p>
-              </div>
-              <span className="data-mono text-base font-bold text-foreground">
-                {row.moveLabel}
-              </span>
-            </div>
-          </article>
-        ))}
+    <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+        {eyebrow}
+      </p>
+      <h3 className="mt-2 heading-condensed text-xl text-foreground">{title}</h3>
+      <div className="mt-4 overflow-hidden rounded-[1.45rem] border border-border bg-background/45">
+        <div className="overflow-x-auto">
+          <table className="min-w-full text-left text-sm">
+            <thead className="border-b border-border bg-background/70">
+              <tr>
+                {headers.map(header => (
+                  <th
+                    key={header}
+                    className="px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground"
+                  >
+                    {header}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row, rowIndex) => (
+                <tr key={`${title}-${rowIndex}`} className="border-b border-border/60 last:border-b-0">
+                  {row.map((cell, cellIndex) => (
+                    <td
+                      key={`${title}-${rowIndex}-${cellIndex}`}
+                      className={`px-4 py-3 align-top leading-7 ${
+                        cellIndex === 0 ? "font-semibold text-foreground" : "text-muted-foreground"
+                      }`}
+                    >
+                      {cell || "-"}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
   );
 }
 
-function HavensCard({ title, rows }: { title: string; rows: MomentumHavenRow[] }) {
+function MacroStack({ title, rows }: { title: string; rows: MacroRow[] }) {
   return (
-    <section className="rounded-[1.5rem] border border-border bg-card/80 p-5 shadow-xl">
+    <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
       <div className="flex items-center gap-2">
-        <ShieldAlert className="h-4 w-4 text-amber-400" />
-        <h3 className="heading-condensed text-lg text-foreground">
-          {title}
-        </h3>
+        <Activity className="size-4 text-emerald-300" />
+        <h3 className="heading-condensed text-xl text-foreground">{title}</h3>
       </div>
-      <div className="mt-4 grid gap-3">
-        {rows.map(row => (
-          <article
-            key={row.symbol}
-            className="rounded-none border border-border bg-background/50 p-4"
-          >
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <p className="text-sm font-semibold text-foreground">{row.symbol}</p>
-                <p className="mt-1 text-xs text-muted-foreground">{row.role}</p>
+      <div className="mt-4 space-y-3">
+        {rows.length ? (
+          rows.map(row => (
+            <article
+              key={`${title}-${row.metric}`}
+              className="rounded-[1.45rem] border border-border bg-background/55 p-4"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <p className="text-sm font-semibold text-foreground">{row.metric}</p>
+                <span className="data-mono text-sm font-semibold text-emerald-300">
+                  {row.value}
+                </span>
               </div>
-              <span
-                className={`data-mono text-base font-bold ${
-                  (row.performance || 0) >= 0 ? "text-emerald-300" : "text-rose-300"
-                }`}
-              >
-                {row.performanceLabel}
-              </span>
-            </div>
-          </article>
-        ))}
+              {row.comment ? (
+                <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                  {row.comment}
+                </p>
+              ) : null}
+            </article>
+          ))
+        ) : (
+          <EmptyPanel message="Bu blokta parse edilen veri yok." />
+        )}
       </div>
     </section>
   );
+}
+
+function MoversStack({
+  title,
+  rows,
+  positive,
+}: {
+  title: string;
+  rows: MomentumMoverRow[];
+  positive: boolean;
+}) {
+  return (
+    <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+      <div className="flex items-center gap-2">
+        {positive ? (
+          <TrendingUp className="size-4 text-emerald-300" />
+        ) : (
+          <TrendingDown className="size-4 text-red-300" />
+        )}
+        <h3 className="heading-condensed text-xl text-foreground">{title}</h3>
+      </div>
+      <div className="mt-4 space-y-3">
+        {rows.length ? (
+          rows.map(row => (
+            <article
+              key={`${title}-${row.ticker}-${row.name}`}
+              className="rounded-[1.45rem] border border-border bg-background/55 p-4"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-sm font-semibold text-foreground">
+                    {row.ticker || row.name}
+                    {row.name && row.ticker && row.name !== row.ticker
+                      ? ` · ${row.name}`
+                      : ""}
+                  </p>
+                  <p className="mt-2 text-sm leading-7 text-muted-foreground">
+                    {row.catalyst}
+                  </p>
+                </div>
+                <span
+                  className={`data-mono text-sm font-semibold ${
+                    positive ? "text-emerald-300" : "text-red-300"
+                  }`}
+                >
+                  {row.moveLabel}
+                </span>
+              </div>
+            </article>
+          ))
+        ) : (
+          <EmptyPanel
+            message={
+              positive
+                ? "Yukari momentum listesi bu raporda ayri gelmedi."
+                : "Asagi momentum listesi bu raporda ayri gelmedi."
+            }
+          />
+        )}
+      </div>
+    </section>
+  );
+}
+
+function HavenStack({ rows }: { rows: MomentumHavenRow[] }) {
+  return (
+    <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+      <div className="flex items-center gap-2">
+        <ShieldAlert className="size-4 text-amber-300" />
+        <h3 className="heading-condensed text-xl text-foreground">Defensive</h3>
+      </div>
+      <div className="mt-4 space-y-3">
+        {rows.length ? (
+          rows.map(row => (
+            <article
+              key={row.symbol}
+              className="rounded-[1.45rem] border border-border bg-background/55 p-4"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-sm font-semibold text-foreground">{row.symbol}</p>
+                  <p className="mt-2 text-sm leading-7 text-muted-foreground">{row.role}</p>
+                </div>
+                <span className="data-mono text-sm font-semibold text-amber-300">
+                  {row.performanceLabel}
+                </span>
+              </div>
+            </article>
+          ))
+        ) : (
+          <EmptyPanel message="Defensive veya hedge notu bu raporda ayri gelmedi." />
+        )}
+      </div>
+    </section>
+  );
+}
+
+function formatSectorRows(rows: MomentumSectorRow[]) {
+  return rows.map(row => [
+    row.sector,
+    row.dayChangeLabel,
+    row.weeklyLabel,
+    row.comment,
+  ]);
 }
 
 export default function MomentumMarketTab({
@@ -156,245 +245,160 @@ export default function MomentumMarketTab({
   report: MomentumReportSource;
   language: AppLanguage;
 }) {
-  const indexChartData = report.indexRows.map(row => ({
-    subject: row.index,
-    move: row.pctChange || 0,
-    label: row.pctChangeLabel,
-    comment: row.comment,
-  }));
-
-  const sectorChartData = report.sectorRows.map(row => ({
-    subject: row.sector,
-    move: row.dayChange || 0,
-    label: row.dayChangeLabel,
-    weekly: row.weeklyLabel,
-    comment: row.comment,
-  }));
-
   const vixClose = report.vixRows.find(row => /vix kapanis/i.test(row.label));
   const vixChange = report.vixRows.find(row => /gunluk degisim/i.test(row.label));
-  const weeklyVix = report.vixRows.find(row => /1-haftalik/i.test(row.label));
-  const monthlyVix = report.vixRows.find(row => /1-aylik/i.test(row.label));
 
   return (
     <div className="space-y-6 px-6 pb-8">
-      <section className="grid gap-6 xl:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)]">
-        <article className="rounded-[2rem] border border-border bg-card/90 p-6 shadow-xl">
-          <div className="flex items-center gap-2">
-            <CandlestickChart className="h-4 w-4 text-emerald-400" />
-            <p className="heading-condensed text-lg text-foreground">
-              {copy(language, "Ana Endeks Darbesi", "Main Index Pulse")}
+      <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+        <div className="flex items-start gap-3">
+          <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-2 text-emerald-300">
+            <CandlestickChart className="size-4" />
+          </div>
+          <div className="space-y-2">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+              {copy(language, "Market Pulse", "Market Pulse")}
             </p>
-          </div>
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-            {copy(
-              language,
-              "Seansin sertligini once endeks seviyesinde oku. Bar yapisi gunluk hasari, tooltip ise yorum katmanini tasiyor.",
-              "Read the session's strength first at the index level. Bar structure shows daily damage, tooltip carries the commentary layer."
-            )}
-          </p>
-          <div className="mt-5">
-            <ChartContainer
-              className="h-[320px] w-full"
-              config={{
-                move: { label: copy(language, "Degisim", "Change"), color: "oklch(0.78 0.18 160)" },
-              }}
-            >
-              <BarChart data={indexChartData} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
-                <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                <XAxis
-                  dataKey="subject"
-                  tickLine={false}
-                  axisLine={false}
-                  interval={0}
-                  height={58}
-                  angle={-18}
-                  textAnchor="end"
-                />
-                <YAxis tickLine={false} axisLine={false} width={48} />
-                <ReferenceLine y={0} stroke="rgba(148,163,184,0.35)" />
-                <ChartTooltip
-                  cursor={false}
-                  content={
-                    <ChartTooltipContent
-                      formatter={(_value, _name, item) => (
-                        <div className="grid gap-1.5">
-                          <span className="font-medium text-foreground">
-                            {String(item.payload.subject)}
-                          </span>
-                          <span className="text-muted-foreground">
-                            {String(item.payload.label)}
-                          </span>
-                          <span className="text-xs text-muted-foreground">
-                            {String(item.payload.comment)}
-                          </span>
-                        </div>
-                      )}
-                    />
-                  }
-                />
-                <Bar dataKey="move" radius={[0, 0, 0, 0]}>
-                  {indexChartData.map(row => (
-                    <Cell
-                      key={row.subject}
-                      fill={row.move >= 0 ? "oklch(0.78 0.18 160)" : "oklch(0.63 0.22 25)"}
-                    />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ChartContainer>
-          </div>
-        </article>
-
-        <div className="grid gap-4">
-          <DataCard
-            label={copy(language, "VIX Kapanis", "VIX Close")}
-            value={vixClose?.value || report.vixRows[0]?.value || "-"}
-            note={vixClose?.comment || report.vixCommentary[0] || copy(language, "Volatilite rejimi secili rapordan okunuyor.", "Volatility regime read from selected report.")}
-          />
-          <div className="grid gap-4 sm:grid-cols-2">
-            <DataCard
-              label={copy(language, "Gunluk VIX", "Daily VIX")}
-              value={vixChange?.value || "-"}
-              note={vixChange?.comment || copy(language, "Kisa vadeli korku ivmesi", "Short-term fear momentum")}
-            />
-            <DataCard
-              label={copy(language, "1 Haftalik", "1 Week")}
-              value={weeklyVix?.value || "-"}
-              note={weeklyVix?.comment || copy(language, "Haftalik trend", "Weekly trend")}
-            />
-            <DataCard
-              label={copy(language, "1 Aylik", "1 Month")}
-              value={monthlyVix?.value || "-"}
-              note={monthlyVix?.comment || copy(language, "Aylik denge", "Monthly balance")}
-            />
-            <DataCard
-              label={copy(language, "Okuma Suresi", "Reading Time")}
-              value={report.readingTimeLabel || "-"}
-              note={copy(language, "Report executive summary icindeki tahmini sure", "Estimated time within report executive summary")}
-            />
+            <h2 className="heading-condensed text-3xl text-foreground">
+              {copy(language, "Sade piyasa okuma katmani", "Simplified market reading layer")}
+            </h2>
+            <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
+              {copy(
+                language,
+                "Grafik yerine secili momentum markdown dosyasindaki endeks, VIX, sektor ve makro bloklari dogrudan okunur tablolarla gosterilir.",
+                "Instead of charts, the index, VIX, sector and macro blocks from the selected momentum markdown are shown in direct readable tables."
+              )}
+            </p>
           </div>
         </div>
       </section>
 
-      <section className="grid gap-6 xl:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]">
-        <article className="rounded-[2rem] border border-border bg-card/90 p-6 shadow-xl">
-          <div className="flex items-center gap-2">
-            <Waves className="h-4 w-4 text-cyan-400" />
-            <p className="heading-condensed text-lg text-foreground">
-              {copy(language, "Sektor Dagilimi", "Sector Distribution")}
-            </p>
-          </div>
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-            {copy(
-              language,
-              "Teknoloji darbesi ile defensive rotasyon ayni tabloda okunuyor. Bar gunluk hareketi, sag panel ise sektor bazli yorumu tasiyor.",
-              "Tech hit and defensive rotation read in the same table. Bar shows daily move, right panel carries sector-based commentary."
-            )}
-          </p>
-          <div className="mt-5">
-            <ChartContainer
-              className="h-[340px] w-full"
-              config={{
-                move: { label: copy(language, "Gunluk performans", "Daily performance"), color: "oklch(0.75 0.15 75)" },
-              }}
-            >
-              <BarChart data={sectorChartData} layout="vertical" margin={{ top: 0, right: 16, left: 0, bottom: 0 }}>
-                <CartesianGrid horizontal={false} strokeDasharray="3 3" />
-                <XAxis type="number" tickLine={false} axisLine={false} />
-                <YAxis
-                  type="category"
-                  dataKey="subject"
-                  tickLine={false}
-                  axisLine={false}
-                  width={116}
-                />
-                <ReferenceLine x={0} stroke="rgba(148,163,184,0.35)" />
-                <ChartTooltip
-                  cursor={false}
-                  content={
-                    <ChartTooltipContent
-                      formatter={(_value, _name, item) => (
-                        <div className="grid gap-1.5">
-                          <span className="font-medium text-foreground">
-                            {String(item.payload.subject)}
-                          </span>
-                          <span className="text-muted-foreground">
-                            {copy(language, "Gunluk", "Daily")}: {String(item.payload.label)}
-                          </span>
-                          <span className="text-muted-foreground">
-                            {copy(language, "Haftalik", "Weekly")}: {String(item.payload.weekly)}
-                          </span>
-                          <span className="text-xs text-muted-foreground">
-                            {String(item.payload.comment)}
-                          </span>
-                        </div>
-                      )}
-                    />
-                  }
-                />
-                <Bar dataKey="move" radius={[0, 0, 0, 0]}>
-                  {sectorChartData.map(row => (
-                    <Cell
-                      key={row.subject}
-                      fill={row.move >= 0 ? "oklch(0.78 0.18 160)" : "oklch(0.63 0.22 25)"}
-                    />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ChartContainer>
-          </div>
-        </article>
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <SimpleMetricCard
+          label="VIX"
+          value={vixClose?.value || report.vixRows[0]?.value || report.regimeLabel || "-"}
+          note={vixClose?.comment || report.vixCommentary[0] || copy(language, "Secili rapordan okunur.", "Read from the selected report.")}
+        />
+        <SimpleMetricCard
+          label={copy(language, "Gunluk VIX", "Daily VIX")}
+          value={vixChange?.value || "-"}
+          note={vixChange?.comment || copy(language, "Kisa vade korku temposu.", "Short-term fear tempo.")}
+        />
+        <SimpleMetricCard
+          label={copy(language, "Rejim", "Regime")}
+          value={report.regimeLabel || "-"}
+          note={copy(language, "Tum setup yorumu bu rejimden turetilir.", "All setup interpretation is derived from this regime.")}
+        />
+        <SimpleMetricCard
+          label={copy(language, "Okuma Suresi", "Reading Time")}
+          value={report.readingTimeLabel || "-"}
+          note={copy(language, "Kaynak raporda belirtilen tahmini sure.", "Estimated time stated in the source report.")}
+        />
+      </section>
 
-        <article className="rounded-[2rem] border border-border bg-card/90 p-6 shadow-xl">
+      <section className="grid gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
+        <DataTable
+          eyebrow={copy(language, "Ana Endeksler", "Major Indices")}
+          title={copy(language, "Endeks hareketleri", "Index moves")}
+          headers={[
+            copy(language, "Endeks", "Index"),
+            copy(language, "Kapanis", "Close"),
+            copy(language, "Degisim", "Change"),
+            copy(language, "% Degisim", "% Change"),
+            copy(language, "Yorum", "Comment"),
+          ]}
+          rows={report.indexRows.map(row => [
+            row.index,
+            row.closeLabel,
+            row.changeLabel,
+            row.pctChangeLabel,
+            row.comment,
+          ])}
+        />
+
+        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
           <div className="flex items-center gap-2">
-            <ShieldAlert className="h-4 w-4 text-amber-400" />
-            <p className="heading-condensed text-lg text-foreground">
-              {copy(language, "VIX Yorumu", "VIX Commentary")}
-            </p>
+            <Waves className="size-4 text-cyan-300" />
+            <h3 className="heading-condensed text-xl text-foreground">
+              {copy(language, "Volatilite Notlari", "Volatility Notes")}
+            </h3>
           </div>
           <div className="mt-4 space-y-3">
-            {report.vixCommentary.length ? (
-              report.vixCommentary.map(line => (
-                <div
-                  key={line}
-                  className="rounded-none border border-amber-400/20 bg-amber-500/5 px-4 py-3 text-sm leading-relaxed text-muted-foreground"
+            {report.vixRows.length ? (
+              report.vixRows.map(row => (
+                <article
+                  key={row.label}
+                  className="rounded-[1.45rem] border border-border bg-background/55 p-4"
                 >
-                  {line}
-                </div>
+                  <div className="flex items-start justify-between gap-3">
+                    <p className="text-sm font-semibold text-foreground">{row.label}</p>
+                    <span className="data-mono text-sm font-semibold text-amber-300">
+                      {row.value}
+                    </span>
+                  </div>
+                  {row.comment ? (
+                    <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                      {row.comment}
+                    </p>
+                  ) : null}
+                </article>
               ))
             ) : (
-              <div className="rounded-none border border-border bg-background/50 px-4 py-3 text-sm text-muted-foreground">
-                {copy(language, "Bu raporda ek VIX yorumu bulunmuyor.", "No additional VIX commentary in this report.")}
-              </div>
+              <EmptyPanel
+                message={copy(
+                  language,
+                  "VIX bloklari bu raporda parse edilemedi.",
+                  "VIX blocks could not be parsed from this report."
+                )}
+              />
             )}
+
+            {report.vixCommentary.length ? (
+              <div className="rounded-[1.45rem] border border-emerald-500/20 bg-emerald-500/8 p-4">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                  {copy(language, "Editor Notu", "Editor Note")}
+                </p>
+                <div className="mt-2 space-y-2 text-sm leading-7 text-foreground/90">
+                  {report.vixCommentary.map(line => (
+                    <p key={line}>{line}</p>
+                  ))}
+                </div>
+              </div>
+            ) : null}
           </div>
-        </article>
+        </section>
       </section>
 
+      <DataTable
+        eyebrow={copy(language, "Sektorler", "Sectors")}
+        title={copy(language, "Sektor dagilimi", "Sector distribution")}
+        headers={[
+          copy(language, "Sektor", "Sector"),
+          copy(language, "Gunluk", "Daily"),
+          copy(language, "Haftalik", "Weekly"),
+          copy(language, "Yorum", "Comment"),
+        ]}
+        rows={formatSectorRows(report.sectorRows)}
+      />
+
       <section className="grid gap-6 xl:grid-cols-3">
-        <MoversCard
-          title={copy(language, "En Cok Dusenler", "Biggest Losers")}
-          icon={CandlestickChart}
-          rows={report.loserRows}
-          accentClassName="text-rose-400"
-        />
-        <MoversCard
-          title={copy(language, "En Cok Yukselenler", "Biggest Gainers")}
-          icon={Activity}
+        <MoversStack
+          title={copy(language, "Guclu Yukselenler", "Strong Gainers")}
           rows={report.gainerRows}
-          accentClassName="text-emerald-400"
+          positive
         />
-        <HavensCard
-          title={copy(language, "Guvenli Liman Akisi", "Safe Haven Flow")}
-          rows={report.havenRows}
+        <MoversStack
+          title={copy(language, "Zayiflayanlar", "Weakening Names")}
+          rows={report.loserRows}
+          positive={false}
         />
+        <HavenStack rows={report.havenRows} />
       </section>
 
       <section className="grid gap-6 xl:grid-cols-3">
-        <MacroTable title={copy(language, "Faiz Politikasi", "Interest Policy")} rows={report.rateRows} />
-        <MacroTable title={copy(language, "Buyume Resmi", "Growth Picture")} rows={report.growthRows} />
-        <MacroTable title={copy(language, "Street Tahminleri", "Street Forecasts")} rows={report.forecastRows} />
+        <MacroStack title={copy(language, "Makro Takvim", "Macro Calendar")} rows={report.rateRows} />
+        <MacroStack title={copy(language, "Buyume / Veri", "Growth / Data")} rows={report.growthRows} />
+        <MacroStack title={copy(language, "Risk / Outlook", "Risk / Outlook")} rows={report.forecastRows} />
       </section>
     </div>
   );
