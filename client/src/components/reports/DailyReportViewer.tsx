@@ -1,16 +1,13 @@
 import type { DailyReportContent } from "@shared/dailyReports";
-import {
-  BookOpen,
-  CalendarRange,
-  FileStack,
-  GalleryHorizontal,
-  Sparkles,
-  Target,
-  UserRound,
-} from "lucide-react";
-import MarkdownReportRenderer from "@/components/reports/MarkdownReportRenderer";
+import ReportPostShell, {
+  type ReportPostItem,
+} from "@/components/reports/ReportPostShell";
 import { getDailyReportAssetUrl } from "@/lib/dailyReports";
 import type { AppLanguage } from "@/lib/i18n";
+import {
+  extractLeadParagraphsFromMarkdown,
+  extractSnapshotMetricsFromMarkdown,
+} from "@/lib/reportPost";
 
 interface DailyReportViewerProps {
   language?: AppLanguage;
@@ -118,34 +115,6 @@ function prettifyFigureLabel(fileName: string) {
     .replace(/\b\w/g, char => char.toUpperCase());
 }
 
-function MetaCard({
-  icon: Icon,
-  label,
-  value,
-}: {
-  icon: typeof CalendarRange;
-  label: string;
-  value: string;
-}) {
-  return (
-    <div className="rounded-[1.55rem] border border-border bg-background/55 p-4">
-      <div className="flex items-start gap-3">
-        <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-2 text-emerald-300">
-          <Icon className="size-4" />
-        </div>
-        <div className="min-w-0">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            {label}
-          </p>
-          <p className="mt-2 text-sm font-semibold leading-6 text-foreground">
-            {value}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function DailyReportViewer({
   language = "tr",
   title,
@@ -194,63 +163,89 @@ export default function DailyReportViewer({
   const assetBasePath = normalizedContent.assetBasePath || sourceFolder;
   const sourceLabel =
     normalizedContent.sourceLabel || sourceFolder || copy(language, "Daily report source", "Daily report source");
-
-  const metaCards = [
+  const categoryLabel = sourceLabel.toLowerCase().startsWith("flow/")
+    ? copy(language, "Flow Post", "Flow Post")
+    : copy(language, "Daily Post", "Daily Post");
+  const storyItems = normalizedContent.executiveSummary.length
+    ? normalizedContent.executiveSummary.slice(0, 4)
+    : extractLeadParagraphsFromMarkdown(normalizedContent.markdown, 3);
+  const snapshotMetrics = extractSnapshotMetricsFromMarkdown(normalizedContent.markdown, 6);
+  const statCards: ReportPostItem[] = snapshotMetrics.length
+    ? snapshotMetrics.map(item => ({
+        label: item.label,
+        value: item.value,
+        detail: item.detail,
+        tone: "info",
+      }))
+    : [
+        {
+          label: "Ticker",
+          value: String(normalizedContent.tickerUniverse.length),
+          detail: copy(language, "Parser ile cikan ticker evreni.", "Ticker universe parsed from the source."),
+          tone: "bull",
+        },
+        {
+          label: "Figure",
+          value: String(normalizedContent.figureFiles.length),
+          detail: copy(language, "Yuklenen gorsel adedi.", "Uploaded figure count."),
+          tone: "info",
+        },
+        {
+          label: copy(language, "Arastirma", "Research"),
+          value: String(normalizedContent.researchFileCount),
+          detail: copy(language, "Ek arastirma dosyasi sayisi.", "Additional research file count."),
+        },
+      ];
+  const metaItems: ReportPostItem[] = [
     {
-      icon: CalendarRange,
-      label: copy(language, "Rapor Tarihi", "Report Date"),
-      value: formatReportDate(reportDate, locale),
-    },
-    {
-      icon: BookOpen,
-      label: copy(language, "Kaynak", "Source"),
-      value: sourceLabel,
-    },
-    {
-      icon: Sparkles,
-      label: copy(language, "Yuklenme", "Loaded"),
-      value: formatUpdateStamp(updatedAt, locale),
-    },
-    {
-      icon: Target,
       label: "Ticker",
       value: String(normalizedContent.tickerUniverse.length),
+      tone: "bull",
     },
     {
-      icon: GalleryHorizontal,
       label: "Figure",
       value: String(normalizedContent.figureFiles.length),
+      tone: "info",
     },
     {
-      icon: FileStack,
+      label: "OpenAI",
+      value: String(normalizedContent.openAiFigureFiles.length),
+      tone: "caution",
+    },
+    {
       label: copy(language, "Arastirma", "Research"),
       value: String(normalizedContent.researchFileCount),
     },
+    ...(normalizedContent.author
+      ? [
+          {
+            label: copy(language, "Hazirlayan", "Author"),
+            value: normalizedContent.author,
+            tone: "info" as const,
+          },
+        ]
+      : []),
+    ...(normalizedContent.coverage
+      ? [
+          {
+            label: copy(language, "Kapsam", "Coverage"),
+            value: normalizedContent.coverage,
+          },
+        ]
+      : []),
+    ...(normalizedContent.methodology
+      ? [
+          {
+            label: copy(language, "Metodoloji", "Methodology"),
+            value: normalizedContent.methodology,
+          },
+        ]
+      : []),
+    ...normalizedContent.metadataItems.map(item => ({
+      label: item.label,
+      value: item.value,
+    })),
   ];
-
-  if (normalizedContent.author) {
-    metaCards.splice(2, 0, {
-      icon: UserRound,
-      label: copy(language, "Hazirlayan", "Author"),
-      value: normalizedContent.author,
-    });
-  }
-
-  if (normalizedContent.coverage) {
-    metaCards.push({
-      icon: BookOpen,
-      label: copy(language, "Kapsam", "Coverage"),
-      value: normalizedContent.coverage,
-    });
-  }
-
-  if (normalizedContent.methodology) {
-    metaCards.push({
-      icon: Sparkles,
-      label: copy(language, "Metodoloji", "Methodology"),
-      value: normalizedContent.methodology,
-    });
-  }
 
   const galleryFigures = normalizedContent.figureFiles.map(fileName => {
     const preferred = resolvePreferredFigureFileName(
@@ -267,80 +262,44 @@ export default function DailyReportViewer({
   });
 
   return (
-    <div className="space-y-6">
-      <section className="rounded-[2rem] border border-border bg-card/95 p-6 shadow-2xl">
-        <div className="space-y-4">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-              {copy(language, "Kaynak Rapor", "Source Report")}
-            </span>
-            {normalizedContent.sourceKind ? (
-              <span className="rounded-full border border-border bg-background/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                {normalizedContent.sourceKind === "file"
-                  ? copy(language, "Markdown Dosyasi", "Markdown File")
-                  : copy(language, "Arastirma Paketi", "Research Package")}
-              </span>
-            ) : null}
-          </div>
+    <ReportPostShell
+      language={language}
+      categoryLabel={categoryLabel}
+      title={title}
+      headline={normalizedContent.headline}
+      reportDateLabel={formatReportDate(reportDate, locale)}
+      updatedAtLabel={formatUpdateStamp(updatedAt, locale)}
+      sourceLabel={sourceLabel}
+      sourceKindLabel={
+        normalizedContent.sourceKind === "file"
+          ? copy(language, "Markdown Dosyasi", "Markdown File")
+          : copy(language, "Arastirma Paketi", "Research Package")
+      }
+      statCards={statCards}
+      metaItems={metaItems}
+      storyItems={storyItems}
+      markdown={normalizedContent.markdown}
+      emptyMessage={copy(
+        language,
+        "Kaynak markdown icerigi bos.",
+        "The source markdown content is empty."
+      )}
+      resolveImage={(src, alt) => {
+        const resolved = resolveAssetSrc(
+          assetBasePath,
+          src,
+          normalizedContent.openAiFigureFiles
+        );
 
-          <div className="space-y-3">
-            <h2 className="text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
-              {title}
-            </h2>
-            <p className="max-w-4xl text-sm leading-7 text-muted-foreground md:text-[15px]">
-              {normalizedContent.headline ||
-                copy(
-                  language,
-                  "Bu rapor dosyasi basit ve tam bir okuma deneyimiyle gosteriliyor.",
-                  "This report file is shown with a simple and complete reading experience."
-                )}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {metaCards.map(card => (
-          <MetaCard
-            key={`${card.label}-${card.value}`}
-            icon={card.icon}
-            label={card.label}
-            value={card.value}
-          />
-        ))}
-        {normalizedContent.metadataItems.map(item => (
-          <MetaCard
-            key={`${item.label}-${item.value}`}
-            icon={FileStack}
-            label={item.label}
-            value={item.value}
-          />
-        ))}
-      </section>
-
-      {normalizedContent.executiveSummary.length ? (
-        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-            {copy(language, "Yonetici Ozeti", "Executive Summary")}
-          </p>
-          <div className="mt-4 grid gap-3">
-            {normalizedContent.executiveSummary.map((item, index) => (
-              <article
-                key={`${index}-${item.slice(0, 48)}`}
-                className="rounded-[1.45rem] border border-border bg-background/55 p-4"
-              >
-                <div className="flex items-start gap-3">
-                  <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-xs font-semibold text-emerald-300">
-                    {String(index + 1).padStart(2, "0")}
-                  </div>
-                  <p className="text-sm leading-7 text-foreground/90">{item}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-      ) : null}
-
+        return {
+          src: resolved.src,
+          alt: alt || prettifyFigureLabel(src),
+          label: resolved.aiEnhanced
+            ? `${prettifyFigureLabel(src)} · OpenAI`
+            : prettifyFigureLabel(src),
+        };
+      }}
+    >
       {galleryFigures.length ? (
         <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -392,31 +351,6 @@ export default function DailyReportViewer({
           </div>
         </section>
       ) : null}
-
-      <MarkdownReportRenderer
-        language={language}
-        markdown={normalizedContent.markdown}
-        emptyMessage={copy(
-          language,
-          "Kaynak markdown icerigi bos.",
-          "The source markdown content is empty."
-        )}
-        resolveImage={(src, alt) => {
-          const resolved = resolveAssetSrc(
-            assetBasePath,
-            src,
-            normalizedContent.openAiFigureFiles
-          );
-
-          return {
-            src: resolved.src,
-            alt: alt || prettifyFigureLabel(src),
-            label: resolved.aiEnhanced
-              ? `${prettifyFigureLabel(src)} · OpenAI`
-              : prettifyFigureLabel(src),
-          };
-        }}
-      />
-    </div>
+    </ReportPostShell>
   );
 }

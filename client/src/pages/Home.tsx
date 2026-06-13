@@ -33,7 +33,7 @@ import WorkspaceHeroPanel from "@/components/workspace/WorkspaceHeroPanel";
 import WorkspaceLoadingState from "@/components/workspace/WorkspaceLoadingState";
 import WorkspaceSummaryCard from "@/components/workspace/WorkspaceSummaryCard";
 import EarningReportCalendarTab from "@/components/tabs/EarningReportCalendarTab";
-import EarningReportDocumentTab from "@/components/tabs/EarningReportDocumentTab";
+import EarningReportPostTab from "@/components/tabs/EarningReportPostTab";
 import EarningReportPlaybookTab from "@/components/tabs/EarningReportPlaybookTab";
 import EarningReportRiskTab from "@/components/tabs/EarningReportRiskTab";
 import {
@@ -43,14 +43,14 @@ import {
 } from "@/lib/earningReports";
 import { parseEarningReportMarkdown } from "@/lib/earningReportSource";
 
-type TabId = "playbook" | "calendar" | "risk" | "document";
+type TabId = "post" | "playbook" | "calendar" | "risk";
 
 function getTabs(language: AppLanguage) {
   return [
+    { id: "post" as const, label: "Post", icon: FileText },
     { id: "playbook" as const, label: "Playbook", icon: ClipboardList },
     { id: "calendar" as const, label: copy(language, "Takvim", "Calendar"), icon: CalendarDays },
     { id: "risk" as const, label: copy(language, "Risk", "Risk"), icon: AlertTriangle },
-    { id: "document" as const, label: copy(language, "Dokuman", "Document"), icon: FileText },
   ];
 }
 
@@ -64,7 +64,7 @@ interface EarningReportDetailResponse {
 
 export default function Home({ language }: { language: AppLanguage }) {
   const [, setLocation] = useLocation();
-  const [activeTab, setActiveTab] = useState<TabId>("playbook");
+  const [activeTab, setActiveTab] = useState<TabId>("post");
   const [selectedReportId, setSelectedReportId] = useState("");
   const [selectedTicker, setSelectedTicker] = useState<string | null>(null);
   const [reports, setReports] = useState<EarningReportSourceSummary[]>([]);
@@ -292,6 +292,15 @@ export default function Home({ language }: { language: AppLanguage }) {
     }
 
     switch (activeTab) {
+      case "post":
+        return (
+          <EarningReportPostTab
+            report={parsedReport}
+            language={language}
+            reportDateLabel={selectedSummary?.reportDateLabel}
+            updatedAtLabel={selectedUploadLabel}
+          />
+        );
       case "playbook":
         return (
           <EarningReportPlaybookTab
@@ -312,16 +321,13 @@ export default function Home({ language }: { language: AppLanguage }) {
         );
       case "risk":
         return <EarningReportRiskTab report={parsedReport} language={language} />;
-      case "document":
-        return <EarningReportDocumentTab report={parsedReport} language={language} />;
       default:
         return (
-          <EarningReportPlaybookTab
-            key={`${selectedReportId}:${selectedTicker || "none"}`}
+          <EarningReportPostTab
             report={parsedReport}
             language={language}
-            selectedTicker={selectedTicker}
-            onSelectTicker={handleTickerSelect}
+            reportDateLabel={selectedSummary?.reportDateLabel}
+            updatedAtLabel={selectedUploadLabel}
           />
         );
     }
@@ -345,8 +351,8 @@ export default function Home({ language }: { language: AppLanguage }) {
           title={copy(language, "Guncel earnings strateji paneli", "Current earnings strategy panel")}
           description={copy(
             language,
-            "Tum yuklenen earnings markdown dosyalari arsivde tutulur. Secili rapor icin playbook, takvim, risk ve tam kaynak dokuman ayni workspace icinde acilir.",
-            "Every uploaded earnings markdown file stays in the archive. For the selected report, the playbook, calendar, risk view and full source document open inside the same workspace."
+            "Tum yuklenen earnings markdown dosyalari arsivde tutulur. Varsayilan gorunum, secili dosyayi eksiksiz bir post gibi acar; playbook, takvim ve risk sekmeleri destek katmani olarak kalir.",
+            "Every uploaded earnings markdown file stays in the archive. The default view opens the selected file as a complete post, while playbook, calendar, and risk tabs stay as supporting layers."
           )}
           actions={
             <>

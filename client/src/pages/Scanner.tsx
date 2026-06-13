@@ -32,7 +32,7 @@ import WorkspaceLoadingState from "@/components/workspace/WorkspaceLoadingState"
 import WorkspaceSummaryCard, {
   type SummaryTone,
 } from "@/components/workspace/WorkspaceSummaryCard";
-import MomentumReportDocumentTab from "@/components/tabs/MomentumReportDocumentTab";
+import MomentumReportPostTab from "@/components/tabs/MomentumReportPostTab";
 import {
   formatMomentumReportDate,
   sortMomentumReportsNewestFirst,
@@ -44,19 +44,7 @@ import MomentumSetupsTab from "@/scanner/components/MomentumSetupsTab";
 import MomentumStrategyTab from "@/scanner/components/MomentumStrategyTab";
 import ScannerPage from "@/scanner/components/ScannerPage";
 
-type TabId = "market" | "setups" | "strategy" | "document" | "scanner";
-
-const tabs: Array<{
-  id: TabId;
-  label: string;
-  icon: typeof CandlestickChart;
-}> = [
-  { id: "market", label: "Market Pulse", icon: CandlestickChart },
-  { id: "setups", label: "Setups", icon: TrendingUp },
-  { id: "strategy", label: "Strategy", icon: ShieldCheck },
-  { id: "document", label: "Document", icon: FileText },
-  { id: "scanner", label: "Live Scanner", icon: Radar },
-];
+type TabId = "post" | "market" | "setups" | "strategy" | "scanner";
 
 interface ScannerRoutePageProps {
   language: AppLanguage;
@@ -99,7 +87,7 @@ function copy(language: AppLanguage, tr: string, en: string) {
 
 export default function Scanner({ language }: ScannerRoutePageProps) {
   const [, setLocation] = useLocation();
-  const [activeTab, setActiveTab] = useState<TabId>("market");
+  const [activeTab, setActiveTab] = useState<TabId>("post");
   const [selectedReportId, setSelectedReportId] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [reports, setReports] = useState<MomentumSourceSummary[]>([]);
@@ -289,6 +277,17 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
     parsedReport?.title ||
     copy(language, "Momentum report bekleniyor", "Momentum report pending");
   const hasReports = reports.length > 0;
+  const tabs: Array<{
+    id: TabId;
+    label: string;
+    icon: typeof CandlestickChart;
+  }> = [
+    { id: "post", label: "Post", icon: FileText },
+    { id: "market", label: "Market Pulse", icon: CandlestickChart },
+    { id: "setups", label: "Setups", icon: TrendingUp },
+    { id: "strategy", label: "Strategy", icon: ShieldCheck },
+    { id: "scanner", label: "Live Scanner", icon: Radar },
+  ];
 
   const handleTabChange = (tab: TabId) => {
     startTabTransition(() => {
@@ -341,16 +340,28 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
     }
 
     switch (activeTab) {
+      case "post":
+        return (
+          <MomentumReportPostTab
+            report={parsedReport}
+            language={language}
+            updatedAtLabel={selectedUpdateLabel}
+          />
+        );
       case "market":
         return <MomentumMarketTab report={parsedReport} language={language} />;
       case "setups":
         return <MomentumSetupsTab report={parsedReport} language={language} />;
       case "strategy":
         return <MomentumStrategyTab report={parsedReport} language={language} />;
-      case "document":
-        return <MomentumReportDocumentTab report={parsedReport} language={language} />;
       default:
-        return <MomentumMarketTab report={parsedReport} language={language} />;
+        return (
+          <MomentumReportPostTab
+            report={parsedReport}
+            language={language}
+            updatedAtLabel={selectedUpdateLabel}
+          />
+        );
     }
   };
 
@@ -376,8 +387,8 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
           title={copy(language, "Momentum report ve live scanner", "Momentum report and live scanner")}
           description={copy(
             language,
-            "Tum yuklenen momentum markdown dosyalari bu arsivde gorunur. Secili rapor icin sade market, setup, strategy, tam dokuman ve live scanner akislari ayni workspace icinde acilir.",
-            "Every uploaded momentum markdown file appears in this archive. For the selected report, the simplified market, setup, strategy, full document and live scanner flows open in the same workspace."
+            "Tum yuklenen momentum markdown dosyalari bu arsivde gorunur. Varsayilan gorunum, secili raporu eksiksiz bir post gibi acar; market, setup, strategy ve live scanner sekmeleri destek akislaridir.",
+            "Every uploaded momentum markdown file appears in this archive. The default view opens the selected report as a complete post, while market, setup, strategy, and live scanner tabs stay as supporting flows."
           )}
           actions={
             <>
