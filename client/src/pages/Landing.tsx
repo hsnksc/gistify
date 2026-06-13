@@ -69,12 +69,12 @@ export default function Landing({
       <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
         <section className="rounded-3xl border border-border bg-card/80 p-6 shadow-xl">
           <div className="grid gap-4 md:grid-cols-3">
-            {features.map(item => {
+            {features.map((item, index) => {
               const Icon = item.icon;
 
               return (
                 <article
-                  key={item.title}
+                  key={`${item.title}-${index}`}
                   className="rounded-2xl border border-border bg-background/60 p-4"
                 >
                   <Icon className="size-5 text-primary" />

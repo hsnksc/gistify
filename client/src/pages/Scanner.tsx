@@ -26,6 +26,11 @@ import type {
   MomentumSourceSummary,
 } from "@shared/momentumSources";
 import { Button } from "@/components/ui/button";
+import WorkspaceHeroPanel from "@/components/workspace/WorkspaceHeroPanel";
+import WorkspaceLoadingState from "@/components/workspace/WorkspaceLoadingState";
+import WorkspaceSummaryCard, {
+  type SummaryTone,
+} from "@/components/workspace/WorkspaceSummaryCard";
 import {
   formatMomentumReportDate,
   sortMomentumReportsNewestFirst,
@@ -38,7 +43,6 @@ import MomentumStrategyTab from "@/scanner/components/MomentumStrategyTab";
 import ScannerPage from "@/scanner/components/ScannerPage";
 
 type TabId = "market" | "setups" | "strategy" | "scanner";
-type SummaryTone = "bull" | "bear" | "caution" | "info";
 
 const tabs: Array<{
   id: TabId;
@@ -84,54 +88,6 @@ function formatMomentumUpdateStamp(value: string, locale = "tr-TR") {
 function hasDisplayValue(value: string | null | undefined) {
   const normalized = String(value || "").trim();
   return Boolean(normalized && normalized !== "-" && normalized !== "momentum/");
-}
-
-function SummaryCard({
-  label,
-  value,
-  hint,
-  icon: Icon,
-  tone = "info",
-}: {
-  label: string;
-  value: string;
-  hint: string;
-  icon: typeof CandlestickChart;
-  tone?: SummaryTone;
-}) {
-  const toneClasses: Record<SummaryTone, string> = {
-    bull: "border-emerald-500/22 bg-emerald-500/10 text-emerald-300",
-    bear: "border-red-500/22 bg-red-500/10 text-red-300",
-    caution: "border-amber-500/22 bg-amber-500/10 text-amber-300",
-    info: "border-indigo-500/22 bg-indigo-500/10 text-indigo-300",
-  };
-
-  return (
-    <div className="workspace-card p-4">
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            {label}
-          </p>
-          <p className="data-mono mt-2 text-2xl font-bold text-foreground">
-            {value}
-          </p>
-          <p className="mt-1 text-xs leading-5 text-muted-foreground">{hint}</p>
-        </div>
-        <div className={`rounded-xl border p-2 ${toneClasses[tone]}`}>
-          <Icon className="size-4" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function LoadingState({ label }: { label: string }) {
-  return (
-    <section className="workspace-card p-6 text-sm leading-7 text-muted-foreground">
-      {label}
-    </section>
-  );
 }
 
 function copy(language: AppLanguage, tr: string, en: string) {
@@ -363,7 +319,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
 
     if (loadingReports || loadingDetail) {
       return (
-        <LoadingState
+        <WorkspaceLoadingState
           label={copy(language, "Momentum report workspace yukleniyor.", "Loading momentum workspace.")}
         />
       );
@@ -371,7 +327,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
 
     if (!parsedReport) {
       return (
-        <LoadingState
+        <WorkspaceLoadingState
           label={copy(
             language,
             "Henuz goruntulenebilir bir momentum report yok. `momentum/` altina yeni `.md` dosyasi eklendiginde burada otomatik listelenecek.",
@@ -396,134 +352,123 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
   return (
     <div className="min-h-screen bg-background">
       <div className="container py-6 md:py-8">
-        <section className="workspace-panel overflow-hidden">
-          <div className="relative overflow-hidden px-5 py-5 md:px-6 md:py-6">
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.22),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.14),transparent_26%)]" />
-            <div className="relative space-y-5">
-              <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                <div className="space-y-3">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="badge-strong">
-                      {positiveIndices} {copy(language, "pozitif endeks", "positive indices")}
-                    </span>
-                    <span className="badge-danger">
-                      {negativeIndices} {copy(language, "negatif endeks", "negative indices")}
-                    </span>
-                    <span className="badge-warning">
-                      {regimeCount} {copy(language, "rejim faktor", "regime factors")}
-                    </span>
-                  </div>
-                  <div className="space-y-2">
-                    <p className="heading-condensed text-sm uppercase tracking-[0.18em] text-indigo-300">
-                      Momentum Scanner Workspace
-                    </p>
-                    <h1 className="heading-condensed max-w-4xl text-3xl leading-none text-foreground md:text-5xl">
-                      {copy(language, "Momentum report ve live scanner", "Momentum report and live scanner")}
-                    </h1>
-                    <p className="max-w-3xl text-sm leading-7 text-muted-foreground md:text-[15px]">
-                      {copy(
-                        language,
-                        "En guncel momentum raporu ustten secilir. Market pulse, setup, strategy ve live scanner ayni workspace icinde acilir.",
-                        "Select the latest momentum report from the strip above. Market pulse, setup, strategy and live scanner open inside the same workspace."
-                      )}
-                    </p>
-                  </div>
-                </div>
+        <WorkspaceHeroPanel
+          overlayClassName="bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.22),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.14),transparent_26%)]"
+          badges={
+            <>
+              <span className="badge-strong">
+                {positiveIndices} {copy(language, "pozitif endeks", "positive indices")}
+              </span>
+              <span className="badge-danger">
+                {negativeIndices} {copy(language, "negatif endeks", "negative indices")}
+              </span>
+              <span className="badge-warning">
+                {regimeCount} {copy(language, "rejim faktor", "regime factors")}
+              </span>
+            </>
+          }
+          eyebrow="Momentum Scanner Workspace"
+          title={copy(language, "Momentum report ve live scanner", "Momentum report and live scanner")}
+          description={copy(
+            language,
+            "En guncel momentum raporu ustten secilir. Market pulse, setup, strategy ve live scanner ayni workspace icinde acilir.",
+            "Select the latest momentum report from the strip above. Market pulse, setup, strategy and live scanner open inside the same workspace."
+          )}
+          actions={
+            <>
+              <Button type="button" variant="outline" onClick={() => void loadReports()}>
+                <RefreshCw className="size-4" />
+                {copy(language, "Yenile", "Refresh")}
+              </Button>
+              <Button type="button" variant="outline" onClick={() => setLocation("/daily-report")}>
+                <Activity className="size-4" />
+                Daily
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setSidebarOpen(current => !current)}
+              >
+                {sidebarOpen ? (
+                  <PanelLeftClose className="size-4" />
+                ) : (
+                  <PanelLeftOpen className="size-4" />
+                )}
+                {copy(language, "Arsiv", "Archive")}
+              </Button>
+            </>
+          }
+          reportStrip={
+            <div className="flex items-center gap-2 overflow-x-auto terminal-scrollbar pb-2">
+              {reports.map((report, index) => {
+                const active = report.id === selectedReportId;
 
-                <div className="flex flex-wrap items-center gap-2">
-                  <Button type="button" variant="outline" onClick={() => void loadReports()}>
-                    <RefreshCw className="size-4" />
-                    {copy(language, "Yenile", "Refresh")}
-                  </Button>
-                  <Button type="button" variant="outline" onClick={() => setLocation("/daily-report")}>
-                    <Activity className="size-4" />
-                    Daily
-                  </Button>
-                  <Button
+                return (
+                  <button
+                    key={report.id}
                     type="button"
-                    variant="outline"
-                    onClick={() => setSidebarOpen(current => !current)}
+                    onClick={() => setSelectedReportId(report.id)}
+                    className={`min-w-[220px] shrink-0 rounded-xl border px-4 py-3 text-left transition-all duration-150 ${
+                      active
+                        ? "border-indigo-400/45 bg-indigo-500/14 shadow-[0_0_18px_rgba(99,102,241,0.16)]"
+                        : "border-border bg-card/80 hover:border-border hover:bg-[rgba(35,45,66,0.72)]"
+                    }`}
                   >
-                    {sidebarOpen ? (
-                      <PanelLeftClose className="size-4" />
-                    ) : (
-                      <PanelLeftOpen className="size-4" />
-                    )}
-                    {copy(language, "Arsiv", "Archive")}
-                  </Button>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2 overflow-x-auto terminal-scrollbar pb-2">
-                {reports.map((report, index) => {
-                  const active = report.id === selectedReportId;
-
-                  return (
-                    <button
-                      key={report.id}
-                      type="button"
-                      onClick={() => setSelectedReportId(report.id)}
-                      className={`min-w-[220px] shrink-0 rounded-xl border px-4 py-3 text-left transition-all duration-150 ${
-                        active
-                          ? "border-indigo-400/45 bg-indigo-500/14 shadow-[0_0_18px_rgba(99,102,241,0.16)]"
-                          : "border-border bg-card/80 hover:border-border hover:bg-[rgba(35,45,66,0.72)]"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between gap-3">
-                        <span className="data-mono text-[11px] text-muted-foreground">
-                          {index === 0 ? "LATEST" : "ARCHIVE"}
-                        </span>
-                        <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-amber-300">
-                          {report.vixLabel || "VIX -"}
-                        </span>
-                      </div>
-                      <p className="mt-2 text-sm font-semibold text-foreground">
-                        {report.title}
-                      </p>
-                      <p className="mt-1 text-xs text-muted-foreground">
-                        {report.targetDateLabel || formatMomentumReportDate(report.reportDate, locale)}
-                      </p>
-                      <div className="mt-3 flex items-center gap-2 text-[11px] text-muted-foreground">
-                        <Clock3 className="size-3.5" />
-                        <span>{formatMomentumUpdateStamp(report.updatedAt, locale)}</span>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {hasReports ? (
-                <div className="inline-flex max-w-full flex-wrap items-center gap-3 rounded-xl border border-border bg-background/40 px-4 py-3 text-xs text-muted-foreground">
-                  <span className="flex items-center gap-1.5">
-                    <CandlestickChart className="size-3.5 text-sky-300" />
-                    {parsedReport?.indexRows.length || 0} index row
-                  </span>
-                  <span className="h-3 w-px bg-border" />
-                  <span className="flex items-center gap-1.5">
-                    <TrendingUp className="size-3.5 text-emerald-300" />
-                    {parsedReport?.candidates.length || 0} setup
-                  </span>
-                  <span className="h-3 w-px bg-border" />
-                  <span className="flex items-center gap-1.5">
-                    <TrendingDown className="size-3.5 text-red-300" />
-                    {negativeIndices} negative breadth
-                  </span>
-                  <span className="h-3 w-px bg-border" />
-                  <span className="flex items-center gap-1.5">
-                    <Target className="size-3.5 text-indigo-300" />
-                    {topSetup?.ticker || copy(language, "Top setup bekleniyor", "Top setup pending")}
-                  </span>
-                </div>
-              ) : (
-                <div className="inline-flex max-w-full flex-wrap items-center gap-2 rounded-xl border border-dashed border-border bg-background/35 px-4 py-3 text-xs text-muted-foreground">
-                  {loadingReports
-                    ? copy(language, "Momentum report listesi yukleniyor.", "Loading momentum report list.")
-                    : copy(language, "`momentum/` source geldikten sonra piyasa stat bar otomatik dolacak.", "The market stat bar will populate automatically when a `momentum/` source is available.")}
-                </div>
-              )}
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="data-mono text-[11px] text-muted-foreground">
+                        {index === 0 ? "LATEST" : "ARCHIVE"}
+                      </span>
+                      <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-amber-300">
+                        {report.vixLabel || "VIX -"}
+                      </span>
+                    </div>
+                    <p className="mt-2 text-sm font-semibold text-foreground">
+                      {report.title}
+                    </p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {report.targetDateLabel || formatMomentumReportDate(report.reportDate, locale)}
+                    </p>
+                    <div className="mt-3 flex items-center gap-2 text-[11px] text-muted-foreground">
+                      <Clock3 className="size-3.5" />
+                      <span>{formatMomentumUpdateStamp(report.updatedAt, locale)}</span>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
-          </div>
-        </section>
+          }
+          statusBar={
+            hasReports ? (
+              <div className="inline-flex max-w-full flex-wrap items-center gap-3 rounded-xl border border-border bg-background/40 px-4 py-3 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1.5">
+                  <CandlestickChart className="size-3.5 text-sky-300" />
+                  {parsedReport?.indexRows.length || 0} index row
+                </span>
+                <span className="h-3 w-px bg-border" />
+                <span className="flex items-center gap-1.5">
+                  <TrendingUp className="size-3.5 text-emerald-300" />
+                  {parsedReport?.candidates.length || 0} setup
+                </span>
+                <span className="h-3 w-px bg-border" />
+                <span className="flex items-center gap-1.5">
+                  <TrendingDown className="size-3.5 text-red-300" />
+                  {negativeIndices} negative breadth
+                </span>
+                <span className="h-3 w-px bg-border" />
+                <span className="flex items-center gap-1.5">
+                  <Target className="size-3.5 text-indigo-300" />
+                  {topSetup?.ticker || copy(language, "Top setup bekleniyor", "Top setup pending")}
+                </span>
+              </div>
+            ) : (
+              <div className="inline-flex max-w-full flex-wrap items-center gap-2 rounded-xl border border-dashed border-border bg-background/35 px-4 py-3 text-xs text-muted-foreground">
+                {loadingReports
+                  ? copy(language, "Momentum report listesi yukleniyor.", "Loading momentum report list.")
+                  : copy(language, "`momentum/` source geldikten sonra piyasa stat bar otomatik dolacak.", "The market stat bar will populate automatically when a `momentum/` source is available.")}
+              </div>
+            )
+          }
+        />
 
         <div
           className={`mt-6 grid gap-6 ${
@@ -557,21 +502,21 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                   </div>
 
                   <div className="grid gap-3 sm:grid-cols-3 md:min-w-[420px]">
-                    <SummaryCard
+                    <WorkspaceSummaryCard
                       label={copy(language, "Rapor tarihi", "Report date")}
                       value={activeSummary?.reportDateLabel || "-"}
                       hint={copy(language, "Momentum source takvimi", "Momentum source calendar")}
                       icon={CandlestickChart}
                       tone="info"
                     />
-                    <SummaryCard
+                    <WorkspaceSummaryCard
                       label="Target"
                       value={activeSummary?.targetDateLabel || "-"}
                       hint={copy(language, "Aksiyon / hedef seans", "Action / target session")}
                       icon={Target}
                       tone="caution"
                     />
-                    <SummaryCard
+                    <WorkspaceSummaryCard
                       label="Update"
                       value={selectedUpdateLabel}
                       hint={copy(language, "Dosya degisiklik damgasi", "File update timestamp")}
@@ -652,7 +597,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                 {hasReports ? (
                   <div className="mt-4 space-y-3">
                     {summaryCards.map(card => (
-                      <SummaryCard
+                      <WorkspaceSummaryCard
                         key={card.label}
                         label={card.label}
                         value={card.value}

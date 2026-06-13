@@ -33,18 +33,68 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 export default function SectorTab({ stocks = stocksData, language }: Props) {
   const itSpendingData = [
-    { name: copy(language, 'Veri Merkezi', 'Data Center'), value: 653, growth: 31.7, color: 'oklch(0.78 0.18 160)' },
-    { name: copy(language, 'Yazılım', 'Software'), value: 1434, growth: 14.7, color: '#4ade80' },
-    { name: copy(language, 'BT Hizmetleri', 'IT Services'), value: 1867, growth: 8.7, color: 'oklch(0.75 0.15 75)' },
-    { name: copy(language, 'Cihazlar', 'Devices'), value: 836, growth: 6.1, color: 'oklch(0.6 0.12 250)' },
-    { name: copy(language, 'İletişim', 'Communications'), value: 1365, growth: 4.7, color: 'oklch(0.7 0.15 300)' },
+    {
+      name: copy(language, 'Veri Merkezi', 'Data Center'),
+      axisLabel: copy(language, 'Veri Mrk.', 'Data Ctr'),
+      value: 653,
+      growth: 31.7,
+      color: 'oklch(0.78 0.18 160)',
+    },
+    {
+      name: copy(language, 'Yazılım', 'Software'),
+      axisLabel: copy(language, 'Yazilim', 'Software'),
+      value: 1434,
+      growth: 14.7,
+      color: '#4ade80',
+    },
+    {
+      name: copy(language, 'BT Hizmetleri', 'IT Services'),
+      axisLabel: copy(language, 'BT Hiz.', 'IT Svcs'),
+      value: 1867,
+      growth: 8.7,
+      color: 'oklch(0.75 0.15 75)',
+    },
+    {
+      name: copy(language, 'Cihazlar', 'Devices'),
+      axisLabel: copy(language, 'Cihaz', 'Devices'),
+      value: 836,
+      growth: 6.1,
+      color: 'oklch(0.6 0.12 250)',
+    },
+    {
+      name: copy(language, 'İletişim', 'Communications'),
+      axisLabel: copy(language, 'Iletisim', 'Comms'),
+      value: 1365,
+      growth: 4.7,
+      color: 'oklch(0.7 0.15 300)',
+    },
   ];
 
   const sectorStockMap = [
-    { sector: copy(language, 'AI Yarı İletken', 'AI Semiconductor'), tickers: ['MRVL', 'AVGO', 'DELL'], color: 'oklch(0.78 0.18 160)' },
-    { sector: copy(language, 'Siber Güvenlik', 'Cybersecurity'), tickers: ['CRWD', 'PANW', 'ZS'], color: '#4ade80' },
-    { sector: copy(language, 'Bulut Yazılım', 'Cloud Software'), tickers: ['SNOW', 'CRM', 'ADSK'], color: 'oklch(0.75 0.15 75)' },
-    { sector: copy(language, 'Defansif', 'Defensive'), tickers: ['COST'], color: 'oklch(0.6 0.12 250)' },
+    {
+      sector: copy(language, 'AI Yarı İletken', 'AI Semiconductor'),
+      axisLabel: copy(language, 'AI Yari Iltk.', 'AI Semi'),
+      tickers: ['MRVL', 'AVGO', 'DELL'],
+      color: 'oklch(0.78 0.18 160)',
+    },
+    {
+      sector: copy(language, 'Siber Güvenlik', 'Cybersecurity'),
+      axisLabel: copy(language, 'Siber Guv.', 'Cybersec'),
+      tickers: ['CRWD', 'PANW', 'ZS'],
+      color: '#4ade80',
+    },
+    {
+      sector: copy(language, 'Bulut Yazılım', 'Cloud Software'),
+      axisLabel: copy(language, 'Bulut Yzm.', 'Cloud SW'),
+      tickers: ['SNOW', 'CRM', 'ADSK'],
+      color: 'oklch(0.75 0.15 75)',
+    },
+    {
+      sector: copy(language, 'Defansif', 'Defensive'),
+      axisLabel: copy(language, 'Defansif', 'Defensive'),
+      tickers: ['COST'],
+      color: 'oklch(0.6 0.12 250)',
+    },
   ];
 
   const avgMomentumBySector = sectorStockMap.map(s => {
@@ -52,7 +102,12 @@ export default function SectorTab({ stocks = stocksData, language }: Props) {
     const avg = sectorStocks.length
       ? sectorStocks.reduce((sum, st) => sum + st.momentumScore, 0) / sectorStocks.length
       : 0;
-    return { sector: s.sector, momentum: Math.round(avg), color: s.color };
+    return {
+      sector: s.sector,
+      axisLabel: s.axisLabel,
+      momentum: Math.round(avg),
+      color: s.color,
+    };
   });
 
   return (
@@ -86,8 +141,15 @@ export default function SectorTab({ stocks = stocksData, language }: Props) {
             <ResponsiveContainer width="100%" height="90%">
               <BarChart data={itSpendingData} margin={{ top: 5, right: 10, bottom: 20, left: 10 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.22 0.03 225)" />
-                <XAxis dataKey="name" tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 9, fontFamily: 'JetBrains Mono' }} angle={-20} textAnchor="end" />
-                <YAxis tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 9, fontFamily: 'JetBrains Mono' }} />
+                <XAxis
+                  dataKey="axisLabel"
+                  tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 11, fontFamily: 'JetBrains Mono' }}
+                  tickMargin={12}
+                />
+                <YAxis
+                  tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 11, fontFamily: 'JetBrains Mono' }}
+                  tickMargin={8}
+                />
                 <Tooltip content={<CustomTooltip />} />
                 <Bar dataKey="value" name={copy(language, 'Harcama ($M)', 'Spending ($M)')} maxBarSize={40}>
                   {itSpendingData.map((entry, i) => (
@@ -104,8 +166,18 @@ export default function SectorTab({ stocks = stocksData, language }: Props) {
             <ResponsiveContainer width="100%" height="90%">
               <BarChart data={itSpendingData} layout="vertical" margin={{ top: 5, right: 30, bottom: 5, left: 60 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.22 0.03 225)" horizontal={false} />
-                <XAxis type="number" unit="%" tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 9, fontFamily: 'JetBrains Mono' }} />
-                <YAxis type="category" dataKey="name" tick={{ fill: 'oklch(0.65 0.01 220)', fontSize: 10, fontFamily: 'JetBrains Mono' }} width={70} />
+                <XAxis
+                  type="number"
+                  unit="%"
+                  tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 11, fontFamily: 'JetBrains Mono' }}
+                  tickMargin={8}
+                />
+                <YAxis
+                  type="category"
+                  dataKey="axisLabel"
+                  tick={{ fill: 'oklch(0.65 0.01 220)', fontSize: 11, fontFamily: 'JetBrains Mono' }}
+                  width={84}
+                />
                 <Tooltip content={<CustomTooltip />} />
                 <Bar dataKey="growth" name={copy(language, 'Büyüme (%)', 'Growth (%)')} maxBarSize={18}>
                   {itSpendingData.map((entry, i) => (
@@ -170,8 +242,16 @@ export default function SectorTab({ stocks = stocksData, language }: Props) {
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={avgMomentumBySector} margin={{ top: 5, right: 20, bottom: 5, left: 10 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.22 0.03 225)" />
-              <XAxis dataKey="sector" tick={{ fill: 'oklch(0.55 0.015 225)', fontSize: 10, fontFamily: 'JetBrains Mono' }} />
-              <YAxis domain={[0, 100]} tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 10, fontFamily: 'JetBrains Mono' }} />
+              <XAxis
+                dataKey="axisLabel"
+                tick={{ fill: 'oklch(0.55 0.015 225)', fontSize: 11, fontFamily: 'JetBrains Mono' }}
+                tickMargin={10}
+              />
+              <YAxis
+                domain={[0, 100]}
+                tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 11, fontFamily: 'JetBrains Mono' }}
+                tickMargin={8}
+              />
               <Tooltip content={<CustomTooltip />} />
               <Bar dataKey="momentum" name={copy(language, 'Ort. Momentum', 'Avg. Momentum')} maxBarSize={60}>
                 {avgMomentumBySector.map((entry, i) => (

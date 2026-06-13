@@ -340,6 +340,7 @@ function FigureCard({
               alt={figure.label}
               className="max-h-full w-full rounded-[1.25rem] object-contain shadow-[0_20px_60px_rgba(0,0,0,0.38)] transition-transform duration-300 group-hover:scale-[1.01]"
               loading="lazy"
+              decoding="async"
             />
           </div>
         </div>
@@ -1065,6 +1066,7 @@ export default function DailyReportViewer({
                     src={activeFigure.src}
                     alt={activeFigure.label}
                     className="mx-auto max-h-full max-w-full rounded-[1.4rem] object-contain shadow-[0_24px_90px_rgba(0,0,0,0.48)]"
+                    decoding="async"
                   />
                 </div>
               </div>

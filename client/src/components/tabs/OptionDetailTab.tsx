@@ -32,12 +32,50 @@ export default function OptionDetailTab({
 
   // Timeline data
   const timelineData = [
-    { day: copy(language, '15 gün öncesi', '15 days before'), iv: stock.historicalIV, callPrice: stock.callPremiumBuy, status: 'BUY' },
-    { day: copy(language, '10 gün öncesi', '10 days before'), iv: stock.historicalIV + 8, callPrice: stock.callPremiumBuy + 0.5, status: 'HOLD' },
-    { day: copy(language, '5 gün öncesi', '5 days before'), iv: stock.currentIV - 15, callPrice: stock.callPremiumBuy + 1.2, status: 'HOLD' },
-    { day: copy(language, '2 gün öncesi', '2 days before'), iv: stock.currentIV - 5, callPrice: stock.callPremiumSell - 0.3, status: 'HOLD' },
-    { day: copy(language, '1 gün öncesi', '1 day before'), iv: stock.currentIV, callPrice: stock.callPremiumSell, status: 'SELL' },
-    { day: copy(language, 'Earnings sonrası', 'After earnings'), iv: stock.currentIV - stock.expectedIVCrush, callPrice: stock.callPremiumSell - (stock.callPremiumSell * stock.expectedIVCrush / 100), status: 'CRUSH' },
+    {
+      day: copy(language, '15 gün öncesi', '15 days before'),
+      axisLabel: copy(language, '15g once', '15d prior'),
+      iv: stock.historicalIV,
+      callPrice: stock.callPremiumBuy,
+      status: 'BUY',
+    },
+    {
+      day: copy(language, '10 gün öncesi', '10 days before'),
+      axisLabel: copy(language, '10g once', '10d prior'),
+      iv: stock.historicalIV + 8,
+      callPrice: stock.callPremiumBuy + 0.5,
+      status: 'HOLD',
+    },
+    {
+      day: copy(language, '5 gün öncesi', '5 days before'),
+      axisLabel: copy(language, '5g once', '5d prior'),
+      iv: stock.currentIV - 15,
+      callPrice: stock.callPremiumBuy + 1.2,
+      status: 'HOLD',
+    },
+    {
+      day: copy(language, '2 gün öncesi', '2 days before'),
+      axisLabel: copy(language, '2g once', '2d prior'),
+      iv: stock.currentIV - 5,
+      callPrice: stock.callPremiumSell - 0.3,
+      status: 'HOLD',
+    },
+    {
+      day: copy(language, '1 gün öncesi', '1 day before'),
+      axisLabel: copy(language, '1g once', '1d prior'),
+      iv: stock.currentIV,
+      callPrice: stock.callPremiumSell,
+      status: 'SELL',
+    },
+    {
+      day: copy(language, 'Earnings sonrası', 'After earnings'),
+      axisLabel: copy(language, 'Sonrasi', 'After ER'),
+      iv: stock.currentIV - stock.expectedIVCrush,
+      callPrice:
+        stock.callPremiumSell -
+        (stock.callPremiumSell * stock.expectedIVCrush) / 100,
+      status: 'CRUSH',
+    },
   ];
 
   return (
@@ -162,13 +200,23 @@ export default function OptionDetailTab({
             <LineChart data={timelineData} margin={{ top: 5, right: 20, bottom: 20, left: 10 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.22 0.03 225)" />
               <XAxis
-                dataKey="day"
-                tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 9, fontFamily: 'JetBrains Mono' }}
-                angle={-20}
-                textAnchor="end"
+                dataKey="axisLabel"
+                tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 11, fontFamily: 'JetBrains Mono' }}
+                tickMargin={12}
               />
-              <YAxis yAxisId="left" tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 9, fontFamily: 'JetBrains Mono' }} label={{ value: 'IV', angle: -90, position: 'insideLeft' }} />
-              <YAxis yAxisId="right" orientation="right" tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 9, fontFamily: 'JetBrains Mono' }} label={{ value: copy(language, 'Call Fiyatı ($)', 'Call Price ($)'), angle: 90, position: 'insideRight' }} />
+              <YAxis
+                yAxisId="left"
+                tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 11, fontFamily: 'JetBrains Mono' }}
+                tickMargin={8}
+                label={{ value: 'IV', angle: -90, position: 'insideLeft' }}
+              />
+              <YAxis
+                yAxisId="right"
+                orientation="right"
+                tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 11, fontFamily: 'JetBrains Mono' }}
+                tickMargin={8}
+                label={{ value: copy(language, 'Call Fiyatı ($)', 'Call Price ($)'), angle: 90, position: 'insideRight' }}
+              />
               <Tooltip content={({ active, payload, label }) => {
                 if (active && payload && payload.length) {
                   const data = payload[0]?.payload;

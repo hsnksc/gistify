@@ -39,6 +39,7 @@ import {
 import { extractApiErrorMessage, readJsonResponse } from "@/lib/api";
 import { useLocation } from "wouter";
 import { copy, type AppLanguage } from "@/lib/i18n";
+import { toast } from "sonner";
 
 type WorkspaceKey = "earnings" | "momentum" | "daily" | "images";
 
@@ -234,6 +235,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
   const [adminAuthorized, setAdminAuthorized] = useState(false);
   const [adminSecret, setAdminSecret] = useState(() => readStoredAdminSecret());
   const [adminBusy, setAdminBusy] = useState(false);
+  const [adminBusyLabel, setAdminBusyLabel] = useState("");
   const [adminError, setAdminError] = useState("");
   const [workspaceStatus, setWorkspaceStatus] =
     useState<AdminMarketDataStatus | null>(null);
@@ -615,8 +617,21 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
     );
   }, [selectedDailySource]);
 
+  const handleAdminFailure = useCallback(
+    (error: unknown, fallback: string) => {
+      const message = error instanceof Error ? error.message : fallback;
+      setAdminError(message);
+      toast.error(message);
+      return message;
+    },
+    []
+  );
+
   const handleUnlock = async () => {
     setAdminBusy(true);
+    setAdminBusyLabel(
+      copy(language, "Admin kilidi aciliyor", "Unlocking admin workspace")
+    );
     setAdminError("");
 
     try {
@@ -635,14 +650,19 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
       );
       writeStoredAdminSecret(adminSecret);
       setAdminAuthorized(true);
+      toast.success(
+        copy(language, "Admin workspace acildi.", "Admin workspace unlocked.")
+      );
     } catch (error) {
       writeStoredAdminSecret("");
       setAdminAuthorized(false);
-      setAdminError(
-        error instanceof Error ? error.message : copy(language, "Admin kilidi acilamadi.", "Admin lock could not be opened.")
+      handleAdminFailure(
+        error,
+        copy(language, "Admin kilidi acilamadi.", "Admin lock could not be opened.")
       );
     } finally {
       setAdminBusy(false);
+      setAdminBusyLabel("");
     }
   };
 
@@ -771,6 +791,11 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
     }
 
     setAdminBusy(true);
+    setAdminBusyLabel(
+      status === "published"
+        ? copy(language, "Earnings raporu yayinlaniyor", "Publishing earnings report")
+        : copy(language, "Earnings taslagi kaydediliyor", "Saving earnings draft")
+    );
     setAdminError("");
 
     try {
@@ -814,14 +839,23 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
       setSelectedReportId(savedReport.id);
       setDraftReport(deepCloneReport(savedReport));
       await loadSuggestions(adminSecret);
+      toast.success(
+        status === "published"
+          ? copy(language, "Earnings raporu yayinlandi.", "Earnings report published.")
+          : copy(language, "Earnings taslagi kaydedildi.", "Earnings draft saved.")
+      );
     } catch (error) {
-      setAdminError(
-        error instanceof Error
-          ? error.message
-          : copy(language, copy(language, "Earnings raporu kaydedilemedi.", "Earnings report could not be saved."), "Earnings report could not be saved.")
+      handleAdminFailure(
+        error,
+        copy(
+          language,
+          "Earnings raporu kaydedilemedi.",
+          "Earnings report could not be saved."
+        )
       );
     } finally {
       setAdminBusy(false);
+      setAdminBusyLabel("");
     }
   };
 
@@ -834,6 +868,11 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
     }
 
     setAdminBusy(true);
+    setAdminBusyLabel(
+      status === "published"
+        ? copy(language, "Momentum snapshot yayinlaniyor", "Publishing momentum snapshot")
+        : copy(language, "Momentum taslagi kaydediliyor", "Saving momentum draft")
+    );
     setAdminError("");
 
     try {
@@ -877,14 +916,23 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
       setLatestPublishedMomentum(nextPayload.latestPublished || null);
       setSelectedMomentumReportId(savedReport.id);
       setDraftMomentumReport(JSON.parse(JSON.stringify(savedReport)));
+      toast.success(
+        status === "published"
+          ? copy(language, "Momentum snapshot yayinlandi.", "Momentum snapshot published.")
+          : copy(language, "Momentum taslagi kaydedildi.", "Momentum draft saved.")
+      );
     } catch (error) {
-      setAdminError(
-        error instanceof Error
-          ? error.message
-          : copy(language, copy(language, "Momentum raporu kaydedilemedi.", "Momentum report could not be saved."), "Momentum report could not be saved.")
+      handleAdminFailure(
+        error,
+        copy(
+          language,
+          "Momentum raporu kaydedilemedi.",
+          "Momentum report could not be saved."
+        )
       );
     } finally {
       setAdminBusy(false);
+      setAdminBusyLabel("");
     }
   };
 
@@ -897,6 +945,11 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
     }
 
     setAdminBusy(true);
+    setAdminBusyLabel(
+      status === "published"
+        ? copy(language, "Daily report yayinlaniyor", "Publishing daily report")
+        : copy(language, "Daily taslak kaydediliyor", "Saving daily draft")
+    );
     setAdminError("");
 
     try {
@@ -940,12 +993,23 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
       setLatestPublishedDaily(nextPayload.latestPublished || null);
       setSelectedDailyReportId(savedReport.id);
       setDraftDailyReport(JSON.parse(JSON.stringify(savedReport)));
+      toast.success(
+        status === "published"
+          ? copy(language, "Daily report yayinlandi.", "Daily report published.")
+          : copy(language, "Daily taslak kaydedildi.", "Daily draft saved.")
+      );
     } catch (error) {
-      setAdminError(
-        error instanceof Error ? error.message : copy(language, copy(language, "Daily report kaydedilemedi.", "Daily report could not be saved."), "Daily report could not be saved.")
+      handleAdminFailure(
+        error,
+        copy(
+          language,
+          "Daily report kaydedilemedi.",
+          "Daily report could not be saved."
+        )
       );
     } finally {
       setAdminBusy(false);
+      setAdminBusyLabel("");
     }
   };
 
@@ -1029,9 +1093,9 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
       if (nextFigureFileNames.length === 1) {
         const result = await requestChartGeneration(nextFigureFileNames);
         applyGeneratedSource(result);
-        setDailyOpenAiChartMessage(
-          `${result.generatedFiles.length} ${copy(language, "grafik icin OpenAI varyanti uretildi.", "OpenAI variant(s) generated for chart(s).")}`
-        );
+        const successMessage = `${result.generatedFiles.length} ${copy(language, "grafik icin OpenAI varyanti uretildi.", "OpenAI variant(s) generated for chart(s).")}`;
+        setDailyOpenAiChartMessage(successMessage);
+        toast.success(successMessage);
         return;
       }
 
@@ -1047,8 +1111,14 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
           `${completed}/${total} ${copy(language, "grafik tek tek uretildi.", "charts generated one by one.")}`
         );
       }
+
+      if (completed > 0) {
+        toast.success(
+          `${completed}/${total} ${copy(language, "grafik uretildi.", "charts generated.")}`
+        );
+      }
     } catch (error) {
-      setDailyOpenAiChartError(
+      const message =
         completed > 0
           ? `${completed}/${total} ${copy(language, "grafik uretildi.", "charts generated.")} ${
               currentFigureFileName ? `${currentFigureFileName} ${copy(language, "asamasinda", "at stage")} ` : ""
@@ -1059,8 +1129,9 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
             }`
           : error instanceof Error
             ? error.message
-            : copy(language, "OpenAI chart generation tamamlanamadi.", "OpenAI chart generation could not be completed.")
-      );
+            : copy(language, "OpenAI chart generation tamamlanamadi.", "OpenAI chart generation could not be completed.");
+      setDailyOpenAiChartError(message);
+      toast.error(message);
     } finally {
       setDailyOpenAiChartBusy(false);
     }
@@ -1144,6 +1215,25 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
 
   return (
     <div className="px-4 py-8">
+      {adminBusy ? (
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-background/55 p-4 backdrop-blur-sm md:items-start md:pt-24">
+          <div className="flex w-full max-w-md items-start gap-3 rounded-[1.75rem] border border-border bg-card/96 p-4 shadow-2xl">
+            <RefreshCw className="mt-0.5 size-4 shrink-0 animate-spin text-emerald-300" />
+            <div className="space-y-1">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                {copy(language, "Islem devam ediyor", "Action in progress")}
+              </p>
+              <p className="text-sm font-medium text-foreground">
+                {adminBusyLabel || copy(language, "Admin islemi suruyor.", "Admin action is running.")}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                {copy(language, "Kayit veya publish tamamlanana kadar bu pencere beklemede kalir.", "This overlay stays open until the save or publish step completes.")}
+              </p>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
       <div className="mx-auto max-w-7xl space-y-6">
         <section className="rounded-[2rem] border border-border bg-card/95 p-6 shadow-2xl">
           <div className="flex flex-wrap items-start justify-between gap-4">
@@ -1357,17 +1447,19 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                 </p>
                 <div className="mt-4 space-y-3 text-sm text-muted-foreground">
                   <p>
-                    copy(language, "`REPORT_ADMIN_SECRET`: admin publish kilidi icin zorunlu", "`REPORT_ADMIN_SECRET`: required for admin publish lock")
-                  </p>
-                  <p>copy(language, "`FMP_API_KEY`: gercek earnings takvimi ve hisse verisi icin zorunlu", "`FMP_API_KEY`: required for real earnings calendar and stock data")</p>
-                  <p>
-                    copy(language, "`OPENAI_API_KEY`: Image Studio ile referans gorselden yeni image uretmek icin zorunlu", "`OPENAI_API_KEY`: required to generate new images from reference visuals via Image Studio")
+                    {copy(language, "`REPORT_ADMIN_SECRET`: admin publish kilidi icin zorunlu", "`REPORT_ADMIN_SECRET`: required for admin publish lock")}
                   </p>
                   <p>
-                    copy(language, "`VITE_SCANNER_MASSIVE_API_KEY`, `VITE_SCANNER_TWELVEDATA_API_KEY`, `VITE_SCANNER_ALPHAVANTAGE_API_KEY`: momentum scanner fallback'i icin opsiyonel", "`VITE_SCANNER_MASSIVE_API_KEY`, `VITE_SCANNER_TWELVEDATA_API_KEY`, `VITE_SCANNER_ALPHAVANTAGE_API_KEY`: optional for momentum scanner fallback")
+                    {copy(language, "`FMP_API_KEY`: gercek earnings takvimi ve hisse verisi icin zorunlu", "`FMP_API_KEY`: required for real earnings calendar and stock data")}
                   </p>
                   <p>
-                    copy(language, "Daily report icin ek API key gerekmiyor. Yeni paketleri `dailyreport/DDMMYYYY/` klasorune veya `flow/**.md` olarak birakman yeterli.", "No extra API key needed for Daily report. Just drop new packages into `dailyreport/DDMMYYYY/` folders or as `flow/**.md` files.")
+                    {copy(language, "`OPENAI_API_KEY`: Image Studio ile referans gorselden yeni image uretmek icin zorunlu", "`OPENAI_API_KEY`: required to generate new images from reference visuals via Image Studio")}
+                  </p>
+                  <p>
+                    {copy(language, "`VITE_SCANNER_MASSIVE_API_KEY`, `VITE_SCANNER_TWELVEDATA_API_KEY`, `VITE_SCANNER_ALPHAVANTAGE_API_KEY`: momentum scanner fallback'i icin opsiyonel", "`VITE_SCANNER_MASSIVE_API_KEY`, `VITE_SCANNER_TWELVEDATA_API_KEY`, `VITE_SCANNER_ALPHAVANTAGE_API_KEY`: optional for momentum scanner fallback")}
+                  </p>
+                  <p>
+                    {copy(language, "Daily report icin ek API key gerekmiyor. Yeni paketleri `dailyreport/DDMMYYYY/` klasorune veya `flow/**.md` olarak birakman yeterli.", "No extra API key needed for Daily report. Just drop new packages into `dailyreport/DDMMYYYY/` folders or as `flow/**.md` files.")}
                   </p>
                 </div>
               </div>

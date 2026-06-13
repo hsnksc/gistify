@@ -28,6 +28,9 @@ import type {
 import type { AppLanguage } from "@/lib/i18n";
 import { copy } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
+import WorkspaceHeroPanel from "@/components/workspace/WorkspaceHeroPanel";
+import WorkspaceLoadingState from "@/components/workspace/WorkspaceLoadingState";
+import WorkspaceSummaryCard from "@/components/workspace/WorkspaceSummaryCard";
 import EarningReportCalendarTab from "@/components/tabs/EarningReportCalendarTab";
 import EarningReportPlaybookTab from "@/components/tabs/EarningReportPlaybookTab";
 import EarningReportRiskTab from "@/components/tabs/EarningReportRiskTab";
@@ -39,7 +42,6 @@ import {
 import { parseEarningReportMarkdown } from "@/lib/earningReportSource";
 
 type TabId = "playbook" | "calendar" | "risk";
-type SummaryTone = "bull" | "bear" | "caution" | "info";
 
 function getTabs(language: AppLanguage) {
   return [
@@ -55,54 +57,6 @@ interface EarningReportsListResponse {
 
 interface EarningReportDetailResponse {
   report?: EarningReportSourceRecord | null;
-}
-
-function SummaryCard({
-  label,
-  value,
-  hint,
-  icon: Icon,
-  tone = "info",
-}: {
-  label: string;
-  value: string;
-  hint: string;
-  icon: typeof BarChart3;
-  tone?: SummaryTone;
-}) {
-  const toneClasses: Record<SummaryTone, string> = {
-    bull: "border-emerald-500/22 bg-emerald-500/10 text-emerald-300",
-    bear: "border-red-500/22 bg-red-500/10 text-red-300",
-    caution: "border-amber-500/22 bg-amber-500/10 text-amber-300",
-    info: "border-indigo-500/22 bg-indigo-500/10 text-indigo-300",
-  };
-
-  return (
-    <div className="workspace-card p-4">
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            {label}
-          </p>
-          <p className="data-mono mt-2 text-2xl font-bold text-foreground">
-            {value}
-          </p>
-          <p className="mt-1 text-xs leading-5 text-muted-foreground">{hint}</p>
-        </div>
-        <div className={`rounded-xl border p-2 ${toneClasses[tone]}`}>
-          <Icon className="size-4" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function LoadingState({ label }: { label: string }) {
-  return (
-    <section className="workspace-card p-6 text-sm leading-7 text-muted-foreground">
-      {label}
-    </section>
-  );
 }
 
 export default function Home({ language }: { language: AppLanguage }) {
@@ -312,7 +266,7 @@ export default function Home({ language }: { language: AppLanguage }) {
   const renderActiveTab = () => {
     if (loadingReports || loadingDetail) {
       return (
-        <LoadingState
+        <WorkspaceLoadingState
           label={copy(language, "Earning report workspace yukleniyor.", "Loading earnings workspace.")}
         />
       );
@@ -320,7 +274,7 @@ export default function Home({ language }: { language: AppLanguage }) {
 
     if (!parsedReport) {
       return (
-        <LoadingState
+        <WorkspaceLoadingState
           label={copy(
             language,
             "Henuz goruntulenebilir bir earnings raporu yok. `earningreport/` klasorune yeni rapor yuklendiginde burada otomatik listelenecek.",
@@ -367,127 +321,116 @@ export default function Home({ language }: { language: AppLanguage }) {
   return (
     <div className="min-h-screen bg-background">
       <div className="container py-6 md:py-8">
-        <section className="workspace-panel overflow-hidden">
-          <div className="relative overflow-hidden px-5 py-5 md:px-6 md:py-6">
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.22),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(16,185,129,0.14),transparent_28%)]" />
-            <div className="relative space-y-5">
-              <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                <div className="space-y-3">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="badge-strong">{bullishCount} bullish bias</span>
-                    <span className="badge-danger">{bearishCount} bearish bias</span>
-                    <span className="badge-warning">
-                      {balancedCount} {copy(language, "dengeli", "balanced")}
-                    </span>
-                  </div>
-                  <div className="space-y-2">
-                    <p className="heading-condensed text-sm uppercase tracking-[0.18em] text-indigo-300">
-                      {copy(language, "Earning Strategy Workspace", "Earnings Strategy Workspace")}
+        <WorkspaceHeroPanel
+          overlayClassName="bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.22),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(16,185,129,0.14),transparent_28%)]"
+          badges={
+            <>
+              <span className="badge-strong">{bullishCount} bullish bias</span>
+              <span className="badge-danger">{bearishCount} bearish bias</span>
+              <span className="badge-warning">
+                {balancedCount} {copy(language, "dengeli", "balanced")}
+              </span>
+            </>
+          }
+          eyebrow={copy(language, "Earning Strategy Workspace", "Earnings Strategy Workspace")}
+          title={copy(language, "Guncel earnings strateji paneli", "Current earnings strategy panel")}
+          description={copy(
+            language,
+            "Yalnizca en son earnings raporu gorunur. Ticker secimi, playbook, takvim ve risk panelleri tek source uzerinden acilir.",
+            "Latest 2 earnings reports are shown. Ticker selection, playbook, calendar and risk panels open from a single active source."
+          )}
+          actions={
+            <>
+              <Button type="button" variant="outline" onClick={() => void loadReports()}>
+                <RefreshCw className="size-4" />
+                {copy(language, "Yenile", "Refresh")}
+              </Button>
+              <Button type="button" variant="outline" onClick={() => setLocation("/momentum")}>
+                <Radar className="size-4" />
+                Momentum
+              </Button>
+              <Button type="button" variant="outline" onClick={() => setLocation("/app/admin")}>
+                <Shield className="size-4" />
+                Admin
+              </Button>
+            </>
+          }
+          reportStrip={
+            <div className="flex items-center gap-2 overflow-x-auto terminal-scrollbar pb-2">
+              {visibleReports.map((report, index) => {
+                const active = report.id === selectedReportId;
+
+                return (
+                  <button
+                    key={report.id}
+                    type="button"
+                    onClick={() => setSelectedReportId(report.id)}
+                    className={`min-w-[185px] shrink-0 rounded-xl border px-4 py-3 text-left transition-all duration-150 ${
+                      active
+                        ? "border-indigo-400/45 bg-indigo-500/14 shadow-[0_0_18px_rgba(99,102,241,0.16)]"
+                        : "border-border bg-card/80 hover:border-border hover:bg-[rgba(35,45,66,0.72)]"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="data-mono text-[11px] text-muted-foreground">
+                        {index === 0 ? "LIVE" : "ARCHIVE"}
+                      </span>
+                      <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-amber-300">
+                        {report.vixLabel || "VIX -"}
+                      </span>
+                    </div>
+                    <p className="data-mono mt-2 text-sm font-semibold text-foreground">
+                      {formatEarningReportDateTime(report.updatedAt)}
                     </p>
-                    <h1 className="heading-condensed max-w-4xl text-3xl leading-none text-foreground md:text-5xl">
-                      {copy(language, "Guncel earnings strateji paneli", "Current earnings strategy panel")}
-                    </h1>
-                    <p className="max-w-3xl text-sm leading-7 text-muted-foreground md:text-[15px]">
-                      {copy(
-                        language,
-                        "Yalnizca en son earnings raporu gorunur. Ticker secimi, playbook, takvim ve risk panelleri tek source uzerinden acilir.",
-                        "Latest 2 earnings reports are shown. Ticker selection, playbook, calendar and risk panels open from a single active source."
-                      )}
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {report.reportDateLabel || formatEarningReportDate(report.reportDate, locale)}
                     </p>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-2">
-                  <Button type="button" variant="outline" onClick={() => void loadReports()}>
-                    <RefreshCw className="size-4" />
-                    {copy(language, "Yenile", "Refresh")}
-                  </Button>
-                  <Button type="button" variant="outline" onClick={() => setLocation("/momentum")}>
-                    <Radar className="size-4" />
-                    Momentum
-                  </Button>
-                  <Button type="button" variant="outline" onClick={() => setLocation("/app/admin")}>
-                    <Shield className="size-4" />
-                    Admin
-                  </Button>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2 overflow-x-auto terminal-scrollbar pb-2">
-                {visibleReports.map((report, index) => {
-                  const active = report.id === selectedReportId;
-
-                  return (
-                    <button
-                      key={report.id}
-                      type="button"
-                      onClick={() => setSelectedReportId(report.id)}
-                      className={`min-w-[185px] shrink-0 rounded-xl border px-4 py-3 text-left transition-all duration-150 ${
-                        active
-                          ? "border-indigo-400/45 bg-indigo-500/14 shadow-[0_0_18px_rgba(99,102,241,0.16)]"
-                          : "border-border bg-card/80 hover:border-border hover:bg-[rgba(35,45,66,0.72)]"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between gap-3">
-                        <span className="data-mono text-[11px] text-muted-foreground">
-                          {index === 0 ? "LIVE" : "ARCHIVE"}
-                        </span>
-                        <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-amber-300">
-                          {report.vixLabel || "VIX -"}
-                        </span>
-                      </div>
-                      <p className="data-mono mt-2 text-sm font-semibold text-foreground">
-                        {formatEarningReportDateTime(report.updatedAt)}
-                      </p>
-                      <p className="mt-1 text-xs text-muted-foreground">
-                        {report.reportDateLabel || formatEarningReportDate(report.reportDate, locale)}
-                      </p>
-                      <div className="mt-3 flex items-center gap-2 text-[11px] text-muted-foreground">
-                        <Clock3 className="size-3.5" />
-                        <span className="line-clamp-1">{report.headline || "Earning report"}</span>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {hasReports ? (
-                <div className="inline-flex max-w-full flex-wrap items-center gap-3 rounded-xl border border-border bg-background/40 px-4 py-3 text-xs text-muted-foreground">
-                  <span className="flex items-center gap-1.5">
-                    <BarChart3 className="size-3.5 text-sky-300" />
-                    {positions.length} earnings event
-                  </span>
-                  <span className="h-3 w-px bg-border" />
-                  <span className="flex items-center gap-1.5">
-                    <TrendingUp className="size-3.5 text-emerald-300" />
-                    {bullishCount} bullish
-                  </span>
-                  <span className="h-3 w-px bg-border" />
-                  <span className="flex items-center gap-1.5">
-                    <TrendingDown className="size-3.5 text-red-300" />
-                    {bearishCount} bearish
-                  </span>
-                  <span className="h-3 w-px bg-border" />
-                  <span className="flex items-center gap-1.5">
-                    <Zap className="size-3.5 text-amber-300" />
-                    Avg IV Rank {avgIvRank}
-                  </span>
-                  <span className="h-3 w-px bg-border" />
-                  <span className="flex items-center gap-1.5">
-                    <Target className="size-3.5 text-indigo-300" />
-                    Avg move {avgExpectedMove}
-                  </span>
-                </div>
-              ) : (
-                <div className="inline-flex max-w-full flex-wrap items-center gap-2 rounded-xl border border-dashed border-border bg-background/35 px-4 py-3 text-xs text-muted-foreground">
-                  {loadingReports
-                    ? copy(language, "Earnings report listesi yukleniyor.", "Loading earnings report list.")
-                    : copy(language, "`earningreport/` kaynagi gelince stat bar otomatik dolacak.", "The stat bar will populate automatically when an `earningreport/` source is available.")}
-                </div>
-              )}
+                    <div className="mt-3 flex items-center gap-2 text-[11px] text-muted-foreground">
+                      <Clock3 className="size-3.5" />
+                      <span className="line-clamp-1">{report.headline || "Earning report"}</span>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
-          </div>
-        </section>
+          }
+          statusBar={
+            hasReports ? (
+              <div className="inline-flex max-w-full flex-wrap items-center gap-3 rounded-xl border border-border bg-background/40 px-4 py-3 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1.5">
+                  <BarChart3 className="size-3.5 text-sky-300" />
+                  {positions.length} earnings event
+                </span>
+                <span className="h-3 w-px bg-border" />
+                <span className="flex items-center gap-1.5">
+                  <TrendingUp className="size-3.5 text-emerald-300" />
+                  {bullishCount} bullish
+                </span>
+                <span className="h-3 w-px bg-border" />
+                <span className="flex items-center gap-1.5">
+                  <TrendingDown className="size-3.5 text-red-300" />
+                  {bearishCount} bearish
+                </span>
+                <span className="h-3 w-px bg-border" />
+                <span className="flex items-center gap-1.5">
+                  <Zap className="size-3.5 text-amber-300" />
+                  Avg IV Rank {avgIvRank}
+                </span>
+                <span className="h-3 w-px bg-border" />
+                <span className="flex items-center gap-1.5">
+                  <Target className="size-3.5 text-indigo-300" />
+                  Avg move {avgExpectedMove}
+                </span>
+              </div>
+            ) : (
+              <div className="inline-flex max-w-full flex-wrap items-center gap-2 rounded-xl border border-dashed border-border bg-background/35 px-4 py-3 text-xs text-muted-foreground">
+                {loadingReports
+                  ? copy(language, "Earnings report listesi yukleniyor.", "Loading earnings report list.")
+                  : copy(language, "`earningreport/` kaynagi gelince stat bar otomatik dolacak.", "The stat bar will populate automatically when an `earningreport/` source is available.")}
+              </div>
+            )
+          }
+        />
 
         <div
           className={`mt-6 grid gap-6 ${
@@ -511,21 +454,21 @@ export default function Home({ language }: { language: AppLanguage }) {
                   </div>
 
                   <div className="grid gap-3 sm:grid-cols-3 md:min-w-[420px]">
-                    <SummaryCard
+                    <WorkspaceSummaryCard
                       label={copy(language, "Rapor tarihi", "Report date")}
                       value={selectedSummary?.reportDateLabel || "-"}
                       hint={copy(language, "Parser ile okunan ana tarih", "Primary date parsed from the report")}
                       icon={CalendarDays}
                       tone="info"
                     />
-                    <SummaryCard
+                    <WorkspaceSummaryCard
                       label="VIX"
                       value={selectedSummary?.vixLabel || "-"}
                       hint={copy(language, "Secili rapor volatilite baglami", "Volatility context for the selected report")}
                       icon={Zap}
                       tone="caution"
                     />
-                    <SummaryCard
+                    <WorkspaceSummaryCard
                       label={copy(language, "Yuklenme", "Loaded")}
                       value={selectedUploadLabel}
                       hint={copy(language, "Liste siralamasi bu zamana gore", "List ordering uses this timestamp")}
@@ -594,28 +537,28 @@ export default function Home({ language }: { language: AppLanguage }) {
 
                 {hasReports ? (
                   <div className="mt-4 space-y-3">
-                    <SummaryCard
+                    <WorkspaceSummaryCard
                       label={copy(language, "Rapor adedi", "Report count")}
                       value={String(visibleReports.length)}
                       hint={copy(language, "Su an son 2 rapor gorunur", "Latest 2 reports are visible")}
                       icon={BarChart3}
                       tone="info"
                     />
-                    <SummaryCard
+                    <WorkspaceSummaryCard
                       label={copy(language, "Son yukleme", "Latest load")}
                       value={latestUploadLabel}
                       hint={copy(language, "Varsayilan acilan rapor", "Default report opened on entry")}
                       icon={RefreshCw}
                       tone="bull"
                     />
-                    <SummaryCard
+                    <WorkspaceSummaryCard
                       label={copy(language, "Aktif setup", "Active setups")}
                       value={String(positions.length)}
                       hint={copy(language, "Secili rapordaki ticker", "Tickers in the selected report")}
                       icon={Target}
                       tone="info"
                     />
-                    <SummaryCard
+                    <WorkspaceSummaryCard
                       label={copy(language, "Yakin event", "Nearest event")}
                       value={nextEvent?.ticker || "-"}
                       hint={
