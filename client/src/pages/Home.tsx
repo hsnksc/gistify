@@ -237,17 +237,27 @@ export default function Home({ language }: { language: AppLanguage }) {
     return `%${Math.round(total / valid.length)}`;
   }, [positions]);
 
-  const avgExpectedMove = useMemo(() => {
-    const valid = positions.filter(position => position.expectedMove !== null);
+  const avgCpr = useMemo(() => {
+    const valid = positions
+      .map(position => {
+        const metric = position.metrics.find(item =>
+          item.label.toLocaleLowerCase("tr-TR").includes("cpr")
+        );
+        const match = metric?.value.match(/-?\d+(?:[.,]\d+)?/);
+        if (!match) {
+          return null;
+        }
+
+        const parsed = Number(match[0].replace(",", "."));
+        return Number.isFinite(parsed) ? parsed : null;
+      })
+      .filter((value): value is number => value !== null);
     if (!valid.length) {
       return "-";
     }
 
-    const total = valid.reduce(
-      (sum, position) => sum + Math.abs(position.expectedMove || 0),
-      0
-    );
-    return `%${(total / valid.length).toFixed(1)}`;
+    const total = valid.reduce((sum, value) => sum + value, 0);
+    return (total / valid.length).toFixed(2);
   }, [positions]);
 
   const selectedHeadline =
@@ -434,7 +444,7 @@ export default function Home({ language }: { language: AppLanguage }) {
                 <span className="h-3 w-px bg-border" />
                 <span className="flex items-center gap-1.5">
                   <Target className="size-3.5 text-indigo-300" />
-                  Avg move {avgExpectedMove}
+                  Avg CPR {avgCpr}
                 </span>
               </div>
             ) : (

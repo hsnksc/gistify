@@ -2112,142 +2112,437 @@ function parseModernPositionSection(
 
 function parseCprPositionSection(
   lines: string[],
-  startIdx: number
-): (EarningsPosition & { schedule: Array<{ date: string; action: string }> }) | null {
-  const heading = lines[startIdx];
-  const headingMatch = heading.match(/^###\s+(\d+\.\d+)\s+([A-Z]{1,5})/);
-  const subStockMatch = heading.match(/^####\s+([A-Z]{1,5})/);
-  if (!headingMatch && !subStockMatch) return null;
-
-  const order = headingMatch ? parseFloat(headingMatch[1]) : 0;
-  const ticker = headingMatch ? headingMatch[2] : (subStockMatch ? subStockMatch[1] : "");
-
-  const parts = heading.split(/[\u2014\u2013]/);
-  let price = "";
-  let cpr = "";
-  if (parts.length >= 3) {
-    const priceMatch = parts[1].trim().match(/\$?([~\d,.]+)/);
-    if (priceMatch) price = priceMatch[1];
-    const cprMatch = parts[2].match(/CPR:\s+([\d.~]+)/);
-    if (cprMatch) cpr = cprMatch[1];
+  startIdx: number,
+  context: {
+    reportDateIso: string;
+    reportYear: string;
+    allocationMap: Map<string, AllocationEntry>;
+    calendarMap: Map<string, { company: string; earningsDate: string; earningsTime: string }>;
+    appendixMap: Map<
+      string,
+      {
+        price: string;
+        ivRank: string;
+        volumeCpr: string;
+        oiCpr: string;
+        sentiment: string;
+        strategy: string;
+        fomcRisk: string;
+        budgetMin: string;
+      }
+    >;
   }
+): (EarningsPosition & { schedule: Array<{ date: string; action: string; note: string }> }) | null {
+  const rawHeading = cleanText((lines[startIdx] || "").replace(/[\u2013\u2014]/g, "-"));
+  const headingMatch = rawHeading.match(
+    /^#{3,4}\s+(?:(\d+(?:\.\d+)*)\s+)?([A-Z]{1,5})\s*-\s*\$?([~\d,.]+).*?CPR:\s*([~\d.]+)/i
+  );
+  if (!headingMatch) {
+    return null;
+  }
+
+  const order = parseNumber(headingMatch[1] || "") || 0;
+  const ticker = cleanText(headingMatch[2] || "");
+  const headingPrice = cleanText(headingMatch[3] || "");
+  const headingCpr = cleanText(headingMatch[4] || "");
 
   let endIdx = lines.length;
-  for (let i = startIdx + 1; i < lines.length; i++) {
-    if (lines[i].match(/^###\s+\d+\.\d+\s+[A-Z]/)) {
-      endIdx = i;
+  for (let index = startIdx + 1; index < lines.length; index += 1) {
+    const candidate = cleanText((lines[index] || "").replace(/[\u2013\u2014]/g, "-"));
+    if (/^#{3,4}\s+(?:(\d+(?:\.\d+)*)\s+)?[A-Z]{1,5}\s*-\s*\$?[\d,.~]+.*CPR:/i.test(candidate)) {
+      endIdx = index;
       break;
     }
-    // Sub-stocks (####) should also stop at next #### or ###
-    if (lines[startIdx].match(/^####/) && lines[i].match(/^#{3,4}\s/)) {
-      endIdx = i;
-      break;
-    }
-  }
-
-  const params: Record<string, string> = {};
-  let inParams = false;
-  for (let i = startIdx; i < endIdx; i++) {
-    if (lines[i].match(/^\|\s*Parametre\s*\|\s*Değer\s*\|/)) {
-      inParams = true;
-      continue;
-    }
-    if (inParams && lines[i].match(/^\|[-\s|]+\|/)) continue;
-    if (inParams && lines[i].match(/^\|/)) {
-      const cells = lines[i].split("|").map(c => c.trim()).filter(c => c);
-      if (cells.length >= 2) {
-        const key = cells[0].replace(/\*\*/g, "").trim();
-        params[key] = cells[1];
-      }
-    }
-    if (inParams && !lines[i].match(/^\|/) && lines[i].trim() !== "") break;
-  }
-
-  let strategy = "";
-  for (let i = startIdx; i < endIdx; i++) {
-    const sm = lines[i].match(/^####\s+(?:Ana Strateji|Strateji 1):\s+(.+)/);
-    if (sm) {
-      strategy = sm[1].trim();
+    if (/^##\s+\d+\./.test(candidate)) {
+      endIdx = index;
       break;
     }
   }
 
-  const budget: Array<{ budget: string; strategy: string; cost: string; maxProfit: string }> = [];
-  let inBudget = false;
-  for (let i = startIdx; i < endIdx; i++) {
-    if (lines[i].includes("Bütçe Dostu")) {
-      inBudget = true;
-      continue;
+  const sectionLines = lines.slice(startIdx + 1, endIdx);
+  const overviewTable = parseFirstTable(sectionLines);
+  const overviewMap = buildTableValueMap(overviewTable);
+  const appendix = context.appendixMap.get(ticker);
+  const allocation = context.allocationMap.get(ticker);
+  const calendarEntry = context.calendarMap.get(ticker);
+
+  const metrics: StrategyMetrics[] = [];
+  const seenMetricLabels = new Set<string>();
+  const pushMetric = (label: string, value: string) => {
+    const cleanLabel = cleanText(label);
+    const cleanValue = cleanText(value);
+    if (!cleanLabel || !cleanValue) {
+      return;
     }
-    if (inBudget && lines[i].match(/^\|[-\s|]+\|/)) continue;
-    if (inBudget && lines[i].match(/^\|/)) {
-      const cells = lines[i].split("|").map(c => c.trim()).filter(c => c);
-      if (cells.length >= 3 && !cells[0].includes("Bütçe")) {
-        budget.push({ budget: cells[0], strategy: cells[1], cost: cells[2], maxProfit: cells[3] || "" });
-      }
+
+    const key = normalizeForSearch(cleanLabel);
+    if (seenMetricLabels.has(key)) {
+      return;
     }
-    if (inBudget && !lines[i].match(/^\|/) && lines[i].trim() !== "") break;
+
+    seenMetricLabels.add(key);
+    metrics.push({ label: cleanLabel, value: cleanValue });
+  };
+
+  for (const row of overviewTable?.rows || []) {
+    pushMetric(row[0] || "", row[1] || "");
   }
 
-  const schedule: Array<{ date: string; action: string }> = [];
-  let inSchedule = false;
-  for (let i = startIdx; i < endIdx; i++) {
-    if (lines[i].includes("Giriş-Çıkış Takvimi")) {
-      inSchedule = true;
-      continue;
+  pushMetric("Fiyat", findMetricValueByAliases(metrics, ["fiyat"]) || `$${headingPrice}`);
+  pushMetric("Hacim CPR", findMetricValueByAliases(metrics, ["hacim cpr"]) || headingCpr);
+  pushMetric("OI CPR", appendix?.oiCpr || "");
+  pushMetric("IV Rank", appendix?.ivRank || "");
+  pushMetric("Ana Strateji", appendix?.strategy || "");
+  pushMetric("FOMC Riski", appendix?.fomcRisk || "");
+  pushMetric("Butce Min.", appendix?.budgetMin || "");
+
+  const rawEarningsValue =
+    findMetricValueByAliases(metrics, ["earnings"]) || calendarEntry?.earningsDate || "";
+  const earningsMatch = normalizeForSearch(rawEarningsValue).match(
+    /(\d{1,2})\s+([a-z]+)(?:\s+(\d{4}))?(?:.*\b(amc|bmo)\b)?/i
+  );
+  const monthMap: Record<string, string> = {
+    ocak: "Ocak",
+    subat: "Subat",
+    mart: "Mart",
+    nisan: "Nisan",
+    mayis: "Mayis",
+    haziran: "Haziran",
+    temmuz: "Temmuz",
+    agustos: "Agustos",
+    eylul: "Eylul",
+    ekim: "Ekim",
+    kasim: "Kasim",
+    aralik: "Aralik",
+  };
+  const earningsDateFromMetric =
+    earningsMatch && monthMap[earningsMatch[2]]
+      ? `${Number(earningsMatch[1])} ${monthMap[earningsMatch[2]]} ${earningsMatch[3] || context.reportYear}`
+      : "";
+  const earningsTimeFromMetric = earningsMatch?.[4]?.toUpperCase() || "-";
+  const earningsDate =
+    earningsDateFromMetric || calendarEntry?.earningsDate || cleanText(rawEarningsValue) || "-";
+  const earningsTime =
+    earningsTimeFromMetric !== "-"
+      ? earningsTimeFromMetric
+      : calendarEntry?.earningsTime || "-";
+  const earningsDateIso = parseTurkishDateLabelClient(earningsDate);
+  const daysLeft = earningsDateIso ? diffCalendarDays(context.reportDateIso, earningsDateIso) : 999;
+  const company =
+    calendarEntry?.company ||
+    {
+      AMD: "Advanced Micro Devices",
+      TSLA: "Tesla",
+      NFLX: "Netflix",
+      NVDA: "NVIDIA",
+      META: "Meta Platforms",
+      GOOGL: "Alphabet",
+      AAPL: "Apple",
+      AMZN: "Amazon",
+      MSFT: "Microsoft",
+      JPM: "JPMorgan Chase",
+      BAC: "Bank of America",
+      GS: "Goldman Sachs",
+      WFC: "Wells Fargo",
+      C: "Citigroup",
+      MS: "Morgan Stanley",
+      BLK: "BlackRock",
+      UNH: "UnitedHealth Group",
+      JNJ: "Johnson & Johnson",
+      PFE: "Pfizer",
+      ABT: "Abbott Laboratories",
+      TMO: "Thermo Fisher Scientific",
+      MRK: "Merck & Co.",
+      XOM: "ExxonMobil",
+      CVX: "Chevron",
+      MA: "Mastercard",
+      V: "Visa",
+      DIS: "Walt Disney",
+      BA: "Boeing",
+      NKE: "Nike",
+      HD: "Home Depot",
+      INTC: "Intel",
+    }[ticker] ||
+    ticker;
+
+  const strategyLineIndex = sectionLines.findIndex(line =>
+    /(?:^####\s+Ana Strateji:|^####\s+Strateji\s*1:|^\*\*Strateji\s*1:)/i.test(
+      cleanText(line)
+    )
+  );
+  const primaryStrategyLine =
+    strategyLineIndex >= 0 ? cleanText(sectionLines[strategyLineIndex] || "") : "";
+  const strategyTitle =
+    cleanText(
+      primaryStrategyLine
+        .replace(/^####\s*/i, "")
+        .replace(/^\*\*/i, "")
+        .replace(/\*\*$/i, "")
+        .replace(/^Ana Strateji:\s*/i, "")
+        .replace(/^Strateji\s*1:\s*/i, "")
+        .replace(/\s+\(Ana\)\s*/i, "")
+        .replace(/\s+⭐.*$/, "")
+    ) ||
+    appendix?.strategy ||
+    "Strategy";
+
+  const primaryStrategyTable =
+    strategyLineIndex >= 0 ? parseFirstTable(sectionLines.slice(strategyLineIndex + 1)) : null;
+  const alternativeIndex = sectionLines.findIndex((line, index) => {
+    if (index <= strategyLineIndex) {
+      return false;
     }
-    if (inSchedule && lines[i].match(/^\|[-\s|]+\|/)) continue;
-    if (inSchedule && lines[i].match(/^\|/)) {
-      const cells = lines[i].split("|").map(c => c.trim()).filter(c => c);
-      if (cells.length >= 2 && !cells[0].includes("Tarih")) {
-        schedule.push({ date: cells[0], action: cells[1] });
-      }
-    }
-    if (inSchedule && !lines[i].match(/^\|/) && lines[i].trim() !== "") break;
+
+    return /alternatif|long spread alternatifi|^####\s+Strateji\s*2:|^\*\*Strateji\s*2:/i.test(
+      normalizeForSearch(line)
+    );
+  });
+  const alternativeTable =
+    alternativeIndex >= 0 ? parseFirstTable(sectionLines.slice(alternativeIndex + 1)) : null;
+  const ratioIndex = findLineIndexByText(sectionLines, "cpr bazli call/put orani");
+  const ratioTable = ratioIndex >= 0 ? parseFirstTable(sectionLines.slice(ratioIndex + 1)) : null;
+  const budgetIndex = findLineIndexByText(sectionLines, "butce dostu");
+  const budgetTable = budgetIndex >= 0 ? parseFirstTable(sectionLines.slice(budgetIndex + 1)) : null;
+  const scheduleIndex =
+    findLineIndexByText(sectionLines, "giris-cikis takvimi") >= 0
+      ? findLineIndexByText(sectionLines, "giris-cikis takvimi")
+      : findLineIndexByText(sectionLines, "giriş-çıkış takvimi");
+  const scheduleTable =
+    scheduleIndex >= 0 ? parseFirstTable(sectionLines.slice(scheduleIndex + 1)) : null;
+  const scenarioTable =
+    parseAllTables(sectionLines).find(table =>
+      table.headers.some(header => normalizeForSearch(header).includes("senaryo"))
+    ) || null;
+
+  for (const row of primaryStrategyTable?.rows || []) {
+    pushMetric(row[0] || "", row[1] || "");
+  }
+  if (!findMetricValueByAliases(metrics, ["iv rank"]) && appendix?.ivRank) {
+    pushMetric("IV Rank", appendix.ivRank);
   }
 
-  const metrics = Object.entries(params).map(([label, value]) => ({ label, value }));
-  const strategyTitle = strategy || "Strategy";
+  const rawNarrativeLines = sectionLines
+    .map(line => cleanText((line || "").replace(/^>\s*/, "")))
+    .filter(
+      line =>
+        line &&
+        !line.startsWith("|") &&
+        !/^####\s+/i.test(line) &&
+        !/^###\s+/i.test(line) &&
+        line !== "---"
+    );
+  const overviewCommentary = (overviewTable?.rows || [])
+    .map(row => cleanText(row[2] || ""))
+    .filter(Boolean);
+  const quoteAlerts = parseQuoteBlocks(sectionLines).flatMap(block => block);
+  const warnings = dedupeItems([
+    ...quoteAlerts,
+    ...rawNarrativeLines.filter(line => /uyari|risk|dikkat|fomc|onemli|önemli|yarim pozisyon|kucult/i.test(normalizeForSearch(line))),
+    ...overviewCommentary.filter(line => /risk|fomc|dikkat|uyari|yarim/i.test(normalizeForSearch(line))),
+  ]).slice(0, 8);
+
+  const ratioRow = ratioTable?.rows[0] || null;
+  let callWeight = parsePercent(cleanText(ratioRow?.[0] || ""));
+  let putWeight = parsePercent(cleanText(ratioRow?.[1] || ""));
+  if (callWeight === null || putWeight === null) {
+    const ratioHint = rawNarrativeLines.find(line => /%\d+.*call.*%\d+.*put/i.test(line)) || "";
+    const parsedWeights = parseWeights(ratioHint);
+    callWeight = parsedWeights.callWeight;
+    putWeight = parsedWeights.putWeight;
+  }
+  if (callWeight === null || putWeight === null) {
+    const inferred = inferStrategyWeights(strategyTitle, strategyTitle);
+    callWeight = inferred.callWeight;
+    putWeight = inferred.putWeight;
+  }
+  const ratioText =
+    callWeight !== null && putWeight !== null
+      ? `${callWeight}% call / ${putWeight}% put`
+      : "50% call / 50% put";
+
+  const detailedSchedule =
+    (scheduleTable?.rows || [])
+      .map(row => {
+        const date = cleanText(row[0] || "");
+        const action = cleanText(row[1] || "");
+        const note = cleanText(row[2] || row[1] || strategyTitle);
+        if (!date || !action) {
+          return null;
+        }
+
+        return {
+          date,
+          action,
+          note,
+        };
+      })
+      .filter(
+        (
+          row
+        ): row is {
+          date: string;
+          action: string;
+          note: string;
+        } => Boolean(row)
+      ) || [];
+
+  const entryWindow = findMetricValueByAliases(metrics, ["entry penceresi"]);
+  const entryCheckpoint =
+    detailedSchedule.find(item =>
+      /entry|giris|pozisyon.*ac/i.test(normalizeForSearch(item.action))
+    )?.date || entryWindow;
+  const exitCheckpoint =
+    detailedSchedule.find(item =>
+      /cikis|kapat|kar al|zamanla/i.test(normalizeForSearch(item.action))
+    )?.date || "";
+
+  const primaryItems = dedupeItems([
+    ...paramTableItems(primaryStrategyTable, [
+      "Sell Call",
+      "Short Call",
+      "Buy Call",
+      "Long Call",
+      "Sell Put",
+      "Short Put",
+      "Buy Put",
+      "Long Put",
+      "Wing Width",
+      "Spread Width",
+      "Tahmini Kredi",
+      "Tahmini Maliyet",
+      "Kredi",
+      "Maliyet",
+      "Max Risk",
+      "Max Kar",
+      "ROI",
+      "Breakeven",
+      "Breakeven'lar",
+    ]),
+    ...tableToRowSummaries(primaryStrategyTable, 4),
+  ]).slice(0, 6);
+
+  const executionItems = dedupeItems([
+    ...paramTableItems(primaryStrategyTable, [
+      "Kar Hedefi",
+      "Stop-Loss",
+      "Pozisyon Boyutu",
+      "K.O. Olasiligi",
+      "K.O. Olasılığı",
+      "Max Risk",
+    ]),
+    ...detailedSchedule.map(item => `${item.date}: ${item.action}`),
+    ...warnings.slice(0, 3),
+  ]).slice(0, 6);
+
+  const news = buildNewsBucketsFromItems(
+    dedupeItems([
+      ...overviewCommentary,
+      ...rawNarrativeLines.filter(line => !/yasal uyari/i.test(normalizeForSearch(line))),
+      strategyTitle,
+    ])
+  );
+
+  const scenarios =
+    scenarioTable?.rows.map(row => ({
+      scenario: cleanText(row[0] || ""),
+      ivChange: cleanText(row[1] || ""),
+      stockMove: [cleanText(row[2] || ""), cleanText(row[3] || "")]
+        .filter(Boolean)
+        .join(" | "),
+      pnl: cleanText(row[4] || row[3] || ""),
+    })) || [];
+
+  const notes = [
+    createNote(
+      "Snapshot",
+      (overviewTable?.rows || []).map(row => `${cleanText(row[0] || "")}: ${cleanText(row[2] || row[1] || "")}`)
+    ),
+    createNote("Primary setup", tableToRowSummaries(primaryStrategyTable, 8)),
+    createNote("Alternative setup", tableToRowSummaries(alternativeTable, 6)),
+    createNote(
+      "Budget ladder",
+      (budgetTable?.rows || []).map(
+        row =>
+          `${cleanText(row[0] || "")}: ${cleanText(row[1] || "")} | ${cleanText(row[2] || "")} | ${cleanText(row[3] || "")}`
+      )
+    ),
+    createNote(
+      "Execution plan",
+      detailedSchedule.map(item =>
+        `${item.date}: ${item.action}${item.note && item.note !== item.action ? ` | ${item.note}` : ""}`
+      )
+    ),
+  ].filter((note): note is StrategyNote => Boolean(note));
+
+  const price =
+    parseNumber(findMetricValueByAliases(metrics, ["fiyat", "son fiyat"])) ||
+    parseNumber(headingPrice);
+  const ivRank =
+    parsePercent(findMetricValueByAliases(metrics, ["iv rank"])) ||
+    parsePercent(appendix?.ivRank || "");
+  const expectedMove =
+    parsePercent(findMetricValueByAliases(metrics, ["expected move", "beklenen hareket"])) ||
+    parsePercent(
+      rawNarrativeLines
+        .join(" ")
+        .match(/expected move[^0-9%]*%?([0-9]+(?:[.,]\d+)?)/i)?.[1] || ""
+    );
 
   return {
     order: Number.isFinite(order) ? order : 0,
     ticker,
-    company: ticker,
-    earningsLabel: params["Earnings"] || "-",
-    earningsDate: params["Earnings"] || "-",
-    earningsTime: "-",
-    daysLeft: 0,
+    company,
+    earningsLabel: [earningsDate, earningsTime !== "-" ? earningsTime : ""]
+      .filter(Boolean)
+      .join(" "),
+    earningsDate,
+    earningsTime,
+    daysLeft,
     strategyTitle,
-    allocationCapital: "-",
-    allocationRisk: "-",
+    allocationCapital:
+      allocation?.capital ||
+      appendix?.budgetMin ||
+      findMetricValueByAliases(metrics, ["pozisyon boyutu"]) ||
+      "-",
+    allocationRisk:
+      findMetricValueByAliases(metrics, ["fomc riski"]) ||
+      appendix?.fomcRisk ||
+      findMetricValueByAliases(metrics, ["pozisyon boyutu"]) ||
+      strategyTitle,
     metrics,
-    news: [],
+    news,
     blueprint: {
-      rawLines: [strategyTitle],
-      ratioText: "50% call / 50% put",
-      callWeight: 50,
-      putWeight: 50,
-      biasLine: strategyTitle,
-      callHeading: "Primary setup",
-      callItems: budget.map(b => b.budget + ": " + b.strategy),
-      putHeading: "Risk / sizing",
-      putItems: schedule.map(s => s.date + ": " + s.action),
+      rawLines: dedupeItems([strategyTitle, ratioText, ...overviewCommentary.slice(0, 3)]),
+      ratioText,
+      callWeight,
+      putWeight,
+      biasLine:
+        ratioTable?.rows[0]?.[2] ||
+        overviewCommentary[0] ||
+        findMetricValueByAliases(metrics, ["teknik trend", "sentiment"]) ||
+        strategyTitle,
+      callHeading:
+        callWeight !== null && putWeight !== null && callWeight > putWeight
+          ? "Bullish setup"
+          : callWeight !== null && putWeight !== null && putWeight > callWeight
+            ? "Bearish setup"
+            : "Primary setup",
+      callItems: primaryItems.length ? primaryItems : [strategyTitle],
+      putHeading: "Execution / risk",
+      putItems: executionItems.length ? executionItems : warnings.slice(0, 4),
       expiryLines: [],
-      entry: "",
-      exit: ""
+      entry: entryCheckpoint,
+      exit: exitCheckpoint,
     },
     greeks: [],
-    scenarios: [],
-    warnings: [],
-    notes: [
-      { title: "Params", lines: Object.entries(params).map(([k, v]) => k + ": " + v) },
-      { title: "Budget", lines: budget.map(b => b.budget + ": " + b.strategy + " (" + b.cost + ")") }
-    ],
-    price: parseFloat(price) || null,
-    ivRank: parseFloat(params["IV Rank"]?.replace(/[^\d.]/g, "")) || null,
-    expectedMove: null,
-    schedule
-  } as EarningsPosition & { schedule: Array<{ date: string; action: string }> };
+    scenarios: scenarios.filter(row => row.scenario),
+    warnings,
+    notes,
+    price,
+    ivRank,
+    expectedMove,
+    schedule: detailedSchedule,
+  };
 }
 
 function stripUpdateDaySuffix(value: string) {
@@ -3462,6 +3757,11 @@ function parseCprEarningReportMarkdown(
 
   const reportDateItem = meta.find(m => m.label.includes("Tarihi"));
   const reportDate = reportDateItem ? reportDateItem.value : "-";
+  const reportDateIso = parseTurkishDateLabelClient(reportDate);
+  const reportYear =
+    reportDate.match(/\b(20\d{2})\b/)?.[1] ||
+    title.match(/\b(20\d{2})\b/)?.[1] ||
+    "2026";
 
   let vixLabel = "-";
   for (const line of lines) {
@@ -3474,51 +3774,257 @@ function parseCprEarningReportMarkdown(
     }
   }
 
-  const positions: EarningsPosition[] = [];
-  const tradeSchedule: TradeScheduleRow[] = [];
-
-  for (let i = 0; i < lines.length; i++) {
-    const headingMatch = lines[i].match(/^###\s+(\d+\.\d+)\s+([A-Z]{1,5})/);
-    if (headingMatch && lines[i].includes("$") && lines[i].includes("CPR:")) {
-      const pos = parseCprPositionSection(lines, i);
-      if (pos) {
-        positions.push(pos);
-        for (const s of pos.schedule || []) {
-          tradeSchedule.push({
-            date: s.date.replace(/\*\*/g, ""),
-            ticker: pos.ticker,
-            action: s.action,
-            note: pos.strategyTitle
-          });
-        }
-      }
+  const monthMap: Record<string, string> = {
+    ocak: "Ocak",
+    subat: "Subat",
+    mart: "Mart",
+    nisan: "Nisan",
+    mayis: "Mayis",
+    haziran: "Haziran",
+    temmuz: "Temmuz",
+    agustos: "Agustos",
+    eylul: "Eylul",
+    ekim: "Ekim",
+    kasim: "Kasim",
+    aralik: "Aralik",
+  };
+  const parseTickerEarnings = (value: string) => {
+    const normalized = normalizeForSearch(value);
+    const match = normalized.match(
+      /(\d{1,2})\s+([a-z]+)(?:\s+(\d{4}))?(?:.*\b(amc|bmo)\b)?/i
+    );
+    if (!match || !monthMap[match[2]]) {
+      return { earningsDate: "", earningsTime: "-" };
     }
-    // Handle sub-stocks under section 8.3 (#### TICKER — $PRICE — CPR: X.XX)
-    const subStockMatch = lines[i].match(/^####\s+([A-Z]{1,5})\s+.*\$.*CPR:/);
-    if (subStockMatch) {
-      const pos = parseCprPositionSection(lines, i);
-      if (pos) {
-        positions.push(pos);
-        for (const s of pos.schedule || []) {
-          tradeSchedule.push({
-            date: s.date.replace(/\*\*/g, ""),
-            ticker: pos.ticker,
-            action: s.action,
-            note: pos.strategyTitle
+
+    return {
+      earningsDate: `${Number(match[1])} ${monthMap[match[2]]} ${match[3] || reportYear}`,
+      earningsTime: match[4]?.toUpperCase() || "-",
+    };
+  };
+  const calendarMap = new Map<
+    string,
+    { company: string; earningsDate: string; earningsTime: string }
+  >();
+  const calendarSection = getSectionBody(lines, findLineIndex(lines, /^###\s+3\.1\s+/));
+  let currentCalendarDate = "";
+  let currentCalendarTime = "-";
+  let cursor = 0;
+  while (cursor < calendarSection.length) {
+    const currentLine = cleanText(calendarSection[cursor] || "");
+    const headingMatch = normalizeForSearch(currentLine).match(
+      /(\d{1,2})\s+([a-z]+)\s+(\d{4})(?:.*\b(amc|bmo)\b)?/i
+    );
+    if (headingMatch && monthMap[headingMatch[2]]) {
+      currentCalendarDate = `${Number(headingMatch[1])} ${monthMap[headingMatch[2]]} ${headingMatch[3]}`;
+      currentCalendarTime = headingMatch[4]?.toUpperCase() || "-";
+      cursor += 1;
+      continue;
+    }
+
+    if (currentLine.startsWith("|")) {
+      const parsed = parseTable(calendarSection, cursor);
+      if (parsed.table) {
+        for (const row of parsed.table.rows) {
+          const ticker = cleanText((row[0] || "").match(/[A-Z]{1,5}/)?.[0] || "");
+          if (!ticker) {
+            continue;
+          }
+
+          calendarMap.set(ticker, {
+            company: cleanText(row[1] || ticker),
+            earningsDate: currentCalendarDate,
+            earningsTime: currentCalendarTime,
           });
         }
       }
+      cursor = parsed.nextIndex;
+      continue;
+    }
+
+    cursor += 1;
+  }
+
+  const topTenTable = parseFirstTable(
+    getSectionBody(lines, findLineIndex(lines, /^###\s+3\.3\s+/))
+  );
+  for (const row of topTenTable?.rows || []) {
+    const ticker = cleanText((row[1] || "").match(/[A-Z]{1,5}/)?.[0] || "");
+    if (!ticker) {
+      continue;
+    }
+
+    const parsed = parseTickerEarnings(row[3] || "");
+    const existing = calendarMap.get(ticker);
+    calendarMap.set(ticker, {
+      company: cleanText(row[2] || existing?.company || ticker),
+      earningsDate: parsed.earningsDate || existing?.earningsDate || "",
+      earningsTime:
+        parsed.earningsTime !== "-"
+          ? parsed.earningsTime
+          : existing?.earningsTime || "-",
+    });
+  }
+
+  const appendixMap = new Map<
+    string,
+    {
+      price: string;
+      ivRank: string;
+      volumeCpr: string;
+      oiCpr: string;
+      sentiment: string;
+      strategy: string;
+      fomcRisk: string;
+      budgetMin: string;
+    }
+  >();
+  const appendixTable = parseFirstTable(
+    getSectionBody(lines, findLineIndex(lines, /^###\s+Ek A:/i))
+  );
+  for (const row of appendixTable?.rows || []) {
+    const ticker = cleanText((row[0] || "").match(/[A-Z]{1,5}/)?.[0] || "");
+    if (!ticker) {
+      continue;
+    }
+
+    appendixMap.set(ticker, {
+      price: cleanText(row[1] || ""),
+      ivRank: cleanText(row[2] || ""),
+      volumeCpr: cleanText(row[3] || ""),
+      oiCpr: cleanText(row[4] || ""),
+      sentiment: cleanText(row[5] || ""),
+      strategy: cleanText(row[6] || ""),
+      fomcRisk: cleanText(row[7] || ""),
+      budgetMin: cleanText(row[8] || ""),
+    });
+  }
+
+  const allocationSections = [
+    /^###\s+11\.4\s+/,
+    /^###\s+11\.3\s+/,
+    /^###\s+11\.2\s+/,
+    /^###\s+11\.1\s+/,
+  ];
+  const allocationsMap = new Map<string, AllocationEntry>();
+  for (const matcher of allocationSections) {
+    const table = parseFirstTable(getSectionBody(lines, findLineIndex(lines, matcher)));
+    for (const row of table?.rows || []) {
+      const ticker = cleanText((row[0] || "").match(/[A-Z]{1,5}/)?.[0] || "");
+      if (!ticker || ticker === "TOPLAM" || ticker === "NAKIT" || allocationsMap.has(ticker)) {
+        continue;
+      }
+
+      allocationsMap.set(ticker, {
+        ticker,
+        capital: cleanText(row[2] || row[3] || "-"),
+        riskLevel: [cleanText(row[3] || ""), cleanText(row[1] || "")]
+          .filter(Boolean)
+          .join(" | "),
+      });
     }
   }
 
+  const normalizeScheduleAction = (value: string) => {
+    const normalized = normalizeForSearch(value);
+    if (normalized.includes("entry") || normalized.includes("giris")) {
+      return "GIRIS";
+    }
+    if (normalized.includes("earnings")) {
+      return "EARNINGS";
+    }
+    if (
+      normalized.includes("cikis") ||
+      normalized.includes("kar al") ||
+      normalized.includes("kapat")
+    ) {
+      return "CIKIS";
+    }
+    if (
+      normalized.includes("fomc") ||
+      normalized.includes("kucult") ||
+      normalized.includes("azalt") ||
+      normalized.includes("durdur") ||
+      normalized.includes("risk")
+    ) {
+      return "RISK";
+    }
+    return "IZLE";
+  };
+
+  const positions: EarningsPosition[] = [];
+  const positionScheduleRows: TradeScheduleRow[] = [];
+  const seenTickers = new Set<string>();
+
+  for (let i = 0; i < lines.length; i++) {
+    const isPrimaryHeading =
+      /^###\s+\d+\.\d+\s+[A-Z]{1,5}\s+.*\$.*CPR:/i.test(lines[i] || "");
+    const isSubStockHeading = /^####\s+[A-Z]{1,5}\s+.*\$.*CPR:/i.test(lines[i] || "");
+    if (!isPrimaryHeading && !isSubStockHeading) {
+      continue;
+    }
+
+    const parsedPosition = parseCprPositionSection(lines, i, {
+      reportDateIso,
+      reportYear,
+      allocationMap: allocationsMap,
+      calendarMap,
+      appendixMap,
+    });
+    if (!parsedPosition || seenTickers.has(parsedPosition.ticker)) {
+      continue;
+    }
+
+    seenTickers.add(parsedPosition.ticker);
+    positions.push(parsedPosition);
+    for (const row of parsedPosition.schedule || []) {
+      positionScheduleRows.push({
+        date: row.date.replace(/\*\*/g, ""),
+        ticker: parsedPosition.ticker,
+        action: normalizeScheduleAction(row.action),
+        note:
+          row.note && row.note !== row.action
+            ? `${row.action} | ${row.note}`
+            : row.note || parsedPosition.strategyTitle,
+      });
+    }
+  }
+
+  const knownTickers = positions.map(position => position.ticker);
   const timelineSteps: Array<{ phase: string; label: string }> = [];
-  const calIdx = lines.findIndex(l => l.match(/^###\s+3\.1\s+Günlük Detaylı Takvim/));
-  if (calIdx >= 0) {
-    for (let i = calIdx; i < lines.length; i++) {
-      if (lines[i].match(/^####\s+🔷/)) {
-        const m = lines[i].match(/^####\s+🔷\s+(.+)/);
-        if (m) timelineSteps.push({ phase: m[1], label: "" });
+  const weeklyTradeSchedule: TradeScheduleRow[] = [];
+  const weeklyPlanSection = getSectionBody(lines, findLineIndex(lines, /^###\s+12\.1\s+/));
+  for (const [heading, sectionLines] of Array.from(
+    splitSections(weeklyPlanSection, /^####\s+/).entries()
+  )) {
+    const weeklyTable = parseFirstTable(sectionLines);
+    const tableRows = weeklyTable?.rows || [];
+    const highlights = tableRows.slice(0, 2).map(row =>
+      [cleanText(row[1] || ""), cleanText(row[2] || ""), cleanText(row[3] || "")]
+        .filter(Boolean)
+        .join(" | ")
+    );
+    timelineSteps.push({
+      phase: cleanText(heading.replace(/^####\s*/, "")),
+      label: highlights.join(" || "),
+    });
+
+    for (const row of tableRows) {
+      const date = cleanText(row[1] || row[0] || "");
+      const detail = cleanText(row[2] || row[1] || "");
+      if (!date || !detail) {
+        continue;
       }
+
+      const note = [cleanText(row[0] || ""), cleanText(row[3] || ""), cleanText(row[4] || "")]
+        .filter(Boolean)
+        .join(" | ");
+      weeklyTradeSchedule.push({
+        date,
+        ticker: extractTickerReferences(`${detail} ${note}`, knownTickers),
+        action: normalizeScheduleAction(detail),
+        note: note ? `${detail} | ${note}` : detail,
+      });
     }
   }
 
@@ -3607,29 +4113,6 @@ function parseCprEarningReportMarkdown(
     .map(line => cleanText(line.replace(/^\[[^\]]*\]\s*/, "")))
     .filter(Boolean);
 
-  const allocationSections = [
-    /^###\s+11\.4\s+/,
-    /^###\s+11\.3\s+/,
-    /^###\s+11\.2\s+/,
-    /^###\s+11\.1\s+/,
-  ];
-  const allocationsMap = new Map<string, AllocationEntry>();
-  for (const matcher of allocationSections) {
-    const table = parseFirstTable(getSectionBody(lines, findLineIndex(lines, matcher)));
-    for (const row of table?.rows || []) {
-      const ticker = cleanText((row[0] || "").match(/[A-Z]{1,5}/)?.[0] || "");
-      if (!ticker || ticker === "TOPLAM" || ticker === "NAKIT" || allocationsMap.has(ticker)) {
-        continue;
-      }
-
-      allocationsMap.set(ticker, {
-        ticker,
-        capital: cleanText(row[2] || row[3] || "-"),
-        riskLevel: cleanText(row[1] || row[3] || "-"),
-      });
-    }
-  }
-
   const positionSizingTable = parseFirstTable(
     getSectionBody(lines, findLineIndex(lines, /^###\s+11\.5\s+/))
   );
@@ -3638,7 +4121,9 @@ function parseCprEarningReportMarkdown(
     capital:
       allocationsMap.get(position.ticker)?.capital ||
       cleanText(position.metrics.find(metric => /Pozisyon Boyutu/i.test(metric.label))?.value || "-"),
-    contracts: "-",
+    contracts:
+      cleanText(position.metrics.find(metric => /Pozisyon Boyutu/i.test(metric.label))?.value || "-") ||
+      "-",
   }));
   const exampleRows = positionSizingTable?.rows || [];
   for (const row of exampleRows) {
@@ -3656,18 +4141,15 @@ function parseCprEarningReportMarkdown(
     }
   }
 
-  const weeklySectionLines = getSectionBody(lines, findLineIndex(lines, /^##\s+12\./));
-  for (const rawLine of weeklySectionLines) {
-    const headingMatch = rawLine.match(/^####\s+(.+)/);
-    if (headingMatch) {
-      timelineSteps.push({
-        phase: cleanText(headingMatch[1] || ""),
-        label: "",
-      });
-    }
-  }
-
-  tradeSchedule.push(...reductionSchedule);
+  const tradeSchedule = Array.from(
+    new Map(
+      [...weeklyTradeSchedule, ...positionScheduleRows, ...reductionSchedule].map(row => [
+        `${row.date}-${row.ticker}-${row.action}-${row.note}`,
+        row,
+      ] as const)
+    ).values()
+  );
+  const mainThemeLine = lines.find(line => normalizeForSearch(line).includes("ana tema:")) || "";
 
   return {
     sourceFile,
@@ -3677,14 +4159,22 @@ function parseCprEarningReportMarkdown(
     meta,
     reportDate,
     vixLabel,
-    coreWindow: subtitle,
+    coreWindow:
+      cleanText(mainThemeLine.replace(/^\*\*Ana Tema:\*\*\s*/i, "")) ||
+      [`VIX ${vixLabel}`, subtitle, "FOMC 28-29 Temmuz"].filter(Boolean).join(" | "),
     timelineSteps,
     gainDrivers,
     allocations:
       positions.map(position => ({
         ticker: position.ticker,
-        capital: allocationsMap.get(position.ticker)?.capital || "-",
-        riskLevel: allocationsMap.get(position.ticker)?.riskLevel || position.strategyTitle,
+        capital:
+          allocationsMap.get(position.ticker)?.capital ||
+          appendixMap.get(position.ticker)?.budgetMin ||
+          "-",
+        riskLevel:
+          allocationsMap.get(position.ticker)?.riskLevel ||
+          findMetricValueByAliases(position.metrics, ["fomc riski"]) ||
+          position.strategyTitle,
       })) || [],
     positions,
     tradeSchedule,

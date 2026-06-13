@@ -410,30 +410,19 @@ export default function EarningReportPlaybookTab({
               accentClass="text-amber-300"
             />
             <SummaryMetric
-              label="Expected Move"
-              value={findMetricValue(activePosition, [
-                "Expected Move",
-                "Beklenen Hareket (EM)",
-                "Beklenen Hareket",
-              ])}
-              hint={copy(language, "Beklenen band", "Expected range")}
+              label="CPR"
+              value={findMetricValue(activePosition, ["Hacim CPR"]) || "-"}
+              hint={copy(language, "Call / put dengesinin ozeti", "Fast read on call / put balance")}
             />
             <SummaryMetric
-              label="EPS"
+              label={copy(language, "Giris Penceresi", "Entry Window")}
               value={
-                findMetricValue(activePosition, [
-                  "Surprise Pot.",
-                  "EPS Beklenti",
-                  "EPS Tahmini",
-                ]) !== "-"
-                  ? findMetricValue(activePosition, [
-                      "Surprise Pot.",
-                      "EPS Beklenti",
-                      "EPS Tahmini",
-                    ])
-                  : findMetricValue(activePosition, ["Gelir Tahmini"])
+                activePosition.blueprint.entry ||
+                findMetricValue(activePosition, ["Entry Penceresi"]) ||
+                findMetricValue(activePosition, ["K.O. Olasılığı", "K.O. Olasiligi"]) ||
+                "-"
               }
-              hint={copy(language, "Ana beklenti snapshot", "Primary expectation snapshot")}
+              hint={copy(language, "En kritik execution checkpoint", "Most important execution checkpoint")}
               accentClass="text-emerald-300"
             />
           </div>

@@ -26,6 +26,54 @@ function sortPositions(positions: EarningsPosition[]) {
   });
 }
 
+function normalizeMetricLabel(value: string) {
+  return value
+    .toLocaleLowerCase("tr-TR")
+    .replace(/ç/g, "c")
+    .replace(/ğ/g, "g")
+    .replace(/ı/g, "i")
+    .replace(/ö/g, "o")
+    .replace(/ş/g, "s")
+    .replace(/ü/g, "u")
+    .trim();
+}
+
+function findMetricValue(position: EarningsPosition, labels: string | string[]) {
+  const aliases = Array.isArray(labels) ? labels : [labels];
+  const metrics = position.metrics.map(metric => ({
+    ...metric,
+    normalizedLabel: normalizeMetricLabel(metric.label),
+  }));
+
+  for (const label of aliases) {
+    const normalized = normalizeMetricLabel(label);
+    const exact = metrics.find(metric => metric.normalizedLabel === normalized);
+    if (exact?.value) {
+      return exact.value;
+    }
+  }
+
+  for (const label of aliases) {
+    const normalized = normalizeMetricLabel(label);
+    const partial = metrics.find(metric => metric.normalizedLabel.includes(normalized));
+    if (partial?.value) {
+      return partial.value;
+    }
+  }
+
+  return "";
+}
+
+function parseMetricNumber(value: string) {
+  const match = value.match(/-?\d+(?:[.,]\d+)?/);
+  if (!match) {
+    return null;
+  }
+
+  const parsed = Number(match[0].replace(",", "."));
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
 function getBiasTone(position: EarningsPosition): ReportTone {
   const callWeight = position.blueprint.callWeight ?? 0;
   const putWeight = position.blueprint.putWeight ?? 0;
@@ -55,6 +103,24 @@ function getBiasLabel(position: EarningsPosition, language: AppLanguage) {
   return copy(language, "Dengeli", "Balanced");
 }
 
+function getRiskTone(position: EarningsPosition): ReportTone {
+  const risk = normalizeMetricLabel(position.allocationRisk || "");
+
+  if (risk.includes("🔴") || risk.includes("yuksek")) {
+    return "bear";
+  }
+
+  if (risk.includes("🟡") || risk.includes("orta")) {
+    return "caution";
+  }
+
+  if (risk.includes("🟢") || risk.includes("dusuk")) {
+    return "bull";
+  }
+
+  return "neutral";
+}
+
 function formatPercentValue(value: number | null, digits: number = 0) {
   if (value === null || !Number.isFinite(value)) {
     return "-";
@@ -68,22 +134,22 @@ function buildStatCards(
   positions: EarningsPosition[],
   language: AppLanguage
 ) {
+  const cprValues = positions
+    .map(position => parseMetricNumber(findMetricValue(position, ["Hacim CPR"])))
+    .filter((value): value is number => value !== null && Number.isFinite(value));
   const ivValues = positions
     .map(position => position.ivRank)
     .filter((value): value is number => value !== null && Number.isFinite(value));
-  const moveValues = positions
-    .map(position => position.expectedMove)
-    .filter((value): value is number => value !== null && Number.isFinite(value));
   const nextEvent = positions[0] || null;
+  const highRiskCount = positions.filter(position => getRiskTone(position) === "bear").length;
+  const topIvPosition =
+    positions
+      .filter(position => position.ivRank !== null)
+      .sort((left, right) => (right.ivRank || 0) - (left.ivRank || 0))[0] || null;
 
-  const avgIvRank = ivValues.length
-    ? `%${Math.round(ivValues.reduce((sum, value) => sum + value, 0) / ivValues.length)}`
-    : "-";
-  const avgExpectedMove = moveValues.length
-    ? `%${(
-        moveValues.reduce((sum, value) => sum + Math.abs(value), 0) / moveValues.length
-      ).toFixed(1)}`
-    : "-";
+  const avgCpr = cprValues.length
+    ? cprValues.reduce((sum, value) => sum + value, 0) / cprValues.length
+    : null;
 
   return [
     {
@@ -91,30 +157,38 @@ function buildStatCards(
       value: String(positions.length),
       detail: copy(
         language,
-        "Secili earnings dosyasindan parse edilen ticker sayisi.",
+        "Secili earnings dosyasindan parse edilen ticker adedi.",
         "Number of tickers parsed from the selected earnings file."
       ),
       tone: "info",
     },
     {
-      label: "Avg IV Rank",
-      value: avgIvRank,
-      detail: copy(
-        language,
-        "Opsiyon maliyet rejiminin ortalama seviyesi.",
-        "Average options cost regime level."
-      ),
+      label: copy(language, "En Yuksek IV Rank", "Highest IV Rank"),
+      value: topIvPosition ? `${topIvPosition.ticker} · ${formatPercentValue(topIvPosition.ivRank, 2)}` : "-",
+      detail: topIvPosition
+        ? topIvPosition.strategyTitle
+        : copy(language, "IV Rank verisi bulunamadi.", "IV Rank data is unavailable."),
       tone: "caution",
     },
     {
-      label: copy(language, "Ort. Beklenen Hareket", "Avg Expected Move"),
-      value: avgExpectedMove,
+      label: "Avg CPR",
+      value: avgCpr !== null ? avgCpr.toFixed(2) : "-",
       detail: copy(
         language,
-        "Tum aktif setup'larin beklenen hareket ortalamasi.",
-        "Average expected move across active setups."
+        "Hacim CPR ortalamasi; yon dengesini hizli okuma icin.",
+        "Average volume CPR for a fast read on directional balance."
       ),
       tone: "bull",
+    },
+    {
+      label: copy(language, "FOMC Yuksek Risk", "High FOMC Risk"),
+      value: String(highRiskCount),
+      detail: copy(
+        language,
+        "Kirmizi risk etiketi alan setup sayisi.",
+        "Number of setups tagged with the highest risk label."
+      ),
+      tone: "bear",
     },
     {
       label: copy(language, "En Yakin Event", "Nearest Event"),
@@ -129,8 +203,8 @@ function buildStatCards(
       value: report.vixLabel || "-",
       detail: copy(
         language,
-        "Kaynak rapordaki volatilite baglami.",
-        "Volatility context from the source report."
+        "Makro volatilite baglami.",
+        "Macro volatility context."
       ),
       tone: "caution",
     },
@@ -235,7 +309,10 @@ function DataTable({
           </thead>
           <tbody>
             {rows.map((row, rowIndex) => (
-              <tr key={`${rowIndex}-${row[0] || "row"}`} className="border-b border-border/60 last:border-b-0">
+              <tr
+                key={`${rowIndex}-${row[0] || "row"}`}
+                className="border-b border-border/60 last:border-b-0"
+              >
                 {headers.map((_, cellIndex) => (
                   <td
                     key={`${rowIndex}-${cellIndex}`}
@@ -255,6 +332,73 @@ function DataTable({
   );
 }
 
+function ConvictionCard({
+  position,
+  assessment,
+  language,
+}: {
+  position: EarningsPosition;
+  assessment: string;
+  language: AppLanguage;
+}) {
+  const ivRank = findMetricValue(position, ["IV Rank"]);
+  const cpr = findMetricValue(position, ["Hacim CPR"]);
+  const entryWindow =
+    position.blueprint.entry || findMetricValue(position, ["Entry Penceresi"]) || "-";
+
+  return (
+    <article className="rounded-[1.45rem] border border-border bg-background/55 p-4">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-emerald-300">
+            {copy(language, "Yuksek Oncelik", "High Conviction")}
+          </p>
+          <h4 className="mt-2 text-lg font-semibold text-foreground">
+            {position.ticker}
+            <span className="ml-2 text-sm font-normal text-muted-foreground">
+              {position.company}
+            </span>
+          </h4>
+        </div>
+        <span
+          className={`rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] ${
+            getBiasTone(position) === "bull"
+              ? "border-emerald-500/25 bg-emerald-500/10 text-emerald-300"
+              : getBiasTone(position) === "bear"
+                ? "border-red-500/25 bg-red-500/10 text-red-300"
+                : "border-amber-500/25 bg-amber-500/10 text-amber-300"
+          }`}
+        >
+          {getBiasLabel(position, language)}
+        </span>
+      </div>
+
+      <p className="mt-3 text-sm leading-7 text-muted-foreground">{assessment}</p>
+
+      <div className="mt-4 grid gap-3 sm:grid-cols-3">
+        <div className="rounded-[1rem] border border-border bg-card/70 p-3">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+            IV Rank
+          </p>
+          <p className="mt-2 text-sm font-semibold text-amber-300">{ivRank || "-"}</p>
+        </div>
+        <div className="rounded-[1rem] border border-border bg-card/70 p-3">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+            CPR
+          </p>
+          <p className="mt-2 text-sm font-semibold text-sky-300">{cpr || "-"}</p>
+        </div>
+        <div className="rounded-[1rem] border border-border bg-card/70 p-3">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+            {copy(language, "Giris", "Entry")}
+          </p>
+          <p className="mt-2 text-sm font-semibold text-foreground">{entryWindow}</p>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 export default function EarningReportPostTab({
   report,
   language = "tr",
@@ -262,9 +406,30 @@ export default function EarningReportPostTab({
   updatedAtLabel = "",
 }: EarningReportPostTabProps) {
   const positions = sortPositions(report.positions);
-  const storyItems = report.gainDrivers.length
-    ? report.gainDrivers.slice(0, 4).map(driver => `${driver.factor}: ${driver.assessment}`)
-    : report.goldenRules.slice(0, 4);
+  const convictionBoard = report.gainDrivers
+    .map(driver => {
+      const matchedPosition = positions.find(position => position.ticker === driver.factor);
+      if (!matchedPosition) {
+        return null;
+      }
+
+      return {
+        position: matchedPosition,
+        assessment: [driver.impact, driver.assessment].filter(Boolean).join(" | "),
+      };
+    })
+    .filter(
+      (
+        entry
+      ): entry is {
+        position: EarningsPosition;
+        assessment: string;
+      } => Boolean(entry)
+    );
+
+  const storyItems = convictionBoard.length
+    ? convictionBoard.slice(0, 5).map(entry => `${entry.position.ticker}: ${entry.assessment}`)
+    : report.goldenRules.slice(0, 5);
   const metaItems: ReportPostItem[] = [
     ...report.meta.map(item => ({
       label: item.label,
@@ -289,8 +454,8 @@ export default function EarningReportPostTab({
       subtitle={report.subtitle}
       headline={copy(
         language,
-        "Bu gorunum, secili earnings markdown dosyasini post formatinda ozetler; setup, takvim, risk ve tam kaynak icerigi ayni akista korunur.",
-        "This view turns the selected earnings markdown file into a post-style reading flow while keeping setups, calendar, risk context, and the full source content together."
+        "Bu gorunum secili earnings markdown dosyasini gercek verilerle bir post akisina cevirir; setup derinligi, execution plani, portfoy notlari ve tam kaynak icerigi ayni yerde kalir.",
+        "This view turns the selected earnings markdown file into a post flow with real parsed data while keeping setup depth, execution planning, portfolio notes, and the full source document together."
       )}
       reportDateLabel={reportDateLabel || report.reportDate}
       updatedAtLabel={updatedAtLabel}
@@ -306,99 +471,199 @@ export default function EarningReportPostTab({
         "The earnings markdown content is empty."
       )}
     >
+      {convictionBoard.length ? (
+        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+          <SectionTitle
+            eyebrow={copy(language, "Top Picks", "Top Picks")}
+            title={copy(language, "Rapordaki en guclu setup'lar", "Highest-conviction setups in the report")}
+            description={copy(
+              language,
+              "Executive summary tarafinda one cikan isimler burada dogrudan setup kartlarina baglanir.",
+              "The names highlighted in the executive summary are tied directly to their setup cards here."
+            )}
+          />
+
+          <div className="mt-5 grid gap-4 xl:grid-cols-2">
+            {convictionBoard.map(entry => (
+              <ConvictionCard
+                key={`${entry.position.ticker}-${entry.assessment}`}
+                position={entry.position}
+                assessment={entry.assessment}
+                language={language}
+              />
+            ))}
+          </div>
+        </section>
+      ) : null}
+
       <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
         <SectionTitle
-          eyebrow={copy(language, "Setup Board", "Setup Board")}
+          eyebrow={copy(language, "Setup Atlas", "Setup Atlas")}
           title={copy(language, "Ticker bazli oyun plani", "Ticker-by-ticker game plan")}
           description={copy(
             language,
-            "Her yuklenen earnings raporu, parse edilen tum setup'lari sade ama eksiksiz kartlar halinde aciyor.",
-            "Each uploaded earnings report opens all parsed setups as clean but complete cards."
+            "Her yuklenen earnings raporu, parse edilen tum setup'lari eksik metrikleri one cikarmadan okunabilir kartlar halinde acar.",
+            "Each uploaded earnings report opens every parsed setup as readable cards without surfacing fake or missing metrics."
           )}
         />
 
         <div className="mt-5 grid gap-4 xl:grid-cols-2">
-          {positions.map(position => (
-            <article
-              key={`${position.ticker}-${position.order}`}
-              className="rounded-[1.45rem] border border-border bg-background/55 p-4"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-lg font-semibold text-foreground">
-                    {position.ticker}
-                    <span className="ml-2 text-sm font-normal text-muted-foreground">
-                      {position.company}
+          {positions.map(position => {
+            const price = findMetricValue(position, ["Fiyat", "Son Fiyat"]) || "-";
+            const ivRank = findMetricValue(position, ["IV Rank"]) || "-";
+            const cpr = findMetricValue(position, ["Hacim CPR"]) || "-";
+            const entryWindow =
+              position.blueprint.entry || findMetricValue(position, ["Entry Penceresi"]) || "-";
+            const exitWindow = position.blueprint.exit || "-";
+            const knockout =
+              findMetricValue(position, ["K.O. Olasılığı", "K.O. Olasiligi"]) ||
+              findMetricValue(position, ["Kar Hedefi", "ROI"]) ||
+              "-";
+
+            return (
+              <article
+                key={`${position.ticker}-${position.order}`}
+                className="rounded-[1.45rem] border border-border bg-background/55 p-4"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-lg font-semibold text-foreground">
+                      {position.ticker}
+                      <span className="ml-2 text-sm font-normal text-muted-foreground">
+                        {position.company}
+                      </span>
+                    </p>
+                    <p className="mt-2 text-xs uppercase tracking-[0.16em] text-muted-foreground">
+                      {position.earningsDate} {position.earningsTime !== "-" ? `· ${position.earningsTime}` : ""} ·{" "}
+                      {position.daysLeft} {copy(language, "gun", "days")}
+                    </p>
+                  </div>
+                  <div className="flex flex-col items-end gap-2">
+                    <span
+                      className={`rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] ${
+                        getBiasTone(position) === "bull"
+                          ? "border-emerald-500/25 bg-emerald-500/10 text-emerald-300"
+                          : getBiasTone(position) === "bear"
+                            ? "border-red-500/25 bg-red-500/10 text-red-300"
+                            : "border-amber-500/25 bg-amber-500/10 text-amber-300"
+                      }`}
+                    >
+                      {getBiasLabel(position, language)}
                     </span>
-                  </p>
-                  <p className="mt-2 text-xs uppercase tracking-[0.16em] text-muted-foreground">
-                    {position.earningsDate} · {position.earningsTime} · {position.daysLeft}{" "}
-                    {copy(language, "gun", "days")}
-                  </p>
+                    <span
+                      className={`rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] ${
+                        getRiskTone(position) === "bear"
+                          ? "border-red-500/25 bg-red-500/10 text-red-300"
+                          : getRiskTone(position) === "caution"
+                            ? "border-amber-500/25 bg-amber-500/10 text-amber-300"
+                            : getRiskTone(position) === "bull"
+                              ? "border-emerald-500/25 bg-emerald-500/10 text-emerald-300"
+                              : "border-border bg-background/60 text-muted-foreground"
+                      }`}
+                    >
+                      {position.allocationRisk || copy(language, "Risk notu yok", "No risk tag")}
+                    </span>
+                  </div>
                 </div>
-                <span
-                  className={`rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] ${
-                    getBiasTone(position) === "bull"
-                      ? "border-emerald-500/25 bg-emerald-500/10 text-emerald-300"
-                      : getBiasTone(position) === "bear"
-                        ? "border-red-500/25 bg-red-500/10 text-red-300"
-                        : "border-amber-500/25 bg-amber-500/10 text-amber-300"
-                  }`}
-                >
-                  {getBiasLabel(position, language)}
-                </span>
-              </div>
 
-              <p className="mt-3 text-sm font-semibold text-foreground">
-                {position.strategyTitle}
-              </p>
+                <p className="mt-3 text-sm font-semibold text-foreground">{position.strategyTitle}</p>
 
-              <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                <div className="rounded-[1.1rem] border border-border bg-card/70 p-3">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                    IV Rank
-                  </p>
-                  <p className="mt-2 text-sm font-semibold text-amber-300">
-                    {formatPercentValue(position.ivRank)}
-                  </p>
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-[1.1rem] border border-border bg-card/70 p-3">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                      {copy(language, "Fiyat", "Price")}
+                    </p>
+                    <p className="mt-2 text-sm font-semibold text-foreground">{price}</p>
+                  </div>
+                  <div className="rounded-[1.1rem] border border-border bg-card/70 p-3">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                      IV Rank
+                    </p>
+                    <p className="mt-2 text-sm font-semibold text-amber-300">{ivRank}</p>
+                  </div>
+                  <div className="rounded-[1.1rem] border border-border bg-card/70 p-3">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                      CPR
+                    </p>
+                    <p className="mt-2 text-sm font-semibold text-sky-300">{cpr}</p>
+                  </div>
+                  <div className="rounded-[1.1rem] border border-border bg-card/70 p-3">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                      {copy(language, "Giris Penceresi", "Entry Window")}
+                    </p>
+                    <p className="mt-2 text-sm font-semibold text-foreground">{entryWindow}</p>
+                  </div>
                 </div>
-                <div className="rounded-[1.1rem] border border-border bg-card/70 p-3">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                    {copy(language, "Beklenen Hareket", "Expected Move")}
-                  </p>
-                  <p className="mt-2 text-sm font-semibold text-sky-300">
-                    {formatPercentValue(position.expectedMove, 1)}
-                  </p>
-                </div>
-                <div className="rounded-[1.1rem] border border-border bg-card/70 p-3">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                    {copy(language, "Sermaye", "Capital")}
-                  </p>
-                  <p className="mt-2 text-sm font-semibold text-foreground">
-                    {position.allocationCapital}
-                  </p>
-                </div>
-                <div className="rounded-[1.1rem] border border-border bg-card/70 p-3">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                    Risk
-                  </p>
-                  <p className="mt-2 text-sm font-semibold text-foreground">
-                    {position.allocationRisk}
-                  </p>
-                </div>
-              </div>
 
-              <div className="mt-4">
-                <BiasMeter position={position} language={language} />
-              </div>
-
-              {position.warnings.length ? (
-                <div className="mt-4 rounded-[1.1rem] border border-red-500/20 bg-red-500/8 p-3 text-sm leading-6 text-red-100/90">
-                  {position.warnings[0]}
+                <div className="mt-4 rounded-[1.1rem] border border-border bg-card/70 p-3">
+                  <div className="grid gap-3 sm:grid-cols-3">
+                    <div>
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                        {copy(language, "Sermaye", "Capital")}
+                      </p>
+                      <p className="mt-2 text-sm font-semibold text-foreground">
+                        {position.allocationCapital}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                        {copy(language, "Cikis", "Exit")}
+                      </p>
+                      <p className="mt-2 text-sm font-semibold text-foreground">{exitWindow}</p>
+                    </div>
+                    <div>
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                        {copy(language, "KO / Hedef", "KO / Target")}
+                      </p>
+                      <p className="mt-2 text-sm font-semibold text-foreground">{knockout}</p>
+                    </div>
+                  </div>
                 </div>
-              ) : null}
-            </article>
-          ))}
+
+                <div className="mt-4">
+                  <BiasMeter position={position} language={language} />
+                </div>
+
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-[1.1rem] border border-emerald-500/15 bg-emerald-500/5 p-3">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-emerald-300">
+                      {copy(language, "Primary setup", "Primary setup")}
+                    </p>
+                    <ul className="mt-2 space-y-1 text-sm leading-6 text-muted-foreground">
+                      {position.blueprint.callItems.length ? (
+                        position.blueprint.callItems.map(item => (
+                          <li key={`${position.ticker}-call-${item}`}>{item}</li>
+                        ))
+                      ) : (
+                        <li>{position.strategyTitle}</li>
+                      )}
+                    </ul>
+                  </div>
+
+                  <div className="rounded-[1.1rem] border border-border bg-card/70 p-3">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                      {copy(language, "Execution / risk", "Execution / risk")}
+                    </p>
+                    <ul className="mt-2 space-y-1 text-sm leading-6 text-muted-foreground">
+                      {position.blueprint.putItems.length ? (
+                        position.blueprint.putItems.map(item => (
+                          <li key={`${position.ticker}-put-${item}`}>{item}</li>
+                        ))
+                      ) : (
+                        <li>{copy(language, "Ek execution notu yok.", "No extra execution note.")}</li>
+                      )}
+                    </ul>
+                  </div>
+                </div>
+
+                {position.warnings.length ? (
+                  <div className="mt-4 rounded-[1.1rem] border border-red-500/20 bg-red-500/8 p-3 text-sm leading-6 text-red-100/90">
+                    {position.warnings[0]}
+                  </div>
+                ) : null}
+              </article>
+            );
+          })}
         </div>
       </section>
 
@@ -416,12 +681,7 @@ export default function EarningReportPostTab({
                 copy(language, "Aksiyon", "Action"),
                 copy(language, "Not", "Note"),
               ]}
-              rows={report.tradeSchedule.map(item => [
-                item.date,
-                item.ticker,
-                item.action,
-                item.note,
-              ])}
+              rows={report.tradeSchedule.map(item => [item.date, item.ticker, item.action, item.note])}
               emptyMessage={copy(
                 language,
                 "Bu raporda ayri bir trade schedule tablosu yok.",
@@ -431,6 +691,30 @@ export default function EarningReportPostTab({
           </div>
         </section>
 
+        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+          <SectionTitle
+            eyebrow={copy(language, "Portfolio", "Portfolio")}
+            title={copy(language, "Portfoy ve allocation notlari", "Portfolio and allocation notes")}
+          />
+          <div className="mt-5">
+            <DataTable
+              headers={[
+                "Ticker",
+                copy(language, "Sermaye", "Capital"),
+                copy(language, "Allocation notu", "Allocation note"),
+              ]}
+              rows={report.allocations.map(item => [item.ticker, item.capital, item.riskLevel])}
+              emptyMessage={copy(
+                language,
+                "Bu raporda parse edilen allocation tablosu yok.",
+                "No parsed allocation table is available in this report."
+              )}
+            />
+          </div>
+        </section>
+      </section>
+
+      <section className="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
         <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
           <SectionTitle
             eyebrow={copy(language, "Risk Matrix", "Risk Matrix")}
@@ -458,17 +742,15 @@ export default function EarningReportPostTab({
             />
           </div>
         </section>
-      </section>
 
-      <section className="grid gap-6 xl:grid-cols-2">
         <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
           <SectionTitle
             eyebrow="Rules"
             title={copy(language, "Golden rules", "Golden rules")}
             description={copy(
               language,
-              "Raporun global disiplin kurallari burada duz metin yerine operasyonel maddeler olarak korunur.",
-              "The report's global discipline rules are preserved here as operational items instead of raw text."
+              "Raporun global disiplin kurallari burada operasyonel maddeler olarak korunur.",
+              "The report's global discipline rules are preserved here as operational items."
             )}
           />
           <ol className="mt-5 space-y-3 text-sm leading-7 text-muted-foreground">
@@ -487,33 +769,27 @@ export default function EarningReportPostTab({
               </li>
             )}
           </ol>
-        </section>
 
-        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
-          <SectionTitle
-            eyebrow="Checklist"
-            title={copy(language, "Gunluk kontrol listesi", "Daily checklist")}
-            description={copy(
-              language,
-              "Yeni markdown yuklendiginde checklist satirlari ayni post akisina otomatik eklenir.",
-              "When a new markdown file is uploaded, checklist rows are added to the same post flow automatically."
-            )}
-          />
-          <div className="mt-5 grid gap-3 sm:grid-cols-2">
-            {report.checklist.length ? (
-              report.checklist.map(item => (
-                <article
-                  key={item}
-                  className="rounded-[1.2rem] border border-border bg-background/55 px-4 py-3 text-sm leading-7 text-muted-foreground"
-                >
-                  {item}
+          <div className="mt-6 border-t border-border pt-5">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-200">
+              {copy(language, "Gunluk kontrol listesi", "Daily checklist")}
+            </p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              {report.checklist.length ? (
+                report.checklist.map(item => (
+                  <article
+                    key={item}
+                    className="rounded-[1.2rem] border border-border bg-background/55 px-4 py-3 text-sm leading-7 text-muted-foreground"
+                  >
+                    {item}
+                  </article>
+                ))
+              ) : (
+                <article className="rounded-[1.2rem] border border-dashed border-border bg-background/35 px-4 py-3 text-sm text-muted-foreground sm:col-span-2">
+                  {copy(language, "Checklist parse edilemedi.", "Checklist could not be parsed.")}
                 </article>
-              ))
-            ) : (
-              <article className="rounded-[1.2rem] border border-dashed border-border bg-background/35 px-4 py-3 text-sm text-muted-foreground sm:col-span-2">
-                {copy(language, "Checklist parse edilemedi.", "Checklist could not be parsed.")}
-              </article>
-            )}
+              )}
+            </div>
           </div>
         </section>
       </section>
