@@ -2037,11 +2037,11 @@ function renderStaticMarketingPage(
         color: var(--text);
       }
       a { color: inherit; text-decoration: none; }
-      .wrap { max-width: 1120px; margin: 0 auto; padding: 24px 16px 64px; }
+      .wrap { max-width: 1160px; margin: 0 auto; padding: 24px 16px 64px; }
       .card {
-        background: rgba(13, 23, 34, 0.92);
+        background: linear-gradient(135deg, rgba(13, 23, 34, 0.94), rgba(10, 18, 28, 0.9));
         border: 1px solid var(--border);
-        border-radius: 26px;
+        border-radius: 30px;
         box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
       }
       header {
@@ -2064,6 +2064,7 @@ function renderStaticMarketingPage(
         color: var(--muted);
         font-size: 14px;
         margin-top: 6px;
+        max-width: 640px;
       }
       nav {
         display: flex;
@@ -2071,6 +2072,10 @@ function renderStaticMarketingPage(
         flex-wrap: wrap;
       }
       nav a, .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
         border: 1px solid var(--border);
         background: rgba(255, 255, 255, 0.02);
         padding: 10px 14px;
@@ -2078,9 +2083,45 @@ function renderStaticMarketingPage(
         font-size: 12px;
         color: var(--muted);
       }
+      .button-primary {
+        border-color: rgba(52, 211, 153, 0.35);
+        background: rgba(52, 211, 153, 0.12);
+        color: #d7ffe8;
+      }
       .hero {
-        padding: 30px 24px;
+        position: relative;
+        overflow: hidden;
+        padding: 32px 24px;
         margin-bottom: 18px;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(circle at top right, rgba(99, 102, 241, 0.14), transparent 28%),
+          linear-gradient(120deg, transparent, rgba(148, 163, 184, 0.04), transparent);
+        pointer-events: none;
+      }
+      .hero-layout,
+      .grid {
+        position: relative;
+        display: grid;
+        gap: 18px;
+      }
+      .hero-layout {
+        grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+        align-items: end;
+      }
+      .hero-stack {
+        display: grid;
+        gap: 14px;
+      }
+      .hero-note {
+        background: rgba(17, 31, 45, 0.78);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 16px;
       }
       .eyebrow {
         color: var(--primary);
@@ -2092,7 +2133,7 @@ function renderStaticMarketingPage(
       h1 {
         margin: 14px 0 12px;
         font-size: clamp(2rem, 5vw, 3.75rem);
-        line-height: 1.06;
+        line-height: 1.04;
       }
       .lead {
         max-width: 760px;
@@ -2100,9 +2141,60 @@ function renderStaticMarketingPage(
         line-height: 1.7;
         font-size: 16px;
       }
-      .grid {
+      .hero-chips,
+      .hero-actions,
+      .footer-links {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .chip {
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 999px;
+        padding: 9px 12px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      .metrics {
         display: grid;
-        gap: 18px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .metric,
+      .feature,
+      .list-item,
+      .legal-block,
+      .flow-step,
+      .detail-card {
+        background: rgba(17, 31, 45, 0.82);
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        padding: 16px;
+      }
+      .metric-value {
+        display: block;
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .metric-label,
+      .mini-tag {
+        display: inline-block;
+        margin-top: 6px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--primary);
+      }
+      .metric-copy {
+        margin-top: 8px;
+        font-size: 12px;
+        color: var(--muted);
       }
       .two {
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -2127,6 +2219,12 @@ function renderStaticMarketingPage(
         margin: 0;
         padding-left: 18px;
       }
+      .compact-list {
+        margin-top: 12px;
+      }
+      .compact-list li + li {
+        margin-top: 8px;
+      }
       .pill {
         display: inline-block;
         padding: 8px 12px;
@@ -2139,16 +2237,39 @@ function renderStaticMarketingPage(
         letter-spacing: 0.12em;
         text-transform: uppercase;
       }
-      .feature, .list-item, .legal-block {
-        background: rgba(17, 31, 45, 0.82);
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        padding: 16px;
-      }
       .price {
         font-size: 44px;
         font-weight: 700;
         margin: 12px 0 18px;
+      }
+      .section-head {
+        margin-bottom: 18px;
+      }
+      .detail-grid {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+      .flow-list {
+        display: grid;
+        gap: 14px;
+      }
+      .flow-step {
+        display: grid;
+        grid-template-columns: 72px 1fr;
+        gap: 16px;
+        align-items: start;
+      }
+      .flow-index {
+        display: grid;
+        place-items: center;
+        min-height: 72px;
+        border-radius: 18px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--primary);
+        font-size: 28px;
+        font-weight: 700;
       }
       footer {
         margin-top: 18px;
@@ -2161,17 +2282,28 @@ function renderStaticMarketingPage(
       footer p {
         margin: 0;
       }
-      .footer-links {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-      }
       .footer-links a {
         border: 1px solid var(--border);
         border-radius: 999px;
         padding: 10px 14px;
         color: var(--muted);
         font-size: 12px;
+      }
+      @media (max-width: 860px) {
+        .hero-layout {
+          grid-template-columns: 1fr;
+        }
+        .metrics {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 720px) {
+        .flow-step {
+          grid-template-columns: 1fr;
+        }
+        .flow-index {
+          min-height: 56px;
+        }
       }
     </style>
   </head>
@@ -2185,9 +2317,6 @@ function renderStaticMarketingPage(
         <nav>
           <a href="/">Home</a>
           <a href="/pricing">Pricing</a>
-          <a href="/terms">Terms &amp; Conditions</a>
-          <a href="/privacy">Privacy Policy</a>
-          <a href="/refund">Refund Policy</a>
           <a href="/app">Open App</a>
         </nav>
       </header>
@@ -2212,35 +2341,183 @@ function renderStaticMarketingPage(
 
 function renderLandingPageHtml() {
   return renderStaticMarketingPage(
-    "Gistify Product Overview",
-    "Gistify is a subscription-based analytics platform for momentum scanning, pre-earnings research, risk matrix views and options analysis.",
+    "Gistify | Momentum, Earnings and Options Research Workspace",
+    "Gistify brings momentum scans, pre-earnings planning and options risk framing into one subscription workspace.",
     `
       <section class="card hero">
-        <div class="eyebrow">Product Overview</div>
-        <h1>Gistify is a subscription-based analytics platform built to speed up pre-earnings decision making.</h1>
-        <p class="lead">The service combines momentum scanning, pre-earnings stock research, sector context, risk matrix screens and options-focused analysis in a single web application.</p>
+        <div class="hero-layout">
+          <div>
+            <div class="eyebrow">Product Overview</div>
+            <h1>One workspace for momentum scans, pre-earnings planning and options risk framing.</h1>
+            <p class="lead">Gistify is built for active traders who want scan results, event context, risk scenarios and an action plan inside one flow. Fewer tabs, faster prep, clearer decisions.</p>
+            <div class="hero-chips">
+              <span class="chip">Momentum Scanner</span>
+              <span class="chip">Pre-Earnings Playbook</span>
+              <span class="chip">Risk Matrix + Options</span>
+            </div>
+            <div class="hero-actions" style="margin-top:16px;">
+              <a class="button button-primary" href="/pay">Start Subscription</a>
+              <a class="button" href="/pricing">See Pricing</a>
+            </div>
+          </div>
+
+          <aside class="hero-stack">
+            <div class="hero-note">
+              <div class="pill">Paddle checkout live</div>
+              <p style="margin:14px 0 0;">A single monthly plan keeps the offer simple while packaging scanner data, event research and risk framing into the same product surface.</p>
+            </div>
+            <div class="metrics">
+              <div class="metric">
+                <span class="metric-value">3</span>
+                <span class="metric-label">Core Workspaces</span>
+                <div class="metric-copy">Momentum, earnings and risk stay connected instead of fragmented across tools.</div>
+              </div>
+              <div class="metric">
+                <span class="metric-value">1</span>
+                <span class="metric-label">Single Flow</span>
+                <div class="metric-copy">Scanning, event context and planning live in one repeatable workflow.</div>
+              </div>
+              <div class="metric">
+                <span class="metric-value">250 TRY</span>
+                <span class="metric-label">Monthly Access</span>
+                <div class="metric-copy">One subscription unlocks the public research surface and the app workflow.</div>
+              </div>
+            </div>
+          </aside>
+        </div>
       </section>
+
       <div class="grid two">
         <section class="card">
-          <h2>Features included with purchase</h2>
-          <div class="grid">
-            <div class="feature"><h3>Momentum Scanner</h3><p>Scans active names using opening momentum, volume change and sector distribution signals.</p></div>
-            <div class="feature"><h3>Pre-Earnings Analysis</h3><p>Shows expectations, beat probability, sector context and directional analysis before earnings.</p></div>
-            <div class="feature"><h3>Risk and Options View</h3><p>Combines risk matrix screens, IV crush views and options-focused research modules.</p></div>
+          <div class="section-head">
+            <div class="eyebrow">Detailed Product Overview</div>
+            <h2 style="margin-top:12px;">What the customer gets in practice</h2>
+            <p>Gistify is not just another data screen. It combines why a name matters, how to read it before the event, and how to frame the risk inside the same experience.</p>
+          </div>
+          <div class="detail-grid">
+            <div class="detail-card">
+              <span class="mini-tag">Scan</span>
+              <h3>Momentum Scanner</h3>
+              <p>Filters opening momentum, volume change and sector rotation so you can see which names are truly in motion.</p>
+              <ul class="compact-list">
+                <li>Opening strength and volume deviation</li>
+                <li>Sector leadership tracking</li>
+                <li>A compressed signal layer for fast decisions</li>
+              </ul>
+            </div>
+            <div class="detail-card">
+              <span class="mini-tag">Earnings</span>
+              <h3>Pre-Earnings Brief</h3>
+              <p>Packages expectation level, beat risk, sector context and directional framing into one decision card.</p>
+              <ul class="compact-list">
+                <li>Expectation map ahead of the event</li>
+                <li>Sector and theme context</li>
+                <li>Fast reading before position sizing</li>
+              </ul>
+            </div>
+            <div class="detail-card">
+              <span class="mini-tag">Risk</span>
+              <h3>Risk and Options View</h3>
+              <p>Makes expected move, IV crush framing and options-based risk/reward easier to compare.</p>
+              <ul class="compact-list">
+                <li>Risk matrix and scenario thinking</li>
+                <li>IV crush context</li>
+                <li>Interpretation aligned with options structures</li>
+              </ul>
+            </div>
+            <div class="detail-card">
+              <span class="mini-tag">Workflow</span>
+              <h3>Single Workspace Logic</h3>
+              <p>Unifies scan, event analysis and risk framing so the workflow stays coherent instead of scattered.</p>
+              <ul class="compact-list">
+                <li>Fewer tabs, cleaner context</li>
+                <li>A pre-entry checklist feel</li>
+                <li>A reusable layout in the same screen</li>
+              </ul>
+            </div>
           </div>
         </section>
+
         <aside class="card">
           <span class="pill">Paddle checkout live</span>
           <h2 style="margin-top:18px;">Pricing Snapshot</h2>
           <div class="price">250 TRY / month</div>
           <div class="grid">
-            <div class="list-item">Monthly web access</div>
-            <div class="list-item">Momentum scanner module</div>
-            <div class="list-item">Earnings benchmark dashboard</div>
-            <div class="list-item">Risk matrix and options view</div>
-            <div class="list-item">Support via support@gistify.pro</div>
+            <div class="list-item">Monthly web access to all analysis modules</div>
+            <div class="list-item">Momentum scanner and sector view</div>
+            <div class="list-item">Pre-earnings research dashboards</div>
+            <div class="list-item">Risk matrix and IV crush context</div>
+            <div class="list-item">Email support via support@gistify.pro</div>
+          </div>
+          <div class="hero-note" style="margin-top:18px;">
+            <span class="mini-tag">Best For</span>
+            <ul class="compact-list">
+              <li>Active traders building plans before earnings</li>
+              <li>Users who want scan and event context in one place</li>
+              <li>People trying to reduce tab overload</li>
+            </ul>
+          </div>
+          <div class="hero-actions" style="margin-top:18px;">
+            <a class="button button-primary" href="/app">Open App</a>
+            <a class="button" href="/pricing">Detailed Pricing</a>
           </div>
         </aside>
+      </div>
+
+      <div class="grid two" style="margin-top:18px;">
+        <section class="card">
+          <div class="section-head">
+            <div class="eyebrow">Why It Converts</div>
+            <h2 style="margin-top:12px;">The value shows up in decision speed</h2>
+          </div>
+          <div class="grid">
+            <div class="feature">
+              <span class="mini-tag">Focus</span>
+              <h3>Sharper focus</h3>
+              <p>Daily scans and event prep feel like one decision lane instead of separate products.</p>
+            </div>
+            <div class="feature">
+              <span class="mini-tag">Speed</span>
+              <h3>Faster prep</h3>
+              <p>Understand why a ticker matters and how to frame it before earnings in less time.</p>
+            </div>
+            <div class="feature">
+              <span class="mini-tag">Execution</span>
+              <h3>Closer to action</h3>
+              <p>The output is not just informative; it is shaped to feel closer to an execution decision.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-head">
+            <div class="eyebrow">Workflow</div>
+            <h2 style="margin-top:12px;">Move from scan screen to action plan in three steps</h2>
+          </div>
+          <div class="flow-list">
+            <div class="flow-step">
+              <div class="flow-index">01</div>
+              <div>
+                <h3>Scan the active names</h3>
+                <p>Momentum and volume layers filter the names most likely to stay important through the session.</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-index">02</div>
+              <div>
+                <h3>Build the event context</h3>
+                <p>Earnings expectations, sector context and directional framing become readable in the same workflow.</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-index">03</div>
+              <div>
+                <h3>Match risk with structure</h3>
+                <p>Expected move and options context push the idea from raw thesis to a usable plan.</p>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     `
   );

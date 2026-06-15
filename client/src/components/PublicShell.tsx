@@ -12,6 +12,12 @@ interface PublicShellProps {
   children: ReactNode;
   ctaHref?: string;
   ctaLabel?: string;
+  heroHighlights?: string[];
+  heroStats?: Array<{
+    value: string;
+    label: string;
+    detail?: string;
+  }>;
 }
 
 export default function PublicShell({
@@ -23,20 +29,26 @@ export default function PublicShell({
   children,
   ctaHref,
   ctaLabel,
+  heroHighlights,
+  heroStats,
 }: PublicShellProps) {
   const navItems = [
     { href: "/", label: copy(language, "Ana Sayfa", "Home") },
     { href: "/app", label: copy(language, "Uygulamayi Ac", "Open App") },
     { href: "/pricing", label: copy(language, "Fiyatlandirma", "Pricing") },
   ];
+  const hasHeroAside = Boolean(
+    (ctaHref && ctaLabel) || (heroStats && heroStats.length > 0)
+  );
 
   return (
     <div className="min-h-screen overflow-hidden bg-background text-foreground">
-      <div className="pointer-events-none absolute inset-0 tactical-grid opacity-20" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(circle_at_top,rgba(16,185,129,0.18),transparent_60%)]" />
+      <div className="pointer-events-none absolute inset-0 tactical-grid opacity-[0.16]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[520px] bg-[radial-gradient(circle_at_top,rgba(16,185,129,0.16),transparent_42%),radial-gradient(circle_at_18%_18%,rgba(59,130,246,0.12),transparent_28%)]" />
+      <div className="pointer-events-none absolute right-[-120px] top-40 h-80 w-80 rounded-full bg-emerald-500/10 blur-3xl" />
 
-      <div className="relative mx-auto flex max-w-7xl flex-col gap-6 px-4 py-8">
-        <header className="rounded-3xl border border-border bg-card/85 p-4 shadow-2xl">
+      <div className="relative mx-auto flex max-w-7xl flex-col gap-6 px-4 py-8 md:px-6 lg:px-8">
+        <header className="rounded-[2rem] border border-border bg-[linear-gradient(135deg,rgba(17,24,39,0.95),rgba(15,23,42,0.88))] p-4 shadow-[0_28px_80px_rgba(0,0,0,0.28)] backdrop-blur">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-center gap-3">
               <img
@@ -103,9 +115,14 @@ export default function PublicShell({
           </div>
         </header>
 
-        <section className="rounded-[2rem] border border-border bg-card/88 p-6 shadow-2xl md:p-8">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-3xl space-y-3">
+        <section className="relative overflow-hidden rounded-[2.25rem] border border-border bg-[linear-gradient(135deg,rgba(17,24,39,0.95),rgba(12,18,31,0.9))] p-6 shadow-[0_30px_90px_rgba(0,0,0,0.3)] md:p-8">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.14),transparent_28%),linear-gradient(120deg,transparent,rgba(148,163,184,0.03),transparent)]" />
+          <div
+            className={`relative grid gap-8 ${
+              hasHeroAside ? "xl:grid-cols-[1.15fr_0.85fr] xl:items-end" : ""
+            }`}
+          >
+            <div className="max-w-4xl space-y-5">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
                 {eyebrow}
               </p>
@@ -115,20 +132,62 @@ export default function PublicShell({
               <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base">
                 {description}
               </p>
+
+              {heroHighlights && heroHighlights.length > 0 ? (
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {heroHighlights.map(item => (
+                    <span
+                      key={item}
+                      className="rounded-full border border-border bg-background/55 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              ) : null}
             </div>
 
-            {ctaHref && ctaLabel ? (
-              <Button asChild size="lg" className="h-11 min-w-[220px]">
-                <a href={ctaHref}>
-                  {ctaLabel}
-                  <ArrowRight className="size-4" />
-                </a>
-              </Button>
+            {hasHeroAside ? (
+              <div className="grid gap-4 xl:justify-items-end">
+                {ctaHref && ctaLabel ? (
+                  <Button asChild size="lg" className="h-11 min-w-[220px]">
+                    <a href={ctaHref}>
+                      {ctaLabel}
+                      <ArrowRight className="size-4" />
+                    </a>
+                  </Button>
+                ) : null}
+
+                {heroStats && heroStats.length > 0 ? (
+                  <div className="grid w-full gap-3 sm:grid-cols-3 xl:max-w-xl">
+                    {heroStats.map(stat => (
+                      <div
+                        key={`${stat.label}-${stat.value}`}
+                        className="rounded-3xl border border-border bg-background/58 p-4 shadow-[0_16px_36px_rgba(0,0,0,0.18)]"
+                      >
+                        <p className="text-2xl font-semibold tracking-tight">
+                          {stat.value}
+                        </p>
+                        <p className="mt-1 text-xs font-semibold uppercase tracking-[0.16em] text-primary">
+                          {stat.label}
+                        </p>
+                        {stat.detail ? (
+                          <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                            {stat.detail}
+                          </p>
+                        ) : null}
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
             ) : null}
           </div>
         </section>
 
-        <main data-language={language}>{children}</main>
+        <main data-language={language} className="space-y-6">
+          {children}
+        </main>
       </div>
     </div>
   );
