@@ -60,3 +60,14 @@ export interface DailyReportSourcePackage {
   sourceLabel: string;
   assetBasePath: string;
 }
+
+export interface FlowReportComment {
+  id: string;
+  reportId: string;
+  userId: string;
+  userName: string;
+  userPicture?: string;
+  body: string;
+  createdAt: string;
+  updatedAt: string;
+}

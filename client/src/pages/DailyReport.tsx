@@ -8,9 +8,12 @@ import {
   CalendarRange,
   GalleryHorizontal,
   RefreshCw,
+  Share2,
   Sparkles,
   Target,
 } from "lucide-react";
+import { toast } from "sonner";
+import FlowReportCommunityPanel from "@/components/reports/FlowReportCommunityPanel";
 import DailyReportViewer from "@/components/reports/DailyReportViewer";
 import { Button } from "@/components/ui/button";
 import {
@@ -107,6 +110,14 @@ function formatUpdateStamp(value: string, locale = "tr-TR") {
   }).format(parsed);
 }
 
+function getRequestedFlowReportId() {
+  if (typeof window === "undefined") {
+    return "";
+  }
+
+  return new URLSearchParams(window.location.search).get("report") || "";
+}
+
 function MetaPill({
   icon: Icon,
   label,
@@ -186,6 +197,19 @@ export default function DailyReportPage({
       ? report.content.openAiFigureFiles
       : [];
 
+  const syncFlowUrl = useCallback(
+    (reportId: string) => {
+      if (typeof window === "undefined" || !isFlowMode || !reportId) {
+        return;
+      }
+
+      const nextUrl = new URL(window.location.href);
+      nextUrl.searchParams.set("report", reportId);
+      window.history.replaceState({}, "", `${nextUrl.pathname}${nextUrl.search}`);
+    },
+    [isFlowMode]
+  );
+
   const loadReports = useCallback(async () => {
     setLoading(true);
 
@@ -203,12 +227,16 @@ export default function DailyReportPage({
       }
 
       const payload = (await response.json()) as DailyReportsResponse;
+      const requestedReportId = isFlowMode ? getRequestedFlowReportId() : "";
       const nextReports = sortSourcePackagesNewestFirst(payload.sources || [])
         .filter(source => (isFlowMode ? isFlowSource(source) : !isFlowSource(source)))
         .map(mapSourceToViewerReport);
       setReports(nextReports);
       setSelectedReportId(current =>
-        current && nextReports.some(report => report.id === current)
+        requestedReportId &&
+        nextReports.some(report => report.id === requestedReportId)
+          ? requestedReportId
+          : current && nextReports.some(report => report.id === current)
           ? current
           : nextReports[0]?.id || ""
       );
@@ -222,6 +250,12 @@ export default function DailyReportPage({
   useEffect(() => {
     void loadReports();
   }, [loadReports]);
+
+  useEffect(() => {
+    if (selectedReportId && isFlowMode) {
+      syncFlowUrl(selectedReportId);
+    }
+  }, [isFlowMode, selectedReportId, syncFlowUrl]);
 
   const selectedReport = useMemo(
     () => reports.find(report => report.id === selectedReportId) || reports[0] || null,
@@ -237,6 +271,43 @@ export default function DailyReportPage({
         updatedAt: formatUpdateStamp(selectedReport.updatedAt, locale),
       }
     : null;
+
+  const handleShare = useCallback(async () => {
+    if (typeof window === "undefined" || !selectedReport) {
+      return;
+    }
+
+    const shareUrl = new URL(window.location.href);
+    shareUrl.pathname = "/flow";
+    shareUrl.searchParams.set("report", selectedReport.id);
+    const nextUrl = shareUrl.toString();
+
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: selectedReport.title,
+          text:
+            selectedReport.content.headline ||
+            copy(
+              language,
+              "Gistify flow raporunu incele.",
+              "Review this Gistify flow report."
+            ),
+          url: nextUrl,
+        });
+        return;
+      }
+
+      await navigator.clipboard.writeText(nextUrl);
+      toast.success(
+        copy(language, "Flow linki kopyalandi.", "Flow link copied.")
+      );
+    } catch {
+      toast.error(
+        copy(language, "Paylasim tamamlanamadi.", "Share could not be completed.")
+      );
+    }
+  }, [language, selectedReport]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -261,16 +332,27 @@ export default function DailyReportPage({
                     {copy(
                       language,
                       isFlowMode
-                        ? "Flow kutuphanesindeki yuklu markdown dosyalari burada dogrudan gorunur. Tarih secerek farkli flow analizlerine gecis yapabilirsin."
+                        ? "Flow kutuphanesindeki yuklu markdown dosyalari burada herkese acik gorunur. Ustteki key alanindan raporun can alici kisimlarina gidip detaylara inebilir, uye girisiyle yorum birakabilirsin."
                         : "Yuklenen daily source paketleri burada dogrudan gorunur. Tarih secerek okuma panelini degistirebilirsin.",
                       isFlowMode
-                        ? "Uploaded markdown files in the flow library appear here directly. Select a date to switch between flow analyses."
+                        ? "Uploaded markdown files in the flow library are publicly readable here. Use the top key section to jump into deeper report details, and signed-in members can leave comments."
                         : "Uploaded daily source packages appear here directly. Select a date to switch the reading panel."
                     )}
                   </p>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
+                  {isFlowMode ? (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => void handleShare()}
+                      disabled={!selectedReport}
+                    >
+                      <Share2 className="size-4" />
+                      {copy(language, "Paylas", "Share")}
+                    </Button>
+                  ) : null}
                   <Button type="button" variant="outline" onClick={() => void loadReports()}>
                     <RefreshCw className="size-4" />
                     {copy(language, "Yenile", "Refresh")}
@@ -455,15 +537,23 @@ export default function DailyReportPage({
 
           <div className="p-4 md:p-6">
             {selectedReport ? (
-              <DailyReportViewer
-                key={selectedReport.id}
-                language={language}
-                title={selectedReport.title}
-                reportDate={selectedReport.reportDate}
-                updatedAt={selectedReport.updatedAt}
-                sourceFolder={selectedReport.sourceFolder}
-                content={selectedReport.content}
-              />
+              <div className="space-y-6">
+                <DailyReportViewer
+                  key={selectedReport.id}
+                  language={language}
+                  title={selectedReport.title}
+                  reportDate={selectedReport.reportDate}
+                  updatedAt={selectedReport.updatedAt}
+                  sourceFolder={selectedReport.sourceFolder}
+                  content={selectedReport.content}
+                />
+                {isFlowMode ? (
+                  <FlowReportCommunityPanel
+                    language={language}
+                    reportId={selectedReport.id}
+                  />
+                ) : null}
+              </div>
             ) : (
               <div className="grid min-h-[420px] place-items-center">
                 <div className="text-center">

@@ -11,6 +11,7 @@ import type {
   WatchlistRecord,
 } from "../shared/opportunities";
 import type {
+  FlowReportComment,
   DailyReportRecord,
   DailyReportStatus,
 } from "../shared/dailyReports";
@@ -217,6 +218,17 @@ interface DailyReportDbRow {
   updated_at: string;
   published_at: string | null;
   content_json: string;
+}
+
+interface FlowReportCommentDbRow {
+  id: string;
+  report_id: string;
+  user_id: string;
+  user_name: string;
+  user_picture: string | null;
+  body: string;
+  created_at: string;
+  updated_at: string;
 }
 
 function getDatabasePath() {
@@ -476,6 +488,19 @@ function mapDailyReportRow(row: DailyReportDbRow): DailyReportRecord {
   };
 }
 
+function mapFlowReportCommentRow(row: FlowReportCommentDbRow): FlowReportComment {
+  return {
+    id: row.id,
+    reportId: row.report_id,
+    userId: row.user_id,
+    userName: row.user_name,
+    userPicture: row.user_picture || undefined,
+    body: row.body,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
 export function createBillingStore() {
   const dbPath = getDatabasePath();
   fs.mkdirSync(path.dirname(dbPath), { recursive: true });
@@ -634,6 +659,17 @@ export function createBillingStore() {
       content_json TEXT NOT NULL
     );
 
+    CREATE TABLE IF NOT EXISTS flow_report_comments (
+      id TEXT PRIMARY KEY,
+      report_id TEXT NOT NULL,
+      user_id TEXT NOT NULL,
+      user_name TEXT NOT NULL,
+      user_picture TEXT,
+      body TEXT NOT NULL,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+
     CREATE INDEX IF NOT EXISTS idx_auth_sessions_user_id
       ON auth_sessions(user_id);
 
@@ -663,6 +699,12 @@ export function createBillingStore() {
 
     CREATE INDEX IF NOT EXISTS idx_daily_reports_status_date
       ON daily_reports(status, report_date DESC);
+
+    CREATE INDEX IF NOT EXISTS idx_flow_report_comments_report_date
+      ON flow_report_comments(report_id, created_at DESC);
+
+    CREATE INDEX IF NOT EXISTS idx_flow_report_comments_user_id
+      ON flow_report_comments(user_id);
   `);
 
   const subscriptionTableInfo = db.prepare("PRAGMA table_info(billing_subscriptions)").all() as
@@ -1361,6 +1403,34 @@ export function createBillingStore() {
       content_json = excluded.content_json
   `);
 
+  const listFlowReportCommentsByReportIdStmt = db.prepare(`
+    SELECT
+      id,
+      report_id,
+      user_id,
+      user_name,
+      user_picture,
+      body,
+      created_at,
+      updated_at
+    FROM flow_report_comments
+    WHERE report_id = ?
+    ORDER BY created_at DESC
+  `);
+
+  const insertFlowReportCommentStmt = db.prepare(`
+    INSERT INTO flow_report_comments (
+      id,
+      report_id,
+      user_id,
+      user_name,
+      user_picture,
+      body,
+      created_at,
+      updated_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+  `);
+
   return {
     dbPath,
     pruneExpiredSessions(now = Date.now()) {
@@ -1620,6 +1690,23 @@ export function createBillingStore() {
         record.updatedAt,
         record.publishedAt || null,
         JSON.stringify(record.content)
+      );
+    },
+    listFlowReportCommentsByReportId(reportId: string) {
+      const rows = listFlowReportCommentsByReportIdStmt.all(reportId) as unknown as
+        FlowReportCommentDbRow[];
+      return rows.map(mapFlowReportCommentRow);
+    },
+    createFlowReportComment(record: FlowReportComment) {
+      insertFlowReportCommentStmt.run(
+        record.id,
+        record.reportId,
+        record.userId,
+        record.userName,
+        record.userPicture || null,
+        record.body,
+        record.createdAt,
+        record.updatedAt
       );
     },
   };

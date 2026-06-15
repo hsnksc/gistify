@@ -7,8 +7,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
+  buildReportHeadingAnchors,
   parseReportMarkdown,
-  slugifyReportHeading,
   type ReportMarkdownBlock,
 } from "@/lib/reportMarkdown";
 import type { AppLanguage } from "@/lib/i18n";
@@ -78,19 +78,11 @@ export default function MarkdownReportRenderer({
 }: MarkdownReportRendererProps) {
   const [activeImage, setActiveImage] = useState<ResolvedImage | null>(null);
   const blocks = useMemo(() => parseReportMarkdown(markdown), [markdown]);
-  const headings = useMemo(
-    () =>
-      blocks
-        .filter(
-          (block): block is Extract<ReportMarkdownBlock, { type: "heading" }> =>
-            block.type === "heading" && block.level <= 2
-        )
-        .map((block, index) => ({
-          id: `report-section-${index}-${slugifyReportHeading(block.text)}`,
-          label: block.text,
-        })),
-    [blocks]
-  );
+  const headingAnchors = useMemo(() => buildReportHeadingAnchors(blocks, 3), [blocks]);
+  const sectionMapHeadings = useMemo(() => {
+    const topLevelHeadings = headingAnchors.filter(heading => heading.level <= 2);
+    return topLevelHeadings.length ? topLevelHeadings : headingAnchors.slice(0, 8);
+  }, [headingAnchors]);
 
   if (!blocks.length) {
     return (
@@ -109,7 +101,7 @@ export default function MarkdownReportRenderer({
 
   return (
     <div className="space-y-6">
-      {headings.length > 1 ? (
+      {sectionMapHeadings.length > 1 ? (
         <section className="rounded-[1.8rem] border border-border bg-card/90 p-5 shadow-xl">
           <div className="flex items-center gap-2">
             <BookOpen className="size-4 text-emerald-300" />
@@ -118,7 +110,7 @@ export default function MarkdownReportRenderer({
             </p>
           </div>
           <div className="mt-4 flex flex-wrap gap-2">
-            {headings.map(heading => (
+            {sectionMapHeadings.map(heading => (
               <a
                 key={heading.id}
                 href={`#${heading.id}`}
@@ -135,10 +127,7 @@ export default function MarkdownReportRenderer({
         <div className="space-y-4">
           {blocks.map((block, index) => {
             if (block.type === "heading") {
-              const id =
-                block.level <= 2
-                  ? headings[headingIndex++]?.id
-                  : undefined;
+              const id = block.level <= 3 ? headingAnchors[headingIndex++]?.id : undefined;
 
               return (
                 <div key={`${block.type}-${index}`} id={id} className="scroll-mt-24">

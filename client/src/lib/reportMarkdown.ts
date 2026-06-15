@@ -7,6 +7,14 @@ export type ReportMarkdownBlock =
   | { type: "blockquote"; lines: string[] }
   | { type: "code"; language: string; code: string };
 
+export interface ReportHeadingAnchor {
+  id: string;
+  label: string;
+  level: 1 | 2 | 3 | 4;
+  index: number;
+  blockIndex: number;
+}
+
 function cleanInlineMarkdown(value: string) {
   return value
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1 ($2)")
@@ -198,4 +206,27 @@ export function slugifyReportHeading(value: string) {
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-")
     .slice(0, 80);
+}
+
+export function buildReportHeadingAnchors(
+  blocks: ReportMarkdownBlock[],
+  maxLevel: 1 | 2 | 3 | 4 = 2
+) {
+  const anchors: ReportHeadingAnchor[] = [];
+
+  blocks.forEach((block, blockIndex) => {
+    if (block.type !== "heading" || block.level > maxLevel) {
+      return;
+    }
+
+    anchors.push({
+      id: `report-section-${anchors.length}-${slugifyReportHeading(block.text)}`,
+      label: block.text,
+      level: block.level,
+      index: anchors.length,
+      blockIndex,
+    });
+  });
+
+  return anchors;
 }

@@ -11,6 +11,7 @@ import type {
   WatchlistRecord,
 } from "../shared/opportunities";
 import type {
+  FlowReportComment,
   DailyReportContent,
   DailyReportRecord,
 } from "../shared/dailyReports";
@@ -127,6 +128,10 @@ interface MomentumReportUpsertRequestBody {
 
 interface DailyReportUpsertRequestBody {
   report?: unknown;
+}
+
+interface FlowReportCommentCreateRequestBody {
+  body?: unknown;
 }
 
 interface TranslateRequestBody {
@@ -1339,6 +1344,12 @@ function getViewerFlowReports(limit = 25) {
     .slice(0, limit);
 }
 
+function getViewerFlowReportById(reportId: string) {
+  return buildViewerDailyReportCatalog().find(
+    report => report.id === reportId && isFlowDailyReport(report)
+  ) || null;
+}
+
 function getRequestActor(req: express.Request) {
   const payload = readAuthPayload(req);
   if (!payload.authenticated || !payload.user) {
@@ -1349,6 +1360,7 @@ function getRequestActor(req: express.Request) {
     id: payload.user.id,
     email: payload.user.email,
     name: payload.user.name,
+    picture: payload.user.picture,
     accessMode: payload.accessMode,
     membership: payload.membership,
   };
@@ -1366,6 +1378,16 @@ function requireSubscribedActor(
 
   if (!actor.membership.isSubscribed) {
     res.status(403).json({ error: "Bu alan aktif abonelik gerektiriyor." });
+    return null;
+  }
+
+  return actor;
+}
+
+function requireCommentActor(req: express.Request, res: express.Response) {
+  const actor = getRequestActor(req);
+  if (!actor || actor.accessMode === "public") {
+    res.status(401).json({ error: "Yorum yazmak icin uye girisi gerekli." });
     return null;
   }
 
@@ -3627,6 +3649,68 @@ async function startServer() {
     res.status(200).json({
       report: getViewerFlowReports(1)[0] || null,
     });
+  });
+
+  app.get("/api/flow-reports/:reportId/comments", (req, res) => {
+    setPrivateNoStore(res);
+
+    const reportId = normalizeString(req.params.reportId);
+    const report = getViewerFlowReportById(reportId);
+    if (!report) {
+      res.status(404).json({ error: "Flow report bulunamadi." });
+      return;
+    }
+
+    res.status(200).json({
+      comments: billingStore.listFlowReportCommentsByReportId(report.id),
+    });
+  });
+
+  app.post("/api/flow-reports/:reportId/comments", (req, res) => {
+    setPrivateNoStore(res);
+
+    const actor = requireCommentActor(req, res);
+    if (!actor) {
+      return;
+    }
+
+    const reportId = normalizeString(req.params.reportId);
+    const report = getViewerFlowReportById(reportId);
+    if (!report) {
+      res.status(404).json({ error: "Flow report bulunamadi." });
+      return;
+    }
+
+    const body =
+      req.body && typeof req.body === "object"
+        ? (req.body as FlowReportCommentCreateRequestBody)
+        : {};
+    const commentBody = normalizeString(body.body);
+
+    if (commentBody.length < 2) {
+      res.status(400).json({ error: "Yorum en az 2 karakter olmali." });
+      return;
+    }
+
+    if (commentBody.length > 1200) {
+      res.status(400).json({ error: "Yorum 1200 karakteri gecemez." });
+      return;
+    }
+
+    const nowIso = new Date().toISOString();
+    const comment: FlowReportComment = {
+      id: crypto.randomUUID(),
+      reportId: report.id,
+      userId: actor.id,
+      userName: actor.name,
+      userPicture: actor.picture,
+      body: commentBody,
+      createdAt: nowIso,
+      updatedAt: nowIso,
+    };
+
+    billingStore.createFlowReportComment(comment);
+    res.status(201).json({ comment });
   });
 
   app.post("/api/i18n/translate", async (req, res) => {

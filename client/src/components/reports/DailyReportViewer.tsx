@@ -8,6 +8,7 @@ import {
   extractLeadParagraphsFromMarkdown,
   extractSnapshotMetricsFromMarkdown,
 } from "@/lib/reportPost";
+import { buildReportSpotlight } from "@/lib/reportSpotlight";
 
 interface DailyReportViewerProps {
   language?: AppLanguage;
@@ -166,9 +167,12 @@ export default function DailyReportViewer({
   const categoryLabel = sourceLabel.toLowerCase().startsWith("flow/")
     ? copy(language, "Flow Post", "Flow Post")
     : copy(language, "Daily Post", "Daily Post");
-  const storyItems = normalizedContent.executiveSummary.length
-    ? normalizedContent.executiveSummary.slice(0, 4)
-    : extractLeadParagraphsFromMarkdown(normalizedContent.markdown, 3);
+  const spotlight = buildReportSpotlight(normalizedContent.markdown);
+  const storyItems = spotlight
+    ? []
+    : normalizedContent.executiveSummary.length
+      ? normalizedContent.executiveSummary.slice(0, 4)
+      : extractLeadParagraphsFromMarkdown(normalizedContent.markdown, 3);
   const snapshotMetrics = extractSnapshotMetricsFromMarkdown(normalizedContent.markdown, 6);
   const statCards: ReportPostItem[] = snapshotMetrics.length
     ? snapshotMetrics.map(item => ({
@@ -300,57 +304,129 @@ export default function DailyReportViewer({
         };
       }}
     >
-      {galleryFigures.length ? (
-        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                {copy(language, "Gorsel Arsivi", "Figure Archive")}
-              </p>
-              <h3 className="mt-2 text-xl font-semibold text-foreground">
-                {copy(language, "Yuklenen grafik ve gorseller", "Uploaded charts and visuals")}
-              </h3>
+      <>
+        {spotlight?.items.length ? (
+          <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                  {copy(language, "One Cikanlar", "Key Spotlight")}
+                </p>
+                <h3 className="mt-2 text-xl font-semibold text-foreground">
+                  {spotlight.title === "Spotlight"
+                    ? copy(
+                        language,
+                        "Raporun can alici kisimlari",
+                        "The report's most important points"
+                      )
+                    : spotlight.title}
+                </h3>
+              </div>
+              <span className="rounded-full border border-border bg-background/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                {spotlight.items.length} key
+              </span>
             </div>
-            <span className="rounded-full border border-border bg-background/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-              {galleryFigures.length} figure
-            </span>
-          </div>
 
-          <div className="mt-5 grid gap-4 lg:grid-cols-2">
-            {galleryFigures.map(figure => (
-              <figure
-                key={figure.fileName}
-                className="overflow-hidden rounded-[1.7rem] border border-border bg-background/55"
-              >
-                <div className="flex items-center justify-between gap-3 border-b border-border px-4 py-3">
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-semibold text-foreground">
-                      {figure.label}
-                    </p>
-                    <p className="mt-1 truncate text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                      {figure.fileName}
-                    </p>
+            <div className="mt-5 grid gap-4 xl:grid-cols-2">
+              {spotlight.items.map(item => {
+                const cardClassName = `block rounded-[1.55rem] border border-border bg-background/55 p-4 transition-colors ${
+                  item.anchorId
+                    ? "hover:border-emerald-400/35 hover:bg-background/75"
+                    : ""
+                }`;
+                const cardBody = (
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-foreground md:text-base">
+                        {item.label}
+                      </p>
+                      <p className="mt-2 text-sm leading-7 text-muted-foreground">
+                        {item.detail}
+                      </p>
+                    </div>
+                    {item.anchorId ? (
+                      <span className="shrink-0 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-300">
+                        {copy(language, "Detaya Git", "Jump")}
+                      </span>
+                    ) : null}
                   </div>
-                  {figure.aiEnhanced ? (
-                    <span className="rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-300">
-                      OpenAI
-                    </span>
-                  ) : null}
-                </div>
-                <div className="bg-[#07141a] p-4">
-                  <img
-                    src={figure.src}
-                    alt={figure.label}
-                    className="max-h-[420px] w-full rounded-[1.2rem] object-contain"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </div>
-              </figure>
-            ))}
-          </div>
-        </section>
-      ) : null}
+                );
+
+                return (
+                  item.anchorId ? (
+                    <a
+                      key={`${item.label}-${item.detail.slice(0, 24)}`}
+                      href={`#${item.anchorId}`}
+                      className={cardClassName}
+                    >
+                      {cardBody}
+                    </a>
+                  ) : (
+                    <article
+                      key={`${item.label}-${item.detail.slice(0, 24)}`}
+                      className={cardClassName}
+                    >
+                      {cardBody}
+                    </article>
+                  )
+                );
+              })}
+            </div>
+          </section>
+        ) : null}
+
+        {galleryFigures.length ? (
+          <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                  {copy(language, "Gorsel Arsivi", "Figure Archive")}
+                </p>
+                <h3 className="mt-2 text-xl font-semibold text-foreground">
+                  {copy(language, "Yuklenen grafik ve gorseller", "Uploaded charts and visuals")}
+                </h3>
+              </div>
+              <span className="rounded-full border border-border bg-background/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                {galleryFigures.length} figure
+              </span>
+            </div>
+
+            <div className="mt-5 grid gap-4 lg:grid-cols-2">
+              {galleryFigures.map(figure => (
+                <figure
+                  key={figure.fileName}
+                  className="overflow-hidden rounded-[1.7rem] border border-border bg-background/55"
+                >
+                  <div className="flex items-center justify-between gap-3 border-b border-border px-4 py-3">
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold text-foreground">
+                        {figure.label}
+                      </p>
+                      <p className="mt-1 truncate text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+                        {figure.fileName}
+                      </p>
+                    </div>
+                    {figure.aiEnhanced ? (
+                      <span className="rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-300">
+                        OpenAI
+                      </span>
+                    ) : null}
+                  </div>
+                  <div className="bg-[#07141a] p-4">
+                    <img
+                      src={figure.src}
+                      alt={figure.label}
+                      className="max-h-[420px] w-full rounded-[1.2rem] object-contain"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                </figure>
+              ))}
+            </div>
+          </section>
+        ) : null}
+      </>
     </ReportPostShell>
   );
 }

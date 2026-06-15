@@ -507,13 +507,9 @@ function App() {
   const runtimeTranslationInFlightRef = useRef(false);
   const maskOriginalRef = useRef(new WeakMap<Text, string>());
   const isPaymentRoute = location === "/pay";
-  const isMarketingRoute = [
-    "/",
-    "/pricing",
-    "/terms",
-    "/privacy",
-    "/refund",
-  ].includes(location);
+  const isMarketingRoute =
+    ["/", "/pricing", "/terms", "/privacy", "/refund"].includes(location) ||
+    location.startsWith("/flow");
   const hasStandaloneWorkspaceHeader =
     location === "/app" ||
     location.startsWith("/momentum") ||
