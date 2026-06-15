@@ -255,8 +255,29 @@ function Router({
   );
 }
 
-function AppNavigation({ language }: { language: AppLanguage }) {
+function WorkspaceNavigation({
+  language,
+  authState,
+  isLimitedAccess,
+  isPublicAccessMode,
+}: {
+  language: AppLanguage;
+  authState: AuthState;
+  isLimitedAccess: boolean;
+  isPublicAccessMode: boolean;
+}) {
   const [location, setLocation] = useLocation();
+  const canAccessPaidRoutes =
+    isPublicAccessMode ||
+    (authState.status === "authenticated" && !isLimitedAccess);
+  const showAdmin =
+    authState.status === "authenticated" &&
+    !isLimitedAccess &&
+    !isPublicAccessMode;
+
+  const handleNavigate = (href: string) => {
+    setLocation(href);
+  };
 
   const items = [
     {
@@ -264,12 +285,7 @@ function AppNavigation({ language }: { language: AppLanguage }) {
       label: language === "en" ? "Earning Strategy" : "Earning Strategy",
       icon: LayoutDashboard,
       active: location === "/app",
-    },
-    {
-      href: "/app/admin",
-      label: language === "en" ? "Admin" : "Admin",
-      icon: Shield,
-      active: location.startsWith("/app/admin"),
+      requiresSubscription: true,
     },
     {
       href: "/momentum",
@@ -277,44 +293,81 @@ function AppNavigation({ language }: { language: AppLanguage }) {
       icon: Radar,
       active:
         location.startsWith("/momentum") || location.startsWith("/scanner"),
+      requiresSubscription: true,
     },
     {
       href: "/daily-report",
       label: language === "en" ? "Daily" : "Daily",
       icon: FileText,
       active: location.startsWith("/daily-report"),
+      requiresSubscription: true,
     },
     {
       href: "/flow",
       label: language === "en" ? "Flow" : "Flow",
       icon: Layers3,
       active: location.startsWith("/flow"),
+      requiresSubscription: false,
     },
   ];
+
+  if (showAdmin) {
+    items.splice(1, 0, {
+      href: "/app/admin",
+      label: language === "en" ? "Admin" : "Admin",
+      icon: Shield,
+      active: location.startsWith("/app/admin"),
+      requiresSubscription: true,
+    });
+  }
 
   return (
     <nav className="hidden md:flex md:items-center md:gap-1 md:rounded-full md:border md:border-border md:bg-card md:p-1">
       {items.map(item => {
         const Icon = item.icon;
+        const isLocked = item.requiresSubscription && !canAccessPaidRoutes;
 
         return (
           <button
             key={item.href}
             type="button"
-            onClick={() => setLocation(item.href)}
+            onClick={() => handleNavigate(item.href)}
             className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
               item.active
                 ? "bg-primary text-primary-foreground"
-                : "text-muted-foreground hover:text-foreground"
+                : isLocked
+                  ? "text-muted-foreground hover:text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
             }`}
           >
             <Icon className="size-3.5" />
             {item.label}
+            {isLocked ? (
+              <span className="rounded-full border border-border bg-background/70 px-1.5 py-0.5 text-[9px] uppercase tracking-[0.14em] text-muted-foreground">
+                Pro
+              </span>
+            ) : null}
           </button>
         );
       })}
     </nav>
   );
+}
+
+function getWorkspaceSectionLabel(path: string, language: AppLanguage) {
+  if (path.startsWith("/app/admin")) {
+    return copy(language, "Admin", "Admin");
+  }
+
+  if (path.startsWith("/momentum") || path.startsWith("/scanner")) {
+    return copy(language, "Momentum", "Momentum");
+  }
+
+  if (path.startsWith("/daily-report")) {
+    return copy(language, "Daily", "Daily");
+  }
+
+  return copy(language, "Earning Strategy", "Earning Strategy");
 }
 
 function SiteFooter({ language }: { language: AppLanguage }) {
@@ -368,7 +421,13 @@ function SiteFooter({ language }: { language: AppLanguage }) {
   );
 }
 
-function LimitedAccessPreview({ language }: { language: AppLanguage }) {
+function SubscriptionRequiredView({
+  language,
+  sectionLabel,
+}: {
+  language: AppLanguage;
+  sectionLabel: string;
+}) {
   return (
     <div className="px-4 py-8">
       <div className="mx-auto max-w-7xl space-y-6">
@@ -376,31 +435,36 @@ function LimitedAccessPreview({ language }: { language: AppLanguage }) {
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="space-y-2">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                {copy(language, "Pro Onizleme", "Pro Preview")}
+                {copy(language, "Abonelik kilidi", "Subscription gate")}
               </p>
               <h2 className="text-2xl font-semibold tracking-tight">
                 {copy(
                   language,
-                  "Tam panel aktif abonelikle acilir",
-                  "The full panel opens with an active subscription"
+                  `${sectionLabel} modulu aktif abonelik gerektiriyor`,
+                  `${sectionLabel} requires an active subscription`
                 )}
               </h2>
               <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
                 {copy(
                   language,
-                  "Momentum scanner, earnings takvimi, risk matrisi ve opsiyon ekranlari sadece aktif abonelikte acilir. Google girisi tamamlandiktan sonra Paddle ile abonelik baslatip tum modulleri aktif edebilirsin.",
-                  "Momentum scanner, earnings calendar, risk matrix and options screens are available only with an active subscription. After signing in with Google, you can activate all modules by starting a Paddle subscription."
+                  "Flow herkese acik kalir. Earning Strategy, Momentum ve Daily modullerini acmak icin Paddle uzerinden aktif abonelik gerekir.",
+                  "Flow stays open to everyone. Unlocking Earning Strategy, Momentum and Daily requires an active Paddle subscription."
                 )}
               </p>
               <div className="flex flex-wrap gap-3 pt-2">
                 <Button asChild>
                   <a href="/pay">
-                    {copy(language, "Paddle ile abone ol", "Subscribe with Paddle")}
+                    {copy(language, "Odeme ekranini ac", "Open payment screen")}
+                  </a>
+                </Button>
+                <Button asChild variant="outline" className="bg-background/70">
+                  <a href="/flow">
+                    {copy(language, "Flow'a git", "Go to Flow")}
                   </a>
                 </Button>
                 <Button asChild variant="outline" className="bg-background/70">
                   <a href="/pricing">
-                    {copy(language, "Plan detaylari", "View plan details")}
+                    {copy(language, "Plan detaylarini gor", "View plan details")}
                   </a>
                 </Button>
               </div>
@@ -408,10 +472,10 @@ function LimitedAccessPreview({ language }: { language: AppLanguage }) {
 
             <div className="grid min-w-[220px] grid-cols-2 gap-3">
               {[
-                ["Scanner", copy(language, "Kilitli", "Locked")],
-                [copy(language, "Takvim", "Calendar"), copy(language, "Kilitli", "Locked")],
-                [copy(language, "Risk", "Risk"), copy(language, "Kilitli", "Locked")],
-                [copy(language, "Opsiyon", "Options"), copy(language, "Kilitli", "Locked")],
+                [copy(language, "Earning Strategy", "Earning Strategy"), copy(language, "Abonelik", "Subscription")],
+                ["Momentum", copy(language, "Abonelik", "Subscription")],
+                ["Daily", copy(language, "Abonelik", "Subscription")],
+                ["Flow", copy(language, "Acik", "Open")],
               ].map(([label, value]) => (
                 <div
                   key={label}
@@ -429,9 +493,9 @@ function LimitedAccessPreview({ language }: { language: AppLanguage }) {
 
         <section className="grid gap-4 md:grid-cols-3">
           {[
-            copy(language, "Acilis momentumu tarama tablosu", "Opening momentum scan table"),
-            copy(language, "Sektor bazli momentum dagilimi", "Sector-based momentum distribution"),
-            copy(language, "Opsiyon strateji ve IV crush gorunumu", "Options strategy and IV crush view"),
+            copy(language, "Abonelik acildiginda earning strategy workspace'i tam verilerle kullanirsin.", "After activation, the earning strategy workspace opens with full data."),
+            copy(language, "Momentum scanner ve daily yuzeyi ayni uyelikle acilir.", "Momentum scanner and the daily surface unlock with the same subscription."),
+            copy(language, "Flow kamuya acik kalir; yorum yazmak icin sadece giris yeterlidir.", "Flow remains public; posting comments only requires sign-in."),
           ].map(title => (
             <div
               key={title}
@@ -512,6 +576,12 @@ function App() {
   const isMarketingRoute =
     ["/", "/pricing", "/terms", "/privacy", "/refund"].includes(location) ||
     location.startsWith("/flow");
+  const isLockedWorkspaceRoute =
+    location === "/app" ||
+    location.startsWith("/app/admin") ||
+    location.startsWith("/momentum") ||
+    location.startsWith("/scanner") ||
+    location.startsWith("/daily-report");
   const hasStandaloneWorkspaceHeader =
     location === "/app" ||
     location.startsWith("/momentum") ||
@@ -521,6 +591,10 @@ function App() {
     authState.status === "authenticated" && !authState.membership.isSubscribed;
   const isPublicAccessMode =
     authState.status === "authenticated" && authState.accessMode === "public";
+  const lockedWorkspaceSectionLabel = useMemo(
+    () => getWorkspaceSectionLabel(location, language),
+    [language, location]
+  );
 
   useEffect(() => {
     persistLanguage(language);
@@ -951,10 +1025,12 @@ function App() {
                       </div>
                     </div>
 
-                    {authState.status === "authenticated" &&
-                    !isLimitedAccess ? (
-                      <AppNavigation language={language} />
-                    ) : null}
+                    <WorkspaceNavigation
+                      language={language}
+                      authState={authState}
+                      isLimitedAccess={isLimitedAccess}
+                      isPublicAccessMode={isPublicAccessMode}
+                    />
                   </div>
 
                   <div className="flex items-center gap-2">
@@ -1041,13 +1117,17 @@ function App() {
                       {copy(language, "Google OAuth Kimlik Dogrulama", "Google OAuth Authentication")}
                     </div>
                     <h1 className="text-2xl font-semibold tracking-tight">
-                      {copy(language, "Finans paneline giris yap", "Sign in to the finance dashboard")}
+                      {copy(
+                        language,
+                        `${lockedWorkspaceSectionLabel} icin giris yap`,
+                        `Sign in to open ${lockedWorkspaceSectionLabel}`
+                      )}
                     </h1>
                     <p className="text-sm text-muted-foreground leading-relaxed">
                       {copy(
                         language,
-                        "Uyelik durumuna gore erisim acilir. Uye olmayanlar paneli goremez, uye olanlar ise abonelik olmadan kisitli gorunumde kalir.",
-                        "Access opens based on membership status. Non-members cannot view the panel, and members without a subscription stay in limited mode."
+                        "Flow herkese acik. Earning Strategy, Momentum ve Daily modullerini acmak icin once Google ile uye girisi yapman gerekir; aktif abonelik yoksa odeme ekranina gecersin.",
+                        "Flow is open to everyone. To open Earning Strategy, Momentum and Daily, sign in with Google first; if the account is not subscribed, you will be taken to the payment step."
                       )}
                     </p>
                   </div>
@@ -1074,52 +1154,11 @@ function App() {
             !isPaymentRoute &&
             !isMarketingRoute ? (
               <div className="relative">
-                {isLimitedAccess ? (
-                  <div
-                    data-no-mask
-                    className="z-40 border-b border-border bg-card/95 backdrop-blur px-4 py-3"
-                  >
-                    <div className="mx-auto max-w-7xl flex flex-wrap items-center justify-between gap-3">
-                      <div className="space-y-0.5">
-                        <p className="text-sm font-semibold">
-                          {copy(language, "Kisitli gorunum aktif", "Limited view active")}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {copy(
-                            language,
-                            "Uye girisi tamamlandi. Rakamlar gizlenir ve grafikler sadece aktif abonelikte acilir.",
-                            "Member sign-in completed. Numbers are masked and charts are available only for active subscribers."
-                          )}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {copy(
-                            language,
-                            "Abonelik acik degil. `/pay` ekranindan Paddle checkout ile uyeligi aktif edip tum modulleri acabilirsin.",
-                            "Subscription is not active. You can enable it from `/pay` with Paddle checkout and unlock all modules."
-                          )}
-                        </p>
-                      </div>
-
-                      <div className="flex items-center gap-2">
-                        <Button asChild>
-                          <a href="/pay">
-                            {copy(language, "Aboneligi ac", "Unlock subscription")}
-                          </a>
-                        </Button>
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={() => void refreshAuthState()}
-                        >
-                          {copy(language, "Durumu yenile", "Refresh status")}
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                ) : null}
-
-                {isLimitedAccess ? (
-                  <LimitedAccessPreview language={language} />
+                {isLimitedAccess && isLockedWorkspaceRoute ? (
+                  <SubscriptionRequiredView
+                    language={language}
+                    sectionLabel={lockedWorkspaceSectionLabel}
+                  />
                 ) : (
                   <div ref={protectedViewRef}>
                     <Router
