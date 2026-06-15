@@ -670,6 +670,24 @@ function isPublicAccessMode() {
 
 function readAuthPayload(req: express.Request): AuthPayload {
   if (isPublicAccessMode()) {
+    const sessionUser = getSessionUser(req);
+    if (sessionUser) {
+      return {
+        authenticated: true,
+        user: {
+          id: sessionUser.id,
+          email: sessionUser.email,
+          name: sessionUser.name,
+          picture: sessionUser.picture,
+        },
+        membership: {
+          plan: "pro",
+          isSubscribed: true,
+        },
+        accessMode: "public",
+      };
+    }
+
     return {
       authenticated: true,
       user: { ...PUBLIC_ACCESS_USER },
@@ -1386,7 +1404,7 @@ function requireSubscribedActor(
 
 function requireCommentActor(req: express.Request, res: express.Response) {
   const actor = getRequestActor(req);
-  if (!actor || actor.accessMode === "public") {
+  if (!actor || actor.id === PUBLIC_ACCESS_USER.id) {
     res.status(401).json({ error: "Yorum yazmak icin uye girisi gerekli." });
     return null;
   }

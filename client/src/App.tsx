@@ -321,6 +321,7 @@ function SiteFooter({ language }: { language: AppLanguage }) {
   const links =
     language === "en"
       ? [
+          { href: "/flow", label: "Flow" },
           { href: "/pricing", label: "Pricing" },
           { href: "/terms", label: "Terms" },
           { href: "/privacy", label: "Privacy" },
@@ -328,6 +329,7 @@ function SiteFooter({ language }: { language: AppLanguage }) {
           { href: "/pay", label: "Pay" },
         ]
       : [
+          { href: "/flow", label: "Flow" },
           { href: "/pricing", label: "Fiyatlandirma" },
           { href: "/terms", label: "Kosullar" },
           { href: "/privacy", label: "Gizlilik" },

@@ -34,6 +34,7 @@ export default function PublicShell({
 }: PublicShellProps) {
   const navItems = [
     { href: "/", label: copy(language, "Ana Sayfa", "Home") },
+    { href: "/flow", label: copy(language, "Flow", "Flow") },
     { href: "/app", label: copy(language, "Uygulamayi Ac", "Open App") },
     { href: "/pricing", label: copy(language, "Fiyatlandirma", "Pricing") },
   ];

@@ -140,7 +140,12 @@ export default function FlowReportCommunityPanel({
   }, [loadAuth]);
 
   const canComment = useMemo(
-    () => Boolean(auth?.authenticated && auth.user && auth.accessMode !== "public"),
+    () =>
+      Boolean(
+        auth?.authenticated &&
+          auth.user &&
+          auth.user.id !== "public-access"
+      ),
     [auth]
   );
 
