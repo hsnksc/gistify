@@ -61,10 +61,8 @@ export default function FlowCommunityPanel({
   const [auth, setAuth] = useState<ViewerAuthResponse | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [draftComment, setDraftComment] = useState("");
-  const { comments, error, loading, submitComment, submitting } = useFlowComments(
-    reportId,
-    language
-  );
+  const { comments, error, loading, submitComment, submitting } =
+    useFlowComments(reportId, language);
 
   const loadAuth = useCallback(async () => {
     setAuthLoading(true);
@@ -97,7 +95,8 @@ export default function FlowCommunityPanel({
   }, [reportId]);
 
   const canComment = useMemo(
-    () => Boolean(auth?.authenticated && auth.user?.id !== PUBLIC_ACCESS_USER_ID),
+    () =>
+      Boolean(auth?.authenticated && auth.user?.id !== PUBLIC_ACCESS_USER_ID),
     [auth]
   );
   const isPublicPreviewUser = auth?.user?.id === PUBLIC_ACCESS_USER_ID;
@@ -115,7 +114,11 @@ export default function FlowCommunityPanel({
       toast.error(
         caughtError instanceof Error
           ? caughtError.message
-          : copy(language, "Yorum gonderilemedi.", "Comment could not be posted.")
+          : copy(
+              language,
+              "Yorum gonderilemedi.",
+              "Comment could not be posted."
+            )
       );
     }
   }, [draftComment, language, submitComment]);
@@ -155,8 +158,8 @@ export default function FlowCommunityPanel({
               onChange={event => setDraftComment(event.target.value)}
               placeholder={copy(
                 language,
-                "Yorumu buraya yaz. Bu alan Flow raporunun altinda herkese acik gorunur.",
-                "Write your comment here. It will appear publicly below this flow report."
+                "Yorumu buraya yaz. Bu yorum bu Flow raporunda herkese acik gorunur.",
+                "Write your comment here. It will appear publicly on this flow report."
               )}
               rows={4}
               maxLength={1200}
@@ -205,7 +208,11 @@ export default function FlowCommunityPanel({
               <div className="mt-3">
                 <Button asChild variant="outline">
                   <a href="/api/auth/google">
-                    {copy(language, "Google ile Giris Yap", "Sign in with Google")}
+                    {copy(
+                      language,
+                      "Google ile Giris Yap",
+                      "Sign in with Google"
+                    )}
                   </a>
                 </Button>
               </div>

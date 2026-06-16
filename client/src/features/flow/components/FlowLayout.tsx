@@ -8,6 +8,7 @@ interface FlowLayoutProps {
   eyebrow: string;
   language: AppLanguage;
   sidebar?: ReactNode;
+  sidebarLayoutClassName?: string;
   title: string;
 }
 
@@ -17,6 +18,7 @@ export default function FlowLayout({
   description,
   eyebrow,
   sidebar,
+  sidebarLayoutClassName = "xl:grid-cols-[minmax(0,1fr)_320px]",
   title,
 }: FlowLayoutProps) {
   return (
@@ -36,15 +38,21 @@ export default function FlowLayout({
                   {description}
                 </p>
               </div>
-              {actions ? <div className="flex flex-wrap items-center gap-2">{actions}</div> : null}
+              {actions ? (
+                <div className="flex flex-wrap items-center gap-2">
+                  {actions}
+                </div>
+              ) : null}
             </div>
           </div>
         </section>
 
         {sidebar ? (
-          <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
+          <div className={`mt-6 grid gap-6 ${sidebarLayoutClassName}`}>
             <main className="min-w-0 space-y-6">{children}</main>
-            <aside className="space-y-6 xl:sticky xl:top-24 xl:self-start">{sidebar}</aside>
+            <aside className="space-y-6 xl:sticky xl:top-24 xl:self-start">
+              {sidebar}
+            </aside>
           </div>
         ) : (
           <main className="mt-6 space-y-6">{children}</main>

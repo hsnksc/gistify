@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { ArrowRight, Layers3, RefreshCw } from "lucide-react";
 import { Link, useLocation } from "wouter";
+import LanguageSelector from "@/components/LanguageSelector";
 import { Button } from "@/components/ui/button";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import FlowLayout from "../components/FlowLayout";
@@ -15,7 +16,13 @@ import {
   normalizeFlowContent,
 } from "../lib/flowReportHelpers";
 
-export default function FlowIndexPage({ language }: { language: AppLanguage }) {
+export default function FlowIndexPage({
+  language,
+  onLanguageChange,
+}: {
+  language: AppLanguage;
+  onLanguageChange: (next: AppLanguage) => void;
+}) {
   const [, setLocation] = useLocation();
   const [activeSourceLabel, setActiveSourceLabel] = useState("all");
   const { reports, loading, error, reload } = useFlowReports(language);
@@ -27,12 +34,16 @@ export default function FlowIndexPage({ language }: { language: AppLanguage }) {
       return;
     }
 
-    const legacyReportId = new URLSearchParams(window.location.search).get("report");
+    const legacyReportId = new URLSearchParams(window.location.search).get(
+      "report"
+    );
     if (!legacyReportId) {
       return;
     }
 
-    setLocation(`/flow/${encodeURIComponent(legacyReportId)}`, { replace: true });
+    setLocation(`/flow/${encodeURIComponent(legacyReportId)}`, {
+      replace: true,
+    });
   }, [setLocation]);
 
   const sourceOptions = useMemo(() => {
@@ -83,7 +94,9 @@ export default function FlowIndexPage({ language }: { language: AppLanguage }) {
     () =>
       activeSourceLabel === "all"
         ? reports
-        : reports.filter(report => getFlowSourceLabel(report) === activeSourceLabel),
+        : reports.filter(
+            report => getFlowSourceLabel(report) === activeSourceLabel
+          ),
     [activeSourceLabel, reports]
   );
 
@@ -156,10 +169,13 @@ export default function FlowIndexPage({ language }: { language: AppLanguage }) {
         "Browse published flow reports as a standalone library. Filter by source and jump directly into a detail page."
       )}
       actions={
-        <Button type="button" variant="outline" onClick={() => void reload()}>
-          <RefreshCw className="size-4" />
-          {copy(language, "Yenile", "Refresh")}
-        </Button>
+        <>
+          <LanguageSelector language={language} onChange={onLanguageChange} />
+          <Button type="button" variant="outline" onClick={() => void reload()}>
+            <RefreshCw className="size-4" />
+            {copy(language, "Yenile", "Refresh")}
+          </Button>
+        </>
       }
       sidebar={sidebar}
     >
@@ -195,7 +211,10 @@ export default function FlowIndexPage({ language }: { language: AppLanguage }) {
                   Figure
                 </p>
                 <p className="mt-2 text-2xl font-semibold text-foreground">
-                  {normalizeFlowContent(featuredReport.content).figureFiles.length}
+                  {
+                    normalizeFlowContent(featuredReport.content).figureFiles
+                      .length
+                  }
                 </p>
               </div>
               <div className="rounded-[1.4rem] border border-border bg-background/45 p-4">
@@ -203,7 +222,10 @@ export default function FlowIndexPage({ language }: { language: AppLanguage }) {
                   Ticker
                 </p>
                 <p className="mt-2 text-2xl font-semibold text-foreground">
-                  {normalizeFlowContent(featuredReport.content).tickerUniverse.length}
+                  {
+                    normalizeFlowContent(featuredReport.content).tickerUniverse
+                      .length
+                  }
                 </p>
               </div>
               <Link
@@ -224,7 +246,11 @@ export default function FlowIndexPage({ language }: { language: AppLanguage }) {
           aria-live="polite"
           className="rounded-[1.8rem] border border-border bg-card/75 px-5 py-6 text-sm text-muted-foreground"
         >
-          {copy(language, "Flow kutuphanesi yukleniyor.", "Loading the flow library.")}
+          {copy(
+            language,
+            "Flow kutuphanesi yukleniyor.",
+            "Loading the flow library."
+          )}
         </div>
       ) : error ? (
         <div

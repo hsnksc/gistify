@@ -15,16 +15,14 @@ import {
   Radar,
   Shield,
 } from "lucide-react";
+import LanguageSelector from "@/components/LanguageSelector";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { Route, Switch, useLocation } from "wouter";
-import {
-  APP_LANGUAGE_STORAGE_KEY,
-  type AppLanguage,
-} from "@/lib/i18n";
+import { APP_LANGUAGE_STORAGE_KEY, type AppLanguage } from "@/lib/i18n";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
@@ -34,7 +32,9 @@ const ReportsAdmin = lazy(() => import("./pages/ReportsAdmin"));
 const Scanner = lazy(() => import("./pages/Scanner"));
 const DailyReport = lazy(() => import("./pages/DailyReport"));
 const FlowIndexPage = lazy(() => import("./features/flow/pages/FlowIndexPage"));
-const FlowDetailPage = lazy(() => import("./features/flow/pages/FlowDetailPage"));
+const FlowDetailPage = lazy(
+  () => import("./features/flow/pages/FlowDetailPage")
+);
 const Pay = lazy(() => import("./pages/Pay"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const Terms = lazy(() => import("./pages/Terms"));
@@ -217,7 +217,9 @@ function Router({
             <Landing language={language} onLanguageChange={onLanguageChange} />
           )}
         </Route>
-        <Route path={"/app/admin"}>{() => <ReportsAdmin language={language} />}</Route>
+        <Route path={"/app/admin"}>
+          {() => <ReportsAdmin language={language} />}
+        </Route>
         <Route path={"/app"}>{() => <Home language={language} />}</Route>
         <Route path={"/momentum"}>
           {() => <Scanner language={language} />}
@@ -227,11 +229,20 @@ function Router({
         </Route>
         <Route path={"/flow/:reportId"}>
           {params => (
-            <FlowDetailPage language={language} reportId={params.reportId || ""} />
+            <FlowDetailPage
+              language={language}
+              onLanguageChange={onLanguageChange}
+              reportId={params.reportId || ""}
+            />
           )}
         </Route>
         <Route path={"/flow"}>
-          {() => <FlowIndexPage language={language} />}
+          {() => (
+            <FlowIndexPage
+              language={language}
+              onLanguageChange={onLanguageChange}
+            />
+          )}
         </Route>
         <Route path={"/scanner"}>{() => <Scanner language={language} />}</Route>
         <Route path={"/pricing"}>
@@ -470,7 +481,11 @@ function SubscriptionRequiredView({
                 </Button>
                 <Button asChild variant="outline" className="bg-background/70">
                   <a href="/pricing">
-                    {copy(language, "Plan detaylarini gor", "View plan details")}
+                    {copy(
+                      language,
+                      "Plan detaylarini gor",
+                      "View plan details"
+                    )}
                   </a>
                 </Button>
               </div>
@@ -478,7 +493,10 @@ function SubscriptionRequiredView({
 
             <div className="grid min-w-[220px] grid-cols-2 gap-3">
               {[
-                [copy(language, "Earning Strategy", "Earning Strategy"), copy(language, "Abonelik", "Subscription")],
+                [
+                  copy(language, "Earning Strategy", "Earning Strategy"),
+                  copy(language, "Abonelik", "Subscription"),
+                ],
                 ["Momentum", copy(language, "Abonelik", "Subscription")],
                 ["Daily", copy(language, "Abonelik", "Subscription")],
                 ["Flow", copy(language, "Acik", "Open")],
@@ -499,9 +517,21 @@ function SubscriptionRequiredView({
 
         <section className="grid gap-4 md:grid-cols-3">
           {[
-            copy(language, "Abonelik acildiginda earning strategy workspace'i tam verilerle kullanirsin.", "After activation, the earning strategy workspace opens with full data."),
-            copy(language, "Momentum scanner ve daily yuzeyi ayni uyelikle acilir.", "Momentum scanner and the daily surface unlock with the same subscription."),
-            copy(language, "Flow kamuya acik kalir; yorum yazmak icin sadece giris yeterlidir.", "Flow remains public; posting comments only requires sign-in."),
+            copy(
+              language,
+              "Abonelik acildiginda earning strategy workspace'i tam verilerle kullanirsin.",
+              "After activation, the earning strategy workspace opens with full data."
+            ),
+            copy(
+              language,
+              "Momentum scanner ve daily yuzeyi ayni uyelikle acilir.",
+              "Momentum scanner and the daily surface unlock with the same subscription."
+            ),
+            copy(
+              language,
+              "Flow kamuya acik kalir; yorum yazmak icin sadece giris yeterlidir.",
+              "Flow remains public; posting comments only requires sign-in."
+            ),
           ].map(title => (
             <div
               key={title}
@@ -517,44 +547,6 @@ function SubscriptionRequiredView({
           ))}
         </section>
       </div>
-    </div>
-  );
-}
-
-function LanguageSelector({
-  language,
-  onChange,
-}: {
-  language: AppLanguage;
-  onChange: (next: AppLanguage) => void;
-}) {
-  return (
-    <div
-      data-no-translate
-      className="inline-flex items-center rounded-full border border-border bg-card p-0.5"
-    >
-      <button
-        type="button"
-        className={`rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
-          language === "tr"
-            ? "bg-primary text-primary-foreground"
-            : "text-muted-foreground hover:text-foreground"
-        }`}
-        onClick={() => onChange("tr")}
-      >
-        TR
-      </button>
-      <button
-        type="button"
-        className={`rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
-          language === "en"
-            ? "bg-primary text-primary-foreground"
-            : "text-muted-foreground hover:text-foreground"
-        }`}
-        onClick={() => onChange("en")}
-      >
-        EN
-      </button>
     </div>
   );
 }
@@ -579,15 +571,19 @@ function App() {
   const runtimeTranslationInFlightRef = useRef(false);
   const maskOriginalRef = useRef(new WeakMap<Text, string>());
   const isPaymentRoute = location === "/pay";
+  const isFlowRoute = location.startsWith("/flow");
   const isMarketingRoute =
     ["/", "/pricing", "/terms", "/privacy", "/refund"].includes(location) ||
-    location.startsWith("/flow");
+    isFlowRoute;
   const isLockedWorkspaceRoute =
     location === "/app" ||
     location.startsWith("/app/admin") ||
     location.startsWith("/momentum") ||
     location.startsWith("/scanner") ||
     location.startsWith("/daily-report");
+  const shouldShowWorkspaceHeader =
+    !isPaymentRoute &&
+    (isFlowRoute || (authState.status !== "loading" && !isMarketingRoute));
   const hasStandaloneWorkspaceHeader =
     location === "/app" ||
     location.startsWith("/momentum") ||
@@ -1001,9 +997,7 @@ function App() {
               <Router language={language} onLanguageChange={setLanguage} />
             ) : null}
 
-            {authState.status !== "loading" &&
-            !isPaymentRoute &&
-            !isMarketingRoute ? (
+            {shouldShowWorkspaceHeader ? (
               <header
                 data-no-mask
                 data-no-translate
@@ -1103,10 +1097,18 @@ function App() {
               <div className="min-h-screen grid place-items-center px-4 text-center">
                 <div className="space-y-2">
                   <h1 className="text-xl font-semibold">
-                    {copy(language, "Oturum kontrol ediliyor", "Checking session")}
+                    {copy(
+                      language,
+                      "Oturum kontrol ediliyor",
+                      "Checking session"
+                    )}
                   </h1>
                   <p className="text-sm text-muted-foreground">
-                    {copy(language, "Birkac saniye surebilir.", "This may take a few seconds.")}
+                    {copy(
+                      language,
+                      "Birkac saniye surebilir.",
+                      "This may take a few seconds."
+                    )}
                   </p>
                 </div>
               </div>
@@ -1120,7 +1122,11 @@ function App() {
                   <div className="space-y-2">
                     <div className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
                       <GoogleMark />
-                      {copy(language, "Google OAuth Kimlik Dogrulama", "Google OAuth Authentication")}
+                      {copy(
+                        language,
+                        "Google OAuth Kimlik Dogrulama",
+                        "Google OAuth Authentication"
+                      )}
                     </div>
                     <h1 className="text-2xl font-semibold tracking-tight">
                       {copy(
@@ -1150,7 +1156,11 @@ function App() {
                     onClick={startGoogleLogin}
                   >
                     <GoogleMark />
-                    {copy(language, "Google ile giris yap", "Sign in with Google")}
+                    {copy(
+                      language,
+                      "Google ile giris yap",
+                      "Sign in with Google"
+                    )}
                   </Button>
                 </div>
               </div>
@@ -1176,9 +1186,7 @@ function App() {
               </div>
             ) : null}
 
-            {!isPaymentRoute ? (
-              <SiteFooter language={language} />
-            ) : null}
+            {!isPaymentRoute ? <SiteFooter language={language} /> : null}
           </div>
         </TooltipProvider>
       </ThemeProvider>

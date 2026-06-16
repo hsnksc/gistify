@@ -16,6 +16,16 @@ export default function FlowReportViewer({
 }: FlowReportViewerProps) {
   const viewer = buildFlowViewerData(report, language);
 
+  if (viewer.contentFormat === "html") {
+    return (
+      <HtmlReportRenderer
+        language={language}
+        html={viewer.html}
+        emptyMessage={viewer.emptyMessage}
+      />
+    );
+  }
+
   return (
     <ReportPostShell
       language={language}
@@ -31,24 +41,6 @@ export default function FlowReportViewer({
       storyItems={viewer.storyItems}
       markdown={viewer.markdown}
       emptyMessage={viewer.emptyMessage}
-      documentDescription={
-        viewer.contentFormat === "html"
-          ? copy(
-              language,
-              "Asagida yuklenen HTML raporunun tam akisi yorum paneli ile ayni Flow temasinda korunur.",
-              "The full uploaded HTML report is preserved below within the same Flow surface as the community panel."
-            )
-          : undefined
-      }
-      documentContent={
-        viewer.contentFormat === "html" ? (
-          <HtmlReportRenderer
-            language={language}
-            html={viewer.html}
-            emptyMessage={viewer.emptyMessage}
-          />
-        ) : undefined
-      }
       resolveImage={viewer.resolveImage}
     >
       <>
