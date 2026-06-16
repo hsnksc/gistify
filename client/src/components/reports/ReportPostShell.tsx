@@ -1,5 +1,11 @@
 import type { ReactNode } from "react";
-import { BookOpen, CalendarRange, Clock3, Files, ScrollText } from "lucide-react";
+import {
+  BookOpen,
+  CalendarRange,
+  Clock3,
+  Files,
+  ScrollText,
+} from "lucide-react";
 import MarkdownReportRenderer from "@/components/reports/MarkdownReportRenderer";
 import { copy, type AppLanguage } from "@/lib/i18n";
 
@@ -34,6 +40,8 @@ interface ReportPostShellProps {
   markdown: string;
   emptyMessage?: string;
   resolveImage?: (src: string, alt: string) => ResolvedImage;
+  documentContent?: ReactNode;
+  documentDescription?: string;
   children?: ReactNode;
 }
 
@@ -97,7 +105,9 @@ function StatCard({ item }: { item: ReportPostItem }) {
         {item.value}
       </p>
       {item.detail ? (
-        <p className="mt-2 text-xs leading-6 text-muted-foreground">{item.detail}</p>
+        <p className="mt-2 text-xs leading-6 text-muted-foreground">
+          {item.detail}
+        </p>
       ) : null}
     </article>
   );
@@ -119,6 +129,8 @@ export default function ReportPostShell({
   markdown,
   emptyMessage,
   resolveImage,
+  documentContent,
+  documentDescription = "",
   children,
 }: ReportPostShellProps) {
   const visibleMetaItems = metaItems.filter(
@@ -157,8 +169,8 @@ export default function ReportPostShell({
               {headline ||
                 copy(
                   language,
-                  "Yuklenen markdown dosyasi eksiksiz, okunabilir ve tema ile uyumlu bir post akisi halinde gosterilir.",
-                  "The uploaded markdown file is shown as a complete, readable post aligned with the site theme."
+                  "Yuklenen kaynak dosya eksiksiz, okunabilir ve tema ile uyumlu bir post akisi halinde gosterilir.",
+                  "The uploaded source file is shown as a complete, readable post aligned with the site theme."
                 )}
             </p>
           </div>
@@ -241,22 +253,25 @@ export default function ReportPostShell({
               {copy(language, "Tam Dokuman", "Full Document")}
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
-              {copy(
-                language,
-                "Asagida yuklenen markdown dosyasinin tam akisi tema ile uyumlu sekilde korunur.",
-                "The full flow of the uploaded markdown file is preserved below in the site theme."
-              )}
+              {documentDescription ||
+                copy(
+                  language,
+                  "Asagida yuklenen kaynak dosyanin tam akisi tema ile uyumlu sekilde korunur.",
+                  "The full flow of the uploaded source file is preserved below in the site theme."
+                )}
             </p>
           </div>
         </div>
       </section>
 
-      <MarkdownReportRenderer
-        language={language}
-        markdown={markdown}
-        emptyMessage={emptyMessage}
-        resolveImage={resolveImage}
-      />
+      {documentContent || (
+        <MarkdownReportRenderer
+          language={language}
+          markdown={markdown}
+          emptyMessage={emptyMessage}
+          resolveImage={resolveImage}
+        />
+      )}
     </div>
   );
 }

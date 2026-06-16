@@ -1,3 +1,4 @@
+import HtmlReportRenderer from "@/components/reports/HtmlReportRenderer";
 import ReportPostShell from "@/components/reports/ReportPostShell";
 import type { AppLanguage } from "@/lib/i18n";
 import type { FlowReport } from "@shared/flow";
@@ -30,6 +31,24 @@ export default function FlowReportViewer({
       storyItems={viewer.storyItems}
       markdown={viewer.markdown}
       emptyMessage={viewer.emptyMessage}
+      documentDescription={
+        viewer.contentFormat === "html"
+          ? copy(
+              language,
+              "Asagida yuklenen HTML raporunun tam akisi yorum paneli ile ayni Flow temasinda korunur.",
+              "The full uploaded HTML report is preserved below within the same Flow surface as the community panel."
+            )
+          : undefined
+      }
+      documentContent={
+        viewer.contentFormat === "html" ? (
+          <HtmlReportRenderer
+            language={language}
+            html={viewer.html}
+            emptyMessage={viewer.emptyMessage}
+          />
+        ) : undefined
+      }
       resolveImage={viewer.resolveImage}
     >
       <>
@@ -109,7 +128,11 @@ export default function FlowReportViewer({
                   {copy(language, "Gorsel Arsivi", "Figure Archive")}
                 </p>
                 <h3 className="mt-2 text-xl font-semibold text-foreground">
-                  {copy(language, "Yuklenen grafik ve gorseller", "Uploaded charts and visuals")}
+                  {copy(
+                    language,
+                    "Yuklenen grafik ve gorseller",
+                    "Uploaded charts and visuals"
+                  )}
                 </h3>
               </div>
               <span className="rounded-full border border-border bg-background/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">

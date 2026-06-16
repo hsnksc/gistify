@@ -1,5 +1,6 @@
 export type DailyReportStatus = "draft" | "published";
 export type DailyReportSourceKind = "folder" | "file";
+export type DailyReportContentFormat = "markdown" | "html";
 
 export interface DailyReportMetadataItem {
   label: string;
@@ -14,12 +15,14 @@ export interface DailyReportContent {
   metadataItems?: DailyReportMetadataItem[];
   executiveSummary: string[];
   markdown: string;
+  html?: string;
   sectionFiles: string[];
   figureFiles: string[];
   openAiFigureFiles: string[];
   tickerUniverse: string[];
   researchFileCount: number;
   sourceKind?: DailyReportSourceKind;
+  contentFormat?: DailyReportContentFormat;
   sourceLabel?: string;
   assetBasePath?: string;
 }
@@ -50,6 +53,7 @@ export interface DailyReportSourcePackage {
   metadataItems: DailyReportMetadataItem[];
   executiveSummary: string[];
   markdown: string;
+  html?: string;
   sectionFiles: string[];
   figureFiles: string[];
   openAiFigureFiles: string[];
@@ -57,6 +61,7 @@ export interface DailyReportSourcePackage {
   researchFileCount: number;
   updatedAt: string;
   sourceKind: DailyReportSourceKind;
+  contentFormat?: DailyReportContentFormat;
   sourceLabel: string;
   assetBasePath: string;
 }

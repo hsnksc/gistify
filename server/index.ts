@@ -849,7 +849,8 @@ function normalizeWeeklyReportEntry(
     value && typeof value === "object"
       ? (value as Partial<Record<keyof WeeklyReportEntry, unknown>>)
       : {};
-  const ticker = normalizeString(source.ticker) || fallbackTicker || `STK${index + 1}`;
+  const ticker =
+    normalizeString(source.ticker) || fallbackTicker || `STK${index + 1}`;
   const earningsDate = normalizeIsoDate(source.earningsDate, "2026-06-01");
 
   return {
@@ -903,7 +904,8 @@ function normalizeWeeklyReportEntry(
     lastEarningsMove: normalizeNumber(source.lastEarningsMove, 6),
     historicalIVCrush: normalizeNumber(source.historicalIVCrush, 28),
     beatRate: normalizeNumber(source.beatRate, 70),
-    thesis: normalizeString(source.thesis) || `${ticker} icin admin notu bekleniyor.`,
+    thesis:
+      normalizeString(source.thesis) || `${ticker} icin admin notu bekleniyor.`,
     directionalBias: isValidEnumValue(
       normalizeString(source.directionalBias),
       ["Bullish", "Bearish", "Neutral"] as const,
@@ -961,16 +963,15 @@ function normalizeWeeklyReportRecordInput(
     previousRecord?.weekEnd || weekStart
   );
   const title =
-    normalizeString(source.title) || previousRecord?.title || "Yeni Haftalik Rapor";
+    normalizeString(source.title) ||
+    previousRecord?.title ||
+    "Yeni Haftalik Rapor";
   const status = isValidEnumValue(
     normalizeString(source.status),
     ["draft", "published"] as const,
     previousRecord?.status || "draft"
   ) as WeeklyReportStatus;
-  const content = normalizeWeeklyReportContent(
-    source.content,
-    title
-  );
+  const content = normalizeWeeklyReportContent(source.content, title);
   const publishedAt =
     status === "published"
       ? normalizeIsoDateTime(
@@ -980,10 +981,7 @@ function normalizeWeeklyReportRecordInput(
       : undefined;
 
   return {
-    id:
-      normalizeString(source.id) ||
-      previousRecord?.id ||
-      crypto.randomUUID(),
+    id: normalizeString(source.id) || previousRecord?.id || crypto.randomUUID(),
     slug:
       normalizeString(source.slug) ||
       previousRecord?.slug ||
@@ -996,8 +994,7 @@ function normalizeWeeklyReportRecordInput(
       previousRecord?.analysisDate || nowIso
     ),
     status,
-    authorEmail:
-      previousRecord?.authorEmail || getWeeklyReportAdminEmail(),
+    authorEmail: previousRecord?.authorEmail || getWeeklyReportAdminEmail(),
     createdAt: previousRecord?.createdAt || nowIso,
     updatedAt: nowIso,
     publishedAt,
@@ -1005,19 +1002,16 @@ function normalizeWeeklyReportRecordInput(
   } satisfies WeeklyReportRecord;
 }
 
-function normalizeMomentumReportEntry(
-  value: unknown,
-  index: number
-) {
+function normalizeMomentumReportEntry(value: unknown, index: number) {
   const source =
     value && typeof value === "object"
       ? (value as Partial<Record<keyof MomentumReportEntry, unknown>>)
       : {};
-  const ticker = normalizeString(source.ticker).toUpperCase() || `STK${index + 1}`;
+  const ticker =
+    normalizeString(source.ticker).toUpperCase() || `STK${index + 1}`;
 
   return {
-    id:
-      normalizeString(source.id) || `${ticker.toLowerCase()}-${index + 1}`,
+    id: normalizeString(source.id) || `${ticker.toLowerCase()}-${index + 1}`,
     ticker,
     name: normalizeString(source.name) || ticker,
     sector: normalizeString(source.sector) || "Technology",
@@ -1075,7 +1069,9 @@ function normalizeMomentumReportRecordInput(
       ? (value as Partial<Record<keyof MomentumReportRecord, unknown>>)
       : {};
   const title =
-    normalizeString(source.title) || previousRecord?.title || "Momentum Snapshot";
+    normalizeString(source.title) ||
+    previousRecord?.title ||
+    "Momentum Snapshot";
   const status = isValidEnumValue(
     normalizeString(source.status),
     ["draft", "published"] as const,
@@ -1085,9 +1081,7 @@ function normalizeMomentumReportRecordInput(
   return {
     id: normalizeString(source.id) || previousRecord?.id || crypto.randomUUID(),
     slug:
-      normalizeString(source.slug) ||
-      previousRecord?.slug ||
-      slugify(title),
+      normalizeString(source.slug) || previousRecord?.slug || slugify(title),
     title,
     reportDate: normalizeIsoDate(
       source.reportDate,
@@ -1147,13 +1141,15 @@ function normalizeDailyReportContent(value: unknown, title: string) {
 
   return {
     headline:
-      normalizeString(source.headline) || `${title} icin yayinlanmis daily report`,
+      normalizeString(source.headline) ||
+      `${title} icin yayinlanmis daily report`,
     author: normalizeString(source.author) || undefined,
     coverage: normalizeString(source.coverage) || undefined,
     methodology: normalizeString(source.methodology) || undefined,
     metadataItems: normalizeDailyMetadataItems(source.metadataItems),
     executiveSummary,
     markdown: normalizeString(source.markdown),
+    html: normalizeString(source.html) || undefined,
     sectionFiles,
     figureFiles,
     openAiFigureFiles,
@@ -1161,6 +1157,8 @@ function normalizeDailyReportContent(value: unknown, title: string) {
     researchFileCount: normalizeNumber(source.researchFileCount, 0),
     sourceKind:
       normalizeString(source.sourceKind) === "file" ? "file" : "folder",
+    contentFormat:
+      normalizeString(source.contentFormat) === "html" ? "html" : "markdown",
     sourceLabel: normalizeString(source.sourceLabel) || undefined,
     assetBasePath: normalizeString(source.assetBasePath) || undefined,
   } satisfies DailyReportContent;
@@ -1186,9 +1184,7 @@ function normalizeDailyReportRecordInput(
   return {
     id: normalizeString(source.id) || previousRecord?.id || crypto.randomUUID(),
     slug:
-      normalizeString(source.slug) ||
-      previousRecord?.slug ||
-      slugify(title),
+      normalizeString(source.slug) || previousRecord?.slug || slugify(title),
     title,
     reportDate: normalizeIsoDate(
       source.reportDate,
@@ -1197,7 +1193,9 @@ function normalizeDailyReportRecordInput(
     status,
     authorEmail: previousRecord?.authorEmail || getWeeklyReportAdminEmail(),
     sourceFolder:
-      normalizeString(source.sourceFolder) || previousRecord?.sourceFolder || "",
+      normalizeString(source.sourceFolder) ||
+      previousRecord?.sourceFolder ||
+      "",
     createdAt: previousRecord?.createdAt || nowIso,
     updatedAt: nowIso,
     publishedAt:
@@ -1232,10 +1230,7 @@ function isWeeklyReportAdminRequest(req: express.Request) {
   return safeEqual(configuredSecret, requestSecret);
 }
 
-function requireWeeklyReportAdmin(
-  req: express.Request,
-  res: express.Response
-) {
+function requireWeeklyReportAdmin(req: express.Request, res: express.Response) {
   if (isWeeklyReportAdminRequest(req)) {
     return true;
   }
@@ -1261,7 +1256,10 @@ function getViewerWeeklyReports(referenceDate = new Date()) {
     .listWeeklyReports()
     .filter(report => report.status === "published")
     .filter(report => !isLegacyWeeklySeedReport(report))
-    .filter(report => Date.parse(`${report.weekEnd}T23:59:59Z`) >= currentWeekStart.getTime())
+    .filter(
+      report =>
+        Date.parse(`${report.weekEnd}T23:59:59Z`) >= currentWeekStart.getTime()
+    )
     .sort(
       (left, right) =>
         Date.parse(`${left.weekStart}T00:00:00Z`) -
@@ -1298,10 +1296,7 @@ function getRequestActor(req: express.Request) {
   };
 }
 
-function requireSubscribedActor(
-  req: express.Request,
-  res: express.Response
-) {
+function requireSubscribedActor(req: express.Request, res: express.Response) {
   const actor = getRequestActor(req);
   if (!actor) {
     res.status(401).json({ error: "Oturum gerekli." });
@@ -1434,10 +1429,7 @@ function calculateOpportunityCompositeScore(entry: WeeklyReportEntry) {
   );
 
   return Math.round(
-    momentum * 0.3 +
-      iv * 0.3 +
-      earningsQuality * 0.2 +
-      riskAdjusted * 0.2
+    momentum * 0.3 + iv * 0.3 + earningsQuality * 0.2 + riskAdjusted * 0.2
   );
 }
 
@@ -1841,7 +1833,9 @@ async function getPaddleCustomerEmail(customerId: string) {
   return normalizeEmail(payload.data?.email);
 }
 
-async function upsertPaddleSubscriptionFromEntity(entity: PaddleSubscriptionEntity) {
+async function upsertPaddleSubscriptionFromEntity(
+  entity: PaddleSubscriptionEntity
+) {
   const subscriptionId = normalizeString(entity.id);
   if (!subscriptionId) {
     throw new Error("Paddle subscription payload missing id.");
@@ -1890,8 +1884,7 @@ async function upsertPaddleSubscriptionFromEntity(entity: PaddleSubscriptionEnti
       normalizeOptionalIsoDateTime(entity.started_at) ||
       normalizeOptionalIsoDateTime(entity.first_billed_at) ||
       currentRecord?.startedAt,
-    endsAt:
-      resolvePaddleSubscriptionEndsAt(entity) || currentRecord?.endsAt,
+    endsAt: resolvePaddleSubscriptionEndsAt(entity) || currentRecord?.endsAt,
     updatedAt: nowIso,
     lastOrderId: subscriptionId,
   };
@@ -3240,7 +3233,10 @@ async function startServer() {
     const sector = normalizeString(req.query.sector);
     const days = normalizeNumber(req.query.days, 0);
     const page = Math.max(1, normalizeNumber(req.query.page, 1));
-    const limit = Math.min(50, Math.max(1, normalizeNumber(req.query.limit, 20)));
+    const limit = Math.min(
+      50,
+      Math.max(1, normalizeNumber(req.query.limit, 20))
+    );
     const offset = (page - 1) * limit;
 
     const filtered = filterOpportunitiesForTier(
@@ -3603,7 +3599,9 @@ async function startServer() {
       res.status(200).json({ translations });
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Ceviri istegi basarisiz oldu.";
+        error instanceof Error
+          ? error.message
+          : "Ceviri istegi basarisiz oldu.";
       res.status(500).json({ error: message });
     }
   });
@@ -3682,10 +3680,12 @@ async function startServer() {
         sectionFiles: source.sectionFiles,
         figureFiles: source.figureFiles,
         openAiFigureFiles: source.openAiFigureFiles,
+        html: source.html,
         tickerUniverse: source.tickerUniverse,
         researchFileCount: source.researchFileCount,
         updatedAt: source.updatedAt,
         sourceKind: source.sourceKind,
+        contentFormat: source.contentFormat,
         sourceLabel: source.sourceLabel,
         assetBasePath: source.assetBasePath,
       })),
@@ -3881,7 +3881,10 @@ async function startServer() {
     const previousRecord = reportId
       ? billingStore.getMomentumReportById(reportId)
       : null;
-    const report = normalizeMomentumReportRecordInput(rawReport, previousRecord);
+    const report = normalizeMomentumReportRecordInput(
+      rawReport,
+      previousRecord
+    );
 
     billingStore.upsertMomentumReport(report);
     res.status(previousRecord ? 200 : 201).json({
@@ -3905,7 +3908,9 @@ async function startServer() {
       return;
     }
 
-    const payload = extractObjectRecord((req.body ?? {}) as PaddleWebhookPayload);
+    const payload = extractObjectRecord(
+      (req.body ?? {}) as PaddleWebhookPayload
+    );
     const eventType = normalizeString(payload?.event_type).toLowerCase();
     const data = extractObjectRecord(payload?.data);
 
@@ -4015,7 +4020,9 @@ async function startServer() {
 
     try {
       const result = await generateDailyReportOpenAiCharts(payload);
-      res.status(200).json(result satisfies DailyReportOpenAiChartGenerateResponse);
+      res
+        .status(200)
+        .json(result satisfies DailyReportOpenAiChartGenerateResponse);
     } catch (error) {
       console.error("Daily report OpenAI chart generation failed", error);
       res.status(502).json({

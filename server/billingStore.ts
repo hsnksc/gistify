@@ -19,7 +19,10 @@ import type {
   MomentumReportRecord,
   MomentumReportStatus,
 } from "../shared/momentumReports";
-import type { WeeklyReportRecord, WeeklyReportStatus } from "../shared/weeklyReports";
+import type {
+  WeeklyReportRecord,
+  WeeklyReportStatus,
+} from "../shared/weeklyReports";
 
 export type SubscriptionProvider = "shopier" | "paddle";
 
@@ -428,7 +431,10 @@ function mapDailyReportRow(row: DailyReportDbRow): DailyReportRecord {
       : {};
   const normalizeOptionalString = (value: unknown) =>
     typeof value === "string" && value.trim() ? value.trim() : undefined;
-  const normalizeStringArray = (value: unknown, transform?: (item: string) => string) =>
+  const normalizeStringArray = (
+    value: unknown,
+    transform?: (item: string) => string
+  ) =>
     Array.isArray(value)
       ? value
           .filter((item): item is string => typeof item === "string")
@@ -470,6 +476,7 @@ function mapDailyReportRow(row: DailyReportDbRow): DailyReportRecord {
       metadataItems: normalizeMetadataItems(content.metadataItems),
       executiveSummary: normalizeStringArray(content.executiveSummary),
       markdown: typeof content.markdown === "string" ? content.markdown : "",
+      html: normalizeOptionalString(content.html),
       sectionFiles: normalizeStringArray(content.sectionFiles),
       figureFiles: normalizeStringArray(content.figureFiles),
       openAiFigureFiles: normalizeStringArray(content.openAiFigureFiles),
@@ -482,13 +489,16 @@ function mapDailyReportRow(row: DailyReportDbRow): DailyReportRecord {
           ? content.researchFileCount
           : 0,
       sourceKind: content.sourceKind === "file" ? "file" : "folder",
+      contentFormat: content.contentFormat === "html" ? "html" : "markdown",
       sourceLabel: normalizeOptionalString(content.sourceLabel),
       assetBasePath: normalizeOptionalString(content.assetBasePath),
     },
   };
 }
 
-function mapFlowReportCommentRow(row: FlowReportCommentDbRow): FlowReportComment {
+function mapFlowReportCommentRow(
+  row: FlowReportCommentDbRow
+): FlowReportComment {
   return {
     id: row.id,
     reportId: row.report_id,
@@ -707,8 +717,9 @@ export function createBillingStore() {
       ON flow_report_comments(user_id);
   `);
 
-  const subscriptionTableInfo = db.prepare("PRAGMA table_info(billing_subscriptions)").all() as
-    unknown as TableInfoRow[] | undefined;
+  const subscriptionTableInfo = db
+    .prepare("PRAGMA table_info(billing_subscriptions)")
+    .all() as unknown as TableInfoRow[] | undefined;
   const usesLegacySubscriptionSchema = Boolean(
     subscriptionTableInfo?.some(row => row.name === "user_id" && row.pk === 1)
   );
@@ -1471,15 +1482,21 @@ export function createBillingStore() {
       deleteSessionStmt.run(sessionId);
     },
     getSubscriptionByUserId(userId: string) {
-      const row = getSubscriptionByUserStmt.get(userId) as SubscriptionDbRow | undefined;
+      const row = getSubscriptionByUserStmt.get(userId) as
+        | SubscriptionDbRow
+        | undefined;
       return row ? mapSubscriptionRow(row) : null;
     },
     getSubscriptionByEmail(email: string) {
-      const row = getSubscriptionByEmailStmt.get(email) as SubscriptionDbRow | undefined;
+      const row = getSubscriptionByEmailStmt.get(email) as
+        | SubscriptionDbRow
+        | undefined;
       return row ? mapSubscriptionRow(row) : null;
     },
     getSubscriptionByLastOrderId(orderId: string) {
-      const row = getSubscriptionByLastOrderStmt.get(orderId) as SubscriptionDbRow | undefined;
+      const row = getSubscriptionByLastOrderStmt.get(orderId) as
+        | SubscriptionDbRow
+        | undefined;
       return row ? mapSubscriptionRow(row) : null;
     },
     upsertSubscription(record: SubscriptionRecord) {
@@ -1517,11 +1534,16 @@ export function createBillingStore() {
         record.updatedAt
       );
     },
-    updateOrderStatus(orderId: string, status: BillingOrderStatus, updatedAt: string) {
+    updateOrderStatus(
+      orderId: string,
+      status: BillingOrderStatus,
+      updatedAt: string
+    ) {
       updateOrderStatusStmt.run(status, updatedAt, orderId);
     },
     listWeeklyReports() {
-      const rows = listWeeklyReportsStmt.all() as unknown as WeeklyReportDbRow[];
+      const rows =
+        listWeeklyReportsStmt.all() as unknown as WeeklyReportDbRow[];
       return rows.map(mapWeeklyReportRow);
     },
     getWeeklyReportById(reportId: string) {
@@ -1595,7 +1617,9 @@ export function createBillingStore() {
       );
     },
     listWatchlistByUserId(userId: string) {
-      const rows = listWatchlistByUserIdStmt.all(userId) as unknown as WatchlistDbRow[];
+      const rows = listWatchlistByUserIdStmt.all(
+        userId
+      ) as unknown as WatchlistDbRow[];
       return rows.map(mapWatchlistRow);
     },
     upsertWatchlist(record: WatchlistRecord) {
@@ -1632,7 +1656,8 @@ export function createBillingStore() {
       );
     },
     listMomentumReports() {
-      const rows = listMomentumReportsStmt.all() as unknown as MomentumReportDbRow[];
+      const rows =
+        listMomentumReportsStmt.all() as unknown as MomentumReportDbRow[];
       return rows.map(mapMomentumReportRow);
     },
     getMomentumReportById(reportId: string) {
@@ -1693,8 +1718,9 @@ export function createBillingStore() {
       );
     },
     listFlowReportCommentsByReportId(reportId: string) {
-      const rows = listFlowReportCommentsByReportIdStmt.all(reportId) as unknown as
-        FlowReportCommentDbRow[];
+      const rows = listFlowReportCommentsByReportIdStmt.all(
+        reportId
+      ) as unknown as FlowReportCommentDbRow[];
       return rows.map(mapFlowReportCommentRow);
     },
     createFlowReportComment(record: FlowReportComment) {

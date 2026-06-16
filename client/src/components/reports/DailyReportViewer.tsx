@@ -1,4 +1,5 @@
 import type { DailyReportContent } from "@shared/dailyReports";
+import HtmlReportRenderer from "@/components/reports/HtmlReportRenderer";
 import ReportPostShell, {
   type ReportPostItem,
 } from "@/components/reports/ReportPostShell";
@@ -96,7 +97,10 @@ function resolveAssetSrc(
     };
   }
 
-  const preferred = resolvePreferredFigureFileName(normalized, openAiFigureFiles);
+  const preferred = resolvePreferredFigureFileName(
+    normalized,
+    openAiFigureFiles
+  );
   return {
     src: getDailyReportAssetUrl(assetBasePath, preferred.fileName),
     aiEnhanced: preferred.aiEnhanced,
@@ -128,18 +132,26 @@ export default function DailyReportViewer({
   const normalizedContent = {
     ...content,
     headline: typeof content.headline === "string" ? content.headline : "",
+    html: typeof content.html === "string" ? content.html : "",
     markdown: typeof content.markdown === "string" ? content.markdown : "",
     author: typeof content.author === "string" ? content.author : "",
     coverage: typeof content.coverage === "string" ? content.coverage : "",
-    methodology: typeof content.methodology === "string" ? content.methodology : "",
+    methodology:
+      typeof content.methodology === "string" ? content.methodology : "",
     executiveSummary: Array.isArray(content.executiveSummary)
-      ? content.executiveSummary.filter((item): item is string => typeof item === "string")
+      ? content.executiveSummary.filter(
+          (item): item is string => typeof item === "string"
+        )
       : [],
     figureFiles: Array.isArray(content.figureFiles)
-      ? content.figureFiles.filter((item): item is string => typeof item === "string")
+      ? content.figureFiles.filter(
+          (item): item is string => typeof item === "string"
+        )
       : [],
     openAiFigureFiles: Array.isArray(content.openAiFigureFiles)
-      ? content.openAiFigureFiles.filter((item): item is string => typeof item === "string")
+      ? content.openAiFigureFiles.filter(
+          (item): item is string => typeof item === "string"
+        )
       : [],
     metadataItems: Array.isArray(content.metadataItems)
       ? content.metadataItems.filter(
@@ -152,28 +164,46 @@ export default function DailyReportViewer({
         )
       : [],
     tickerUniverse: Array.isArray(content.tickerUniverse)
-      ? content.tickerUniverse.filter((item): item is string => typeof item === "string")
+      ? content.tickerUniverse.filter(
+          (item): item is string => typeof item === "string"
+        )
       : [],
     researchFileCount:
       typeof content.researchFileCount === "number" &&
       Number.isFinite(content.researchFileCount)
         ? content.researchFileCount
         : 0,
+    contentFormat:
+      content.contentFormat === "html" ||
+      (typeof content.html === "string" &&
+        content.html.trim().length > 0 &&
+        !content.markdown)
+        ? "html"
+        : "markdown",
   } satisfies DailyReportContent;
 
   const assetBasePath = normalizedContent.assetBasePath || sourceFolder;
   const sourceLabel =
-    normalizedContent.sourceLabel || sourceFolder || copy(language, "Daily report source", "Daily report source");
+    normalizedContent.sourceLabel ||
+    sourceFolder ||
+    copy(language, "Daily report source", "Daily report source");
   const categoryLabel = sourceLabel.toLowerCase().startsWith("flow/")
     ? copy(language, "Flow Post", "Flow Post")
     : copy(language, "Daily Post", "Daily Post");
-  const spotlight = buildReportSpotlight(normalizedContent.markdown);
+  const isHtmlSource = normalizedContent.contentFormat === "html";
+  const spotlight = isHtmlSource
+    ? null
+    : buildReportSpotlight(normalizedContent.markdown);
   const storyItems = spotlight
     ? []
     : normalizedContent.executiveSummary.length
       ? normalizedContent.executiveSummary.slice(0, 4)
-      : extractLeadParagraphsFromMarkdown(normalizedContent.markdown, 3);
-  const snapshotMetrics = extractSnapshotMetricsFromMarkdown(normalizedContent.markdown, 6);
+      : isHtmlSource
+        ? []
+        : extractLeadParagraphsFromMarkdown(normalizedContent.markdown, 3);
+  const snapshotMetrics = isHtmlSource
+    ? []
+    : extractSnapshotMetricsFromMarkdown(normalizedContent.markdown, 6);
   const statCards: ReportPostItem[] = snapshotMetrics.length
     ? snapshotMetrics.map(item => ({
         label: item.label,
@@ -185,19 +215,31 @@ export default function DailyReportViewer({
         {
           label: "Ticker",
           value: String(normalizedContent.tickerUniverse.length),
-          detail: copy(language, "Parser ile cikan ticker evreni.", "Ticker universe parsed from the source."),
+          detail: copy(
+            language,
+            "Parser ile cikan ticker evreni.",
+            "Ticker universe parsed from the source."
+          ),
           tone: "bull",
         },
         {
           label: "Figure",
           value: String(normalizedContent.figureFiles.length),
-          detail: copy(language, "Yuklenen gorsel adedi.", "Uploaded figure count."),
+          detail: copy(
+            language,
+            "Yuklenen gorsel adedi.",
+            "Uploaded figure count."
+          ),
           tone: "info",
         },
         {
           label: copy(language, "Arastirma", "Research"),
           value: String(normalizedContent.researchFileCount),
-          detail: copy(language, "Ek arastirma dosyasi sayisi.", "Additional research file count."),
+          detail: copy(
+            language,
+            "Ek arastirma dosyasi sayisi.",
+            "Additional research file count."
+          ),
         },
       ];
   const metaItems: ReportPostItem[] = [
@@ -275,18 +317,46 @@ export default function DailyReportViewer({
       updatedAtLabel={formatUpdateStamp(updatedAt, locale)}
       sourceLabel={sourceLabel}
       sourceKindLabel={
-        normalizedContent.sourceKind === "file"
-          ? copy(language, "Markdown Dosyasi", "Markdown File")
-          : copy(language, "Arastirma Paketi", "Research Package")
+        isHtmlSource
+          ? copy(language, "HTML Dosyasi", "HTML File")
+          : normalizedContent.sourceKind === "file"
+            ? copy(language, "Markdown Dosyasi", "Markdown File")
+            : copy(language, "Arastirma Paketi", "Research Package")
       }
       statCards={statCards}
       metaItems={metaItems}
       storyItems={storyItems}
       markdown={normalizedContent.markdown}
+      documentDescription={
+        isHtmlSource
+          ? copy(
+              language,
+              "Asagida yuklenen HTML kaynak ayni yayin temasinda korunur.",
+              "The uploaded HTML source is preserved below inside the publishing theme."
+            )
+          : undefined
+      }
+      documentContent={
+        isHtmlSource ? (
+          <HtmlReportRenderer
+            language={language}
+            html={normalizedContent.html || ""}
+            emptyMessage={copy(
+              language,
+              "Kaynak HTML icerigi bos.",
+              "The source HTML content is empty."
+            )}
+          />
+        ) : undefined
+      }
       emptyMessage={copy(
         language,
-        "Kaynak markdown icerigi bos.",
-        "The source markdown content is empty."
+        isHtmlSource
+          ? "Kaynak HTML icerigi bos."
+          : "Kaynak markdown icerigi bos.",
+        isHtmlSource
+          ? "The source HTML content is empty."
+          : "The source markdown content is empty."
       )}
       resolveImage={(src, alt) => {
         const resolved = resolveAssetSrc(
@@ -352,23 +422,21 @@ export default function DailyReportViewer({
                   </div>
                 );
 
-                return (
-                  item.anchorId ? (
-                    <a
-                      key={`${item.label}-${item.detail.slice(0, 24)}`}
-                      href={`#${item.anchorId}`}
-                      className={cardClassName}
-                    >
-                      {cardBody}
-                    </a>
-                  ) : (
-                    <article
-                      key={`${item.label}-${item.detail.slice(0, 24)}`}
-                      className={cardClassName}
-                    >
-                      {cardBody}
-                    </article>
-                  )
+                return item.anchorId ? (
+                  <a
+                    key={`${item.label}-${item.detail.slice(0, 24)}`}
+                    href={`#${item.anchorId}`}
+                    className={cardClassName}
+                  >
+                    {cardBody}
+                  </a>
+                ) : (
+                  <article
+                    key={`${item.label}-${item.detail.slice(0, 24)}`}
+                    className={cardClassName}
+                  >
+                    {cardBody}
+                  </article>
                 );
               })}
             </div>
@@ -383,7 +451,11 @@ export default function DailyReportViewer({
                   {copy(language, "Gorsel Arsivi", "Figure Archive")}
                 </p>
                 <h3 className="mt-2 text-xl font-semibold text-foreground">
-                  {copy(language, "Yuklenen grafik ve gorseller", "Uploaded charts and visuals")}
+                  {copy(
+                    language,
+                    "Yuklenen grafik ve gorseller",
+                    "Uploaded charts and visuals"
+                  )}
                 </h3>
               </div>
               <span className="rounded-full border border-border bg-background/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">

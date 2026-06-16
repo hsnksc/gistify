@@ -53,9 +53,17 @@ export default function FlowDetailPage({
       }
 
       await navigator.clipboard.writeText(shareUrl);
-      toast.success(copy(language, "Flow linki kopyalandi.", "Flow link copied."));
+      toast.success(
+        copy(language, "Flow linki kopyalandi.", "Flow link copied.")
+      );
     } catch {
-      toast.error(copy(language, "Paylasim tamamlanamadi.", "Share could not be completed."));
+      toast.error(
+        copy(
+          language,
+          "Paylasim tamamlanamadi.",
+          "Share could not be completed."
+        )
+      );
     }
   }, [language, report]);
 
@@ -135,7 +143,9 @@ export default function FlowDetailPage({
               <button
                 key={item.id}
                 type="button"
-                onClick={() => setLocation(`/flow/${encodeURIComponent(item.id)}`)}
+                onClick={() =>
+                  setLocation(`/flow/${encodeURIComponent(item.id)}`)
+                }
                 className="block w-full rounded-[1.2rem] border border-border bg-background/45 px-3 py-3 text-left text-sm transition-colors hover:bg-background/70"
               >
                 <p className="font-semibold text-foreground">{item.title}</p>
@@ -159,13 +169,17 @@ export default function FlowDetailPage({
         report?.content.headline ||
         copy(
           language,
-          "Bagimsiz Flow detay sayfasinda markdown, gorseller ve topluluk yorumlari ayni yuzeyde acilir.",
-          "The standalone flow detail page keeps markdown, visuals and community comments on the same surface."
+          "Bagimsiz Flow detay sayfasinda kaynak rapor, gorseller ve topluluk yorumlari ayni yuzeyde acilir.",
+          "The standalone flow detail page keeps the source report, visuals and community comments on the same surface."
         )
       }
       actions={
         <>
-          <Button type="button" variant="outline" onClick={() => setLocation("/flow")}>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => setLocation("/flow")}
+          >
             <ArrowLeft className="size-4" />
             {copy(language, "Kutuphane", "Library")}
           </Button>
@@ -173,7 +187,11 @@ export default function FlowDetailPage({
             <RefreshCw className="size-4" />
             {copy(language, "Yenile", "Refresh")}
           </Button>
-          <Button type="button" variant="outline" onClick={() => void handleShare()}>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => void handleShare()}
+          >
             <Share2 className="size-4" />
             {copy(language, "Paylas", "Share")}
           </Button>

@@ -24,10 +24,12 @@ export interface FlowResolvedImage {
 }
 
 export interface FlowViewerData {
+  contentFormat: "markdown" | "html";
   categoryLabel: string;
   emptyMessage: string;
   galleryFigures: FlowGalleryFigure[];
   headline: string;
+  html: string;
   markdown: string;
   metaItems: ReportPostItem[];
   reportDateLabel: string;
@@ -100,7 +102,10 @@ function resolveAssetSrc(
     };
   }
 
-  const preferred = resolvePreferredFigureFileName(normalized, openAiFigureFiles);
+  const preferred = resolvePreferredFigureFileName(
+    normalized,
+    openAiFigureFiles
+  );
   return {
     aiEnhanced: preferred.aiEnhanced,
     src: getDailyReportAssetUrl(assetBasePath, preferred.fileName),
@@ -134,18 +139,31 @@ export function formatFlowTimestamp(value: string, locale = "tr-TR") {
   }).format(parsed);
 }
 
-export function normalizeFlowContent(content: DailyReportContent): DailyReportContent {
+export function normalizeFlowContent(
+  content: DailyReportContent
+): DailyReportContent {
+  const html = typeof content.html === "string" ? content.html : "";
+  const contentFormat =
+    content.contentFormat === "html" || (html && !content.markdown)
+      ? "html"
+      : "markdown";
+
   return {
     ...content,
     author: typeof content.author === "string" ? content.author : "",
     coverage: typeof content.coverage === "string" ? content.coverage : "",
     executiveSummary: Array.isArray(content.executiveSummary)
-      ? content.executiveSummary.filter((item): item is string => typeof item === "string")
+      ? content.executiveSummary.filter(
+          (item): item is string => typeof item === "string"
+        )
       : [],
     figureFiles: Array.isArray(content.figureFiles)
-      ? content.figureFiles.filter((item): item is string => typeof item === "string")
+      ? content.figureFiles.filter(
+          (item): item is string => typeof item === "string"
+        )
       : [],
     headline: typeof content.headline === "string" ? content.headline : "",
+    html,
     markdown: typeof content.markdown === "string" ? content.markdown : "",
     metadataItems: Array.isArray(content.metadataItems)
       ? content.metadataItems.filter(
@@ -162,9 +180,12 @@ export function normalizeFlowContent(content: DailyReportContent): DailyReportCo
             item.value.trim().length > 0
         )
       : [],
-    methodology: typeof content.methodology === "string" ? content.methodology : "",
+    methodology:
+      typeof content.methodology === "string" ? content.methodology : "",
     openAiFigureFiles: Array.isArray(content.openAiFigureFiles)
-      ? content.openAiFigureFiles.filter((item): item is string => typeof item === "string")
+      ? content.openAiFigureFiles.filter(
+          (item): item is string => typeof item === "string"
+        )
       : [],
     researchFileCount:
       typeof content.researchFileCount === "number" &&
@@ -172,8 +193,11 @@ export function normalizeFlowContent(content: DailyReportContent): DailyReportCo
         ? content.researchFileCount
         : 0,
     tickerUniverse: Array.isArray(content.tickerUniverse)
-      ? content.tickerUniverse.filter((item): item is string => typeof item === "string")
+      ? content.tickerUniverse.filter(
+          (item): item is string => typeof item === "string"
+        )
       : [],
+    contentFormat,
   };
 }
 
@@ -193,7 +217,9 @@ export function getFlowPreviewText(
   const lead =
     content.headline ||
     content.executiveSummary[0] ||
-    extractLeadParagraphsFromMarkdown(content.markdown, 1)[0];
+    (content.contentFormat === "markdown"
+      ? extractLeadParagraphsFromMarkdown(content.markdown, 1)[0]
+      : "");
 
   return (
     lead ||
@@ -213,13 +239,20 @@ export function buildFlowViewerData(
   const content = normalizeFlowContent(report.content);
   const assetBasePath = content.assetBasePath || report.sourceFolder;
   const sourceLabel = getFlowSourceLabel(report);
-  const spotlight = buildReportSpotlight(content.markdown);
+  const isHtmlSource = content.contentFormat === "html";
+  const spotlight = isHtmlSource
+    ? null
+    : buildReportSpotlight(content.markdown);
   const storyItems = spotlight
     ? []
     : content.executiveSummary.length
       ? content.executiveSummary.slice(0, 4)
-      : extractLeadParagraphsFromMarkdown(content.markdown, 3);
-  const snapshotMetrics = extractSnapshotMetricsFromMarkdown(content.markdown, 6);
+      : isHtmlSource
+        ? []
+        : extractLeadParagraphsFromMarkdown(content.markdown, 3);
+  const snapshotMetrics = isHtmlSource
+    ? []
+    : extractSnapshotMetricsFromMarkdown(content.markdown, 6);
   const statCards: ReportPostItem[] = snapshotMetrics.length
     ? snapshotMetrics.map(item => ({
         detail: item.detail,
@@ -239,7 +272,11 @@ export function buildFlowViewerData(
           value: String(content.tickerUniverse.length),
         },
         {
-          detail: copy(language, "Yuklenen gorsel adedi.", "Uploaded figure count."),
+          detail: copy(
+            language,
+            "Yuklenen gorsel adedi.",
+            "Uploaded figure count."
+          ),
           label: "Figure",
           tone: "info",
           value: String(content.figureFiles.length),
@@ -306,34 +343,42 @@ export function buildFlowViewerData(
     })),
   ];
 
-  const galleryFigures: FlowGalleryFigure[] = content.figureFiles.map(fileName => {
-    const preferred = resolvePreferredFigureFileName(
-      fileName,
-      content.openAiFigureFiles
-    );
+  const galleryFigures: FlowGalleryFigure[] = content.figureFiles.map(
+    fileName => {
+      const preferred = resolvePreferredFigureFileName(
+        fileName,
+        content.openAiFigureFiles
+      );
 
-    return {
-      aiEnhanced: preferred.aiEnhanced,
-      fileName: preferred.fileName,
-      label: prettifyFigureLabel(fileName),
-      src: getDailyReportAssetUrl(assetBasePath, preferred.fileName),
-    };
-  });
+      return {
+        aiEnhanced: preferred.aiEnhanced,
+        fileName: preferred.fileName,
+        label: prettifyFigureLabel(fileName),
+        src: getDailyReportAssetUrl(assetBasePath, preferred.fileName),
+      };
+    }
+  );
 
   return {
+    contentFormat: isHtmlSource ? "html" : "markdown",
     categoryLabel: copy(language, "Flow Post", "Flow Post"),
     emptyMessage: copy(
       language,
-      "Kaynak markdown icerigi bos.",
-      "The source markdown content is empty."
+      "Kaynak icerik gosterilemedi.",
+      "The source content could not be displayed."
     ),
     galleryFigures,
     headline: content.headline,
+    html: content.html || "",
     markdown: content.markdown,
     metaItems,
     reportDateLabel: formatFlowReportDate(report.reportDate, locale),
     resolveImage: (src, alt) => {
-      const resolved = resolveAssetSrc(assetBasePath, src, content.openAiFigureFiles);
+      const resolved = resolveAssetSrc(
+        assetBasePath,
+        src,
+        content.openAiFigureFiles
+      );
 
       return {
         aiEnhanced: resolved.aiEnhanced,
@@ -344,8 +389,9 @@ export function buildFlowViewerData(
         src: resolved.src,
       };
     },
-    sourceKindLabel:
-      content.sourceKind === "file"
+    sourceKindLabel: isHtmlSource
+      ? copy(language, "HTML Dosyasi", "HTML File")
+      : content.sourceKind === "file"
         ? copy(language, "Markdown Dosyasi", "Markdown File")
         : copy(language, "Arastirma Paketi", "Research Package"),
     sourceLabel,
