@@ -54,6 +54,13 @@ import {
   listDailyReportSourcePackages,
 } from "./dailyReportSources";
 import {
+  getDailyReportSourcePackages,
+  getViewerDailyReports,
+} from "./services/flowService";
+import { createFlowCommentsRouter } from "./routes/flow/comments";
+import { createFlowReportsRouter } from "./routes/flow/reports";
+import { createFlowSourcesRouter } from "./routes/flow/sources";
+import {
   generateDailyReportOpenAiCharts,
   normalizeDailyReportOpenAiChartGenerateRequest,
 } from "./dailyReportOpenAiCharts";
@@ -128,10 +135,6 @@ interface MomentumReportUpsertRequestBody {
 
 interface DailyReportUpsertRequestBody {
   report?: unknown;
-}
-
-interface FlowReportCommentCreateRequestBody {
-  body?: unknown;
 }
 
 interface TranslateRequestBody {
@@ -1273,99 +1276,10 @@ function getViewerWeeklyReports(referenceDate = new Date()) {
   );
 }
 
-function isFlowSourceLabel(value: string) {
-  return normalizeString(value).toLowerCase().startsWith("flow/");
-}
-
-function isFlowDailyReport(report: DailyReportRecord) {
-  return (
-    isFlowSourceLabel(report.content.sourceLabel || "") ||
-    normalizeString(report.sourceFolder).toLowerCase().startsWith("flow-")
-  );
-}
-
-function buildViewerDailyReportCatalog() {
-  const publishedReports = billingStore
+function getPublishedDailyReports() {
+  return billingStore
     .listDailyReports()
-    .filter(report => report.status === "published")
-    .sort((left, right) => right.reportDate.localeCompare(left.reportDate));
-  const publishedBySource = new Map(
-    publishedReports.map(report => [report.sourceFolder, report])
-  );
-  const sourcePackages = listDailyReportSourcePackages();
-  const sourcedReports = sourcePackages.map(source => {
-    const existing = publishedBySource.get(source.folderName);
-    const sourceRecord = buildDailyReportRecordFromSource(
-      source,
-      existing?.authorEmail || getWeeklyReportAdminEmail(),
-      existing
-    );
-
-    if (!existing) {
-      return {
-        ...sourceRecord,
-        status: "published" as const,
-        updatedAt: source.updatedAt,
-        publishedAt: source.updatedAt,
-      };
-    }
-
-    return {
-      ...sourceRecord,
-      id: existing.id,
-      slug: existing.slug,
-      title: existing.title || sourceRecord.title,
-      reportDate: existing.reportDate || sourceRecord.reportDate,
-      status: "published" as const,
-      authorEmail: existing.authorEmail,
-      createdAt: existing.createdAt,
-      updatedAt:
-        existing.updatedAt > source.updatedAt ? existing.updatedAt : source.updatedAt,
-      publishedAt: existing.publishedAt || source.updatedAt,
-      content: {
-        ...sourceRecord.content,
-        headline: normalizeString(existing.content.headline) || sourceRecord.content.headline,
-        author: existing.content.author || sourceRecord.content.author,
-        coverage: existing.content.coverage || sourceRecord.content.coverage,
-        methodology: existing.content.methodology || sourceRecord.content.methodology,
-        executiveSummary: existing.content.executiveSummary.length
-          ? existing.content.executiveSummary
-          : sourceRecord.content.executiveSummary,
-      },
-    } satisfies DailyReportRecord;
-  });
-  const sourcedKeys = new Set(sourcePackages.map(source => source.folderName));
-  const archivedPublished = publishedReports.filter(
-    report => report.sourceFolder && !sourcedKeys.has(report.sourceFolder)
-  );
-
-  return [...sourcedReports, ...archivedPublished]
-    .sort((left, right) => {
-      const byDate = right.reportDate.localeCompare(left.reportDate);
-      if (byDate !== 0) {
-        return byDate;
-      }
-
-      return right.updatedAt.localeCompare(left.updatedAt);
-    });
-}
-
-function getViewerDailyReports(limit = 10) {
-  return buildViewerDailyReportCatalog()
-    .filter(report => !isFlowDailyReport(report))
-    .slice(0, limit);
-}
-
-function getViewerFlowReports(limit = 25) {
-  return buildViewerDailyReportCatalog()
-    .filter(isFlowDailyReport)
-    .slice(0, limit);
-}
-
-function getViewerFlowReportById(reportId: string) {
-  return buildViewerDailyReportCatalog().find(
-    report => report.id === reportId && isFlowDailyReport(report)
-  ) || null;
+    .filter(report => report.status === "published");
 }
 
 function getRequestActor(req: express.Request) {
@@ -1396,16 +1310,6 @@ function requireSubscribedActor(
 
   if (!actor.membership.isSubscribed) {
     res.status(403).json({ error: "Bu alan aktif abonelik gerektiriyor." });
-    return null;
-  }
-
-  return actor;
-}
-
-function requireCommentActor(req: express.Request, res: express.Response) {
-  const actor = getRequestActor(req);
-  if (!actor || actor.id === PUBLIC_ACCESS_USER.id) {
-    res.status(401).json({ error: "Yorum yazmak icin uye girisi gerekli." });
     return null;
   }
 
@@ -3626,110 +3530,49 @@ async function startServer() {
   app.get("/api/daily-reports", (_req, res) => {
     setPrivateNoStore(res);
     res.status(200).json({
-      reports: getViewerDailyReports(),
+      reports: getViewerDailyReports(getPublishedDailyReports()),
     });
   });
 
   app.get("/api/daily-report-sources", (_req, res) => {
     setPrivateNoStore(res);
     res.status(200).json({
-      sources: listDailyReportSourcePackages().filter(
-        source => !isFlowSourceLabel(source.sourceLabel || source.folderName)
-      ),
+      sources: getDailyReportSourcePackages(),
     });
   });
 
   app.get("/api/daily-reports/latest", (_req, res) => {
     setPrivateNoStore(res);
     res.status(200).json({
-      report: getViewerDailyReports(1)[0] || null,
+      report: getViewerDailyReports(getPublishedDailyReports(), 1)[0] || null,
     });
   });
 
-  app.get("/api/flow-reports", (_req, res) => {
-    setPrivateNoStore(res);
-    res.status(200).json({
-      reports: getViewerFlowReports(),
-    });
-  });
+  app.use(
+    "/api/flow-sources",
+    createFlowSourcesRouter({
+      setPrivateNoStore,
+    })
+  );
 
-  app.get("/api/flow-sources", (_req, res) => {
-    setPrivateNoStore(res);
-    res.status(200).json({
-      sources: listDailyReportSourcePackages().filter(source =>
-        isFlowSourceLabel(source.sourceLabel || source.folderName)
-      ),
-    });
-  });
+  app.use(
+    "/api/flow-reports/:reportId/comments",
+    createFlowCommentsRouter({
+      setPrivateNoStore,
+      getPublishedReports: getPublishedDailyReports,
+      listCommentsByReportId: billingStore.listFlowReportCommentsByReportId,
+      createComment: billingStore.createFlowReportComment,
+      readAuthPayload,
+    })
+  );
 
-  app.get("/api/flow-reports/latest", (_req, res) => {
-    setPrivateNoStore(res);
-    res.status(200).json({
-      report: getViewerFlowReports(1)[0] || null,
-    });
-  });
-
-  app.get("/api/flow-reports/:reportId/comments", (req, res) => {
-    setPrivateNoStore(res);
-
-    const reportId = normalizeString(req.params.reportId);
-    const report = getViewerFlowReportById(reportId);
-    if (!report) {
-      res.status(404).json({ error: "Flow report bulunamadi." });
-      return;
-    }
-
-    res.status(200).json({
-      comments: billingStore.listFlowReportCommentsByReportId(report.id),
-    });
-  });
-
-  app.post("/api/flow-reports/:reportId/comments", (req, res) => {
-    setPrivateNoStore(res);
-
-    const actor = requireCommentActor(req, res);
-    if (!actor) {
-      return;
-    }
-
-    const reportId = normalizeString(req.params.reportId);
-    const report = getViewerFlowReportById(reportId);
-    if (!report) {
-      res.status(404).json({ error: "Flow report bulunamadi." });
-      return;
-    }
-
-    const body =
-      req.body && typeof req.body === "object"
-        ? (req.body as FlowReportCommentCreateRequestBody)
-        : {};
-    const commentBody = normalizeString(body.body);
-
-    if (commentBody.length < 2) {
-      res.status(400).json({ error: "Yorum en az 2 karakter olmali." });
-      return;
-    }
-
-    if (commentBody.length > 1200) {
-      res.status(400).json({ error: "Yorum 1200 karakteri gecemez." });
-      return;
-    }
-
-    const nowIso = new Date().toISOString();
-    const comment: FlowReportComment = {
-      id: crypto.randomUUID(),
-      reportId: report.id,
-      userId: actor.id,
-      userName: actor.name,
-      userPicture: actor.picture,
-      body: commentBody,
-      createdAt: nowIso,
-      updatedAt: nowIso,
-    };
-
-    billingStore.createFlowReportComment(comment);
-    res.status(201).json({ comment });
-  });
+  app.use(
+    "/api/flow-reports",
+    createFlowReportsRouter({
+      setPrivateNoStore,
+      getPublishedReports: getPublishedDailyReports,
+    })
+  );
 
   app.post("/api/i18n/translate", async (req, res) => {
     setPrivateNoStore(res);

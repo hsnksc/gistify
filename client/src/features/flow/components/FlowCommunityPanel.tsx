@@ -1,36 +1,29 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { MessageSquareText, Send } from "lucide-react";
-import type { FlowReportComment } from "@shared/dailyReports";
+import { PUBLIC_ACCESS_USER_ID } from "@shared/flow";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import type { AppLanguage } from "@/lib/i18n";
+import { copy, type AppLanguage } from "@/lib/i18n";
 import { toast } from "sonner";
+import { useFlowComments } from "../hooks/useFlowComments";
 
 type MembershipPlan = "guest" | "member" | "pro";
 type AccessMode = "managed" | "public";
 
-interface FlowCommentsResponse {
-  comments?: FlowReportComment[];
-}
-
 interface ViewerAuthResponse {
+  accessMode: AccessMode;
   authenticated: boolean;
+  membership: {
+    isSubscribed: boolean;
+    plan: MembershipPlan;
+  };
   user: {
-    id: string;
     email: string;
+    id: string;
     name: string;
     picture?: string;
   } | null;
-  membership: {
-    plan: MembershipPlan;
-    isSubscribed: boolean;
-  };
-  accessMode: AccessMode;
-}
-
-function copy(language: AppLanguage, tr: string, en: string) {
-  return language === "en" ? en : tr;
 }
 
 function getInitials(name: string) {
@@ -50,14 +43,14 @@ function formatTimestamp(value: string, locale: string) {
 
   return new Intl.DateTimeFormat(locale, {
     day: "2-digit",
-    month: "short",
-    year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+    month: "short",
+    year: "numeric",
   }).format(parsed);
 }
 
-export default function FlowReportCommunityPanel({
+export default function FlowCommunityPanel({
   language,
   reportId,
 }: {
@@ -65,52 +58,21 @@ export default function FlowReportCommunityPanel({
   reportId: string;
 }) {
   const locale = language === "en" ? "en-US" : "tr-TR";
-  const [comments, setComments] = useState<FlowReportComment[]>([]);
   const [auth, setAuth] = useState<ViewerAuthResponse | null>(null);
-  const [loadingComments, setLoadingComments] = useState(true);
-  const [loadingAuth, setLoadingAuth] = useState(true);
+  const [authLoading, setAuthLoading] = useState(true);
   const [draftComment, setDraftComment] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-
-  const loadComments = useCallback(async () => {
-    if (!reportId) {
-      setComments([]);
-      setLoadingComments(false);
-      return;
-    }
-
-    setLoadingComments(true);
-
-    try {
-      const response = await fetch(
-        `/api/flow-reports/${encodeURIComponent(reportId)}/comments`,
-        {
-          credentials: "include",
-          cache: "no-store",
-        }
-      );
-
-      if (!response.ok) {
-        setComments([]);
-        return;
-      }
-
-      const payload = (await response.json()) as FlowCommentsResponse;
-      setComments(Array.isArray(payload.comments) ? payload.comments : []);
-    } catch {
-      setComments([]);
-    } finally {
-      setLoadingComments(false);
-    }
-  }, [reportId]);
+  const { comments, error, loading, submitComment, submitting } = useFlowComments(
+    reportId,
+    language
+  );
 
   const loadAuth = useCallback(async () => {
-    setLoadingAuth(true);
+    setAuthLoading(true);
 
     try {
       const response = await fetch("/api/auth/me", {
-        credentials: "include",
         cache: "no-store",
+        credentials: "include",
       });
 
       if (!response.ok) {
@@ -118,90 +80,45 @@ export default function FlowReportCommunityPanel({
         return;
       }
 
-      const payload = (await response.json()) as ViewerAuthResponse;
-      setAuth(payload);
+      setAuth((await response.json()) as ViewerAuthResponse);
     } catch {
       setAuth(null);
     } finally {
-      setLoadingAuth(false);
+      setAuthLoading(false);
     }
   }, []);
-
-  useEffect(() => {
-    void loadComments();
-  }, [loadComments]);
-
-  useEffect(() => {
-    setDraftComment("");
-  }, [reportId]);
 
   useEffect(() => {
     void loadAuth();
   }, [loadAuth]);
 
+  useEffect(() => {
+    setDraftComment("");
+  }, [reportId]);
+
   const canComment = useMemo(
-    () =>
-      Boolean(
-        auth?.authenticated &&
-          auth.user &&
-          auth.user.id !== "public-access"
-      ),
+    () => Boolean(auth?.authenticated && auth.user?.id !== PUBLIC_ACCESS_USER_ID),
     [auth]
   );
+  const isPublicPreviewUser = auth?.user?.id === PUBLIC_ACCESS_USER_ID;
 
-  const handleSubmit = async () => {
-    const body = draftComment.trim();
-    if (!body) {
+  const handleSubmit = useCallback(async () => {
+    if (!draftComment.trim()) {
       return;
     }
 
-    setSubmitting(true);
-
     try {
-      const response = await fetch(
-        `/api/flow-reports/${encodeURIComponent(reportId)}/comments`,
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ body }),
-        }
-      );
-
-      const payload =
-        response.headers.get("content-type")?.includes("application/json")
-          ? ((await response.json()) as { error?: string; comment?: FlowReportComment })
-          : {};
-
-      if (!response.ok) {
-        toast.error(
-          payload.error ||
-            copy(
-              language,
-              "Yorum gonderilemedi.",
-              "Comment could not be posted."
-            )
-        );
-        return;
-      }
-
+      await submitComment(draftComment);
       setDraftComment("");
-      setComments(current =>
-        payload.comment ? [payload.comment, ...current] : current
-      );
-      toast.success(
-        copy(language, "Yorum paylasildi.", "Comment posted successfully.")
-      );
-    } catch {
+      toast.success(copy(language, "Yorum paylasildi.", "Comment posted."));
+    } catch (caughtError) {
       toast.error(
-        copy(language, "Yorum gonderilemedi.", "Comment could not be posted.")
+        caughtError instanceof Error
+          ? caughtError.message
+          : copy(language, "Yorum gonderilemedi.", "Comment could not be posted.")
       );
-    } finally {
-      setSubmitting(false);
     }
-  };
+  }, [draftComment, language, submitComment]);
 
   return (
     <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
@@ -219,8 +136,8 @@ export default function FlowReportCommunityPanel({
           <p className="mt-1 text-sm text-muted-foreground">
             {copy(
               language,
-              "Bu sayfayi herkes gorebilir. Yorum yazmak icin sadece uye girisi yeterli; ucretli abonelik gerekmez.",
-              "Everyone can read this page. Writing a comment only requires member sign-in; a paid subscription is not required."
+              "Okuma herkese acik kalir. Yorum yazmak icin normal uye girisi gerekir; public preview hesabi yorum gonderemez.",
+              "Reading stays public. Posting requires a normal member sign-in; the public preview account cannot submit comments."
             )}
           </p>
         </div>
@@ -238,7 +155,7 @@ export default function FlowReportCommunityPanel({
               onChange={event => setDraftComment(event.target.value)}
               placeholder={copy(
                 language,
-                "Yorumu buraya yaz. Bu alan flow raporu altinda herkese acik gorunur.",
+                "Yorumu buraya yaz. Bu alan Flow raporunun altinda herkese acik gorunur.",
                 "Write your comment here. It will appear publicly below this flow report."
               )}
               rows={4}
@@ -248,14 +165,15 @@ export default function FlowReportCommunityPanel({
               <p className="text-xs text-muted-foreground">
                 {copy(
                   language,
-                  "Yorum yazmak icin aktif odeme gerekmiyor.",
-                  "An active paid subscription is not required to comment."
+                  "Yorum icin ucretli abonelik gerekmiyor.",
+                  "A paid subscription is not required to comment."
                 )}
               </p>
               <Button
                 type="button"
                 onClick={() => void handleSubmit()}
                 disabled={submitting || !draftComment.trim()}
+                aria-busy={submitting}
               >
                 <Send className="size-4" />
                 {copy(language, "Yorumu Gonder", "Post Comment")}
@@ -265,19 +183,25 @@ export default function FlowReportCommunityPanel({
         ) : (
           <div className="rounded-[1.55rem] border border-dashed border-border bg-background/40 p-4">
             <p className="text-sm text-muted-foreground">
-              {loadingAuth
+              {authLoading
                 ? copy(
                     language,
                     "Yorum izinleri kontrol ediliyor.",
                     "Checking comment permissions."
                   )
-                : copy(
-                    language,
-                    "Yorum yazmak icin uye girisi yapmalisin. Okuma herkese acik kalir.",
-                    "You need a member sign-in to comment. Reading remains public."
-                  )}
+                : isPublicPreviewUser
+                  ? copy(
+                      language,
+                      "Public preview kullanicisi yorum gonderemez. Kendi Google hesabinla giris yapmalisin.",
+                      "The public preview user cannot post comments. Sign in with your own Google account."
+                    )
+                  : copy(
+                      language,
+                      "Yorum yazmak icin Google ile uye girisi yapmalisin. Okuma herkese acik kalir.",
+                      "You need a Google member sign-in to comment. Reading remains public."
+                    )}
             </p>
-            {!loadingAuth ? (
+            {!authLoading ? (
               <div className="mt-3">
                 <Button asChild variant="outline">
                   <a href="/api/auth/google">
@@ -289,9 +213,20 @@ export default function FlowReportCommunityPanel({
           </div>
         )}
 
-        {loadingComments ? (
-          <div className="rounded-[1.55rem] border border-border bg-background/40 p-4 text-sm text-muted-foreground">
+        {loading ? (
+          <div
+            role="status"
+            aria-live="polite"
+            className="rounded-[1.55rem] border border-border bg-background/40 p-4 text-sm text-muted-foreground"
+          >
             {copy(language, "Yorumlar yukleniyor.", "Loading comments.")}
+          </div>
+        ) : error && !comments.length ? (
+          <div
+            role="alert"
+            className="rounded-[1.55rem] border border-dashed border-border bg-background/40 p-4 text-sm text-muted-foreground"
+          >
+            {error}
           </div>
         ) : comments.length ? (
           <div className="space-y-3">

@@ -33,7 +33,8 @@ const Home = lazy(() => import("./pages/Home"));
 const ReportsAdmin = lazy(() => import("./pages/ReportsAdmin"));
 const Scanner = lazy(() => import("./pages/Scanner"));
 const DailyReport = lazy(() => import("./pages/DailyReport"));
-const FlowReports = lazy(() => import("./pages/FlowReports"));
+const FlowIndexPage = lazy(() => import("./features/flow/pages/FlowIndexPage"));
+const FlowDetailPage = lazy(() => import("./features/flow/pages/FlowDetailPage"));
 const Pay = lazy(() => import("./pages/Pay"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const Terms = lazy(() => import("./pages/Terms"));
@@ -224,8 +225,13 @@ function Router({
         <Route path={"/daily-report"}>
           {() => <DailyReport language={language} />}
         </Route>
+        <Route path={"/flow/:reportId"}>
+          {params => (
+            <FlowDetailPage language={language} reportId={params.reportId || ""} />
+          )}
+        </Route>
         <Route path={"/flow"}>
-          {() => <FlowReports language={language} />}
+          {() => <FlowIndexPage language={language} />}
         </Route>
         <Route path={"/scanner"}>{() => <Scanner language={language} />}</Route>
         <Route path={"/pricing"}>
