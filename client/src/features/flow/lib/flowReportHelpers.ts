@@ -43,6 +43,13 @@ export interface FlowViewerData {
   updatedAtLabel: string;
 }
 
+export interface FlowTickerGroup {
+  latestReport: FlowReport;
+  reports: FlowReport[];
+  sourceLabels: string[];
+  ticker: string;
+}
+
 function normalizeRelativeAssetPath(value: string) {
   return value.replace(/^\.\/+/, "").trim();
 }
@@ -110,6 +117,34 @@ function resolveAssetSrc(
     aiEnhanced: preferred.aiEnhanced,
     src: getDailyReportAssetUrl(assetBasePath, preferred.fileName),
   };
+}
+
+function normalizeTickerToken(value: string) {
+  return value.trim().toUpperCase().replace(/[^A-Z0-9.-]/g, "");
+}
+
+function inferTickerFromText(value: string) {
+  const source = value.trim();
+  if (!source) {
+    return "";
+  }
+
+  const patterns = [
+    /\(([A-Z][A-Z0-9.-]{0,9})\)/,
+    /^\s*([A-Z][A-Z0-9.-]{0,9})(?=\s*[—\-·:|])/,
+    /\bTicker\s*[:\-]\s*([A-Z][A-Z0-9.-]{0,9})\b/i,
+    /(?:^|[-_/])([a-z]{1,8})(?=\d{6,8}(?:$|[-_.]))/i,
+  ];
+
+  for (const pattern of patterns) {
+    const match = source.match(pattern);
+    const normalized = normalizeTickerToken(match?.[1] || "");
+    if (normalized) {
+      return normalized;
+    }
+  }
+
+  return "";
 }
 
 export function formatFlowReportDate(reportDate: string, locale = "tr-TR") {
@@ -207,6 +242,74 @@ export function getFlowSourceLabel(report: FlowReport) {
     report.sourceFolder ||
     "Flow source"
   );
+}
+
+export function compareFlowReports(left: FlowReport, right: FlowReport) {
+  const byDate = right.reportDate.localeCompare(left.reportDate);
+  if (byDate !== 0) {
+    return byDate;
+  }
+
+  const byUpdatedAt = right.updatedAt.localeCompare(left.updatedAt);
+  if (byUpdatedAt !== 0) {
+    return byUpdatedAt;
+  }
+
+  return left.title.localeCompare(right.title);
+}
+
+export function getPrimaryFlowTicker(report: FlowReport) {
+  const content = normalizeFlowContent(report.content);
+  const directTicker = content.tickerUniverse
+    .map(item => normalizeTickerToken(item))
+    .find(Boolean);
+
+  if (directTicker) {
+    return directTicker;
+  }
+
+  return (
+    inferTickerFromText(content.coverage || "") ||
+    inferTickerFromText(report.title) ||
+    inferTickerFromText(getFlowSourceLabel(report)) ||
+    inferTickerFromText(report.sourceFolder) ||
+    inferTickerFromText(report.slug) ||
+    normalizeTickerToken(report.id) ||
+    "FLOW"
+  );
+}
+
+export function getFlowTickerReportPath(ticker: string) {
+  const normalizedTicker = normalizeTickerToken(ticker) || ticker.trim();
+  return `/flow/ticker/${encodeURIComponent(normalizedTicker)}`;
+}
+
+export function groupFlowReportsByTicker(reports: FlowReport[]) {
+  const grouped = new Map<string, FlowReport[]>();
+  const orderedReports = [...reports].sort(compareFlowReports);
+
+  for (const report of orderedReports) {
+    const ticker = getPrimaryFlowTicker(report);
+    const existing = grouped.get(ticker);
+    if (existing) {
+      existing.push(report);
+    } else {
+      grouped.set(ticker, [report]);
+    }
+  }
+
+  return Array.from(grouped.entries())
+    .map(([ticker, groupedReports]) => ({
+      latestReport: groupedReports[0],
+      reports: groupedReports,
+      sourceLabels: Array.from(
+        new Set(groupedReports.map(report => getFlowSourceLabel(report)))
+      ),
+      ticker,
+    }))
+    .sort((left, right) =>
+      compareFlowReports(left.latestReport, right.latestReport)
+    );
 }
 
 export function getFlowPreviewText(

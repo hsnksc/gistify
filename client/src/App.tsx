@@ -32,6 +32,7 @@ const ReportsAdmin = lazy(() => import("./pages/ReportsAdmin"));
 const Scanner = lazy(() => import("./pages/Scanner"));
 const DailyReport = lazy(() => import("./pages/DailyReport"));
 const FlowIndexPage = lazy(() => import("./features/flow/pages/FlowIndexPage"));
+const FlowTickerPage = lazy(() => import("./features/flow/pages/FlowTickerPage"));
 const FlowDetailPage = lazy(
   () => import("./features/flow/pages/FlowDetailPage")
 );
@@ -226,6 +227,15 @@ function Router({
         </Route>
         <Route path={"/daily-report"}>
           {() => <DailyReport language={language} />}
+        </Route>
+        <Route path={"/flow/ticker/:ticker"}>
+          {params => (
+            <FlowTickerPage
+              language={language}
+              onLanguageChange={onLanguageChange}
+              ticker={params.ticker || ""}
+            />
+          )}
         </Route>
         <Route path={"/flow/:reportId"}>
           {params => (
@@ -993,10 +1003,6 @@ function App() {
               />
             ) : null}
 
-            {!isPaymentRoute && isMarketingRoute ? (
-              <Router language={language} onLanguageChange={setLanguage} />
-            ) : null}
-
             {shouldShowWorkspaceHeader ? (
               <header
                 data-no-mask
@@ -1089,6 +1095,10 @@ function App() {
                   "Public preview mode is active. If Google sign-in and Paddle billing are enabled again, turn this off and use `APP_ACCESS_MODE=managed`."
                 )}
               </div>
+            ) : null}
+
+            {!isPaymentRoute && isMarketingRoute ? (
+              <Router language={language} onLanguageChange={setLanguage} />
             ) : null}
 
             {authState.status === "loading" &&

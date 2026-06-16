@@ -2,13 +2,16 @@ import { useCallback } from "react";
 import { ArrowLeft, RefreshCw, Share2 } from "lucide-react";
 import { toast } from "sonner";
 import { useLocation } from "wouter";
-import LanguageSelector from "@/components/LanguageSelector";
 import { Button } from "@/components/ui/button";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import FlowCommunityPanel from "../components/FlowCommunityPanel";
 import FlowLayout from "../components/FlowLayout";
 import FlowReportViewer from "../components/FlowReportViewer";
 import { useFlowReport } from "../hooks/useFlowReport";
+import {
+  getFlowTickerReportPath,
+  getPrimaryFlowTicker,
+} from "../lib/flowReportHelpers";
 
 interface FlowDetailPageProps {
   language: AppLanguage;
@@ -18,7 +21,6 @@ interface FlowDetailPageProps {
 
 export default function FlowDetailPage({
   language,
-  onLanguageChange,
   reportId,
 }: FlowDetailPageProps) {
   const [, setLocation] = useLocation();
@@ -59,6 +61,8 @@ export default function FlowDetailPage({
   const sidebar = report ? (
     <FlowCommunityPanel language={language} reportId={report.id} />
   ) : null;
+  const ticker = report ? getPrimaryFlowTicker(report) : "";
+  const tickerPath = ticker ? getFlowTickerReportPath(ticker) : "/flow";
 
   return (
     <FlowLayout
@@ -76,14 +80,22 @@ export default function FlowDetailPage({
       }
       actions={
         <>
-          <LanguageSelector language={language} onChange={onLanguageChange} />
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => setLocation(tickerPath)}
+          >
+            <ArrowLeft className="size-4" />
+            {ticker
+              ? copy(language, `${ticker} raporlari`, `${ticker} reports`)
+              : copy(language, "Hisseler", "Tickers")}
+          </Button>
           <Button
             type="button"
             variant="outline"
             onClick={() => setLocation("/flow")}
           >
-            <ArrowLeft className="size-4" />
-            {copy(language, "Kutuphane", "Library")}
+            {copy(language, "Tum Hisseler", "All Tickers")}
           </Button>
           <Button type="button" variant="outline" onClick={() => void reload()}>
             <RefreshCw className="size-4" />

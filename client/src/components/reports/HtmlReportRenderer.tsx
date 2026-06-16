@@ -81,6 +81,7 @@ function buildPreparedHtmlReport(
   const parser = new DOMParser();
   const documentNode = parser.parseFromString(html, "text/html");
   const bodyClone = documentNode.body.cloneNode(true) as HTMLBodyElement;
+  const reportLanguage = language === "en" ? "en" : "tr";
   bodyClone.querySelectorAll("nav, footer").forEach(node => node.remove());
 
   const navSections = Array.from(
@@ -112,23 +113,26 @@ function buildPreparedHtmlReport(
   }));
 
   let bodyHtml = bodyClone.innerHTML;
-  if (language === "en") {
-    bodyHtml = bodyHtml.replace(
-      /let currentLang = 'tr';/,
-      "let currentLang = 'en';"
+  bodyHtml = bodyHtml
+    .replace(
+      /let\s+currentLang\s*=\s*['"](tr|en)['"]\s*;/g,
+      `let currentLang = '${reportLanguage}';`
+    )
+    .replace(
+      /window\.setLanguage\(\s*['"](tr|en)['"]\s*\)\s*;/g,
+      `window.setLanguage('${reportLanguage}');`
     );
-  }
 
   const bodyClassName = [
     ...Array.from(
       new Set(
-        `${documentNode.body.className} ${language === "en" ? "lang-en" : "lang-tr"}`
+        `${documentNode.body.className} ${reportLanguage === "en" ? "lang-en" : "lang-tr"}`
           .split(/\s+/)
           .map(item => item.trim())
           .filter(item => item && item !== "lang-tr" && item !== "lang-en")
       )
     ),
-    language === "en" ? "lang-en" : "lang-tr",
+    reportLanguage === "en" ? "lang-en" : "lang-tr",
   ].join(" ");
 
   const sections = dedupeSections([
@@ -141,6 +145,18 @@ function buildPreparedHtmlReport(
 <script>
 (() => {
   const instanceId = ${JSON.stringify(instanceId)};
+  const preferredLanguage = ${JSON.stringify(reportLanguage)};
+  const applyPreferredLanguage = () => {
+    if (typeof window.setLanguage === "function") {
+      window.setLanguage(preferredLanguage);
+      return;
+    }
+
+    if (document.body) {
+      document.body.classList.remove("lang-tr", "lang-en");
+      document.body.classList.add(preferredLanguage === "en" ? "lang-en" : "lang-tr");
+    }
+  };
   const postHeight = () => {
     const height = Math.max(
       document.documentElement ? document.documentElement.scrollHeight : 0,
@@ -149,7 +165,9 @@ function buildPreparedHtmlReport(
     parent.postMessage({ type: "gistify-flow-html-height", instanceId, height }, "*");
   };
   const scheduleHeight = () => window.requestAnimationFrame(postHeight);
+  applyPreferredLanguage();
   window.addEventListener("load", () => {
+    applyPreferredLanguage();
     postHeight();
     window.setTimeout(postHeight, 250);
     window.setTimeout(postHeight, 1000);
@@ -194,7 +212,7 @@ section {
   return {
     sections,
     srcDoc: `<!doctype html>
-<html lang="${documentNode.documentElement.lang || "tr"}">
+<html lang="${reportLanguage}">
 <head>
 ${documentNode.head.innerHTML}
 ${layoutStyle}
