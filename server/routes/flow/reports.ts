@@ -20,6 +20,11 @@ function normalizeString(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
 }
 
+function normalizeReportKind(value: unknown) {
+  const normalized = normalizeString(value).toLowerCase();
+  return normalized === "daily" || normalized === "stock" ? normalized : undefined;
+}
+
 export function createFlowReportsRouter({
   setPrivateNoStore,
   getPublishedReports,
@@ -31,6 +36,7 @@ export function createFlowReportsRouter({
 
     const payload: FlowReportsResponse = {
       reports: getViewerFlowReports(getPublishedReports(), {
+        reportKind: normalizeReportKind(req.query.type),
         sourceLabel: normalizeString(req.query.source),
       }),
     };
@@ -43,6 +49,7 @@ export function createFlowReportsRouter({
 
     const payload: FlowReportSummariesResponse = {
       reports: getViewerFlowReportSummaries(getPublishedReports(), {
+        reportKind: normalizeReportKind(req.query.type),
         sourceLabel: normalizeString(req.query.source),
       }),
     };
@@ -57,6 +64,7 @@ export function createFlowReportsRouter({
       report:
         getViewerFlowReports(getPublishedReports(), {
           limit: 1,
+          reportKind: normalizeReportKind(_req.query.type),
         })[0] || null,
     };
 

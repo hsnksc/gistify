@@ -11,6 +11,7 @@ import FlowReportViewer from "./FlowReportViewer";
 import {
   getFlowReportArchiveDetailPath,
   getFlowReportDetailPath,
+  getFlowReportKind,
   getFlowTickerReportPath,
   getPrimaryFlowTicker,
 } from "../lib/flowReportHelpers";
@@ -75,8 +76,11 @@ export default function FlowReportDetailSurface({
   const sidebar = report ? (
     <FlowCommunityPanel language={language} reportId={report.id} />
   ) : null;
-  const ticker = report ? getPrimaryFlowTicker(report) : "";
-  const tickerPath = ticker ? getFlowTickerReportPath(ticker, basePath) : basePath;
+  const reportKind = report ? getFlowReportKind(report) : "stock";
+  const ticker =
+    report && reportKind === "stock" ? getPrimaryFlowTicker(report) : "";
+  const tickerPath = ticker ? getFlowTickerReportPath(ticker, basePath) : "/flow/daily";
+  const libraryPath = reportKind === "daily" ? "/flow" : basePath;
 
   return (
     <FlowLayout
@@ -94,22 +98,35 @@ export default function FlowReportDetailSurface({
       }
       actions={
         <>
+          {reportKind === "daily" ? (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setLocation("/flow/daily")}
+            >
+              <ArrowLeft className="size-4" />
+              {copy(language, "Gunluk Raporlar", "Daily Reports")}
+            </Button>
+          ) : (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setLocation(tickerPath)}
+            >
+              <ArrowLeft className="size-4" />
+              {ticker
+                ? copy(language, `${ticker} raporlari`, `${ticker} reports`)
+                : copy(language, "Hisseler", "Tickers")}
+            </Button>
+          )}
           <Button
             type="button"
             variant="outline"
-            onClick={() => setLocation(tickerPath)}
+            onClick={() => setLocation(libraryPath)}
           >
-            <ArrowLeft className="size-4" />
-            {ticker
-              ? copy(language, `${ticker} raporlari`, `${ticker} reports`)
-              : copy(language, "Hisseler", "Tickers")}
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => setLocation(basePath)}
-          >
-            {copy(language, "Tum Hisseler", "All Tickers")}
+            {reportKind === "daily"
+              ? copy(language, "Rapor Merkezi", "Report Center")
+              : copy(language, "Tum Hisseler", "All Tickers")}
           </Button>
           <Button
             type="button"

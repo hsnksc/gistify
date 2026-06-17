@@ -1,4 +1,5 @@
 export type ReportRecommendation = "BUY" | "HOLD" | "SELL" | null;
+export type ReportKind = "stock" | "daily";
 
 export interface ReportMeta {
   companyName: string;
@@ -10,6 +11,7 @@ export interface ReportMeta {
   rawHtml: string;
   recommendation: ReportRecommendation;
   reportDate: string;
+  reportKind: ReportKind;
   sections: string[];
   ticker: string;
 }
@@ -62,8 +64,58 @@ function parseDateFromFileName(fileName: string, fallbackDate: string) {
   return Number.isNaN(parsed.getTime()) ? fallbackDate : iso;
 }
 
-function extractTitleParts(titleText: string) {
+const DAILY_REPORT_KEYWORDS = [
+  "abd piyasalari",
+  "us markets",
+  "market report",
+  "close report",
+  "kapanis raporu",
+  "gunluk rapor",
+  "pre-market",
+  "premarket",
+];
+
+function normalizeReportKindText(value: string) {
+  return normalizeWhitespace(value)
+    .toLocaleLowerCase("tr-TR")
+    .replace(/ç/g, "c")
+    .replace(/ğ/g, "g")
+    .replace(/ı/g, "i")
+    .replace(/ö/g, "o")
+    .replace(/ş/g, "s")
+    .replace(/ü/g, "u");
+}
+
+function isDailyReportText(value: string) {
+  const normalized = normalizeReportKindText(value);
+  return Boolean(
+    normalized &&
+      DAILY_REPORT_KEYWORDS.some(keyword => normalized.includes(keyword))
+  );
+}
+
+function detectReportKind({
+  bodyText,
+  fileName,
+  titleText,
+}: {
+  bodyText: string;
+  fileName: string;
+  titleText: string;
+}): ReportKind {
+  const candidates = [fileName, titleText, bodyText];
+  return candidates.some(isDailyReportText) ? "daily" : "stock";
+}
+
+function extractTitleParts(titleText: string, reportKind: ReportKind) {
   const normalized = normalizeWhitespace(titleText);
+  if (reportKind === "daily") {
+    return {
+      companyName: normalized,
+      ticker: "MARKET",
+    };
+  }
+
   const titleMatch = normalized.match(
     /^([A-Z0-9.-]{1,10})\s*[—-]\s*(.+?)(?:\s+Advanced\s+Analysis\s+Report)?$/i
   );
@@ -244,6 +296,11 @@ export function parseReportHtml({
   const defaultDate = fallbackDate || new Date().toISOString().slice(0, 10);
 
   if (typeof window === "undefined") {
+    const reportKind = detectReportKind({
+      bodyText: html,
+      fileName,
+      titleText: "",
+    });
     return {
       companyName: "",
       exchange: "",
@@ -254,8 +311,12 @@ export function parseReportHtml({
       rawHtml: html,
       recommendation: null,
       reportDate: parseDateFromFileName(fileName, defaultDate),
+      reportKind,
       sections: [],
-      ticker: safeUpperTicker(fileName.replace(/\.[a-z0-9]+$/i, "")) || "FLOW",
+      ticker:
+        reportKind === "daily"
+          ? "MARKET"
+          : safeUpperTicker(fileName.replace(/\.[a-z0-9]+$/i, "")) || "FLOW",
     };
   }
 
@@ -263,11 +324,18 @@ export function parseReportHtml({
     const parser = new DOMParser();
     const documentNode = parser.parseFromString(html, "text/html");
     const titleText = normalizeWhitespace(documentNode.title || "");
-    const titleParts = extractTitleParts(titleText);
+    const reportKind = detectReportKind({
+      bodyText: documentNode.body.textContent || "",
+      fileName,
+      titleText,
+    });
+    const titleParts = extractTitleParts(titleText, reportKind);
     const fallbackTicker =
-      safeUpperTicker(fileName.replace(/\.[a-z0-9]+$/i, "")) ||
-      titleParts.ticker ||
-      "FLOW";
+      reportKind === "daily"
+        ? "MARKET"
+        : safeUpperTicker(fileName.replace(/\.[a-z0-9]+$/i, "")) ||
+          titleParts.ticker ||
+          "FLOW";
 
     return {
       companyName: titleParts.companyName,
@@ -279,10 +347,16 @@ export function parseReportHtml({
       rawHtml: html,
       recommendation: findRecommendation(documentNode),
       reportDate: parseDateFromFileName(fileName, defaultDate),
+      reportKind,
       sections: collectSections(documentNode),
       ticker: titleParts.ticker || fallbackTicker,
     };
   } catch {
+    const reportKind = detectReportKind({
+      bodyText: html,
+      fileName,
+      titleText: "",
+    });
     return {
       companyName: "",
       exchange: "",
@@ -293,8 +367,12 @@ export function parseReportHtml({
       rawHtml: html,
       recommendation: null,
       reportDate: parseDateFromFileName(fileName, defaultDate),
+      reportKind,
       sections: [],
-      ticker: safeUpperTicker(fileName.replace(/\.[a-z0-9]+$/i, "")) || "FLOW",
+      ticker:
+        reportKind === "daily"
+          ? "MARKET"
+          : safeUpperTicker(fileName.replace(/\.[a-z0-9]+$/i, "")) || "FLOW",
     };
   }
 }

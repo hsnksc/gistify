@@ -1,5 +1,9 @@
 import type { DailyReportContent } from "@shared/dailyReports";
-import type { FlowReport, FlowReportSummary } from "@shared/flow";
+import type {
+  FlowReport,
+  FlowReportKind,
+  FlowReportSummary,
+} from "@shared/flow";
 import type { ReportPostItem } from "@/components/reports/ReportPostShell";
 import { getDailyReportAssetUrl } from "@/lib/dailyReports";
 import { copy, type AppLanguage } from "@/lib/i18n";
@@ -170,6 +174,17 @@ const FLOW_TICKER_ALIASES: Array<{
   },
 ];
 
+const FLOW_DAILY_REPORT_KEYWORDS = [
+  "abd piyasalari",
+  "us markets",
+  "market report",
+  "close report",
+  "kapanis raporu",
+  "gunluk rapor",
+  "pre-market",
+  "premarket",
+];
+
 function isBlockedFlowTicker(value: string) {
   const normalized = normalizeTickerToken(value);
   return !normalized || BLOCKED_FLOW_TICKERS.has(normalized);
@@ -204,6 +219,26 @@ function inferTickerFromText(value: string) {
   }
 
   return "";
+}
+
+function normalizeFlowKindText(value: string) {
+  return value
+    .trim()
+    .toLocaleLowerCase("tr-TR")
+    .replace(/ç/g, "c")
+    .replace(/ğ/g, "g")
+    .replace(/ı/g, "i")
+    .replace(/ö/g, "o")
+    .replace(/ş/g, "s")
+    .replace(/ü/g, "u");
+}
+
+function isDailyMarketReportText(value: string) {
+  const source = normalizeFlowKindText(value);
+  return Boolean(
+    source &&
+      FLOW_DAILY_REPORT_KEYWORDS.some(keyword => source.includes(keyword))
+  );
 }
 
 export function formatFlowReportDate(reportDate: string, locale = "tr-TR") {
@@ -299,6 +334,26 @@ function isFlowReportSummary(report: FlowReportListEntry): report is FlowReportS
   return !("content" in report);
 }
 
+export function getFlowReportKind(report: FlowReportListEntry): FlowReportKind {
+  if (isFlowReportSummary(report)) {
+    return report.reportKind;
+  }
+
+  const content = normalizeFlowContent(report.content);
+  const candidates = [
+    report.title,
+    report.slug,
+    report.sourceFolder,
+    getFlowSourceLabel(report),
+    content.headline,
+    content.coverage,
+  ];
+
+  return candidates.some(value => isDailyMarketReportText(value || ""))
+    ? "daily"
+    : "stock";
+}
+
 export function getFlowSourceLabel(report: FlowReportListEntry) {
   if (isFlowReportSummary(report)) {
     return report.sourceLabel || report.sourceFolder || "Flow source";
@@ -325,6 +380,10 @@ export function compareFlowReports(
 }
 
 export function getPrimaryFlowTicker(report: FlowReportListEntry) {
+  if (getFlowReportKind(report) === "daily") {
+    return "MARKET";
+  }
+
   if (isFlowReportSummary(report)) {
     const directTicker = normalizeTickerToken(report.ticker);
     if (directTicker && !isBlockedFlowTicker(directTicker)) {
@@ -409,7 +468,9 @@ export function findFlowReportByTickerAndDate(
 
 export function groupFlowReportsByTicker<T extends FlowReportListEntry>(reports: T[]) {
   const grouped = new Map<string, T[]>();
-  const orderedReports = [...reports].sort(compareFlowReports);
+  const orderedReports = [...reports]
+    .filter(report => getFlowReportKind(report) === "stock")
+    .sort(compareFlowReports);
 
   for (const report of orderedReports) {
     const ticker = getPrimaryFlowTicker(report);

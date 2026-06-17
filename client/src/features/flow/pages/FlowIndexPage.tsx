@@ -26,7 +26,9 @@ export default function FlowIndexPage({
   title?: string;
 }) {
   const [, setLocation] = useLocation();
-  const { reports, loading, error, reload } = useFlowReportSummaries(language);
+  const { reports, loading, error, reload } = useFlowReportSummaries(language, {
+    reportKind: "stock",
+  });
   const tickerGroups = useMemo(() => groupFlowReportsByTicker(reports), [reports]);
   const locale = language === "en" ? "en-US" : "tr-TR";
   const latestUpdatedAt =

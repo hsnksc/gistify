@@ -2,7 +2,7 @@ import type {
   DailyReportRecord,
   DailyReportSourcePackage,
 } from "../../shared/dailyReports";
-import type { FlowReportSummary } from "../../shared/flow";
+import type { FlowReportKind, FlowReportSummary } from "../../shared/flow";
 import {
   buildDailyReportRecordFromSource,
   listDailyReportSourcePackages,
@@ -141,6 +141,17 @@ const FLOW_TICKER_ALIASES: Array<{
   },
 ];
 
+const FLOW_DAILY_REPORT_KEYWORDS = [
+  "abd piyasalari",
+  "us markets",
+  "market report",
+  "close report",
+  "kapanis raporu",
+  "gunluk rapor",
+  "pre-market",
+  "premarket",
+];
+
 function isBlockedFlowTicker(value: string) {
   const normalized = normalizeTickerToken(value);
   return !normalized || BLOCKED_FLOW_TICKERS.has(normalized);
@@ -175,6 +186,25 @@ function inferTickerFromText(value: string) {
   }
 
   return "";
+}
+
+function normalizeFlowKindText(value: string) {
+  return normalizeString(value)
+    .toLocaleLowerCase("tr-TR")
+    .replace(/ç/g, "c")
+    .replace(/ğ/g, "g")
+    .replace(/ı/g, "i")
+    .replace(/ö/g, "o")
+    .replace(/ş/g, "s")
+    .replace(/ü/g, "u");
+}
+
+function isDailyMarketReportText(value: string) {
+  const source = normalizeFlowKindText(value);
+  return Boolean(
+    source &&
+      FLOW_DAILY_REPORT_KEYWORDS.some(keyword => source.includes(keyword))
+  );
 }
 
 function stripHtml(value: string) {
@@ -318,16 +348,53 @@ function detectContentFormat(report: DailyReportRecord) {
     : "markdown";
 }
 
+function detectFlowReportKind(
+  report: DailyReportRecord,
+  html: string
+): FlowReportKind {
+  const htmlTitle = matchFirstGroup(html, [/<title>([^<]+)<\/title>/i]);
+  const hasBroadTickerUniverse = Array.isArray(report.content.tickerUniverse)
+    ? report.content.tickerUniverse.length >= 4
+    : false;
+  const candidates = [
+    report.title,
+    report.slug,
+    report.sourceFolder,
+    report.content.sourceLabel || "",
+    report.content.headline || "",
+    report.content.coverage || "",
+    htmlTitle,
+  ];
+
+  if (candidates.some(isDailyMarketReportText)) {
+    return "daily";
+  }
+
+  return hasBroadTickerUniverse &&
+    !inferTickerFromText(report.title) &&
+    !inferTickerFromText(report.content.headline || "")
+    ? "daily"
+    : "stock";
+}
+
 function buildFlowReportSummary(report: DailyReportRecord): FlowReportSummary {
   const html = report.content.html || "";
   const contentFormat = detectContentFormat(report);
-  const titleInfo = extractTitleAndCompany(report, html);
+  const reportKind = detectFlowReportKind(report, html);
+  const titleInfo =
+    reportKind === "daily"
+      ? {
+          companyName: normalizeString(report.title) || "Market report",
+          ticker: "MARKET",
+        }
+      : extractTitleAndCompany(report, html);
   const tickerUniverse = Array.isArray(report.content.tickerUniverse)
     ? report.content.tickerUniverse
         .map(item => normalizeTickerToken(item))
         .filter(item => item && !isBlockedFlowTicker(item))
     : [];
   const ticker =
+    (reportKind === "daily" ? "MARKET" : "") ||
     tickerUniverse[0] ||
     titleInfo.ticker ||
     inferTickerFromText(report.content.coverage || "") ||
@@ -365,6 +432,7 @@ function buildFlowReportSummary(report: DailyReportRecord): FlowReportSummary {
     priceChangePct: contentFormat === "html" ? detectPriceChangePct(html) : null,
     recommendation: contentFormat === "html" ? detectRecommendation(html) : null,
     reportDate: report.reportDate,
+    reportKind,
     researchFileCount:
       typeof report.content.researchFileCount === "number"
         ? report.content.researchFileCount
@@ -396,6 +464,7 @@ export function getViewerFlowReports(
   publishedReports: DailyReportRecord[],
   options: {
     limit?: number;
+    reportKind?: FlowReportKind;
     sourceLabel?: string;
   } = {}
 ) {
@@ -406,11 +475,15 @@ export function getViewerFlowReports(
     }
 
     if (!normalizedSourceLabel) {
-      return true;
+      return !options.reportKind || detectFlowReportKind(report, report.content.html || "") === options.reportKind;
     }
 
     const reportSourceLabel = normalizeString(report.content.sourceLabel).toLowerCase();
-    return reportSourceLabel === normalizedSourceLabel;
+    if (reportSourceLabel !== normalizedSourceLabel) {
+      return false;
+    }
+
+    return !options.reportKind || detectFlowReportKind(report, report.content.html || "") === options.reportKind;
   });
 
   return applyLimit(filtered, options.limit);
@@ -420,6 +493,7 @@ export function getViewerFlowReportSummaries(
   publishedReports: DailyReportRecord[],
   options: {
     limit?: number;
+    reportKind?: FlowReportKind;
     sourceLabel?: string;
   } = {}
 ) {

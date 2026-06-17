@@ -129,6 +129,7 @@ export function adaptFlowReportToStoredReport(
     rawHtml: "",
     recommendation: (report.recommendation as ReportRecommendation) || null,
     reportDate: report.reportDate,
+    reportKind: report.reportKind,
     sections: report.sections,
     sourceLabel,
     sourceType: "server",

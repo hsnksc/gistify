@@ -32,6 +32,7 @@ const ReportsAdmin = lazy(() => import("./pages/ReportsAdmin"));
 const Scanner = lazy(() => import("./pages/Scanner"));
 const DailyReport = lazy(() => import("./pages/DailyReport"));
 const FlowPage = lazy(() => import("./features/flow/pages/FlowPage"));
+const FlowDailyPage = lazy(() => import("./features/flow/pages/FlowDailyPage"));
 const FlowTickerPage = lazy(() => import("./features/flow/pages/FlowTickerPage"));
 const FlowDetailPage = lazy(
   () => import("./features/flow/pages/FlowDetailPage")
@@ -282,6 +283,14 @@ function Router({
               language={language}
               onLanguageChange={onLanguageChange}
               ticker={params.ticker || ""}
+            />
+          )}
+        </Route>
+        <Route path={"/flow/daily"}>
+          {() => (
+            <FlowDailyPage
+              language={language}
+              onLanguageChange={onLanguageChange}
             />
           )}
         </Route>

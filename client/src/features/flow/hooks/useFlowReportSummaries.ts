@@ -5,6 +5,7 @@ import type {
 } from "@shared/flow";
 import { extractApiErrorMessage, readJsonResponse } from "@/lib/api";
 import { copy, type AppLanguage } from "@/lib/i18n";
+import type { FlowReportKind } from "@shared/flow";
 
 interface UseFlowReportSummariesResult {
   error: string;
@@ -13,19 +14,30 @@ interface UseFlowReportSummariesResult {
   reports: FlowReportSummary[];
 }
 
+interface UseFlowReportSummariesOptions {
+  reportKind?: FlowReportKind;
+}
+
 export function useFlowReportSummaries(
-  language: AppLanguage
+  language: AppLanguage,
+  options: UseFlowReportSummariesOptions = {}
 ): UseFlowReportSummariesResult {
   const [reports, setReports] = useState<FlowReportSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const { reportKind } = options;
 
   const reload = useCallback(async () => {
     setLoading(true);
     setError("");
 
     try {
-      const response = await fetch("/api/flow-reports/summary", {
+      const searchParams = new URLSearchParams();
+      if (reportKind) {
+        searchParams.set("type", reportKind);
+      }
+
+      const response = await fetch(`/api/flow-reports/summary${searchParams.size ? `?${searchParams.toString()}` : ""}`, {
         cache: "no-store",
         credentials: "include",
       });
@@ -63,7 +75,7 @@ export function useFlowReportSummaries(
     } finally {
       setLoading(false);
     }
-  }, [language]);
+  }, [language, reportKind]);
 
   useEffect(() => {
     void reload();

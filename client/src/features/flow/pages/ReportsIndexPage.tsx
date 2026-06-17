@@ -45,7 +45,7 @@ export default function ReportsIndexPage({
   const [selectedDate, setSelectedDate] = useState("");
   const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
   const { reports: serverReports, loading: serverLoading, error: serverError, reload } =
-    useFlowReportSummaries(language);
+    useFlowReportSummaries(language, { reportKind: "stock" });
   const {
     clearUploadQueue,
     error: localError,
@@ -65,9 +65,15 @@ export default function ReportsIndexPage({
     [serverReports]
   );
 
+  const stockLocalReports = useMemo(
+    () =>
+      localReports.filter(report => (report.reportKind || "stock") === "stock"),
+    [localReports]
+  );
+
   const allReports = useMemo(
-    () => [...serverGalleryReports, ...localReports].sort(compareStoredReports),
-    [localReports, serverGalleryReports]
+    () => [...serverGalleryReports, ...stockLocalReports].sort(compareStoredReports),
+    [serverGalleryReports, stockLocalReports]
   );
   const todayIso = new Date().toISOString().slice(0, 10);
   const effectiveSearch = (forcedTicker || searchValue).trim().toUpperCase();
@@ -119,7 +125,7 @@ export default function ReportsIndexPage({
   );
 
   const summary = {
-    localCount: localReports.length,
+    localCount: stockLocalReports.length,
     serverCount: serverGalleryReports.length,
     todayCount: allReports.filter(report => report.reportDate === todayIso).length,
     totalCount: allReports.length,
@@ -135,8 +141,8 @@ export default function ReportsIndexPage({
       )
     : copy(
         language,
-        "Gunluk HTML hisse raporlarini yukle, IndexedDB icinde sakla ve tarih bazli galeride yayinla.",
-        "Upload daily HTML stock reports, keep them in IndexedDB and publish them in a date-grouped gallery."
+        "HTML hisse raporlarini yukle, arsivle ve tarih bazli galeride ac.",
+        "Upload HTML stock reports, archive them and open them in a date-based gallery."
       );
 
   usePageMeta({
@@ -155,8 +161,8 @@ export default function ReportsIndexPage({
       }
       description={copy(
         language,
-        "Prompttaki yukleme modulu burada calisir: HTML dosyalarini surukle, metadata otomatik parse edilsin, raporlar IndexedDB icinde saklansin ve tum arsiv tarih bazli gruplanarak yayinlansin.",
-        "The upload module from the prompt lives here: drop HTML files, extract metadata automatically, keep them in IndexedDB and publish the archive grouped by date."
+        "Hisse HTML raporlarini tek yerde yukle, filtrele ve arsivle. Yayinli raporlar ile yerel yuklemeler ayni galeride acilir.",
+        "Upload, filter and archive stock HTML reports in one place. Published reports and local uploads open in the same gallery."
       )}
       actions={
         <>

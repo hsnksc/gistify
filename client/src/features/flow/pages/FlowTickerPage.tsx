@@ -31,7 +31,9 @@ export default function FlowTickerPage({
   ticker,
 }: FlowTickerPageProps) {
   const [, setLocation] = useLocation();
-  const { reports, loading, error, reload } = useFlowReportSummaries(language);
+  const { reports, loading, error, reload } = useFlowReportSummaries(language, {
+    reportKind: "stock",
+  });
   const normalizedTicker = ticker.trim().toUpperCase();
   const tickerGroup = useMemo(
     () =>

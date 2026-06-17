@@ -40,7 +40,7 @@ export default function ReportsDateDetailPage({
 }: ReportsDateDetailPageProps) {
   const [location, setLocation] = useLocation();
   const { reports: serverReports, loading: serverLoading, error: serverError, reload } =
-    useFlowReportSummaries(language);
+    useFlowReportSummaries(language, { reportKind: "stock" });
   const {
     error: localError,
     hydrate,
@@ -61,7 +61,7 @@ export default function ReportsDateDetailPage({
       ...serverReports
         .map(adaptFlowReportToStoredReport)
         .filter((report): report is NonNullable<typeof report> => Boolean(report)),
-      ...localReports,
+      ...localReports.filter(report => (report.reportKind || "stock") === "stock"),
     ],
     [localReports, serverReports]
   );

@@ -8,6 +8,7 @@ export const PUBLIC_ACCESS_USER_ID = "public-access";
 
 export type FlowReport = DailyReportRecord;
 export type FlowSource = DailyReportSourcePackage;
+export type FlowReportKind = "stock" | "daily";
 
 export interface FlowReportSummary {
   companyName: string;
@@ -22,6 +23,7 @@ export interface FlowReportSummary {
   priceChangePct: number | null;
   recommendation: string | null;
   reportDate: string;
+  reportKind: FlowReportKind;
   researchFileCount: number;
   sections: string[];
   slug: string;
