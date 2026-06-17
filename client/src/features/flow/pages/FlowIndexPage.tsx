@@ -13,9 +13,17 @@ import {
 
 export default function FlowIndexPage({
   language,
+  basePath = "/flow",
+  description,
+  eyebrow = "Flow",
+  title,
 }: {
+  basePath?: string;
+  description?: string;
   language: AppLanguage;
   onLanguageChange: (next: AppLanguage) => void;
+  eyebrow?: string;
+  title?: string;
 }) {
   const [, setLocation] = useLocation();
   const { reports, loading, error, reload } = useFlowReports(language);
@@ -36,21 +44,26 @@ export default function FlowIndexPage({
       return;
     }
 
-    setLocation(`/flow/${encodeURIComponent(legacyReportId)}`, {
+    setLocation(`${basePath}/${encodeURIComponent(legacyReportId)}`, {
       replace: true,
     });
-  }, [setLocation]);
+  }, [basePath, setLocation]);
 
   return (
     <FlowLayout
       language={language}
-      eyebrow="Flow"
-      title={copy(language, "Flow Hisse Kutuphanesi", "Flow Stock Library")}
-      description={copy(
-        language,
-        "Flow artik hisse bazinda aciliyor. Her yeni ticker kendi kartini alir; karta girince guncel rapor ve gecmis arsivi birlikte gorunur.",
-        "Flow now opens by ticker. Every new stock gets its own card, and each card leads to the current report plus its historical archive."
-      )}
+      eyebrow={eyebrow}
+      title={
+        title || copy(language, "Flow Hisse Kutuphanesi", "Flow Stock Library")
+      }
+      description={
+        description ||
+        copy(
+          language,
+          "Flow artik hisse bazinda aciliyor. Her yeni ticker kendi kartini alir; karta girince guncel rapor ve gecmis arsivi birlikte gorunur.",
+          "Flow now opens by ticker. Every new stock gets its own card, and each card leads to the current report plus its historical archive."
+        )
+      }
       actions={
         <Button type="button" variant="outline" onClick={() => void reload()}>
           <RefreshCw className="size-4" />
@@ -154,6 +167,7 @@ export default function FlowIndexPage({
         >
           {tickerGroups.map(group => (
             <FlowTickerCard
+              basePath={basePath}
               key={group.ticker}
               group={group}
               language={language}

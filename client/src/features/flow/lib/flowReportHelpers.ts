@@ -336,9 +336,42 @@ export function getPrimaryFlowTicker(report: FlowReport) {
   );
 }
 
-export function getFlowTickerReportPath(ticker: string) {
+export function getFlowTickerReportPath(ticker: string, basePath = "/flow") {
   const normalizedTicker = normalizeTickerToken(ticker) || ticker.trim();
-  return `/flow/ticker/${encodeURIComponent(normalizedTicker)}`;
+  return `${basePath}/ticker/${encodeURIComponent(normalizedTicker)}`;
+}
+
+export function getFlowReportDetailPath(reportId: string, basePath = "/flow") {
+  return `${basePath}/${encodeURIComponent(reportId)}`;
+}
+
+export function getFlowReportArchiveDetailPath(
+  report: FlowReport,
+  basePath = "/reports"
+) {
+  const ticker = normalizeTickerToken(getPrimaryFlowTicker(report)) || "FLOW";
+  return `${basePath}/${encodeURIComponent(ticker)}/${encodeURIComponent(report.reportDate)}`;
+}
+
+export function findFlowReportByTickerAndDate(
+  reports: FlowReport[],
+  ticker: string,
+  reportDate: string
+) {
+  const normalizedTicker = normalizeTickerToken(ticker);
+  if (!normalizedTicker || !reportDate) {
+    return null;
+  }
+
+  return (
+    [...reports]
+      .sort(compareFlowReports)
+      .find(
+        report =>
+          getPrimaryFlowTicker(report) === normalizedTicker &&
+          report.reportDate === reportDate
+      ) || null
+  );
 }
 
 export function groupFlowReportsByTicker(reports: FlowReport[]) {

@@ -3,14 +3,17 @@ import { CalendarRange, Files, GalleryHorizontal, Target } from "lucide-react";
 import { Link } from "wouter";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import {
-  formatFlowReportDate,
   formatFlowTimestamp,
+  formatFlowReportDate,
   getFlowPreviewText,
+  getFlowReportArchiveDetailPath,
+  getFlowReportDetailPath,
   getFlowSourceLabel,
   normalizeFlowContent,
 } from "../lib/flowReportHelpers";
 
 interface FlowReportCardProps {
+  basePath?: string;
   language: AppLanguage;
   report: FlowReport;
 }
@@ -31,12 +34,16 @@ function MetaChip({
 }
 
 export default function FlowReportCard({
+  basePath = "/flow",
   language,
   report,
 }: FlowReportCardProps) {
   const locale = language === "en" ? "en-US" : "tr-TR";
   const content = normalizeFlowContent(report.content);
-  const href = `/flow/${encodeURIComponent(report.id)}`;
+  const href =
+    basePath === "/reports"
+      ? getFlowReportArchiveDetailPath(report, basePath)
+      : getFlowReportDetailPath(report.id, basePath);
 
   return (
     <Link

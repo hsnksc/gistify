@@ -9,6 +9,7 @@ import {
 } from "../lib/flowReportHelpers";
 
 interface FlowTickerCardProps {
+  basePath?: string;
   group: FlowTickerGroup;
   language: AppLanguage;
 }
@@ -29,12 +30,13 @@ function MetaChip({
 }
 
 export default function FlowTickerCard({
+  basePath = "/flow",
   group,
   language,
 }: FlowTickerCardProps) {
   const locale = language === "en" ? "en-US" : "tr-TR";
   const latestReport = group.latestReport;
-  const href = getFlowTickerReportPath(group.ticker);
+  const href = getFlowTickerReportPath(group.ticker, basePath);
 
   return (
     <Link

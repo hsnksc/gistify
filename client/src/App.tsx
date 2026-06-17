@@ -31,10 +31,22 @@ const Home = lazy(() => import("./pages/Home"));
 const ReportsAdmin = lazy(() => import("./pages/ReportsAdmin"));
 const Scanner = lazy(() => import("./pages/Scanner"));
 const DailyReport = lazy(() => import("./pages/DailyReport"));
-const FlowIndexPage = lazy(() => import("./features/flow/pages/FlowIndexPage"));
+const FlowPage = lazy(() => import("./features/flow/pages/FlowPage"));
 const FlowTickerPage = lazy(() => import("./features/flow/pages/FlowTickerPage"));
 const FlowDetailPage = lazy(
   () => import("./features/flow/pages/FlowDetailPage")
+);
+const ReportsIndexPage = lazy(
+  () => import("./features/flow/pages/ReportsIndexPage")
+);
+const ReportsTickerPage = lazy(
+  () => import("./features/flow/pages/ReportsTickerPage")
+);
+const ReportsDetailPage = lazy(
+  () => import("./features/flow/pages/ReportsDetailPage")
+);
+const ReportsDateDetailPage = lazy(
+  () => import("./features/flow/pages/ReportsDateDetailPage")
 );
 const Pay = lazy(() => import("./pages/Pay"));
 const Pricing = lazy(() => import("./pages/Pricing"));
@@ -228,6 +240,42 @@ function Router({
         <Route path={"/daily-report"}>
           {() => <DailyReport language={language} />}
         </Route>
+        <Route path={"/reports/ticker/:ticker"}>
+          {params => (
+            <ReportsTickerPage
+              language={language}
+              onLanguageChange={onLanguageChange}
+              ticker={params.ticker || ""}
+            />
+          )}
+        </Route>
+        <Route path={"/reports/:ticker/:reportDate"}>
+          {params => (
+            <ReportsDateDetailPage
+              language={language}
+              onLanguageChange={onLanguageChange}
+              reportDate={params.reportDate || ""}
+              ticker={params.ticker || ""}
+            />
+          )}
+        </Route>
+        <Route path={"/reports/:reportId"}>
+          {params => (
+            <ReportsDetailPage
+              language={language}
+              onLanguageChange={onLanguageChange}
+              reportId={params.reportId || ""}
+            />
+          )}
+        </Route>
+        <Route path={"/reports"}>
+          {() => (
+            <ReportsIndexPage
+              language={language}
+              onLanguageChange={onLanguageChange}
+            />
+          )}
+        </Route>
         <Route path={"/flow/ticker/:ticker"}>
           {params => (
             <FlowTickerPage
@@ -248,7 +296,7 @@ function Router({
         </Route>
         <Route path={"/flow"}>
           {() => (
-            <FlowIndexPage
+            <FlowPage
               language={language}
               onLanguageChange={onLanguageChange}
             />
@@ -333,7 +381,7 @@ function WorkspaceNavigation({
       href: "/flow",
       label: language === "en" ? "Flow" : "Flow",
       icon: Layers3,
-      active: location.startsWith("/flow"),
+      active: location.startsWith("/flow") || location.startsWith("/reports"),
       requiresSubscription: false,
     },
   ];
@@ -402,6 +450,7 @@ function SiteFooter({ language }: { language: AppLanguage }) {
     language === "en"
       ? [
           { href: "/flow", label: "Flow" },
+          { href: "/reports", label: "Reports" },
           { href: "/pricing", label: "Pricing" },
           { href: "/terms", label: "Terms" },
           { href: "/privacy", label: "Privacy" },
@@ -410,6 +459,7 @@ function SiteFooter({ language }: { language: AppLanguage }) {
         ]
       : [
           { href: "/flow", label: "Flow" },
+          { href: "/reports", label: "Raporlar" },
           { href: "/pricing", label: "Fiyatlandirma" },
           { href: "/terms", label: "Kosullar" },
           { href: "/privacy", label: "Gizlilik" },
@@ -582,9 +632,11 @@ function App() {
   const maskOriginalRef = useRef(new WeakMap<Text, string>());
   const isPaymentRoute = location === "/pay";
   const isFlowRoute = location.startsWith("/flow");
+  const isReportsRoute = location.startsWith("/reports");
   const isMarketingRoute =
     ["/", "/pricing", "/terms", "/privacy", "/refund"].includes(location) ||
-    isFlowRoute;
+    isFlowRoute ||
+    isReportsRoute;
   const isLockedWorkspaceRoute =
     location === "/app" ||
     location.startsWith("/app/admin") ||
@@ -593,7 +645,9 @@ function App() {
     location.startsWith("/daily-report");
   const shouldShowWorkspaceHeader =
     !isPaymentRoute &&
-    (isFlowRoute || (authState.status !== "loading" && !isMarketingRoute));
+    (isFlowRoute ||
+      isReportsRoute ||
+      (authState.status !== "loading" && !isMarketingRoute));
   const hasStandaloneWorkspaceHeader =
     location === "/app" ||
     location.startsWith("/momentum") ||

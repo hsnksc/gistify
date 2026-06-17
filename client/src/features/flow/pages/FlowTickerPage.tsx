@@ -10,17 +10,23 @@ import {
   formatFlowReportDate,
   formatFlowTimestamp,
   getFlowPreviewText,
+  getFlowReportArchiveDetailPath,
+  getFlowReportDetailPath,
   getFlowSourceLabel,
   groupFlowReportsByTicker,
 } from "../lib/flowReportHelpers";
 
 interface FlowTickerPageProps {
+  basePath?: string;
+  eyebrow?: string;
   language: AppLanguage;
   onLanguageChange: (next: AppLanguage) => void;
   ticker: string;
 }
 
 export default function FlowTickerPage({
+  basePath = "/flow",
+  eyebrow = "Flow",
   language,
   ticker,
 }: FlowTickerPageProps) {
@@ -37,11 +43,17 @@ export default function FlowTickerPage({
   const latestReport = tickerGroup?.latestReport || null;
   const archiveReports = tickerGroup?.reports.slice(1) || [];
   const locale = language === "en" ? "en-US" : "tr-TR";
+  const latestReportHref =
+    latestReport && basePath === "/reports"
+      ? getFlowReportArchiveDetailPath(latestReport, basePath)
+      : latestReport
+        ? getFlowReportDetailPath(latestReport.id, basePath)
+        : basePath;
 
   return (
     <FlowLayout
       language={language}
-      eyebrow="Flow"
+      eyebrow={eyebrow}
       title={
         latestReport
           ? `${tickerGroup?.ticker} ${copy(language, "Raporlari", "Reports")}`
@@ -60,7 +72,7 @@ export default function FlowTickerPage({
           <Button
             type="button"
             variant="outline"
-            onClick={() => setLocation("/flow")}
+            onClick={() => setLocation(basePath)}
           >
             <ArrowLeft className="size-4" />
             {copy(language, "Hisseler", "Tickers")}
@@ -180,7 +192,7 @@ export default function FlowTickerPage({
               </div>
 
               <Link
-                href={`/flow/${encodeURIComponent(latestReport.id)}`}
+                href={latestReportHref}
                 className="inline-flex items-center justify-center rounded-[1.4rem] border border-indigo-400/35 bg-indigo-500/12 px-4 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-indigo-500/18"
               >
                 {copy(language, "Detayi Ac", "Open Detail")}
@@ -203,6 +215,7 @@ export default function FlowTickerPage({
             </div>
 
             <FlowReportList
+              basePath={basePath}
               language={language}
               reports={archiveReports}
               emptyMessage={copy(

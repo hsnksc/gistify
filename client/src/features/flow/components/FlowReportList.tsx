@@ -3,12 +3,14 @@ import { copy, type AppLanguage } from "@/lib/i18n";
 import FlowReportCard from "./FlowReportCard";
 
 interface FlowReportListProps {
+  basePath?: string;
   emptyMessage?: string;
   language: AppLanguage;
   reports: FlowReport[];
 }
 
 export default function FlowReportList({
+  basePath = "/flow",
   emptyMessage,
   language,
   reports,
@@ -36,7 +38,12 @@ export default function FlowReportList({
       className="grid gap-4 lg:grid-cols-2"
     >
       {reports.map(report => (
-        <FlowReportCard key={report.id} language={language} report={report} />
+        <FlowReportCard
+          key={report.id}
+          basePath={basePath}
+          language={language}
+          report={report}
+        />
       ))}
     </section>
   );
