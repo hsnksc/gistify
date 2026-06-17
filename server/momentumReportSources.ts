@@ -593,7 +593,7 @@ export function listMomentumReportSources() {
       .values()
   ).map(entry => entry.fileName);
 
-  return dedupedFiles
+  const sources = dedupedFiles
     .map(fileName => buildSourceRecord(fileName))
     .filter((entry): entry is MomentumSourceRecord => Boolean(entry))
     .sort((left, right) => {
@@ -603,6 +603,12 @@ export function listMomentumReportSources() {
 
       return right.updatedAt.localeCompare(left.updatedAt);
     });
+
+  if (sources.some(source => source.contentFormat === "html")) {
+    return sources.filter(source => source.contentFormat === "html");
+  }
+
+  return sources;
 }
 
 export function listMomentumReportSourceSummaries() {

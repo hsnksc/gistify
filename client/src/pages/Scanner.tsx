@@ -295,6 +295,10 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
     parsedReport?.title ||
     copy(language, "Momentum report bekleniyor", "Momentum report pending");
   const hasReports = reports.length > 0;
+  const htmlOnlyMode =
+    hasReports && reports.every(report => report.contentFormat === "html");
+  const showReportStrip = !htmlOnlyMode || reports.length > 1;
+  const showArchiveControls = !htmlOnlyMode || reports.length > 1;
   const tabs: Array<{
     id: TabId;
     label: string;
@@ -434,8 +438,12 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
           title={copy(language, "Momentum report ve live scanner", "Momentum report and live scanner")}
           description={copy(
             language,
-            "Tum yuklenen momentum kaynaklari bu arsivde gorunur. Markdown raporlar parser tablariyla acilir; HTML raporlar ise Flow benzeri tam dokuman gorunumuyle ayni workspace icinde acilir.",
-            "Every uploaded momentum source appears in this archive. Markdown reports open with parser tabs, while HTML reports open as full embedded documents inside the same workspace."
+            htmlOnlyMode
+              ? "Momentum HTML raporlari bu workspace icinde tam dokuman olarak acilir. Yeni HTML geldikce ayni yuzeyde guncel ve gecmis raporlar arasinda gecis yapabilirsin."
+              : "Tum yuklenen momentum kaynaklari bu arsivde gorunur. Markdown raporlar parser tablariyla acilir; HTML raporlar ise Flow benzeri tam dokuman gorunumuyle ayni workspace icinde acilir.",
+            htmlOnlyMode
+              ? "Momentum HTML reports open as full embedded documents inside this workspace. As new HTML drops arrive, you can switch between current and past reports from the same surface."
+              : "Every uploaded momentum source appears in this archive. Markdown reports open with parser tabs, while HTML reports open as full embedded documents inside the same workspace."
           )}
           actions={
             <>
@@ -447,21 +455,24 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                 <Activity className="size-4" />
                 Daily
               </Button>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setSidebarOpen(current => !current)}
-              >
-                {sidebarOpen ? (
-                  <PanelLeftClose className="size-4" />
-                ) : (
-                  <PanelLeftOpen className="size-4" />
-                )}
-                {copy(language, "Arsiv", "Archive")}
-              </Button>
+              {showArchiveControls ? (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setSidebarOpen(current => !current)}
+                >
+                  {sidebarOpen ? (
+                    <PanelLeftClose className="size-4" />
+                  ) : (
+                    <PanelLeftOpen className="size-4" />
+                  )}
+                  {copy(language, htmlOnlyMode ? "Raporlar" : "Arsiv", htmlOnlyMode ? "Reports" : "Archive")}
+                </Button>
+              ) : null}
             </>
           }
           reportStrip={
+            showReportStrip ? (
             <div className="flex items-center gap-2 overflow-x-auto terminal-scrollbar pb-2">
               {reports.map((report, index) => {
                 const active = report.id === selectedReportId;
@@ -479,7 +490,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                   >
                     <div className="flex items-center justify-between gap-3">
                       <span className="data-mono text-[11px] text-muted-foreground">
-                        {index === 0 ? "LATEST" : "ARCHIVE"}
+                        {index === 0 ? "LATEST" : htmlOnlyMode ? "REPORT" : "ARCHIVE"}
                       </span>
                       <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-amber-300">
                         {report.vixLabel || "VIX -"}
@@ -499,6 +510,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                 );
               })}
             </div>
+            ) : null
           }
           statusBar={
             hasReports ? (
@@ -554,7 +566,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
 
         <div
           className={`mt-6 grid gap-6 ${
-            sidebarOpen ? "xl:grid-cols-[minmax(0,1.55fr)_340px]" : ""
+            sidebarOpen && showArchiveControls ? "xl:grid-cols-[minmax(0,1.55fr)_340px]" : ""
           }`}
         >
           <main ref={contentRef} className="min-w-0 space-y-6">
@@ -661,7 +673,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
             </section>
           </main>
 
-          {sidebarOpen ? (
+          {sidebarOpen && showArchiveControls ? (
             <aside className="hidden min-w-0 space-y-6 xl:block">
               <section className="workspace-panel p-5">
                 <div className="flex items-start justify-between gap-3">
@@ -702,10 +714,18 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Archive
+                      {htmlOnlyMode ? "Reports" : "Archive"}
                     </p>
                     <p className="mt-1 text-xs text-muted-foreground">
-                      {copy(language, "Zaman damgali report indeks listesi.", "Timestamped report index list.")}
+                      {copy(
+                        language,
+                        htmlOnlyMode
+                          ? "Yuklenen HTML momentum raporlarinin zaman sirali listesi."
+                          : "Zaman damgali report indeks listesi.",
+                        htmlOnlyMode
+                          ? "Chronological list of uploaded HTML momentum reports."
+                          : "Timestamped report index list."
+                      )}
                     </p>
                   </div>
                   {loadingReports ? (
@@ -732,7 +752,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                       >
                         <div className="flex items-center justify-between gap-3">
                           <span className="data-mono text-[11px] text-muted-foreground">
-                            {index === 0 ? "LATEST" : "ARCHIVE"}
+                            {index === 0 ? "LATEST" : htmlOnlyMode ? "REPORT" : "ARCHIVE"}
                           </span>
                           <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-amber-300">
                             {report.vixLabel || "VIX -"}
@@ -760,8 +780,12 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                     <div className="rounded-xl border border-dashed border-border bg-background/45 p-4 text-sm leading-6 text-muted-foreground">
                       {copy(
                         language,
-                        "`momentum/` altina yeni `.md` veya `.html` dosyasi eklendiginde burada otomatik gorunecek.",
-                        "When a new `.md` or `.html` file is added under `momentum/`, it will appear here automatically."
+                        htmlOnlyMode
+                          ? "`momentum/` altina yeni `.html` dosyasi eklendiginde burada otomatik gorunecek."
+                          : "`momentum/` altina yeni `.md` veya `.html` dosyasi eklendiginde burada otomatik gorunecek.",
+                        htmlOnlyMode
+                          ? "When a new `.html` file is added under `momentum/`, it will appear here automatically."
+                          : "When a new `.md` or `.html` file is added under `momentum/`, it will appear here automatically."
                       )}
                     </div>
                   ) : null}
