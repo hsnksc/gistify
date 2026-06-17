@@ -123,23 +123,80 @@ function normalizeTickerToken(value: string) {
   return value.trim().toUpperCase().replace(/[^A-Z0-9.-]/g, "");
 }
 
+const BLOCKED_FLOW_TICKERS = new Set([
+  "ABD",
+  "AI",
+  "EN",
+  "HTML",
+  "PDF",
+  "REPORT",
+  "TR",
+]);
+
+const FLOW_TICKER_ALIASES: Array<{
+  ticker: string;
+  patterns: RegExp[];
+}> = [
+  {
+    ticker: "META",
+    patterns: [/\bmeta platforms?\b/i, /\bmeta\b/i],
+  },
+  {
+    ticker: "HOOD",
+    patterns: [/\brobinhood\b/i],
+  },
+  {
+    ticker: "PLTR",
+    patterns: [/\bpalantir\b/i],
+  },
+  {
+    ticker: "WDC",
+    patterns: [/\bwestern digital\b/i],
+  },
+  {
+    ticker: "INTC",
+    patterns: [/\bintel\b/i],
+  },
+  {
+    ticker: "MARKET",
+    patterns: [
+      /\babd borsalar[ıi]\b/i,
+      /\bus markets?\b/i,
+      /\bpre-market\b/i,
+      /\bmomentum analizi\b/i,
+    ],
+  },
+];
+
+function isBlockedFlowTicker(value: string) {
+  const normalized = normalizeTickerToken(value);
+  return !normalized || BLOCKED_FLOW_TICKERS.has(normalized);
+}
+
 function inferTickerFromText(value: string) {
   const source = value.trim();
   if (!source) {
     return "";
   }
 
+  for (const alias of FLOW_TICKER_ALIASES) {
+    if (alias.patterns.some(pattern => pattern.test(source))) {
+      return alias.ticker;
+    }
+  }
+
   const patterns = [
     /\(([A-Z][A-Z0-9.-]{0,9})\)/,
     /^\s*([A-Z][A-Z0-9.-]{0,9})(?=\s*[—\-·:|])/,
     /\bTicker\s*[:\-]\s*([A-Z][A-Z0-9.-]{0,9})\b/i,
+    /\$([A-Z][A-Z0-9.-]{0,9})\b/,
     /(?:^|[-_/])([a-z]{1,8})(?=\d{6,8}(?:$|[-_.]))/i,
   ];
 
   for (const pattern of patterns) {
     const match = source.match(pattern);
     const normalized = normalizeTickerToken(match?.[1] || "");
-    if (normalized) {
+    if (normalized && !isBlockedFlowTicker(normalized)) {
       return normalized;
     }
   }
@@ -262,7 +319,7 @@ export function getPrimaryFlowTicker(report: FlowReport) {
   const content = normalizeFlowContent(report.content);
   const directTicker = content.tickerUniverse
     .map(item => normalizeTickerToken(item))
-    .find(Boolean);
+    .find(item => item && !isBlockedFlowTicker(item));
 
   if (directTicker) {
     return directTicker;

@@ -220,10 +220,13 @@ function isExcludedMarkdownCandidate(fileName: string) {
   );
 }
 
-function isExcludedFlowSourceFile(fileName: string) {
-  const baseName = path.posix.basename(fileName);
+function isExcludedFlowSourceFile(filePath: string) {
+  const normalizedPath = filePath.replace(/\\/g, "/").toLowerCase();
+  const baseName = path.posix.basename(normalizedPath);
   return (
-    !/\.(md|html)$/i.test(fileName) ||
+    normalizedPath.startsWith("flowskill/") ||
+    normalizedPath.includes("/flowskill/") ||
+    !/\.(md|html)$/i.test(filePath) ||
     /^readme\.md$/i.test(baseName) ||
     /^_template\.md$/i.test(baseName) ||
     /^example\.md$/i.test(baseName) ||
@@ -631,6 +634,95 @@ function extractHtmlTitle(html: string) {
   );
 }
 
+const BLOCKED_FLOW_TICKERS = new Set([
+  "ABD",
+  "AI",
+  "EN",
+  "HTML",
+  "PDF",
+  "REPORT",
+  "TR",
+]);
+
+const FLOW_TICKER_ALIASES: Array<{
+  ticker: string;
+  patterns: RegExp[];
+}> = [
+  {
+    ticker: "META",
+    patterns: [/\bmeta platforms?\b/i, /\bmeta\b/i],
+  },
+  {
+    ticker: "HOOD",
+    patterns: [/\brobinhood\b/i],
+  },
+  {
+    ticker: "PLTR",
+    patterns: [/\bpalantir\b/i],
+  },
+  {
+    ticker: "WDC",
+    patterns: [/\bwestern digital\b/i],
+  },
+  {
+    ticker: "INTC",
+    patterns: [/\bintel\b/i],
+  },
+  {
+    ticker: "MARKET",
+    patterns: [
+      /\babd borsalar[ıi]\b/i,
+      /\bus markets?\b/i,
+      /\bpre-market\b/i,
+      /\bmomentum analizi\b/i,
+    ],
+  },
+];
+
+function normalizeFlowTickerCandidate(value: string) {
+  return normalizeString(value).toUpperCase().replace(/[^A-Z0-9.-]/g, "");
+}
+
+function isBlockedFlowTicker(value: string) {
+  const normalized = normalizeFlowTickerCandidate(value);
+  return !normalized || BLOCKED_FLOW_TICKERS.has(normalized);
+}
+
+function inferFlowTickerFromText(...values: string[]) {
+  const joined = values
+    .map(value => normalizeString(value))
+    .filter(Boolean)
+    .join(" ");
+
+  if (!joined) {
+    return "";
+  }
+
+  for (const alias of FLOW_TICKER_ALIASES) {
+    if (alias.patterns.some(pattern => pattern.test(joined))) {
+      return alias.ticker;
+    }
+  }
+
+  const explicitPatterns = [
+    /\(([A-Z][A-Z0-9.-]{1,9})\)/g,
+    /^\s*([A-Z][A-Z0-9.-]{1,9})(?=\s*[—\-:|])/gm,
+    /\bTicker\s*[:\-]\s*([A-Z][A-Z0-9.-]{1,9})\b/gi,
+    /\$([A-Z][A-Z0-9.-]{1,9})\b/g,
+  ];
+
+  for (const pattern of explicitPatterns) {
+    for (const match of Array.from(joined.matchAll(pattern))) {
+      const normalized = normalizeFlowTickerCandidate(match[1] || "");
+      if (!isBlockedFlowTicker(normalized)) {
+        return normalized;
+      }
+    }
+  }
+
+  return "";
+}
+
 function extractHtmlFigureFiles(html: string) {
   return Array.from(
     new Set(
@@ -653,16 +745,19 @@ function extractHtmlMetadata(html: string) {
   const sectionTitles = collectHtmlTextsByClass(html, "section-title", 8)
     .map(item => item.split(/\s{2,}/)[0] || item)
     .filter(Boolean);
-  const tickerToken =
-    extractHtmlTextByClass(html, "hero-ticker")
-      .replace(/\$/g, "")
-      .match(/\b[A-Z]{2,5}\b/)?.[0] ||
-    title.match(/\b[A-Z]{2,5}\b/)?.[0] ||
-    "";
   const footerText = stripHtmlTags(
     html.match(/<footer[^>]*>([\s\S]*?)<\/footer>/i)?.[1] || ""
   );
   const priceDate = extractHtmlTextByClass(html, "price-date");
+  const tickerToken = inferFlowTickerFromText(
+    extractHtmlTextByClass(html, "hero-ticker").replace(/\$/g, ""),
+    title,
+    heroDescription,
+    verdict,
+    footerText,
+    priceDate,
+    ...sectionTitles
+  );
   const reportDate =
     parseDateTokenFromText(priceDate) ||
     parseMonthFirstDateTokenFromText(priceDate) ||
@@ -682,7 +777,11 @@ function extractHtmlMetadata(html: string) {
     title,
     headline: heroDescription || verdict || cleanMarkdownText(title),
     author: "",
-    coverage: tickerToken ? `Ticker: ${tickerToken}` : "",
+    coverage: tickerToken
+      ? tickerToken === "MARKET"
+        ? "Theme: Market"
+        : `Ticker: ${tickerToken}`
+      : "",
     methodology: "",
     metadataItems,
     executiveSummary: [heroDescription, ...thesisItems, ...timelineItems]
