@@ -13,7 +13,8 @@ import { Button } from "@/components/ui/button";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import FlowLayout from "../components/FlowLayout";
-import { useFlowReports } from "../hooks/useFlowReports";
+import { useFlowReport } from "../hooks/useFlowReport";
+import { useFlowReportSummaries } from "../hooks/useFlowReportSummaries";
 import {
   adaptFlowReportToStoredReport,
   findStoredReport,
@@ -39,7 +40,7 @@ export default function ReportsDateDetailPage({
 }: ReportsDateDetailPageProps) {
   const [location, setLocation] = useLocation();
   const { reports: serverReports, loading: serverLoading, error: serverError, reload } =
-    useFlowReports(language);
+    useFlowReportSummaries(language);
   const {
     error: localError,
     hydrate,
@@ -69,7 +70,14 @@ export default function ReportsDateDetailPage({
     () => findStoredReport(allReports, ticker, reportDate, reportIdFromQuery),
     [allReports, reportDate, reportIdFromQuery, ticker]
   );
-  const loading = serverLoading || localLoading;
+  const serverDetailReportId =
+    report?.sourceType === "server" ? report.serverReportId || "" : "";
+  const {
+    report: serverDetailReport,
+    loading: serverDetailLoading,
+    error: serverDetailError,
+  } = useFlowReport(serverDetailReportId, language);
+  const loading = serverLoading || localLoading || serverDetailLoading;
   const error = [serverError, localError].filter(Boolean).join(" · ");
   const pageTitle = report
     ? `${report.ticker} · ${report.companyName || report.fileName} · Gistify`
@@ -269,7 +277,22 @@ export default function ReportsDateDetailPage({
             )}
           </section>
 
-          <HtmlReportRenderer language={language} html={report.rawHtml} />
+          <HtmlReportRenderer
+            language={language}
+            html={
+              report.sourceType === "upload"
+                ? report.rawHtml
+                : serverDetailReport?.content.html || ""
+            }
+            emptyMessage={
+              serverDetailError ||
+              copy(
+                language,
+                "Rapor HTML icerigi yuklenemedi.",
+                "The report HTML content could not be loaded."
+              )
+            }
+          />
         </>
       )}
     </FlowLayout>

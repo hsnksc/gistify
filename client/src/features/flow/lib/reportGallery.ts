@@ -1,8 +1,7 @@
-import type { FlowReport } from "@shared/flow";
+import type { FlowReportSummary } from "@shared/flow";
 import { copy, type AppLanguage } from "@/lib/i18n";
-import { getFlowSourceLabel, normalizeFlowContent } from "./flowReportHelpers";
+import { getFlowSourceLabel } from "./flowReportHelpers";
 import {
-  parseReportHtml,
   type ReportRecommendation,
   type StoredReportRecord,
 } from "./parseReport";
@@ -109,32 +108,32 @@ export function formatReportPrice(
 }
 
 export function adaptFlowReportToStoredReport(
-  report: FlowReport
+  report: FlowReportSummary
 ): StoredReportRecord | null {
-  const content = normalizeFlowContent(report.content);
-  const html = content.html || "";
-  if (content.contentFormat !== "html" || !html.trim()) {
+  if (report.contentFormat !== "html") {
     return null;
   }
 
   const sourceLabel = getFlowSourceLabel(report) || report.title;
 
-  const parsed = parseReportHtml({
-    fallbackDate: report.reportDate,
-    fileName: sourceLabel,
-    html,
-  });
-
   return {
-    ...parsed,
-    companyName:
-      parsed.companyName || report.title.replace(parsed.ticker, "").trim(),
+    companyName: report.companyName || report.title.replace(report.ticker, "").trim(),
     duplicateOf: null,
+    exchange: report.exchange,
+    fileName: sourceLabel,
+    hasCharts: report.hasCharts,
     id: `server:${report.id}`,
     loadedAt: report.updatedAt,
+    price: report.price,
+    priceChangePct: report.priceChangePct,
+    rawHtml: "",
+    recommendation: (report.recommendation as ReportRecommendation) || null,
+    reportDate: report.reportDate,
+    sections: report.sections,
     sourceLabel,
     sourceType: "server",
     serverReportId: report.id,
+    ticker: report.ticker,
   };
 }
 

@@ -26,7 +26,7 @@ import {
   type VoteState,
   useMediaQuery,
 } from "../components/compare/flowCompareHelpers";
-import { useFlowReports } from "../hooks/useFlowReports";
+import { useFlowReportSummaries } from "../hooks/useFlowReportSummaries";
 import {
   FLOW_MODELS,
   type FlowModelId,
@@ -49,7 +49,7 @@ export default function FlowPage({
   const reducedMotion = useReducedMotion();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const isWideDesktop = useMediaQuery("(min-width: 1440px)");
-  const { reports, reload } = useFlowReports(language);
+  const { reports, reload } = useFlowReportSummaries(language);
   const [prompt, setPrompt] = useState("");
   const [selectedModelIds, setSelectedModelIds] = useState<FlowModelId[]>([
     "chatgpt",

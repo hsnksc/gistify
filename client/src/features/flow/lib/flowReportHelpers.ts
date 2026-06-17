@@ -1,5 +1,5 @@
 import type { DailyReportContent } from "@shared/dailyReports";
-import type { FlowReport } from "@shared/flow";
+import type { FlowReport, FlowReportSummary } from "@shared/flow";
 import type { ReportPostItem } from "@/components/reports/ReportPostShell";
 import { getDailyReportAssetUrl } from "@/lib/dailyReports";
 import { copy, type AppLanguage } from "@/lib/i18n";
@@ -43,9 +43,11 @@ export interface FlowViewerData {
   updatedAtLabel: string;
 }
 
-export interface FlowTickerGroup {
-  latestReport: FlowReport;
-  reports: FlowReport[];
+export type FlowReportListEntry = FlowReport | FlowReportSummary;
+
+export interface FlowTickerGroup<T extends FlowReportListEntry = FlowReportListEntry> {
+  latestReport: T;
+  reports: T[];
   sourceLabels: string[];
   ticker: string;
 }
@@ -293,15 +295,22 @@ export function normalizeFlowContent(
   };
 }
 
-export function getFlowSourceLabel(report: FlowReport) {
-  return (
-    normalizeFlowContent(report.content).sourceLabel ||
-    report.sourceFolder ||
-    "Flow source"
-  );
+function isFlowReportSummary(report: FlowReportListEntry): report is FlowReportSummary {
+  return !("content" in report);
 }
 
-export function compareFlowReports(left: FlowReport, right: FlowReport) {
+export function getFlowSourceLabel(report: FlowReportListEntry) {
+  if (isFlowReportSummary(report)) {
+    return report.sourceLabel || report.sourceFolder || "Flow source";
+  }
+
+  return normalizeFlowContent(report.content).sourceLabel || report.sourceFolder || "Flow source";
+}
+
+export function compareFlowReports(
+  left: FlowReportListEntry,
+  right: FlowReportListEntry
+) {
   const byDate = right.reportDate.localeCompare(left.reportDate);
   if (byDate !== 0) {
     return byDate;
@@ -315,7 +324,31 @@ export function compareFlowReports(left: FlowReport, right: FlowReport) {
   return left.title.localeCompare(right.title);
 }
 
-export function getPrimaryFlowTicker(report: FlowReport) {
+export function getPrimaryFlowTicker(report: FlowReportListEntry) {
+  if (isFlowReportSummary(report)) {
+    const directTicker = normalizeTickerToken(report.ticker);
+    if (directTicker && !isBlockedFlowTicker(directTicker)) {
+      return directTicker;
+    }
+
+    const fromUniverse = report.tickerUniverse
+      .map(item => normalizeTickerToken(item))
+      .find(item => item && !isBlockedFlowTicker(item));
+
+    if (fromUniverse) {
+      return fromUniverse;
+    }
+
+    return (
+      inferTickerFromText(report.title) ||
+      inferTickerFromText(report.sourceLabel) ||
+      inferTickerFromText(report.sourceFolder) ||
+      inferTickerFromText(report.slug) ||
+      normalizeTickerToken(report.id) ||
+      "FLOW"
+    );
+  }
+
   const content = normalizeFlowContent(report.content);
   const directTicker = content.tickerUniverse
     .map(item => normalizeTickerToken(item))
@@ -346,7 +379,7 @@ export function getFlowReportDetailPath(reportId: string, basePath = "/flow") {
 }
 
 export function getFlowReportArchiveDetailPath(
-  report: FlowReport,
+  report: FlowReportListEntry,
   basePath = "/reports"
 ) {
   const ticker = normalizeTickerToken(getPrimaryFlowTicker(report)) || "FLOW";
@@ -354,7 +387,7 @@ export function getFlowReportArchiveDetailPath(
 }
 
 export function findFlowReportByTickerAndDate(
-  reports: FlowReport[],
+  reports: FlowReportListEntry[],
   ticker: string,
   reportDate: string
 ) {
@@ -374,8 +407,8 @@ export function findFlowReportByTickerAndDate(
   );
 }
 
-export function groupFlowReportsByTicker(reports: FlowReport[]) {
-  const grouped = new Map<string, FlowReport[]>();
+export function groupFlowReportsByTicker<T extends FlowReportListEntry>(reports: T[]) {
+  const grouped = new Map<string, T[]>();
   const orderedReports = [...reports].sort(compareFlowReports);
 
   for (const report of orderedReports) {
@@ -402,10 +435,19 @@ export function groupFlowReportsByTicker(reports: FlowReport[]) {
     );
 }
 
-export function getFlowPreviewText(
-  report: FlowReport,
-  language: AppLanguage = "tr"
-) {
+export function getFlowPreviewText(report: FlowReportListEntry, language: AppLanguage = "tr") {
+  if (isFlowReportSummary(report)) {
+    return (
+      report.previewText ||
+      report.headline ||
+      copy(
+        language,
+        "Bu Flow raporu icin onizleme metni hazirlanamadi.",
+        "No preview text is available for this flow report."
+      )
+    );
+  }
+
   const content = normalizeFlowContent(report.content);
   const lead =
     content.headline ||

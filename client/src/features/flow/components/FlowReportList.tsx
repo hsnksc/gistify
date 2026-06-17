@@ -1,12 +1,12 @@
-import type { FlowReport } from "@shared/flow";
 import { copy, type AppLanguage } from "@/lib/i18n";
+import type { FlowReportListEntry } from "../lib/flowReportHelpers";
 import FlowReportCard from "./FlowReportCard";
 
 interface FlowReportListProps {
   basePath?: string;
   emptyMessage?: string;
   language: AppLanguage;
-  reports: FlowReport[];
+  reports: FlowReportListEntry[];
 }
 
 export default function FlowReportList({

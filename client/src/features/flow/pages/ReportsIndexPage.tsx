@@ -20,7 +20,7 @@ import { copy, type AppLanguage } from "@/lib/i18n";
 import FlowLayout from "../components/FlowLayout";
 import ReportGalleryCard from "../components/reports/ReportGalleryCard";
 import ReportUploadDropzone from "../components/reports/ReportUploadDropzone";
-import { useFlowReports } from "../hooks/useFlowReports";
+import { useFlowReportSummaries } from "../hooks/useFlowReportSummaries";
 import {
   adaptFlowReportToStoredReport,
   compareStoredReports,
@@ -45,7 +45,7 @@ export default function ReportsIndexPage({
   const [selectedDate, setSelectedDate] = useState("");
   const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
   const { reports: serverReports, loading: serverLoading, error: serverError, reload } =
-    useFlowReports(language);
+    useFlowReportSummaries(language);
   const {
     clearUploadQueue,
     error: localError,

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import FlowLayout from "../components/FlowLayout";
 import FlowReportList from "../components/FlowReportList";
-import { useFlowReports } from "../hooks/useFlowReports";
+import { useFlowReportSummaries } from "../hooks/useFlowReportSummaries";
 import {
   formatFlowReportDate,
   formatFlowTimestamp,
@@ -31,7 +31,7 @@ export default function FlowTickerPage({
   ticker,
 }: FlowTickerPageProps) {
   const [, setLocation] = useLocation();
-  const { reports, loading, error, reload } = useFlowReports(language);
+  const { reports, loading, error, reload } = useFlowReportSummaries(language);
   const normalizedTicker = ticker.trim().toUpperCase();
   const tickerGroup = useMemo(
     () =>
@@ -60,7 +60,7 @@ export default function FlowTickerPage({
           : copy(language, "Flow hisse sayfasi", "Flow ticker page")
       }
       description={
-        latestReport?.content.headline ||
+        (latestReport ? getFlowPreviewText(latestReport, language) : "") ||
         copy(
           language,
           "Secilen hisse icin guncel rapor ve tarihsel Flow arsivi ayni sayfada acilir.",

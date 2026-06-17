@@ -1,8 +1,8 @@
-import type { FlowReport } from "@shared/flow";
 import { CalendarRange, Files, GalleryHorizontal, Target } from "lucide-react";
 import { Link } from "wouter";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import {
+  type FlowReportListEntry,
   formatFlowTimestamp,
   formatFlowReportDate,
   getFlowPreviewText,
@@ -15,7 +15,7 @@ import {
 interface FlowReportCardProps {
   basePath?: string;
   language: AppLanguage;
-  report: FlowReport;
+  report: FlowReportListEntry;
 }
 
 function MetaChip({
@@ -39,7 +39,7 @@ export default function FlowReportCard({
   report,
 }: FlowReportCardProps) {
   const locale = language === "en" ? "en-US" : "tr-TR";
-  const content = normalizeFlowContent(report.content);
+  const content = "content" in report ? normalizeFlowContent(report.content) : null;
   const href =
     basePath === "/reports"
       ? getFlowReportArchiveDetailPath(report, basePath)
@@ -76,11 +76,19 @@ export default function FlowReportCard({
           />
           <MetaChip
             icon={GalleryHorizontal}
-            label={`${content.figureFiles.length} ${copy(language, "figure", "figures")}`}
+            label={`${
+              "content" in report
+                ? content?.figureFiles.length || 0
+                : report.figureCount
+            } ${copy(language, "figure", "figures")}`}
           />
           <MetaChip
             icon={Target}
-            label={`${content.tickerUniverse.length} ticker`}
+            label={`${
+              "content" in report
+                ? content?.tickerUniverse.length || 0
+                : report.tickerUniverse.length
+            } ticker`}
           />
         </div>
       </div>

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import FlowLayout from "../components/FlowLayout";
 import FlowTickerCard from "../components/FlowTickerCard";
-import { useFlowReports } from "../hooks/useFlowReports";
+import { useFlowReportSummaries } from "../hooks/useFlowReportSummaries";
 import {
   formatFlowTimestamp,
   groupFlowReportsByTicker,
@@ -26,7 +26,7 @@ export default function FlowIndexPage({
   title?: string;
 }) {
   const [, setLocation] = useLocation();
-  const { reports, loading, error, reload } = useFlowReports(language);
+  const { reports, loading, error, reload } = useFlowReportSummaries(language);
   const tickerGroups = useMemo(() => groupFlowReportsByTicker(reports), [reports]);
   const locale = language === "en" ? "en-US" : "tr-TR";
   const latestUpdatedAt =

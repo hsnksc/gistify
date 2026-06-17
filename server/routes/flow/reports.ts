@@ -1,9 +1,14 @@
 import { Router, type Response } from "express";
 import type { DailyReportRecord } from "../../../shared/dailyReports";
-import type { FlowReportResponse, FlowReportsResponse } from "../../../shared/flow";
+import type {
+  FlowReportResponse,
+  FlowReportsResponse,
+  FlowReportSummariesResponse,
+} from "../../../shared/flow";
 import {
   getViewerFlowReportById,
   getViewerFlowReports,
+  getViewerFlowReportSummaries,
 } from "../../services/flowService";
 
 interface FlowReportsRouterDependencies {
@@ -26,6 +31,18 @@ export function createFlowReportsRouter({
 
     const payload: FlowReportsResponse = {
       reports: getViewerFlowReports(getPublishedReports(), {
+        sourceLabel: normalizeString(req.query.source),
+      }),
+    };
+
+    res.status(200).json(payload);
+  });
+
+  router.get("/summary", (req, res) => {
+    setPrivateNoStore(res);
+
+    const payload: FlowReportSummariesResponse = {
+      reports: getViewerFlowReportSummaries(getPublishedReports(), {
         sourceLabel: normalizeString(req.query.source),
       }),
     };
