@@ -33,6 +33,14 @@ function normalizeText(value: string) {
   return value.replace(/\s+/g, " ").trim();
 }
 
+function slugifySectionId(value: string) {
+  return normalizeText(value)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 48);
+}
+
 function getPlainText(value: string) {
   if (typeof window === "undefined") {
     return normalizeText(value.replace(/<[^>]+>/g, " "));
@@ -45,9 +53,11 @@ function getPlainText(value: string) {
 
 function getLocalizedNodeText(element: Element, language: AppLanguage) {
   const clone = element.cloneNode(true) as Element;
-  clone
-    .querySelectorAll(language === "en" ? ".tr-only" : ".en-only")
-    .forEach(node => node.remove());
+  const hiddenSelectors =
+    language === "en"
+      ? [".tr-only", '[data-lang="tr"]', '[data-lang-inline="tr"]']
+      : [".en-only", '[data-lang="en"]', '[data-lang-inline="en"]'];
+  clone.querySelectorAll(hiddenSelectors.join(", ")).forEach(node => node.remove());
   return getPlainText(clone.textContent || "");
 }
 
@@ -83,6 +93,32 @@ function buildPreparedHtmlReport(
   const bodyClone = documentNode.body.cloneNode(true) as HTMLBodyElement;
   const reportLanguage = language === "en" ? "en" : "tr";
   bodyClone.querySelectorAll("nav, footer").forEach(node => node.remove());
+  const topHeader = bodyClone.querySelector("header");
+  if (topHeader && topHeader.parentElement === bodyClone) {
+    topHeader.remove();
+  }
+
+  const heroNode = bodyClone.querySelector<HTMLElement>("#hero, .hero");
+  if (heroNode && !heroNode.id) {
+    heroNode.id = "hero";
+  }
+
+  const generatedSections = Array.from(
+    bodyClone.querySelectorAll<HTMLElement>(".section-head")
+  ).map((sectionHead, index) => {
+    const labelNode = sectionHead.querySelector(".section-title, h1, h2, h3");
+    const label = labelNode
+      ? getLocalizedNodeText(labelNode, language)
+      : getPlainText(sectionHead.textContent || "");
+    const sectionId =
+      sectionHead.id ||
+      `gistify-section-${slugifySectionId(label || String(index + 1)) || index + 1}`;
+    sectionHead.id = sectionId;
+    return {
+      id: sectionId,
+      label,
+    };
+  });
 
   const navSections = Array.from(
     documentNode.querySelectorAll<HTMLAnchorElement>('nav a[href^="#"]')
@@ -91,7 +127,7 @@ function buildPreparedHtmlReport(
     label: getLocalizedNodeText(link, language),
   }));
 
-  const heroSection = documentNode.getElementById("hero")
+  const heroSection = bodyClone.querySelector("#hero")
     ? [
         {
           id: "hero",
@@ -101,7 +137,7 @@ function buildPreparedHtmlReport(
     : [];
 
   const fallbackSections = Array.from(
-    documentNode.querySelectorAll<HTMLElement>("section[id]")
+    bodyClone.querySelectorAll<HTMLElement>("section[id]")
   ).map(section => ({
     id: section.id,
     label: section.querySelector("h1, h2, h3")
@@ -138,6 +174,7 @@ function buildPreparedHtmlReport(
   const sections = dedupeSections([
     ...heroSection,
     ...navSections,
+    ...generatedSections,
     ...fallbackSections,
   ]).slice(0, 12);
 
@@ -146,9 +183,29 @@ function buildPreparedHtmlReport(
 (() => {
   const instanceId = ${JSON.stringify(instanceId)};
   const preferredLanguage = ${JSON.stringify(reportLanguage)};
+  const syncDataLangVisibility = () => {
+    document.querySelectorAll("[data-lang]").forEach(node => {
+      node.classList.toggle("visible", node.getAttribute("data-lang") === preferredLanguage);
+    });
+    document.querySelectorAll("[data-lang-inline]").forEach(node => {
+      node.classList.toggle(
+        "visible",
+        node.getAttribute("data-lang-inline") === preferredLanguage
+      );
+    });
+    document.querySelectorAll(".lang-btn").forEach(node => {
+      const label = (node.textContent || "").trim().toLowerCase();
+      node.classList.toggle("active", label === preferredLanguage);
+    });
+    document.documentElement.lang = preferredLanguage;
+  };
   const applyPreferredLanguage = () => {
     if (typeof window.setLanguage === "function") {
       window.setLanguage(preferredLanguage);
+      return;
+    }
+    if (typeof window.setLang === "function") {
+      window.setLang(preferredLanguage);
       return;
     }
 
@@ -156,6 +213,7 @@ function buildPreparedHtmlReport(
       document.body.classList.remove("lang-tr", "lang-en");
       document.body.classList.add(preferredLanguage === "en" ? "lang-en" : "lang-tr");
     }
+    syncDataLangVisibility();
   };
   const postHeight = () => {
     const height = Math.max(

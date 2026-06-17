@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Momentum × Opsiyon × Pre-Market — 16/17 Haz 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:#050C1B; --surface:#091525; --card:#0C1D30; --card2:#0F2240;
+  --green:#00C805; --green-d:#009904; --green-glow:rgba(0,200,5,0.18);
+  --amber:#F59E0B; --red:#EF4444; --blue:#3B82F6;
+  --txt:#DCE8FF; --txt-muted:#6A83A8;
+  --border:rgba(255,255,255,0.07); --border-g:rgba(0,200,5,0.15);
+  --r:12px; --r-lg:20px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;min-height:100vh;font-size:14px}
+a{color:var(--green);text-decoration:none}
+
+/* HEADER */
+header{border-bottom:1px solid var(--border);padding:14px 24px;background:var(--surface);
+  display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:99}
+.brand{font-family:'Space Grotesk',sans-serif;font-weight:700;color:var(--green);
+  display:flex;align-items:center;gap:10px;font-size:1rem}
+.brand span{color:var(--txt);font-weight:400;font-size:.82rem}
+.header-right{display:flex;align-items:center;gap:10px}
+.lang-toggle{display:flex;background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+.lang-btn{padding:5px 14px;font-size:.75rem;font-family:'JetBrains Mono',monospace;
+  cursor:pointer;border:none;background:transparent;color:var(--txt-muted);transition:.2s}
+.lang-btn.active{background:var(--green);color:#000;font-weight:700}
+.nav-pill{background:var(--card);border:1px solid var(--border);color:var(--txt-muted);
+  padding:4px 12px;border-radius:20px;font-size:.72rem;font-family:'JetBrains Mono',monospace}
+
+/* HERO BANNER */
+.hero{background:linear-gradient(135deg,var(--surface),var(--card2));
+  border-bottom:1px solid var(--border-g);padding:32px 24px 24px}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--green);
+  letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px;opacity:.8}
+.hero-title{font-family:'Space Grotesk',sans-serif;font-size:1.9rem;font-weight:700;
+  line-height:1.2;letter-spacing:-.5px;margin-bottom:8px}
+.hero-title span{color:var(--green)}
+.hero-sub{color:var(--txt-muted);font-size:.85rem;margin-bottom:20px;max-width:600px}
+.macro-pills{display:flex;flex-wrap:wrap;gap:8px}
+.mpill{padding:5px 13px;border-radius:20px;font-size:.72rem;font-family:'JetBrains Mono',monospace;
+  font-weight:600;border:1px solid}
+.mpill-warn{background:rgba(245,158,11,.12);color:var(--amber);border-color:rgba(245,158,11,.3)}
+.mpill-bull{background:rgba(0,200,5,.1);color:var(--green);border-color:var(--border-g)}
+.mpill-neu{background:rgba(59,130,246,.1);color:var(--blue);border-color:rgba(59,130,246,.25)}
+
+/* MAIN */
+main{max-width:1100px;margin:0 auto;padding:24px 24px 48px}
+
+/* SECTION HEAD */
+.section-head{display:flex;align-items:baseline;gap:16px;margin:36px 0 16px;
+  padding-bottom:12px;border-bottom:1px solid var(--border)}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;
+  color:var(--green);opacity:.7}
+.section-title{font-family:'Space Grotesk',sans-serif;font-size:1.25rem;font-weight:700;
+  letter-spacing:-.4px;color:var(--txt)}
+
+/* STAT CARDS */
+.hero-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:24px 0}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  padding:16px;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.stat-card.green::before{background:var(--green)}
+.stat-card.amber::before{background:var(--amber)}
+.stat-card.red::before{background:var(--red)}
+.stat-card.blue::before{background:var(--blue)}
+.sc-label{font-size:.7rem;color:var(--txt-muted);text-transform:uppercase;
+  letter-spacing:.08em;margin-bottom:8px;font-family:'Space Grotesk',sans-serif}
+.sc-val{font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:600;margin-bottom:4px}
+.stat-card.green .sc-val{color:var(--green)}
+.stat-card.amber .sc-val{color:var(--amber)}
+.stat-card.red .sc-val{color:var(--red)}
+.stat-card.blue .sc-val{color:var(--blue)}
+.sc-sub{font-size:.72rem;color:var(--txt-muted)}
+.sc-badge{display:inline-block;margin-top:10px;padding:3px 9px;border-radius:20px;
+  font-size:.65rem;font-family:'JetBrains Mono',monospace;font-weight:600}
+.badge-green{background:rgba(0,200,5,.15);color:var(--green);border:1px solid var(--border-g)}
+.badge-amber{background:rgba(245,158,11,.15);color:var(--amber);border:1px solid rgba(245,158,11,.3)}
+.badge-red{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3)}
+.badge-blue{background:rgba(59,130,246,.15);color:var(--blue);border:1px solid rgba(59,130,246,.3)}
+
+/* STOCK TABLE */
+.table-wrap{border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;margin:16px 0}
+table{width:100%;border-collapse:collapse}
+thead tr{background:var(--card2)}
+th{padding:11px 14px;text-align:left;font-family:'Space Grotesk',sans-serif;font-size:.72rem;
+  font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--txt-muted);
+  border-bottom:1px solid var(--border)}
+td{padding:12px 14px;border-bottom:1px solid var(--border);font-size:.82rem;
+  vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:rgba(255,255,255,.025)}
+.rank-badge{width:26px;height:26px;border-radius:50%;display:inline-flex;
+  align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;font-weight:700}
+.r1{background:rgba(245,158,11,.2);color:var(--amber)}
+.r2{background:rgba(0,200,5,.15);color:var(--green)}
+.r3{background:rgba(59,130,246,.15);color:var(--blue)}
+.r-rest{background:var(--card2);color:var(--txt-muted)}
+.ticker-cell{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.92rem}
+.score-bar-wrap{display:flex;align-items:center;gap:8px;min-width:120px}
+.score-bar{height:4px;border-radius:2px;background:rgba(255,255,255,.08);flex:1}
+.score-fill{height:100%;border-radius:2px}
+.fill-high{background:var(--green)}
+.fill-mid{background:var(--amber)}
+.fill-low{background:var(--red)}
+.score-val{font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:600;white-space:nowrap}
+.score-high{color:var(--green)}.score-mid{color:var(--amber)}.score-low{color:var(--red)}
+.pm-up{color:var(--green);font-family:'JetBrains Mono',monospace;font-size:.8rem;font-weight:600}
+.pm-down{color:var(--red);font-family:'JetBrains Mono',monospace;font-size:.8rem;font-weight:600}
+.pm-flat{color:var(--txt-muted);font-family:'JetBrains Mono',monospace;font-size:.8rem}
+.tags{display:flex;flex-wrap:wrap;gap:4px}
+.tag{font-size:.65rem;padding:2px 7px;border-radius:20px;font-family:'JetBrains Mono',monospace;
+  font-weight:500;border:1px solid}
+.tag-g{background:rgba(0,200,5,.1);color:var(--green);border-color:var(--border-g)}
+.tag-a{background:rgba(245,158,11,.1);color:var(--amber);border-color:rgba(245,158,11,.25)}
+.tag-b{background:rgba(59,130,246,.1);color:var(--blue);border-color:rgba(59,130,246,.25)}
+.tag-r{background:rgba(239,68,68,.1);color:var(--red);border-color:rgba(239,68,68,.25)}
+
+/* STOCK DETAIL CARDS */
+.stock-grid{display:flex;flex-direction:column;gap:14px;margin:16px 0}
+.stock-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:18px 20px;position:relative;overflow:hidden;transition:.2s}
+.stock-card:hover{border-color:var(--border-g);background:var(--card2)}
+.stock-card-top{border-left:3px solid;padding-left:14px}
+.stock-card-top.green{border-color:var(--green)}
+.stock-card-top.amber{border-color:var(--amber)}
+.stock-card-top.red{border-color:var(--red)}
+.stock-card-top.blue{border-color:var(--blue)}
+.scard-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.scard-left{display:flex;align-items:center;gap:12px}
+.scard-ticker{font-family:'Space Grotesk',sans-serif;font-size:1.35rem;font-weight:700}
+.scard-name{font-size:.78rem;color:var(--txt-muted);margin-top:2px}
+.scard-score{text-align:right}
+.scard-score-num{font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700}
+.scard-score-label{font-size:.65rem;color:var(--txt-muted);font-family:'Space Grotesk',sans-serif}
+.scard-pills{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.scard-detail{display:grid;grid-template-columns:1fr 1fr;gap:6px 20px;margin-bottom:10px}
+.scard-di{font-size:.78rem;color:var(--txt-muted)}.scard-di strong{color:var(--txt);font-weight:500}
+.scard-note{font-size:.73rem;color:var(--txt-muted);padding-top:8px;
+  border-top:1px solid var(--border);margin-top:4px;line-height:1.5}
+.scard-progress{height:3px;border-radius:2px;background:rgba(255,255,255,.07);margin-top:10px}
+.scard-pf{height:100%;border-radius:2px}
+
+/* RISK CARDS */
+.risk-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin:16px 0}
+.risk-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+.risk-card.high{border-left:3px solid var(--red)}
+.risk-card.med{border-left:3px solid var(--amber)}
+.risk-card.low{border-left:3px solid var(--green)}
+.risk-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.risk-name{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.88rem}
+.risk-level{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;
+  padding:2px 8px;border-radius:20px}
+.risk-card.high .risk-level{background:rgba(239,68,68,.15);color:var(--red)}
+.risk-card.med .risk-level{background:rgba(245,158,11,.15);color:var(--amber)}
+.risk-card.low .risk-level{background:rgba(0,200,5,.12);color:var(--green)}
+.risk-body{font-size:.78rem;color:var(--txt-muted);line-height:1.6}
+
+/* STRATEGY CARDS */
+.strategy-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:16px 0}
+.strat-card{background:var(--card);border:1px solid var(--border-g);border-radius:var(--r-lg);
+  padding:18px;position:relative}
+.strat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--green),transparent)}
+.strat-horizon{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:600;
+  color:var(--green);letter-spacing:.12em;margin-bottom:6px}
+.strat-action{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;
+  margin-bottom:14px}
+.strat-row{display:flex;justify-content:space-between;align-items:center;
+  padding:7px 0;border-bottom:1px solid var(--border)}
+.strat-key{font-size:.75rem;color:var(--txt-muted)}
+.strat-v{font-family:'JetBrains Mono',monospace;font-size:.85rem;font-weight:600;color:var(--txt)}
+.strat-v.green{color:var(--green)}.strat-v.red{color:var(--red)}.strat-v.amber{color:var(--amber)}
+.conf-block{margin-top:12px}
+.conf-label{font-size:.68rem;color:var(--txt-muted);margin-bottom:5px}
+.conf-bar{height:5px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden}
+.conf-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--green-d),var(--green))}
+.conf-pct{font-size:.7rem;color:var(--txt-muted);margin-top:4px;font-family:'JetBrains Mono',monospace}
+
+/* RADAR */
+.radar-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:16px 0}
+.radar-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  padding:14px;transition:.2s}
+.radar-card:hover{border-color:var(--border-g)}
+.radar-ticker{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1rem;
+  color:var(--green);margin-bottom:4px}
+.radar-name{font-size:.72rem;color:var(--txt-muted);margin-bottom:6px}
+.radar-reason{font-size:.78rem;color:var(--txt);line-height:1.5}
+
+/* DISCLAIMER */
+.disclaimer{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);
+  border-radius:var(--r);padding:14px 16px;font-size:.77rem;color:var(--txt-muted);
+  line-height:1.7;margin:24px 0}
+.disclaimer strong{color:var(--amber)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:18px 24px;text-align:center;
+  font-size:.73rem;color:var(--txt-muted);background:var(--surface);
+  font-family:'JetBrains Mono',monospace}
+footer span{color:var(--green)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .hero-title{font-size:1.4rem}
+  .scard-detail{grid-template-columns:1fr}
+  .strat-card{min-width:0}
+  header{padding:12px 16px}
+  main{padding:16px}
+  .hero{padding:24px 16px 20px}
+}
+
+/* LANG HIDDEN */
+[data-lang]{display:none}
+[data-lang].visible{display:block}
+[data-lang-inline]{display:none}
+[data-lang-inline].visible{display:inline}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <circle cx="10" cy="10" r="9" stroke="#00C805" stroke-width="1.5"/>
+      <path d="M7 10.5c0-1.657 1.343-3 3-3s3 1.343 3 3v3H7v-3z" fill="#00C805"/>
+      <rect x="9" y="4" width="2" height="2.5" rx="1" fill="#00C805"/>
+    </svg>
+    Gistify.pro
+    <span data-lang-inline="tr" class="visible">· Momentum Tarama Raporu</span>
+    <span data-lang-inline="en">· Momentum Scan Report</span>
+  </div>
+  <div class="header-right">
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('tr')">TR</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
+    <div class="nav-pill">16–17 JUN 2026</div>
+  </div>
+</header>
+
+<!-- ───── HERO ───── -->
+<div class="hero">
+  <div data-lang="tr" class="visible">
+    <div class="hero-tag">▸ NYSE/NASDAQ TARAMA · HAZIRAN 2026</div>
+    <div class="hero-title">Momentum × Opsiyon × <span>Pre-Market</span></div>
+    <div class="hero-sub">16 Haziran 2026 kapanış opsiyon akışı ve momentum analizi → 17 Haziran 2026 pre-market beklentileri. 3 skill kombinasyonu: /stock-explosion-hunter · /us-momentum-trading · /us-stock-deep-research</div>
+    <div class="macro-pills">
+      <span class="mpill mpill-warn">⚡ FOMC Toplantısı (Warsh İlk Presser)</span>
+      <span class="mpill mpill-warn">⚡ Triple Witching Haftası</span>
+      <span class="mpill mpill-bull">✓ Dow Jones Rekor</span>
+      <span class="mpill mpill-neu">VIX ~19 (Normal)</span>
+      <span class="mpill mpill-warn">Fear &amp; Greed: 34 (Korku)</span>
+    </div>
+  </div>
+  <div data-lang="en">
+    <div class="hero-tag">▸ NYSE/NASDAQ SCAN · JUNE 2026</div>
+    <div class="hero-title">Momentum × Options × <span>Pre-Market</span></div>
+    <div class="hero-sub">June 16, 2026 closing options flow and momentum analysis → June 17, 2026 pre-market expectations. 3-skill combination: /stock-explosion-hunter · /us-momentum-trading · /us-stock-deep-research</div>
+    <div class="macro-pills">
+      <span class="mpill mpill-warn">⚡ FOMC Meeting (Warsh's 1st Presser)</span>
+      <span class="mpill mpill-warn">⚡ Triple Witching Week</span>
+      <span class="mpill mpill-bull">✓ Dow Jones Record High</span>
+      <span class="mpill mpill-neu">VIX ~19 (Normal)</span>
+      <span class="mpill mpill-warn">Fear &amp; Greed: 34 (Fear)</span>
+    </div>
+  </div>
+</div>
+
+<main>
+
+<!-- ───── SECTION 1: MARKET CONTEXT ───── -->
+<div class="section-head">
+  <span class="section-num">01</span>
+  <h2 class="section-title">
+    <span data-lang-inline="tr" class="visible">Piyasa Bağlamı</span>
+    <span data-lang-inline="en">Market Context</span>
+  </h2>
+</div>
+
+<div class="hero-stats">
+  <div class="stat-card amber">
+    <div class="sc-label"><span data-lang-inline="tr" class="visible">VIX Seviyesi</span><span data-lang-inline="en">VIX Level</span></div>
+    <div class="sc-val">~19</div>
+    <div class="sc-sub"><span data-lang-inline="tr" class="visible">Normal bölge (15–20)</span><span data-lang-inline="en">Normal range (15–20)</span></div>
+    <span class="sc-badge badge-amber">ORTA VOLATİLİTE</span>
+  </div>
+  <div class="stat-card red">
+    <div class="sc-label">Fear &amp; Greed</div>
+    <div class="sc-val">34</div>
+    <div class="sc-sub"><span data-lang-inline="tr" class="visible">Korku bölgesi</span><span data-lang-inline="en">Fear territory</span></div>
+    <span class="sc-badge badge-red"><span data-lang-inline="tr" class="visible">TEMKİNLİ</span><span data-lang-inline="en">CAUTIOUS</span></span>
+  </div>
+  <div class="stat-card blue">
+    <div class="sc-label">SPY/QQQ</div>
+    <div class="sc-val">Karışık</div>
+    <div class="sc-sub">QQQ -0.17% · DJI <span data-lang-inline="tr" class="visible">rekor</span><span data-lang-inline="en">record</span></div>
+    <span class="sc-badge badge-blue">FOMC BEKLE</span>
+  </div>
+  <div class="stat-card green">
+    <div class="sc-label"><span data-lang-inline="tr" class="visible">Opsiyon Hacmi</span><span data-lang-inline="en">Options Volume</span></div>
+    <div class="sc-val">52.9M</div>
+    <div class="sc-sub"><span data-lang-inline="tr" class="visible">Günlük kontrat (16 Haz)</span><span data-lang-inline="en">Daily contracts (Jun 16)</span></div>
+    <span class="sc-badge badge-green">YÜKSEK AKTİVİTE</span>
+  </div>
+</div>
+
+<!-- ───── SECTION 2: TOP 10 TABLE ───── -->
+<div class="section-head">
+  <span class="section-num">02</span>
+  <h2 class="section-title">
+    <span data-lang-inline="tr" class="visible">Top 10 — Özet Tablo</span>
+    <span data-lang-inline="en">Top 10 — Summary Table</span>
+  </h2>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Ticker</th>
+        <th><span data-lang-inline="tr" class="visible">Şirket</span><span data-lang-inline="en">Company</span></th>
+        <th><span data-lang-inline="tr" class="visible">Skor</span><span data-lang-inline="en">Score</span></th>
+        <th>Pre-Market 17 Haz</th>
+        <th><span data-lang-inline="tr" class="visible">Ana Katalist</span><span data-lang-inline="en">Main Catalyst</span></th>
+        <th>Tags</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="rank-badge r1">1</span></td>
+        <td class="ticker-cell" style="color:var(--green)">SPCX</td>
+        <td>SpaceX</td>
+        <td><div class="score-bar-wrap"><div class="score-bar"><div class="score-fill fill-high" style="width:96%"></div></div><span class="score-val score-high">9.6</span></div></td>
+        <td><span class="pm-down">-4.31%</span></td>
+        <td><span data-lang-inline="tr" class="visible">Rekor opsiyon debüsü 1.8M kontrat · Anysphere $60B satın alma</span><span data-lang-inline="en">Record options debut 1.8M contracts · Anysphere $60B acquisition</span></td>
+        <td><div class="tags"><span class="tag tag-g">IPO</span><span class="tag tag-g">Options</span><span class="tag tag-r">110x Rev</span></div></td>
+      </tr>
+      <tr>
+        <td><span class="rank-badge r2">2</span></td>
+        <td class="ticker-cell" style="color:var(--blue)">INTC</td>
+        <td>Intel Corp</td>
+        <td><div class="score-bar-wrap"><div class="score-bar"><div class="score-fill fill-high" style="width:88%"></div></div><span class="score-val score-high">8.8</span></div></td>
+        <td><span class="pm-up">Pozitif</span></td>
+        <td><span data-lang-inline="tr" class="visible">BofA çift yükseltme Sell→Buy · PT $96→$135 · AI Foundry</span><span data-lang-inline="en">BofA double upgrade Sell→Buy · PT $96→$135 · AI Foundry</span></td>
+        <td><div class="tags"><span class="tag tag-g">BofA Buy</span><span class="tag tag-b">Foundry</span><span class="tag tag-g">+190% YTD</span></div></td>
+      </tr>
+      <tr>
+        <td><span class="rank-badge r3">3</span></td>
+        <td class="ticker-cell" style="color:var(--blue)">WDC</td>
+        <td>Western Digital</td>
+        <td><div class="score-bar-wrap"><div class="score-bar"><div class="score-fill fill-high" style="width:85%"></div></div><span class="score-val score-high">8.5</span></div></td>
+        <td><span class="pm-up">+8.9%</span></td>
+        <td><span data-lang-inline="tr" class="visible">Pre-market +8.9% · Morgan Stanley Top Pick · AI depolama</span><span data-lang-inline="en">Pre-market +8.9% · Morgan Stanley Top Pick · AI storage</span></td>
+        <td><div class="tags"><span class="tag tag-g">MS Top Pick</span><span class="tag tag-a">RSI 78</span></div></td>
+      </tr>
+      <tr>
+        <td><span class="rank-badge r-rest">4</span></td>
+        <td class="ticker-cell" style="color:var(--amber)">YUM</td>
+        <td>Yum! Brands</td>
+        <td><div class="score-bar-wrap"><div class="score-bar"><div class="score-fill fill-mid" style="width:78%"></div></div><span class="score-val score-mid">7.8</span></div></td>
+        <td><span class="pm-up">Pozitif</span></td>
+        <td><span data-lang-inline="tr" class="visible">Pizza Hut $2.7B satışı · KFC/Taco Bell odaklanma</span><span data-lang-inline="en">Pizza Hut $2.7B sale · KFC/Taco Bell focus</span></td>
+        <td><div class="tags"><span class="tag tag-g">M&amp;A</span><span class="tag tag-b">+3% Close</span></div></td>
+      </tr>
+      <tr>
+        <td><span class="rank-badge r-rest">5</span></td>
+        <td class="ticker-cell" style="color:var(--green)">BMY</td>
+        <td>Bristol-Myers Squibb</td>
+        <td><div class="score-bar-wrap"><div class="score-bar"><div class="score-fill fill-high" style="width:79%"></div></div><span class="score-val score-high">7.9</span></div></td>
+        <td><span class="pm-flat">Nötr</span></td>
+        <td><span data-lang-inline="tr" class="visible">Olağandışı call 9:1 · 8,240 blok Jul $57.50 call · Smart money</span><span data-lang-inline="en">Unusual call 9:1 · 8,240 block Jul $57.50 call · Smart money</span></td>
+        <td><div class="tags"><span class="tag tag-g">UOA 9:1</span><span class="tag tag-b">Pharma</span></div></td>
+      </tr>
+      <tr>
+        <td><span class="rank-badge r-rest">6</span></td>
+        <td class="ticker-cell" style="color:var(--amber)">HUM</td>
+        <td>Humana Inc</td>
+        <td><div class="score-bar-wrap"><div class="score-bar"><div class="score-fill fill-mid" style="width:75%"></div></div><span class="score-val score-mid">7.5</span></div></td>
+        <td><span class="pm-down">-3.58%</span></td>
+        <td><span data-lang-inline="tr" class="visible">52H rekor · JPM/BofA/Mizuho hedef fiyat artışları</span><span data-lang-inline="en">52W high · JPM/BofA/Mizuho price target raises</span></td>
+        <td><div class="tags"><span class="tag tag-g">52W High</span><span class="tag tag-a">Div $0.89</span></div></td>
+      </tr>
+      <tr>
+        <td><span class="rank-badge r-rest">7</span></td>
+        <td class="ticker-cell" style="color:var(--green)">CRS</td>
+        <td>Carpenter Technology</td>
+        <td><div class="score-bar-wrap"><div class="score-bar"><div class="score-fill fill-high" style="width:77%"></div></div><span class="score-val score-high">7.7</span></div></td>
+        <td><span class="pm-flat">Konsolidasyon</span></td>
+        <td><span data-lang-inline="tr" class="visible">52H rekor $545.82 · Yıllık +130% · Havacılık alaşım talebi</span><span data-lang-inline="en">52W record $545.82 · Annual +130% · Aerospace alloy demand</span></td>
+        <td><div class="tags"><span class="tag tag-g">+130% YTD</span><span class="tag tag-b">Aerospace</span></div></td>
+      </tr>
+      <tr>
+        <td><span class="rank-badge r-rest">8</span></td>
+        <td class="ticker-cell" style="color:var(--blue)">STX</td>
+        <td>Seagate Technology</td>
+        <td><div class="score-bar-wrap"><div class="score-bar"><div class="score-fill fill-high" style="width:76%"></div></div><span class="score-val score-high">7.6</span></div></td>
+        <td><span class="pm-up">Pozitif</span></td>
+        <td><span data-lang-inline="tr" class="visible">Pre-market +7.3% · Blowout kazanç · MS Overweight</span><span data-lang-inline="en">Pre-market +7.3% · Blowout earnings · MS Overweight</span></td>
+        <td><div class="tags"><span class="tag tag-g">Earnings Beat</span><span class="tag tag-b">Storage</span></div></td>
+      </tr>
+      <tr>
+        <td><span class="rank-badge r-rest">9</span></td>
+        <td class="ticker-cell" style="color:var(--red)">CRVO</td>
+        <td>CervoMed Inc</td>
+        <td><div class="score-bar-wrap"><div class="score-bar"><div class="score-fill fill-mid" style="width:72%"></div></div><span class="score-val score-mid">7.2</span></div></td>
+        <td><span class="pm-flat">Konsolidasyon</span></td>
+        <td><span data-lang-inline="tr" class="visible">Direktör $3M içeriden alım · Pre-market +32.3% · Biotech</span><span data-lang-inline="en">Director $3M insider buy · Pre-market +32.3% · Biotech</span></td>
+        <td><div class="tags"><span class="tag tag-g">Insider Buy</span><span class="tag tag-r">Micro Cap</span></div></td>
+      </tr>
+      <tr>
+        <td><span class="rank-badge r-rest">10</span></td>
+        <td class="ticker-cell">SPG</td>
+        <td>Simon Property Group</td>
+        <td><div class="score-bar-wrap"><div class="score-bar"><div class="score-fill fill-mid" style="width:70%"></div></div><span class="score-val score-mid">7.0</span></div></td>
+        <td><span class="pm-flat">Sakin</span></td>
+        <td><span data-lang-inline="tr" class="visible">52H rekor $215.98 · Temettü %4.15 · Savunmacı rotasyon</span><span data-lang-inline="en">52W record $215.98 · Dividend 4.15% · Defensive rotation</span></td>
+        <td><div class="tags"><span class="tag tag-b">REIT</span><span class="tag tag-a">4.15% Div</span></div></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ───── SECTION 3: DETAIL CARDS ───── -->
+<div class="section-head">
+  <span class="section-num">03</span>
+  <h2 class="section-title">
+    <span data-lang-inline="tr" class="visible">Detaylı Hisse Analizleri</span>
+    <span data-lang-inline="en">Detailed Stock Analyses</span>
+  </h2>
+</div>
+
+<div class="stock-grid">
+
+  <!-- SPCX -->
+  <div class="stock-card">
+    <div class="stock-card-top green">
+      <div class="scard-header">
+        <div class="scard-left">
+          <span class="rank-badge r1">1</span>
+          <div>
+            <div class="scard-ticker" style="color:var(--green)">SPCX — SpaceX (Nasdaq)</div>
+            <div class="scard-name"><span data-lang-inline="tr" class="visible">Uzay & Yapay Zeka · Yeni Halka Arz</span><span data-lang-inline="en">Space & AI · Recent IPO</span></div>
+          </div>
+        </div>
+        <div class="scard-score">
+          <div class="scard-score-num" style="color:var(--green)">9.6<span style="font-size:.9rem;color:var(--txt-muted)">/10</span></div>
+          <div class="scard-score-label"><span data-lang-inline="tr" class="visible">Patlama Skoru</span><span data-lang-inline="en">Explosion Score</span></div>
+        </div>
+      </div>
+      <div class="scard-pills">
+        <span class="tag tag-g">🚀 1.8M Kontrat (Rekor Opsiyon Debüsü)</span>
+        <span class="tag tag-g">Anysphere/Cursor $60B Satın Alma</span>
+        <span class="tag tag-b">Call/Put: 1.7:1 Bullish</span>
+        <span class="tag tag-a">Amazon &amp; Microsoft'u Geçti</span>
+        <span class="tag tag-r">110x Revenue Riski</span>
+      </div>
+      <div class="scard-detail">
+        <div class="scard-di"><strong>$201.80</strong> <span data-lang-inline="tr" class="visible">kapanış (16 Haz, +4.8%)</span><span data-lang-inline="en">close (Jun 16, +4.8%)</span></div>
+        <div class="scard-di"><strong style="color:var(--red)">$200.80 (-4.31%)</strong> <span data-lang-inline="tr" class="visible">pre-market 17 Haz</span><span data-lang-inline="en">pre-market Jun 17</span></div>
+        <div class="scard-di"><strong>$135 – $225.64</strong> 52W <span data-lang-inline="tr" class="visible">aralık</span><span data-lang-inline="en">range</span></div>
+        <div class="scard-di"><strong>~$2.65T</strong> <span data-lang-inline="tr" class="visible">piyasa değeri</span><span data-lang-inline="en">market cap</span></div>
+        <div class="scard-di"><strong>$164</strong> <span data-lang-inline="tr" class="visible">ort. analist PT</span><span data-lang-inline="en">avg analyst PT</span></div>
+        <div class="scard-di"><strong>4 Buy / 1 Sell</strong> <span data-lang-inline="tr" class="visible">analist</span><span data-lang-inline="en">analyst coverage</span></div>
+      </div>
+      <div class="scard-note"><span data-lang-inline="tr" class="visible">📌 Pre-market geri çekilmesi gama squeeze sona mı erer yoksa destek tutar mı? Düşük float + yoğun opsiyon ortamı fiyatı her iki yönde şiddetli hareket ettirebilir. Sadece deneyimli yatırımcılar için.</span><span data-lang-inline="en">📌 Pre-market pullback signals gamma squeeze end or support hold? Low float + heavy options environment can move price violently in both directions. Experienced traders only.</span></div>
+      <div class="scard-progress"><div class="scard-pf fill-high" style="width:96%"></div></div>
+    </div>
+  </div>
+
+  <!-- INTC -->
+  <div class="stock-card">
+    <div class="stock-card-top blue">
+      <div class="scard-header">
+        <div class="scard-left">
+          <span class="rank-badge r2">2</span>
+          <div>
+            <div class="scard-ticker" style="color:var(--blue)">INTC — Intel Corp (Nasdaq)</div>
+            <div class="scard-name"><span data-lang-inline="tr" class="visible">Yarı İletken · AI CPU · Foundry</span><span data-lang-inline="en">Semiconductor · AI CPU · Foundry</span></div>
+          </div>
+        </div>
+        <div class="scard-score">
+          <div class="scard-score-num" style="color:var(--green)">8.8<span style="font-size:.9rem;color:var(--txt-muted)">/10</span></div>
+          <div class="scard-score-label"><span data-lang-inline="tr" class="visible">Patlama Skoru</span><span data-lang-inline="en">Explosion Score</span></div>
+        </div>
+      </div>
+      <div class="scard-pills">
+        <span class="tag tag-g">BofA Çift Yükseltme (Sell→Buy)</span>
+        <span class="tag tag-b">PT $96 → $135</span>
+        <span class="tag tag-g">AI Server CPU $40B / 2030</span>
+        <span class="tag tag-a">2026'da +190%</span>
+        <span class="tag tag-b">Jun 120 Call: 37K+ Kontrat</span>
+      </div>
+      <div class="scard-detail">
+        <div class="scard-di"><strong>~$114</strong> <span data-lang-inline="tr" class="visible">kapanış (+$6.99)</span><span data-lang-inline="en">close (+$6.99)</span></div>
+        <div class="scard-di"><strong style="color:var(--green)"><span data-lang-inline="tr" class="visible">Pozitif beklenti</span><span data-lang-inline="en">Positive outlook</span></strong></div>
+        <div class="scard-di"><strong>~$538B</strong> <span data-lang-inline="tr" class="visible">piyasa değeri</span><span data-lang-inline="en">market cap</span></div>
+        <div class="scard-di"><strong>Call/Put: 4:3</strong></div>
+        <div class="scard-di"><strong>Vivek Arya (BofA)</strong> <span data-lang-inline="tr" class="visible">üst düzey analist</span><span data-lang-inline="en">top analyst</span></div>
+        <div class="scard-di"><strong>18A</strong> <span data-lang-inline="tr" class="visible">verim hedeflerin üzerinde</span><span data-lang-inline="en">yield above targets</span></div>
+      </div>
+      <div class="scard-note"><span data-lang-inline="tr" class="visible">📌 Nadir "çift yükseltme" (Sell'den direkt Buy'a) güçlü kurumsal sinyal. Foundry müşteri tabanı (Apple, MediaTek potansiyeli) + AI CPU talebi ikili katalist sağlıyor.</span><span data-lang-inline="en">📌 Rare "double upgrade" (Sell directly to Buy) is a strong institutional signal. Foundry client base (Apple, MediaTek potential) + AI CPU demand provides dual catalyst.</span></div>
+      <div class="scard-progress"><div class="scard-pf fill-high" style="width:88%"></div></div>
+    </div>
+  </div>
+
+  <!-- WDC -->
+  <div class="stock-card">
+    <div class="stock-card-top blue">
+      <div class="scard-header">
+        <div class="scard-left">
+          <span class="rank-badge r3">3</span>
+          <div>
+            <div class="scard-ticker" style="color:var(--blue)">WDC — Western Digital (Nasdaq)</div>
+            <div class="scard-name"><span data-lang-inline="tr" class="visible">Depolama · AI Veri Merkezi · HAMR</span><span data-lang-inline="en">Storage · AI Data Center · HAMR</span></div>
+          </div>
+        </div>
+        <div class="scard-score">
+          <div class="scard-score-num" style="color:var(--green)">8.5<span style="font-size:.9rem;color:var(--txt-muted)">/10</span></div>
+          <div class="scard-score-label"><span data-lang-inline="tr" class="visible">Patlama Skoru</span><span data-lang-inline="en">Explosion Score</span></div>
+        </div>
+      </div>
+      <div class="scard-pills">
+        <span class="tag tag-g">Pre-market +8.9% (16 Haz)</span>
+        <span class="tag tag-g">Morgan Stanley Top Pick</span>
+        <span class="tag tag-b">%28 Yıllık Gelir Büyümesi</span>
+        <span class="tag tag-a">RSI ~78 (Aşırı Alım)</span>
+        <span class="tag tag-b">%46.1 Brüt Marj (Rekor)</span>
+      </div>
+      <div class="scard-detail">
+        <div class="scard-di"><strong>Pre-market +8.9%</strong> (16 Haz)</div>
+        <div class="scard-di"><strong style="color:var(--green)"><span data-lang-inline="tr" class="visible">Pozitif sürüklenim</span><span data-lang-inline="en">Positive carry</span></strong></div>
+        <div class="scard-di"><strong>$10.73B</strong> <span data-lang-inline="tr" class="visible">yıllık gelir</span><span data-lang-inline="en">annual revenue</span></div>
+        <div class="scard-di"><strong>%35.4</strong> <span data-lang-inline="tr" class="visible">net marj</span><span data-lang-inline="en">net margin</span></div>
+        <div class="scard-di"><strong>HAMR</strong> <span data-lang-inline="tr" class="visible">2027 hacim üretimi</span><span data-lang-inline="en">2027 volume production</span></div>
+        <div class="scard-di"><strong>SanDisk</strong> <span data-lang-inline="tr" class="visible">$3.17B elden çıkarma</span><span data-lang-inline="en">$3.17B divestiture</span></div>
+      </div>
+      <div class="scard-note"><span data-lang-inline="tr" class="visible">📌 STX blowout kazancı WDC'yi de taşıdı. RSI 78 aşırı alım sinyali veriyor — pullback riski yüksek. Uzun vadeli tez güçlü, kısa vadede dikkatli ol.</span><span data-lang-inline="en">📌 STX blowout earnings lifted WDC too. RSI 78 signals overbought — pullback risk is elevated. Long-term thesis strong, exercise caution short-term.</span></div>
+      <div class="scard-progress"><div class="scard-pf fill-high" style="width:85%"></div></div>
+    </div>
+  </div>
+
+  <!-- BMY -->
+  <div class="stock-card">
+    <div class="stock-card-top green">
+      <div class="scard-header">
+        <div class="scard-left">
+          <span class="rank-badge r-rest">5</span>
+          <div>
+            <div class="scard-ticker" style="color:var(--green)">BMY — Bristol-Myers Squibb (NYSE)</div>
+            <div class="scard-name"><span data-lang-inline="tr" class="visible">İlaç · Kardiyoloji · Onkoloji</span><span data-lang-inline="en">Pharma · Cardiology · Oncology</span></div>
+          </div>
+        </div>
+        <div class="scard-score">
+          <div class="scard-score-num" style="color:var(--green)">7.9<span style="font-size:.9rem;color:var(--txt-muted)">/10</span></div>
+          <div class="scard-score-label"><span data-lang-inline="tr" class="visible">Patlama Skoru</span><span data-lang-inline="en">Explosion Score</span></div>
+        </div>
+      </div>
+      <div class="scard-pills">
+        <span class="tag tag-g">Olağandışı Call 9:1 Oranı</span>
+        <span class="tag tag-g">8,240 Blok — Jul $57.50 Call</span>
+        <span class="tag tag-b">31 Analistten 31i — "Moderate Buy"</span>
+        <span class="tag tag-b">Mavacamten Çalışması Momentumu</span>
+      </div>
+      <div class="scard-detail">
+        <div class="scard-di"><strong>$56.87</strong> (+$1.27, 16 Haz)</div>
+        <div class="scard-di"><strong style="color:var(--txt-muted)"><span data-lang-inline="tr" class="visible">Nötr beklenti</span><span data-lang-inline="en">Neutral outlook</span></strong></div>
+        <div class="scard-di"><strong>$62.88</strong> <span data-lang-inline="tr" class="visible">ort. analist PT (+15.5%)</span><span data-lang-inline="en">avg analyst PT (+15.5%)</span></div>
+        <div class="scard-di"><strong>13.5M</strong> <span data-lang-inline="tr" class="visible">hacim (ort. 11.7M)</span><span data-lang-inline="en">volume (avg 11.7M)</span></div>
+        <div class="scard-di"><strong>$1.58 EPS</strong> <span data-lang-inline="tr" class="visible">Q1 (+9.7% beat)</span><span data-lang-inline="en">Q1 (+9.7% beat)</span></div>
+        <div class="scard-di"><strong>52W: $42.52–$62.89</strong></div>
+      </div>
+      <div class="scard-note"><span data-lang-inline="tr" class="visible">📌 "Smart money" 8,240 blok kontrat alımı yükselen bir short squeeze veya kurumsal pozisyonlama olabilir. Sağlık sektörüne rotasyon + Mavacamten gerçek dünya ivmesi katalist.</span><span data-lang-inline="en">📌 "Smart money" 8,240 block contract buy could be rising short squeeze or institutional positioning. Healthcare rotation + Mavacamten real-world momentum as catalyst.</span></div>
+      <div class="scard-progress"><div class="scard-pf fill-high" style="width:79%"></div></div>
+    </div>
+  </div>
+
+</div><!-- end stock-grid -->
+
+<!-- ───── SECTION 4: RISK CARDS ───── -->
+<div class="section-head">
+  <span class="section-num">04</span>
+  <h2 class="section-title">
+    <span data-lang-inline="tr" class="visible">Risk Değerlendirmesi</span>
+    <span data-lang-inline="en">Risk Assessment</span>
+  </h2>
+</div>
+
+<div class="risk-grid">
+  <div class="risk-card high">
+    <div class="risk-head">
+      <span class="risk-name">⚠️ FOMC Hawkish Sürpriz</span>
+      <span class="risk-level">HIGH</span>
+    </div>
+    <div class="risk-body"><span data-lang-inline="tr" class="visible">Warsh'ın ilk presser'ı beklenenden daha agresif bir ton içerirse büyüme hisseleri (özellikle SPCX, INTC) sert satış görebilir. Faiz artışı beklentisi momentum hisselerine zarar verir.</span><span data-lang-inline="en">If Warsh's first presser is more aggressive than expected, growth stocks (especially SPCX, INTC) may see sharp selling. Rate hike expectations damage momentum stocks.</span></div>
+  </div>
+  <div class="risk-card high">
+    <div class="risk-head">
+      <span class="risk-name">⚡ Pre-Market Düşük Likidite</span>
+      <span class="risk-level">HIGH</span>
+    </div>
+    <div class="risk-body"><span data-lang-inline="tr" class="visible">Pre-market hareketler (özellikle SPCX -4.31%, HUM -3.58%) düşük hacimde gerçekleşir. Geniş spread ve sert fiyat dalgalanmaları riski yüksektir. Piyasa açılışı beklenip giriş yapılmalı.</span><span data-lang-inline="en">Pre-market moves (especially SPCX -4.31%, HUM -3.58%) occur on low volume. Wide spreads and sharp price swings are elevated risks. Wait for market open before entry.</span></div>
+  </div>
+  <div class="risk-card med">
+    <div class="risk-head">
+      <span class="risk-name">📊 Triple Witching Volatilitesi</span>
+      <span class="risk-level">MED</span>
+    </div>
+    <div class="risk-body"><span data-lang-inline="tr" class="visible">17 Haziran triple witching günü büyük opsiyon pozisyonlarının kapanmasıyla piyasada yapay fiyat hareketleri oluşabilir. Özellikle SPY/QQQ opsiyonlarındaki gamma etkisi dikkat ister.</span><span data-lang-inline="en">June 17 triple witching may create artificial price movements as large options positions close. The gamma effect in SPY/QQQ options warrants particular attention.</span></div>
+  </div>
+  <div class="risk-card med">
+    <div class="risk-head">
+      <span class="risk-name">💊 CRVO Mikro-Cap Riski</span>
+      <span class="risk-level">MED</span>
+    </div>
+    <div class="risk-body"><span data-lang-inline="tr" class="visible">CervoMed $23M piyasa değeri, "going concern" uyarısı ve faz 2b aşamasında klinik riskleriyle sadece spekülatif yatırımcılar için uygundur. %70 gerilemiş bir hissede +32% premarket çok dikkat ister.</span><span data-lang-inline="en">CervoMed $23M market cap, "going concern" warning and Phase 2b clinical risks make it suitable only for speculative investors. A +32% premarket on a stock that fell 70% warrants extreme caution.</span></div>
+  </div>
+  <div class="risk-card med">
+    <div class="risk-head">
+      <span class="risk-name">🏗️ WDC/INTC Aşırı Alım</span>
+      <span class="risk-level">MED</span>
+    </div>
+    <div class="risk-body"><span data-lang-inline="tr" class="visible">WDC RSI ~78, INTC ise 2026'da +190% ile bu yılın en büyük kazananlarından. Mevcut fiyatlar analist hedeflerinin üzerinde; kısa vadeli düzeltme ihtimali yüksek. Uzun vadeli tez sağlam.</span><span data-lang-inline="en">WDC RSI ~78, INTC up +190% in 2026 as one of this year's biggest winners. Current prices above analyst targets; short-term correction probability is elevated. Long-term thesis is solid.</span></div>
+  </div>
+  <div class="risk-card low">
+    <div class="risk-head">
+      <span class="risk-name">🏢 SPG / BMY Savunmacı Tampon</span>
+      <span class="risk-level">LOW</span>
+    </div>
+    <div class="risk-body"><span data-lang-inline="tr" class="visible">FOMC belirsizliği ortamında SPG (%4.15 temettü) ve BMY (ilaç sektörü) savunmacı portföy tamponları olarak değerlendirilebilir. Risk/ödül profili diğer hisselere kıyasla daha dengeli.</span><span data-lang-inline="en">In a FOMC uncertainty environment, SPG (4.15% dividend) and BMY (pharma sector) can be considered defensive portfolio buffers. Risk/reward profile is more balanced compared to other stocks.</span></div>
+  </div>
+</div>
+
+<!-- ───── SECTION 5: STRATEGY ───── -->
+<div class="section-head">
+  <span class="section-num">05</span>
+  <h2 class="section-title">
+    <span data-lang-inline="tr" class="visible">Opsiyon Stratejileri</span>
+    <span data-lang-inline="en">Options Strategies</span>
+  </h2>
+</div>
+
+<div class="strategy-grid">
+  <div class="strat-card">
+    <div class="strat-horizon">SPCX — KISA VADE</div>
+    <div class="strat-action">🚀 Strangle / Straddle</div>
+    <div class="strat-row"><span class="strat-key">Strateji</span><span class="strat-v amber">ATM Strangle</span></div>
+    <div class="strat-row"><span class="strat-key">Call Strike</span><span class="strat-v green">$210</span></div>
+    <div class="strat-row"><span class="strat-key">Put Strike</span><span class="strat-v red">$190</span></div>
+    <div class="strat-row"><span class="strat-key">Vade</span><span class="strat-v">17–20 Haz</span></div>
+    <div class="strat-row"><span class="strat-key">VIX Rejimi</span><span class="strat-v amber">~19 (Orta)</span></div>
+    <div class="conf-block">
+      <div class="conf-label"><span data-lang-inline="tr" class="visible">Güven Seviyesi</span><span data-lang-inline="en">Confidence</span></div>
+      <div class="conf-bar"><div class="conf-fill" style="width:60%"></div></div>
+      <div class="conf-pct">60% — <span data-lang-inline="tr" class="visible">Yüksek belirsizlik, her iki yön mümkün</span><span data-lang-inline="en">High uncertainty, both directions possible</span></div>
+    </div>
+  </div>
+
+  <div class="strat-card">
+    <div class="strat-horizon">INTC — ORTA VADE</div>
+    <div class="strat-action">📈 Bull Call Spread</div>
+    <div class="strat-row"><span class="strat-key">Strateji</span><span class="strat-v amber">Bull Call Spread</span></div>
+    <div class="strat-row"><span class="strat-key">Buy Call</span><span class="strat-v green">$115 (ATM)</span></div>
+    <div class="strat-row"><span class="strat-key">Sell Call</span><span class="strat-v red">$130 (OTM)</span></div>
+    <div class="strat-row"><span class="strat-key">Vade</span><span class="strat-v">Temmuz 2026</span></div>
+    <div class="strat-row"><span class="strat-key">Hedef PT</span><span class="strat-v green">$135 (BofA)</span></div>
+    <div class="conf-block">
+      <div class="conf-label"><span data-lang-inline="tr" class="visible">Güven Seviyesi</span><span data-lang-inline="en">Confidence</span></div>
+      <div class="conf-bar"><div class="conf-fill" style="width:75%"></div></div>
+      <div class="conf-pct">75% — BofA double upgrade + foundry momentum</div>
+    </div>
+  </div>
+
+  <div class="strat-card">
+    <div class="strat-horizon">BMY — KISA/ORTA VADE</div>
+    <div class="strat-action">💊 Long Call (Smart Money Takibi)</div>
+    <div class="strat-row"><span class="strat-key">Strateji</span><span class="strat-v amber">Long Call</span></div>
+    <div class="strat-row"><span class="strat-key">Strike</span><span class="strat-v green">$57.50 (OTM)</span></div>
+    <div class="strat-row"><span class="strat-key">Vade</span><span class="strat-v">17 Temmuz 2026</span></div>
+    <div class="strat-row"><span class="strat-key">Blok Referans</span><span class="strat-v">8,240 Kontrat @ $1.60</span></div>
+    <div class="strat-row"><span class="strat-key">Analist PT</span><span class="strat-v green">$62.88 (+15.5%)</span></div>
+    <div class="conf-block">
+      <div class="conf-label"><span data-lang-inline="tr" class="visible">Güven Seviyesi</span><span data-lang-inline="en">Confidence</span></div>
+      <div class="conf-bar"><div class="conf-fill" style="width:70%"></div></div>
+      <div class="conf-pct">70% — <span data-lang-inline="tr" class="visible">Kurumsal blok + sağlık rotasyonu</span><span data-lang-inline="en">Institutional block + healthcare rotation</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ───── SECTION 6: RADAR ───── -->
+<div class="section-head">
+  <span class="section-num">06</span>
+  <h2 class="section-title">
+    <span data-lang-inline="tr" class="visible">Radar Listesi — Yakından İzle</span>
+    <span data-lang-inline="en">Radar List — Watch Closely</span>
+  </h2>
+</div>
+
+<div class="radar-grid">
+  <div class="radar-card">
+    <div class="radar-ticker">NVDA</div>
+    <div class="radar-name">Nvidia Corp</div>
+    <div class="radar-reason"><span data-lang-inline="tr" class="visible">AI çip sektörü lideri; $25B tahvil satışı sonrası $208-212 bandında. Semiconductor rallisi devam ederse önce NVDA hissini takip et.</span><span data-lang-inline="en">AI chip sector leader; $208-212 range post $25B bond sale. If semiconductor rally continues, track NVDA signal first.</span></div>
+  </div>
+  <div class="radar-card">
+    <div class="radar-ticker">AMD</div>
+    <div class="radar-name">Advanced Micro Devices</div>
+    <div class="radar-reason"><span data-lang-inline="tr" class="visible">BofA PT $560'a yükseltildi. Zen 6 CPU sızıntısı + INTC ile rekabet güçlü. INTC momentumu taşarsa AMD sürüklenir.</span><span data-lang-inline="en">BofA PT raised to $560. Zen 6 CPU leak + strong INTC competition. If INTC momentum spills over, AMD follows.</span></div>
+  </div>
+  <div class="radar-card">
+    <div class="radar-ticker">MSFT</div>
+    <div class="radar-name">Microsoft Corp</div>
+    <div class="radar-reason"><span data-lang-inline="tr" class="visible">Vol/OI oranı 122x (Aralık vadesi). 44/44 analist Buy. Ackman %14 portföy. Mag7 içinde en az sahip olunan; potansiyel yükseliş var.</span><span data-lang-inline="en">Vol/OI ratio 122x (Dec expiry). 44/44 analysts Buy. Ackman 14% portfolio. Least owned among Mag7; upside potential.</span></div>
+  </div>
+  <div class="radar-card">
+    <div class="radar-ticker">SCHW</div>
+    <div class="radar-name">Charles Schwab</div>
+    <div class="radar-reason"><span data-lang-inline="tr" class="visible">52H düşükten %10+ toparlandı. P/E 21x tarihsel düşük. 2026'da -%10 sonrası yükseliş ile kurumsal bahis fırsatçı görünüyor.</span><span data-lang-inline="en">Recovered 10%+ from 52W low. P/E 21x historically low. After -10% in 2026, recovery with institutional bet looks opportunistic.</span></div>
+  </div>
+</div>
+
+<!-- ───── DISCLAIMER ───── -->
+<div class="disclaimer">
+  <strong>⚠️ <span data-lang-inline="tr" class="visible">Yasal Uyarı</span><span data-lang-inline="en">Legal Disclaimer</span>:</strong>
+  <span data-lang-inline="tr" class="visible">Bu rapor yalnızca bilgilendirme amaçlıdır ve <strong>yatırım tavsiyesi niteliği taşımaz</strong>. Rapor; /stock-explosion-hunter, /us-momentum-trading ve /us-stock-deep-research skill kombinasyonuyla 16–17 Haziran 2026 verileri üzerinden hazırlanmıştır. Pre-market hareketler düşük likidite içerir; gerçek zamanlı veri için kendi broker platformunuzu kullanın. Tüm yatırım kararları yatırımcının kendi sorumluluğundadır. Hisse senetleri ve opsiyonlar sermaye kaybı riski içerir.</span>
+  <span data-lang-inline="en">This report is for informational purposes only and does <strong>not constitute investment advice</strong>. Report prepared using /stock-explosion-hunter, /us-momentum-trading and /us-stock-deep-research skill combination based on June 16–17, 2026 data. Pre-market moves occur on low liquidity; use your own broker platform for real-time data. All investment decisions are the sole responsibility of the investor. Stocks and options carry risk of capital loss.</span>
+</div>
+
+</main>
+
+<footer>
+  <span>Gistify.pro</span> · <span data-lang-inline="tr" class="visible">Hazırlandı: 17 Haziran 2026 · Kaynak: Claude AI + Web Taraması</span><span data-lang-inline="en">Generated: June 17, 2026 · Source: Claude AI + Web Scan</span> · <span>v1.0</span>
+</footer>
+
+<script>
+function setLang(lang) {
+  document.querySelectorAll('[data-lang]').forEach(el => {
+    el.classList.toggle('visible', el.dataset.lang === lang);
+  });
+  document.querySelectorAll('[data-lang-inline]').forEach(el => {
+    el.classList.toggle('visible', el.dataset.langInline === lang);
+  });
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent === lang.toUpperCase());
+  });
+  document.documentElement.lang = lang;
+}
+document.addEventListener('DOMContentLoaded', () => setLang('tr'));
+</script>
+</body>
+</html>

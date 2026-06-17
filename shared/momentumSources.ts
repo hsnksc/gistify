@@ -1,4 +1,7 @@
+export type MomentumSourceContentFormat = "markdown" | "html";
+
 export interface MomentumSourceSummary {
+  contentFormat: MomentumSourceContentFormat;
   id: string;
   fileName: string;
   sourceFile: string;
@@ -15,5 +18,6 @@ export interface MomentumSourceSummary {
 }
 
 export interface MomentumSourceRecord extends MomentumSourceSummary {
+  html: string;
   markdown: string;
 }

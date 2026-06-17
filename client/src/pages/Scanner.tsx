@@ -32,6 +32,7 @@ import WorkspaceLoadingState from "@/components/workspace/WorkspaceLoadingState"
 import WorkspaceSummaryCard, {
   type SummaryTone,
 } from "@/components/workspace/WorkspaceSummaryCard";
+import MomentumHtmlReportTab from "@/components/tabs/MomentumHtmlReportTab";
 import MomentumReportPostTab from "@/components/tabs/MomentumReportPostTab";
 import {
   formatMomentumReportDate,
@@ -190,12 +191,14 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
   const activeSummary = selectedSummary || activeReport;
 
   const parsedReport = useMemo(() => {
-    if (!activeReport) {
+    if (!activeReport || activeReport.contentFormat === "html") {
       return null;
     }
 
     return parseMomentumReportMarkdown(activeReport.markdown, activeReport.sourceFile);
   }, [activeReport]);
+  const isHtmlSource =
+    (activeReport?.contentFormat || activeSummary?.contentFormat) === "html";
 
   const topSetup = useMemo(() => {
     if (!parsedReport) {
@@ -240,6 +243,21 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
       });
     }
 
+    items.push({
+      label: copy(language, "Kaynak Turu", "Source Type"),
+      value:
+        activeSummary?.contentFormat === "html"
+          ? "HTML"
+          : copy(language, "Markdown", "Markdown"),
+      hint: copy(
+        language,
+        "Secili momentum kaynagi dosya formati.",
+        "File format of the selected momentum source."
+      ),
+      icon: FileText,
+      tone: activeSummary?.contentFormat === "html" ? "caution" : "info",
+    });
+
     if (hasDisplayValue(activeSummary?.vixLabel)) {
       items.push({
         label: "VIX",
@@ -281,13 +299,26 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
     id: TabId;
     label: string;
     icon: typeof CandlestickChart;
-  }> = [
-    { id: "post", label: "Post", icon: FileText },
-    { id: "market", label: "Market Pulse", icon: CandlestickChart },
-    { id: "setups", label: "Setups", icon: TrendingUp },
-    { id: "strategy", label: "Strategy", icon: ShieldCheck },
-    { id: "scanner", label: "Live Scanner", icon: Radar },
-  ];
+  }> = isHtmlSource
+    ? [
+        { id: "post", label: "HTML Report", icon: FileText },
+        { id: "scanner", label: "Live Scanner", icon: Radar },
+      ]
+    : [
+        { id: "post", label: "Post", icon: FileText },
+        { id: "market", label: "Market Pulse", icon: CandlestickChart },
+        { id: "setups", label: "Setups", icon: TrendingUp },
+        { id: "strategy", label: "Strategy", icon: ShieldCheck },
+        { id: "scanner", label: "Live Scanner", icon: Radar },
+      ];
+
+  useEffect(() => {
+    if (tabs.some(tab => tab.id === activeTab)) {
+      return;
+    }
+
+    setActiveTab("post");
+  }, [activeTab, tabs]);
 
   const handleTabChange = (tab: TabId) => {
     startTabTransition(() => {
@@ -328,12 +359,16 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
     }
 
     if (!parsedReport) {
+      if (activeReport?.contentFormat === "html" && activeReport.html) {
+        return <MomentumHtmlReportTab report={activeReport} language={language} />;
+      }
+
       return (
         <WorkspaceLoadingState
           label={copy(
             language,
-            "Henuz goruntulenebilir bir momentum report yok. `momentum/` altina yeni `.md` dosyasi eklendiginde burada otomatik listelenecek.",
-            "There is no viewable momentum report yet. When a new `.md` file is added under `momentum/`, it will appear here automatically."
+            "Henuz goruntulenebilir bir momentum report yok. `momentum/` altina yeni `.md` veya `.html` dosyasi eklendiginde burada otomatik listelenecek.",
+            "There is no viewable momentum report yet. When a new `.md` or `.html` file is added under `momentum/`, it will appear here automatically."
           )}
         />
       );
@@ -371,24 +406,36 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
         <WorkspaceHeroPanel
           overlayClassName="bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.22),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.14),transparent_26%)]"
           badges={
-            <>
-              <span className="badge-strong">
-                {positiveIndices} {copy(language, "pozitif endeks", "positive indices")}
-              </span>
-              <span className="badge-danger">
-                {negativeIndices} {copy(language, "negatif endeks", "negative indices")}
-              </span>
-              <span className="badge-warning">
-                {regimeCount} {copy(language, "rejim faktor", "regime factors")}
-              </span>
-            </>
+            isHtmlSource ? (
+              <>
+                <span className="badge-warning">HTML source</span>
+                <span className="badge-strong">
+                  {activeSummary?.targetDateLabel || activeSummary?.reportDateLabel || "-"}
+                </span>
+                <span className="badge-danger">
+                  {activeSummary?.vixLabel || "VIX -"}
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="badge-strong">
+                  {positiveIndices} {copy(language, "pozitif endeks", "positive indices")}
+                </span>
+                <span className="badge-danger">
+                  {negativeIndices} {copy(language, "negatif endeks", "negative indices")}
+                </span>
+                <span className="badge-warning">
+                  {regimeCount} {copy(language, "rejim faktor", "regime factors")}
+                </span>
+              </>
+            )
           }
           eyebrow="Momentum Scanner Workspace"
           title={copy(language, "Momentum report ve live scanner", "Momentum report and live scanner")}
           description={copy(
             language,
-            "Tum yuklenen momentum markdown dosyalari bu arsivde gorunur. Varsayilan gorunum, secili raporu eksiksiz bir post gibi acar; market, setup, strategy ve live scanner sekmeleri destek akislaridir.",
-            "Every uploaded momentum markdown file appears in this archive. The default view opens the selected report as a complete post, while market, setup, strategy, and live scanner tabs stay as supporting flows."
+            "Tum yuklenen momentum kaynaklari bu arsivde gorunur. Markdown raporlar parser tablariyla acilir; HTML raporlar ise Flow benzeri tam dokuman gorunumuyle ayni workspace icinde acilir.",
+            "Every uploaded momentum source appears in this archive. Markdown reports open with parser tabs, while HTML reports open as full embedded documents inside the same workspace."
           )}
           actions={
             <>
@@ -455,27 +502,46 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
           }
           statusBar={
             hasReports ? (
-              <div className="inline-flex max-w-full flex-wrap items-center gap-3 rounded-xl border border-border bg-background/40 px-4 py-3 text-xs text-muted-foreground">
-                <span className="flex items-center gap-1.5">
-                  <CandlestickChart className="size-3.5 text-sky-300" />
-                  {parsedReport?.indexRows.length || 0} index row
-                </span>
-                <span className="h-3 w-px bg-border" />
-                <span className="flex items-center gap-1.5">
-                  <TrendingUp className="size-3.5 text-emerald-300" />
-                  {parsedReport?.candidates.length || 0} setup
-                </span>
-                <span className="h-3 w-px bg-border" />
-                <span className="flex items-center gap-1.5">
-                  <TrendingDown className="size-3.5 text-red-300" />
-                  {negativeIndices} negative breadth
-                </span>
-                <span className="h-3 w-px bg-border" />
-                <span className="flex items-center gap-1.5">
-                  <Target className="size-3.5 text-indigo-300" />
-                  {topSetup?.ticker || copy(language, "Top setup bekleniyor", "Top setup pending")}
-                </span>
-              </div>
+              isHtmlSource ? (
+                <div className="inline-flex max-w-full flex-wrap items-center gap-3 rounded-xl border border-border bg-background/40 px-4 py-3 text-xs text-muted-foreground">
+                  <span className="flex items-center gap-1.5">
+                    <FileText className="size-3.5 text-sky-300" />
+                    HTML source
+                  </span>
+                  <span className="h-3 w-px bg-border" />
+                  <span className="flex items-center gap-1.5">
+                    <Target className="size-3.5 text-indigo-300" />
+                    {activeSummary?.targetDateLabel || activeSummary?.reportDateLabel || "-"}
+                  </span>
+                  <span className="h-3 w-px bg-border" />
+                  <span className="flex items-center gap-1.5">
+                    <Zap className="size-3.5 text-amber-300" />
+                    {activeSummary?.vixLabel || "VIX -"}
+                  </span>
+                </div>
+              ) : (
+                <div className="inline-flex max-w-full flex-wrap items-center gap-3 rounded-xl border border-border bg-background/40 px-4 py-3 text-xs text-muted-foreground">
+                  <span className="flex items-center gap-1.5">
+                    <CandlestickChart className="size-3.5 text-sky-300" />
+                    {parsedReport?.indexRows.length || 0} index row
+                  </span>
+                  <span className="h-3 w-px bg-border" />
+                  <span className="flex items-center gap-1.5">
+                    <TrendingUp className="size-3.5 text-emerald-300" />
+                    {parsedReport?.candidates.length || 0} setup
+                  </span>
+                  <span className="h-3 w-px bg-border" />
+                  <span className="flex items-center gap-1.5">
+                    <TrendingDown className="size-3.5 text-red-300" />
+                    {negativeIndices} negative breadth
+                  </span>
+                  <span className="h-3 w-px bg-border" />
+                  <span className="flex items-center gap-1.5">
+                    <Target className="size-3.5 text-indigo-300" />
+                    {topSetup?.ticker || copy(language, "Top setup bekleniyor", "Top setup pending")}
+                  </span>
+                </div>
+              )
             ) : (
               <div className="inline-flex max-w-full flex-wrap items-center gap-2 rounded-xl border border-dashed border-border bg-background/35 px-4 py-3 text-xs text-muted-foreground">
                 {loadingReports
@@ -549,13 +615,13 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                 </div>
               )}
 
-              {parsedReport?.executiveSummary ? (
+              {(parsedReport?.executiveSummary || (isHtmlSource && activeSummary?.headline)) ? (
                 <div className="mt-4 workspace-card p-4">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                    Executive Summary
+                    {copy(language, "Ozet", "Summary")}
                   </p>
                   <p className="mt-2 text-sm leading-7 text-foreground/90">
-                    {parsedReport.executiveSummary}
+                    {parsedReport?.executiveSummary || activeSummary?.headline}
                   </p>
                 </div>
               ) : null}
@@ -694,8 +760,8 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                     <div className="rounded-xl border border-dashed border-border bg-background/45 p-4 text-sm leading-6 text-muted-foreground">
                       {copy(
                         language,
-                        "`momentum/` altina yeni `.md` dosyasi eklendiginde burada otomatik gorunecek.",
-                        "When a new `.md` file is added under `momentum/`, it will appear here automatically."
+                        "`momentum/` altina yeni `.md` veya `.html` dosyasi eklendiginde burada otomatik gorunecek.",
+                        "When a new `.md` or `.html` file is added under `momentum/`, it will appear here automatically."
                       )}
                     </div>
                   ) : null}
