@@ -1,0 +1,83 @@
+- generic [ref=e3]:
+  - region "Notifications alt+T"
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - img "Gistify logo" [ref=e8]
+          - generic [ref=e9]:
+            - paragraph [ref=e10]: Gistify
+            - paragraph [ref=e11]: Earnings Intelligence
+        - navigation [ref=e12]:
+          - button "Earning Strategy Pro" [ref=e13] [cursor=pointer]:
+            - img [ref=e14]
+            - text: Earning Strategy
+            - generic [ref=e19]: Pro
+          - button "Momentum Pro" [ref=e20] [cursor=pointer]:
+            - img [ref=e21]
+            - text: Momentum
+            - generic [ref=e28]: Pro
+          - button "Daily Pro" [ref=e29] [cursor=pointer]:
+            - img [ref=e30]
+            - text: Daily
+            - generic [ref=e33]: Pro
+          - button "Flow" [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Flow
+      - generic [ref=e40]:
+        - button "TR" [ref=e41] [cursor=pointer]
+        - button "EN" [ref=e42] [cursor=pointer]
+  - generic [ref=e63]:
+    - generic [ref=e66]:
+      - generic [ref=e67]:
+        - paragraph [ref=e68]: Flow
+        - heading "Report Center" [level=1] [ref=e69]
+        - paragraph [ref=e70]: Archive stock HTML reports and follow daily market reports on a separate surface.
+      - generic [ref=e71]:
+        - button "Stock Reports" [ref=e72] [cursor=pointer]:
+          - img
+          - text: Stock Reports
+        - button "Daily Report" [ref=e73] [cursor=pointer]:
+          - img
+          - text: Daily Report
+        - button "Refresh" [ref=e74] [cursor=pointer]:
+          - img
+          - text: Refresh
+    - main [ref=e75]:
+      - generic [ref=e76]:
+        - article [ref=e77]:
+          - paragraph [ref=e78]: Ticker Library
+          - paragraph [ref=e79]: "0"
+        - article [ref=e80]:
+          - paragraph [ref=e81]: Stock Reports
+          - paragraph [ref=e82]: "0"
+        - article [ref=e83]:
+          - paragraph [ref=e84]: Daily Reports
+          - paragraph [ref=e85]: "0"
+        - article [ref=e86]:
+          - generic [ref=e87]:
+            - img [ref=e88]
+            - paragraph [ref=e91]: Latest Update
+          - paragraph [ref=e92]: "-"
+      - alert [ref=e93]: Loading report center.
+  - contentinfo [ref=e48]:
+    - generic [ref=e49]:
+      - generic [ref=e50]:
+        - paragraph [ref=e51]: Gistify
+        - paragraph [ref=e52]: Earnings intelligence platform for momentum scanning, pre-earnings analysis and options research.
+        - paragraph [ref=e53]: "Support: support@gistify.pro"
+      - generic [ref=e54]:
+        - link "Flow" [ref=e55] [cursor=pointer]:
+          - /url: /flow
+        - link "Reports" [ref=e56] [cursor=pointer]:
+          - /url: /reports
+        - link "Pricing" [ref=e57] [cursor=pointer]:
+          - /url: /pricing
+        - link "Terms" [ref=e58] [cursor=pointer]:
+          - /url: /terms
+        - link "Privacy" [ref=e59] [cursor=pointer]:
+          - /url: /privacy
+        - link "Refund" [ref=e60] [cursor=pointer]:
+          - /url: /refund
+        - link "Pay" [ref=e61] [cursor=pointer]:
+          - /url: /pay

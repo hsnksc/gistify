@@ -1,0 +1,113 @@
+- generic [ref=e3]:
+  - region "Notifications alt+T"
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - img "Gistify logo" [ref=e8]
+          - generic [ref=e9]:
+            - paragraph [ref=e10]: Gistify
+            - paragraph [ref=e11]: Earnings Intelligence
+        - navigation [ref=e12]:
+          - button "Earning Strategy Pro" [ref=e13] [cursor=pointer]:
+            - img [ref=e14]
+            - text: Earning Strategy
+            - generic [ref=e19]: Pro
+          - button "Momentum Pro" [ref=e20] [cursor=pointer]:
+            - img [ref=e21]
+            - text: Momentum
+            - generic [ref=e28]: Pro
+          - button "Daily Pro" [ref=e29] [cursor=pointer]:
+            - img [ref=e30]
+            - text: Daily
+            - generic [ref=e33]: Pro
+          - button "Flow" [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Flow
+      - generic [ref=e40]:
+        - button "TR" [ref=e41] [cursor=pointer]
+        - button "EN" [ref=e42] [cursor=pointer]
+  - generic [ref=e63]:
+    - generic [ref=e66]:
+      - generic [ref=e67]:
+        - paragraph [ref=e68]: Flow
+        - heading "Flow ticker page" [level=1] [ref=e69]
+        - paragraph [ref=e70]: The selected stock opens with its current report and historical Flow archive on the same page.
+      - generic [ref=e71]:
+        - button "Tickers" [ref=e72] [cursor=pointer]:
+          - img
+          - text: Tickers
+        - button "Refresh" [ref=e73] [cursor=pointer]:
+          - img
+          - text: Refresh
+    - main [ref=e74]:
+      - generic [ref=e75]:
+        - article [ref=e76]:
+          - paragraph [ref=e77]: Current Report
+          - paragraph [ref=e78]: Jun 17, 2026
+          - paragraph [ref=e79]: The most recent Flow report under this stock.
+        - article [ref=e80]:
+          - generic [ref=e81]:
+            - img [ref=e82]
+            - paragraph [ref=e86]: Archive
+          - paragraph [ref=e87]: "1"
+          - paragraph [ref=e88]: Previous reports stored for the same stock.
+        - article [ref=e89]:
+          - generic [ref=e90]:
+            - img [ref=e91]
+            - paragraph [ref=e94]: Latest Update
+          - paragraph [ref=e95]: Jun 17, 2026, 02:30 PM
+          - paragraph [ref=e96]: The latest processing timestamp for the current report.
+      - generic [ref=e98]:
+        - generic [ref=e99]:
+          - paragraph [ref=e100]: Current View
+          - heading "Robinhood Markets (HOOD) - Research Report | Siber-Finans" [level=2] [ref=e101]
+          - paragraph [ref=e102]: Robinhood Markets (HOOD) - Research Report | Siber-Finans
+          - generic [ref=e103]:
+            - generic [ref=e104]: flow/robinhood-markets-hood-research-report-html.html
+            - generic [ref=e105]: Jun 17, 2026
+            - generic [ref=e106]: Jun 17, 2026, 02:30 PM
+        - link "Open Detail" [ref=e107] [cursor=pointer]:
+          - /url: /flow/daily-report-flow-robinhood-markets-hood-research-report-html
+      - generic [ref=e108]:
+        - generic [ref=e109]:
+          - paragraph [ref=e110]: Historical Reports
+          - heading "HOOD archive" [level=2] [ref=e111]
+        - region "Flow report list" [ref=e112]:
+          - link "Jun 16, 2026 Jun 16, 2026, 11:44 AM HOOD — Robinhood Markets Analysis Robinhood Markets (HOOD), ABD'nin lider perakende yatırım platformu. 2026'da SpaceX IPO erişimi, halka arz yüklenim (underwriting) statüsü ve yeni ürün lansmanlarıyla güçlü momentum yakalayan HOOD, YTD %+28.36 performansıyla endeksleri büyük farkla geride bıraktı. HOOD NASDAQ BUY flow/hood16062026.html" [ref=e113] [cursor=pointer]:
+            - /url: /flow/daily-report-flow-hood16062026
+            - img [ref=e115]
+            - generic [ref=e117]:
+              - generic [ref=e118]:
+                - generic [ref=e119]: Jun 16, 2026
+                - generic [ref=e120]: Jun 16, 2026, 11:44 AM
+              - heading "HOOD — Robinhood Markets Analysis" [level=3] [ref=e121]
+              - paragraph [ref=e122]: Robinhood Markets (HOOD), ABD'nin lider perakende yatırım platformu. 2026'da SpaceX IPO erişimi, halka arz yüklenim (underwriting) statüsü ve yeni ürün lansmanlarıyla güçlü momentum yakalayan HOOD, YTD %+28.36 performansıyla endeksleri büyük farkla geride bıraktı.
+              - generic [ref=e123]:
+                - generic [ref=e124]: HOOD
+                - generic [ref=e125]: NASDAQ
+                - generic [ref=e126]: BUY
+                - generic [ref=e127]:
+                  - img [ref=e128]
+                  - text: flow/hood16062026.html
+  - contentinfo [ref=e48]:
+    - generic [ref=e49]:
+      - generic [ref=e50]:
+        - paragraph [ref=e51]: Gistify
+        - paragraph [ref=e52]: Earnings intelligence platform for momentum scanning, pre-earnings analysis and options research.
+        - paragraph [ref=e53]: "Support: support@gistify.pro"
+      - generic [ref=e54]:
+        - link "Flow" [ref=e55] [cursor=pointer]:
+          - /url: /flow
+        - link "Reports" [ref=e56] [cursor=pointer]:
+          - /url: /reports
+        - link "Pricing" [ref=e57] [cursor=pointer]:
+          - /url: /pricing
+        - link "Terms" [ref=e58] [cursor=pointer]:
+          - /url: /terms
+        - link "Privacy" [ref=e59] [cursor=pointer]:
+          - /url: /privacy
+        - link "Refund" [ref=e60] [cursor=pointer]:
+          - /url: /refund
+        - link "Pay" [ref=e61] [cursor=pointer]:
+          - /url: /pay

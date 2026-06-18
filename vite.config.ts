@@ -3,7 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import fs from "node:fs";
 import path from "node:path";
-import { defineConfig, type Plugin, type ViteDevServer } from "vite";
+import { defineConfig, loadEnv, type Plugin, type ViteDevServer } from "vite";
 import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
 
 // =============================================================================
@@ -150,6 +150,31 @@ function vitePluginManusDebugCollector(): Plugin {
   };
 }
 
+/**
+ * Removes the analytics script tag from index.html when no analytics endpoint
+ * is configured. This avoids requests to the literal placeholder URL which
+ * crash Express with a URIError.
+ */
+function vitePluginConditionalAnalytics(): Plugin {
+  let analyticsEndpoint = "";
+  return {
+    name: "conditional-analytics",
+    configResolved(config) {
+      const env = loadEnv(config.mode, config.root, "");
+      analyticsEndpoint = env.VITE_ANALYTICS_ENDPOINT || "";
+    },
+    transformIndexHtml(html) {
+      if (analyticsEndpoint) {
+        return html;
+      }
+      return html.replace(
+        /<script[^>]*defer[^>]*src=["']%VITE_ANALYTICS_ENDPOINT%\/umami["'][^>]*>\s*<\/script>/i,
+        ""
+      );
+    },
+  };
+}
+
 function vitePluginStorageProxy(): Plugin {
   return {
     name: "manus-storage-proxy",
@@ -203,7 +228,7 @@ function vitePluginStorageProxy(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy()];
+const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginConditionalAnalytics(), vitePluginStorageProxy()];
 
 export default defineConfig({
   plugins,

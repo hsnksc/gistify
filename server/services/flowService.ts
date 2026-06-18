@@ -4,6 +4,13 @@ import type {
 } from "../../shared/dailyReports";
 import type { FlowReportKind, FlowReportSummary } from "../../shared/flow";
 import {
+  extractFlowTitleInfo,
+  inferFlowTickerFromText,
+  isBlockedFlowTicker,
+  normalizeFlowTicker,
+  resolveFlowReportKind,
+} from "../../shared/flowInference.ts";
+import {
   buildDailyReportRecordFromSource,
   listDailyReportSourcePackages,
 } from "../dailyReportSources";
@@ -107,105 +114,6 @@ function applyLimit<T>(items: T[], limit?: number) {
   return items.slice(0, Math.max(0, limit));
 }
 
-function normalizeTickerToken(value: string) {
-  return normalizeString(value).toUpperCase().replace(/[^A-Z0-9.-]/g, "");
-}
-
-const BLOCKED_FLOW_TICKERS = new Set([
-  "ABD",
-  "AI",
-  "EN",
-  "HTML",
-  "PDF",
-  "REPORT",
-  "TR",
-]);
-
-const FLOW_TICKER_ALIASES: Array<{
-  ticker: string;
-  patterns: RegExp[];
-}> = [
-  { ticker: "META", patterns: [/\bmeta platforms?\b/i, /\bmeta\b/i] },
-  { ticker: "HOOD", patterns: [/\brobinhood\b/i] },
-  { ticker: "PLTR", patterns: [/\bpalantir\b/i] },
-  { ticker: "WDC", patterns: [/\bwestern digital\b/i] },
-  { ticker: "INTC", patterns: [/\bintel\b/i] },
-  {
-    ticker: "MARKET",
-    patterns: [
-      /\babd borsalar[ıi]\b/i,
-      /\bus markets?\b/i,
-      /\bpre-market\b/i,
-      /\bmomentum analizi\b/i,
-    ],
-  },
-];
-
-const FLOW_DAILY_REPORT_KEYWORDS = [
-  "abd piyasalari",
-  "us markets",
-  "market report",
-  "close report",
-  "kapanis raporu",
-  "gunluk rapor",
-  "pre-market",
-  "premarket",
-];
-
-function isBlockedFlowTicker(value: string) {
-  const normalized = normalizeTickerToken(value);
-  return !normalized || BLOCKED_FLOW_TICKERS.has(normalized);
-}
-
-function inferTickerFromText(value: string) {
-  const source = normalizeString(value);
-  if (!source) {
-    return "";
-  }
-
-  for (const alias of FLOW_TICKER_ALIASES) {
-    if (alias.patterns.some(pattern => pattern.test(source))) {
-      return alias.ticker;
-    }
-  }
-
-  const patterns = [
-    /\(([A-Z][A-Z0-9.-]{0,9})\)/,
-    /^\s*([A-Z][A-Z0-9.-]{0,9})(?=\s*[—\-·:|])/,
-    /\bTicker\s*[:\-]\s*([A-Z][A-Z0-9.-]{0,9})\b/i,
-    /\$([A-Z][A-Z0-9.-]{0,9})\b/,
-    /(?:^|[-_/])([a-z]{1,8})(?=\d{6,8}(?:$|[-_.]))/i,
-  ];
-
-  for (const pattern of patterns) {
-    const match = source.match(pattern);
-    const normalized = normalizeTickerToken(match?.[1] || "");
-    if (normalized && !isBlockedFlowTicker(normalized)) {
-      return normalized;
-    }
-  }
-
-  return "";
-}
-
-function normalizeFlowKindText(value: string) {
-  return normalizeString(value)
-    .toLocaleLowerCase("tr-TR")
-    .replace(/ç/g, "c")
-    .replace(/ğ/g, "g")
-    .replace(/ı/g, "i")
-    .replace(/ö/g, "o")
-    .replace(/ş/g, "s")
-    .replace(/ü/g, "u");
-}
-
-function isDailyMarketReportText(value: string) {
-  const source = normalizeFlowKindText(value);
-  return Boolean(
-    source &&
-      FLOW_DAILY_REPORT_KEYWORDS.some(keyword => source.includes(keyword))
-  );
-}
 
 function stripHtml(value: string) {
   return normalizeString(value.replace(/<[^>]+>/g, " "));
@@ -235,23 +143,7 @@ function matchFirstGroup(value: string, patterns: RegExp[]) {
 function extractTitleAndCompany(report: DailyReportRecord, html: string) {
   const htmlTitle = matchFirstGroup(html, [/<title>([^<]+)<\/title>/i]);
   const sourceTitle = htmlTitle || report.title;
-  const titleMatch = sourceTitle.match(
-    /^([A-Z0-9.-]{1,10})\s*[—-]\s*(.+?)(?:\s+Advanced\s+Analysis\s+Report)?$/i
-  );
-
-  if (titleMatch) {
-    return {
-      companyName: normalizeString(titleMatch[2]),
-      ticker: normalizeTickerToken(titleMatch[1]),
-    };
-  }
-
-  return {
-    companyName: normalizeString(
-      sourceTitle.replace(/^[A-Z0-9.-]+\s*[—-]?\s*/i, "")
-    ),
-    ticker: inferTickerFromText(sourceTitle),
-  };
+  return extractFlowTitleInfo(sourceTitle);
 }
 
 function detectExchange(html: string) {
@@ -319,6 +211,15 @@ function detectRecommendation(html: string) {
   );
 }
 
+function extractFirstMeaningfulParagraph(html: string): string {
+  const text = stripHtml(html);
+  const paragraphs = text
+    .split(/\n\s*\n/)
+    .map(paragraph => paragraph.trim())
+    .filter(paragraph => paragraph.length > 24);
+  return paragraphs[0] || "";
+}
+
 function collectSections(html: string) {
   const ids = Array.from(
     html.matchAll(/(?:id|href)=["']#?([a-z0-9_-]+)["']/gi)
@@ -353,28 +254,19 @@ function detectFlowReportKind(
   html: string
 ): FlowReportKind {
   const htmlTitle = matchFirstGroup(html, [/<title>([^<]+)<\/title>/i]);
-  const hasBroadTickerUniverse = Array.isArray(report.content.tickerUniverse)
-    ? report.content.tickerUniverse.length >= 4
-    : false;
-  const candidates = [
-    report.title,
-    report.slug,
-    report.sourceFolder,
-    report.content.sourceLabel || "",
-    report.content.headline || "",
-    report.content.coverage || "",
+
+  return resolveFlowReportKind({
+    title: report.title,
     htmlTitle,
-  ];
-
-  if (candidates.some(isDailyMarketReportText)) {
-    return "daily";
-  }
-
-  return hasBroadTickerUniverse &&
-    !inferTickerFromText(report.title) &&
-    !inferTickerFromText(report.content.headline || "")
-    ? "daily"
-    : "stock";
+    tickerUniverse: report.content.tickerUniverse,
+    candidates: [
+      report.slug,
+      report.sourceFolder,
+      report.content.sourceLabel || "",
+      report.content.headline || "",
+      report.content.coverage || "",
+    ],
+  });
 }
 
 function buildFlowReportSummary(report: DailyReportRecord): FlowReportSummary {
@@ -390,19 +282,21 @@ function buildFlowReportSummary(report: DailyReportRecord): FlowReportSummary {
       : extractTitleAndCompany(report, html);
   const tickerUniverse = Array.isArray(report.content.tickerUniverse)
     ? report.content.tickerUniverse
-        .map(item => normalizeTickerToken(item))
+        .map(item => normalizeFlowTicker(item))
         .filter(item => item && !isBlockedFlowTicker(item))
     : [];
   const ticker =
     (reportKind === "daily" ? "MARKET" : "") ||
     tickerUniverse[0] ||
     titleInfo.ticker ||
-    inferTickerFromText(report.content.coverage || "") ||
-    inferTickerFromText(report.title) ||
-    inferTickerFromText(report.content.sourceLabel || "") ||
-    inferTickerFromText(report.sourceFolder) ||
-    inferTickerFromText(report.slug) ||
-    normalizeTickerToken(report.id) ||
+    inferFlowTickerFromText(
+      report.content.coverage || "",
+      report.title,
+      report.content.sourceLabel || "",
+      report.sourceFolder,
+      report.slug
+    ) ||
+    normalizeFlowTicker(report.id) ||
     "FLOW";
   const sourceLabel =
     normalizeString(report.content.sourceLabel) ||
@@ -411,6 +305,9 @@ function buildFlowReportSummary(report: DailyReportRecord): FlowReportSummary {
   const previewText =
     normalizeString(report.content.headline) ||
     normalizeString(report.content.executiveSummary[0] || "") ||
+    (contentFormat === "html"
+      ? normalizeString(extractFirstMeaningfulParagraph(html))
+      : "") ||
     normalizeString(report.content.coverage || "") ||
     report.title;
 

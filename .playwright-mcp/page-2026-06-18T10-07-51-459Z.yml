@@ -1,0 +1,266 @@
+- generic [ref=e3]:
+  - region "Notifications alt+T"
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - img "Gistify logo" [ref=e8]
+          - generic [ref=e9]:
+            - paragraph [ref=e10]: Gistify
+            - paragraph [ref=e11]: Earnings Intelligence
+        - navigation [ref=e12]:
+          - button "Earning Strategy Pro" [ref=e13] [cursor=pointer]:
+            - img [ref=e14]
+            - text: Earning Strategy
+            - generic [ref=e19]: Pro
+          - button "Momentum Pro" [ref=e20] [cursor=pointer]:
+            - img [ref=e21]
+            - text: Momentum
+            - generic [ref=e28]: Pro
+          - button "Daily Pro" [ref=e29] [cursor=pointer]:
+            - img [ref=e30]
+            - text: Daily
+            - generic [ref=e33]: Pro
+          - button "Flow" [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Flow
+      - generic [ref=e40]:
+        - button "TR" [ref=e41] [cursor=pointer]
+        - button "EN" [ref=e42] [cursor=pointer]
+  - generic [ref=e63]:
+    - generic [ref=e66]:
+      - generic [ref=e67]:
+        - paragraph [ref=e68]: Flow
+        - heading "Report Center" [level=1] [ref=e69]
+        - paragraph [ref=e70]: Archive stock HTML reports and follow daily market reports on a separate surface.
+      - generic [ref=e71]:
+        - button "Stock Reports" [ref=e72] [cursor=pointer]:
+          - img
+          - text: Stock Reports
+        - button "Daily Report" [ref=e73] [cursor=pointer]:
+          - img
+          - text: Daily Report
+        - button "Refresh" [ref=e74] [cursor=pointer]:
+          - img
+          - text: Refresh
+    - main [ref=e75]:
+      - generic [ref=e76]:
+        - article [ref=e77]:
+          - paragraph [ref=e78]: Ticker Library
+          - paragraph [ref=e79]: "5"
+        - article [ref=e80]:
+          - paragraph [ref=e81]: Stock Reports
+          - paragraph [ref=e82]: "8"
+        - article [ref=e83]:
+          - paragraph [ref=e84]: Daily Reports
+          - paragraph [ref=e85]: "3"
+        - article [ref=e86]:
+          - generic [ref=e87]:
+            - img [ref=e88]
+            - paragraph [ref=e91]: Latest Update
+          - paragraph [ref=e92]: Jun 18, 2026, 12:41 AM
+      - generic [ref=e93]:
+        - generic [ref=e94]:
+          - generic [ref=e95]:
+            - paragraph [ref=e96]: Daily Report
+            - heading "Market journal" [level=2] [ref=e97]
+            - paragraph [ref=e98]: US market journals and macro close reports live here. Surface the latest issue first and open the archive on its own page.
+          - button "Open Daily Archive" [ref=e99] [cursor=pointer]:
+            - img
+            - text: Open Daily Archive
+        - generic [ref=e100]:
+          - link "Jun 17, 2026 Jun 18, 2026, 12:41 AM ABD Piyasaları — 17 Haziran 2026 | Kapsamlı Rapor ABD Piyasaları — 17 Haziran 2026 | Kapsamlı Rapor NASDAQ HOLD flow/us-market-report-june17-2026.html" [ref=e101] [cursor=pointer]:
+            - /url: /flow/daily-report-flow-us-market-report-june17-2026
+            - img [ref=e103]
+            - generic [ref=e105]:
+              - generic [ref=e106]:
+                - generic [ref=e107]: Jun 17, 2026
+                - generic [ref=e108]: Jun 18, 2026, 12:41 AM
+              - heading "ABD Piyasaları — 17 Haziran 2026 | Kapsamlı Rapor" [level=3] [ref=e109]
+              - paragraph [ref=e110]: ABD Piyasaları — 17 Haziran 2026 | Kapsamlı Rapor
+              - generic [ref=e111]:
+                - generic [ref=e112]: NASDAQ
+                - generic [ref=e113]: HOLD
+                - generic [ref=e114]:
+                  - img [ref=e115]
+                  - text: flow/us-market-report-june17-2026.html
+          - link "Jun 16, 2026 Jun 16, 2026, 04:24 PM ABD Borsaları Momentum & Pre-Market Derin Analiz Raporu - 16 Haziran 2026 ABD Borsaları Momentum & Pre-Market Derin Analiz Raporu - 16 Haziran 2026 SELL flow/abd-borsaları-momentum-&-pre-market-derin-analiz-raporu-16-haziran-2026.html" [ref=e118] [cursor=pointer]:
+            - /url: /flow/daily-report-flow-abd-borsalar-momentum-pre-market-derin-analiz-raporu-16-haziran-2026
+            - img [ref=e120]
+            - generic [ref=e122]:
+              - generic [ref=e123]:
+                - generic [ref=e124]: Jun 16, 2026
+                - generic [ref=e125]: Jun 16, 2026, 04:24 PM
+              - heading "ABD Borsaları Momentum & Pre-Market Derin Analiz Raporu - 16 Haziran 2026" [level=3] [ref=e126]
+              - paragraph [ref=e127]: ABD Borsaları Momentum & Pre-Market Derin Analiz Raporu - 16 Haziran 2026
+              - generic [ref=e128]:
+                - generic [ref=e129]: SELL
+                - generic [ref=e130]:
+                  - img [ref=e131]
+                  - text: flow/abd-borsaları-momentum-&-pre-market-derin-analiz-raporu-16-haziran-2026.html
+          - link "Jun 16, 2026 Jun 16, 2026, 03:11 PM ABD Borsaları Momentum Analizi - TR/EN (15-16 Haziran 2026) ABD Borsaları Momentum Analizi - TR/EN (15-16 Haziran 2026) NASDAQ SELL flow/abd-borsaları-momentum-analizi-tr-en-15-16-haziran-2026.html" [ref=e134] [cursor=pointer]:
+            - /url: /flow/daily-report-flow-abd-borsalar-momentum-analizi-tr-en-15-16-haziran-2026
+            - img [ref=e136]
+            - generic [ref=e138]:
+              - generic [ref=e139]:
+                - generic [ref=e140]: Jun 16, 2026
+                - generic [ref=e141]: Jun 16, 2026, 03:11 PM
+              - heading "ABD Borsaları Momentum Analizi - TR/EN (15-16 Haziran 2026)" [level=3] [ref=e142]
+              - paragraph [ref=e143]: ABD Borsaları Momentum Analizi - TR/EN (15-16 Haziran 2026)
+              - generic [ref=e144]:
+                - generic [ref=e145]: NASDAQ
+                - generic [ref=e146]: SELL
+                - generic [ref=e147]:
+                  - img [ref=e148]
+                  - text: flow/abd-borsaları-momentum-analizi-tr-en-15-16-haziran-2026.html
+      - generic [ref=e151]:
+        - generic [ref=e152]:
+          - generic [ref=e153]:
+            - paragraph [ref=e154]: Stock Reports
+            - heading "Ticker library" [level=2] [ref=e155]
+            - paragraph [ref=e156]: Each stock keeps its own card. Entering the card opens the latest report, the archive and the comment panel in one flow.
+          - button "Open Stock Gallery" [ref=e157] [cursor=pointer]:
+            - img
+            - text: Open Stock Gallery
+        - generic [ref=e158]:
+          - link "Ticker View HOOD 2 reports Robinhood Markets (HOOD) - Research Report | Siber-Finans Robinhood Markets (HOOD) - Research Report | Siber-Finans Jun 17, 2026 1 archive 2 sources Open Reports" [ref=e159] [cursor=pointer]:
+            - /url: /flow/ticker/HOOD
+            - generic [ref=e160]:
+              - generic [ref=e161]:
+                - paragraph [ref=e162]: Ticker View
+                - heading "HOOD" [level=2] [ref=e163]
+              - generic [ref=e164]: 2 reports
+            - generic [ref=e165]:
+              - paragraph [ref=e166]: Robinhood Markets (HOOD) - Research Report | Siber-Finans
+              - paragraph [ref=e167]: Robinhood Markets (HOOD) - Research Report | Siber-Finans
+            - generic [ref=e168]:
+              - generic [ref=e169]:
+                - generic [ref=e170]:
+                  - img [ref=e171]
+                  - text: Jun 17, 2026
+                - generic [ref=e173]:
+                  - img [ref=e174]
+                  - text: 1 archive
+                - generic [ref=e178]:
+                  - img [ref=e179]
+                  - text: 2 sources
+              - generic [ref=e183]:
+                - text: Open Reports
+                - img [ref=e184]
+          - link "Ticker View WDC 1 reports Western Digital (WDC) Research Verification Report Western Digital (WDC) Research Verification Report Jun 17, 2026 0 archive 1 sources Open Reports" [ref=e186] [cursor=pointer]:
+            - /url: /flow/ticker/WDC
+            - generic [ref=e187]:
+              - generic [ref=e188]:
+                - paragraph [ref=e189]: Ticker View
+                - heading "WDC" [level=2] [ref=e190]
+              - generic [ref=e191]: 1 reports
+            - generic [ref=e192]:
+              - paragraph [ref=e193]: Western Digital (WDC) Research Verification Report
+              - paragraph [ref=e194]: Western Digital (WDC) Research Verification Report
+            - generic [ref=e195]:
+              - generic [ref=e196]:
+                - generic [ref=e197]:
+                  - img [ref=e198]
+                  - text: Jun 17, 2026
+                - generic [ref=e200]:
+                  - img [ref=e201]
+                  - text: 0 archive
+                - generic [ref=e205]:
+                  - img [ref=e206]
+                  - text: 1 sources
+              - generic [ref=e210]:
+                - text: Open Reports
+                - img [ref=e211]
+          - link "Ticker View INTC 1 reports Intel 18A-P Verification Report | Siber-Finans Intel 18A-P Verification Report | Siber-Finans Jun 17, 2026 0 archive 1 sources Open Reports" [ref=e213] [cursor=pointer]:
+            - /url: /flow/ticker/INTC
+            - generic [ref=e214]:
+              - generic [ref=e215]:
+                - paragraph [ref=e216]: Ticker View
+                - heading "INTC" [level=2] [ref=e217]
+              - generic [ref=e218]: 1 reports
+            - generic [ref=e219]:
+              - paragraph [ref=e220]: Intel 18A-P Verification Report | Siber-Finans
+              - paragraph [ref=e221]: Intel 18A-P Verification Report | Siber-Finans
+            - generic [ref=e222]:
+              - generic [ref=e223]:
+                - generic [ref=e224]:
+                  - img [ref=e225]
+                  - text: Jun 17, 2026
+                - generic [ref=e227]:
+                  - img [ref=e228]
+                  - text: 0 archive
+                - generic [ref=e232]:
+                  - img [ref=e233]
+                  - text: 1 sources
+              - generic [ref=e237]:
+                - text: Open Reports
+                - img [ref=e238]
+          - link "Ticker View META 3 reports Meta 2026 AI Stratejisi | Meta AI Strategy 2026 Meta 2026 AI Stratejisi | Meta AI Strategy 2026 Jun 17, 2026 2 archive 3 sources Open Reports" [ref=e240] [cursor=pointer]:
+            - /url: /flow/ticker/META
+            - generic [ref=e241]:
+              - generic [ref=e242]:
+                - paragraph [ref=e243]: Ticker View
+                - heading "META" [level=2] [ref=e244]
+              - generic [ref=e245]: 3 reports
+            - generic [ref=e246]:
+              - paragraph [ref=e247]: Meta 2026 AI Stratejisi | Meta AI Strategy 2026
+              - paragraph [ref=e248]: Meta 2026 AI Stratejisi | Meta AI Strategy 2026
+            - generic [ref=e249]:
+              - generic [ref=e250]:
+                - generic [ref=e251]:
+                  - img [ref=e252]
+                  - text: Jun 17, 2026
+                - generic [ref=e254]:
+                  - img [ref=e255]
+                  - text: 2 archive
+                - generic [ref=e259]:
+                  - img [ref=e260]
+                  - text: 3 sources
+              - generic [ref=e264]:
+                - text: Open Reports
+                - img [ref=e265]
+          - link "Ticker View PLTR 1 reports PLTR — Palantir Technologies Stock Diagnostic Report Palantir Technologies (PLTR), Q1 2026'da %85 rekor gelir büyümesi ve %71 yıllık rehberlik yükseltmesi ile olağanüstü finansallar sunsa da, 2026 yılında değerleme endişeleri ve siyasi riskler nedeniyle YTD bazda yaklaşık %24 değer kaybetmiştir. Hisse, 12 Haziran'da test ettiği $126.65 dip seviyesinden, makroekonomik jeopolitik yumuşama sayesinde $134.58 seviyesine tepki yükselişi gerçekleştirmiştir. Jun 16, 2026 0 archive 1 sources Open Reports" [ref=e267] [cursor=pointer]:
+            - /url: /flow/ticker/PLTR
+            - generic [ref=e268]:
+              - generic [ref=e269]:
+                - paragraph [ref=e270]: Ticker View
+                - heading "PLTR" [level=2] [ref=e271]
+              - generic [ref=e272]: 1 reports
+            - generic [ref=e273]:
+              - paragraph [ref=e274]: PLTR — Palantir Technologies Stock Diagnostic Report
+              - paragraph [ref=e275]: Palantir Technologies (PLTR), Q1 2026'da %85 rekor gelir büyümesi ve %71 yıllık rehberlik yükseltmesi ile olağanüstü finansallar sunsa da, 2026 yılında değerleme endişeleri ve siyasi riskler nedeniyle YTD bazda yaklaşık %24 değer kaybetmiştir. Hisse, 12 Haziran'da test ettiği $126.65 dip seviyesinden, makroekonomik jeopolitik yumuşama sayesinde $134.58 seviyesine tepki yükselişi gerçekleştirmiştir.
+            - generic [ref=e276]:
+              - generic [ref=e277]:
+                - generic [ref=e278]:
+                  - img [ref=e279]
+                  - text: Jun 16, 2026
+                - generic [ref=e281]:
+                  - img [ref=e282]
+                  - text: 0 archive
+                - generic [ref=e286]:
+                  - img [ref=e287]
+                  - text: 1 sources
+              - generic [ref=e291]:
+                - text: Open Reports
+                - img [ref=e292]
+  - contentinfo [ref=e48]:
+    - generic [ref=e49]:
+      - generic [ref=e50]:
+        - paragraph [ref=e51]: Gistify
+        - paragraph [ref=e52]: Earnings intelligence platform for momentum scanning, pre-earnings analysis and options research.
+        - paragraph [ref=e53]: "Support: support@gistify.pro"
+      - generic [ref=e54]:
+        - link "Flow" [ref=e55] [cursor=pointer]:
+          - /url: /flow
+        - link "Reports" [ref=e56] [cursor=pointer]:
+          - /url: /reports
+        - link "Pricing" [ref=e57] [cursor=pointer]:
+          - /url: /pricing
+        - link "Terms" [ref=e58] [cursor=pointer]:
+          - /url: /terms
+        - link "Privacy" [ref=e59] [cursor=pointer]:
+          - /url: /privacy
+        - link "Refund" [ref=e60] [cursor=pointer]:
+          - /url: /refund
+        - link "Pay" [ref=e61] [cursor=pointer]:
+          - /url: /pay

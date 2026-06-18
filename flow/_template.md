@@ -4,6 +4,7 @@
 **Hazirlayan:** Hasan
 **Kapsam:** US equities, macro, sector rotation
 **Metodoloji:** Manual synthesis of market structure, leadership and risk markers
+**Ticker:** MARKET
 
 ## Ozet
 

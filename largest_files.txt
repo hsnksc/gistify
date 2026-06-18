@@ -1,0 +1,46 @@
+Scanning for largest files (this may take a moment)...
+
+SizeMB FullName
+------ --------
+ 14,48 C:\Users\hasan\OneDrive\Desktop\gistify\skills\dataset\Paul_Wilmott,_Jeff_Dewynne,_Sam_Howison-Option_Pricing__Mathematical_Models_and_Computation-Oxford_Financial_Press(1994).pdf
+ 10,31 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\mermaid@11.12.0\node_modules\mermaid\dist\mermaid.min.js.map
+ 10,27 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\mermaid@11.12.0\node_modules\mermaid\dist\mermaid.js.map
+ 10,07 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\@esbuild+win32-x64@0.25.10\node_modules\@esbuild\win32-x64\esbuild.exe
+  9,45 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\@esbuild+win32-x64@0.21.5\node_modules\@esbuild\win32-x64\esbuild.exe
+  8,51 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\typescript@5.6.3\node_modules\typescript\lib\typescript.js
+  8,34 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\lightningcss-win32-x64-msvc@1.30.1\node_modules\lightningcss-win32-x64-msvc\lightningcss.win32-x64-msvc.node
+  7,37 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\pnpm@10.18.1\node_modules\pnpm\dist\pnpm.cjs
+  6,34 C:\Users\hasan\OneDrive\Desktop\gistify\skills\dataset\Essentials Of Quantitative Finance_1.pdf
+  6,17 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\mermaid@11.12.0\node_modules\mermaid\dist\mermaid.js
+  5,79 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\typescript@5.6.3\node_modules\typescript\lib\tsc.js
+  5,14 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\lucide-react@0.542.0_react@19.2.1\node_modules\lucide-react\dist\umd\lucide-react.js.map
+  5,05 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\lucide-react@0.542.0_react@19.2.1\node_modules\lucide-react\dist\cjs\lucide-react.js.map
+  4,42 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\cytoscape-fcose@2.2.0_cytoscape@3.33.1\node_modules\cytoscape-fcose\demo\demo.gif
+  4,17 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\lucide-react@0.453.0_react@19.2.1\node_modules\lucide-react\dist\umd\lucide-react.js.map
+  4,11 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\lucide-react@0.453.0_react@19.2.1\node_modules\lucide-react\dist\cjs\lucide-react.js.map
+  4,01 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\lucide-react@0.542.0_react@19.2.1\node_modules\lucide-react\dist\umd\lucide-react.min.js.map
+  3,62 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\lucide-react@0.453.0_react@19.2.1\node_modules\lucide-react\dist\umd\lucide-react.min.js.map
+  3,34 C:\Users\hasan\OneDrive\Desktop\gistify\skills\dataset\Machine-learning-techniques-and-data-for-stock-marke_2022_Expert-Systems-wit.pdf
+  3,03 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\@tailwindcss+oxide-win32-x64-msvc@4.1.14\node_modules\@tailwindcss\oxide-win32-x64-msvc\tailwindcss-oxide.win32-x64-msvc.node
+  3,03 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\cytoscape-fcose@2.2.0_cytoscape@3.33.1\node_modules\cytoscape-fcose\demo\incrementalConstraints.gif
+  2,78 C:\Users\hasan\OneDrive\Desktop\gistify\skills\dataset\black_scholes_presentation.pdf
+  2,68 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.vite\deps\lucide-react.js.map
+  2,62 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\mermaid@11.12.0\node_modules\mermaid\dist\mermaid.min.js
+  2,57 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\@rollup+rollup-win32-x64-msvc@4.52.4\node_modules\@rollup\rollup-win32-x64-msvc\rollup.win32-x64-msvc.node
+  2,30 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.vite\deps\recharts.js.map
+  2,10 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\date-fns@4.1.0\node_modules\date-fns\locale\cdn.js.map
+  2,08 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\lucide-react@0.542.0_react@19.2.1\node_modules\lucide-react\dynamic.d.ts
+  2,08 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\lucide-react@0.542.0_react@19.2.1\node_modules\lucide-react\dynamicIconImports.d.ts
+  2,00 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\@rollup+rollup-win32-x64-gnu@4.52.4\node_modules\@rollup\rollup-win32-x64-gnu\rollup.win32-x64-gnu.node
+  2,00 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\lucide-react@0.542.0_react@19.2.1\node_modules\lucide-react\dist\lucide-react.d.ts
+  1,99 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\vite@5.4.20_@types+node@24.7.0_lightningcss@1.30.1\node_modules\vite\dist\node\chunks\dep-D_zLpgQd.js
+  1,92 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\lucide-react@0.542.0_react@19.2.1\node_modules\lucide-react\dist\lucide-react.prefixed.d.ts
+  1,91 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\lucide-react@0.542.0_react@19.2.1\node_modules\lucide-react\dist\lucide-react.suffixed.d.ts
+  1,85 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\lucide-react@0.453.0_react@19.2.1\node_modules\lucide-react\dist\lucide-react.d.ts
+  1,82 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\@mermaid-js+parser@0.6.3\node_modules\@mermaid-js\parser\dist\chunks\mermaid-parser.esm.min\chunk-GZP6XWLY.mjs.map
+  1,81 C:\Users\hasan\OneDrive\Desktop\gistify\skills\dataset\ssrn-4701765.pdf
+  1,81 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\lucide-react@0.453.0_react@19.2.1\node_modules\lucide-react\dynamicIconImports.d.ts
+  1,81 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\mermaid@11.12.0\node_modules\mermaid\dist\chunks\mermaid.esm.min\chunk-7SRKK4IT.mjs.map
+  1,79 C:\Users\hasan\OneDrive\Desktop\gistify\node_modules\.pnpm\mermaid@11.12.0\node_modules\mermaid\dist\chunks\mermaid.esm\chunk-2N6VOINK.mjs.map
+
+

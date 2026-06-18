@@ -1,9 +1,10 @@
 import { ArrowLeft, Clock3, RefreshCw, ScrollText } from "lucide-react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import FlowLayout from "../components/FlowLayout";
-import FlowReportCard from "../components/FlowReportCard";
+import FlowReportList from "../components/FlowReportList";
 import { useFlowReportSummaries } from "../hooks/useFlowReportSummaries";
 import {
   formatFlowReportDate,
@@ -22,7 +23,17 @@ export default function FlowDailyPage({
     reportKind: "daily",
   });
   const latestReport = reports[0] || null;
+  const archiveReports = latestReport ? reports.slice(1) : reports;
   const locale = language === "en" ? "en-US" : "tr-TR";
+
+  usePageMeta({
+    description: copy(
+      language,
+      "Gistify Flow gunluk piyasa raporlari arsivi.",
+      "Gistify Flow daily market report archive."
+    ),
+    title: copy(language, "Gunluk Rapor Arsivi | Gistify", "Daily Report Archive | Gistify"),
+  });
 
   return (
     <FlowLayout
@@ -51,38 +62,38 @@ export default function FlowDailyPage({
         </>
       }
     >
-      <section className="grid gap-4 md:grid-cols-3">
-        <article className="rounded-[1.8rem] border border-border bg-card/90 p-5 shadow-xl">
+      <section key={latestReport?.id || "empty"} className="grid gap-3 md:grid-cols-3">
+        <article className="rounded-2xl border border-border bg-card/90 p-4 shadow-md">
           <div className="flex items-center gap-2">
             <ScrollText className="size-4 text-cyan-300" />
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-300">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-cyan-300">
               {copy(language, "Toplam Gunluk", "Total Daily Reports")}
             </p>
           </div>
-          <p className="mt-4 text-3xl font-semibold text-foreground">
+          <p className="mt-2 text-2xl font-semibold text-foreground">
             {reports.length}
           </p>
         </article>
 
-        <article className="rounded-[1.8rem] border border-border bg-card/90 p-5 shadow-xl">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+        <article className="rounded-2xl border border-border bg-card/90 p-4 shadow-md">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-emerald-300">
             {copy(language, "Son Rapor Tarihi", "Latest Report Date")}
           </p>
-          <p className="mt-4 text-xl font-semibold text-foreground">
+          <p className="mt-2 text-lg font-semibold text-foreground">
             {latestReport
               ? formatFlowReportDate(latestReport.reportDate, locale)
               : "-"}
           </p>
         </article>
 
-        <article className="rounded-[1.8rem] border border-border bg-card/90 p-5 shadow-xl">
+        <article className="rounded-2xl border border-border bg-card/90 p-4 shadow-md">
           <div className="flex items-center gap-2">
             <Clock3 className="size-4 text-amber-300" />
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-amber-300">
               {copy(language, "Son Guncelleme", "Latest Update")}
             </p>
           </div>
-          <p className="mt-4 text-xl font-semibold text-foreground">
+          <p className="mt-2 text-lg font-semibold text-foreground">
             {latestReport
               ? formatFlowTimestamp(latestReport.updatedAt, locale)
               : "-"}
@@ -91,15 +102,15 @@ export default function FlowDailyPage({
       </section>
 
       {loading ? (
-        <div className="rounded-[1.8rem] border border-border bg-card/75 px-5 py-6 text-sm text-muted-foreground">
+        <div className="rounded-2xl border border-border bg-card/75 px-4 py-5 text-sm text-muted-foreground">
           {copy(language, "Gunluk raporlar yukleniyor.", "Loading daily reports.")}
         </div>
       ) : error ? (
-        <div className="rounded-[1.8rem] border border-dashed border-border bg-card/75 px-5 py-6 text-sm text-muted-foreground">
+        <div className="rounded-2xl border border-dashed border-border bg-card/75 px-4 py-5 text-sm text-muted-foreground">
           {error}
         </div>
       ) : !latestReport ? (
-        <div className="rounded-[1.8rem] border border-dashed border-border bg-card/65 px-5 py-6 text-sm text-muted-foreground">
+        <div className="rounded-2xl border border-dashed border-border bg-card/65 px-4 py-5 text-sm text-muted-foreground">
           {copy(
             language,
             "Henuz gunluk piyasa raporu bulunamadi.",
@@ -108,18 +119,26 @@ export default function FlowDailyPage({
         </div>
       ) : (
         <>
-          <section className="rounded-[2rem] border border-border bg-card/95 p-6 shadow-2xl">
-            <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-              <div className="space-y-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-300">
+          <section className="rounded-2xl border border-border bg-card/95 p-4 shadow-md">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+              <div className="space-y-2">
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-cyan-300">
                   {copy(language, "One Cikan Rapor", "Featured Daily")}
                 </p>
-                <h2 className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
+                <h2 className="text-xl font-semibold tracking-tight text-foreground md:text-2xl">
                   {latestReport.title}
                 </h2>
-                <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
+                <p className="max-w-3xl text-xs leading-5 text-muted-foreground">
                   {getFlowPreviewText(latestReport, language)}
                 </p>
+                <div className="flex flex-wrap gap-1.5 text-[10px] text-muted-foreground">
+                  <span className="rounded-full border border-border bg-background/60 px-2 py-0.5">
+                    {formatFlowReportDate(latestReport.reportDate, locale)}
+                  </span>
+                  <span className="rounded-full border border-border bg-background/60 px-2 py-0.5">
+                    {formatFlowTimestamp(latestReport.updatedAt, locale)}
+                  </span>
+                </div>
               </div>
 
               <Button
@@ -132,26 +151,21 @@ export default function FlowDailyPage({
             </div>
           </section>
 
-          <section className="space-y-4">
-            <div className="rounded-[1.8rem] border border-border bg-card/90 p-5 shadow-xl">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-indigo-300">
+          <section className="space-y-3">
+            <div className="rounded-2xl border border-border bg-card/90 p-4 shadow-md">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-indigo-300">
                 {copy(language, "Arsiv", "Archive")}
               </p>
-              <h2 className="mt-2 text-xl font-semibold text-foreground">
+              <h2 className="mt-1 text-lg font-semibold text-foreground">
                 {copy(language, "Tum gunluk raporlar", "All daily reports")}
               </h2>
             </div>
 
-            <div className="grid gap-4 lg:grid-cols-2">
-              {reports.map(report => (
-                <FlowReportCard
-                  basePath="/flow"
-                  key={report.id}
-                  language={language}
-                  report={report}
-                />
-              ))}
-            </div>
+            <FlowReportList
+              basePath="/flow"
+              language={language}
+              reports={archiveReports}
+            />
           </section>
         </>
       )}

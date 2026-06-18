@@ -4,6 +4,7 @@ import type {
   DailyReportRecord,
   DailyReportSourcePackage,
 } from "../shared/dailyReports";
+import { inferFlowTickerFromText } from "../shared/flowInference.ts";
 
 function getConfiguredRootPath() {
   const configured = normalizeString(process.env.DAILY_REPORTS_PATH);
@@ -587,16 +588,26 @@ function extractMetadata(markdown: string) {
     cleanMarkdownText(timestampMatch?.[1] || "") ||
     cleanMarkdownText(headerMetadata.reportDateLabel);
 
+  const tickerToken = inferFlowTickerFromText(title);
+
   return {
     title,
     headline,
     author: headerMetadata.author || normalizeString(authorMatch?.[1]),
-    coverage: headerMetadata.coverage || normalizeString(coverageMatch?.[1]),
+    coverage:
+      headerMetadata.coverage ||
+      normalizeString(coverageMatch?.[1]) ||
+      (tickerToken
+        ? tickerToken === "MARKET"
+          ? "Theme: Market"
+          : `Ticker: ${tickerToken}`
+        : ""),
     methodology:
       headerMetadata.methodology || normalizeString(methodologyMatch?.[1]),
     metadataItems: headerMetadata.metadataItems,
     executiveSummary: normalizedSummary,
     reportDate: parseDateTokenFromText(reportDateLabel),
+    tickerUniverse: tickerToken ? [tickerToken] : [],
   };
 }
 
@@ -634,94 +645,6 @@ function extractHtmlTitle(html: string) {
   );
 }
 
-const BLOCKED_FLOW_TICKERS = new Set([
-  "ABD",
-  "AI",
-  "EN",
-  "HTML",
-  "PDF",
-  "REPORT",
-  "TR",
-]);
-
-const FLOW_TICKER_ALIASES: Array<{
-  ticker: string;
-  patterns: RegExp[];
-}> = [
-  {
-    ticker: "META",
-    patterns: [/\bmeta platforms?\b/i, /\bmeta\b/i],
-  },
-  {
-    ticker: "HOOD",
-    patterns: [/\brobinhood\b/i],
-  },
-  {
-    ticker: "PLTR",
-    patterns: [/\bpalantir\b/i],
-  },
-  {
-    ticker: "WDC",
-    patterns: [/\bwestern digital\b/i],
-  },
-  {
-    ticker: "INTC",
-    patterns: [/\bintel\b/i],
-  },
-  {
-    ticker: "MARKET",
-    patterns: [
-      /\babd borsalar[ıi]\b/i,
-      /\bus markets?\b/i,
-      /\bpre-market\b/i,
-      /\bmomentum analizi\b/i,
-    ],
-  },
-];
-
-function normalizeFlowTickerCandidate(value: string) {
-  return normalizeString(value).toUpperCase().replace(/[^A-Z0-9.-]/g, "");
-}
-
-function isBlockedFlowTicker(value: string) {
-  const normalized = normalizeFlowTickerCandidate(value);
-  return !normalized || BLOCKED_FLOW_TICKERS.has(normalized);
-}
-
-function inferFlowTickerFromText(...values: string[]) {
-  const joined = values
-    .map(value => normalizeString(value))
-    .filter(Boolean)
-    .join(" ");
-
-  if (!joined) {
-    return "";
-  }
-
-  for (const alias of FLOW_TICKER_ALIASES) {
-    if (alias.patterns.some(pattern => pattern.test(joined))) {
-      return alias.ticker;
-    }
-  }
-
-  const explicitPatterns = [
-    /\(([A-Z][A-Z0-9.-]{1,9})\)/g,
-    /^\s*([A-Z][A-Z0-9.-]{1,9})(?=\s*[—\-:|])/gm,
-    /\bTicker\s*[:\-]\s*([A-Z][A-Z0-9.-]{1,9})\b/gi,
-    /\$([A-Z][A-Z0-9.-]{1,9})\b/g,
-  ];
-
-  for (const pattern of explicitPatterns) {
-    for (const match of Array.from(joined.matchAll(pattern))) {
-      const normalized = normalizeFlowTickerCandidate(match[1] || "");
-      if (!isBlockedFlowTicker(normalized)) {
-        return normalized;
-      }
-    }
-  }
-
-  return "";
-}
 
 function extractHtmlFigureFiles(html: string) {
   return Array.from(
@@ -745,6 +668,9 @@ function extractHtmlMetadata(html: string) {
   const sectionTitles = collectHtmlTextsByClass(html, "section-title", 8)
     .map(item => item.split(/\s{2,}/)[0] || item)
     .filter(Boolean);
+  const h1Text = stripHtmlTags(
+    html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)?.[1] || ""
+  );
   const footerText = stripHtmlTags(
     html.match(/<footer[^>]*>([\s\S]*?)<\/footer>/i)?.[1] || ""
   );
@@ -752,6 +678,7 @@ function extractHtmlMetadata(html: string) {
   const tickerToken = inferFlowTickerFromText(
     extractHtmlTextByClass(html, "hero-ticker").replace(/\$/g, ""),
     title,
+    h1Text,
     heroDescription,
     verdict,
     footerText,
@@ -761,6 +688,10 @@ function extractHtmlMetadata(html: string) {
   const reportDate =
     parseDateTokenFromText(priceDate) ||
     parseMonthFirstDateTokenFromText(priceDate) ||
+    parseDateTokenFromText(title) ||
+    parseMonthFirstDateTokenFromText(title) ||
+    parseDateTokenFromText(h1Text) ||
+    parseMonthFirstDateTokenFromText(h1Text) ||
     parseDateTokenFromText(footerText) ||
     parseMonthFirstDateTokenFromText(footerText);
   const metadataItems: { label: string; value: string }[] = [];
@@ -1212,7 +1143,7 @@ function buildFileSourcePackage({
         buildDailyReportOpenAiFigureFileName(fileName)
       )
     ),
-    tickerUniverse: htmlMetadata?.tickerUniverse || [],
+    tickerUniverse: metadata.tickerUniverse || [],
     researchFileCount: 0,
     updatedAt: new Date(stats.mtimeMs).toISOString(),
     sourceKind: "file",

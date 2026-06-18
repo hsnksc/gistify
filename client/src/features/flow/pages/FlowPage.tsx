@@ -1,11 +1,11 @@
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { Clock3, Layers3, RefreshCw, ScrollText } from "lucide-react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import FlowLayout from "../components/FlowLayout";
-import FlowReportCard from "../components/FlowReportCard";
+import FlowReportRow from "../components/FlowReportRow";
 import FlowTickerCard from "../components/FlowTickerCard";
 import { useFlowReportSummaries } from "../hooks/useFlowReportSummaries";
 import {
@@ -21,22 +21,10 @@ export default function FlowPage({
 }) {
   const [, setLocation] = useLocation();
   const { reports, loading, error, reload } = useFlowReportSummaries(language);
-  const stockReports = useMemo(
-    () => reports.filter(report => report.reportKind === "stock"),
-    [reports]
-  );
-  const dailyReports = useMemo(
-    () => reports.filter(report => report.reportKind === "daily"),
-    [reports]
-  );
-  const tickerGroups = useMemo(
-    () => groupFlowReportsByTicker(stockReports),
-    [stockReports]
-  );
-  const latestDailyReport = dailyReports[0] || null;
-  const highlightedDailyReports = latestDailyReport
-    ? dailyReports.slice(0, 3)
-    : [];
+  const stockReports = reports.filter(report => report.reportKind === "stock");
+  const dailyReports = reports.filter(report => report.reportKind === "daily");
+  const tickerGroups = groupFlowReportsByTicker(stockReports);
+  const highlightedDailyReports = dailyReports.slice(0, 3);
   const previewTickerGroups = tickerGroups.slice(0, 6);
   const locale = language === "en" ? "en-US" : "tr-TR";
   const latestUpdatedAt = reports[0]?.updatedAt || "";
@@ -102,76 +90,76 @@ export default function FlowPage({
         </>
       }
     >
-      <section className="grid gap-4 md:grid-cols-4">
-        <article className="rounded-[1.8rem] border border-border bg-card/90 p-5 shadow-xl">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-            {copy(language, "Hisse Basligi", "Ticker Library")}
-          </p>
-          <p className="mt-4 text-3xl font-semibold text-foreground">
-            {tickerGroups.length}
-          </p>
-        </article>
-
-        <article className="rounded-[1.8rem] border border-border bg-card/90 p-5 shadow-xl">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-indigo-300">
-            {copy(language, "Hisse Raporu", "Stock Reports")}
-          </p>
-          <p className="mt-4 text-3xl font-semibold text-foreground">
-            {stockReports.length}
-          </p>
-        </article>
-
-        <article className="rounded-[1.8rem] border border-border bg-card/90 p-5 shadow-xl">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-300">
-            {copy(language, "Gunluk Rapor", "Daily Reports")}
-          </p>
-          <p className="mt-4 text-3xl font-semibold text-foreground">
-            {dailyReports.length}
-          </p>
-        </article>
-
-        <article className="rounded-[1.8rem] border border-border bg-card/90 p-5 shadow-xl">
-          <div className="flex items-center gap-2">
-            <Clock3 className="size-4 text-amber-300" />
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300">
-              {copy(language, "Son Guncelleme", "Latest Update")}
-            </p>
-          </div>
-          <p className="mt-4 text-xl font-semibold text-foreground">
-            {latestUpdatedAt
-              ? formatFlowTimestamp(latestUpdatedAt, locale)
-              : "-"}
-          </p>
-        </article>
-      </section>
-
       {loading ? (
         <div
           role="status"
           aria-live="polite"
-          className="rounded-[1.8rem] border border-border bg-card/75 px-5 py-6 text-sm text-muted-foreground"
+          className="rounded-2xl border border-border bg-card/75 px-4 py-5 text-sm text-muted-foreground"
         >
           {copy(language, "Rapor merkezi yukleniyor.", "Loading report center.")}
         </div>
       ) : error ? (
         <div
           role="alert"
-          className="rounded-[1.8rem] border border-dashed border-border bg-card/75 px-5 py-6 text-sm text-muted-foreground"
+          className="rounded-2xl border border-dashed border-border bg-card/75 px-4 py-5 text-sm text-muted-foreground"
         >
           {error}
         </div>
       ) : (
         <>
-          <section className="space-y-4">
-            <div className="flex flex-col gap-3 rounded-[1.8rem] border border-border bg-card/90 p-5 shadow-xl lg:flex-row lg:items-end lg:justify-between">
+          <section className="grid gap-3 md:grid-cols-4">
+            <article className="rounded-2xl border border-border bg-card/90 p-4 shadow-md">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-emerald-300">
+                {copy(language, "Hisse Basligi", "Ticker Library")}
+              </p>
+              <p className="mt-2 text-2xl font-semibold text-foreground">
+                {tickerGroups.length}
+              </p>
+            </article>
+
+            <article className="rounded-2xl border border-border bg-card/90 p-4 shadow-md">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-indigo-300">
+                {copy(language, "Hisse Raporu", "Stock Reports")}
+              </p>
+              <p className="mt-2 text-2xl font-semibold text-foreground">
+                {stockReports.length}
+              </p>
+            </article>
+
+            <article className="rounded-2xl border border-border bg-card/90 p-4 shadow-md">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-cyan-300">
+                {copy(language, "Gunluk Rapor", "Daily Reports")}
+              </p>
+              <p className="mt-2 text-2xl font-semibold text-foreground">
+                {dailyReports.length}
+              </p>
+            </article>
+
+            <article className="rounded-2xl border border-border bg-card/90 p-4 shadow-md">
+              <div className="flex items-center gap-2">
+                <Clock3 className="size-4 text-amber-300" />
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-amber-300">
+                  {copy(language, "Son Guncelleme", "Latest Update")}
+                </p>
+              </div>
+              <p className="mt-2 text-base font-semibold text-foreground">
+                {latestUpdatedAt
+                  ? formatFlowTimestamp(latestUpdatedAt, locale)
+                  : "-"}
+              </p>
+            </article>
+          </section>
+
+          <section className="space-y-3">
+            <div className="flex flex-col gap-2 rounded-2xl border border-border bg-card/90 p-4 shadow-md lg:flex-row lg:items-end lg:justify-between">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-300">
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-cyan-300">
                   {copy(language, "Gunluk Rapor", "Daily Report")}
                 </p>
-                <h2 className="mt-2 text-2xl font-semibold text-foreground">
+                <h2 className="mt-1 text-xl font-semibold text-foreground">
                   {copy(language, "Piyasa gunlugu", "Market journal")}
                 </h2>
-                <p className="mt-2 max-w-3xl text-sm leading-7 text-muted-foreground">
+                <p className="mt-1 max-w-3xl text-xs leading-5 text-muted-foreground">
                   {copy(
                     language,
                     "ABD piyasa gunlugu ve makro kapanis raporlari burada toplanir. Son raporu one cikar, arsivi ayri sayfada ac.",
@@ -191,7 +179,7 @@ export default function FlowPage({
             </div>
 
             {!highlightedDailyReports.length ? (
-              <div className="rounded-[1.8rem] border border-dashed border-border bg-card/65 px-5 py-6 text-sm text-muted-foreground">
+              <div className="rounded-2xl border border-dashed border-border bg-card/65 px-4 py-5 text-sm text-muted-foreground">
                 {copy(
                   language,
                   "Henuz gunluk piyasa raporu bulunamadi.",
@@ -199,9 +187,9 @@ export default function FlowPage({
                 )}
               </div>
             ) : (
-              <div className="grid gap-4 lg:grid-cols-3">
+              <div className="grid gap-3">
                 {highlightedDailyReports.map(report => (
-                  <FlowReportCard
+                  <FlowReportRow
                     basePath="/flow"
                     key={report.id}
                     language={language}
@@ -212,16 +200,16 @@ export default function FlowPage({
             )}
           </section>
 
-          <section className="space-y-4">
-            <div className="flex flex-col gap-3 rounded-[1.8rem] border border-border bg-card/90 p-5 shadow-xl lg:flex-row lg:items-end lg:justify-between">
+          <section className="space-y-3">
+            <div className="flex flex-col gap-2 rounded-2xl border border-border bg-card/90 p-4 shadow-md lg:flex-row lg:items-end lg:justify-between">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-emerald-300">
                   {copy(language, "Hisse Raporlari", "Stock Reports")}
                 </p>
-                <h2 className="mt-2 text-2xl font-semibold text-foreground">
+                <h2 className="mt-1 text-xl font-semibold text-foreground">
                   {copy(language, "Ticker kutuphanesi", "Ticker library")}
                 </h2>
-                <p className="mt-2 max-w-3xl text-sm leading-7 text-muted-foreground">
+                <p className="mt-1 max-w-3xl text-xs leading-5 text-muted-foreground">
                   {copy(
                     language,
                     "Her hisse kendi kartini alir. Karta girince guncel rapor, gecmis arsiv ve yorum paneli ayni akista acilir.",
@@ -241,7 +229,7 @@ export default function FlowPage({
             </div>
 
             {!previewTickerGroups.length ? (
-              <div className="rounded-[1.8rem] border border-dashed border-border bg-card/65 px-5 py-6 text-sm text-muted-foreground">
+              <div className="rounded-2xl border border-dashed border-border bg-card/65 px-4 py-5 text-sm text-muted-foreground">
                 {copy(
                   language,
                   "Henuz gosterilecek hisse raporu bulunamadi.",
@@ -249,7 +237,7 @@ export default function FlowPage({
                 )}
               </div>
             ) : (
-              <div className="grid gap-4 lg:grid-cols-2">
+              <div className="grid gap-3 lg:grid-cols-3">
                 {previewTickerGroups.map(group => (
                   <FlowTickerCard
                     basePath="/flow"

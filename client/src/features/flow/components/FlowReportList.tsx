@@ -1,6 +1,6 @@
 import { copy, type AppLanguage } from "@/lib/i18n";
 import type { FlowReportListEntry } from "../lib/flowReportHelpers";
-import FlowReportCard from "./FlowReportCard";
+import FlowReportRow from "./FlowReportRow";
 
 interface FlowReportListProps {
   basePath?: string;
@@ -20,7 +20,7 @@ export default function FlowReportList({
       <div
         role="status"
         aria-live="polite"
-        className="rounded-[1.8rem] border border-dashed border-border bg-card/65 px-5 py-6 text-sm text-muted-foreground"
+        className="rounded-2xl border border-dashed border-border bg-card/65 px-4 py-5 text-sm text-muted-foreground"
       >
         {emptyMessage ||
           copy(
@@ -35,10 +35,10 @@ export default function FlowReportList({
   return (
     <section
       aria-label={copy(language, "Flow rapor listesi", "Flow report list")}
-      className="grid gap-4 lg:grid-cols-2"
+      className="grid gap-3"
     >
       {reports.map(report => (
-        <FlowReportCard
+        <FlowReportRow
           key={report.id}
           basePath={basePath}
           language={language}

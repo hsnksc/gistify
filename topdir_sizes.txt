@@ -1,0 +1,38 @@
+benchmark                            0,81 MB
+client                               2,89 MB
+dailyreport                         16,32 MB
+data                                 0,25 MB
+earningreport                        0,12 MB
+momentum                             0,05 MB
+Momentumscrapper                     2,24 MB
+patches                                 0 MB
+server                               0,23 MB
+shared                               0,01 MB
+skills                              49,68 MB
+v2                                    0,8 MB
+\nTop level files (largest 20):
+
+SizeMB Name
+------ ----
+  1,22 gistifylogo.png
+  0,26 xcom.jpeg
+  0,25 pnpm-lock.yaml
+  0,16 Gistify_v3.0_Gelismis_Agent_Gelistirme_Dokumani.md
+  0,11 dir_sizes.txt
+  0,04 VISUAL_REDESIGN_PROMPT.md
+  0,03 README.md
+  0,01 template.json
+  0,01 yapi.md
+  0,01 vite.config.ts
+  0,01 largest_files.txt
+  0,00 research_findings.md
+  0,00 package.json
+  0,00 .project-config.json
+  0,00 ideas.md
+  0,00 .env
+  0,00 .gitignore
+  0,00 .env.example
+  0,00 cleanup_commit_output.txt
+  0,00 Dockerfile
+
+

@@ -12,6 +12,12 @@ import {
   extractSnapshotMetricsFromMarkdown,
 } from "@/lib/reportPost";
 import { buildReportSpotlight } from "@/lib/reportSpotlight";
+import {
+  inferFlowTickerFromText,
+  isBlockedFlowTicker,
+  normalizeFlowTicker,
+  resolveFlowReportKind,
+} from "@shared/flowInference";
 
 export interface FlowGalleryFigure {
   aiEnhanced: boolean;
@@ -125,121 +131,6 @@ function resolveAssetSrc(
   };
 }
 
-function normalizeTickerToken(value: string) {
-  return value.trim().toUpperCase().replace(/[^A-Z0-9.-]/g, "");
-}
-
-const BLOCKED_FLOW_TICKERS = new Set([
-  "ABD",
-  "AI",
-  "EN",
-  "HTML",
-  "PDF",
-  "REPORT",
-  "TR",
-]);
-
-const FLOW_TICKER_ALIASES: Array<{
-  ticker: string;
-  patterns: RegExp[];
-}> = [
-  {
-    ticker: "META",
-    patterns: [/\bmeta platforms?\b/i, /\bmeta\b/i],
-  },
-  {
-    ticker: "HOOD",
-    patterns: [/\brobinhood\b/i],
-  },
-  {
-    ticker: "PLTR",
-    patterns: [/\bpalantir\b/i],
-  },
-  {
-    ticker: "WDC",
-    patterns: [/\bwestern digital\b/i],
-  },
-  {
-    ticker: "INTC",
-    patterns: [/\bintel\b/i],
-  },
-  {
-    ticker: "MARKET",
-    patterns: [
-      /\babd borsalar[ıi]\b/i,
-      /\bus markets?\b/i,
-      /\bpre-market\b/i,
-      /\bmomentum analizi\b/i,
-    ],
-  },
-];
-
-const FLOW_DAILY_REPORT_KEYWORDS = [
-  "abd piyasalari",
-  "us markets",
-  "market report",
-  "close report",
-  "kapanis raporu",
-  "gunluk rapor",
-  "pre-market",
-  "premarket",
-];
-
-function isBlockedFlowTicker(value: string) {
-  const normalized = normalizeTickerToken(value);
-  return !normalized || BLOCKED_FLOW_TICKERS.has(normalized);
-}
-
-function inferTickerFromText(value: string) {
-  const source = value.trim();
-  if (!source) {
-    return "";
-  }
-
-  for (const alias of FLOW_TICKER_ALIASES) {
-    if (alias.patterns.some(pattern => pattern.test(source))) {
-      return alias.ticker;
-    }
-  }
-
-  const patterns = [
-    /\(([A-Z][A-Z0-9.-]{0,9})\)/,
-    /^\s*([A-Z][A-Z0-9.-]{0,9})(?=\s*[—\-·:|])/,
-    /\bTicker\s*[:\-]\s*([A-Z][A-Z0-9.-]{0,9})\b/i,
-    /\$([A-Z][A-Z0-9.-]{0,9})\b/,
-    /(?:^|[-_/])([a-z]{1,8})(?=\d{6,8}(?:$|[-_.]))/i,
-  ];
-
-  for (const pattern of patterns) {
-    const match = source.match(pattern);
-    const normalized = normalizeTickerToken(match?.[1] || "");
-    if (normalized && !isBlockedFlowTicker(normalized)) {
-      return normalized;
-    }
-  }
-
-  return "";
-}
-
-function normalizeFlowKindText(value: string) {
-  return value
-    .trim()
-    .toLocaleLowerCase("tr-TR")
-    .replace(/ç/g, "c")
-    .replace(/ğ/g, "g")
-    .replace(/ı/g, "i")
-    .replace(/ö/g, "o")
-    .replace(/ş/g, "s")
-    .replace(/ü/g, "u");
-}
-
-function isDailyMarketReportText(value: string) {
-  const source = normalizeFlowKindText(value);
-  return Boolean(
-    source &&
-      FLOW_DAILY_REPORT_KEYWORDS.some(keyword => source.includes(keyword))
-  );
-}
 
 export function formatFlowReportDate(reportDate: string, locale = "tr-TR") {
   return new Intl.DateTimeFormat(locale, {
@@ -340,18 +231,17 @@ export function getFlowReportKind(report: FlowReportListEntry): FlowReportKind {
   }
 
   const content = normalizeFlowContent(report.content);
-  const candidates = [
-    report.title,
-    report.slug,
-    report.sourceFolder,
-    getFlowSourceLabel(report),
-    content.headline,
-    content.coverage,
-  ];
-
-  return candidates.some(value => isDailyMarketReportText(value || ""))
-    ? "daily"
-    : "stock";
+  return resolveFlowReportKind({
+    title: report.title,
+    tickerUniverse: content.tickerUniverse,
+    candidates: [
+      report.slug,
+      report.sourceFolder,
+      getFlowSourceLabel(report),
+      content.headline,
+      content.coverage || "",
+    ],
+  });
 }
 
 export function getFlowSourceLabel(report: FlowReportListEntry) {
@@ -385,13 +275,13 @@ export function getPrimaryFlowTicker(report: FlowReportListEntry) {
   }
 
   if (isFlowReportSummary(report)) {
-    const directTicker = normalizeTickerToken(report.ticker);
+    const directTicker = normalizeFlowTicker(report.ticker);
     if (directTicker && !isBlockedFlowTicker(directTicker)) {
       return directTicker;
     }
 
     const fromUniverse = report.tickerUniverse
-      .map(item => normalizeTickerToken(item))
+      .map(item => normalizeFlowTicker(item))
       .find(item => item && !isBlockedFlowTicker(item));
 
     if (fromUniverse) {
@@ -399,18 +289,20 @@ export function getPrimaryFlowTicker(report: FlowReportListEntry) {
     }
 
     return (
-      inferTickerFromText(report.title) ||
-      inferTickerFromText(report.sourceLabel) ||
-      inferTickerFromText(report.sourceFolder) ||
-      inferTickerFromText(report.slug) ||
-      normalizeTickerToken(report.id) ||
+      inferFlowTickerFromText(
+        report.title,
+        report.sourceLabel,
+        report.sourceFolder,
+        report.slug
+      ) ||
+      normalizeFlowTicker(report.id) ||
       "FLOW"
     );
   }
 
   const content = normalizeFlowContent(report.content);
   const directTicker = content.tickerUniverse
-    .map(item => normalizeTickerToken(item))
+    .map(item => normalizeFlowTicker(item))
     .find(item => item && !isBlockedFlowTicker(item));
 
   if (directTicker) {
@@ -418,18 +310,20 @@ export function getPrimaryFlowTicker(report: FlowReportListEntry) {
   }
 
   return (
-    inferTickerFromText(content.coverage || "") ||
-    inferTickerFromText(report.title) ||
-    inferTickerFromText(getFlowSourceLabel(report)) ||
-    inferTickerFromText(report.sourceFolder) ||
-    inferTickerFromText(report.slug) ||
-    normalizeTickerToken(report.id) ||
+    inferFlowTickerFromText(
+      content.coverage || "",
+      report.title,
+      getFlowSourceLabel(report),
+      report.sourceFolder,
+      report.slug
+    ) ||
+    normalizeFlowTicker(report.id) ||
     "FLOW"
   );
 }
 
 export function getFlowTickerReportPath(ticker: string, basePath = "/flow") {
-  const normalizedTicker = normalizeTickerToken(ticker) || ticker.trim();
+  const normalizedTicker = normalizeFlowTicker(ticker) || ticker.trim();
   return `${basePath}/ticker/${encodeURIComponent(normalizedTicker)}`;
 }
 
@@ -441,7 +335,7 @@ export function getFlowReportArchiveDetailPath(
   report: FlowReportListEntry,
   basePath = "/reports"
 ) {
-  const ticker = normalizeTickerToken(getPrimaryFlowTicker(report)) || "FLOW";
+  const ticker = normalizeFlowTicker(getPrimaryFlowTicker(report)) || "FLOW";
   return `${basePath}/${encodeURIComponent(ticker)}/${encodeURIComponent(report.reportDate)}`;
 }
 
@@ -450,7 +344,7 @@ export function findFlowReportByTickerAndDate(
   ticker: string,
   reportDate: string
 ) {
-  const normalizedTicker = normalizeTickerToken(ticker);
+  const normalizedTicker = normalizeFlowTicker(ticker);
   if (!normalizedTicker || !reportDate) {
     return null;
   }

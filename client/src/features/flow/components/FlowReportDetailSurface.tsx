@@ -4,6 +4,7 @@ import { ArrowLeft, RefreshCw, Share2 } from "lucide-react";
 import { toast } from "sonner";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import FlowCommunityPanel from "./FlowCommunityPanel";
 import FlowLayout from "./FlowLayout";
@@ -82,8 +83,22 @@ export default function FlowReportDetailSurface({
   const tickerPath = ticker ? getFlowTickerReportPath(ticker, basePath) : "/flow/daily";
   const libraryPath = reportKind === "daily" ? "/flow" : basePath;
 
+  usePageMeta({
+    description:
+      report?.content.headline ||
+      copy(
+        language,
+        "Gistify Flow rapor detayi.",
+        "Gistify Flow report detail."
+      ),
+    title: report?.title
+      ? `${report.title} | Gistify`
+      : copy(language, "Flow Raporu | Gistify", "Flow Report | Gistify"),
+  });
+
   return (
     <FlowLayout
+      key={report?.id || "empty"}
       language={language}
       sidebarLayoutClassName="xl:grid-cols-[minmax(0,1fr)_380px]"
       eyebrow={eyebrow}

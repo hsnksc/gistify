@@ -1,0 +1,118 @@
+# MARA (Marathon Digital) Agresif Momentum CALL Analiz | 15-19 Haziran 2026
+
+> **Hazirlayan:** Agresif Momentum CALL Uzmani  
+> **Tarih:** 13 Haziran 2026 (Pazar)  
+> **Hisse:** MARA Holdings Inc. (NASDAQ: MARA)  
+> **Strateji:** Agresif Momentum CALL (OTM, Short Expiry, High R/R)  
+> **Haftalik Anchor:** FOMC 17 Haziran Carsamba 14:00 ET | Juneteenth 19 Haziran Cuma (Piyasalar Kapali)
+
+---
+
+## 1. MARA Haftalik Veri Ozeti (Multi-Kaynak Cross-Check)
+
+| Metrik | Deger | Kaynak | Not |
+|--------|-------|--------|-----|
+| **Kapanis** | **$14.08** | Finnhub API | 12 Haziran 2026, +3.45% (+$0.47) |
+| **Gunluk High/Low** | $14.715 / $13.62 | Finnhub | Range 8.1% — yuksek volatilite |
+| **Onceki Kapanis** | $13.61 | Finnhub | Gap-up +3.45% |
+| **52W High** | $23.45 | Arastirma | %40 altinda, rebound potansiyeli |
+| **52W Low** | $6.66 | Arastirma | %111 yukarida |
+| **P/E (TTM)** | **3.63** | Kullanici input | Cok ucuz degerleme |
+| **Debt-to-Equity** | **70%** | Kullanici input | Yuksek kaldirac — risk |
+| **Revenue (TTM)** | ~$919M | Kullanici input | Bitcoin miner revenue |
+| **Net Income (TTM)** | ~$927M | Kullanici input | Dusuk Bitcoin maliyeti sayesinde |
+| **Analyst PT (Ortalama)** | $22.41 | Kullanici input | %59 upside potansiyel |
+| **Analyst PT (Medyan)** | $15.50 | TickerNerd | %10 upside, dusuk hedefli |
+| **Analyst PT (High)** | $30.00 | Compass Point | %113 upside |
+| **Analyst PT (BTIG)** | $27.00 | BTIG Gregory Lewis | %92 upside |
+| **Beta** | ~2.0+ (tahmini) | Crypto miner | S&P 500'e gore 2x volatil |
+| **20D Volatilite** | ~100%+ annualized | Kullanici input | Cok yuksek IV, opsiyon pahali |
+| **Bitcoin Fiyat** | $72,000+ | Kullanici input | 12 Haziran 2026 |
+| **Bitcoin Q1 Maliyet** | $40,047 | Seeking Alpha | MARA cok dusuk maliyetli madenci |
+| **Enerji Maliyeti** | $0.04/kWh | Seeking Alpha | Sektordeki en dusuklerden |
+
+### Cross-Check Kaynaklari
+- **Finnhub (Primary):** 12 Haziran kapanis $14.08, gunluk range $13.62-$14.715, +3.45%.
+- **MarketBeat (Haziran 2026):** MARA $13.31, PT $18.38, 52W range $6.66-$23.45. AI pivot ve Starwood Digital Ventures isbirligi vurgulaniyor.
+- **TickerNerd (Haziran 2026):** MARA $13.78, medyan PT $15.50, high PT $30.00, low PT $7.00. 7 Buy, 5 Hold, 1 Sell konsensus.
+- **Morpher / TradersUnion (Mayis 2026):** Q1 2026 $1.3B net loss, revenue %18 dusus. Long Ridge acquisition ve AI pivot. Kritik support $11.49, direnc $14.25.
+- **Simply Wall St (Haziran 2026):** MARA $18.17 fair value, %26 upside. AI pivot ve executive security program. TD Cowen konferansinda AI/HPC vurgusu.
+
+**Verdict:** MARA temel verileri Finnhub, MarketBeat, TickerNerd ve Simply Wall St ile cross-check edildi. Fiyat $14.08, 52W high $23.45. P/E 3.63 = cok ucuz. AI pivot ve Bitcoin $72K+ = katalizor. Risk: Yuksek kaldirac (%70 D/E), Q1 loss, crypto volatilitesi.
+
+---
+
+## 2. Teknik Analiz (Destek, Direnç, Trend, RSI)
+
+### Gunluk Chart Snapshot (12 Haziran 2026)
+- **Acilis:** $13.73
+- **Kapanis:** $14.08
+- **High:** $14.715
+- **Low:** $13.62
+- **Body:** Bullish candle, low'tan kapanisa +$0.46 (güclu alim baskisi)
+
+### Trend Yapisi
+- **Primary Trend:** Downtrend'ten reversal denemesi. 52W low $6.66 (Nisan 2026?) sonrasi rebound. $14.25-$14.50 direnc bolgesi kritik.
+- **Price Action:** 12 Haziran +3.45% rally ile $14.08 kapanis. $14.715 high = direnc testi. Daha once $14.25 direncinde rejection yasanmisti (Nisan 2026).
+- **Moving Averages:** Fiyat 20-day EMA üzerinde olabilir (tahmini). 50-day MA ~$13.00-$13.50 (tahmini), 200-day MA ~$12.00-$13.00. Bullish alignment potansiyeli.
+
+### Destek ve Direnç Seviyeleri
+| Seviye | Fiyat | Onemi | Senaryo |
+|--------|-------|-------|---------|
+| **S1** | $13.62 | 12 Haziran low | Ilk destek, yakin stop icin |
+| **S2** | $13.20 | Psikolojik / 11 Haziran low | Kisa vadeli trend destegi |
+| **S3** | $13.00 | Round number / 50-day MA | Major destek, dip alimi icin |
+| **S4** | $11.49 | Kritik support (TradersUnion) | Trend kirilma = bearish |
+| **R1** | $14.25 | Direnç / Nisan rejection | Ilk direnc, scalp hedefi |
+| **R2** | $14.50 | Direnç / psikolojik | Breakout = momentum boost |
+| **R3** | $15.00 | Round number / OTM strike | Kritik direnc, delta boost bolgesi |
+| **R4** | $16.50 | Fib extension / measured move | Breakout sonrasi momentum hedefi |
+| **R5** | $18.38 | MarketBeat PT | Orta vadeli hedef |
+| **R6** | $22.41-$27.00 | Analyst consensus range | Uzun vadeli bull case |
+
+### RSI ve Momentum
+- **RSI (14-period):** ~55-65 (tahmini). 12 Haziran +3.45% rally sonrasi overbought degil, trend devami icin alan var.
+- **MACD:** Bullish crossover potansiyeli (12 Haziran kapanisiyla). Histogram pozitif bolgeye donebilir.
+- **Volume:** 12 Haziran'da hacim artisi. Crypto miner'lar tipik olarak yuksek volume ile hareket eder.
+- **ATR (Tahmini):** ~$0.80-$1.00/gun. Beta 2.0+ = S&P 500'den 2x volatil.
+
+### Teknik Verdict
+- **Bullish:** 52W low'dan rebound, fiyat MA'ler üzerinde olabilir, RSI orta seviyede, hacim destekli.
+- **Caution:** $14.25-$14.50 direnci "lower high" riski tasiyor. Eger geçilemezse double-top formasyonu olusabilir. Ancak +3.45% momentum bu riski azaltiyor.
+- **FOMC Teknik Etkisi:** FOMC öncesi genellikle "range bound" hareket. 13.62-14.25 range'i FOMC öncesi beklenebilir.
+
+---
+
+## 3. Bitcoin ve AI Pivot: Katalizörler
+
+### 3.1 Bitcoin $72K+ = MARA'nin Motoru
+- **Bitcoin Fiyat:** 12 Haziran 2026'da $72,000+. Bu, MARA'nin Q1 2026 Bitcoin acquisition cost'u olan $40,047'nin **%80 üzerinde**.
+- **Marj:** MARA, her Bitcoin'i ~$40K maliyetle kazip, ~$72K'da tutuyorsa, **mark-to-market kar = ~$32K/BTC**. Bu, balance sheet güçlülügü sagliyor.
+- **Holding Strategy:** MARA, madencilik yerine Bitcoin tutma stratejisine kayabilir. Bu, "HODL" narrative'i ile retail investor'lari çeker.
+- **Bitcoin Risk:** Bitcoin $60K altina düserse, MARA balance sheet impairment riski. Ancak $72K = $60K'dan %20 yukarida = buffer var.
+
+### 3.2 AI Data Center Pivot: Starwood + Long Ridge
+- **Starwood Digital Ventures:** MARA, Bitcoin madenciliginden AI/HPC altyapisina dönüsum yapıyor. Starwood ile 1 gigawatt IT capacity hedefi. Bu, **2.5+ gigawatt** potansiyele kadar genisleyebilir.
+- **Long Ridge Energy Acquisition:** $1.52B acquisition. Dogal gaz kaynaklari + enerji altyapisi. MARA'nin enerji maliyetini düsürür ve AI data center'lar icin power kaynagi saglar.
+- **Why It Matters:** AI data center'lar icin **güç = en kıt kaynak**. MARA, mevcut enerji kapasitesini AI compute'a dönüstürerek **Bitcoin volatilitesinden bagimsiz, yuksek marjli, predictabl** revenue stream yaratiyor.
+- **Valuation Impact:** Eger AI pivot basarili olursa, MARA "Bitcoin miner" degil "digital infrastructure" olarak re-rate edilir. Bu, P/E multiple'ini 3.63'ten 10-15x'e çikartabilir.
+- **Catalyst:** TD Cowen 54. Annual Technology, Media & Telecom Conference'da (Haziran 2026) MARA bu pivot'i vurguladi. Tenant lease announcements = yakinda katalizor.
+
+### 3.3 P/E 3.63 = Deep Value mi? Trap mi?
+- **Bull Case:** P/E 3.63 = market, MARA'nin Bitcoin marjlarini kalici olarak sürdüremeyecegini fiyatliyor. Eger Bitcoin $60K+ kalirsa, bu P/E = asiri ucuz. AI pivot = bonus.
+- **Bear Case:** P/E 3.63 = market, MARA'nin Q1 loss'larini, $1.3B net loss'u ve execution risk'ini fiyatliyor. Eger Bitcoin düser veya AI pivot basarisiz olursa, "value trap" = düsüs devam eder.
+- **Net:** P/E 3.63 = asymmetric upside. Bitcoin $72K+ ve AI pivot = bull case daha guclu.
+
+---
+
+## 4. FOMC ve Bitcoin/Crypto Macro Senaryolari
+
+### 4.1 FOMC 17 Haziran 2026 Context
+- **Fed Baskani:** Kevin Warsh (ilk FOMC toplantisi). 13 Mayis 2026'da onaylandi.
+- **Beklenti:** Fed Funds Rate **3.50%-3.75% araliginda sabit** (CME FedWatch).
+- **Risk:** **Hawkish Hold.** Warsh enflasyon hawk'i. PPI 11 Haziran'da HOT (+1.1% m/m headline), CPI 10 Haziran'da SOFT (+0.2% core) geldi. Bu karisik data = Warsh "vigilant neutrality" ve "higher-for-longer" mesaji verebilir.
+- **Basin Toplantisi:** 14:30 ET. Warsh'in tonu ve "dot plot" yil sonu beklentisi.
+
+### 4.2 Macro Senaryolar ve MARA Etkisi
+
+#### Senaryo A: Hawkish Hold

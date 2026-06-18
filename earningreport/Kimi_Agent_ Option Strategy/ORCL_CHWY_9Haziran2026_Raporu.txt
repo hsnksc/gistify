@@ -1,0 +1,164 @@
+
+╔══════════════════════════════════════════════════════════════════════╗
+║          ORCL & CHWY — 9 HAZİRAN 2026 GÜNCEL VERİ RAPORU            ║
+║              🔥 EARNINGS ÖNCESİ SON GÜN VERİLERİ 🔥                 ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+📅 TARİH: 9 Haziran 2026 (Salı)
+⚠️  KRİTİK NOT: Her iki hisse de YARIN (10 Haziran) earnings açıklayacak!
+   • ORCL: 10 Haziran AMC (After Market Close / Kapanış Sonrası)
+   • CHWY: 10 Haziran BMO (Before Market Open / Açılış Öncesi)
+
+═══════════════════════════════════════════════════════════════════════
+                        ORCL (ORACLE CORPORATION)
+═══════════════════════════════════════════════════════════════════════
+
+📈 FİYAT VERİLERİ
+───────────────────────────────────────────────────────────────────────
+  Son İntraday Fiyat (9 Haz, ~2PM):  $212.84
+  8 Haziran Kapanış:                 $213.06
+  5 Haziran Kapanış:                 $213.68
+  Günlük Değişim (8→9 Haz):          ~-$0.22 (-0.10%)
+  7 Haz Raporundan Değişim:          $213.68 → $212.84 (-0.39%)
+  Önceki Rapor (7 Haz):              $213.68
+
+📊 TEKNİK GÖSTERGELER
+───────────────────────────────────────────────────────────────────────
+  RSI(14):                           54.48  [NÖTR 🟡]
+  ATR(14):                           $8.80
+  50 Günlük MA:                      $193.68  [Fiyat ÜZERİNDE ✅]
+  200 Günlük MA:                     $206.12  [Fiyat ÜZERİNDE ✅]
+  Hacim (8 Haz):                     13.3M  [Ort: 27.6M — DÜŞÜK 🔵]
+  52 Hafta Aralığı:                  $134.57 — $345.72
+  Piyasa Değeri:                     $612.1B
+
+💹 VOLATİLİTE & OPSİYON METRİKLERİ
+───────────────────────────────────────────────────────────────────────
+  Implied Volatility (IV):           75.76%
+  IV Rank:                           82.83%  [YÜKSEK 🔴]
+  IV30 (30 Günlük Ort. IV):          76.19%
+  Earnings İmplied Move:             ±12.96% (Haftalık opsiyon)
+  Opsiyon Hacim (20g Ort):           287,555  [ÇOK YÜKSEK 🔴]
+  Earnings Volatility Rating (EVR):  5.7/10
+
+📋 EARNINGS BEKLENTİLERİ
+───────────────────────────────────────────────────────────────────────
+  Beklenen EPS:                      $1.95
+  Beklenen Gelir:                    $19.10B
+  Son Çeyrek EPS:                    $1.70 (5.30% pozitif sürpriz)
+
+═══════════════════════════════════════════════════════════════════════
+                        CHWY (CHEWY, INC.)
+═══════════════════════════════════════════════════════════════════════
+
+📈 FİYAT VERİLERİ
+───────────────────────────────────────────────────────────────────────
+  Son İntraday Fiyat (9 Haz, ~2PM):  $20.29
+  8 Haziran Kapanış:                 $20.28
+  5 Haziran Kapanış:                 $20.64
+  Günlük Değişim (8→9 Haz):          ~+$0.01 (+0.05%)
+  7 Haz Raporundan Değişim:          $20.64 → $20.29 (-1.70%)
+  Önceki Rapor (7 Haz):              $20.64
+
+📊 TEKNİK GÖSTERGELER
+───────────────────────────────────────────────────────────────────────
+  RSI(14):                           31.12  [AŞIRI SATIMA YAKIN ⚠️]
+  ATR(14):                           $0.55
+  50 Günlük MA:                      $23.09  [Fiyat ALTINDA ❌]
+  200 Günlük MA:                     $33.33  [Fiyat ALTINDA ❌]
+  Hacim (8 Haz):                     4.4M  [Ort: 8.4M — DÜŞÜK 🔵]
+  52 Hafta Aralığı:                  $19.30 — $48.62
+  Piyasa Değeri:                     $8.3B
+
+💹 VOLATİLİTE & OPSİYON METRİKLERİ
+───────────────────────────────────────────────────────────────────────
+  IV30 (30 Günlük Ort. IV):          73.92%
+  Earnings İmplied Move:             ±10.25% (MarketWatch Straddle)
+                                     ±12.9%  (MarketChameleon)
+  Opsiyon Hacim (20g Ort):           14,295
+
+📊 SHORT İNTEREST
+───────────────────────────────────────────────────────────────────────
+  Short Interest:                    26.81M hisse
+  % of Float:                        11.71%  [YÜKSEK 🔴]
+  Short Ratio:                       3.22 gün kapanış süresi
+  Short Interest Değişimi:           +26.01% (artış)
+
+📋 EARNINGS BEKLENTİLERİ
+───────────────────────────────────────────────────────────────────────
+  Beklenen EPS:                      $0.43  (yıllık +22.86%)
+  Beklenen Gelir:                    $3.36B (yıllık +7.84%)
+  Zacks Konsensüs (F.Y.):            $1.62 EPS, $13.67B Gelir
+
+═══════════════════════════════════════════════════════════════════════
+                      KARŞILAŞTIRMALI ÖZET TABLO
+═══════════════════════════════════════════════════════════════════════
+
+┌─────────────────────────┬──────────────┬──────────────┐
+│ Metrik                  │ ORCL         │ CHWY         │
+├─────────────────────────┼──────────────┼──────────────┤
+│ Güncel Fiyat (~2PM)     │ $212.84      │ $20.29       │
+│ 8 Haz Kapanış           │ $213.06      │ $20.28       │
+│ 7 Haz Rapor Fiyatı      │ $213.68      │ $20.64       │
+│ Rapor'dan Değişim       │ -0.39%       │ -1.70%       │
+│ RSI(14)                 │ 54.48        │ 31.12        │
+│ ATR(14)                 │ $8.80        │ $0.55        │
+│ 50MA Durumu             │ ÜZERİNDE     │ ALTINDA      │
+│ IV30                    │ 76.19%       │ 73.92%       │
+│ IV Rank (ORCL)          │ 82.83%       │ N/A          │
+│ Earnings İmplied Move   │ ±12.96%      │ ±10.25-12.9%│
+│ Short Interest          │ 1.26M (0.4%) │ 26.81M (11.7%)│
+│ 52w Dip Mesafesi        │ +58.2%       │ +5.1%        │
+│ Trend                   │ Stabil       │ Düşüş        │
+└─────────────────────────┴──────────────┴──────────────┘
+
+═══════════════════════════════════════════════════════════════════════
+                       🎯 ANALİST YORUMU & NOTLAR
+═══════════════════════════════════════════════════════════════════════
+
+ORCL (ORACLE) — POZİSYON: TARAFsIZ/YÜKSELİŞE MEYİLLİ
+───────────────────────────────────────────────────────────────────────
+✅ Fiyat hem 50MA ($193.68) hem de 200MA ($206.12) ÜZERİNDE
+✅ RSI(14) = 54.48 nötr bölgede — aşırı alım/satım yok
+✅ Oppenheimer 8 Haz'da hedefi $235 → $275'e yükseltti (Outperform)
+⚠️ IV Rank %82.83 — earnings öncesi opsiyonlar çok pahalı
+⚠️ Son earnings (Mart) sonrası %11.36 yükselmişti — beklenti yüksek
+⚠️ O gün %9.59 düşüş yaşadı — volatilite yüksek
+💡 EVR: 5.7/10 — orta-yüksek volatilite beklentisi
+
+→ Beklenen hareket aralığı (10 Haziran kapanış sonrası):
+  Alt: $212.84 × (1 - 0.1296) = $185.25
+  Üst: $212.84 × (1 + 0.1296) = $240.43
+
+CHWY (CHEWY) — POZİSYON: ZAYIF/DÜŞÜŞ EĞİLİMİNDE
+───────────────────────────────────────────────────────────────────────
+❌ Fiyat tüm hareketli ortalamaların ALTINDA (50MA: $23.09)
+❌ RSI(14) = 31.12 — aşırı satım bölgesine yakın (dip sinyali)
+❌ Son 1 haftada -11.75% değer kaybetti
+❌ 52 hafta dibine ($19.30) sadece $0.98 mesafe (%5.1)
+⚠️ Short Interest %11.71 — yüksek short baskısı devam ediyor
+⚠️ YTD getiri hâlâ +38.62% (çok düşmüş olsa da)
+⚠️ TradingView teknik analizi: "Strong Sell"
+💡 EVR: 5.0/10 — orta volatilite beklentisi
+
+→ Beklenen hareket aralığı (10 Haziran açılış öncesi):
+  Alt: $20.29 × (1 - 0.1025) = $18.21
+  Üst: $20.29 × (1 + 0.1025) = $22.37
+
+═══════════════════════════════════════════════════════════════════════
+                        ⚠️ RİSK UYARILARI
+═══════════════════════════════════════════════════════════════════════
+
+1. ORCL: IV Rank %82+ seviyesinde — opsiyon primleri çok yüksek.
+   Satım stratejileri (sell premium) cazip olabilir.
+
+2. CHWY: 52 hafta dibine ($19.30) çok yakın. Düşüş devam ederse
+   yeni dip test edilebilir. Earnings'de kötü sonuç = sert düşüş.
+
+3. Her iki hisse için de yarın earnings var — piyasa hareketli olacak.
+   Pozisyon alınacaksa risk yönetimi kritik!
+
+═══════════════════════════════════════════════════════════════════════
+📌 RAPOR TARİHİ: 9 Haziran 2026 (Salı)
+📌 SON GÜNCELLEME: ~2:00-2:06 PM EDT (İntraday veriler)
+═══════════════════════════════════════════════════════════════════════

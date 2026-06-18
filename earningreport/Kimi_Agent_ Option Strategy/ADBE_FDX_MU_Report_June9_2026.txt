@@ -1,0 +1,175 @@
+
+================================================================================
+         ADBE | FDX | MU - GÜNCEL FİYAT VERİLERİ RAPORU
+                    9 Haziran 2026 (Salı)
+================================================================================
+
+⚠ NOT: 9 Haziran 2026 kapanış verileri henüz mevcut değildir. 
+   Aşağıdaki tabloda SUNULAN EN GÜNCEL VERİLER: 8 Haziran 2026 Kapanış
+
+================================================================================
+📊 GENEL ÖZET TABLOSU
+================================================================================
+
+┌──────────┬─────────────┬──────────────┬─────────────┬─────────────┬──────────┐
+│ Hisse    │ Son Fiyat   │ Günlük Değ.  │ Hacim       │ RSI(14)     │ ATR(14)  │
+├──────────┼─────────────┼──────────────┼─────────────┼─────────────┼──────────┤
+│ ADBE     │ $246.76     │ -1.86%       │ 2.83M       │ 39.48       │ $10.42   │
+│ FDX      │ $331.83     │ +0.25%       │ 0.78M       │ 59.11       │ $7.38    │
+│ MU       │ $945.76     │ +9.46%       │ 41.98M      │ 61.30       │ $34.22   │
+└──────────┴─────────────┴──────────────┴─────────────┴─────────────┴──────────┘
+
+================================================================================
+📈 IV METRİKLERİ & KAZANÇ TAKVİMİ
+================================================================================
+
+┌──────────┬──────────────────┬────────────────────┬──────────────────┐
+│ Hisse    │ IV Rank          │ IV Percentile      │ Kazanç Tarihi    │
+├──────────┼──────────────────┼────────────────────┼──────────────────┤
+│ ADBE     │ 89.86            │ %99 (Çok Yüksek)   │ 11 Haz (2 gün!)  │
+│ FDX      │ 93.15%           │ %94-96 (Çok Yüksek)│ 23 Haz (14 gün)  │
+│ MU       │ N/A              │ %21.73 Implied Move│ 24 Haz (15 gün)  │
+└──────────┴──────────────────┴────────────────────┴──────────────────┘
+
+================================================================================
+📊 DETAYLI HİSSE ANALİZLERİ
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+🔴 ADBE (Adobe Inc.) - NASDAQ
+────────────────────────────────────────────────────────────────────────────────
+• SON FİYAT: $246.76 (8 Haziran 2026 Kapanış)
+• ÖNCEKİ KAPANIŞ: $251.44 (5 Haziran)
+• GÜNLÜK DEĞİŞİM: -$4.68 (-%1.86)
+• AÇILIŞ / YÜKSEK / DÜŞÜK: $249.06 / $250.74 / $244.25
+• HACİM: 2,832,787 (Ort: 5,571,100 - Ortalamanın altında)
+• RSI(14): 39.48 → Nötr bölge, aşırı satım (30) sınırına yakın
+• IV RANK: 89.86 (Yüksek) | IV PERCENTILE: %99 (Çok Yüksek)
+• ATR(14): $10.42 - $11.07
+• 50MA DURUMU: Fiyat 50MA altında (50MA ~$245-284 arası)
+• 52 HAFTALIK ARALIK: $224.13 - $421.48
+• P/E: 14.39 | BETA: 1.40
+• YTD GETİRİ: +%29.49
+• KAZANÇ TARİHİ: 11 Haziran 2026 (After Market Close) - 2 GÜN KALDI
+• ANALİST HEDEFİ: Ortalama $329.81 (Yüksek: $487)
+• NOT: Kazanç öncesi IV çok yüksek (%99 percentile). Opsiyon primleri pahalı.
+  Stifel hedef fiyatını $400'ten $350'ye düşürdü ama "Buy" tavsiyesini korudu.
+
+Önceki Rapor Karşılaştırması:
+┌─────────────────┬──────────────┬──────────────┬─────────────┐
+│ ADBE            │ 7 Haziran    │ 8-9 Haziran  │ Değişim     │
+├─────────────────┼──────────────┼──────────────┼─────────────┤
+│ Fiyat           │ $251.44      │ $246.76      │ -%1.86      │
+│ Kazanç Tarihi   │ 11 Haz AMC   │ 11 Haz AMC   │ 2 gün kaldı │
+│ YTD             │ -%28*        │ +%29.49      │ Güncellendi │
+└─────────────────┴──────────────┴──────────────┴─────────────┘
+  *Önceki rapordaki YTD -%28 verisi muhtemelen hatalıdır. Yahoo Finance'a
+   göre YTD +%29.49'dur.
+
+────────────────────────────────────────────────────────────────────────────────
+🟢 FDX (FedEx Corporation) - NYSE
+────────────────────────────────────────────────────────────────────────────────
+• SON FİYAT: $331.83 (8 Haziran 2026 Kapanış)
+• ÖNCEKİ KAPANIŞ: $331.00 (5 Haziran)
+• GÜNLÜK DEĞİŞİM: +$0.83 (+%0.25)
+• AÇILIŞ / YÜKSEK / DÜŞÜK: $331.20 / $332.97 / $328.27
+• HACİM: 777,950 (Ort: 2,211,885 - Çok düşük hacim)
+• RSI(14): 59.11 → Nötr bölge (Önceki raporda RSI 71'di, düşüş gösterdi)
+• IV RANK: 93.15% (Yüksek) | IV PERCENTILE: %94-96 (Çok Yüksek)
+• ATR(14): $7.38 - $15.74
+• 50MA DURUMU: Fiyat 50MA üzerinde (~$305-349 arası)
+• 52 HAFTALIK ARALIK: $177.00 - $341.14 (Zirveye yakın!)
+• P/E: 17.67 | BETA: 1.30
+• YTD GETİRİ: +%42.78
+• KAZANÇ TARİHİ: 23 Haziran 2026 (After Market Close) - 14 GÜN KALDI
+• TEMETTÜ: $5.80/yıl (%1.75 verim)
+• ANALİST HEDEFİ: Ortalama $382.36 (Yüksek: $479)
+• NOT: 52-hafta zirvesine ($341.14) çok yakın. Morgan Stanley hedefini
+  $230'dan $160'a düşürdü ve "Underweight" tavsiyesi verdi.
+
+Önceki Rapor Karşılaştırması:
+┌─────────────────┬──────────────┬──────────────┬─────────────┐
+│ FDX             │ 7 Haziran    │ 8-9 Haziran  │ Değişim     │
+├─────────────────┼──────────────┼──────────────┼─────────────┤
+│ Fiyat           │ $331.00      │ $331.83      │ +%0.25      │
+│ RSI             │ 71           │ 59.11        │ -11.89      │
+│ Kazanç Tarihi   │ 23 Haz AMC   │ 23 Haz AMC   │ 14 gün kaldı│
+└─────────────────┴──────────────┴──────────────┴─────────────┘
+
+────────────────────────────────────────────────────────────────────────────────
+🟢 MU (Micron Technology Inc.) - NASDAQ
+────────────────────────────────────────────────────────────────────────────────
+• SON FİYAT: $945.76 (8 Haziran 2026 Kapanış) / $946.47 (Gün içi)
+• ÖNCEKİ KAPANIŞ: $864.01 (5 Haziran)
+• GÜNLÜK DEĞİŞİM: +$81.75 (+%9.46) - BÜYÜK SICRAMA!
+• AÇILIŞ / YÜKSEK / DÜŞÜK: $938.27 / $962.95 / $916.50
+• HACİM: 41,984,067 (Ort: 48,323,617 - Yüksek hacim)
+• RSI(14): 61.30 → Nötr bölge, hafif pozitif
+• IMPLIED MOVE (Haftalık): %21.73 (Üç hisse arasında EN YÜKSEK!)
+• ATR(14): $34.22 (Yüksek volatilite)
+• 50MA DURUMU: Fiyat 50MA ÇOK üzerinde (~$500-994 arası)
+• 52 HAFTALIK ARALIK: $103.38 - $1,089.29
+• P/E: 44.71 | BETA: 2.17
+• YTD GETİRİ: +%231.76 (Olağanüstü!)
+• KAZANÇ TARİHİ: 24 Haziran 2026 (After Market Close) - 15 GÜN KALDI
+• ANALİST HEDEFİ: Ortalama $739.47 (Wells Fargo: $1,220)
+• NOT: 2 günde +%9.46 sıçrama yaptı. 5 Haziran'dan bu yana +%10.3.
+  Wells Fargo hedef fiyatı $550'den $1,220'ye yükseltti. "Overweight".
+  Haftalık opsiyonlar %21.73 hareket fiyatlıyor - kazanç öncesi en yüksek.
+
+Önceki Rapor Karşılaştırması:
+┌─────────────────┬──────────────┬──────────────┬─────────────┐
+│ MU              │ 7 Haziran    │ 8-9 Haziran  │ Değişim     │
+├─────────────────┼──────────────┼──────────────┼─────────────┤
+│ Fiyat           │ $864.01      │ $945.76      │ +%9.46      │
+│ Beta            │ 2.17         │ 2.17         │ Sabit       │
+│ Kazanç Tarihi   │ 24 Haz AMC   │ 24 Haz AMC   │ 15 gün kaldı│
+└─────────────────┴──────────────┴──────────────┴─────────────┘
+
+================================================================================
+💡 STRATEJİK ÖZET & TESPİTLER
+================================================================================
+
+1. ADBE (Adobe) - KAZANÇA 2 GÜN KALDI ⚠️
+   • IV %99 percentile'da → Opsiyon primleri çok pahalı
+   • Kazanç öncesi son 3 günde -%4.68 düşüş (satış baskısı)
+   • RSI 39.48 ile aşırı satım sınırına yakın
+   • 50MA altında işlem görüyor (Kısa vadeli trend zayıf)
+   • TAHMİN: Kazanç öncesi yüksek volatilite bekleniyor (%9.64 implied move)
+
+2. FDX (FedEx) - KAZANÇA 14 GÜN VAR
+   • En sakin hisse: Günlük değişim sadece +%0.25
+   • IV Rank %93.15 ile yüksek seviyede
+   • 52-hafta zirvesine ($341.14) çok yakın
+   • RSI 59.11 ile nötr bölgede (Önceki 71'den düştü)
+   • Düşük hacim (0.78M) → İlgi azalıyor olabilir
+   • TAHMİN: Kazanç öncesi IV artmaya devam edecek
+
+3. MU (Micron) - KAZANÇA 15 GÜN VAR
+   • SON 2 GÜNDE +%9.46 PATLAMA!
+   • Hacim yüksek (41.98M) → Güçlü alım ilgisi
+   • Implied Move %21.73 → Piyasa kazançta devasa hareket bekliyor
+   • ATR $34.22 → Günlük oynaklık çok yüksek
+   • Beta 2.17 ile piyasadan daha volatil
+   • YTD +%231.76 → Yılın yıldızı
+   • TAHMİN: Kazanç öncesi momentum devam edebilir ama risk çok yüksek
+
+================================================================================
+📊 KAZANÇ TAKVİMİ ÖZETİ
+================================================================================
+
+┌──────────┬─────────────────────┬──────────────────┬────────────────────┐
+│ Hisse    │ Kazanç Tarihi       │ Kalan Gün        │ Implied Move       │
+├──────────┼─────────────────────┼──────────────────┼────────────────────┤
+│ ADBE     │ 11 Haziran 2026 AMC │ 2 gün            │ %9.64              │
+│ FDX      │ 23 Haziran 2026 AMC │ 14 gün           │ %9.64              │
+│ MU       │ 24 Haziran 2026 AMC │ 15 gün           │ %21.73             │
+└──────────┴─────────────────────┴──────────────────┴────────────────────┘
+
+================================================================================
+                         RAPOR TARİHİ: 9 Haziran 2026
+                         VERİ KAYNAĞI: Yahoo Finance, 
+                         investing.com, marketchameleon.com,
+                         optionslam.com, unusualwhales.com,
+                         optioncharts.io, finviz.com
+================================================================================

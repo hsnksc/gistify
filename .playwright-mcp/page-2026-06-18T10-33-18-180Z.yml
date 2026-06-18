@@ -1,0 +1,191 @@
+- generic [ref=e3]:
+  - region "Notifications alt+T"
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - img "Gistify logo" [ref=e8]
+          - generic [ref=e9]:
+            - paragraph [ref=e10]: Gistify
+            - paragraph [ref=e11]: Earnings Intelligence
+        - navigation [ref=e12]:
+          - button "Earning Strategy Pro" [ref=e13] [cursor=pointer]:
+            - img [ref=e14]
+            - text: Earning Strategy
+            - generic [ref=e19]: Pro
+          - button "Momentum Pro" [ref=e20] [cursor=pointer]:
+            - img [ref=e21]
+            - text: Momentum
+            - generic [ref=e28]: Pro
+          - button "Daily Pro" [ref=e29] [cursor=pointer]:
+            - img [ref=e30]
+            - text: Daily
+            - generic [ref=e33]: Pro
+          - button "Flow" [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Flow
+      - generic [ref=e40]:
+        - button "TR" [ref=e41] [cursor=pointer]
+        - button "EN" [ref=e42] [cursor=pointer]
+  - generic [ref=e63]:
+    - generic [ref=e66]:
+      - generic [ref=e67]:
+        - paragraph [ref=e68]: Flow
+        - heading "Flow report" [level=1] [ref=e69]
+        - paragraph [ref=e70]: The standalone flow detail page keeps the source report, visuals and community comments on the same surface.
+      - generic [ref=e71]:
+        - button "Tickers" [ref=e72] [cursor=pointer]:
+          - img
+          - text: Tickers
+        - button "All Tickers" [ref=e73] [cursor=pointer]
+        - button "Refresh" [ref=e74] [cursor=pointer]:
+          - img
+          - text: Refresh
+        - button "Share" [ref=e75] [cursor=pointer]:
+          - img
+          - text: Share
+    - generic [ref=e76]:
+      - main [ref=e77]:
+        - iframe [ref=e80]:
+          - generic [active] [ref=f1e1]:
+            - main [ref=f1e2]:
+              - generic [ref=f1e3]:
+                - generic [ref=f1e4]: ÇARŞAMBA · 17 HAZİRAN 2026 · FOMC GÜNÜ · EXA + INVESTING.COM DOĞRULAMALI WEDNESDAY · JUNE 17, 2026 · FOMC DAY · EXA + INVESTING.COM VERIFIED
+                - generic [ref=f1e5]: 🏛️ FED Şahin Şoku — Teknik, Momentum, OpsiyonFed Hawkish Shock — Technical, Momentum, Options
+                - generic [ref=f1e6]: Kevin Warsh'ın ilk FOMC toplantısında faizler sabit tutuldu, ancak 9/18 üye yıl sonu artış öngördü. VIX 16.8. S&P500 -1.19%, Nasdaq -1.32%. ARM +5.96%, MU +3.44%, INTC +3.28% öne çıkarken META -5.02%, MSFT -3.82% çöktü.
+                - generic [ref=f1e7]: At Warsh's first FOMC, rates held but 9/18 officials projected a year-end hike. VIX 16.8. S&P500 -1.19%, Nasdaq -1.32%. ARM +5.96%, MU +3.44%, INTC +3.28% led gainers; META -5.02%, MSFT -3.82% collapsed.
+                - generic [ref=f1e8]:
+                  - generic [ref=f1e9]: 📉 FOMC ŞAHİNFOMC HAWKISH
+                  - generic [ref=f1e10]: 📊 VIX 16.84
+                  - generic [ref=f1e11]: 🛢️ BRENT $79.35
+                  - generic [ref=f1e12]: 🕊️ ABD-İRANUS-IRAN
+                  - generic [ref=f1e13]: 🚀 SPCX IPO
+                  - generic [ref=f1e14]: 🤖 AI CPU DALGASIWAVE
+              - generic [ref=f1e15]:
+                - button "📊 Genel BakışOverview" [ref=f1e16] [cursor=pointer]
+                - button "💰 FiyatlarPrices" [ref=f1e17] [cursor=pointer]
+                - button "📈 Teknik AnalizTechnical" [ref=f1e18] [cursor=pointer]
+                - button "🎯 AnalistlerAnalysts" [ref=f1e19] [cursor=pointer]
+                - button "🔥 Momentum 20Momentum 20" [ref=f1e20] [cursor=pointer]
+                - button "⚡ OpsiyonOptions" [ref=f1e21] [cursor=pointer]
+                - button "📰 HaberlerNews" [ref=f1e22] [cursor=pointer]
+                - button "⚠️ RisklerRisks" [ref=f1e23] [cursor=pointer]
+                - button "⭐ Gistify DeğerlendirmeGistify Rating" [ref=f1e24] [cursor=pointer]
+              - generic [ref=f1e25]:
+                - generic [ref=f1e26]:
+                  - text: ✅
+                  - generic [ref=f1e27]: Fiyatlar Exa API + ChartExchange + Robinhood ile doğrulandı · Skorlar yeniden hesaplandı · v3.2
+                  - generic [ref=f1e28]: Prices verified via Exa API + ChartExchange + Robinhood · Scores recalculated · v3.2
+                - generic [ref=f1e29]:
+                  - generic [ref=f1e30]:
+                    - generic [ref=f1e31]: Dow Jones
+                    - generic [ref=f1e32]: 51,495
+                    - generic [ref=f1e33]: "-499 pt · -0.96%"
+                    - generic [ref=f1e34]: ▼ DÜŞÜŞDOWN
+                  - generic [ref=f1e35]:
+                    - generic [ref=f1e36]: S&P 500
+                    - generic [ref=f1e37]: 7,421
+                    - generic [ref=f1e38]: "-90 pt · -1.19%"
+                    - generic [ref=f1e39]: ▼ DÜŞÜŞDOWN
+                  - generic [ref=f1e40]:
+                    - generic [ref=f1e41]: Nasdaq
+                    - generic [ref=f1e42]: 26,022
+                    - generic [ref=f1e43]: "-349 pt · -1.32%"
+                    - generic [ref=f1e44]: ▼ DÜŞÜŞDOWN
+                  - generic [ref=f1e45]:
+                    - generic [ref=f1e46]: VIX
+                    - generic [ref=f1e47]: "16.84"
+                    - generic [ref=f1e48]: "Önceki: 16.41 · Gün içi: 16.02–17.08Prev: 16.41 · Range: 16.02–17.08"
+                    - generic [ref=f1e49]: ORTA / MID
+                  - generic [ref=f1e50]:
+                    - generic [ref=f1e51]: Fed Rate
+                    - generic [ref=f1e52]: 3.50–3.75%
+                    - generic [ref=f1e53]: 4. ardışık beklemede4th consecutive hold
+                    - generic [ref=f1e54]: OYBİRLİĞİUNANIMOUS
+                  - generic [ref=f1e55]:
+                    - generic [ref=f1e56]: 10Y Treasury
+                    - generic [ref=f1e57]: 4.45%
+                    - generic [ref=f1e58]: "2Y: 4.05% → 4.14% (+9bp)"
+                    - generic [ref=f1e59]: ↑ YUKARIRISING
+                  - generic [ref=f1e60]:
+                    - generic [ref=f1e61]: Brent Crude
+                    - generic [ref=f1e62]: $79.35
+                    - generic [ref=f1e63]: +0.5% · İran baskısıIran deal
+                    - generic [ref=f1e64]: İZLENİYORWATCHING
+                  - generic [ref=f1e65]:
+                    - generic [ref=f1e66]: Fear & Greed
+                    - generic [ref=f1e67]: ~45
+                    - generic [ref=f1e68]: FOMC sonrası korku bölgesiPost-FOMC fear territory
+                    - generic [ref=f1e69]: KORKUFEAR
+                - generic [ref=f1e70]:
+                  - generic [ref=f1e71]: ⚠️
+                  - generic [ref=f1e72]:
+                    - 'heading "Şahin Sürpriz: 9/18 Üye Yıl Sonu Faiz Artışı ÖngörüyorHawkish Surprise: 9/18 Officials Project Year-End Rate Hike" [level=4] [ref=f1e73]'
+                    - paragraph [ref=f1e74]: PCE tahmini %2.7 → %3.6'ya revize edildi. 6 üye 2+ artış destekliyor. Warsh kendi dotunu çerçeve reformu gerekçesiyle paylaşmadı. 2Y tahvil 9bp fırlayarak 4.14%'e ulaştı.
+                    - paragraph [ref=f1e75]: PCE forecast revised from 2.7% to 3.6%. 6 members support 2+ hikes. Warsh withheld his dot citing framework reform. 2Y yield jumped 9bp to 4.14%.
+                - generic [ref=f1e76]:
+                  - generic [ref=f1e77]:
+                    - generic [ref=f1e78]: PCE 2026
+                    - generic [ref=f1e79]: 3.6%
+                    - generic [ref=f1e80]: Mart'ta 2.7%Was 2.7% Mar
+                  - generic [ref=f1e81]:
+                    - generic [ref=f1e82]: Artış DestekçileriHike Supporters
+                    - generic [ref=f1e83]: 9 / 18
+                    - generic [ref=f1e84]: 6'sı 2+ artış6 want 2+ hikes
+                  - generic [ref=f1e85]:
+                    - generic [ref=f1e86]: Dec ArtışHike Odds
+                    - generic [ref=f1e87]: 43%
+                    - generic [ref=f1e88]: CME FedWatch
+                  - generic [ref=f1e89]:
+                    - generic [ref=f1e90]: GDP 2026
+                    - generic [ref=f1e91]: 2.2%
+                    - generic [ref=f1e92]: "Mart'tan: 2.4%Down from 2.4%"
+                  - generic [ref=f1e93]:
+                    - generic [ref=f1e94]: 2Y TahvilYield
+                    - generic [ref=f1e95]: 4.14%
+                    - generic [ref=f1e96]: +9bp gün içiintraday
+                  - generic [ref=f1e97]:
+                    - generic [ref=f1e98]: 10Y TahvilYield
+                    - generic [ref=f1e99]: 4.45%
+                    - generic [ref=f1e100]: +2bp
+              - generic [ref=f1e101]:
+                - strong [ref=f1e102]: "⚠️ YASAL UYARI:DISCLAIMER:"
+                - text: Bu rapor yalnızca bilgilendirme amaçlıdır ve yatırım tavsiyesi değildir. Fiyatlar Exa API + ChartExchange + Investing.com + StockAnalysis kaynaklarından doğrulanmıştır. Opsiyon stratejileri örnek niteliğindedir. Tüm finansal kararlar için lisanslı bir yatırım danışmanına başvurunuz. Veriler 17 Haziran 2026 kapanışına aittir. This report is for informational purposes only and is not investment advice. Prices verified via Exa API + ChartExchange + Investing.com + StockAnalysis. Options strategies are illustrative only. Consult a licensed advisor for all financial decisions. Data as of June 17, 2026 close.
+            - text: • • • • • • • • • • • •
+      - complementary [ref=e81]:
+        - generic [ref=e82]:
+          - generic [ref=e83]:
+            - generic [ref=e84]:
+              - generic [ref=e85]:
+                - img [ref=e86]
+                - paragraph [ref=e88]: Community
+              - heading "Comments" [level=3] [ref=e89]
+              - paragraph [ref=e90]: Reading stays public. Posting requires a normal member sign-in; the public preview account cannot submit comments.
+            - generic [ref=e91]: 0 comments
+          - generic [ref=e92]:
+            - generic [ref=e93]:
+              - paragraph [ref=e94]: Checking comment permissions.
+              - link "Sign in with Google" [ref=e96] [cursor=pointer]:
+                - /url: /api/auth/google
+            - generic [ref=e97]: Loading comments.
+  - contentinfo [ref=e48]:
+    - generic [ref=e49]:
+      - generic [ref=e50]:
+        - paragraph [ref=e51]: Gistify
+        - paragraph [ref=e52]: Earnings intelligence platform for momentum scanning, pre-earnings analysis and options research.
+        - paragraph [ref=e53]: "Support: support@gistify.pro"
+      - generic [ref=e54]:
+        - link "Flow" [ref=e55] [cursor=pointer]:
+          - /url: /flow
+        - link "Reports" [ref=e56] [cursor=pointer]:
+          - /url: /reports
+        - link "Pricing" [ref=e57] [cursor=pointer]:
+          - /url: /pricing
+        - link "Terms" [ref=e58] [cursor=pointer]:
+          - /url: /terms
+        - link "Privacy" [ref=e59] [cursor=pointer]:
+          - /url: /privacy
+        - link "Refund" [ref=e60] [cursor=pointer]:
+          - /url: /refund
+        - link "Pay" [ref=e61] [cursor=pointer]:
+          - /url: /pay
