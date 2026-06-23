@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Haziran 2026 CPI Tahmin Raporu — 22 Haziran Güncellemesi | June 2026 CPI Forecast Report — June 22 Update</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#050C1B;--surf:#091525;--card:#0C1D30;--card2:#0F2240;
+  --green:#00C805;--green-d:#009904;--glow:rgba(0,200,5,.18);
+  --amber:#F59E0B;--red:#EF4444;--blue:#3B82F6;--purple:#A855F7;--cyan:#06B6D4;
+  --txt:#DCE8FF;--muted:#6A83A8;
+  --bdr:rgba(255,255,255,.07);--bdr-g:rgba(0,200,5,.15);
+  --r:12px;--rL:20px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;min-height:100vh;font-size:14px;line-height:1.6}
+/* LANG */
+.lang-btn{background:var(--card2);border:1px solid var(--bdr-g);color:var(--green);padding:5px 14px;border-radius:20px;font-size:.7rem;font-family:'JetBrains Mono',monospace;font-weight:600;cursor:pointer;transition:background .15s}
+.lang-btn:hover{background:rgba(0,200,5,.18)}
+[data-lang="en"] .tr{display:none!important}[data-lang="en"] .en{display:revert!important}
+[data-lang="tr"] .en{display:none!important}[data-lang="tr"] .tr{display:revert!important}
+/* LAYOUT */
+header{border-bottom:1px solid var(--bdr);padding:13px 24px;background:var(--surf);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
+.brand{font-family:'Space Grotesk',sans-serif;font-weight:700;color:var(--green);display:flex;align-items:center;gap:8px;font-size:.9rem}
+.brand span{color:var(--txt);font-weight:400}
+.hdr-r{display:flex;align-items:center;gap:7px}
+.pill{background:var(--card);border:1px solid var(--bdr);color:var(--muted);padding:4px 11px;border-radius:20px;font-size:.68rem;font-family:'JetBrains Mono',monospace}
+main{max-width:1240px;margin:0 auto;padding:20px 18px 70px}
+/* SECTION */
+.sh{display:flex;align-items:baseline;gap:13px;margin:32px 0 13px;padding-bottom:10px;border-bottom:1px solid var(--bdr)}
+.sn{font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:600;color:var(--green);opacity:.8}
+.st{font-family:'Space Grotesk',sans-serif;font-size:1.18rem;font-weight:700;letter-spacing:-.4px}
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--surf),var(--card2));border:1px solid var(--bdr-g);border-radius:var(--rL);padding:24px 28px;margin-bottom:6px}
+.hero-date{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--green);letter-spacing:.1em;margin-bottom:5px}
+.hero-h{font-family:'Space Grotesk',sans-serif;font-size:1.6rem;font-weight:700;letter-spacing:-.6px;margin-bottom:6px}
+.hero-p{color:var(--muted);font-size:.83rem;max-width:800px;line-height:1.72}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.tag{padding:3px 10px;border-radius:20px;font-size:.65rem;font-family:'JetBrains Mono',monospace;font-weight:600;letter-spacing:.04em}
+.tr-tag{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:var(--red)}
+.ta-tag{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);color:var(--amber)}
+.tg-tag{background:rgba(0,200,5,.1);border:1px solid rgba(0,200,5,.25);color:var(--green)}
+.tb-tag{background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.3);color:var(--blue)}
+.tp-tag{background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.3);color:var(--purple)}
+.tc-tag{background:rgba(6,182,212,.12);border:1px solid rgba(6,182,212,.3);color:var(--cyan)}
+/* META BAR */
+.meta-bar{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 16px}
+.meta-pill{background:var(--card);border:1px solid var(--bdr);border-radius:20px;padding:5px 12px;font-size:.68rem;color:var(--muted)}
+.meta-pill strong{color:var(--txt);font-family:'JetBrains Mono',monospace;font-weight:600}
+/* STAT GRID */
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;margin:16px 0}
+.sc{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:13px 15px;position:relative;overflow:hidden}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r) var(--r) 0 0}
+.g::before{background:var(--green)}.r::before{background:var(--red)}.a::before{background:var(--amber)}.b::before{background:var(--blue)}.n::before{background:var(--muted)}.c::before{background:var(--cyan)}
+.sc-lbl{font-size:.62rem;font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:.07em;color:var(--muted);text-transform:uppercase;margin-bottom:4px}
+.sc-v{font-family:'JetBrains Mono',monospace;font-size:1.25rem;font-weight:600;margin-bottom:3px}
+.vg{color:var(--green)}.vr{color:var(--red)}.va{color:var(--amber)}.vn{color:var(--txt)}.vc{color:var(--cyan)}
+.sc-s{font-size:.68rem;color:var(--muted)}
+.mbadge{display:inline-block;padding:2px 7px;border-radius:20px;font-size:.6rem;font-family:'JetBrains Mono',monospace;font-weight:600;margin-top:4px}
+.mb-r{background:rgba(239,68,68,.15);color:var(--red)}.mb-g{background:rgba(0,200,5,.12);color:var(--green)}.mb-a{background:rgba(245,158,11,.12);color:var(--amber)}.mb-c{background:rgba(6,182,212,.12);color:var(--cyan)}
+/* TABLE */
+.tw{overflow-x:auto;margin:12px 0;border-radius:var(--r);border:1px solid var(--bdr)}
+table{width:100%;border-collapse:collapse}
+thead tr{background:var(--surf)}
+th{padding:9px 12px;text-align:left;font-family:'Space Grotesk',sans-serif;font-size:.65rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--bdr)}
+tbody tr{border-bottom:1px solid var(--bdr)}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:rgba(255,255,255,.02)}
+td{padding:9px 12px;font-size:.78rem;vertical-align:middle}
+.mono{font-family:'JetBrains Mono',monospace}
+.cg{color:var(--green)}.cr{color:var(--red)}.ca{color:var(--amber)}.cb{color:var(--blue)}.cm{color:var(--muted)}.cc{color:var(--cyan)}
+/* ALERT */
+.alert{border-radius:var(--r);padding:12px 16px;margin-bottom:10px;display:flex;gap:10px;align-items:flex-start}
+.ai{font-size:1rem;flex-shrink:0;margin-top:1px}
+.ac h4{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.82rem;margin-bottom:2px}
+.ac p{font-size:.77rem;color:var(--muted);line-height:1.6}
+.alert-r{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.22)}
+.alert-a{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.22)}
+.alert-g{background:rgba(0,200,5,.06);border:1px solid rgba(0,200,5,.2)}
+.alert-b{background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.22)}
+/* LISTS */
+.bl{list-style:none;display:flex;flex-direction:column;gap:4px;margin:10px 0}
+.bl li{font-size:.78rem;color:var(--muted);padding-left:13px;position:relative;line-height:1.6}
+.bl li::before{content:'•';position:absolute;left:0;color:var(--green)}
+.bl.risk li::before{color:var(--amber)}
+/* CODE/PRE */
+pre{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:14px 16px;font-family:'JetBrains Mono',monospace;font-size:.74rem;line-height:1.7;overflow-x:auto;color:var(--txt);margin:12px 0}
+/* MACRO */
+.mg{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:9px;margin:12px 0}
+.mi{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:12px 14px}
+.mi-l{font-size:.62rem;color:var(--muted);font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px}
+.mi-v{font-family:'JetBrains Mono',monospace;font-size:.98rem;font-weight:600}
+.mi-n{font-size:.67rem;color:var(--muted);margin-top:2px}
+/* RISK CARDS */
+.rg{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:11px;margin:12px 0}
+.rc{background:var(--card);border-radius:var(--r);padding:14px 16px}
+.rc-hi{border:1px solid rgba(239,68,68,.3)}.rc-me{border:1px solid rgba(245,158,11,.3)}.rc-lo{border:1px solid rgba(0,200,5,.25)}
+.rc-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.rc-nm{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.82rem}
+.rc-lv{font-size:.6rem;font-family:'JetBrains Mono',monospace;font-weight:700;padding:2px 7px;border-radius:20px}
+.rc-hi .rc-lv{background:rgba(239,68,68,.15);color:var(--red)}
+.rc-me .rc-lv{background:rgba(245,158,11,.12);color:var(--amber)}
+.rc-lo .rc-lv{background:rgba(0,200,5,.1);color:var(--green)}
+.rc-b{font-size:.75rem;color:var(--muted);line-height:1.62}
+/* STRATEGY */
+.stratg{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:13px;margin:12px 0}
+.strat{background:var(--card);border:1px solid var(--bdr);border-radius:var(--rL);padding:17px}
+.s-hor{font-size:.62rem;font-family:'JetBrains Mono',monospace;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
+.s-act{font-family:'Space Grotesk',sans-serif;font-size:.92rem;font-weight:700;margin-bottom:12px}
+.sr{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--bdr)}
+.sr:last-of-type{border-bottom:none}
+.sk2{font-size:.7rem;color:var(--muted)}.sv{font-family:'JetBrains Mono',monospace;font-size:.76rem;font-weight:600}
+.sv-u{color:var(--green)}.sv-d{color:var(--red)}
+/* DISC */
+.disc{background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.2);border-radius:var(--r);padding:12px 16px;margin:20px 0;font-size:.75rem;color:var(--muted);line-height:1.6}
+.disc strong{color:var(--amber)}
+.src-note{font-size:.66rem;color:var(--muted);font-family:'JetBrains Mono',monospace;background:var(--card);border:1px solid var(--bdr);border-radius:7px;padding:6px 11px;display:inline-flex;align-items:center;gap:5px;margin-bottom:5px}
+footer{border-top:1px solid var(--bdr);padding:16px 24px;text-align:center;font-size:.68rem;color:var(--muted);background:var(--surf)}
+@media(max-width:640px){main{padding:12px 10px 40px}.hero{padding:16px 14px}.hero-h{font-size:1.2rem}.st{font-size:1rem}}
+</style>
+</head>
+<body data-lang="tr">
+
+<header>
+  <div class="brand">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#00C805" stroke-width="1.5"/><path d="M7 10.5c0-1.657 1.343-3 3-3s3 1.343 3 3v3H7v-3z" fill="#00C805"/><rect x="9" y="4" width="2" height="2.5" rx="1" fill="#00C805"/></svg>
+    Gistify.pro <span>· <span class="tr">Haziran 2026 CPI Tahmin Raporu</span><span class="en">June 2026 CPI Forecast Report</span></span>
+  </div>
+  <div class="hdr-r">
+    <button class="lang-btn" onclick="toggleLang()">🌐 EN / TR</button>
+    <div class="pill">22 Jun 2026 · v2.0</div>
+  </div>
+</header>
+
+<main>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-date">
+    <span class="tr">22 HAZİRAN 2026 · 09:31 TRT · BLS AÇIKLAMASI: 10 TEMMUZ 2026, 08:30 ET</span>
+    <span class="en">JUNE 22, 2026 · 09:31 TRT · BLS RELEASE: JULY 10, 2026, 08:30 ET</span>
+  </div>
+  <div class="hero-h">📊 <span class="tr">Haziran 2026 CPI Tahmin Raporu — 22 Haziran Güncellemesi</span><span class="en">June 2026 CPI Forecast Report — June 22 Update</span></div>
+  <div class="hero-p tr"><strong>Temel tahmin:</strong> Genel CPI aylık +0.10% (aralık 0.0%–+0.2%), Çekirdek CPI aylık +0.20%. Petrol çökmesine rağmen BLS veri toplama dönemi (ayın ilk 2–3 haftası) nedeniyle Haziran petrol çöküşünün tamamı yansımayabilir. FOMC şahin duruşu CPI piyasa etkisini sınırlayacak.</div>
+  <div class="hero-p en"><strong>Core forecast:</strong> Headline CPI m/m +0.10% (range 0.0%–+0.2%), Core CPI m/m +0.20%. Despite the oil collapse, the BLS CPI data collection window (first 2–3 weeks of the month) means not all of June's oil drop may be captured. The FOMC's hawkish stance will limit CPI market impact.</div>
+  <div class="tags">
+    <span class="tag tr-tag">📉 <span class="tr">PETROL ÇÖKÜŞÜ</span><span class="en">OIL COLLAPSE</span></span>
+    <span class="tag ta-tag">🏦 <span class="tr">FOMC ŞAHİN</span><span class="en">FOMC HAWKISH</span></span>
+    <span class="tag tg-tag">📊 <span class="tr">CPI +0.10%</span><span class="en">CPI +0.10%</span></span>
+    <span class="tag tb-tag">🛢️ <span class="tr">WTI $75.44</span><span class="en">WTI $75.44</span></span>
+    <span class="tag tp-tag">🕊️ <span class="tr">İRAN ANLAŞMASI</span><span class="en">IRAN DEAL</span></span>
+  </div>
+</div>
+
+<div class="meta-bar">
+  <div class="meta-pill"><span class="tr"><strong>Rapor Tarihi:</strong> 22 Haziran 2026, 09:31 TRT</span><span class="en"><strong>Report Date:</strong> June 22, 2026, 09:31 TRT</span></div>
+  <div class="meta-pill"><span class="tr"><strong>Tahmin Dönemi:</strong> Haziran 2026</span><span class="en"><strong>Forecast Period:</strong> June 2026</span></div>
+  <div class="meta-pill"><span class="tr"><strong>Metodoloji:</strong> Aşağıdan yukarıya ağırlıklı toplama (BLS göreli önem ağırlıkları)</span><span class="en"><strong>Methodology:</strong> Bottom-up weighted aggregation (BLS relative importance weights)</span></div>
+</div>
+
+<!-- ════════════════════════════════════════ SECTION 1 ════════════════════════════════════════ -->
+<div class="sh"><span class="sn">01</span><h2 class="st"><span class="tr">Özet (Güncellenmiş)</span><span class="en">Executive Summary (Updated)</span></h2></div>
+
+<div class="tw">
+  <table>
+    <thead><tr>
+      <th><span class="tr">Metrik</span><span class="en">Metric</span></th>
+      <th><span class="tr">Güncel Tahmin (22 Haz)</span><span class="en">Current Forecast (Jun 22)</span></th>
+      <th><span class="tr">Önceki Tahmin (18 Haz)</span><span class="en">Previous Forecast (Jun 18)</span></th>
+      <th><span class="tr">Mayıs 2026 (Gerçekleşen)</span><span class="en">May 2026 (Actual)</span></th>
+      <th><span class="tr">Eğilim</span><span class="en">Trend</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td><strong><span class="tr">Genel CPI a/a SA</span><span class="en">Headline CPI m/m SA</span></strong></td><td class="mono cg"><strong>+0.10%</strong></td><td class="mono">+0.10%</td><td class="mono">+0.5%</td><td class="tr">Sabit (aşağı yönlü risk)</td><td class="en">Stable (downside risk)</td></tr>
+      <tr><td><strong><span class="tr">Çekirdek CPI a/a SA</span><span class="en">Core CPI m/m SA</span></strong></td><td class="mono cg"><strong>+0.20%</strong></td><td class="mono">+0.20%</td><td class="mono">+0.2%</td><td class="tr">Sabit</td><td class="en">Stable</td></tr>
+      <tr><td><strong><span class="tr">Genel CPI y/y NSA</span><span class="en">Headline CPI y/y NSA</span></strong></td><td class="mono cg"><strong>~3.8%</strong></td><td class="mono">~3.8%</td><td class="mono">+4.2%</td><td class="mono cr">↓</td></tr>
+      <tr><td><strong><span class="tr">Çekirdek CPI y/y NSA</span><span class="en">Core CPI y/y NSA</span></strong></td><td class="mono cg"><strong>~2.9%</strong></td><td class="mono">~2.9%</td><td class="mono">+2.9%</td><td class="mono">→</td></tr>
+      <tr><td><strong><span class="tr">Enerji CPI a/a</span><span class="en">Energy CPI m/m</span></strong></td><td class="mono cg"><strong>-2.5%</strong></td><td class="mono">-2.5%</td><td class="mono cr">+3.9%</td><td class="tr">Sabit</td><td class="en">Stable</td></tr>
+      <tr><td><strong><span class="tr">Gıda CPI a/a</span><span class="en">Food CPI m/m</span></strong></td><td class="mono cg"><strong>+0.15%</strong></td><td class="mono">+0.15%</td><td class="mono">+0.2%</td><td class="tr">Sabit</td><td class="en">Stable</td></tr>
+      <tr><td><strong><span class="tr">Barınma CPI a/a</span><span class="en">Shelter CPI m/m</span></strong></td><td class="mono cg"><strong>+0.25%</strong></td><td class="mono">+0.25%</td><td class="mono">+0.3%</td><td class="tr">Sabit</td><td class="en">Stable</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="alert alert-g">
+  <div class="ai">🔑</div>
+  <div class="ac">
+    <h4><span class="tr">Ana Çıkarım</span><span class="en">Key Takeaway</span></h4>
+    <p class="tr">18 Haziran'dan bu yana petrol fiyatları daha da düştü; WTI 75–78 dolar aralığına geriledi. İran anlaşması uygulanıyor (20 milyon varil ihracat başladı). Ancak BLS CPI veri toplama dönemi ayın <strong>ilk 2–3 haftasını</strong> kapsadığı için Haziran petrol çöküşünün <strong>tamamı</strong> Haziran CPI'ına yansımayabilir. <strong>+0.10%</strong> (aralık: 0.0%–+0.2%) "yumuşak-çehreli" bir genel enflasyon baskısı bekleniyor. FOMC'nin şahin bekleme duruşu (nokta grafiği %3.8) CPI'nın piyasa etkisini sınırlayacak.</p>
+    <p class="en">Since June 18, oil prices have fallen further, with WTI dropping to the $75–$78 range. The Iran deal is being implemented (20 million barrels of exports have begun). However, since the BLS CPI data collection period covers the <strong>first 2–3 weeks</strong> of the month, <strong>not all</strong> of June's oil crash may be reflected in the June CPI. A <strong>+0.10%</strong> (range: 0.0%–+0.2%) "soft-ish" headline print is expected. The FOMC's hawkish hold (dot plot at 3.8%) will limit the market impact of the CPI.</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ SECTION 2 ════════════════════════════════════════ -->
+<div class="sh"><span class="sn">02</span><h2 class="st"><span class="tr">Güncel Piyasa Verileri (22 Haziran 2026)</span><span class="en">Current Market Data (June 22, 2026)</span></h2></div>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">2.1 Petrol Fiyatları — Çöküş Devam Ediyor</span><span class="en">2.1 Oil Prices — Collapse Continues</span></h3>
+
+<div class="tw">
+  <table>
+    <thead><tr>
+      <th><span class="tr">Tarih</span><span class="en">Date</span></th>
+      <th>WTI <span class="tr">Fiyat</span><span class="en">Price</span></th>
+      <th><span class="tr">Günlük Değişim</span><span class="en">Daily Change</span></th>
+      <th><span class="tr">Notlar</span><span class="en">Notes</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td>1 <span class="tr">Haziran</span><span class="en">June</span></td><td class="mono">$94.97</td><td class="mono">—</td><td class="tr">Ay başı</td><td class="en">Start of month</td></tr>
+      <tr><td>3 <span class="tr">Haziran</span><span class="en">June</span></td><td class="mono">$96.89</td><td class="mono">—</td><td class="tr">Aylık zirve</td><td class="en">Monthly peak</td></tr>
+      <tr><td>10 <span class="tr">Haziran</span><span class="en">June</span></td><td class="mono">$93.00</td><td class="mono">—</td><td class="tr">CPI günü</td><td class="en">CPI day</td></tr>
+      <tr><td>11 <span class="tr">Haziran</span><span class="en">June</span></td><td class="mono">$90.22</td><td class="mono cr">-$2.78</td><td class="tr">Trump anlaşma açıklaması</td><td class="en">Trump deal announcement</td></tr>
+      <tr><td>15 <span class="tr">Haziran</span><span class="en">June</span></td><td class="mono">$83.21</td><td class="mono cr">-$4.12</td><td class="tr">Anlaşma yaklaşıyor</td><td class="en">Deal nearing</td></tr>
+      <tr><td>16 <span class="tr">Haziran</span><span class="en">June</span></td><td class="mono">$78.84</td><td class="mono cr">-$4.37</td><td class="tr">Anlaşma imzalandı</td><td class="en">Deal signed</td></tr>
+      <tr><td>17 <span class="tr">Haziran</span><span class="en">June</span></td><td class="mono">$79.63</td><td class="mono cg">+$0.79</td><td class="tr">Kısa vadeli düzeltme</td><td class="en">Short-term correction</td></tr>
+      <tr><td>18 <span class="tr">Haziran</span><span class="en">June</span></td><td class="mono">$75.42</td><td class="mono cr">-$1.37</td><td class="tr">Mutabakat Muhtırası imzalandı</td><td class="en">MoU signed</td></tr>
+      <tr><td>19 <span class="tr">Haziran</span><span class="en">June</span></td><td class="mono">$76.60</td><td class="mono cg">+$1.18</td><td class="tr">Vance açıklaması, oynaklık</td><td class="en">Vance statement, volatility</td></tr>
+      <tr><td>22 <span class="tr">Haziran (sabah)</span><span class="en">June (morning)</span></td><td class="mono">$78.62</td><td class="mono cg">+$2.02</td><td class="tr">İran geçici olarak Hürmüz'ü kapadı, sonra açtı</td><td class="en">Iran temporarily closed Hormuz, then reopened</td></tr>
+      <tr style="background:rgba(0,200,5,.04)"><td><strong>22 <span class="tr">Haziran (kapanış)</span><span class="en">June (close)</span></strong></td><td class="mono cg"><strong>$75.44</strong></td><td class="mono cr"><strong>-$2.91</strong></td><td class="tr cg"><strong>Anlaşma uygulanıyor</strong></td><td class="en cg"><strong>Deal being implemented</strong></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<ul class="bl">
+  <li><strong>Brent 22 Haziran:</strong> $78.29 (ICIS) — $81.11 (<span class="tr">sabah sıçraması</span><span class="en">morning spike</span>)</li>
+  <li><strong><span class="tr">Haziran Ortalama WTI</span><span class="en">June Average WTI</span>:</strong> ~$85–88 (<span class="tr">tahmin</span><span class="en">estimate</span>)</li>
+  <li><strong><span class="tr">Mayıs Ortalama WTI</span><span class="en">May Average WTI</span>:</strong> ~$100+</li>
+  <li><strong>A/A Değişim:</strong> ~-13% <span class="tr">ila</span><span class="en">to</span> -15%</li>
+</ul>
+
+<div class="alert alert-b">
+  <div class="ai">🛢️</div>
+  <div class="ac">
+    <h4><span class="tr">İran Anlaşması Güncel Durumu</span><span class="en">Iran Deal Current Status</span></h4>
+    <p class="tr">20 milyon varil ham petrol Cebel-i Ali (Chabahar) limanından sevk edildi (19 Haziran). Hürmüz Boğazı kısmen açık, bazı kısıtlamalar sürüyor. İran 22 Haziran sabahı "anlaşma ihlali" gerekçesiyle Hürmüz'ü geçici olarak kapadı, sonra açtı. 60 günlük müzakere penceresi devam ediyor (Cenevre, 19 Haziran'da başladı). Nükleer program çözülmedi. IEA: 2027'de günde 5,05 milyon varil potansiyel fazla arz. Cushing stokları 20 milyon varil (1985'ten bu yana en düşük), ancak talep de yüksek.</p>
+    <p class="en">20 million barrels of crude oil shipped from Chabahar port (June 19). Strait of Hormuz partially open, some restrictions remain. Iran temporarily closed Hormuz on the morning of June 22 due to "deal violation," then reopened. 60-day negotiation window ongoing (Geneva, started June 19). Nuclear program remains unresolved. IEA: Potential surplus of 5.05 million barrels/day in 2027. Cushing inventories at 20 million barrels (lowest since 1985), but demand is also high.</p>
+  </div>
+</div>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">2.2 FOMC 16–17 Haziran — Şahin Bekleme Onaylandı</span><span class="en">2.2 FOMC June 16–17 — Hawkish Hold Confirmed</span></h3>
+
+<div class="tw">
+  <table>
+    <thead><tr>
+      <th><span class="tr">Metrik</span><span class="en">Metric</span></th>
+      <th><span class="tr">Değer</span><span class="en">Value</span></th>
+      <th><span class="tr">Beklenti</span><span class="en">Expectation</span></th>
+      <th><span class="tr">Etki</span><span class="en">Impact</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td><span class="tr">FOMC Kararı</span><span class="en">FOMC Decision</span></td><td class="mono cg"><strong>3.50%–3.75%</strong></td><td class="tr">Bekleme (%97 olasılık)</td><td class="en">Hold (97% prob)</td><td class="mono">—</td></tr>
+      <tr><td><span class="tr">2026 Nokta Grafiği Medyanı</span><span class="en">Dot Plot 2026 Median</span></td><td class="mono cr"><strong>%3.8</strong> (<span class="tr">önceki</span><span class="en">prev.</span> 3.4%)</td><td class="mono">3.4%</td><td class="tr cg"><strong>Şahin kayma</strong></td><td class="en cg"><strong>Hawkish shift</strong></td></tr>
+      <tr><td><span class="tr">2026 İndirim Beklentisi</span><span class="en">2026 Cut Expectation</span></td><td class="mono cr"><strong>0 indirim</strong> (<span class="tr">önceki</span><span class="en">prev.</span> 1)</td><td class="tr">1 indirim</td><td class="en">1 cut</td><td class="tr">Şahin</td><td class="en">Hawkish</td></tr>
+      <tr><td><span class="tr">Faiz Artışı Bekleyen Politikacılar</span><span class="en">Policymakers Expecting Hikes</span></td><td class="mono ca"><strong>9/19</strong></td><td class="mono">—</td><td class="tr">Şahin</td><td class="en">Hawkish</td></tr>
+      <tr><td><span class="tr">Warsh Mesajı</span><span class="en">Warsh Message</span></td><td class="tr">"Fiyat istikrarı" vurgusu</td><td class="en">"Price stability" emphasis</td><td class="tr">Güvercin beklentisi</td><td class="en">Dovish expectation</td><td class="tr cg"><strong>Şahin</strong></td><td class="en cg"><strong>Hawkish</strong></td></tr>
+      <tr><td><span class="tr">Altın</span><span class="en">Gold</span></td><td class="mono">$4,268 (-$73.78, -1.70%)</td><td class="mono">—</td><td class="tr">Şahin = reel faizler yükseliyor</td><td class="en">Hawkish = real yields rise</td></tr>
+      <tr><td><span class="tr">10Y Hazine</span><span class="en">10Y Treasury</span></td><td class="mono ca"><strong>4.48–4.49%</strong></td><td class="mono">—</td><td class="tr">Şahin bekleme = faizler sabit/yukarı</td><td class="en">Hawkish hold = yields stable/up</td></tr>
+      <tr><td>DXY</td><td class="mono ca"><strong>100.85</strong></td><td class="mono">—</td><td class="tr">Şahin Fed = DXY güçleniyor</td><td class="en">Hawkish Fed = DXY strengthens</td></tr>
+      <tr><td>VIX</td><td class="mono ca"><strong>16.78</strong> (<span class="tr">19 Haziran kapanış</span><span class="en">June 19 close</span>)</td><td class="mono">—</td><td class="tr">S&P zirve yakınında, oynaklık düşük</td><td class="en">S&P near peak, volatility low</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="alert alert-a">
+  <div class="ai">📈</div>
+  <div class="ac">
+    <h4><span class="tr">Analiz</span><span class="en">Analysis</span></h4>
+    <p class="tr">Warsh'ın ilk toplantısı piyasanın beklediğinden daha şahindi. 2026 yıl sonu faiz tahmininin medyanı %3.4'ten <strong>%3.8'e</strong> yükseldi; bu, 2026'da <strong>sıfır faiz indirimi</strong> (hatta bir artış olasılığı) anlamına geliyor. 19 Haziran'da piyasa şahin şekilde yeniden fiyatladı: teknoloji hisseleri sert satıldı (Infosys -6.75%, TCS -3.55%), altın -1.70% ve 10 yıllık faizler yükseldi.</p>
+    <p class="en">Warsh's first meeting was more hawkish than the market expected. The dot plot's median year-end rate forecast for 2026 rose from 3.4% to <strong>3.8%</strong>, implying <strong>zero rate cuts in 2026</strong> (or even potential for one hike). On June 19, the market repriced hawkishly: tech stocks sold off sharply (Infosys -6.75%, TCS -3.55%), gold -1.70%, and 10Y yields rose.</p>
+  </div>
+</div>
+
+<div class="alert alert-b">
+  <div class="ai">🎯</div>
+  <div class="ac">
+    <h4><span class="tr">CPI Etkisi</span><span class="en">CPI Impact</span></h4>
+    <p class="tr">FOMC kararı Haziran CPI verisini etkilemedi (CPI verileri 1–30 Haziran arasında toplandı). Ancak 10 Temmuz'da CPI açıklandığında Warsh'ın şahin tonu piyasa tepkisini sınırlayacak — "yumuşak CPI = faiz indirimi" fiyatlaması yerine piyasa "Warsh şahin, ilerleme kabul edildi ama indirim yok" yaklaşımını benimseyebilir.</p>
+    <p class="en">The FOMC decision did not affect June CPI data (CPI data collected June 1–30). However, when CPI is released on July 10, Warsh's hawkish tone will limit the market reaction — instead of "soft CPI = rate cut" pricing, the market may adopt a "Warsh is hawkish, progress acknowledged but no cut" stance.</p>
+  </div>
+</div>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">2.3 Perakende Satışlar — Beklentileri Aştı (Geçmişe Dönük Veri)</span><span class="en">2.3 Retail Sales — Exceeded Expectations (Backward-Looking Data)</span></h3>
+
+<div class="tw">
+  <table>
+    <thead><tr>
+      <th><span class="tr">Metrik</span><span class="en">Metric</span></th>
+      <th><span class="tr">Beklenti</span><span class="en">Expectation</span></th>
+      <th><span class="tr">Gerçekleşen (Mayıs)</span><span class="en">Actual (May)</span></th>
+      <th><span class="tr">Önceki</span><span class="en">Previous</span></th>
+      <th><span class="tr">Yorum</span><span class="en">Comment</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td><span class="tr">Perakende Satışlar A/A</span><span class="en">Retail Sales MoM</span></td><td class="mono">+0.60%</td><td class="mono cg"><strong>+0.90%</strong></td><td class="mono">+0.50%</td><td class="tr">Güçlü tüketici (Mayıs)</td><td class="en">Strong consumer (May)</td></tr>
+      <tr><td><span class="tr">Otomobil Hariç Perakende Satışlar A/A</span><span class="en">Retail Sales Ex Auto MoM</span></td><td class="mono">+0.60%</td><td class="mono cg"><strong>+0.80%</strong></td><td class="mono">+0.70%</td><td class="tr">Çekirdek güçlü (Mayıs)</td><td class="en">Core strong (May)</td></tr>
+      <tr><td><span class="tr">Otomobil & Benzin Hariç Perakende Satışlar</span><span class="en">Retail Sales Ex Auto & Gas</span></td><td class="mono">+0.30%</td><td class="mono cg"><strong>+0.50%</strong></td><td class="mono">+0.50%</td><td class="tr">Enerji hariç sabit</td><td class="en">Ex-energy stable (May)</td></tr>
+      <tr><td><span class="tr">Kontrol Grubu</span><span class="en">Control Group</span></td><td class="mono">+0.40%</td><td class="mono cg"><strong>+0.70%</strong></td><td class="mono">+0.50%</td><td class="tr">Güçlü GSYH girdisi (Mayıs)</td><td class="en">Strong GDP input (May)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="alert alert-a">
+  <div class="ai">📝</div>
+  <div class="ac">
+    <h4><span class="tr">Not</span><span class="en">Note</span></h4>
+    <p class="tr">Bu veriler <strong>Mayıs 2026</strong>'ya aittir (17 Haziran'da açıklandı). Haziran 2026 tüketici harcamalarını ve dolayısıyla CPI tahminini yansıtmaz. Ancak güçlü Mayıs perakende satışları = sağlam tüketici talebi = Haziran çekirdek hizmetler talebi için <strong>yukarı yönlü risk</strong>.</p>
+    <p class="en">This data pertains to <strong>May 2026</strong> (released June 17). It does not reflect June 2026 consumer spending for the CPI forecast. However, strong May retail sales = robust consumer demand = <strong>upside risk</strong> for June core services demand.</p>
+  </div>
+</div>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">2.4 MBA İpotek Başvuruları (17 Haziran)</span><span class="en">2.4 MBA Mortgage Applications (June 17)</span></h3>
+
+<div class="tw">
+  <table>
+    <thead><tr><th><span class="tr">Metrik</span><span class="en">Metric</span></th><th><span class="tr">Değer</span><span class="en">Value</span></th><th><span class="tr">Önceki</span><span class="en">Previous</span></th></tr></thead>
+    <tbody>
+      <tr><td><span class="tr">MBA İpotek Başvuruları</span><span class="en">MBA Mortgage Applications</span></td><td class="mono cr"><strong>-3.80%</strong></td><td class="mono cg">+10.80%</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<p class="tr" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0">İpotek talebi düşüyor = konut piyasası zayıf kalmaya devam ediyor. FOMC şahin bekleme = ipotek faizleri %6.5+ aralığında kalıyor. Konut piyasası zayıflığı = barınma CPI yavaşlaması devam ediyor.</p>
+<p class="en" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0">Mortgage demand is falling = housing market remains weak. FOMC hawkish hold = mortgage rates stay in the 6.5%+ range. Housing market weakness = shelter CPI deceleration continues.</p>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">2.5 Güncel Hisse Fiyatları (Ana Göstergeler)</span><span class="en">2.5 Current Stock Prices (Key Indicators)</span></h3>
+
+<div class="tw">
+  <table>
+    <thead><tr><th><span class="tr">Hisse</span><span class="en">Stock</span></th><th><span class="tr">Son Fiyat</span><span class="en">Last Price</span></th><th>YTD</th><th><span class="tr">Notlar</span><span class="en">Notes</span></th></tr></thead>
+    <tbody>
+      <tr><td class="mono cg"><strong>NVDA</strong></td><td class="mono">$210.69 (<span class="tr">18 Haz</span><span class="en">Jun 18</span>)</td><td class="mono cg">~+50%</td><td class="tr">FOMC sonrası teknoloji rallisi + AI talebi</td><td class="en">Post-FOMC tech rally + AI demand</td></tr>
+      <tr><td class="mono cg"><strong>AMD</strong></td><td class="mono">~$488</td><td class="mono cg">~+35%</td><td class="tr">AI çip momentumu</td><td class="en">AI chip momentum</td></tr>
+      <tr><td class="mono cr"><strong>XLE</strong></td><td class="mono">~$57</td><td class="mono cr">~-5%</td><td class="tr">Petrol düşüşü = enerji baskısı</td><td class="en">Oil decline = energy pressure</td></tr>
+      <tr><td class="mono cr"><strong>AMT</strong></td><td class="mono">~$192</td><td class="mono cr">~-12%</td><td class="tr">REIT, faiz baskısı</td><td class="en">REIT, rate pressure</td></tr>
+      <tr><td class="mono cg"><strong>SPY</strong></td><td class="mono">~$6,100</td><td class="mono cg">~+15%</td><td class="tr">S&P zirve yakınında</td><td class="en">S&P near peak</td></tr>
+      <tr><td class="mono cg"><strong>QQQ</strong></td><td class="mono">~$520</td><td class="mono cg">~+20%</td><td class="tr">Teknoloji rallisi</td><td class="en">Tech rally</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ════════════════════════════════════════ SECTION 3 ════════════════════════════════════════ -->
+<div class="sh"><span class="sn">03</span><h2 class="st"><span class="tr">Haziran CPI Veri Toplama Zamanlaması — KRİTİK NOT</span><span class="en">June CPI Data Collection Timing — CRITICAL NOTE</span></h2></div>
+
+<div class="alert alert-r">
+  <div class="ai">⚠️</div>
+  <div class="ac">
+    <h4><span class="tr">ÖNEMLİ</span><span class="en">IMPORTANT</span></h4>
+    <p class="tr">BLS CPI veri toplama dönemi ayın <strong>ilk 2–3 haftasını</strong> kapsar. Benzin fiyatları genellikle 1–20 arasında toplanır. Bu, Haziran petrol çöküşünün <strong>tamamının</strong> Haziran CPI'ına yansımayabileceği anlamına gelir.</p>
+    <p class="en">The BLS CPI data collection period covers the <strong>first 2–3 weeks</strong> of the month. Gasoline prices are typically collected between the 1st and 20th. This means <strong>not all</strong> of June's oil crash may be reflected in the June CPI.</p>
+  </div>
+</div>
+
+<div class="tw">
+  <table>
+    <thead><tr>
+      <th><span class="tr">Dönem</span><span class="en">Period</span></th>
+      <th><span class="tr">WTI Ortalaması</span><span class="en">WTI Average</span></th>
+      <th><span class="tr">Benzin CPI Etkisi</span><span class="en">Gasoline CPI Impact</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td>1–10 <span class="tr">Haziran</span><span class="en">June</span></td><td class="mono">~$94–96</td><td class="tr">Pozitif/sabit</td><td class="en">Positive/stable</td></tr>
+      <tr><td>11–15 <span class="tr">Haziran</span><span class="en">June</span></td><td class="mono">~$87–90</td><td class="tr">Düşüş başlıyor</td><td class="en">Decline begins</td></tr>
+      <tr><td>16–20 <span class="tr">Haziran</span><span class="en">June</span></td><td class="mono">~$78–83</td><td class="tr">Keskin düşüş</td><td class="en">Sharp decline</td></tr>
+      <tr><td>21–30 <span class="tr">Haziran</span><span class="en">June</span></td><td class="mono">~$75–80</td><td class="tr">Keskin düşüş (CPI'ya kısmen yansır)</td><td class="en">Sharp decline (partially reflected in CPI)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<p class="tr" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>CPI Veri Toplama Tahmini:</strong> Benzin fiyatları 1–15 Haziran arasında ~$3.45'ten ~$3.20'ye düştü ve 16–20 Haziran'da ~$3.10'a geriledi. BLS anketörleri tipik olarak 2.–3. haftada veri toplar, bu nedenle <strong>15–20 Haziran</strong> fiyatları daha fazla ağırlık taşır.</p>
+<p class="en" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>CPI Data Collection Estimate:</strong> Gasoline prices fell from ~$3.45 to ~$3.20 between June 1–15, and further to ~$3.10 by June 16–20. BLS surveyors typically collect data in the 2nd–3rd week, so prices from <strong>June 15–20</strong> carry more weight.</p>
+
+<div class="alert alert-g">
+  <div class="ai">✅</div>
+  <div class="ac">
+    <h4><span class="tr">Sonuç</span><span class="en">Conclusion</span></h4>
+    <p class="tr">Benzin CPI a/a tahmini: <strong>-5% ila -7%</strong> (önceki -8%'e göre biraz daha az negatif). Toplam Enerji CPI: <strong>-2.0% ila -2.5%</strong> (önceki -2.5%'e göre biraz daha az negatif).</p>
+    <p class="en">Gasoline CPI m/m forecast: <strong>-5% to -7%</strong> (vs. previous -8%, slightly less negative). Total Energy CPI: <strong>-2.0% to -2.5%</strong> (vs. previous -2.5%, slightly less negative).</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ SECTION 4 ════════════════════════════════════════ -->
+<div class="sh"><span class="sn">04</span><h2 class="st"><span class="tr">Güncel Bileşen Bazlı Tahmin Tablosu (Haziran 2026)</span><span class="en">Updated Component-Based Forecast Table (June 2026)</span></h2></div>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">4.1 Enerji CPI (~%6.4 ağırlık) — REVİZE</span><span class="en">4.1 Energy CPI (~6.4% weight) — REVISED</span></h3>
+
+<div class="tw">
+  <table>
+    <thead><tr>
+      <th><span class="tr">Alt Bileşen</span><span class="en">Sub-Component</span></th>
+      <th><span class="tr">Ağırlık</span><span class="en">Weight</span></th>
+      <th><span class="tr">Tahmin a/a</span><span class="en">Forecast m/m</span></th>
+      <th><span class="tr">Katkı (yüzde puanı)</span><span class="en">Contribution (ppt)</span></th>
+      <th><span class="tr">Veri Kaynağı / Gerekçe (Güncel)</span><span class="en">Data Source / Rationale (Updated)</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td><strong><span class="tr">Benzin</span><span class="en">Gasoline</span></strong></td><td class="mono">~3.4%</td><td class="mono cr"><strong>-6.0%</strong></td><td class="mono cr">-0.204</td><td class="tr">Haziran ort. WTI -13%, ulusal ort. benzin ~$3.50 → ~$3.15. <strong>CPI veri toplama 1–20 Haziran = kısmi yansıma.</strong> İran ihracatları başladı = arz artıyor.</td><td class="en">WTI June avg. -13%, national avg. gasoline ~$3.50 → ~$3.15. <strong>CPI data collection Jun 1–20 = partial capture.</strong> Iranian exports began = supply rising.</td></tr>
+      <tr><td><strong><span class="tr">Elektrik</span><span class="en">Electricity</span></strong></td><td class="mono">~2.3%</td><td class="mono cg"><strong>+0.5%</strong></td><td class="mono cg">+0.012</td><td class="tr">Yaz sezonu = klima talebi artıyor. EIA: Yüksek soğutma derece günleri. Doğal gaz fiyatları sabit.</td><td class="en">Summer season = AC demand rising. EIA: High cooling degree days. Natural gas prices stable.</td></tr>
+      <tr><td><strong><span class="tr">Doğal Gaz</span><span class="en">Natural Gas</span></strong></td><td class="mono">~1.1%</td><td class="mono cg"><strong>+0.8%</strong></td><td class="mono cg">+0.009</td><td class="tr">Yaz klima talebi = doğal gazla elektrik üretimi artıyor. EIA depo +73 bcf (beklenti 80 bcf) = daha sıkı.</td><td class="en">Summer AC demand = NG electricity generation rising. EIA storage +73 bcf (expectation 80 bcf) = tighter.</td></tr>
+      <tr><td><strong><span class="tr">Yakıt Yağı</span><span class="en">Fuel Oil</span></strong></td><td class="mono">~0.1%</td><td class="mono cg"><strong>+1.0%</strong></td><td class="mono cg">+0.001</td><td class="tr">Düşük ağırlık, önemsiz. Isıtma yağı sezonu kapalı.</td><td class="en">Low weight, negligible. Heating oil season closed.</td></tr>
+      <tr style="background:rgba(0,200,5,.04)"><td><strong><span class="tr">Enerji Toplam</span><span class="en">Energy Total</span></strong></td><td class="mono cg"><strong>6.4%</strong></td><td class="mono cr"><strong>-2.0%</strong></td><td class="mono cr"><strong>-0.182</strong></td><td class="tr cg"><strong>Petrol çöküşü = baskın ama kısmen yansıdı.</strong></td><td class="en cg"><strong>Oil collapse = dominant but partially captured.</strong></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<p class="tr" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Revizyon:</strong> Önceki tahmin -2.5% → <strong>-2.0%</strong> (CPI veri toplama zamanlaması nedeniyle). Benzin -8% → <strong>-6%</strong>.</p>
+<p class="en" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Revision:</strong> Previous forecast -2.5% → <strong>-2.0%</strong> (due to CPI data collection timing). Gasoline -8% → <strong>-6%</strong>.</p>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">4.2 Gıda CPI (~%13.6 ağırlık) — Sabit</span><span class="en">4.2 Food CPI (~13.6% weight) — Stable</span></h3>
+
+<div class="tw">
+  <table>
+    <thead><tr>
+      <th><span class="tr">Alt Bileşen</span><span class="en">Sub-Component</span></th>
+      <th><span class="tr">Ağırlık</span><span class="en">Weight</span></th>
+      <th><span class="tr">Tahmin a/a</span><span class="en">Forecast m/m</span></th>
+      <th><span class="tr">Katkı (yüzde puanı)</span><span class="en">Contribution (ppt)</span></th>
+      <th><span class="tr">Veri Kaynağı / Gerekçe</span><span class="en">Data Source / Rationale</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td><strong><span class="tr">Evde Gıda</span><span class="en">Food at Home</span></strong></td><td class="mono">~8.3%</td><td class="mono cg"><strong>+0.1%</strong></td><td class="mono cg">+0.008</td><td class="tr">USDA: Tahıl fiyatları düşük, et fiyatları sabit, yumurta fiyatları -49% (Nisan) etkisi sürüyor. Tedarik zinciri baskısı hafifliyor.</td><td class="en">USDA: Grain prices low, meat prices stable, egg prices -49% (April) effect continues. Supply chain pressure easing.</td></tr>
+      <tr><td><strong><span class="tr">Dışarıda Gıda</span><span class="en">Food Away</span></strong></td><td class="mono">~5.3%</td><td class="mono cg"><strong>+0.2%</strong></td><td class="mono cg">+0.011</td><td class="tr">Restoran fiyatları yavaşlıyor. İşgücü maliyeti artışları sürüyor, ancak girdi maliyetleri düşüyor. Nisan +0.3%, Mayıs +0.2% eğilimi.</td><td class="en">Restaurant prices slowing. Labor cost increases continue, but input costs falling. April +0.3%, May +0.2% trend.</td></tr>
+      <tr style="background:rgba(0,200,5,.04)"><td><strong><span class="tr">Gıda Toplam</span><span class="en">Food Total</span></strong></td><td class="mono cg"><strong>13.6%</strong></td><td class="mono cg"><strong>+0.15%</strong></td><td class="mono cg"><strong>+0.020</strong></td><td class="tr">Sabit, yavaş hareketli. Tarımsal emtia düşüşü = aşağı yönlü risk.</td><td class="en">Stable, slow-moving. Agricultural commodity decline = downside risk.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">4.3 Barınma CPI (~%35.3 ağırlık) — Sabit</span><span class="en">4.3 Shelter CPI (~35.3% weight) — Stable</span></h3>
+
+<div class="tw">
+  <table>
+    <thead><tr>
+      <th><span class="tr">Alt Bileşen</span><span class="en">Sub-Component</span></th>
+      <th><span class="tr">Ağırlık</span><span class="en">Weight</span></th>
+      <th><span class="tr">Tahmin a/a</span><span class="en">Forecast m/m</span></th>
+      <th><span class="tr">Katkı (yüzde puanı)</span><span class="en">Contribution (ppt)</span></th>
+      <th><span class="tr">Veri Kaynağı / Gerekçe</span><span class="en">Data Source / Rationale</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td><strong><span class="tr">Birincil Kiralama</span><span class="en">Rent of Primary</span></strong></td><td class="mono">~7.7%</td><td class="mono cg"><strong>+0.25%</strong></td><td class="mono cg">+0.019</td><td class="tr">Zillow ZORI: Piyasa kiraları yavaşlıyor. BLS barınma verisinde 6–12 ay gecikme var. Mayıs +0.3% yavaşlaması sürüyor.</td><td class="en">Zillow ZORI: Market rents slowing. BLS shelter has a 6–12 month lag. May +0.3% deceleration continues.</td></tr>
+      <tr><td><strong>OER</strong></td><td class="mono">~26.0%</td><td class="mono cg"><strong>+0.25%</strong></td><td class="mono cg">+0.065</td><td class="tr">OER = Malik Eşdeğer Kira. Apartment List: Haziran +0.1% (yıllıklandırılmış ~%1.2). BLS gecikmesi = +0.25%.</td><td class="en">OER = Owner Equivalent Rent. Apartment List: June +0.1% (annualized ~1.2%). BLS lag = +0.25%.</td></tr>
+      <tr><td><strong><span class="tr">Konaklama</span><span class="en">Lodging</span></strong></td><td class="mono">~1.4%</td><td class="mono cg"><strong>+0.5%</strong></td><td class="mono cg">+0.007</td><td class="tr">Yaz sezonu = otel fiyatları artıyor. Hava yolu talebi = rezervasyon fiyatları yukarı.</td><td class="en">Summer season = hotel prices rising. Air travel demand = booking prices up.</td></tr>
+      <tr style="background:rgba(0,200,5,.04)"><td><strong><span class="tr">Barınma Toplam</span><span class="en">Shelter Total</span></strong></td><td class="mono cg"><strong>35.3%</strong></td><td class="mono cg"><strong>+0.25%</strong></td><td class="mono cg"><strong>+0.088</strong></td><td class="tr">Normalleşme sürüyor. Mayıs +0.3% → Haziran +0.25% → Temmuz +0.2%.</td><td class="en">Normalization continues. May +0.3% → June +0.25% → July +0.2%.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">4.4 Çekirdek Mallar CPI (~%21 ağırlık) — Hafif Revizyon (DXY Güçlü)</span><span class="en">4.4 Core Goods CPI (~21% weight) — Slight Revision (DXY Strong)</span></h3>
+
+<div class="tw">
+  <table>
+    <thead><tr>
+      <th><span class="tr">Alt Bileşen</span><span class="en">Sub-Component</span></th>
+      <th><span class="tr">Ağırlık</span><span class="en">Weight</span></th>
+      <th><span class="tr">Tahmin a/a</span><span class="en">Forecast m/m</span></th>
+      <th><span class="tr">Katkı (yüzde puanı)</span><span class="en">Contribution (ppt)</span></th>
+      <th><span class="tr">Veri Kaynağı / Gerekçe (Güncel)</span><span class="en">Data Source / Rationale (Updated)</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td><strong><span class="tr">Yeni Araçlar</span><span class="en">New Vehicles</span></strong></td><td class="mono">~3.8%</td><td class="mono cg"><strong>+0.2%</strong></td><td class="mono cg">+0.008</td><td class="tr">Oto satışları hafif zayıf. DXY 100.85 = güçlü dolar = ithalat deflasyonu. Tarife geçişi hâlâ yok.</td><td class="en">Auto sales slightly weak. DXY 100.85 = strong dollar = import deflation. Tariff pass-through still absent.</td></tr>
+      <tr><td><strong><span class="tr">İkinci El Araçlar/Kamyonlar</span><span class="en">Used Cars/Trucks</span></strong></td><td class="mono">~1.6%</td><td class="mono cr"><strong>-0.5%</strong></td><td class="mono cr">-0.008</td><td class="tr">Manheim Endeksi: Haziran'da hafif düşüş. DXY güçlü = ithal otomobil baskısı.</td><td class="en">Manheim Index: Slight decline in June. DXY strong = imported auto pressure.</td></tr>
+      <tr><td><strong><span class="tr">Giyim</span><span class="en">Apparel</span></strong></td><td class="mono">~2.5%</td><td class="mono"><strong>+0.0%</strong></td><td class="mono">+0.000</td><td class="tr">DXY 100.85 = ithal giyim deflasyonu. Yaz sezonu = mevsimsel indirimler. Tarife etkisi ertelendi.</td><td class="en">DXY 100.85 = import clothing deflation. Summer season = seasonal discounting. Tariff effect delayed.</td></tr>
+      <tr><td><strong><span class="tr">Tıbbi Mallar</span><span class="en">Medical Commodities</span></strong></td><td class="mono">~1.4%</td><td class="mono cr"><strong>-0.2%</strong></td><td class="mono cr">-0.003</td><td class="tr">İlaç fiyatları sabit/negatif. Jenerik ilaç deflasyonu sürüyor.</td><td class="en">Pharma prices stable/negative. Generic drug deflation continues.</td></tr>
+      <tr><td><strong><span class="tr">Diğer Çekirdek Mallar</span><span class="en">Other Core Goods</span></strong></td><td class="mono">~12.0%</td><td class="mono cg"><strong>+0.25%</strong></td><td class="mono cg">+0.030</td><td class="tr">PPI çekirdek geçişi (+0.4% Mayıs → Haziran +0.2–0.25%). Plastik, kimyasallar, dayanıklı mallar = girdi maliyeti düşüşü. DXY güçlü = ithalat deflasyonu.</td><td class="en">PPI core pass-through (+0.4% May → June +0.2–0.25%). Plastics, chemicals, durables = input cost decline. DXY strong = import deflation.</td></tr>
+      <tr style="background:rgba(0,200,5,.04)"><td><strong><span class="tr">Çekirdek Mallar Toplam</span><span class="en">Core Goods Total</span></strong></td><td class="mono cg"><strong>21.0%</strong></td><td class="mono cg"><strong>+0.20%</strong></td><td class="mono cg"><strong>+0.042</strong></td><td class="tr">PPI geçişi + DXY güçlü = karışık. Önceki tahmin +0.25% → <strong>+0.20%</strong> (DXY etkisi).</td><td class="en">PPI pass-through + DXY strong = mixed. Previous forecast +0.25% → <strong>+0.20%</strong> (DXY effect).</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<p class="tr" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Revizyon:</strong> Çekirdek mallar +0.25% → <strong>+0.20%</strong> (DXY 100.85 = güçlü dolar = ithalat deflasyonu baskısı).</p>
+<p class="en" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Revision:</strong> Core goods +0.25% → <strong>+0.20%</strong> (DXY 100.85 = strong dollar = import deflation pressure).</p>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">4.5 Çekirdek Hizmetler (Barınma Hariç) CPI (~%17.5 ağırlık) — Hafif Revizyon (Yukarı)</span><span class="en">4.5 Core Services (ex-Shelter) CPI (~17.5% weight) — Slight Revision (Upward)</span></h3>
+
+<div class="tw">
+  <table>
+    <thead><tr>
+      <th><span class="tr">Alt Bileşen</span><span class="en">Sub-Component</span></th>
+      <th><span class="tr">Ağırlık</span><span class="en">Weight</span></th>
+      <th><span class="tr">Tahmin a/a</span><span class="en">Forecast m/m</span></th>
+      <th><span class="tr">Katkı (yüzde puanı)</span><span class="en">Contribution (ppt)</span></th>
+      <th><span class="tr">Veri Kaynağı / Gerekçe (Güncel)</span><span class="en">Data Source / Rationale (Updated)</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td><strong><span class="tr">Tıbbi Hizmetler</span><span class="en">Medical Services</span></strong></td><td class="mono">~6.9%</td><td class="mono cg"><strong>+0.2%</strong></td><td class="mono cg">+0.014</td><td class="tr">Sağlık işgücü maliyetleri artıyor, ancak CMS geri ödeme kesintileri = baskı. Yavaş hareketli.</td><td class="en">Healthcare labor costs rising, but CMS reimbursement cuts = pressure. Slow-moving.</td></tr>
+      <tr><td><strong><span class="tr">Ulaşım Hizmetleri</span><span class="en">Transport Services</span></strong></td><td class="mono">~4.5%</td><td class="mono cr"><strong>-0.2%</strong></td><td class="mono cr">-0.009</td><td class="tr">Uçak yakıtı düşüşü = havayolu ücretleri düşüyor. Araç sigortası hâlâ +0.5% (hasar sıklığı artıyor). Net: hafif negatif.</td><td class="en">Jet fuel decline = airline fares falling. Vehicle insurance still +0.5% (claim frequency rising). Net: Slightly negative.</td></tr>
+      <tr><td><strong><span class="tr">Eğlence Hizmetleri</span><span class="en">Recreation Services</span></strong></td><td class="mono">~2.8%</td><td class="mono cg"><strong>+0.3%</strong></td><td class="mono cg">+0.008</td><td class="tr">Yaz sezonu = eğlence talebi artıyor. Konserler, tema parklar, seyahat = fiyat artışları.</td><td class="en">Summer season = recreation demand rising. Concerts, theme parks, travel = price increases.</td></tr>
+      <tr><td><strong><span class="tr">Eğitim</span><span class="en">Education</span></strong></td><td class="mono">~1.2%</td><td class="mono cg"><strong>+0.2%</strong></td><td class="mono cg">+0.002</td><td class="tr">Harç artışları = yıllık +3–4%, ancak a/a = sabit.</td><td class="en">Tuition increases = annual +3–4%, but m/m = stable.</td></tr>
+      <tr><td><strong><span class="tr">İletişim</span><span class="en">Communication</span></strong></td><td class="mono">~1.0%</td><td class="mono cr"><strong>-0.1%</strong></td><td class="mono cr">-0.001</td><td class="tr">Telekom fiyat savaşı = kablosuz tarife fiyatları düşüyor.</td><td class="en">Telecom pricing war = wireless plan prices falling.</td></tr>
+      <tr><td><strong><span class="tr">Diğer Hizmetler</span><span class="en">Other Services</span></strong></td><td class="mono">~1.1%</td><td class="mono cg"><strong>+0.2%</strong></td><td class="mono cg">+0.002</td><td class="tr">Bankacılık ücretleri, kişisel hizmetler = hafif artış.</td><td class="en">Banking fees, personal services = slight increase.</td></tr>
+      <tr style="background:rgba(0,200,5,.04)"><td><strong><span class="tr">Çekirdek Hizmetler (Barınma Hariç) Toplam</span><span class="en">Core Svcs (ex-Shelter) Total</span></strong></td><td class="mono cg"><strong>17.5%</strong></td><td class="mono cg"><strong>+0.18%</strong></td><td class="mono cg"><strong>+0.032</strong></td><td class="tr">Mayıs perakende satışları güçlü (+0.9%) = talep sağlam. Ancak havayolu ücretleri düşük = net karışık. Önceki +0.15% → <strong>+0.18%</strong>.</td><td class="en">May retail sales strong (+0.9%) = demand solid. But airline fares low = net mixed. Previous +0.15% → <strong>+0.18%</strong>.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<p class="tr" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Revizyon:</strong> Barınma hariç çekirdek hizmetler +0.15% → <strong>+0.18%</strong> (Mayıs perakende satışları güçlü = Haziran talebi sürüyor).</p>
+<p class="en" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Revision:</strong> Core services ex-shelter +0.15% → <strong>+0.18%</strong> (May retail sales strong = June demand continues).</p>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">4.6 Diğer Bileşenler — Sabit</span><span class="en">4.6 Other Components — Stable</span></h3>
+
+<div class="tw">
+  <table>
+    <thead><tr>
+      <th><span class="tr">Alt Bileşen</span><span class="en">Sub-Component</span></th>
+      <th><span class="tr">Ağırlık</span><span class="en">Weight</span></th>
+      <th><span class="tr">Tahmin a/a</span><span class="en">Forecast m/m</span></th>
+      <th><span class="tr">Katkı (yüzde puanı)</span><span class="en">Contribution (ppt)</span></th>
+      <th><span class="tr">Gerekçe</span><span class="en">Rationale</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td><strong><span class="tr">Eğlence (mallar)</span><span class="en">Recreation (goods)</span></strong></td><td class="mono">~2.7%</td><td class="mono cg"><strong>+0.2%</strong></td><td class="mono cg">+0.005</td><td class="tr">Elektronik, spor malzemeleri = sabit.</td><td class="en">Electronics, sporting goods = stable.</td></tr>
+      <tr><td><strong><span class="tr">Eğitim & İletişim</span><span class="en">Education & Comm.</span></strong></td><td class="mono">~3.3%</td><td class="mono cg"><strong>+0.1%</strong></td><td class="mono cg">+0.003</td><td class="tr">Harç + iletişim = sabit.</td><td class="en">Tuition + communication = stable.</td></tr>
+      <tr><td><strong><span class="tr">Diğer Mallar & Hizmetler</span><span class="en">Other Goods & Svcs</span></strong></td><td class="mono">~3.0%</td><td class="mono cg"><strong>+0.2%</strong></td><td class="mono cg">+0.006</td><td class="tr">Kişisel bakım, tütün = hafif artış.</td><td class="en">Personal care, tobacco = slight increase.</td></tr>
+      <tr><td><strong><span class="tr">Tütün</span><span class="en">Tobacco</span></strong></td><td class="mono">~0.5%</td><td class="mono cg"><strong>+0.3%</strong></td><td class="mono cg">+0.002</td><td class="tr">Vergi/fiyat artışları = yavaş yükseliş.</td><td class="en">Tax/price increases = slow rise.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ════════════════════════════════════════ SECTION 5 ════════════════════════════════════════ -->
+<div class="sh"><span class="sn">05</span><h2 class="st"><span class="tr">Güncel Toplama Matematiği (Ağırlıklı Toplam)</span><span class="en">Updated Aggregation Math (Weighted Sum)</span></h2></div>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">Genel CPI a/a SA (Güncel)</span><span class="en">Headline CPI m/m SA (Updated)</span></h3>
+
+<pre>
++ Gıda           (+0.15% × 13.6%)  = +0.020 ppt
++ Enerji         (-2.0% × 6.4%)    = -0.128 ppt  ← Revize: -2.5% → -2.0% (veri toplama)
++ Barınma        (+0.25% × 35.3%)  = +0.088 ppt
++ Çekirdek Mallar(+0.20% × 21.0%)  = +0.042 ppt  ← Revize: +0.25% → +0.20% (DXY güçlü)
++ Çekirdek Hizmet(+0.18% × 17.5%)  = +0.032 ppt  ← Revize: +0.15% → +0.18% (talep güçlü)
++ Tıbbi Hizmetler(+0.2% × 6.9%)    = +0.014 ppt
++ Eğlence        (+0.2% × 5.5%)    = +0.011 ppt
++ Eğitim/İletişim(+0.1% × 6.0%)    = +0.006 ppt
++ Giyim          (+0.0% × 2.5%)    = +0.000 ppt  ← Revize: +0.1% → 0.0% (DXY güçlü)
++ Diğer          (+0.2% × 3.0%)    = +0.006 ppt
+────────────────────────────────────────────────
+= +0.091 ppt  →  Yuvarlanmış: +0.10% a/a SA (±0.10%)
+</pre>
+
+<p class="tr" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Önceki tahmin (18 Haz):</strong> +0.067 ppt → +0.10%<br/><strong>Güncel tahmin (22 Haz):</strong> +0.091 ppt → +0.10%<br/><strong>Fark:</strong> Sabit, +0.10% civarında kalıyor. DXY baskısı aşağı, talep baskısı yukarı. Net etki neredeyse sıfır.</p>
+<p class="en" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Previous forecast (Jun 18):</strong> +0.067 ppt → +0.10%<br/><strong>Current forecast (Jun 22):</strong> +0.091 ppt → +0.10%<br/><strong>Difference:</strong> Stable, remains around +0.10%. DXY pressure down, demand pressure up. Net effect nearly zero.</p>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">Çekirdek CPI a/a SA (Gıda & Enerji Hariç) — Güncel</span><span class="en">Core CPI m/m SA (Ex Food & Energy) — Updated</span></h3>
+
+<pre>
++ Barınma        (+0.25% × 35.3%)  = +0.088 ppt
++ Çekirdek Mallar(+0.20% × 21.0%)  = +0.042 ppt  ← Revize: +0.25% → +0.20%
++ Çekirdek Hizmet(+0.18% × 17.5%)  = +0.032 ppt  ← Revize: +0.15% → +0.18%
++ Tıbbi Hizmetler(+0.2% × 6.9%)    = +0.014 ppt
++ Eğlence        (+0.2% × 5.5%)    = +0.011 ppt
++ Eğitim/İletişim(+0.1% × 6.0%)    = +0.006 ppt
++ Giyim          (+0.0% × 2.5%)    = +0.000 ppt  ← Revize: +0.1% → 0.0%
++ Diğer          (+0.2% × 3.0%)    = +0.006 ppt
+────────────────────────────────────────────────
+= +0.199 ppt  →  Yuvarlanmış: +0.20% a/a SA (±0.05%)
+</pre>
+
+<p class="tr" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Önceki tahmin (18 Haz):</strong> +0.207 ppt → +0.20%<br/><strong>Güncel tahmin (22 Haz):</strong> +0.199 ppt → +0.20%<br/><strong>Fark:</strong> Neredeyse sıfır. DXY etkisi ve talep etkisi birbirini iptal ediyor.</p>
+<p class="en" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Previous forecast (Jun 18):</strong> +0.207 ppt → +0.20%<br/><strong>Current forecast (Jun 22):</strong> +0.199 ppt → +0.20%<br/><strong>Difference:</strong> Nearly zero. DXY effect and demand effect cancel each other out.</p>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">Yıllık Tahmin — Güncel</span><span class="en">Year-over-Year Forecast — Updated</span></h3>
+
+<p class="tr" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Genel y/y:</strong></p>
+<p class="en" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Headline y/y:</strong></p>
+
+<pre>
+Mayıs 2026 Endeksi (NSA) = 334.690
+Haziran 2026 Projeksiyon = 334.690 × 1.001 = 335.025
+Haziran 2025 Taban (~) = 321.2 (y/y +3.8%)
+Haziran 2026 y/y = (335.025 / 321.2 - 1) × 100 ≈ +3.8%
+</pre>
+
+<p class="tr" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Çekirdek y/y:</strong></p>
+<p class="en" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Core y/y:</strong></p>
+
+<pre>
+Mayıs 2026 Çekirdek y/y = +2.9%
+Haziran çekirdek a/a = +0.2% (beklenen)
+Çekirdek y/y ≈ +2.9% (taban etkisi sabit, çekirdek sabit)
+</pre>
+
+</main>
+
+<!-- ════════════════════════════════════════ SECTION 6 ════════════════════════════════════════ -->
+<div class="sh"><span class="sn">06</span><h2 class="st"><span class="tr">Güncel Senaryo Analizi (22 Haziran)</span><span class="en">Updated Scenario Analysis (June 22)</span></h2></div>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">6.1 Temel Senaryo (%55 Olasılık): Genel +0.1%, Çekirdek +0.2%</span><span class="en">6.1 Base Case (55% Probability): Headline +0.1%, Core +0.2%</span></h3>
+
+<p class="tr" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Varsayımlar:</strong></p>
+<p class="en" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Assumptions:</strong></p>
+<ul class="bl">
+  <li class="tr">WTI Haziran sonuna kadar 75–80 dolar aralığında kalır</li>
+  <li class="en">WTI remains in $75–$80 range (through end of June)</li>
+  <li class="tr">Benzin CPI a/a -5% ila -6% (CPI veri toplama kısmen yakalar)</li>
+  <li class="en">Gasoline CPI -5% to -6% m/m (CPI data collection partially captures)</li>
+  <li class="tr">Barınma +0.25% (normalleşme sürüyor)</li>
+  <li class="en">Shelter +0.25% (normalization continues)</li>
+  <li class="tr">Çekirdek mallar +0.20% (PPI geçişi + DXY güçlü = denge)</li>
+  <li class="en">Core goods +0.20% (PPI pass-through + DXY strong = offset)</li>
+  <li class="tr">Çekirdek hizmetler +0.18% (perakende satışlar güçlü = talep var)</li>
+  <li class="en">Core services +0.18% (retail sales strong = demand exists)</li>
+  <li class="tr">DXY 100.85 = ithalat deflasyonu baskısı</li>
+  <li class="en">DXY 100.85 = import deflation pressure</li>
+</ul>
+
+<p class="tr" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Piyasa Etkisi (FOMC şahin bağlamında):</strong></p>
+<p class="en" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Market Impact (in FOMC hawkish context):</strong></p>
+<ul class="bl">
+  <li class="tr">10Y Hazine: 4.40–4.50% (hafif düşüş, ancak FOMC şahin = sınırlı)</li>
+  <li class="en">10Y Treasury: 4.40–4.50% (slight decline, but FOMC hawkish = limited)</li>
+  <li class="tr">DXY: 100.0–100.85 (güçlü, şahin Fed destekliyor)</li>
+  <li class="en">DXY: 100.0–100.85 (strong, supported by hawkish Fed)</li>
+  <li class="tr">S&P 500: +0.3–0.8% (genel yumuşak = büyüme rallisi, ancak FOMC şahin = sınırlı)</li>
+  <li class="en">S&P 500: +0.3–0.8% (headline soft = growth rally, but FOMC hawkish = limited)</li>
+  <li class="tr">VIX: 16–18 (düşük, sabit)</li>
+  <li class="en">VIX: 16–18 (low, stable)</li>
+  <li class="tr"><strong>Fed:</strong> Warsh "ilerlemeyi kabul ediyor" ancak "tek veri noktası trend yapmaz" = faiz bekleme sürüyor</li>
+  <li class="en"><strong>Fed:</strong> Warsh "acknowledges progress" but "one data point doesn't make a trend" = rate hold continues</li>
+</ul>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">6.2 Daha Yumuşak Senaryo (%25 Olasılık): Genel +0.0%, Çekirdek +0.15%</span><span class="en">6.2 Softer Scenario (25% Probability): Headline +0.0%, Core +0.15%</span></h3>
+
+<p class="tr" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Varsayımlar:</strong></p>
+<p class="en" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Assumptions:</strong></p>
+<ul class="bl">
+  <li class="tr">WTI 70–75 dolar aralığına düşer (Haziran sonuna kadar)</li>
+  <li class="en">WTI falls to $70–$75 range (through end of June)</li>
+  <li class="tr">Benzin CPI a/a -7% (CPI veri toplama daha fazlasını yakalar)</li>
+  <li class="en">Gasoline CPI -7% m/m (CPI data collection captures more)</li>
+  <li class="tr">Barınma +0.20% (Zillow verisi yavaşlamayı hızlandırır)</li>
+  <li class="en">Shelter +0.20% (Zillow data accelerates slowdown)</li>
+  <li class="tr">Çekirdek mallar +0.15% (DXY güçlü = ithalat deflasyonu)</li>
+  <li class="en">Core goods +0.15% (DXY strong = import deflation)</li>
+  <li class="tr">Çekirdek hizmetler +0.15% (havayolu ücretleri -1%)</li>
+  <li class="en">Core services +0.15% (airline fares -1%)</li>
+</ul>
+
+<p class="tr" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Piyasa Etkisi:</strong></p>
+<p class="en" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Market Impact:</strong></p>
+<ul class="bl">
+  <li class="tr">10Y Hazine: 4.35–4.45% (daha fazla düşüş)</li>
+  <li class="en">10Y Treasury: 4.35–4.45% (further decline)</li>
+  <li class="tr">DXY: 99.5–100.0 (hafif zayıflama, petrol düşüşü = DXY aşağı)</li>
+  <li class="en">DXY: 99.5–100.0 (slight weakening, oil drop = DXY down)</li>
+  <li class="tr">S&P 500: +0.8–1.5% (büyüme rallisi)</li>
+  <li class="en">S&P 500: +0.8–1.5% (growth rally)</li>
+  <li class="tr"><strong>Fed:</strong> Warsh bile "ilerleme cesaret verici" diyebilir. Ancak 2026 indirim beklentileri hâlâ zayıf (nokta grafiği şahin).</li>
+  <li class="en"><strong>Fed:</strong> Even Warsh might say "progress is encouraging." But 2026 cut expectations still weak (dot plot hawkish).</li>
+</ul>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">6.3 Sıcak Senaryo (%20 Olasılık): Genel +0.2%, Çekirdek +0.3%+</span><span class="en">6.3 Hot Scenario (20% Probability): Headline +0.2%, Core +0.3%+</span></h3>
+
+<p class="tr" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Varsayımlar:</strong></p>
+<p class="en" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Assumptions:</strong></p>
+<ul class="bl">
+  <li class="tr">Petrol fiyatları geri sıçrar (İran anlaşması tersiner, WTI 85$+)</li>
+  <li class="en">Oil prices rebound (Iran deal reverses, WTI $85+)</li>
+  <li class="tr">Benzin CPI -2% (sınırlı düşüş)</li>
+  <li class="en">Gasoline CPI -2% (limited decline)</li>
+  <li class="tr">Çekirdek mallar +0.35% (güçlü PPI geçişi, DXY zayıflar)</li>
+  <li class="en">Core goods +0.35% (PPI pass-through strong, DXY weakens)</li>
+  <li class="tr">Çekirdek hizmetler +0.4% (perakende satışlar güçlü = talep patlaması, yaz sezonu = seyahat patlaması)</li>
+  <li class="en">Core services +0.4% (retail sales strong = demand boom, summer season = travel surge)</li>
+  <li class="tr">Barınma +0.35% (normalleşme duraklar)</li>
+  <li class="en">Shelter +0.35% (normalization stalls)</li>
+</ul>
+
+<p class="tr" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Piyasa Etkisi:</strong></p>
+<p class="en" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Market Impact:</strong></p>
+<ul class="bl">
+  <li class="tr">10Y Hazine: 4.50–4.60% (yukarı)</li>
+  <li class="en">10Y Treasury: 4.50–4.60% (up)</li>
+  <li class="tr">DXY: 101.0–102.0 (güçlenme)</li>
+  <li class="en">DXY: 101.0–102.0 (strengthening)</li>
+  <li class="tr">S&P 500: -0.3–0.8% (riskten kaçış)</li>
+  <li class="en">S&P 500: -0.3–0.8% (risk-off)</li>
+  <li class="tr">VIX: 18–20 (yükseliş)</li>
+  <li class="en">VIX: 18–20 (rise)</li>
+  <li class="tr"><strong>Fed:</strong> Warsh "enflasyon yüksek kalmaya devam ediyor" = şahin ton güçlenir. 2026 için 1+ artış fiyatlaması.</li>
+  <li class="en"><strong>Fed:</strong> Warsh "inflation remains elevated" = hawkish tone strengthens. 2026 pricing for 1+ hike.</li>
+</ul>
+
+<!-- ════════════════════════════════════════ SECTION 7 ════════════════════════════════════════ -->
+<div class="sh"><span class="sn">07</span><h2 class="st"><span class="tr">Güncel İşlem Kurulumu (22 Haziran — CPI'ye 18 Gün)</span><span class="en">Current Trade Setup (June 22 — 18 Days Until CPI)</span></h2></div>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">7.1 Güncel Makro Göstergeler</span><span class="en">7.1 Current Macro Indicators</span></h3>
+
+<div class="tw">
+  <table>
+    <thead><tr>
+      <th><span class="tr">Gösterge</span><span class="en">Indicator</span></th>
+      <th><span class="tr">Güncel Değer</span><span class="en">Current Value</span></th>
+      <th><span class="tr">Eğilim</span><span class="en">Trend</span></th>
+      <th><span class="tr">CPI Etkisi</span><span class="en">CPI Impact</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td><strong>WTI</strong></td><td class="mono">$75.44</td><td class="mono cr">↓↓↓ <span class="tr">Düşüş</span><span class="en">Decline</span></td><td class="tr">Enerji deflasyonu = genel enflasyon aşağı</td><td class="en">Energy deflation = headline down</td></tr>
+      <tr><td><strong>Brent</strong></td><td class="mono">$78.29</td><td class="mono cr">↓↓↓ <span class="tr">Düşüş</span><span class="en">Decline</span></td><td class="tr">Aynı</td><td class="en">Same</td></tr>
+      <tr><td><strong>DXY</strong></td><td class="mono ca">100.85</td><td class="mono cg">↑ <span class="tr">Güçlü</span><span class="en">Strong</span></td><td class="tr">İthalat deflasyonu = çekirdek mallar aşağı</td><td class="en">Import deflation = core goods down</td></tr>
+      <tr><td><strong>10Y Hazine</strong></td><td class="mono ca">4.49%</td><td class="mono cg">↑ <span class="tr">Yukarı</span><span class="en">Up</span></td><td class="tr">FOMC şahin = REIT'ler baskı</td><td class="en">FOMC hawkish = REITs pressure</td></tr>
+      <tr><td><strong>VIX</strong></td><td class="mono cg">16.78</td><td class="mono cr">↓ <span class="tr">Düşük</span><span class="en">Low</span></td><td class="tr">Piyasa sakin, risk iştahı yüksek</td><td class="en">Market calm, risk-on</td></tr>
+      <tr><td><strong>NVDA</strong></td><td class="mono">$210.69</td><td class="mono cg">↑ <span class="tr">Ralli</span><span class="en">Rally</span></td><td class="tr">AI talebi = yapısal büyüme</td><td class="en">AI demand = structural growth</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">7.2 Yumuşak Baskıya Göre Uzun Pozisyon Kurulumları</span><span class="en">7.2 Long Setups Based on CPI Forecast (Soft Print)</span></h3>
+
+<div class="tw">
+  <table>
+    <thead><tr>
+      <th><span class="tr">Hisse</span><span class="en">Stock</span></th>
+      <th><span class="tr">Sektör</span><span class="en">Sector</span></th>
+      <th><span class="tr">Tez</span><span class="en">Thesis</span></th>
+      <th><span class="tr">Hedef</span><span class="en">Target</span></th>
+      <th><span class="tr">Stop</span><span class="en">Stop</span></th>
+      <th>R/R</th>
+    </tr></thead>
+    <tbody>
+      <tr><td class="mono cg"><strong>UAL</strong></td><td class="tr">Havayolları</td><td class="en">Airlines</td><td class="tr">Uçak yakıtı 75$ = marj genişlemesi. Yaz sezonu = talep güçlü. FOMC şahin = 10Y yukarı, ancak petrol düşüşü = doğrudan fayda.</td><td class="en">Jet fuel at $75 = margin expansion. Summer season = demand strong. FOMC hawkish = 10Y up, but oil drop = direct benefit.</td><td class="mono cg">+8–12%</td><td class="mono cr">-4%</td><td class="mono">1:2.5</td></tr>
+      <tr><td class="mono cg"><strong>DAL</strong></td><td class="tr">Havayolları</td><td class="en">Airlines</td><td class="tr">Premium segment + SkyMiles kalkanı.</td><td class="en">Premium segment + SkyMiles shield.</td><td class="mono cg">+6–10%</td><td class="mono cr">-4%</td><td class="mono">1:2</td></tr>
+      <tr><td class="mono cg"><strong>NKE</strong></td><td class="tr">Tüketici</td><td class="en">Consumer</td><td class="tr">Aşırı satım + dönüşüm + perakende satışlar güçlü = talep var.</td><td class="en">Oversold + turnaround + retail sales strong = demand exists.</td><td class="mono cg">+10–15%</td><td class="mono cr">-5%</td><td class="mono">1:3</td></tr>
+      <tr><td class="mono cg"><strong>DHI</strong></td><td class="tr">Konut İnşaatçısı</td><td class="en">Homebuilder</td><td class="tr">İpotek faizleri %6.5 = hâlâ zayıf. Ancak genel CPI yumuşak = 10Y hafifçe düşebilir.</td><td class="en">Mortgage rates at 6.5% = still weak. But headline CPI soft = 10Y may dip slightly.</td><td class="mono cg">+3–6%</td><td class="mono cr">-3%</td><td class="mono">1:1.5</td></tr>
+      <tr><td class="mono cg"><strong>LYB</strong></td><td class="tr">Kimyasallar</td><td class="en">Chemicals</td><td class="tr">Nafta marj genişlemesi + momentum. Petrol düşüşü = hammadde maliyetleri aşağı.</td><td class="en">Naphtha margin expansion + momentum. Oil drop = feedstock costs down.</td><td class="mono cg">+8–12%</td><td class="mono cr">-4%</td><td class="mono">1:2.5</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="alert alert-a">
+  <div class="ai">⚠️</div>
+  <div class="ac">
+    <h4><span class="tr">Not</span><span class="en">Note</span></h4>
+    <p class="tr">FOMC şahin = teknoloji çarpan sıkıştırma riski. DXY 100.85 ve 10Y 4.49% ile NVDA/AMD gibi yüksek süreli büyüme hisseleri baskı altında. Teknoloji rallisi sınırlı. Havayolları, kimyasallar, tüketici = <strong>doğrudan emtia maliyet faydası</strong> = daha güvenli.</p>
+    <p class="en">FOMC hawkish = tech multiple compression risk. High-duration growth stocks like NVDA/AMD are under pressure with DXY at 100.85 and 10Y at 4.49%. Tech rally is limited. Airlines, chemicals, consumer = <strong>direct commodity cost benefit</strong> = safer.</p>
+  </div>
+</div>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">7.3 Kısa Pozisyon Kurulumları (Şahin FOMC + Petrol Düşüşü)</span><span class="en">7.3 Short Setups (Hawkish FOMC + Oil Decline)</span></h3>
+
+<div class="tw">
+  <table>
+    <thead><tr>
+      <th><span class="tr">Hisse/ETF</span><span class="en">Stock/ETF</span></th>
+      <th><span class="tr">Sektör</span><span class="en">Sector</span></th>
+      <th><span class="tr">Tez</span><span class="en">Thesis</span></th>
+      <th><span class="tr">Hedef</span><span class="en">Target</span></th>
+      <th><span class="tr">Stop</span><span class="en">Stop</span></th>
+      <th>R/R</th>
+    </tr></thead>
+    <tbody>
+      <tr><td class="mono cr"><strong>XLE</strong></td><td class="tr">Enerji</td><td class="en">Energy</td><td class="tr">Petrol 75$ = yukarı akış marjları sıkışıyor. İran ihracatları = arz fazlası.</td><td class="en">Oil at $75 = upstream margins squeezed. Iranian exports = supply surplus.</td><td class="mono cr">-3–5%</td><td class="mono cg">+2%</td><td class="mono">1:2</td></tr>
+      <tr><td class="mono cr"><strong>XOM</strong></td><td class="tr">Büyük Petrol</td><td class="en">Oil Major</td><td class="tr">WTI 75$ = temettü kesme riski? Düşük petrol = keşif baskısı.</td><td class="en">WTI $75 = dividend cut risk? Low oil = exploration pressure.</td><td class="mono cr">-3–5%</td><td class="mono cg">+2%</td><td class="mono">1:2</td></tr>
+      <tr><td class="mono cr"><strong>GLD</strong></td><td class="tr">Altın</td><td class="en">Gold</td><td class="tr">DXY 100.85 + FOMC şahin + reel faizler yükseliyor = altın baskısı.</td><td class="en">DXY 100.85 + FOMC hawkish + real yields rising = gold pressure.</td><td class="mono cr">-2–4%</td><td class="mono cg">+2%</td><td class="mono">1:2</td></tr>
+      <tr><td class="mono cr"><strong>TGT</strong></td><td class="tr">Perakende</td><td class="en">Retail</td><td class="tr">Harcama gücü zayıflığı, "otomobil hariç benzin" perakende satışları +0.50% = çekirdek talep var, ancak TGT = pazar payı kaybı.</td><td class="en">Discretionary weakness, retail sales "ex auto & gas" +0.50% = core demand exists, but TGT = market share loss.</td><td class="mono cr">-2–4%</td><td class="mono cg">+2%</td><td class="mono">1:2</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">7.4 Güncel Opsiyon Stratejileri (CPI Günü — 10 Temmuz 2026)</span><span class="en">7.4 Current Option Strategies (CPI Day — July 10, 2026)</span></h3>
+
+<div class="alert alert-b">
+  <div class="ai">⚡</div>
+  <div class="ac">
+    <h4><span class="tr">FOMC Şahin + DXY 100.85 + Petrol Düşüşü = Çok Yönlü Kurulum</span><span class="en">FOMC Hawkish + DXY 100.85 + Oil Decline = Multi-Faceted Setup</span></h4>
+  </div>
+</div>
+
+<div class="tw">
+  <table>
+    <thead><tr>
+      <th><span class="tr">Strateji</span><span class="en">Strategy</span></th>
+      <th><span class="tr">Dayanak</span><span class="en">Underlying</span></th>
+      <th><span class="tr">Kurulum</span><span class="en">Setup</span></th>
+      <th>R/R</th>
+      <th><span class="tr">Notlar</span><span class="en">Notes</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td class="mono cg"><strong><span class="tr">Uzun Alım</span><span class="en">Long Call</span></strong></td><td class="mono">UAL</td><td class="tr">Haftalık ATM</td><td class="en">ATM weekly</td><td class="mono">1:2.5</td><td class="tr">Uçak yakıtı düşüşü = doğrudan fayda. Yaz talebi.</td><td class="en">Jet fuel drop = direct benefit. Summer demand.</td></tr>
+      <tr><td class="mono cg"><strong><span class="tr">Uzun Alım</span><span class="en">Long Call</span></strong></td><td class="mono">LYB</td><td class="tr">Haftalık ATM</td><td class="en">ATM weekly</td><td class="mono">1:2.5</td><td class="tr">Nafta marj genişlemesi.</td><td class="en">Naphtha margin expansion.</td></tr>
+      <tr><td class="mono ca"><strong><span class="tr">Put Kredi Spread</span><span class="en">Put Credit Spread</span></strong></td><td class="mono">XLE</td><td class="tr">Sat 55P / Al 50P</td><td class="en">Sell 55P / Buy 50P</td><td class="mono">1:3</td><td class="tr">Petrol 75$ = enerji PUT.</td><td class="en">Oil at $75 = energy PUT.</td></tr>
+      <tr><td class="mono cr"><strong><span class="tr">Ayı Put Spread</span><span class="en">Bear Put Spread</span></strong></td><td class="mono">GLD</td><td class="tr">Al 420P / Sat 400P</td><td class="en">Buy 420P / Sell 400P</td><td class="mono">1:2.5</td><td class="tr">DXY 100.85 + şahin = altın baskısı.</td><td class="en">DXY 100.85 + hawkish = gold pressure.</td></tr>
+      <tr><td class="mono"><strong><span class="tr">Iron Condor</span><span class="en">Iron Condor</span></strong></td><td class="mono">SPY</td><td class="tr">570P/585P/625C/640C</td><td class="en">570P/585P/625C/640C</td><td class="tr">Prim toplama</td><td class="en">Collection</td><td class="tr">FOMC şahin + CPI yumuşak = aralık içi hareket.</td><td class="en">FOMC hawkish + CPI soft = range-bound.</td></tr>
+      <tr><td class="mono cg"><strong><span class="tr">Bull Call Spread</span><span class="en">Bull Call Spread</span></strong></td><td class="mono">NKE</td><td class="tr">Al 45C / Sat 52C</td><td class="en">Buy 45C / Sell 52C</td><td class="mono">1:2.5</td><td class="tr">Aşırı satım + dönüşüm.</td><td class="en">Oversold + turnaround.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<p class="tr" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>CPI Günü Taktikleri (10 Temmuz):</strong></p>
+<p class="en" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>CPI Day Tactics (July 10):</strong></p>
+<ol class="bl">
+  <li class="tr"><strong>8:15 ET:</strong> Tüm pozisyonları kapat (varsa). CPI öncesi nötr olun.</li>
+  <li class="en"><strong>8:15 ET:</strong> Close all positions (if any). Be flat pre-CPI.</li>
+  <li class="tr"><strong>8:30 ET:</strong> CPI açıklaması. Genel +0.1% = vadeliler +0.3–0.8% açılır. Ancak FOMC şahin = sınırlı.</li>
+  <li class="en"><strong>8:30 ET:</strong> CPI print. Headline +0.1% = futures open +0.3–0.8%. But FOMC hawkish = limited.</li>
+  <li class="tr"><strong>8:35–9:00 ET:</strong> VWAP kurulumu. 5 dakika bekle (oynaklık tuzağından kaçın). Fiyat sabitleşince gir.</li>
+  <li class="en"><strong>8:35–9:00 ET:</strong> VWAP setup. Wait 5 minutes (avoid volatility trap). Enter once price stabilizes.</li>
+  <li class="tr"><strong>9:00–9:30 ET:</strong> ORB reddi. Açılış aralığı kırılması.</li>
+  <li class="en"><strong>9:00–9:30 ET:</strong> ORB reject. Opening range breakout.</li>
+  <li class="tr"><strong>Not:</strong> FOMC şahin = "ralliyi sat" potansiyeli. Yumuşak CPI rallisi kısa sürebilir. Dikkatli olun. DXY 100.85 = güçlü dolar = S&P yukarı potansiyeli sınırlı.</li>
+  <li class="en"><strong>Note:</strong> FOMC hawkish = "sell the rally" potential. Soft CPI print rally = can be faded. Be cautious. DXY 100.85 = strong dollar = limited S&P upside.</li>
+</ol>
+
+<!-- ════════════════════════════════════════ SECTION 8 ════════════════════════════════════════ -->
+<div class="sh"><span class="sn">08</span><h2 class="st"><span class="tr">Güncel Riskler ve Uyarılar (22 Haziran)</span><span class="en">Current Risks and Warnings (June 22)</span></h2></div>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">8.1 Yukarı Yönlü Risk (Tahmin Aşımı)</span><span class="en">8.1 Upside Risk (Forecast Exceedance)</span></h3>
+
+<div class="tw">
+  <table>
+    <thead><tr>
+      <th><span class="tr">Risk</span><span class="en">Risk</span></th>
+      <th><span class="tr">Olasılık</span><span class="en">Probability</span></th>
+      <th><span class="tr">Etki</span><span class="en">Impact</span></th>
+      <th><span class="tr">Güncelleme</span><span class="en">Update</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td><strong><span class="tr">Petrol geri sıçraması</span><span class="en">Oil rebound</span></strong></td><td class="mono">25%</td><td class="tr">İran anlaşması tersiner (19 Haz Cenevre, İsrail, Lübnan), WTI 85$+ = Enerji CPI -2.0%'den +0.5%'e.</td><td class="en">Iran deal reverses (June 19 Geneva, Israel, Lebanon), WTI $85+ = Energy CPI from -2.0% to +0.5%.</td><td class="tr cg"><strong>Arttı</strong> — İran 22 Haz sabahı geçici olarak Hürmüz'ü kapattı, oynaklık yükseldi.</td><td class="en cg"><strong>Increased</strong> — Iran temporarily closed Hormuz on June 22 morning, volatility rose.</td></tr>
+      <tr><td><strong><span class="tr">Çekirdek hizmetler güçlenmesi</span><span class="en">Core services strengthening</span></strong></td><td class="mono">25%</td><td class="tr">Perakende satışlar (Mayıs) +0.9% = talep patlaması. Yaz sezonu = seyahat, yeme-içme, oteller = +0.5%+.</td><td class="en">Retail sales (May) +0.9% = demand boom. Summer season = travel, dining, hotels = +0.5%+.</td><td class="tr cg"><strong>Arttı</strong> — Yaz talebi başladı.</td><td class="en cg"><strong>Increased</strong> — Summer demand has begun.</td></tr>
+      <tr><td><strong><span class="tr">Barınma normalleşmesi duraklar</span><span class="en">Shelter normalization stalls</span></strong></td><td class="mono">15%</td><td class="tr">Zillow verisi ani tersiner.</td><td class="en">Zillow data suddenly reverses.</td><td class="tr">Sabit — Zillow/Apartment List hâlâ yavaşlıyor.</td><td class="en">Stable — Zillow/Apartment List still slowing.</td></tr>
+      <tr><td><strong><span class="tr">Güçlü PPI geçişi</span><span class="en">Strong PPI pass-through</span></strong></td><td class="mono">15%</td><td class="tr">Mayıs çekirdek PPI +0.4%'ü Haziran CPI'na tam yansıması.</td><td class="en">May core PPI +0.4% fully reflected in June CPI.</td><td class="tr">Sabit — DXY 100.85 = geçiş sınırlı.</td><td class="en">Stable — DXY 100.85 = limited pass-through.</td></tr>
+      <tr><td><strong><span class="tr">DXY zayıflar</span><span class="en">DXY weakens</span></strong></td><td class="mono">10%</td><td class="tr">DXY 100.85 → 98.0 = ithalat deflasyonu baskısı hafifler. Çekirdek mallar yukarı.</td><td class="en">DXY 100.85 → 98.0 = import deflation pressure eases. Core goods up.</td><td class="tr ca"><strong>Yeni</strong> — DXY şu anda güçlü, ancak petrol düşüşü = DXY üzerine aşağı baskı.</td><td class="en ca"><strong>New</strong> — DXY currently strong, but oil drop = downward pressure on DXY.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">8.2 Aşağı Yönlü Risk (Tahmin Kısa Kalma)</span><span class="en">8.2 Downside Risk (Forecast Shortfall)</span></h3>
+
+<div class="tw">
+  <table>
+    <thead><tr>
+      <th><span class="tr">Risk</span><span class="en">Risk</span></th>
+      <th><span class="tr">Olasılık</span><span class="en">Probability</span></th>
+      <th><span class="tr">Etki</span><span class="en">Impact</span></th>
+      <th><span class="tr">Güncelleme</span><span class="en">Update</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td><strong><span class="tr">Petrol 70$ altı</span><span class="en">Oil below $70</span></strong></td><td class="mono">15%</td><td class="tr">İran anlaşması tam uygulanır, OPEC+ fazla arz, IEA 5mb/d fazlası. WTI 65–70$ = Enerji CPI -4%.</td><td class="en">Iran deal fully implemented, OPEC+ excess supply, IEA 5mb/d surplus. WTI $65–70 = Energy CPI -4%.</td><td class="tr ca"><strong>Azaldı</strong> — İran anlaşması uygulanıyor, ancak Hürmüz kısıtlamaları sürüyor. 70$ altı zor.</td><td class="en ca"><strong>Reduced</strong> — Iran deal being implemented, but Hormuz restrictions continue. Below $70 is difficult.</td></tr>
+      <tr><td><strong><span class="tr">Barınma hızlı yavaşlama</span><span class="en">Shelter rapid deceleration</span></strong></td><td class="mono">20%</td><td class="tr">Zillow/Apartment List verisi hızla BLS'ye yansır. Barınma +0.15% = çekirdek +0.15%.</td><td class="en">Zillow/Apartment List data quickly reflected in BLS. Shelter +0.15% = core +0.15%.</td><td class="tr">Sabit — BLS gecikmesi 6–12 ay = hızlı yansıma olası değil.</td><td class="en">Stable — BLS lag 6–12 months = rapid reflection unlikely.</td></tr>
+      <tr><td><strong><span class="tr">Tarımsal çöküş</span><span class="en">Agricultural collapse</span></strong></td><td class="mono">15%</td><td class="tr">Hava durumu, gıda fiyatları -0.5% = gıda deflasyonu.</td><td class="en">Weather, food prices -0.5% = food deflation.</td><td class="tr">Sabit — Tarımsal emtialar düşük.</td><td class="en">Stable — Agricultural commodities low.</td></tr>
+      <tr><td><strong><span class="tr">DXY 102+</span><span class="en">DXY 102+</span></strong></td><td class="mono">10%</td><td class="tr">FOMC şahin + güvenli liman = DXY güçlenir. İthalat deflasyonu = çekirdek mallar negatif.</td><td class="en">FOMC hawkish + safe haven = DXY strengthens. Import deflation = core goods negative.</td><td class="tr ca"><strong>Yeni</strong> — DXY 100.85, FOMC şahin = 102+ potansiyel. Çekirdek mallar baskısı.</td><td class="en ca"><strong>New</strong> — DXY 100.85, FOMC hawkish = 102+ potential. Core goods pressure.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">8.3 FOMC Bağlam Riski — Güncel</span><span class="en">8.3 FOMC Context Risk — Updated</span></h3>
+
+<ul class="bl">
+  <li class="tr"><strong>FOMC şahin = yumuşak CPI baskısının etkisi sınırlı.</strong> Warsh'ın nokta grafiği %3.8 = 2026'da sıfır faiz indirimi.</li>
+  <li class="en"><strong>FOMC hawkish = Limited impact from soft CPI print.</strong> Warsh's dot plot at 3.8% = zero cuts in 2026.</li>
+  <li class="tr"><strong>DXY 100.85 = güçlü dolar.</strong> İthalat deflasyonu = çekirdek mallar baskısı. Ayrıca gelişmekte olan piyasalar baskısı.</li>
+  <li class="en"><strong>DXY 100.85 = strong dollar.</strong> Import deflation = core goods pressure. Also emerging markets pressure.</li>
+  <li class="tr"><strong>10Y 4.49% = yüksek.</strong> REIT'ler, konut inşaatçıları, kamu hizmetleri = faize duyarlı = baskı.</li>
+  <li class="en"><strong>10Y at 4.49% = high.</strong> REITs, homebuilders, utilities = rate-sensitive = pressure.</li>
+  <li class="tr"><strong>Teknoloji çarpan sıkıştırması:</strong> NVDA 210.69$'da, FOMC şahin = iskonto oranı yükseliyor = yüksek süreli büyüme baskısı. 19 Haziran'da Infosys -6.75%, TCS -3.55% = teknoloji satışı.</li>
+  <li class="en"><strong>Tech multiple compression:</strong> NVDA at $210.69, FOMC hawkish = discount rate rising = high-duration growth pressure. On June 19, Infosys -6.75%, TCS -3.55% = tech selloff.</li>
+  <li class="tr"><strong>29 Temmuz FOMC (opsiyonel):</strong> Haziran CPI yumuşaksa Warsh "ilerlemenin kabul edildiğini" söyleyebilir. Ancak nokta grafiği şahin = 2026 indirim beklentileri zayıf.</li>
+  <li class="en"><strong>July 29 FOMC (optional):</strong> If June CPI is soft, Warsh may say "progress acknowledged." But dot plot hawkish = weak 2026 cut expectations.</li>
+</ul>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">8.4 İran Anlaşması Riski — Güncel</span><span class="en">8.4 Iran Deal Risk — Updated</span></h3>
+
+<ul class="bl">
+  <li class="tr"><strong>19 Haziran Cenevre müzakereleri başladı.</strong> 60 günlük pencere.</li>
+  <li class="en"><strong>June 19 Geneva negotiations began.</strong> 60-day window.</li>
+  <li class="tr"><strong>İran 22 Haziran sabahı geçici olarak Hürmüz'ü kapattı</strong> = petrol 78.62$'a sıçradı, sonra açıldı = 75.44$.</li>
+  <li class="en"><strong>Iran temporarily closed Hormuz on the morning of June 22</strong> = oil spiked to $78.62, then reopened = $75.44.</li>
+  <li class="tr"><strong>İran 20 milyon varil ihracata başladı</strong> = arz artıyor = petrol baskısı.</li>
+  <li class="en"><strong>Iran began exporting 20 million barrels</strong> = supply rising = oil pressure.</li>
+  <li class="tr"><strong>Nükleer program çözülmedi.</strong> Anlaşma çökerse petrol 90$+ çıkabilir = CPI tahmini değişir.</li>
+  <li class="en"><strong>Nuclear program unresolved.</strong> If the deal collapses, oil could rise to $90+ = CPI forecast changes.</li>
+  <li class="tr"><strong>İsrail/Lübnan gerilimleri sürüyor.</strong> JD Vance: "Ateşkes kırılgan."</li>
+  <li class="en"><strong>Israel/Lebanon tensions continue.</strong> JD Vance: "Ceasefire is fragile."</li>
+</ul>
+
+<!-- ════════════════════════════════════════ SECTION 9 ════════════════════════════════════════ -->
+<div class="sh"><span class="sn">09</span><h2 class="st"><span class="tr">Güncel Portföy Önerileri (22 Haziran — 10 Temmuz CPI'ye 18 Gün)</span><span class="en">Current Portfolio Recommendations (June 22 — 18 Days Until July 10 CPI)</span></h2></div>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">9.1 Agresif (Yüksek Risk/Yüksek Getiri)</span><span class="en">9.1 Aggressive (High Risk/High Return)</span></h3>
+
+<div class="tw">
+  <table>
+    <thead><tr>
+      <th>#</th><th><span class="tr">Hisse/ETF</span><span class="en">Stock/ETF</span></th>
+      <th><span class="tr">Yön</span><span class="en">Direction</span></th>
+      <th><span class="tr">Ağırlık</span><span class="en">Weight</span></th>
+      <th><span class="tr">Enstrüman</span><span class="en">Instrument</span></th>
+      <th><span class="tr">Getiri Potansiyeli</span><span class="en">Return Potential</span></th>
+      <th><span class="tr">Güven</span><span class="en">Confidence</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td class="mono">1</td><td class="mono cg"><strong>UAL</strong></td><td class="cg"><span class="tr">UZUN</span><span class="en">LONG</span></td><td class="mono">12%</td><td class="tr">Haftalık CALL</td><td class="en">Weekly CALL</td><td class="mono cg">2–3x</td><td class="mono">⭐⭐⭐⭐</td></tr>
+      <tr><td class="mono">2</td><td class="mono cg"><strong>LYB</strong></td><td class="cg"><span class="tr">UZUN</span><span class="en">LONG</span></td><td class="mono">10%</td><td class="tr">Haftalık CALL</td><td class="en">Weekly CALL</td><td class="mono cg">2–3x</td><td class="mono">⭐⭐⭐⭐</td></tr>
+      <tr><td class="mono">3</td><td class="mono cg"><strong>NKE</strong></td><td class="cg"><span class="tr">UZUN</span><span class="en">LONG</span></td><td class="mono">10%</td><td class="tr">Haftalık CALL</td><td class="en">Weekly CALL</td><td class="mono cg">2–4x</td><td class="mono">⭐⭐⭐⭐⭐</td></tr>
+      <tr><td class="mono">4</td><td class="mono cg"><strong>DAL</strong></td><td class="cg"><span class="tr">UZUN</span><span class="en">LONG</span></td><td class="mono">8%</td><td class="tr">Haftalık CALL</td><td class="en">Weekly CALL</td><td class="mono cg">2x</td><td class="mono">⭐⭐⭐⭐</td></tr>
+      <tr><td class="mono">5</td><td class="mono cg"><strong>DHI</strong></td><td class="cg"><span class="tr">UZUN</span><span class="en">LONG</span></td><td class="mono">8%</td><td class="tr">Haftalık CALL</td><td class="en">Weekly CALL</td><td class="mono cg">2–3x</td><td class="mono">⭐⭐⭐</td></tr>
+      <tr><td class="mono">6</td><td class="mono cr"><strong>XLE</strong></td><td class="cr"><span class="tr">KISA</span><span class="en">SHORT</span></td><td class="mono">8%</td><td class="tr">Haftalık PUT</td><td class="en">Weekly PUT</td><td class="mono cg">2x</td><td class="mono">⭐⭐⭐⭐</td></tr>
+      <tr><td class="mono">7</td><td class="mono cr"><strong>GLD</strong></td><td class="cr"><span class="tr">KISA</span><span class="en">SHORT</span></td><td class="mono">8%</td><td class="tr">Haftalık PUT</td><td class="en">Weekly PUT</td><td class="mono cg">2x</td><td class="mono">⭐⭐⭐⭐</td></tr>
+      <tr><td class="mono">8</td><td class="mono cr"><strong>TGT</strong></td><td class="cr"><span class="tr">KISA</span><span class="en">SHORT</span></td><td class="mono">6%</td><td class="tr">Haftalık PUT</td><td class="en">Weekly PUT</td><td class="mono cg">2x</td><td class="mono">⭐⭐⭐⭐</td></tr>
+      <tr><td class="mono">9</td><td class="mono"><strong>SPY</strong></td><td class="ca"><span class="tr">IRON CONDOR</span><span class="en">IRON CONDOR</span></td><td class="mono">10%</td><td class="tr">570P/585P/625C/640C</td><td class="en">570P/585P/625C/640C</td><td class="tr">Prim toplama</td><td class="en">Collection</td><td class="mono">⭐⭐⭐⭐</td></tr>
+      <tr><td class="mono">10</td><td class="mono"><strong><span class="tr">Nakit</span><span class="en">Cash</span></strong></td><td class="mono">—</td><td class="mono">20%</td><td class="mono">—</td><td class="mono">—</td><td class="mono">—</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<ul class="bl">
+  <li class="tr"><strong>Net Beta:</strong> ~0.3 (piyasa nötr-vari)</li>
+  <li class="en"><strong>Net Beta:</strong> ~0.3 (market neutral-ish)</li>
+  <li class="tr"><strong>Beklenen Portföy Getirisi (yumuşak CPI):</strong> +5–10%</li>
+  <li class="en"><strong>Expected Portfolio Return (soft CPI):</strong> +5–10%</li>
+  <li class="tr"><strong>Maksimum Çekilme (sıcak CPI):</strong> -8–12%</li>
+  <li class="en"><strong>Max Drawdown (hot CPI):</strong> -8–12%</li>
+</ul>
+
+<p class="tr" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Tez:</strong> FOMC şahin = sınırlı teknoloji rallisi. Petrol düşüşü = havayolları, kimyasallar için doğrudan fayda. DXY 100.85 = altın baskısı. Aralık içi piyasa = iron condor.</p>
+<p class="en" style="color:var(--muted);font-size:.78rem;line-height:1.7;margin:8px 0"><strong>Thesis:</strong> FOMC hawkish = limited tech rally. Oil decline = direct benefit for airlines, chemicals. DXY 100.85 = gold pressure. Range-bound market = iron condor.</p>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">9.2 Dengeli (Orta Risk/Orta Getiri)</span><span class="en">9.2 Balanced (Medium Risk/Medium Return)</span></h3>
+
+<div class="tw">
+  <table>
+    <thead><tr>
+      <th>#</th><th><span class="tr">Hisse/ETF</span><span class="en">Stock/ETF</span></th>
+      <th><span class="tr">Yön</span><span class="en">Direction</span></th>
+      <th><span class="tr">Ağırlık</span><span class="en">Weight</span></th>
+      <th><span class="tr">Enstrüman</span><span class="en">Instrument</span></th>
+      <th><span class="tr">Getiri Potansiyeli</span><span class="en">Return Potential</span></th>
+      <th><span class="tr">Güven</span><span class="en">Confidence</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td class="mono">1</td><td class="mono cg"><strong>UAL</strong></td><td class="cg"><span class="tr">UZUN</span><span class="en">LONG</span></td><td class="mono">10%</td><td class="tr">Haftalık CALL</td><td class="en">Weekly CALL</td><td class="mono cg">2–3x</td><td class="mono">⭐⭐⭐⭐</td></tr>
+      <tr><td class="mono">2</td><td class="mono cg"><strong>NKE</strong></td><td class="cg"><span class="tr">UZUN</span><span class="en">LONG</span></td><td class="mono">10%</td><td class="tr">Haftalık CALL</td><td class="en">Weekly CALL</td><td class="mono cg">2–3x</td><td class="mono">⭐⭐⭐⭐⭐</td></tr>
+      <tr><td class="mono">3</td><td class="mono cg"><strong>LYB</strong></td><td class="cg"><span class="tr">UZUN</span><span class="en">LONG</span></td><td class="mono">8%</td><td class="tr">Haftalık CALL</td><td class="en">Weekly CALL</td><td class="mono cg">2–3x</td><td class="mono">⭐⭐⭐⭐</td></tr>
+      <tr><td class="mono">4</td><td class="mono cr"><strong>XLE</strong></td><td class="cr"><span class="tr">KISA</span><span class="en">SHORT</span></td><td class="mono">8%</td><td class="tr">Haftalık PUT</td><td class="en">Weekly PUT</td><td class="mono cg">2x</td><td class="mono">⭐⭐⭐⭐</td></tr>
+      <tr><td class="mono">5</td><td class="mono cr"><strong>GLD</strong></td><td class="cr"><span class="tr">KISA</span><span class="en">SHORT</span></td><td class="mono">6%</td><td class="tr">Haftalık PUT</td><td class="en">Weekly PUT</td><td class="mono cg">2x</td><td class="mono">⭐⭐⭐⭐</td></tr>
+      <tr><td class="mono">6</td><td class="mono"><strong>SPY</strong></td><td class="ca"><span class="tr">IRON CONDOR</span><span class="en">IRON CONDOR</span></td><td class="mono">12%</td><td class="tr">575P/590P/620C/635C</td><td class="en">575P/590P/620C/635C</td><td class="tr">Prim toplama</td><td class="en">Collection</td><td class="mono">⭐⭐⭐⭐</td></tr>
+      <tr><td class="mono">7</td><td class="mono cg"><strong>IWM</strong></td><td class="cg"><span class="tr">UZUN</span><span class="en">LONG</span></td><td class="mono">8%</td><td class="tr">Haftalık CALL</td><td class="en">Weekly CALL</td><td class="mono cg">2x</td><td class="mono">⭐⭐⭐</td></tr>
+      <tr><td class="mono">8</td><td class="mono"><strong><span class="tr">Nakit</span><span class="en">Cash</span></strong></td><td class="mono">—</td><td class="mono">38%</td><td class="mono">—</td><td class="mono">—</td><td class="mono">—</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<ul class="bl">
+  <li class="tr"><strong>Net Beta:</strong> ~0.2 (defansif)</li>
+  <li class="en"><strong>Net Beta:</strong> ~0.2 (defensive)</li>
+  <li class="tr"><strong>Beklenen Portföy Getirisi:</strong> +3–7%</li>
+  <li class="en"><strong>Expected Portfolio Return:</strong> +3–7%</li>
+  <li class="tr"><strong>Maksimum Çekilme:</strong> -5–8%</li>
+  <li class="en"><strong>Max Drawdown:</strong> -5–8%</li>
+</ul>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">9.3 Muhafazakâr (Düşük Risk/Düşük Getiri)</span><span class="en">9.3 Conservative (Low Risk/Low Return)</span></h3>
+
+<div class="tw">
+  <table>
+    <thead><tr>
+      <th>#</th><th><span class="tr">Hisse/ETF</span><span class="en">Stock/ETF</span></th>
+      <th><span class="tr">Yön</span><span class="en">Direction</span></th>
+      <th><span class="tr">Ağırlık</span><span class="en">Weight</span></th>
+      <th><span class="tr">Enstrüman</span><span class="en">Instrument</span></th>
+      <th><span class="tr">Getiri Potansiyeli</span><span class="en">Return Potential</span></th>
+      <th><span class="tr">Güven</span><span class="en">Confidence</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td class="mono">1</td><td class="mono cg"><strong>SPY</strong></td><td class="cg"><span class="tr">CALL SPREAD</span><span class="en">CALL SPREAD</span></td><td class="mono">15%</td><td class="tr">600C/615C</td><td class="en">600C/615C</td><td class="mono cg">1.5x</td><td class="mono">⭐⭐⭐⭐⭐</td></tr>
+      <tr><td class="mono">2</td><td class="mono cr"><strong>XLE</strong></td><td class="cr"><span class="tr">PUT SPREAD</span><span class="en">PUT SPREAD</span></td><td class="mono">10%</td><td class="tr">58P/52P</td><td class="en">58P/52P</td><td class="mono cg">1.5x</td><td class="mono">⭐⭐⭐⭐⭐</td></tr>
+      <tr><td class="mono">3</td><td class="mono cr"><strong>GLD</strong></td><td class="cr"><span class="tr">PUT SPREAD</span><span class="en">PUT SPREAD</span></td><td class="mono">10%</td><td class="tr">430P/410P</td><td class="en">430P/410P</td><td class="mono cg">1.5x</td><td class="mono">⭐⭐⭐⭐⭐</td></tr>
+      <tr><td class="mono">4</td><td class="mono"><strong><span class="tr">Nakit</span><span class="en">Cash</span></strong></td><td class="mono">—</td><td class="mono">65%</td><td class="mono">—</td><td class="mono">—</td><td class="mono">—</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<ul class="bl">
+  <li class="tr"><strong>Net Beta:</strong> ~0.0 (nötr)</li>
+  <li class="en"><strong>Net Beta:</strong> ~0.0 (neutral)</li>
+  <li class="tr"><strong>Beklenen Portföy Getirisi:</strong> +1–3%</li>
+  <li class="en"><strong>Expected Portfolio Return:</strong> +1–3%</li>
+  <li class="tr"><strong>Maksimum Çekilme:</strong> -2–4%</li>
+  <li class="en"><strong>Max Drawdown:</strong> -2–4%</li>
+</ul>
+
+<!-- ════════════════════════════════════════ SECTION 10 ════════════════════════════════════════ -->
+<div class="sh"><span class="sn">10</span><h2 class="st"><span class="tr">Zaman Çizelgesi ve Eylem Planı (22 Haziran — 10 Temmuz)</span><span class="en">Timeline and Action Plan (June 22 — July 10)</span></h2></div>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">10.1 22–30 Haziran (Haziran Sonu)</span><span class="en">10.1 June 22–30 (End of June)</span></h3>
+
+<div class="tw">
+  <table>
+    <thead><tr>
+      <th><span class="tr">Tarih</span><span class="en">Date</span></th>
+      <th><span class="tr">Olay</span><span class="en">Event</span></th>
+      <th><span class="tr">Eylem</span><span class="en">Action</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td>22–26 <span class="tr">Haziran</span><span class="en">Jun</span></td><td class="tr">Petrol fiyatlarını izle. İran anlaşması uygulanması.</td><td class="en">Monitor oil prices. Iran deal implementation.</td><td class="tr">WTI 70–80$ aralığında mı? 70$ altı = daha yumuşak genel enflasyon. 80$ üstü = tahmin revizyonu.</td><td class="en">Is WTI in $70–80 range? Below $70 = softer headline. Above $80 = forecast revision.</td></tr>
+      <tr><td>26 <span class="tr">Haziran</span><span class="en">Jun</span></td><td class="tr">PCE verisi (Mayıs) açıklanacak.</td><td class="en">PCE data (May) released.</td><td class="tr">Fed'in tercih ettiği enflasyon ölçüsü. Çekirdek PCE beklentiyi aşarsa = şahin.</td><td class="en">Fed's preferred inflation measure. If core PCE beats expectations = hawkish.</td></tr>
+      <tr><td>27–30 <span class="tr">Haziran</span><span class="en">Jun</span></td><td class="tr">GSYH final (Q1), tüketici güveni.</td><td class="en">GDP final (Q1), consumer confidence.</td><td class="tr">Talep göstergeleri. Güçlü talep = çekirdek CPI yukarı riski.</td><td class="en">Demand indicators. Strong demand = core CPI upside risk.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">10.2 1–9 Temmuz (CPI Öncesi)</span><span class="en">10.2 July 1–9 (Pre-CPI)</span></h3>
+
+<div class="tw">
+  <table>
+    <thead><tr>
+      <th><span class="tr">Tarih</span><span class="en">Date</span></th>
+      <th><span class="tr">Eylem</span><span class="en">Action</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td>1–3 <span class="tr">Temmuz</span><span class="en">Jul</span></td><td class="tr">Pozisyonları azalt. 4 Temmuz tatili (piyasa kapalı) = oynaklık.</td><td class="en">Reduce positions. July 4 holiday (market closed) = volatility.</td></tr>
+      <tr><td>4–6 <span class="tr">Temmuz</span><span class="en">Jul</span></td><td class="tr">Petrol fiyatlarını izle. Temmuz başı = yaz talep sezonu.</td><td class="en">Monitor oil prices. Early July = summer demand season.</td></tr>
+      <tr><td>7–9 <span class="tr">Temmuz</span><span class="en">Jul</span></td><td class="tr">CPI öncesi son pozisyon ayarlamaları. Nötr veya küçük pozisyon kal.</td><td class="en">Final pre-CPI position adjustments. Stay flat or small position.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">10.3 10 Temmuz (CPI Günü)</span><span class="en">10.3 July 10 (CPI Day)</span></h3>
+
+<div class="tw">
+  <table>
+    <thead><tr>
+      <th><span class="tr">Saat (ET)</span><span class="en">Time (ET)</span></th>
+      <th><span class="tr">Eylem</span><span class="en">Action</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td class="mono">8:15</td><td class="tr">Tüm pozisyonları kapat. CPI öncesi nötr olun.</td><td class="en">Close all positions. Be flat pre-CPI.</td></tr>
+      <tr><td class="mono">8:30</td><td class="tr">CPI açıklaması. Yumuşak baskı = havayolları, kimyasallar, tüketici uzun.</td><td class="en">CPI print. Soft print = long airlines, chemicals, consumer.</td></tr>
+      <tr><td class="mono">8:35–9:00</td><td class="tr">VWAP kurulumu. 5 dakika bekle.</td><td class="en">VWAP setup. Wait 5 minutes.</td></tr>
+      <tr><td class="mono">9:00–9:30</td><td class="tr">ORB reddi. FOMC şahin = "ralliyi sat" riski. DXY 100.85 = S&P yukarı sınırlı.</td><td class="en">ORB reject. FOMC hawkish = "sell the rally" risk. DXY 100.85 = limited S&P upside.</td></tr>
+      <tr><td class="mono">10:00–16:00</td><td class="tr">Takip eden stop. Kar realizasyonu.</td><td class="en">Trailing stop. Take profits.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ════════════════════════════════════════ SECTION 11 ════════════════════════════════════════ -->
+<div class="sh"><span class="sn">11</span><h2 class="st"><span class="tr">Sonuç ve Ana Çıkarımlar (22 Haziran Güncellemesi)</span><span class="en">Conclusion and Key Takeaways (June 22 Update)</span></h2></div>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">11.1 Haziran 2026 CPI Tahmini — Güncel</span><span class="en">11.1 June 2026 CPI Forecast — Updated</span></h3>
+
+<div class="tw">
+  <table>
+    <thead><tr>
+      <th><span class="tr">Metrik</span><span class="en">Metric</span></th>
+      <th><span class="tr">Güncel Tahmin (22 Haz)</span><span class="en">Current Forecast (Jun 22)</span></th>
+      <th><span class="tr">Önceki (18 Haz)</span><span class="en">Previous (Jun 18)</span></th>
+      <th><span class="tr">Sapma</span><span class="en">Deviation</span></th>
+      <th><span class="tr">Piyasa Beklentisi</span><span class="en">Market Expectation</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td><strong><span class="tr">Genel a/a</span><span class="en">Headline m/m</span></strong></td><td class="mono cg"><strong>+0.10%</strong></td><td class="mono">+0.10%</td><td class="tr">Sabit</td><td class="en">Stable</td><td class="mono">+0.25%</td></tr>
+      <tr><td><strong><span class="tr">Çekirdek a/a</span><span class="en">Core m/m</span></strong></td><td class="mono cg"><strong>+0.20%</strong></td><td class="mono">+0.20%</td><td class="tr">Sabit</td><td class="en">Stable</td><td class="mono">+0.25%</td></tr>
+      <tr><td><strong><span class="tr">Genel y/y</span><span class="en">Headline y/y</span></strong></td><td class="mono cg"><strong>3.8%</strong></td><td class="mono">3.8%</td><td class="tr">Sabit</td><td class="en">Stable</td><td class="mono">4.0%</td></tr>
+      <tr><td><strong><span class="tr">Çekirdek y/y</span><span class="en">Core y/y</span></strong></td><td class="mono cg"><strong>2.9%</strong></td><td class="mono">2.9%</td><td class="tr">Sabit</td><td class="en">Stable</td><td class="mono">3.0%</td></tr>
+      <tr><td><strong><span class="tr">Enerji a/a</span><span class="en">Energy m/m</span></strong></td><td class="mono cr"><strong>-2.0%</strong></td><td class="mono">-2.5%</td><td class="tr">Revize (yukarı)</td><td class="en">Revised (up)</td><td class="mono">—</td></tr>
+      <tr><td><strong><span class="tr">Çekirdek mallar a/a</span><span class="en">Core goods m/m</span></strong></td><td class="mono cg"><strong>+0.20%</strong></td><td class="mono">+0.25%</td><td class="tr">Revize (aşağı)</td><td class="en">Revised (down)</td><td class="mono">—</td></tr>
+      <tr><td><strong><span class="tr">Barınma hariç çekirdek hizmetler a/a</span><span class="en">Core svcs ex-shelter m/m</span></strong></td><td class="mono cg"><strong>+0.18%</strong></td><td class="mono">+0.15%</td><td class="tr">Revize (yukarı)</td><td class="en">Revised (up)</td><td class="mono">—</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h3 style="font-family:'Space Grotesk',sans-serif;font-size:1rem;margin:18px 0 8px"><span class="tr">11.2 Güncellemeler Özeti (18 Haz → 22 Haz)</span><span class="en">11.2 Summary of Updates (Jun 18 → Jun 22)</span></h3>
+
+<ol class="bl">
+  <li class="tr"><strong>Petrol fiyatları daha da düştü</strong> (WTI 75.42$). Ancak CPI veri toplama 1–20 Haziran arasında = <strong>düşüşün tamamı yakalanmayabilir</strong>. Enerji CPI tahmini -2.5% → <strong>-2.0%</strong> revize edildi.</li>
+  <li class="en"><strong>Oil prices fell further</strong> (WTI $75.42). However, CPI data collection is between June 1–20 = <strong>not all of the decline may be captured</strong>. Energy CPI forecast revised from -2.5% → <strong>-2.0%</strong>.</li>
+  <li class="tr"><strong>DXY 100.85 = güçlü dolar.</strong> İthalat deflasyonu baskısı = çekirdek mallar tahmini +0.25% → <strong>+0.20%</strong> revize edildi.</li>
+  <li class="en"><strong>DXY at 100.85 = strong dollar.</strong> Import deflation pressure = core goods forecast revised from +0.25% → <strong>+0.20%</strong>.</li>
+  <li class="tr"><strong>Mayıs perakende satışları güçlü (+0.9%).</strong> Tüketici talebi sağlam = barınma hariç çekirdek hizmetler tahmini +0.15% → <strong>+0.18%</strong> revize edildi.</li>
+  <li class="en"><strong>May retail sales strong (+0.9%).</strong> Consumer demand is solid = core services ex-shelter forecast revised from +0.15% → <strong>+0.18%</strong>.</li>
+  <li class="tr"><strong>Net etki:</strong> DXY aşağı baskısı ve talep yukarı baskısı <strong>birbirini iptal etti</strong>. Genel ve çekirdek tahminler <strong>neredeyse değişmedi</strong> (+0.10% / +0.20%).</li>
+  <li class="en"><strong>Net effect:</strong> DXY downward pressure and demand upward pressure <strong>canceled each other out</strong>. Headline and core forecasts <strong>remained nearly unchanged</strong> (+0.10% / +0.20%).</li>
+  <li class="tr"><strong>FOMC şahin = sınırlı piyasa etkisi.</strong> Warsh'ın nokta grafiği %3.8 = 2026'da sıfır indirim. 10 Temmuz'da CPI yumuşak bile bassa piyasa "Warsh şahin, tek veri noktası trend yapmaz" yaklaşımını benimseyebilir = sınırlı ralli.</li>
+  <li class="en"><strong>FOMC hawkish = limited market impact.</strong> Warsh's dot plot at 3.8% = zero cuts in 2026. Even if CPI prints soft on July 10, the market may adopt a "Warsh is hawkish, one data point doesn't make a trend" stance = limited rally.</li>
+  <li class="tr"><strong>İran anlaşması kırılgan.</strong> 22 Haziran sabahı Hürmüz geçici olarak kapatıldı = petrol 78.62$'a sıçradı. Nükleer program, İsrail/Lübnan, ABD Kongresi = riskler sürüyor. Petrol 85$+ = CPI tahmini değişir.</li>
+  <li class="en"><strong>Iran deal is fragile.</strong> On the morning of June 22, Hormuz was temporarily closed = oil spiked to $78.62. Nuclear program, Israel/Lebanon, US Congress = risks remain. Oil at $85+ = CPI forecast changes.</li>
+  <li class="tr"><strong>İşlem Kurulumu:</strong> FOMC şahin + DXY güçlü = teknoloji çarpan sıkıştırması. <strong>Havayolları (UAL, DAL), kimyasallar (LYB), tüketici (NKE) = doğrudan emtia maliyet faydası = daha güvenli.</strong> Enerji (XLE), altın (GLD) = kısa. Iron condor (SPY) = aralık içi.</li>
+  <li class="en"><strong>Trade Setup:</strong> FOMC hawkish + DXY strong = tech multiple compression. <strong>Airlines (UAL, DAL), chemicals (LYB), consumer (NKE) = direct commodity cost benefit = safer.</strong> Energy (XLE), gold (GLD) = short. Iron condor (SPY) = range-bound.</li>
+</ol>
+
+<div class="disc">
+  <strong>⚠️ <span class="tr">YASAL UYARI:</span><span class="en">DISCLAIMER:</span></strong>
+  <span class="tr">Bu rapor yalnızca bilgilendirme amaçlıdır ve yatırım tavsiyesi değildir. CPI tahminleri mevcut piyasa verilerine ve istatistiksel modellere dayanmaktadır; gerçek BLS verileri farklılık gösterebilir.</span>
+  <span class="en">This report is for informational purposes only and is not investment advice. CPI forecasts are based on current market data and statistical models; actual BLS data may differ.</span>
+</div>
+
+<div class="src-note">ℹ️ <span class="tr"><strong>Raporu Hazırlayan:</strong> Kimi Work Agent (us-cpi-pre-release-forecast skill v2.0)</span><span class="en"><strong>Report Prepared by:</strong> Kimi Work Agent (us-cpi-pre-release-forecast skill v2.0)</span></div>
+<div class="src-note">📚 <span class="tr"><strong>Veri Kaynakları:</strong> BLS (Mayıs 2026 CPI), BLS (Mayıs 2026 PPI), EIA, AAA, ICIS, Reuters, CME FedWatch, TradingKey, Univest, ALM First, GoodReturns, TradingEconomics, AngelOne, ATB Wealth, MarketWatch, NVIDIA IR, FOMC 16–17 Haziran 2026 sonuçları, en güncel ABD-İran anlaşması haberleri (22 Haziran 2026)</span><span class="en"><strong>Data Sources:</strong> BLS (May 2026 CPI), BLS (May 2026 PPI), EIA, AAA, ICIS, Reuters, CME FedWatch, TradingKey, Univest, ALM First, GoodReturns, TradingEconomics, AngelOne, ATB Wealth, MarketWatch, NVIDIA IR, FOMC June 16–17, 2026 results, latest US-Iran deal news (June 22, 2026)</span></div>
+
+</main>
+
+<footer>
+  Gistify.pro · <span class="tr">22 Haziran 2026 · v2.0 · CPI Tahmin Raporu · 11 Bölüm · Altan Yukarıya Ağırlıklı Toplama · Senaryo Analizi</span>
+  <span class="en">June 22, 2026 · v2.0 · CPI Forecast Report · 11 Sections · Bottom-Up Weighted Aggregation · Scenario Analysis</span>
+</footer>
+
+<script>
+function toggleLang(){
+  const b=document.body;
+  b.setAttribute('data-lang',b.getAttribute('data-lang')==='tr'?'en':'tr');
+}
+</script>
+</body>
+</html>
