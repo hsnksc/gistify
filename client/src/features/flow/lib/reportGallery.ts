@@ -123,6 +123,7 @@ export function adaptFlowReportToStoredReport(
     fileName: sourceLabel,
     hasCharts: report.hasCharts,
     id: `server:${report.id}`,
+    languageMode: report.languageMode,
     loadedAt: report.updatedAt,
     price: report.price,
     priceChangePct: report.priceChangePct,
@@ -135,6 +136,7 @@ export function adaptFlowReportToStoredReport(
     sourceType: "server",
     serverReportId: report.id,
     ticker: report.ticker,
+    translationState: report.translationState,
   };
 }
 

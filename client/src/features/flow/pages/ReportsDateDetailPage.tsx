@@ -292,6 +292,8 @@ export default function ReportsDateDetailPage({
                 "The report HTML content could not be loaded."
               )
             }
+            sourceLabel={report.sourceLabel}
+            title={report.companyName || report.fileName}
           />
         </>
       )}

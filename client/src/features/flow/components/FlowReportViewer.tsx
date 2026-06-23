@@ -22,6 +22,9 @@ export default function FlowReportViewer({
         language={language}
         html={viewer.html}
         emptyMessage={viewer.emptyMessage}
+        sourceFolder={report.sourceFolder}
+        sourceLabel={viewer.sourceLabel}
+        title={viewer.title}
       />
     );
   }

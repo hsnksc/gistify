@@ -4,6 +4,10 @@ import type {
   FlowReportKind,
   FlowReportSummary,
 } from "@shared/flow";
+import {
+  analyzeFlowReportLanguage,
+  type FlowReportLanguageInfo,
+} from "@shared/flowLanguage";
 import type { ReportPostItem } from "@/components/reports/ReportPostShell";
 import { getDailyReportAssetUrl } from "@/lib/dailyReports";
 import { copy, type AppLanguage } from "@/lib/i18n";
@@ -60,6 +64,11 @@ export interface FlowTickerGroup<T extends FlowReportListEntry = FlowReportListE
   reports: T[];
   sourceLabels: string[];
   ticker: string;
+}
+
+export interface FlowLanguageBadge {
+  label: string;
+  toneClassName: string;
 }
 
 function normalizeRelativeAssetPath(value: string) {
@@ -223,6 +232,64 @@ export function normalizeFlowContent(
 
 function isFlowReportSummary(report: FlowReportListEntry): report is FlowReportSummary {
   return !("content" in report);
+}
+
+export function getFlowReportLanguageInfo(
+  report: FlowReportListEntry
+): FlowReportLanguageInfo {
+  if (isFlowReportSummary(report)) {
+    return {
+      hasLanguageToggle: false,
+      languageMode: report.languageMode,
+      translationState: report.translationState,
+    };
+  }
+
+  const content = normalizeFlowContent(report.content);
+  return analyzeFlowReportLanguage({
+    contentFormat: content.contentFormat,
+    html: content.html || "",
+    markdown: content.markdown,
+    sourceFolder: report.sourceFolder,
+    sourceLabel: content.sourceLabel || report.sourceFolder,
+    title: report.title,
+  });
+}
+
+export function getFlowLanguageBadge(
+  report: FlowReportListEntry,
+  language: AppLanguage
+): FlowLanguageBadge | null {
+  const languageInfo = getFlowReportLanguageInfo(report);
+
+  if (languageInfo.languageMode === "bilingual") {
+    return {
+      label:
+        languageInfo.translationState === "partial"
+          ? copy(language, "TR + EN kismi", "TR + EN partial")
+          : copy(language, "TR + EN", "TR + EN"),
+      toneClassName:
+        languageInfo.translationState === "partial"
+          ? "border-amber-400/30 bg-amber-500/10 text-amber-300"
+          : "border-cyan-400/30 bg-cyan-500/10 text-cyan-300",
+    };
+  }
+
+  if (languageInfo.languageMode === "tr") {
+    return {
+      label: "TR",
+      toneClassName: "border-emerald-400/30 bg-emerald-500/10 text-emerald-300",
+    };
+  }
+
+  if (languageInfo.languageMode === "en") {
+    return {
+      label: "EN",
+      toneClassName: "border-blue-400/30 bg-blue-500/10 text-blue-300",
+    };
+  }
+
+  return null;
 }
 
 export function getFlowReportKind(report: FlowReportListEntry): FlowReportKind {

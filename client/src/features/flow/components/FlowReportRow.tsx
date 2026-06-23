@@ -5,7 +5,9 @@ import {
   type FlowReportListEntry,
   formatFlowReportDate,
   formatFlowTimestamp,
+  getFlowLanguageBadge,
   getFlowPreviewText,
+  getFlowReportKind,
   getFlowReportArchiveDetailPath,
   getFlowReportDetailPath,
   getFlowSourceLabel,
@@ -29,6 +31,8 @@ export default function FlowReportRow({
       ? getFlowReportArchiveDetailPath(report, basePath)
       : getFlowReportDetailPath(report.id, basePath);
   const ticker = getPrimaryFlowTicker(report);
+  const reportKind = getFlowReportKind(report);
+  const languageBadge = getFlowLanguageBadge(report, language);
 
   return (
     <Link
@@ -58,6 +62,18 @@ export default function FlowReportRow({
         </p>
 
         <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+          <span className="inline-flex items-center rounded-full border border-border bg-background/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+            {reportKind === "daily"
+              ? copy(language, "Gunluk", "Daily")
+              : copy(language, "Hisse", "Stock")}
+          </span>
+          {languageBadge ? (
+            <span
+              className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${languageBadge.toneClassName}`}
+            >
+              {languageBadge.label}
+            </span>
+          ) : null}
           {ticker && ticker !== "MARKET" && ticker !== "FLOW" && (
             <span className="inline-flex items-center rounded-full border border-border bg-background/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
               {ticker}

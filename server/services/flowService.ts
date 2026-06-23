@@ -10,6 +10,7 @@ import {
   normalizeFlowTicker,
   resolveFlowReportKind,
 } from "../../shared/flowInference.ts";
+import { analyzeFlowReportLanguage } from "../../shared/flowLanguage";
 import {
   buildDailyReportRecordFromSource,
   listDailyReportSourcePackages,
@@ -273,6 +274,14 @@ function buildFlowReportSummary(report: DailyReportRecord): FlowReportSummary {
   const html = report.content.html || "";
   const contentFormat = detectContentFormat(report);
   const reportKind = detectFlowReportKind(report, html);
+  const languageInfo = analyzeFlowReportLanguage({
+    contentFormat,
+    html,
+    markdown: report.content.markdown || "",
+    sourceFolder: report.sourceFolder,
+    sourceLabel: report.content.sourceLabel || "",
+    title: report.title,
+  });
   const titleInfo =
     reportKind === "daily"
       ? {
@@ -330,6 +339,8 @@ function buildFlowReportSummary(report: DailyReportRecord): FlowReportSummary {
     recommendation: contentFormat === "html" ? detectRecommendation(html) : null,
     reportDate: report.reportDate,
     reportKind,
+    languageMode: languageInfo.languageMode,
+    translationState: languageInfo.translationState,
     researchFileCount:
       typeof report.content.researchFileCount === "number"
         ? report.content.researchFileCount

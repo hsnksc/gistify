@@ -3,6 +3,10 @@ import type {
   DailyReportSourcePackage,
   FlowReportComment,
 } from "./dailyReports";
+import type {
+  FlowReportLanguageMode,
+  FlowReportTranslationState,
+} from "./flowLanguage";
 
 export const PUBLIC_ACCESS_USER_ID = "public-access";
 
@@ -24,6 +28,8 @@ export interface FlowReportSummary {
   recommendation: string | null;
   reportDate: string;
   reportKind: FlowReportKind;
+  languageMode: FlowReportLanguageMode;
+  translationState: FlowReportTranslationState;
   researchFileCount: number;
   sections: string[];
   slug: string;

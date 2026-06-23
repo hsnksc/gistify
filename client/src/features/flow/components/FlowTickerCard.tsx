@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import {
   formatFlowReportDate,
+  getFlowLanguageBadge,
   getFlowPreviewText,
   getFlowTickerReportPath,
   type FlowTickerGroup,
@@ -21,6 +22,7 @@ export default function FlowTickerCard({
 }: FlowTickerCardProps) {
   const locale = language === "en" ? "en-US" : "tr-TR";
   const latestReport = group.latestReport;
+  const languageBadge = getFlowLanguageBadge(latestReport, language);
   const href = getFlowTickerReportPath(group.ticker, basePath);
 
   return (
@@ -44,9 +46,18 @@ export default function FlowTickerCard({
       </div>
 
       <div className="space-y-1">
-        <p className="line-clamp-1 text-sm font-semibold text-foreground">
-          {latestReport.title}
-        </p>
+        <div className="flex flex-wrap items-center gap-2">
+          <p className="line-clamp-1 text-sm font-semibold text-foreground">
+            {latestReport.title}
+          </p>
+          {languageBadge ? (
+            <span
+              className={`rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${languageBadge.toneClassName}`}
+            >
+              {languageBadge.label}
+            </span>
+          ) : null}
+        </div>
         <p className="line-clamp-2 text-xs leading-5 text-muted-foreground">
           {getFlowPreviewText(latestReport, language)}
         </p>

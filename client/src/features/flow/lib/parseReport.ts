@@ -1,3 +1,9 @@
+import {
+  analyzeFlowReportLanguage,
+  type FlowReportLanguageMode,
+  type FlowReportTranslationState,
+} from "@shared/flowLanguage";
+
 export type ReportRecommendation = "BUY" | "HOLD" | "SELL" | null;
 export type ReportKind = "stock" | "daily";
 
@@ -12,6 +18,8 @@ export interface ReportMeta {
   recommendation: ReportRecommendation;
   reportDate: string;
   reportKind: ReportKind;
+  languageMode: FlowReportLanguageMode;
+  translationState: FlowReportTranslationState;
   sections: string[];
   ticker: string;
 }
@@ -301,17 +309,25 @@ export function parseReportHtml({
       fileName,
       titleText: "",
     });
+    const languageInfo = analyzeFlowReportLanguage({
+      contentFormat: "html",
+      html,
+      sourceLabel: fileName,
+      title: "",
+    });
     return {
       companyName: "",
       exchange: "",
       fileName,
       hasCharts: /<canvas|Chart\.js|new\s+Chart\s*\(/i.test(html),
+      languageMode: languageInfo.languageMode,
       price: null,
       priceChangePct: null,
       rawHtml: html,
       recommendation: null,
       reportDate: parseDateFromFileName(fileName, defaultDate),
       reportKind,
+      translationState: languageInfo.translationState,
       sections: [],
       ticker:
         reportKind === "daily"
@@ -329,6 +345,12 @@ export function parseReportHtml({
       fileName,
       titleText,
     });
+    const languageInfo = analyzeFlowReportLanguage({
+      contentFormat: "html",
+      html,
+      sourceLabel: fileName,
+      title: titleText,
+    });
     const titleParts = extractTitleParts(titleText, reportKind);
     const fallbackTicker =
       reportKind === "daily"
@@ -342,12 +364,14 @@ export function parseReportHtml({
       exchange: findExchange(documentNode),
       fileName,
       hasCharts: detectCharts(documentNode, html),
+      languageMode: languageInfo.languageMode,
       price: findPrice(documentNode),
       priceChangePct: findPriceChangePct(documentNode),
       rawHtml: html,
       recommendation: findRecommendation(documentNode),
       reportDate: parseDateFromFileName(fileName, defaultDate),
       reportKind,
+      translationState: languageInfo.translationState,
       sections: collectSections(documentNode),
       ticker: titleParts.ticker || fallbackTicker,
     };
@@ -357,17 +381,25 @@ export function parseReportHtml({
       fileName,
       titleText: "",
     });
+    const languageInfo = analyzeFlowReportLanguage({
+      contentFormat: "html",
+      html,
+      sourceLabel: fileName,
+      title: "",
+    });
     return {
       companyName: "",
       exchange: "",
       fileName,
       hasCharts: /<canvas|Chart\.js|new\s+Chart\s*\(/i.test(html),
+      languageMode: languageInfo.languageMode,
       price: null,
       priceChangePct: null,
       rawHtml: html,
       recommendation: null,
       reportDate: parseDateFromFileName(fileName, defaultDate),
       reportKind,
+      translationState: languageInfo.translationState,
       sections: [],
       ticker:
         reportKind === "daily"

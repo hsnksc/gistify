@@ -18,6 +18,40 @@ import {
   getRecommendationTone,
 } from "../../lib/reportGallery";
 
+function getLanguageBadge(
+  language: AppLanguage,
+  report: StoredReportRecord
+): { label: string; toneClassName: string } | null {
+  if (report.languageMode === "bilingual") {
+    return {
+      label:
+        report.translationState === "partial"
+          ? copy(language, "TR + EN kismi", "TR + EN partial")
+          : copy(language, "TR + EN", "TR + EN"),
+      toneClassName:
+        report.translationState === "partial"
+          ? "border-amber-400/30 bg-amber-500/10 text-amber-300"
+          : "border-cyan-400/30 bg-cyan-500/10 text-cyan-300",
+    };
+  }
+
+  if (report.languageMode === "tr") {
+    return {
+      label: "TR",
+      toneClassName: "border-emerald-400/30 bg-emerald-500/10 text-emerald-300",
+    };
+  }
+
+  if (report.languageMode === "en") {
+    return {
+      label: "EN",
+      toneClassName: "border-blue-400/30 bg-blue-500/10 text-blue-300",
+    };
+  }
+
+  return null;
+}
+
 interface ReportGalleryCardProps {
   language: AppLanguage;
   onRemove?: (reportId: string) => void;
@@ -33,6 +67,7 @@ export default function ReportGalleryCard({
   const priceChangePositive = hasPriceChange
     ? (report.priceChangePct ?? 0) >= 0
     : false;
+  const languageBadge = getLanguageBadge(language, report);
 
   return (
     <article className="group rounded-[1.8rem] border border-border bg-card/90 p-5 shadow-xl transition-all hover:border-indigo-400/35 hover:bg-card">
@@ -43,9 +78,21 @@ export default function ReportGalleryCard({
               ? copy(language, "Yerel Yukleme", "Local Upload")
               : copy(language, "Yayinli Kaynak", "Published Source")}
           </p>
-          <h3 className="mt-2 text-3xl font-semibold tracking-tight text-foreground">
-            {report.ticker}
-          </h3>
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            <h3 className="text-3xl font-semibold tracking-tight text-foreground">
+              {report.ticker}
+            </h3>
+            {languageBadge ? (
+              <span
+                className={cn(
+                  "rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em]",
+                  languageBadge.toneClassName
+                )}
+              >
+                {languageBadge.label}
+              </span>
+            ) : null}
+          </div>
         </div>
 
         <span
