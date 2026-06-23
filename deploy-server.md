@@ -2,6 +2,10 @@
 
 > **Goal:** Run Midas pipeline on the production VPS and make Gistify serve `/api/midas/signals` from a canonical, atomically-updated `midas_signals.json` file without requiring a redeploy on every refresh.
 
+> **Production URL:** `https://gistify.pro`
+> **API Endpoint:** `https://gistify.pro/api/midas/signals`
+> **VPS IP:** `82.29.173.6` (Port 2222 for SSH)
+
 ---
 
 ## 1. Where the file should live
@@ -131,14 +135,14 @@ os.replace(tmp_path, vps_path)
 After every pipeline run or deploy:
 
 ```bash
-# 1. File exists and is valid JSON
+# 1. File exists and is valid JSON on VPS
 cat /srv/gistify/midas/midas_signals.json | jq '.timestamp, .symbol_count'
 
 # 2. Timestamp is recent
 stat /srv/gistify/midas/midas_signals.json
 
-# 3. API returns data
-curl -s http://localhost:3000/api/midas/signals | jq '.timestamp, .signals | length'
+# 3. API returns data (production)
+curl -s https://gistify.pro/api/midas/signals | jq '.timestamp, .signals | length'
 
 # 4. Container logs show no read errors
 docker logs --tail 20 gistify
