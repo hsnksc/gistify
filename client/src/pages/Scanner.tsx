@@ -11,6 +11,7 @@ import {
   CandlestickChart,
   Clock3,
   FileText,
+  LineChart,
   PanelLeftClose,
   PanelLeftOpen,
   Radar,
@@ -44,8 +45,9 @@ import MomentumMarketTab from "@/scanner/components/MomentumMarketTab";
 import MomentumSetupsTab from "@/scanner/components/MomentumSetupsTab";
 import MomentumStrategyTab from "@/scanner/components/MomentumStrategyTab";
 import ScannerPage from "@/scanner/components/ScannerPage";
+import MidasOpportunitiesTab from "@/components/tabs/MidasOpportunitiesTab";
 
-type TabId = "post" | "market" | "setups" | "strategy" | "scanner";
+type TabId = "post" | "market" | "setups" | "strategy" | "scanner" | "opportunities";
 
 interface ScannerRoutePageProps {
   language: AppLanguage;
@@ -306,6 +308,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
   }> = isHtmlSource
     ? [
         { id: "post", label: "HTML Report", icon: FileText },
+        { id: "opportunities", label: "Midas Opportunities", icon: LineChart },
         { id: "scanner", label: "Live Scanner", icon: Radar },
       ]
     : [
@@ -313,6 +316,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
         { id: "market", label: "Market Pulse", icon: CandlestickChart },
         { id: "setups", label: "Setups", icon: TrendingUp },
         { id: "strategy", label: "Strategy", icon: ShieldCheck },
+        { id: "opportunities", label: "Midas Opportunities", icon: LineChart },
         { id: "scanner", label: "Live Scanner", icon: Radar },
       ];
 
@@ -350,6 +354,20 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
             </p>
           </div>
           <ScannerPage lang={language} />
+        </section>
+      );
+    }
+
+    if (activeTab === "opportunities") {
+      return (
+        <section className="workspace-card overflow-hidden p-4 md:p-5">
+          <div className="mb-4 flex items-center gap-2">
+            <LineChart className="size-4 text-indigo-300" />
+            <p className="heading-condensed text-sm text-foreground">
+              {copy(language, "Midas Momentum Firsatlari", "Midas Momentum Opportunities")}
+            </p>
+          </div>
+          <MidasOpportunitiesTab language={language} />
         </section>
       );
     }

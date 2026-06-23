@@ -72,6 +72,7 @@ import {
   getMomentumReportSource,
   listMomentumReportSourceSummaries,
 } from "./momentumReportSources";
+import { createMidasSignalsSyncService } from "./midasSignals";
 import {
   generateOpenAiImage,
   isOpenAiImageStudioConfigured,
@@ -2920,7 +2921,9 @@ const __dirname = path.dirname(__filename);
 async function startServer() {
   const app = express();
   const server = createServer(app);
+  const midasSignalsSync = createMidasSignalsSyncService();
   billingStore.pruneExpiredSessions();
+  await midasSignalsSync.start();
 
   app.set("trust proxy", 1);
   app.use(
@@ -3658,6 +3661,39 @@ async function startServer() {
     }
 
     res.status(200).json({ report });
+  });
+
+  app.get("/api/midas/signals", (_req, res) => {
+    setPrivateNoStore(res);
+
+    const snapshot = midasSignalsSync.getSnapshot();
+    if (!snapshot) {
+      res.status(503).json({
+        error: "Midas signal snapshot hazir degil.",
+        pipeline: midasSignalsSync.getPipeline(),
+      });
+      return;
+    }
+
+    res.status(200).json(snapshot);
+  });
+
+  app.post("/api/admin/midas/signals/refresh", async (req, res) => {
+    setPrivateNoStore(res);
+    if (!requireWeeklyReportAdmin(req, res)) {
+      return;
+    }
+
+    const snapshot = await midasSignalsSync.refresh({ force: true });
+    if (!snapshot) {
+      res.status(503).json({
+        error: "Midas signal snapshot yenilenemedi.",
+        pipeline: midasSignalsSync.getPipeline(),
+      });
+      return;
+    }
+
+    res.status(200).json(snapshot);
   });
 
   app.get("/api/admin/daily-report-sources", (req, res) => {
