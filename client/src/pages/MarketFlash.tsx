@@ -77,8 +77,366 @@ const THEME = {
   lineClassName: "bg-violet-400/70",
 };
 
+type LooseRecord = Record<string, unknown>;
+
+function asRecord(value: unknown): LooseRecord | null {
+  return value && typeof value === "object" && !Array.isArray(value)
+    ? (value as LooseRecord)
+    : null;
+}
+
+function asRecordArray(value: unknown): LooseRecord[] {
+  return Array.isArray(value)
+    ? value.map(item => asRecord(item)).filter((item): item is LooseRecord => item !== null)
+    : [];
+}
+
+function asString(value: unknown): string | undefined {
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+    return trimmed.length ? trimmed : undefined;
+  }
+
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return String(value);
+  }
+
+  return undefined;
+}
+
+function toFiniteNumber(value: unknown): number | undefined {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value;
+  }
+
+  if (typeof value === "string") {
+    const cleaned = value.replace(/[$,%\s,]/g, "");
+    const parsed = Number(cleaned);
+    return Number.isFinite(parsed) ? parsed : undefined;
+  }
+
+  return undefined;
+}
+
 function isFiniteNumber(value: unknown): value is number {
   return typeof value === "number" && Number.isFinite(value);
+}
+
+function parseScaledNumber(value: unknown): number | undefined {
+  if (isFiniteNumber(value)) {
+    return value;
+  }
+
+  if (typeof value !== "string") {
+    return undefined;
+  }
+
+  const trimmed = value.trim();
+  const direct = Number(trimmed.replace(/[,$]/g, ""));
+  if (Number.isFinite(direct)) {
+    return direct;
+  }
+
+  const match = trimmed.match(/^([\d.]+)\s*([KMBT])$/i);
+  if (!match) {
+    return undefined;
+  }
+
+  const amount = Number(match[1]);
+  if (!Number.isFinite(amount)) {
+    return undefined;
+  }
+
+  const multipliers: Record<string, number> = {
+    K: 1_000,
+    M: 1_000_000,
+    B: 1_000_000_000,
+    T: 1_000_000_000_000,
+  };
+
+  return amount * multipliers[match[2].toUpperCase()];
+}
+
+function normalizeRevenueValue(value: unknown): number | undefined {
+  const parsed = toFiniteNumber(value);
+  if (!isFiniteNumber(parsed)) {
+    return undefined;
+  }
+
+  // Kimi raporu ciroyu bazen "35.0" gibi milyar biriminde yaziyor.
+  if (parsed > 0 && parsed < 1_000) {
+    return parsed * 1_000_000_000;
+  }
+
+  return parsed;
+}
+
+function normalizeReportType(value: unknown): MarketFlashReportType {
+  const raw = asString(value)?.toLowerCase();
+  if (raw === "pre-market" || raw === "after-market" || raw === "hourly") {
+    return raw;
+  }
+  return "hourly";
+}
+
+function normalizeEarningsTime(
+  value: unknown
+): MarketFlashEarningsItem["time"] {
+  const raw = asString(value)?.toLowerCase().replace(/\s+/g, "-");
+  if (!raw) {
+    return "intraday";
+  }
+
+  if (raw.includes("before") || raw === "bmo" || raw === "before-open") {
+    return "before-open";
+  }
+
+  if (raw.includes("after") || raw === "amc" || raw === "after-close") {
+    return "after-close";
+  }
+
+  return "intraday";
+}
+
+function normalizeExpiry(
+  expiry: unknown,
+  zeroDte: unknown
+): MarketFlashSetup["expiry"] {
+  if (zeroDte === true) {
+    return "0DTE";
+  }
+
+  const raw = asString(expiry)?.toLowerCase() ?? "";
+  if (raw.includes("0dte")) {
+    return "0DTE";
+  }
+  if (raw.includes("week")) {
+    return "weekly";
+  }
+  return "monthly";
+}
+
+function normalizeSentiment(
+  value: unknown
+): MarketFlashEarningsItem["analystSentiment"] | undefined {
+  const raw = asString(value)?.toLowerCase();
+  if (raw === "bullish" || raw === "bearish" || raw === "neutral") {
+    return raw;
+  }
+  return undefined;
+}
+
+function normalizeGapStatus(value: unknown): MarketFlashCarryForward["gapStatus"] {
+  const raw = asString(value)?.toLowerCase();
+  switch (raw) {
+    case "gap-up-maintained":
+    case "gap-up-faded":
+    case "gap-down-maintained":
+    case "gap-down-faded":
+    case "flat":
+      return raw;
+    default:
+      return "flat";
+  }
+}
+
+function inferSectorLabel(ticker: string, catalyst: string, fallback?: string) {
+  if (fallback) {
+    return fallback;
+  }
+
+  const haystack = `${ticker} ${catalyst}`.toLowerCase();
+
+  if (
+    ["amd", "nvda", "mu", "avgo", "tsm", "qcom", "soxl", "smci"].some(symbol =>
+      haystack.includes(symbol)
+    ) ||
+    haystack.includes("semiconductor")
+  ) {
+    return "Semiconductors";
+  }
+
+  if (
+    ["run", "enph", "fslr", "sedg"].some(symbol => haystack.includes(symbol)) ||
+    haystack.includes("solar")
+  ) {
+    return "Solar";
+  }
+
+  if (
+    ["spy", "qqq", "iwm", "dia", "tlt"].some(symbol => haystack.includes(symbol))
+  ) {
+    return "ETF";
+  }
+
+  if (
+    ["absi", "plsm", "biotech", "health", "pharma"].some(symbol =>
+      haystack.includes(symbol)
+    )
+  ) {
+    return "Biotech";
+  }
+
+  if (
+    ["meta", "amzn", "aapl", "msft", "goog", "tech", "software"].some(symbol =>
+      haystack.includes(symbol)
+    )
+  ) {
+    return "Technology";
+  }
+
+  if (haystack.includes("energy") || haystack.includes("oil")) {
+    return "Energy";
+  }
+
+  return "Single Name";
+}
+
+function normalizeIndexQuote(value: unknown): MarketFlashIndexQuote {
+  const record = asRecord(value);
+
+  return {
+    price: toFiniteNumber(record?.price) ?? 0,
+    change:
+      toFiniteNumber(record?.changePercent) ??
+      toFiniteNumber(record?.change) ??
+      0,
+    vwap:
+      toFiniteNumber(record?.vwap) ?? toFiniteNumber(record?.vwapAnchor),
+  };
+}
+
+function normalizeMover(value: unknown): MarketFlashMover {
+  const record = asRecord(value);
+  const ticker = asString(record?.ticker) ?? "-";
+  const catalyst =
+    asString(record?.catalyst) ?? asString(record?.reason) ?? "-";
+  const sector = inferSectorLabel(
+    ticker,
+    catalyst,
+    asString(record?.sector) ?? asString(record?.company)
+  );
+
+  return {
+    ticker,
+    price:
+      toFiniteNumber(record?.price) ??
+      toFiniteNumber(record?.preMarketPrice) ??
+      0,
+    change:
+      toFiniteNumber(record?.change) ??
+      toFiniteNumber(record?.changePercent) ??
+      0,
+    catalyst,
+    volume:
+      toFiniteNumber(record?.volume) ??
+      toFiniteNumber(record?.preMarketVolume) ??
+      0,
+    sector,
+    marketCap:
+      parseScaledNumber(record?.marketCap) ?? toFiniteNumber(record?.marketCap),
+  };
+}
+
+function normalizeSetup(value: unknown): MarketFlashSetup {
+  const record = asRecord(value);
+  const ticker = asString(record?.ticker) ?? "-";
+  const catalyst = asString(record?.catalyst) ?? asString(record?.warning) ?? "-";
+
+  return {
+    ticker,
+    price:
+      toFiniteNumber(record?.price) ??
+      toFiniteNumber(record?.preMarketPrice) ??
+      toFiniteNumber(record?.entry) ??
+      0,
+    setup: asString(record?.setup) ?? asString(record?.setupType) ?? "-",
+    entry: toFiniteNumber(record?.entry) ?? 0,
+    stop: toFiniteNumber(record?.stop) ?? 0,
+    target: toFiniteNumber(record?.target) ?? 0,
+    rr:
+      toFiniteNumber(record?.rr) ??
+      toFiniteNumber(record?.riskReward) ??
+      0,
+    expiry: normalizeExpiry(record?.expiry ?? record?.optionType, record?.zeroDTE),
+    catalyst,
+    sector: inferSectorLabel(
+      ticker,
+      catalyst,
+      asString(record?.sector)
+    ),
+  };
+}
+
+function normalizeEarningsItem(value: unknown): MarketFlashEarningsItem {
+  const record = asRecord(value);
+
+  return {
+    ticker: asString(record?.ticker) ?? "-",
+    company: asString(record?.company),
+    time: normalizeEarningsTime(record?.time),
+    consensusEps:
+      toFiniteNumber(record?.consensusEps) ??
+      toFiniteNumber(record?.epsEstimate),
+    consensusRev: normalizeRevenueValue(
+      record?.consensusRev ?? record?.revenueEstimate
+    ),
+    priorEps: toFiniteNumber(record?.priorEps ?? record?.previousEps),
+    priorRev: normalizeRevenueValue(record?.priorRev ?? record?.previousRevenue),
+    expectedMove: asString(record?.expectedMove),
+    analystSentiment: normalizeSentiment(record?.analystSentiment),
+    consensusRange: asString(record?.consensusRange),
+    note: asString(record?.note) ?? asString(record?.warning),
+  };
+}
+
+function normalizeCarryForward(value: unknown): MarketFlashCarryForward {
+  const record = asRecord(value);
+
+  return {
+    ticker: asString(record?.ticker) ?? "-",
+    todayChange: toFiniteNumber(record?.todayChange) ?? 0,
+    gapStatus: normalizeGapStatus(record?.gapStatus),
+    bias:
+      asString(record?.bias) === "CALL" ||
+      asString(record?.bias) === "PUT" ||
+      asString(record?.bias) === "NEUTRAL"
+        ? (asString(record?.bias) as MarketFlashCarryForward["bias"])
+        : "NEUTRAL",
+    setupType: asString(record?.setupType) ?? "-",
+  };
+}
+
+function normalizeMarketFlashReport(value: unknown): MarketFlashReport {
+  const record = asRecord(value);
+  const marketSummary = asRecord(record?.marketSummary);
+  const movers = asRecord(record?.topMovers);
+
+  return {
+    reportType: normalizeReportType(record?.reportType),
+    reportDate: asString(record?.reportDate) ?? new Date().toISOString().slice(0, 10),
+    generatedAt: asString(record?.generatedAt) ?? new Date().toISOString(),
+    marketSummary: {
+      spy: normalizeIndexQuote(marketSummary?.spy),
+      qqq: normalizeIndexQuote(marketSummary?.qqq),
+      iwm: normalizeIndexQuote(marketSummary?.iwm),
+      vix: normalizeIndexQuote(marketSummary?.vix),
+    },
+    topMovers: {
+      gainers: asRecordArray(movers?.gainers).map(normalizeMover),
+      losers: asRecordArray(movers?.losers).map(normalizeMover),
+    },
+    callSetups: asRecordArray(record?.callSetups).map(normalizeSetup),
+    putSetups: asRecordArray(record?.putSetups).map(normalizeSetup),
+    earningsCalendar: asRecordArray(record?.earningsCalendar).map(
+      normalizeEarningsItem
+    ),
+    vwapNotes: asString(record?.vwapNotes) ?? "",
+    riskAssessment: asString(record?.riskAssessment) ?? "",
+    nextDayCarryForward: asRecordArray(record?.nextDayCarryForward).map(
+      normalizeCarryForward
+    ),
+  };
 }
 
 function formatNumber(value: number | null | undefined, decimals = 2) {
@@ -708,6 +1066,14 @@ function EarningsCalendar({
                       </p>
                     </div>
                   ) : null}
+                  {item.note ? (
+                    <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 sm:col-span-2">
+                      <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                        {copy(language, "Not", "Note")}
+                      </p>
+                      <p className="mt-0.5 text-foreground">{item.note}</p>
+                    </div>
+                  ) : null}
                 </div>
               </AccordionContent>
             </AccordionItem>
@@ -1016,7 +1382,7 @@ export default function MarketFlash({ language }: { language: AppLanguage }) {
           );
         }
 
-        setReport((await response.json()) as MarketFlashReport);
+        setReport(normalizeMarketFlashReport(await response.json()));
         setError(null);
       } catch (loadError) {
         setError(

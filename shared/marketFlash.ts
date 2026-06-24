@@ -47,6 +47,7 @@ export interface MarketFlashSetup {
 
 export interface MarketFlashEarningsItem {
   ticker: string;
+  company?: string;
   time: "before-open" | "after-close" | "intraday";
   consensusEps?: number;
   consensusRev?: number;
@@ -55,6 +56,7 @@ export interface MarketFlashEarningsItem {
   expectedMove?: string;
   analystSentiment?: "bullish" | "bearish" | "neutral";
   consensusRange?: string;
+  note?: string;
 }
 
 export interface MarketFlashCarryForward {
