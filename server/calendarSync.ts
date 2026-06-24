@@ -196,6 +196,7 @@ function buildSourceCandidates(configuredSourceFile: string | null): string[] {
   const defaults = [
     path.resolve(process.cwd(), "..", "calendar", "calendar_forecast.json"),
     path.resolve(process.cwd(), "calendar", "calendar_forecast.json"),
+    path.resolve(process.cwd(), "client", "public", "calendar", "calendar_forecast.json"),
     path.resolve(process.cwd(), "client", "public", "calendar_forecast.json"),
   ];
 
