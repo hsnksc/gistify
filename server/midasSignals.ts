@@ -3,6 +3,8 @@ import path from "node:path";
 import type {
   MidasActionSignal,
   MidasPipelineMetadata,
+  MidasRiskLevel,
+  MidasSignalLayers,
   MidasSignalRecord,
   MidasSignalsData,
 } from "../shared/midasSignals";
@@ -54,6 +56,20 @@ function normalizeInteger(value: unknown, fallback = 0) {
   return Math.max(0, Math.floor(normalizeNumber(value, fallback)));
 }
 
+function normalizeOptionalNumber(value: unknown) {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value;
+  }
+
+  const raw = normalizeString(value);
+  if (!raw) {
+    return undefined;
+  }
+
+  const parsed = Number(raw);
+  return Number.isFinite(parsed) ? parsed : undefined;
+}
+
 function normalizeTimestamp(value: unknown, fallback: string) {
   const raw = normalizeString(value);
   if (!raw) {
@@ -96,6 +112,52 @@ function normalizeActionSignal(value: unknown): MidasActionSignal {
   }
 }
 
+function normalizeRiskLevel(value: unknown): MidasRiskLevel | undefined {
+  const raw = normalizeString(value).toUpperCase();
+  switch (raw) {
+    case "LOW":
+    case "MEDIUM":
+    case "HIGH":
+      return raw;
+    default:
+      return undefined;
+  }
+}
+
+function normalizeSignalLayers(value: unknown): MidasSignalLayers | undefined {
+  const source = extractObjectRecord(value);
+  if (!source) {
+    return undefined;
+  }
+
+  const momentumScore = normalizeOptionalNumber(
+    source.momentum_score ?? source.momentumScore
+  );
+  const oscillatorScore = normalizeOptionalNumber(
+    source.oscillator_score ?? source.oscillatorScore
+  );
+  const trendScore = normalizeOptionalNumber(source.trend_score ?? source.trendScore);
+  const confluenceScore = normalizeOptionalNumber(
+    source.confluence_score ?? source.confluenceScore
+  );
+
+  if (
+    momentumScore === undefined &&
+    oscillatorScore === undefined &&
+    trendScore === undefined &&
+    confluenceScore === undefined
+  ) {
+    return undefined;
+  }
+
+  return {
+    momentumScore,
+    oscillatorScore,
+    trendScore,
+    confluenceScore,
+  };
+}
+
 function normalizeSignalRecord(
   value: unknown,
   fallbackTimestamp: string
@@ -119,6 +181,10 @@ function normalizeSignalRecord(
     weekly_pct: normalizeNumber(source.weekly_pct),
     monthly_pct: normalizeNumber(source.monthly_pct),
     signals: normalizeStringArray(source.signals),
+    confidence: normalizeOptionalNumber(source.confidence ?? source.confidence_score),
+    riskLevel: normalizeRiskLevel(source.risk_level ?? source.riskLevel),
+    notes: normalizeString(source.notes) || undefined,
+    layers: normalizeSignalLayers(source.layers),
     timestamp: normalizeTimestamp(source.timestamp, fallbackTimestamp),
   };
 }

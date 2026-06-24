@@ -6,6 +6,14 @@ export type MidasActionSignal =
   | "STRONG_SELL";
 
 export type MidasPipelineStatus = "idle" | "ok" | "stale" | "error";
+export type MidasRiskLevel = "LOW" | "MEDIUM" | "HIGH";
+
+export interface MidasSignalLayers {
+  momentumScore?: number;
+  oscillatorScore?: number;
+  trendScore?: number;
+  confluenceScore?: number;
+}
 
 export interface MidasSignalRecord {
   symbol: string;
@@ -16,6 +24,10 @@ export interface MidasSignalRecord {
   weekly_pct: number;
   monthly_pct: number;
   signals: string[];
+  confidence?: number;
+  riskLevel?: MidasRiskLevel;
+  notes?: string;
+  layers?: MidasSignalLayers;
   timestamp?: string;
 }
 

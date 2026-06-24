@@ -8,7 +8,7 @@ import {
   Zap,
 } from "lucide-react";
 import { useLocation } from "wouter";
-import MidasOpportunitiesTab from "@/components/tabs/MidasOpportunitiesTab";
+import MomentumFlowSurface from "@/components/tabs/MomentumFlowSurface";
 import { Button } from "@/components/ui/button";
 import type { AppLanguage } from "@/lib/i18n";
 import WorkspaceHeroPanel from "@/components/workspace/WorkspaceHeroPanel";
@@ -128,7 +128,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
             </div>
           </div>
 
-          <MidasOpportunitiesTab key={refreshSeed} language={language} />
+          <MomentumFlowSurface key={refreshSeed} language={language} />
         </section>
       </div>
     </div>
