@@ -67,6 +67,13 @@ export interface MarketFlashCarryForward {
   setupType: string;
 }
 
+export interface MarketFlashRiskAssessment {
+  level?: MarketFlashRiskLevel;
+  title?: string;
+  summary: string;
+  details?: string[];
+}
+
 export interface MarketFlashReport {
   reportType: MarketFlashReportType;
   reportDate: string;
@@ -80,6 +87,6 @@ export interface MarketFlashReport {
   putSetups: MarketFlashSetup[];
   earningsCalendar: MarketFlashEarningsItem[];
   vwapNotes: string;
-  riskAssessment: string;
+  riskAssessment: MarketFlashRiskAssessment;
   nextDayCarryForward: MarketFlashCarryForward[];
 }

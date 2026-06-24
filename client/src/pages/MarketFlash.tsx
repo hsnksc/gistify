@@ -6,6 +6,7 @@ import type {
   MarketFlashMarketSummary,
   MarketFlashMover,
   MarketFlashReport,
+  MarketFlashRiskAssessment,
   MarketFlashReportType,
   MarketFlashSetup,
 } from "@shared/marketFlash";
@@ -240,6 +241,50 @@ function normalizeGapStatus(value: unknown): MarketFlashCarryForward["gapStatus"
   }
 }
 
+function normalizeRiskLevel(
+  value: unknown
+): MarketFlashRiskAssessment["level"] {
+  const raw = asString(value)?.toLowerCase();
+  if (raw === "low" || raw === "medium" || raw === "high") {
+    return raw;
+  }
+  return undefined;
+}
+
+function normalizeStringList(value: unknown): string[] | undefined {
+  const items = Array.isArray(value)
+    ? value.map(entry => asString(entry)).filter((entry): entry is string => Boolean(entry))
+    : [];
+
+  return items.length ? items : undefined;
+}
+
+function normalizeRiskAssessment(value: unknown): MarketFlashRiskAssessment {
+  if (typeof value === "string") {
+    return { summary: value };
+  }
+
+  const record = asRecord(value);
+  const details =
+    normalizeStringList(record?.details) ??
+    normalizeStringList(record?.notes) ??
+    normalizeStringList(record?.bullets);
+  const summary =
+    asString(record?.summary) ??
+    asString(record?.text) ??
+    asString(record?.body) ??
+    asString(record?.description) ??
+    details?.[0] ??
+    "";
+
+  return {
+    level: normalizeRiskLevel(record?.level ?? record?.riskLevel),
+    title: asString(record?.title) ?? asString(record?.label),
+    summary,
+    details,
+  };
+}
+
 function inferSectorLabel(ticker: string, catalyst: string, fallback?: string) {
   if (fallback) {
     return fallback;
@@ -432,7 +477,7 @@ function normalizeMarketFlashReport(value: unknown): MarketFlashReport {
       normalizeEarningsItem
     ),
     vwapNotes: asString(record?.vwapNotes) ?? "",
-    riskAssessment: asString(record?.riskAssessment) ?? "",
+    riskAssessment: normalizeRiskAssessment(record?.riskAssessment),
     nextDayCarryForward: asRecordArray(record?.nextDayCarryForward).map(
       normalizeCarryForward
     ),
@@ -546,7 +591,12 @@ function changeBgClass(change: number | null | undefined) {
 }
 
 function inferRiskLevel(report: MarketFlashReport): "low" | "medium" | "high" {
-  const text = `${report.riskAssessment} ${report.vwapNotes}`.toLowerCase();
+  if (report.riskAssessment.level) {
+    return report.riskAssessment.level;
+  }
+
+  const detailText = report.riskAssessment.details?.join(" ") ?? "";
+  const text = `${report.riskAssessment.summary} ${detailText} ${report.vwapNotes}`.toLowerCase();
   const vix = report.marketSummary.vix?.price ?? 0;
 
   if (
@@ -971,113 +1021,160 @@ function EarningsCalendar({
       </CardHeader>
       <CardContent>
         <Accordion type="single" collapsible className="w-full">
-          {items.map(item => (
-            <AccordionItem
-              key={item.ticker}
-              value={item.ticker}
-              className="border-b border-white/10 last:border-b-0"
-            >
-              <AccordionTrigger className="py-3 text-sm hover:no-underline">
-                <div className="flex w-full items-center justify-between pr-4">
-                  <div className="flex items-center gap-3">
-                    <span className="font-semibold text-foreground">
-                      {item.ticker}
-                    </span>
-                    <Badge
-                      variant="outline"
-                      className={cn(
-                        "text-[10px] uppercase tracking-[0.12em]",
-                        item.time === "before-open"
-                          ? "border-emerald-500/25 bg-emerald-500/12 text-emerald-200"
-                          : item.time === "after-close"
-                            ? "border-violet-500/25 bg-violet-500/12 text-violet-200"
-                            : "border-amber-500/25 bg-amber-500/12 text-amber-200"
-                      )}
-                    >
-                      {item.time === "before-open"
-                        ? "BMO"
-                        : item.time === "after-close"
-                          ? "AMC"
-                          : "Intraday"}
-                    </Badge>
+          {items.map(item => {
+            const metrics = [
+              isFiniteNumber(item.consensusEps)
+                ? {
+                    label: copy(language, "EPS Beklenen", "Consensus EPS"),
+                    value: `$${formatNumber(item.consensusEps)}`,
+                  }
+                : null,
+              isFiniteNumber(item.consensusRev)
+                ? {
+                    label: copy(language, "Rev Beklenen", "Consensus Rev"),
+                    value: `$${formatCompactNumber(item.consensusRev)}`,
+                  }
+                : null,
+              isFiniteNumber(item.priorEps)
+                ? {
+                    label: copy(language, "Onceki EPS", "Prior EPS"),
+                    value: `$${formatNumber(item.priorEps)}`,
+                  }
+                : null,
+              isFiniteNumber(item.priorRev)
+                ? {
+                    label: copy(language, "Onceki Rev", "Prior Rev"),
+                    value: `$${formatCompactNumber(item.priorRev)}`,
+                  }
+                : null,
+            ].filter(
+              (
+                metric
+              ): metric is {
+                label: string;
+                value: string;
+              } => Boolean(metric)
+            );
+
+            return (
+              <AccordionItem
+                key={item.ticker}
+                value={item.ticker}
+                className="border-b border-white/10 last:border-b-0"
+              >
+                <AccordionTrigger className="py-3 text-sm hover:no-underline">
+                  <div className="flex w-full items-center justify-between pr-4">
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-3">
+                        <span className="font-semibold text-foreground">
+                          {item.ticker}
+                        </span>
+                        <Badge
+                          variant="outline"
+                          className={cn(
+                            "text-[10px] uppercase tracking-[0.12em]",
+                            item.time === "before-open"
+                              ? "border-emerald-500/25 bg-emerald-500/12 text-emerald-200"
+                              : item.time === "after-close"
+                                ? "border-violet-500/25 bg-violet-500/12 text-violet-200"
+                                : "border-amber-500/25 bg-amber-500/12 text-amber-200"
+                          )}
+                        >
+                          {item.time === "before-open"
+                            ? "BMO"
+                            : item.time === "after-close"
+                              ? "AMC"
+                              : "Intraday"}
+                        </Badge>
+                      </div>
+                      {item.company ? (
+                        <p className="mt-1 truncate text-[12px] text-muted-foreground">
+                          {item.company}
+                        </p>
+                      ) : null}
+                    </div>
+                    {item.expectedMove ? (
+                      <span className="text-[12px] text-muted-foreground">
+                        Move {item.expectedMove}
+                      </span>
+                    ) : null}
                   </div>
-                  <span className="text-[12px] text-muted-foreground">
-                    Move {item.expectedMove || "-"}
-                  </span>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="grid gap-2 pb-2 sm:grid-cols-2">
-                  <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
-                    <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                      {copy(language, "EPS Beklenen", "Consensus EPS")}
-                    </p>
-                    <p className="mt-0.5 text-foreground">
-                      {isFiniteNumber(item.consensusEps)
-                        ? `$${formatNumber(item.consensusEps)}`
-                        : "-"}
-                    </p>
-                  </div>
-                  <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
-                    <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                      {copy(language, "Rev Beklenen", "Consensus Rev")}
-                    </p>
-                    <p className="mt-0.5 text-foreground">
-                      {isFiniteNumber(item.consensusRev)
-                        ? `$${formatCompactNumber(item.consensusRev)}`
-                        : "-"}
-                    </p>
-                  </div>
-                  <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
-                    <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                      {copy(language, "Onceki EPS", "Prior EPS")}
-                    </p>
-                    <p className="mt-0.5 text-foreground">
-                      {isFiniteNumber(item.priorEps)
-                        ? `$${formatNumber(item.priorEps)}`
-                        : "-"}
-                    </p>
-                  </div>
-                  <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
-                    <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                      {copy(language, "Onceki Rev", "Prior Rev")}
-                    </p>
-                    <p className="mt-0.5 text-foreground">
-                      {isFiniteNumber(item.priorRev)
-                        ? `$${formatCompactNumber(item.priorRev)}`
-                        : "-"}
-                    </p>
-                  </div>
-                  {item.consensusRange ? (
-                    <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 sm:col-span-2">
-                      <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                        {copy(language, "Konsensus Araligi", "Consensus Range")}
-                      </p>
-                      <p className="mt-0.5 text-foreground">{item.consensusRange}</p>
+                </AccordionTrigger>
+                <AccordionContent>
+                  {metrics.length ? (
+                    <div className="grid gap-2 pb-2 sm:grid-cols-2">
+                      {metrics.map(metric => (
+                        <div
+                          key={metric.label}
+                          className="rounded-xl border border-white/10 bg-black/20 px-3 py-2"
+                        >
+                          <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                            {metric.label}
+                          </p>
+                          <p className="mt-0.5 text-foreground">{metric.value}</p>
+                        </div>
+                      ))}
+                      {item.consensusRange ? (
+                        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 sm:col-span-2">
+                          <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                            {copy(language, "Konsensus Araligi", "Consensus Range")}
+                          </p>
+                          <p className="mt-0.5 text-foreground">{item.consensusRange}</p>
+                        </div>
+                      ) : null}
+                      {item.analystSentiment ? (
+                        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 sm:col-span-2">
+                          <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                            {copy(language, "Analist Gorusu", "Analyst Sentiment")}
+                          </p>
+                          <p className="mt-0.5 capitalize text-foreground">
+                            {item.analystSentiment}
+                          </p>
+                        </div>
+                      ) : null}
+                      {item.note ? (
+                        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 sm:col-span-2">
+                          <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                            {copy(language, "Not", "Note")}
+                          </p>
+                          <p className="mt-0.5 text-foreground">{item.note}</p>
+                        </div>
+                      ) : null}
+                    </div>
+                  ) : item.note || item.consensusRange || item.analystSentiment ? (
+                    <div className="grid gap-2 pb-2 sm:grid-cols-2">
+                      {item.consensusRange ? (
+                        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 sm:col-span-2">
+                          <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                            {copy(language, "Konsensus Araligi", "Consensus Range")}
+                          </p>
+                          <p className="mt-0.5 text-foreground">{item.consensusRange}</p>
+                        </div>
+                      ) : null}
+                      {item.analystSentiment ? (
+                        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 sm:col-span-2">
+                          <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                            {copy(language, "Analist Gorusu", "Analyst Sentiment")}
+                          </p>
+                          <p className="mt-0.5 capitalize text-foreground">
+                            {item.analystSentiment}
+                          </p>
+                        </div>
+                      ) : null}
+                      {item.note ? (
+                        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 sm:col-span-2">
+                          <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                            {copy(language, "Not", "Note")}
+                          </p>
+                          <p className="mt-0.5 text-foreground">{item.note}</p>
+                        </div>
+                      ) : null}
                     </div>
                   ) : null}
-                  {item.analystSentiment ? (
-                    <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 sm:col-span-2">
-                      <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                        {copy(language, "Analist Gorusu", "Analyst Sentiment")}
-                      </p>
-                      <p className="mt-0.5 capitalize text-foreground">
-                        {item.analystSentiment}
-                      </p>
-                    </div>
-                  ) : null}
-                  {item.note ? (
-                    <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 sm:col-span-2">
-                      <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                        {copy(language, "Not", "Note")}
-                      </p>
-                      <p className="mt-0.5 text-foreground">{item.note}</p>
-                    </div>
-                  ) : null}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          ))}
+                </AccordionContent>
+              </AccordionItem>
+            );
+          })}
         </Accordion>
       </CardContent>
     </Card>
@@ -1112,6 +1209,8 @@ function RiskAlert({
   }[level];
 
   const Icon = config.icon;
+  const riskTitle = report.riskAssessment.title || config.title;
+  const riskDetails = report.riskAssessment.details ?? [];
 
   return (
     <Alert
@@ -1121,9 +1220,28 @@ function RiskAlert({
       )}
     >
       <Icon className="size-4" />
-      <AlertTitle>{config.title}</AlertTitle>
+      <AlertTitle className="flex items-center justify-between gap-3">
+        <span>{riskTitle}</span>
+        <Badge
+          variant="outline"
+          className="border-white/15 bg-black/20 text-[10px] uppercase tracking-[0.14em] text-current"
+        >
+          {copy(
+            language,
+            level === "high" ? "Yuksek" : level === "low" ? "Dusuk" : "Orta",
+            level
+          )}
+        </Badge>
+      </AlertTitle>
       <AlertDescription className="text-foreground/80">
-        {report.riskAssessment}
+        <p>{report.riskAssessment.summary}</p>
+        {riskDetails.length ? (
+          <ul className="mt-2 space-y-1 text-[12px] leading-5 text-foreground/70">
+            {riskDetails.map(detail => (
+              <li key={detail}>• {detail}</li>
+            ))}
+          </ul>
+        ) : null}
       </AlertDescription>
     </Alert>
   );
@@ -1306,7 +1424,9 @@ function StockDetailModal({
                 {copy(language, "Market Cap", "Market Cap")}
               </p>
               <p className="mt-1 text-foreground">
-                {formatCompactNumber(mover.marketCap)}
+                {isFiniteNumber(mover.marketCap)
+                  ? formatCompactNumber(mover.marketCap)
+                  : copy(language, "Veri mevcut degil", "Data unavailable")}
               </p>
             </div>
             <div className="rounded-xl border border-white/10 bg-black/20 p-3">
