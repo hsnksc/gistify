@@ -1,7 +1,7 @@
 {
   "reportType": "after-market",
   "reportDate": "2026-06-24",
-  "generatedAt": "2026-06-24T21:37:50.511655+00:00",
+  "generatedAt": "2026-06-25T00:31:02+03:00",
   "marketSummary": {
     "spy": {
       "price": 733.24,
@@ -31,9 +31,9 @@
       "prevClose": 295.32
     },
     "vix": {
-      "price": 19.5,
-      "change": 2.41,
-      "vwap": 19.29,
+      "price": 18.63,
+      "change": -4.41,
+      "vwap": 19.37,
       "open": 19.13,
       "high": 20.34,
       "low": 18.04,
@@ -43,483 +43,358 @@
   "topMovers": {
     "gainers": [
       {
-        "ticker": "ABSI",
-        "company": "Absci Corp",
-        "price": 10.075,
-        "change": 35.9649,
-        "volume": 34000000,
-        "catalyst": "null - specific catalyst not found in search results; biotech sector momentum possibly related to AI-drug discovery pipeline updates",
-        "sector": "Biotechnology",
-        "marketCap": 1155256440,
+        "ticker": "RUN",
+        "company": "Sunrun Inc.",
+        "price": 15.97,
+        "change": 24.63,
+        "volume": 32644000,
+        "catalyst": "Tesla solar deal announcement; solar sector surging on green energy momentum. RVOL 3.9x.",
+        "sector": "Solar/Energy",
+        "marketCap": null,
         "week52Range": [
-          2.24,
-          8.57
-        ]
-      },
-      {
-        "ticker": "WEN",
-        "company": "Wendy's Co",
-        "price": 7.86,
-        "change": 25.6595,
-        "volume": 185000000,
-        "catalyst": "New CEO Bob Wright appointed ending interim leadership; renewed buyout speculation tied to Nelson Peltz's Trian Fund Management (~16% ownership)",
-        "sector": "Hotels, Restaurants & Leisure",
-        "marketCap": 1289550000,
-        "week52Range": [
-          6.07,
-          12.51
-        ]
-      },
-      {
-        "ticker": "DFTX",
-        "company": "Definium Therapeutics Inc",
-        "price": 42.13,
-        "change": 16.4456,
-        "volume": 11000000,
-        "catalyst": "Phase 3 EMERGE study for DT120 (LSD-based depression therapy) met key goals; announced upsized $700M public offering",
-        "sector": "Pharmaceuticals",
-        "marketCap": 3946035906,
-        "week52Range": [
-          6.35,
-          39.16
+          6.98,
+          22.44
         ]
       },
       {
         "ticker": "KBH",
         "company": "KB Home",
-        "price": 61.51,
-        "change": 16.6509,
-        "volume": 3000000,
-        "catalyst": "Q2 FY26 earnings reaction (reported June 23 after close); beat sales expectations despite slight EPS miss ($0.43 vs $0.45 est)",
-        "sector": "Consumer Products",
-        "marketCap": 3303442080,
+        "price": 61.6,
+        "change": 16.82,
+        "volume": 2131000,
+        "catalyst": "Housing sector strength; mortgage rate optimism; homebuilder earnings momentum. RVOL 1.7x.",
+        "sector": "Homebuilder",
+        "marketCap": null,
         "week52Range": [
           44.03,
           68.71
         ]
       },
       {
-        "ticker": "RUN",
-        "company": "Sunrun Inc",
-        "price": 14.42,
-        "change": 12.5683,
-        "volume": 44000000,
-        "catalyst": "New alliance announced for managing grid congestion and meeting energy needs; investors responded positively to partnership",
-        "sector": "Electrical Equipment",
-        "marketCap": 3055816327,
+        "ticker": "RKT",
+        "company": "Rocket Companies",
+        "price": 15.24,
+        "change": 13.12,
+        "volume": 24139000,
+        "catalyst": "Fintech/mortgage platform momentum; retail trader interest. Volume near average.",
+        "sector": "Fintech",
+        "marketCap": null,
         "week52Range": [
-          5.98,
-          22.44
+          12.17,
+          24.36
         ]
       },
       {
-        "ticker": "FOUR",
-        "company": "Shift4 Payments Inc",
-        "price": 44.22,
-        "change": 14.3522,
-        "volume": 2000000,
-        "catalyst": "null - specific catalyst not found; high short interest (~25% of float) may have contributed to squeeze momentum",
-        "sector": "Financial Services",
-        "marketCap": 3067649252,
+        "ticker": "AAL",
+        "company": "American Airlines Group",
+        "price": 17.44,
+        "change": 8.05,
+        "volume": 207000000,
+        "catalyst": "Airline sector demand recovery; travel bookings strength; near 52w high breakout. RVOL 2.7x.",
+        "sector": "Airlines",
+        "marketCap": null,
         "week52Range": [
-          34.56,
-          108.5
+          10.09,
+          17.47
         ]
       },
       {
-        "ticker": "ICLR",
-        "company": "ICON PLC",
-        "price": 158.17,
-        "change": 10.8642,
-        "volume": 2000000,
-        "catalyst": "null - specific catalyst not found in search results; CRO sector defensive rotation possibly",
-        "sector": "Life Sciences Tools & Services",
-        "marketCap": 10923860554,
+        "ticker": "GLW",
+        "company": "Corning Inc.",
+        "price": 214.14,
+        "change": 10.34,
+        "volume": 9945000,
+        "catalyst": "Optical communications demand; display glass recovery; new 52-week high. RVOL 0.76x.",
+        "sector": "Technology/Communications",
+        "marketCap": null,
         "week52Range": [
-          66.57,
-          211.0
-        ]
-      },
-      {
-        "ticker": "BLDR",
-        "company": "Builders FirstSource Inc",
-        "price": 85.41,
-        "change": 11.3124,
-        "volume": 2000000,
-        "catalyst": "null - specific catalyst not found in search results; housing/builder sector rally on lower rate expectations",
-        "sector": "Building",
-        "marketCap": 8253069441,
-        "week52Range": [
-          65.1,
-          151.03
+          51.09,
+          212.39
         ]
       }
     ],
     "losers": [
       {
-        "ticker": "HTZ",
-        "company": "Hertz Global Holdings Inc",
-        "price": 3.0,
-        "change": -40.7115,
-        "volume": 63000000,
-        "catalyst": "$100M share sale and $300M PIK notes dilute investors and raise debt; weak Q2 EBITDA outlook added pressure",
-        "sector": "Road & Rail",
-        "marketCap": 1597768461,
-        "week52Range": [
-          3.78,
-          8.44
-        ]
-      },
-      {
-        "ticker": "RGC",
-        "company": "Regencell Bioscience Holdings Ltd",
-        "price": 8.56,
-        "change": -22.7437,
-        "volume": 381000,
-        "catalyst": "Multiple securities class action lawsuits and DOJ subpoena into trading activity; June 23 lead plaintiff deadline intensified selling",
-        "sector": "Pharmaceuticals",
-        "marketCap": 5489853381,
-        "week52Range": [
-          9.39,
-          69.0
-        ]
-      },
-      {
         "ticker": "CBRS",
-        "company": "Cerebras Systems Inc",
+        "company": "Cerebras Systems",
         "price": 182.26,
-        "change": -19.6101,
-        "volume": 17000000,
-        "catalyst": "Q1 earnings beat on June 23 (EPS -$0.04 vs -$0.16 est) but stock fell -10.79% after hours; continued profit-taking/selling on June 24",
+        "change": -19.61,
+        "volume": 21000000,
+        "catalyst": "AI chip sector rotation; profit-taking after massive YTD gains; competitive pressure from NVIDIA. RVOL 2.6x.",
         "sector": "Semiconductors",
-        "marketCap": 49790055793,
+        "marketCap": null,
         "week52Range": [
-          196.73,
+          181.56,
           386.34
         ]
       },
       {
         "ticker": "HQ",
-        "company": "Horizon Quantum Holdings Ltd",
+        "company": "Horizon Quantum Holdings",
         "price": 28.41,
-        "change": -14.9146,
-        "volume": 735000,
-        "catalyst": "Profit-taking after parabolic rally — stock had soared ~200% in prior week on IonQ deal and QUBT order news; sharp reversal",
+        "change": -14.91,
+        "volume": 866778,
+        "catalyst": "Quantum computing sector profit-taking; speculative tech selloff. RVOL 1.6x.",
         "sector": "Technology",
-        "marketCap": 1062922201,
+        "marketCap": null,
         "week52Range": [
           8.29,
           45.0
         ]
       },
       {
-        "ticker": "NVTS",
-        "company": "Navitas Semiconductor Corp",
-        "price": 18.32,
-        "change": -14.3925,
-        "volume": 26000000,
-        "catalyst": "null - specific catalyst not found; continued profit-taking after massive 2026 rally; no specific June 24 news",
-        "sector": "Semiconductors",
-        "marketCap": 5001461898,
-        "week52Range": [
-          5.44,
-          34.17
-        ]
-      },
-      {
         "ticker": "AEVA",
-        "company": "Aeva Technologies Inc",
+        "company": "Aeva Technologies",
         "price": 20.04,
-        "change": -14.8683,
-        "volume": 2000000,
-        "catalyst": "null - specific catalyst not found; earlier $100M follow-on offering on June 3 may still be weighing on price",
-        "sector": "Electrical Equipment",
-        "marketCap": 1483980954,
+        "change": -14.87,
+        "volume": 3000000,
+        "catalyst": "LiDAR/autonomous driving tech weakness; competitive concerns. RVOL 1.5x.",
+        "sector": "Technology/Auto",
+        "marketCap": null,
         "week52Range": [
           8.83,
           38.8
         ]
       },
       {
+        "ticker": "NVTS",
+        "company": "Navitas Semiconductor",
+        "price": 18.32,
+        "change": -14.39,
+        "volume": 34000000,
+        "catalyst": "GaN semiconductor weakness; EV/charging sentiment down. RVOL 1.03x.",
+        "sector": "Semiconductors",
+        "marketCap": null,
+        "week52Range": [
+          5.44,
+          34.17
+        ]
+      },
+      {
         "ticker": "WYFI",
-        "company": "WhiteFiber Inc",
+        "company": "Whitefiber Inc.",
         "price": 38.71,
-        "change": -13.5165,
-        "volume": 3000000,
-        "catalyst": "null - specific catalyst not found in search results; small float (11.13M) high volatility continuation",
-        "sector": "Technology",
-        "marketCap": 1376600000,
+        "change": -13.52,
+        "volume": 4000000,
+        "catalyst": "Fiber optics sector rotation; profit-taking after recent rally. RVOL 2.0x.",
+        "sector": "Technology/Communications",
+        "marketCap": null,
         "week52Range": [
           10.51,
           46.87
         ]
-      },
-      {
-        "ticker": "NG",
-        "company": "NovaGold Resources Inc",
-        "price": 6.2,
-        "change": -14.1274,
-        "volume": 4000000,
-        "catalyst": "Earnings reported June 24; stock dropped on earnings day — likely weak results or guidance on Donlin Gold project costs",
-        "sector": "Metals & Mining",
-        "marketCap": 3167996194,
-        "week52Range": [
-          3.61,
-          14.4
-        ]
       }
     ]
   },
-  "callSetups": [
+  "earningsCalendar": [
     {
-      "ticker": "SPY",
-      "direction": "call",
-      "entry": 731.0,
-      "target": 737.0,
-      "stop": 728.0,
-      "riskReward": 2.0,
-      "rationale": "June 24 low 730.84 held; PCE data softness could trigger VWAP reclaim and gap fill toward 735.17 open; mean reversion setup",
-      "timeframe": "0DTE",
-      "note": "8:30 AM ET data block (PCE + GDP + Durable Goods) high risk — wait for 9:00 AM confirmation or reduce size"
+      "ticker": "MU",
+      "company": "Micron Technology",
+      "time": "after-close",
+      "consensusEps": 20.2,
+      "consensusRev": 34520000000,
+      "priorEps": 1.91,
+      "priorRev": 9300000000,
+      "expectedMove": 4.5,
+      "consensusRange": "$7.53 - $24.08",
+      "analystSentiment": "bullish",
+      "note": "BEAT: Actual EPS $25.11 vs $20.20 est (+24.31%). Revenue $41.46B vs $35.82B est. Aftermarket +4.58%. AI/HBM demand exceptional. 0DTE YASAK — IV crush active post-earnings."
     },
     {
-      "ticker": "IWM",
+      "ticker": "JEF",
+      "company": "Jefferies Financial Group",
+      "time": "after-close",
+      "consensusEps": 1.16,
+      "consensusRev": 2300000000,
+      "priorEps": 0.4,
+      "priorRev": 1630000000,
+      "expectedMove": 3.5,
+      "consensusRange": null,
+      "analystSentiment": "neutral",
+      "note": "MISS: Actual EPS $1.02 vs $1.16 est (-$0.14). Revenue $2.21B vs $2.30B est. Aftermarket -1.24%. Advisory revenue miss. UBS downgraded to Neutral last week."
+    },
+    {
+      "ticker": "DAKT",
+      "company": "Daktronics",
+      "time": "before-open",
+      "consensusEps": null,
+      "consensusRev": null,
+      "priorEps": null,
+      "priorRev": null,
+      "expectedMove": null,
+      "consensusRange": null,
+      "analystSentiment": "neutral",
+      "note": "Fiscal Q4 and FY2026 results before market open. Insufficient detailed consensus data found via web search."
+    },
+    {
+      "ticker": "CRWS",
+      "company": "Crown Crafts",
+      "time": "before-open",
+      "consensusEps": null,
+      "consensusRev": null,
+      "priorEps": null,
+      "priorRev": null,
+      "expectedMove": null,
+      "consensusRange": null,
+      "analystSentiment": "neutral",
+      "note": "Fiscal Q4 and FY2026 results before market open. Small-cap consumer products (NASDAQ-CM)."
+    },
+    {
+      "ticker": "TCOM",
+      "company": "Trip.com Group",
+      "time": "after-close",
+      "consensusEps": null,
+      "consensusRev": null,
+      "priorEps": null,
+      "priorRev": null,
+      "expectedMove": null,
+      "consensusRange": null,
+      "analystSentiment": "bullish",
+      "note": "Q1 2026 results after close. Travel sector bellwether. Aftermarket reaction data not yet available in search results at generation time."
+    }
+  ],
+  "callSetups": [
+    {
+      "ticker": "MU",
       "direction": "call",
-      "entry": 295.5,
-      "target": 299.5,
-      "stop": 293.5,
-      "riskReward": 2.0,
-      "rationale": "IWM outperformed QQQ for 2 consecutive days (+0.46% vs -0.42%); small-cap/value rotation multi-day signal; 294.69 low support held",
-      "timeframe": "0DTE",
-      "note": "PCE softness would accelerate rotation into small-caps"
+      "entry": 1060,
+      "target": 1130,
+      "stop": 1030,
+      "riskReward": 2.33,
+      "rationale": "Massive earnings beat ($25.11 vs $20.20 est), AI/HBM demand exceptional. Breakout above $1060 with volume. VWAP reclaim. Aftermarket already +4.6%.",
+      "timeframe": "swing"
+    },
+    {
+      "ticker": "RUN",
+      "direction": "call",
+      "entry": 15.5,
+      "target": 17.0,
+      "stop": 14.8,
+      "riskReward": 2.14,
+      "rationale": "Tesla solar deal catalyst, 4x RVOL volume surge. Above VWAP with retail momentum. Solar sector rotation. High liquidity options.",
+      "timeframe": "0DTE"
     },
     {
       "ticker": "AAL",
       "direction": "call",
-      "entry": 17.0,
-      "target": 18.0,
-      "stop": 16.5,
+      "entry": 17.1,
+      "target": 18.5,
+      "stop": 16.4,
       "riskReward": 2.0,
-      "rationale": "52-week high breakout (+7.31% on June 24); UBS target $21; cyclical/value rotation theme; volume 172M vs 76M avg = 2.26x RVOL",
-      "timeframe": "0DTE",
-      "note": "Chase setup — wait for pre-market pullback to $17 or better entry"
+      "rationale": "Airline momentum near 52w high breakout, 2.7x volume. Above VWAP with institutional buying. Travel demand recovery.",
+      "timeframe": "intraday"
     },
     {
-      "ticker": "KBH",
+      "ticker": "SPY",
       "direction": "call",
-      "entry": 59.0,
-      "target": 63.0,
-      "stop": 57.0,
+      "entry": 732,
+      "target": 742,
+      "stop": 727,
       "riskReward": 2.0,
-      "rationale": "Q2 earnings momentum +16.65% breakout; 3M volume vs 1.57M avg = 1.91x RVOL; housing sector rally on lower mortgage rate expectations; 10Y yield decline supports builders",
-      "timeframe": "intraday",
-      "note": "Do not chase at open — wait for pullback to $59 or gap fill; earnings stock so IV elevated"
+      "rationale": "Gap fill potential from 730 support level. Above key level with VIX compression. If PCE data surprises to downside, risk-on rally.",
+      "timeframe": "0DTE"
     },
     {
-      "ticker": "WEN",
+      "ticker": "GLW",
       "direction": "call",
-      "entry": 7.5,
-      "target": 8.5,
-      "stop": 7.0,
+      "entry": 212,
+      "target": 230,
+      "stop": 203,
       "riskReward": 2.0,
-      "rationale": "Meme squeeze +25.66% on new CEO appointment + Trian buyout speculation; 185M volume vs 8M avg = 23x RVOL; retail interest can carry 24-48 hours",
-      "timeframe": "0DTE",
-      "note": "High risk half-position; momentum trade not fundamental; gap fill to 7.50 would be ideal entry"
+      "rationale": "New 52w high, optical communications demand recovery. Pullback to 212 breakout level = entry. Volume above average.",
+      "timeframe": "swing"
     }
   ],
   "putSetups": [
     {
       "ticker": "CBRS",
       "direction": "put",
-      "entry": 185.0,
-      "target": 175.0,
-      "stop": 190.0,
+      "entry": 185,
+      "target": 165,
+      "stop": 195,
       "riskReward": 2.0,
-      "rationale": "IPO first earnings collapse -19.61%; post-IPO stocks with bad guidance typically selloff 3-5 days; 17M volume vs 5.54M avg = 3.07x RVOL confirms distribution",
-      "timeframe": "0DTE",
-      "note": "Options spreads wide — use limit orders; float only 34.5M small moves exaggerated"
+      "rationale": "AI chip sector rotation, massive -19.6% breakdown. Below VWAP with distribution volume. Continuation likely.",
+      "timeframe": "swing"
     },
     {
       "ticker": "QQQ",
       "direction": "put",
-      "entry": 713.0,
-      "target": 703.0,
-      "stop": 718.0,
-      "riskReward": 2.0,
-      "rationale": "Relative weakness vs IWM; Korea chip ETF crisis spillover risk; tech underperforming value rotation; 704.45 support break opens 700",
-      "timeframe": "0DTE",
-      "note": "If PCE comes soft abandon immediately — tech would bounce on lower rate expectations"
+      "entry": 712,
+      "target": 695,
+      "stop": 720,
+      "riskReward": 2.13,
+      "rationale": "Tech weakness, below VWAP. If PCE data hot tomorrow, tech selloff accelerates. Gap fill to 695 possible.",
+      "timeframe": "0DTE"
     },
     {
-      "ticker": "MU",
+      "ticker": "NVTS",
       "direction": "put",
-      "entry": 1050.0,
-      "target": 990.0,
-      "stop": 1080.0,
+      "entry": 18.5,
+      "target": 16.5,
+      "stop": 19.5,
       "riskReward": 2.0,
-      "rationale": "Sell-the-news after historic quarter; stock crashed -13% intraday before +14.8% AH; if best quarter not enough = peak pricing; Korea chip crisis adds sector headwind",
-      "timeframe": "0DTE",
-      "note": "IV crush post-earnings — use spreads instead of naked puts; do not trade until 9:45 AM after initial volatility settles"
-    },
-    {
-      "ticker": "NVDA",
-      "direction": "put",
-      "entry": 200.0,
-      "target": 194.0,
-      "stop": 203.0,
-      "riskReward": 2.0,
-      "rationale": "Psychological $200 rejection; AI trade cooling; G7 AI regulatory risk; Korea semiconductor crisis; volume 82M vs 162M avg = 0.51x suggests distribution without buyers",
-      "timeframe": "0DTE",
-      "note": "Only if opens below 200 and fails to reclaim in first 30 minutes"
-    },
-    {
-      "ticker": "AMD",
-      "direction": "put",
-      "entry": 515.0,
-      "target": 505.0,
-      "stop": 520.0,
-      "riskReward": 2.0,
-      "rationale": "520 support broken on June 24; volume 13.7M vs 37.7M avg = 0.36x RVOL; no buyers = distribution pattern; semiconductor sector weakness",
-      "timeframe": "0DTE",
-      "note": "Wait for 515 retest as resistance before entry; if gaps above 520 abandon"
-    }
-  ],
-  "earningsCalendar": [
-    {
-      "ticker": "MU",
-      "company": "Micron Technology Inc",
-      "time": "after-close",
-      "consensusEps": 20.98,
-      "consensusRev": 35850000000,
-      "priorEps": 1.91,
-      "priorRev": 9300000000,
-      "expectedMove": 12.87,
-      "consensusRange": "$7.53 - $24.08",
-      "analystSentiment": "bullish",
-      "note": "Aftermarket +14.84% strongly suggests massive beat; 0DTE June 24 expiration — IV crush imminent for options holders; 8 consecutive quarters beat with avg surprise +15.84%"
-    },
-    {
-      "ticker": "JEF",
-      "company": "Jefferies Financial Group Inc",
-      "time": "after-close",
-      "consensusEps": 1.13,
-      "consensusRev": 2300000000,
-      "priorEps": 0.4,
-      "priorRev": 1630000000,
-      "expectedMove": 8.59,
-      "consensusRange": "null - range not found in indexed sources",
-      "analystSentiment": "neutral",
-      "note": "Actual EPS $1.02 miss vs $1.09-$1.17 consensus; actual revenue $2.21B miss vs $2.30B; 0DTE June 24 expiration — IV crush risk; watch investment banking pipeline guidance"
-    },
-    {
-      "ticker": "TCOM",
-      "company": "Trip.com Group Ltd",
-      "time": "after-close",
-      "consensusEps": 0.85,
-      "consensusRev": 2300000000,
-      "priorEps": 0.82,
-      "priorRev": 1910000000,
-      "expectedMove": 10.37,
-      "consensusRange": "null - range not found in indexed sources",
-      "analystSentiment": "bullish",
-      "note": "Results not yet indexed as of 5:12 PM ET; conference call 8:00 PM ET; 0DTE June 24 expiration; prior quarter missed EPS by $0.01; Chinese travel demand sensitivity"
-    },
-    {
-      "ticker": "DAKT",
-      "company": "Daktronics Inc",
-      "time": "before-open",
-      "consensusEps": 0.21,
-      "consensusRev": 205270000,
-      "priorEps": -0.19,
-      "priorRev": 172500000,
-      "expectedMove": 15.76,
-      "consensusRange": "null - range not found in indexed sources",
-      "analystSentiment": "bullish",
-      "note": "Beat EPS $0.27 vs $0.20-$0.22 est; beat revenue $208.61M vs $205.27M est; guidance: FY2027 backlog $356M targeting 7-10% revenue CAGR through FY2028; options liquidity limited"
-    },
-    {
-      "ticker": "CRWS",
-      "company": "Crown Crafts Inc",
-      "time": "before-open",
-      "consensusEps": 0.14,
-      "consensusRev": 16300000,
-      "priorEps": -1.04,
-      "priorRev": 23200000,
-      "expectedMove": 13.67,
-      "consensusRange": "null - range not found in indexed sources",
-      "analystSentiment": "null - no recent analyst coverage found",
-      "note": "Massive EPS miss ($0.03 vs $0.14) but revenue beat ($22.38M vs $16.30M); thin options market; very low market cap $29M; infant/juvenile products segment"
-    },
-    {
-      "ticker": "WOR",
-      "company": "Worthington Enterprises Inc",
-      "time": "after-close",
-      "consensusEps": 1.05,
-      "consensusRev": 386490000,
-      "priorEps": 1.06,
-      "priorRev": 317880000,
-      "expectedMove": 10.1,
-      "consensusRange": "null - range not found in indexed sources",
-      "analystSentiment": "neutral",
-      "note": "Actual EPS $0.97 miss vs $1.05; actual revenue $371.50M miss vs $386.49M; aftermarket -10.32%; raised dividend 5% and repurchased 350K shares; no FY2027 guidance provided"
-    }
-  ],
-  "vwapNotes": "SPY 733.24 < VWAP 734.68 = gap-down açılış sonrası VWAP altında kapanış, gap fill tamamlanmadı. QQQ 710.62 < VWAP 711.67 = VWAP altında, 704.45 low'dan rebound ama weakness devam ediyor. IWM 296.69 ≈ VWAP 297.02 = neredeyse VWAP'ta kapanış, small-cap relative strength.",
-  "riskAssessment": {
-    "level": "medium",
-    "vixRegime": "VIX 19.50 (+2.41%), 15-20 normal range; elevated from 16.40 low on June 18; complacency broken but not fear territory",
-    "sectorRotation": "Small-cap/value outperforming tech (IWM +0.46% vs QQQ -0.42%); housing/builders strong (KBH, BLDR, DFH); semiconductors weak (NVDA, CBRS, NVTS); cyclical rotation active",
-    "earningsRisk": "MU massive after-hours surge +14.8% suggests beat; JEF miss EPS and revenue; WOR miss -10.3%; TCOM pending 8PM ET call; DAKT beat; CRWS mixed miss/beat",
-    "macroRisk": "June 25 8:30 AM ET: PCE + Core PCE + Durable Goods + GDP Revision + Jobless Claims. FOMC next July 28-29. Korea chip ETF crisis fallout. Iran-US negotiations ongoing. 10Y yield ~4.40%."
-  },
-  "nextDayCarryForward": [
-    {
-      "ticker": "KBH",
-      "reason": "Earnings momentum +16.65% breakout with 1.91x RVOL; housing sector rotation on lower rate expectations",
-      "keyLevel": 55.0,
-      "catalyst": "10Y yield below 4.45% extends builder rally; earnings momentum carry"
-    },
-    {
-      "ticker": "AAL",
-      "reason": "52-week high breakout +7.31% on 2.26x RVOL; airline sector cyclical/value rotation",
-      "keyLevel": 16.2,
-      "catalyst": "Breakout follow-through above 17.42; UBS $21 target; oil price decline helps margins"
-    },
-    {
-      "ticker": "WEN",
-      "reason": "Meme squeeze +25.66% on 23x RVOL; new CEO + Trian buyout speculation; retail interest carry",
-      "keyLevel": 7.0,
-      "catalyst": "Social media momentum / short interest data; Trian Fund 13F updates"
-    },
-    {
-      "ticker": "IWM",
-      "reason": "Small-cap/value rotation outperforming tech for 2 days; PCE data could accelerate rotation",
-      "keyLevel": 294.0,
-      "catalyst": "PCE softness below 3.4% triggers rate-cut repricing favoring small-caps"
-    },
-    {
-      "ticker": "FOUR",
-      "reason": "Fintech +14.35% on high volume; short interest squeeze potential; breakout from base",
-      "keyLevel": 42.0,
-      "catalyst": "Volume confirmation above 2M avg; payment processing sector rotation"
-    },
-    {
-      "ticker": "CBRS",
-      "reason": "IPO earnings collapse -19.61%; post-IPO stocks typically selloff 3-5 days after earnings disappointment",
-      "keyLevel": 190.0,
-      "catalyst": "Continued earnings-related selling; semiconductor sector weakness"
-    },
-    {
-      "ticker": "MU",
-      "reason": "Sell-the-news after historic quarter; intraday -13% before +14.8% AH = extreme volatility; Korea chip headwinds",
-      "keyLevel": 1080.0,
-      "catalyst": "IV crush post-earnings; sector rotation away from memory chips; Korea crisis spillover"
+      "rationale": "GaN semiconductor weakness, EV/charging sentiment down. Breakdown below $19 support. Continuation pattern.",
+      "timeframe": "intraday"
     },
     {
       "ticker": "AEVA",
-      "reason": "Lidar/chip selloff -14.9%; continuation of semiconductor weakness; $100M offering overhang",
-      "keyLevel": 21.0,
-      "catalyst": "Chip sector weakness continuation; offering overhang pressure"
+      "direction": "put",
+      "entry": 20.5,
+      "target": 18.0,
+      "stop": 21.5,
+      "riskReward": 2.5,
+      "rationale": "LiDAR tech weakness, -14.9% breakdown. Speculative tech selloff. Below $21 swing low.",
+      "timeframe": "swing"
+    },
+    {
+      "ticker": "SPY",
+      "direction": "put",
+      "entry": 735,
+      "target": 725,
+      "stop": 739,
+      "riskReward": 2.5,
+      "rationale": "If PCE data hot tomorrow, broad market selloff. Below VWAP with gap fill to 725 support. Macro hedge. Inverse correlation with SPY CALL.",
+      "timeframe": "0DTE"
+    }
+  ],
+  "vwapNotes": "SPY kapanış 733.24, VWAP 734.68 — hafif VWAP altında, risk-off bias. QQQ kapanış 710.62, VWAP 711.67 — VWAP altında, tech zayıflığı. IWM kapanış 296.69, VWAP 297.02 — VWAP altında, small-cap karışık. Gün içi gap (SPY 735.17 açılış) tam fill olmadı — açılıştan sonra düşüş devam etti. SPY 730.84 dip seviyesi 730 support üzerinde tutundu. Gap-up fill olmayan hisseler: RUN (+24.6% gap-up, hâlâ fill olmadı), KBH (+16.8% gap-up, hâlâ fill olmadı). Gap-down fill olmayan hisseler: CBRS (-19.6% gap-down, hâlâ fill olmadı).",
+  "riskAssessment": {
+    "level": "medium",
+    "vixRegime": "VIX 18.63 (-4.41%) — normal regime, complacency eroding slightly. Intraday high 20.34 touched briefly (elevated zone).",
+    "sectorRotation": "Tech/semis weak (QQQ -0.42%), small-caps mixed (IWM +0.46%), housing strong (KBH +16.8%, RUN +24.6%), solar surging (Tesla deal), airlines lifting (AAL +8.0%). Money rotating from AI chips to housing/solar/utilities.",
+    "earningsRisk": "MU massive beat (+24% EPS beat) but elevated expectations bar; JEF miss on advisory revenue; TCOM after-close results pending. IV crush active on MU.",
+    "macroRisk": "June 25: GDP revision, PCE inflation, jobless claims, durable goods — critical Fed data day. Fed speakers: NY Fed Williams (3:40pm ET) + Chicago Fed Goolsbee (6:30pm ET). Iran-US geopolitical overhang. Oil -4.3% today ($70.06). Gold -3.6% ($3,999)."
+  },
+  "nextDayCarryForward": [
+    {
+      "ticker": "MU",
+      "reason": "Earnings massive beat (+24% EPS), AI/HBM demand continues, aftermarket already +4.6%",
+      "keyLevel": 1040,
+      "catalyst": "Earnings beat continuation + analyst PT upgrades"
+    },
+    {
+      "ticker": "RUN",
+      "reason": "Tesla solar deal catalyst, volume surge 4x average, sector momentum",
+      "keyLevel": 15.5,
+      "catalyst": "Tesla partnership details + solar sector rotation"
+    },
+    {
+      "ticker": "KBH",
+      "reason": "Housing sector strength, homebuilder earnings momentum",
+      "keyLevel": 60.0,
+      "catalyst": "Housing data + mortgage rate sentiment"
+    },
+    {
+      "ticker": "AAL",
+      "reason": "Airline breakout near 52w high, massive volume 2.7x average",
+      "keyLevel": 17.0,
+      "catalyst": "Travel demand + price target upgrades"
+    },
+    {
+      "ticker": "GLW",
+      "reason": "New 52-week high, optical/display demand recovery, 10%+ move",
+      "keyLevel": 210,
+      "catalyst": "5G infrastructure spending + display glass demand"
     }
   ]
 }
