@@ -1,340 +1,466 @@
 {
-  "reportType": "hourly",
+  "reportType": "pre-market",
   "reportDate": "2026-06-24",
-  "generatedAt": "2026-06-24T21:01:37+03:00",
+  "generatedAt": "2026-06-24T20:43:56.598566+00:00",
   "marketSummary": {
     "spy": {
-      "price": 733.73,
-      "change": 0.02,
-      "vwap": 734.99
+      "price": 733.24,
+      "change": -0.0463,
+      "vwap": 734.6750000000001,
+      "open": 735.17,
+      "high": 739.945,
+      "low": 730.84,
+      "prevClose": 733.58
     },
     "qqq": {
-      "price": 710.18,
-      "change": -0.49,
-      "vwap": 712.36
+      "price": 710.62,
+      "change": -0.4246,
+      "vwap": 711.6666666666666,
+      "open": 715.37,
+      "high": 719.93,
+      "low": 704.45,
+      "prevClose": 713.65
     },
     "iwm": {
-      "price": 296.77,
-      "change": 0.49,
-      "vwap": 297.05
+      "price": 296.69,
+      "change": 0.4639,
+      "vwap": 297.0233333333333,
+      "open": 295.88,
+      "high": 299.69,
+      "low": 294.69,
+      "prevClose": 295.32
     },
     "vix": {
-      "price": 18.46,
-      "change": -5.28,
-      "vwap": 18.25
+      "price": 19.96,
+      "change": 2.41,
+      "vwap": null,
+      "open": 19.13,
+      "high": 20.34,
+      "low": 18.04,
+      "prevClose": 19.49
     }
   },
   "topMovers": {
     "gainers": [
       {
-        "ticker": "WEN",
-        "price": 8.06,
-        "change": 28.78,
-        "catalyst": "Earnings surprise / restructuring news",
-        "volume": 177069825,
-        "sector": "Restaurants"
-      },
-      {
-        "ticker": "DFTX",
-        "price": 42.78,
-        "change": 18.24,
-        "catalyst": "Biotech clinical trial data",
-        "volume": 10623738,
-        "sector": "Biotech"
-      },
-      {
-        "ticker": "KBH",
-        "price": 61.32,
-        "change": 16.29,
-        "catalyst": "Housing data / homebuilder momentum",
-        "volume": 2887201,
-        "sector": "Homebuilders"
-      },
-      {
-        "ticker": "ICLR",
-        "price": 161.11,
-        "change": 12.92,
-        "catalyst": "CRO sector strength / M&A rumor",
-        "volume": 1371441,
-        "sector": "Biotech"
-      },
-      {
-        "ticker": "RKT",
-        "price": 14.99,
-        "change": 11.32,
-        "catalyst": "Mortgage finance tailwind",
-        "volume": 44481031,
-        "sector": "Financial Services"
-      },
-      {
         "ticker": "ABSI",
-        "price": 10.21,
-        "change": 37.79,
-        "catalyst": "AI biotech partnership",
-        "volume": 32643094,
-        "sector": "Biotech"
+        "company": "Absci Corp",
+        "price": 9.51,
+        "change": 28.34,
+        "volume": 4895793,
+        "catalyst": "AI-driven drug discovery partnership momentum; biotech sector rotation into AI-enabled platforms",
+        "sector": "Biotechnology",
+        "marketCap": 1590000000,
+        "week52Range": [
+          2.24,
+          8.57
+        ]
+      },
+      {
+        "ticker": "WEN",
+        "company": "Wendy's Co",
+        "price": 7.94,
+        "change": 26.94,
+        "volume": 31405348,
+        "catalyst": "Activist investor speculation; dividend yield 8.5% attracting value buyers; fast food defensive rotation",
+        "sector": "Hotels, Restaurants & Leisure",
+        "marketCap": 1560000000,
+        "week52Range": [
+          6.07,
+          12.51
+        ]
       },
       {
         "ticker": "RUN",
-        "price": 15.26,
-        "change": 19.09,
-        "catalyst": "Solar energy policy tailwind",
-        "volume": 41360251,
-        "sector": "Solar"
+        "company": "Sunrun Inc",
+        "price": 15.55,
+        "change": 21.39,
+        "volume": 6265360,
+        "catalyst": "Solar sector bounce on Tesla energy deal news; renewable energy policy tailwinds",
+        "sector": "Electrical Equipment",
+        "marketCap": 3620000000,
+        "week52Range": [
+          5.98,
+          22.44
+        ]
       },
       {
-        "ticker": "AMZN",
-        "price": 238.64,
-        "change": 1.93,
-        "catalyst": "E-commerce momentum + market breadth",
-        "volume": 32099518,
-        "sector": "Technology"
+        "ticker": "FCEL",
+        "company": "FuelCell Energy Inc",
+        "price": 25.24,
+        "change": 15.67,
+        "volume": 2312426,
+        "catalyst": "Hydrogen infrastructure bill momentum; clean energy pivot; Tesla solar deal spillover effect",
+        "sector": "Electrical Equipment",
+        "marketCap": 1410000000,
+        "week52Range": [
+          3.78,
+          27.69
+        ]
+      },
+      {
+        "ticker": "CCXI",
+        "company": "Churchill Capital Corp XI",
+        "price": 12.65,
+        "change": 21.4,
+        "volume": 5160076,
+        "catalyst": "SPAC merger speculation; deal announcement rumors driving pre-market volume",
+        "sector": "Financial Services",
+        "marketCap": 675640000,
+        "week52Range": [
+          10.07,
+          11.125
+        ]
+      },
+      {
+        "ticker": "PLSM",
+        "company": "Pulsenmore Ltd",
+        "price": 10.36,
+        "change": 203.81,
+        "volume": 22631246,
+        "catalyst": "Medical device FDA clearance news; home healthcare monitoring approval driving microcap squeeze",
+        "sector": "Healthcare",
+        "marketCap": 22020000,
+        "week52Range": [
+          null,
+          null
+        ]
+      },
+      {
+        "ticker": "FRTT",
+        "company": "Fort Technology Inc",
+        "price": 3.07,
+        "change": 73.45,
+        "volume": 24413729,
+        "catalyst": "Cybersecurity contract win; microcap momentum with high volume pre-market pump",
+        "sector": "Technology",
+        "marketCap": 20330000,
+        "week52Range": [
+          null,
+          null
+        ]
+      },
+      {
+        "ticker": "CUPR",
+        "company": "Cuprina Holdings (Cayman) Limited",
+        "price": 5.58,
+        "change": 41.62,
+        "volume": 6773422,
+        "catalyst": "Biotech catalyst unknown; microcap momentum with speculative volume",
+        "sector": "Biotechnology",
+        "marketCap": 14610000,
+        "week52Range": [
+          null,
+          null
+        ]
       }
     ],
     "losers": [
       {
-        "ticker": "CBRS",
-        "price": 187.1,
-        "change": -17.48,
-        "catalyst": "AI chip competition / lockup expiry",
-        "volume": 15904140,
-        "sector": "Semiconductors"
-      },
-      {
-        "ticker": "MSTR",
-        "price": 95.12,
-        "change": -8.4,
-        "catalyst": "Bitcoin weakness / crypto regulatory concern",
-        "volume": 26369455,
-        "sector": "Technology"
-      },
-      {
-        "ticker": "COIN",
-        "price": 150.88,
-        "change": -4.61,
-        "catalyst": "Crypto sector weakness",
-        "volume": 6016346,
-        "sector": "Financial Services"
-      },
-      {
-        "ticker": "PLTR",
-        "price": 113.83,
-        "change": -2.46,
-        "catalyst": "Tech profit-taking / government contract delay",
-        "volume": 33379721,
-        "sector": "Technology"
-      },
-      {
         "ticker": "MU",
-        "price": 1025.27,
-        "change": -2.52,
-        "catalyst": "Earnings expectation bubble / pre-earnings fade",
-        "volume": 34148615,
-        "sector": "Semiconductors"
+        "company": "Micron Technology Inc",
+        "price": 1051.77,
+        "change": -13.18,
+        "volume": 58150000,
+        "catalyst": "South Korea leveraged ETF warning sparking chip sector sell-off; MU down 13% from all-time high; earnings after close tonight with 17% implied move",
+        "sector": "Semiconductors",
+        "marketCap": 1186116000000,
+        "week52Range": [
+          103.38,
+          1213.56
+        ]
       },
       {
-        "ticker": "TSLA",
-        "price": 376.28,
-        "change": -1.4,
-        "catalyst": "EV recovery failure / reversal",
-        "volume": 24038615,
-        "sector": "Automotive"
+        "ticker": "PRIM",
+        "company": "Primoris Services Corp",
+        "price": 84.95,
+        "change": -21.59,
+        "volume": 9596000,
+        "catalyst": "Guidance reset and management turnover; renewables execution problems; analyst price target cuts to $98-117 range",
+        "sector": "Construction",
+        "marketCap": 4608956000,
+        "week52Range": [
+          65.0,
+          205.5
+        ]
       },
       {
-        "ticker": "AMD",
-        "price": 512.76,
-        "change": -1.36,
-        "catalyst": "Semiconductor weakness",
-        "volume": 13660716,
-        "sector": "Semiconductors"
+        "ticker": "ARM",
+        "company": "Arm Holdings PLC",
+        "price": 366.39,
+        "change": -10.14,
+        "volume": 10889000,
+        "catalyst": "Profit-taking after 220% YTD rally; valuation concerns at 400x P/E; AI chip supply worries",
+        "sector": "Semiconductors",
+        "marketCap": 433814000000,
+        "week52Range": [
+          100.02,
+          452.7
+        ]
       },
       {
-        "ticker": "NVDA",
-        "price": 198.22,
-        "change": -0.89,
-        "catalyst": "Semiconductor breadth weakness",
-        "volume": 72041348,
-        "sector": "Semiconductors"
+        "ticker": "COHR",
+        "company": "Coherent Corp",
+        "price": 381.22,
+        "change": -10.4,
+        "volume": 5910000,
+        "catalyst": "AI-optics sector profit-taking after 370% 1-year rally; no fresh company-specific news; broad semiconductor de-risking",
+        "sector": "Electrical Equipment",
+        "marketCap": 74582000000,
+        "week52Range": [
+          77.84,
+          440.0
+        ]
+      },
+      {
+        "ticker": "VRT",
+        "company": "Vertiv Holdings Co",
+        "price": 318.32,
+        "change": -11.07,
+        "volume": 10250000,
+        "catalyst": "AI data center cooling sector rotation; profit-taking after 90% YTD rally; multiple compression at 80x P/E",
+        "sector": "Electrical Equipment",
+        "marketCap": 122000000000,
+        "week52Range": [
+          110.06,
+          379.935
+        ]
+      },
+      {
+        "ticker": "POET",
+        "company": "POET Technologies Inc",
+        "price": 10.73,
+        "change": -11.25,
+        "volume": 17243000,
+        "catalyst": "Optical semiconductor sector correction; profit-taking after 170% 6-month rally; no specific catalyst",
+        "sector": "Semiconductors",
+        "marketCap": null,
+        "week52Range": [
+          3.87,
+          20.81
+        ]
+      },
+      {
+        "ticker": "EOSE",
+        "company": "EOS Energy Enterprises Inc",
+        "price": 6.49,
+        "change": -11.58,
+        "volume": 20935000,
+        "catalyst": "Energy storage sector under pressure; dilution risk; negative gross margins continuing",
+        "sector": "Energy",
+        "marketCap": null,
+        "week52Range": [
+          4.2,
+          19.86
+        ]
+      },
+      {
+        "ticker": "BW",
+        "company": "Babcock & Wilcox Enterprises Inc",
+        "price": 15.9,
+        "change": -10.47,
+        "volume": 2468000,
+        "catalyst": "Nuclear energy sector profit-taking; 1200% 3-year rally triggering de-risking; no specific news",
+        "sector": "Industrials",
+        "marketCap": null,
+        "week52Range": [
+          0.87,
+          22.03
+        ]
       }
     ]
   },
   "callSetups": [
     {
-      "ticker": "RUN",
-      "price": 15.26,
-      "setup": "Gap & Go Momentum",
-      "entry": 16.0,
-      "stop": 15.2,
-      "target": 17.6,
-      "rr": 2.0,
-      "expiry": "weekly",
-      "catalyst": "Solar policy tailwind + upgrade. VWAP ~15.40, intra profit-taking aktif. 16.80 high'dan geri çekilme.",
-      "sector": "Solar"
-    },
-    {
       "ticker": "ABSI",
-      "price": 10.21,
-      "setup": "Gap Continuation",
-      "entry": 10.0,
-      "stop": 9.2,
-      "target": 11.6,
-      "rr": 2.0,
-      "expiry": "0DTE",
-      "catalyst": "AI biotech partnership. VWAP ~9.70 üzerinde. 11.01 high'dan geri çekilme.",
-      "sector": "Biotech"
-    },
-    {
-      "ticker": "AMZN",
-      "price": 238.64,
-      "setup": "Momentum Breakout",
-      "entry": 237.0,
-      "stop": 233.0,
-      "target": 245.0,
-      "rr": 2.0,
-      "expiry": "weekly",
-      "catalyst": "E-commerce momentum + market breadth. VWAP ~237.50 üzerinde. 242.42 test edildi.",
-      "sector": "Technology"
+      "direction": "call",
+      "entry": 9.2,
+      "target": 11.5,
+      "stop": 8.4,
+      "riskReward": 2.75,
+      "rationale": "Pre-market momentum + AI biotech narrative. Volume confirmation 3x avg. Entry VWAP reclaim. 52-week high $8.57 breakout target. 0DTE uygun değil — yüksek volatilite.",
+      "timeframe": "swing (days)"
     },
     {
       "ticker": "WEN",
-      "price": 8.06,
-      "setup": "Gap & Go Momentum",
-      "entry": 8.0,
-      "stop": 7.5,
-      "target": 9.0,
-      "rr": 2.0,
-      "expiry": "weekly",
-      "catalyst": "Earnings surprise / restructuring news. VWAP üzerinde kırılım.",
-      "sector": "Restaurants"
+      "direction": "call",
+      "entry": 7.8,
+      "target": 9.5,
+      "stop": 7.0,
+      "riskReward": 2.125,
+      "rationale": "Dividend yield 8.5% defensive play. Pre-market 26% hacim onaylı. 52-week low $6.07'dan bounce. Entry gap fill altı. 0DTE uygun değil — earnings yok.",
+      "timeframe": "swing (days)"
     },
     {
-      "ticker": "KBH",
-      "price": 61.32,
-      "setup": "Momentum Breakout",
-      "entry": 61.0,
-      "stop": 59.0,
-      "target": 65.0,
-      "rr": 2.0,
-      "expiry": "weekly",
-      "catalyst": "Housing data / homebuilder momentum. VWAP üzerinde.",
-      "sector": "Homebuilders"
+      "ticker": "RUN",
+      "direction": "call",
+      "entry": 15.2,
+      "target": 19.0,
+      "stop": 13.5,
+      "riskReward": 2.24,
+      "rationale": "Solar sector Tesla deal tailwind. Pre-market 21% + 6M volume. 52-week range $5.98-$22.44. Entry VWAP üzeri. 0DTE uygun — hacim >1M.",
+      "timeframe": "intraday"
+    },
+    {
+      "ticker": "FCEL",
+      "direction": "call",
+      "entry": 24.5,
+      "target": 30.0,
+      "stop": 22.0,
+      "riskReward": 2.2,
+      "rationale": "Hydrogen infrastructure momentum. 52-week high $27.69 yakın. Volume 2.3M. Entry VWAP üzeri. 0DTE uygun değil — spread risk.",
+      "timeframe": "swing (days)"
+    },
+    {
+      "ticker": "CCXI",
+      "direction": "call",
+      "entry": 12.4,
+      "target": 14.5,
+      "stop": 11.5,
+      "riskReward": 2.33,
+      "rationale": "SPAC merger rumor momentum. 52-week high $11.125 breakout. Volume 5.1M. Entry VWAP üzeri. 0DTE YASAK — SPAC spread risk.",
+      "timeframe": "intraday"
     }
   ],
   "putSetups": [
     {
-      "ticker": "AMD",
-      "price": 512.76,
-      "setup": "VWAP Fade",
-      "entry": 515.0,
-      "stop": 520.0,
-      "target": 505.0,
-      "rr": 2.0,
-      "expiry": "weekly",
-      "catalyst": "Semiconductor weakness. VWAP ~516 altında. 507.33 low = yeni destek testi.",
-      "sector": "Semiconductors"
-    },
-    {
-      "ticker": "PAYX",
-      "price": 96.58,
-      "setup": "Earnings Fade",
-      "entry": 94.5,
-      "stop": 96.0,
-      "target": 90.0,
-      "rr": 3.0,
-      "expiry": "weekly",
-      "catalyst": "Earnings IV crush. 93.02 low'dan bounce. Fade setup hala geçerli.",
-      "sector": "Financial Services"
-    },
-    {
       "ticker": "MU",
-      "price": 1025.27,
-      "setup": "Earnings Reversal",
+      "direction": "put",
       "entry": 1050.0,
-      "stop": 1080.0,
-      "target": 990.0,
-      "rr": 2.0,
-      "expiry": "weekly",
-      "catalyst": "Earnings expectation bubble. 1086.34 open → 1011.49 low = -6.9% intra drop. VWAP ~1048 altında.",
-      "sector": "Semiconductors"
+      "target": 940.0,
+      "stop": 1100.0,
+      "riskReward": 2.2,
+      "rationale": "Earnings öncesi 13% düşüş. All-time high'dan kırılma. 17% implied move, bearish bias. Entry VWAP altı. 0DTE YASAK — earnings günü IV crush.",
+      "timeframe": "swing (days)"
     },
     {
-      "ticker": "NVDA",
-      "price": 198.22,
-      "setup": "Momentum Fade",
-      "entry": 201.0,
-      "stop": 203.0,
-      "target": 196.0,
-      "rr": 2.5,
-      "expiry": "weekly",
-      "catalyst": "Semiconductor breadth weakness. 201.67 high'dan reversal. VWAP ~199.50 altında.",
-      "sector": "Semiconductors"
+      "ticker": "PRIM",
+      "direction": "put",
+      "entry": 85.0,
+      "target": 70.0,
+      "stop": 92.0,
+      "riskReward": 2.14,
+      "rationale": "Guidance reset + management turnover. 52-week low $65 hedef. 21% pre-market düşüş. Entry VWAP altı. 0DTE uygun değil — düşük hacim.",
+      "timeframe": "swing (days)"
     },
     {
-      "ticker": "CBRS",
-      "price": 187.1,
-      "setup": "Gap Down Fade",
-      "entry": 188.0,
-      "stop": 193.0,
-      "target": 178.0,
-      "rr": 2.0,
-      "expiry": "weekly",
-      "catalyst": "AI chip competition / lockup expiry. VWAP altında güçlü negatif.",
-      "sector": "Semiconductors"
+      "ticker": "ARM",
+      "direction": "put",
+      "entry": 365.0,
+      "target": 320.0,
+      "stop": 385.0,
+      "riskReward": 2.25,
+      "rationale": "400x P/E valuation correction. 220% YTD rally profit-taking. 52-week low $100.02, short-term target $320. Entry VWAP altı. 0DTE uygun — yüksek hacim.",
+      "timeframe": "intraday"
+    },
+    {
+      "ticker": "COHR",
+      "direction": "put",
+      "entry": 380.0,
+      "target": 340.0,
+      "stop": 400.0,
+      "riskReward": 2.0,
+      "rationale": "AI-optics sector de-risking. 370% 1-year rally correction. 52-week high $440'dan kırılma. Entry VWAP altı. 0DTE uygun — yüksek hacim.",
+      "timeframe": "intraday"
+    },
+    {
+      "ticker": "VRT",
+      "direction": "put",
+      "entry": 315.0,
+      "target": 280.0,
+      "stop": 332.0,
+      "riskReward": 2.06,
+      "rationale": "AI cooling sector rotation. 80x P/E multiple compression. 52-week low $110.06, short-term target $280. Entry VWAP altı. 0DTE uygun — hacim >5M.",
+      "timeframe": "intraday"
     }
   ],
   "earningsCalendar": [
     {
       "ticker": "PAYX",
-      "company": "Paychex",
+      "company": "Paychex Inc",
       "time": "before-open",
-      "consensusEps": 1.31,
-      "note": "Earnings reported. IV crush aktif. 93.02 low'dan bounce. 0DTE YASAK."
+      "consensusEps": 1.33,
+      "consensusRev": 1600000000,
+      "priorEps": 1.12,
+      "priorRev": 1290000000,
+      "expectedMove": 3.5,
+      "consensusRange": "1.30 - 1.36",
+      "analystSentiment": "neutral",
+      "note": "BMO earnings — payroll services steady. 0DTE/short-term options IV crush riski. Consensus EPS $1.33 vs prior $1.12 (18.7% growth). Expected move ~3.5%."
+    },
+    {
+      "ticker": "MKC",
+      "company": "McCormick & Company Inc",
+      "time": "before-open",
+      "consensusEps": 0.7,
+      "consensusRev": 1900000000,
+      "priorEps": 0.65,
+      "priorRev": 1700000000,
+      "expectedMove": 4.2,
+      "consensusRange": "0.65 - 0.75",
+      "analystSentiment": "neutral",
+      "note": "BMO — consumer staples defensive. 0DTE YASAK. Prior EPS $0.65. Expected move ~4.2%."
     },
     {
       "ticker": "MU",
-      "company": "Micron Technology",
+      "company": "Micron Technology Inc",
       "time": "after-close",
-      "consensusEps": 20.05,
-      "consensusRev": 35000000000,
-      "note": "Pre-earnings fade: 1086.34 → 1011.49 (-6.9%). Expectation bubble patladı. 0DTE YASAK."
+      "consensusEps": 20.98,
+      "consensusRev": 35900000000,
+      "priorEps": 1.91,
+      "priorRev": 9300000000,
+      "expectedMove": 17.0,
+      "consensusRange": "7.53 - 24.08",
+      "analystSentiment": "bullish",
+      "note": "0DTE YASAK. Earnings günü = IV crush riski. MU all-time high'dan 13% düştü. HBM4 rampası ile bekleniyor ama 17% implied move riskli. Önceki EPS $1.91, consensus $20.98 (932% growth). Revenue $9.30B -> $35.9B. IV 102%, IV Percentile 96% — aşırı yüksek. 0DTE/haftalık opsiyonlar IV crush kurbanı olur."
     },
     {
-      "ticker": "FUL",
-      "company": "H.B. Fuller",
+      "ticker": "NKE",
+      "company": "Nike Inc",
       "time": "after-close",
-      "consensusEps": 1.38,
-      "note": "IV crush riski."
+      "consensusEps": 0.12,
+      "consensusRev": 11000000000,
+      "priorEps": 0.54,
+      "priorRev": 11200000000,
+      "expectedMove": 10.5,
+      "consensusRange": "0.08 - 0.16",
+      "analystSentiment": "bearish",
+      "note": "0DTE YASAK. Nike düşüş trendinde. Önceki earnings -15.5% düşüş. YTD -20%. Tariff ve Çin headwind'leri. Prior EPS $0.54, consensus $0.12 (78% decline). Expected move ~10.5%."
     },
     {
       "ticker": "JEF",
-      "company": "Jefferies",
+      "company": "Jefferies Financial Group Inc",
       "time": "after-close",
-      "consensusEps": 1.02,
-      "note": "IV crush riski."
-    },
-    {
-      "ticker": "MLKN",
-      "company": "MillerKnoll",
-      "time": "after-close",
-      "consensusEps": 0.52,
-      "note": "IV crush riski."
+      "consensusEps": 1.09,
+      "consensusRev": 2200000000,
+      "priorEps": 0.85,
+      "priorRev": 1800000000,
+      "expectedMove": 6.8,
+      "consensusRange": "0.95 - 1.25",
+      "analystSentiment": "neutral",
+      "note": "0DTE YASAK. Investment banking M&A activity tailwind. Prior EPS $0.85. Expected move ~6.8%."
     },
     {
       "ticker": "TCOM",
-      "company": "Trip.com",
+      "company": "Trip.com Group Ltd",
       "time": "after-close",
-      "consensusEps": 6.05,
-      "note": "IV crush riski."
-    },
-    {
-      "ticker": "WS",
-      "company": "Worthington Steel",
-      "time": "after-close",
-      "consensusEps": 0.73,
-      "note": "IV crush riski."
+      "consensusEps": 0.85,
+      "consensusRev": 2300000000,
+      "priorEps": 0.72,
+      "priorRev": 2100000000,
+      "expectedMove": 7.5,
+      "consensusRange": "0.70 - 1.00",
+      "analystSentiment": "bullish",
+      "note": "0DTE YASAK. China travel recovery play. Prior EPS $0.72. Expected move ~7.5%."
     }
   ],
-  "vwapNotes": "SPY/QQQ gap fill oldu, VWAP altında negatif. IWM VWAP üzerinde stabil. CALL trigger'larında VWAP üzeri = continuation. PUT trigger'larında VWAP altı = fade. VIX <20 = low vol regime.",
-  "riskAssessment": "VIX 18.46 (low vol). Tech weakness (QQQ -0.49%), small-cap outperformance (IWM +0.49%). Semiconductor zayıf, housing/biotech güçlü. Earnings risk: PAYX reported, MU AMC. 0DTE sınırlı. nextDayCarryForward: MU PUT bias güçlü, AMZN CALL bias devam.",
+  "vwapNotes": "SPY $733.24, VWAP ~$734.66 → hafifçe VWAP altında, risk-off bias. QQQ $710.62, VWAP ~$711.67 → VWAP altında, tech weakness. IWM $296.69, VWAP ~$297.03 → VWAP üzerinde, small-cap relative strength. VIX 19.96 → 'normal' regime (15-20), pre-market gap risk var ama şok yok. Index pattern: Large-cap tech zayıf, small-cap ve defensifler güçlü.",
+  "riskAssessment": {
+    "level": "medium",
+    "vixRegime": "VIX 19.96 (normal, 15-20 range). 52-week range 13.38-35.30. 5-day -8.24%, 1-month +13.32%. Geçen hafta 17-20 aralığında, complacency değil ama fear yok.",
+    "sectorRotation": "Tech/Semiconductors (MU, ARM, COHR, VRT) de-risking — profit-taking dominant. Biotech (ABSI), Solar (RUN), Fast Food (WEN) defensive rotation. Small-cap (IWM) relative strength. AI infrastructure multiple compression.",
+    "earningsRisk": "MU AMC — 17% implied move, IV 102%, IV Percentile 96%. NKE AMC — 10.5% implied move, YTD -20% downtrend. PAYX/MKC BMO — 3-4% expected moves. Total 6 critical earnings today.",
+    "macroRisk": "FOMC 2 gün önce pause kararı. Oil $70 (-4.3%) energy sektörüne baskı. Güney Kore leveraged ETF uyarısı chip sektörünü sarstı. Trade war/tariff risk devam ediyor."
+  },
   "nextDayCarryForward": []
 }
