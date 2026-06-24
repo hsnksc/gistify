@@ -4,434 +4,337 @@
   "generatedAt": "2026-06-24T21:01:37+03:00",
   "marketSummary": {
     "spy": {
-      "ticker": "SPY",
-      "price": 732.48,
-      "change": -1.1,
-      "changePercent": -0.15,
-      "open": 734.99,
-      "high": 739.945,
-      "low": 731.28,
-      "prevClose": 733.58,
-      "vwapNote": "VWAP ~733.5 altında, negatif bias",
-      "preMarket": 736.9
+      "price": 733.73,
+      "change": 0.02,
+      "vwap": 734.99
     },
     "qqq": {
-      "ticker": "QQQ",
-      "price": 707.84,
-      "change": -5.81,
-      "changePercent": -0.81,
-      "open": 716.09,
-      "high": 719.93,
-      "low": 706.9662,
-      "prevClose": 713.65,
-      "vwapNote": "VWAP ~712 altında, negatif bias",
-      "preMarket": 716.66
+      "price": 710.18,
+      "change": -0.49,
+      "vwap": 712.36
     },
     "iwm": {
-      "ticker": "IWM",
-      "price": 295.97,
-      "change": 0.65,
-      "changePercent": 0.22,
-      "open": 295.72,
-      "high": 299.69,
-      "low": 294.69,
-      "prevClose": 295.32,
-      "vwapNote": "VWAP ~295.85 üzerinde, hafif pozitif",
-      "preMarket": 296.35
+      "price": 296.77,
+      "change": 0.49,
+      "vwap": 297.05
     },
     "vix": {
-      "ticker": "VIX",
       "price": 18.46,
-      "change": -1.03,
-      "changePercent": -5.28,
-      "prevClose": 19.49,
-      "vwapNote": "Low volatility regime, option premium'lar ucuz"
+      "change": -5.28,
+      "vwap": 18.25
     }
   },
-  "preMarketTracking": [
-    {
-      "ticker": "SPY",
-      "preMarket": 736.9,
-      "open": 734.99,
-      "current": 732.48,
-      "status": "Gap-up açıldı, gap fill + negatif dönüş",
-      "vwapPosition": "VWAP altında"
-    },
-    {
-      "ticker": "QQQ",
-      "preMarket": 716.66,
-      "open": 716.09,
-      "current": 707.84,
-      "status": "Gap-up açıldı, gap fill + negatif dönüş",
-      "vwapPosition": "VWAP altında"
-    },
-    {
-      "ticker": "IWM",
-      "preMarket": 296.35,
-      "open": 295.72,
-      "current": 295.97,
-      "status": "Hafif pozitif, stabil",
-      "vwapPosition": "VWAP üzerinde"
-    }
-  ],
-  "callSetups": [
-    {
-      "ticker": "RUN",
-      "preMarketPrice": 16.09,
-      "preMarketChange": 25.6,
-      "currentPrice": 15.13,
-      "currentChange": 18.11,
-      "open": 14.215,
-      "high": 16.8,
-      "low": 14.215,
-      "setupType": "Gap & Go Momentum",
-      "entry": 16.0,
-      "stop": 15.2,
-      "target": 17.6,
-      "rr": 2.0,
-      "option": "Weekly CALL",
-      "triggerStatus": "TRIGGERED → Entry 16.00 üzerinde 16.80 high'a kadar gitti, şimdi profit-taking 15.13",
-      "vwapPosition": "VWAP ~15.40 civarı, altında",
-      "note": "Solar momentum devam ediyor ama intra-profit taking aktif"
-    },
-    {
-      "ticker": "ABSI",
-      "preMarketPrice": 10.12,
-      "preMarketChange": 36.57,
-      "currentPrice": 10.18,
-      "currentChange": 37.38,
-      "open": 8.45,
-      "high": 11.01,
-      "low": 8.45,
-      "setupType": "Gap Continuation",
-      "entry": 10.0,
-      "stop": 9.2,
-      "target": 11.6,
-      "rr": 2.0,
-      "option": "0DTE CALL",
-      "triggerStatus": "TRIGGERED → Entry 10.00 üzerinde 11.01 high'a kadar gitti, şimdi 10.18",
-      "vwapPosition": "VWAP ~9.70 üzerinde",
-      "note": "Biotech gap continuation çalıştı, 11.01 high'dan geri çekilme"
-    },
-    {
-      "ticker": "META",
-      "preMarketPrice": 566.0,
-      "preMarketChange": 0.86,
-      "currentPrice": 557.21,
-      "currentChange": -0.89,
-      "open": 562.11,
-      "high": 569.04,
-      "low": 555.55,
-      "setupType": "VWAP Reclaim",
-      "entry": 566.0,
-      "stop": 560.0,
-      "target": 578.0,
-      "rr": 2.0,
-      "option": "Weekly CALL",
-      "triggerStatus": "STOPPED → 560.00 stop altında (low 555.55), setup invalid",
-      "vwapPosition": "VWAP altında, reclaim başarısız",
-      "note": "Tech weakness, pre-market pozitiflik ters döndü"
-    },
-    {
-      "ticker": "AMZN",
-      "preMarketPrice": 237.0,
-      "preMarketChange": 1.49,
-      "currentPrice": 238.47,
-      "currentChange": 1.86,
-      "open": 233.6975,
-      "high": 242.4199,
-      "low": 232.95,
-      "setupType": "Momentum Breakout",
-      "entry": 237.0,
-      "stop": 233.0,
-      "target": 245.0,
-      "rr": 2.0,
-      "option": "Weekly CALL",
-      "triggerStatus": "TRIGGERED → Entry 237.00 üzerinde 242.42 high'a kadar gitti, şimdi 238.47",
-      "vwapPosition": "VWAP ~237.50 üzerinde",
-      "note": "E-commerce momentum devam ediyor, 242.42 test etti"
-    },
-    {
-      "ticker": "TSLA",
-      "preMarketPrice": 383.0,
-      "preMarketChange": 0.72,
-      "currentPrice": 374.8,
-      "currentChange": -1.78,
-      "open": 382.12,
-      "high": 384.58,
-      "low": 374.21,
-      "setupType": "Opening Range Breakout",
-      "entry": 383.0,
-      "stop": 378.0,
-      "target": 393.0,
-      "rr": 2.0,
-      "option": "Weekly CALL",
-      "triggerStatus": "STOPPED → 378.00 stop altında (low 374.21), setup invalid",
-      "vwapPosition": "VWAP altında",
-      "note": "EV recovery başarısız, 384.58 high'dan reversal"
-    }
-  ],
-  "putSetups": [
-    {
-      "ticker": "AMD",
-      "preMarketPrice": 515.0,
-      "preMarketChange": -0.83,
-      "currentPrice": 509.27,
-      "currentChange": -2.04,
-      "open": 523.95,
-      "high": 524.96,
-      "low": 507.33,
-      "setupType": "VWAP Fade",
-      "entry": 515.0,
-      "stop": 520.0,
-      "target": 505.0,
-      "rr": 2.0,
-      "option": "Weekly PUT",
-      "triggerStatus": "TRIGGERED → Entry 515.00 altında 507.33 low'a kadar düştü, target 505.00 yakın",
-      "vwapPosition": "VWAP ~516 altında, güçlü negatif",
-      "note": "Semiconductor weakness devam ediyor, 507.33 low = yeni destek testi"
-    },
-    {
-      "ticker": "PAYX",
-      "preMarketPrice": 94.5,
-      "preMarketChange": -3.37,
-      "currentPrice": 96.35,
-      "currentChange": -1.67,
-      "open": 98.365,
-      "high": 98.845,
-      "low": 93.02,
-      "setupType": "Earnings Fade",
-      "entry": 94.5,
-      "stop": 96.0,
-      "target": 90.0,
-      "rr": 3.0,
-      "option": "Weekly PUT",
-      "triggerStatus": "TRIGGERED → Entry 94.50 altında 93.02 low yaptı, şimdi 96.35'e geri çekilme (earnings IV crush)",
-      "vwapPosition": "VWAP ~96.00 civarı, altında",
-      "note": "Earnings IV crush etkisi, 93.02 low'dan bounce — fade setup hala geçerli"
-    },
-    {
-      "ticker": "MU",
-      "preMarketPrice": 1050.0,
-      "preMarketChange": -3.1,
-      "currentPrice": 1012.3,
-      "currentChange": -3.75,
-      "open": 1086.34,
-      "high": 1086.34,
-      "low": 1011.49,
-      "setupType": "Earnings Reversal",
-      "entry": 1050.0,
-      "stop": 1080.0,
-      "target": 990.0,
-      "rr": 2.0,
-      "option": "Weekly PUT",
-      "triggerStatus": "TRIGGERED → Entry 1050.00 altında 1011.49 low'a kadar düştü, target 990.00 yakın",
-      "vwapPosition": "VWAP ~1048 altında, güçlü negatif",
-      "note": "Earnings expectation bubble patladı, 1086.34 open → 1011.49 low = -6.9% intra drop"
-    },
-    {
-      "ticker": "NVDA",
-      "preMarketPrice": 201.0,
-      "preMarketChange": 0.37,
-      "currentPrice": 197.67,
-      "currentChange": -1.18,
-      "open": 200.56,
-      "high": 201.67,
-      "low": 197.32,
-      "setupType": "Momentum Fade",
-      "entry": 201.0,
-      "stop": 203.0,
-      "target": 196.0,
-      "rr": 2.5,
-      "option": "Weekly PUT",
-      "triggerStatus": "TRIGGERED → Entry 201.00 altında 197.32 low yaptı, target 196.00 yakın",
-      "vwapPosition": "VWAP ~199.50 altında",
-      "note": "Semiconductor breadth zayıflığı, 201.67 high'dan reversal"
-    },
-    {
-      "ticker": "AAPL",
-      "preMarketPrice": 295.5,
-      "preMarketChange": 0.4,
-      "currentPrice": 296.17,
-      "currentChange": 0.64,
-      "open": 295.0075,
-      "high": 299.7,
-      "low": 293.2,
-      "setupType": "Range Fade",
-      "entry": 295.5,
-      "stop": 297.5,
-      "target": 291.5,
-      "rr": 2.0,
-      "option": "Weekly PUT",
-      "triggerStatus": "NOT TRIGGERED → Entry 295.50 üzerinde, 299.70 high yaptı. Setup bekliyor.",
-      "vwapPosition": "VWAP ~296.50 civarı, hafif üzerinde",
-      "note": "AAPL nispeten güçlü, PUT setup henüz trigger olmadı"
-    }
-  ],
-  "newMomentum": {
+  "topMovers": {
     "gainers": [
       {
         "ticker": "WEN",
-        "name": "The Wendy's Co",
-        "price": 8.0,
-        "changePercent": 28.0,
-        "volume": "159M",
+        "price": 8.06,
+        "change": 28.78,
         "catalyst": "Earnings surprise / restructuring news",
-        "setup": "Gap & Go CALL",
-        "vwapPosition": "VWAP üzerinde"
-      },
-      {
-        "ticker": "KBH",
-        "name": "KB Home",
-        "price": 61.39,
-        "changePercent": 16.41,
-        "volume": "3M",
-        "catalyst": "Housing data / homebuilder momentum",
-        "setup": "Momentum Breakout CALL",
-        "vwapPosition": "VWAP üzerinde"
-      },
-      {
-        "ticker": "RKT",
-        "name": "Rocket Companies",
-        "price": 15.08,
-        "changePercent": 11.96,
-        "volume": "34M",
-        "catalyst": "Mortgage / housing finance tailwind",
-        "setup": "Continuation CALL",
-        "vwapPosition": "VWAP üzerinde"
+        "volume": 177069825,
+        "sector": "Restaurants"
       },
       {
         "ticker": "DFTX",
-        "name": "Definium Therapeutics",
-        "price": 42.43,
-        "changePercent": 17.27,
-        "volume": "10M",
+        "price": 42.78,
+        "change": 18.24,
         "catalyst": "Biotech clinical trial data",
-        "setup": "Gap Continuation CALL",
-        "vwapPosition": "VWAP üzerinde"
+        "volume": 10623738,
+        "sector": "Biotech"
+      },
+      {
+        "ticker": "KBH",
+        "price": 61.32,
+        "change": 16.29,
+        "catalyst": "Housing data / homebuilder momentum",
+        "volume": 2887201,
+        "sector": "Homebuilders"
       },
       {
         "ticker": "ICLR",
-        "name": "Icon PLC",
-        "price": 159.49,
-        "changePercent": 11.8,
-        "volume": "1M",
+        "price": 161.11,
+        "change": 12.92,
         "catalyst": "CRO sector strength / M&A rumor",
-        "setup": "Breakout CALL",
-        "vwapPosition": "VWAP üzerinde"
+        "volume": 1371441,
+        "sector": "Biotech"
+      },
+      {
+        "ticker": "RKT",
+        "price": 14.99,
+        "change": 11.32,
+        "catalyst": "Mortgage finance tailwind",
+        "volume": 44481031,
+        "sector": "Financial Services"
+      },
+      {
+        "ticker": "ABSI",
+        "price": 10.21,
+        "change": 37.79,
+        "catalyst": "AI biotech partnership",
+        "volume": 32643094,
+        "sector": "Biotech"
+      },
+      {
+        "ticker": "RUN",
+        "price": 15.26,
+        "change": 19.09,
+        "catalyst": "Solar energy policy tailwind",
+        "volume": 41360251,
+        "sector": "Solar"
+      },
+      {
+        "ticker": "AMZN",
+        "price": 238.64,
+        "change": 1.93,
+        "catalyst": "E-commerce momentum + market breadth",
+        "volume": 32099518,
+        "sector": "Technology"
       }
     ],
     "losers": [
       {
         "ticker": "CBRS",
-        "name": "Cerebras Systems",
-        "price": 187.58,
-        "changePercent": -17.37,
-        "volume": "15M",
+        "price": 187.1,
+        "change": -17.48,
         "catalyst": "AI chip competition / lockup expiry",
-        "setup": "Gap Down PUT",
-        "vwapPosition": "VWAP altında"
+        "volume": 15904140,
+        "sector": "Semiconductors"
       },
       {
         "ticker": "MSTR",
-        "name": "MicroStrategy",
-        "price": 92.68,
-        "changePercent": -10.75,
-        "volume": "20M+",
+        "price": 95.12,
+        "change": -8.4,
         "catalyst": "Bitcoin weakness / crypto regulatory concern",
-        "setup": "Momentum Fade PUT",
-        "vwapPosition": "VWAP altında"
+        "volume": 26369455,
+        "sector": "Technology"
       },
       {
         "ticker": "COIN",
-        "name": "Coinbase",
-        "price": 149.01,
-        "changePercent": -5.8,
-        "volume": "20M+",
+        "price": 150.88,
+        "change": -4.61,
         "catalyst": "Crypto sector weakness",
-        "setup": "Continuation PUT",
-        "vwapPosition": "VWAP altında"
+        "volume": 6016346,
+        "sector": "Financial Services"
       },
       {
         "ticker": "PLTR",
-        "name": "Palantir Technologies",
-        "price": 112.69,
-        "changePercent": -3.44,
-        "volume": "30M+",
+        "price": 113.83,
+        "change": -2.46,
         "catalyst": "Tech profit-taking / government contract delay",
-        "setup": "Fade PUT",
-        "vwapPosition": "VWAP altında"
+        "volume": 33379721,
+        "sector": "Technology"
       },
       {
-        "ticker": "HTZ",
-        "name": "Hertz Global",
-        "price": 3.37,
-        "changePercent": -33.4,
-        "volume": "42M",
-        "catalyst": "Analyst downgrade, guidance cut",
-        "setup": "Penny stock — excluded",
-        "vwapPosition": "VWAP altında"
+        "ticker": "MU",
+        "price": 1025.27,
+        "change": -2.52,
+        "catalyst": "Earnings expectation bubble / pre-earnings fade",
+        "volume": 34148615,
+        "sector": "Semiconductors"
+      },
+      {
+        "ticker": "TSLA",
+        "price": 376.28,
+        "change": -1.4,
+        "catalyst": "EV recovery failure / reversal",
+        "volume": 24038615,
+        "sector": "Automotive"
+      },
+      {
+        "ticker": "AMD",
+        "price": 512.76,
+        "change": -1.36,
+        "catalyst": "Semiconductor weakness",
+        "volume": 13660716,
+        "sector": "Semiconductors"
+      },
+      {
+        "ticker": "NVDA",
+        "price": 198.22,
+        "change": -0.89,
+        "catalyst": "Semiconductor breadth weakness",
+        "volume": 72041348,
+        "sector": "Semiconductors"
       }
     ]
   },
+  "callSetups": [
+    {
+      "ticker": "RUN",
+      "price": 15.26,
+      "setup": "Gap & Go Momentum",
+      "entry": 16.0,
+      "stop": 15.2,
+      "target": 17.6,
+      "rr": 2.0,
+      "expiry": "weekly",
+      "catalyst": "Solar policy tailwind + upgrade. VWAP ~15.40, intra profit-taking aktif. 16.80 high'dan geri çekilme.",
+      "sector": "Solar"
+    },
+    {
+      "ticker": "ABSI",
+      "price": 10.21,
+      "setup": "Gap Continuation",
+      "entry": 10.0,
+      "stop": 9.2,
+      "target": 11.6,
+      "rr": 2.0,
+      "expiry": "0DTE",
+      "catalyst": "AI biotech partnership. VWAP ~9.70 üzerinde. 11.01 high'dan geri çekilme.",
+      "sector": "Biotech"
+    },
+    {
+      "ticker": "AMZN",
+      "price": 238.64,
+      "setup": "Momentum Breakout",
+      "entry": 237.0,
+      "stop": 233.0,
+      "target": 245.0,
+      "rr": 2.0,
+      "expiry": "weekly",
+      "catalyst": "E-commerce momentum + market breadth. VWAP ~237.50 üzerinde. 242.42 test edildi.",
+      "sector": "Technology"
+    },
+    {
+      "ticker": "WEN",
+      "price": 8.06,
+      "setup": "Gap & Go Momentum",
+      "entry": 8.0,
+      "stop": 7.5,
+      "target": 9.0,
+      "rr": 2.0,
+      "expiry": "weekly",
+      "catalyst": "Earnings surprise / restructuring news. VWAP üzerinde kırılım.",
+      "sector": "Restaurants"
+    },
+    {
+      "ticker": "KBH",
+      "price": 61.32,
+      "setup": "Momentum Breakout",
+      "entry": 61.0,
+      "stop": 59.0,
+      "target": 65.0,
+      "rr": 2.0,
+      "expiry": "weekly",
+      "catalyst": "Housing data / homebuilder momentum. VWAP üzerinde.",
+      "sector": "Homebuilders"
+    }
+  ],
+  "putSetups": [
+    {
+      "ticker": "AMD",
+      "price": 512.76,
+      "setup": "VWAP Fade",
+      "entry": 515.0,
+      "stop": 520.0,
+      "target": 505.0,
+      "rr": 2.0,
+      "expiry": "weekly",
+      "catalyst": "Semiconductor weakness. VWAP ~516 altında. 507.33 low = yeni destek testi.",
+      "sector": "Semiconductors"
+    },
+    {
+      "ticker": "PAYX",
+      "price": 96.58,
+      "setup": "Earnings Fade",
+      "entry": 94.5,
+      "stop": 96.0,
+      "target": 90.0,
+      "rr": 3.0,
+      "expiry": "weekly",
+      "catalyst": "Earnings IV crush. 93.02 low'dan bounce. Fade setup hala geçerli.",
+      "sector": "Financial Services"
+    },
+    {
+      "ticker": "MU",
+      "price": 1025.27,
+      "setup": "Earnings Reversal",
+      "entry": 1050.0,
+      "stop": 1080.0,
+      "target": 990.0,
+      "rr": 2.0,
+      "expiry": "weekly",
+      "catalyst": "Earnings expectation bubble. 1086.34 open → 1011.49 low = -6.9% intra drop. VWAP ~1048 altında.",
+      "sector": "Semiconductors"
+    },
+    {
+      "ticker": "NVDA",
+      "price": 198.22,
+      "setup": "Momentum Fade",
+      "entry": 201.0,
+      "stop": 203.0,
+      "target": 196.0,
+      "rr": 2.5,
+      "expiry": "weekly",
+      "catalyst": "Semiconductor breadth weakness. 201.67 high'dan reversal. VWAP ~199.50 altında.",
+      "sector": "Semiconductors"
+    },
+    {
+      "ticker": "CBRS",
+      "price": 187.1,
+      "setup": "Gap Down Fade",
+      "entry": 188.0,
+      "stop": 193.0,
+      "target": 178.0,
+      "rr": 2.0,
+      "expiry": "weekly",
+      "catalyst": "AI chip competition / lockup expiry. VWAP altında güçlü negatif.",
+      "sector": "Semiconductors"
+    }
+  ],
   "earningsCalendar": [
     {
-      "company": "Paychex",
       "ticker": "PAYX",
-      "time": "Before Open",
-      "epsEstimate": "$1.31",
-      "currentStatus": "Earnings reported, IV crush aktif, 93.02 low'dan bounce",
-      "optionAlert": "0DTE YASAK"
+      "company": "Paychex",
+      "time": "before-open",
+      "consensusEps": 1.31,
+      "note": "Earnings reported. IV crush aktif. 93.02 low'dan bounce. 0DTE YASAK."
     },
     {
-      "company": "Micron Technology",
       "ticker": "MU",
-      "time": "After Close",
-      "epsEstimate": "$20.05",
-      "currentStatus": "Pre-earnings fade devam ediyor, 1086.34 → 1011.49 intra",
-      "optionAlert": "0DTE YASAK"
+      "company": "Micron Technology",
+      "time": "after-close",
+      "consensusEps": 20.05,
+      "consensusRev": 35000000000,
+      "note": "Pre-earnings fade: 1086.34 → 1011.49 (-6.9%). Expectation bubble patladı. 0DTE YASAK."
     },
     {
-      "company": "H.B. Fuller",
       "ticker": "FUL",
-      "time": "After Close",
-      "epsEstimate": "$1.38",
-      "currentStatus": "Bekliyor",
-      "optionAlert": "IV crush riski"
+      "company": "H.B. Fuller",
+      "time": "after-close",
+      "consensusEps": 1.38,
+      "note": "IV crush riski."
     },
     {
-      "company": "Jefferies",
       "ticker": "JEF",
-      "time": "After Close",
-      "epsEstimate": "$1.02",
-      "currentStatus": "Bekliyor",
-      "optionAlert": "IV crush riski"
+      "company": "Jefferies",
+      "time": "after-close",
+      "consensusEps": 1.02,
+      "note": "IV crush riski."
     },
     {
-      "company": "MillerKnoll",
       "ticker": "MLKN",
-      "time": "After Close",
-      "epsEstimate": "$0.52",
-      "currentStatus": "Bekliyor",
-      "optionAlert": "IV crush riski"
+      "company": "MillerKnoll",
+      "time": "after-close",
+      "consensusEps": 0.52,
+      "note": "IV crush riski."
     },
     {
-      "company": "Trip.com",
       "ticker": "TCOM",
-      "time": "After Close",
-      "epsEstimate": "$6.05",
-      "currentStatus": "Bekliyor",
-      "optionAlert": "IV crush riski"
+      "company": "Trip.com",
+      "time": "after-close",
+      "consensusEps": 6.05,
+      "note": "IV crush riski."
     },
     {
-      "company": "Worthington Steel",
       "ticker": "WS",
-      "time": "After Close",
-      "epsEstimate": "$0.73",
-      "currentStatus": "Bekliyor",
-      "optionAlert": "IV crush riski"
+      "company": "Worthington Steel",
+      "time": "after-close",
+      "consensusEps": 0.73,
+      "note": "IV crush riski."
     }
   ],
   "vwapNotes": "SPY/QQQ gap fill oldu, VWAP altında negatif. IWM VWAP üzerinde stabil. CALL trigger'larında VWAP üzeri = continuation. PUT trigger'larında VWAP altı = fade. VIX <20 = low vol regime.",
-  "riskAssessment": "VIX 18.46 (low vol). Tech weakness (QQQ -0.81%), small-cap outperformance (IWM +0.22%). Semiconductor zayıf, housing/biotech güçlü. Earnings risk: PAYX reported, MU AMC. 0DTE sınırlı."
+  "riskAssessment": "VIX 18.46 (low vol). Tech weakness (QQQ -0.49%), small-cap outperformance (IWM +0.49%). Semiconductor zayıf, housing/biotech güçlü. Earnings risk: PAYX reported, MU AMC. 0DTE sınırlı. nextDayCarryForward: MU PUT bias güçlü, AMZN CALL bias devam.",
+  "nextDayCarryForward": []
 }
