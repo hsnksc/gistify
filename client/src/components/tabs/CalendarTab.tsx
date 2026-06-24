@@ -82,7 +82,7 @@ export default function CalendarTab({
               {/* Date label */}
               <div className="w-[140px] flex-shrink-0 pr-4 pt-1 text-right">
                 <div className="data-mono text-xs font-bold" style={{ color: 'oklch(0.75 0.15 75)' }}>{grouped[date].label}</div>
-                <div className="text-xs" style={{ color: 'oklch(0.4 0.015 225)' }}>{grouped[date].items[0]?.time || 'AMC'}</div>
+                <div className="text-xs" style={{ color: 'oklch(0.4 0.015 225)' }}>{grouped[date].items[0]?.time || copy(language, 'AMC', 'AMC')}</div>
               </div>
 
               {/* Dot */}
@@ -182,7 +182,7 @@ export default function CalendarTab({
                     copy(language, 'Gelir Büyümesi', 'Revenue Growth'),
                   ] : []),
                   copy(language, 'Beat İhtimali', 'Beat Probability'),
-                  'Implied Move',
+                  copy(language, 'Implied Move', 'Implied Move'),
                   copy(language, 'Sinyal', 'Signal'),
                 ].map(h => (
                   <th key={h} className="px-3 py-2 text-left heading-condensed text-xs tracking-wider" style={{ color: 'oklch(0.55 0.015 225)' }}>

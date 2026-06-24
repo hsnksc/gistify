@@ -4,7 +4,7 @@ import ReportPostShell, {
   type ReportPostItem,
 } from "@/components/reports/ReportPostShell";
 import { getDailyReportAssetUrl } from "@/lib/dailyReports";
-import type { AppLanguage } from "@/lib/i18n";
+import { copy, type AppLanguage } from "@/lib/i18n";
 import {
   extractLeadParagraphsFromMarkdown,
   extractSnapshotMetricsFromMarkdown,
@@ -18,10 +18,6 @@ interface DailyReportViewerProps {
   updatedAt?: string;
   sourceFolder: string;
   content: DailyReportContent;
-}
-
-function copy(language: AppLanguage, tr: string, en: string) {
-  return language === "en" ? en : tr;
 }
 
 function formatReportDate(reportDate: string, locale = "tr-TR") {

@@ -19,7 +19,7 @@ import type {
   MidasSignalsData,
 } from "@shared/midasSignals";
 import { runMomentumScan, type StockResult } from "@/scanner";
-import type { AppLanguage } from "@/lib/i18n";
+import { copy, type AppLanguage } from "@/lib/i18n";
 
 type SurfaceMode = "overview" | "positive" | "neutral" | "negative" | "shifts";
 type SignalDirection = "positive" | "negative" | "neutral";
@@ -57,10 +57,6 @@ const SNAPSHOT_REFRESH_INTERVAL_MS = 60 * 1000;
 const MAX_OVERVIEW_SIGNALS = 4;
 const MAX_OVERVIEW_NEUTRALS = 4;
 const MAX_OVERVIEW_SHIFTS = 4;
-
-function copy(language: AppLanguage, tr: string, en: string) {
-  return language === "en" ? en : tr;
-}
 
 function signalBadgeClass(signal: ActionSignal) {
   switch (signal) {

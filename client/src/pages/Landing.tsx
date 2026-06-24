@@ -202,7 +202,7 @@ export default function Landing({
     <PublicShell
       language={language}
       onLanguageChange={onLanguageChange}
-      eyebrow="Public Product Overview"
+      eyebrow={copy(language, "Urun Genel Bakis", "Public Product Overview")}
       title={copy(
         language,
         "Momentum tarama, earnings planlama ve opsiyon risk cercevesi icin tek workspace.",

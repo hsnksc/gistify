@@ -153,7 +153,7 @@ export default function ReportsIndexPage({
   return (
     <FlowLayout
       language={language}
-      eyebrow="Reports"
+      eyebrow={copy(language, "Raporlar", "Reports")}
       title={
         forcedTicker
           ? `${forcedTicker.toUpperCase()} ${copy(language, "Rapor Galerisi", "Report Gallery")}`

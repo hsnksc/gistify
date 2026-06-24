@@ -37,14 +37,14 @@ function getLanguageBadge(
 
   if (report.languageMode === "tr") {
     return {
-      label: "TR",
+      label: copy(language, "TR", "TR"),
       toneClassName: "border-emerald-400/30 bg-emerald-500/10 text-emerald-300",
     };
   }
 
   if (report.languageMode === "en") {
     return {
-      label: "EN",
+      label: copy(language, "EN", "EN"),
       toneClassName: "border-blue-400/30 bg-blue-500/10 text-blue-300",
     };
   }

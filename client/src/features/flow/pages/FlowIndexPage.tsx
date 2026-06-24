@@ -15,7 +15,7 @@ export default function FlowIndexPage({
   language,
   basePath = "/flow",
   description,
-  eyebrow = "Flow",
+  eyebrow = copy(language, "Flow", "Flow"),
   title,
 }: {
   basePath?: string;

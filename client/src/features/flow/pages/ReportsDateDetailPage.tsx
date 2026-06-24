@@ -102,7 +102,7 @@ export default function ReportsDateDetailPage({
   return (
     <FlowLayout
       language={language}
-      eyebrow="Reports"
+      eyebrow={copy(language, "Raporlar", "Reports")}
       title={
         report
           ? `${report.ticker} · ${report.companyName || report.fileName}`
@@ -224,7 +224,7 @@ export default function ReportsDateDetailPage({
                         className="rounded-full"
                       >
                         <Languages className="size-3.5" />
-                        TR
+                        {copy(language, "TR", "TR")}
                       </Button>
                       <Button
                         type="button"
@@ -234,7 +234,7 @@ export default function ReportsDateDetailPage({
                         className="rounded-full"
                       >
                         <Globe2 className="size-3.5" />
-                        EN
+                        {copy(language, "EN", "EN")}
                       </Button>
                     </div>
                   </article>

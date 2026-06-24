@@ -47,8 +47,8 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 export default function OverviewTab({
   onStockClick,
   stocks = stocksData,
-  reportWindow = 'Weekly view',
-  analysisDateLabel = 'Live',
+  reportWindow = copy(language, 'Haftalik gorunum', 'Weekly view'),
+  analysisDateLabel = copy(language, 'Canli', 'Live'),
   headline,
   summary,
   language,
@@ -101,7 +101,7 @@ export default function OverviewTab({
             </span>
           </div>
           <h1 className="heading-condensed mb-2" style={{ fontSize: '2.8rem', lineHeight: 1.1, color: 'oklch(0.95 0.01 220)' }}>
-            EARNING STRATEGY<br />
+            {copy(language, 'EARNING STRATEGY', 'EARNING STRATEGY')}<br />
             <span style={{ color: 'oklch(0.78 0.18 160)' }}>{copy(language, 'DERİN ANALİZ', 'DEEP ANALYSIS')}</span>
           </h1>
           <p className="text-sm max-w-xl" style={{ color: 'oklch(0.65 0.015 225)', lineHeight: 1.6 }}>

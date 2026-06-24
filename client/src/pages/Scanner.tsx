@@ -10,15 +10,11 @@ import {
 import { useLocation } from "wouter";
 import MomentumFlowSurface from "@/components/tabs/MomentumFlowSurface";
 import { Button } from "@/components/ui/button";
-import type { AppLanguage } from "@/lib/i18n";
+import { copy, type AppLanguage } from "@/lib/i18n";
 import WorkspaceHeroPanel from "@/components/workspace/WorkspaceHeroPanel";
 
 interface ScannerRoutePageProps {
   language: AppLanguage;
-}
-
-function copy(language: AppLanguage, tr: string, en: string) {
-  return language === "en" ? en : tr;
 }
 
 export default function Scanner({ language }: ScannerRoutePageProps) {

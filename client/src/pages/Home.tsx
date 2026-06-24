@@ -47,8 +47,8 @@ type TabId = "post" | "playbook" | "calendar" | "risk";
 
 function getTabs(language: AppLanguage) {
   return [
-    { id: "post" as const, label: "Post", icon: FileText },
-    { id: "playbook" as const, label: "Playbook", icon: ClipboardList },
+    { id: "post" as const, label: copy(language, "Post", "Post"), icon: FileText },
+    { id: "playbook" as const, label: copy(language, "Playbook", "Playbook"), icon: ClipboardList },
     { id: "calendar" as const, label: copy(language, "Takvim", "Calendar"), icon: CalendarDays },
     { id: "risk" as const, label: copy(language, "Risk", "Risk"), icon: AlertTriangle },
   ];
@@ -350,8 +350,8 @@ export default function Home({ language }: { language: AppLanguage }) {
           overlayClassName="bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.22),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(16,185,129,0.14),transparent_28%)]"
           badges={
             <>
-              <span className="badge-strong">{bullishCount} bullish bias</span>
-              <span className="badge-danger">{bearishCount} bearish bias</span>
+              <span className="badge-strong">{bullishCount} {copy(language, "bullish egilim", "bullish bias")}</span>
+              <span className="badge-danger">{bearishCount} {copy(language, "bearish egilim", "bearish bias")}</span>
               <span className="badge-warning">
                 {balancedCount} {copy(language, "dengeli", "balanced")}
               </span>
@@ -372,11 +372,11 @@ export default function Home({ language }: { language: AppLanguage }) {
               </Button>
               <Button type="button" variant="outline" onClick={() => setLocation("/momentum")}>
                 <Radar className="size-4" />
-                Momentum
+                {copy(language, "Momentum", "Momentum")}
               </Button>
               <Button type="button" variant="outline" onClick={() => setLocation("/app/admin")}>
                 <Shield className="size-4" />
-                Admin
+                {copy(language, "Admin", "Admin")}
               </Button>
             </>
           }
@@ -398,7 +398,7 @@ export default function Home({ language }: { language: AppLanguage }) {
                   >
                     <div className="flex items-center justify-between gap-3">
                       <span className="data-mono text-[11px] text-muted-foreground">
-                        {index === 0 ? "LIVE" : "ARCHIVE"}
+                        {index === 0 ? copy(language, "CANLI", "LIVE") : copy(language, "ARŞIV", "ARCHIVE")}
                       </span>
                       <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-amber-300">
                         {report.vixLabel || "VIX -"}
@@ -412,7 +412,7 @@ export default function Home({ language }: { language: AppLanguage }) {
                     </p>
                     <div className="mt-3 flex items-center gap-2 text-[11px] text-muted-foreground">
                       <Clock3 className="size-3.5" />
-                      <span className="line-clamp-1">{report.headline || "Earning report"}</span>
+                      <span className="line-clamp-1">{report.headline || copy(language, "Earning raporu", "Earning report")}</span>
                     </div>
                   </button>
                 );
@@ -424,27 +424,27 @@ export default function Home({ language }: { language: AppLanguage }) {
               <div className="inline-flex max-w-full flex-wrap items-center gap-3 rounded-xl border border-border bg-background/40 px-4 py-3 text-xs text-muted-foreground">
                 <span className="flex items-center gap-1.5">
                   <BarChart3 className="size-3.5 text-sky-300" />
-                  {positions.length} earnings event
+                  {positions.length} {copy(language, "earnings eventi", "earnings event")}
                 </span>
                 <span className="h-3 w-px bg-border" />
                 <span className="flex items-center gap-1.5">
                   <TrendingUp className="size-3.5 text-emerald-300" />
-                  {bullishCount} bullish
+                  {bullishCount} {copy(language, "bullish", "bullish")}
                 </span>
                 <span className="h-3 w-px bg-border" />
                 <span className="flex items-center gap-1.5">
                   <TrendingDown className="size-3.5 text-red-300" />
-                  {bearishCount} bearish
+                  {bearishCount} {copy(language, "bearish", "bearish")}
                 </span>
                 <span className="h-3 w-px bg-border" />
                 <span className="flex items-center gap-1.5">
                   <Zap className="size-3.5 text-amber-300" />
-                  Avg IV Rank {avgIvRank}
+                  {copy(language, "Ort. IV Rank", "Avg IV Rank")} {avgIvRank}
                 </span>
                 <span className="h-3 w-px bg-border" />
                 <span className="flex items-center gap-1.5">
                   <Target className="size-3.5 text-indigo-300" />
-                  Avg CPR {avgCpr}
+                  {copy(language, "Ort. CPR", "Avg CPR")} {avgCpr}
                 </span>
               </div>
             ) : (
@@ -468,7 +468,7 @@ export default function Home({ language }: { language: AppLanguage }) {
                 <div className="flex flex-col gap-4 border-b border-border pb-4 md:flex-row md:items-end md:justify-between">
                   <div className="space-y-2">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-indigo-300">
-                      Selected report
+                      {copy(language, "Secili rapor", "Selected report")}
                     </p>
                     <h2 className="heading-condensed text-2xl text-foreground md:text-3xl">
                       {selectedUploadLabel}

@@ -675,7 +675,7 @@ function IndexPill({
             variant="outline"
             className="border-rose-500/25 bg-rose-500/12 text-rose-200 text-[9px]"
           >
-            VIX {formatNumber(quote.price)}
+            {copy(language, "VIX", "VIX")} {formatNumber(quote.price)}
           </Badge>
         ) : null}
       </div>
@@ -690,7 +690,7 @@ function IndexPill({
       </div>
       {isFiniteNumber(quote.vwap) ? (
         <p className="mt-1 text-[11px] text-muted-foreground">
-          VWAP {formatNumber(quote.vwap)}
+          {copy(language, "VWAP", "VWAP")} {formatNumber(quote.vwap)}
         </p>
       ) : null}
     </div>
@@ -922,7 +922,7 @@ function SetupCard({
       <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
         <div className="rounded-xl border border-white/10 bg-black/20 px-2.5 py-1.5">
           <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-            Entry
+            {copy(language, "Giris", "Entry")}
           </p>
           <p className="mt-0.5 font-medium text-foreground">
             {formatNumber(setup.entry)}
@@ -930,7 +930,7 @@ function SetupCard({
         </div>
         <div className="rounded-xl border border-white/10 bg-black/20 px-2.5 py-1.5">
           <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-            Stop
+            {copy(language, "Stop", "Stop")}
           </p>
           <p className="mt-0.5 font-medium text-rose-300">
             {formatNumber(setup.stop)}
@@ -938,7 +938,7 @@ function SetupCard({
         </div>
         <div className="rounded-xl border border-white/10 bg-black/20 px-2.5 py-1.5">
           <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-            Target
+            {copy(language, "Hedef", "Target")}
           </p>
           <p className="mt-0.5 font-medium text-emerald-300">
             {formatNumber(setup.target)}
@@ -946,7 +946,7 @@ function SetupCard({
         </div>
         <div className="rounded-xl border border-white/10 bg-black/20 px-2.5 py-1.5">
           <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-            R/R
+            {copy(language, "R/R", "R/R")}
           </p>
           <p className="mt-0.5 font-medium text-foreground">
             {isFiniteNumber(setup.rr) ? `1:${setup.rr.toFixed(1)}` : "-"}
@@ -1081,10 +1081,10 @@ function EarningsCalendar({
                           )}
                         >
                           {item.time === "before-open"
-                            ? "BMO"
+                            ? copy(language, "BMO", "BMO")
                             : item.time === "after-close"
-                              ? "AMC"
-                              : "Intraday"}
+                              ? copy(language, "AMC", "AMC")
+                              : copy(language, "Intraday", "Intraday")}
                         </Badge>
                       </div>
                       {item.company ? (

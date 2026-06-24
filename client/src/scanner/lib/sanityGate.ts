@@ -4,6 +4,8 @@
  * Tüm skorları güvenli aralığa [0, 100] clamp eder.
  */
 
+import { type AppLanguage, copy } from "@/lib/i18n";
+
 // ===================== Temel Güvenlik Fonksiyonları =====================
 
 /** Bir değerin "sayısal ve güvenli" olup olmadığını kontrol eder */
@@ -42,16 +44,16 @@ export interface ScoreValidationResult {
 }
 
 /** Tüm momentum faktör skorlarını validasyondan geçir */
-export function validateFactorScores(factors: Record<string, number>): ScoreValidationResult {
+export function validateFactorScores(factors: Record<string, number>, language: AppLanguage = "tr"): ScoreValidationResult {
   const issues: string[] = [];
   const sanitized: Record<string, number> = {};
 
   for (const [key, val] of Object.entries(factors)) {
     if (!isSafeNumber(val)) {
-      issues.push(`Faktör "${key}" güvensiz değer: ${val} → 50`);
+      issues.push(copy(language, `Faktör "${key}" güvensiz değer: ${val} → 50`, `Factor "${key}" unsafe value: ${val} → 50`));
       sanitized[key] = 50;
     } else if (val < 0 || val > 100) {
-      issues.push(`Faktör "${key}" aralık dışı: ${val.toFixed(2)} → clamp`);
+      issues.push(copy(language, `Faktör "${key}" aralık dışı: ${val.toFixed(2)} → clamp`, `Factor "${key}" out of range: ${val.toFixed(2)} → clamp`));
       sanitized[key] = clamp100(val);
     } else {
       sanitized[key] = val;
@@ -73,7 +75,7 @@ export function sanityGate(inputs: {
   structure: number; rsiShort: number; velDir: number; velVol: number;
   mktCap: number; retention: number; pcS: number;
   weights: Record<string, number>;
-}): { score: number; issues: string[] } {
+}, language: AppLanguage = "tr"): { score: number; issues: string[] } {
   const issues: string[] = [];
   const { weights, ...scores } = inputs;
 
@@ -81,10 +83,10 @@ export function sanityGate(inputs: {
   const safeScores: Record<string, number> = {};
   for (const [key, val] of Object.entries(scores)) {
     if (!isSafeNumber(val)) {
-      issues.push(`[SanityGate] ${key} = ${String(val)} (NaN/Infinity/null) → 50`);
+      issues.push(copy(language, `[SanityGate] ${key} = ${String(val)} (NaN/Infinity/null) → 50`, `[SanityGate] ${key} = ${String(val)} (NaN/Infinity/null) → 50`));
       safeScores[key] = 50;
     } else if (val < 0 || val > 100) {
-      issues.push(`[SanityGate] ${key} = ${val.toFixed(2)} (aralık dışı) → clamp`);
+      issues.push(copy(language, `[SanityGate] ${key} = ${val.toFixed(2)} (aralık dışı) → clamp`, `[SanityGate] ${key} = ${val.toFixed(2)} (out of range) → clamp`));
       safeScores[key] = clamp100(val);
     } else {
       safeScores[key] = val;
@@ -95,14 +97,14 @@ export function sanityGate(inputs: {
   let weightSum = 0;
   for (const [key, w] of Object.entries(weights)) {
     if (!isSafeNumber(w)) {
-      issues.push(`[SanityGate] Ağırlık ${key} = ${String(w)} → 0`);
+      issues.push(copy(language, `[SanityGate] Ağırlık ${key} = ${String(w)} → 0`, `[SanityGate] Weight ${key} = ${String(w)} → 0`));
       weights[key] = 0;
     } else {
       weightSum += w;
     }
   }
   if (Math.abs(weightSum - 1.0) > 0.01) {
-    issues.push(`[SanityGate] Ağırlık toplamı = ${weightSum.toFixed(4)} (normalizasyon uygulanıyor)`);
+    issues.push(copy(language, `[SanityGate] Ağırlık toplamı = ${weightSum.toFixed(4)} (normalizasyon uygulanıyor)`, `[SanityGate] Weight sum = ${weightSum.toFixed(4)} (normalizing)`));
     // Normalize et
     for (const key of Object.keys(weights)) {
       weights[key] = weightSum > 0 ? (weights[key] ?? 0) / weightSum : 0;
@@ -127,7 +129,7 @@ export function sanityGate(inputs: {
   // 4. Final clamp
   const finalScore = clamp100(score);
   if (finalScore !== score) {
-    issues.push(`[SanityGate] Final skor ${score} → clamp100 → ${finalScore}`);
+    issues.push(copy(language, `[SanityGate] Final skor ${score} → clamp100 → ${finalScore}`, `[SanityGate] Final score ${score} → clamp100 → ${finalScore}`));
   }
 
   if (issues.length > 0) {
@@ -146,16 +148,16 @@ export interface YahooValidationResult {
 }
 
 /** Yahoo Finance yanıtını validasyon'dan geçir */
-export function validateYahooResponse(json: any): YahooValidationResult {
+export function validateYahooResponse(json: any, language: AppLanguage = "tr"): YahooValidationResult {
   // Temel yapı kontrolü
   if (!json || typeof json !== "object") {
-    return { isValid: false, error: "Yanıt JSON değil", dataQuality: 0 };
+    return { isValid: false, error: copy(language, "Yanıt JSON değil", "Response is not JSON"), dataQuality: 0 };
   }
   if (!json.chart?.result?.[0]) {
     if (json.chart?.error) {
-      return { isValid: false, error: `Yahoo API hatası: ${json.chart.error.description || json.chart.error.code}`, dataQuality: 0 };
+      return { isValid: false, error: copy(language, `Yahoo API hatası: ${json.chart.error.description || json.chart.error.code}`, `Yahoo API error: ${json.chart.error.description || json.chart.error.code}`), dataQuality: 0 };
     }
-    return { isValid: false, error: "Geçersiz yanıt yapısı (chart.result eksik)", dataQuality: 0 };
+    return { isValid: false, error: copy(language, "Geçersiz yanıt yapısı (chart.result eksik)", "Invalid response structure (chart.result missing)"), dataQuality: 0 };
   }
 
   const result = json.chart.result[0];
@@ -165,17 +167,17 @@ export function validateYahooResponse(json: any): YahooValidationResult {
 
   // Meta kontrolü
   if (!meta || !isSafeNumber(meta.regularMarketPrice)) {
-    return { isValid: false, error: "Meta verisi eksik veya geçersiz", dataQuality: 0 };
+    return { isValid: false, error: copy(language, "Meta verisi eksik veya geçersiz", "Meta data missing or invalid"), dataQuality: 0 };
   }
 
   // Quote kontrolü
   if (!quote || !Array.isArray(quote.close) || quote.close.length === 0) {
-    return { isValid: false, error: "Fiyat verisi eksik", dataQuality: 0 };
+    return { isValid: false, error: copy(language, "Fiyat verisi eksik", "Price data missing"), dataQuality: 0 };
   }
 
   // Timestamp kontrolü
   if (!Array.isArray(timestamps) || timestamps.length === 0) {
-    return { isValid: false, error: "Timestamp verisi eksik", dataQuality: 0 };
+    return { isValid: false, error: copy(language, "Timestamp verisi eksik", "Timestamp data missing"), dataQuality: 0 };
   }
 
   // Null oranını hesapla
@@ -189,7 +191,7 @@ export function validateYahooResponse(json: any): YahooValidationResult {
 
   // Minimum veri uzunluğu
   if (quote.close.filter((c: unknown) => c !== null).length < 20) {
-    return { isValid: false, error: `Yetersiz veri: ${total} gün (minimum 20)`, dataQuality };
+    return { isValid: false, error: copy(language, `Yetersiz veri: ${total} gün (minimum 20)`, `Insufficient data: ${total} days (minimum 20)`), dataQuality };
   }
 
   return { isValid: true, dataQuality };
@@ -202,28 +204,29 @@ export function validateCandleData(
   high: number[],
   low: number[],
   close: number[],
-  volume: number[]
+  volume: number[],
+  language: AppLanguage = "tr"
 ): { isValid: boolean; error?: string } {
   if (!Array.isArray(timestamps) || timestamps.length < 20) {
-    return { isValid: false, error: `Yetersiz timestamp: ${timestamps?.length ?? 0}` };
+    return { isValid: false, error: copy(language, `Yetersiz timestamp: ${timestamps?.length ?? 0}`, `Insufficient timestamps: ${timestamps?.length ?? 0}`) };
   }
   if (!Array.isArray(close) || close.length < 20) {
-    return { isValid: false, error: `Yetersiz close verisi: ${close?.length ?? 0}` };
+    return { isValid: false, error: copy(language, `Yetersiz close verisi: ${close?.length ?? 0}`, `Insufficient close data: ${close?.length ?? 0}`) };
   }
   if (!Array.isArray(volume) || volume.length < 20) {
-    return { isValid: false, error: `Yetersiz volume verisi: ${volume?.length ?? 0}` };
+    return { isValid: false, error: copy(language, `Yetersiz volume verisi: ${volume?.length ?? 0}`, `Insufficient volume data: ${volume?.length ?? 0}`) };
   }
 
   // Array uzunlukları eşit mi?
   const len = timestamps.length;
   if (open.length !== len || high.length !== len || low.length !== len || close.length !== len || volume.length !== len) {
-    return { isValid: false, error: `Array uzunlukları uyuşmuyor: ts=${len}, o=${open.length}, h=${high.length}, l=${low.length}, c=${close.length}, v=${volume.length}` };
+    return { isValid: false, error: copy(language, `Array uzunlukları uyuşmuyor: ts=${len}, o=${open.length}, h=${high.length}, l=${low.length}, c=${close.length}, v=${volume.length}`, `Array length mismatch: ts=${len}, o=${open.length}, h=${high.length}, l=${low.length}, c=${close.length}, v=${volume.length}`) };
   }
 
   // Tüm close değerleri sayısal mı?
   const invalidClose = close.filter((c) => !isSafeNumber(c));
   if (invalidClose.length > close.length * 0.3) {
-    return { isValid: false, error: `Çok fazla geçersiz close değeri: ${invalidClose.length}/${close.length}` };
+    return { isValid: false, error: copy(language, `Çok fazla geçersiz close değeri: ${invalidClose.length}/${close.length}`, `Too many invalid close values: ${invalidClose.length}/${close.length}`) };
   }
 
   return { isValid: true };

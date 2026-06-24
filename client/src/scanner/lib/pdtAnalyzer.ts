@@ -5,6 +5,7 @@
  */
 
 import type { StockData } from "./yahooFinance";
+import { type AppLanguage, copy } from "@/lib/i18n";
 
 // ===================== TIP TANIMLARI =====================
 
@@ -332,31 +333,58 @@ function calcOvernightRisk(tech: PdtTechnicalData): PdtAnalysis["overnightRisk"]
 
 // ===================== ÖZET METNİ =====================
 
-function buildSummary(ticker: string, call: PdtOptionAnalysis, put: PdtOptionAnalysis, tech: PdtTechnicalData, pdt: PdtAnalysis): string {
+function buildSummary(ticker: string, call: PdtOptionAnalysis, put: PdtOptionAnalysis, tech: PdtTechnicalData, pdt: PdtAnalysis, language: AppLanguage): string {
   const parts: string[] = [];
 
-  parts.push(`${ticker} $${tech.priceChangePercent >= 0 ? "+" : ""}${tech.priceChangePercent.toFixed(2)}% ile ${tech.trend === "UPTREND" ? "yükseliş trendinde" : tech.trend === "DOWNTREND" ? "düşüş trendinde" : "yana hareket ediyor"}.`);
+  const trendText = copy(language,
+    tech.trend === "UPTREND" ? "yükseliş trendinde" : tech.trend === "DOWNTREND" ? "düşüş trendinde" : "yana hareket ediyor",
+    tech.trend === "UPTREND" ? "in an uptrend" : tech.trend === "DOWNTREND" ? "in a downtrend" : "moving sideways"
+  );
+  parts.push(`${ticker} $${tech.priceChangePercent >= 0 ? "+" : ""}${tech.priceChangePercent.toFixed(2)}% ile ${trendText}.`);
 
   if (call.signal === "STRONG_BUY" || call.signal === "BUY") {
-    parts.push(`Call sinyali ${call.signal === "STRONG_BUY" ? "GÜÇLÜ AL" : "AL"} — ${call.strategy} ile %${call.targetMove} hedef.`);
+    const signalLabel = call.signal === "STRONG_BUY"
+      ? copy(language, "GÜÇLÜ AL", "STRONG BUY")
+      : copy(language, "AL", "BUY");
+    parts.push(copy(language,
+      `Call sinyali ${signalLabel} — ${call.strategy} ile %${call.targetMove} hedef.`,
+      `Call signal ${signalLabel} — ${call.strategy} target %${call.targetMove}.`
+    ));
   }
 
   if (put.signal === "STRONG_BUY" || put.signal === "BUY") {
-    parts.push(`Put sinyali ${put.signal === "STRONG_BUY" ? "GÜÇLÜ AL" : "AL"} — ${put.strategy} ile %${put.targetMove} hedef.`);
+    const signalLabel = put.signal === "STRONG_BUY"
+      ? copy(language, "GÜÇLÜ AL", "STRONG BUY")
+      : copy(language, "AL", "BUY");
+    parts.push(copy(language,
+      `Put sinyali ${signalLabel} — ${put.strategy} ile %${put.targetMove} hedef.`,
+      `Put signal ${signalLabel} — ${put.strategy} target %${put.targetMove}.`
+    ));
   }
 
   if (call.signal === "AVOID" && put.signal === "AVOID") {
-    parts.push(`Her iki yönde de sinyal zayıf — BEKLE.`);
+    parts.push(copy(language, "Her iki yönde de sinyal zayıf — BEKLE.", "Both directions weak — WAIT."));
   }
 
-  parts.push(`Gecelik tutma riski ${pdt.overnightRisk === "LOW" ? "DÜŞÜK" : pdt.overnightRisk === "MEDIUM" ? "ORTA" : "YÜKSEK"}.${pdt.earningsWarning ? " Earnings yakın — DİKKAT!" : ""}`);
+  const riskText = pdt.overnightRisk === "LOW"
+    ? copy(language, "DÜŞÜK", "LOW")
+    : pdt.overnightRisk === "MEDIUM"
+    ? copy(language, "ORTA", "MEDIUM")
+    : copy(language, "YÜKSEK", "HIGH");
+  const earningsWarning = pdt.earningsWarning
+    ? copy(language, " — Earnings yakın, DİKKAT!", " — Earnings near, CAUTION!")
+    : "";
+  parts.push(copy(language,
+    `Gecelik tutma riski ${riskText}.${earningsWarning}`,
+    `Overnight hold risk ${riskText}.${earningsWarning}`
+  ));
 
   return parts.join(" ");
 }
 
 // ===================== ANA FONKSIYON =====================
 
-export function analyzePdt(data: StockData): PdtAnalysisResult {
+export function analyzePdt(data: StockData, language: AppLanguage = "tr"): PdtAnalysisResult {
   const c = data.close;
   const h = data.high;
   const l = data.low;
@@ -407,17 +435,29 @@ export function analyzePdt(data: StockData): PdtAnalysisResult {
     strategy: callStrat.strategy,
     strike: callStrike,
     expiry: "14-21 DTE",
-    entryCondition: callScore.signal === "AVOID" ? "Giris yok — Sinyal zayif" : `${current} uzeri, VWAP ${vwapPos} onay`,
+    entryCondition: callScore.signal === "AVOID"
+      ? copy(language, "Giris yok — Sinyal zayif", "No entry — Weak signal")
+      : `${current} ${copy(language, "uzeri", "above")}, VWAP ${vwapPos} ${copy(language, "onay", "confirmed")}`,
     targetMove: `+${(callStrat.otmPct * 100).toFixed(1)}%`,
     pop: callPop,
     riskReward: `1:${callRR.toFixed(1)}`,
-    maxLoss: callStrat.strategy.includes("Spread") ? "Net prim (sinirli)" : "Odenen prim",
-    takeProfit: `%${(callRR * callStrat.otmPct * 100 * 0.5).toFixed(0)} kar`,
-    stopCondition: callStrat.strategy.includes("Spread") ? "2x prim = stop" : "%50 prim erimesi = stop",
+    maxLoss: callStrat.strategy.includes("Spread")
+      ? copy(language, "Net prim (sinirli)", "Net premium (limited)")
+      : copy(language, "Odenen prim", "Premium paid"),
+    takeProfit: `%${(callRR * callStrat.otmPct * 100 * 0.5).toFixed(0)} ${copy(language, "kar", "profit")}`,
+    stopCondition: callStrat.strategy.includes("Spread")
+      ? copy(language, "2x prim = stop", "2x premium = stop")
+      : copy(language, "%50 prim erimesi = stop", "%50 premium decay = stop"),
     kellySize: kellySizing(callPop, callRR),
     pdtNote: callScore.score >= 60
-      ? `PDT: 1 gun tutma icin uygun. Momentum ${callScore.score >= 75 ? "güclü" : "orta"}, ertesi gun devam olasiligi yüksek.`
-      : `PDT: 1 gun tutma RISIKLI. Sinyal zayif, gecelik kayip olasiligi var.`,
+      ? copy(language,
+          `PDT: 1 gun tutma icin uygun. Momentum ${callScore.score >= 75 ? "güclü" : "orta"}, ertesi gun devam olasiligi yüksek.`,
+          `PDT: Suitable for 1-day hold. Momentum ${callScore.score >= 75 ? "strong" : "moderate"}, high continuation probability.`
+        )
+      : copy(language,
+          `PDT: 1 gun tutma RISIKLI. Sinyal zayif, gecelik kayip olasiligi var.`,
+          `PDT: 1-day hold RISKY. Signal weak, overnight loss risk.`
+        ),
   };
 
   // PUT analizi
@@ -433,17 +473,29 @@ export function analyzePdt(data: StockData): PdtAnalysisResult {
     strategy: putStrat.strategy,
     strike: putStrike,
     expiry: "14-21 DTE",
-    entryCondition: putScore.signal === "AVOID" ? "Giris yok — Sinyal zayif" : `${current} alti, VWAP ${vwapPos} onay`,
+    entryCondition: putScore.signal === "AVOID"
+      ? copy(language, "Giris yok — Sinyal zayif", "No entry — Weak signal")
+      : `${current} ${copy(language, "alti", "below")}, VWAP ${vwapPos} ${copy(language, "onay", "confirmed")}`,
     targetMove: `-${(putStrat.otmPct * 100).toFixed(1)}%`,
     pop: putPop,
     riskReward: `1:${putRR.toFixed(1)}`,
-    maxLoss: putStrat.strategy.includes("Spread") ? "Net prim (sinirli)" : "Odenen prim",
-    takeProfit: `%${(putRR * putStrat.otmPct * 100 * 0.5).toFixed(0)} kar`,
-    stopCondition: putStrat.strategy.includes("Spread") ? "2x prim = stop" : "%50 prim erimesi = stop",
+    maxLoss: putStrat.strategy.includes("Spread")
+      ? copy(language, "Net prim (sinirli)", "Net premium (limited)")
+      : copy(language, "Odenen prim", "Premium paid"),
+    takeProfit: `%${(putRR * putStrat.otmPct * 100 * 0.5).toFixed(0)} ${copy(language, "kar", "profit")}`,
+    stopCondition: putStrat.strategy.includes("Spread")
+      ? copy(language, "2x prim = stop", "2x premium = stop")
+      : copy(language, "%50 prim erimesi = stop", "%50 premium decay = stop"),
     kellySize: kellySizing(putPop, putRR),
     pdtNote: putScore.score <= 40
-      ? `PDT: 1 gun tutma icin uygun. Asagi momentum ${putScore.score <= 25 ? "güclü" : "orta"}, ertesi gun dusus devam olasiligi.`
-      : `PDT: 1 gun tutma RISIKLI. Asagi sinyal zayif.`,
+      ? copy(language,
+          `PDT: 1 gun tutma icin uygun. Asagi momentum ${putScore.score <= 25 ? "güclü" : "orta"}, ertesi gun dusus devam olasiligi.`,
+          `PDT: Suitable for 1-day hold. Down momentum ${putScore.score <= 25 ? "strong" : "moderate"}, likely continuation.`
+        )
+      : copy(language,
+          `PDT: 1 gun tutma RISIKLI. Asagi sinyal zayif.`,
+          `PDT: 1-day hold RISKY. Down signal weak.`
+        ),
   };
 
   // PDT analizi
@@ -454,19 +506,19 @@ export function analyzePdt(data: StockData): PdtAnalysisResult {
 
   // Katalizörler ve riskler
   const catalysts: string[] = [];
-  if (tech.rvol >= 2) catalysts.push("Yüksek hacimli momentum devami");
-  if (tech.orbBreakout) catalysts.push("ORB kirilimi devami");
-  if (tech.trend === "UPTREND") catalysts.push("Yükselen trend destegi");
-  else if (tech.trend === "DOWNTREND") catalysts.push("Düsüs trendi devami");
+  if (tech.rvol >= 2) catalysts.push(copy(language, "Yüksek hacimli momentum devami", "High volume momentum continuation"));
+  if (tech.orbBreakout) catalysts.push(copy(language, "ORB kirilimi devami", "ORB breakout continuation"));
+  if (tech.trend === "UPTREND") catalysts.push(copy(language, "Yükselen trend destegi", "Uptrend support"));
+  else if (tech.trend === "DOWNTREND") catalysts.push(copy(language, "Düsüs trendi devami", "Downtrend continuation"));
   if (tech.priceChangePercent > 3) catalysts.push("Güclü gunlük momentum");
-  if (catalysts.length === 0) catalysts.push("Teknik seviyelerde hareket beklentisi");
+  if (catalysts.length === 0) catalysts.push(copy(language, "Teknik seviyelerde hareket beklentisi", "Expected movement at technical levels"));
 
   const riskFactors: string[] = [];
-  if (overnightRisk === "HIGH") riskFactors.push("Yüksek ATR — gecelik sapma riski");
-  if (rsi14 > 75) riskFactors.push("RSI asiri alim — geri cekilme olasiligi");
-  if (rsi14 < 25) riskFactors.push("RSI asiri satim — dead cat bounce riski");
-  if (tech.rvol > 4) riskFactors.push("Hacim patlamasi sonrasi yorgunluk");
-  if (riskFactors.length === 0) riskFactors.push("Genel piyasa riski");
+  if (overnightRisk === "HIGH") riskFactors.push(copy(language, "Yüksek ATR — gecelik sapma riski", "High ATR — overnight deviation risk"));
+  if (rsi14 > 75) riskFactors.push(copy(language, "RSI asiri alim — geri cekilme olasiligi", "RSI overbought — pullback risk"));
+  if (rsi14 < 25) riskFactors.push(copy(language, "RSI asiri satim — dead cat bounce riski", "RSI oversold — dead cat bounce risk"));
+  if (tech.rvol > 4) riskFactors.push(copy(language, "Hacim patlamasi sonrasi yorgunluk", "Volume spike fatigue"));
+  if (riskFactors.length === 0) riskFactors.push(copy(language, "Genel piyasa riski", "General market risk"));
 
   // Earnings kontrolu
   const earningsTickers = ["AAPL","MSFT","AMZN","GOOGL","META","NVDA","TSLA","AVGO","NFLX","AMD","CRM","MRVL","SNOW","PLTR","HOOD","SOFI","ACHR"];
@@ -478,7 +530,7 @@ export function analyzePdt(data: StockData): PdtAnalysisResult {
     catalysts,
     riskFactors,
     earningsWarning: hasEarnings,
-    earningsDate: hasEarnings ? "Yakinda (5 gun icinde olabilir)" : null,
+    earningsDate: hasEarnings ? copy(language, "Yakinda (5 gun icinde olabilir)", "Soon (within 5 days possible)") : null,
   };
 
   // Overall bias
@@ -488,7 +540,7 @@ export function analyzePdt(data: StockData): PdtAnalysisResult {
   else bias = "NEUTRAL";
 
   // Özet
-  const summary = buildSummary(data.ticker, call, put, tech, pdtAnalysis);
+  const summary = buildSummary(data.ticker, call, put, tech, pdtAnalysis, language);
 
   return {
     ticker: data.ticker,
@@ -506,13 +558,13 @@ export function analyzePdt(data: StockData): PdtAnalysisResult {
 
 // ===================== JSON ÇIKTI ÜRETİCİ =====================
 
-export function analyzePdtToJson(data: StockData): string {
-  const result = analyzePdt(data);
+export function analyzePdtToJson(data: StockData, language: AppLanguage = "tr"): string {
+  const result = analyzePdt(data, language);
   return JSON.stringify(result, null, 2);
 }
 
 // ===================== ÇOKLU HİSSE ANALİZİ =====================
 
-export async function analyzePdtMultiple(stocks: StockData[]): Promise<PdtAnalysisResult[]> {
-  return stocks.map((s) => analyzePdt(s));
+export async function analyzePdtMultiple(stocks: StockData[], language: AppLanguage = "tr"): Promise<PdtAnalysisResult[]> {
+  return stocks.map((s) => analyzePdt(s, language));
 }

@@ -117,7 +117,7 @@ export default function FlowPage({
   return (
     <FlowLayout
       language={language}
-      eyebrow="Flow"
+      eyebrow={copy(language, "Flow", "Flow")}
       title={copy(language, "Rapor Merkezi", "Report Center")}
       description={copy(
         language,

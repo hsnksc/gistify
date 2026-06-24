@@ -15,7 +15,48 @@ export interface MidasSignalLayers {
   confluenceScore?: number;
 }
 
+export interface TradePlan {
+  entry: number;
+  stop: number;
+  target1: number;
+  target2: number;
+  rr_ratio: number;
+  stop_pct: number;
+  atr14: number;
+  nat_r_pct: number;
+}
+
+export interface PositionSizing {
+  shares: number;
+  position_value: number;
+  dollar_risk: number;
+  risk_pct_of_account: number;
+  kelly_fraction: number;
+  account_size: number;
+}
+
+export interface FactorBreakdown {
+  f1_momentum_quality: number;
+  f2_relative_strength: number;
+  f3_volume_liquidity: number;
+  f4_technical_structure: number;
+  f5_volatility_regime: number;
+  f6_catalyst_flow: number;
+}
+
+export interface MarketRegime {
+  score: number;
+  class: string;
+  long_multiplier: number;
+  short_multiplier: number;
+  vix: number;
+  spy_vs_sma50: number;
+  spy_vs_sma200: number;
+  spy_5d_return: number;
+}
+
 export interface MidasSignalRecord {
+  // existing fields
   symbol: string;
   signal: MidasActionSignal;
   strength: number;
@@ -29,6 +70,20 @@ export interface MidasSignalRecord {
   notes?: string;
   layers?: MidasSignalLayers;
   timestamp?: string;
+  // v4.0 new fields
+  apex_score?: number;
+  raw_apex?: number;
+  direction?: "LONG" | "SHORT";
+  conviction_tier?: "A+" | "A" | "B" | "C" | "D";
+  setup_type?: string;
+  factor_breakdown?: FactorBreakdown;
+  trade_plan?: TradePlan;
+  position_sizing?: PositionSizing;
+  liquidity?: {
+    dollar_volume: number;
+    spread_bps: number;
+  };
+  technical?: Record<string, any>;
 }
 
 export interface MidasPipelineMetadata {
@@ -56,6 +111,7 @@ export interface MidasSignalsData {
   successful: number;
   failed: number;
   mode: string;
+  version?: string;
   summary?: {
     strong_buy: number;
     buy: number;
@@ -65,6 +121,7 @@ export interface MidasSignalsData {
     avg_confidence: number;
     market_sentiment: string;
   };
+  market_regime?: MarketRegime;
   market_overview?: Record<string, MarketOverviewItem>;
   signals: MidasSignalRecord[];
   errors?: string[];

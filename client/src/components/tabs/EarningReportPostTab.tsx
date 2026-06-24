@@ -677,7 +677,7 @@ export default function EarningReportPostTab({
             <DataTable
               headers={[
                 copy(language, "Tarih", "Date"),
-                "Ticker",
+                copy(language, "Hisse", "Ticker"),
                 copy(language, "Aksiyon", "Action"),
                 copy(language, "Not", "Note"),
               ]}
@@ -699,7 +699,7 @@ export default function EarningReportPostTab({
           <div className="mt-5">
             <DataTable
               headers={[
-                "Ticker",
+                copy(language, "Hisse", "Ticker"),
                 copy(language, "Sermaye", "Capital"),
                 copy(language, "Allocation notu", "Allocation note"),
               ]}
@@ -745,7 +745,7 @@ export default function EarningReportPostTab({
 
         <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
           <SectionTitle
-            eyebrow="Rules"
+            eyebrow={copy(language, "Kurallar", "Rules")}
             title={copy(language, "Golden rules", "Golden rules")}
             description={copy(
               language,

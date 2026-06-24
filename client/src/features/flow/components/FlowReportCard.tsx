@@ -85,7 +85,7 @@ export default function FlowReportCard({
               "content" in report
                 ? content?.tickerUniverse.length || 0
                 : report.tickerUniverse.length
-            } ticker`}
+            } ${copy(language, "ticker", "ticker")}`}
           />
         </div>
       </div>

@@ -1,9 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Activity,
+  ArrowDown,
   ArrowRightLeft,
+  ArrowUp,
   BarChart3,
   Clock,
+  Filter,
   LineChart,
   Loader2,
   RefreshCw,
@@ -18,7 +21,7 @@ import type {
   MidasSignalsData,
 } from "@shared/midasSignals";
 import { runMomentumScan, type StockResult } from "@/scanner";
-import type { AppLanguage } from "@/lib/i18n";
+import { copy, type AppLanguage } from "@/lib/i18n";
 
 type SignalDirection = "positive" | "negative" | "neutral";
 type SurfaceMode = "overview" | "positive" | "negative" | "shifts";
@@ -56,10 +59,6 @@ interface MergedSignalRecord extends MidasSignalRecord {
 const SNAPSHOT_REFRESH_INTERVAL_MS = 60 * 1000;
 const MAX_OVERVIEW_SIGNALS = 6;
 const MAX_OVERVIEW_SHIFTS = 6;
-
-function copy(language: AppLanguage, tr: string, en: string) {
-  return language === "en" ? en : tr;
-}
 
 function signalBadgeClass(signal: ActionSignal) {
   switch (signal) {
@@ -521,6 +520,36 @@ function MomentumSignalCard({
         </span>
       </div>
 
+      {(signal.setup_type || signal.direction || signal.conviction_tier) ? (
+        <div className="mt-2 flex flex-wrap gap-2">
+          {signal.setup_type ? (
+            <span className="rounded-full border border-indigo-400/25 bg-indigo-500/10 px-2 py-0.5 text-[10px] font-medium text-indigo-200">
+              {signal.setup_type}
+            </span>
+          ) : null}
+          {signal.direction ? (
+            <span className={`rounded-full border px-2 py-0.5 text-[10px] font-medium ${
+              signal.direction === 'LONG'
+                ? 'border-emerald-400/25 bg-emerald-500/10 text-emerald-300'
+                : 'border-rose-400/25 bg-rose-500/10 text-rose-300'
+            }`}>
+              {signal.direction === 'LONG' ? copy(language, "↑ LONG", "↑ LONG") : copy(language, "↓ SHORT", "↓ SHORT")}
+            </span>
+          ) : null}
+          {signal.conviction_tier ? (
+            <span className={`rounded-full border px-2 py-0.5 text-[10px] font-bold ${
+              signal.conviction_tier === 'A+' ? 'border-emerald-400/30 bg-emerald-500/15 text-emerald-300' :
+              signal.conviction_tier === 'A' ? 'border-emerald-300/25 bg-emerald-400/10 text-emerald-200' :
+              signal.conviction_tier === 'B' ? 'border-amber-400/25 bg-amber-500/10 text-amber-300' :
+              signal.conviction_tier === 'C' ? 'border-orange-400/25 bg-orange-500/10 text-orange-300' :
+              'border-rose-400/25 bg-rose-500/10 text-rose-300'
+            }`}>
+              {signal.conviction_tier}
+            </span>
+          ) : null}
+        </div>
+      ) : null}
+
       <div className="mt-4">
         <div className="mb-2 flex items-center justify-between gap-3 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
           <span>{copy(language, "Momentum gucu", "Momentum conviction")}</span>
@@ -533,6 +562,27 @@ function MomentumSignalCard({
           />
         </div>
       </div>
+
+      {typeof signal.apex_score === 'number' ? (
+        <div className="mt-4">
+          <div className="mb-1 flex items-center justify-between gap-3 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+            <span>{copy(language, "Apex Skoru", "Apex Score")}</span>
+            <span className="data-mono text-foreground/85">{signal.apex_score}/100</span>
+          </div>
+          <div className="h-2 overflow-hidden rounded-full bg-background/75">
+            <div
+              className={`h-full rounded-full transition-all duration-300 ${
+                signal.apex_score >= 60
+                  ? 'bg-emerald-400'
+                  : signal.apex_score >= 40
+                  ? 'bg-amber-400'
+                  : 'bg-rose-400'
+              }`}
+              style={{ width: `${Math.max(0, Math.min(100, signal.apex_score))}%` }}
+            />
+          </div>
+        </div>
+      ) : null}
 
       <div className="mt-4 flex flex-wrap gap-2 text-[11px]">
         <span className={`data-mono rounded-full border border-border bg-background/70 px-2.5 py-1 ${pctClass(currentDayPct)}`}>
@@ -576,6 +626,31 @@ function MomentumSignalCard({
       </div>
 
       <div className="mt-4 flex flex-wrap gap-2">
+        {signal.setup_type ? (
+          <span className="rounded-full border border-indigo-400/25 bg-indigo-500/10 px-2 py-0.5 text-[10px] font-medium text-indigo-200">
+            {signal.setup_type}
+          </span>
+        ) : null}
+        {signal.direction ? (
+          <span className={`rounded-full border px-2 py-0.5 text-[10px] font-medium ${
+            signal.direction === 'LONG'
+              ? 'border-emerald-400/25 bg-emerald-500/10 text-emerald-300'
+              : 'border-rose-400/25 bg-rose-500/10 text-rose-300'
+          }`}>
+            {signal.direction === 'LONG' ? '↑ LONG' : '↓ SHORT'}
+          </span>
+        ) : null}
+        {signal.conviction_tier ? (
+          <span className={`rounded-full border px-2 py-0.5 text-[10px] font-bold ${
+            signal.conviction_tier === 'A+' ? 'border-emerald-400/30 bg-emerald-500/15 text-emerald-300' :
+            signal.conviction_tier === 'A' ? 'border-emerald-300/25 bg-emerald-400/10 text-emerald-200' :
+            signal.conviction_tier === 'B' ? 'border-amber-400/25 bg-amber-500/10 text-amber-300' :
+            signal.conviction_tier === 'C' ? 'border-orange-400/25 bg-orange-500/10 text-orange-300' :
+            'border-rose-400/25 bg-rose-500/10 text-rose-300'
+          }`}>
+            {signal.conviction_tier}
+          </span>
+        ) : null}
         {signal.signals.slice(0, 4).map(tag => (
           <span
             key={tag}
@@ -585,6 +660,66 @@ function MomentumSignalCard({
           </span>
         ))}
       </div>
+
+      {signal.factor_breakdown ? (
+        <div className="mt-4 space-y-1.5">
+          <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">{copy(language, "Faktor Dagilimi", "Factor Breakdown")}</p>
+          {[
+            { key: 'f1_momentum_quality', label: copy(language, 'F1', 'F1') },
+            { key: 'f2_relative_strength', label: copy(language, 'F2', 'F2') },
+            { key: 'f3_volume_liquidity', label: copy(language, 'F3', 'F3') },
+            { key: 'f4_technical_structure', label: copy(language, 'F4', 'F4') },
+            { key: 'f5_volatility_regime', label: copy(language, 'F5', 'F5') },
+            { key: 'f6_catalyst_flow', label: copy(language, 'F6', 'F6') },
+          ].map((f) => {
+            const score = (signal.factor_breakdown as Record<string, number>)[f.key] ?? 0;
+            return (
+              <div key={f.key} className="flex items-center gap-2">
+                <span className="w-5 text-[10px] font-medium text-muted-foreground">{f.label}</span>
+                <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-background/75">
+                  <div
+                    className="h-full rounded-full bg-indigo-400"
+                    style={{ width: `${Math.max(0, Math.min(100, score))}%` }}
+                  />
+                </div>
+                <span className="w-6 text-right text-[10px] data-mono text-foreground/80">{Math.round(score)}</span>
+              </div>
+            );
+          })}
+        </div>
+      ) : null}
+
+      {signal.trade_plan ? (
+        <div className="mt-4 rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-[11px]">
+          <p className="mb-1.5 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">{copy(language, "Trade Plan", "Trade Plan")}</p>
+          <div className="flex flex-wrap gap-x-3 gap-y-1">
+            <span>{copy(language, "Giris:", "Entry:")} {formatPrice(signal.trade_plan.entry)}</span>
+            <span className="text-rose-300">{copy(language, "Stop:", "Stop:")} {formatPrice(signal.trade_plan.stop)}</span>
+            <span className="text-emerald-300">{copy(language, "T1:", "T1:")} {formatPrice(signal.trade_plan.target1)}</span>
+            <span className="text-emerald-300">{copy(language, "T2:", "T2:")} {formatPrice(signal.trade_plan.target2)}</span>
+            <span>{copy(language, "RR:", "RR:")} {signal.trade_plan.rr_ratio.toFixed(1)}</span>
+            <span>{copy(language, "Stop%:", "Stop%:")} {signal.trade_plan.stop_pct.toFixed(1)}%</span>
+          </div>
+        </div>
+      ) : null}
+
+      {signal.position_sizing && signal.position_sizing.shares > 0 ? (
+        <div className="mt-4 rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-[11px]">
+          <p className="mb-1.5 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">{copy(language, "Pozisyon Buyuklugu", "Position Sizing")}</p>
+          <div className="flex flex-wrap gap-x-3 gap-y-1">
+            <span>{copy(language, "Adet:", "Shares:")} {signal.position_sizing.shares}</span>
+            <span>{copy(language, "Pozisyon:", "Position:")} ${signal.position_sizing.position_value.toLocaleString()}</span>
+            <span>{copy(language, "Risk:", "Risk:")} ${signal.position_sizing.dollar_risk.toFixed(0)} ({signal.position_sizing.risk_pct_of_account.toFixed(1)}%)</span>
+            <span className={`rounded px-1.5 py-0.5 text-[10px] font-bold ${
+              signal.position_sizing.kelly_fraction >= 0.25 ? 'bg-emerald-500/20 text-emerald-300' :
+              signal.position_sizing.kelly_fraction >= 0.15 ? 'bg-amber-500/20 text-amber-300' :
+              'bg-rose-500/20 text-rose-300'
+            }`}>
+              {copy(language, "Kelly:", "Kelly:")} {(signal.position_sizing.kelly_fraction * 100).toFixed(0)}%
+            </span>
+          </div>
+        </div>
+      ) : null}
 
       <div className="mt-4 flex flex-wrap items-center gap-3 text-[10px] text-muted-foreground">
         <span>
@@ -1404,6 +1539,36 @@ export default function MidasOpportunitiesTab({
                 </span>
               </div>
 
+              {(signal.setup_type || signal.direction || signal.conviction_tier) ? (
+                <div className="mt-2 flex flex-wrap gap-1.5">
+                  {signal.setup_type ? (
+                    <span className="rounded-full border border-indigo-400/25 bg-indigo-500/10 px-2 py-0.5 text-[10px] font-medium text-indigo-200">
+                      {signal.setup_type}
+                    </span>
+                  ) : null}
+                  {signal.direction ? (
+                    <span className={`rounded-full border px-2 py-0.5 text-[10px] font-medium ${
+                      signal.direction === 'LONG'
+                        ? 'border-emerald-400/25 bg-emerald-500/10 text-emerald-300'
+                        : 'border-rose-400/25 bg-rose-500/10 text-rose-300'
+                    }`}>
+                      {signal.direction === 'LONG' ? copy(language, "↑ LONG", "↑ LONG") : copy(language, "↓ SHORT", "↓ SHORT")}
+                    </span>
+                  ) : null}
+                  {signal.conviction_tier ? (
+                    <span className={`rounded-full border px-2 py-0.5 text-[10px] font-bold ${
+                      signal.conviction_tier === 'A+' ? 'border-emerald-400/30 bg-emerald-500/15 text-emerald-300' :
+                      signal.conviction_tier === 'A' ? 'border-emerald-300/25 bg-emerald-400/10 text-emerald-200' :
+                      signal.conviction_tier === 'B' ? 'border-amber-400/25 bg-amber-500/10 text-amber-300' :
+                      signal.conviction_tier === 'C' ? 'border-orange-400/25 bg-orange-500/10 text-orange-300' :
+                      'border-rose-400/25 bg-rose-500/10 text-rose-300'
+                    }`}>
+                      {signal.conviction_tier}
+                    </span>
+                  ) : null}
+                </div>
+              ) : null}
+
               <div className="mt-3 flex flex-wrap gap-1.5">
                 <span className="rounded-full border border-border bg-background/70 px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
                   Snapshot {signalLabel(signal.signal, language)}
@@ -1449,6 +1614,27 @@ export default function MidasOpportunitiesTab({
                 </div>
               </div>
 
+              {typeof signal.apex_score === 'number' ? (
+                <div className="mt-3">
+                  <div className="mb-1 flex items-center justify-between gap-3 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+                    <span>Apex Score</span>
+                    <span className="data-mono text-foreground/85">{signal.apex_score}/100</span>
+                  </div>
+                  <div className="h-2 overflow-hidden rounded-full bg-border/60">
+                    <div
+                      className={`h-full rounded-full transition-all duration-300 ${
+                        signal.apex_score >= 60
+                          ? 'bg-emerald-400'
+                          : signal.apex_score >= 40
+                          ? 'bg-amber-400'
+                          : 'bg-rose-400'
+                      }`}
+                      style={{ width: `${Math.max(0, Math.min(100, signal.apex_score))}%` }}
+                    />
+                  </div>
+                </div>
+              ) : null}
+
               {signal.live ? (
                 <div className="mt-3 grid grid-cols-4 gap-2">
                   <div className="rounded-lg border border-border/60 bg-background/50 p-2 text-center">
@@ -1474,6 +1660,66 @@ export default function MidasOpportunitiesTab({
                     <p className="data-mono mt-1 text-sm font-semibold text-foreground">
                       {signal.live.volumeRatio.toFixed(2)}x
                     </p>
+                  </div>
+                </div>
+              ) : null}
+
+              {signal.factor_breakdown ? (
+                <div className="mt-3 space-y-1">
+                  <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Factor Breakdown</p>
+                  {[
+                    { key: 'f1_momentum_quality', label: 'F1' },
+                    { key: 'f2_relative_strength', label: 'F2' },
+                    { key: 'f3_volume_liquidity', label: 'F3' },
+                    { key: 'f4_technical_structure', label: 'F4' },
+                    { key: 'f5_volatility_regime', label: 'F5' },
+                    { key: 'f6_catalyst_flow', label: 'F6' },
+                  ].map((f) => {
+                    const score = (signal.factor_breakdown as Record<string, number>)[f.key] ?? 0;
+                    return (
+                      <div key={f.key} className="flex items-center gap-2">
+                        <span className="w-4 text-[10px] font-medium text-muted-foreground">{f.label}</span>
+                        <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-border/60">
+                          <div
+                            className="h-full rounded-full bg-indigo-400"
+                            style={{ width: `${Math.max(0, Math.min(100, score))}%` }}
+                          />
+                        </div>
+                        <span className="w-5 text-right text-[10px] data-mono text-foreground/80">{Math.round(score)}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : null}
+
+              {signal.trade_plan ? (
+                <div className="mt-3 rounded-lg border border-border/60 bg-background/50 px-3 py-2 text-[11px]">
+                  <p className="mb-1 text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Trade Plan</p>
+                  <div className="flex flex-wrap gap-x-2 gap-y-1">
+                    <span>Entry: {formatPrice(signal.trade_plan.entry)}</span>
+                    <span className="text-rose-300">Stop: {formatPrice(signal.trade_plan.stop)}</span>
+                    <span className="text-emerald-300">T1: {formatPrice(signal.trade_plan.target1)}</span>
+                    <span className="text-emerald-300">T2: {formatPrice(signal.trade_plan.target2)}</span>
+                    <span>RR: {signal.trade_plan.rr_ratio.toFixed(1)}</span>
+                    <span>Stop%: {signal.trade_plan.stop_pct.toFixed(1)}%</span>
+                  </div>
+                </div>
+              ) : null}
+
+              {signal.position_sizing && signal.position_sizing.shares > 0 ? (
+                <div className="mt-3 rounded-lg border border-border/60 bg-background/50 px-3 py-2 text-[11px]">
+                  <p className="mb-1 text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Position Sizing</p>
+                  <div className="flex flex-wrap gap-x-2 gap-y-1">
+                    <span>Shares: {signal.position_sizing.shares}</span>
+                    <span>Position: ${signal.position_sizing.position_value.toLocaleString()}</span>
+                    <span>Risk: ${signal.position_sizing.dollar_risk.toFixed(0)} ({signal.position_sizing.risk_pct_of_account.toFixed(1)}%)</span>
+                    <span className={`rounded px-1.5 py-0.5 text-[10px] font-bold ${
+                      signal.position_sizing.kelly_fraction >= 0.25 ? 'bg-emerald-500/20 text-emerald-300' :
+                      signal.position_sizing.kelly_fraction >= 0.15 ? 'bg-amber-500/20 text-amber-300' :
+                      'bg-rose-500/20 text-rose-300'
+                    }`}>
+                      Kelly: {(signal.position_sizing.kelly_fraction * 100).toFixed(0)}%
+                    </span>
                   </div>
                 </div>
               ) : null}

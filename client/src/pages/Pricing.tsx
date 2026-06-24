@@ -9,9 +9,9 @@ export default function Pricing({
   onLanguageChange: (next: AppLanguage) => void;
 }) {
   const items = [
-    "Momentum scanner",
+    copy(language, "Momentum scanner", "Momentum scanner"),
     copy(language, "Earning strategy paneli", "Earning strategy dashboard"),
-    "Pre-earnings stock analysis tabs",
+    copy(language, "Pre-earnings hisse analiz sekmeleri", "Pre-earnings stock analysis tabs"),
     copy(language, "Risk matrisi ve IV crush gorunumu", "Risk matrix and IV crush views"),
     copy(language, "Web erisimi ve support@gistify.pro destegi", "Web access and support via support@gistify.pro"),
   ];
@@ -20,7 +20,7 @@ export default function Pricing({
     <PublicShell
       language={language}
       onLanguageChange={onLanguageChange}
-      eyebrow="Pricing"
+      eyebrow={copy(language, "Fiyatlandirma", "Pricing")}
       title={copy(language, "Tek planli aylik abonelik", "Single monthly subscription")}
       description={copy(
         language,
@@ -33,7 +33,7 @@ export default function Pricing({
       <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
         <section className="rounded-3xl border border-border bg-card/85 p-6 shadow-xl">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-            Gistify Pro
+            {copy(language, "Gistify Pro", "Gistify Pro")}
           </p>
           <div className="mt-3 flex items-end gap-3">
             <span className="text-5xl font-semibold">250</span>

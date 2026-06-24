@@ -393,14 +393,14 @@ function WorkspaceNavigation({
   const items = [
     {
       href: "/app",
-      label: language === "en" ? "Earning Strategy" : "Earning Strategy",
+      label: copy(language, "Earning Strategy", "Earning Strategy"),
       icon: LayoutDashboard,
       active: location === "/app",
       requiresSubscription: true,
     },
     {
       href: "/momentum",
-      label: language === "en" ? "Momentum" : "Momentum",
+      label: copy(language, "Momentum", "Momentum"),
       icon: Radar,
       active:
         location.startsWith("/momentum") || location.startsWith("/scanner"),
@@ -408,35 +408,35 @@ function WorkspaceNavigation({
     },
     {
       href: "/daily-report",
-      label: language === "en" ? "Daily" : "Daily",
+      label: copy(language, "Daily", "Daily"),
       icon: FileText,
       active: location.startsWith("/daily-report"),
       requiresSubscription: true,
     },
     {
       href: "/cpi-ppi",
-      label: language === "en" ? "CPI/PPI" : "CPI/PPI",
+      label: copy(language, "CPI/PPI", "CPI/PPI"),
       icon: Activity,
       active: location.startsWith("/cpi-ppi"),
       requiresSubscription: true,
     },
     {
       href: "/calendar",
-      label: language === "en" ? "Calendar" : "Takvim",
+      label: copy(language, "Takvim", "Calendar"),
       icon: CalendarDays,
       active: location.startsWith("/calendar"),
       requiresSubscription: true,
     },
     {
       href: "/marketflash",
-      label: language === "en" ? "Market Flash" : "Market Flash",
+      label: copy(language, "Market Flash", "Market Flash"),
       icon: Zap,
       active: location.startsWith("/marketflash"),
       requiresSubscription: true,
     },
     {
       href: "/flow",
-      label: language === "en" ? "Flow" : "Flow",
+      label: copy(language, "Flow", "Flow"),
       icon: Layers3,
       active: location.startsWith("/flow") || location.startsWith("/reports"),
       requiresSubscription: false,
@@ -446,7 +446,7 @@ function WorkspaceNavigation({
   if (showAdmin) {
     items.splice(1, 0, {
       href: "/app/admin",
-      label: language === "en" ? "Admin" : "Admin",
+      label: copy(language, "Admin", "Admin"),
       icon: Shield,
       active: location.startsWith("/app/admin"),
       requiresSubscription: true,
@@ -515,26 +515,15 @@ function getWorkspaceSectionLabel(path: string, language: AppLanguage) {
 }
 
 function SiteFooter({ language }: { language: AppLanguage }) {
-  const links =
-    language === "en"
-      ? [
-          { href: "/flow", label: "Flow" },
-          { href: "/reports", label: "Reports" },
-          { href: "/pricing", label: "Pricing" },
-          { href: "/terms", label: "Terms" },
-          { href: "/privacy", label: "Privacy" },
-          { href: "/refund", label: "Refund" },
-          { href: "/pay", label: "Pay" },
-        ]
-      : [
-          { href: "/flow", label: "Flow" },
-          { href: "/reports", label: "Raporlar" },
-          { href: "/pricing", label: "Fiyatlandirma" },
-          { href: "/terms", label: "Kosullar" },
-          { href: "/privacy", label: "Gizlilik" },
-          { href: "/refund", label: "Iade" },
-          { href: "/pay", label: "Odeme" },
-        ];
+  const links = [
+    { href: "/flow", label: copy(language, "Flow", "Flow") },
+    { href: "/reports", label: copy(language, "Raporlar", "Reports") },
+    { href: "/pricing", label: copy(language, "Fiyatlandirma", "Pricing") },
+    { href: "/terms", label: copy(language, "Kosullar", "Terms") },
+    { href: "/privacy", label: copy(language, "Gizlilik", "Privacy") },
+    { href: "/refund", label: copy(language, "Iade", "Refund") },
+    { href: "/pay", label: copy(language, "Odeme", "Pay") },
+  ];
 
   return (
     <footer className="border-t border-border bg-background/95">
@@ -542,12 +531,14 @@ function SiteFooter({ language }: { language: AppLanguage }) {
         <div className="space-y-1">
           <p className="text-sm font-semibold text-foreground">Gistify</p>
           <p className="text-xs text-muted-foreground">
-            {language === "en"
-              ? "Earnings intelligence platform for momentum scanning, pre-earnings analysis and options research."
-              : "Momentum tarama, earnings oncesi analiz ve opsiyon arastirmasi icin earnings intelligence platformu."}
+            {copy(
+              language,
+              "Momentum tarama, earnings oncesi analiz ve opsiyon arastirmasi icin earnings intelligence platformu.",
+              "Earnings intelligence platform for momentum scanning, pre-earnings analysis and options research."
+            )}
           </p>
           <p className="text-xs text-muted-foreground">
-            {language === "en" ? "Support" : "Destek"}: support@gistify.pro
+            {copy(language, "Destek", "Support")}: support@gistify.pro
           </p>
         </div>
 

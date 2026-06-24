@@ -27,7 +27,7 @@ interface FlowTickerPageProps {
 
 export default function FlowTickerPage({
   basePath = "/flow",
-  eyebrow = "Flow",
+  eyebrow = copy(language, "Flow", "Flow"),
   language,
   ticker,
 }: FlowTickerPageProps) {

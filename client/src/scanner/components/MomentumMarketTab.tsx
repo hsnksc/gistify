@@ -13,7 +13,7 @@ import type {
   MomentumReportSource,
   MomentumSectorRow,
 } from "@/lib/momentumReportSource";
-import { copy, useAppLanguage } from "@/lib/i18n";
+import { copy } from "@/lib/i18n";
 import type { AppLanguage } from "@/lib/i18n";
 
 function SimpleMetricCard({
@@ -99,8 +99,7 @@ function DataTable({
   );
 }
 
-function MacroStack({ title, rows }: { title: string; rows: MacroRow[] }) {
-  const language = useAppLanguage();
+function MacroStack({ title, rows, language }: { title: string; rows: MacroRow[]; language: AppLanguage }) {
 
   return (
     <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
@@ -146,12 +145,13 @@ function MoversStack({
   title,
   rows,
   positive,
+  language,
 }: {
   title: string;
   rows: MomentumMoverRow[];
   positive: boolean;
+  language: AppLanguage;
 }) {
-  const language = useAppLanguage();
 
   return (
     <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
@@ -214,8 +214,7 @@ function MoversStack({
   );
 }
 
-function HavenStack({ rows }: { rows: MomentumHavenRow[] }) {
-  const language = useAppLanguage();
+function HavenStack({ rows, language }: { rows: MomentumHavenRow[]; language: AppLanguage }) {
 
   return (
     <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
@@ -414,19 +413,21 @@ export default function MomentumMarketTab({
           title={copy(language, "Guclu Yukselenler", "Strong Gainers")}
           rows={report.gainerRows}
           positive
+          language={language}
         />
         <MoversStack
           title={copy(language, "Zayiflayanlar", "Weakening Names")}
           rows={report.loserRows}
           positive={false}
+          language={language}
         />
-        <HavenStack rows={report.havenRows} />
+        <HavenStack rows={report.havenRows} language={language} />
       </section>
 
       <section className="grid gap-6 xl:grid-cols-3">
-        <MacroStack title={copy(language, "Makro Takvim", "Macro Calendar")} rows={report.rateRows} />
-        <MacroStack title={copy(language, "Buyume / Veri", "Growth / Data")} rows={report.growthRows} />
-        <MacroStack title={copy(language, "Risk / Outlook", "Risk / Outlook")} rows={report.forecastRows} />
+        <MacroStack title={copy(language, "Makro Takvim", "Macro Calendar")} rows={report.rateRows} language={language} />
+        <MacroStack title={copy(language, "Buyume / Veri", "Growth / Data")} rows={report.growthRows} language={language} />
+        <MacroStack title={copy(language, "Risk / Outlook", "Risk / Outlook")} rows={report.forecastRows} language={language} />
       </section>
     </div>
   );

@@ -11,7 +11,7 @@ import {
   parseReportMarkdown,
   type ReportMarkdownBlock,
 } from "@/lib/reportMarkdown";
-import type { AppLanguage } from "@/lib/i18n";
+import { copy, type AppLanguage } from "@/lib/i18n";
 
 interface ResolvedImage {
   src: string;
@@ -24,10 +24,6 @@ interface MarkdownReportRendererProps {
   markdown: string;
   emptyMessage?: string;
   resolveImage?: (src: string, alt: string) => ResolvedImage;
-}
-
-function copy(language: AppLanguage, tr: string, en: string) {
-  return language === "en" ? en : tr;
 }
 
 function renderTable(block: Extract<ReportMarkdownBlock, { type: "table" }>, key: string) {

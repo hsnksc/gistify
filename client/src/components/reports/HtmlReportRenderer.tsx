@@ -11,7 +11,7 @@ import {
   analyzeFlowReportLanguage,
   type FlowReportLanguageInfo,
 } from "@shared/flowLanguage";
-import type { AppLanguage } from "@/lib/i18n";
+import { copy, type AppLanguage } from "@/lib/i18n";
 
 interface HtmlReportRendererProps {
   language?: AppLanguage;
@@ -42,10 +42,6 @@ const MAX_RUNTIME_TRANSLATION_TEXT_LENGTH = 1800;
 const MAX_RUNTIME_TRANSLATION_BATCH_SIZE = 18;
 const MAX_RUNTIME_TRANSLATION_BATCH_CHARS = 12000;
 const runtimeHtmlTranslationCache = new Map<string, string>();
-
-function copy(language: AppLanguage, tr: string, en: string) {
-  return language === "en" ? en : tr;
-}
 
 function normalizeText(value: string) {
   return value.replace(/\s+/g, " ").trim();

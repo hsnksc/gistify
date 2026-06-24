@@ -93,7 +93,7 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
         setScanResponse(response);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Scan failed");
+      setError(err instanceof Error ? err.message : copy(lang, "Tarama basarisiz", "Scan failed"));
     } finally {
       setIsScanning(false);
     }
@@ -215,7 +215,7 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
             </div>
             <p className="text-xs text-muted-foreground">
               {scanProgress.current
-                ? `${scanProgress.current} ${copy(lang, "analiz ediliyor", "is being analyzed")}`
+                ? `${scanProgress.current} ${copy(lang, "analiz ediliyor", "analyzing")}`
                 : copy(lang, "Tarama evreni isleniyor.", "Universe is being scanned.")}
             </p>
           </div>

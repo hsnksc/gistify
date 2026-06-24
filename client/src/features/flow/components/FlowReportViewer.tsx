@@ -65,7 +65,7 @@ export default function FlowReportViewer({
                 </h3>
               </div>
               <span className="rounded-full border border-border bg-background/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                {viewer.spotlight.items.length} key
+                {viewer.spotlight.items.length} {copy(language, "anahtar nokta", "key")}
               </span>
             </div>
 
@@ -131,7 +131,7 @@ export default function FlowReportViewer({
                 </h3>
               </div>
               <span className="rounded-full border border-border bg-background/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                {viewer.galleryFigures.length} figure
+                {viewer.galleryFigures.length} {copy(language, "figure", "figure")}
               </span>
             </div>
 

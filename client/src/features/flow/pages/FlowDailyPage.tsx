@@ -38,7 +38,7 @@ export default function FlowDailyPage({
   return (
     <FlowLayout
       language={language}
-      eyebrow="Daily"
+      eyebrow={copy(language, "Gunluk", "Daily")}
       title={copy(language, "Gunluk Rapor Arsivi", "Daily Report Archive")}
       description={copy(
         language,

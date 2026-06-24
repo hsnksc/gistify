@@ -277,14 +277,14 @@ export function getFlowLanguageBadge(
 
   if (languageInfo.languageMode === "tr") {
     return {
-      label: "TR",
+      label: copy(language, "TR", "TR"),
       toneClassName: "border-emerald-400/30 bg-emerald-500/10 text-emerald-300",
     };
   }
 
   if (languageInfo.languageMode === "en") {
     return {
-      label: "EN",
+      label: copy(language, "EN", "EN"),
       toneClassName: "border-blue-400/30 bg-blue-500/10 text-blue-300",
     };
   }
@@ -524,7 +524,7 @@ export function buildFlowViewerData(
             "Parser ile cikan ticker evreni.",
             "Ticker universe parsed from the source."
           ),
-          label: "Ticker",
+          label: copy(language, "Ticker", "Ticker"),
           tone: "bull",
           value: String(content.tickerUniverse.length),
         },
@@ -534,7 +534,7 @@ export function buildFlowViewerData(
             "Yuklenen gorsel adedi.",
             "Uploaded figure count."
           ),
-          label: "Figure",
+          label: copy(language, "Gorsel", "Figure"),
           tone: "info",
           value: String(content.figureFiles.length),
         },
@@ -551,12 +551,12 @@ export function buildFlowViewerData(
 
   const metaItems: ReportPostItem[] = [
     {
-      label: "Ticker",
+      label: copy(language, "Ticker", "Ticker"),
       tone: "bull",
       value: String(content.tickerUniverse.length),
     },
     {
-      label: "Figure",
+      label: copy(language, "Gorsel", "Figure"),
       tone: "info",
       value: String(content.figureFiles.length),
     },
