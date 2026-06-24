@@ -135,6 +135,14 @@ function walkTextNodes(root: Node, callback: (node: Text) => void) {
   }
 }
 
+type RuntimeTranslationRecord = {
+  value: string;
+  language: AppLanguage;
+};
+
+const TRANSLATABLE_ATTRIBUTES = ["placeholder", "title", "aria-label", "alt"] as const;
+type TranslatableAttribute = (typeof TRANSLATABLE_ATTRIBUTES)[number];
+
 function GoogleMark() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5">
@@ -667,9 +675,18 @@ function App() {
   const [authState, setAuthState] = useState<AuthState>({ status: "loading" });
   const appRootRef = useRef<HTMLDivElement | null>(null);
   const protectedViewRef = useRef<HTMLDivElement | null>(null);
-  const translationOriginalRef = useRef(new WeakMap<Text, string>());
+  const translationOriginalRef = useRef(
+    new WeakMap<Text, RuntimeTranslationRecord>()
+  );
+  const translationAppliedRef = useRef(new WeakMap<Text, string>());
+  const attributeOriginalRef = useRef(
+    new WeakMap<Element, Map<TranslatableAttribute, RuntimeTranslationRecord>>()
+  );
+  const attributeAppliedRef = useRef(
+    new WeakMap<Element, Map<TranslatableAttribute, string>>()
+  );
   const runtimeTranslationCacheRef = useRef(new Map<string, string>());
-  const pendingRuntimeTranslationRef = useRef(new Set<string>());
+  const pendingRuntimeTranslationRef = useRef(new Map<string, { source: AppLanguage; target: AppLanguage }>());
   const runtimeTranslationTimerRef = useRef<number | null>(null);
   const runtimeTranslationInFlightRef = useRef(false);
   const maskOriginalRef = useRef(new WeakMap<Text, string>());
@@ -792,7 +809,10 @@ function App() {
     }
 
     const originalMap = translationOriginalRef.current;
-    const pendingSet = pendingRuntimeTranslationRef.current;
+    const appliedMap = translationAppliedRef.current;
+    const attributeOriginalMap = attributeOriginalRef.current;
+    const attributeAppliedMap = attributeAppliedRef.current;
+    const pendingMap = pendingRuntimeTranslationRef.current;
     let disposed = false;
 
     const clearPendingTimer = () => {
@@ -817,19 +837,19 @@ function App() {
 
     const flushRuntimeTranslations = async () => {
       if (
-        language !== "en" ||
         runtimeTranslationInFlightRef.current ||
-        pendingSet.size === 0 ||
+        pendingMap.size === 0 ||
         disposed
       ) {
         return;
       }
 
       runtimeTranslationInFlightRef.current = true;
-      const batch: string[] = [];
+      const batch: Array<{ text: string; source: AppLanguage; target: AppLanguage }> = [];
       let batchCharCount = 0;
 
-      for (const text of Array.from(pendingSet)) {
+      for (const [cacheKey, direction] of Array.from(pendingMap.entries())) {
+        const [text] = cacheKey.split("\u0000");
         const wouldExceedChars =
           batch.length > 0 &&
           batchCharCount + text.length > MAX_RUNTIME_TRANSLATION_BATCH_CHARS;
@@ -841,46 +861,76 @@ function App() {
           break;
         }
 
-        batch.push(text);
+        batch.push({
+          text,
+          source: direction.source,
+          target: direction.target,
+        });
         batchCharCount += text.length;
+        pendingMap.delete(cacheKey);
       }
 
-      batch.forEach(text => pendingSet.delete(text));
-
       try {
-        const response = await fetch("/api/i18n/translate", {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            source: "tr",
-            target: "en",
-            texts: batch,
-          }),
-        });
+        const groupedBatches = new Map<
+          string,
+          { source: AppLanguage; target: AppLanguage; texts: string[] }
+        >();
 
-        if (response.ok) {
-          const payload = (await response.json()) as {
-            translations?: Record<string, string>;
-          };
-
-          const translations = payload.translations || {};
-          for (const sourceText of batch) {
-            runtimeTranslationCacheRef.current.set(
-              sourceText,
-              translations[sourceText] || sourceText
-            );
+        for (const item of batch) {
+          const key = `${item.source}:${item.target}`;
+          const existing = groupedBatches.get(key);
+          if (existing) {
+            existing.texts.push(item.text);
+          } else {
+            groupedBatches.set(key, {
+              source: item.source,
+              target: item.target,
+              texts: [item.text],
+            });
           }
-        } else {
-          for (const sourceText of batch) {
-            runtimeTranslationCacheRef.current.set(sourceText, sourceText);
+        }
+
+        for (const request of groupedBatches.values()) {
+          const response = await fetch("/api/i18n/translate", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              source: request.source,
+              target: request.target,
+              texts: request.texts,
+            }),
+          });
+
+          if (response.ok) {
+            const payload = (await response.json()) as {
+              translations?: Record<string, string>;
+            };
+
+            const translations = payload.translations || {};
+            for (const sourceText of request.texts) {
+              runtimeTranslationCacheRef.current.set(
+                `${sourceText}\u0000${request.source}\u0000${request.target}`,
+                translations[sourceText] || sourceText
+              );
+            }
+          } else {
+            for (const sourceText of request.texts) {
+              runtimeTranslationCacheRef.current.set(
+                `${sourceText}\u0000${request.source}\u0000${request.target}`,
+                sourceText
+              );
+            }
           }
         }
       } catch {
-        for (const sourceText of batch) {
-          runtimeTranslationCacheRef.current.set(sourceText, sourceText);
+        for (const item of batch) {
+          runtimeTranslationCacheRef.current.set(
+            `${item.text}\u0000${item.source}\u0000${item.target}`,
+            item.text
+          );
         }
       } finally {
         runtimeTranslationInFlightRef.current = false;
@@ -891,16 +941,16 @@ function App() {
       }
 
       walkTextNodes(root, translateNode);
+      translateElementAttributes(root);
 
-      if (pendingSet.size > 0) {
+      if (pendingMap.size > 0) {
         scheduleRuntimeTranslations();
       }
     };
 
     const scheduleRuntimeTranslations = () => {
       if (
-        language !== "en" ||
-        pendingSet.size === 0 ||
+        pendingMap.size === 0 ||
         runtimeTranslationInFlightRef.current ||
         runtimeTranslationTimerRef.current !== null ||
         disposed
@@ -914,14 +964,26 @@ function App() {
       }, 120);
     };
 
-    const resolveEnglishTranslation = (source: string) => {
-      const runtimeValue = runtimeTranslationCacheRef.current.get(source);
+    const resolveRuntimeTranslation = (
+      source: string,
+      sourceLanguage: AppLanguage,
+      targetLanguage: AppLanguage
+    ) => {
+      if (sourceLanguage === targetLanguage) {
+        return source;
+      }
+
+      const cacheKey = `${source}\u0000${sourceLanguage}\u0000${targetLanguage}`;
+      const runtimeValue = runtimeTranslationCacheRef.current.get(cacheKey);
       if (runtimeValue) {
         return runtimeValue;
       }
 
       if (source.length <= MAX_RUNTIME_TRANSLATION_TEXT_LENGTH) {
-        pendingSet.add(source);
+        pendingMap.set(cacheKey, {
+          source: sourceLanguage,
+          target: targetLanguage,
+        });
       }
 
       scheduleRuntimeTranslations();
@@ -938,20 +1000,115 @@ function App() {
         return;
       }
 
-      if (!originalMap.has(node)) {
-        originalMap.set(node, currentValue);
+      const previousOriginal = originalMap.get(node);
+      const previousApplied = appliedMap.get(node);
+      if (
+        !previousOriginal ||
+        (previousApplied !== undefined &&
+          currentValue !== previousApplied &&
+          currentValue !== previousOriginal.value)
+      ) {
+        originalMap.set(node, { value: currentValue, language });
+        appliedMap.delete(node);
       }
 
-      const source = originalMap.get(node) ?? currentValue;
-      const translated =
-        language === "en" ? resolveEnglishTranslation(source) : source;
+      const sourceRecord = originalMap.get(node) ?? {
+        value: currentValue,
+        language,
+      };
+      const translated = resolveRuntimeTranslation(
+        sourceRecord.value,
+        sourceRecord.language,
+        language
+      );
 
       if (node.nodeValue !== translated) {
         node.nodeValue = translated;
       }
+
+      appliedMap.set(node, translated);
+    }
+
+    const shouldSkipElement = (element: Element) =>
+      Boolean(
+        element.closest(
+          "[data-no-translate], script, style, textarea, input, pre, code"
+        )
+      );
+
+    const translateAttribute = (
+      element: Element,
+      attribute: TranslatableAttribute
+    ) => {
+      if (shouldSkipElement(element) || !element.hasAttribute(attribute)) {
+        return;
+      }
+
+      const currentValue = element.getAttribute(attribute) ?? "";
+      if (!currentValue.trim()) {
+        return;
+      }
+
+      const existingAttributes =
+        attributeOriginalMap.get(element) ||
+        new Map<TranslatableAttribute, RuntimeTranslationRecord>();
+      const appliedAttributes =
+        attributeAppliedMap.get(element) ||
+        new Map<TranslatableAttribute, string>();
+      const previousOriginal = existingAttributes.get(attribute);
+      const previousApplied = appliedAttributes.get(attribute);
+
+      if (
+        !previousOriginal ||
+        (previousApplied !== undefined &&
+          currentValue !== previousApplied &&
+          currentValue !== previousOriginal.value)
+      ) {
+        existingAttributes.set(attribute, { value: currentValue, language });
+        appliedAttributes.delete(attribute);
+      }
+
+      attributeOriginalMap.set(element, existingAttributes);
+      attributeAppliedMap.set(element, appliedAttributes);
+
+      const sourceRecord = existingAttributes.get(attribute) ?? {
+        value: currentValue,
+        language,
+      };
+      const translated = resolveRuntimeTranslation(
+        sourceRecord.value,
+        sourceRecord.language,
+        language
+      );
+
+      if (element.getAttribute(attribute) !== translated) {
+        element.setAttribute(attribute, translated);
+      }
+
+      appliedAttributes.set(attribute, translated);
+    };
+
+    function translateElementAttributes(rootNode: Node) {
+      if (rootNode.nodeType === Node.ELEMENT_NODE) {
+        const element = rootNode as Element;
+        TRANSLATABLE_ATTRIBUTES.forEach(attribute =>
+          translateAttribute(element, attribute)
+        );
+      }
+
+      if ("querySelectorAll" in rootNode) {
+        (rootNode as ParentNode)
+          .querySelectorAll("[placeholder], [title], [aria-label], img[alt]")
+          .forEach(element => {
+            TRANSLATABLE_ATTRIBUTES.forEach(attribute =>
+              translateAttribute(element, attribute)
+            );
+          });
+      }
     }
 
     walkTextNodes(root, translateNode);
+    translateElementAttributes(root);
     scheduleRuntimeTranslations();
 
     const observer = new MutationObserver(mutations => {
@@ -971,6 +1128,7 @@ function App() {
           }
 
           walkTextNodes(addedNode, translateNode);
+          translateElementAttributes(addedNode);
         }
       }
 
