@@ -633,6 +633,149 @@ function MarketOverviewStrip({
   );
 }
 
+function FlowMetricCard({
+  icon: Icon,
+  label,
+  value,
+  tone,
+}: {
+  icon: typeof Activity;
+  label: string;
+  value: number;
+  tone: "positive" | "neutral" | "negative" | "shift";
+}) {
+  const toneClass =
+    tone === "positive"
+      ? "border-emerald-500/18 bg-[linear-gradient(180deg,rgba(16,185,129,0.14),rgba(6,78,59,0.18))] text-emerald-100"
+      : tone === "negative"
+        ? "border-rose-500/18 bg-[linear-gradient(180deg,rgba(244,63,94,0.14),rgba(76,5,25,0.18))] text-rose-100"
+        : tone === "shift"
+          ? "border-indigo-500/18 bg-[linear-gradient(180deg,rgba(99,102,241,0.14),rgba(30,27,75,0.18))] text-indigo-100"
+          : "border-amber-500/18 bg-[linear-gradient(180deg,rgba(245,158,11,0.14),rgba(120,53,15,0.18))] text-amber-100";
+  const iconClass =
+    tone === "positive"
+      ? "text-emerald-300"
+      : tone === "negative"
+        ? "text-rose-300"
+        : tone === "shift"
+          ? "text-indigo-200"
+          : "text-amber-300";
+
+  return (
+    <div className={`rounded-[1rem] border p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)] ${toneClass}`}>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="text-[9px] font-semibold uppercase tracking-[0.16em] opacity-80">
+            {label}
+          </p>
+          <p className="heading-condensed mt-1 text-[1.9rem] leading-none">
+            {value}
+          </p>
+        </div>
+        <div className="rounded-full border border-white/10 bg-background/30 p-2">
+          <Icon className={`size-3.5 ${iconClass}`} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function HeroInsightCard({
+  icon: Icon,
+  label,
+  symbol,
+  detail,
+  description,
+  tone,
+  onClick,
+}: {
+  icon: typeof Activity;
+  label: string;
+  symbol: string;
+  detail: string;
+  description: string;
+  tone: "positive" | "neutral" | "negative" | "shift";
+  onClick: () => void;
+}) {
+  const toneClass =
+    tone === "positive"
+      ? "border-emerald-500/20 bg-[linear-gradient(180deg,rgba(16,185,129,0.10),rgba(6,78,59,0.24))] text-emerald-50 hover:border-emerald-400/28"
+      : tone === "negative"
+        ? "border-rose-500/20 bg-[linear-gradient(180deg,rgba(244,63,94,0.10),rgba(76,5,25,0.24))] text-rose-50 hover:border-rose-400/28"
+        : tone === "shift"
+          ? "border-indigo-500/20 bg-[linear-gradient(180deg,rgba(99,102,241,0.10),rgba(30,27,75,0.24))] text-indigo-50 hover:border-indigo-400/28"
+          : "border-amber-500/20 bg-[linear-gradient(180deg,rgba(245,158,11,0.10),rgba(120,53,15,0.24))] text-amber-50 hover:border-amber-400/28";
+  const accentClass =
+    tone === "positive"
+      ? "from-emerald-300 via-emerald-400 to-teal-300"
+      : tone === "negative"
+        ? "from-rose-300 via-rose-400 to-orange-300"
+        : tone === "shift"
+          ? "from-indigo-200 via-indigo-300 to-sky-300"
+          : "from-amber-200 via-amber-300 to-yellow-200";
+  const labelClass =
+    tone === "positive"
+      ? "text-emerald-300/85"
+      : tone === "negative"
+        ? "text-rose-300/85"
+        : tone === "shift"
+          ? "text-indigo-200/85"
+          : "text-amber-300/85";
+  const detailClass =
+    tone === "positive"
+      ? "text-emerald-200"
+      : tone === "negative"
+        ? "text-rose-200"
+        : tone === "shift"
+          ? "text-indigo-100"
+          : "text-amber-100";
+  const glowClass =
+    tone === "positive"
+      ? "bg-emerald-400/16"
+      : tone === "negative"
+        ? "bg-rose-400/16"
+        : tone === "shift"
+          ? "bg-indigo-400/16"
+          : "bg-amber-400/16";
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`group relative min-h-[128px] overflow-hidden rounded-[1.1rem] border p-3.5 text-left transition-all duration-200 hover:-translate-y-0.5 hover:bg-background/20 ${toneClass}`}
+    >
+      <div className={`absolute inset-x-0 top-0 h-px bg-gradient-to-r ${accentClass}`} />
+      <div className={`absolute -right-6 -top-8 h-20 w-20 rounded-full blur-2xl ${glowClass}`} />
+
+      <div className="relative flex h-full flex-col">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <div className="rounded-full border border-white/10 bg-background/25 p-1.5">
+              <Icon className={`size-3.5 ${labelClass}`} />
+            </div>
+            <p className={`text-[9px] font-semibold uppercase tracking-[0.18em] ${labelClass}`}>
+              {label}
+            </p>
+          </div>
+          <span className={`data-mono text-[12px] font-semibold ${detailClass}`}>
+            {detail}
+          </span>
+        </div>
+
+        <div className="mt-3 flex items-end justify-between gap-3">
+          <h4 className="heading-condensed text-[2rem] leading-none text-foreground">
+            {symbol}
+          </h4>
+        </div>
+
+        <p className="mt-3 text-[13px] leading-6 text-foreground/84">
+          {description}
+        </p>
+      </div>
+    </button>
+  );
+}
+
 export default function MomentumFlowSurface({
   language = "tr",
 }: {
@@ -922,108 +1065,130 @@ export default function MomentumFlowSurface({
         {error ? <div className="mt-4 rounded-xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">{error}</div> : null}
         {liveError ? <div className="mt-4 rounded-xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">{liveError}</div> : null}
 
-        <div className="mt-5 grid gap-4 xl:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
-          <div className="rounded-[1.35rem] border border-border bg-background/38 p-4">
+        <div className="mt-5 grid gap-3 xl:grid-cols-[minmax(0,1.2fr)_minmax(300px,0.8fr)]">
+          <div className="rounded-[1.2rem] border border-border bg-background/38 p-3.5">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">{copy(language, "Akis haritasi", "Flow map")}</p>
-                <p className="mt-1 text-sm text-foreground/90">{balanceDescription}</p>
+                <p className="mt-1 text-[13px] leading-6 text-foreground/90">{balanceDescription}</p>
               </div>
-              <div className="rounded-full border border-border bg-background/60 px-3 py-1 text-[11px] text-muted-foreground">
+              <div className="rounded-full border border-border bg-background/60 px-2.5 py-1 text-[10px] text-muted-foreground">
                 {copy(language, "Mod", "Mode")}: <span className="data-mono">{data.mode}</span>
               </div>
             </div>
 
-            <div className="mt-4 overflow-hidden rounded-full border border-border bg-background/70">
-              <div className="flex h-3 w-full">
+            <div className="mt-3 overflow-hidden rounded-full border border-border bg-background/70">
+              <div className="flex h-2.5 w-full">
                 <div className="bg-gradient-to-r from-emerald-500 to-teal-400" style={{ width: `${positiveRatio}%` }} />
                 <div className="bg-gradient-to-r from-amber-400 to-yellow-300" style={{ width: `${neutralRatio}%` }} />
                 <div className="bg-gradient-to-r from-rose-500 to-orange-400" style={{ width: `${negativeRatio}%` }} />
               </div>
             </div>
 
-            <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-              <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-3">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-300/80">{copy(language, "Pozitif", "Positive")}</p>
-                <p className="heading-condensed mt-1 text-2xl text-emerald-100">{positiveCount}</p>
-              </div>
-              <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-3">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-amber-300/80">{copy(language, "Notr", "Neutral")}</p>
-                <p className="heading-condensed mt-1 text-2xl text-amber-100">{neutralCount}</p>
-              </div>
-              <div className="rounded-xl border border-rose-500/20 bg-rose-500/10 p-3">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-rose-300/80">{copy(language, "Negatif", "Negative")}</p>
-                <p className="heading-condensed mt-1 text-2xl text-rose-100">{negativeCount}</p>
-              </div>
-              <div className="rounded-xl border border-indigo-500/20 bg-indigo-500/10 p-3">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-indigo-200">{copy(language, "Kaymalar", "Shifts")}</p>
-                <p className="heading-condensed mt-1 text-2xl text-indigo-100">{orderedChangedSignals.length}</p>
-              </div>
+            <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+              <FlowMetricCard
+                icon={TrendingUp}
+                label={copy(language, "Pozitif", "Positive")}
+                value={positiveCount}
+                tone="positive"
+              />
+              <FlowMetricCard
+                icon={LineChart}
+                label={copy(language, "Notr", "Neutral")}
+                value={neutralCount}
+                tone="neutral"
+              />
+              <FlowMetricCard
+                icon={ShieldAlert}
+                label={copy(language, "Negatif", "Negative")}
+                value={negativeCount}
+                tone="negative"
+              />
+              <FlowMetricCard
+                icon={ArrowRightLeft}
+                label={copy(language, "Kaymalar", "Shifts")}
+                value={orderedChangedSignals.length}
+                tone="shift"
+              />
             </div>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2">
-            <button type="button" onClick={() => setSurfaceMode("positive")} className="min-h-[152px] rounded-[1.25rem] border border-emerald-500/22 bg-emerald-500/[0.08] p-4 text-left transition-colors hover:bg-emerald-500/[0.12]">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-emerald-300/80">{copy(language, "Oncu uzun taraf", "Lead long setup")}</p>
-              {strongestPositive ? (
-                <>
-                  <div className="mt-2 flex items-center justify-between gap-3">
-                    <h4 className="heading-condensed text-2xl text-emerald-100">{strongestPositive.symbol}</h4>
-                    <span className="data-mono text-sm text-emerald-200">{formatPct(strongestPositive.dayChange)}</span>
-                  </div>
-                  <p className="mt-2 text-sm leading-6 text-emerald-50/88">{strongestPositive.headline}</p>
-                </>
-              ) : <p className="mt-2 text-sm text-emerald-50/80">{copy(language, "Su an net bir lider yok.", "There is no clear leader right now.")}</p>}
-            </button>
+          <div className="grid gap-2.5 sm:grid-cols-2">
+            <HeroInsightCard
+              icon={TrendingUp}
+              label={copy(language, "Oncu uzun taraf", "Lead long setup")}
+              symbol={strongestPositive?.symbol || "--"}
+              detail={
+                strongestPositive
+                  ? formatPct(strongestPositive.dayChange)
+                  : copy(language, "Beklemede", "Waiting")
+              }
+              description={
+                strongestPositive?.headline ||
+                copy(language, "Su an net bir lider yok.", "There is no clear leader right now.")
+              }
+              tone="positive"
+              onClick={() => setSurfaceMode("positive")}
+            />
 
-            <button type="button" onClick={() => setSurfaceMode("neutral")} className="min-h-[152px] rounded-[1.25rem] border border-amber-500/22 bg-amber-500/[0.08] p-4 text-left transition-colors hover:bg-amber-500/[0.12]">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-amber-300/80">{copy(language, "Gecis radari", "Transition radar")}</p>
-              {strongestNeutral ? (
-                <>
-                  <div className="mt-2 flex items-center justify-between gap-3">
-                    <h4 className="heading-condensed text-2xl text-amber-100">{strongestNeutral.symbol}</h4>
-                    <span className={`data-mono text-sm ${pctClass(strongestNeutral.dayChange)}`}>{formatPct(strongestNeutral.dayChange)}</span>
-                  </div>
-                  <p className="mt-2 text-sm leading-6 text-amber-50/88">{strongestNeutral.headline}</p>
-                </>
-              ) : <p className="mt-2 text-sm text-amber-50/80">{copy(language, "Su an on plana cikan bir neutral gecis yok.", "There is no neutral transition name standing out right now.")}</p>}
-            </button>
+            <HeroInsightCard
+              icon={LineChart}
+              label={copy(language, "Gecis radari", "Transition radar")}
+              symbol={strongestNeutral?.symbol || "--"}
+              detail={
+                strongestNeutral
+                  ? formatPct(strongestNeutral.dayChange)
+                  : copy(language, "Beklemede", "Waiting")
+              }
+              description={
+                strongestNeutral?.headline ||
+                copy(language, "Su an on plana cikan bir neutral gecis yok.", "There is no neutral transition name standing out right now.")
+              }
+              tone="neutral"
+              onClick={() => setSurfaceMode("neutral")}
+            />
 
-            <button type="button" onClick={() => setSurfaceMode("negative")} className="min-h-[152px] rounded-[1.25rem] border border-rose-500/22 bg-rose-500/[0.08] p-4 text-left transition-colors hover:bg-rose-500/[0.12]">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-rose-300/80">{copy(language, "Oncu kisa taraf", "Lead short setup")}</p>
-              {strongestNegative ? (
-                <>
-                  <div className="mt-2 flex items-center justify-between gap-3">
-                    <h4 className="heading-condensed text-2xl text-rose-100">{strongestNegative.symbol}</h4>
-                    <span className="data-mono text-sm text-rose-200">{formatPct(strongestNegative.dayChange)}</span>
-                  </div>
-                  <p className="mt-2 text-sm leading-6 text-rose-50/88">{strongestNegative.headline}</p>
-                </>
-              ) : <p className="mt-2 text-sm text-rose-50/80">{copy(language, "Su an net bir bozulma lideri yok.", "There is no clear breakdown leader right now.")}</p>}
-            </button>
+            <HeroInsightCard
+              icon={ShieldAlert}
+              label={copy(language, "Oncu kisa taraf", "Lead short setup")}
+              symbol={strongestNegative?.symbol || "--"}
+              detail={
+                strongestNegative
+                  ? formatPct(strongestNegative.dayChange)
+                  : copy(language, "Beklemede", "Waiting")
+              }
+              description={
+                strongestNegative?.headline ||
+                copy(language, "Su an net bir bozulma lideri yok.", "There is no clear breakdown leader right now.")
+              }
+              tone="negative"
+              onClick={() => setSurfaceMode("negative")}
+            />
 
-            <button type="button" onClick={() => setSurfaceMode(featuredShift ? "shifts" : "overview")} className="min-h-[152px] rounded-[1.25rem] border border-indigo-500/22 bg-indigo-500/[0.08] p-4 text-left transition-colors hover:bg-indigo-500/[0.12]">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-indigo-200">
-                {featuredShift ? copy(language, "Canli revizyon", "Live revision") : copy(language, "Hizli hareket", "Fast move")}
-              </p>
-              {featuredShift ? (
-                <>
-                  <div className="mt-2 flex items-center justify-between gap-3">
-                    <h4 className="heading-condensed text-2xl text-indigo-100">{featuredShift.symbol}</h4>
-                    <span className="text-[11px] text-indigo-100">{signalLabel(featuredShift.signal, language)} - {signalLabel(featuredShift.resolvedSignal, language)}</span>
-                  </div>
-                  <p className="mt-2 text-sm leading-6 text-indigo-50/88">{featuredShift.headline}</p>
-                </>
-              ) : biggestMover ? (
-                <>
-                  <div className="mt-2 flex items-center justify-between gap-3">
-                    <h4 className="heading-condensed text-2xl text-indigo-100">{biggestMover.symbol}</h4>
-                    <span className={`data-mono text-sm ${pctClass(biggestMover.dayChange)}`}>{formatPct(biggestMover.dayChange)}</span>
-                  </div>
-                  <p className="mt-2 text-sm leading-6 text-indigo-50/88">{copy(language, "Canli sinyal kaymasi yoksa gun ici en sert hareketi burada sabitliyoruz.", "When there is no live signal shift, we pin the sharpest intraday move here.")}</p>
-                </>
-              ) : null}
-            </button>
+            <HeroInsightCard
+              icon={featuredShift ? ArrowRightLeft : Zap}
+              label={
+                featuredShift
+                  ? copy(language, "Canli revizyon", "Live revision")
+                  : copy(language, "Hizli hareket", "Fast move")
+              }
+              symbol={featuredShift?.symbol || biggestMover?.symbol || "--"}
+              detail={
+                featuredShift
+                  ? `${signalLabel(featuredShift.signal, language)} -> ${signalLabel(featuredShift.resolvedSignal, language)}`
+                  : biggestMover
+                    ? formatPct(biggestMover.dayChange)
+                    : copy(language, "Beklemede", "Waiting")
+              }
+              description={
+                featuredShift?.headline ||
+                (biggestMover
+                  ? copy(language, "Canli sinyal kaymasi yoksa gun ici en sert hareketi burada sabitliyoruz.", "When there is no live signal shift, we pin the sharpest intraday move here.")
+                  : copy(language, "Henuz one cikan bir hizli hareket yok.", "There is no standout fast move yet."))
+              }
+              tone="shift"
+              onClick={() => setSurfaceMode(featuredShift ? "shifts" : "overview")}
+            />
           </div>
         </div>
       </div>
