@@ -5,6 +5,7 @@ import {
   MoreHorizontalIcon,
 } from "lucide-react";
 
+import { copy, useAppLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 
@@ -69,15 +70,17 @@ function PaginationPrevious({
   className,
   ...props
 }: React.ComponentProps<typeof PaginationLink>) {
+  const language = useAppLanguage();
+
   return (
     <PaginationLink
-      aria-label="Go to previous page"
+      aria-label={copy(language, "Onceki sayfaya git", "Go to previous page")}
       size="default"
       className={cn("gap-1 px-2.5 sm:pl-2.5", className)}
       {...props}
     >
       <ChevronLeftIcon />
-      <span className="hidden sm:block">Previous</span>
+      <span className="hidden sm:block">{copy(language, "Onceki", "Previous")}</span>
     </PaginationLink>
   );
 }
@@ -86,14 +89,16 @@ function PaginationNext({
   className,
   ...props
 }: React.ComponentProps<typeof PaginationLink>) {
+  const language = useAppLanguage();
+
   return (
     <PaginationLink
-      aria-label="Go to next page"
+      aria-label={copy(language, "Sonraki sayfaya git", "Go to next page")}
       size="default"
       className={cn("gap-1 px-2.5 sm:pr-2.5", className)}
       {...props}
     >
-      <span className="hidden sm:block">Next</span>
+      <span className="hidden sm:block">{copy(language, "Sonraki", "Next")}</span>
       <ChevronRightIcon />
     </PaginationLink>
   );
@@ -103,6 +108,8 @@ function PaginationEllipsis({
   className,
   ...props
 }: React.ComponentProps<"span">) {
+  const language = useAppLanguage();
+
   return (
     <span
       aria-hidden
@@ -111,7 +118,9 @@ function PaginationEllipsis({
       {...props}
     >
       <MoreHorizontalIcon className="size-4" />
-      <span className="sr-only">More pages</span>
+      <span className="sr-only">
+        {copy(language, "Daha fazla sayfa", "More pages")}
+      </span>
     </span>
   );
 }

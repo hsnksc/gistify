@@ -32,14 +32,18 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
           overlayClassName="bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.18),transparent_32%),radial-gradient(circle_at_bottom_left,rgba(244,63,94,0.14),transparent_28%),radial-gradient(circle_at_center,rgba(59,130,246,0.12),transparent_40%)]"
           badges={
             <>
-              <span className="badge-strong">Live Midas Feed</span>
+              <span className="badge-strong">
+                {copy(language, "Canli Midas Akisi", "Live Midas Feed")}
+              </span>
               <span className="badge-warning">
                 {copy(language, "Pozitif, neutral ve negatif akis", "Positive, neutral, and negative flow")}
               </span>
-              <span className="badge-danger">Kimi pipeline sync</span>
+              <span className="badge-danger">
+                {copy(language, "Kimi pipeline senkronu", "Kimi pipeline sync")}
+              </span>
             </>
           }
-          eyebrow="Momentum Signal Workspace"
+          eyebrow={copy(language, "Momentum Sinyal Workspace", "Momentum Signal Workspace")}
           title={copy(
             language,
             "Momentum artik rapor degil akistir",
@@ -66,7 +70,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
                 onClick={() => setLocation("/daily-report")}
               >
                 <Activity className="size-4" />
-                Daily
+                {copy(language, "Gunluk", "Daily")}
               </Button>
             </>
           }

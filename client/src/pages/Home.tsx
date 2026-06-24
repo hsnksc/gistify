@@ -551,13 +551,15 @@ export default function Home({ language }: { language: AppLanguage }) {
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Current snapshot
+                      {copy(language, "Guncel snapshot", "Current snapshot")}
                     </p>
                     <h3 className="mt-2 heading-condensed text-xl text-foreground">
                       {selectedSummary?.reportDateLabel || "-"}
                     </h3>
                   </div>
-                  <span className="badge-strong">live index</span>
+                  <span className="badge-strong">
+                    {copy(language, "canli endeks", "live index")}
+                  </span>
                 </div>
 
                 {hasReports ? (

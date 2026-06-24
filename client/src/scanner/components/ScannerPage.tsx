@@ -319,7 +319,9 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
                           {signalLabel(stock.signal)}
                         </span>
                         {stock.rsiWarning ? (
-                          <span className="ml-2 text-[9px] font-medium text-red-400">RED</span>
+                          <span className="ml-2 text-[9px] font-medium text-red-400">
+                            {copy(lang, "KIRMIZI", "RED")}
+                          </span>
                         ) : null}
                       </td>
                       <td className="px-3 py-3 text-sm text-foreground">${stock.currentPrice.toFixed(2)}</td>

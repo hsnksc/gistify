@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef } from "react";
 import type { StrategyCalendarItem } from "@/lib/earningStrategyData";
+import { copy, useAppLanguage } from "@/lib/i18n";
 import {
   riskConfig,
   signalConfig,
@@ -30,6 +31,7 @@ export default function StrategyPlaybookTab({
   reportWindow,
   analysisDateLabel,
 }: Props) {
+  const language = useAppLanguage();
   const hasInitialSelection = useRef(false);
   const entries = useMemo(() => {
     const optionMap = new Map(strategies.map(strategy => [strategy.ticker, strategy]));
@@ -61,15 +63,17 @@ export default function StrategyPlaybookTab({
       <div className="p-6">
         <section className="rounded-none border border-border bg-card/80 p-6">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300">
-            Published Data Bekleniyor
+            {copy(language, "Published data bekleniyor", "Waiting for published data")}
           </p>
           <h1 className="mt-3 heading-condensed text-3xl text-foreground">
-            Gosterilecek earning benchmark verisi yok
+            {copy(language, "Gosterilecek earning benchmark verisi yok", "No earning benchmark data to display")}
           </h1>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Bu ekran artik static seed veya uydurma fallback gostermiyor. Admin
-            workspace uzerinden gercek weekly report publish edilince benchmark
-            burada gorunur.
+            {copy(
+              language,
+              "Bu ekran artik static seed veya uydurma fallback gostermiyor. Admin workspace uzerinden gercek weekly report publish edilince benchmark burada gorunur.",
+              "This screen no longer shows static seeds or fabricated fallbacks. The benchmark appears here once a real weekly report is published from the admin workspace."
+            )}
           </p>
         </section>
       </div>
@@ -82,39 +86,41 @@ export default function StrategyPlaybookTab({
         <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
           <div className="space-y-2">
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-              Unified Earnings Playbook
+              {copy(language, "Birlesik Earnings Playbook", "Unified Earnings Playbook")}
             </p>
             <h1 className="heading-condensed text-3xl leading-none text-foreground md:text-4xl">
-              Hisse hisse,
+              {copy(language, "Hisse hisse,", "Stock by stock,")}
               <br />
-              earning tarihine gore akıs
+              {copy(language, "earning tarihine gore akis", "flow by earnings date")}
             </h1>
             <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
-              Tum coverage tek formatta birlestirildi. Her kart, secili hissenin
-              momentum profilini, tezini, risklerini ve opsiyon planini ayni
-              yerde toplar.
+              {copy(
+                language,
+                "Tum coverage tek formatta birlestirildi. Her kart, secili hissenin momentum profilini, tezini, risklerini ve opsiyon planini ayni yerde toplar.",
+                "All coverage is merged into a single format. Each card gathers the selected stock's momentum profile, thesis, risks, and options plan in one place."
+              )}
             </p>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-3 xl:min-w-[460px]">
             <div className="rounded-none border border-border bg-background/50 p-3">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                Coverage
+                {copy(language, "Coverage", "Coverage")}
               </p>
               <p className="mt-2 data-mono text-lg font-bold text-foreground">
-                {stocks.length} hisse
+                {stocks.length} {copy(language, "hisse", "stocks")}
               </p>
               <p className="mt-1 text-xs text-muted-foreground">{reportWindow}</p>
             </div>
             <div className="rounded-none border border-border bg-background/50 p-3">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                Analysis
+                {copy(language, "Analysis", "Analysis")}
               </p>
               <p className="mt-2 data-mono text-lg font-bold text-foreground">
                 {analysisDateLabel}
               </p>
               <p className="mt-1 text-xs text-muted-foreground">
-                Son toplu strateji guncellemesi
+                {copy(language, "Son toplu strateji guncellemesi", "Latest batch strategy refresh")}
               </p>
             </div>
             <div className="rounded-none border border-border bg-background/50 p-3">
@@ -122,10 +128,10 @@ export default function StrategyPlaybookTab({
                 Flow
               </p>
               <p className="mt-2 data-mono text-lg font-bold text-emerald-300">
-                Tarih sirali
+                {copy(language, "Tarih sirali", "Date ranked")}
               </p>
               <p className="mt-1 text-xs text-muted-foreground">
-                En yakin event en ustte kalir
+                {copy(language, "En yakin event en ustte kalir", "The nearest event stays on top")}
               </p>
             </div>
           </div>
@@ -136,7 +142,7 @@ export default function StrategyPlaybookTab({
         <div className="flex items-center gap-2">
           <div className="h-4 w-1" style={{ background: "oklch(0.78 0.18 160)" }} />
           <h2 className="heading-condensed text-base text-foreground">
-            Hisse Atlama Menusu
+            {copy(language, "Hisse Atlama Menusu", "Stock Jump Menu")}
           </h2>
         </div>
         <div className="flex gap-2 overflow-x-auto pb-1">
@@ -221,31 +227,37 @@ export default function StrategyPlaybookTab({
                   {[
                     {
                       label: "Momentum",
+                      labelEn: "Momentum",
                       value: String(stock.momentumScore),
                       color: "text-emerald-300",
                     },
                     {
                       label: "Beat ihtimali",
+                      labelEn: "Beat probability",
                       value: `%${stock.earningsBeatProbability}`,
                       color: "text-foreground",
                     },
                     {
                       label: "IV crush",
+                      labelEn: "IV crush",
                       value: option ? `-%${option.expectedIVCrush}` : "-",
                       color: "text-amber-300",
                     },
                     {
                       label: "Implied move",
+                      labelEn: "Implied move",
                       value: `±%${stock.impliedMove}`,
                       color: "text-foreground",
                     },
                     {
                       label: "Target",
+                      labelEn: "Target",
                       value: option ? `%${option.targetProfit}` : "-",
                       color: "text-emerald-300",
                     },
                     {
                       label: "Max loss",
+                      labelEn: "Max loss",
                       value: option ? `-%${option.maxLoss}` : "-",
                       color: "text-red-300",
                     },
@@ -255,7 +267,7 @@ export default function StrategyPlaybookTab({
                       className="rounded-none border border-border bg-background/50 p-3"
                     >
                       <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                        {metric.label}
+                        {copy(language, metric.label, metric.labelEn)}
                       </p>
                       <p className={`mt-2 data-mono text-lg font-bold ${metric.color}`}>
                         {metric.value}
@@ -270,22 +282,22 @@ export default function StrategyPlaybookTab({
                   <div className="mb-3 flex items-center gap-2">
                     <div className="h-4 w-1" style={{ background: "oklch(0.78 0.18 160)" }} />
                     <h4 className="heading-condensed text-sm text-foreground">
-                      Hisse Gorunumu
+                      {copy(language, "Hisse Gorunumu", "Stock View")}
                     </h4>
                   </div>
                   <div className="space-y-2 text-sm">
                     {[
-                      ["Earnings tarihi", stock.earningsDate],
-                      ["6A performans", `${stock.priceChange6M > 0 ? "+" : ""}${stock.priceChange6M}%`],
-                      ["1A performans", `${stock.priceChange1M > 0 ? "+" : ""}${stock.priceChange1M}%`],
+                      [copy(language, "Earnings tarihi", "Earnings date"), stock.earningsDate],
+                      [copy(language, "6A performans", "6M performance"), `${stock.priceChange6M > 0 ? "+" : ""}${stock.priceChange6M}%`],
+                      [copy(language, "1A performans", "1M performance"), `${stock.priceChange1M > 0 ? "+" : ""}${stock.priceChange1M}%`],
                       ["RSI 14", String(stock.rsi14)],
                       ["Current IV", option ? String(option.currentIV) : "-"],
                       ["Historical IV", option ? String(option.historicalIV) : "-"],
-                      ["Tarihsel move", option ? `%${option.lastEarningsMove}` : "-"],
-                      ["Risk seviyesi", stockRisk.label],
+                      [copy(language, "Tarihsel move", "Historical move"), option ? `%${option.lastEarningsMove}` : "-"],
+                      [copy(language, "Risk seviyesi", "Risk level"), stockRisk.label],
                     ].map(([label, value]) => (
                       <div
-                        key={label}
+                        key={String(label)}
                         className="flex items-center justify-between gap-3 border-b border-border/60 py-1.5"
                       >
                         <span className="text-muted-foreground">{label}</span>
@@ -301,7 +313,7 @@ export default function StrategyPlaybookTab({
                   <div className="mb-3 flex items-center gap-2">
                     <div className="h-4 w-1" style={{ background: "oklch(0.75 0.15 75)" }} />
                     <h4 className="heading-condensed text-sm text-foreground">
-                      Opsiyon Oyun Plani
+                      {copy(language, "Opsiyon Oyun Plani", "Options Game Plan")}
                     </h4>
                   </div>
 
@@ -309,11 +321,11 @@ export default function StrategyPlaybookTab({
                     <div className="space-y-3">
                       <div className="flex flex-wrap items-center gap-2">
                         <span className={`border px-2.5 py-1 text-xs font-bold ${directionalColor}`}>
-                          Yon: {option.directionalBias}
+                          {copy(language, "Yon", "Bias")}: {option.directionalBias}
                         </span>
                         {optionRisk ? (
                           <span className={`data-mono text-xs font-bold ${optionRisk.textClass}`}>
-                            Risk: {optionRisk.label}
+                            {copy(language, "Risk", "Risk")}: {optionRisk.label}
                           </span>
                         ) : null}
                       </div>
@@ -325,23 +337,23 @@ export default function StrategyPlaybookTab({
                       <div className="grid gap-3 md:grid-cols-2">
                         <div className="rounded-none border border-border bg-card/70 p-3">
                           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                            Call setup
+                            {copy(language, "Call setup", "Call setup")}
                           </p>
                           <div className="mt-2 space-y-1.5 text-sm">
                             <div className="flex items-center justify-between">
-                              <span className="text-muted-foreground">Buy</span>
+                              <span className="text-muted-foreground">{copy(language, "Al", "Buy")}</span>
                               <span className="data-mono text-xs font-semibold text-foreground">
                                 ${option.callPremiumBuy.toFixed(2)}
                               </span>
                             </div>
                             <div className="flex items-center justify-between">
-                              <span className="text-muted-foreground">Sell</span>
+                              <span className="text-muted-foreground">{copy(language, "Sat", "Sell")}</span>
                               <span className="data-mono text-xs font-semibold text-foreground">
                                 ${option.callPremiumSell.toFixed(2)}
                               </span>
                             </div>
                             <div className="flex items-center justify-between">
-                              <span className="text-muted-foreground">Gain</span>
+                              <span className="text-muted-foreground">{copy(language, "Getiri", "Gain")}</span>
                               <span className="data-mono text-xs font-semibold text-emerald-300">
                                 +%{option.callGainFromIV}
                               </span>
@@ -351,23 +363,23 @@ export default function StrategyPlaybookTab({
 
                         <div className="rounded-none border border-border bg-card/70 p-3">
                           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                            Put setup
+                            {copy(language, "Put setup", "Put setup")}
                           </p>
                           <div className="mt-2 space-y-1.5 text-sm">
                             <div className="flex items-center justify-between">
-                              <span className="text-muted-foreground">Buy</span>
+                              <span className="text-muted-foreground">{copy(language, "Al", "Buy")}</span>
                               <span className="data-mono text-xs font-semibold text-foreground">
                                 ${option.putPremiumBuy.toFixed(2)}
                               </span>
                             </div>
                             <div className="flex items-center justify-between">
-                              <span className="text-muted-foreground">Sell</span>
+                              <span className="text-muted-foreground">{copy(language, "Sat", "Sell")}</span>
                               <span className="data-mono text-xs font-semibold text-foreground">
                                 ${option.putPremiumSell.toFixed(2)}
                               </span>
                             </div>
                             <div className="flex items-center justify-between">
-                              <span className="text-muted-foreground">Gain</span>
+                              <span className="text-muted-foreground">{copy(language, "Getiri", "Gain")}</span>
                               <span className="data-mono text-xs font-semibold text-emerald-300">
                                 +%{option.putGainFromIV}
                               </span>
@@ -378,7 +390,7 @@ export default function StrategyPlaybookTab({
                     </div>
                   ) : (
                     <p className="text-sm text-muted-foreground">
-                      Bu hisse icin opsiyon plani bulunamadi.
+                      {copy(language, "Bu hisse icin opsiyon plani bulunamadi.", "No options plan was found for this stock.")}
                     </p>
                   )}
                 </section>
@@ -388,7 +400,7 @@ export default function StrategyPlaybookTab({
                 <div className="mb-2 flex items-center gap-2">
                   <div className="h-4 w-1" style={{ background: "oklch(0.6 0.12 250)" }} />
                   <h4 className="heading-condensed text-sm text-foreground">
-                    Tez
+                    {copy(language, "Tez", "Thesis")}
                   </h4>
                 </div>
                 <p className="text-sm leading-relaxed text-muted-foreground">
@@ -399,7 +411,7 @@ export default function StrategyPlaybookTab({
               <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)]">
                 <section className="rounded-none border border-border bg-background/40 p-4">
                   <h4 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                    Katalizorler
+                    {copy(language, "Katalizorler", "Catalysts")}
                   </h4>
                   <ul className="mt-3 space-y-2">
                     {stock.catalysts.slice(0, 4).map(item => (
@@ -413,7 +425,7 @@ export default function StrategyPlaybookTab({
 
                 <section className="rounded-none border border-border bg-background/40 p-4">
                   <h4 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-red-300">
-                    Riskler
+                    {copy(language, "Riskler", "Risks")}
                   </h4>
                   <ul className="mt-3 space-y-2">
                     {stock.risks.slice(0, 4).map(item => (
@@ -427,21 +439,37 @@ export default function StrategyPlaybookTab({
 
                 <section className="rounded-none border border-border bg-background/40 p-4">
                   <h4 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300">
-                    Execution Notlari
+                    {copy(language, "Execution Notlari", "Execution Notes")}
                   </h4>
                   <div className="mt-3 space-y-3 text-sm text-muted-foreground">
                     <div>
                       <p className="font-semibold text-foreground">1. Build</p>
-                      <p>10-15 gun once plan kur, implied move ve boyut sinirini yaz.</p>
+                      <p>
+                        {copy(
+                          language,
+                          "10-15 gun once plan kur, implied move ve boyut sinirini yaz.",
+                          "Build the plan 10-15 days ahead, and write down the implied move and sizing limit."
+                        )}
+                      </p>
                     </div>
                     <div>
                       <p className="font-semibold text-foreground">2. Reduce</p>
-                      <p>1-2 gun kala IV expansion karini realize et, event riskini tasima.</p>
+                      <p>
+                        {copy(
+                          language,
+                          "1-2 gun kala IV expansion karini realize et, event riskini tasima.",
+                          "Realize the IV expansion gain 1-2 days before the event and do not carry event risk."
+                        )}
+                      </p>
                     </div>
                     <div>
                       <p className="font-semibold text-foreground">3. Review</p>
                       <p>
-                        Beat, rehberlik ve gap davranisini ertesi gun ayni karttan yeniden degerlendir.
+                        {copy(
+                          language,
+                          "Beat, rehberlik ve gap davranisini ertesi gun ayni karttan yeniden degerlendir.",
+                          "Re-evaluate the beat, guidance, and gap behavior from the same card on the next day."
+                        )}
                       </p>
                     </div>
                   </div>

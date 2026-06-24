@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { copy, useAppLanguage } from "@/lib/i18n";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -176,6 +177,7 @@ function CarouselPrevious({
   ...props
 }: React.ComponentProps<typeof Button>) {
   const { orientation, scrollPrev, canScrollPrev } = useCarousel();
+  const language = useAppLanguage();
 
   return (
     <Button
@@ -194,7 +196,9 @@ function CarouselPrevious({
       {...props}
     >
       <ArrowLeft />
-      <span className="sr-only">Previous slide</span>
+      <span className="sr-only">
+        {copy(language, "Onceki slayt", "Previous slide")}
+      </span>
     </Button>
   );
 }
@@ -206,6 +210,7 @@ function CarouselNext({
   ...props
 }: React.ComponentProps<typeof Button>) {
   const { orientation, scrollNext, canScrollNext } = useCarousel();
+  const language = useAppLanguage();
 
   return (
     <Button
@@ -224,7 +229,9 @@ function CarouselNext({
       {...props}
     >
       <ArrowRight />
-      <span className="sr-only">Next slide</span>
+      <span className="sr-only">
+        {copy(language, "Sonraki slayt", "Next slide")}
+      </span>
     </Button>
   );
 }

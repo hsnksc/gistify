@@ -289,7 +289,9 @@ export default function MomentumSetupsTab({
         <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
           <div className="flex items-center gap-2">
             <Gauge className="size-4 text-amber-300" />
-            <h3 className="heading-condensed text-xl text-foreground">Defensive</h3>
+            <h3 className="heading-condensed text-xl text-foreground">
+              {copy(language, "Defansif", "Defensive")}
+            </h3>
           </div>
           <div className="mt-4 space-y-3">
             {report.candidates.filter(row => row.group === "defensive").length ? (

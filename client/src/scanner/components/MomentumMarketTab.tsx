@@ -13,7 +13,7 @@ import type {
   MomentumReportSource,
   MomentumSectorRow,
 } from "@/lib/momentumReportSource";
-import { copy } from "@/lib/i18n";
+import { copy, useAppLanguage } from "@/lib/i18n";
 import type { AppLanguage } from "@/lib/i18n";
 
 function SimpleMetricCard({
@@ -100,6 +100,8 @@ function DataTable({
 }
 
 function MacroStack({ title, rows }: { title: string; rows: MacroRow[] }) {
+  const language = useAppLanguage();
+
   return (
     <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
       <div className="flex items-center gap-2">
@@ -127,7 +129,13 @@ function MacroStack({ title, rows }: { title: string; rows: MacroRow[] }) {
             </article>
           ))
         ) : (
-          <EmptyPanel message="Bu blokta parse edilen veri yok." />
+          <EmptyPanel
+            message={copy(
+              language,
+              "Bu blokta parse edilen veri yok.",
+              "No parsed data is available in this block."
+            )}
+          />
         )}
       </div>
     </section>
@@ -143,6 +151,8 @@ function MoversStack({
   rows: MomentumMoverRow[];
   positive: boolean;
 }) {
+  const language = useAppLanguage();
+
   return (
     <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
       <div className="flex items-center gap-2">
@@ -186,8 +196,16 @@ function MoversStack({
           <EmptyPanel
             message={
               positive
-                ? "Yukari momentum listesi bu raporda ayri gelmedi."
-                : "Asagi momentum listesi bu raporda ayri gelmedi."
+                ? copy(
+                    language,
+                    "Yukari momentum listesi bu raporda ayri gelmedi.",
+                    "The upside momentum list did not come through separately in this report."
+                  )
+                : copy(
+                    language,
+                    "Asagi momentum listesi bu raporda ayri gelmedi.",
+                    "The downside momentum list did not come through separately in this report."
+                  )
             }
           />
         )}
@@ -197,11 +215,15 @@ function MoversStack({
 }
 
 function HavenStack({ rows }: { rows: MomentumHavenRow[] }) {
+  const language = useAppLanguage();
+
   return (
     <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
       <div className="flex items-center gap-2">
         <ShieldAlert className="size-4 text-amber-300" />
-        <h3 className="heading-condensed text-xl text-foreground">Defensive</h3>
+        <h3 className="heading-condensed text-xl text-foreground">
+          {copy(language, "Defansif", "Defensive")}
+        </h3>
       </div>
       <div className="mt-4 space-y-3">
         {rows.length ? (
@@ -222,7 +244,13 @@ function HavenStack({ rows }: { rows: MomentumHavenRow[] }) {
             </article>
           ))
         ) : (
-          <EmptyPanel message="Defensive veya hedge notu bu raporda ayri gelmedi." />
+          <EmptyPanel
+            message={copy(
+              language,
+              "Defensive veya hedge notu bu raporda ayri gelmedi.",
+              "The defensive or hedge note did not come through separately in this report."
+            )}
+          />
         )}
       </div>
     </section>
