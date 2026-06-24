@@ -77,7 +77,15 @@ const THEME = {
   lineClassName: "bg-violet-400/70",
 };
 
-function formatNumber(value: number, decimals = 2) {
+function isFiniteNumber(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value);
+}
+
+function formatNumber(value: number | null | undefined, decimals = 2) {
+  if (!isFiniteNumber(value)) {
+    return "-";
+  }
+
   return value.toLocaleString("en-US", {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
@@ -85,7 +93,7 @@ function formatNumber(value: number, decimals = 2) {
 }
 
 function formatCompactNumber(value: number | undefined) {
-  if (value === undefined || Number.isNaN(value)) {
+  if (!isFiniteNumber(value)) {
     return "-";
   }
 
@@ -105,7 +113,11 @@ function formatCompactNumber(value: number | undefined) {
   return `$${value}`;
 }
 
-function formatVolume(value: number) {
+function formatVolume(value: number | null | undefined) {
+  if (!isFiniteNumber(value)) {
+    return "-";
+  }
+
   if (value >= 1_000_000) {
     return `${(value / 1_000_000).toFixed(2)}M`;
   }
@@ -147,7 +159,11 @@ function getReportTypeLabel(
   }
 }
 
-function changeClass(change: number) {
+function changeClass(change: number | null | undefined) {
+  if (!isFiniteNumber(change)) {
+    return "text-muted-foreground";
+  }
+
   if (change > 0) {
     return "text-emerald-400";
   }
@@ -157,7 +173,11 @@ function changeClass(change: number) {
   return "text-muted-foreground";
 }
 
-function changeBgClass(change: number) {
+function changeBgClass(change: number | null | undefined) {
+  if (!isFiniteNumber(change)) {
+    return "border-border bg-background/60";
+  }
+
   if (change > 0) {
     return "border-emerald-500/20 bg-emerald-500/10";
   }
@@ -228,7 +248,7 @@ function IndexPill({
     return null;
   }
 
-  const change = quote.change;
+  const change = isFiniteNumber(quote.change) ? quote.change : 0;
   const positive = change >= 0;
 
   return (
@@ -242,12 +262,12 @@ function IndexPill({
         <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
           {label}
         </span>
-        {isVix && quote.price > 20 ? (
+        {isVix && isFiniteNumber(quote.price) && quote.price > 20 ? (
           <Badge
             variant="outline"
             className="border-rose-500/25 bg-rose-500/12 text-rose-200 text-[9px]"
           >
-            VIX {quote.price.toFixed(2)}
+            VIX {formatNumber(quote.price)}
           </Badge>
         ) : null}
       </div>
@@ -260,7 +280,7 @@ function IndexPill({
           {formatNumber(change)}%
         </span>
       </div>
-      {quote.vwap ? (
+      {isFiniteNumber(quote.vwap) ? (
         <p className="mt-1 text-[11px] text-muted-foreground">
           VWAP {formatNumber(quote.vwap)}
         </p>
@@ -444,7 +464,7 @@ function SetupCard({
   language: AppLanguage;
 }) {
   const isCall = type === "call";
-  const rrHigh = setup.rr >= 2.0;
+  const rrHigh = isFiniteNumber(setup.rr) && setup.rr >= 2.0;
   const is0DTE = setup.expiry === "0DTE";
 
   return (
@@ -521,7 +541,7 @@ function SetupCard({
             R/R
           </p>
           <p className="mt-0.5 font-medium text-foreground">
-            1:{setup.rr.toFixed(1)}
+            {isFiniteNumber(setup.rr) ? `1:${setup.rr.toFixed(1)}` : "-"}
           </p>
         </div>
       </div>
@@ -635,7 +655,9 @@ function EarningsCalendar({
                       {copy(language, "EPS Beklenen", "Consensus EPS")}
                     </p>
                     <p className="mt-0.5 text-foreground">
-                      {item.consensusEps ? `$${formatNumber(item.consensusEps)}` : "-"}
+                      {isFiniteNumber(item.consensusEps)
+                        ? `$${formatNumber(item.consensusEps)}`
+                        : "-"}
                     </p>
                   </div>
                   <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
@@ -643,7 +665,9 @@ function EarningsCalendar({
                       {copy(language, "Rev Beklenen", "Consensus Rev")}
                     </p>
                     <p className="mt-0.5 text-foreground">
-                      {item.consensusRev ? `$${formatCompactNumber(item.consensusRev)}` : "-"}
+                      {isFiniteNumber(item.consensusRev)
+                        ? `$${formatCompactNumber(item.consensusRev)}`
+                        : "-"}
                     </p>
                   </div>
                   <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
@@ -651,7 +675,9 @@ function EarningsCalendar({
                       {copy(language, "Onceki EPS", "Prior EPS")}
                     </p>
                     <p className="mt-0.5 text-foreground">
-                      {item.priorEps ? `$${formatNumber(item.priorEps)}` : "-"}
+                      {isFiniteNumber(item.priorEps)
+                        ? `$${formatNumber(item.priorEps)}`
+                        : "-"}
                     </p>
                   </div>
                   <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
@@ -659,7 +685,9 @@ function EarningsCalendar({
                       {copy(language, "Onceki Rev", "Prior Rev")}
                     </p>
                     <p className="mt-0.5 text-foreground">
-                      {item.priorRev ? `$${formatCompactNumber(item.priorRev)}` : "-"}
+                      {isFiniteNumber(item.priorRev)
+                        ? `$${formatCompactNumber(item.priorRev)}`
+                        : "-"}
                     </p>
                   </div>
                   {item.consensusRange ? (
