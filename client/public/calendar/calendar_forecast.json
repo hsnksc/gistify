@@ -1,11 +1,39 @@
 {
   "reportDate": "2026-06-24",
-  "generatedAt": "2026-06-24T12:00:00+03:00",
-  "title": "24 Haziran 2026 — Ekonomik Takvim & Makro Rapor",
-  "summary": "Bugun yoğun bir Avrupa-Asya takvimi ile basladi, öğleden sonra ABD verileri ve aksam saatlerinde kritik BOJ/FED olaylari ile devam edecek. Avustralya TUFE beklentinin altinda gelerek (%4,00 vs %4,30) AUD/USD uzerinde baski yaratti. Almanya Ifo karisik bir tablo cizdi: mevcut degerlendirme beklentiyi asarken, beklentiler altinda kaldi. Isvicre ZEW sert bir dususle (-25,0) Avrupa sentimentinde zayifligi dogruladi. VIX 19,21 seviyesinde — normal bandin alt yarisinda, 'nutr-azalan' korku. FED Stres Testi ve BOJ Ueda konusmasi aksam 23:00'da piyasalari hareketlendirecek potansiyel katalizorler. Ana tema: Enflasyon yavasliyor ama merkez bankalari hala hawkish.",
+  "generatedAt": "2026-06-24T15:10:00+03:00",
+  "title": "24 Haziran 2026 — Tam Ekonomik Takvim & Derin Makro Analiz",
+  "summary": "Bugun 3 yildizli buyuk olay yok, ancak 2+ yildiz 9 onemli olay var: Avustralya TUFE, Almanya Ifo uclu, Isvicre ZEW, ABD MBA ipotek verileri, ve aksam 23:00'da kritik FED Stres Testi + BOJ Ueda konusmasi. Piyasa 'sessiz ama tetikte' — VIX 19, Fear & Greed 58. Ara oglen verileri Avrupa zayifligini, ABD ipotek rebound'unu dogruladi. Aksam ikili merkez bankasi olayi volatiliteyi tetikleyebilir.",
   "events": [
     {
-      "id": "au-cpi-may-2026",
+      "id": "jp-boj-opinions-240626",
+      "time": "02:50",
+      "country": "Japonya",
+      "countryFlag": "🇯🇵",
+      "eventName": "BoJ Gorus Ozeti",
+      "importance": "low",
+      "previous": null,
+      "forecast": null,
+      "actual": null,
+      "currency": "JPY",
+      "unit": null,
+      "analysis": "BoJ uye gorusleri — Haziran toplantisi oncesi son sinyal. Himino'nun mesajlari: 'Faiz artislarina devam, Ortadogu gelismelerini izliyoruz'. Ueda'nin 23:00 konusmasi daha onemli."
+    },
+    {
+      "id": "jp-cspi-240626",
+      "time": "02:50",
+      "country": "Japonya",
+      "countryFlag": "🇯🇵",
+      "eventName": "Sirket Hizmetleri Fiyat Endeksi (CSPI) (Yillik)",
+      "importance": "medium",
+      "previous": "%3,3",
+      "forecast": "%3,3",
+      "actual": "%3,3",
+      "currency": "JPY",
+      "unit": "YoY",
+      "analysis": "INLINE (%3,3). Hizmet sektoru enflasyonu sabit kaldi — BOJ icin 'enflasyon hedefine dogru ilerliyoruz' sinyali. Negatif reel faizler sorunu cozulmuyor, bu da yen zayifligini besliyor."
+    },
+    {
+      "id": "au-cpi-240626",
       "time": "04:30",
       "country": "Avustralya",
       "countryFlag": "🇦🇺",
@@ -15,23 +43,11 @@
       "forecast": "%4,30",
       "actual": "%4,00",
       "currency": "AUD",
-      "unit": "YoY"
+      "unit": "YoY",
+      "analysis": "COOLER (%4,00 vs bek. %4,30). RBA Mayis'ta %4,35'e cikti, bu veri enflasyonun yavasladigini gosteriyor. Ancak RBA hala 'higher for longer' pozisyonunda. AUD/USD 0,6913 — Cin zayifligi + emtia dususu = AUD baskisi. AUD/USD Put firstati."
     },
     {
-      "id": "de-ifo-business-climate-jun-2026",
-      "time": "11:00",
-      "country": "Almanya",
-      "countryFlag": "🇩🇪",
-      "eventName": "Ifo Is Iklimi Endeksi (Haz)",
-      "importance": "high",
-      "previous": "85,0",
-      "forecast": "85,6",
-      "actual": "85,6",
-      "currency": "EUR",
-      "unit": "Index"
-    },
-    {
-      "id": "de-ifo-expectations-jun-2026",
+      "id": "de-ifo-expectations-240626",
       "time": "11:00",
       "country": "Almanya",
       "countryFlag": "🇩🇪",
@@ -41,10 +57,11 @@
       "forecast": "85,0",
       "actual": "84,1",
       "currency": "EUR",
-      "unit": "Index"
+      "unit": "Index",
+      "analysis": "BELOW (84,1 vs bek. 85,0). Gelecege donuk beklentiler zayif — enerji maliyetleri, Cin talebi, ihracat endisesi. Ifo mevcut degerlendirme 87,0 ile guclu ama 'iyi-simdi, kotu-sonra' dinamigi = DAX kâr realizasyonu riski."
     },
     {
-      "id": "de-ifo-current-assessment-jun-2026",
+      "id": "de-ifo-current-240626",
       "time": "11:00",
       "country": "Almanya",
       "countryFlag": "🇩🇪",
@@ -54,10 +71,25 @@
       "forecast": "86,0",
       "actual": "87,0",
       "currency": "EUR",
-      "unit": "Index"
+      "unit": "Index",
+      "analysis": "ABOVE (87,0 vs bek. 86,0). Mevcut is cevreleri hala dayanikli — imalat ve hizmet sektoru operasyonel olarak guclu. Ancak bu 'geriye donuk' veri, onumuzdeki 6 ay icin gecerli degil."
     },
     {
-      "id": "ch-zew-expectations-jun-2026",
+      "id": "de-ifo-business-climate-240626",
+      "time": "11:00",
+      "country": "Almanya",
+      "countryFlag": "🇩🇪",
+      "eventName": "Ifo Is Iklimi Endeksi (Haz)",
+      "importance": "high",
+      "previous": "85,0",
+      "forecast": "85,6",
+      "actual": "85,6",
+      "currency": "EUR",
+      "unit": "Index",
+      "analysis": "INLINE (85,6). Mevcut guclu + beklentiler zayif = karisik. Ifo, Euro bolgesi en onemli onci gostergesi. 85,6 seviyesi hala genisleme esiginin (85) hemen uzerinde. EUR/USD 1,1530 seviyesinde — zayif ZEW + Ifo beklentileri = 1,14 test riski."
+    },
+    {
+      "id": "ch-zew-240626",
       "time": "11:00",
       "country": "Isvicre",
       "countryFlag": "🇨🇭",
@@ -67,10 +99,95 @@
       "forecast": null,
       "actual": "-25,0",
       "currency": "CHF",
-      "unit": "Index"
+      "unit": "Index",
+      "analysis": "SHARP DROP (-25,0 vs onceki -11,1). Institusyonel yatirimcilarin 6 aylik outlook'u cok karamsar. Avrupa yatirim akisini, Alman ihracat, Cin talebi endisesi yansitiyor. CHF guvenli liman talebi artabilir."
     },
     {
-      "id": "us-mba-mortgage-applications-weekly",
+      "id": "de-buba-nagel-240626",
+      "time": "12:00",
+      "country": "Almanya",
+      "countryFlag": "🇩🇪",
+      "eventName": "Buba Baskani Nagel'in Konusmasi",
+      "importance": "medium",
+      "previous": null,
+      "forecast": null,
+      "actual": null,
+      "currency": "EUR",
+      "unit": null,
+      "analysis": "Nagel, ECB enflasyon mucadelesi ve Alman bankacilik sektoru uzerine konusabilir. ECB Haziran'da tuttu, Eylul gevseme olasiligi artiyor. Nagel hawkish tutarsa EUR destek bulur, dovish pivot sinyali verirse EUR/USD 1,14'e inebilir."
+    },
+    {
+      "id": "it-ctz-240626",
+      "time": "12:30",
+      "country": "Italya",
+      "countryFlag": "🇮🇹",
+      "eventName": "2Y CTZ Ihalesi",
+      "importance": "medium",
+      "previous": "%2,730",
+      "forecast": null,
+      "actual": "%2,740",
+      "currency": "EUR",
+      "unit": "%",
+      "analysis": "Yield %2,740 — hafif yukselis. Italya 2Y tahvil getirisi, Euro bolgesi periferik borclanma maliyetinin gostergesi. Hafif yukselis = Italya risk primi marjinal artis. BTP-Bund spread'i izlenmeli."
+    },
+    {
+      "id": "uk-5y-bond-240626",
+      "time": "12:30",
+      "country": "Ingiltere",
+      "countryFlag": "🇬🇧",
+      "eventName": "5Y Hazine Tahvil Ihalesi",
+      "importance": "medium",
+      "previous": "%4,277",
+      "forecast": null,
+      "actual": "%4,284",
+      "currency": "GBP",
+      "unit": "%",
+      "analysis": "Yield %4,284. UK 5Y getirisi, BoE faiz beklentilerinin yansimasi. BoE %3,75'te tutuyor. Hafif yukselis = piyasa, BoE'nin daha uzun sure bekleyecegini fiyatliyor."
+    },
+    {
+      "id": "de-10y-bond-240626",
+      "time": "12:40",
+      "country": "Almanya",
+      "countryFlag": "🇩🇪",
+      "eventName": "10Y Tahvil Ihalesi",
+      "importance": "medium",
+      "previous": "%3,060",
+      "forecast": null,
+      "actual": "%2,960",
+      "currency": "EUR",
+      "unit": "%",
+      "analysis": "Yield dustu (%2,960 vs onceki %3,060). Alman 10Y getirisi 10bp dustu = tahvil piyasasi 'guvenli liman' akmaya basliyor. Euro bolgesi zayifligine bahis. Bund getirisi duserse EUR/USD da baskilanir."
+    },
+    {
+      "id": "de-30y-bond-240626",
+      "time": "12:40",
+      "country": "Almanya",
+      "countryFlag": "🇩🇪",
+      "eventName": "30Y Tahvil Ihalesi",
+      "importance": "medium",
+      "previous": "%3,490",
+      "forecast": null,
+      "actual": "%2,960",
+      "currency": "EUR",
+      "unit": "%",
+      "analysis": "Yield sert dustu (%2,960 vs onceki %3,490). 53bp dustu! Bu cok buyuk — piyasa, uzun vadeli Almanya deflasyon/uzun buhran bekliyor. 30Y-10Y spread'i daraliyor = flat yield curve = resesyon sinyali."
+    },
+    {
+      "id": "us-mba-30y-rate-240626",
+      "time": "14:00",
+      "country": "ABD",
+      "countryFlag": "🇺🇸",
+      "eventName": "MBA 30Y Ipotek Orani",
+      "importance": "medium",
+      "previous": "%6,60",
+      "forecast": null,
+      "actual": "%6,59",
+      "currency": "USD",
+      "unit": "%",
+      "analysis": "Hafif dusus (%6,59). Fed'in 2025 sonu/2026 basi 75bp kesintisi mortgage rate'lere yansidi. Ancak %6,59 hala tarihsel olarak yuksek. Konut piyasasi hassas ama cokmuyor."
+    },
+    {
+      "id": "us-mba-apps-240626",
       "time": "14:00",
       "country": "ABD",
       "countryFlag": "🇺🇸",
@@ -80,23 +197,53 @@
       "forecast": null,
       "actual": "+%1,0",
       "currency": "USD",
-      "unit": "WoW"
+      "unit": "WoW",
+      "analysis": "REBOUND (+%1,0 vs onceki -%3,8). Haftalik bazda toparlanma. Kisa vadeli gurultu olabilir ama trend hala zayif. XHB ve VNQ icin marjinal pozitif."
     },
     {
-      "id": "us-mba-30y-mortgage-rate",
+      "id": "us-mba-purchase-240626",
       "time": "14:00",
       "country": "ABD",
       "countryFlag": "🇺🇸",
-      "eventName": "MBA 30 Yillik Ipotek Orani",
-      "importance": "medium",
-      "previous": "%6,60",
+      "eventName": "MBA Satin Alma Endeksi",
+      "importance": "low",
+      "previous": "170,8",
       "forecast": null,
-      "actual": "%6,59",
+      "actual": "169,7",
       "currency": "USD",
-      "unit": "%"
+      "unit": "Index",
+      "analysis": "Hafif dusus (169,7 vs 170,8). Satin alma aktivitesi hala dusuk seviyelerde. Yeni konut talebi zayif."
     },
     {
-      "id": "us-fed-stress-test-2026",
+      "id": "us-mba-market-240626",
+      "time": "14:00",
+      "country": "ABD",
+      "countryFlag": "🇺🇸",
+      "eventName": "Ipotek Piyasa Endeksi",
+      "importance": "low",
+      "previous": "269,5",
+      "forecast": null,
+      "actual": "272,1",
+      "currency": "USD",
+      "unit": "Index",
+      "analysis": "Hafif yukselis (272,1). Genel ipotek aktivitesi toparlanma isareti. Ancak 2021 zirvesine (700+) gore cok dusuk."
+    },
+    {
+      "id": "us-mba-refi-240626",
+      "time": "14:00",
+      "country": "ABD",
+      "countryFlag": "🇺🇸",
+      "eventName": "Ipotek Refinansman Endeksi",
+      "importance": "low",
+      "previous": "483,0",
+      "forecast": null,
+      "actual": "486,1",
+      "currency": "USD",
+      "unit": "Index",
+      "analysis": "Hafif yukselis (486,1). Refinansman talebi hala dusuk. Rate'ler dustugunde daha fazla refi beklenir."
+    },
+    {
+      "id": "us-fed-stress-240626",
       "time": "23:00",
       "country": "ABD",
       "countryFlag": "🇺🇸",
@@ -106,10 +253,11 @@
       "forecast": null,
       "actual": "Bekleniyor",
       "currency": "USD",
-      "unit": null
+      "unit": null,
+      "analysis": "32 buyuk ABD bankasi, agir resesyon senaryosuna karsi test ediliyor. Isizlik %10, konut -%30, CRE -%39. JPM, BAC, WFC, C, GS, MS'in SCB (Stress Capital Buffer) durumu kritik. Beklenti: Cogu banka gecer, SCB sabit kalir. SCB yukselirse XLF ve KRE sert dusebilir."
     },
     {
-      "id": "jp-boj-ueda-speech-jun-2026",
+      "id": "jp-boj-ueda-240626",
       "time": "23:00",
       "country": "Japonya",
       "countryFlag": "🇯🇵",
@@ -119,47 +267,69 @@
       "forecast": null,
       "actual": "Bekleniyor",
       "currency": "JPY",
-      "unit": null
+      "unit": null,
+      "analysis": "15-16 Haziran BOJ toplantisi oncesi son onemli mesaj. Piyasa >%80 olasilikla Haziran'da %0,75'ten %1,00'e 25bp artis bekliyor. Ueda hawkish konuursa USD/JPY 158'e, dovish kalirsa 160+ devam. MoF 11,7 trilyon JPY ile mudahale etti ama etkisi gecici. Citi: Yen zayifligi devam ederse 2026'da 3 artis riski."
     }
   ],
   "optionSetups": [
     {
       "asset": "XLF",
       "bias": "neutral",
-      "trigger": "FED Stres Testi sonuclari saat 23:00 — binary event",
+      "trigger": "FED Stres Testi 23:00 — binary event. Beklenti disi SCB = sert hareket",
       "invalidation": "Sonuclar tamamen beklentiye uygun gelirse IV crush",
-      "setupType": "Straddle / Strangle"
+      "setupType": "Straddle / Strangle",
+      "rationale": "Stres testi her yil XLF'i hareketlendirir. 2026 senaryosu agir: CRE -%39, konut -%30. Any SCB hike for a major bank = XLF -%2-3."
+    },
+    {
+      "asset": "KRE",
+      "bias": "bearish",
+      "trigger": "CRE riski en yuksek olan sektor. Zions, Western Alliance, KeyCorp",
+      "invalidation": "Stres testi CRE kayiplarini hafif gosterirse",
+      "setupType": "Weekly PUT",
+      "rationale": "Regional bankalar CRE exposure'u en yuksek. 2026 stres testi CRE'ye agir vuruyor. KRE 2025'te CRE sorunlariyla sert dustu."
     },
     {
       "asset": "AUD/USD",
       "bias": "bearish",
-      "trigger": "TUFE %4,00 (beklenti alti) + RBA hold + Cin zayifligi",
+      "trigger": "TUFE %4,00 (beklenti %4,30 alti) + RBA hold + Cin zayifligi",
       "invalidation": "DXY 104 altina gerilerse veya RBA hawkish pivot yaparsa",
-      "setupType": "0DTE / Weekly PUT"
+      "setupType": "0DTE / Weekly PUT",
+      "rationale": "Enflasyon yavasliyor ama RBA hala hawkish. Cin talebi zayif = demir cevheri destegi azaliyor. AUD/USD 0,68 test edebilir."
     },
     {
       "asset": "DAX",
       "bias": "bearish",
-      "trigger": "Ifo beklentileri 84,1 (beklenti alti) + ZEW -25,0",
+      "trigger": "Ifo beklentileri 84,1 (beklenti alti) + ZEW -25,0 + Almanya 30Y yield sert dustu",
       "invalidation": "Ifo mevcut degerlendirmesi 88+ veya ECB dovish pivot",
-      "setupType": "Weekly PUT"
+      "setupType": "Weekly PUT",
+      "rationale": "Ifo 'iyi-simdi, kotu-sonra' dinamigi + 30Y yield 53bp dustu = resesyon endisesi. DAX 24,200 hedeflenebilir."
     },
     {
       "asset": "USD/JPY",
       "bias": "bearish",
       "trigger": "Ueda 'Haziran'da artis yapacagiz' mesaji verirse",
       "invalidation": "Ueda belirsiz kalirsa veya DXY guclenirse",
-      "setupType": "0DTE PUT"
+      "setupType": "0DTE PUT",
+      "rationale": "BOJ Haziran artisi >%80 olasilik. JGB ihaleleri guclu. Hukumet destekliyor. USD/JPY 160'dan 158'e dusus potansiyeli."
     },
     {
       "asset": "SPY",
       "bias": "neutral",
-      "trigger": "23:00'da FED Stres Testi + BOJ Ueda konusmasi — cift katalizor",
+      "trigger": "23:00'da FED Stres Testi + BOJ Ueda — cift katalizor, ayni saat",
       "invalidation": "Her iki olay da beklentiye uygun gelirse",
-      "setupType": "0DTE Strangle (OTM CALL + OTM PUT)"
+      "setupType": "0DTE Strangle (OTM CALL + OTM PUT)",
+      "rationale": "Iki buyuk merkez bankasi olayi ayni saatte. Herhangi bir surpriz = SPY 1%+ hareket. VIX 19 = premium ucuz."
+    },
+    {
+      "asset": "EUR/USD",
+      "bias": "bearish",
+      "trigger": "ZEW -25,0 + Ifo beklentileri zayif + Almanya 30Y yield sert dustu",
+      "invalidation": "ECB hawkish guidance veya DXY 104 kirilmasi",
+      "setupType": "Weekly PUT",
+      "rationale": "Euro bolgesi sentiment coktu. ZEW -25,0 institutionel yatirimcilarin 6 aylik outlook'u. EUR/USD 1,1530'da, 1,14 test edilebilir."
     }
   ],
-  "vixOutlook": "VIX 19,21 seviyesinde — normal band (13-20) icinde, alt yari. 'Nutr-azalan korku' bolgesi. Opsiyon premium'lari makul, hedging maliyeti dusuk. 23:00'da FED Stres Testi + BOJ Ueda olaylari ile 20+ yukselis potansiyeli var.",
-  "fearGreedOutlook": "Fear & Greed 58 (Neutral, hafif acgozluluk). 41-60 araliginda. Piyasa hala risk almaya acik ama asiri degil. 'Goldilocks' bolgesi — directional opsiyon stratejileri icin uygun ortam.",
-  "marketNarrative": "24 Haziran 2026 'merkez bankasi gunu' olarak nitelendirilebilir. Sabah Avrupa verileri zayif sentimenti dogruladi, oglen ABD ipotek verileri konut piyasasinin hala direncli oldugunu gosterdi. Aksam 23:00'da FED Stres Testi ve BOJ Ueda konusmasi birlikte piyasalari hareketlendirecek. Ana temalar: (1) Enflasyon yavasliyor (AU TUFE) ama merkez bankalari hala hawkish (RBA, BOJ). (2) Avrupa zayifliyor (Ifo beklentileri + ZEW) — EUR/USD ve DAX baskisi altinda. (3) VIX 19 = opsiyon premium'lari ucuz, aksam volatilite artisi potansiyeli yuksek. (4) Opsiyon firstalari: XLF straddle (stres testi), AUD/USD put (TUFE), DAX put (Ifo), USD/JPY put (BOJ), SPY strangle (cift katalizor)."
+  "vixOutlook": "VIX 19,21 (normal band 13-20, alt yari). 'Nutr-azalan korku' bolgesi. 23:00 FED + BOJ olaylari ile 20+ yukselis potansiyeli. Opsiyon premium'lari makul, hedging maliyeti dusuk. Aksam volatilite artisi bekleniyor.",
+  "fearGreedOutlook": "Fear & Greed 58 (Neutral, hafif acgozluluk). 41-60 araliginda. 'Goldilocks' bolgesi — directional opsiyon stratejileri icin uygun. Aksam olaylari ile 50'ye dusus veya 65'e yukselis potansiyeli.",
+  "marketNarrative": "24 Haziran 2026 'sessiz ama tetikte' bir gun. 3 yildizli buyuk olay yok, ancak 2+ yildiz 9 olay + aksam ikili merkez bankasi katalizoru (FED Stres Testi + BOJ Ueda) piyasalari hareketlendirebilir. Sabah Avustralya TUFE enflasyonun yavasladigini gosterdi (%4,00). Almanya Ifo mevcut guclu (87,0) ama beklentiler zayif (84,1). Isvicre ZEW -25,0 ile Avrupa sentimenti coktu. Almanya 30Y tahvil yield'i 53bp dustu — resesyon endisesi. ABD MBA ipotek verileri haftalik rebound gosterdi (+1,0%). Aksam 23:00'da FED 32 bankayi stres testine tabi tutacak (CRE -39%, konut -30%) ve BOJ Ueda Haziran artis sinyali verebilir. VIX 19, Fear & Greed 58 = 'Goldilocks' ortam. Aksam volatilite artisi potansiyeli yuksek. Ana tema: Merkez bankalari hala hawkish, enflasyon yavasliyor, Avrupa zayifliyor, ABD direncli."
 }
