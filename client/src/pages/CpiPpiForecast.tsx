@@ -268,15 +268,15 @@ function CompactStatCard({
   return (
     <article
       className={cn(
-        "rounded-2xl border border-white/10 bg-black/20 px-3.5 py-3",
+        "rounded-xl border border-white/10 bg-black/20 px-3 py-1.5",
         className
       )}
     >
-      <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+      <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
         {label}
       </p>
-      <p className="mt-2 text-sm font-semibold text-foreground">{value}</p>
-      <p className="mt-1 text-[11px] leading-5 text-muted-foreground">{hint}</p>
+      <p className="mt-1 text-xs font-semibold text-foreground">{value}</p>
+      <p className="mt-0.5 text-[10px] leading-4 text-muted-foreground">{hint}</p>
     </article>
   );
 }
@@ -293,27 +293,27 @@ function ReleaseCard({
   const theme = WORKSPACE_THEME[slotKey];
 
   return (
-    <article className={cn("rounded-[1.45rem] border p-4", theme.softCardClassName)}>
-      <div className="flex items-start justify-between gap-3">
+    <article className={cn("rounded-2xl border p-2", theme.softCardClassName)}>
+      <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <p
             className={cn(
-              "text-[10px] font-semibold uppercase tracking-[0.18em]",
+              "text-[9px] font-semibold uppercase tracking-[0.18em]",
               theme.eyebrowClassName
             )}
           >
             {release.name} {copy(language, "release frame", "release frame")}
           </p>
-          <h3 className="mt-2 heading-condensed text-[1.45rem] leading-none text-foreground">
+          <h3 className="mt-1 heading-condensed text-lg leading-none text-foreground">
             {release.period || release.name}
           </h3>
-          <p className="mt-1.5 text-[13px] text-muted-foreground">
+          <p className="mt-1 text-xs text-muted-foreground">
             {formatDateLabel(release.releaseDate, language)} ·{" "}
             {release.releaseTimeEt || "08:30 ET"}
           </p>
         </div>
         <span
-          className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] ${biasClass(
+          className={`rounded-full border px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.16em] ${biasClass(
             release.bias
           )}`}
         >
@@ -321,7 +321,7 @@ function ReleaseCard({
         </span>
       </div>
 
-      <div className="mt-4 grid gap-2 sm:grid-cols-2">
+      <div className="mt-2 grid grid-cols-4 gap-1.5">
         {[
           { label: "Headline MoM", value: release.headlineMoM || "-" },
           { label: "Headline YoY", value: release.headlineYoY || "-" },
@@ -330,56 +330,47 @@ function ReleaseCard({
         ].map(item => (
           <div
             key={`${release.name}-${item.label}`}
-            className="rounded-xl border border-white/10 bg-black/20 px-3 py-2.5"
+            className="rounded-lg border border-white/10 bg-black/20 px-2 py-1.5"
           >
-            <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+            <p className="text-[9px] uppercase tracking-[0.14em] text-muted-foreground">
               {item.label}
             </p>
-            <p className="mt-1.5 data-mono text-sm font-semibold text-foreground">
+            <p className="mt-0.5 data-mono text-xs font-semibold text-foreground">
               {item.value}
             </p>
           </div>
         ))}
       </div>
 
-      <div className="mt-3 grid gap-2 sm:grid-cols-2">
-        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2.5">
-          <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+      <div className="mt-2 grid grid-cols-2 gap-1.5">
+        <div className="rounded-lg border border-white/10 bg-black/20 px-2 py-1.5">
+          <p className="text-[9px] uppercase tracking-[0.14em] text-muted-foreground">
             {copy(language, "Guven", "Confidence")}
           </p>
-          <p className="mt-1.5 data-mono text-sm font-semibold text-foreground">
+          <p className="mt-0.5 data-mono text-xs font-semibold text-foreground">
             {formatProbability(release.confidence)}
           </p>
         </div>
-        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2.5">
-          <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+        <div className="rounded-lg border border-white/10 bg-black/20 px-2 py-1.5">
+          <p className="text-[9px] uppercase tracking-[0.14em] text-muted-foreground">
             {copy(language, "Onceki", "Prior")}
           </p>
-          <p className="mt-1.5 text-sm text-foreground">
+          <p className="mt-0.5 text-xs text-foreground">
             {release.priorHeadlineMoM || "-"} / {release.priorCoreMoM || "-"}
           </p>
         </div>
       </div>
 
-      <div className="mt-3 rounded-xl border border-white/10 bg-black/20 px-3 py-3">
-        <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-          {copy(language, "Tez", "Thesis")}
-        </p>
-        <p className="mt-1.5 text-[13px] leading-6 text-foreground/88">
-          {release.thesis || copy(language, "Tez henuz gelmedi.", "No thesis yet.")}
-        </p>
-      </div>
+
     </article>
   );
 }
 
-function ScenarioCard({
-  language,
+function ScenarioRow({
   scenario,
   releaseName,
   slotKey,
 }: {
-  language: AppLanguage;
   scenario: MacroForecastScenario;
   releaseName: MacroForecastRelease["name"];
   slotKey: MacroForecastWorkspaceKey;
@@ -387,70 +378,20 @@ function ScenarioCard({
   const theme = WORKSPACE_THEME[slotKey];
 
   return (
-    <article className={cn("rounded-[1.3rem] border p-3.5", theme.softCardClassName)}>
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <p
-            className={cn(
-              "text-[10px] font-semibold uppercase tracking-[0.16em]",
-              theme.eyebrowClassName
-            )}
-          >
-            {copy(language, "Senaryo", "Scenario")}
-          </p>
-          <h3 className="mt-1 text-sm font-semibold text-foreground">
-            {scenario.label}
-          </h3>
-        </div>
-        <span className="rounded-full border border-white/10 bg-black/20 px-2.5 py-1 data-mono text-[11px] text-foreground">
-          {formatProbability(scenario.probability)}
-        </span>
+    <div className="grid grid-cols-[1fr_auto_1.6fr] items-center gap-2 rounded-lg border border-white/10 bg-black/20 px-2 py-0.5 text-[11px]">
+      <div className="min-w-0">
+        <p className="truncate font-semibold leading-tight text-foreground">{scenario.label}</p>
+        <p className={cn("text-[9px] leading-tight", theme.eyebrowClassName)}>
+          {releaseName} {scenario.probability}%
+        </p>
       </div>
-
-      <div className="mt-3 grid gap-2 sm:grid-cols-2">
-        <div className="rounded-lg border border-white/10 bg-black/20 p-2.5">
-          <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-            {releaseName} {copy(language, "sonuc", "outcome")}
-          </p>
-          <p className="mt-1 text-[13px] leading-5 text-foreground">
-            {scenario.outcome || "-"}
-          </p>
-        </div>
-        <div className="rounded-lg border border-white/10 bg-black/20 p-2.5">
-          <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-            {copy(language, "Olasilik", "Probability")}
-          </p>
-          <p className="mt-1 data-mono text-sm text-foreground">
-            {formatProbability(scenario.probability)}
-          </p>
-        </div>
-      </div>
-
-      <div className="mt-3 space-y-2 text-[13px] leading-6">
-        <div className="rounded-lg border border-white/10 bg-black/20 p-2.5">
-          <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-            {copy(language, "Piyasa okumasi", "Market readthrough")}
-          </p>
-          <p className="mt-1 text-foreground/88">{scenario.marketReadthrough || "-"}</p>
-        </div>
-        <div className="rounded-lg border border-white/10 bg-black/20 p-2.5">
-          <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-            {copy(language, "Avantajli alanlar", "Favored assets")}
-          </p>
-          <p className="mt-1 text-foreground/88">
-            {scenario.favoredAssets.length
-              ? scenario.favoredAssets.join(" · ")
-              : "-"}
-          </p>
-        </div>
-        <div className="rounded-lg border border-rose-500/18 bg-rose-500/8 p-2.5">
-          <p className="text-[10px] uppercase tracking-[0.16em] text-rose-200">
-            {copy(language, "Invalidation", "Invalidation")}
-          </p>
-          <p className="mt-1 text-rose-50/90">{scenario.invalidation || "-"}</p>
-        </div>
-      </div>
-    </article>
+      <span className="data-mono rounded-full border border-white/10 bg-black/30 px-1.5 py-0 text-[10px] text-foreground">
+        {formatProbability(scenario.probability)}
+      </span>
+      <p className="line-clamp-1 leading-tight text-muted-foreground">
+        {scenario.outcome || scenario.marketReadthrough || "-"}
+      </p>
+    </div>
   );
 }
 
@@ -478,23 +419,23 @@ function SimpleListCard({
       : theme.softCardClassName;
 
   return (
-    <section className={cn("rounded-[1.35rem] border p-4", panelClassName)}>
-      <div className="flex items-center gap-2">
-        <Icon className={`size-4 ${accentClassName}`} />
-        <h3 className="heading-condensed text-lg text-foreground">{title}</h3>
+    <section className={cn("rounded-2xl border p-2", panelClassName)}>
+      <div className="flex items-center gap-1.5">
+        <Icon className={`size-3.5 ${accentClassName}`} />
+        <h3 className="heading-condensed text-sm text-foreground">{title}</h3>
       </div>
-      <div className="mt-3 space-y-2">
+      <div className="mt-2 space-y-1.5">
         {items.length ? (
           items.map(item => (
             <div
               key={item}
-              className="rounded-xl border border-white/10 bg-black/20 px-3 py-2.5 text-[13px] leading-6 text-foreground/88"
+              className="line-clamp-1 rounded-lg border border-white/10 bg-black/20 px-2.5 py-1.5 text-xs leading-4 text-foreground/88"
             >
               {item}
             </div>
           ))
         ) : (
-          <div className="rounded-xl border border-dashed border-white/10 bg-black/15 px-3 py-2.5 text-sm text-muted-foreground">
+          <div className="rounded-lg border border-dashed border-white/10 bg-black/15 px-2.5 py-1.5 text-xs text-muted-foreground">
             {copy(language, "Veri yok.", "No data yet.")}
           </div>
         )}
@@ -515,33 +456,31 @@ function WatchlistCard({
   const theme = WORKSPACE_THEME[slotKey];
 
   return (
-    <section className={cn("rounded-[1.35rem] border p-4", theme.softCardClassName)}>
-      <div className="flex items-center gap-2">
-        <Target className={`size-4 ${theme.eyebrowClassName}`} />
-        <h3 className="heading-condensed text-lg text-foreground">
+    <section className={cn("rounded-2xl border p-2", theme.softCardClassName)}>
+      <div className="flex items-center gap-1.5">
+        <Target className={`size-3.5 ${theme.eyebrowClassName}`} />
+        <h3 className="heading-condensed text-sm text-foreground">
           {forecast.release.name} {copy(language, "watchlist", "watchlist")}
         </h3>
       </div>
-      <div className="mt-3 space-y-2.5">
+      <div className="mt-2 space-y-1.5">
         {forecast.watchItems.length ? (
           forecast.watchItems.map(item => (
             <article
               key={`${forecast.release.name}-${item.label}`}
-              className="rounded-xl border border-white/10 bg-black/20 p-3"
+              className="rounded-lg border border-white/10 bg-black/20 p-2"
             >
-              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                 {item.label}
               </p>
-              <p className="mt-1.5 data-mono text-sm font-semibold text-foreground">
+              <p className="mt-0.5 data-mono text-xs font-semibold text-foreground">
                 {item.value || "-"}
               </p>
-              <p className="mt-1 text-[12px] leading-5 text-muted-foreground">
-                {item.note || "-"}
-              </p>
+
             </article>
           ))
         ) : (
-          <div className="rounded-xl border border-dashed border-white/10 bg-black/15 px-3 py-2.5 text-sm text-muted-foreground">
+          <div className="rounded-lg border border-dashed border-white/10 bg-black/15 px-2.5 py-1.5 text-xs text-muted-foreground">
             {copy(
               language,
               "Watchlist henuz gelmedi.",
@@ -566,16 +505,16 @@ function PlaybookTable({
   const theme = WORKSPACE_THEME[slotKey];
 
   return (
-    <section className={cn("rounded-[1.35rem] border p-4", theme.softCardClassName)}>
-      <div className="flex items-center gap-2">
-        <Activity className={`size-4 ${theme.eyebrowClassName}`} />
-        <h3 className="heading-condensed text-lg text-foreground">
+    <section className={cn("rounded-2xl border p-2", theme.softCardClassName)}>
+      <div className="flex items-center gap-1.5">
+        <Activity className={`size-3.5 ${theme.eyebrowClassName}`} />
+        <h3 className="heading-condensed text-sm text-foreground">
           {forecast.release.name} {copy(language, "playbook", "playbook")}
         </h3>
       </div>
-      <div className="mt-3 overflow-hidden rounded-[1.15rem] border border-white/10 bg-black/20">
+      <div className="mt-2 overflow-hidden rounded-xl border border-white/10 bg-black/20">
         <div className="overflow-x-auto">
-          <table className="min-w-full text-left text-[13px]">
+          <table className="min-w-full text-left text-xs">
             <thead className="border-b border-white/10 bg-black/25">
               <tr>
                 {[
@@ -586,7 +525,7 @@ function PlaybookTable({
                 ].map(header => (
                   <th
                     key={`${forecast.release.name}-${header}`}
-                    className="px-3 py-2.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground"
+                    className="px-2 py-1.5 text-[9px] font-semibold uppercase tracking-[0.16em] text-muted-foreground"
                   >
                     {header}
                   </th>
@@ -600,23 +539,23 @@ function PlaybookTable({
                     key={`${forecast.release.name}-${setup.asset}-${setup.trigger}`}
                     className="border-b border-white/10 last:border-b-0"
                   >
-                    <td className="px-3 py-2.5 font-semibold text-foreground">
+                    <td className="px-2 py-1.5 font-semibold text-foreground">
                       {setup.asset}
                     </td>
-                    <td className="px-3 py-2.5 text-muted-foreground">
-                      {setup.bias || "-"}
+                    <td className="max-w-[140px] px-2 py-1.5 text-muted-foreground">
+                      <span className="line-clamp-2">{setup.bias || "-"}</span>
                     </td>
-                    <td className="px-3 py-2.5 text-muted-foreground">
-                      {setup.trigger || "-"}
+                    <td className="max-w-[160px] px-2 py-1.5 text-muted-foreground">
+                      <span className="line-clamp-2">{setup.trigger || "-"}</span>
                     </td>
-                    <td className="px-3 py-2.5 text-muted-foreground">
-                      {setup.invalidation || "-"}
+                    <td className="max-w-[160px] px-2 py-1.5 text-muted-foreground">
+                      <span className="line-clamp-2">{setup.invalidation || "-"}</span>
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td className="px-3 py-3 text-sm text-muted-foreground" colSpan={4}>
+                  <td className="px-2 py-2 text-xs text-muted-foreground" colSpan={4}>
                     {copy(
                       language,
                       "Playbook henuz gelmedi.",
@@ -647,23 +586,23 @@ function PipelineCard({
   const theme = WORKSPACE_THEME[slotKey];
 
   return (
-    <article className={cn("rounded-[1.25rem] border p-3.5", theme.softCardClassName)}>
-      <div className="flex items-start justify-between gap-3">
+    <article className={cn("rounded-2xl border p-2.5", theme.softCardClassName)}>
+      <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <p
             className={cn(
-              "text-[10px] font-semibold uppercase tracking-[0.16em]",
+              "text-[9px] font-semibold uppercase tracking-[0.16em]",
               theme.eyebrowClassName
             )}
           >
             {label} {copy(language, "pipeline", "pipeline")}
           </p>
-          <h3 className="mt-1 text-sm font-semibold text-foreground">
+          <h3 className="mt-0.5 text-xs font-semibold text-foreground">
             {pipelineStatusLabel(pipeline.status, language)}
           </h3>
         </div>
         <span
-          className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] ${pipelineStatusClass(
+          className={`rounded-full border px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.16em] ${pipelineStatusClass(
             pipeline.status
           )}`}
         >
@@ -671,21 +610,23 @@ function PipelineCard({
         </span>
       </div>
 
-      <div className="mt-3 space-y-2 text-[12px] text-muted-foreground">
-        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
+      <div className="mt-2 space-y-1.5 text-[10px] text-muted-foreground">
+        <div className="rounded-lg border border-white/10 bg-black/20 px-2.5 py-1">
           {copy(language, "Son senkron", "Last sync")}:{" "}
           <span className="text-foreground">
             {formatTimestamp(pipeline.lastSyncedAt, language)}
           </span>
         </div>
-        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
+        <div className="rounded-lg border border-white/10 bg-black/20 px-2.5 py-1">
           {copy(language, "Kaynak", "Source")}:{" "}
-          <span className="break-all text-foreground">
-            {pipeline.resolvedSourceFile || pipeline.configuredSourceFile || "-"}
+          <span className="line-clamp-1 break-all text-foreground">
+            {pipeline.resolvedSourceFile
+              ? pipeline.resolvedSourceFile.replace(/\\/g, "/").split("/").pop()
+              : pipeline.configuredSourceFile || "-"}
           </span>
         </div>
         {pipeline.error ? (
-          <div className="rounded-xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-rose-100">
+          <div className="rounded-lg border border-rose-500/20 bg-rose-500/10 px-2.5 py-1 text-rose-100">
             {pipeline.error}
           </div>
         ) : null}
@@ -708,43 +649,43 @@ function MissingWorkspacePanel({
 
   return (
     <section className={cn("h-full overflow-hidden rounded-[1.8rem] border p-[1px]", theme.shellClassName)}>
-      <div className={cn("relative flex h-full flex-col overflow-hidden rounded-[1.75rem] p-4 md:p-5", theme.innerClassName)}>
+      <div className={cn("relative flex h-full flex-col overflow-hidden rounded-[1.75rem] p-2.5", theme.innerClassName)}>
         <div
           className={cn(
-            "pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b",
+            "pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b",
             theme.glowClassName
           )}
         />
-        <div className="relative flex-1 overflow-y-auto space-y-4 pr-1">
-          <div className="flex items-start justify-between gap-3">
+        <div className="relative flex-1 overflow-hidden space-y-2">
+          <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">
-              <div className="flex items-center gap-2">
-                <span className={cn("h-2.5 w-2.5 rounded-full", theme.lineClassName)} />
+              <div className="flex items-center gap-1.5">
+                <span className={cn("h-2 w-2 rounded-full", theme.lineClassName)} />
                 <p
                   className={cn(
-                    "text-[10px] font-semibold uppercase tracking-[0.18em]",
+                    "text-[9px] font-semibold uppercase tracking-[0.18em]",
                     theme.eyebrowClassName
                   )}
                 >
                   {theme.label} Workspace
                 </p>
               </div>
-              <h2 className="mt-2 heading-condensed text-[1.65rem] leading-none text-foreground">
+              <h2 className="mt-1 heading-condensed text-lg leading-none text-foreground">
                 {copy(language, "Kaynak bekleniyor", "Waiting for source")}
               </h2>
-              <p className="mt-2 text-[13px] leading-6 text-foreground/82">
+              <p className="mt-1 line-clamp-2 text-xs leading-4 text-foreground/82">
                 {copy(
                   language,
                   `${theme.label} alani sayfada hazir. Snapshot gelince bu yarim otomatik dolar.`,
                   `The ${theme.label} half of the page is ready. As soon as the snapshot lands, this side fills automatically.`
                 )}
               </p>
-              <p className="mt-2 text-[12px] leading-5 text-muted-foreground">
+              <p className="mt-1 line-clamp-1 text-[10px] leading-4 text-muted-foreground">
                 {descriptor.summary}
               </p>
             </div>
             <span
-              className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] ${pipelineStatusClass(
+              className={`rounded-full border px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.16em] ${pipelineStatusClass(
                 pipeline.status
               )}`}
             >
@@ -752,7 +693,7 @@ function MissingWorkspacePanel({
             </span>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-2 sm:grid-cols-2">
             <CompactStatCard
               label={copy(language, "Beklenen dosya", "Expected file")}
               value={expectedFileName(slotKey)}
@@ -771,22 +712,22 @@ function MissingWorkspacePanel({
             />
           </div>
 
-          <div className={cn("rounded-[1.35rem] border p-4", theme.softCardClassName)}>
-            <div className="flex items-center gap-2">
-              <Database className={`size-4 ${theme.iconClassName}`} />
-              <h3 className="heading-condensed text-lg text-foreground">
+          <div className={cn("rounded-2xl border p-2.5", theme.softCardClassName)}>
+            <div className="flex items-center gap-1.5">
+              <Database className={`size-3.5 ${theme.iconClassName}`} />
+              <h3 className="heading-condensed text-sm text-foreground">
                 {copy(language, "Deploy notu", "Deploy note")}
               </h3>
             </div>
-            <div className="mt-3 space-y-2 text-[13px] leading-6 text-foreground/82">
-              <p>
+            <div className="mt-2 space-y-1 text-xs leading-4 text-foreground/82">
+              <p className="line-clamp-2">
                 {copy(
                   language,
                   "Kimi bu dosyayi sadece kendi gecici klasorune birakmamali. Final artifact gorulebilir hedefe yazilmali.",
                   "Kimi must not leave this file only in a private scratch folder. The final artifact has to land on a readable target."
                 )}
               </p>
-              <p className="text-muted-foreground">
+              <p className="line-clamp-2 text-muted-foreground">
                 {copy(
                   language,
                   `Repo deploy kullaniyorsa ./${expectedFileName(slotKey)} uretip push etmeli. Container path kullaniyorsa ${envVarName(
@@ -829,31 +770,31 @@ function ForecastWorkspaceSection({
 
   return (
     <section className={cn("h-full overflow-hidden rounded-[1.8rem] border p-[1px]", theme.shellClassName)}>
-      <div className={cn("relative flex h-full flex-col overflow-hidden rounded-[1.75rem] p-4 md:p-5", theme.innerClassName)}>
+      <div className={cn("relative flex h-full flex-col overflow-hidden rounded-[1.75rem] p-2.5", theme.innerClassName)}>
         <div
           className={cn(
-            "pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b",
+            "pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b",
             theme.glowClassName
           )}
         />
-        <div className="relative flex-1 overflow-y-auto space-y-4 pr-1">
-          <div className="flex flex-wrap items-start justify-between gap-4">
+        <div className="relative flex-1 overflow-hidden space-y-1">
+          <div className="flex flex-wrap items-start justify-between gap-2">
             <div className="min-w-0">
-              <div className="flex items-center gap-2">
-                <span className={cn("h-2.5 w-2.5 rounded-full", theme.lineClassName)} />
+              <div className="flex items-center gap-1.5">
+                <span className={cn("h-2 w-2 rounded-full", theme.lineClassName)} />
                 <p
                   className={cn(
-                    "text-[10px] font-semibold uppercase tracking-[0.18em]",
+                    "text-[9px] font-semibold uppercase tracking-[0.18em]",
                     theme.eyebrowClassName
                   )}
                 >
                   {theme.label} · {descriptor.title}
                 </p>
               </div>
-              <h2 className="mt-2 heading-condensed text-[1.6rem] leading-none text-foreground md:text-[1.9rem]">
+              <h2 className="mt-0.5 heading-condensed text-base leading-none text-foreground md:text-lg">
                 {forecast.title || `${forecast.release.name} Forecast Snapshot`}
               </h2>
-              <p className="mt-2 text-[13px] leading-6 text-foreground/84">
+              <p className="mt-0.5 line-clamp-1 text-xs leading-4 text-foreground/84">
                 {forecast.summary ||
                   copy(
                     language,
@@ -862,16 +803,16 @@ function ForecastWorkspaceSection({
                   )}
               </p>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5">
               <span
-                className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] ${biasClass(
+                className={`rounded-full border px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.16em] ${biasClass(
                   forecast.release.bias
                 )}`}
               >
                 {biasLabel(forecast.release.bias, language)}
               </span>
               <span
-                className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] ${pipelineStatusClass(
+                className={`rounded-full border px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.16em] ${pipelineStatusClass(
                   forecast.pipeline?.status || "idle"
                 )}`}
               >
@@ -881,21 +822,21 @@ function ForecastWorkspaceSection({
             </div>
           </div>
 
-          <div className={cn("rounded-[1.35rem] border p-4", theme.cardClassName)}>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+          <div className={cn("rounded-2xl border p-2.5", theme.cardClassName)}>
+            <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
               {copy(language, "Base case", "Base case")}
             </p>
-            <p className="mt-2 text-sm font-semibold text-foreground">
+            <p className="mt-1 line-clamp-1 text-xs font-semibold leading-4 text-foreground">
               {forecast.baseCase || "-"}
             </p>
-            <p className="mt-2 text-[12px] leading-5 text-muted-foreground">
+            <p className="mt-1 text-[10px] leading-4 text-muted-foreground">
               {leadScenario
                 ? `${leadScenario.label} · ${formatProbability(leadScenario.probability)}`
                 : copy(language, "Senaryo gelmedi.", "No scenario loaded.")}
             </p>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-3">
+          <div className="grid gap-2 sm:grid-cols-3">
             <CompactStatCard
               label={copy(language, "Release", "Release")}
               value={formatDateLabel(forecast.release.releaseDate, language)}
@@ -927,35 +868,34 @@ function ForecastWorkspaceSection({
             />
           ) : null}
 
-          <div className="grid gap-4 2xl:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)]">
-            <div className="min-w-0 space-y-4">
+          <div className="grid gap-1.5 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)]">
+            <div className="min-w-0 space-y-1">
               <ReleaseCard
                 language={language}
                 release={forecast.release}
                 slotKey={slotKey}
               />
 
-              <section className={cn("rounded-[1.35rem] border p-4", theme.softCardClassName)}>
-                <div className="flex items-center gap-2">
-                  <Sparkles className={`size-4 ${theme.eyebrowClassName}`} />
-                  <h3 className="heading-condensed text-lg text-foreground">
+              <section className={cn("rounded-2xl border p-2", theme.softCardClassName)}>
+                <div className="flex items-center gap-1.5">
+                  <Sparkles className={`size-3.5 ${theme.eyebrowClassName}`} />
+                  <h3 className="heading-condensed text-sm text-foreground">
                     {forecast.release.name}{" "}
                     {copy(language, "senaryo matrisi", "scenario matrix")}
                   </h3>
                 </div>
-                <div className="mt-3 grid gap-3 xl:grid-cols-2">
+                <div className="mt-2 space-y-1.5">
                   {forecast.scenarios.length ? (
                     forecast.scenarios.map(scenario => (
-                      <ScenarioCard
+                      <ScenarioRow
                         key={`${forecast.release.name}-${scenario.id}`}
-                        language={language}
                         scenario={scenario}
                         releaseName={forecast.release.name}
                         slotKey={slotKey}
                       />
                     ))
                   ) : (
-                    <div className="rounded-xl border border-dashed border-white/10 bg-black/15 px-4 py-3 text-sm text-muted-foreground xl:col-span-2">
+                    <div className="rounded-lg border border-dashed border-white/10 bg-black/15 px-3 py-2 text-xs text-muted-foreground">
                       {copy(
                         language,
                         "Senaryo kartlari henuz gelmedi.",
@@ -973,7 +913,7 @@ function ForecastWorkspaceSection({
               />
             </div>
 
-            <div className="min-w-0 space-y-4">
+            <div className="min-w-0 space-y-1">
               <WatchlistCard
                 forecast={forecast}
                 language={language}
@@ -1139,68 +1079,61 @@ export default function CpiPpiForecastPage({
   }));
 
   return (
-    <div className="h-screen overflow-hidden bg-background">
-      <div className="container flex h-full flex-col py-4 md:py-5">
-        <section className="shrink-0 overflow-hidden rounded-[2rem] border border-border bg-[linear-gradient(180deg,rgba(7,11,20,0.98),rgba(7,10,18,1))] shadow-[0_24px_80px_rgba(0,0,0,0.32)]">
-          <div className="relative px-5 py-4 md:px-6 md:py-5">
+    <div className="fixed inset-0 overflow-hidden bg-background">
+      <div className="container flex h-full flex-col py-3 md:py-4">
+        <section className="shrink-0 overflow-hidden rounded-2xl border border-border bg-[linear-gradient(180deg,rgba(7,11,20,0.98),rgba(7,10,18,1))] shadow-[0_24px_80px_rgba(0,0,0,0.32)]">
+          <div className="relative px-4 py-2.5 md:px-5 md:py-3">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.12),transparent_28%),radial-gradient(circle_at_top_right,rgba(245,158,11,0.14),transparent_28%),radial-gradient(circle_at_bottom_center,rgba(16,185,129,0.08),transparent_26%)]" />
-            <div className="relative grid gap-5 xl:grid-cols-[minmax(0,1.15fr)_420px]">
-              <div className="space-y-3">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="badge-strong">Dual macro workspaces</span>
+            <div className="relative grid gap-4 lg:grid-cols-[minmax(0,1.15fr)_400px]">
+              <div className="space-y-2">
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="badge-strong text-[9px]">Dual macro workspaces</span>
                   <span
-                    className={`rounded-full border px-3 py-1 text-[11px] ${pipelineStatusClass(
+                    className={`rounded-full border px-2 py-0.5 text-[9px] ${pipelineStatusClass(
                       pipelineStatus
                     )}`}
                   >
                     {copy(language, "Pipeline", "Pipeline")}:{" "}
                     {pipelineStatusLabel(pipelineStatus, language)}
                   </span>
-                  <span className="badge-warning">00:00 TSI</span>
+                  <span className="badge-warning text-[9px]">00:00 TSI</span>
                 </div>
 
-                <div className="space-y-3">
-                  <p className="heading-condensed text-sm uppercase tracking-[0.18em] text-indigo-300">
+                <div className="space-y-1.5">
+                  <p className="heading-condensed text-xs uppercase tracking-[0.18em] text-indigo-300">
                     CPI / PPI Forecast
                   </p>
-                  <h1 className="heading-condensed max-w-4xl text-2xl leading-none text-foreground md:text-[2.4rem]">
+                  <h1 className="heading-condensed max-w-4xl text-xl leading-none text-foreground md:text-2xl">
                     {copy(
                       language,
                       "CPI solda, PPI sagda. Iki workspace ayni zeminde.",
                       "CPI on the left, PPI on the right. Two workspaces on one surface."
                     )}
                   </h1>
-                  <p className="max-w-3xl text-[13px] leading-6 text-muted-foreground">
-                    {copy(
-                      language,
-                      "Bu alan artik tek parca uzun bir rapor degil. Her yari kendi release frame, scenario map, playbook ve pipeline durumunu tasiyor. Dosya eksikse bosluk yerine neden eksik oldugu gorunur.",
-                      "This is no longer one long report. Each half carries its own release frame, scenario map, playbook, and pipeline state. If a file is missing, you see why instead of a dead blank area."
-                    )}
-                  </p>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-white/10 bg-black/20 px-4 py-2.5 text-xs text-muted-foreground">
-                  <span className="flex items-center gap-1.5">
-                    <Activity className="size-3.5 text-emerald-300" />
+                <div className="flex flex-wrap items-center gap-2 rounded-xl border border-white/10 bg-black/20 px-3 py-1.5 text-[10px] text-muted-foreground">
+                  <span className="flex items-center gap-1">
+                    <Activity className="size-3 text-emerald-300" />
                     {copy(language, "Aktif workspace", "Active workspaces")}:{" "}
                     {availableWorkspaces.map(workspace => workspace.release.name).join(" / ")}
                   </span>
-                  <span className="h-3 w-px bg-white/10" />
-                  <span className="flex items-center gap-1.5">
-                    <CalendarDays className="size-3.5 text-sky-300" />
+                  <span className="h-2.5 w-px bg-white/10" />
+                  <span className="flex items-center gap-1">
+                    <CalendarDays className="size-3 text-sky-300" />
                     {copy(language, "Gunluk deploy", "Daily deploy")}: 00:00 TSI
                   </span>
-                  <span className="h-3 w-px bg-white/10" />
-                  <span className="flex items-center gap-1.5">
-                    <Sparkles className="size-3.5 text-amber-300" />
+                  <span className="h-2.5 w-px bg-white/10" />
+                  <span className="flex items-center gap-1">
+                    <Sparkles className="size-3 text-amber-300" />
                     {copy(language, "Son senkron", "Last sync")}:{" "}
                     {formatTimestamp(lastSyncAt, language)}
                   </span>
                 </div>
               </div>
 
-              <div className="space-y-3">
-                <div className="grid gap-3 sm:grid-cols-2">
+              <div className="space-y-2">
+                <div className="grid gap-2 sm:grid-cols-2">
                   <CompactStatCard
                     label={copy(language, "CPI status", "CPI status")}
                     value={pipelineStatusLabel(forecast.pipeline.cpi.status, language)}
@@ -1234,14 +1167,15 @@ export default function CpiPpiForecastPage({
                       "A missing half automatically falls back to the pending panel."
                     )}
                   />
-                  <div className="rounded-2xl border border-white/10 bg-black/20 p-2.5">
+                  <div className="rounded-xl border border-white/10 bg-black/20 p-1.5">
                     <Button
                       type="button"
                       variant="outline"
-                      className="w-full justify-center"
+                      size="sm"
+                      className="w-full justify-center text-xs"
                       onClick={() => void loadForecast()}
                     >
-                      <RefreshCw className={`size-4 ${refreshing ? "animate-spin" : ""}`} />
+                      <RefreshCw className={`size-3 ${refreshing ? "animate-spin" : ""}`} />
                       {copy(language, "Yenile", "Refresh")}
                     </Button>
                   </div>
@@ -1257,7 +1191,7 @@ export default function CpiPpiForecastPage({
           </div>
         ) : null}
 
-        <main className="mt-4 grid h-full flex-1 grid-cols-1 gap-4 overflow-hidden min-h-0 xl:grid-cols-2">
+        <main className="mt-3 grid h-full flex-1 grid-cols-1 gap-3 overflow-hidden min-h-0 lg:grid-cols-2">
           {workspaceSlots.map(item =>
             item.forecast ? (
               <ForecastWorkspaceSection
