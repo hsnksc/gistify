@@ -34,7 +34,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
             <>
               <span className="badge-strong">Live Midas Feed</span>
               <span className="badge-warning">
-                {copy(language, "Pozitif ve negatif akis", "Positive and negative flow")}
+                {copy(language, "Pozitif, neutral ve negatif akis", "Positive, neutral, and negative flow")}
               </span>
               <span className="badge-danger">Kimi pipeline sync</span>
             </>
@@ -47,8 +47,8 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
           )}
           description={copy(
             language,
-            "Eski momentum rapor tablari temizlendi. Bu yuzey artik Kimi pipeline'dan gelen veriyi okuyup hisseleri pozitif ve negatif momentum olarak gerekceleriyle birlikte siralar.",
-            "The old momentum report tabs are stripped out. This surface now reads the Kimi pipeline feed and ranks stocks by positive and negative momentum with explicit reasons."
+            "Eski momentum rapor tablari temizlendi. Bu yuzey artik Kimi pipeline'dan gelen veriyi okuyup hisseleri pozitif, neutral ve negatif momentum olarak gerekceleriyle birlikte siralar.",
+            "The old momentum report tabs are stripped out. This surface now reads the Kimi pipeline feed and ranks stocks across positive, neutral, and negative momentum with explicit reasons."
           )}
           actions={
             <>
@@ -91,6 +91,15 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
               </span>
               <span className="h-3 w-px bg-border" />
               <span className="flex items-center gap-1.5">
+                <LineChart className="size-3.5 text-amber-300" />
+                {copy(
+                  language,
+                  "Neutral gecis isimleri kaybolmaz",
+                  "Neutral transition names stay visible"
+                )}
+              </span>
+              <span className="h-3 w-px bg-border" />
+              <span className="flex items-center gap-1.5">
                 <Zap className="size-3.5 text-amber-300" />
                 {copy(
                   language,
@@ -114,15 +123,15 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
               <h2 className="heading-condensed text-2xl text-foreground md:text-3xl">
                 {copy(
                   language,
-                  "Pozitif ve negatif momentum siralamasi",
-                  "Positive and negative momentum ranking"
+                  "Pozitif, neutral ve negatif momentum siralamasi",
+                  "Positive, neutral, and negative momentum ranking"
                 )}
               </h2>
               <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
                 {copy(
                   language,
-                  "Her kartta yon, zaman dilimi performansi ve sinyal gerekcesi gorunur. Pipeline yeni veri getirdikce sayfa bunu cekip canli motorla yeniden tartar.",
-                  "Each card shows direction, timeframe performance, and signal rationale. As the pipeline publishes new data, the page pulls it in and re-weighs it with the live engine."
+                  "Her kartta yon, zaman dilimi performansi ve sinyal gerekcesi gorunur. Pipeline yeni veri getirdikce sayfa bunu cekip canli motorla yeniden tartar; neutral gecisler de ayri blokta korunur.",
+                  "Each card shows direction, timeframe performance, and signal rationale. As the pipeline publishes new data, the page pulls it in and re-weighs it with the live engine, while neutral transitions remain visible in a dedicated block."
                 )}
               </p>
             </div>

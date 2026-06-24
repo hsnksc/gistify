@@ -21,7 +21,7 @@ import type {
 import { runMomentumScan, type StockResult } from "@/scanner";
 import type { AppLanguage } from "@/lib/i18n";
 
-type SurfaceMode = "overview" | "positive" | "negative" | "shifts";
+type SurfaceMode = "overview" | "positive" | "neutral" | "negative" | "shifts";
 type SignalDirection = "positive" | "negative" | "neutral";
 
 interface LiveSignalSummary {
@@ -54,8 +54,9 @@ interface MergedSignalRecord extends MidasSignalRecord {
 }
 
 const SNAPSHOT_REFRESH_INTERVAL_MS = 60 * 1000;
-const MAX_OVERVIEW_SIGNALS = 6;
-const MAX_OVERVIEW_SHIFTS = 6;
+const MAX_OVERVIEW_SIGNALS = 4;
+const MAX_OVERVIEW_NEUTRALS = 4;
+const MAX_OVERVIEW_SHIFTS = 4;
 
 function copy(language: AppLanguage, tr: string, en: string) {
   return language === "en" ? en : tr;
@@ -395,10 +396,12 @@ function MomentumSignalCard({
   language,
   signal,
   snapshotTimestamp,
+  compact = false,
 }: {
   language: AppLanguage;
   signal: MergedSignalRecord;
   snapshotTimestamp: string;
+  compact?: boolean;
 }) {
   const currentPrice = signal.live?.currentPrice ?? signal.price;
   const currentDayPct = signal.live?.priceChangePct ?? signal.daily_pct;
@@ -414,6 +417,10 @@ function MomentumSignalCard({
         signal.layers.trendScore !== undefined ||
         signal.layers.confluenceScore !== undefined)
   );
+  const visibleReasonDetails = compact
+    ? signal.reasonDetails.slice(0, 2)
+    : signal.reasonDetails;
+  const visibleTags = compact ? signal.signals.slice(0, 3) : signal.signals.slice(0, 4);
   const toneClass =
     signal.directionalBias === "positive"
       ? "border-emerald-500/25 bg-[linear-gradient(180deg,rgba(16,185,129,0.12),rgba(15,23,42,0.74))]"
@@ -426,23 +433,30 @@ function MomentumSignalCard({
       : signal.directionalBias === "negative"
         ? "bg-gradient-to-r from-rose-400 to-orange-300"
         : "bg-gradient-to-r from-amber-400 to-yellow-200";
+  const cardClassName = compact
+    ? "rounded-[0.95rem] border p-2.5 shadow-[0_10px_28px_rgba(3,7,18,0.16)] transition-colors duration-200"
+    : "rounded-[1.1rem] border p-3 shadow-[0_12px_32px_rgba(3,7,18,0.18)] transition-colors duration-200";
 
   return (
-    <article className={`rounded-[1.1rem] border p-3 shadow-[0_12px_32px_rgba(3,7,18,0.18)] transition-colors duration-200 ${toneClass}`}>
+    <article className={`${cardClassName} ${toneClass}`}>
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-1.5">
-            <p className="heading-condensed text-xl text-foreground">{signal.symbol}</p>
+            <p className={`heading-condensed text-foreground ${compact ? "text-lg" : "text-xl"}`}>
+              {signal.symbol}
+            </p>
             {signal.directionalBias === "positive" ? (
-              <TrendingUp className="size-4 text-emerald-300" />
+              <TrendingUp className={`${compact ? "size-3.5" : "size-4"} text-emerald-300`} />
             ) : signal.directionalBias === "negative" ? (
-              <TrendingDown className="size-4 text-rose-300" />
+              <TrendingDown className={`${compact ? "size-3.5" : "size-4"} text-rose-300`} />
             ) : (
-              <LineChart className="size-4 text-amber-300" />
+              <LineChart className={`${compact ? "size-3.5" : "size-4"} text-amber-300`} />
             )}
           </div>
-          <p className="mt-0.5 text-[13px] leading-5 text-foreground/90">{signal.headline}</p>
-          <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[10px] text-muted-foreground">
+          <p className={`mt-0.5 text-foreground/90 ${compact ? "text-[12px] leading-5" : "text-[13px] leading-5"}`}>
+            {signal.headline}
+          </p>
+          <div className={`flex flex-wrap items-center gap-1.5 text-muted-foreground ${compact ? "mt-1 text-[9px]" : "mt-1.5 text-[10px]"}`}>
             <span className="data-mono rounded-full border border-border bg-background/60 px-2 py-0.5">{formatPrice(currentPrice)}</span>
             {signal.live ? (
               <span className="rounded-full border border-border bg-background/60 px-2 py-0.5">
@@ -452,12 +466,12 @@ function MomentumSignalCard({
           </div>
         </div>
 
-        <span className={`shrink-0 rounded-md border px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.14em] ${signalBadgeClass(signal.resolvedSignal)}`}>
+        <span className={`shrink-0 rounded-md border px-2 py-0.5 font-bold uppercase tracking-[0.14em] ${compact ? "text-[8px]" : "text-[9px]"} ${signalBadgeClass(signal.resolvedSignal)}`}>
           {signalLabel(signal.resolvedSignal, language)}
         </span>
       </div>
 
-      <div className="mt-3 flex flex-wrap gap-1.5 text-[10px]">
+      <div className={`flex flex-wrap gap-1.5 ${compact ? "mt-2.5 text-[9px]" : "mt-3 text-[10px]"}`}>
         {displayConfidenceLabel ? (
           <span className="rounded-full border border-sky-400/20 bg-sky-500/10 px-2 py-0.5 text-sky-100">
             {copy(language, "Guven", "Confidence")}: {displayConfidenceLabel}
@@ -475,17 +489,17 @@ function MomentumSignalCard({
         ) : null}
       </div>
 
-      <div className="mt-3">
-        <div className="mb-1.5 flex items-center justify-between gap-3 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+      <div className={compact ? "mt-2.5" : "mt-3"}>
+        <div className={`mb-1.5 flex items-center justify-between gap-3 uppercase tracking-[0.16em] text-muted-foreground ${compact ? "text-[9px]" : "text-[10px]"}`}>
           <span>{copy(language, "Momentum gucu", "Momentum conviction")}</span>
           <span className="data-mono text-foreground/85">{convictionWidth}/100</span>
         </div>
-        <div className="h-1.5 overflow-hidden rounded-full bg-background/75">
+        <div className={`${compact ? "h-1.5" : "h-1.5"} overflow-hidden rounded-full bg-background/75`}>
           <div className={`h-full rounded-full transition-all duration-300 ${meterClass}`} style={{ width: `${convictionWidth}%` }} />
         </div>
       </div>
 
-      <div className="mt-3 flex flex-wrap gap-1.5 text-[10px]">
+      <div className={`flex flex-wrap gap-1.5 ${compact ? "mt-2.5 text-[9px]" : "mt-3 text-[10px]"}`}>
         <span className={`data-mono rounded-full border border-border bg-background/70 px-2 py-0.5 ${pctClass(currentDayPct)}`}>{copy(language, "Gunluk", "Daily")}: {formatPct(currentDayPct)}</span>
         <span className={`data-mono rounded-full border border-border bg-background/70 px-2 py-0.5 ${pctClass(signal.weekly_pct)}`}>{copy(language, "Haftalik", "Weekly")}: {formatPct(signal.weekly_pct)}</span>
         <span className={`data-mono rounded-full border border-border bg-background/70 px-2 py-0.5 ${pctClass(signal.monthly_pct)}`}>{copy(language, "Aylik", "Monthly")}: {formatPct(signal.monthly_pct)}</span>
@@ -506,7 +520,7 @@ function MomentumSignalCard({
       ) : null}
 
       {signal.notes ? (
-        <div className="mt-3 rounded-lg border border-sky-400/18 bg-sky-500/[0.08] px-2.5 py-2 text-[11px] leading-5 text-sky-50/88">
+        <div className={`mt-3 rounded-lg border border-sky-400/18 bg-sky-500/[0.08] px-2.5 py-2 text-[11px] leading-5 text-sky-50/88 ${compact ? "hidden" : ""}`}>
           <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-sky-200/78">
             {copy(language, "Analist notu", "Analyst note")}
           </p>
@@ -514,15 +528,15 @@ function MomentumSignalCard({
         </div>
       ) : null}
 
-      <div className="mt-3 space-y-1.5">
-        {signal.reasonDetails.map((reason) => (
-          <div key={reason} className="rounded-lg border border-border/70 bg-background/60 px-2.5 py-1.5 text-[11px] leading-5 text-foreground/88 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]">
+      <div className={`space-y-1.5 ${compact ? "mt-2.5" : "mt-3"}`}>
+        {visibleReasonDetails.map((reason) => (
+          <div key={reason} className={`rounded-lg border border-border/70 bg-background/60 px-2.5 py-1.5 leading-5 text-foreground/88 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)] ${compact ? "text-[10px]" : "text-[11px]"}`}>
             {reason}
           </div>
         ))}
       </div>
 
-      {hasLayers ? (
+      {hasLayers && !compact ? (
         <div className="mt-3 grid gap-1.5 sm:grid-cols-2">
           <div className="rounded-lg border border-border/70 bg-background/60 px-2.5 py-1.5 text-[11px] text-muted-foreground">
             <p className="text-[10px] uppercase tracking-[0.14em]">{copy(language, "Momentum", "Momentum")}</p>
@@ -543,19 +557,79 @@ function MomentumSignalCard({
         </div>
       ) : null}
 
-      <div className="mt-3 flex flex-wrap gap-1.5">
-        {signal.signals.slice(0, 4).map((tag) => (
-          <span key={tag} className="rounded-full border border-border bg-background/70 px-2 py-0.5 text-[9px] font-medium text-muted-foreground">
+      <div className={`flex flex-wrap gap-1.5 ${compact ? "mt-2.5" : "mt-3"}`}>
+        {visibleTags.map((tag) => (
+          <span key={tag} className={`rounded-full border border-border bg-background/70 px-2 py-0.5 font-medium text-muted-foreground ${compact ? "text-[8px]" : "text-[9px]"}`}>
             {tag}
           </span>
         ))}
       </div>
 
-      <div className="mt-3 flex flex-wrap items-center gap-2 text-[10px] text-muted-foreground">
+      <div className={`flex flex-wrap items-center gap-2 text-muted-foreground ${compact ? "mt-2.5 text-[9px]" : "mt-3 text-[10px]"}`}>
         <span>{copy(language, "Snapshot", "Snapshot")}: {formatTimestamp(signal.timestamp || snapshotTimestamp, language)}</span>
         {signal.live ? <span>{copy(language, "Canli", "Live")}: {formatTimestamp(signal.live.updatedAt, language)}</span> : null}
       </div>
     </article>
+  );
+}
+
+function MarketOverviewStrip({
+  language,
+  marketOverview,
+}: {
+  language: AppLanguage;
+  marketOverview: NonNullable<MidasSignalsData["market_overview"]>;
+}) {
+  const entries = Object.entries(marketOverview).slice(0, 4);
+  if (!entries.length) {
+    return null;
+  }
+
+  return (
+    <section className="rounded-[1.25rem] border border-border bg-background/38 p-3.5">
+      <div className="mb-3 flex items-center gap-2">
+        <BarChart3 className="size-4 text-indigo-300" />
+        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-indigo-200">
+          {copy(language, "Genis piyasa atimi", "Broad market pulse")}
+        </p>
+      </div>
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {entries.map(([ticker, info]) => {
+          const changeClass =
+            info.change_pct > 0
+              ? "text-emerald-300"
+              : info.change_pct < 0
+                ? "text-rose-300"
+                : "text-muted-foreground";
+          const sign = info.change_pct > 0 ? "+" : "";
+
+          return (
+            <div
+              key={ticker}
+              className="rounded-[1rem] border border-border/70 bg-background/70 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    {ticker}
+                  </p>
+                  <p className="mt-1 heading-condensed text-xl text-foreground">
+                    {formatPrice(info.price)}
+                  </p>
+                </div>
+                <span className={`data-mono text-sm ${changeClass}`}>
+                  {sign}
+                  {info.change_pct.toFixed(2)}%
+                </span>
+              </div>
+              <p className="mt-2 text-[11px] leading-5 text-muted-foreground">
+                {info.name}
+              </p>
+            </div>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 
@@ -688,6 +762,15 @@ export default function MomentumFlowSurface({
     if (weeklyGap !== 0) return weeklyGap;
     return right.monthly_pct - left.monthly_pct;
   }), [mergedSignals]);
+  const neutralSignals = useMemo(() => [...mergedSignals].filter((signal) => signal.directionalBias === "neutral").sort((left, right) => {
+    const convictionGap = right.conviction - left.conviction;
+    if (convictionGap !== 0) return convictionGap;
+    const dayGap = Math.abs(right.dayChange) - Math.abs(left.dayChange);
+    if (dayGap !== 0) return dayGap;
+    const weeklyGap = Math.abs(right.weekly_pct) - Math.abs(left.weekly_pct);
+    if (weeklyGap !== 0) return weeklyGap;
+    return Math.abs(right.monthly_pct) - Math.abs(left.monthly_pct);
+  }), [mergedSignals]);
   const negativeSignals = useMemo(() => [...mergedSignals].filter((signal) => signal.directionalBias === "negative").sort((left, right) => {
     const actionGap = actionPriority(right.resolvedSignal) - actionPriority(left.resolvedSignal);
     if (actionGap !== 0) return actionGap;
@@ -740,26 +823,41 @@ export default function MomentumFlowSurface({
   const neutralRatio = Math.round((neutralCount / totalSignals) * 100);
   const negativeRatio = Math.max(0, 100 - positiveRatio - neutralRatio);
   const strongestPositive = positiveSignals[0] ?? null;
+  const strongestNeutral = neutralSignals[0] ?? null;
   const strongestNegative = negativeSignals[0] ?? null;
   const featuredShift = orderedChangedSignals[0] ?? null;
   const visiblePositiveSignals = surfaceMode === "overview" ? positiveSignals.slice(0, MAX_OVERVIEW_SIGNALS) : positiveSignals;
+  const visibleNeutralSignals = surfaceMode === "overview" ? neutralSignals.slice(0, MAX_OVERVIEW_NEUTRALS) : neutralSignals;
   const visibleNegativeSignals = surfaceMode === "overview" ? negativeSignals.slice(0, MAX_OVERVIEW_SIGNALS) : negativeSignals;
   const visibleChangedSignals = surfaceMode === "overview" ? orderedChangedSignals.slice(0, MAX_OVERVIEW_SHIFTS) : orderedChangedSignals;
   const showPositiveSection = surfaceMode === "overview" || surfaceMode === "positive";
+  const showNeutralSection = surfaceMode === "overview" || surfaceMode === "neutral";
   const showNegativeSection = surfaceMode === "overview" || surfaceMode === "negative";
   const showShiftSection = surfaceMode === "overview" || surfaceMode === "shifts";
   const positiveCardLayout =
-    surfaceMode === "positive" ? "grid gap-3 xl:grid-cols-2" : "space-y-3";
+    surfaceMode === "positive"
+      ? "grid gap-3 md:grid-cols-2 2xl:grid-cols-3"
+      : "grid gap-3 md:grid-cols-2";
+  const neutralCardLayout =
+    surfaceMode === "neutral"
+      ? "grid gap-3 md:grid-cols-2 xl:grid-cols-3"
+      : "grid gap-3 md:grid-cols-2 xl:grid-cols-4";
   const negativeCardLayout =
-    surfaceMode === "negative" ? "grid gap-3 xl:grid-cols-2" : "space-y-3";
+    surfaceMode === "negative"
+      ? "grid gap-3 md:grid-cols-2 2xl:grid-cols-3"
+      : "grid gap-3 md:grid-cols-2";
   const balanceHeadline =
-    positiveCount > negativeCount
+    neutralCount >= positiveCount && neutralCount >= negativeCount && neutralCount > 0
+      ? copy(language, "Piyasa bekleme bandinda", "The market is sitting in a wait zone")
+      : positiveCount > negativeCount
       ? copy(language, "Akis yukari yone egimli", "Flow is tilted to the upside")
       : negativeCount > positiveCount
         ? copy(language, "Asagi baski agir basiyor", "Downside pressure is in control")
         : copy(language, "Momentum dengede", "Momentum is balanced");
   const balanceDescription =
-    positiveCount > negativeCount
+    neutralCount >= positiveCount && neutralCount >= negativeCount && neutralCount > 0
+      ? copy(language, "Neutral blok genisledi; piyasa karar vermeden once gecis isimlerini izlemek daha kritik.", "The neutral block has expanded, so transition names matter more than outright leaders.")
+      : positiveCount > negativeCount
       ? copy(language, "Pozitif tarafta daha fazla lider var; canli motor buy tarafini one cikariyor.", "There are more leaders on the positive side, and the live engine is favoring buy setups.")
       : negativeCount > positiveCount
         ? copy(language, "Negatif tarafta daha fazla bozulma var; risk yuzeyi kalinlasiyor.", "More names are deteriorating on the negative side, and the risk surface is thickening.")
@@ -767,6 +865,7 @@ export default function MomentumFlowSurface({
   const viewButtons: Array<{ id: SurfaceMode; label: string; count: number; icon: typeof TrendingUp }> = [
     { id: "overview", label: copy(language, "Komuta gorunumu", "Command view"), count: mergedSignals.length, icon: BarChart3 },
     { id: "positive", label: copy(language, "Liderler", "Leaders"), count: positiveSignals.length, icon: TrendingUp },
+    { id: "neutral", label: copy(language, "Notr radar", "Neutral radar"), count: neutralSignals.length, icon: LineChart },
     { id: "negative", label: copy(language, "Riskler", "Risks"), count: negativeSignals.length, icon: TrendingDown },
     { id: "shifts", label: copy(language, "Degisimler", "Shifts"), count: orderedChangedSignals.length, icon: ArrowRightLeft },
   ];
@@ -863,8 +962,8 @@ export default function MomentumFlowSurface({
             </div>
           </div>
 
-          <div className="grid gap-3">
-            <button type="button" onClick={() => setSurfaceMode("positive")} className="rounded-[1.25rem] border border-emerald-500/22 bg-emerald-500/[0.08] p-4 text-left transition-colors hover:bg-emerald-500/[0.12]">
+          <div className="grid gap-3 sm:grid-cols-2">
+            <button type="button" onClick={() => setSurfaceMode("positive")} className="min-h-[152px] rounded-[1.25rem] border border-emerald-500/22 bg-emerald-500/[0.08] p-4 text-left transition-colors hover:bg-emerald-500/[0.12]">
               <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-emerald-300/80">{copy(language, "Oncu uzun taraf", "Lead long setup")}</p>
               {strongestPositive ? (
                 <>
@@ -877,7 +976,20 @@ export default function MomentumFlowSurface({
               ) : <p className="mt-2 text-sm text-emerald-50/80">{copy(language, "Su an net bir lider yok.", "There is no clear leader right now.")}</p>}
             </button>
 
-            <button type="button" onClick={() => setSurfaceMode("negative")} className="rounded-[1.25rem] border border-rose-500/22 bg-rose-500/[0.08] p-4 text-left transition-colors hover:bg-rose-500/[0.12]">
+            <button type="button" onClick={() => setSurfaceMode("neutral")} className="min-h-[152px] rounded-[1.25rem] border border-amber-500/22 bg-amber-500/[0.08] p-4 text-left transition-colors hover:bg-amber-500/[0.12]">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-amber-300/80">{copy(language, "Gecis radari", "Transition radar")}</p>
+              {strongestNeutral ? (
+                <>
+                  <div className="mt-2 flex items-center justify-between gap-3">
+                    <h4 className="heading-condensed text-2xl text-amber-100">{strongestNeutral.symbol}</h4>
+                    <span className={`data-mono text-sm ${pctClass(strongestNeutral.dayChange)}`}>{formatPct(strongestNeutral.dayChange)}</span>
+                  </div>
+                  <p className="mt-2 text-sm leading-6 text-amber-50/88">{strongestNeutral.headline}</p>
+                </>
+              ) : <p className="mt-2 text-sm text-amber-50/80">{copy(language, "Su an on plana cikan bir neutral gecis yok.", "There is no neutral transition name standing out right now.")}</p>}
+            </button>
+
+            <button type="button" onClick={() => setSurfaceMode("negative")} className="min-h-[152px] rounded-[1.25rem] border border-rose-500/22 bg-rose-500/[0.08] p-4 text-left transition-colors hover:bg-rose-500/[0.12]">
               <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-rose-300/80">{copy(language, "Oncu kisa taraf", "Lead short setup")}</p>
               {strongestNegative ? (
                 <>
@@ -890,7 +1002,7 @@ export default function MomentumFlowSurface({
               ) : <p className="mt-2 text-sm text-rose-50/80">{copy(language, "Su an net bir bozulma lideri yok.", "There is no clear breakdown leader right now.")}</p>}
             </button>
 
-            <button type="button" onClick={() => setSurfaceMode(featuredShift ? "shifts" : "overview")} className="rounded-[1.25rem] border border-indigo-500/22 bg-indigo-500/[0.08] p-4 text-left transition-colors hover:bg-indigo-500/[0.12]">
+            <button type="button" onClick={() => setSurfaceMode(featuredShift ? "shifts" : "overview")} className="min-h-[152px] rounded-[1.25rem] border border-indigo-500/22 bg-indigo-500/[0.08] p-4 text-left transition-colors hover:bg-indigo-500/[0.12]">
               <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-indigo-200">
                 {featuredShift ? copy(language, "Canli revizyon", "Live revision") : copy(language, "Hizli hareket", "Fast move")}
               </p>
@@ -915,6 +1027,10 @@ export default function MomentumFlowSurface({
           </div>
         </div>
       </div>
+
+      {data.market_overview ? (
+        <MarketOverviewStrip language={language} marketOverview={data.market_overview} />
+      ) : null}
 
       <div className="sticky top-4 z-10 rounded-[1.25rem] border border-border bg-background/75 p-1.5 shadow-[0_18px_48px_rgba(3,7,18,0.24)] backdrop-blur">
         <div className="flex flex-wrap items-center gap-1.5">
@@ -991,6 +1107,46 @@ export default function MomentumFlowSurface({
         </section>
       ) : null}
 
+      {showNeutralSection ? (
+        <section className="space-y-4">
+          <div className="flex items-start justify-between gap-3 rounded-[1.2rem] border border-amber-500/20 bg-[linear-gradient(180deg,rgba(245,158,11,0.10),rgba(15,23,42,0.86))] p-3.5">
+            <div className="flex items-start gap-3">
+              <LineChart className="mt-0.5 size-4 text-amber-300" />
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-amber-300/80">{copy(language, "Neutral radar", "Neutral radar")}</p>
+                <h3 className="mt-1 heading-condensed text-xl text-amber-100">{copy(language, "Karar vermeyen ama izlenmesi gereken isimler", "Names in transition that still deserve attention")}</h3>
+                <p className="mt-1.5 text-xs leading-6 text-amber-50/85">
+                  {copy(language, "Hold sinyalleri burada kaybolmuyor. Yon netlesmeden once yuksek hareket, rejim gecisi veya kararsiz konviksiyon tasiyan isimleri bu blokta topluyoruz.", "Hold signals do not disappear here. This block collects names carrying movement, regime transition, or unresolved conviction before direction becomes clear.")}
+                </p>
+              </div>
+            </div>
+            <div className="rounded-full border border-amber-500/18 bg-background/35 px-2.5 py-0.5 text-[10px] text-amber-100">{neutralSignals.length} {copy(language, "isim", "names")}</div>
+          </div>
+
+          {visibleNeutralSignals.length > 0 ? (
+            <div className={neutralCardLayout}>
+              {visibleNeutralSignals.map((signal) => (
+                <MomentumSignalCard
+                  key={signal.symbol}
+                  language={language}
+                  signal={signal}
+                  snapshotTimestamp={data.timestamp}
+                  compact={surfaceMode === "overview"}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-2xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">{copy(language, "Su an neutral watchlist'e giren isim yok.", "There are no names in the neutral watchlist right now.")}</div>
+          )}
+
+          {surfaceMode === "overview" && neutralSignals.length > MAX_OVERVIEW_NEUTRALS ? (
+            <button type="button" onClick={() => setSurfaceMode("neutral")} className="inline-flex items-center gap-2 rounded-lg border border-amber-500/18 bg-amber-500/[0.08] px-3 py-2 text-xs font-semibold text-amber-100 transition-colors hover:bg-amber-500/[0.12]">
+              {copy(language, "Tum neutral listeyi ac", "Open the full neutral list")}
+            </button>
+          ) : null}
+        </section>
+      ) : null}
+
       <div className={`grid gap-4 ${showPositiveSection && showNegativeSection ? "xl:grid-cols-2" : ""}`}>
         {showPositiveSection ? (
           <section className="space-y-4">
@@ -1011,7 +1167,13 @@ export default function MomentumFlowSurface({
             {visiblePositiveSignals.length > 0 ? (
               <div className={positiveCardLayout}>
                 {visiblePositiveSignals.map((signal) => (
-                  <MomentumSignalCard key={signal.symbol} language={language} signal={signal} snapshotTimestamp={data.timestamp} />
+                  <MomentumSignalCard
+                    key={signal.symbol}
+                    language={language}
+                    signal={signal}
+                    snapshotTimestamp={data.timestamp}
+                    compact={surfaceMode === "overview"}
+                  />
                 ))}
               </div>
             ) : (
@@ -1045,7 +1207,13 @@ export default function MomentumFlowSurface({
             {visibleNegativeSignals.length > 0 ? (
               <div className={negativeCardLayout}>
                 {visibleNegativeSignals.map((signal) => (
-                  <MomentumSignalCard key={signal.symbol} language={language} signal={signal} snapshotTimestamp={data.timestamp} />
+                  <MomentumSignalCard
+                    key={signal.symbol}
+                    language={language}
+                    signal={signal}
+                    snapshotTimestamp={data.timestamp}
+                    compact={surfaceMode === "overview"}
+                  />
                 ))}
               </div>
             ) : (
