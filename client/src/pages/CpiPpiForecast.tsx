@@ -648,15 +648,15 @@ function MissingWorkspacePanel({
   const descriptor = workspaceDescriptor(slotKey, language);
 
   return (
-    <section className={cn("h-full overflow-hidden rounded-[1.8rem] border p-[1px]", theme.shellClassName)}>
-      <div className={cn("relative flex h-full flex-col overflow-hidden rounded-[1.75rem] p-2.5", theme.innerClassName)}>
+    <section className={cn("rounded-[1.8rem] border p-[1px]", theme.shellClassName)}>
+      <div className={cn("relative rounded-[1.75rem] p-2.5", theme.innerClassName)}>
         <div
           className={cn(
             "pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b",
             theme.glowClassName
           )}
         />
-        <div className="relative flex-1 overflow-hidden space-y-2">
+        <div className="relative space-y-2">
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">
               <div className="flex items-center gap-1.5">
@@ -769,15 +769,15 @@ function ForecastWorkspaceSection({
   const descriptor = workspaceDescriptor(slotKey, language);
 
   return (
-    <section className={cn("h-full overflow-hidden rounded-[1.8rem] border p-[1px]", theme.shellClassName)}>
-      <div className={cn("relative flex h-full flex-col overflow-hidden rounded-[1.75rem] p-2.5", theme.innerClassName)}>
+    <section className={cn("rounded-[1.8rem] border p-[1px]", theme.shellClassName)}>
+      <div className={cn("relative rounded-[1.75rem] p-2.5", theme.innerClassName)}>
         <div
           className={cn(
             "pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b",
             theme.glowClassName
           )}
         />
-        <div className="relative flex-1 overflow-hidden space-y-1">
+        <div className="relative space-y-1">
           <div className="flex flex-wrap items-start justify-between gap-2">
             <div className="min-w-0">
               <div className="flex items-center gap-1.5">
@@ -1079,8 +1079,8 @@ export default function CpiPpiForecastPage({
   }));
 
   return (
-    <div className="fixed inset-0 overflow-hidden bg-background">
-      <div className="container flex h-full flex-col py-3 md:py-4">
+    <div className="min-h-screen bg-background">
+      <div className="container py-3 md:py-4">
         <section className="shrink-0 overflow-hidden rounded-2xl border border-border bg-[linear-gradient(180deg,rgba(7,11,20,0.98),rgba(7,10,18,1))] shadow-[0_24px_80px_rgba(0,0,0,0.32)]">
           <div className="relative px-4 py-2.5 md:px-5 md:py-3">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.12),transparent_28%),radial-gradient(circle_at_top_right,rgba(245,158,11,0.14),transparent_28%),radial-gradient(circle_at_bottom_center,rgba(16,185,129,0.08),transparent_26%)]" />
@@ -1191,7 +1191,7 @@ export default function CpiPpiForecastPage({
           </div>
         ) : null}
 
-        <main className="mt-3 grid h-full flex-1 grid-cols-1 gap-3 overflow-hidden min-h-0 lg:grid-cols-2">
+        <main className="mt-3 grid grid-cols-1 gap-3 lg:grid-cols-2 items-start">
           {workspaceSlots.map(item =>
             item.forecast ? (
               <ForecastWorkspaceSection
