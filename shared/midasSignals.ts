@@ -43,12 +43,29 @@ export interface MidasPipelineMetadata {
   usingFallback: boolean;
 }
 
+export interface MarketOverviewItem {
+  name: string;
+  price: number;
+  change_pct: number;
+  volume: number;
+}
+
 export interface MidasSignalsData {
   timestamp: string;
   symbol_count: number;
   successful: number;
   failed: number;
   mode: string;
+  summary?: {
+    strong_buy: number;
+    buy: number;
+    hold: number;
+    sell: number;
+    strong_sell: number;
+    avg_confidence: number;
+    market_sentiment: string;
+  };
+  market_overview?: Record<string, MarketOverviewItem>;
   signals: MidasSignalRecord[];
   errors?: string[];
   pipeline?: MidasPipelineMetadata;

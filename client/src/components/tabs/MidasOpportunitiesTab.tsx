@@ -1,12 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Activity,
-  ArrowDown,
-  ArrowUp,
   ArrowRightLeft,
   BarChart3,
   Clock,
-  Filter,
   LineChart,
   Loader2,
   RefreshCw,
@@ -23,8 +20,8 @@ import type {
 import { runMomentumScan, type StockResult } from "@/scanner";
 import type { AppLanguage } from "@/lib/i18n";
 
-type FilterMode = "all" | "buy" | "sell" | "top_up" | "top_down";
 type SignalDirection = "positive" | "negative" | "neutral";
+type SurfaceMode = "overview" | "positive" | "negative" | "shifts";
 
 interface LiveSignalSummary {
   action: ActionSignal;
@@ -57,6 +54,8 @@ interface MergedSignalRecord extends MidasSignalRecord {
 }
 
 const SNAPSHOT_REFRESH_INTERVAL_MS = 60 * 1000;
+const MAX_OVERVIEW_SIGNALS = 6;
+const MAX_OVERVIEW_SHIFTS = 6;
 
 function copy(language: AppLanguage, tr: string, en: string) {
   return language === "en" ? en : tr;
@@ -471,18 +470,25 @@ function MomentumSignalCard({
   const currentPrice = signal.live?.currentPrice ?? signal.price;
   const currentDayPct = signal.live?.priceChangePct ?? signal.daily_pct;
   const signalChanged = signal.live && signal.live.action !== signal.signal;
+  const convictionWidth = Math.max(8, Math.min(100, Math.round(signal.conviction)));
   const toneClass =
     signal.directionalBias === "positive"
-      ? "border-emerald-500/25 bg-emerald-500/[0.06]"
+      ? "border-emerald-500/25 bg-[linear-gradient(180deg,rgba(16,185,129,0.12),rgba(15,23,42,0.74))]"
       : signal.directionalBias === "negative"
-        ? "border-rose-500/25 bg-rose-500/[0.06]"
-        : "border-border bg-card/80";
+        ? "border-rose-500/25 bg-[linear-gradient(180deg,rgba(244,63,94,0.12),rgba(15,23,42,0.74))]"
+        : "border-border bg-[linear-gradient(180deg,rgba(245,158,11,0.10),rgba(15,23,42,0.74))]";
+  const meterClass =
+    signal.directionalBias === "positive"
+      ? "bg-gradient-to-r from-emerald-400 to-teal-300"
+      : signal.directionalBias === "negative"
+        ? "bg-gradient-to-r from-rose-400 to-orange-300"
+        : "bg-gradient-to-r from-amber-400 to-yellow-200";
 
   return (
-    <article className={`rounded-2xl border p-4 ${toneClass}`}>
+    <article className={`rounded-[1.35rem] border p-4 shadow-[0_18px_48px_rgba(3,7,18,0.22)] transition-transform duration-200 hover:-translate-y-0.5 ${toneClass}`}>
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <p className="heading-condensed text-2xl text-foreground">{signal.symbol}</p>
             {signal.directionalBias === "positive" ? (
               <TrendingUp className="size-4 text-emerald-300" />
@@ -493,9 +499,17 @@ function MomentumSignalCard({
             )}
           </div>
           <p className="mt-1 text-sm text-foreground/90">{signal.headline}</p>
-          <p className="data-mono mt-1 text-xs text-muted-foreground">
-            {formatPrice(currentPrice)}
-          </p>
+          <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground">
+            <span className="data-mono rounded-full border border-border bg-background/60 px-2.5 py-1">
+              {formatPrice(currentPrice)}
+            </span>
+            {signal.live ? (
+              <span className="rounded-full border border-border bg-background/60 px-2.5 py-1">
+                {copy(language, "Scanner", "Scanner")}:{" "}
+                {scannerSignalLabel(signal.live.scannerSignal, language)}
+              </span>
+            ) : null}
+          </div>
         </div>
 
         <span
@@ -507,21 +521,34 @@ function MomentumSignalCard({
         </span>
       </div>
 
+      <div className="mt-4">
+        <div className="mb-2 flex items-center justify-between gap-3 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+          <span>{copy(language, "Momentum gucu", "Momentum conviction")}</span>
+          <span className="data-mono text-foreground/85">{convictionWidth}/100</span>
+        </div>
+        <div className="h-2 overflow-hidden rounded-full bg-background/75">
+          <div
+            className={`h-full rounded-full transition-all duration-300 ${meterClass}`}
+            style={{ width: `${convictionWidth}%` }}
+          />
+        </div>
+      </div>
+
       <div className="mt-4 flex flex-wrap gap-2 text-[11px]">
-        <span className="rounded-full border border-border bg-background/70 px-2.5 py-1 text-muted-foreground">
+        <span className={`data-mono rounded-full border border-border bg-background/70 px-2.5 py-1 ${pctClass(currentDayPct)}`}>
           {copy(language, "Gunluk", "Daily")}: {formatPct(currentDayPct)}
         </span>
-        <span className="rounded-full border border-border bg-background/70 px-2.5 py-1 text-muted-foreground">
+        <span className={`data-mono rounded-full border border-border bg-background/70 px-2.5 py-1 ${pctClass(signal.weekly_pct)}`}>
           {copy(language, "Haftalik", "Weekly")}: {formatPct(signal.weekly_pct)}
         </span>
-        <span className="rounded-full border border-border bg-background/70 px-2.5 py-1 text-muted-foreground">
+        <span className={`data-mono rounded-full border border-border bg-background/70 px-2.5 py-1 ${pctClass(signal.monthly_pct)}`}>
           {copy(language, "Aylik", "Monthly")}: {formatPct(signal.monthly_pct)}
         </span>
         <span className="rounded-full border border-border bg-background/70 px-2.5 py-1 text-muted-foreground">
           {copy(language, "Konviksiyon", "Conviction")}: {Math.round(signal.conviction)}
         </span>
         {signal.live ? (
-          <span className="rounded-full border border-border bg-background/70 px-2.5 py-1 text-muted-foreground">
+          <span className="data-mono rounded-full border border-border bg-background/70 px-2.5 py-1 text-muted-foreground">
             Bull {signal.live.bullScore} / Bear {signal.live.bearScore}
           </span>
         ) : null}
@@ -541,7 +568,7 @@ function MomentumSignalCard({
         {signal.reasonDetails.map(reason => (
           <div
             key={reason}
-            className="rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-xs leading-6 text-foreground/88"
+            className="rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-xs leading-6 text-foreground/88 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]"
           >
             {reason}
           </div>
@@ -1013,6 +1040,40 @@ export default function MidasOpportunitiesTab({
           </div>
         </div>
       </div>
+
+      {data?.market_overview ? (
+        <section className="rounded-2xl border border-border/60 bg-background/55 p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <BarChart3 className="size-4 text-indigo-300" />
+            <p className="text-sm font-semibold text-foreground">
+              {copy(language, "Genel Piyasa", "Broad Market")}
+            </p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            {Object.entries(data.market_overview).map(([ticker, info]) => {
+              const change = info.change_pct;
+              const changeClass = change > 0 ? "text-emerald-300" : change < 0 ? "text-rose-300" : "text-muted-foreground";
+              const sign = change > 0 ? "+" : "";
+              return (
+                <div key={ticker} className="rounded-xl border border-border/40 bg-background/70 p-3">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    {ticker}
+                  </p>
+                  <p className="data-mono mt-1 text-lg font-semibold text-foreground">
+                    ${info.price.toFixed(2)}
+                  </p>
+                  <p className={`data-mono text-sm font-semibold ${changeClass}`}>
+                    {sign}{change.toFixed(2)}%
+                  </p>
+                  <p className="mt-1 text-[10px] text-muted-foreground">
+                    {info.name}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      ) : null}
 
       {changedSignals.length > 0 ? (
         <section className="rounded-2xl border border-indigo-400/18 bg-indigo-500/10 p-4">
