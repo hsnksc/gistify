@@ -707,15 +707,15 @@ function MissingWorkspacePanel({
   const descriptor = workspaceDescriptor(slotKey, language);
 
   return (
-    <section className={cn("overflow-hidden rounded-[1.8rem] border p-[1px]", theme.shellClassName)}>
-      <div className={cn("relative overflow-hidden rounded-[1.75rem] p-4 md:p-5", theme.innerClassName)}>
+    <section className={cn("h-full overflow-hidden rounded-[1.8rem] border p-[1px]", theme.shellClassName)}>
+      <div className={cn("relative flex h-full flex-col overflow-hidden rounded-[1.75rem] p-4 md:p-5", theme.innerClassName)}>
         <div
           className={cn(
             "pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b",
             theme.glowClassName
           )}
         />
-        <div className="relative space-y-4">
+        <div className="relative flex-1 overflow-y-auto space-y-4 pr-1">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
               <div className="flex items-center gap-2">
@@ -828,15 +828,15 @@ function ForecastWorkspaceSection({
   const descriptor = workspaceDescriptor(slotKey, language);
 
   return (
-    <section className={cn("overflow-hidden rounded-[1.8rem] border p-[1px]", theme.shellClassName)}>
-      <div className={cn("relative overflow-hidden rounded-[1.75rem] p-4 md:p-5", theme.innerClassName)}>
+    <section className={cn("h-full overflow-hidden rounded-[1.8rem] border p-[1px]", theme.shellClassName)}>
+      <div className={cn("relative flex h-full flex-col overflow-hidden rounded-[1.75rem] p-4 md:p-5", theme.innerClassName)}>
         <div
           className={cn(
             "pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b",
             theme.glowClassName
           )}
         />
-        <div className="relative space-y-4">
+        <div className="relative flex-1 overflow-y-auto space-y-4 pr-1">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="min-w-0">
               <div className="flex items-center gap-2">
@@ -1139,13 +1139,13 @@ export default function CpiPpiForecastPage({
   }));
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container py-6 md:py-8">
-        <section className="overflow-hidden rounded-[2rem] border border-border bg-[linear-gradient(180deg,rgba(7,11,20,0.98),rgba(7,10,18,1))] shadow-[0_24px_80px_rgba(0,0,0,0.32)]">
-          <div className="relative px-5 py-5 md:px-6 md:py-6">
+    <div className="h-screen overflow-hidden bg-background">
+      <div className="container flex h-full flex-col py-4 md:py-5">
+        <section className="shrink-0 overflow-hidden rounded-[2rem] border border-border bg-[linear-gradient(180deg,rgba(7,11,20,0.98),rgba(7,10,18,1))] shadow-[0_24px_80px_rgba(0,0,0,0.32)]">
+          <div className="relative px-5 py-4 md:px-6 md:py-5">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.12),transparent_28%),radial-gradient(circle_at_top_right,rgba(245,158,11,0.14),transparent_28%),radial-gradient(circle_at_bottom_center,rgba(16,185,129,0.08),transparent_26%)]" />
             <div className="relative grid gap-5 xl:grid-cols-[minmax(0,1.15fr)_420px]">
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="badge-strong">Dual macro workspaces</span>
                   <span
@@ -1163,14 +1163,14 @@ export default function CpiPpiForecastPage({
                   <p className="heading-condensed text-sm uppercase tracking-[0.18em] text-indigo-300">
                     CPI / PPI Forecast
                   </p>
-                  <h1 className="heading-condensed max-w-4xl text-3xl leading-none text-foreground md:text-[3.15rem]">
+                  <h1 className="heading-condensed max-w-4xl text-2xl leading-none text-foreground md:text-[2.4rem]">
                     {copy(
                       language,
                       "CPI solda, PPI sagda. Iki workspace ayni zeminde.",
                       "CPI on the left, PPI on the right. Two workspaces on one surface."
                     )}
                   </h1>
-                  <p className="max-w-3xl text-[14px] leading-7 text-muted-foreground">
+                  <p className="max-w-3xl text-[13px] leading-6 text-muted-foreground">
                     {copy(
                       language,
                       "Bu alan artik tek parca uzun bir rapor degil. Her yari kendi release frame, scenario map, playbook ve pipeline durumunu tasiyor. Dosya eksikse bosluk yerine neden eksik oldugu gorunur.",
@@ -1179,7 +1179,7 @@ export default function CpiPpiForecastPage({
                   </p>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-xs text-muted-foreground">
+                <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-white/10 bg-black/20 px-4 py-2.5 text-xs text-muted-foreground">
                   <span className="flex items-center gap-1.5">
                     <Activity className="size-3.5 text-emerald-300" />
                     {copy(language, "Aktif workspace", "Active workspaces")}:{" "}
@@ -1257,7 +1257,7 @@ export default function CpiPpiForecastPage({
           </div>
         ) : null}
 
-        <main className="mt-6 grid gap-6 xl:grid-cols-2">
+        <main className="mt-4 grid h-full flex-1 grid-cols-1 gap-4 overflow-hidden min-h-0 xl:grid-cols-2">
           {workspaceSlots.map(item =>
             item.forecast ? (
               <ForecastWorkspaceSection
