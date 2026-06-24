@@ -347,6 +347,8 @@ function buildSourceCandidates(key: MacroForecastWorkspaceKey) {
   const defaults = [
     path.resolve(process.cwd(), "..", definition.workspaceDir, definition.fileName),
     path.resolve(process.cwd(), definition.fileName),
+    path.resolve(process.cwd(), "data", definition.fileName),
+    path.resolve(process.cwd(), "data", definition.workspaceDir, definition.fileName),
     path.resolve(process.cwd(), "client", "public", definition.fileName),
   ];
   const candidates = Array.from(
