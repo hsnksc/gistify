@@ -1,0 +1,550 @@
+- generic [ref=e3]:
+  - region "Notifications alt+T"
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - img "Gistify logo" [ref=e8]
+          - generic [ref=e9]:
+            - paragraph [ref=e10]: Gistify
+            - paragraph [ref=e11]: Earnings Intelligence
+        - navigation [ref=e12]:
+          - button "Earning Strategy" [ref=e13] [cursor=pointer]:
+            - img [ref=e14]
+            - text: Earning Strategy
+          - button "Momentum" [ref=e19] [cursor=pointer]:
+            - img [ref=e20]
+            - text: Momentum
+          - button "Daily" [ref=e27] [cursor=pointer]:
+            - img [ref=e28]
+            - text: Daily
+          - button "CPI/PPI" [ref=e31] [cursor=pointer]:
+            - img [ref=e32]
+            - text: CPI/PPI
+          - button "Calendar" [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Calendar
+          - button "Flow" [ref=e37] [cursor=pointer]:
+            - img [ref=e38]
+            - text: Flow
+      - generic [ref=e42]:
+        - generic [ref=e43]:
+          - button "TR" [ref=e44] [cursor=pointer]
+          - button "EN" [ref=e45] [cursor=pointer]
+        - generic [ref=e46]: Public Preview
+  - generic [ref=e47]: "Public preview mode is active. If Google sign-in and Paddle billing are enabled again, turn this off and use `APP_ACCESS_MODE=managed`."
+  - generic [ref=e70]:
+    - generic [ref=e73]:
+      - generic [ref=e74]:
+        - generic [ref=e75]:
+          - generic [ref=e76]: Dual macro workspaces
+          - generic [ref=e77]: "Pipeline: Synced"
+          - generic [ref=e78]: 00:00 TSI
+        - generic [ref=e79]:
+          - paragraph [ref=e80]: CPI / PPI Forecast
+          - heading "CPI on the left, PPI on the right. Two workspaces on one surface." [level=1] [ref=e81]
+          - paragraph [ref=e82]: This is no longer one long report. Each half carries its own release frame, scenario map, playbook, and pipeline state. If a file is missing, you see why instead of a dead blank area.
+        - generic [ref=e83]:
+          - generic [ref=e84]:
+            - img [ref=e85]
+            - text: "Active workspaces: CPI / PPI"
+          - generic [ref=e88]:
+            - img [ref=e89]
+            - text: "Daily deploy: 00:00 TSI"
+          - generic [ref=e92]:
+            - img [ref=e93]
+            - text: "Last sync: 06/24, 02:06 PM"
+      - generic [ref=e96]:
+        - article [ref=e97]:
+          - paragraph [ref=e98]: CPI status
+          - paragraph [ref=e99]: Synced
+          - paragraph [ref=e100]: Jul 11, 2026
+        - article [ref=e101]:
+          - paragraph [ref=e102]: PPI status
+          - paragraph [ref=e103]: Synced
+          - paragraph [ref=e104]: Jul 15, 2026
+        - article [ref=e105]:
+          - paragraph [ref=e106]: Live source
+          - paragraph [ref=e107]: 2/2 ready
+          - paragraph [ref=e108]: A missing half automatically falls back to the pending panel.
+        - button "Refresh" [ref=e110] [cursor=pointer]:
+          - img
+          - text: Refresh
+    - main [ref=e111]:
+      - generic [ref=e114]:
+        - generic [ref=e115]:
+          - generic [ref=e116]:
+            - paragraph [ref=e119]: CPI · Consumer inflation
+            - heading "US CPI Forecast Snapshot — June 2026" [level=2] [ref=e120]
+            - paragraph [ref=e121]: Haziran CPI headline +0.10% m/m (beklenti +0.25%) bekleniyor. Petrol WTI $72.85 ile Haziran'da -25% düştü = energy deflasyonu derinleşiyor. API envanter düşüşü 765k varil (beklenti 4.5m) = talep zayıf. Hormuz'da 3 supertanker geçti, İran-Oman anlaşması. FOMC hawkish hold (Warsh dot plot 3.8%, 2026'da 0 cut) soft print etkisini sınırlayacak. Core +0.20% stabil. PCE raporu bu hafta (26-27 Haziran).
+          - generic [ref=e122]:
+            - generic [ref=e123]: In line
+            - generic [ref=e124]: "Pipeline: Synced"
+        - generic [ref=e125]:
+          - paragraph [ref=e126]: Base case
+          - paragraph [ref=e127]: Below-consensus headline CPI on oil collapse; core stable but FOMC hawkish limits market reaction
+          - paragraph [ref=e128]: Base case · %55
+        - generic [ref=e129]:
+          - article [ref=e130]:
+            - paragraph [ref=e131]: Release
+            - paragraph [ref=e132]: Jul 11, 2026
+            - paragraph [ref=e133]: Jun 2026 · 08:30 ET
+          - article [ref=e134]:
+            - paragraph [ref=e135]: Conviction
+            - paragraph [ref=e136]: "%67"
+            - paragraph [ref=e137]: Kimi conviction score
+          - article [ref=e138]:
+            - paragraph [ref=e139]: Snapshot
+            - paragraph [ref=e140]: 06/24, 11:01 AM
+            - paragraph [ref=e141]: Jun 24, 2026 · 00:00 TSI
+        - article [ref=e142]:
+          - generic [ref=e143]:
+            - generic [ref=e144]:
+              - paragraph [ref=e145]: CPI pipeline
+              - heading "Synced" [level=3] [ref=e146]
+            - generic [ref=e147]: 00:00 TSI
+          - generic [ref=e148]:
+            - generic [ref=e149]: "Last sync: 06/24, 02:06 PM"
+            - generic [ref=e150]:
+              - text: "Source:"
+              - generic [ref=e151]: C:\Users\hasan\OneDrive\Desktop\gistify\cpi_forecast.json
+        - generic [ref=e152]:
+          - generic [ref=e153]:
+            - article [ref=e154]:
+              - generic [ref=e155]:
+                - generic [ref=e156]:
+                  - paragraph [ref=e157]: CPI release frame
+                  - heading "Jun 2026" [level=3] [ref=e158]
+                  - paragraph [ref=e159]: Jul 11, 2026 · 08:30 ET
+                - generic [ref=e160]: In line
+              - generic [ref=e161]:
+                - generic [ref=e162]:
+                  - paragraph [ref=e163]: Headline MoM
+                  - paragraph [ref=e164]: +0.10%
+                - generic [ref=e165]:
+                  - paragraph [ref=e166]: Headline YoY
+                  - paragraph [ref=e167]: 3.7%
+                - generic [ref=e168]:
+                  - paragraph [ref=e169]: Core MoM
+                  - paragraph [ref=e170]: +0.20%
+                - generic [ref=e171]:
+                  - paragraph [ref=e172]: Core YoY
+                  - paragraph [ref=e173]: 2.9%
+              - generic [ref=e174]:
+                - generic [ref=e175]:
+                  - paragraph [ref=e176]: Confidence
+                  - paragraph [ref=e177]: "%70"
+                - generic [ref=e178]:
+                  - paragraph [ref=e179]: Prior
+                  - paragraph [ref=e180]: +0.5% / +0.2%
+              - generic [ref=e181]:
+                - paragraph [ref=e182]: Thesis
+                - paragraph [ref=e183]: Petrol WTI $72.85 (Haziran -25%) = energy deflasyonu dominant. API envanter 765k düşüş (beklenti 4.5m) = talep zayıf. Hormuz'da 3 supertanker geçti. FOMC hawkish (dot plot 3.8%) soft print etkisini sınırlar. Core stabil (+0.20%) ama DXY 101 = import deflasyon baskısı.
+            - generic [ref=e184]:
+              - generic [ref=e185]:
+                - img [ref=e186]
+                - heading "CPI scenario matrix" [level=3] [ref=e188]
+              - generic [ref=e189]:
+                - article [ref=e190]:
+                  - generic [ref=e191]:
+                    - generic [ref=e192]:
+                      - paragraph [ref=e193]: Scenario
+                      - heading "Base case" [level=3] [ref=e194]
+                    - generic [ref=e195]: "%55"
+                  - generic [ref=e196]:
+                    - generic [ref=e197]:
+                      - paragraph [ref=e198]: CPI outcome
+                      - paragraph [ref=e199]: Headline +0.10% m/m, Core +0.20% m/m — below consensus on oil deflation
+                    - generic [ref=e200]:
+                      - paragraph [ref=e201]: Probability
+                      - paragraph [ref=e202]: "%55"
+                  - generic [ref=e203]:
+                    - generic [ref=e204]:
+                      - paragraph [ref=e205]: Market readthrough
+                      - paragraph [ref=e206]: 10Y yields fade slightly (4.45-4.50%), DXY 100-101 stabil. Airlines (UAL) and chemicals (LYB) rally on jet fuel/naphtha margin expansion. Energy (XLE) and gold (GLD) under pressure. Tech (NVDA) limited upside due to FOMC hawkishness.
+                    - generic [ref=e207]:
+                      - paragraph [ref=e208]: Favored assets
+                      - paragraph [ref=e209]: UAL · LYB · NKE · XLE_PUT · GLD_PUT
+                    - generic [ref=e210]:
+                      - paragraph [ref=e211]: Invalidation
+                      - paragraph [ref=e212]: Iran deal collapses, WTI spikes above $85, or core services re-accelerate above +0.30%.
+                - article [ref=e213]:
+                  - generic [ref=e214]:
+                    - generic [ref=e215]:
+                      - paragraph [ref=e216]: Scenario
+                      - heading "Hotter inflation surprise" [level=3] [ref=e217]
+                    - generic [ref=e218]: "%20"
+                  - generic [ref=e219]:
+                    - generic [ref=e220]:
+                      - paragraph [ref=e221]: CPI outcome
+                      - paragraph [ref=e222]: Headline +0.25%+ m/m, Core +0.30%+ m/m — oil rebounds, services sticky
+                    - generic [ref=e223]:
+                      - paragraph [ref=e224]: Probability
+                      - paragraph [ref=e225]: "%20"
+                  - generic [ref=e226]:
+                    - generic [ref=e227]:
+                      - paragraph [ref=e228]: Market readthrough
+                      - paragraph [ref=e229]: 10Y yields spike (4.55%+), DXY 101.5+. Tech (NVDA) and REITs (AMT) selloff. USD long, energy (XLE) short-cover rally. Gold (GLD) squeeze.
+                    - generic [ref=e230]:
+                      - paragraph [ref=e231]: Favored assets
+                      - paragraph [ref=e232]: USD · XLE · GLD · SPY_PUT
+                    - generic [ref=e233]:
+                      - paragraph [ref=e234]: Invalidation
+                      - paragraph [ref=e235]: Hot print driven by one-off energy component; core services actually stable.
+                - article [ref=e236]:
+                  - generic [ref=e237]:
+                    - generic [ref=e238]:
+                      - paragraph [ref=e239]: Scenario
+                      - heading "Cooler disinflation impulse" [level=3] [ref=e240]
+                    - generic [ref=e241]: "%25"
+                  - generic [ref=e242]:
+                    - generic [ref=e243]:
+                      - paragraph [ref=e244]: CPI outcome
+                      - paragraph [ref=e245]: Headline +0.0% m/m, Core +0.15% m/m — oil collapse fully captured, DXY compression
+                    - generic [ref=e246]:
+                      - paragraph [ref=e247]: Probability
+                      - paragraph [ref=e248]: "%25"
+                  - generic [ref=e249]:
+                    - generic [ref=e250]:
+                      - paragraph [ref=e251]: Market readthrough
+                      - paragraph [ref=e252]: 10Y yields drop (4.35-4.40%), DXY 99.5-100. Growth (QQQ) rallies, airlines (UAL) +10-15%. Homebuilders (DHI) on mortgage relief. Energy (XLE) -5%.
+                    - generic [ref=e253]:
+                      - paragraph [ref=e254]: Favored assets
+                      - paragraph [ref=e255]: QQQ · UAL · DHI · AMT · XLE_PUT
+                    - generic [ref=e256]:
+                      - paragraph [ref=e257]: Invalidation
+                      - paragraph [ref=e258]: Market already priced a benign outcome; FOMC hawkish tone prevents rally.
+            - generic [ref=e259]:
+              - generic [ref=e260]:
+                - img [ref=e261]
+                - heading "CPI playbook" [level=3] [ref=e263]
+              - table [ref=e266]:
+                - rowgroup [ref=e267]:
+                  - row "Asset Bias Trigger Invalidation" [ref=e268]:
+                    - columnheader "Asset" [ref=e269]
+                    - columnheader "Bias" [ref=e270]
+                    - columnheader "Trigger" [ref=e271]
+                    - columnheader "Invalidation" [ref=e272]
+                - rowgroup [ref=e273]:
+                  - row "UST 10Y / TLT Long duration on cooler or inline core Core CPI <= +0.20% and services ex-shelter stable; WTI stays below $75 Sticky core services above +0.30% with wages re-accelerating; PCE hot this week." [ref=e274]:
+                    - cell "UST 10Y / TLT" [ref=e275]
+                    - cell "Long duration on cooler or inline core" [ref=e276]:
+                      - generic [ref=e277]: Long duration on cooler or inline core
+                    - cell "Core CPI <= +0.20% and services ex-shelter stable; WTI stays below $75" [ref=e278]:
+                      - generic [ref=e279]: Core CPI <= +0.20% and services ex-shelter stable; WTI stays below $75
+                    - cell "Sticky core services above +0.30% with wages re-accelerating; PCE hot this week." [ref=e280]:
+                      - generic [ref=e281]: Sticky core services above +0.30% with wages re-accelerating; PCE hot this week.
+                  - row "NASDAQ / QQQ / NVDA Cautious — FOMC hawkish limits multiple expansion 10Y yield drops below 4.45% after release and DXY softens below 100 Hot CPI with 10Y yield above 4.55% and DXY above 101.5." [ref=e282]:
+                    - cell "NASDAQ / QQQ / NVDA" [ref=e283]
+                    - cell "Cautious — FOMC hawkish limits multiple expansion" [ref=e284]:
+                      - generic [ref=e285]: Cautious — FOMC hawkish limits multiple expansion
+                    - cell "10Y yield drops below 4.45% after release and DXY softens below 100" [ref=e286]:
+                      - generic [ref=e287]: 10Y yield drops below 4.45% after release and DXY softens below 100
+                    - cell "Hot CPI with 10Y yield above 4.55% and DXY above 101.5." [ref=e288]:
+                      - generic [ref=e289]: Hot CPI with 10Y yield above 4.55% and DXY above 101.5.
+                  - row "Airlines — UAL / DAL Long — jet fuel collapse + summer demand WTI $72-75 and CPI headline soft; summer travel bookings strong Iran deal collapses, WTI above $85, or travel demand disappoints." [ref=e290]:
+                    - cell "Airlines — UAL / DAL" [ref=e291]
+                    - cell "Long — jet fuel collapse + summer demand" [ref=e292]:
+                      - generic [ref=e293]: Long — jet fuel collapse + summer demand
+                    - cell "WTI $72-75 and CPI headline soft; summer travel bookings strong" [ref=e294]:
+                      - generic [ref=e295]: WTI $72-75 and CPI headline soft; summer travel bookings strong
+                    - cell "Iran deal collapses, WTI above $85, or travel demand disappoints." [ref=e296]:
+                      - generic [ref=e297]: Iran deal collapses, WTI above $85, or travel demand disappoints.
+                  - row "Energy — XLE / XOM / CVX Short — oil supply glut, Iran exports resuming, demand weak WTI below $75 and Hormuz traffic normalizes; API inventory weak demand Iran deal collapses, Israel attacks, or OPEC+ cuts production." [ref=e298]:
+                    - cell "Energy — XLE / XOM / CVX" [ref=e299]
+                    - cell "Short — oil supply glut, Iran exports resuming, demand weak" [ref=e300]:
+                      - generic [ref=e301]: Short — oil supply glut, Iran exports resuming, demand weak
+                    - cell "WTI below $75 and Hormuz traffic normalizes; API inventory weak demand" [ref=e302]:
+                      - generic [ref=e303]: WTI below $75 and Hormuz traffic normalizes; API inventory weak demand
+                    - cell "Iran deal collapses, Israel attacks, or OPEC+ cuts production." [ref=e304]:
+                      - generic [ref=e305]: Iran deal collapses, Israel attacks, or OPEC+ cuts production.
+                  - row "Gold / GLD Short — DXY 101 + FOMC hawkish + real yields rising DXY above 100.85 and 10Y yield above 4.50% on CPI day DXY drops below 99.5 or geopolitical shock (Iran deal collapse)." [ref=e306]:
+                    - cell "Gold / GLD" [ref=e307]
+                    - cell "Short — DXY 101 + FOMC hawkish + real yields rising" [ref=e308]:
+                      - generic [ref=e309]: Short — DXY 101 + FOMC hawkish + real yields rising
+                    - cell "DXY above 100.85 and 10Y yield above 4.50% on CPI day" [ref=e310]:
+                      - generic [ref=e311]: DXY above 100.85 and 10Y yield above 4.50% on CPI day
+                    - cell "DXY drops below 99.5 or geopolitical shock (Iran deal collapse)." [ref=e312]:
+                      - generic [ref=e313]: DXY drops below 99.5 or geopolitical shock (Iran deal collapse).
+          - generic [ref=e314]:
+            - generic [ref=e315]:
+              - generic [ref=e316]:
+                - img [ref=e317]
+                - heading "CPI watchlist" [level=3] [ref=e321]
+              - generic [ref=e322]:
+                - article [ref=e323]:
+                  - paragraph [ref=e324]: Fed path / Warsh
+                  - paragraph [ref=e325]: 0 cuts in 2026 (dot plot 3.8%)
+                  - paragraph [ref=e326]: FOMC hawkish hold on 16-17 Jun. Warsh 'price stability' tone. 9/19 policymakers expect hike.
+                - article [ref=e327]:
+                  - paragraph [ref=e328]: 10Y UST
+                  - paragraph [ref=e329]: 4.50%
+                  - paragraph [ref=e330]: Key regime line. Below 4.45% = growth rally. Above 4.55% = risk-off. Oil pulling down, FOMC pushing up.
+                - article [ref=e331]:
+                  - paragraph [ref=e332]: WTI Oil
+                  - paragraph [ref=e333]: $72.85
+                  - paragraph [ref=e334]: Haziran -25%. API inventory -765k (weak demand). 3 supertankers passed Hormuz. Iran-Oman navigation talks. $70 line = headline CPI 0.0% risk.
+                - article [ref=e335]:
+                  - paragraph [ref=e336]: PCE Report
+                  - paragraph [ref=e337]: This week (26-27 Jun)
+                  - paragraph [ref=e338]: Fed's preferred inflation gauge. PCE soft = dovish sentiment. PCE hot = hawkish. Affects market pricing, not CPI directly.
+                - article [ref=e339]:
+                  - paragraph [ref=e340]: DXY
+                  - paragraph [ref=e341]: 100.85-101.0
+                  - paragraph [ref=e342]: 1-year highs. FOMC hawkish + safe haven. Import deflation pressure on core goods.
+            - generic [ref=e343]:
+              - generic [ref=e344]:
+                - img [ref=e345]
+                - heading "CPI key drivers" [level=3] [ref=e348]
+              - generic [ref=e349]:
+                - generic [ref=e350]: "Oil collapse: WTI -25% in June = gasoline CPI -7% m/m. Energy deflation is the dominant headline driver. API inventory -765k vs 4.5m expected = weak demand."
+                - generic [ref=e351]: "FOMC hawkish hold: Warsh's first meeting. Dot plot 3.8% median = zero cuts in 2026. Limits soft-CPI market reaction."
+                - generic [ref=e352]: "Iran deal: 60-day waiver, 3 supertankers passed Hormuz, Iran-Oman navigation talks. Supply glut risk = oil downside."
+                - generic [ref=e353]: "DXY 101: Strong dollar = import deflation on core goods. Partially offsets PPI passthrough."
+                - generic [ref=e354]: "Core services sticky: Retail sales strong (+0.9% May) = consumer demand resilient. Airline fares, recreation = upside risk."
+            - generic [ref=e355]:
+              - generic [ref=e356]:
+                - img [ref=e357]
+                - heading "CPI risk map" [level=3] [ref=e359]
+              - generic [ref=e360]:
+                - generic [ref=e361]: "Iran deal collapse: Nuclear inspectors denied, Israel/Lebanon tensions, US Congress opposition. WTI $85+ = CPI revision."
+                - generic [ref=e362]: "PCE hot this week: If core PCE +0.3%+ m/m, hawkish sentiment intensifies, 10Y yields spike, DXY strengthens."
+                - generic [ref=e363]: "FOMC hawkish limits reaction: Market may 'sell the rally' even on soft CPI. Warsh 'one data point' rhetoric."
+                - generic [ref=e364]: "Demand weakness: API inventory -765k vs 4.5m expected = weak crude demand. If global recession fears rise, oil and risk assets both fall."
+                - generic [ref=e365]: "Shelter lag: Zillow/Apartment List slowing but BLS 6-12 month lag. Faster deceleration = core downside surprise."
+      - generic [ref=e368]:
+        - generic [ref=e369]:
+          - generic [ref=e370]:
+            - paragraph [ref=e373]: PPI · Producer pipeline
+            - heading "US PPI Forecast Snapshot" [level=2] [ref=e374]
+            - paragraph [ref=e375]: Headline PPI near-flat after May's energy shock. Hormuz deal opened the strait; WTI collapsed to $74, gasoline retail fell to $4.05. Energy PPI mean-reverts to -2.0%. Core PPI stays elevated at +0.5% m/m due to lagged petrochemical passthrough from May's +10.7% energy spike and sticky services. Stage 1 intermediate demand +3.2% from May still feeds into final demand goods. The headline is almost entirely an energy story; core is the real signal.
+          - generic [ref=e376]:
+            - generic [ref=e377]: Cooler than expected
+            - generic [ref=e378]: "Pipeline: Synced"
+        - generic [ref=e379]:
+          - paragraph [ref=e380]: Base case
+          - paragraph [ref=e381]: Flat headline, sticky core; energy mean-reversion masks upstream persistence
+          - paragraph [ref=e382]: Base case · %55
+        - generic [ref=e383]:
+          - article [ref=e384]:
+            - paragraph [ref=e385]: Release
+            - paragraph [ref=e386]: Jul 15, 2026
+            - paragraph [ref=e387]: Jun 2026 · 08:30 ET
+          - article [ref=e388]:
+            - paragraph [ref=e389]: Conviction
+            - paragraph [ref=e390]: "%65"
+            - paragraph [ref=e391]: Kimi conviction score
+          - article [ref=e392]:
+            - paragraph [ref=e393]: Snapshot
+            - paragraph [ref=e394]: 06/24, 02:03 PM
+            - paragraph [ref=e395]: Jun 24, 2026 · 00:00 TSI
+        - article [ref=e396]:
+          - generic [ref=e397]:
+            - generic [ref=e398]:
+              - paragraph [ref=e399]: PPI pipeline
+              - heading "Synced" [level=3] [ref=e400]
+            - generic [ref=e401]: 00:00 TSI
+          - generic [ref=e402]:
+            - generic [ref=e403]: "Last sync: 06/24, 02:06 PM"
+            - generic [ref=e404]:
+              - text: "Source:"
+              - generic [ref=e405]: C:\Users\hasan\OneDrive\Desktop\gistify\ppi_forecast.json
+        - generic [ref=e406]:
+          - generic [ref=e407]:
+            - article [ref=e408]:
+              - generic [ref=e409]:
+                - generic [ref=e410]:
+                  - paragraph [ref=e411]: PPI release frame
+                  - heading "Jun 2026" [level=3] [ref=e412]
+                  - paragraph [ref=e413]: Jul 15, 2026 · 08:30 ET
+                - generic [ref=e414]: Cooler than expected
+              - generic [ref=e415]:
+                - generic [ref=e416]:
+                  - paragraph [ref=e417]: Headline MoM
+                  - paragraph [ref=e418]: +0.1%
+                - generic [ref=e419]:
+                  - paragraph [ref=e420]: Headline YoY
+                  - paragraph [ref=e421]: 6.6%
+                - generic [ref=e422]:
+                  - paragraph [ref=e423]: Core MoM
+                  - paragraph [ref=e424]: +0.5%
+                - generic [ref=e425]:
+                  - paragraph [ref=e426]: Core YoY
+                  - paragraph [ref=e427]: 5.6%
+              - generic [ref=e428]:
+                - generic [ref=e429]:
+                  - paragraph [ref=e430]: Confidence
+                  - paragraph [ref=e431]: "%65"
+                - generic [ref=e432]:
+                  - paragraph [ref=e433]: Prior
+                  - paragraph [ref=e434]: +1.1% / +0.8%
+              - generic [ref=e435]:
+                - paragraph [ref=e436]: Thesis
+                - paragraph [ref=e437]: Energy PPI mean-reverts after Hormuz reopening, but core goods lagged passthrough and sticky services keep core elevated. The headline is an energy mirage; the Fed cares about core.
+            - generic [ref=e438]:
+              - generic [ref=e439]:
+                - img [ref=e440]
+                - heading "PPI scenario matrix" [level=3] [ref=e442]
+              - generic [ref=e443]:
+                - article [ref=e444]:
+                  - generic [ref=e445]:
+                    - generic [ref=e446]:
+                      - paragraph [ref=e447]: Scenario
+                      - heading "Base case" [level=3] [ref=e448]
+                    - generic [ref=e449]: "%55"
+                  - generic [ref=e450]:
+                    - generic [ref=e451]:
+                      - paragraph [ref=e452]: PPI outcome
+                      - paragraph [ref=e453]: Headline +0.1%, core +0.5%. Energy mean-reverts, core stays sticky.
+                    - generic [ref=e454]:
+                      - paragraph [ref=e455]: Probability
+                      - paragraph [ref=e456]: "%55"
+                  - generic [ref=e457]:
+                    - generic [ref=e458]:
+                      - paragraph [ref=e459]: Market readthrough
+                      - paragraph [ref=e460]: Rates digest the headline but focus on core. No major Fed repricing. Cyclicals stabilize if margin narrative holds.
+                    - generic [ref=e461]:
+                      - paragraph [ref=e462]: Favored assets
+                      - paragraph [ref=e463]: Industrials · Quality growth · Gold
+                    - generic [ref=e464]:
+                      - paragraph [ref=e465]: Invalidation
+                      - paragraph [ref=e466]: Core services re-accelerate above +0.7% m/m.
+                - article [ref=e467]:
+                  - generic [ref=e468]:
+                    - generic [ref=e469]:
+                      - paragraph [ref=e470]: Scenario
+                      - heading "Hotter pipeline pressure" [level=3] [ref=e471]
+                    - generic [ref=e472]: "%25"
+                  - generic [ref=e473]:
+                    - generic [ref=e474]:
+                      - paragraph [ref=e475]: PPI outcome
+                      - paragraph [ref=e476]: Headline +0.4%, core +0.7%. Lagged passthrough hits harder than expected; services stay hot.
+                    - generic [ref=e477]:
+                      - paragraph [ref=e478]: Probability
+                      - paragraph [ref=e479]: "%25"
+                  - generic [ref=e480]:
+                    - generic [ref=e481]:
+                      - paragraph [ref=e482]: Market readthrough
+                      - paragraph [ref=e483]: Rates higher, USD firmer, margin-sensitive equities under pressure. Fed hawkishness extends.
+                    - generic [ref=e484]:
+                      - paragraph [ref=e485]: Favored assets
+                      - paragraph [ref=e486]: USD · Energy · Value
+                    - generic [ref=e487]:
+                      - paragraph [ref=e488]: Invalidation
+                      - paragraph [ref=e489]: Hot print is driven by narrow commodity volatility with weak pass-through into CPI.
+                - article [ref=e490]:
+                  - generic [ref=e491]:
+                    - generic [ref=e492]:
+                      - paragraph [ref=e493]: Scenario
+                      - heading "Cleaner disinflation pulse" [level=3] [ref=e494]
+                    - generic [ref=e495]: "%20"
+                  - generic [ref=e496]:
+                    - generic [ref=e497]:
+                      - paragraph [ref=e498]: PPI outcome
+                      - paragraph [ref=e499]: Headline -0.2%, core +0.3%. Energy collapses further; core passthrough fades faster than expected.
+                    - generic [ref=e500]:
+                      - paragraph [ref=e501]: Probability
+                      - paragraph [ref=e502]: "%20"
+                  - generic [ref=e503]:
+                    - generic [ref=e504]:
+                      - paragraph [ref=e505]: Market readthrough
+                      - paragraph [ref=e506]: Fed-cut odds rise, rates soften, broader equity appetite improves. Margin relief narrative strengthens.
+                    - generic [ref=e507]:
+                      - paragraph [ref=e508]: Favored assets
+                      - paragraph [ref=e509]: Growth · Small caps · Duration
+                    - generic [ref=e510]:
+                      - paragraph [ref=e511]: Invalidation
+                      - paragraph [ref=e512]: Market already priced a benign outcome before release.
+            - generic [ref=e513]:
+              - generic [ref=e514]:
+                - img [ref=e515]
+                - heading "PPI playbook" [level=3] [ref=e517]
+              - table [ref=e520]:
+                - rowgroup [ref=e521]:
+                  - row "Asset Bias Trigger Invalidation" [ref=e522]:
+                    - columnheader "Asset" [ref=e523]
+                    - columnheader "Bias" [ref=e524]
+                    - columnheader "Trigger" [ref=e525]
+                    - columnheader "Invalidation" [ref=e526]
+                - rowgroup [ref=e527]:
+                  - row "UST 10Y / TLT Long duration if core PPI cools without hawkish spillover Core PPI <= +0.3% m/m and revisions are benign Broad upstream re-acceleration with hawkish rates repricing" [ref=e528]:
+                    - cell "UST 10Y / TLT" [ref=e529]
+                    - cell "Long duration if core PPI cools without hawkish spillover" [ref=e530]:
+                      - generic [ref=e531]: Long duration if core PPI cools without hawkish spillover
+                    - cell "Core PPI <= +0.3% m/m and revisions are benign" [ref=e532]:
+                      - generic [ref=e533]: Core PPI <= +0.3% m/m and revisions are benign
+                    - cell "Broad upstream re-acceleration with hawkish rates repricing" [ref=e534]:
+                      - generic [ref=e535]: Broad upstream re-acceleration with hawkish rates repricing
+                  - row "Industrial cyclicals Constructive only if margin pressure eases Core goods and services pipeline both avoid upside surprise Input cost shock restarts (Hormuz re-closes, energy spikes)" [ref=e536]:
+                    - cell "Industrial cyclicals" [ref=e537]
+                    - cell "Constructive only if margin pressure eases" [ref=e538]:
+                      - generic [ref=e539]: Constructive only if margin pressure eases
+                    - cell "Core goods and services pipeline both avoid upside surprise" [ref=e540]:
+                      - generic [ref=e541]: Core goods and services pipeline both avoid upside surprise
+                    - cell "Input cost shock restarts (Hormuz re-closes, energy spikes)" [ref=e542]:
+                      - generic [ref=e543]: Input cost shock restarts (Hormuz re-closes, energy spikes)
+                  - row "USD Long on hotter PPI surprise with rates follow-through Headline and core both beat with higher terminal-rate pricing Rates fade despite the beat" [ref=e544]:
+                    - cell "USD" [ref=e545]
+                    - cell "Long on hotter PPI surprise with rates follow-through" [ref=e546]:
+                      - generic [ref=e547]: Long on hotter PPI surprise with rates follow-through
+                    - cell "Headline and core both beat with higher terminal-rate pricing" [ref=e548]:
+                      - generic [ref=e549]: Headline and core both beat with higher terminal-rate pricing
+                    - cell "Rates fade despite the beat" [ref=e550]:
+                      - generic [ref=e551]: Rates fade despite the beat
+          - generic [ref=e552]:
+            - generic [ref=e553]:
+              - generic [ref=e554]:
+                - img [ref=e555]
+                - heading "PPI watchlist" [level=3] [ref=e559]
+              - generic [ref=e560]:
+                - article [ref=e561]:
+                  - paragraph [ref=e562]: Final demand services
+                  - paragraph [ref=e563]: Key swing bucket
+                  - paragraph [ref=e564]: A hot services print can overwhelm softer goods. Portfolio management and healthcare are slow-moving but sticky.
+                - article [ref=e565]:
+                  - paragraph [ref=e566]: Commodity complex
+                  - paragraph [ref=e567]: Oil and metals
+                  - paragraph [ref=e568]: Important for headline direction but not enough alone. WTI $74 is a floor until Hormuz stability is confirmed.
+                - article [ref=e569]:
+                  - paragraph [ref=e570]: Pass-through
+                  - paragraph [ref=e571]: Margin pressure watch
+                  - paragraph [ref=e572]: Focus on whether PPI changes the CPI path or earnings narrative. Stage 1-4 intermediate demand is the leading indicator.
+            - generic [ref=e573]:
+              - generic [ref=e574]:
+                - img [ref=e575]
+                - heading "PPI key drivers" [level=3] [ref=e578]
+              - generic [ref=e579]:
+                - generic [ref=e580]: Goods deflation helps, but services pipeline matters more for readthrough.
+                - generic [ref=e581]: Commodity moves can distort the headline without changing core pass-through.
+                - generic [ref=e582]: PPI matters most when it shifts margin expectations or the CPI narrative.
+                - generic [ref=e583]: Hormuz reopening is a temporary supply shock reversal; geopolitical risk premium can return quickly.
+            - generic [ref=e584]:
+              - generic [ref=e585]:
+                - img [ref=e586]
+                - heading "PPI risk map" [level=3] [ref=e588]
+              - generic [ref=e589]:
+                - generic [ref=e590]: Consensus may already expect a benign upstream print after Hormuz deal.
+                - generic [ref=e591]: Revisions can dominate the first market read. May 2026 was heavily revised.
+                - generic [ref=e592]: Macro tape can be driven by yields or oil even if PPI itself is tame.
+                - generic [ref=e593]: Iran deal is 60-day; collapse risk re-energizes energy PPI.
+  - contentinfo [ref=e55]:
+    - generic [ref=e56]:
+      - generic [ref=e57]:
+        - paragraph [ref=e58]: Gistify
+        - paragraph [ref=e59]: Earnings intelligence platform for momentum scanning, pre-earnings analysis and options research.
+        - paragraph [ref=e60]: "Support: support@gistify.pro"
+      - generic [ref=e61]:
+        - link "Flow" [ref=e62] [cursor=pointer]:
+          - /url: /flow
+        - link "Reports" [ref=e63] [cursor=pointer]:
+          - /url: /reports
+        - link "Pricing" [ref=e64] [cursor=pointer]:
+          - /url: /pricing
+        - link "Terms" [ref=e65] [cursor=pointer]:
+          - /url: /terms
+        - link "Privacy" [ref=e66] [cursor=pointer]:
+          - /url: /privacy
+        - link "Refund" [ref=e67] [cursor=pointer]:
+          - /url: /refund
+        - link "Pay" [ref=e68] [cursor=pointer]:
+          - /url: /pay

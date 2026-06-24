@@ -1,0 +1,60 @@
+- generic [ref=e3]:
+  - region "Notifications alt+T"
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - img "Gistify logo" [ref=e8]
+          - generic [ref=e9]:
+            - paragraph [ref=e10]: Gistify
+            - paragraph [ref=e11]: Earnings Intelligence
+        - navigation [ref=e12]:
+          - button "Earning Strategy" [ref=e13] [cursor=pointer]:
+            - img [ref=e14]
+            - text: Earning Strategy
+          - button "Momentum" [ref=e19] [cursor=pointer]:
+            - img [ref=e20]
+            - text: Momentum
+          - button "Daily" [ref=e27] [cursor=pointer]:
+            - img [ref=e28]
+            - text: Daily
+          - button "CPI/PPI" [ref=e31] [cursor=pointer]:
+            - img [ref=e32]
+            - text: CPI/PPI
+          - button "Calendar" [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+            - text: Calendar
+          - button "Flow" [ref=e37] [cursor=pointer]:
+            - img [ref=e38]
+            - text: Flow
+      - generic [ref=e42]:
+        - generic [ref=e43]:
+          - button "TR" [ref=e44] [cursor=pointer]
+          - button "EN" [ref=e45] [cursor=pointer]
+        - generic [ref=e46]: Public Preview
+  - generic [ref=e47]: "Public preview mode is active. If Google sign-in and Paddle billing are enabled again, turn this off and use `APP_ACCESS_MODE=managed`."
+  - generic [ref=e51]:
+    - heading "Loading workspace" [level=2] [ref=e52]
+    - paragraph [ref=e53]: The earnings strategy and momentum workspaces are loading.
+    - paragraph [ref=e54]: Daily and portfolio modules are connecting as well.
+  - contentinfo [ref=e55]:
+    - generic [ref=e56]:
+      - generic [ref=e57]:
+        - paragraph [ref=e58]: Gistify
+        - paragraph [ref=e59]: Earnings intelligence platform for momentum scanning, pre-earnings analysis and options research.
+        - paragraph [ref=e60]: "Support: support@gistify.pro"
+      - generic [ref=e61]:
+        - link "Flow" [ref=e62] [cursor=pointer]:
+          - /url: /flow
+        - link "Reports" [ref=e63] [cursor=pointer]:
+          - /url: /reports
+        - link "Pricing" [ref=e64] [cursor=pointer]:
+          - /url: /pricing
+        - link "Terms" [ref=e65] [cursor=pointer]:
+          - /url: /terms
+        - link "Privacy" [ref=e66] [cursor=pointer]:
+          - /url: /privacy
+        - link "Refund" [ref=e67] [cursor=pointer]:
+          - /url: /refund
+        - link "Pay" [ref=e68] [cursor=pointer]:
+          - /url: /pay

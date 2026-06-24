@@ -1,0 +1,26 @@
+- generic [ref=e3]:
+  - region "Notifications alt+T"
+  - generic [ref=e5]:
+    - heading "Checking session" [level=1] [ref=e6]
+    - paragraph [ref=e7]: This may take a few seconds.
+  - contentinfo [ref=e8]:
+    - generic [ref=e9]:
+      - generic [ref=e10]:
+        - paragraph [ref=e11]: Gistify
+        - paragraph [ref=e12]: Earnings intelligence platform for momentum scanning, pre-earnings analysis and options research.
+        - paragraph [ref=e13]: "Support: support@gistify.pro"
+      - generic [ref=e14]:
+        - link "Flow" [ref=e15] [cursor=pointer]:
+          - /url: /flow
+        - link "Reports" [ref=e16] [cursor=pointer]:
+          - /url: /reports
+        - link "Pricing" [ref=e17] [cursor=pointer]:
+          - /url: /pricing
+        - link "Terms" [ref=e18] [cursor=pointer]:
+          - /url: /terms
+        - link "Privacy" [ref=e19] [cursor=pointer]:
+          - /url: /privacy
+        - link "Refund" [ref=e20] [cursor=pointer]:
+          - /url: /refund
+        - link "Pay" [ref=e21] [cursor=pointer]:
+          - /url: /pay
