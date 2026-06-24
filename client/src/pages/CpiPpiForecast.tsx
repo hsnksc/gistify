@@ -414,10 +414,12 @@ function ScenarioRow({
   scenario,
   releaseName,
   slotKey,
+  language,
 }: {
   scenario: MacroForecastScenario;
   releaseName: MacroForecastRelease["name"];
   slotKey: MacroForecastWorkspaceKey;
+  language: AppLanguage;
 }) {
   const theme = WORKSPACE_THEME[slotKey];
 
@@ -962,6 +964,7 @@ function ForecastWorkspaceSection({
                         scenario={scenario}
                         releaseName={forecast.release.name}
                         slotKey={slotKey}
+                        language={language}
                       />
                     ))
                   ) : (
