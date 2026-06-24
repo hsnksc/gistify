@@ -1,0 +1,144 @@
+{
+  "generatedAt": "2026-06-24T07:54:07Z",
+  "reportDate": "2026-06-24",
+  "title": "US CPI Forecast Snapshot — June 2026",
+  "summary": "Haziran CPI headline +0.10% m/m (beklenti +0.25%) bekleniyor. Petrol WTI $73.37 ile Haziran'da -22% düştü = energy deflasyonu dominant. FOMC hawkish hold (Warsh dot plot 3.8%, 2026'da 0 cut) soft print etkisini sınırlayacak. Core +0.20% stabil. PCE raporu bu hafta (26-27 Haziran) piyasa sentiment'ini etkiler.",
+  "baseCase": "Below-consensus headline CPI on oil collapse; core stable but FOMC hawkish limits market reaction",
+  "conviction": 65,
+  "release": {
+    "name": "CPI",
+    "period": "Jun 2026",
+    "releaseDate": "2026-07-11",
+    "releaseTimeEt": "08:30 ET",
+    "headlineMoM": "+0.10%",
+    "headlineYoY": "3.7%",
+    "coreMoM": "+0.20%",
+    "coreYoY": "2.9%",
+    "priorHeadlineMoM": "+0.5%",
+    "priorHeadlineYoY": "4.2%",
+    "priorCoreMoM": "+0.2%",
+    "priorCoreYoY": "2.9%",
+    "bias": "BELOW",
+    "confidence": 68,
+    "thesis": "Petrol WTI $73.37 (Haziran -22%) = energy deflasyonu dominant. Gasoline CPI -7% m/m. FOMC hawkish (dot plot 3.8%) soft print etkisini sınırlar. Core stabil (+0.20%) ama DXY 101 = import deflasyon baskısı."
+  },
+  "scenarios": [
+    {
+      "id": "base",
+      "label": "Base case",
+      "probability": 55,
+      "outcome": "Headline +0.10% m/m, Core +0.20% m/m — below consensus on oil deflation",
+      "marketReadthrough": "10Y yields fade slightly (4.45-4.50%), DXY 100-101 stabil. Airlines (UAL) and chemicals (LYB) rally on jet fuel/naphtha margin expansion. Energy (XLE) and gold (GLD) under pressure. Tech (NVDA) limited upside due to FOMC hawkishness.",
+      "favoredAssets": [
+        "UAL",
+        "LYB",
+        "NKE",
+        "XLE_PUT",
+        "GLD_PUT"
+      ],
+      "invalidation": "Iran deal collapses, WTI spikes above $85, or core services re-accelerate above +0.30%."
+    },
+    {
+      "id": "hot",
+      "label": "Hotter inflation surprise",
+      "probability": 20,
+      "outcome": "Headline +0.25%+ m/m, Core +0.30%+ m/m — oil rebounds, services sticky",
+      "marketReadthrough": "10Y yields spike (4.55%+), DXY 101.5+. Tech (NVDA) and REITs (AMT) selloff. USD long, energy (XLE) short-cover rally. Gold (GLD) squeeze.",
+      "favoredAssets": [
+        "USD",
+        "XLE",
+        "GLD",
+        "SPY_PUT"
+      ],
+      "invalidation": "Hot print driven by one-off energy component; core services actually stable."
+    },
+    {
+      "id": "cool",
+      "label": "Cooler disinflation impulse",
+      "probability": 25,
+      "outcome": "Headline +0.0% m/m, Core +0.15% m/m — oil collapse fully captured, DXY compression",
+      "marketReadthrough": "10Y yields drop (4.35-4.40%), DXY 99.5-100. Growth (QQQ) rallies, airlines (UAL) +10-15%. Homebuilders (DHI) on mortgage relief. Energy (XLE) -5%.",
+      "favoredAssets": [
+        "QQQ",
+        "UAL",
+        "DHI",
+        "AMT",
+        "XLE_PUT"
+      ],
+      "invalidation": "Market already priced a benign outcome; FOMC hawkish tone prevents rally."
+    }
+  ],
+  "setups": [
+    {
+      "asset": "UST 10Y / TLT",
+      "bias": "Long duration on cooler or inline core",
+      "trigger": "Core CPI <= +0.20% and services ex-shelter stable; WTI stays below $75",
+      "invalidation": "Sticky core services above +0.30% with wages re-accelerating; PCE hot this week."
+    },
+    {
+      "asset": "NASDAQ / QQQ / NVDA",
+      "bias": "Cautious — FOMC hawkish limits multiple expansion",
+      "trigger": "10Y yield drops below 4.45% after release and DXY softens below 100",
+      "invalidation": "Hot CPI with 10Y yield above 4.55% and DXY above 101.5."
+    },
+    {
+      "asset": "Airlines — UAL / DAL",
+      "bias": "Long — jet fuel collapse + summer demand",
+      "trigger": "WTI $73-75 and CPI headline soft; summer travel bookings strong",
+      "invalidation": "Iran deal collapses, WTI above $85, or travel demand disappoints."
+    },
+    {
+      "asset": "Energy — XLE / XOM / CVX",
+      "bias": "Short — oil supply glut, Iran exports resuming",
+      "trigger": "WTI below $75 and Hormuz traffic normalizes; 30m barrels shipped",
+      "invalidation": "Iran deal collapses, Israel attacks, or OPEC+ cuts production."
+    },
+    {
+      "asset": "Gold / GLD",
+      "bias": "Short — DXY 101 + FOMC hawkish + real yields rising",
+      "trigger": "DXY above 100.85 and 10Y yield above 4.50% on CPI day",
+      "invalidation": "DXY drops below 99.5 or geopolitical shock (Iran deal collapse)."
+    }
+  ],
+  "watchItems": [
+    {
+      "label": "Fed path / Warsh",
+      "value": "0 cuts in 2026 (dot plot 3.8%)",
+      "note": "FOMC hawkish hold on 16-17 Jun. Warsh 'price stability' tone. 9/19 policymakers expect hike. Main macro transmission channel."
+    },
+    {
+      "label": "10Y UST",
+      "value": "4.50%",
+      "note": "Key regime line. Below 4.45% = growth rally. Above 4.55% = risk-off. Oil collapse pulling it down, FOMC hawkish pushing up."
+    },
+    {
+      "label": "WTI Oil",
+      "value": "$73.37",
+      "note": "Haziran -22%. Iran 60-day waiver, 30m barrels shipped. Hormuz traffic resuming. $70 line = headline CPI 0.0% risk."
+    },
+    {
+      "label": "PCE Report",
+      "value": "This week (26-27 Jun)",
+      "note": "Fed's preferred inflation gauge. PCE soft = dovish sentiment. PCE hot = hawkish. Affects market pricing, not CPI directly."
+    },
+    {
+      "label": "DXY",
+      "value": "100.85-101.0",
+      "note": "1-year highs. FOMC hawkish + safe haven. Import deflation pressure on core goods."
+    }
+  ],
+  "keyDrivers": [
+    "Oil collapse: WTI -22% in June = gasoline CPI -7% m/m. Energy deflation is the dominant headline driver.",
+    "FOMC hawkish hold: Warsh's first meeting. Dot plot 3.8% median = zero cuts in 2026. Limits soft-CPI market reaction.",
+    "Iran deal: 60-day waiver granted, 30m barrels shipped, Hormuz traffic resuming. Supply glut risk = oil downside.",
+    "DXY 101: Strong dollar = import deflation on core goods. Partially offsets PPI passthrough.",
+    "Core services sticky: Retail sales strong (+0.9% May) = consumer demand resilient. Airline fares, recreation = upside risk."
+  ],
+  "risks": [
+    "Iran deal collapse: Nuclear inspectors denied, Israel/Lebanon tensions, US Congress opposition. WTI $85+ = CPI revision.",
+    "PCE hot this week: If core PCE +0.3%+ m/m, hawkish sentiment intensifies, 10Y yields spike, DXY strengthens.",
+    "FOMC hawkish limits reaction: Market may 'sell the rally' even on soft CPI. Warsh 'one data point' rhetoric.",
+    "Geopolitics: Israel-Lebanon, Hormuz partial closure (22 Jun morning spike). Oil volatility = CPI uncertainty.",
+    "Shelter lag: Zillow/Apartment List slowing but BLS 6-12 month lag. Faster deceleration = core downside surprise."
+  ]
+}
