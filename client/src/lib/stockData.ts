@@ -72,8 +72,8 @@ export const stocksData: StockData[] = [
     sector: 'AI Yarı İletken',
     earningsDate: '27 May 2026',
     earningsTime: 'AMC',
-    currentPrice: 176.27,
-    priceChange6M: 144,
+    currentPrice: 275.25,
+    priceChange6M: 136,
     priceChange1M: 22,
     
     epsEstimate: 0.81,
@@ -83,7 +83,7 @@ export const stocksData: StockData[] = [
     beatRateLast4Q: 100,
     avgEpsBeat: 12.5,
     
-    rsi14: 63,
+    rsi14: 57,
     volumeCurrent: 29.2,
     volumeAvg3M: 12,
     volumeStatus: 'VERY_HIGH',
@@ -112,7 +112,7 @@ export const stocksData: StockData[] = [
       'Geçen çeyrekte +18.4% hareket etmişti (yüksek beklenti)'
     ],
     
-    momentumScore: 96,
+    momentumScore: 80,
     earningsBeatProbability: 78,
     signal: 'STRONG_BUY',
     riskLevel: 'MEDIUM',
@@ -122,7 +122,7 @@ export const stocksData: StockData[] = [
     keyMetricValue: '+50% YoY',
     
     historicalMoves: [18.4, 8.2, -5.1, 12.3],
-    impliedMove: 9.7,
+    impliedMove: 8.1,
   },
   {
     ticker: 'CRWD',
@@ -130,7 +130,7 @@ export const stocksData: StockData[] = [
     sector: 'Siber Güvenlik',
     earningsDate: '3 Haz 2026',
     earningsTime: 'AMC',
-    currentPrice: 624.41,
+    currentPrice: 672.5,
     priceChange6M: 90,
     priceChange1M: 18,
     
@@ -170,7 +170,7 @@ export const stocksData: StockData[] = [
       'Rekabetin artması (Palo Alto, SentinelOne)'
     ],
     
-    momentumScore: 94,
+    momentumScore: 93,
     earningsBeatProbability: 74,
     signal: 'STRONG_BUY',
     riskLevel: 'MEDIUM',
@@ -180,7 +180,7 @@ export const stocksData: StockData[] = [
     keyMetricValue: '+33% YoY',
     
     historicalMoves: [7.2, 5.8, 11.4, 3.9],
-    impliedMove: 8.5,
+    impliedMove: 8.4,
   },
   {
     ticker: 'AVGO',
@@ -188,8 +188,8 @@ export const stocksData: StockData[] = [
     sector: 'AI Yarı İletken',
     earningsDate: '3 Haz 2026',
     earningsTime: 'AMC',
-    currentPrice: 420.33,
-    priceChange6M: 24,
+    currentPrice: 381.315,
+    priceChange6M: 22,
     priceChange1M: 32,
     
     epsEstimate: 2.32,
@@ -199,7 +199,7 @@ export const stocksData: StockData[] = [
     beatRateLast4Q: 75,
     avgEpsBeat: 3.1,
     
-    rsi14: 62,
+    rsi14: 60,
     volumeCurrent: 16.2,
     volumeAvg3M: 3.5,
     volumeStatus: 'HIGH',
@@ -228,7 +228,7 @@ export const stocksData: StockData[] = [
       'VMware entegrasyon maliyetleri devam ediyor'
     ],
     
-    momentumScore: 88,
+    momentumScore: 84,
     earningsBeatProbability: 71,
     signal: 'BUY',
     riskLevel: 'LOW',
@@ -238,7 +238,7 @@ export const stocksData: StockData[] = [
     keyMetricValue: '$22B (+47%)',
     
     historicalMoves: [4.8, -11.4, 3.2, 6.1],
-    impliedMove: 7.2,
+    impliedMove: 6.8,
   },
   {
     ticker: 'PANW',
@@ -246,7 +246,7 @@ export const stocksData: StockData[] = [
     sector: 'Siber Güvenlik',
     earningsDate: '2 Haz 2026',
     earningsTime: 'AMC',
-    currentPrice: 246.66,
+    currentPrice: 285.26,
     priceChange6M: 77,
     priceChange1M: 12,
     
@@ -286,9 +286,9 @@ export const stocksData: StockData[] = [
       'Yüksek değerleme premium'
     ],
     
-    momentumScore: 62,
+    momentumScore: 18,
     earningsBeatProbability: 65,
-    signal: 'NEUTRAL',
+    signal: 'CAUTION_HOT',
     riskLevel: 'HIGH',
     
     thesis: 'PANW güçlü fundamentaller sunuyor ancak teknik tablo endişe verici. RSI 78 ile aşırı alım bölgesine yakın ve analist hedef fiyatı mevcut fiyatın %12 altında. Earnings iyi gelse bile "haberle sat" dinamiği devreye girebilir. Mevcut pozisyon sahipleri için tutma, yeni giriş için daha iyi fiyat bekleme stratejisi önerilir.',
@@ -296,7 +296,7 @@ export const stocksData: StockData[] = [
     keyMetricValue: '$6.3B (+33%)',
     
     historicalMoves: [9.8, -8.2, 5.4, 11.2],
-    impliedMove: 8.8,
+    impliedMove: 8.7,
   },
   {
     ticker: 'COST',
@@ -304,8 +304,8 @@ export const stocksData: StockData[] = [
     sector: 'Defansif Perakende',
     earningsDate: '28 May 2026',
     earningsTime: 'AMC',
-    currentPrice: 1020,
-    priceChange6M: 27,
+    currentPrice: 961.01,
+    priceChange6M: 28,
     priceChange1M: 5,
     
     epsEstimate: 4.91,
@@ -315,7 +315,7 @@ export const stocksData: StockData[] = [
     beatRateLast4Q: 100,
     avgEpsBeat: 4.2,
     
-    rsi14: 55,
+    rsi14: 56,
     volumeCurrent: 1.95,
     volumeAvg3M: 2,
     volumeStatus: 'NORMAL',
@@ -343,7 +343,7 @@ export const stocksData: StockData[] = [
       'Enflasyon baskısı marjları sıkıştırabilir'
     ],
     
-    momentumScore: 75,
+    momentumScore: 77,
     earningsBeatProbability: 68,
     signal: 'BUY',
     riskLevel: 'LOW',
@@ -353,7 +353,7 @@ export const stocksData: StockData[] = [
     keyMetricValue: '+8% YoY',
     
     historicalMoves: [3.2, 1.8, 4.5, 2.1],
-    impliedMove: 4.2,
+    impliedMove: 4.4,
   },
   {
     ticker: 'DELL',
@@ -361,8 +361,8 @@ export const stocksData: StockData[] = [
     sector: 'AI Sunucu / Donanım',
     earningsDate: '27 May 2026',
     earningsTime: 'AMC',
-    currentPrice: 115,
-    priceChange6M: 107,
+    currentPrice: 433.74,
+    priceChange6M: 108,
     priceChange1M: 8,
     
     epsEstimate: 2.97,
@@ -372,7 +372,7 @@ export const stocksData: StockData[] = [
     beatRateLast4Q: 75,
     avgEpsBeat: 10.2,
     
-    rsi14: 58,
+    rsi14: 59,
     volumeCurrent: 3.7,
     volumeAvg3M: 8,
     volumeStatus: 'LOW',
@@ -400,7 +400,7 @@ export const stocksData: StockData[] = [
       'Yüksek borç yükü'
     ],
     
-    momentumScore: 68,
+    momentumScore: 70,
     earningsBeatProbability: 58,
     signal: 'NEUTRAL',
     riskLevel: 'MEDIUM',
@@ -410,7 +410,7 @@ export const stocksData: StockData[] = [
     keyMetricValue: '$25B Hedef',
     
     historicalMoves: [12.4, -6.8, 8.9, 5.2],
-    impliedMove: 9.5,
+    impliedMove: 9.7,
   },
   {
     ticker: 'ADSK',
@@ -531,8 +531,8 @@ export const stocksData: StockData[] = [
     sector: 'CRM Yazılımı',
     earningsDate: '28 May 2026',
     earningsTime: 'AMC',
-    currentPrice: 245,
-    priceChange6M: -33,
+    currentPrice: 152.76,
+    priceChange6M: -32,
     priceChange1M: -5,
     
     epsEstimate: 2.65,
@@ -542,7 +542,7 @@ export const stocksData: StockData[] = [
     beatRateLast4Q: 75,
     avgEpsBeat: 3.8,
     
-    rsi14: 42,
+    rsi14: 43,
     volumeCurrent: 12.4,
     volumeAvg3M: 6,
     volumeStatus: 'HIGH',
@@ -570,7 +570,7 @@ export const stocksData: StockData[] = [
       'Yapay zeka geçişi yavaş ilerliyor'
     ],
     
-    momentumScore: 35,
+    momentumScore: 38,
     earningsBeatProbability: 38,
     signal: 'STRONG_SELL',
     riskLevel: 'VERY_HIGH',
@@ -580,7 +580,7 @@ export const stocksData: StockData[] = [
     keyMetricValue: '+7.5% YoY',
     
     historicalMoves: [-8.4, -12.1, 5.2, -6.8],
-    impliedMove: 7.8,
+    impliedMove: 8.1,
   },
   {
     ticker: 'ZS',
@@ -588,8 +588,8 @@ export const stocksData: StockData[] = [
     sector: 'Siber Güvenlik',
     earningsDate: '25 May 2026',
     earningsTime: 'AMC',
-    currentPrice: 195,
-    priceChange6M: -40,
+    currentPrice: 127.27,
+    priceChange6M: -38,
     priceChange1M: -12,
     
     epsEstimate: 1.04,
@@ -599,7 +599,7 @@ export const stocksData: StockData[] = [
     beatRateLast4Q: 75,
     avgEpsBeat: 5.2,
     
-    rsi14: 32,
+    rsi14: 34,
     volumeCurrent: 2.5,
     volumeAvg3M: 3,
     volumeStatus: 'NORMAL',
@@ -627,7 +627,7 @@ export const stocksData: StockData[] = [
       'Büyüme yavaşlaması endişesi'
     ],
     
-    momentumScore: 28,
+    momentumScore: 32,
     earningsBeatProbability: 42,
     signal: 'STRONG_SELL',
     riskLevel: 'VERY_HIGH',
@@ -637,7 +637,7 @@ export const stocksData: StockData[] = [
     keyMetricValue: '+22% YoY',
     
     historicalMoves: [-18.4, 12.2, -8.9, -5.4],
-    impliedMove: 11.2,
+    impliedMove: 11.6,
   },
 ];
 

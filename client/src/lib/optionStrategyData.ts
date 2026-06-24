@@ -62,13 +62,13 @@ export const optionStrategyData: OptionStrategy[] = [
     sector: 'Semiconductors',
     earningsDate: '27 May 2026',
     
-    momentumScore: 96,
-    priceChange6M: 144,
-    rsi14: 65,
+    momentumScore: 80,
+    priceChange6M: 136,
+    rsi14: 59,
     
-    currentIV: 92,
+    currentIV: 89,
     historicalIV: 65,
-    impliedMove: 12.5,
+    impliedMove: 10.9,
     expectedIVCrush: 42,
     ivCrushPotential: 'HIGH',
     
@@ -105,13 +105,13 @@ export const optionStrategyData: OptionStrategy[] = [
     sector: 'Cybersecurity',
     earningsDate: '3 June 2026',
     
-    momentumScore: 94,
+    momentumScore: 93,
     priceChange6M: 90,
     rsi14: 72,
     
     currentIV: 78,
     historicalIV: 52,
-    impliedMove: 10.4,
+    impliedMove: 10.3,
     expectedIVCrush: 38,
     ivCrushPotential: 'HIGH',
     
@@ -148,13 +148,13 @@ export const optionStrategyData: OptionStrategy[] = [
     sector: 'Semiconductors',
     earningsDate: '3 June 2026',
     
-    momentumScore: 88,
-    priceChange6M: 24,
-    rsi14: 62,
+    momentumScore: 84,
+    priceChange6M: 22,
+    rsi14: 60,
     
-    currentIV: 45,
+    currentIV: 44,
     historicalIV: 42,
-    impliedMove: 6.8,
+    impliedMove: 6.4,
     expectedIVCrush: 22,
     ivCrushPotential: 'MEDIUM',
     
@@ -191,13 +191,13 @@ export const optionStrategyData: OptionStrategy[] = [
     sector: 'Retail',
     earningsDate: '28 May 2026',
     
-    momentumScore: 75,
-    priceChange6M: 27,
-    rsi14: 58,
+    momentumScore: 77,
+    priceChange6M: 28,
+    rsi14: 59,
     
     currentIV: 22,
     historicalIV: 21,
-    impliedMove: 3.5,
+    impliedMove: 3.7,
     expectedIVCrush: 15,
     ivCrushPotential: 'LOW',
     
@@ -234,13 +234,13 @@ export const optionStrategyData: OptionStrategy[] = [
     sector: 'Technology Hardware',
     earningsDate: '29 May 2026',
     
-    momentumScore: 82,
-    priceChange6M: 35,
-    rsi14: 60,
+    momentumScore: 84,
+    priceChange6M: 36,
+    rsi14: 61,
     
     currentIV: 62,
     historicalIV: 55,
-    impliedMove: 8.5,
+    impliedMove: 8.7,
     expectedIVCrush: 28,
     ivCrushPotential: 'MEDIUM',
     
@@ -277,13 +277,13 @@ export const optionStrategyData: OptionStrategy[] = [
     sector: 'Cybersecurity',
     earningsDate: '31 May 2026',
     
-    momentumScore: 78,
+    momentumScore: 0,
     priceChange6M: 45,
     rsi14: 87,
     
     currentIV: 88,
     historicalIV: 58,
-    impliedMove: 9.2,
+    impliedMove: 9.1,
     expectedIVCrush: 35,
     ivCrushPotential: 'HIGH',
     
@@ -363,13 +363,13 @@ export const optionStrategyData: OptionStrategy[] = [
     sector: 'Software',
     earningsDate: '1 June 2026',
     
-    momentumScore: 55,
-    priceChange6M: -33,
-    rsi14: 42,
+    momentumScore: 58,
+    priceChange6M: -32,
+    rsi14: 43,
     
-    currentIV: 55,
+    currentIV: 56,
     historicalIV: 48,
-    impliedMove: 7.2,
+    impliedMove: 7.5,
     expectedIVCrush: 24,
     ivCrushPotential: 'MEDIUM',
     
@@ -449,13 +449,13 @@ export const optionStrategyData: OptionStrategy[] = [
     sector: 'Cybersecurity',
     earningsDate: '2 June 2026',
     
-    momentumScore: 42,
-    priceChange6M: -40,
-    rsi14: 35,
+    momentumScore: 46,
+    priceChange6M: -38,
+    rsi14: 37,
     
-    currentIV: 95,
+    currentIV: 96,
     historicalIV: 60,
-    impliedMove: 11.8,
+    impliedMove: 12.2,
     expectedIVCrush: 43,
     ivCrushPotential: 'HIGH',
     
