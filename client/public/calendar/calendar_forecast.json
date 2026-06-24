@@ -1,0 +1,165 @@
+{
+  "reportDate": "2026-06-24",
+  "generatedAt": "2026-06-24T12:00:00+03:00",
+  "title": "24 Haziran 2026 — Ekonomik Takvim & Makro Rapor",
+  "summary": "Bugun yoğun bir Avrupa-Asya takvimi ile basladi, öğleden sonra ABD verileri ve aksam saatlerinde kritik BOJ/FED olaylari ile devam edecek. Avustralya TUFE beklentinin altinda gelerek (%4,00 vs %4,30) AUD/USD uzerinde baski yaratti. Almanya Ifo karisik bir tablo cizdi: mevcut degerlendirme beklentiyi asarken, beklentiler altinda kaldi. Isvicre ZEW sert bir dususle (-25,0) Avrupa sentimentinde zayifligi dogruladi. VIX 19,21 seviyesinde — normal bandin alt yarisinda, 'nutr-azalan' korku. FED Stres Testi ve BOJ Ueda konusmasi aksam 23:00'da piyasalari hareketlendirecek potansiyel katalizorler. Ana tema: Enflasyon yavasliyor ama merkez bankalari hala hawkish.",
+  "events": [
+    {
+      "id": "au-cpi-may-2026",
+      "time": "04:30",
+      "country": "Avustralya",
+      "countryFlag": "🇦🇺",
+      "eventName": "TUFE Agirlikli Ortalamasi (Yillik) (May)",
+      "importance": "high",
+      "previous": "%4,20",
+      "forecast": "%4,30",
+      "actual": "%4,00",
+      "currency": "AUD",
+      "unit": "YoY"
+    },
+    {
+      "id": "de-ifo-business-climate-jun-2026",
+      "time": "11:00",
+      "country": "Almanya",
+      "countryFlag": "🇩🇪",
+      "eventName": "Ifo Is Iklimi Endeksi (Haz)",
+      "importance": "high",
+      "previous": "85,0",
+      "forecast": "85,6",
+      "actual": "85,6",
+      "currency": "EUR",
+      "unit": "Index"
+    },
+    {
+      "id": "de-ifo-expectations-jun-2026",
+      "time": "11:00",
+      "country": "Almanya",
+      "countryFlag": "🇩🇪",
+      "eventName": "Isletme Beklentileri (Haz)",
+      "importance": "high",
+      "previous": "83,9",
+      "forecast": "85,0",
+      "actual": "84,1",
+      "currency": "EUR",
+      "unit": "Index"
+    },
+    {
+      "id": "de-ifo-current-assessment-jun-2026",
+      "time": "11:00",
+      "country": "Almanya",
+      "countryFlag": "🇩🇪",
+      "eventName": "Mevcut Degerlendirme (Haz)",
+      "importance": "high",
+      "previous": "86,1",
+      "forecast": "86,0",
+      "actual": "87,0",
+      "currency": "EUR",
+      "unit": "Index"
+    },
+    {
+      "id": "ch-zew-expectations-jun-2026",
+      "time": "11:00",
+      "country": "Isvicre",
+      "countryFlag": "🇨🇭",
+      "eventName": "ZEW Beklentileri (Haz)",
+      "importance": "medium",
+      "previous": "-11,1",
+      "forecast": null,
+      "actual": "-25,0",
+      "currency": "CHF",
+      "unit": "Index"
+    },
+    {
+      "id": "us-mba-mortgage-applications-weekly",
+      "time": "14:00",
+      "country": "ABD",
+      "countryFlag": "🇺🇸",
+      "eventName": "MBA Ipotek Basvurulari (Haftalik)",
+      "importance": "medium",
+      "previous": "-%3,8",
+      "forecast": null,
+      "actual": "+%1,0",
+      "currency": "USD",
+      "unit": "WoW"
+    },
+    {
+      "id": "us-mba-30y-mortgage-rate",
+      "time": "14:00",
+      "country": "ABD",
+      "countryFlag": "🇺🇸",
+      "eventName": "MBA 30 Yillik Ipotek Orani",
+      "importance": "medium",
+      "previous": "%6,60",
+      "forecast": null,
+      "actual": "%6,59",
+      "currency": "USD",
+      "unit": "%"
+    },
+    {
+      "id": "us-fed-stress-test-2026",
+      "time": "23:00",
+      "country": "ABD",
+      "countryFlag": "🇺🇸",
+      "eventName": "FED Stres Testi Sonuclari",
+      "importance": "high",
+      "previous": null,
+      "forecast": null,
+      "actual": "Bekleniyor",
+      "currency": "USD",
+      "unit": null
+    },
+    {
+      "id": "jp-boj-ueda-speech-jun-2026",
+      "time": "23:00",
+      "country": "Japonya",
+      "countryFlag": "🇯🇵",
+      "eventName": "BOJ Baskani Ueda'nin Konusmasi",
+      "importance": "high",
+      "previous": null,
+      "forecast": null,
+      "actual": "Bekleniyor",
+      "currency": "JPY",
+      "unit": null
+    }
+  ],
+  "optionSetups": [
+    {
+      "asset": "XLF",
+      "bias": "neutral",
+      "trigger": "FED Stres Testi sonuclari saat 23:00 — binary event",
+      "invalidation": "Sonuclar tamamen beklentiye uygun gelirse IV crush",
+      "setupType": "Straddle / Strangle"
+    },
+    {
+      "asset": "AUD/USD",
+      "bias": "bearish",
+      "trigger": "TUFE %4,00 (beklenti alti) + RBA hold + Cin zayifligi",
+      "invalidation": "DXY 104 altina gerilerse veya RBA hawkish pivot yaparsa",
+      "setupType": "0DTE / Weekly PUT"
+    },
+    {
+      "asset": "DAX",
+      "bias": "bearish",
+      "trigger": "Ifo beklentileri 84,1 (beklenti alti) + ZEW -25,0",
+      "invalidation": "Ifo mevcut degerlendirmesi 88+ veya ECB dovish pivot",
+      "setupType": "Weekly PUT"
+    },
+    {
+      "asset": "USD/JPY",
+      "bias": "bearish",
+      "trigger": "Ueda 'Haziran'da artis yapacagiz' mesaji verirse",
+      "invalidation": "Ueda belirsiz kalirsa veya DXY guclenirse",
+      "setupType": "0DTE PUT"
+    },
+    {
+      "asset": "SPY",
+      "bias": "neutral",
+      "trigger": "23:00'da FED Stres Testi + BOJ Ueda konusmasi — cift katalizor",
+      "invalidation": "Her iki olay da beklentiye uygun gelirse",
+      "setupType": "0DTE Strangle (OTM CALL + OTM PUT)"
+    }
+  ],
+  "vixOutlook": "VIX 19,21 seviyesinde — normal band (13-20) icinde, alt yari. 'Nutr-azalan korku' bolgesi. Opsiyon premium'lari makul, hedging maliyeti dusuk. 23:00'da FED Stres Testi + BOJ Ueda olaylari ile 20+ yukselis potansiyeli var.",
+  "fearGreedOutlook": "Fear & Greed 58 (Neutral, hafif acgozluluk). 41-60 araliginda. Piyasa hala risk almaya acik ama asiri degil. 'Goldilocks' bolgesi — directional opsiyon stratejileri icin uygun ortam.",
+  "marketNarrative": "24 Haziran 2026 'merkez bankasi gunu' olarak nitelendirilebilir. Sabah Avrupa verileri zayif sentimenti dogruladi, oglen ABD ipotek verileri konut piyasasinin hala direncli oldugunu gosterdi. Aksam 23:00'da FED Stres Testi ve BOJ Ueda konusmasi birlikte piyasalari hareketlendirecek. Ana temalar: (1) Enflasyon yavasliyor (AU TUFE) ama merkez bankalari hala hawkish (RBA, BOJ). (2) Avrupa zayifliyor (Ifo beklentileri + ZEW) — EUR/USD ve DAX baskisi altinda. (3) VIX 19 = opsiyon premium'lari ucuz, aksam volatilite artisi potansiyeli yuksek. (4) Opsiyon firstalari: XLF straddle (stres testi), AUD/USD put (TUFE), DAX put (Ifo), USD/JPY put (BOJ), SPY strangle (cift katalizor)."
+}
