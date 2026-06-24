@@ -110,6 +110,13 @@ temp/
 # Webdev artifacts (checkpoint zips, migrations, etc.)
 .webdev/
 
+# Playwright MCP artifacts
+.playwright-mcp/
+%TEMP%*
+*.png
+midas-*.json
+midas-*.md
+
 # Manus version file (auto-generated, not part of source)
 client/public/__manus__/version.json
 
