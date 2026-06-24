@@ -29,10 +29,23 @@ Produce or update `ppi_forecast.json` for the Gistify `CPI/PPI` workspace page.
 Gistify reads this file automatically from one of these locations:
 
 1. The exact path configured by `PPI_FORECAST_PIPELINE_SOURCE_FILE`
-2. `./ppi_forecast.json`
-3. `../Kimi_Agent_PPI/ppi_forecast.json`
+2. `/app/data/ppi_forecast.json`
+3. `./ppi_forecast.json`
+4. `./client/public/ppi_forecast.json`
+5. `../Kimi_Agent_PPI/ppi_forecast.json`
 
 If you control the deploy target directly, prefer the path provided by `PPI_FORECAST_PIPELINE_SOURCE_FILE`.
+
+## Deploy contract
+
+The file must land on a path the running Gistify server can actually read.
+
+- Do not leave the final artifact only inside a hidden Kimi scratch directory.
+- If this workspace deploys through the Gistify repo, write `./ppi_forecast.json`.
+- If the repo contains `client/public`, also mirror the same JSON to `./client/public/ppi_forecast.json`.
+- If this workspace controls the runtime filesystem, prefer `PPI_FORECAST_PIPELINE_SOURCE_FILE`.
+- If the env var is not available but the app runs inside the standard container layout, write `/app/data/ppi_forecast.json`.
+- If the workspace has commit access to the deploy repo, commit and push the updated artifact after validation.
 
 ## Non-negotiable output rules
 
@@ -48,6 +61,7 @@ If you control the deploy target directly, prefer the path provided by `PPI_FORE
 7. Keep `probability` and `confidence` values in the `0-100` range.
 8. Do not output an explanatory report to stdout instead of the JSON artifact.
 9. Do not omit the file because the release is not imminent. The workspace should still publish the current best PPI setup.
+10. If you update the repo artifact, make sure the final committed filename is exactly `ppi_forecast.json`.
 
 ## Research requirements
 
