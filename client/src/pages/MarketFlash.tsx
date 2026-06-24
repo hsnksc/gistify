@@ -646,10 +646,12 @@ function isUsMarketOpen() {
 function IndexPill({
   label,
   quote,
+  language,
   isVix = false,
 }: {
   label: string;
   quote: MarketFlashIndexQuote | undefined;
+  language: AppLanguage;
   isVix?: boolean;
 }) {
   if (!quote) {
@@ -1687,10 +1689,15 @@ export default function MarketFlash() {
               ) : null}
 
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                <IndexPill label="SPY" quote={summary.spy} />
-                <IndexPill label="QQQ" quote={summary.qqq} />
-                <IndexPill label="IWM" quote={summary.iwm} />
-                <IndexPill label="VIX" quote={summary.vix} isVix />
+                <IndexPill label="SPY" quote={summary.spy} language={language} />
+                <IndexPill label="QQQ" quote={summary.qqq} language={language} />
+                <IndexPill label="IWM" quote={summary.iwm} language={language} />
+                <IndexPill
+                  label="VIX"
+                  quote={summary.vix}
+                  language={language}
+                  isVix
+                />
               </div>
 
               <div className="grid gap-4 lg:grid-cols-2">
