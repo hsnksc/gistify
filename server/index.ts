@@ -74,6 +74,7 @@ import {
 } from "./momentumReportSources";
 import { createMidasSignalsSyncService } from "./midasSignals";
 import { createCpiPpiForecastSyncService } from "./cpiPpiForecast";
+import { createCalendarSyncService } from "./calendarSync";
 import {
   generateOpenAiImage,
   isOpenAiImageStudioConfigured,
@@ -2924,9 +2925,14 @@ async function startServer() {
   const server = createServer(app);
   const midasSignalsSync = createMidasSignalsSyncService();
   const cpiPpiForecastSync = createCpiPpiForecastSyncService();
+  const calendarSync = createCalendarSyncService({
+    sourceFile: process.env.CALENDAR_PIPELINE_SOURCE_FILE || path.resolve(__dirname, "../../calendar/calendar_forecast.json"),
+    pollIntervalMs: Number(process.env.CALENDAR_PIPELINE_POLL_INTERVAL_MS) || 60_000,
+  });
   billingStore.pruneExpiredSessions();
   await midasSignalsSync.start();
   await cpiPpiForecastSync.start();
+  await calendarSync.start();
 
   app.set("trust proxy", 1);
   app.use(
@@ -3689,6 +3695,21 @@ async function startServer() {
       res.status(503).json({
         error: "CPI/PPI forecast snapshot hazir degil.",
         pipeline: cpiPpiForecastSync.getPipeline(),
+      });
+      return;
+    }
+
+    res.status(200).json(snapshot);
+  });
+
+  app.get("/api/calendar", (_req, res) => {
+    setPrivateNoStore(res);
+
+    const snapshot = calendarSync.getSnapshot();
+    if (!snapshot) {
+      res.status(503).json({
+        error: "Calendar snapshot hazir degil.",
+        pipeline: calendarSync.getPipeline(),
       });
       return;
     }
