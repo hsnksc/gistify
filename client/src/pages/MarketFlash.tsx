@@ -1468,7 +1468,6 @@ function StockDetailModal({
 
 export default function MarketFlash() {
   const language = useAppLanguage();
-  const language = useAppLanguage();
   const [report, setReport] = useState<MarketFlashReport | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
