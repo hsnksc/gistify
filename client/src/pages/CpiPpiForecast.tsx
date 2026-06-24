@@ -254,6 +254,28 @@ function repoMirrorTarget(key: MacroForecastWorkspaceKey) {
   return `./client/public/${expectedFileName(key)}`;
 }
 
+function localizeReleaseMetricLabel(
+  key: "headlineMoM" | "headlineYoY" | "coreMoM" | "coreYoY",
+  language: AppLanguage
+) {
+  switch (key) {
+    case "headlineMoM":
+      return copy(language, "Manşet Aylık", "Headline MoM");
+    case "headlineYoY":
+      return copy(language, "Manşet Yıllık", "Headline YoY");
+    case "coreMoM":
+      return copy(language, "Çekirdek Aylık", "Core MoM");
+    case "coreYoY":
+      return copy(language, "Çekirdek Yıllık", "Core YoY");
+  }
+}
+
+function workspaceLabel(key: MacroForecastWorkspaceKey, language: AppLanguage) {
+  return key === "cpi"
+    ? copy(language, "TÜFE", "CPI")
+    : copy(language, "ÜFE", "PPI");
+}
+
 function CompactStatCard({
   label,
   value,
@@ -302,7 +324,8 @@ function ReleaseCard({
               theme.eyebrowClassName
             )}
           >
-            {release.name} {copy(language, "release frame", "release frame")}
+            {workspaceLabel(slotKey, language)}{" "}
+            {copy(language, "yayın çerçevesi", "release frame")}
           </p>
           <h3 className="mt-1 heading-condensed text-lg leading-none text-foreground">
             {release.period || release.name}
@@ -323,17 +346,29 @@ function ReleaseCard({
 
       <div className="mt-3 grid grid-cols-2 gap-2 lg:grid-cols-4">
         {[
-          { label: "Headline MoM", value: release.headlineMoM || "-" },
-          { label: "Headline YoY", value: release.headlineYoY || "-" },
-          { label: "Core MoM", value: release.coreMoM || "-" },
-          { label: "Core YoY", value: release.coreYoY || "-" },
+          {
+            key: "headlineMoM" as const,
+            value: release.headlineMoM || "-",
+          },
+          {
+            key: "headlineYoY" as const,
+            value: release.headlineYoY || "-",
+          },
+          {
+            key: "coreMoM" as const,
+            value: release.coreMoM || "-",
+          },
+          {
+            key: "coreYoY" as const,
+            value: release.coreYoY || "-",
+          },
         ].map(item => (
           <div
-            key={`${release.name}-${item.label}`}
+            key={`${release.name}-${item.key}`}
             className="rounded-lg border border-white/10 bg-black/20 px-2.5 py-2"
           >
             <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-              {item.label}
+              {localizeReleaseMetricLabel(item.key, language)}
             </p>
             <p className="mt-1 data-mono text-sm font-semibold text-foreground">
               {item.value}
@@ -394,7 +429,7 @@ function ScenarioRow({
             {scenario.label}
           </p>
           <p className={cn("mt-1 text-[10px] leading-tight", theme.eyebrowClassName)}>
-            {releaseName} {scenario.probability}%
+            {workspaceLabel(slotKey, language)} {scenario.probability}%
           </p>
         </div>
         <span className="data-mono rounded-full border border-white/10 bg-black/30 px-2 py-0.5 text-[11px] text-foreground">
@@ -489,7 +524,8 @@ function WatchlistCard({
       <div className="flex items-center gap-1.5">
         <Target className={`size-3.5 ${theme.eyebrowClassName}`} />
         <h3 className="heading-condensed text-sm text-foreground">
-          {forecast.release.name} {copy(language, "watchlist", "watchlist")}
+          {workspaceLabel(slotKey, language)}{" "}
+          {copy(language, "izleme listesi", "watchlist")}
         </h3>
       </div>
       <div className="mt-2 space-y-2">
@@ -540,7 +576,8 @@ function PlaybookTable({
       <div className="flex items-center gap-1.5">
         <Activity className={`size-3.5 ${theme.eyebrowClassName}`} />
         <h3 className="heading-condensed text-sm text-foreground">
-          {forecast.release.name} {copy(language, "playbook", "playbook")}
+          {workspaceLabel(slotKey, language)}{" "}
+          {copy(language, "işlem planı", "playbook")}
         </h3>
       </div>
       <div className="mt-2 overflow-hidden rounded-xl border border-white/10 bg-black/20">
@@ -626,7 +663,8 @@ function PipelineCard({
               theme.eyebrowClassName
             )}
           >
-            {label} {copy(language, "pipeline", "pipeline")}
+            {workspaceLabel(slotKey, language)}{" "}
+            {copy(language, "pipeline", "pipeline")}
           </p>
           <h3 className="mt-0.5 text-xs font-semibold text-foreground">
             {pipelineStatusLabel(pipeline.status, language)}
@@ -698,7 +736,8 @@ function MissingWorkspacePanel({
                     theme.eyebrowClassName
                   )}
                 >
-                  {theme.label} Workspace
+                  {workspaceLabel(slotKey, language)}{" "}
+                  {copy(language, "workspace", "workspace")}
                 </p>
               </div>
               <h2 className="mt-1 heading-condensed text-lg leading-none text-foreground">
@@ -819,7 +858,7 @@ function ForecastWorkspaceSection({
                     theme.eyebrowClassName
                   )}
                 >
-                  {theme.label} · {descriptor.title}
+                  {workspaceLabel(slotKey, language)} · {descriptor.title}
                 </p>
               </div>
               <h2 className="mt-0.5 heading-condensed text-base leading-none text-foreground md:text-lg">
@@ -911,7 +950,7 @@ function ForecastWorkspaceSection({
                 <div className="flex items-center gap-1.5">
                   <Sparkles className={`size-3.5 ${theme.eyebrowClassName}`} />
                   <h3 className="heading-condensed text-sm text-foreground">
-                    {forecast.release.name}{" "}
+                    {workspaceLabel(slotKey, language)}{" "}
                     {copy(language, "senaryo matrisi", "scenario matrix")}
                   </h3>
                 </div>
@@ -955,7 +994,7 @@ function ForecastWorkspaceSection({
                 icon={TrendingUp}
                 items={forecast.keyDrivers}
                 language={language}
-                title={`${forecast.release.name} ${copy(
+                title={`${workspaceLabel(slotKey, language)} ${copy(
                   language,
                   "key drivers",
                   "key drivers"
@@ -967,7 +1006,7 @@ function ForecastWorkspaceSection({
                 icon={ShieldAlert}
                 items={forecast.risks}
                 language={language}
-                title={`${forecast.release.name} ${copy(
+                title={`${workspaceLabel(slotKey, language)} ${copy(
                   language,
                   "risk map",
                   "risk map"
@@ -1118,7 +1157,13 @@ export default function CpiPpiForecastPage({
             <div className="relative grid gap-4 lg:grid-cols-[minmax(0,1.15fr)_400px]">
               <div className="space-y-2">
                 <div className="flex flex-wrap items-center gap-1.5">
-                  <span className="badge-strong text-[9px]">Dual macro workspaces</span>
+                  <span className="badge-strong text-[9px]">
+                    {copy(
+                      language,
+                      "İkili makro workspace",
+                      "Dual macro workspaces"
+                    )}
+                  </span>
                   <span
                     className={`rounded-full border px-2 py-0.5 text-[9px] ${pipelineStatusClass(
                       pipelineStatus
@@ -1132,7 +1177,7 @@ export default function CpiPpiForecastPage({
 
                 <div className="space-y-1.5">
                   <p className="heading-condensed text-xs uppercase tracking-[0.18em] text-indigo-300">
-                    CPI / PPI Forecast
+                    {copy(language, "TÜFE / ÜFE Tahmini", "CPI / PPI Forecast")}
                   </p>
                   <h1 className="heading-condensed max-w-4xl text-xl leading-none text-foreground md:text-2xl">
                     {copy(
@@ -1166,7 +1211,7 @@ export default function CpiPpiForecastPage({
               <div className="space-y-2">
                 <div className="grid gap-2 sm:grid-cols-2">
                   <CompactStatCard
-                    label={copy(language, "CPI status", "CPI status")}
+                    label={copy(language, "TÜFE durumu", "CPI status")}
                     value={pipelineStatusLabel(forecast.pipeline.cpi.status, language)}
                     hint={
                       forecast.cpi
@@ -1176,7 +1221,7 @@ export default function CpiPpiForecastPage({
                     className={WORKSPACE_THEME.cpi.cardClassName}
                   />
                   <CompactStatCard
-                    label={copy(language, "PPI status", "PPI status")}
+                    label={copy(language, "ÜFE durumu", "PPI status")}
                     value={pipelineStatusLabel(forecast.pipeline.ppi.status, language)}
                     hint={
                       forecast.ppi
@@ -1186,7 +1231,7 @@ export default function CpiPpiForecastPage({
                     className={WORKSPACE_THEME.ppi.cardClassName}
                   />
                   <CompactStatCard
-                    label={copy(language, "Live source", "Live source")}
+                    label={copy(language, "Canlı kaynak", "Live source")}
                     value={copy(
                       language,
                       `${availableWorkspaces.length}/2 hazir`,
