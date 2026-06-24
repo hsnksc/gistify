@@ -16,6 +16,7 @@ import {
   LogOut,
   Radar,
   Shield,
+  Zap,
 } from "lucide-react";
 import LanguageSelector from "@/components/LanguageSelector";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -24,7 +25,11 @@ import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { Route, Switch, useLocation } from "wouter";
-import { APP_LANGUAGE_STORAGE_KEY, type AppLanguage } from "@/lib/i18n";
+import {
+  APP_LANGUAGE_STORAGE_KEY,
+  AppLanguageContext,
+  type AppLanguage,
+} from "@/lib/i18n";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
@@ -53,6 +58,7 @@ const ReportsDateDetailPage = lazy(
 );
 const CpiPpiForecastPage = lazy(() => import("./pages/CpiPpiForecast"));
 const Calendar = lazy(() => import("./pages/Calendar"));
+const MarketFlash = lazy(() => import("./pages/MarketFlash"));
 const Pay = lazy(() => import("./pages/Pay"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const Terms = lazy(() => import("./pages/Terms"));
@@ -259,6 +265,9 @@ function Router({
         <Route path={"/calendar"}>
           {() => <Calendar language={language} />}
         </Route>
+        <Route path={"/marketflash"}>
+          {() => <MarketFlash language={language} />}
+        </Route>
         <Route path={"/reports/ticker/:ticker"}>
           {params => (
             <ReportsTickerPage
@@ -419,6 +428,13 @@ function WorkspaceNavigation({
       requiresSubscription: true,
     },
     {
+      href: "/marketflash",
+      label: language === "en" ? "Market Flash" : "Market Flash",
+      icon: Zap,
+      active: location.startsWith("/marketflash"),
+      requiresSubscription: true,
+    },
+    {
       href: "/flow",
       label: language === "en" ? "Flow" : "Flow",
       icon: Layers3,
@@ -489,6 +505,10 @@ function getWorkspaceSectionLabel(path: string, language: AppLanguage) {
 
   if (path.startsWith("/calendar")) {
     return copy(language, "Takvim", "Calendar");
+  }
+
+  if (path.startsWith("/marketflash")) {
+    return copy(language, "Market Flash", "Market Flash");
   }
 
   return copy(language, "Earning Strategy", "Earning Strategy");
@@ -573,8 +593,8 @@ function SubscriptionRequiredView({
               <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
                 {copy(
                   language,
-                  "Flow herkese acik kalir. Earning Strategy, Momentum, Daily, CPI/PPI ve Calendar modullerini acmak icin Paddle uzerinden aktif abonelik gerekir.",
-                  "Flow stays open to everyone. Unlocking Earning Strategy, Momentum, Daily, CPI/PPI and Calendar requires an active Paddle subscription."
+                  "Flow herkese acik kalir. Earning Strategy, Momentum, Daily, CPI/PPI, Calendar ve Market Flash modullerini acmak icin Paddle uzerinden aktif abonelik gerekir.",
+                  "Flow stays open to everyone. Unlocking Earning Strategy, Momentum, Daily, CPI/PPI, Calendar and Market Flash requires an active Paddle subscription."
                 )}
               </p>
               <div className="flex flex-wrap gap-3 pt-2">
@@ -610,6 +630,7 @@ function SubscriptionRequiredView({
                 ["Daily", copy(language, "Abonelik", "Subscription")],
                 ["CPI/PPI", copy(language, "Abonelik", "Subscription")],
                 ["Calendar", copy(language, "Abonelik", "Subscription")],
+                ["Market Flash", copy(language, "Abonelik", "Subscription")],
                 ["Flow", copy(language, "Acik", "Open")],
               ].map(([label, value]) => (
                 <div
@@ -635,8 +656,8 @@ function SubscriptionRequiredView({
             ),
             copy(
               language,
-              "Momentum scanner, daily yuzeyi, CPI/PPI forecast ve Economic Calendar ayni uyelikle acilir.",
-              "Momentum scanner, the daily surface, the CPI/PPI forecast and Economic Calendar unlock with the same subscription."
+              "Momentum scanner, daily yuzeyi, CPI/PPI forecast, Economic Calendar ve Market Flash ayni uyelikle acilir.",
+              "Momentum scanner, the daily surface, the CPI/PPI forecast, Economic Calendar and Market Flash unlock with the same subscription."
             ),
             copy(
               language,
@@ -704,7 +725,8 @@ function App() {
     location.startsWith("/scanner") ||
     location.startsWith("/daily-report") ||
     location.startsWith("/cpi-ppi") ||
-    location.startsWith("/calendar");
+    location.startsWith("/calendar") ||
+    location.startsWith("/marketflash");
   const shouldShowWorkspaceHeader =
     !isPaymentRoute &&
     (isFlowRoute ||
@@ -803,7 +825,7 @@ function App() {
   };
 
   useEffect(() => {
-    const root = appRootRef.current;
+    const root = document.body;
     if (!root || (authState.status === "loading" && !isPaymentRoute)) {
       return;
     }
@@ -1244,10 +1266,11 @@ function App() {
     <ErrorBoundary>
       <ThemeProvider defaultTheme="dark">
         <TooltipProvider>
-          <div
-            ref={appRootRef}
-            className="min-h-screen bg-background text-foreground"
-          >
+          <AppLanguageContext.Provider value={language}>
+            <div
+              ref={appRootRef}
+              className="min-h-screen bg-background text-foreground"
+            >
             <Toaster />
 
             {isPaymentRoute ? (
@@ -1452,9 +1475,9 @@ function App() {
                 )}
               </div>
             ) : null}
-
-            {!isPaymentRoute ? <SiteFooter language={language} /> : null}
-          </div>
+              {!isPaymentRoute ? <SiteFooter language={language} /> : null}
+            </div>
+          </AppLanguageContext.Provider>
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>

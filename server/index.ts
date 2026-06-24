@@ -3717,6 +3717,43 @@ async function startServer() {
     res.status(200).json(snapshot);
   });
 
+  app.get("/api/marketflash", (_req, res) => {
+    setPrivateNoStore(res);
+
+    const staticPath =
+      process.env.NODE_ENV === "production"
+        ? path.resolve(__dirname, "public")
+        : path.resolve(__dirname, "..", "dist", "public");
+    const reportPath = path.resolve(
+      staticPath,
+      "marketflash",
+      "marketflash_report.json"
+    );
+
+    try {
+      if (!fs.existsSync(reportPath)) {
+        res.status(503).json({
+          error: "Market Flash raporu hazir degil.",
+        });
+        return;
+      }
+
+      const raw = fs.readFileSync(reportPath, "utf8");
+      if (!raw.trim()) {
+        res.status(503).json({
+          error: "Market Flash raporu bos.",
+        });
+        return;
+      }
+
+      res.status(200).type("json").send(raw);
+    } catch {
+      res.status(503).json({
+        error: "Market Flash raporu okunamadi.",
+      });
+    }
+  });
+
   app.post("/api/admin/midas/signals/refresh", async (req, res) => {
     setPrivateNoStore(res);
     if (!requireWeeklyReportAdmin(req, res)) {

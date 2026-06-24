@@ -1,0 +1,183 @@
+{
+  "reportType": "pre-market",
+  "reportDate": "2026-06-24",
+  "generatedAt": "2026-06-24T16:00:00+03:00",
+  "marketSummary": {
+    "spy": { "price": 733.58, "change": -1.45, "vwap": 735.0 },
+    "qqq": { "price": 713.65, "change": -3.29, "vwap": 720.0 },
+    "iwm": { "price": 295.32, "change": -0.96, "vwap": 296.0 },
+    "vix": { "price": 18.5, "change": 8.5 }
+  },
+  "topMovers": {
+    "gainers": [
+      {
+        "ticker": "MU",
+        "price": 1092.53,
+        "change": 3.88,
+        "catalyst": "Earnings after close",
+        "volume": 1740000,
+        "sector": "Semiconductors",
+        "marketCap": 125000000000,
+        "week52Range": [850.0, 1200.0]
+      },
+      {
+        "ticker": "RUN",
+        "price": 18.42,
+        "change": 18.15,
+        "catalyst": "Short squeeze momentum",
+        "volume": 8200000,
+        "sector": "Solar",
+        "marketCap": 4200000000,
+        "week52Range": [8.5, 22.0]
+      },
+      {
+        "ticker": "QS",
+        "price": 7.85,
+        "change": 16.5,
+        "catalyst": "EV battery partnership rumors",
+        "volume": 15600000,
+        "sector": "Auto Components",
+        "marketCap": 5100000000,
+        "week52Range": [4.12, 12.9]
+      }
+    ],
+    "losers": [
+      {
+        "ticker": "ENPH",
+        "price": 47.22,
+        "change": -9.9,
+        "catalyst": "Solar sector selloff",
+        "volume": 5200000,
+        "sector": "Solar",
+        "marketCap": 6400000000,
+        "week52Range": [40.0, 118.0]
+      },
+      {
+        "ticker": "TSLA",
+        "price": 248.5,
+        "change": -5.79,
+        "catalyst": "Delivery miss concerns",
+        "volume": 98000000,
+        "sector": "Auto Manufacturers",
+        "marketCap": 790000000000,
+        "week52Range": [138.8, 488.54]
+      },
+      {
+        "ticker": "NVDA",
+        "price": 118.32,
+        "change": -4.13,
+        "catalyst": "Profit taking after ATH",
+        "volume": 41000000,
+        "sector": "Semiconductors",
+        "marketCap": 2900000000000,
+        "week52Range": [75.61, 153.13]
+      }
+    ]
+  },
+  "callSetups": [
+    {
+      "ticker": "MU",
+      "price": 1092.53,
+      "setup": "Earnings momentum",
+      "entry": 1080.0,
+      "stop": 1038.5,
+      "target": 1200.0,
+      "rr": 2.5,
+      "expiry": "weekly",
+      "catalyst": "Q3 earnings after close, consensus EPS $19.72",
+      "sector": "Semiconductors"
+    },
+    {
+      "ticker": "RUN",
+      "price": 18.42,
+      "setup": "Short squeeze continuation",
+      "entry": 18.0,
+      "stop": 16.5,
+      "target": 22.0,
+      "rr": 2.3,
+      "expiry": "0DTE",
+      "catalyst": "High short interest, volume breakout",
+      "sector": "Solar"
+    },
+    {
+      "ticker": "QQQ",
+      "price": 713.65,
+      "setup": "VWAP reclaim bounce",
+      "entry": 718.0,
+      "stop": 708.0,
+      "target": 735.0,
+      "rr": 1.7,
+      "expiry": "weekly",
+      "catalyst": "Oversold tech bounce if SPY reclaims VWAP",
+      "sector": "ETF"
+    }
+  ],
+  "putSetups": [
+    {
+      "ticker": "ENPH",
+      "price": 47.22,
+      "setup": "Breakdown continuation",
+      "entry": 48.5,
+      "stop": 51.0,
+      "target": 42.0,
+      "rr": 2.0,
+      "expiry": "0DTE",
+      "catalyst": "$50 support broken, solar sector weakness",
+      "sector": "Solar"
+    },
+    {
+      "ticker": "TSLA",
+      "price": 248.5,
+      "setup": "Delivery concern fade",
+      "entry": 252.0,
+      "stop": 262.0,
+      "target": 230.0,
+      "rr": 2.2,
+      "expiry": "weekly",
+      "catalyst": "Gap down below $250 support",
+      "sector": "Auto Manufacturers"
+    }
+  ],
+  "earningsCalendar": [
+    {
+      "ticker": "MU",
+      "time": "after-close",
+      "consensusEps": 19.72,
+      "consensusRev": 34.52,
+      "priorEps": 1.91,
+      "priorRev": 9.3,
+      "expectedMove": "±8.5%",
+      "analystSentiment": "bullish",
+      "consensusRange": "$18.90 - $20.55"
+    },
+    {
+      "ticker": "FDX",
+      "time": "after-close",
+      "consensusEps": 5.08,
+      "consensusRev": 22.1,
+      "priorEps": 4.94,
+      "priorRev": 21.7,
+      "expectedMove": "±6.2%",
+      "analystSentiment": "neutral",
+      "consensusRange": "$4.80 - $5.35"
+    }
+  ],
+  "vwapNotes": "**QQQ** gap down below VWAP. **SPY** testing VWAP from below. **IWM** relative strength. Short bias until VWAP reclaim.\n\n> Key level: SPY 735 VWAP reclaim is the line in the sand for bulls.\n\n- Support: SPY 728 / QQQ 708\n- Resistance: SPY 738 / QQQ 720",
+  "riskAssessment": "Semiconductor selloff (SOXL -23%). VIX rising but not panic yet. Earnings day = elevated IV. Avoid 0DTE on low-float names.",
+  "nextDayCarryForward": [
+    {
+      "ticker": "MU",
+      "todayChange": 3.88,
+      "gapStatus": "gap-up-maintained",
+      "bias": "CALL",
+      "setupType": "Earnings continuation"
+    },
+    {
+      "ticker": "ENPH",
+      "todayChange": -9.9,
+      "gapStatus": "gap-down-maintained",
+      "bias": "PUT",
+      "setupType": "Breakdown continuation"
+    }
+  ]
+}
