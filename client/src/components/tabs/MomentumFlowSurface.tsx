@@ -428,11 +428,11 @@ function MomentumSignalCard({
         : "bg-gradient-to-r from-amber-400 to-yellow-200";
 
   return (
-    <article className={`rounded-[1.35rem] border p-4 shadow-[0_18px_48px_rgba(3,7,18,0.22)] transition-transform duration-200 hover:-translate-y-0.5 ${toneClass}`}>
-      <div className="flex items-start justify-between gap-4">
+    <article className={`rounded-[1.1rem] border p-3 shadow-[0_12px_32px_rgba(3,7,18,0.18)] transition-colors duration-200 ${toneClass}`}>
+      <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <div className="flex flex-wrap items-center gap-2">
-            <p className="heading-condensed text-2xl text-foreground">{signal.symbol}</p>
+          <div className="flex flex-wrap items-center gap-1.5">
+            <p className="heading-condensed text-xl text-foreground">{signal.symbol}</p>
             {signal.directionalBias === "positive" ? (
               <TrendingUp className="size-4 text-emerald-300" />
             ) : signal.directionalBias === "negative" ? (
@@ -441,63 +441,63 @@ function MomentumSignalCard({
               <LineChart className="size-4 text-amber-300" />
             )}
           </div>
-          <p className="mt-1 text-sm text-foreground/90">{signal.headline}</p>
-          <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground">
-            <span className="data-mono rounded-full border border-border bg-background/60 px-2.5 py-1">{formatPrice(currentPrice)}</span>
+          <p className="mt-0.5 text-[13px] leading-5 text-foreground/90">{signal.headline}</p>
+          <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[10px] text-muted-foreground">
+            <span className="data-mono rounded-full border border-border bg-background/60 px-2 py-0.5">{formatPrice(currentPrice)}</span>
             {signal.live ? (
-              <span className="rounded-full border border-border bg-background/60 px-2.5 py-1">
+              <span className="rounded-full border border-border bg-background/60 px-2 py-0.5">
                 {copy(language, "Scanner", "Scanner")}: {scannerSignalLabel(signal.live.scannerSignal, language)}
               </span>
             ) : null}
           </div>
         </div>
 
-        <span className={`shrink-0 rounded-lg border px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] ${signalBadgeClass(signal.resolvedSignal)}`}>
+        <span className={`shrink-0 rounded-md border px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.14em] ${signalBadgeClass(signal.resolvedSignal)}`}>
           {signalLabel(signal.resolvedSignal, language)}
         </span>
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-2 text-[11px]">
+      <div className="mt-3 flex flex-wrap gap-1.5 text-[10px]">
         {displayConfidenceLabel ? (
-          <span className="rounded-full border border-sky-400/20 bg-sky-500/10 px-2.5 py-1 text-sky-100">
+          <span className="rounded-full border border-sky-400/20 bg-sky-500/10 px-2 py-0.5 text-sky-100">
             {copy(language, "Guven", "Confidence")}: {displayConfidenceLabel}
           </span>
         ) : null}
         {signal.riskLevel ? (
-          <span className={`rounded-full border px-2.5 py-1 ${riskBadgeClass(signal.riskLevel)}`}>
+          <span className={`rounded-full border px-2 py-0.5 ${riskBadgeClass(signal.riskLevel)}`}>
             {riskLabel(signal.riskLevel, language)}
           </span>
         ) : null}
         {signal.live && snapshotConfidenceLabel ? (
-          <span className="rounded-full border border-border bg-background/70 px-2.5 py-1 text-muted-foreground">
+          <span className="rounded-full border border-border bg-background/70 px-2 py-0.5 text-muted-foreground">
             {copy(language, "Snapshot guven", "Snapshot confidence")}: {snapshotConfidenceLabel}
           </span>
         ) : null}
       </div>
 
-      <div className="mt-4">
-        <div className="mb-2 flex items-center justify-between gap-3 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+      <div className="mt-3">
+        <div className="mb-1.5 flex items-center justify-between gap-3 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
           <span>{copy(language, "Momentum gucu", "Momentum conviction")}</span>
           <span className="data-mono text-foreground/85">{convictionWidth}/100</span>
         </div>
-        <div className="h-2 overflow-hidden rounded-full bg-background/75">
+        <div className="h-1.5 overflow-hidden rounded-full bg-background/75">
           <div className={`h-full rounded-full transition-all duration-300 ${meterClass}`} style={{ width: `${convictionWidth}%` }} />
         </div>
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-2 text-[11px]">
-        <span className={`data-mono rounded-full border border-border bg-background/70 px-2.5 py-1 ${pctClass(currentDayPct)}`}>{copy(language, "Gunluk", "Daily")}: {formatPct(currentDayPct)}</span>
-        <span className={`data-mono rounded-full border border-border bg-background/70 px-2.5 py-1 ${pctClass(signal.weekly_pct)}`}>{copy(language, "Haftalik", "Weekly")}: {formatPct(signal.weekly_pct)}</span>
-        <span className={`data-mono rounded-full border border-border bg-background/70 px-2.5 py-1 ${pctClass(signal.monthly_pct)}`}>{copy(language, "Aylik", "Monthly")}: {formatPct(signal.monthly_pct)}</span>
+      <div className="mt-3 flex flex-wrap gap-1.5 text-[10px]">
+        <span className={`data-mono rounded-full border border-border bg-background/70 px-2 py-0.5 ${pctClass(currentDayPct)}`}>{copy(language, "Gunluk", "Daily")}: {formatPct(currentDayPct)}</span>
+        <span className={`data-mono rounded-full border border-border bg-background/70 px-2 py-0.5 ${pctClass(signal.weekly_pct)}`}>{copy(language, "Haftalik", "Weekly")}: {formatPct(signal.weekly_pct)}</span>
+        <span className={`data-mono rounded-full border border-border bg-background/70 px-2 py-0.5 ${pctClass(signal.monthly_pct)}`}>{copy(language, "Aylik", "Monthly")}: {formatPct(signal.monthly_pct)}</span>
         {signal.live ? (
-          <span className="data-mono rounded-full border border-border bg-background/70 px-2.5 py-1 text-muted-foreground">
+          <span className="data-mono rounded-full border border-border bg-background/70 px-2 py-0.5 text-muted-foreground">
             Bull {signal.live.bullScore} / Bear {signal.live.bearScore}
           </span>
         ) : null}
       </div>
 
       {signalChanged ? (
-        <div className="mt-4 flex items-center gap-2 rounded-xl border border-indigo-400/20 bg-indigo-500/10 px-3 py-2 text-[11px] text-indigo-100">
+        <div className="mt-3 flex items-center gap-2 rounded-lg border border-indigo-400/20 bg-indigo-500/10 px-2.5 py-1.5 text-[10px] text-indigo-100">
           <ArrowRightLeft className="size-3.5" />
           <span>
             {copy(language, "Snapshot", "Snapshot")} {signalLabel(signal.signal, language)} - {copy(language, "Canli", "Live")} {signalLabel(signal.resolvedSignal, language)}
@@ -506,7 +506,7 @@ function MomentumSignalCard({
       ) : null}
 
       {signal.notes ? (
-        <div className="mt-4 rounded-xl border border-sky-400/18 bg-sky-500/[0.08] px-3 py-3 text-xs leading-6 text-sky-50/88">
+        <div className="mt-3 rounded-lg border border-sky-400/18 bg-sky-500/[0.08] px-2.5 py-2 text-[11px] leading-5 text-sky-50/88">
           <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-sky-200/78">
             {copy(language, "Analist notu", "Analyst note")}
           </p>
@@ -514,44 +514,44 @@ function MomentumSignalCard({
         </div>
       ) : null}
 
-      <div className="mt-4 space-y-2">
+      <div className="mt-3 space-y-1.5">
         {signal.reasonDetails.map((reason) => (
-          <div key={reason} className="rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-xs leading-6 text-foreground/88 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]">
+          <div key={reason} className="rounded-lg border border-border/70 bg-background/60 px-2.5 py-1.5 text-[11px] leading-5 text-foreground/88 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]">
             {reason}
           </div>
         ))}
       </div>
 
       {hasLayers ? (
-        <div className="mt-4 grid gap-2 sm:grid-cols-2">
-          <div className="rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-xs text-muted-foreground">
+        <div className="mt-3 grid gap-1.5 sm:grid-cols-2">
+          <div className="rounded-lg border border-border/70 bg-background/60 px-2.5 py-1.5 text-[11px] text-muted-foreground">
             <p className="text-[10px] uppercase tracking-[0.14em]">{copy(language, "Momentum", "Momentum")}</p>
-            <p className="data-mono mt-1 text-sm text-foreground">{signal.layers?.momentumScore ?? "-"}</p>
+            <p className="data-mono mt-1 text-[13px] text-foreground">{signal.layers?.momentumScore ?? "-"}</p>
           </div>
-          <div className="rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-xs text-muted-foreground">
+          <div className="rounded-lg border border-border/70 bg-background/60 px-2.5 py-1.5 text-[11px] text-muted-foreground">
             <p className="text-[10px] uppercase tracking-[0.14em]">{copy(language, "Osilator", "Oscillator")}</p>
-            <p className="data-mono mt-1 text-sm text-foreground">{signal.layers?.oscillatorScore ?? "-"}</p>
+            <p className="data-mono mt-1 text-[13px] text-foreground">{signal.layers?.oscillatorScore ?? "-"}</p>
           </div>
-          <div className="rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-xs text-muted-foreground">
+          <div className="rounded-lg border border-border/70 bg-background/60 px-2.5 py-1.5 text-[11px] text-muted-foreground">
             <p className="text-[10px] uppercase tracking-[0.14em]">{copy(language, "Trend", "Trend")}</p>
-            <p className="data-mono mt-1 text-sm text-foreground">{signal.layers?.trendScore ?? "-"}</p>
+            <p className="data-mono mt-1 text-[13px] text-foreground">{signal.layers?.trendScore ?? "-"}</p>
           </div>
-          <div className="rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-xs text-muted-foreground">
+          <div className="rounded-lg border border-border/70 bg-background/60 px-2.5 py-1.5 text-[11px] text-muted-foreground">
             <p className="text-[10px] uppercase tracking-[0.14em]">{copy(language, "Uyum", "Confluence")}</p>
-            <p className="data-mono mt-1 text-sm text-foreground">{signal.layers?.confluenceScore ?? "-"}</p>
+            <p className="data-mono mt-1 text-[13px] text-foreground">{signal.layers?.confluenceScore ?? "-"}</p>
           </div>
         </div>
       ) : null}
 
-      <div className="mt-4 flex flex-wrap gap-2">
+      <div className="mt-3 flex flex-wrap gap-1.5">
         {signal.signals.slice(0, 4).map((tag) => (
-          <span key={tag} className="rounded-full border border-border bg-background/70 px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+          <span key={tag} className="rounded-full border border-border bg-background/70 px-2 py-0.5 text-[9px] font-medium text-muted-foreground">
             {tag}
           </span>
         ))}
       </div>
 
-      <div className="mt-4 flex flex-wrap items-center gap-3 text-[10px] text-muted-foreground">
+      <div className="mt-3 flex flex-wrap items-center gap-2 text-[10px] text-muted-foreground">
         <span>{copy(language, "Snapshot", "Snapshot")}: {formatTimestamp(signal.timestamp || snapshotTimestamp, language)}</span>
         {signal.live ? <span>{copy(language, "Canli", "Live")}: {formatTimestamp(signal.live.updatedAt, language)}</span> : null}
       </div>
@@ -748,6 +748,10 @@ export default function MomentumFlowSurface({
   const showPositiveSection = surfaceMode === "overview" || surfaceMode === "positive";
   const showNegativeSection = surfaceMode === "overview" || surfaceMode === "negative";
   const showShiftSection = surfaceMode === "overview" || surfaceMode === "shifts";
+  const positiveCardLayout =
+    surfaceMode === "positive" ? "grid gap-3 xl:grid-cols-2" : "space-y-3";
+  const negativeCardLayout =
+    surfaceMode === "negative" ? "grid gap-3 xl:grid-cols-2" : "space-y-3";
   const balanceHeadline =
     positiveCount > negativeCount
       ? copy(language, "Akis yukari yone egimli", "Flow is tilted to the upside")
@@ -987,26 +991,30 @@ export default function MomentumFlowSurface({
         </section>
       ) : null}
 
-      <div className={`grid gap-5 ${showPositiveSection && showNegativeSection ? "xl:grid-cols-2" : ""}`}>
+      <div className={`grid gap-4 ${showPositiveSection && showNegativeSection ? "xl:grid-cols-2" : ""}`}>
         {showPositiveSection ? (
           <section className="space-y-4">
-            <div className="flex items-start justify-between gap-4 rounded-[1.4rem] border border-emerald-500/20 bg-[linear-gradient(180deg,rgba(16,185,129,0.10),rgba(15,23,42,0.86))] p-4">
+            <div className="flex items-start justify-between gap-3 rounded-[1.2rem] border border-emerald-500/20 bg-[linear-gradient(180deg,rgba(16,185,129,0.10),rgba(15,23,42,0.86))] p-3.5">
               <div className="flex items-start gap-3">
-                <TrendingUp className="mt-0.5 size-5 text-emerald-300" />
+                <TrendingUp className="mt-0.5 size-4 text-emerald-300" />
                 <div>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300/80">{copy(language, "Pozitif momentum", "Positive momentum")}</p>
-                  <h3 className="mt-1 heading-condensed text-2xl text-emerald-100">{copy(language, "Yukari yone guclu isimler", "Upside leaders")}</h3>
-                  <p className="mt-2 text-sm leading-7 text-emerald-50/85">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-emerald-300/80">{copy(language, "Pozitif momentum", "Positive momentum")}</p>
+                  <h3 className="mt-1 heading-condensed text-xl text-emerald-100">{copy(language, "Yukari yone guclu isimler", "Upside leaders")}</h3>
+                  <p className="mt-1.5 text-xs leading-6 text-emerald-50/85">
                     {copy(language, "Al ve guclu al sinyalleri burada konviksiyon, haftalik ivme ve aylik devam gucu ile siralanir.", "Buy and strong buy names are ranked here by conviction, weekly acceleration, and monthly continuation strength.")}
                   </p>
                 </div>
               </div>
-              <div className="rounded-full border border-emerald-500/18 bg-background/35 px-3 py-1 text-[11px] text-emerald-100">{positiveSignals.length} {copy(language, "isim", "names")}</div>
+              <div className="rounded-full border border-emerald-500/18 bg-background/35 px-2.5 py-0.5 text-[10px] text-emerald-100">{positiveSignals.length} {copy(language, "isim", "names")}</div>
             </div>
 
-            {visiblePositiveSignals.length > 0 ? visiblePositiveSignals.map((signal) => (
-              <MomentumSignalCard key={signal.symbol} language={language} signal={signal} snapshotTimestamp={data.timestamp} />
-            )) : (
+            {visiblePositiveSignals.length > 0 ? (
+              <div className={positiveCardLayout}>
+                {visiblePositiveSignals.map((signal) => (
+                  <MomentumSignalCard key={signal.symbol} language={language} signal={signal} snapshotTimestamp={data.timestamp} />
+                ))}
+              </div>
+            ) : (
               <div className="rounded-2xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">{copy(language, "Su an pozitif momentum listesine giren isim yok.", "There are no names in the positive momentum list right now.")}</div>
             )}
 
@@ -1020,23 +1028,27 @@ export default function MomentumFlowSurface({
 
         {showNegativeSection ? (
           <section className="space-y-4">
-            <div className="flex items-start justify-between gap-4 rounded-[1.4rem] border border-rose-500/20 bg-[linear-gradient(180deg,rgba(244,63,94,0.10),rgba(15,23,42,0.86))] p-4">
+            <div className="flex items-start justify-between gap-3 rounded-[1.2rem] border border-rose-500/20 bg-[linear-gradient(180deg,rgba(244,63,94,0.10),rgba(15,23,42,0.86))] p-3.5">
               <div className="flex items-start gap-3">
-                <ShieldAlert className="mt-0.5 size-5 text-rose-300" />
+                <ShieldAlert className="mt-0.5 size-4 text-rose-300" />
                 <div>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-rose-300/80">{copy(language, "Negatif momentum", "Negative momentum")}</p>
-                  <h3 className="mt-1 heading-condensed text-2xl text-rose-100">{copy(language, "Asagi yone baski altindaki isimler", "Names under downside pressure")}</h3>
-                  <p className="mt-2 text-sm leading-7 text-rose-50/85">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-rose-300/80">{copy(language, "Negatif momentum", "Negative momentum")}</p>
+                  <h3 className="mt-1 heading-condensed text-xl text-rose-100">{copy(language, "Asagi yone baski altindaki isimler", "Names under downside pressure")}</h3>
+                  <p className="mt-1.5 text-xs leading-6 text-rose-50/85">
                     {copy(language, "Sat ve guclu sat sinyalleri burada canli bear skoru, kisa vade zayiflik ve trend bozulmasi ile one cikar.", "Sell and strong sell names stand out here through live bear score, short-term weakness, and broader trend deterioration.")}
                   </p>
                 </div>
               </div>
-              <div className="rounded-full border border-rose-500/18 bg-background/35 px-3 py-1 text-[11px] text-rose-100">{negativeSignals.length} {copy(language, "isim", "names")}</div>
+              <div className="rounded-full border border-rose-500/18 bg-background/35 px-2.5 py-0.5 text-[10px] text-rose-100">{negativeSignals.length} {copy(language, "isim", "names")}</div>
             </div>
 
-            {visibleNegativeSignals.length > 0 ? visibleNegativeSignals.map((signal) => (
-              <MomentumSignalCard key={signal.symbol} language={language} signal={signal} snapshotTimestamp={data.timestamp} />
-            )) : (
+            {visibleNegativeSignals.length > 0 ? (
+              <div className={negativeCardLayout}>
+                {visibleNegativeSignals.map((signal) => (
+                  <MomentumSignalCard key={signal.symbol} language={language} signal={signal} snapshotTimestamp={data.timestamp} />
+                ))}
+              </div>
+            ) : (
               <div className="rounded-2xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">{copy(language, "Su an negatif momentum listesine giren isim yok.", "There are no names in the negative momentum list right now.")}</div>
             )}
 

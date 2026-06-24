@@ -73,6 +73,7 @@ import {
   listMomentumReportSourceSummaries,
 } from "./momentumReportSources";
 import { createMidasSignalsSyncService } from "./midasSignals";
+import { createCpiPpiForecastSyncService } from "./cpiPpiForecast";
 import {
   generateOpenAiImage,
   isOpenAiImageStudioConfigured,
@@ -2922,8 +2923,10 @@ async function startServer() {
   const app = express();
   const server = createServer(app);
   const midasSignalsSync = createMidasSignalsSyncService();
+  const cpiPpiForecastSync = createCpiPpiForecastSyncService();
   billingStore.pruneExpiredSessions();
   await midasSignalsSync.start();
+  await cpiPpiForecastSync.start();
 
   app.set("trust proxy", 1);
   app.use(
@@ -3671,6 +3674,21 @@ async function startServer() {
       res.status(503).json({
         error: "Midas signal snapshot hazir degil.",
         pipeline: midasSignalsSync.getPipeline(),
+      });
+      return;
+    }
+
+    res.status(200).json(snapshot);
+  });
+
+  app.get("/api/cpi-ppi/forecast", (_req, res) => {
+    setPrivateNoStore(res);
+
+    const snapshot = cpiPpiForecastSync.getSnapshot();
+    if (!snapshot) {
+      res.status(503).json({
+        error: "CPI/PPI forecast snapshot hazir degil.",
+        pipeline: cpiPpiForecastSync.getPipeline(),
       });
       return;
     }

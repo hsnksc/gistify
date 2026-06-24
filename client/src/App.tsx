@@ -8,6 +8,7 @@ import {
   useState,
 } from "react";
 import {
+  Activity,
   FileText,
   LayoutDashboard,
   Layers3,
@@ -49,6 +50,7 @@ const ReportsDetailPage = lazy(
 const ReportsDateDetailPage = lazy(
   () => import("./features/flow/pages/ReportsDateDetailPage")
 );
+const CpiPpiForecastPage = lazy(() => import("./pages/CpiPpiForecast"));
 const Pay = lazy(() => import("./pages/Pay"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const Terms = lazy(() => import("./pages/Terms"));
@@ -241,6 +243,9 @@ function Router({
         <Route path={"/daily-report"}>
           {() => <DailyReport language={language} />}
         </Route>
+        <Route path={"/cpi-ppi"}>
+          {() => <CpiPpiForecastPage language={language} />}
+        </Route>
         <Route path={"/reports/ticker/:ticker"}>
           {params => (
             <ReportsTickerPage
@@ -387,6 +392,13 @@ function WorkspaceNavigation({
       requiresSubscription: true,
     },
     {
+      href: "/cpi-ppi",
+      label: language === "en" ? "CPI/PPI" : "CPI/PPI",
+      icon: Activity,
+      active: location.startsWith("/cpi-ppi"),
+      requiresSubscription: true,
+    },
+    {
       href: "/flow",
       label: language === "en" ? "Flow" : "Flow",
       icon: Layers3,
@@ -449,6 +461,10 @@ function getWorkspaceSectionLabel(path: string, language: AppLanguage) {
 
   if (path.startsWith("/daily-report")) {
     return copy(language, "Daily", "Daily");
+  }
+
+  if (path.startsWith("/cpi-ppi")) {
+    return copy(language, "CPI/PPI", "CPI/PPI");
   }
 
   return copy(language, "Earning Strategy", "Earning Strategy");
@@ -533,8 +549,8 @@ function SubscriptionRequiredView({
               <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
                 {copy(
                   language,
-                  "Flow herkese acik kalir. Earning Strategy, Momentum ve Daily modullerini acmak icin Paddle uzerinden aktif abonelik gerekir.",
-                  "Flow stays open to everyone. Unlocking Earning Strategy, Momentum and Daily requires an active Paddle subscription."
+                  "Flow herkese acik kalir. Earning Strategy, Momentum, Daily ve CPI/PPI modullerini acmak icin Paddle uzerinden aktif abonelik gerekir.",
+                  "Flow stays open to everyone. Unlocking Earning Strategy, Momentum, Daily and CPI/PPI requires an active Paddle subscription."
                 )}
               </p>
               <div className="flex flex-wrap gap-3 pt-2">
@@ -568,6 +584,7 @@ function SubscriptionRequiredView({
                 ],
                 ["Momentum", copy(language, "Abonelik", "Subscription")],
                 ["Daily", copy(language, "Abonelik", "Subscription")],
+                ["CPI/PPI", copy(language, "Abonelik", "Subscription")],
                 ["Flow", copy(language, "Acik", "Open")],
               ].map(([label, value]) => (
                 <div
@@ -593,8 +610,8 @@ function SubscriptionRequiredView({
             ),
             copy(
               language,
-              "Momentum scanner ve daily yuzeyi ayni uyelikle acilir.",
-              "Momentum scanner and the daily surface unlock with the same subscription."
+              "Momentum scanner, daily yuzeyi ve CPI/PPI forecast ayni uyelikle acilir.",
+              "Momentum scanner, the daily surface, and the CPI/PPI forecast unlock with the same subscription."
             ),
             copy(
               language,
@@ -651,7 +668,8 @@ function App() {
     location.startsWith("/app/admin") ||
     location.startsWith("/momentum") ||
     location.startsWith("/scanner") ||
-    location.startsWith("/daily-report");
+    location.startsWith("/daily-report") ||
+    location.startsWith("/cpi-ppi");
   const shouldShowWorkspaceHeader =
     !isPaymentRoute &&
     (isFlowRoute ||

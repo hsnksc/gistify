@@ -152,12 +152,12 @@ function SummaryMetric({
   accentClass?: string;
 }) {
   return (
-    <div className="rounded-none border border-border bg-background/50 p-3">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+    <div className="rounded-none border border-border bg-background/50 px-3 py-2.5">
+      <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
         {label}
       </p>
-      <p className={`mt-2 data-mono text-lg font-bold ${accentClass}`}>{value}</p>
-      <p className="mt-1 text-xs text-muted-foreground">{hint}</p>
+      <p className={`mt-1.5 data-mono text-base font-bold ${accentClass}`}>{value}</p>
+      <p className="mt-1 text-[11px] leading-5 text-muted-foreground">{hint}</p>
     </div>
   );
 }
@@ -208,11 +208,11 @@ function WeightMeter({
 
 function NoteCard({ note }: { note: StrategyNote }) {
   return (
-    <div className={`rounded-none border p-4 ${noteTone(note)}`}>
-      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-foreground">
+    <div className={`rounded-none border p-3 ${noteTone(note)}`}>
+      <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground">
         {note.title}
       </p>
-      <div className="mt-3 space-y-2 text-sm leading-relaxed text-muted-foreground">
+      <div className="mt-2 space-y-1.5 text-xs leading-6 text-muted-foreground">
         {note.lines.map(line => (
           <p key={`${note.title}-${line}`}>{line}</p>
         ))}
@@ -259,40 +259,40 @@ export default function EarningReportPlaybookTab({
   }
 
   return (
-    <div className="space-y-6 p-6">
-      <section className="rounded-none border border-border bg-card/80 p-5">
-        <div className="grid gap-5 xl:grid-cols-[minmax(0,1.1fr)_minmax(360px,0.9fr)]">
+    <div className="space-y-5 p-5 md:p-6">
+      <section className="rounded-none border border-border bg-card/80 p-4">
+        <div className="grid gap-4 xl:grid-cols-[minmax(0,1.15fr)_minmax(340px,0.85fr)]">
           <div className="space-y-3">
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
               {copy(language, "Rapor ozeti", "Report summary")}
             </p>
-            <h1 className="heading-condensed text-3xl leading-none text-foreground md:text-4xl">
+            <h1 className="heading-condensed text-2xl leading-none text-foreground md:text-3xl">
               {report.title}
             </h1>
             <p className="text-sm text-muted-foreground">{report.subtitle}</p>
-            <div className="rounded-none border border-emerald-400/20 bg-emerald-500/5 px-4 py-3">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+            <div className="rounded-none border border-emerald-400/20 bg-emerald-500/5 px-3 py-2.5">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
                 {copy(language, "Ana pencere", "Core window")}
               </p>
-              <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+              <p className="mt-1 text-xs leading-6 text-muted-foreground">
                 {report.coreWindow}
               </p>
             </div>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-2.5 sm:grid-cols-2">
             {report.gainDrivers.slice(0, 4).map(driver => (
               <div
                 key={driver.factor}
-                className="rounded-none border border-border bg-background/50 p-3"
+                className="rounded-none border border-border bg-background/50 px-3 py-2.5"
               >
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                   {driver.factor}
                 </p>
-                <p className="mt-2 text-sm font-semibold text-foreground">
+                <p className="mt-1.5 text-[13px] font-semibold text-foreground">
                   {driver.impact}
                 </p>
-                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                <p className="mt-1 text-[11px] leading-5 text-muted-foreground">
                   {driver.assessment}
                 </p>
               </div>
@@ -308,39 +308,39 @@ export default function EarningReportPlaybookTab({
             {copy(language, "Hisse secimi", "Ticker selection")}
           </h2>
         </div>
-        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-2.5 md:grid-cols-2 xl:grid-cols-4">
           {positions.map(position => (
             <button
               key={position.ticker}
               type="button"
               onClick={() => onSelectTicker(position.ticker)}
-              className={`rounded-none border p-4 text-left transition-colors ${
+              className={`rounded-none border p-3 text-left transition-colors ${
                 activePosition.ticker === position.ticker
                   ? "border-emerald-400/50 bg-emerald-500/10"
                   : "border-border bg-card/70 hover:border-white/15"
               }`}
             >
               <div className="flex items-center justify-between gap-3">
-                <span className="heading-condensed text-2xl text-foreground">
+                <span className="heading-condensed text-xl text-foreground">
                   {position.ticker}
                 </span>
-                <span className={`text-xs font-semibold ${getBiasTone(position)}`}>
+                <span className={`line-clamp-1 text-[11px] font-semibold ${getBiasTone(position)}`}>
                   {position.blueprint.ratioText || position.strategyTitle}
                 </span>
               </div>
-              <p className="mt-2 text-sm text-muted-foreground">{position.company}</p>
-              <div className="mt-3 flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+              <p className="mt-1 text-xs text-muted-foreground line-clamp-1">{position.company}</p>
+              <div className="mt-2 flex flex-wrap gap-1.5 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
                 <span>{position.earningsDate}</span>
                 <span>{position.earningsTime}</span>
                 <span>
                   {position.daysLeft} {copy(language, "gun", "days")}
                 </span>
               </div>
-              <div className="mt-3 flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.16em]">
-                <span className="rounded-none border border-border bg-background/60 px-2 py-1 text-muted-foreground">
+              <div className="mt-2 flex flex-wrap gap-1.5 text-[10px] uppercase tracking-[0.16em]">
+                <span className="rounded-none border border-border bg-background/60 px-2 py-0.5 text-muted-foreground">
                   {findMetricValue(position, ["Katalist Skoru"])}
                 </span>
-                <span className="rounded-none border border-border bg-background/60 px-2 py-1 text-muted-foreground">
+                <span className="rounded-none border border-border bg-background/60 px-2 py-0.5 text-muted-foreground">
                   {findMetricValue(position, ["EarningsPlay Aksiyon"])}
                 </span>
               </div>
@@ -349,46 +349,46 @@ export default function EarningReportPlaybookTab({
         </div>
       </section>
 
-      <div key={activePosition.ticker} className="space-y-6">
-      <section className="rounded-none border border-emerald-400/30 bg-card/85 p-5">
-        <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+      <div key={activePosition.ticker} className="space-y-5">
+      <section className="rounded-none border border-emerald-400/30 bg-card/85 p-4">
+        <div className="flex flex-col gap-3 xl:flex-row xl:items-start xl:justify-between">
           <div className="space-y-3">
-            <div className="flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            <div className="flex flex-wrap items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
               <span>#{activePosition.order}</span>
               <span>{activePosition.earningsDate}</span>
-              <span className="rounded-none border border-border bg-background/60 px-2 py-1">
+              <span className="rounded-none border border-border bg-background/60 px-2 py-0.5">
                 {activePosition.earningsTime}
               </span>
-              <span className="rounded-none border border-border bg-background/60 px-2 py-1">
+              <span className="rounded-none border border-border bg-background/60 px-2 py-0.5">
                 {activePosition.daysLeft} {copy(language, "gun kaldi", "days left")}
               </span>
             </div>
 
             <div>
               <div className="flex flex-wrap items-center gap-3">
-                <h3 className="heading-condensed text-4xl leading-none text-foreground">
+                <h3 className="heading-condensed text-3xl leading-none text-foreground">
                   {activePosition.ticker}
                 </h3>
-                <span className={`text-sm font-semibold ${getBiasTone(activePosition)}`}>
+                <span className={`text-xs font-semibold ${getBiasTone(activePosition)}`}>
                   {activePosition.strategyTitle}
                 </span>
-                <span className="rounded-none border border-border bg-background/60 px-2 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-amber-300">
+                <span className="rounded-none border border-border bg-background/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-amber-300">
                   {findMetricValue(activePosition, ["Katalist Skoru"])}
                 </span>
               </div>
-              <p className="mt-2 text-sm text-muted-foreground">
+              <p className="mt-1 text-sm text-muted-foreground">
                 {activePosition.company}
               </p>
             </div>
 
             <div className="flex flex-wrap gap-2 text-xs">
-              <span className="rounded-none border border-border bg-background/60 px-3 py-1.5 text-muted-foreground">
+              <span className="rounded-none border border-border bg-background/60 px-2.5 py-1 text-[11px] text-muted-foreground">
                 {copy(language, "Sermaye", "Capital")}:{" "}
                 <span className="data-mono font-semibold text-foreground">
                   {activePosition.allocationCapital}
                 </span>
               </span>
-              <span className="rounded-none border border-border bg-background/60 px-3 py-1.5 text-muted-foreground">
+              <span className="rounded-none border border-border bg-background/60 px-2.5 py-1 text-[11px] text-muted-foreground">
                 {copy(language, "Risk", "Risk")}:{" "}
                 <span className="data-mono font-semibold text-foreground">
                   {activePosition.allocationRisk}
@@ -397,7 +397,7 @@ export default function EarningReportPlaybookTab({
             </div>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2 xl:w-[460px]">
+          <div className="grid gap-2.5 sm:grid-cols-2 xl:w-[420px]">
             <SummaryMetric
               label={copy(language, "Fiyat", "Price")}
               value={findMetricValue(activePosition, ["Fiyat", "Son Fiyat"])}
@@ -430,25 +430,25 @@ export default function EarningReportPlaybookTab({
       </section>
 
       <section className="grid gap-4 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
-        <article className="rounded-none border border-border bg-card/80 p-4">
+        <article className="rounded-none border border-border bg-card/80 p-3.5">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
               {copy(language, "Strateji ozeti", "Strategy summary")}
             </p>
-            <h4 className={`mt-2 text-sm font-semibold ${getBiasTone(activePosition)}`}>
+            <h4 className={`mt-1.5 text-sm font-semibold ${getBiasTone(activePosition)}`}>
               {activePosition.strategyTitle}
             </h4>
           </div>
 
-          <div className="mt-4 space-y-4">
+          <div className="mt-3 space-y-3">
             <WeightMeter language={language} position={activePosition} />
 
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="grid gap-2.5 sm:grid-cols-2">
               <div className="rounded-none border border-emerald-400/20 bg-emerald-500/5 p-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
                   {activePosition.blueprint.callHeading}
                 </p>
-                <ul className="mt-2 space-y-1 text-sm leading-relaxed text-muted-foreground">
+                <ul className="mt-2 space-y-1 text-xs leading-5 text-muted-foreground">
                   {activePosition.blueprint.callItems.length ? (
                     activePosition.blueprint.callItems.map(item => (
                       <li key={`${activePosition.ticker}-call-${item}`}>{item}</li>
@@ -460,10 +460,10 @@ export default function EarningReportPlaybookTab({
               </div>
 
               <div className="rounded-none border border-red-400/20 bg-red-500/5 p-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-red-300">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-red-300">
                   {activePosition.blueprint.putHeading}
                 </p>
-                <ul className="mt-2 space-y-1 text-sm leading-relaxed text-muted-foreground">
+                <ul className="mt-2 space-y-1 text-xs leading-5 text-muted-foreground">
                   {activePosition.blueprint.putItems.length ? (
                     activePosition.blueprint.putItems.map(item => (
                       <li key={`${activePosition.ticker}-put-${item}`}>{item}</li>
@@ -475,28 +475,28 @@ export default function EarningReportPlaybookTab({
               </div>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-3">
-              <div className="rounded-none border border-border bg-background/60 p-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            <div className="grid gap-2.5 sm:grid-cols-3">
+              <div className="rounded-none border border-border bg-background/60 p-2.5">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                   {copy(language, "Giris", "Entry")}
                 </p>
-                <p className="mt-2 text-sm text-foreground">
+                <p className="mt-1.5 text-sm text-foreground">
                   {activePosition.blueprint.entry || "-"}
                 </p>
               </div>
-              <div className="rounded-none border border-border bg-background/60 p-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              <div className="rounded-none border border-border bg-background/60 p-2.5">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                   {copy(language, "Cikis", "Exit")}
                 </p>
-                <p className="mt-2 text-sm text-foreground">
+                <p className="mt-1.5 text-sm text-foreground">
                   {activePosition.blueprint.exit || "-"}
                 </p>
               </div>
-              <div className="rounded-none border border-border bg-background/60 p-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              <div className="rounded-none border border-border bg-background/60 p-2.5">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                   Expiry
                 </p>
-                <div className="mt-2 space-y-1 text-sm text-foreground">
+                <div className="mt-1.5 space-y-1 text-sm text-foreground">
                   {activePosition.blueprint.expiryLines.length ? (
                     activePosition.blueprint.expiryLines.map(line => (
                       <p key={`${activePosition.ticker}-expiry-${line}`}>{line}</p>
@@ -509,11 +509,11 @@ export default function EarningReportPlaybookTab({
             </div>
 
             {activePosition.warnings.length ? (
-              <div className="rounded-none border border-red-400/30 bg-red-500/6 p-4">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-red-300">
+              <div className="rounded-none border border-red-400/30 bg-red-500/6 p-3">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-red-300">
                   {copy(language, "Kritik uyarilar", "Critical warnings")}
                 </p>
-                <div className="mt-3 space-y-2 text-sm leading-relaxed text-red-100/90">
+                <div className="mt-2 space-y-1.5 text-xs leading-6 text-red-100/90">
                   {activePosition.warnings.map(warning => (
                     <p key={`${activePosition.ticker}-warning-${warning}`}>{warning}</p>
                   ))}
