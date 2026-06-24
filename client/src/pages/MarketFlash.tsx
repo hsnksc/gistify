@@ -59,7 +59,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import MarkdownReportRenderer from "@/components/reports/MarkdownReportRenderer";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { copy, useAppLanguage, type AppLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 const DEFAULT_POLL_INTERVAL_MS = 60 * 1000;
@@ -1466,7 +1466,9 @@ function StockDetailModal({
   );
 }
 
-export default function MarketFlash({ language }: { language: AppLanguage }) {
+export default function MarketFlash() {
+  const language = useAppLanguage();
+  const language = useAppLanguage();
   const [report, setReport] = useState<MarketFlashReport | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
