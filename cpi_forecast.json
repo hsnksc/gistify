@@ -1,33 +1,33 @@
 {
-  "generatedAt": "2026-06-25T06:22:26Z",
-  "reportDate": "2026-06-25",
+  "generatedAt": "2026-06-25T21:00:47Z",
+  "reportDate": "2026-06-26",
   "title": "US CPI Forecast Snapshot — June 2026",
-  "summary": "Haziran CPI headline +0.10% m/m (consensus +0.25%) bekleniyor. Brent $72.56, WTI ~$76.5 ile Haziran'da -25% düşüş = energy deflasyonu derinleşiyor. FOMC 16-17 Haziran'da hawkish hold (Warsh 'price stability', dot plot 3.75%-4.00% y/e 2026, +25bp). Core +0.20% stabil. PCE raporu bu hafta (26-27 Haziran). DXY 101.50, 10Y 4.50%.",
+  "summary": "Cleveland Fed nowcast (3.96% headline / 2.85% core) aligns with oil collapse. WTI ~$76, Brent ~$77 (-25% in June) = energy deflation dominant. Core MoM likely +0.20% with sticky shelter offsetting gasoline decline. FOMC 16-17 Jun hawkish hold (Warsh, dot plot 3.75%-4.00%) limits risk-on reaction. PCE this week (26-27 Jun).",
   "baseCase": "Below-consensus headline CPI on oil collapse; core stable but FOMC hawkish limits market reaction",
-  "conviction": 67,
+  "conviction": 68,
   "release": {
     "name": "CPI",
     "period": "Jun 2026",
-    "releaseDate": "2026-07-11",
+    "releaseDate": "2026-07-10",
     "releaseTimeEt": "08:30 ET",
-    "headlineMoM": "+0.10%",
-    "headlineYoY": "3.7%",
+    "headlineMoM": "-0.10%",
+    "headlineYoY": "3.9%",
     "coreMoM": "+0.20%",
-    "coreYoY": "2.9%",
-    "priorHeadlineMoM": "+0.5%",
+    "coreYoY": "2.8%",
+    "priorHeadlineMoM": "+0.50%",
     "priorHeadlineYoY": "4.2%",
-    "priorCoreMoM": "+0.2%",
+    "priorCoreMoM": "+0.20%",
     "priorCoreYoY": "2.9%",
     "bias": "BELOW",
     "confidence": 70,
-    "thesis": "Brent $72.56, WTI ~$76.5 (Haziran -25%) = energy deflasyonu dominant. FOMC hawkish hold (Warsh 'price stability', dot plot 3.75%-4.00% y/e 2026 = +25bp). Core stabil (+0.20%) ama DXY 101.50 = import deflasyon baskısı. PCE 26-27 Haziran."
+    "thesis": "Cleveland Fed nowcast 3.96% headline / 2.85% core supports below-consensus print. Oil collapse (WTI -25% in June) = energy deflation. Shelter sticky (+3.4% y/y). Core services stable. FOMC hawkish hold caps duration rally."
   },
   "scenarios": [
     {
       "id": "base",
       "label": "Base case",
       "probability": 55,
-      "outcome": "Headline +0.10% m/m, Core +0.20% m/m — below consensus on oil deflation",
+      "outcome": "Headline -0.10% m/m, Core +0.20% m/m — below consensus on oil deflation",
       "marketReadthrough": "10Y yields fade slightly (4.45-4.50%), DXY 100-101 stabil. Airlines (UAL) and chemicals (LYB) rally on jet fuel/naphtha margin expansion. Energy (XLE) and gold (GLD) under pressure. Tech (NVDA) limited upside due to FOMC hawkishness.",
       "favoredAssets": [
         "UAL",
@@ -42,7 +42,7 @@
       "id": "hot",
       "label": "Hotter inflation surprise",
       "probability": 20,
-      "outcome": "Headline +0.25%+ m/m, Core +0.30%+ m/m — oil rebounds, services sticky",
+      "outcome": "Headline +0.10%+ m/m, Core +0.30%+ m/m — oil rebounds, services sticky",
       "marketReadthrough": "10Y yields spike (4.55%+), DXY 101.5+. Tech (NVDA) and REITs (AMT) selloff. USD long, energy (XLE) short-cover rally. Gold (GLD) squeeze.",
       "favoredAssets": [
         "USD",
@@ -56,7 +56,7 @@
       "id": "cool",
       "label": "Cooler disinflation impulse",
       "probability": 25,
-      "outcome": "Headline +0.0% m/m, Core +0.15% m/m — oil collapse fully captured, DXY compression",
+      "outcome": "Headline -0.20% m/m, Core +0.15% m/m — oil collapse fully captured, DXY compression",
       "marketReadthrough": "10Y yields drop (4.35-4.40%), DXY 99.5-100. Growth (QQQ) rallies, airlines (UAL) +10-15%. Homebuilders (DHI) on mortgage relief. Energy (XLE) -5%.",
       "favoredAssets": [
         "QQQ",
@@ -113,8 +113,8 @@
     },
     {
       "label": "WTI / Brent Oil",
-      "value": "$72.56 / $76.5",
-      "note": "Haziran -25%. Brent 72.56 (25 Jun). API inventory weak demand. Hormuz geçişleri normalleşiyor. $70 line = headline CPI 0.0% risk."
+      "value": "$76.00 / $77.16",
+      "note": "Haziran -25%. Brent 77.16 (23 Jun). API inventory weak demand. Hormuz geçişleri normalleşiyor. $70 line = headline CPI 0.0% risk."
     },
     {
       "label": "PCE Report",
@@ -128,11 +128,12 @@
     }
   ],
   "keyDrivers": [
-    "Oil collapse: Brent $72.56, WTI -25% in June = gasoline CPI -7% m/m. Energy deflation is the dominant headline driver. API inventory weak demand.",
+    "Cleveland Fed nowcast: 3.96% headline / 2.85% core (updated 25 Jun). Strong directional signal for below-consensus print.",
+    "Oil collapse: WTI $76, Brent $77 (-25% in June) = gasoline CPI -7% m/m. Energy deflation is the dominant headline driver. API inventory weak demand.",
     "FOMC hawkish hold: Warsh's first meeting. Dot plot 3.75%-4.00% y/e 2026 = +25bp. 3/18 members expect hike, 5/18 expect 50bp hikes. 'Price stability' language.",
     "Iran deal progress: Hormuz traffic normalizing, 3 supertankers passed. Supply glut risk = oil downside.",
     "DXY 101.50: Strong dollar = import deflation on core goods. Partially offsets PPI passthrough.",
-    "Core services sticky: Retail sales strong (+0.9% May) = consumer demand resilient. Airline fares, recreation = upside risk."
+    "Core services sticky: Shelter +3.4% y/y. Retail sales strong (+0.9% May) = consumer demand resilient. Airline fares, recreation = upside risk."
   ],
   "risks": [
     "Iran deal collapse: Nuclear inspectors denied, Israel/Lebanon tensions, US Congress opposition. WTI $85+ = CPI revision.",
