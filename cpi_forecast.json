@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-24T08:01:56Z",
-  "reportDate": "2026-06-24",
+  "generatedAt": "2026-06-25T06:22:26Z",
+  "reportDate": "2026-06-25",
   "title": "US CPI Forecast Snapshot — June 2026",
-  "summary": "Haziran CPI headline +0.10% m/m (beklenti +0.25%) bekleniyor. Petrol WTI $72.85 ile Haziran'da -25% düştü = energy deflasyonu derinleşiyor. API envanter düşüşü 765k varil (beklenti 4.5m) = talep zayıf. Hormuz'da 3 supertanker geçti, İran-Oman anlaşması. FOMC hawkish hold (Warsh dot plot 3.8%, 2026'da 0 cut) soft print etkisini sınırlayacak. Core +0.20% stabil. PCE raporu bu hafta (26-27 Haziran).",
+  "summary": "Haziran CPI headline +0.10% m/m (consensus +0.25%) bekleniyor. Brent $72.56, WTI ~$76.5 ile Haziran'da -25% düşüş = energy deflasyonu derinleşiyor. FOMC 16-17 Haziran'da hawkish hold (Warsh 'price stability', dot plot 3.75%-4.00% y/e 2026, +25bp). Core +0.20% stabil. PCE raporu bu hafta (26-27 Haziran). DXY 101.50, 10Y 4.50%.",
   "baseCase": "Below-consensus headline CPI on oil collapse; core stable but FOMC hawkish limits market reaction",
   "conviction": 67,
   "release": {
@@ -20,7 +20,7 @@
     "priorCoreYoY": "2.9%",
     "bias": "BELOW",
     "confidence": 70,
-    "thesis": "Petrol WTI $72.85 (Haziran -25%) = energy deflasyonu dominant. API envanter 765k düşüş (beklenti 4.5m) = talep zayıf. Hormuz'da 3 supertanker geçti. FOMC hawkish (dot plot 3.8%) soft print etkisini sınırlar. Core stabil (+0.20%) ama DXY 101 = import deflasyon baskısı."
+    "thesis": "Brent $72.56, WTI ~$76.5 (Haziran -25%) = energy deflasyonu dominant. FOMC hawkish hold (Warsh 'price stability', dot plot 3.75%-4.00% y/e 2026 = +25bp). Core stabil (+0.20%) ama DXY 101.50 = import deflasyon baskısı. PCE 26-27 Haziran."
   },
   "scenarios": [
     {
@@ -72,7 +72,7 @@
     {
       "asset": "UST 10Y / TLT",
       "bias": "Long duration on cooler or inline core",
-      "trigger": "Core CPI <= +0.20% and services ex-shelter stable; WTI stays below $75",
+      "trigger": "Core CPI <= +0.20% and services ex-shelter stable; WTI stays below $78",
       "invalidation": "Sticky core services above +0.30% with wages re-accelerating; PCE hot this week."
     },
     {
@@ -84,13 +84,13 @@
     {
       "asset": "Airlines — UAL / DAL",
       "bias": "Long — jet fuel collapse + summer demand",
-      "trigger": "WTI $72-75 and CPI headline soft; summer travel bookings strong",
+      "trigger": "WTI $72-78 and CPI headline soft; summer travel bookings strong",
       "invalidation": "Iran deal collapses, WTI above $85, or travel demand disappoints."
     },
     {
       "asset": "Energy — XLE / XOM / CVX",
       "bias": "Short — oil supply glut, Iran exports resuming, demand weak",
-      "trigger": "WTI below $75 and Hormuz traffic normalizes; API inventory weak demand",
+      "trigger": "WTI below $78 and Hormuz traffic normalizes; API inventory weak demand",
       "invalidation": "Iran deal collapses, Israel attacks, or OPEC+ cuts production."
     },
     {
@@ -103,8 +103,8 @@
   "watchItems": [
     {
       "label": "Fed path / Warsh",
-      "value": "0 cuts in 2026 (dot plot 3.8%)",
-      "note": "FOMC hawkish hold on 16-17 Jun. Warsh 'price stability' tone. 9/19 policymakers expect hike."
+      "value": "+25bp in 2026 (dot plot 3.75%-4.00%)",
+      "note": "FOMC hawkish hold on 16-17 Jun. Warsh 'price stability' tone. 3/18 hike, 5/18 hike 50bp."
     },
     {
       "label": "10Y UST",
@@ -112,9 +112,9 @@
       "note": "Key regime line. Below 4.45% = growth rally. Above 4.55% = risk-off. Oil pulling down, FOMC pushing up."
     },
     {
-      "label": "WTI Oil",
-      "value": "$72.85",
-      "note": "Haziran -25%. API inventory -765k (weak demand). 3 supertankers passed Hormuz. Iran-Oman navigation talks. $70 line = headline CPI 0.0% risk."
+      "label": "WTI / Brent Oil",
+      "value": "$72.56 / $76.5",
+      "note": "Haziran -25%. Brent 72.56 (25 Jun). API inventory weak demand. Hormuz geçişleri normalleşiyor. $70 line = headline CPI 0.0% risk."
     },
     {
       "label": "PCE Report",
@@ -123,22 +123,22 @@
     },
     {
       "label": "DXY",
-      "value": "100.85-101.0",
-      "note": "1-year highs. FOMC hawkish + safe haven. Import deflation pressure on core goods."
+      "value": "101.50",
+      "note": "Near 52-week high 101.80. FOMC hawkish + safe haven. Import deflation pressure on core goods."
     }
   ],
   "keyDrivers": [
-    "Oil collapse: WTI -25% in June = gasoline CPI -7% m/m. Energy deflation is the dominant headline driver. API inventory -765k vs 4.5m expected = weak demand.",
-    "FOMC hawkish hold: Warsh's first meeting. Dot plot 3.8% median = zero cuts in 2026. Limits soft-CPI market reaction.",
-    "Iran deal: 60-day waiver, 3 supertankers passed Hormuz, Iran-Oman navigation talks. Supply glut risk = oil downside.",
-    "DXY 101: Strong dollar = import deflation on core goods. Partially offsets PPI passthrough.",
+    "Oil collapse: Brent $72.56, WTI -25% in June = gasoline CPI -7% m/m. Energy deflation is the dominant headline driver. API inventory weak demand.",
+    "FOMC hawkish hold: Warsh's first meeting. Dot plot 3.75%-4.00% y/e 2026 = +25bp. 3/18 members expect hike, 5/18 expect 50bp hikes. 'Price stability' language.",
+    "Iran deal progress: Hormuz traffic normalizing, 3 supertankers passed. Supply glut risk = oil downside.",
+    "DXY 101.50: Strong dollar = import deflation on core goods. Partially offsets PPI passthrough.",
     "Core services sticky: Retail sales strong (+0.9% May) = consumer demand resilient. Airline fares, recreation = upside risk."
   ],
   "risks": [
     "Iran deal collapse: Nuclear inspectors denied, Israel/Lebanon tensions, US Congress opposition. WTI $85+ = CPI revision.",
     "PCE hot this week: If core PCE +0.3%+ m/m, hawkish sentiment intensifies, 10Y yields spike, DXY strengthens.",
     "FOMC hawkish limits reaction: Market may 'sell the rally' even on soft CPI. Warsh 'one data point' rhetoric.",
-    "Demand weakness: API inventory -765k vs 4.5m expected = weak crude demand. If global recession fears rise, oil and risk assets both fall.",
+    "Demand weakness: API inventory weak demand = crude demand concerns. If global recession fears rise, oil and risk assets both fall.",
     "Shelter lag: Zillow/Apartment List slowing but BLS 6-12 month lag. Faster deceleration = core downside surprise."
   ]
 }
