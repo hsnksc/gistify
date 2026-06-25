@@ -4,10 +4,22 @@
  */
 
 import { optionStrategyData, strategyConfig, riskLevelConfig, type OptionStrategy } from '@/lib/optionStrategyData';
+import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart';
+import {
+  chartAxisLabel,
+  chartAxisTick,
+  chartCursorLine,
+  chartGrid,
+  chartLineDot,
+  chartPalette,
+  formatChartCurrency,
+  formatChartNumber,
+  getChartAriaLabel,
+} from '@/lib/chartTheme';
 import { copy } from '@/lib/i18n';
 import type { AppLanguage } from '@/lib/i18n';
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  LineChart, Line, XAxis, YAxis, CartesianGrid,
 } from 'recharts';
 
 interface Props {
@@ -77,6 +89,16 @@ export default function OptionDetailTab({
       status: 'CRUSH',
     },
   ];
+  const timelineChartConfig = {
+    iv: {
+      label: 'IV',
+      color: chartPalette.warning,
+    },
+    callPrice: {
+      label: copy(language, 'Call Fiyatı', 'Call Price'),
+      color: chartPalette.bull,
+    },
+  } satisfies ChartConfig;
 
   return (
     <div className="p-6 space-y-4">
@@ -196,45 +218,75 @@ export default function OptionDetailTab({
           {copy(language, 'Strateji Timeline: IV Expansion Fırsat', 'Strategy Timeline: IV Expansion Opportunity')}
         </div>
         <div style={{ height: '250px' }}>
-          <ResponsiveContainer width="100%" height="100%">
+          <ChartContainer
+            aria-label={getChartAriaLabel(
+              copy(language, 'IV ve call fiyatı timeline grafiği', 'IV and call price timeline chart'),
+              copy(language, 'Çizgiler earnings öncesi günlerde implied volatility ve call premium değişimini birlikte gösterir.', 'The lines show implied volatility and call premium changes together across the days leading into earnings.')
+            )}
+            className="h-full aspect-auto"
+            config={timelineChartConfig}
+          >
             <LineChart data={timelineData} margin={{ top: 5, right: 20, bottom: 20, left: 10 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.22 0.03 225)" />
+              <CartesianGrid {...chartGrid} />
               <XAxis
                 dataKey="axisLabel"
-                tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 11, fontFamily: 'JetBrains Mono' }}
+                tick={chartAxisTick}
                 tickMargin={12}
               />
               <YAxis
                 yAxisId="left"
-                tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 11, fontFamily: 'JetBrains Mono' }}
+                tick={chartAxisTick}
                 tickMargin={8}
-                label={{ value: 'IV', angle: -90, position: 'insideLeft' }}
+                label={chartAxisLabel('IV', { angle: -90, position: 'insideLeft' })}
               />
               <YAxis
                 yAxisId="right"
                 orientation="right"
-                tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 11, fontFamily: 'JetBrains Mono' }}
+                tick={chartAxisTick}
                 tickMargin={8}
-                label={{ value: copy(language, 'Call Fiyatı ($)', 'Call Price ($)'), angle: 90, position: 'insideRight' }}
+                label={chartAxisLabel(copy(language, 'Call Fiyatı ($)', 'Call Price ($)'), { angle: 90, position: 'insideRight' })}
               />
-              <Tooltip content={({ active, payload, label }) => {
-                if (active && payload && payload.length) {
-                  const data = payload[0]?.payload;
-                  return (
-                    <div className="px-3 py-2 border" style={{ background: 'oklch(0.15 0.03 225)', borderColor: 'oklch(0.25 0.03 225)', borderRadius: 0 }}>
-                      <p className="data-mono text-xs font-bold" style={{ color: 'oklch(0.78 0.18 160)' }}>{data?.day}</p>
-                      <p className="data-mono text-xs" style={{ color: 'oklch(0.75 0.15 75)' }}>IV: {data?.iv}</p>
-                      <p className="data-mono text-xs" style={{ color: 'oklch(0.78 0.18 160)' }}>Call: ${data?.callPrice.toFixed(2)}</p>
-                      <p className="text-xs" style={{ color: cfg.color }}>{data?.status}</p>
-                    </div>
-                  );
+              <ChartTooltip
+                cursor={chartCursorLine}
+                content={
+                  <ChartTooltipContent
+                    labelKey="day"
+                    renderContent={({ datum, label }) => (
+                      <>
+                        <div className="data-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-300">
+                          {label}
+                        </div>
+                        <div className="flex items-center justify-between gap-3">
+                          <span className="text-muted-foreground">IV</span>
+                          <span className="data-mono font-semibold text-foreground">
+                            {formatChartNumber(datum?.iv, 1)}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between gap-3">
+                          <span className="text-muted-foreground">
+                            {copy(language, 'Call Fiyatı', 'Call Price')}
+                          </span>
+                          <span className="data-mono font-semibold text-foreground">
+                            {formatChartCurrency(datum?.callPrice)}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between gap-3">
+                          <span className="text-muted-foreground">
+                            {copy(language, 'Durum', 'Status')}
+                          </span>
+                          <span className="data-mono font-semibold" style={{ color: cfg.color }}>
+                            {typeof datum?.status === 'string' ? datum.status : '-'}
+                          </span>
+                        </div>
+                      </>
+                    )}
+                  />
                 }
-                return null;
-              }} />
-              <Line yAxisId="left" type="monotone" dataKey="iv" stroke="oklch(0.75 0.15 75)" strokeWidth={2} dot={{ fill: 'oklch(0.75 0.15 75)', r: 4 }} />
-              <Line yAxisId="right" type="monotone" dataKey="callPrice" stroke="oklch(0.78 0.18 160)" strokeWidth={2} dot={{ fill: 'oklch(0.78 0.18 160)', r: 4 }} />
+              />
+              <Line yAxisId="left" type="monotone" dataKey="iv" stroke={chartPalette.warning} strokeWidth={2} dot={chartLineDot(chartPalette.warning)} activeDot={chartLineDot(chartPalette.warning)} />
+              <Line yAxisId="right" type="monotone" dataKey="callPrice" stroke={chartPalette.bull} strokeWidth={2} dot={chartLineDot(chartPalette.bull)} activeDot={chartLineDot(chartPalette.bull)} />
             </LineChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </div>
       </div>
 

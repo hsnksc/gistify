@@ -1,12 +1,14 @@
 import * as React from "react";
 import * as RechartsPrimitive from "recharts";
 
+import { chartPalette } from "@/lib/chartTheme";
 import { getTooltipDatum, getTooltipLabel } from "@/lib/chartTooltip";
 import { cn } from "@/lib/utils";
 
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const;
 type TooltipProps = React.ComponentProps<typeof RechartsPrimitive.Tooltip>;
+type TooltipPayload = TooltipProps["payload"];
 
 export type ChartConfig = {
   [k in string]: {
@@ -23,6 +25,13 @@ type ChartContextProps = {
 };
 
 const ChartContext = React.createContext<ChartContextProps | null>(null);
+
+type ChartTooltipRenderProps = {
+  config: ChartConfig;
+  datum: Record<string, unknown> | null;
+  label: React.ReactNode;
+  payload: TooltipPayload;
+};
 
 function useChart() {
   const context = React.useContext(ChartContext);
@@ -55,7 +64,7 @@ function ChartContainer({
         data-slot="chart"
         data-chart={chartId}
         className={cn(
-          "[&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_[stroke='#ccc']]:stroke-border flex aspect-video justify-center text-xs [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-surface]:outline-hidden",
+          "[&_.recharts-cartesian-axis-line]:stroke-white/8 [&_.recharts-cartesian-axis-tick_line]:stroke-white/8 [&_.recharts-cartesian-axis-tick_text]:fill-slate-400 [&_.recharts-cartesian-grid_line]:stroke-white/8 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-sky-400/40 [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-white/10 [&_.recharts-radial-bar-background-sector]:fill-white/5 [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-sky-400/8 [&_.recharts-reference-line_[stroke='#ccc']]:stroke-white/10 flex aspect-video justify-center text-[11px] [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-surface]:outline-hidden",
           className
         )}
         {...props}
@@ -165,6 +174,7 @@ function ChartTooltipContent({
   color,
   nameKey,
   labelKey,
+  renderContent,
 }: React.ComponentProps<typeof RechartsPrimitive.Tooltip> &
   React.ComponentProps<"div"> & {
     hideLabel?: boolean;
@@ -172,6 +182,7 @@ function ChartTooltipContent({
     indicator?: "line" | "dot" | "dashed";
     nameKey?: string;
     labelKey?: string;
+    renderContent?: (props: ChartTooltipRenderProps) => React.ReactNode;
   }) {
   const { config } = useChart();
 
@@ -212,16 +223,43 @@ function ChartTooltipContent({
 
   const nestLabel = payload.length === 1 && indicator !== "dot";
   const tooltipKey = buildTooltipReactKey(payload, label);
+  const datum = getTooltipDatum(payload as never);
+
+  if (renderContent) {
+    return (
+      <div
+        className={cn(
+          "grid min-w-[11rem] items-start gap-2 rounded-[calc(var(--radius)-2px)] border border-white/10 bg-[var(--surface-overlay)] px-3 py-2.5 text-xs shadow-[0_20px_48px_rgba(2,8,23,0.45)] backdrop-blur-sm",
+          className
+        )}
+        style={{
+          borderColor: chartPalette.surfaceBorder,
+          background: chartPalette.surface,
+        }}
+      >
+        {renderContent({
+          config,
+          datum,
+          label: tooltipLabel,
+          payload,
+        })}
+      </div>
+    );
+  }
 
   return (
     <div
       className={cn(
-        "border-border/50 bg-background grid min-w-[8rem] items-start gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs shadow-xl",
+        "grid min-w-[11rem] items-start gap-2 rounded-[calc(var(--radius)-2px)] border border-white/10 bg-[var(--surface-overlay)] px-3 py-2.5 text-xs shadow-[0_20px_48px_rgba(2,8,23,0.45)] backdrop-blur-sm",
         className
       )}
+      style={{
+        borderColor: chartPalette.surfaceBorder,
+        background: chartPalette.surface,
+      }}
     >
       {!nestLabel ? tooltipLabel : null}
-      <div className="grid gap-1.5">
+      <div className="grid gap-2">
         {payload
           .filter(item => item.type !== "none")
           .map((item, index) => {

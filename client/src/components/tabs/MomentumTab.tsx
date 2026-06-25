@@ -4,31 +4,38 @@
  */
 
 import { stocksData, signalConfig, riskConfig, type StockData } from '@/lib/stockData';
-import { getTooltipLabel } from '@/lib/chartTooltip';
+import { Delta } from '@/components/ui/delta';
 import {
-  ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell,
-  BarChart, Bar, Legend,
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from '@/components/ui/chart';
+import {
+  chartAxisLabel,
+  chartAxisStrongTick,
+  chartAxisTick,
+  chartCursorLine,
+  chartCursorZone,
+  chartGrid,
+  chartPalette,
+  coerceChartNumber,
+  formatChartNumber,
+  formatChartPercent,
+  getChartAriaLabel,
+  getSignalChartColor,
+} from '@/lib/chartTheme';
+import {
+  ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Cell,
+  BarChart, Bar,
 } from 'recharts';
 
 interface Props {
   onStockClick: (ticker: string) => void;
   stocks?: StockData[];
 }
-
-const CustomTooltip = ({ active, payload }: any) => {
-  if (active && payload && payload.length) {
-    const d = payload[0]?.payload;
-    return (
-      <div className="px-3 py-2 border" style={{ background: 'oklch(0.15 0.03 225)', borderColor: 'oklch(0.25 0.03 225)', borderRadius: 0 }}>
-        <p className="data-mono text-xs font-bold" style={{ color: 'oklch(0.78 0.18 160)' }}>{d?.ticker}</p>
-        <p className="data-mono text-xs" style={{ color: 'oklch(0.75 0.15 75)' }}>6A Getiri: {d?.x}%</p>
-        <p className="data-mono text-xs" style={{ color: 'oklch(0.78 0.18 160)' }}>Momentum: {d?.y}</p>
-        <p className="data-mono text-xs" style={{ color: 'oklch(0.65 0.22 25)' }}>Beat İht: %{d?.beat}</p>
-      </div>
-    );
-  }
-  return null;
-};
 
 export default function MomentumTab({ onStockClick, stocks = stocksData }: Props) {
   const sorted = [...stocks].sort((a, b) => b.momentumScore - a.momentumScore);
@@ -46,13 +53,22 @@ export default function MomentumTab({ onStockClick, stocks = stocksData }: Props
     mevcut: s.volumeCurrent,
     ortalama: s.volumeAvg3M,
   }));
-
-  const getScatterColor = (signal: string) => {
-    if (signal === 'STRONG_BUY') return 'oklch(0.78 0.18 160)';
-    if (signal === 'BUY') return '#4ade80';
-    if (signal === 'NEUTRAL') return 'oklch(0.75 0.15 75)';
-    return 'oklch(0.65 0.22 25)';
-  };
+  const scatterChartConfig = {
+    y: {
+      label: 'Momentum',
+      color: chartPalette.accent,
+    },
+  } satisfies ChartConfig;
+  const volumeChartConfig = {
+    mevcut: {
+      label: 'Mevcut Hacim',
+      color: chartPalette.bull,
+    },
+    ortalama: {
+      label: '3A Ortalama',
+      color: chartPalette.warning,
+    },
+  } satisfies ChartConfig;
 
   return (
     <div className="p-6 space-y-6">
@@ -229,30 +245,67 @@ export default function MomentumTab({ onStockClick, stocks = stocksData }: Props
             </h2>
           </div>
           <div className="tactical-card p-4" style={{ height: '320px' }}>
-            <ResponsiveContainer width="100%" height="100%">
+            <ChartContainer
+              aria-label={getChartAriaLabel(
+                '6A getiri ve momentum saçılım grafiği',
+                'X ekseni altı aylık getiriyi, Y ekseni momentum skorunu ve nokta rengi sinyal gücünü gösterir.'
+              )}
+              className="h-full aspect-auto"
+              config={scatterChartConfig}
+            >
               <ScatterChart margin={{ top: 10, right: 20, bottom: 20, left: 10 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.22 0.03 225)" />
+                <CartesianGrid {...chartGrid} />
                 <XAxis
                   dataKey="x"
                   name="6A Getiri"
                   unit="%"
-                  tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 10, fontFamily: 'JetBrains Mono' }}
-                  label={{ value: '6A Getiri (%)', position: 'insideBottom', offset: -10, fill: 'oklch(0.45 0.015 225)', fontSize: 10 }}
+                  tick={chartAxisTick}
+                  label={chartAxisLabel('6A Getiri (%)', { position: 'insideBottom', offset: -10 })}
                 />
                 <YAxis
                   dataKey="y"
                   name="Momentum"
-                  tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 10, fontFamily: 'JetBrains Mono' }}
-                  label={{ value: 'Momentum', angle: -90, position: 'insideLeft', fill: 'oklch(0.45 0.015 225)', fontSize: 10 }}
+                  tick={chartAxisTick}
+                  label={chartAxisLabel('Momentum', { angle: -90, position: 'insideLeft' })}
                 />
-                <Tooltip content={<CustomTooltip />} />
+                <ChartTooltip
+                  cursor={chartCursorLine}
+                  content={
+                    <ChartTooltipContent
+                      labelKey="ticker"
+                      renderContent={({ datum, label }) => (
+                        <>
+                          <div className="data-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-300">
+                            {label}
+                          </div>
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="text-muted-foreground">6A Getiri</span>
+                            <Delta value={coerceChartNumber(datum?.x as number | string | null | undefined)} precision={1} />
+                          </div>
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="text-muted-foreground">Momentum</span>
+                            <span className="data-mono font-semibold text-foreground">
+                              {formatChartNumber(datum?.y)}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="text-muted-foreground">Beat İht.</span>
+                            <span className="data-mono font-semibold text-foreground">
+                              {formatChartPercent(datum?.beat)}
+                            </span>
+                          </div>
+                        </>
+                      )}
+                    />
+                  }
+                />
                 <Scatter data={scatterData} name="Hisseler">
                   {scatterData.map((entry, i) => (
-                    <Cell key={i} fill={getScatterColor(entry.signal)} />
+                    <Cell key={i} fill={getSignalChartColor(entry.signal)} />
                   ))}
                 </Scatter>
               </ScatterChart>
-            </ResponsiveContainer>
+            </ChartContainer>
           </div>
         </div>
 
@@ -265,30 +318,50 @@ export default function MomentumTab({ onStockClick, stocks = stocksData }: Props
             </h2>
           </div>
           <div className="tactical-card p-4" style={{ height: '320px' }}>
-            <ResponsiveContainer width="100%" height="100%">
+            <ChartContainer
+              aria-label={getChartAriaLabel(
+                'Hacim karşılaştırma grafiği',
+                'Her hisse için mevcut hacim ile üç aylık ortalama hacim yan yana gösterilir.'
+              )}
+              className="h-full aspect-auto"
+              config={volumeChartConfig}
+            >
               <BarChart data={volumeData} margin={{ top: 5, right: 10, bottom: 5, left: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.22 0.03 225)" />
-                <XAxis dataKey="ticker" tick={{ fill: 'oklch(0.55 0.015 225)', fontSize: 10, fontFamily: 'JetBrains Mono', fontWeight: 600 }} />
-                <YAxis tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 10, fontFamily: 'JetBrains Mono' }} />
-                <Tooltip content={({ active, payload, label }) => {
-                  if (active && payload && payload.length) {
-                    const resolvedLabel = getTooltipLabel(payload, label);
-                    return (
-                      <div className="px-3 py-2 border" style={{ background: 'oklch(0.15 0.03 225)', borderColor: 'oklch(0.25 0.03 225)', borderRadius: 0 }}>
-                        <p className="data-mono text-xs font-bold" style={{ color: 'oklch(0.78 0.18 160)' }}>{resolvedLabel}</p>
-                        {payload.map((p: any, i: number) => (
-                          <p key={i} className="data-mono text-xs" style={{ color: p.fill }}>{p.name}: {p.value}M</p>
-                        ))}
-                      </div>
-                    );
+                <CartesianGrid {...chartGrid} />
+                <XAxis dataKey="ticker" tick={chartAxisStrongTick} />
+                <YAxis tick={chartAxisTick} />
+                <ChartTooltip
+                  cursor={chartCursorZone}
+                  content={
+                    <ChartTooltipContent
+                      labelKey="ticker"
+                      renderContent={({ datum, label }) => (
+                        <>
+                          <div className="data-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-300">
+                            {label}
+                          </div>
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="text-muted-foreground">Mevcut</span>
+                            <span className="data-mono font-semibold text-foreground">
+                              {formatChartNumber(datum?.mevcut)}M
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="text-muted-foreground">3A Ortalama</span>
+                            <span className="data-mono font-semibold text-foreground">
+                              {formatChartNumber(datum?.ortalama)}M
+                            </span>
+                          </div>
+                        </>
+                      )}
+                    />
                   }
-                  return null;
-                }} />
-                <Legend wrapperStyle={{ fontSize: '11px', color: 'oklch(0.55 0.015 225)' }} />
-                <Bar dataKey="mevcut" name="Mevcut Hacim" fill="oklch(0.78 0.18 160)" maxBarSize={20} />
-                <Bar dataKey="ortalama" name="3A Ortalama" fill="oklch(0.75 0.15 75 / 0.6)" maxBarSize={20} />
+                />
+                <ChartLegend content={<ChartLegendContent />} />
+                <Bar dataKey="mevcut" name="Mevcut Hacim" fill={chartPalette.bull} maxBarSize={20} />
+                <Bar dataKey="ortalama" name="3A Ortalama" fill={chartPalette.warningSoft} maxBarSize={20} />
               </BarChart>
-            </ResponsiveContainer>
+            </ChartContainer>
           </div>
         </div>
       </div>

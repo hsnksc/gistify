@@ -4,11 +4,22 @@
  */
 
 import { stocksData, sectorMacroData, signalConfig, type StockData } from '@/lib/stockData';
-import { getTooltipLabel } from '@/lib/chartTooltip';
+import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart';
+import {
+  chartAxisStrongTick,
+  chartAxisTick,
+  chartCursorZone,
+  chartGrid,
+  chartPalette,
+  formatChartNumber,
+  formatChartPercent,
+  getChartAriaLabel,
+  getMomentumBandColor,
+} from '@/lib/chartTheme';
 import { copy } from '@/lib/i18n';
 import type { AppLanguage } from '@/lib/i18n';
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Cell,
 } from 'recharts';
 
 const HERO_URL = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663682523726/f6iQZ4ZvSyNWxyJ4Djp26f/hero_banner-iCqwWxUrnD74QRvdzpTN5G.webp';
@@ -22,27 +33,6 @@ interface Props {
   summary?: string;
   language: AppLanguage;
 }
-
-const CustomTooltip = ({ active, payload, label }: any) => {
-  if (active && payload && payload.length) {
-    const resolvedLabel = getTooltipLabel(payload, label);
-    return (
-      <div className="px-3 py-2 border" style={{
-        background: 'oklch(0.15 0.03 225)',
-        borderColor: 'oklch(0.25 0.03 225)',
-        borderRadius: 0,
-      }}>
-        <p className="data-mono text-xs font-bold" style={{ color: 'oklch(0.78 0.18 160)' }}>{resolvedLabel}</p>
-        {payload.map((p: any, i: number) => (
-          <p key={i} className="data-mono text-xs" style={{ color: p.color }}>
-            {p.name}: {p.value}
-          </p>
-        ))}
-      </div>
-    );
-  }
-  return null;
-};
 
 export default function OverviewTab({
   onStockClick,
@@ -79,6 +69,16 @@ export default function OverviewTab({
   const leadSector =
     [...stocks].sort((left, right) => right.momentumScore - left.momentumScore)[0]?.sector ||
     'Technology';
+  const momentumChartConfig = {
+    score: {
+      label: copy(language, 'Momentum Skoru', 'Momentum Score'),
+      color: chartPalette.accent,
+    },
+    beat: {
+      label: copy(language, 'Beat İhtimali', 'Beat Probability'),
+      color: chartPalette.warning,
+    },
+  } satisfies ChartConfig;
 
   return (
     <div className="p-0">
@@ -221,27 +221,59 @@ export default function OverviewTab({
               </h2>
             </div>
             <div className="tactical-card p-4" style={{ height: '340px' }}>
-              <ResponsiveContainer width="100%" height="100%">
+              <ChartContainer
+                aria-label={getChartAriaLabel(
+                  copy(language, 'Momentum skoru sıralaması', 'Momentum score ranking'),
+                  copy(language, 'Her çubuk bir hisseyi, çubuk uzunluğu momentum skorunu ve tooltip beat ihtimalini gösterir.', 'Each bar shows a stock, bar length shows momentum score, and the tooltip shows beat probability.')
+                )}
+                className="h-full aspect-auto"
+                config={momentumChartConfig}
+              >
                 <BarChart data={momentumChartData} layout="vertical" margin={{ left: 10, right: 30, top: 5, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.22 0.03 225)" horizontal={false} />
-                  <XAxis type="number" domain={[0, 100]} tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 10, fontFamily: 'JetBrains Mono' }} />
-                  <YAxis type="category" dataKey="ticker" tick={{ fill: 'oklch(0.75 0.01 220)', fontSize: 11, fontFamily: 'JetBrains Mono', fontWeight: 600 }} width={40} />
-                  <Tooltip content={<CustomTooltip />} />
+                  <CartesianGrid {...chartGrid} horizontal={false} />
+                  <XAxis type="number" domain={[0, 100]} tick={chartAxisTick} />
+                  <YAxis type="category" dataKey="ticker" tick={chartAxisStrongTick} width={40} />
+                  <ChartTooltip
+                    cursor={chartCursorZone}
+                    content={
+                      <ChartTooltipContent
+                        labelKey="ticker"
+                        renderContent={({ datum, label }) => (
+                          <>
+                            <div className="data-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-300">
+                              {label}
+                            </div>
+                            <div className="flex items-center justify-between gap-3">
+                              <span className="text-muted-foreground">
+                                {copy(language, 'Momentum', 'Momentum')}
+                              </span>
+                              <span className="data-mono font-semibold text-foreground">
+                                {formatChartNumber(datum?.score)}
+                              </span>
+                            </div>
+                            <div className="flex items-center justify-between gap-3">
+                              <span className="text-muted-foreground">
+                                {copy(language, 'Beat İht.', 'Beat Prob.')}
+                              </span>
+                              <span className="data-mono font-semibold text-foreground">
+                                {formatChartPercent(datum?.beat)}
+                              </span>
+                            </div>
+                          </>
+                        )}
+                      />
+                    }
+                  />
                   <Bar dataKey="score" name={copy(language, 'Momentum', 'Momentum')} radius={[0, 0, 0, 0]} maxBarSize={18}>
                     {momentumChartData.map((entry) => (
                       <Cell
                         key={entry.ticker}
-                        fill={
-                          entry.score >= 85 ? 'oklch(0.78 0.18 160)' :
-                          entry.score >= 65 ? '#4ade80' :
-                          entry.score >= 50 ? 'oklch(0.75 0.15 75)' :
-                          'oklch(0.65 0.22 25)'
-                        }
+                        fill={getMomentumBandColor(entry.score)}
                       />
                     ))}
                   </Bar>
                 </BarChart>
-              </ResponsiveContainer>
+              </ChartContainer>
             </div>
           </div>
         </div>

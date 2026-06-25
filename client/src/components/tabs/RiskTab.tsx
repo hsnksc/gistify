@@ -4,10 +4,22 @@
  */
 
 import { stocksData, signalConfig, riskConfig, type StockData } from '@/lib/stockData';
+import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart';
+import {
+  chartAxisLabel,
+  chartAxisTick,
+  chartCursorLine,
+  chartGrid,
+  chartPalette,
+  formatChartNumber,
+  formatChartPercent,
+  getChartAriaLabel,
+  getSignalChartColor,
+} from '@/lib/chartTheme';
 import { copy } from '@/lib/i18n';
 import type { AppLanguage } from '@/lib/i18n';
 import {
-  ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell,
+  ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Cell,
 } from 'recharts';
 
 interface Props {
@@ -17,21 +29,6 @@ interface Props {
 }
 
 const riskOrder = { LOW: 1, MEDIUM: 2, HIGH: 3, VERY_HIGH: 4 };
-
-const CustomTooltip = ({ active, payload }: any) => {
-  if (active && payload && payload.length) {
-    const d = payload[0]?.payload;
-    return (
-      <div className="px-3 py-2 border" style={{ background: 'oklch(0.15 0.03 225)', borderColor: 'oklch(0.25 0.03 225)', borderRadius: 0 }}>
-        <p className="data-mono text-xs font-bold" style={{ color: 'oklch(0.78 0.18 160)' }}>{d?.ticker}</p>
-        <p className="data-mono text-xs" style={{ color: 'oklch(0.75 0.15 75)' }}>{copy(d?.language || 'tr', 'Beat İhtimali', 'Beat Probability')}: %{d?.x}</p>
-        <p className="data-mono text-xs" style={{ color: 'oklch(0.78 0.18 160)' }}>Momentum: {d?.y}</p>
-        <p className="data-mono text-xs" style={{ color: 'oklch(0.65 0.22 25)' }}>{copy(d?.language || 'tr', 'Risk', 'Risk')}: {d?.riskLabel}</p>
-      </div>
-    );
-  }
-  return null;
-};
 
 export default function RiskTab({ onStockClick, stocks = stocksData, language }: Props) {
   const matrixData = stocks.map(s => ({
@@ -43,13 +40,16 @@ export default function RiskTab({ onStockClick, stocks = stocksData, language }:
     signal: s.signal,
     language,
   }));
-
-  const getColor = (signal: string) => {
-    if (signal === 'STRONG_BUY') return 'oklch(0.78 0.18 160)';
-    if (signal === 'BUY') return '#4ade80';
-    if (signal === 'NEUTRAL') return 'oklch(0.75 0.15 75)';
-    return 'oklch(0.65 0.22 25)';
-  };
+  const matrixChartConfig = {
+    y: {
+      label: copy(language, 'Momentum', 'Momentum'),
+      color: chartPalette.accent,
+    },
+    x: {
+      label: copy(language, 'Beat İhtimali', 'Beat Probability'),
+      color: chartPalette.warning,
+    },
+  } satisfies ChartConfig;
 
   // Portfolio strategy groups
   const strongBuy = stocks.filter(s => s.signal === 'STRONG_BUY');
@@ -89,32 +89,77 @@ export default function RiskTab({ onStockClick, stocks = stocksData, language }:
             <div className="absolute bottom-12 left-8 text-xs font-semibold" style={{ color: 'oklch(0.65 0.22 25 / 0.5)' }}>
               {copy(language, 'RİSKLİ BÖLGE ↙', 'RISKY ZONE ↙')}
             </div>
-            <ResponsiveContainer width="100%" height="100%">
+            <ChartContainer
+              aria-label={getChartAriaLabel(
+                copy(language, 'Risk matrisi scatter grafiği', 'Risk matrix scatter chart'),
+                copy(language, 'X ekseni beat ihtimalini, Y ekseni momentum skorunu ve nokta rengi sinyal gücünü gösterir.', 'The X axis shows beat probability, the Y axis shows momentum score, and point color shows signal strength.')
+              )}
+              className="h-full aspect-auto"
+              config={matrixChartConfig}
+            >
               <ScatterChart margin={{ top: 20, right: 20, bottom: 30, left: 20 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.22 0.03 225)" />
+                <CartesianGrid {...chartGrid} />
                 <XAxis
                   dataKey="x"
                   name={copy(language, 'Beat İhtimali', 'Beat Probability')}
                   unit="%"
                   domain={[30, 85]}
-                  tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 10, fontFamily: 'JetBrains Mono' }}
-                  label={{ value: copy(language, 'Beat İhtimali (%)', 'Beat Probability (%)'), position: 'insideBottom', offset: -15, fill: 'oklch(0.45 0.015 225)', fontSize: 10 }}
+                  tick={chartAxisTick}
+                  label={chartAxisLabel(copy(language, 'Beat İhtimali (%)', 'Beat Probability (%)'), { position: 'insideBottom', offset: -15 })}
                 />
                 <YAxis
                   dataKey="y"
                   name={copy(language, 'Momentum', 'Momentum')}
                   domain={[20, 100]}
-                  tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 10, fontFamily: 'JetBrains Mono' }}
-                  label={{ value: copy(language, 'Momentum', 'Momentum'), angle: -90, position: 'insideLeft', fill: 'oklch(0.45 0.015 225)', fontSize: 10 }}
+                  tick={chartAxisTick}
+                  label={chartAxisLabel(copy(language, 'Momentum', 'Momentum'), { angle: -90, position: 'insideLeft' })}
                 />
-                <Tooltip content={<CustomTooltip />} />
+                <ChartTooltip
+                  cursor={chartCursorLine}
+                  content={
+                    <ChartTooltipContent
+                      labelKey="ticker"
+                      renderContent={({ datum, label }) => (
+                        <>
+                          <div className="data-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-300">
+                            {label}
+                          </div>
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="text-muted-foreground">
+                              {copy(language, 'Beat İhtimali', 'Beat Probability')}
+                            </span>
+                            <span className="data-mono font-semibold text-foreground">
+                              {formatChartPercent(datum?.x)}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="text-muted-foreground">
+                              {copy(language, 'Momentum', 'Momentum')}
+                            </span>
+                            <span className="data-mono font-semibold text-foreground">
+                              {formatChartNumber(datum?.y)}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="text-muted-foreground">
+                              {copy(language, 'Risk', 'Risk')}
+                            </span>
+                            <span className="data-mono font-semibold text-foreground">
+                              {typeof datum?.riskLabel === 'string' ? datum.riskLabel : '-'}
+                            </span>
+                          </div>
+                        </>
+                      )}
+                    />
+                  }
+                />
                 <Scatter data={matrixData} name={copy(language, 'Hisseler', 'Stocks')}>
                   {matrixData.map((entry, i) => (
-                    <Cell key={i} fill={getColor(entry.signal)} />
+                    <Cell key={i} fill={getSignalChartColor(entry.signal)} />
                   ))}
                 </Scatter>
               </ScatterChart>
-            </ResponsiveContainer>
+            </ChartContainer>
           </div>
         </div>
 

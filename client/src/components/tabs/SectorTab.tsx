@@ -4,32 +4,27 @@
  */
 
 import { sectorMacroData, stocksData, type StockData } from '@/lib/stockData';
-import { getTooltipLabel } from '@/lib/chartTooltip';
+import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart';
+import {
+  chartAxisStrongTick,
+  chartAxisTick,
+  chartCursorZone,
+  chartGrid,
+  chartPalette,
+  formatChartNumber,
+  formatChartPercent,
+  getChartAriaLabel,
+} from '@/lib/chartTheme';
 import { copy } from '@/lib/i18n';
 import type { AppLanguage } from '@/lib/i18n';
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Cell,
 } from 'recharts';
 
 interface Props {
   stocks?: StockData[];
   language: AppLanguage;
 }
-
-const CustomTooltip = ({ active, payload, label }: any) => {
-  if (active && payload && payload.length) {
-    const resolvedLabel = getTooltipLabel(payload, label);
-    return (
-      <div className="px-3 py-2 border" style={{ background: 'oklch(0.15 0.03 225)', borderColor: 'oklch(0.25 0.03 225)', borderRadius: 0 }}>
-        <p className="data-mono text-xs font-bold" style={{ color: 'oklch(0.78 0.18 160)' }}>{resolvedLabel}</p>
-        {payload.map((p: any, i: number) => (
-          <p key={i} className="data-mono text-xs" style={{ color: p.fill || p.color }}>{p.name}: {p.value}{p.unit || ''}</p>
-        ))}
-      </div>
-    );
-  }
-  return null;
-};
 
 export default function SectorTab({ stocks = stocksData, language }: Props) {
   const itSpendingData = [
@@ -109,6 +104,22 @@ export default function SectorTab({ stocks = stocksData, language }: Props) {
       color: s.color,
     };
   });
+  const spendingChartConfig = {
+    value: {
+      label: copy(language, 'Harcama ($M)', 'Spending ($M)'),
+      color: chartPalette.accent,
+    },
+    growth: {
+      label: copy(language, 'Büyüme (%)', 'Growth (%)'),
+      color: chartPalette.warning,
+    },
+  } satisfies ChartConfig;
+  const momentumChartConfig = {
+    momentum: {
+      label: copy(language, 'Ort. Momentum', 'Avg. Momentum'),
+      color: chartPalette.info,
+    },
+  } satisfies ChartConfig;
 
   return (
     <div className="p-6 space-y-6">
@@ -138,54 +149,128 @@ export default function SectorTab({ stocks = stocksData, language }: Props) {
             <div className="text-xs font-semibold tracking-widest uppercase mb-2" style={{ color: 'oklch(0.45 0.015 225)' }}>
               {copy(language, 'Harcama Büyüklüğü ($M)', 'Spending Size ($M)')}
             </div>
-            <ResponsiveContainer width="100%" height="90%">
+            <ChartContainer
+              aria-label={getChartAriaLabel(
+                copy(language, 'BT harcama büyüklüğü grafiği', 'IT spending size chart'),
+                copy(language, 'Kategori bazında küresel BT harcama büyüklüklerini gösterir.', 'Shows global IT spending size by category.')
+              )}
+              className="h-[90%] aspect-auto"
+              config={spendingChartConfig}
+            >
               <BarChart data={itSpendingData} margin={{ top: 5, right: 10, bottom: 20, left: 10 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.22 0.03 225)" />
+                <CartesianGrid {...chartGrid} />
                 <XAxis
                   dataKey="axisLabel"
-                  tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 11, fontFamily: 'JetBrains Mono' }}
+                  tick={chartAxisTick}
                   tickMargin={12}
                 />
                 <YAxis
-                  tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 11, fontFamily: 'JetBrains Mono' }}
+                  tick={chartAxisTick}
                   tickMargin={8}
                 />
-                <Tooltip content={<CustomTooltip />} />
+                <ChartTooltip
+                  cursor={chartCursorZone}
+                  content={
+                    <ChartTooltipContent
+                      labelKey="name"
+                      renderContent={({ datum, label }) => (
+                        <>
+                          <div className="data-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-300">
+                            {label}
+                          </div>
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="text-muted-foreground">
+                              {copy(language, 'Harcama', 'Spending')}
+                            </span>
+                            <span className="data-mono font-semibold text-foreground">
+                              {formatChartNumber(datum?.value)}M
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="text-muted-foreground">
+                              {copy(language, 'Büyüme', 'Growth')}
+                            </span>
+                            <span className="data-mono font-semibold text-foreground">
+                              {formatChartPercent(datum?.growth, 1)}
+                            </span>
+                          </div>
+                        </>
+                      )}
+                    />
+                  }
+                />
                 <Bar dataKey="value" name={copy(language, 'Harcama ($M)', 'Spending ($M)')} maxBarSize={40}>
                   {itSpendingData.map((entry, i) => (
                     <Cell key={i} fill={entry.color} />
                   ))}
                 </Bar>
               </BarChart>
-            </ResponsiveContainer>
+            </ChartContainer>
           </div>
           <div className="tactical-card p-4" style={{ height: '300px' }}>
             <div className="text-xs font-semibold tracking-widest uppercase mb-2" style={{ color: 'oklch(0.45 0.015 225)' }}>
               {copy(language, 'YoY Büyüme Oranları (%)', 'YoY Growth Rates (%)')}
             </div>
-            <ResponsiveContainer width="100%" height="90%">
+            <ChartContainer
+              aria-label={getChartAriaLabel(
+                copy(language, 'BT harcama büyüme grafiği', 'IT spending growth chart'),
+                copy(language, 'Kategori bazında yıllık büyüme oranlarını yatay çubuklarla gösterir.', 'Shows year-over-year growth rates by category using horizontal bars.')
+              )}
+              className="h-[90%] aspect-auto"
+              config={spendingChartConfig}
+            >
               <BarChart data={itSpendingData} layout="vertical" margin={{ top: 5, right: 30, bottom: 5, left: 60 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.22 0.03 225)" horizontal={false} />
+                <CartesianGrid {...chartGrid} horizontal={false} />
                 <XAxis
                   type="number"
                   unit="%"
-                  tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 11, fontFamily: 'JetBrains Mono' }}
+                  tick={chartAxisTick}
                   tickMargin={8}
                 />
                 <YAxis
                   type="category"
                   dataKey="axisLabel"
-                  tick={{ fill: 'oklch(0.65 0.01 220)', fontSize: 11, fontFamily: 'JetBrains Mono' }}
+                  tick={chartAxisStrongTick}
                   width={84}
                 />
-                <Tooltip content={<CustomTooltip />} />
+                <ChartTooltip
+                  cursor={chartCursorZone}
+                  content={
+                    <ChartTooltipContent
+                      labelKey="name"
+                      renderContent={({ datum, label }) => (
+                        <>
+                          <div className="data-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-300">
+                            {label}
+                          </div>
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="text-muted-foreground">
+                              {copy(language, 'YoY Büyüme', 'YoY Growth')}
+                            </span>
+                            <span className="data-mono font-semibold text-foreground">
+                              {formatChartPercent(datum?.growth, 1)}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="text-muted-foreground">
+                              {copy(language, 'Harcama', 'Spending')}
+                            </span>
+                            <span className="data-mono font-semibold text-foreground">
+                              {formatChartNumber(datum?.value)}M
+                            </span>
+                          </div>
+                        </>
+                      )}
+                    />
+                  }
+                />
                 <Bar dataKey="growth" name={copy(language, 'Büyüme (%)', 'Growth (%)')} maxBarSize={18}>
                   {itSpendingData.map((entry, i) => (
                     <Cell key={i} fill={entry.color} />
                   ))}
                 </Bar>
               </BarChart>
-            </ResponsiveContainer>
+            </ChartContainer>
           </div>
         </div>
       </div>
@@ -239,27 +324,56 @@ export default function SectorTab({ stocks = stocksData, language }: Props) {
           </h2>
         </div>
         <div className="tactical-card p-4" style={{ height: '220px' }}>
-          <ResponsiveContainer width="100%" height="100%">
+          <ChartContainer
+            aria-label={getChartAriaLabel(
+              copy(language, 'Sektör bazlı ortalama momentum grafiği', 'Average momentum by sector chart'),
+              copy(language, 'Her sektör için ortalama momentum skoru çubuk uzunluğu ile gösterilir.', 'Bar length shows the average momentum score for each sector.')
+            )}
+            className="h-full aspect-auto"
+            config={momentumChartConfig}
+          >
             <BarChart data={avgMomentumBySector} margin={{ top: 5, right: 20, bottom: 5, left: 10 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.22 0.03 225)" />
+              <CartesianGrid {...chartGrid} />
               <XAxis
                 dataKey="axisLabel"
-                tick={{ fill: 'oklch(0.55 0.015 225)', fontSize: 11, fontFamily: 'JetBrains Mono' }}
+                tick={chartAxisStrongTick}
                 tickMargin={10}
               />
               <YAxis
                 domain={[0, 100]}
-                tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 11, fontFamily: 'JetBrains Mono' }}
+                tick={chartAxisTick}
                 tickMargin={8}
               />
-              <Tooltip content={<CustomTooltip />} />
+              <ChartTooltip
+                cursor={chartCursorZone}
+                content={
+                  <ChartTooltipContent
+                    labelKey="sector"
+                    renderContent={({ datum, label }) => (
+                      <>
+                        <div className="data-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-300">
+                          {label}
+                        </div>
+                        <div className="flex items-center justify-between gap-3">
+                          <span className="text-muted-foreground">
+                            {copy(language, 'Ort. Momentum', 'Avg. Momentum')}
+                          </span>
+                          <span className="data-mono font-semibold text-foreground">
+                            {formatChartNumber(datum?.momentum)}
+                          </span>
+                        </div>
+                      </>
+                    )}
+                  />
+                }
+              />
               <Bar dataKey="momentum" name={copy(language, 'Ort. Momentum', 'Avg. Momentum')} maxBarSize={60}>
                 {avgMomentumBySector.map((entry, i) => (
                   <Cell key={i} fill={entry.color} />
                 ))}
               </Bar>
             </BarChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </div>
       </div>
 

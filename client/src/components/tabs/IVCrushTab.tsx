@@ -4,12 +4,34 @@
  */
 
 import { strategyConfig, riskLevelConfig, type OptionStrategy } from '@/lib/optionStrategyData';
-import { getTooltipLabel } from '@/lib/chartTooltip';
+import { Delta } from '@/components/ui/delta';
+import {
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from '@/components/ui/chart';
+import {
+  chartAxisLabel,
+  chartAxisStrongTick,
+  chartAxisTick,
+  chartCursorLine,
+  chartCursorZone,
+  chartGrid,
+  chartPalette,
+  coerceChartNumber,
+  formatChartNumber,
+  formatChartPercent,
+  getChartAriaLabel,
+  getRatingChartColor,
+} from '@/lib/chartTheme';
 import { copy } from '@/lib/i18n';
 import type { AppLanguage } from '@/lib/i18n';
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell,
-  ScatterChart, Scatter, Legend,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Cell,
+  ScatterChart, Scatter,
 } from 'recharts';
 
 interface Props {
@@ -61,13 +83,26 @@ export default function IVCrushTab({
     putGain: s.putGainFromIV,
     targetProfit: s.targetProfit,
   }));
-
-  const getRatingColor = (rating: string) => {
-    if (rating === 'EXCELLENT') return 'oklch(0.78 0.18 160)';
-    if (rating === 'GOOD') return '#4ade80';
-    if (rating === 'FAIR') return 'oklch(0.75 0.15 75)';
-    return 'oklch(0.65 0.22 25)';
-  };
+  const scatterChartConfig = {
+    y: {
+      label: copy(language, 'Momentum', 'Momentum'),
+      color: chartPalette.accent,
+    },
+    x: {
+      label: copy(language, 'Mevcut IV', 'Current IV'),
+      color: chartPalette.warning,
+    },
+  } satisfies ChartConfig;
+  const profitChartConfig = {
+    callGain: {
+      label: copy(language, 'Call Kazancı', 'Call Profit'),
+      color: chartPalette.bull,
+    },
+    putGain: {
+      label: copy(language, 'Put Kazancı', 'Put Profit'),
+      color: chartPalette.warning,
+    },
+  } satisfies ChartConfig;
 
   return (
     <div className="p-6 space-y-6">
@@ -228,43 +263,73 @@ export default function IVCrushTab({
             </h2>
           </div>
           <div className="tactical-card p-4" style={{ height: '300px' }}>
-            <ResponsiveContainer width="100%" height="100%">
+            <ChartContainer
+              aria-label={getChartAriaLabel(
+                copy(language, 'Mevcut IV ve momentum scatter grafiği', 'Current IV and momentum scatter chart'),
+                copy(language, 'X ekseni mevcut implied volatility, Y ekseni momentum skoru ve nokta rengi strateji ratingini gösterir.', 'The X axis shows current implied volatility, the Y axis shows momentum score, and point color shows strategy rating.')
+              )}
+              className="h-full aspect-auto"
+              config={scatterChartConfig}
+            >
               <ScatterChart margin={{ top: 10, right: 20, bottom: 20, left: 10 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.22 0.03 225)" />
+                <CartesianGrid {...chartGrid} />
                 <XAxis
                   dataKey="x"
                   name={copy(language, 'Mevcut IV', 'Current IV')}
                   unit=""
-                  tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 10, fontFamily: 'JetBrains Mono' }}
-                  label={{ value: copy(language, 'Mevcut IV', 'Current IV'), position: 'insideBottom', offset: -10, fill: 'oklch(0.45 0.015 225)', fontSize: 10 }}
+                  tick={chartAxisTick}
+                  label={chartAxisLabel(copy(language, 'Mevcut IV', 'Current IV'), { position: 'insideBottom', offset: -10 })}
                 />
                 <YAxis
                   dataKey="y"
                   name={copy(language, 'Momentum', 'Momentum')}
-                  tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 10, fontFamily: 'JetBrains Mono' }}
-                  label={{ value: copy(language, 'Momentum Skoru', 'Momentum Score'), angle: -90, position: 'insideLeft', fill: 'oklch(0.45 0.015 225)', fontSize: 10 }}
+                  tick={chartAxisTick}
+                  label={chartAxisLabel(copy(language, 'Momentum Skoru', 'Momentum Score'), { angle: -90, position: 'insideLeft' })}
                 />
-                <Tooltip content={({ active, payload }) => {
-                  if (active && payload && payload.length) {
-                    const d = payload[0]?.payload;
-                    return (
-                      <div className="px-3 py-2 border" style={{ background: 'oklch(0.15 0.03 225)', borderColor: 'oklch(0.25 0.03 225)', borderRadius: 0 }}>
-                        <p className="data-mono text-xs font-bold" style={{ color: 'oklch(0.78 0.18 160)' }}>{d?.ticker}</p>
-                        <p className="data-mono text-xs" style={{ color: 'oklch(0.75 0.15 75)' }}>IV: {d?.x}</p>
-                        <p className="data-mono text-xs" style={{ color: 'oklch(0.78 0.18 160)' }}>Momentum: {d?.y}</p>
-                        <p className="data-mono text-xs" style={{ color: 'oklch(0.65 0.22 25)' }}>IV Crush: -{d?.crush}%</p>
-                      </div>
-                    );
+                <ChartTooltip
+                  cursor={chartCursorLine}
+                  content={
+                    <ChartTooltipContent
+                      labelKey="ticker"
+                      renderContent={({ datum, label }) => (
+                        <>
+                          <div className="data-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-300">
+                            {label}
+                          </div>
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="text-muted-foreground">IV</span>
+                            <span className="data-mono font-semibold text-foreground">
+                              {formatChartNumber(datum?.x, 1)}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="text-muted-foreground">
+                              {copy(language, 'Momentum', 'Momentum')}
+                            </span>
+                            <span className="data-mono font-semibold text-foreground">
+                              {formatChartNumber(datum?.y)}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="text-muted-foreground">IV Crush</span>
+                            <Delta
+                              value={coerceChartNumber(datum?.crush as number | string | null | undefined) === null ? null : -coerceChartNumber(datum?.crush as number | string | null | undefined)!}
+                              precision={1}
+                              positiveIsGood={false}
+                            />
+                          </div>
+                        </>
+                      )}
+                    />
                   }
-                  return null;
-                }} />
+                />
                 <Scatter data={scatterData} name={copy(language, 'Hisseler', 'Stocks')}>
                   {scatterData.map((entry, i) => (
-                    <Cell key={i} fill={getRatingColor(entry.rating)} />
+                    <Cell key={i} fill={getRatingChartColor(entry.rating)} />
                   ))}
                 </Scatter>
               </ScatterChart>
-            </ResponsiveContainer>
+            </ChartContainer>
           </div>
         </div>
 
@@ -277,32 +342,58 @@ export default function IVCrushTab({
             </h2>
           </div>
           <div className="tactical-card p-4" style={{ height: '300px' }}>
-            <ResponsiveContainer width="100%" height="100%">
+            <ChartContainer
+              aria-label={getChartAriaLabel(
+                copy(language, 'Call ve put kar potansiyeli grafiği', 'Call and put profit potential chart'),
+                copy(language, 'Her hisse için call ve put tarafındaki potansiyel IV getirisi yan yana gösterilir.', 'Shows potential IV-driven returns for call and put positions side by side for each stock.')
+              )}
+              className="h-full aspect-auto"
+              config={profitChartConfig}
+            >
               <BarChart data={profitData.slice(0, 8)} margin={{ top: 5, right: 10, bottom: 5, left: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.22 0.03 225)" />
-                <XAxis dataKey="ticker" tick={{ fill: 'oklch(0.55 0.015 225)', fontSize: 10, fontFamily: 'JetBrains Mono', fontWeight: 600 }} />
-                <YAxis tick={{ fill: 'oklch(0.45 0.015 225)', fontSize: 10, fontFamily: 'JetBrains Mono' }} unit="%" />
-                <Tooltip content={({ active, payload, label }) => {
-                  if (active && payload && payload.length) {
-                    const resolvedLabel = getTooltipLabel(payload, label);
-                    return (
-                      <div className="px-3 py-2 border" style={{ background: 'oklch(0.15 0.03 225)', borderColor: 'oklch(0.25 0.03 225)', borderRadius: 0 }}>
-                        <p className="data-mono text-xs font-bold" style={{ color: 'oklch(0.78 0.18 160)' }}>{resolvedLabel}</p>
-                        {payload.map((p: any, i: number) => (
-                          <p key={i} className="data-mono text-xs" style={{ color: p.fill }}>
-                            {p.name}: +{p.value}%
-                          </p>
-                        ))}
-                      </div>
-                    );
+                <CartesianGrid {...chartGrid} />
+                <XAxis dataKey="ticker" tick={chartAxisStrongTick} />
+                <YAxis tick={chartAxisTick} unit="%" />
+                <ChartTooltip
+                  cursor={chartCursorZone}
+                  content={
+                    <ChartTooltipContent
+                      labelKey="ticker"
+                      renderContent={({ datum, label }) => (
+                        <>
+                          <div className="data-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-300">
+                            {label}
+                          </div>
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="text-muted-foreground">
+                              {copy(language, 'Call Kazancı', 'Call Profit')}
+                            </span>
+                            <Delta value={coerceChartNumber(datum?.callGain as number | string | null | undefined)} precision={1} />
+                          </div>
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="text-muted-foreground">
+                              {copy(language, 'Put Kazancı', 'Put Profit')}
+                            </span>
+                            <Delta value={coerceChartNumber(datum?.putGain as number | string | null | undefined)} precision={1} />
+                          </div>
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="text-muted-foreground">
+                              {copy(language, 'Hedef Kar', 'Target Profit')}
+                            </span>
+                            <span className="data-mono font-semibold text-foreground">
+                              {formatChartPercent(datum?.targetProfit, 1)}
+                            </span>
+                          </div>
+                        </>
+                      )}
+                    />
                   }
-                  return null;
-                }} />
-                <Legend wrapperStyle={{ fontSize: '11px', color: 'oklch(0.55 0.015 225)' }} />
-                <Bar dataKey="callGain" name={copy(language, 'Call Kazancı', 'Call Profit')} fill="oklch(0.78 0.18 160)" maxBarSize={20} />
-                <Bar dataKey="putGain" name={copy(language, 'Put Kazancı', 'Put Profit')} fill="oklch(0.75 0.15 75)" maxBarSize={20} />
+                />
+                <ChartLegend content={<ChartLegendContent />} />
+                <Bar dataKey="callGain" name={copy(language, 'Call Kazancı', 'Call Profit')} fill={chartPalette.bull} maxBarSize={20} />
+                <Bar dataKey="putGain" name={copy(language, 'Put Kazancı', 'Put Profit')} fill={chartPalette.warning} maxBarSize={20} />
               </BarChart>
-            </ResponsiveContainer>
+            </ChartContainer>
           </div>
         </div>
       </div>
