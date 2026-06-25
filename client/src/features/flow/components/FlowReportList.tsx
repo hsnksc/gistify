@@ -1,3 +1,5 @@
+import { FileSearch } from "lucide-react";
+import EmptyState from "@/components/ui/empty-state";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import type { FlowReportListEntry } from "../lib/flowReportHelpers";
 import FlowReportRow from "./FlowReportRow";
@@ -17,18 +19,22 @@ export default function FlowReportList({
 }: FlowReportListProps) {
   if (!reports.length) {
     return (
-      <div
-        role="status"
-        aria-live="polite"
-        className="rounded-xl border border-dashed border-border bg-card/65 px-4 py-6 text-sm text-muted-foreground"
-      >
-        {emptyMessage ||
+      <EmptyState
+        description={copy(
+          language,
+          "Filtreleri gevsetip veya aramayi temizleyip listeyi genisletebilirsin.",
+          "Loosen the filters or clear the search to widen the list."
+        )}
+        icon={FileSearch}
+        title={
+          emptyMessage ||
           copy(
             language,
             "Bu filtreye uygun Flow raporu bulunamadi.",
             "No flow report matched this filter."
-          )}
-      </div>
+          )
+        }
+      />
     );
   }
 

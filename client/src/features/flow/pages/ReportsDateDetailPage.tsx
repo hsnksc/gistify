@@ -1,6 +1,8 @@
 import { useMemo } from "react";
 import {
+  AlertCircle,
   ArrowLeft,
+  FileSearch,
   Globe2,
   Languages,
   MessageSquareText,
@@ -11,6 +13,8 @@ import { useLocation } from "wouter";
 import HtmlReportRenderer from "@/components/reports/HtmlReportRenderer";
 import { Button } from "@/components/ui/button";
 import { Delta } from "@/components/ui/delta";
+import EmptyState from "@/components/ui/empty-state";
+import LoadingState from "@/components/ui/loading-state";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import FlowLayout from "../components/FlowLayout";
@@ -146,18 +150,33 @@ export default function ReportsDateDetailPage({
       }
     >
       {loading ? (
-        <div className="rounded-xl border border-border bg-card/75 px-6 py-6 text-sm text-muted-foreground">
-          {copy(language, "Rapor detayi yukleniyor.", "Loading report detail.")}
-        </div>
+        <LoadingState
+          compact
+          label={copy(
+            language,
+            "Rapor detayi yukleniyor.",
+            "Loading report detail."
+          )}
+        />
       ) : !report ? (
-        <div className="rounded-xl border border-dashed border-border bg-card/75 px-6 py-6 text-sm text-muted-foreground">
-          {error ||
+        <EmptyState
+          description={
+            error ||
             copy(
               language,
-              "Bu ticker ve tarih icin rapor bulunamadi.",
-              "No report was found for this ticker and date."
-            )}
-        </div>
+              "Ticker, tarih veya secili rapor kimligini kontrol et.",
+              "Check the ticker, date or selected report id."
+            )
+          }
+          icon={error ? AlertCircle : FileSearch}
+          role={error ? "alert" : "status"}
+          title={copy(
+            language,
+            "Bu ticker ve tarih icin rapor bulunamadi.",
+            "No report was found for this ticker and date."
+          )}
+          tone={error ? "danger" : "neutral"}
+        />
       ) : (
         <>
           <section className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">

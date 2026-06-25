@@ -1,103 +1,115 @@
 {
-  "generatedAt": "2026-06-24T11:03:00Z",
-  "reportDate": "2026-06-24",
+  "generatedAt": "2026-06-25T06:28:08Z",
+  "reportDate": "2026-06-25",
   "title": "US PPI Forecast Snapshot",
-  "summary": "Headline PPI near-flat after May's energy shock. Hormuz deal opened the strait; WTI collapsed to $74, gasoline retail fell to $4.05. Energy PPI mean-reverts to -2.0%. Core PPI stays elevated at +0.5% m/m due to lagged petrochemical passthrough from May's +10.7% energy spike and sticky services. Stage 1 intermediate demand +3.2% from May still feeds into final demand goods. The headline is almost entirely an energy story; core is the real signal.",
+  "summary": "May PPI surprised hot headline (+1.1% MoM, 6.5% YoY) on gasoline +23.4%, but core came in softer than feared at +0.4% MoM (4.9% YoY) vs 0.5% consensus. Services slowed to +0.3% from 0.7%. June energy PPI collapses as WTI fell from $91+ to $72.6 after the Hormuz deal. Headline likely flat to slightly positive; core stays sticky around +0.3%. The Fed watches core, not the energy mirage.",
   "baseCase": "Flat headline, sticky core; energy mean-reversion masks upstream persistence",
-  "conviction": 65,
+  "conviction": 68,
   "release": {
     "name": "PPI",
     "period": "Jun 2026",
     "releaseDate": "2026-07-15",
     "releaseTimeEt": "08:30 ET",
     "headlineMoM": "+0.1%",
-    "headlineYoY": "6.6%",
-    "coreMoM": "+0.5%",
-    "coreYoY": "5.6%",
+    "headlineYoY": "6.5%",
+    "coreMoM": "+0.3%",
+    "coreYoY": "5.0%",
     "priorHeadlineMoM": "+1.1%",
     "priorHeadlineYoY": "6.5%",
-    "priorCoreMoM": "+0.8%",
-    "priorCoreYoY": "5.1%",
+    "priorCoreMoM": "+0.4%",
+    "priorCoreYoY": "4.9%",
     "bias": "COOLER",
-    "confidence": 65,
-    "thesis": "Energy PPI mean-reverts after Hormuz reopening, but core goods lagged passthrough and sticky services keep core elevated. The headline is an energy mirage; the Fed cares about core."
+    "confidence": 68,
+    "thesis": "Energy PPI mean-reverts after Hormuz reopening and WTI collapse to $72.6. Core came in softer than feared in May (+0.4% vs 0.5% consensus) and services slowed. June core stays sticky around +0.3% on lagged petrochemical passthrough and portfolio management. The headline is an energy story; core is the signal."
   },
   "scenarios": [
     {
       "id": "base",
       "label": "Base case",
       "probability": 55,
-      "outcome": "Headline +0.1%, core +0.5%. Energy mean-reverts, core stays sticky.",
-      "marketReadthrough": "Rates digest the headline but focus on core. No major Fed repricing. Cyclicals stabilize if margin narrative holds.",
-      "favoredAssets": ["Industrials", "Quality growth", "Gold"],
-      "invalidation": "Core services re-accelerate above +0.7% m/m."
+      "outcome": "Headline +0.1%, core +0.3%. Energy mean-reverts, core stays sticky but not accelerating.",
+      "marketReadthrough": "Rates digest the headline but focus on core. No major Fed repricing. Cyclicals stabilize if margin narrative holds. Treasury yields drift lower.",
+      "favoredAssets": [
+        "Industrials",
+        "Quality growth",
+        "Gold"
+      ],
+      "invalidation": "Core services re-accelerate above +0.5% MoM or headline surprises above +0.4%."
     },
     {
       "id": "hot",
       "label": "Hotter pipeline pressure",
       "probability": 25,
-      "outcome": "Headline +0.4%, core +0.7%. Lagged passthrough hits harder than expected; services stay hot.",
-      "marketReadthrough": "Rates higher, USD firmer, margin-sensitive equities under pressure. Fed hawkishness extends.",
-      "favoredAssets": ["USD", "Energy", "Value"],
-      "invalidation": "Hot print is driven by narrow commodity volatility with weak pass-through into CPI."
+      "outcome": "Headline +0.5%, core +0.5%. Lagged passthrough hits harder than expected; services stay hot.",
+      "marketReadthrough": "Rates higher, USD firmer, margin-sensitive equities under pressure. Fed hawkishness extends on core stickiness.",
+      "favoredAssets": [
+        "USD",
+        "Energy",
+        "Value"
+      ],
+      "invalidation": "Hot print is driven by narrow commodity volatility with weak pass-through into CPI or margins."
     },
     {
       "id": "cool",
       "label": "Cleaner disinflation pulse",
       "probability": 20,
-      "outcome": "Headline -0.2%, core +0.3%. Energy collapses further; core passthrough fades faster than expected.",
+      "outcome": "Headline -0.2%, core +0.2%. Energy collapses further; core passthrough fades faster than expected.",
       "marketReadthrough": "Fed-cut odds rise, rates soften, broader equity appetite improves. Margin relief narrative strengthens.",
-      "favoredAssets": ["Growth", "Small caps", "Duration"],
-      "invalidation": "Market already priced a benign outcome before release."
+      "favoredAssets": [
+        "Growth",
+        "Small caps",
+        "Duration"
+      ],
+      "invalidation": "Market already priced a benign outcome before release or oil snaps back on Hormuz deal collapse."
     }
   ],
   "setups": [
     {
       "asset": "UST 10Y / TLT",
       "bias": "Long duration if core PPI cools without hawkish spillover",
-      "trigger": "Core PPI <= +0.3% m/m and revisions are benign",
+      "trigger": "Core PPI <= +0.2% MoM and revisions are benign",
       "invalidation": "Broad upstream re-acceleration with hawkish rates repricing"
     },
     {
       "asset": "Industrial cyclicals",
       "bias": "Constructive only if margin pressure eases",
-      "trigger": "Core goods and services pipeline both avoid upside surprise",
-      "invalidation": "Input cost shock restarts (Hormuz re-closes, energy spikes)"
+      "trigger": "Core goods and services pipeline both avoid upside surprise; May core softness confirmed",
+      "invalidation": "Input cost shock restarts (Hormuz deal collapses, energy spikes above $85)"
     },
     {
       "asset": "USD",
       "bias": "Long on hotter PPI surprise with rates follow-through",
       "trigger": "Headline and core both beat with higher terminal-rate pricing",
-      "invalidation": "Rates fade despite the beat"
+      "invalidation": "Rates fade despite the beat or oil collapse drives risk-on"
     }
   ],
   "watchItems": [
     {
       "label": "Final demand services",
       "value": "Key swing bucket",
-      "note": "A hot services print can overwhelm softer goods. Portfolio management and healthcare are slow-moving but sticky."
+      "note": "May services slowed to +0.3% from 0.7%. A re-acceleration above +0.5% would flip the narrative."
     },
     {
       "label": "Commodity complex",
       "value": "Oil and metals",
-      "note": "Important for headline direction but not enough alone. WTI $74 is a floor until Hormuz stability is confirmed."
+      "note": "WTI $72.6 (June 24) is below pre-conflict levels. If it holds, energy PPI collapses. Watch Hormuz deal fragility."
     },
     {
       "label": "Pass-through",
       "value": "Margin pressure watch",
-      "note": "Focus on whether PPI changes the CPI path or earnings narrative. Stage 1-4 intermediate demand is the leading indicator."
+      "note": "May core +0.4% was softer than feared. Focus on whether June confirms the trend or reverses it."
     }
   ],
   "keyDrivers": [
-    "Goods deflation helps, but services pipeline matters more for readthrough.",
-    "Commodity moves can distort the headline without changing core pass-through.",
+    "May core PPI came in softer than consensus (+0.4% vs 0.5%). Services slowed to +0.3% from 0.7%.",
+    "Oil mean-reverts after Hormuz deal: WTI $91+ -> $72.6. Energy PPI collapses in June.",
     "PPI matters most when it shifts margin expectations or the CPI narrative.",
-    "Hormuz reopening is a temporary supply shock reversal; geopolitical risk premium can return quickly."
+    "60-day Hormuz deal window is fragile. Collapse risk re-energizes energy PPI."
   ],
   "risks": [
-    "Consensus may already expect a benign upstream print after Hormuz deal.",
-    "Revisions can dominate the first market read. May 2026 was heavily revised.",
+    "May headline PPI was very hot (+1.1% MoM). Revisions can dominate the first market read.",
+    "Hormuz deal is 60-day and fragile. Israeli action in Lebanon or Iran non-compliance can collapse it.",
     "Macro tape can be driven by yields or oil even if PPI itself is tame.",
-    "Iran deal is 60-day; collapse risk re-energizes energy PPI."
+    "Core services may re-accelerate if portfolio management and healthcare pricing stay sticky."
   ]
 }

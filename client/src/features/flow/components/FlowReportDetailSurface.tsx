@@ -1,9 +1,11 @@
 import { useCallback } from "react";
 import type { FlowReport } from "@shared/flow";
-import { ArrowLeft, RefreshCw, Share2 } from "lucide-react";
+import { AlertCircle, ArrowLeft, FileSearch, RefreshCw, Share2 } from "lucide-react";
 import { toast } from "sonner";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
+import EmptyState from "@/components/ui/empty-state";
+import LoadingState from "@/components/ui/loading-state";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import FlowCommunityPanel from "./FlowCommunityPanel";
@@ -164,25 +166,29 @@ export default function FlowReportDetailSurface({
       sidebar={sidebar}
     >
       {loading ? (
-        <div
-          role="status"
-          aria-live="polite"
-          className="rounded-xl border border-border bg-card/75 px-6 py-6 text-sm text-muted-foreground"
-        >
-          {copy(language, "Flow raporu yukleniyor.", "Loading flow report.")}
-        </div>
+        <LoadingState
+          compact
+          label={copy(language, "Flow raporu yukleniyor.", "Loading flow report.")}
+        />
       ) : !report ? (
-        <div
-          role="alert"
-          className="rounded-xl border border-dashed border-border bg-card/75 px-6 py-6 text-sm text-muted-foreground"
-        >
-          {error ||
+        <EmptyState
+          description={
+            error ||
             copy(
               language,
-              "Istenen Flow raporu bulunamadi.",
-              "The requested flow report could not be found."
-            )}
-        </div>
+              "Arsive geri donup raporu tekrar secmeyi dene.",
+              "Return to the archive and try selecting the report again."
+            )
+          }
+          icon={error ? AlertCircle : FileSearch}
+          role={error ? "alert" : "status"}
+          title={copy(
+            language,
+            "Istenen Flow raporu bulunamadi.",
+            "The requested flow report could not be found."
+          )}
+          tone={error ? "danger" : "neutral"}
+        />
       ) : (
         <FlowReportViewer language={language} report={report} />
       )}

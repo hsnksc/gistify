@@ -1,15 +1,19 @@
 import { useEffect, useMemo, useState } from "react";
 import {
+  AlertCircle,
   ArrowRight,
   Clock3,
   Layers3,
   RefreshCw,
   ScrollText,
   Search,
+  SearchX,
 } from "lucide-react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
+import EmptyState from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
+import LoadingState from "@/components/ui/loading-state";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import FlowLayout from "../components/FlowLayout";
@@ -150,20 +154,26 @@ export default function FlowPage({
       }
     >
       {loading ? (
-        <div
-          role="status"
-          aria-live="polite"
-          className="rounded-xl border border-border bg-card/75 px-4 py-6 text-sm text-muted-foreground"
-        >
-          {copy(language, "Rapor merkezi yukleniyor.", "Loading report center.")}
-        </div>
+        <LoadingState
+          compact
+          label={copy(
+            language,
+            "Rapor merkezi yukleniyor.",
+            "Loading report center."
+          )}
+        />
       ) : error ? (
-        <div
+        <EmptyState
+          description={error}
+          icon={AlertCircle}
           role="alert"
-          className="rounded-xl border border-dashed border-border bg-card/75 px-4 py-6 text-sm text-muted-foreground"
-        >
-          {error}
-        </div>
+          title={copy(
+            language,
+            "Rapor merkezi yuklenemedi",
+            "Report center could not be loaded"
+          )}
+          tone="danger"
+        />
       ) : (
         <>
           <section className="grid gap-3 md:grid-cols-4">
@@ -399,13 +409,19 @@ export default function FlowPage({
             </div>
 
             {!highlightedDailyReports.length ? (
-              <div className="rounded-xl border border-dashed border-border bg-card/65 px-4 py-6 text-sm text-muted-foreground">
-                {copy(
+              <EmptyState
+                description={copy(
+                  language,
+                  "Gunluk lane icin arama veya yayinli akis verisini genislet.",
+                  "Widen the search or published flow feed for the daily lane."
+                )}
+                icon={SearchX}
+                title={copy(
                   language,
                   "Bu filtrede gunluk piyasa raporu bulunamadi.",
                   "No daily market report matched this filter."
                 )}
-              </div>
+              />
             ) : (
               <FlowReportList
                 basePath="/flow"
@@ -444,13 +460,19 @@ export default function FlowPage({
             </div>
 
             {!previewTickerGroups.length ? (
-              <div className="rounded-xl border border-dashed border-border bg-card/65 px-4 py-6 text-sm text-muted-foreground">
-                {copy(
+              <EmptyState
+                description={copy(
+                  language,
+                  "Aramayi temizleyip ticker kutuphanesini tekrar genisletebilirsin.",
+                  "Clear the search to widen the ticker library again."
+                )}
+                icon={SearchX}
+                title={copy(
                   language,
                   "Bu filtrede gosterilecek hisse raporu bulunamadi.",
                   "There are no stock reports to display for this filter."
                 )}
-              </div>
+              />
             ) : (
               <div className="grid gap-3 lg:grid-cols-3">
                 {previewTickerGroups.map(group => (

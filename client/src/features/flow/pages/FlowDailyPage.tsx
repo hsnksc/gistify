@@ -1,6 +1,15 @@
-import { ArrowLeft, Clock3, RefreshCw, ScrollText } from "lucide-react";
+import {
+  AlertCircle,
+  ArrowLeft,
+  Clock3,
+  FileSearch,
+  RefreshCw,
+  ScrollText,
+} from "lucide-react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
+import EmptyState from "@/components/ui/empty-state";
+import LoadingState from "@/components/ui/loading-state";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import FlowLayout from "../components/FlowLayout";
@@ -102,21 +111,40 @@ export default function FlowDailyPage({
       </section>
 
       {loading ? (
-        <div className="rounded-xl border border-border bg-card/75 px-4 py-6 text-sm text-muted-foreground">
-          {copy(language, "Gunluk raporlar yukleniyor.", "Loading daily reports.")}
-        </div>
+        <LoadingState
+          compact
+          label={copy(
+            language,
+            "Gunluk raporlar yukleniyor.",
+            "Loading daily reports."
+          )}
+        />
       ) : error ? (
-        <div className="rounded-xl border border-dashed border-border bg-card/75 px-4 py-6 text-sm text-muted-foreground">
-          {error}
-        </div>
+        <EmptyState
+          description={error}
+          icon={AlertCircle}
+          role="alert"
+          title={copy(
+            language,
+            "Gunluk arsiv yuklenemedi",
+            "Daily archive could not be loaded"
+          )}
+          tone="danger"
+        />
       ) : !latestReport ? (
-        <div className="rounded-xl border border-dashed border-border bg-card/65 px-4 py-6 text-sm text-muted-foreground">
-          {copy(
+        <EmptyState
+          description={copy(
+            language,
+            "Yeni gunluk raporlar geldikce bu arsiv otomatik dolacak.",
+            "This archive will fill automatically as new daily reports arrive."
+          )}
+          icon={FileSearch}
+          title={copy(
             language,
             "Henuz gunluk piyasa raporu bulunamadi.",
             "No daily market report is available yet."
           )}
-        </div>
+        />
       ) : (
         <>
           <section className="rounded-xl border border-border bg-card/95 p-4 shadow-md">

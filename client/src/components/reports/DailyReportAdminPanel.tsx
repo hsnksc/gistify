@@ -1,12 +1,19 @@
-import { type ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FileText, RefreshCw, Save, Upload } from "lucide-react";
 import type {
   DailyReportContent,
   DailyReportRecord,
   DailyReportSourcePackage,
 } from "@shared/dailyReports";
+import {
+  AdminField as Field,
+  AdminPanel,
+  AdminPanelSurface,
+  AdminSectionLabel,
+} from "@/components/reports/AdminPanel";
 import DailyReportViewer from "@/components/reports/DailyReportViewer";
 import { Button } from "@/components/ui/button";
+import EmptyState from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -46,14 +53,9 @@ interface DailyReportAdminPanelProps {
   onPublish: () => void;
 }
 
-function Field({ label, children }: { label: string; children: ReactNode }) {
-  return (
-    <label className="space-y-1.5">
-      <span className="text-xs font-medium text-muted-foreground">{label}</span>
-      {children}
-    </label>
-  );
-}
+const DAILY_ADMIN_PANEL_CONFIG = {
+  layout: "sidebar-main",
+} as const;
 
 const parseLineList = (value: string) =>
   value
@@ -199,11 +201,16 @@ export default function DailyReportAdminPanel({
 
   if (!adminAuthorized) {
     return (
-      <div className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
-        <p className="text-sm text-muted-foreground">
-          Daily report publish aracini kullanmak icin once admin kilidini ac.
-        </p>
-      </div>
+      <AdminPanel
+        config={{ layout: "single" }}
+        main={
+          <EmptyState
+            description="Daily report publish aracini kullanmak icin once admin kilidini ac."
+            title="Admin kilidi kapali"
+            tone="warning"
+          />
+        }
+      />
     );
   }
 
@@ -252,12 +259,15 @@ export default function DailyReportAdminPanel({
   };
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[340px_minmax(0,1fr)]">
-      <aside className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl xl:sticky xl:top-24 xl:h-[calc(100vh-8rem)] xl:overflow-y-auto">
+    <AdminPanel
+      config={DAILY_ADMIN_PANEL_CONFIG}
+      sidebar={
+        <AdminPanelSurface
+          as="aside"
+          className="xl:sticky xl:top-24 xl:h-[calc(100vh-8rem)] xl:overflow-y-auto"
+        >
         <div className="flex items-center justify-between gap-2">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            Source Packages
-          </p>
+          <AdminSectionLabel>Source Packages</AdminSectionLabel>
           <button
             type="button"
             onClick={onRefreshSources}
@@ -292,9 +302,7 @@ export default function DailyReportAdminPanel({
         </div>
         <div className="mt-6">
           <div className="flex items-center justify-between gap-2">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              Kayitli Daily Reports
-            </p>
+            <AdminSectionLabel>Kayitli Daily Reports</AdminSectionLabel>
             <button
               type="button"
               onClick={onRefreshReports}
@@ -337,17 +345,16 @@ export default function DailyReportAdminPanel({
             ))}
           </div>
         </div>
-      </aside>
-
-      <div className="space-y-6">
-        <section className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
+        </AdminPanelSurface>
+      }
+      main={
+        <>
+        <AdminPanelSurface>
           {draftReport ? (
             <div className="space-y-6">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                    Publish
-                  </p>
+                  <AdminSectionLabel tone="accent">Publish</AdminSectionLabel>
                   <h3 className="text-2xl font-semibold tracking-tight text-foreground">
                     Daily Report Editoru
                   </h3>
@@ -376,10 +383,8 @@ export default function DailyReportAdminPanel({
                 <p className="text-sm text-destructive">{adminError}</p>
               ) : null}
               <div className="grid gap-4 xl:grid-cols-2">
-                <div className="space-y-4 rounded-xl border border-border bg-background/50 p-4">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                    Metadata
-                  </p>
+                <AdminPanelSurface as="div" tone="muted" className="space-y-4">
+                  <AdminSectionLabel tone="accent">Metadata</AdminSectionLabel>
                   <div className="grid gap-4 md:grid-cols-2">
                     <Field label="Baslik">
                       <Input
@@ -441,11 +446,9 @@ export default function DailyReportAdminPanel({
                       />
                     </Field>
                   </div>
-                </div>
-                <div className="space-y-4 rounded-xl border border-border bg-background/50 p-4">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                    Narrative
-                  </p>
+                </AdminPanelSurface>
+                <AdminPanelSurface as="div" tone="muted" className="space-y-4">
+                  <AdminSectionLabel tone="accent">Narrative</AdminSectionLabel>
                   <div className="grid gap-4 md:grid-cols-2">
                     <Field label="Headline">
                       <Input
@@ -526,7 +529,7 @@ export default function DailyReportAdminPanel({
                       />
                     </Field>
                   </div>
-                </div>
+                </AdminPanelSurface>
               </div>
               <div className="grid gap-4 xl:grid-cols-2">
                 <Field label="Executive summary (bos satirla ayir)">
@@ -596,11 +599,9 @@ export default function DailyReportAdminPanel({
                   }
                 />
               </Field>
-              <div className="space-y-3 rounded-xl border border-border bg-background/50 p-4">
+              <AdminPanelSurface as="div" tone="muted" className="space-y-3">
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                    Advanced JSON
-                  </p>
+                  <AdminSectionLabel tone="accent">Advanced JSON</AdminSectionLabel>
                   <div className="flex flex-wrap gap-2">
                     <Button
                       type="button"
@@ -629,23 +630,21 @@ export default function DailyReportAdminPanel({
                     payload'ini buradan duzenle.
                   </p>
                 )}
-              </div>
+              </AdminPanelSurface>
             </div>
           ) : (
-            <p className="text-sm text-muted-foreground">
-              Duzenlenecek daily report taslagi yok. Once bir source package
-              secip taslaga donustur.
-            </p>
+            <EmptyState
+              description="Once bir source package secip taslaga donustur."
+              title="Duzenlenecek daily report taslagi yok"
+            />
           )}
-        </section>
+        </AdminPanelSurface>
 
         {selectedSource ? (
-          <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
+          <AdminPanelSurface>
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                  Source Preview
-                </p>
+                <AdminSectionLabel tone="accent">Source Preview</AdminSectionLabel>
                 <h3 className="mt-1 text-xl font-semibold text-foreground">
                   {selectedSource.title}
                 </h3>
@@ -723,7 +722,7 @@ export default function DailyReportAdminPanel({
                 <span className="text-destructive">{openAiChartError}</span>
               ) : null}
             </div>
-          </section>
+          </AdminPanelSurface>
         ) : null}
 
         {draftReport ? (
@@ -761,8 +760,9 @@ export default function DailyReportAdminPanel({
             }}
           />
         ) : null}
-      </div>
-    </div>
+        </>
+      }
+    />
   );
 }
 

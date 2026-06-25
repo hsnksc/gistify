@@ -5,7 +5,14 @@ import type {
   OpenAiImageReferencePayload,
 } from "@shared/openaiImageStudio";
 import { OPENAI_IMAGE_MAX_REFERENCES } from "@shared/openaiImageStudio";
+import {
+  AdminField as Field,
+  AdminPanel,
+  AdminPanelSurface,
+  AdminSectionLabel,
+} from "@/components/reports/AdminPanel";
 import { Button } from "@/components/ui/button";
+import EmptyState from "@/components/ui/empty-state";
 import { Textarea } from "@/components/ui/textarea";
 import { extractApiErrorMessage, readJsonResponse } from "@/lib/api";
 
@@ -17,6 +24,10 @@ interface ReferenceImageDraft extends OpenAiImageReferencePayload {
   id: string;
   sizeLabel: string;
 }
+
+const OPENAI_IMAGE_PANEL_CONFIG = {
+  layout: "main-preview",
+} as const;
 
 function createReferenceId() {
   if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
@@ -154,11 +165,9 @@ export default function OpenAiImageAdminPanel({
   };
 
   return (
-    <section className="space-y-3">
+    <div className="space-y-3">
       <div className="space-y-1">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-          OpenAI Image Studio
-        </p>
+        <AdminSectionLabel tone="accent">OpenAI Image Studio</AdminSectionLabel>
         <h2 className="text-2xl font-semibold tracking-tight text-foreground">
           Referans gorsellerle yeni image uret
         </h2>
@@ -169,22 +178,21 @@ export default function OpenAiImageAdminPanel({
         </p>
       </div>
 
-      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_420px]">
-        <article className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
+      <AdminPanel
+        config={OPENAI_IMAGE_PANEL_CONFIG}
+        main={
+          <AdminPanelSurface as="article">
           <div className="space-y-6">
-            <label className="space-y-2">
-              <span className="text-xs font-medium text-muted-foreground">
-                Prompt
-              </span>
+            <Field label="Prompt">
               <Textarea
                 value={prompt}
                 onChange={event => setPrompt(event.target.value)}
                 className="min-h-36"
                 placeholder="Ornek: Bu iki referans gorseldeki kompozisyonu koru, daha premium bir landing page hero ilustrasyonu uret."
               />
-            </label>
+            </Field>
 
-            <div className="space-y-3 rounded-xl border border-border bg-background/50 p-4">
+            <AdminPanelSurface as="div" tone="muted" className="space-y-3">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <p className="text-xs font-medium text-muted-foreground">
@@ -257,11 +265,13 @@ export default function OpenAiImageAdminPanel({
                   ))}
                 </div>
               ) : (
-                <div className="rounded-xl border border-dashed border-border bg-background/40 p-4 text-sm text-muted-foreground">
-                  Henuz referans gorsel secilmedi.
-                </div>
+                <EmptyState
+                  className="p-4"
+                  description="Gorsel sec butonuyla kompozisyon referanslarini ekle."
+                  title="Henuz referans gorsel secilmedi"
+                />
               )}
-            </div>
+            </AdminPanelSurface>
 
             {error ? <p className="text-sm text-destructive">{error}</p> : null}
 
@@ -285,12 +295,11 @@ export default function OpenAiImageAdminPanel({
               </Button>
             </div>
           </div>
-        </article>
-
-        <article className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-            Son sonuc
-          </p>
+          </AdminPanelSurface>
+        }
+        preview={
+          <AdminPanelSurface as="article">
+          <AdminSectionLabel tone="accent">Son sonuc</AdminSectionLabel>
 
           {result ? (
             <div className="mt-4 space-y-4">
@@ -333,13 +342,16 @@ export default function OpenAiImageAdminPanel({
               </div>
             </div>
           ) : (
-            <div className="mt-4 rounded-xl border border-dashed border-border bg-background/40 p-6 text-sm text-muted-foreground">
-              Uretilen gorsel burada preview olarak gosterilecek.
-            </div>
+            <EmptyState
+              className="mt-4"
+              description="OpenAI istegi tamamlandiginda preview burada gosterilecek."
+              title="Uretilen gorsel burada preview olarak gosterilecek"
+            />
           )}
-        </article>
-      </div>
-    </section>
+          </AdminPanelSurface>
+        }
+      />
+    </div>
   );
 }
 

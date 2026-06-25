@@ -392,7 +392,7 @@ function StockDetail({ stock, t, lang }: { stock: StockResult; t: (key: string) 
           <Delta value={stock.priceChangePct} className="text-sm font-bold" />
         </div>
         <div className="rounded-lg border border-border bg-background/55 p-3">
-          <p className="text-[10px] text-muted-foreground">ATR (14)</p>
+          <p className="text-[10px] text-muted-foreground">{t("ATR (14)")}</p>
           <p className="text-sm font-bold text-foreground">${stock.atr14d.toFixed(2)}</p>
         </div>
         <div className="rounded-lg border border-border bg-background/55 p-3">

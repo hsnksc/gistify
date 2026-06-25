@@ -132,7 +132,7 @@ function CandidateTable({
                 copy(language, "Grup", "Group"),
                 copy(language, "Skor", "Score"),
                 copy(language, "Tez", "Thesis"),
-                "Risk",
+                copy(language, "Risk", "Risk"),
               ].map(header => (
                 <th
                   key={header}

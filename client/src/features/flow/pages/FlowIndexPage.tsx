@@ -1,7 +1,15 @@
 import { useEffect, useMemo } from "react";
-import { Clock3, Layers3, RefreshCw } from "lucide-react";
+import {
+  AlertCircle,
+  Clock3,
+  FileSearch,
+  Layers3,
+  RefreshCw,
+} from "lucide-react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
+import EmptyState from "@/components/ui/empty-state";
+import LoadingState from "@/components/ui/loading-state";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import FlowLayout from "../components/FlowLayout";
 import FlowTickerCard from "../components/FlowTickerCard";
@@ -132,36 +140,40 @@ export default function FlowIndexPage({
       </section>
 
       {loading ? (
-        <div
-          role="status"
-          aria-live="polite"
-          className="rounded-xl border border-border bg-card/75 px-6 py-6 text-sm text-muted-foreground"
-        >
-          {copy(
+        <LoadingState
+          compact
+          label={copy(
             language,
             "Flow hisse kartlari yukleniyor.",
             "Loading flow ticker cards."
           )}
-        </div>
+        />
       ) : error ? (
-        <div
+        <EmptyState
+          description={error}
+          icon={AlertCircle}
           role="alert"
-          className="rounded-xl border border-dashed border-border bg-card/75 px-6 py-6 text-sm text-muted-foreground"
-        >
-          {error}
-        </div>
+          title={copy(
+            language,
+            "Flow hisse kutuphanesi yuklenemedi",
+            "Flow stock library could not be loaded"
+          )}
+          tone="danger"
+        />
       ) : !tickerGroups.length ? (
-        <div
-          role="status"
-          aria-live="polite"
-          className="rounded-xl border border-dashed border-border bg-card/65 px-6 py-6 text-sm text-muted-foreground"
-        >
-          {copy(
+        <EmptyState
+          description={copy(
+            language,
+            "Yeni ticker raporlari geldiginde kutuphane burada acilacak.",
+            "The library will open here as new ticker reports arrive."
+          )}
+          icon={FileSearch}
+          title={copy(
             language,
             "Henuz gosterilecek Flow hissesi bulunamadi.",
             "There are no Flow tickers to display yet."
           )}
-        </div>
+        />
       ) : (
         <section
           aria-label={copy(language, "Flow hisse listesi", "Flow ticker list")}

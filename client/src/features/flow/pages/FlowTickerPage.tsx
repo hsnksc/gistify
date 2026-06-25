@@ -1,7 +1,16 @@
 import { useMemo } from "react";
-import { ArrowLeft, Clock3, History, RefreshCw } from "lucide-react";
+import {
+  AlertCircle,
+  ArrowLeft,
+  Clock3,
+  FileSearch,
+  History,
+  RefreshCw,
+} from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
+import EmptyState from "@/components/ui/empty-state";
+import LoadingState from "@/components/ui/loading-state";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import FlowLayout from "../components/FlowLayout";
@@ -102,29 +111,33 @@ export default function FlowTickerPage({
       }
     >
       {loading ? (
-        <div
-          role="status"
-          aria-live="polite"
-          className="rounded-xl border border-border bg-card/75 px-4 py-6 text-sm text-muted-foreground"
-        >
-          {copy(
+        <LoadingState
+          compact
+          label={copy(
             language,
             "Hisse raporlari yukleniyor.",
             "Loading ticker reports."
           )}
-        </div>
+        />
       ) : !tickerGroup || !latestReport ? (
-        <div
-          role="alert"
-          className="rounded-xl border border-dashed border-border bg-card/75 px-4 py-6 text-sm text-muted-foreground"
-        >
-          {error ||
+        <EmptyState
+          description={
+            error ||
             copy(
               language,
-              "Bu ticker icin Flow raporu bulunamadi.",
-              "No Flow report was found for this ticker."
-            )}
-        </div>
+              "Ticker arsivine geri donup baska bir sembol sec.",
+              "Return to the ticker archive and pick another symbol."
+            )
+          }
+          icon={error ? AlertCircle : FileSearch}
+          role={error ? "alert" : "status"}
+          title={copy(
+            language,
+            "Bu ticker icin Flow raporu bulunamadi.",
+            "No Flow report was found for this ticker."
+          )}
+          tone={error ? "danger" : "neutral"}
+        />
       ) : (
         <>
           <section key={latestReport?.id || "empty"} className="grid gap-3 md:grid-cols-3">

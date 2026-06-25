@@ -1,7 +1,14 @@
 import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { Plus, RefreshCw, Shield, Trash2, Upload } from "lucide-react";
 import type { WeeklyReportEntry, WeeklyReportRecord } from "@shared/weeklyReports";
+import {
+  AdminField as Field,
+  AdminPanel,
+  AdminPanelSurface,
+  AdminSectionLabel as SectionLabel,
+} from "@/components/reports/AdminPanel";
 import { Button } from "@/components/ui/button";
+import EmptyState from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -35,28 +42,9 @@ interface WeeklyReportAdminPanelProps {
   onPublish: () => void;
 }
 
-function SectionLabel({ children }: { children: string }) {
-  return (
-    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-      {children}
-    </p>
-  );
-}
-
-function Field({
-  label,
-  children,
-}: {
-  label: string;
-  children: ReactNode;
-}) {
-  return (
-    <label className="space-y-1.5">
-      <span className="text-xs font-medium text-muted-foreground">{label}</span>
-      {children}
-    </label>
-  );
-}
+const WEEKLY_ADMIN_PANEL_CONFIG = {
+  layout: "sidebar-main",
+} as const;
 
 function updateEntryField(
   report: WeeklyReportRecord,
@@ -204,9 +192,10 @@ export default function WeeklyReportAdminPanel({
 
   if (!adminAuthorized) {
     return (
-      <section className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
-          <div className="space-y-6">
+      <AdminPanel
+        config={{ layout: "main-preview" }}
+        main={
+          <AdminPanelSurface>
             <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-200">
               <Shield className="size-4" />
               Yonetici kilidi kapali
@@ -247,9 +236,10 @@ export default function WeeklyReportAdminPanel({
             {adminError ? (
               <p className="text-sm text-destructive">{adminError}</p>
             ) : null}
-          </div>
-
-          <div className="rounded-xl border border-border bg-background/60 p-6">
+          </AdminPanelSurface>
+        }
+        preview={
+          <AdminPanelSurface as="div" tone="muted" className="p-6">
             <SectionLabel>Bu sayfada neler var</SectionLabel>
             <div className="mt-4 space-y-3 text-sm text-muted-foreground">
               <p>Yeni haftalik taslak olusturma</p>
@@ -257,15 +247,20 @@ export default function WeeklyReportAdminPanel({
               <p>Draft kaydetme ve publish etme</p>
               <p>Published raporlardan projection senkronu</p>
             </div>
-          </div>
-        </div>
-      </section>
+          </AdminPanelSurface>
+        }
+      />
     );
   }
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[340px_minmax(0,1fr)]">
-      <aside className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl xl:sticky xl:top-24 xl:h-[calc(100vh-8rem)] xl:overflow-y-auto">
+    <AdminPanel
+      config={WEEKLY_ADMIN_PANEL_CONFIG}
+      sidebar={
+        <AdminPanelSurface
+          as="aside"
+          className="xl:sticky xl:top-24 xl:h-[calc(100vh-8rem)] xl:overflow-y-auto"
+        >
         <div className="flex items-center justify-between gap-2">
           <SectionLabel>Rapor Secimi</SectionLabel>
           <button
@@ -359,9 +354,11 @@ export default function WeeklyReportAdminPanel({
             })}
           </div>
         </div>
-      </aside>
+        </AdminPanelSurface>
+      }
+      main={
+        <AdminPanelSurface as="div">
 
-      <div className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
         {draftReport ? (
           <div className="space-y-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
@@ -518,7 +515,7 @@ export default function WeeklyReportAdminPanel({
               </Field>
             </div>
 
-            <div className="space-y-4 rounded-xl border border-border bg-background/60 p-4">
+            <AdminPanelSurface as="div" tone="muted" className="space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <SectionLabel>Hisse Editoru</SectionLabel>
@@ -848,13 +845,14 @@ export default function WeeklyReportAdminPanel({
                   </Field>
                 </div>
               ) : (
-                <p className="text-sm text-muted-foreground">
-                  Bu raporda duzenlenecek hisse yok.
-                </p>
+                <EmptyState
+                  description="Bu raporda duzenlenecek hisse yok."
+                  title="Secili entry bulunamadi"
+                />
               )}
-            </div>
+            </AdminPanelSurface>
 
-            <div className="space-y-3 rounded-xl border border-border bg-background/60 p-4">
+            <AdminPanelSurface as="div" tone="muted" className="space-y-3">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <SectionLabel>Advanced JSON</SectionLabel>
@@ -888,15 +886,18 @@ export default function WeeklyReportAdminPanel({
               {rawReportError ? (
                 <p className="text-sm text-destructive">{rawReportError}</p>
               ) : null}
-            </div>
+            </AdminPanelSurface>
           </div>
         ) : (
-          <div className="grid min-h-[560px] place-items-center text-sm text-muted-foreground">
-            Duzenlenecek bir rapor secilmedi.
-          </div>
+          <EmptyState
+            className="grid min-h-[560px] place-items-center"
+            description="Kayitli haftalardan birini sec veya yeni hafta taslagi olustur."
+            title="Duzenlenecek bir rapor secilmedi"
+          />
         )}
-      </div>
-    </div>
+        </AdminPanelSurface>
+      }
+    />
   );
 }
 

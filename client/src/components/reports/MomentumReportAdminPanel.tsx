@@ -1,10 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
 import { Radar, RefreshCw, Save, Upload } from "lucide-react";
 import type { MomentumReportEntry, MomentumReportRecord } from "@shared/momentumReports";
+import {
+  AdminField as Field,
+  AdminPanel,
+  AdminPanelSurface,
+  AdminSectionLabel,
+} from "@/components/reports/AdminPanel";
 import { runMomentumScan } from "@/scanner";
 import { applyScanResultsToMomentumDraft } from "@/lib/momentumReports";
 import type { StockResult } from "@/scanner/types";
 import { Button } from "@/components/ui/button";
+import EmptyState from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -48,20 +55,9 @@ interface MomentumReportAdminPanelProps {
   onPublish: () => void;
 }
 
-function Field({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <label className="space-y-1.5">
-      <span className="text-xs font-medium text-muted-foreground">{label}</span>
-      {children}
-    </label>
-  );
-}
+const MOMENTUM_ADMIN_PANEL_CONFIG = {
+  layout: "sidebar-main",
+} as const;
 
 export default function MomentumReportAdminPanel({
   adminAuthorized,
@@ -241,21 +237,29 @@ export default function MomentumReportAdminPanel({
 
   if (!adminAuthorized) {
     return (
-      <div className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
-        <p className="text-sm text-muted-foreground">
-          Momentum publish aracini kullanmak icin once admin kilidini ac.
-        </p>
-      </div>
+      <AdminPanel
+        config={{ layout: "single" }}
+        main={
+          <EmptyState
+            description="Momentum publish aracini kullanmak icin once admin kilidini ac."
+            title="Admin kilidi kapali"
+            tone="warning"
+          />
+        }
+      />
     );
   }
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[340px_minmax(0,1fr)]">
-      <aside className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl xl:sticky xl:top-24 xl:h-[calc(100vh-8rem)] xl:overflow-y-auto">
+    <AdminPanel
+      config={MOMENTUM_ADMIN_PANEL_CONFIG}
+      sidebar={
+        <AdminPanelSurface
+          as="aside"
+          className="xl:sticky xl:top-24 xl:h-[calc(100vh-8rem)] xl:overflow-y-auto"
+        >
         <div className="flex items-center justify-between gap-2">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            Momentum Raporlari
-          </p>
+          <AdminSectionLabel>Momentum Raporlari</AdminSectionLabel>
           <button
             type="button"
             onClick={onRefresh}
@@ -334,26 +338,24 @@ export default function MomentumReportAdminPanel({
             <p className="text-sm text-destructive">{scanError}</p>
           ) : null}
 
-          <div className="rounded-xl border border-border bg-background/60 p-4">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              Son tarama
-            </p>
+          <AdminPanelSurface as="div" tone="muted">
+            <AdminSectionLabel>Son tarama</AdminSectionLabel>
             <p className="mt-2 text-sm text-foreground">
               {scanResults.length ? `${scanResults.length} setup bulundu` : "Henuz tarama yok"}
             </p>
-          </div>
+          </AdminPanelSurface>
         </div>
-      </aside>
+        </AdminPanelSurface>
+      }
+      main={
+        <>
 
-      <div className="space-y-6">
-        <section className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
+        <AdminPanelSurface>
           {draftReport ? (
             <div className="space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                    Publish
-                  </p>
+                  <AdminSectionLabel tone="accent">Publish</AdminSectionLabel>
                   <h3 className="text-2xl font-semibold tracking-tight text-foreground">
                     Momentum Snapshot Editoru
                   </h3>
@@ -449,19 +451,18 @@ export default function MomentumReportAdminPanel({
               </div>
             </div>
           ) : (
-            <p className="text-sm text-muted-foreground">
-              Duzenlenecek momentum raporu bulunamadi.
-            </p>
+            <EmptyState
+              description="Momentum report secip duzenlemeye basla."
+              title="Duzenlenecek momentum raporu bulunamadi"
+            />
           )}
-        </section>
+        </AdminPanelSurface>
 
         {scanResults.length ? (
-          <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
+          <AdminPanelSurface>
             <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                  Canli tarama sonucu
-                </p>
+                <AdminSectionLabel tone="accent">Canli tarama sonucu</AdminSectionLabel>
                 <h3 className="text-xl font-semibold text-foreground">
                   Taramadan gelen adaylar
                 </h3>
@@ -524,13 +525,11 @@ export default function MomentumReportAdminPanel({
                 </article>
               ))}
             </div>
-          </section>
+          </AdminPanelSurface>
         ) : null}
 
-        <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-            Yayinlanacak kartlar
-          </p>
+        <AdminPanelSurface>
+          <AdminSectionLabel tone="accent">Yayinlanacak kartlar</AdminSectionLabel>
           <div className="mt-4 grid gap-4 xl:grid-cols-2">
             {selectedEntries.length ? (
               selectedEntries.map(entry => (
@@ -595,15 +594,13 @@ export default function MomentumReportAdminPanel({
               </p>
             )}
           </div>
-        </section>
+        </AdminPanelSurface>
 
         {draftReport ? (
-          <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
+          <AdminPanelSurface>
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                  Advanced JSON
-                </p>
+                <AdminSectionLabel tone="accent">Advanced JSON</AdminSectionLabel>
                 <h3 className="mt-1 text-xl font-semibold text-foreground">
                   Tum report payload'i
                 </h3>
@@ -638,10 +635,11 @@ export default function MomentumReportAdminPanel({
                 degistirmek icin kullan.
               </p>
             )}
-          </section>
+          </AdminPanelSurface>
         ) : null}
-      </div>
-    </div>
+        </>
+      }
+    />
   );
 }
 

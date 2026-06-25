@@ -22,6 +22,7 @@ import {
 import LanguageSelector from "@/components/LanguageSelector";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import LoadingState from "@/components/ui/loading-state";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
@@ -227,25 +228,15 @@ function Router({
     <Suspense
       fallback={
         <div className="px-4 py-8">
-          <div className="mx-auto max-w-7xl rounded-xl border border-border bg-card/95 p-6 text-card-foreground shadow-2xl">
-            <h2 className="text-lg font-semibold">
-              {copy(language, "Panel yukleniyor", "Loading workspace")}
-            </h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              {copy(
-                language,
-                "Earnings strateji ve momentum workspace hazirlaniyor.",
-                "The earnings strategy and momentum workspaces are loading."
-              )}
-            </p>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {copy(
-                language,
-                "Daily ve portfolio modulleri de baglaniyor.",
-                "Daily and portfolio modules are connecting as well."
-              )}
-            </p>
-          </div>
+          <LoadingState
+            className="mx-auto max-w-7xl"
+            description={copy(
+              language,
+              "Earnings strateji, momentum, daily ve portfolio modulleri baglaniyor.",
+              "The earnings strategy, momentum, daily and portfolio modules are connecting."
+            )}
+            label={copy(language, "Panel yukleniyor", "Loading workspace")}
+          />
         </div>
       }
     >

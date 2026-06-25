@@ -1,7 +1,5 @@
+import LoadingState from "@/components/ui/loading-state";
+
 export default function WorkspaceLoadingState({ label }: { label: string }) {
-  return (
-    <section className="workspace-card p-6 text-sm leading-7 text-muted-foreground">
-      {label}
-    </section>
-  );
+  return <LoadingState compact className="workspace-card p-6" label={label} />;
 }

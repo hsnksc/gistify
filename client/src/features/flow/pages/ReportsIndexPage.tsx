@@ -1,13 +1,17 @@
 import { useMemo, useState } from "react";
 import {
+  AlertCircle,
   Database,
   RefreshCw,
   Search,
+  SearchX,
   Sparkles,
   UploadCloud,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import EmptyState from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
+import LoadingState from "@/components/ui/loading-state";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import {
   Select,
@@ -324,23 +328,42 @@ export default function ReportsIndexPage({
       </section>
 
       {serverError || localError ? (
-        <div className="rounded-xl border border-dashed border-border bg-card/75 px-6 py-6 text-sm text-muted-foreground">
-          {[serverError, localError].filter(Boolean).join(" · ")}
-        </div>
+        <EmptyState
+          description={[serverError, localError].filter(Boolean).join(" · ")}
+          icon={AlertCircle}
+          role="alert"
+          title={copy(
+            language,
+            "Rapor galerisi yuklenemedi",
+            "Report gallery could not be loaded"
+          )}
+          tone="danger"
+        />
       ) : null}
 
       {serverLoading || localLoading ? (
-        <div className="rounded-xl border border-border bg-card/75 px-6 py-6 text-sm text-muted-foreground">
-          {copy(language, "Rapor galerisi yukleniyor.", "Loading report gallery.")}
-        </div>
+        <LoadingState
+          compact
+          label={copy(
+            language,
+            "Rapor galerisi yukleniyor.",
+            "Loading report gallery."
+          )}
+        />
       ) : !groupedReports.length ? (
-        <div className="rounded-xl border border-dashed border-border bg-card/65 px-6 py-6 text-sm text-muted-foreground">
-          {copy(
+        <EmptyState
+          description={copy(
+            language,
+            "Aramayi, tarih filtresini veya oneriyi degistirip galeriyi genislet.",
+            "Adjust the search, date or recommendation filters to widen the gallery."
+          )}
+          icon={SearchX}
+          title={copy(
             language,
             "Secilen filtrelerle eslesen rapor bulunamadi.",
             "No reports matched the current filters."
           )}
-        </div>
+        />
       ) : (
         <div className="space-y-6">
           {groupedReports.map(([reportDate, reports]) => (
