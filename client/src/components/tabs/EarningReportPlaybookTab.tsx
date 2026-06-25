@@ -599,30 +599,52 @@ export default function EarningReportPlaybookTab({
           </div>
 
           {activePosition.greeks.length ? (
-            <div className="mt-6 overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-border/80 text-left text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                    <th className="pb-2">Greek</th>
-                    <th className="pb-2">{copy(language, "Deger", "Value")}</th>
-                    <th className="pb-2">{copy(language, "Aciklama", "Notes")}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {activePosition.greeks.map(row => (
-                    <tr
-                      key={`${activePosition.ticker}-${row.greek}`}
-                      className="border-b border-border/50 last:border-b-0"
-                    >
-                      <td className="py-2 data-mono font-semibold text-foreground">
-                        {row.greek}
-                      </td>
-                      <td className="py-2 data-mono text-amber-300">{row.value}</td>
-                      <td className="py-2 text-muted-foreground">{row.description}</td>
+            <div className="mt-6">
+              <div className="hidden md:block overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-border/80 text-left text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                      <th className="pb-2">Greek</th>
+                      <th className="pb-2">{copy(language, "Deger", "Value")}</th>
+                      <th className="pb-2">{copy(language, "Aciklama", "Notes")}</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {activePosition.greeks.map(row => (
+                      <tr
+                        key={`${activePosition.ticker}-${row.greek}`}
+                        className="border-b border-border/50 last:border-b-0"
+                      >
+                        <td className="py-2 data-mono font-semibold text-foreground">
+                          {row.greek}
+                        </td>
+                        <td className="py-2 data-mono text-amber-300">{row.value}</td>
+                        <td className="py-2 text-muted-foreground">{row.description}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="grid gap-3 md:hidden">
+                {activePosition.greeks.map(row => (
+                  <div
+                    key={`${activePosition.ticker}-${row.greek}-mobile`}
+                    className="rounded-xl border border-white/10 bg-black/20 p-3"
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="data-mono text-sm font-semibold text-foreground">
+                        {row.greek}
+                      </span>
+                      <span className="data-mono text-sm font-semibold text-amber-300">
+                        {row.value}
+                      </span>
+                    </div>
+                    <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                      {row.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           ) : null}
         </article>
@@ -632,36 +654,69 @@ export default function EarningReportPlaybookTab({
             {copy(language, "Kar / zarar senaryolari", "P/L scenarios")}
           </p>
           {activePosition.scenarios.length ? (
-            <div className="mt-4 overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-border/80 text-left text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                    <th className="pb-2">{copy(language, "Senaryo", "Scenario")}</th>
-                    <th className="pb-2">{copy(language, "IV degisimi", "IV change")}</th>
-                    <th className="pb-2">{copy(language, "Hisse hareketi", "Stock move")}</th>
-                    <th className="pb-2">Est. P/L</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {activePosition.scenarios.map(row => (
-                    <tr
-                      key={`${activePosition.ticker}-${row.scenario}`}
-                      className="border-b border-border/50 last:border-b-0"
-                    >
-                      <td className="py-2 text-foreground">{row.scenario}</td>
-                      <td className="py-2 data-mono text-muted-foreground">
-                        {row.ivChange}
-                      </td>
-                      <td className="py-2 data-mono text-muted-foreground">
-                        {row.stockMove}
-                      </td>
-                      <td className={`py-2 data-mono font-semibold ${getScenarioTone(row.pnl)}`}>
-                        {row.pnl}
-                      </td>
+            <div className="mt-4">
+              <div className="hidden md:block overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-border/80 text-left text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                      <th className="pb-2">{copy(language, "Senaryo", "Scenario")}</th>
+                      <th className="pb-2">{copy(language, "IV degisimi", "IV change")}</th>
+                      <th className="pb-2">{copy(language, "Hisse hareketi", "Stock move")}</th>
+                      <th className="pb-2">Est. P/L</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {activePosition.scenarios.map(row => (
+                      <tr
+                        key={`${activePosition.ticker}-${row.scenario}`}
+                        className="border-b border-border/50 last:border-b-0"
+                      >
+                        <td className="py-2 text-foreground">{row.scenario}</td>
+                        <td className="py-2 data-mono text-muted-foreground">
+                          {row.ivChange}
+                        </td>
+                        <td className="py-2 data-mono text-muted-foreground">
+                          {row.stockMove}
+                        </td>
+                        <td className={`py-2 data-mono font-semibold ${getScenarioTone(row.pnl)}`}>
+                          {row.pnl}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="grid gap-3 md:hidden">
+                {activePosition.scenarios.map(row => (
+                  <div
+                    key={`${activePosition.ticker}-${row.scenario}-mobile`}
+                    className="rounded-xl border border-white/10 bg-black/20 p-3"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <span className="text-sm font-semibold text-foreground">
+                        {row.scenario}
+                      </span>
+                      <span className={`data-mono text-sm font-semibold ${getScenarioTone(row.pnl)}`}>
+                        {row.pnl}
+                      </span>
+                    </div>
+                    <div className="mt-3 grid gap-2 text-sm">
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-muted-foreground">
+                          {copy(language, "IV degisimi", "IV change")}
+                        </span>
+                        <span className="data-mono text-foreground">{row.ivChange}</span>
+                      </div>
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-muted-foreground">
+                          {copy(language, "Hisse hareketi", "Stock move")}
+                        </span>
+                        <span className="data-mono text-foreground">{row.stockMove}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           ) : (
             <div className="mt-4 rounded-none border border-border bg-background/50 p-4 text-sm leading-relaxed text-muted-foreground">

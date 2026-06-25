@@ -90,32 +90,32 @@ export function EventsTable({
             <Globe className={cn("size-5", THEME.iconClassName)} />
             {copy(language, "Makro Olaylar", "Macro Events")}
           </CardTitle>
-          <div className="flex flex-wrap items-center gap-2">
-            <div className="relative">
-              <Search className="absolute left-2.5 top-1/2 size-3 -translate-y-1/2 text-muted-foreground" />
+          <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
+            <div className="relative w-full sm:w-auto">
+              <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground md:left-2.5 md:size-3" />
               <Input
                 placeholder={copy(language, "Ara...", "Search...")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-8 w-40 bg-background/70 pl-8 text-xs"
+                className="h-11 w-full bg-background/70 pl-10 text-[clamp(0.875rem,2.8vw,0.95rem)] md:h-8 md:w-40 md:pl-8 md:text-xs"
               />
             </div>
             <ToggleGroup
               type="single"
               value={filter}
               onValueChange={(v) => v && setFilter(v as typeof filter)}
-              className="h-8"
+              className="grid h-auto w-full grid-cols-4 gap-1 sm:flex sm:w-auto sm:gap-0"
             >
-              <ToggleGroupItem value="all" className="text-xs">
+              <ToggleGroupItem value="all" className="min-h-11 text-[clamp(0.875rem,2.8vw,0.95rem)] md:min-h-8 md:text-xs">
                 {copy(language, "Tumu", "All")}
               </ToggleGroupItem>
-              <ToggleGroupItem value="high" className="text-xs">
+              <ToggleGroupItem value="high" className="min-h-11 text-[clamp(0.875rem,2.8vw,0.95rem)] md:min-h-8 md:text-xs">
                 🔴
               </ToggleGroupItem>
-              <ToggleGroupItem value="medium" className="text-xs">
+              <ToggleGroupItem value="medium" className="min-h-11 text-[clamp(0.875rem,2.8vw,0.95rem)] md:min-h-8 md:text-xs">
                 🟡
               </ToggleGroupItem>
-              <ToggleGroupItem value="low" className="text-xs">
+              <ToggleGroupItem value="low" className="min-h-11 text-[clamp(0.875rem,2.8vw,0.95rem)] md:min-h-8 md:text-xs">
                 🟢
               </ToggleGroupItem>
             </ToggleGroup>
@@ -123,7 +123,7 @@ export function EventsTable({
               value={sortBy}
               onValueChange={(v) => setSortBy(v as typeof sortBy)}
             >
-              <SelectTrigger className="h-8 w-32 text-xs bg-background/70">
+              <SelectTrigger className="h-11 w-full bg-background/70 text-[clamp(0.875rem,2.8vw,0.95rem)] md:h-8 md:w-32 md:text-xs">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

@@ -25,6 +25,7 @@ import {
   formatChartNumber,
   formatChartPercent,
   getChartAriaLabel,
+  getMomentumBandColor,
   getSignalChartColor,
 } from '@/lib/chartTheme';
 import {
@@ -115,7 +116,7 @@ export default function MomentumTab({ onStockClick, stocks = stocksData }: Props
             TAM SKORLAMA TABLOSU
           </h2>
         </div>
-        <div className="overflow-x-auto">
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr style={{ borderBottom: '2px solid oklch(0.22 0.03 225)', background: 'oklch(0.13 0.025 230)' }}>
@@ -231,6 +232,16 @@ export default function MomentumTab({ onStockClick, stocks = stocksData }: Props
               })}
             </tbody>
           </table>
+        </div>
+        <div className="space-y-3 md:hidden">
+          {sorted.map((stock, i) => (
+            <MomentumMobileCard
+              key={stock.ticker}
+              stock={stock}
+              rank={i + 1}
+              onClick={() => onStockClick(stock.ticker)}
+            />
+          ))}
         </div>
       </div>
 
@@ -366,5 +377,111 @@ export default function MomentumTab({ onStockClick, stocks = stocksData }: Props
         </div>
       </div>
     </div>
+  );
+}
+
+function MomentumMobileCard({
+  stock,
+  rank,
+  onClick,
+}: {
+  stock: StockData;
+  rank: number;
+  onClick: () => void;
+}) {
+  const cfg = signalConfig[stock.signal];
+  const rCfg = riskConfig[stock.riskLevel];
+  const momentumColor = getMomentumBandColor(stock.momentumScore);
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="w-full rounded-xl border border-white/10 bg-black/20 p-4 text-left"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <div className="flex items-center gap-2">
+            <span className="data-mono text-sm font-bold text-slate-400">
+              #{rank}
+            </span>
+            <span className="data-mono text-base font-bold text-foreground">
+              {stock.ticker}
+            </span>
+            <span className="truncate text-sm text-muted-foreground">
+              {stock.sector}
+            </span>
+          </div>
+          <div className="mt-2 flex items-center gap-2">
+            <span
+              className={`rounded-md border px-2 py-1 text-sm font-bold ${cfg.bgClass} ${cfg.textClass} ${cfg.borderClass}`}
+            >
+              {cfg.label}
+            </span>
+            <span className={`data-mono text-sm font-semibold ${rCfg.textClass}`}>
+              {rCfg.label}
+            </span>
+          </div>
+        </div>
+        <div className="text-right">
+          <div className="text-[13px] text-muted-foreground">Momentum</div>
+          <div className="data-mono text-lg font-bold" style={{ color: momentumColor }}>
+            {stock.momentumScore}
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-3 h-1.5 rounded-full bg-white/10">
+        <div
+          className="h-full rounded-full"
+          style={{ width: `${stock.momentumScore}%`, background: momentumColor }}
+        />
+      </div>
+
+      <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
+        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
+          <div className="text-[13px] text-muted-foreground">Beat İht.</div>
+          <div className="mt-1 data-mono font-semibold text-foreground">
+            %{stock.earningsBeatProbability}
+          </div>
+        </div>
+        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
+          <div className="text-[13px] text-muted-foreground">6A Getiri</div>
+          <div className="mt-1">
+            <Delta value={stock.priceChange6M} precision={1} />
+          </div>
+        </div>
+        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
+          <div className="text-[13px] text-muted-foreground">RSI</div>
+          <div className="mt-1 data-mono font-semibold text-foreground">
+            {stock.rsi14}
+          </div>
+        </div>
+        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
+          <div className="text-[13px] text-muted-foreground">Analist Buy%</div>
+          <div className="mt-1 data-mono font-semibold text-foreground">
+            %{stock.analystBuyConsensus}
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-3 flex flex-wrap items-center gap-3 text-sm">
+        <span className="text-muted-foreground">
+          Earnings: <span className="data-mono text-foreground">{stock.earningsDate}</span>
+        </span>
+        <span className="text-muted-foreground">
+          Hacim:{" "}
+          <span className="font-semibold text-foreground">
+            {stock.volumeStatus === 'VERY_HIGH'
+              ? 'Çok Yüksek'
+              : stock.volumeStatus === 'HIGH'
+                ? 'Yüksek'
+                : stock.volumeStatus === 'LOW'
+                  ? 'Düşük'
+                  : 'Normal'}
+          </span>
+        </span>
+      </div>
+    </button>
   );
 }

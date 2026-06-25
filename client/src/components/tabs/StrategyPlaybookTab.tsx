@@ -151,14 +151,14 @@ export default function StrategyPlaybookTab({
               key={stock.ticker}
               type="button"
               onClick={() => onSelectTicker(stock.ticker)}
-              className={`shrink-0 rounded-none border px-3 py-2 text-left ${
+              className={`min-h-11 shrink-0 rounded-none border px-4 py-2 text-left md:min-h-9 md:px-3 ${
                 selectedTicker === stock.ticker
                   ? "border-emerald-400/50 bg-emerald-500/10 text-emerald-300"
                   : "border-border bg-card/70 text-muted-foreground"
               }`}
             >
-              <div className="data-mono text-xs font-bold">{stock.ticker}</div>
-              <div className="mt-1 text-[11px]">
+              <div className="data-mono text-[clamp(0.875rem,2.8vw,0.95rem)] font-bold md:text-xs">{stock.ticker}</div>
+              <div className="mt-1 text-[clamp(0.8125rem,2.5vw,0.875rem)] md:text-[11px]">
                 {calendarItem?.label || stock.earningsDate}
               </div>
             </button>

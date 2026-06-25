@@ -148,7 +148,7 @@ export default function IVCrushTab({
             {copy(language, 'IV CRUSH FIRASAT SIRALAMASI', 'IV CRUSH OPPORTUNITY RANKING')}
           </h2>
         </div>
-        <div className="overflow-x-auto">
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr style={{ borderBottom: '2px solid oklch(0.22 0.03 225)', background: 'oklch(0.13 0.025 230)' }}>
@@ -248,6 +248,17 @@ export default function IVCrushTab({
               })}
             </tbody>
           </table>
+        </div>
+        <div className="space-y-3 md:hidden">
+          {sorted.map((stock, i) => (
+            <IVCrushMobileCard
+              key={stock.ticker}
+              stock={stock}
+              language={language}
+              rank={i + 1}
+              onClick={() => onStockClick(stock.ticker)}
+            />
+          ))}
         </div>
 
       </div>
@@ -481,6 +492,122 @@ export default function IVCrushTab({
         </div>
       </div>
     </div>
+  );
+}
+
+function IVCrushMobileCard({
+  stock,
+  language,
+  rank,
+  onClick,
+}: {
+  stock: OptionStrategy;
+  language: AppLanguage;
+  rank: number;
+  onClick: () => void;
+}) {
+  const cfg = strategyConfig[stock.strategyRating];
+  const rCfg = riskLevelConfig[stock.riskLevel];
+  const biasColor =
+    stock.directionalBias === 'CALL'
+      ? chartPalette.bull
+      : stock.directionalBias === 'PUT'
+        ? chartPalette.bear
+        : chartPalette.warning;
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="w-full rounded-xl border border-white/10 bg-black/20 p-4 text-left"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <div className="flex items-center gap-2">
+            <span className="data-mono text-sm font-bold text-slate-400">
+              #{rank}
+            </span>
+            <span className="data-mono text-base font-bold text-foreground">
+              {stock.ticker}
+            </span>
+          </div>
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            <span
+              className={`rounded-md border px-2 py-1 text-sm font-bold ${cfg.bgClass} ${cfg.textClass} ${cfg.borderClass}`}
+            >
+              {cfg.label}
+            </span>
+            <span className={`text-sm font-semibold ${rCfg.textClass}`}>
+              {rCfg.label}
+            </span>
+          </div>
+        </div>
+        <div className="text-right">
+          <div className="text-[13px] text-muted-foreground">
+            {copy(language, 'IV Crush Skoru', 'IV Crush Score')}
+          </div>
+          <div className="data-mono text-lg font-bold" style={{ color: cfg.color }}>
+            {stock.ivCrushScore}
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-3 h-1.5 rounded-full bg-white/10">
+        <div
+          className="h-full rounded-full"
+          style={{ width: `${stock.ivCrushScore}%`, background: cfg.color }}
+        />
+      </div>
+
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        <span
+          className="data-mono rounded-md border px-2 py-1 text-sm font-bold"
+          style={{
+            borderColor: `${biasColor}40`,
+            background: `${biasColor}18`,
+            color: biasColor,
+          }}
+        >
+          {stock.directionalBias} %{stock.biasStrength}
+        </span>
+        <span className="truncate text-sm text-muted-foreground">
+          {stock.biasReason}
+        </span>
+      </div>
+
+      <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
+        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
+          <div className="text-[13px] text-muted-foreground">
+            {copy(language, 'Mevcut IV', 'Current IV')}
+          </div>
+          <div className="mt-1 data-mono font-semibold text-foreground">
+            {stock.currentIV}
+          </div>
+        </div>
+        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
+          <div className="text-[13px] text-muted-foreground">IV Crush</div>
+          <div className="mt-1">
+            <Delta value={-stock.expectedIVCrush} precision={1} positiveIsGood={false} />
+          </div>
+        </div>
+        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
+          <div className="text-[13px] text-muted-foreground">
+            {copy(language, 'Hedef Kar', 'Target Profit')}
+          </div>
+          <div className="mt-1">
+            <Delta value={stock.targetProfit} precision={1} />
+          </div>
+        </div>
+        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
+          <div className="text-[13px] text-muted-foreground">
+            {copy(language, 'Strateji', 'Strategy')}
+          </div>
+          <div className="mt-1 text-sm font-semibold text-foreground">
+            {stock.recommendedStrategy.split('(')[0].trim()}
+          </div>
+        </div>
+      </div>
+    </button>
   );
 }
 
