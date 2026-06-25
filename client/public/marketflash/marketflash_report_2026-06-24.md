@@ -1,141 +1,128 @@
 # Market Flash Stocks — After-Market Rapor
-**24 Haziran 2026 | ET 17:00 | TSİ 00:00**
+**Rapor Tarihi:** 2026-06-24  
+**Üretim Zamanı:** 2026-06-24T23:48:00-04:00  
+**Rapor Tipi:** After-Market (Gün Sonu Recap + Momentum Carry-Forward)
 
 ---
 
-## 1. Market Summary
+## 1. Market Summary (Index & VIX)
 
-| Instrument | Price | Change | VWAP | Open | High | Low | Prev Close |
-|---|---|---|---|---|---|---|---|
-| **SPY** | 733.24 | -0.05% | 734.68 | 735.17 | 739.95 | 730.84 | 733.58 |
-| **QQQ** | 710.62 | -0.42% | 711.67 | 715.37 | 719.93 | 704.45 | 713.65 |
-| **IWM** | 296.69 | +0.46% | 297.02 | 295.88 | 299.69 | 294.69 | 295.32 |
-| **VIX** | 18.63 | -4.41% | 19.37 | 19.13 | 20.34 | 18.04 | 19.49 |
+| Instrument | Price | Change % | VWAP | Open | High | Low | Prev Close | Not |
+|---|---|---|---|---|---|---|---|---|
+| **SPY** | $733.24 | -0.05% | $734.68 | $735.17 | $739.95 | $730.84 | $733.58 | VWAP altında kapanış |
+| **QQQ** | $710.62 | -0.42% | $711.67 | $715.37 | $719.93 | $704.45 | $713.65 | Tech weakness |
+| **IWM** | $296.69 | +0.46% | $297.02 | $295.88 | $299.69 | $294.69 | $295.32 | Small-cap outperformance |
+| **VIX** | $18.63 | -4.41% | N/A | $19.13 | $20.34 | $18.04 | $19.49 | Normal-elevated sınırı |
 
-- **SPY:** Dow +0.35% ile yükselirken S&P 500 hafif -0.12% negatif kapadı. Nasdaq -0.46%. Tech zayıf, defensives + utilities güçlü.
-- **VIX:** 18.63 — normal regime. Gün içi 20.34 touch etti (elevated) ama kapanışta geri çekildi. Yarın PCE verisi öncesi volatilite potansiyeli yüksek.
-
----
-
-## 2. VWAP Notes & Gap Analysis
-
-- SPY kapanış 733.24 < VWAP 734.68 — **hafif risk-off bias**.
-- QQQ kapanış 710.62 < VWAP 711.67 — **tech zayıflığı**.
-- IWM kapanış 296.69 < VWAP 297.02 — **small-cap karışık**.
-- Gün içi gap (SPY 735.17 açılış) **tam fill olmadı** — açılıştan sonra düşüş devam etti. SPY 730.84 dip seviyesi 730 support üzerinde tutundu.
-- **Gap-up fill olmayan:** RUN (+24.6%), KBH (+16.8%), GLW (+10.3%) — momentum carry-forward adayı.
-- **Gap-down fill olmayan:** CBRS (-19.6%), HQ (-14.9%), AEVA (-14.9%) — continuation riski.
+> **VIX Notu:** Finnhub VIX için 0 döndürdü; CBOE/MarketWatch verisiyle doğrulandı. VIX 18.63 = 15-20 aralığında (normal). 4.41% düşüş risk-off azalması işareti.
 
 ---
 
-## 3. Top Movers — Gainers (5)
+## 2. Top Movers — Günün En Hareketli Hisseleri
 
-| # | Ticker | Şirket | Fiyat | Değişim | Hacim | Katalizör | Sektör |
-|---|---|---|---|---|---|---|---|
-| 1 | **RUN** | Sunrun Inc. | $15.97 | **+24.63%** | 32.6M | Tesla solar deal duyurusu; yeşil enerji momentumu | Solar/Energy |
-| 2 | **KBH** | KB Home | $61.60 | **+16.82%** | 2.1M | Konut sektörü gücü; mortgage iyimserliği | Homebuilder |
-| 3 | **RKT** | Rocket Companies | $15.24 | **+13.12%** | 24.1M | Fintech/mortgage platform momentumu | Fintech |
-| 4 | **AAL** | American Airlines | $17.44 | **+8.05%** | 207M | Havayolu talep toparlanması; 52w high yakını | Airlines |
-| 5 | **GLW** | Corning Inc. | $214.14 | **+10.34%** | 9.9M | Optik iletişim talebi; yeni 52w high | Technology |
+### 🔼 Gainers (5)
+| Ticker | Şirket | Fiyat | Değişim % | Hacim | Katalizör | Sektör |
+|---|---|---|---|---|---|---|
+| KBH | KB Home | $61.51 | +16.65% | 4.07M | Homebuilder rally + rate-cut narrative; real assets rotation | Consumer Discretionary |
+| FOUR | Shift4 Payments | $44.22 | +14.35% | 2.58M | Payment processor breakout; fintech rotation | Technology |
+| MANE | Veradermics | $117.29 | +13.21% | 1.03M | Biotech momentum; clinical trial optimism | Healthcare |
+| RUN | Sunrun | $14.42 | +12.57% | 51.23M | Solar rebound; RVOL >6x; lower energy costs | Industrials |
+| ADPT | Adaptive Biotechnologies | $19.34 | +12.25% | 4.89M | Immune medicine partnership; $18 breakout | Healthcare |
 
----
-
-## 4. Top Movers — Losers (5)
-
-| # | Ticker | Şirket | Fiyat | Değişim | Hacim | Katalizör | Sektör |
-|---|---|---|---|---|---|---|---|
-| 1 | **CBRS** | Cerebras Systems | $182.26 | **-19.61%** | 21M | AI chip sektör rotasyonu; YTD kâr realizasyonu | Semiconductors |
-| 2 | **HQ** | Horizon Quantum | $28.41 | **-14.91%** | 867K | Kuantum bilgisayar spekülatif satışı | Technology |
-| 3 | **AEVA** | Aeva Technologies | $20.04 | **-14.87%** | 3M | LiDAR/otonom sürüş zayıflığı | Technology/Auto |
-| 4 | **NVTS** | Navitas Semiconductor | $18.32 | **-14.39%** | 34M | GaN yarı iletken zayıflığı; EV sentiment düşük | Semiconductors |
-| 5 | **WYFI** | Whitefiber Inc. | $38.71 | **-13.52%** | 4M | Fiber optik sektör rotasyonu | Technology/Comm |
+### 🔽 Losers (5)
+| Ticker | Şirket | Fiyat | Değişim % | Hacim | Katalizör | Sektör |
+|---|---|---|---|---|---|---|
+| CBRS | Cerebras Systems | $186.06 | -17.93% | 17.57M | AI chip sector selloff; AI capex concerns | Technology |
+| NVTS | Navitas Semiconductor | $17.49 | -18.27% | 27.14M | Semiconductor weakness; $20 support break | Technology |
+| RGC | Regencell Bioscience | $8.80 | -20.58% | 393K | Biotech volatility; thin liquidity reversal | Healthcare |
+| MAAS | Maase Inc | $18.00 | -15.23% | 163K | Tech small-cap de-risking; rotation out | Technology |
+| NG | NovaGold Resources | $6.14 | -15.04% | 4.30M | Gold -3% to $4,010; dollar strength | Materials |
 
 ---
 
-## 5. Earnings Calendar — 24 Haziran 2026
+## 3. Earnings Calendar — Bugün Açıklananlar
 
-### Micron Technology (MU) — After-Close
-- **Konsensus EPS:** $20.20 | **Aktüel EPS:** $25.11 ✅ **BEAT (+24.31%)**
-- **Konsensus Rev:** $34.52B | **Aktüel Rev:** $41.46B ✅ **BEAT**
+### Micron Technology (MU) — After-Close ✅ BEAT
+- **Consensus EPS:** $20.20 | **Actual EPS:** $25.11 (**+24.3% beat**)
+- **Consensus Rev:** $35.82B | **Actual Rev:** $41.46B (**+15.7% beat**)
 - **Geçen Yıl Aynı Çeyrek:** EPS $1.91 | Rev $9.30B
+- **Expected Move:** ~8.5%
+- **Guidance:** Q4 rev $49B-$51B, adj EPS $30-$32 (record)
+- **After-Market Reaction:** **+13% to ~$1,180**
+- **Not:** AI/HBM demand boom, gross margin 84.9%. 0DTE YASAK — IV crush aktif, ama momentum carry-forward güçlü.
+
+### Trip.com Group (TCOM) — After-Close ⚠️ MIXED
+- **Consensus EPS:** $0.85 | **Actual EPS:** $0.83 (**-2.35% miss**)
+- **Consensus Rev:** $2.33B | **Actual Rev:** $2.35B (**+0.9% beat**)
+- **Geçen Yıl Aynı Çeyrek:** EPS $0.60 | Rev $1.91B
 - **Expected Move:** ~4.5%
-- **Aftermarket Reaksiyon:** +4.58% ($1,037.93 → $1,085.44)
-- **Analyst Sentiment:** Bullish (upward revisions son 30 gün)
-- **Note:** AI/HBM talebi olağanüstü. 0DTE YASAK — IV crush aktif.
+- **Guidance:** Q2 net revenue +3% to +8% YoY (weak)
+- **After-Market Reaction:** **-1.73% to $44.68**
+- **Not:** Revenue beat ama EPS miss + guidance downgrade baskılıyor. 0DTE YASAK.
 
-### Jefferies Financial (JEF) — After-Close
-- **Konsensus EPS:** $1.16 | **Aktüel EPS:** $1.02 ❌ **MISS (-$0.14)**
-- **Konsensus Rev:** $2.30B | **Aktüel Rev:** $2.21B ❌ **MISS**
-- **Geçen Yıl Aynı Çeyrek:** EPS $0.40 | Rev $1.63B
-- **Aftermarket Reaksiyon:** -1.24% ($57.92 → $57.20)
-- **Note:** Advisory geliri beklentiyi karşılamadı. UBS geçen hafta Neutral'a indirdi.
-
-### Daktronics (DAKT) — Before-Open
-- **Note:** Fiscal Q4 ve FY2026 sonuçları. Detaylı consensus verisi bulunamadı.
-
-### Crown Crafts (CRWS) — Before-Open
-- **Note:** Fiscal Q4 ve FY2026 sonuçları. Small-cap consumer products (NASDAQ-CM).
-
-### Trip.com Group (TCOM) — After-Close
-- **Note:** Q1 2026 sonuçları. Seyahat sektörü öncüsü. Aftermarket reaksiyon verisi henüz mevcut değil.
+### HIVE Digital Technologies (HIVE) — Before-Open ⏳ N/A
+- **Consensus EPS:** -$0.21 | **Consensus Rev:** $79.99M
+- **Actual:** Arama kaynaklarında actual veriye ulaşılamadı; rapor üretim zamanından önce açıklanmış olabilir.
+- **Not:** Crypto miner; Bitcoin volatilitesi direct exposure. 0DTE YASAK.
 
 ---
 
-## 6. CALL Setups — Yarın (5)
+## 4. CALL Setups — Yarın İçin 5 Long Adayı
 
-| # | Ticker | Yön | Entry | Target | Stop | R/R | Rationale | Timeframe |
-|---|---|---|---|---|---|---|---|---|
-| 1 | **MU** | CALL | 1060 | 1130 | 1030 | **2.33:1** | Earnings beat ($25.11 vs $20.20), AI/HBM talep olağanüstü. $1060 üzeri breakout. | swing |
-| 2 | **RUN** | CALL | 15.50 | 17.00 | 14.80 | **2.14:1** | Tesla solar deal, 4x RVOL. VWAP üzeri. | 0DTE |
-| 3 | **AAL** | CALL | 17.10 | 18.50 | 16.40 | **2.0:1** | Havayolu momentumu, 52w high yakını, 2.7x hacim. | intraday |
-| 4 | **SPY** | CALL | 732 | 742 | 727 | **2.0:1** | 730 support gap fill potansiyeli. PCE sürprizi = risk-on. | 0DTE |
-| 5 | **GLW** | CALL | 212 | 230 | 203 | **2.0:1** | Yeni 52w high, optik talep. 212 breakout retest = entry. | swing |
-
----
-
-## 7. PUT Setups — Yarın (5)
-
-| # | Ticker | Yön | Entry | Target | Stop | R/R | Rationale | Timeframe |
-|---|---|---|---|---|---|---|---|---|
-| 1 | **CBRS** | PUT | 185 | 165 | 195 | **2.0:1** | AI chip sektör rotasyonu, -19.6% breakdown. VWAP altı. | swing |
-| 2 | **QQQ** | PUT | 712 | 695 | 720 | **2.13:1** | Tech zayıflığı, VWAP altı. PCE hot = tech selloff. | 0DTE |
-| 3 | **NVTS** | PUT | 18.50 | 16.50 | 19.50 | **2.0:1** | GaN yarı iletken zayıflığı, $19 destek altı. | intraday |
-| 4 | **AEVA** | PUT | 20.50 | 18.00 | 21.50 | **2.5:1** | LiDAR zayıflığı, -14.9% breakdown. $21 swing low altı. | swing |
-| 5 | **SPY** | PUT | 735 | 725 | 739 | **2.5:1** | PCE hot = broad market selloff. 725 gap fill. Macro hedge. | 0DTE |
+| Ticker | Yön | Entry | Hedef | Stop | R/R | Rationale | Timeframe |
+|---|---|---|---|---|---|---|---|
+| MU | CALL | $1,170 | $1,250 | $1,130 | 2.0x | Earnings momentum carry; gap-up sonrası pullback $1170 | 0DTE/intraday |
+| KBH | CALL | $60.00 | $66.00 | $57.00 | 2.0x | Homebuilder rotation + breakout | swing |
+| IWM | CALL | $295.00 | $302.00 | $291.50 | 2.0x | Small-cap rotation; VWAP reclaim | intraday |
+| FND | CALL | $55.00 | $62.00 | $51.50 | 2.0x | Homebuilder zincirleme; %10.65 momentum | swing |
+| SPY | CALL | $730.00 | $740.00 | $725.00 | 2.0x | Mean reversion bounce; 3-gün negatif seri | intraday |
 
 ---
 
-## 8. Risk Assessment
+## 5. PUT Setups — Yarın İçin 5 Short Adayı
 
-| Kategori | Değerlendirme |
-|---|---|
-| **Seviye** | medium |
-| **VIX Regime** | VIX 18.63 (-4.41%) — normal regime. Gün içi 20.34 touch etti (elevated). PCE öncesi volatilite potansiyeli yüksek. |
-| **Sektör Rotasyonu** | Tech/semis zayıf (QQQ -0.42%), small-cap karışık (IWM +0.46%), konut güçlü (KBH, RUN), solar yükseliş (Tesla deal), havayolları toparlanıyor (AAL). Para AI chip'lerden konut/solar/utilities'a dönüyor. |
-| **Earnings Riski** | MU büyük beat (+24% EPS) ama beklenti barı çok yüksek; JEF advisory miss; TCOM sonuçları bekleniyor. IV crush aktif. |
-| **Macro Risk** | 25 Haziran: GDP revizyon, PCE enflasyon, jobless claims, durable goods — kritik Fed verisi günü. Fed konuşmacıları: Williams (3:40pm ET) + Goolsbee (6:30pm ET). İran-ABD jeopolitik riski. Petrol -4.3% ($70.06). Altın -3.6% ($3,999). |
+| Ticker | Yön | Entry | Hedef | Stop | R/R | Rationale | Timeframe |
+|---|---|---|---|---|---|---|---|
+| QQQ | PUT | $712.00 | $695.00 | $720.00 | 2.1x | Tech weakness; VWAP altı kapanış | intraday |
+| CBRS | PUT | $185.00 | $170.00 | $192.00 | 2.1x | AI chip selloff; breakdown continuation | swing |
+| NVDA | PUT | $200.00 | $190.00 | $205.00 | 2.0x | AI spending concerns; $200 reject | intraday |
+| APO | PUT | $122.00 | $115.00 | $125.00 | 2.3x | Financial sector weakness; S&P 500 loser | swing |
+| COIN | PUT | $152.00 | $140.00 | $156.00 | 3.0x | Crypto weakness; Bitcoin $59K-61K zayıf | swing |
 
 ---
 
-## 9. Next Day Carry Forward — Yarın İzlenecek Adaylar
+## 6. VWAP Notes & Risk Assessment
 
-| Ticker | Neden | Key Level | Katalizör |
+### VWAP Notları
+SPY kapanış $733.24, VWAP ~$734.68 → VWAP altında kapanış (risk-off). QQQ kapanış $710.62, VWAP ~$711.67 → VWAP altında, tech weakness devam. IWM kapanış $296.69, VWAP ~$297.02 → VWAP hemen altında ama pozitif close (+0.46%), small-cap outperformance. Genel resim: SPY/QQQ VWAP altında = risk-off bias; IWM pozitif = rotation small-cap'lere. Gap-up açılış yapan SPY/QQQ gap fill'i tamamladı ve altına sarktı. Yarın mean reversion bounce veya breakdown devamı izlenecek.
+
+### Risk Assessment
+- **Risk Level:** medium
+- **VIX Regime:** VIX 18.63 (normal-elevated sınırında, -4.41%). 15-20 aralığında = normal volatilite; 20 üzeri kapanışta elevated risk. Şu an complacency sınırında.
+- **Sector Rotation:** Tech (XLK -3.7%) ve Semiconductor zayıf; AI spending concerns. Consumer Staples (XLP +1.8%) ve Utilities güçlü. Small-cap (IWM +0.46%) large-cap'tan outperform. Rotation real assets / value'ya doğru devam ediyor.
+- **Earnings Risk:** MU massive beat + record guidance (AH +13%) — semiconductorda sentiment reversal tetikleyebilir. TCOM mixed (EPS miss, guidance weak) — travel sector overhang. MU IV crush risk devam ediyor; yarın momentum carry ama 0DTE tavsiye edilmez.
+- **Macro Risk:** Yarın (June 25) 8:30 ET yoğun macro takvim: Initial Jobless Claims, Personal Income/Spending, PCE Deflator (Y/Y 4.1% est), Core PCE (Y/Y 3.4% est), Durable Goods, GDP Revision (Q1 1.7% est). Ayrıca NY Fed President John Williams (3:40 PM) ve Chicago Fed President Austan Goolsbee (6:30 PM) konuşmaları. PCE verisi Fed policy beklentilerini hareketlendirebilir.
+
+---
+
+## 7. Next Day Carry Forward — Yarın İzlenecek Adaylar
+
+| Ticker | Neden | Kritik Seviye | Katalizör |
 |---|---|---|---|
-| **MU** | Earnings massive beat (+24% EPS), AI/HBM talep devam ediyor, aftermarket +4.6% | 1040 | Earnings beat devamı + analist PT yükseltmeleri |
-| **RUN** | Tesla solar deal, 4x RVOL hacim | 15.50 | Tesla detayları + solar sektör rotasyonu |
-| **KBH** | Konut sektörü gücü, homebuilder momentum | 60.00 | Konut verileri + mortgage sentiment |
-| **AAL** | Havayolu 52w high breakout, 2.7x hacim | 17.00 | Seyahat talebi + PT yükseltmeleri |
-| **GLW** | Yeni 52w high, optik/display talep | 210 | 5G altyapı yatırımları + display glass talebi |
+| MU | Record beat + guidance raise; AH +13% | $1,150 | Earnings momentum continuation |
+| TCOM | EPS miss + weak guidance overhang | $44.50 | Guidance downgrade continuation |
+| KBH | Homebuilder rotation + %16.65 yükseliş | $60.00 | Housing / mortgage rate narrative |
+| CBRS | AI chip broad selloff devam riski | $185.00 | Semiconductor sentiment |
+| IWM | Small-cap rotation outperform | $295.00 | Macro data (PCE) + sector rotation |
 
 ---
 
-## 10. Notlar & Uyarılar
-
-- **0DTE YASAK:** MU earnings sonrası IV crush aktif. CALL setup swing olarak planlandı, 0DTE kullanımı tavsiye edilmez.
-- **PCE Günü:** 25 Haziran sabah 8:30 ET'de PCE, GDP, jobless claims, durable goods — hepsi aynı anda. Market gap riski yüksek. SETUP'ları PCE verisi öncesi açmayı düşünün.
-- **Gap Fill:** SPY 735 açılış gap'i fill olmadı. Yarın 730 destek üzerinde tutunursa, 735 gap fill hedeflenebilir.
-- **Oil/Altın:** Petrol -4.3%, altın -3.6% — enflasyon baskısı azalıyor sinyali. PCE ile teyit edilirse risk-on rally potansiyeli.
+## 8. Macro Risk Summary — Yarın (June 25)
+- **8:30 AM ET:** Initial Jobless Claims, Personal Income/Spending, PCE Deflator, Core PCE, Durable Goods Orders, GDP Revision (Q1)
+- **Fed Speakers:** John Williams (NY Fed, 3:40 PM), Austan Goolsbee (Chicago Fed, 6:30 PM)
+- **PCE Risk:** Headline PCE Y/Y 4.1% est (prev 3.8%), Core PCE Y/Y 3.4% est (prev 3.3%). Yüksek gelirse hawkish repricing; düşük gelirse risk-on.
+- **Gap-Up/Down Fill:** SPY ve QQQ bugün gap-up açılışını tamamen fill etti ve altına sarktı. Yarın pre-market'ta gap-up open = fade riski (mean reversion); gap-down = VWAP bounce aranabilir.
 
 ---
 
-*Rapor TSİ 00:31'de üretildi. Veriler Finnhub API + Yahoo Finance + MarketWatch + CBOE kaynaklarından derlendi. Tüm setup'lar 2:1+ R/R minimum ile filtrelendi.*
+*Rapor Market Flash Stocks skill protokolüne göre üretilmiştir. EXACT schema compliance uygulanmıştır. Finansal jargon İngilizce, rapor dili Türkçe.*
