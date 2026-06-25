@@ -126,7 +126,7 @@ export default function OptionDetailTab({
       </div>
 
       {/* Stock Header */}
-      <div className="tactical-card p-6" style={{ borderLeftColor: cfg.color, borderLeftWidth: '4px' }}>
+      <div className="data-card p-6" style={{ borderLeftColor: cfg.color, borderLeftWidth: '4px' }}>
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <div className="flex items-center gap-3 mb-1">
@@ -173,7 +173,7 @@ export default function OptionDetailTab({
       </div>
 
       {/* Yönsel Analiz & Momentum Section */}
-      <div className="tactical-card p-4" style={{ borderLeftColor: stock.directionalBias === 'CALL' ? 'oklch(0.78 0.18 160)' : stock.directionalBias === 'PUT' ? 'oklch(0.65 0.22 25)' : 'oklch(0.75 0.15 75)' }}>
+      <div className="data-card p-4" style={{ borderLeftColor: stock.directionalBias === 'CALL' ? 'oklch(0.78 0.18 160)' : stock.directionalBias === 'PUT' ? 'oklch(0.65 0.22 25)' : 'oklch(0.75 0.15 75)' }}>
         <div className="flex items-center gap-2 mb-3">
           <div className="heading-condensed text-sm" style={{ color: 'oklch(0.92 0.01 220)' }}>{copy(language, 'YÖNSEL ANALİZ & MOMENTUM GEREKÇESİ', 'DIRECTIONAL ANALYSIS & MOMENTUM RATIONALE')}</div>
           <div className="flex-1 h-[1px]" style={{ background: 'oklch(0.22 0.03 225)' }} />
@@ -213,7 +213,7 @@ export default function OptionDetailTab({
       </div>
 
       {/* Strategy Timeline */}
-      <div className="tactical-card p-4">
+      <div className="data-card p-4">
         <div className="text-xs font-semibold tracking-widest uppercase mb-3" style={{ color: 'oklch(0.45 0.015 225)' }}>
           {copy(language, 'Strateji Timeline: IV Expansion Fırsat', 'Strategy Timeline: IV Expansion Opportunity')}
         </div>
@@ -293,7 +293,7 @@ export default function OptionDetailTab({
       {/* Key Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Call Strategy */}
-        <div className="tactical-card p-4">
+        <div className="data-card p-4">
           <div className="text-xs font-semibold tracking-widest uppercase mb-3" style={{ color: 'oklch(0.45 0.015 225)' }}>
             {copy(language, '📞 CALL OPSİYON STRATEJİSİ', '📞 CALL OPTION STRATEGY')}
           </div>
@@ -314,7 +314,7 @@ export default function OptionDetailTab({
         </div>
 
         {/* Put Strategy */}
-        <div className="tactical-card p-4">
+        <div className="data-card p-4">
           <div className="text-xs font-semibold tracking-widest uppercase mb-3" style={{ color: 'oklch(0.45 0.015 225)' }}>
             {copy(language, '📉 PUT OPSİYON STRATEJİSİ', '📉 PUT OPTION STRATEGY')}
           </div>
@@ -336,7 +336,7 @@ export default function OptionDetailTab({
       </div>
 
       {/* Risk vs Reward */}
-      <div className="tactical-card p-4">
+      <div className="data-card p-4">
         <div className="text-xs font-semibold tracking-widest uppercase mb-3" style={{ color: 'oklch(0.45 0.015 225)' }}>
           {copy(language, '⚖ RİSK vs ÖDÜL', '⚖ RISK vs REWARD')}
         </div>
@@ -355,7 +355,7 @@ export default function OptionDetailTab({
       </div>
 
       {/* Recommended Strategy */}
-      <div className="tactical-card p-4" style={{ borderLeftColor: cfg.color }}>
+      <div className="data-card p-4" style={{ borderLeftColor: cfg.color }}>
         <div className="text-xs font-semibold tracking-widest uppercase mb-2" style={{ color: 'oklch(0.45 0.015 225)' }}>
           {copy(language, '✅ ÖNERİLEN STRATEJİ', '✅ RECOMMENDED STRATEGY')}
         </div>
@@ -376,17 +376,17 @@ export default function OptionDetailTab({
 
       {/* Risk Factors */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        <div className="tactical-card p-3" style={{ borderLeftColor: 'oklch(0.65 0.22 25)' }}>
+        <div className="data-card p-3" style={{ borderLeftColor: 'oklch(0.65 0.22 25)' }}>
           <div className="text-xs font-semibold mb-1" style={{ color: 'oklch(0.65 0.22 25)' }}>{copy(language, 'Earnings Miss Riski', 'Earnings Miss Risk')}</div>
           <div className="data-mono text-2xl font-bold mb-1" style={{ color: 'oklch(0.65 0.22 25)' }}>{stock.earningsMissRisk}%</div>
           <div className="text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>{copy(language, 'Fiyat keskin düşüş riski', 'Risk of sharp price drop')}</div>
         </div>
-        <div className="tactical-card p-3" style={{ borderLeftColor: 'oklch(0.75 0.15 75)' }}>
+        <div className="data-card p-3" style={{ borderLeftColor: 'oklch(0.75 0.15 75)' }}>
           <div className="text-xs font-semibold mb-1" style={{ color: 'oklch(0.75 0.15 75)' }}>{copy(language, 'Gap Riski', 'Gap Risk')}</div>
           <div className="data-mono text-2xl font-bold mb-1" style={{ color: 'oklch(0.75 0.15 75)' }}>{stock.gapRisk}%</div>
           <div className="text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>{copy(language, 'Earnings sonrası gap açılma riski', 'Risk of gap opening after earnings')}</div>
         </div>
-        <div className="tactical-card p-3" style={{ borderLeftColor: 'oklch(0.78 0.18 160)' }}>
+        <div className="data-card p-3" style={{ borderLeftColor: 'oklch(0.78 0.18 160)' }}>
           <div className="text-xs font-semibold mb-1" style={{ color: 'oklch(0.78 0.18 160)' }}>{copy(language, 'Tarihsel Beat Oranı', 'Historical Beat Rate')}</div>
           <div className="data-mono text-2xl font-bold mb-1" style={{ color: 'oklch(0.78 0.18 160)' }}>%{stock.beatRate}</div>
           <div className="text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>{copy(language, 'Son 4 çeyrekte beat oranı', 'Beat rate over the last 4 quarters')}</div>
@@ -395,4 +395,5 @@ export default function OptionDetailTab({
     </div>
   );
 }
+
 

@@ -230,7 +230,7 @@ export default function DailyReportPage({
   return (
     <div className="min-h-screen bg-background">
       <div className="container py-6 md:py-8">
-        <section className="workspace-panel overflow-hidden">
+        <section className="panel overflow-hidden">
           <div className="px-6 py-6 md:px-6 md:py-6">
             <div className="flex flex-col gap-6">
               <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
@@ -366,7 +366,7 @@ export default function DailyReportPage({
           </div>
         </section>
 
-        <section className="mt-6 workspace-panel min-w-0 overflow-hidden">
+        <section className="mt-6 panel min-w-0 overflow-hidden">
           <div className="border-b border-border px-6 py-4 md:px-6">
             <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
               <div className="space-y-2">
@@ -441,5 +441,6 @@ export default function DailyReportPage({
     </div>
   );
 }
+
 
 

@@ -81,7 +81,7 @@ export default function RiskTab({ onStockClick, stocks = stocksData, language }:
               {copy(language, 'BEAT İHTİMALİ vs MOMENTUM', 'BEAT PROBABILITY vs MOMENTUM')}
             </h2>
           </div>
-          <div className="tactical-card p-4 relative" style={{ height: '360px' }}>
+          <div className="data-card p-4 relative" style={{ height: '360px' }}>
             {/* Quadrant labels */}
             <div className="absolute top-8 right-8 text-xs font-semibold" style={{ color: 'oklch(0.78 0.18 160 / 0.5)' }}>
               {copy(language, 'İDEAL BÖLGE ↗', 'IDEAL ZONE ↗')}
@@ -179,7 +179,7 @@ export default function RiskTab({ onStockClick, stocks = stocksData, language }:
                 <button
                   key={stock.ticker}
                   onClick={() => onStockClick(stock.ticker)}
-                  className="w-full tactical-card p-3 text-left"
+                  className="w-full data-card p-3 text-left"
                   style={{ borderLeftColor: cfg.color }}
                 >
                   <div className="flex items-center justify-between">
@@ -259,7 +259,7 @@ export default function RiskTab({ onStockClick, stocks = stocksData, language }:
               action: copy(language, 'Kaçın', 'Avoid'),
             },
           ].map(group => (
-            <div key={group.title} className="tactical-card p-4" style={{ borderLeftColor: group.color }}>
+            <div key={group.title} className="data-card p-4" style={{ borderLeftColor: group.color }}>
               <div className="heading-condensed text-sm mb-1" style={{ color: group.color }}>{group.title}</div>
               <div className="flex flex-wrap gap-1 mb-2">
                 {group.stocks.map(s => (
@@ -281,7 +281,7 @@ export default function RiskTab({ onStockClick, stocks = stocksData, language }:
       </div>
 
       {/* Key Risk Factors */}
-      <div className="tactical-card p-6" style={{ borderLeftColor: 'oklch(0.65 0.22 25)', borderLeftWidth: '4px' }}>
+      <div className="data-card p-6" style={{ borderLeftColor: 'oklch(0.65 0.22 25)', borderLeftWidth: '4px' }}>
         <div className="heading-condensed text-base mb-3" style={{ color: 'oklch(0.65 0.22 25)' }}>
           {copy(language, '⚠ GENEL RİSK FAKTÖRLERİ', '⚠ GENERAL RISK FACTORS')}
         </div>
@@ -313,4 +313,5 @@ export default function RiskTab({ onStockClick, stocks = stocksData, language }:
     </div>
   );
 }
+
 

@@ -23,7 +23,7 @@ export default function WorkspaceHeroPanel({
   overlayClassName,
 }: WorkspaceHeroPanelProps) {
   return (
-    <section className="workspace-panel overflow-hidden">
+    <section className="panel overflow-hidden">
       <div className="relative overflow-hidden px-6 py-6 md:px-6 md:py-6">
         <div
           className={cn(
@@ -62,5 +62,6 @@ export default function WorkspaceHeroPanel({
     </section>
   );
 }
+
 
 

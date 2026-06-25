@@ -120,7 +120,7 @@ export default function IVCrushTab({
       </div>
 
       {/* Strategy Explanation */}
-      <div className="tactical-card p-6" style={{ borderLeftColor: 'oklch(0.78 0.18 160)', borderLeftWidth: '4px' }}>
+      <div className="data-card p-6" style={{ borderLeftColor: 'oklch(0.78 0.18 160)', borderLeftWidth: '4px' }}>
         <div className="heading-condensed text-base mb-3" style={{ color: 'oklch(0.78 0.18 160)' }}>
           {copy(language, '💡 Strateji Mantığı', '💡 Strategy Logic')}
         </div>
@@ -273,7 +273,7 @@ export default function IVCrushTab({
               {copy(language, 'MEVCUT IV vs MOMENTUM SKORU', 'CURRENT IV vs MOMENTUM SCORE')}
             </h2>
           </div>
-          <div className="tactical-card p-4" style={{ height: '300px' }}>
+          <div className="data-card p-4" style={{ height: '300px' }}>
             <ChartContainer
               aria-label={getChartAriaLabel(
                 copy(language, 'Mevcut IV ve momentum scatter grafiği', 'Current IV and momentum scatter chart'),
@@ -352,7 +352,7 @@ export default function IVCrushTab({
               {copy(language, 'CALL vs PUT KAR POTANSİYELİ', 'CALL vs PUT PROFIT POTENTIAL')}
             </h2>
           </div>
-          <div className="tactical-card p-4" style={{ height: '300px' }}>
+          <div className="data-card p-4" style={{ height: '300px' }}>
             <ChartContainer
               aria-label={getChartAriaLabel(
                 copy(language, 'Call ve put kar potansiyeli grafiği', 'Call and put profit potential chart'),
@@ -425,7 +425,7 @@ export default function IVCrushTab({
               <button
                 key={stock.ticker}
                 onClick={() => onStockClick(stock.ticker)}
-                className="tactical-card p-4 text-left"
+                className="data-card p-4 text-left"
                 style={{ borderLeftColor: cfg.color }}
               >
                 <div className="flex items-center justify-between mb-2">
@@ -468,7 +468,7 @@ export default function IVCrushTab({
       </div>
 
       {/* Risk Warning */}
-      <div className="tactical-card p-4" style={{ borderLeftColor: 'oklch(0.65 0.22 25)', borderLeftWidth: '4px' }}>
+      <div className="data-card p-4" style={{ borderLeftColor: 'oklch(0.65 0.22 25)', borderLeftWidth: '4px' }}>
         <div className="heading-condensed text-sm mb-2" style={{ color: 'oklch(0.65 0.22 25)' }}>
           {copy(language, '⚠ RİSK UYARISI', '⚠ RISK WARNING')}
         </div>
@@ -610,4 +610,5 @@ function IVCrushMobileCard({
     </button>
   );
 }
+
 

@@ -24,7 +24,7 @@ export default function FlowLayout({
   return (
     <div className="min-h-screen bg-background">
       <div className="container py-6 md:py-8">
-        <section className="workspace-panel overflow-hidden">
+        <section className="panel overflow-hidden">
           <div className="px-6 py-6 md:px-6 md:py-7">
             <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
               <div className="space-y-3">
@@ -61,5 +61,6 @@ export default function FlowLayout({
     </div>
   );
 }
+
 
 

@@ -255,7 +255,7 @@ export default function MomentumTab({ onStockClick, stocks = stocksData }: Props
               6A GETİRİ vs MOMENTUM SKORU
             </h2>
           </div>
-          <div className="tactical-card p-4" style={{ height: '320px' }}>
+          <div className="data-card p-4" style={{ height: '320px' }}>
             <ChartContainer
               aria-label={getChartAriaLabel(
                 '6A getiri ve momentum saçılım grafiği',
@@ -328,7 +328,7 @@ export default function MomentumTab({ onStockClick, stocks = stocksData }: Props
               HACİM ANALİZİ (MEVCUT vs 3A ORT.)
             </h2>
           </div>
-          <div className="tactical-card p-4" style={{ height: '320px' }}>
+          <div className="data-card p-4" style={{ height: '320px' }}>
             <ChartContainer
               aria-label={getChartAriaLabel(
                 'Hacim karşılaştırma grafiği',
@@ -485,3 +485,4 @@ function MomentumMobileCard({
     </button>
   );
 }
+

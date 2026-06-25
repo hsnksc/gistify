@@ -129,7 +129,7 @@ export default function OverviewTab({
             { label: copy(language, 'Ort. Beat İhtimali', 'Avg. Beat Probability'), value: `%${avgBeat}`, sub: copy(language, 'Secili hafta ortalamasi', 'Selected week average'), color: 'oklch(0.75 0.15 75)' },
             { label: copy(language, 'Ort. Momentum', 'Avg. Momentum'), value: String(avgMomentum), sub: leadSector, color: 'oklch(0.75 0.15 75)' },
           ].map((kpi, i) => (
-            <div key={i} className="tactical-card p-4">
+            <div key={i} className="data-card p-4">
               <div className="text-xs mb-1 tracking-wide uppercase font-semibold" style={{ color: 'oklch(0.45 0.015 225)' }}>
                 {kpi.label}
               </div>
@@ -158,7 +158,7 @@ export default function OverviewTab({
                   <button
                     key={stock.ticker}
                     onClick={() => onStockClick(stock.ticker)}
-                    className="w-full tactical-card p-3 text-left"
+                    className="w-full data-card p-3 text-left"
                   >
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
@@ -220,7 +220,7 @@ export default function OverviewTab({
                 {copy(language, 'MOMENTUM SKORU SIRALAMASI', 'MOMENTUM SCORE RANKING')}
               </h2>
             </div>
-            <div className="tactical-card p-4" style={{ height: '340px' }}>
+            <div className="data-card p-4" style={{ height: '340px' }}>
               <ChartContainer
                 aria-label={getChartAriaLabel(
                   copy(language, 'Momentum skoru sıralaması', 'Momentum score ranking'),
@@ -288,7 +288,7 @@ export default function OverviewTab({
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {Object.values(sectorMacroData).map((sector) => (
-              <div key={sector.name} className="tactical-card p-4">
+              <div key={sector.name} className="data-card p-4">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs font-semibold" style={{ color: 'oklch(0.55 0.015 225)' }}>{sector.name}</span>
                   <span className={`text-xs font-bold px-1.5 py-0.5 ${
@@ -328,3 +328,4 @@ export default function OverviewTab({
     </div>
   );
 }
+

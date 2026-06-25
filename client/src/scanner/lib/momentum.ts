@@ -13,7 +13,7 @@ import { copy, type AppLanguage } from "@/lib/i18n";
 import type { StockData } from "./yahooFinance";
 import type { StockResult, ScoreExplanation, ConfidenceBreakdown, RankingInfo } from "@/scanner/types";
 import { FACTOR_WEIGHTS, CONFIDENCE_WEIGHTS, RANKING_WEIGHTS, getFactorLabels, clamp100, confidenceLabel, dataQualityLabel } from "./scoreConfig";
-import { TRAINED_WEIGHTS } from "./trainedModel";
+import { SIGNAL_WEIGHTS } from "./signalModel";
 import { sanityGate, isSafeNumber } from "./sanityGate";
 
 const MIN_AVG_VOLUME_20D = 500_000;
@@ -598,7 +598,7 @@ export function analyzeStock(
   // ===== FAZ 1: SANITY GATE =====
   const { score: totalScore, issues } = sanityGate({
     rvolS, gap, orbScore: orb.score, vwap, structure, rsiShort, velDir: vel.dirScore,
-    velVol: vel.volScore, mktCap, retention, pcS, weights: { ...TRAINED_WEIGHTS },
+    velVol: vel.volScore, mktCap, retention, pcS, weights: { ...SIGNAL_WEIGHTS },
   }, language);
 
   if (issues.length > 0) {
@@ -641,7 +641,7 @@ export function analyzeStock(
   const explanations = buildExplanations({
     rvolS, gap, orbScore: orb.score, vwap, structure, rsiShort,
     velDir: vel.dirScore, velVol: vel.volScore, mktCap, retention, pcS,
-  }, rawValues, TRAINED_WEIGHTS, language);
+  }, rawValues, SIGNAL_WEIGHTS, language);
 
   // MACD
   const macd = calcMacd(closePrices);

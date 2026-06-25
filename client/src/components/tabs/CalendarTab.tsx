@@ -102,7 +102,7 @@ export default function CalendarTab({
                     <button
                       key={item.ticker}
                       onClick={() => onStockClick(item.ticker)}
-                      className="w-full tactical-card p-3 text-left"
+                      className="w-full data-card p-3 text-left"
                       style={{ borderLeftColor: cfg.color }}
                     >
                       <div className="flex items-center justify-between">
@@ -234,3 +234,4 @@ export default function CalendarTab({
     </div>
   );
 }
+

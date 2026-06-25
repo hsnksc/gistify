@@ -1,6 +1,6 @@
 /**
- * AI Catalyst Analyzer v4.3
- * PDF'den entegre: Hisse haberlerini tarar, katalizör gücünü 1-3 arası değerlendirir.
+ * Catalyst Analyzer v4.3
+ * Hisse haberlerini tarar, katalizör gücünü 1-3 arası değerlendirir.
  * "Dilution" veya "Regulatory Risk" gibi negatif haberlerde sistem uyarısı verir.
  */
 
@@ -8,7 +8,7 @@ export interface CatalystResult {
   score: 1 | 2 | 3;           // 1=Negatif, 2=Nötr, 3=Pozitif
   flags: RiskFlag[];           // Özel risk bayrakları
   newsFound: boolean;          // Haber bulundu mu?
-  summary: string;             // AI analiz özeti
+  summary: string;             // Katalizör özeti
   rawData?: NewsItem[];        // Ham haber verileri
 }
 
@@ -76,7 +76,7 @@ const RISK_FLAG_MAP: Record<string, RiskFlag[]> = {
 
 /**
  * Basit keyword bazlı katalizör analizi (offline, API'siz çalışır)
- * Gerçek AI entegrasyonu için Gemini/OpenAI API key gerekir
+ * Gelişmiş model entegrasyonu için harici API anahtarı gerekir
  */
 export function analyzeCatalyst(ticker: string, newsTitles: string[]): CatalystResult {
   if (!newsTitles || newsTitles.length === 0) {

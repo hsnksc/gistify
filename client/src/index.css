@@ -265,14 +265,14 @@
     font-variant-numeric: tabular-nums;
   }
 
-  .tactical-grid {
+  .data-grid {
     background-image:
       linear-gradient(var(--color-border-subtle) 1px, transparent 1px),
       linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px);
     background-size: 32px 32px;
   }
 
-  .tactical-card {
+  .data-card {
     background: var(--surface-raised);
     border: 1px solid var(--color-border-subtle);
     border-left: 3px solid var(--color-bull);
@@ -285,13 +285,13 @@
       box-shadow 200ms ease;
   }
 
-  .tactical-card:hover {
+  .data-card:hover {
     border-color: var(--color-border-medium);
     transform: translateY(-2px);
     box-shadow: 0 16px 36px rgba(2, 6, 23, 0.26);
   }
 
-  .workspace-panel {
+  .panel {
     background: var(--surface-raised);
     border: 1px solid var(--color-border-subtle);
     border-radius: var(--radius);
@@ -502,8 +502,8 @@
     display: none !important;
   }
 
-  .restricted-view .tactical-card:has(.recharts-responsive-container),
-  .restricted-view .tactical-card:has(.recharts-wrapper),
+  .restricted-view .data-card:has(.recharts-responsive-container),
+  .restricted-view .data-card:has(.recharts-wrapper),
   .restricted-view div:has(> .recharts-responsive-container) {
     position: relative;
     min-height: 12rem;
@@ -511,8 +511,8 @@
     place-items: center;
   }
 
-  .restricted-view .tactical-card:has(.recharts-responsive-container)::after,
-  .restricted-view .tactical-card:has(.recharts-wrapper)::after,
+  .restricted-view .data-card:has(.recharts-responsive-container)::after,
+  .restricted-view .data-card:has(.recharts-wrapper)::after,
   .restricted-view div:has(> .recharts-responsive-container)::after {
     content: "Grafikler sadece aktif abonelerde acik.";
     border: 1px dashed var(--color-border-strong);
@@ -525,3 +525,4 @@
     padding: 0.75rem 1rem;
   }
 }
+

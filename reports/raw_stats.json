@@ -1,0 +1,4742 @@
+{
+  "stats": {
+    "total_files": 539,
+    "total_lines": 141232,
+    "client_files": [
+      {
+        "path": "client\\public\\midas_signals.json",
+        "lines": 6652,
+        "size_kb": 161.4
+      },
+      {
+        "path": "client\\public\\calendar\\calendar_forecast.json",
+        "lines": 335,
+        "size_kb": 14.5
+      },
+      {
+        "path": "client\\public\\marketflash\\marketflash_report.json",
+        "lines": 466,
+        "size_kb": 15.0
+      },
+      {
+        "path": "client\\public\\__manus__\\version.json",
+        "lines": 4,
+        "size_kb": 0.1
+      },
+      {
+        "path": "client\\src\\App.tsx",
+        "lines": 1478,
+        "size_kb": 46.3
+      },
+      {
+        "path": "client\\src\\const.ts",
+        "lines": 17,
+        "size_kb": 0.6
+      },
+      {
+        "path": "client\\src\\index.css",
+        "lines": 471,
+        "size_kb": 11.5
+      },
+      {
+        "path": "client\\src\\main.tsx",
+        "lines": 5,
+        "size_kb": 0.2
+      },
+      {
+        "path": "client\\src\\components\\ErrorBoundary.tsx",
+        "lines": 71,
+        "size_kb": 2.0
+      },
+      {
+        "path": "client\\src\\components\\LanguageSelector.tsx",
+        "lines": 41,
+        "size_kb": 1.1
+      },
+      {
+        "path": "client\\src\\components\\ManusDialog.tsx",
+        "lines": 85,
+        "size_kb": 2.3
+      },
+      {
+        "path": "client\\src\\components\\Map.tsx",
+        "lines": 155,
+        "size_kb": 4.8
+      },
+      {
+        "path": "client\\src\\components\\PublicShell.tsx",
+        "lines": 195,
+        "size_kb": 8.1
+      },
+      {
+        "path": "client\\src\\components\\reports\\DailyReportAdminPanel.tsx",
+        "lines": 767,
+        "size_kb": 27.9
+      },
+      {
+        "path": "client\\src\\components\\reports\\DailyReportViewer.tsx",
+        "lines": 500,
+        "size_kb": 16.3
+      },
+      {
+        "path": "client\\src\\components\\reports\\HtmlReportRenderer.tsx",
+        "lines": 849,
+        "size_kb": 23.1
+      },
+      {
+        "path": "client\\src\\components\\reports\\MarkdownReportRenderer.tsx",
+        "lines": 301,
+        "size_kb": 11.6
+      },
+      {
+        "path": "client\\src\\components\\reports\\MomentumReportAdminPanel.tsx",
+        "lines": 646,
+        "size_kb": 20.9
+      },
+      {
+        "path": "client\\src\\components\\reports\\OpenAiImageAdminPanel.tsx",
+        "lines": 344,
+        "size_kb": 11.8
+      },
+      {
+        "path": "client\\src\\components\\reports\\ReportPostShell.tsx",
+        "lines": 277,
+        "size_kb": 8.4
+      },
+      {
+        "path": "client\\src\\components\\reports\\WeeklyReportAdminPanel.tsx",
+        "lines": 901,
+        "size_kb": 31.2
+      },
+      {
+        "path": "client\\src\\components\\tabs\\CalendarTab.tsx",
+        "lines": 236,
+        "size_kb": 12.3
+      },
+      {
+        "path": "client\\src\\components\\tabs\\EarningReportCalendarTab.tsx",
+        "lines": 312,
+        "size_kb": 12.1
+      },
+      {
+        "path": "client\\src\\components\\tabs\\EarningReportDocumentTab.tsx",
+        "lines": 49,
+        "size_kb": 1.9
+      },
+      {
+        "path": "client\\src\\components\\tabs\\EarningReportPlaybookTab.tsx",
+        "lines": 680,
+        "size_kb": 26.8
+      },
+      {
+        "path": "client\\src\\components\\tabs\\EarningReportPostTab.tsx",
+        "lines": 798,
+        "size_kb": 29.8
+      },
+      {
+        "path": "client\\src\\components\\tabs\\EarningReportRiskTab.tsx",
+        "lines": 332,
+        "size_kb": 13.3
+      },
+      {
+        "path": "client\\src\\components\\tabs\\IVCrushTab.tsx",
+        "lines": 394,
+        "size_kb": 21.2
+      },
+      {
+        "path": "client\\src\\components\\tabs\\MidasOpportunitiesTab.tsx",
+        "lines": 1794,
+        "size_kb": 75.7
+      },
+      {
+        "path": "client\\src\\components\\tabs\\MomentumFlowSurface.tsx",
+        "lines": 1400,
+        "size_kb": 67.2
+      },
+      {
+        "path": "client\\src\\components\\tabs\\MomentumHtmlReportTab.tsx",
+        "lines": 26,
+        "size_kb": 0.7
+      },
+      {
+        "path": "client\\src\\components\\tabs\\MomentumReportDocumentTab.tsx",
+        "lines": 49,
+        "size_kb": 1.9
+      },
+      {
+        "path": "client\\src\\components\\tabs\\MomentumReportPostTab.tsx",
+        "lines": 433,
+        "size_kb": 15.4
+      },
+      {
+        "path": "client\\src\\components\\tabs\\MomentumTab.tsx",
+        "lines": 297,
+        "size_kb": 14.3
+      },
+      {
+        "path": "client\\src\\components\\tabs\\OptionDetailTab.tsx",
+        "lines": 345,
+        "size_kb": 21.2
+      },
+      {
+        "path": "client\\src\\components\\tabs\\OverviewTab.tsx",
+        "lines": 298,
+        "size_kb": 15.6
+      },
+      {
+        "path": "client\\src\\components\\tabs\\RiskTab.tsx",
+        "lines": 270,
+        "size_kb": 14.0
+      },
+      {
+        "path": "client\\src\\components\\tabs\\SectorTab.tsx",
+        "lines": 300,
+        "size_kb": 14.5
+      },
+      {
+        "path": "client\\src\\components\\tabs\\StrategyPlaybookTab.tsx",
+        "lines": 484,
+        "size_kb": 22.9
+      },
+      {
+        "path": "client\\src\\components\\ui\\accordion.tsx",
+        "lines": 64,
+        "size_kb": 2.0
+      },
+      {
+        "path": "client\\src\\components\\ui\\alert-dialog.tsx",
+        "lines": 155,
+        "size_kb": 3.8
+      },
+      {
+        "path": "client\\src\\components\\ui\\alert.tsx",
+        "lines": 66,
+        "size_kb": 1.6
+      },
+      {
+        "path": "client\\src\\components\\ui\\aspect-ratio.tsx",
+        "lines": 9,
+        "size_kb": 0.3
+      },
+      {
+        "path": "client\\src\\components\\ui\\avatar.tsx",
+        "lines": 51,
+        "size_kb": 1.1
+      },
+      {
+        "path": "client\\src\\components\\ui\\badge.tsx",
+        "lines": 46,
+        "size_kb": 1.6
+      },
+      {
+        "path": "client\\src\\components\\ui\\breadcrumb.tsx",
+        "lines": 112,
+        "size_kb": 2.4
+      },
+      {
+        "path": "client\\src\\components\\ui\\button-group.tsx",
+        "lines": 83,
+        "size_kb": 2.2
+      },
+      {
+        "path": "client\\src\\components\\ui\\button.tsx",
+        "lines": 60,
+        "size_kb": 2.0
+      },
+      {
+        "path": "client\\src\\components\\ui\\calendar.tsx",
+        "lines": 211,
+        "size_kb": 7.5
+      },
+      {
+        "path": "client\\src\\components\\ui\\card.tsx",
+        "lines": 92,
+        "size_kb": 2.0
+      },
+      {
+        "path": "client\\src\\components\\ui\\carousel.tsx",
+        "lines": 246,
+        "size_kb": 5.7
+      },
+      {
+        "path": "client\\src\\components\\ui\\chart.tsx",
+        "lines": 400,
+        "size_kb": 11.8
+      },
+      {
+        "path": "client\\src\\components\\ui\\checkbox.tsx",
+        "lines": 30,
+        "size_kb": 1.2
+      },
+      {
+        "path": "client\\src\\components\\ui\\collapsible.tsx",
+        "lines": 31,
+        "size_kb": 0.8
+      },
+      {
+        "path": "client\\src\\components\\ui\\command.tsx",
+        "lines": 184,
+        "size_kb": 4.7
+      },
+      {
+        "path": "client\\src\\components\\ui\\context-menu.tsx",
+        "lines": 250,
+        "size_kb": 8.1
+      },
+      {
+        "path": "client\\src\\components\\ui\\dialog.tsx",
+        "lines": 212,
+        "size_kb": 6.1
+      },
+      {
+        "path": "client\\src\\components\\ui\\drawer.tsx",
+        "lines": 133,
+        "size_kb": 4.2
+      },
+      {
+        "path": "client\\src\\components\\ui\\dropdown-menu.tsx",
+        "lines": 255,
+        "size_kb": 8.2
+      },
+      {
+        "path": "client\\src\\components\\ui\\empty.tsx",
+        "lines": 104,
+        "size_kb": 2.3
+      },
+      {
+        "path": "client\\src\\components\\ui\\field.tsx",
+        "lines": 242,
+        "size_kb": 5.9
+      },
+      {
+        "path": "client\\src\\components\\ui\\form.tsx",
+        "lines": 168,
+        "size_kb": 3.7
+      },
+      {
+        "path": "client\\src\\components\\ui\\hover-card.tsx",
+        "lines": 42,
+        "size_kb": 1.5
+      },
+      {
+        "path": "client\\src\\components\\ui\\input-group.tsx",
+        "lines": 168,
+        "size_kb": 4.9
+      },
+      {
+        "path": "client\\src\\components\\ui\\input-otp.tsx",
+        "lines": 75,
+        "size_kb": 2.2
+      },
+      {
+        "path": "client\\src\\components\\ui\\input.tsx",
+        "lines": 70,
+        "size_kb": 2.7
+      },
+      {
+        "path": "client\\src\\components\\ui\\item.tsx",
+        "lines": 193,
+        "size_kb": 4.4
+      },
+      {
+        "path": "client\\src\\components\\ui\\kbd.tsx",
+        "lines": 28,
+        "size_kb": 0.8
+      },
+      {
+        "path": "client\\src\\components\\ui\\label.tsx",
+        "lines": 22,
+        "size_kb": 0.6
+      },
+      {
+        "path": "client\\src\\components\\ui\\menubar.tsx",
+        "lines": 274,
+        "size_kb": 8.2
+      },
+      {
+        "path": "client\\src\\components\\ui\\navigation-menu.tsx",
+        "lines": 168,
+        "size_kb": 6.5
+      },
+      {
+        "path": "client\\src\\components\\ui\\pagination.tsx",
+        "lines": 136,
+        "size_kb": 3.0
+      },
+      {
+        "path": "client\\src\\components\\ui\\popover.tsx",
+        "lines": 46,
+        "size_kb": 1.6
+      },
+      {
+        "path": "client\\src\\components\\ui\\progress.tsx",
+        "lines": 29,
+        "size_kb": 0.7
+      },
+      {
+        "path": "client\\src\\components\\ui\\radio-group.tsx",
+        "lines": 43,
+        "size_kb": 1.4
+      },
+      {
+        "path": "client\\src\\components\\ui\\resizable.tsx",
+        "lines": 54,
+        "size_kb": 2.0
+      },
+      {
+        "path": "client\\src\\components\\ui\\scroll-area.tsx",
+        "lines": 56,
+        "size_kb": 1.6
+      },
+      {
+        "path": "client\\src\\components\\ui\\select.tsx",
+        "lines": 185,
+        "size_kb": 6.1
+      },
+      {
+        "path": "client\\src\\components\\ui\\separator.tsx",
+        "lines": 26,
+        "size_kb": 0.7
+      },
+      {
+        "path": "client\\src\\components\\ui\\sheet.tsx",
+        "lines": 146,
+        "size_kb": 4.2
+      },
+      {
+        "path": "client\\src\\components\\ui\\sidebar.tsx",
+        "lines": 745,
+        "size_kb": 21.9
+      },
+      {
+        "path": "client\\src\\components\\ui\\skeleton.tsx",
+        "lines": 13,
+        "size_kb": 0.3
+      },
+      {
+        "path": "client\\src\\components\\ui\\slider.tsx",
+        "lines": 61,
+        "size_kb": 1.9
+      },
+      {
+        "path": "client\\src\\components\\ui\\sonner.tsx",
+        "lines": 23,
+        "size_kb": 0.5
+      },
+      {
+        "path": "client\\src\\components\\ui\\spinner.tsx",
+        "lines": 16,
+        "size_kb": 0.3
+      },
+      {
+        "path": "client\\src\\components\\ui\\switch.tsx",
+        "lines": 29,
+        "size_kb": 1.1
+      },
+      {
+        "path": "client\\src\\components\\ui\\table.tsx",
+        "lines": 114,
+        "size_kb": 2.4
+      },
+      {
+        "path": "client\\src\\components\\ui\\tabs.tsx",
+        "lines": 64,
+        "size_kb": 1.9
+      },
+      {
+        "path": "client\\src\\components\\ui\\textarea.tsx",
+        "lines": 67,
+        "size_kb": 2.6
+      },
+      {
+        "path": "client\\src\\components\\ui\\toggle-group.tsx",
+        "lines": 73,
+        "size_kb": 1.9
+      },
+      {
+        "path": "client\\src\\components\\ui\\toggle.tsx",
+        "lines": 45,
+        "size_kb": 1.5
+      },
+      {
+        "path": "client\\src\\components\\ui\\tooltip.tsx",
+        "lines": 59,
+        "size_kb": 1.8
+      },
+      {
+        "path": "client\\src\\components\\workspace\\WorkspaceHeroPanel.tsx",
+        "lines": 64,
+        "size_kb": 1.8
+      },
+      {
+        "path": "client\\src\\components\\workspace\\WorkspaceLoadingState.tsx",
+        "lines": 7,
+        "size_kb": 0.2
+      },
+      {
+        "path": "client\\src\\components\\workspace\\WorkspaceSummaryCard.tsx",
+        "lines": 47,
+        "size_kb": 1.3
+      },
+      {
+        "path": "client\\src\\contexts\\ThemeContext.tsx",
+        "lines": 72,
+        "size_kb": 1.6
+      },
+      {
+        "path": "client\\src\\features\\flow\\components\\FlowCommunityPanel.tsx",
+        "lines": 286,
+        "size_kb": 9.7
+      },
+      {
+        "path": "client\\src\\features\\flow\\components\\FlowLayout.tsx",
+        "lines": 63,
+        "size_kb": 1.9
+      },
+      {
+        "path": "client\\src\\features\\flow\\components\\FlowReportCard.tsx",
+        "lines": 94,
+        "size_kb": 3.1
+      },
+      {
+        "path": "client\\src\\features\\flow\\components\\FlowReportDetailSurface.tsx",
+        "lines": 191,
+        "size_kb": 5.7
+      },
+      {
+        "path": "client\\src\\features\\flow\\components\\FlowReportList.tsx",
+        "lines": 50,
+        "size_kb": 1.2
+      },
+      {
+        "path": "client\\src\\features\\flow\\components\\FlowReportRow.tsx",
+        "lines": 100,
+        "size_kb": 4.1
+      },
+      {
+        "path": "client\\src\\features\\flow\\components\\FlowReportViewer.tsx",
+        "lines": 176,
+        "size_kb": 7.0
+      },
+      {
+        "path": "client\\src\\features\\flow\\components\\FlowTickerCard.tsx",
+        "lines": 97,
+        "size_kb": 3.9
+      },
+      {
+        "path": "client\\src\\features\\flow\\components\\reports\\ReportGalleryCard.tsx",
+        "lines": 201,
+        "size_kb": 7.1
+      },
+      {
+        "path": "client\\src\\features\\flow\\components\\reports\\ReportUploadDropzone.tsx",
+        "lines": 178,
+        "size_kb": 6.5
+      },
+      {
+        "path": "client\\src\\features\\flow\\hooks\\useFlowComments.ts",
+        "lines": 151,
+        "size_kb": 3.8
+      },
+      {
+        "path": "client\\src\\features\\flow\\hooks\\useFlowReport.ts",
+        "lines": 78,
+        "size_kb": 1.8
+      },
+      {
+        "path": "client\\src\\features\\flow\\hooks\\useFlowReports.ts",
+        "lines": 73,
+        "size_kb": 1.8
+      },
+      {
+        "path": "client\\src\\features\\flow\\hooks\\useFlowReportSummaries.ts",
+        "lines": 90,
+        "size_kb": 2.3
+      },
+      {
+        "path": "client\\src\\features\\flow\\hooks\\useFlowSources.ts",
+        "lines": 73,
+        "size_kb": 1.8
+      },
+      {
+        "path": "client\\src\\features\\flow\\lib\\flowReportHelpers.ts",
+        "lines": 661,
+        "size_kb": 17.7
+      },
+      {
+        "path": "client\\src\\features\\flow\\lib\\parseReport.ts",
+        "lines": 410,
+        "size_kb": 10.4
+      },
+      {
+        "path": "client\\src\\features\\flow\\lib\\reportGallery.ts",
+        "lines": 180,
+        "size_kb": 4.7
+      },
+      {
+        "path": "client\\src\\features\\flow\\pages\\FlowDailyPage.tsx",
+        "lines": 174,
+        "size_kb": 6.9
+      },
+      {
+        "path": "client\\src\\features\\flow\\pages\\FlowDetailPage.tsx",
+        "lines": 32,
+        "size_kb": 0.8
+      },
+      {
+        "path": "client\\src\\features\\flow\\pages\\FlowIndexPage.tsx",
+        "lines": 182,
+        "size_kb": 6.1
+      },
+      {
+        "path": "client\\src\\features\\flow\\pages\\FlowPage.tsx",
+        "lines": 525,
+        "size_kb": 20.8
+      },
+      {
+        "path": "client\\src\\features\\flow\\pages\\FlowTickerPage.tsx",
+        "lines": 249,
+        "size_kb": 9.5
+      },
+      {
+        "path": "client\\src\\features\\flow\\pages\\ReportsDateDetailPage.tsx",
+        "lines": 302,
+        "size_kb": 12.4
+      },
+      {
+        "path": "client\\src\\features\\flow\\pages\\ReportsDetailPage.tsx",
+        "lines": 24,
+        "size_kb": 0.5
+      },
+      {
+        "path": "client\\src\\features\\flow\\pages\\ReportsIndexPage.tsx",
+        "lines": 403,
+        "size_kb": 15.6
+      },
+      {
+        "path": "client\\src\\features\\flow\\pages\\ReportsTickerPage.tsx",
+        "lines": 22,
+        "size_kb": 0.5
+      },
+      {
+        "path": "client\\src\\features\\flow\\store\\useReportStore.ts",
+        "lines": 337,
+        "size_kb": 8.7
+      },
+      {
+        "path": "client\\src\\hooks\\useComposition.ts",
+        "lines": 81,
+        "size_kb": 2.2
+      },
+      {
+        "path": "client\\src\\hooks\\useMobile.tsx",
+        "lines": 21,
+        "size_kb": 0.6
+      },
+      {
+        "path": "client\\src\\hooks\\usePageMeta.ts",
+        "lines": 79,
+        "size_kb": 2.4
+      },
+      {
+        "path": "client\\src\\hooks\\usePersistFn.ts",
+        "lines": 20,
+        "size_kb": 0.5
+      },
+      {
+        "path": "client\\src\\lib\\api.ts",
+        "lines": 56,
+        "size_kb": 1.7
+      },
+      {
+        "path": "client\\src\\lib\\chartTooltip.ts",
+        "lines": 43,
+        "size_kb": 0.9
+      },
+      {
+        "path": "client\\src\\lib\\dailyReportInsights.ts",
+        "lines": 601,
+        "size_kb": 16.5
+      },
+      {
+        "path": "client\\src\\lib\\dailyReports.ts",
+        "lines": 117,
+        "size_kb": 3.5
+      },
+      {
+        "path": "client\\src\\lib\\earningReports.ts",
+        "lines": 35,
+        "size_kb": 0.9
+      },
+      {
+        "path": "client\\src\\lib\\earningReportSource.ts",
+        "lines": 4224,
+        "size_kb": 124.7
+      },
+      {
+        "path": "client\\src\\lib\\earningStrategyData.ts",
+        "lines": 719,
+        "size_kb": 20.7
+      },
+      {
+        "path": "client\\src\\lib\\i18n.ts",
+        "lines": 15,
+        "size_kb": 0.4
+      },
+      {
+        "path": "client\\src\\lib\\juneEarningsData.ts",
+        "lines": 391,
+        "size_kb": 9.5
+      },
+      {
+        "path": "client\\src\\lib\\momentumReportLibrary.ts",
+        "lines": 31,
+        "size_kb": 0.8
+      },
+      {
+        "path": "client\\src\\lib\\momentumReports.ts",
+        "lines": 91,
+        "size_kb": 2.5
+      },
+      {
+        "path": "client\\src\\lib\\momentumReportSource.ts",
+        "lines": 1382,
+        "size_kb": 35.9
+      },
+      {
+        "path": "client\\src\\lib\\optionStrategyData.ts",
+        "lines": 531,
+        "size_kb": 11.9
+      },
+      {
+        "path": "client\\src\\lib\\paddleClient.ts",
+        "lines": 23,
+        "size_kb": 0.6
+      },
+      {
+        "path": "client\\src\\lib\\reportMarkdown.ts",
+        "lines": 232,
+        "size_kb": 5.7
+      },
+      {
+        "path": "client\\src\\lib\\reportPost.ts",
+        "lines": 134,
+        "size_kb": 3.0
+      },
+      {
+        "path": "client\\src\\lib\\reportSpotlight.ts",
+        "lines": 326,
+        "size_kb": 8.3
+      },
+      {
+        "path": "client\\src\\lib\\stockData.ts",
+        "lines": 738,
+        "size_kb": 22.6
+      },
+      {
+        "path": "client\\src\\lib\\utils.ts",
+        "lines": 6,
+        "size_kb": 0.2
+      },
+      {
+        "path": "client\\src\\lib\\weeklyReports.ts",
+        "lines": 239,
+        "size_kb": 6.6
+      },
+      {
+        "path": "client\\src\\pages\\Calendar.tsx",
+        "lines": 854,
+        "size_kb": 27.2
+      },
+      {
+        "path": "client\\src\\pages\\CpiPpiForecast.tsx",
+        "lines": 1295,
+        "size_kb": 44.2
+      },
+      {
+        "path": "client\\src\\pages\\DailyReport.tsx",
+        "lines": 443,
+        "size_kb": 16.4
+      },
+      {
+        "path": "client\\src\\pages\\Home.tsx",
+        "lines": 614,
+        "size_kb": 23.8
+      },
+      {
+        "path": "client\\src\\pages\\Landing.tsx",
+        "lines": 478,
+        "size_kb": 19.9
+      },
+      {
+        "path": "client\\src\\pages\\MarketFlash.tsx",
+        "lines": 1864,
+        "size_kb": 60.2
+      },
+      {
+        "path": "client\\src\\pages\\NotFound.tsx",
+        "lines": 64,
+        "size_kb": 2.6
+      },
+      {
+        "path": "client\\src\\pages\\Pay.tsx",
+        "lines": 690,
+        "size_kb": 24.2
+      },
+      {
+        "path": "client\\src\\pages\\Pricing.tsx",
+        "lines": 96,
+        "size_kb": 4.2
+      },
+      {
+        "path": "client\\src\\pages\\Privacy.tsx",
+        "lines": 99,
+        "size_kb": 3.8
+      },
+      {
+        "path": "client\\src\\pages\\Refund.tsx",
+        "lines": 95,
+        "size_kb": 3.7
+      },
+      {
+        "path": "client\\src\\pages\\ReportsAdmin.tsx",
+        "lines": 1968,
+        "size_kb": 79.1
+      },
+      {
+        "path": "client\\src\\pages\\Scanner.tsx",
+        "lines": 145,
+        "size_kb": 6.2
+      },
+      {
+        "path": "client\\src\\pages\\Terms.tsx",
+        "lines": 99,
+        "size_kb": 4.3
+      },
+      {
+        "path": "client\\src\\pages\\calendar\\Calendar.theme.ts",
+        "lines": 33,
+        "size_kb": 1.3
+      },
+      {
+        "path": "client\\src\\pages\\calendar\\Calendar.types.ts",
+        "lines": 4,
+        "size_kb": 0.2
+      },
+      {
+        "path": "client\\src\\pages\\calendar\\calendar.utils.ts",
+        "lines": 227,
+        "size_kb": 6.5
+      },
+      {
+        "path": "client\\src\\pages\\calendar\\components\\CompactStatCard.tsx",
+        "lines": 51,
+        "size_kb": 1.3
+      },
+      {
+        "path": "client\\src\\pages\\calendar\\components\\CountdownTimer.tsx",
+        "lines": 47,
+        "size_kb": 1.3
+      },
+      {
+        "path": "client\\src\\pages\\calendar\\components\\DayThemeBadge.tsx",
+        "lines": 20,
+        "size_kb": 0.5
+      },
+      {
+        "path": "client\\src\\pages\\calendar\\components\\FearGreedOutlookCard.tsx",
+        "lines": 30,
+        "size_kb": 1.0
+      },
+      {
+        "path": "client\\src\\pages\\calendar\\components\\MarketSessionIndicator.tsx",
+        "lines": 16,
+        "size_kb": 0.4
+      },
+      {
+        "path": "client\\src\\pages\\calendar\\components\\VixOutlookCard.tsx",
+        "lines": 30,
+        "size_kb": 1.0
+      },
+      {
+        "path": "client\\src\\pages\\calendar\\hooks\\useCalendarData.ts",
+        "lines": 82,
+        "size_kb": 2.1
+      },
+      {
+        "path": "client\\src\\pages\\calendar\\hooks\\useExpandedRow.ts",
+        "lines": 10,
+        "size_kb": 0.4
+      },
+      {
+        "path": "client\\src\\scanner\\index.ts",
+        "lines": 49,
+        "size_kb": 1.4
+      },
+      {
+        "path": "client\\src\\scanner\\types.ts",
+        "lines": 147,
+        "size_kb": 3.1
+      },
+      {
+        "path": "client\\src\\scanner\\useScannerI18n.ts",
+        "lines": 18,
+        "size_kb": 0.4
+      },
+      {
+        "path": "client\\src\\scanner\\components\\EnterpriseReport.tsx",
+        "lines": 335,
+        "size_kb": 15.5
+      },
+      {
+        "path": "client\\src\\scanner\\components\\MomentumMarketTab.tsx",
+        "lines": 434,
+        "size_kb": 15.1
+      },
+      {
+        "path": "client\\src\\scanner\\components\\MomentumSetupsTab.tsx",
+        "lines": 428,
+        "size_kb": 16.9
+      },
+      {
+        "path": "client\\src\\scanner\\components\\MomentumStrategyTab.tsx",
+        "lines": 249,
+        "size_kb": 10.1
+      },
+      {
+        "path": "client\\src\\scanner\\components\\OptionStrategyPanel.tsx",
+        "lines": 462,
+        "size_kb": 18.8
+      },
+      {
+        "path": "client\\src\\scanner\\components\\ScannerPage.tsx",
+        "lines": 464,
+        "size_kb": 19.2
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\advancedOptions.ts",
+        "lines": 238,
+        "size_kb": 8.1
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\advancedPattern.ts",
+        "lines": 300,
+        "size_kb": 8.9
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\aiCatalystAnalyzer.ts",
+        "lines": 205,
+        "size_kb": 6.3
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\backtestEngine.ts",
+        "lines": 562,
+        "size_kb": 19.1
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\browserTrainer.ts",
+        "lines": 424,
+        "size_kb": 13.4
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\consistencyReport.ts",
+        "lines": 583,
+        "size_kb": 21.7
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\dailyScanner.ts",
+        "lines": 139,
+        "size_kb": 3.8
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\dataProviders.ts",
+        "lines": 768,
+        "size_kb": 26.3
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\earningsMomentum.ts",
+        "lines": 375,
+        "size_kb": 12.8
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\executionRules.ts",
+        "lines": 485,
+        "size_kb": 15.6
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\microstructureCheck.ts",
+        "lines": 193,
+        "size_kb": 5.5
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\momentum.ts",
+        "lines": 750,
+        "size_kb": 30.3
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\optionAnalytics.ts",
+        "lines": 256,
+        "size_kb": 8.3
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\optionsStrategies.ts",
+        "lines": 608,
+        "size_kb": 21.1
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\optionsTypes.ts",
+        "lines": 267,
+        "size_kb": 8.5
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\parallelScanner.ts",
+        "lines": 175,
+        "size_kb": 4.7
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\patternEngine.ts",
+        "lines": 393,
+        "size_kb": 13.5
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\pdtAnalyzer.ts",
+        "lines": 570,
+        "size_kb": 21.2
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\portfolioRisk.ts",
+        "lines": 350,
+        "size_kb": 13.0
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\queryEngine.ts",
+        "lines": 140,
+        "size_kb": 4.4
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\regimeDetector.ts",
+        "lines": 270,
+        "size_kb": 9.2
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\sanityGate.ts",
+        "lines": 233,
+        "size_kb": 9.2
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\scoreConfig.ts",
+        "lines": 315,
+        "size_kb": 11.2
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\stockDatabase.ts",
+        "lines": 370,
+        "size_kb": 11.4
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\trainedModel.ts",
+        "lines": 107,
+        "size_kb": 2.9
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\v3Report.ts",
+        "lines": 415,
+        "size_kb": 15.0
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\v4Engine.ts",
+        "lines": 318,
+        "size_kb": 10.2
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\varEngine.ts",
+        "lines": 227,
+        "size_kb": 8.0
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\watchlist.ts",
+        "lines": 31,
+        "size_kb": 0.7
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\yahooFinance.ts",
+        "lines": 150,
+        "size_kb": 6.7
+      },
+      {
+        "path": "client\\src\\scanner\\locales\\en.ts",
+        "lines": 81,
+        "size_kb": 2.6
+      },
+      {
+        "path": "client\\src\\scanner\\locales\\tr.ts",
+        "lines": 81,
+        "size_kb": 2.7
+      }
+    ],
+    "server_files": [
+      {
+        "path": "server\\adminMarketData.ts",
+        "lines": 755,
+        "size_kb": 20.7
+      },
+      {
+        "path": "server\\billingStore.ts",
+        "lines": 1739,
+        "size_kb": 44.3
+      },
+      {
+        "path": "server\\calendarSync.ts",
+        "lines": 387,
+        "size_kb": 10.5
+      },
+      {
+        "path": "server\\cpiPpiForecast.ts",
+        "lines": 589,
+        "size_kb": 16.0
+      },
+      {
+        "path": "server\\dailyReportOpenAiCharts.ts",
+        "lines": 168,
+        "size_kb": 4.9
+      },
+      {
+        "path": "server\\dailyReportSources.ts",
+        "lines": 1316,
+        "size_kb": 35.9
+      },
+      {
+        "path": "server\\earningReportSources.ts",
+        "lines": 383,
+        "size_kb": 9.8
+      },
+      {
+        "path": "server\\index.ts",
+        "lines": 4199,
+        "size_kb": 117.8
+      },
+      {
+        "path": "server\\midasSignals.ts",
+        "lines": 425,
+        "size_kb": 10.7
+      },
+      {
+        "path": "server\\momentumReportSources.ts",
+        "lines": 630,
+        "size_kb": 17.7
+      },
+      {
+        "path": "server\\openaiImageStudio.ts",
+        "lines": 291,
+        "size_kb": 7.8
+      },
+      {
+        "path": "server\\openaiTranslation.ts",
+        "lines": 223,
+        "size_kb": 5.5
+      },
+      {
+        "path": "server\\weeklyReportSeeds.ts",
+        "lines": 727,
+        "size_kb": 20.5
+      },
+      {
+        "path": "server\\routes\\flow\\comments.ts",
+        "lines": 135,
+        "size_kb": 3.5
+      },
+      {
+        "path": "server\\routes\\flow\\reports.ts",
+        "lines": 92,
+        "size_kb": 2.3
+      },
+      {
+        "path": "server\\routes\\flow\\sources.ts",
+        "lines": 25,
+        "size_kb": 0.6
+      },
+      {
+        "path": "server\\services\\flowService.ts",
+        "lines": 439,
+        "size_kb": 12.7
+      }
+    ],
+    "ui_components": [],
+    "tabs": [],
+    "pages": [],
+    "scanner_files": [],
+    "flow_files": [],
+    "lib_files": [],
+    "hooks": [],
+    "server_modules": [],
+    "largest_files": [
+      {
+        "path": "Momentumscrapper\\app\\package-lock.json",
+        "lines": 10626,
+        "size_kb": 370.9
+      },
+      {
+        "path": "client\\public\\midas_signals.json",
+        "lines": 6652,
+        "size_kb": 161.4
+      },
+      {
+        "path": "client\\src\\lib\\earningReportSource.ts",
+        "lines": 4224,
+        "size_kb": 124.7
+      },
+      {
+        "path": "server\\index.ts",
+        "lines": 4199,
+        "size_kb": 117.8
+      },
+      {
+        "path": "client\\src\\pages\\ReportsAdmin.tsx",
+        "lines": 1968,
+        "size_kb": 79.1
+      },
+      {
+        "path": "client\\src\\pages\\MarketFlash.tsx",
+        "lines": 1864,
+        "size_kb": 60.2
+      },
+      {
+        "path": "client\\src\\components\\tabs\\MidasOpportunitiesTab.tsx",
+        "lines": 1794,
+        "size_kb": 75.7
+      },
+      {
+        "path": "server\\billingStore.ts",
+        "lines": 1739,
+        "size_kb": 44.3
+      },
+      {
+        "path": "client\\src\\App.tsx",
+        "lines": 1478,
+        "size_kb": 46.3
+      },
+      {
+        "path": "client\\src\\components\\tabs\\MomentumFlowSurface.tsx",
+        "lines": 1400,
+        "size_kb": 67.2
+      },
+      {
+        "path": "client\\src\\lib\\momentumReportSource.ts",
+        "lines": 1382,
+        "size_kb": 35.9
+      },
+      {
+        "path": "server\\dailyReportSources.ts",
+        "lines": 1316,
+        "size_kb": 35.9
+      },
+      {
+        "path": "client\\src\\pages\\CpiPpiForecast.tsx",
+        "lines": 1295,
+        "size_kb": 44.2
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\momentum.ts",
+        "lines": 959,
+        "size_kb": 36.9
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\momentum.ts",
+        "lines": 959,
+        "size_kb": 36.9
+      },
+      {
+        "path": "client\\src\\components\\reports\\WeeklyReportAdminPanel.tsx",
+        "lines": 901,
+        "size_kb": 31.2
+      },
+      {
+        "path": "client\\src\\pages\\Calendar.tsx",
+        "lines": 854,
+        "size_kb": 27.2
+      },
+      {
+        "path": "client\\src\\components\\reports\\HtmlReportRenderer.tsx",
+        "lines": 849,
+        "size_kb": 23.1
+      },
+      {
+        "path": "client\\src\\components\\tabs\\EarningReportPostTab.tsx",
+        "lines": 798,
+        "size_kb": 29.8
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\dataProviders.ts",
+        "lines": 768,
+        "size_kb": 26.3
+      },
+      {
+        "path": "client\\src\\components\\reports\\DailyReportAdminPanel.tsx",
+        "lines": 767,
+        "size_kb": 27.9
+      },
+      {
+        "path": "server\\adminMarketData.ts",
+        "lines": 755,
+        "size_kb": 20.7
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\momentum.ts",
+        "lines": 750,
+        "size_kb": 30.3
+      },
+      {
+        "path": "client\\src\\components\\ui\\sidebar.tsx",
+        "lines": 745,
+        "size_kb": 21.9
+      },
+      {
+        "path": "client\\src\\lib\\stockData.ts",
+        "lines": 738,
+        "size_kb": 22.6
+      },
+      {
+        "path": "v2\\client\\src\\lib\\stockData.ts",
+        "lines": 738,
+        "size_kb": 22.6
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\sidebar.tsx",
+        "lines": 734,
+        "size_kb": 21.4
+      },
+      {
+        "path": "server\\weeklyReportSeeds.ts",
+        "lines": 727,
+        "size_kb": 20.5
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\sidebar.tsx",
+        "lines": 726,
+        "size_kb": 21.1
+      },
+      {
+        "path": "midas_signals.json",
+        "lines": 719,
+        "size_kb": 15.9
+      },
+      {
+        "path": "client\\src\\lib\\earningStrategyData.ts",
+        "lines": 719,
+        "size_kb": 20.7
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\dataProviders.ts",
+        "lines": 715,
+        "size_kb": 24.6
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\dataProviders.ts",
+        "lines": 715,
+        "size_kb": 24.6
+      },
+      {
+        "path": "client\\src\\pages\\Pay.tsx",
+        "lines": 690,
+        "size_kb": 24.2
+      },
+      {
+        "path": "client\\src\\components\\tabs\\EarningReportPlaybookTab.tsx",
+        "lines": 680,
+        "size_kb": 26.8
+      },
+      {
+        "path": "client\\src\\features\\flow\\lib\\flowReportHelpers.ts",
+        "lines": 661,
+        "size_kb": 17.7
+      },
+      {
+        "path": "client\\src\\components\\reports\\MomentumReportAdminPanel.tsx",
+        "lines": 646,
+        "size_kb": 20.9
+      },
+      {
+        "path": "server\\momentumReportSources.ts",
+        "lines": 630,
+        "size_kb": 17.7
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\sections\\SmartScanner.tsx",
+        "lines": 627,
+        "size_kb": 30.3
+      },
+      {
+        "path": "client\\src\\pages\\Home.tsx",
+        "lines": 614,
+        "size_kb": 23.8
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\optionsStrategies.ts",
+        "lines": 608,
+        "size_kb": 21.1
+      },
+      {
+        "path": "client\\src\\lib\\dailyReportInsights.ts",
+        "lines": 601,
+        "size_kb": 16.5
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\optionsStrategies.ts",
+        "lines": 600,
+        "size_kb": 20.6
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\optionsStrategies.ts",
+        "lines": 600,
+        "size_kb": 20.6
+      },
+      {
+        "path": "server\\cpiPpiForecast.ts",
+        "lines": 589,
+        "size_kb": 16.0
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\consistencyReport.ts",
+        "lines": 583,
+        "size_kb": 21.7
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\pdtAnalyzer.ts",
+        "lines": 570,
+        "size_kb": 21.2
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\backtestEngine.ts",
+        "lines": 562,
+        "size_kb": 19.1
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\backtestEngine.ts",
+        "lines": 551,
+        "size_kb": 18.8
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\backtestEngine.ts",
+        "lines": 551,
+        "size_kb": 18.8
+      },
+      {
+        "path": "client\\src\\lib\\optionStrategyData.ts",
+        "lines": 531,
+        "size_kb": 11.9
+      },
+      {
+        "path": "client\\src\\features\\flow\\pages\\FlowPage.tsx",
+        "lines": 525,
+        "size_kb": 20.8
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\pdtAnalyzer.ts",
+        "lines": 518,
+        "size_kb": 18.4
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\pdtAnalyzer.ts",
+        "lines": 518,
+        "size_kb": 18.4
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\consistencyReport.ts",
+        "lines": 516,
+        "size_kb": 18.0
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\consistencyReport.ts",
+        "lines": 516,
+        "size_kb": 18.0
+      },
+      {
+        "path": "client\\src\\components\\reports\\DailyReportViewer.tsx",
+        "lines": 500,
+        "size_kb": 16.3
+      },
+      {
+        "path": "v2\\client\\src\\lib\\juneDetailedEarningsData.ts",
+        "lines": 487,
+        "size_kb": 10.0
+      },
+      {
+        "path": "v2\\client\\src\\lib\\optionStrategyData.ts",
+        "lines": 486,
+        "size_kb": 10.6
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\executionRules.ts",
+        "lines": 485,
+        "size_kb": 15.6
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\executionRules.ts",
+        "lines": 485,
+        "size_kb": 15.6
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\executionRules.ts",
+        "lines": 485,
+        "size_kb": 15.6
+      },
+      {
+        "path": "client\\src\\components\\tabs\\StrategyPlaybookTab.tsx",
+        "lines": 484,
+        "size_kb": 22.9
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\sections\\StockDetailModal.tsx",
+        "lines": 481,
+        "size_kb": 24.9
+      },
+      {
+        "path": "client\\src\\pages\\Landing.tsx",
+        "lines": 478,
+        "size_kb": 19.9
+      },
+      {
+        "path": "v2\\client\\src\\lib\\juneEarningsData.ts",
+        "lines": 475,
+        "size_kb": 9.6
+      },
+      {
+        "path": "client\\src\\index.css",
+        "lines": 471,
+        "size_kb": 11.5
+      },
+      {
+        "path": "client\\public\\marketflash\\marketflash_report.json",
+        "lines": 466,
+        "size_kb": 15.0
+      },
+      {
+        "path": "client\\src\\scanner\\components\\ScannerPage.tsx",
+        "lines": 464,
+        "size_kb": 19.2
+      },
+      {
+        "path": "client\\src\\scanner\\components\\OptionStrategyPanel.tsx",
+        "lines": 462,
+        "size_kb": 18.8
+      },
+      {
+        "path": "client\\src\\pages\\DailyReport.tsx",
+        "lines": 443,
+        "size_kb": 16.4
+      },
+      {
+        "path": "server\\services\\flowService.ts",
+        "lines": 439,
+        "size_kb": 12.7
+      },
+      {
+        "path": "client\\src\\scanner\\components\\MomentumMarketTab.tsx",
+        "lines": 434,
+        "size_kb": 15.1
+      },
+      {
+        "path": "client\\src\\components\\tabs\\MomentumReportPostTab.tsx",
+        "lines": 433,
+        "size_kb": 15.4
+      },
+      {
+        "path": "client\\src\\scanner\\components\\MomentumSetupsTab.tsx",
+        "lines": 428,
+        "size_kb": 16.9
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\sections\\BacktestPanel.tsx",
+        "lines": 425,
+        "size_kb": 19.9
+      },
+      {
+        "path": "server\\midasSignals.ts",
+        "lines": 425,
+        "size_kb": 10.7
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\browserTrainer.ts",
+        "lines": 424,
+        "size_kb": 13.4
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\browserTrainer.ts",
+        "lines": 424,
+        "size_kb": 13.4
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\browserTrainer.ts",
+        "lines": 424,
+        "size_kb": 13.4
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\v3Report.ts",
+        "lines": 415,
+        "size_kb": 15.0
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\v3Report.ts",
+        "lines": 413,
+        "size_kb": 14.9
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\v3Report.ts",
+        "lines": 413,
+        "size_kb": 14.9
+      },
+      {
+        "path": "client\\src\\features\\flow\\lib\\parseReport.ts",
+        "lines": 410,
+        "size_kb": 10.4
+      },
+      {
+        "path": "client\\src\\features\\flow\\pages\\ReportsIndexPage.tsx",
+        "lines": 403,
+        "size_kb": 15.6
+      },
+      {
+        "path": "client\\src\\components\\ui\\chart.tsx",
+        "lines": 400,
+        "size_kb": 11.8
+      },
+      {
+        "path": "client\\src\\components\\tabs\\IVCrushTab.tsx",
+        "lines": 394,
+        "size_kb": 21.2
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\patternEngine.ts",
+        "lines": 393,
+        "size_kb": 13.5
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\patternEngine.ts",
+        "lines": 392,
+        "size_kb": 13.4
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\patternEngine.ts",
+        "lines": 392,
+        "size_kb": 13.4
+      },
+      {
+        "path": "client\\src\\lib\\juneEarningsData.ts",
+        "lines": 391,
+        "size_kb": 9.5
+      },
+      {
+        "path": "server\\calendarSync.ts",
+        "lines": 387,
+        "size_kb": 10.5
+      },
+      {
+        "path": "server\\earningReportSources.ts",
+        "lines": 383,
+        "size_kb": 9.8
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\earningsMomentum.ts",
+        "lines": 375,
+        "size_kb": 12.8
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\earningsMomentum.ts",
+        "lines": 373,
+        "size_kb": 12.7
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\earningsMomentum.ts",
+        "lines": 373,
+        "size_kb": 12.7
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\stockDatabase.ts",
+        "lines": 370,
+        "size_kb": 11.4
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\stockDatabase.ts",
+        "lines": 370,
+        "size_kb": 11.4
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\stockDatabase.ts",
+        "lines": 370,
+        "size_kb": 11.4
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\sections\\StockDatabasePanel.tsx",
+        "lines": 360,
+        "size_kb": 15.7
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\chart.tsx",
+        "lines": 357,
+        "size_kb": 9.8
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\chart.tsx",
+        "lines": 355,
+        "size_kb": 9.9
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\portfolioRisk.ts",
+        "lines": 350,
+        "size_kb": 13.0
+      },
+      {
+        "path": "client\\src\\components\\tabs\\OptionDetailTab.tsx",
+        "lines": 345,
+        "size_kb": 21.2
+      },
+      {
+        "path": "client\\src\\components\\reports\\OpenAiImageAdminPanel.tsx",
+        "lines": 344,
+        "size_kb": 11.8
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\components\\ScannerPage.tsx",
+        "lines": 340,
+        "size_kb": 14.6
+      },
+      {
+        "path": "v2\\client\\src\\components\\tabs\\IVCrushTab.tsx",
+        "lines": 339,
+        "size_kb": 16.7
+      },
+      {
+        "path": "client\\src\\features\\flow\\store\\useReportStore.ts",
+        "lines": 337,
+        "size_kb": 8.7
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\portfolioRisk.ts",
+        "lines": 337,
+        "size_kb": 12.5
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\portfolioRisk.ts",
+        "lines": 337,
+        "size_kb": 12.5
+      },
+      {
+        "path": "client\\public\\calendar\\calendar_forecast.json",
+        "lines": 335,
+        "size_kb": 14.5
+      },
+      {
+        "path": "client\\src\\scanner\\components\\EnterpriseReport.tsx",
+        "lines": 335,
+        "size_kb": 15.5
+      },
+      {
+        "path": "v2\\client\\src\\components\\tabs\\DynamicReportTab.tsx",
+        "lines": 335,
+        "size_kb": 17.3
+      },
+      {
+        "path": "v2\\client\\src\\components\\tabs\\JuneEarningsTab.tsx",
+        "lines": 335,
+        "size_kb": 16.6
+      },
+      {
+        "path": "client\\src\\components\\tabs\\EarningReportRiskTab.tsx",
+        "lines": 332,
+        "size_kb": 13.3
+      },
+      {
+        "path": "client\\src\\lib\\reportSpotlight.ts",
+        "lines": 326,
+        "size_kb": 8.3
+      },
+      {
+        "path": "v2\\client\\src\\index.css",
+        "lines": 323,
+        "size_kb": 8.7
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\sections\\ResultsTable.tsx",
+        "lines": 322,
+        "size_kb": 16.0
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\v4Engine.ts",
+        "lines": 318,
+        "size_kb": 10.2
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\v4Engine.ts",
+        "lines": 318,
+        "size_kb": 10.2
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\v4Engine.ts",
+        "lines": 318,
+        "size_kb": 10.2
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\locales\\en.ts",
+        "lines": 316,
+        "size_kb": 9.6
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\locales\\tr.ts",
+        "lines": 316,
+        "size_kb": 9.8
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\scoreConfig.ts",
+        "lines": 315,
+        "size_kb": 11.2
+      },
+      {
+        "path": "client\\src\\components\\tabs\\EarningReportCalendarTab.tsx",
+        "lines": 312,
+        "size_kb": 12.1
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\scoreConfig.ts",
+        "lines": 310,
+        "size_kb": 10.0
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\scoreConfig.ts",
+        "lines": 310,
+        "size_kb": 10.0
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\pages\\Dashboard.tsx",
+        "lines": 303,
+        "size_kb": 14.4
+      },
+      {
+        "path": "client\\src\\features\\flow\\pages\\ReportsDateDetailPage.tsx",
+        "lines": 302,
+        "size_kb": 12.4
+      },
+      {
+        "path": "client\\src\\components\\reports\\MarkdownReportRenderer.tsx",
+        "lines": 301,
+        "size_kb": 11.6
+      },
+      {
+        "path": "client\\src\\components\\tabs\\SectorTab.tsx",
+        "lines": 300,
+        "size_kb": 14.5
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\advancedPattern.ts",
+        "lines": 300,
+        "size_kb": 8.9
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\advancedPattern.ts",
+        "lines": 299,
+        "size_kb": 8.9
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\advancedPattern.ts",
+        "lines": 299,
+        "size_kb": 8.9
+      },
+      {
+        "path": "client\\src\\components\\tabs\\OverviewTab.tsx",
+        "lines": 298,
+        "size_kb": 15.6
+      },
+      {
+        "path": "client\\src\\components\\tabs\\MomentumTab.tsx",
+        "lines": 297,
+        "size_kb": 14.3
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\pages\\ScanPage.tsx",
+        "lines": 294,
+        "size_kb": 14.4
+      },
+      {
+        "path": "v2\\client\\src\\components\\tabs\\MomentumTab.tsx",
+        "lines": 294,
+        "size_kb": 14.1
+      },
+      {
+        "path": "server\\openaiImageStudio.ts",
+        "lines": 291,
+        "size_kb": 7.8
+      },
+      {
+        "path": "client\\src\\features\\flow\\components\\FlowCommunityPanel.tsx",
+        "lines": 286,
+        "size_kb": 9.7
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\sections\\OptionsPanel.tsx",
+        "lines": 285,
+        "size_kb": 13.0
+      },
+      {
+        "path": "v2\\client\\src\\lib\\reportGenerator.ts",
+        "lines": 283,
+        "size_kb": 9.3
+      },
+      {
+        "path": "client\\src\\components\\reports\\ReportPostShell.tsx",
+        "lines": 277,
+        "size_kb": 8.4
+      },
+      {
+        "path": "client\\src\\components\\ui\\menubar.tsx",
+        "lines": 274,
+        "size_kb": 8.2
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\menubar.tsx",
+        "lines": 274,
+        "size_kb": 8.2
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\sections\\PostEarningsScreener.tsx",
+        "lines": 274,
+        "size_kb": 12.8
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\menubar.tsx",
+        "lines": 274,
+        "size_kb": 8.2
+      },
+      {
+        "path": "client\\src\\components\\tabs\\RiskTab.tsx",
+        "lines": 270,
+        "size_kb": 14.0
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\regimeDetector.ts",
+        "lines": 270,
+        "size_kb": 9.2
+      },
+      {
+        "path": "v2\\client\\src\\components\\tabs\\OverviewTab.tsx",
+        "lines": 268,
+        "size_kb": 13.1
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\optionsTypes.ts",
+        "lines": 267,
+        "size_kb": 8.5
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\types\\options.ts",
+        "lines": 267,
+        "size_kb": 8.5
+      },
+      {
+        "path": "vite.config.ts",
+        "lines": 266,
+        "size_kb": 8.1
+      },
+      {
+        "path": "v2\\client\\src\\components\\tabs\\RiskTab.tsx",
+        "lines": 266,
+        "size_kb": 11.9
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\regimeDetector.ts",
+        "lines": 263,
+        "size_kb": 8.9
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\regimeDetector.ts",
+        "lines": 263,
+        "size_kb": 8.9
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\optionAnalytics.ts",
+        "lines": 256,
+        "size_kb": 8.3
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\optionAnalytics.ts",
+        "lines": 256,
+        "size_kb": 8.3
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\optionAnalytics.ts",
+        "lines": 256,
+        "size_kb": 8.3
+      },
+      {
+        "path": "client\\src\\components\\ui\\dropdown-menu.tsx",
+        "lines": 255,
+        "size_kb": 8.2
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\dropdown-menu.tsx",
+        "lines": 255,
+        "size_kb": 8.2
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\dropdown-menu.tsx",
+        "lines": 255,
+        "size_kb": 8.2
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\context-menu.tsx",
+        "lines": 252,
+        "size_kb": 8.1
+      },
+      {
+        "path": "client\\src\\components\\ui\\context-menu.tsx",
+        "lines": 250,
+        "size_kb": 8.1
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\context-menu.tsx",
+        "lines": 250,
+        "size_kb": 8.1
+      },
+      {
+        "path": "client\\src\\features\\flow\\pages\\FlowTickerPage.tsx",
+        "lines": 249,
+        "size_kb": 9.5
+      },
+      {
+        "path": "client\\src\\scanner\\components\\MomentumStrategyTab.tsx",
+        "lines": 249,
+        "size_kb": 10.1
+      },
+      {
+        "path": "v2\\client\\src\\components\\tabs\\JuneStockDetailTab.tsx",
+        "lines": 249,
+        "size_kb": 13.9
+      },
+      {
+        "path": "client\\src\\components\\ui\\carousel.tsx",
+        "lines": 246,
+        "size_kb": 5.7
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\field.tsx",
+        "lines": 246,
+        "size_kb": 6.0
+      },
+      {
+        "path": "client\\src\\components\\ui\\field.tsx",
+        "lines": 242,
+        "size_kb": 5.9
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\field.tsx",
+        "lines": 242,
+        "size_kb": 5.9
+      },
+      {
+        "path": "v2\\vite.config.ts",
+        "lines": 241,
+        "size_kb": 7.3
+      },
+      {
+        "path": "v2\\client\\src\\components\\tabs\\JuneOverviewTab.tsx",
+        "lines": 240,
+        "size_kb": 12.4
+      },
+      {
+        "path": "client\\src\\lib\\weeklyReports.ts",
+        "lines": 239,
+        "size_kb": 6.6
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\carousel.tsx",
+        "lines": 239,
+        "size_kb": 5.4
+      },
+      {
+        "path": "v2\\client\\src\\components\\tabs\\OptionDetailTab.tsx",
+        "lines": 239,
+        "size_kb": 14.1
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\carousel.tsx",
+        "lines": 239,
+        "size_kb": 5.5
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\advancedOptions.ts",
+        "lines": 238,
+        "size_kb": 8.1
+      },
+      {
+        "path": "v2\\client\\src\\components\\tabs\\StockDetailTab.tsx",
+        "lines": 238,
+        "size_kb": 11.6
+      },
+      {
+        "path": "client\\src\\components\\tabs\\CalendarTab.tsx",
+        "lines": 236,
+        "size_kb": 12.3
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\sanityGate.ts",
+        "lines": 233,
+        "size_kb": 9.2
+      },
+      {
+        "path": "client\\src\\lib\\reportMarkdown.ts",
+        "lines": 232,
+        "size_kb": 5.7
+      },
+      {
+        "path": "v2\\client\\src\\components\\tabs\\JuneOptionDetailTab.tsx",
+        "lines": 232,
+        "size_kb": 13.9
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\sanityGate.ts",
+        "lines": 230,
+        "size_kb": 7.7
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\sanityGate.ts",
+        "lines": 230,
+        "size_kb": 7.7
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\pages\\AnalysisPage.tsx",
+        "lines": 229,
+        "size_kb": 12.0
+      },
+      {
+        "path": "client\\src\\pages\\calendar\\calendar.utils.ts",
+        "lines": 227,
+        "size_kb": 6.5
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\varEngine.ts",
+        "lines": 227,
+        "size_kb": 8.0
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\varEngine.ts",
+        "lines": 227,
+        "size_kb": 8.0
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\varEngine.ts",
+        "lines": 227,
+        "size_kb": 8.0
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\sections\\ConsistencyReportPanel.tsx",
+        "lines": 223,
+        "size_kb": 12.5
+      },
+      {
+        "path": "server\\openaiTranslation.ts",
+        "lines": 223,
+        "size_kb": 5.5
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\advancedOptions.ts",
+        "lines": 222,
+        "size_kb": 6.6
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\advancedOptions.ts",
+        "lines": 222,
+        "size_kb": 6.6
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\calendar.tsx",
+        "lines": 220,
+        "size_kb": 7.6
+      },
+      {
+        "path": "v2\\client\\src\\components\\tabs\\SectorTab.tsx",
+        "lines": 213,
+        "size_kb": 11.1
+      },
+      {
+        "path": "client\\src\\components\\ui\\dialog.tsx",
+        "lines": 212,
+        "size_kb": 6.1
+      },
+      {
+        "path": "client\\src\\components\\ui\\calendar.tsx",
+        "lines": 211,
+        "size_kb": 7.5
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\calendar.tsx",
+        "lines": 211,
+        "size_kb": 7.5
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\dialog.tsx",
+        "lines": 209,
+        "size_kb": 5.9
+      },
+      {
+        "path": "v2\\client\\src\\pages\\Home.tsx",
+        "lines": 209,
+        "size_kb": 10.0
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\aiCatalystAnalyzer.ts",
+        "lines": 205,
+        "size_kb": 6.3
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\aiCatalystAnalyzer.ts",
+        "lines": 205,
+        "size_kb": 6.3
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\types\\scanner.ts",
+        "lines": 205,
+        "size_kb": 4.8
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\aiCatalystAnalyzer.ts",
+        "lines": 205,
+        "size_kb": 6.3
+      },
+      {
+        "path": "client\\src\\features\\flow\\components\\reports\\ReportGalleryCard.tsx",
+        "lines": 201,
+        "size_kb": 7.1
+      },
+      {
+        "path": "v2\\client\\src\\components\\AdminPanel.tsx",
+        "lines": 199,
+        "size_kb": 6.7
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\pages\\PortfolioPage.tsx",
+        "lines": 198,
+        "size_kb": 10.8
+      },
+      {
+        "path": "client\\src\\components\\PublicShell.tsx",
+        "lines": 195,
+        "size_kb": 8.1
+      },
+      {
+        "path": "client\\src\\components\\ui\\item.tsx",
+        "lines": 193,
+        "size_kb": 4.4
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\microstructureCheck.ts",
+        "lines": 193,
+        "size_kb": 5.5
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\item.tsx",
+        "lines": 193,
+        "size_kb": 4.4
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\microstructureCheck.ts",
+        "lines": 193,
+        "size_kb": 5.5
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\microstructureCheck.ts",
+        "lines": 193,
+        "size_kb": 5.5
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\item.tsx",
+        "lines": 193,
+        "size_kb": 4.4
+      },
+      {
+        "path": "client\\src\\features\\flow\\components\\FlowReportDetailSurface.tsx",
+        "lines": 191,
+        "size_kb": 5.7
+      },
+      {
+        "path": "v2\\client\\src\\pages\\ReportPage.tsx",
+        "lines": 189,
+        "size_kb": 8.5
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\select.tsx",
+        "lines": 188,
+        "size_kb": 6.2
+      },
+      {
+        "path": "client\\src\\components\\ui\\select.tsx",
+        "lines": 185,
+        "size_kb": 6.1
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\select.tsx",
+        "lines": 185,
+        "size_kb": 6.1
+      },
+      {
+        "path": "client\\src\\components\\ui\\command.tsx",
+        "lines": 184,
+        "size_kb": 4.7
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\command.tsx",
+        "lines": 184,
+        "size_kb": 4.7
+      },
+      {
+        "path": "v2\\client\\src\\components\\tabs\\JuneMomentumTab.tsx",
+        "lines": 183,
+        "size_kb": 8.7
+      },
+      {
+        "path": "client\\src\\features\\flow\\pages\\FlowIndexPage.tsx",
+        "lines": 182,
+        "size_kb": 6.1
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\command.tsx",
+        "lines": 182,
+        "size_kb": 4.7
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\sections\\TrainingPanel.tsx",
+        "lines": 182,
+        "size_kb": 8.2
+      },
+      {
+        "path": "shared\\flowLanguage.ts",
+        "lines": 181,
+        "size_kb": 5.5
+      },
+      {
+        "path": "v2\\client\\src\\components\\tabs\\CalendarTab.tsx",
+        "lines": 181,
+        "size_kb": 9.3
+      },
+      {
+        "path": "client\\src\\features\\flow\\lib\\reportGallery.ts",
+        "lines": 180,
+        "size_kb": 4.7
+      },
+      {
+        "path": "client\\src\\features\\flow\\components\\reports\\ReportUploadDropzone.tsx",
+        "lines": 178,
+        "size_kb": 6.5
+      },
+      {
+        "path": "client\\src\\features\\flow\\components\\FlowReportViewer.tsx",
+        "lines": 176,
+        "size_kb": 7.0
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\parallelScanner.ts",
+        "lines": 175,
+        "size_kb": 4.7
+      },
+      {
+        "path": "client\\src\\features\\flow\\pages\\FlowDailyPage.tsx",
+        "lines": 174,
+        "size_kb": 6.9
+      },
+      {
+        "path": "shared\\flowInference.ts",
+        "lines": 173,
+        "size_kb": 4.3
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\parallelScanner.ts",
+        "lines": 172,
+        "size_kb": 4.8
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\parallelScanner.ts",
+        "lines": 172,
+        "size_kb": 4.8
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\input-group.tsx",
+        "lines": 170,
+        "size_kb": 4.9
+      },
+      {
+        "path": "client\\src\\components\\ui\\form.tsx",
+        "lines": 168,
+        "size_kb": 3.7
+      },
+      {
+        "path": "client\\src\\components\\ui\\input-group.tsx",
+        "lines": 168,
+        "size_kb": 4.9
+      },
+      {
+        "path": "client\\src\\components\\ui\\navigation-menu.tsx",
+        "lines": 168,
+        "size_kb": 6.5
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\navigation-menu.tsx",
+        "lines": 168,
+        "size_kb": 6.5
+      },
+      {
+        "path": "server\\dailyReportOpenAiCharts.ts",
+        "lines": 168,
+        "size_kb": 4.9
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\form.tsx",
+        "lines": 168,
+        "size_kb": 3.7
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\input-group.tsx",
+        "lines": 168,
+        "size_kb": 4.9
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\navigation-menu.tsx",
+        "lines": 168,
+        "size_kb": 6.5
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\form.tsx",
+        "lines": 167,
+        "size_kb": 3.7
+      },
+      {
+        "path": "client\\src\\components\\Map.tsx",
+        "lines": 155,
+        "size_kb": 4.8
+      },
+      {
+        "path": "client\\src\\components\\ui\\alert-dialog.tsx",
+        "lines": 155,
+        "size_kb": 3.8
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\alert-dialog.tsx",
+        "lines": 155,
+        "size_kb": 3.8
+      },
+      {
+        "path": "v2\\client\\src\\components\\Map.tsx",
+        "lines": 155,
+        "size_kb": 4.8
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\alert-dialog.tsx",
+        "lines": 155,
+        "size_kb": 3.8
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\pages\\HistoryPage.tsx",
+        "lines": 152,
+        "size_kb": 7.9
+      },
+      {
+        "path": "client\\src\\features\\flow\\hooks\\useFlowComments.ts",
+        "lines": 151,
+        "size_kb": 3.8
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\yahooFinance.ts",
+        "lines": 150,
+        "size_kb": 6.7
+      },
+      {
+        "path": "client\\src\\scanner\\types.ts",
+        "lines": 147,
+        "size_kb": 3.1
+      },
+      {
+        "path": "client\\src\\components\\ui\\sheet.tsx",
+        "lines": 146,
+        "size_kb": 4.2
+      },
+      {
+        "path": "client\\src\\pages\\Scanner.tsx",
+        "lines": 145,
+        "size_kb": 6.2
+      },
+      {
+        "path": "cpi_forecast.json",
+        "lines": 144,
+        "size_kb": 6.8
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\dialog.tsx",
+        "lines": 141,
+        "size_kb": 3.9
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\queryEngine.ts",
+        "lines": 140,
+        "size_kb": 4.4
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\queryEngine.ts",
+        "lines": 140,
+        "size_kb": 4.4
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\queryEngine.ts",
+        "lines": 140,
+        "size_kb": 4.4
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\dailyScanner.ts",
+        "lines": 139,
+        "size_kb": 3.8
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\dailyScanner.ts",
+        "lines": 139,
+        "size_kb": 3.8
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\dailyScanner.ts",
+        "lines": 139,
+        "size_kb": 3.8
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\sheet.tsx",
+        "lines": 139,
+        "size_kb": 4.0
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\sheet.tsx",
+        "lines": 137,
+        "size_kb": 4.0
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\layouts\\PortalLayout.tsx",
+        "lines": 137,
+        "size_kb": 5.9
+      },
+      {
+        "path": "client\\src\\components\\ui\\pagination.tsx",
+        "lines": 136,
+        "size_kb": 3.0
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\drawer.tsx",
+        "lines": 135,
+        "size_kb": 4.2
+      },
+      {
+        "path": "server\\routes\\flow\\comments.ts",
+        "lines": 135,
+        "size_kb": 3.5
+      },
+      {
+        "path": "client\\src\\lib\\reportPost.ts",
+        "lines": 134,
+        "size_kb": 3.0
+      },
+      {
+        "path": "client\\src\\components\\ui\\drawer.tsx",
+        "lines": 133,
+        "size_kb": 4.2
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\drawer.tsx",
+        "lines": 133,
+        "size_kb": 4.2
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\sections\\FilterPanel.tsx",
+        "lines": 129,
+        "size_kb": 5.2
+      },
+      {
+        "path": "shared\\midasSignals.ts",
+        "lines": 129,
+        "size_kb": 2.8
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\pagination.tsx",
+        "lines": 127,
+        "size_kb": 2.7
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\pagination.tsx",
+        "lines": 127,
+        "size_kb": 2.7
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\types.ts",
+        "lines": 122,
+        "size_kb": 2.6
+      },
+      {
+        "path": "client\\src\\lib\\dailyReports.ts",
+        "lines": 117,
+        "size_kb": 3.5
+      },
+      {
+        "path": "client\\src\\components\\ui\\table.tsx",
+        "lines": 114,
+        "size_kb": 2.4
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\table.tsx",
+        "lines": 114,
+        "size_kb": 2.4
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\table.tsx",
+        "lines": 114,
+        "size_kb": 2.4
+      },
+      {
+        "path": "client\\src\\components\\ui\\breadcrumb.tsx",
+        "lines": 112,
+        "size_kb": 2.4
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\breadcrumb.tsx",
+        "lines": 109,
+        "size_kb": 2.3
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\breadcrumb.tsx",
+        "lines": 109,
+        "size_kb": 2.3
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\trainedModel.ts",
+        "lines": 107,
+        "size_kb": 2.9
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\trainedModel.ts",
+        "lines": 107,
+        "size_kb": 2.9
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\trainedModel.ts",
+        "lines": 107,
+        "size_kb": 2.9
+      },
+      {
+        "path": "client\\src\\components\\ui\\empty.tsx",
+        "lines": 104,
+        "size_kb": 2.3
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\empty.tsx",
+        "lines": 104,
+        "size_kb": 2.3
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\empty.tsx",
+        "lines": 104,
+        "size_kb": 2.3
+      },
+      {
+        "path": "ppi_forecast.json",
+        "lines": 103,
+        "size_kb": 4.8
+      },
+      {
+        "path": "Momentumscrapper\\app\\package.json",
+        "lines": 102,
+        "size_kb": 3.4
+      },
+      {
+        "path": "package.json",
+        "lines": 101,
+        "size_kb": 3.3
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\sections\\PatternMatches.tsx",
+        "lines": 101,
+        "size_kb": 4.5
+      },
+      {
+        "path": "client\\src\\features\\flow\\components\\FlowReportRow.tsx",
+        "lines": 100,
+        "size_kb": 4.1
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\yahooFinance.ts",
+        "lines": 100,
+        "size_kb": 5.3
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\yahooFinance.ts",
+        "lines": 100,
+        "size_kb": 5.3
+      },
+      {
+        "path": "v2\\package.json",
+        "lines": 100,
+        "size_kb": 3.3
+      },
+      {
+        "path": "client\\src\\pages\\Privacy.tsx",
+        "lines": 99,
+        "size_kb": 3.8
+      },
+      {
+        "path": "client\\src\\pages\\Terms.tsx",
+        "lines": 99,
+        "size_kb": 4.3
+      },
+      {
+        "path": "client\\src\\features\\flow\\components\\FlowTickerCard.tsx",
+        "lines": 97,
+        "size_kb": 3.9
+      },
+      {
+        "path": "client\\src\\pages\\Pricing.tsx",
+        "lines": 96,
+        "size_kb": 4.2
+      },
+      {
+        "path": "client\\src\\pages\\Refund.tsx",
+        "lines": 95,
+        "size_kb": 3.7
+      },
+      {
+        "path": "client\\src\\features\\flow\\components\\FlowReportCard.tsx",
+        "lines": 94,
+        "size_kb": 3.1
+      },
+      {
+        "path": "client\\src\\components\\ui\\card.tsx",
+        "lines": 92,
+        "size_kb": 2.0
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\card.tsx",
+        "lines": 92,
+        "size_kb": 1.9
+      },
+      {
+        "path": "server\\routes\\flow\\reports.ts",
+        "lines": 92,
+        "size_kb": 2.3
+      },
+      {
+        "path": "shared\\marketFlash.ts",
+        "lines": 92,
+        "size_kb": 2.1
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\card.tsx",
+        "lines": 92,
+        "size_kb": 2.0
+      },
+      {
+        "path": "client\\src\\lib\\momentumReports.ts",
+        "lines": 91,
+        "size_kb": 2.5
+      },
+      {
+        "path": "client\\src\\features\\flow\\hooks\\useFlowReportSummaries.ts",
+        "lines": 90,
+        "size_kb": 2.3
+      },
+      {
+        "path": "shared\\cpiPpiForecast.ts",
+        "lines": 87,
+        "size_kb": 2.1
+      },
+      {
+        "path": "client\\src\\components\\ManusDialog.tsx",
+        "lines": 85,
+        "size_kb": 2.3
+      },
+      {
+        "path": "v2\\client\\src\\components\\ManusDialog.tsx",
+        "lines": 85,
+        "size_kb": 2.3
+      },
+      {
+        "path": "client\\src\\components\\ui\\button-group.tsx",
+        "lines": 83,
+        "size_kb": 2.2
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\button-group.tsx",
+        "lines": 83,
+        "size_kb": 2.2
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\i18n\\I18nContext.tsx",
+        "lines": 83,
+        "size_kb": 2.6
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\filters.ts",
+        "lines": 83,
+        "size_kb": 2.3
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\filters.ts",
+        "lines": 83,
+        "size_kb": 2.3
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\button-group.tsx",
+        "lines": 83,
+        "size_kb": 2.2
+      },
+      {
+        "path": "client\\src\\pages\\calendar\\hooks\\useCalendarData.ts",
+        "lines": 82,
+        "size_kb": 2.1
+      },
+      {
+        "path": "shared\\opportunities.ts",
+        "lines": 82,
+        "size_kb": 2.0
+      },
+      {
+        "path": "client\\src\\hooks\\useComposition.ts",
+        "lines": 81,
+        "size_kb": 2.2
+      },
+      {
+        "path": "client\\src\\scanner\\locales\\en.ts",
+        "lines": 81,
+        "size_kb": 2.6
+      },
+      {
+        "path": "client\\src\\scanner\\locales\\tr.ts",
+        "lines": 81,
+        "size_kb": 2.7
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\toggle-group.tsx",
+        "lines": 81,
+        "size_kb": 2.2
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\locales\\en.ts",
+        "lines": 81,
+        "size_kb": 2.6
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\locales\\tr.ts",
+        "lines": 81,
+        "size_kb": 2.7
+      },
+      {
+        "path": "v2\\client\\src\\hooks\\useComposition.ts",
+        "lines": 81,
+        "size_kb": 2.2
+      },
+      {
+        "path": "client\\src\\hooks\\usePageMeta.ts",
+        "lines": 79,
+        "size_kb": 2.4
+      },
+      {
+        "path": "client\\src\\features\\flow\\hooks\\useFlowReport.ts",
+        "lines": 78,
+        "size_kb": 1.8
+      },
+      {
+        "path": "Momentumscrapper\\app\\api\\router.ts",
+        "lines": 78,
+        "size_kb": 2.1
+      },
+      {
+        "path": "shared\\dailyReports.ts",
+        "lines": 78,
+        "size_kb": 1.8
+      },
+      {
+        "path": "Momentumscrapper\\app\\api\\lib\\http.ts",
+        "lines": 77,
+        "size_kb": 1.9
+      },
+      {
+        "path": "client\\src\\components\\ui\\input-otp.tsx",
+        "lines": 75,
+        "size_kb": 2.2
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\index.css",
+        "lines": 75,
+        "size_kb": 2.1
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\input-otp.tsx",
+        "lines": 75,
+        "size_kb": 2.2
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\input-otp.tsx",
+        "lines": 75,
+        "size_kb": 2.2
+      },
+      {
+        "path": "client\\src\\components\\ui\\toggle-group.tsx",
+        "lines": 73,
+        "size_kb": 1.9
+      },
+      {
+        "path": "client\\src\\features\\flow\\hooks\\useFlowReports.ts",
+        "lines": 73,
+        "size_kb": 1.8
+      },
+      {
+        "path": "client\\src\\features\\flow\\hooks\\useFlowSources.ts",
+        "lines": 73,
+        "size_kb": 1.8
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\toggle-group.tsx",
+        "lines": 73,
+        "size_kb": 1.9
+      },
+      {
+        "path": "client\\src\\contexts\\ThemeContext.tsx",
+        "lines": 72,
+        "size_kb": 1.6
+      },
+      {
+        "path": "client\\src\\components\\ErrorBoundary.tsx",
+        "lines": 71,
+        "size_kb": 2.0
+      },
+      {
+        "path": "client\\src\\components\\ui\\input.tsx",
+        "lines": 70,
+        "size_kb": 2.7
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\sections\\AlertSystem.tsx",
+        "lines": 70,
+        "size_kb": 2.5
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\input.tsx",
+        "lines": 70,
+        "size_kb": 2.7
+      },
+      {
+        "path": "client\\src\\components\\ui\\textarea.tsx",
+        "lines": 67,
+        "size_kb": 2.6
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\textarea.tsx",
+        "lines": 67,
+        "size_kb": 2.6
+      },
+      {
+        "path": "client\\src\\components\\ui\\alert.tsx",
+        "lines": 66,
+        "size_kb": 1.6
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\alert.tsx",
+        "lines": 66,
+        "size_kb": 1.6
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\tabs.tsx",
+        "lines": 66,
+        "size_kb": 1.9
+      },
+      {
+        "path": "shared\\flow.ts",
+        "lines": 66,
+        "size_kb": 1.5
+      },
+      {
+        "path": "shared\\weeklyReports.ts",
+        "lines": 66,
+        "size_kb": 1.7
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\alert.tsx",
+        "lines": 66,
+        "size_kb": 1.6
+      },
+      {
+        "path": "client\\src\\components\\ui\\accordion.tsx",
+        "lines": 64,
+        "size_kb": 2.0
+      },
+      {
+        "path": "client\\src\\components\\ui\\tabs.tsx",
+        "lines": 64,
+        "size_kb": 1.9
+      },
+      {
+        "path": "client\\src\\components\\workspace\\WorkspaceHeroPanel.tsx",
+        "lines": 64,
+        "size_kb": 1.8
+      },
+      {
+        "path": "client\\src\\pages\\NotFound.tsx",
+        "lines": 64,
+        "size_kb": 2.6
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\accordion.tsx",
+        "lines": 64,
+        "size_kb": 2.0
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\sections\\RadarTooltip.tsx",
+        "lines": 64,
+        "size_kb": 3.0
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\accordion.tsx",
+        "lines": 64,
+        "size_kb": 2.0
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\tabs.tsx",
+        "lines": 64,
+        "size_kb": 1.9
+      },
+      {
+        "path": "v2\\client\\src\\contexts\\ThemeContext.tsx",
+        "lines": 64,
+        "size_kb": 1.4
+      },
+      {
+        "path": "client\\src\\features\\flow\\components\\FlowLayout.tsx",
+        "lines": 63,
+        "size_kb": 1.9
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\slider.tsx",
+        "lines": 63,
+        "size_kb": 1.9
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\button.tsx",
+        "lines": 62,
+        "size_kb": 2.2
+      },
+      {
+        "path": "v2\\client\\src\\components\\ErrorBoundary.tsx",
+        "lines": 62,
+        "size_kb": 1.6
+      },
+      {
+        "path": "client\\src\\components\\ui\\slider.tsx",
+        "lines": 61,
+        "size_kb": 1.9
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\tooltip.tsx",
+        "lines": 61,
+        "size_kb": 1.8
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\slider.tsx",
+        "lines": 61,
+        "size_kb": 1.9
+      },
+      {
+        "path": "client\\src\\components\\ui\\button.tsx",
+        "lines": 60,
+        "size_kb": 2.0
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\sections\\StatsCards.tsx",
+        "lines": 60,
+        "size_kb": 2.2
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\button.tsx",
+        "lines": 60,
+        "size_kb": 2.0
+      },
+      {
+        "path": "client\\src\\components\\ui\\tooltip.tsx",
+        "lines": 59,
+        "size_kb": 1.8
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\sections\\ScannerControls.tsx",
+        "lines": 59,
+        "size_kb": 1.6
+      },
+      {
+        "path": "shared\\calendar.ts",
+        "lines": 59,
+        "size_kb": 1.4
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\tooltip.tsx",
+        "lines": 59,
+        "size_kb": 1.8
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\scroll-area.tsx",
+        "lines": 58,
+        "size_kb": 1.6
+      },
+      {
+        "path": "client\\src\\components\\ui\\scroll-area.tsx",
+        "lines": 56,
+        "size_kb": 1.6
+      },
+      {
+        "path": "client\\src\\lib\\api.ts",
+        "lines": 56,
+        "size_kb": 1.7
+      },
+      {
+        "path": "v2\\client\\src\\components\\ReportSelector.tsx",
+        "lines": 56,
+        "size_kb": 2.4
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\scroll-area.tsx",
+        "lines": 56,
+        "size_kb": 1.6
+      },
+      {
+        "path": "client\\src\\components\\ui\\resizable.tsx",
+        "lines": 54,
+        "size_kb": 2.0
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\resizable.tsx",
+        "lines": 54,
+        "size_kb": 1.9
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\resizable.tsx",
+        "lines": 54,
+        "size_kb": 2.0
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\index.ts",
+        "lines": 53,
+        "size_kb": 1.9
+      },
+      {
+        "path": "client\\src\\components\\ui\\avatar.tsx",
+        "lines": 51,
+        "size_kb": 1.1
+      },
+      {
+        "path": "client\\src\\pages\\calendar\\components\\CompactStatCard.tsx",
+        "lines": 51,
+        "size_kb": 1.3
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\avatar.tsx",
+        "lines": 51,
+        "size_kb": 1.1
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\avatar.tsx",
+        "lines": 51,
+        "size_kb": 1.1
+      },
+      {
+        "path": "client\\src\\features\\flow\\components\\FlowReportList.tsx",
+        "lines": 50,
+        "size_kb": 1.2
+      },
+      {
+        "path": "client\\src\\components\\tabs\\EarningReportDocumentTab.tsx",
+        "lines": 49,
+        "size_kb": 1.9
+      },
+      {
+        "path": "client\\src\\components\\tabs\\MomentumReportDocumentTab.tsx",
+        "lines": 49,
+        "size_kb": 1.9
+      },
+      {
+        "path": "client\\src\\scanner\\index.ts",
+        "lines": 49,
+        "size_kb": 1.4
+      },
+      {
+        "path": "v2\\client\\src\\pages\\NotFound.tsx",
+        "lines": 49,
+        "size_kb": 1.7
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\popover.tsx",
+        "lines": 48,
+        "size_kb": 1.6
+      },
+      {
+        "path": "client\\src\\components\\workspace\\WorkspaceSummaryCard.tsx",
+        "lines": 47,
+        "size_kb": 1.3
+      },
+      {
+        "path": "client\\src\\pages\\calendar\\components\\CountdownTimer.tsx",
+        "lines": 47,
+        "size_kb": 1.3
+      },
+      {
+        "path": "client\\src\\components\\ui\\badge.tsx",
+        "lines": 46,
+        "size_kb": 1.6
+      },
+      {
+        "path": "client\\src\\components\\ui\\popover.tsx",
+        "lines": 46,
+        "size_kb": 1.6
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\badge.tsx",
+        "lines": 46,
+        "size_kb": 1.6
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\badge.tsx",
+        "lines": 46,
+        "size_kb": 1.6
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\popover.tsx",
+        "lines": 46,
+        "size_kb": 1.6
+      },
+      {
+        "path": "client\\src\\components\\ui\\toggle.tsx",
+        "lines": 45,
+        "size_kb": 1.5
+      },
+      {
+        "path": "Momentumscrapper\\app\\tsconfig.app.json",
+        "lines": 45,
+        "size_kb": 0.9
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\radio-group.tsx",
+        "lines": 45,
+        "size_kb": 1.4
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\toggle.tsx",
+        "lines": 45,
+        "size_kb": 1.5
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\toggle.tsx",
+        "lines": 45,
+        "size_kb": 1.5
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\hover-card.tsx",
+        "lines": 44,
+        "size_kb": 1.5
+      },
+      {
+        "path": "client\\src\\components\\ui\\radio-group.tsx",
+        "lines": 43,
+        "size_kb": 1.4
+      },
+      {
+        "path": "client\\src\\lib\\chartTooltip.ts",
+        "lines": 43,
+        "size_kb": 0.9
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\radio-group.tsx",
+        "lines": 43,
+        "size_kb": 1.4
+      },
+      {
+        "path": "client\\src\\components\\ui\\hover-card.tsx",
+        "lines": 42,
+        "size_kb": 1.5
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\App.css",
+        "lines": 42,
+        "size_kb": 0.6
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\hover-card.tsx",
+        "lines": 42,
+        "size_kb": 1.5
+      },
+      {
+        "path": "client\\src\\components\\LanguageSelector.tsx",
+        "lines": 41,
+        "size_kb": 1.1
+      },
+      {
+        "path": "shared\\momentumReports.ts",
+        "lines": 41,
+        "size_kb": 0.9
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\sonner.tsx",
+        "lines": 38,
+        "size_kb": 1.0
+      },
+      {
+        "path": ".project-config.json",
+        "lines": 35,
+        "size_kb": 2.3
+      },
+      {
+        "path": "client\\src\\lib\\earningReports.ts",
+        "lines": 35,
+        "size_kb": 0.9
+      },
+      {
+        "path": "v2\\.project-config.json",
+        "lines": 35,
+        "size_kb": 2.3
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\providers\\trpc.tsx",
+        "lines": 34,
+        "size_kb": 0.9
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\sections\\ScannerHeader.tsx",
+        "lines": 34,
+        "size_kb": 1.3
+      },
+      {
+        "path": "shared\\openaiImageStudio.ts",
+        "lines": 34,
+        "size_kb": 1.0
+      },
+      {
+        "path": "client\\src\\pages\\calendar\\Calendar.theme.ts",
+        "lines": 33,
+        "size_kb": 1.3
+      },
+      {
+        "path": "Momentumscrapper\\app\\api\\boot.ts",
+        "lines": 33,
+        "size_kb": 1.0
+      },
+      {
+        "path": "v2\\client\\src\\App.tsx",
+        "lines": 33,
+        "size_kb": 0.8
+      },
+      {
+        "path": "v2\\server\\index.ts",
+        "lines": 33,
+        "size_kb": 0.9
+      },
+      {
+        "path": "client\\src\\features\\flow\\pages\\FlowDetailPage.tsx",
+        "lines": 32,
+        "size_kb": 0.8
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\checkbox.tsx",
+        "lines": 32,
+        "size_kb": 1.2
+      },
+      {
+        "path": "client\\src\\components\\ui\\collapsible.tsx",
+        "lines": 31,
+        "size_kb": 0.8
+      },
+      {
+        "path": "client\\src\\lib\\momentumReportLibrary.ts",
+        "lines": 31,
+        "size_kb": 0.8
+      },
+      {
+        "path": "client\\src\\scanner\\lib\\watchlist.ts",
+        "lines": 31,
+        "size_kb": 0.7
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\collapsible.tsx",
+        "lines": 31,
+        "size_kb": 0.8
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\switch.tsx",
+        "lines": 31,
+        "size_kb": 1.1
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\watchlist.ts",
+        "lines": 31,
+        "size_kb": 0.7
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\watchlist.ts",
+        "lines": 31,
+        "size_kb": 0.7
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\collapsible.tsx",
+        "lines": 31,
+        "size_kb": 0.8
+      },
+      {
+        "path": "client\\src\\components\\ui\\checkbox.tsx",
+        "lines": 30,
+        "size_kb": 1.2
+      },
+      {
+        "path": "client\\src\\pages\\calendar\\components\\FearGreedOutlookCard.tsx",
+        "lines": 30,
+        "size_kb": 1.0
+      },
+      {
+        "path": "client\\src\\pages\\calendar\\components\\VixOutlookCard.tsx",
+        "lines": 30,
+        "size_kb": 1.0
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\checkbox.tsx",
+        "lines": 30,
+        "size_kb": 1.2
+      },
+      {
+        "path": "client\\src\\components\\ui\\progress.tsx",
+        "lines": 29,
+        "size_kb": 0.7
+      },
+      {
+        "path": "client\\src\\components\\ui\\switch.tsx",
+        "lines": 29,
+        "size_kb": 1.1
+      },
+      {
+        "path": "Momentumscrapper\\app\\vite.config.ts",
+        "lines": 29,
+        "size_kb": 0.8
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\progress.tsx",
+        "lines": 29,
+        "size_kb": 0.7
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\progress.tsx",
+        "lines": 29,
+        "size_kb": 0.7
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\switch.tsx",
+        "lines": 29,
+        "size_kb": 1.1
+      },
+      {
+        "path": "client\\src\\components\\ui\\kbd.tsx",
+        "lines": 28,
+        "size_kb": 0.8
+      },
+      {
+        "path": "Momentumscrapper\\app\\tsconfig.json",
+        "lines": 28,
+        "size_kb": 0.4
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\kbd.tsx",
+        "lines": 28,
+        "size_kb": 0.8
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\separator.tsx",
+        "lines": 28,
+        "size_kb": 0.7
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\pages\\Scanner.tsx",
+        "lines": 28,
+        "size_kb": 0.9
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\kbd.tsx",
+        "lines": 28,
+        "size_kb": 0.8
+      },
+      {
+        "path": "client\\src\\components\\tabs\\MomentumHtmlReportTab.tsx",
+        "lines": 26,
+        "size_kb": 0.7
+      },
+      {
+        "path": "client\\src\\components\\ui\\separator.tsx",
+        "lines": 26,
+        "size_kb": 0.7
+      },
+      {
+        "path": "Momentumscrapper\\app\\tsconfig.node.json",
+        "lines": 26,
+        "size_kb": 0.6
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\separator.tsx",
+        "lines": 26,
+        "size_kb": 0.7
+      },
+      {
+        "path": "server\\routes\\flow\\sources.ts",
+        "lines": 25,
+        "size_kb": 0.6
+      },
+      {
+        "path": "client\\src\\features\\flow\\pages\\ReportsDetailPage.tsx",
+        "lines": 24,
+        "size_kb": 0.5
+      },
+      {
+        "path": "Momentumscrapper\\app\\tsconfig.server.json",
+        "lines": 24,
+        "size_kb": 0.6
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\App.tsx",
+        "lines": 24,
+        "size_kb": 0.8
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\label.tsx",
+        "lines": 24,
+        "size_kb": 0.6
+      },
+      {
+        "path": "tsconfig.json",
+        "lines": 23,
+        "size_kb": 0.6
+      },
+      {
+        "path": "client\\src\\components\\ui\\sonner.tsx",
+        "lines": 23,
+        "size_kb": 0.5
+      },
+      {
+        "path": "client\\src\\lib\\paddleClient.ts",
+        "lines": 23,
+        "size_kb": 0.6
+      },
+      {
+        "path": "Momentumscrapper\\app\\api\\lib\\vite.ts",
+        "lines": 23,
+        "size_kb": 0.7
+      },
+      {
+        "path": "shared\\momentumSources.ts",
+        "lines": 23,
+        "size_kb": 0.5
+      },
+      {
+        "path": "v2\\tsconfig.json",
+        "lines": 23,
+        "size_kb": 0.6
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\sonner.tsx",
+        "lines": 23,
+        "size_kb": 0.5
+      },
+      {
+        "path": "tsconfig.node.json",
+        "lines": 22,
+        "size_kb": 0.5
+      },
+      {
+        "path": "client\\src\\components\\ui\\label.tsx",
+        "lines": 22,
+        "size_kb": 0.6
+      },
+      {
+        "path": "client\\src\\features\\flow\\pages\\ReportsTickerPage.tsx",
+        "lines": 22,
+        "size_kb": 0.5
+      },
+      {
+        "path": "Momentumscrapper\\app\\components.json",
+        "lines": 22,
+        "size_kb": 0.5
+      },
+      {
+        "path": "Momentumscrapper\\app\\db\\schema.ts",
+        "lines": 22,
+        "size_kb": 0.6
+      },
+      {
+        "path": "v2\\tsconfig.node.json",
+        "lines": 22,
+        "size_kb": 0.5
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\label.tsx",
+        "lines": 22,
+        "size_kb": 0.6
+      },
+      {
+        "path": "client\\src\\hooks\\useMobile.tsx",
+        "lines": 21,
+        "size_kb": 0.6
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\input.tsx",
+        "lines": 21,
+        "size_kb": 0.9
+      },
+      {
+        "path": "v2\\client\\src\\hooks\\useMobile.tsx",
+        "lines": 21,
+        "size_kb": 0.6
+      },
+      {
+        "path": "client\\src\\hooks\\usePersistFn.ts",
+        "lines": 20,
+        "size_kb": 0.5
+      },
+      {
+        "path": "client\\src\\pages\\calendar\\components\\DayThemeBadge.tsx",
+        "lines": 20,
+        "size_kb": 0.5
+      },
+      {
+        "path": "v2\\client\\src\\hooks\\usePersistFn.ts",
+        "lines": 20,
+        "size_kb": 0.5
+      },
+      {
+        "path": "components.json",
+        "lines": 19,
+        "size_kb": 0.4
+      },
+      {
+        "path": "Momentumscrapper\\app\\vitest.config.ts",
+        "lines": 19,
+        "size_kb": 0.5
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\hooks\\use-mobile.ts",
+        "lines": 19,
+        "size_kb": 0.6
+      },
+      {
+        "path": "v2\\components.json",
+        "lines": 19,
+        "size_kb": 0.4
+      },
+      {
+        "path": "client\\src\\scanner\\useScannerI18n.ts",
+        "lines": 18,
+        "size_kb": 0.4
+      },
+      {
+        "path": "Momentumscrapper\\app\\api\\queries\\connection.ts",
+        "lines": 18,
+        "size_kb": 0.4
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\textarea.tsx",
+        "lines": 18,
+        "size_kb": 0.7
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\useScannerI18n.ts",
+        "lines": 18,
+        "size_kb": 0.4
+      },
+      {
+        "path": "client\\src\\const.ts",
+        "lines": 17,
+        "size_kb": 0.6
+      },
+      {
+        "path": "Momentumscrapper\\app\\db\\seed.ts",
+        "lines": 17,
+        "size_kb": 0.4
+      },
+      {
+        "path": "v2\\client\\src\\const.ts",
+        "lines": 17,
+        "size_kb": 0.6
+      },
+      {
+        "path": "template.json",
+        "lines": 16,
+        "size_kb": 14.0
+      },
+      {
+        "path": "client\\src\\components\\ui\\spinner.tsx",
+        "lines": 16,
+        "size_kb": 0.3
+      },
+      {
+        "path": "client\\src\\pages\\calendar\\components\\MarketSessionIndicator.tsx",
+        "lines": 16,
+        "size_kb": 0.4
+      },
+      {
+        "path": "Momentumscrapper\\app\\drizzle.config.ts",
+        "lines": 16,
+        "size_kb": 0.4
+      },
+      {
+        "path": "Momentumscrapper\\app\\api\\lib\\env.ts",
+        "lines": 16,
+        "size_kb": 0.4
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\main.tsx",
+        "lines": 16,
+        "size_kb": 0.4
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\spinner.tsx",
+        "lines": 16,
+        "size_kb": 0.3
+      },
+      {
+        "path": "shared\\earningReports.ts",
+        "lines": 16,
+        "size_kb": 0.3
+      },
+      {
+        "path": "v2\\template.json",
+        "lines": 16,
+        "size_kb": 14.0
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\spinner.tsx",
+        "lines": 16,
+        "size_kb": 0.3
+      },
+      {
+        "path": "client\\src\\lib\\i18n.ts",
+        "lines": 15,
+        "size_kb": 0.4
+      },
+      {
+        "path": "Momentumscrapper\\app\\contracts\\errors.ts",
+        "lines": 15,
+        "size_kb": 0.5
+      },
+      {
+        "path": "shared\\dailyReportOpenAiCharts.ts",
+        "lines": 14,
+        "size_kb": 0.3
+      },
+      {
+        "path": "client\\src\\components\\ui\\skeleton.tsx",
+        "lines": 13,
+        "size_kb": 0.3
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\skeleton.tsx",
+        "lines": 13,
+        "size_kb": 0.3
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\skeleton.tsx",
+        "lines": 13,
+        "size_kb": 0.3
+      },
+      {
+        "path": "Momentumscrapper\\app\\api\\context.ts",
+        "lines": 12,
+        "size_kb": 0.3
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\components\\ui\\aspect-ratio.tsx",
+        "lines": 11,
+        "size_kb": 0.3
+      },
+      {
+        "path": "client\\src\\pages\\calendar\\hooks\\useExpandedRow.ts",
+        "lines": 10,
+        "size_kb": 0.4
+      },
+      {
+        "path": "Momentumscrapper\\app\\api\\middleware.ts",
+        "lines": 10,
+        "size_kb": 0.3
+      },
+      {
+        "path": "client\\src\\components\\ui\\aspect-ratio.tsx",
+        "lines": 9,
+        "size_kb": 0.3
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\pages\\Home.tsx",
+        "lines": 9,
+        "size_kb": 0.2
+      },
+      {
+        "path": "v2\\client\\src\\components\\ui\\aspect-ratio.tsx",
+        "lines": 9,
+        "size_kb": 0.3
+      },
+      {
+        "path": "client\\src\\components\\workspace\\WorkspaceLoadingState.tsx",
+        "lines": 7,
+        "size_kb": 0.2
+      },
+      {
+        "path": "client\\src\\lib\\utils.ts",
+        "lines": 6,
+        "size_kb": 0.2
+      },
+      {
+        "path": "Momentumscrapper\\app\\.backend-features.json",
+        "lines": 6,
+        "size_kb": 0.1
+      },
+      {
+        "path": "Momentumscrapper\\app\\src\\lib\\utils.ts",
+        "lines": 6,
+        "size_kb": 0.2
+      },
+      {
+        "path": "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\utils.ts",
+        "lines": 6,
+        "size_kb": 0.2
+      },
+      {
+        "path": "v2\\client\\src\\lib\\utils.ts",
+        "lines": 6,
+        "size_kb": 0.2
+      },
+      {
+        "path": ".vscode\\extensions.json",
+        "lines": 5,
+        "size_kb": 0.1
+      },
+      {
+        "path": "client\\src\\main.tsx",
+        "lines": 5,
+        "size_kb": 0.2
+      },
+      {
+        "path": "v2\\client\\src\\main.tsx",
+        "lines": 5,
+        "size_kb": 0.2
+      },
+      {
+        "path": "client\\public\\__manus__\\version.json",
+        "lines": 4,
+        "size_kb": 0.1
+      },
+      {
+        "path": "client\\src\\pages\\calendar\\Calendar.types.ts",
+        "lines": 4,
+        "size_kb": 0.2
+      },
+      {
+        "path": "v2\\client\\public\\__manus__\\version.json",
+        "lines": 4,
+        "size_kb": 0.1
+      },
+      {
+        "path": "shared\\const.ts",
+        "lines": 2,
+        "size_kb": 0.1
+      },
+      {
+        "path": "v2\\shared\\const.ts",
+        "lines": 2,
+        "size_kb": 0.1
+      },
+      {
+        "path": "%TEMP%midas-req-1.json",
+        "lines": 1,
+        "size_kb": 0.4
+      },
+      {
+        "path": "%TEMP%midas-req-a.json",
+        "lines": 1,
+        "size_kb": 0.4
+      },
+      {
+        "path": "Momentumscrapper\\app\\contracts\\types.ts",
+        "lines": 1,
+        "size_kb": 0.0
+      },
+      {
+        "path": "Momentumscrapper\\app\\db\\relations.ts",
+        "lines": 1,
+        "size_kb": 0.0
+      }
+    ]
+  },
+  "patterns": {
+    "Momentumscrapper\\app\\package-lock.json": {
+      "useState_count": 0,
+      "useEffect_count": 0,
+      "useMemo_count": 0,
+      "useCallback_count": 0,
+      "useRef_count": 0,
+      "any_types": 0,
+      "as_assertions": 0,
+      "non_null_assertions": 0,
+      "console_log": 0,
+      "TODO_comments": 4,
+      "shadcn_imports": 0,
+      "lucide_imports": 4,
+      "recharts_imports": 8,
+      "framer_motion": 0,
+      "fetch_calls": 0,
+      "axios_calls": 0,
+      "className_p4": 4,
+      "className_p5": 1,
+      "className_p6": 0,
+      "className_rounded_2xl": 0,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 0,
+      "className_gradient": 0,
+      "className_border": 0,
+      "text_muted": 0,
+      "copy_function": 0,
+      "inline_translate": 0
+    },
+    "client\\public\\midas_signals.json": {
+      "useState_count": 0,
+      "useEffect_count": 0,
+      "useMemo_count": 0,
+      "useCallback_count": 0,
+      "useRef_count": 0,
+      "any_types": 0,
+      "as_assertions": 0,
+      "non_null_assertions": 0,
+      "console_log": 0,
+      "TODO_comments": 0,
+      "shadcn_imports": 0,
+      "lucide_imports": 0,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 0,
+      "axios_calls": 0,
+      "className_p4": 0,
+      "className_p5": 0,
+      "className_p6": 0,
+      "className_rounded_2xl": 0,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 0,
+      "className_gradient": 0,
+      "className_border": 0,
+      "text_muted": 0,
+      "copy_function": 0,
+      "inline_translate": 0
+    },
+    "client\\src\\lib\\earningReportSource.ts": {
+      "useState_count": 0,
+      "useEffect_count": 0,
+      "useMemo_count": 0,
+      "useCallback_count": 0,
+      "useRef_count": 0,
+      "any_types": 0,
+      "as_assertions": 20,
+      "non_null_assertions": 133,
+      "console_log": 0,
+      "TODO_comments": 0,
+      "shadcn_imports": 0,
+      "lucide_imports": 0,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 0,
+      "axios_calls": 0,
+      "className_p4": 0,
+      "className_p5": 0,
+      "className_p6": 0,
+      "className_rounded_2xl": 0,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 0,
+      "className_gradient": 0,
+      "className_border": 0,
+      "text_muted": 0,
+      "copy_function": 0,
+      "inline_translate": 0
+    },
+    "server\\index.ts": {
+      "useState_count": 0,
+      "useEffect_count": 0,
+      "useMemo_count": 0,
+      "useCallback_count": 0,
+      "useRef_count": 0,
+      "any_types": 0,
+      "as_assertions": 61,
+      "non_null_assertions": 160,
+      "console_log": 19,
+      "TODO_comments": 0,
+      "shadcn_imports": 0,
+      "lucide_imports": 0,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 6,
+      "axios_calls": 0,
+      "className_p4": 0,
+      "className_p5": 0,
+      "className_p6": 0,
+      "className_rounded_2xl": 0,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 0,
+      "className_gradient": 5,
+      "className_border": 0,
+      "text_muted": 0,
+      "copy_function": 0,
+      "inline_translate": 0
+    },
+    "client\\src\\pages\\ReportsAdmin.tsx": {
+      "useState_count": 32,
+      "useEffect_count": 4,
+      "useMemo_count": 4,
+      "useCallback_count": 16,
+      "useRef_count": 0,
+      "any_types": 0,
+      "as_assertions": 9,
+      "non_null_assertions": 38,
+      "console_log": 0,
+      "TODO_comments": 0,
+      "shadcn_imports": 2,
+      "lucide_imports": 1,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 12,
+      "axios_calls": 0,
+      "className_p4": 12,
+      "className_p5": 8,
+      "className_p6": 6,
+      "className_rounded_2xl": 3,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 8,
+      "className_gradient": 0,
+      "className_border": 20,
+      "text_muted": 30,
+      "copy_function": 155,
+      "inline_translate": 151
+    },
+    "client\\src\\pages\\MarketFlash.tsx": {
+      "useState_count": 7,
+      "useEffect_count": 3,
+      "useMemo_count": 2,
+      "useCallback_count": 2,
+      "useRef_count": 0,
+      "any_types": 0,
+      "as_assertions": 2,
+      "non_null_assertions": 23,
+      "console_log": 0,
+      "TODO_comments": 0,
+      "shadcn_imports": 7,
+      "lucide_imports": 1,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 1,
+      "axios_calls": 0,
+      "className_p4": 8,
+      "className_p5": 1,
+      "className_p6": 0,
+      "className_rounded_2xl": 11,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 0,
+      "className_gradient": 4,
+      "className_border": 3,
+      "text_muted": 41,
+      "copy_function": 70,
+      "inline_translate": 61
+    },
+    "client\\src\\components\\tabs\\MidasOpportunitiesTab.tsx": {
+      "useState_count": 11,
+      "useEffect_count": 4,
+      "useMemo_count": 11,
+      "useCallback_count": 3,
+      "useRef_count": 4,
+      "any_types": 0,
+      "as_assertions": 5,
+      "non_null_assertions": 25,
+      "console_log": 0,
+      "TODO_comments": 0,
+      "shadcn_imports": 0,
+      "lucide_imports": 1,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 1,
+      "axios_calls": 0,
+      "className_p4": 11,
+      "className_p5": 3,
+      "className_p6": 5,
+      "className_rounded_2xl": 7,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 0,
+      "className_gradient": 8,
+      "className_border": 48,
+      "text_muted": 49,
+      "copy_function": 158,
+      "inline_translate": 141
+    },
+    "server\\billingStore.ts": {
+      "useState_count": 0,
+      "useEffect_count": 0,
+      "useMemo_count": 0,
+      "useCallback_count": 0,
+      "useRef_count": 0,
+      "any_types": 0,
+      "as_assertions": 38,
+      "non_null_assertions": 2,
+      "console_log": 0,
+      "TODO_comments": 0,
+      "shadcn_imports": 0,
+      "lucide_imports": 0,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 0,
+      "axios_calls": 0,
+      "className_p4": 0,
+      "className_p5": 0,
+      "className_p6": 0,
+      "className_rounded_2xl": 0,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 0,
+      "className_gradient": 0,
+      "className_border": 0,
+      "text_muted": 0,
+      "copy_function": 0,
+      "inline_translate": 0
+    },
+    "client\\src\\App.tsx": {
+      "useState_count": 3,
+      "useEffect_count": 6,
+      "useMemo_count": 3,
+      "useCallback_count": 2,
+      "useRef_count": 12,
+      "any_types": 0,
+      "as_assertions": 11,
+      "non_null_assertions": 48,
+      "console_log": 0,
+      "TODO_comments": 0,
+      "shadcn_imports": 4,
+      "lucide_imports": 1,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 3,
+      "axios_calls": 0,
+      "className_p4": 5,
+      "className_p5": 1,
+      "className_p6": 2,
+      "className_rounded_2xl": 4,
+      "className_rounded_3xl": 2,
+      "className_shadow_2xl": 3,
+      "className_gradient": 0,
+      "className_border": 16,
+      "text_muted": 15,
+      "copy_function": 52,
+      "inline_translate": 35
+    },
+    "client\\src\\components\\tabs\\MomentumFlowSurface.tsx": {
+      "useState_count": 11,
+      "useEffect_count": 4,
+      "useMemo_count": 11,
+      "useCallback_count": 3,
+      "useRef_count": 3,
+      "any_types": 0,
+      "as_assertions": 3,
+      "non_null_assertions": 32,
+      "console_log": 0,
+      "TODO_comments": 0,
+      "shadcn_imports": 0,
+      "lucide_imports": 1,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 1,
+      "axios_calls": 0,
+      "className_p4": 6,
+      "className_p5": 1,
+      "className_p6": 6,
+      "className_rounded_2xl": 5,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 0,
+      "className_gradient": 26,
+      "className_border": 36,
+      "text_muted": 27,
+      "copy_function": 143,
+      "inline_translate": 143
+    },
+    "client\\src\\lib\\momentumReportSource.ts": {
+      "useState_count": 0,
+      "useEffect_count": 0,
+      "useMemo_count": 0,
+      "useCallback_count": 0,
+      "useRef_count": 0,
+      "any_types": 0,
+      "as_assertions": 1,
+      "non_null_assertions": 39,
+      "console_log": 0,
+      "TODO_comments": 0,
+      "shadcn_imports": 0,
+      "lucide_imports": 0,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 0,
+      "axios_calls": 0,
+      "className_p4": 0,
+      "className_p5": 0,
+      "className_p6": 0,
+      "className_rounded_2xl": 0,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 0,
+      "className_gradient": 0,
+      "className_border": 0,
+      "text_muted": 0,
+      "copy_function": 0,
+      "inline_translate": 0
+    },
+    "server\\dailyReportSources.ts": {
+      "useState_count": 0,
+      "useEffect_count": 0,
+      "useMemo_count": 0,
+      "useCallback_count": 0,
+      "useRef_count": 0,
+      "any_types": 0,
+      "as_assertions": 0,
+      "non_null_assertions": 72,
+      "console_log": 0,
+      "TODO_comments": 4,
+      "shadcn_imports": 0,
+      "lucide_imports": 0,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 0,
+      "axios_calls": 0,
+      "className_p4": 0,
+      "className_p5": 0,
+      "className_p6": 0,
+      "className_rounded_2xl": 0,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 0,
+      "className_gradient": 0,
+      "className_border": 0,
+      "text_muted": 0,
+      "copy_function": 0,
+      "inline_translate": 0
+    },
+    "client\\src\\pages\\CpiPpiForecast.tsx": {
+      "useState_count": 5,
+      "useEffect_count": 3,
+      "useMemo_count": 2,
+      "useCallback_count": 2,
+      "useRef_count": 0,
+      "any_types": 0,
+      "as_assertions": 9,
+      "non_null_assertions": 10,
+      "console_log": 0,
+      "TODO_comments": 0,
+      "shadcn_imports": 1,
+      "lucide_imports": 1,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 1,
+      "axios_calls": 0,
+      "className_p4": 1,
+      "className_p5": 0,
+      "className_p6": 0,
+      "className_rounded_2xl": 9,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 0,
+      "className_gradient": 12,
+      "className_border": 2,
+      "text_muted": 24,
+      "copy_function": 74,
+      "inline_translate": 54
+    },
+    "Momentumscrapper\\app\\src\\lib\\momentum.ts": {
+      "useState_count": 0,
+      "useEffect_count": 0,
+      "useMemo_count": 0,
+      "useCallback_count": 0,
+      "useRef_count": 0,
+      "any_types": 0,
+      "as_assertions": 4,
+      "non_null_assertions": 12,
+      "console_log": 1,
+      "TODO_comments": 0,
+      "shadcn_imports": 0,
+      "lucide_imports": 0,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 0,
+      "axios_calls": 0,
+      "className_p4": 0,
+      "className_p5": 0,
+      "className_p6": 0,
+      "className_rounded_2xl": 0,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 0,
+      "className_gradient": 0,
+      "className_border": 0,
+      "text_muted": 0,
+      "copy_function": 0,
+      "inline_translate": 0
+    },
+    "Momentumscrapper\\gistify-scanner\\client\\src\\scanner\\lib\\momentum.ts": {
+      "useState_count": 0,
+      "useEffect_count": 0,
+      "useMemo_count": 0,
+      "useCallback_count": 0,
+      "useRef_count": 0,
+      "any_types": 0,
+      "as_assertions": 4,
+      "non_null_assertions": 12,
+      "console_log": 1,
+      "TODO_comments": 0,
+      "shadcn_imports": 0,
+      "lucide_imports": 0,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 0,
+      "axios_calls": 0,
+      "className_p4": 0,
+      "className_p5": 0,
+      "className_p6": 0,
+      "className_rounded_2xl": 0,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 0,
+      "className_gradient": 0,
+      "className_border": 0,
+      "text_muted": 0,
+      "copy_function": 0,
+      "inline_translate": 0
+    },
+    "client\\src\\components\\reports\\WeeklyReportAdminPanel.tsx": {
+      "useState_count": 4,
+      "useEffect_count": 3,
+      "useMemo_count": 2,
+      "useCallback_count": 0,
+      "useRef_count": 0,
+      "any_types": 0,
+      "as_assertions": 7,
+      "non_null_assertions": 10,
+      "console_log": 0,
+      "TODO_comments": 0,
+      "shadcn_imports": 4,
+      "lucide_imports": 1,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 0,
+      "axios_calls": 0,
+      "className_p4": 5,
+      "className_p5": 2,
+      "className_p6": 4,
+      "className_rounded_2xl": 1,
+      "className_rounded_3xl": 2,
+      "className_shadow_2xl": 3,
+      "className_gradient": 0,
+      "className_border": 7,
+      "text_muted": 10,
+      "copy_function": 0,
+      "inline_translate": 0
+    },
+    "client\\src\\pages\\Calendar.tsx": {
+      "useState_count": 6,
+      "useEffect_count": 3,
+      "useMemo_count": 0,
+      "useCallback_count": 2,
+      "useRef_count": 0,
+      "any_types": 0,
+      "as_assertions": 2,
+      "non_null_assertions": 12,
+      "console_log": 0,
+      "TODO_comments": 0,
+      "shadcn_imports": 4,
+      "lucide_imports": 1,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 1,
+      "axios_calls": 0,
+      "className_p4": 4,
+      "className_p5": 1,
+      "className_p6": 0,
+      "className_rounded_2xl": 7,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 0,
+      "className_gradient": 4,
+      "className_border": 1,
+      "text_muted": 16,
+      "copy_function": 51,
+      "inline_translate": 39
+    },
+    "client\\src\\components\\reports\\HtmlReportRenderer.tsx": {
+      "useState_count": 2,
+      "useEffect_count": 3,
+      "useMemo_count": 5,
+      "useCallback_count": 2,
+      "useRef_count": 2,
+      "any_types": 0,
+      "as_assertions": 8,
+      "non_null_assertions": 42,
+      "console_log": 0,
+      "TODO_comments": 0,
+      "shadcn_imports": 0,
+      "lucide_imports": 1,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 1,
+      "axios_calls": 0,
+      "className_p4": 1,
+      "className_p5": 3,
+      "className_p6": 0,
+      "className_rounded_2xl": 0,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 0,
+      "className_gradient": 0,
+      "className_border": 6,
+      "text_muted": 4,
+      "copy_function": 9,
+      "inline_translate": 6
+    },
+    "client\\src\\components\\tabs\\EarningReportPostTab.tsx": {
+      "useState_count": 0,
+      "useEffect_count": 0,
+      "useMemo_count": 0,
+      "useCallback_count": 0,
+      "useRef_count": 0,
+      "any_types": 0,
+      "as_assertions": 2,
+      "non_null_assertions": 11,
+      "console_log": 0,
+      "TODO_comments": 0,
+      "shadcn_imports": 0,
+      "lucide_imports": 0,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 0,
+      "axios_calls": 0,
+      "className_p4": 5,
+      "className_p5": 6,
+      "className_p6": 2,
+      "className_rounded_2xl": 0,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 0,
+      "className_gradient": 0,
+      "className_border": 29,
+      "text_muted": 28,
+      "copy_function": 66,
+      "inline_translate": 54
+    },
+    "client\\src\\scanner\\lib\\dataProviders.ts": {
+      "useState_count": 0,
+      "useEffect_count": 0,
+      "useMemo_count": 0,
+      "useCallback_count": 0,
+      "useRef_count": 0,
+      "any_types": 0,
+      "as_assertions": 0,
+      "non_null_assertions": 38,
+      "console_log": 13,
+      "TODO_comments": 0,
+      "shadcn_imports": 0,
+      "lucide_imports": 0,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 1,
+      "axios_calls": 0,
+      "className_p4": 0,
+      "className_p5": 0,
+      "className_p6": 0,
+      "className_rounded_2xl": 0,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 0,
+      "className_gradient": 0,
+      "className_border": 0,
+      "text_muted": 0,
+      "copy_function": 0,
+      "inline_translate": 0
+    },
+    "client\\src\\components\\reports\\DailyReportAdminPanel.tsx": {
+      "useState_count": 3,
+      "useEffect_count": 2,
+      "useMemo_count": 0,
+      "useCallback_count": 0,
+      "useRef_count": 0,
+      "any_types": 0,
+      "as_assertions": 2,
+      "non_null_assertions": 10,
+      "console_log": 0,
+      "TODO_comments": 0,
+      "shadcn_imports": 4,
+      "lucide_imports": 1,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 0,
+      "axios_calls": 0,
+      "className_p4": 8,
+      "className_p5": 2,
+      "className_p6": 3,
+      "className_rounded_2xl": 1,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 3,
+      "className_gradient": 0,
+      "className_border": 8,
+      "text_muted": 10,
+      "copy_function": 0,
+      "inline_translate": 0
+    },
+    "server\\adminMarketData.ts": {
+      "useState_count": 0,
+      "useEffect_count": 0,
+      "useMemo_count": 0,
+      "useCallback_count": 0,
+      "useRef_count": 0,
+      "any_types": 0,
+      "as_assertions": 8,
+      "non_null_assertions": 11,
+      "console_log": 0,
+      "TODO_comments": 0,
+      "shadcn_imports": 0,
+      "lucide_imports": 0,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 1,
+      "axios_calls": 0,
+      "className_p4": 0,
+      "className_p5": 0,
+      "className_p6": 0,
+      "className_rounded_2xl": 0,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 0,
+      "className_gradient": 0,
+      "className_border": 0,
+      "text_muted": 0,
+      "copy_function": 0,
+      "inline_translate": 0
+    },
+    "client\\src\\scanner\\lib\\momentum.ts": {
+      "useState_count": 0,
+      "useEffect_count": 0,
+      "useMemo_count": 0,
+      "useCallback_count": 0,
+      "useRef_count": 0,
+      "any_types": 0,
+      "as_assertions": 0,
+      "non_null_assertions": 8,
+      "console_log": 1,
+      "TODO_comments": 0,
+      "shadcn_imports": 0,
+      "lucide_imports": 0,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 0,
+      "axios_calls": 0,
+      "className_p4": 0,
+      "className_p5": 0,
+      "className_p6": 0,
+      "className_rounded_2xl": 0,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 0,
+      "className_gradient": 0,
+      "className_border": 0,
+      "text_muted": 0,
+      "copy_function": 3,
+      "inline_translate": 3
+    },
+    "client\\src\\components\\ui\\sidebar.tsx": {
+      "useState_count": 2,
+      "useEffect_count": 1,
+      "useMemo_count": 2,
+      "useCallback_count": 2,
+      "useRef_count": 0,
+      "any_types": 0,
+      "as_assertions": 4,
+      "non_null_assertions": 8,
+      "console_log": 0,
+      "TODO_comments": 0,
+      "shadcn_imports": 6,
+      "lucide_imports": 1,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 0,
+      "axios_calls": 0,
+      "className_p4": 0,
+      "className_p5": 0,
+      "className_p6": 0,
+      "className_rounded_2xl": 0,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 0,
+      "className_gradient": 0,
+      "className_border": 0,
+      "text_muted": 0,
+      "copy_function": 5,
+      "inline_translate": 4
+    },
+    "client\\src\\lib\\stockData.ts": {
+      "useState_count": 0,
+      "useEffect_count": 0,
+      "useMemo_count": 0,
+      "useCallback_count": 0,
+      "useRef_count": 0,
+      "any_types": 0,
+      "as_assertions": 14,
+      "non_null_assertions": 0,
+      "console_log": 0,
+      "TODO_comments": 2,
+      "shadcn_imports": 0,
+      "lucide_imports": 0,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 0,
+      "axios_calls": 0,
+      "className_p4": 0,
+      "className_p5": 0,
+      "className_p6": 0,
+      "className_rounded_2xl": 0,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 0,
+      "className_gradient": 0,
+      "className_border": 0,
+      "text_muted": 0,
+      "copy_function": 0,
+      "inline_translate": 0
+    },
+    "v2\\client\\src\\lib\\stockData.ts": {
+      "useState_count": 0,
+      "useEffect_count": 0,
+      "useMemo_count": 0,
+      "useCallback_count": 0,
+      "useRef_count": 0,
+      "any_types": 0,
+      "as_assertions": 14,
+      "non_null_assertions": 0,
+      "console_log": 0,
+      "TODO_comments": 2,
+      "shadcn_imports": 0,
+      "lucide_imports": 0,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 0,
+      "axios_calls": 0,
+      "className_p4": 0,
+      "className_p5": 0,
+      "className_p6": 0,
+      "className_rounded_2xl": 0,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 0,
+      "className_gradient": 0,
+      "className_border": 0,
+      "text_muted": 0,
+      "copy_function": 0,
+      "inline_translate": 0
+    },
+    "v2\\client\\src\\components\\ui\\sidebar.tsx": {
+      "useState_count": 2,
+      "useEffect_count": 1,
+      "useMemo_count": 2,
+      "useCallback_count": 2,
+      "useRef_count": 0,
+      "any_types": 0,
+      "as_assertions": 4,
+      "non_null_assertions": 8,
+      "console_log": 0,
+      "TODO_comments": 0,
+      "shadcn_imports": 6,
+      "lucide_imports": 1,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 0,
+      "axios_calls": 0,
+      "className_p4": 0,
+      "className_p5": 0,
+      "className_p6": 0,
+      "className_rounded_2xl": 0,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 0,
+      "className_gradient": 0,
+      "className_border": 0,
+      "text_muted": 0,
+      "copy_function": 0,
+      "inline_translate": 0
+    },
+    "server\\weeklyReportSeeds.ts": {
+      "useState_count": 0,
+      "useEffect_count": 0,
+      "useMemo_count": 0,
+      "useCallback_count": 0,
+      "useRef_count": 0,
+      "any_types": 0,
+      "as_assertions": 2,
+      "non_null_assertions": 1,
+      "console_log": 0,
+      "TODO_comments": 0,
+      "shadcn_imports": 0,
+      "lucide_imports": 0,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 0,
+      "axios_calls": 0,
+      "className_p4": 0,
+      "className_p5": 0,
+      "className_p6": 0,
+      "className_rounded_2xl": 0,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 0,
+      "className_gradient": 0,
+      "className_border": 0,
+      "text_muted": 0,
+      "copy_function": 0,
+      "inline_translate": 0
+    },
+    "Momentumscrapper\\app\\src\\components\\ui\\sidebar.tsx": {
+      "useState_count": 2,
+      "useEffect_count": 1,
+      "useMemo_count": 2,
+      "useCallback_count": 2,
+      "useRef_count": 0,
+      "any_types": 0,
+      "as_assertions": 4,
+      "non_null_assertions": 8,
+      "console_log": 0,
+      "TODO_comments": 0,
+      "shadcn_imports": 6,
+      "lucide_imports": 1,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 0,
+      "axios_calls": 0,
+      "className_p4": 0,
+      "className_p5": 0,
+      "className_p6": 0,
+      "className_rounded_2xl": 0,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 0,
+      "className_gradient": 0,
+      "className_border": 0,
+      "text_muted": 0,
+      "copy_function": 0,
+      "inline_translate": 0
+    },
+    "midas_signals.json": {
+      "useState_count": 0,
+      "useEffect_count": 0,
+      "useMemo_count": 0,
+      "useCallback_count": 0,
+      "useRef_count": 0,
+      "any_types": 0,
+      "as_assertions": 0,
+      "non_null_assertions": 0,
+      "console_log": 0,
+      "TODO_comments": 0,
+      "shadcn_imports": 0,
+      "lucide_imports": 0,
+      "recharts_imports": 0,
+      "framer_motion": 0,
+      "fetch_calls": 0,
+      "axios_calls": 0,
+      "className_p4": 0,
+      "className_p5": 0,
+      "className_p6": 0,
+      "className_rounded_2xl": 0,
+      "className_rounded_3xl": 0,
+      "className_shadow_2xl": 0,
+      "className_gradient": 0,
+      "className_border": 0,
+      "text_muted": 0,
+      "copy_function": 0,
+      "inline_translate": 0
+    }
+  }
+}

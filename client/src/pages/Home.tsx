@@ -6,6 +6,7 @@ import {
   useState,
   useTransition,
 } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   AlertTriangle,
   BarChart3,
@@ -463,7 +464,7 @@ export default function Home({ language }: { language: AppLanguage }) {
           }`}
         >
           <main ref={contentRef} className="min-w-0 space-y-6">
-            <section className="workspace-panel p-4 md:p-6">
+            <section className="panel p-4 md:p-6">
               {hasReports ? (
                 <div className="flex flex-col gap-4 border-b border-border pb-4 md:flex-row md:items-end md:justify-between">
                   <div className="space-y-2">
@@ -540,14 +541,24 @@ export default function Home({ language }: { language: AppLanguage }) {
                     {copy(language, "Gorunum degisiyor...", "Switching view...")}
                   </div>
                 ) : null}
-                {renderActiveTab()}
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={`${activeTab}:${selectedReportId}:${selectedTicker || "none"}`}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -12 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                  >
+                    {renderActiveTab()}
+                  </motion.div>
+                </AnimatePresence>
               </div>
             </section>
           </main>
 
           {sidebarOpen ? (
             <aside className="hidden min-w-0 space-y-6 xl:block">
-              <section className="workspace-panel p-6">
+              <section className="panel p-6">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
@@ -612,5 +623,6 @@ export default function Home({ language }: { language: AppLanguage }) {
     </div>
   );
 }
+
 
 

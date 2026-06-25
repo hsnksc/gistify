@@ -145,7 +145,7 @@ export default function SectorTab({ stocks = stocksData, language }: Props) {
           </h2>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <div className="tactical-card p-4" style={{ height: '300px' }}>
+          <div className="data-card p-4" style={{ height: '300px' }}>
             <div className="text-xs font-semibold tracking-widest uppercase mb-2" style={{ color: 'oklch(0.45 0.015 225)' }}>
               {copy(language, 'Harcama Büyüklüğü ($M)', 'Spending Size ($M)')}
             </div>
@@ -207,7 +207,7 @@ export default function SectorTab({ stocks = stocksData, language }: Props) {
               </BarChart>
             </ChartContainer>
           </div>
-          <div className="tactical-card p-4" style={{ height: '300px' }}>
+          <div className="data-card p-4" style={{ height: '300px' }}>
             <div className="text-xs font-semibold tracking-widest uppercase mb-2" style={{ color: 'oklch(0.45 0.015 225)' }}>
               {copy(language, 'YoY Büyüme Oranları (%)', 'YoY Growth Rates (%)')}
             </div>
@@ -285,7 +285,7 @@ export default function SectorTab({ stocks = stocksData, language }: Props) {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {Object.values(sectorMacroData).map((sector) => (
-            <div key={sector.name} className="tactical-card p-4">
+            <div key={sector.name} className="data-card p-4">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="heading-condensed text-base" style={{ color: 'oklch(0.85 0.01 220)' }}>{sector.name}</h3>
                 <span className={`text-xs font-bold px-2 py-0.5 border ${
@@ -323,7 +323,7 @@ export default function SectorTab({ stocks = stocksData, language }: Props) {
             {copy(language, 'SEKTÖR BAZLI ORT. MOMENTUM SKORU', 'SECTOR-BASED AVG. MOMENTUM SCORE')}
           </h2>
         </div>
-        <div className="tactical-card p-4" style={{ height: '220px' }}>
+        <div className="data-card p-4" style={{ height: '220px' }}>
           <ChartContainer
             aria-label={getChartAriaLabel(
               copy(language, 'Sektör bazlı ortalama momentum grafiği', 'Average momentum by sector chart'),
@@ -378,7 +378,7 @@ export default function SectorTab({ stocks = stocksData, language }: Props) {
       </div>
 
       {/* AI Semiconductor Deep Dive */}
-      <div className="tactical-card p-6" style={{ borderLeftColor: 'oklch(0.78 0.18 160)', borderLeftWidth: '4px' }}>
+      <div className="data-card p-6" style={{ borderLeftColor: 'oklch(0.78 0.18 160)', borderLeftWidth: '4px' }}>
         <div className="flex items-center gap-2 mb-3">
           <span className="heading-condensed text-base" style={{ color: 'oklch(0.78 0.18 160)' }}>
             {copy(language, '◈ AI YARI İLETKEN — DERİN BAĞLAM', '◈ AI SEMICONDUCTOR — DEEP CONTEXT')}
@@ -412,4 +412,5 @@ export default function SectorTab({ stocks = stocksData, language }: Props) {
     </div>
   );
 }
+
 

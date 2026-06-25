@@ -1,0 +1,7 @@
+{
+  "date": "2026-06-25",
+  "postText": "📊 Gün Özeti | 25.06.2026\n• $SPY -0.05% | $QQQ -0.42% | $VIX 18.6\n• Rotation: $XLK -3.7% vs $IWM +0.46% — small-cap güçlü\n• 🔥 $MU +13% AH — $25.11 vs $20.20\n• ❄️ $CBRS -17.9% — AI selloff\n• Midas: $INTC 45.5 | $MU 43\nPCE 8:30 ET — core 3.4% est, 3-gün negatif seri, mean reversion.",
+  "status": "posted",
+  "timestamp": "2026-06-25T11:15:00Z",
+  "sources": ["marketflash", "midas", "ppi_forecast", "cpi_forecast"]
+}

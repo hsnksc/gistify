@@ -1,6 +1,6 @@
 /**
- * Trained Model v4
- * Geçmiş verilerden öğrenilmiş optimal parametreler.
+ * Signal Model v4
+ * Geçmiş verilerden türetilen eşikler ve ağırlıklar.
  * Eğitim sonuçları varsa onları, yoksa varsayılanları kullanır.
  */
 
@@ -23,7 +23,7 @@ const DEFAULT_THRESHOLDS = {
 } as const;
 
 // Eğitilmiş eşik değerleri (eğitim sonuçlarından dinamik)
-function getTrainedThresholds() {
+function getSignalThresholds() {
   const trained = loadTrainingResults();
   if (!trained) return { ...DEFAULT_THRESHOLDS };
   return {
@@ -36,11 +36,11 @@ function getTrainedThresholds() {
   };
 }
 
-export const TRAINED_THRESHOLDS = getTrainedThresholds();
+export const SIGNAL_THRESHOLDS = getSignalThresholds();
 
 // ===================== Faktör Ağırlıkları =====================
 
-export const TRAINED_WEIGHTS = {
+export const SIGNAL_WEIGHTS = {
   rvol: 0.22,
   gap: 0.12,
   orb: 0.15,
@@ -54,9 +54,9 @@ export const TRAINED_WEIGHTS = {
   price_change: 0.02,
 } as const;
 
-const totalWeight = Object.values(TRAINED_WEIGHTS).reduce((a, b) => a + b, 0);
+const totalWeight = Object.values(SIGNAL_WEIGHTS).reduce((a, b) => a + b, 0);
 if (Math.abs(totalWeight - 1.0) > 0.01) {
-  console.error(`[TrainedModel] Ağırlık toplamı ${totalWeight.toFixed(2)} olmalı 1.00`);
+  console.error(`[SignalModel] Ağırlık toplamı ${totalWeight.toFixed(2)} olmalı 1.00`);
 }
 
 // ===================== Sektör Bonusları =====================
@@ -87,10 +87,10 @@ export function getDayAdjustment(): number {
 
 // ===================== Model Açıklaması =====================
 
-export function getModelDescription(): string {
+export function getSignalModelDescription(): string {
   const trained = loadTrainingResults();
   if (trained) {
-    return `Eğitilmiş Model (${new Date(trained.trainedAt).toLocaleDateString("tr-TR")}):
+    return `Signal Model (${new Date(trained.trainedAt).toLocaleDateString("tr-TR")}):
 - ${trained.totalTrades} trade analiz edildi
 - Optimal entry: ${trained.optimalScoreThreshold}+ skor
 - Optimal RVOL: ${trained.optimalRvol}x+
@@ -98,7 +98,7 @@ export function getModelDescription(): string {
 - En iyi WR: %${trained.bestWinRate}
 - En güçlü faktör: RVOL (hacim patlaması)`;
   }
-  return `Varsayılan Model (henüz eğitilmedi):
+  return `Varsayılan Signal Model (henüz eğitilmedi):
 - Entry threshold: 55+ skor
 - Optimal RVOL: 1.8x+
 - Optimal RSI: 55-78

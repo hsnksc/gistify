@@ -111,7 +111,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
           }
         />
 
-        <section className="mt-6 workspace-panel p-4 md:p-6">
+        <section className="mt-6 panel p-4 md:p-6">
           <div className="mb-4 flex flex-col gap-2 border-b border-border pb-4 md:flex-row md:items-end md:justify-between">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
@@ -143,5 +143,6 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
     </div>
   );
 }
+
 
 
