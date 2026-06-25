@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Globe, Search } from "lucide-react";
+import { Globe, Search, SlidersHorizontal, ChevronDown } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -71,13 +71,20 @@ export function EventsTable({
       return a.country.localeCompare(b.country);
     });
 
+  const filterCounts = {
+    all: events.length,
+    high: events.filter((e) => e.importance === "high").length,
+    medium: events.filter((e) => e.importance === "medium").length,
+    low: events.filter((e) => e.importance === "low").length,
+  };
+
   const headers = [
     copy(language, "Saat", "Time"),
     copy(language, "Ulke", "Country"),
     copy(language, "Olay", "Event"),
-    copy(language, "Onem", "Importance"),
-    copy(language, "Onceki", "Previous"),
-    copy(language, "Beklenen", "Forecast"),
+    copy(language, "Onem", "Imp."),
+    copy(language, "Onceki", "Prev"),
+    copy(language, "Beklenen", "Fcst"),
     copy(language, "Gerceklesen", "Actual"),
     "",
   ];
@@ -89,41 +96,75 @@ export function EventsTable({
           <CardTitle className="flex items-center gap-2 text-lg">
             <Globe className={cn("size-5", THEME.iconClassName)} />
             {copy(language, "Makro Olaylar", "Macro Events")}
+            <Badge
+              variant="outline"
+              className="ml-1 text-[10px] font-medium border-white/10 bg-white/5"
+            >
+              {filtered.length}
+            </Badge>
           </CardTitle>
           <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
             <div className="relative w-full sm:w-auto">
-              <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground md:left-2.5 md:size-3" />
+              <Search className="absolute left-3 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
               <Input
                 placeholder={copy(language, "Ara...", "Search...")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-11 w-full bg-background/70 pl-10 text-[clamp(0.875rem,2.8vw,0.95rem)] md:h-8 md:w-40 md:pl-8 md:text-xs"
+                className="h-8 w-full bg-background/60 pl-8 text-xs border-white/10 focus:border-emerald-500/40"
               />
             </div>
             <ToggleGroup
               type="single"
               value={filter}
               onValueChange={(v) => v && setFilter(v as typeof filter)}
-              className="grid h-auto w-full grid-cols-4 gap-1 sm:flex sm:w-auto sm:gap-0"
+              className="grid h-auto w-full grid-cols-4 gap-1 sm:flex sm:w-auto sm:gap-0.5"
             >
-              <ToggleGroupItem value="all" className="min-h-11 text-[clamp(0.875rem,2.8vw,0.95rem)] md:min-h-8 md:text-xs">
-                {copy(language, "Tumu", "All")}
+              <ToggleGroupItem
+                value="all"
+                className="h-8 text-xs px-2.5 data-[state=on]:bg-white/10 data-[state=on]:border-white/20"
+              >
+                {copy(language, "Tumu", "All")}{" "}
+                <span className="ml-1 text-[10px] text-muted-foreground">
+                  {filterCounts.all}
+                </span>
               </ToggleGroupItem>
-              <ToggleGroupItem value="high" className="min-h-11 text-[clamp(0.875rem,2.8vw,0.95rem)] md:min-h-8 md:text-xs">
-                🔴
+              <ToggleGroupItem
+                value="high"
+                className="h-8 text-xs px-2.5 data-[state=on]:bg-rose-500/20 data-[state=on]:border-rose-500/40 data-[state=on]:text-rose-200"
+              >
+                <span className="mr-1 inline-block size-2 rounded-full bg-rose-500" />
+                {copy(language, "Yuksek", "High")}
+                <span className="ml-1 text-[10px] text-muted-foreground">
+                  {filterCounts.high}
+                </span>
               </ToggleGroupItem>
-              <ToggleGroupItem value="medium" className="min-h-11 text-[clamp(0.875rem,2.8vw,0.95rem)] md:min-h-8 md:text-xs">
-                🟡
+              <ToggleGroupItem
+                value="medium"
+                className="h-8 text-xs px-2.5 data-[state=on]:bg-amber-500/20 data-[state=on]:border-amber-500/40 data-[state=on]:text-amber-200"
+              >
+                <span className="mr-1 inline-block size-2 rounded-full bg-amber-500" />
+                {copy(language, "Orta", "Med")}
+                <span className="ml-1 text-[10px] text-muted-foreground">
+                  {filterCounts.medium}
+                </span>
               </ToggleGroupItem>
-              <ToggleGroupItem value="low" className="min-h-11 text-[clamp(0.875rem,2.8vw,0.95rem)] md:min-h-8 md:text-xs">
-                🟢
+              <ToggleGroupItem
+                value="low"
+                className="h-8 text-xs px-2.5 data-[state=on]:bg-emerald-500/20 data-[state=on]:border-emerald-500/40 data-[state=on]:text-emerald-200"
+              >
+                <span className="mr-1 inline-block size-2 rounded-full bg-emerald-500" />
+                {copy(language, "Dusuk", "Low")}
+                <span className="ml-1 text-[10px] text-muted-foreground">
+                  {filterCounts.low}
+                </span>
               </ToggleGroupItem>
             </ToggleGroup>
             <Select
               value={sortBy}
               onValueChange={(v) => setSortBy(v as typeof sortBy)}
             >
-              <SelectTrigger className="h-11 w-full bg-background/70 text-[clamp(0.875rem,2.8vw,0.95rem)] md:h-8 md:w-32 md:text-xs">
+              <SelectTrigger className="h-8 w-full bg-background/60 text-xs border-white/10 sm:w-28">
+                <SlidersHorizontal className="size-3 mr-1.5 text-muted-foreground" />
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -145,11 +186,11 @@ export function EventsTable({
         <div className="hidden md:block overflow-x-auto">
           <Table>
             <TableHeader>
-              <TableRow className="border-white/10 hover:bg-transparent">
+              <TableRow className="border-white/10 hover:bg-transparent bg-black/20">
                 {headers.map((header, i) => (
                   <TableHead
                     key={i}
-                    className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground"
+                    className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground py-2"
                   >
                     {header}
                   </TableHead>
@@ -171,7 +212,7 @@ export function EventsTable({
                 <TableRow>
                   <TableCell
                     colSpan={headers.length}
-                    className="text-sm text-muted-foreground"
+                    className="text-sm text-muted-foreground py-6 text-center"
                   >
                     {copy(language, "Bulunamadi", "No results found")}
                   </TableCell>
@@ -181,7 +222,7 @@ export function EventsTable({
           </Table>
         </div>
 
-        <div className="md:hidden space-y-3 p-4">
+        <div className="md:hidden space-y-2 p-3">
           {filtered.length ? (
             filtered.map((event) => (
               <MobileEventCard
@@ -193,7 +234,7 @@ export function EventsTable({
               />
             ))
           ) : (
-            <div className="rounded-xl border border-dashed border-white/10 bg-black/15 px-4 py-3 text-sm text-muted-foreground">
+            <div className="rounded-xl border border-dashed border-white/10 bg-black/15 px-4 py-3 text-sm text-muted-foreground text-center">
               {copy(language, "Bulunamadi", "No results found")}
             </div>
           )}
@@ -217,75 +258,88 @@ function MobileEventCard({
   return (
     <div
       className={cn(
-        "rounded-xl border border-white/10 bg-black/20 p-3.5",
-        importanceRowClass(event.importance)
+        "rounded-lg border border-white/10 bg-black/20 overflow-hidden",
+        importanceRowClass(event.importance),
+        event.importance === "high" && "border-l-2 border-l-rose-500/50"
       )}
       onClick={onToggle}
     >
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <p className="text-sm font-semibold text-foreground">
-            {event.eventName}
-          </p>
-          <p className="mt-1 text-xs text-muted-foreground">
-            {event.countryFlag} {event.country} · {event.time}
-            {event.currency && ` · ${event.currency}`}
-          </p>
-        </div>
-        <Badge
-          variant="outline"
-          className={cn(
-            "shrink-0 text-[10px] uppercase tracking-[0.14em]",
-            importanceClass(event.importance)
-          )}
-        >
-          {importanceLabel(event.importance, language)}
-        </Badge>
-      </div>
-      <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
-        <div className="rounded-xl border border-white/10 bg-black/20 px-2 py-1.5">
-          <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-            {copy(language, "Onceki", "Previous")}
-          </p>
-          <p className="mt-1 text-foreground">{event.previous || "-"}</p>
-        </div>
-        <div className="rounded-xl border border-white/10 bg-black/20 px-2 py-1.5">
-          <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-            {copy(language, "Beklenen", "Forecast")}
-          </p>
-          <p className="mt-1 text-foreground">{event.forecast || "-"}</p>
-        </div>
-        <div className="rounded-xl border border-white/10 bg-black/20 px-2 py-1.5">
-          <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-            {copy(language, "Gerceklesen", "Actual")}
-          </p>
-          <p
-            className={cn(
-              "mt-1",
-              actualHighlightClass(
-                event.actual,
-                event.forecast,
-                event.impactDirection
-              )
-            )}
-          >
-            {event.actual || "-"}
-            {event.unit && event.actual ? (
-              <span className="text-xs text-muted-foreground ml-1">
-                {event.unit}
+      <div className="p-3">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-sm font-semibold tabular-nums text-foreground">
+                {event.time}
               </span>
-            ) : null}
-          </p>
+              <span className="text-base">{event.countryFlag}</span>
+              <Badge
+                variant="outline"
+                className={cn(
+                  "text-[9px] uppercase tracking-[0.14em] font-semibold px-1.5 py-0",
+                  importanceClass(event.importance)
+                )}
+              >
+                {importanceLabel(event.importance, language)}
+              </Badge>
+            </div>
+            <p className="text-sm font-medium text-foreground leading-snug">
+              {event.eventName}
+            </p>
+          </div>
+          <ChevronDown
+            className={cn(
+              "size-4 mt-0.5 transition-transform duration-200 text-muted-foreground shrink-0",
+              isExpanded && "rotate-180"
+            )}
+          />
+        </div>
+        <div className="mt-2.5 grid grid-cols-3 gap-2">
+          <div className="rounded-md border border-white/10 bg-black/30 px-2 py-1.5">
+            <p className="text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
+              {copy(language, "Onceki", "Prev")}
+            </p>
+            <p className="mt-0.5 text-xs font-medium text-foreground">{event.previous || "-"}</p>
+          </div>
+          <div className="rounded-md border border-white/10 bg-black/30 px-2 py-1.5">
+            <p className="text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
+              {copy(language, "Beklenen", "Fcst")}
+            </p>
+            <p className="mt-0.5 text-xs font-medium text-foreground">{event.forecast || "-"}</p>
+          </div>
+          <div className="rounded-md border border-white/10 bg-black/30 px-2 py-1.5">
+            <p className="text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
+              {copy(language, "Gerceklesen", "Actual")}
+            </p>
+            <p
+              className={cn(
+                "mt-0.5 text-xs font-semibold",
+                actualHighlightClass(
+                  event.actual,
+                  event.forecast,
+                  event.impactDirection
+                )
+              )}
+            >
+              {event.actual || "-"}
+              {event.unit && event.actual ? (
+                <span className="text-[9px] text-muted-foreground ml-0.5">
+                  {event.unit}
+                </span>
+              ) : null}
+            </p>
+          </div>
         </div>
       </div>
       {isExpanded && (
-        <div className="mt-3 rounded-xl bg-black/30 p-3 text-sm text-foreground/80 space-y-2">
+        <div className="border-t border-white/5 bg-gradient-to-b from-black/30 to-black/20 p-3 space-y-2">
           {event.analysis && (
-            <div>
-              <p className="font-medium text-emerald-300">
+            <div className="rounded-md border border-emerald-500/10 bg-emerald-500/[0.04] p-2.5">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-emerald-300 mb-1">
                 {copy(language, "Analiz", "Analysis")}
               </p>
-              <p className="mt-1 text-xs">{event.analysis}</p>
+              <p className="text-xs leading-relaxed text-foreground/80">
+                {event.analysis}
+              </p>
             </div>
           )}
           <CountdownTimer targetTime={event.time} language={language} />

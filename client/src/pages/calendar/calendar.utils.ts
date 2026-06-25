@@ -107,9 +107,9 @@ export function importanceLabel(
 export function importanceClass(importance: CalendarImportance) {
   switch (importance) {
     case "high":
-      return "border-rose-500/25 bg-rose-500/12 text-rose-200";
+      return "border-rose-500/30 bg-rose-500/15 text-rose-200 font-semibold shadow-[0_0_12px_rgba(244,63,94,0.08)]";
     case "medium":
-      return "border-amber-500/25 bg-amber-500/12 text-amber-200";
+      return "border-amber-500/30 bg-amber-500/15 text-amber-200 font-semibold shadow-[0_0_12px_rgba(245,158,11,0.06)]";
     default:
       return "border-slate-500/25 bg-slate-500/10 text-slate-300";
   }
@@ -118,11 +118,11 @@ export function importanceClass(importance: CalendarImportance) {
 export function importanceRowClass(importance: CalendarImportance) {
   switch (importance) {
     case "high":
-      return "bg-rose-500/[0.04]";
+      return "border-l-2 border-l-rose-500/50 bg-rose-500/[0.04] hover:bg-rose-500/[0.07]";
     case "medium":
-      return "bg-amber-500/[0.03]";
+      return "border-l-2 border-l-amber-500/40 bg-amber-500/[0.03] hover:bg-amber-500/[0.06]";
     default:
-      return "";
+      return "hover:bg-white/[0.02]";
   }
 }
 

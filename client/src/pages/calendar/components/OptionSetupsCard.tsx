@@ -6,6 +6,8 @@ import {
   ArrowUp,
   ArrowDown,
   Minus,
+  Target,
+  ShieldAlert,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -25,12 +27,13 @@ import type { CalendarOptionSetup } from "@shared/calendar";
 import { THEME } from "../Calendar.theme";
 import { biasClass, biasLabel } from "../calendar.utils";
 
-function SetupIcon({ type }: { type: string }) {
+function SetupIcon({ type, bias }: { type: string; bias: string }) {
   const lower = type.toLowerCase();
-  if (lower.includes("call"))
-    return <ArrowUp className="size-4 text-emerald-400" />;
-  if (lower.includes("put"))
+  const isBearish = bias === "bearish";
+  if (lower.includes("put") || isBearish)
     return <ArrowDown className="size-4 text-rose-400" />;
+  if (lower.includes("call") || bias === "bullish")
+    return <ArrowUp className="size-4 text-emerald-400" />;
   if (lower.includes("straddle") || lower.includes("strangle"))
     return <Minus className="size-4 text-amber-400" />;
   return <TrendingUp className="size-4 text-muted-foreground" />;
@@ -48,8 +51,8 @@ export function OptionSetupsCard({
   return (
     <Card className={cn("overflow-hidden", THEME.softCardClassName)}>
       <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-lg">
-          <TrendingUp className={cn("size-5", THEME.iconClassName)} />
+        <CardTitle className="flex items-center gap-2 text-base">
+          <TrendingUp className={cn("size-4", THEME.iconClassName)} />
           {copy(
             language,
             "Opsiyon Stratejisi Onerileri",
@@ -57,7 +60,7 @@ export function OptionSetupsCard({
           )}
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-2.5">
         {setups.length ? (
           setups.map((setup, index) => {
             const id = `${setup.asset}-${index}`;
@@ -71,21 +74,35 @@ export function OptionSetupsCard({
                 }
               >
                 <CollapsibleTrigger className="w-full">
-                  <div className="flex items-center justify-between rounded-xl border border-white/10 bg-black/20 p-3.5">
-                    <div className="flex items-center gap-2">
-                      <SetupIcon type={setup.setupType} />
-                      <span className="text-sm font-semibold text-foreground">
-                        {setup.asset}
-                      </span>
-                      <span className="text-[11px] text-muted-foreground">
-                        {setup.setupType}
-                      </span>
+                  <div className={cn(
+                    "flex items-center justify-between rounded-lg border p-3 transition-colors duration-150",
+                    setup.bias === "bullish" ? "border-emerald-500/15 bg-emerald-500/[0.04] hover:bg-emerald-500/[0.07]" :
+                    setup.bias === "bearish" ? "border-rose-500/15 bg-rose-500/[0.04] hover:bg-rose-500/[0.07]" :
+                    "border-amber-500/15 bg-amber-500/[0.04] hover:bg-amber-500/[0.07]"
+                  )}>
+                    <div className="flex items-center gap-2.5">
+                      <div className={cn(
+                        "flex size-8 items-center justify-center rounded-lg border",
+                        setup.bias === "bullish" ? "border-emerald-500/20 bg-emerald-500/10" :
+                        setup.bias === "bearish" ? "border-rose-500/20 bg-rose-500/10" :
+                        "border-amber-500/20 bg-amber-500/10"
+                      )}>
+                        <SetupIcon type={setup.setupType} bias={setup.bias} />
+                      </div>
+                      <div className="text-left">
+                        <span className="text-sm font-bold text-foreground">
+                          {setup.asset}
+                        </span>
+                        <span className="ml-2 text-[11px] text-muted-foreground">
+                          {setup.setupType}
+                        </span>
+                      </div>
                     </div>
                     <div className="flex items-center gap-2">
                       <Badge
                         variant="outline"
                         className={cn(
-                          "text-[10px] uppercase tracking-[0.14em]",
+                          "text-[10px] uppercase tracking-[0.14em] font-semibold",
                           biasClass(setup.bias)
                         )}
                       >
@@ -93,7 +110,7 @@ export function OptionSetupsCard({
                       </Badge>
                       <ChevronDown
                         className={cn(
-                          "size-4 transition-transform",
+                          "size-4 transition-transform duration-200 text-muted-foreground",
                           isOpen && "rotate-180"
                         )}
                       />
@@ -102,27 +119,40 @@ export function OptionSetupsCard({
                 </CollapsibleTrigger>
                 <CollapsibleContent>
                   <div className="grid gap-2 sm:grid-cols-2 mt-2">
-                    <div className="rounded-xl border border-emerald-500/10 bg-emerald-500/[0.05] px-3 py-2">
-                      <p className="text-[10px] uppercase tracking-[0.14em] text-emerald-200/80">
-                        {copy(language, "Tetik", "Trigger")}
-                      </p>
-                      <p className="mt-1 text-[13px] leading-5 text-foreground/88">
+                    <div className="rounded-lg border border-emerald-500/12 bg-emerald-500/[0.04] p-2.5">
+                      <div className="flex items-center gap-1.5 mb-1">
+                        <Target className="size-3 text-emerald-300" />
+                        <p className="text-[10px] font-semibold uppercase tracking-wider text-emerald-300">
+                          {copy(language, "Tetik", "Trigger")}
+                        </p>
+                      </div>
+                      <p className="text-[12px] leading-5 text-foreground/85">
                         {setup.trigger}
                       </p>
                     </div>
-                    <div className="rounded-xl border border-rose-500/10 bg-rose-500/[0.05] px-3 py-2">
-                      <p className="text-[10px] uppercase tracking-[0.14em] text-rose-200/80">
-                        {copy(language, "Invalidasyon", "Invalidation")}
-                      </p>
-                      <p className="mt-1 text-[13px] leading-5 text-foreground/88">
+                    <div className="rounded-lg border border-rose-500/12 bg-rose-500/[0.04] p-2.5">
+                      <div className="flex items-center gap-1.5 mb-1">
+                        <ShieldAlert className="size-3 text-rose-300" />
+                        <p className="text-[10px] font-semibold uppercase tracking-wider text-rose-300">
+                          {copy(language, "Invalidasyon", "Invalidation")}
+                        </p>
+                      </div>
+                      <p className="text-[12px] leading-5 text-foreground/85">
                         {setup.invalidation}
                       </p>
                     </div>
                   </div>
                   {setup.rationale && (
-                    <div className="mt-2 rounded-lg bg-amber-500/5 p-2 text-xs text-amber-200/80">
-                      <Lightbulb className="inline size-3 mr-1" />
-                      {setup.rationale}
+                    <div className="mt-2 rounded-lg border border-amber-500/12 bg-amber-500/[0.04] p-2.5">
+                      <div className="flex items-center gap-1.5 mb-1">
+                        <Lightbulb className="size-3 text-amber-300" />
+                        <p className="text-[10px] font-semibold uppercase tracking-wider text-amber-300">
+                          {copy(language, "Rationale", "Rationale")}
+                        </p>
+                      </div>
+                      <p className="text-[12px] leading-5 text-foreground/85">
+                        {setup.rationale}
+                      </p>
                     </div>
                   )}
                 </CollapsibleContent>
@@ -130,7 +160,7 @@ export function OptionSetupsCard({
             );
           })
         ) : (
-          <div className="rounded-xl border border-dashed border-white/10 bg-black/15 px-4 py-3 text-sm text-muted-foreground">
+          <div className="rounded-lg border border-dashed border-white/10 bg-black/15 px-4 py-3 text-sm text-muted-foreground text-center">
             {copy(
               language,
               "Bugun icin opsiyon setup'i bulunmuyor.",
