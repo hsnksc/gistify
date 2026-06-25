@@ -375,6 +375,7 @@ function parseCalendar(markdown: string): EarningsEvent[] {
   const lines = markdown.split(/\r?\n/);
   let currentDate = "";
   let currentTime: EarningsTime = "TBA";
+  let calendarHeaders: string[] | null = null;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
@@ -384,63 +385,78 @@ function parseCalendar(markdown: string): EarningsEvent[] {
     if (headingMatch) {
       currentDate = parseTurkishDateToken(headingMatch[1]);
       currentTime = parseTime(line);
+      calendarHeaders = null;
       continue;
     }
 
-    if (!line.startsWith("|")) continue;
-
-    const nextLine = lines[i + 1]?.trim() || "";
-    if (!nextLine.startsWith("|") || /^[-:\s|]+$/.test(nextLine.replace(/\|/g, ""))) {
-      // Might be a table row; build from current block
+    if (!line.startsWith("|")) {
+      calendarHeaders = null;
+      continue;
     }
 
-    // We rely on parseTables for actual extraction to avoid inline complexity.
-  }
+    const cells = line
+      .replace(/^\|/, "")
+      .replace(/\|$/, "")
+      .split("|")
+      .map(cell => cleanMarkdownText(cell));
 
-  const tables = parseTables(markdown);
-  const headerPatterns = ["ticker", "hisse", "ticker", "şirket"];
+    // Separator line
+    if (cells.every(cell => /^[-:\s]+$/.test(cell))) {
+      continue;
+    }
 
-  for (const table of tables) {
-    const hasTicker = table.headers.some(h => {
-      const nh = normalizeString(h);
-      return nh.includes("ticker") || nh.includes("hisse");
-    });
-    const hasSector = table.headers.some(h => normalizeString(h).toLowerCase().includes("sektör"));
-    const hasDate = table.headers.some(h => {
-      const nh = normalizeString(h);
-      return nh.includes("tarih") || nh.includes("earnings tarihi");
-    });
-    const hasImportance = table.headers.some(h => normalizeString(h).toLowerCase().includes("önem"));
+    const nextLine = lines[i + 1]?.trim() || "";
+    const isHeader =
+      nextLine.startsWith("|") && /^[-:\s|]+$/.test(nextLine.replace(/\|/g, ""));
 
-    if (!hasTicker || !hasSector || !hasImportance) continue;
-
-    for (const row of table.rows) {
-      const ticker = cleanMarkdownText(row[0]);
-      if (!ticker || ticker.toLowerCase() === "ticker" || ticker.toLowerCase() === "hisse") continue;
-
-      // Try to find date/time/importance from row or context
-      const companyIdx = table.headers.findIndex(h => h.includes("şirket"));
-      const sectorIdx = table.headers.findIndex(h => h.includes("sektör"));
-      const marketCapIdx = table.headers.findIndex(h => h.includes("piyasa"));
-      const importanceIdx = table.headers.findIndex(h => h.includes("önem"));
-      const dateIdx = table.headers.findIndex(
-        h => h.includes("earnings tarihi") || h.includes("muhtemel tarih") || h.includes("tarih")
+    if (isHeader) {
+      const headers = cells.map(cell => normalizeString(cell).toLowerCase());
+      const hasTicker = headers.some(
+        h => h.includes("ticker") || h.includes("hisse")
       );
-      const timeIdx = table.headers.findIndex(h => h.includes("saat"));
+      const hasSector = headers.some(h => h.includes("sektör"));
+      const hasImportance = headers.some(h => h.includes("önem"));
+      calendarHeaders = hasTicker && hasSector && hasImportance ? headers : null;
+      continue;
+    }
+
+    if (calendarHeaders) {
+      const ticker = cleanMarkdownText(cells[0]);
+      if (
+        !ticker ||
+        ticker.toLowerCase() === "ticker" ||
+        ticker.toLowerCase() === "hisse"
+      ) {
+        continue;
+      }
+
+      const companyIdx = calendarHeaders.findIndex(h => h.includes("şirket"));
+      const sectorIdx = calendarHeaders.findIndex(h => h.includes("sektör"));
+      const marketCapIdx = calendarHeaders.findIndex(h => h.includes("piyasa"));
+      const importanceIdx = calendarHeaders.findIndex(h => h.includes("önem"));
+      const dateIdx = calendarHeaders.findIndex(
+        h =>
+          h.includes("earnings tarihi") ||
+          h.includes("muhtemel tarih") ||
+          h.includes("tarih")
+      );
+      const timeIdx = calendarHeaders.findIndex(h => h.includes("saat"));
 
       const date =
-        (dateIdx >= 0 ? parseTurkishDateToken(row[dateIdx]) : "") || currentDate;
+        (dateIdx >= 0 ? parseTurkishDateToken(cells[dateIdx]) : "") ||
+        currentDate;
+      const rowTime = timeIdx >= 0 ? parseTime(cells[timeIdx]) : null;
       const time: EarningsTime =
-        (timeIdx >= 0 ? parseTime(row[timeIdx]) : currentTime) || "TBA";
+        rowTime && rowTime !== "TBA" ? rowTime : currentTime;
 
       events.push({
         ticker,
-        company: companyIdx >= 0 ? row[companyIdx] : undefined,
-        sector: sectorIdx >= 0 ? row[sectorIdx] : undefined,
+        company: companyIdx >= 0 ? cells[companyIdx] : undefined,
+        sector: sectorIdx >= 0 ? cells[sectorIdx] : undefined,
         date,
         time,
-        marketCap: marketCapIdx >= 0 ? row[marketCapIdx] : undefined,
-        importance: parseImportance(row[importanceIdx] || ""),
+        marketCap: marketCapIdx >= 0 ? cells[marketCapIdx] : undefined,
+        importance: parseImportance(cells[importanceIdx] || ""),
       });
     }
   }
