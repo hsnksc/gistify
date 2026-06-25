@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * Post-Earnings / News Momentum Screener v4
  *
@@ -10,9 +9,10 @@
  * Skorlama: PEAD (Post-Earnings Announcement Drift) + Gap-And-Go + Continuation
  */
 
-import { fetchYF, fetchStockData, NASDAQ_TICKERS } from "./yahooFinance";
-import { sanityGate, isSafeNumber } from "./sanityGate";
+import { fetchYF, fetchStockData } from "./yahooFinance";
+import { sanityGate } from "./sanityGate";
 import { clamp100 } from "./scoreConfig";
+import { type AppLanguage } from "@/lib/i18n";
 
 // ===================== Tipler =====================
 
@@ -190,6 +190,7 @@ export async function analyzeTickerGapHistory(ticker: string): Promise<TickerHis
     nextDayWinRate: Math.round(nextDayWinRate * 10) / 10,
     avgNextDayChange: Math.round(avgNextDayChange * 100) / 100,
     bestGapUpDay: bestGapUp,
+    historicalGapUps: gapUps.length,
   };
 }
 
@@ -200,7 +201,8 @@ export async function analyzeTickerGapHistory(ticker: string): Promise<TickerHis
  */
 export async function scanPostEarningsMomentum(
   tickers: string[],
-  onProgress?: (current: number, total: number, ticker: string) => void
+  onProgress?: (current: number, total: number, ticker: string) => void,
+  language: AppLanguage = "tr"
 ): Promise<PostEarningsMomentumResult[]> {
   const results: PostEarningsMomentumResult[] = [];
   const CHUNK = 3;

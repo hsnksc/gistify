@@ -67,6 +67,14 @@ export interface StockData {
   marketCap: number;
   dataQuality?: number;
   lastUpdated?: number;
+  intraday?: {
+    timestamps: number[];
+    open: number[];
+    high: number[];
+    low: number[];
+    close: number[];
+    volume: number[];
+  };
 }
 
 export const NASDAQ_TICKERS = [

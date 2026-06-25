@@ -14,7 +14,7 @@ import type { StockData } from "./yahooFinance";
 import type { StockResult, ScoreExplanation, ConfidenceBreakdown, RankingInfo } from "@/scanner/types";
 import { FACTOR_WEIGHTS, CONFIDENCE_WEIGHTS, RANKING_WEIGHTS, getFactorLabels, clamp100, confidenceLabel, dataQualityLabel } from "./scoreConfig";
 import { SIGNAL_WEIGHTS } from "./signalModel";
-import { sanityGate, isSafeNumber } from "./sanityGate";
+import { sanityGate } from "./sanityGate";
 
 const MIN_AVG_VOLUME_20D = 500_000;
 const MIN_DOLLAR_VOLUME = 50_000_000;

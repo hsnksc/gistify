@@ -5,6 +5,7 @@
  */
 
 import type { MarketRegime, IVCurve, TermStructure, VixRegime } from "./optionsTypes";
+import { copy, type AppLanguage } from "@/lib/i18n";
 
 // ─── VIX REGIME THRESHOLDS ───
 const VIX_LEVELS = {
@@ -220,10 +221,10 @@ export function calculateIVCurve(
 }
 
 // ─── IV SİNYALİ (Tek hisse için) ───
-export function ivSignal(ivRank: number, ivPremium: number): "SELL_PREMIUM" | "BUY_PREMIUM" | "NEUTRAL" {
-  if (ivRank > 70 && ivPremium > 5) return "SELL_PREMIUM";
-  if (ivRank < 30 && ivPremium < -5) return "BUY_PREMIUM";
-  return "NEUTRAL";
+export function ivSignal(ivRank: number, ivPremium: number): { signal: "SELL_PREMIUM" | "BUY_PREMIUM" | "NEUTRAL" } {
+  if (ivRank > 70 && ivPremium > 5) return { signal: "SELL_PREMIUM" };
+  if (ivRank < 30 && ivPremium < -5) return { signal: "BUY_PREMIUM" };
+  return { signal: "NEUTRAL" };
 }
 
 // ─── IV RADAR HIZLI GÖRÜNÜM ───

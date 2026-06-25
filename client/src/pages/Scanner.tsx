@@ -25,6 +25,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
     <div className="min-h-screen bg-background">
       <div className="container py-6 md:py-8">
         <WorkspaceHeroPanel
+          reportStrip={null}
           overlayClassName="bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.18),transparent_32%),radial-gradient(circle_at_bottom_left,rgba(244,63,94,0.14),transparent_28%),radial-gradient(circle_at_center,rgba(59,130,246,0.12),transparent_40%)]"
           badges={
             <>
@@ -143,6 +144,3 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
     </div>
   );
 }
-
-
-

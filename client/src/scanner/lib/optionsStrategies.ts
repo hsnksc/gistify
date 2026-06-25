@@ -8,9 +8,9 @@
 
 import type { StockResult } from "../types";
 import { copy, type AppLanguage } from "@/lib/i18n";
-import type { SpreadMetrics, PositionManagement, IVCurve, ExpectedMove, ProbabilityOfProfit } from "./optionsTypes";
+import type { SpreadMetrics, PositionManagement, IVCurve, ExpectedMove } from "./optionsTypes";
 import { calculateIVCurve, ivSignal } from "./regimeDetector";
-import { calculateExpectedMove, calculatePOP, calculateSpreadMetrics } from "./optionAnalytics";
+import { calculateExpectedMove, calculateSpreadMetrics } from "./optionAnalytics";
 import { createManagementRules, createExecutionPlan, calculatePositionSize } from "./executionRules";
 
 // ─── STRATEJİ İSİM HELPER ───
@@ -320,8 +320,8 @@ export function recommendStrategies(
   // v3.0: IV sinyali
   if (ivCurve) {
     const ivSig = ivSignal(ivCurve.iVRank, ivCurve.ivPremium);
-    const ivLabel = ivSig === "SELL_PREMIUM" ? copy(language, "Premium satışı", "Premium sale") : ivSig === "BUY_PREMIUM" ? copy(language, "Premium alımı", "Premium purchase") : copy(language, "Nötr", "Neutral");
-    const ivNote = ivSig === "SELL_PREMIUM" ? copy(language, "IV yüksek, credit spread mantıklı", "IV high, credit spread makes sense") : ivSig === "BUY_PREMIUM" ? copy(language, "IV düşük, long premium mantıklı", "IV low, long premium makes sense") : copy(language, "IV ortalama", "IV average");
+    const ivLabel = ivSig.signal === "SELL_PREMIUM" ? copy(language, "Premium satışı", "Premium sale") : ivSig.signal === "BUY_PREMIUM" ? copy(language, "Premium alımı", "Premium purchase") : copy(language, "Nötr", "Neutral");
+    const ivNote = ivSig.signal === "SELL_PREMIUM" ? copy(language, "IV yüksek, credit spread mantıklı", "IV high, credit spread makes sense") : ivSig.signal === "BUY_PREMIUM" ? copy(language, "IV düşük, long premium mantıklı", "IV low, long premium makes sense") : copy(language, "IV ortalama", "IV average");
     riskWarnings.push(`${ivLabel}: ${ivNote}`);
 
     // Term structure uyarısı
@@ -424,7 +424,7 @@ export function expectedMoveFromStraddle(straddlePrice: number, underlyingPrice:
 // Hem CALL hem PUT analizi — PDT persistence dahil
 // ═══════════════════════════════════════════════════════════════════════════════
 
-import type { BiDirectionalSetup, OptionSetup, DirectionRecommendation, T1SuitabilityResult } from "../types";
+import type { BiDirectionalSetup, OptionSetup, T1SuitabilityResult } from "../types";
 
 /**
  * Çift yönlü strateji: Hem CALL hem PUT setup'ı üretir.

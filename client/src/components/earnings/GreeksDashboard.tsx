@@ -15,56 +15,73 @@ export default function GreeksDashboard({
   const withGreeks = strategies.filter(s => s.greeks);
 
   return (
-    <section className="panel p-4">
-      <div className="mb-3 flex items-center gap-2">
-        <Activity className="size-4 text-sky-300" />
-        <h2 className="heading-condensed text-base">
+    <section className="panel p-5 md:p-6">
+      <div className="mb-5 flex items-center gap-2">
+        <Activity className="size-5 text-sky-400" />
+        <h2 className="text-lg font-bold text-white">
           {copy(language, "Greeks Dashboard", "Greeks Dashboard")}
         </h2>
+        <span className="rounded-full bg-slate-800 px-2 py-0.5 text-xs font-bold text-slate-400">
+          {withGreeks.length}
+        </span>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs">
-          <thead className="border-b border-border text-muted-foreground">
-            <tr>
-              <th className="py-2">{copy(language, "Hisse", "Ticker")}</th>
-              <th className="py-2">Delta</th>
-              <th className="py-2">Theta</th>
-              <th className="py-2">Vega</th>
-              <th className="py-2">Gamma</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-border">
-            {withGreeks.slice(0, 30).map(strategy => (
-              <tr key={strategy.ticker} className="hover:bg-muted/30">
-                <td className="py-2 font-semibold text-foreground">
-                  {strategy.ticker}
-                </td>
-                <td className={cn("py-2", signColor(strategy.greeks?.delta))}>
-                  {strategy.greeks?.delta || "-"}
-                </td>
-                <td className={cn("py-2", signColor(strategy.greeks?.theta, true))}>
-                  {strategy.greeks?.theta || "-"}
-                </td>
-                <td className="py-2 text-muted-foreground">
-                  {strategy.greeks?.vega || "-"}
-                </td>
-                <td className="py-2 text-muted-foreground">
-                  {strategy.greeks?.gamma || "-"}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="space-y-3">
+        {withGreeks.slice(0, 30).map(strategy => (
+          <div
+            key={strategy.ticker}
+            className="rounded-xl border border-slate-800/60 bg-slate-900/50 p-4 transition-all hover:border-slate-700"
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-white">{strategy.ticker}</span>
+                {strategy.type && (
+                  <span className="rounded bg-slate-800 px-1.5 py-0.5 text-[10px] font-semibold text-slate-400">
+                    {strategy.type}
+                  </span>
+                )}
+              </div>
+              <span className="text-xs text-slate-500">
+                IV Rank {strategy.ivRank || "—"}
+              </span>
+            </div>
+            <div className="mt-3 grid grid-cols-4 gap-3">
+              <GreekBar label="Delta" value={strategy.greeks?.delta} />
+              <GreekBar label="Theta" value={strategy.greeks?.theta} />
+              <GreekBar label="Vega" value={strategy.greeks?.vega} />
+              <GreekBar label="Gamma" value={strategy.greeks?.gamma} />
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );
 }
 
-function signColor(value?: string, invert = false) {
+function GreekBar({ label, value }: { label: string; value?: string }) {
   const num = value ? parseFloat(value.replace(/[$,]/g, "")) : NaN;
-  if (Number.isNaN(num)) return "text-muted-foreground";
-  if (num > 0) return invert ? "text-emerald-300" : "text-emerald-300";
-  if (num < 0) return "text-rose-300";
-  return "text-muted-foreground";
+  const magnitude = Number.isNaN(num) ? 0 : Math.min(Math.abs(num) / 50, 1);
+  const barColor =
+    num > 0 ? "bg-emerald-500" : num < 0 ? "bg-rose-500" : "bg-slate-600";
+  const textColor =
+    num > 0 ? "text-emerald-400" : num < 0 ? "text-rose-400" : "text-slate-500";
+
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+          {label}
+        </span>
+        <span className={cn("text-xs font-bold", textColor)}>
+          {value || "—"}
+        </span>
+      </div>
+      <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-slate-800">
+        <div
+          className={cn("h-full rounded-full", barColor)}
+          style={{ width: `${magnitude * 100}%` }}
+        />
+      </div>
+    </div>
+  );
 }

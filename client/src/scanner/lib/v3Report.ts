@@ -11,7 +11,8 @@ import type {
 import { detectMarketRegime, calculateIVCurve, regimeDescription } from "./regimeDetector";
 import { calculateExpectedMove, calculatePOP, calculateSpreadMetrics } from "./optionAnalytics";
 import { createManagementRules, determineAction } from "./executionRules";
-import { calculatePortfolioRisk, getBeta, calculateBetaWeightedDelta, stressTest } from "./portfolioRisk";
+import { calculatePortfolioRisk } from "./portfolioRisk";
+import { type AppLanguage } from "@/lib/i18n";
 
 // ─── DEMO/GERÇEK POZİSYON ÜRETİCİ ───
 

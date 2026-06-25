@@ -2,11 +2,9 @@ import { useMemo, useState } from "react";
 import {
   ArrowRight,
   BadgeCheck,
-  BarChart3,
   CalendarDays,
   ChevronRight,
   Clock3,
-  Layers3,
   LineChart,
   Radar,
   ShieldCheck,
@@ -22,10 +20,10 @@ type PreviewMode = "flow" | "earnings" | "calendar";
 const reveal = {
   hidden: { opacity: 0, y: 18 },
   visible: (delay = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.22, ease: "easeOut", delay },
-  }),
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.22, ease: "easeOut" as const, delay },
+    }),
 };
 
 export default function Landing({
