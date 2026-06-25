@@ -1,161 +1,299 @@
 {
   "reportType": "hourly",
   "reportDate": "2026-06-25",
-  "generatedAt": "2026-06-25T21:05:49.162751+03:00",
+  "generatedAt": "2026-06-25T15:00:00-04:00",
   "marketSummary": {
     "spy": {
-      "price": 733.54,
-      "change": 0.0409,
-      "vwap": 734.17,
+      "price": 733.95,
+      "change": 0.0968,
+      "changeValue": 0.71,
       "open": 738.91,
       "high": 739.37,
       "low": 729.6,
-      "prevClose": 733.24
+      "prevClose": 733.24,
+      "vwap": 734.31
     },
     "qqq": {
-      "price": 717.16,
-      "change": 0.9203,
-      "vwap": 716.43,
+      "price": 716.76,
+      "change": 0.864,
+      "changeValue": 6.14,
       "open": 726.235,
       "high": 726.83,
       "low": 705.3,
-      "prevClose": 710.62
+      "prevClose": 710.62,
+      "vwap": 716.3
     },
     "iwm": {
-      "price": 298.58,
-      "change": 0.637,
-      "vwap": 298.99,
+      "price": 297.66,
+      "change": 0.3269,
+      "changeValue": 0.97,
       "open": 298.645,
       "high": 301.5,
       "low": 296.9,
-      "prevClose": 296.69
+      "prevClose": 296.69,
+      "vwap": 298.69
     },
     "vix": {
-      "price": 19.38,
-      "change": 4.03,
-      "vwap": 19.02,
+      "price": 18.89,
+      "change": 1.4,
+      "changeValue": 0.26,
       "open": 18.11,
       "high": 19.95,
       "low": 17.72,
-      "prevClose": 18.63
+      "prevClose": 18.63,
+      "vwap": 18.59
     }
   },
   "topMovers": {
     "gainers": [
       {
         "ticker": "AYI",
-        "company": "Acuity Brands Inc",
-        "price": 368.62,
-        "change": 20.66,
-        "volume": 632168,
-        "catalyst": "Fiscal Q3 earnings beat + strong lighting/IoT demand guidance. Revenue surprise positive.",
-        "sector": null,
-        "marketCap": null,
-        "week52Range": null
+        "company": "Acuity Brands",
+        "price": 366.43,
+        "change": 19.78,
+        "volume": 851055,
+        "catalyst": "Q3 FY2026 earnings beat: EPS $5.31 vs consensus $5.12 (+3.7%), revenue $1.2B +2% YoY, margin expansion",
+        "sector": "Industrials",
+        "marketCap": 8690000000,
+        "week52Range": [
+          257.22,
+          379.97
+        ]
+      },
+      {
+        "ticker": "MU",
+        "company": "Micron Technology",
+        "price": 1194.18,
+        "change": 13.96,
+        "volume": 44135322,
+        "catalyst": "Q3 FY26 earnings crush: EPS $25.1 vs $20.7 estimate, revenue $41.46B, strong guidance, Rosenblatt raises PT to $1500",
+        "sector": "Semiconductors",
+        "marketCap": 1305000000000,
+        "week52Range": [
+          103.39,
+          1255.0
+        ]
       },
       {
         "ticker": "BB",
-        "company": "BlackBerry Limited",
-        "price": 10.65,
-        "change": 23.55,
-        "volume": 48000000,
-        "catalyst": "AI-driven IVY platform momentum + short squeeze. Pure speculative flow, no fundamental catalyst.",
-        "sector": null,
-        "marketCap": null,
-        "week52Range": null
+        "company": "BlackBerry",
+        "price": 10.56,
+        "change": 22.59,
+        "volume": 56000000,
+        "catalyst": "Q1 FY2027 earnings beat + raised full-year guidance, strong cybersecurity demand",
+        "sector": "Software",
+        "marketCap": 5052000000,
+        "week52Range": [
+          3.12,
+          10.93
+        ]
       },
       {
         "ticker": "TECH",
-        "company": "Bio-Techne Corp",
-        "price": 70.52,
-        "change": 19.78,
-        "volume": 36000000,
-        "catalyst": "Fiscal Q4 2026 earnings optimism + biotech sector rotation. Protein sciences demand outlook.",
-        "sector": null,
-        "marketCap": null,
-        "week52Range": null
+        "company": "Bio-Techne",
+        "price": 70.51,
+        "change": 19.74,
+        "volume": 41000000,
+        "catalyst": "Merck KGaA $73/share acquisition offer announced, premium takeover bid",
+        "sector": "Biotechnology",
+        "marketCap": 9220000000,
+        "week52Range": [
+          43.2,
+          72.16
+        ]
       },
       {
         "ticker": "KYMR",
-        "company": "Kymera Therapeutics Inc",
-        "price": 117.41,
-        "change": 17.56,
-        "volume": 2000000,
-        "catalyst": "Protein degradation platform data readout + M&A speculation. Biotech momentum continuation.",
-        "sector": null,
-        "marketCap": null,
-        "week52Range": null
-      },
-      {
-        "ticker": "QCOM",
-        "company": "QUALCOMM Inc",
-        "price": 212.66,
-        "change": 7.73,
-        "volume": 2247000,
-        "catalyst": "AI smartphone chip demand + royalty collection uplift. Broad tech momentum tailwind.",
-        "sector": null,
-        "marketCap": null,
-        "week52Range": null
+        "company": "Kymera Therapeutics",
+        "price": 117.79,
+        "change": 17.91,
+        "volume": 3000000,
+        "catalyst": "Positive clinical pipeline momentum + biotech sector rotation",
+        "sector": "Biotechnology",
+        "marketCap": 8082000000,
+        "week52Range": [
+          36.65,
+          105.0
+        ]
       }
     ],
     "losers": [
       {
-        "ticker": "AAPL",
-        "company": "Apple Inc",
-        "price": 276.6,
-        "change": -5.62,
-        "volume": 39000000,
-        "catalyst": "Memory crunch deepening — MacBook/iPad price hike announced. Supply chain margin pressure fears.",
-        "sector": null,
-        "marketCap": null,
-        "week52Range": null
-      },
-      {
-        "ticker": "TCOM",
-        "company": "Trip.com Group Ltd",
-        "price": 40.04,
-        "change": -13.52,
-        "volume": 9000000,
-        "catalyst": "China travel demand slowdown fears + macro headwinds. Geopolitical risk premium widening.",
-        "sector": null,
-        "marketCap": null,
-        "week52Range": null
-      },
-      {
         "ticker": "INOD",
-        "company": "Innodata Inc",
-        "price": 72.75,
-        "change": -10.79,
-        "volume": 1000000,
-        "catalyst": "AI data annotation revenue miss fears. High valuation compression after prior run-up.",
-        "sector": null,
-        "marketCap": null,
-        "week52Range": null
+        "company": "Innodata",
+        "price": 72.34,
+        "change": -11.29,
+        "volume": 2000000,
+        "catalyst": "Profit taking after multi-month AI rally + CEO insider selling post-Q1 beat",
+        "sector": "Technology",
+        "marketCap": 2960000000,
+        "week52Range": [
+          34.23,
+          125.14
+        ]
       },
       {
-        "ticker": "PSNY",
-        "company": "Polestar Automotive",
-        "price": 18.59,
-        "change": -7.83,
-        "volume": 160000,
-        "catalyst": "EV sector demand slowdown, delivery miss fears, cash burn concerns. Low volume = thin tape.",
-        "sector": null,
-        "marketCap": null,
-        "week52Range": null
+        "ticker": "JEF",
+        "company": "Jefferies Financial Group",
+        "price": 52.05,
+        "change": -10.31,
+        "volume": 4000000,
+        "catalyst": "Q2 earnings reaction (June 24 after close) + financial sector rotation",
+        "sector": "Capital Markets",
+        "marketCap": 12372000000,
+        "week52Range": [
+          35.53,
+          71.04
+        ]
       },
       {
-        "ticker": "FCEL",
-        "company": "FuelCell Energy Inc",
-        "price": 19.9,
-        "change": -7.7,
-        "volume": 7000000,
-        "catalyst": "Clean energy tax credit uncertainty + hydrogen funding delay. Sector rotation out of speculative energy.",
-        "sector": null,
+        "ticker": "NNE",
+        "company": "Nano Nuclear Energy",
+        "price": 20.93,
+        "change": -9.55,
+        "volume": 2000000,
+        "catalyst": "Nuclear sector profit taking after recent momentum run-up",
+        "sector": "Energy",
         "marketCap": null,
-        "week52Range": null
+        "week52Range": [
+          18.95,
+          60.83
+        ]
+      },
+      {
+        "ticker": "TSHA",
+        "company": "Taysha Gene Therapies",
+        "price": 6.22,
+        "change": -10.58,
+        "volume": 8000000,
+        "catalyst": "Gene therapy sector volatility + capital raise concerns",
+        "sector": "Biotechnology",
+        "marketCap": null,
+        "week52Range": [
+          2.26,
+          7.3
+        ]
+      },
+      {
+        "ticker": "NVTS",
+        "company": "Navitas Semiconductor",
+        "price": 18.32,
+        "change": -14.39,
+        "volume": 33914000,
+        "catalyst": "Semiconductor sector rotation + profit taking after recent rally",
+        "sector": "Semiconductors",
+        "marketCap": null,
+        "week52Range": [
+          5.44,
+          34.16
+        ]
       }
     ]
   },
+  "callSetups": [
+    {
+      "ticker": "MU",
+      "direction": "call",
+      "entry": 1140,
+      "target": 1260,
+      "stop": 1080,
+      "riskReward": 2.0,
+      "rationale": "Earnings beat momentum continuation. VWAP üstünde kalırsa call bias. Volume confirmation var.",
+      "timeframe": "swing"
+    },
+    {
+      "ticker": "AYI",
+      "direction": "call",
+      "entry": 350,
+      "target": 390,
+      "stop": 330,
+      "riskReward": 2.0,
+      "rationale": "Earnings beat sonrası momentum devamı. VWAP üstü = risk-on. 2x R/R minimum.",
+      "timeframe": "swing"
+    },
+    {
+      "ticker": "BB",
+      "direction": "call",
+      "entry": 9.5,
+      "target": 11.2,
+      "stop": 8.7,
+      "riskReward": 2.13,
+      "rationale": "Earnings beat + guidance raise. VWAP üstünde tutunma. Cybersecurity talebi.",
+      "timeframe": "swing"
+    },
+    {
+      "ticker": "QQQ",
+      "direction": "call",
+      "entry": 705,
+      "target": 735,
+      "stop": 690,
+      "riskReward": 2.0,
+      "rationale": "Tech liderliği, VWAP üstünde. Gap fill bölgesinden bounce bekleniyor.",
+      "timeframe": "intraday"
+    },
+    {
+      "ticker": "SPY",
+      "direction": "call",
+      "entry": 725,
+      "target": 745,
+      "stop": 715,
+      "riskReward": 2.0,
+      "rationale": "VWAP altında ama gap fill zone destekli. Reclaim ile call bias.",
+      "timeframe": "intraday"
+    }
+  ],
+  "putSetups": [
+    {
+      "ticker": "INOD",
+      "direction": "put",
+      "entry": 78,
+      "target": 60,
+      "stop": 85,
+      "riskReward": 2.57,
+      "rationale": "AI rallisi sonrası profit taking. VWAP altında, selling pressure devam ediyor.",
+      "timeframe": "swing"
+    },
+    {
+      "ticker": "JEF",
+      "direction": "put",
+      "entry": 54,
+      "target": 45,
+      "stop": 58,
+      "riskReward": 2.25,
+      "rationale": "Earnings sonrası düşüş devamı. VWAP altı = put bias. Financial sector zayıf.",
+      "timeframe": "swing"
+    },
+    {
+      "ticker": "TSHA",
+      "direction": "put",
+      "entry": 6.5,
+      "target": 5.0,
+      "stop": 7.25,
+      "riskReward": 2.0,
+      "rationale": "Gene therapy volatilitesi + düşük float. VWAP altında momentum devamı.",
+      "timeframe": "swing"
+    },
+    {
+      "ticker": "NVTS",
+      "direction": "put",
+      "entry": 19.5,
+      "target": 16.0,
+      "stop": 21.0,
+      "riskReward": 2.33,
+      "rationale": "Semiconductor sector rotasyonu. VWAP altında, breakdown devamı.",
+      "timeframe": "swing"
+    },
+    {
+      "ticker": "NNE",
+      "direction": "put",
+      "entry": 21.0,
+      "target": 16.0,
+      "stop": 23.0,
+      "riskReward": 2.5,
+      "rationale": "Nuclear sector profit taking. VWAP altında, momentum zayıflığı.",
+      "timeframe": "swing"
+    }
+  ],
   "earningsCalendar": [
     {
       "ticker": "SNX",
@@ -164,11 +302,37 @@
       "consensusEps": 4.14,
       "consensusRev": 16800000000,
       "priorEps": 2.99,
-      "priorRev": 14937000000,
+      "priorRev": 14938000000,
       "expectedMove": null,
       "consensusRange": null,
       "analystSentiment": "bullish",
-      "note": "Earnings açıklandı — BEAT by $0.71 EPS ($4.85 vs $4.14) ve $2.77B revenue ($19.57B vs $16.80B). IV crush riski geçmiş. Stock +0.48%. priorRev hesaplanmış (expectedRev / 1.31). [expectedMove] data not found in web search. [consensusRange] data not found."
+      "note": "Massive beat: EPS $4.85 vs $4.14 (+$0.71), revenue $19.57B vs $16.80B (+$2.77B). IV crush active — 0DTE YASAK. priorRev calculated from +31% YoY growth."
+    },
+    {
+      "ticker": "AYI",
+      "company": "Acuity Brands",
+      "time": "before-open",
+      "consensusEps": 5.12,
+      "consensusRev": 1180000000,
+      "priorEps": 5.12,
+      "priorRev": 1176000000,
+      "expectedMove": null,
+      "consensusRange": null,
+      "analystSentiment": "bullish",
+      "note": "Beat: EPS $5.31 vs $5.12 (+3.7%), revenue $1.2B +2% YoY. IV crush active — 0DTE YASAK. priorRev estimated from +2% YoY growth."
+    },
+    {
+      "ticker": "BB",
+      "company": "BlackBerry",
+      "time": "before-open",
+      "consensusEps": 0.03,
+      "consensusRev": null,
+      "priorEps": null,
+      "priorRev": null,
+      "expectedMove": null,
+      "consensusRange": null,
+      "analystSentiment": "neutral",
+      "note": "Q1 FY2027 results. Strong earnings beat + raised full-year guidance. Stock surged 20%+. IV crush active — 0DTE YASAK. priorEps/priorRev data not found in sources."
     },
     {
       "ticker": "WGO",
@@ -177,50 +341,11 @@
       "consensusEps": 0.78,
       "consensusRev": 755680000,
       "priorEps": 0.81,
-      "priorRev": null,
+      "priorRev": 777300000,
       "expectedMove": null,
-      "consensusRange": null,
+      "consensusRange": "$0.61 - $0.84",
       "analystSentiment": "bearish",
-      "note": "Earnings günü = IV crush riski. 0DTE YASAK. Consensus EPS ($0.78) < prior year ($0.81) → YoY decline expected. [priorRev] data not found in web search. [expectedMove] data not found. [consensusRange] data not found."
-    },
-    {
-      "ticker": "CMC",
-      "company": "Commercial Metals",
-      "time": "before-open",
-      "consensusEps": 1.68,
-      "consensusRev": 2410000000,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": null,
-      "consensusRange": null,
-      "analystSentiment": "neutral",
-      "note": "Earnings günü = IV crush riski. 0DTE YASAK. [priorEps] data not found in web search. [priorRev] data not found. [expectedMove] data not found. [consensusRange] data not found."
-    },
-    {
-      "ticker": "LNN",
-      "company": "Lindsay Co",
-      "time": "before-open",
-      "consensusEps": 1.14,
-      "consensusRev": 157800000,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": null,
-      "consensusRange": null,
-      "analystSentiment": "neutral",
-      "note": "Earnings günü = IV crush riski. 0DTE YASAK. [priorEps] data not found. [priorRev] data not found. [expectedMove] data not found. [consensusRange] data not found."
-    },
-    {
-      "ticker": "DRI",
-      "company": "Darden Restaurants",
-      "time": "before-open",
-      "consensusEps": 3.64,
-      "consensusRev": 3730000000,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": null,
-      "consensusRange": null,
-      "analystSentiment": "neutral",
-      "note": "Earnings günü = IV crush riski. 0DTE YASAK. [priorEps] data not found. [priorRev] data not found. [expectedMove] data not found. [consensusRange] data not found."
+      "note": "Q3 2026 results. Consensus implies 59% EPS growth YoY but 2.5% revenue decline. Wide estimate range = surprise risk. IV crush risk — 0DTE YASAK."
     },
     {
       "ticker": "MKC",
@@ -233,159 +358,55 @@
       "expectedMove": null,
       "consensusRange": null,
       "analystSentiment": "neutral",
-      "note": "Earnings günü = IV crush riski. 0DTE YASAK. [priorEps] data not found. [priorRev] data not found. [expectedMove] data not found. [consensusRange] data not found."
+      "note": "Q2 2026 results expected before open. IV crush risk — avoid 0DTE. priorEps/priorRev data not found in sources."
     },
     {
-      "ticker": "QMCO",
-      "company": "Quantum",
+      "ticker": "CMC",
+      "company": "Commercial Metals",
       "time": "before-open",
-      "consensusEps": null,
-      "consensusRev": null,
+      "consensusEps": 1.68,
+      "consensusRev": 2410000000,
       "priorEps": null,
       "priorRev": null,
       "expectedMove": null,
       "consensusRange": null,
       "analystSentiment": "neutral",
-      "note": "Earnings günü. Conference call 5PM ET. IV crush riski. 0DTE YASAK. [consensusEps] data not found. [consensusRev] data not found. [priorEps] data not found. [priorRev] data not found. [expectedMove] data not found. [consensusRange] data not found."
+      "note": "Q3 2026 results expected before open. IV crush risk — avoid 0DTE. priorEps/priorRev data not found in sources."
     },
     {
-      "ticker": "FDXF",
-      "company": "FedEx Freight",
-      "time": "after-close",
-      "consensusEps": null,
-      "consensusRev": null,
+      "ticker": "DRI",
+      "company": "Darden Restaurants",
+      "time": "before-open",
+      "consensusEps": 3.64,
+      "consensusRev": 3730000000,
+      "priorEps": null,
+      "priorRev": null,
+      "expectedMove": null,
+      "consensusRange": null,
+      "analystSentiment": "bullish",
+      "note": "Q4 2026 results expected before open. IV crush risk — avoid 0DTE. priorEps/priorRev data not found in sources."
+    },
+    {
+      "ticker": "LNN",
+      "company": "Lindsay Corporation",
+      "time": "before-open",
+      "consensusEps": 1.14,
+      "consensusRev": 157800000,
       "priorEps": null,
       "priorRev": null,
       "expectedMove": null,
       "consensusRange": null,
       "analystSentiment": "neutral",
-      "note": "After-close earnings. LTL freight market recovery watch. IV crush riski. 0DTE YASAK. [consensusEps] data not found. [consensusRev] data not found. [priorEps] data not found. [priorRev] data not found. [expectedMove] data not found. [consensusRange] data not found."
-    },
-    {
-      "ticker": "CGEH",
-      "company": "Capstone Energy+",
-      "time": "after-close",
-      "consensusEps": null,
-      "consensusRev": null,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": null,
-      "consensusRange": null,
-      "analystSentiment": "neutral",
-      "note": "After-close earnings. FY2026 full year results. IV crush riski. 0DTE YASAK. [consensusEps] data not found. [consensusRev] data not found. [priorEps] data not found. [priorRev] data not found. [expectedMove] data not found. [consensusRange] data not found."
+      "note": "Q3 2026 results expected before open. IV crush risk — avoid 0DTE. priorEps/priorRev data not found in sources."
     }
   ],
-  "callSetups": [
-    {
-      "ticker": "QQQ",
-      "direction": "call",
-      "entry": 712,
-      "target": 726,
-      "stop": 705,
-      "riskReward": 2.0,
-      "timeframe": "intraday",
-      "rationale": "QQQ VWAP (716.43) üstünde, ORB high 726.83 test ediliyor. Pullback 712'ye kadar beklenmeli. Risk-on eğilimi var. Volume confirmation."
-    },
-    {
-      "ticker": "AYI",
-      "direction": "call",
-      "entry": 355,
-      "target": 375,
-      "stop": 345,
-      "riskReward": 2.0,
-      "timeframe": "swing",
-      "rationale": "VWAP (357.6) üstünde güçlü momentum. Earnings beat sonrası continuation. Entry VWAP testi. Fiyat 368.62, pullback 355 beklenmeli."
-    },
-    {
-      "ticker": "TECH",
-      "direction": "call",
-      "entry": 70.3,
-      "target": 72.0,
-      "stop": 69.5,
-      "riskReward": 2.1,
-      "timeframe": "intraday",
-      "rationale": "VWAP (70.41) üstünde, narrow range breakout. Biotech momentum. Volume confirmation. Entry 70.3 VWAP retest."
-    },
-    {
-      "ticker": "BB",
-      "direction": "call",
-      "entry": 10.0,
-      "target": 11.5,
-      "stop": 9.3,
-      "riskReward": 2.1,
-      "timeframe": "intraday",
-      "rationale": "VWAP (10.25) üstünde, short squeeze + AI momentum. Entry VWAP retest 10.0. Yüksek volatilite, meme flow riski."
-    },
-    {
-      "ticker": "KYMR",
-      "direction": "call",
-      "entry": 110,
-      "target": 125,
-      "stop": 104,
-      "riskReward": 2.5,
-      "timeframe": "swing",
-      "rationale": "VWAP (117.27) yakınında, gün içi dip 104.335'ten bounce. Biotech momentum. Yüksek volatilite ama 2.5x R/R."
-    }
-  ],
-  "putSetups": [
-    {
-      "ticker": "AAPL",
-      "direction": "put",
-      "entry": 285,
-      "target": 270,
-      "stop": 290,
-      "riskReward": 3.0,
-      "timeframe": "intraday",
-      "rationale": "VWAP (280.09) altında, açılıştan satış baskısı. Memory crunch haber akışı. Entry VWAP retest 285. Day low 273.75 target."
-    },
-    {
-      "ticker": "TCOM",
-      "direction": "put",
-      "entry": 40.0,
-      "target": 37,
-      "stop": 41.5,
-      "riskReward": 2.0,
-      "timeframe": "intraday",
-      "rationale": "VWAP (39.55) altında, China macro headwinds. Gap down continuation. Entry 40.0 VWAP test."
-    },
-    {
-      "ticker": "INOD",
-      "direction": "put",
-      "entry": 75,
-      "target": 68,
-      "stop": 80,
-      "riskReward": 2.0,
-      "timeframe": "intraday",
-      "rationale": "VWAP (75.65) altında, AI data bubble fears. Entry VWAP retest 75. Stop gün high 83.58 üstü."
-    },
-    {
-      "ticker": "PSNY",
-      "direction": "put",
-      "entry": 19.2,
-      "target": 16.5,
-      "stop": 20.3,
-      "riskReward": 2.5,
-      "timeframe": "swing",
-      "rationale": "VWAP (18.76) altında, EV sector weakness. Entry 19.2 VWAP retest. $16.5 destek."
-    },
-    {
-      "ticker": "SPY",
-      "direction": "put",
-      "entry": 738,
-      "target": 728,
-      "stop": 741,
-      "riskReward": 3.3,
-      "timeframe": "intraday",
-      "rationale": "VWAP (734.17) altında, VIX yükseliş. Entry 738 VWAP retest. Risk-off eğilimi. Stop 741 day high üstü."
-    }
-  ],
-  "vwapNotes": "SPY 733.54 VWAP 734.17 altında — hafif negatif. QQQ 717.16 VWAP 716.43 üstünde — tech güçlü. IWM 298.58 VWAP 298.99 altında — small cap zayıf. VIX 19.38 (+4.03%) yükselişte — risk-off. Genel tape: büyük-cap tech (QQQ) diğerlerinden ayrışıyor. Gap fill: SPY açılış 738.91'den gap aşağı oluşmuş, 729.6 low'a kadar kapanma eğilimi var.",
+  "vwapNotes": "SPY VWAP (734.31) altında ve hafif negatif (+0.10%). QQQ VWAP (716.30) üzerinde ve güçlü pozitif (+0.86%). IWM VWAP (298.69) altında ve zayıf (+0.33%). Tech (QQQ) liderliği devam ediyor, ancak broad market (SPY/IWM) VWAP altında kaldı. Gap fill SPY'de 729.6 low'dan başladı, kısmen dolduruldu. Risk-on/risk-off karışık: QQQ alım, SPY/IWM satım baskısı.",
   "riskAssessment": {
     "level": "medium",
-    "vixRegime": "VIX 19.38 (+4.03%) — elevated/normal border. Fear ölçüsü artıyor, complacency yok.",
-    "sectorRotation": "Tech (QQQ) relative strength, small-cap (IWM) lagging. Energy/Consumer zayıf. Biotech momentum.",
-    "earningsRisk": "SNX, WGO, CMC, LNN, DRI, MKC earnings today. IV crush risk active. 0DTE YASAK on all earnings names.",
-    "macroRisk": "Geopolitical tensions easing (Middle East) but VIX elevated. FOMC outlook uncertain, 10-year yield 4.39%. AI capex feeding into tech earnings."
+    "vixRegime": "VIX 18.89 (+1.40%) — normal-elevated geçiş bölgesi. 15-20 aralığında, complacency azalıyor.",
+    "sectorRotation": "Tech/Semiconductor güçlü (MU earnings beat, QQQ lider). Biotech M&A aktif (TECH takeover). Financials zayıf (JEF düşüş). Nuclear/Energy profit taking.",
+    "earningsRisk": "Yoğun earnings günü (50 BMO + 62 AMC). AYI, SNX, BB earnings sonrası IV crush aktif. 0DTE bu hisselerde YASAK. Bekleyenler: MKC, WGO, CMC, DRI, LNN.",
+    "macroRisk": "Bugün önemli makro veri yok. Önümüzdeki hafta FOMC toplantısı potansiyel headwind. TCOM üzerindeki Çin antitrust soruşturması jeopolitik risk ekliyor."
   },
   "nextDayCarryForward": []
 }
