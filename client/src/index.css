@@ -190,6 +190,15 @@
   }
 }
 
+@keyframes skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -335,6 +344,29 @@
     border-color: color-mix(in srgb, var(--color-accent) 35%, transparent);
     color: var(--color-text-primary);
     box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-accent) 16%, transparent);
+  }
+
+  .skeleton-shimmer {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    background: color-mix(in srgb, var(--surface-overlay) 82%, transparent);
+  }
+
+  .skeleton-shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(248, 251, 255, 0.04) 42%,
+      rgba(248, 251, 255, 0.16) 50%,
+      rgba(248, 251, 255, 0.04) 58%,
+      transparent 100%
+    );
+    animation: skeleton-shimmer 1.4s ease-in-out infinite;
   }
 
   .tone-bull {
