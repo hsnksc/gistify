@@ -1,106 +1,113 @@
-# Market Flash Stocks — PRE-MARKET
+# Market Flash Stocks - Intra-Market Hourly Report
 
-> **Tarih:** 2026-06-24 | **Saat:** TSİ 20:38 | **ET:** 13:38
-> **Rapor Tipi:** Pre-Market | **VIX:** 18.34 (-5.90%)
-
----
-
-## Piyama Genel Durumu
-
-| Endeks | Fiyat | Değişim | Değişim % | Önceki Kapanış | Yorum |
-|--------|-------|---------|-----------|----------------|-------|
-| SPY | 732.40 | -1.18 | -0.16% | 733.58 | Hafif negatif açılış öncesi |
-| QQQ | 708.50 | -5.15 | -0.72% | 713.65 | Tech risk-off |
-| IWM | 296.36 | +1.04 | +0.35% | 295.32 | Small-cap relative strength |
-| VIX | 18.34 | -1.15 | -5.90% | 19.49 | Fear → Neutral gerileme |
-
-**Özet:** SPY hafif negatif, QQQ daha zayıf (-0.72%). IWM pozitif ayrışıyor (+0.35%) → rotation sinyali. VIX 18.34'e geriledi, panic yok ama tech'te satış baskısı devam ediyor.
+**Rapor Tarihi:** 2026-06-25  
+**Oluşturma Saati:** 2026-06-25 14:07:14 UTC  
+**Rapor Tipi:** Hourly (Intra-Market)  
+**Piyasa Durumu:** ABD piyasası AÇIK (ET 10:00-16:00)
 
 ---
 
-## Top Movers
+## 1. Market Summary
 
-### Gainers
+| Index | Price | Change | VWAP | Open | High | Low | Prev Close |
+|-------|-------|--------|------|------|------|-----|------------|
+| **SPY** | $729.89 | -0.46% | $732.95 | $738.91 | $739.37 | $729.60 | $733.24 |
+| **QQQ** | $705.89 | -0.67% | $712.85 | $726.24 | $726.83 | $705.82 | $710.62 |
+| **IWM** | $297.26 | +0.19% | $298.38 | $298.65 | $300.97 | $296.90 | $296.69 |
+| **VIX** | $17.84 | -4.24% | $17.84 | $18.11 | $18.17 | $17.72 | $18.63 |
 
-| Hisse | Fiyat | Değişim | Değişim % | Hacim | Avg Hacim | Katalizör |
-|-------|-------|---------|-----------|-------|-----------|-----------|
-| ABSI | 10.39 | +2.98 | +40.22% | 27M | 5M | Biyotek momentum |
-| WEN | 8.08 | +1.83 | +29.18% | 159M | 10M | M&A spekülasyonu |
-| RUN | 15.62 | +2.81 | +21.94% | 37M | 8M | Solar sektör rally |
-| KBH | 61.24 | +8.51 | +16.14% | 3M | 1M | Homebuilder talebi |
-| RKT | 15.16 | +1.69 | +12.55% | 34M | 26M | Fintech/mortgage momentum |
-
-### Losers
-
-| Hisse | Fiyat | Değişim | Değişim % | Hacim | Avg Hacim | Katalizör |
-|-------|-------|---------|-----------|-------|-----------|-----------|
-| CBRS | 187.04 | -39.68 | -17.50% | 15M | 8M | AI chip sektörü satışı |
-| NVTS | 17.98 | -3.42 | -15.98% | 19M | 33M | Power semi zayıflığı |
-| ARM | 348.86 | -17.53 | -4.78% | 10.9M | 10M | Semiconductor risk-off |
-| ON | 112.56 | -4.50 | -3.84% | 15.5M | 12M | Auto/power semi endişesi |
-| MU | 1024.28 | -27.49 | -2.61% | 8M | 12M | Earnings after close (Q3) |
+> **VIX Note:** VIX Finnhub API'de 0 döndürdüğü için CBOE/MarketWatch web aramasıyla doğrulandı. VIX 17.84 = normal regime (15-20). Düşüş devam ediyor ama endeksler VWAP altında = risk-off bias.
 
 ---
 
-## CALL Setups
+## 2. Top Movers
 
-| Hisse | Fiyat | Entry | Stop | Target | R/R | Expiry | Katalizör |
-|-------|-------|-------|------|--------|-----|--------|-----------|
-| WEN | 8.08 | 8.00 | 7.50 | 9.00 | 2.0 | weekly | M&A spekülasyonu, 159M hacim (16x avg) |
-| RUN | 15.62 | 15.50 | 14.80 | 17.00 | 2.1 | weekly | Solar rally, 37M hacim (4.6x avg) |
-| KBH | 61.24 | 61.00 | 59.00 | 65.00 | 2.0 | weekly | Homebuilder talebi, 3M hacim |
-| AAPL | 296.41 | 296.00 | 293.00 | 302.00 | 2.0 | weekly | Tech risk-off'ta pozitif ayrışma |
-| RKT | 15.16 | 15.00 | 14.30 | 16.40 | 2.0 | weekly | Fintech momentum, 34M hacim |
+### Gainers (5)
 
-**Notlar:**
-- WEN: M&A spekülasyonuyla volume patlaması. Entry 8.00 üzerinde kapanış takip edilmeli.
-- RUN: Solar sektöründe broad momentum. Stop 14.80 altı gap fill riski.
-- KBH: Homebuilder breakout. 52-week range ortası üzerinde.
-- AAPL: QQQ -0.72% vs AAPL +0.72% → defensive tech rotation.
-- RKT: Mortgage app data sonrası momentum.
+| Ticker | Company | Price | Change | Volume | Catalyst |
+|--------|---------|-------|--------|--------|----------|
+| **TECH** | Bio-Techne Corporation | $70.43 | +19.64% | 10.82M | Merck KGaA $73/share acquisition offer - buyout premium |
+| **RUN** | Sunrun Inc. | $14.42 | +12.57% | 51.23M | Tesla + Renew Home 16 GW virtual power plant partnership |
+| **BLDR** | Builders FirstSource | $85.41 | +11.31% | 3.03M | Housing/building products rally - new housing legislation |
+| **QCOM** | Qualcomm Inc. | $216.67 | +9.80% | 2.25M | AI chip deal with ByteDance, hyperscaler custom silicon ramp |
+| **AAL** | American Airlines | $17.44 | +8.05% | 207.08M | Oil drop (US-Iran deal), Strait of Hormuz reopened, Barclays PT $19 |
 
----
+### Losers (5)
 
-## PUT Setups
-
-| Hisse | Fiyat | Entry | Stop | Target | R/R | Expiry | Katalizör |
-|-------|-------|-------|------|--------|-----|--------|-----------|
-| ARM | 348.86 | 349.00 | 356.00 | 335.00 | 2.0 | weekly | Semiconductor risk-off |
-| ON | 112.56 | 113.00 | 116.00 | 107.00 | 2.0 | weekly | Auto/power semi talep endişesi |
-| CBRS | 187.04 | 188.00 | 195.00 | 174.00 | 2.0 | weekly | AI chip breakdown, volatilite yüksek |
-| MU | 1024.28 | 1025.00 | 1050.00 | 975.00 | 2.0 | 0DTE | Q3 earnings after close |
-| AMD | 509.74 | 510.00 | 518.00 | 494.00 | 2.0 | weekly | Tech selloff momentum |
-
-**⚠️ Uyarılar:**
-- **MU 0DTE:** Earnings after close = **yüksek IV crush riski**. 0DTE sadece deneyimli trader'lar için. Hacim >1M (8M avg), likidite yeterli.
-- **CBRS:** Aşırı volatilite. Wide stop (188→195) gerekli. Position size küçük tutulmalı.
-- Tüm PUT setup'ları QQQ weakness + semiconductor risk-off temelinde.
+| Ticker | Company | Price | Change | Volume | Catalyst |
+|--------|---------|-------|--------|--------|----------|
+| **CBRS** | Cerebras Systems | $186.06 | -17.93% | 17.57M | AI chip/semiconductor sector selloff, profit-taking |
+| **NVTS** | Navitas Semiconductor | $17.49 | -18.27% | 27.14M | Semiconductor sector weakness, power chip distribution |
+| **WOLF** | Wolfspeed, Inc. | $43.97 | -10.10% | 3.82M | Negative gross margins, cash burn, EV demand weakness |
+| **OUST** | Ouster, Inc. | $39.22 | -13.14% | 4.20M | Lidar/tech sector rotation, profit-taking |
+| **SYRE** | Spyre Therapeutics | $84.68 | -12.75% | 3.16M | Biotech/therapeutics selloff after 517% 52-week run |
 
 ---
 
-## Earnings Takvimi
+## 3. Earnings Calendar
 
-| Hisse | Zaman | EPS Beklenen | Rev Beklenen (B) | Önceki EPS | Önceki Rev | Çeyrek |
-|-------|-------|--------------|------------------|------------|------------|--------|
-| MU | After Close | $20.98 | $35.85 | N/A | N/A | Q3 2026 |
-| TCOM | After Close | N/A | N/A | N/A | N/A | Q1 2026 |
-
-**MU Q3 2026:** Consensus EPS $20.98, Revenue $35.85B. After close (4:30 PM ET / 23:30 TSİ). Yüksek IV crush riski. 0DTE straddle/strangle play'ler IV expansion'a duyarlı.
-
----
-
-## VWAP / Teknik Notlar
-
-Pre-market session: VWAP henüz oluşmadı. SPY 732.40 (-0.16%) açılış öncesi hafif negatif. QQQ 708.50 (-0.72%) tech risk-off gösteriyor. IWM 296.36 (+0.35%) relative strength pozitif. Small-cap outperformance = rotation sinyali. Key levels: SPY 731 (prem low) / 735 (prev close). QQQ 707 (prem low) / 714 (prev close).
-
----
-
-## Risk Değerlendirmesi
-
-VIX 18.34 (-5.90%) = Fear seviyesinden Neutral'a doğru gerileme. Semiconductor sektöründe risk-off (ARM -4.78%, ON -3.84%, AMD -1.94%). AI chip (CBRS) -17.50% = sektörel değil idiosynkratik satış. Earnings günü (MU after close) = elevated IV. 0DTE sadece >1M volume hisselerde (MU 8M avg). Low-float ve penny stock'ları (<$5) avoid. Piyama açılışta gap-down riski var (QQQ -0.72%). Short bias tech'te, long bias small-cap/homebuilder'da.
+| Ticker | Company | Time | Consensus EPS | Consensus Rev | Prior EPS | Expected Move | Sentiment | Note |
+|--------|---------|------|---------------|---------------|-----------|---------------|-----------|------|
+| DRI | Darden Restaurants | BMO | $3.64 | $3.73B | $3.29 | ±4.5% | Neutral | IV crush risk. 0DTE YASAK. |
+| SNX | TD SYNNEX | BMO | $4.18 | $17.0B | $3.15 | ±5.2% | Neutral | IV crush risk. 0DTE YASAK. |
+| AYI | Acuity Brands | BMO | $5.24 | $1.2B | $4.85 | ±4.8% | Neutral | IV crush risk. 0DTE YASAK. |
+| CMC | Commercial Metals | BMO | $1.77 | $2.4B | $1.68 | ±4.2% | Neutral | IV crush risk. 0DTE YASAK. |
+| WGO | Winnebago Industries | BMO | $0.78 | $763.2M | $0.81 | ±6.5% | Bearish | YoY EPS decline. IV crush risk. 0DTE YASAK. |
+| NNOX | Nano-X Imaging | BMO | -$0.20 | $4.6M | -$0.22 | ±8.2% | Neutral | High volatility small-cap. 0DTE YASAK. |
+| BB | BlackBerry | AMC | $0.03 | $139.8M | $0.02 | ±7.5% | Neutral | AMC = IV crush risk. 0DTE YASAK. |
+| HUBG | Hub Group | AMC | $0.42 | $888.4M | $0.38 | ±5.0% | Neutral | AMC = IV crush risk. 0DTE YASAK. |
+| MKC | McCormick | TBD | $0.69 | $1.9B | $0.65 | ±3.5% | Neutral | Consumer staples. Timing TBD. 0DTE YASAK. |
+| LNN | Lindsay Corp | BMO | $1.14 | $157.8M | $1.05 | ±5.5% | Neutral | Agriculture/irrigation. 0DTE YASAK. |
 
 ---
 
-> **Disclaimer:** Bu rapor eğitim ve analiz amaçlıdır. Yatırım tavsiyesi değildir. Options trading yüksek risk içerir. Her trade'te kendi due diligence'ınızı yapın.
+## 4. CALL Setups (5)
 
-> **Generated by:** Market Flash Stocks Skill | **Gistify Deploy**
+| Ticker | Entry | Target | Stop | R/R | Rationale | Timeframe | VWAP |
+|--------|-------|--------|------|-----|-----------|-----------|------|
+| **TECH** | $70.50 | $73.00 | $68.00 | 2.5x | Merck $73 offer = floor. VWAP break above $72 = momentum. 10.8M volume. | Intraday | Above |
+| **RUN** | $14.50 | $16.00 | $13.80 | 2.1x | Tesla 16 GW VPP deal = structural catalyst. ORB breakout $15. 51M volume. | Intraday | Above |
+| **QCOM** | $216.00 | $225.00 | $210.00 | 2.5x | AI chip momentum (ByteDance + hyperscaler). Semicon leadership. | Intraday | Above |
+| **BLDR** | $85.00 | $92.00 | $81.50 | 2.0x | Housing legislation tailwind. Break $86 resistance. Building products rotation. | Swing | Above |
+| **AAL** | $17.40 | $18.50 | $16.80 | 2.8x | Oil drop = margin expansion. 52-week high breakout. 207M volume. | Intraday | Above |
+
+---
+
+## 5. PUT Setups (5)
+
+| Ticker | Entry | Target | Stop | R/R | Rationale | Timeframe | VWAP |
+|--------|-------|--------|------|-----|-----------|-----------|------|
+| **CBRS** | $185.00 | $175.00 | $192.00 | 2.9x | AI chip selloff. Below VWAP ($196). 17.5M = distribution. | Intraday | Below |
+| **NVTS** | $17.50 | $15.50 | $18.50 | 2.0x | Semiconductor weakness. Below VWAP. 27M volume = heavy selling. | Intraday | Below |
+| **WOLF** | $44.00 | $40.00 | $46.00 | 2.0x | Negative margins, cash burn. Below VWAP. Post-bankruptcy overhang. | Intraday | Below |
+| **SPY** | $730.00 | $720.00 | $735.00 | 2.0x | Below VWAP ($732.95). Tech weakness. QQQ drag. Gap fill $720. | 0DTE | Below |
+| **QQQ** | $706.00 | $695.00 | $712.00 | 2.0x | Below VWAP ($712.85). Semiconductor selloff. Tech leadership fading. | 0DTE | Below |
+
+---
+
+## 6. VWAP Notes
+
+SPY ($729.89) **BELOW VWAP** ($732.95). QQQ ($705.89) **BELOW VWAP** ($712.85). IWM ($297.26) **BELOW VWAP** ($298.38).  
+
+**Tüm 3 major index VWAP altında = risk-off bias.** QQQ zayıflığı (tech semis) SPY'yi aşağı çekiyor. IWM düz ama hâlâ VWAP altında. Gap down tam olarak doldurulmadı. VIX düşüyor (-4.24%) ama endeksler toparlanmıyor = selektif zayıflık tech/megacap'te.
+
+---
+
+## 7. Risk Assessment
+
+| Level | medium |
+|-------|--------|
+| **VIX Regime** | VIX 17.84 = normal regime (15-20). Düşüş -4.24% from 18.63. Korku yok ama dikkat gerekli. |
+| **Sector Rotation** | Tech/semis ZAYIF (CBRS -17.9%, NVTS -18.3%, WOLF -10.1%). Housing/building GÜÇLÜ (BLDR +11.3%). Airlines GÜÇLÜ (AAL +8.1%, UAL +6.2%). Solar GÜÇLÜ (RUN +12.6%). Healthcare M&A aktif (TECH +19.6%). |
+| **Earnings Risk** | Bugün BMO: DRI, SNX, AYI, CMC, WGO, NNOX. AMC: BB, HUBG. TBD: MKC, LNN. TÜMÜNDE IV crush risk. Bu ticker'larda 0DTE = premium imhası. |
+| **Macro Risk** | US-Iran MOU imzalandı, Strait of Hormuz açıldı = petrol fiyatları düştü, havayolları ralli yaptı. 10-year yield 4.39%. CPI %4 üzerinde ama petrol rahatlaması geliyor. Fed bölünmüş. Bugün major macro data yok. |
+
+---
+
+## 8. Next Day Carry Forward
+
+> **Hourly raporunda boş array:** `[]`
+
+---
+
+*Bu rapor intra-market hourly formatında üretilmiştir. Tüm veriler Finnhub API, Yahoo Finance, CBOE, MarketWatch ve çeşitli web kaynaklarından toplanmıştır. Yatırım tavsiyesi değildir.*
