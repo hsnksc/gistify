@@ -117,7 +117,7 @@ export default function EarningsHero({
           <MetricCard
             icon={<Activity className="size-4" />}
             label="VIX"
-            value={data.macro.vix}
+            value={data.macro.vix || copy(language, "Bekleniyor", "Pending")}
             tone={getVixTone(data.macro.vix)}
           />
           <MetricCard

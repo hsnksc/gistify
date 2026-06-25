@@ -16,7 +16,6 @@ import {
   FileText,
   Radar,
   RefreshCw,
-  Shield,
   Target,
   TrendingDown,
   TrendingUp,
@@ -84,7 +83,7 @@ export default function Home({ language }: { language: AppLanguage }) {
     ),
     title: copy(
       language,
-      "Gistify | Earnings Strategy Workspace",
+      "Gistify | Kazanc Stratejisi Workspace'i",
       "Gistify | Earnings Strategy Workspace"
     ),
   });
@@ -379,8 +378,12 @@ export default function Home({ language }: { language: AppLanguage }) {
               </span>
             </>
           }
-          eyebrow={copy(language, "Earnings Strategy Workspace", "Earnings Strategy Workspace")}
-          title={copy(language, "Guncel earnings strateji paneli", "Current earnings strategy panel")}
+          eyebrow={copy(
+            language,
+            "Kazanc Stratejisi Workspace'i",
+            "Earnings Strategy Workspace"
+          )}
+          title={copy(language, "Guncel kazanc stratejisi paneli", "Current earnings strategy panel")}
           description={copy(
             language,
             "Tum yuklenen earnings markdown dosyalari arsivde tutulur. Varsayilan gorunum, secili dosyayi eksiksiz bir post gibi acar; playbook, takvim ve risk sekmeleri destek katmani olarak kalir.",
@@ -395,10 +398,6 @@ export default function Home({ language }: { language: AppLanguage }) {
               <Button type="button" variant="outline" onClick={() => setLocation("/momentum")}>
                 <Radar className="size-4" />
                 {copy(language, "Momentum", "Momentum")}
-              </Button>
-              <Button type="button" variant="outline" onClick={() => setLocation("/app/admin")}>
-                <Shield className="size-4" />
-                {copy(language, "Admin", "Admin")}
               </Button>
             </>
           }

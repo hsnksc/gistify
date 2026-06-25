@@ -15,7 +15,9 @@ interface UseFlowReportSummariesResult {
 }
 
 interface UseFlowReportSummariesOptions {
+  limit?: number;
   reportKind?: FlowReportKind;
+  timeoutMs?: number;
 }
 
 export function useFlowReportSummaries(
@@ -25,22 +27,31 @@ export function useFlowReportSummaries(
   const [reports, setReports] = useState<FlowReportSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const { reportKind } = options;
+  const { limit, reportKind, timeoutMs = 20_000 } = options;
 
   const reload = useCallback(async () => {
     setLoading(true);
     setError("");
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), timeoutMs);
 
     try {
       const searchParams = new URLSearchParams();
       if (reportKind) {
         searchParams.set("type", reportKind);
       }
+      if (typeof limit === "number" && Number.isFinite(limit) && limit > 0) {
+        searchParams.set("limit", String(Math.floor(limit)));
+      }
 
-      const response = await fetch(`/api/flow-reports/summary${searchParams.size ? `?${searchParams.toString()}` : ""}`, {
-        cache: "no-store",
-        credentials: "include",
-      });
+      const response = await fetch(
+        `/api/flow-reports/summary${searchParams.size ? `?${searchParams.toString()}` : ""}`,
+        {
+          cache: "no-store",
+          credentials: "include",
+          signal: controller.signal,
+        }
+      );
       const payload = await readJsonResponse<FlowReportSummariesResponse>(
         response,
         "flow report summaries",
@@ -62,20 +73,29 @@ export function useFlowReportSummaries(
 
       setReports(Array.isArray(payload.reports) ? payload.reports : []);
     } catch (caughtError) {
+      const isAbortError =
+        caughtError instanceof DOMException && caughtError.name === "AbortError";
       setError(
-        caughtError instanceof Error
-          ? caughtError.message
-          : copy(
+        isAbortError
+          ? copy(
               language,
-              "Flow rapor ozetleri yuklenemedi.",
-              "Flow report summaries could not be loaded."
+              "Flow rapor ozetleri zamaninda gelmedi. Yeniden dene.",
+              "Flow report summaries took too long to arrive. Try again."
             )
+          : caughtError instanceof Error
+            ? caughtError.message
+            : copy(
+                language,
+                "Flow rapor ozetleri yuklenemedi.",
+                "Flow report summaries could not be loaded."
+              )
       );
       setReports([]);
     } finally {
+      window.clearTimeout(timeoutId);
       setLoading(false);
     }
-  }, [language, reportKind]);
+  }, [language, limit, reportKind, timeoutMs]);
 
   useEffect(() => {
     void reload();

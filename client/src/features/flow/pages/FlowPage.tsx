@@ -32,6 +32,8 @@ import {
   groupFlowReportsByTicker,
 } from "../lib/flowReportHelpers";
 
+const FLOW_PAGE_SUMMARY_LIMIT = 60;
+
 export default function FlowPage({
   language,
 }: {
@@ -40,7 +42,10 @@ export default function FlowPage({
 }) {
   const [, setLocation] = useLocation();
   const [searchValue, setSearchValue] = useState("");
-  const { reports, loading, error, reload } = useFlowReportSummaries(language);
+  const { reports, loading, error, reload } = useFlowReportSummaries(language, {
+    limit: FLOW_PAGE_SUMMARY_LIMIT,
+    timeoutMs: 10_000,
+  });
   const normalizedSearch = searchValue.trim().toUpperCase();
   const locale = language === "en" ? "en-US" : "tr-TR";
 
@@ -121,7 +126,7 @@ export default function FlowPage({
   return (
     <FlowLayout
       language={language}
-      eyebrow={copy(language, "Flow", "Flow")}
+      eyebrow={copy(language, "Akis", "Flow")}
       title={copy(language, "Rapor Merkezi", "Report Center")}
       description={copy(
         language,
@@ -164,6 +169,12 @@ export default function FlowPage({
         />
       ) : error ? (
         <EmptyState
+          action={
+            <Button type="button" variant="outline" onClick={() => void reload()}>
+              <RefreshCw className="size-4" />
+              {copy(language, "Tekrar dene", "Try again")}
+            </Button>
+          }
           description={error}
           icon={AlertCircle}
           role="alert"
@@ -179,7 +190,7 @@ export default function FlowPage({
           <section className="grid gap-3 md:grid-cols-4">
             <article className="rounded-xl border border-border bg-card/90 p-4 shadow-md">
               <p className="text-[10px] font-semibold uppercase tracking-wider text-emerald-300">
-                {copy(language, "Hisse Basligi", "Ticker Library")}
+                {copy(language, "Gorunen Hisse", "Visible Tickers")}
               </p>
               <p className="mt-2 text-2xl font-semibold text-foreground">
                 {tickerGroups.length}
@@ -188,7 +199,7 @@ export default function FlowPage({
 
             <article className="rounded-xl border border-border bg-card/90 p-4 shadow-md">
               <p className="text-[10px] font-semibold uppercase tracking-wider text-sky-300">
-                {copy(language, "Hisse Raporu", "Stock Reports")}
+                {copy(language, "Gorunen Hisse Raporu", "Visible Stock Reports")}
               </p>
               <p className="mt-2 text-2xl font-semibold text-foreground">
                 {stockReports.length}
@@ -197,7 +208,7 @@ export default function FlowPage({
 
             <article className="rounded-xl border border-border bg-card/90 p-4 shadow-md">
               <p className="text-[10px] font-semibold uppercase tracking-wider text-cyan-300">
-                {copy(language, "Gunluk Rapor", "Daily Reports")}
+                {copy(language, "Gorunen Gunluk Rapor", "Visible Daily Reports")}
               </p>
               <p className="mt-2 text-2xl font-semibold text-foreground">
                 {dailyReports.length}
@@ -218,6 +229,16 @@ export default function FlowPage({
               </p>
             </article>
           </section>
+
+          {reports.length >= FLOW_PAGE_SUMMARY_LIMIT ? (
+            <div className="rounded-xl border border-amber-500/20 bg-amber-500/8 px-4 py-3 text-sm text-amber-100">
+              {copy(
+                language,
+                "Flow ana sayfasi hiz icin son 60 ozetle aciliyor. Tum arsiv icin Hisse Arsivi veya Gunluk Arsiv'e gec.",
+                "The Flow homepage opens with the latest 60 summaries for speed. Open Stock Archive or Daily Archive for the full history."
+              )}
+            </div>
+          ) : null}
 
           <section className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
             <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">

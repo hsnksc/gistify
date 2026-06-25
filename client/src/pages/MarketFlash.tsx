@@ -798,7 +798,7 @@ function MoversTable({
         <CardTitle
           className={cn(
             "flex items-center gap-2 text-lg",
-            tone === "gainer" ? "text-emerald-200" : "text-rose-200"
+            tone === "gainer" ? "text-emerald-200" : "text-white"
           )}
         >
           <Icon className="size-5" />

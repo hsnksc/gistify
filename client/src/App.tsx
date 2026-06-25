@@ -233,6 +233,42 @@ function copy(language: AppLanguage, tr: string, en: string) {
   return language === "en" ? en : tr;
 }
 
+type WorkspaceLabelKey =
+  | "admin"
+  | "calendar"
+  | "cpiPpi"
+  | "daily"
+  | "earnings"
+  | "earningsStrategy"
+  | "flow"
+  | "marketFlash"
+  | "momentum";
+
+function workspaceLabel(language: AppLanguage, key: WorkspaceLabelKey) {
+  switch (key) {
+    case "admin":
+      return copy(language, "Yonetim", "Admin");
+    case "calendar":
+      return copy(language, "Takvim", "Calendar");
+    case "cpiPpi":
+      return "CPI/PPI";
+    case "daily":
+      return copy(language, "Gunluk", "Daily");
+    case "earnings":
+      return copy(language, "Earnings", "Earnings");
+    case "earningsStrategy":
+      return copy(language, "Kazanc Stratejisi", "Earnings Strategy");
+    case "flow":
+      return copy(language, "Akis", "Flow");
+    case "marketFlash":
+      return copy(language, "Market Flash", "Market Flash");
+    case "momentum":
+      return copy(language, "Momentum", "Momentum");
+    default:
+      return "";
+  }
+}
+
 function Router({
   language,
   onLanguageChange,
@@ -248,10 +284,10 @@ function Router({
             className="mx-auto max-w-7xl"
             description={copy(
               language,
-              "Earnings strateji, momentum, daily ve portfolio modulleri baglaniyor.",
+              "Kazanc stratejisi, momentum, gunluk ve portfoy modulleri baglaniyor.",
               "The earnings strategy, momentum, daily and portfolio modules are connecting."
             )}
-            label={copy(language, "Panel yukleniyor", "Loading workspace")}
+            label={copy(language, "Calisma alani yukleniyor", "Loading workspace")}
           />
         </div>
       }
@@ -430,21 +466,21 @@ function WorkspaceNavigation({
   const items = [
     {
       href: "/app",
-      label: copy(language, "Earnings Strategy", "Earnings Strategy"),
+      label: workspaceLabel(language, "earningsStrategy"),
       icon: LayoutDashboard,
       active: location === "/app",
       requiresSubscription: true,
     },
     {
       href: "/earnings",
-      label: copy(language, "Earnings", "Earnings"),
+      label: workspaceLabel(language, "earnings"),
       icon: TrendingUp,
       active: location.startsWith("/earnings"),
       requiresSubscription: true,
     },
     {
       href: "/momentum",
-      label: copy(language, "Momentum", "Momentum"),
+      label: workspaceLabel(language, "momentum"),
       icon: Radar,
       active:
         location.startsWith("/momentum") || location.startsWith("/scanner"),
@@ -452,35 +488,35 @@ function WorkspaceNavigation({
     },
     {
       href: "/daily-report",
-      label: copy(language, "Daily", "Daily"),
+      label: workspaceLabel(language, "daily"),
       icon: FileText,
       active: location.startsWith("/daily-report"),
       requiresSubscription: true,
     },
     {
       href: "/cpi-ppi",
-      label: copy(language, "CPI/PPI", "CPI/PPI"),
+      label: workspaceLabel(language, "cpiPpi"),
       icon: Activity,
       active: location.startsWith("/cpi-ppi"),
       requiresSubscription: true,
     },
     {
       href: "/calendar",
-      label: copy(language, "Takvim", "Calendar"),
+      label: workspaceLabel(language, "calendar"),
       icon: CalendarDays,
       active: location.startsWith("/calendar"),
       requiresSubscription: true,
     },
     {
       href: "/marketflash",
-      label: copy(language, "Market Flash", "Market Flash"),
+      label: workspaceLabel(language, "marketFlash"),
       icon: Zap,
       active: location.startsWith("/marketflash"),
       requiresSubscription: true,
     },
     {
       href: "/flow",
-      label: copy(language, "Flow", "Flow"),
+      label: workspaceLabel(language, "flow"),
       icon: Layers3,
       active: location.startsWith("/flow") || location.startsWith("/reports"),
       requiresSubscription: false,
@@ -490,7 +526,7 @@ function WorkspaceNavigation({
   if (showAdmin) {
     items.splice(1, 0, {
       href: "/app/admin",
-      label: copy(language, "Admin", "Admin"),
+      label: workspaceLabel(language, "admin"),
       icon: Shield,
       active: location.startsWith("/app/admin"),
       requiresSubscription: true,
@@ -656,39 +692,43 @@ function WorkspaceNavigation({
 
 function getWorkspaceSectionLabel(path: string, language: AppLanguage) {
   if (path.startsWith("/app/admin")) {
-    return copy(language, "Admin", "Admin");
+    return workspaceLabel(language, "admin");
   }
 
   if (path.startsWith("/momentum") || path.startsWith("/scanner")) {
-    return copy(language, "Momentum", "Momentum");
+    return workspaceLabel(language, "momentum");
   }
 
   if (path.startsWith("/daily-report")) {
-    return copy(language, "Daily", "Daily");
+    return workspaceLabel(language, "daily");
   }
 
   if (path.startsWith("/cpi-ppi")) {
-    return copy(language, "CPI/PPI", "CPI/PPI");
+    return workspaceLabel(language, "cpiPpi");
   }
 
   if (path.startsWith("/calendar")) {
-    return copy(language, "Takvim", "Calendar");
+    return workspaceLabel(language, "calendar");
   }
 
   if (path.startsWith("/marketflash")) {
-    return copy(language, "Market Flash", "Market Flash");
+    return workspaceLabel(language, "marketFlash");
+  }
+
+  if (path.startsWith("/flow") || path.startsWith("/reports")) {
+    return workspaceLabel(language, "flow");
   }
 
   if (path.startsWith("/earnings")) {
-    return copy(language, "Earnings", "Earnings");
+    return workspaceLabel(language, "earnings");
   }
 
-  return copy(language, "Earnings Strategy", "Earnings Strategy");
+  return workspaceLabel(language, "earningsStrategy");
 }
 
 function SiteFooter({ language }: { language: AppLanguage }) {
   const links = [
-    { href: "/flow", label: copy(language, "Flow", "Flow") },
+    { href: "/flow", label: workspaceLabel(language, "flow") },
     { href: "/reports", label: copy(language, "Raporlar", "Reports") },
     { href: "/pricing", label: copy(language, "Fiyatlandirma", "Pricing") },
     { href: "/terms", label: copy(language, "Kosullar", "Terms") },
@@ -756,7 +796,7 @@ function SubscriptionRequiredView({
               <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
                 {copy(
                   language,
-                  "Flow herkese acik kalir. Earnings Strategy, Momentum, Daily, CPI/PPI, Calendar ve Market Flash modullerini acmak icin Paddle uzerinden aktif abonelik gerekir.",
+                  "Akis herkese acik kalir. Kazanc Stratejisi, Momentum, Gunluk, CPI/PPI, Takvim ve Market Flash modullerini acmak icin Paddle uzerinden aktif abonelik gerekir.",
                   "Flow stays open to everyone. Unlocking Earnings Strategy, Momentum, Daily, CPI/PPI, Calendar and Market Flash requires an active Paddle subscription."
                 )}
               </p>
@@ -768,7 +808,7 @@ function SubscriptionRequiredView({
                 </Button>
                 <Button asChild variant="outline" className="bg-background/70">
                   <a href="/flow">
-                    {copy(language, "Flow'a git", "Go to Flow")}
+                    {copy(language, "Akis'a git", "Go to Flow")}
                   </a>
                 </Button>
                 <Button asChild variant="outline" className="bg-background/70">
@@ -786,15 +826,30 @@ function SubscriptionRequiredView({
             <div className="grid min-w-[220px] grid-cols-2 gap-3">
               {[
                 [
-                  copy(language, "Earnings Strategy", "Earnings Strategy"),
+                  workspaceLabel(language, "earningsStrategy"),
                   copy(language, "Abonelik", "Subscription"),
                 ],
-                ["Momentum", copy(language, "Abonelik", "Subscription")],
-                ["Daily", copy(language, "Abonelik", "Subscription")],
-                ["CPI/PPI", copy(language, "Abonelik", "Subscription")],
-                ["Calendar", copy(language, "Abonelik", "Subscription")],
-                ["Market Flash", copy(language, "Abonelik", "Subscription")],
-                ["Flow", copy(language, "Acik", "Open")],
+                [
+                  workspaceLabel(language, "momentum"),
+                  copy(language, "Abonelik", "Subscription"),
+                ],
+                [
+                  workspaceLabel(language, "daily"),
+                  copy(language, "Abonelik", "Subscription"),
+                ],
+                [
+                  workspaceLabel(language, "cpiPpi"),
+                  copy(language, "Abonelik", "Subscription"),
+                ],
+                [
+                  workspaceLabel(language, "calendar"),
+                  copy(language, "Abonelik", "Subscription"),
+                ],
+                [
+                  workspaceLabel(language, "marketFlash"),
+                  copy(language, "Abonelik", "Subscription"),
+                ],
+                [workspaceLabel(language, "flow"), copy(language, "Acik", "Open")],
               ].map(([label, value]) => (
                 <div
                   key={label}
@@ -814,8 +869,8 @@ function SubscriptionRequiredView({
           {[
             copy(
               language,
-              "Abonelik acildiginda earning strategy workspace'i tam verilerle kullanirsin.",
-              "After activation, the earning strategy workspace opens with full data."
+              "Abonelik acildiginda kazanc stratejisi workspace'ini tam verilerle kullanirsin.",
+              "After activation, the earnings strategy workspace opens with full data."
             ),
             copy(
               language,
@@ -1595,7 +1650,7 @@ function App() {
                     <p className="text-sm text-muted-foreground leading-relaxed">
                       {copy(
                         language,
-                        "Flow herkese acik. Earnings Strategy, Momentum ve Daily modullerini acmak icin once Google ile uye girisi yapman gerekir; aktif abonelik yoksa odeme ekranina gecersin.",
+                        "Akis herkese acik. Kazanc Stratejisi, Momentum ve Gunluk modullerini acmak icin once Google ile uye girisi yapman gerekir; aktif abonelik yoksa odeme ekranina gecersin.",
                         "Flow is open to everyone. To open Earnings Strategy, Momentum and Daily, sign in with Google first; if the account is not subscribed, you will be taken to the payment step."
                       )}
                     </p>

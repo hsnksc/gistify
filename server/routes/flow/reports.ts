@@ -25,6 +25,20 @@ function normalizeReportKind(value: unknown) {
   return normalized === "daily" || normalized === "stock" ? normalized : undefined;
 }
 
+function normalizeLimit(value: unknown) {
+  const normalized = normalizeString(value);
+  if (!normalized) {
+    return undefined;
+  }
+
+  const parsed = Number.parseInt(normalized, 10);
+  if (!Number.isFinite(parsed) || parsed < 1) {
+    return undefined;
+  }
+
+  return Math.min(parsed, 100);
+}
+
 export function createFlowReportsRouter({
   setPrivateNoStore,
   getPublishedReports,
@@ -36,6 +50,7 @@ export function createFlowReportsRouter({
 
     const payload: FlowReportsResponse = {
       reports: getViewerFlowReports(getPublishedReports(), {
+        limit: normalizeLimit(req.query.limit),
         reportKind: normalizeReportKind(req.query.type),
         sourceLabel: normalizeString(req.query.source),
       }),
@@ -49,6 +64,7 @@ export function createFlowReportsRouter({
 
     const payload: FlowReportSummariesResponse = {
       reports: getViewerFlowReportSummaries(getPublishedReports(), {
+        limit: normalizeLimit(req.query.limit),
         reportKind: normalizeReportKind(req.query.type),
         sourceLabel: normalizeString(req.query.source),
       }),
