@@ -104,7 +104,7 @@ export default function OptionDetailTab({
       </div>
 
       {/* Stock Header */}
-      <div className="tactical-card p-5" style={{ borderLeftColor: cfg.color, borderLeftWidth: '4px' }}>
+      <div className="tactical-card p-6" style={{ borderLeftColor: cfg.color, borderLeftWidth: '4px' }}>
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <div className="flex items-center gap-3 mb-1">
@@ -343,3 +343,4 @@ export default function OptionDetailTab({
     </div>
   );
 }
+

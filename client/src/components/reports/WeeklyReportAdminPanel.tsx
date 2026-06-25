@@ -204,9 +204,9 @@ export default function WeeklyReportAdminPanel({
 
   if (!adminAuthorized) {
     return (
-      <section className="rounded-[2rem] border border-border bg-card/95 p-6 shadow-2xl">
+      <section className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
-          <div className="space-y-5">
+          <div className="space-y-6">
             <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-200">
               <Shield className="size-4" />
               Yonetici kilidi kapali
@@ -249,7 +249,7 @@ export default function WeeklyReportAdminPanel({
             ) : null}
           </div>
 
-          <div className="rounded-[2rem] border border-border bg-background/60 p-5">
+          <div className="rounded-xl border border-border bg-background/60 p-6">
             <SectionLabel>Bu sayfada neler var</SectionLabel>
             <div className="mt-4 space-y-3 text-sm text-muted-foreground">
               <p>Yeni haftalik taslak olusturma</p>
@@ -265,7 +265,7 @@ export default function WeeklyReportAdminPanel({
 
   return (
     <div className="grid gap-6 xl:grid-cols-[340px_minmax(0,1fr)]">
-      <aside className="rounded-[2rem] border border-border bg-card/95 p-5 shadow-2xl xl:sticky xl:top-24 xl:h-[calc(100vh-8rem)] xl:overflow-y-auto">
+      <aside className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl xl:sticky xl:top-24 xl:h-[calc(100vh-8rem)] xl:overflow-y-auto">
         <div className="flex items-center justify-between gap-2">
           <SectionLabel>Rapor Secimi</SectionLabel>
           <button
@@ -326,7 +326,7 @@ export default function WeeklyReportAdminPanel({
                   key={report.id}
                   type="button"
                   onClick={() => onSelectReport(report.id)}
-                  className={`w-full rounded-2xl border px-3 py-3 text-left transition-colors ${
+                  className={`w-full rounded-xl border px-3 py-3 text-left transition-colors ${
                     report.id === selectedReportId
                       ? "border-emerald-500/40 bg-emerald-500/10"
                       : "border-border bg-card/80 hover:bg-card"
@@ -361,7 +361,7 @@ export default function WeeklyReportAdminPanel({
         </div>
       </aside>
 
-      <div className="rounded-[2rem] border border-border bg-card/95 p-6 shadow-2xl">
+      <div className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
         {draftReport ? (
           <div className="space-y-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
@@ -518,7 +518,7 @@ export default function WeeklyReportAdminPanel({
               </Field>
             </div>
 
-            <div className="space-y-4 rounded-3xl border border-border bg-background/60 p-4">
+            <div className="space-y-4 rounded-xl border border-border bg-background/60 p-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <SectionLabel>Hisse Editoru</SectionLabel>
@@ -854,7 +854,7 @@ export default function WeeklyReportAdminPanel({
               )}
             </div>
 
-            <div className="space-y-3 rounded-3xl border border-border bg-background/60 p-4">
+            <div className="space-y-3 rounded-xl border border-border bg-background/60 p-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <SectionLabel>Advanced JSON</SectionLabel>
@@ -899,3 +899,4 @@ export default function WeeklyReportAdminPanel({
     </div>
   );
 }
+

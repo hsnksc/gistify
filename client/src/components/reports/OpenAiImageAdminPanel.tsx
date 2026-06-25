@@ -170,8 +170,8 @@ export default function OpenAiImageAdminPanel({
       </div>
 
       <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_420px]">
-        <article className="rounded-[2rem] border border-border bg-card/95 p-6 shadow-2xl">
-          <div className="space-y-5">
+        <article className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
+          <div className="space-y-6">
             <label className="space-y-2">
               <span className="text-xs font-medium text-muted-foreground">
                 Prompt
@@ -184,7 +184,7 @@ export default function OpenAiImageAdminPanel({
               />
             </label>
 
-            <div className="space-y-3 rounded-[1.5rem] border border-border bg-background/50 p-4">
+            <div className="space-y-3 rounded-xl border border-border bg-background/50 p-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <p className="text-xs font-medium text-muted-foreground">
@@ -224,7 +224,7 @@ export default function OpenAiImageAdminPanel({
                   {referenceImages.map(image => (
                     <div
                       key={image.id}
-                      className="rounded-[1.25rem] border border-border bg-card/80 p-3"
+                      className="rounded-xl border border-border bg-card/80 p-3"
                     >
                       <img
                         src={image.dataUrl}
@@ -257,7 +257,7 @@ export default function OpenAiImageAdminPanel({
                   ))}
                 </div>
               ) : (
-                <div className="rounded-[1.25rem] border border-dashed border-border bg-background/40 p-4 text-sm text-muted-foreground">
+                <div className="rounded-xl border border-dashed border-border bg-background/40 p-4 text-sm text-muted-foreground">
                   Henuz referans gorsel secilmedi.
                 </div>
               )}
@@ -287,7 +287,7 @@ export default function OpenAiImageAdminPanel({
           </div>
         </article>
 
-        <article className="rounded-[2rem] border border-border bg-card/95 p-6 shadow-2xl">
+        <article className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
             Son sonuc
           </p>
@@ -297,11 +297,11 @@ export default function OpenAiImageAdminPanel({
               <img
                 src={result.imageDataUrl}
                 alt="OpenAI generated"
-                className="w-full rounded-[1.5rem] border border-border bg-background/60 object-cover"
+                className="w-full rounded-xl border border-border bg-background/60 object-cover"
               />
 
               <div className="grid gap-3 sm:grid-cols-2">
-                <div className="rounded-[1.25rem] border border-border bg-background/50 p-3">
+                <div className="rounded-xl border border-border bg-background/50 p-3">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                     Model
                   </p>
@@ -309,7 +309,7 @@ export default function OpenAiImageAdminPanel({
                     {result.model}
                   </p>
                 </div>
-                <div className="rounded-[1.25rem] border border-border bg-background/50 p-3">
+                <div className="rounded-xl border border-border bg-background/50 p-3">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                     Referans
                   </p>
@@ -333,7 +333,7 @@ export default function OpenAiImageAdminPanel({
               </div>
             </div>
           ) : (
-            <div className="mt-4 rounded-[1.5rem] border border-dashed border-border bg-background/40 p-5 text-sm text-muted-foreground">
+            <div className="mt-4 rounded-xl border border-dashed border-border bg-background/40 p-6 text-sm text-muted-foreground">
               Uretilen gorsel burada preview olarak gosterilecek.
             </div>
           )}
@@ -342,3 +342,4 @@ export default function OpenAiImageAdminPanel({
     </section>
   );
 }
+

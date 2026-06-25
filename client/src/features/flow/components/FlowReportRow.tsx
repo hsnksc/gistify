@@ -37,15 +37,15 @@ export default function FlowReportRow({
   return (
     <Link
       href={href}
-      className="group flex items-start gap-3 rounded-xl border border-border bg-card/80 p-3 shadow-sm transition-all hover:border-indigo-400/35 hover:bg-card hover:shadow-md"
+      className="group flex items-start gap-3 rounded-xl border border-border bg-card/80 p-3 shadow-sm transition-all hover:border-sky-400/35 hover:bg-card hover:shadow-md"
     >
       <div className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-border bg-background/60">
-        <CalendarRange className="size-4 text-indigo-300" />
+        <CalendarRange className="size-4 text-sky-300" />
       </div>
 
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-semibold uppercase tracking-wider text-indigo-300">
+          <span className="text-xs font-semibold uppercase tracking-wider text-sky-300">
             {formatFlowReportDate(report.reportDate, locale)}
           </span>
           <span className="text-[10px] text-muted-foreground">
@@ -53,7 +53,7 @@ export default function FlowReportRow({
           </span>
         </div>
 
-        <h3 className="mt-0.5 truncate text-sm font-semibold text-foreground transition-colors group-hover:text-indigo-200">
+        <h3 className="mt-0.5 truncate text-sm font-semibold text-foreground transition-colors group-hover:text-sky-200">
           {report.title}
         </h3>
 
@@ -98,3 +98,4 @@ export default function FlowReportRow({
     </Link>
   );
 }
+

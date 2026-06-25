@@ -49,13 +49,13 @@ export default function PublicShell({
       <div className="pointer-events-none absolute right-[-120px] top-40 h-80 w-80 rounded-full bg-emerald-500/10 blur-3xl" />
 
       <div className="relative mx-auto flex max-w-7xl flex-col gap-6 px-4 py-8 md:px-6 lg:px-8">
-        <header className="rounded-[2rem] border border-border bg-[linear-gradient(135deg,rgba(17,24,39,0.95),rgba(15,23,42,0.88))] p-4 shadow-[0_28px_80px_rgba(0,0,0,0.28)] backdrop-blur">
+        <header className="rounded-xl border border-border bg-[linear-gradient(135deg,rgba(17,24,39,0.95),rgba(15,23,42,0.88))] p-4 shadow-[0_28px_80px_rgba(0,0,0,0.28)] backdrop-blur">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-center gap-3">
               <img
                 src="/gistifylogo.jpeg?v=20260606-1"
                 alt="Gistify logo"
-                className="size-12 rounded-2xl border border-border object-cover shadow-[0_12px_30px_rgba(0,0,0,0.18)]"
+                className="size-12 rounded-xl border border-border object-cover shadow-[0_12px_30px_rgba(0,0,0,0.18)]"
               />
               <div className="space-y-1">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
@@ -116,14 +116,14 @@ export default function PublicShell({
           </div>
         </header>
 
-        <section className="relative overflow-hidden rounded-[2.25rem] border border-border bg-[linear-gradient(135deg,rgba(17,24,39,0.95),rgba(12,18,31,0.9))] p-6 shadow-[0_30px_90px_rgba(0,0,0,0.3)] md:p-8">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.14),transparent_28%),linear-gradient(120deg,transparent,rgba(148,163,184,0.03),transparent)]" />
+        <section className="relative overflow-hidden rounded-xl border border-border bg-[linear-gradient(135deg,rgba(17,24,39,0.95),rgba(12,18,31,0.9))] p-6 shadow-[0_30px_90px_rgba(0,0,0,0.3)] md:p-8">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(14,165,233,0.14),transparent_28%),linear-gradient(120deg,transparent,rgba(148,163,184,0.03),transparent)]" />
           <div
             className={`relative grid gap-8 ${
               hasHeroAside ? "xl:grid-cols-[1.15fr_0.85fr] xl:items-end" : ""
             }`}
           >
-            <div className="max-w-4xl space-y-5">
+            <div className="max-w-4xl space-y-6">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
                 {eyebrow}
               </p>
@@ -164,7 +164,7 @@ export default function PublicShell({
                     {heroStats.map(stat => (
                       <div
                         key={`${stat.label}-${stat.value}`}
-                        className="rounded-3xl border border-border bg-background/58 p-4 shadow-[0_16px_36px_rgba(0,0,0,0.18)]"
+                        className="rounded-xl border border-border bg-background/58 p-4 shadow-[0_16px_36px_rgba(0,0,0,0.18)]"
                       >
                         <p className="text-2xl font-semibold tracking-tight">
                           {stat.value}
@@ -193,3 +193,5 @@ export default function PublicShell({
     </div>
   );
 }
+
+

@@ -97,7 +97,7 @@ function StatCard({ item }: { item: ReportPostItem }) {
   const tone = toneClasses(item.tone);
 
   return (
-    <article className={`rounded-[1.55rem] border p-4 ${tone.border}`}>
+    <article className={`rounded-xl border p-4 ${tone.border}`}>
       <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
         {item.label}
       </p>
@@ -143,10 +143,10 @@ export default function ReportPostShell({
 
   return (
     <div className="space-y-6">
-      <section className="rounded-[2rem] border border-border bg-card/95 p-6 shadow-2xl">
+      <section className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
         <div className="space-y-4">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-full border border-indigo-500/25 bg-indigo-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-indigo-300">
+            <span className="rounded-full border border-sky-500/25 bg-sky-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
               {categoryLabel}
             </span>
             {sourceKindLabel ? (
@@ -161,7 +161,7 @@ export default function ReportPostShell({
               {title}
             </h2>
             {subtitle ? (
-              <p className="text-sm font-medium text-indigo-200/90 md:text-[15px]">
+              <p className="text-sm font-medium text-sky-200/90 md:text-[15px]">
                 {subtitle}
               </p>
             ) : null}
@@ -218,7 +218,7 @@ export default function ReportPostShell({
       ) : null}
 
       {visibleStoryItems.length ? (
-        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+        <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <div className="flex items-center gap-2">
             <BookOpen className="size-4 text-emerald-300" />
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
@@ -229,10 +229,10 @@ export default function ReportPostShell({
             {visibleStoryItems.map((item, index) => (
               <article
                 key={`${index}-${item.slice(0, 48)}`}
-                className="rounded-[1.45rem] border border-border bg-background/55 p-4"
+                className="rounded-xl border border-border bg-background/55 p-4"
               >
                 <div className="flex items-start gap-3">
-                  <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-xs font-semibold text-emerald-300">
+                  <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-xs font-semibold text-emerald-300">
                     {String(index + 1).padStart(2, "0")}
                   </div>
                   <p className="text-sm leading-7 text-foreground/90">{item}</p>
@@ -245,7 +245,7 @@ export default function ReportPostShell({
 
       {children}
 
-      <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+      <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
         <div className="flex items-center gap-2">
           <ScrollText className="size-4 text-emerald-300" />
           <div>
@@ -275,3 +275,5 @@ export default function ReportPostShell({
     </div>
   );
 }
+
+

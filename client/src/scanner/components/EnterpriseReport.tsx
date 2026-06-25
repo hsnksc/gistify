@@ -1,6 +1,7 @@
 import type { StockResult } from "@/scanner/types";
 import { copy } from "@/lib/i18n";
 import type { AppLanguage } from "@/lib/i18n";
+import { Delta } from "@/components/ui/delta";
 import {
   Activity,
   BarChart3,
@@ -145,9 +146,7 @@ function SetupLayer({ stocks, language }: { stocks: StockResult[]; language: App
             <div key={stock.ticker} className="flex items-center justify-between rounded bg-slate-800/50 p-2.5">
               <div className="flex items-center gap-3">
                 <span className="text-sm font-bold text-white">{stock.ticker}</span>
-                <span className={`text-xs ${stock.priceChangePct >= 0 ? "text-emerald-400" : "text-red-400"}`}>
-                  {stock.priceChangePct >= 0 ? "+" : ""}{stock.priceChangePct.toFixed(2)}%
-                </span>
+                <Delta value={stock.priceChangePct} className="text-xs" />
               </div>
               <div className="flex items-center gap-4 text-xs text-slate-400">
                 <span>POP: <b className="text-white">%{pop}</b></span>
@@ -277,7 +276,7 @@ export default function EnterpriseReport({ stocks, scanTime, language }: Enterpr
   const bestSetupEn = best.length > 0 ? best.map((s) => `${s.ticker} (Score ${s.score})`).join(", ") : "No strong setup for today";
 
   return (
-    <div className="space-y-4 rounded-xl border border-slate-700/50 bg-slate-900/40 p-5">
+    <div className="space-y-4 rounded-xl border border-slate-700/50 bg-slate-900/40 p-6">
       <div className="flex items-center justify-between">
         <h2 className="flex items-center gap-2 text-lg font-bold text-white">
           <TrendingUp className="h-5 w-5 text-emerald-400" />
@@ -333,3 +332,4 @@ export default function EnterpriseReport({ stocks, scanTime, language }: Enterpr
     </div>
   );
 }
+

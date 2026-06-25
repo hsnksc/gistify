@@ -259,7 +259,7 @@ export default function EarningReportPlaybookTab({
   }
 
   return (
-    <div className="space-y-5 p-5 md:p-6">
+    <div className="space-y-6 p-6 md:p-6">
       <section className="rounded-none border border-border bg-card/80 p-4">
         <div className="grid gap-4 xl:grid-cols-[minmax(0,1.15fr)_minmax(340px,0.85fr)]">
           <div className="space-y-3">
@@ -349,7 +349,7 @@ export default function EarningReportPlaybookTab({
         </div>
       </section>
 
-      <div key={activePosition.ticker} className="space-y-5">
+      <div key={activePosition.ticker} className="space-y-6">
       <section className="rounded-none border border-emerald-400/30 bg-card/85 p-4">
         <div className="flex flex-col gap-3 xl:flex-row xl:items-start xl:justify-between">
           <div className="space-y-3">
@@ -599,7 +599,7 @@ export default function EarningReportPlaybookTab({
           </div>
 
           {activePosition.greeks.length ? (
-            <div className="mt-5 overflow-x-auto">
+            <div className="mt-6 overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-border/80 text-left text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
@@ -678,3 +678,4 @@ export default function EarningReportPlaybookTab({
     </div>
   );
 }
+

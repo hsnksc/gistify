@@ -85,7 +85,7 @@ export default function Privacy({
         {copy.sections.map(section => (
           <section
             key={section.title}
-            className="rounded-3xl border border-border bg-card/82 p-6 shadow-xl"
+            className="rounded-xl border border-border bg-card/82 p-6 shadow-xl"
           >
             <h2 className="text-xl font-semibold">{section.title}</h2>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
@@ -97,3 +97,4 @@ export default function Privacy({
     </PublicShell>
   );
 }
+

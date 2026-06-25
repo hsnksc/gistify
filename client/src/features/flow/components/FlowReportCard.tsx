@@ -48,11 +48,11 @@ export default function FlowReportCard({
   return (
     <Link
       href={href}
-      className="group block rounded-2xl border border-border bg-card/90 p-4 shadow-md transition-all hover:border-indigo-400/35 hover:bg-card hover:shadow-lg"
+      className="group block rounded-xl border border-border bg-card/90 p-4 shadow-md transition-all hover:border-sky-400/35 hover:bg-card hover:shadow-lg"
     >
       <div className="flex h-full flex-col gap-2.5">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <span className="rounded-full border border-indigo-500/25 bg-indigo-500/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-indigo-300">
+          <span className="rounded-full border border-sky-500/25 bg-sky-500/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-sky-300">
             {formatFlowReportDate(report.reportDate, locale)}
           </span>
           <span className="text-[10px] text-muted-foreground">
@@ -61,7 +61,7 @@ export default function FlowReportCard({
         </div>
 
         <div className="space-y-1">
-          <h2 className="text-base font-semibold tracking-tight text-foreground transition-colors group-hover:text-indigo-200">
+          <h2 className="text-base font-semibold tracking-tight text-foreground transition-colors group-hover:text-sky-200">
             {report.title}
           </h2>
           <p className="line-clamp-2 text-xs leading-5 text-muted-foreground">
@@ -92,3 +92,5 @@ export default function FlowReportCard({
     </Link>
   );
 }
+
+

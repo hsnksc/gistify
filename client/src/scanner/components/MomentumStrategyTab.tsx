@@ -13,7 +13,7 @@ function TableSection({
   rows: string[][];
 }) {
   return (
-    <section className="rounded-[2rem] border border-border bg-card/90 p-6 shadow-xl">
+    <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
       <div className="flex items-center gap-2">
         <Target className="h-4 w-4 text-emerald-400" />
         <h3 className="heading-condensed text-lg text-foreground">{title}</h3>
@@ -61,7 +61,7 @@ export default function MomentumStrategyTab({
   return (
     <div className="space-y-6 px-6 pb-8">
       <section className="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)]">
-        <article className="rounded-[2rem] border border-border bg-card/90 p-6 shadow-xl">
+        <article className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <div className="flex items-center gap-2">
             <Route className="h-4 w-4 text-emerald-400" />
             <p className="heading-condensed text-lg text-foreground">
@@ -88,7 +88,7 @@ export default function MomentumStrategyTab({
           </div>
         </article>
 
-        <article className="rounded-[2rem] border border-border bg-card/90 p-6 shadow-xl">
+        <article className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <div className="flex items-center gap-2">
             <Shield className="h-4 w-4 text-cyan-400" />
             <p className="heading-condensed text-lg text-foreground">
@@ -178,7 +178,7 @@ export default function MomentumStrategyTab({
       />
 
       <section className="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)]">
-        <article className="rounded-[2rem] border border-border bg-card/90 p-6 shadow-xl">
+        <article className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <div className="flex items-center gap-2">
             <AlertTriangle className="h-4 w-4 text-rose-400" />
             <p className="heading-condensed text-lg text-foreground">
@@ -200,7 +200,7 @@ export default function MomentumStrategyTab({
           </div>
         </article>
 
-        <article className="rounded-[2rem] border border-border bg-card/90 p-6 shadow-xl">
+        <article className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <div className="flex items-center gap-2">
             <Shield className="h-4 w-4 text-cyan-400" />
             <p className="heading-condensed text-lg text-foreground">
@@ -228,7 +228,7 @@ export default function MomentumStrategyTab({
         </article>
       </section>
 
-      <section className="rounded-[2rem] border border-border bg-card/90 p-6 shadow-xl">
+      <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
         <div className="flex items-center gap-2">
           <Target className="h-4 w-4 text-emerald-400" />
           <p className="heading-condensed text-lg text-foreground">{copy(language, "Sonuc", "Conclusion")}</p>
@@ -239,7 +239,7 @@ export default function MomentumStrategyTab({
           ))}
         </div>
         {report.footerNote ? (
-          <div className="mt-5 rounded-none border border-border bg-background/55 px-4 py-3 text-xs leading-relaxed text-muted-foreground">
+          <div className="mt-6 rounded-none border border-border bg-background/55 px-4 py-3 text-xs leading-relaxed text-muted-foreground">
             {report.footerNote}
           </div>
         ) : null}
@@ -247,3 +247,4 @@ export default function MomentumStrategyTab({
     </div>
   );
 }
+

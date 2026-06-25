@@ -9,6 +9,7 @@
  */
 
 import type { MarketRegime, IVCurve, SpreadMetrics } from "./optionsTypes";
+import { copy, type AppLanguage } from "@/lib/i18n";
 import { getDynamicWeights, volatilityAdjustedScore, portfolioHeatCheck, type VixRegime } from "./scoreConfig";
 import { detectMarketRegime, calculateIVCurve } from "./regimeDetector";
 import { calculateExpectedMove, calculatePOP, calculateSpreadMetrics } from "./optionAnalytics";
@@ -58,11 +59,12 @@ export function v4ScoreStock(
   highPrices: number[],
   lowPrices: number[],
   // VIX rejimi
-  vixLevel: number = 20
+  vixLevel: number = 20,
+  language: AppLanguage = "tr"
 ): v4StockScore {
   // 1. Rejim tespiti
   const ivCurve = calculateIVCurve(ticker, price, closePrices, highPrices, lowPrices);
-  const regime = detectMarketRegime([ivCurve]);
+  const regime = detectMarketRegime([ivCurve], language);
   const vixRegime: VixRegime = {
     level: vixLevel,
     label: regime.vixRegime as VixRegime["label"],
@@ -193,7 +195,8 @@ export function v4GenerateSetup(
   highPrices: number[],
   lowPrices: number[],
   netLiquidationValue: number,
-  vixLevel: number = 20
+  vixLevel: number = 20,
+  language: AppLanguage = "tr"
 ): v4Setup | null {
   // 1. Portföy ısısı kontrolü (geçici, gerçek değerler dışarıdan gelmeli)
   // 2. IV Curve
@@ -216,16 +219,17 @@ export function v4GenerateSetup(
     metrics.maxLoss,
     netLiquidationValue,
     spreadWidth,
-    stock.regime.sizingFactor
+    stock.regime.sizingFactor,
+    language
   );
 
   // 6. Execution
-  const rec = recommendedEntryWindow("Bull Put Spread", 1.5);
-  const slip = estimateSlippage(rec.window, 1.5, spreadWidth);
+  const rec = recommendedEntryWindow("Bull Put Spread", 1.5, language);
+  const slip = estimateSlippage(rec.window, 1.5, spreadWidth, language);
 
   // 7. Neden
-  const ivAdj = stock.ivSignal === "SELL_PREMIUM" ? " (Premium satışı mantıklı — IV yüksek)" : "";
-  const rationale = `Skor ${stock.finalScore}/100${ivAdj}. POP %${metrics.pop.popPercent}. Breakeven $${metrics.breakeven} (%${((metrics.breakeven / stock.price - 1) * 100).toFixed(1)} OTM).`;
+  const ivAdj = stock.ivSignal === "SELL_PREMIUM" ? copy(language, " (Premium satışı mantıklı — IV yüksek)", " (Premium sale makes sense — IV high)") : "";
+  const rationale = copy(language, `Skor ${stock.finalScore}/100${ivAdj}. POP %${metrics.pop.popPercent}. Breakeven $${metrics.breakeven} (%${((metrics.breakeven / stock.price - 1) * 100).toFixed(1)} OTM).`, `Score ${stock.finalScore}/100${ivAdj}. POP %${metrics.pop.popPercent}. Breakeven $${metrics.breakeven} (%${((metrics.breakeven / stock.price - 1) * 100).toFixed(1)} OTM).`);
 
   return {
     ticker: stock.ticker,
@@ -251,8 +255,8 @@ export function v4GenerateSetup(
     expectedMove: metrics.expectedMove.moveDollars,
     rationale,
     ifFails: stock.regime.termStructure === "BACKWARDATION"
-      ? "BACKWARDATION: IV patlaması + put skew artışı. Strike'a assignment riski yüksek."
-      : "IV crush veya yön değişirse zarar. 2x kredi stop ile korun.",
+      ? copy(language, "BACKWARDATION: IV patlaması + put skew artışı. Strike'a assignment riski yüksek.", "BACKWARDATION: IV spike + put skew increase. High assignment risk to strike.")
+      : copy(language, "IV crush veya yön değişirse zarar. 2x kredi stop ile korun.", "IV crush or direction change means loss. Protected by 2x credit stop."),
   };
 }
 
@@ -287,14 +291,15 @@ export function generateV4Report(
   setups: v4Setup[],
   totalPortfolioRisk: number,
   netLiquidationValue: number,
-  regime: MarketRegime
+  regime: MarketRegime,
+  language: AppLanguage = "tr"
 ): v4Report {
   const heat = portfolioHeatCheck(totalPortfolioRisk, netLiquidationValue);
 
   const priorities: string[] = [];
-  if (!heat.canTrade) priorities.push(`PORTFÖY ISI ${heat.heatPct}% ≥ %5 → Yeni işlem YASAK`);
-  if (regime.termStructure === "BACKWARDATION") priorities.push("BACKWARDATION → Credit spread YASAK");
-  if (regime.vixRegime === "EXTREME_FEAR") priorities.push(`VIX ${regime.vixLevel}: Premium zengini — disiplin ile fırsat`);
+  if (!heat.canTrade) priorities.push(copy(language, `PORTFÖY ISI ${heat.heatPct}% ≥ %5 → Yeni işlem YASAK`, `PORTFOLIO HEAT ${heat.heatPct}% ≥ %5 → New trades BANNED`));
+  if (regime.termStructure === "BACKWARDATION") priorities.push(copy(language, "BACKWARDATION → Credit spread YASAK", "BACKWARDATION → Credit spread BANNED"));
+  if (regime.vixRegime === "EXTREME_FEAR") priorities.push(copy(language, `VIX ${regime.vixLevel}: Premium zengini — disiplin ile fırsat`, `VIX ${regime.vixLevel}: Premium rich — opportunity with discipline`));
 
   return {
     version: "4.0",
@@ -304,14 +309,14 @@ export function generateV4Report(
     stocks: stocks.sort((a, b) => b.finalScore - a.finalScore),
     setups: setups.sort((a, b) => b.score - a.score),
     executionRules: [
-      "1. Midpoint limit emir (piyasa emiri YASAK)",
-      "2. Slippage ≤%5 (üzerinde RED)",
-      "3. Giriş: 10:30-11:30 EDT (OPTIMAL/MID penceresi)",
-      "4. Kelly sizing: Edge'e göre, max NLV %2",
-      "5. %50 kar al → yarısını kapat",
-      "6. 21 DTE roll, 14 DTE time stop",
-      "7. 2x kredi = stop loss",
-      "8. Portföy ısısı %5 → yeni işlem DURUR",
+      copy(language, "1. Midpoint limit emir (piyasa emiri YASAK)", "1. Midpoint limit order (market order BANNED)"),
+      copy(language, "2. Slippage ≤%5 (üzerinde RED)", "2. Slippage ≤%5 (above RED)"),
+      copy(language, "3. Giriş: 10:30-11:30 EDT (OPTIMAL/MID penceresi)", "3. Entry: 10:30-11:30 EDT (OPTIMAL/MID window)"),
+      copy(language, "4. Kelly sizing: Edge'e göre, max NLV %2", "4. Kelly sizing: Based on edge, max NLV %2"),
+      copy(language, "5. %50 kar al → yarısını kapat", "5. %50 take profit → close half"),
+      copy(language, "6. 21 DTE roll, 14 DTE time stop", "6. 21 DTE roll, 14 DTE time stop"),
+      copy(language, "7. 2x kredi = stop loss", "7. 2x credit = stop loss"),
+      copy(language, "8. Portföy ısısı %5 → yeni işlem DURUR", "8. Portfolio heat %5 → new trades STOP"),
     ],
     priorities,
   };

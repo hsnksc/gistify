@@ -25,10 +25,10 @@ export default function FlowLayout({
     <div className="min-h-screen bg-background">
       <div className="container py-6 md:py-8">
         <section className="workspace-panel overflow-hidden">
-          <div className="px-5 py-6 md:px-6 md:py-7">
-            <div className="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
+          <div className="px-6 py-6 md:px-6 md:py-7">
+            <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
               <div className="space-y-3">
-                <p className="heading-condensed text-sm uppercase tracking-[0.18em] text-indigo-300">
+                <p className="heading-condensed text-sm uppercase tracking-[0.18em] text-sky-300">
                   {eyebrow}
                 </p>
                 <h1 className="heading-condensed text-3xl leading-none text-foreground md:text-5xl">
@@ -61,3 +61,5 @@ export default function FlowLayout({
     </div>
   );
 }
+
+

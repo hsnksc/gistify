@@ -71,7 +71,7 @@ export function OptionSetupsCard({
                 }
               >
                 <CollapsibleTrigger className="w-full">
-                  <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-black/20 p-3.5">
+                  <div className="flex items-center justify-between rounded-xl border border-white/10 bg-black/20 p-3.5">
                     <div className="flex items-center gap-2">
                       <SetupIcon type={setup.setupType} />
                       <span className="text-sm font-semibold text-foreground">
@@ -130,7 +130,7 @@ export function OptionSetupsCard({
             );
           })
         ) : (
-          <div className="rounded-2xl border border-dashed border-white/10 bg-black/15 px-4 py-3 text-sm text-muted-foreground">
+          <div className="rounded-xl border border-dashed border-white/10 bg-black/15 px-4 py-3 text-sm text-muted-foreground">
             {copy(
               language,
               "Bugun icin opsiyon setup'i bulunmuyor.",
@@ -142,3 +142,4 @@ export function OptionSetupsCard({
     </Card>
   );
 }
+

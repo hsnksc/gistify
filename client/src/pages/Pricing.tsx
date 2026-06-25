@@ -31,7 +31,7 @@ export default function Pricing({
       ctaLabel={copy(language, "Odeme sayfasini ac", "Open payment page")}
     >
       <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-        <section className="rounded-3xl border border-border bg-card/85 p-6 shadow-xl">
+        <section className="rounded-xl border border-border bg-card/85 p-6 shadow-xl">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
             {copy(language, "Gistify Pro", "Gistify Pro")}
           </p>
@@ -46,7 +46,7 @@ export default function Pricing({
             {items.map(item => (
               <div
                 key={item}
-                className="rounded-2xl border border-border bg-background/60 px-4 py-3 text-sm"
+                className="rounded-xl border border-border bg-background/60 px-4 py-3 text-sm"
               >
                 {item}
               </div>
@@ -54,7 +54,7 @@ export default function Pricing({
           </div>
         </section>
 
-        <section className="rounded-3xl border border-border bg-card/80 p-6 shadow-xl">
+        <section className="rounded-xl border border-border bg-card/80 p-6 shadow-xl">
           <h2 className="text-xl font-semibold">
             {copy(language, "Onemli notlar", "Important notes")}
           </h2>
@@ -94,3 +94,4 @@ export default function Pricing({
     </PublicShell>
   );
 }
+

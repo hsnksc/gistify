@@ -51,14 +51,14 @@ function DataTable({
 }) {
   if (!rows.length) {
     return (
-      <div className="rounded-[1.4rem] border border-dashed border-border bg-background/35 p-4 text-sm text-muted-foreground">
+      <div className="rounded-xl border border-dashed border-border bg-background/35 p-4 text-sm text-muted-foreground">
         {emptyMessage}
       </div>
     );
   }
 
   return (
-    <div className="overflow-hidden rounded-[1.45rem] border border-border bg-background/45">
+    <div className="overflow-hidden rounded-xl border border-border bg-background/45">
       <div className="overflow-x-auto">
         <table className="min-w-full text-left text-sm">
           <thead className="border-b border-border bg-background/70">
@@ -224,7 +224,7 @@ export default function MomentumReportPostTab({
         "The momentum markdown content is empty."
       )}
     >
-      <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+      <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
         <SectionTitle
           eyebrow={copy(language, "Candidate Board", "Candidate Board")}
           title={copy(language, "Aday setuplar", "Candidate setups")}
@@ -235,12 +235,12 @@ export default function MomentumReportPostTab({
           )}
         />
 
-        <div className="mt-5 grid gap-4 xl:grid-cols-2">
+        <div className="mt-6 grid gap-4 xl:grid-cols-2">
           {report.candidates.length ? (
             report.candidates.map(candidate => (
               <article
                 key={`${candidate.group}-${candidate.ticker}-${candidate.name}`}
-                className="rounded-[1.45rem] border border-border bg-background/55 p-4"
+                className="rounded-xl border border-border bg-background/55 p-4"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>
@@ -264,7 +264,7 @@ export default function MomentumReportPostTab({
                   </span>
                 </div>
                 <p className="mt-4 text-sm leading-7 text-foreground/90">{candidate.reason}</p>
-                <div className="mt-4 rounded-[1.1rem] border border-border bg-card/70 p-3">
+                <div className="mt-4 rounded-xl border border-border bg-card/70 p-3">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                     Risk
                   </p>
@@ -273,7 +273,7 @@ export default function MomentumReportPostTab({
               </article>
             ))
           ) : (
-            <article className="rounded-[1.45rem] border border-dashed border-border bg-background/35 p-4 text-sm text-muted-foreground xl:col-span-2">
+            <article className="rounded-xl border border-dashed border-border bg-background/35 p-4 text-sm text-muted-foreground xl:col-span-2">
               {copy(language, "Bu raporda parse edilen setup yok.", "No setups were parsed from this report.")}
             </article>
           )}
@@ -281,12 +281,12 @@ export default function MomentumReportPostTab({
       </section>
 
       <section className="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
-        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+        <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <SectionTitle
             eyebrow={copy(language, "Market Snapshot", "Market Snapshot")}
             title={copy(language, "Endeks ve sektor resmi", "Index and sector picture")}
           />
-          <div className="mt-5 space-y-5">
+          <div className="mt-6 space-y-6">
             <DataTable
               headers={[
                 copy(language, "Endeks", "Index"),
@@ -331,12 +331,12 @@ export default function MomentumReportPostTab({
           </div>
         </section>
 
-        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+        <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <SectionTitle
             eyebrow={copy(language, "Catalysts", "Catalysts")}
             title={copy(language, "Takvim ve senaryo", "Calendar and scenario")}
           />
-          <div className="mt-5 space-y-5">
+          <div className="mt-6 space-y-6">
             <DataTable
               headers={[
                 copy(language, "Tarih", "Date"),
@@ -377,41 +377,41 @@ export default function MomentumReportPostTab({
       </section>
 
       <section className="grid gap-6 xl:grid-cols-2">
-        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+        <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <SectionTitle
             eyebrow={copy(language, "Risk Factors", "Risk Factors")}
             title={copy(language, "Acil dikkat maddeleri", "Priority watchpoints")}
           />
-          <div className="mt-5 space-y-3">
+          <div className="mt-6 space-y-3">
             {report.riskFactors.length ? (
               report.riskFactors.map(item => (
                 <article
                   key={`${item.title}-${item.detail}`}
-                  className="rounded-[1.25rem] border border-border bg-background/55 p-4"
+                  className="rounded-xl border border-border bg-background/55 p-4"
                 >
                   <p className="text-sm font-semibold text-foreground">{item.title}</p>
                   <p className="mt-2 text-sm leading-7 text-muted-foreground">{item.detail}</p>
                 </article>
               ))
             ) : (
-              <article className="rounded-[1.25rem] border border-dashed border-border bg-background/35 p-4 text-sm text-muted-foreground">
+              <article className="rounded-xl border border-dashed border-border bg-background/35 p-4 text-sm text-muted-foreground">
                 {copy(language, "Risk faktoru parse edilemedi.", "Risk factors could not be parsed.")}
               </article>
             )}
           </div>
         </section>
 
-        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+        <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <SectionTitle
             eyebrow={copy(language, "Option Route", "Option Route")}
             title={copy(language, "Opsiyon ve rota notlari", "Options and route notes")}
           />
-          <div className="mt-5 space-y-3">
+          <div className="mt-6 space-y-3">
             {report.optionStrategies.length ? (
               report.optionStrategies.map(item => (
                 <article
                   key={`${item.strategy}-${item.condition}`}
-                  className="rounded-[1.25rem] border border-border bg-background/55 p-4"
+                  className="rounded-xl border border-border bg-background/55 p-4"
                 >
                   <p className="text-sm font-semibold text-foreground">{item.strategy}</p>
                   <p className="mt-2 text-sm leading-7 text-muted-foreground">{item.condition}</p>
@@ -421,7 +421,7 @@ export default function MomentumReportPostTab({
                 </article>
               ))
             ) : (
-              <article className="rounded-[1.25rem] border border-dashed border-border bg-background/35 p-4 text-sm text-muted-foreground">
+              <article className="rounded-xl border border-dashed border-border bg-background/35 p-4 text-sm text-muted-foreground">
                 {copy(language, "Opsiyon rota notu parse edilemedi.", "Option route notes could not be parsed.")}
               </article>
             )}
@@ -431,3 +431,4 @@ export default function MomentumReportPostTab({
     </ReportPostShell>
   );
 }
+

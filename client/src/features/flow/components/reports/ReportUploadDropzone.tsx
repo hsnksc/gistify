@@ -25,8 +25,8 @@ export default function ReportUploadDropzone({
   );
 
   return (
-    <section className="rounded-[2rem] border border-border bg-card/95 p-6 shadow-2xl">
-      <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
+    <section className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
+      <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
         <div className="space-y-3">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
             {copy(language, "HTML Yukleme", "HTML Upload")}
@@ -102,13 +102,13 @@ export default function ReportUploadDropzone({
             onFilesSelected(files);
           }
         }}
-        className={`mt-5 flex w-full flex-col items-center justify-center rounded-[1.8rem] border border-dashed px-6 py-10 text-center transition-colors ${
+        className={`mt-6 flex w-full flex-col items-center justify-center rounded-xl border border-dashed px-6 py-10 text-center transition-colors ${
           dragActive
             ? "border-emerald-400/45 bg-emerald-500/10"
-            : "border-border bg-background/50 hover:border-indigo-400/35 hover:bg-background/70"
+            : "border-border bg-background/50 hover:border-sky-400/35 hover:bg-background/70"
         }`}
       >
-        <span className="inline-flex size-14 items-center justify-center rounded-3xl border border-emerald-400/20 bg-emerald-500/10 text-emerald-300">
+        <span className="inline-flex size-14 items-center justify-center rounded-xl border border-emerald-400/20 bg-emerald-500/10 text-emerald-300">
           <UploadCloud className="size-6" />
         </span>
         <p className="mt-4 text-lg font-semibold text-foreground">
@@ -128,11 +128,11 @@ export default function ReportUploadDropzone({
       </button>
 
       {uploadQueue.length ? (
-        <div className="mt-5 grid gap-3 md:grid-cols-2">
+        <div className="mt-6 grid gap-3 md:grid-cols-2">
           {uploadQueue.map(item => (
             <article
               key={item.id}
-              className="rounded-[1.4rem] border border-border bg-background/55 p-4"
+              className="rounded-xl border border-border bg-background/55 p-4"
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
@@ -144,7 +144,7 @@ export default function ReportUploadDropzone({
                   </p>
                 </div>
                 {item.status === "parsing" ? (
-                  <LoaderCircle className="size-4 animate-spin text-indigo-300" />
+                  <LoaderCircle className="size-4 animate-spin text-sky-300" />
                 ) : item.status === "error" ? (
                   <XCircle className="size-4 text-red-300" />
                 ) : (
@@ -156,7 +156,7 @@ export default function ReportUploadDropzone({
               </p>
               {item.status === "parsing" ? (
                 <div className="mt-3 h-2 overflow-hidden rounded-full bg-background/80">
-                  <div className="h-full w-1/2 animate-pulse rounded-full bg-indigo-400/70" />
+                  <div className="h-full w-1/2 animate-pulse rounded-full bg-sky-400/70" />
                 </div>
               ) : null}
             </article>
@@ -176,3 +176,5 @@ export default function ReportUploadDropzone({
     </section>
   );
 }
+
+

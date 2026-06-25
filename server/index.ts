@@ -2039,7 +2039,7 @@ function renderStaticMarketingPage(
         position: absolute;
         inset: 0;
         background:
-          radial-gradient(circle at top right, rgba(99, 102, 241, 0.14), transparent 28%),
+          radial-gradient(circle at top right, rgba(14, 165, 233, 0.14), transparent 28%),
           linear-gradient(120deg, transparent, rgba(148, 163, 184, 0.04), transparent);
         pointer-events: none;
       }
@@ -4197,3 +4197,4 @@ async function startServer() {
 }
 
 startServer().catch(console.error);
+

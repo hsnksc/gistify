@@ -4,6 +4,7 @@
  */
 
 import type { BacktestSummary, DailyTrade } from "./backtestEngine";
+import { type AppLanguage, copy } from "@/lib/i18n";
 
 // ===================== Tipler =====================
 
@@ -110,39 +111,39 @@ function gradeFromScore(score: number): "A" | "B" | "C" | "D" | "F" {
   return "F";
 }
 
-function gradeLabel(grade: string): string {
+function gradeLabel(grade: string, language: AppLanguage = "tr"): string {
   const labels: Record<string, string> = {
-    A: "Mükemmel",
-    B: "İyi",
-    C: "Ortalama",
-    D: "Zayıf",
-    F: "Kötü",
+    A: copy(language, "Mükemmel", "Excellent"),
+    B: copy(language, "İyi", "Good"),
+    C: copy(language, "Ortalama", "Average"),
+    D: copy(language, "Zayıf", "Weak"),
+    F: copy(language, "Kötü", "Poor"),
   };
-  return labels[grade] || "Bilinmiyor";
+  return labels[grade] || copy(language, "Bilinmiyor", "Unknown");
 }
 
 // ===================== Ana Rapor Fonksiyonu =====================
 
-export function generateConsistencyReport(summary: BacktestSummary): ConsistencyReport {
+export function generateConsistencyReport(summary: BacktestSummary, language: AppLanguage = "tr"): ConsistencyReport {
   const trades = summary.trades;
   if (trades.length === 0) {
-    return generateEmptyReport();
+    return generateEmptyReport(language);
   }
 
   // 1. Win Rate Tutarlılığı
-  const winRateConsistency = analyzeWinRateConsistency(trades);
+  const winRateConsistency = analyzeWinRateConsistency(trades, language);
 
   // 2. Skor → P&L Korelasyonu
-  const scorePnLCorrelation = analyzeScorePnLCorrelation(trades);
+  const scorePnLCorrelation = analyzeScorePnLCorrelation(trades, language);
 
   // 3. Gün İçi Tutarlılık
-  const dailyConsistency = analyzeDailyConsistency(trades, summary.dailyReturns);
+  const dailyConsistency = analyzeDailyConsistency(trades, summary.dailyReturns, language);
 
   // 4. Risk Metrikleri
   const riskMetrics = analyzeRiskMetrics(trades, summary);
 
   // 5. Faktör Analizi
-  const factorAnalysis = analyzeFactors(trades);
+  const factorAnalysis = analyzeFactors(trades, language);
 
   // 6. Zaman Serisi
   const timeSeries = buildTimeSeries(summary);
@@ -173,8 +174,8 @@ export function generateConsistencyReport(summary: BacktestSummary): Consistency
   const overallGrade = gradeFromScore(overallScore);
 
   // 8. Özet & Öneriler
-  const summaryText = buildSummary(overallGrade, overallScore, winRateConsistency, riskMetrics, scorePnLCorrelation);
-  const recommendations = buildRecommendations(winRateConsistency, scorePnLCorrelation, dailyConsistency, riskMetrics);
+  const summaryText = buildSummary(overallGrade, overallScore, winRateConsistency, riskMetrics, scorePnLCorrelation, language);
+  const recommendations = buildRecommendations(winRateConsistency, scorePnLCorrelation, dailyConsistency, riskMetrics, language);
 
   return {
     overallGrade,
@@ -192,7 +193,7 @@ export function generateConsistencyReport(summary: BacktestSummary): Consistency
 
 // ===================== Analiz Fonksiyonları =====================
 
-function analyzeWinRateConsistency(trades: DailyTrade[]) {
+function analyzeWinRateConsistency(trades: DailyTrade[], language: AppLanguage = "tr") {
   // Aylık dönemlere göre win rate hesapla
   const monthly: Record<string, { wins: number; total: number }> = {};
 
@@ -223,8 +224,14 @@ function analyzeWinRateConsistency(trades: DailyTrade[]) {
   const grade = isConsistent ? "A" : cv < 0.3 ? "B" : cv < 0.5 ? "C" : "D";
 
   const interpretation = isConsistent
-    ? `Win rate aylık dönemlerde tutarlı (CV: ${(cv * 100).toFixed(1)}%). Strateji farklı piyasa koşullarında benzer performans gösteriyor.`
-    : `Win rate aylık dönemlerde değişken (CV: ${(cv * 100).toFixed(1)}%). Bazı dönemlerde performans düşüşü var.`;
+    ? copy(language,
+        `Win rate aylık dönemlerde tutarlı (CV: ${(cv * 100).toFixed(1)}%). Strateji farklı piyasa koşullarında benzer performans gösteriyor.`,
+        `Win rate consistent across monthly periods (CV: ${(cv * 100).toFixed(1)}%). Strategy shows similar performance in different market conditions.`
+      )
+    : copy(language,
+        `Win rate aylık dönemlerde değişken (CV: ${(cv * 100).toFixed(1)}%). Bazı dönemlerde performans düşüşü var.`,
+        `Win rate variable across monthly periods (CV: ${(cv * 100).toFixed(1)}%). Performance declines in some periods.`
+      );
 
   return {
     grade,
@@ -237,7 +244,7 @@ function analyzeWinRateConsistency(trades: DailyTrade[]) {
   };
 }
 
-function analyzeScorePnLCorrelation(trades: DailyTrade[]) {
+function analyzeScorePnLCorrelation(trades: DailyTrade[], language: AppLanguage = "tr") {
   const scores = trades.map((t) => t.score);
   const pnls = trades.map((t) => t.pnlPct);
 
@@ -271,10 +278,19 @@ function analyzeScorePnLCorrelation(trades: DailyTrade[]) {
   const grade = Math.abs(r) > 0.4 ? "A" : Math.abs(r) > 0.25 ? "B" : Math.abs(r) > 0.1 ? "C" : "D";
 
   const interpretation = Math.abs(r) > 0.4
-    ? `Momentum skoru ile P&L arasında güçlü ${r > 0 ? "pozitif" : "negatif"} korelasyon (r=${r.toFixed(2)}). Yüksek skorlu hisseler gerçekten daha iyi performans gösteriyor.`
+    ? copy(language,
+        `Momentum skoru ile P&L arasında güçlü ${r > 0 ? "pozitif" : "negatif"} korelasyon (r=${r.toFixed(2)}). Yüksek skorlu hisseler gerçekten daha iyi performans gösteriyor.`,
+        `Strong ${r > 0 ? "positive" : "negative"} correlation between momentum score and P&L (r=${r.toFixed(2)}). High-scoring stocks indeed perform better.`
+      )
     : Math.abs(r) > 0.1
-    ? `Zayıf korelasyon (r=${r.toFixed(2)}). Skor sisteminde iyileştirme gerekebilir.`
-    : `Korelasyon yok (r=${r.toFixed(2)}). Momentum skoru P&L'yi açıklamıyor - sistem kritik hata.`;
+    ? copy(language,
+        `Zayıf korelasyon (r=${r.toFixed(2)}). Skor sisteminde iyileştirme gerekebilir.`,
+        `Weak correlation (r=${r.toFixed(2)}). Score system may need improvement.`
+      )
+    : copy(language,
+        `Korelasyon yok (r=${r.toFixed(2)}). Momentum skoru P&L'yi açıklamıyor - sistem kritik hata.`,
+        `No correlation (r=${r.toFixed(2)}). Momentum score does not explain P&L — critical system error.`
+      );
 
   return {
     grade,
@@ -285,7 +301,7 @@ function analyzeScorePnLCorrelation(trades: DailyTrade[]) {
   };
 }
 
-function analyzeDailyConsistency(trades: DailyTrade[], dailyReturns: Array<{ date: string; pnl: number }>) {
+function analyzeDailyConsistency(trades: DailyTrade[], dailyReturns: Array<{ date: string; pnl: number }>, language: AppLanguage = "tr") {
   const dailyPnLs = dailyReturns.map((d) => d.pnl);
   const avgTradesPerDay = trades.length / (dailyReturns.length || 1);
 
@@ -308,10 +324,19 @@ function analyzeDailyConsistency(trades: DailyTrade[], dailyReturns: Array<{ dat
   const grade = maxLosses <= 2 ? "A" : maxLosses <= 4 ? "B" : maxLosses <= 6 ? "C" : "D";
 
   const streakAnalysis = maxLosses <= 2
-    ? `Kısa zarar serileri (${maxLosses} gün). Strateji hızlı toparlanıyor.`
+    ? copy(language,
+        `Kısa zarar serileri (${maxLosses} gün). Strateji hızlı toparlanıyor.`,
+        `Short loss streaks (${maxLosses} days). Strategy recovers quickly.`
+      )
     : maxLosses <= 4
-    ? `Orta uzunlukta zarar serileri (${maxLosses} gün). Dikkatli olunmalı.`
-    : `Uzun zarar serileri (${maxLosses} gün). Risk yönetimi gözden geçirilmeli.`;
+    ? copy(language,
+        `Orta uzunlukta zarar serileri (${maxLosses} gün). Dikkatli olunmalı.`,
+        `Medium loss streaks (${maxLosses} days). Caution advised.`
+      )
+    : copy(language,
+        `Uzun zarar serileri (${maxLosses} gün). Risk yönetimi gözden geçirilmeli.`,
+        `Long loss streaks (${maxLosses} days). Risk management should be reviewed.`
+      );
 
   return {
     grade,
@@ -367,9 +392,17 @@ function analyzeRiskMetrics(trades: DailyTrade[], summary: BacktestSummary) {
   };
 }
 
-function analyzeFactors(trades: DailyTrade[]) {
+function analyzeFactors(trades: DailyTrade[], language: AppLanguage = "tr") {
   // Güne göre performans
-  const dayNames = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
+  const dayNames = (lang: AppLanguage) => [
+    copy(lang, "Pazar", "Sunday"),
+    copy(lang, "Pazartesi", "Monday"),
+    copy(lang, "Salı", "Tuesday"),
+    copy(lang, "Çarşamba", "Wednesday"),
+    copy(lang, "Perşembe", "Thursday"),
+    copy(lang, "Cuma", "Friday"),
+    copy(lang, "Cumartesi", "Saturday"),
+  ];
   const dayStats: Record<number, { pnl: number; count: number }> = {};
   for (const t of trades) {
     const dow = t.dayOfWeek;
@@ -378,12 +411,12 @@ function analyzeFactors(trades: DailyTrade[]) {
     dayStats[dow].count++;
   }
 
-  let bestDay = "Bilinmiyor", worstDay = "Bilinmiyor";
+  let bestDay = copy(language, "Bilinmiyor", "Unknown"), worstDay = copy(language, "Bilinmiyor", "Unknown");
   let bestAvg = -Infinity, worstAvg = Infinity;
   for (const [dow, stat] of Object.entries(dayStats)) {
     const avg = stat.pnl / stat.count;
-    if (avg > bestAvg) { bestAvg = avg; bestDay = dayNames[parseInt(dow)]; }
-    if (avg < worstAvg) { worstAvg = avg; worstDay = dayNames[parseInt(dow)]; }
+    if (avg > bestAvg) { bestAvg = avg; bestDay = dayNames(language)[parseInt(dow)]; }
+    if (avg < worstAvg) { worstAvg = avg; worstDay = dayNames(language)[parseInt(dow)]; }
   }
 
   // RVOL etkisi
@@ -402,11 +435,17 @@ function analyzeFactors(trades: DailyTrade[]) {
 
   return {
     grade,
-    bestPerformingDay: `${bestDay} (ort. ${bestAvg.toFixed(2)}%)`,
-    worstPerformingDay: `${worstDay} (ort. ${worstAvg.toFixed(2)}%)`,
-    rvolEffect: `Yüksek RVOL (≥2x) win rate: %${highRvolWinRate.toFixed(0)} | Düşük RVOL (<1.5x): %${lowRvolWinRate.toFixed(0)}`,
-    rsiEffect: `Yüksek RSI (≥70) ort. P&L: ${highRsiAvg.toFixed(2)}% | Orta RSI (50-70): ${medRsiAvg.toFixed(2)}%`,
-    gapEffect: "Analiz için yeterli veri yok",
+    bestPerformingDay: `${bestDay} (${copy(language, "ort.", "avg")} ${bestAvg.toFixed(2)}%)`,
+    worstPerformingDay: `${worstDay} (${copy(language, "ort.", "avg")} ${worstAvg.toFixed(2)}%)`,
+    rvolEffect: copy(language,
+    `Yüksek RVOL (≥2x) win rate: %${highRvolWinRate.toFixed(0)} | Düşük RVOL (<1.5x): %${lowRvolWinRate.toFixed(0)}`,
+    `High RVOL (≥2x) win rate: %${highRvolWinRate.toFixed(0)} | Low RVOL (<1.5x): %${lowRvolWinRate.toFixed(0)}`
+  ),
+    rsiEffect: copy(language,
+    `Yüksek RSI (≥70) ort. P&L: ${highRsiAvg.toFixed(2)}% | Orta RSI (50-70): ${medRsiAvg.toFixed(2)}%`,
+    `High RSI (≥70) avg P&L: ${highRsiAvg.toFixed(2)}% | Med RSI (50-70): ${medRsiAvg.toFixed(2)}%`
+  ),
+    gapEffect: copy(language, "Analiz için yeterli veri yok", "Not enough data for analysis"),
   };
 }
 
@@ -458,59 +497,87 @@ function buildSummary(
   score: number,
   wr: { isConsistent: boolean; overallWinRate: number },
   risk: { sharpeRatio: number; expectancy: number },
-  corr: { pearsonR: number }
+  corr: { pearsonR: number },
+  language: AppLanguage = "tr"
 ): string {
-  return `Sistem tutarlılık notu: ${grade} (${score}/100). Genel win rate %${wr.overallWinRate}. ${
-    wr.isConsistent ? "Aylık performans tutarlı." : "Aylık performans dalgalanmaları mevcut."
-  } Skor-P&L korelasyonu r=${corr.pearsonR}. Sharpe ratio ${risk.sharpeRatio}. İşlem başı beklenen getiri ${risk.expectancy}%.`;
+  return copy(language,
+    `Sistem tutarlılık notu: ${grade} (${score}/100). Genel win rate %${wr.overallWinRate}. ${
+      wr.isConsistent ? "Aylık performans tutarlı." : "Aylık performans dalgalanmaları mevcut."
+    } Skor-P&L korelasyonu r=${corr.pearsonR}. Sharpe ratio ${risk.sharpeRatio}. İşlem başı beklenen getiri ${risk.expectancy}%.`,
+    `System consistency grade: ${grade} (${score}/100). Overall win rate %${wr.overallWinRate}. ${
+      wr.isConsistent ? "Monthly performance consistent." : "Monthly performance fluctuations present."
+    } Score-P&L correlation r=${corr.pearsonR}. Sharpe ratio ${risk.sharpeRatio}. Expected return per trade ${risk.expectancy}%.`
+  );
 }
 
 function buildRecommendations(
   wr: { isConsistent: boolean; coefficientOfVariation: number },
   corr: { pearsonR: number; optimalThreshold: number },
   daily: { maxConsecutiveLosses: number },
-  risk: { sharpeRatio: number; riskOfRuin: number }
+  risk: { sharpeRatio: number; riskOfRuin: number },
+  language: AppLanguage = "tr"
 ): string[] {
   const recs: string[] = [];
 
   if (!wr.isConsistent) {
-    recs.push(`Win rate tutarlılığı düşük (CV: ${(wr.coefficientOfVariation * 100).toFixed(0)}%). Farklı piyasa rejimlerine (yüksek/düşük volatilite) göre adaptif threshold kullanın.`);
+    recs.push(copy(language,
+    `Win rate tutarlılığı düşük (CV: ${(wr.coefficientOfVariation * 100).toFixed(0)}%). Farklı piyasa rejimlerine (yüksek/düşük volatilite) göre adaptif threshold kullanın.`,
+    `Win rate consistency low (CV: ${(wr.coefficientOfVariation * 100).toFixed(0)}%). Use adaptive thresholds for different market regimes (high/low volatility).`
+  ));
   }
 
   if (Math.abs(corr.pearsonR) < 0.2) {
-    recs.push("Momentum skoru ile P&L arasında zayıf ilişki. Faktör ağırlıklarını yeniden kalibre edin.");
+    recs.push(copy(language,
+    "Momentum skoru ile P&L arasında zayıf ilişki. Faktör ağırlıklarını yeniden kalibre edin.",
+    "Weak relationship between momentum score and P&L. Recalibrate factor weights."
+  ));
   }
 
-  recs.push(`Optimal entry threshold: ${corr.optimalThreshold} skor. Bu seviyenin üzerindeki hisseler daha tutarlı performans gösteriyor.`);
+  recs.push(copy(language,
+    `Optimal entry threshold: ${corr.optimalThreshold} skor. Bu seviyenin üzerindeki hisseler daha tutarlı performans gösteriyor.`,
+    `Optimal entry threshold: ${corr.optimalThreshold} score. Stocks above this level show more consistent performance.`
+  ));
 
   if (daily.maxConsecutiveLosses > 4) {
-    recs.push(`Uzun zarar serileri (${daily.maxConsecutiveLosses} gün). Günlük max pozisyon sınırını azaltın veya piyasa rejimine göre pozisyon büyüklüğünü ayarlayın.`);
+    recs.push(copy(language,
+    `Uzun zarar serileri (${daily.maxConsecutiveLosses} gün). Günlük max pozisyon sınırını azaltın veya piyasa rejimine göre pozisyon büyüklüğünü ayarlayın.`,
+    `Long loss streaks (${daily.maxConsecutiveLosses} days). Reduce daily max position limit or adjust position size by market regime.`
+  ));
   }
 
   if (risk.sharpeRatio < 1) {
-    recs.push("Sharpe ratio 1'in altında. TP/SL oranını iyileştirmek için TP %'sini artırın veya SL %'sini düşürün.");
+    recs.push(copy(language,
+    "Sharpe ratio 1'in altında. TP/SL oranını iyileştirmek için TP %'sini artırın veya SL %'sini düşürün.",
+    "Sharpe ratio below 1. Improve TP/SL ratio by increasing TP % or decreasing SL %."
+  ));
   }
 
   if (risk.riskOfRuin > 5) {
-    recs.push("Risk of ruin yüksek. Pozisyon büyüklüğünü azaltın veya daha katı entry kriterleri uygulayın.");
+    recs.push(copy(language,
+    "Risk of ruin yüksek. Pozisyon büyüklüğünü azaltın veya daha katı entry kriterleri uygulayın.",
+    "Risk of ruin high. Reduce position size or apply stricter entry criteria."
+  ));
   }
 
-  recs.push("Raporu periyodik olarak (ayda bir) çalıştırarak sistem parametrelerinin hâlâ optimal olduğunu doğrulayın.");
+  recs.push(copy(language,
+    "Raporu periyodik olarak (ayda bir) çalıştırarak sistem parametrelerinin hâlâ optimal olduğunu doğrulayın.",
+    "Run this report periodically (monthly) to verify system parameters remain optimal."
+  ));
 
   return recs;
 }
 
-function generateEmptyReport(): ConsistencyReport {
+function generateEmptyReport(language: AppLanguage = "tr"): ConsistencyReport {
   return {
     overallGrade: "F",
     overallScore: 0,
-    summary: "Yetersiz veri. Backtest çalıştırılmamış veya hiç trade üretilmemiş.",
-    winRateConsistency: { grade: "F", overallWinRate: 0, monthlyWinRates: [], stdDeviation: 0, coefficientOfVariation: 0, isConsistent: false, interpretation: "Veri yok" },
-    scorePnLCorrelation: { grade: "F", pearsonR: 0, interpretation: "Veri yok", scoreRanges: [], optimalThreshold: 60 },
-    dailyConsistency: { grade: "F", avgTradesPerDay: 0, dailyPnLStdDev: 0, maxConsecutiveWins: 0, maxConsecutiveLosses: 0, streakAnalysis: "Veri yok" },
+    summary: copy(language, "Yetersiz veri. Backtest çalıştırılmamış veya hiç trade üretilmemiş.", "Insufficient data. Backtest not run or no trades generated."),
+    winRateConsistency: { grade: "F", overallWinRate: 0, monthlyWinRates: [], stdDeviation: 0, coefficientOfVariation: 0, isConsistent: false, interpretation: copy(language, "Veri yok", "No data") },
+    scorePnLCorrelation: { grade: "F", pearsonR: 0, interpretation: copy(language, "Veri yok", "No data"), scoreRanges: [], optimalThreshold: 60 },
+    dailyConsistency: { grade: "F", avgTradesPerDay: 0, dailyPnLStdDev: 0, maxConsecutiveWins: 0, maxConsecutiveLosses: 0, streakAnalysis: copy(language, "Veri yok", "No data") },
     riskMetrics: { grade: "F", sharpeRatio: 0, sortinoRatio: 0, maxDrawdownPct: 0, calmarRatio: 0, avgWinToAvgLoss: 0, expectancy: 0, riskOfRuin: 0 },
     factorAnalysis: { grade: "F", bestPerformingDay: "", worstPerformingDay: "", rvolEffect: "", rsiEffect: "", gapEffect: "" },
-    recommendations: ["Önce backtest çalıştırın."],
+    recommendations: [copy(language, "Önce backtest çalıştırın.", "Run backtest first.")],
     timeSeries: [],
   };
 }

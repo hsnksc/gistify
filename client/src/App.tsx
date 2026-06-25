@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
+import type { ComponentType } from "react";
 import {
   Activity,
   CalendarDays,
@@ -57,7 +58,12 @@ const ReportsDateDetailPage = lazy(
   () => import("./features/flow/pages/ReportsDateDetailPage")
 );
 const CpiPpiForecastPage = lazy(() => import("./pages/CpiPpiForecast"));
-const Calendar = lazy(() => import("./pages/Calendar"));
+const CalendarPage = lazy(async () => {
+  const module = await import("./pages/Calendar");
+  return {
+    default: module.default as ComponentType<{ language: AppLanguage }>,
+  };
+});
 const MarketFlash = lazy(() => import("./pages/MarketFlash"));
 const Pay = lazy(() => import("./pages/Pay"));
 const Pricing = lazy(() => import("./pages/Pricing"));
@@ -221,7 +227,7 @@ function Router({
     <Suspense
       fallback={
         <div className="px-4 py-8">
-          <div className="mx-auto max-w-7xl rounded-2xl border border-border bg-card/95 p-6 text-card-foreground shadow-2xl">
+          <div className="mx-auto max-w-7xl rounded-xl border border-border bg-card/95 p-6 text-card-foreground shadow-2xl">
             <h2 className="text-lg font-semibold">
               {copy(language, "Panel yukleniyor", "Loading workspace")}
             </h2>
@@ -263,10 +269,10 @@ function Router({
           {() => <CpiPpiForecastPage language={language} />}
         </Route>
         <Route path={"/calendar"}>
-          {() => <Calendar language={language} />}
+          {() => <CalendarPage language={language} />}
         </Route>
         <Route path={"/marketflash"}>
-          {() => <MarketFlash language={language} />}
+          {() => <MarketFlash />}
         </Route>
         <Route path={"/reports/ticker/:ticker"}>
           {params => (
@@ -568,7 +574,7 @@ function SubscriptionRequiredView({
   return (
     <div className="px-4 py-8">
       <div className="mx-auto max-w-7xl space-y-6">
-        <section className="rounded-3xl border border-border bg-card/95 p-6 shadow-2xl">
+        <section className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="space-y-2">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
@@ -626,7 +632,7 @@ function SubscriptionRequiredView({
               ].map(([label, value]) => (
                 <div
                   key={label}
-                  className="rounded-2xl border border-border bg-background/60 p-4 text-center"
+                  className="rounded-xl border border-border bg-background/60 p-4 text-center"
                 >
                   <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
                     {label}
@@ -658,13 +664,13 @@ function SubscriptionRequiredView({
           ].map(title => (
             <div
               key={title}
-              className="rounded-3xl border border-border bg-card/80 p-5 shadow-xl"
+              className="rounded-xl border border-border bg-card/80 p-6 shadow-xl"
             >
               <p className="text-sm font-semibold">{title}</p>
               <div className="mt-4 space-y-3">
                 <div className="h-3 rounded-full bg-muted/70" />
                 <div className="h-3 w-5/6 rounded-full bg-muted/50" />
-                <div className="h-24 rounded-2xl border border-dashed border-border bg-background/50" />
+                <div className="h-24 rounded-xl border border-dashed border-border bg-background/50" />
               </div>
             </div>
           ))}
@@ -903,7 +909,7 @@ function App() {
           }
         }
 
-        for (const request of groupedBatches.values()) {
+        for (const request of Array.from(groupedBatches.values())) {
           const response = await fetch("/api/i18n/translate", {
             method: "POST",
             credentials: "include",
@@ -1399,7 +1405,7 @@ function App() {
             !isPaymentRoute &&
             !isMarketingRoute ? (
               <div className="min-h-screen flex items-center justify-center px-4 py-8">
-                <div className="w-full max-w-lg rounded-2xl border border-border bg-card/95 p-7 text-card-foreground shadow-2xl space-y-5">
+                <div className="w-full max-w-lg rounded-xl border border-border bg-card/95 p-7 text-card-foreground shadow-2xl space-y-6">
                   <div className="space-y-2">
                     <div className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
                       <GoogleMark />
@@ -1476,3 +1482,4 @@ function App() {
 }
 
 export default App;
+

@@ -28,18 +28,18 @@ export default function FlowTickerCard({
   return (
     <Link
       href={href}
-      className="group flex flex-col gap-3 rounded-2xl border border-border bg-card/90 p-4 shadow-md transition-all hover:border-indigo-400/35 hover:bg-card hover:shadow-lg"
+      className="group flex flex-col gap-3 rounded-xl border border-border bg-card/90 p-4 shadow-md transition-all hover:border-sky-400/35 hover:bg-card hover:shadow-lg"
     >
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-indigo-300">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-sky-300">
             {copy(language, "Hisse Basligi", "Ticker View")}
           </p>
-          <h2 className="mt-1 text-2xl font-semibold tracking-tight text-foreground transition-colors group-hover:text-indigo-200">
+          <h2 className="mt-1 text-2xl font-semibold tracking-tight text-foreground transition-colors group-hover:text-sky-200">
             {group.ticker}
           </h2>
         </div>
-        <span className="rounded-full border border-indigo-500/25 bg-indigo-500/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-indigo-300">
+        <span className="rounded-full border border-sky-500/25 bg-sky-500/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-sky-300">
           {group.reports.length}{" "}
           {copy(language, "rapor", "reports")}
         </span>
@@ -87,7 +87,7 @@ export default function FlowTickerCard({
           </span>
         </div>
 
-        <span className="inline-flex items-center gap-1 text-xs font-semibold text-foreground transition-colors group-hover:text-indigo-200">
+        <span className="inline-flex items-center gap-1 text-xs font-semibold text-foreground transition-colors group-hover:text-sky-200">
           {copy(language, "Raporlari Ac", "Open Reports")}
           <ArrowRight className="size-3.5" />
         </span>
@@ -95,3 +95,5 @@ export default function FlowTickerCard({
     </Link>
   );
 }
+
+

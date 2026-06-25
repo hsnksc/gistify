@@ -30,7 +30,7 @@ function renderTable(block: Extract<ReportMarkdownBlock, { type: "table" }>, key
   return (
     <div
       key={key}
-      className="overflow-hidden rounded-[1.55rem] border border-border bg-background/55"
+      className="overflow-hidden rounded-xl border border-border bg-background/55"
     >
       <div className="overflow-x-auto">
         <table className="min-w-full text-left text-sm">
@@ -82,7 +82,7 @@ export default function MarkdownReportRenderer({
 
   if (!blocks.length) {
     return (
-      <div className="rounded-[1.75rem] border border-dashed border-border bg-background/40 p-5 text-sm leading-7 text-muted-foreground">
+      <div className="rounded-xl border border-dashed border-border bg-background/40 p-6 text-sm leading-7 text-muted-foreground">
         {emptyMessage ||
           copy(
             language,
@@ -98,7 +98,7 @@ export default function MarkdownReportRenderer({
   return (
     <div className="space-y-6">
       {sectionMapHeadings.length > 1 ? (
-        <section className="rounded-[1.8rem] border border-border bg-card/90 p-5 shadow-xl">
+        <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <div className="flex items-center gap-2">
             <BookOpen className="size-4 text-emerald-300" />
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
@@ -119,7 +119,7 @@ export default function MarkdownReportRenderer({
         </section>
       ) : null}
 
-      <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+      <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
         <div className="space-y-4">
           {blocks.map((block, index) => {
             if (block.type === "heading") {
@@ -160,7 +160,7 @@ export default function MarkdownReportRenderer({
               return (
                 <ListTag
                   key={`${block.type}-${index}`}
-                  className={`space-y-2 pl-5 text-sm leading-7 text-muted-foreground ${
+                  className={`space-y-2 pl-6 text-sm leading-7 text-muted-foreground ${
                     block.ordered ? "list-decimal" : "list-disc"
                   }`}
                 >
@@ -179,7 +179,7 @@ export default function MarkdownReportRenderer({
               return (
                 <div
                   key={`${block.type}-${index}`}
-                  className="rounded-[1.55rem] border border-emerald-500/20 bg-emerald-500/8 p-4"
+                  className="rounded-xl border border-emerald-500/20 bg-emerald-500/8 p-4"
                 >
                   <div className="flex items-start gap-3">
                     <Quote className="mt-0.5 size-4 shrink-0 text-emerald-300" />
@@ -197,7 +197,7 @@ export default function MarkdownReportRenderer({
               return (
                 <div
                   key={`${block.type}-${index}`}
-                  className="overflow-hidden rounded-[1.55rem] border border-border bg-[#08131a]"
+                  className="overflow-hidden rounded-xl border border-border bg-[#08131a]"
                 >
                   <div className="border-b border-white/10 px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                     {block.language || copy(language, "Kod blogu", "Code block")}
@@ -220,7 +220,7 @@ export default function MarkdownReportRenderer({
               return (
                 <figure
                   key={`${block.type}-${index}`}
-                  className="overflow-hidden rounded-[1.75rem] border border-border bg-background/55"
+                  className="overflow-hidden rounded-xl border border-border bg-background/55"
                 >
                   <div className="flex items-center justify-between gap-3 border-b border-border px-4 py-3">
                     <p className="truncate text-sm font-semibold text-foreground">
@@ -243,7 +243,7 @@ export default function MarkdownReportRenderer({
                     <img
                       src={resolved.src}
                       alt={resolved.alt}
-                      className="max-h-[560px] w-full rounded-[1.25rem] object-contain"
+                      className="max-h-[560px] w-full rounded-xl object-contain"
                       loading="lazy"
                       decoding="async"
                     />
@@ -263,8 +263,8 @@ export default function MarkdownReportRenderer({
           showCloseButton
         >
           {activeImage ? (
-            <div className="flex h-full flex-col overflow-hidden rounded-[1.6rem]">
-              <div className="border-b border-white/10 px-6 py-5">
+            <div className="flex h-full flex-col overflow-hidden rounded-xl">
+              <div className="border-b border-white/10 px-6 py-6">
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0">
                     <DialogTitle className="text-xl font-semibold text-foreground">
@@ -288,7 +288,7 @@ export default function MarkdownReportRenderer({
                 <img
                   src={activeImage.src}
                   alt={activeImage.alt}
-                  className="mx-auto max-h-full max-w-full rounded-[1.4rem] object-contain shadow-[0_24px_90px_rgba(0,0,0,0.48)]"
+                  className="mx-auto max-h-full max-w-full rounded-xl object-contain shadow-[0_24px_90px_rgba(0,0,0,0.48)]"
                   decoding="async"
                 />
               </div>
@@ -299,3 +299,4 @@ export default function MarkdownReportRenderer({
     </div>
   );
 }
+

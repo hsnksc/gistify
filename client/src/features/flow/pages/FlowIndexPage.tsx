@@ -74,7 +74,7 @@ export default function FlowIndexPage({
       }
     >
       <section className="grid gap-4 md:grid-cols-3">
-        <article className="rounded-[1.8rem] border border-border bg-card/90 p-5 shadow-xl">
+        <article className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <div className="flex items-center gap-2">
             <Layers3 className="size-4 text-emerald-300" />
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
@@ -93,8 +93,8 @@ export default function FlowIndexPage({
           </p>
         </article>
 
-        <article className="rounded-[1.8rem] border border-border bg-card/90 p-5 shadow-xl">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-indigo-300">
+        <article className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
             {copy(language, "Toplam Rapor", "Total Reports")}
           </p>
           <p className="mt-4 text-3xl font-semibold text-foreground">
@@ -109,7 +109,7 @@ export default function FlowIndexPage({
           </p>
         </article>
 
-        <article className="rounded-[1.8rem] border border-border bg-card/90 p-5 shadow-xl">
+        <article className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <div className="flex items-center gap-2">
             <Clock3 className="size-4 text-amber-300" />
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300">
@@ -135,7 +135,7 @@ export default function FlowIndexPage({
         <div
           role="status"
           aria-live="polite"
-          className="rounded-[1.8rem] border border-border bg-card/75 px-5 py-6 text-sm text-muted-foreground"
+          className="rounded-xl border border-border bg-card/75 px-6 py-6 text-sm text-muted-foreground"
         >
           {copy(
             language,
@@ -146,7 +146,7 @@ export default function FlowIndexPage({
       ) : error ? (
         <div
           role="alert"
-          className="rounded-[1.8rem] border border-dashed border-border bg-card/75 px-5 py-6 text-sm text-muted-foreground"
+          className="rounded-xl border border-dashed border-border bg-card/75 px-6 py-6 text-sm text-muted-foreground"
         >
           {error}
         </div>
@@ -154,7 +154,7 @@ export default function FlowIndexPage({
         <div
           role="status"
           aria-live="polite"
-          className="rounded-[1.8rem] border border-dashed border-border bg-card/65 px-5 py-6 text-sm text-muted-foreground"
+          className="rounded-xl border border-dashed border-border bg-card/65 px-6 py-6 text-sm text-muted-foreground"
         >
           {copy(
             language,
@@ -180,3 +180,5 @@ export default function FlowIndexPage({
     </FlowLayout>
   );
 }
+
+

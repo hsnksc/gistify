@@ -48,7 +48,7 @@ export default function FlowReportViewer({
     >
       <>
         {viewer.spotlight?.items.length ? (
-          <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+          <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
@@ -69,9 +69,9 @@ export default function FlowReportViewer({
               </span>
             </div>
 
-            <div className="mt-5 grid gap-4 xl:grid-cols-2">
+            <div className="mt-6 grid gap-4 xl:grid-cols-2">
               {viewer.spotlight.items.map(item => {
-                const cardClassName = `block rounded-[1.55rem] border border-border bg-background/55 p-4 transition-colors ${
+                const cardClassName = `block rounded-xl border border-border bg-background/55 p-4 transition-colors ${
                   item.anchorId
                     ? "hover:border-emerald-400/35 hover:bg-background/75"
                     : ""
@@ -116,7 +116,7 @@ export default function FlowReportViewer({
         ) : null}
 
         {viewer.galleryFigures.length ? (
-          <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+          <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
@@ -135,11 +135,11 @@ export default function FlowReportViewer({
               </span>
             </div>
 
-            <div className="mt-5 grid gap-4 lg:grid-cols-2">
+            <div className="mt-6 grid gap-4 lg:grid-cols-2">
               {viewer.galleryFigures.map(figure => (
                 <figure
                   key={figure.fileName}
-                  className="overflow-hidden rounded-[1.7rem] border border-border bg-background/55"
+                  className="overflow-hidden rounded-xl border border-border bg-background/55"
                 >
                   <div className="flex items-center justify-between gap-3 border-b border-border px-4 py-3">
                     <div className="min-w-0">
@@ -160,7 +160,7 @@ export default function FlowReportViewer({
                     <img
                       src={figure.src}
                       alt={figure.label}
-                      className="max-h-[420px] w-full rounded-[1.2rem] object-contain"
+                      className="max-h-[420px] w-full rounded-xl object-contain"
                       loading="lazy"
                       decoding="async"
                     />
@@ -174,3 +174,4 @@ export default function FlowReportViewer({
     </ReportPostShell>
   );
 }
+

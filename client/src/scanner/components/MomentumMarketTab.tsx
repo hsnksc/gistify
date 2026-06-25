@@ -26,7 +26,7 @@ function SimpleMetricCard({
   note: string;
 }) {
   return (
-    <div className="rounded-[1.45rem] border border-border bg-background/55 p-4">
+    <div className="rounded-xl border border-border bg-background/55 p-4">
       <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
         {label}
       </p>
@@ -38,7 +38,7 @@ function SimpleMetricCard({
 
 function EmptyPanel({ message }: { message: string }) {
   return (
-    <div className="rounded-[1.45rem] border border-dashed border-border bg-background/35 p-4 text-sm leading-7 text-muted-foreground">
+    <div className="rounded-xl border border-dashed border-border bg-background/35 p-4 text-sm leading-7 text-muted-foreground">
       {message}
     </div>
   );
@@ -56,12 +56,12 @@ function DataTable({
   rows: string[][];
 }) {
   return (
-    <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+    <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
       <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
         {eyebrow}
       </p>
       <h3 className="mt-2 heading-condensed text-xl text-foreground">{title}</h3>
-      <div className="mt-4 overflow-hidden rounded-[1.45rem] border border-border bg-background/45">
+      <div className="mt-4 overflow-hidden rounded-xl border border-border bg-background/45">
         <div className="overflow-x-auto">
           <table className="min-w-full text-left text-sm">
             <thead className="border-b border-border bg-background/70">
@@ -102,7 +102,7 @@ function DataTable({
 function MacroStack({ title, rows, language }: { title: string; rows: MacroRow[]; language: AppLanguage }) {
 
   return (
-    <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+    <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
       <div className="flex items-center gap-2">
         <Activity className="size-4 text-emerald-300" />
         <h3 className="heading-condensed text-xl text-foreground">{title}</h3>
@@ -112,7 +112,7 @@ function MacroStack({ title, rows, language }: { title: string; rows: MacroRow[]
           rows.map(row => (
             <article
               key={`${title}-${row.metric}`}
-              className="rounded-[1.45rem] border border-border bg-background/55 p-4"
+              className="rounded-xl border border-border bg-background/55 p-4"
             >
               <div className="flex items-start justify-between gap-3">
                 <p className="text-sm font-semibold text-foreground">{row.metric}</p>
@@ -154,7 +154,7 @@ function MoversStack({
 }) {
 
   return (
-    <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+    <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
       <div className="flex items-center gap-2">
         {positive ? (
           <TrendingUp className="size-4 text-emerald-300" />
@@ -168,7 +168,7 @@ function MoversStack({
           rows.map(row => (
             <article
               key={`${title}-${row.ticker}-${row.name}`}
-              className="rounded-[1.45rem] border border-border bg-background/55 p-4"
+              className="rounded-xl border border-border bg-background/55 p-4"
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
@@ -217,7 +217,7 @@ function MoversStack({
 function HavenStack({ rows, language }: { rows: MomentumHavenRow[]; language: AppLanguage }) {
 
   return (
-    <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+    <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
       <div className="flex items-center gap-2">
         <ShieldAlert className="size-4 text-amber-300" />
         <h3 className="heading-condensed text-xl text-foreground">
@@ -229,7 +229,7 @@ function HavenStack({ rows, language }: { rows: MomentumHavenRow[]; language: Ap
           rows.map(row => (
             <article
               key={row.symbol}
-              className="rounded-[1.45rem] border border-border bg-background/55 p-4"
+              className="rounded-xl border border-border bg-background/55 p-4"
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
@@ -277,9 +277,9 @@ export default function MomentumMarketTab({
 
   return (
     <div className="space-y-6 px-6 pb-8">
-      <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+      <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
         <div className="flex items-start gap-3">
-          <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-2 text-emerald-300">
+          <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-2 text-emerald-300">
             <CandlestickChart className="size-4" />
           </div>
           <div className="space-y-2">
@@ -343,7 +343,7 @@ export default function MomentumMarketTab({
           ])}
         />
 
-        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+        <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <div className="flex items-center gap-2">
             <Waves className="size-4 text-cyan-300" />
             <h3 className="heading-condensed text-xl text-foreground">
@@ -355,7 +355,7 @@ export default function MomentumMarketTab({
               report.vixRows.map(row => (
                 <article
                   key={row.label}
-                  className="rounded-[1.45rem] border border-border bg-background/55 p-4"
+                  className="rounded-xl border border-border bg-background/55 p-4"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <p className="text-sm font-semibold text-foreground">{row.label}</p>
@@ -381,7 +381,7 @@ export default function MomentumMarketTab({
             )}
 
             {report.vixCommentary.length ? (
-              <div className="rounded-[1.45rem] border border-emerald-500/20 bg-emerald-500/8 p-4">
+              <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/8 p-4">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
                   {copy(language, "Editor Notu", "Editor Note")}
                 </p>
@@ -432,3 +432,4 @@ export default function MomentumMarketTab({
     </div>
   );
 }
+

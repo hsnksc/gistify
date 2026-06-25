@@ -85,7 +85,7 @@ export default function IVCrushTab({
       </div>
 
       {/* Strategy Explanation */}
-      <div className="tactical-card p-5" style={{ borderLeftColor: 'oklch(0.78 0.18 160)', borderLeftWidth: '4px' }}>
+      <div className="tactical-card p-6" style={{ borderLeftColor: 'oklch(0.78 0.18 160)', borderLeftWidth: '4px' }}>
         <div className="heading-condensed text-base mb-3" style={{ color: 'oklch(0.78 0.18 160)' }}>
           {copy(language, '💡 Strateji Mantığı', '💡 Strategy Logic')}
         </div>
@@ -392,3 +392,4 @@ export default function IVCrushTab({
     </div>
   );
 }
+

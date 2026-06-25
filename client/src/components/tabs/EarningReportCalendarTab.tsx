@@ -118,8 +118,8 @@ export default function EarningReportCalendarTab({
 
   return (
     <div className="space-y-6 p-6">
-      <section className="rounded-none border border-border bg-card/80 p-5">
-        <div className="grid gap-5 xl:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)]">
+      <section className="rounded-none border border-border bg-card/80 p-6">
+        <div className="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)]">
           <div className="space-y-3">
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300">
               Execution window
@@ -310,3 +310,4 @@ export default function EarningReportCalendarTab({
     </div>
   );
 }
+

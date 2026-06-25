@@ -3,10 +3,10 @@ import type { ComponentType } from "react";
 type SummaryTone = "bull" | "bear" | "caution" | "info";
 
 const toneClasses: Record<SummaryTone, string> = {
-  bull: "border-emerald-500/22 bg-emerald-500/10 text-emerald-300",
-  bear: "border-red-500/22 bg-red-500/10 text-red-300",
-  caution: "border-amber-500/22 bg-amber-500/10 text-amber-300",
-  info: "border-indigo-500/22 bg-indigo-500/10 text-indigo-300",
+  bull: "tone-bull",
+  bear: "tone-bear",
+  caution: "tone-caution",
+  info: "tone-info",
 };
 
 interface WorkspaceSummaryCardProps {
@@ -45,3 +45,4 @@ export default function WorkspaceSummaryCard({
 }
 
 export type { SummaryTone };
+

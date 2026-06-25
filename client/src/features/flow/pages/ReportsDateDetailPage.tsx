@@ -10,6 +10,7 @@ import {
 import { useLocation } from "wouter";
 import HtmlReportRenderer from "@/components/reports/HtmlReportRenderer";
 import { Button } from "@/components/ui/button";
+import { Delta } from "@/components/ui/delta";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import FlowLayout from "../components/FlowLayout";
@@ -18,7 +19,6 @@ import { useFlowReportSummaries } from "../hooks/useFlowReportSummaries";
 import {
   adaptFlowReportToStoredReport,
   findStoredReport,
-  formatPriceChange,
   formatRecommendationLabel,
   formatReportPrice,
   getRecommendationTone,
@@ -146,11 +146,11 @@ export default function ReportsDateDetailPage({
       }
     >
       {loading ? (
-        <div className="rounded-[1.8rem] border border-border bg-card/75 px-5 py-6 text-sm text-muted-foreground">
+        <div className="rounded-xl border border-border bg-card/75 px-6 py-6 text-sm text-muted-foreground">
           {copy(language, "Rapor detayi yukleniyor.", "Loading report detail.")}
         </div>
       ) : !report ? (
-        <div className="rounded-[1.8rem] border border-dashed border-border bg-card/75 px-5 py-6 text-sm text-muted-foreground">
+        <div className="rounded-xl border border-dashed border-border bg-card/75 px-6 py-6 text-sm text-muted-foreground">
           {error ||
             copy(
               language,
@@ -160,8 +160,8 @@ export default function ReportsDateDetailPage({
         </div>
       ) : (
         <>
-          <section className="rounded-[2rem] border border-border bg-card/95 p-5 shadow-2xl">
-            <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
+          <section className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
+            <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
               <div className="space-y-4">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="rounded-full border border-border bg-background/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
@@ -178,18 +178,16 @@ export default function ReportsDateDetailPage({
                 </div>
 
                 <div className="grid gap-3 md:grid-cols-4">
-                  <article className="rounded-[1.2rem] border border-border bg-background/55 p-4">
+                  <article className="rounded-xl border border-border bg-background/55 p-4">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                       {copy(language, "Fiyat", "Price")}
                     </p>
                     <p className="mt-2 text-xl font-semibold text-foreground">
                       {formatReportPrice(report.price, language)}
                     </p>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {formatPriceChange(report.priceChangePct, language)}
-                    </p>
+                    <Delta value={report.priceChangePct} className="mt-1 text-sm" />
                   </article>
-                  <article className="rounded-[1.2rem] border border-border bg-background/55 p-4">
+                  <article className="rounded-xl border border-border bg-background/55 p-4">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                       {copy(language, "Bolumler", "Sections")}
                     </p>
@@ -200,7 +198,7 @@ export default function ReportsDateDetailPage({
                       {report.sections.join(" · ") || copy(language, "Algilanmadi", "Not detected")}
                     </p>
                   </article>
-                  <article className="rounded-[1.2rem] border border-border bg-background/55 p-4">
+                  <article className="rounded-xl border border-border bg-background/55 p-4">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                       {copy(language, "Grafik", "Charts")}
                     </p>
@@ -211,7 +209,7 @@ export default function ReportsDateDetailPage({
                       {report.sourceLabel}
                     </p>
                   </article>
-                  <article className="rounded-[1.2rem] border border-border bg-background/55 p-4">
+                  <article className="rounded-xl border border-border bg-background/55 p-4">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                       {copy(language, "Dil", "Language")}
                     </p>
@@ -269,7 +267,7 @@ export default function ReportsDateDetailPage({
             </div>
           </section>
 
-          <section className="rounded-[1.8rem] border border-border bg-card/90 p-5 text-sm leading-7 text-muted-foreground shadow-xl">
+          <section className="rounded-xl border border-border bg-card/90 p-6 text-sm leading-7 text-muted-foreground shadow-xl">
             {copy(
               language,
               "Guvenlik notu: rapor ana uygulama DOM'una basilmiyor; iframe `sandbox=\"allow-scripts\"` ile izole aciliyor ve `allow-same-origin` verilmedigi icin rapor script'leri uygulama kabuguna erisemiyor.",
@@ -300,3 +298,4 @@ export default function ReportsDateDetailPage({
     </FlowLayout>
   );
 }
+

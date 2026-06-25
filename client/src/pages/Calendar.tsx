@@ -76,13 +76,13 @@ export default function Calendar({ language }: { language: AppLanguage }) {
       <div className="container py-6 md:py-8">
         <section
           className={cn(
-            "overflow-hidden rounded-[1.8rem] border p-[1px]",
+            "overflow-hidden rounded-xl border p-[1px]",
             THEME.shellClassName
           )}
         >
           <div
             className={cn(
-              "relative overflow-hidden rounded-[1.75rem] p-4 md:p-5",
+              "relative overflow-hidden rounded-xl p-4 md:p-6",
               THEME.innerClassName
             )}
           >
@@ -93,7 +93,7 @@ export default function Calendar({ language }: { language: AppLanguage }) {
               )}
             />
 
-            <div className="relative space-y-5">
+            <div className="relative space-y-6">
               <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
@@ -183,7 +183,7 @@ export default function Calendar({ language }: { language: AppLanguage }) {
               </div>
 
               {error ? (
-                <div className="flex items-start gap-2 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-100">
+                <div className="flex items-start gap-2 rounded-xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-100">
                   <AlertTriangle className="mt-0.5 size-4 shrink-0" />
                   {error}
                 </div>
@@ -227,7 +227,7 @@ export default function Calendar({ language }: { language: AppLanguage }) {
                 </div>
               </div>
 
-              <div className="rounded-[1.25rem] border border-emerald-500/16 bg-emerald-500/[0.05] p-3.5">
+              <div className="rounded-xl border border-emerald-500/16 bg-emerald-500/[0.05] p-3.5">
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
                     <p
@@ -280,3 +280,4 @@ export default function Calendar({ language }: { language: AppLanguage }) {
     </div>
   );
 }
+

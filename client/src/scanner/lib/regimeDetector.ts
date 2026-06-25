@@ -40,7 +40,7 @@ function classifyTermStructure(termPoints: { daysToExpiry: number; iv: number }[
 }
 
 // ─── REJİM KURALLARI ───
-function regimeRules(regime: VixRegime, term: TermStructure, vixTrendDir: "RISING" | "FALLING" | "STABLE"): {
+function regimeRules(regime: VixRegime, term: TermStructure, vixTrendDir: "RISING" | "FALLING" | "STABLE", language: AppLanguage = "tr"): {
   creditSpreadAllowed: boolean;
   longPremiumAllowed: boolean;
   maxDteRecommendation: number;
@@ -62,7 +62,7 @@ function regimeRules(regime: VixRegime, term: TermStructure, vixTrendDir: "RISIN
     rules.longPremiumAllowed = true;  // Long vol faydalı
     rules.maxDteRecommendation = 30;
     rules.sizingFactor = 0.5;         // Pozisyon yarıya
-    rules.note = "⚠️ BACKWARDATION: Credit spread SATMA. Long premium tercih et. Pozisyon yarıya.";
+    rules.note = copy(language, "⚠️ BACKWARDATION: Credit spread SATMA. Long premium tercih et. Pozisyon yarıya.", "⚠️ BACKWARDATION: Do NOT sell credit spread. Prefer long premium. Halve position.");
     return rules;
   }
 
@@ -73,7 +73,7 @@ function regimeRules(regime: VixRegime, term: TermStructure, vixTrendDir: "RISIN
       rules.longPremiumAllowed = false;   // IV zirvede, long vol pahalı
       rules.maxDteRecommendation = 30;
       rules.sizingFactor = 0.7;
-      rules.note = "🚨 VIX 35+: Credit spread sat (IV zirvede), long premium AÇMA, vade 30 gün max.";
+      rules.note = copy(language, "🚨 VIX 35+: Credit spread sat (IV zirvede), long premium AÇMA, vade 30 gün max.", "🚨 VIX 35+: Sell credit spread (IV at peak), do NOT open long premium, max 30 days.");
       break;
 
     case "FEAR":
@@ -81,7 +81,7 @@ function regimeRules(regime: VixRegime, term: TermStructure, vixTrendDir: "RISIN
       rules.longPremiumAllowed = false;
       rules.maxDteRecommendation = 35;
       rules.sizingFactor = 0.8;
-      rules.note = "⚠️ VIX 25+: Credit spread tercih edilebilir, short vol mantıklı.";
+      rules.note = copy(language, "⚠️ VIX 25+: Credit spread tercih edilebilir, short vol mantıklı.", "⚠️ VIX 25+: Credit spread preferable, short vol makes sense.");
       break;
 
     case "NORMAL":
@@ -89,7 +89,7 @@ function regimeRules(regime: VixRegime, term: TermStructure, vixTrendDir: "RISIN
       rules.longPremiumAllowed = true;
       rules.maxDteRecommendation = 45;
       rules.sizingFactor = 1.0;
-      rules.note = "✅ VIX normal. Standart stratejiler uygulanabilir.";
+      rules.note = copy(language, "✅ VIX normal. Standart stratejiler uygulanabilir.", "✅ VIX normal. Standard strategies applicable.");
       break;
 
     case "COMPLACENT":
@@ -98,7 +98,7 @@ function regimeRules(regime: VixRegime, term: TermStructure, vixTrendDir: "RISIN
       rules.maxDteRecommendation = 45;
       rules.sizingFactor = 1.0;
       if (vixTrendDir === "FALLING") {
-        rules.note = "⚠️ VIX düşüş trendinde. Short vol risk artıyor, hedge düşün.";
+        rules.note = copy(language, "⚠️ VIX düşüş trendinde. Short vol risk artıyor, hedge düşün.", "⚠️ VIX falling trend. Short vol risk rising, consider hedge.");
       }
       break;
 
@@ -107,7 +107,7 @@ function regimeRules(regime: VixRegime, term: TermStructure, vixTrendDir: "RISIN
       rules.longPremiumAllowed = true;    // Long vol hedge mantıklı
       rules.maxDteRecommendation = 45;
       rules.sizingFactor = 0.7;
-      rules.note = "🔥 VIX 12-: Aşırı complacent! Short vol DARBOĞAZ riski. Long vol hedge şart.";
+      rules.note = copy(language, "🔥 VIX 12-: Aşırı complacent! Short vol DARBOĞAZ riski. Long vol hedge şart.", "🔥 VIX 12-: Extreme complacent! Short vol SQUEEZE risk. Long vol hedge required.");
       break;
   }
 
@@ -124,7 +124,7 @@ function estimateVix(ivCurves: IVCurve[]): { vix: number; vix5: number } {
 }
 
 // ─── ANA FONKSİYON ───
-export function detectMarketRegime(ivCurves: IVCurve[]): MarketRegime {
+export function detectMarketRegime(ivCurves: IVCurve[], language: AppLanguage = "tr"): MarketRegime {
   const { vix, vix5 } = estimateVix(ivCurves);
   const regime = classifyVixLevel(vix);
   const trend = vixTrend(vix, vix5);
@@ -135,7 +135,7 @@ export function detectMarketRegime(ivCurves: IVCurve[]): MarketRegime {
     term = classifyTermStructure(ivCurves[0].termStructure);
   }
 
-  const rules = regimeRules(regime, term, trend);
+  const rules = regimeRules(regime, term, trend, language);
 
   return {
     vixLevel: vix,

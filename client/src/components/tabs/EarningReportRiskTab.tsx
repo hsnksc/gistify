@@ -75,8 +75,8 @@ export default function EarningReportRiskTab({ report, language = "tr" }: Props)
 
   return (
     <div className="space-y-6 p-6">
-      <section className="rounded-none border border-border bg-card/80 p-5">
-        <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(320px,1fr)]">
+      <section className="rounded-none border border-border bg-card/80 p-6">
+        <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(320px,1fr)]">
           <div className="space-y-3">
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-red-300">
               Risk framework
@@ -330,3 +330,4 @@ export default function EarningReportRiskTab({ report, language = "tr" }: Props)
     </div>
   );
 }
+

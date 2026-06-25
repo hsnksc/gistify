@@ -281,7 +281,7 @@ export async function scanPostEarningsMomentum(
         structure: 0.20, rsi_short: 0, velocity_dir: 0,
         velocity_vol: 0, marketCap: 0, retention: 0, price_change: 0,
       },
-    });
+    }, language);
 
     // Continuation Probability: Ertesi gün devam olasılığı
     const contProb = Math.round(

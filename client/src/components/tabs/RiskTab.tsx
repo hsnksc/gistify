@@ -236,7 +236,7 @@ export default function RiskTab({ onStockClick, stocks = stocksData, language }:
       </div>
 
       {/* Key Risk Factors */}
-      <div className="tactical-card p-5" style={{ borderLeftColor: 'oklch(0.65 0.22 25)', borderLeftWidth: '4px' }}>
+      <div className="tactical-card p-6" style={{ borderLeftColor: 'oklch(0.65 0.22 25)', borderLeftWidth: '4px' }}>
         <div className="heading-condensed text-base mb-3" style={{ color: 'oklch(0.65 0.22 25)' }}>
           {copy(language, '⚠ GENEL RİSK FAKTÖRLERİ', '⚠ GENERAL RISK FACTORS')}
         </div>
@@ -268,3 +268,4 @@ export default function RiskTab({ onStockClick, stocks = stocksData, language }:
     </div>
   );
 }
+

@@ -105,7 +105,7 @@ export default function FlowTickerPage({
         <div
           role="status"
           aria-live="polite"
-          className="rounded-2xl border border-border bg-card/75 px-4 py-5 text-sm text-muted-foreground"
+          className="rounded-xl border border-border bg-card/75 px-4 py-6 text-sm text-muted-foreground"
         >
           {copy(
             language,
@@ -116,7 +116,7 @@ export default function FlowTickerPage({
       ) : !tickerGroup || !latestReport ? (
         <div
           role="alert"
-          className="rounded-2xl border border-dashed border-border bg-card/75 px-4 py-5 text-sm text-muted-foreground"
+          className="rounded-xl border border-dashed border-border bg-card/75 px-4 py-6 text-sm text-muted-foreground"
         >
           {error ||
             copy(
@@ -128,7 +128,7 @@ export default function FlowTickerPage({
       ) : (
         <>
           <section key={latestReport?.id || "empty"} className="grid gap-3 md:grid-cols-3">
-            <article className="rounded-2xl border border-border bg-card/90 p-4 shadow-md">
+            <article className="rounded-xl border border-border bg-card/90 p-4 shadow-md">
               <p className="text-[10px] font-semibold uppercase tracking-wider text-emerald-300">
                 {copy(language, "Guncel Rapor", "Current Report")}
               </p>
@@ -144,10 +144,10 @@ export default function FlowTickerPage({
               </p>
             </article>
 
-            <article className="rounded-2xl border border-border bg-card/90 p-4 shadow-md">
+            <article className="rounded-xl border border-border bg-card/90 p-4 shadow-md">
               <div className="flex items-center gap-2">
-                <History className="size-4 text-indigo-300" />
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-indigo-300">
+                <History className="size-4 text-sky-300" />
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-sky-300">
                   {copy(language, "Arsiv", "Archive")}
                 </p>
               </div>
@@ -163,7 +163,7 @@ export default function FlowTickerPage({
               </p>
             </article>
 
-            <article className="rounded-2xl border border-border bg-card/90 p-4 shadow-md">
+            <article className="rounded-xl border border-border bg-card/90 p-4 shadow-md">
               <div className="flex items-center gap-2">
                 <Clock3 className="size-4 text-amber-300" />
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-amber-300">
@@ -183,7 +183,7 @@ export default function FlowTickerPage({
             </article>
           </section>
 
-          <section className="rounded-2xl border border-border bg-card/95 p-4 shadow-md">
+          <section className="rounded-xl border border-border bg-card/95 p-4 shadow-md">
             <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
               <div className="space-y-2">
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-emerald-300">
@@ -210,7 +210,7 @@ export default function FlowTickerPage({
 
               <Link
                 href={latestReportHref}
-                className="inline-flex items-center justify-center rounded-xl border border-indigo-400/35 bg-indigo-500/12 px-4 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-indigo-500/18"
+                className="inline-flex items-center justify-center rounded-xl border border-sky-400/35 bg-sky-500/12 px-4 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-sky-500/18"
               >
                 {copy(language, "Detayi Ac", "Open Detail")}
               </Link>
@@ -218,8 +218,8 @@ export default function FlowTickerPage({
           </section>
 
           <section className="space-y-3">
-            <div className="rounded-2xl border border-border bg-card/90 p-4 shadow-md">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-indigo-300">
+            <div className="rounded-xl border border-border bg-card/90 p-4 shadow-md">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-sky-300">
                 {copy(language, "Gecmis Raporlar", "Historical Reports")}
               </p>
               <h2 className="mt-1 text-lg font-semibold text-foreground">
@@ -247,3 +247,5 @@ export default function FlowTickerPage({
     </FlowLayout>
   );
 }
+
+

@@ -12,9 +12,9 @@ export default function EarningReportDocumentTab({
 }) {
   return (
     <div className="space-y-6 p-6">
-      <section className="rounded-none border border-border bg-card/80 p-5">
+      <section className="rounded-none border border-border bg-card/80 p-6">
         <div className="flex items-start gap-3">
-          <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-2 text-emerald-300">
+          <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-2 text-emerald-300">
             <FileText className="size-4" />
           </div>
           <div className="space-y-2">
@@ -47,3 +47,4 @@ export default function EarningReportDocumentTab({
     </div>
   );
 }
+

@@ -1,4 +1,4 @@
-import { ArrowUp, ArrowDown } from "lucide-react";
+import { Delta } from "@/components/ui/delta";
 import { cn } from "@/lib/utils";
 
 export function CompactStatCard({
@@ -17,7 +17,7 @@ export function CompactStatCard({
   return (
     <article
       className={cn(
-        "rounded-2xl border border-white/10 bg-black/20 px-3.5 py-3",
+        "rounded-xl border border-white/10 bg-black/20 px-3.5 py-3",
         onClick && "cursor-pointer hover:bg-white/5 transition-colors"
       )}
       onClick={onClick}
@@ -28,19 +28,12 @@ export function CompactStatCard({
       <div className="mt-2 flex items-baseline gap-2">
         <p className="text-sm font-semibold text-foreground">{value}</p>
         {delta !== undefined && (
-          <span
-            className={cn(
-              "text-xs",
-              delta > 0 ? "text-rose-400" : "text-emerald-400"
-            )}
-          >
-            {delta > 0 ? (
-              <ArrowUp className="inline size-3" />
-            ) : (
-              <ArrowDown className="inline size-3" />
-            )}
-            {Math.abs(delta)}%
-          </span>
+          <Delta
+            value={delta}
+            positiveIsGood={false}
+            precision={0}
+            className="text-xs"
+          />
         )}
       </div>
       <p className="mt-1 text-[11px] leading-5 text-muted-foreground">
@@ -49,3 +42,4 @@ export function CompactStatCard({
     </article>
   );
 }
+

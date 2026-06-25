@@ -82,7 +82,7 @@ export default function StrategyPlaybookTab({
 
   return (
     <div className="p-6 space-y-6">
-      <section className="rounded-none border border-border bg-card/80 p-5">
+      <section className="rounded-none border border-border bg-card/80 p-6">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
           <div className="space-y-2">
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
@@ -166,7 +166,7 @@ export default function StrategyPlaybookTab({
         </div>
       </section>
 
-      <section className="space-y-5">
+      <section className="space-y-6">
         {entries.map(({ stock, option, calendar: calendarItem }) => {
           const signal = signalConfig[stock.signal];
           const stockRisk = riskConfig[stock.riskLevel];
@@ -183,7 +183,7 @@ export default function StrategyPlaybookTab({
             <article
               id={`playbook-${stock.ticker}`}
               key={stock.ticker}
-              className={`rounded-none border bg-card/80 p-5 transition-colors ${
+              className={`rounded-none border bg-card/80 p-6 transition-colors ${
                 selectedTicker === stock.ticker
                   ? "border-emerald-400/50"
                   : "border-border"
@@ -277,7 +277,7 @@ export default function StrategyPlaybookTab({
                 </div>
               </div>
 
-              <div className="mt-5 grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+              <div className="mt-6 grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
                 <section className="rounded-none border border-border bg-background/40 p-4">
                   <div className="mb-3 flex items-center gap-2">
                     <div className="h-4 w-1" style={{ background: "oklch(0.78 0.18 160)" }} />
@@ -482,3 +482,4 @@ export default function StrategyPlaybookTab({
     </div>
   );
 }
+

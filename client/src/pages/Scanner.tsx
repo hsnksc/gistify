@@ -111,12 +111,12 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
           }
         />
 
-        <section className="mt-6 workspace-panel p-4 md:p-5">
+        <section className="mt-6 workspace-panel p-4 md:p-6">
           <div className="mb-4 flex flex-col gap-2 border-b border-border pb-4 md:flex-row md:items-end md:justify-between">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <LineChart className="size-4 text-indigo-300" />
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-indigo-300">
+                <LineChart className="size-4 text-sky-300" />
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
                   {copy(language, "Momentum akisi", "Momentum flow")}
                 </p>
               </div>
@@ -143,3 +143,5 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
     </div>
   );
 }
+
+

@@ -264,7 +264,7 @@ export default function SectorTab({ stocks = stocksData, language }: Props) {
       </div>
 
       {/* AI Semiconductor Deep Dive */}
-      <div className="tactical-card p-5" style={{ borderLeftColor: 'oklch(0.78 0.18 160)', borderLeftWidth: '4px' }}>
+      <div className="tactical-card p-6" style={{ borderLeftColor: 'oklch(0.78 0.18 160)', borderLeftWidth: '4px' }}>
         <div className="flex items-center gap-2 mb-3">
           <span className="heading-condensed text-base" style={{ color: 'oklch(0.78 0.18 160)' }}>
             {copy(language, '◈ AI YARI İLETKEN — DERİN BAĞLAM', '◈ AI SEMICONDUCTOR — DEEP CONTEXT')}
@@ -298,3 +298,4 @@ export default function SectorTab({ stocks = stocksData, language }: Props) {
     </div>
   );
 }
+

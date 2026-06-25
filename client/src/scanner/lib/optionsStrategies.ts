@@ -7,10 +7,16 @@
  */
 
 import type { StockResult } from "../types";
+import { copy, type AppLanguage } from "@/lib/i18n";
 import type { SpreadMetrics, PositionManagement, IVCurve, ExpectedMove, ProbabilityOfProfit } from "./optionsTypes";
 import { calculateIVCurve, ivSignal } from "./regimeDetector";
 import { calculateExpectedMove, calculatePOP, calculateSpreadMetrics } from "./optionAnalytics";
 import { createManagementRules, createExecutionPlan, calculatePositionSize } from "./executionRules";
+
+// ─── STRATEJİ İSİM HELPER ───
+export function getStrategyName(strategy: OptionStrategy, language: AppLanguage): string {
+  return copy(language, strategy.nameTr, strategy.name);
+}
 
 // ─── STRATEJİ TANIMLARI (v2'den korundu) ───
 
@@ -123,17 +129,17 @@ const STRATEGIES: Record<string, OptionStrategy> = {
 
 // ─── IV PROXY (v2'den) ───
 
-function getIvStrategyAdjustment(ivRank: number): { strategy: string; note: string } {
+function getIvStrategyAdjustment(ivRank: number, language: AppLanguage = "tr"): { strategy: string; note: string } {
   if (ivRank > 70) {
-    return { strategy: "bull_call_spread", note: `IV Rank ${ivRank} ÇOK YÜKSEK → Spread zorunlu, tek call pahalı` };
+    return { strategy: "bull_call_spread", note: copy(language, `IV Rank ${ivRank} ÇOK YÜKSEK → Spread zorunlu, tek call pahalı`, `IV Rank ${ivRank} VERY HIGH → Spread mandatory, single call expensive`) };
   }
   if (ivRank > 50) {
-    return { strategy: "bull_call_spread", note: `IV Rank ${ivRank} yüksek → Spread ile maliyet düşür` };
+    return { strategy: "bull_call_spread", note: copy(language, `IV Rank ${ivRank} yüksek → Spread ile maliyet düşür`, `IV Rank ${ivRank} high → Reduce cost with spread`) };
   }
   if (ivRank < 30) {
-    return { strategy: "long_call", note: `IV Rank ${ivRank} düşük → Uzun call mantıklı (ucuz prim)` };
+    return { strategy: "long_call", note: copy(language, `IV Rank ${ivRank} düşük → Uzun call mantıklı (ucuz prim)`, `IV Rank ${ivRank} low → Long call makes sense (cheap premium)`) };
   }
-  return { strategy: "bull_call_spread", note: `IV Rank ${ivRank} normal → Dengeli spread` };
+  return { strategy: "bull_call_spread", note: copy(language, `IV Rank ${ivRank} normal → Dengeli spread`, `IV Rank ${ivRank} normal → Balanced spread`) };
 }
 
 // ─── ANA FONKSİYON v3.0 ───
@@ -147,7 +153,8 @@ export function recommendStrategies(
   // v3.0: Portföy boyutu
   netLiquidationValue?: number,
   // v4.1: Vade kontrolü (days to expiration)
-  daysToExpiration?: number
+  daysToExpiration?: number,
+  language: AppLanguage = "tr"
 ): StrategyRecommendation {
   const strategies: OptionStrategy[] = [];
   const entryNotes: string[] = [];
@@ -156,7 +163,7 @@ export function recommendStrategies(
   // ─── v4.1: VADE KONTROLÜ (Eleştiri #11) ───
   let dteOverride = false;
   if (daysToExpiration !== undefined) {
-    const dteCheck = checkDaysToExpiration(daysToExpiration, stock.signal);
+    const dteCheck = checkDaysToExpiration(daysToExpiration, stock.signal, language);
     if (!dteCheck.allowed) {
       dteOverride = true;
       riskWarnings.push(dteCheck.warning || "Vade kontrolü engeli");
@@ -172,7 +179,7 @@ export function recommendStrategies(
   const stopLossPrice = Math.round((stock.currentPrice - stock.atr14d) * 100) / 100;
 
   const ivRank = stock.ivProxy || 50;
-  const ivAdj = getIvStrategyAdjustment(ivRank);
+  const ivAdj = getIvStrategyAdjustment(ivRank, language);
 
   let confidence = "DÜŞÜK";
   if (stock.score >= 75) confidence = "YÜKSEK";
@@ -241,51 +248,51 @@ export function recommendStrategies(
       maxProfit: "0",
       maxLoss: "0",
       breakeven: "-",
-      setup: "Yeni pozisyon açma",
-      whenToUse: ["Vade çok kısa"],
-      pros: ["Risk yok"],
-      cons: ["Kâr yok"],
+      setup: copy(language, "Yeni pozisyon açma", "Open new position"),
+      whenToUse: [copy(language, "Vade çok kısa", "Expiration too short")],
+      pros: [copy(language, "Risk yok", "No risk")],
+      cons: [copy(language, "Kâr yok", "No profit")],
       premiumEstimate: "$0",
     };
-    entryNotes.push("Vade kontrolü nedeniyle strateji önerisi RED");
-    entryNotes.push(`DTE: ${daysToExpiration} gün — Minimum 3 gün gerekli`);
+    entryNotes.push(copy(language, "Vade kontrolü nedeniyle strateji önerisi RED", "Strategy recommendation RED due to expiration check"));
+    entryNotes.push(copy(language, `DTE: ${daysToExpiration} gün — Minimum 3 gün gerekli`, `DTE: ${daysToExpiration} days — Minimum 3 days required`));
 
   } else if (stock.score >= 75 && stock.volumeRatio >= 2 && stock.rsi > 50 && stock.rsi < 80) {
     primary = ivRank > 50 ? STRATEGIES.bull_call_spread : STRATEGIES.long_call;
-    entryNotes.push("Güçlü momentum sinyali");
+    entryNotes.push(copy(language, "Güçlü momentum sinyali", "Strong momentum signal"));
     entryNotes.push(ivAdj.note);
-    entryNotes.push(`Hedef: $${targetPrice} (ATR × ${atrMult})`);
-    entryNotes.push(`Durdurma: $${stopLossPrice} (ATR × 1)`);
+    entryNotes.push(copy(language, `Hedef: $${targetPrice} (ATR × ${atrMult})`, `Target: $${targetPrice} (ATR × ${atrMult})`));
+    entryNotes.push(copy(language, `Durdurma: $${stopLossPrice} (ATR × 1)`, `Stop: $${stopLossPrice} (ATR × 1)`));
 
     // v3.0: Expected Move ekle
     if (expectedMove) {
       entryNotes.push(`Expected Move (${dte}D): $${expectedMove.moveDollars.toFixed(2)} (%${expectedMove.movePercent.toFixed(1)})`);
       riskWarnings.push(expectedMove.movePercent > 8
-        ? `Expected Move %${expectedMove.movePercent.toFixed(1)} çok yüksek → Pozisyon küçült`
-        : `Expected Move %${expectedMove.movePercent.toFixed(1)} kabul edilebilir aralık`
+        ? copy(language, `Expected Move %${expectedMove.movePercent.toFixed(1)} çok yüksek → Pozisyon küçült`, `Expected Move %${expectedMove.movePercent.toFixed(1)} very high → Reduce position`)
+        : copy(language, `Expected Move %${expectedMove.movePercent.toFixed(1)} kabul edilebilir aralık`, `Expected Move %${expectedMove.movePercent.toFixed(1)} acceptable range`)
       );
     }
 
     // v3.0: POP ekle
     if (spreadMetrics) {
-      entryNotes.push(`POP: %${spreadMetrics.pop.popPercent} | Max Risk: $${spreadMetrics.maxLoss} | Kredi: $${spreadMetrics.netCredit}`);
+      entryNotes.push(copy(language, `POP: %${spreadMetrics.pop.popPercent} | Max Risk: $${spreadMetrics.maxLoss} | Kredi: $${spreadMetrics.netCredit}`, `POP: %${spreadMetrics.pop.popPercent} | Max Risk: $${spreadMetrics.maxLoss} | Credit: $${spreadMetrics.netCredit}`));
       entryNotes.push(`Breakeven: $${spreadMetrics.breakeven} | R/R: ${spreadMetrics.rReturn.toFixed(2)}`);
     }
 
-    riskWarnings.push(ivRank > 70 ? "IV çok yüksek, spread şart" : "Yüksek kaldıraç riski");
+    riskWarnings.push(ivRank > 70 ? copy(language, "IV çok yüksek, spread şart", "IV very high, spread required") : copy(language, "Yüksek kaldıraç riski", "High leverage risk"));
 
   } else if (stock.score >= 55 && stock.vwapDeviation > 0) {
     primary = STRATEGIES.bull_call_spread;
-    entryNotes.push("Orta momentum - korunmalı strateji");
+    entryNotes.push(copy(language, "Orta momentum - korunmalı strateji", "Medium momentum - protective strategy"));
     entryNotes.push(ivAdj.note);
   } else if (stock.volumeRatio >= 3 && Math.abs(stock.priceChangePct) > 2) {
     primary = STRATEGIES.long_straddle;
-    entryNotes.push("Yüksek volatilite - yön bağımsız");
-    riskWarnings.push("Çift prim maliyeti");
+    entryNotes.push(copy(language, "Yüksek volatilite - yön bağımsız", "High volatility - direction independent"));
+    riskWarnings.push(copy(language, "Çift prim maliyeti", "Double premium cost"));
   } else {
     primary = STRATEGIES.bull_put_spread;
-    entryNotes.push("Düşük konfidans - konservatif");
-    entryNotes.push("Önce izleyin, onay bekleyin");
+    entryNotes.push(copy(language, "Düşük konfidans - konservatif", "Low confidence - conservative"));
+    entryNotes.push(copy(language, "Önce izleyin, onay bekleyin", "Watch first, wait for confirmation"));
   }
 
   // Alternatifler (DTE override durumunda ekleme)
@@ -297,39 +304,39 @@ export function recommendStrategies(
 
   // RSI RED filtresi (v4.1)
   if (stock.rsi > 80) {
-    riskWarnings.push("🚨 RSI aşırı alım (>80) — KESİNLİKLE yeni pozisyon AÇMA");
-    riskWarnings.push("RSI RED filtresi aktif, skor sıfırlandı");
+    riskWarnings.push(copy(language, "🚨 RSI aşırı alım (>80) — KESİNLİKLE yeni pozisyon AÇMA", "🚨 RSI overbought (>80) — DO NOT open new position"));
+    riskWarnings.push(copy(language, "RSI RED filtresi aktif, skor sıfırlandı", "RSI RED filter active, score reset"));
   } else if (stock.rsi > 75) {
-    riskWarnings.push("⚠️ RSI sıcak bölge (75-80) — Stop-loss şart, küçük pozisyon");
+    riskWarnings.push(copy(language, "⚠️ RSI sıcak bölge (75-80) — Stop-loss şart, küçük pozisyon", "⚠️ RSI hot zone (75-80) — Stop-loss required, small position"));
   }
 
   // Earnings
   const earningsWarn = stock.earningsWarning || null;
   if (earningsWarn) {
     riskWarnings.push(earningsWarn);
-    riskWarnings.push("Earnings sonrası IV crush yaşanabilir — vade earnings'den SONRA");
+    riskWarnings.push(copy(language, "Earnings sonrası IV crush yaşanabilir — vade earnings'den SONRA", "IV crush may occur after earnings — expiration AFTER earnings"));
   }
 
   // v3.0: IV sinyali
   if (ivCurve) {
     const ivSig = ivSignal(ivCurve.iVRank, ivCurve.ivPremium);
-    const ivLabel = ivSig === "SELL_PREMIUM" ? "Premium satışı" : ivSig === "BUY_PREMIUM" ? "Premium alımı" : "Nötr";
-    const ivNote = ivSig === "SELL_PREMIUM" ? "IV yüksek, credit spread mantıklı" : ivSig === "BUY_PREMIUM" ? "IV düşük, long premium mantıklı" : "IV ortalama";
+    const ivLabel = ivSig === "SELL_PREMIUM" ? copy(language, "Premium satışı", "Premium sale") : ivSig === "BUY_PREMIUM" ? copy(language, "Premium alımı", "Premium purchase") : copy(language, "Nötr", "Neutral");
+    const ivNote = ivSig === "SELL_PREMIUM" ? copy(language, "IV yüksek, credit spread mantıklı", "IV high, credit spread makes sense") : ivSig === "BUY_PREMIUM" ? copy(language, "IV düşük, long premium mantıklı", "IV low, long premium makes sense") : copy(language, "IV ortalama", "IV average");
     riskWarnings.push(`${ivLabel}: ${ivNote}`);
 
     // Term structure uyarısı
     if (ivCurve.termShape === "BACKWARDATION") {
-      riskWarnings.push("⚠️ BACKWARDATION: Piyasa panik modunda, credit spread RİSKLİ");
-      riskWarnings.push("Öneri: Long premium (put/call) veya BEKLE");
+      riskWarnings.push(copy(language, "⚠️ BACKWARDATION: Piyasa panik modunda, credit spread RİSKLİ", "⚠️ BACKWARDATION: Market in panic mode, credit spread RISKY"));
+      riskWarnings.push(copy(language, "Öneri: Long premium (put/call) veya BEKLE", "Recommendation: Long premium (put/call) or WAIT"));
     }
   }
 
   // IV recommendation text
   const ivRecText = ivRank > 70
-    ? `IV Rank yüksek (%${ivRank}) → Call yerine spread, vade kısa tutun`
+    ? copy(language, `IV Rank yüksek (%${ivRank}) → Call yerine spread, vade kısa tutun`, `IV Rank high (%${ivRank}) → Spread instead of call, keep expiration short`)
     : ivRank < 30
-    ? `IV Rank düşük (%${ivRank}) → Uzun call mantıklı, vade uzun tutun`
-    : `IV Rank normal (%${ivRank}) → Standart stratejiler`;
+    ? copy(language, `IV Rank düşük (%${ivRank}) → Uzun call mantıklı, vade uzun tutun`, `IV Rank low (%${ivRank}) → Long call makes sense, keep expiration long`)
+    : copy(language, `IV Rank normal (%${ivRank}) → Standart stratejiler`, `IV Rank normal (%${ivRank}) → Standard strategies`);
 
   // ─── v3.0: EXECUTION PLANI ───
   let execution: StrategyRecommendation["execution"] | undefined;
@@ -369,7 +376,7 @@ export function recommendStrategies(
 
 // ─── VADE KONTROLÜ (Eleştiri #11) ───
 
-export function checkDaysToExpiration(daysToExpiration: number, signal: string): {
+export function checkDaysToExpiration(daysToExpiration: number, signal: string, language: AppLanguage = "tr"): {
   allowed: boolean;
   warning: string | null;
   maxDte: number;
@@ -377,21 +384,21 @@ export function checkDaysToExpiration(daysToExpiration: number, signal: string):
   if (daysToExpiration < 3) {
     return {
       allowed: false,
-      warning: `🚨 Sadece ${daysToExpiration} gün kaldı! Theta decay maksimum, pin riski yüksek. KAPAT.`,
+      warning: copy(language, `🚨 Sadece ${daysToExpiration} gün kaldı! Theta decay maksimum, pin riski yüksek. KAPAT.`, `🚨 Only ${daysToExpiration} days left! Theta decay maximum, pin risk high. CLOSE.`),
       maxDte: daysToExpiration,
     };
   }
   if (daysToExpiration < 7) {
     return {
       allowed: signal === "OVERBOUGHT_RED" || signal === "CAUTION_HOT" ? false : true,
-      warning: `⚠️ Sadece ${daysToExpiration} gün kaldı. Son hafta gamma riski çok yüksek. Yeni pozisyon AÇMA.`,
+      warning: copy(language, `⚠️ Sadece ${daysToExpiration} gün kaldı. Son hafta gamma riski çok yüksek. Yeni pozisyon AÇMA.`, `⚠️ Only ${daysToExpiration} days left. Last week gamma risk very high. DO NOT open new position.`),
       maxDte: 7,
     };
   }
   if (daysToExpiration < 14) {
     return {
       allowed: true,
-      warning: `⚠️ ${daysToExpiration} gün kaldı. 14 DTE time stop yaklaşıyor.`,
+      warning: copy(language, `⚠️ ${daysToExpiration} gün kaldı. 14 DTE time stop yaklaşıyor.`, `⚠️ ${daysToExpiration} days left. 14 DTE time stop approaching.`),
       maxDte: 14,
     };
   }
@@ -428,10 +435,11 @@ export function recommendBiDirectionalStrategies(
   daysToExpiration: number,
   persistenceScore: number,
   bearScore: number,
+  language: AppLanguage = "tr",
 ): BiDirectionalSetup {
 
-  const callSetup = buildCallSetup(stock, daysToExpiration);
-  const putSetup = buildPutSetup(stock, bearScore, daysToExpiration);
+  const callSetup = buildCallSetup(stock, daysToExpiration, language);
+  const putSetup = buildPutSetup(stock, bearScore, daysToExpiration, language);
 
   const pdtSuitable = persistenceScore >= 65;
   const recommendation = decidePrimaryDirection(stock.score, bearScore, persistenceScore);
@@ -445,9 +453,9 @@ export function recommendBiDirectionalStrategies(
   };
 }
 
-function buildCallSetup(stock: StockResult, dte: number): OptionSetup {
+function buildCallSetup(stock: StockResult, dte: number, language: AppLanguage = "tr"): OptionSetup {
   // DTE kontrolü
-  if (dte < 3) return { signal: "AVOID", strategy: "AVOID", strike: 0, dte, otmPct: 0, reason: "DTE < 3: theta decay maksimum" };
+  if (dte < 3) return { signal: "AVOID", strategy: "AVOID", strike: 0, dte, otmPct: 0, reason: copy(language, "DTE < 3: theta decay maksimum", "DTE < 3: theta decay maximum") };
   if (dte < 7 && stock.rsi >= 80) return { signal: "AVOID", strategy: "AVOID", strike: 0, dte, otmPct: 0, reason: "DTE < 7 + RSI > 80" };
 
   const otmPct = stock.rsi > 70 ? 0.08 : 0.05;
@@ -462,11 +470,11 @@ function buildCallSetup(stock: StockResult, dte: number): OptionSetup {
       kellySize: `NLV %${Math.min(2.0, stock.score / 50).toFixed(1)}`,
       targetMove: `+${(otmPct * 100).toFixed(1)}%`,
       riskReward: "1:2.5",
-      maxLoss: "Ödenen prim",
-      takeProfit: "%50 prim artışı",
-      stopCondition: "%50 prim erimesi = stop",
-      entryCondition: `${stock.currentPrice} üzeri, VWAP üstü onay`,
-      pdtNote: `PDT: 1 gün tutma için uygun. Momentum güçlü, ertesi gün devam olasılığı yüksek.`,
+      maxLoss: copy(language, "Ödenen prim", "Premium paid"),
+      takeProfit: copy(language, "%50 prim artışı", "%50 premium increase"),
+      stopCondition: copy(language, "%50 prim erimesi = stop", "%50 premium decay = stop"),
+      entryCondition: copy(language, `${stock.currentPrice} üzeri, VWAP üstü onay`, `${stock.currentPrice} above, VWAP above confirmation`),
+      pdtNote: copy(language, `PDT: 1 gün tutma için uygun. Momentum güçlü, ertesi gün devam olasılığı yüksek.`, `PDT: Suitable for 1-day hold. Momentum strong, likely continuation next day.`),
     };
   } else if (stock.score >= 55 && stock.vwapDeviation > 0) {
     return {
@@ -477,11 +485,11 @@ function buildCallSetup(stock: StockResult, dte: number): OptionSetup {
       kellySize: `NLV %${Math.min(1.5, stock.score / 60).toFixed(1)}`,
       targetMove: `+${(otmPct * 100).toFixed(1)}%`,
       riskReward: "1:2.0",
-      maxLoss: "Net prim (sınırlı)",
-      takeProfit: "%50 spread değeri",
-      stopCondition: "2x prim = stop",
-      entryCondition: `${stock.currentPrice} üzeri, VWAP üstü`,
-      pdtNote: `PDT: Spread ile risk sınırlı, 1 gün tutma uygun.`,
+      maxLoss: copy(language, "Net prim (sınırlı)", "Net premium (limited)"),
+      takeProfit: copy(language, "%50 spread değeri", "%50 spread value"),
+      stopCondition: copy(language, "2x prim = stop", "2x premium = stop"),
+      entryCondition: copy(language, `${stock.currentPrice} üzeri, VWAP üstü`, `${stock.currentPrice} above, VWAP above`),
+      pdtNote: copy(language, `PDT: Spread ile risk sınırlı, 1 gün tutma uygun.`, `PDT: Risk limited with spread, suitable for 1-day hold.`),
     };
   } else {
     return {
@@ -492,22 +500,22 @@ function buildCallSetup(stock: StockResult, dte: number): OptionSetup {
       kellySize: "NLV %0.5",
       targetMove: "+2%",
       riskReward: "1:1.5",
-      maxLoss: "Net prim (sınırlı)",
-      takeProfit: "%50 prim",
-      stopCondition: "2x prim = stop",
-      entryCondition: "Konservatif giriş",
-      pdtNote: `PDT: Konservatif spread, düşük risk.`,
+      maxLoss: copy(language, "Net prim (sınırlı)", "Net premium (limited)"),
+      takeProfit: copy(language, "%50 prim", "%50 premium"),
+      stopCondition: copy(language, "2x prim = stop", "2x premium = stop"),
+      entryCondition: copy(language, "Konservatif giriş", "Conservative entry"),
+      pdtNote: copy(language, `PDT: Konservatif spread, düşük risk.`, `PDT: Conservative spread, low risk.`),
     };
   }
 }
 
-function buildPutSetup(stock: StockResult, bearScore: number, dte: number): OptionSetup {
+function buildPutSetup(stock: StockResult, bearScore: number, dte: number, language: AppLanguage = "tr"): OptionSetup {
   // DTE kontrolü — put için de zorunlu
-  if (dte < 3) return { signal: "AVOID", strategy: "AVOID", strike: 0, dte, otmPct: 0, reason: "DTE < 3: theta decay maksimum" };
-  if (dte < 7 && stock.rsi <= 25) return { signal: "AVOID", strategy: "AVOID", strike: 0, dte, otmPct: 0, reason: "DTE < 7 + RSI < 25: mean reversion riski" };
+  if (dte < 3) return { signal: "AVOID", strategy: "AVOID", strike: 0, dte, otmPct: 0, reason: copy(language, "DTE < 3: theta decay maksimum", "DTE < 3: theta decay maximum") };
+  if (dte < 7 && stock.rsi <= 25) return { signal: "AVOID", strategy: "AVOID", strike: 0, dte, otmPct: 0, reason: copy(language, "DTE < 7 + RSI < 25: mean reversion riski", "DTE < 7 + RSI < 25: mean reversion risk") };
 
   // RSI aşırı satım uyarısı
-  if (stock.rsi <= 20) return { signal: "AVOID", strategy: "AVOID", strike: 0, dte, otmPct: 0, reason: "RSI ≤ 20: aşırı satım, mean reversion riski yüksek" };
+  if (stock.rsi <= 20) return { signal: "AVOID", strategy: "AVOID", strike: 0, dte, otmPct: 0, reason: copy(language, "RSI ≤ 20: aşırı satım, mean reversion riski yüksek", "RSI ≤ 20: oversold, high mean reversion risk") };
 
   const otmPct = stock.rsi < 30 ? 0.08 : 0.05;
   const strike = Math.round(stock.currentPrice * (1 - otmPct) / 5) * 5;
@@ -521,11 +529,11 @@ function buildPutSetup(stock: StockResult, bearScore: number, dte: number): Opti
       kellySize: `NLV %${Math.min(2.0, bearScore / 50).toFixed(1)}`,
       targetMove: `-${(otmPct * 100).toFixed(1)}%`,
       riskReward: "1:2.5",
-      maxLoss: "Ödenen prim",
-      takeProfit: "%50 prim artışı",
-      stopCondition: "%50 prim erimesi = stop",
-      entryCondition: `${stock.currentPrice} altı, VWAP altı onay`,
-      pdtNote: `PDT: 1 gün tutma için uygun. Aşağı momentum güçlü, ertesi gün düşüş devam olasılığı.`,
+      maxLoss: copy(language, "Ödenen prim", "Premium paid"),
+      takeProfit: copy(language, "%50 prim artışı", "%50 premium increase"),
+      stopCondition: copy(language, "%50 prim erimesi = stop", "%50 premium decay = stop"),
+      entryCondition: copy(language, `${stock.currentPrice} altı, VWAP altı onay`, `${stock.currentPrice} below, VWAP below confirmation`),
+      pdtNote: copy(language, `PDT: 1 gün tutma için uygun. Aşağı momentum güçlü, ertesi gün düşüş devam olasılığı.`, `PDT: Suitable for 1-day hold. Down momentum strong, likely continuation next day.`),
     };
   } else if (bearScore >= 55 && stock.vwapDeviation < 0) {
     return {
@@ -536,11 +544,11 @@ function buildPutSetup(stock: StockResult, bearScore: number, dte: number): Opti
       kellySize: `NLV %${Math.min(1.5, bearScore / 60).toFixed(1)}`,
       targetMove: `-${(otmPct * 100).toFixed(1)}%`,
       riskReward: "1:2.0",
-      maxLoss: "Net prim (sınırlı)",
-      takeProfit: "%50 spread değeri",
-      stopCondition: "2x prim = stop",
-      entryCondition: `${stock.currentPrice} altı, VWAP altı`,
-      pdtNote: `PDT: Spread ile risk sınırlı, 1 gün tutma uygun.`,
+      maxLoss: copy(language, "Net prim (sınırlı)", "Net premium (limited)"),
+      takeProfit: copy(language, "%50 spread değeri", "%50 spread value"),
+      stopCondition: copy(language, "2x prim = stop", "2x premium = stop"),
+      entryCondition: copy(language, `${stock.currentPrice} altı, VWAP altı`, `${stock.currentPrice} below, VWAP below`),
+      pdtNote: copy(language, `PDT: Spread ile risk sınırlı, 1 gün tutma uygun.`, `PDT: Risk limited with spread, suitable for 1-day hold.`),
     };
   } else {
     return {
@@ -551,11 +559,11 @@ function buildPutSetup(stock: StockResult, bearScore: number, dte: number): Opti
       kellySize: "NLV %0.5",
       targetMove: "-2%",
       riskReward: "1:1.5",
-      maxLoss: "Net prim (sınırlı)",
-      takeProfit: "%50 prim",
-      stopCondition: "2x prim = stop",
-      entryCondition: "Konservatif giriş",
-      pdtNote: `PDT: Konservatif spread, düşük risk.`,
+      maxLoss: copy(language, "Net prim (sınırlı)", "Net premium (limited)"),
+      takeProfit: copy(language, "%50 prim", "%50 premium"),
+      stopCondition: copy(language, "2x prim = stop", "2x premium = stop"),
+      entryCondition: copy(language, "Konservatif giriş", "Conservative entry"),
+      pdtNote: copy(language, `PDT: Konservatif spread, düşük risk.`, `PDT: Conservative spread, low risk.`),
     };
   }
 }

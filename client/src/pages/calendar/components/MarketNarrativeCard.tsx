@@ -41,7 +41,7 @@ function HighlightText({
 function extractLevels(text: string): { label: string; value: string }[] {
   const regex =
     /(VIX|DXY|EUR\/USD|GBP\/USD|USD\/JPY|BTC|SPX|NDX)\s+([\d.,]+)/gi;
-  const matches = [...text.matchAll(regex)];
+  const matches = Array.from(text.matchAll(regex));
   return matches.map((m) => ({ label: m[1], value: m[2] }));
 }
 
@@ -93,7 +93,7 @@ export function MarketNarrativeCard({
             ))}
           </div>
         )}
-        <div className="rounded-2xl border border-white/10 bg-black/20 p-3.5">
+        <div className="rounded-xl border border-white/10 bg-black/20 p-3.5">
           <p className="text-[13px] leading-6 text-foreground/88">
             <HighlightText
               text={safeNarrative}
@@ -120,3 +120,4 @@ export function MarketNarrativeCard({
     </Card>
   );
 }
+

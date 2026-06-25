@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Globe, Search } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -192,7 +193,7 @@ export function EventsTable({
               />
             ))
           ) : (
-            <div className="rounded-2xl border border-dashed border-white/10 bg-black/15 px-4 py-3 text-sm text-muted-foreground">
+            <div className="rounded-xl border border-dashed border-white/10 bg-black/15 px-4 py-3 text-sm text-muted-foreground">
               {copy(language, "Bulunamadi", "No results found")}
             </div>
           )}
@@ -216,7 +217,7 @@ function MobileEventCard({
   return (
     <div
       className={cn(
-        "rounded-2xl border border-white/10 bg-black/20 p-3.5",
+        "rounded-xl border border-white/10 bg-black/20 p-3.5",
         importanceRowClass(event.importance)
       )}
       onClick={onToggle}
@@ -293,3 +294,4 @@ function MobileEventCard({
     </div>
   );
 }
+

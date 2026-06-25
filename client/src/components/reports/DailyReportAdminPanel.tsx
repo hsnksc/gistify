@@ -199,7 +199,7 @@ export default function DailyReportAdminPanel({
 
   if (!adminAuthorized) {
     return (
-      <div className="rounded-[2rem] border border-border bg-card/95 p-6 shadow-2xl">
+      <div className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
         <p className="text-sm text-muted-foreground">
           Daily report publish aracini kullanmak icin once admin kilidini ac.
         </p>
@@ -253,7 +253,7 @@ export default function DailyReportAdminPanel({
 
   return (
     <div className="grid gap-6 xl:grid-cols-[340px_minmax(0,1fr)]">
-      <aside className="rounded-[2rem] border border-border bg-card/95 p-5 shadow-2xl xl:sticky xl:top-24 xl:h-[calc(100vh-8rem)] xl:overflow-y-auto">
+      <aside className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl xl:sticky xl:top-24 xl:h-[calc(100vh-8rem)] xl:overflow-y-auto">
         <div className="flex items-center justify-between gap-2">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
             Source Packages
@@ -310,7 +310,7 @@ export default function DailyReportAdminPanel({
                 key={report.id}
                 type="button"
                 onClick={() => onSelectReport(report.id)}
-                className={`w-full rounded-2xl border px-3 py-3 text-left transition-colors ${
+                className={`w-full rounded-xl border px-3 py-3 text-left transition-colors ${
                   report.id === selectedReportId
                     ? "border-emerald-500/40 bg-emerald-500/10"
                     : "border-border bg-card/80 hover:bg-card"
@@ -340,7 +340,7 @@ export default function DailyReportAdminPanel({
       </aside>
 
       <div className="space-y-6">
-        <section className="rounded-[2rem] border border-border bg-card/95 p-6 shadow-2xl">
+        <section className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
           {draftReport ? (
             <div className="space-y-6">
               <div className="flex flex-wrap items-center justify-between gap-3">
@@ -376,7 +376,7 @@ export default function DailyReportAdminPanel({
                 <p className="text-sm text-destructive">{adminError}</p>
               ) : null}
               <div className="grid gap-4 xl:grid-cols-2">
-                <div className="space-y-4 rounded-[1.75rem] border border-border bg-background/50 p-4">
+                <div className="space-y-4 rounded-xl border border-border bg-background/50 p-4">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
                     Metadata
                   </p>
@@ -442,7 +442,7 @@ export default function DailyReportAdminPanel({
                     </Field>
                   </div>
                 </div>
-                <div className="space-y-4 rounded-[1.75rem] border border-border bg-background/50 p-4">
+                <div className="space-y-4 rounded-xl border border-border bg-background/50 p-4">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
                     Narrative
                   </p>
@@ -596,7 +596,7 @@ export default function DailyReportAdminPanel({
                   }
                 />
               </Field>
-              <div className="space-y-3 rounded-[1.75rem] border border-border bg-background/50 p-4">
+              <div className="space-y-3 rounded-xl border border-border bg-background/50 p-4">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
                     Advanced JSON
@@ -640,7 +640,7 @@ export default function DailyReportAdminPanel({
         </section>
 
         {selectedSource ? (
-          <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+          <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
@@ -658,7 +658,7 @@ export default function DailyReportAdminPanel({
                 Bu source'u kullan
               </Button>
             </div>
-            <div className="mt-5 grid gap-4 lg:grid-cols-[minmax(0,1fr)_220px_auto]">
+            <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_220px_auto]">
               <Field label="OpenAI chart prompt">
                 <Textarea
                   rows={5}
@@ -765,3 +765,4 @@ export default function DailyReportAdminPanel({
     </div>
   );
 }
+

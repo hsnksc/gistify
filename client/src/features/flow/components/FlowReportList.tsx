@@ -20,7 +20,7 @@ export default function FlowReportList({
       <div
         role="status"
         aria-live="polite"
-        className="rounded-2xl border border-dashed border-border bg-card/65 px-4 py-5 text-sm text-muted-foreground"
+        className="rounded-xl border border-dashed border-border bg-card/65 px-4 py-6 text-sm text-muted-foreground"
       >
         {emptyMessage ||
           copy(
@@ -48,3 +48,4 @@ export default function FlowReportList({
     </section>
   );
 }
+

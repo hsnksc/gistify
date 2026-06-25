@@ -248,7 +248,7 @@ function BiasMeter({
 
   if (!total) {
     return (
-      <div className="rounded-[1.1rem] border border-border bg-background/45 px-3 py-2 text-xs text-muted-foreground">
+      <div className="rounded-xl border border-border bg-background/45 px-3 py-2 text-xs text-muted-foreground">
         {position.blueprint.ratioText ||
           copy(language, "Call / Put dagilimi verilmedi.", "Call / put split was not provided.")}
       </div>
@@ -285,14 +285,14 @@ function DataTable({
 }) {
   if (!rows.length) {
     return (
-      <div className="rounded-[1.4rem] border border-dashed border-border bg-background/35 p-4 text-sm text-muted-foreground">
+      <div className="rounded-xl border border-dashed border-border bg-background/35 p-4 text-sm text-muted-foreground">
         {emptyMessage}
       </div>
     );
   }
 
   return (
-    <div className="overflow-hidden rounded-[1.45rem] border border-border bg-background/45">
+    <div className="overflow-hidden rounded-xl border border-border bg-background/45">
       <div className="overflow-x-auto">
         <table className="min-w-full text-left text-sm">
           <thead className="border-b border-border bg-background/70">
@@ -347,7 +347,7 @@ function ConvictionCard({
     position.blueprint.entry || findMetricValue(position, ["Entry Penceresi"]) || "-";
 
   return (
-    <article className="rounded-[1.45rem] border border-border bg-background/55 p-4">
+    <article className="rounded-xl border border-border bg-background/55 p-4">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-emerald-300">
@@ -376,19 +376,19 @@ function ConvictionCard({
       <p className="mt-3 text-sm leading-7 text-muted-foreground">{assessment}</p>
 
       <div className="mt-4 grid gap-3 sm:grid-cols-3">
-        <div className="rounded-[1rem] border border-border bg-card/70 p-3">
+        <div className="rounded-xl border border-border bg-card/70 p-3">
           <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
             IV Rank
           </p>
           <p className="mt-2 text-sm font-semibold text-amber-300">{ivRank || "-"}</p>
         </div>
-        <div className="rounded-[1rem] border border-border bg-card/70 p-3">
+        <div className="rounded-xl border border-border bg-card/70 p-3">
           <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
             CPR
           </p>
           <p className="mt-2 text-sm font-semibold text-sky-300">{cpr || "-"}</p>
         </div>
-        <div className="rounded-[1rem] border border-border bg-card/70 p-3">
+        <div className="rounded-xl border border-border bg-card/70 p-3">
           <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
             {copy(language, "Giris", "Entry")}
           </p>
@@ -472,7 +472,7 @@ export default function EarningReportPostTab({
       )}
     >
       {convictionBoard.length ? (
-        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+        <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <SectionTitle
             eyebrow={copy(language, "Top Picks", "Top Picks")}
             title={copy(language, "Rapordaki en guclu setup'lar", "Highest-conviction setups in the report")}
@@ -483,7 +483,7 @@ export default function EarningReportPostTab({
             )}
           />
 
-          <div className="mt-5 grid gap-4 xl:grid-cols-2">
+          <div className="mt-6 grid gap-4 xl:grid-cols-2">
             {convictionBoard.map(entry => (
               <ConvictionCard
                 key={`${entry.position.ticker}-${entry.assessment}`}
@@ -496,7 +496,7 @@ export default function EarningReportPostTab({
         </section>
       ) : null}
 
-      <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+      <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
         <SectionTitle
           eyebrow={copy(language, "Setup Atlas", "Setup Atlas")}
           title={copy(language, "Ticker bazli oyun plani", "Ticker-by-ticker game plan")}
@@ -523,7 +523,7 @@ export default function EarningReportPostTab({
             return (
               <article
                 key={`${position.ticker}-${position.order}`}
-                className="rounded-[1.15rem] border border-border bg-background/55 p-3.5"
+                className="rounded-xl border border-border bg-background/55 p-3.5"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>
@@ -668,12 +668,12 @@ export default function EarningReportPostTab({
       </section>
 
       <section className="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
-        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+        <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <SectionTitle
             eyebrow={copy(language, "Execution", "Execution")}
             title={copy(language, "Takvim ve islem sirasi", "Timeline and execution order")}
           />
-          <div className="mt-5">
+          <div className="mt-6">
             <DataTable
               headers={[
                 copy(language, "Tarih", "Date"),
@@ -691,12 +691,12 @@ export default function EarningReportPostTab({
           </div>
         </section>
 
-        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+        <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <SectionTitle
             eyebrow={copy(language, "Portfolio", "Portfolio")}
             title={copy(language, "Portfoy ve allocation notlari", "Portfolio and allocation notes")}
           />
-          <div className="mt-5">
+          <div className="mt-6">
             <DataTable
               headers={[
                 copy(language, "Hisse", "Ticker"),
@@ -715,12 +715,12 @@ export default function EarningReportPostTab({
       </section>
 
       <section className="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
-        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+        <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <SectionTitle
             eyebrow={copy(language, "Risk Matrix", "Risk Matrix")}
             title={copy(language, "Makro ve setup riskleri", "Macro and setup risks")}
           />
-          <div className="mt-5">
+          <div className="mt-6">
             <DataTable
               headers={[
                 copy(language, "Risk", "Risk"),
@@ -743,7 +743,7 @@ export default function EarningReportPostTab({
           </div>
         </section>
 
-        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+        <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <SectionTitle
             eyebrow={copy(language, "Kurallar", "Rules")}
             title={copy(language, "Golden rules", "Golden rules")}
@@ -753,24 +753,24 @@ export default function EarningReportPostTab({
               "The report's global discipline rules are preserved here as operational items."
             )}
           />
-          <ol className="mt-5 space-y-3 text-sm leading-7 text-muted-foreground">
+          <ol className="mt-6 space-y-3 text-sm leading-7 text-muted-foreground">
             {report.goldenRules.length ? (
               report.goldenRules.map(rule => (
                 <li
                   key={rule}
-                  className="rounded-[1.2rem] border border-border bg-background/55 px-4 py-3"
+                  className="rounded-xl border border-border bg-background/55 px-4 py-3"
                 >
                   {rule}
                 </li>
               ))
             ) : (
-              <li className="rounded-[1.2rem] border border-dashed border-border bg-background/35 px-4 py-3">
+              <li className="rounded-xl border border-dashed border-border bg-background/35 px-4 py-3">
                 {copy(language, "Golden rule parse edilemedi.", "Golden rules could not be parsed.")}
               </li>
             )}
           </ol>
 
-          <div className="mt-6 border-t border-border pt-5">
+          <div className="mt-6 border-t border-border pt-6">
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-200">
               {copy(language, "Gunluk kontrol listesi", "Daily checklist")}
             </p>
@@ -779,13 +779,13 @@ export default function EarningReportPostTab({
                 report.checklist.map(item => (
                   <article
                     key={item}
-                    className="rounded-[1.2rem] border border-border bg-background/55 px-4 py-3 text-sm leading-7 text-muted-foreground"
+                    className="rounded-xl border border-border bg-background/55 px-4 py-3 text-sm leading-7 text-muted-foreground"
                   >
                     {item}
                   </article>
                 ))
               ) : (
-                <article className="rounded-[1.2rem] border border-dashed border-border bg-background/35 px-4 py-3 text-sm text-muted-foreground sm:col-span-2">
+                <article className="rounded-xl border border-dashed border-border bg-background/35 px-4 py-3 text-sm text-muted-foreground sm:col-span-2">
                   {copy(language, "Checklist parse edilemedi.", "Checklist could not be parsed.")}
                 </article>
               )}
@@ -796,3 +796,4 @@ export default function EarningReportPostTab({
     </ReportPostShell>
   );
 }
+

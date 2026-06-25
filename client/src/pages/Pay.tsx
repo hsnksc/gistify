@@ -403,8 +403,8 @@ export default function Pay({
   return (
     <div className="min-h-screen bg-background text-foreground">
       <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10">
-        <div className="rounded-[2rem] border border-border bg-card/90 p-6 shadow-2xl">
-          <div className="flex flex-wrap items-start justify-between gap-5">
+        <div className="rounded-xl border border-border bg-card/90 p-6 shadow-2xl">
+          <div className="flex flex-wrap items-start justify-between gap-6">
             <div className="max-w-3xl space-y-3">
               <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-emerald-300">
                 <Sparkles className="size-3.5" />
@@ -457,7 +457,7 @@ export default function Pay({
             {[copy.secure, copy.accountLinked, copy.webhookSync].map(label => (
               <div
                 key={label}
-                className="rounded-2xl border border-border bg-background/60 px-4 py-3 text-sm font-medium"
+                className="rounded-xl border border-border bg-background/60 px-4 py-3 text-sm font-medium"
               >
                 {label}
               </div>
@@ -466,7 +466,7 @@ export default function Pay({
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
-          <section className="rounded-[2rem] border border-border bg-card/85 p-6 shadow-xl">
+          <section className="rounded-xl border border-border bg-card/85 p-6 shadow-xl">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
@@ -485,7 +485,7 @@ export default function Pay({
               </div>
             </div>
 
-            <div className="mt-6 rounded-3xl border border-border bg-background/55 p-5">
+            <div className="mt-6 rounded-xl border border-border bg-background/55 p-6">
               {authState.status === "loading" ? (
                 <div className="space-y-3">
                   <div className="flex items-center gap-2 text-sm font-semibold">
@@ -636,7 +636,7 @@ export default function Pay({
             </div>
           </section>
 
-          <aside className="rounded-[2rem] border border-border bg-card/80 p-6 shadow-xl">
+          <aside className="rounded-xl border border-border bg-card/80 p-6 shadow-xl">
             <div className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
               {copy.settingsTitle}
             </div>
@@ -644,7 +644,7 @@ export default function Pay({
               {[copy.step1, copy.step2, copy.step3].map(step => (
                 <div
                   key={step}
-                  className="rounded-2xl border border-border bg-background/60 p-4 text-sm"
+                  className="rounded-xl border border-border bg-background/60 p-4 text-sm"
                 >
                   {step}
                 </div>
@@ -652,7 +652,7 @@ export default function Pay({
             </div>
 
             <div className="mt-6 space-y-3">
-              <div className="rounded-2xl border border-border bg-background/60 p-4">
+              <div className="rounded-xl border border-border bg-background/60 p-4">
                 <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
                   {copy.accountLabel}
                 </p>
@@ -662,7 +662,7 @@ export default function Pay({
                     : copy.guest}
                 </p>
               </div>
-              <div className="rounded-2xl border border-border bg-background/60 p-4">
+              <div className="rounded-xl border border-border bg-background/60 p-4">
                 <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
                   {copy.modeLabel}
                 </p>
@@ -673,7 +673,7 @@ export default function Pay({
                     : copy.publicMode}
                 </p>
               </div>
-              <div className="rounded-2xl border border-border bg-background/60 p-4">
+              <div className="rounded-xl border border-border bg-background/60 p-4">
                 <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
                   {copy.billingLabel}
                 </p>
@@ -688,3 +688,4 @@ export default function Pay({
     </div>
   );
 }
+

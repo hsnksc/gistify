@@ -762,7 +762,7 @@ export default function HtmlReportRenderer({
 
   if (!prepared) {
     return (
-      <div className="rounded-[1.75rem] border border-dashed border-border bg-background/40 p-5 text-sm leading-7 text-muted-foreground">
+      <div className="rounded-xl border border-dashed border-border bg-background/40 p-6 text-sm leading-7 text-muted-foreground">
         {emptyMessage ||
           copy(
             language,
@@ -776,7 +776,7 @@ export default function HtmlReportRenderer({
   return (
     <div className="space-y-6">
       {translationNotice ? (
-        <section className="rounded-[1.8rem] border border-amber-400/25 bg-amber-500/8 p-4 shadow-xl">
+        <section className="rounded-xl border border-amber-400/25 bg-amber-500/8 p-4 shadow-xl">
           <div className="flex items-start gap-3">
             <Languages className="mt-0.5 size-4 text-amber-300" />
             <div className="space-y-1">
@@ -792,7 +792,7 @@ export default function HtmlReportRenderer({
       ) : null}
 
       {prepared.sections.length > 1 ? (
-        <section className="rounded-[1.8rem] border border-border bg-card/90 p-5 shadow-xl">
+        <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <div className="flex items-center gap-2">
             <BookOpen className="size-4 text-emerald-300" />
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
@@ -814,7 +814,7 @@ export default function HtmlReportRenderer({
         </section>
       ) : null}
 
-      <section className="overflow-hidden rounded-[2rem] border border-border bg-card/90 shadow-xl">
+      <section className="overflow-hidden rounded-xl border border-border bg-card/90 shadow-xl">
         <iframe
           ref={iframeRef}
           title={copy(language, "HTML rapor gorunumu", "HTML report view")}
@@ -826,8 +826,8 @@ export default function HtmlReportRenderer({
       </section>
 
       {prepared.sections.length > 1 ? (
-        <section className="rounded-[1.8rem] border border-border bg-card/90 p-5 shadow-xl">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-indigo-300">
+        <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
             {copy(language, "Hizli Gecis", "Quick Jump")}
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
@@ -836,7 +836,7 @@ export default function HtmlReportRenderer({
                 key={`${section.id}-bottom`}
                 type="button"
                 onClick={() => scrollToSection(section.id)}
-                className="rounded-full border border-border bg-background/65 px-3 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:border-indigo-400/35 hover:text-indigo-200"
+                className="rounded-full border border-border bg-background/65 px-3 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:border-sky-400/35 hover:text-sky-200"
               >
                 {section.label}
               </button>
@@ -847,3 +847,5 @@ export default function HtmlReportRenderer({
     </div>
   );
 }
+
+

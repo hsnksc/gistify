@@ -15,6 +15,7 @@ import { fetchYF } from "./yahooFinance";
 import type { StockResult } from "../types";
 import { sanityGate, isSafeNumber } from "./sanityGate";
 import { FACTOR_WEIGHTS, clamp100 } from "./scoreConfig";
+import { type AppLanguage, copy } from "@/lib/i18n";
 
 // ===================== Tipler =====================
 
@@ -306,7 +307,7 @@ function calculateHistoricalMomentum(
 
 // ===================== Backtest Motoru =====================
 
-export async function runBacktest(config: BacktestConfig): Promise<BacktestSummary> {
+export async function runBacktest(config: BacktestConfig, language: AppLanguage = "tr"): Promise<BacktestSummary> {
   const allTrades: DailyTrade[] = [];
   const dailyReturns: Array<{ date: string; pnl: number; trades: number }> = [];
 
@@ -426,7 +427,7 @@ export async function runBacktest(config: BacktestConfig): Promise<BacktestSumma
   }
 
   // İstatistikler
-  return calculateBacktestStats(allTrades, dailyReturns, config, sortedDates.length);
+  return calculateBacktestStats(allTrades, dailyReturns, config, sortedDates.length, language);
 }
 
 // ===================== İstatistik Hesaplama =====================
@@ -435,7 +436,8 @@ function calculateBacktestStats(
   trades: DailyTrade[],
   dailyReturns: Array<{ date: string; pnl: number; trades: number }>,
   config: BacktestConfig,
-  totalTradingDays: number
+  totalTradingDays: number,
+  language: AppLanguage = "tr"
 ): BacktestSummary {
   if (trades.length === 0) {
     return {
@@ -500,12 +502,20 @@ function calculateBacktestStats(
   });
 
   // Güne göre performans
-  const dayNames = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
+  const dayNames = (lang: AppLanguage) => [
+    copy(lang, "Pazar", "Sunday"),
+    copy(lang, "Pazartesi", "Monday"),
+    copy(lang, "Salı", "Tuesday"),
+    copy(lang, "Çarşamba", "Wednesday"),
+    copy(lang, "Perşembe", "Thursday"),
+    copy(lang, "Cuma", "Friday"),
+    copy(lang, "Cumartesi", "Saturday"),
+  ];
   const performanceByDay = [1, 2, 3, 4, 5].map((dow) => {
     const subset = trades.filter((t) => t.dayOfWeek === dow);
     const wins = subset.filter((t) => t.pnlPct > 0);
     return {
-      day: dayNames[dow],
+      day: dayNames(language)[dow],
       trades: subset.length,
       winRate: subset.length > 0 ? Math.round((wins.length / subset.length) * 1000) / 10 : 0,
       avgPnL: subset.length > 0 ? Math.round((subset.reduce((s, t) => s + t.pnlPct, 0) / subset.length) * 100) / 100 : 0,

@@ -347,7 +347,7 @@ export default function Home({ language }: { language: AppLanguage }) {
     <div className="min-h-screen bg-background">
       <div className="container py-6 md:py-8">
         <WorkspaceHeroPanel
-          overlayClassName="bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.22),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(16,185,129,0.14),transparent_28%)]"
+          overlayClassName="bg-[radial-gradient(circle_at_top_right,rgba(14,165,233,0.22),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(16,185,129,0.14),transparent_28%)]"
           badges={
             <>
               <span className="badge-strong">{bullishCount} {copy(language, "bullish egilim", "bullish bias")}</span>
@@ -392,7 +392,7 @@ export default function Home({ language }: { language: AppLanguage }) {
                     onClick={() => setSelectedReportId(report.id)}
                     className={`min-w-[185px] shrink-0 rounded-xl border px-4 py-3 text-left transition-all duration-150 ${
                       active
-                        ? "border-indigo-400/45 bg-indigo-500/14 shadow-[0_0_18px_rgba(99,102,241,0.16)]"
+                        ? "border-sky-400/45 bg-sky-500/14 shadow-[0_0_18px_rgba(14,165,233,0.16)]"
                         : "border-border bg-card/80 hover:border-border hover:bg-[rgba(35,45,66,0.72)]"
                     }`}
                   >
@@ -443,7 +443,7 @@ export default function Home({ language }: { language: AppLanguage }) {
                 </span>
                 <span className="h-3 w-px bg-border" />
                 <span className="flex items-center gap-1.5">
-                  <Target className="size-3.5 text-indigo-300" />
+                  <Target className="size-3.5 text-sky-300" />
                   {copy(language, "Ort. CPR", "Avg CPR")} {avgCpr}
                 </span>
               </div>
@@ -463,11 +463,11 @@ export default function Home({ language }: { language: AppLanguage }) {
           }`}
         >
           <main ref={contentRef} className="min-w-0 space-y-6">
-            <section className="workspace-panel p-4 md:p-5">
+            <section className="workspace-panel p-4 md:p-6">
               {hasReports ? (
                 <div className="flex flex-col gap-4 border-b border-border pb-4 md:flex-row md:items-end md:justify-between">
                   <div className="space-y-2">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-indigo-300">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
                       {copy(language, "Secili rapor", "Selected report")}
                     </p>
                     <h2 className="heading-condensed text-2xl text-foreground md:text-3xl">
@@ -534,9 +534,9 @@ export default function Home({ language }: { language: AppLanguage }) {
                 })}
               </div>
 
-              <div className="mt-5 space-y-5">
+              <div className="mt-6 space-y-6">
                 {isTabPending ? (
-                  <div className="rounded-xl border border-indigo-500/18 bg-indigo-500/10 px-3 py-2 text-xs text-indigo-200">
+                  <div className="rounded-xl border border-sky-500/18 bg-sky-500/10 px-3 py-2 text-xs text-sky-200">
                     {copy(language, "Gorunum degisiyor...", "Switching view...")}
                   </div>
                 ) : null}
@@ -547,7 +547,7 @@ export default function Home({ language }: { language: AppLanguage }) {
 
           {sidebarOpen ? (
             <aside className="hidden min-w-0 space-y-6 xl:block">
-              <section className="workspace-panel p-5">
+              <section className="workspace-panel p-6">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
@@ -612,3 +612,5 @@ export default function Home({ language }: { language: AppLanguage }) {
     </div>
   );
 }
+
+

@@ -19,6 +19,7 @@ import { getScanTimingWarning } from "@/scanner/lib/momentum";
 import type { ScanResponse, StockResult } from "@/scanner/types";
 import { copy } from "@/lib/i18n";
 import type { AppLanguage } from "@/lib/i18n";
+import { Delta } from "@/components/ui/delta";
 import EnterpriseReport from "./EnterpriseReport";
 import OptionStrategyPanel from "./OptionStrategyPanel";
 
@@ -60,11 +61,11 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
   const [sortKey, setSortKey] = useState<keyof StockResult>("score");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
   const [error, setError] = useState<string | null>(null);
-  const [timingWarning, setTimingWarning] = useState<string | null>(getScanTimingWarning());
+  const [timingWarning, setTimingWarning] = useState<string | null>(getScanTimingWarning(lang));
 
   useEffect(() => {
-    setTimingWarning(getScanTimingWarning());
-    const interval = setInterval(() => setTimingWarning(getScanTimingWarning()), 60000);
+    setTimingWarning(getScanTimingWarning(lang));
+    const interval = setInterval(() => setTimingWarning(getScanTimingWarning(lang)), 60000);
     return () => clearInterval(interval);
   }, []);
 
@@ -119,11 +120,11 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
   };
 
   return (
-    <div className="space-y-6 p-5 lg:p-6">
+    <div className="space-y-6 p-6 lg:p-6">
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <h1 className="flex items-center gap-2 text-xl font-bold text-foreground">
-            <Radar className="h-5 w-5 text-indigo-300" />
+            <Radar className="h-5 w-5 text-sky-300" />
             {t("NASDAQ Momentum Tarama")}
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -144,7 +145,7 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
           <button
             onClick={handleScan}
             disabled={isScanning}
-            className="flex items-center gap-2 rounded-lg bg-indigo-500 px-6 py-2.5 font-semibold text-white transition-all hover:bg-indigo-400 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-lg bg-sky-500 px-6 py-2.5 font-semibold text-white transition-all hover:bg-sky-400 disabled:opacity-50"
           >
             {isScanning ? (
               <>
@@ -192,7 +193,7 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
                   onClick={() => setFilterSignal(signal)}
                   className={`rounded-lg border px-2.5 py-1 text-xs font-medium transition-all ${
                     filterSignal === signal
-                      ? "border-indigo-400/30 bg-indigo-500/15 text-indigo-200"
+                      ? "border-sky-400/30 bg-sky-500/15 text-sky-200"
                       : "border-border bg-background/70 text-muted-foreground hover:bg-[rgba(35,45,66,0.72)] hover:text-foreground"
                   }`}
                 >
@@ -207,7 +208,7 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
           <div className="space-y-2">
             <div className="h-2 w-full overflow-hidden rounded-full bg-background/80">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-sky-500 transition-all duration-300"
+                className="h-full rounded-full bg-gradient-to-r from-sky-500 to-sky-500 transition-all duration-300"
                 style={{
                   width: `${Math.min(100, (scanProgress.scanned / scanProgress.total) * 100)}%`,
                 }}
@@ -222,7 +223,7 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
         ) : null}
 
         {!isScanning && results.length === 0 && !error ? (
-          <div className="rounded-2xl border border-border bg-background/55 p-4">
+          <div className="rounded-xl border border-border bg-background/55 p-4">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-sm font-semibold text-foreground">
@@ -316,7 +317,7 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
                       </td>
                       <td className="px-3 py-3">
                         <span className={`inline-flex rounded border px-2 py-0.5 text-[10px] font-medium text-white ${signalBg(stock.signal)}`}>
-                          {signalLabel(stock.signal)}
+                          {signalLabel(stock.signal, lang)}
                         </span>
                         {stock.rsiWarning ? (
                           <span className="ml-2 text-[9px] font-medium text-red-400">
@@ -326,14 +327,7 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
                       </td>
                       <td className="px-3 py-3 text-sm text-foreground">${stock.currentPrice.toFixed(2)}</td>
                       <td className="px-3 py-3">
-                        <span
-                          className={`text-sm font-medium ${
-                            stock.priceChangePct >= 0 ? "text-emerald-400" : "text-red-400"
-                          }`}
-                        >
-                          {stock.priceChangePct >= 0 ? "+" : ""}
-                          {stock.priceChangePct.toFixed(2)}%
-                        </span>
+                        <Delta value={stock.priceChangePct} className="text-sm" />
                       </td>
                       <td className="px-3 py-3 text-sm text-muted-foreground">{stock.rsi.toFixed(1)}</td>
                       <td className="px-3 py-3 text-sm text-muted-foreground">{stock.volumeRatio.toFixed(2)}x</td>
@@ -395,14 +389,7 @@ function StockDetail({ stock, t, lang }: { stock: StockResult; t: (key: string) 
         </div>
         <div className="rounded-lg border border-border bg-background/55 p-3">
           <p className="text-[10px] text-muted-foreground">{t("Günlük Değişim")}</p>
-          <p
-            className={`text-sm font-bold ${
-              stock.priceChangePct >= 0 ? "text-emerald-400" : "text-red-400"
-            }`}
-          >
-            {stock.priceChangePct >= 0 ? "+" : ""}
-            {stock.priceChangePct.toFixed(2)}%
-          </p>
+          <Delta value={stock.priceChangePct} className="text-sm font-bold" />
         </div>
         <div className="rounded-lg border border-border bg-background/55 p-3">
           <p className="text-[10px] text-muted-foreground">ATR (14)</p>
@@ -462,3 +449,5 @@ function StockDetail({ stock, t, lang }: { stock: StockResult; t: (key: string) 
     </div>
   );
 }
+
+

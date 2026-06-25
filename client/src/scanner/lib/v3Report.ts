@@ -164,7 +164,8 @@ function buildSetupLayer(
 
 function buildPortfolioLayer(
   positions: RawPosition[],
-  nlv: number
+  nlv: number,
+  language: AppLanguage = "tr"
 ): PortfolioRisk {
   const posForRisk = positions.map((p) => ({
     ticker: p.ticker,
@@ -173,7 +174,7 @@ function buildPortfolioLayer(
     quantity: p.quantity,
   }));
 
-  return calculatePortfolioRisk(posForRisk, nlv);
+  return calculatePortfolioRisk(posForRisk, nlv, language);
 }
 
 // ─── KRİTİK ÖNCELİKLER ───
@@ -242,6 +243,7 @@ function buildPriorities(
 // ─── ANA RAPOR MOTORU ───
 
 export interface ReportInputs {
+  language?: AppLanguage;
   positions: RawPosition[];
   candidates: { ticker: string; score: number; price: number; atr: number; rsi: number; closePrices: number[]; highPrices: number[]; lowPrices: number[] }[];
   nlv: number; // Net Liquidation Value
@@ -278,7 +280,7 @@ export function generateV3Report(inputs: ReportInputs): v3Report {
   const newSetups = buildSetupLayer(inputs.candidates, ivCurves, inputs.nlv, regime);
 
   // 5. Katman 4: Portföy Sağlığı
-  const portfolioRisk = buildPortfolioLayer(inputs.positions, inputs.nlv);
+  const portfolioRisk = buildPortfolioLayer(inputs.positions, inputs.nlv, inputs.language);
 
   // 6. Kritik Öncelikler
   const priorities = buildPriorities(actions, portfolioRisk, regime);

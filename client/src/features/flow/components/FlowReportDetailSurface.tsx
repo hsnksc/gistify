@@ -167,14 +167,14 @@ export default function FlowReportDetailSurface({
         <div
           role="status"
           aria-live="polite"
-          className="rounded-[1.8rem] border border-border bg-card/75 px-5 py-6 text-sm text-muted-foreground"
+          className="rounded-xl border border-border bg-card/75 px-6 py-6 text-sm text-muted-foreground"
         >
           {copy(language, "Flow raporu yukleniyor.", "Loading flow report.")}
         </div>
       ) : !report ? (
         <div
           role="alert"
-          className="rounded-[1.8rem] border border-dashed border-border bg-card/75 px-5 py-6 text-sm text-muted-foreground"
+          className="rounded-xl border border-dashed border-border bg-card/75 px-6 py-6 text-sm text-muted-foreground"
         >
           {error ||
             copy(
@@ -189,3 +189,4 @@ export default function FlowReportDetailSurface({
     </FlowLayout>
   );
 }
+

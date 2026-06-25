@@ -430,8 +430,8 @@ function MomentumSignalCard({
         ? "bg-gradient-to-r from-rose-400 to-orange-300"
         : "bg-gradient-to-r from-amber-400 to-yellow-200";
   const cardClassName = compact
-    ? "rounded-[0.95rem] border p-2.5 shadow-[0_10px_28px_rgba(3,7,18,0.16)] transition-colors duration-200"
-    : "rounded-[1.1rem] border p-3 shadow-[0_12px_32px_rgba(3,7,18,0.18)] transition-colors duration-200";
+    ? "rounded-xl border p-2.5 shadow-[0_10px_28px_rgba(3,7,18,0.16)] transition-colors duration-200"
+    : "rounded-xl border p-3 shadow-[0_12px_32px_rgba(3,7,18,0.18)] transition-colors duration-200";
 
   return (
     <article className={`${cardClassName} ${toneClass}`}>
@@ -507,7 +507,7 @@ function MomentumSignalCard({
       </div>
 
       {signalChanged ? (
-        <div className="mt-3 flex items-center gap-2 rounded-lg border border-indigo-400/20 bg-indigo-500/10 px-2.5 py-1.5 text-[10px] text-indigo-100">
+        <div className="mt-3 flex items-center gap-2 rounded-lg border border-sky-400/20 bg-sky-500/10 px-2.5 py-1.5 text-[10px] text-sky-100">
           <ArrowRightLeft className="size-3.5" />
           <span>
             {copy(language, "Snapshot", "Snapshot")} {signalLabel(signal.signal, language)} - {copy(language, "Canli", "Live")} {signalLabel(signal.resolvedSignal, language)}
@@ -582,10 +582,10 @@ function MarketOverviewStrip({
   }
 
   return (
-    <section className="rounded-[1.25rem] border border-border bg-background/38 p-3.5">
+    <section className="rounded-xl border border-border bg-background/38 p-3.5">
       <div className="mb-3 flex items-center gap-2">
-        <BarChart3 className="size-4 text-indigo-300" />
-        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-indigo-200">
+        <BarChart3 className="size-4 text-sky-300" />
+        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-200">
           {copy(language, "Genis piyasa atimi", "Broad market pulse")}
         </p>
       </div>
@@ -602,7 +602,7 @@ function MarketOverviewStrip({
           return (
             <div
               key={ticker}
-              className="rounded-[1rem] border border-border/70 bg-background/70 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]"
+              className="rounded-xl border border-border/70 bg-background/70 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]"
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
@@ -646,7 +646,7 @@ function FlowMetricCard({
       : tone === "negative"
         ? "border-rose-500/18 bg-[linear-gradient(180deg,rgba(244,63,94,0.14),rgba(76,5,25,0.18))] text-rose-100"
         : tone === "shift"
-          ? "border-indigo-500/18 bg-[linear-gradient(180deg,rgba(99,102,241,0.14),rgba(30,27,75,0.18))] text-indigo-100"
+          ? "border-sky-500/18 bg-[linear-gradient(180deg,rgba(14,165,233,0.14),rgba(30,27,75,0.18))] text-sky-100"
           : "border-amber-500/18 bg-[linear-gradient(180deg,rgba(245,158,11,0.14),rgba(120,53,15,0.18))] text-amber-100";
   const iconClass =
     tone === "positive"
@@ -654,11 +654,11 @@ function FlowMetricCard({
       : tone === "negative"
         ? "text-rose-300"
         : tone === "shift"
-          ? "text-indigo-200"
+          ? "text-sky-200"
           : "text-amber-300";
 
   return (
-    <div className={`rounded-[1rem] border p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)] ${toneClass}`}>
+    <div className={`rounded-xl border p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)] ${toneClass}`}>
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-[9px] font-semibold uppercase tracking-[0.16em] opacity-80">
@@ -699,7 +699,7 @@ function HeroInsightCard({
       : tone === "negative"
         ? "border-rose-500/20 bg-[linear-gradient(180deg,rgba(244,63,94,0.10),rgba(76,5,25,0.24))] text-rose-50 hover:border-rose-400/28"
         : tone === "shift"
-          ? "border-indigo-500/20 bg-[linear-gradient(180deg,rgba(99,102,241,0.10),rgba(30,27,75,0.24))] text-indigo-50 hover:border-indigo-400/28"
+          ? "border-sky-500/20 bg-[linear-gradient(180deg,rgba(14,165,233,0.10),rgba(30,27,75,0.24))] text-sky-50 hover:border-sky-400/28"
           : "border-amber-500/20 bg-[linear-gradient(180deg,rgba(245,158,11,0.10),rgba(120,53,15,0.24))] text-amber-50 hover:border-amber-400/28";
   const accentClass =
     tone === "positive"
@@ -707,7 +707,7 @@ function HeroInsightCard({
       : tone === "negative"
         ? "from-rose-300 via-rose-400 to-orange-300"
         : tone === "shift"
-          ? "from-indigo-200 via-indigo-300 to-sky-300"
+          ? "from-sky-200 via-sky-300 to-sky-300"
           : "from-amber-200 via-amber-300 to-yellow-200";
   const labelClass =
     tone === "positive"
@@ -715,7 +715,7 @@ function HeroInsightCard({
       : tone === "negative"
         ? "text-rose-300/85"
         : tone === "shift"
-          ? "text-indigo-200/85"
+          ? "text-sky-200/85"
           : "text-amber-300/85";
   const detailClass =
     tone === "positive"
@@ -723,7 +723,7 @@ function HeroInsightCard({
       : tone === "negative"
         ? "text-rose-200"
         : tone === "shift"
-          ? "text-indigo-100"
+          ? "text-sky-100"
           : "text-amber-100";
   const glowClass =
     tone === "positive"
@@ -731,14 +731,14 @@ function HeroInsightCard({
       : tone === "negative"
         ? "bg-rose-400/16"
         : tone === "shift"
-          ? "bg-indigo-400/16"
+          ? "bg-sky-400/16"
           : "bg-amber-400/16";
 
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`group relative min-h-[128px] overflow-hidden rounded-[1.1rem] border p-3.5 text-left transition-all duration-200 hover:-translate-y-0.5 hover:bg-background/20 ${toneClass}`}
+      className={`group relative min-h-[128px] overflow-hidden rounded-xl border p-3.5 text-left transition-all duration-200 hover:-translate-y-0.5 hover:bg-background/20 ${toneClass}`}
     >
       <div className={`absolute inset-x-0 top-0 h-px bg-gradient-to-r ${accentClass}`} />
       <div className={`absolute -right-6 -top-8 h-20 w-20 rounded-full blur-2xl ${glowClass}`} />
@@ -932,7 +932,7 @@ export default function MomentumFlowSurface({
     return (
       <div className="workspace-card p-6">
         <div className="flex items-center gap-2">
-          <LineChart className="size-4 animate-pulse text-indigo-300" />
+          <LineChart className="size-4 animate-pulse text-sky-300" />
           <p className="text-sm text-foreground">{copy(language, "Momentum akisi yukleniyor...", "Loading momentum flow...")}</p>
         </div>
       </div>
@@ -1010,13 +1010,13 @@ export default function MomentumFlowSurface({
   ];
 
   return (
-    <div className="space-y-5">
-      <div className="rounded-[1.6rem] border border-border bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.14),transparent_24%),radial-gradient(circle_at_bottom_left,rgba(16,185,129,0.12),transparent_26%),linear-gradient(180deg,rgba(15,23,42,0.96),rgba(17,24,39,0.98))] p-4 shadow-[0_24px_80px_rgba(3,7,18,0.34)] md:p-5">
+    <div className="space-y-6">
+      <div className="rounded-xl border border-border bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.14),transparent_24%),radial-gradient(circle_at_bottom_left,rgba(16,185,129,0.12),transparent_26%),linear-gradient(180deg,rgba(15,23,42,0.96),rgba(17,24,39,0.98))] p-4 shadow-[0_24px_80px_rgba(3,7,18,0.34)] md:p-6">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <Activity className="size-4 text-indigo-300" />
-              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-indigo-200">
+              <Activity className="size-4 text-sky-300" />
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-200">
                 {copy(language, "Momentum komuta katmani", "Momentum command layer")}
               </p>
             </div>
@@ -1031,7 +1031,7 @@ export default function MomentumFlowSurface({
               {snapshotRefreshing ? <Loader2 className="size-4 animate-spin" /> : <RefreshCw className="size-4" />}
               {copy(language, "Kaynagi yenile", "Refresh source")}
             </button>
-            <button type="button" onClick={() => void runLiveRefresh(data.signals.map((signal) => signal.symbol))} disabled={liveLoading} className="inline-flex items-center justify-center gap-2 rounded-lg border border-indigo-400/30 bg-indigo-500/12 px-4 py-2 text-sm font-semibold text-indigo-100 transition-colors hover:bg-indigo-500/18 disabled:cursor-not-allowed disabled:opacity-60">
+            <button type="button" onClick={() => void runLiveRefresh(data.signals.map((signal) => signal.symbol))} disabled={liveLoading} className="inline-flex items-center justify-center gap-2 rounded-lg border border-sky-400/30 bg-sky-500/12 px-4 py-2 text-sm font-semibold text-sky-100 transition-colors hover:bg-sky-500/18 disabled:cursor-not-allowed disabled:opacity-60">
               {liveLoading ? <Loader2 className="size-4 animate-spin" /> : <Zap className="size-4" />}
               {copy(language, "Canli yeniden tara", "Run live rescore")}
             </button>
@@ -1050,7 +1050,7 @@ export default function MomentumFlowSurface({
         {liveLoading ? (
           <div className="mt-4 space-y-2">
             <div className="h-2 w-full overflow-hidden rounded-full bg-background/80">
-              <div className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-sky-500 transition-all duration-300" style={{ width: `${progressPct}%` }} />
+              <div className="h-full rounded-full bg-gradient-to-r from-sky-500 to-sky-500 transition-all duration-300" style={{ width: `${progressPct}%` }} />
             </div>
             <p className="text-xs text-muted-foreground">
               {scanProgress.current ? `${scanProgress.current} ${copy(language, "icin canli skor uretiliyor.", "is being rescored live.")}` : copy(language, "Momentum evreni canli yeniden skorlanuyor.", "The momentum universe is being rescored live.")}
@@ -1061,8 +1061,8 @@ export default function MomentumFlowSurface({
         {error ? <div className="mt-4 rounded-xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">{error}</div> : null}
         {liveError ? <div className="mt-4 rounded-xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">{liveError}</div> : null}
 
-        <div className="mt-5 grid gap-3 xl:grid-cols-[minmax(0,1.2fr)_minmax(300px,0.8fr)]">
-          <div className="rounded-[1.2rem] border border-border bg-background/38 p-3.5">
+        <div className="mt-6 grid gap-3 xl:grid-cols-[minmax(0,1.2fr)_minmax(300px,0.8fr)]">
+          <div className="rounded-xl border border-border bg-background/38 p-3.5">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">{copy(language, "Akis haritasi", "Flow map")}</p>
@@ -1193,14 +1193,14 @@ export default function MomentumFlowSurface({
         <MarketOverviewStrip language={language} marketOverview={data.market_overview} />
       ) : null}
 
-      <div className="sticky top-4 z-10 rounded-[1.25rem] border border-border bg-background/75 p-1.5 shadow-[0_18px_48px_rgba(3,7,18,0.24)] backdrop-blur">
+      <div className="sticky top-4 z-10 rounded-xl border border-border bg-background/75 p-1.5 shadow-[0_18px_48px_rgba(3,7,18,0.24)] backdrop-blur">
         <div className="flex flex-wrap items-center gap-1.5">
           {viewButtons.map((button) => {
             const active = surfaceMode === button.id;
             const Icon = button.icon;
 
             return (
-              <button key={button.id} type="button" onClick={() => setSurfaceMode(button.id)} className={`inline-flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold transition-colors ${active ? "bg-indigo-500/18 text-indigo-100 shadow-[0_0_0_1px_rgba(99,102,241,0.18)]" : "text-muted-foreground hover:bg-background/70 hover:text-foreground"}`}>
+              <button key={button.id} type="button" onClick={() => setSurfaceMode(button.id)} className={`inline-flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold transition-colors ${active ? "bg-sky-500/18 text-sky-100 shadow-[0_0_0_1px_rgba(14,165,233,0.18)]" : "text-muted-foreground hover:bg-background/70 hover:text-foreground"}`}>
                 <Icon className="size-3.5" />
                 {button.label}
                 <span className="data-mono rounded-full bg-background/60 px-1.5 py-0.5 text-[10px]">{button.count}</span>
@@ -1216,21 +1216,21 @@ export default function MomentumFlowSurface({
       </div>
 
       {showShiftSection ? (
-        <section className="rounded-[1.4rem] border border-indigo-400/18 bg-[linear-gradient(180deg,rgba(99,102,241,0.10),rgba(15,23,42,0.86))] p-4">
+        <section className="rounded-xl border border-sky-400/18 bg-[linear-gradient(180deg,rgba(14,165,233,0.10),rgba(15,23,42,0.86))] p-4">
           <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <ArrowRightLeft className="size-4 text-indigo-200" />
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-indigo-200">{copy(language, "Sinyal kaymalari", "Signal shifts")}</p>
+                <ArrowRightLeft className="size-4 text-sky-200" />
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-200">{copy(language, "Sinyal kaymalari", "Signal shifts")}</p>
               </div>
-              <h3 className="heading-condensed text-2xl text-indigo-50">{copy(language, "Canli motorun revize ettigi isimler", "Names revised by the live engine")}</h3>
-              <p className="max-w-3xl text-sm leading-7 text-indigo-50/78">
+              <h3 className="heading-condensed text-2xl text-sky-50">{copy(language, "Canli motorun revize ettigi isimler", "Names revised by the live engine")}</h3>
+              <p className="max-w-3xl text-sm leading-7 text-sky-50/78">
                 {copy(language, "Snapshot ile canli motor ayni yone bakmiyorsa, once bu blok okunmali. Burasi en kritik rejim degisimlerini biriktirir.", "If the snapshot and the live engine disagree, this block should be read first. It collects the most important regime shifts.")}
               </p>
             </div>
 
             {surfaceMode === "overview" && orderedChangedSignals.length > MAX_OVERVIEW_SHIFTS ? (
-              <button type="button" onClick={() => setSurfaceMode("shifts")} className="inline-flex items-center gap-2 rounded-lg border border-indigo-400/20 bg-background/35 px-3 py-2 text-xs font-semibold text-indigo-100 transition-colors hover:bg-background/50">
+              <button type="button" onClick={() => setSurfaceMode("shifts")} className="inline-flex items-center gap-2 rounded-lg border border-sky-400/20 bg-background/35 px-3 py-2 text-xs font-semibold text-sky-100 transition-colors hover:bg-background/50">
                 {copy(language, "Tum kaymalari ac", "Open all shifts")}
               </button>
             ) : null}
@@ -1239,18 +1239,18 @@ export default function MomentumFlowSurface({
           {visibleChangedSignals.length > 0 ? (
             <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
               {visibleChangedSignals.map((signal) => (
-                <div key={signal.symbol} className="rounded-2xl border border-indigo-400/18 bg-background/35 p-4">
+                <div key={signal.symbol} className="rounded-xl border border-sky-400/18 bg-background/35 p-4">
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <p className="heading-condensed text-xl text-indigo-50">{signal.symbol}</p>
-                      <p className="mt-1 text-xs text-indigo-50/72">{signal.headline}</p>
+                      <p className="heading-condensed text-xl text-sky-50">{signal.symbol}</p>
+                      <p className="mt-1 text-xs text-sky-50/72">{signal.headline}</p>
                     </div>
-                    <ArrowRightLeft className="size-4 text-indigo-200" />
+                    <ArrowRightLeft className="size-4 text-sky-200" />
                   </div>
 
                   <div className="mt-4 flex flex-wrap gap-2 text-[11px]">
                     <span className="rounded-full border border-border bg-background/55 px-2.5 py-1 text-muted-foreground">{copy(language, "Snapshot", "Snapshot")}: {signalLabel(signal.signal, language)}</span>
-                    <span className="rounded-full border border-indigo-400/18 bg-indigo-500/10 px-2.5 py-1 text-indigo-100">{copy(language, "Canli", "Live")}: {signalLabel(signal.resolvedSignal, language)}</span>
+                    <span className="rounded-full border border-sky-400/18 bg-sky-500/10 px-2.5 py-1 text-sky-100">{copy(language, "Canli", "Live")}: {signalLabel(signal.resolvedSignal, language)}</span>
                   </div>
 
                   <div className="mt-4 flex flex-wrap gap-2 text-[11px]">
@@ -1261,7 +1261,7 @@ export default function MomentumFlowSurface({
               ))}
             </div>
           ) : (
-            <div className="mt-4 rounded-2xl border border-dashed border-indigo-400/18 bg-background/30 p-6 text-sm text-indigo-50/78">
+            <div className="mt-4 rounded-xl border border-dashed border-sky-400/18 bg-background/30 p-6 text-sm text-sky-50/78">
               {copy(language, "Su an snapshot ile canli motor ayni yone bakiyor; dikkat edilmesi gereken acik bir sinyal kaymasi yok.", "The snapshot and the live engine are aligned right now, so there is no meaningful signal shift to escalate.")}
             </div>
           )}
@@ -1270,7 +1270,7 @@ export default function MomentumFlowSurface({
 
       {showNeutralSection ? (
         <section className="space-y-4">
-          <div className="flex items-start justify-between gap-3 rounded-[1.2rem] border border-amber-500/20 bg-[linear-gradient(180deg,rgba(245,158,11,0.10),rgba(15,23,42,0.86))] p-3.5">
+          <div className="flex items-start justify-between gap-3 rounded-xl border border-amber-500/20 bg-[linear-gradient(180deg,rgba(245,158,11,0.10),rgba(15,23,42,0.86))] p-3.5">
             <div className="flex items-start gap-3">
               <LineChart className="mt-0.5 size-4 text-amber-300" />
               <div>
@@ -1297,7 +1297,7 @@ export default function MomentumFlowSurface({
               ))}
             </div>
           ) : (
-            <div className="rounded-2xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">{copy(language, "Su an neutral watchlist'e giren isim yok.", "There are no names in the neutral watchlist right now.")}</div>
+            <div className="rounded-xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">{copy(language, "Su an neutral watchlist'e giren isim yok.", "There are no names in the neutral watchlist right now.")}</div>
           )}
 
           {surfaceMode === "overview" && neutralSignals.length > MAX_OVERVIEW_NEUTRALS ? (
@@ -1311,7 +1311,7 @@ export default function MomentumFlowSurface({
       <div className={`grid gap-4 ${showPositiveSection && showNegativeSection ? "xl:grid-cols-2" : ""}`}>
         {showPositiveSection ? (
           <section className="space-y-4">
-            <div className="flex items-start justify-between gap-3 rounded-[1.2rem] border border-emerald-500/20 bg-[linear-gradient(180deg,rgba(16,185,129,0.10),rgba(15,23,42,0.86))] p-3.5">
+            <div className="flex items-start justify-between gap-3 rounded-xl border border-emerald-500/20 bg-[linear-gradient(180deg,rgba(16,185,129,0.10),rgba(15,23,42,0.86))] p-3.5">
               <div className="flex items-start gap-3">
                 <TrendingUp className="mt-0.5 size-4 text-emerald-300" />
                 <div>
@@ -1338,7 +1338,7 @@ export default function MomentumFlowSurface({
                 ))}
               </div>
             ) : (
-              <div className="rounded-2xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">{copy(language, "Su an pozitif momentum listesine giren isim yok.", "There are no names in the positive momentum list right now.")}</div>
+              <div className="rounded-xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">{copy(language, "Su an pozitif momentum listesine giren isim yok.", "There are no names in the positive momentum list right now.")}</div>
             )}
 
             {surfaceMode === "overview" && positiveSignals.length > MAX_OVERVIEW_SIGNALS ? (
@@ -1351,7 +1351,7 @@ export default function MomentumFlowSurface({
 
         {showNegativeSection ? (
           <section className="space-y-4">
-            <div className="flex items-start justify-between gap-3 rounded-[1.2rem] border border-rose-500/20 bg-[linear-gradient(180deg,rgba(244,63,94,0.10),rgba(15,23,42,0.86))] p-3.5">
+            <div className="flex items-start justify-between gap-3 rounded-xl border border-rose-500/20 bg-[linear-gradient(180deg,rgba(244,63,94,0.10),rgba(15,23,42,0.86))] p-3.5">
               <div className="flex items-start gap-3">
                 <ShieldAlert className="mt-0.5 size-4 text-rose-300" />
                 <div>
@@ -1378,7 +1378,7 @@ export default function MomentumFlowSurface({
                 ))}
               </div>
             ) : (
-              <div className="rounded-2xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">{copy(language, "Su an negatif momentum listesine giren isim yok.", "There are no names in the negative momentum list right now.")}</div>
+              <div className="rounded-xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">{copy(language, "Su an negatif momentum listesine giren isim yok.", "There are no names in the negative momentum list right now.")}</div>
             )}
 
             {surfaceMode === "overview" && negativeSignals.length > MAX_OVERVIEW_SIGNALS ? (
@@ -1398,3 +1398,5 @@ export default function MomentumFlowSurface({
     </div>
   );
 }
+
+

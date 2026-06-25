@@ -132,14 +132,14 @@ function ReportSelectorCard({
     <button
       type="button"
       onClick={() => onSelect(report.id)}
-      className={`min-w-[220px] rounded-2xl border px-4 py-3 text-left transition-all ${
+      className={`min-w-[220px] rounded-xl border px-4 py-3 text-left transition-all ${
         active
-          ? "border-indigo-400/45 bg-indigo-500/14 shadow-[0_0_18px_rgba(99,102,241,0.14)]"
+          ? "border-sky-400/45 bg-sky-500/14 shadow-[0_0_18px_rgba(14,165,233,0.14)]"
           : "border-border bg-background/45 hover:bg-background/70"
       }`}
     >
       <div className="flex items-center justify-between gap-3">
-        <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-indigo-300">
+        <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-sky-300">
           {formatReportDate(report.reportDate, locale)}
         </span>
         <span className="text-[11px] text-muted-foreground">
@@ -231,11 +231,11 @@ export default function DailyReportPage({
     <div className="min-h-screen bg-background">
       <div className="container py-6 md:py-8">
         <section className="workspace-panel overflow-hidden">
-          <div className="px-5 py-5 md:px-6 md:py-6">
-            <div className="flex flex-col gap-5">
+          <div className="px-6 py-6 md:px-6 md:py-6">
+            <div className="flex flex-col gap-6">
               <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
                 <div className="space-y-2">
-                  <p className="heading-condensed text-sm uppercase tracking-[0.18em] text-indigo-300">
+                  <p className="heading-condensed text-sm uppercase tracking-[0.18em] text-sky-300">
                     Daily Report
                   </p>
                   <h1 className="heading-condensed text-3xl leading-none text-foreground md:text-5xl">
@@ -262,7 +262,7 @@ export default function DailyReportPage({
               {reports.length ? (
                 <>
                   <div className="grid gap-4 xl:grid-cols-[320px_minmax(0,1fr)]">
-                    <div className="rounded-[1.75rem] border border-border bg-background/45 p-4">
+                    <div className="rounded-xl border border-border bg-background/45 p-4">
                       <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
                         {copy(language, "En Guncel", "Latest")}
                       </p>
@@ -277,7 +277,7 @@ export default function DailyReportPage({
                       </p>
                     </div>
 
-                    <div className="space-y-3 rounded-[1.75rem] border border-border bg-background/45 p-4">
+                    <div className="space-y-3 rounded-xl border border-border bg-background/45 p-4">
                       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                           {copy(language, "Gunluk Rapor Secimi", "Daily report selection")}
@@ -367,11 +367,11 @@ export default function DailyReportPage({
         </section>
 
         <section className="mt-6 workspace-panel min-w-0 overflow-hidden">
-          <div className="border-b border-border px-5 py-4 md:px-6">
+          <div className="border-b border-border px-6 py-4 md:px-6">
             <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
               <div className="space-y-2">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="rounded-full border border-indigo-500/25 bg-indigo-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-indigo-300">
+                  <span className="rounded-full border border-sky-500/25 bg-sky-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
                     Daily intelligence
                   </span>
                   {selectedStats?.aiFigures ? (
@@ -441,3 +441,5 @@ export default function DailyReportPage({
     </div>
   );
 }
+
+

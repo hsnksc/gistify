@@ -66,13 +66,13 @@ export function formatRecommendationLabel(
 
 export function getRecommendationTone(recommendation: ReportRecommendation) {
   if (recommendation === "BUY") {
-    return "border-emerald-400/30 bg-emerald-500/10 text-emerald-300";
+    return "tone-bull";
   }
   if (recommendation === "HOLD") {
-    return "border-amber-400/30 bg-amber-500/10 text-amber-300";
+    return "tone-caution";
   }
   if (recommendation === "SELL") {
-    return "border-red-400/30 bg-red-500/10 text-red-300";
+    return "tone-bear";
   }
   return "border-border bg-background/60 text-muted-foreground";
 }

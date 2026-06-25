@@ -484,7 +484,7 @@ function MomentumSignalCard({
         : "bg-gradient-to-r from-amber-400 to-yellow-200";
 
   return (
-    <article className={`rounded-[1.35rem] border p-4 shadow-[0_18px_48px_rgba(3,7,18,0.22)] transition-transform duration-200 hover:-translate-y-0.5 ${toneClass}`}>
+    <article className={`rounded-xl border p-4 shadow-[0_18px_48px_rgba(3,7,18,0.22)] transition-transform duration-200 hover:-translate-y-0.5 ${toneClass}`}>
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
@@ -523,7 +523,7 @@ function MomentumSignalCard({
       {(signal.setup_type || signal.direction || signal.conviction_tier) ? (
         <div className="mt-2 flex flex-wrap gap-2">
           {signal.setup_type ? (
-            <span className="rounded-full border border-indigo-400/25 bg-indigo-500/10 px-2 py-0.5 text-[10px] font-medium text-indigo-200">
+            <span className="rounded-full border border-sky-400/25 bg-sky-500/10 px-2 py-0.5 text-[10px] font-medium text-sky-200">
               {signal.setup_type}
             </span>
           ) : null}
@@ -605,7 +605,7 @@ function MomentumSignalCard({
       </div>
 
       {signalChanged ? (
-        <div className="mt-4 flex items-center gap-2 rounded-xl border border-indigo-400/20 bg-indigo-500/10 px-3 py-2 text-[11px] text-indigo-100">
+        <div className="mt-4 flex items-center gap-2 rounded-xl border border-sky-400/20 bg-sky-500/10 px-3 py-2 text-[11px] text-sky-100">
           <ArrowRightLeft className="size-3.5" />
           <span>
             {copy(language, "Snapshot", "Snapshot")} {signalLabel(signal.signal, language)} -{" "}
@@ -627,7 +627,7 @@ function MomentumSignalCard({
 
       <div className="mt-4 flex flex-wrap gap-2">
         {signal.setup_type ? (
-          <span className="rounded-full border border-indigo-400/25 bg-indigo-500/10 px-2 py-0.5 text-[10px] font-medium text-indigo-200">
+          <span className="rounded-full border border-sky-400/25 bg-sky-500/10 px-2 py-0.5 text-[10px] font-medium text-sky-200">
             {signal.setup_type}
           </span>
         ) : null}
@@ -678,7 +678,7 @@ function MomentumSignalCard({
                 <span className="w-5 text-[10px] font-medium text-muted-foreground">{f.label}</span>
                 <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-background/75">
                   <div
-                    className="h-full rounded-full bg-indigo-400"
+                    className="h-full rounded-full bg-sky-400"
                     style={{ width: `${Math.max(0, Math.min(100, score))}%` }}
                   />
                 </div>
@@ -989,7 +989,7 @@ export default function MidasOpportunitiesTab({
     return (
       <div className="workspace-card p-6">
         <div className="flex items-center gap-2">
-          <LineChart className="size-4 animate-pulse text-indigo-300" />
+          <LineChart className="size-4 animate-pulse text-sky-300" />
           <p className="text-sm text-foreground">
             {copy(language, "Momentum akisi yukleniyor...", "Loading momentum flow...")}
           </p>
@@ -1030,13 +1030,13 @@ export default function MidasOpportunitiesTab({
       : 0;
 
   return (
-    <div className="space-y-5">
-      <div className="rounded-2xl border border-border bg-background/45 p-4 md:p-5">
+    <div className="space-y-6">
+      <div className="rounded-xl border border-border bg-background/45 p-4 md:p-6">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <Activity className="size-4 text-indigo-300" />
-              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-indigo-200">
+              <Activity className="size-4 text-sky-300" />
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-200">
                 {copy(language, "Canli momentum orkestra", "Live momentum orchestration")}
               </p>
             </div>
@@ -1067,7 +1067,7 @@ export default function MidasOpportunitiesTab({
               type="button"
               onClick={() => void runLiveRefresh(data.signals.map((signal) => signal.symbol))}
               disabled={liveLoading}
-              className="inline-flex items-center justify-center gap-2 rounded-lg border border-indigo-400/30 bg-indigo-500/12 px-4 py-2 text-sm font-semibold text-indigo-100 transition-colors hover:bg-indigo-500/18 disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex items-center justify-center gap-2 rounded-lg border border-sky-400/30 bg-sky-500/12 px-4 py-2 text-sm font-semibold text-sky-100 transition-colors hover:bg-sky-500/18 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {liveLoading ? <Loader2 className="size-4 animate-spin" /> : <Zap className="size-4" />}
               {copy(language, "Canli yeniden tara", "Run live rescore")}
@@ -1108,7 +1108,7 @@ export default function MidasOpportunitiesTab({
           <div className="mt-4 space-y-2">
             <div className="h-2 w-full overflow-hidden rounded-full bg-background/80">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-sky-500 transition-all duration-300"
+                className="h-full rounded-full bg-gradient-to-r from-sky-500 to-sky-500 transition-all duration-300"
                 style={{ width: `${progressPct}%` }}
               />
             </div>
@@ -1155,11 +1155,11 @@ export default function MidasOpportunitiesTab({
             </p>
             <p className="heading-condensed mt-1 text-2xl text-amber-100">{neutralCount}</p>
           </div>
-          <div className="rounded-xl border border-indigo-500/20 bg-indigo-500/10 p-3">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-indigo-200">
+          <div className="rounded-xl border border-sky-500/20 bg-sky-500/10 p-3">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-sky-200">
               {copy(language, "Sinyal degisenler", "Signal shifts")}
             </p>
-            <p className="heading-condensed mt-1 text-2xl text-indigo-100">
+            <p className="heading-condensed mt-1 text-2xl text-sky-100">
               {changedSignals.length}
             </p>
           </div>
@@ -1177,9 +1177,9 @@ export default function MidasOpportunitiesTab({
       </div>
 
       {data?.market_overview ? (
-        <section className="rounded-2xl border border-border/60 bg-background/55 p-4">
+        <section className="rounded-xl border border-border/60 bg-background/55 p-4">
           <div className="flex items-center gap-2 mb-3">
-            <BarChart3 className="size-4 text-indigo-300" />
+            <BarChart3 className="size-4 text-sky-300" />
             <p className="text-sm font-semibold text-foreground">
               {copy(language, "Genel Piyasa", "Broad Market")}
             </p>
@@ -1211,10 +1211,10 @@ export default function MidasOpportunitiesTab({
       ) : null}
 
       {changedSignals.length > 0 ? (
-        <section className="rounded-2xl border border-indigo-400/18 bg-indigo-500/10 p-4">
+        <section className="rounded-xl border border-sky-400/18 bg-sky-500/10 p-4">
           <div className="flex items-center gap-2">
-            <ArrowRightLeft className="size-4 text-indigo-200" />
-            <p className="text-sm font-semibold text-indigo-100">
+            <ArrowRightLeft className="size-4 text-sky-200" />
+            <p className="text-sm font-semibold text-sky-100">
               {copy(language, "Canli motorun revize ettigi isimler", "Names revised by the live engine")}
             </p>
           </div>
@@ -1222,7 +1222,7 @@ export default function MidasOpportunitiesTab({
             {changedSignals.slice(0, 10).map((signal) => (
               <span
                 key={signal.symbol}
-                className="rounded-full border border-indigo-400/18 bg-background/35 px-3 py-1 text-[11px] text-indigo-100"
+                className="rounded-full border border-sky-400/18 bg-background/35 px-3 py-1 text-[11px] text-sky-100"
               >
                 {signal.symbol}: {signalLabel(signal.signal, language)} -{" "}
                 {signalLabel(signal.resolvedSignal, language)}
@@ -1232,9 +1232,9 @@ export default function MidasOpportunitiesTab({
         </section>
       ) : null}
 
-      <div className="grid gap-5 xl:grid-cols-2">
+      <div className="grid gap-6 xl:grid-cols-2">
         <section className="space-y-4">
-          <div className="flex items-start gap-3 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.07] p-4">
+          <div className="flex items-start gap-3 rounded-xl border border-emerald-500/20 bg-emerald-500/[0.07] p-4">
             <TrendingUp className="mt-0.5 size-5 text-emerald-300" />
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300/80">
@@ -1263,7 +1263,7 @@ export default function MidasOpportunitiesTab({
               />
             ))
           ) : (
-            <div className="rounded-2xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">
+            <div className="rounded-xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">
               {copy(
                 language,
                 "Su an pozitif momentum listesine giren isim yok.",
@@ -1274,7 +1274,7 @@ export default function MidasOpportunitiesTab({
         </section>
 
         <section className="space-y-4">
-          <div className="flex items-start gap-3 rounded-2xl border border-rose-500/20 bg-rose-500/[0.07] p-4">
+          <div className="flex items-start gap-3 rounded-xl border border-rose-500/20 bg-rose-500/[0.07] p-4">
             <ShieldAlert className="mt-0.5 size-5 text-rose-300" />
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-rose-300/80">
@@ -1303,7 +1303,7 @@ export default function MidasOpportunitiesTab({
               />
             ))
           ) : (
-            <div className="rounded-2xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">
+            <div className="rounded-xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">
               {copy(
                 language,
                 "Su an negatif momentum listesine giren isim yok.",
@@ -1325,13 +1325,13 @@ export default function MidasOpportunitiesTab({
   );
 
   return (
-    <div className="space-y-5">
-      <div className="workspace-card rounded-xl border border-border bg-background/45 p-4 md:p-5">
+    <div className="space-y-6">
+      <div className="workspace-card rounded-xl border border-border bg-background/45 p-4 md:p-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <Activity className="size-4 text-indigo-300" />
-              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-indigo-200">
+              <Activity className="size-4 text-sky-300" />
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-200">
                 {copy(language, "Canli Kimi Signal Engine", "Live Kimi Signal Engine")}
               </p>
             </div>
@@ -1348,7 +1348,7 @@ export default function MidasOpportunitiesTab({
             type="button"
             onClick={() => void runLiveRefresh(data.signals.map((signal) => signal.symbol))}
             disabled={liveLoading}
-            className="inline-flex items-center justify-center gap-2 rounded-lg border border-indigo-400/30 bg-indigo-500/12 px-4 py-2 text-sm font-semibold text-indigo-100 transition-all hover:bg-indigo-500/18 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center justify-center gap-2 rounded-lg border border-sky-400/30 bg-sky-500/12 px-4 py-2 text-sm font-semibold text-sky-100 transition-all hover:bg-sky-500/18 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {liveLoading ? <Loader2 className="size-4 animate-spin" /> : <RefreshCw className="size-4" />}
             {liveLoading
@@ -1376,7 +1376,7 @@ export default function MidasOpportunitiesTab({
           <div className="mt-4 space-y-2">
             <div className="h-2 w-full overflow-hidden rounded-full bg-background/80">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-sky-500 transition-all duration-300"
+                className="h-full rounded-full bg-gradient-to-r from-sky-500 to-sky-500 transition-all duration-300"
                 style={{ width: `${progressPct}%` }}
               />
             </div>
@@ -1523,7 +1523,7 @@ export default function MidasOpportunitiesTab({
           return (
             <div
               key={signal.symbol}
-              className="workspace-card group relative overflow-hidden rounded-xl border border-border bg-card/80 p-4 transition-all hover:border-indigo-400/30 hover:bg-[rgba(35,45,66,0.85)]"
+              className="workspace-card group relative overflow-hidden rounded-xl border border-border bg-card/80 p-4 transition-all hover:border-sky-400/30 hover:bg-[rgba(35,45,66,0.85)]"
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
@@ -1542,7 +1542,7 @@ export default function MidasOpportunitiesTab({
               {(signal.setup_type || signal.direction || signal.conviction_tier) ? (
                 <div className="mt-2 flex flex-wrap gap-1.5">
                   {signal.setup_type ? (
-                    <span className="rounded-full border border-indigo-400/25 bg-indigo-500/10 px-2 py-0.5 text-[10px] font-medium text-indigo-200">
+                    <span className="rounded-full border border-sky-400/25 bg-sky-500/10 px-2 py-0.5 text-[10px] font-medium text-sky-200">
                       {signal.setup_type}
                     </span>
                   ) : null}
@@ -1574,14 +1574,14 @@ export default function MidasOpportunitiesTab({
                   Snapshot {signalLabel(signal.signal, language)}
                 </span>
                 {signal.live ? (
-                  <span className="rounded-full border border-indigo-400/25 bg-indigo-500/10 px-2 py-0.5 text-[10px] font-medium text-indigo-200">
+                  <span className="rounded-full border border-sky-400/25 bg-sky-500/10 px-2 py-0.5 text-[10px] font-medium text-sky-200">
                     {copy(language, "Scanner", "Scanner")}: {scannerSignalLabel(signal.live.scannerSignal, language)}
                   </span>
                 ) : null}
               </div>
 
               {signalChanged ? (
-                <div className="mt-3 rounded-lg border border-indigo-400/18 bg-indigo-500/10 px-3 py-2 text-[11px] text-indigo-100">
+                <div className="mt-3 rounded-lg border border-sky-400/18 bg-sky-500/10 px-3 py-2 text-[11px] text-sky-100">
                   {copy(language, "Snapshot", "Snapshot")} {signalLabel(signal.signal, language)} →{" "}
                   {copy(language, "Canli", "Live")} {signalLabel(signal.resolvedSignal, language)}
                 </div>
@@ -1681,7 +1681,7 @@ export default function MidasOpportunitiesTab({
                         <span className="w-4 text-[10px] font-medium text-muted-foreground">{f.label}</span>
                         <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-border/60">
                           <div
-                            className="h-full rounded-full bg-indigo-400"
+                            className="h-full rounded-full bg-sky-400"
                             style={{ width: `${Math.max(0, Math.min(100, score))}%` }}
                           />
                         </div>
@@ -1792,3 +1792,5 @@ export default function MidasOpportunitiesTab({
     </div>
   );
 }
+
+

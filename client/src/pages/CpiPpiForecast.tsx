@@ -315,7 +315,7 @@ function ReleaseCard({
   const theme = WORKSPACE_THEME[slotKey];
 
   return (
-    <article className={cn("rounded-2xl border p-3", theme.softCardClassName)}>
+    <article className={cn("rounded-xl border p-3", theme.softCardClassName)}>
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <p
@@ -485,7 +485,7 @@ function SimpleListCard({
       : theme.softCardClassName;
 
   return (
-    <section className={cn("rounded-2xl border p-2", panelClassName)}>
+    <section className={cn("rounded-xl border p-2", panelClassName)}>
       <div className="flex items-center gap-1.5">
         <Icon className={`size-3.5 ${accentClassName}`} />
         <h3 className="heading-condensed text-sm text-foreground">{title}</h3>
@@ -522,7 +522,7 @@ function WatchlistCard({
   const theme = WORKSPACE_THEME[slotKey];
 
   return (
-    <section className={cn("rounded-2xl border p-2", theme.softCardClassName)}>
+    <section className={cn("rounded-xl border p-2", theme.softCardClassName)}>
       <div className="flex items-center gap-1.5">
         <Target className={`size-3.5 ${theme.eyebrowClassName}`} />
         <h3 className="heading-condensed text-sm text-foreground">
@@ -574,7 +574,7 @@ function PlaybookTable({
   const theme = WORKSPACE_THEME[slotKey];
 
   return (
-    <section className={cn("rounded-2xl border p-2", theme.softCardClassName)}>
+    <section className={cn("rounded-xl border p-2", theme.softCardClassName)}>
       <div className="flex items-center gap-1.5">
         <Activity className={`size-3.5 ${theme.eyebrowClassName}`} />
         <h3 className="heading-condensed text-sm text-foreground">
@@ -656,7 +656,7 @@ function PipelineCard({
   const theme = WORKSPACE_THEME[slotKey];
 
   return (
-    <article className={cn("rounded-2xl border p-2.5", theme.softCardClassName)}>
+    <article className={cn("rounded-xl border p-2.5", theme.softCardClassName)}>
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <p
@@ -719,8 +719,8 @@ function MissingWorkspacePanel({
   const descriptor = workspaceDescriptor(slotKey, language);
 
   return (
-    <section className={cn("rounded-[1.8rem] border p-[1px]", theme.shellClassName)}>
-      <div className={cn("relative rounded-[1.75rem] p-2.5", theme.innerClassName)}>
+    <section className={cn("rounded-xl border p-[1px]", theme.shellClassName)}>
+      <div className={cn("relative rounded-xl p-2.5", theme.innerClassName)}>
         <div
           className={cn(
             "pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b",
@@ -784,7 +784,7 @@ function MissingWorkspacePanel({
             />
           </div>
 
-          <div className={cn("rounded-2xl border p-2.5", theme.softCardClassName)}>
+          <div className={cn("rounded-xl border p-2.5", theme.softCardClassName)}>
             <div className="flex items-center gap-1.5">
               <Database className={`size-3.5 ${theme.iconClassName}`} />
               <h3 className="heading-condensed text-sm text-foreground">
@@ -841,8 +841,8 @@ function ForecastWorkspaceSection({
   const descriptor = workspaceDescriptor(slotKey, language);
 
   return (
-    <section className={cn("rounded-[1.8rem] border p-[1px]", theme.shellClassName)}>
-      <div className={cn("relative rounded-[1.75rem] p-2.5", theme.innerClassName)}>
+    <section className={cn("rounded-xl border p-[1px]", theme.shellClassName)}>
+      <div className={cn("relative rounded-xl p-2.5", theme.innerClassName)}>
         <div
           className={cn(
             "pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b",
@@ -894,7 +894,7 @@ function ForecastWorkspaceSection({
             </div>
           </div>
 
-          <div className={cn("rounded-2xl border p-3", theme.cardClassName)}>
+          <div className={cn("rounded-xl border p-3", theme.cardClassName)}>
             <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
               {copy(language, "Ana tahmin", "Lead forecast")}
             </p>
@@ -948,7 +948,7 @@ function ForecastWorkspaceSection({
                 slotKey={slotKey}
               />
 
-              <section className={cn("rounded-2xl border p-2", theme.softCardClassName)}>
+              <section className={cn("rounded-xl border p-2", theme.softCardClassName)}>
                 <div className="flex items-center gap-1.5">
                   <Sparkles className={`size-3.5 ${theme.eyebrowClassName}`} />
                   <h3 className="heading-condensed text-sm text-foreground">
@@ -1154,8 +1154,8 @@ export default function CpiPpiForecastPage({
   return (
     <div className="min-h-screen bg-background">
       <div className="container py-3 md:py-4">
-        <section className="shrink-0 overflow-hidden rounded-2xl border border-border bg-[linear-gradient(180deg,rgba(7,11,20,0.98),rgba(7,10,18,1))] shadow-[0_24px_80px_rgba(0,0,0,0.32)]">
-          <div className="relative px-4 py-2.5 md:px-5 md:py-3">
+        <section className="shrink-0 overflow-hidden rounded-xl border border-border bg-[linear-gradient(180deg,rgba(7,11,20,0.98),rgba(7,10,18,1))] shadow-[0_24px_80px_rgba(0,0,0,0.32)]">
+          <div className="relative px-4 py-2.5 md:px-6 md:py-3">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.12),transparent_28%),radial-gradient(circle_at_top_right,rgba(245,158,11,0.14),transparent_28%),radial-gradient(circle_at_bottom_center,rgba(16,185,129,0.08),transparent_26%)]" />
             <div className="relative grid gap-4 lg:grid-cols-[minmax(0,1.15fr)_400px]">
               <div className="space-y-2">
@@ -1179,7 +1179,7 @@ export default function CpiPpiForecastPage({
                 </div>
 
                 <div className="space-y-1.5">
-                  <p className="heading-condensed text-xs uppercase tracking-[0.18em] text-indigo-300">
+                  <p className="heading-condensed text-xs uppercase tracking-[0.18em] text-sky-300">
                     {copy(language, "TÜFE / ÜFE Tahmini", "CPI / PPI Forecast")}
                   </p>
                   <h1 className="heading-condensed max-w-4xl text-xl leading-none text-foreground md:text-2xl">
@@ -1265,7 +1265,7 @@ export default function CpiPpiForecastPage({
         </section>
 
         {error ? (
-          <div className="mt-5 rounded-xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+          <div className="mt-6 rounded-xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
             {error}
           </div>
         ) : null}
@@ -1293,3 +1293,5 @@ export default function CpiPpiForecastPage({
     </div>
   );
 }
+
+

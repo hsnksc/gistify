@@ -241,7 +241,7 @@ export default function MomentumReportAdminPanel({
 
   if (!adminAuthorized) {
     return (
-      <div className="rounded-[2rem] border border-border bg-card/95 p-6 shadow-2xl">
+      <div className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
         <p className="text-sm text-muted-foreground">
           Momentum publish aracini kullanmak icin once admin kilidini ac.
         </p>
@@ -251,7 +251,7 @@ export default function MomentumReportAdminPanel({
 
   return (
     <div className="grid gap-6 xl:grid-cols-[340px_minmax(0,1fr)]">
-      <aside className="rounded-[2rem] border border-border bg-card/95 p-5 shadow-2xl xl:sticky xl:top-24 xl:h-[calc(100vh-8rem)] xl:overflow-y-auto">
+      <aside className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl xl:sticky xl:top-24 xl:h-[calc(100vh-8rem)] xl:overflow-y-auto">
         <div className="flex items-center justify-between gap-2">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
             Momentum Raporlari
@@ -334,7 +334,7 @@ export default function MomentumReportAdminPanel({
             <p className="text-sm text-destructive">{scanError}</p>
           ) : null}
 
-          <div className="rounded-2xl border border-border bg-background/60 p-4">
+          <div className="rounded-xl border border-border bg-background/60 p-4">
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
               Son tarama
             </p>
@@ -346,7 +346,7 @@ export default function MomentumReportAdminPanel({
       </aside>
 
       <div className="space-y-6">
-        <section className="rounded-[2rem] border border-border bg-card/95 p-6 shadow-2xl">
+        <section className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
           {draftReport ? (
             <div className="space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
@@ -456,7 +456,7 @@ export default function MomentumReportAdminPanel({
         </section>
 
         {scanResults.length ? (
-          <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+          <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
             <div className="flex items-center justify-between gap-3">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
@@ -480,7 +480,7 @@ export default function MomentumReportAdminPanel({
               {scanResults.slice(0, 8).map(stock => (
                 <article
                   key={stock.ticker}
-                  className="rounded-2xl border border-border bg-background/60 p-4"
+                  className="rounded-xl border border-border bg-background/60 p-4"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
@@ -527,7 +527,7 @@ export default function MomentumReportAdminPanel({
           </section>
         ) : null}
 
-        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+        <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
             Yayinlanacak kartlar
           </p>
@@ -536,7 +536,7 @@ export default function MomentumReportAdminPanel({
               selectedEntries.map(entry => (
                 <article
                   key={entry.id}
-                  className="rounded-2xl border border-border bg-background/60 p-4"
+                  className="rounded-xl border border-border bg-background/60 p-4"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
@@ -598,7 +598,7 @@ export default function MomentumReportAdminPanel({
         </section>
 
         {draftReport ? (
-          <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+          <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
@@ -644,3 +644,4 @@ export default function MomentumReportAdminPanel({
     </div>
   );
 }
+

@@ -60,12 +60,12 @@ export default function Refund({
       ctaLabel={copy.ctaLabel}
     >
       <div className="grid gap-6 lg:grid-cols-[1fr_0.9fr]">
-        <section className="rounded-3xl border border-border bg-card/82 p-6 shadow-xl">
+        <section className="rounded-xl border border-border bg-card/82 p-6 shadow-xl">
           <div className="space-y-3">
             {copy.points.map(point => (
               <div
                 key={point}
-                className="rounded-2xl border border-border bg-background/60 px-4 py-3 text-sm leading-relaxed text-muted-foreground"
+                className="rounded-xl border border-border bg-background/60 px-4 py-3 text-sm leading-relaxed text-muted-foreground"
               >
                 {point}
               </div>
@@ -73,7 +73,7 @@ export default function Refund({
           </div>
         </section>
 
-        <aside className="rounded-3xl border border-border bg-card/82 p-6 shadow-xl">
+        <aside className="rounded-xl border border-border bg-card/82 p-6 shadow-xl">
           <h2 className="text-xl font-semibold">{copy.requestTitle}</h2>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
             {copy.requestBody}
@@ -93,3 +93,4 @@ export default function Refund({
     </PublicShell>
   );
 }
+

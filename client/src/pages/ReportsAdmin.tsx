@@ -178,7 +178,7 @@ function SectionCard({
   value: string;
 }) {
   return (
-    <div className="rounded-[2rem] border border-border bg-card/85 p-5 shadow-xl">
+    <div className="rounded-xl border border-border bg-card/85 p-6 shadow-xl">
       <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
         {title}
       </p>
@@ -202,7 +202,7 @@ function ProviderCard({
   note?: string;
 }) {
   return (
-    <article className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+    <article className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-sm font-semibold text-foreground">{title}</p>
         <span
@@ -1185,7 +1185,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
   if (loading) {
     return (
       <div className="px-4 py-8">
-        <div className="mx-auto max-w-7xl rounded-[2rem] border border-border bg-card/95 p-8 shadow-2xl">
+        <div className="mx-auto max-w-7xl rounded-xl border border-border bg-card/95 p-8 shadow-2xl">
           <h1 className="text-2xl font-semibold tracking-tight">
             {copy(language, "Admin workspace yukleniyor", "Admin workspace loading")}
           </h1>
@@ -1200,12 +1200,12 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
   if (pageError) {
     return (
       <div className="px-4 py-8">
-        <div className="mx-auto max-w-4xl rounded-[2rem] border border-destructive/30 bg-card/95 p-8 shadow-2xl">
+        <div className="mx-auto max-w-4xl rounded-xl border border-destructive/30 bg-card/95 p-8 shadow-2xl">
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">
             {copy(language, "Admin sayfasi acilamadi", "Admin page could not be opened")}
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">{pageError}</p>
-          <Button className="mt-5" onClick={() => void refreshPage(adminSecret)}>
+          <Button className="mt-6" onClick={() => void refreshPage(adminSecret)}>
             {copy(language, "Tekrar dene", "Try again")}
           </Button>
         </div>
@@ -1217,7 +1217,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
     <div className="px-4 py-8">
       {adminBusy ? (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-background/55 p-4 backdrop-blur-sm md:items-start md:pt-24">
-          <div className="flex w-full max-w-md items-start gap-3 rounded-[1.75rem] border border-border bg-card/96 p-4 shadow-2xl">
+          <div className="flex w-full max-w-md items-start gap-3 rounded-xl border border-border bg-card/96 p-4 shadow-2xl">
             <RefreshCw className="mt-0.5 size-4 shrink-0 animate-spin text-emerald-300" />
             <div className="space-y-1">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-300">
@@ -1235,7 +1235,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
       ) : null}
 
       <div className="mx-auto max-w-7xl space-y-6">
-        <section className="rounded-[2rem] border border-border bg-card/95 p-6 shadow-2xl">
+        <section className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="space-y-4">
               <Button
@@ -1392,9 +1392,9 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
         </section>
 
         {!adminAuthorized ? (
-          <section className="rounded-[2rem] border border-border bg-card/95 p-6 shadow-2xl">
+          <section className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
             <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
-              <div className="space-y-5">
+              <div className="space-y-6">
                 <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-200">
                   <Shield className="size-4" />
                   {copy(language, "Yonetici kilidi kapali", "Admin lock is closed")}
@@ -1441,7 +1441,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                 ) : null}
               </div>
 
-              <div className="rounded-[2rem] border border-border bg-background/60 p-5">
+              <div className="rounded-xl border border-border bg-background/60 p-6">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                   {copy(language, "Gerekli env ve veri", "Required env and data")}
                 </p>
@@ -1497,7 +1497,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
               />
             </section>
 
-            <section className="rounded-[2rem] border border-border bg-card/95 p-6 shadow-2xl">
+            <section className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div className="space-y-2">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
@@ -1527,7 +1527,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                 </div>
               </div>
 
-              <div className="mt-5 grid gap-4 xl:grid-cols-2">
+              <div className="mt-6 grid gap-4 xl:grid-cols-2">
                 {suggestions.map(suggestion => {
                   const topTickers = suggestion.report.content.entries
                     .slice(0, 5)
@@ -1537,7 +1537,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                   return (
                     <article
                       key={`${suggestion.report.id}-${suggestion.source}`}
-                      className="rounded-[2rem] border border-border bg-background/60 p-5"
+                      className="rounded-xl border border-border bg-background/60 p-6"
                     >
                       <div className="flex flex-wrap items-start justify-between gap-3">
                         <div className="space-y-2">
@@ -1563,7 +1563,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                           </p>
                         </div>
 
-                        <div className="rounded-2xl border border-border bg-card/80 px-4 py-3">
+                        <div className="rounded-xl border border-border bg-card/80 px-4 py-3">
                           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                             Entry
                           </p>
@@ -1573,7 +1573,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                         </div>
                       </div>
 
-                      <div className="mt-4 rounded-2xl border border-border bg-card/70 p-4">
+                      <div className="mt-4 rounded-xl border border-border bg-card/70 p-4">
                         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                           {copy(language, "One cikan tickerlar", "Highlighted tickers")}
                         </p>
@@ -1617,7 +1617,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
               </div>
 
               {!suggestions.length ? (
-                <div className="mt-5 rounded-[2rem] border border-dashed border-border bg-background/50 p-5 text-sm text-muted-foreground">
+                <div className="mt-6 rounded-xl border border-dashed border-border bg-background/50 p-6 text-sm text-muted-foreground">
                   {copy(language, "Bu an icin sistem oneri uretmedi. Static seed fallback kapali; `FMP_API_KEY` tanimli degilse veya provider veri donmezse bu alan bilerek bos kalir.", "The system did not generate suggestions at this time. Static seed fallback is disabled; this area intentionally remains empty if `FMP_API_KEY` is not set or the provider returns no data.")}
                 </div>
               ) : null}
@@ -1714,7 +1714,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
               />
             </section>
 
-            <section className="rounded-[2rem] border border-border bg-card/95 p-6 shadow-2xl">
+            <section className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div className="space-y-2">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
@@ -1746,7 +1746,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
               </div>
 
               {latestPublishedMomentum ? (
-                <div className="mt-5 rounded-[2rem] border border-border bg-background/60 p-5">
+                <div className="mt-6 rounded-xl border border-border bg-background/60 p-6">
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div className="space-y-2">
                       <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
@@ -1760,7 +1760,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                       </p>
                     </div>
 
-                    <div className="rounded-2xl border border-border bg-card/80 px-4 py-3">
+                    <div className="rounded-xl border border-border bg-card/80 px-4 py-3">
                       <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                         Featured setup
                       </p>
@@ -1771,7 +1771,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                   </div>
                 </div>
               ) : (
-                <div className="mt-5 rounded-[2rem] border border-dashed border-border bg-background/50 p-5 text-sm text-muted-foreground">
+                <div className="mt-6 rounded-xl border border-dashed border-border bg-background/50 p-6 text-sm text-muted-foreground">
                   {copy(language, "Henuz yayinlanmis momentum snapshot yok. Once taramayi calistir, sonuclari taslaga aktar ve publish et.", "No momentum snapshot has been published yet. First run the scan, transfer results to draft and publish.")}
                 </div>
               )}
@@ -1839,7 +1839,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
               />
             </section>
 
-            <section className="rounded-[2rem] border border-border bg-card/95 p-6 shadow-2xl">
+            <section className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div className="space-y-2">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
@@ -1944,7 +1944,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
         ) : null}
 
         {adminAuthorized ? (
-          <section className="rounded-[2rem] border border-border bg-card/95 p-5 shadow-xl">
+          <section className="rounded-xl border border-border bg-card/95 p-6 shadow-xl">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
@@ -1966,3 +1966,4 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
     </div>
   );
 }
+

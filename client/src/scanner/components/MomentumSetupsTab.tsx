@@ -43,7 +43,7 @@ function SetupStat({
   accentClassName: string;
 }) {
   return (
-    <div className="rounded-[1.45rem] border border-border bg-background/55 p-4">
+    <div className="rounded-xl border border-border bg-background/55 p-4">
       <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
         {label}
       </p>
@@ -55,7 +55,7 @@ function SetupStat({
 
 function EmptyPanel({ message }: { message: string }) {
   return (
-    <div className="rounded-[1.45rem] border border-dashed border-border bg-background/35 p-4 text-sm leading-7 text-muted-foreground">
+    <div className="rounded-xl border border-dashed border-border bg-background/35 p-4 text-sm leading-7 text-muted-foreground">
       {message}
     </div>
   );
@@ -69,7 +69,7 @@ function CandidateCard({
   language: AppLanguage;
 }) {
   return (
-    <article className={`rounded-[1.45rem] border p-4 ${groupTone(row.group)}`}>
+    <article className={`rounded-xl border p-4 ${groupTone(row.group)}`}>
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-sm font-semibold text-foreground">
@@ -122,7 +122,7 @@ function CandidateTable({
   }
 
   return (
-    <div className="overflow-hidden rounded-[1.45rem] border border-border bg-background/45">
+    <div className="overflow-hidden rounded-xl border border-border bg-background/45">
       <div className="overflow-x-auto">
         <table className="min-w-full text-left text-sm">
           <thead className="border-b border-border bg-background/70">
@@ -183,9 +183,9 @@ export default function MomentumSetupsTab({
 
   return (
     <div className="space-y-6 px-6 pb-8">
-      <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+      <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
         <div className="flex items-start gap-3">
-          <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-2 text-emerald-300">
+          <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-2 text-emerald-300">
             <Radar className="size-4" />
           </div>
           <div className="space-y-2">
@@ -233,7 +233,7 @@ export default function MomentumSetupsTab({
         />
       </section>
 
-      <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+      <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
         <div className="flex items-center gap-2">
           <Radar className="size-4 text-emerald-300" />
           <h3 className="heading-condensed text-xl text-foreground">
@@ -246,7 +246,7 @@ export default function MomentumSetupsTab({
       </section>
 
       <section className="grid gap-6 xl:grid-cols-3">
-        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+        <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <div className="flex items-center gap-2">
             <TrendingUp className="size-4 text-emerald-300" />
             <h3 className="heading-condensed text-xl text-foreground">
@@ -266,7 +266,7 @@ export default function MomentumSetupsTab({
           </div>
         </section>
 
-        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+        <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <div className="flex items-center gap-2">
             <TrendingDown className="size-4 text-red-300" />
             <h3 className="heading-condensed text-xl text-foreground">
@@ -286,7 +286,7 @@ export default function MomentumSetupsTab({
           </div>
         </section>
 
-        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+        <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <div className="flex items-center gap-2">
             <Gauge className="size-4 text-amber-300" />
             <h3 className="heading-condensed text-xl text-foreground">
@@ -308,14 +308,14 @@ export default function MomentumSetupsTab({
       </section>
 
       <section className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(320px,0.9fr)]">
-        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+        <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <div className="flex items-center gap-2">
             <CalendarClock className="size-4 text-cyan-300" />
             <h3 className="heading-condensed text-xl text-foreground">
               {copy(language, "Takvim Katalizorleri", "Calendar Catalysts")}
             </h3>
           </div>
-          <div className="mt-4 overflow-hidden rounded-[1.45rem] border border-border bg-background/45">
+          <div className="mt-4 overflow-hidden rounded-xl border border-border bg-background/45">
             <div className="overflow-x-auto">
               <table className="min-w-full text-left text-sm">
                 <thead className="border-b border-border bg-background/70">
@@ -352,7 +352,7 @@ export default function MomentumSetupsTab({
           </div>
         </section>
 
-        <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+        <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <div className="flex items-center gap-2">
             <Gauge className="size-4 text-cyan-300" />
             <h3 className="heading-condensed text-xl text-foreground">
@@ -364,7 +364,7 @@ export default function MomentumSetupsTab({
               report.rsiRows.map(row => (
                 <article
                   key={row.subject}
-                  className="rounded-[1.45rem] border border-border bg-background/55 p-4"
+                  className="rounded-xl border border-border bg-background/55 p-4"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <p className="text-sm font-semibold text-foreground">{row.subject}</p>
@@ -383,7 +383,7 @@ export default function MomentumSetupsTab({
 
             {(weakestRsi || hottestRsi) ? (
               <div className="grid gap-3 md:grid-cols-2">
-                <article className="rounded-[1.45rem] border border-border bg-background/55 p-4">
+                <article className="rounded-xl border border-border bg-background/55 p-4">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                     {copy(language, "En zayif RSI", "Weakest RSI")}
                   </p>
@@ -394,7 +394,7 @@ export default function MomentumSetupsTab({
                     {weakestRsi?.status || "-"}
                   </p>
                 </article>
-                <article className="rounded-[1.45rem] border border-border bg-background/55 p-4">
+                <article className="rounded-xl border border-border bg-background/55 p-4">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                     {copy(language, "En guclu RSI", "Strongest RSI")}
                   </p>
@@ -409,7 +409,7 @@ export default function MomentumSetupsTab({
             ) : null}
 
             {report.specialCatalysts.length ? (
-              <div className="rounded-[1.45rem] border border-emerald-500/20 bg-emerald-500/8 p-4">
+              <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/8 p-4">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
                   {copy(language, "Ozel Katalizorler", "Special Catalysts")}
                 </p>
@@ -426,3 +426,4 @@ export default function MomentumSetupsTab({
     </div>
   );
 }
+

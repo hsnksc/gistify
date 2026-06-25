@@ -124,7 +124,7 @@ export default function FlowCommunityPanel({
   }, [draftComment, language, submitComment]);
 
   return (
-    <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+    <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <div className="flex items-center gap-2">
@@ -150,9 +150,9 @@ export default function FlowCommunityPanel({
         </span>
       </div>
 
-      <div className="mt-5 space-y-4">
+      <div className="mt-6 space-y-4">
         {canComment ? (
-          <div className="rounded-[1.55rem] border border-border bg-background/55 p-4">
+          <div className="rounded-xl border border-border bg-background/55 p-4">
             <Textarea
               value={draftComment}
               onChange={event => setDraftComment(event.target.value)}
@@ -184,7 +184,7 @@ export default function FlowCommunityPanel({
             </div>
           </div>
         ) : (
-          <div className="rounded-[1.55rem] border border-dashed border-border bg-background/40 p-4">
+          <div className="rounded-xl border border-dashed border-border bg-background/40 p-4">
             <p className="text-sm text-muted-foreground">
               {authLoading
                 ? copy(
@@ -224,14 +224,14 @@ export default function FlowCommunityPanel({
           <div
             role="status"
             aria-live="polite"
-            className="rounded-[1.55rem] border border-border bg-background/40 p-4 text-sm text-muted-foreground"
+            className="rounded-xl border border-border bg-background/40 p-4 text-sm text-muted-foreground"
           >
             {copy(language, "Yorumlar yukleniyor.", "Loading comments.")}
           </div>
         ) : error && !comments.length ? (
           <div
             role="alert"
-            className="rounded-[1.55rem] border border-dashed border-border bg-background/40 p-4 text-sm text-muted-foreground"
+            className="rounded-xl border border-dashed border-border bg-background/40 p-4 text-sm text-muted-foreground"
           >
             {error}
           </div>
@@ -240,7 +240,7 @@ export default function FlowCommunityPanel({
             {comments.map(comment => (
               <article
                 key={comment.id}
-                className="rounded-[1.55rem] border border-border bg-background/55 p-4"
+                className="rounded-xl border border-border bg-background/55 p-4"
               >
                 <div className="flex items-start gap-3">
                   <Avatar className="size-10 border border-border">
@@ -272,7 +272,7 @@ export default function FlowCommunityPanel({
             ))}
           </div>
         ) : (
-          <div className="rounded-[1.55rem] border border-dashed border-border bg-background/40 p-4 text-sm text-muted-foreground">
+          <div className="rounded-xl border border-dashed border-border bg-background/40 p-4 text-sm text-muted-foreground">
             {copy(
               language,
               "Bu rapor icin henuz yorum yok. Ilk yorumu uye girisi yapan biri birakabilir.",
@@ -284,3 +284,4 @@ export default function FlowCommunityPanel({
     </section>
   );
 }
+

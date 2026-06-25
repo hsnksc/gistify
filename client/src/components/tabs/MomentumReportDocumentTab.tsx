@@ -12,9 +12,9 @@ export default function MomentumReportDocumentTab({
 }) {
   return (
     <div className="space-y-6 px-6 pb-8">
-      <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+      <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
         <div className="flex items-start gap-3">
-          <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-2 text-emerald-300">
+          <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-2 text-emerald-300">
             <FileText className="size-4" />
           </div>
           <div className="space-y-2">
@@ -47,3 +47,4 @@ export default function MomentumReportDocumentTab({
     </div>
   );
 }
+

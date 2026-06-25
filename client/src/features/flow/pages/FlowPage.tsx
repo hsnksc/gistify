@@ -153,21 +153,21 @@ export default function FlowPage({
         <div
           role="status"
           aria-live="polite"
-          className="rounded-2xl border border-border bg-card/75 px-4 py-5 text-sm text-muted-foreground"
+          className="rounded-xl border border-border bg-card/75 px-4 py-6 text-sm text-muted-foreground"
         >
           {copy(language, "Rapor merkezi yukleniyor.", "Loading report center.")}
         </div>
       ) : error ? (
         <div
           role="alert"
-          className="rounded-2xl border border-dashed border-border bg-card/75 px-4 py-5 text-sm text-muted-foreground"
+          className="rounded-xl border border-dashed border-border bg-card/75 px-4 py-6 text-sm text-muted-foreground"
         >
           {error}
         </div>
       ) : (
         <>
           <section className="grid gap-3 md:grid-cols-4">
-            <article className="rounded-2xl border border-border bg-card/90 p-4 shadow-md">
+            <article className="rounded-xl border border-border bg-card/90 p-4 shadow-md">
               <p className="text-[10px] font-semibold uppercase tracking-wider text-emerald-300">
                 {copy(language, "Hisse Basligi", "Ticker Library")}
               </p>
@@ -176,8 +176,8 @@ export default function FlowPage({
               </p>
             </article>
 
-            <article className="rounded-2xl border border-border bg-card/90 p-4 shadow-md">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-indigo-300">
+            <article className="rounded-xl border border-border bg-card/90 p-4 shadow-md">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-sky-300">
                 {copy(language, "Hisse Raporu", "Stock Reports")}
               </p>
               <p className="mt-2 text-2xl font-semibold text-foreground">
@@ -185,7 +185,7 @@ export default function FlowPage({
               </p>
             </article>
 
-            <article className="rounded-2xl border border-border bg-card/90 p-4 shadow-md">
+            <article className="rounded-xl border border-border bg-card/90 p-4 shadow-md">
               <p className="text-[10px] font-semibold uppercase tracking-wider text-cyan-300">
                 {copy(language, "Gunluk Rapor", "Daily Reports")}
               </p>
@@ -194,7 +194,7 @@ export default function FlowPage({
               </p>
             </article>
 
-            <article className="rounded-2xl border border-border bg-card/90 p-4 shadow-md">
+            <article className="rounded-xl border border-border bg-card/90 p-4 shadow-md">
               <div className="flex items-center gap-2">
                 <Clock3 className="size-4 text-amber-300" />
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-amber-300">
@@ -209,8 +209,8 @@ export default function FlowPage({
             </article>
           </section>
 
-          <section className="rounded-[2rem] border border-border bg-card/95 p-5 shadow-2xl">
-            <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
+          <section className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
+            <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
               <div className="space-y-3">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
                   {copy(language, "Buradan Basla", "Start Here")}
@@ -272,7 +272,7 @@ export default function FlowPage({
                       "Ticker, sirket veya rapor basligi ara",
                       "Search ticker, company or report title"
                     )}
-                    className="h-11 rounded-[1rem] border-border bg-background/60 pl-10"
+                    className="h-11 rounded-xl border-border bg-background/60 pl-10"
                   />
                 </div>
 
@@ -332,8 +332,8 @@ export default function FlowPage({
           </section>
 
           <section className="space-y-3">
-            <div className="rounded-2xl border border-border bg-card/90 p-4 shadow-md">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-indigo-300">
+            <div className="rounded-xl border border-border bg-card/90 p-4 shadow-md">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-sky-300">
                 {copy(language, "Son Raporlar", "Recent Reports")}
               </p>
               <h2 className="mt-1 text-lg font-semibold text-foreground">
@@ -371,7 +371,7 @@ export default function FlowPage({
           </section>
 
           <section className="space-y-3">
-            <div className="flex flex-col gap-2 rounded-2xl border border-border bg-card/90 p-4 shadow-md lg:flex-row lg:items-end lg:justify-between">
+            <div className="flex flex-col gap-2 rounded-xl border border-border bg-card/90 p-4 shadow-md lg:flex-row lg:items-end lg:justify-between">
               <div>
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-cyan-300">
                   {copy(language, "Gunluk Rapor", "Daily Report")}
@@ -399,7 +399,7 @@ export default function FlowPage({
             </div>
 
             {!highlightedDailyReports.length ? (
-              <div className="rounded-2xl border border-dashed border-border bg-card/65 px-4 py-5 text-sm text-muted-foreground">
+              <div className="rounded-xl border border-dashed border-border bg-card/65 px-4 py-6 text-sm text-muted-foreground">
                 {copy(
                   language,
                   "Bu filtrede gunluk piyasa raporu bulunamadi.",
@@ -416,7 +416,7 @@ export default function FlowPage({
           </section>
 
           <section className="space-y-3">
-            <div className="flex flex-col gap-2 rounded-2xl border border-border bg-card/90 p-4 shadow-md lg:flex-row lg:items-end lg:justify-between">
+            <div className="flex flex-col gap-2 rounded-xl border border-border bg-card/90 p-4 shadow-md lg:flex-row lg:items-end lg:justify-between">
               <div>
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-emerald-300">
                   {copy(language, "Hisse Raporlari", "Stock Reports")}
@@ -444,7 +444,7 @@ export default function FlowPage({
             </div>
 
             {!previewTickerGroups.length ? (
-              <div className="rounded-2xl border border-dashed border-border bg-card/65 px-4 py-5 text-sm text-muted-foreground">
+              <div className="rounded-xl border border-dashed border-border bg-card/65 px-4 py-6 text-sm text-muted-foreground">
                 {copy(
                   language,
                   "Bu filtrede gosterilecek hisse raporu bulunamadi.",
@@ -468,7 +468,7 @@ export default function FlowPage({
           {(featuredStockReport || featuredDailyReport) && !normalizedSearch ? (
             <section className="grid gap-3 lg:grid-cols-2">
               {featuredStockReport ? (
-                <article className="rounded-2xl border border-border bg-card/90 p-4 shadow-md">
+                <article className="rounded-xl border border-border bg-card/90 p-4 shadow-md">
                   <p className="text-[10px] font-semibold uppercase tracking-wider text-emerald-300">
                     {copy(language, "En Guncel Hisse", "Freshest Stock")}
                   </p>
@@ -496,7 +496,7 @@ export default function FlowPage({
               ) : null}
 
               {featuredDailyReport ? (
-                <article className="rounded-2xl border border-border bg-card/90 p-4 shadow-md">
+                <article className="rounded-xl border border-border bg-card/90 p-4 shadow-md">
                   <p className="text-[10px] font-semibold uppercase tracking-wider text-cyan-300">
                     {copy(language, "En Guncel Gunluk", "Freshest Daily")}
                   </p>
@@ -523,3 +523,5 @@ export default function FlowPage({
     </FlowLayout>
   );
 }
+
+

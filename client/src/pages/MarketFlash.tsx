@@ -664,7 +664,7 @@ function IndexPill({
   return (
     <div
       className={cn(
-        "flex flex-col rounded-2xl border px-4 py-3",
+        "flex flex-col rounded-xl border px-4 py-3",
         changeBgClass(change)
       )}
     >
@@ -832,7 +832,7 @@ function MoversTable({
                 type="button"
                 onClick={() => onSelect(mover)}
                 className={cn(
-                  "w-full rounded-2xl border border-white/10 bg-black/20 p-3 text-left transition-colors hover:bg-white/[0.03]",
+                  "w-full rounded-xl border border-white/10 bg-black/20 p-3 text-left transition-colors hover:bg-white/[0.03]",
                   tone === "gainer"
                     ? "border-l-4 border-l-emerald-500"
                     : "border-l-4 border-l-rose-500"
@@ -854,7 +854,7 @@ function MoversTable({
               </button>
             ))
           ) : (
-            <div className="rounded-2xl border border-dashed border-white/10 bg-black/15 px-4 py-3 text-sm text-muted-foreground">
+            <div className="rounded-xl border border-dashed border-white/10 bg-black/15 px-4 py-3 text-sm text-muted-foreground">
               {copy(language, "Veri yok.", "No data.")}
             </div>
           )}
@@ -880,7 +880,7 @@ function SetupCard({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-2xl border border-white/10 bg-black/20 p-4",
+        "relative overflow-hidden rounded-xl border border-white/10 bg-black/20 p-4",
         isCall ? "border-l-4 border-l-emerald-500" : "border-l-4 border-l-rose-500"
       )}
     >
@@ -1005,7 +1005,7 @@ function EarningsCalendar({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="rounded-2xl border border-dashed border-white/10 bg-black/15 px-4 py-3 text-sm text-muted-foreground">
+          <div className="rounded-xl border border-dashed border-white/10 bg-black/15 px-4 py-3 text-sm text-muted-foreground">
             {copy(language, "Bugun earnings takvimi bos.", "No earnings on the calendar today.")}
           </div>
         </CardContent>
@@ -1217,7 +1217,7 @@ function RiskAlert({
   return (
     <Alert
       className={cn(
-        "rounded-2xl border",
+        "rounded-xl border",
         config.className
       )}
     >
@@ -1340,7 +1340,7 @@ function CarryForwardTable({
             items.map(item => (
               <div
                 key={item.ticker}
-                className="rounded-2xl border border-white/10 bg-black/20 p-3"
+                className="rounded-xl border border-white/10 bg-black/20 p-3"
               >
                 <div className="flex items-center justify-between gap-2">
                   <span className="font-semibold text-foreground">
@@ -1367,7 +1367,7 @@ function CarryForwardTable({
               </div>
             ))
           ) : (
-            <div className="rounded-2xl border border-dashed border-white/10 bg-black/15 px-4 py-3 text-sm text-muted-foreground">
+            <div className="rounded-xl border border-dashed border-white/10 bg-black/15 px-4 py-3 text-sm text-muted-foreground">
               {copy(language, "Veri yok.", "No data.")}
             </div>
           )}
@@ -1585,13 +1585,13 @@ export default function MarketFlash() {
       <div className="container py-6 md:py-8">
         <section
           className={cn(
-            "overflow-hidden rounded-[1.8rem] border p-[1px]",
+            "overflow-hidden rounded-xl border p-[1px]",
             THEME.shellClassName
           )}
         >
           <div
             className={cn(
-              "relative overflow-hidden rounded-[1.75rem] p-4 md:p-5",
+              "relative overflow-hidden rounded-xl p-4 md:p-6",
               THEME.innerClassName
             )}
           >
@@ -1602,7 +1602,7 @@ export default function MarketFlash() {
               )}
             />
 
-            <div className="relative space-y-5">
+            <div className="relative space-y-6">
               <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
@@ -1682,7 +1682,7 @@ export default function MarketFlash() {
               </div>
 
               {error ? (
-                <div className="flex items-start gap-2 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-100">
+                <div className="flex items-start gap-2 rounded-xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-100">
                   <AlertTriangle className="mt-0.5 size-4 shrink-0" />
                   {error}
                 </div>
@@ -1738,7 +1738,7 @@ export default function MarketFlash() {
                         />
                       ))
                     ) : (
-                      <div className="rounded-2xl border border-dashed border-white/10 bg-black/15 px-4 py-3 text-sm text-muted-foreground">
+                      <div className="rounded-xl border border-dashed border-white/10 bg-black/15 px-4 py-3 text-sm text-muted-foreground">
                         {copy(language, "CALL setup'i yok.", "No CALL setups.")}
                       </div>
                     )}
@@ -1763,7 +1763,7 @@ export default function MarketFlash() {
                         />
                       ))
                     ) : (
-                      <div className="rounded-2xl border border-dashed border-white/10 bg-black/15 px-4 py-3 text-sm text-muted-foreground">
+                      <div className="rounded-xl border border-dashed border-white/10 bg-black/15 px-4 py-3 text-sm text-muted-foreground">
                         {copy(language, "PUT setup'i yok.", "No PUT setups.")}
                       </div>
                     )}
@@ -1862,3 +1862,4 @@ export default function MarketFlash() {
     </div>
   );
 }
+

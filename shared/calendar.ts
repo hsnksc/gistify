@@ -14,6 +14,8 @@ export interface CalendarEvent {
   actual?: string;
   currency: string;
   unit?: string;
+  analysis?: string;
+  impactDirection?: "positive" | "negative";
 }
 
 export interface CalendarOptionSetup {
@@ -22,6 +24,7 @@ export interface CalendarOptionSetup {
   trigger: string;
   invalidation: string;
   setupType: string;
+  rationale?: string;
 }
 
 export interface CalendarDayReport {

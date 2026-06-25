@@ -21,10 +21,11 @@ export function FearGreedOutlookCard({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="rounded-2xl border border-white/10 bg-black/20 p-3.5">
+        <div className="rounded-xl border border-white/10 bg-black/20 p-3.5">
           <p className="text-[13px] leading-6 text-foreground/88">{fearGreedOutlook}</p>
         </div>
       </CardContent>
     </Card>
   );
 }
+

@@ -5,6 +5,7 @@
 
 import type { PortfolioRisk, SectorExposure, StressTestResult, Greeks, BetaMatrix } from "./optionsTypes";
 import { parametricVaR, historicalVaR, expectedShortfall, stressTestShock, calculateGreeksLimits, checkGreeksLimits, SHOCK_SCENARIOS } from "./varEngine";
+import { type AppLanguage, copy } from "@/lib/i18n";
 
 // ─── SEKTÖR BETA MATRİSİ ───
 
@@ -94,7 +95,8 @@ export function calculateSectorExposure(
 // ─── KORELASYON UYARISI ───
 
 export function correlationCheck(
-  positions: PositionForRisk[]
+  positions: PositionForRisk[],
+  language: AppLanguage = "tr"
 ): string[] {
   const warnings: string[] = [];
   const sectors = positions.map((p) => getBeta(p.ticker).sector);
@@ -106,20 +108,29 @@ export function correlationCheck(
   // Check concentration
   const maxSector = Object.entries(sectorCount).sort((a, b) => b[1] - a[1])[0];
   if (maxSector && maxSector[1] >= 3) {
-    warnings.push(`🚨 ${maxSector[0]} sektöründe ${maxSector[1]} pozisyon → Tek sektöre %${(maxSector[1] / positions.length * 100).toFixed(0)} bet`);
+    warnings.push(copy(language,
+    `🚨 ${maxSector[0]} sektöründe ${maxSector[1]} pozisyon → Tek sektöre %${(maxSector[1] / positions.length * 100).toFixed(0)} bet`,
+    `🚨 ${maxSector[1]} positions in ${maxSector[0]} sector → %${(maxSector[1] / positions.length * 100).toFixed(0)} bet on single sector`
+  ));
   }
 
   // Check tech concentration (common mistake)
   const techTickers = positions.filter((p) => getBeta(p.ticker).sector === "Technology");
   if (techTickers.length >= 3) {
     const names = techTickers.map((p) => p.ticker).join(", ");
-    warnings.push(`⚠️ Teknoloji bet'i: ${names} → SPY/Q düşerse hepsi zarar eder`);
+    warnings.push(copy(language,
+    `⚠️ Teknoloji bet'i: ${names} → SPY/Q düşerse hepsi zarar eder`,
+    `⚠️ Tech bet: ${names} → All lose if SPY/Q drops`
+  ));
   }
 
   // Check meme/high-beta concentration
   const highBeta = positions.filter((p) => getBeta(p.ticker).betaSPY > 1.5);
   if (highBeta.length >= 3) {
-    warnings.push(`⚠️ ${highBeta.length} yüksek beta hisse (β>1.5) → Piyasa düşerse amplifiye kayıp`);
+    warnings.push(copy(language,
+    `⚠️ ${highBeta.length} yüksek beta hisse (β>1.5) → Piyasa düşerse amplifiye kayıp`,
+    `⚠️ ${highBeta.length} high-beta stocks (β>1.5) → Amplified loss if market drops`
+  ));
   }
 
   return warnings;
@@ -192,11 +203,12 @@ export function multiStressTest(
 
 export function calculatePortfolioRisk(
   positions: PositionForRisk[],
-  netLiquidationValue: number
+  netLiquidationValue: number,
+  language: AppLanguage = "tr"
 ): PortfolioRisk {
   const bwd = calculateBetaWeightedDelta(positions);
   const sectorExposures = calculateSectorExposure(positions, netLiquidationValue);
-  const corrWarnings = correlationCheck(positions);
+  const corrWarnings = correlationCheck(positions, language);
   const stress = stressTest(positions, netLiquidationValue);
 
   // Aggregate Greeks
@@ -268,12 +280,13 @@ export interface v4PortfolioRisk {
 export function calculateV4PortfolioRisk(
   positions: PositionForRisk[],
   netLiquidationValue: number,
-  historicalReturns: number[] // SPY günlük getiriler (decimal)
+  historicalReturns: number[], // SPY günlük getiriler (decimal)
+  language: AppLanguage = "tr"
 ): v4PortfolioRisk {
   // v3.0 temel metrikler
   const bwd = calculateBetaWeightedDelta(positions);
   const sectorExposures = calculateSectorExposure(positions, netLiquidationValue);
-  const corrWarnings = correlationCheck(positions);
+  const corrWarnings = correlationCheck(positions, language);
 
   // Aggregate Greeks
   const totalTheta = positions.reduce((s, p) => s + p.greeks.theta * p.quantity, 0);

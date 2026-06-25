@@ -178,7 +178,7 @@ export default function ReportsIndexPage({
       }
     >
       <section className="grid gap-4 md:grid-cols-4">
-        <article className="rounded-[1.8rem] border border-border bg-card/90 p-5 shadow-xl">
+        <article className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
             {copy(language, "Toplam Rapor", "Total Reports")}
           </p>
@@ -186,15 +186,15 @@ export default function ReportsIndexPage({
             {summary.totalCount}
           </p>
         </article>
-        <article className="rounded-[1.8rem] border border-border bg-card/90 p-5 shadow-xl">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-indigo-300">
+        <article className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
             {copy(language, "Yerel Arsiv", "Local Archive")}
           </p>
           <p className="mt-4 text-3xl font-semibold text-foreground">
             {summary.localCount}
           </p>
         </article>
-        <article className="rounded-[1.8rem] border border-border bg-card/90 p-5 shadow-xl">
+        <article className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300">
             {copy(language, "Yayinli Arsiv", "Published Archive")}
           </p>
@@ -202,7 +202,7 @@ export default function ReportsIndexPage({
             {summary.serverCount}
           </p>
         </article>
-        <article className="rounded-[1.8rem] border border-border bg-card/90 p-5 shadow-xl">
+        <article className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-300">
             {copy(language, "Bugun", "Today")}
           </p>
@@ -221,10 +221,10 @@ export default function ReportsIndexPage({
         />
       ) : null}
 
-      <section className="rounded-[2rem] border border-border bg-card/95 p-5 shadow-2xl">
+      <section className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
           <div className="space-y-2">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-indigo-300">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
               {copy(language, "Filtreler", "Filters")}
             </p>
             <h2 className="text-xl font-semibold text-foreground">
@@ -259,7 +259,7 @@ export default function ReportsIndexPage({
           </div>
         </div>
 
-        <div className="mt-5 grid gap-3 lg:grid-cols-5">
+        <div className="mt-6 grid gap-3 lg:grid-cols-5">
           <div className="lg:col-span-2">
             <div className="relative">
               <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -272,13 +272,13 @@ export default function ReportsIndexPage({
                   "Ticker veya sirket ara",
                   "Search ticker or company"
                 )}
-                className="h-11 rounded-[1rem] border-border bg-background/60 pl-10"
+                className="h-11 rounded-xl border-border bg-background/60 pl-10"
               />
             </div>
           </div>
 
           <Select value={recommendationFilter} onValueChange={setRecommendationFilter}>
-            <SelectTrigger className="h-11 w-full rounded-[1rem] border-border bg-background/60">
+            <SelectTrigger className="h-11 w-full rounded-xl border-border bg-background/60">
               <SelectValue placeholder={copy(language, "Oneri", "Recommendation")} />
             </SelectTrigger>
             <SelectContent>
@@ -290,7 +290,7 @@ export default function ReportsIndexPage({
           </Select>
 
           <Select value={exchangeFilter} onValueChange={setExchangeFilter}>
-            <SelectTrigger className="h-11 w-full rounded-[1rem] border-border bg-background/60">
+            <SelectTrigger className="h-11 w-full rounded-xl border-border bg-background/60">
               <SelectValue placeholder={copy(language, "Borsa", "Exchange")} />
             </SelectTrigger>
             <SelectContent>
@@ -308,10 +308,10 @@ export default function ReportsIndexPage({
               type="date"
               value={selectedDate}
               onChange={event => setSelectedDate(event.target.value)}
-              className="h-11 rounded-[1rem] border-border bg-background/60"
+              className="h-11 rounded-xl border-border bg-background/60"
             />
             <Select value={sortOrder} onValueChange={value => setSortOrder(value as "newest" | "oldest")}>
-              <SelectTrigger className="h-11 w-full rounded-[1rem] border-border bg-background/60">
+              <SelectTrigger className="h-11 w-full rounded-xl border-border bg-background/60">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -324,17 +324,17 @@ export default function ReportsIndexPage({
       </section>
 
       {serverError || localError ? (
-        <div className="rounded-[1.8rem] border border-dashed border-border bg-card/75 px-5 py-6 text-sm text-muted-foreground">
+        <div className="rounded-xl border border-dashed border-border bg-card/75 px-6 py-6 text-sm text-muted-foreground">
           {[serverError, localError].filter(Boolean).join(" · ")}
         </div>
       ) : null}
 
       {serverLoading || localLoading ? (
-        <div className="rounded-[1.8rem] border border-border bg-card/75 px-5 py-6 text-sm text-muted-foreground">
+        <div className="rounded-xl border border-border bg-card/75 px-6 py-6 text-sm text-muted-foreground">
           {copy(language, "Rapor galerisi yukleniyor.", "Loading report gallery.")}
         </div>
       ) : !groupedReports.length ? (
-        <div className="rounded-[1.8rem] border border-dashed border-border bg-card/65 px-5 py-6 text-sm text-muted-foreground">
+        <div className="rounded-xl border border-dashed border-border bg-card/65 px-6 py-6 text-sm text-muted-foreground">
           {copy(
             language,
             "Secilen filtrelerle eslesen rapor bulunamadi.",
@@ -346,7 +346,7 @@ export default function ReportsIndexPage({
           {groupedReports.map(([reportDate, reports]) => (
             <section
               key={reportDate}
-              className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl"
+              className="rounded-xl border border-border bg-card/90 p-6 shadow-xl"
             >
               <div className="flex items-center justify-between gap-3">
                 <div>
@@ -362,7 +362,7 @@ export default function ReportsIndexPage({
                 </span>
               </div>
 
-              <div className="mt-5 grid gap-4 xl:grid-cols-2">
+              <div className="mt-6 grid gap-4 xl:grid-cols-2">
                 {reports.map(report => (
                   <ReportGalleryCard
                     key={report.id}
@@ -377,9 +377,9 @@ export default function ReportsIndexPage({
         </div>
       )}
 
-      <section className="rounded-[2rem] border border-border bg-card/90 p-5 shadow-xl">
+      <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
         <div className="flex items-start gap-3">
-          <UploadCloud className="mt-1 size-4 text-indigo-300" />
+          <UploadCloud className="mt-1 size-4 text-sky-300" />
           <div className="space-y-2 text-sm leading-7 text-muted-foreground">
             <p>
               {copy(
@@ -401,3 +401,5 @@ export default function ReportsIndexPage({
     </FlowLayout>
   );
 }
+
+

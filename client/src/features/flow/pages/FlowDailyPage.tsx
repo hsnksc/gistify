@@ -63,7 +63,7 @@ export default function FlowDailyPage({
       }
     >
       <section key={latestReport?.id || "empty"} className="grid gap-3 md:grid-cols-3">
-        <article className="rounded-2xl border border-border bg-card/90 p-4 shadow-md">
+        <article className="rounded-xl border border-border bg-card/90 p-4 shadow-md">
           <div className="flex items-center gap-2">
             <ScrollText className="size-4 text-cyan-300" />
             <p className="text-[10px] font-semibold uppercase tracking-wider text-cyan-300">
@@ -75,7 +75,7 @@ export default function FlowDailyPage({
           </p>
         </article>
 
-        <article className="rounded-2xl border border-border bg-card/90 p-4 shadow-md">
+        <article className="rounded-xl border border-border bg-card/90 p-4 shadow-md">
           <p className="text-[10px] font-semibold uppercase tracking-wider text-emerald-300">
             {copy(language, "Son Rapor Tarihi", "Latest Report Date")}
           </p>
@@ -86,7 +86,7 @@ export default function FlowDailyPage({
           </p>
         </article>
 
-        <article className="rounded-2xl border border-border bg-card/90 p-4 shadow-md">
+        <article className="rounded-xl border border-border bg-card/90 p-4 shadow-md">
           <div className="flex items-center gap-2">
             <Clock3 className="size-4 text-amber-300" />
             <p className="text-[10px] font-semibold uppercase tracking-wider text-amber-300">
@@ -102,15 +102,15 @@ export default function FlowDailyPage({
       </section>
 
       {loading ? (
-        <div className="rounded-2xl border border-border bg-card/75 px-4 py-5 text-sm text-muted-foreground">
+        <div className="rounded-xl border border-border bg-card/75 px-4 py-6 text-sm text-muted-foreground">
           {copy(language, "Gunluk raporlar yukleniyor.", "Loading daily reports.")}
         </div>
       ) : error ? (
-        <div className="rounded-2xl border border-dashed border-border bg-card/75 px-4 py-5 text-sm text-muted-foreground">
+        <div className="rounded-xl border border-dashed border-border bg-card/75 px-4 py-6 text-sm text-muted-foreground">
           {error}
         </div>
       ) : !latestReport ? (
-        <div className="rounded-2xl border border-dashed border-border bg-card/65 px-4 py-5 text-sm text-muted-foreground">
+        <div className="rounded-xl border border-dashed border-border bg-card/65 px-4 py-6 text-sm text-muted-foreground">
           {copy(
             language,
             "Henuz gunluk piyasa raporu bulunamadi.",
@@ -119,7 +119,7 @@ export default function FlowDailyPage({
         </div>
       ) : (
         <>
-          <section className="rounded-2xl border border-border bg-card/95 p-4 shadow-md">
+          <section className="rounded-xl border border-border bg-card/95 p-4 shadow-md">
             <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
               <div className="space-y-2">
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-cyan-300">
@@ -152,8 +152,8 @@ export default function FlowDailyPage({
           </section>
 
           <section className="space-y-3">
-            <div className="rounded-2xl border border-border bg-card/90 p-4 shadow-md">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-indigo-300">
+            <div className="rounded-xl border border-border bg-card/90 p-4 shadow-md">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-sky-300">
                 {copy(language, "Arsiv", "Archive")}
               </p>
               <h2 className="mt-1 text-lg font-semibold text-foreground">
@@ -172,3 +172,5 @@ export default function FlowDailyPage({
     </FlowLayout>
   );
 }
+
+
