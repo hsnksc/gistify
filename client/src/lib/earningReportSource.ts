@@ -1,3 +1,10 @@
+import {
+  isStructuredEarningsStrategyMarkdown,
+  parseStructuredEarningsStrategyMarkdown,
+  type StructuredEarningsStrategyReport,
+  type StructuredStrategyRow,
+} from "@shared/earningReportStructured";
+
 export interface MarkdownTable {
   headers: string[];
   rows: string[][];
@@ -4186,10 +4193,537 @@ function parseCprEarningReportMarkdown(
   };
 }
 
+function findStructuredMacroValue(
+  report: StructuredEarningsStrategyReport,
+  needle: string
+) {
+  const normalizedNeedle = normalizeForSearch(needle);
+  return (
+    report.macroRows.find(row =>
+      normalizeForSearch(row.indicator).includes(normalizedNeedle)
+    )?.level || ""
+  );
+}
+
+function inferStructuredWeights(direction: string, setup: string) {
+  const normalized = normalizeForSearch(`${direction} ${setup}`);
+
+  if (
+    normalized.includes("neutral") ||
+    normalized.includes("agnostic") ||
+    normalized.includes("dengeli") ||
+    normalized.includes("straddle") ||
+    normalized.includes("strangle") ||
+    normalized.includes("iron condor") ||
+    normalized.includes("calendar")
+  ) {
+    return { callWeight: 50, putWeight: 50 };
+  }
+
+  if (
+    normalized.includes("bear") ||
+    normalized.includes("ayi") ||
+    normalized.includes("long put") ||
+    normalized.includes("bear put") ||
+    normalized.includes("bear call")
+  ) {
+    return { callWeight: 30, putWeight: 70 };
+  }
+
+  return { callWeight: 70, putWeight: 30 };
+}
+
+function splitStructuredList(value: string) {
+  return cleanText(value)
+    .split(/\s*\/\s*|,\s*/)
+    .map(item => cleanText(item))
+    .filter(Boolean);
+}
+
+function parseStructuredGreekMap(value: string) {
+  const entries = new Map<string, string>();
+  const matches = Array.from(
+    value.matchAll(/([A-Za-z]+)\s*:\s*([+-]?\d+(?:[.,]\d+)?)/g)
+  );
+
+  for (const match of matches) {
+    entries.set(normalizeForSearch(match[1] || ""), cleanText(match[2] || ""));
+  }
+
+  return entries;
+}
+
+function buildStructuredGreeks(value: string): GreekRow[] {
+  const greekMap = parseStructuredGreekMap(value);
+
+  return [
+    { greek: "Delta", value: greekMap.get("delta") || "", description: "Directional exposure" },
+    { greek: "Theta", value: greekMap.get("theta") || "", description: "Time decay" },
+    { greek: "Vega", value: greekMap.get("vega") || "", description: "IV sensitivity" },
+    { greek: "Gamma", value: greekMap.get("gamma") || "", description: "Convexity" },
+  ].filter(row => row.value);
+}
+
+function inferStructuredRiskLabel(row: StructuredStrategyRow) {
+  const normalized = normalizeForSearch(`${row.setup} ${row.direction} ${row.importance}`);
+
+  if (
+    normalized.includes("long call") ||
+    normalized.includes("long put") ||
+    normalized.includes("straddle") ||
+    normalized.includes("strangle")
+  ) {
+    return "Yuksek";
+  }
+
+  if (
+    normalized.includes("high") ||
+    normalized.includes("ratio") ||
+    normalized.includes("calendar")
+  ) {
+    return "Orta";
+  }
+
+  return "Dusuk";
+}
+
+function inferBudgetBandFromCost(value: string) {
+  const numeric = parseNumber(value);
+  if (numeric === null) {
+    return "";
+  }
+
+  if (numeric <= 50) return "$10 - $50";
+  if (numeric <= 200) return "$50 - $200";
+  if (numeric <= 500) return "$200 - $500";
+  return "$500 - $1,000";
+}
+
+function buildStructuredBudgetOptionMap(report: StructuredEarningsStrategyReport) {
+  const optionsByTicker = new Map<string, StrategyMetrics[]>();
+  const seen = new Set<string>();
+  const strategyByTicker = new Map(report.strategies.map(row => [row.ticker, row] as const));
+
+  const pushBudgetMetric = (
+    ticker: string,
+    budget: string,
+    strategy: string,
+    cost: string,
+    maxReturn: string
+  ) => {
+    if (!ticker || !budget || !strategy) {
+      return;
+    }
+
+    const key = `${ticker}::${budget}::${strategy}::${cost}::${maxReturn}`;
+    if (seen.has(key)) {
+      return;
+    }
+
+    seen.add(key);
+    const current = optionsByTicker.get(ticker) || [];
+    current.push({
+      label: budget,
+      value: [strategy, cost, maxReturn].filter(Boolean).join(" | "),
+    });
+    optionsByTicker.set(ticker, current);
+  };
+
+  for (const row of report.strategies) {
+    const derivedBudget = inferBudgetBandFromCost(row.budgetCost);
+    if (derivedBudget) {
+      pushBudgetMetric(
+        row.ticker,
+        derivedBudget,
+        row.setup || row.strategyTitle,
+        row.budgetCost,
+        row.targetProfit
+      );
+    }
+  }
+
+  for (const bucket of report.budgetBuckets) {
+    for (const item of bucket.items) {
+      const fallbackStrategy = strategyByTicker.get(item.ticker);
+      pushBudgetMetric(
+        item.ticker,
+        bucket.budgetLabel || bucket.label,
+        item.title || fallbackStrategy?.setup || item.ticker,
+        item.risk,
+        item.target
+      );
+    }
+  }
+
+  return optionsByTicker;
+}
+
+function buildStructuredNotes(row: StructuredStrategyRow) {
+  const notes: StrategyNote[] = [];
+
+  if (row.structure) {
+    notes.push({
+      title: "Structure",
+      lines: splitStructuredList(row.structure),
+    });
+  }
+
+  const riskRewardLines = [
+    row.budgetCost && `Base cost: ${row.budgetCost}`,
+    row.credit && `Credit: ${row.credit}`,
+    row.maxRisk && `Max risk: ${row.maxRisk}`,
+    row.targetProfit && `Target: ${row.targetProfit}`,
+  ].filter(Boolean) as string[];
+
+  if (riskRewardLines.length > 0) {
+    notes.push({
+      title: "Risk / Reward",
+      lines: riskRewardLines,
+    });
+  }
+
+  const timingLines = [
+    row.entryWindow && `Entry: ${row.entryWindow}`,
+    row.exitWindow && `Exit: ${row.exitWindow}`,
+  ].filter(Boolean) as string[];
+
+  if (timingLines.length > 0) {
+    notes.push({
+      title: "Timing",
+      lines: timingLines,
+    });
+  }
+
+  if (row.note) {
+    notes.push({
+      title: "Desk Note",
+      lines: [row.note],
+    });
+  }
+
+  return notes;
+}
+
+function buildStructuredNews(row: StructuredStrategyRow): NewsBucket[] {
+  if (!row.note) {
+    return [];
+  }
+
+  const normalized = normalizeForSearch(row.direction || row.setup);
+  const key: NewsBucket["key"] = normalized.includes("bear")
+    ? "negative"
+    : normalized.includes("bull")
+      ? "positive"
+      : "mixed";
+
+  return [
+    {
+      key,
+      label: "Desk view",
+      items: [row.note],
+    },
+  ];
+}
+
+function buildStructuredBlueprint(row: StructuredStrategyRow): StrategyBlueprint {
+  const weights = inferStructuredWeights(row.direction, row.setup || row.strategyTitle);
+  const structureItems = splitStructuredList(row.structure);
+
+  return {
+    rawLines: [row.structure, row.note].filter(Boolean),
+    ratioText: `Call ${weights.callWeight}% / Put ${weights.putWeight}%`,
+    callWeight: weights.callWeight,
+    putWeight: weights.putWeight,
+    biasLine: row.direction || row.setup || row.strategyTitle,
+    callHeading: "Structure",
+    callItems: structureItems.length > 0 ? structureItems : [row.setup || row.strategyTitle],
+    putHeading: "Execution",
+    putItems: [
+      row.entryWindow && `Entry ${row.entryWindow}`,
+      row.exitWindow && `Exit ${row.exitWindow}`,
+      row.budgetCost && `Base cost ${row.budgetCost}`,
+      row.maxRisk && `Max risk ${row.maxRisk}`,
+      row.targetProfit && `Target ${row.targetProfit}`,
+    ].filter(Boolean) as string[],
+    expiryLines: [
+      row.earningsDate && `Earnings ${row.earningsDate}`,
+      row.earningsTime && `${row.earningsTime} session`,
+    ].filter(Boolean) as string[],
+    entry: row.entryWindow,
+    exit: row.exitWindow,
+  };
+}
+
+function buildStructuredScenarios(row: StructuredStrategyRow): ScenarioRow[] {
+  const normalized = normalizeForSearch(row.direction || row.setup);
+  const upsideMove = normalized.includes("bear") ? "-4%" : "+4%";
+  const downsideMove = normalized.includes("bear") ? "+3%" : "-3%";
+
+  return [
+    {
+      scenario: "Base case",
+      ivChange: "-10%",
+      stockMove: "Contained",
+      pnl: row.targetProfit || row.maxRisk || "-",
+    },
+    {
+      scenario: normalized.includes("bear") ? "Downside follow-through" : "Upside follow-through",
+      ivChange: "-6%",
+      stockMove: upsideMove,
+      pnl: row.targetProfit || "-",
+    },
+    {
+      scenario: "Wrong-way move",
+      ivChange: "-15%",
+      stockMove: downsideMove,
+      pnl: row.maxRisk ? `-${row.maxRisk}` : "-",
+    },
+  ];
+}
+
+function buildStructuredPositions(report: StructuredEarningsStrategyReport) {
+  const reportDateIso = report.meta.reportDate;
+  const budgetMetricMap = buildStructuredBudgetOptionMap(report);
+  const fomcStatus = normalizeForSearch(report.fomc.status);
+
+  return report.strategies.map((row, index) => {
+    const earningsDateIso = cleanText(row.earningsDate || "");
+    const earningsDateLabel =
+      formatTurkishDateFromIso(earningsDateIso) || row.earningsDate || "-";
+    const daysLeft =
+      reportDateIso && earningsDateIso
+        ? diffCalendarDays(reportDateIso, earningsDateIso)
+        : 999;
+    const riskLabel = inferStructuredRiskLabel(row);
+    const metricEntries: StrategyMetrics[] = [
+      row.price && { label: "Fiyat", value: row.price },
+      row.ivRank && { label: "IV Rank", value: row.ivRank },
+      row.cpr && { label: "Hacim CPR", value: row.cpr },
+      row.direction && { label: "Direction", value: row.direction },
+      row.setup && { label: "Setup", value: row.setup },
+      row.entryWindow && { label: "Entry Penceresi", value: row.entryWindow },
+      row.exitWindow && { label: "Exit Penceresi", value: row.exitWindow },
+      row.budgetCost && { label: "Pozisyon Boyutu", value: row.budgetCost },
+      row.credit && { label: "Kredi", value: row.credit },
+      row.maxRisk && { label: "Max Risk", value: row.maxRisk },
+      row.targetProfit && { label: "Target Profit", value: row.targetProfit },
+      row.importance && { label: "Importance", value: row.importance },
+      fomcStatus && { label: "FOMC Riski", value: report.fomc.status },
+      ...(budgetMetricMap.get(row.ticker) || []),
+    ].filter((entry): entry is StrategyMetrics => Boolean(entry));
+
+    const warnings = dedupeItems([
+      normalizeForSearch(row.importance) === "high"
+        ? "High-importance event. Respect post-earnings gap risk."
+        : "",
+      fomcStatus === "imminent" || fomcStatus === "blackout"
+        ? `FOMC overlap risk: ${report.fomc.status}`
+        : "",
+      row.note && /iv|vol|gap|crowd|risk/i.test(row.note) ? row.note : "",
+    ]).slice(0, 4);
+
+    return {
+      order: index + 1,
+      ticker: row.ticker,
+      company: row.company || row.ticker,
+      earningsLabel: [earningsDateLabel, row.earningsTime].filter(Boolean).join(" | "),
+      earningsDate: earningsDateLabel,
+      earningsTime: row.earningsTime || "TBA",
+      daysLeft,
+      strategyTitle: row.setup || row.strategyTitle,
+      allocationCapital: row.budgetCost || row.maxRisk || "-",
+      allocationRisk: riskLabel,
+      metrics: metricEntries,
+      news: buildStructuredNews(row),
+      blueprint: buildStructuredBlueprint(row),
+      greeks: buildStructuredGreeks(row.greeksRaw),
+      scenarios: buildStructuredScenarios(row),
+      warnings,
+      notes: buildStructuredNotes(row),
+      price: parseNumber(row.price),
+      ivRank: parsePercent(row.ivRank),
+      expectedMove: null,
+    } satisfies EarningsPosition;
+  });
+}
+
+function buildStructuredTradeSchedule(positions: EarningsPosition[]) {
+  return positions
+    .flatMap(position => [
+      position.blueprint.entry
+        ? {
+            date: position.blueprint.entry,
+            ticker: position.ticker,
+            action: "PLANLI GIRIS",
+            note: `${position.ticker} ${position.strategyTitle} icin planli giris penceresi.`,
+          }
+        : null,
+      position.earningsDate
+        ? {
+            date: position.earningsDate,
+            ticker: position.ticker,
+            action: "EARNINGS",
+            note: `${position.earningsTime} earnings event.`,
+          }
+        : null,
+      position.blueprint.exit
+        ? {
+            date: position.blueprint.exit,
+            ticker: position.ticker,
+            action: "PLANLI CIKIS",
+            note: `${position.ticker} setup'ini earnings sonrasinda yonetme / cikis penceresi.`,
+          }
+        : null,
+    ])
+    .filter((row): row is TradeScheduleRow => Boolean(row));
+}
+
+function buildStructuredRisks(report: StructuredEarningsStrategyReport): RiskEntry[] {
+  const risks: RiskEntry[] = [];
+  const fomcStatus = report.fomc.status || "";
+
+  if (report.fomc.date) {
+    risks.push({
+      risk: "FOMC overlap",
+      probability: fomcStatus || "Orta",
+      impact: `${report.fomc.date} toplantisi earnings tape'i bozabilir.`,
+      mitigation: report.fomc.note || "Pozisyon boyutunu kis ve blackout penceresine saygi duy.",
+    });
+  }
+
+  risks.push({
+    risk: "IV crush",
+    probability: "Yuksek",
+    impact: "Volatilite dususu dogru yone ragmen primleri baskilayabilir.",
+    mitigation: "Premium odakli yapilari ve hedefli cikis disiplinini kullan.",
+  });
+
+  risks.push({
+    risk: "Crowded calendar",
+    probability: report.calendarTotals.highImportance > 10 ? "Yuksek" : "Orta",
+    impact: "Ayni hafta icinde coklu high-importance event korelasyonu artirir.",
+    mitigation: "Ayni sektorde ust uste risk alma; butceyi dagit.",
+  });
+
+  risks.push({
+    risk: "Execution slippage",
+    probability: "Orta",
+    impact: "Acilis / kapanis seansinda spreadler genisleyebilir.",
+    mitigation: "Entry window disinda zorlamali emir kullanma; likit strike sec.",
+  });
+
+  return risks;
+}
+
+function buildStructuredPositionSizing(positions: EarningsPosition[]) {
+  return positions.map(position => ({
+    ticker: position.ticker,
+    capital: position.allocationCapital,
+    contracts: "1x",
+  }));
+}
+
+function buildStructuredGoldenRules(report: StructuredEarningsStrategyReport) {
+  return dedupeItems([
+    ...report.executiveSummary.slice(0, 3),
+    "Earnings release oncesi planli cikis yoksa risk azalt.",
+    "IV crush riskini tek setup'a yigmaz.",
+    "FOMC blackout penceresinde boyutu kucult.",
+  ]).slice(0, 6);
+}
+
+function buildStructuredChecklist(report: StructuredEarningsStrategyReport) {
+  const actionItems = report.actionWeeks.flatMap(week => week.actions);
+
+  return dedupeItems([
+    ...actionItems,
+    "Earnings takvimini tekrar kontrol et.",
+    "Entry / exit tarihlerini teyit et.",
+    "Likidite ve spread kalitesini acilis oncesi kontrol et.",
+  ]).slice(0, 8);
+}
+
+function parseStructuredEarningReportSource(
+  markdown: string,
+  sourceFile: string
+): EarningReportSource | null {
+  const structured = parseStructuredEarningsStrategyMarkdown(markdown, sourceFile);
+  if (!structured) {
+    return null;
+  }
+
+  const positions = buildStructuredPositions(structured);
+  const reportDateLabel =
+    formatTurkishDateFromIso(structured.meta.reportDate) ||
+    structured.meta.reportDate ||
+    "-";
+  const vixLabel = findStructuredMacroValue(structured, "vix") || "-";
+  const subtitle =
+    [structured.meta.currentMonth, structured.meta.nextMonth]
+      .filter(Boolean)
+      .join(" + ") || structured.executiveSummary[0] || "Structured earnings report";
+  const coreWindow = [
+    structured.meta.currentMonth,
+    structured.meta.nextMonth,
+    structured.regime && `Regime: ${structured.regime}`,
+    structured.fomc.date && `FOMC: ${structured.fomc.date}`,
+  ]
+    .filter(Boolean)
+    .join(" | ");
+
+  return {
+    sourceFile,
+    rawMarkdown: markdown,
+    title: structured.meta.title,
+    subtitle,
+    meta: [
+      { label: "Rapor Tarihi", value: reportDateLabel },
+      ...(structured.meta.window ? [{ label: "Window", value: structured.meta.window }] : []),
+      ...(structured.meta.desk ? [{ label: "Desk", value: structured.meta.desk }] : []),
+      ...(structured.meta.version ? [{ label: "Versiyon", value: structured.meta.version }] : []),
+      ...(structured.regime ? [{ label: "Regime", value: structured.regime }] : []),
+      ...(vixLabel && vixLabel !== "-" ? [{ label: "VIX", value: vixLabel }] : []),
+    ],
+    reportDate: reportDateLabel,
+    vixLabel,
+    coreWindow,
+    timelineSteps: structured.actionWeeks.slice(0, 8).map(week => ({
+      phase: week.week,
+      label: [week.focus, ...week.actions.slice(0, 2)].filter(Boolean).join(" | "),
+    })),
+    gainDrivers: structured.macroRows.slice(0, 4).map(row => ({
+      factor: row.indicator,
+      impact: row.signal || row.level || "-",
+      assessment: [row.level && `Level ${row.level}`, row.weekChange && `1W ${row.weekChange}`, row.monthChange && `1M ${row.monthChange}`]
+        .filter(Boolean)
+        .join(" | "),
+    })),
+    allocations: positions.map(position => ({
+      ticker: position.ticker,
+      capital: position.allocationCapital,
+      riskLevel: position.allocationRisk,
+    })),
+    positions,
+    tradeSchedule: buildStructuredTradeSchedule(positions),
+    risks: buildStructuredRisks(structured),
+    positionSizing: buildStructuredPositionSizing(positions),
+    goldenRules: buildStructuredGoldenRules(structured),
+    checklist: buildStructuredChecklist(structured),
+    disclaimer: "Generated from the structured Earnings Strategy Report format.",
+  };
+}
+
 export function parseEarningReportMarkdown(
   markdown: string,
   sourceFile = "earningreport/source.md"
 ): EarningReportSource {
+  if (isStructuredEarningsStrategyMarkdown(markdown)) {
+    const structured = parseStructuredEarningReportSource(markdown, sourceFile);
+    if (structured) {
+      return structured;
+    }
+  }
+
   const lines = splitLines(markdown);
   const modernPositionIndex = findLineIndex(lines, /^###\s+3\.\d+\s+[A-Z]+/);
   const updatePositionIndex = findLineIndex(lines, /^###\s+\d+\.\s+[A-Z]+\s+\(/);

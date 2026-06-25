@@ -1,5 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
+import {
+  isStructuredEarningsStrategyMarkdown,
+  parseStructuredEarningsStrategyMarkdown,
+  type StructuredEarningsStrategyReport,
+} from "../shared/earningReportStructured";
 import type {
   ActionPlanItem,
   BudgetOption,
@@ -982,11 +987,307 @@ function parseExecutiveSummary(markdown: string): string[] {
   return items.slice(0, 10);
 }
 
+function findStructuredMacroValue(
+  report: StructuredEarningsStrategyReport,
+  needle: string
+) {
+  const normalizedNeedle = normalizeString(needle).toLowerCase();
+  return (
+    report.macroRows.find(row =>
+      normalizeString(row.indicator).toLowerCase().includes(normalizedNeedle)
+    )?.level || ""
+  );
+}
+
+function parseStructuredImportanceValue(value: string) {
+  const raw = normalizeString(value).toLowerCase();
+  if (raw.includes("high")) return 5;
+  if (raw.includes("medium")) return 3;
+  if (raw.includes("low")) return 2;
+  return parseImportance(value);
+}
+
+function parseStructuredStrategyGreeks(value: string): Greeks | undefined {
+  const entries = new Map<string, string>();
+  const matches = Array.from(
+    value.matchAll(/([A-Za-z]+)\s*:\s*([+-]?\d+(?:[.,]\d+)?)/g)
+  );
+
+  for (const match of matches) {
+    entries.set(normalizeString(match[1]).toLowerCase(), normalizeString(match[2]));
+  }
+
+  const greeks = {
+    delta: entries.get("delta") || undefined,
+    theta: entries.get("theta") || undefined,
+    vega: entries.get("vega") || undefined,
+    gamma: entries.get("gamma") || undefined,
+  } satisfies Greeks;
+
+  if (!greeks.delta && !greeks.theta && !greeks.vega && !greeks.gamma) {
+    return undefined;
+  }
+
+  return greeks;
+}
+
+function inferStructuredBudgetBand(value: string) {
+  const numeric = parseNumber(value);
+  if (numeric === undefined) {
+    return "";
+  }
+
+  if (numeric <= 50) return "$10 - $50";
+  if (numeric <= 200) return "$50 - $200";
+  if (numeric <= 500) return "$200 - $500";
+  return "$500 - $1,000";
+}
+
+function buildStructuredBudgetOptions(report: StructuredEarningsStrategyReport) {
+  const optionsByTicker = new Map<string, BudgetOption[]>();
+  const seen = new Set<string>();
+  const strategyByTicker = new Map(report.strategies.map(row => [row.ticker, row] as const));
+
+  const pushOption = (
+    ticker: string,
+    budget: string,
+    strategy: string,
+    cost: string,
+    maxReturn: string
+  ) => {
+    if (!ticker || !budget || !strategy) {
+      return;
+    }
+
+    const key = `${ticker}::${budget}::${strategy}::${cost}::${maxReturn}`;
+    if (seen.has(key)) {
+      return;
+    }
+
+    seen.add(key);
+    const current = optionsByTicker.get(ticker) || [];
+    current.push({
+      budget,
+      strategy,
+      cost,
+      maxProfit: maxReturn || cost,
+      maxReturn: maxReturn || undefined,
+    });
+    optionsByTicker.set(ticker, current);
+  };
+
+  for (const row of report.strategies) {
+    const derivedBudget = inferStructuredBudgetBand(row.budgetCost);
+    if (derivedBudget) {
+      pushOption(
+        row.ticker,
+        derivedBudget,
+        row.setup || row.strategyTitle,
+        row.budgetCost,
+        row.targetProfit
+      );
+    }
+  }
+
+  for (const bucket of report.budgetBuckets) {
+    for (const item of bucket.items) {
+      const fallback = strategyByTicker.get(item.ticker);
+      pushOption(
+        item.ticker,
+        bucket.budgetLabel || bucket.label,
+        item.title || fallback?.setup || item.ticker,
+        item.risk,
+        item.target
+      );
+    }
+  }
+
+  return optionsByTicker;
+}
+
+function parseStructuredMacro(report: StructuredEarningsStrategyReport): MacroData {
+  return {
+    vix: findStructuredMacroValue(report, "vix") || undefined,
+    sp500: findStructuredMacroValue(report, "s&p") || undefined,
+    nasdaq: findStructuredMacroValue(report, "nasdaq") || undefined,
+    russell2000: findStructuredMacroValue(report, "russell") || undefined,
+    tenYearYield: findStructuredMacroValue(report, "10y") || undefined,
+    dxy: findStructuredMacroValue(report, "dxy") || undefined,
+    wti: findStructuredMacroValue(report, "wti") || undefined,
+    bitcoin: findStructuredMacroValue(report, "bitcoin") || undefined,
+    fearGreed: findStructuredMacroValue(report, "fear") || undefined,
+    regime: normalizeString(report.regime) || undefined,
+    notes: report.macroRows
+      .map(row => [row.indicator, row.signal].filter(Boolean).join(": "))
+      .filter(Boolean),
+  };
+}
+
+function parseStructuredFomc(report: StructuredEarningsStrategyReport): FOMCData | undefined {
+  if (!report.fomc.date) {
+    return undefined;
+  }
+
+  const daysUntil = parseNumber(report.fomc.daysRemaining);
+  const explicitStatus = normalizeString(report.fomc.status).toLowerCase();
+  const status =
+    explicitStatus === "distant" ||
+    explicitStatus === "approaching" ||
+    explicitStatus === "imminent" ||
+    explicitStatus === "blackout"
+      ? (explicitStatus as FOMCStatus)
+      : typeof daysUntil === "number"
+        ? parseFOMCStatus(daysUntil)
+        : undefined;
+
+  return {
+    date: report.fomc.date,
+    daysUntil,
+    blackoutStart: normalizeString(report.fomc.blackoutStart) || undefined,
+    status,
+    marketExpectation: normalizeString(report.fomc.note) || undefined,
+    notes: report.fomc.note ? [report.fomc.note] : undefined,
+  };
+}
+
+function parseStructuredCalendar(report: StructuredEarningsStrategyReport): EarningsEvent[] {
+  const cprMap = new Map(report.cprStocks.map(stock => [stock.ticker, stock] as const));
+  const strategyMap = new Map(report.strategies.map(strategy => [strategy.ticker, strategy] as const));
+
+  return report.calendar.map(row => {
+    const cpr = cprMap.get(row.ticker);
+    const strategy = strategyMap.get(row.ticker);
+
+    return {
+      ticker: row.ticker,
+      company: normalizeString(row.company) || undefined,
+      sector: normalizeString(row.sector) || undefined,
+      date: row.date,
+      time: parseTime(row.session),
+      importance: parseStructuredImportanceValue(row.importance),
+      ivRank: normalizeString(cpr?.ivRank) || undefined,
+      cpr: normalizeString(cpr?.hacimCpr) || undefined,
+      strategy: normalizeString(strategy?.setup || strategy?.strategyTitle) || undefined,
+      notes: row.note ? [row.note] : undefined,
+    };
+  });
+}
+
+function parseStructuredStrategies(report: StructuredEarningsStrategyReport): Strategy[] {
+  const budgetOptions = buildStructuredBudgetOptions(report);
+
+  return report.strategies.map(row => ({
+    ticker: row.ticker,
+    company: normalizeString(row.company) || undefined,
+    sector: normalizeString(row.sector) || undefined,
+    price: normalizeString(row.price) || undefined,
+    ivRank: normalizeString(row.ivRank) || undefined,
+    cpr: normalizeString(row.cpr) || undefined,
+    type: parseStrategyType(row.setup || row.strategyTitle),
+    entry: normalizeString(row.entryWindow) || undefined,
+    exit: normalizeString(row.exitWindow) || undefined,
+    maxHold: row.earningsDate ? `Through ${row.earningsDate}` : undefined,
+    profitTarget: normalizeString(row.targetProfit) || undefined,
+    credit: normalizeString(row.credit) || undefined,
+    maxRisk: normalizeString(row.maxRisk) || undefined,
+    koProbability:
+      normalizeString(row.importance).toLowerCase() === "high"
+        ? "High importance"
+        : undefined,
+    positionSize: normalizeString(row.budgetCost) || undefined,
+    greeks: parseStructuredStrategyGreeks(row.greeksRaw),
+    budgetOptions: budgetOptions.get(row.ticker) || [],
+    notes: [row.structure, row.note].filter(Boolean),
+  }));
+}
+
+function parseStructuredPortfolio(report: StructuredEarningsStrategyReport): PortfolioLevel[] {
+  const strategyMap = new Map(report.strategies.map(strategy => [strategy.ticker, strategy] as const));
+
+  return report.portfolioLevels.map(level => ({
+    budget: level.budget,
+    recommendations: level.recommendations.map(item => {
+      const ticker = normalizeString(item.strategy).match(/\b[A-Z]{1,5}\b/)?.[0] || "";
+      const strategy = strategyMap.get(ticker);
+
+      return {
+        ticker,
+        strategy: item.strategy,
+        allocation: item.allocation,
+        expectedReturn: normalizeString(item.target) || undefined,
+        risk: parseRisk(item.risk || ""),
+        sector: normalizeString(strategy?.sector) || undefined,
+        fomcRisk: report.fomc.status || undefined,
+        entryWindow: normalizeString(strategy?.entryWindow) || undefined,
+        exitWindow: normalizeString(strategy?.exitWindow) || undefined,
+      };
+    }),
+  }));
+}
+
+function parseStructuredActionPlan(report: StructuredEarningsStrategyReport): ActionPlanItem[] {
+  return report.actionWeeks.map(week => {
+    const match = week.week.match(/^(Week\s+\d+)\s*\(([^)]+)\)$/i);
+
+    return {
+      week: normalizeString(match?.[1] || week.week) || undefined,
+      dateRange: normalizeString(match?.[2] || "") || undefined,
+      focus: normalizeString(week.focus) || undefined,
+      actions: week.actions.filter(Boolean),
+    };
+  });
+}
+
+function parseStructuredEarningsStrategyData(
+  markdown: string,
+  sourceFile: string
+): EarningsStrategyData | null {
+  const structured = parseStructuredEarningsStrategyMarkdown(markdown, sourceFile);
+  if (!structured) {
+    return null;
+  }
+
+  const strategies = parseStructuredStrategies(structured);
+
+  return {
+    generatedAt: new Date().toISOString(),
+    reportDate: structured.meta.reportDate,
+    currentMonth: structured.meta.currentMonth,
+    nextMonth: structured.meta.nextMonth,
+    title: structured.meta.title,
+    summary: structured.executiveSummary[0] || "",
+    macro: parseStructuredMacro(structured),
+    fomc: parseStructuredFomc(structured),
+    calendar: parseStructuredCalendar(structured),
+    cprStocks: structured.cprStocks.map(stock => ({
+      ticker: stock.ticker,
+      price: normalizeString(stock.price) || undefined,
+      hacimCPR: normalizeString(stock.hacimCpr) || undefined,
+      oiCPR: normalizeString(stock.oiCpr) || undefined,
+      sentiment: parseSentiment(stock.sentiment),
+      sector: normalizeString(stock.sector) || undefined,
+      ivRank: normalizeString(stock.ivRank) || undefined,
+    })),
+    strategies,
+    budgetStrategies: strategies.filter(strategy => strategy.budgetOptions.length > 0),
+    portfolio: parseStructuredPortfolio(structured),
+    actionPlan: parseStructuredActionPlan(structured),
+    executiveSummary: structured.executiveSummary,
+  };
+}
+
 export function parseEarningsStrategyMarkdown(
   markdown: string,
   sourceFile: string
 ): EarningsStrategyData | null {
   if (!markdown) return null;
+
+  if (isStructuredEarningsStrategyMarkdown(markdown)) {
+    const structured = parseStructuredEarningsStrategyData(markdown, sourceFile);
+    if (structured) {
+      return structured;
+    }
+  }
 
   const tables = parseTables(markdown);
   const titleInfo = extractTitleInfo(markdown, sourceFile);
@@ -1055,11 +1356,15 @@ function getConfiguredRootPath() {
     "earningreport",
     "Kimi_Agent_ Option Strategy"
   );
+  const fallbackDir = path.resolve(process.cwd(), "earningreport");
+  if (findLatestMasterFile(fallbackDir)) {
+    return { folder: fallbackDir, file: null };
+  }
+
   if (fs.existsSync(workspaceDir)) {
     return { folder: workspaceDir, file: null };
   }
 
-  const fallbackDir = path.resolve(process.cwd(), "earningreport");
   return { folder: fallbackDir, file: null };
 }
 

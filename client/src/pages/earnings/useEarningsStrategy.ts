@@ -48,7 +48,7 @@ export function useEarningsStrategy(): EarningsStrategyState {
       setPipeline(payload.pipeline || DEFAULT_PIPELINE);
 
       if (!response.ok || !payload.success || !payload.data) {
-        setData(payload.data || null);
+        setData(current => payload.data || current);
         const message = payload.error || "Earnings workspace unavailable.";
         setError(message);
         return {
@@ -78,6 +78,20 @@ export function useEarningsStrategy(): EarningsStrategyState {
   useEffect(() => {
     void refresh();
   }, [refresh]);
+
+  useEffect(() => {
+    const intervalMs = data
+      ? Math.max(pipeline.pollIntervalMs || 60_000, 30_000)
+      : 4_000;
+
+    const timer = setInterval(() => {
+      void refresh();
+    }, intervalMs);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [data, pipeline.pollIntervalMs, refresh]);
 
   return {
     data,

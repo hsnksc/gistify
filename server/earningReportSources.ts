@@ -1,6 +1,10 @@
 import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
+import {
+  isStructuredEarningsStrategyMarkdown,
+  parseStructuredEarningsStrategyMarkdown,
+} from "../shared/earningReportStructured";
 import type {
   EarningReportSourceRecord,
   EarningReportSourceSummary,
@@ -52,6 +56,30 @@ function getConfiguredRootPath() {
   }
 
   return path.resolve(process.cwd(), configured);
+}
+
+function isReportMarkdownFile(fileName: string) {
+  const normalized = normalizeSearchString(path.basename(fileName, path.extname(fileName)));
+
+  if (!normalized.includes("earning")) {
+    return false;
+  }
+
+  if (
+    normalized.includes("prompt") ||
+    normalized.includes("plan") ||
+    normalized.includes("auth") ||
+    normalized.includes("scenario") ||
+    normalized.includes("implementation")
+  ) {
+    return false;
+  }
+
+  return (
+    normalized.includes("strateji") ||
+    normalized.includes("strategy") ||
+    normalized.includes("master")
+  );
 }
 
 function listFiles(folderPath: string) {
@@ -268,7 +296,44 @@ function parseTurkishDateLabel(value: string) {
   return `${year}-${month}-${day}`;
 }
 
+function extractStructuredMetadata(markdown: string, fileName: string, updatedAt: string) {
+  const structured = parseStructuredEarningsStrategyMarkdown(markdown, fileName);
+  if (!structured) {
+    return null;
+  }
+
+  const vixLabel =
+    structured.macroRows.find(row => normalizeSearchString(row.indicator).includes("vix"))?.level || "";
+  const headline =
+    structured.executiveSummary[0] ||
+    structured.macroRows[0]?.signal ||
+    structured.meta.currentMonth ||
+    structured.meta.title;
+  const reportDate = structured.meta.reportDate || updatedAt.slice(0, 10);
+  const reportDateLabel = formatTurkishDateLabel(reportDate) || reportDate;
+  const subtitle =
+    [structured.meta.currentMonth, structured.meta.nextMonth]
+      .filter(Boolean)
+      .join(" + ") || structured.meta.version || structured.meta.title;
+
+  return {
+    title: structured.meta.title,
+    subtitle,
+    headline,
+    reportDate,
+    reportDateLabel,
+    vixLabel,
+  };
+}
+
 function extractMetadata(markdown: string, fileName: string, updatedAt: string) {
+  if (isStructuredEarningsStrategyMarkdown(markdown)) {
+    const structured = extractStructuredMetadata(markdown, fileName, updatedAt);
+    if (structured) {
+      return structured;
+    }
+  }
+
   const title = readHeading(markdown, "#") || fileName;
   const secondaryHeading = readHeading(markdown, "##");
   const subtitle =
@@ -320,6 +385,10 @@ function buildSourceRecord(fileName: string) {
   }
 
   if (!/\.md$/i.test(path.extname(fileName))) {
+    return null;
+  }
+
+  if (!isReportMarkdownFile(fileName)) {
     return null;
   }
 
