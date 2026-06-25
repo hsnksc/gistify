@@ -5,7 +5,7 @@
   "summary": "Bugün macro-heavy bir gün. TSİ 15:30'da ABD'den 6 HIGH + 12 MEDIUM veri açıklanacak. En kritik: Core PCE (beklenen 0.3% MoM / 3.4% YoY). VIX 18.63 (normal), Fear & Greed 26 (Fear). Piyasa 15:30'da ciddi volatilite yaşayacak. Yön bağımsız setup'lar mümkün.",
   "events": [
     {
-      "id": 1,
+      "id": "1",
       "time": "15:30",
       "country": "US",
       "eventName": "Core PCE Price Index (MoM) (May)",
@@ -19,7 +19,7 @@
       "unit": "%"
     },
     {
-      "id": 2,
+      "id": "2",
       "time": "15:30",
       "country": "US",
       "eventName": "Core PCE Price Index (YoY) (May)",
@@ -33,7 +33,7 @@
       "unit": "%"
     },
     {
-      "id": 3,
+      "id": "3",
       "time": "15:30",
       "country": "US",
       "eventName": "Core PCE Prices (Q1)",
@@ -47,7 +47,7 @@
       "unit": "%"
     },
     {
-      "id": 4,
+      "id": "4",
       "time": "15:30",
       "country": "US",
       "eventName": "PCE price index (MoM) (May)",
@@ -61,7 +61,7 @@
       "unit": "%"
     },
     {
-      "id": 5,
+      "id": "5",
       "time": "15:30",
       "country": "US",
       "eventName": "PCE Price index (YoY) (May)",
@@ -75,7 +75,7 @@
       "unit": "%"
     },
     {
-      "id": 6,
+      "id": "6",
       "time": "15:30",
       "country": "US",
       "eventName": "PCE Prices (Q1)",
@@ -89,7 +89,7 @@
       "unit": "%"
     },
     {
-      "id": 7,
+      "id": "7",
       "time": "04:30",
       "country": "AU",
       "eventName": "Employment Change (May)",
@@ -103,7 +103,7 @@
       "unit": "K"
     },
     {
-      "id": 8,
+      "id": "8",
       "time": "04:30",
       "country": "AU",
       "eventName": "Full Employment Change (May)",
@@ -117,7 +117,7 @@
       "unit": "K"
     },
     {
-      "id": 9,
+      "id": "9",
       "time": "04:30",
       "country": "AU",
       "eventName": "Unemployment Rate (May)",
@@ -131,7 +131,7 @@
       "unit": "%"
     },
     {
-      "id": 10,
+      "id": "10",
       "time": "09:00",
       "country": "EU",
       "eventName": "GfK German Consumer Climate (Jul)",
@@ -145,7 +145,7 @@
       "unit": "index"
     },
     {
-      "id": 11,
+      "id": "11",
       "time": "11:00",
       "country": "EU",
       "eventName": "ECB Economic Bulletin",
@@ -159,7 +159,7 @@
       "unit": "index"
     },
     {
-      "id": 12,
+      "id": "12",
       "time": "15:30",
       "country": "US",
       "eventName": "Final GDP (QoQ) (Q1)",
@@ -173,7 +173,7 @@
       "unit": "%"
     },
     {
-      "id": 13,
+      "id": "13",
       "time": "15:30",
       "country": "US",
       "eventName": "GDP Price Index (QoQ) (Q1)",
@@ -187,7 +187,7 @@
       "unit": "%"
     },
     {
-      "id": 14,
+      "id": "14",
       "time": "15:30",
       "country": "US",
       "eventName": "Initial Jobless Claims",
@@ -201,7 +201,7 @@
       "unit": "K"
     },
     {
-      "id": 15,
+      "id": "15",
       "time": "15:30",
       "country": "US",
       "eventName": "Core Durable Goods Orders (MoM) (May)",
@@ -215,7 +215,7 @@
       "unit": "%"
     },
     {
-      "id": 16,
+      "id": "16",
       "time": "15:30",
       "country": "US",
       "eventName": "Durable Goods Orders (MoM) (May)",
@@ -229,7 +229,7 @@
       "unit": "%"
     },
     {
-      "id": 17,
+      "id": "17",
       "time": "15:30",
       "country": "US",
       "eventName": "Goods Orders Non Defense Ex Air (MoM) (May)",
@@ -243,7 +243,7 @@
       "unit": "%"
     },
     {
-      "id": 18,
+      "id": "18",
       "time": "15:30",
       "country": "US",
       "eventName": "Personal Income (MoM) (May)",
@@ -257,7 +257,7 @@
       "unit": "%"
     },
     {
-      "id": 19,
+      "id": "19",
       "time": "15:30",
       "country": "US",
       "eventName": "Personal Spending (MoM) (May)",
@@ -271,7 +271,7 @@
       "unit": "%"
     },
     {
-      "id": 20,
+      "id": "20",
       "time": "27 min",
       "country": "EU",
       "eventName": "Spanish GDP (QoQ) (Q1)",
@@ -285,7 +285,7 @@
       "unit": "%"
     },
     {
-      "id": 21,
+      "id": "21",
       "time": "02:50",
       "country": "JP",
       "eventName": "Foreign Bonds Buying",
@@ -299,7 +299,7 @@
       "unit": "B"
     },
     {
-      "id": 22,
+      "id": "22",
       "time": "02:50",
       "country": "JP",
       "eventName": "Foreign Investments in Japanese Stocks",
@@ -313,7 +313,7 @@
       "unit": "B"
     },
     {
-      "id": 23,
+      "id": "23",
       "time": "03:30",
       "country": "US",
       "eventName": "U.S. President Trump Speaks",
@@ -327,7 +327,7 @@
       "unit": "index"
     },
     {
-      "id": 24,
+      "id": "24",
       "time": "04:00",
       "country": "JP",
       "eventName": "BoJ Tamura Speaks",
@@ -341,7 +341,7 @@
       "unit": "index"
     },
     {
-      "id": 25,
+      "id": "25",
       "time": "08:00",
       "country": "JP",
       "eventName": "Coincident Indicator (MoM) (Apr)",
@@ -355,7 +355,7 @@
       "unit": "%"
     },
     {
-      "id": 26,
+      "id": "26",
       "time": "08:00",
       "country": "JP",
       "eventName": "Leading Index (Apr)",
@@ -369,7 +369,7 @@
       "unit": "index"
     },
     {
-      "id": 27,
+      "id": "27",
       "time": "08:00",
       "country": "JP",
       "eventName": "Leading Index (MoM) (Apr)",
@@ -383,7 +383,7 @@
       "unit": "%"
     },
     {
-      "id": 28,
+      "id": "28",
       "time": "12 min",
       "country": "EU",
       "eventName": "French Consumer Confidence (Jun)",
@@ -397,7 +397,7 @@
       "unit": "index"
     },
     {
-      "id": 29,
+      "id": "29",
       "time": "27 min",
       "country": "EU",
       "eventName": "Spanish GDP (YoY) (Q1)",
@@ -411,7 +411,7 @@
       "unit": "%"
     },
     {
-      "id": 30,
+      "id": "30",
       "time": "27 min",
       "country": "EU",
       "eventName": "Spanish PPI (YoY) (May)",
@@ -425,7 +425,7 @@
       "unit": "%"
     },
     {
-      "id": 31,
+      "id": "31",
       "time": "11:00",
       "country": "EU",
       "eventName": "Italian Industrial Sales (MoM) (Apr)",
@@ -439,7 +439,7 @@
       "unit": "%"
     },
     {
-      "id": 32,
+      "id": "32",
       "time": "11:00",
       "country": "EU",
       "eventName": "Italian Industrial Sales (YoY) (Apr)",
@@ -453,7 +453,7 @@
       "unit": "%"
     },
     {
-      "id": 33,
+      "id": "33",
       "time": "11:30",
       "country": "HK",
       "eventName": "Exports (MoM) (May)",
@@ -467,7 +467,7 @@
       "unit": "%"
     },
     {
-      "id": 34,
+      "id": "34",
       "time": "11:30",
       "country": "HK",
       "eventName": "Imports (MoM) (May)",
@@ -481,7 +481,7 @@
       "unit": "%"
     },
     {
-      "id": 35,
+      "id": "35",
       "time": "11:30",
       "country": "HK",
       "eventName": "Trade Balance (May)",
@@ -495,7 +495,7 @@
       "unit": "B"
     },
     {
-      "id": 36,
+      "id": "36",
       "time": "12:10",
       "country": "EU",
       "eventName": "Italian 6-Month BOT Auction",
@@ -509,7 +509,7 @@
       "unit": "%"
     },
     {
-      "id": 37,
+      "id": "37",
       "time": "12:30",
       "country": "ZA",
       "eventName": "PPI (YoY) (May)",
@@ -523,7 +523,7 @@
       "unit": "%"
     },
     {
-      "id": 38,
+      "id": "38",
       "time": "12:30",
       "country": "ZA",
       "eventName": "PPI (MoM) (May)",
@@ -537,7 +537,7 @@
       "unit": "%"
     },
     {
-      "id": 39,
+      "id": "39",
       "time": "13:00",
       "country": "UK",
       "eventName": "CBI Distributive Trades Survey (Jun)",
@@ -551,7 +551,7 @@
       "unit": "index"
     },
     {
-      "id": 40,
+      "id": "40",
       "time": "15:00",
       "country": "BR",
       "eventName": "BCB National Monetary Council Meeting",
@@ -565,7 +565,7 @@
       "unit": "index"
     },
     {
-      "id": 41,
+      "id": "41",
       "time": "15:00",
       "country": "BR",
       "eventName": "Mid-Month CPI (MoM) (Jun)",
@@ -579,7 +579,7 @@
       "unit": "%"
     },
     {
-      "id": 42,
+      "id": "42",
       "time": "15:00",
       "country": "BR",
       "eventName": "Mid-Month CPI (YoY) (Jun)",
@@ -593,7 +593,7 @@
       "unit": "%"
     },
     {
-      "id": 43,
+      "id": "43",
       "time": "15:30",
       "country": "US",
       "eventName": "Chicago Fed National Activity (May)",
@@ -607,7 +607,7 @@
       "unit": "index"
     },
     {
-      "id": 44,
+      "id": "44",
       "time": "15:30",
       "country": "US",
       "eventName": "Continuing Jobless Claims",
@@ -621,7 +621,7 @@
       "unit": "K"
     },
     {
-      "id": 45,
+      "id": "45",
       "time": "15:30",
       "country": "US",
       "eventName": "Durables Excluding Defense (MoM) (May)",
@@ -635,7 +635,7 @@
       "unit": "%"
     },
     {
-      "id": 46,
+      "id": "46",
       "time": "15:30",
       "country": "US",
       "eventName": "Corporate Profits (QoQ) (Q1)",
@@ -649,7 +649,7 @@
       "unit": "%"
     },
     {
-      "id": 47,
+      "id": "47",
       "time": "15:30",
       "country": "US",
       "eventName": "GDP Sales (Q1)",
@@ -663,7 +663,7 @@
       "unit": "%"
     },
     {
-      "id": 48,
+      "id": "48",
       "time": "15:30",
       "country": "US",
       "eventName": "Real Consumer Spending (Q1)",
@@ -677,7 +677,7 @@
       "unit": "%"
     },
     {
-      "id": 49,
+      "id": "49",
       "time": "15:30",
       "country": "US",
       "eventName": "Real Personal Consumption (MoM) (May)",
@@ -691,7 +691,7 @@
       "unit": "%"
     },
     {
-      "id": 50,
+      "id": "50",
       "time": "15:30",
       "country": "CA",
       "eventName": "Average Weekly Earnings (YoY) (Apr)",
@@ -705,7 +705,7 @@
       "unit": "%"
     },
     {
-      "id": 51,
+      "id": "51",
       "time": "15:30",
       "country": "US",
       "eventName": "Jobless Claims 4-Week Avg.",
@@ -719,7 +719,7 @@
       "unit": "K"
     },
     {
-      "id": 52,
+      "id": "52",
       "time": "15:45",
       "country": "US",
       "eventName": "FOMC Member Bowman Speaks",
@@ -733,7 +733,7 @@
       "unit": "index"
     },
     {
-      "id": 53,
+      "id": "53",
       "time": "16:00",
       "country": "RU",
       "eventName": "Central Bank reserves (USD)",
@@ -747,7 +747,7 @@
       "unit": "B"
     },
     {
-      "id": 54,
+      "id": "54",
       "time": "17:00",
       "country": "US",
       "eventName": "Atlanta Fed GDPNow (Q2)",
@@ -761,7 +761,7 @@
       "unit": "%"
     },
     {
-      "id": 55,
+      "id": "55",
       "time": "17:00",
       "country": "US",
       "eventName": "Dallas Fed PCE (May)",
@@ -775,7 +775,7 @@
       "unit": "%"
     },
     {
-      "id": 56,
+      "id": "56",
       "time": "17:30",
       "country": "US",
       "eventName": "Natural Gas Storage",
@@ -789,7 +789,7 @@
       "unit": "B"
     },
     {
-      "id": 57,
+      "id": "57",
       "time": "18:00",
       "country": "US",
       "eventName": "KC Fed Composite Index (Jun)",
@@ -803,7 +803,7 @@
       "unit": "index"
     },
     {
-      "id": 58,
+      "id": "58",
       "time": "18:00",
       "country": "US",
       "eventName": "KC Fed Manufacturing Index (Jun)",
@@ -817,7 +817,7 @@
       "unit": "index"
     },
     {
-      "id": 59,
+      "id": "59",
       "time": "18:30",
       "country": "US",
       "eventName": "4-Week Bill Auction",
@@ -831,7 +831,7 @@
       "unit": "%"
     },
     {
-      "id": 60,
+      "id": "60",
       "time": "18:30",
       "country": "US",
       "eventName": "8-Week Bill Auction",
@@ -845,7 +845,7 @@
       "unit": "%"
     },
     {
-      "id": 61,
+      "id": "61",
       "time": "20:00",
       "country": "US",
       "eventName": "7-Year Note Auction",
@@ -859,7 +859,7 @@
       "unit": "%"
     },
     {
-      "id": 62,
+      "id": "62",
       "time": "22:40",
       "country": "US",
       "eventName": "FOMC Member Williams Speaks",
@@ -873,7 +873,7 @@
       "unit": "index"
     },
     {
-      "id": 63,
+      "id": "63",
       "time": "23:30",
       "country": "US",
       "eventName": "Fed's Balance Sheet",
@@ -887,7 +887,7 @@
       "unit": "B"
     },
     {
-      "id": 64,
+      "id": "64",
       "time": "23:30",
       "country": "US",
       "eventName": "Reserve Balances with Federal Reserve Banks",
@@ -904,7 +904,7 @@
   "optionSetups": [
     {
       "asset": "SPY",
-      "bias": "BEARISH",
+      "bias": "bearish",
       "trigger": "Core PCE MoM ≥0.4% veya Headline PCE YoY ≥4.2%",
       "invalidation": "Core PCE ≤0.2%",
       "setupType": "0DTE PUT",
@@ -912,7 +912,7 @@
     },
     {
       "asset": "SPY",
-      "bias": "BULLISH",
+      "bias": "bullish",
       "trigger": "Core PCE MoM ≤0.2%",
       "invalidation": "Core PCE ≥0.4%",
       "setupType": "0DTE CALL",
@@ -920,7 +920,7 @@
     },
     {
       "asset": "SPY",
-      "bias": "DIRECTIONAL AGNOSTIC",
+      "bias": "neutral",
       "trigger": "15:30'da breakout direction, 2-3 dakika bekleyip momentum takibi",
       "invalidation": "Tüm veriler inline, VIX crush",
       "setupType": "0DTE MOMENTUM",
@@ -928,7 +928,7 @@
     },
     {
       "asset": "EUR/USD",
-      "bias": "BULLISH",
+      "bias": "bullish",
       "trigger": "ECB hawkish tone + PCE inline/soft",
       "invalidation": "ECB dovish + PCE beat",
       "setupType": "Haftalık CALL / Bull Call Spread",
@@ -936,7 +936,7 @@
     },
     {
       "asset": "DXY (UUP)",
-      "bias": "BULLISH",
+      "bias": "bullish",
       "trigger": "PCE beat + ECB hawkish olmazsa",
       "invalidation": "PCE miss + ECB hawkish",
       "setupType": "UUP CALL",

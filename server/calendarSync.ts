@@ -82,7 +82,8 @@ function normalizeEvent(value: unknown, fallbackTimestamp: string): CalendarEven
     return null;
   }
 
-  const id = normalizeString(source.id);
+  const rawId = source.id;
+  const id = typeof rawId === "number" ? String(rawId) : normalizeString(rawId);
   const eventName = normalizeString(source.eventName ?? source.event_name);
   const country = normalizeString(source.country);
   const currency = normalizeString(source.currency);
@@ -90,6 +91,11 @@ function normalizeEvent(value: unknown, fallbackTimestamp: string): CalendarEven
   if (!id || !eventName || !country || !currency) {
     return null;
   }
+
+  const rawImpact = normalizeString(source.impactDirection ?? source.impact_direction).toLowerCase();
+  let impactDirection: CalendarEvent["impactDirection"] = undefined;
+  if (rawImpact === "positive") impactDirection = "positive";
+  if (rawImpact === "negative") impactDirection = "negative";
 
   return {
     id,
@@ -103,6 +109,8 @@ function normalizeEvent(value: unknown, fallbackTimestamp: string): CalendarEven
     actual: normalizeOptionalString(source.actual),
     currency,
     unit: normalizeOptionalString(source.unit),
+    analysis: normalizeOptionalString(source.analysis),
+    impactDirection,
   };
 }
 
@@ -135,6 +143,7 @@ function normalizeOptionSetup(value: unknown): CalendarOptionSetup | null {
     trigger,
     invalidation,
     setupType,
+    rationale: normalizeOptionalString(source.rationale),
   };
 }
 
