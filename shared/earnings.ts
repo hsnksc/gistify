@@ -78,6 +78,7 @@ export interface BudgetOption {
   strategy: string;
   cost: string;
   maxProfit: string;
+  maxReturn?: string;
 }
 
 export interface Strategy {
@@ -126,6 +127,8 @@ export interface PortfolioRecommendation {
   sector?: string;
   fomcRisk?: string;
   entryExit?: string;
+  entryWindow?: string;
+  exitWindow?: string;
 }
 
 export interface PortfolioLevel {

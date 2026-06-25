@@ -46,7 +46,14 @@ export default function CPRTable({ language, stocks }: CPRTableProps) {
   const [search, setSearch] = useState("");
 
   const sectors = useMemo(
-    () => Array.from(new Set(stocks.map(s => s.sector).filter(Boolean))),
+    () =>
+      Array.from(
+        new Set(
+          stocks
+            .map(s => s.sector)
+            .filter((x): x is string => Boolean(x))
+        )
+      ),
     [stocks]
   );
 
