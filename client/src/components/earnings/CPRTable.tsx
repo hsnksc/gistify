@@ -145,126 +145,134 @@ export default function CPRTable({ language, stocks }: CPRTableProps) {
         ))}
       </div>
 
-      <div className="max-h-[500px] overflow-y-auto rounded-2xl border border-white/10 overflow-hidden">
-        <table className="w-full text-left text-sm">
-          <thead className="bg-slate-800/80 text-xs font-semibold uppercase tracking-wider text-sky-300">
-            <tr>
-              <Th
-                label={copy(language, "Hisse", "Ticker")}
-                sortKey="ticker"
-                sortBy={sortBy}
-                sortDesc={sortDesc}
-                onSort={setSortBy}
-                onDirection={() => setSortDesc(d => !d)}
-              />
-              <Th
-                label="Hacim CPR"
-                sortKey="hacimCPR"
-                sortBy={sortBy}
-                sortDesc={sortDesc}
-                onSort={setSortBy}
-                onDirection={() => setSortDesc(d => !d)}
-              />
-              <Th
-                label="OI CPR"
-                sortKey="oiCPR"
-                sortBy={sortBy}
-                sortDesc={sortDesc}
-                onSort={setSortBy}
-                onDirection={() => setSortDesc(d => !d)}
-              />
-              <Th
-                label={copy(language, "Sektör", "Sector")}
-                sortKey="sector"
-                sortBy={sortBy}
-                sortDesc={sortDesc}
-                onSort={setSortBy}
-                onDirection={() => setSortDesc(d => !d)}
-              />
-              <Th
-                label={copy(language, "Sentiment", "Sentiment")}
-                sortKey="sentiment"
-                sortBy={sortBy}
-                sortDesc={sortDesc}
-                onSort={setSortBy}
-                onDirection={() => setSortDesc(d => !d)}
-              />
-              <Th
-                label={copy(language, "IV Rank", "IV Rank")}
-                sortKey="ivRank"
-                sortBy={sortBy}
-                sortDesc={sortDesc}
-                onSort={setSortBy}
-                onDirection={() => setSortDesc(d => !d)}
-              />
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-white/5">
-            {sorted.map((stock, index) => (
-              <tr
-                key={stock.ticker}
-                className={cn(
-                  "transition-colors",
-                  index % 2 === 0 ? "bg-slate-800/30" : "bg-slate-900/30",
-                  "hover:bg-sky-500/5"
-                )}
-              >
-                <td className="py-3 pl-4">
-                  <div className="flex items-center gap-2">
-                    <button
-                      className="font-bold text-white hover:text-sky-400 transition-colors"
-                      onClick={() => {
-                        // navigate or onClick handler
-                      }}
+      {sorted.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-900/40 p-6 text-center text-sm text-slate-400">
+          {copy(
+            language,
+            "Aktif arama veya sektor filtresiyle eslesen CPR kaydi yok.",
+            "No CPR entries match the active search or sector filter."
+          )}
+        </div>
+      ) : (
+        <div className="max-h-[500px] overflow-y-auto rounded-2xl border border-white/10 overflow-hidden">
+          <table className="w-full text-left text-sm">
+            <thead className="bg-slate-800/80 text-xs font-semibold uppercase tracking-wider text-sky-300">
+              <tr>
+                <Th
+                  label={copy(language, "Hisse", "Ticker")}
+                  sortKey="ticker"
+                  sortBy={sortBy}
+                  sortDesc={sortDesc}
+                  onSort={setSortBy}
+                  onDirection={() => setSortDesc(d => !d)}
+                />
+                <Th
+                  label="Hacim CPR"
+                  sortKey="hacimCPR"
+                  sortBy={sortBy}
+                  sortDesc={sortDesc}
+                  onSort={setSortBy}
+                  onDirection={() => setSortDesc(d => !d)}
+                />
+                <Th
+                  label="OI CPR"
+                  sortKey="oiCPR"
+                  sortBy={sortBy}
+                  sortDesc={sortDesc}
+                  onSort={setSortBy}
+                  onDirection={() => setSortDesc(d => !d)}
+                />
+                <Th
+                  label={copy(language, "Sektör", "Sector")}
+                  sortKey="sector"
+                  sortBy={sortBy}
+                  sortDesc={sortDesc}
+                  onSort={setSortBy}
+                  onDirection={() => setSortDesc(d => !d)}
+                />
+                <Th
+                  label={copy(language, "Sentiment", "Sentiment")}
+                  sortKey="sentiment"
+                  sortBy={sortBy}
+                  sortDesc={sortDesc}
+                  onSort={setSortBy}
+                  onDirection={() => setSortDesc(d => !d)}
+                />
+                <Th
+                  label={copy(language, "IV Rank", "IV Rank")}
+                  sortKey="ivRank"
+                  sortBy={sortBy}
+                  sortDesc={sortDesc}
+                  onSort={setSortBy}
+                  onDirection={() => setSortDesc(d => !d)}
+                />
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/5">
+              {sorted.map((stock, index) => (
+                <tr
+                  key={stock.ticker}
+                  className={cn(
+                    "transition-colors",
+                    index % 2 === 0 ? "bg-slate-800/30" : "bg-slate-900/30",
+                    "hover:bg-sky-500/5"
+                  )}
+                >
+                  <td className="py-3 pl-4">
+                    <div className="flex items-center gap-2">
+                    <a
+                      href={`/earnings/${stock.ticker}`}
+                      className="font-bold text-white transition-colors hover:text-sky-400"
                     >
                       {stock.ticker}
-                    </button>
-                    {stock.price && (
-                      <span className="text-xs text-slate-500">
-                        {stock.price}
-                      </span>
-                    )}
-                  </div>
-                </td>
-                <td className="py-3">
-                  <CPRBar value={stock.hacimCPR} />
-                </td>
-                <td className={cn("py-3", cprColor(stock.oiCPR))}>
-                  {stock.oiCPR || "—"}
-                </td>
-                <td className="py-3">
-                  {stock.sector ? (
-                    <span className="rounded-lg bg-slate-800 px-2.5 py-1 text-xs font-medium text-slate-300">
-                      {stock.sector}
-                    </span>
-                  ) : (
-                    "—"
-                  )}
-                </td>
-                <td className="py-3">
-                  {stock.sentiment ? (
-                    <span
-                      className={cn(
-                        "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold",
-                        SENTIMENT_COLORS[stock.sentiment] ||
-                          SENTIMENT_COLORS["Unknown"]
+                    </a>
+                      {stock.price && (
+                        <span className="text-xs text-slate-500">
+                          {stock.price}
+                        </span>
                       )}
-                    >
-                      {SENTIMENT_EMOJI[stock.sentiment] || "❓"}
-                      {stock.sentiment}
-                    </span>
-                  ) : (
-                    "—"
-                  )}
-                </td>
-                <td className="py-3 pr-4">
-                  <IVRankBar value={stock.ivRank} />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                    </div>
+                  </td>
+                  <td className="py-3">
+                    <CPRBar value={stock.hacimCPR} />
+                  </td>
+                  <td className={cn("py-3", cprColor(stock.oiCPR))}>
+                    {stock.oiCPR || "—"}
+                  </td>
+                  <td className="py-3">
+                    {stock.sector ? (
+                      <span className="rounded-lg bg-slate-800 px-2.5 py-1 text-xs font-medium text-slate-300">
+                        {stock.sector}
+                      </span>
+                    ) : (
+                      "—"
+                    )}
+                  </td>
+                  <td className="py-3">
+                    {stock.sentiment ? (
+                      <span
+                        className={cn(
+                          "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold",
+                          SENTIMENT_COLORS[stock.sentiment] ||
+                            SENTIMENT_COLORS["Unknown"]
+                        )}
+                      >
+                        {SENTIMENT_EMOJI[stock.sentiment] || "❓"}
+                        {stock.sentiment}
+                      </span>
+                    ) : (
+                      "—"
+                    )}
+                  </td>
+                  <td className="py-3 pr-4">
+                    <IVRankBar value={stock.ivRank} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </section>
   );
 }

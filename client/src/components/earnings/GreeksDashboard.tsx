@@ -119,6 +119,26 @@ export default function GreeksDashboard({
     }
   }
 
+  if (withGreeks.length === 0) {
+    return (
+      <section className="panel p-5 md:p-6">
+        <div className="mb-4 flex items-center gap-2">
+          <Activity className="size-5 text-sky-400" />
+          <h2 className="text-lg font-bold text-white">
+            {copy(language, "Greeks Dashboard", "Greeks Dashboard")}
+          </h2>
+        </div>
+        <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-900/40 p-6 text-center text-sm text-slate-400">
+          {copy(
+            language,
+            "Henüz Greeks verisi gelmedi. Opsiyon risk haritasi veri bekliyor.",
+            "Greeks data has not arrived yet. The options risk map is waiting for data."
+          )}
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="panel p-5 md:p-6">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
@@ -152,84 +172,94 @@ export default function GreeksDashboard({
         </div>
       </div>
 
-      <div className="max-h-[500px] overflow-y-auto rounded-2xl border border-white/10">
-        <table className="w-full text-left text-sm">
-          <thead className="sticky top-0 z-10 bg-slate-900/95 backdrop-blur">
-            <tr className="border-b border-white/10">
-              <th
-                className="cursor-pointer select-none py-3 pl-4 pr-2 text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-white"
-                onClick={() => handleSort("ticker")}
-              >
-                <div className="flex items-center gap-1">
-                  {copy(language, "Hisse", "Ticker")}
-                  <ArrowUpDown className="size-3" />
-                </div>
-              </th>
-              {GREEKS.map((g) => (
+      {sorted.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-900/40 p-6 text-center text-sm text-slate-400">
+          {copy(
+            language,
+            "Aktif filtre ile eslesen Greeks satiri yok.",
+            "No Greeks rows match the active filter."
+          )}
+        </div>
+      ) : (
+        <div className="max-h-[500px] overflow-y-auto rounded-2xl border border-white/10">
+          <table className="w-full text-left text-sm">
+            <thead className="sticky top-0 z-10 bg-slate-900/95 backdrop-blur">
+              <tr className="border-b border-white/10">
                 <th
-                  key={g.key}
-                  className="cursor-pointer select-none py-3 px-2 text-xs font-bold uppercase tracking-wider text-sky-300 hover:text-white"
-                  onClick={() => handleSort(g.key)}
+                  className="cursor-pointer select-none py-3 pl-4 pr-2 text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-white"
+                  onClick={() => handleSort("ticker")}
                 >
                   <div className="flex items-center gap-1">
-                    <span className="text-base">{g.symbol}</span>
-                    <span className="text-[10px] text-slate-500">{g.label}</span>
+                    {copy(language, "Hisse", "Ticker")}
                     <ArrowUpDown className="size-3" />
                   </div>
                 </th>
-              ))}
-              <th className="py-3 px-2 text-xs font-bold uppercase tracking-wider text-slate-400">
-                IV Rank
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-800/60">
-            {sorted.map((strategy, idx) => {
-              const d = parseGreek(strategy.greeks?.delta);
-              const t = parseGreek(strategy.greeks?.theta);
-              const v = parseGreek(strategy.greeks?.vega);
-              const g = parseGreek(strategy.greeks?.gamma);
-              const dc = deltaCell(d);
-              const tc = thetaCell(t);
-              const vc = vegaCell(v);
-              const gc = gammaCell(g);
-              return (
-                <tr
-                  key={strategy.ticker}
-                  className={cn(
-                    "transition-colors hover:bg-slate-800/40",
-                    idx % 2 === 0 ? "bg-slate-900/20" : "bg-transparent"
-                  )}
-                >
-                  <td className="py-3 pl-4 pr-2">
-                    <div>
-                      <span className="font-bold text-white">{strategy.ticker}</span>
-                      <p className="text-[10px] text-slate-500">
-                        {strategy.sector || strategy.type || "—"}
-                      </p>
+                {GREEKS.map((g) => (
+                  <th
+                    key={g.key}
+                    className="cursor-pointer select-none py-3 px-2 text-xs font-bold uppercase tracking-wider text-sky-300 hover:text-white"
+                    onClick={() => handleSort(g.key)}
+                  >
+                    <div className="flex items-center gap-1">
+                      <span className="text-base">{g.symbol}</span>
+                      <span className="text-[10px] text-slate-500">{g.label}</span>
+                      <ArrowUpDown className="size-3" />
                     </div>
-                  </td>
-                  <td className={cn("px-2 py-3 text-center", dc.bg)}>
-                    <span className={cn("text-xs font-bold", dc.text)}>{d.raw}</span>
-                  </td>
-                  <td className={cn("px-2 py-3 text-center", tc.bg)}>
-                    <span className={cn("text-xs font-bold", tc.text)}>{t.raw}</span>
-                  </td>
-                  <td className={cn("px-2 py-3 text-center", vc.bg)}>
-                    <span className={cn("text-xs font-bold", vc.text)}>{v.raw}</span>
-                  </td>
-                  <td className={cn("px-2 py-3 text-center", gc.bg)}>
-                    <span className={cn("text-xs font-bold", gc.text)}>{g.raw}</span>
-                  </td>
-                  <td className="px-2 py-3 text-center">
-                    <span className="text-xs text-slate-400">{strategy.ivRank || "—"}</span>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+                  </th>
+                ))}
+                <th className="py-3 px-2 text-xs font-bold uppercase tracking-wider text-slate-400">
+                  IV Rank
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-800/60">
+              {sorted.map((strategy, idx) => {
+                const d = parseGreek(strategy.greeks?.delta);
+                const t = parseGreek(strategy.greeks?.theta);
+                const v = parseGreek(strategy.greeks?.vega);
+                const g = parseGreek(strategy.greeks?.gamma);
+                const dc = deltaCell(d);
+                const tc = thetaCell(t);
+                const vc = vegaCell(v);
+                const gc = gammaCell(g);
+                return (
+                  <tr
+                    key={strategy.ticker}
+                    className={cn(
+                      "transition-colors hover:bg-slate-800/40",
+                      idx % 2 === 0 ? "bg-slate-900/20" : "bg-transparent"
+                    )}
+                  >
+                    <td className="py-3 pl-4 pr-2">
+                      <div>
+                        <span className="font-bold text-white">{strategy.ticker}</span>
+                        <p className="text-[10px] text-slate-500">
+                          {strategy.sector || strategy.type || "—"}
+                        </p>
+                      </div>
+                    </td>
+                    <td className={cn("px-2 py-3 text-center", dc.bg)}>
+                      <span className={cn("text-xs font-bold", dc.text)}>{d.raw}</span>
+                    </td>
+                    <td className={cn("px-2 py-3 text-center", tc.bg)}>
+                      <span className={cn("text-xs font-bold", tc.text)}>{t.raw}</span>
+                    </td>
+                    <td className={cn("px-2 py-3 text-center", vc.bg)}>
+                      <span className={cn("text-xs font-bold", vc.text)}>{v.raw}</span>
+                    </td>
+                    <td className={cn("px-2 py-3 text-center", gc.bg)}>
+                      <span className={cn("text-xs font-bold", gc.text)}>{g.raw}</span>
+                    </td>
+                    <td className="px-2 py-3 text-center">
+                      <span className="text-xs text-slate-400">{strategy.ivRank || "—"}</span>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {/* Legend */}
       <div className="mt-4 flex flex-wrap items-center gap-4 text-[10px] text-slate-400">

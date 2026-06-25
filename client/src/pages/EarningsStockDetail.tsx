@@ -8,10 +8,12 @@ import {
   EarningsLoadingState,
   EarningsPipelinePanel,
   EarningsUnavailableState,
+  EarningsWorkspaceToolbar,
   EarningsWorkspaceFrame,
 } from "./earnings/EarningsSurface";
 import { useEarningsStrategy } from "./earnings/useEarningsStrategy";
 import EmptyState from "@/components/ui/empty-state";
+import { toast } from "sonner";
 
 export default function EarningsStockDetailPage({
   language,
@@ -32,8 +34,17 @@ export default function EarningsStockDetailPage({
       <EarningsUnavailableState
         error={error}
         language={language}
-        onRetry={() => {
-          void refresh();
+        onRetry={async () => {
+          const result = await refresh();
+          if (result.ok) {
+            toast.success(
+              copy(language, "Ticker workspace'i yenilendi.", "The ticker workspace refreshed.")
+            );
+            return;
+          }
+          toast.error(copy(language, "Yenileme basarisiz.", "Refresh failed."), {
+            description: result.error,
+          });
         }}
       />
     );
@@ -47,6 +58,18 @@ export default function EarningsStockDetailPage({
   const relatedEvents = data.calendar.filter(
     event => event.ticker.toUpperCase() === normalizedTicker
   );
+  const handleRefresh = async () => {
+    const result = await refresh();
+    if (result.ok) {
+      toast.success(
+        copy(language, "Ticker workspace'i yenilendi.", "The ticker workspace refreshed.")
+      );
+      return;
+    }
+    toast.error(copy(language, "Yenileme basarisiz.", "Refresh failed."), {
+      description: result.error,
+    });
+  };
 
   return (
     <EarningsWorkspaceFrame>
@@ -55,8 +78,13 @@ export default function EarningsStockDetailPage({
         isRefreshing={isRefreshing}
         language={language}
         onRefresh={() => {
-          void refresh();
+          void handleRefresh();
         }}
+      />
+      <EarningsWorkspaceToolbar
+        language={language}
+        pipeline={pipeline}
+        sectionLabel={`${copy(language, "Ticker", "Ticker")}: ${normalizedTicker}`}
       />
       <EarningsPipelinePanel language={language} pipeline={pipeline} />
       {strategy ? (

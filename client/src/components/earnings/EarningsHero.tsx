@@ -102,6 +102,17 @@ export default function EarningsHero({
                 </div>
               )}
             </div>
+
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="rounded-full border border-sky-500/30 bg-sky-500/15 px-3 py-1 text-xs font-semibold text-sky-300">
+                {copy(language, "Aktif donem", "Active window")}: {currentMonth}
+              </span>
+              {nextMonth ? (
+                <span className="rounded-full border border-white/10 bg-slate-800/50 px-3 py-1 text-xs font-semibold text-slate-300">
+                  {copy(language, "Siradaki", "Next")}: {nextMonth}
+                </span>
+              ) : null}
+            </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">

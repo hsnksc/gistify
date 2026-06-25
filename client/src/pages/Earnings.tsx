@@ -1,5 +1,4 @@
-import { useState } from "react";
-import type { ReactNode } from "react";
+import { useEffect, useState } from "react";
 import EarningsCalendar from "@/components/earnings/EarningsCalendar";
 import EarningsHero from "@/components/earnings/EarningsHero";
 import CPRTable from "@/components/earnings/CPRTable";
@@ -26,14 +25,54 @@ import {
   EarningsLoadingState,
   EarningsPipelinePanel,
   EarningsUnavailableState,
+  EarningsWorkspaceToolbar,
   EarningsWorkspaceFrame,
   ExecutiveSummaryPanel,
   PortfolioPanel,
   StrategyCollectionPanel,
 } from "./earnings/EarningsSurface";
 import { useEarningsStrategy } from "./earnings/useEarningsStrategy";
+import { toast } from "sonner";
 
 type TabKey = "overview" | "calendar" | "strategies" | "cpr" | "portfolio" | "greeks";
+const ACTIVE_TAB_STORAGE_KEY = "gistify:earnings:active-tab";
+
+function isTabKey(value: string | null): value is TabKey {
+  return (
+    value === "overview" ||
+    value === "calendar" ||
+    value === "strategies" ||
+    value === "cpr" ||
+    value === "portfolio" ||
+    value === "greeks"
+  );
+}
+
+function replaceEarningsQueryParam(key: string, value: string) {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  params.set(key, value);
+  const query = params.toString();
+  const nextUrl = `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`;
+  window.history.replaceState({}, "", nextUrl);
+}
+
+function readStoredTab(): TabKey {
+  if (typeof window === "undefined") {
+    return "overview";
+  }
+
+  const queryTab = new URLSearchParams(window.location.search).get("tab");
+  if (isTabKey(queryTab)) {
+    return queryTab;
+  }
+
+  const value = window.localStorage.getItem(ACTIVE_TAB_STORAGE_KEY);
+  return isTabKey(value) ? value : "overview";
+}
 
 const TABS: { key: TabKey; labelTr: string; labelEn: string; icon: React.ReactNode }[] = [
   { key: "overview", labelTr: "Genel Bakış", labelEn: "Overview", icon: <LayoutDashboard className="size-4" /> },
@@ -51,7 +90,16 @@ export default function EarningsPage({
 }) {
   const { data, error, isLoading, isRefreshing, pipeline, refresh } =
     useEarningsStrategy();
-  const [activeTab, setActiveTab] = useState<TabKey>("overview");
+  const [activeTab, setActiveTab] = useState<TabKey>(() => readStoredTab());
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    window.localStorage.setItem(ACTIVE_TAB_STORAGE_KEY, activeTab);
+    replaceEarningsQueryParam("tab", activeTab);
+  }, [activeTab]);
 
   if (isLoading) {
     return <EarningsLoadingState language={language} />;
@@ -62,12 +110,57 @@ export default function EarningsPage({
       <EarningsUnavailableState
         error={error}
         language={language}
-        onRetry={() => {
-          void refresh();
+        onRetry={async () => {
+          const result = await refresh();
+          if (result.ok) {
+            toast.success(
+              copy(language, "Earnings workspace yenilendi.", "The earnings workspace refreshed.")
+            );
+            return;
+          }
+          toast.error(
+            copy(language, "Yenileme basarisiz.", "Refresh failed."),
+            {
+              description:
+                result.error ||
+                copy(
+                  language,
+                  "Pipeline verisi alinamadi.",
+                  "The pipeline data could not be loaded."
+                ),
+            }
+          );
         }}
       />
     );
   }
+
+  const handleRefresh = async () => {
+    const result = await refresh();
+    if (result.ok) {
+      toast.success(
+        copy(language, "Earnings workspace yenilendi.", "The earnings workspace refreshed."),
+        {
+          description: copy(
+            language,
+            "Takvim, strateji ve portfoy snapshot'i guncellendi.",
+            "The calendar, strategy, and portfolio snapshot were refreshed."
+          ),
+        }
+      );
+      return;
+    }
+
+    toast.error(copy(language, "Yenileme basarisiz.", "Refresh failed."), {
+      description:
+        result.error ||
+        copy(
+          language,
+          "Pipeline verisi alinamadi.",
+          "The pipeline data could not be loaded."
+        ),
+    });
+  };
 
   const bmoCount = data.calendar.filter(e => e.time === "BMO").length;
   const amcCount = data.calendar.filter(e => e.time === "AMC").length;
@@ -80,7 +173,7 @@ export default function EarningsPage({
         isRefreshing={isRefreshing}
         language={language}
         onRefresh={() => {
-          void refresh();
+          void handleRefresh();
         }}
       />
 
@@ -105,6 +198,16 @@ export default function EarningsPage({
         </div>
       </div>
 
+      <EarningsWorkspaceToolbar
+        language={language}
+        pipeline={pipeline}
+        sectionLabel={copy(
+          language,
+          TABS.find(tab => tab.key === activeTab)?.labelTr || "Genel Bakış",
+          TABS.find(tab => tab.key === activeTab)?.labelEn || "Overview"
+        )}
+      />
+
       {/* Overview Tab */}
       {activeTab === "overview" && (
         <div className="space-y-6">
@@ -125,7 +228,15 @@ export default function EarningsPage({
             language={language}
           />
           <ActionPlan items={data.actionPlan} language={language} />
-          <ReportDownload language={language} />
+          <ReportDownload
+            fileName={
+              pipeline.resolvedSourceFile
+                ? pipeline.resolvedSourceFile.split(/[/\\]/).pop()
+                : undefined
+            }
+            language={language}
+            reportDate={data.reportDate}
+          />
         </div>
       )}
 

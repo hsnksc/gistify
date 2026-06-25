@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Wallet, TrendingUp, DollarSign } from "lucide-react";
+import { Wallet, TrendingUp, DollarSign, Minus } from "lucide-react";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { Strategy } from "@shared/earnings";
@@ -84,6 +84,26 @@ export default function BudgetMatrix({
   language,
   strategies,
 }: BudgetMatrixProps) {
+  if (strategies.length === 0) {
+    return (
+      <section className="panel p-5 md:p-6">
+        <div className="mb-5 flex items-center gap-2">
+          <Wallet className="size-5 text-sky-400" />
+          <h2 className="text-lg font-bold text-white">
+            {copy(language, "Bütçe Dostu Stratejiler", "Budget Friendly Strategies")}
+          </h2>
+        </div>
+        <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-900/40 p-6 text-center text-sm text-slate-400">
+          {copy(
+            language,
+            "Bu lens icin henuz butceye gore eslesmis setup yok.",
+            "No budget-aligned setup is available for this lens yet."
+          )}
+        </div>
+      </section>
+    );
+  }
+
   const grouped = useMemo(() => {
     const map: Record<number, Strategy[]> = { 0: [], 1: [], 2: [], 3: [] };
     for (const s of strategies) {
@@ -240,9 +260,16 @@ export default function BudgetMatrix({
                 })}
 
                 {items.length === 0 && (
-                  <p className="py-4 text-center text-xs text-slate-500">
-                    {copy(language, "Veri yok", "No data")}
-                  </p>
+                  <div className="rounded-xl border border-dashed border-slate-700/70 bg-slate-900/30 px-3 py-4 text-center">
+                    <Minus className="mx-auto size-4 text-slate-500" />
+                    <p className="mt-2 text-xs text-slate-500">
+                      {copy(
+                        language,
+                        "Bu butce bandinda uygun setup yok.",
+                        "No matching setup in this budget band."
+                      )}
+                    </p>
+                  </div>
                 )}
               </div>
 

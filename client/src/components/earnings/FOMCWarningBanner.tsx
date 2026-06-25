@@ -125,6 +125,16 @@ export default function FOMCWarningBanner({
             </p>
 
             <div className="mt-3 flex flex-wrap gap-2">
+              {fomc.blackoutStart && fomc.date ? (
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-orange-500/30 bg-orange-500/10 px-2.5 py-1 text-xs font-semibold text-orange-300">
+                  <Clock className="size-3" />
+                  {copy(
+                    language,
+                    `Blackout araligi: ${fomc.blackoutStart} -> ${fomc.date}`,
+                    `Blackout window: ${fomc.blackoutStart} -> ${fomc.date}`
+                  )}
+                </span>
+              ) : null}
               {fomc.blackoutStart && (
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-rose-500/30 bg-rose-500/10 px-2.5 py-1 text-xs font-semibold text-rose-300">
                   <ShieldAlert className="size-3" />

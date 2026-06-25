@@ -13,7 +13,7 @@ export default function ReportDownload({
   reportDate,
   fileName,
 }: ReportDownloadProps) {
-  const hasReport = !!reportDate && !!fileName;
+  const hasReport = !!reportDate;
 
   const cards = [
     {
@@ -98,6 +98,9 @@ export default function ReportDownload({
                     <CalendarDays className="size-3.5" />
                     {reportDate}
                   </div>
+                  {fileName ? (
+                    <p className="text-[11px] text-slate-600">{fileName}</p>
+                  ) : null}
                 </div>
               ) : (
                 <div className="mb-4 rounded-lg border border-slate-700/50 bg-slate-900/30 p-3">

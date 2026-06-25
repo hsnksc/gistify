@@ -7,10 +7,12 @@ import {
   EarningsLoadingState,
   EarningsPipelinePanel,
   EarningsUnavailableState,
+  EarningsWorkspaceToolbar,
   EarningsWorkspaceFrame,
   StrategyCollectionPanel,
 } from "./earnings/EarningsSurface";
 import { useEarningsStrategy } from "./earnings/useEarningsStrategy";
+import { toast } from "sonner";
 
 export default function EarningsStrategiesPage({
   language,
@@ -29,12 +31,34 @@ export default function EarningsStrategiesPage({
       <EarningsUnavailableState
         error={error}
         language={language}
-        onRetry={() => {
-          void refresh();
+        onRetry={async () => {
+          const result = await refresh();
+          if (result.ok) {
+            toast.success(
+              copy(language, "Strateji workspace'i yenilendi.", "The strategy workspace refreshed.")
+            );
+            return;
+          }
+          toast.error(copy(language, "Yenileme basarisiz.", "Refresh failed."), {
+            description: result.error,
+          });
         }}
       />
     );
   }
+
+  const handleRefresh = async () => {
+    const result = await refresh();
+    if (result.ok) {
+      toast.success(
+        copy(language, "Strateji workspace'i yenilendi.", "The strategy workspace refreshed.")
+      );
+      return;
+    }
+    toast.error(copy(language, "Yenileme basarisiz.", "Refresh failed."), {
+      description: result.error,
+    });
+  };
 
   return (
     <EarningsWorkspaceFrame>
@@ -43,8 +67,13 @@ export default function EarningsStrategiesPage({
         isRefreshing={isRefreshing}
         language={language}
         onRefresh={() => {
-          void refresh();
+          void handleRefresh();
         }}
+      />
+      <EarningsWorkspaceToolbar
+        language={language}
+        pipeline={pipeline}
+        sectionLabel={copy(language, "Stratejiler", "Strategies")}
       />
       <EarningsPipelinePanel language={language} pipeline={pipeline} />
       {data.fomc ? (

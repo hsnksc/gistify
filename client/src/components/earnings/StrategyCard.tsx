@@ -11,6 +11,7 @@ import {
   LogOut,
   AlertCircle,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { Strategy, StrategyType } from "@shared/earnings";
@@ -40,6 +41,9 @@ export default function StrategyCard({ language, strategy }: StrategyCardProps) 
   const typeColor = strategy.type
     ? STRATEGY_COLORS[strategy.type]
     : "bg-slate-500/20 text-slate-400 border-slate-500/30";
+  const portfolioHref = strategy.budgetOptions[0]
+    ? `/earnings?tab=portfolio&budget=${encodeURIComponent(strategy.budgetOptions[0].budget)}`
+    : null;
 
   return (
     <div
@@ -221,6 +225,31 @@ export default function StrategyCard({ language, strategy }: StrategyCardProps) 
           ))}
         </div>
       )}
+
+      <div className="mt-5 flex flex-wrap gap-2 border-t border-white/8 pt-4">
+        <Button
+          asChild
+          size="sm"
+          variant="outline"
+          className="rounded-xl border-white/10 bg-slate-900/50 text-slate-100 hover:bg-slate-800/70"
+        >
+          <a href={`/earnings/${strategy.ticker}`}>
+            {copy(language, "Ticker detayi", "Ticker detail")}
+          </a>
+        </Button>
+        {portfolioHref ? (
+          <Button
+            asChild
+            size="sm"
+            variant="ghost"
+            className="rounded-xl text-sky-300 hover:bg-sky-500/10 hover:text-sky-200"
+          >
+            <a href={portfolioHref}>
+              {copy(language, "Portfoy lensi", "Portfolio lens")}
+            </a>
+          </Button>
+        ) : null}
+      </div>
     </div>
   );
 }

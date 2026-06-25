@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AlertTriangle,
   CalendarDays,
@@ -12,11 +12,17 @@ import {
   Zap,
   PieChart,
   ArrowRight,
+  Search,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import EmptyState from "@/components/ui/empty-state";
 import LoadingState from "@/components/ui/loading-state";
 import StrategyCard from "@/components/earnings/StrategyCard";
+import {
+  EarningsFreshnessBadge,
+  EarningsWorkspaceToolbar,
+  getPipelineStatusMeta,
+} from "@/components/earnings/EarningsWorkspaceChrome";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type {
@@ -67,27 +73,42 @@ export function EarningsUnavailableState({
   language: AppLanguage;
   onRetry: () => void;
 }) {
+  const hasRuntimeError = Boolean(error.trim());
+
   return (
     <EarningsWorkspaceFrame>
       <EmptyState
-        tone="warning"
-        title={copy(
-          language,
-          "Earnings workspace hazir degil",
-          "The earnings workspace is not ready"
-        )}
-        description={
-          error ||
-          copy(
-            language,
-            "Pipeline verisi henuz gelmedi. Kaynagi tekrar yoklayin.",
-            "The pipeline data has not arrived yet. Retry the source."
-          )
+        tone={hasRuntimeError ? "danger" : "info"}
+        title={
+          hasRuntimeError
+            ? copy(
+                language,
+                "Earnings workspace baglanamadi",
+                "The earnings workspace could not connect"
+              )
+            : copy(
+                language,
+                "Earnings workspace bos dondu",
+                "The earnings workspace returned empty"
+              )
         }
-        icon={AlertTriangle}
+        description={
+          hasRuntimeError
+            ? error
+            : copy(
+                language,
+                "Pipeline verisi henuz gelmedi. Kaynagi kontrol edip tekrar deneyin.",
+                "The pipeline data has not arrived yet. Check the source and retry."
+              )
+        }
+        icon={hasRuntimeError ? AlertTriangle : Search}
         action={
           <Button type="button" variant="outline" onClick={onRetry}>
-            {copy(language, "Tekrar dene", "Retry")}
+            {copy(
+              language,
+              hasRuntimeError ? "Tekrar dene" : "Kaynagi tekrar yokla",
+              hasRuntimeError ? "Retry" : "Retry source"
+            )}
           </Button>
         }
       />
@@ -102,63 +123,91 @@ export function EarningsPipelinePanel({
   language: AppLanguage;
   pipeline: EarningsStrategyPipelineMetadata;
 }) {
-  const statusCopy = {
-    idle: copy(language, "Beklemede", "Idle"),
-    ok: copy(language, "Guncel", "Current"),
-    stale: copy(language, "Bayat", "Stale"),
-    error: copy(language, "Hata", "Error"),
-  }[pipeline.status];
+  const statusMeta = getPipelineStatusMeta(pipeline.status, language);
+  const [isExpanded, setIsExpanded] = useState(() => pipeline.status !== "ok");
 
-  const statusColor = {
-    idle: "text-slate-400",
-    ok: "text-emerald-400",
-    stale: "text-amber-400",
-    error: "text-rose-400",
-  }[pipeline.status];
+  useEffect(() => {
+    if (pipeline.status !== "ok") {
+      setIsExpanded(true);
+    }
+  }, [pipeline.status]);
 
   return (
     <section className={cn(
       "panel p-6 md:p-8",
       "bg-gradient-to-b from-slate-800/50 to-slate-900/50 backdrop-blur-sm"
     )}>
-      <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+      <button
+        type="button"
+        onClick={() => setIsExpanded(value => !value)}
+        className="flex w-full flex-col gap-3 text-left md:flex-row md:items-center md:justify-between"
+      >
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-400">
             {copy(language, "Pipeline durumu", "Pipeline status")}
           </p>
-          <h2 className={cn("mt-2 text-xl font-bold", statusColor)}>
-            {statusCopy}
-          </h2>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">
-            {pipeline.error ||
-              copy(
-                language,
-                "Kaynak markdown dosyasi duzenli olarak taraniyor ve son snapshot burada sunuluyor.",
-                "The source markdown is polled regularly and the latest snapshot is surfaced here."
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            <span
+              className={cn(
+                "inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold",
+                statusMeta.chipClassName,
+                statusMeta.pulse ? "animate-pulse" : ""
               )}
-          </p>
+            >
+              <statusMeta.Icon className="size-3.5" />
+              {statusMeta.label}
+            </span>
+            <EarningsFreshnessBadge language={language} pipeline={pipeline} />
+          </div>
         </div>
-        <div className="grid gap-2 rounded-2xl border border-white/10 bg-slate-900/50 p-5 text-sm text-slate-400 md:min-w-[300px]">
-          <p>
-            <span className="text-slate-500">
-              {copy(language, "Son senkron", "Last sync")}:{" "}
-            </span>
-            {pipeline.lastSyncedAt || "—"}
-          </p>
-          <p>
-            <span className="text-slate-500">
-              {copy(language, "Kaynak degisti", "Source modified")}:{" "}
-            </span>
-            {pipeline.lastSourceModifiedAt || "—"}
-          </p>
-          <p className="truncate">
-            <span className="text-slate-500">
-              {copy(language, "Kaynak", "Source")}:{" "}
-            </span>
-            {pipeline.resolvedSourceFile || pipeline.sourceFolder || "—"}
-          </p>
+        <span className="inline-flex items-center gap-2 text-sm text-slate-400">
+          {copy(
+            language,
+            isExpanded ? "Detayi gizle" : "Detayi goster",
+            isExpanded ? "Hide details" : "Show details"
+          )}
+          {isExpanded ? (
+            <ChevronUp className="size-4" />
+          ) : (
+            <ChevronDown className="size-4" />
+          )}
+        </span>
+      </button>
+
+      {isExpanded ? (
+        <div className="mt-5 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+          <div>
+            <p className="max-w-2xl text-sm leading-6 text-slate-400">
+              {pipeline.error ||
+                copy(
+                  language,
+                  "Kaynak markdown dosyasi duzenli olarak taraniyor ve son snapshot burada sunuluyor.",
+                  "The source markdown is polled regularly and the latest snapshot is surfaced here."
+                )}
+            </p>
+          </div>
+          <div className="grid gap-2 rounded-2xl border border-white/10 bg-slate-900/50 p-5 text-sm text-slate-400 md:min-w-[300px]">
+            <p>
+              <span className="text-slate-500">
+                {copy(language, "Son senkron", "Last sync")}:{" "}
+              </span>
+              {pipeline.lastSyncedAt || "—"}
+            </p>
+            <p>
+              <span className="text-slate-500">
+                {copy(language, "Kaynak degisti", "Source modified")}:{" "}
+              </span>
+              {pipeline.lastSourceModifiedAt || "—"}
+            </p>
+            <p className="truncate">
+              <span className="text-slate-500">
+                {copy(language, "Kaynak", "Source")}:{" "}
+              </span>
+              {pipeline.resolvedSourceFile || pipeline.sourceFolder || "—"}
+            </p>
+          </div>
         </div>
-      </div>
+      ) : null}
     </section>
   );
 }
@@ -181,6 +230,27 @@ export function StrategyCollectionPanel({
   const displayTitle = title === "Core strategies" || title === "Core Strategies"
     ? copy(language, "Öne Çıkan Stratejiler", "Core Strategies")
     : title;
+
+  if (strategies.length === 0) {
+    return (
+      <section className="panel p-6 md:p-8">
+        <EmptyState
+          tone="neutral"
+          title={copy(
+            language,
+            "Bu bolumde uygun strategy yok",
+            "No strategy is available in this section"
+          )}
+          description={copy(
+            language,
+            "Pipeline bu lens icin henuz setup cikarmadi.",
+            "The pipeline has not produced a setup for this lens yet."
+          )}
+          icon={Zap}
+        />
+      </section>
+    );
+  }
 
   return (
     <section className={cn(
@@ -315,6 +385,8 @@ export function ActionPlanPanel({
     </section>
   );
 }
+
+export { EarningsWorkspaceToolbar };
 
 export function PortfolioPanel({
   language,

@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import {
   PieChart,
   CalendarDays,
@@ -6,11 +6,10 @@ import {
   Shield,
   AlertTriangle,
   ArrowRight,
-  ChevronRight,
 } from "lucide-react";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import type { PortfolioLevel, PortfolioRecommendation } from "@shared/earnings";
+import type { PortfolioLevel } from "@shared/earnings";
 
 interface PortfolioBuilderProps {
   language: AppLanguage;
@@ -57,13 +56,59 @@ const SECTOR_COLORS = [
   "#f472b6", // pink
 ];
 
+const PORTFOLIO_BUDGET_STORAGE_KEY = "gistify:earnings:portfolio-budget";
+
+function replaceBudgetQueryParam(value: string) {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  params.set("budget", value);
+  const query = params.toString();
+  const nextUrl = `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`;
+  window.history.replaceState({}, "", nextUrl);
+}
+
+function readStoredBudget() {
+  if (typeof window === "undefined") {
+    return "$1,000";
+  }
+
+  const queryBudget = new URLSearchParams(window.location.search).get("budget");
+  if (queryBudget) {
+    return queryBudget;
+  }
+
+  return (
+    window.localStorage.getItem(PORTFOLIO_BUDGET_STORAGE_KEY) || "$1,000"
+  );
+}
+
 export default function PortfolioBuilder({
   language,
   portfolio,
 }: PortfolioBuilderProps) {
-  const [selected, setSelected] = useState("$1,000");
+  const [selected, setSelected] = useState(() => readStoredBudget());
   const level = portfolio.find((l) => l.budget === selected);
   const recs = level?.recommendations ?? [];
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    window.localStorage.setItem(PORTFOLIO_BUDGET_STORAGE_KEY, selected);
+    replaceBudgetQueryParam(selected);
+  }, [selected]);
+
+  useEffect(() => {
+    if (level || portfolio.length === 0) {
+      return;
+    }
+
+    setSelected(portfolio[0].budget);
+  }, [level, portfolio]);
 
   const totalAllocation = useMemo(() => {
     return recs.reduce((sum, r) => {
@@ -240,7 +285,6 @@ export default function PortfolioBuilder({
               {recs.map((rec, idx) => {
                 const risk = (rec.risk || "medium") as "low" | "medium" | "high";
                 const style = RISK_STYLES[risk] || RISK_STYLES.medium;
-                const alloc = parseFloat(rec.allocation?.replace(/[^0-9.]/g, "") ?? "0");
                 return (
                   <div
                     key={`${rec.ticker}-${idx}`}

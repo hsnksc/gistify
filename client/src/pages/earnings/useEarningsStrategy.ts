@@ -22,7 +22,7 @@ interface EarningsStrategyState {
   isLoading: boolean;
   isRefreshing: boolean;
   pipeline: EarningsStrategyPipelineMetadata;
-  refresh: () => Promise<void>;
+  refresh: () => Promise<{ error?: string; ok: boolean }>;
 }
 
 export function useEarningsStrategy(): EarningsStrategyState {
@@ -49,17 +49,26 @@ export function useEarningsStrategy(): EarningsStrategyState {
 
       if (!response.ok || !payload.success || !payload.data) {
         setData(payload.data || null);
-        setError(payload.error || "Earnings workspace unavailable.");
-        return;
+        const message = payload.error || "Earnings workspace unavailable.";
+        setError(message);
+        return {
+          error: message,
+          ok: false,
+        };
       }
 
       setData(payload.data);
+      return { ok: true };
     } catch (fetchError) {
-      setError(
+      const message =
         fetchError instanceof Error
           ? fetchError.message
-          : "Earnings workspace unavailable."
-      );
+          : "Earnings workspace unavailable.";
+      setError(message);
+      return {
+        error: message,
+        ok: false,
+      };
     } finally {
       setIsLoading(false);
       setIsRefreshing(false);

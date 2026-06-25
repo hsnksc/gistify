@@ -1,15 +1,17 @@
 import EarningsCalendar from "@/components/earnings/EarningsCalendar";
 import EarningsHero from "@/components/earnings/EarningsHero";
 import FOMCWarningBanner from "@/components/earnings/FOMCWarningBanner";
-import type { AppLanguage } from "@/lib/i18n";
+import { copy, type AppLanguage } from "@/lib/i18n";
 import {
   CalendarStatsPanel,
   EarningsLoadingState,
   EarningsPipelinePanel,
   EarningsUnavailableState,
+  EarningsWorkspaceToolbar,
   EarningsWorkspaceFrame,
 } from "./earnings/EarningsSurface";
 import { useEarningsStrategy } from "./earnings/useEarningsStrategy";
+import { toast } from "sonner";
 
 export default function EarningsCalendarPage({
   language,
@@ -28,8 +30,17 @@ export default function EarningsCalendarPage({
       <EarningsUnavailableState
         error={error}
         language={language}
-        onRetry={() => {
-          void refresh();
+        onRetry={async () => {
+          const result = await refresh();
+          if (result.ok) {
+            toast.success(
+              copy(language, "Earnings takvimi yenilendi.", "The earnings calendar refreshed.")
+            );
+            return;
+          }
+          toast.error(copy(language, "Yenileme basarisiz.", "Refresh failed."), {
+            description: result.error,
+          });
         }}
       />
     );
@@ -40,6 +51,18 @@ export default function EarningsCalendarPage({
   ).length;
   const bmoCount = data.calendar.filter(event => event.time === "BMO").length;
   const amcCount = data.calendar.filter(event => event.time === "AMC").length;
+  const handleRefresh = async () => {
+    const result = await refresh();
+    if (result.ok) {
+      toast.success(
+        copy(language, "Earnings takvimi yenilendi.", "The earnings calendar refreshed.")
+      );
+      return;
+    }
+    toast.error(copy(language, "Yenileme basarisiz.", "Refresh failed."), {
+      description: result.error,
+    });
+  };
 
   return (
     <EarningsWorkspaceFrame>
@@ -48,8 +71,13 @@ export default function EarningsCalendarPage({
         isRefreshing={isRefreshing}
         language={language}
         onRefresh={() => {
-          void refresh();
+          void handleRefresh();
         }}
+      />
+      <EarningsWorkspaceToolbar
+        language={language}
+        pipeline={pipeline}
+        sectionLabel={copy(language, "Takvim", "Calendar")}
       />
       <EarningsPipelinePanel language={language} pipeline={pipeline} />
       {data.fomc ? (

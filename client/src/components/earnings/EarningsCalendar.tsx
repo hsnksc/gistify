@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import { CalendarDays, Star } from "lucide-react";
+import { useMemo, useState } from "react";
+import { CalendarDays, SlidersHorizontal, Star } from "lucide-react";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { EarningsEvent, EarningsTime } from "@shared/earnings";
@@ -16,8 +16,44 @@ export default function EarningsCalendar({
   language,
   events,
 }: EarningsCalendarProps) {
-  const { weeks, monthNames } = useMemo(() => buildCalendar(events), [events]);
+  const [timeFilter, setTimeFilter] = useState<"all" | EarningsTime>("all");
+  const [importanceFilter, setImportanceFilter] = useState<"all" | "high">("all");
+  const [sectorFilter, setSectorFilter] = useState("all");
+  const sectors = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          events
+            .map(event => event.sector?.trim())
+            .filter((sector): sector is string => Boolean(sector))
+        )
+      )
+        .sort((left, right) => left.localeCompare(right))
+        .slice(0, 8),
+    [events]
+  );
+  const filteredEvents = useMemo(
+    () =>
+      events.filter(event => {
+        if (timeFilter !== "all" && event.time !== timeFilter) {
+          return false;
+        }
+
+        if (importanceFilter === "high" && event.importance < 3) {
+          return false;
+        }
+
+        if (sectorFilter !== "all" && event.sector !== sectorFilter) {
+          return false;
+        }
+
+        return true;
+      }),
+    [events, importanceFilter, sectorFilter, timeFilter]
+  );
+  const { weeks, monthNames } = useMemo(() => buildCalendar(filteredEvents), [filteredEvents]);
   const dayLabels = language === "en" ? DAYS : DAY_LABELS_TR;
+  const visibleCount = filteredEvents.length;
 
   return (
     <section className={cn(
@@ -40,6 +76,9 @@ export default function EarningsCalendar({
           </div>
         </div>
         <div className="flex items-center gap-4 text-xs text-slate-400">
+          <span className="rounded-full border border-white/10 bg-slate-800/50 px-3 py-1.5 font-semibold text-slate-300">
+            {visibleCount} {copy(language, "event", "events")}
+          </span>
           <span className="flex items-center gap-2 rounded-full border border-white/10 bg-slate-800/50 px-3 py-1.5">
             <span className="inline-block size-2.5 rounded-full bg-emerald-500" />
             BMO
@@ -49,6 +88,54 @@ export default function EarningsCalendar({
             AMC
           </span>
         </div>
+      </div>
+
+      <div className="mb-4 rounded-2xl border border-white/10 bg-slate-900/50 p-4">
+        <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+          <SlidersHorizontal className="size-3.5" />
+          {copy(language, "Takvim filtreleri", "Calendar filters")}
+        </div>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <FilterChip
+            active={timeFilter === "all"}
+            label={copy(language, "Tum zamanlar", "All times")}
+            onClick={() => setTimeFilter("all")}
+          />
+          <FilterChip
+            active={timeFilter === "BMO"}
+            label="BMO"
+            onClick={() => setTimeFilter("BMO")}
+          />
+          <FilterChip
+            active={timeFilter === "AMC"}
+            label="AMC"
+            onClick={() => setTimeFilter("AMC")}
+          />
+          <FilterChip
+            active={importanceFilter === "high"}
+            label={copy(language, "Yuksek onem", "High importance")}
+            onClick={() =>
+              setImportanceFilter(value => (value === "high" ? "all" : "high"))
+            }
+          />
+        </div>
+        {sectors.length > 0 ? (
+          <div className="mt-3 flex flex-wrap gap-2">
+            <FilterChip
+              active={sectorFilter === "all"}
+              label={copy(language, "Tum sektorler", "All sectors")}
+              onClick={() => setSectorFilter("all")}
+            />
+            {sectors.map(sector => (
+              <FilterChip
+                key={sector}
+                active={sectorFilter === sector}
+                label={sector}
+                onClick={() => setSectorFilter(sector)}
+              />
+            ))}
+          </div>
+        ) : null}
       </div>
 
       {/* Month pills */}
@@ -70,10 +157,13 @@ export default function EarningsCalendar({
 
       {/* Day headers */}
       <div className="grid grid-cols-7 gap-2 border-b border-white/10 pb-3">
-        {dayLabels.map(d => (
+        {dayLabels.map((d, index) => (
           <div
             key={d}
-            className="text-center text-xs font-bold uppercase tracking-wider text-slate-400"
+            className={cn(
+              "text-center text-xs font-bold uppercase tracking-wider",
+              index >= 5 ? "text-slate-600" : "text-slate-400"
+            )}
           >
             {d}
           </div>
@@ -81,19 +171,39 @@ export default function EarningsCalendar({
       </div>
 
       {/* Calendar grid */}
-      <div className="mt-3 space-y-2">
-        {weeks.map((week, wi) => (
-          <div key={wi} className="grid grid-cols-7 gap-2">
-            {week.map((day, di) => (
-              <DayCell
-                key={`${wi}-${di}`}
-                language={language}
-                day={day}
-              />
-            ))}
-          </div>
-        ))}
-      </div>
+      {filteredEvents.length > 0 ? (
+        <div className="mt-3 space-y-2">
+          {weeks.map((week, wi) => (
+            <div key={wi} className="grid grid-cols-7 gap-2">
+              {week.map((day, di) => (
+                <DayCell
+                  key={`${wi}-${di}`}
+                  day={day}
+                  isWeekend={di >= 5}
+                  language={language}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="mt-3 rounded-2xl border border-dashed border-slate-700 bg-slate-900/35 px-4 py-8 text-center">
+          <p className="text-sm font-semibold text-slate-300">
+            {copy(
+              language,
+              "Bu filtre kombinasyonunda event yok.",
+              "No events match this filter combination."
+            )}
+          </p>
+          <p className="mt-2 text-xs text-slate-500">
+            {copy(
+              language,
+              "Zaman, onem veya sektor secimini gevsetin.",
+              "Relax the time, importance, or sector filter."
+            )}
+          </p>
+        </div>
+      )}
 
       {/* Legend */}
       <div className="mt-5 flex flex-wrap gap-4 border-t border-white/10 pt-4 text-xs text-slate-500">
@@ -113,13 +223,20 @@ export default function EarningsCalendar({
 function DayCell({
   language,
   day,
+  isWeekend,
 }: {
   language: AppLanguage;
   day: CalendarDay;
+  isWeekend: boolean;
 }) {
   if (!day.date) {
     return (
-      <div className="min-h-[110px] rounded-2xl border border-white/5 bg-slate-900/30 md:min-h-[130px]" />
+      <div
+        className={cn(
+          "min-h-[110px] rounded-2xl border border-white/5 bg-slate-900/30 md:min-h-[130px]",
+          isWeekend ? "opacity-55" : ""
+        )}
+      />
     );
   }
 
@@ -128,18 +245,31 @@ function DayCell({
   const isCurrentMonth = day.isCurrentMonth;
   const hasHighImportance = day.events.some(e => e.importance >= 3);
   const maxStars = day.events.reduce((max, e) => Math.max(max, e.importance), 0);
+  const intensityScore = day.events.reduce(
+    (sum, event) => sum + Math.min(event.importance, 3),
+    0
+  );
+  const heatClass =
+    intensityScore >= 8
+      ? "border-sky-400/30 bg-sky-500/18"
+      : intensityScore >= 4
+        ? "border-sky-500/20 bg-sky-500/10"
+        : intensityScore > 0
+          ? "border-white/10 bg-slate-800/55"
+          : isCurrentMonth
+            ? "border-white/5 bg-slate-900/30"
+            : "border-white/5 border-dashed bg-slate-900/20";
 
   return (
     <div
       className={cn(
         "group relative min-h-[110px] rounded-2xl border p-2.5 transition-all duration-300 md:min-h-[130px] md:p-3",
+        heatClass,
+        !isCurrentMonth && day.events.length > 0 ? "border-dashed" : "",
+        isWeekend ? "opacity-75" : "",
         day.events.length > 0
-          ? isCurrentMonth
-            ? "border-white/10 bg-slate-800/50 hover:-translate-y-0.5 hover:border-sky-500/30 hover:shadow-lg hover:shadow-sky-500/5"
-            : "border-white/5 border-dashed bg-slate-800/30 hover:-translate-y-0.5 hover:border-sky-500/20 hover:shadow-lg hover:shadow-sky-500/5"
-          : isCurrentMonth
-            ? "border-white/5 bg-slate-900/30"
-            : "border-white/5 border-dashed bg-slate-900/20"
+          ? "hover:-translate-y-0.5 hover:border-sky-500/30 hover:shadow-lg hover:shadow-sky-500/5"
+          : ""
       )}
     >
       {/* Day number + importance indicator */}
@@ -175,7 +305,7 @@ function DayCell({
 
       {/* Hover tooltip — detailed */}
       {day.events.length > 0 && (
-        <div className="pointer-events-none absolute left-1/2 top-full z-30 mt-2 hidden w-72 -translate-x-1/2 rounded-2xl border border-white/10 bg-slate-900/95 p-4 shadow-2xl backdrop-blur-md group-hover:block md:left-full md:top-0 md:ml-2 md:mt-0 md:translate-x-0">
+        <div className="invisible absolute left-1/2 top-full z-30 mt-2 w-72 -translate-x-1/2 rounded-2xl border border-white/10 bg-slate-900/95 p-4 opacity-0 shadow-2xl backdrop-blur-md transition-opacity duration-150 group-hover:visible group-hover:opacity-100 md:left-full md:top-0 md:ml-2 md:mt-0 md:translate-x-0">
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.12em] text-sky-400">
             {day.date}
           </p>
@@ -187,7 +317,12 @@ function DayCell({
               >
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-white">{e.ticker}</span>
+                    <a
+                      href={`/earnings/${e.ticker}`}
+                      className="font-bold text-white transition-colors hover:text-sky-400"
+                    >
+                      {e.ticker}
+                    </a>
                     <TimeBadge time={e.time} />
                   </div>
                   <p className="mt-0.5 truncate text-[11px] text-slate-400">{e.company}</p>
@@ -221,9 +356,35 @@ function DayCell({
   );
 }
 
+function FilterChip({
+  active,
+  label,
+  onClick,
+}: {
+  active: boolean;
+  label: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors",
+        active
+          ? "border-sky-500/30 bg-sky-500/15 text-sky-300"
+          : "border-white/10 bg-slate-800/50 text-slate-400 hover:bg-slate-800 hover:text-slate-200"
+      )}
+    >
+      {label}
+    </button>
+  );
+}
+
 function EventPill({ event }: { event: EarningsEvent }) {
   return (
-    <div
+    <a
+      href={`/earnings/${event.ticker}`}
       className={cn(
         "flex items-center justify-between rounded-lg border px-2 py-1 text-[10px] font-medium transition-all hover:scale-[1.02]",
         event.time === "BMO"
@@ -236,7 +397,7 @@ function EventPill({ event }: { event: EarningsEvent }) {
     >
       <span className="font-bold">{event.ticker}</span>
       <span className="opacity-70">{event.time}</span>
-    </div>
+    </a>
   );
 }
 
