@@ -35,13 +35,13 @@ interface Props {
 }
 
 export default function OverviewTab({
+  language,
   onStockClick,
   stocks = stocksData,
   reportWindow = copy(language, 'Haftalik gorunum', 'Weekly view'),
   analysisDateLabel = copy(language, 'Canli', 'Live'),
   headline,
   summary,
-  language,
 }: Props) {
   const topPicks = stocks.filter(s => s.signal === 'STRONG_BUY' || s.signal === 'BUY').slice(0, 5);
   const momentumChartData = [...stocks]

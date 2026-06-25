@@ -101,7 +101,7 @@ export function chartLineDot(color: string) {
   };
 }
 
-export function coerceChartNumber(value: number | string | null | undefined) {
+export function coerceChartNumber(value: unknown) {
   if (typeof value === "number") {
     return Number.isFinite(value) ? value : null;
   }
@@ -115,7 +115,7 @@ export function coerceChartNumber(value: number | string | null | undefined) {
 }
 
 export function formatChartNumber(
-  value: number | string | null | undefined,
+  value: unknown,
   digits = 0
 ) {
   const parsed = coerceChartNumber(value);
@@ -130,7 +130,7 @@ export function formatChartNumber(
 }
 
 export function formatChartPercent(
-  value: number | string | null | undefined,
+  value: unknown,
   digits = 0
 ) {
   const parsed = coerceChartNumber(value);
@@ -142,7 +142,7 @@ export function formatChartPercent(
 }
 
 export function formatChartCurrency(
-  value: number | string | null | undefined,
+  value: unknown,
   currencySymbol = "$",
   digits = 2
 ) {

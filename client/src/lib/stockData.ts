@@ -5,7 +5,7 @@
 // Güncelleme: 21 Mayıs 2026
 // ============================================================
 
-export type SignalLevel = 'STRONG_BUY' | 'BUY' | 'NEUTRAL' | 'SELL' | 'STRONG_SELL';
+export type SignalLevel = 'STRONG_BUY' | 'BUY' | 'NEUTRAL' | 'SELL' | 'STRONG_SELL' | 'CAUTION_HOT';
 export type VolumeStatus = 'VERY_HIGH' | 'HIGH' | 'NORMAL' | 'LOW';
 export type RiskLevel = 'LOW' | 'MEDIUM' | 'HIGH' | 'VERY_HIGH';
 
@@ -727,6 +727,13 @@ export const signalConfig: Record<SignalLevel, { label: string; color: string; b
     bgClass: 'bg-red-600/15',
     textClass: 'text-red-500',
     borderClass: 'border-red-600/40',
+  },
+  CAUTION_HOT: {
+    label: 'Dikkat — Sıcak',
+    color: '#f59e0b',
+    bgClass: 'bg-amber-500/15',
+    textClass: 'text-amber-400',
+    borderClass: 'border-amber-500/40',
   },
 };
 

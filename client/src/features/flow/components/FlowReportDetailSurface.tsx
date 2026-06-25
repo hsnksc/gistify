@@ -30,10 +30,10 @@ interface FlowReportDetailSurfaceProps {
 }
 
 export default function FlowReportDetailSurface({
+  language,
   basePath = "/flow",
   eyebrow = copy(language, "Flow", "Flow"),
   error = "",
-  language,
   loading = false,
   onRefresh,
   report,

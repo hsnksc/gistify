@@ -35,9 +35,9 @@ interface FlowTickerPageProps {
 }
 
 export default function FlowTickerPage({
+  language,
   basePath = "/flow",
   eyebrow = copy(language, "Flow", "Flow"),
-  language,
   ticker,
 }: FlowTickerPageProps) {
   const [, setLocation] = useLocation();

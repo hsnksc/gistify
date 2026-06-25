@@ -25,6 +25,7 @@ import { copy, type AppLanguage } from "@/lib/i18n";
 
 type SignalDirection = "positive" | "negative" | "neutral";
 type SurfaceMode = "overview" | "positive" | "negative" | "shifts";
+type FilterMode = "all" | "buy" | "sell" | "top_up" | "top_down";
 
 interface LiveSignalSummary {
   action: ActionSignal;
@@ -672,7 +673,7 @@ function MomentumSignalCard({
             { key: 'f5_volatility_regime', label: copy(language, 'F5', 'F5') },
             { key: 'f6_catalyst_flow', label: copy(language, 'F6', 'F6') },
           ].map((f) => {
-            const score = (signal.factor_breakdown as Record<string, number>)[f.key] ?? 0;
+            const score = signal.factor_breakdown![f.key as keyof NonNullable<typeof signal.factor_breakdown>] ?? 0;
             return (
               <div key={f.key} className="flex items-center gap-2">
                 <span className="w-5 text-[10px] font-medium text-muted-foreground">{f.label}</span>
@@ -869,11 +870,11 @@ export default function MidasOpportunitiesTab({
   // Auto live-scan disabled: client-side CORS proxy 50-symbol fetch locks browser
   // useEffect(() => {
   //   if (!data) return;
-  //   const nextKey = `${data.timestamp}:${data.symbol_count}`;
+  //   const nextKey = `${data.timestamp}:${data!.symbol_count}`;
   //   if (lastAutoScanKeyRef.current === nextKey) return;
   //   lastAutoScanKeyRef.current = nextKey;
   //   autoScanRef.current = true;
-  //   void runLiveRefresh(data.signals.map((signal) => signal.symbol));
+  //   void runLiveRefresh(data!.signals.map((signal) => signal.symbol));
   // }, [data, runLiveRefresh]);
 
   const mergedSignals = useMemo(() => {
@@ -1065,7 +1066,7 @@ export default function MidasOpportunitiesTab({
             </button>
             <button
               type="button"
-              onClick={() => void runLiveRefresh(data.signals.map((signal) => signal.symbol))}
+              onClick={() => void runLiveRefresh(data!.signals.map((signal) => signal.symbol))}
               disabled={liveLoading}
               className="inline-flex items-center justify-center gap-2 rounded-lg border border-sky-400/30 bg-sky-500/12 px-4 py-2 text-sm font-semibold text-sky-100 transition-colors hover:bg-sky-500/18 disabled:cursor-not-allowed disabled:opacity-60"
             >
@@ -1091,7 +1092,7 @@ export default function MidasOpportunitiesTab({
             {pipelineStatusLabel(data.pipeline?.status || "idle", language)}
           </span>
           <span className="rounded-full border border-border bg-background/70 px-3 py-1">
-            {liveCoverageCount}/{data.symbol_count} {copy(language, "sembol tarandi", "symbols scanned")}
+            {liveCoverageCount}/{data!.symbol_count} {copy(language, "sembol tarandi", "symbols scanned")}
           </span>
           <span className="rounded-full border border-border bg-background/70 px-3 py-1">
             {changedSignals.length} {copy(language, "sinyal degisti", "signals changed")}
@@ -1317,7 +1318,7 @@ export default function MidasOpportunitiesTab({
       <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
         <Clock className="size-3.5" />
         <span className="data-mono">
-          {snapshotTimestampLabel} - {data.mode} mode - {data.successful}/{data.symbol_count}{" "}
+          {snapshotTimestampLabel} - {data.mode} mode - {data.successful}/{data!.symbol_count}{" "}
           {copy(language, "sembol", "symbols")}
         </span>
       </div>
@@ -1346,7 +1347,7 @@ export default function MidasOpportunitiesTab({
 
           <button
             type="button"
-            onClick={() => void runLiveRefresh(data.signals.map((signal) => signal.symbol))}
+            onClick={() => void runLiveRefresh(data!.signals.map((signal) => signal.symbol))}
             disabled={liveLoading}
             className="inline-flex items-center justify-center gap-2 rounded-lg border border-sky-400/30 bg-sky-500/12 px-4 py-2 text-sm font-semibold text-sky-100 transition-all hover:bg-sky-500/18 disabled:cursor-not-allowed disabled:opacity-60"
           >
@@ -1365,7 +1366,7 @@ export default function MidasOpportunitiesTab({
             {copy(language, "Canli update", "Live update")}: {liveTimestampLabel}
           </span>
           <span className="rounded-full border border-border bg-background/70 px-3 py-1">
-            {liveCoverageCount}/{data.symbol_count} {copy(language, "sembol tarandi", "symbols scanned")}
+            {liveCoverageCount}/{data!.symbol_count} {copy(language, "sembol tarandi", "symbols scanned")}
           </span>
           <span className="rounded-full border border-border bg-background/70 px-3 py-1">
             {changedCount} {copy(language, "sinyal degisti", "signals changed")}
@@ -1428,7 +1429,7 @@ export default function MidasOpportunitiesTab({
               {copy(language, "Tarama Kapsami", "Scan Coverage")}
             </p>
             <p className="mt-1 text-sm text-foreground">
-              {data.successful}/{data.symbol_count} {copy(language, "snapshot", "snapshot")}
+              {data!.successful}/{data!.symbol_count} {copy(language, "snapshot", "snapshot")}
             </p>
           </div>
         </div>
@@ -1510,7 +1511,7 @@ export default function MidasOpportunitiesTab({
       <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
         <Clock className="size-3.5" />
         <span className="data-mono">
-          {snapshotTimestampLabel} - {data.mode} mode - {data.successful}/{data.symbol_count} sembol
+          {snapshotTimestampLabel} - {data!.mode} mode - {data!.successful}/{data!.symbol_count} sembol
         </span>
       </div>
 
@@ -1675,7 +1676,7 @@ export default function MidasOpportunitiesTab({
                     { key: 'f5_volatility_regime', label: 'F5' },
                     { key: 'f6_catalyst_flow', label: 'F6' },
                   ].map((f) => {
-                    const score = (signal.factor_breakdown as Record<string, number>)[f.key] ?? 0;
+                    const score = signal.factor_breakdown![f.key as keyof NonNullable<typeof signal.factor_breakdown>] ?? 0;
                     return (
                       <div key={f.key} className="flex items-center gap-2">
                         <span className="w-4 text-[10px] font-medium text-muted-foreground">{f.label}</span>
@@ -1767,7 +1768,7 @@ export default function MidasOpportunitiesTab({
               <div className="mt-3 flex items-center justify-between gap-3 text-[10px] text-muted-foreground">
                 <span>
                   {copy(language, "Snapshot", "Snapshot")}:{" "}
-                  {formatTimestamp(signal.timestamp || data.timestamp, language)}
+                  {formatTimestamp(signal.timestamp || data!.timestamp, language)}
                 </span>
                 {signal.live ? (
                   <span>
