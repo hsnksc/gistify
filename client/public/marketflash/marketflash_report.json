@@ -1,159 +1,189 @@
 {
   "reportType": "hourly",
   "reportDate": "2026-06-25",
-  "generatedAt": "2026-06-25T15:09:23.255746+00:00",
+  "generatedAt": "2026-06-25T16:01:23+00:00",
   "marketSummary": {
     "spy": {
-      "price": 735.54,
-      "change": 0.31,
-      "vwap": 734.84,
+      "price": 734.14,
+      "change": 0.1227,
+      "vwap": 734.37,
       "open": 738.91,
       "high": 739.37,
       "low": 729.6,
       "prevClose": 733.24
     },
     "qqq": {
-      "price": 713.04,
-      "change": 0.34,
-      "vwap": 715.06,
+      "price": 714.06,
+      "change": 0.4841,
+      "vwap": 715.4,
       "open": 726.235,
       "high": 726.83,
       "low": 705.3,
       "prevClose": 710.62
     },
     "iwm": {
-      "price": 300.22,
-      "change": 1.19,
-      "vwap": 299.54,
+      "price": 298.33,
+      "change": 0.5528,
+      "vwap": 298.91,
       "open": 298.645,
       "high": 301.5,
       "low": 296.9,
       "prevClose": 296.69
     },
     "vix": {
-      "price": 17.84,
-      "change": -4.24,
-      "vwap": 17.84,
-      "open": 18.11,
-      "high": 18.17,
-      "low": 17.72,
-      "prevClose": 18.63,
-      "note": "VIX verified via CBOE/MarketWatch web search. Finnhub returns 0 for VIX."
+      "price": null,
+      "change": null,
+      "vwap": null,
+      "open": null,
+      "high": null,
+      "low": null,
+      "prevClose": null,
+      "note": "VIX data unavailable in this update. Finnhub returns 0. Web search returned India VIX results only. Previous verified reading 17.84 from earlier today."
     }
   },
   "topMovers": {
     "gainers": [
       {
-        "ticker": "EWTX",
-        "company": "Edgewise Therapeutics, Inc.",
-        "price": 42.3,
-        "change": 8.94,
-        "volume": "1.339M",
-        "catalyst": "Biotech momentum continuation, strong clinical pipeline data interest",
-        "sector": null,
-        "marketCap": null,
-        "week52Range": null
+        "ticker": "TECH",
+        "company": "Bio-Techne Corporation",
+        "price": 70.34,
+        "change": 19.46,
+        "volume": "26M",
+        "catalyst": "Biotech sector earnings momentum, strong clinical research demand, RVOL 8.7",
+        "sector": "Biotechnology",
+        "marketCap": 11028000000,
+        "week52Range": [
+          43.2,
+          72.16
+        ]
       },
       {
-        "ticker": "VKTX",
-        "company": "Viking Therapeutics, Inc.",
-        "price": 37.87,
-        "change": 8.79,
-        "volume": "5.137M",
-        "catalyst": "Obesity drug biotech momentum, sector rotation into healthcare",
-        "sector": null,
-        "marketCap": null,
-        "week52Range": null
+        "ticker": "BB",
+        "company": "BlackBerry Limited",
+        "price": 10.31,
+        "change": 19.69,
+        "volume": "37M",
+        "catalyst": "Q1 FY27 earnings BEAT ($0.04 vs $0.02 est), cybersecurity pivot, RVOL 1.3",
+        "sector": "Technology",
+        "marketCap": 5732000000,
+        "week52Range": [
+          3.12,
+          10.93
+        ]
       },
       {
-        "ticker": "IQV",
-        "company": "IQVIA Holdings Inc.",
-        "price": 185.62,
-        "change": 8.37,
-        "volume": "1.453M",
-        "catalyst": "CRO sector strength, healthcare services demand, M&A speculation",
-        "sector": null,
-        "marketCap": null,
-        "week52Range": null
+        "ticker": "RUN",
+        "company": "Sunrun Inc.",
+        "price": 14.42,
+        "change": 12.57,
+        "volume": "51M",
+        "catalyst": "Solar energy sector demand surge, renewable policy momentum, RVOL 5.7",
+        "sector": "Solar Energy",
+        "marketCap": 3440000000,
+        "week52Range": [
+          7.23,
+          22.44
+        ]
       },
       {
-        "ticker": "CRL",
-        "company": "Charles River Laboratories International, Inc.",
-        "price": 202.1,
-        "change": 8.31,
-        "volume": "741.98K",
-        "catalyst": "Lab services/CRO momentum, biotech research demand strong",
-        "sector": null,
-        "marketCap": null,
-        "week52Range": null
+        "ticker": "ADPT",
+        "company": "Adaptive Biotechnologies Corporation",
+        "price": 19.34,
+        "change": 12.25,
+        "volume": "4.9M",
+        "catalyst": "Biotech momentum, immune sequencing demand, clinical pipeline interest, RVOL 2.1",
+        "sector": "Biotechnology",
+        "marketCap": 3095000000,
+        "week52Range": [
+          9.96,
+          20.76
+        ]
       },
       {
-        "ticker": "AAL",
-        "company": "American Airlines Group Inc.",
-        "price": 17.44,
-        "change": 8.05,
-        "volume": "207.08M",
-        "catalyst": "Oil prices continue dropping post US-Iran MOU, airline margin expansion, Barclays PT $19",
-        "sector": null,
-        "marketCap": null,
-        "week52Range": null
+        "ticker": "BLDR",
+        "company": "Builders FirstSource, Inc.",
+        "price": 85.41,
+        "change": 11.31,
+        "volume": "3.0M",
+        "catalyst": "Homebuilder sector strength, construction demand, housing starts optimism, RVOL 1.2",
+        "sector": "Building Materials",
+        "marketCap": 9187000000,
+        "week52Range": [
+          65.1,
+          151.03
+        ]
       }
     ],
     "losers": [
       {
-        "ticker": "APO",
-        "company": "Apollo Global Management, Inc.",
-        "price": 122.51,
-        "change": -6.1,
-        "volume": "1.2M",
-        "catalyst": "Private equity sector rotation, profit-taking after recent highs, AUM concerns",
-        "sector": null,
-        "marketCap": null,
-        "week52Range": null
+        "ticker": "NVTS",
+        "company": "Navitas Semiconductor Corporation",
+        "price": 17.49,
+        "change": -18.27,
+        "volume": "27M",
+        "catalyst": "GaN semiconductor sector rotation, demand concerns, profit-taking after rally",
+        "sector": "Semiconductors",
+        "marketCap": 4260000000,
+        "week52Range": [
+          5.44,
+          34.17
+        ]
       },
       {
-        "ticker": "BX",
-        "company": "Blackstone Inc.",
-        "price": 115.76,
-        "change": -5.9,
-        "volume": "2.8M",
-        "catalyst": "Alternative asset manager selloff, real estate exposure concerns, rate sensitivity",
-        "sector": null,
-        "marketCap": null,
-        "week52Range": null
+        "ticker": "CBRS",
+        "company": "Cerebras Systems Inc.",
+        "price": 168.1,
+        "change": -17.93,
+        "volume": "10M",
+        "catalyst": "AI chip sector profit-taking, valuation concerns, competitive pressure from NVDA",
+        "sector": "Semiconductors / AI",
+        "marketCap": 40861000000,
+        "week52Range": [
+          161.47,
+          385.0
+        ]
       },
       {
-        "ticker": "HOOD",
-        "company": "Robinhood Markets, Inc.",
-        "price": 94.86,
-        "change": -5.9,
-        "volume": "8.5M",
-        "catalyst": "Fintech/retail brokerage profit-taking, regulatory overhang concerns, crypto weakness",
-        "sector": null,
-        "marketCap": null,
-        "week52Range": null
+        "ticker": "NG",
+        "company": "NovaGold Resources Inc.",
+        "price": 6.14,
+        "change": -15.04,
+        "volume": "4.3M",
+        "catalyst": "Gold mining sector weakness, metal price correction, risk-off unwind",
+        "sector": "Gold Mining",
+        "marketCap": 2692000000,
+        "week52Range": [
+          3.61,
+          14.4
+        ]
       },
       {
-        "ticker": "ARES",
-        "company": "Ares Management Corporation",
-        "price": 113.96,
-        "change": -5.7,
-        "volume": "1.1M",
-        "catalyst": "Private credit/alternative asset rotation, profit-taking in financial services",
-        "sector": null,
-        "marketCap": null,
-        "week52Range": null
+        "ticker": "INFQ",
+        "company": "Infleqtion, Inc.",
+        "price": 13.73,
+        "change": -13.94,
+        "volume": "19M",
+        "catalyst": "Quantum computing tech selloff, profit-taking after recent rally, speculative unwind",
+        "sector": "Quantum Computing",
+        "marketCap": 2997000000,
+        "week52Range": [
+          8.52,
+          21.28
+        ]
       },
       {
-        "ticker": "CHPT",
-        "company": "ChargePoint Holdings, Inc.",
-        "price": 5.58,
-        "change": -17.82,
-        "volume": "1.82M",
-        "catalyst": "EV charging sector weakness, demand concerns, cash burn worries, guidance cut fears",
-        "sector": null,
-        "marketCap": null,
-        "week52Range": null
+        "ticker": "GLXY",
+        "company": "Galaxy Digital Holdings Ltd.",
+        "price": 28.07,
+        "change": -10.47,
+        "volume": "4.3M",
+        "catalyst": "Crypto/digital asset sector weakness, BTC pullback, regulatory overhang concerns",
+        "sector": "Digital Assets / Crypto",
+        "marketCap": 5374000000,
+        "week52Range": [
+          16.43,
+          45.92
+        ]
       }
     ]
   },
@@ -165,9 +195,9 @@
       "target": 18.8,
       "stop": 16.9,
       "riskReward": 2.0,
-      "rationale": "Oil price drop = airline margin expansion. VWAP above, 207M volume confirmation. 52-week high resistance test.",
+      "rationale": "Oil price drop = airline margin expansion. Price 17.61 near entry. Volume 27M confirmation. Watch for VWAP reclaim.",
       "timeframe": "intraday",
-      "vwapPosition": "above"
+      "vwapPosition": "below"
     },
     {
       "ticker": "IQV",
@@ -176,7 +206,7 @@
       "target": 198.0,
       "stop": 180.0,
       "riskReward": 2.0,
-      "rationale": "CRO sector momentum +8.37%. VWAP break continuation. Healthcare services demand strong. 1.45M volume.",
+      "rationale": "CRO sector momentum continuation. VWAP above ($187.29). Healthcare services demand strong. 1.45M volume.",
       "timeframe": "intraday",
       "vwapPosition": "above"
     },
@@ -187,9 +217,9 @@
       "target": 215.0,
       "stop": 196.0,
       "riskReward": 2.0,
-      "rationale": "Lab services momentum +8.31%. VWAP above. Biotech research pipeline strong. 742K volume.",
+      "rationale": "Lab services momentum continuation. Price above entry but slight VWAP below ($208.04). Biotech research pipeline strong. 742K volume.",
       "timeframe": "intraday",
-      "vwapPosition": "above"
+      "vwapPosition": "below"
     },
     {
       "ticker": "VKTX",
@@ -198,9 +228,9 @@
       "target": 42.0,
       "stop": 36.0,
       "riskReward": 2.0,
-      "rationale": "Obesity drug biotech momentum +8.79%. VWAP above. Sector rotation into healthcare. 5.1M volume.",
+      "rationale": "Obesity drug biotech momentum continuation. Price above entry but slight VWAP below ($38.42). Sector rotation into healthcare. 5.1M volume.",
       "timeframe": "intraday",
-      "vwapPosition": "above"
+      "vwapPosition": "below"
     },
     {
       "ticker": "SPY",
@@ -209,9 +239,9 @@
       "target": 742.0,
       "stop": 731.0,
       "riskReward": 2.3,
-      "rationale": "SPY above VWAP ($734.84). IWM leading, small-cap strength. Risk-on rotation. Index CALL for market continuation.",
+      "rationale": "SPY near VWAP ($734.37). IWM small-cap strength. Risk-on rotation potential. Index CALL for market continuation. Caution: below VWAP.",
       "timeframe": "0DTE",
-      "vwapPosition": "above"
+      "vwapPosition": "below"
     }
   ],
   "putSetups": [
@@ -222,7 +252,7 @@
       "target": 88.0,
       "stop": 98.5,
       "riskReward": 2.0,
-      "rationale": "Fintech profit-taking -5.9%. Below VWAP. Crypto weakness dragging. 8.5M volume distribution.",
+      "rationale": "Fintech profit-taking continuation. Below VWAP ($95.62). Crypto weakness dragging. 8.5M volume distribution.",
       "timeframe": "intraday",
       "vwapPosition": "below"
     },
@@ -233,18 +263,7 @@
       "target": 115.0,
       "stop": 127.0,
       "riskReward": 2.0,
-      "rationale": "Private equity rotation -6.1%. Below VWAP. AUM concerns. Rate sensitivity. Profit-taking distribution.",
-      "timeframe": "intraday",
-      "vwapPosition": "below"
-    },
-    {
-      "ticker": "BX",
-      "direction": "put",
-      "entry": 116.0,
-      "target": 108.0,
-      "stop": 120.0,
-      "riskReward": 2.0,
-      "rationale": "Alternative asset manager selloff -5.9%. Real estate exposure. Below VWAP. Distribution pattern.",
+      "rationale": "Private equity rotation continuation. Below VWAP ($122.73). AUM concerns. Rate sensitivity. Profit-taking distribution.",
       "timeframe": "intraday",
       "vwapPosition": "below"
     },
@@ -255,7 +274,7 @@
       "target": 4.8,
       "stop": 6.0,
       "riskReward": 2.0,
-      "rationale": "EV charging demand collapse -17.8%. Cash burn concerns. Below VWAP. Sector rotation out of EV infrastructure.",
+      "rationale": "EV charging demand collapse continuation. Cash burn concerns. Below VWAP ($5.50). Sector rotation out of EV infrastructure.",
       "timeframe": "intraday",
       "vwapPosition": "below"
     },
@@ -266,8 +285,19 @@
       "target": 700.0,
       "stop": 719.5,
       "riskReward": 2.0,
-      "rationale": "QQQ below VWAP ($715.06). Tech semis still weak. Semiconductor drag. Gap fill to $700.",
+      "rationale": "QQQ below VWAP ($715.40). Tech semis still weak. Semiconductor drag. Gap fill to $700 target.",
       "timeframe": "0DTE",
+      "vwapPosition": "below"
+    },
+    {
+      "ticker": "AXTI",
+      "direction": "put",
+      "entry": 68.0,
+      "target": 60.0,
+      "stop": 71.5,
+      "riskReward": 2.3,
+      "rationale": "Semiconductor/materials sector weakness -4.3%. Below VWAP ($68.50). Volume 11M. Profit-taking in AI supply chain names.",
+      "timeframe": "intraday",
       "vwapPosition": "below"
     }
   ],
@@ -335,7 +365,7 @@
       "expectedMove": 4.5,
       "consensusRange": "$3.50 - $3.78",
       "analystSentiment": "neutral",
-      "note": "Stock +2.3% intraday = likely beat. BMO Q4 FY26. Prior YoY sales +10.6%. IV crush risk. 0DTE YASAK. actual EPS not confirmed at report time."
+      "note": "BMO Q4 FY26. Actual EPS not yet available in public sources at report time. Stock flat intraday. Prior YoY sales +10.6%. IV crush risk. 0DTE YASAK."
     },
     {
       "ticker": "WGO",
@@ -348,20 +378,7 @@
       "expectedMove": 6.5,
       "consensusRange": "$0.61 - $0.86",
       "analystSentiment": "bearish",
-      "note": "Stock +5.7% intraday = likely beat. BMO Q3 FY26. Analyst confidence deteriorated. IV crush risk. 0DTE YASAK. actual EPS not confirmed at report time."
-    },
-    {
-      "ticker": "LNN",
-      "company": "Lindsay Corporation",
-      "time": "before-open",
-      "consensusEps": 1.14,
-      "consensusRev": 157800000,
-      "priorEps": 1.05,
-      "priorRev": 150000000,
-      "expectedMove": 5.5,
-      "consensusRange": "$1.05 - $1.23",
-      "analystSentiment": "neutral",
-      "note": "BMO Q3 2026. Agriculture/irrigation. IV crush risk. 0DTE YASAK."
+      "note": "BMO Q3 FY26. Actual EPS not yet available in public sources. Stock +5.68% intraday = likely beat. Analyst confidence deteriorated. IV crush risk. 0DTE YASAK."
     },
     {
       "ticker": "MKC",
@@ -374,7 +391,7 @@
       "expectedMove": 3.5,
       "consensusRange": "$0.64 - $0.74",
       "analystSentiment": "neutral",
-      "note": "BMO Q2 2026. Consumer staples defensive. IV crush risk. 0DTE YASAK."
+      "note": "BMO Q2 2026. Actual EPS not yet available. Stock +2.18% intraday. Consumer staples defensive. IV crush risk. 0DTE YASAK."
     },
     {
       "ticker": "NNOX",
@@ -387,7 +404,7 @@
       "expectedMove": 8.2,
       "consensusRange": "-$0.24 - -$0.16",
       "analystSentiment": "neutral",
-      "note": "BMO small-cap medical imaging. High volatility. IV crush risk. 0DTE YASAK."
+      "note": "BMO small-cap medical imaging. Actual EPS not yet available. High volatility. IV crush risk. 0DTE YASAK."
     },
     {
       "ticker": "HUBG",
@@ -414,14 +431,27 @@
       "consensusRange": null,
       "analystSentiment": "neutral",
       "note": "AMC Q4 FY26 FedEx Freight. No consensus data available. IV crush risk. 0DTE YASAK."
+    },
+    {
+      "ticker": "QMCO",
+      "company": "Quantum Corporation",
+      "time": "after-close",
+      "consensusEps": null,
+      "consensusRev": null,
+      "priorEps": null,
+      "priorRev": null,
+      "expectedMove": null,
+      "consensusRange": null,
+      "analystSentiment": "neutral",
+      "note": "AMC Q4 FY26. No consensus data available. Storage/tech. IV crush risk. 0DTE YASAK."
     }
   ],
-  "vwapNotes": "SPY ($735.54) ABOVE VWAP ($734.84). QQQ ($713.04) BELOW VWAP ($715.06). IWM ($300.22) ABOVE VWAP ($299.54). Market recovery since last hourly: SPY +5.65, QQQ +7.15, IWM +2.96. SPY and IWM above VWAP = risk-on rotation into small-cap and broad market. QQQ still below VWAP = tech semis not fully recovered. VIX declining to 17.84 supports low fear environment. Gap down from open partially filled.",
+  "vwapNotes": "SPY ($734.14) hafif VWAP ($734.37) ALTINDA. QQQ ($714.06) VWAP ($715.40) ALTINDA. IWM ($298.33) hafif VWAP ($298.91) ALTINDA. Mevcut saatlik durum: SPY ve IWM önceki saatlik rapordaki VWAP üstü pozisyonunu kaybetti. QQQ hala VWAP altında. Market risk-off shift sinyali. Açılış gap'i kısmen dolduruldu. Index'lerin VWAP altında kalması PUT bias'ı destekliyor.",
   "riskAssessment": {
     "level": "medium",
-    "vixRegime": "VIX 17.84 = normal regime (15-20). Declining -4.24% from 18.63. No fear but earnings day volatility elevated.",
-    "sectorRotation": "Healthcare/CRO/Biotech GÜÇLÜ (IQV +8.4%, CRL +8.3%, VKTX +8.8%). Airlines GÜÇLÜ (AAL +8.1%). Private equity ZAYIF (APO -6.1%, BX -5.9%, ARES -5.7%). Fintech ZAYIF (HOOD -5.9%). EV charging ZAYIF (CHPT -17.8%).",
-    "earningsRisk": "SNX BEAT ($4.85 vs $4.14). AYI BEAT ($5.31 vs $5.12). CMC BEAT ($1.73 vs $1.70). BB BEAT ($0.04 vs $0.02). DRI/WGO likely beat based on price action. IV crush risk on ALL reported earnings. 0DTE positions on these tickers = premium destruction.",
+    "vixRegime": "VIX data unavailable in this update. Previous verified reading 17.84 = normal regime (15-20). Earnings day volatility elevated.",
+    "sectorRotation": "Healthcare/Biotech GÜÇLÜ (TECH +19.5%, BB +19.7%, ADPT +12.3%). Solar GÜÇLÜ (RUN +12.6%). Homebuilders GÜÇLÜ (BLDR +11.3%). AI Chip/Semiconductor ZAYIF (CBRS -17.9%, NVTS -18.3%). Crypto/Digital ZAYIF (GLXY -10.5%). Gold/Mining ZAYIF (NG -15.0%).",
+    "earningsRisk": "SNX, AYI, CMC, BB BEAT reported. DRI, WGO, MKC, NNOX BMO results pending. HUBG, FDXF, QMCO AMC. IV crush risk on ALL reported earnings. 0DTE positions on these tickers = premium destruction.",
     "macroRisk": "US-Iran MOU signed, Strait of Hormuz reopened = oil prices down, airlines rally. 10-year yield 4.39%. CPI >4% but oil relief coming. Fed divided. No major macro data today."
   },
   "nextDayCarryForward": []
