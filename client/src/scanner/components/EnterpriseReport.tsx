@@ -152,7 +152,7 @@ function SetupLayer({ stocks, language }: { stocks: StockResult[]; language: App
                 <span>POP: <b className="text-white">%{pop}</b></span>
                 <span>EM: <b className="text-white">${em.toFixed(2)}</b></span>
                 <span>BE: <b className="text-white">${breakeven.toFixed(2)}</b></span>
-                <span>Risk: <b className="text-white">${maxLoss.toFixed(2)}</b></span>
+                <span>{copy(language, "Risk: ", "Risk: ")}<b className="text-white">${maxLoss.toFixed(2)}</b></span>
                 <span>DTE: <b className="text-white">{dte}</b></span>
               </div>
             </div>
@@ -272,8 +272,9 @@ export default function EnterpriseReport({ stocks, scanTime, language }: Enterpr
   const hotTickers = hotStocks.map((s) => s.ticker).join(", ");
 
   const best = stocks.filter((s) => s.signal === "STRONG_BUY" || s.signal === "BUY").slice(0, 3);
-  const bestSetupTr = best.length > 0 ? best.map((s) => `${s.ticker} (Skor ${s.score})`).join(", ") : "Bugün için güçlü setup yok";
-  const bestSetupEn = best.length > 0 ? best.map((s) => `${s.ticker} (Score ${s.score})`).join(", ") : "No strong setup for today";
+  const bestSetup = best.length > 0
+    ? best.map((s) => `${s.ticker} (${copy(language, "Skor", "Score")} ${s.score})`).join(", ")
+    : copy(language, "Bugün için güçlü setup yok", "No strong setup for today");
 
   return (
     <div className="space-y-4 rounded-xl border border-slate-700/50 bg-slate-900/40 p-6">
@@ -324,7 +325,7 @@ export default function EnterpriseReport({ stocks, scanTime, language }: Enterpr
           <div className="flex items-start gap-2 text-xs text-emerald-400">
             <Activity className="mt-0.5 h-3 w-3 flex-shrink-0" />
             <span>
-              {copy(language, `✅ En iyi kurulum: ${bestSetupTr}`, `✅ Best setup: ${bestSetupEn}`)}
+              {copy(language, `✅ En iyi kurulum: ${bestSetup}`, `✅ Best setup: ${bestSetup}`)}
             </span>
           </div>
         </div>

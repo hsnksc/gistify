@@ -93,7 +93,7 @@ function CandidateCard({
         </div>
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-            Risk
+            {copy(language, "Risk", "Risk")}
           </p>
           <p className="mt-1 text-muted-foreground">{row.risk}</p>
         </div>
@@ -226,7 +226,7 @@ export default function MomentumSetupsTab({
           accentClassName="text-red-300"
         />
         <SetupStat
-          label="Defensive"
+          label={copy(language, "Defensive", "Defensive")}
           value={String(defensiveCount)}
           hint={copy(language, "Koruyucu rota ve dusuk beta blok.", "Protective route and lower beta block.")}
           accentClassName="text-amber-300"

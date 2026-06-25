@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 import { ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
+import LanguageSelector from "@/components/LanguageSelector";
 import { Button } from "@/components/ui/button";
 import { copy, type AppLanguage } from "@/lib/i18n";
 
@@ -44,12 +46,17 @@ export default function PublicShell({
 
   return (
     <div className="min-h-screen overflow-hidden bg-background text-foreground">
-      <div className="pointer-events-none absolute inset-0 tactical-grid opacity-[0.16]" />
+      <div className="pointer-events-none absolute inset-0 data-grid opacity-[0.14]" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[520px] bg-[radial-gradient(circle_at_top,rgba(16,185,129,0.16),transparent_42%),radial-gradient(circle_at_18%_18%,rgba(59,130,246,0.12),transparent_28%)]" />
       <div className="pointer-events-none absolute right-[-120px] top-40 h-80 w-80 rounded-full bg-emerald-500/10 blur-3xl" />
 
       <div className="relative mx-auto flex max-w-7xl flex-col gap-6 px-4 py-8 md:px-6 lg:px-8">
-        <header className="rounded-xl border border-border bg-[linear-gradient(135deg,rgba(17,24,39,0.95),rgba(15,23,42,0.88))] p-4 shadow-[0_28px_80px_rgba(0,0,0,0.28)] backdrop-blur">
+        <motion.header
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
+          className="rounded-xl border border-border bg-[linear-gradient(135deg,rgba(17,24,39,0.95),rgba(15,23,42,0.88))] p-4 shadow-[0_28px_80px_rgba(0,0,0,0.28)] backdrop-blur"
+        >
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-center gap-3">
               <img
@@ -68,30 +75,10 @@ export default function PublicShell({
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              <div className="inline-flex items-center rounded-full border border-border bg-background/70 p-0.5 text-xs">
-                <button
-                  type="button"
-                  onClick={() => onLanguageChange("tr")}
-                  className={`rounded-full px-3 py-1.5 font-semibold transition-colors ${
-                    language === "tr"
-                      ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  TR
-                </button>
-                <button
-                  type="button"
-                  onClick={() => onLanguageChange("en")}
-                  className={`rounded-full px-3 py-1.5 font-semibold transition-colors ${
-                    language === "en"
-                      ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  EN
-                </button>
-              </div>
+              <LanguageSelector
+                language={language}
+                onChange={onLanguageChange}
+              />
 
               <nav className="flex flex-wrap items-center gap-2 text-xs">
                 {navItems.map(item => {
@@ -114,9 +101,14 @@ export default function PublicShell({
               </nav>
             </div>
           </div>
-        </header>
+        </motion.header>
 
-        <section className="relative overflow-hidden rounded-xl border border-border bg-[linear-gradient(135deg,rgba(17,24,39,0.95),rgba(12,18,31,0.9))] p-6 shadow-[0_30px_90px_rgba(0,0,0,0.3)] md:p-8">
+        <motion.section
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.22, ease: "easeOut", delay: 0.04 }}
+          className="relative overflow-hidden rounded-xl border border-border bg-[linear-gradient(135deg,rgba(17,24,39,0.95),rgba(12,18,31,0.9))] p-6 shadow-[0_30px_90px_rgba(0,0,0,0.3)] md:p-8"
+        >
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(14,165,233,0.14),transparent_28%),linear-gradient(120deg,transparent,rgba(148,163,184,0.03),transparent)]" />
           <div
             className={`relative grid gap-8 ${
@@ -184,11 +176,17 @@ export default function PublicShell({
               </div>
             ) : null}
           </div>
-        </section>
+        </motion.section>
 
-        <main data-language={language} className="space-y-6">
+        <motion.main
+          data-language={language}
+          className="space-y-6"
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.22, ease: "easeOut", delay: 0.08 }}
+        >
           {children}
-        </main>
+        </motion.main>
       </div>
     </div>
   );
