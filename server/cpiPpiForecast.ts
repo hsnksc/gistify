@@ -126,8 +126,11 @@ function normalizeBias(value: unknown): MacroForecastBias {
   const raw = normalizeString(value).toUpperCase();
   switch (raw) {
     case "HOTTER":
+    case "ABOVE":
+      return "HOTTER";
     case "COOLER":
-      return raw;
+    case "BELOW":
+      return "COOLER";
     default:
       return "INLINE";
   }
@@ -344,12 +347,14 @@ function resolveLatestTimestamp(
 function buildSourceCandidates(key: MacroForecastWorkspaceKey) {
   const definition = SOURCE_DEFINITIONS[key];
   const configuredSourceFile = normalizeString(process.env[definition.envVar]);
+  const deployTarget = path.resolve("/app", "data", definition.fileName);
   const defaults = [
-    path.resolve(process.cwd(), "..", definition.workspaceDir, definition.fileName),
-    path.resolve(process.cwd(), definition.fileName),
     path.resolve(process.cwd(), "data", definition.fileName),
-    path.resolve(process.cwd(), "data", definition.workspaceDir, definition.fileName),
+    path.resolve(process.cwd(), definition.fileName),
     path.resolve(process.cwd(), "client", "public", definition.fileName),
+    path.resolve(process.cwd(), "data", definition.workspaceDir, definition.fileName),
+    path.resolve(process.cwd(), "..", definition.workspaceDir, definition.fileName),
+    deployTarget,
   ];
   const candidates = Array.from(
     new Set([configuredSourceFile, ...defaults].filter(Boolean))

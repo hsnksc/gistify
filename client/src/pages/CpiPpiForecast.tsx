@@ -685,15 +685,15 @@ function PipelineCard({
         <div className="rounded-lg border border-white/10 bg-black/20 px-2.5 py-1">
           {copy(language, "Son senkron", "Last sync")}:{" "}
           <span className="text-foreground">
-            {formatTimestamp(pipeline.lastSyncedAt, language)}
+            {formatTimestamp(pipeline.lastSyncedAt ?? undefined, language)}
           </span>
         </div>
         <div className="rounded-lg border border-white/10 bg-black/20 px-2.5 py-1">
           {copy(language, "Kaynak", "Source")}:{" "}
           <span className="line-clamp-1 break-all text-foreground">
             {pipeline.resolvedSourceFile
-              ? pipeline.resolvedSourceFile.replace(/\\/g, "/").split("/").pop()
-              : pipeline.configuredSourceFile || "-"}
+              ? pipeline.resolvedSourceFile.replace(/\\/g, "/")
+              : (pipeline.configuredSourceFile ?? "-")}
           </span>
         </div>
         {pipeline.error ? (
