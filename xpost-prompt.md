@@ -25,47 +25,113 @@ Aşağıdaki dosyaları oku (varsa):
 
 Eğer dosya yoksa veya boşsa, atla ve mevcut verilerle devam et. Eğer tüm dosyalar yoksa, web araştırması ile günün piyasa özetini üret.
 
-## Adım 2 — Post Metni Üret
+## Adım 2 — Post Metni Üret (X Pro Formatı)
 
-**Format:** Tek post, max 280 karakter (X.com tweet limiti).
+**Format:** Kısa satırlar, bol emoji, punchy, Twitter-native. Duvar metni (wall of text) YASAK.
 
 **Stil:**
 - Türkçe ana dil, finansal jargon İngilizce (VWAP, 0DTE, CALL, PUT, IV Crush, momentum)
-- Emojili ve görsel
-- Kısa, net, aksiyon odaklı
+- Her satır 40-60 karakter max (mobilde okunabilir)
+- Bol emoji, her paragraf 1-2 satır max
+- $ işareti TÜM ticker'lar önüne (SPY değil $SPY)
 - Hashtag yok (spam algılanmaması için)
+- FOTO ÜRETME (grafik, chart, screenshot YASAK)
 
-**Post template (aktif piyasa):**
+**Post Template (Market Flash — After-Market):**
 ```
-📊 Gün Özeti | [GG.AA.YYYY]
-• SPY [±%] | QQQ [±%] | VIX [değer]
-• 🔥 [Ticker] [±%] momentum
-• ❄️ [Ticker] [±%] pullback
-• Midas: [Direction] | Score [X/10]
-[1 cümle insight]
+📊 25.06 | $SPY $QQQ $IWM $VIX
+
+Endeks:
+🔴 $SPY -0.05% 733.24
+🔴 $QQQ -0.42% 710.62
+🟢 $IWM +0.46% 296.69
+🟢 $VIX 18.6 (-4.4%)
+
+🔥 Gainer:
+$KBH +16.7% — homebuilder rally
+$FOUR +14.4% — fintech bounce
+$RUN +12.6% — solar rebound
+
+❄️ Loser:
+$CBRS -17.9% — AI chip selloff
+$NVTS -18.3% — semi break
+
+🎯 $MU +13% AH
+$25.11 vs $20.20 est
+Q4 guidance 49-51B
+0DTE YASAK — IV crush
+
+⚠️ PCE 8:30 ET
+Core 3.4% est
+3-gün negatif → mean reversion?
 ```
 
-**Post template (yatay piyasa — "too quiet"):**
+**Post Template (Midas — Sinyal):**
 ```
-📊 Gün Özeti | [GG.AA.YYYY]
-• SPY [±%] | QQQ [±%] | VIX [değer]
-• Too quiet — mean reversion modu
-• Midas: [N] CALL, [N] PUT sinyali
-• VWAP bounce & gap fade fırsatları
-[1 cümle risk notu]
+🎯 Midas | 50 sembol | 49 OK
+
+🏆 Top STRONG_BUY:
+$MU — Score 43
+Entry 1239 | Stop 1085
+Target 1471/1626 | R/R 2.5x
+
+$INTC — Score 45.5
+Entry 138 | Stop 122
+Target 162/178 | R/R 2.5x
+
+$ALAB — Score 30.4
+MACD bullish cross
+Monthly +33%
+
+⚠️ $MU IV crush yüksek
+Swing izle, 0DTE tavsiye edilmez
 ```
 
-**Örnek:**
+**Post Template (Macro — PCE/CPI):**
 ```
-📊 Gün Özeti | 25.06.2026
-• SPY +0.8% | QQQ +1.2% | VIX 18.5
-• 🔥 TSLA +4.5% VWAP break
-• ❄️ META -2.1% gap fade
-• Midas: CALL | Score 8.2/10
-FOMC öncesi volatilite yükseliyor, 0DTE straddle izle.
+📈 Macro | 25.06.2026
+
+PCE 8:30 ET yarın:
+• Core 3.4% est
+• Jobless Claims
+• GDP Revision
+
+CPI Forecast (11 Temmuz):
+Base: Headline +0.10%
+Core +0.20%
+Brent 72.56 → oil deflation
+
+PPI Forecast (15 Temmuz):
+Base: Headline +0.1%
+Core +0.3% — sticky
+Hormuz 60-day window
+
+10Y 4.50% — regime line
+DXY 101.50 — 52w high yakını
 ```
 
-Karakter limitini kesinlikle aşma. 280 karakterin altında kal.
+**Post Template (Earnings Strategy):**
+```
+📅 Earnings | Rolling 2-Ay
+
+🎯 $MU — MASSIVE BEAT
+EPS 25.11 vs 20.20
+AH +13% → swing carry
+
+🏠 Homebuilders güçlü
+$KBH +16.7% — rate-cut narrative
+Rotation real assets
+
+✈️ Airlines UAL/DAL
+Jet fuel collapse + summer
+CPI soft = +10-15%
+
+⚠️ Kurallar:
+0DTE = earnings day ONLY
+IV crush: enter 2-5g önce
+Max hold 2 gün
+FOMC week: size -50%
+```
 
 ## Adım 3 — X.com Post Atma (WebBridge)
 
@@ -164,6 +230,8 @@ curl.exe -s -X POST http://127.0.0.1:10086/command -H "Content-Type: application
 ```
 
 **Fallback:** Eğer X.com'a login olunmamışsa veya captcha/bot koruması varsa, post metnini dosyaya kaydet ve "X.com login required — post ready at [path]" rapor et. Kullanıcıya manuel atması için post metnini göster.
+
+**ÖNEMLİ:** Fotoğraf, grafik, chart, screenshot ÜRETME ve UPLOAD ETME. Sadece metin post'ları.
 
 ## Adım 4 — Kaydet
 

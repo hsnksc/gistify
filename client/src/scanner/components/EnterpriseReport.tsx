@@ -68,7 +68,7 @@ function RegimeLayer({ stocks, language }: { stocks: StockResult[]; language: Ap
           <p className="text-sm font-bold text-white">{regime.replace(/_/g, " ")}</p>
         </div>
         <div className="rounded bg-slate-800/50 p-2.5">
-          <p className="text-[10px] text-slate-500">Term Structure</p>
+          <p className="text-[10px] text-slate-500">{copy(language, "Term Structure", "Term Structure")}</p>
           <p className="text-sm font-bold text-white">{termStructure}</p>
         </div>
       </div>
@@ -149,11 +149,11 @@ function SetupLayer({ stocks, language }: { stocks: StockResult[]; language: App
                 <Delta value={stock.priceChangePct} className="text-xs" />
               </div>
               <div className="flex items-center gap-4 text-xs text-slate-400">
-                <span>POP: <b className="text-white">%{pop}</b></span>
-                <span>EM: <b className="text-white">${em.toFixed(2)}</b></span>
-                <span>BE: <b className="text-white">${breakeven.toFixed(2)}</b></span>
+                <span>{copy(language, "POP: ", "POP: ")}<b className="text-white">%{pop}</b></span>
+                <span>{copy(language, "EM: ", "EM: ")}<b className="text-white">${em.toFixed(2)}</b></span>
+                <span>{copy(language, "BE: ", "BE: ")}<b className="text-white">${breakeven.toFixed(2)}</b></span>
                 <span>{copy(language, "Risk: ", "Risk: ")}<b className="text-white">${maxLoss.toFixed(2)}</b></span>
-                <span>DTE: <b className="text-white">{dte}</b></span>
+                <span>{copy(language, "DTE: ", "DTE: ")}<b className="text-white">{dte}</b></span>
               </div>
             </div>
           );
@@ -243,11 +243,11 @@ function PortfolioLayer({ stocks, language }: { stocks: StockResult[]; language:
             <p className="font-bold text-white">{avgScore < 50 ? copy(language, "🔴 Zarar Artar", "🔴 Loss Increases") : copy(language, "🟢 Spread Korur", "🟢 Spread Protects")}</p>
           </div>
           <div>
-            <p className="text-[10px] text-slate-500">Earnings Gap</p>
+            <p className="text-[10px] text-slate-500">{copy(language, "Earnings Gap", "Earnings Gap")}</p>
             <p className="font-bold text-white">{maxRSI > 75 ? copy(language, "🔴 Aşırı Alım", "🔴 Overbought") : copy(language, "🟢 Normal", "🟢 Normal")}</p>
           </div>
           <div>
-            <p className="text-[10px] text-slate-500">Liquidity</p>
+            <p className="text-[10px] text-slate-500">{copy(language, "Likidite", "Liquidity")}</p>
             <p className="font-bold text-white">{stocks.filter((s) => s.avgDollarVolume > 50_000_000).length}/{stocks.length} ✅</p>
           </div>
         </div>

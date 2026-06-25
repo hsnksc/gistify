@@ -501,7 +501,7 @@ function MomentumSignalCard({
         <span className={`data-mono rounded-full border border-border bg-background/70 px-2 py-0.5 ${pctClass(signal.monthly_pct)}`}>{copy(language, "Aylik", "Monthly")}: {formatPct(signal.monthly_pct)}</span>
         {signal.live ? (
           <span className="data-mono rounded-full border border-border bg-background/70 px-2 py-0.5 text-muted-foreground">
-            Bull {signal.live.bullScore} / Bear {signal.live.bearScore}
+            {copy(language, "Bull", "Bull")} {signal.live.bullScore} / {copy(language, "Bear", "Bear")} {signal.live.bearScore}
           </span>
         ) : null}
       </div>
@@ -1039,7 +1039,7 @@ export default function MomentumFlowSurface({
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2 text-[11px] text-muted-foreground">
-          <span className="rounded-full border border-border bg-background/70 px-3 py-1">Snapshot: {snapshotTimestampLabel}</span>
+          <span className="rounded-full border border-border bg-background/70 px-3 py-1">{copy(language, "Snapshot: ", "Snapshot: ")}{snapshotTimestampLabel}</span>
           <span className="rounded-full border border-border bg-background/70 px-3 py-1">{copy(language, "Canli update", "Live update")}: {liveTimestampLabel}</span>
           <span className={`rounded-full border px-3 py-1 ${pipelineStatusClass(data.pipeline?.status || "idle")}`}>{copy(language, "Pipeline", "Pipeline")}: {pipelineStatusLabel(data.pipeline?.status || "idle", language)}</span>
           <span className="rounded-full border border-border bg-background/70 px-3 py-1">{liveCoverageCount}/{data.symbol_count} {copy(language, "sembol tarandi", "symbols scanned")}</span>
@@ -1255,7 +1255,7 @@ export default function MomentumFlowSurface({
 
                   <div className="mt-4 flex flex-wrap gap-2 text-[11px]">
                     <span className={`data-mono rounded-full border border-border bg-background/55 px-2.5 py-1 ${pctClass(signal.dayChange)}`}>{copy(language, "Gunluk", "Daily")}: {formatPct(signal.dayChange)}</span>
-                    {signal.live ? <span className="data-mono rounded-full border border-border bg-background/55 px-2.5 py-1 text-muted-foreground">Bull {signal.live.bullScore} / Bear {signal.live.bearScore}</span> : null}
+                    {signal.live ? <span className="data-mono rounded-full border border-border bg-background/55 px-2.5 py-1 text-muted-foreground">{copy(language, "Bull", "Bull")} {signal.live.bullScore} / {copy(language, "Bear", "Bear")} {signal.live.bearScore}</span> : null}
                   </div>
                 </div>
               ))}

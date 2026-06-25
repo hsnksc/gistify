@@ -191,7 +191,7 @@ function suggestStrategy(stock: StockResult, language: AppLanguage): StrategySug
     const shortCall = atmStrike;
     const longCall = roundTo5(atmStrike + metrics.spreadWidth);
     return {
-      name: "Bear Call Spread",
+      name: copy(language, "Ayı Call Spread'i (Kredi)", "Bear Call Spread"),
       nameTr: "Ayı Call Spread'i (Kredi)",
       direction: "BEARISH",
       setup: `${copy(language, "Sat", "Sell")} ${shortCall}C / ${copy(language, "Al", "Buy")} ${longCall}C`,
@@ -224,7 +224,7 @@ function suggestStrategy(stock: StockResult, language: AppLanguage): StrategySug
     const shortPut = atmStrike;
     const longPut = roundTo5(Math.max(atmStrike - metrics.spreadWidth, 1));
     return {
-      name: "Bull Put Spread",
+      name: copy(language, "Boğa Put Spread'i (Kredi)", "Bull Put Spread"),
       nameTr: "Boğa Put Spread'i (Kredi)",
       direction: "BULLISH",
       setup: `${copy(language, "Sat", "Sell")} ${shortPut}P / ${copy(language, "Al", "Buy")} ${longPut}P`,
@@ -254,7 +254,7 @@ function suggestStrategy(stock: StockResult, language: AppLanguage): StrategySug
   if (signal === "STRONG_BUY" || signal === "BUY" || signal === "NEUTRAL_BULLISH") {
     // Bullish momentum
     return {
-      name: "Bull Call Spread",
+      name: copy(language, "Boğa Call Spread'i (Debit)", "Bull Call Spread"),
       nameTr: "Boğa Call Spread'i (Debit)",
       direction: "BULLISH",
       setup: `${copy(language, "Al", "Buy")} ${itmStrike}C / ${copy(language, "Sat", "Sell")} ${otmStrike}C`,
@@ -284,7 +284,7 @@ function suggestStrategy(stock: StockResult, language: AppLanguage): StrategySug
 
   // Default: Neutral / Weak
   return {
-    name: "No Setup",
+    name: copy(language, "Uygun Setup Yok", "No Setup"),
     nameTr: "Uygun Setup Yok",
     direction: "NEUTRAL",
     setup: copy(language, "Bekle", "Wait"),
