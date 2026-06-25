@@ -167,7 +167,7 @@ function parseDateFromHeading(value: string): string {
   return "";
 }
 
-function extractTitleInfo(markdown: string) {
+function extractTitleInfo(markdown: string, sourceFile?: string) {
   const firstLine = markdown.split(/\r?\n/)[0] || "";
   const titleMatch = firstLine.match(/^#\s+(.+)$/);
   const title = cleanMarkdownText(titleMatch?.[1] || "");
@@ -185,12 +185,49 @@ function extractTitleInfo(markdown: string) {
   const currentMonth = seasonMatch ? seasonMatch[1] : "";
   const currentYear = seasonMatch ? seasonMatch[2] : "";
 
+  // Infer nextMonth from file name or title
+  let nextMonth = "";
+
+  // Try file name: 202607_202608_Earnings...
+  if (sourceFile) {
+    const fileNameMatch = path.basename(sourceFile).match(/(\d{4})(\d{2})_(\d{4})(\d{2})/);
+    if (fileNameMatch) {
+      const nextMonthNum = fileNameMatch[4];
+      const nextYear = fileNameMatch[3];
+      const monthNumToTr: Record<string, string> = {
+        "01": "Ocak", "02": "Şubat", "03": "Mart", "04": "Nisan",
+        "05": "Mayıs", "06": "Haziran", "07": "Temmuz", "08": "Ağustos",
+        "09": "Eylül", "10": "Ekim", "11": "Kasım", "12": "Aralık",
+      };
+      const nextMonthName = monthNumToTr[nextMonthNum];
+      if (nextMonthName) {
+        nextMonth = `${nextMonthName} ${nextYear}`;
+      }
+    }
+  }
+
+  // Try title patterns: "Temmuz 2026 + Ağustos 2026" or "Temmuz & Ağustos 2026"
+  if (!nextMonth) {
+    const titleMonthMatch = title.match(/([A-Za-zÇçĞğİıÖöŞşÜü]+)\s+\d{4}\s*[\+&]\s*([A-Za-zÇçĞğİıÖöŞşÜü]+)\s+\d{4}/i);
+    if (titleMonthMatch) {
+      nextMonth = `${titleMonthMatch[2]} ${currentYear || ""}`.trim();
+    }
+  }
+
+  // Try "Gelecek Ay" or explicit "+ Ağustos 2026" in executive summary
+  if (!nextMonth) {
+    const nextMonthMatch = markdown.match(/(?:Gelecek Ay|Next Month|Sonraki Ay)\s*[:\-]?\s*([A-Za-zÇçĞğİıÖöŞşÜü]+)\s+(\d{4})/i);
+    if (nextMonthMatch) {
+      nextMonth = `${nextMonthMatch[1]} ${nextMonthMatch[2]}`;
+    }
+  }
+
   return {
     title,
     reportDate,
     currentMonth,
     currentYear,
-    nextMonth: "", // Will be inferred
+    nextMonth,
   };
 }
 
@@ -841,6 +878,7 @@ function parseExecutiveSummary(markdown: string): string[] {
   const items: string[] = [];
   const lines = markdown.split(/\r?\n/);
   let inSection = false;
+  let foundFirstParagraph = false;
 
   for (const line of lines) {
     if (/^##\s+1\.\s*EXECUTIVE SUMMARY/i.test(line.trim())) {
@@ -854,6 +892,10 @@ function parseExecutiveSummary(markdown: string): string[] {
     if (cleaned.startsWith("|")) continue;
     if (cleaned.startsWith("- ") || /^\d+\./.test(cleaned)) {
       items.push(cleaned.replace(/^-\s*/, "").replace(/^\d+\.\s*/, ""));
+    } else if (cleaned.length > 40 && !cleaned.startsWith("#") && !foundFirstParagraph) {
+      // First meaningful paragraph text (not a heading, not a table, long enough)
+      items.unshift(cleaned);
+      foundFirstParagraph = true;
     }
   }
 
@@ -867,7 +909,7 @@ function parseEarningsStrategyMarkdown(
   if (!markdown) return null;
 
   const tables = parseTables(markdown);
-  const titleInfo = extractTitleInfo(markdown);
+  const titleInfo = extractTitleInfo(markdown, sourceFile);
 
   const macro = parseMacro(tables);
   // Try to extract regime from heading text
@@ -894,7 +936,7 @@ function parseEarningsStrategyMarkdown(
     generatedAt: new Date().toISOString(),
     reportDate: titleInfo.reportDate,
     currentMonth: `${titleInfo.currentMonth} ${titleInfo.currentYear}`,
-    nextMonth: "", // Could be inferred if needed
+    nextMonth: titleInfo.nextMonth,
     title: titleInfo.title,
     summary: executiveSummary[0] || "",
     macro,
@@ -945,7 +987,7 @@ function findLatestMasterFile(folder: string): { filePath: string; mtimeMs: numb
   if (!fs.existsSync(folder)) return null;
 
   const entries = fs.readdirSync(folder, { withFileTypes: true });
-  let latest: { filePath: string; mtimeMs: number } | null = null;
+  const candidates: { filePath: string; mtimeMs: number; dateScore: number }[] = [];
 
   for (const entry of entries) {
     if (!entry.isFile()) continue;
@@ -954,12 +996,25 @@ function findLatestMasterFile(folder: string): { filePath: string; mtimeMs: numb
 
     const filePath = path.join(folder, name);
     const stats = fs.statSync(filePath);
-    if (!latest || stats.mtimeMs > latest.mtimeMs) {
-      latest = { filePath, mtimeMs: stats.mtimeMs };
+
+    // Extract date from file name for stable ordering (e.g., 202607_202608 or Temmuz2026)
+    let dateScore = 0;
+    const dateMatch = name.match(/(\d{4})(\d{2})(?:_(\d{4})(\d{2}))?/);
+    if (dateMatch) {
+      dateScore = Number(dateMatch[1]) * 100 + Number(dateMatch[2]);
+    } else {
+      // Fallback to mtimeMs as score
+      dateScore = stats.mtimeMs;
     }
+
+    candidates.push({ filePath, mtimeMs: stats.mtimeMs, dateScore });
   }
 
-  return latest;
+  if (candidates.length === 0) return null;
+
+  // Sort by dateScore descending (most recent first)
+  candidates.sort((a, b) => b.dateScore - a.dateScore);
+  return { filePath: candidates[0].filePath, mtimeMs: candidates[0].mtimeMs };
 }
 
 export function createEarningsStrategySyncService(): EarningsStrategySyncService {

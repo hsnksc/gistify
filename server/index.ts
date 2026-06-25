@@ -3764,7 +3764,12 @@ async function startServer() {
     }
 
     if (!latest) {
-      res.status(503).json({ error: `No earnings report found for format ${format || "md"}.` });
+      res.status(404).json({ error: `No earnings report found for format ${format || "md"}.` });
+      return;
+    }
+
+    if (!fs.existsSync(latest.filePath)) {
+      res.status(404).json({ error: `Report file not found: ${path.basename(latest.filePath)}` });
       return;
     }
 
