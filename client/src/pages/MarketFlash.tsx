@@ -59,6 +59,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import MarkdownReportRenderer from "@/components/reports/MarkdownReportRenderer";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import { copy, useAppLanguage, type AppLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
@@ -530,7 +531,7 @@ function formatVolume(value: number | null | undefined) {
   return String(value);
 }
 
-function formatTimestamp(value: string | undefined) {
+function formatTimestamp(value: string | undefined, language: AppLanguage) {
   if (!value) {
     return "-";
   }
@@ -540,11 +541,30 @@ function formatTimestamp(value: string | undefined) {
     return value;
   }
 
-  return new Intl.DateTimeFormat("tr-TR", {
+  return new Intl.DateTimeFormat(language === "en" ? "en-US" : "tr-TR", {
     day: "2-digit",
-    month: "2-digit",
+    month: "short",
+    year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+    hour12: language === "en",
+  }).format(parsed);
+}
+
+function formatReportDate(value: string | undefined, language: AppLanguage) {
+  if (!value) {
+    return "-";
+  }
+
+  const parsed = new Date(/^\d{4}-\d{2}-\d{2}$/.test(value) ? `${value}T00:00:00Z` : value);
+  if (Number.isNaN(parsed.getTime())) {
+    return value;
+  }
+
+  return new Intl.DateTimeFormat(language === "en" ? "en-US" : "tr-TR", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
   }).format(parsed);
 }
 
@@ -1477,6 +1497,15 @@ export default function MarketFlash() {
   const [autoRefresh, setAutoRefresh] = useState<boolean>(true);
   const [selectedMover, setSelectedMover] = useState<MarketFlashMover | null>(null);
 
+  usePageMeta({
+    description: copy(
+      language,
+      "Market Flash intraday tape, index, VIX, movers ve carry-forward riskini tek ekranda toplar.",
+      "Market Flash combines the intraday tape, indices, VIX, movers and carry-forward risk on one screen."
+    ),
+    title: copy(language, "Gistify | Market Flash", "Gistify | Market Flash"),
+  });
+
   const pollIntervalMs = useMemo(() => {
     return isUsMarketOpen() ? DEFAULT_POLL_INTERVAL_MS : OFF_MARKET_POLL_INTERVAL_MS;
   }, []);
@@ -1625,13 +1654,13 @@ export default function MarketFlash() {
                     {getReportTypeLabel(report.reportType, language)}
                   </h1>
                   <p className="mt-2 text-[13px] leading-6 text-foreground/82">
-                    {report.reportDate} ·{" "}
+                    {formatReportDate(report.reportDate, language)} ·{" "}
                     {copy(
                       language,
                       "Son guncelleme",
-                      "Last update"
+                      "Last updated"
                     )}{" "}
-                    {formatTimestamp(report.generatedAt)}
+                    {formatTimestamp(report.generatedAt, language)}
                   </p>
                 </div>
 

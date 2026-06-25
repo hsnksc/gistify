@@ -430,7 +430,7 @@ function WorkspaceNavigation({
   const items = [
     {
       href: "/app",
-      label: copy(language, "Earning Strategy", "Earning Strategy"),
+      label: copy(language, "Earnings Strategy", "Earnings Strategy"),
       icon: LayoutDashboard,
       active: location === "/app",
       requiresSubscription: true,
@@ -513,7 +513,7 @@ function WorkspaceNavigation({
 
   return (
     <>
-      <nav className="hidden md:flex md:items-center md:gap-1 md:rounded-full md:border md:border-border md:bg-card md:p-1">
+      <nav className="terminal-scrollbar hidden max-w-full md:flex md:items-center md:gap-1 md:overflow-x-auto md:rounded-full md:border md:border-border md:bg-card md:p-1">
         {items.map(item => {
           const Icon = item.icon;
           const isLocked = item.requiresSubscription && !canAccessPaidRoutes;
@@ -683,7 +683,7 @@ function getWorkspaceSectionLabel(path: string, language: AppLanguage) {
     return copy(language, "Earnings", "Earnings");
   }
 
-  return copy(language, "Earning Strategy", "Earning Strategy");
+  return copy(language, "Earnings Strategy", "Earnings Strategy");
 }
 
 function SiteFooter({ language }: { language: AppLanguage }) {
@@ -694,7 +694,7 @@ function SiteFooter({ language }: { language: AppLanguage }) {
     { href: "/terms", label: copy(language, "Kosullar", "Terms") },
     { href: "/privacy", label: copy(language, "Gizlilik", "Privacy") },
     { href: "/refund", label: copy(language, "Iade", "Refund") },
-    { href: "/pay", label: copy(language, "Odeme", "Pay") },
+    { href: "/pay", label: copy(language, "Odeme", "Billing") },
   ];
 
   return (
@@ -756,8 +756,8 @@ function SubscriptionRequiredView({
               <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
                 {copy(
                   language,
-                  "Flow herkese acik kalir. Earning Strategy, Momentum, Daily, CPI/PPI, Calendar ve Market Flash modullerini acmak icin Paddle uzerinden aktif abonelik gerekir.",
-                  "Flow stays open to everyone. Unlocking Earning Strategy, Momentum, Daily, CPI/PPI, Calendar and Market Flash requires an active Paddle subscription."
+                  "Flow herkese acik kalir. Earnings Strategy, Momentum, Daily, CPI/PPI, Calendar ve Market Flash modullerini acmak icin Paddle uzerinden aktif abonelik gerekir.",
+                  "Flow stays open to everyone. Unlocking Earnings Strategy, Momentum, Daily, CPI/PPI, Calendar and Market Flash requires an active Paddle subscription."
                 )}
               </p>
               <div className="flex flex-wrap gap-3 pt-2">
@@ -786,7 +786,7 @@ function SubscriptionRequiredView({
             <div className="grid min-w-[220px] grid-cols-2 gap-3">
               {[
                 [
-                  copy(language, "Earning Strategy", "Earning Strategy"),
+                  copy(language, "Earnings Strategy", "Earnings Strategy"),
                   copy(language, "Abonelik", "Subscription"),
                 ],
                 ["Momentum", copy(language, "Abonelik", "Subscription")],
@@ -1595,8 +1595,8 @@ function App() {
                     <p className="text-sm text-muted-foreground leading-relaxed">
                       {copy(
                         language,
-                        "Flow herkese acik. Earning Strategy, Momentum ve Daily modullerini acmak icin once Google ile uye girisi yapman gerekir; aktif abonelik yoksa odeme ekranina gecersin.",
-                        "Flow is open to everyone. To open Earning Strategy, Momentum and Daily, sign in with Google first; if the account is not subscribed, you will be taken to the payment step."
+                        "Flow herkese acik. Earnings Strategy, Momentum ve Daily modullerini acmak icin once Google ile uye girisi yapman gerekir; aktif abonelik yoksa odeme ekranina gecersin.",
+                        "Flow is open to everyone. To open Earnings Strategy, Momentum and Daily, sign in with Google first; if the account is not subscribed, you will be taken to the payment step."
                       )}
                     </p>
                   </div>
@@ -1652,4 +1652,3 @@ function App() {
 }
 
 export default App;
-

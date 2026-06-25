@@ -10,7 +10,7 @@ export default function Pricing({
 }) {
   const items = [
     copy(language, "Momentum scanner", "Momentum scanner"),
-    copy(language, "Earning strategy paneli", "Earning strategy dashboard"),
+    copy(language, "Earnings strategy paneli", "Earnings strategy dashboard"),
     copy(language, "Pre-earnings hisse analiz sekmeleri", "Pre-earnings stock analysis tabs"),
     copy(language, "Risk matrisi ve IV crush gorunumu", "Risk matrix and IV crush views"),
     copy(language, "Web erisimi ve support@gistify.pro destegi", "Web access and support via support@gistify.pro"),

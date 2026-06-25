@@ -46,11 +46,11 @@ export default function PublicShell({
 
   return (
     <div className="min-h-screen overflow-hidden bg-background text-foreground">
-      <div className="pointer-events-none absolute inset-0 data-grid opacity-[0.14]" />
+      <div className="pointer-events-none absolute inset-0 data-grid opacity-[0.08]" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[520px] bg-[radial-gradient(circle_at_top,rgba(16,185,129,0.16),transparent_42%),radial-gradient(circle_at_18%_18%,rgba(59,130,246,0.12),transparent_28%)]" />
       <div className="pointer-events-none absolute right-[-120px] top-40 h-80 w-80 rounded-full bg-emerald-500/10 blur-3xl" />
 
-      <div className="relative mx-auto flex max-w-7xl flex-col gap-6 px-4 py-8 md:px-6 lg:px-8">
+      <div className="relative mx-auto flex max-w-7xl flex-col gap-6 px-4 pt-8 pb-4 md:px-6 md:pb-6 lg:px-8">
         <motion.header
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
@@ -119,7 +119,7 @@ export default function PublicShell({
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
                 {eyebrow}
               </p>
-              <h1 className="max-w-4xl text-3xl font-semibold tracking-tight md:text-5xl">
+              <h1 className="max-w-4xl text-3xl font-semibold leading-[1.04] tracking-tight md:text-5xl md:leading-[1]">
                 {title}
               </h1>
               <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base">

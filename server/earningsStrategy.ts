@@ -4,7 +4,7 @@ import {
   isStructuredEarningsStrategyMarkdown,
   parseStructuredEarningsStrategyMarkdown,
   type StructuredEarningsStrategyReport,
-} from "../shared/earningReportStructured";
+} from "../shared/earningReportStructured.ts";
 import type {
   ActionPlanItem,
   BudgetOption,
@@ -1295,7 +1295,7 @@ export function parseEarningsStrategyMarkdown(
   const macro = parseMacro(tables);
   // Try to extract regime from heading text
   const regimeMatch = markdown.match(/Piyasa Rejimi:\s*"([^"]+)"/i) || markdown.match(/Regime:\s*"?([^"\n]+)"/i);
-  if (regimeMatch) { macro.regime = regimeMatch[1].trim(); console.log("DEBUG macro.regime:", macro.regime); }
+  if (regimeMatch) macro.regime = regimeMatch[1].trim();
 
   const fomc = parseFOMC(tables, markdown);
   const calendar = parseCalendar(tables, markdown);
@@ -1368,7 +1368,7 @@ function getConfiguredRootPath() {
   return { folder: fallbackDir, file: null };
 }
 
-function findLatestMasterFile(folder: string): { filePath: string; mtimeMs: number } | null {
+export function findLatestMasterFile(folder: string): { filePath: string; mtimeMs: number } | null {
   if (!fs.existsSync(folder)) return null;
 
   const entries = fs.readdirSync(folder, { withFileTypes: true });
@@ -1386,7 +1386,9 @@ function findLatestMasterFile(folder: string): { filePath: string; mtimeMs: numb
     let dateScore = 0;
     const dateMatch = name.match(/(\d{4})(\d{2})(?:_(\d{4})(\d{2}))?/);
     if (dateMatch) {
-      dateScore = Number(dateMatch[1]) * 100 + Number(dateMatch[2]);
+      const year = Number(dateMatch[3] || dateMatch[1]);
+      const month = Number(dateMatch[4] || dateMatch[2]);
+      dateScore = year * 100 + month;
     } else {
       // Fallback to mtimeMs as score
       dateScore = stats.mtimeMs;
@@ -1398,7 +1400,7 @@ function findLatestMasterFile(folder: string): { filePath: string; mtimeMs: numb
   if (candidates.length === 0) return null;
 
   // Sort by dateScore descending (most recent first)
-  candidates.sort((a, b) => b.dateScore - a.dateScore);
+  candidates.sort((a, b) => b.dateScore - a.dateScore || b.mtimeMs - a.mtimeMs);
   return { filePath: candidates[0].filePath, mtimeMs: candidates[0].mtimeMs };
 }
 

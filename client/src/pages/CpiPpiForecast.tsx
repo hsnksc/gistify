@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import WorkspaceLoadingState from "@/components/workspace/WorkspaceLoadingState";
 import { Button } from "@/components/ui/button";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
@@ -82,9 +83,11 @@ function formatTimestamp(value: string | undefined, language: AppLanguage) {
 
   return new Intl.DateTimeFormat(language === "en" ? "en-US" : "tr-TR", {
     day: "2-digit",
-    month: "2-digit",
+    month: "short",
+    year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+    hour12: language === "en",
   }).format(parsed);
 }
 
@@ -108,8 +111,13 @@ function formatDateLabel(value: string | undefined, language: AppLanguage) {
   }).format(parsed);
 }
 
-function formatProbability(value: number) {
-  return `%${Math.round(value)}`;
+function formatProbability(value: number, language: AppLanguage) {
+  const rounded = Math.round(value);
+  return language === "en" ? `${rounded}%` : `%${rounded}`;
+}
+
+function deployTimeLabel() {
+  return "00:00 UTC+3";
 }
 
 function pipelineStatusLabel(
@@ -383,7 +391,7 @@ function ReleaseCard({
             {copy(language, "Guven", "Confidence")}
           </p>
           <p className="mt-1 data-mono text-sm font-semibold text-foreground">
-            {formatProbability(release.confidence)}
+            {formatProbability(release.confidence, language)}
           </p>
         </div>
         <div className="rounded-lg border border-white/10 bg-black/20 px-2.5 py-2">
@@ -435,7 +443,7 @@ function ScenarioRow({
           </p>
         </div>
         <span className="data-mono rounded-full border border-white/10 bg-black/30 px-2 py-0.5 text-[11px] text-foreground">
-          {formatProbability(scenario.probability)}
+          {formatProbability(scenario.probability, language)}
         </span>
       </div>
       <p className="mt-2 text-[12px] leading-5 text-muted-foreground">
@@ -677,7 +685,7 @@ function PipelineCard({
             pipeline.status
           )}`}
         >
-          00:00 TSI
+          {deployTimeLabel()}
         </span>
       </div>
 
@@ -795,8 +803,8 @@ function MissingWorkspacePanel({
               <p className="line-clamp-2">
                 {copy(
                   language,
-                  "Kimi bu dosyayi sadece kendi gecici klasorune birakmamali. Final artifact gorulebilir hedefe yazilmali.",
-                  "Kimi must not leave this file only in a private scratch folder. The final artifact has to land on a readable target."
+                  "Pipeline bu dosyayi sadece gecici klasorde birakmamali. Final artifact gorulebilir hedefe yazilmali.",
+                  "The pipeline must not leave this file only in a private scratch folder. The final artifact has to land on a readable target."
                 )}
               </p>
               <p className="line-clamp-2 text-muted-foreground">
@@ -903,7 +911,7 @@ function ForecastWorkspaceSection({
             </p>
             <p className="mt-1.5 text-[11px] leading-5 text-muted-foreground">
               {leadScenario
-                ? `${leadScenario.label} · ${formatProbability(leadScenario.probability)}`
+                ? `${leadScenario.label} · ${formatProbability(leadScenario.probability, language)}`
                 : copy(language, "Senaryo gelmedi.", "No scenario loaded.")}
             </p>
           </div>
@@ -919,14 +927,14 @@ function ForecastWorkspaceSection({
             />
             <CompactStatCard
               label={copy(language, "Conviction", "Conviction")}
-              value={formatProbability(forecast.conviction)}
-              hint={copy(language, "Kimi tez skoru", "Kimi conviction score")}
+              value={formatProbability(forecast.conviction, language)}
+              hint={copy(language, "Tahmin guven skoru", "Forecast conviction score")}
               className={theme.cardClassName}
             />
             <CompactStatCard
               label={copy(language, "Snapshot", "Snapshot")}
               value={formatTimestamp(forecast.generatedAt, language)}
-              hint={`${formatDateLabel(forecast.reportDate, language)} · 00:00 TSI`}
+              hint={`${formatDateLabel(forecast.reportDate, language)} · ${deployTimeLabel()}`}
               className={theme.cardClassName}
             />
           </div>
@@ -1035,6 +1043,19 @@ export default function CpiPpiForecastPage({
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  usePageMeta({
+    description: copy(
+      language,
+      "CPI ve PPI snapshotlari ayni workspace icinde release tarihi, senaryo matrisi ve cross-asset playbook ile izlenir.",
+      "CPI and PPI snapshots are tracked in one workspace with release dates, scenario matrices and cross-asset playbooks."
+    ),
+    title: copy(
+      language,
+      "Gistify | CPI & PPI Forecast Workspace",
+      "Gistify | CPI & PPI Forecast Workspace"
+    ),
+  });
+
   const loadForecast = useCallback(
     async (silent = false) => {
       if (!silent) {
@@ -1129,8 +1150,8 @@ export default function CpiPpiForecastPage({
               error ||
               copy(
                 language,
-                "Henuz CPI veya PPI forecast snapshot'i bulunmuyor. Kimi pipeline cpi_forecast.json ya da ppi_forecast.json uretince bu alan otomatik dolacak.",
-                "There is no CPI or PPI forecast snapshot yet. This page will populate automatically once the Kimi pipeline produces cpi_forecast.json or ppi_forecast.json."
+                "Henuz CPI veya PPI forecast snapshot'i bulunmuyor. Pipeline cpi_forecast.json ya da ppi_forecast.json uretince bu alan otomatik dolacak.",
+                "There is no CPI or PPI forecast snapshot yet. This page will populate automatically once the pipeline produces cpi_forecast.json or ppi_forecast.json."
               )
             }
           />
@@ -1175,7 +1196,7 @@ export default function CpiPpiForecastPage({
                     {copy(language, "Pipeline", "Pipeline")}:{" "}
                     {pipelineStatusLabel(pipelineStatus, language)}
                   </span>
-                  <span className="badge-warning text-[9px]">00:00 TSI</span>
+                  <span className="badge-warning text-[9px]">{deployTimeLabel()}</span>
                 </div>
 
                 <div className="space-y-1.5">
@@ -1200,7 +1221,7 @@ export default function CpiPpiForecastPage({
                   <span className="h-2.5 w-px bg-white/10" />
                   <span className="flex items-center gap-1">
                     <CalendarDays className="size-3 text-sky-300" />
-                    {copy(language, "Gunluk deploy", "Daily deploy")}: 00:00 TSI
+                    {copy(language, "Gunluk deploy", "Daily deploy")}: {deployTimeLabel()}
                   </span>
                   <span className="h-2.5 w-px bg-white/10" />
                   <span className="flex items-center gap-1">
@@ -1242,8 +1263,8 @@ export default function CpiPpiForecastPage({
                     )}
                     hint={copy(
                       language,
-                      "Eksik yari otomatik pending paneli alir.",
-                      "A missing half automatically falls back to the pending panel."
+                      "Bir taraf eksikse son gecerli snapshot korunur.",
+                      "If one side is missing, the last valid snapshot stays visible."
                     )}
                   />
                   <div className="rounded-xl border border-white/10 bg-black/20 p-1.5">
@@ -1293,5 +1314,4 @@ export default function CpiPpiForecastPage({
     </div>
   );
 }
-
 

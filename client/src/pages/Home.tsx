@@ -30,6 +30,7 @@ import type {
 import type { AppLanguage } from "@/lib/i18n";
 import { copy } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import WorkspaceHeroPanel from "@/components/workspace/WorkspaceHeroPanel";
 import WorkspaceLoadingState from "@/components/workspace/WorkspaceLoadingState";
 import WorkspaceSummaryCard from "@/components/workspace/WorkspaceSummaryCard";
@@ -74,6 +75,19 @@ export default function Home({ language }: { language: AppLanguage }) {
   const [loadingDetail, setLoadingDetail] = useState(false);
   const [isTabPending, startTabTransition] = useTransition();
   const contentRef = useRef<HTMLDivElement | null>(null);
+
+  usePageMeta({
+    description: copy(
+      language,
+      "Gistify earnings workspace secili markdown raporunu post, playbook, takvim ve risk lensleriyle ayni yuzeyde acar.",
+      "The Gistify earnings workspace opens the selected markdown report across post, playbook, calendar and risk lenses on the same surface."
+    ),
+    title: copy(
+      language,
+      "Gistify | Earnings Strategy Workspace",
+      "Gistify | Earnings Strategy Workspace"
+    ),
+  });
 
   useEffect(() => {
     contentRef.current?.scrollTo({ top: 0, behavior: "auto" });
@@ -269,6 +283,13 @@ export default function Home({ language }: { language: AppLanguage }) {
       "Secili earnings raporunun ana tezleri, strateji setleri ve takvim akisi.",
       "Core thesis, strategy sets and calendar flow for the selected earnings report."
     );
+  const selectedReportDateLabel = selectedSummary
+    ? formatEarningReportDate(selectedSummary.reportDate, locale)
+    : "-";
+  const selectedVixLabel =
+    selectedSummary?.vixLabel ||
+    parsedReport?.vixLabel ||
+    copy(language, "Bekleniyor", "Pending");
 
   const handleTickerSelect = (ticker: string) => {
     setSelectedTicker(ticker);
@@ -285,7 +306,7 @@ export default function Home({ language }: { language: AppLanguage }) {
     if (loadingReports || loadingDetail) {
       return (
         <WorkspaceLoadingState
-          label={copy(language, "Earning report workspace yukleniyor.", "Loading earnings workspace.")}
+          label={copy(language, "Earnings report workspace yukleniyor.", "Loading earnings workspace.")}
         />
       );
     }
@@ -308,7 +329,7 @@ export default function Home({ language }: { language: AppLanguage }) {
           <EarningReportPostTab
             report={parsedReport}
             language={language}
-            reportDateLabel={selectedSummary?.reportDateLabel}
+            reportDateLabel={selectedReportDateLabel}
             updatedAtLabel={selectedUploadLabel}
           />
         );
@@ -337,7 +358,7 @@ export default function Home({ language }: { language: AppLanguage }) {
           <EarningReportPostTab
             report={parsedReport}
             language={language}
-            reportDateLabel={selectedSummary?.reportDateLabel}
+            reportDateLabel={selectedReportDateLabel}
             updatedAtLabel={selectedUploadLabel}
           />
         );
@@ -358,7 +379,7 @@ export default function Home({ language }: { language: AppLanguage }) {
               </span>
             </>
           }
-          eyebrow={copy(language, "Earning Strategy Workspace", "Earnings Strategy Workspace")}
+          eyebrow={copy(language, "Earnings Strategy Workspace", "Earnings Strategy Workspace")}
           title={copy(language, "Guncel earnings strateji paneli", "Current earnings strategy panel")}
           description={copy(
             language,
@@ -402,18 +423,18 @@ export default function Home({ language }: { language: AppLanguage }) {
                         {index === 0 ? copy(language, "CANLI", "LIVE") : copy(language, "ARŞIV", "ARCHIVE")}
                       </span>
                       <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-amber-300">
-                        {report.vixLabel || "VIX -"}
+                        {report.vixLabel || copy(language, "VIX bekleniyor", "VIX pending")}
                       </span>
                     </div>
                     <p className="data-mono mt-2 text-sm font-semibold text-foreground">
-                      {formatEarningReportDateTime(report.updatedAt)}
+                      {formatEarningReportDateTime(report.updatedAt, locale)}
                     </p>
                     <p className="mt-1 text-xs text-muted-foreground">
-                      {report.reportDateLabel || formatEarningReportDate(report.reportDate, locale)}
+                      {formatEarningReportDate(report.reportDate, locale)}
                     </p>
                     <div className="mt-3 flex items-center gap-2 text-[11px] text-muted-foreground">
                       <Clock3 className="size-3.5" />
-                      <span className="line-clamp-1">{report.headline || copy(language, "Earning raporu", "Earning report")}</span>
+                      <span className="line-clamp-1">{report.headline || copy(language, "Earnings raporu", "Earnings report")}</span>
                     </div>
                   </button>
                 );
@@ -482,14 +503,14 @@ export default function Home({ language }: { language: AppLanguage }) {
                   <div className="grid gap-3 sm:grid-cols-3 md:min-w-[420px]">
                     <WorkspaceSummaryCard
                       label={copy(language, "Rapor tarihi", "Report date")}
-                      value={selectedSummary?.reportDateLabel || "-"}
+                      value={selectedReportDateLabel}
                       hint={copy(language, "Parser ile okunan ana tarih", "Primary date parsed from the report")}
                       icon={CalendarDays}
                       tone="info"
                     />
                     <WorkspaceSummaryCard
                       label="VIX"
-                      value={selectedSummary?.vixLabel || "-"}
+                      value={selectedVixLabel}
                       hint={copy(language, "Secili rapor volatilite baglami", "Volatility context for the selected report")}
                       icon={Zap}
                       tone="caution"
@@ -565,7 +586,7 @@ export default function Home({ language }: { language: AppLanguage }) {
                       {copy(language, "Guncel snapshot", "Current snapshot")}
                     </p>
                     <h3 className="mt-2 heading-condensed text-xl text-foreground">
-                      {selectedSummary?.reportDateLabel || "-"}
+                      {selectedReportDateLabel}
                     </h3>
                   </div>
                   <span className="badge-strong">

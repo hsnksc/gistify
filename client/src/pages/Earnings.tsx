@@ -9,6 +9,7 @@ import PortfolioBuilder from "@/components/earnings/PortfolioBuilder";
 import GreeksDashboard from "@/components/earnings/GreeksDashboard";
 import ActionPlan from "@/components/earnings/ActionPlan";
 import ReportDownload from "@/components/earnings/ReportDownload";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import type { AppLanguage } from "@/lib/i18n";
 import { copy } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -91,6 +92,19 @@ export default function EarningsPage({
   const { data, error, isLoading, isRefreshing, pipeline, refresh } =
     useEarningsStrategy();
   const [activeTab, setActiveTab] = useState<TabKey>(() => readStoredTab());
+
+  usePageMeta({
+    description: copy(
+      language,
+      "Gistify earnings workspace takvim, strateji, CPR, Greeks ve portfoy katmanini tek karar yuzeyinde birlestirir.",
+      "The Gistify earnings workspace combines calendar, strategy, CPR, Greeks and portfolio layers on one decision surface."
+    ),
+    title: copy(
+      language,
+      "Gistify | Earnings Workspace",
+      "Gistify | Earnings Workspace"
+    ),
+  });
 
   useEffect(() => {
     if (typeof window === "undefined") {

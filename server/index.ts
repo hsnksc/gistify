@@ -2275,7 +2275,7 @@ function renderStaticMarketingPage(
           <a href="/terms">Terms</a>
           <a href="/privacy">Privacy</a>
           <a href="/refund">Refund</a>
-          <a href="/pay">Pay</a>
+          <a href="/pay">Billing</a>
         </div>
       </footer>
     </div>
@@ -4256,4 +4256,3 @@ async function startServer() {
 }
 
 startServer().catch(console.error);
-
