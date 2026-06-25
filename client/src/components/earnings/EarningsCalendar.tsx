@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { CalendarDays, SlidersHorizontal, Star } from "lucide-react";
+import { CalendarDays, Star, ChevronLeft, ChevronRight } from "lucide-react";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { EarningsEvent, EarningsTime } from "@shared/earnings";
@@ -16,154 +16,57 @@ export default function EarningsCalendar({
   language,
   events,
 }: EarningsCalendarProps) {
-  const [timeFilter, setTimeFilter] = useState<"all" | EarningsTime>("all");
-  const [importanceFilter, setImportanceFilter] = useState<"all" | "high">("all");
-  const [sectorFilter, setSectorFilter] = useState("all");
-  const sectors = useMemo(
-    () =>
-      Array.from(
-        new Set(
-          events
-            .map(event => event.sector?.trim())
-            .filter((sector): sector is string => Boolean(sector))
-        )
-      )
-        .sort((left, right) => left.localeCompare(right))
-        .slice(0, 8),
-    [events]
+  const { weeks, monthNames, eventMap } = useMemo(
+    () => buildCalendar(events, language),
+    [events, language]
   );
-  const filteredEvents = useMemo(
-    () =>
-      events.filter(event => {
-        if (timeFilter !== "all" && event.time !== timeFilter) {
-          return false;
-        }
-
-        if (importanceFilter === "high" && event.importance < 3) {
-          return false;
-        }
-
-        if (sectorFilter !== "all" && event.sector !== sectorFilter) {
-          return false;
-        }
-
-        return true;
-      }),
-    [events, importanceFilter, sectorFilter, timeFilter]
-  );
-  const { weeks, monthNames } = useMemo(() => buildCalendar(filteredEvents), [filteredEvents]);
   const dayLabels = language === "en" ? DAYS : DAY_LABELS_TR;
-  const visibleCount = filteredEvents.length;
+  const [hoveredTicker, setHoveredTicker] = useState<string | null>(null);
+
+  const bmoCount = events.filter(e => e.time === "BMO").length;
+  const amcCount = events.filter(e => e.time === "AMC").length;
+  const highCount = events.filter(e => e.importance >= 4).length;
 
   return (
-    <section className={cn(
-      "panel p-6 md:p-8",
-      "bg-gradient-to-b from-slate-800/50 to-slate-900/50 backdrop-blur-sm"
-    )}>
+    <section className="panel overflow-hidden rounded-3xl border border-white/10 bg-slate-900/50 p-5 md:p-6">
       {/* Header */}
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
           <div className="flex size-10 items-center justify-center rounded-xl bg-sky-500/10">
             <CalendarDays className="size-5 text-sky-400" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-white">
+            <h2 className="text-lg font-bold text-white">
               {copy(language, "Earnings Takvimi", "Earnings Calendar")}
             </h2>
             <p className="text-xs text-slate-400">
-              {copy(language, "BMO: Açılış Öncesi", "BMO: Before Market Open")} · {copy(language, "AMC: Kapanış Sonrası", "AMC: After Market Close")}
+              {monthNames.join(" · ")}
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-4 text-xs text-slate-400">
-          <span className="rounded-full border border-white/10 bg-slate-800/50 px-3 py-1.5 font-semibold text-slate-300">
-            {visibleCount} {copy(language, "event", "events")}
-          </span>
-          <span className="flex items-center gap-2 rounded-full border border-white/10 bg-slate-800/50 px-3 py-1.5">
-            <span className="inline-block size-2.5 rounded-full bg-emerald-500" />
-            BMO
-          </span>
-          <span className="flex items-center gap-2 rounded-full border border-white/10 bg-slate-800/50 px-3 py-1.5">
-            <span className="inline-block size-2.5 rounded-full bg-violet-500" />
-            AMC
-          </span>
-        </div>
-      </div>
 
-      <div className="mb-4 rounded-2xl border border-white/10 bg-slate-900/50 p-4">
-        <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
-          <SlidersHorizontal className="size-3.5" />
-          {copy(language, "Takvim filtreleri", "Calendar filters")}
-        </div>
-        <div className="mt-3 flex flex-wrap gap-2">
-          <FilterChip
-            active={timeFilter === "all"}
-            label={copy(language, "Tum zamanlar", "All times")}
-            onClick={() => setTimeFilter("all")}
+        <div className="flex flex-wrap items-center gap-2 text-[11px]">
+          <Badge
+            dot="emerald"
+            label={`BMO ${bmoCount}`}
           />
-          <FilterChip
-            active={timeFilter === "BMO"}
-            label="BMO"
-            onClick={() => setTimeFilter("BMO")}
+          <Badge
+            dot="violet"
+            label={`AMC ${amcCount}`}
           />
-          <FilterChip
-            active={timeFilter === "AMC"}
-            label="AMC"
-            onClick={() => setTimeFilter("AMC")}
-          />
-          <FilterChip
-            active={importanceFilter === "high"}
-            label={copy(language, "Yuksek onem", "High importance")}
-            onClick={() =>
-              setImportanceFilter(value => (value === "high" ? "all" : "high"))
-            }
+          <Badge
+            icon={<Star className="size-3 text-amber-400" />}
+            label={`${copy(language, "Yüksek Önem", "High Imp.")} ${highCount}`}
           />
         </div>
-        {sectors.length > 0 ? (
-          <div className="mt-3 flex flex-wrap gap-2">
-            <FilterChip
-              active={sectorFilter === "all"}
-              label={copy(language, "Tum sektorler", "All sectors")}
-              onClick={() => setSectorFilter("all")}
-            />
-            {sectors.map(sector => (
-              <FilterChip
-                key={sector}
-                active={sectorFilter === sector}
-                label={sector}
-                onClick={() => setSectorFilter(sector)}
-              />
-            ))}
-          </div>
-        ) : null}
-      </div>
-
-      {/* Month pills */}
-      <div className="mb-4 flex items-center gap-3">
-        {monthNames.map((m, i) => (
-          <span
-            key={m}
-            className={cn(
-              "rounded-full px-4 py-1.5 text-sm font-bold",
-              i === 0
-                ? "border border-sky-500/30 bg-sky-500/15 text-sky-400"
-                : "border border-white/10 bg-slate-800/50 text-slate-400"
-            )}
-          >
-            {m}
-          </span>
-        ))}
       </div>
 
       {/* Day headers */}
-      <div className="grid grid-cols-7 gap-2 border-b border-white/10 pb-3">
-        {dayLabels.map((d, index) => (
+      <div className="grid grid-cols-7 gap-1 border-b border-white/10 pb-2">
+        {dayLabels.map(d => (
           <div
             key={d}
-            className={cn(
-              "text-center text-xs font-bold uppercase tracking-wider",
-              index >= 5 ? "text-slate-600" : "text-slate-400"
-            )}
+            className="py-2 text-center text-[10px] font-bold uppercase tracking-wider text-slate-500"
           >
             {d}
           </div>
@@ -171,303 +74,226 @@ export default function EarningsCalendar({
       </div>
 
       {/* Calendar grid */}
-      {filteredEvents.length > 0 ? (
-        <div className="mt-3 space-y-2">
-          {weeks.map((week, wi) => (
-            <div key={wi} className="grid grid-cols-7 gap-2">
-              {week.map((day, di) => (
-                <DayCell
-                  key={`${wi}-${di}`}
-                  day={day}
-                  isWeekend={di >= 5}
-                  language={language}
-                />
-              ))}
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="mt-3 rounded-2xl border border-dashed border-slate-700 bg-slate-900/35 px-4 py-8 text-center">
-          <p className="text-sm font-semibold text-slate-300">
-            {copy(
-              language,
-              "Bu filtre kombinasyonunda event yok.",
-              "No events match this filter combination."
-            )}
-          </p>
-          <p className="mt-2 text-xs text-slate-500">
-            {copy(
-              language,
-              "Zaman, onem veya sektor secimini gevsetin.",
-              "Relax the time, importance, or sector filter."
-            )}
-          </p>
-        </div>
-      )}
+      <div className="mt-2 space-y-1">
+        {weeks.map((week, wi) => (
+          <div key={wi} className="grid grid-cols-7 gap-1">
+            {week.map((day, di) => (
+              <DayCell
+                key={`${wi}-${di}`}
+                day={day}
+                eventMap={eventMap}
+                language={language}
+                onHover={setHoveredTicker}
+                hoveredTicker={hoveredTicker}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
 
       {/* Legend */}
-      <div className="mt-5 flex flex-wrap gap-4 border-t border-white/10 pt-4 text-xs text-slate-500">
-        <span className="flex items-center gap-2">
-          <Star className="size-3.5 text-amber-400" />
-          {copy(language, "Yüksek Önem", "High Importance")}
+      <div className="mt-4 flex flex-wrap items-center gap-4 border-t border-white/10 pt-3 text-[11px] text-slate-500">
+        <span className="flex items-center gap-1.5">
+          <span className="inline-block size-2 rounded-full bg-emerald-500" />
+          BMO
         </span>
-        <span className="flex items-center gap-2">
-          <span className="inline-block size-3 rounded border border-slate-700 border-dashed" />
-          {copy(language, "Sonraki Ay", "Next Month")}
+        <span className="flex items-center gap-1.5">
+          <span className="inline-block size-2 rounded-full bg-violet-500" />
+          AMC
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="inline-block size-2 rounded-full bg-slate-500" />
+          TBA
         </span>
       </div>
     </section>
   );
 }
 
-function DayCell({
-  language,
-  day,
-  isWeekend,
+function Badge({
+  dot,
+  icon,
+  label,
 }: {
-  language: AppLanguage;
+  dot?: "emerald" | "violet" | "amber" | "slate";
+  icon?: React.ReactNode;
+  label: string;
+}) {
+  return (
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-slate-800/50 px-2.5 py-1 text-slate-300">
+      {dot ? (
+        <span
+          className={cn(
+            "size-1.5 rounded-full",
+            dot === "emerald" && "bg-emerald-500",
+            dot === "violet" && "bg-violet-500",
+            dot === "amber" && "bg-amber-500",
+            dot === "slate" && "bg-slate-500"
+          )}
+        />
+      ) : null}
+      {icon}
+      {label}
+    </span>
+  );
+}
+
+function DayCell({
+  day,
+  eventMap,
+  language,
+  onHover,
+  hoveredTicker,
+}: {
   day: CalendarDay;
-  isWeekend: boolean;
+  eventMap: Map<string, EarningsEvent[]>;
+  language: AppLanguage;
+  onHover: (ticker: string | null) => void;
+  hoveredTicker: string | null;
 }) {
   if (!day.date) {
     return (
-      <div
-        className={cn(
-          "min-h-[110px] rounded-2xl border border-white/5 bg-slate-900/30 md:min-h-[130px]",
-          isWeekend ? "opacity-55" : ""
-        )}
-      />
+      <div className="min-h-[80px] rounded-xl bg-slate-800/20 p-1.5 md:min-h-[96px]" />
     );
   }
 
-  const parsed = new Date(day.date);
-  const dayNum = parsed.getDate();
-  const isCurrentMonth = day.isCurrentMonth;
-  const hasHighImportance = day.events.some(e => e.importance >= 3);
-  const maxStars = day.events.reduce((max, e) => Math.max(max, e.importance), 0);
-  const intensityScore = day.events.reduce(
-    (sum, event) => sum + Math.min(event.importance, 3),
-    0
-  );
-  const heatClass =
-    intensityScore >= 8
-      ? "border-sky-400/30 bg-sky-500/18"
-      : intensityScore >= 4
-        ? "border-sky-500/20 bg-sky-500/10"
-        : intensityScore > 0
-          ? "border-white/10 bg-slate-800/55"
-          : isCurrentMonth
-            ? "border-white/5 bg-slate-900/30"
-            : "border-white/5 border-dashed bg-slate-900/20";
+  const events = eventMap.get(day.date) || [];
+  const isToday = false;
 
   return (
     <div
       className={cn(
-        "group relative min-h-[110px] rounded-2xl border p-2.5 transition-all duration-300 md:min-h-[130px] md:p-3",
-        heatClass,
-        !isCurrentMonth && day.events.length > 0 ? "border-dashed" : "",
-        isWeekend ? "opacity-75" : "",
-        day.events.length > 0
-          ? "hover:-translate-y-0.5 hover:border-sky-500/30 hover:shadow-lg hover:shadow-sky-500/5"
-          : ""
+        "group relative flex min-h-[80px] flex-col rounded-xl border p-1.5 transition-colors md:min-h-[96px]",
+        events.length > 0
+          ? "border-white/10 bg-slate-800/40 hover:bg-slate-800/60"
+          : "border-transparent bg-slate-800/20"
       )}
     >
-      {/* Day number + importance indicator */}
-      <div className="flex items-center justify-between">
-        <span
-          className={cn(
-            "text-sm font-bold",
-            isCurrentMonth ? "text-slate-200" : "text-slate-600"
-          )}
-        >
-          {dayNum}
-        </span>
-        {hasHighImportance && (
-          <div className="flex items-center gap-0.5">
-            {Array.from({ length: Math.min(maxStars, 3) }).map((_, i) => (
-              <Star key={i} className="size-3 fill-amber-400 text-amber-400" />
-            ))}
-          </div>
+      <span
+        className={cn(
+          "self-start rounded-md px-1.5 py-0.5 text-[10px] font-bold",
+          isToday
+            ? "bg-sky-500 text-white"
+            : "text-slate-400 group-hover:text-slate-200"
         )}
-      </div>
+      >
+        {day.dayOfMonth}
+      </span>
 
-      {/* Event chips stacked */}
-      <div className="mt-2 space-y-1.5">
-        {day.events.slice(0, 4).map(event => (
-          <EventPill key={event.ticker} event={event} />
+      <div className="mt-1 flex flex-1 flex-col gap-1 overflow-hidden">
+        {events.map(event => (
+          <a
+            key={event.ticker}
+            href={`/earnings/${event.ticker}`}
+            onMouseEnter={() => onHover(event.ticker)}
+            onMouseLeave={() => onHover(null)}
+            className={cn(
+              "flex items-center gap-1 rounded-md border px-1.5 py-0.5 text-[10px] font-semibold transition-all",
+              hoveredTicker === event.ticker
+                ? "scale-[1.02] border-white/20 bg-slate-700/60"
+                : "border-transparent bg-slate-700/30 hover:bg-slate-700/50",
+              event.time === "BMO"
+                ? "text-emerald-300"
+                : event.time === "AMC"
+                  ? "text-violet-300"
+                  : "text-slate-300"
+            )}
+          >
+            <span
+              className={cn(
+                "size-1.5 rounded-full",
+                event.time === "BMO" && "bg-emerald-500",
+                event.time === "AMC" && "bg-violet-500",
+                event.time === "TBA" && "bg-slate-500"
+              )}
+            />
+            <span className="truncate">{event.ticker}</span>
+            {event.importance >= 4 ? (
+              <Star className="ml-auto size-2.5 shrink-0 text-amber-400" />
+            ) : null}
+          </a>
         ))}
-        {day.events.length > 4 && (
-          <span className="block text-center text-[10px] font-medium text-slate-500">
-            +{day.events.length - 4}
-          </span>
-        )}
       </div>
-
-      {/* Hover tooltip — detailed */}
-      {day.events.length > 0 && (
-        <div className="invisible absolute left-1/2 top-full z-30 mt-2 w-72 -translate-x-1/2 rounded-2xl border border-white/10 bg-slate-900/95 p-4 opacity-0 shadow-2xl backdrop-blur-md transition-opacity duration-150 group-hover:visible group-hover:opacity-100 md:left-full md:top-0 md:ml-2 md:mt-0 md:translate-x-0">
-          <p className="mb-3 text-xs font-bold uppercase tracking-[0.12em] text-sky-400">
-            {day.date}
-          </p>
-          <div className="space-y-3">
-            {day.events.map(e => (
-              <div
-                key={e.ticker}
-                className="flex items-start justify-between gap-3 rounded-xl border border-white/5 bg-slate-800/50 p-2.5"
-              >
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    <a
-                      href={`/earnings/${e.ticker}`}
-                      className="font-bold text-white transition-colors hover:text-sky-400"
-                    >
-                      {e.ticker}
-                    </a>
-                    <TimeBadge time={e.time} />
-                  </div>
-                  <p className="mt-0.5 truncate text-[11px] text-slate-400">{e.company}</p>
-                  {(e as unknown as { sector?: string }).sector && (
-                    <p className="mt-0.5 text-[10px] text-slate-500">
-                      {(e as unknown as { sector?: string }).sector}
-                    </p>
-                  )}
-                  {(e as unknown as { marketCap?: string }).marketCap && (
-                    <p className="mt-0.5 text-[10px] text-slate-500">
-                      {(e as unknown as { marketCap?: string }).marketCap}
-                    </p>
-                  )}
-                  {(e as unknown as { strategy?: string }).strategy && (
-                    <p className="mt-1 text-[10px] font-medium text-sky-400/80">
-                      {(e as unknown as { strategy?: string }).strategy}
-                    </p>
-                  )}
-                </div>
-                <div className="flex items-center gap-0.5">
-                  {Array.from({ length: Math.min(e.importance, 3) }).map((_, i) => (
-                    <Star key={i} className="size-2.5 fill-amber-400 text-amber-400" />
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
-  );
-}
-
-function FilterChip({
-  active,
-  label,
-  onClick,
-}: {
-  active: boolean;
-  label: string;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={cn(
-        "rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors",
-        active
-          ? "border-sky-500/30 bg-sky-500/15 text-sky-300"
-          : "border-white/10 bg-slate-800/50 text-slate-400 hover:bg-slate-800 hover:text-slate-200"
-      )}
-    >
-      {label}
-    </button>
-  );
-}
-
-function EventPill({ event }: { event: EarningsEvent }) {
-  return (
-    <a
-      href={`/earnings/${event.ticker}`}
-      className={cn(
-        "flex items-center justify-between rounded-lg border px-2 py-1 text-[10px] font-medium transition-all hover:scale-[1.02]",
-        event.time === "BMO"
-          ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-300"
-          : event.time === "AMC"
-            ? "border-violet-500/20 bg-violet-500/10 text-violet-300"
-            : "border-white/5 bg-slate-800/50 text-slate-300"
-      )}
-      title={event.company}
-    >
-      <span className="font-bold">{event.ticker}</span>
-      <span className="opacity-70">{event.time}</span>
-    </a>
-  );
-}
-
-function TimeBadge({ time }: { time: EarningsTime }) {
-  return (
-    <span
-      className={cn(
-        "rounded-md px-2 py-0.5 text-[10px] font-bold",
-        time === "BMO"
-          ? "bg-emerald-500/15 text-emerald-400"
-          : time === "AMC"
-            ? "bg-violet-500/15 text-violet-400"
-            : "bg-slate-700 text-slate-300"
-      )}
-    >
-      {time}
-    </span>
   );
 }
 
 interface CalendarDay {
   date: string | null;
-  events: EarningsEvent[];
-  isCurrentMonth: boolean;
+  dayOfMonth: number | null;
 }
 
-function buildCalendar(events: EarningsEvent[]) {
-  const grouped: Record<string, EarningsEvent[]> = {};
-  for (const e of events) {
-    if (!grouped[e.date]) grouped[e.date] = [];
-    grouped[e.date].push(e);
+function buildCalendar(events: EarningsEvent[], language: "en" | "tr") {
+  const eventMap = new Map<string, EarningsEvent[]>();
+  const monthSet = new Set<string>();
+  let minDate: Date | null = null;
+  let maxDate: Date | null = null;
+
+  for (const event of events) {
+    if (!event.date) continue;
+    const list = eventMap.get(event.date) || [];
+    list.push(event);
+    eventMap.set(event.date, list);
+
+    const d = new Date(`${event.date}T00:00:00`);
+    if (!Number.isNaN(d.getTime())) {
+      if (!minDate || d < minDate) minDate = d;
+      if (!maxDate || d > maxDate) maxDate = d;
+      monthSet.add(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`);
+    }
   }
 
-  const dates = Object.keys(grouped).sort();
-  if (dates.length === 0) return { weeks: [] as CalendarDay[][], monthNames: [] };
+  // Sort events within each day by importance desc, then ticker asc
+  for (const list of Array.from(eventMap.values())) {
+    list.sort((a: EarningsEvent, b: EarningsEvent) => {
+      if (b.importance !== a.importance) return b.importance - a.importance;
+      return a.ticker.localeCompare(b.ticker);
+    });
+  }
 
-  const first = new Date(dates[0]);
-  const last = new Date(dates[dates.length - 1]);
+  const monthNames: string[] = [];
+  const monthFormatter = new Intl.DateTimeFormat(language === "en" ? "en-US" : "tr-TR", {
+    month: "long",
+    year: "numeric",
+  });
 
-  const start = new Date(first);
-  start.setDate(start.getDate() - ((start.getDay() + 6) % 7));
-  const end = new Date(last);
-  end.setDate(end.getDate() + ((7 - end.getDay()) % 7));
+  if (minDate && maxDate) {
+    let cursor = new Date(minDate.getFullYear(), minDate.getMonth(), 1);
+    const end = new Date(maxDate.getFullYear(), maxDate.getMonth(), 1);
+    while (cursor <= end) {
+      monthNames.push(monthFormatter.format(cursor));
+      cursor = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1);
+    }
+  }
 
   const weeks: CalendarDay[][] = [];
-  let current: CalendarDay[] = [];
-  const cur = new Date(start);
-  const currentMonth = first.getMonth();
-  const monthNamesSet = new Set<string>();
 
-  while (cur <= end) {
-    const iso = cur.toISOString().split("T")[0];
-    const eventsForDay = grouped[iso] || [];
-    const isCurrentMonth = cur.getMonth() === currentMonth;
-    if (isCurrentMonth) {
-      monthNamesSet.add(
-        cur.toLocaleString("en-US", { month: "long" })
-      );
-    }
-    current.push({
-      date: iso,
-      events: eventsForDay,
-      isCurrentMonth,
-    });
-    if (current.length === 7) {
-      weeks.push(current);
-      current = [];
-    }
-    cur.setDate(cur.getDate() + 1);
+  if (!minDate || !maxDate) {
+    return { weeks, monthNames, eventMap };
   }
 
-  return { weeks, monthNames: Array.from(monthNamesSet) };
+  const start = new Date(minDate.getFullYear(), minDate.getMonth(), 1);
+  const end = new Date(maxDate.getFullYear(), maxDate.getMonth() + 1, 0);
+
+  // Adjust start to Monday
+  const startDay = start.getDay(); // 0 = Sunday
+  const mondayOffset = startDay === 0 ? -6 : 1 - startDay;
+  const cursor = new Date(start);
+  cursor.setDate(cursor.getDate() + mondayOffset);
+
+  while (cursor <= end) {
+    const week: CalendarDay[] = [];
+    for (let i = 0; i < 7; i++) {
+      const dateStr = cursor.toISOString().slice(0, 10);
+      const inRange = cursor >= start && cursor <= end;
+      week.push({
+        date: inRange ? dateStr : null,
+        dayOfMonth: inRange ? cursor.getDate() : null,
+      });
+      cursor.setDate(cursor.getDate() + 1);
+    }
+    weeks.push(week);
+  }
+
+  return { weeks, monthNames, eventMap };
 }

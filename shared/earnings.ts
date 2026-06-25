@@ -50,6 +50,7 @@ export interface FOMCData {
   status?: FOMCStatus;
   currentRate?: string;
   marketExpectation?: string;
+  notes?: string[];
 }
 
 export interface EarningsEvent {
@@ -64,6 +65,7 @@ export interface EarningsEvent {
   ivRank?: string;
   cpr?: string;
   strategy?: string;
+  notes?: string[];
 }
 
 export interface Greeks {

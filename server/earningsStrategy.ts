@@ -91,11 +91,11 @@ function parseRisk(value: string): RiskLevel {
 
 function parseSentiment(value: string): Sentiment {
   const raw = normalizeString(value).toLowerCase();
-  if (raw.includes("güçlü boğa")) return "Güçlü Boğa";
-  if (raw.includes("güçlü ayı")) return "Güçlü Ayı";
-  if (raw.includes("ayı")) return "Ayı";
-  if (raw.includes("boğa")) return "Boğa";
-  if (raw.includes("nötr")) return "Nötr";
+  if (raw.includes("güçlü boğa") || raw.includes("bullish") || raw.includes("strong bull")) return "Güçlü Boğa";
+  if (raw.includes("güçlü ayı") || raw.includes("bearish") || raw.includes("strong bear")) return "Güçlü Ayı";
+  if (raw.includes("ayı") || raw.includes("bear")) return "Ayı";
+  if (raw.includes("boğa") || raw.includes("bull")) return "Boğa";
+  if (raw.includes("nötr") || raw.includes("neutral")) return "Nötr";
   return "Unknown";
 }
 
@@ -236,7 +236,7 @@ interface MarkdownTable {
   rows: string[][];
 }
 
-function parseTables(markdown: string): MarkdownTable[] {
+export function parseTables(markdown: string): MarkdownTable[] {
   const tables: MarkdownTable[] = [];
   const lines = markdown.split(/\r?\n/);
   let buffer: string[] = [];
@@ -307,10 +307,12 @@ function findTableByHeader(tables: MarkdownTable[], headerNeedle: string): Markd
   );
 }
 
-function parseMacro(tables: MarkdownTable[]): MacroData {
+export function parseMacro(tables: MarkdownTable[]): MacroData {
   const macroTable =
     findTableByHeader(tables, "gösterge") ||
-    findTableByHeader(tables, "metrik");
+    findTableByHeader(tables, "metrik") ||
+    findTableByHeader(tables, "metric") ||
+    findTableByHeader(tables, "indicator");
 
   const macro: MacroData = {};
   if (!macroTable) return macro;
@@ -337,7 +339,9 @@ function parseFOMC(tables: MarkdownTable[], markdown: string): FOMCData | undefi
   const fomcTable =
     findTableByHeader(tables, "detay") ||
     findTableByHeader(tables, "bilgi") ||
-    findTableByHeader(tables, "toplantı tarihi");
+    findTableByHeader(tables, "toplantı tarihi") ||
+    findTableByHeader(tables, "field") ||
+    findTableByHeader(tables, "value");
   if (!fomcTable) return undefined;
 
   const data: Record<string, string> = {};
@@ -348,30 +352,90 @@ function parseFOMC(tables: MarkdownTable[], markdown: string): FOMCData | undefi
   }
 
   const date =
+    data["date"] ||
     data["toplantı tarihi"] ||
     findRowByLabel(tables, "toplantı tarihi", 1);
 
-  const parsedDate = parseTurkishDateToken(date);
+  const daysRemaining =
+    data["daysremaining"] ||
+    data["days remaining"] ||
+    data["kalan gün"];
+
+  const parsedDate = date ? date : parseTurkishDateToken(date);
   let daysUntil: number | undefined;
   if (parsedDate) {
     const now = new Date();
     const target = new Date(parsedDate);
     const diffMs = target.getTime() - now.getTime();
     daysUntil = Math.max(0, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
+  } else if (daysRemaining) {
+    daysUntil = Number(daysRemaining);
   }
+
+  const blackoutStart = data["blackoutstart"] || data["blackout dönemi"];
+  const status = data["status"] || data["durum"];
+  const currentRate = data["current rate"] || data["mevcut faiz"];
+  const marketExpectation = data["market expectation"] || data["piyasa beklentisi"];
+  const note = data["note"] || data["not"];
 
   return {
     date: parsedDate || date,
     daysUntil,
-    blackoutStart: data["blackout dönemi"],
-    status: daysUntil !== undefined ? parseFOMCStatus(daysUntil) : undefined,
-    currentRate: data["mevcut faiz"],
-    marketExpectation: data["piyasa beklentisi"],
+    blackoutStart,
+    status: status ? (status as FOMCStatus) : daysUntil !== undefined ? parseFOMCStatus(daysUntil) : undefined,
+    currentRate,
+    marketExpectation,
+    notes: note ? [note] : undefined,
   };
 }
 
-function parseCalendar(markdown: string): EarningsEvent[] {
+function parseCalendar(tables: MarkdownTable[], markdown: string): EarningsEvent[] {
   const events: EarningsEvent[] = [];
+  
+  // NEW FORMAT: Try to find Calendar table by Date/Ticker column first
+  const calendarTable =
+    findTableByHeader(tables, "date") ||
+    findTableByHeader(tables, "tarih") ||
+    findTableByHeader(tables, "ticker");
+  
+  if (calendarTable) {
+    const headers = calendarTable.headers.map(h => h.toLowerCase());
+    const dateIdx = headers.findIndex(h => h.includes("date") || h.includes("tarih"));
+    const tickerIdx = headers.findIndex(h => h.includes("ticker") || h.includes("hisse"));
+    const companyIdx = headers.findIndex(h => h.includes("company") || h.includes("şirket"));
+    const sectorIdx = headers.findIndex(h => h.includes("sector") || h.includes("sektör"));
+    const sessionIdx = headers.findIndex(h => h.includes("session") || h.includes("saat"));
+    const importanceIdx = headers.findIndex(h => h.includes("importance") || h.includes("önem"));
+    const noteIdx = headers.findIndex(h => h.includes("note") || h.includes("not") || h.includes("açıklama"));
+    
+    for (const row of calendarTable.rows) {
+      if (row.length < 2) continue;
+      
+      const ticker = tickerIdx >= 0 ? cleanMarkdownText(row[tickerIdx]) : "";
+      if (!ticker || ticker.toLowerCase() === "ticker" || ticker.toLowerCase() === "hisse") continue;
+      
+      const date = dateIdx >= 0 ? normalizeString(row[dateIdx]) : "";
+      const company = companyIdx >= 0 ? normalizeString(row[companyIdx]) : "";
+      const sector = sectorIdx >= 0 ? normalizeString(row[sectorIdx]) : "";
+      const session = sessionIdx >= 0 ? parseTime(row[sessionIdx]) : "TBA";
+      const importance = importanceIdx >= 0 ? parseImportance(row[importanceIdx]) : 1;
+      const note = noteIdx >= 0 ? normalizeString(row[noteIdx]) : "";
+      
+      events.push({
+        date,
+        ticker,
+        company,
+        sector,
+        time: session,
+        importance,
+        notes: note ? [note] : undefined,
+      });
+    }
+    
+    return events;
+  }
+  
+  // OLD FORMAT: Fallback to date headings with embedded tables
   const lines = markdown.split(/\r?\n/);
   let currentDate = "";
   let currentTime: EarningsTime = "TBA";
@@ -897,7 +961,7 @@ function parseExecutiveSummary(markdown: string): string[] {
   let foundFirstParagraph = false;
 
   for (const line of lines) {
-    if (/^##\s+1\.\s*EXECUTIVE SUMMARY/i.test(line.trim())) {
+    if (/^##\s*(?:\d+\.\s*)?EXECUTIVE SUMMARY/i.test(line.trim())) {
       inSection = true;
       continue;
     }
@@ -918,7 +982,7 @@ function parseExecutiveSummary(markdown: string): string[] {
   return items.slice(0, 10);
 }
 
-function parseEarningsStrategyMarkdown(
+export function parseEarningsStrategyMarkdown(
   markdown: string,
   sourceFile: string
 ): EarningsStrategyData | null {
@@ -929,11 +993,11 @@ function parseEarningsStrategyMarkdown(
 
   const macro = parseMacro(tables);
   // Try to extract regime from heading text
-  const regimeMatch = markdown.match(/Piyasa Rejimi:\s*"([^"]+)"/i);
-  if (regimeMatch) macro.regime = regimeMatch[1];
+  const regimeMatch = markdown.match(/Piyasa Rejimi:\s*"([^"]+)"/i) || markdown.match(/Regime:\s*"?([^"\n]+)"/i);
+  if (regimeMatch) { macro.regime = regimeMatch[1].trim(); console.log("DEBUG macro.regime:", macro.regime); }
 
   const fomc = parseFOMC(tables, markdown);
-  const calendar = parseCalendar(markdown);
+  const calendar = parseCalendar(tables, markdown);
   const cprStocks = parseCPR(tables);
   const strategies = parseStrategies(markdown);
   const portfolio = parsePortfolio(tables, markdown);

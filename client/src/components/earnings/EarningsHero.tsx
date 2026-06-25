@@ -3,16 +3,18 @@ import { Button } from "@/components/ui/button";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import {
-  FileText,
   RefreshCw,
   TrendingUp,
   TrendingDown,
   Minus,
-  BarChart3,
   Calendar,
   AlertTriangle,
+  Download,
+  Activity,
+  BarChart3,
+  Clock,
 } from "lucide-react";
-import type { EarningsStrategyData } from "@shared/earnings";
+import type { EarningsStrategyData, FOMCData } from "@shared/earnings";
 
 interface EarningsHeroProps {
   language: AppLanguage;
@@ -28,94 +30,41 @@ export default function EarningsHero({
   isRefreshing,
 }: EarningsHeroProps) {
   const currentMonth = data.currentMonth || "—";
-  const nextMonth = data.nextMonth || null;
-  const fomcWarning = (data as { fomcWarning?: string }).fomcWarning;
-
-  const vixNum = data.macro.vix
-    ? parseFloat(data.macro.vix.replace(/[^0-9.]/g, ""))
-    : NaN;
-  const vixColor =
-    !Number.isNaN(vixNum) && vixNum > 25
-      ? "text-rose-400"
-      : !Number.isNaN(vixNum) && vixNum > 20
-        ? "text-amber-400"
-        : "text-emerald-400";
-
-  const spChange = data.macro.sp500 || "";
-  const spDirection = spChange.includes("-") ? "down" : spChange.includes("+") ? "up" : "flat";
+  const nextMonth = data.nextMonth;
 
   return (
     <section
       className={cn(
-        "relative overflow-hidden rounded-2xl border border-white/10",
-        "bg-gradient-to-br from-slate-900 via-[#1a2744] to-slate-900"
+        "relative overflow-hidden rounded-3xl border border-white/10",
+        "bg-gradient-to-br from-slate-900 via-[#162032] to-slate-900"
       )}
     >
-      {/* ambient glows */}
-      <div className="pointer-events-none absolute -left-20 -top-20 h-80 w-80 rounded-full bg-sky-500/8 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-20 -right-20 h-80 w-80 rounded-full bg-indigo-500/8 blur-3xl" />
-      <div className="pointer-events-none absolute left-1/2 top-0 h-px w-full -translate-x-1/2 bg-gradient-to-r from-transparent via-sky-500/20 to-transparent" />
+      {/* Ambient glows */}
+      <div className="pointer-events-none absolute -left-24 -top-24 h-96 w-96 rounded-full bg-sky-500/10 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-indigo-500/10 blur-3xl" />
+      <div className="pointer-events-none absolute left-0 top-0 h-px w-full bg-gradient-to-r from-transparent via-sky-500/25 to-transparent" />
 
-      <div className="relative p-6 md:p-8 lg:p-10">
-        {/* Top row: Two-month header + actions */}
-        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-start">
-          <div className="space-y-3">
-            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-sky-400">
+      <div className="relative p-6 md:p-8">
+        {/* Top bar */}
+        <div className="flex flex-col justify-between gap-4 md:flex-row md:items-start">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 rounded-full border border-sky-500/20 bg-sky-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-400">
               <Calendar className="size-3.5" />
-              {copy(language, "Rolling 2-Aylık Earnings Stratejisi", "Rolling 2-Month Earnings Strategy")}
+              {copy(language, "Rolling 2-Aylık Strateji", "Rolling 2-Month Strategy")}
             </div>
-
-            {/* Dramatic two-month display */}
-            <div className="flex items-center gap-4 md:gap-6">
-              <div className="text-center">
-                <p className="text-3xl font-bold tracking-tight text-white md:text-4xl lg:text-5xl">
-                  {currentMonth}
-                </p>
-                <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-sky-400/80">
-                  {copy(language, "Mevcut Ay", "Current Month")}
-                </p>
-              </div>
-
-              <div className="flex flex-col items-center gap-1">
-                <div className="h-px w-12 bg-gradient-to-r from-transparent via-sky-500/50 to-transparent md:w-16 lg:w-20" />
-                <span className="text-2xl font-light text-sky-400/60 md:text-3xl">+</span>
-                <div className="h-px w-12 bg-gradient-to-r from-transparent via-sky-500/50 to-transparent md:w-16 lg:w-20" />
-              </div>
-
-              {nextMonth ? (
-                <div className="text-center">
-                  <p className="text-3xl font-bold tracking-tight text-slate-300 md:text-4xl lg:text-5xl">
-                    {nextMonth}
-                  </p>
-                  <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400/80">
-                    {copy(language, "Sonraki Ay", "Next Month")}
-                  </p>
-                </div>
-              ) : (
-                <div className="text-center">
-                  <p className="text-3xl font-bold tracking-tight text-slate-600 md:text-4xl lg:text-5xl">
-                    —
-                  </p>
-                  <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500/60">
-                    {copy(language, "Sonraki Ay", "Next Month")}
-                  </p>
-                </div>
-              )}
-            </div>
-
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="rounded-full border border-sky-500/30 bg-sky-500/15 px-3 py-1 text-xs font-semibold text-sky-300">
-                {copy(language, "Aktif donem", "Active window")}: {currentMonth}
-              </span>
-              {nextMonth ? (
-                <span className="rounded-full border border-white/10 bg-slate-800/50 px-3 py-1 text-xs font-semibold text-slate-300">
-                  {copy(language, "Siradaki", "Next")}: {nextMonth}
-                </span>
-              ) : null}
-            </div>
+            <h1 className="text-2xl font-bold tracking-tight text-white md:text-3xl">
+              {data.title ||
+                copy(language, "Earnings Stratejisi", "Earnings Strategy")}
+            </h1>
+            {data.summary ? (
+              <p className="max-w-2xl text-sm leading-relaxed text-slate-400">
+                {data.summary.slice(0, 180)}
+                {data.summary.length > 180 ? "..." : ""}
+              </p>
+            ) : null}
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex items-center gap-2">
             <Button
               variant="outline"
               size="sm"
@@ -124,10 +73,7 @@ export default function EarningsHero({
               className="rounded-xl border-white/10 bg-slate-800/50 text-slate-200 backdrop-blur-sm hover:bg-slate-700/50 hover:text-white"
             >
               <RefreshCw
-                className={cn(
-                  "mr-2 size-4",
-                  isRefreshing ? "animate-spin" : ""
-                )}
+                className={cn("mr-2 size-4", isRefreshing && "animate-spin")}
               />
               {copy(language, "Yenile", "Refresh")}
             </Button>
@@ -137,141 +83,194 @@ export default function EarningsHero({
               asChild
               className="rounded-xl border-white/10 bg-slate-800/50 text-slate-200 backdrop-blur-sm hover:bg-slate-700/50 hover:text-white"
             >
-              <a
-                href="/api/earnings/download?format=md"
-                download
-                className="inline-flex items-center"
-              >
-                <FileText className="mr-2 size-4" />
-                MD
-              </a>
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              asChild
-              className="rounded-xl border-white/10 bg-slate-800/50 text-slate-200 backdrop-blur-sm hover:bg-slate-700/50 hover:text-white"
-            >
-              <a
-                href="/api/earnings/download?format=docx"
-                download
-                className="inline-flex items-center"
-              >
-                <FileText className="mr-2 size-4" />
-                DOCX
+              <a href="/api/earnings/download?format=md" download>
+                <Download className="mr-2 size-4" />
+                {copy(language, "Rapor", "Report")}
               </a>
             </Button>
           </div>
         </div>
 
-        {/* Macro big numbers — dramatic cards */}
-        <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
-          <BigStat
+        {/* Month ribbon */}
+        <div className="mt-6 flex flex-wrap items-stretch gap-3">
+          <MonthCard
+            label={copy(language, "Mevcut Ay", "Current Month")}
+            value={currentMonth}
+            active
+          />
+          {nextMonth ? (
+            <MonthCard
+              label={copy(language, "Sonraki Ay", "Next Month")}
+              value={nextMonth}
+            />
+          ) : (
+            <MonthCard
+              label={copy(language, "Sonraki Ay", "Next Month")}
+              value={copy(language, "Bekleniyor", "Pending")}
+              muted
+            />
+          )}
+        </div>
+
+        {/* Metric ribbon */}
+        <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
+          <MetricCard
+            icon={<Activity className="size-4" />}
             label="VIX"
-            value={data.macro.vix || "—"}
-            colorClass={vixColor}
-            icon={<BarChart3 className="size-5" />}
-            gradient="from-rose-500/10 to-amber-500/10"
+            value={data.macro.vix}
+            tone={getVixTone(data.macro.vix)}
           />
-          <BigStat
+          <MetricCard
+            icon={<BarChart3 className="size-4" />}
             label="S&P 500"
-            value={data.macro.sp500 || "—"}
-            colorClass={
-              spDirection === "up"
-                ? "text-emerald-400"
-                : spDirection === "down"
-                  ? "text-rose-400"
-                  : "text-slate-400"
-            }
-            icon={
-              spDirection === "up" ? (
-                <TrendingUp className="size-5" />
-              ) : spDirection === "down" ? (
-                <TrendingDown className="size-5" />
-              ) : (
-                <Minus className="size-5" />
-              )
-            }
-            gradient="from-emerald-500/10 to-sky-500/10"
+            value={data.macro.sp500}
           />
-          <BigStat
+          <MetricCard
+            icon={<BarChart3 className="size-4" />}
             label="Nasdaq"
-            value={data.macro.nasdaq || "—"}
-            colorClass="text-slate-300"
-            icon={<BarChart3 className="size-5" />}
-            gradient="from-violet-500/10 to-sky-500/10"
+            value={data.macro.nasdaq}
           />
-          <BigStat
-            label={copy(language, "Rejim", "Regime")}
-            value={data.macro.regime || "—"}
-            colorClass="text-sky-400"
-            icon={<BarChart3 className="size-5" />}
-            gradient="from-sky-500/10 to-indigo-500/10"
-          />
-        </div>
-
-        {/* FOMC Warning Banner */}
-        {fomcWarning && (
-          <div className="mt-6 flex items-center gap-3 rounded-xl border border-amber-500/20 bg-gradient-to-r from-amber-500/10 to-transparent px-4 py-3">
-            <AlertTriangle className="size-5 shrink-0 text-amber-400" />
-            <p className="text-sm font-semibold text-amber-300">{fomcWarning}</p>
-          </div>
-        )}
-
-        {/* Report strip */}
-        <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-white/10 pt-5 text-xs text-slate-400">
-          <span className="rounded-full border border-white/10 bg-slate-800/50 px-3 py-1.5">
-            {copy(language, "Rapor Tarihi", "Report Date")}: <span className="font-semibold text-slate-200">{data.reportDate || "—"}</span>
-          </span>
-          <span className="hidden text-slate-600 md:inline">·</span>
-          <span className="rounded-full border border-white/10 bg-slate-800/50 px-3 py-1.5">
-            {copy(language, "Rejim", "Regime")}: <span className="font-semibold text-sky-400">{data.macro.regime || "—"}</span>
-          </span>
-          <span className="hidden text-slate-600 md:inline">·</span>
-          <div className="flex flex-wrap gap-2">
-            {data.executiveSummary.slice(0, 4).map((item, index) => (
-              <span
-                key={index}
-                className="inline-flex items-center rounded-full border border-white/10 bg-slate-800/50 px-3 py-1.5 text-[11px] text-slate-300 transition-all hover:-translate-y-0.5 hover:border-sky-500/30 hover:text-white"
-              >
-                {item}
-              </span>
-            ))}
-          </div>
+          <FOMCCard fomc={data.fomc} language={language} />
         </div>
       </div>
     </section>
   );
 }
 
-function BigStat({
+function MonthCard({
   label,
   value,
-  colorClass,
-  icon,
-  gradient,
+  active,
+  muted,
 }: {
   label: string;
   value: string;
-  colorClass: string;
-  icon: ReactNode;
-  gradient?: string;
+  active?: boolean;
+  muted?: boolean;
 }) {
   return (
     <div
       className={cn(
-        "rounded-2xl border border-white/10 p-5 transition-all duration-300",
-        "hover:-translate-y-0.5 hover:border-sky-500/20 hover:shadow-lg hover:shadow-sky-500/5",
-        gradient ? `bg-gradient-to-br ${gradient} bg-slate-800/50` : "bg-slate-800/50"
+        "flex min-w-[140px] flex-1 flex-col justify-center rounded-2xl border px-5 py-4",
+        active
+          ? "border-sky-500/25 bg-sky-500/10"
+          : muted
+            ? "border-white/5 bg-slate-800/30"
+            : "border-white/10 bg-slate-800/40"
       )}
     >
-      <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-        {icon}
+      <p
+        className={cn(
+          "text-[10px] font-semibold uppercase tracking-[0.18em]",
+          active ? "text-sky-400/80" : "text-slate-500"
+        )}
+      >
         {label}
-      </div>
-      <p className={cn("mt-2 text-3xl font-bold tracking-tight md:text-4xl", colorClass)}>
+      </p>
+      <p
+        className={cn(
+          "mt-1 text-xl font-bold tracking-tight md:text-2xl",
+          active ? "text-white" : muted ? "text-slate-600" : "text-slate-300"
+        )}
+      >
         {value}
       </p>
     </div>
   );
+}
+
+function MetricCard({
+  icon,
+  label,
+  value,
+  tone,
+}: {
+  icon: ReactNode;
+  label: string;
+  value?: string;
+  tone?: "neutral" | "amber" | "rose" | "emerald";
+}) {
+  return (
+    <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-slate-800/40 px-4 py-3">
+      <div
+        className={cn(
+          "flex size-9 shrink-0 items-center justify-center rounded-xl",
+          tone === "rose"
+            ? "bg-rose-500/15 text-rose-400"
+            : tone === "amber"
+              ? "bg-amber-500/15 text-amber-400"
+              : tone === "emerald"
+                ? "bg-emerald-500/15 text-emerald-400"
+                : "bg-slate-700/50 text-slate-400"
+        )}
+      >
+        {icon}
+      </div>
+      <div>
+        <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+          {label}
+        </p>
+        <p className="text-base font-bold text-white">{value || "—"}</p>
+      </div>
+    </div>
+  );
+}
+
+function FOMCCard({
+  fomc,
+  language,
+}: {
+  fomc?: FOMCData;
+  language: AppLanguage;
+}) {
+  if (!fomc?.date) {
+    return (
+      <MetricCard
+        icon={<Clock className="size-4" />}
+        label={copy(language, "FOMC", "FOMC")}
+        value={copy(language, "Veri yok", "No data")}
+      />
+    );
+  }
+
+  const isNear = fomc.status === "imminent" || fomc.status === "approaching";
+
+  return (
+    <div
+      className={cn(
+        "flex items-center gap-3 rounded-2xl border px-4 py-3",
+        isNear
+          ? "border-amber-500/25 bg-amber-500/10"
+          : "border-white/10 bg-slate-800/40"
+      )}
+    >
+      <div
+        className={cn(
+          "flex size-9 shrink-0 items-center justify-center rounded-xl",
+          isNear ? "bg-amber-500/15 text-amber-400" : "bg-slate-700/50 text-slate-400"
+        )}
+      >
+        <AlertTriangle className="size-4" />
+      </div>
+      <div className="min-w-0">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+          {copy(language, "FOMC", "FOMC")}
+        </p>
+        <p className="truncate text-base font-bold text-white">
+          {fomc.daysUntil ?? "—"}{" "}
+          {copy(language, "gün kaldı", "days left")}
+        </p>
+        <p className="truncate text-[10px] text-slate-400">{fomc.date}</p>
+      </div>
+    </div>
+  );
+}
+
+function getVixTone(vix?: string): "neutral" | "amber" | "rose" | "emerald" {
+  if (!vix) return "neutral";
+  const num = parseFloat(vix.replace(/[^0-9.]/g, ""));
+  if (Number.isNaN(num)) return "neutral";
+  if (num > 25) return "rose";
+  if (num > 20) return "amber";
+  return "emerald";
 }
