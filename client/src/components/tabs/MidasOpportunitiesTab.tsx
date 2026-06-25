@@ -866,15 +866,15 @@ export default function MidasOpportunitiesTab({
     [language]
   );
 
-  useEffect(() => {
-    if (!data) return;
-    const nextKey = `${data.timestamp}:${data.symbol_count}`;
-    if (lastAutoScanKeyRef.current === nextKey) return;
-
-    lastAutoScanKeyRef.current = nextKey;
-    autoScanRef.current = true;
-    void runLiveRefresh(data.signals.map((signal) => signal.symbol));
-  }, [data, runLiveRefresh]);
+  // Auto live-scan disabled: client-side CORS proxy 50-symbol fetch locks browser
+  // useEffect(() => {
+  //   if (!data) return;
+  //   const nextKey = `${data.timestamp}:${data.symbol_count}`;
+  //   if (lastAutoScanKeyRef.current === nextKey) return;
+  //   lastAutoScanKeyRef.current = nextKey;
+  //   autoScanRef.current = true;
+  //   void runLiveRefresh(data.signals.map((signal) => signal.symbol));
+  // }, [data, runLiveRefresh]);
 
   const mergedSignals = useMemo(() => {
     if (!data) return [];
