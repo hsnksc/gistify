@@ -76,6 +76,10 @@ import { createMidasSignalsSyncService } from "./midasSignals";
 import { createCpiPpiForecastSyncService } from "./cpiPpiForecast";
 import { createCalendarSyncService } from "./calendarSync";
 import {
+  createEarningsStrategySyncService,
+  buildEarningsApiResponse,
+} from "./earningsStrategy";
+import {
   generateOpenAiImage,
   isOpenAiImageStudioConfigured,
   normalizeOpenAiImageGenerateRequest,
@@ -2925,6 +2929,7 @@ async function startServer() {
   const server = createServer(app);
   const midasSignalsSync = createMidasSignalsSyncService();
   const cpiPpiForecastSync = createCpiPpiForecastSyncService();
+  const earningsStrategySync = createEarningsStrategySyncService();
   const calendarSync = createCalendarSyncService({
     sourceFile: process.env.CALENDAR_PIPELINE_SOURCE_FILE || path.resolve(__dirname, "../../calendar/calendar_forecast.json"),
     pollIntervalMs: Number(process.env.CALENDAR_PIPELINE_POLL_INTERVAL_MS) || 60_000,
@@ -2932,6 +2937,7 @@ async function startServer() {
   billingStore.pruneExpiredSessions();
   await midasSignalsSync.start();
   await cpiPpiForecastSync.start();
+  await earningsStrategySync.start();
   await calendarSync.start();
 
   app.set("trust proxy", 1);
@@ -3715,6 +3721,54 @@ async function startServer() {
     }
 
     res.status(200).json(snapshot);
+  });
+
+  app.get("/api/earnings/strategy", (_req, res) => {
+    setPrivateNoStore(res);
+
+    const snapshot = earningsStrategySync.getSnapshot();
+    const pipeline = earningsStrategySync.getPipeline();
+    const response = buildEarningsApiResponse(snapshot, pipeline);
+
+    if (!snapshot) {
+      res.status(503).json(response);
+      return;
+    }
+
+    res.status(200).json(response);
+  });
+
+  app.get("/api/earnings/download", async (_req, res) => {
+    const format = normalizeString(_req.query.format);
+    const folder = earningsStrategySync.getPipeline().sourceFolder || path.resolve(process.cwd(), "earningreport", "Kimi_Agent_ Option Strategy");
+
+    if (!fs.existsSync(folder)) {
+      res.status(503).json({ error: "Earnings report folder not found." });
+      return;
+    }
+
+    const extension = format === "docx" ? ".docx" : ".md";
+    const entries = fs.readdirSync(folder, { withFileTypes: true });
+    let latest: { filePath: string; mtimeMs: number } | null = null;
+
+    for (const entry of entries) {
+      if (!entry.isFile()) continue;
+      if (!entry.name.toLowerCase().endsWith(extension)) continue;
+      if (!/Earnings_Opsiyon_Master_Stratejisi/i.test(entry.name)) continue;
+
+      const filePath = path.join(folder, entry.name);
+      const stats = fs.statSync(filePath);
+      if (!latest || stats.mtimeMs > latest.mtimeMs) {
+        latest = { filePath, mtimeMs: stats.mtimeMs };
+      }
+    }
+
+    if (!latest) {
+      res.status(503).json({ error: `No earnings report found for format ${format || "md"}.` });
+      return;
+    }
+
+    res.download(latest.filePath, path.basename(latest.filePath));
   });
 
   app.get("/api/marketflash", (_req, res) => {

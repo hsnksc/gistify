@@ -288,21 +288,30 @@ function normalizeForecastWorkspaceData(
     baseCase: normalizeString(source.baseCase ?? source.base_case),
     conviction: normalizeProbability(source.conviction),
     release: normalizeRelease(releaseSource, definition.releaseName),
-    scenarios: Array.isArray(source.scenarios)
-      ? source.scenarios
-          .map((item, index) => normalizeScenario(item, index, definition.releaseName))
-          .filter((item): item is MacroForecastScenario => Boolean(item))
-      : [],
-    setups: Array.isArray(source.setups)
-      ? source.setups
-          .map(item => normalizeSetup(item))
-          .filter((item): item is MacroForecastSetup => Boolean(item))
-      : [],
-    watchItems: Array.isArray(source.watchItems ?? source.watch_items)
-      ? (source.watchItems ?? source.watch_items)
-          .map(item => normalizeWatchItem(item))
-          .filter((item): item is MacroForecastWatchItem => Boolean(item))
-      : [],
+    scenarios: (() => {
+      const raw = source.scenarios;
+      return Array.isArray(raw)
+        ? raw
+            .map((item, index) => normalizeScenario(item, index, definition.releaseName))
+            .filter((item): item is MacroForecastScenario => Boolean(item))
+        : [];
+    })(),
+    setups: (() => {
+      const raw = source.setups;
+      return Array.isArray(raw)
+        ? raw
+            .map(item => normalizeSetup(item))
+            .filter((item): item is MacroForecastSetup => Boolean(item))
+        : [];
+    })(),
+    watchItems: (() => {
+      const raw = source.watchItems ?? source.watch_items;
+      return Array.isArray(raw)
+        ? raw
+            .map(item => normalizeWatchItem(item))
+            .filter((item): item is MacroForecastWatchItem => Boolean(item))
+        : [];
+    })(),
     keyDrivers: normalizeStringArray(source.keyDrivers ?? source.key_drivers),
     risks: normalizeStringArray(source.risks),
   } satisfies MacroForecastWorkspaceData;

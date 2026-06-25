@@ -18,6 +18,7 @@ import {
   Menu,
   Radar,
   Shield,
+  TrendingUp,
   Zap,
 } from "lucide-react";
 import LanguageSelector from "@/components/LanguageSelector";
@@ -68,6 +69,12 @@ const ReportsDateDetailPage = lazy(
   () => import("./features/flow/pages/ReportsDateDetailPage")
 );
 const CpiPpiForecastPage = lazy(() => import("./pages/CpiPpiForecast"));
+const EarningsPage = lazy(() => import("./pages/Earnings"));
+const EarningsCalendarPage = lazy(() => import("./pages/EarningsCalendar"));
+const EarningsStrategiesPage = lazy(() => import("./pages/EarningsStrategies"));
+const EarningsStockDetailPage = lazy(
+  () => import("./pages/EarningsStockDetail")
+);
 const CalendarPage = lazy(async () => {
   const module = await import("./pages/Calendar");
   return {
@@ -259,6 +266,23 @@ function Router({
           {() => <ReportsAdmin language={language} />}
         </Route>
         <Route path={"/app"}>{() => <Home language={language} />}</Route>
+        <Route path={"/earnings/calendar"}>
+          {() => <EarningsCalendarPage language={language} />}
+        </Route>
+        <Route path={"/earnings/strategies"}>
+          {() => <EarningsStrategiesPage language={language} />}
+        </Route>
+        <Route path={"/earnings/:ticker"}>
+          {params => (
+            <EarningsStockDetailPage
+              language={language}
+              ticker={params.ticker || ""}
+            />
+          )}
+        </Route>
+        <Route path={"/earnings"}>
+          {() => <EarningsPage language={language} />}
+        </Route>
         <Route path={"/momentum"}>
           {() => <Scanner language={language} />}
         </Route>
@@ -412,6 +436,13 @@ function WorkspaceNavigation({
       requiresSubscription: true,
     },
     {
+      href: "/earnings",
+      label: copy(language, "Earnings", "Earnings"),
+      icon: TrendingUp,
+      active: location.startsWith("/earnings"),
+      requiresSubscription: true,
+    },
+    {
       href: "/momentum",
       label: copy(language, "Momentum", "Momentum"),
       icon: Radar,
@@ -468,6 +499,7 @@ function WorkspaceNavigation({
 
   const mobilePrimaryHrefs = new Set([
     "/app",
+    "/earnings",
     "/momentum",
     "/daily-report",
     "/flow",
@@ -645,6 +677,10 @@ function getWorkspaceSectionLabel(path: string, language: AppLanguage) {
 
   if (path.startsWith("/marketflash")) {
     return copy(language, "Market Flash", "Market Flash");
+  }
+
+  if (path.startsWith("/earnings")) {
+    return copy(language, "Earnings", "Earnings");
   }
 
   return copy(language, "Earning Strategy", "Earning Strategy");
@@ -848,6 +884,7 @@ function App() {
   const isLockedWorkspaceRoute =
     location === "/app" ||
     location.startsWith("/app/admin") ||
+    location.startsWith("/earnings") ||
     location.startsWith("/momentum") ||
     location.startsWith("/scanner") ||
     location.startsWith("/daily-report") ||
@@ -861,6 +898,7 @@ function App() {
       (authState.status !== "loading" && !isMarketingRoute));
   const hasStandaloneWorkspaceHeader =
     location === "/app" ||
+    location.startsWith("/earnings") ||
     location.startsWith("/momentum") ||
     location.startsWith("/scanner");
 
