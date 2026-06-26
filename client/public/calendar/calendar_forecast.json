@@ -125,7 +125,7 @@
       "importance": "low",
       "previous": "87.9",
       "forecast": "88.4",
-      "actual": "",
+      "actual": "88.4",
       "currency": "EUR",
       "unit": "index",
       "analysis": "İtalya iş dünyası güveni hafif toparlanma bekleniyor. Euro Bölgesi'nin en büyük üçüncü ekonomisi için kritik."
@@ -139,7 +139,7 @@
       "importance": "low",
       "previous": "93.4",
       "forecast": "94.5",
-      "actual": "",
+      "actual": "92.4",
       "currency": "EUR",
       "unit": "index",
       "analysis": "Tüketici güveninde hafif iyileşme bekleniyor. Ancak genel seviyeler hala düşük."
@@ -153,7 +153,7 @@
       "importance": "medium",
       "previous": "3.77%",
       "forecast": "",
-      "actual": "",
+      "actual": "3.63%",
       "currency": "EUR",
       "unit": "%",
       "analysis": "İtalya 10Y tahvil ihalesi. Önceki 3.77% getiri. Euro Bölgesi borçlanma maliyetleri ve risk iştahı açısından takip edilecek. Yüksek getiri, İtalya risk primini gösteriyor."
@@ -167,7 +167,7 @@
       "importance": "low",
       "previous": "3.16%",
       "forecast": "",
-      "actual": "",
+      "actual": "3.03%",
       "currency": "EUR",
       "unit": "%",
       "analysis": "5Y BTP ihalesi. Kısa vadeli borçlanma maliyetleri."
@@ -181,7 +181,7 @@
       "importance": "low",
       "previous": "3.85B",
       "forecast": "",
-      "actual": "",
+      "actual": "3.84B",
       "currency": "EUR",
       "unit": "B",
       "analysis": "İtalya dış ticaret fazlası. Önceki 3.85B."
@@ -195,7 +195,7 @@
       "importance": "medium",
       "previous": "3,100.1K",
       "forecast": "",
-      "actual": "",
+      "actual": "3,115.6K",
       "currency": "EUR",
       "unit": "K",
       "analysis": "Fransa işsizlik başvuruları. Önceki 3.1M seviyesinde. Euro Bölgesi işgücü piyasası zayıflığını gösteriyor. ECB'nin politika kararları için önemli bir veri noktası."
@@ -209,7 +209,7 @@
       "importance": "low",
       "previous": "17.7%",
       "forecast": "",
-      "actual": "",
+      "actual": "17.7%",
       "currency": "INR",
       "unit": "%",
       "analysis": "Hindistan banka kredi büyümesi. Önceki 17.7% ile güçlü. EM büyümesi için pozitif sinyal."
@@ -223,7 +223,7 @@
       "importance": "low",
       "previous": "12.2%",
       "forecast": "",
-      "actual": "",
+      "actual": "12.0%",
       "currency": "INR",
       "unit": "%",
       "analysis": "Mevduat büyümesi 12.2% ile kredi büyümesinin altında. Likidite sıkışıklığı riski."
@@ -237,7 +237,7 @@
       "importance": "low",
       "previous": "671.63B",
       "forecast": "",
-      "actual": "",
+      "actual": "672.59B",
       "currency": "INR",
       "unit": "B",
       "analysis": "Hindistan döviz rezervleri 671.6B. Yüksek seviye, rupee için stabilite sağlıyor."
@@ -265,7 +265,7 @@
       "importance": "low",
       "previous": "-1.77B",
       "forecast": "-4.16B",
-      "actual": "",
+      "actual": "-3.19B",
       "currency": "BRL",
       "unit": "B",
       "analysis": "Brezilya cari açık -4.16B beklenti. Önceki -1.77B'den ciddi genişleme. BRL üzerinde baskı yaratır."
@@ -279,7 +279,7 @@
       "importance": "low",
       "previous": "8.91B",
       "forecast": "5.75B",
-      "actual": "",
+      "actual": "7.97B",
       "currency": "BRL",
       "unit": "B",
       "analysis": "FDI 5.75B beklenti, önceki 8.91B. Sermaye girişi yavaşlıyor."
@@ -293,7 +293,7 @@
       "importance": "medium",
       "previous": "5.8%",
       "forecast": "5.6%",
-      "actual": "",
+      "actual": "5.6%",
       "currency": "BRL",
       "unit": "%",
       "analysis": "Brezilya işsizlik oranı 5.6% beklenti (önceki 5.8%). İyileşme sinyali. Ancak cari açık genişlemesi ile çelişkili. BRL için karma etki. EM risk iştahına pozitif."
@@ -307,7 +307,7 @@
       "importance": "medium",
       "previous": "-83.01B",
       "forecast": "-85.00B",
-      "actual": "",
+      "actual": "-105.80B",
       "currency": "USD",
       "unit": "B",
       "analysis": "ABD mal ticareti açığı -85B beklenti (önceki -83B). İthalat talebi güçlü kalıyor. USD için karışık: güçlü talep USD'yi destekler, açık genişlemesi ise zayıflatır. DXY etkisi sınırlı."
@@ -321,7 +321,7 @@
       "importance": "medium",
       "previous": "0.6%",
       "forecast": "",
-      "actual": "",
+      "actual": "0.4%",
       "currency": "USD",
       "unit": "%",
       "analysis": "Perakende envanterleri (oto hariç) önceki 0.6%. Envanter birikimi, talep zayıflığı sinyali olabilir. GDP hesaplamalarında negatif etki."
@@ -335,7 +335,7 @@
       "importance": "low",
       "previous": "0.6%",
       "forecast": "0.3%",
-      "actual": "",
+      "actual": "0.3%",
       "currency": "USD",
       "unit": "%",
       "analysis": "Toptan satış envanterleri yavaşlama eğiliminde (0.6% -> 0.3%). Tedarik zinciri normalleşmesi."
@@ -349,7 +349,7 @@
       "importance": "medium",
       "previous": "0.6%",
       "forecast": "",
-      "actual": "",
+      "actual": "-0.7%",
       "currency": "CAD",
       "unit": "%",
       "analysis": "Kanada toptan satışları önceki 0.6%. Petrol fiyatlarındaki yukarı hareket CAD'yi destekliyor."
@@ -363,7 +363,7 @@
       "importance": "medium",
       "previous": "4.8%",
       "forecast": "4.6%",
-      "actual": "",
+      "actual": "4.6%",
       "currency": "USD",
       "unit": "%",
       "analysis": "1 yıllık enflasyon beklentileri 4.6% beklenti (önceki 4.8%). Hafif gerileme Fed için olumlu ancak hala 2% hedefinin çok üzerinde. Fed'in hawkish duruşunu değiştirmeye yetmez."
@@ -377,7 +377,7 @@
       "importance": "medium",
       "previous": "3.4%",
       "forecast": "3.4%",
-      "actual": "",
+      "actual": "3.3%",
       "currency": "USD",
       "unit": "%",
       "analysis": "5 yıllık enflasyon beklentileri 3.4%'te sabit. Kalıcı enflasyon korkusu devam ediyor. Fed'in 2% hedefine sadakat testi. Bu seviye Fed'in rahatsız olabileceği bir bölgede."
@@ -391,7 +391,7 @@
       "importance": "medium",
       "previous": "44.1",
       "forecast": "49.3",
-      "actual": "",
+      "actual": "50.7",
       "currency": "USD",
       "unit": "index",
       "analysis": "Tüketici beklentileri 49.3 beklenti (önceki 44.1). Güçlü toparlanma. Bu, ABD tüketicisinin direncini gösteriyor. SPY/QQQ için pozitif."
@@ -405,7 +405,7 @@
       "importance": "medium",
       "previous": "44.8",
       "forecast": "48.9",
-      "actual": "",
+      "actual": "49.5",
       "currency": "USD",
       "unit": "index",
       "analysis": "Michigan Tüketici Güveni final verisi 48.9 beklenti (önceki 44.8, preliminary 48.9). Mayıs ayındaki tarihi dip 44.8'den toparlanma devam ediyor. Ancak hala 2024 ortalamasının (69.8) çok altında. Benzin fiyatlarındaki erken ay düşüşü etkili. Fed için: zayıf ama toparlanan tüketici = karışık sinyal."
@@ -419,7 +419,7 @@
       "importance": "low",
       "previous": "48.4",
       "forecast": "48.4",
-      "actual": "",
+      "actual": "47.7",
       "currency": "USD",
       "unit": "index",
       "analysis": "Mevcut koşullar 48.4 ile sabit. Tüketici güvenindeki toparlanma beklentilerden kaynaklanıyor, mevcut durum hala zayıf."
@@ -461,7 +461,7 @@
       "importance": "medium",
       "previous": "433",
       "forecast": "",
-      "actual": "",
+      "actual": "440",
       "currency": "USD",
       "unit": "count",
       "analysis": "Petrol kuyu sayısı önceki 433. OPEC+ arz disiplini zayıflarsa ve petrol fiyatları düşerse, kuyu sayısı azalabilir. XLE ve USO için sinyal."
@@ -475,7 +475,7 @@
       "importance": "medium",
       "previous": "563",
       "forecast": "",
-      "actual": "",
+      "actual": "573",
       "currency": "USD",
       "unit": "count",
       "analysis": "Toplam kuyu sayısı 563. Enerji sektörü capex sinyali."
@@ -489,7 +489,7 @@
       "importance": "medium",
       "previous": "-71.6K",
       "forecast": "",
-      "actual": "",
+      "actual": "-105.7K",
       "currency": "GBP",
       "unit": "K",
       "analysis": "GBP net spekülatif pozisyon -71.6K. Pound üzerinde net short baskısı. GBP/USD zayıflığı devam edebilir."
@@ -503,7 +503,7 @@
       "importance": "low",
       "previous": "0.1K",
       "forecast": "",
-      "actual": "",
+      "actual": "0.8K",
       "currency": "USD",
       "unit": "K",
       "analysis": "Alüminyum pozisyonu neredeyse nötr. Emtia talebi zayıf."
@@ -517,7 +517,7 @@
       "importance": "low",
       "previous": "75.3K",
       "forecast": "",
-      "actual": "",
+      "actual": "71.6K",
       "currency": "USD",
       "unit": "K",
       "analysis": "Bakır net long 75.3K. Güçlü emtia talebi sinyali. Çin büyümesi ile ilişkili."
@@ -531,7 +531,7 @@
       "importance": "low",
       "previous": "77.8K",
       "forecast": "",
-      "actual": "",
+      "actual": "58.3K",
       "currency": "USD",
       "unit": "K",
       "analysis": "Mısır net long 77.8K. Gıda enflasyonu baskısı."
@@ -545,7 +545,7 @@
       "importance": "medium",
       "previous": "124.5K",
       "forecast": "",
-      "actual": "",
+      "actual": "114.6K",
       "currency": "USD",
       "unit": "K",
       "analysis": "Ham petrol net long 124.5K. Yüksek spekülatif long pozisyon, squeeze riski taşıyor. WTI 85$ altında kalmalı yoksa long liquidation başlayabilir."
@@ -559,7 +559,7 @@
       "importance": "medium",
       "previous": "180.2K",
       "forecast": "",
-      "actual": "",
+      "actual": "181.3K",
       "currency": "USD",
       "unit": "K",
       "analysis": "Altın net long 180.2K. Rekor seviyelere yakın. Güvenli liman talebi yüksek. Real yield compression altını destekliyor."
@@ -573,7 +573,7 @@
       "importance": "medium",
       "previous": "-8.9K",
       "forecast": "",
-      "actual": "",
+      "actual": "-9.1K",
       "currency": "USD",
       "unit": "K",
       "analysis": "Nasdaq 100 net short -8.9K. Tech'e karşı temkinli pozisyonlama. June 5'teki %4.18'lik düşüşten sonra kısa pozisyon artabilir. NDX 30000 destek seviyesi."
@@ -587,7 +587,7 @@
       "importance": "low",
       "previous": "-173.5K",
       "forecast": "",
-      "actual": "",
+      "actual": "-176.7K",
       "currency": "USD",
       "unit": "K",
       "analysis": "Doğal gaz net short -173.5K. Aşırı short pozisyon, mean reversion bounce potansiyeli."
@@ -601,7 +601,7 @@
       "importance": "medium",
       "previous": "-194.0K",
       "forecast": "",
-      "actual": "",
+      "actual": "-35.4K",
       "currency": "USD",
       "unit": "K",
       "analysis": "S&P 500 net short -194.0K. Spekülatif pozisyonlamada aşırı short. Bu, contrarian bullish sinyal olabilir. Ancak June 5'teki kırılma sonrası risk yüksek. SPY 7400/7500 seviyeleri kritik."
@@ -615,7 +615,7 @@
       "importance": "low",
       "previous": "24.5K",
       "forecast": "",
-      "actual": "",
+      "actual": "23.8K",
       "currency": "USD",
       "unit": "K",
       "analysis": "Gümüş net long 24.5K. Altın ile korelasyon yüksek."
@@ -629,7 +629,7 @@
       "importance": "low",
       "previous": "117.6K",
       "forecast": "",
-      "actual": "",
+      "actual": "100.8K",
       "currency": "USD",
       "unit": "K",
       "analysis": "Soya net long 117.6K. Gıda emtiasında güçlü talep."
@@ -643,7 +643,7 @@
       "importance": "low",
       "previous": "-50.8K",
       "forecast": "",
-      "actual": "",
+      "actual": "-48.4K",
       "currency": "USD",
       "unit": "K",
       "analysis": "Buğday net short -50.8K. Tarım emtiasında baskı."
@@ -657,7 +657,7 @@
       "importance": "low",
       "previous": "-132.9K",
       "forecast": "",
-      "actual": "",
+      "actual": "-146.8K",
       "currency": "CAD",
       "unit": "K",
       "analysis": "CAD net short -132.9K. Kanada doları üzerinde aşırı baskı. Petrol fiyatları destek oluyor ancak USD/CAD 1.39 seviyelerinde."
@@ -671,7 +671,7 @@
       "importance": "low",
       "previous": "-40.1K",
       "forecast": "",
-      "actual": "",
+      "actual": "-41.1K",
       "currency": "CHF",
       "unit": "K",
       "analysis": "CHF net short -40.1K. Güvenli liman talebi sınırlı."
@@ -685,7 +685,7 @@
       "importance": "medium",
       "previous": "-4.1K",
       "forecast": "",
-      "actual": "",
+      "actual": "-13.0K",
       "currency": "AUD",
       "unit": "K",
       "analysis": "AUD net short -4.1K. Neredeyse nötr. Emtia fiyatları ve Çin talebi belirleyici."
@@ -699,7 +699,7 @@
       "importance": "medium",
       "previous": "41.0K",
       "forecast": "",
-      "actual": "",
+      "actual": "43.7K",
       "currency": "BRL",
       "unit": "K",
       "analysis": "BRL net long 41.0K. Spekülatif long pozisyon. Cari açık genişlemesi riski."
@@ -713,7 +713,7 @@
       "importance": "medium",
       "previous": "-150.1K",
       "forecast": "",
-      "actual": "",
+      "actual": "-146.1K",
       "currency": "JPY",
       "unit": "K",
       "analysis": "JPY net short -150.1K. Aşırı short pozisyon. BoJ sıkılaştırma beklentisi ile short squeeze riski yüksek. USD/JPY 160 seviyesinde."
@@ -727,7 +727,7 @@
       "importance": "low",
       "previous": "-45.2K",
       "forecast": "",
-      "actual": "",
+      "actual": "-54.8K",
       "currency": "NZD",
       "unit": "K",
       "analysis": "NZD net short -45.2K. Komodityo para birimleri zayıf."
@@ -741,7 +741,7 @@
       "importance": "medium",
       "previous": "34.4K",
       "forecast": "",
-      "actual": "",
+      "actual": "30.2K",
       "currency": "EUR",
       "unit": "K",
       "analysis": "EUR net long 34.4K. Euro üzerinde net long pozisyon. ECB sıkılaştırması ve EUR/USD 1.16 seviyeleri."
