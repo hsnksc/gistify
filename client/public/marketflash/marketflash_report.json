@@ -1,47 +1,47 @@
 {
   "reportType": "hourly",
   "reportDate": "2026-06-26",
-  "generatedAt": "2026-06-26T22:00:00+03:00",
+  "generatedAt": "2026-06-26T23:00:50+03:00",
   "marketSummary": {
     "spy": {
-      "price": 731.69,
-      "change": -0.36,
-      "vwap": 731.69,
-      "open": 730.4,
+      "price": 728.99,
+      "change": -0.72,
+      "vwap": 727.37,
+      "open": 728.945,
       "high": 736.53,
-      "low": 726.86,
+      "low": 716.58,
       "prevClose": 734.3,
-      "note": "Gap down acilis sonrasi recovery. VWAP'e esit. Risk-on/off notr."
+      "note": "Gap down acilis (734.30 -> 728.945) sonrasi gun icinde 716.58 low yapip recovery ile VWAP uzerinde kapanis. Gunluk degisim -0.72%. Risk-on/off notr."
     },
     "qqq": {
-      "price": 708.44,
-      "change": -1.11,
-      "vwap": 708.94,
-      "open": 709.09,
-      "high": 715.56,
+      "price": 708.9,
+      "change": -1.04,
+      "vwap": 709.09,
+      "open": 707.13,
+      "high": 715.555,
       "low": 702.81,
       "prevClose": 716.38,
-      "note": "VWAP altinda. Gap down acik, fill edilmedi. Tech zayif."
+      "note": "Gap down acilis (716.38 -> 707.13) sonrasi recovery sinirli kaldi. VWAP altinda kapanis (-1.04%). Tech sektoru zayif."
     },
     "iwm": {
-      "price": 296.6,
-      "change": -0.77,
-      "vwap": 297.45,
-      "open": 297.81,
+      "price": 297.95,
+      "change": -0.32,
+      "vwap": 297.9,
+      "open": 296.6,
       "high": 300.03,
       "low": 295.73,
       "prevClose": 298.91,
-      "note": "VWAP altinda. Gap down kismen doldu. Small-cap zayif."
+      "note": "Gap down acilis (298.91 -> 296.6) sonrasi kismen doldurdu. VWAP'e neredeyse esit kapanis (-0.32%). Small-cap notr."
     },
     "vix": {
-      "price": 18.83,
-      "change": -0.32,
-      "vwap": null,
+      "price": 18.63,
+      "change": -1.38,
+      "vwap": 19.33,
       "open": 19.7,
       "high": 20.72,
       "low": 18.63,
       "prevClose": 18.89,
-      "note": "CBOE verisi (Finnhub VIX icin 0 dondu). Normal regime (15-20). Complacency'tan cikti ama fear degil."
+      "note": "CBOE spot verisi (Finnhub VIX icin 0 dondu). Normal regime (15-20). Onceki kapanis 18.89'dan -1.38%. Gun icinde 20.72 high yapti. Kapanis VWAP altinda — volatilite cekiliyor."
     }
   },
   "topMovers": {
@@ -52,9 +52,9 @@
         "price": 24.13,
         "change": 22.86,
         "volume": "16M",
-        "catalyst": "Clean energy sector rotation; hydrogen/fuel cell momentum continuation. No specific company news identified — sector-wide momentum driver.",
+        "catalyst": "Clean energy sector rotation; hydrogen/fuel cell momentum continuation. No specific company news today.",
         "sector": "Electrical Equipment",
-        "marketCap": 1328500499,
+        "marketCap": null,
         "week52Range": null,
         "note": "RVOL > 2x. Strong volume confirmation."
       },
@@ -64,11 +64,14 @@
         "price": 49.05,
         "change": 15.38,
         "volume": "498K",
-        "catalyst": "Q1 FY2027 earnings BEAT: EPS $0.57 vs consensus $0.43 (+$0.14 beat). YoY EPS swing from -$0.13 to +$0.57.",
+        "catalyst": "Q1 FY2027 earnings BEAT: EPS $0.57 vs consensus $0.43 (+$0.14 beat). YoY EPS swing from -$0.13.",
         "sector": "Building",
-        "marketCap": 906990697,
-        "week52Range": null,
-        "note": "Earnings-driven gap up. Conference call 9:00 AM ET."
+        "marketCap": null,
+        "week52Range": [
+          31.21,
+          50.76
+        ],
+        "note": "Earnings-driven gap up. Conference call 9:00 AM ET. Volume 2x average."
       },
       {
         "ticker": "SLS",
@@ -76,7 +79,7 @@
         "price": 12.11,
         "change": 14.9,
         "volume": "11M",
-        "catalyst": "Biotech momentum; SLS009 AML pipeline optimism. No specific intraday news identified — sector rotation into beaten-down biotech.",
+        "catalyst": "Biotech momentum; SLS009 AML pipeline optimism. No specific intraday news — sector rotation into beaten-down biotech.",
         "sector": null,
         "marketCap": null,
         "week52Range": null,
@@ -182,7 +185,33 @@
       "expectedMove": null,
       "consensusRange": null,
       "analystSentiment": "bullish",
-      "note": "APOG Q1 FY2027 earnings BEAT. EPS $0.57 vs $0.43 consensus (+$0.14 beat). YoY EPS swing from -$0.13. IV crush active post-earnings. 0DTE YASAK. Revenue data not fully available in sources."
+      "note": "Q1 FY2027 earnings BEAT. EPS $0.57 vs $0.43 consensus (+$0.14 beat). YoY EPS swing from -$0.13. IV crush active post-earnings. 0DTE YASAK. Revenue data not fully available in sources."
+    },
+    {
+      "ticker": "CNVS",
+      "company": "Cineverse Corp",
+      "time": "before-open",
+      "consensusEps": -0.12,
+      "consensusRev": null,
+      "priorEps": null,
+      "priorRev": null,
+      "expectedMove": null,
+      "consensusRange": null,
+      "analystSentiment": "neutral",
+      "note": "Micro-cap streaming media. FY2026 Q4 results. EPS $0.05 vs -$0.12 consensus (+141.67% surprise). Prior YoY data not available. 0DTE YASAK due to IV crush."
+    },
+    {
+      "ticker": "XAIR",
+      "company": "Beyond Air Inc",
+      "time": "after-close",
+      "consensusEps": -0.57,
+      "consensusRev": 2300000,
+      "priorEps": null,
+      "priorRev": null,
+      "expectedMove": null,
+      "consensusRange": null,
+      "analystSentiment": "neutral",
+      "note": "Micro-cap respiratory device company. Q4 results. AMC today. EPS est -$0.57, rev est $2.3M. High IV crush risk. 0DTE YASAK."
     }
   ],
   "callSetups": [
@@ -193,8 +222,8 @@
       "target": 56.0,
       "stop": 46.0,
       "riskReward": 2.3,
-      "rationale": "Earnings beat momentum continuation. VWAP uzerinde kapanis bekleniyor. Volume confirmation. Gap fill 50.76 yakin destek.",
-      "timeframe": "intraday",
+      "rationale": "Earnings beat momentum continuation. VWAP uzerinde kapanis. Volume confirmation. Gap fill 50.76 yakin destek.",
+      "timeframe": "swing",
       "note": "Earnings gunu — IV crush riski dusuyor ama hala yuksek. 0DTE YASAK."
     },
     {
@@ -205,7 +234,7 @@
       "stop": 22.0,
       "riskReward": 2.5,
       "rationale": "Clean energy momentum continuation. Gap up + VWAP uzerinde. RVOL > 2x. Sector rotation.",
-      "timeframe": "intraday",
+      "timeframe": "swing",
       "note": "No earnings today. Momentum play."
     },
     {
@@ -233,11 +262,11 @@
     {
       "ticker": "SPY",
       "direction": "call",
-      "entry": 731.69,
+      "entry": 728.99,
       "target": 740.0,
-      "stop": 727.0,
-      "riskReward": 2.1,
-      "rationale": "Gap fill potential + VWAP mean reversion. SPY gap down acildi, gap fill 734.30 hedefi. Risk-on bias.",
+      "stop": 724.0,
+      "riskReward": 2.8,
+      "rationale": "Gap fill potential + VWAP mean reversion. SPY gap down acildi, VWAP uzerinde kapanis. Next session gap fill 734.30 hedefi. Risk-on bias.",
       "timeframe": "intraday",
       "note": "Index ETF. 0DTE liquid. VIX normal regime."
     }
@@ -251,13 +280,13 @@
       "stop": 94.0,
       "riskReward": 2.0,
       "rationale": "Semiconductor breakdown. VWAP altinda. Sector contagion + momentum continuation. Gap down with no fill. KOSPI -8% contagion.",
-      "timeframe": "intraday",
+      "timeframe": "swing",
       "note": "No earnings today. Pure momentum breakdown. High volume."
     },
     {
       "ticker": "QQQ",
       "direction": "put",
-      "entry": 708.44,
+      "entry": 708.9,
       "target": 692.0,
       "stop": 715.0,
       "riskReward": 2.3,
@@ -299,12 +328,12 @@
       "note": "No earnings today. Options liquidity may be limited on such a high price — verify bid/ask."
     }
   ],
-  "vwapNotes": "SPY price VWAP'e esit (731.69), gap down acilistan sonra recovery gosteriyor. QQQ ve IWM VWAP altinda kapanis — risk-off bias. QQQ gap down acik kaldi, fill edilmedi. IWM gap down kismen doldu. Tech selloff + semi weakness = VWAP altinda kalan index'ler put bias tasıyor. SPY notr, QQQ/IWM zayif.",
+  "vwapNotes": "SPY gun sonu VWAP uzerinde (728.99 > 727.37) kapamis, ancak gun icinde gap down acilis sonrasi recovery sinirli kaldi. QQQ VWAP altinda (708.90 < 709.09) — tech zayif. IWM neredeyse VWAP esit (297.95 ~ 297.90) — small-cap notr. VIX VWAP altinda (18.63 < 19.33) — volatilite dusus egiliminde, fear bolgesinden cikti.",
   "riskAssessment": {
     "level": "medium",
-    "vixRegime": "VIX 18.83 (CBOE), normal regime (15-20). Onceki kapanis 18.89'den -0.32%. Complacency'tan cikti ama fear bolgesine girmedi.",
-    "sectorRotation": "Tech zayif (QQQ -1.11%), Semiconductor sector under heavy pressure (ON -24%, WDC -12%). Biotech mixed (MRNA +11%, SLS +15%, CAPR -13%). Clean energy volatile (FCEL +23%, BE -13%).",
-    "earningsRisk": "APOG Q1 earnings beat this morning. IV crush active post-release. 0DTE YASAK on APOG. No major tech earnings today. Next week: WDC Aug 5.",
+    "vixRegime": "VIX 18.63 (CBOE spot), normal regime (15-20). Onceki kapanis 18.89'dan -1.38%. Complacency'tan cikti ama fear bolgesine girmedi.",
+    "sectorRotation": "Tech zayif (QQQ -1.04%), Semiconductor sector under heavy pressure (ON -24%, WDC -12%). Biotech mixed (MRNA +11%, SLS +15%, CAPR -13%). Clean energy volatile (FCEL +23%, BE -13%).",
+    "earningsRisk": "APOG Q1 earnings beat this morning. IV crush active post-release. 0DTE YASAK on APOG. CNVS micro-cap surprise beat. XAIR AMC tonight. No major tech earnings today.",
     "macroRisk": "Fed policy uncertainty, Treasury yields elevated. Geopolitical: Iran Strait of Hormuz tensions supporting oil volatility. Asian markets KOSPI -8% circuit breaker Friday — global risk-off contagion."
   },
   "nextDayCarryForward": []
