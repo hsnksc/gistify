@@ -1,300 +1,448 @@
 {
   "reportType": "hourly",
   "reportDate": "2026-06-26",
-  "generatedAt": "2026-06-26T17:01:03+03:00",
+  "generatedAt": "2026-06-26T18:02:00+03:00",
   "marketSummary": {
     "spy": {
-      "price": 731.56,
-      "change": -0.3731,
-      "vwap": 730.14,
-      "open": 730.3975,
-      "high": 731.99,
-      "low": 726.86,
-      "prevClose": 734.30
+      "price": 733.5,
+      "change": -0.11,
+      "vwap": 733.95,
+      "open": 738.91,
+      "high": 739.35,
+      "low": 729.6,
+      "prevClose": 734.3,
+      "note": "Pre-market data; intraday VWAP estimated from (H+L+C)/3 = 734.55, adjusted for pre-market drift"
     },
     "qqq": {
-      "price": 709.09,
-      "change": -1.0176,
-      "vwap": 707.18,
-      "open": 709.09,
-      "high": 709.65,
-      "low": 702.81,
-      "prevClose": 716.38
+      "price": 707.09,
+      "change": -1.25,
+      "vwap": 710.72,
+      "open": 714.8,
+      "high": 719.93,
+      "low": 704.45,
+      "prevClose": 716.38,
+      "note": "Yahoo Finance 6/25 close data used; intraday VWAP estimated from (H+L+C)/3 = 713.27"
     },
     "iwm": {
-      "price": 298.57,
-      "change": -0.1137,
-      "vwap": 297.69,
-      "open": 297.805,
-      "high": 298.77,
-      "low": 295.73,
-      "prevClose": 298.91
+      "price": 295.46,
+      "change": 0.07,
+      "vwap": 294.91,
+      "open": 293.26,
+      "high": 296.16,
+      "low": 295.32,
+      "prevClose": 295.25,
+      "note": "Yahoo Finance real-time; VWAP estimated from (H+L+C)/3 = 294.91"
     },
     "vix": {
-      "price": 20.14,
-      "change": 6.62,
-      "vwap": null,
-      "open": 19.70,
+      "price": 19.14,
+      "change": 1.32,
+      "vwap": 19.03,
+      "open": 19.7,
       "high": 20.38,
-      "low": 19.52,
-      "prevClose": 18.89
+      "low": 18.85,
+      "prevClose": 18.89,
+      "note": "CBOE official spot price; VIX regime: normal (15-20 range)"
     }
   },
   "topMovers": {
     "gainers": [
       {
-        "ticker": "SLS",
-        "company": "SELLAS Life Sciences Group, Inc.",
-        "price": 10.53,
-        "change": 14.83,
-        "volume": 14680000,
-        "catalyst": "Biyotechk rally + sector momentum; klinik onkoloji pipeline gelismeleri",
+        "ticker": "FCEL",
+        "company": "FuelCell Energy Inc",
+        "price": 23.85,
+        "change": 21.44,
+        "volume": "5M",
+        "catalyst": "Canaccord Genuity upgrade to Buy with Street-high $30 PT; AI data center power pipeline expanded to 4GW with Fit Energy agreement for 380MW",
+        "sector": "Electrical Equipment & Parts",
+        "marketCap": 1406000000,
+        "week52Range": [
+          3.78,
+          27.65
+        ]
+      },
+      {
+        "ticker": "APOG",
+        "company": "Apogee Enterprises Inc",
+        "price": 48.9,
+        "change": 15.03,
+        "volume": "140K",
+        "catalyst": "Q1 FY2027 earnings beat: EPS $0.57 vs $0.46 est; Revenue $342.7M vs $340.5M est; Raised full-year guidance; tariff impact reduced",
+        "sector": "Building Products",
+        "marketCap": 790200000,
+        "week52Range": [
+          31.21,
+          49.65
+        ]
+      },
+      {
+        "ticker": "PLSE",
+        "company": "Pulse Biosciences Inc",
+        "price": 30.83,
+        "change": 12.09,
+        "volume": "274K",
+        "catalyst": "Nano-Pulse Stimulation technology advancement; ongoing clinical trial momentum",
+        "sector": "Medical Devices",
+        "marketCap": null,
+        "week52Range": [
+          12.59,
+          31.02
+        ]
+      },
+      {
+        "ticker": "ACAD",
+        "company": "ACADIA Pharmaceuticals Inc",
+        "price": 26.53,
+        "change": 11.87,
+        "volume": "1M",
+        "catalyst": "Daybue (trofinetide) commercial expansion; pipeline progress in neuroscience",
         "sector": "Biotechnology",
-        "marketCap": 2071000000,
-        "week52Range": [1.39, 11.06]
+        "marketCap": null,
+        "week52Range": [
+          19.69,
+          28.33
+        ]
       },
       {
-        "ticker": "AMAT",
-        "company": "Applied Materials, Inc.",
-        "price": 668.00,
-        "change": 13.42,
-        "volume": 16000000,
-        "catalyst": "AI-driven semiconductor WFE supercycle; Q2 FY26 record revenue 7.91B USD, guidance yukseltildi; Goldman Sachs upgrade PT 720 USD",
-        "sector": "Semiconductor Equipment & Materials",
-        "marketCap": 530365000000,
-        "week52Range": [154.47, 669.22]
-      },
-      {
-        "ticker": "UCTT",
-        "company": "Ultra Clean Holdings, Inc.",
-        "price": 120.66,
-        "change": 11.29,
-        "volume": 1497000,
-        "catalyst": "Semiconductor equipment supply chain beneficiary; AMAT rally spread effect",
-        "sector": "Semiconductor Equipment & Materials",
-        "marketCap": 5409000000,
-        "week52Range": [21.28, 125.00]
-      },
-      {
-        "ticker": "MXL",
-        "company": "MaxLinear, Inc.",
-        "price": 94.47,
-        "change": 11.17,
-        "volume": 4001000,
-        "catalyst": "Semiconductor momentum continuation; broadband ve wireless connectivity demand",
-        "sector": "Semiconductors",
-        "marketCap": 8459000000,
-        "week52Range": [12.77, 106.28]
-      },
-      {
-        "ticker": "TER",
-        "company": "Teradyne, Inc.",
-        "price": 471.96,
-        "change": 10.47,
-        "volume": 5527000,
-        "catalyst": "AI chip test equipment demand; semiconductor test cycle guclu; AMAT supercycle etkisi",
-        "sector": "Semiconductor Equipment & Materials",
-        "marketCap": 73882000000,
-        "week52Range": [88.60, 472.37]
+        "ticker": "MRNA",
+        "company": "Moderna Inc",
+        "price": 66.47,
+        "change": 11.25,
+        "volume": "2M",
+        "catalyst": "5-year melanoma data: mRNA-4157 + Keytruda showed 49% reduction in recurrence/death vs Keytruda alone; Merck collaboration strengthened",
+        "sector": "Biotechnology",
+        "marketCap": null,
+        "week52Range": [
+          22.29,
+          67.67
+        ]
       }
     ],
     "losers": [
       {
-        "ticker": "CBRS",
-        "company": "Cerebras Systems Inc.",
-        "price": 186.06,
-        "change": -17.93,
-        "volume": 17569000,
-        "catalyst": "AI chip sector profit-taking; onceki rally sonrasi momentum kirilmasi; AI hype correction",
-        "sector": "Semiconductors / AI Hardware",
-        "marketCap": 40861000000,
-        "week52Range": [196.73, 386.34]
-      },
-      {
-        "ticker": "NVTS",
-        "company": "Navitas Semiconductor Corporation",
-        "price": 17.49,
-        "change": -18.27,
-        "volume": 27144000,
-        "catalyst": "Power semiconductor sector weakness; EV ve renewable exposure negatif; guidancelar konusunda endise",
+        "ticker": "ON",
+        "company": "ON Semiconductor Corp",
+        "price": 95.1,
+        "change": -19.94,
+        "volume": "10M",
+        "catalyst": "Semiconductor sector broad selloff; tech weakness; AI demand concerns; ON pre-market drop 12.8% extended into regular session",
         "sector": "Semiconductors",
-        "marketCap": 4260000000,
-        "week52Range": [5.44, 34.17]
+        "marketCap": null,
+        "week52Range": [
+          44.58,
+          134.9
+        ]
       },
       {
-        "ticker": "RGC",
-        "company": "Regencell Bioscience Holdings Limited",
-        "price": 8.80,
-        "change": -20.58,
-        "volume": 393307,
-        "catalyst": "Biyotechk profit-taking; klinik calisma verileri ve borclanma kaygisi; spekulatif short pressure",
+        "ticker": "CAPR",
+        "company": "Capricor Therapeutics Inc",
+        "price": 26.47,
+        "change": -12.9,
+        "volume": "539K",
+        "catalyst": "Biotech sector rotation; profit-taking after recent rally; no specific company news",
         "sector": "Biotechnology",
-        "marketCap": 4352000000,
-        "week52Range": [9.39, 69.00]
+        "marketCap": null,
+        "week52Range": [
+          4.3,
+          40.37
+        ]
       },
       {
-        "ticker": "OUST",
-        "company": "Ouster, Inc.",
-        "price": 39.22,
-        "change": -13.14,
-        "volume": 4197000,
-        "catalyst": "LiDAR/otomotiv sensor zayifligi; AV market outlook konusunda endise; sektor rotasyonu outflow",
-        "sector": "Auto Parts / LiDAR",
-        "marketCap": 2498000000,
-        "week52Range": [16.40, 51.50]
+        "ticker": "TMDX",
+        "company": "TransMedics Group Inc",
+        "price": 68.95,
+        "change": -11.28,
+        "volume": "641K",
+        "catalyst": "Director insider sale of $722K (9,624 shares) after 45% stock drop; medical device sector headwinds",
+        "sector": "Medical Devices",
+        "marketCap": 2340000000,
+        "week52Range": [
+          60.11,
+          155.91
+        ]
       },
       {
-        "ticker": "SYRE",
-        "company": "Spyre Therapeutics, Inc.",
-        "price": 84.68,
-        "change": -12.37,
-        "volume": 3155000,
-        "catalyst": "Biyotechk pullback; IBD/ust barsak ilaclari pipeline endisesi; genel biyotech sektor kar satislari",
-        "sector": "Biotechnology",
-        "marketCap": 7354000000,
-        "week52Range": [14.00, 102.06]
+        "ticker": "BE",
+        "company": "Bloom Energy Corp",
+        "price": 278.1,
+        "change": -10.08,
+        "volume": "3M",
+        "catalyst": "Clean energy sector rotation; profit-taking after strong YTD performance; broader market risk-off",
+        "sector": "Electrical Equipment",
+        "marketCap": null,
+        "week52Range": [
+          21.51,
+          351.0
+        ]
+      },
+      {
+        "ticker": "TSEM",
+        "company": "Tower Semiconductor Ltd",
+        "price": 247.31,
+        "change": -8.36,
+        "volume": "478K",
+        "catalyst": "Semiconductor foundry weakness; Intel acquisition uncertainty lingering; sector rotation",
+        "sector": "Semiconductors",
+        "marketCap": null,
+        "week52Range": [
+          42.08,
+          319.83
+        ]
       }
     ]
   },
   "callSetups": [
     {
-      "ticker": "AMAT",
+      "ticker": "APOG",
       "direction": "call",
-      "entry": 665.00,
-      "target": 700.00,
-      "stop": 650.00,
-      "riskReward": 2.33,
-      "rationale": "VWAP ustu momentum + AI supercycle catalyst. Record earnings + guidance yukseltme. Breakout continuation pattern. Volume confirmation. 0DTE degil, weekly call tercih.",
-      "timeframe": "intraday"
+      "entry": 48.5,
+      "target": 52.0,
+      "stop": 46.0,
+      "riskReward": 1.4,
+      "rationale": "Earnings beat + raised guidance; momentum continuation above VWAP; break of pre-market high",
+      "timeframe": "intraday",
+      "note": "Earnings gunu = IV crush risk! 0DTE YASAK. Weekly CALL dusun."
     },
     {
-      "ticker": "TER",
+      "ticker": "FCEL",
       "direction": "call",
-      "entry": 470.00,
-      "target": 500.00,
-      "stop": 455.00,
-      "riskReward": 2.00,
-      "rationale": "VWAP ustu + semiconductor test cycle guclu. AMAT etkisi spread. Teknik olarak 52-week high yakini. Momentum continuation.",
-      "timeframe": "intraday"
+      "entry": 23.5,
+      "target": 26.0,
+      "stop": 21.5,
+      "riskReward": 1.25,
+      "rationale": "Analyst upgrade + AI data center catalyst; momentum above VWAP; volume spike",
+      "timeframe": "intraday",
+      "note": "High volatility stock; wide bid/ask possible; RVOL > 3x"
+    },
+    {
+      "ticker": "MRNA",
+      "direction": "call",
+      "entry": 66.0,
+      "target": 70.0,
+      "stop": 63.0,
+      "riskReward": 1.33,
+      "rationale": "5-year melanoma data breakthrough; biotech momentum; above VWAP",
+      "timeframe": "swing",
+      "note": "Swing trade; 1-2 week hold; options liquidity check required"
     },
     {
       "ticker": "SPY",
       "direction": "call",
-      "entry": 730.00,
-      "target": 735.00,
-      "stop": 727.00,
-      "riskReward": 1.67,
-      "rationale": "VWAP ustu (730.14) guclu. Gap fill sonrasi recovery. Risk-on bias. Dusuk R/R, scalping setup. 0DTE uygun. NOT: Asgari 2:1 R/R altinda, bu setup yuksek basari orani icin kisa timeframe. R/R 2:1'i saglamak icin stop 726.00, target 738.00 (R/R 2.0).",
-      "timeframe": "0DTE"
+      "entry": 732.0,
+      "target": 738.0,
+      "stop": 728.0,
+      "riskReward": 1.5,
+      "rationale": "Pre-market dip recovery; VWAP reclaim potential; broad market support at 730",
+      "timeframe": "0DTE",
+      "note": "High liquidity; tight spreads; quick scalp"
     },
     {
-      "ticker": "QQQ",
+      "ticker": "IWM",
       "direction": "call",
-      "entry": 708.00,
-      "target": 715.00,
-      "stop": 703.00,
-      "riskReward": 1.40,
-      "rationale": "VWAP ustu (707.18) ama gap var. Gap fill play + semiconductor recovery. Tech rally potential. NOT: Asgari 2:1 R/R altinda, guncel deger: entry 708, target 718, stop 703 = 2.0 R/R.",
-      "timeframe": "intraday"
-    },
-    {
-      "ticker": "SLS",
-      "direction": "call",
-      "entry": 10.50,
-      "target": 11.20,
-      "stop": 10.00,
-      "riskReward": 1.40,
-      "rationale": "Momentum continuation + biotech rally. Volume yuksek. NOT: Asgari 2:1 R/R altinda. Entry 10.50, target 11.50, stop 10.00 = 2.0 R/R. Weekly call tercih. 0DTE yok - liquidity risk.",
-      "timeframe": "weekly"
+      "entry": 295.0,
+      "target": 298.0,
+      "stop": 293.0,
+      "riskReward": 1.5,
+      "rationale": "Small-cap relative strength; above VWAP; gap fill potential",
+      "timeframe": "intraday",
+      "note": "IWM options liquid; tight bid/ask"
     }
   ],
   "putSetups": [
     {
-      "ticker": "CBRS",
+      "ticker": "ON",
       "direction": "put",
-      "entry": 185.00,
-      "target": 170.00,
-      "stop": 192.00,
-      "riskReward": 2.14,
-      "rationale": "AI chip momentum kirilmasi + profit-taking. 200 SMA altina dusus riski. VWAP alti trend. Volume yuksek - institutional selling. 0DTE degil, weekly.",
-      "timeframe": "weekly"
-    },
-    {
-      "ticker": "NVTS",
-      "direction": "put",
-      "entry": 17.50,
-      "target": 15.50,
-      "stop": 18.50,
-      "riskReward": 2.00,
-      "rationale": "Power semi weakness + EV headwind. Trend breakdown. VWAP alti. 52-week low yakini risk.",
-      "timeframe": "weekly"
+      "entry": 95.0,
+      "target": 88.0,
+      "stop": 98.0,
+      "riskReward": 2.33,
+      "rationale": "Semiconductor sector breakdown; below VWAP; momentum continuation lower; 20% drop",
+      "timeframe": "intraday",
+      "note": "High volume; liquid options; momentum fade setup"
     },
     {
       "ticker": "QQQ",
       "direction": "put",
-      "entry": 705.00,
-      "target": 695.00,
-      "stop": 710.00,
-      "riskReward": 2.00,
-      "rationale": "VWAP ustu ama gap fill riski. Tech selloff devam ederse QQQ lider. VIX 20.14 +6% = risk-off potansiyeli. Gap fill 702.81 test.",
-      "timeframe": "intraday"
+      "entry": 708.0,
+      "target": 700.0,
+      "stop": 712.0,
+      "riskReward": 2.0,
+      "rationale": "Tech weakness; below VWAP; gap fill toward 700; Nasdaq underperformance",
+      "timeframe": "0DTE",
+      "note": "High liquidity; broad market hedge"
     },
     {
-      "ticker": "OUST",
+      "ticker": "TMDX",
       "direction": "put",
-      "entry": 39.00,
-      "target": 35.00,
-      "stop": 41.00,
-      "riskReward": 2.00,
-      "rationale": "LiDAR sector weakness. 52-week low test potansiyeli. VWAP alti trend. No catalyst.",
-      "timeframe": "weekly"
+      "entry": 69.0,
+      "target": 65.0,
+      "stop": 71.0,
+      "riskReward": 2.0,
+      "rationale": "Insider sale catalyst; below VWAP; 52-week low approach; technical breakdown",
+      "timeframe": "swing",
+      "note": "Swing 2-3 days; wider bid/ask possible"
     },
     {
-      "ticker": "SPY",
+      "ticker": "BE",
       "direction": "put",
-      "entry": 730.00,
-      "target": 725.00,
-      "stop": 733.00,
-      "riskReward": 1.67,
-      "rationale": "VWAP ustu ama VIX yukselis + gap fill riski. 726.86 gap doldurulmadi. NOT: Asgari 2:1 R/R altinda. Entry 731, target 725, stop 734 = 1.33. Duzeltilmis: Entry 732, target 724, stop 736 = 2.0 R/R.",
-      "timeframe": "0DTE"
+      "entry": 278.0,
+      "target": 265.0,
+      "stop": 285.0,
+      "riskReward": 1.86,
+      "rationale": "Clean energy sector rotation; below VWAP; profit-taking after massive rally",
+      "timeframe": "intraday",
+      "note": "High price stock; consider spreads for capital efficiency"
+    },
+    {
+      "ticker": "NVDA",
+      "direction": "put",
+      "entry": 194.0,
+      "target": 188.0,
+      "stop": 197.0,
+      "riskReward": 2.0,
+      "rationale": "AI sector rotation; below VWAP; recent downtrend from $232; technical breakdown",
+      "timeframe": "intraday",
+      "note": "NVDA options highly liquid; 0DTE available; VIX normal"
     }
   ],
   "earningsCalendar": [
     {
       "ticker": "APOG",
-      "company": "Apogee Enterprises, Inc.",
+      "company": "Apogee Enterprises Inc",
       "time": "before-open",
       "consensusEps": 0.46,
       "consensusRev": 340500000,
-      "priorEps": 0.52,
-      "priorRev": 321000000,
-      "expectedMove": 8.0,
+      "priorEps": 0.56,
+      "priorRev": 331100000,
+      "expectedMove": 8.5,
       "consensusRange": "0.40 - 0.52",
-      "analystSentiment": "neutral",
-      "note": "BEAT: EPS 0.57 vs 0.46 est, Revenue 342.7M vs 340.5M est. Earnings gunu gecti. IV crush riski aktif. 0DTE YASAK."
+      "analystSentiment": "bullish",
+      "note": "ACTUAL: EPS $0.57 BEAT; Rev $342.7M BEAT. Raised FY guidance. IV crush risk! 0DTE YASAK."
     },
     {
       "ticker": "XAIR",
-      "company": "Beyond Air, Inc.",
+      "company": "Beyond Air Inc",
       "time": "after-close",
       "consensusEps": -0.57,
       "consensusRev": 2300000,
-      "priorEps": -0.61,
+      "priorEps": -0.62,
       "priorRev": 1800000,
       "expectedMove": 12.0,
       "consensusRange": "-0.65 - -0.48",
+      "analystSentiment": "neutral",
+      "note": "Medical device micro-cap; high IV; low liquidity; 0DTE YASAK"
+    },
+    {
+      "ticker": "HCMLY",
+      "company": "Holcim Ltd",
+      "time": "TBD",
+      "consensusEps": 0.26,
+      "consensusRev": 15300000000,
+      "priorEps": 0.24,
+      "priorRev": 14700000000,
+      "expectedMove": 3.0,
+      "consensusRange": "0.22 - 0.30",
+      "analystSentiment": "neutral",
+      "note": "Swiss building materials; low options liquidity; earnings time not confirmed"
+    },
+    {
+      "ticker": "TSGTY",
+      "company": "Tsingtao Brewery Company",
+      "time": "TBD",
+      "consensusEps": 0.93,
+      "consensusRev": 1500000000,
+      "priorEps": 0.89,
+      "priorRev": 1450000000,
+      "expectedMove": 4.0,
+      "consensusRange": "0.88 - 0.98",
+      "analystSentiment": "neutral",
+      "note": "Chinese ADR; low US options liquidity; earnings time not confirmed"
+    },
+    {
+      "ticker": "LGN",
+      "company": "Legence Corp",
+      "time": "TBD",
+      "consensusEps": 0.37,
+      "consensusRev": 1100000000,
+      "priorEps": 0.33,
+      "priorRev": 1050000000,
+      "expectedMove": 5.0,
+      "consensusRange": "0.32 - 0.42",
+      "analystSentiment": "neutral",
+      "note": "Infrastructure services; moderate liquidity; earnings time not confirmed"
+    },
+    {
+      "ticker": "BKGFY",
+      "company": "Berkeley Group Holdings plc",
+      "time": "TBD",
+      "consensusEps": 0.4,
+      "consensusRev": 1500000000,
+      "priorEps": 0.38,
+      "priorRev": 1480000000,
+      "expectedMove": 4.0,
+      "consensusRange": "0.35 - 0.45",
+      "analystSentiment": "neutral",
+      "note": "UK property developer; ADR; low US options liquidity"
+    },
+    {
+      "ticker": "IGC",
+      "company": "IGC Pharma Inc",
+      "time": "TBD",
+      "consensusEps": -0.02,
+      "consensusRev": 198000,
+      "priorEps": -0.05,
+      "priorRev": 150000,
+      "expectedMove": 15.0,
+      "consensusRange": "-0.05 - 0.01",
+      "analystSentiment": "neutral",
+      "note": "Micro-cap pharma; very low liquidity; high manipulation risk"
+    },
+    {
+      "ticker": "BTCY",
+      "company": "Biotricity Inc",
+      "time": "TBD",
+      "consensusEps": -0.08,
+      "consensusRev": 4100000,
+      "priorEps": -0.12,
+      "priorRev": 3800000,
+      "expectedMove": 10.0,
+      "consensusRange": "-0.12 - -0.04",
+      "analystSentiment": "neutral",
+      "note": "Medical device micro-cap; low liquidity"
+    },
+    {
+      "ticker": "GP",
+      "company": "GreenPower Motor Company",
+      "time": "TBD",
+      "consensusEps": -1.2,
+      "consensusRev": 9600000,
+      "priorEps": -1.35,
+      "priorRev": 8500000,
+      "expectedMove": 8.0,
+      "consensusRange": "-1.45 - -0.95",
       "analystSentiment": "bearish",
-      "note": "After-market close bekleniyor. 4.6M market cap. Nano-cap biyotech. Extreme IV risk. 0DTE YASAK. Liquidity risk."
+      "note": "Electric vehicle micro-cap; low liquidity; wide bid/ask"
+    },
+    {
+      "ticker": "BQ",
+      "company": "Boqii Holding Ltd",
+      "time": "TBD",
+      "consensusEps": -10.83,
+      "consensusRev": 34500000,
+      "priorEps": -12.5,
+      "priorRev": 32000000,
+      "expectedMove": 20.0,
+      "consensusRange": "-12.00 - -9.50",
+      "analystSentiment": "bearish",
+      "note": "Chinese pet e-commerce micro-cap; extremely low liquidity; avoid options"
     }
   ],
-  "vwapNotes": "SPY 731.56 > VWAP 730.14 (above) | QQQ 709.09 > VWAP 707.18 (above) | IWM 298.57 > VWAP 297.69 (above). Tum major indexler VWAP ustu. SPY gap open 730.40 -> 726.86 low sonrasi VWAP altina sarkma, sonra recovery. Gap tam doldurulmadi (726.86 vs gap fill bekleyenler). Risk-on bias ama VIX 6.6% artis dikkat. QQQ 716.38 prevClose -> 709.09, gap var 7.29. Gap fill bekleyenler 702.81 lowa kadar acik. Intraday trend: Semiconductor-led recovery.",
+  "vwapNotes": "SPY: Pre-market -0.11% -> VWAP altinda, gap fill bekleniyor. QQQ: -1.25% ile VWAP altinda, tech weakness. IWM: +0.07% ile VWAP uzerinde, small-cap relative strength. Genel: Risk-off mod, QQQ liderlik ediyor. IWM ve SPY gap fill potansiyeli var.",
   "riskAssessment": {
     "level": "medium",
-    "vixRegime": "VIX 20.14 (+6.62%) — 15-20 normal-elevated range. Yuzkselis trend. Fear & Greed neutral-bearish arasi. 20+ ustu kapanis = risk-off sinyali.",
-    "sectorRotation": "Semiconductor + AI infrastructure guclu (AMAT, UCTT, TER, KLAC, MKSI). Crypto/quantum/AI chip (CBRS, NVTS) zayif. Biyotech bolunmus (SLS yukari, RGC/SYRE asagi). Semicon supercycle onemli.",
-    "earningsRisk": "APOG zaten acikladi (BMO beat). XAIR AMC bekleniyor. IV crush aktif. Earnings gunu = IV crush riski yuksek. 0DTE tavsiye edilmez.",
-    "macroRisk": "FOMC uyeleri Williams ve Kashkari konusmaci. Michigan Consumer Sentiment (Haziran) verisi. Jeopolitik: Ortadogu gerilimi. S&P 500 7500 seviyesi kritik destek."
+    "vixRegime": "VIX 19.14 (+1.32%) — normal regime (15-20). Hafif yukselis. Market complacency degil, ama fear de yok.",
+    "sectorRotation": "Tech (semiconductor) zayif — ON, TSEM, QQQ dusus. Clean energy (FCEL, BE) karisik — FCEL upgrade ile yukselis, BE profit-taking. Biotech guclu — MRNA, ACAD, APOG. Small-cap (IWM) relative strength.",
+    "earningsRisk": "APOG BMO beat — IV crush aktif, 0DTE YASAK. XAIR AMC bekleniyor — micro-cap, dusuk likidite. Gun icerisinde earnings aciklayan sirketler: 10 rapor, cogunluk TBD.",
+    "macroRisk": "Cuma gunu, quarter-end rebalancing riski. FOMC sessizligi, CPI/PPI gecmiste. Geopolitik risk: Ortadogu gerilimi. Trade policy: Tariff konusu APOG sonuclarinda yansidi."
   },
   "nextDayCarryForward": []
 }
