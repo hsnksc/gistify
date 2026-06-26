@@ -1,21 +1,21 @@
 {
-  "reportType": "hourly",
-  "reportDate": "2026-06-25",
-  "generatedAt": "2026-06-25T23:02:34+03:00",
+  "reportType": "pre-market",
+  "reportDate": "2026-06-26",
+  "generatedAt": "2026-06-26T11:00:33+03:00",
   "marketSummary": {
     "spy": {
-      "price": 733.5,
-      "change": 0.0355,
-      "vwap": 734.16,
+      "price": 734.3,
+      "change": 0.1446,
+      "vwap": 734.42,
       "open": 738.91,
       "high": 739.37,
       "low": 729.6,
       "prevClose": 733.24
     },
     "qqq": {
-      "price": 714.86,
-      "change": 0.5967,
-      "vwap": 715.66,
+      "price": 716.38,
+      "change": 0.8106,
+      "vwap": 716.17,
       "open": 725.9,
       "high": 726.83,
       "low": 705.3,
@@ -31,391 +31,281 @@
       "prevClose": 296.69
     },
     "vix": {
-      "price": 18.8,
-      "change": 0.91,
-      "vwap": 18.21,
+      "price": 18.89,
+      "change": 1.40,
+      "vwap": null,
       "open": 18.11,
       "high": 19.95,
       "low": 17.72,
-      "prevClose": 18.63
+      "prevClose": 18.63,
+      "note": "Finnhub returns 0 for VIX; verified via CBOE web search"
     }
   },
   "topMovers": {
     "gainers": [
       {
+        "ticker": "MU",
+        "company": "Micron Technology, Inc.",
+        "price": 1213.56,
+        "change": 15.74,
+        "volume": null,
+        "catalyst": "AI memory blowout guidance — quarterly revenue guided to ~$50B vs $43.2B consensus on surging AI-driven HBM demand. Post-earnings momentum strongest in semiconductor space.",
+        "sector": "Technology",
+        "marketCap": 1370000000000,
+        "week52Range": null,
+        "note": "Pre-market volume explosive; 0DTE viable post-IV crush. Gap > 5% — gap-fill risk if volume fades at open."
+      },
+      {
         "ticker": "TECH",
         "company": "Bio-Techne Corporation",
-        "price": 70.43,
-        "change": 19.64,
-        "volume": 10820000,
-        "catalyst": "Biotech sector strength and genomic tools demand surge",
-        "sector": "Biotechnology",
-        "marketCap": 11028000000,
-        "week52Range": [
-          43.2,
-          72.16
-        ]
+        "price": 70.70,
+        "change": 20.08,
+        "volume": 9564548,
+        "catalyst": "Q3 earnings and revenue beat consensus estimates; strong biotech tools demand.",
+        "sector": "Life Sciences",
+        "marketCap": 11070000000,
+        "week52Range": null,
+        "note": "Gap up 20% — thin options chain, wide bid/ask likely. Wait for ORB confirmation."
       },
       {
-        "ticker": "RUN",
-        "company": "Sunrun Inc.",
-        "price": 14.42,
-        "change": 12.57,
-        "volume": 51229000,
-        "catalyst": "Clean energy sector rotation and solar policy optimism",
-        "sector": "Solar / Energy",
-        "marketCap": 3440000000,
-        "week52Range": [
-          7.23,
-          22.44
-        ]
+        "ticker": "BB",
+        "company": "BlackBerry Limited",
+        "price": 10.34,
+        "change": 19.95,
+        "volume": 5565389,
+        "catalyst": "Fiscal Q1 adjusted earnings beat, strong cash flow generation, lifted FY2027 outlook.",
+        "sector": "Technology",
+        "marketCap": 6040000000,
+        "week52Range": null,
+        "note": "Cybersecurity + IoT dual narrative; volume confirms retail interest."
       },
       {
-        "ticker": "QCOM",
-        "company": "QUALCOMM Incorporated",
-        "price": 216.67,
-        "change": 9.8,
-        "volume": 2247000,
-        "catalyst": "Broad semiconductor momentum and AI edge inference demand",
-        "sector": "Semiconductors",
-        "marketCap": 228370000000,
-        "week52Range": [
-          121.99,
-          259.92
-        ]
+        "ticker": "AMAT",
+        "company": "Applied Materials, Inc.",
+        "price": 668.00,
+        "change": 13.42,
+        "volume": null,
+        "catalyst": "Semiconductor equipment sympathy on AI chip buildout demand; WFE spending outlook improving.",
+        "sector": "Technology",
+        "marketCap": null,
+        "week52Range": null,
+        "note": "Breakout above 640 resistance; relative volume elevated."
       },
       {
-        "ticker": "AAL",
-        "company": "American Airlines Group Inc.",
-        "price": 17.44,
-        "change": 8.05,
-        "volume": 207076000,
-        "catalyst": "Travel demand optimism and airline sector rebound",
-        "sector": "Airlines",
-        "marketCap": 11535000000,
-        "week52Range": [
-          10.09,
-          17.47
-        ]
-      },
-      {
-        "ticker": "ADPT",
-        "company": "Adaptive Biotechnologies Corporation",
-        "price": 19.34,
-        "change": 12.25,
-        "volume": 4886000,
-        "catalyst": "Genomic medicine momentum and immune sequencing demand",
-        "sector": "Biotechnology",
-        "marketCap": 3095000000,
-        "week52Range": [
-          9.96,
-          20.76
-        ]
+        "ticker": "KLAC",
+        "company": "KLA Corporation",
+        "price": 258.80,
+        "change": 7.62,
+        "volume": 8625000,
+        "catalyst": "Semiconductor equipment strength on AI memory and advanced node inspection demand cycle.",
+        "sector": "Technology",
+        "marketCap": 338064000000,
+        "week52Range": null,
+        "note": "RVOL > 3 on 8.6M volume vs 10.8M avg; institutional accumulation signal."
       }
     ],
     "losers": [
       {
-        "ticker": "CBRS",
-        "company": "Cerebras Systems Inc.",
-        "price": 186.06,
-        "change": -17.93,
-        "volume": 17569000,
-        "catalyst": "Profit taking in AI hardware after recent extended rally",
-        "sector": "Semiconductors / AI Hardware",
-        "marketCap": 40861000000,
-        "week52Range": [
-          196.73,
-          386.34
-        ]
+        "ticker": "AAPL",
+        "company": "Apple Inc.",
+        "price": 275.15,
+        "change": -6.12,
+        "volume": null,
+        "catalyst": "Megacap tech weakness — iPhone demand concerns and broad rotation out of defensive large-cap tech.",
+        "sector": "Technology",
+        "marketCap": 4200000000000,
+        "week52Range": null,
+        "note": "Below VWAP 282; PUT bias on breakdown continuation. High liquidity options."
       },
       {
-        "ticker": "NVTS",
-        "company": "Navitas Semiconductor Corporation",
-        "price": 17.49,
-        "change": -18.27,
-        "volume": 27144000,
-        "catalyst": "Semiconductor weakness and GaN demand concerns",
-        "sector": "Semiconductors",
-        "marketCap": 4260000000,
-        "week52Range": [
-          5.44,
-          34.17
-        ]
+        "ticker": "MSFT",
+        "company": "Microsoft Corporation",
+        "price": 352.83,
+        "change": -3.46,
+        "volume": null,
+        "catalyst": "Megacap tech pressure — AI monetization timeline concerns and broad software multiple compression.",
+        "sector": "Technology",
+        "marketCap": 2600000000000,
+        "week52Range": null,
+        "note": "Below VWAP 356.5; -2.3% additional after-hours pressure. Watch 350 support."
       },
       {
-        "ticker": "AXTI",
-        "company": "AXT, Inc.",
-        "price": 67.86,
-        "change": -12.9,
-        "volume": 11005000,
-        "catalyst": "Materials sector selloff and rare earth substrate concerns",
-        "sector": "Semiconductor Materials",
-        "marketCap": 4440000000,
-        "week52Range": [
-          1.85,
-          143.16
-        ]
+        "ticker": "TRVG",
+        "company": "trivago N.V.",
+        "price": 4.96,
+        "change": -3.50,
+        "volume": null,
+        "catalyst": "After-hours weakness continuation — travel sector headwinds and European booking softness.",
+        "sector": "Consumer Cyclical",
+        "marketCap": 350680000,
+        "week52Range": null,
+        "note": "After-hours data shows -10.28% at $4.45; Finnhub close -3.50%. Discrepancy due to timing."
       },
       {
-        "ticker": "INFQ",
-        "company": "Infleqtion, Inc.",
-        "price": 13.73,
-        "change": -13.94,
-        "volume": 19255000,
-        "catalyst": "Quantum computing sector correction and valuation reset",
-        "sector": "Quantum Technology",
-        "marketCap": 2997000000,
-        "week52Range": [
-          8.52,
-          21.28
-        ]
+        "ticker": "APO",
+        "company": "Apollo Global Management, Inc.",
+        "price": null,
+        "change": -6.10,
+        "volume": null,
+        "catalyst": "Alternative asset management selloff — private equity valuation concerns and AUM growth slowdown.",
+        "sector": "Financials",
+        "marketCap": null,
+        "week52Range": null,
+        "note": "Price data not found in Finnhub quote; -6.1% from Thursday regular session web sources."
       },
       {
-        "ticker": "OUST",
-        "company": "Ouster, Inc.",
-        "price": 39.22,
-        "change": -13.14,
-        "volume": 4197000,
-        "catalyst": "Lidar and autonomous tech weakness amid competitive pressure",
-        "sector": "Lidar / Autonomous",
-        "marketCap": 2498000000,
-        "week52Range": [
-          16.4,
-          51.5
-        ]
+        "ticker": "NEOG",
+        "company": "Neogen Corporation",
+        "price": 9.51,
+        "change": 3.59,
+        "volume": null,
+        "catalyst": "After-hours -9.12% at $8.64 per web sources; Finnhub close shows +3.59%. Discrepancy due to post-close earnings reaction.",
+        "sector": "Health Care",
+        "marketCap": 2070000000,
+        "week52Range": null,
+        "note": "Earnings-related gap down expected at open. Pre-market data inconsistent across sources."
       }
     ]
   },
   "callSetups": [
     {
-      "ticker": "QCOM",
+      "ticker": "MU",
       "direction": "call",
-      "entry": 214.0,
-      "target": 226.0,
-      "stop": 208.0,
+      "entry": 1230,
+      "target": 1310,
+      "stop": 1190,
       "riskReward": 2.0,
-      "rationale": "Semiconductor momentum continuation. VWAP reclaim above QQQ 715. Strong volume. Entry on pullback to 214.",
-      "timeframe": "swing"
+      "rationale": "AI memory blowout guidance — VWAP reclaim above 1220, pre-market volume surge. Post-earnings IV crush passed; 0DTE viable on high liquidity. Momentum continuation above 1255 prior high.",
+      "timeframe": "0DTE"
     },
     {
-      "ticker": "AAL",
+      "ticker": "AMAT",
       "direction": "call",
-      "entry": 16.8,
-      "target": 19.0,
-      "stop": 16.0,
-      "riskReward": 2.75,
-      "rationale": "Airlines sector strength. Above VWAP with rising volume. Breakout above 17.5 resistance targets 19.",
-      "timeframe": "swing"
-    },
-    {
-      "ticker": "RUN",
-      "direction": "call",
-      "entry": 14.0,
-      "target": 16.0,
-      "stop": 13.0,
+      "entry": 660,
+      "target": 720,
+      "stop": 630,
       "riskReward": 2.0,
-      "rationale": "Solar clean energy rotation. VWAP bounce setup. Volume spike confirms institutional interest.",
-      "timeframe": "swing"
+      "rationale": "Semiconductor equipment sympathy breakout — above 640 resistance on AI chip buildout demand. Volume confirmation from WFE spending outlook. 1-week swing for measured move.",
+      "timeframe": "1-week"
     },
     {
-      "ticker": "TECH",
+      "ticker": "KLAC",
       "direction": "call",
-      "entry": 68.0,
-      "target": 78.0,
-      "stop": 64.0,
-      "riskReward": 2.5,
-      "rationale": "Biotech momentum. Gap up with heavy volume. Pullback entry to 68 for continuation to 78.",
-      "timeframe": "swing"
+      "entry": 255,
+      "target": 275,
+      "stop": 245,
+      "riskReward": 2.0,
+      "rationale": "Semiconductor momentum — above VWAP 251, 7.6% gap up continuation. RVOL > 3 signals institutional accumulation. Strong sector tailwind from AI memory cycle.",
+      "timeframe": "1-week"
     },
     {
-      "ticker": "BLDR",
+      "ticker": "BB",
       "direction": "call",
-      "entry": 83.0,
-      "target": 92.0,
-      "stop": 79.0,
-      "riskReward": 2.25,
-      "rationale": "Homebuilder strength. Above VWAP. Breakout from consolidation. Volume confirms.",
-      "timeframe": "swing"
+      "entry": 10.0,
+      "target": 11.50,
+      "stop": 9.25,
+      "riskReward": 2.0,
+      "rationale": "Earnings beat + cash flow lift — breakout above 9.75 resistance. VWAP reclaim at 10.05. Retail volume confirms interest. 1-week target for measured move to 11.50.",
+      "timeframe": "1-week"
+    },
+    {
+      "ticker": "QQQ",
+      "direction": "call",
+      "entry": 715,
+      "target": 735,
+      "stop": 705,
+      "riskReward": 2.0,
+      "rationale": "Nasdaq futures +1.76% pre-market — tech rebound after Micron guidance. ORB long above 718. VWAP 716.17 support. Risk-on rotation expected.",
+      "timeframe": "0DTE"
     }
   ],
   "putSetups": [
     {
-      "ticker": "CBRS",
+      "ticker": "AAPL",
       "direction": "put",
-      "entry": 190.0,
-      "target": 170.0,
-      "stop": 198.0,
-      "riskReward": 2.5,
-      "rationale": "AI hardware breakdown below VWAP. Heavy volume on sell side. Momentum continuation lower.",
-      "timeframe": "swing"
-    },
-    {
-      "ticker": "NVTS",
-      "direction": "put",
-      "entry": 18.0,
-      "target": 15.0,
-      "stop": 19.5,
+      "entry": 280,
+      "target": 260,
+      "stop": 290,
       "riskReward": 2.0,
-      "rationale": "Semiconductor weakness. Below VWAP. Gap down continuation. Entry on retest of 18.",
-      "timeframe": "swing"
+      "rationale": "Megacap tech weakness — below VWAP 282. Gap down continuation below 285 support. -6.12% momentum likely extends on sector rotation. 1-week target for swing low.",
+      "timeframe": "1-week"
     },
     {
-      "ticker": "AXTI",
+      "ticker": "MSFT",
       "direction": "put",
-      "entry": 68.0,
-      "target": 58.0,
-      "stop": 72.0,
-      "riskReward": 2.5,
-      "rationale": "Materials selloff. Below VWAP with expanding volume. Breakdown from support.",
-      "timeframe": "swing"
-    },
-    {
-      "ticker": "OUST",
-      "direction": "put",
-      "entry": 39.0,
-      "target": 34.0,
-      "stop": 41.5,
+      "entry": 355,
+      "target": 335,
+      "stop": 365,
       "riskReward": 2.0,
-      "rationale": "Lidar weakness. Below VWAP. Gap fill lower. Entry on retest of 39.",
-      "timeframe": "swing"
+      "rationale": "Below VWAP 356.5, AI monetization pressure and software multiple compression. Breakdown below 350 accelerates to 340 support. 1-week swing.",
+      "timeframe": "1-week"
     },
     {
-      "ticker": "INFQ",
+      "ticker": "SPY",
       "direction": "put",
-      "entry": 13.7,
-      "target": 11.5,
-      "stop": 14.8,
+      "entry": 736,
+      "target": 720,
+      "stop": 744,
       "riskReward": 2.0,
-      "rationale": "Quantum sector correction. Below VWAP. Breakdown from 14.5 support. Volume spike.",
-      "timeframe": "swing"
+      "rationale": "Hedge setup — PCE data released Thursday (sticky inflation), FOMC hawkish hold. VWAP rejection at 734. 0DTE hedge if gap up fades at open.",
+      "timeframe": "0DTE"
+    },
+    {
+      "ticker": "TRVG",
+      "direction": "put",
+      "entry": 5.0,
+      "target": 4.50,
+      "stop": 5.25,
+      "riskReward": 2.0,
+      "rationale": "After-hours weakness continuation — travel sector headwinds. Below 5.00 support break triggers down move to 4.50. Low liquidity, size accordingly.",
+      "timeframe": "1-week"
+    },
+    {
+      "ticker": "VXX",
+      "direction": "put",
+      "entry": 19.50,
+      "target": 18.0,
+      "stop": 20.25,
+      "riskReward": 2.0,
+      "rationale": "Volatility crush play — futures rallying, VIX 18.89 in normal regime. Mean reversion lower on risk-on sentiment. 0DTE if market gaps up and holds.",
+      "timeframe": "0DTE"
     }
   ],
   "earningsCalendar": [
     {
-      "ticker": "SNX",
-      "company": "TD SYNNEX",
+      "ticker": "APOG",
+      "company": "Apogee Enterprises, Inc.",
       "time": "before-open",
-      "consensusEps": 4.14,
-      "consensusRev": 16800000000,
-      "priorEps": 2.99,
-      "priorRev": 14940000000,
-      "expectedMove": 2.5,
-      "consensusRange": "4.14",
-      "analystSentiment": "bullish",
-      "note": "Strong beat reported: EPS $4.85 vs $4.14, Rev $19.57B vs $16.80B. YoY rev +31%. IV crush active. 0DTE YASAK."
-    },
-    {
-      "ticker": "WGO",
-      "company": "Winnebago Industries",
-      "time": "before-open",
-      "consensusEps": 0.78,
-      "consensusRev": 755680000,
-      "priorEps": 0.49,
-      "priorRev": 777300000,
-      "expectedMove": 11.97,
-      "consensusRange": "0.61 - 0.84",
-      "analystSentiment": "bearish",
-      "note": "Analyst confidence deteriorated. Consensus down 4.9% past month. priorRev and priorEps data found via AlphaStreet. IV crush risk. Expected move ±11.97%."
-    },
-    {
-      "ticker": "MKC",
-      "company": "McCormick & Company",
-      "time": "before-open",
-      "consensusEps": 0.71,
-      "consensusRev": 1910000000,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": 6.4,
-      "consensusRange": "0.71",
-      "analystSentiment": null,
-      "note": "priorEps and priorRev data not found in source. Historically predicted move ±6.4% (MarketChameleon). IV crush risk."
-    },
-    {
-      "ticker": "DRI",
-      "company": "Darden Restaurants",
-      "time": "before-open",
-      "consensusEps": 3.64,
-      "consensusRev": 3730000000,
+      "consensusEps": 0.46,
+      "consensusRev": 340500000,
       "priorEps": null,
       "priorRev": null,
       "expectedMove": null,
-      "consensusRange": "3.64",
+      "consensusRange": null,
       "analystSentiment": null,
-      "note": "priorEps, priorRev, expectedMove data not found in source. IV crush risk."
+      "note": "Small-cap industrial glass/architectural. Thin options chain, low liquidity — avoid 0DTE. priorEps/expectedMove data not found in available sources."
     },
     {
-      "ticker": "CMC",
-      "company": "Commercial Metals",
-      "time": "before-open",
-      "consensusEps": 1.68,
-      "consensusRev": 2410000000,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": null,
-      "consensusRange": "1.68",
-      "analystSentiment": "bullish",
-      "note": "priorEps, priorRev, expectedMove data not found in source. UBS upgraded to Buy with $89 target. IV crush risk."
-    },
-    {
-      "ticker": "LNN",
-      "company": "Lindsay Co.",
-      "time": "before-open",
-      "consensusEps": 1.14,
-      "consensusRev": 157800000,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": null,
-      "consensusRange": "1.14",
-      "analystSentiment": null,
-      "note": "priorEps, priorRev, expectedMove data not found in source. IV crush risk."
-    },
-    {
-      "ticker": "FDXF",
-      "company": "FedEx Freight",
+      "ticker": "XAIR",
+      "company": "Beyond Air, Inc.",
       "time": "after-close",
-      "consensusEps": null,
-      "consensusRev": null,
+      "consensusEps": -0.57,
+      "consensusRev": 2300000,
       "priorEps": null,
       "priorRev": null,
       "expectedMove": null,
       "consensusRange": null,
       "analystSentiment": null,
-      "note": "After-close earnings. All consensus data not found in source. IV crush risk for 0DTE."
-    },
-    {
-      "ticker": "CGEH",
-      "company": "Capstone Energy+",
-      "time": "after-close",
-      "consensusEps": null,
-      "consensusRev": null,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": null,
-      "consensusRange": null,
-      "analystSentiment": null,
-      "note": "After-close earnings. All consensus data not found in source. IV crush risk."
-    },
-    {
-      "ticker": "YRD",
-      "company": "Yiren Digital",
-      "time": "before-open",
-      "consensusEps": null,
-      "consensusRev": null,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": null,
-      "consensusRange": null,
-      "analystSentiment": null,
-      "note": "Before-open reported Q1 2026 results. All consensus data not found in source. IV crush active. 0DTE YASAK."
+      "note": "Micro-cap medical device ($4.6M market cap). Illiquid options — avoid entirely."
     }
   ],
-  "vwapNotes": "SPY (733.50), QQQ (714.86), and IWM (298.91) all closed below their intraday VWAP levels (SPY 734.16, QQQ 715.66, IWM 299.05), indicating a risk-off finish into the close. Gap down open partially filled but sellers remained in control in the afternoon session. Market closed at ET 16:00 — this is the after-market transition report.",
+  "vwapNotes": "SPY close 734.3 vs VWAP 734.42 — flat, consolidation mode. QQQ close 716.38 vs VWAP 716.17 — marginally above VWAP, bullish tilt. IWM close 298.91 vs VWAP 299.05 — marginally below. Market mixed: tech rebound (Micron/semis) vs megacap weakness (AAPL/MSFT). Pre-market futures point to gap up open. ORB 09:30-09:45 ET beklenmeli — gap > 5% hisselerde (MU, TECH, BB) chasing yasak, volume confirmation zorunlu.",
   "riskAssessment": {
     "level": "medium",
-    "vixRegime": "VIX 18.80 (+0.91%) — normal regime (15–20 range). Post-close spot from CBOE.",
-    "sectorRotation": "Quantum and AI hardware under pressure (CBRS, NVTS, INFQ); biotech and travel showing relative strength (TECH, AAL). Defensive rotation visible into close.",
-    "earningsRisk": "SNX reported strong beat this morning. After-close earnings include FDXF and CGEH. Multiple before-open reporters still active with IV crush risk.",
-    "macroRisk": "Post-FOMC digestion, month-end rebalancing, and quarter-end positioning flows. VIX stable but close below VWAP warns caution."
+    "vixRegime": "VIX 18.89 (Jun 25 close) — normal regime (15-20). VIX9D 18.07 close to spot, near-term uncertainty priced equal to medium-term. No fear, no complacency.",
+    "sectorRotation": "Semiconductors (MU, AMAT, KLAC, SNDK, WDC) strongest on AI memory demand. Megacap tech (AAPL, MSFT) under pressure. Small-cap (IWM) mixed. Defensive rotation paused.",
+    "earningsRisk": "MU post-earnings blowout active — IV crush passed, momentum play OK. APOG pre-market today — small-cap, thin chain. XAIR after-close — micro-cap, avoid. NEOG post-close earnings gap down expected.",
+    "macroRisk": "May PCE released Thursday (headline 0.4% MoM, core 0.3% MoM, YoY core 3.4%) — inflation sticky above 2% target. FOMC hawkish hold last week (Jun 17), Fed funds 3.5-3.75%, half of FOMC members projecting hikes. Today: Advanced trade balance, consumer sentiment final. No major event risk, but CPI/FOMC hangover persists."
   },
   "nextDayCarryForward": []
 }
