@@ -1,47 +1,44 @@
 {
   "reportType": "hourly",
   "reportDate": "2026-06-26",
-  "generatedAt": "2026-06-26T20:01:11+03:00",
+  "generatedAt": "2026-06-26T14:00:00-04:00",
   "marketSummary": {
     "spy": {
-      "price": 734.69,
-      "change": 0.0531,
-      "vwap": 732.69,
+      "price": 733.96,
+      "change": -0.0463,
+      "vwap": 732.45,
       "open": 730.3975,
       "high": 736.53,
       "low": 726.86,
-      "prevClose": 734.3,
-      "note": "VWAP ustunde, risk-on bias. Gap up acilis sonrasi continuation."
+      "prevClose": 734.3
     },
     "qqq": {
-      "price": 713.41,
-      "change": -0.4146,
-      "vwap": 710.59,
+      "price": 711.81,
+      "change": -0.6379,
+      "vwap": 710.06,
       "open": 709.09,
       "high": 715.555,
       "low": 702.81,
-      "prevClose": 716.38,
-      "note": "VWAP ustunde. Tech mixed, MSFT guclu, NVDA/INTC zayif."
+      "prevClose": 716.38
     },
     "iwm": {
-      "price": 298.57,
-      "change": -0.1137,
-      "vwap": 298.11,
+      "price": 297.95,
+      "change": -0.3212,
+      "vwap": 297.9,
       "open": 297.805,
       "high": 300.03,
       "low": 295.73,
-      "prevClose": 298.91,
-      "note": "VWAP ustunde. Small-cap flat, relative strength var."
+      "prevClose": 298.91
     },
     "vix": {
-      "price": 20.14,
-      "change": 6.62,
+      "price": 18.85,
+      "change": -0.21,
       "vwap": null,
       "open": 19.7,
-      "high": 20.38,
+      "high": 20.72,
       "low": 19.52,
       "prevClose": 18.89,
-      "note": "Finnhub VIX icin 0 dondurdu. MarketWatch/CBOE cross-check: VIX ~20.14, elevated-normal borderline. Opsiyon primleri yuksek."
+      "note": "Finnhub returns 0 for VIX. CBOE live data verified via web search: 18.85 with -0.21% change. VIX VWAP not applicable for volatility index."
     }
   },
   "topMovers": {
@@ -49,263 +46,229 @@
       {
         "ticker": "FCEL",
         "company": "FuelCell Energy Inc",
-        "price": 24.77,
-        "change": 26.12,
+        "price": 24.2,
+        "change": 23.1552,
         "volume": "13M",
-        "catalyst": "Clean energy momentum continuation, no single headline catalyst — sector rotation driven",
-        "sector": "Energy / Clean Tech",
+        "catalyst": "Clean energy / fuel cell sector momentum; large order announcement and EV charging infrastructure tailwinds driving speculative interest.",
+        "sector": null,
         "marketCap": null,
         "week52Range": null,
-        "note": "sector ve marketCap verisi Finnhub API'den hizli alinamadi, null."
+        "note": "sector, marketCap, week52Range data not found in Finnhub (slow response); volume from Morningstar pre-market movers."
       },
       {
         "ticker": "APOG",
         "company": "Apogee Enterprises Inc",
-        "price": 50.74,
-        "change": 19.36,
+        "price": 49.29,
+        "change": 16.0311,
         "volume": "338K",
-        "catalyst": "Q1 2027 earnings beat: EPS $0.57 vs $0.43 consensus, architectural glass demand strength",
-        "sector": "Industrials / Building Materials",
-        "marketCap": null,
-        "week52Range": [
-          31.21,
-          50.76
-        ],
-        "note": "52w high zirvesine yaklasti. Earnings gecisi aktif."
-      },
-      {
-        "ticker": "MRNA",
-        "company": "Moderna Inc",
-        "price": 67.95,
-        "change": 13.72,
-        "volume": "7M",
-        "catalyst": "Biotech sector momentum, vaccine pipeline optimism, broad healthcare rotation",
-        "sector": "Healthcare / Biotech",
+        "catalyst": "Q1 FY2027 earnings beat: EPS $0.57 vs consensus $0.43 (+39% surprise); revenue $342.7M vs $340.5M expected. Acquired $115M glass business recently.",
+        "sector": null,
         "marketCap": null,
         "week52Range": null,
-        "note": null
+        "note": "sector, marketCap, week52Range data not found in Finnhub (slow response); volume from Morningstar."
       },
       {
         "ticker": "SLS",
         "company": "SELLAS Life Sciences Group Inc",
-        "price": 11.95,
-        "change": 13.38,
+        "price": 12.13,
+        "change": 15.1947,
         "volume": "7M",
-        "catalyst": "Biotech momentum, clinical trial developments, oncology pipeline interest",
-        "sector": "Healthcare / Biotech",
+        "catalyst": "Oncology positive clinical trial data readout; glioblastoma treatment pipeline excitement driving biotech momentum.",
+        "sector": null,
         "marketCap": null,
-        "week52Range": [
-          1.4,
-          12.19
-        ],
-        "note": "52w high seviyelerine yaklasti."
+        "week52Range": null,
+        "note": "sector, marketCap, week52Range data not found in Finnhub (slow response)."
       },
       {
-        "ticker": "AMAT",
-        "company": "Applied Materials Inc",
-        "price": 668.0,
-        "change": 13.42,
-        "volume": "16M",
-        "catalyst": "Semiconductor equipment demand surge, AI infrastructure capex strength, strong volume confirmation",
-        "sector": "Technology / Semiconductor Equipment",
-        "marketCap": 530365000000,
-        "week52Range": [
-          154.47,
-          669.22
-        ],
-        "note": "52w high zirvesine yaklasti. RVOL > 2."
+        "ticker": "MRNA",
+        "company": "Moderna Inc",
+        "price": 66.37,
+        "change": 11.0795,
+        "volume": "7M",
+        "catalyst": "RSV vaccine pipeline progress and seasonal respiratory portfolio positioning; mRNA platform interest rebound.",
+        "sector": null,
+        "marketCap": null,
+        "week52Range": null,
+        "note": "sector, marketCap, week52Range data not found in Finnhub (slow response)."
+      },
+      {
+        "ticker": "ACAD",
+        "company": "ACADIA Pharmaceuticals Inc",
+        "price": 25.75,
+        "change": 8.5582,
+        "volume": "2M",
+        "catalyst": "Biotech sector momentum; pimavanserin (dementia-related psychosis) commercial expansion and pipeline updates.",
+        "sector": null,
+        "marketCap": null,
+        "week52Range": null,
+        "note": "sector, marketCap, week52Range data not found in Finnhub (slow response)."
       }
     ],
     "losers": [
       {
         "ticker": "ON",
         "company": "ON Semiconductor Corp",
-        "price": 92.81,
-        "change": -21.87,
+        "price": 90.52,
+        "change": -23.7662,
         "volume": "18M",
-        "catalyst": "Q2 earnings miss / guidance cut, semiconductor sector rotation out of auto/industrial chips",
-        "sector": "Technology / Semiconductors",
+        "catalyst": "Q2 earnings miss and guidance cut; AI/data-center demand slowdown fears hitting silicon carbide and power semiconductor outlook.",
+        "sector": null,
         "marketCap": null,
-        "week52Range": [
-          44.58,
-          134.9
-        ],
-        "note": "RVOL > 1.5. Breakdown pattern, VWAP altinda."
-      },
-      {
-        "ticker": "RGC",
-        "company": "Regencell Bioscience Holdings Ltd",
-        "price": 6.28,
-        "change": -15.93,
-        "volume": "199K",
-        "catalyst": "Biotech volatility, no specific headline catalyst — profit-taking after recent run-up",
-        "sector": "Healthcare / Biotech",
-        "marketCap": null,
-        "week52Range": [
-          6.16,
-          68.99
-        ],
-        "note": "Dusuk hacimli, manipulation risk."
-      },
-      {
-        "ticker": "CAPR",
-        "company": "Capricor Therapeutics Inc",
-        "price": 26.37,
-        "change": -13.23,
-        "volume": "1M",
-        "catalyst": "Biotech profit-taking after recent rally, DMD gene therapy competitive concerns",
-        "sector": "Healthcare / Biotech",
-        "marketCap": null,
-        "week52Range": [
-          4.3,
-          40.37
-        ],
-        "note": null
-      },
-      {
-        "ticker": "BE",
-        "company": "Bloom Energy Corp",
-        "price": 270.52,
-        "change": -12.53,
-        "volume": "8M",
-        "catalyst": "Clean energy sector profit-taking, guidance concerns, high valuation compression",
-        "sector": "Energy / Clean Tech",
-        "marketCap": null,
-        "week52Range": [
-          21.51,
-          351.0
-        ],
-        "note": "Yuksek hacimli distribution."
+        "week52Range": null,
+        "note": "sector, marketCap, week52Range data not found in Finnhub (slow response)."
       },
       {
         "ticker": "WDC",
         "company": "Western Digital Corp",
-        "price": 603.63,
-        "change": -10.61,
+        "price": 590.94,
+        "change": -12.5039,
         "volume": "5M",
-        "catalyst": "Memory/storage sector weakness, NAND flash pricing pressure, margin compression fears",
-        "sector": "Technology / Data Storage",
+        "catalyst": "Memory and storage demand weakness; NAND pricing pressure and cloud capex cuts weighing on disk drive / flash outlook.",
+        "sector": null,
         "marketCap": null,
-        "week52Range": [
-          62.59,
-          799.7
-        ],
-        "note": null
+        "week52Range": null,
+        "note": "sector, marketCap, week52Range data not found in Finnhub (slow response). WDC split-adjusted price may differ from screeners."
+      },
+      {
+        "ticker": "ENTG",
+        "company": "Entegris Inc",
+        "price": 158.23,
+        "change": -10.2394,
+        "volume": "1M",
+        "catalyst": "Semi cycle downturn concern; advanced materials and contamination control demand slowing as foundry capex declines.",
+        "sector": null,
+        "marketCap": null,
+        "week52Range": null,
+        "note": "sector, marketCap, week52Range data not found in Finnhub (slow response)."
+      },
+      {
+        "ticker": "VC",
+        "company": "Visteon Corp",
+        "price": 98.31,
+        "change": -11.8296,
+        "volume": "455K",
+        "catalyst": "Auto supplier sector pressure; EV demand slowdown and OEM inventory cuts hitting cockpit electronics revenue outlook.",
+        "sector": null,
+        "marketCap": null,
+        "week52Range": null,
+        "note": "sector, marketCap, week52Range data not found in Finnhub (slow response)."
+      },
+      {
+        "ticker": "FORM",
+        "company": "FormFactor Inc",
+        "price": 135.21,
+        "change": -9.1025,
+        "volume": "657K",
+        "catalyst": "Probe card demand weakness; semiconductor test and measurement capex cuts as chip makers delay expansion.",
+        "sector": null,
+        "marketCap": null,
+        "week52Range": null,
+        "note": "sector, marketCap, week52Range data not found in Finnhub (slow response)."
       }
     ]
   },
   "callSetups": [
     {
-      "ticker": "AMAT",
+      "ticker": "APOG",
       "direction": "call",
-      "entry": 660.0,
-      "target": 690.0,
-      "stop": 645.0,
-      "riskReward": 2.0,
-      "rationale": "VWAP ustunde guclu momentum, AI infrastructure talebi, volume confirmation. 52w high zirvesine yakinda breakout oynagi.",
-      "timeframe": "intraday",
-      "vwapPosition": "above"
+      "entry": 48.5,
+      "target": 55.0,
+      "stop": 45.0,
+      "riskReward": 2.2,
+      "rationale": "Earnings beat momentum continuation. VWAP ustunde (47.8), volume confirmation. APOG 42.48 previous close uzerinde gap-up +16% ile guclu momentum. Gap-fill riski var ama VWAP hold ederse call bias.",
+      "timeframe": "intraday"
     },
     {
       "ticker": "FCEL",
       "direction": "call",
-      "entry": 24.0,
-      "target": 27.0,
-      "stop": 22.8,
-      "riskReward": 2.5,
-      "rationale": "Clean energy momentum continuation, VWAP ustunde, RVOL > 2. Gap up sonrasi flag pattern.",
-      "timeframe": "0DTE",
-      "vwapPosition": "above"
+      "entry": 23.5,
+      "target": 28.0,
+      "stop": 21.5,
+      "riskReward": 2.25,
+      "rationale": "Clean energy sector momentum, fuel cell order catalyst. RVOL > 3x. VWAP ustunde (22.9). Volume break 13M+ ile momentum continuation.",
+      "timeframe": "intraday"
     },
     {
-      "ticker": "APOG",
+      "ticker": "MRNA",
       "direction": "call",
-      "entry": 49.5,
-      "target": 55.0,
-      "stop": 47.0,
-      "riskReward": 2.2,
-      "rationale": "Earnings beat sonrasi momentum continuation, VWAP ustunde, volume spike. Architectural glass talebi guclu.",
-      "timeframe": "intraday",
-      "vwapPosition": "above"
+      "entry": 63.0,
+      "target": 72.0,
+      "stop": 59.0,
+      "riskReward": 2.25,
+      "rationale": "Biotech momentum, VWAP ustunde (65.0). Pipeline rebound +11% volume tailwind. No earnings today = 0DTE riski dusuk.",
+      "timeframe": "intraday"
     },
     {
-      "ticker": "MSFT",
+      "ticker": "SPY",
       "direction": "call",
-      "entry": 360.0,
-      "target": 380.0,
-      "stop": 352.0,
-      "riskReward": 2.5,
-      "rationale": "VWAP ustunde tech leadership, gap fill sonrasi continuation. Cloud/AI revenue momentum guclu.",
-      "timeframe": "intraday",
-      "vwapPosition": "above"
-    },
-    {
-      "ticker": "AAPL",
-      "direction": "call",
-      "entry": 273.0,
-      "target": 285.0,
-      "stop": 267.0,
+      "entry": 730.0,
+      "target": 740.0,
+      "stop": 725.0,
       "riskReward": 2.0,
-      "rationale": "VWAP ustunde stabil momentum, large-cap liquidity. iPhone cycle ve services growth destekliyor.",
-      "timeframe": "intraday",
-      "vwapPosition": "above"
+      "rationale": "Index stability, VWAP ustunde (732.45). Gap-down fill 726.86 low sonrasi recovery. Michigan sentiment 49.5 better than expected. Risk-on hafif.",
+      "timeframe": "0DTE"
+    },
+    {
+      "ticker": "QQQ",
+      "direction": "call",
+      "entry": 706.0,
+      "target": 720.0,
+      "stop": 699.0,
+      "riskReward": 2.0,
+      "rationale": "Tech dip-buy setup, VWAP ustunde (710.06). Semi weakness (ON, WDC) baskisi altinda ama index genelinde tutunma. 702.81 low = structural support.",
+      "timeframe": "0DTE"
     }
   ],
   "putSetups": [
     {
       "ticker": "ON",
       "direction": "put",
-      "entry": 94.0,
-      "target": 85.0,
-      "stop": 98.0,
-      "riskReward": 2.25,
-      "rationale": "VWAP altinda breakdown continuation, semiconductor weakness, earnings miss. Distribution pattern.",
-      "timeframe": "intraday",
-      "vwapPosition": "below"
-    },
-    {
-      "ticker": "INTC",
-      "direction": "put",
-      "entry": 130.0,
-      "target": 122.0,
-      "stop": 134.0,
+      "entry": 92.0,
+      "target": 82.0,
+      "stop": 97.0,
       "riskReward": 2.0,
-      "rationale": "VWAP altinda tech sector weakness, gap down continuation. Foundry margins baskisi.",
-      "timeframe": "intraday",
-      "vwapPosition": "below"
-    },
-    {
-      "ticker": "BE",
-      "direction": "put",
-      "entry": 275.0,
-      "target": 255.0,
-      "stop": 283.0,
-      "riskReward": 2.5,
-      "rationale": "VWAP altinda clean energy pullback, high volume distribution. Valuation compression devam ediyor.",
-      "timeframe": "intraday",
-      "vwapPosition": "below"
+      "rationale": "Earnings breakdown, VWAP altinda (97.3). AI demand slowdown guidance cut ile -24% gap-down. Momentum continuation short. Gap-fill reject = put bias.",
+      "timeframe": "intraday"
     },
     {
       "ticker": "WDC",
       "direction": "put",
-      "entry": 610.0,
-      "target": 585.0,
-      "stop": 622.0,
-      "riskReward": 2.08,
-      "rationale": "VWAP altinda storage/memory weakness, breakdown pattern. NAND pricing baskisi.",
-      "timeframe": "intraday",
-      "vwapPosition": "below"
+      "entry": 595.0,
+      "target": 560.0,
+      "stop": 610.0,
+      "riskReward": 2.33,
+      "rationale": "Storage/memory weakness, VWAP altinda (610.5). NAND pricing pressure + cloud capex cuts. Gap-down continuation below 600 psikolojik seviye.",
+      "timeframe": "intraday"
     },
     {
-      "ticker": "NVDA",
+      "ticker": "ENTG",
       "direction": "put",
-      "entry": 196.0,
-      "target": 188.0,
-      "stop": 200.0,
+      "entry": 160.0,
+      "target": 148.0,
+      "stop": 166.0,
       "riskReward": 2.0,
-      "rationale": "VWAP altinda semiconductor rotasyonu, large-cap PUT liquidity. AI chip demand concerns.",
-      "timeframe": "intraday",
-      "vwapPosition": "below"
+      "rationale": "Semi cycle downturn put play. VWAP altinda (164.7). Foundry materials demand slowing. Below 160 = continuation zone.",
+      "timeframe": "intraday"
+    },
+    {
+      "ticker": "VC",
+      "direction": "put",
+      "entry": 100.0,
+      "target": 92.0,
+      "stop": 104.0,
+      "riskReward": 2.0,
+      "rationale": "Auto supplier weakness, VWAP altinda (100.25). EV demand slowdown hitting cockpit electronics. Below 100 = momentum continuation.",
+      "timeframe": "intraday"
+    },
+    {
+      "ticker": "FORM",
+      "direction": "put",
+      "entry": 136.0,
+      "target": 128.0,
+      "stop": 140.0,
+      "riskReward": 2.0,
+      "rationale": "Probe card / semi test capex cut. VWAP altinda (136.4). Gap-down rejection pattern. 132.52 low = next support break.",
+      "timeframe": "intraday"
     }
   ],
   "earningsCalendar": [
@@ -314,87 +277,61 @@
       "company": "Apogee Enterprises Inc",
       "time": "before-open",
       "consensusEps": 0.43,
-      "consensusRev": 333840000,
+      "consensusRev": 340500000,
       "priorEps": -0.13,
-      "priorRev": 342700000,
-      "expectedMove": null,
-      "consensusRange": "$0.40 - $0.46",
+      "priorRev": null,
+      "expectedMove": 8.5,
+      "consensusRange": "$0.41 - $0.46",
       "analystSentiment": "bullish",
-      "note": "Earnings beat by $0.14 ($0.57 actual). Strong architectural glass demand. IV crush aktif — 0DTE YASAK. expectedMove verisi kaynaktan alinamadi."
+      "note": "EARNINGS GUNU = IV CRUSH RISKI. APOG reported $0.57 EPS, beat consensus by +39%. Revenue $342.7M vs $340.5M. 0DTE YASAK — IV deflation active even after beat."
     },
     {
-      "ticker": "DRI",
-      "company": "Darden Restaurants Inc",
+      "ticker": "CNVS",
+      "company": "Cineverse Corp",
       "time": "before-open",
-      "consensusEps": 3.63,
-      "consensusRev": 3730000000,
-      "priorEps": 2.98,
-      "priorRev": 3270000000,
-      "expectedMove": null,
-      "consensusRange": "$3.60 - $3.67",
-      "analystSentiment": "bullish",
-      "note": "EPS beat by $0.03 ($3.66 actual), revenue $3.72B vs $3.73B est (hafif miss). Olive Garden/LongHorn strength. IV crush aktif — 0DTE YASAK. expectedMove verisi kaynaktan alinamadi."
-    },
-    {
-      "ticker": "SNX",
-      "company": "TD SYNNEX Corp",
-      "time": "before-open",
-      "consensusEps": 4.07,
-      "consensusRev": 16800000000,
-      "priorEps": 2.8,
-      "priorRev": 14950000000,
-      "expectedMove": null,
-      "consensusRange": "$3.90 - $4.20",
-      "analystSentiment": "bullish",
-      "note": "Massive beat: EPS $4.85 vs $4.07 cons, revenue $19.57B vs $16.80B. Stock -3.5% on softer Q3 guidance. IV crush aktif — 0DTE YASAK. expectedMove verisi kaynaktan alinamadi."
-    },
-    {
-      "ticker": "MKC",
-      "company": "McCormick & Company Inc",
-      "time": "before-open",
-      "consensusEps": 0.69,
-      "consensusRev": 1900000000,
-      "priorEps": 0.69,
-      "priorRev": 1660000000,
-      "expectedMove": null,
-      "consensusRange": "$0.65 - $0.72",
-      "analystSentiment": "neutral",
-      "note": "Flat YoY EPS expected. Revenue growth +14.4%. Consumer staples defensive. IV crush aktif — 0DTE YASAK. expectedMove verisi kaynaktan alinamadi."
-    },
-    {
-      "ticker": "AYI",
-      "company": "Acuity Brands Inc",
-      "time": "before-open",
-      "consensusEps": 5.19,
+      "consensusEps": -0.12,
       "consensusRev": null,
       "priorEps": null,
       "priorRev": null,
       "expectedMove": null,
-      "consensusRange": "$5.00 - $5.35",
-      "analystSentiment": "bullish",
-      "note": "Lighting/industrial demand. Stock +1.28%. priorEps ve priorRev verisi kaynaktan hizli alinamadi. IV crush aktif — 0DTE YASAK."
+      "consensusRange": null,
+      "analystSentiment": "neutral",
+      "note": "EARNINGS GUNU = IV CRUSH RISKI. CNVS reported $0.05 EPS vs -$0.12 consensus, beat +141.67%. Low-float microcap; prior EPS/rev data not found in available sources. 0DTE YASAK."
     },
     {
-      "ticker": "BB",
-      "company": "BlackBerry Ltd",
-      "time": "before-open",
-      "consensusEps": 0.03,
+      "ticker": "CAXPF",
+      "company": "District Copper Corp",
+      "time": "AMC",
+      "consensusEps": null,
       "consensusRev": null,
       "priorEps": null,
       "priorRev": null,
       "expectedMove": null,
-      "consensusRange": "$0.00 - $0.06",
+      "consensusRange": null,
       "analystSentiment": "neutral",
-      "note": "Cybersecurity/IoT turnaround play. Stock +8.51%. priorEps ve priorRev verisi kaynaktan hizli alinamadi. IV crush aktif — 0DTE YASAK."
+      "note": "EARNINGS GUNU = IV CRUSH RISKI. Q2 2026 earnings after market close. Microcap copper explorer; consensus data not available. 0DTE YASAK."
+    },
+    {
+      "ticker": "XAIR",
+      "company": "Beyond Air Inc",
+      "time": "after-close",
+      "consensusEps": -0.57,
+      "consensusRev": 2300000,
+      "priorEps": null,
+      "priorRev": null,
+      "expectedMove": null,
+      "consensusRange": null,
+      "analystSentiment": "bearish",
+      "note": "EARNINGS GUNU = IV CRUSH RISKI. Beyond Air reports AMC; estimate -$0.57 EPS, $2.3M revenue. Microcap biotech; prior EPS/rev data not found. 0DTE YASAK."
     }
   ],
-  "vwapNotes": "SPY VWAP ustunde (+$2.00), QQQ VWAP ustunde (+$2.82), IWM VWAP ustunde (+$0.46). Tum major indexler VWAP ustunde — risk-on bias. SPY gap up acilis (730.40) sonrasi 736.53 high yaparak continuation gosterdi. Gap fill riski dusuk. Semiconductors (ON, INTC, NVDA) VWAP altinda zayif, tech mega-caps (MSFT, AAPL) VWAP ustunde guclu. Clean energy/biotech (FCEL, MRNA, SLS) VWAP ustunde momentum guclu.",
+  "vwapNotes": "SPY 733.96 > VWAP 732.45 (hafif risk-on). QQQ 711.81 > VWAP 710.06 (hafif risk-on). IWM 297.95 ≈ VWAP 297.90 (neutral). SPY 730.40 open, 726.86 low ile gap-down kismen doldu. QQQ 709.09 open, 702.81 low ile gap-down doldu. IWM 297.80 open, 295.73 low. Genel trend: buyuk-cap stabiliti, small-cap neutral, semi sektoru baskili.",
   "riskAssessment": {
     "level": "medium",
-    "vixRegime": "VIX ~20.14, elevated-normal borderline. 15-20 normal, 20-30 elevated. Opsiyon primleri yuksek, directional trade costlari artmis.",
-    "sectorRotation": "Semiconductors zayif (ON -21.87%, NVDA -0.74%, INTC -3.01%). Clean Energy/Biotech guclu (FCEL +26%, MRNA +13%, SLS +13%). Tech mega-caps karisik (MSFT +5%, AAPL +0.7%). Consumer staples (MKC +4.9%) defensive alim.",
-    "earningsRisk": "Bugun 6+ onemli earnings aciklandi (APOG, DRI, SNX, MKC, AYI, BB). IV crush aktif. Earnings hisselerinde 0DTE YASAK. SNX buyuk beat'e ragmen guidance endisesiyle dusuyor.",
-    "macroRisk": "Geopolitical risk hafifliyor (Iran peace talks, Strait of Hormuz). Petrol fiyatlari dusus trendinde. FOMC bekleniyor. ABD piyasasi karisik, breadth zayif."
+    "vixRegime": "VIX 18.85 (-0.21%), normal regime (15-20). Piyasa complacent degil ama fear yok. 0DTE opsiyonlar icin normal volatilite.",
+    "sectorRotation": "Tech karisik: semi weakness (ON, WDC, ENTG, FORM) vs software/green energy guclu (FCEL, APOG). Auto supplier (VC) baskili. Biotech (MRNA, SLS, ACAD) momentum var.",
+    "earningsRisk": "APOG earnings beat sonrasi +16% momentum. Cineverse (CNVS) beat. Beyond Air (XAIR) AMC bekliyor. IV crush riski APOG ve CNVS icin aktif — 0DTE YASAK.",
+    "macroRisk": "Michigan Consumer Sentiment Final 49.5 (beklenti 48.9) hafif pozitif. FOMC/CPI yok bu hafta. Geopolitical risk dusuk. PCE takip eden haftalarda onemli."
   },
   "nextDayCarryForward": []
 }
