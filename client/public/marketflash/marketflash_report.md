@@ -1,128 +1,111 @@
 # Market Flash Stocks — Intra-Market Hourly Report
 
-**Report Date:** 26 Haziran 2026 (Cuma)  
-**Generated At:** TSİ 18:02 (ET 11:02)  
-**Report Type:** Saatlik Intra-Market  
-**Market Status:** ABD piyasasi ACIK (TSİ 17:00–23:00 / ET 10:00–16:00)
+**Rapor Tarihi:** 2026-06-26  
+**Uretim Zamani:** 2026-06-26 20:01 TSİ (13:01 ET)  
+**Rapor Tipi:** Intra-Market Hourly  
+**Piyasa Durumu:** Açık (ET 09:30–16:00)
 
 ---
 
-## 1. Market Summary (Piyasa Özeti)
+## 1. Market Summary (SPY / QQQ / IWM / VIX)
 
-| Instrument | Price | Change | VWAP | Open | High | Low | Prev Close | Note |
-|---|---|---|---|---|---|---|---|---|
-| **SPY** | $733.50 | −0.11% | $733.95 | $738.91 | $739.35 | $729.60 | $734.30 | Pre-market veri; VWAP (H+L+C)/3 tahmini |
-| **QQQ** | $707.09 | −1.25% | $710.72 | $714.80 | $719.93 | $704.45 | $716.38 | 6/25 close; VWAP tahmini |
-| **IWM** | $295.46 | +0.07% | $294.91 | $293.26 | $296.16 | $295.32 | $295.25 | Real-time; VWAP tahmini |
-| **VIX** | $19.14 | +1.32% | $19.03 | $19.70 | $20.38 | $18.85 | $18.89 | CBOE spot; **normal regime** |
+| Ticker | Fiyat | Değişim % | VWAP | Açılış | High | Low | Önceki Kapanış | Not |
+|--------|-------|-----------|------|--------|------|-----|----------------|-----|
+| **SPY** | $734.69 | +0.05% | $732.69 | $730.40 | $736.53 | $726.86 | $734.30 | VWAP üstünde, risk-on bias. Gap up açılış sonrası continuation. |
+| **QQQ** | $713.41 | -0.41% | $710.59 | $709.09 | $715.56 | $702.81 | $716.38 | VWAP üstünde. Tech mixed — MSFT güçlü, NVDA/INTC zayıf. |
+| **IWM** | $298.57 | -0.11% | $298.11 | $297.81 | $300.03 | $295.73 | $298.91 | VWAP üstünde. Small-cap flat, relative strength var. |
+| **VIX** | ~20.14 | +6.62% | — | $19.70 | $20.38 | $19.52 | $18.89 | Elevated-normal borderline. Opsiyon primleri yüksek. |
 
-**VIX Regime:** VIX 19.14 → **15–20 araligi = normal**. Hafif yukselis var ama complacency (kibir) degil, fear de yok. **Risk-on/risk-off sinirinda**.
-
----
-
-## 2. Top Movers (Günün Hareketlileri)
-
-### Gainers (Yukari Yönlü)
-
-| # | Ticker | Sirket | Fiyat | Değişim | Hacim | Katalizör | Sektor |
-|---|---|---|---|---|---|---|---|
-| 1 | **FCEL** | FuelCell Energy | $23.85 | **+21.44%** | 5M | Canaccord Genuity upgrade → Buy, PT $30 (Street-high). AI data center pipeline 4GW; Fit Energy anlasmasi 380MW. | Electrical Equipment |
-| 2 | **APOG** | Apogee Enterprises | $48.90 | **+15.03%** | 140K | **Q1 FY2027 earnings BEAT:** EPS $0.57 vs $0.46 est; Rev $342.7M vs $340.5M est. Yilsonu guidance yukseltildi. Tariff etkisi azaldi. | Building Products |
-| 3 | **PLSE** | Pulse Biosciences | $30.83 | **+12.09%** | 274K | Nano-Pulse Stimulation teknolojisi ilerlemesi; klinik calisma momentumu. | Medical Devices |
-| 4 | **ACAD** | ACADIA Pharma | $26.53 | **+11.87%** | 1M | Daybue (trofinetide) ticari genisleme; norobilim pipeline ilerlemesi. | Biotechnology |
-| 5 | **MRNA** | Moderna | $66.47 | **+11.25%** | 2M | **5 yillik melanoma verisi:** mRNA-4157 + Keytruda, tek basina Keytruda'ya gore niks/gecisik halde **%49 azalma**. Merck isbirligi guclendi. | Biotechnology |
-
-### Losers (Asagi Yönlü)
-
-| # | Ticker | Sirket | Fiyat | Değişim | Hacim | Katalizör | Sektor |
-|---|---|---|---|---|---|---|---|
-| 1 | **ON** | ON Semiconductor | $95.10 | **−19.94%** | 10M | **Semiconductor sector genis satis**. Tech zayiflik; AI talep endiseleri. Pre-market %12.8 dusus, gun icinde derinlesti. | Semiconductors |
-| 2 | **CAPR** | Capricor Therapeutics | $26.47 | **−12.90%** | 539K | Biotech sektor rotasyonu; son rally sonrasi kar realizasyonu. Sirket-spesifik haber yok. | Biotechnology |
-| 3 | **TMDX** | TransMedics | $68.95 | **−11.28%** | 641K | **Direktor insider satisi:** $722K (9,624 hisse) — %45 dusus sonrasi. Medical device sektoru baskisi. | Medical Devices |
-| 4 | **BE** | Bloom Energy | $278.10 | **−10.08%** | 3M | Clean energy sektor rotasyonu; guclu YTD performans sonrasi kar realizasyonu. Genel risk-off. | Electrical Equipment |
-| 5 | **TSEM** | Tower Semiconductor | $247.31 | **−8.36%** | 478K | Semiconductor foundry zayifligi; Intel acquisition belirsizligi devam ediyor. | Semiconductors |
+> **VIX Kritik Not:** Finnhub API VIX için `{"c":0}` döndürdü. CBOE ve MarketWatch cross-check ile VIX ~20.14 doğrulandı. Regime: 15–20 normal, 20–30 elevated. VIX ~20 = opsiyon primleri pahalı, dikkatli ol.
 
 ---
 
-## 3. Earnings Calendar (Kazanç Takvimi)
+## 2. Top Movers
 
-**⚠️ UYARI:** Earnings günü = **IV crush riski**. Açıklama sonrasi saatlerde 0DTE option **YASAK**. Weekly veya sonraki vadeye bak.
+### Gainers (5)
 
-| Ticker | Sirket | Zaman | Consensus EPS | Consensus Rev | Önceki Yil EPS | Önceki Yil Rev | Expected Move | EPS Range | Sentiment | Not |
-|---|---|---|---|---|---|---|---|---|---|---|
-| **APOG** | Apogee Enterprises | BMO | $0.46 | $340.5M | $0.56 | $331.1M | ±8.5% | $0.40–$0.52 | **bullish** | ✅ **BEAT:** EPS $0.57, Rev $342.7M. Guidance yukseltildi. **0DTE YASAK.** |
-| **XAIR** | Beyond Air | AMC | −$0.57 | $2.3M | −$0.62 | $1.8M | ±12.0% | −$0.65–(−$0.48) | neutral | Micro-cap medikal; dusuk likidite; **0DTE YASAK.** |
-| **HCMLY** | Holcim | TBD | $0.26 | $15.3B | $0.24 | $14.7B | ±3.0% | $0.22–$0.30 | neutral | Isviçre insaat malzemeleri; dusuk opsiyon likiditesi. |
-| **TSGTY** | Tsingtao Brewery | TBD | $0.93 | $1.5B | $0.89 | $1.45B | ±4.0% | $0.88–$0.98 | neutral | Çin ADR; ABD opsiyon likiditesi dusuk. |
-| **LGN** | Legence Corp | TBD | $0.37 | $1.1B | $0.33 | $1.05B | ±5.0% | $0.32–$0.42 | neutral | Altyapi hizmetleri; orta likidite. |
-| **BKGFY** | Berkeley Group | TBD | $0.40 | $1.5B | $0.38 | $1.48B | ±4.0% | $0.35–$0.45 | neutral | İngiliz emlak gelistirici; ADR. |
-| **IGC** | IGC Pharma | TBD | −$0.02 | $198K | −$0.05 | $150K | ±15.0% | −$0.05–$0.01 | neutral | Micro-cap; **manipulasyon riski**; opsiyon yok. |
-| **BTCY** | Biotricity | TBD | −$0.08 | $4.1M | −$0.12 | $3.8M | ±10.0% | −$0.12–(−$0.04) | neutral | Micro-cap medikal; dusuk likidite. |
-| **GP** | GreenPower Motor | TBD | −$1.20 | $9.6M | −$1.35 | $8.5M | ±8.0% | −$1.45–(−$0.95) | bearish | EV micro-cap; dusuk likidite; genis bid/ask. |
-| **BQ** | Boqii Holding | TBD | −$10.83 | $34.5M | −$12.50 | $32M | ±20.0% | −$12.00–(−$9.50) | bearish | Çin evcil hayvan e-ticaret; **extreme low liquidity; opsiyondan uzak dur.** |
+| Ticker | Şirket | Fiyat | Değişim % | Hacim | Katalizör |
+|--------|--------|-------|-----------|-------|-----------|
+| **FCEL** | FuelCell Energy | $24.77 | +26.12% | 13M | Clean energy momentum continuation, sektör rotasyonu |
+| **APOG** | Apogee Enterprises | $50.74 | +19.36% | 338K | Q1 2027 earnings beat: $0.57 vs $0.43 cons |
+| **MRNA** | Moderna | $67.95 | +13.72% | 7M | Biotech sektör momentum, aşı pipeline iyimserliği |
+| **SLS** | SELLAS Life Sciences | $11.95 | +13.38% | 7M | Biotech momentum, klinik gelişmeler |
+| **AMAT** | Applied Materials | $668.00 | +13.42% | 16M | AI infrastructure talebi, yarıiletken ekipman güçlü |
 
----
+### Losers (5)
 
-## 4. CALL Setups (Yukari Potansiyel)
-
-| # | Ticker | Yön | Entry | Target | Stop | R/R | Zaman | Rationale | Not |
-|---|---|---|---|---|---|---|---|---|---|
-| 1 | **APOG** | CALL | $48.50 | $52.00 | $46.00 | 1.4:1 | Intraday | Earnings beat + guidance raise; momentum devami; VWAP üzerinde. | **Earnings gunu = 0DTE YASAK.** Weekly dusun. |
-| 2 | **FCEL** | CALL | $23.50 | $26.00 | $21.50 | 1.25:1 | Intraday | Analyst upgrade + AI catalyst; VWAP üzerinde; hacim patlamasi. | Volatil; genis bid/ask olabilir. RVOL > 3x. |
-| 3 | **MRNA** | CALL | $66.00 | $70.00 | $63.00 | 1.33:1 | Swing | 5-yillik melanoma data; biotech momentum; VWAP üzerinde. | 1–2 hafta hold; opsiyon likidite kontrol. |
-| 4 | **SPY** | CALL | $732.00 | $738.00 | $728.00 | 1.5:1 | 0DTE | Pre-market dip recovery; VWAP reclaim potansiyeli; 730 destek. | Yuksek likidite; dar spread; hizli scalp. |
-| 5 | **IWM** | CALL | $295.00 | $298.00 | $293.00 | 1.5:1 | Intraday | Small-cap relative strength; VWAP üzerinde; gap fill potansiyeli. | IWM opsiyonlari likit; dar bid/ask. |
+| Ticker | Şirket | Fiyat | Değişim % | Hacim | Katalizör |
+|--------|--------|-------|-----------|-------|-----------|
+| **ON** | ON Semiconductor | $92.81 | -21.87% | 18M | Q2 earnings miss / guidance cut, yarıiletken rotasyonu |
+| **RGC** | Regencell Bioscience | $6.28 | -15.93% | 199K | Biotech volatilitesi, kar realizasyonu |
+| **CAPR** | Capricor Therapeutics | $26.37 | -13.23% | 1M | Biotech kar realizasyonu, rekabet endişeleri |
+| **BE** | Bloom Energy | $270.52 | -12.53% | 8M | Clean energy kar realizasyonu, guidance endişeleri |
+| **WDC** | Western Digital | $603.63 | -10.61% | 5M | Memory/storage zayıflığı, NAND fiyat baskısı |
 
 ---
 
-## 5. PUT Setups (Asagi Potansiyel)
+## 3. Earnings Takvimi (Bugün Açıklananlar)
 
-| # | Ticker | Yön | Entry | Target | Stop | R/R | Zaman | Rationale | Not |
-|---|---|---|---|---|---|---|---|---|---|
-| 1 | **ON** | PUT | $95.00 | $88.00 | $98.00 | **2.33:1** | Intraday | Semiconductor breakdown; VWAP altinda; momentum devami; %20 dusus. | Yuksek hacim; likit opsiyon; momentum fade. |
-| 2 | **QQQ** | PUT | $708.00 | $700.00 | $712.00 | **2.0:1** | 0DTE | Tech zayiflik; VWAP altinda; 700 gap fill; Nasdaq underperform. | Yuksek likidite; broad market hedge. |
-| 3 | **TMDX** | PUT | $69.00 | $65.00 | $71.00 | **2.0:1** | Swing | Insider sale catalyst; VWAP altinda; 52-hafta dusugu yaklasimi. | 2–3 gun; genis bid/ask olabilir. |
-| 4 | **BE** | PUT | $278.00 | $265.00 | $285.00 | 1.86:1 | Intraday | Clean energy rotasyon; VWAP altinda; guclu rally sonrasi kar satisi. | Yuksek fiyat; spread ile capital efficiency sagla. |
-| 5 | **NVDA** | PUT | $194.00 | $188.00 | $197.00 | **2.0:1** | Intraday | AI sektor rotasyon; VWAP altinda; $232'den beri dusus; teknik kirilma. | NVDA opsiyonlari son derece likit; 0DTE mevcut. |
+> ⚠️ **Uyarı:** Earnings günü = IV crush riski. Aşağıdaki hisselerde **0DTE YASAK**.
 
----
-
-## 6. VWAP Notes & Teknik Analiz
-
-- **SPY:** Pre-market −0.11% → **VWAP altinda**. Gap fill bekleniyor. 730 destek, 735 direnc.  
-- **QQQ:** −1.25% ile **VWAP altinda**, tech weakness. 700 psikolojik destek; gap fill riski.  
-- **IWM:** +0.07% ile **VWAP üzerinde**, small-cap relative strength. 293–296 araligi.  
-- **Genel:** Risk-off mod; QQQ liderlik ediyor. IWM ve SPY gap fill potansiyeli var.
+| Ticker | Şirket | Zaman | Consensus EPS | Actual EPS | Önceki Yıl EPS | Consensus Rev | Kanaat | Not |
+|--------|--------|-------|---------------|------------|----------------|---------------|--------|-----|
+| **APOG** | Apogee Enterprises | BMO | $0.43 | $0.57 | -$0.13 | $333.8M | Bullish | Beat by $0.14. Mimarlık camı talebi güçlü. |
+| **DRI** | Darden Restaurants | BMO | $3.63 | $3.66 | $2.98 | $3.73B est | Bullish | Beat by $0.03, revenue hafif miss. Olive Garden güçlü. |
+| **SNX** | TD SYNNEX | BMO | $4.07 | $4.85 | $2.80 | $16.80B est | Bullish | Massive beat. Revenue $19.57B vs $16.80B. Stok -3.5% guidance endişesiyle. |
+| **MKC** | McCormick | BMO | $0.69 | — | $0.69 | $1.90B est | Neutral | Flat YoY EPS. Consumer staples defensive. |
+| **AYI** | Acuity Brands | BMO | $5.19 | — | — | — | Bullish | Aydınlatma/endüstriyel talep. Stok +1.28%. |
+| **BB** | BlackBerry | BMO | $0.03 | — | — | — | Neutral | Cybersecurity/IoT turnaround. Stok +8.51%. |
 
 ---
 
-## 7. Risk Assessment (Risk Degerlendirmesi)
+## 4. CALL / PUT Setups
 
-```json
-{
-  "level": "medium",
-  "vixRegime": "VIX 19.14 (+1.32%) — normal regime (15-20). Hafif yukselis. Market complacency degil, ama fear de yok.",
-  "sectorRotation": "Tech (semiconductor) zayif — ON, TSEM, QQQ dusus. Clean energy (FCEL, BE) karisik — FCEL upgrade ile yukselis, BE profit-taking. Biotech guclu — MRNA, ACAD, APOG. Small-cap (IWM) relative strength.",
-  "earningsRisk": "APOG BMO beat — IV crush aktif, 0DTE YASAK. XAIR AMC bekleniyor — micro-cap, dusuk likidite. Gun icerisinde 10 rapor, cogunluk TBD.",
-  "macroRisk": "Cuma gunu, quarter-end rebalancing riski. FOMC sessizligi, CPI/PPI gecmiste. Geopolitik risk: Ortadogu gerilimi. Trade policy: Tariff konusu APOG sonuclarinda yansidi."
-}
-```
+### CALL Setups (5)
 
----
+| Ticker | Yön | Entry | Hedef | Stop | R/R | Zaman | Rasyonel | VWAP |
+|--------|-----|-------|-------|------|-----|-------|----------|------|
+| **AMAT** | CALL | $660 | $690 | $645 | 2.0 | Intraday | AI infrastructure talebi, volume confirmation | Üstü |
+| **FCEL** | CALL | $24.00 | $27.00 | $22.80 | 2.5 | 0DTE | Clean energy momentum, RVOL > 2 | Üstü |
+| **APOG** | CALL | $49.50 | $55.00 | $47.00 | 2.2 | Intraday | Earnings beat sonrası momentum | Üstü |
+| **MSFT** | CALL | $360 | $380 | $352 | 2.5 | Intraday | Tech leadership, gap fill continuation | Üstü |
+| **AAPL** | CALL | $273 | $285 | $267 | 2.0 | Intraday | Stabil momentum, large-cap liquidity | Üstü |
 
-## 8. Saatlik Güncelleme Özeti
+### PUT Setups (5)
 
-| Durum | Değerlendirme |
-|---|---|
-| **Piyasa Tonu** | Risk-off, tech liderlik ediyor. |
-| **VIX** | 19.14 — Normal; hafif yukselis. |
-| **Sektor Lideri** | Biotech (MRNA, ACAD, APOG) |
-| **Sektor Zayif** | Semiconductors (ON, TSEM, QQQ) |
-| **Aktif Setup** | ON PUT (2.33 R/R), QQQ PUT (2.0 R/R) |
-| **Earnings Uyari** | APOG beat sonrasi IV crush; 0DTE YASAK. |
-
-**Sonraki Saat Takibi:** QQQ 700 seviyesi, SPY 730 gap fill, IWM 296 uzeri kalicilik.
+| Ticker | Yön | Entry | Hedef | Stop | R/R | Zaman | Rasyonel | VWAP |
+|--------|-----|-------|-------|------|-----|-------|----------|------|
+| **ON** | PUT | $94 | $85 | $98 | 2.25 | Intraday | Earnings miss, breakdown continuation | Altı |
+| **INTC** | PUT | $130 | $122 | $134 | 2.0 | Intraday | Tech weakness, gap down continuation | Altı |
+| **BE** | PUT | $275 | $255 | $283 | 2.5 | Intraday | Clean energy distribution, valuation compression | Altı |
+| **WDC** | PUT | $610 | $585 | $622 | 2.08 | Intraday | Storage weakness, breakdown pattern | Altı |
+| **NVDA** | PUT | $196 | $188 | $200 | 2.0 | Intraday | Semiconductor rotasyonu, large-cap PUT liquidity | Altı |
 
 ---
 
-*Bu rapor yalnizca bilgilendirme amaclidir; yatirim tavsiyesi degildir. Options trading yuksek risk icerir.*
+## 5. VWAP Notları & Risk Değerlendirmesi
+
+### VWAP Notları
+- **SPY** VWAP üstünde (+$2.00), **QQQ** VWAP üstünde (+$2.82), **IWM** VWAP üstünde (+$0.46).
+- Tüm major indexler VWAP üstünde → **risk-on bias**.
+- SPY gap up açılış ($730.40) sonrası $736.53 high yaparak continuation gösterdi. Gap fill riski düşük.
+- Semiconductors (ON, INTC, NVDA) VWAP altında zayıf.
+- Tech mega-caps (MSFT, AAPL) VWAP üstünde güçlü.
+- Clean energy/biotech (FCEL, MRNA, SLS) VWAP üstünde momentum güçlü.
+
+### Risk Assessment
+- **Risk Seviyesi:** Medium
+- **VIX Regime:** VIX ~20.14, elevated-normal borderline. Opsiyon primleri yüksek, directional trade costları artmış.
+- **Sektör Rotasyonu:** Semiconductors zayıf (ON -21.87%, NVDA -0.74%, INTC -3.01%). Clean Energy/Biotech güçlü (FCEL +26%, MRNA +13%). Tech mega-caps karışık (MSFT +5%, AAPL +0.7%).
+- **Earnings Riski:** Bugün 6+ önemli earnings açıklandı. IV crush aktif. Earnings hisselerinde 0DTE YASAK.
+- **Makro Risk:** Geopolitical risk hafifliyor (Iran peace talks). Petrol fiyatları düşüş trendinde. FOMC bekleniyor.
+
+---
+
+## 6. Next Day Carry Forward
+
+Hourly raporunda boş array: `[]`
+
+---
+
+*Rapor dili: Türkçe (finansal jargon İngilizce). Tüm veriler Finnhub API + web araması ile doğrulanmıştır. Eksik alanlar için `null` + note açıklaması kullanılmıştır.*
