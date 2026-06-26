@@ -1,6 +1,6 @@
 {
   "reportDate": "2026-06-26",
-  "generatedAt": "2026-06-26T01:15:58.318896+00:00",
+  "generatedAt": "2026-06-26T05:38:25+00:00",
   "title": "Ekonomik Takvim Raporu — 26 Haziran 2026",
   "summary": "Bugün 53 ekonomik olay takvimde. 3 yıldızlı (high) olay yok. 25 medium (2 yıldız) ve 28 low (1 yıldız) olay var. ABD Michigan Consumer Sentiment final verisi, Fed/FOMC konuşmacıları (Goolsbee, Williams, Kashkari), Tokyo Core CPI, ABD Goods Trade Balance, CFTC pozisyonlama raporu ve Brezilya işsizlik öne çıkıyor. Piyasa genelinde stagflasyon korkusu ve Fed hawkish tilt hakim. VIX 17-18 aralığında, Fear & Greed 'Greed' bölgesine döndü. 0DTE/haftalık opsiyon stratejileri için VWAP bounce ve gap fade setupları öneriliyor.",
   "events": [
@@ -83,7 +83,7 @@
       "importance": "low",
       "previous": "17.6%",
       "forecast": "17.0%",
-      "actual": "",
+      "actual": "13.0%",
       "currency": "SGD",
       "unit": "%",
       "analysis": "Singapur sanayi üretimi yavaşlama eğiliminde. Önceki 17.6%'dan 17.0% beklenti. Asya imalat sektöründeki yavaşlama sinyali."
@@ -97,7 +97,7 @@
       "importance": "low",
       "previous": "5.8%",
       "forecast": "2.0%",
-      "actual": "",
+      "actual": "-0.7%",
       "currency": "SGD",
       "unit": "%",
       "analysis": "Aylık bazda ciddi yavaşlama (5.8% -> 2.0%). Küresel talep zayıflığını gösteriyor."
