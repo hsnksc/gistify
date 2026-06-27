@@ -29,23 +29,10 @@ Produce or update `ppi_forecast.json` for the Gistify `CPI/PPI` workspace page.
 Gistify reads this file automatically from one of these locations:
 
 1. The exact path configured by `PPI_FORECAST_PIPELINE_SOURCE_FILE`
-2. `/app/data/ppi_forecast.json`
-3. `./ppi_forecast.json`
-4. `./client/public/ppi_forecast.json`
-5. `../Kimi_Agent_PPI/ppi_forecast.json`
+2. `./ppi_forecast.json`
+3. `../Kimi_Agent_PPI/ppi_forecast.json`
 
 If you control the deploy target directly, prefer the path provided by `PPI_FORECAST_PIPELINE_SOURCE_FILE`.
-
-## Deploy contract
-
-The file must land on a path the running Gistify server can actually read.
-
-- Do not leave the final artifact only inside a hidden Kimi scratch directory.
-- If this workspace deploys through the Gistify repo, write `./ppi_forecast.json`.
-- If the repo contains `client/public`, also mirror the same JSON to `./client/public/ppi_forecast.json`.
-- If this workspace controls the runtime filesystem, prefer `PPI_FORECAST_PIPELINE_SOURCE_FILE`.
-- If the env var is not available but the app runs inside the standard container layout, write `/app/data/ppi_forecast.json`.
-- If the workspace has commit access to the deploy repo, commit and push the updated artifact after validation.
 
 ## Non-negotiable output rules
 
@@ -61,7 +48,6 @@ The file must land on a path the running Gistify server can actually read.
 7. Keep `probability` and `confidence` values in the `0-100` range.
 8. Do not output an explanatory report to stdout instead of the JSON artifact.
 9. Do not omit the file because the release is not imminent. The workspace should still publish the current best PPI setup.
-10. If you update the repo artifact, make sure the final committed filename is exactly `ppi_forecast.json`.
 
 ## Research requirements
 
@@ -100,23 +86,23 @@ If the next PPI release is still the same event as yesterday, regenerate the fil
   "reportDate": "2026-06-24",
   "title": "US PPI Forecast Snapshot",
   "summary": "Short multi-sentence PPI summary.",
-  "baseCase": "Mixed but non-accelerating upstream price pressure",
-  "conviction": 68,
+  "baseCase": "Flat headline, sticky core; energy mean-reversion masks upstream persistence",
+  "conviction": 65,
   "release": {
     "name": "PPI",
     "period": "Jun 2026",
-    "releaseDate": "2026-07-12",
+    "releaseDate": "2026-07-15",
     "releaseTimeEt": "08:30 ET",
-    "headlineMoM": "0.2%",
-    "headlineYoY": "2.4%",
-    "coreMoM": "0.2%",
-    "coreYoY": "2.7%",
-    "priorHeadlineMoM": "0.0%",
-    "priorHeadlineYoY": "2.5%",
-    "priorCoreMoM": "0.1%",
-    "priorCoreYoY": "2.8%",
+    "headlineMoM": "+0.1%",
+    "headlineYoY": "6.6%",
+    "coreMoM": "+0.5%",
+    "coreYoY": "5.6%",
+    "priorHeadlineMoM": "+1.1%",
+    "priorHeadlineYoY": "6.5%",
+    "priorCoreMoM": "+0.8%",
+    "priorCoreYoY": "5.1%",
     "bias": "COOLER",
-    "confidence": 68,
+    "confidence": 65,
     "thesis": "One or two sentence PPI thesis."
   },
   "scenarios": [
@@ -124,10 +110,10 @@ If the next PPI release is still the same event as yesterday, regenerate the fil
       "id": "base",
       "label": "Base case",
       "probability": 55,
-      "outcome": "Mixed but not re-accelerating PPI",
-      "marketReadthrough": "Lower yields, margin relief narrative improves, cyclical risk can stabilize.",
+      "outcome": "Headline +0.1%, core +0.5%. Energy mean-reverts, core stays sticky.",
+      "marketReadthrough": "Rates digest the headline but focus on core. No major Fed repricing.",
       "favoredAssets": ["Industrials", "Quality growth", "Gold"],
-      "invalidation": "Services and goods pipeline both re-accelerate together."
+      "invalidation": "Core services re-accelerate above +0.7% MoM."
     },
     {
       "id": "hot",
@@ -198,6 +184,26 @@ If the next PPI release is still the same event as yesterday, regenerate the fil
 }
 ```
 
+## Deploy Pipeline (CRITICAL)
+
+After writing the JSON, you MUST deploy it to production so Gistify can read it.
+
+Step 1: Write the JSON to the workspace:
+  `C:\Users\hasan\OneDrive\Desktop\gistify\ppi_forecast.json`
+
+Step 2: Also copy it to client/public/ so the build includes it:
+  `C:\Users\hasan\OneDrive\Desktop\gistify\client\public\ppi_forecast.json`
+
+Step 3: Git commit and push to trigger Coolify auto-deploy:
+  ```bash
+  cd C:\Users\hasan\OneDrive\Desktop\gistify
+  git add ppi_forecast.json client/public/ppi_forecast.json
+  git commit -m "PPI Forecast Snapshot: [PERIOD] release ([DATE]) — [ONE-LINE SUMMARY]"
+  git push origin main
+  ```
+
+If git push fails, DO NOT silently ignore it. Retry once. If it still fails, keep the JSON file valid locally and report the deploy failure.
+
 ## Final execution checklist
 
 Before you finish:
@@ -205,5 +211,6 @@ Before you finish:
 1. Validate the JSON.
 2. Confirm the `release.name` field is `PPI`.
 3. Confirm every `scenario` has `probability`, `outcome`, `marketReadthrough`, and `invalidation`.
-4. Confirm the file was written atomically to the deploy target.
-5. Do not output a narrative report instead of the JSON file.
+4. Confirm the file was written to BOTH locations.
+5. Confirm git commit + push succeeded.
+6. Do not output a narrative report instead of the JSON file.
