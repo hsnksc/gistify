@@ -132,7 +132,7 @@ export default function GreeksDashboard({
           {copy(
             language,
             "Henüz Greeks verisi gelmedi. Opsiyon risk haritasi veri bekliyor.",
-            "Greeks data has not arrived yet. The options risk map is waiting for data."
+            "Greeks data not yet available. Option risk map awaiting data."
           )}
         </div>
       </section>
@@ -265,19 +265,19 @@ export default function GreeksDashboard({
       <div className="mt-4 flex flex-wrap items-center gap-4 text-[10px] text-slate-400">
         <div className="flex items-center gap-1.5">
           <span className="inline-block size-2.5 rounded-sm bg-emerald-500/40" />
-          <span>Delta / Theta pozitif</span>
+          <span>{copy(language, "Delta / Theta pozitif", "Delta / Theta positive")}</span>
         </div>
         <div className="flex items-center gap-1.5">
           <span className="inline-block size-2.5 rounded-sm bg-rose-500/40" />
-          <span>Delta / Theta negatif</span>
+          <span>{copy(language, "Delta / Theta negatif", "Delta / Theta negative")}</span>
         </div>
         <div className="flex items-center gap-1.5">
           <span className="inline-block size-2.5 rounded-sm bg-emerald-500/40" />
-          <span>Vega negatif (IV crush kazancı)</span>
+          <span>{copy(language, "Vega negatif (IV crush kazancı)", "Vega negative (IV crush gain)")}</span>
         </div>
         <div className="flex items-center gap-1.5">
           <span className="inline-block size-2.5 rounded-sm bg-amber-500/40" />
-          <span>Gamma yüksek (risk)</span>
+          <span>{copy(language, "Gamma yüksek (risk)", "Gamma high (risk)")}</span>
         </div>
       </div>
     </section>

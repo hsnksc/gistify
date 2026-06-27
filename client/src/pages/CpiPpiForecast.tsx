@@ -1185,7 +1185,7 @@ export default function CpiPpiForecastPage({
                     {copy(
                       language,
                       "İkili makro workspace",
-                      "Dual macro workspaces"
+                      "Dual macro workspace"
                     )}
                   </span>
                   <span

@@ -257,19 +257,19 @@ export default function PortfolioBuilder({
               </p>
               <div className="grid grid-cols-2 gap-2">
                 {[
-                  { label: "Düşük Olasılık / Düşük Etki", color: "bg-emerald-500/20 border-emerald-500/30 text-emerald-300" },
-                  { label: "Düşük Olasılık / Yüksek Etki", color: "bg-amber-500/20 border-amber-500/30 text-amber-300" },
-                  { label: "Yüksek Olasılık / Düşük Etki", color: "bg-sky-500/20 border-sky-500/30 text-sky-300" },
-                  { label: "Yüksek Olasılık / Yüksek Etki", color: "bg-rose-500/20 border-rose-500/30 text-rose-300" },
+                  { tr: "Düşük Olasılık / Düşük Etki", en: "Low Probability / Low Impact", color: "bg-emerald-500/20 border-emerald-500/30 text-emerald-300" },
+                  { tr: "Düşük Olasılık / Yüksek Etki", en: "Low Probability / High Impact", color: "bg-amber-500/20 border-amber-500/30 text-amber-300" },
+                  { tr: "Yüksek Olasılık / Düşük Etki", en: "High Probability / Low Impact", color: "bg-sky-500/20 border-sky-500/30 text-sky-300" },
+                  { tr: "Yüksek Olasılık / Yüksek Etki", en: "High Probability / High Impact", color: "bg-rose-500/20 border-rose-500/30 text-rose-300" },
                 ].map((cell) => (
                   <div
-                    key={cell.label}
+                    key={cell.tr}
                     className={cn(
                       "rounded-xl border p-2.5 text-center text-[10px] font-semibold leading-tight",
                       cell.color
                     )}
                   >
-                    {copy(language, cell.label, cell.label)}
+                    {copy(language, cell.tr, cell.en)}
                   </div>
                 ))}
               </div>

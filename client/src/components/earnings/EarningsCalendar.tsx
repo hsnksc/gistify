@@ -9,9 +9,6 @@ interface EarningsCalendarProps {
   events: EarningsEvent[];
 }
 
-const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const DAY_LABELS_TR = ["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"];
-
 export default function EarningsCalendar({
   language,
   events,
@@ -20,7 +17,15 @@ export default function EarningsCalendar({
     () => buildCalendar(events, language),
     [events, language]
   );
-  const dayLabels = language === "en" ? DAYS : DAY_LABELS_TR;
+  const dayLabels = [
+    copy(language, "Pzt", "Mon"),
+    copy(language, "Sal", "Tue"),
+    copy(language, "Çar", "Wed"),
+    copy(language, "Per", "Thu"),
+    copy(language, "Cum", "Fri"),
+    copy(language, "Cmt", "Sat"),
+    copy(language, "Paz", "Sun"),
+  ];
   const [hoveredTicker, setHoveredTicker] = useState<string | null>(null);
 
   const bmoCount = events.filter(e => e.time === "BMO").length;

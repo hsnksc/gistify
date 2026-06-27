@@ -23,7 +23,7 @@ export default function ReportDownload({
       desc: copy(
         language,
         "Gistify raporunu markdown formatında indirin. GitHub ve Notion ile uyumlu.",
-        "Download the Gistify report in Markdown format. Compatible with GitHub and Notion."
+        "Download Gistify report in markdown format. Compatible with GitHub and Notion."
       ),
       border: "border-emerald-500/20",
       bg: "bg-emerald-500/5",
@@ -108,7 +108,7 @@ export default function ReportDownload({
                     {copy(
                       language,
                       "Henüz rapor üretilmedi. Önce analiz tamamlayın.",
-                      "No report generated yet. Complete the analysis first."
+                      "No report generated yet. Complete analysis first."
                     )}
                   </p>
                 </div>

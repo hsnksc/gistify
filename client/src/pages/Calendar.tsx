@@ -59,7 +59,7 @@ export default function Calendar({ language }: { language: AppLanguage }) {
               copy(
                 language,
                 "Henüz ekonomik takvim snapshot'i bulunmuyor.",
-                "There is no economic calendar snapshot yet."
+                "No economic calendar snapshot available yet."
               )
             }
           />

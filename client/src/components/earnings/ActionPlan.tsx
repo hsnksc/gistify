@@ -248,12 +248,12 @@ export default function ActionPlan({ language, items }: ActionPlanProps) {
         </p>
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
           {[
-            "Pre-market momentum scan",
-            "VIX & Fear & Greed kontrolü",
-            "Earnings calendar gözden geçir",
-            "Greeks dashboard kontrolü",
-            "Entry/Exit seviyelerini güncelle",
-            "Pozisyon risk limiti kontrolü",
+            copy(language, "Pre-market momentum taraması", "Pre-market momentum scan"),
+            copy(language, "VIX & Fear & Greed kontrolü", "VIX & Fear & Greed check"),
+            copy(language, "Earnings calendar gözden geçir", "Review earnings calendar"),
+            copy(language, "Greeks dashboard kontrolü", "Check Greeks dashboard"),
+            copy(language, "Entry/Exit seviyelerini güncelle", "Update entry/exit levels"),
+            copy(language, "Pozisyon risk limiti kontrolü", "Position risk limit check"),
           ].map((task, i) => {
             const key = `daily-${i}`;
             const isDone = checked[key];

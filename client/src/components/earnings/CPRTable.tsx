@@ -23,19 +23,29 @@ interface CPRTableProps {
 
 const SENTIMENT_EMOJI: Record<string, string> = {
   "Güçlü Boğa": "🟢",
+  "Strong Bull": "🟢",
   Boğa: "🟡",
+  "Bull": "🟡",
   Nötr: "⚪",
+  "Neutral": "⚪",
   Ayı: "🟠",
+  "Bear": "🟠",
   "Güçlü Ayı": "🔴",
+  "Strong Bear": "🔴",
   Unknown: "❓",
 };
 
 const SENTIMENT_COLORS: Record<string, string> = {
   "Güçlü Boğa": "text-emerald-400 bg-emerald-500/15 border-emerald-500/30",
+  "Strong Bull": "text-emerald-400 bg-emerald-500/15 border-emerald-500/30",
   Boğa: "text-emerald-300 bg-emerald-500/15 border-emerald-500/30",
+  "Bull": "text-emerald-300 bg-emerald-500/15 border-emerald-500/30",
   Nötr: "text-slate-400 bg-slate-500/15 border-slate-500/30",
+  "Neutral": "text-slate-400 bg-slate-500/15 border-slate-500/30",
   Ayı: "text-rose-300 bg-rose-500/15 border-rose-500/30",
+  "Bear": "text-rose-300 bg-rose-500/15 border-rose-500/30",
   "Güçlü Ayı": "text-rose-400 bg-rose-500/15 border-rose-500/30",
+  "Strong Bear": "text-rose-400 bg-rose-500/15 border-rose-500/30",
   Unknown: "text-slate-500 bg-slate-500/15 border-slate-500/30",
 };
 
@@ -166,8 +176,8 @@ export default function CPRTable({ language, stocks }: CPRTableProps) {
                   onSort={setSortBy}
                   onDirection={() => setSortDesc(d => !d)}
                 />
-                <Th
-                  label="Hacim CPR"
+                  <Th
+                  label={copy(language, "Hacim CPR", "Volume CPR")}
                   sortKey="hacimCPR"
                   sortBy={sortBy}
                   sortDesc={sortDesc}
@@ -175,7 +185,7 @@ export default function CPRTable({ language, stocks }: CPRTableProps) {
                   onDirection={() => setSortDesc(d => !d)}
                 />
                 <Th
-                  label="OI CPR"
+                  label={copy(language, "OI CPR", "OI CPR")}
                   sortKey="oiCPR"
                   sortBy={sortBy}
                   sortDesc={sortDesc}
@@ -253,12 +263,12 @@ export default function CPRTable({ language, stocks }: CPRTableProps) {
                       <span
                         className={cn(
                           "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold",
-                          SENTIMENT_COLORS[stock.sentiment] ||
+                          SENTIMENT_COLORS[sentimentEn(stock.sentiment)] ||
                             SENTIMENT_COLORS["Unknown"]
                         )}
                       >
-                        {SENTIMENT_EMOJI[stock.sentiment] || "❓"}
-                        {stock.sentiment}
+                        {SENTIMENT_EMOJI[sentimentEn(stock.sentiment)] || "❓"}
+                        {copy(language, stock.sentiment, sentimentEn(stock.sentiment))}
                       </span>
                     ) : (
                       "—"
@@ -367,6 +377,17 @@ function Th({
       )}
     </th>
   );
+}
+
+function sentimentEn(tr: string): string {
+  switch (tr) {
+    case "Güçlü Boğa": return "Strong Bull";
+    case "Güçlü Ayı": return "Strong Bear";
+    case "Boğa": return "Bull";
+    case "Ayı": return "Bear";
+    case "Nötr": return "Neutral";
+    default: return tr;
+  }
 }
 
 function cprColor(value?: string) {

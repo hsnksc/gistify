@@ -17,7 +17,8 @@ const STATUS_CONFIG: Record<
     text: string;
     icon: string;
     pulse: boolean;
-    label: string;
+    labelTr: string;
+    labelEn: string;
     badge: string;
     progress: string;
   }
@@ -28,7 +29,8 @@ const STATUS_CONFIG: Record<
     text: "text-emerald-300",
     icon: "text-emerald-400",
     pulse: false,
-    label: "FOMC Uyarısı",
+    labelTr: "FOMC Uyarısı",
+    labelEn: "FOMC Warning",
     badge: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
     progress: "bg-emerald-500",
   },
@@ -38,7 +40,8 @@ const STATUS_CONFIG: Record<
     text: "text-amber-300",
     icon: "text-amber-400",
     pulse: true,
-    label: "FOMC Yaklaşıyor",
+    labelTr: "FOMC Yaklaşıyor",
+    labelEn: "FOMC Approaching",
     badge: "bg-amber-500/20 text-amber-400 border-amber-500/30",
     progress: "bg-amber-500",
   },
@@ -48,7 +51,8 @@ const STATUS_CONFIG: Record<
     text: "text-orange-300",
     icon: "text-orange-400",
     pulse: true,
-    label: "FOMC Çok Yakın",
+    labelTr: "FOMC Çok Yakın",
+    labelEn: "FOMC Very Close",
     badge: "bg-orange-500/20 text-orange-400 border-orange-500/30",
     progress: "bg-orange-500",
   },
@@ -58,7 +62,8 @@ const STATUS_CONFIG: Record<
     text: "text-rose-300",
     icon: "text-rose-400",
     pulse: true,
-    label: "FOMC Blackout",
+    labelTr: "FOMC Blackout",
+    labelEn: "FOMC Blackout",
     badge: "bg-rose-500/20 text-rose-400 border-rose-500/30",
     progress: "bg-rose-500",
   },
@@ -104,7 +109,7 @@ export default function FOMCWarningBanner({
           <div>
             <div className="flex flex-wrap items-center gap-2">
               <h3 className={cn("text-xl font-bold", config.text)}>
-                {copy(language, config.label, config.label)}
+                {copy(language, config.labelTr, config.labelEn)}
               </h3>
               <span
                 className={cn(
