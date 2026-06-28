@@ -69,7 +69,11 @@ export default function PublicShell({
                   Gistify
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {copy(language, "Earnings intelligence ve momentum arastirma platformu", "Earnings intelligence and momentum research platform")}
+                  {copy(
+                    language,
+                    "Earnings intelligence ve momentum arastirma platformu",
+                    "Earnings intelligence and momentum research platform"
+                  )}
                 </p>
               </div>
             </div>
@@ -119,10 +123,10 @@ export default function PublicShell({
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
                 {eyebrow}
               </p>
-              <h1 className="max-w-4xl text-3xl font-semibold leading-[1.04] tracking-tight md:text-5xl md:leading-[1]">
+              <h1 className="max-w-4xl text-3xl font-semibold leading-[1.1] tracking-tight md:text-5xl md:leading-[1.08]">
                 {title}
               </h1>
-              <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base">
+              <p className="max-w-2xl text-sm leading-relaxed text-slate-300 md:text-base">
                 {description}
               </p>
 
@@ -191,5 +195,3 @@ export default function PublicShell({
     </div>
   );
 }
-
-
