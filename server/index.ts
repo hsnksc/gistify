@@ -7,7 +7,6 @@ import fs from "node:fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import type {
-  AgentRunRecord,
   OpportunityRecord,
   OpportunityTier,
 } from "../shared/opportunities";
@@ -43,14 +42,10 @@ import {
 } from "./billingStore";
 import { COOKIE_NAME, ONE_YEAR_MS } from "../shared/const";
 import {
-  buildLiveWeeklyReportSuggestions,
-  getAdminMarketDataStatus,
-  isFmpConfigured,
-} from "./adminMarketData";
-import {
   getDailyReportRootPath,
   getFlowReportRootPath,
 } from "./dailyReportSources";
+import { createAdminAgentsRouter } from "./routes/adminAgents";
 import { createCalendarRouter } from "./routes/calendar";
 import { createCpiPpiRouter } from "./routes/cpiPpi";
 import { createDailyReportsRouter } from "./routes/dailyReports";
@@ -61,6 +56,7 @@ import { createMidasRouter } from "./routes/midas";
 import { createMomentumRouter } from "./routes/momentum";
 import { createOpportunitiesRouter } from "./routes/opportunities";
 import { createWatchlistRouter } from "./routes/watchlist";
+import { createWeeklyReportsRouter } from "./routes/weeklyReports";
 import { createFlowCommentsRouter } from "./routes/flow/comments";
 import { createFlowReportsRouter } from "./routes/flow/reports";
 import { createFlowSourcesRouter } from "./routes/flow/sources";
@@ -82,6 +78,10 @@ import {
   normalizeTranslationTexts,
   translateTurkishTextsToEnglish,
 } from "./openaiTranslation";
+import {
+  getMomentumReportSource,
+  listMomentumReportSourceSummaries,
+} from "./momentumReportSources";
 
 type MembershipPlan = "guest" | "member" | "pro";
 type AppAccessMode = "managed" | "public";
@@ -126,14 +126,6 @@ interface GoogleUserInfo {
   picture?: string;
 }
 
-interface WeeklyReportUpsertRequestBody {
-  report?: unknown;
-}
-
-interface MomentumReportUpsertRequestBody {
-  report?: unknown;
-}
-
 interface TranslateRequestBody {
   source?: unknown;
   target?: unknown;
@@ -146,11 +138,6 @@ interface PortfolioPositionUpsertRequestBody {
 
 interface PortfolioAnalyzeRequestBody {
   accountSize?: unknown;
-}
-
-interface AgentTriggerRequestBody {
-  agentType?: unknown;
-  tickers?: unknown;
 }
 
 interface ShopierCheckoutRequestBody {
@@ -3279,88 +3266,16 @@ async function startServer() {
     }
   });
 
-  app.get("/api/admin/agents/runs", (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    res.status(200).json({
-      runs: billingStore.listAgentRuns(),
-    });
-  });
-
-  app.post("/api/admin/agents/trigger", (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    const body = (req.body ?? {}) as AgentTriggerRequestBody;
-    const agentType = normalizeString(body.agentType) || "full_scan";
-    const tickerList = Array.isArray(body.tickers)
-      ? body.tickers
-          .filter((value): value is string => typeof value === "string")
-          .map(value => normalizeString(value).toUpperCase())
-          .filter(Boolean)
-      : [];
-    const tickerSet = tickerList.length ? new Set(tickerList) : undefined;
-    const startedAt = new Date().toISOString();
-    const runId = crypto.randomUUID();
-
-    const runningRecord: AgentRunRecord = {
-      id: runId,
-      runType: agentType,
-      status: "running",
-      tickersScanned: tickerSet?.size || 0,
-      opportunitiesFound: 0,
-      errors: [],
-      log:
-        tickerList.length > 0
-          ? `Manual ${agentType} run for tickers: ${tickerList.join(", ")}`
-          : `Manual ${agentType} run for published weekly reports`,
-      retryCount: 0,
-      startedAt,
-    };
-
-    billingStore.upsertAgentRun(runningRecord);
-
-    try {
-      const opportunitiesFound = syncOpportunitiesFromPublishedWeeklyReports({
-        tickers: tickerSet,
-      });
-      const completedRecord: AgentRunRecord = {
-        ...runningRecord,
-        status: "success",
-        tickersScanned: tickerSet?.size || opportunitiesFound,
-        opportunitiesFound,
-        log: `${runningRecord.log}. Projection sync completed successfully.`,
-        completedAt: new Date().toISOString(),
-      };
-
-      billingStore.upsertAgentRun(completedRecord);
-      res.status(201).json({
-        run: completedRecord,
-        runs: billingStore.listAgentRuns(),
-      });
-    } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Agent run basarisiz oldu.";
-      const failedRecord: AgentRunRecord = {
-        ...runningRecord,
-        status: "failed",
-        errors: [message],
-        log: `${runningRecord.log}. Projection sync failed.`,
-        completedAt: new Date().toISOString(),
-      };
-
-      billingStore.upsertAgentRun(failedRecord);
-      res.status(500).json({
-        error: message,
-        run: failedRecord,
-      });
-    }
-  });
+  app.use(
+    "/api",
+    createAdminAgentsRouter({
+      billingStore,
+      normalizeString,
+      requireWeeklyReportAdmin,
+      setPrivateNoStore,
+      syncOpportunitiesFromPublishedWeeklyReports,
+    })
+  );
 
   app.use(
     "/api/flow-sources",
@@ -3439,160 +3354,38 @@ async function startServer() {
   app.use("/api/earning-reports", createEarningReportsRouter());
   app.use("/api/marketflash", createMarketFlashRouter(marketFlashStaticPath));
   app.use("/api/midas", createMidasRouter(midasSignalsSync));
-  app.use("/api/momentum", createMomentumRouter());
+  app.use(
+    "/api",
+    createMomentumRouter({
+      billingStore,
+      getMomentumReportSource,
+      listMomentumReportSourceSummaries,
+      normalizeMomentumReportRecordInput,
+      normalizeString,
+      requireWeeklyReportAdmin,
+      setPrivateNoStore,
+    })
+  );
   app.use("/api/opportunities", createOpportunitiesRouter(billingStore));
+  app.use(
+    "/api",
+    createWeeklyReportsRouter({
+      billingStore,
+      getViewerWeeklyReports,
+      getWeeklyReportAdminEmail,
+      isWeeklyReportAdminRequest,
+      normalizeString,
+      normalizeWeeklyReportRecordInput,
+      requireWeeklyReportAdmin,
+      setPrivateNoStore,
+      syncOpportunitiesFromPublishedWeeklyReports: () =>
+        syncOpportunitiesFromPublishedWeeklyReports(),
+    })
+  );
   app.use(
     ["/api/watchlist", "/api/me/watchlist"],
     createWatchlistRouter(billingStore)
   );
-
-  app.get("/api/reports/weekly", (req, res) => {
-    setPrivateNoStore(res);
-    res.status(200).json({
-      reports: getViewerWeeklyReports(),
-      admin: {
-        authorized: isWeeklyReportAdminRequest(req),
-        email: getWeeklyReportAdminEmail(),
-      },
-    });
-  });
-
-  app.get("/api/admin/reports/weekly", (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    res.status(200).json({
-      reports: billingStore.listWeeklyReports(),
-      admin: {
-        authorized: true,
-        email: getWeeklyReportAdminEmail(),
-      },
-    });
-  });
-
-  app.get("/api/admin/workspace/status", (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    res.status(200).json({
-      providers: getAdminMarketDataStatus(),
-      env: {
-        fmpConfigured: isFmpConfigured(),
-      },
-    });
-  });
-
-  app.get("/api/admin/reports/weekly/suggestions", async (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    const existingReports = billingStore.listWeeklyReports();
-
-    try {
-      const liveSuggestions = await buildLiveWeeklyReportSuggestions(
-        existingReports,
-        getWeeklyReportAdminEmail()
-      );
-
-      if (liveSuggestions.length > 0) {
-        res.status(200).json({
-          suggestions: liveSuggestions,
-          providers: getAdminMarketDataStatus(),
-          mode: "live",
-        });
-        return;
-      }
-    } catch (error) {
-      console.error("Live weekly report suggestion build failed", error);
-    }
-
-    res.status(200).json({
-      suggestions: [],
-      providers: getAdminMarketDataStatus(),
-      mode: "empty",
-    });
-  });
-
-  app.post("/api/admin/reports/weekly", (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    const body = (req.body ?? {}) as WeeklyReportUpsertRequestBody;
-    const rawReport = body.report;
-    const draftSource =
-      rawReport && typeof rawReport === "object"
-        ? (rawReport as Partial<Record<keyof WeeklyReportRecord, unknown>>)
-        : undefined;
-    const reportId = draftSource ? normalizeString(draftSource.id) : "";
-    const previousRecord = reportId
-      ? billingStore.getWeeklyReportById(reportId)
-      : null;
-    const report = normalizeWeeklyReportRecordInput(rawReport, previousRecord);
-
-    billingStore.upsertWeeklyReport(report);
-    syncOpportunitiesFromPublishedWeeklyReports();
-
-    res.status(previousRecord ? 200 : 201).json({
-      report,
-      reports: billingStore.listWeeklyReports(),
-    });
-  });
-
-  app.get("/api/momentum/reports/latest", (req, res) => {
-    setPrivateNoStore(res);
-    res.status(200).json({
-      report: billingStore.getLatestPublishedMomentumReport(),
-    });
-  });
-
-  app.get("/api/admin/momentum/reports", (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    res.status(200).json({
-      reports: billingStore.listMomentumReports(),
-      latestPublished: billingStore.getLatestPublishedMomentumReport(),
-    });
-  });
-
-  app.post("/api/admin/momentum/reports", (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    const body = (req.body ?? {}) as MomentumReportUpsertRequestBody;
-    const rawReport = body.report;
-    const draftSource =
-      rawReport && typeof rawReport === "object"
-        ? (rawReport as Partial<Record<keyof MomentumReportRecord, unknown>>)
-        : undefined;
-    const reportId = draftSource ? normalizeString(draftSource.id) : "";
-    const previousRecord = reportId
-      ? billingStore.getMomentumReportById(reportId)
-      : null;
-    const report = normalizeMomentumReportRecordInput(
-      rawReport,
-      previousRecord
-    );
-
-    billingStore.upsertMomentumReport(report);
-    res.status(previousRecord ? 200 : 201).json({
-      report,
-      reports: billingStore.listMomentumReports(),
-      latestPublished: billingStore.getLatestPublishedMomentumReport(),
-    });
-  });
 
   app.post("/api/billing/paddle/webhook", async (req, res) => {
     if (getPaddleServerConfigIssues().length > 0) {
