@@ -62,8 +62,10 @@ import {
 import { createCalendarRouter } from "./routes/calendar";
 import { createCpiPpiRouter } from "./routes/cpiPpi";
 import { createEarningsRouter } from "./routes/earnings";
+import { createEarningReportsRouter } from "./routes/earningReports";
 import { createMarketFlashRouter } from "./routes/marketflash";
 import { createMidasRouter } from "./routes/midas";
+import { createMomentumRouter } from "./routes/momentum";
 import { createFlowCommentsRouter } from "./routes/flow/comments";
 import { createFlowReportsRouter } from "./routes/flow/reports";
 import { createFlowSourcesRouter } from "./routes/flow/sources";
@@ -71,14 +73,7 @@ import {
   generateDailyReportOpenAiCharts,
   normalizeDailyReportOpenAiChartGenerateRequest,
 } from "./dailyReportOpenAiCharts";
-import {
-  getEarningReportSource,
-  listEarningReportSourceSummaries,
-} from "./earningReportSources";
-import {
-  getMomentumReportSource,
-  listMomentumReportSourceSummaries,
-} from "./momentumReportSources";
+
 import { createMidasSignalsSyncService } from "./midasSignals";
 import { createCpiPpiForecastSyncService } from "./cpiPpiForecast";
 import { createCalendarSyncService } from "./calendarSync";
@@ -3680,60 +3675,6 @@ async function startServer() {
     }
   });
 
-  app.get("/api/earning-reports", (_req, res) => {
-    setPrivateNoStore(res);
-    res.status(200).json({
-      reports: listEarningReportSourceSummaries(),
-    });
-  });
-
-  app.get("/api/earning-reports/latest", (_req, res) => {
-    setPrivateNoStore(res);
-    res.status(200).json({
-      report: listEarningReportSourceSummaries()[0] || null,
-    });
-  });
-
-  app.get("/api/earning-reports/:sourceId", (req, res) => {
-    setPrivateNoStore(res);
-
-    const sourceId = normalizeString(req.params.sourceId);
-    const report = getEarningReportSource(sourceId);
-    if (!report) {
-      res.status(404).json({ error: "Earning report source bulunamadi." });
-      return;
-    }
-
-    res.status(200).json({ report });
-  });
-
-  app.get("/api/momentum/sources", (_req, res) => {
-    setPrivateNoStore(res);
-    res.status(200).json({
-      reports: listMomentumReportSourceSummaries(),
-    });
-  });
-
-  app.get("/api/momentum/sources/latest", (_req, res) => {
-    setPrivateNoStore(res);
-    res.status(200).json({
-      report: listMomentumReportSourceSummaries()[0] || null,
-    });
-  });
-
-  app.get("/api/momentum/sources/:sourceId", (req, res) => {
-    setPrivateNoStore(res);
-
-    const sourceId = normalizeString(req.params.sourceId);
-    const report = getMomentumReportSource(sourceId);
-    if (!report) {
-      res.status(404).json({ error: "Momentum report source bulunamadi." });
-      return;
-    }
-
-    res.status(200).json({ report });
-  });
-
   const marketFlashStaticPath =
     process.env.NODE_ENV === "production"
       ? path.resolve(__dirname, "public")
@@ -3742,8 +3683,10 @@ async function startServer() {
   app.use("/api/calendar", createCalendarRouter(calendarSync));
   app.use("/api/cpi-ppi", createCpiPpiRouter(cpiPpiForecastSync));
   app.use("/api/earnings", createEarningsRouter(earningsStrategySync));
+  app.use("/api/earning-reports", createEarningReportsRouter());
   app.use("/api/marketflash", createMarketFlashRouter(marketFlashStaticPath));
   app.use("/api/midas", createMidasRouter(midasSignalsSync));
+  app.use("/api/momentum", createMomentumRouter());
 
   app.get("/api/admin/daily-report-sources", (req, res) => {
     setPrivateNoStore(res);
