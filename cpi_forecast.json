@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-27T00:00:48Z",
-  "reportDate": "2026-06-27",
+  "generatedAt": "2026-06-29T00:00:00Z",
+  "reportDate": "2026-06-29",
   "title": "US CPI Forecast Snapshot - June 2026",
-  "summary": "Oil collapse accelerates: Brent ~$72, WTI ~$69 (June 26) = deeper energy deflation for June CPI. 10Y yield faded to 4.41% (Jun 24) on growth fears. DXY 101.33. FOMC hawkish hold (dot plot +25bp) caps duration rally. Core likely +0.15% MoM with shelter normalizing; headline -0.15% on gasoline drag. June CPI = July 10 release.",
+  "summary": "Oil collapse deepens: Brent ~$72, WTI ~$69 as Hormuz traffic normalizes to ~75% prewar levels. 10Y yield faded to 4.37% (Jun 26). FOMC hawkish hold (dot plot +25bp) caps duration rally. Core likely +0.2% MoM with shelter normalizing; headline -0.1% on gasoline drag. June CPI = July 10 release. Cleveland Fed Nowcast 3.96% headline / 2.85% core.",
   "baseCase": "Below-consensus headline on oil collapse; core cooling but sticky services floor",
   "conviction": 70,
   "release": {
@@ -10,61 +10,44 @@
     "period": "Jun 2026",
     "releaseDate": "2026-07-10",
     "releaseTimeEt": "08:30 ET",
-    "headlineMoM": "-0.15%",
-    "headlineYoY": "3.6%",
-    "coreMoM": "+0.15%",
-    "coreYoY": "2.7%",
-    "priorHeadlineMoM": "+0.50%",
+    "headlineMoM": "-0.1%",
+    "headlineYoY": "3.8%",
+    "coreMoM": "+0.2%",
+    "coreYoY": "2.8%",
+    "priorHeadlineMoM": "+0.5%",
     "priorHeadlineYoY": "4.2%",
-    "priorCoreMoM": "+0.20%",
+    "priorCoreMoM": "+0.2%",
     "priorCoreYoY": "2.9%",
     "bias": "BELOW",
-    "confidence": 72,
-    "thesis": "Oil collapse (-25% in June) drives headline negative. Core softening as shelter normalizes but services ex-shelter sticky. FOMC hawkish hold limits market reaction."
+    "confidence": 70,
+    "thesis": "Energy deflation dominates June headline as oil averages ~$85-90 vs $107 in May. Core services ex-shelter sticky but shelter normalizing. FOMC hawkish tone limits market reaction to soft print."
   },
   "scenarios": [
     {
       "id": "base",
       "label": "Base case",
       "probability": 55,
-      "outcome": "Headline -0.15% m/m, Core +0.15% m/m - oil deflation dominates, core moderates",
-      "marketReadthrough": "10Y yields drift lower (4.35-4.40%), DXY 100-101. Airlines (UAL) and chemicals (LYB) rally on jet fuel/naphtha margin expansion. Energy (XLE) under pressure. Tech (NVDA) limited upside due to FOMC hawkishness.",
-      "favoredAssets": [
-        "UAL",
-        "LYB",
-        "NKE",
-        "XLE_PUT",
-        "GLD_PUT"
-      ],
-      "invalidation": "Iran deal collapses, WTI spikes above $80, or core services re-accelerate above +0.25%."
+      "outcome": "Headline -0.1% m/m, Core +0.2% m/m - oil deflation dominates, core moderates",
+      "marketReadthrough": "10Y yields drift lower (4.30-4.35%), DXY 100-101. Airlines (UAL) and chemicals (LYB) rally on jet fuel/naphtha margin expansion. Energy (XLE) under pressure. Tech (NVDA) limited upside due to FOMC hawkishness.",
+      "favoredAssets": ["UAL", "LYB", "NKE", "XLE_PUT", "GLD_PUT"],
+      "invalidation": "Iran deal collapses, WTI spikes above $80, or core services re-accelerate above +0.3%."
     },
     {
       "id": "hot",
       "label": "Hotter inflation surprise",
       "probability": 20,
-      "outcome": "Headline +0.05%+ m/m, Core +0.25%+ m/m - oil rebounds, services sticky",
+      "outcome": "Headline +0.1%+ m/m, Core +0.3%+ m/m - oil rebounds, services sticky",
       "marketReadthrough": "10Y yields spike (4.50%+), DXY 101.5+. Tech (NVDA) and REITs (AMT) selloff. USD long, energy (XLE) short-cover rally. Gold (GLD) squeeze.",
-      "favoredAssets": [
-        "USD",
-        "XLE",
-        "GLD",
-        "SPY_PUT"
-      ],
+      "favoredAssets": ["USD", "XLE", "GLD", "SPY_PUT"],
       "invalidation": "Hot print driven by one-off energy component; core services actually stable."
     },
     {
       "id": "cool",
       "label": "Cooler disinflation impulse",
       "probability": 25,
-      "outcome": "Headline -0.25% m/m, Core +0.10% m/m - oil collapse fully captured, DXY compression",
+      "outcome": "Headline -0.2% m/m, Core +0.1% m/m - oil collapse fully captured, DXY compression",
       "marketReadthrough": "10Y yields drop (4.25-4.30%), DXY 99.5-100. Growth (QQQ) rallies, airlines (UAL) +10-15%. Homebuilders (DHI) on mortgage relief. Energy (XLE) -5%.",
-      "favoredAssets": [
-        "QQQ",
-        "UAL",
-        "DHI",
-        "AMT",
-        "XLE_PUT"
-      ],
+      "favoredAssets": ["QQQ", "UAL", "DHI", "AMT", "XLE_PUT"],
       "invalidation": "Market already priced a benign outcome; FOMC hawkish tone prevents rally."
     }
   ],
@@ -72,8 +55,8 @@
     {
       "asset": "UST 10Y / TLT",
       "bias": "Long duration on cooler or inline core",
-      "trigger": "Core CPI <= +0.15% and services ex-shelter stable; WTI stays below $72",
-      "invalidation": "Sticky core services above +0.25% with wages re-accelerating."
+      "trigger": "Core CPI <= +0.2% and services ex-shelter stable; WTI stays below $75",
+      "invalidation": "Sticky core services above +0.3% with wages re-accelerating."
     },
     {
       "asset": "NASDAQ / QQQ / NVDA",
@@ -89,14 +72,14 @@
     },
     {
       "asset": "Energy - XLE / XOM / CVX",
-      "bias": "Short - oil supply glut, Iran exports resuming, demand weak",
-      "trigger": "WTI below $72 and Hormuz traffic normalizes; API inventory weak demand",
+      "bias": "Short - oil supply glut, Hormuz normalizing, demand weak",
+      "trigger": "WTI below $75 and Hormuz traffic normalizes; API inventory weak demand",
       "invalidation": "Iran deal collapses, Israel attacks, or OPEC+ cuts production."
     },
     {
       "asset": "Gold / GLD",
       "bias": "Short - DXY 101 + FOMC hawkish + real yields rising",
-      "trigger": "DXY above 100.5 and 10Y yield above 4.40% on CPI day",
+      "trigger": "DXY above 100.5 and 10Y yield above 4.35% on CPI day",
       "invalidation": "DXY drops below 99.5 or geopolitical shock (Iran deal collapse)."
     }
   ],
@@ -108,13 +91,13 @@
     },
     {
       "label": "10Y UST",
-      "value": "4.41%",
-      "note": "Key regime line. Below 4.35% = growth rally. Above 4.50% = risk-off. Oil pulling down, FOMC pushing up."
+      "value": "4.37%",
+      "note": "Key regime line. Below 4.30% = growth rally. Above 4.50% = risk-off. Oil pulling down, FOMC pushing up."
     },
     {
       "label": "WTI / Brent Oil",
-      "value": "$69.08 / $72.15",
-      "note": "June collapse -25%+. Brent 72.15 (26 Jun). Hormuz traffic normalizing. $70 line = headline CPI 0.0% risk."
+      "value": "$69.13 / $71.99",
+      "note": "June collapse -22%+. Brent 71.99 (26 Jun). Hormuz traffic normalizing. $70 line = headline CPI 0.0% risk."
     },
     {
       "label": "DXY",
@@ -123,12 +106,13 @@
     }
   ],
   "keyDrivers": [
-    "Oil collapse: WTI $69, Brent $72 (-25% in June) = gasoline CPI -8% to -10% m/m. Energy deflation is the dominant headline driver.",
+    "Oil collapse: WTI $69, Brent $72 (-22% in June) = gasoline CPI -6% to -8% m/m. Energy deflation is the dominant headline driver.",
     "FOMC hawkish hold: Warsh's first meeting. Dot plot 3.75%-4.00% y/e 2026 = +25bp. PCE inflation revised sharply higher to 3.6% for 2026.",
     "Shelter normalizing: Zillow/Apartment List slowing, BLS 6-12 month lag. OER back toward +0.20% MoM from April's +0.6% spike.",
     "DXY 101.33: Strong dollar = import deflation on core goods. Partially offsets PPI passthrough.",
     "Core services sticky: Wages +3.6% YoY, ISM services prices-paid elevated. Airline fares, recreation = upside risk.",
-    "Iran deal progress: Hormuz traffic normalizing, Persian Gulf exports at ~75% prewar levels. Supply glut risk = oil downside."
+    "Iran deal progress: Hormuz traffic normalizing, Persian Gulf exports at ~75% prewar levels. Supply glut risk = oil downside.",
+    "Cleveland Fed Nowcast: 3.96% headline / 2.85% core (Jun 26). Model-based anchor above our 3.8% / 2.8% forecast."
   ],
   "risks": [
     "Iran deal collapse: Nuclear inspectors denied, Israel/Lebanon tensions, US Congress opposition. WTI $80+ = CPI revision.",
