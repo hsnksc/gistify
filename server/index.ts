@@ -59,7 +59,9 @@ import {
   getDailyReportSourcePackages,
   getViewerDailyReports,
 } from "./services/flowService";
+import { createCalendarRouter } from "./routes/calendar";
 import { createEarningsRouter } from "./routes/earnings";
+import { createMarketFlashRouter } from "./routes/marketflash";
 import { createFlowCommentsRouter } from "./routes/flow/comments";
 import { createFlowReportsRouter } from "./routes/flow/reports";
 import { createFlowSourcesRouter } from "./routes/flow/sources";
@@ -3757,59 +3759,14 @@ async function startServer() {
     res.status(200).json(snapshot);
   });
 
-  app.get("/api/calendar", (_req, res) => {
-    setPrivateNoStore(res);
+  const marketFlashStaticPath =
+    process.env.NODE_ENV === "production"
+      ? path.resolve(__dirname, "public")
+      : path.resolve(__dirname, "..", "dist", "public");
 
-    const snapshot = calendarSync.getSnapshot();
-    if (!snapshot) {
-      res.status(503).json({
-        error: "Calendar snapshot hazir degil.",
-        pipeline: calendarSync.getPipeline(),
-      });
-      return;
-    }
-
-    res.status(200).json(snapshot);
-  });
-
+  app.use("/api/calendar", createCalendarRouter(calendarSync));
   app.use("/api/earnings", createEarningsRouter(earningsStrategySync));
-
-  app.get("/api/marketflash", (_req, res) => {
-    setPrivateNoStore(res);
-
-    const staticPath =
-      process.env.NODE_ENV === "production"
-        ? path.resolve(__dirname, "public")
-        : path.resolve(__dirname, "..", "dist", "public");
-    const reportPath = path.resolve(
-      staticPath,
-      "marketflash",
-      "marketflash_report.json"
-    );
-
-    try {
-      if (!fs.existsSync(reportPath)) {
-        res.status(503).json({
-          error: "Market Flash raporu hazir degil.",
-        });
-        return;
-      }
-
-      const raw = fs.readFileSync(reportPath, "utf8");
-      if (!raw.trim()) {
-        res.status(503).json({
-          error: "Market Flash raporu bos.",
-        });
-        return;
-      }
-
-      res.status(200).type("json").send(raw);
-    } catch {
-      res.status(503).json({
-        error: "Market Flash raporu okunamadi.",
-      });
-    }
-  });
+  app.use("/api/marketflash", createMarketFlashRouter(marketFlashStaticPath));
 
   app.post("/api/admin/midas/signals/refresh", async (req, res) => {
     setPrivateNoStore(res);
