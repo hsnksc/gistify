@@ -14,6 +14,7 @@ import {
   ClipboardList,
   Clock3,
   FileText,
+  Layers3,
   Radar,
   RefreshCw,
   Target,
@@ -219,6 +220,13 @@ export default function Home({ language }: { language: AppLanguage }) {
   }, [positions]);
 
   const latestReport = visibleReports[0] || null;
+
+  useEffect(() => {
+    if (latestReport && selectedReportId !== latestReport.id) {
+      setSelectedReportId(latestReport.id);
+    }
+  }, [latestReport?.id]);
+
   const hasReports = visibleReports.length > 0;
   const sidebarOpen = true;
   const locale = language === "en" ? "en-US" : "tr-TR";
@@ -402,42 +410,46 @@ export default function Home({ language }: { language: AppLanguage }) {
             </>
           }
           reportStrip={
-            <div className="flex items-center gap-2 overflow-x-auto terminal-scrollbar pb-2">
-              {visibleReports.map((report, index) => {
-                const active = report.id === selectedReportId;
-
-                return (
-                  <button
-                    key={report.id}
-                    type="button"
-                    onClick={() => setSelectedReportId(report.id)}
-                    className={`min-w-[185px] shrink-0 rounded-xl border px-4 py-3 text-left transition-all duration-150 ${
-                      active
-                        ? "border-sky-400/45 bg-sky-500/14 shadow-[0_0_18px_rgba(14,165,233,0.16)]"
-                        : "border-border bg-card/80 hover:border-border hover:bg-[rgba(35,45,66,0.72)]"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between gap-3">
-                      <span className="data-mono text-[11px] text-muted-foreground">
-                        {index === 0 ? copy(language, "CANLI", "LIVE") : copy(language, "ARŞIV", "ARCHIVE")}
+            <div className="space-y-4">
+              {latestReport ? (
+                <div className="flex flex-col gap-4 rounded-xl border border-sky-500/20 bg-gradient-to-br from-sky-500/10 via-card/90 to-card/90 p-5 shadow-xl lg:flex-row lg:items-start lg:justify-between">
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <span className="inline-flex items-center rounded-full border border-emerald-500/25 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-300">
+                        {copy(language, "CANLI", "LIVE")}
                       </span>
                       <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-amber-300">
-                        {report.vixLabel || copy(language, "VIX bekleniyor", "VIX pending")}
+                        {latestReport.vixLabel || copy(language, "VIX bekleniyor", "VIX pending")}
                       </span>
                     </div>
-                    <p className="data-mono mt-2 text-sm font-semibold text-foreground">
-                      {formatEarningReportDateTime(report.updatedAt, locale)}
+                    <h3 className="text-2xl font-semibold tracking-tight text-foreground">
+                      {formatEarningReportDateTime(latestReport.updatedAt, locale)}
+                    </h3>
+                    <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                      {latestReport.headline || copy(language, "Earnings raporu", "Earnings report")}
                     </p>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      {formatEarningReportDate(report.reportDate, locale)}
-                    </p>
-                    <div className="mt-3 flex items-center gap-2 text-[11px] text-muted-foreground">
-                      <Clock3 className="size-3.5" />
-                      <span className="line-clamp-1">{report.headline || copy(language, "Earnings raporu", "Earnings report")}</span>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <CalendarDays className="size-3.5" />
+                      <span>{formatEarningReportDate(latestReport.reportDate, locale)}</span>
                     </div>
-                  </button>
-                );
-              })}
+                  </div>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <Button type="button" variant="outline" onClick={() => setLocation("/reports")}>
+                      <Layers3 className="size-4" />
+                      {copy(language, "Tum Arsivi Gor", "View Full Archive")}
+                    </Button>
+                    {reports.length > 1 && (
+                      <span className="inline-flex items-center rounded-full border border-border bg-background/60 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                        +{reports.length - 1} {copy(language, "rapor arsivde", "reports in archive")}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="rounded-xl border border-dashed border-border bg-background/35 p-4 text-sm text-muted-foreground">
+                  {copy(language, "Henuz rapor yok.", "No reports yet.")}
+                </div>
+              )}
             </div>
           }
           statusBar={
