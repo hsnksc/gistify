@@ -1,5 +1,6 @@
 import express from "express";
 import rateLimit from "express-rate-limit";
+import helmet from "helmet";
 import { createServer } from "http";
 import crypto from "node:crypto";
 import fs from "node:fs";
@@ -2932,8 +2933,11 @@ async function startServer() {
   const cpiPpiForecastSync = createCpiPpiForecastSyncService();
   const earningsStrategySync = createEarningsStrategySyncService();
   const calendarSync = createCalendarSyncService({
-    sourceFile: process.env.CALENDAR_PIPELINE_SOURCE_FILE || path.resolve(__dirname, "../../calendar/calendar_forecast.json"),
-    pollIntervalMs: Number(process.env.CALENDAR_PIPELINE_POLL_INTERVAL_MS) || 60_000,
+    sourceFile:
+      process.env.CALENDAR_PIPELINE_SOURCE_FILE ||
+      path.resolve(__dirname, "../../calendar/calendar_forecast.json"),
+    pollIntervalMs:
+      Number(process.env.CALENDAR_PIPELINE_POLL_INTERVAL_MS) || 60_000,
   });
   billingStore.pruneExpiredSessions();
   await midasSignalsSync.start();
@@ -2960,15 +2964,50 @@ async function startServer() {
     })
   );
 
-  // Rate limiting middleware
+  // Security headers
+  app.use(
+    helmet({
+      contentSecurityPolicy: false,
+      crossOriginEmbedderPolicy: false,
+    })
+  );
+
+  // General API rate limiting
   const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100, // limit each IP to 100 requests per windowMs
     standardHeaders: true,
     legacyHeaders: false,
-    message: JSON.stringify({ error: "Too many requests, please try again later." }),
+    message: JSON.stringify({
+      error: "Too many requests, please try again later.",
+    }),
   });
   app.use("/api/", limiter);
+
+  // Stricter rate limiting for authentication endpoints
+  const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 30, // limit each IP to 30 auth requests per windowMs
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: JSON.stringify({
+      error: "Too many authentication attempts, please try again later.",
+    }),
+  });
+  app.use("/api/auth/", authLimiter);
+
+  // Stricter rate limiting for OpenAI / generation endpoints
+  const openaiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 30, // limit each IP to 30 generation requests per windowMs
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: JSON.stringify({
+      error: "Too many generation requests, please try again later.",
+    }),
+  });
+  app.use("/api/admin/openai/", openaiLimiter);
+  app.use("/api/admin/daily-report-charts/openai", openaiLimiter);
 
   app.use(
     "/api/daily-report/assets/flow",
@@ -3752,7 +3791,13 @@ async function startServer() {
 
   app.get("/api/earnings/download", async (_req, res) => {
     const format = normalizeString(_req.query.format);
-    const folder = earningsStrategySync.getPipeline().sourceFolder || path.resolve(process.cwd(), "earningreport", "Kimi_Agent_ Option Strategy");
+    const folder =
+      earningsStrategySync.getPipeline().sourceFolder ||
+      path.resolve(
+        process.cwd(),
+        "earningreport",
+        "Kimi_Agent_ Option Strategy"
+      );
 
     if (!fs.existsSync(folder)) {
       res.status(503).json({ error: "Earnings report folder not found." });
@@ -3776,12 +3821,20 @@ async function startServer() {
     }
 
     if (!latest) {
-      res.status(404).json({ error: `No earnings report found for format ${format || "md"}.` });
+      res
+        .status(404)
+        .json({
+          error: `No earnings report found for format ${format || "md"}.`,
+        });
       return;
     }
 
     if (!fs.existsSync(latest.filePath)) {
-      res.status(404).json({ error: `Report file not found: ${path.basename(latest.filePath)}` });
+      res
+        .status(404)
+        .json({
+          error: `Report file not found: ${path.basename(latest.filePath)}`,
+        });
       return;
     }
 
