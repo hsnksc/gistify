@@ -5,17 +5,14 @@ import fs from "node:fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import type {
-  AgentRunRecord,
   OpportunityRecord,
   OpportunityTier,
-  WatchlistRecord,
 } from "../shared/opportunities";
 import type {
   FlowReportComment,
   DailyReportContent,
   DailyReportRecord,
 } from "../shared/dailyReports";
-import type { DailyReportOpenAiChartGenerateResponse } from "../shared/dailyReportOpenAiCharts";
 import type {
   MomentumReportContent,
   MomentumReportEntry,
@@ -42,12 +39,6 @@ import {
 } from "./billingStore";
 import { COOKIE_NAME, ONE_YEAR_MS } from "../shared/const";
 import {
-  buildLiveWeeklyReportSuggestions,
-  getAdminMarketDataStatus,
-  isFmpConfigured,
-} from "./adminMarketData";
-import {
-  buildDailyReportRecordFromSource,
   getDailyReportRootPath,
   getFlowReportRootPath,
   getDailyReportSourcePackage,
@@ -57,9 +48,16 @@ import {
   getDailyReportSourcePackages,
   getViewerDailyReports,
 } from "./services/flowService";
+import { createAdminAgentsRouter } from "./routes/adminAgents";
+import { createAiRouter } from "./routes/ai";
+import { createDailyReportsRouter } from "./routes/dailyReports";
 import { createFlowCommentsRouter } from "./routes/flow/comments";
 import { createFlowReportsRouter } from "./routes/flow/reports";
 import { createFlowSourcesRouter } from "./routes/flow/sources";
+import { createMomentumRouter } from "./routes/momentum";
+import { createOpportunitiesRouter } from "./routes/opportunities";
+import { createWeeklyReportsRouter } from "./routes/weeklyReports";
+import { createWorkspaceFeedsRouter } from "./routes/workspaceFeeds";
 import {
   generateDailyReportOpenAiCharts,
   normalizeDailyReportOpenAiChartGenerateRequest,
@@ -132,41 +130,12 @@ interface GoogleUserInfo {
   picture?: string;
 }
 
-interface WeeklyReportUpsertRequestBody {
-  report?: unknown;
-}
-
-interface MomentumReportUpsertRequestBody {
-  report?: unknown;
-}
-
-interface DailyReportUpsertRequestBody {
-  report?: unknown;
-}
-
-interface TranslateRequestBody {
-  source?: unknown;
-  target?: unknown;
-  texts?: unknown;
-}
-
 interface PortfolioPositionUpsertRequestBody {
   position?: unknown;
 }
 
 interface PortfolioAnalyzeRequestBody {
   accountSize?: unknown;
-}
-
-interface WatchlistUpsertRequestBody {
-  ticker?: unknown;
-  notes?: unknown;
-  alertOnOpportunity?: unknown;
-}
-
-interface AgentTriggerRequestBody {
-  agentType?: unknown;
-  tickers?: unknown;
 }
 
 interface ShopierCheckoutRequestBody {
@@ -3243,324 +3212,74 @@ async function startServer() {
     }
   });
 
-  app.get("/api/opportunities", (req, res) => {
-    setPrivateNoStore(res);
-    const tier = resolveOpportunityTier(req);
-    const minScore = normalizeNumber(req.query.minScore, 0);
-    const strategy = normalizeString(req.query.strategy);
-    const sector = normalizeString(req.query.sector);
-    const days = normalizeNumber(req.query.days, 0);
-    const page = Math.max(1, normalizeNumber(req.query.page, 1));
-    const limit = Math.min(
-      50,
-      Math.max(1, normalizeNumber(req.query.limit, 20))
-    );
-    const offset = (page - 1) * limit;
-
-    const filtered = filterOpportunitiesForTier(
-      billingStore
-        .listOpportunities()
-        .filter(opportunity => opportunity.status === "active")
-        .filter(opportunity => opportunity.compositeScore >= minScore)
-        .filter(opportunity =>
-          strategy ? opportunity.strategyType === strategy : true
-        )
-        .filter(opportunity => (sector ? opportunity.sector === sector : true))
-        .filter(opportunity =>
-          days > 0 ? opportunity.daysToEarnings <= days : true
-        ),
-      tier
-    );
-
-    const items = filtered.slice(offset, offset + limit);
-    res.status(200).json({
-      data: items,
-      meta: {
-        total: filtered.length,
-        page,
-        limit,
-        hasMore: filtered.length > offset + items.length,
-        tier,
-      },
-    });
-  });
-
-  app.get("/api/opportunities/:id/related", (req, res) => {
-    setPrivateNoStore(res);
-    const tier = resolveOpportunityTier(req);
-    const opportunityId = normalizeString(req.params.id);
-    const opportunity = billingStore
-      .listOpportunities()
-      .find(item => item.id === opportunityId);
-
-    if (!opportunity) {
-      res.status(404).json({ error: "Firsat bulunamadi." });
-      return;
-    }
-
-    const allowedItems = filterOpportunitiesForTier(
-      billingStore
-        .listOpportunities()
-        .filter(item => item.status === "active")
-        .filter(item => item.id !== opportunity.id)
-        .filter(item => item.sector === opportunity.sector)
-        .sort((left, right) => right.compositeScore - left.compositeScore),
-      tier
-    ).slice(0, 4);
-
-    res.status(200).json({
-      data: allowedItems,
-      meta: {
-        tier,
-        sourceOpportunityId: opportunity.id,
-      },
-    });
-  });
-
-  app.get("/api/opportunities/:id", (req, res) => {
-    setPrivateNoStore(res);
-    const tier = resolveOpportunityTier(req);
-    const opportunityId = normalizeString(req.params.id);
-    const opportunity = billingStore
-      .listOpportunities()
-      .find(item => item.id === opportunityId);
-
-    if (!opportunity) {
-      res.status(404).json({ error: "Firsat bulunamadi." });
-      return;
-    }
-
-    const allowedItems = filterOpportunitiesForTier([opportunity], tier);
-    if (!allowedItems.length) {
-      res.status(403).json({
-        error: "Bu firsat daha yuksek uyelik seviyesi gerektiriyor.",
-        required: opportunity.tierRequired,
-        current: tier,
-      });
-      return;
-    }
-
-    res.status(200).json({
-      data: opportunity,
-      meta: {
-        tier,
-      },
-    });
-  });
-
-  app.get(["/api/watchlist", "/api/me/watchlist"], (req, res) => {
-    setPrivateNoStore(res);
-    const actor = getRequestActor(req);
-    if (!actor) {
-      res.status(401).json({ error: "Oturum gerekli." });
-      return;
-    }
-
-    res.status(200).json({
-      items: billingStore.listWatchlistByUserId(actor.id),
-    });
-  });
-
-  app.post(["/api/watchlist", "/api/me/watchlist"], (req, res) => {
-    setPrivateNoStore(res);
-    const actor = getRequestActor(req);
-    if (!actor) {
-      res.status(401).json({ error: "Oturum gerekli." });
-      return;
-    }
-
-    const body = (req.body ?? {}) as WatchlistUpsertRequestBody;
-    const ticker = normalizeString(body.ticker).toUpperCase();
-    if (!ticker) {
-      res.status(400).json({ error: "Ticker gerekli." });
-      return;
-    }
-
-    const nowIso = new Date().toISOString();
-    const record: WatchlistRecord = {
-      id: crypto.randomUUID(),
-      userId: actor.id,
-      email: actor.email,
-      ticker,
-      notes: normalizeString(body.notes) || undefined,
-      alertOnOpportunity: body.alertOnOpportunity !== false,
-      addedAt: nowIso,
-      updatedAt: nowIso,
-    };
-
-    billingStore.upsertWatchlist(record);
-    res.status(201).json({
-      item: record,
-      items: billingStore.listWatchlistByUserId(actor.id),
-    });
-  });
-
-  app.patch(
-    ["/api/watchlist/:ticker", "/api/me/watchlist/:ticker"],
-    (req, res) => {
-      setPrivateNoStore(res);
-      const actor = getRequestActor(req);
-      if (!actor) {
-        res.status(401).json({ error: "Oturum gerekli." });
-        return;
-      }
-
-      const ticker = normalizeString(req.params.ticker).toUpperCase();
-      if (!ticker) {
-        res.status(400).json({ error: "Ticker gerekli." });
-        return;
-      }
-
-      const existing = billingStore
-        .listWatchlistByUserId(actor.id)
-        .find(item => item.ticker === ticker);
-      if (!existing) {
-        res.status(404).json({ error: "Watchlist kaydi bulunamadi." });
-        return;
-      }
-
-      const body = (req.body ?? {}) as WatchlistUpsertRequestBody;
-      const updatedRecord: WatchlistRecord = {
-        ...existing,
-        notes: normalizeString(body.notes) || undefined,
-        alertOnOpportunity: body.alertOnOpportunity !== false,
-        updatedAt: new Date().toISOString(),
-      };
-
-      billingStore.upsertWatchlist(updatedRecord);
-      res.status(200).json({
-        item: updatedRecord,
-        items: billingStore.listWatchlistByUserId(actor.id),
-      });
-    }
+  app.use(
+    "/api",
+    createOpportunitiesRouter({
+      billingStore,
+      filterOpportunitiesForTier,
+      getRequestActor,
+      normalizeNumber,
+      normalizeString,
+      resolveOpportunityTier,
+      setPrivateNoStore,
+    })
   );
 
-  app.delete(
-    ["/api/watchlist/:ticker", "/api/me/watchlist/:ticker"],
-    (req, res) => {
-      setPrivateNoStore(res);
-      const actor = getRequestActor(req);
-      if (!actor) {
-        res.status(401).json({ error: "Oturum gerekli." });
-        return;
-      }
-
-      const ticker = normalizeString(req.params.ticker).toUpperCase();
-      if (!ticker) {
-        res.status(400).json({ error: "Ticker gerekli." });
-        return;
-      }
-
-      billingStore.deleteWatchlist(actor.id, ticker);
-      res.status(200).json({
-        items: billingStore.listWatchlistByUserId(actor.id),
-      });
-    }
+  app.use(
+    "/api",
+    createAdminAgentsRouter({
+      billingStore,
+      normalizeString,
+      requireWeeklyReportAdmin,
+      setPrivateNoStore,
+      syncOpportunitiesFromPublishedWeeklyReports,
+    })
   );
 
-  app.get("/api/admin/agents/runs", (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
+  app.use(
+    "/api",
+    createDailyReportsRouter({
+      billingStore,
+      getDailyReportSourcePackage,
+      getDailyReportSourcePackages,
+      getPublishedDailyReports,
+      getViewerDailyReports,
+      listDailyReportSourcePackages,
+      normalizeDailyReportRecordInput,
+      normalizeString,
+      requireWeeklyReportAdmin,
+      setPrivateNoStore,
+    })
+  );
 
-    res.status(200).json({
-      runs: billingStore.listAgentRuns(),
-    });
-  });
+  app.use(
+    "/api",
+    createWeeklyReportsRouter({
+      billingStore,
+      getViewerWeeklyReports: () => getViewerWeeklyReports(),
+      getWeeklyReportAdminEmail,
+      isWeeklyReportAdminRequest,
+      normalizeString,
+      normalizeWeeklyReportRecordInput,
+      requireWeeklyReportAdmin,
+      setPrivateNoStore,
+      syncOpportunitiesFromPublishedWeeklyReports: () =>
+        syncOpportunitiesFromPublishedWeeklyReports(),
+    })
+  );
 
-  app.post("/api/admin/agents/trigger", (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    const body = (req.body ?? {}) as AgentTriggerRequestBody;
-    const agentType = normalizeString(body.agentType) || "full_scan";
-    const tickerList = Array.isArray(body.tickers)
-      ? body.tickers
-          .filter((value): value is string => typeof value === "string")
-          .map(value => normalizeString(value).toUpperCase())
-          .filter(Boolean)
-      : [];
-    const tickerSet = tickerList.length ? new Set(tickerList) : undefined;
-    const startedAt = new Date().toISOString();
-    const runId = crypto.randomUUID();
-
-    const runningRecord: AgentRunRecord = {
-      id: runId,
-      runType: agentType,
-      status: "running",
-      tickersScanned: tickerSet?.size || 0,
-      opportunitiesFound: 0,
-      errors: [],
-      log:
-        tickerList.length > 0
-          ? `Manual ${agentType} run for tickers: ${tickerList.join(", ")}`
-          : `Manual ${agentType} run for published weekly reports`,
-      retryCount: 0,
-      startedAt,
-    };
-
-    billingStore.upsertAgentRun(runningRecord);
-
-    try {
-      const opportunitiesFound = syncOpportunitiesFromPublishedWeeklyReports({
-        tickers: tickerSet,
-      });
-      const completedRecord: AgentRunRecord = {
-        ...runningRecord,
-        status: "success",
-        tickersScanned: tickerSet?.size || opportunitiesFound,
-        opportunitiesFound,
-        log: `${runningRecord.log}. Projection sync completed successfully.`,
-        completedAt: new Date().toISOString(),
-      };
-
-      billingStore.upsertAgentRun(completedRecord);
-      res.status(201).json({
-        run: completedRecord,
-        runs: billingStore.listAgentRuns(),
-      });
-    } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Agent run basarisiz oldu.";
-      const failedRecord: AgentRunRecord = {
-        ...runningRecord,
-        status: "failed",
-        errors: [message],
-        log: `${runningRecord.log}. Projection sync failed.`,
-        completedAt: new Date().toISOString(),
-      };
-
-      billingStore.upsertAgentRun(failedRecord);
-      res.status(500).json({
-        error: message,
-        run: failedRecord,
-      });
-    }
-  });
-
-  app.get("/api/daily-reports", (_req, res) => {
-    setPrivateNoStore(res);
-    res.status(200).json({
-      reports: getViewerDailyReports(getPublishedDailyReports()),
-    });
-  });
-
-  app.get("/api/daily-report-sources", (_req, res) => {
-    setPrivateNoStore(res);
-    res.status(200).json({
-      sources: getDailyReportSourcePackages(),
-    });
-  });
-
-  app.get("/api/daily-reports/latest", (_req, res) => {
-    setPrivateNoStore(res);
-    res.status(200).json({
-      report: getViewerDailyReports(getPublishedDailyReports(), 1)[0] || null,
-    });
-  });
+  app.use(
+    "/api",
+    createMomentumRouter({
+      billingStore,
+      getMomentumReportSource,
+      listMomentumReportSourceSummaries,
+      normalizeMomentumReportRecordInput,
+      normalizeString,
+      requireWeeklyReportAdmin,
+      setPrivateNoStore,
+    })
+  );
 
   app.use(
     "/api/flow-sources",
@@ -3588,482 +3307,46 @@ async function startServer() {
     })
   );
 
-  app.post("/api/i18n/translate", async (req, res) => {
-    setPrivateNoStore(res);
-
-    const body =
-      req.body && typeof req.body === "object"
-        ? (req.body as TranslateRequestBody)
-        : {};
-
-    const source = normalizeString(body.source).toLowerCase();
-    const target = normalizeString(body.target).toLowerCase();
-    const texts = normalizeTranslationTexts(body.texts);
-
-    if (!texts.length) {
-      res.status(200).json({ translations: {} });
-      return;
-    }
-
-    if (source !== "tr" || target !== "en") {
-      res.status(200).json({
-        translations: Object.fromEntries(texts.map(text => [text, text])),
-      });
-      return;
-    }
-
-    try {
-      const translations = await translateTurkishTextsToEnglish(texts);
-      res.status(200).json({ translations });
-    } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : "Ceviri istegi basarisiz oldu.";
-      res.status(500).json({ error: message });
-    }
-  });
-
-  app.get("/api/earning-reports", (_req, res) => {
-    setPrivateNoStore(res);
-    res.status(200).json({
-      reports: listEarningReportSourceSummaries(),
-    });
-  });
-
-  app.get("/api/earning-reports/latest", (_req, res) => {
-    setPrivateNoStore(res);
-    res.status(200).json({
-      report: listEarningReportSourceSummaries()[0] || null,
-    });
-  });
-
-  app.get("/api/earning-reports/:sourceId", (req, res) => {
-    setPrivateNoStore(res);
-
-    const sourceId = normalizeString(req.params.sourceId);
-    const report = getEarningReportSource(sourceId);
-    if (!report) {
-      res.status(404).json({ error: "Earning report source bulunamadi." });
-      return;
-    }
-
-    res.status(200).json({ report });
-  });
-
-  app.get("/api/momentum/sources", (_req, res) => {
-    setPrivateNoStore(res);
-    res.status(200).json({
-      reports: listMomentumReportSourceSummaries(),
-    });
-  });
-
-  app.get("/api/momentum/sources/latest", (_req, res) => {
-    setPrivateNoStore(res);
-    res.status(200).json({
-      report: listMomentumReportSourceSummaries()[0] || null,
-    });
-  });
-
-  app.get("/api/momentum/sources/:sourceId", (req, res) => {
-    setPrivateNoStore(res);
-
-    const sourceId = normalizeString(req.params.sourceId);
-    const report = getMomentumReportSource(sourceId);
-    if (!report) {
-      res.status(404).json({ error: "Momentum report source bulunamadi." });
-      return;
-    }
-
-    res.status(200).json({ report });
-  });
-
-  app.get("/api/midas/signals", (_req, res) => {
-    setPrivateNoStore(res);
-
-    const snapshot = midasSignalsSync.getSnapshot();
-    if (!snapshot) {
-      res.status(503).json({
-        error: "Midas signal snapshot hazir degil.",
-        pipeline: midasSignalsSync.getPipeline(),
-      });
-      return;
-    }
-
-    res.status(200).json(snapshot);
-  });
-
-  app.get("/api/cpi-ppi/forecast", (_req, res) => {
-    setPrivateNoStore(res);
-
-    const snapshot = cpiPpiForecastSync.getSnapshot();
-    if (!snapshot) {
-      res.status(503).json({
-        error: "CPI/PPI forecast snapshot hazir degil.",
-        pipeline: cpiPpiForecastSync.getPipeline(),
-      });
-      return;
-    }
-
-    res.status(200).json(snapshot);
-  });
-
-  app.get("/api/calendar", (_req, res) => {
-    setPrivateNoStore(res);
-
-    const snapshot = calendarSync.getSnapshot();
-    if (!snapshot) {
-      res.status(503).json({
-        error: "Calendar snapshot hazir degil.",
-        pipeline: calendarSync.getPipeline(),
-      });
-      return;
-    }
-
-    res.status(200).json(snapshot);
-  });
-
-  app.get("/api/earnings/strategy", (_req, res) => {
-    setPrivateNoStore(res);
-
-    const snapshot = earningsStrategySync.getSnapshot();
-    const pipeline = earningsStrategySync.getPipeline();
-    const response = buildEarningsApiResponse(snapshot, pipeline);
-
-    if (!snapshot) {
-      res.status(503).json(response);
-      return;
-    }
-
-    res.status(200).json(response);
-  });
-
-  app.get("/api/earnings/download", async (_req, res) => {
-    const format = normalizeString(_req.query.format);
-    const folder = earningsStrategySync.getPipeline().sourceFolder || path.resolve(process.cwd(), "earningreport", "Kimi_Agent_ Option Strategy");
-
-    if (!fs.existsSync(folder)) {
-      res.status(503).json({ error: "Earnings report folder not found." });
-      return;
-    }
-
-    const extension = format === "docx" ? ".docx" : ".md";
-    const entries = fs.readdirSync(folder, { withFileTypes: true });
-    let latest: { filePath: string; mtimeMs: number } | null = null;
-
-    for (const entry of entries) {
-      if (!entry.isFile()) continue;
-      if (!entry.name.toLowerCase().endsWith(extension)) continue;
-      if (!/Earnings_Opsiyon_Master_Stratejisi/i.test(entry.name)) continue;
-
-      const filePath = path.join(folder, entry.name);
-      const stats = fs.statSync(filePath);
-      if (!latest || stats.mtimeMs > latest.mtimeMs) {
-        latest = { filePath, mtimeMs: stats.mtimeMs };
-      }
-    }
-
-    if (!latest) {
-      res.status(404).json({ error: `No earnings report found for format ${format || "md"}.` });
-      return;
-    }
-
-    if (!fs.existsSync(latest.filePath)) {
-      res.status(404).json({ error: `Report file not found: ${path.basename(latest.filePath)}` });
-      return;
-    }
-
-    res.download(latest.filePath, path.basename(latest.filePath));
-  });
-
-  app.get("/api/marketflash", (_req, res) => {
-    setPrivateNoStore(res);
-
-    const staticPath =
-      process.env.NODE_ENV === "production"
-        ? path.resolve(__dirname, "public")
-        : path.resolve(__dirname, "..", "dist", "public");
-    const reportPath = path.resolve(
-      staticPath,
-      "marketflash",
-      "marketflash_report.json"
-    );
-
-    try {
-      if (!fs.existsSync(reportPath)) {
-        res.status(503).json({
-          error: "Market Flash raporu hazir degil.",
-        });
-        return;
-      }
-
-      const raw = fs.readFileSync(reportPath, "utf8");
-      if (!raw.trim()) {
-        res.status(503).json({
-          error: "Market Flash raporu bos.",
-        });
-        return;
-      }
-
-      res.status(200).type("json").send(raw);
-    } catch {
-      res.status(503).json({
-        error: "Market Flash raporu okunamadi.",
-      });
-    }
-  });
-
-  app.post("/api/admin/midas/signals/refresh", async (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    const snapshot = await midasSignalsSync.refresh({ force: true });
-    if (!snapshot) {
-      res.status(503).json({
-        error: "Midas signal snapshot yenilenemedi.",
-        pipeline: midasSignalsSync.getPipeline(),
-      });
-      return;
-    }
-
-    res.status(200).json(snapshot);
-  });
-
-  app.get("/api/admin/daily-report-sources", (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    res.status(200).json({
-      sources: listDailyReportSourcePackages().map(source => ({
-        id: source.id,
-        folderName: source.folderName,
-        reportDate: source.reportDate,
-        title: source.title,
-        headline: source.headline,
-        author: source.author,
-        coverage: source.coverage,
-        methodology: source.methodology,
-        executiveSummary: source.executiveSummary,
-        sectionFiles: source.sectionFiles,
-        figureFiles: source.figureFiles,
-        openAiFigureFiles: source.openAiFigureFiles,
-        html: source.html,
-        tickerUniverse: source.tickerUniverse,
-        researchFileCount: source.researchFileCount,
-        updatedAt: source.updatedAt,
-        sourceKind: source.sourceKind,
-        contentFormat: source.contentFormat,
-        sourceLabel: source.sourceLabel,
-        assetBasePath: source.assetBasePath,
-      })),
-    });
-  });
-
-  app.get("/api/admin/daily-report-sources/:folderName", (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    const folderName = normalizeString(req.params.folderName);
-    const source = getDailyReportSourcePackage(folderName);
-    if (!source) {
-      res.status(404).json({ error: "Daily report source bulunamadi." });
-      return;
-    }
-
-    res.status(200).json({ source });
-  });
-
-  app.get("/api/admin/daily-reports", (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    res.status(200).json({
-      reports: billingStore.listDailyReports(),
-      latestPublished: billingStore.getLatestPublishedDailyReport(),
-    });
-  });
-
-  app.post("/api/admin/daily-reports", (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    const body = (req.body ?? {}) as DailyReportUpsertRequestBody;
-    const rawReport = body.report;
-    const draftSource =
-      rawReport && typeof rawReport === "object"
-        ? (rawReport as Partial<Record<keyof DailyReportRecord, unknown>>)
-        : undefined;
-    const reportId = draftSource ? normalizeString(draftSource.id) : "";
-    const previousRecord = reportId
-      ? billingStore.getDailyReportById(reportId)
-      : null;
-    const report = normalizeDailyReportRecordInput(rawReport, previousRecord);
-
-    billingStore.upsertDailyReport(report);
-    res.status(previousRecord ? 200 : 201).json({
-      report,
-      reports: billingStore.listDailyReports(),
-      latestPublished: billingStore.getLatestPublishedDailyReport(),
-    });
-  });
-
-  app.get("/api/reports/weekly", (req, res) => {
-    setPrivateNoStore(res);
-    res.status(200).json({
-      reports: getViewerWeeklyReports(),
-      admin: {
-        authorized: isWeeklyReportAdminRequest(req),
-        email: getWeeklyReportAdminEmail(),
-      },
-    });
-  });
-
-  app.get("/api/admin/reports/weekly", (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    res.status(200).json({
-      reports: billingStore.listWeeklyReports(),
-      admin: {
-        authorized: true,
-        email: getWeeklyReportAdminEmail(),
-      },
-    });
-  });
-
-  app.get("/api/admin/workspace/status", (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    res.status(200).json({
-      providers: getAdminMarketDataStatus(),
-      env: {
-        fmpConfigured: isFmpConfigured(),
-      },
-    });
-  });
-
-  app.get("/api/admin/reports/weekly/suggestions", async (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    const existingReports = billingStore.listWeeklyReports();
-
-    try {
-      const liveSuggestions = await buildLiveWeeklyReportSuggestions(
-        existingReports,
-        getWeeklyReportAdminEmail()
-      );
-
-      if (liveSuggestions.length > 0) {
-        res.status(200).json({
-          suggestions: liveSuggestions,
-          providers: getAdminMarketDataStatus(),
-          mode: "live",
-        });
-        return;
-      }
-    } catch (error) {
-      console.error("Live weekly report suggestion build failed", error);
-    }
-
-    res.status(200).json({
-      suggestions: [],
-      providers: getAdminMarketDataStatus(),
-      mode: "empty",
-    });
-  });
-
-  app.post("/api/admin/reports/weekly", (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    const body = (req.body ?? {}) as WeeklyReportUpsertRequestBody;
-    const rawReport = body.report;
-    const draftSource =
-      rawReport && typeof rawReport === "object"
-        ? (rawReport as Partial<Record<keyof WeeklyReportRecord, unknown>>)
-        : undefined;
-    const reportId = draftSource ? normalizeString(draftSource.id) : "";
-    const previousRecord = reportId
-      ? billingStore.getWeeklyReportById(reportId)
-      : null;
-    const report = normalizeWeeklyReportRecordInput(rawReport, previousRecord);
-
-    billingStore.upsertWeeklyReport(report);
-    syncOpportunitiesFromPublishedWeeklyReports();
-
-    res.status(previousRecord ? 200 : 201).json({
-      report,
-      reports: billingStore.listWeeklyReports(),
-    });
-  });
-
-  app.get("/api/momentum/reports/latest", (req, res) => {
-    setPrivateNoStore(res);
-    res.status(200).json({
-      report: billingStore.getLatestPublishedMomentumReport(),
-    });
-  });
-
-  app.get("/api/admin/momentum/reports", (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    res.status(200).json({
-      reports: billingStore.listMomentumReports(),
-      latestPublished: billingStore.getLatestPublishedMomentumReport(),
-    });
-  });
-
-  app.post("/api/admin/momentum/reports", (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    const body = (req.body ?? {}) as MomentumReportUpsertRequestBody;
-    const rawReport = body.report;
-    const draftSource =
-      rawReport && typeof rawReport === "object"
-        ? (rawReport as Partial<Record<keyof MomentumReportRecord, unknown>>)
-        : undefined;
-    const reportId = draftSource ? normalizeString(draftSource.id) : "";
-    const previousRecord = reportId
-      ? billingStore.getMomentumReportById(reportId)
-      : null;
-    const report = normalizeMomentumReportRecordInput(
-      rawReport,
-      previousRecord
-    );
-
-    billingStore.upsertMomentumReport(report);
-    res.status(previousRecord ? 200 : 201).json({
-      report,
-      reports: billingStore.listMomentumReports(),
-      latestPublished: billingStore.getLatestPublishedMomentumReport(),
-    });
-  });
+  app.use(
+    "/api",
+    createAiRouter({
+      generateDailyReportOpenAiCharts,
+      generateOpenAiImage,
+      isOpenAiImageStudioConfigured,
+      normalizeDailyReportOpenAiChartGenerateRequest,
+      normalizeOpenAiImageGenerateRequest,
+      normalizeString,
+      normalizeTranslationTexts,
+      requireWeeklyReportAdmin,
+      setPrivateNoStore,
+      translateTurkishTextsToEnglish,
+    })
+  );
+
+  app.use(
+    "/api",
+    createWorkspaceFeedsRouter({
+      buildEarningsApiResponse,
+      getCalendarPipeline: () => calendarSync.getPipeline(),
+      getCalendarSnapshot: () => calendarSync.getSnapshot(),
+      getCpiPpiPipeline: () => cpiPpiForecastSync.getPipeline(),
+      getCpiPpiSnapshot: () => cpiPpiForecastSync.getSnapshot(),
+      getEarningReportSource,
+      getEarningsDownloadFolder: () =>
+        earningsStrategySync.getPipeline().sourceFolder || null,
+      getEarningsPipeline: () => earningsStrategySync.getPipeline(),
+      getEarningsSnapshot: () => earningsStrategySync.getSnapshot(),
+      getMarketFlashReportPath: () =>
+        path.resolve(staticPath, "marketflash", "marketflash_report.json"),
+      getMidasPipeline: () => midasSignalsSync.getPipeline(),
+      getMidasSnapshot: () => midasSignalsSync.getSnapshot(),
+      listEarningReportSourceSummaries,
+      normalizeString,
+      refreshMidasSignals: () => midasSignalsSync.refresh({ force: true }),
+      requireWeeklyReportAdmin,
+      setPrivateNoStore,
+    })
+  );
 
   app.post("/api/billing/paddle/webhook", async (req, res) => {
     if (getPaddleServerConfigIssues().length > 0) {
@@ -4130,79 +3413,6 @@ async function startServer() {
       error:
         "Shopier webhook devre disi. Yeni odeme akisi Paddle uzerinden acilacak.",
     });
-  });
-
-  app.post("/api/admin/openai/image-generate", async (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    if (!isOpenAiImageStudioConfigured()) {
-      res.status(503).json({
-        error: "OpenAI image studio hazir degil. OPENAI_API_KEY gerekli.",
-      });
-      return;
-    }
-
-    const payload = normalizeOpenAiImageGenerateRequest(req.body);
-    if (!payload.prompt) {
-      res.status(400).json({ error: "Prompt gerekli." });
-      return;
-    }
-
-    try {
-      const result = await generateOpenAiImage(payload);
-      res.status(200).json(result);
-    } catch (error) {
-      console.error("OpenAI image generation failed", error);
-      res.status(502).json({
-        error:
-          error instanceof Error
-            ? error.message
-            : "OpenAI image olusturma istegi tamamlanamadi.",
-      });
-    }
-  });
-
-  app.post("/api/admin/daily-report-charts/openai", async (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    if (!isOpenAiImageStudioConfigured()) {
-      res.status(503).json({
-        error: "OpenAI chart workflow hazir degil. OPENAI_API_KEY gerekli.",
-      });
-      return;
-    }
-
-    const payload = normalizeDailyReportOpenAiChartGenerateRequest(req.body);
-    if (!payload.sourceId) {
-      res.status(400).json({ error: "Source secimi gerekli." });
-      return;
-    }
-
-    if (!payload.prompt) {
-      res.status(400).json({ error: "Prompt gerekli." });
-      return;
-    }
-
-    try {
-      const result = await generateDailyReportOpenAiCharts(payload);
-      res
-        .status(200)
-        .json(result satisfies DailyReportOpenAiChartGenerateResponse);
-    } catch (error) {
-      console.error("Daily report OpenAI chart generation failed", error);
-      res.status(502).json({
-        error:
-          error instanceof Error
-            ? error.message
-            : "Daily report OpenAI chart generation tamamlanamadi.",
-      });
-    }
   });
 
   app.get("/", (_req, res) => {

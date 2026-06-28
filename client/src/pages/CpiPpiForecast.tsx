@@ -227,7 +227,7 @@ function workspaceDescriptor(
 ) {
   if (key === "cpi") {
     return {
-      title: copy(language, "Consumer inflation", "Consumer inflation"),
+      title: copy(language, "Tüketici enflasyonu", "Consumer inflation"),
       summary: copy(
         language,
         "Tuketici fiyatlarindaki yonu, oran baskisini ve risk varliklarin ilk tepkisini izler.",
@@ -237,7 +237,7 @@ function workspaceDescriptor(
   }
 
   return {
-    title: copy(language, "Producer pipeline", "Producer pipeline"),
+    title: copy(language, "Üretici enflasyonu", "Producer pipeline"),
     summary: copy(
       language,
       "Uretici fiyatlarindaki baskiyi, marj anlatisini ve CPI'ya gecis riskini izler.",
@@ -1051,7 +1051,7 @@ export default function CpiPpiForecastPage({
     ),
     title: copy(
       language,
-      "Gistify | CPI & PPI Forecast Workspace",
+      "Gistify | CPI & PPI Tahmin Workspace",
       "Gistify | CPI & PPI Forecast Workspace"
     ),
   });

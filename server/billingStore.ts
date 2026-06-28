@@ -1737,3 +1737,5 @@ export function createBillingStore() {
     },
   };
 }
+
+export type BillingStore = ReturnType<typeof createBillingStore>;
