@@ -1,0 +1,1482 @@
+[
+  {
+    "file": "components\\earnings\\ActionPlan.tsx",
+    "line": 67,
+    "content": "} else if (lower.includes(\"wait\") || lower.includes(\"bekle\") || lower.includes(\"sabır\") || lower.includes(\"monitor\")) {"
+  },
+  {
+    "file": "components\\earnings\\ActionPlan.tsx",
+    "line": 70,
+    "content": "const isEarnings = lower.includes(\"earnings\") || lower.includes(\"kazanç\") || lower.includes(\"açıklama\");"
+  },
+  {
+    "file": "components\\earnings\\ActionPlan.tsx",
+    "line": 252,
+    "content": "\"VIX & Fear & Greed kontrolü\","
+  },
+  {
+    "file": "components\\earnings\\ActionPlan.tsx",
+    "line": 253,
+    "content": "\"Earnings calendar gözden geçir\","
+  },
+  {
+    "file": "components\\earnings\\ActionPlan.tsx",
+    "line": 254,
+    "content": "\"Greeks dashboard kontrolü\","
+  },
+  {
+    "file": "components\\earnings\\ActionPlan.tsx",
+    "line": 255,
+    "content": "\"Entry/Exit seviyelerini güncelle\","
+  },
+  {
+    "file": "components\\earnings\\ActionPlan.tsx",
+    "line": 256,
+    "content": "\"Pozisyon risk limiti kontrolü\","
+  },
+  {
+    "file": "components\\earnings\\CPRTable.tsx",
+    "line": 25,
+    "content": "\"Güçlü Boğa\": \"🟢\","
+  },
+  {
+    "file": "components\\earnings\\CPRTable.tsx",
+    "line": 29,
+    "content": "\"Güçlü Ayı\": \"🔴\","
+  },
+  {
+    "file": "components\\earnings\\CPRTable.tsx",
+    "line": 34,
+    "content": "\"Güçlü Boğa\": \"text-emerald-400 bg-emerald-500/15 border-emerald-500/30\","
+  },
+  {
+    "file": "components\\earnings\\CPRTable.tsx",
+    "line": 38,
+    "content": "\"Güçlü Ayı\": \"text-rose-400 bg-rose-500/15 border-rose-500/30\","
+  },
+  {
+    "file": "components\\earnings\\EarningsCalendar.tsx",
+    "line": 13,
+    "content": "const DAY_LABELS_TR = [\"Pzt\", \"Sal\", \"Çar\", \"Per\", \"Cum\", \"Cmt\", \"Paz\"];"
+  },
+  {
+    "file": "components\\earnings\\FOMCWarningBanner.tsx",
+    "line": 31,
+    "content": "label: \"FOMC Uyarısı\","
+  },
+  {
+    "file": "components\\earnings\\FOMCWarningBanner.tsx",
+    "line": 41,
+    "content": "label: \"FOMC Yaklaşıyor\","
+  },
+  {
+    "file": "components\\earnings\\FOMCWarningBanner.tsx",
+    "line": 51,
+    "content": "label: \"FOMC Çok Yakın\","
+  },
+  {
+    "file": "components\\earnings\\FOMCWarningBanner.tsx",
+    "line": 166,
+    "content": "\"FOMC yaklaştıkça pozisyon büyüklüğünü azaltmayı ve IV crush riskine karşı hedge'leri gözden geçirmeyi düşünün.\","
+  },
+  {
+    "file": "components\\earnings\\GreeksDashboard.tsx",
+    "line": 134,
+    "content": "\"Henüz Greeks verisi gelmedi. Opsiyon risk haritasi veri bekliyor.\","
+  },
+  {
+    "file": "components\\earnings\\PortfolioBuilder.tsx",
+    "line": 260,
+    "content": "{ label: \"Düşük Olasılık / Düşük Etki\", color: \"bg-emerald-500/20 border-emerald-500/30 text-emerald-300\" },"
+  },
+  {
+    "file": "components\\earnings\\PortfolioBuilder.tsx",
+    "line": 261,
+    "content": "{ label: \"Düşük Olasılık / Yüksek Etki\", color: \"bg-amber-500/20 border-amber-500/30 text-amber-300\" },"
+  },
+  {
+    "file": "components\\earnings\\PortfolioBuilder.tsx",
+    "line": 262,
+    "content": "{ label: \"Yüksek Olasılık / Düşük Etki\", color: \"bg-sky-500/20 border-sky-500/30 text-sky-300\" },"
+  },
+  {
+    "file": "components\\earnings\\PortfolioBuilder.tsx",
+    "line": 263,
+    "content": "{ label: \"Yüksek Olasılık / Yüksek Etki\", color: \"bg-rose-500/20 border-rose-500/30 text-rose-300\" },"
+  },
+  {
+    "file": "components\\earnings\\ReportDownload.tsx",
+    "line": 25,
+    "content": "\"Gistify raporunu markdown formatında indirin. GitHub ve Notion ile uyumlu.\","
+  },
+  {
+    "file": "components\\earnings\\ReportDownload.tsx",
+    "line": 40,
+    "content": "\"DOCX formatında indirin. Microsoft Word ve Google Docs ile uyumlu.\","
+  },
+  {
+    "file": "components\\earnings\\ReportDownload.tsx",
+    "line": 110,
+    "content": "\"Henüz rapor üretilmedi. Önce analiz tamamlayın.\","
+  },
+  {
+    "file": "components\\tabs\\EarningReportPlaybookTab.tsx",
+    "line": 422,
+    "content": "findMetricValue(activePosition, [\"K.O. Olasılığı\", \"K.O. Olasiligi\"]) ||"
+  },
+  {
+    "file": "components\\tabs\\EarningReportPostTab.tsx",
+    "line": 519,
+    "content": "findMetricValue(position, [\"K.O. Olasılığı\", \"K.O. Olasiligi\"]) ||"
+  },
+  {
+    "file": "components\\tabs\\OverviewTab.tsx",
+    "line": 322,
+    "content": "'Bu rapor yalnızca bilgilendirme amaçlıdır ve yatırım tavsiyesi niteliği taşımaz. Geçmiş performans gelecekteki sonuçları garanti etmez. Hisse senedi "
+  },
+  {
+    "file": "components\\tabs\\SectorTab.tsx",
+    "line": 407,
+    "content": "\"Yapay zeka altyapısına yönelik küresel yatırım ivmesi 2026'da da sürmektedir. Hyperscaler bulut sağlayıcıları (Amazon, Google, Microsoft, Meta) kendi"
+  },
+  {
+    "file": "lib\\earningReportSource.ts",
+    "line": 2057,
+    "content": "\"Pozisyon Büyüklüğü\","
+  },
+  {
+    "file": "lib\\earningReportSource.ts",
+    "line": 2059,
+    "content": "\"Beta Düzeltmesi\","
+  },
+  {
+    "file": "lib\\earningReportSource.ts",
+    "line": 2316,
+    "content": ": findLineIndexByText(sectionLines, \"giriş-çıkış takvimi\");"
+  },
+  {
+    "file": "lib\\earningReportSource.ts",
+    "line": 2437,
+    "content": "\"K.O. Olasılığı\","
+  },
+  {
+    "file": "lib\\earningReportSource.ts",
+    "line": 3445,
+    "content": "{ label: \"Ana Görüş\", value: valueMap.get(\"ana gorus\") || thesisTitle },"
+  },
+  {
+    "file": "lib\\earningReportSource.ts",
+    "line": 3561,
+    "content": "createNote(\"Tez özeti\", ["
+  },
+  {
+    "file": "lib\\earningReportSource.ts",
+    "line": 4046,
+    "content": "if (cells.length >= 5 && !cells[0].includes(\"Sıra\")) {"
+  },
+  {
+    "file": "lib\\earningReportSource.ts",
+    "line": 4063,
+    "content": "risk: \"FOMC Kritik Uyarı\","
+  },
+  {
+    "file": "lib\\earningReportSource.ts",
+    "line": 4064,
+    "content": "probability: \"Yüksek\","
+  },
+  {
+    "file": "lib\\earningReportSource.ts",
+    "line": 4066,
+    "content": "mitigation: \"21-27 Temmuz arasında pozisyonları %50 azaltın\""
+  },
+  {
+    "file": "lib\\earningStrategyData.ts",
+    "line": 198,
+    "content": "? \"Yüksek oynaklık nedeniyle küçük boyut tercih edilmeli.\""
+  },
+  {
+    "file": "lib\\earningStrategyData.ts",
+    "line": 199,
+    "content": ": \"Pozisyon boyutu implied move ile uyumlu tutulmalı.\","
+  },
+  {
+    "file": "lib\\momentumReportSource.ts",
+    "line": 351,
+    "content": "\"şubat\": \"02\","
+  },
+  {
+    "file": "lib\\momentumReportSource.ts",
+    "line": 355,
+    "content": "\"mayıs\": \"05\","
+  },
+  {
+    "file": "lib\\momentumReportSource.ts",
+    "line": 359,
+    "content": "\"ağustos\": \"08\","
+  },
+  {
+    "file": "lib\\momentumReportSource.ts",
+    "line": 361,
+    "content": "\"eylül\": \"09\","
+  },
+  {
+    "file": "lib\\momentumReportSource.ts",
+    "line": 364,
+    "content": "\"kasım\": \"11\","
+  },
+  {
+    "file": "lib\\momentumReportSource.ts",
+    "line": 366,
+    "content": "\"aralık\": \"12\","
+  },
+  {
+    "file": "lib\\optionStrategyData.ts",
+    "line": 493,
+    "content": "label: 'Mükemmel Fırsat',"
+  },
+  {
+    "file": "lib\\optionStrategyData.ts",
+    "line": 498,
+    "content": "desc: 'Yüksek IV crush + Güçlü momentum = En iyi fırsat',"
+  },
+  {
+    "file": "lib\\optionStrategyData.ts",
+    "line": 501,
+    "content": "label: 'İyi Fırsat',"
+  },
+  {
+    "file": "lib\\optionStrategyData.ts",
+    "line": 509,
+    "content": "label: 'Makul Fırsat',"
+  },
+  {
+    "file": "lib\\optionStrategyData.ts",
+    "line": 514,
+    "content": "desc: 'Düşük IV crush veya zayıf momentum',"
+  },
+  {
+    "file": "lib\\optionStrategyData.ts",
+    "line": 517,
+    "content": "label: 'Zayıf Fırsat',"
+  },
+  {
+    "file": "lib\\optionStrategyData.ts",
+    "line": 522,
+    "content": "desc: 'Çok düşük IV crush + Kırılmış momentum',"
+  },
+  {
+    "file": "lib\\optionStrategyData.ts",
+    "line": 527,
+    "content": "LOW: { label: 'Düşük', color: 'oklch(0.78 0.18 160)', textClass: 'text-emerald-400' },"
+  },
+  {
+    "file": "lib\\optionStrategyData.ts",
+    "line": 529,
+    "content": "HIGH: { label: 'Yüksek', color: 'oklch(0.65 0.22 25)', textClass: 'text-red-400' },"
+  },
+  {
+    "file": "lib\\optionStrategyData.ts",
+    "line": 530,
+    "content": "VERY_HIGH: { label: 'Çok Yüksek', color: 'oklch(0.55 0.25 25)', textClass: 'text-red-600' },"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 72,
+    "content": "sector: 'AI Yarı İletken',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 102,
+    "content": "'AI özel çip geliri Q1\\'de +50% büyüme beklentisi',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 103,
+    "content": "'Deloitte: 2026\\'da AI çip geliri ~$500B tahmin',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 104,
+    "content": "'SOXX sektör lideri konumu korunuyor',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 105,
+    "content": "'B of A Securities Şubat\\'ta Neutral\\'den Buy\\'a yükseltti',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 106,
+    "content": "'Barclays Nisan\\'da Equal-Weight\\'ten Overweight\\'e yükseltti',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 107,
+    "content": "'EPS büyüme CAGR 3 yıl: %39'"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 110,
+    "content": "'Analist ortalama hedef fiyatı mevcut fiyatın %25 altında',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 111,
+    "content": "'Yüksek değerleme (P/E premium)',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 112,
+    "content": "'Geçen çeyrekte +18.4% hareket etmişti (yüksek beklenti)'"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 120,
+    "content": "thesis: 'Marvell, AI özel çip (custom ASIC) alanında Broadcom ile birlikte en güçlü konumda. Hyperscaler müşterileri (Amazon, Google, Microsoft) kendi"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 121,
+    "content": "keyMetric: 'AI Gelir Büyümesi',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 130,
+    "content": "sector: 'Siber Güvenlik',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 160,
+    "content": "'Gartner: 2026 siber güvenlik harcaması $244B (+13.5% YoY)',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 161,
+    "content": "'Şirket rehberi: Q1 EPS $1.06-1.07 (konsensüs üstü)',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 162,
+    "content": "'ARR büyümesi Q4\\'te +33% YoY ($6.3B)',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 163,
+    "content": "'Falcon platformu AI entegrasyonu güçleniyor',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 164,
+    "content": "'52 hafta zirvesine yakın (651$) — güçlü momentum',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 165,
+    "content": "'EPS büyüme tahmini: +64.7% gelecek yıl'"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 168,
+    "content": "'RSI 72 — yüksek alım bölgesine yaklaşıyor',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 169,
+    "content": "'Yüksek P/E (forward ~370x)',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 170,
+    "content": "'Rekabetin artması (Palo Alto, SentinelOne)'"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 178,
+    "content": "thesis: 'CrowdStrike, siber güvenlik alanında platform konsolidasyonunun en büyük kazananı. Falcon platformu rakipsiz AI entegrasyonu ile kurumsal müş"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 179,
+    "content": "keyMetric: 'ARR Büyümesi',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 188,
+    "content": "sector: 'AI Yarı İletken',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 218,
+    "content": "'Şirket kendi Q2 rehberi: $22B gelir (+47% YoY) — konsensüs üstü',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 219,
+    "content": "'AI özel çip geliri $100B hedefi açıklandı',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 220,
+    "content": "'EBITDA marjı %68 rekor seviyede',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 221,
+    "content": "'Analist hedef fiyatı 3 ayda %16 yukarı revize edildi',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 223,
+    "content": "'Piyasa değeri $1.98 trilyon — mega cap güvenliği'"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 226,
+    "content": "'Geçen çeyrekte earnings sonrası -11.4% düşmüştü (Aralık 2025)',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 227,
+    "content": "'Yüksek piyasa değeri — büyük hareket için büyük katalizör gerekli',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 236,
+    "content": "thesis: 'Broadcom, hem AI özel çip (ASIC) hem de kurumsal yazılım (VMware) tarafında güçlü pozisyon. Şirketin kendi verdiği Q2 rehberi ($22B) analist "
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 246,
+    "content": "sector: 'Siber Güvenlik',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 276,
+    "content": "'Gelir rehberi 3 ayda %13 yukarı revize edildi',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 278,
+    "content": "'Platformlaşma stratejisi müşteri tutma oranını artırıyor',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 280,
+    "content": "'Gartner siber güvenlik büyümesi sektörel destek sağlıyor'"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 283,
+    "content": "'RSI 78 — aşırı alım bölgesine yakın (\"blow-off\" riski)',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 284,
+    "content": "'Analist hedef fiyatı mevcut fiyatın %12 ALTINDA',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 285,
+    "content": "'\"Haberle sat\" riski yüksek (buy the rumor, sell the news)',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 286,
+    "content": "'Yüksek değerleme premium'"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 294,
+    "content": "thesis: 'PANW güçlü fundamentaller sunuyor ancak teknik tablo endişe verici. RSI 78 ile aşırı alım bölgesine yakın ve analist hedef fiyatı mevcut fiya"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 334,
+    "content": "'Defansif karakter — piyasa volatilitesinde güvenli liman',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 335,
+    "content": "'Üyelik geliri istikrarlı büyüme (+8% YoY)',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 336,
+    "content": "'Son 4 çeyrekte 4/4 beklenti üstü performans',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 337,
+    "content": "'Analist hedef fiyatı %13 upside sunuyor',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 338,
+    "content": "'Tüketici harcamaları dayanıklılığı'"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 341,
+    "content": "'Düşük beta — piyasa rallisinde geride kalabilir',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 342,
+    "content": "'Yüksek P/E (premium değerleme)',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 343,
+    "content": "'Enflasyon baskısı marjları sıkıştırabilir'"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 351,
+    "content": "thesis: 'Costco, belirsizlik dönemlerinde portföy dengesi için ideal defansif pozisyon. Üyelik modeli sayesinde gelir öngörülebilirliği yüksek. Son 4 "
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 352,
+    "content": "keyMetric: 'Üyelik Büyümesi',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 361,
+    "content": "sector: 'AI Sunucu / Donanım',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 391,
+    "content": "'AI sunucu siparişleri $25B yıllık gelir hedefi (FY2026)',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 392,
+    "content": "'Tam yıl geliri rekor $113.5B (+19% YoY)',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 393,
+    "content": "'Analist hedef fiyatı %26 upside sunuyor',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 394,
+    "content": "'AI altyapı talebi güçlü'"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 397,
+    "content": "'Hacim ortalamanın yarısında — \"yorgunluk\" sinyali',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 398,
+    "content": "'EPS beklentisi son çeyrekteki $3.89\\'dan $2.97\\'ye düştü',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 399,
+    "content": "'PC segmenti zayıflığı devam ediyor',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 400,
+    "content": "'Yüksek borç yükü'"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 408,
+    "content": "thesis: 'Dell, AI sunucu talebinden faydalanıyor ancak hacim zayıflığı endişe verici. Fiyat yükselirken hacmin düşmesi \"yorgunluk\" işareti. EPS beklen"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 418,
+    "content": "sector: 'Tasarım Yazılımı',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 448,
+    "content": "'Q1 2026 earnings: +17.5% YoY gelir büyümesi beklenti üstü',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 449,
+    "content": "'AI tasarım araçları (Forma, Fusion) entegrasyonu güçleniyor',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 450,
+    "content": "'Abonelik modeline geçiş tamamlandı — öngörülebilir gelir',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 451,
+    "content": "'Analist hedef fiyatı %12 upside'"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 454,
+    "content": "'IGV (yazılım ETF) bear market baskısı',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 455,
+    "content": "'Momentum zayıf — RSI 45 nötr bölge',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 456,
+    "content": "'Yüksek değerleme yazılım sektörü genelinde baskı altında'"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 464,
+    "content": "thesis: 'Autodesk, AI tasarım araçları ile uzun vadeli büyüme potansiyeli taşıyor ancak kısa vadeli momentum zayıf. Yazılım sektörünün genel baskısı a"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 465,
+    "content": "keyMetric: 'Gelir Büyümesi',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 504,
+    "content": "'Yüksek analist upside potansiyeli (%24)',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 505,
+    "content": "'Gelir büyümesi +26% YoY güçlü',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 509,
+    "content": "'Fiyat -35% (6 ay) — kırılmış momentum',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 510,
+    "content": "'IGV bear market baskısı',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 511,
+    "content": "'Rekabet: Databricks, Google BigQuery güçleniyor',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 512,
+    "content": "'Yüksek değerleme (P/S premium)',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 513,
+    "content": "'Yönetim değişikliği belirsizliği'"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 521,
+    "content": "thesis: 'Snowflake, kırılmış momentum ve zayıf sektörel destek ile earnings öncesi riskli bir pozisyon. Fiyat 6 ayda %35 düşmüş, IGV bear market baskı"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 522,
+    "content": "keyMetric: 'Gelir Büyümesi',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 531,
+    "content": "sector: 'CRM Yazılımı',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 562,
+    "content": "'Agentforce AI platformu lansmanı',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 563,
+    "content": "'Büyük kurumsal müşteri tabanı'"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 566,
+    "content": "'BofA downgrade — sektörel destek yok',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 567,
+    "content": "'Yüksek hacimde düşüş (distribution sinyali)',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 569,
+    "content": "'Gelir büyümesi yavaşlıyor (+7.5% — tarihsel düşük)',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 570,
+    "content": "'Yapay zeka geçişi yavaş ilerliyor'"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 578,
+    "content": "thesis: 'Salesforce, kırılmış momentum ve distribution (kurumsal satış) sinyalleri ile earnings öncesi kaçınılması gereken hisse. Yüksek hacimde fiyat"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 579,
+    "content": "keyMetric: 'Gelir Büyümesi',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 588,
+    "content": "sector: 'Siber Güvenlik',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 618,
+    "content": "'RSI 32 — aşırı satım bölgesi (teknik toparlanma potansiyeli)',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 620,
+    "content": "'Q1 2026 earnings beklenti üstü geçti'"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 623,
+    "content": "'EVP istifası — yönetim belirsizliği',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 624,
+    "content": "'Fiyat -40% (6 ay) — ciddi momentum kaybı',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 626,
+    "content": "'CRWD ve PANW\\'a müşteri kaybı riski',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 627,
+    "content": "'Büyüme yavaşlaması endişesi'"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 635,
+    "content": "thesis: 'Zscaler, içsel sorunlar (EVP istifası) ve kırılmış momentum ile earnings öncesi en riskli hisse. RSI 32 teknik toparlanma potansiyeli sunsa d"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 636,
+    "content": "keyMetric: 'Gelir Büyümesi',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 647,
+    "content": "name: 'AI Yarı İletken',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 655,
+    "content": "name: 'Siber Güvenlik',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 658,
+    "content": "keyDriver: 'AI-destekli tehdit artışı',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 663,
+    "content": "name: 'Bulut Yazılım',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 697,
+    "content": "label: 'Güçlü Al',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 711,
+    "content": "label: 'Nötr',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 725,
+    "content": "label: 'Güçlü Sat',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 732,
+    "content": "label: 'Dikkat — Sıcak',"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 741,
+    "content": "LOW: { label: 'Düşük', textClass: 'text-emerald-400' },"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 743,
+    "content": "HIGH: { label: 'Yüksek', textClass: 'text-orange-400' },"
+  },
+  {
+    "file": "lib\\stockData.ts",
+    "line": 744,
+    "content": "VERY_HIGH: { label: 'Çok Yüksek', textClass: 'text-red-500' },"
+  },
+  {
+    "file": "pages\\Calendar.tsx",
+    "line": 61,
+    "content": "\"Henüz ekonomik takvim snapshot'i bulunmuyor.\","
+  },
+  {
+    "file": "pages\\CpiPpiForecast.tsx",
+    "line": 1187,
+    "content": "\"İkili makro workspace\","
+  },
+  {
+    "file": "pages\\Earnings.tsx",
+    "line": 79,
+    "content": "{ key: \"overview\", labelTr: \"Genel Bakış\", labelEn: \"Overview\", icon: <LayoutDashboard className=\"size-4\" /> },"
+  },
+  {
+    "file": "pages\\Earnings.tsx",
+    "line": 83,
+    "content": "{ key: \"portfolio\", labelTr: \"Portföy\", labelEn: \"Portfolio\", icon: <Wallet className=\"size-4\" /> },"
+  },
+  {
+    "file": "pages\\Earnings.tsx",
+    "line": 220,
+    "content": "TABS.find(tab => tab.key === activeTab)?.labelTr || \"Genel Bakış\","
+  },
+  {
+    "file": "pages\\MarketFlash.tsx",
+    "line": 623,
+    "content": "text.includes(\"yüksek\") ||"
+  },
+  {
+    "file": "pages\\MarketFlash.tsx",
+    "line": 633,
+    "content": "text.includes(\"düşük\") ||"
+  },
+  {
+    "file": "scanner\\components\\EnterpriseReport.tsx",
+    "line": 110,
+    "content": "\"Pozisyon açtığınızda burada DTE, Delta, Theta decay ve çıkış planı görünecek\","
+  },
+  {
+    "file": "scanner\\components\\OptionStrategyPanel.tsx",
+    "line": 195,
+    "content": "nameTr: \"Ayı Call Spread'i (Kredi)\","
+  },
+  {
+    "file": "scanner\\components\\OptionStrategyPanel.tsx",
+    "line": 228,
+    "content": "nameTr: \"Boğa Put Spread'i (Kredi)\","
+  },
+  {
+    "file": "scanner\\components\\OptionStrategyPanel.tsx",
+    "line": 258,
+    "content": "nameTr: \"Boğa Call Spread'i (Debit)\","
+  },
+  {
+    "file": "scanner\\components\\ScannerPage.tsx",
+    "line": 131,
+    "content": "{t(\"Günün ilk yarım saatinde en güçlü momentum gösteren hisseler\")}"
+  },
+  {
+    "file": "scanner\\components\\ScannerPage.tsx",
+    "line": 153,
+    "content": "{t(\"Taranıyor...\")} ({scanProgress.scanned}/{scanProgress.total})"
+  },
+  {
+    "file": "scanner\\components\\ScannerPage.tsx",
+    "line": 271,
+    "content": "{filtered.length} {t(\"hisse eşleşti\")} | {t(\"Sonuçlar\")}"
+  },
+  {
+    "file": "scanner\\components\\ScannerPage.tsx",
+    "line": 287,
+    "content": "{ key: \"priceChangePct\" as keyof StockResult, label: t(\"Değişim\") },"
+  },
+  {
+    "file": "scanner\\components\\ScannerPage.tsx",
+    "line": 290,
+    "content": "{ key: \"confidenceScore\" as keyof StockResult, label: t(\"Güven\") },"
+  },
+  {
+    "file": "scanner\\components\\ScannerPage.tsx",
+    "line": 374,
+    "content": "<p>{t(\"Eşleşen hisse bulunamadı\")}</p>"
+  },
+  {
+    "file": "scanner\\components\\ScannerPage.tsx",
+    "line": 375,
+    "content": "<p className=\"mt-1 text-sm\">{t(\"Filtreleri genişletmeyi dene\")}</p>"
+  },
+  {
+    "file": "scanner\\components\\ScannerPage.tsx",
+    "line": 387,
+    "content": "<p className=\"text-[10px] text-muted-foreground\">{t(\"Güncel Fiyat\")}</p>"
+  },
+  {
+    "file": "scanner\\components\\ScannerPage.tsx",
+    "line": 391,
+    "content": "<p className=\"text-[10px] text-muted-foreground\">{t(\"Günlük Değişim\")}</p>"
+  },
+  {
+    "file": "scanner\\components\\ScannerPage.tsx",
+    "line": 408,
+    "content": "{t(\"Skor Açıklamaları\")}"
+  },
+  {
+    "file": "scanner\\lib\\advancedOptions.ts",
+    "line": 54,
+    "content": "\"Fiyat hedefe yakın. ATM seçmek en yüksek delta ve en iyi risk/ödül dengesi sağlar.\","
+  },
+  {
+    "file": "scanner\\lib\\advancedOptions.ts",
+    "line": 72,
+    "content": "\"Hedefe %2-4 mesafe var. Hafif OTM prim maliyetini düşürür, hâlâ güçlü delta sağlar.\","
+  },
+  {
+    "file": "scanner\\lib\\advancedOptions.ts",
+    "line": 90,
+    "content": "\"Hedef uzak. Agresif OTM ucuz prim sunar ama kazanma olasılığı daha düşüktür.\","
+  },
+  {
+    "file": "scanner\\lib\\advancedOptions.ts",
+    "line": 113,
+    "content": "\"Yüksek volatilite rejimi. Uzun vade seçerek theta kaybını sınırlayın ve fırsat penceresini genişletin.\","
+  },
+  {
+    "file": "scanner\\lib\\advancedOptions.ts",
+    "line": 126,
+    "content": "\"Düşük volatilite rejimi. Kısa vade ile gamma'dan faydalanın; hareket beklentisi yüksek.\","
+  },
+  {
+    "file": "scanner\\lib\\advancedOptions.ts",
+    "line": 139,
+    "content": "\"Hafta ortası/sonu yaklaştığında bir sonraki haftanın sonuna kadar vade seçin.\","
+  },
+  {
+    "file": "scanner\\lib\\advancedPattern.ts",
+    "line": 74,
+    "content": "? \"Düşük Volatilite Rejimi\""
+  },
+  {
+    "file": "scanner\\lib\\advancedPattern.ts",
+    "line": 76,
+    "content": "? \"Yüksek Volatilite Rejimi\""
+  },
+  {
+    "file": "scanner\\lib\\advancedPattern.ts",
+    "line": 137,
+    "content": "\"Salı\","
+  },
+  {
+    "file": "scanner\\lib\\advancedPattern.ts",
+    "line": 138,
+    "content": "\"Çarşamba\","
+  },
+  {
+    "file": "scanner\\lib\\advancedPattern.ts",
+    "line": 139,
+    "content": "\"Perşembe\","
+  },
+  {
+    "file": "scanner\\lib\\advancedPattern.ts",
+    "line": 179,
+    "content": "const idx = [\"Pazar\", \"Pazartesi\", \"Salı\", \"Çarşamba\", \"Perşembe\", \"Cuma\"].indexOf(d.day);"
+  },
+  {
+    "file": "scanner\\lib\\advancedPattern.ts",
+    "line": 269,
+    "content": "if (sectorBonus >= 10) factors.push(\"Sektör ortalamasının 1.5σ üzerinde (+10)\");"
+  },
+  {
+    "file": "scanner\\lib\\advancedPattern.ts",
+    "line": 270,
+    "content": "else if (sectorBonus >= 5) factors.push(\"Sektörün üzerinde (+5)\");"
+  },
+  {
+    "file": "scanner\\lib\\browserTrainer.ts",
+    "line": 333,
+    "content": "const dayNames = [\"Pzt\", \"Sal\", \"Çar\", \"Per\", \"Cum\", \"Cmt\", \"Paz\"];"
+  },
+  {
+    "file": "scanner\\lib\\catalystAnalyzer.ts",
+    "line": 193,
+    "content": "DILUTION: \"Sermaye artırımı / Hisse arzı — Fiyat baskısı riski\","
+  },
+  {
+    "file": "scanner\\lib\\catalystAnalyzer.ts",
+    "line": 194,
+    "content": "REGULATORY_RISK: \"Düzenleyici risk — Yasal engel olabilir\","
+  },
+  {
+    "file": "scanner\\lib\\catalystAnalyzer.ts",
+    "line": 195,
+    "content": "EARNINGS_MISS: \"Bilanço hayal kırıklığı — Beklentilerin altında\","
+  },
+  {
+    "file": "scanner\\lib\\catalystAnalyzer.ts",
+    "line": 197,
+    "content": "SEC_INVESTIGATION: \"SEC soruşturması — Ciddi yasal risk\","
+  },
+  {
+    "file": "scanner\\lib\\catalystAnalyzer.ts",
+    "line": 198,
+    "content": "DEBT_CONCERN: \"Borç endişesi — Finansal zayıflık\","
+  },
+  {
+    "file": "scanner\\lib\\catalystAnalyzer.ts",
+    "line": 199,
+    "content": "EXECUTIVE_SELL: \"Yönetici satışı — Güvensizlik sinyali\","
+  },
+  {
+    "file": "scanner\\lib\\catalystAnalyzer.ts",
+    "line": 200,
+    "content": "LAWSUIT: \"Dava — Potansiyel mali yükümlülük\","
+  },
+  {
+    "file": "scanner\\lib\\catalystAnalyzer.ts",
+    "line": 201,
+    "content": "GUIDANCE_CUT: \"Hedef düşürme — Şirket kötümser\","
+  },
+  {
+    "file": "scanner\\lib\\catalystAnalyzer.ts",
+    "line": 202,
+    "content": "INSIDER_SELLING: \"İçeriden yoğun satış — Yönetim kaçıyor\","
+  },
+  {
+    "file": "scanner\\lib\\consistencyReport.ts",
+    "line": 505,
+    "content": "wr.isConsistent ? \"Aylık performans tutarlı.\" : \"Aylık performans dalgalanmaları mevcut.\""
+  },
+  {
+    "file": "scanner\\lib\\consistencyReport.ts",
+    "line": 531,
+    "content": "\"Momentum skoru ile P&L arasında zayıf ilişki. Faktör ağırlıklarını yeniden kalibre edin.\","
+  },
+  {
+    "file": "scanner\\lib\\consistencyReport.ts",
+    "line": 550,
+    "content": "\"Sharpe ratio 1'in altında. TP/SL oranını iyileştirmek için TP %'sini artırın veya SL %'sini düşürün.\","
+  },
+  {
+    "file": "scanner\\lib\\consistencyReport.ts",
+    "line": 557,
+    "content": "\"Risk of ruin yüksek. Pozisyon büyüklüğünü azaltın veya daha katı entry kriterleri uygulayın.\","
+  },
+  {
+    "file": "scanner\\lib\\consistencyReport.ts",
+    "line": 563,
+    "content": "\"Raporu periyodik olarak (ayda bir) çalıştırarak sistem parametrelerinin hâlâ optimal olduğunu doğrulayın.\","
+  },
+  {
+    "file": "scanner\\lib\\earningsMomentum.ts",
+    "line": 311,
+    "content": "reasons.push(`Gap-up: %${gapPct.toFixed(2)} — ${gapPct >= 1 && gapPct <= 4 ? \"İdeal aralık\" : gapPct > 8 ? \"Fazla geniş, fade riski\" : \"Kabul edilebil"
+  },
+  {
+    "file": "scanner\\lib\\earningsMomentum.ts",
+    "line": 312,
+    "content": "reasons.push(`RVOL: ${rvol.toFixed(1)}x — ${rvol >= 2 ? \"Hacim patlaması onaylıyor\" : \"Hacim zayıf\"}`);"
+  },
+  {
+    "file": "scanner\\lib\\earningsMomentum.ts",
+    "line": 313,
+    "content": "reasons.push(`Gün içi devam: ${continuationPct >= 0 ? \"+\" : \"\"}${continuationPct.toFixed(2)}% — ${continuationPct > 0 ? \"Momentum güçlü\" : \"Erken ters"
+  },
+  {
+    "file": "scanner\\lib\\earningsMomentum.ts",
+    "line": 314,
+    "content": "reasons.push(`Retention: %${retention.toFixed(2)} geri çekilme — ${retention < 1 ? \"Güçlü tutma\" : retention < 3 ? \"Normal\" : \"Zayıf\"}`);"
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 27,
+    "content": "riskLevel: \"DÜŞÜK\" | \"ORTA\" | \"YÜKSEK\";"
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 76,
+    "content": "riskLevel: \"YÜKSEK\","
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 77,
+    "content": "maxProfit: \"Sınırsız\","
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 78,
+    "content": "maxLoss: \"Ödenen prim\","
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 80,
+    "content": "setup: \"ITM/ATM call alın\","
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 81,
+    "content": "whenToUse: [\"Güçlü yükseliş (>3%)\", \"Yüksek momentum\", \"Düşük IV (ucuz prim)\"],"
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 82,
+    "content": "pros: [\"Sınırsız kazanç\", \"Basit\", \"Kaldıraç\"],"
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 83,
+    "content": "cons: [\"Zaman aşımı\", \"Yüksek IV = pahalı prim\", \"Tek yönlü\"],"
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 94,
+    "content": "setup: \"ATM call al, OTM call sat (1 strike yukarı)\","
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 95,
+    "content": "whenToUse: [\"Orta yükseliş (1-3%)\", \"Yüksek IV ortamında\", \"Prim maliyetini düşür\"],"
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 96,
+    "content": "pros: [\"Düşük maliyet\", \"Risk sınırlı\", \"IV crush dostu\"],"
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 97,
+    "content": "cons: [\"Kazanç sınırlı\", \"İki komisyon\"],"
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 104,
+    "content": "riskLevel: \"DÜŞÜK\","
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 107,
+    "content": "breakeven: \"Üst strike - net prim\","
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 109,
+    "content": "whenToUse: [\"Hafif yükseliş/yatay\", \"Prim geliri\", \"Yüksek IV\"],"
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 110,
+    "content": "pros: [\"Prim geliri\", \"Yüksek kazanma olasılığı\", \"IV crush'dan fayda\"],"
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 111,
+    "content": "cons: [\"Sınırlı kazanç\", \"Margin gerekebilir\"],"
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 118,
+    "content": "riskLevel: \"YÜKSEK\","
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 119,
+    "content": "maxProfit: \"Sınırsız (her yön)\","
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 122,
+    "content": "setup: \"Aynı strike'da call + put al\","
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 123,
+    "content": "whenToUse: [\"Büyük hareket bekleniyor\", \"Yön net değil\", \"Kazanç öncesi\"],"
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 124,
+    "content": "pros: [\"Yön bağımsız\", \"Büyük hareketten fayda\"],"
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 125,
+    "content": "cons: [\"Çift prim\", \"Zaman aşımı hızlı\", \"Çok büyük hareket şart\"],"
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 169,
+    "content": "riskWarnings.push(dteCheck.warning || \"Vade kontrolü engeli\");"
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 170,
+    "content": "riskWarnings.push(\"Yeni pozisyon AÇMA — Vade çok kısa\");"
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 184,
+    "content": "let confidence = \"DÜŞÜK\";"
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 185,
+    "content": "if (stock.score >= 75) confidence = \"YÜKSEK\";"
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 245,
+    "content": "nameTr: \"BEKLE — Vade Uygun Değil\","
+  },
+  {
+    "file": "scanner\\lib\\optionsStrategies.ts",
+    "line": 247,
+    "content": "riskLevel: \"YÜKSEK\","
+  },
+  {
+    "file": "scanner\\lib\\optionsTypes.ts",
+    "line": 221,
+    "content": "action: string;       // \"KAPAT\", \"KAR REALİZE\", \"ROLL\", \"HEDGE\""
+  },
+  {
+    "file": "scanner\\lib\\optionsTypes.ts",
+    "line": 241,
+    "content": "ifFails: string;      // \"IV spike + put skew artışı\""
+  },
+  {
+    "file": "scanner\\lib\\patternEngine.ts",
+    "line": 289,
+    "content": "factors.push(\"✓ Açılış momentumu geçmiş devam günleri ortalaması üzerinde\");"
+  },
+  {
+    "file": "scanner\\lib\\patternEngine.ts",
+    "line": 292,
+    "content": "factors.push(\"△ Açılış momentumu minimum eşik üzerinde\");"
+  },
+  {
+    "file": "scanner\\lib\\patternEngine.ts",
+    "line": 294,
+    "content": "factors.push(\"✗ Açılış momentumu düşük\");"
+  },
+  {
+    "file": "scanner\\lib\\patternEngine.ts",
+    "line": 301,
+    "content": "factors.push(\"✓ Hacim geçmiş devam günleri ortalaması üzerinde\");"
+  },
+  {
+    "file": "scanner\\lib\\patternEngine.ts",
+    "line": 304,
+    "content": "factors.push(\"△ Hacim minimum eşik üzerinde\");"
+  },
+  {
+    "file": "scanner\\lib\\patternEngine.ts",
+    "line": 306,
+    "content": "factors.push(\"✗ Hacim düşük\");"
+  },
+  {
+    "file": "scanner\\lib\\patternEngine.ts",
+    "line": 316,
+    "content": "factors.push(\"△ RSI kabul edilebilir aralıkta\");"
+  },
+  {
+    "file": "scanner\\lib\\patternEngine.ts",
+    "line": 318,
+    "content": "factors.push(\"✗ RSI optimal aralık dışında\");"
+  },
+  {
+    "file": "scanner\\lib\\patternEngine.ts",
+    "line": 325,
+    "content": "factors.push(\"✓ Güçlü VWAP üzeri pozisyon\");"
+  },
+  {
+    "file": "scanner\\lib\\patternEngine.ts",
+    "line": 328,
+    "content": "factors.push(\"△ VWAP üzerinde\");"
+  },
+  {
+    "file": "scanner\\lib\\patternEngine.ts",
+    "line": 330,
+    "content": "factors.push(\"✗ VWAP altında\");"
+  },
+  {
+    "file": "scanner\\lib\\patternEngine.ts",
+    "line": 349,
+    "content": "factors.push(\"✓ Yüksek momentum skoru\");"
+  },
+  {
+    "file": "scanner\\lib\\patternEngine.ts",
+    "line": 354,
+    "content": "factors.push(\"✗ Düşük momentum skoru\");"
+  },
+  {
+    "file": "scanner\\lib\\patternEngine.ts",
+    "line": 366,
+    "content": "recommendation = \"GÜÇLÜ AL / CALL SPREAD - Devam etme olasılığı yüksek\";"
+  },
+  {
+    "file": "scanner\\lib\\patternEngine.ts",
+    "line": 368,
+    "content": "recommendation = \"NÖTR / KORUNMALI CALL - Dikkatli takip edin\";"
+  },
+  {
+    "file": "scanner\\lib\\patternEngine.ts",
+    "line": 370,
+    "content": "recommendation = \"BEKLE / İZLE - Sinyal yetersiz\";"
+  },
+  {
+    "file": "scanner\\lib\\queryEngine.ts",
+    "line": 101,
+    "content": "if ([\"SORGULA\", \"EN İYİ\", \"EN IYI\", \"TOP\", \"BEST\", \"LISTELE\"].includes(trimmed)) {"
+  },
+  {
+    "file": "scanner\\lib\\queryEngine.ts",
+    "line": 108,
+    "content": ": \"Veritabanında hisse bulunamadı. Önce 'Günlük Tara' çalıştırın.\","
+  },
+  {
+    "file": "scanner\\lib\\queryEngine.ts",
+    "line": 113,
+    "content": "if ([\"İSTATİSTİK\", \"ISTATISTIK\", \"DURUM\", \"STATS\", \"STATUS\"].includes(trimmed)) {"
+  },
+  {
+    "file": "scanner\\lib\\queryEngine.ts",
+    "line": 138,
+    "content": "message: \"Komut anlaşılamadı. 'sorgula', 'AAPL' veya 'istatistik' yazın.\","
+  },
+  {
+    "file": "scanner\\lib\\regimeDetector.ts",
+    "line": 266,
+    "content": "lines.push(`Credit Spread: ${regime.creditSpreadAllowed ? \"✅ İzinli\" : \"❌ YASAK\"}`);"
+  },
+  {
+    "file": "scanner\\lib\\regimeDetector.ts",
+    "line": 267,
+    "content": "lines.push(`Long Premium: ${regime.longPremiumAllowed ? \"✅ İzinli\" : \"❌ YASAK\"}`);"
+  },
+  {
+    "file": "scanner\\lib\\sanityGate.ts",
+    "line": 11,
+    "content": "/** Bir değerin \"sayısal ve güvenli\" olup olmadığını kontrol eder */"
+  },
+  {
+    "file": "scanner\\lib\\signalModel.ts",
+    "line": 106,
+    "content": "- \"Modeli Eğit\" butonu ile gerçek verilerle eğitin`;"
+  },
+  {
+    "file": "scanner\\lib\\v3Report.ts",
+    "line": 156,
+    "content": "? \"IV spike + put skew artışı, assignment riski\""
+  },
+  {
+    "file": "scanner\\lib\\v3Report.ts",
+    "line": 207,
+    "content": "action: \"Long premium stratejilerine geç, pozisyon yarıya\","
+  },
+  {
+    "file": "scanner\\lib\\v3Report.ts",
+    "line": 218,
+    "content": "action: \"Çeşitlendir: Farklı sektörlere spread aç\","
+  },
+  {
+    "file": "scanner\\lib\\v3Report.ts",
+    "line": 227,
+    "content": "action: \"IV hareketine hedge ekle veya pozisyon küçült\","
+  },
+  {
+    "file": "scanner\\lib\\v3Report.ts",
+    "line": 237,
+    "content": "action: \"Korku zirvede → Credit spread fırsatı (discipline ile)\","
+  },
+  {
+    "file": "scanner\\lib\\v3Report.ts",
+    "line": 314,
+    "content": "lines.push(\"┃ 🔬 KATMAN 1: PİYASA REJİMİ                                                  ┃\");"
+  },
+  {
+    "file": "scanner\\lib\\v3Report.ts",
+    "line": 319,
+    "content": "lines.push(`   Credit Spread: ${r.creditSpreadAllowed ? \"✅ İzinli\" : \"❌ YASAK\"} | Long Premium: ${r.longPremiumAllowed ? \"✅ İzinli\" : \"❌ YASAK\"}`);"
+  },
+  {
+    "file": "scanner\\lib\\v3Report.ts",
+    "line": 325,
+    "content": "lines.push(\"┃ ⚡ KATMAN 2: AÇIK POZİSYONLAR                                               ┃\");"
+  },
+  {
+    "file": "scanner\\lib\\v3Report.ts",
+    "line": 329,
+    "content": "lines.push(\"   Açık pozisyon yok.\");"
+  },
+  {
+    "file": "scanner\\lib\\v3Report.ts",
+    "line": 341,
+    "content": "lines.push(\"   📋 AKSİYON LİSTESİ:\");"
+  },
+  {
+    "file": "scanner\\lib\\v3Report.ts",
+    "line": 355,
+    "content": "lines.push(\"┃ 🎯 KATMAN 3: YENİ KURULUMLAR                                                ┃\");"
+  },
+  {
+    "file": "scanner\\lib\\v3Report.ts",
+    "line": 359,
+    "content": "lines.push(\"   Uygun kurulum bulunamadı (rejim kısıtlamaları veya düşük skor).\");"
+  },
+  {
+    "file": "scanner\\lib\\v3Report.ts",
+    "line": 376,
+    "content": "lines.push(\"┃ 🛡️ KATMAN 4: PORTFÖY SAĞLIĞI                                               ┃\");"
+  },
+  {
+    "file": "scanner\\lib\\v3Report.ts",
+    "line": 392,
+    "content": "lines.push(`      ${pr.stressTest.withinLimits ? \"✅ Limit içinde\" : \"🚨 LİMİT AŞILDI\"}`);"
+  },
+  {
+    "file": "scanner\\lib\\v3Report.ts",
+    "line": 396,
+    "content": "lines.push(\"   Korelasyon Uyarıları:\");"
+  },
+  {
+    "file": "scanner\\lib\\v3Report.ts",
+    "line": 405,
+    "content": "lines.push(\"┃ 📌 KRİTİK ÖNCELİKLER                                                        ┃\");"
+  },
+  {
+    "file": "scanner\\lib\\varEngine.ts",
+    "line": 194,
+    "content": "{ name: \"1987 Crash (Black Monday)\", spyMove: -20.0, vixMove: +300, ivSpike: +150, description: \"Tek günde %20 düşüş, VIX 150+'ye çıkış\" },"
+  },
+  {
+    "file": "scanner\\lib\\varEngine.ts",
+    "line": 195,
+    "content": "{ name: \"2008 Lehman\", spyMove: -8.0, vixMove: +150, ivSpike: +80, description: \"Sistemik risk, kredi piyasası donması\" },"
+  },
+  {
+    "file": "scanner\\lib\\varEngine.ts",
+    "line": 196,
+    "content": "{ name: \"2020 COVID Crash\", spyMove: -12.0, vixMove: +200, ivSpike: +100, description: \"Pandimik şok, 34 günde %34 düşüş\" },"
+  },
+  {
+    "file": "scanner\\lib\\varEngine.ts",
+    "line": 197,
+    "content": "{ name: \"2022 Inflation Shock\", spyMove: -5.0, vixMove: +80, ivSpike: +50, description: \"Fed agresif sıkılaştırma\" },"
+  },
+  {
+    "file": "scanner\\lib\\varEngine.ts",
+    "line": 198,
+    "content": "{ name: \"Flash Crash 2010\", spyMove: -9.0, vixMove: +100, ivSpike: +60, description: \"Algo-driven ani çöküş, 15 dk içinde\" },"
+  }
+]

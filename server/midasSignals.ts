@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { execSync } from "node:child_process";
 import type {
   MidasActionSignal,
   MidasPipelineMetadata,
@@ -307,6 +308,28 @@ export function createMidasSignalsSyncService(): MidasSignalsSyncService {
     };
   }
 
+  function runAlpacaFallback(outputPath: string): boolean {
+    try {
+      const scriptPath = path.resolve(process.cwd(), "scripts", "midas_alpaca_pipeline.py");
+      if (!fs.existsSync(scriptPath)) {
+        console.log("[Midas Alpaca Fallback] Script not found, skipping.");
+        return false;
+      }
+      const pythonCmd = process.platform === "win32" ? "py" : "python3";
+      console.log(`[Midas Alpaca Fallback] Running ${pythonCmd} midas_alpaca_pipeline.py...`);
+      execSync(`"${pythonCmd}" "${scriptPath}" --output "${outputPath}" --mode default`, {
+        cwd: process.cwd(),
+        timeout: 180000,
+        stdio: "pipe",
+      });
+      console.log("[Midas Alpaca Fallback] Completed successfully.");
+      return true;
+    } catch (e) {
+      console.error("[Midas Alpaca Fallback] Failed:", e instanceof Error ? e.message : String(e));
+      return false;
+    }
+  }
+
   function attachPipeline(snapshot: MidasSignalsData) {
     return {
       ...snapshot,
@@ -316,12 +339,22 @@ export function createMidasSignalsSyncService(): MidasSignalsSyncService {
 
   async function refresh(options: RefreshOptions = {}) {
     const { configuredSourceFile, candidates } = getCurrentSourceConfig();
-    const locatedSource = locateSourceFile(candidates);
+    let locatedSource = locateSourceFile(candidates);
     lastAttemptAt = new Date().toISOString();
+
+    // Alpaca fallback: if source file is missing or signals are empty, trigger Alpaca pipeline
+    let alpacaGenerated = false;
+    if (!locatedSource) {
+      const fallbackPath = path.resolve(process.cwd(), "midas_signals.json");
+      if (runAlpacaFallback(fallbackPath)) {
+        locatedSource = locateSourceFile(candidates);
+        alpacaGenerated = true;
+      }
+    }
 
     if (!locatedSource) {
       lastError =
-        "Midas pipeline source file not found. Set MIDAS_PIPELINE_SOURCE_FILE or generate midas_signals.json in the expected workspace.";
+        "Midas pipeline source file not found and Alpaca fallback failed. Set MIDAS_PIPELINE_SOURCE_FILE or generate midas_signals.json.";
       status = currentSnapshot ? "stale" : "error";
       usingFallback = false;
 
@@ -336,7 +369,7 @@ export function createMidasSignalsSyncService(): MidasSignalsSyncService {
     lastSourceModifiedAt = locatedSource.modifiedAtIso;
     usingFallback = Boolean(
       configuredSourceFile && configuredSourceFile !== locatedSource.filePath
-    );
+    ) || alpacaGenerated;
 
     if (
       !options.force &&
@@ -359,6 +392,24 @@ export function createMidasSignalsSyncService(): MidasSignalsSyncService {
 
       if (!normalized) {
         throw new Error("Midas signal payload could not be normalized.");
+      }
+
+      // If signals array is empty, try Alpaca fallback once
+      if (normalized.signals.length === 0) {
+        const fallbackPath = path.resolve(process.cwd(), "midas_signals.json");
+        if (runAlpacaFallback(fallbackPath)) {
+          const reRead = fs.readFileSync(fallbackPath, "utf8");
+          const reParsed = JSON.parse(reRead) as unknown;
+          const reNormalized = normalizeMidasSignalsData(reParsed, new Date().toISOString());
+          if (reNormalized && reNormalized.signals.length > 0) {
+            lastKnownMtimeMs = locatedSource.mtimeMs;
+            lastSyncedAt = new Date().toISOString();
+            lastError = null;
+            status = "ok";
+            currentSnapshot = attachPipeline(reNormalized);
+            return currentSnapshot;
+          }
+        }
       }
 
       lastKnownMtimeMs = locatedSource.mtimeMs;

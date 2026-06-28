@@ -1,0 +1,1 @@
+{"action":"evaluate","args":{"code":"(()=>{return JSON.stringify({title:document.title,url:window.location.href,bodyLen:document.body.innerHTML.length,hasTable:!!document.querySelector('table'),divCount:document.querySelectorAll('div').length,firstDivClass:document.querySelector('div')?document.querySelector('div').className:null});})()"},"session":"midas-technical-data"}

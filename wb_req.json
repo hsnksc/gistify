@@ -1,0 +1,1 @@
+{"action":"evaluate","args":{"code":"(()=>{const rows=document.querySelectorAll('[data-slot=\"split-table-row\"]');return JSON.stringify({rowCount:rows.length,firstRowText:rows[0]?rows[0].textContent.substring(0,200):null});})()"},"session":"midas-technical-data"}
