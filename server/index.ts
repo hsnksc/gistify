@@ -59,6 +59,7 @@ import {
   getDailyReportSourcePackages,
   getViewerDailyReports,
 } from "./services/flowService";
+import { createEarningsRouter } from "./routes/earnings";
 import { createFlowCommentsRouter } from "./routes/flow/comments";
 import { createFlowReportsRouter } from "./routes/flow/reports";
 import { createFlowSourcesRouter } from "./routes/flow/sources";
@@ -77,10 +78,7 @@ import {
 import { createMidasSignalsSyncService } from "./midasSignals";
 import { createCpiPpiForecastSyncService } from "./cpiPpiForecast";
 import { createCalendarSyncService } from "./calendarSync";
-import {
-  createEarningsStrategySyncService,
-  buildEarningsApiResponse,
-} from "./earningsStrategy";
+import { createEarningsStrategySyncService } from "./earningsStrategy";
 import {
   generateOpenAiImage,
   isOpenAiImageStudioConfigured,
@@ -406,7 +404,7 @@ function isSecureRequest(req: express.Request) {
   return req.secure || forwardedProto.split(",")[0] === "https";
 }
 
-function setPrivateNoStore(res: express.Response) {
+export function setPrivateNoStore(res: express.Response) {
   res.setHeader("Cache-Control", "private, no-store, max-age=0");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Vary", "Cookie");
@@ -551,7 +549,7 @@ function addDays(baseDate: Date, days: number) {
   return next;
 }
 
-function normalizeString(value: unknown) {
+export function normalizeString(value: unknown) {
   if (typeof value !== "string") {
     return "";
   }
@@ -3774,72 +3772,7 @@ async function startServer() {
     res.status(200).json(snapshot);
   });
 
-  app.get("/api/earnings/strategy", (_req, res) => {
-    setPrivateNoStore(res);
-
-    const snapshot = earningsStrategySync.getSnapshot();
-    const pipeline = earningsStrategySync.getPipeline();
-    const response = buildEarningsApiResponse(snapshot, pipeline);
-
-    if (!snapshot) {
-      res.status(503).json(response);
-      return;
-    }
-
-    res.status(200).json(response);
-  });
-
-  app.get("/api/earnings/download", async (_req, res) => {
-    const format = normalizeString(_req.query.format);
-    const folder =
-      earningsStrategySync.getPipeline().sourceFolder ||
-      path.resolve(
-        process.cwd(),
-        "earningreport",
-        "Kimi_Agent_ Option Strategy"
-      );
-
-    if (!fs.existsSync(folder)) {
-      res.status(503).json({ error: "Earnings report folder not found." });
-      return;
-    }
-
-    const extension = format === "docx" ? ".docx" : ".md";
-    const entries = fs.readdirSync(folder, { withFileTypes: true });
-    let latest: { filePath: string; mtimeMs: number } | null = null;
-
-    for (const entry of entries) {
-      if (!entry.isFile()) continue;
-      if (!entry.name.toLowerCase().endsWith(extension)) continue;
-      if (!/Earnings_Opsiyon_Master_Stratejisi/i.test(entry.name)) continue;
-
-      const filePath = path.join(folder, entry.name);
-      const stats = fs.statSync(filePath);
-      if (!latest || stats.mtimeMs > latest.mtimeMs) {
-        latest = { filePath, mtimeMs: stats.mtimeMs };
-      }
-    }
-
-    if (!latest) {
-      res
-        .status(404)
-        .json({
-          error: `No earnings report found for format ${format || "md"}.`,
-        });
-      return;
-    }
-
-    if (!fs.existsSync(latest.filePath)) {
-      res
-        .status(404)
-        .json({
-          error: `Report file not found: ${path.basename(latest.filePath)}`,
-        });
-      return;
-    }
-
-    res.download(latest.filePath, path.basename(latest.filePath));
-  });
+  app.use("/api/earnings", createEarningsRouter(earningsStrategySync));
 
   app.get("/api/marketflash", (_req, res) => {
     setPrivateNoStore(res);
