@@ -60,8 +60,10 @@ import {
   getViewerDailyReports,
 } from "./services/flowService";
 import { createCalendarRouter } from "./routes/calendar";
+import { createCpiPpiRouter } from "./routes/cpiPpi";
 import { createEarningsRouter } from "./routes/earnings";
 import { createMarketFlashRouter } from "./routes/marketflash";
+import { createMidasRouter } from "./routes/midas";
 import { createFlowCommentsRouter } from "./routes/flow/comments";
 import { createFlowReportsRouter } from "./routes/flow/reports";
 import { createFlowSourcesRouter } from "./routes/flow/sources";
@@ -1222,7 +1224,7 @@ function getReportAdminRequestSecret(req: express.Request) {
   return normalizeString(req.header("x-gistify-admin-secret"));
 }
 
-function isWeeklyReportAdminRequest(req: express.Request) {
+export function isWeeklyReportAdminRequest(req: express.Request) {
   const adminEmail = getWeeklyReportAdminEmail();
   const sessionUser = getSessionUser(req);
 
@@ -1239,7 +1241,10 @@ function isWeeklyReportAdminRequest(req: express.Request) {
   return safeEqual(configuredSecret, requestSecret);
 }
 
-function requireWeeklyReportAdmin(req: express.Request, res: express.Response) {
+export function requireWeeklyReportAdmin(
+  req: express.Request,
+  res: express.Response
+) {
   if (isWeeklyReportAdminRequest(req)) {
     return true;
   }
@@ -3729,62 +3734,16 @@ async function startServer() {
     res.status(200).json({ report });
   });
 
-  app.get("/api/midas/signals", (_req, res) => {
-    setPrivateNoStore(res);
-
-    const snapshot = midasSignalsSync.getSnapshot();
-    if (!snapshot) {
-      res.status(503).json({
-        error: "Midas signal snapshot hazir degil.",
-        pipeline: midasSignalsSync.getPipeline(),
-      });
-      return;
-    }
-
-    res.status(200).json(snapshot);
-  });
-
-  app.get("/api/cpi-ppi/forecast", (_req, res) => {
-    setPrivateNoStore(res);
-
-    const snapshot = cpiPpiForecastSync.getSnapshot();
-    if (!snapshot) {
-      res.status(503).json({
-        error: "CPI/PPI forecast snapshot hazir degil.",
-        pipeline: cpiPpiForecastSync.getPipeline(),
-      });
-      return;
-    }
-
-    res.status(200).json(snapshot);
-  });
-
   const marketFlashStaticPath =
     process.env.NODE_ENV === "production"
       ? path.resolve(__dirname, "public")
       : path.resolve(__dirname, "..", "dist", "public");
 
   app.use("/api/calendar", createCalendarRouter(calendarSync));
+  app.use("/api/cpi-ppi", createCpiPpiRouter(cpiPpiForecastSync));
   app.use("/api/earnings", createEarningsRouter(earningsStrategySync));
   app.use("/api/marketflash", createMarketFlashRouter(marketFlashStaticPath));
-
-  app.post("/api/admin/midas/signals/refresh", async (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    const snapshot = await midasSignalsSync.refresh({ force: true });
-    if (!snapshot) {
-      res.status(503).json({
-        error: "Midas signal snapshot yenilenemedi.",
-        pipeline: midasSignalsSync.getPipeline(),
-      });
-      return;
-    }
-
-    res.status(200).json(snapshot);
-  });
+  app.use("/api/midas", createMidasRouter(midasSignalsSync));
 
   app.get("/api/admin/daily-report-sources", (req, res) => {
     setPrivateNoStore(res);
