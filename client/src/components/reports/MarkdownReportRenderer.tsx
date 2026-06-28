@@ -94,49 +94,33 @@ export default function MarkdownReportRenderer({
   }
 
   let headingIndex = 0;
+  let firstH1Skipped = false;
 
   return (
     <div className="space-y-6">
-      {sectionMapHeadings.length > 1 ? (
-        <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
-          <div className="flex items-center gap-2">
-            <BookOpen className="size-4 text-emerald-300" />
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-              {copy(language, "Bolum Haritasi", "Section Map")}
-            </p>
-          </div>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {sectionMapHeadings.map(heading => (
-              <a
-                key={heading.id}
-                href={`#${heading.id}`}
-                className="rounded-full border border-border bg-background/65 px-3 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:border-emerald-400/35 hover:text-emerald-300"
-              >
-                {heading.label}
-              </a>
-            ))}
-          </div>
-        </section>
-      ) : null}
-
       <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
         <div className="space-y-4">
           {blocks.map((block, index) => {
             if (block.type === "heading") {
               const id = block.level <= 3 ? headingAnchors[headingIndex++]?.id : undefined;
 
+              if (block.level === 1 && !firstH1Skipped) {
+                firstH1Skipped = true;
+                return null;
+              }
+
               return (
                 <div key={`${block.type}-${index}`} id={id} className="scroll-mt-24">
                   {block.level === 1 ? (
-                    <h2 className="pt-2 text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
+                    <h2 className="pt-2 text-xl font-semibold tracking-tight text-foreground md:text-2xl">
                       {block.text}
                     </h2>
                   ) : block.level === 2 ? (
-                    <h3 className="pt-4 text-xl font-semibold tracking-tight text-foreground md:text-2xl">
+                    <h3 className="pt-4 text-lg font-semibold tracking-tight text-foreground md:text-xl">
                       {block.text}
                     </h3>
                   ) : (
-                    <h4 className="pt-2 text-lg font-semibold text-foreground">
+                    <h4 className="pt-2 text-base font-semibold text-foreground">
                       {block.text}
                     </h4>
                   )}

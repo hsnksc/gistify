@@ -4,7 +4,9 @@ import {
   CalendarRange,
   Clock3,
   Files,
+  Layers3,
   ScrollText,
+  Target,
 } from "lucide-react";
 import MarkdownReportRenderer from "@/components/reports/MarkdownReportRenderer";
 import { copy, type AppLanguage } from "@/lib/i18n";
@@ -143,59 +145,59 @@ export default function ReportPostShell({
 
   return (
     <div className="space-y-6">
-      <section className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
-        <div className="space-y-4">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-full border border-sky-500/25 bg-sky-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
-              {categoryLabel}
-            </span>
-            {sourceKindLabel ? (
-              <span className="rounded-full border border-border bg-background/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                {sourceKindLabel}
+      <section className="rounded-xl border border-sky-500/15 bg-gradient-to-br from-sky-500/8 via-card/95 to-card/95 p-6 shadow-2xl">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="space-y-3 min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="rounded-full border border-sky-500/25 bg-sky-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
+                {categoryLabel}
               </span>
-            ) : null}
+              {sourceKindLabel ? (
+                <span className="rounded-full border border-border bg-background/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  {sourceKindLabel}
+                </span>
+              ) : null}
+            </div>
+
+            <div className="space-y-1">
+              <h2 className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl line-clamp-2">
+                {title}
+              </h2>
+              {subtitle ? (
+                <p className="text-sm font-medium text-sky-200/90 line-clamp-1">
+                  {subtitle}
+                </p>
+              ) : null}
+              {headline ? (
+                <p className="max-w-3xl text-sm leading-7 text-muted-foreground line-clamp-2">
+                  {headline}
+                </p>
+              ) : null}
+            </div>
           </div>
 
-          <div className="space-y-2">
-            <h2 className="text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
-              {title}
-            </h2>
-            {subtitle ? (
-              <p className="text-sm font-medium text-sky-200/90 md:text-[15px]">
-                {subtitle}
-              </p>
-            ) : null}
-            <p className="max-w-4xl text-sm leading-7 text-muted-foreground md:text-[15px]">
-              {headline ||
-                copy(
-                  language,
-                  "Yuklenen kaynak dosya eksiksiz, okunabilir ve tema ile uyumlu bir post akisi halinde gosterilir.",
-                  "The uploaded source file is shown as a complete, readable post aligned with the site theme."
-                )}
-            </p>
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            {sourceLabel ? (
-              <MetaPill
-                icon={Files}
-                label={copy(language, "Kaynak", "Source")}
-                value={sourceLabel}
-              />
-            ) : null}
-            {reportDateLabel ? (
-              <MetaPill
-                icon={CalendarRange}
-                label={copy(language, "Rapor Tarihi", "Report Date")}
-                value={reportDateLabel}
-              />
-            ) : null}
+          <div className="flex flex-col gap-2 lg:items-end lg:shrink-0">
+            <div className="flex flex-wrap gap-2">
+              {sourceLabel ? (
+                <MetaPill
+                  icon={Files}
+                  label={copy(language, "Kaynak", "Source")}
+                  value={sourceLabel}
+                />
+              ) : null}
+              {reportDateLabel ? (
+                <MetaPill
+                  icon={CalendarRange}
+                  label={copy(language, "Tarih", "Date")}
+                  value={reportDateLabel}
+                />
+              ) : null}
+            </div>
             {updatedAtLabel ? (
-              <MetaPill
-                icon={Clock3}
-                label={copy(language, "Yuklenme", "Loaded")}
-                value={updatedAtLabel}
-              />
+              <div className="inline-flex items-center gap-2 text-[11px] text-muted-foreground">
+                <Clock3 className="size-3" />
+                <span>{updatedAtLabel}</span>
+              </div>
             ) : null}
           </div>
         </div>

@@ -454,8 +454,8 @@ export default function EarningReportPostTab({
       subtitle={report.subtitle}
       headline={copy(
         language,
-        "Bu gorunum secili earnings markdown dosyasini gercek verilerle bir post akisina cevirir; setup derinligi, execution plani, portfoy notlari ve tam kaynak icerigi ayni yerde kalir.",
-        "This view turns the selected earnings markdown file into a post flow with real parsed data while keeping setup depth, execution planning, portfolio notes, and the full source document together."
+        "Secili rapordaki setup'lar, strateji kartlari ve teknik metrikler asagida.",
+        "Setups, strategy cards and technical metrics from the selected report are below."
       )}
       reportDateLabel={reportDateLabel || report.reportDate}
       updatedAtLabel={updatedAtLabel}
