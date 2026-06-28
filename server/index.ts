@@ -48,18 +48,12 @@ import {
   isFmpConfigured,
 } from "./adminMarketData";
 import {
-  buildDailyReportRecordFromSource,
   getDailyReportRootPath,
   getFlowReportRootPath,
-  getDailyReportSourcePackage,
-  listDailyReportSourcePackages,
 } from "./dailyReportSources";
-import {
-  getDailyReportSourcePackages,
-  getViewerDailyReports,
-} from "./services/flowService";
 import { createCalendarRouter } from "./routes/calendar";
 import { createCpiPpiRouter } from "./routes/cpiPpi";
+import { createDailyReportsRouter } from "./routes/dailyReports";
 import { createEarningsRouter } from "./routes/earnings";
 import { createEarningReportsRouter } from "./routes/earningReports";
 import { createMarketFlashRouter } from "./routes/marketflash";
@@ -137,10 +131,6 @@ interface WeeklyReportUpsertRequestBody {
 }
 
 interface MomentumReportUpsertRequestBody {
-  report?: unknown;
-}
-
-interface DailyReportUpsertRequestBody {
   report?: unknown;
 }
 
@@ -1165,7 +1155,7 @@ function normalizeDailyReportContent(value: unknown, title: string) {
   } satisfies DailyReportContent;
 }
 
-function normalizeDailyReportRecordInput(
+export function normalizeDailyReportRecordInput(
   value: unknown,
   previousRecord?: DailyReportRecord | null
 ) {
@@ -1278,7 +1268,7 @@ function getViewerWeeklyReports(referenceDate = new Date()) {
   );
 }
 
-function getPublishedDailyReports() {
+export function getPublishedDailyReports() {
   return billingStore
     .listDailyReports()
     .filter(report => report.status === "published");
@@ -3372,27 +3362,6 @@ async function startServer() {
     }
   });
 
-  app.get("/api/daily-reports", (_req, res) => {
-    setPrivateNoStore(res);
-    res.status(200).json({
-      reports: getViewerDailyReports(getPublishedDailyReports()),
-    });
-  });
-
-  app.get("/api/daily-report-sources", (_req, res) => {
-    setPrivateNoStore(res);
-    res.status(200).json({
-      sources: getDailyReportSourcePackages(),
-    });
-  });
-
-  app.get("/api/daily-reports/latest", (_req, res) => {
-    setPrivateNoStore(res);
-    res.status(200).json({
-      report: getViewerDailyReports(getPublishedDailyReports(), 1)[0] || null,
-    });
-  });
-
   app.use(
     "/api/flow-sources",
     createFlowSourcesRouter({
@@ -3462,6 +3431,10 @@ async function startServer() {
 
   app.use("/api/calendar", createCalendarRouter(calendarSync));
   app.use("/api/cpi-ppi", createCpiPpiRouter(cpiPpiForecastSync));
+  app.use(
+    "/api",
+    createDailyReportsRouter(billingStore, getPublishedDailyReports)
+  );
   app.use("/api/earnings", createEarningsRouter(earningsStrategySync));
   app.use("/api/earning-reports", createEarningReportsRouter());
   app.use("/api/marketflash", createMarketFlashRouter(marketFlashStaticPath));
@@ -3472,92 +3445,6 @@ async function startServer() {
     ["/api/watchlist", "/api/me/watchlist"],
     createWatchlistRouter(billingStore)
   );
-
-  app.get("/api/admin/daily-report-sources", (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    res.status(200).json({
-      sources: listDailyReportSourcePackages().map(source => ({
-        id: source.id,
-        folderName: source.folderName,
-        reportDate: source.reportDate,
-        title: source.title,
-        headline: source.headline,
-        author: source.author,
-        coverage: source.coverage,
-        methodology: source.methodology,
-        executiveSummary: source.executiveSummary,
-        sectionFiles: source.sectionFiles,
-        figureFiles: source.figureFiles,
-        openAiFigureFiles: source.openAiFigureFiles,
-        html: source.html,
-        tickerUniverse: source.tickerUniverse,
-        researchFileCount: source.researchFileCount,
-        updatedAt: source.updatedAt,
-        sourceKind: source.sourceKind,
-        contentFormat: source.contentFormat,
-        sourceLabel: source.sourceLabel,
-        assetBasePath: source.assetBasePath,
-      })),
-    });
-  });
-
-  app.get("/api/admin/daily-report-sources/:folderName", (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    const folderName = normalizeString(req.params.folderName);
-    const source = getDailyReportSourcePackage(folderName);
-    if (!source) {
-      res.status(404).json({ error: "Daily report source bulunamadi." });
-      return;
-    }
-
-    res.status(200).json({ source });
-  });
-
-  app.get("/api/admin/daily-reports", (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    res.status(200).json({
-      reports: billingStore.listDailyReports(),
-      latestPublished: billingStore.getLatestPublishedDailyReport(),
-    });
-  });
-
-  app.post("/api/admin/daily-reports", (req, res) => {
-    setPrivateNoStore(res);
-    if (!requireWeeklyReportAdmin(req, res)) {
-      return;
-    }
-
-    const body = (req.body ?? {}) as DailyReportUpsertRequestBody;
-    const rawReport = body.report;
-    const draftSource =
-      rawReport && typeof rawReport === "object"
-        ? (rawReport as Partial<Record<keyof DailyReportRecord, unknown>>)
-        : undefined;
-    const reportId = draftSource ? normalizeString(draftSource.id) : "";
-    const previousRecord = reportId
-      ? billingStore.getDailyReportById(reportId)
-      : null;
-    const report = normalizeDailyReportRecordInput(rawReport, previousRecord);
-
-    billingStore.upsertDailyReport(report);
-    res.status(previousRecord ? 200 : 201).json({
-      report,
-      reports: billingStore.listDailyReports(),
-      latestPublished: billingStore.getLatestPublishedDailyReport(),
-    });
-  });
 
   app.get("/api/reports/weekly", (req, res) => {
     setPrivateNoStore(res);

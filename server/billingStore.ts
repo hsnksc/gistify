@@ -511,6 +511,8 @@ function mapFlowReportCommentRow(
   };
 }
 
+export type BillingStore = ReturnType<typeof createBillingStore>;
+
 export function createBillingStore() {
   const dbPath = getDatabasePath();
   fs.mkdirSync(path.dirname(dbPath), { recursive: true });
