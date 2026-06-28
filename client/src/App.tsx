@@ -1,13 +1,4 @@
-import {
-  Suspense,
-  lazy,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import type { ComponentType } from "react";
+import { lazy, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Activity,
   CalendarDays,
@@ -22,9 +13,9 @@ import {
   Zap,
 } from "lucide-react";
 import LanguageSelector from "@/components/LanguageSelector";
+import { AppRouter } from "@/app/AppRouter";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import LoadingState from "@/components/ui/loading-state";
 import {
   Sheet,
   SheetContent,
@@ -35,8 +26,7 @@ import {
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useIsMobile } from "@/hooks/useMobile";
-import NotFound from "@/pages/NotFound";
-import { Route, Switch, useLocation } from "wouter";
+import { useLocation } from "wouter";
 import {
   APP_LANGUAGE_STORAGE_KEY,
   AppLanguageContext,
@@ -45,48 +35,7 @@ import {
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
-const Landing = lazy(() => import("./pages/Landing"));
-const Home = lazy(() => import("./pages/Home"));
-const ReportsAdmin = lazy(() => import("./pages/ReportsAdmin"));
-const Scanner = lazy(() => import("./pages/Scanner"));
-const DailyReport = lazy(() => import("./pages/DailyReport"));
-const FlowPage = lazy(() => import("./features/flow/pages/FlowPage"));
-const FlowDailyPage = lazy(() => import("./features/flow/pages/FlowDailyPage"));
-const FlowTickerPage = lazy(() => import("./features/flow/pages/FlowTickerPage"));
-const FlowDetailPage = lazy(
-  () => import("./features/flow/pages/FlowDetailPage")
-);
-const ReportsIndexPage = lazy(
-  () => import("./features/flow/pages/ReportsIndexPage")
-);
-const ReportsTickerPage = lazy(
-  () => import("./features/flow/pages/ReportsTickerPage")
-);
-const ReportsDetailPage = lazy(
-  () => import("./features/flow/pages/ReportsDetailPage")
-);
-const ReportsDateDetailPage = lazy(
-  () => import("./features/flow/pages/ReportsDateDetailPage")
-);
-const CpiPpiForecastPage = lazy(() => import("./pages/CpiPpiForecast"));
-const EarningsPage = lazy(() => import("./pages/Earnings"));
-const EarningsCalendarPage = lazy(() => import("./pages/EarningsCalendar"));
-const EarningsStrategiesPage = lazy(() => import("./pages/EarningsStrategies"));
-const EarningsStockDetailPage = lazy(
-  () => import("./pages/EarningsStockDetail")
-);
-const CalendarPage = lazy(async () => {
-  const module = await import("./pages/Calendar");
-  return {
-    default: module.default as ComponentType<{ language: AppLanguage }>,
-  };
-});
-const MarketFlash = lazy(() => import("./pages/MarketFlash"));
 const Pay = lazy(() => import("./pages/Pay"));
-const Pricing = lazy(() => import("./pages/Pricing"));
-const Terms = lazy(() => import("./pages/Terms"));
-const Privacy = lazy(() => import("./pages/Privacy"));
-const Refund = lazy(() => import("./pages/Refund"));
 
 type MembershipPlan = "guest" | "member" | "pro";
 type AccessMode = "managed" | "public";
@@ -169,7 +118,12 @@ type RuntimeTranslationRecord = {
   language: AppLanguage;
 };
 
-const TRANSLATABLE_ATTRIBUTES = ["placeholder", "title", "aria-label", "alt"] as const;
+const TRANSLATABLE_ATTRIBUTES = [
+  "placeholder",
+  "title",
+  "aria-label",
+  "alt",
+] as const;
 type TranslatableAttribute = (typeof TRANSLATABLE_ATTRIBUTES)[number];
 
 function GoogleMark() {
@@ -267,169 +221,6 @@ function workspaceLabel(language: AppLanguage, key: WorkspaceLabelKey) {
     default:
       return "";
   }
-}
-
-function Router({
-  language,
-  onLanguageChange,
-}: {
-  language: AppLanguage;
-  onLanguageChange: (next: AppLanguage) => void;
-}) {
-  return (
-    <Suspense
-      fallback={
-        <div className="px-4 py-8">
-          <LoadingState
-            className="mx-auto max-w-7xl"
-            description={copy(
-              language,
-              "Kazanc stratejisi, momentum, gunluk ve portfoy modulleri baglaniyor.",
-              "The earnings strategy, momentum, daily and portfolio modules are connecting."
-            )}
-            label={copy(language, "Calisma alani yukleniyor", "Loading workspace")}
-          />
-        </div>
-      }
-    >
-      <Switch>
-        <Route path={"/"}>
-          {() => (
-            <Landing language={language} onLanguageChange={onLanguageChange} />
-          )}
-        </Route>
-        <Route path={"/app/admin"}>
-          {() => <ReportsAdmin language={language} />}
-        </Route>
-        <Route path={"/app"}>{() => <Home language={language} />}</Route>
-        <Route path={"/earnings/calendar"}>
-          {() => <EarningsCalendarPage language={language} />}
-        </Route>
-        <Route path={"/earnings/strategies"}>
-          {() => <EarningsStrategiesPage language={language} />}
-        </Route>
-        <Route path={"/earnings/:ticker"}>
-          {params => (
-            <EarningsStockDetailPage
-              language={language}
-              ticker={params.ticker || ""}
-            />
-          )}
-        </Route>
-        <Route path={"/earnings"}>
-          {() => <EarningsPage language={language} />}
-        </Route>
-        <Route path={"/momentum"}>
-          {() => <Scanner language={language} />}
-        </Route>
-        <Route path={"/daily-report"}>
-          {() => <DailyReport language={language} />}
-        </Route>
-        <Route path={"/cpi-ppi"}>
-          {() => <CpiPpiForecastPage language={language} />}
-        </Route>
-        <Route path={"/calendar"}>
-          {() => <CalendarPage language={language} />}
-        </Route>
-        <Route path={"/marketflash"}>
-          {() => <MarketFlash />}
-        </Route>
-        <Route path={"/reports/ticker/:ticker"}>
-          {params => (
-            <ReportsTickerPage
-              language={language}
-              onLanguageChange={onLanguageChange}
-              ticker={params.ticker || ""}
-            />
-          )}
-        </Route>
-        <Route path={"/reports/:ticker/:reportDate"}>
-          {params => (
-            <ReportsDateDetailPage
-              language={language}
-              onLanguageChange={onLanguageChange}
-              reportDate={params.reportDate || ""}
-              ticker={params.ticker || ""}
-            />
-          )}
-        </Route>
-        <Route path={"/reports/:reportId"}>
-          {params => (
-            <ReportsDetailPage
-              language={language}
-              onLanguageChange={onLanguageChange}
-              reportId={params.reportId || ""}
-            />
-          )}
-        </Route>
-        <Route path={"/reports"}>
-          {() => (
-            <ReportsIndexPage
-              language={language}
-              onLanguageChange={onLanguageChange}
-            />
-          )}
-        </Route>
-        <Route path={"/flow/ticker/:ticker"}>
-          {params => (
-            <FlowTickerPage
-              language={language}
-              onLanguageChange={onLanguageChange}
-              ticker={params.ticker || ""}
-            />
-          )}
-        </Route>
-        <Route path={"/flow/daily"}>
-          {() => (
-            <FlowDailyPage
-              language={language}
-              onLanguageChange={onLanguageChange}
-            />
-          )}
-        </Route>
-        <Route path={"/flow/:reportId"}>
-          {params => (
-            <FlowDetailPage
-              language={language}
-              onLanguageChange={onLanguageChange}
-              reportId={params.reportId || ""}
-            />
-          )}
-        </Route>
-        <Route path={"/flow"}>
-          {() => (
-            <FlowPage
-              language={language}
-              onLanguageChange={onLanguageChange}
-            />
-          )}
-        </Route>
-        <Route path={"/scanner"}>{() => <Scanner language={language} />}</Route>
-        <Route path={"/pricing"}>
-          {() => (
-            <Pricing language={language} onLanguageChange={onLanguageChange} />
-          )}
-        </Route>
-        <Route path={"/terms"}>
-          {() => (
-            <Terms language={language} onLanguageChange={onLanguageChange} />
-          )}
-        </Route>
-        <Route path={"/privacy"}>
-          {() => (
-            <Privacy language={language} onLanguageChange={onLanguageChange} />
-          )}
-        </Route>
-        <Route path={"/refund"}>
-          {() => (
-            <Refund language={language} onLanguageChange={onLanguageChange} />
-          )}
-        </Route>
-        <Route path={"/404"} component={NotFound} />
-        <Route component={NotFound} />
-      </Switch>
-    </Suspense>
-  );
 }
 
 function WorkspaceNavigation({
@@ -849,7 +640,10 @@ function SubscriptionRequiredView({
                   workspaceLabel(language, "marketFlash"),
                   copy(language, "Abonelik", "Subscription"),
                 ],
-                [workspaceLabel(language, "flow"), copy(language, "Acik", "Open")],
+                [
+                  workspaceLabel(language, "flow"),
+                  copy(language, "Acik", "Open"),
+                ],
               ].map(([label, value]) => (
                 <div
                   key={label}
@@ -925,7 +719,9 @@ function App() {
     new WeakMap<Element, Map<TranslatableAttribute, string>>()
   );
   const runtimeTranslationCacheRef = useRef(new Map<string, string>());
-  const pendingRuntimeTranslationRef = useRef(new Map<string, { source: AppLanguage; target: AppLanguage }>());
+  const pendingRuntimeTranslationRef = useRef(
+    new Map<string, { source: AppLanguage; target: AppLanguage }>()
+  );
   const runtimeTranslationTimerRef = useRef<number | null>(null);
   const runtimeTranslationInFlightRef = useRef(false);
   const maskOriginalRef = useRef(new WeakMap<Text, string>());
@@ -1087,7 +883,11 @@ function App() {
       }
 
       runtimeTranslationInFlightRef.current = true;
-      const batch: Array<{ text: string; source: AppLanguage; target: AppLanguage }> = [];
+      const batch: Array<{
+        text: string;
+        source: AppLanguage;
+        target: AppLanguage;
+      }> = [];
       let batchCharCount = 0;
 
       for (const [cacheKey, direction] of Array.from(pendingMap.entries())) {
@@ -1493,210 +1293,210 @@ function App() {
                 shouldShowWorkspaceHeader ? "pb-24 md:pb-0" : ""
               }`}
             >
-            <Toaster />
+              <Toaster />
 
-            {isPaymentRoute ? (
-              <Pay
-                language={language}
-                onLanguageChange={setLanguage}
-                authState={authState}
-                onSignIn={startGoogleLogin}
-                onRefreshAuthState={refreshAuthState}
-              />
-            ) : null}
+              {isPaymentRoute ? (
+                <Pay
+                  language={language}
+                  onLanguageChange={setLanguage}
+                  authState={authState}
+                  onSignIn={startGoogleLogin}
+                  onRefreshAuthState={refreshAuthState}
+                />
+              ) : null}
 
-            {shouldShowWorkspaceHeader ? (
-              <header
-                data-no-mask
-                data-no-translate
-                className={`border-b border-border bg-background/95 backdrop-blur ${
-                  hasStandaloneWorkspaceHeader
-                    ? "relative z-[30]"
-                    : "sticky top-0 z-[70]"
-                }`}
-              >
-                <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3">
-                  <div className="flex min-w-0 items-center gap-3 md:gap-4">
-                    <div className="inline-flex shrink-0 items-center gap-3 rounded-full border border-border bg-card/90 px-3 py-2 shadow-[0_12px_28px_rgba(0,0,0,0.14)]">
-                      <img
-                        src="/gistifylogo.jpeg?v=20260606-1"
-                        alt="Gistify logo"
-                        className="size-10 rounded-full border border-border object-cover md:size-11"
-                      />
-                      <div className="min-w-0 leading-tight">
-                        <p className="text-sm font-semibold text-foreground md:text-base">
-                          Gistify
-                        </p>
-                        <p className="text-[11px] text-muted-foreground md:text-xs">
-                          Earnings Intelligence
-                        </p>
+              {shouldShowWorkspaceHeader ? (
+                <header
+                  data-no-mask
+                  data-no-translate
+                  className={`border-b border-border bg-background/95 backdrop-blur ${
+                    hasStandaloneWorkspaceHeader
+                      ? "relative z-[30]"
+                      : "sticky top-0 z-[70]"
+                  }`}
+                >
+                  <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3">
+                    <div className="flex min-w-0 items-center gap-3 md:gap-4">
+                      <div className="inline-flex shrink-0 items-center gap-3 rounded-full border border-border bg-card/90 px-3 py-2 shadow-[0_12px_28px_rgba(0,0,0,0.14)]">
+                        <img
+                          src="/gistifylogo.jpeg?v=20260606-1"
+                          alt="Gistify logo"
+                          className="size-10 rounded-full border border-border object-cover md:size-11"
+                        />
+                        <div className="min-w-0 leading-tight">
+                          <p className="text-sm font-semibold text-foreground md:text-base">
+                            Gistify
+                          </p>
+                          <p className="text-[11px] text-muted-foreground md:text-xs">
+                            Earnings Intelligence
+                          </p>
+                        </div>
                       </div>
+
+                      <WorkspaceNavigation
+                        language={language}
+                        authState={authState}
+                        isLimitedAccess={isLimitedAccess}
+                        isPublicAccessMode={isPublicAccessMode}
+                      />
                     </div>
 
-                    <WorkspaceNavigation
-                      language={language}
-                      authState={authState}
-                      isLimitedAccess={isLimitedAccess}
-                      isPublicAccessMode={isPublicAccessMode}
-                    />
+                    <div className="flex items-center gap-2">
+                      <LanguageSelector
+                        language={language}
+                        onChange={setLanguage}
+                      />
+
+                      {isPublicAccessMode ? (
+                        <div className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-emerald-300">
+                          Public Preview
+                        </div>
+                      ) : null}
+
+                      {authState.status === "authenticated" &&
+                      !isPublicAccessMode ? (
+                        <div className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-1 py-1">
+                          <Avatar className="size-8 border border-border">
+                            {authState.user.picture ? (
+                              <AvatarImage
+                                src={authState.user.picture}
+                                alt={`${authState.user.name} profile`}
+                              />
+                            ) : null}
+                            <AvatarFallback className="text-[10px] font-semibold">
+                              {getInitials(authState.user.name) || "U"}
+                            </AvatarFallback>
+                          </Avatar>
+
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon-sm"
+                            className="rounded-full"
+                            aria-label="Sign out"
+                            title="Sign out"
+                            onClick={logout}
+                          >
+                            <LogOut className="size-4" />
+                          </Button>
+                        </div>
+                      ) : null}
+                    </div>
                   </div>
+                </header>
+              ) : null}
 
-                  <div className="flex items-center gap-2">
-                    <LanguageSelector
-                      language={language}
-                      onChange={setLanguage}
-                    />
-
-                    {isPublicAccessMode ? (
-                      <div className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-emerald-300">
-                        Public Preview
-                      </div>
-                    ) : null}
-
-                    {authState.status === "authenticated" &&
-                    !isPublicAccessMode ? (
-                      <div className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-1 py-1">
-                        <Avatar className="size-8 border border-border">
-                          {authState.user.picture ? (
-                            <AvatarImage
-                              src={authState.user.picture}
-                              alt={`${authState.user.name} profile`}
-                            />
-                          ) : null}
-                          <AvatarFallback className="text-[10px] font-semibold">
-                            {getInitials(authState.user.name) || "U"}
-                          </AvatarFallback>
-                        </Avatar>
-
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon-sm"
-                          className="rounded-full"
-                          aria-label="Sign out"
-                          title="Sign out"
-                          onClick={logout}
-                        >
-                          <LogOut className="size-4" />
-                        </Button>
-                      </div>
-                    ) : null}
-                  </div>
+              {isPublicAccessMode && !isPaymentRoute ? (
+                <div
+                  data-no-mask
+                  className="border-b border-emerald-500/20 bg-emerald-500/8 px-4 py-2 text-center text-xs text-emerald-200"
+                >
+                  {copy(
+                    language,
+                    "Public preview modu acik. Google girisi ve Paddle billing tekrar acildiysa bu modu kapatip `APP_ACCESS_MODE=managed` kullan.",
+                    "Public preview mode is active. If Google sign-in and Paddle billing are enabled again, turn this off and use `APP_ACCESS_MODE=managed`."
+                  )}
                 </div>
-              </header>
-            ) : null}
+              ) : null}
 
-            {isPublicAccessMode && !isPaymentRoute ? (
-              <div
-                data-no-mask
-                className="border-b border-emerald-500/20 bg-emerald-500/8 px-4 py-2 text-center text-xs text-emerald-200"
-              >
-                {copy(
-                  language,
-                  "Public preview modu acik. Google girisi ve Paddle billing tekrar acildiysa bu modu kapatip `APP_ACCESS_MODE=managed` kullan.",
-                  "Public preview mode is active. If Google sign-in and Paddle billing are enabled again, turn this off and use `APP_ACCESS_MODE=managed`."
-                )}
-              </div>
-            ) : null}
+              {!isPaymentRoute && isMarketingRoute ? (
+                <AppRouter language={language} onLanguageChange={setLanguage} />
+              ) : null}
 
-            {!isPaymentRoute && isMarketingRoute ? (
-              <Router language={language} onLanguageChange={setLanguage} />
-            ) : null}
-
-            {authState.status === "loading" &&
-            !isPaymentRoute &&
-            !isMarketingRoute ? (
-              <div className="min-h-screen grid place-items-center px-4 text-center">
-                <div className="space-y-2">
-                  <h1 className="text-xl font-semibold">
-                    {copy(
-                      language,
-                      "Oturum kontrol ediliyor",
-                      "Checking session"
-                    )}
-                  </h1>
-                  <p className="text-sm text-muted-foreground">
-                    {copy(
-                      language,
-                      "Birkac saniye surebilir.",
-                      "This may take a few seconds."
-                    )}
-                  </p>
-                </div>
-              </div>
-            ) : null}
-
-            {authState.status === "anonymous" &&
-            !isPaymentRoute &&
-            !isMarketingRoute ? (
-              <div className="min-h-screen flex items-center justify-center px-4 py-8">
-                <div className="w-full max-w-lg rounded-xl border border-border bg-card/95 p-7 text-card-foreground shadow-2xl space-y-6">
+              {authState.status === "loading" &&
+              !isPaymentRoute &&
+              !isMarketingRoute ? (
+                <div className="min-h-screen grid place-items-center px-4 text-center">
                   <div className="space-y-2">
-                    <div className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
+                    <h1 className="text-xl font-semibold">
+                      {copy(
+                        language,
+                        "Oturum kontrol ediliyor",
+                        "Checking session"
+                      )}
+                    </h1>
+                    <p className="text-sm text-muted-foreground">
+                      {copy(
+                        language,
+                        "Birkac saniye surebilir.",
+                        "This may take a few seconds."
+                      )}
+                    </p>
+                  </div>
+                </div>
+              ) : null}
+
+              {authState.status === "anonymous" &&
+              !isPaymentRoute &&
+              !isMarketingRoute ? (
+                <div className="min-h-screen flex items-center justify-center px-4 py-8">
+                  <div className="w-full max-w-lg rounded-xl border border-border bg-card/95 p-7 text-card-foreground shadow-2xl space-y-6">
+                    <div className="space-y-2">
+                      <div className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
+                        <GoogleMark />
+                        {copy(
+                          language,
+                          "Google OAuth Kimlik Dogrulama",
+                          "Google OAuth Authentication"
+                        )}
+                      </div>
+                      <h1 className="text-2xl font-semibold tracking-tight">
+                        {copy(
+                          language,
+                          `${lockedWorkspaceSectionLabel} icin giris yap`,
+                          `Sign in to open ${lockedWorkspaceSectionLabel}`
+                        )}
+                      </h1>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        {copy(
+                          language,
+                          "Akis herkese acik. Kazanc Stratejisi, Momentum ve Gunluk modullerini acmak icin once Google ile uye girisi yapman gerekir; aktif abonelik yoksa odeme ekranina gecersin.",
+                          "Flow is open to everyone. To open Earnings Strategy, Momentum and Daily, sign in with Google first; if the account is not subscribed, you will be taken to the payment step."
+                        )}
+                      </p>
+                    </div>
+
+                    {authState.error ? (
+                      <p className="text-sm text-destructive">
+                        {authState.error}
+                      </p>
+                    ) : null}
+
+                    <Button
+                      className="w-full h-11 border border-slate-200 bg-white text-slate-900 hover:bg-slate-100"
+                      size="lg"
+                      onClick={startGoogleLogin}
+                    >
                       <GoogleMark />
                       {copy(
                         language,
-                        "Google OAuth Kimlik Dogrulama",
-                        "Google OAuth Authentication"
+                        "Google ile giris yap",
+                        "Sign in with Google"
                       )}
-                    </div>
-                    <h1 className="text-2xl font-semibold tracking-tight">
-                      {copy(
-                        language,
-                        `${lockedWorkspaceSectionLabel} icin giris yap`,
-                        `Sign in to open ${lockedWorkspaceSectionLabel}`
-                      )}
-                    </h1>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      {copy(
-                        language,
-                        "Akis herkese acik. Kazanc Stratejisi, Momentum ve Gunluk modullerini acmak icin once Google ile uye girisi yapman gerekir; aktif abonelik yoksa odeme ekranina gecersin.",
-                        "Flow is open to everyone. To open Earnings Strategy, Momentum and Daily, sign in with Google first; if the account is not subscribed, you will be taken to the payment step."
-                      )}
-                    </p>
+                    </Button>
                   </div>
-
-                  {authState.error ? (
-                    <p className="text-sm text-destructive">
-                      {authState.error}
-                    </p>
-                  ) : null}
-
-                  <Button
-                    className="w-full h-11 border border-slate-200 bg-white text-slate-900 hover:bg-slate-100"
-                    size="lg"
-                    onClick={startGoogleLogin}
-                  >
-                    <GoogleMark />
-                    {copy(
-                      language,
-                      "Google ile giris yap",
-                      "Sign in with Google"
-                    )}
-                  </Button>
                 </div>
-              </div>
-            ) : null}
+              ) : null}
 
-            {authState.status === "authenticated" &&
-            !isPaymentRoute &&
-            !isMarketingRoute ? (
-              <div className="relative">
-                {isLimitedAccess && isLockedWorkspaceRoute ? (
-                  <SubscriptionRequiredView
-                    language={language}
-                    sectionLabel={lockedWorkspaceSectionLabel}
-                  />
-                ) : (
-                  <div ref={protectedViewRef}>
-                    <Router
+              {authState.status === "authenticated" &&
+              !isPaymentRoute &&
+              !isMarketingRoute ? (
+                <div className="relative">
+                  {isLimitedAccess && isLockedWorkspaceRoute ? (
+                    <SubscriptionRequiredView
                       language={language}
-                      onLanguageChange={setLanguage}
+                      sectionLabel={lockedWorkspaceSectionLabel}
                     />
-                  </div>
-                )}
-              </div>
-            ) : null}
+                  ) : (
+                    <div ref={protectedViewRef}>
+                      <AppRouter
+                        language={language}
+                        onLanguageChange={setLanguage}
+                      />
+                    </div>
+                  )}
+                </div>
+              ) : null}
               {!isPaymentRoute ? <SiteFooter language={language} /> : null}
             </div>
           </AppLanguageContext.Provider>
