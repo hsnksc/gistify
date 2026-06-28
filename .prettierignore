@@ -3,3 +3,11 @@ node_modules
 .git
 *.min.js
 *.min.css
+.next
+build
+out
+public
+*.md
+*.docx
+*.csv
+reports

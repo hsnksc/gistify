@@ -1,4 +1,5 @@
 import express from "express";
+import rateLimit from "express-rate-limit";
 import { createServer } from "http";
 import crypto from "node:crypto";
 import fs from "node:fs";
@@ -2958,6 +2959,17 @@ async function startServer() {
       },
     })
   );
+
+  // Rate limiting middleware
+  const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: JSON.stringify({ error: "Too many requests, please try again later." }),
+  });
+  app.use("/api/", limiter);
+
   app.use(
     "/api/daily-report/assets/flow",
     express.static(getFlowReportRootPath(), {

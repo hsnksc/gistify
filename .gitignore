@@ -18,6 +18,26 @@ build/
 .vscode/
 .idea/
 *.swp
+
+# Reports and generated files
+reports/
+*.md
+!README.md
+*.docx
+*.csv
+
+# WebBridge debug files
+wb-*.json
+webbridge*.json
+
+# Other generated files
+midas_debug.json
+hardcoded_tr_audit.json
+plan_visual.md
+visual_*.md
+
+# Earning reports (generated)
+earningreport/
 *.swo
 *~
 
