@@ -1,337 +1,408 @@
 {
   "reportType": "hourly",
   "reportDate": "2026-06-29",
-  "generatedAt": "2026-06-29T13:00:00-04:00",
+  "generatedAt": "2026-06-29T18:04:40.060217+00:00",
   "marketSummary": {
     "spy": {
-      "price": 738.73,
-      "change": 1.3361,
-      "vwap": 736.905,
+      "ticker": "SPY",
+      "price": 740.36,
+      "change": 1.56,
+      "changePct": 1.56,
       "open": 736.525,
-      "high": 739.895,
+      "high": 740.82,
       "low": 732.09,
-      "prevClose": 728.99
+      "prevClose": 728.99,
+      "vwap": 737.76,
+      "vwapPosition": "above"
     },
     "qqq": {
-      "price": 720.74,
-      "change": 2.0127,
-      "vwap": 715.677,
+      "ticker": "QQQ",
+      "price": 722.72,
+      "change": 16.2,
+      "changePct": 2.29,
       "open": 714.255,
-      "high": 721.12,
+      "high": 723.63,
       "low": 705.172,
-      "prevClose": 706.52
+      "prevClose": 706.52,
+      "vwap": 717.17,
+      "vwapPosition": "above"
     },
     "iwm": {
-      "price": 297.08,
-      "change": -0.9172,
-      "vwap": 296.973,
+      "ticker": "IWM",
+      "price": 297.77,
+      "change": -2.06,
+      "changePct": -0.69,
       "open": 298.11,
       "high": 299.16,
       "low": 294.68,
-      "prevClose": 299.83
+      "prevClose": 299.83,
+      "vwap": 297.2,
+      "vwapPosition": "above"
     },
     "vix": {
-      "price": 18.42,
-      "change": 0.05,
-      "vwap": null,
+      "ticker": "VIX",
+      "price": 17.86,
+      "change": -0.55,
+      "changePct": -2.99,
       "open": 18.6,
-      "high": 18.6,
-      "low": 17.98,
+      "high": 19.45,
+      "low": 17.73,
       "prevClose": 18.41,
-      "note": "VIX VWAP data not applicable for volatility index. Price verified via CBOE website search."
+      "vwap": null,
+      "vwapPosition": null
     }
   },
   "topMovers": {
     "gainers": [
       {
+        "ticker": "IRDM",
+        "company": "Iridium Communications Inc",
+        "price": 53.56,
+        "change": 21.07,
+        "volume": "High",
+        "catalyst": "Earnings beat + satellite connectivity demand",
+        "sector": "Telecommunications",
+        "marketCap": null,
+        "week52Range": [
+          15.67,
+          53.77
+        ],
+        "vwapPosition": "above",
+        "note": null
+      },
+      {
+        "ticker": "VSAT",
+        "company": "Viasat Inc",
+        "price": 75.43,
+        "change": 16.61,
+        "volume": "High",
+        "catalyst": "Satellite/Defense contract + M&A speculation",
+        "sector": "Telecommunications",
+        "marketCap": null,
+        "week52Range": [
+          14.0,
+          89.79
+        ],
+        "vwapPosition": "above",
+        "note": null
+      },
+      {
+        "ticker": "RBLX",
+        "company": "Roblox Corp",
+        "price": 55.31,
+        "change": 16.31,
+        "volume": "High",
+        "catalyst": "Platform engagement + metaverse growth metrics",
+        "sector": "Technology",
+        "marketCap": null,
+        "week52Range": [
+          40.15,
+          150.59
+        ],
+        "vwapPosition": "above",
+        "note": null
+      },
+      {
+        "ticker": "CHTR",
+        "company": "Charter Communications Inc",
+        "price": 149.79,
+        "change": 12.08,
+        "volume": "Medium",
+        "catalyst": "Cable upgrade cycle + broadband subscriber beat",
+        "sector": "Communication Services",
+        "marketCap": null,
+        "week52Range": [
+          124.05,
+          422.29
+        ],
+        "vwapPosition": "below",
+        "note": "VWAP altına sarkmış — dikkat"
+      },
+      {
         "ticker": "AMAT",
-        "company": "Applied Materials, Inc.",
+        "company": "Applied Materials Inc",
         "price": 677.07,
         "change": 8.01,
-        "volume": 4296000,
-        "catalyst": "Semiconductor equipment demand / AI chip build-out momentum",
-        "sector": null,
-        "marketCap": 537566000000,
-        "week52Range": null,
-        "note": "sector and week52Range data not found in fast source (Finnhub slow)."
-      },
-      {
-        "ticker": "PANW",
-        "company": "Palo Alto Networks, Inc.",
-        "price": 328.65,
-        "change": 8.04,
-        "volume": 2670000,
-        "catalyst": "Cybersecurity sector rotation + cloud security demand",
-        "sector": null,
-        "marketCap": 267850000000,
-        "week52Range": null,
-        "note": "sector and week52Range data not found in fast source."
-      },
-      {
-        "ticker": "CMCSA",
-        "company": "Comcast Corporation",
-        "price": 25.15,
-        "change": 8.55,
-        "volume": 63643000,
-        "catalyst": "NBCUniversal spin-off announcement after 15 years",
-        "sector": null,
-        "marketCap": 89842000000,
-        "week52Range": null,
-        "note": "sector and week52Range data not found in fast source."
-      },
-      {
-        "ticker": "FBIN",
-        "company": "Fortune Brands Innovations, Inc.",
-        "price": 49.92,
-        "change": 8.61,
-        "volume": 2127000,
-        "catalyst": "Home products / consumer discretionary rebound",
-        "sector": null,
-        "marketCap": 5955000000,
-        "week52Range": null,
-        "note": "sector and week52Range data not found in fast source."
-      },
-      {
-        "ticker": "FSLY",
-        "company": "Fastly, Inc.",
-        "price": 18.58,
-        "change": 8.59,
-        "volume": 1861000,
-        "catalyst": "Edge cloud/CDN momentum + AI inference edge demand",
-        "sector": null,
-        "marketCap": 2908000000,
-        "week52Range": null,
-        "note": "sector and week52Range data not found in fast source."
+        "volume": "High",
+        "catalyst": "AI chip capex demand + China export license clarity",
+        "sector": "Technology",
+        "marketCap": null,
+        "week52Range": [
+          154.47,
+          669.22
+        ],
+        "vwapPosition": "above",
+        "note": null
       }
     ],
     "losers": [
       {
-        "ticker": "WDC",
-        "company": "Western Digital Corp",
-        "price": 586.45,
-        "change": -13.17,
-        "volume": 21366000,
-        "catalyst": "Memory/storage sector weakness, NAND flash price concerns",
-        "sector": null,
+        "ticker": "BLD",
+        "company": "TopBuild Corp",
+        "price": 360.22,
+        "change": -15.32,
+        "volume": "Low",
+        "catalyst": "Housing data miss + QXO acquisition uncertainty",
+        "sector": "Industrials",
         "marketCap": null,
-        "week52Range": null,
-        "note": "sector, marketCap and week52Range data not found in fast source."
+        "week52Range": [
+          320.38,
+          557.44
+        ],
+        "vwapPosition": "below",
+        "note": "Breakdown below VWAP; thin volume"
       },
       {
-        "ticker": "CRDO",
-        "company": "Credo Technology Group Holding Ltd",
-        "price": 238.0,
-        "change": -11.2,
-        "volume": 38419000,
-        "catalyst": "High-speed connectivity chip profit-taking after 150% YTD rally",
-        "sector": null,
+        "ticker": "SNEX",
+        "company": "StoneX Group Inc",
+        "price": 118.04,
+        "change": -12.63,
+        "volume": "Medium",
+        "catalyst": "Earnings miss + trading revenue decline",
+        "sector": "Financials",
         "marketCap": null,
-        "week52Range": null,
-        "note": "sector, marketCap and week52Range data not found in fast source."
+        "week52Range": [
+          53.53,
+          141.76
+        ],
+        "vwapPosition": "below",
+        "note": null
       },
       {
-        "ticker": "OMER",
-        "company": "Omeros Corp",
-        "price": 8.67,
-        "change": -19.12,
-        "volume": 10913000,
-        "catalyst": "Biotech clinical trial disappointment / FDA setback speculation",
-        "sector": null,
+        "ticker": "VC",
+        "company": "Visteon Corp",
+        "price": 95.4,
+        "change": -7.34,
+        "volume": "Medium",
+        "catalyst": "Auto sector weakness + guidance cut concerns",
+        "sector": "Consumer Discretionary",
         "marketCap": null,
-        "week52Range": null,
-        "note": "sector, marketCap and week52Range data not found in fast source."
+        "week52Range": [
+          83.78,
+          129.12
+        ],
+        "vwapPosition": "below",
+        "note": null
       },
       {
-        "ticker": "CAPR",
-        "company": "Capricor Therapeutics Inc",
-        "price": 26.44,
-        "change": -13.03,
-        "volume": 5319000,
-        "catalyst": "Gene therapy sector volatility + profit-taking",
-        "sector": null,
+        "ticker": "SEPN",
+        "company": "Septerna Inc",
+        "price": 34.69,
+        "change": -6.84,
+        "volume": "Low",
+        "catalyst": "Biotech sector rotation + trial data delay",
+        "sector": "Health Care",
         "marketCap": null,
-        "week52Range": null,
-        "note": "sector, marketCap and week52Range data not found in fast source."
+        "week52Range": [
+          10.27,
+          37.88
+        ],
+        "vwapPosition": "below",
+        "note": "Speculative risk"
       },
       {
-        "ticker": "JELD",
-        "company": "JELD-WEN Holding Inc",
-        "price": 1.44,
-        "change": -12.73,
-        "volume": 10324000,
-        "catalyst": "Housing/materials weakness, low price institutional selling",
-        "sector": null,
+        "ticker": "T",
+        "company": "AT&T Inc",
+        "price": 21.82,
+        "change": -5.1,
+        "volume": "High",
+        "catalyst": "Debt concern + dividend pressure + telecom rotation",
+        "sector": "Communication Services",
         "marketCap": null,
-        "week52Range": null,
-        "note": "sector, marketCap and week52Range data not found in fast source. Low price stock, manipulation risk."
+        "week52Range": [
+          21.29,
+          29.79
+        ],
+        "vwapPosition": "below",
+        "note": null
       }
     ]
   },
   "callSetups": [
     {
-      "ticker": "AMAT",
-      "direction": "call",
-      "entry": 675,
-      "target": 695,
-      "stop": 665,
+      "ticker": "IRDM",
+      "direction": "CALL",
+      "entry": 53.0,
+      "target": 58.5,
+      "stop": 50.5,
+      "riskReward": 2.2,
+      "rationale": "Earnings beat, VWAP above, satellite demand. RVOL > 3.",
+      "timeframe": "0DTE/Weekly",
+      "vwapPosition": "above",
+      "note": null
+    },
+    {
+      "ticker": "VSAT",
+      "direction": "CALL",
+      "entry": 75.0,
+      "target": 85.0,
+      "stop": 70.0,
       "riskReward": 2.0,
-      "rationale": "VWAP üstü, semi momentum, AI chip build-out. Hacim 4.3M yüksek.",
-      "timeframe": "intraday"
+      "rationale": "Defense/satellite momentum, gap hold. VWAP above.",
+      "timeframe": "Weekly",
+      "vwapPosition": "above",
+      "note": null
+    },
+    {
+      "ticker": "RBLX",
+      "direction": "CALL",
+      "entry": 54.0,
+      "target": 59.5,
+      "stop": 51.5,
+      "riskReward": 2.2,
+      "rationale": "Platform growth, breakout. Volume confirm.",
+      "timeframe": "Weekly",
+      "vwapPosition": "above",
+      "note": null
+    },
+    {
+      "ticker": "AMAT",
+      "direction": "CALL",
+      "entry": 677.0,
+      "target": 710.0,
+      "stop": 657.0,
+      "riskReward": 2.0,
+      "rationale": "AI capex cycle, semi leader. Liquidity excellent.",
+      "timeframe": "Weekly",
+      "vwapPosition": "above",
+      "note": null
     },
     {
       "ticker": "PANW",
-      "direction": "call",
-      "entry": 325,
-      "target": 350,
-      "stop": 315,
-      "riskReward": 2.5,
-      "rationale": "VWAP üstü gap-up, cybersecurity relative strength. Hacim yüksek.",
-      "timeframe": "intraday"
-    },
-    {
-      "ticker": "SPY",
-      "direction": "call",
-      "entry": 735,
-      "target": 745,
-      "stop": 730,
+      "direction": "CALL",
+      "entry": 328.0,
+      "target": 348.0,
+      "stop": 318.0,
       "riskReward": 2.0,
-      "rationale": "Index VWAP üstü, broad market risk-on. Düşük VIX = call bias.",
-      "timeframe": "0DTE"
-    },
-    {
-      "ticker": "QQQ",
-      "direction": "call",
-      "entry": 715,
-      "target": 730,
-      "stop": 708,
-      "riskReward": 2.14,
-      "rationale": "Tech relative strength, VWAP bounce. Volume confirmation.",
-      "timeframe": "intraday"
-    },
-    {
-      "ticker": "TENB",
-      "direction": "call",
-      "entry": 32,
-      "target": 35,
-      "stop": 30.5,
-      "riskReward": 2.0,
-      "rationale": "Cybersecurity momentum continuation, VWAP üstü. Hacim 1M.",
-      "timeframe": "intraday"
+      "rationale": "Cybersecurity momentum, government contracts. VWAP above.",
+      "timeframe": "Weekly",
+      "vwapPosition": "above",
+      "note": null
     }
   ],
   "putSetups": [
     {
-      "ticker": "WDC",
-      "direction": "put",
-      "entry": 590,
-      "target": 560,
-      "stop": 600,
-      "riskReward": 3.0,
-      "rationale": "VWAP altı, semi weakness breakdown. Hacim 21M = conviction.",
-      "timeframe": "intraday"
+      "ticker": "BLD",
+      "direction": "PUT",
+      "entry": 360.0,
+      "target": 335.0,
+      "stop": 372.0,
+      "riskReward": 2.1,
+      "rationale": "Housing slowdown, QXO deal uncertainty, breakdown below VWAP.",
+      "timeframe": "Weekly",
+      "vwapPosition": "below",
+      "note": null
     },
     {
-      "ticker": "CRDO",
-      "direction": "put",
-      "entry": 240,
-      "target": 220,
-      "stop": 248,
-      "riskReward": 2.5,
-      "rationale": "Tech profit-taking, VWAP altı. YTD 150% sonrası correction.",
-      "timeframe": "intraday"
+      "ticker": "T",
+      "direction": "PUT",
+      "entry": 21.7,
+      "target": 19.5,
+      "stop": 22.7,
+      "riskReward": 2.2,
+      "rationale": "Debt concern, dividend pressure, VWAP below.",
+      "timeframe": "Weekly",
+      "vwapPosition": "below",
+      "note": null
+    },
+    {
+      "ticker": "SNEX",
+      "direction": "PUT",
+      "entry": 118.0,
+      "target": 105.0,
+      "stop": 124.0,
+      "riskReward": 2.2,
+      "rationale": "Earnings miss, financial sector weakness, momentum shift.",
+      "timeframe": "Weekly",
+      "vwapPosition": "below",
+      "note": null
+    },
+    {
+      "ticker": "VZ",
+      "direction": "PUT",
+      "entry": 43.5,
+      "target": 40.0,
+      "stop": 45.2,
+      "riskReward": 2.1,
+      "rationale": "Earnings disappointment, VWAP below, telecom rotation.",
+      "timeframe": "Weekly",
+      "vwapPosition": "below",
+      "note": null
     },
     {
       "ticker": "IWM",
-      "direction": "put",
-      "entry": 298,
-      "target": 290,
-      "stop": 301,
-      "riskReward": 2.67,
-      "rationale": "Small-cap lagging, SPY/QQQ'a göre zayıf. VWAP altı riski.",
-      "timeframe": "intraday"
-    },
-    {
-      "ticker": "OMER",
-      "direction": "put",
-      "entry": 8.7,
-      "target": 7.5,
-      "stop": 9.2,
-      "riskReward": 2.4,
-      "rationale": "Biotech selloff, hacimli düşüş. VWAP altı.",
-      "timeframe": "intraday"
-    },
-    {
-      "ticker": "JELD",
-      "direction": "put",
-      "entry": 1.45,
-      "target": 1.25,
-      "stop": 1.55,
+      "direction": "PUT",
+      "entry": 297.0,
+      "target": 290.0,
+      "stop": 300.5,
       "riskReward": 2.0,
-      "rationale": "Housing weakness, düşük fiyat = manipulation risk. Dikkat.",
-      "timeframe": "intraday"
+      "rationale": "Small-cap risk-off, VWAP below, index hedge.",
+      "timeframe": "0DTE/Weekly",
+      "vwapPosition": "below",
+      "note": null
     }
   ],
   "earningsCalendar": [
     {
+      "ticker": "CRMT",
+      "company": "America's Car-Mart Inc",
+      "time": "before-open",
+      "consensusEps": -0.66,
+      "consensusRev": 334900000,
+      "priorEps": 1.26,
+      "priorRev": 370200000,
+      "expectedMove": "High",
+      "consensusRange": "-$0.66 est",
+      "analystSentiment": "bearish",
+      "note": "Low price ($2.52), illiquid; 0DTE not recommended. Earnings day = IV crush risk."
+    },
+    {
       "ticker": "AVAV",
-      "company": "AeroVironment, Inc.",
+      "company": "AeroVironment Inc",
       "time": "after-close",
       "consensusEps": 1.49,
       "consensusRev": 570000000,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": 11.31,
-      "consensusRange": null,
-      "analystSentiment": null,
-      "note": "Earnings günü = IV crush riski. Expected move ±11.31%. 0DTE YASAK. Drone/AI defense play. priorEps/priorRev data not found in search."
+      "priorEps": 0.3,
+      "priorRev": 408050000,
+      "expectedMove": "±11.31%",
+      "consensusRange": "$1.49 est",
+      "analystSentiment": "bullish",
+      "note": "Defense/UAS; high IV. 0DTE YASAK — IV crush risk after AMC."
     },
     {
       "ticker": "CNXC",
-      "company": "Concentrix Corporation",
+      "company": "Concentrix Corp",
       "time": "after-close",
-      "consensusEps": 2.69,
-      "consensusRev": 2500000000,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": 19.6,
-      "consensusRange": null,
-      "analystSentiment": null,
-      "note": "Expected move ±19.60% = yüksek volatilite. 0DTE YASAK. Customer experience BPO. priorEps/priorRev data not found in search."
+      "consensusEps": 2.64,
+      "consensusRev": 2470000000,
+      "priorEps": 2.79,
+      "priorRev": 2370000000,
+      "expectedMove": "±19.60%",
+      "consensusRange": "$2.57-$2.69",
+      "analystSentiment": "neutral",
+      "note": "BPO/tech services; high debt. 0DTE YASAK — IV crush risk after AMC."
     },
     {
       "ticker": "QMCO",
-      "company": "Quantum Corporation",
+      "company": "Quantum Corp",
       "time": "after-close",
       "consensusEps": -0.31,
       "consensusRev": 74200000,
       "priorEps": null,
       "priorRev": null,
-      "expectedMove": null,
-      "consensusRange": null,
-      "analystSentiment": null,
-      "note": "Negatif EPS consensus. 0DTE YASAK. Data storage/IT infrastructure. expectedMove data not found in search."
-    },
-    {
-      "ticker": "CRMT",
-      "company": "America's Car-Mart, Inc.",
-      "time": "before-open",
-      "consensusEps": -0.66,
-      "consensusRev": 334900000,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": null,
-      "consensusRange": null,
-      "analystSentiment": null,
-      "note": "BMO raporu açıldı. 0DTE YASAK. Subprime auto dealer. priorEps/priorRev/expectedMove data not found in search."
+      "expectedMove": "High",
+      "consensusRange": "-$0.31 est",
+      "analystSentiment": "bearish",
+      "note": "Data storage; micro-cap, illiquid. 0DTE YASAK. priorEps/priorRev not found in available sources."
     }
   ],
-  "vwapNotes": "SPY ve QQQ net VWAP üstünde (risk-on). IWM VWAP'a yapışık, small-cap relative weakness. Gap fill tamamlandı, momentum continuation görülüyor.",
+  "vwapNotes": "SPY 740.36 vs VWAP 737.76 → +2.60 above. Risk-on. QQQ 722.72 vs VWAP 717.17 → +5.55 above. Tech strong. IWM 297.77 vs VWAP 297.20 → +0.57 above (slight). Small-cap trying to recover from negative. VIX 17.86 — normal volatility. Gap fill: SPY gap up from 728.99 still open; QQQ gap from 706.52 open; IWM gap down from 299.83 still possible fill.",
   "riskAssessment": {
     "level": "medium",
-    "vixRegime": "VIX 18.42 (normal range 15-20). Complacency değil, fear değil. Normal volatilite.",
-    "sectorRotation": "Tech/Cybersecurity (PANW, TENB, AMAT) strong. Semiconductors mixed (AMAT strong, WDC weak). Biotech weak (OMER, CAPR). Small-cap (IWM) lagging large-cap.",
-    "earningsRisk": "AVAV, CNXC, QMCO after-close. CNXC expected move ±19.60% = yüksek risk. CRMT BMO açıldı.",
-    "macroRisk": "FOMC öncesi dönem, piyasa bekleyişte. Geopolitical tensions (Middle East) oil prices affecting sentiment."
+    "vixRegime": "VIX 17.86 — normal volatilite. 15-20 aralığı = standard risk. 20+ geçerse elevated.",
+    "sectorRotation": "Tech (XLK) + Consumer Discretionary (XLY) güçlü; Utilities (XLU) + Small-cap (IWM) zayıf. Growth > Value.",
+    "earningsRisk": "CRMT (BMO completed), AVAV/CNXC/QMCO (AMC) today. Tomorrow NKE/STZ/PRGS. AMC stocks = 0DTE YASAK.",
+    "macroRisk": "US-Iran gerginliği (Hormuz), FOMC/Kevin Warsh debut, 10Y yield ~4.40% (higher-for-longer), DXY ~99.70."
   },
   "nextDayCarryForward": []
 }
