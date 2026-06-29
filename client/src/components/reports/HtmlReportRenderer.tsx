@@ -508,7 +508,165 @@ function buildPreparedHtmlReport(
       const label = (node.textContent || "").trim().toLowerCase();
       node.classList.toggle("active", label === languageCode);
     });
+    document
+      .querySelectorAll(".langtoggle button, .lang-toggle button, .lang-switch button")
+      .forEach(node => {
+        const rawLabel =
+          node.getAttribute("data-lang") ||
+          node.getAttribute("lang") ||
+          node.textContent ||
+          "";
+        const normalizedLabel = normalizeAscii(rawLabel);
+        const targetLanguage = normalizedLabel.includes("en") ? "en" : "tr";
+        node.classList.toggle("active", targetLanguage === languageCode);
+        node.classList.toggle("on", targetLanguage === languageCode);
+      });
     document.documentElement.lang = languageCode;
+  };
+
+  const setElementDisplay = (element, visible, displayValue = "block") => {
+    if (!element) {
+      return;
+    }
+
+    if (visible) {
+      element.removeAttribute("hidden");
+      element.style.display = displayValue;
+      return;
+    }
+
+    element.setAttribute("hidden", "true");
+    element.style.display = "none";
+  };
+
+  const syncSectionHeadState = sectionHead => {
+    if (!(sectionHead instanceof HTMLElement)) {
+      return;
+    }
+
+    const isCollapsed = sectionHead.classList.contains("collapsed");
+    const nestedBodies = Array.from(sectionHead.children).filter(
+      node => node instanceof HTMLElement && node.classList.contains("section-body")
+    );
+    const siblingBody =
+      sectionHead.nextElementSibling instanceof HTMLElement &&
+      sectionHead.nextElementSibling.classList.contains("section-body")
+        ? sectionHead.nextElementSibling
+        : null;
+
+    [...nestedBodies, siblingBody].filter(Boolean).forEach(node => {
+      setElementDisplay(node, !isCollapsed);
+    });
+  };
+
+  const syncCardState = card => {
+    if (!(card instanceof HTMLElement)) {
+      return;
+    }
+
+    const isOpen = card.classList.contains("open");
+    Array.from(card.children)
+      .filter(
+        node => node instanceof HTMLElement && node.classList.contains("cbody")
+      )
+      .forEach(node => {
+        setElementDisplay(node, isOpen);
+      });
+
+    const expander = card.querySelector(".exp");
+    if (expander) {
+      expander.textContent = isOpen ? "−" : "＋";
+    }
+  };
+
+  const ensureTargetVisible = target => {
+    if (!(target instanceof HTMLElement)) {
+      return;
+    }
+
+    const card = target.closest(".card[id^='card-']");
+    if (card instanceof HTMLElement) {
+      card.classList.add("open");
+      syncCardState(card);
+    }
+
+    let current = target;
+    while (current) {
+      if (current.classList.contains("section-body")) {
+        const siblingHead = current.previousElementSibling;
+        if (
+          siblingHead instanceof HTMLElement &&
+          siblingHead.classList.contains("section-head")
+        ) {
+          siblingHead.classList.remove("collapsed");
+          syncSectionHeadState(siblingHead);
+        }
+      }
+
+      if (current.classList.contains("section-head")) {
+        current.classList.remove("collapsed");
+        syncSectionHeadState(current);
+      }
+
+      current = current.parentElement;
+    }
+  };
+
+  const scrollToTarget = sectionId => {
+    const normalizedSectionId = String(sectionId || "").replace(/^#/, "");
+    if (!normalizedSectionId) {
+      return;
+    }
+
+    const target = document.getElementById(normalizedSectionId);
+    if (!target) {
+      return;
+    }
+
+    ensureTargetVisible(target);
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    scheduleHeight();
+  };
+
+  const initializeInteractiveShell = () => {
+    document.querySelectorAll(".section-head").forEach(node => {
+      syncSectionHeadState(node);
+    });
+    document.querySelectorAll(".card[id^='card-']").forEach(node => {
+      syncCardState(node);
+    });
+    applyCardFilters();
+  };
+
+  let activeCardSignal = "ALL";
+  let activeCardQuery = "";
+
+  const applyCardFilters = () => {
+    const filterableCards = Array.from(
+      document.querySelectorAll(".card[data-sig], .chip[data-sig]")
+    );
+    if (!filterableCards.length) {
+      return false;
+    }
+
+    const normalizedSignal = String(activeCardSignal || "ALL").toUpperCase();
+    const normalizedQuery = String(activeCardQuery || "").toLowerCase().trim();
+
+    filterableCards.forEach(node => {
+      const symbol = String(node.getAttribute("data-sym") || "").toLowerCase();
+      const name = String(node.getAttribute("data-name") || "").toLowerCase();
+      const signal = String(node.getAttribute("data-sig") || "").toUpperCase();
+      const matchesQuery =
+        !normalizedQuery ||
+        symbol.includes(normalizedQuery) ||
+        name.includes(normalizedQuery);
+      const matchesSignal =
+        normalizedSignal === "ALL" || signal === normalizedSignal;
+
+      node.classList.toggle("hide", !(matchesQuery && matchesSignal));
+    });
+
+    return true;
   };
 
   const activateLanguageContent = languageCode => {
@@ -546,6 +704,7 @@ function buildPreparedHtmlReport(
     const element = document.getElementById(String(id || ""));
     if (element) {
       element.classList.toggle("collapsed");
+      syncSectionHeadState(element);
     }
     scheduleHeight();
   };
@@ -566,10 +725,16 @@ function buildPreparedHtmlReport(
       node.classList.remove("active");
     });
 
-    const target = document.getElementById(String(contentId || ""));
+    const normalizedContentId = String(contentId || "");
+    const target = document.getElementById(normalizedContentId);
     if (target) {
       target.classList.add("active");
+      scheduleHeight();
+      return;
     }
+
+    activeCardSignal = normalizedContentId || "ALL";
+    applyCardFilters();
     scheduleHeight();
   };
 
@@ -577,6 +742,7 @@ function buildPreparedHtmlReport(
     const target = document.getElementById("card-" + String(symbol || ""));
     if (target) {
       target.classList.toggle("open");
+      syncCardState(target);
     }
     scheduleHeight();
   };
@@ -587,15 +753,22 @@ function buildPreparedHtmlReport(
       return;
     }
     target.classList.add("open");
+    syncCardState(target);
     target.scrollIntoView({ behavior: "smooth", block: "start" });
     scheduleHeight();
   };
 
   window.filter = () => {
     const input = document.getElementById("q");
-    const query =
+    activeCardQuery =
       input && "value" in input ? String(input.value || "").toLowerCase().trim() : "";
 
+    if (applyCardFilters()) {
+      scheduleHeight();
+      return;
+    }
+
+    const query = activeCardQuery;
     document.querySelectorAll(".card[data-sym], .chip[data-sym]").forEach(node => {
       const symbol = String(node.getAttribute("data-sym") || "").toLowerCase();
       const name = String(node.getAttribute("data-name") || "").toLowerCase();
@@ -609,6 +782,7 @@ function buildPreparedHtmlReport(
     const shouldOpen = Boolean(open);
     document.querySelectorAll(".card[id^='card-']").forEach(node => {
       node.classList.toggle("open", shouldOpen);
+      syncCardState(node);
     });
     scheduleHeight();
   };
@@ -622,6 +796,7 @@ function buildPreparedHtmlReport(
 
   const applyPreferredLanguage = () => {
     applyLanguage(preferredLanguage);
+    initializeInteractiveShell();
   };
 
   const postHeight = () => {
@@ -735,6 +910,26 @@ function buildPreparedHtmlReport(
 
   window.addEventListener("resize", postHeight);
 
+  document.addEventListener("click", event => {
+    const target = event.target;
+    if (!(target instanceof Element)) {
+      return;
+    }
+
+    const anchor = target.closest('a[href^="#"]');
+    if (!anchor) {
+      return;
+    }
+
+    const href = anchor.getAttribute("href") || "";
+    if (href.length <= 1) {
+      return;
+    }
+
+    event.preventDefault();
+    scrollToTarget(href);
+  });
+
   new MutationObserver(mutations => {
     for (const mutation of mutations) {
       if (
@@ -773,10 +968,7 @@ function buildPreparedHtmlReport(
     }
 
     if (data.type === "gistify-flow-html-scroll") {
-      const target = document.getElementById(String(data.sectionId || ""));
-      if (target) {
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
+      scrollToTarget(String(data.sectionId || ""));
       return;
     }
 
@@ -848,6 +1040,69 @@ pre {
   display: none !important;
 }
 .lang-content.active {
+  display: block !important;
+}
+.section-head + .section-body {
+  display: none !important;
+}
+.section-head:not(.collapsed) + .section-body {
+  display: block !important;
+}
+.card > .cbody {
+  display: none !important;
+}
+.card.open > .cbody {
+  display: block !important;
+}
+.card.hide,
+.chip.hide {
+  display: none !important;
+}
+.chead {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  cursor: pointer !important;
+}
+.chead .ctitle {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 10px !important;
+  flex-wrap: wrap !important;
+}
+.chead .cmeta {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  flex-wrap: wrap !important;
+  margin-left: auto !important;
+}
+.card .exp {
+  transition: transform 0.18s ease !important;
+}
+.card.open .exp {
+  transform: rotate(45deg) !important;
+}
+#index {
+  scroll-margin-top: 24px !important;
+}
+.lang-tr,
+.lang-en,
+.blang-tr,
+.blang-en {
+  display: none !important;
+}
+body.lang-tr .lang-tr {
+  display: inline !important;
+}
+body.lang-en .lang-en {
+  display: inline !important;
+}
+body.lang-tr .blang-tr {
+  display: block !important;
+}
+body.lang-en .blang-en {
   display: block !important;
 }
 </style>`;
