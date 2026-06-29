@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IV Crush Explained: Before, During, and After Earnings | Gistify Blog</title>
+<meta name="description" content="What is IV crush? Learn how implied volatility collapses after earnings, how to measure it, and strategies to avoid getting crushed. Complete guide for options traders.">
+<link rel="canonical" href="https://gistify.pro/blog/options-education/iv-crush-explained">
+<meta property="og:title" content="IV Crush Explained: Before, During, and After Earnings">
+<meta property="og:description" content="What is IV crush? Learn how implied volatility collapses after earnings, how to measure it, and strategies to avoid getting crushed. Complete guide for options traders.">
+<meta property="og:url" content="https://gistify.pro/blog/options-education/iv-crush-explained">
+<meta property="og:image" content="https://gistify.pro/og-image.png">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Gistify">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="IV Crush Explained: Before, During, and After Earnings">
+<meta name="twitter:description" content="What is IV crush? Learn how implied volatility collapses after earnings, how to measure it, and strategies to avoid getting crushed. Complete guide for options traders.">
+<meta name="twitter:image" content="https://gistify.pro/og-image.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"IV Crush Explained: Before, During, and After Earnings","author":{"@type":"Organization","name":"Gistify","url":"https://gistify.pro"},"publisher":{"@type":"Organization","name":"Gistify","logo":{"@type":"ImageObject","url":"https://gistify.pro/logo.png"}},"datePublished":"2026-07-02","dateModified":"2026-07-02","articleSection":"Options Education","keywords":"IV crush, implied volatility, options earnings, volatility collapse, straddle, IV rank, expected move","mainEntityOfPage":{"@type":"WebPage","@id":"https://gistify.pro/blog/options-education/iv-crush-explained"}}</script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.7; }
+nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; max-width: 900px; margin: 0 auto; }
+nav .brand { color: #10b981; font-weight: 700; font-size: 1.25rem; }
+nav a { color: #94a3b8; text-decoration: none; font-size: 0.875rem; transition: color 0.2s; }
+nav a:hover { color: #10b981; }
+article { max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+h1 { font-size: 2.5rem; font-weight: 700; color: #e2e8f0; margin-bottom: 1rem; line-height: 1.2; }
+h2 { font-size: 1.75rem; font-weight: 600; color: #10b981; margin-top: 2.5rem; margin-bottom: 1rem; line-height: 1.3; }
+h3 { font-size: 1.25rem; font-weight: 600; color: #e2e8f0; margin-top: 1.5rem; margin-bottom: 0.75rem; line-height: 1.3; }
+p { margin-bottom: 1rem; color: #e2e8f0; }
+a { color: #10b981; text-decoration: none; }
+a:hover { text-decoration: underline; }
+strong { font-weight: 700; color: #e2e8f0; }
+em { font-style: italic; }
+ul { margin-bottom: 1rem; padding-left: 1.5rem; }
+ul li { margin-bottom: 0.5rem; color: #e2e8f0; }
+ul li::marker { color: #10b981; }
+ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+ol li { margin-bottom: 0.5rem; color: #e2e8f0; }
+ol li::marker { color: #10b981; }
+hr { border: 0; border-top: 1px solid #334155; margin: 2rem 0; }
+code { background: #1e293b; padding: 0.2rem 0.4rem; border-radius: 4px; font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; font-size: 0.9em; color: #e2e8f0; }
+pre { background: #1e293b; padding: 1rem; border-radius: 8px; overflow-x: auto; margin-bottom: 1rem; }
+pre code { background: transparent; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; border: 1px solid #334155; }
+th, td { border: 1px solid #334155; padding: 12px; text-align: left; }
+th { background: #1e293b; color: #10b981; font-weight: 600; }
+td { color: #e2e8f0; }
+.cta-box { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 1.5rem; text-align: center; margin: 2.5rem 0; }
+.cta-box h3 { color: #10b981; margin-top: 0; margin-bottom: 0.75rem; font-size: 1.5rem; }
+.cta-box p { color: #94a3b8; margin-bottom: 1.25rem; }
+.cta-box a.btn { display: inline-block; background: #10b981; color: #fff; padding: 0.75rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 600; transition: background 0.2s; }
+.cta-box a.btn:hover { background: #059669; text-decoration: none; }
+footer { color: #64748b; text-align: center; padding: 2rem; font-size: 0.75rem; border-top: 1px solid #1e293b; max-width: 800px; margin: 0 auto; }
+@media (max-width: 600px) {
+  nav { padding: 1rem; }
+  article { padding: 1.5rem 1rem; }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.125rem; }
+  table { font-size: 0.875rem; }
+  th, td { padding: 8px; }
+}
+</style>
+</head>
+<body>
+<nav>
+  <div class="brand">Gistify</div>
+  <a href="https://gistify.pro">← Back to Gistify</a>
+</nav>
+
+<article>
+<h1>IV Crush Explained: What Happens to Options Before, During, and After Earnings</h1>
+
+<p>If you trade options around earnings, there is one force more powerful than direction, more predictable than price action, and more destructive to unprepared traders than any bad stock pick: <strong>IV crush</strong>.</p>
+
+<p>Implied volatility crush is the overnight collapse in option premiums that happens after a scheduled event—most dramatically, an earnings report. It can wipe out 50%, 70%, even 90% of an option's time value in a single session. Traders who buy calls or puts before earnings, hoping for a directional windfall, often find themselves right on direction and still losing money.</p>
+
+<p>This guide explains exactly what IV crush is, why it happens, how to measure it, and—most importantly—how to trade around it instead of being crushed by it.</p>
+
+<hr>
+
+<h2>What Is Implied Volatility (IV)? A 2-Minute Primer</h2>
+
+<h3>IV vs. Historical Volatility</h3>
+
+<p>Implied volatility is not the same as historical volatility. Historical volatility looks backward. It measures how much a stock has actually moved in the past. Implied volatility looks forward. It is the market's best estimate of how much a stock <em>will</em> move between now and the option's expiration.</p>
+
+<p>Think of it like insurance pricing. If a hurricane is approaching, insurance premiums spike before the storm hits—not after. Once the storm passes, premiums collapse back to normal. The storm itself may have caused minimal damage, but the uncertainty premium is gone.</p>
+
+<p>Implied volatility works the same way. Before earnings, the market doesn't know if the stock will gap up 10% or down 10%. That uncertainty is priced into every option on the chain. After earnings, the uncertainty is resolved. The gap either happened or it didn't. The premium deflates.</p>
+
+<h3>Why IV Is the "Fear Premium" in Options</h3>
+
+<p>IV is often called the fear premium because it rises when uncertainty rises. Not just uncertainty about earnings—uncertainty about macro events, Fed policy, geopolitical shocks, or sector-specific news.</p>
+
+<p>For options traders, IV is a separate profit-and-loss driver. You can be right on the stock direction and still lose money if IV collapses against you. Or you can be directionally neutral and profit purely from the rise and fall of volatility.</p>
+
+<p>Understanding this distinction is the foundation of every advanced options strategy. Delta is direction. Vega is volatility. Theta is time. In earnings trading, vega often matters more than delta.</p>
+
+<hr>
+
+<h2>What Is IV Crush?</h2>
+
+<h3>The Mechanics of Volatility Collapse</h3>
+
+<p>IV crush is the rapid, often overnight decline in implied volatility after a scheduled event removes uncertainty from the market. The mechanism is simple:</p>
+
+<ol>
+<li>Before the event, option market makers demand a premium for the risk of a large gap.</li>
+<li>The event occurs. The gap either happens or doesn't.</li>
+<li>The uncertainty is gone. Market makers no longer need the same premium.</li>
+<li>IV drops. Option prices drop with it.</li>
+</ol>
+
+<p>This is not a theoretical concept. It is a mechanical, repeatable, and highly predictable event. If you know when earnings are scheduled, you know when IV crush will happen.</p>
+
+<p>The crush is most severe in the expiration cycle that includes the earnings date. Weekly options that expire the Friday after a Wednesday earnings report can see IV drop from 80% to 30% overnight. The further-dated expirations (2–4 weeks out) also see declines, but the magnitude is smaller because they still carry uncertainty from future events.</p>
+
+<h3>Why Earnings Are the Biggest IV Crush Events</h3>
+
+<p>Earnings are the most reliable and most dramatic IV crush events in the market because they are:</p>
+
+<ul>
+<li><strong>Scheduled:</strong> Everyone knows when they happen. No surprise.</li>
+<li><strong>Binary:</strong> The company beats or misses. The stock moves or it doesn't.</li>
+<li><strong>Information-dense:</strong> Earnings reports contain revenue, EPS, guidance, margins, and forward commentary. The market reprices everything overnight.</li>
+<li><strong>Widely traded:</strong> For large-cap names, millions of options contracts change hands in the days before earnings. This liquidity creates deep, tradable IV curves.</li>
+</ul>
+
+<p>Other events (FDA decisions, product launches, legal verdicts) can cause IV spikes, but none are as predictable and widespread as quarterly earnings season.</p>
+
+<h3>Visual: IV Curve Before vs. After Earnings (Text-Based)</h3>
+
+<p>Imagine a bell curve. The x-axis is the stock price. The y-axis is probability density. Before earnings, the curve is wide and flat—reflecting the market's uncertainty about where the stock will land. After earnings, the curve is tall and narrow—reflecting the fact that the stock has settled on a new price.</p>
+
+<p>In options terms, this translates to:</p>
+
+<ul>
+<li><strong>Before earnings:</strong> ATM implied volatility is 80%. The 100-strike call costs $8.00. The 100-strike put costs $8.00. The market expects a ±$12 move.</li>
+<li><strong>After earnings:</strong> The stock moved $5. ATM implied volatility is now 35%. The 100-strike call is worth $2.50. The 100-strike put is worth $1.00. The premium has evaporated even though the stock moved.</li>
+</ul>
+
+<p>This is the crush in action. The event occurred, the stock moved, but the move was smaller than the premium priced in. The long option holder is crushed.</p>
+
+<hr>
+
+<h2>The Three Phases of IV Crush</h2>
+
+<p>IV crush is not a single moment. It unfolds across three distinct phases, each with its own trading implications.</p>
+
+<h3>Phase 1: Before Earnings (IV Expansion — "The Setup")</h3>
+
+<p>In the 5–10 days before an earnings report, implied volatility begins rising. This is the expansion phase. The market starts pricing in the event.</p>
+
+<ul>
+<li><strong>What happens:</strong> Option premiums rise. The at-the-money straddle gets more expensive. Out-of-the-money puts and calls gain value even if the stock price barely moves.</li>
+<li><strong>Who profits:</strong> Traders who bought options early (T-10 to T-7) benefit from the rise in premium. Short volatility traders (iron condors, strangles) start getting squeezed.</li>
+<li><strong>What to watch:</strong> IV Rank. If IV Rank is already above 80%, the easy expansion is done. If it's below 40%, there's still room for the pre-event ramp.</li>
+</ul>
+
+<h3>Phase 2: The Earnings Event (IV Peak — "The Trap")</h3>
+
+<p>On the day of earnings, IV reaches its maximum. The market has priced in the maximum expected move. The straddle is at its most expensive. The options chain is swollen with premium.</p>
+
+<ul>
+<li><strong>What happens:</strong> This is the point of maximum risk for long volatility traders. You are paying top dollar for the option. To profit, the stock must move <em>more</em> than the expected move. Anything less, and the IV crush will eat your gains.</li>
+<li><strong>Who profits:</strong> Short volatility traders who entered before the peak. They collected the premium and are now waiting for the collapse.</li>
+<li><strong>What to watch:</strong> The expected move vs. the historical average move. If the expected move is much larger than history, the setup favors sellers. If it's smaller, it favors buyers.</li>
+</ul>
+
+<h3>Phase 3: After Earnings (IV Collapse — "The Crush")</h3>
+
+<p>The report is out. The stock has gapped. And now the premium that was priced in for the event is worthless.</p>
+
+<ul>
+<li><strong>What happens:</strong> IV drops 40–70% in a single session. The weekly options that were trading at $5.00 are now worth $1.50. The stock moved 4%, but the expected move was 6%. The long option holder is down 40% despite being right on direction.</li>
+<li><strong>Who profits:</strong> Short volatility traders. Iron condor sellers. Strangle sellers. Anyone who collected premium before the event and let time and uncertainty do the work.</li>
+<li><strong>What to watch:</strong> How the stock behaves in the first 30 minutes. If the gap reverses (gap fade), the short volatility position can profit from both the IV crush and the directional reversal.</li>
+</ul>
+
+<p>Understanding these three phases is the key to timing your entries and exits. Buy before the peak, sell into the peak, or sell before the peak and let the crush do the work. Each approach requires a different strategy and a different risk profile.</p>
+
+<hr>
+
+<h2>How to Measure IV Crush Risk Before You Trade</h2>
+
+<h3>IV Rank vs. IV Percentile (Which to Use?)</h3>
+
+<p>IV Rank and IV Percentile are both measures of how expensive options are relative to history. They answer the same question but with slightly different math.</p>
+
+<ul>
+<li><strong>IV Rank:</strong> (Current IV − 52-Week Low IV) ÷ (52-Week High IV − 52-Week Low IV). Tells you where current IV sits within the year's range.</li>
+<li><strong>IV Percentile:</strong> The percentage of days in the past year where IV was <em>lower</em> than today. Tells you how many days were cheaper.</li>
+</ul>
+
+<p><strong>For earnings trading, IV Rank is usually more useful.</strong> It tells you whether the options are near their most expensive or cheapest levels of the year. An IV Rank of 90% means you're paying close to the top of the year's range. An IV Rank of 15% means you're getting a discount.</p>
+
+<p>The general rule:</p>
+<ul>
+<li><strong>IV Rank > 70%:</strong> Favors short volatility strategies (sell premium).</li>
+<li><strong>IV Rank < 30%:</strong> Favors long volatility strategies (buy premium).</li>
+<li><strong>IV Rank 30–70%:</strong> Neutral zone. Use directional spreads.</li>
+</ul>
+
+<h3>The Expected Move Formula</h3>
+
+<p>The options market prices the expected move into the at-the-money straddle. You can estimate it with a simple formula:</p>
+
+<p><strong>Expected Move = Stock Price × (IV × √(Days to Expiration / 365))</strong></p>
+
+<p>For a quick approximation using the nearest weekly expiration:</p>
+
+<p><strong>Expected Move ≈ Stock Price × (IV × √(Days/365))</strong></p>
+
+<p><strong>Example:</strong> A stock is trading at $200. IV is 50%. The earnings are in 7 days.</p>
+
+<p>Expected Move = $200 × (0.50 × √(7/365)) = $200 × (0.50 × 0.139) = $200 × 0.0695 = <strong>$13.90</strong></p>
+
+<p>This means the market is pricing in a ±$13.90 move (about ±7%) for the event. If you believe the stock will move more than $13.90, buying a straddle or strangle has edge. If you believe it will move less, selling a strangle or iron condor has edge.</p>
+
+<p>A simpler, faster proxy: the price of the at-the-money call + the at-the-money put. If the 200 call is $7.00 and the 200 put is $6.50, the market expects a ±$13.50 move. This is the straddle price and it is often more accurate than the formula because it uses live market prices.</p>
+
+<h3>Reading the Options Chain for IV Crush Clues</h3>
+
+<p>The options chain tells you what the market expects. Before earnings, look at:</p>
+
+<ul>
+<li><strong>The ATM straddle price:</strong> This is the expected move in dollars.</li>
+<li><strong>The skew:</strong> Are puts or calls more expensive? If puts are pricing much higher than calls, the market is hedging downside risk. This often happens ahead of uncertain reports.</li>
+<li><strong>The term structure:</strong> Compare IV across expirations. If the weekly expiration is at 80% and the monthly is at 45%, the market is pricing the event heavily into the weekly. The crush will be concentrated there.</li>
+</ul>
+
+<p>Gistify surfaces IV Rank and IV Percentile automatically in the Pre-Earnings Brief—so you can see the risk before you size the trade.</p>
+
+<hr>
+
+<h2>IV Crush Strategies: Long vs. Short Volatility</h2>
+
+<h3>When to BUY Options Before Earnings (Long Volatility)</h3>
+
+<p>You should buy options when the market is underpricing the move. The signals:</p>
+
+<ul>
+<li>IV Rank is below 30% (options are cheap relative to the year)</li>
+<li>The expected move is smaller than the stock's historical average earnings move</li>
+<li>The stock is breaking out or breaking down on volume into the event</li>
+<li>The whisper number diverges significantly from consensus</li>
+</ul>
+
+<p><strong>Best strategies for long volatility:</strong></p>
+<ul>
+<li>Long straddles (directionally neutral, need large move)</li>
+<li>Long strangles (cheaper than straddle, need even larger move)</li>
+<li>Naked calls or puts (directional, high risk, high reward)</li>
+</ul>
+
+<p>The key risk: even if you are right on direction and the move is large, you still need to overcome the premium you paid. If you paid $12 for a straddle and the stock moves $10, you lose money. The move must exceed the expected move.</p>
+
+<h3>When to SELL Options Before Earnings (Short Volatility)</h3>
+
+<p>You should sell options when the market is overpricing the move. The signals:</p>
+
+<ul>
+<li>IV Rank is above 70% (options are expensive)</li>
+<li>The expected move is larger than the stock's historical average earnings move</li>
+<li>The stock has been range-bound for weeks</li>
+<li>The options market is pricing in a panic that probably won't materialize</li>
+</ul>
+
+<p><strong>Best strategies for short volatility:</strong></p>
+<ul>
+<li>Short strangles (sell OTM call and put, profit from range-bound action)</li>
+<li>Iron condors (defined-risk version of the strangle)</li>
+<li>Credit spreads (directional short volatility with capped risk)</li>
+</ul>
+
+<p>The key risk: if the stock moves more than expected, losses can be substantial. Short strangles have unlimited risk on the call side and large risk on the put side. Iron condors cap the risk but also cap the reward.</p>
+
+<h3>The Straddle Buyer's Nightmare (Real Example with AAPL)</h3>
+
+<p>In January 2024, AAPL reported earnings after the close. The stock was at $185. The weekly 185 straddle was trading at $8.50, implying a ±$8.50 expected move (about 4.6%).</p>
+
+<p>AAPL beat EPS but missed on iPhone revenue. The stock opened the next day at $183.50—down $1.50. By noon, it was at $182.00. The straddle that cost $8.50 was now worth $3.00.</p>
+
+<p>The straddle buyer was crushed. They paid $8.50 for a position now worth $3.00—a 65% loss. The stock moved less than expected. The IV collapse took the rest.</p>
+
+<p>This is the nightmare. The stock moved. The report was newsworthy. But the market had priced in too much uncertainty. The straddle buyer paid for a move that didn't happen.</p>
+
+<h3>The Iron Condor Seller's Dream (Real Example)</h3>
+
+<p>In the same AAPL earnings cycle, an iron condor seller sold the 195 call / 200 call spread and the 175 put / 170 put spread, collecting $2.00 in premium. AAPL closed the next day at $183.</p>
+
+<p>All legs expired worthless. The seller kept the full $2.00 premium. The IV crush accelerated the decay, and the stock stayed comfortably within the range. This is the dream scenario: the event passed, the uncertainty evaporated, and the premium was collected.</p>
+
+<p>Of course, if AAPL had gapped to $200, the condor seller would have hit max loss. The strategy works over time because most earnings moves are smaller than the market prices. But position sizing is critical because the outliers are painful.</p>
+
+<hr>
+
+<h2>Real Example: NVDA Earnings IV Crush (Q1 2025)</h2>
+
+<h3>IV Before the Event</h3>
+
+<p>In May 2025, NVDA reported Q1 earnings. The stock was trading at $1,120. The options market was pricing a massive move.</p>
+
+<ul>
+<li><strong>IV Rank:</strong> 94% (near the highest of the year)</li>
+<li><strong>ATM straddle price:</strong> $62.00 (±5.5% expected move)</li>
+<li><strong>Weekly 1120 call:</strong> $31.00</li>
+<li><strong>Weekly 1120 put:</strong> $31.00</li>
+</ul>
+
+<p>The market was priced for perfection. NVDA had run up 30% in the two months prior. The whisper number was sky-high. Every analyst on Wall Street had a "buy" rating. The options market was demanding a premium for the risk of a disappointment.</p>
+
+<h3>The Actual Move vs. Expected Move</h3>
+
+<p>NVDA beat EPS and revenue. Guidance was raised. But the stock had run so far into the event that the beat was already priced in. NVDA opened the next morning at $1,145—up $25 (2.2%).</p>
+
+<p>The expected move was ±$62. The actual move was +$25. The stock moved in the "right" direction but less than half of what the market priced.</p>
+
+<h3>What Happened to Straddle Prices the Next Morning</h3>
+
+<p>The 1120 straddle that cost $62.00 at the close was worth $28.00 at the open. The call leg gained value from the stock move but lost more from IV crush. The put leg was nearly worthless.</p>
+
+<p>A trader who bought the straddle for $62.00 and held through the event lost $34.00 per share ($3,400 per contract)—a 55% loss. They were right on direction (the stock went up) and still lost money because the move was too small to overcome the premium and the crush.</p>
+
+<h3>Lesson Learned</h3>
+
+<p>When IV Rank is above 90% and the stock has run hard into the event, the market is pricing in a massive move. The bar is extremely high. Even a good result may not be enough. In these conditions, short volatility strategies or simply avoiding the trade are often the better choices.</p>
+
+<hr>
+
+<h2>Tools to Track IV Crush in Real Time</h2>
+
+<h3>Free Tools vs. Premium Tools</h3>
+
+<p><strong>Free tools:</strong></p>
+<ul>
+<li><strong>Broker platforms (Thinkorswim, Tastytrade, Webull):</strong> Most brokers show IV Rank, IV Percentile, and expected move on the options chain. The data is real-time but limited in historical comparison.</li>
+<li><strong>Market Chameleon:</strong> Offers free IV analysis, earnings calendars, and historical move data. Excellent for checking past earnings reactions.</li>
+<li><strong>CBOE VIX:</strong> The overall market fear gauge. Not stock-specific, but useful for context.</li>
+</ul>
+
+<p><strong>Premium tools:</strong></p>
+<ul>
+<li><strong>ORATS:</strong> Institutional-grade options analytics with detailed IV term structure, skew analysis, and backtesting.</li>
+<li><strong>CML Viz:</strong> Earnings-specific tools with historical move distributions and win-rate statistics.</li>
+<li><strong>Unusual Whales:</strong> Flow data and IV tracking with a focus on institutional order flow.</li>
+</ul>
+
+<p>For most active traders, a combination of a solid broker platform (for real-time chain data) and a free earnings analysis site (for historical context) is sufficient.</p>
+
+<h3>Gistify's Risk Matrix for IV Crush Context</h3>
+
+<p>Gistify's Risk Matrix visualizes IV crush alongside expected move and position sizing—so you see the full picture before clicking. The tool shows:</p>
+
+<ul>
+<li>IV Rank and IV Percentile at a glance</li>
+<li>Expected move vs. historical average move</li>
+<li>Strategy-specific risk/reward (straddle, spread, condor)</li>
+<li>Position size based on your account and max loss preference</li>
+</ul>
+
+<p>Instead of tabbing between your broker, an earnings calendar, and a calculator, the Risk Matrix surfaces everything on one screen. You can compare 5 setups in 30 seconds and trade the one with the cleanest edge.</p>
+
+<h3>Gistify's Free IV Rank Calculator</h3>
+
+<p>If you want a quick, standalone check, Gistify offers a free IV Rank Calculator at <code>/tools/iv-rank-calculator</code>. Enter the stock ticker, and it pulls the current IV, 52-week high/low, and calculates IV Rank and IV Percentile in real time. No signup required. Use it as a first filter before deciding whether to buy or sell volatility on any earnings setup.</p>
+
+<hr>
+
+<h2>IV Crush FAQ</h2>
+
+<h3>What exactly is IV crush?</h3>
+<p>IV crush is the rapid, usually overnight decline in implied volatility after a scheduled event (like earnings) removes uncertainty from the market. It causes option prices to drop even when the stock moves in the expected direction.</p>
+
+<h3>Does IV crush happen after every earnings report?</h3>
+<p>Yes. Some degree of IV crush happens after every earnings report because the uncertainty is resolved. The magnitude varies. High-profile events with extreme IV expansion see the largest crushes. Quiet reports with little pre-event positioning see smaller crushes.</p>
+
+<h3>Can I lose money even if the stock moves in my direction?</h3>
+<p>Absolutely. If you buy a call and the stock goes up 3%, but the expected move was 8%, the IV crush can erase the small directional gain and leave you with a loss. Direction alone is not enough.</p>
+
+<h3>How do I avoid IV crush?</h3>
+<p>You can't avoid it if you hold long options through the event. But you can trade around it: use vertical spreads (which are less sensitive to IV), sell options instead of buying them, or close positions before the event. Alternatively, choose expirations further out to reduce the crush's impact.</p>
+
+<h3>Is IV crush worse for weekly or monthly options?</h3>
+<p>Weekly options that expire closest to the earnings date experience the worst crush. They have the most event premium baked in. Monthly options (30+ DTE) still see IV declines, but the percentage is smaller because they carry other time value.</p>
+
+<h3>Can I profit from IV crush?</h3>
+<p>Yes. Short volatility strategies—iron condors, short strangles, credit spreads—profit from IV crush. You collect premium before the event, and the crush accelerates your gains as the options lose value.</p>
+
+<h3>What is a good IV Rank for buying options before earnings?</h3>
+<p>Generally, you want IV Rank below 30% for long volatility strategies. This means the options are cheap relative to the past year, and the market may be underpricing the event. Above 70%, selling is usually more favorable.</p>
+
+<h3>How long does IV crush last?</h3>
+<p>The majority of the crush happens in the first trading session after the event. By the second day, IV has usually settled into a new, lower range. However, if the earnings result changes the stock's forward trajectory (e.g., guidance raised significantly), the new baseline IV may be higher than before.</p>
+
+<hr>
+
+<h2>Don't Get Crushed — Use Gistify</h2>
+
+<p>IV crush is not a mystery. It is a mechanical, predictable event that happens four times a year for every publicly traded company. The traders who get crushed are the ones who ignore it. The traders who profit are the ones who measure it, account for it, and build it into their strategy.</p>
+
+<p>Before your next earnings trade, ask yourself:</p>
+<ul>
+<li>What is the IV Rank?</li>
+<li>What is the expected move?</li>
+<li>What is the historical average move?</li>
+<li>Am I buying overpriced insurance or selling it?</li>
+</ul>
+
+<p>Gistify is built to answer these questions in seconds, not minutes. The Pre-Earnings Brief surfaces IV Rank and IV Percentile automatically. The Risk Matrix visualizes IV crush alongside expected move and position sizing. And the free IV Rank Calculator lets you run a quick check on any ticker, anytime.</p>
+
+<p>Stop trading earnings on instinct. Start trading them with data.</p>
+
+<p><strong><a href="https://gistify.pro">Try Gistify's Risk Matrix and free IV Rank Calculator →</a></strong></p>
+
+<p><em>Measure the crush before it measures you.</em></p>
+
+<div class="cta-box">
+  <h3>Don't Get Crushed — Use Gistify</h3>
+  <p>Gistify's Risk Matrix visualizes IV crush alongside expected move and position sizing — so you see the full picture before clicking.</p>
+  <a href="https://gistify.pro" class="btn">Try Gistify Free →</a>
+</div>
+</article>
+
+<footer>
+  © 2026 Gistify. All rights reserved.
+</footer>
+</body>
+</html>

@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Complete Guide to Trading Earnings with Options (2025) | Gistify Blog</title>
+  <meta name="description" content="Learn 4 proven earnings options strategies, IV crush mechanics, position sizing, and a pre-earnings checklist. The definitive guide for active options traders.">
+  <link rel="canonical" href="https://gistify.pro/blog/earnings-strategy/complete-guide-trading-earnings-options">
+  <meta property="og:title" content="The Complete Guide to Trading Earnings with Options (2025) | Gistify Blog">
+  <meta property="og:description" content="Learn 4 proven earnings options strategies, IV crush mechanics, position sizing, and a pre-earnings checklist. The definitive guide for active options traders.">
+  <meta property="og:url" content="https://gistify.pro/blog/earnings-strategy/complete-guide-trading-earnings-options">
+  <meta property="og:image" content="https://gistify.pro/og-image.png">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Gistify">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Complete Guide to Trading Earnings with Options (2025) | Gistify Blog">
+  <meta name="twitter:description" content="Learn 4 proven earnings options strategies, IV crush mechanics, position sizing, and a pre-earnings checklist. The definitive guide for active options traders.">
+  <meta name="twitter:image" content="https://gistify.pro/og-image.png">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"The Complete Guide to Trading Earnings with Options (2025)","author":{"@type":"Organization","name":"Gistify","url":"https://gistify.pro"},"publisher":{"@type":"Organization","name":"Gistify","logo":{"@type":"ImageObject","url":"https://gistify.pro/logo.png"}},"datePublished":"2026-07-02","dateModified":"2026-07-02","articleSection":"Earnings Strategy","keywords":"earnings options, options trading, IV crush, pre-earnings strategy, straddle, strangle, vertical spread","mainEntityOfPage":{"@type":"WebPage","@id":"https://gistify.pro/blog/earnings-strategy/complete-guide-trading-earnings-options"}}</script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background-color: #0f172a;
+      color: #e2e8f0;
+      line-height: 1.7;
+    }
+    a {
+      color: #10b981;
+      text-decoration: none;
+      transition: text-decoration 0.2s ease;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    /* Nav */
+    nav {
+      border-bottom: 1px solid #334155;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .nav-brand {
+      color: #10b981;
+      font-weight: 700;
+      font-size: 1.25rem;
+    }
+    .nav-back {
+      color: #94a3b8;
+      font-size: 0.875rem;
+    }
+    .nav-back:hover {
+      color: #10b981;
+    }
+    /* Article */
+    article {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    h2 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: #10b981;
+      margin-top: 2.5rem;
+      margin-bottom: 1rem;
+      line-height: 1.3;
+    }
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+      line-height: 1.3;
+    }
+    p {
+      margin-bottom: 1rem;
+      color: #e2e8f0;
+    }
+    strong {
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+    em {
+      font-style: italic;
+      color: #94a3b8;
+    }
+    ul, ol {
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+    }
+    li {
+      margin-bottom: 0.5rem;
+      color: #e2e8f0;
+    }
+    li::marker {
+      color: #10b981;
+    }
+    ol li::marker {
+      color: #10b981;
+      font-weight: 600;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid #334155;
+      margin: 2.5rem 0;
+    }
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      font-size: 0.875rem;
+    }
+    thead {
+      background-color: #1e293b;
+    }
+    th, td {
+      border: 1px solid #334155;
+      padding: 12px;
+      text-align: left;
+      color: #e2e8f0;
+    }
+    th {
+      font-weight: 600;
+      color: #10b981;
+    }
+    tr:nth-child(even) {
+      background-color: rgba(30, 41, 59, 0.4);
+    }
+    /* Code */
+    pre {
+      background: #1e293b;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+      border: 1px solid #334155;
+    }
+    code {
+      background: #1e293b;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.875em;
+      color: #e2e8f0;
+    }
+    pre code {
+      padding: 0;
+      background: transparent;
+    }
+    /* Checklist */
+    ul.checklist {
+      list-style: none;
+      padding-left: 0;
+    }
+    ul.checklist li {
+      position: relative;
+      padding-left: 1.75rem;
+      margin-bottom: 0.6rem;
+    }
+    ul.checklist li::before {
+      content: "☐";
+      position: absolute;
+      left: 0;
+      top: 0.05em;
+      color: #10b981;
+      font-size: 1.1em;
+    }
+    /* CTA Box */
+    .cta-box {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      margin-top: 2.5rem;
+      margin-bottom: 2rem;
+    }
+    .cta-box h3 {
+      color: #10b981;
+      margin-top: 0;
+      margin-bottom: 0.75rem;
+      font-size: 1.25rem;
+    }
+    .cta-box p {
+      color: #94a3b8;
+      margin-bottom: 1.25rem;
+      font-size: 0.95rem;
+    }
+    .cta-button {
+      display: inline-block;
+      background: #10b981;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+    .cta-button:hover {
+      background: #059669;
+      text-decoration: none;
+    }
+    /* Footer */
+    footer {
+      color: #64748b;
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.75rem;
+      border-top: 1px solid #334155;
+    }
+    /* Responsive */
+    @media (max-width: 600px) {
+      nav {
+        padding: 1rem;
+      }
+      article {
+        padding: 1.5rem 1rem;
+      }
+      h1 {
+        font-size: 1.75rem;
+      }
+      h2 {
+        font-size: 1.4rem;
+        margin-top: 2rem;
+      }
+      h3 {
+        font-size: 1.1rem;
+      }
+      table {
+        font-size: 0.75rem;
+      }
+      th, td {
+        padding: 8px;
+      }
+      .cta-box {
+        padding: 1.25rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-brand">Gistify</div>
+    <a href="https://gistify.pro" class="nav-back">← Back to Gistify</a>
+  </nav>
+
+  <article>
+    <h1>The Complete Guide to Trading Earnings with Options (2025)</h1>
+
+    <p>Earnings season is the Super Bowl of options trading. Four times a year, a quiet market transforms into a high-velocity battlefield where implied volatility spikes, premiums swell, and stocks gap 5%, 10%, even 15% overnight. For options traders, this window represents both the highest-profit-potential and highest-risk environment of the entire calendar.</p>
+
+    <p>If you know how to read the setup, earnings plays can deliver 2x–5x returns in 24 hours. If you don't, you can lose 50–80% of your position before the opening bell the next morning.</p>
+
+    <p>This guide is designed for active traders who want a repeatable system for trading earnings with options. No theory for theory's sake. No hand-waving. Just a structured approach: filter the calendar, match the strategy to the setup, size the position correctly, and execute with a plan.</p>
+
+    <hr>
+
+    <h2>Why Earnings Season Is the Best Time for Options Traders</h2>
+
+    <h3>The Volatility Explosion Pattern</h3>
+
+    <p>Options prices are driven by two factors: the underlying stock price (delta) and implied volatility (vega). During earnings season, the second factor dominates.</p>
+
+    <p>In the 5–7 trading days before a major earnings release, implied volatility typically rises 20–50% above its 30-day average. For high-beta tech names like NVDA or AMD, IV can double. This means options premiums become significantly more expensive—sometimes 2–3x normal levels.</p>
+
+    <p>For traders long volatility (straddles, strangles, straight calls/puts), this expansion is a tailwind. For traders short volatility (iron condors, credit spreads), it's a headwind that can turn a "safe" trade into a max-loss event.</p>
+
+    <p>The pattern is remarkably consistent:</p>
+
+    <ul>
+      <li><strong>T-7 to T-3:</strong> IV begins creeping higher. Smart money starts positioning.</li>
+      <li><strong>T-2 to T-1:</strong> IV accelerates. Retail volume surges. Liquidity improves.</li>
+      <li><strong>T-0 (the event):</strong> IV peaks. The options market prices in the maximum expected move.</li>
+      <li><strong>T+1:</strong> IV collapses. The "crush" removes 40–70% of the option's time value overnight.</li>
+    </ul>
+
+    <p>This four-phase cycle—expansion, peak, collapse, normalization—is the core mechanic of every earnings options trade. Your job is to know which phase you're trading and who pays whom.</p>
+
+    <h3>How Earnings Create Directional Edge</h3>
+
+    <p>Earnings reports are binary events with a directional resolution. The company beats, misses, or meets expectations; the stock reacts accordingly. This seems obvious, but the edge lies in the <em>asymmetry</em> of market expectations.</p>
+
+    <p>Consider two scenarios:</p>
+
+    <ol>
+      <li><strong>The whisper number is far above consensus.</strong> Analysts expect $1.00 EPS, but the options market is pricing a move consistent with $1.20. If the company reports $1.10—a "beat" by headline standards—the stock may sell off because the result was already priced in.</li>
+      <li><strong>The options market is complacent.</strong> IV rank is low. The expected move is small. If the company surprises, the move can be 2–3x what the market priced. This is where the explosive winners live.</li>
+    </ol>
+
+    <p>Directional edge doesn't come from guessing whether a company will beat or miss. It comes from measuring what the market <em>already expects</em> and positioning for asymmetry when your conviction differs.</p>
+
+    <p>Gistify's Pre-Earnings Brief packages expectation level, beat risk, and sector context into one decision card—so you can see the setup before the market prices it out.</p>
+
+    <hr>
+
+    <h2>Understanding the Earnings Calendar — Your First Filter</h2>
+
+    <h3>How to Read an Earnings Calendar</h3>
+
+    <p>An earnings calendar is just a schedule. The skill is filtering it down to tradeable opportunities.</p>
+
+    <p>Every calendar shows:</p>
+    <ul>
+      <li>Ticker</li>
+      <li>Report date (before open or after close)</li>
+      <li>Consensus EPS and revenue estimates</li>
+      <li>Historical beat/miss rate</li>
+    </ul>
+
+    <p>What most traders miss: the <strong>time of day</strong> matters enormously. A company reporting <em>after the close</em> gives you the full regular session to adjust or exit. A company reporting <em>before the open</em> forces you to hold through the night or close the prior afternoon. The strategies differ.</p>
+
+    <h3>Which Companies Matter</h3>
+
+    <p>Not every earnings report is worth trading. Focus on names with three characteristics:</p>
+
+    <p><strong>Market Cap:</strong> Large-cap and mega-cap stocks ($50B+) attract the most analyst attention and options liquidity. The options chain is tight, spreads are narrow, and you can enter and exit without slippage. AAPL, MSFT, NVDA, and TSLA are prime examples.</p>
+
+    <p><strong>Float:</strong> Stocks with high institutional ownership and free float see the cleanest post-earnings moves. Low-float names can be hijacked by pre-market algos and retail order flow, creating choppy, unpredictable price action.</p>
+
+    <p><strong>Sector Weight:</strong> Companies that dominate their sector (e.g., NVDA in semiconductors, MSFT in enterprise software) create sector-wide ripple effects. Trading these names gives you cleaner moves because the entire market is watching.</p>
+
+    <p>A filtered calendar of 40–50 upcoming earnings reports typically narrows down to 8–12 high-quality setups after applying market cap, float, and sector filters.</p>
+
+    <h3>Gistify's Earnings Calendar Filter</h3>
+
+    <p>Manually filtering an earnings calendar takes 30–45 minutes. Gistify's scanner does it in under 60 seconds. You set thresholds for market cap, IV rank, expected move, and sector weight, and the tool surfaces only the names that match your criteria.</p>
+
+    <p>In Gistify's workspace, the earnings calendar is connected to the options chain, IV Rank, and historical move data—all on one screen. No tab-switching. No spreadsheet juggling.</p>
+
+    <hr>
+
+    <h2>The 4 Earnings Options Strategies Every Trader Should Know</h2>
+
+    <p>Earnings strategies fall into two buckets: long volatility and short volatility. Most traders default to buying calls or puts because it feels intuitive. But the highest-probability earnings setups are often on the short side—selling the overpriced volatility that collapses the next morning.</p>
+
+    <h3>1. The Long Straddle (Directionally Neutral, Volatility Long)</h3>
+
+    <p>A long straddle involves buying an at-the-money (ATM) call and an ATM put with the same strike and expiration—typically the expiration closest to the earnings date.</p>
+
+    <p><strong>The bet:</strong> The stock moves more than the market expects. Direction doesn't matter.</p>
+
+    <p><strong>Example:</strong> NVDA reports earnings on a Wednesday after the close. The stock is trading at $875. The weekly 875 call and 875 put each cost $25.00. Total debit: $50.00. The expected move is $48.00.</p>
+
+    <p>For the straddle to profit, NVDA must move <em>more than</em> $50.00 in either direction by Friday expiration. If it moves $60, the call (or put) is worth $60, and the other leg is worthless. Net profit: $10.00 per contract ($1,000 per lot). If it moves $30, you lose most of the premium.</p>
+
+    <p><strong>When to use:</strong> High IV rank, high historical earnings move, unclear directional bias.</p>
+
+    <h3>2. The Short Strangle (High Probability, IV Crush Capture)</h3>
+
+    <p>A short strangle involves selling an out-of-the-money call and an out-of-the-money put. You collect premium from both sides and profit if the stock stays within the expected move.</p>
+
+    <p><strong>The bet:</strong> The stock does <em>not</em> move as much as the market expects. You are short volatility.</p>
+
+    <p><strong>Example:</strong> TSLA is at $245 before earnings. You sell the 270 call for $4.00 and the 220 put for $3.50. Total credit: $7.50. The expected move is $22.00. If TSLA stays between 220 and 270 through expiration, you keep the full credit.</p>
+
+    <p><strong>The risk:</strong> If TSLA gaps to 285 or crashes to 200, losses are theoretically unlimited on the call side and substantial on the put side. Position sizing is critical.</p>
+
+    <p><strong>When to use:</strong> High IV rank, reliable stock (tight post-earnings range historically), neutral directional bias.</p>
+
+    <h3>3. The Vertical Spread (Directional with Defined Risk)</h3>
+
+    <p>A vertical spread involves buying one option and selling another at a different strike in the same expiration. It reduces cost basis and caps both risk and reward.</p>
+
+    <p><strong>Bull Call Spread:</strong> Buy the 140 call, sell the 150 call. Net debit: $3.50. Max gain: $6.50 (if stock closes above $150). Max loss: $3.50.</p>
+
+    <p><strong>Bear Put Spread:</strong> Buy the 140 put, sell the 130 put. Net debit: $2.80. Max gain: $7.20. Max loss: $2.80.</p>
+
+    <p><strong>When to use:</strong> You have a directional bias but want defined risk. Also useful when the options are expensive, and the spread softens the premium cost.</p>
+
+    <h3>4. The Pre-Earnings Call/Put (Momentum Directional)</h3>
+
+    <p>The simplest and most aggressive strategy: buy a call if you're bullish, buy a put if you're bearish. No hedging, no complexity.</p>
+
+    <p><strong>The catch:</strong> You are exposed to <em>both</em> delta risk (wrong direction) and vega risk (IV crush). If the stock moves in your direction but less than expected, the IV collapse can still erase your gains.</p>
+
+    <p><strong>When to use:</strong> High-conviction directional setups where the options market is underpricing the move. Best used when IV rank is <em>not</em> extreme (underpricing scenario) or when you plan to exit before the event itself.</p>
+
+    <h3>Strategy Comparison Table</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Strategy</th>
+          <th>Risk/Reward</th>
+          <th>IV Crush Exposure</th>
+          <th>Best Market Condition</th>
+          <th>Complexity</th>
+          <th>Capital Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Long Straddle</td>
+          <td>Defined risk / Unlimited reward</td>
+          <td>High (you need the move to outrun the crush)</td>
+          <td>High IV, large expected move, no directional bias</td>
+          <td>Medium</td>
+          <td>High (2x premium)</td>
+        </tr>
+        <tr>
+          <td>Short Strangle</td>
+          <td>High risk / Defined reward</td>
+          <td>None (you profit from the crush)</td>
+          <td>Range-bound, high IV, neutral bias</td>
+          <td>Medium</td>
+          <td>High (margin requirement)</td>
+        </tr>
+        <tr>
+          <td>Vertical Spread</td>
+          <td>Defined risk / Defined reward</td>
+          <td>Moderate (capped by spread width)</td>
+          <td>Directional bias, expensive premiums</td>
+          <td>Low</td>
+          <td>Low</td>
+        </tr>
+        <tr>
+          <td>Pre-Earnings Call/Put</td>
+          <td>High risk / High reward</td>
+          <td>Very high (full premium exposure)</td>
+          <td>Strong directional edge, lower IV</td>
+          <td>Low</td>
+          <td>Low</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Most experienced traders combine these strategies. They might use a vertical spread for their core directional position and a small straddle for the gamma exposure. Or they sell a strangle to fund a directional call.</p>
+
+    <p>Gistify's Risk Matrix makes expected move, IV crush framing, and options-based risk/reward easier to compare—so you can select the right strategy without spreadsheet gymnastics.</p>
+
+    <hr>
+
+    <h2>IV Crush: The #1 Mistake New Earnings Traders Make</h2>
+
+    <h3>What Is Implied Volatility Crush?</h3>
+
+    <p>IV crush is the overnight collapse in implied volatility after the earnings event is resolved. The uncertainty premium that inflated options prices for weeks vanishes in hours.</p>
+
+    <p>Here's why it matters: an option's price is a function of <em>time value</em> and <em>intrinsic value</em>. Before earnings, time value is inflated by uncertainty. After earnings, the uncertainty is gone—even if the stock moved in your favor.</p>
+
+    <p><strong>Example:</strong> You buy an AMD call for $5.00 the day before earnings. AMD gaps up 4% after a beat. You expect a win. But the call is now worth $3.50. Why? The IV crush removed $2.00 of time value, and the 4% move only added $1.50 of intrinsic value. You were right on direction and still lost money.</p>
+
+    <p>This is the single most common mistake in earnings options trading. Traders focus on the delta (direction) and ignore the vega (volatility) component.</p>
+
+    <h3>How to Measure IV Rank and IV Percentile Before the Event</h3>
+
+    <p>IV Rank tells you where current implied volatility sits relative to the past year. An IV Rank of 85% means current IV is higher than 85% of the past year's readings. An IV Rank below 30% means the market is underpricing the event.</p>
+
+    <p>IV Percentile is similar but uses the number of <em>days</em> rather than the range of values. For earnings, IV Rank is usually more practical because it tells you how "expensive" the options are right now.</p>
+
+    <p><strong>Rule of thumb:</strong></p>
+    <ul>
+      <li>IV Rank > 70%: Options are expensive. Consider selling volatility or using spreads.</li>
+      <li>IV Rank 30–70%: Neutral zone. Directional trades with defined risk work well.</li>
+      <li>IV Rank < 30%: Options are cheap. Long straddles and naked calls/puts have better risk/reward.</li>
+    </ul>
+
+    <h3>The "IV Crush Calculator" Mental Model</h3>
+
+    <p>Before you click, run this quick check:</p>
+
+    <ol>
+      <li>What is the expected move? (Use the at-the-money straddle price as a proxy.)</li>
+      <li>What is the historical average post-earnings move for this stock?</li>
+      <li>Is the expected move <em>larger</em> than the historical average? If yes, the market is pricing in extra volatility. The bar for profit is higher.</li>
+      <li>Can the stock move <em>more</em> than the expected move in your direction? If not, don't buy the option.</li>
+    </ol>
+
+    <p>This mental model prevents 80% of bad earnings trades. If the expected move is 8% and the stock historically moves 5%, you are paying for a move that probably won't happen. Reverse the trade. Sell the volatility instead.</p>
+
+    <p>Gistify's Risk Matrix makes expected move, IV crush framing, and options-based risk/reward easier to compare—so you see the full picture before clicking.</p>
+
+    <hr>
+
+    <h2>How to Build a Pre-Earnings Watchlist in 5 Minutes</h2>
+
+    <p>A systematic watchlist process separates professionals from gamblers. Here's the 5-minute workflow used by active traders:</p>
+
+    <h3>Step 1: Filter by Earnings Date (Next 3 Days)</h3>
+
+    <p>Focus on companies reporting in the next 3 sessions. Anything further out has too much time decay and too little IV expansion. The sweet spot is T-2 to T-1 (the day before or two days before).</p>
+
+    <h3>Step 2: Check Historical Post-Earnings Move Range</h3>
+
+    <p>Look at the last 8 quarters. What was the average absolute move? What was the max and min? If the average move is 4% and the expected move is 6%, the options are overpriced. If the average is 7% and the expected is 5%, there may be an edge buying volatility.</p>
+
+    <h3>Step 3: Verify IV Rank > 50%</h3>
+
+    <p>You want some volatility premium to work with. An IV Rank below 50% means the market isn't pricing much uncertainty. This is fine for directional plays, but poor for volatility-selling strategies.</p>
+
+    <h3>Step 4: Match Setup to Strategy (Straddle vs. Spread vs. Directional)</h3>
+
+    <ul>
+      <li>No directional bias + high IV → Long straddle</li>
+      <li>Directional bias + expensive options → Vertical spread</li>
+      <li>Directional bias + cheap options → Naked call/put</li>
+      <li>Neutral bias + high IV → Short strangle or iron condor</li>
+    </ul>
+
+    <h3>Step 5: Set Entry, Exit, and Max Loss Before Clicking</h3>
+
+    <p>Never enter an earnings trade without defining:</p>
+    <ul>
+      <li>Entry price and position size</li>
+      <li>Profit target (50% of max gain? 100%?)</li>
+      <li>Stop loss (max loss as a percentage of account? Fixed dollar amount?)</li>
+      <li>Exit plan (hold through event? sell before close?)</li>
+    </ul>
+
+    <h3>Pre-Earnings Checklist</h3>
+
+    <p>Use this checklist before every earnings trade:</p>
+
+    <ul class="checklist">
+      <li>Earnings date and time confirmed (before open or after close?)</li>
+      <li>Historical post-earnings move range checked (last 8 quarters)</li>
+      <li>IV Rank and IV Percentile verified</li>
+      <li>Expected move calculated or estimated</li>
+      <li>Strategy matched to setup and directional bias</li>
+      <li>Position size calculated (max loss < 1% of account for spreads, < 0.5% for straddles)</li>
+      <li>Entry, exit, and stop-loss defined before order entry</li>
+      <li>No conflicting economic events (CPI, FOMC, jobs report) on the same day</li>
+      <li>Options chain liquidity verified (bid-ask spread < 5% of premium)</li>
+      <li>Plan written down or logged in trading journal</li>
+    </ul>
+
+    <p>Gistify's single-workflow logic lets you scan, build context, and match risk—all in one screen. The watchlist, earnings calendar, and options chain are connected, so you don't lose minutes toggling between tabs.</p>
+
+    <hr>
+
+    <h2>The Post-Earnings Play: When the Real Money Is Made</h2>
+
+    <h3>Why Most Traders Exit Too Early</h3>
+
+    <p>The majority of retail traders close their earnings positions at the opening bell the day after the report. This is often a mistake. The <em>first</em> 30 minutes of post-earnings trading are dominated by emotional order flow—panic selling, FOMO buying, and algorithmic rebalancing. The <em>real</em> move often develops in the first 2 hours.</p>
+
+    <p>If you traded a directional call and the stock gapped up 6%, you might be tempted to take profits immediately. But if the earnings report genuinely changed the narrative (e.g., guidance raised, new product announced), the stock may trend higher all day. Exiting at the open leaves money on the table.</p>
+
+    <h3>The "Gap Fade" Strategy for Morning Reversals</h3>
+
+    <p>Not all gaps hold. Sometimes a stock gaps up on a headline beat but the guidance is soft. The smart money sells the gap, and the stock reverses into the red by noon.</p>
+
+    <p>The gap fade strategy:</p>
+    <ol>
+      <li>Let the first 5–15 minutes trade. Don't FOMO into the opening print.</li>
+      <li>Mark the pre-market high and low.</li>
+      <li>If the stock breaks below the pre-market low in the first 30 minutes, the gap is failing. Fade it with a put or short call spread.</li>
+      <li>If the stock holds above the pre-market high and volume is increasing, the gap is legitimate. Ride it with a trailing stop.</li>
+    </ol>
+
+    <p>This strategy works particularly well on tech names with high retail ownership (TSLA, AMD, PLTR) where emotional buying creates temporary inefficiencies.</p>
+
+    <h3>How to Play Earnings That Move the Sector</h3>
+
+    <p>When a sector bellwether reports, the entire group moves. NVDA earnings don't just move NVDA—they move AMD, AVGO, MU, and SMCI. MSFT earnings move the entire cloud software complex.</p>
+
+    <p>The lag play: If you missed the direct earnings trade, you can trade the sympathy move in the sector peers. These moves often develop 30–90 minutes after the leader reports, giving you a window to position.</p>
+
+    <p>Sympathy plays are lower conviction and should be sized smaller. But they are an excellent way to extract additional value from a single earnings catalyst.</p>
+
+    <hr>
+
+    <h2>Position Sizing for Earnings Plays</h2>
+
+    <p>Earnings are binary. You will be wrong. The only question is whether wrongness costs you 0.5% or 10% of your account.</p>
+
+    <h3>The 1% Rule for Defined-Risk Spreads</h3>
+
+    <p>For vertical spreads, iron condors, and other defined-risk strategies, limit max loss to 1% of your account per trade. If your account is $50,000, no single spread position should risk more than $500.</p>
+
+    <p>This rule assumes you are running multiple positions simultaneously. If you only trade 2–3 earnings setups per cycle, you can stretch to 1.5% per trade. But 1% is the baseline.</p>
+
+    <h3>The 0.5% Rule for Long Straddles</h3>
+
+    <p>Straddles are expensive and have a lower win rate. The nature of the trade (you need a move larger than expected) means you will lose more often than you win. The math works because your winners are large. But the drawdowns must be controlled.</p>
+
+    <p>Limit straddle risk to 0.5% of account per trade. A $50,000 account should not risk more than $250 on a single straddle. If the straddle costs $10.00, buy no more than 2 contracts.</p>
+
+    <h3>When to Size Up</h3>
+
+    <p>There are rare, high-conviction setups where sizing up is justified:</p>
+
+    <ul>
+      <li>IV Rank is below 30% (options are underpriced)</li>
+      <li>Historical earnings move is consistently 2x the expected move</li>
+      <li>The whisper number is diverging sharply from consensus</li>
+      <li>You have a strong directional edge from technical analysis (e.g., breakout on volume into earnings)</li>
+    </ul>
+
+    <p>Even in these cases, never exceed 2% of account on a single earnings trade. The binary nature of the event means Murphy's Law applies more often than you'd like.</p>
+
+    <p>Gistify's Risk Matrix includes a built-in position sizing calculator that ties your max loss preference directly to the options contract price and spread width. Set your account size and risk tolerance once, and it sizes the trade for you.</p>
+
+    <hr>
+
+    <h2>Common Earnings Options Mistakes (And How to Avoid Them)</h2>
+
+    <h3>Holding Through the Event Without a Plan</h3>
+
+    <p>The most common mistake is entering a trade "to see what happens." No stop. No target. No exit plan. This is not trading—it's gambling with a brokerage account.</p>
+
+    <p><strong>Fix:</strong> Before you enter, write down: "I will exit before the close if the position is up 50%. I will hold through the event if IV rank is below 40% and the historical move is 2x the expected move. I will cut the position if the stock moves against me by 20% before the report."</p>
+
+    <h3>Ignoring the Whisper Number</h3>
+
+    <p>The consensus EPS number is what the media reports. The <em>whisper number</em> is what the market actually expects. For widely followed names, the whisper number is often 5–10% above consensus. Beating consensus but missing the whisper is a recipe for a sell-off.</p>
+
+    <p><strong>Fix:</strong> Use social sentiment, options flow, and pre-market price action to gauge the whisper number. If the stock is rallying into earnings despite a "neutral" consensus, the whisper is probably higher.</p>
+
+    <h3>Choosing the Wrong Expiration</h3>
+
+    <p>The expiration closest to earnings has the highest gamma and the most IV crush. The expiration one week further out has lower gamma but also lower IV crush. Choosing the wrong expiration can turn a winning directional trade into a breakeven.</p>
+
+    <p><strong>Fix:</strong> For pure event plays, use the weekly expiration that includes the earnings date. For plays where you expect follow-through (e.g., guidance raised), use the next weekly expiration out to reduce crush risk.</p>
+
+    <h3>Forgetting About Assignment Risk</h3>
+
+    <p>If you sell options (short puts, short calls, strangles), you are exposed to assignment risk. If your short put goes in-the-money after earnings, you may be assigned shares overnight. If your short call goes in-the-money, your shares may be called away.</p>
+
+    <p><strong>Fix:</strong> Close all short options positions before the market closes on earnings day if you do not want assignment. If you are running a defined-risk spread (e.g., put spread), assignment risk is limited to the spread width, but the hassle of managing an exercise/assignment is still worth avoiding.</p>
+
+    <hr>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>Can you really make money trading earnings with options?</h3>
+
+    <p>Yes, but consistency matters more than home runs. The traders who profit from earnings season do so with a systematic approach: filtering calendars, measuring IV, matching strategies, and sizing positions correctly. Trying to guess beats and misses without a framework is statistically unlikely to work over time.</p>
+
+    <h3>What is the best strategy for beginners?</h3>
+
+    <p>Vertical spreads (bull call spreads or bear put spreads) are the best starting point. They offer defined risk, lower capital requirements, and protection from IV crush compared to naked options.</p>
+
+    <h3>Should I hold through the earnings event or sell before?</h3>
+
+    <p>It depends on your strategy. If you are long a straddle or a directional call/put, you generally need to hold through the event to capture the move. If you are short volatility (iron condor, short strangle), you typically want the event to pass so you can capture the IV crush. Always decide before you enter.</p>
+
+    <h3>How much does a stock typically move after earnings?</h3>
+
+    <p>The average post-earnings move for S&P 500 companies is 3–5% in absolute terms. For high-beta tech names, 5–10% is common. For mega-caps (AAPL, MSFT), 2–4% is typical. The expected move priced by the options market is usually a good estimate.</p>
+
+    <h3>What is IV crush, and why does it hurt my trade?</h3>
+
+    <p>IV crush is the collapse in implied volatility after the earnings event. It removes the uncertainty premium from options prices. If you bought an expensive call before earnings and the stock moves less than expected, the IV crush can erase your gains even if the direction was right.</p>
+
+    <h3>Is it better to buy or sell options before earnings?</h3>
+
+    <p>Both approaches work in different conditions. Buying options works when the market is underpricing the move (low IV, large historical gaps). Selling options works when the market is overpricing the move (high IV, small historical gaps). Measure first, then choose.</p>
+
+    <h3>How do I know if the options market is overpricing or underpricing the move?</h3>
+
+    <p>Compare the expected move (priced by the options market) to the stock's historical average post-earnings move. If expected > historical, the market is overpricing. If expected < historical, the market is underpricing.</p>
+
+    <h3>What happens if I get assigned on a short option?</h3>
+
+    <p>If you are short a put and assigned, you will buy 100 shares per contract at the strike price. If you are short a call and assigned, your shares will be sold at the strike price. If you don't want this, close the short option before the event or ensure you have the buying power/capital to handle it.</p>
+
+    <hr>
+
+    <h2>Start Your Next Earnings Play with Gistify</h2>
+
+    <p>Earnings season is where options traders earn their edge—or give it away. The difference between the two is preparation: a filtered calendar, a measured setup, a matched strategy, and a position sized for the binary risk.</p>
+
+    <p>Gistify is built for this exact workflow. The Pre-Earnings Brief packages everything you need—earnings date, expected move, IV Rank, historical move range, and sector context—into a single decision card. The Risk Matrix visualizes your strategy, position size, and max loss before you click. The earnings scanner filters 50+ names down to your highest-conviction setups in seconds.</p>
+
+    <p>You don't need another spreadsheet. You need a system that keeps up with the speed of earnings season.</p>
+
+    <p><strong><a href="https://gistify.pro">Open Gistify and start building your next earnings watchlist →</a></strong></p>
+
+    <p><em>Trade the event. Not the emotion.</em></p>
+  </article>
+
+  <div class="cta-box">
+    <h3>Start Your Next Earnings Play with Gistify</h3>
+    <p>Gistify brings earnings intelligence, momentum scanning, and options research into one dark workspace.</p>
+    <a href="https://gistify.pro" class="cta-button">Open Gistify →</a>
+  </div>
+
+  <footer>
+    <p>© 2026 Gistify. All rights reserved.</p>
+  </footer>
+</body>
+</html>

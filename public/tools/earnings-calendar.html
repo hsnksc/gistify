@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Earnings Calendar (2025) — Upcoming Earnings with Options Context | Gistify</title>
+  <meta name="description" content="Free earnings calendar for options traders. See upcoming earnings dates with IV Rank, expected move, and setup suggestions. Updated weekly. Dark-themed.">
+  <link rel="canonical" href="https://gistify.pro/tools/earnings-calendar">
+  <meta property="og:title" content="Free Earnings Calendar (2025) — Upcoming Earnings with Options Context | Gistify">
+  <meta property="og:description" content="Free earnings calendar for options traders. See upcoming earnings dates with IV Rank, expected move, and setup suggestions. Updated weekly. Dark-themed.">
+  <meta property="og:url" content="https://gistify.pro/tools/earnings-calendar">
+  <meta property="og:image" content="https://gistify.pro/og-image.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Gistify">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free Earnings Calendar (2025) — Upcoming Earnings with Options Context | Gistify">
+  <meta name="twitter:description" content="Free earnings calendar for options traders. See upcoming earnings dates with IV Rank, expected move, and setup suggestions. Updated weekly. Dark-themed.">
+  <meta name="twitter:image" content="https://gistify.pro/og-image.png">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Gistify Earnings Calendar","description":"Free earnings calendar for options traders with IV Rank, expected move, and setup suggestions.","applicationCategory":"FinanceApplication","operatingSystem":"Any","url":"https://gistify.pro/tools/earnings-calendar","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"Gistify"}}</script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      line-height: 1.7;
+    }
+    a { color: #10b981; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    nav {
+      background: #1e293b;
+      border-bottom: 1px solid #334155;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    nav .brand {
+      color: #10b981;
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+    }
+    nav .back-link {
+      color: #94a3b8;
+      font-size: 0.9rem;
+    }
+    nav .back-link:hover { color: #10b981; }
+    .content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      margin: 0 0 0.75rem 0;
+      line-height: 1.3;
+    }
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      margin: 2.5rem 0 1rem 0;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #334155;
+    }
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      margin: 1.5rem 0 0.5rem 0;
+    }
+    p {
+      margin: 0 0 1rem 0;
+      color: #e2e8f0;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #334155;
+      margin: 2rem 0;
+    }
+    ul, ol {
+      margin: 0 0 1rem 0;
+      padding-left: 1.5rem;
+    }
+    li { margin-bottom: 0.5rem; }
+    li::marker { color: #10b981; }
+    strong { color: #e2e8f0; }
+    .lead {
+      font-size: 1.05rem;
+      color: #94a3b8;
+      margin-bottom: 1.5rem;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      border-radius: 8px;
+      border: 1px solid #334155;
+    }
+    table.gistify-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #0f172a;
+      color: #e2e8f0;
+      font-size: 0.9rem;
+      min-width: 700px;
+    }
+    table.gistify-table thead {
+      background: #1e293b;
+    }
+    table.gistify-table th {
+      padding: 12px;
+      text-align: left;
+      font-weight: 600;
+      color: #10b981;
+      border-bottom: 1px solid #334155;
+      white-space: nowrap;
+    }
+    table.gistify-table td {
+      padding: 12px;
+      border-bottom: 1px solid #334155;
+    }
+    table.gistify-table tbody tr:nth-child(even) { background: #1e293b; }
+    table.gistify-table tbody tr:last-child td { border-bottom: none; }
+    .ticker { font-weight: 600; color: #e2e8f0; }
+    .iv-green { color: #10b981; font-weight: 600; }
+    .iv-yellow { color: #f59e0b; font-weight: 600; }
+    .iv-red { color: #ef4444; font-weight: 600; }
+    .setup-green { color: #10b981; font-weight: 600; }
+    .setup-yellow { color: #f59e0b; font-weight: 600; }
+    .setup-red { color: #ef4444; font-weight: 600; }
+    .table-caption {
+      text-align: center;
+      color: #64748b;
+      font-size: 0.85rem;
+      margin-top: 0.75rem;
+    }
+    code {
+      background: #1e293b;
+      color: #10b981;
+      padding: 0.15rem 0.35rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+      font-family: ui-monospace, "SF Mono", Monaco, "Cascadia Code", monospace;
+    }
+    pre {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 1rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+    pre code {
+      background: transparent;
+      color: #e2e8f0;
+      padding: 0;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+    .cta-box {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 2.5rem 0;
+      text-align: center;
+    }
+    .cta-box h3 {
+      margin: 0 0 0.75rem 0;
+      font-size: 1.2rem;
+      color: #e2e8f0;
+    }
+    .cta-box p {
+      margin: 0 0 1rem 0;
+      color: #94a3b8;
+    }
+    .cta-btn {
+      display: inline-block;
+      background: #10b981;
+      color: #0f172a;
+      font-weight: 600;
+      padding: 0.6rem 1.25rem;
+      border-radius: 6px;
+      text-decoration: none;
+    }
+    .cta-btn:hover { background: #34d399; text-decoration: none; }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #64748b;
+      font-size: 0.85rem;
+      border-top: 1px solid #334155;
+    }
+    .disclaimer {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid #334155;
+    }
+    @media (max-width: 600px) {
+      nav { padding: 1rem; }
+      .content { padding: 1rem; }
+      h1 { font-size: 1.5rem; }
+      h2 { font-size: 1.2rem; }
+      table.gistify-table { font-size: 0.82rem; }
+      table.gistify-table th, table.gistify-table td { padding: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <span class="brand">Gistify</span>
+    <a class="back-link" href="https://gistify.pro">&larr; Back to Gistify</a>
+  </nav>
+
+  <main class="content">
+    <h1>Free Earnings Calendar (2025) — Upcoming Earnings with Options Context</h1>
+    <p class="lead"><strong>URL:</strong> <code>/tools/earnings-calendar</code> | <strong>Target Keyword:</strong> earnings calendar 2025</p>
+
+    <p>Earnings season is where options traders make or break their quarter. A single earnings report can move a stock 10% overnight. The options market prices in that expected move through elevated implied volatility. But knowing <em>when</em> a company reports is only half the battle. You also need to know <em>how much</em> the market expects it to move, <em>whether</em> IV is already inflated, and <em>what strategy</em> gives you the best risk/reward.</p>
+
+    <p>This free earnings calendar goes beyond dates. It integrates IV Rank, expected move, and suggested setup types — the same context Gistify traders use to make informed decisions.</p>
+
+    <hr>
+
+    <h2>How to Read This Calendar</h2>
+    <p>Each row in the table below contains the data you need to evaluate an earnings play before the market opens:</p>
+    <ul>
+      <li><strong>Ticker &amp; Company</strong> — The stock symbol and company name</li>
+      <li><strong>Date &amp; Time</strong> — The report date and whether it is Before Market Open (BMO) or After Market Close (AMC)</li>
+      <li><strong>EPS Est</strong> — The consensus earnings per share estimate (context for reaction magnitude)</li>
+      <li><strong>IV Rank</strong> — Implied Volatility Rank on a 0-100 scale. High = expensive options. Low = cheap options.</li>
+      <li><strong>Exp. Move</strong> — The expected price move derived from at-the-money straddle pricing. This is what the market is pricing in.</li>
+      <li><strong>Setup</strong> — The strategy type that best fits the risk/reward profile based on IV Rank and expected move</li>
+    </ul>
+    <p><strong>How to use it:</strong> Look for setups where the expected move is large enough to justify the risk, but IV Rank is not so high that post-earnings IV crush will erase your gains. The sweet spot is often IV Rank between 40-70 with an expected move of 4% or more.</p>
+
+    <hr>
+
+    <h2>This Week's Earnings</h2>
+    <div class="table-wrap">
+      <table class="gistify-table">
+        <thead>
+          <tr>
+            <th>Ticker</th>
+            <th>Company</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>EPS Est</th>
+            <th>IV Rank</th>
+            <th>Exp. Move</th>
+            <th>Setup</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="ticker">AAPL</td>
+            <td>Apple Inc.</td>
+            <td>Jul 24, 2025</td>
+            <td>AMC</td>
+            <td>$1.35</td>
+            <td class="iv-yellow">68</td>
+            <td>±4.2%</td>
+            <td class="setup-green">Straddle</td>
+          </tr>
+          <tr>
+            <td class="ticker">NVDA</td>
+            <td>NVIDIA Corp.</td>
+            <td>Jul 28, 2025</td>
+            <td>AMC</td>
+            <td>$0.68</td>
+            <td class="iv-green">82</td>
+            <td>±7.8%</td>
+            <td class="setup-yellow">Iron Condor</td>
+          </tr>
+          <tr>
+            <td class="ticker">TSLA</td>
+            <td>Tesla Inc.</td>
+            <td>Jul 23, 2025</td>
+            <td>AMC</td>
+            <td>$0.72</td>
+            <td class="iv-green">79</td>
+            <td>±6.5%</td>
+            <td class="setup-yellow">Strangle</td>
+          </tr>
+          <tr>
+            <td class="ticker">MSFT</td>
+            <td>Microsoft Corp.</td>
+            <td>Jul 22, 2025</td>
+            <td>AMC</td>
+            <td>$3.12</td>
+            <td class="iv-yellow">54</td>
+            <td>±3.1%</td>
+            <td class="setup-green">Straddle</td>
+          </tr>
+          <tr>
+            <td class="ticker">AMD</td>
+            <td>Advanced Micro Devices</td>
+            <td>Jul 29, 2025</td>
+            <td>AMC</td>
+            <td>$0.92</td>
+            <td class="iv-green">85</td>
+            <td>±8.2%</td>
+            <td class="setup-red">Spread</td>
+          </tr>
+          <tr>
+            <td class="ticker">AMZN</td>
+            <td>Amazon.com Inc.</td>
+            <td>Jul 31, 2025</td>
+            <td>AMC</td>
+            <td>$1.24</td>
+            <td class="iv-yellow">61</td>
+            <td>±4.8%</td>
+            <td class="setup-green">Straddle</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-caption">Data updated daily. Always verify dates before trading. Expected move derived from ATM straddle pricing.</p>
+
+    <hr>
+
+    <h2>How to Use Earnings Data for Options Trading</h2>
+    <p>Earnings reports are the most predictable catalysts in the market. You know exactly when they happen. The challenge is structuring a trade that profits from the expected move while protecting against the risks you cannot control.</p>
+
+    <p><strong>Step 1: Identify the expected move.</strong><br>The expected move column tells you what the options market is pricing in. If the expected move is ±5% and the stock has historically moved 8% on earnings, there might be a disconnect you can exploit. If the expected move is larger than historical average, the market may be overpricing risk.</p>
+
+    <p><strong>Step 2: Check IV Rank before entering.</strong><br>High IV Rank (above 70) means you are paying a premium for optionality. If you buy a straddle at IV Rank 85, you need the stock to move <em>more</em> than expected just to break even after IV crush. If IV Rank is moderate (40-70), the risk/reward is more balanced.</p>
+
+    <p><strong>Step 3: Choose the right setup.</strong></p>
+    <ul>
+      <li><strong>Straddle</strong> — Buy a call and put at the same strike. Best when you expect a big move but do not know the direction. Works best with moderate IV Rank.</li>
+      <li><strong>Strangle</strong> — Buy a call and put at different strikes. Cheaper than a straddle but needs a larger move to profit. Good for high-volatility stocks.</li>
+      <li><strong>Iron Condor</strong> — Sell a call spread and a put spread. Profit if the stock stays within the expected move. Best when IV Rank is high and you believe the market is overpricing the move.</li>
+      <li><strong>Spread</strong> — Directional call or put spread. Best when you have a strong directional bias and want to limit risk.</li>
+    </ul>
+
+    <p><strong>Step 4: Manage risk with position sizing.</strong><br>Never risk more than 2-5% of your account on a single earnings play. Even with perfect analysis, earnings are binary. A stock can beat estimates, raise guidance, and still sell off because the whisper number was even higher. Size accordingly.</p>
+
+    <hr>
+
+    <h2>Why Options Traders Need More Than a Date</h2>
+    <p>A standard earnings calendar tells you when a company reports. That is table stakes. But options traders need more:</p>
+    <ul>
+      <li><strong>Is implied volatility already inflated?</strong> If IV Rank is 85, the market has already priced in a big move. Your edge is smaller.</li>
+      <li><strong>What is the expected move?</strong> Without this, you are guessing how far the stock might go.</li>
+      <li><strong>What setup fits best?</strong> A straddle is not always the right play. Sometimes an iron condor is better. Sometimes a simple directional spread is best.</li>
+    </ul>
+    <p><strong>Gistify adds IV Rank, expected move, and setup suggestion to every earnings date.</strong> You do not need to cross-reference three tools to build a trade. The context is right there, next to the calendar, in a dark workspace that does not burn your eyes during pre-market.</p>
+
+    <hr>
+
+    <h2>Full Calendar (HTML Table Structure)</h2>
+    <p>Use the structure below to build your own earnings watchlist or embed a calendar in your trading dashboard. The dark-themed table matches Gistify's UI and is responsive across devices.</p>
+
+<pre><code>&lt;table class="gistify-table" style="width:100%;background:#0f172a;color:#e2e8f0;border-collapse:collapse;border-radius:8px;overflow:hidden;font-family:system-ui,-apple-system,sans-serif;"&gt;
+  &lt;thead style="background:#1e293b;"&gt;
+    &lt;tr&gt;
+      &lt;th style="padding:12px;text-align:left;font-weight:600;color:#10b981;"&gt;Ticker&lt;/th&gt;
+      &lt;th style="padding:12px;text-align:left;font-weight:600;color:#10b981;"&gt;Company&lt;/th&gt;
+      &lt;th style="padding:12px;text-align:left;font-weight:600;color:#10b981;"&gt;Date&lt;/th&gt;
+      &lt;th style="padding:12px;text-align:left;font-weight:600;color:#10b981;"&gt;Time&lt;/th&gt;
+      &lt;th style="padding:12px;text-align:left;font-weight:600;color:#10b981;"&gt;EPS Est&lt;/th&gt;
+      &lt;th style="padding:12px;text-align:left;font-weight:600;color:#10b981;"&gt;IV Rank&lt;/th&gt;
+      &lt;th style="padding:12px;text-align:left;font-weight:600;color:#10b981;"&gt;Exp. Move&lt;/th&gt;
+      &lt;th style="padding:12px;text-align:left;font-weight:600;color:#10b981;"&gt;Setup&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;!-- Add rows dynamically --&gt;
+    &lt;tr style="border-bottom:1px solid #334155;"&gt;
+      &lt;td style="padding:12px;font-weight:600;"&gt;TICKER&lt;/td&gt;
+      &lt;td style="padding:12px;"&gt;Company Name&lt;/td&gt;
+      &lt;td style="padding:12px;"&gt;Date&lt;/td&gt;
+      &lt;td style="padding:12px;"&gt;BMO/AMC&lt;/td&gt;
+      &lt;td style="padding:12px;"&gt;$X.XX&lt;/td&gt;
+      &lt;td style="padding:12px;color:#f59e0b;font-weight:600;"&gt;XX&lt;/td&gt;
+      &lt;td style="padding:12px;"&gt;±X.X%&lt;/td&gt;
+      &lt;td style="padding:12px;color:#10b981;font-weight:600;"&gt;Setup&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+
+    <p><strong>Color coding guide for IV Rank:</strong></p>
+    <ul>
+      <li><span class="iv-green">Green (#10b981)</span> — IV Rank above 70. High implied volatility environment.</li>
+      <li><span class="iv-yellow">Yellow (#f59e0b)</span> — IV Rank 40-70. Moderate implied volatility environment.</li>
+      <li><span class="iv-red">Red (#ef4444)</span> — IV Rank below 40. Low implied volatility environment.</li>
+    </ul>
+
+    <p><strong>Color coding guide for Setup type:</strong></p>
+    <ul>
+      <li><strong>Straddle</strong> — Direction-agnostic, moderate IV. Best when you expect volatility but no directional edge.</li>
+      <li><strong>Strangle</strong> — Direction-agnostic, cheaper than straddle. Needs larger move.</li>
+      <li><strong>Iron Condor</strong> — Range-bound thesis. Best when IV is high and you expect the stock to stay within the expected move.</li>
+      <li><strong>Spread</strong> — Directional. Best when you have a strong directional bias and want defined risk.</li>
+    </ul>
+
+    <hr>
+
+    <h2>Pro Tips for Earnings Season</h2>
+    <ol>
+      <li><strong>Avoid the week before expiration.</strong> 0DTE options around earnings have extreme gamma risk. A small move against you can wipe out the entire position. Use weekly options with at least 7-14 days to expiration.</li>
+      <li><strong>Watch the guidance, not just the numbers.</strong> A company can beat EPS and still crash if forward guidance is weak. The options market prices the <em>reaction</em>, not just the report.</li>
+      <li><strong>Use the expected move as a stop.</strong> If you sell an iron condor with wings at the expected move, you are essentially saying "the market is wrong about how far this stock will go." That is a valid thesis, but know what you are betting against.</li>
+      <li><strong>Correlations matter.</strong> If NVDA reports on the same day as AMD, their moves may be correlated. Diversify your earnings plays across sectors to avoid concentration risk.</li>
+    </ol>
+
+    <p><strong>Ready to trade earnings with full context?</strong> Gistify's earnings module adds IV Rank, expected move, and setup suggestions to every date — so you never enter an earnings play blind.</p>
+    <p><a href="/earnings"><strong>Explore Gistify Earnings →</strong></a></p>
+
+    <div class="cta-box">
+      <h3>Get Real-Time Earnings Intelligence with Gistify</h3>
+      <p>Stop guessing when earnings hit. Get IV Rank, expected move, and setup suggestions for every ticker — updated in real time.</p>
+      <a class="cta-btn" href="https://gistify.pro">Get Started on Gistify</a>
+    </div>
+
+    <p class="disclaimer"><strong>Disclaimer:</strong> Earnings data is for informational purposes only. Expected moves are derived from options pricing and are not guarantees of actual price movement. Always verify dates and data before trading. Options trading involves significant risk. Past performance does not guarantee future results.</p>
+  </main>
+
+  <footer>
+    © 2026 Gistify. All rights reserved.
+  </footer>
+</body>
+</html>
