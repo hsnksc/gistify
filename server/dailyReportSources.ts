@@ -79,39 +79,52 @@ const MONTH_TOKENS = new Map<string, string>([
   ["january", "01"],
   ["jan", "01"],
   ["ocak", "01"],
+  ["oca", "01"],
   ["february", "02"],
   ["feb", "02"],
   ["subat", "02"],
+  ["şubat", "02"],
   ["mart", "03"],
-  ["march", "03"],
   ["mar", "03"],
   ["april", "04"],
   ["apr", "04"],
   ["nisan", "04"],
+  ["nisa", "04"],
   ["may", "05"],
   ["mayis", "05"],
+  ["mayıs", "05"],
   ["june", "06"],
   ["jun", "06"],
   ["haziran", "06"],
+  ["haz", "06"],
   ["july", "07"],
   ["jul", "07"],
   ["temmuz", "07"],
   ["august", "08"],
   ["aug", "08"],
   ["agustos", "08"],
+  ["ağustos", "08"],
+  ["ağu", "08"],
   ["september", "09"],
   ["sep", "09"],
   ["sept", "09"],
   ["eylul", "09"],
+  ["eylül", "09"],
+  ["eyl", "09"],
   ["october", "10"],
   ["oct", "10"],
   ["ekim", "10"],
+  ["ek", "10"],
   ["november", "11"],
   ["nov", "11"],
   ["kasim", "11"],
+  ["kasım", "11"],
+  ["kas", "11"],
   ["december", "12"],
   ["dec", "12"],
   ["aralik", "12"],
+  ["aralık", "12"],
+  ["ara", "12"],
 ]);
 
 const ENGLISH_MONTH_NAMES = [
@@ -131,29 +144,88 @@ const ENGLISH_MONTH_NAMES = [
 
 const TURKISH_MONTH_NAMES = [
   "ocak",
+  "oca",
   "subat",
+  "şubat",
   "mart",
   "nisan",
+  "nisa",
   "mayis",
+  "mayıs",
   "haziran",
+  "haz",
   "temmuz",
   "agustos",
+  "ağustos",
+  "ağu",
   "eylul",
+  "eylül",
+  "eyl",
   "ekim",
+  "ek",
   "kasim",
+  "kasım",
+  "kas",
   "aralik",
+  "aralık",
+  "ara",
 ];
 
+function normalizeTurkishDiacritics(str: string): string {
+  return str
+    .replace(/ş/g, "s")
+    .replace(/ğ/g, "g")
+    .replace(/ü/g, "u")
+    .replace(/ö/g, "o")
+    .replace(/ç/g, "c")
+    .replace(/ı/g, "i")
+    .replace(/İ/g, "i")
+    .replace(/Ş/g, "s")
+    .replace(/Ğ/g, "g")
+    .replace(/Ü/g, "u")
+    .replace(/Ö/g, "o")
+    .replace(/Ç/g, "c");
+}
+
 function parseDateTokenFromFileName(fileName: string) {
-  const baseName = path
+  let baseName = path
     .basename(fileName, path.extname(fileName))
     .toLowerCase();
+  baseName = normalizeTurkishDiacritics(baseName);
+
+  // ISO 8601: YYYY-MM-DD (e.g., daily-report-2026-06-29.html)
+  const isoMatch = baseName.match(
+    /(?:^|[_-])(\d{4})-(\d{2})-(\d{2})(?:$|[_-])/
+  );
+  if (isoMatch) {
+    const [, year, month, day] = isoMatch;
+    const numericMonth = Number(month);
+    const numericDay = Number(day);
+    if (
+      numericMonth >= 1 &&
+      numericMonth <= 12 &&
+      numericDay >= 1 &&
+      numericDay <= 31
+    ) {
+      return `${year}-${month}-${day}`;
+    }
+  }
+
   const numericMatch = baseName.match(
     /(?:^|[_-])(\d{2})(\d{2})(\d{4})(?:$|[_-])/
   );
   if (numericMatch) {
     const [, day, month, year] = numericMatch;
-    return `${year}-${month}-${day}`;
+    const numericDay = Number(day);
+    const numericMonth = Number(month);
+    if (
+      numericDay >= 1 &&
+      numericDay <= 31 &&
+      numericMonth >= 1 &&
+      numericMonth <= 12
+    ) {
+      return `${year}-${month}-${day}`;
+    }
   }
 
   const compactNumericMatch = baseName.match(/(\d{2})(\d{2})(\d{4})/);
@@ -161,7 +233,7 @@ function parseDateTokenFromFileName(fileName: string) {
     const [, day, month, year] = compactNumericMatch;
     const numericDay = Number(day);
     const numericMonth = Number(month);
-  if (
+    if (
       Number.isInteger(numericDay) &&
       Number.isInteger(numericMonth) &&
       numericDay >= 1 &&
@@ -174,7 +246,7 @@ function parseDateTokenFromFileName(fileName: string) {
   }
 
   const dayMonthNameMatch = baseName.match(
-    /(?:^|[_-])(\d{1,2})[_-]?(january|jan|ocak|february|feb|subat|march|mar|mart|april|apr|nisan|may|mayis|june|jun|haziran|july|jul|temmuz|august|aug|agustos|september|sep|sept|eylul|october|oct|ekim|november|nov|kasim|december|dec|aralik)(?:[_-]?(\d{4}))?/i
+    /(?:^|[_-])(\d{1,2})[_-]?(january|jan|ocak|oca|february|feb|subat|march|mar|mart|april|apr|nisan|nisa|may|mayis|june|jun|haziran|haz|july|jul|temmuz|august|aug|agustos|ağu|september|sep|sept|eylul|eyl|october|oct|ekim|ek|november|nov|kasim|kas|december|dec|aralik|ara)(?:[_-]?(\d{4}))?/i
   );
   if (dayMonthNameMatch) {
     const [, dayToken, monthToken, year] = dayMonthNameMatch;
@@ -185,7 +257,7 @@ function parseDateTokenFromFileName(fileName: string) {
   }
 
   const monthNameMatch = baseName.match(
-    /(?:^|[_-])(january|jan|ocak|february|feb|subat|march|mar|mart|april|apr|nisan|may|mayis|june|jun|haziran|july|jul|temmuz|august|aug|agustos|september|sep|sept|eylul|october|oct|ekim|november|nov|kasim|december|dec|aralik)[_-]?(\d{1,2})(?:[_-]?(\d{4}))?/i
+    /(?:^|[_-])(january|jan|ocak|oca|february|feb|subat|march|mar|mart|april|apr|nisan|nisa|may|mayis|june|jun|haziran|haz|july|jul|temmuz|august|aug|agustos|ağu|september|sep|sept|eylul|eyl|october|oct|ekim|ek|november|nov|kasim|kas|december|dec|aralik|ara)[_-]?(\d{1,2})(?:[_-]?(\d{4}))?/i
   );
   if (!monthNameMatch) {
     return "";

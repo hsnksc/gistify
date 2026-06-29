@@ -2,6 +2,10 @@ import { CalendarRange, Files, GalleryHorizontal, Target } from "lucide-react";
 import { Link } from "wouter";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import {
+  useFlowTitleTranslation,
+  useFlowSummaryTranslation,
+} from "../hooks/useFlowTranslation";
+import {
   type FlowReportListEntry,
   formatFlowTimestamp,
   formatFlowReportDate,
@@ -45,6 +49,12 @@ export default function FlowReportCard({
       ? getFlowReportArchiveDetailPath(report, basePath)
       : getFlowReportDetailPath(report.id, basePath);
 
+  const translatedTitle = useFlowTitleTranslation(report.title, language);
+  const translatedPreview = useFlowSummaryTranslation(
+    getFlowPreviewText(report, language),
+    language
+  );
+
   return (
     <Link
       href={href}
@@ -62,10 +72,10 @@ export default function FlowReportCard({
 
         <div className="space-y-1">
           <h2 className="text-base font-semibold tracking-tight text-foreground transition-colors group-hover:text-sky-200">
-            {report.title}
+            {translatedTitle}
           </h2>
           <p className="line-clamp-2 text-xs leading-5 text-muted-foreground">
-            {getFlowPreviewText(report, language)}
+            {translatedPreview}
           </p>
         </div>
 
@@ -92,5 +102,3 @@ export default function FlowReportCard({
     </Link>
   );
 }
-
-

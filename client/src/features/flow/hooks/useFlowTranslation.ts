@@ -2,26 +2,128 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import type { AppLanguage } from "@/lib/i18n";
 
 const TURKISH_CHARS = /[çğıöşüÇĞİÖŞÜ]/;
-const TURKISH_WORDS =
-  /\b(?:ve|ile|icin|olarak|guncel|gunluk|sabit|beklenti|rapor|tarih|son|orani|risk|oneri|analiz|degisim|gelir|kar|fiyat|hisse|borsa|sirket|arsiv|ceviri|dil|kismi|ozet|haziran|temmuz|agustos|eylul|ekim|kasim|aralik|ocak|subat|mart|nisan|mayis|durum|guclu|kapsamli|derin|oncesi|sonrasi|aciklamasi|yorum|tahmin|beklentisi|onay|onemi|etkisi|sonucu|nedeni|amaci|konusu|hakkinda|neden|nasil|ne|kim|nerede|ne zaman|nicin|hangi|kadar|kadar|daha|en|veya|ya|ya da|fakat|ancak|ama|lakin|yine|hala|henuz|simdi|bugun|dun|yarindan|sonra|once|onceki|sonraki|sonra|icinde|disinda|arada|yaninda|altinda|ustunde|onunde|arkasinda|karsisinda|yaninda|boyunca|boyunca|sirasinda|zamaninda|noktasinda|durumunda|halinde|sebebiyle|sayesinde|yardimiyla|araciligiyla|vastasiyla|uzerinden|uzerine|geregince|gore|nazaran|oranla|kiyasla|beraber|birlikte|kadar|kadar|dek|degince|kalmak|kalmadan|gelmek|gelince|geldiginde|oldugunda|olunca|olur|olmaz|olabilir|olmustur|olacak|oldu|oldugu|olan|olmayan|eden|edenler|yapan|yapanlar|yapilan|yapilanlar|kalan|kalanlar|gelen|gelenler|giden|gidenler|bulunan|bulunanlar|vardir|yoktur|vardir|mevcut|bulunmaktadir|yer almaktadir|yer alir|alir|gelir|gider|cikar|duser|yukselir|degisir|artar|azalir|baslar|biter|devam eder|surmektedir|gerceklestirilmistir|gerceklestirilmektedir|planlanmistir|on gorulmektedir|beklenmektedir|tahmin edilmektedir|ongorulmektedir|tahmin edilmistir|ongorulmustur|belirtilmistir|aciklanmistir|bildirilmistir|duyurulmustur|ilan edilmistir|yayinlanmistir|sunulmustur|verilmistir|hazirlanmistir|olusturulmustur|yazilmistir|okunmustur|gorulmustur|incelenmistir|degerlendirilmistir|karsilastirilmistir|siralanmistir|listelenmistir|paylasilmistir|gonderilmistir|alimistir|verilmistir|satilmistir|alinmistir|kiralanmistir|satilmistir|tutulmustur|takip edilmistir|izlenmistir|kontrol edilmistir|denetlenmistir|test edilmistir|onaylanmistir|reddedilmistir|kabul edilmistir|sonuclandirilmistir|tamamlanmistir|bitirilmistir|baslatilmistir|durdurulmustur|ertelenmistir|iptal edilmistir|degistirilmistir|guncellenmistir|revize edilmistir|duzeltilmistir|eklenmistir|cikarilmistir|kaldırilmistir|konulmustur|yerlestirilmistir|ayarlanmistir|hazirlanmistir|duzenlenmistir|tasarlanmistir|gelistirilmistir|uretilmistir|satin alinmistir|uretilmistir|ithal edilmistir|ihraç edilmistir|gonderilmistir|tasinmistir|tasinmistir|tasinmistir|tutulmustur|saklanmistir|korunmustur|muhafaza edilmistir|gizlenmistir|ortaya cikarilmistir|aciga cikarilmistir|belirginlesmistir|ortadan kalkmistir|cozulmustur|ayrilmistir|birlesmistir|parcalanmistir|bolunmustur|toplanmistir|dagitilmistir|yayilmistir|genislemistir|daralmistir|yukselmistir|dusmustur|artmistir|azalmistir|degismistir|donmustur|erimistir|buharlasimistir|donmusmistir|yogunlasmistir|seyrelmistir|kalinlastirmistir|inceltilmistir|uzatilmistir|kisaltilmistir|genisletilmistir|daraltimistir|yukseklmistir|alcaltilmistir|hizlandirilmistir|yavaslatimistir|guclendirilmistir|zayiflatimistir|artirilmistir|azaltilmistir|buyutulmustur|kucultulmustur|genisletilmistir|daraltimistir|yogunlastirilmistir|seyreltilmistir|kalinlastirilmistir|inceltilmistir|uzatilmistir|kisaltilmistir|hizlandirilmistir|yavaslatimistir|guclendirilmistir|zayiflatimistir|artirilmistir|azaltilmistir|cozulmustur|ayrilmistir|birlesmistir|parcalanmistir|bolunmustur|toplanmistir|dagitilmistir)\b/i;
+
+// Basit kelime seti — yaygın Türkçe kelimeler (ASCII normalize edilmiş)
+const TURKISH_WORDS_SET = new Set([
+  "ve", "ile", "icin", "olarak", "guncel", "gunluk", "sabit", "beklenti", "rapor",
+  "tarih", "son", "orani", "risk", "oneri", "analiz", "analizi", "degisim", "gelir",
+  "gelirse", "kar", "fiyat", "hisse", "hissesi", "borsa", "sirket", "arsiv", "ceviri",
+  "dil", "kismi", "ozet", "haziran", "temmuz", "agustos", "eylul", "ekim", "kasim",
+  "aralik", "ocak", "subat", "mart", "nisan", "mayis", "durum", "guclu", "kapsamli",
+  "kapsamlı", "derin", "oncesi", "sonrasi", "aciklamasi", "yorum", "tahmin",
+  "beklentisi", "onay", "onemi", "etkisi", "sonucu", "nedeni", "amaci", "konusu",
+  "hakkinda", "hakkında", "neden", "nasil", "nasıl", "ne", "kim", "nerede",
+  "ne zaman", "nicin", "hangi", "kadar", "daha", "en", "veya", "ya", "ya da",
+  "fakat", "ancak", "ama", "lakin", "yine", "hala", "henuz", "henüz", "simdi",
+  "şimdi", "bugun", "bugün", "dun", "dün", "yarindan", "yarından", "sonra", "once",
+  "önce", "onceki", "önceki", "sonraki", "icinde", "içinde", "disinda", "dışında",
+  "arada", "yaninda", "yanında", "altinda", "altında", "ustunde", "üstünde", "onunde",
+  "önünde", "arkasinda", "arkasında", "karsisinda", "karşısında", "boyunca", "sirasinda",
+  "sırasında", "zamaninda", "zamanında", "noktasinda", "noktasında", "durumunda",
+  "halinde", "sebebiyle", "sayesinde", "yardimiyla", "yardımıyla", "araciligiyla",
+  "aracılığıyla", "vastasiyla", "uzerinden", "üzerinden", "uzerine", "üzerine",
+  "geregince", "gereğince", "gore", "göre", "nazaran", "oranla", "kiyasla", "kıyasla",
+  "beraber", "birlikte", "dek", "degince", "değince", "kalmak", "kalmadan", "gelmek",
+  "gelince", "geldiginde", "geldığında", "oldugunda", "olduğunda", "olunca", "olur",
+  "olmaz", "olabilir", "olmustur", "olmuştur", "olacak", "oldu", "oldugu", "olduğu",
+  "olan", "olmayan", "eden", "edenler", "yapan", "yapanlar", "yapilan", "yapılan",
+  "yapilanlar", "yapılanlar", "kalan", "kalanlar", "gelen", "gelenler", "giden",
+  "gidenler", "bulunan", "bulunanlar", "vardir", "vardır", "yoktur", "mevcut",
+  "bulunmaktadir", "bulunmaktadır", "yer almaktadir", "yer almaktadır", "yer alir",
+  "yer alır", "alir", "alır", "gelir", "gider", "cikar", "çıkar", "duser", "düşer",
+  "yukselir", "yükselir", "degisir", "değişir", "artar", "azalir", "azalır", "baslar",
+  "başlar", "biter", "devam eder", "surmektedir", "sürmektedir", "gerceklestirilmistir",
+  "gercekleştirilmiştir", "gerceklestirilmektedir", "gercekleştirilmektedir",
+  "planlanmistir", "planlanmıştır", "on gorulmektedir", "ön görülmektedir",
+  "beklenmektedir", "tahmin edilmektedir", "ongorulmektedir", "öngörülmektedir",
+  "tahmin edilmistir", "tahmin edilmiştir", "ongorulmustur", "öngörülmüştür",
+  "belirtilmistir", "belirtilmiştir", "aciklanmistir", "açıklanmıştir",
+  "bildirilmistir", "bildirilmiştir", "duyurulmustur", "duyurulmuştur",
+  "ilan edilmistir", "ilan edilmiştir", "yayinlanmistir", "yayınlanmıştir",
+  "sunulmustur", "sunulmuştur", "verilmistir", "verilmiştir", "hazirlanmistir",
+  "hazırlanmıştir", "olusturulmustur", "oluşturulmuşutur", "yazilmistir",
+  "yazılmıştir", "okunmustur", "okunmuştur", "gorulmustur", "görülmüştür",
+  "incelenmistir", "incelenmiştir", "degerlendirilmistir", "değerlendirilmiştir",
+  "karsilastirilmistir", "karşılaştırılmıştir", "siralanmistir", "sıralanmıştir",
+  "listelenmistir", "listelenmiştir", "paylasilmistir", "paylaşılmıştir",
+  "gonderilmistir", "gönderilmiştir", "alimistir", "alımıştir", "satilmistir",
+  "satılmıştir", "alinmistir", "alınmıştir", "kiralanmistir", "kiralanmıştir",
+  "tutulmustur", "tutulmuştur", "takip edilmistir", "takip edilmiştir",
+  "izlenmistir", "izlenmiştir", "kontrol edilmistir", "kontrol edilmiştir",
+  "denetlenmistir", "denetlenmiştir", "test edilmistir", "test edilmiştir",
+  "onaylanmistir", "onaylanmıştir", "reddedilmistir", "reddedilmiştir",
+  "kabul edilmistir", "kabul edilmiştir", "sonuclandirilmistir",
+  "sonuçlandırılmıştir", "tamamlanmistir", "tamamlanmıştir", "bitirilmistir",
+  "bitirilmiştir", "baslatilmistir", "başlatılmıştir", "durdurulmustur",
+  "durdurulmuştur", "ertelenmistir", "ertelenmiştir", "iptal edilmistir",
+  "iptal edilmiştir", "degistirilmistir", "değiştirilmiştir", "guncellenmistir",
+  "güncellenmiştir", "revize edilmistir", "revize edilmiştir", "duzeltilmistir",
+  "düzeltilmiştir", "eklenmistir", "eklenmiştir", "cikarilmistir", "çıkarılmıştir",
+  "kaldırilmistir", "kaldırılmıştir", "konulmustur", "konulmuştur",
+  "yerlestirilmistir", "yerleştirilmiştir", "ayarlanmistir", "ayarlanmıştir",
+  "hazirlanmistir", "hazırlanmıştir", "duzenlenmistir", "düzenlenmiştir",
+  "tasarlanmistir", "tasarlanmıştir", "gelistirilmistir", "geliştirilmiştir",
+  "uretilmistir", "üretilmiştir", "satin alinmistir", "satın alınmıştir",
+  "ithal edilmistir", "ithal edilmiştir", "ihraç edilmistir", "ihraç edilmiştir",
+  "tasinmistir", "taşınmıştir", "saklanmistir", "saklanmıştir", "korunmustur",
+  "korunmuştur", "muhafaza edilmistir", "muhafaza edilmiştir", "gizlenmistir",
+  "gizlenmiştir", "ortaya cikarilmistir", "ortaya çıkarılmıştir",
+  "aciga cikarilmistir", "açığa çıkarılmıştir", "belirginlesmistir",
+  "belirginleşmiştir", "ortadan kalkmistir", "ortadan kalkmıştir",
+  "cozulmustur", "çözülmüştür", "ayrilmistir", "ayrılmıştir", "birlesmistir",
+  "birleşmiştir", "parcalanmistir", "parçalanmıştir", "bolunmustur",
+  "bölünmüştür", "toplanmistir", "toplanmıştir", "dagitilmistir",
+  "dağıtılmıştir", "yayilmistir", "yayılmıştir", "genislemistir",
+  "genişlemiştir", "daralmistir", "daralmıştir", "yukselmistir",
+  "yükselmiştir", "dusmustur", "düşmüştür", "artmistir", "artmıştir",
+  "azalmistir", "azalmıştir", "degismistir", "değişmiştir", "donmustur",
+  "donmuştur", "erimistir", "erimiştir", "buharlasimistir", "buharlaşmıştir",
+  "donmusmistir", "donmuşmuştur", "yogunlasmistir", "yoğunlaşmıştir",
+  "seyrelmistir", "seyreltmiştir", "kalinlastirmistir", "kalınlaştırılmıştir",
+  "inceltilmistir", "inceltilmiştir", "uzatilmistir", "uzatılmıştir",
+  "kisaltilmistir", "kısaltılmıştir", "genisletilmistir", "genişletilmiştir",
+  "daraltimistir", "daraltılmıştir", "yukseklmistir", "yükseklmiştir",
+  "alcaltilmistir", "alçaltılmıştir", "hizlandirilmistir", "hızlandırılmıştir",
+  "yavaslatimistir", "yavaşlatılmıştir", "guclendirilmistir", "güçlendirilmiştir",
+  "zayiflatimistir", "zayıflatılmıştir", "artirilmistir", "artırılmıştir",
+  "azaltilmistir", "azaltılmıştir", "buyutulmustur", "büyütülmüştür",
+  "kucultulmustur", "küçültülmüştür", "sezon", "sezonsellik", "sezonselliği",
+  "dusuk", "düşük", "senaryo", "senaryosu", "senedi", "sene",
+]);
 
 const translationCache = new Map<string, string>();
 let inFlightPromise: Promise<Record<string, string>> | null = null;
 let pendingTexts: string[] = [];
 
-function looksTurkish(text: string): boolean {
-  const trimmed = text.trim();
-  if (!trimmed || trimmed.length < 3) return false;
-  if (/^[\d\s.,:%$+\-()/#]+$/.test(trimmed)) return false;
-  const normalized = trimmed
+function normalizeForTurkishCheck(text: string): string {
+  return text
     .toLocaleLowerCase("tr-TR")
     .replace(/ç/g, "c")
     .replace(/ğ/g, "g")
     .replace(/ı/g, "i")
     .replace(/ö/g, "o")
     .replace(/ş/g, "s")
-    .replace(/ü/g, "u");
-  return TURKISH_CHARS.test(trimmed) || TURKISH_WORDS.test(normalized);
+    .replace(/ü/g, "u")
+    .replace(/İ/g, "i")
+    .replace(/[^a-z0-9\s]/gi, " ");
+}
+
+function looksTurkish(text: string): boolean {
+  const trimmed = text.trim();
+  if (!trimmed || trimmed.length < 3) return false;
+  if (/^[\d\s.,:%$+\-()/#]+$/.test(trimmed)) return false;
+
+  // 1. Hızlı kontrol: Türkçe karakter varsa
+  if (TURKISH_CHARS.test(trimmed)) return true;
+
+  // 2. Normalize edilmiş metinde Türkçe kelimeleri ara
+  const normalized = normalizeForTurkishCheck(trimmed);
+  const words = normalized.split(/\s+/).filter(w => w.length >= 3);
+  for (const word of words) {
+    if (TURKISH_WORDS_SET.has(word)) return true;
+  }
+
+  return false;
 }
 
 async function translateTexts(texts: string[]): Promise<Record<string, string>> {

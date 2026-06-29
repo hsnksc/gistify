@@ -2,6 +2,10 @@ import { CalendarRange, FileText } from "lucide-react";
 import { Link } from "wouter";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import {
+  useFlowTitleTranslation,
+  useFlowSummaryTranslation,
+} from "../hooks/useFlowTranslation";
+import {
   type FlowReportListEntry,
   formatFlowReportDate,
   formatFlowTimestamp,
@@ -34,6 +38,12 @@ export default function FlowReportRow({
   const reportKind = getFlowReportKind(report);
   const languageBadge = getFlowLanguageBadge(report, language);
 
+  const translatedTitle = useFlowTitleTranslation(report.title, language);
+  const translatedPreview = useFlowSummaryTranslation(
+    getFlowPreviewText(report, language),
+    language
+  );
+
   return (
     <Link
       href={href}
@@ -54,11 +64,11 @@ export default function FlowReportRow({
         </div>
 
         <h3 className="mt-0.5 truncate text-sm font-semibold text-foreground transition-colors group-hover:text-sky-200">
-          {report.title}
+          {translatedTitle}
         </h3>
 
         <p className="line-clamp-2 text-xs leading-5 text-muted-foreground">
-          {getFlowPreviewText(report, language)}
+          {translatedPreview}
         </p>
 
         <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
@@ -79,16 +89,6 @@ export default function FlowReportRow({
               {ticker}
             </span>
           )}
-          {"exchange" in report && report.exchange && (
-            <span className="inline-flex items-center rounded-full border border-border bg-background/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-              {report.exchange}
-            </span>
-          )}
-          {"recommendation" in report && report.recommendation && (
-            <span className="inline-flex items-center rounded-full border border-border bg-background/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-              {report.recommendation}
-            </span>
-          )}
           <span className="inline-flex items-center gap-1 rounded-full border border-border bg-background/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
             <FileText className="size-3" />
             {getFlowSourceLabel(report)}
@@ -98,4 +98,3 @@ export default function FlowReportRow({
     </Link>
   );
 }
-
