@@ -1,109 +1,101 @@
-# Market Flash — Intra-Market Hourly
-**Rapor Tarihi:** 2026-06-29 | **TSİ:** 19:01 | **ET:** 12:01 PM
-**Rapor Tipi:** Intra-Market Hourly | **VIX Rejimi:** Normal (18.42)
+# Market Flash — Intra-Market Hourly | 2026-06-29 | ET 13:00
+
+> **Rapor Türü:** Saatlik Güncelleme (Intra-Market)  
+> **Tarih:** 2026-06-29  
+> **ET Saat:** 13:00 | **TSİ:** 20:00  
+> **Piyasa Durumu:** ABD piyasası AÇIK. SPY ve QQQ VWAP üstünde, risk-on.
 
 ---
 
-## 1. Piyasa Özeti (Market Summary)
+## 1. Market Summary
 
-| Ticker | Fiyat | Değişim % | VWAP | Açılış | High | Low | Önceki Kapanış |
-|--------|-------|-----------|------|--------|------|-----|----------------|
-| SPY | 738.74 | 1.34% | 736.91 | 736.525 | 739.895 | 732.09 | 728.99 |
-| QQQ | 719.19 | 1.79% | 714.54 | 714.255 | 719.27 | 705.172 | 706.52 |
-| IWM | 296.83 | -1.0% | 296.89 | 298.11 | 299.16 | 294.68 | 299.83 |
-| VIX | 18.42 | 0.05% | N/A | 18.6 | 18.6 | 18.25 | 18.41 |
+| Ticker | Price | Change | VWAP | Open | High | Low | Prev Close |
+|--------|-------|--------|------|------|------|-----|------------|
+| **SPY** | 738.73 | +1.34% | 736.905 | 736.525 | 739.895 | 732.09 | 728.99 |
+| **QQQ** | 720.74 | +2.01% | 715.677 | 714.255 | 721.12 | 705.172 | 706.52 |
+| **IWM** | 297.08 | -0.92% | 296.973 | 298.11 | 299.16 | 294.68 | 299.83 |
+| **VIX** | 18.42 | +0.05% | — | 18.60 | 18.60 | 17.98 | 18.41 |
 
-**VWAP Durumu:**
-- SPY: VWAP 736.91 **üzerinde** → bullish (fiyat: 738.74)
-- QQQ: VWAP 714.54 **üzerinde** → bullish (fiyat: 719.19)
-- IWM: VWAP 296.89 **altında** → bearish (fiyat: 296.83)
-- VIX: 18.42 (normal rejim, 15-20 band) → options premium moderately priced
-
----
-
-## 2. Top Movers — Günün En Büyük Hareket Yapanları
-
-### Gainers (Yukarı Yönlü)
-| Ticker | Şirket | Fiyat | Değişim % | Hacim | Katalizör |
-|--------|--------|-------|-----------|-------|-----------|
-| CHTR | Charter Communications Inc. | $169.5 | +26.83% | 1.39M | Comcast NBCUniversal spin-off announcement boosted telecom/media sector; Charter perceived as key broadband infrastructure beneficiary |
-| CMCSA | Comcast Corporation | $28.2 | +21.71% | 8.98M | Announced plan to spin off NBCUniversal cable networks into standalone entity; Wall Street views as value-unlocking event |
-| IRDM | Iridium Communications Inc. | $52.24 | +20.04% | 395.16K | Strong Q2 subscriber and service revenue growth; satellite IoT connectivity demand accelerating; earnings day reaction |
-| QDEL | QuidelOrtho Corporation | $16.95 | +22.92% | 65.23K | Turnaround optimism on diagnostic testing stabilization; cost restructuring showing traction; potential M&A chatter in med-tech space |
-| RBLX | Roblox Corporation | $50.5 | +6.18% | 294.49K | Gaming/platform sector recovery; user engagement metrics above Street estimates; metaverse-adjacent momentum in tech rotation |
-
-### Losers (Aşağı Yönlü)
-| Ticker | Şirket | Fiyat | Değişim % | Hacim | Katalizör |
-|--------|--------|-------|-----------|-------|-----------|
-| BLD | TopBuild Corp. | $401.18 | -5.72% | 33.62K | Housing/insulation demand concerns; mortgage rates staying elevated squeezes residential construction activity; guidance caution ahead |
-| NSC | Norfolk Southern Corporation | $291.72 | -6.74% | 27 | Rail sector volume softness; intermodal demand down YoY; East Ohio derailment overhang on regulatory risk persists |
-| CHDN | Churchill Downs Inc. | $83.0 | -6.67% | 115 | Gaming/leisure discretionary spending pullback; regional casino competition intensifying; softer premium event attendance |
-| LKQ | LKQ Corporation | $25.0 | -7.51% | 115 | Auto parts aftermarket demand slowing; collision repair volume down; EV adoption shifting parts mix faster than expected |
-| VZ | Verizon Communications Inc. | $43.32 | -6.86% | 25M | Earnings-day pressure; wireless subscriber growth concerns; capex guidance weighing on free cash flow outlook; telecom sector rotation |
+- **SPY:** VWAP üstünde, gap fill tamamlandı, momentum continuation.
+- **QQQ:** Tech relative strength, net VWAP üstü.
+- **IWM:** Small-cap lagging, VWAP'a yapışık, relative weakness.
+- **VIX:** 18.42 = normal range (15–20). Complacency değil, fear değil.
 
 ---
 
-## 3. Earnings Takvimi — 29 Haziran 2026
+## 2. Top Movers
 
-| Ticker | Şirket | Zaman | Cons EPS | Cons Rev | Önceki EPS | Önceki Rev | Expected Move | Analyst | Not |
-|--------|--------|-------|----------|----------|------------|------------|---------------|---------|-----|
-| CRMT | America's Car-Mart, Inc. | before-open | -0.66 | 334900000.0 | null | null | null | neutral | Prior EPS and priorRev data not found in available sources. expectedMove and consensusRange not available. IV crush risk: earnings already reported before open - 0DTE YASAK if reaction continues. |
-| CMCSA | Comcast Corporation | before-open | null | null | null | null | null | bullish | Earnings day with NBCUniversal spin-off catalyst. Consensus data not available in scraped sources. IV crush risk - 0DTE YASAK. |
-| HON | Honeywell International Inc. | before-open | null | null | null | null | null | neutral | Earnings day. Stock showing abnormal -50% move likely due to corporate action/spin-off data error in feeds. Verify ticker before trading. IV crush risk - 0DTE YASAK. |
-| IRDM | Iridium Communications Inc. | before-open | null | null | null | null | null | bullish | Earnings day with +20% reaction. Consensus data not available. IV crush risk - 0DTE YASAK. |
-| VZ | Verizon Communications Inc. | before-open | null | null | null | null | null | bearish | Earnings day with -6.86% reaction. Consensus data not available. IV crush risk - 0DTE YASAK. |
-| RKLB | Rocket Lab USA, Inc. | before-open | null | null | null | null | null | bullish | Earnings day. Space/launch sector momentum. Consensus data not available. IV crush risk - 0DTE YASAK. |
-| AVAV | AeroVironment, Inc. | after-close | 1.49 | 570000000.0 | null | null | null | bullish | After-market close. Defense/drone sector. Prior EPS and expectedMove not available. IV crush risk - 0DTE YASAK. |
-| CNXC | Concentrix Corporation | after-close | 2.69 | 2500000000.0 | null | null | null | neutral | After-market close. BPO/customer experience sector. Prior EPS and expectedMove not available. IV crush risk - 0DTE YASAK. |
-| QMCO | Quantum Corporation | after-close | -0.31 | 74200000.0 | null | null | null | neutral | After-market close. Data storage/backup. Prior EPS and expectedMove not available. IV crush risk - 0DTE YASAK. |
+### Gainers (5)
 
-⚠️ **Earnings günü = IV crush riski.** 0DTE opsiyonlar YASAK. Daha uzun DTE tercih edin.
+| Ticker | Company | Price | Change | Volume | Catalyst |
+|--------|---------|-------|--------|--------|----------|
+| **AMAT** | Applied Materials, Inc. | 677.07 | +8.01% | 4.296M | AI chip build-out / semi equipment demand |
+| **PANW** | Palo Alto Networks, Inc. | 328.65 | +8.04% | 2.670M | Cybersecurity sector rotation |
+| **CMCSA** | Comcast Corporation | 25.15 | +8.55% | 63.643M | NBCUniversal spin-off news |
+| **FBIN** | Fortune Brands Innovations, Inc. | 49.92 | +8.61% | 2.127M | Consumer discretionary rebound |
+| **FSLY** | Fastly, Inc. | 18.58 | +8.59% | 1.861M | Edge cloud / CDN momentum |
 
----
+### Losers (5)
 
-## 4. CALL Setups (5 adet)
-
-| Ticker | Yön | Entry | Target | Stop | R/R | Zaman Dilimi | Rationale |
-|--------|-----|-------|--------|------|-----|--------------|-----------|
-| SPY | CALL | 738.5 | 742.0 | 735.0 | 1.0:1 | 0DTE | SPY VWAP 736.91 uzerinde ve gap-fill sonrasi momentum continuation. Volume onayli yukari trend. ET 12:00 sonrasi risk-on bias. |
-| QQQ | CALL | 719.0 | 724.0 | 714.0 | 1.0:1 | 0DTE | QQQ VWAP 714.54 uzerinde guclu tech momentum. NVDA/MSFT/AMZN liderlik. Gap-open sonrasi trend devami. |
-| CHTR | CALL | 169.0 | 175.0 | 164.0 | 1.2:1 | intraday | Comcast spin-off katalizoruyle %26+ momentum. Hacim yuksek (1.39M). VWAP reclaim sonrasi continuation. |
-| CMCSA | CALL | 28.0 | 30.0 | 26.5 | 1.33:1 | intraday | NBCUniversal spin-off deger acma potansiyeli. Earnings day + haber akisi cakismasi. VWAP uzerinde. |
-| AMZN | CALL | 234.0 | 240.0 | 230.0 | 1.5:1 | 0DTE | Consumer discretionary/tech hibrit. Gun ici +4.66% momentum. VWAP uzerinde. Broad market risk-on. |
+| Ticker | Company | Price | Change | Volume | Catalyst |
+|--------|---------|-------|--------|--------|----------|
+| **WDC** | Western Digital Corp | 586.45 | -13.17% | 21.366M | NAND flash / memory weakness |
+| **CRDO** | Credo Technology Group Holding Ltd | 238.00 | -11.20% | 38.419M | High-speed chip profit-taking |
+| **OMER** | Omeros Corp | 8.67 | -19.12% | 10.913M | Biotech clinical trial disappointment |
+| **CAPR** | Capricor Therapeutics Inc | 26.44 | -13.03% | 5.319M | Gene therapy volatility |
+| **JELD** | JELD-WEN Holding Inc | 1.44 | -12.73% | 10.324M | Housing/materials weakness |
 
 ---
 
-## 5. PUT Setups (5 adet)
+## 3. CALL Setups (5)
 
-| Ticker | Yön | Entry | Target | Stop | R/R | Zaman Dilimi | Rationale |
-|--------|-----|-------|--------|------|-----|--------------|-----------|
-| IWM | PUT | 297.0 | 292.0 | 300.0 | 1.67:1 | 0DTE | IWM VWAP 296.89 altinda. Small-cap zayifligi. SPY/QQQ ayrisma - risk-off small-caps. Trend devami. |
-| BLD | PUT | 400.0 | 385.0 | 410.0 | 1.5:1 | intraday | Housing/insulation zayifligi. VWAP altinda breakdown. Mortgage rate yuksek kaliciligi. |
-| VZ | PUT | 43.5 | 41.0 | 45.0 | 1.67:1 | intraday | Earnings day asagisi. Subscriber growth endisesi. VWAP altinda momentum. Telecom sektor rotasyonu. |
-| CHDN | PUT | 83.0 | 78.0 | 86.0 | 1.67:1 | intraday | Gaming/leisure discretionary pullback. VWAP altinda. Zayif hacim ama sektor zayifligi. |
-| NSC | PUT | 292.0 | 280.0 | 298.0 | 2.0:1 | swing | Rail sektor hacim zayifligi. Intermodal dususu. VWAP altinda momentum devami. |
+| Ticker | Entry | Target | Stop | R/R | Timeframe | Rationale |
+|--------|-------|--------|------|-----|-----------|-----------|
+| **AMAT** | 675 | 695 | 665 | 2.0 | intraday | VWAP üstü, semi momentum, AI demand |
+| **PANW** | 325 | 350 | 315 | 2.5 | intraday | VWAP üstü gap-up, cyber relative strength |
+| **SPY** | 735 | 745 | 730 | 2.0 | 0DTE | Index VWAP üstü, broad risk-on |
+| **QQQ** | 715 | 730 | 708 | 2.14 | intraday | Tech strength, VWAP bounce |
+| **TENB** | 32 | 35 | 30.5 | 2.0 | intraday | Cyber momentum continuation |
 
 ---
 
-## 6. VWAP Notları & Risk Değerlendirmesi
+## 4. PUT Setups (5)
 
-**VWAP Notes:** SPY VWAP 736.91 uzerinde (738.74) -> risk-on bias. QQQ VWAP 714.54 uzerinde (719.19) -> tech guclu. IWM VWAP 296.89 altinda (296.83) -> small-cap zayif. Gap-fill: SPY acilis 736.525 -> kisa gap-up filled ve uzerine cikti. Large-cap / small-cap ayrismasi net: SPY+QQQ pozitif, IWM negatif.
+| Ticker | Entry | Target | Stop | R/R | Timeframe | Rationale |
+|--------|-------|--------|------|-----|-----------|-----------|
+| **WDC** | 590 | 560 | 600 | 3.0 | intraday | VWAP altı, semi breakdown |
+| **CRDO** | 240 | 220 | 248 | 2.5 | intraday | Tech profit-taking, VWAP altı |
+| **IWM** | 298 | 290 | 301 | 2.67 | intraday | Small-cap lagging, VWAP altı riski |
+| **OMER** | 8.70 | 7.50 | 9.20 | 2.4 | intraday | Biotech selloff, hacimli düşüş |
+| **JELD** | 1.45 | 1.25 | 1.55 | 2.0 | intraday | Housing weakness, düşük fiyat risk |
+
+---
+
+## 5. Earnings Calendar
+
+| Ticker | Company | Time | Cons. EPS | Cons. Rev | Expected Move | Note |
+|--------|---------|------|-----------|-----------|---------------|------|
+| **AVAV** | AeroVironment, Inc. | After-close | 1.49 | 570M | ±11.31% | IV crush riski. 0DTE YASAK. Drone/AI play. |
+| **CNXC** | Concentrix Corporation | After-close | 2.69 | 2.5B | ±19.60% | Yüksek volatilite. 0DTE YASAK. |
+| **QMCO** | Quantum Corporation | After-close | -0.31 | 74.2M | — | Negatif EPS. 0DTE YASAK. |
+| **CRMT** | America's Car-Mart, Inc. | Before-open | -0.66 | 334.9M | — | BMO açıldı. 0DTE YASAK. |
+
+---
+
+## 6. VWAP Notes & Risk Assessment
+
+**VWAP Notes:**  
+SPY ve QQQ net VWAP üstünde (risk-on). IWM VWAP'a yapışık, small-cap relative weakness. Gap fill tamamlandı, momentum continuation görülüyor.
 
 **Risk Assessment:**
-- **Seviye:** medium
-- **VIX Rejimi:** VIX 18.42 (normal, 15-20 band). Kisa vadeli complacency degil ama fear de yok. Options premium moderately priced.
-- **Sektor Rotasyonu:** Communication Services guclu (CMCSA/CHTR/IRDM). Tech guclu (QQQ +1.79%). Small-cap/Industrials zayif (IWM -1.0%). Consumer Discretionary/Construction zayif (BLD).
-- **Earnings Riski:** CMCSA, HON, IRDM, VZ, RKLB earnings gunu. AVAV, CNXC, QMCO after-close. IV crush risk aktif. 0DTE earnings stocks YASAK.
-- **Makro Risk:** FOMC beklentisi yakin (temmuz). Mortgage rates yuksek kaliciligi housing sektorunu baski. Tariff/China trade risk arka planda.
+- **Level:** medium
+- **VIX Regime:** VIX 18.42 (normal range 15–20). Complacency değil, fear değil. Normal volatilite.
+- **Sector Rotation:** Tech/Cybersecurity (PANW, TENB, AMAT) strong. Semiconductors mixed (AMAT strong, WDC weak). Biotech weak (OMER, CAPR). Small-cap (IWM) lagging large-cap.
+- **Earnings Risk:** AVAV, CNXC, QMCO after-close. CNXC expected move ±19.60% = yüksek risk. CRMT BMO açıldı.
+- **Macro Risk:** FOMC öncesi dönem, piyasa bekleyişte. Geopolitical tensions (Middle East) oil prices affecting sentiment.
 
 ---
 
-## 7. nextDayCarryForward
+*nextDayCarryForward: [ ] (hourly rapor — boş array)*
 
-Hourly raporunda BOŞ array: `[]`
-
----
-
-*Bu rapor bilgilendirme amacli uretilmistir. Yatirim tavsiyesi degildir. Trading risk icerir.*
-
-**Gistify** → gistify.pro
+*Disclaimer: Bu rapor bilgilendirme amaçlıdır, yatırım tavsiyesi değildir. Options trading yüksek risk içerir.*
