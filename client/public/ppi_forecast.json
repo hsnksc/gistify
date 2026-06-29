@@ -1,137 +1,163 @@
 {
-  "generatedAt": "2026-06-28T21:00:00Z",
-  "reportDate": "2026-06-28",
-  "title": "US PPI Forecast Snapshot — Composite Calibrated Bridge Nowcast v2.5",
-  "summary": "Headline PPI near-flat after May's energy shock. Hormuz deal opened the strait; WTI collapsed to $74, gasoline retail fell to $4.05. Composite Calibrated Bridge Nowcast v2.5 (with adaptive lag correction, regime-dependent bias, and anomaly detection) shows energy mean-reversion to -1.5% but core goods lagged passthrough (+0.6%) and sticky services (+0.4%) keep core elevated. Regime: Normal (VIX 17.87). The headline is almost entirely an energy story; core is the real signal.",
-  "baseCase": "Flat headline, sticky core; energy mean-reversion masks upstream persistence",
-  "conviction": 65,
-  "regime": "normal",
-  "vix": 17.87,
+  "generatedAt": "2026-06-29T09:44:35Z",
+  "reportDate": "2026-06-29",
+  "title": "US PPI Forecast Snapshot \u2014 Composite Calibrated Bridge Nowcast v2.5 Enhanced",
+  "summary": "Post-Hormuz energy mean-reversion deepens with WTI near $70 and gasoline retail easing toward $3.90. ISM Manufacturing Prices Paid at 82.1 remains the strongest inflationary signal in four years, supporting core goods passthrough. Services composite stays sticky at +0.5% with summer travel demand and portfolio management fees. Elevated regime (VIX 18.4) widens the confidence band. Headline is flat; core is the signal.",
+  "baseCase": "Flat headline, sticky core; energy drag masks persistent upstream pressure",
+  "conviction": 60,
+  "regime": "elevated",
+  "vix": 18.41,
   "regimeParameters": {
-    "biasWindow": 3,
+    "biasWindow": 2,
     "energyLag": 1,
     "coreGoodsLag": 1,
     "transportSmoothing": 0.5,
     "ciMultiplier": 1.96
   },
   "adaptiveBias": {
-    "energy": 0.0,
-    "foods": 0.3,
-    "coreGoods": 0.3,
-    "tradeServices": -0.6,
-    "transportation": 0.2,
-    "otherServices": 0.2
+    "energy": -0.3,
+    "foods": 0.0,
+    "coreGoods": -0.2,
+    "tradeServices": 0.0,
+    "transportation": -0.2,
+    "otherServices": 0.1
   },
   "lagCorrection": {
-    "energy": { "lagMonths": 1, "dampening": 1.0 },
-    "coreGoods": { "lagMonths": 1, "dampening": 1.0 }
+    "energy": {
+      "lagMonths": 1,
+      "dampening": 1.0
+    },
+    "coreGoods": {
+      "lagMonths": 1,
+      "dampening": 1.0
+    }
   },
   "compositeProxies": {
     "energy": {
-      "gasoline": -8.0,
-      "diesel": -5.0,
+      "gasoline": -6.0,
+      "diesel": -4.0,
       "jetFuel": -3.0,
-      "naturalGas": 2.8,
-      "composite": -1.5
+      "naturalGas": 0.5,
+      "composite": -1.2
     },
     "foods": {
       "cattle": 0.0,
-      "hogs": -0.5,
-      "grains": 0.2,
+      "hogs": -0.3,
+      "grains": 0.1,
       "dairy": 0.0,
       "usda": 0.0,
-      "composite": 0.3
+      "composite": 0.2
     },
     "coreGoods": {
-      "copper": 0.5,
-      "steel": -0.2,
-      "aluminum": 0.3,
-      "lumber": 0.3,
-      "chemicals": 0.5,
+      "copper": 0.3,
+      "steel": 0.0,
+      "aluminum": 0.2,
+      "lumber": 0.2,
+      "chemicals": 0.6,
       "pharma": 0.2,
-      "composite": 0.6
+      "ismPricesPaid": 3.21,
+      "importPriceIndex": 0.0,
+      "composite": 0.8
     },
     "tradeServices": {
       "inventorySales": 0.0,
-      "wholesaleMargin": -0.3,
-      "retailSales": -0.2,
-      "fuelMargin": 0.0,
-      "composite": -0.5
+      "wholesaleMargin": -0.2,
+      "retailSales": -0.1,
+      "fuelMargin": -0.1,
+      "composite": -0.2
     },
     "transportation": {
       "datSpot": 0.0,
-      "diesel": 2.0,
+      "diesel": -2.0,
       "railFreight": 0.0,
       "airFreight": 0.0,
-      "composite": 1.0
+      "composite": 0.4
     },
     "otherServices": {
       "eci": 0.0,
       "sp500vix": 0.4,
-      "healthcare": 0.0,
-      "accommodation": 0.0,
+      "healthcare": 0.2,
+      "accommodation": 0.2,
       "loanRates": 0.0,
-      "composite": 0.4
+      "composite": 0.5
     }
   },
   "intermediateDemand": {
-    "stage1": 3.2,
-    "stage2": 2.4,
-    "stage3": 1.9,
-    "stage4": 1.1,
-    "uplift": 0.5
+    "stage1": 3.0,
+    "stage2": 2.2,
+    "stage3": 1.7,
+    "stage4": 1.0,
+    "uplift": 0.4
   },
   "release": {
     "name": "PPI",
     "period": "Jun 2026",
     "releaseDate": "2026-07-15",
     "releaseTimeEt": "08:30 ET",
-    "headlineMoM": "+0.1%",
-    "headlineYoY": "6.6%",
-    "coreMoM": "+0.5%",
-    "coreYoY": "5.6%",
+    "headlineMoM": "+0.0%",
+    "headlineYoY": "6.2%",
+    "coreMoM": "+0.4%",
+    "coreYoY": "5.3%",
     "priorHeadlineMoM": "+1.1%",
     "priorHeadlineYoY": "6.5%",
     "priorCoreMoM": "+0.8%",
     "priorCoreYoY": "5.1%",
     "bias": "COOLER",
-    "confidence": 65,
-    "thesis": "Energy composite (gasoline -$0.253, diesel -$0.291, natgas +2.8%) drives headline mean-reversion. Core goods composite (+0.6%) includes lagged petrochemical passthrough from May's +10.7% energy spike. Services composite (+0.4%) reflects S&P 500 volatility and sticky healthcare. Regime: Normal (VIX 17.87). Adaptive bias applied (3-month window)."
+    "confidence": 60,
+    "thesis": "Energy drag from post-Hormuz mean-reversion offsets sticky core goods and services. ISM Prices Paid at 82.1 signals persistent goods pipeline pressure despite moderating crude. Elevated regime (VIX 18.4) warrants wider confidence bands."
   },
   "pointEstimate": {
-    "headline": 0.1,
-    "core": 0.5
+    "headline": 0.0,
+    "core": 0.4
   },
   "confidenceInterval": {
-    "headline": [-0.3, 0.5],
-    "core": [0.2, 0.7]
+    "headline": [
+      -0.5,
+      0.5
+    ],
+    "core": [
+      0.1,
+      0.7
+    ]
   },
   "scenarios": [
     {
       "id": "base",
       "label": "Base case",
       "probability": 55,
-      "outcome": "Headline +0.1%, core +0.5%. Energy mean-reverts, core stays sticky.",
+      "outcome": "Headline flat, core +0.4%. Energy drag stabilizes while core goods and services stay sticky.",
       "marketReadthrough": "Rates digest the headline but focus on core. No major Fed repricing.",
-      "favoredAssets": ["Industrials", "Quality growth", "Gold"],
+      "favoredAssets": [
+        "Industrials",
+        "Quality growth",
+        "Gold"
+      ],
       "invalidation": "Core services re-accelerate above +0.7% MoM."
     },
     {
       "id": "hot",
       "label": "Hotter pipeline pressure",
       "probability": 25,
-      "outcome": "Headline +0.4%, core +0.7%. Lagged passthrough hits harder than expected; services stay hot.",
+      "outcome": "Headline +0.3%, core +0.6%. ISM passthrough hits harder than expected; services stay hot.",
       "marketReadthrough": "Rates higher, USD firmer, margin-sensitive equities under pressure.",
-      "favoredAssets": ["USD", "Energy", "Value"],
+      "favoredAssets": [
+        "USD",
+        "Energy",
+        "Value"
+      ],
       "invalidation": "Hot print is driven by narrow commodity volatility with weak pass-through."
     },
     {
       "id": "cool",
       "label": "Cleaner disinflation pulse",
       "probability": 20,
-      "outcome": "Headline -0.2%, core +0.3%. Energy collapses further; core passthrough fades faster than expected.",
+      "outcome": "Headline -0.3%, core +0.2%. Energy collapses further; core passthrough fades faster than expected.",
       "marketReadthrough": "Fed-cut odds rise, rates soften, broader equity appetite improves.",
-      "favoredAssets": ["Growth", "Small caps", "Duration"],
+      "favoredAssets": [
+        "Growth",
+        "Small caps",
+        "Duration"
+      ],
       "invalidation": "Market already priced a benign outcome before release."
     }
   ],
@@ -164,7 +190,7 @@
     {
       "label": "Commodity complex",
       "value": "Oil and metals",
-      "note": "Important for headline direction but not enough alone. WTI $74 is a floor until Hormuz stability is confirmed."
+      "note": "Important for headline direction but not enough alone. WTI $70-76 range is the new equilibrium until Hormuz stability is fully confirmed."
     },
     {
       "label": "Pass-through",
@@ -197,6 +223,9 @@
     "https://tradingeconomics.com/commodity/lean-hogs",
     "https://tradingeconomics.com/commodity/corn",
     "https://tradingeconomics.com/commodity/wheat",
-    "https://tradingeconomics.com/commodity/soybeans"
+    "https://tradingeconomics.com/commodity/soybeans",
+    "https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/",
+    "https://www.bls.gov/eci/",
+    "https://www.census.gov/wholesale/"
   ]
 }
