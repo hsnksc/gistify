@@ -6,7 +6,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { BookOpen, Languages } from "lucide-react";
+import { AlertTriangle, BookOpen, Languages } from "lucide-react";
 import {
   analyzeFlowReportLanguage,
   type FlowReportLanguageInfo,
@@ -119,6 +119,11 @@ async function translateRuntimeHtmlTexts(texts: string[]) {
         }),
       });
 
+      if (!response.ok) {
+        const errorPayload = (await response.json().catch(() => ({}))) as { error?: string };
+        throw new Error(errorPayload.error || `Translation API returned ${response.status}`);
+      }
+
       const payload = (await response.json()) as {
         translations?: Record<string, string>;
       };
@@ -138,11 +143,12 @@ async function translateRuntimeHtmlTexts(texts: string[]) {
           translations[sourceText] = sourceText;
         }
       }
-    } catch {
+    } catch (err) {
       // Don't cache on error - allow retry next time
       for (const sourceText of batch) {
         translations[sourceText] = sourceText;
       }
+      throw err;
     }
   }
 
@@ -567,6 +573,46 @@ function buildPreparedHtmlReport(
     scheduleHeight();
   };
 
+  window.toggleCard = symbol => {
+    const target = document.getElementById("card-" + String(symbol || ""));
+    if (target) {
+      target.classList.toggle("open");
+    }
+    scheduleHeight();
+  };
+
+  window.goCard = symbol => {
+    const target = document.getElementById("card-" + String(symbol || ""));
+    if (!target) {
+      return;
+    }
+    target.classList.add("open");
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    scheduleHeight();
+  };
+
+  window.filter = () => {
+    const input = document.getElementById("q");
+    const query =
+      input && "value" in input ? String(input.value || "").toLowerCase().trim() : "";
+
+    document.querySelectorAll(".card[data-sym], .chip[data-sym]").forEach(node => {
+      const symbol = String(node.getAttribute("data-sym") || "").toLowerCase();
+      const name = String(node.getAttribute("data-name") || "").toLowerCase();
+      const matches = !query || symbol.includes(query) || name.includes(query);
+      node.classList.toggle("hide", !matches);
+    });
+    scheduleHeight();
+  };
+
+  window.expandAll = open => {
+    const shouldOpen = Boolean(open);
+    document.querySelectorAll(".card[id^='card-']").forEach(node => {
+      node.classList.toggle("open", shouldOpen);
+    });
+    scheduleHeight();
+  };
+
   window.switchLang = languageCode => {
     applyLanguage(languageCode);
   };
@@ -893,6 +939,7 @@ export default function HtmlReportRenderer({
     [language, languageInfo]
   );
   const [iframeHeight, setIframeHeight] = useState(1600);
+  const [translationError, setTranslationError] = useState<string | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -949,15 +996,29 @@ export default function HtmlReportRenderer({
         return;
       }
 
-      const translations = await translateRuntimeHtmlTexts(texts);
-      iframeRef.current.contentWindow.postMessage(
-        {
-          type: "gistify-flow-html-translate-response",
-          instanceId,
-          translations,
-        },
-        "*"
-      );
+      try {
+        const translations = await translateRuntimeHtmlTexts(texts);
+        iframeRef.current.contentWindow.postMessage(
+          {
+            type: "gistify-flow-html-translate-response",
+            instanceId,
+            translations,
+          },
+          "*"
+        );
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Translation failed";
+        setTranslationError(message);
+        // Still send empty response so iframe stops waiting
+        iframeRef.current.contentWindow.postMessage(
+          {
+            type: "gistify-flow-html-translate-response",
+            instanceId,
+            translations: {},
+          },
+          "*"
+        );
+      }
     };
 
     window.addEventListener("message", handleTranslationRequest);
@@ -1016,6 +1077,26 @@ export default function HtmlReportRenderer({
               </p>
               <p className="text-sm leading-6 text-muted-foreground">
                 {translationNotice.body}
+              </p>
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      {translationError && !minimal ? (
+        <section className="rounded-xl border border-rose-400/25 bg-rose-500/8 p-4 shadow-xl">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="mt-0.5 size-4 text-rose-300" />
+            <div className="space-y-1">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-rose-300">
+                {copy(language, "Ceviri Hatasi", "Translation Error")}
+              </p>
+              <p className="text-sm leading-6 text-muted-foreground">
+                {copy(
+                  language,
+                  `Canli ceviri hizmeti gecici olarak kullanilamiyor: ${translationError}. Lutfen sayfayi yenileyin veya daha sonra tekrar deneyin.`,
+                  `Live translation service is temporarily unavailable: ${translationError}. Please refresh the page or try again later.`
+                )}
               </p>
             </div>
           </div>
