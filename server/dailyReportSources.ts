@@ -315,9 +315,9 @@ function isExcludedFlowSourceFile(filePath: string) {
     normalizedPath.includes("/flowskill/") ||
     !/\.(md|html)$/i.test(filePath) ||
     normalizedPath === "index.html" ||
-    /^readme\.md$/i.test(baseName) ||
-    /^_template\.md$/i.test(baseName) ||
-    /^example\.md$/i.test(baseName) ||
+    /^readme\.(md|html)$/i.test(baseName) ||
+    /^_template\.(md|html)$/i.test(baseName) ||
+    /^example\.(md|html)$/i.test(baseName) ||
     /^plan(?:[_-]|$)/i.test(baseName)
   );
 }

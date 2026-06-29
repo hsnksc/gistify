@@ -50,6 +50,7 @@ import {
   getViewerFlowReportSummaries,
   isFlowDailyReport,
 } from "./services/flowService";
+import { syncPublishedFlowReportsToArchive } from "./services/flowArchiveSync";
 import { createAdminAgentsRouter } from "./routes/adminAgents";
 import { createAiRouter } from "./routes/ai";
 import { createAuthRouter } from "./routes/auth";
@@ -1237,6 +1238,11 @@ function getViewerWeeklyReports(referenceDate = new Date()) {
 }
 
 function getPublishedDailyReports() {
+  syncPublishedFlowReportsToArchive(
+    billingStore,
+    getWeeklyReportAdminEmail()
+  );
+
   return billingStore
     .listDailyReports()
     .filter(report => report.status === "published");
