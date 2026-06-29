@@ -767,6 +767,260 @@ function extractHtmlTitle(html: string) {
   );
 }
 
+function escapeHtmlAttribute(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function findHtmlElementById(html: string, targetId: string) {
+  const matcher = /<([a-z0-9:-]+)\b[^>]*\bid=["']([^"']+)["'][^>]*>/gi;
+  const normalizedTarget = targetId.trim().toLowerCase();
+
+  let match: RegExpExecArray | null = matcher.exec(html);
+  while (match) {
+    const tagName = (match[1] || "").toLowerCase();
+    const elementId = (match[2] || "").trim().toLowerCase();
+    if (!tagName || elementId !== normalizedTarget) {
+      match = matcher.exec(html);
+      continue;
+    }
+
+    return {
+      index: match.index ?? -1,
+      tagName,
+    };
+  }
+
+  return null;
+}
+
+function findHtmlElementByClassName(html: string, className: string) {
+  const matcher = /<([a-z0-9:-]+)\b[^>]*\bclass=["']([^"']+)["'][^>]*>/gi;
+  const normalizedTarget = className.trim();
+
+  let match: RegExpExecArray | null = matcher.exec(html);
+  while (match) {
+    const tagName = (match[1] || "").toLowerCase();
+    const classTokens = (match[2] || "")
+      .split(/\s+/)
+      .map((token: string) => token.trim())
+      .filter(Boolean);
+    if (!tagName || !classTokens.includes(normalizedTarget)) {
+      match = matcher.exec(html);
+      continue;
+    }
+
+    return {
+      index: match.index ?? -1,
+      tagName,
+    };
+  }
+
+  return null;
+}
+
+function extractHtmlElementBlock(
+  html: string,
+  element: { index: number; tagName: string } | null
+) {
+  if (!element || element.index < 0 || !element.tagName) {
+    return "";
+  }
+
+  const openTagEnd = html.indexOf(">", element.index);
+  if (openTagEnd < 0) {
+    return "";
+  }
+
+  const tokenMatcher = new RegExp(
+    `<\\/?${element.tagName}\\b[^>]*>`,
+    "gi"
+  );
+  tokenMatcher.lastIndex = element.index;
+
+  let depth = 0;
+  let match: RegExpExecArray | null = tokenMatcher.exec(html);
+  while (match) {
+    if ((match.index ?? -1) < element.index) {
+      match = tokenMatcher.exec(html);
+      continue;
+    }
+
+    const token = match[0] || "";
+    const tokenIndex = match.index ?? -1;
+    const isClosingTag = /^<\//.test(token);
+    const isSelfClosingTag = /\/>$/.test(token);
+
+    if (tokenIndex === element.index) {
+      depth = 1;
+      if (isSelfClosingTag) {
+        return html.slice(element.index, tokenIndex + token.length);
+      }
+      match = tokenMatcher.exec(html);
+      continue;
+    }
+
+    if (!isClosingTag && !isSelfClosingTag) {
+      depth += 1;
+      match = tokenMatcher.exec(html);
+      continue;
+    }
+
+    if (isClosingTag) {
+      depth -= 1;
+      if (depth === 0) {
+        return html.slice(element.index, tokenIndex + token.length);
+      }
+    }
+
+    match = tokenMatcher.exec(html);
+  }
+
+  return html.slice(element.index);
+}
+
+function extractHtmlElementBlockById(html: string, targetId: string) {
+  return extractHtmlElementBlock(html, findHtmlElementById(html, targetId));
+}
+
+function extractHtmlElementBlockByClassName(html: string, className: string) {
+  return extractHtmlElementBlock(
+    html,
+    findHtmlElementByClassName(html, className)
+  );
+}
+
+function extractHtmlBodyContent(html: string) {
+  return html.match(/<body[^>]*>([\s\S]*?)<\/body>/i)?.[1] || html;
+}
+
+function collectHtmlStyleTags(html: string) {
+  return Array.from(html.matchAll(/<style[^>]*>[\s\S]*?<\/style>/gi))
+    .map(match => match[0] || "")
+    .filter(Boolean)
+    .join("\n");
+}
+
+function stripFlowHtmlScripts(html: string) {
+  return html.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "");
+}
+
+function stripFlowHtmlChrome(html: string) {
+  return stripFlowHtmlScripts(html)
+    .replace(/<div[^>]*\bid=["']progress-bar["'][^>]*>\s*<\/div>/gi, "")
+    .replace(
+      /<header\b[^>]*(?:\bid=["']header["']|\bclass=["'][^"']*\bheader\b[^"']*["'])[\s\S]*?<\/header>/gi,
+      ""
+    )
+    .replace(
+      /<footer\b[^>]*(?:\bid=["']footer["']|\bclass=["'][^"']*\bfooter\b[^"']*["'])[\s\S]*?<\/footer>/gi,
+      ""
+    )
+    .replace(
+      /<aside\b[^>]*(?:\bid=["']sidebar["']|\bclass=["'][^"']*\bsidebar\b[^"']*["'])[\s\S]*?<\/aside>/gi,
+      ""
+    )
+    .replace(
+      /<(?:div|nav)\b[^>]*class=["'][^"']*\b(?:lang-toggle|lang-switch|toc-title|toc-nav|toc-list|sidebar)\b[^"']*["'][\s\S]*?<\/(?:div|nav)>/gi,
+      ""
+    )
+    .trim();
+}
+
+function buildDailyReportAssetUrlPath(assetBasePath: string, fileName: string) {
+  const normalizedFileName = normalizeRelativeAssetPath(fileName);
+  const normalizedBasePath = normalizeRelativeAssetPath(assetBasePath);
+
+  if (!normalizedFileName) {
+    return "";
+  }
+
+  if (!normalizedBasePath) {
+    return `/api/daily-report/assets/${normalizedFileName}`;
+  }
+
+  return `/api/daily-report/assets/${normalizedBasePath}/${normalizedFileName}`;
+}
+
+function rewriteFlowHtmlAssetSources(html: string, assetBasePath: string) {
+  return html.replace(
+    /(<img\b[^>]*\bsrc=["'])([^"']+)(["'][^>]*>)/gi,
+    (_match, prefix: string, rawSrc: string, suffix: string) => {
+      const normalizedSrc = normalizeRelativeAssetPath(rawSrc);
+      if (
+        !normalizedSrc ||
+        /^(https?:)?\/\//i.test(normalizedSrc) ||
+        normalizedSrc.startsWith("data:")
+      ) {
+        return `${prefix}${rawSrc}${suffix}`;
+      }
+
+      const rewrittenSrc = buildDailyReportAssetUrlPath(
+        assetBasePath,
+        normalizedSrc
+      );
+      return `${prefix}${escapeHtmlAttribute(rewrittenSrc)}${suffix}`;
+    }
+  );
+}
+
+function buildCanonicalFlowHtmlDocument(html: string, assetBasePath: string) {
+  const sourceHtml = normalizeString(html);
+  if (!sourceHtml) {
+    return "";
+  }
+
+  const cleanedHtml = stripFlowHtmlScripts(sourceHtml);
+  const heroBlock =
+    extractHtmlElementBlockById(cleanedHtml, "hero") ||
+    extractHtmlElementBlockByClassName(cleanedHtml, "hero");
+  const contentBlock =
+    extractHtmlElementBlockById(cleanedHtml, "content-tr") ||
+    extractHtmlElementBlockById(cleanedHtml, "tr-content") ||
+    extractHtmlElementBlockById(cleanedHtml, "main") ||
+    extractHtmlElementBlockByClassName(cleanedHtml, "content") ||
+    extractHtmlElementBlockByClassName(cleanedHtml, "wrap") ||
+    extractHtmlElementBlockByClassName(cleanedHtml, "report-shell") ||
+    extractHtmlBodyContent(cleanedHtml);
+
+  const sanitizedHero = stripFlowHtmlChrome(heroBlock);
+  let sanitizedContent = stripFlowHtmlChrome(contentBlock);
+
+  if (sanitizedHero && sanitizedContent.includes(sanitizedHero)) {
+    sanitizedContent = sanitizedContent.replace(sanitizedHero, "").trim();
+  }
+
+  const bodyContent = [sanitizedHero, sanitizedContent]
+    .filter(Boolean)
+    .join("\n")
+    .trim();
+
+  const finalBody = rewriteFlowHtmlAssetSources(
+    bodyContent || extractHtmlBodyContent(cleanedHtml),
+    assetBasePath
+  );
+  const title = extractHtmlTitle(sourceHtml);
+  const styleTags = collectHtmlStyleTags(sourceHtml);
+
+  return `<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>${escapeHtmlAttribute(title)}</title>
+    ${styleTags}
+  </head>
+  <body>
+    <main class="gistify-flow-source">
+      ${finalBody}
+    </main>
+  </body>
+</html>`;
+}
+
 
 function extractHtmlFigureFiles(html: string) {
   return Array.from(
@@ -1208,6 +1462,9 @@ function buildFlowFileSourcePackage(options: {
     5,
     18
   ).map(item => truncateFlowCopy(item, 220));
+  const normalizedHtml = isHtmlSource
+    ? buildCanonicalFlowHtmlDocument(html, assetBasePath)
+    : "";
   const normalizedMarkdown = buildSimpleFlowMarkdown({
     sourceLabel,
     title,
@@ -1237,7 +1494,7 @@ function buildFlowFileSourcePackage(options: {
     metadataItems: sourceMetadataItems,
     executiveSummary,
     markdown: isHtmlSource ? normalizedMarkdown : markdown || normalizedMarkdown,
-    html,
+    html: normalizedHtml || html,
     sectionFiles: [],
     figureFiles,
     openAiFigureFiles,

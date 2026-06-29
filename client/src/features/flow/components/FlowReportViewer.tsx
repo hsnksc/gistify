@@ -1,5 +1,5 @@
 import HtmlReportRenderer from "@/components/reports/HtmlReportRenderer";
-import MarkdownReportRenderer from "@/components/reports/MarkdownReportRenderer";
+import { buildDailyReportHtmlDocument } from "@/lib/dailyReportHtml";
 import type { AppLanguage } from "@/lib/i18n";
 import type { FlowReport } from "@shared/flow";
 import { useFlowTitleTranslation } from "../hooks/useFlowTranslation";
@@ -16,29 +16,29 @@ export default function FlowReportViewer({
 }: FlowReportViewerProps) {
   const content = normalizeFlowContent(report.content || {});
   const viewer = buildFlowViewerData(report, language);
-
   const translatedTitle = useFlowTitleTranslation(report.title, language);
-
-  if (content.contentFormat === "html") {
-    return (
-      <HtmlReportRenderer
-        language={language}
-        html={content.html || ""}
-        emptyMessage={viewer.emptyMessage}
-        minimal
-        sourceFolder={report.sourceFolder}
-        sourceLabel={content.sourceLabel || report.sourceFolder}
-        title={translatedTitle}
-      />
-    );
-  }
+  const resolvedHtml =
+    content.contentFormat === "html"
+      ? content.html || ""
+      : buildDailyReportHtmlDocument({
+          content,
+          language,
+          reportDateLabel: viewer.reportDateLabel,
+          resolveImage: viewer.resolveImage,
+          sourceLabel: content.sourceLabel || report.sourceFolder,
+          title: translatedTitle,
+          updatedAtLabel: viewer.updatedAtLabel,
+        });
 
   return (
-    <MarkdownReportRenderer
+    <HtmlReportRenderer
       language={language}
-      markdown={content.markdown}
+      html={resolvedHtml}
       emptyMessage={viewer.emptyMessage}
-      resolveImage={viewer.resolveImage}
+      minimal
+      sourceFolder={report.sourceFolder}
+      sourceLabel={content.sourceLabel || report.sourceFolder}
+      title={translatedTitle}
     />
   );
 }

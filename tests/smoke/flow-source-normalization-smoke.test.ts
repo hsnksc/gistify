@@ -113,7 +113,56 @@ Paragraf yapisi korunur ama Flow tarafinda sahte ticker uretilmemelidir.
     );
     expect(source.headline).toContain("tickerlarini");
     expect(source.html).toContain("10 Hisse Senedi Analiz Raporu");
+    expect(source.html).toContain('class="gistify-flow-source"');
+    expect(source.html).not.toContain("<script");
     expect(source.executiveSummary.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it("strips source chrome and keeps a single primary language body for html flow posts", () => {
+    const source = createFlowSourcePackageFromContent({
+      fileName: "daily-bilingual-note-29-haziran-2026.html",
+      sourceLabel: "flow/daily-bilingual-note-29-haziran-2026.html",
+      html: `
+<!doctype html>
+<html>
+  <head>
+    <title>Bilingual Flow Note | $QQQ</title>
+    <style>.hero{color:#fff}</style>
+  </head>
+  <body>
+    <header id="header">Global header</header>
+    <aside id="sidebar">Sidebar links</aside>
+    <main id="main">
+      <div id="hero" class="hero">
+        <h1 class="hero-h">QQQ Momentum Notu</h1>
+      </div>
+      <div id="content-tr" class="lang-content">
+        <section id="tr-1">
+          <h2>Turkce Ozet</h2>
+          <p>Bu blok sitede kalmali.</p>
+        </section>
+      </div>
+      <div id="content-en" class="lang-content">
+        <section id="en-1">
+          <h2>English Summary</h2>
+          <p>This block should not survive canonical source normalization.</p>
+        </section>
+      </div>
+    </main>
+    <footer id="footer">Footer text</footer>
+    <script>window.setLang('en')</script>
+  </body>
+</html>
+      `,
+    });
+
+    expect(source.html).toContain("QQQ Momentum Notu");
+    expect(source.html).toContain("Turkce Ozet");
+    expect(source.html).not.toContain("English Summary");
+    expect(source.html).not.toContain("Global header");
+    expect(source.html).not.toContain("Sidebar links");
+    expect(source.html).not.toContain("Footer text");
+    expect(source.html).not.toContain("<script");
   });
 
   it("prefers embedded html dates over generated file-name dates", () => {

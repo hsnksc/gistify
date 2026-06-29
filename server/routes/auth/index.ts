@@ -52,6 +52,10 @@ type AuthRouterDependencies = {
   buildGoogleAuthUrl: (req: Request, state: string) => string | null;
   clearCookie: (req: Request, res: Response, name: string) => void;
   createSession: (userId: string) => SessionRecord;
+  createSignedAuthSessionCookieValue: (
+    session: SessionRecord,
+    user: Pick<AuthUser, "email" | "id" | "name" | "picture">
+  ) => string;
   getGoogleRedirectUri: (req: Request) => string;
   isPublicAccessMode: () => boolean;
   normalizeEmail: (value: unknown) => string;
@@ -72,6 +76,7 @@ export function createAuthRouter({
   buildGoogleAuthUrl,
   clearCookie,
   createSession,
+  createSignedAuthSessionCookieValue,
   getGoogleRedirectUri,
   isPublicAccessMode,
   normalizeEmail,
@@ -219,7 +224,10 @@ export function createAuthRouter({
       const session = createSession(normalizedUser.id);
       billingStore.upsertSession(session);
 
-      const signedSessionValue = `${session.id}.${signValue(session.id)}`;
+      const signedSessionValue = createSignedAuthSessionCookieValue(
+        session,
+        normalizedUser
+      );
       setCookie(req, res, authCookieName, signedSessionValue, {
         maxAgeSeconds: sessionTtlSeconds,
         path: "/",

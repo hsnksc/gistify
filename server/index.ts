@@ -112,6 +112,13 @@ interface SessionRecord {
   updatedAt: string;
 }
 
+interface SignedAuthSessionPayload {
+  expiresAt: number;
+  issuedAt: string;
+  sessionId: string;
+  user: Pick<AuthUser, "email" | "id" | "name" | "picture">;
+}
+
 interface AuthPayload {
   authenticated: boolean;
   user: Pick<AuthUser, "id" | "email" | "name" | "picture"> | null;
@@ -443,7 +450,89 @@ function createSession(userId: string): SessionRecord {
   };
 }
 
+function createSignedAuthSessionCookieValue(
+  session: SessionRecord,
+  user: Pick<AuthUser, "email" | "id" | "name" | "picture">
+) {
+  const payload: SignedAuthSessionPayload = {
+    expiresAt: session.expiresAt,
+    issuedAt: session.createdAt,
+    sessionId: session.id,
+    user,
+  };
+  const encodedPayload = Buffer.from(
+    JSON.stringify(payload),
+    "utf8"
+  ).toString("base64url");
+  return `v1.${encodedPayload}.${signValue(encodedPayload)}`;
+}
+
+function parseSignedAuthSessionPayload(rawCookie: string | undefined) {
+  if (!rawCookie || !rawCookie.startsWith("v1.")) {
+    return null;
+  }
+
+  const [, encodedPayload, signature] = rawCookie.split(".");
+  if (!encodedPayload || !signature) {
+    return null;
+  }
+
+  if (signValue(encodedPayload) !== signature) {
+    return null;
+  }
+
+  try {
+    const parsed = JSON.parse(
+      Buffer.from(encodedPayload, "base64url").toString("utf8")
+    ) as Partial<SignedAuthSessionPayload>;
+    if (
+      !parsed ||
+      typeof parsed !== "object" ||
+      typeof parsed.sessionId !== "string" ||
+      !parsed.sessionId.trim() ||
+      typeof parsed.issuedAt !== "string" ||
+      !parsed.issuedAt.trim() ||
+      typeof parsed.expiresAt !== "number" ||
+      !Number.isFinite(parsed.expiresAt) ||
+      parsed.expiresAt <= 0 ||
+      !parsed.user ||
+      typeof parsed.user !== "object" ||
+      typeof parsed.user.id !== "string" ||
+      !parsed.user.id.trim() ||
+      typeof parsed.user.email !== "string" ||
+      !parsed.user.email.trim() ||
+      typeof parsed.user.name !== "string" ||
+      !parsed.user.name.trim()
+    ) {
+      return null;
+    }
+
+    return {
+      expiresAt: parsed.expiresAt,
+      issuedAt: parsed.issuedAt,
+      sessionId: parsed.sessionId.trim(),
+      user: {
+        id: parsed.user.id.trim(),
+        email: parsed.user.email.trim(),
+        name: parsed.user.name.trim(),
+        picture:
+          typeof parsed.user.picture === "string" &&
+          parsed.user.picture.trim().length > 0
+            ? parsed.user.picture.trim()
+            : undefined,
+      },
+    } satisfies SignedAuthSessionPayload;
+  } catch {
+    return null;
+  }
+}
+
 function parseSessionIdFromCookie(rawCookie: string | undefined) {
+  const signedPayload = parseSignedAuthSessionPayload(rawCookie);
+  if (signedPayload) {
+    return signedPayload.sessionId;
+  }
+
   if (!rawCookie) {
     return null;
   }
@@ -462,7 +551,24 @@ function parseSessionIdFromCookie(rawCookie: string | undefined) {
 
 function getSessionUser(req: express.Request) {
   const cookies = parseCookies(req.headers.cookie);
-  const sessionId = parseSessionIdFromCookie(cookies[COOKIE_NAME]);
+  const rawSessionCookie = cookies[COOKIE_NAME];
+  const signedPayload = parseSignedAuthSessionPayload(rawSessionCookie);
+  if (signedPayload) {
+    if (signedPayload.expiresAt < Date.now()) {
+      return null;
+    }
+
+    return {
+      id: signedPayload.user.id,
+      email: signedPayload.user.email,
+      name: signedPayload.user.name,
+      picture: signedPayload.user.picture,
+      createdAt: signedPayload.issuedAt,
+      updatedAt: signedPayload.issuedAt,
+    } satisfies AuthUser;
+  }
+
+  const sessionId = parseSessionIdFromCookie(rawSessionCookie);
 
   if (!sessionId) {
     return null;
@@ -3192,6 +3298,7 @@ async function startServer() {
       buildGoogleAuthUrl,
       clearCookie,
       createSession,
+      createSignedAuthSessionCookieValue,
       getGoogleRedirectUri,
       isPublicAccessMode,
       normalizeEmail,
