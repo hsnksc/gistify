@@ -328,7 +328,7 @@ export default function PortfolioBuilder({
                       </div>
                       {rec.fomcRisk && (
                         <div className="text-right">
-                          <p className="text-xs text-slate-500">FOMC</p>
+                          <p className="text-xs text-slate-500">{copy(language, "FOMC", "FOMC")}</p>
                           <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-400">
                             <AlertTriangle className="size-3" />
                             {rec.fomcRisk}

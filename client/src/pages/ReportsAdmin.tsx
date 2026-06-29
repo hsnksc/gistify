@@ -194,12 +194,14 @@ function ProviderCard({
   provider,
   configured,
   note,
+  language,
 }: {
   title: string;
   mode: string;
   provider: string;
   configured: boolean;
   note?: string;
+  language: AppLanguage;
 }) {
   return (
     <article className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
@@ -215,7 +217,9 @@ function ProviderCard({
           {mode}
         </span>
       </div>
-      <p className="mt-2 text-sm text-muted-foreground">Provider: {provider}</p>
+      <p className="mt-2 text-sm text-muted-foreground">
+        {copy(language, "Sağlayıcı:", "Provider:")} {provider}
+      </p>
       {note ? (
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
           {note}
@@ -1480,6 +1484,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                     ? copy(language, "Onumuzdeki iki hafta icin gercek earnings takvimi ve fiyat verisi cekiliyor.", "Real earnings calendar and price data are being pulled for the next two weeks.")
                     : copy(language, "Canli import kapali. `FMP_API_KEY` eklenmezse weekly suggestion listesi bos kalir.", "Live import is disabled. Weekly suggestion list will remain empty if `FMP_API_KEY` is not added.")
                 }
+                language={language}
               />
               <ProviderCard
                 title={copy(language, "Opsiyonlar / IV", "Options / IV")}
@@ -1487,6 +1492,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                 configured={Boolean(workspaceStatus?.providers.optionsData.configured)}
                 mode={workspaceStatus?.providers.optionsData.mode || "heuristic"}
                 note={workspaceStatus?.providers.optionsData.note}
+                language={language}
               />
               <ProviderCard
                 title={copy(language, "Momentum Zenginlestirme", "Momentum enrichment")}
@@ -1494,6 +1500,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                 configured={Boolean(workspaceStatus?.providers.momentumData.configured)}
                 mode={workspaceStatus?.providers.momentumData.mode || "live"}
                 note={copy(language, "Momentum skoru, RSI ve fiyat davranisi earnings draftlarini zenginlestirmek icin kullanilir.", "Momentum score, RSI and price behavior are used to enrich earnings drafts.")}
+                language={language}
               />
             </section>
 
@@ -1675,6 +1682,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                 configured={Boolean(workspaceStatus?.providers.momentumData.configured)}
                 mode={workspaceStatus?.providers.momentumData.mode || "live"}
                 note={copy(language, "Momentum taramasi default olarak Yahoo uzerinden calisir. Paid fallback provider key'leri varsa kalite/genislik artar.", "Momentum scan runs via Yahoo by default. Paid fallback provider keys improve quality/coverage.")}
+                language={language}
               />
               <ProviderCard
                 title={copy(language, "Yedek Anahtarlar", "Fallback keys")}
@@ -1700,6 +1708,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                     ? copy(language, "hazir", "ready")
                     : copy(language, "yok", "missing")
                 }`}
+                language={language}
               />
               <ProviderCard
                 title={copy(language, "Yayin Hedefi", "Publish target")}
@@ -1711,6 +1720,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                     ? `${latestPublishedMomentum.title} ${copy(language, "son canli momentum yayini.", "is the latest live momentum publication.")}`
                     : copy(language, "Henuz yayinlanmis momentum snapshot yok.", "No momentum snapshot has been published yet.")
                 }
+                language={language}
               />
             </section>
 
@@ -1818,6 +1828,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                 configured={dailySourcePackages.length > 0}
                 mode={dailySourcePackages.length > 0 ? "live" : "empty"}
                 note={copy(language, "Bu workspace yerel `dailyreport/<tarih>` klasorlerini ve `flow/**.md` dosyalarini source package olarak okur. Sen yeni gunluk paketi bu path'lere biraktikca admin preview edip publish eder.", "This workspace reads local `dailyreport/<date>` folders and `flow/**.md` files as source packages. As you drop new daily packages into those paths, the admin previews and publishes them.")}
+                language={language}
               />
               <ProviderCard
                 title={copy(language, "Paket Sayisi", "Package count")}
@@ -1825,6 +1836,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                 configured={dailySourcePackages.length > 0}
                 mode={`${dailySourcePackages.length} package`}
                 note={copy(language, "Her klasor veya markdown dosyasi tek bir gunluk source package olarak algilanir.", "Each folder or markdown file is treated as a single daily source package.")}
+                language={language}
               />
               <ProviderCard
                 title={copy(language, "En Son Yayinlanan", "Latest published")}
@@ -1836,6 +1848,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                     ? `${latestPublishedDaily.title} ${copy(language, "son canli gunluk rapor.", "is the latest live daily report.")}`
                     : copy(language, "Henuz yayinlanmis daily report yok.", "No daily report has been published yet.")
                 }
+                language={language}
               />
             </section>
 

@@ -1669,12 +1669,12 @@ export default function MidasOpportunitiesTab({
                 <div className="mt-3 space-y-1">
                   <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{copy(language, "Faktor Dagilimi", "Factor Breakdown")}</p>
                   {[
-                    { key: 'f1_momentum_quality', label: 'F1' },
-                    { key: 'f2_relative_strength', label: 'F2' },
-                    { key: 'f3_volume_liquidity', label: 'F3' },
-                    { key: 'f4_technical_structure', label: 'F4' },
-                    { key: 'f5_volatility_regime', label: 'F5' },
-                    { key: 'f6_catalyst_flow', label: 'F6' },
+                    { key: 'f1_momentum_quality', label: copy(language, 'F1', 'F1') },
+                    { key: 'f2_relative_strength', label: copy(language, 'F2', 'F2') },
+                    { key: 'f3_volume_liquidity', label: copy(language, 'F3', 'F3') },
+                    { key: 'f4_technical_structure', label: copy(language, 'F4', 'F4') },
+                    { key: 'f5_volatility_regime', label: copy(language, 'F5', 'F5') },
+                    { key: 'f6_catalyst_flow', label: copy(language, 'F6', 'F6') },
                   ].map((f) => {
                     const score = signal.factor_breakdown![f.key as keyof NonNullable<typeof signal.factor_breakdown>] ?? 0;
                     return (

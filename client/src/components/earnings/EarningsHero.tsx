@@ -116,18 +116,18 @@ export default function EarningsHero({
         <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
           <MetricCard
             icon={<Activity className="size-4" />}
-            label="VIX"
+            label={copy(language, "VIX", "VIX")}
             value={data.macro.vix || copy(language, "Bekleniyor", "Pending")}
             tone={getVixTone(data.macro.vix)}
           />
           <MetricCard
             icon={<BarChart3 className="size-4" />}
-            label="S&P 500"
+            label={copy(language, "S&P 500", "S&P 500")}
             value={data.macro.sp500}
           />
           <MetricCard
             icon={<BarChart3 className="size-4" />}
-            label="Nasdaq"
+            label={copy(language, "Nasdaq", "Nasdaq")}
             value={data.macro.nasdaq}
           />
           <FOMCCard fomc={data.fomc} language={language} />

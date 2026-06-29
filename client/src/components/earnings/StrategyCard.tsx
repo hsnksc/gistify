@@ -76,12 +76,12 @@ export default function StrategyCard({ language, strategy }: StrategyCardProps) 
             {strategy.ivRank && (
               <span className="flex items-center gap-1.5 text-sm font-semibold text-slate-200">
                 <Crosshair className="size-4 text-violet-400" />
-                IV Rank {strategy.ivRank}
+                {copy(language, "IV Sıralaması", "IV Rank")} {strategy.ivRank}
               </span>
             )}
           </div>
         </div>
-        <CPRBadge cpr={strategy.cpr} />
+        <CPRBadge cpr={strategy.cpr} language={language} />
       </div>
 
       {/* Strategy Type Badge */}
@@ -254,7 +254,7 @@ export default function StrategyCard({ language, strategy }: StrategyCardProps) 
   );
 }
 
-function CPRBadge({ cpr }: { cpr?: string }) {
+function CPRBadge({ cpr, language }: { cpr?: string; language: AppLanguage }) {
   const num = cpr ? Number(cpr.replace(/,/g, "")) : NaN;
   let Icon = Minus;
   let color = "text-slate-500";
@@ -285,7 +285,7 @@ function CPRBadge({ cpr }: { cpr?: string }) {
       )}
     >
       <Icon className="size-3.5" />
-      <span>CPR {cpr || "—"}</span>
+      <span>{copy(language, "CPR", "CPR")} {cpr || "—"}</span>
     </div>
   );
 }

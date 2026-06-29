@@ -404,13 +404,13 @@ export default function EarningReportPlaybookTab({
               hint={copy(language, "Rapor anindaki spot", "Spot price at report time")}
             />
             <SummaryMetric
-              label="IV Rank"
+              label={copy(language, "IV Sıralaması", "IV Rank")}
               value={findMetricValue(activePosition, ["IV Rank"])}
               hint={copy(language, "Opsiyon maliyet rejimi", "Options cost regime")}
               accentClass="text-amber-300"
             />
             <SummaryMetric
-              label="CPR"
+              label={copy(language, "CPR", "CPR")}
               value={findMetricValue(activePosition, ["Hacim CPR"]) || "-"}
               hint={copy(language, "Call / put dengesinin ozeti", "Fast read on call / put balance")}
             />
