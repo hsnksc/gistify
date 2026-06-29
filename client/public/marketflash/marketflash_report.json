@@ -1,38 +1,38 @@
 {
-  "reportType": "pre-market",
+  "reportType": "hourly",
   "reportDate": "2026-06-29",
-  "generatedAt": "2026-06-29T16:05:00+03:00",
+  "generatedAt": "2026-06-29T17:00:34+03:00",
   "marketSummary": {
     "spy": {
-      "price": 728.99,
-      "change": -0.72,
-      "vwap": 727.37,
-      "open": 728.95,
-      "high": 736.53,
-      "low": 716.58,
-      "prevClose": 734.3
+      "price": 737.57,
+      "change": 1.177,
+      "vwap": 736.52,
+      "open": 736.525,
+      "high": 739.895,
+      "low": 732.09,
+      "prevClose": 728.99
     },
     "qqq": {
-      "price": 706.52,
-      "change": -1.38,
-      "vwap": 708.29,
-      "open": 707.13,
-      "high": 715.56,
-      "low": 702.81,
-      "prevClose": 716.38
+      "price": 715.99,
+      "change": 1.3404,
+      "vwap": 713.27,
+      "open": 714.255,
+      "high": 718.66,
+      "low": 705.172,
+      "prevClose": 706.52
     },
     "iwm": {
-      "price": 299.83,
-      "change": 0.31,
-      "vwap": 298.53,
-      "open": 296.6,
-      "high": 300.03,
-      "low": 295.73,
-      "prevClose": 298.91
+      "price": 296.95,
+      "change": -0.9605,
+      "vwap": 296.93,
+      "open": 298.11,
+      "high": 299.16,
+      "low": 294.68,
+      "prevClose": 299.83
     },
     "vix": {
-      "price": 18.21,
-      "change": -1.09,
+      "price": 18.42,
+      "change": 0.05,
       "vwap": null,
       "open": 18.6,
       "high": 18.6,
@@ -43,126 +43,126 @@
   "topMovers": {
     "gainers": [
       {
+        "ticker": "IRDM",
+        "company": "Iridium Communications Inc.",
+        "price": 52.78,
+        "change": 21.2776,
+        "volume": 5705000,
+        "catalyst": "Satellite/space connectivity sector momentum; Iridium global communications demand surge",
+        "sector": "Telecommunications",
+        "marketCap": null,
+        "week52Range": null,
+        "note": "Pre-market gap up +20% devam ediyor. Finnhub profile slow."
+      },
+      {
+        "ticker": "CHTR",
+        "company": "Charter Communications Inc.",
+        "price": 148.45,
+        "change": 11.082,
+        "volume": 1390000,
+        "catalyst": "Charter Communications broadband M&A speculation; telecom sector consolidation chatter",
+        "sector": "Media & Telecom",
+        "marketCap": null,
+        "week52Range": null,
+        "note": "Pre-market +27% gap cooled to +11%. VWAP altında, caution."
+      },
+      {
+        "ticker": "RBLX",
+        "company": "Roblox Corp.",
+        "price": 54.72,
+        "change": 15.0547,
+        "volume": 6553000,
+        "catalyst": "Roblox gaming platform user growth; metaverse sector momentum",
+        "sector": "Interactive Media & Services",
+        "marketCap": null,
+        "week52Range": null,
+        "note": "Strong opening continuation. VWAP üzerinde."
+      },
+      {
         "ticker": "AMAT",
         "company": "Applied Materials Inc.",
-        "price": 653.09,
-        "change": 4.19,
-        "volume": 90980,
-        "catalyst": "AI/semiconductor equipment demand, sector rotation into chip capex",
+        "price": 677.07,
+        "change": 8.01,
+        "volume": 4296000,
+        "catalyst": "AI/semiconductor equipment demand; chip capex cycle continuation",
         "sector": "Semiconductor Equipment",
         "marketCap": null,
         "week52Range": null,
-        "note": "Pre-market data from MarketWatch. Finnhub profile slow."
+        "note": "Pre-market setup +4.19% → +8.01% devam. VWAP üzerinde güçlü."
       },
       {
-        "ticker": "PPC",
-        "company": "Pilgrim's Pride Corp.",
-        "price": 30.19,
-        "change": 5.51,
-        "volume": 0,
-        "catalyst": "Food/agriculture sector momentum, protein pricing strength",
-        "sector": "Food Products",
+        "ticker": "MRVL",
+        "company": "Marvell Technology Inc.",
+        "price": 234.67,
+        "change": 6.1615,
+        "volume": 750780,
+        "catalyst": "Chip designer momentum; AI/data center demand",
+        "sector": "Semiconductors",
         "marketCap": null,
         "week52Range": null,
-        "note": "Pre-market volume zero; low liquidity warning."
-      },
-      {
-        "ticker": "H",
-        "company": "Hyatt Hotels Corp.",
-        "price": 207.43,
-        "change": 4.93,
-        "volume": 2,
-        "catalyst": "Hotels/travel recovery, lodging demand momentum",
-        "sector": "Hotels, Restaurants & Leisure",
-        "marketCap": null,
-        "week52Range": null,
-        "note": "Pre-market volume 2; liquidity warning."
-      },
-      {
-        "ticker": "AS",
-        "company": "Amer Sports Inc.",
-        "price": 35.74,
-        "change": 4.6,
-        "volume": 360,
-        "catalyst": "Consumer retail/sports apparel momentum, brand strength",
-        "sector": "Textiles, Apparel & Luxury Goods",
-        "marketCap": null,
-        "week52Range": null,
-        "note": "Low pre-market volume."
-      },
-      {
-        "ticker": "WOLF",
-        "company": "Wolfspeed Inc.",
-        "price": 47.85,
-        "change": 4.09,
-        "volume": 23980,
-        "catalyst": "EV/semiconductor materials, SiC demand outlook",
-        "sector": "Semiconductor Materials",
-        "marketCap": null,
-        "week52Range": null,
-        "note": "Pre-market volume moderate."
+        "note": "Pre-market +2.26% → +6.16%. VWAP üzerinde."
       }
     ],
     "losers": [
       {
         "ticker": "BLD",
         "company": "TopBuild Corp.",
-        "price": 373.67,
-        "change": -12.19,
+        "price": 366.83,
+        "change": -13.7925,
         "volume": 1750,
-        "catalyst": "Construction/building materials weakness, housing market concerns",
+        "catalyst": "Construction/building materials weakness; housing market demand concerns",
         "sector": "Construction Materials",
         "marketCap": null,
         "week52Range": null,
-        "note": "Significant pre-market gap down."
+        "note": "Pre-market -12.19% → -13.79% devam. VWAP altında. Breakdown."
       },
       {
-        "ticker": "PB",
-        "company": "Prosperity Bancshares Inc.",
-        "price": 70.01,
-        "change": -5.85,
-        "volume": 388,
-        "catalyst": "Regional banking pressure, interest rate sensitivity",
-        "sector": "Banks",
+        "ticker": "VSAT",
+        "company": "ViaSat Inc.",
+        "price": 87.89,
+        "change": -3.0447,
+        "volume": 327800,
+        "catalyst": "Profit-taking after satellite connectivity rally; Viasat mixed signals",
+        "sector": "Telecommunications",
         "marketCap": null,
         "week52Range": null,
-        "note": "Low pre-market volume."
+        "note": "Pre-market +7% gap faded to -3%. VWAP altında."
       },
       {
-        "ticker": "BIO",
-        "company": "Bio-Rad Laboratories Inc.",
-        "price": 289.15,
-        "change": -3.87,
-        "volume": 1,
-        "catalyst": "Life sciences/biotech sector weakness, multiple compression",
-        "sector": "Life Sciences Tools & Services",
+        "ticker": "MDLZ",
+        "company": "Mondelez International Inc.",
+        "price": 59.71,
+        "change": -1.7766,
+        "volume": 1500000,
+        "catalyst": "Consumer staples defensive rotation; profit-taking ahead of macro data",
+        "sector": "Food Products",
         "marketCap": null,
         "week52Range": null,
-        "note": "Pre-market volume 1; illiquid."
-      },
-      {
-        "ticker": "HIG",
-        "company": "Hartford Insurance Group Inc.",
-        "price": 129.87,
-        "change": -3.0,
-        "volume": 27,
-        "catalyst": "Insurance sector pricing pressure, catastrophe loss concerns",
-        "sector": "Insurance",
-        "marketCap": null,
-        "week52Range": null,
-        "note": "Low pre-market volume."
+        "note": "Pre-market -2.13% → -1.78%. VWAP altında."
       },
       {
         "ticker": "AVT",
         "company": "Avnet Inc.",
-        "price": 83.91,
-        "change": -2.85,
-        "volume": 6,
-        "catalyst": "Electronics distribution weakness, semiconductor demand slowdown",
+        "price": 73.66,
+        "change": -0.9414,
+        "volume": 600000,
+        "catalyst": "Electronics distribution mild pressure; semiconductor demand mixed signals",
         "sector": "Electronic Equipment, Instruments & Components",
         "marketCap": null,
         "week52Range": null,
-        "note": "Pre-market volume 6."
+        "note": "Pre-market -2.85% → -0.94%. VWAP altında."
+      },
+      {
+        "ticker": "QCOM",
+        "company": "Qualcomm Inc.",
+        "price": 188.67,
+        "change": -0.3802,
+        "volume": 800000,
+        "catalyst": "Wireless/semiconductor licensing slight pressure; QQQ divergence",
+        "sector": "Semiconductors",
+        "marketCap": null,
+        "week52Range": null,
+        "note": "Pre-market +2.01% faded to -0.38%. VWAP altında."
       }
     ]
   },
@@ -173,38 +173,38 @@
       "time": "before-open",
       "consensusEps": -0.66,
       "consensusRev": 334900000,
-      "priorEps": null,
+      "priorEps": 0.37,
       "priorRev": null,
       "expectedMove": null,
       "consensusRange": null,
       "analystSentiment": "bearish",
-      "note": "Pre-market -31% gap down. IV crush risk. 0DTE YASAK. priorEps data not found in available sources."
+      "note": "CRMT Q4 2026 earnings announced today — massive miss: adjusted EPS -$7.72 vs estimate -$0.66. Revenue -11.6% YoY. Stock at $2.51. IV crush risk. 0DTE YASAK. priorRev data not found in available sources."
     },
     {
       "ticker": "AVAV",
       "company": "AeroVironment Inc.",
       "time": "after-close",
-      "consensusEps": 1.49,
+      "consensusEps": 1.53,
       "consensusRev": 570000000,
       "priorEps": 0.3,
-      "priorRev": null,
-      "expectedMove": null,
+      "priorRev": 275050000,
+      "expectedMove": 11.6,
       "consensusRange": null,
       "analystSentiment": "neutral",
-      "note": "Defense/UAS sector. Q4 FY2026. IV crush risk. 0DTE YASAK. priorRev data not found in available sources."
+      "note": "Defense/UAS sector. Q4 FY2026. IV crush risk. 0DTE YASAK. Expected move ±11.6% per options market. priorRev = Q4 FY2025 actual revenue."
     },
     {
       "ticker": "CNXC",
       "company": "Concentrix Corporation",
       "time": "after-close",
-      "consensusEps": 2.69,
-      "consensusRev": 2500000000,
-      "priorEps": null,
-      "priorRev": null,
+      "consensusEps": 2.64,
+      "consensusRev": 2473900000,
+      "priorEps": 2.79,
+      "priorRev": 2500000000,
       "expectedMove": null,
       "consensusRange": "$2.57 - $2.69",
       "analystSentiment": "neutral",
-      "note": "High debt ($4.75B), margin pressure. Q2 FY2026. IV crush risk. 0DTE YASAK. priorEps data not found in available sources."
+      "note": "High debt ($4.75B), margin pressure. Q2 FY2026. IV crush risk. 0DTE YASAK."
     },
     {
       "ticker": "QMCO",
@@ -269,7 +269,7 @@
       "expectedMove": null,
       "consensusRange": null,
       "analystSentiment": "neutral",
-      "note": "Small cap. Data limited. priorEps, priorRev, consensusRev data not found in available sources."
+      "note": "Small cap. Data limited. consensusRev, priorEps and priorRev data not found in available sources."
     },
     {
       "ticker": "HTT",
@@ -367,113 +367,113 @@
     {
       "ticker": "AMAT",
       "direction": "CALL",
-      "entry": "648.00",
-      "stop": "638.00",
-      "target": "668.00",
+      "entry": "676.00",
+      "stop": "668.00",
+      "target": "692.00",
       "riskReward": "2.0:1",
       "timeframe": "0DTE",
-      "rationale": "Pre-market gap up +4.19% on semiconductor/AI momentum. Above VWAP bias. Volume confirmation."
+      "rationale": "AI/semiconductor equipment momentum. Pre-market setup +4.19% → +8.01% devam. VWAP üzerinde (676.83). Volume confirmation."
     },
     {
-      "ticker": "LRCX",
+      "ticker": "CHTR",
       "direction": "CALL",
-      "entry": "385.00",
-      "stop": "375.00",
-      "target": "405.00",
+      "entry": "148.00",
+      "stop": "143.00",
+      "target": "158.00",
       "riskReward": "2.0:1",
       "timeframe": "0DTE",
-      "rationale": "Semiconductor equipment leader. Gap up +3.58%. Momentum continuation."
+      "rationale": "Broadband M&A momentum. Pre-market +27% cooled to +11%. VWAP altında (154.35) — gap fade risk. Caution."
+    },
+    {
+      "ticker": "RBLX",
+      "direction": "CALL",
+      "entry": "54.00",
+      "stop": "51.00",
+      "target": "60.00",
+      "riskReward": "2.0:1",
+      "timeframe": "0DTE",
+      "rationale": "Gaming platform user growth. Pre-market +6.18% → +15.05%. VWAP üzerinde (53.62). Strong momentum."
     },
     {
       "ticker": "MRVL",
       "direction": "CALL",
-      "entry": "270.00",
-      "stop": "262.00",
-      "target": "286.00",
+      "entry": "234.00",
+      "stop": "228.00",
+      "target": "246.00",
       "riskReward": "2.0:1",
       "timeframe": "0DTE",
-      "rationale": "Chip designer momentum. Pre-market +2.26%. VWAP reclaim setup."
+      "rationale": "Chip designer momentum. AI/data center demand. VWAP üzerinde (228.31). Pre-market +2.26% → +6.16%."
     },
     {
-      "ticker": "GLW",
+      "ticker": "IRDM",
       "direction": "CALL",
-      "entry": "225.00",
-      "stop": "218.00",
-      "target": "239.00",
+      "entry": "52.00",
+      "stop": "49.00",
+      "target": "58.00",
       "riskReward": "2.0:1",
       "timeframe": "0DTE",
-      "rationale": "Optical/AI data center demand. Pre-market +3.27%. Volume leader."
-    },
-    {
-      "ticker": "QCOM",
-      "direction": "CALL",
-      "entry": "192.00",
-      "stop": "186.00",
-      "target": "204.00",
-      "riskReward": "2.0:1",
-      "timeframe": "0DTE",
-      "rationale": "Wireless/semiconductor licensing. Pre-market +2.01%. Liquid options chain."
+      "rationale": "Satellite/space connectivity surge. Pre-market +20% → +21.3%. VWAP üzerinde (51.34). %21 gap — chase risk, volume confirmation required."
     }
   ],
   "putSetups": [
     {
       "ticker": "BLD",
       "direction": "PUT",
-      "entry": "370.00",
-      "stop": "380.00",
-      "target": "350.00",
+      "entry": "367.00",
+      "stop": "375.00",
+      "target": "351.00",
       "riskReward": "2.0:1",
       "timeframe": "0DTE",
-      "rationale": "Construction/building gap down -12.19%. Breakdown below support."
+      "rationale": "Construction/building gap down -13.8%. Pre-market -12.19% → -13.79%. VWAP altında (374.39). Breakdown continuation."
     },
     {
-      "ticker": "PB",
+      "ticker": "VSAT",
       "direction": "PUT",
-      "entry": "69.00",
-      "stop": "72.00",
-      "target": "63.00",
+      "entry": "88.00",
+      "stop": "91.00",
+      "target": "82.00",
       "riskReward": "2.0:1",
       "timeframe": "0DTE",
-      "rationale": "Regional banking weakness. Pre-market -5.85%. Below VWAP."
-    },
-    {
-      "ticker": "HIG",
-      "direction": "PUT",
-      "entry": "129.00",
-      "stop": "133.00",
-      "target": "121.00",
-      "riskReward": "2.0:1",
-      "timeframe": "0DTE",
-      "rationale": "Insurance sector pressure. -3.00% pre-market gap. Momentum short."
-    },
-    {
-      "ticker": "AVT",
-      "direction": "PUT",
-      "entry": "83.00",
-      "stop": "86.00",
-      "target": "77.00",
-      "riskReward": "2.0:1",
-      "timeframe": "0DTE",
-      "rationale": "Electronics distribution weakness. -2.85% pre-market gap."
+      "rationale": "Viasat profit-taking. Pre-market +7% gap faded to -3%. VWAP altında (88.50). Momentum shift."
     },
     {
       "ticker": "MDLZ",
       "direction": "PUT",
-      "entry": "59.00",
+      "entry": "59.50",
       "stop": "61.00",
-      "target": "55.00",
+      "target": "56.50",
+      "riskReward": "2.1:1",
+      "timeframe": "0DTE",
+      "rationale": "Consumer staples defensive breakdown. Pre-market -2.13% → -1.78%. VWAP altında (60.21)."
+    },
+    {
+      "ticker": "AVT",
+      "direction": "PUT",
+      "entry": "73.50",
+      "stop": "75.00",
+      "target": "70.50",
       "riskReward": "2.0:1",
       "timeframe": "0DTE",
-      "rationale": "Consumer staples defensive breakdown. -2.13% pre-market gap."
+      "rationale": "Electronics distribution mild pressure. Pre-market -2.85% → -0.94%. VWAP altında (73.72)."
+    },
+    {
+      "ticker": "QCOM",
+      "direction": "PUT",
+      "entry": "188.00",
+      "stop": "192.00",
+      "target": "180.00",
+      "riskReward": "2.0:1",
+      "timeframe": "0DTE",
+      "rationale": "Wireless/semiconductor licensing slight pressure. Pre-market +2.01% faded to -0.38%. VWAP altında (188.95). QQQ divergence."
     }
   ],
-  "vwapNotes": "SPY VWAP 727.37 üzerinde hafifçe duruyor (+$1.6). QQQ VWAP 708.29 altında gap down (-$1.8). IWM VWAP 298.53 üzerinde güçlü (+$1.3). Risk-on/risk-off karışık: large-cap tech zayıf (QQQ), small-cap ve broad market karışık. Semiconductor liderliğinde pre-market pozitif momentum var.",
+  "vwapNotes": "SPY VWAP 736.52 üzerinde güçlü (+$1.05). QQQ VWAP 713.27 üzerinde (+$2.72). IWM VWAP 296.93 altında hafifçe (-$0.02). Risk-on: large-cap tech ve broad market güçlü. Small-cap karışık. Semiconductor (AMAT, MRVL, GLW) liderliğinde momentum var. Construction (BLD) zayıf. CHTR pre-market +27% gap açılış sonrası +11% ile sönüyor (VWAP altında).",
   "riskAssessment": {
     "level": "medium",
-    "vixRegime": "VIX 18.21 (önceki 18.41). 15-20 arası normal volatilite. Complacency yok, fear yok. 0DTE straddle fiyatlaması makul.",
-    "sectorRotation": "Semiconductor (AMAT, LRCX, MRVL, GLW, QCOM) pre-market güçlü — AI/data center talebi. Insurance (HIG) ve Building (BLD) zayıf. Hotels/travel (H) momentum var. Consumer staples (MDLZ) baskı altında.",
-    "earningsRisk": "CRMT BMO earnings ile -31% pre-market gap down. AVAV, CNXC, QMCO AMC earnings. Earnings günü = IV crush risk. 0DTE setup YASAK.",
-    "macroRisk": "FOMC öncesi dönem (temmuz), tarife politikaları belirsizliği, US-Iran peace deal beklentisi. Geopolitical risk azalma işareti gösteriyor. Small-cap (IWM) göreceli güçlü."
+    "vixRegime": "VIX 18.42 (önceki 18.41). 15-20 arası normal volatilite. Complacency yok, fear yok. 0DTE straddle fiyatlaması makul.",
+    "sectorRotation": "Semiconductor (AMAT, MRVL, GLW) ve Telecom (CHTR) güçlü — AI/data center/M&A talebi. Construction (BLD) ve Consumer Staples (MDLZ) zayıf. Gaming (RBLX) momentum. Small-cap (IWM) karışık.",
+    "earningsRisk": "CRMT BMO earnings ile büyük miss: adjusted EPS -$7.72 vs estimate -$0.66. Revenue -11.6% YoY. AVAV, CNXC, QMCO AMC earnings. Earnings günü = IV crush risk. 0DTE setup YASAK.",
+    "macroRisk": "FOMC öncesi dönem (temmuz), tarife politikaları belirsizliği, US-Iran peace deal beklentisi. Geopolitical risk azalma işareti gösteriyor. Small-cap (IWM) göreceli zayıf."
   },
   "nextDayCarryForward": []
 }
