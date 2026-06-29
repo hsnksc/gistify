@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S&P 500 Temmuz Sezonselliği Derin Analizi | $SPX</title>
+<style>
+  :root{
+    --bg:#0d1117;--bg2:#161b22;--bg3:#21262d;--fg:#c9d1d9;--fg2:#8b949e;--accent:#58a6ff;--accent2:#3fb950;--warn:#f0883e;--danger:#f85149;--info:#58a6ff;--border:#30363d;--radius:8px;--font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,Helvetica,Arial,sans-serif;--mono:'SF Mono',Monaco,Consolas,'Liberation Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--fg);font-family:var(--font);line-height:1.6;font-size:15px;}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 16px;}
+  header{background:linear-gradient(135deg,#1a2332 0%,#0d1117 100%);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden;}
+  header::before{content:'';position:absolute;top:0;right:0;width:300px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(88,166,255,.08),transparent 70%);pointer-events:none;}
+  h1{font-size:1.55rem;font-weight:700;margin-bottom:6px;letter-spacing:-0.3px;}
+  .subtitle{color:var(--fg2);font-size:0.92rem;margin-bottom:12px;}
+  .meta{display:flex;flex-wrap:wrap;gap:10px 18px;font-size:0.78rem;color:var(--fg2);}
+  .meta span{display:inline-flex;align-items:center;gap:5px;}
+  .badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--border);background:var(--bg2);}
+  .badge.bull{color:var(--accent2);border-color:rgba(63,185,80,.35);}
+  .badge.bear{color:var(--danger);border-color:rgba(248,81,73,.35);}
+  .badge.neu{color:var(--warn);border-color:rgba(240,136,62,.35);}
+  .badge.info{color:var(--info);border-color:rgba(88,166,255,.35);}
+  
+  .section{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:16px;overflow:hidden;}
+  .section-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s;}
+  .section-header:hover{background:var(--bg3);}
+  .section-header h2{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;}
+  .section-header .icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--accent);transition:transform .2s;}
+  .section.collapsed .section-header .icon{transform:rotate(-90deg);}
+  .section-body{padding:18px;display:none;}
+  .section:not(.collapsed) .section-body{display:block;}
+  
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;}
+  .card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:16px;transition:transform .15s,border-color .15s;}
+  .card:hover{transform:translateY(-1px);border-color:rgba(88,166,255,.25);}
+  .card-label{font-size:0.75rem;color:var(--fg2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
+  .card-value{font-size:1.35rem;font-weight:700;}
+  .card-value.up{color:var(--accent2);}
+  .card-value.down{color:var(--danger);}
+  .card-value.neu{color:var(--warn);}
+  .card-note{font-size:0.8rem;color:var(--fg2);margin-top:4px;}
+  
+  .tabs{display:flex;gap:2px;background:var(--bg3);padding:4px;border-radius:var(--radius);margin-bottom:14px;}
+  .tab{flex:1;padding:8px 10px;text-align:center;font-size:0.82rem;font-weight:600;border-radius:6px;cursor:pointer;user-select:none;transition:background .15s,color .15s;border:none;color:var(--fg2);background:transparent;}
+  .tab.active{background:var(--bg);color:var(--fg);box-shadow:0 1px 3px rgba(0,0,0,.3);}
+  .tab:hover:not(.active){color:var(--fg);}
+  .tab-content{display:none;}
+  .tab-content.active{display:block;}
+  
+  table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0;}
+  th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--border);}
+  th{background:var(--bg3);color:var(--fg2);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px;}
+  tr:hover td{background:rgba(88,166,255,.04);}
+  td{font-variant-numeric:tabular-nums;}
+  .text-right{text-align:right;}
+  .text-center{text-align:center;}
+  
+  .progress-bar{background:var(--bg3);border-radius:4px;height:18px;overflow:hidden;margin:4px 0;}
+  .progress-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:0.68rem;font-weight:700;color:#fff;}
+  .fill-bull{background:linear-gradient(90deg,#238636,#3fb950);}
+  .fill-base{background:linear-gradient(90deg,#9e6a03,#f0883e);}
+  .fill-bear{background:linear-gradient(90deg,#da3633,#f85149);}
+  
+  .insight-box{background:linear-gradient(135deg,rgba(88,166,255,.06),rgba(88,166,255,.02));border-left:3px solid var(--accent);padding:14px 16px;border-radius:0 var(--radius) var(--radius) 0;margin:12px 0;font-size:0.88rem;}
+  .insight-box strong{color:var(--accent);}
+  .insight-box.warn{border-left-color:var(--warn);background:linear-gradient(135deg,rgba(240,136,62,.06),rgba(240,136,62,.02));}
+  .insight-box.warn strong{color:var(--warn);}
+  .insight-box.danger{border-left-color:var(--danger);background:linear-gradient(135deg,rgba(248,81,73,.06),rgba(248,81,73,.02));}
+  .insight-box.danger strong{color:var(--danger);}
+  .insight-box.bull{border-left-color:var(--accent2);background:linear-gradient(135deg,rgba(63,185,80,.06),rgba(63,185,80,.02));}
+  .insight-box.bull strong{color:var(--accent2);}
+  
+  .tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0;}
+  .tag-green{background:rgba(63,185,80,.15);color:var(--accent2);}
+  .tag-orange{background:rgba(240,136,62,.15);color:var(--warn);}
+  .tag-red{background:rgba(248,81,73,.15);color:var(--danger);}
+  .tag-blue{background:rgba(88,166,255,.15);color:var(--accent);}
+  
+  .kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0;}
+  .kpi{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;text-align:center;}
+  .kpi-num{font-size:1.15rem;font-weight:700;}
+  .kpi-label{font-size:0.72rem;color:var(--fg2);margin-top:2px;}
+  
+  .timeline{position:relative;padding-left:24px;}
+  .timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--border);}
+  .timeline-item{position:relative;margin-bottom:14px;}
+  .timeline-item::before{content:'';position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--bg3);border:2px solid var(--border);}
+  .timeline-item.bull::before{border-color:var(--accent2);background:var(--accent2);}
+  .timeline-item.bear::before{border-color:var(--danger);background:var(--danger);}
+  .timeline-item.warn::before{border-color:var(--warn);background:var(--warn);}
+  .timeline-date{font-size:0.78rem;color:var(--fg2);font-weight:600;}
+  .timeline-body{font-size:0.85rem;margin-top:3px;}
+  
+  .heatmap{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;font-size:0.72rem;margin:10px 0;}
+  .heatmap-cell{padding:6px 2px;text-align:center;border-radius:4px;min-height:36px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .heatmap-cell .day{font-weight:700;font-size:0.78rem;}
+  .heatmap-cell .val{font-size:0.68rem;opacity:.85;}
+  .h-strong{background:rgba(63,185,80,.35);color:#aff5b4;}
+  .h-weak{background:rgba(248,81,73,.35);color:#ffdcd7;}
+  .h-neu{background:rgba(240,136,62,.2);color:#ffdfb6;}
+  .h-flat{background:rgba(139,148,158,.15);color:var(--fg2);}
+  .h-good{background:rgba(63,185,80,.2);color:#aff5b4;}
+  
+  .footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--fg2);border-top:1px solid var(--border);margin-top:32px;}
+  
+  @media(max-width:640px){
+    .wrap{padding:16px 10px;}
+    h1{font-size:1.25rem;}
+    .grid{grid-template-columns:1fr;}
+    .kpi-row{grid-template-columns:repeat(2,1fr);}
+    .tabs{flex-wrap:wrap;}
+    .tab{flex:none;min-width:80px;}
+    table{font-size:0.78rem;}
+    th,td{padding:6px 7px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>S&P 500 Temmuz Sezonselliği Derin Analizi</h1>
+  <div class="subtitle">Carson Investment Research iddiasının 10 boyutlu çoklu-agent doğrulaması, 2026 midterm/B-cycle bağlamı ve opsiyon playbook</div>
+  <div class="meta">
+    <span>&#128197; 29 Haziran 2026</span>
+    <span>&#128340; 2 gün kaldı</span>
+    <span>&#128200; $SPX 7,354</span>
+    <span>&#128200; VIX 19.29</span>
+    <span class="badge neu">Midterm Yılı</span>
+    <span class="badge info">B-Cycle Inversion</span>
+    <span class="badge bear">Negatif Gamma</span>
+  </div>
+</header>
+
+<!-- KÖRNER METRIKLER -->
+<div class="grid" style="margin-bottom:16px;">
+  <div class="card">
+    <div class="card-label">Temmuz Beklentisi (Ağırlıklı)</div>
+    <div class="card-value neu">+1.2% &mdash; +1.8%</div>
+    <div class="card-note">Bull 40% / Base 35% / Bear 25%</div>
+  </div>
+  <div class="card">
+    <div class="card-label">Son 10Y Temmuz Win Rate</div>
+    <div class="card-value up">91%</div>
+    <div class="card-note">10/11 yıl pozitif (2014-2024)</div>
+  </div>
+  <div class="card">
+    <div class="card-label">Midterm Temmuz Ort.</div>
+    <div class="card-value down">+0.7%</div>
+    <div class="card-note">1950'den beri midterm yılları</div>
+  </div>
+  <div class="card">
+    <div class="card-label">Gamma Flip</div>
+    <div class="card-value down">$7,437</div>
+    <div class="card-note">SPX sadece %1.1 altında</div>
+  </div>
+  <div class="card">
+    <div class="card-label">İlk 10 Gün (Tarihsel)</div>
+    <div class="card-value up">+1.5%</div>
+    <div class="card-note">1928'den beri en güçlü 10 gün</div>
+  </div>
+  <div class="card">
+    <div class="card-label">Beklenen Aylık Move</div>
+    <div class="card-value neu">&#177;4.82%</div>
+    <div class="card-note">~354 SPX puanı</div>
+  </div>
+</div>
+
+<!-- SENARYO TABS -->
+<div class="section" id="sec-scenarios">
+  <div class="section-header" onclick="toggle('sec-scenarios')">
+    <h2>&#128200; 3 Senaryo &mdash; Olasılık Ağırlıkları</h2>
+    <div class="icon">&#9662;</div>
+  </div>
+  <div class="section-body">
+    <div class="tabs">
+      <div class="tab active" onclick="setTab(this,'tab-bull')">Bull (40%)</div>
+      <div class="tab" onclick="setTab(this,'tab-base')">Base (35%)</div>
+      <div class="tab" onclick="setTab(this,'tab-bear')">Bear (25%)</div>
+    </div>
+    <div id="tab-bull" class="tab-content active">
+      <div class="insight-box bull">
+        <strong>Bull Case: SPX +2% &rarr; +3%</strong> &mdash; Buyback + Q2 kazançlar + B-cycle momentum ilk yarıyı taşır. XLK/XLV liderlik. 7-11 Temmuz agresif long CALL penceresi. Negatif gamma üzerinde (>$7,437) momentum amplifikasyonu.
+      </div>
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-num up">+2.5%</div><div class="kpi-label">SPX Hedef</div></div>
+        <div class="kpi"><div class="kpi-num up">+5%</div><div class="kpi-label">XLK Outperf</div></div>
+        <div class="kpi"><div class="kpi-num up">+4%</div><div class="kpi-label">XLV Outperf</div></div>
+        <div class="kpi"><div class="kpi-num">15.6</div><div class="kpi-label">VIX Hedef</div></div>
+      </div>
+      <p style="font-size:0.85rem;margin-top:8px;"><strong>Tetikleyiciler:</strong> Kazançlar %85+ beat, tarife sürpriz yok, İran ateşkesi devam, Warsh FOMC "beklendiği gibi" şahin, A/D çizgisi toparlanır (RSP > SPY).</p>
+    </div>
+    <div id="tab-base" class="tab-content">
+      <div class="insight-box">
+        <strong>Base Case: SPX +1% &rarr; +2%</strong> &mdash; İlk yarı güçlü (+1.5%), ikinci yarı fade (+0.5% net). Midterm zayıflığı B-cycle ile dengeleniyor. Tarife ve FOMC volatilite ekliyor ama çöküş yaratmıyor. 15-24 Temmuz arası kar alma dönemi.
+      </div>
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-num neu">+1.5%</div><div class="kpi-label">SPX Hedef</div></div>
+        <div class="kpi"><div class="kpi-num neu">+2%</div><div class="kpi-label">XLK</div></div>
+        <div class="kpi"><div class="kpi-num neu">+2%</div><div class="kpi-label">XLV</div></div>
+        <div class="kpi"><div class="kpi-num">18-22</div><div class="kpi-label">VIX Aralığı</div></div>
+      </div>
+      <p style="font-size:0.85rem;margin-top:8px;"><strong>Tetikleyiciler:</strong> Kazançlar karışık, tarife değişimi piyasada karışıklık, FOMC Warsh ilk toplantısında belirsizlik, A/D düz/negatif, RSP = SPY.</p>
+    </div>
+    <div id="tab-bear" class="tab-content">
+      <div class="insight-box danger">
+        <strong>Bear Case: SPX -2% &rarr; -5%</strong> &mdash; İran ateşkesi bozulur, tarife sokağı (24 Temmuz), Warsh şahin sürpriz (28-29 Temmuz), veya AI kazançları hayal kırıklığı yaratır. Gamma flip ($7,437) kırılır, negatif gamma amplifikasyonu -2% düşüşü -4% yapar. Midterm correction paterni Tetiklenir.
+      </div>
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-num down">-3.5%</div><div class="kpi-label">SPX Hedef</div></div>
+        <div class="kpi"><div class="kpi-num down">-5%</div><div class="kpi-label">XLK</div></div>
+        <div class="kpi"><div class="kpi-num down">-2%</div><div class="kpi-label">XLV</div></div>
+        <div class="kpi"><div class="kpi-num">28-35</div><div class="kpi-label">VIX Hedef</div></div>
+      </div>
+      <p style="font-size:0.85rem;margin-top:8px;"><strong>Tetikleyiciler:</strong> İran ateşkesi bozulma, tarife %10+ sürpriz, Fed faiz artışı ima, AI kazanç "sell the news", SPX < $7,400 gamma kırılımı.</p>
+    </div>
+    
+    <div class="progress-bar" style="margin-top:14px;">
+      <div class="progress-fill fill-bull" style="width:40%;">Bull 40%</div>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill fill-base" style="width:35%;">Base 35%</div>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill fill-bear" style="width:25%;">Bear 25%</div>
+    </div>
+  </div>
+</div>
+
+<!-- TAKVIM -->
+<div class="section" id="sec-calendar">
+  <div class="section-header" onclick="toggle('sec-calendar')">
+    <h2>&#128197; Temmuz 2026 Katalizör Takvimi</h2>
+    <div class="icon">&#9662;</div>
+  </div>
+  <div class="section-body">
+    <div class="timeline">
+      <div class="timeline-item bull">
+        <div class="timeline-date">1-3 Temmuz &mdash; Kısa Hafta</div>
+        <div class="timeline-body">3 Temmuz Cuma tatil (Independence Day observed). Düşük hacim, gap riski. <strong>0DTE küçük pozisyon.</strong></div>
+      </div>
+      <div class="timeline-item bull">
+        <div class="timeline-date">7-11 Temmuz &mdash; Agresif Long Penceresi</div>
+        <div class="timeline-body">İlk tam hafta, momentum + sezonsellik birleşimi. <strong>Agresif bullish: 0DTE CALL on VWAP reclaim >$7,437. XLK/XLV weekly calls.</strong></div>
+      </div>
+      <div class="timeline-item warn">
+        <div class="timeline-date">13-18 Temmuz &mdash; Kazanç Sezonu Başlar</div>
+        <div class="timeline-body">JPM, GS, C, NFLX, TSLA ilk raporlar. <strong>IV crush riski.</strong> Kazanç öncesi pozisyon küçült. Kazanç sonrası IV crush'ta short vol deneyebilir.</div>
+      </div>
+      <div class="timeline-item bear">
+        <div class="timeline-date">24 Temmuz &mdash; Section 122 Tarife Sonu</div>
+        <div class="timeline-body">Yeni %10-12.5 tarife riski. <strong>Pozisyon %50'ye düşür. Put spread hedge ekle.</strong> Ara seçim öncesi "supply chain shock" potansiyeli.</div>
+      </div>
+      <div class="timeline-item bear">
+        <div class="timeline-date">28-29 Temmuz &mdash; FOMC (Warsh İlk Toplantı)</div>
+        <div class="timeline-body">Kevin Warsh'ın ilk başkanlık toplantısı. Nokta grafik yok. Şahin sürpriz riski. <strong>0DTE 2:00 PM öncesi avoid. 30 Temmuz put spread setup.</strong></div>
+      </div>
+      <div class="timeline-item neu">
+        <div class="timeline-date">31 Temmuz &mdash; Ay Sonu</div>
+        <div class="timeline-body">Pozisyon değerlendirmesi. Ağustos-Eylül için bearish setup biriktirme zamanı. <strong>Harvest, don't chase.</strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SEVIYE KARTI -->
+<div class="section" id="sec-levels">
+  <div class="section-header" onclick="toggle('sec-levels')">
+    <h2>&#128204; Kritik Teknik Seviyeler (SPX)</h2>
+    <div class="icon">&#9662;</div>
+  </div>
+  <div class="section-body">
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr));">
+      <div class="card" style="border-color:rgba(63,185,80,.3);">
+        <div class="card-label">Direnç 1</div>
+        <div class="card-value up">7,412</div>
+        <div class="card-note">Tüm Zamanların En Yükseği</div>
+      </div>
+      <div class="card" style="border-color:rgba(63,185,80,.3);">
+        <div class="card-label">Direnç 2</div>
+        <div class="card-value up">7,500</div>
+        <div class="card-note">Psikolojik / Opsiyon Duvarı</div>
+      </div>
+      <div class="card" style="border-color:rgba(240,136,62,.4);">
+        <div class="card-label">Gamma Flip</div>
+        <div class="card-value neu">7,437</div>
+        <div class="card-note">Dealer GEX Regime Switch</div>
+      </div>
+      <div class="card" style="border-color:rgba(248,81,73,.3);">
+        <div class="card-label">Put Wall</div>
+        <div class="card-value down">7,400</div>
+        <div class="card-note">Gamma Flip Altı</div>
+      </div>
+      <div class="card" style="border-color:rgba(248,81,73,.3);">
+        <div class="card-label">Destek 1</div>
+        <div class="card-value down">7,260</div>
+        <div class="card-note">Yakın Dönem Destek</div>
+      </div>
+      <div class="card" style="border-color:rgba(248,81,73,.3);">
+        <div class="card-label">Destek 2</div>
+        <div class="card-value down">7,000</div>
+        <div class="card-note">Psikolojik / 50 DMA</div>
+      </div>
+    </div>
+    <div class="insight-box danger">
+      <strong>Regime Switch:</strong> $7,437 üzerinde = pozitif gamma/ momentum long. $7,437 altında = negatif gamma/ dealer hedging satış baskısı. 0DTE trader'ları için <strong>teknik seviye.</strong>
+    </div>
+  </div>
+</div>
+
+<!-- 0DTE MATRIX -->
+<div class="section" id="sec-0dte">
+  <div class="section-header" onclick="toggle('sec-0dte')">
+    <h2>&#9889; 0DTE Decision Matrix</h2>
+    <div class="icon">&#9662;</div>
+  </div>
+  <div class="section-body">
+    <table>
+      <tr><th>Regime</th><th>SPX Seviyesi</th><th>Eylem</th><th>Strateji</th><th>Avoid</th></tr>
+      <tr>
+        <td><span class="tag tag-green">Above Flip</span></td>
+        <td class="text-right">7,437+</td>
+        <td><strong>Momentum Long</strong></td>
+        <td>Trend-following, gap &amp; go, VWAP reclaim CALL</td>
+        <td>Fade, mean-reversion</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-orange">At Flip</span></td>
+        <td class="text-right">~7,437</td>
+        <td><strong>Wait</strong></td>
+        <td>Breakout/breakdown bekleyin, 0DTE scalping</td>
+        <td>Yön tayini (directional guess)</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-red">Below Flip</span></td>
+        <td class="text-right">7,400-7,437</td>
+        <td><strong>Put Wall</strong></td>
+        <td>Momentum short, dealer hedging satış</td>
+        <td>Long call, dip alım</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-red">Deep</span></td>
+        <td class="text-right">&lt;7,400</td>
+        <td><strong>Short Bias</strong></td>
+        <td>Trend-following down, PUT wall break</td>
+        <td>Bottom fishing</td>
+      </tr>
+    </table>
+    <div class="insight-box">
+      <strong>0DTE Refleksivite:</strong> Sezonsellik güçlü ilk yarı &rarr; call alımları &rarr; dealer hedging alım baskısı &rarr; performans artar &rarr; daha fazla call. <strong>Pozitif feedback loop.</strong> Ama sadece gamma flip üzerinde. Altında: tersi. <em>"Seasonality + 0DTE = amplified seasonality, but only above the gamma flip."</em>
+    </div>
+  </div>
+</div>
+
+<!-- SEKTOR TABS -->
+<div class="section" id="sec-sectors">
+  <div class="section-header" onclick="toggle('sec-sectors')">
+    <h2>&#127942; Sektörel Sezonsellik — Temmuz 2026</h2>
+    <div class="icon">&#9662;</div>
+  </div>
+  <div class="section-body">
+    <div class="tabs">
+      <div class="tab active" onclick="setTab(this,'tab-etf-signal')">ETF Sinyal</div>
+      <div class="tab" onclick="setTab(this,'tab-sect-data')">Temmuz Verileri</div>
+      <div class="tab" onclick="setTab(this,'tab-midterm')">Midterm Etkisi</div>
+    </div>
+    <div id="tab-etf-signal" class="tab-content active">
+      <div class="grid" style="grid-template-columns:1fr 1fr;">
+        <div>
+          <div class="insight-box bull" style="margin-bottom:10px;"><strong>STRONG OVERWEIGHT</strong></div>
+          <table>
+            <tr><th>ETF</th><th>Temmuz WR</th><th>Neden</th></tr>
+            <tr><td><strong>XLK</strong> Tech</td><td class="text-right up">90%</td><td>AI yapısal, buyback, kazanç</td></tr>
+            <tr><td><strong>XLV</strong> Healthcare</td><td class="text-right up">89%</td><td>Midterm en iyi sektör + mean-reversion</td></tr>
+          </table>
+        </div>
+        <div>
+          <div class="insight-box danger" style="margin-bottom:10px;"><strong>AVOID</strong></div>
+          <table>
+            <tr><th>ETF</th><th>Risk</th></tr>
+            <tr><td><strong>XLF</strong> Financials</td><td>Midterm en kötü + Fed belirsizliği</td></tr>
+            <tr><td><strong>XLRE</strong> Real Estate</td><td>Faiz riski</td></tr>
+            <tr><td><strong>XLY</strong> Consumer Disc</td><td>Tarife kırılganlığı</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="insight-box warn" style="margin-top:10px;">
+        <strong>XLI Çatışması:</strong> 100% Temmuz kazanma oranı ama <strong>midterm yıllarının en kötü sektörü</strong>. Midterm sezonselliği Temmuz sezonselliğine üstün geliyor. <strong>XLI avoid.</strong>
+      </div>
+    </div>
+    <div id="tab-sect-data" class="tab-content">
+      <table>
+        <tr><th>Sektör (ETF)</th><th>10Y Win Rate</th><th>Temmuz Ort.</th><th>Midterm Ort.</th><th>Not</th></tr>
+        <tr><td>XLK Tech</td><td class="text-right up">90%</td><td class="text-right up">+4%</td><td class="text-right">~+3%</td><td>AI konsantrasyon</td></tr>
+        <tr><td>XLI Industrials</td><td class="text-right up">100%</td><td class="text-right up">+3.5%</td><td class="text-right down">+0.6%</td><td>Midterm en kötü</td></tr>
+        <tr><td>XLV Healthcare</td><td class="text-right up">89%</td><td class="text-right up">+3.1%</td><td class="text-right up">+10.7%</td><td>Midterm en iyi</td></tr>
+        <tr><td>XLU Utilities</td><td class="text-right up">78%</td><td class="text-right up">+3.3%</td><td class="text-right">~+2%</td><td>Mutlak pozitif</td></tr>
+        <tr><td>XLE Energy</td><td class="text-right">Orta</td><td class="text-right">Orta</td><td class="text-right up">+8.9%</td><td>Jeopolitik ikili</td></tr>
+        <tr><td>XLF Financials</td><td class="text-right down">Düşük</td><td class="text-right down">Düşük</td><td class="text-right down">-0.6%</td><td>Fed uncertainty</td></tr>
+      </table>
+    </div>
+    <div id="tab-midterm" class="tab-content">
+      <table>
+        <tr><th>Midterm En İyiler</th><th>Ortalama</th><th>Midterm En Kötüler</th><th>Ortalama</th></tr>
+        <tr><td class="up">Healthcare</td><td class="text-right up">+10.7%</td><td class="down">Financials</td><td class="text-right down">-0.6%</td></tr>
+        <tr><td class="up">Energy</td><td class="text-right up">+8.9%</td><td class="down">Industrials</td><td class="text-right">+0.6%</td></tr>
+        <tr><td class="up">Consumer Disc</td><td class="text-right up">+6.8%</td><td class="down">Real Estate</td><td class="text-right">-0.3%</td></tr>
+      </table>
+      <div class="insight-box" style="margin-top:10px;">
+        <strong>Midterm + Temmuz Kombinasyonu:</strong> XLV, hem Temmuz'un (%89) hem de midterm yıllarının en güçlü sektörü (+10.7%). XLK, Temmuz'un yapısal gücü (%90) ile AI momentumunu birleştirir. Bu iki ETF, index long'dan daha iyi risk/ödül sunar.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STRATEJI PLAYBOOK -->
+<div class="section" id="sec-playbook">
+  <div class="section-header" onclick="toggle('sec-playbook')">
+    <h2>&#128221; Opsiyon Playbook — Temmuz 2026</h2>
+    <div class="icon">&#9662;</div>
+  </div>
+  <div class="section-body">
+    <div class="tabs">
+      <div class="tab active" onclick="setTab(this,'tab-play-calls')">Long CALL</div>
+      <div class="tab" onclick="setTab(this,'tab-play-hedges')">Hedge / PUT</div>
+      <div class="tab" onclick="setTab(this,'tab-play-avoid')">AVOID</div>
+    </div>
+    <div id="tab-play-calls" class="tab-content active">
+      <table>
+        <tr><th>Strateji</th><th>Under</th><th>Setup</th><th>Giriş</th><th>Hedef</th><th>Stop</th></tr>
+        <tr>
+          <td><strong>Bull Call Spread</strong></td>
+          <td>SPX/SPY</td>
+          <td>ATM / 5% OTM</td>
+          <td>Gamma flip >$7,437</td>
+          <td>+100% premium</td>
+          <td>-50% premium</td>
+        </tr>
+        <tr>
+          <td><strong>Weekly XLK CALL</strong></td>
+          <td>XLK</td>
+          <td>ATM, 7-11 Temmuz expiry</td>
+          <td>VWAP reclaim</td>
+          <td>+150% premium</td>
+          <td>-50% premium</td>
+        </tr>
+        <tr>
+          <td><strong>Weekly XLV CALL</strong></td>
+          <td>XLV</td>
+          <td>ATM, 7-11 Temmuz expiry</td>
+          <td>VWAP reclaim</td>
+          <td>+100% premium</td>
+          <td>-50% premium</td>
+        </tr>
+        <tr>
+          <td><strong>0DTE Momentum</strong></td>
+          <td>SPX</td>
+          <td>CALL, >$7,437</td>
+          <td>VWAP + momentum</td>
+          <td>+200% (day trade)</td>
+          <td>2:30 PM time stop</td>
+        </tr>
+      </table>
+      <div class="insight-box bull">
+        <strong>2x Potansiyel Penceresi:</strong> 7-11 Temmuz, VWAP reclaim + $7,437 üzerinde. 0DTE CALL ile 2x+ hedeflenebilir. Ama sadece canlı GEX izleme ile. Gamma flip altında asla long.
+      </div>
+    </div>
+    <div id="tab-play-hedges" class="tab-content">
+      <table>
+        <tr><th>Strateji</th><th>Under</th><th>Setup</th><th>Giriş</th><th>Hedef</th></tr>
+        <tr>
+          <td><strong>VIX Call Spread</strong></td>
+          <td>VIX</td>
+          <td>20/25 Jul 30 expiry</td>
+          <td>24-26 Temmuz</td>
+          <td>+150% premium</td>
+        </tr>
+        <tr>
+          <td><strong>SPX Put Spread</strong></td>
+          <td>SPX</td>
+          <td>7,300/7,100 Jul 30</td>
+          <td>24 Temmuz veya FOMC</td>
+          <td>+200% premium</td>
+        </tr>
+        <tr>
+          <td><strong>XLE Call Hedge</strong></td>
+          <td>XLE</td>
+          <td>85/90 call spread</td>
+          <td>İran riski artarsa</td>
+          <td>Tail hedge</td>
+        </tr>
+        <tr>
+          <td><strong>FOMC Straddle</strong></td>
+          <td>SPX</td>
+          <td>Jul 30 expiry</td>
+          <td>28 Temmuz 2:00 PM</td>
+          <td>+100% (directional)</td>
+        </tr>
+      </table>
+      <div class="insight-box warn">
+        <strong>Iran Tail Hedge:</strong> İran 60-gün ateşkesi bilinen bilinmeyen (known-unknown). Zamanı tam fiyatlanmamış. VIX call spread ve XLE call spread "ucuz convexity" sağlar. <strong>Her $3 long için $1 put hedge.</strong>
+      </div>
+    </div>
+    <div id="tab-play-avoid" class="tab-content">
+      <table>
+        <tr><th>Strateji</th><th>Neden</th><th>Risk</th></tr>
+        <tr>
+          <td><strong>Iron Condor</strong></td>
+          <td>Negatif gamma + 3 katalizör</td>
+          <td>Gap risk, gamma kırılımı</td>
+        </tr>
+        <tr>
+          <td><strong>Short Straddle</strong></td>
+          <td>Triple catalyst stack</td>
+          <td>Tanımsız risk, yıkıcı</td>
+        </tr>
+        <tr>
+          <td><strong>Gamma Flip Altı Long</strong></td>
+          <td>Dealer hedging satış baskısı</td>
+          <td>-2% düşüş -4% yapar</td>
+        </tr>
+        <tr>
+          <td><strong>FOMC Sonrası Tutma</strong></td>
+          <td>Tarihsel %66.7 fade</td>
+          <td>Overnight gap</td>
+        </tr>
+      </table>
+      <div class="insight-box danger">
+        <strong>10 Trap:</strong> 1) Iron condor, 2) Short straddle, 3) Gamma flip altı call, 4) FOMC sonrası tutma, 5) Early fade (orta-Temmuz), 6) Buyback blackout ignore, 7) Credit spread complacency, 8) XLI carry into August, 9) IV crush ignorance, 10) Holiday oversizing.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 10 INSIGHTS -->
+<div class="section" id="sec-insights">
+  <div class="section-header" onclick="toggle('sec-insights')">
+    <h2>&#127775; 10 Çapraz Çıkarım (Cross-Dimension)</h2>
+    <div class="icon">&#9662;</div>
+  </div>
+  <div class="section-body">
+    <div class="insight-box danger">
+      <strong>1. Gamma-Seasonality Çarpışması:</strong> Normalde Temmuz = pozitif gamma + düşük vol + buyback = sakin ralli. 2026'da negatif gamma (-2.1B) + yükselmiş VIX (19.29) + sıkışmış eğri = amplifiye edilmiş Temmuz. <em>Aynı ay, iki farklı rejim: ilk yarı pozitif feedback, ikinci yarı catalyst-driven breakdown riski.</em>
+    </div>
+    <div class="insight-box warn">
+      <strong>2. B-Cycle Yaz Tuzağı:</strong> 2018 paraleli: Temmuz +3.6% ama bu "yaz rallisi sürecek" yanılgısına yol açtı, ardından Q4 -13%. SPX zaten Nisan'dan %17 yukarıda. <strong>Harvest July, don't chase August.</strong>
+    </div>
+    <div class="insight-box">
+      <strong>3. Kazanç IV Crush &rarr; Makro IV Ramp:</strong> 13 Temmuz kazanç = IV crush. 24-29 Temmuz tarife+FOMC = IV ramp. VIX eğrisi sıkışmış. <strong>Short premium early July, long convexity late July.</strong>
+    </div>
+    <div class="insight-box warn">
+      <strong>4. AI Daraltması = Temmuz Hava Cebi:</strong> Mag7 %35, kazanç büyümesi %70+. A/D çizgisi Mayıs 2024'ten beri düşüyor. Kazançlar "yeterince iyi" değilse, daraltma hızla çöküşe döner. <em>2024 orta-Temmuz: -4.72% drawdown.</em>
+    </div>
+    <div class="insight-box danger">
+      <strong>5. İran Ateşkesi — En Büyük Fiyatlanmamış Kuyruk:</strong> Tarife (24 Temmuz) ve FOMC (28-29) biliniyor. İran 60-gün ateşkesi biliniyor ama zamanı tam fiyatlanmamış. Bozulursa petrol $100+, enflasyon, Fed şahinliği, risk-off. <strong>VIX call spread + XLE call hedge = ucuz convexity.</strong>
+    </div>
+    <div class="insight-box">
+      <strong>6. 0DTE Sezonsellik Refleksivitesi:</strong> 0DTE hacmi %59. İlk yarı sezonsellik güçlü &rarr; call alımları &rarr; dealer hedging alım baskısı &rarr; performans artar &rarr; daha fazla call. <strong>Pozitif feedback loop.</strong> Ama sadece gamma flip ($7,437) üzerinde. <em>"Seasonality + 0DTE = amplified seasonality, but only above the gamma flip."</em>
+    </div>
+    <div class="insight-box bull">
+      <strong>7. XLK/XLV Dispersiyonu > SPX Index Long:</strong> XLK (%90 Temmuz) + XLV (%89 + midterm en iyi) kombinasyonu, hem sezonsel hem midterm avantajları birleştirir. Sektör dispersiyonu, index directional'dan daha yüksek Sharpe sunar.
+    </div>
+    <div class="insight-box warn">
+      <strong>8. Buyback Penceresi Gizli Zemin:</strong> $925B YTD yetki. Kazanç sonrası pencereler (15-20 gün) Temmuz ortasına VWAP talebi. <strong>Ama bu zemin koşullu:</strong> Yüksek faiz (3.50-3.75%), geç cycle, kazanç hayal kırıklığı. 2022'de bazı şirketler durdurdu. <em>"Stealth floor until it breaks."</em>
+    </div>
+    <div class="insight-box">
+      <strong>9. RSP vs. SPY — Genişleme Bahsi:</strong> Temmuz tarihsel olarak genişleme ayı. Ama 2024-2026 daraltması yapısal. <strong>RSP > SPY = genişleme onayı, ralli sürdürülebilir. SPY > RSP = daraltma devam, orta-Temmuz çöküş riski.</strong>
+    </div>
+    <div class="insight-box warn">
+      <strong>10. Warsh'ın İlk FOMC'si — Bilinmeyen Bilinen:</strong> 28-29 Temmuz, Warsh'ın ilk başkanlık toplantısı. Nokta grafik yok. İçerik bilinmiyor, tarih biliniyor. Tarihsel olarak ilk toplantı 1.5-2x normal volatilite yaratır. <strong>VIX Jul 30 call spread = ucuz hedge.</strong>
+    </div>
+  </div>
+</div>
+
+<!-- TEMMUZ HEATMAP -->
+<div class="section" id="sec-heatmap">
+  <div class="section-header" onclick="toggle('sec-heatmap')">
+    <h2>&#128293; Temmuz 2026 — Günlük Güç İndikatörü (Tahmini)</h2>
+    <div class="icon">&#9662;</div>
+  </div>
+  <div class="section-body">
+    <p style="font-size:0.82rem;color:var(--fg2);margin-bottom:10px;">Günlük sezonsellik + katalizör etkisi gösterimi. <strong>H=Güçlü, h=Zayıf, ~=Nötr, X=Kapatılmış.</strong></p>
+    <div class="heatmap">
+      <div class="heatmap-cell h-flat"><div class="day">Pzt</div><div class="val">&mdash;</div></div>
+      <div class="heatmap-cell h-flat"><div class="day">Sal</div><div class="val">&mdash;</div></div>
+      <div class="heatmap-cell h-strong"><div class="day">Çar</div><div class="val">Q3</div></div>
+      <div class="heatmap-cell h-good"><div class="day">Per</div><div class="val">Tatil</div></div>
+      <div class="heatmap-cell h-flat"><div class="day">Cum</div><div class="val">Kapalı</div></div>
+      <div class="heatmap-cell h-flat"><div class="day">Cmt</div><div class="val">Kapalı</div></div>
+      <div class="heatmap-cell h-flat"><div class="day">Paz</div><div class="val">Kapalı</div></div>
+      
+      <div class="heatmap-cell h-strong"><div class="day">6</div><div class="val">+</div></div>
+      <div class="heatmap-cell h-strong"><div class="day">7</div><div class="val">+</div></div>
+      <div class="heatmap-cell h-strong"><div class="day">8</div><div class="val">+</div></div>
+      <div class="heatmap-cell h-strong"><div class="day">9</div><div class="val">+</div></div>
+      <div class="heatmap-cell h-strong"><div class="day">10</div><div class="val">+</div></div>
+      <div class="heatmap-cell h-flat"><div class="day">11</div><div class="val">=</div></div>
+      <div class="heatmap-cell h-flat"><div class="day">12</div><div class="val">=</div></div>
+      
+      <div class="heatmap-cell h-neu"><div class="day">13</div><div class="val">Kazanç</div></div>
+      <div class="heatmap-cell h-neu"><div class="day">14</div><div class="val">Kazanç</div></div>
+      <div class="heatmap-cell h-neu"><div class="day">15</div><div class="val">IV</div></div>
+      <div class="heatmap-cell h-weak"><div class="day">16</div><div class="val">Fade</div></div>
+      <div class="heatmap-cell h-weak"><div class="day">17</div><div class="val">-</div></div>
+      <div class="heatmap-cell h-weak"><div class="day">18</div><div class="val">-</div></div>
+      <div class="heatmap-cell h-weak"><div class="day">19</div><div class="val">-</div></div>
+      
+      <div class="heatmap-cell h-weak"><div class="day">20</div><div class="val">-</div></div>
+      <div class="heatmap-cell h-weak"><div class="day">21</div><div class="val">-</div></div>
+      <div class="heatmap-cell h-weak"><div class="day">22</div><div class="val">-</div></div>
+      <div class="heatmap-cell h-weak"><div class="day">23</div><div class="val">Tarife</div></div>
+      <div class="heatmap-cell h-weak"><div class="day">24</div><div class="val">Şok</div></div>
+      <div class="heatmap-cell h-weak"><div class="day">25</div><div class="val">-</div></div>
+      <div class="heatmap-cell h-weak"><div class="day">26</div><div class="val">-</div></div>
+      
+      <div class="heatmap-cell h-weak"><div class="day">27</div><div class="val">FOMC</div></div>
+      <div class="heatmap-cell h-weak"><div class="day">28</div><div class="val">FOMC</div></div>
+      <div class="heatmap-cell h-weak"><div class="day">29</div><div class="val">Fade</div></div>
+      <div class="heatmap-cell h-weak"><div class="day">30</div><div class="val">-</div></div>
+      <div class="heatmap-cell h-weak"><div class="day">31</div><div class="val">Kapa</div></div>
+      <div class="heatmap-cell h-flat"><div class="day">1</div><div class="val">Ağu</div></div>
+      <div class="heatmap-cell h-flat"><div class="day">2</div><div class="val">Ağu</div></div>
+    </div>
+    <div class="insight-box" style="margin-top:10px;">
+      <strong>Görsel Özet:</strong> İlk 2 hafta <span class="tag tag-green">güçlü</span> (buyback + kazanç). 13-15 Temmuz <span class="tag tag-orange">karışık</span> (IV crush). 16-24 Temmuz <span class="tag tag-red">zayıf</span> (fade + tarife). 27-29 Temmuz <span class="tag tag-red">riskli</span> (FOMC). <strong>Agresif: 7-11. Savunmacı: 21-31.</strong>
+    </div>
+  </div>
+</div>
+
+<!-- RISK MANAGEMENT -->
+<div class="section" id="sec-risk">
+  <div class="section-header" onclick="toggle('sec-risk')">
+    <h2>&#128737; Risk Management Kuralları</h2>
+    <div class="icon">&#9662;</div>
+  </div>
+  <div class="section-body">
+    <div class="grid" style="grid-template-columns:1fr 1fr;">
+      <div>
+        <h3 style="font-size:0.9rem;margin-bottom:8px;color:var(--accent);">Pozisyon</h3>
+        <ul style="font-size:0.85rem;color:var(--fg2);padding-left:18px;">
+          <li>0DTE başına: Sermayenin <strong>%0.5-1'i</strong></li>
+          <li>Temmuz toplam risk: Sermayenin <strong>%15'i</strong></li>
+          <li>Her $3 long için <strong>$1 put hedge</strong></li>
+          <li>Max 3 açık pozisyon (0DTE hariç)</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="font-size:0.9rem;margin-bottom:8px;color:var(--accent);">Stop & Kar</h3>
+        <ul style="font-size:0.85rem;color:var(--fg2);padding-left:18px;">
+          <li>Stop: <strong>-50% premium</strong> veya 2:30 PM time stop</li>
+          <li>Kar al (1-15 Temmuz): <strong>%50-75 at +100%</strong></li>
+          <li>İkinci yarı: Hızlı çıkış, pozisyon %50'ye düşür</li>
+          <li>Max drawdown: Temmuz içinde <strong>-3% normal</strong>, -5%+ = fade</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SUMMARY BOX -->
+<div class="section" style="border-color:rgba(88,166,255,.3);background:linear-gradient(135deg,rgba(88,166,255,.06),rgba(88,166,255,.02));">
+  <div class="section-header" style="cursor:default;">
+    <h2>&#127942; Son Söz — Karar Ağacı</h2>
+  </div>
+  <div class="section-body" style="display:block;">
+    <p style="font-size:0.9rem;margin-bottom:12px;">Carson Investment Research'ın grafiği <strong>istatistiksel olarak doğru</strong> — son 10/20 yılda Temmuz en iyi ay. Ancak 2026, "normal" bir Temmuz değil. Midterm yılı + B-cycle inversion + negatif gamma + triple catalyst stack = <strong>amplifiye edilmiş, iki rejimli bir ay.</strong></p>
+    <div class="grid" style="grid-template-columns:1fr 1fr 1fr;margin:12px 0;">
+      <div class="card" style="border-color:rgba(63,185,80,.3);">
+        <div class="card-label" style="color:var(--accent2);">1-15 Temmuz</div>
+        <div class="card-value up">Agresif Long</div>
+        <div class="card-note">XLK/XLV CALL, 0DTE momentum, VWAP>$7,437</div>
+      </div>
+      <div class="card" style="border-color:rgba(240,136,62,.3);">
+        <div class="card-label" style="color:var(--warn);">16-24 Temmuz</div>
+        <div class="card-value neu">Savunmacı</div>
+        <div class="card-note">Kar al, put hedge, pozisyon %50'ye düşür</div>
+      </div>
+      <div class="card" style="border-color:rgba(248,81,73,.3);">
+        <div class="card-label" style="color:var(--danger);">25-31 Temmuz</div>
+        <div class="card-value down">Çekilme</div>
+        <div class="card-note">FOMC riski, Ağustos setup biriktir</div>
+      </div>
+    </div>
+    <p style="font-size:0.85rem;color:var(--fg2);">&#9888; Tüm finansal veriler üçüncü taraf kaynaklardan (YCharts, CBOE, FactSet, BofA, BlackRock, Carson, LPL, SpotGamma, vb.) alınmıştır. Yatırım tavsiyesi değildir; her trade kararı kendi risk yönetiminize tabidir.</p>
+  </div>
+</div>
+
+<div class="footer">
+  <p>Multi-Agent Deep Research Swarm (Kimi Work) | 29 Haziran 2026</p>
+  <p>Carson Investment Research / YCharts görseli üzerine 10 boyutlu analiz</p>
+</div>
+
+</div>
+
+<script>
+function toggle(id){
+  var el=document.getElementById(id);
+  el.classList.toggle('collapsed');
+}
+function setTab(tab,contentId){
+  var parent=tab.parentElement;
+  var tabs=parent.querySelectorAll('.tab');
+  tabs.forEach(function(t){t.classList.remove('active');});
+  tab.classList.add('active');
+  var contents=parent.parentElement.querySelectorAll('.tab-content');
+  contents.forEach(function(c){c.classList.remove('active');});
+  document.getElementById(contentId).classList.add('active');
+}
+// Open first section by default, keep others collapsed
+['sec-scenarios','sec-calendar','sec-levels','sec-0dte','sec-sectors','sec-playbook','sec-insights','sec-heatmap','sec-risk'].forEach(function(id){document.getElementById(id).classList.add('collapsed');});
+document.getElementById('sec-scenarios').classList.remove('collapsed');
+</script>
+</body>
+</html>
