@@ -19,8 +19,10 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { strategyPresentation } from "@/lib/weeklyReports";
+import { copy, type AppLanguage } from "@/lib/i18n";
 
 interface WeeklyReportAdminPanelProps {
+  language: AppLanguage;
   adminEmail: string;
   adminAuthorized: boolean;
   adminSecret: string;
@@ -63,6 +65,7 @@ function updateEntryField(
 }
 
 export default function WeeklyReportAdminPanel({
+  language,
   adminEmail,
   adminAuthorized,
   adminSecret,
@@ -185,7 +188,7 @@ export default function WeeklyReportAdminPanel({
       setRawReportError("");
     } catch (error) {
       setRawReportError(
-        error instanceof Error ? error.message : "Raw JSON uygulanamadi."
+        error instanceof Error ? error.message : copy(language, "Raw JSON uygulanamadi.", "Raw JSON could not be applied.")
       );
     }
   };
@@ -198,27 +201,26 @@ export default function WeeklyReportAdminPanel({
           <AdminPanelSurface>
             <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-200">
               <Shield className="size-4" />
-              Yonetici kilidi kapali
+              {copy(language, "Yonetici kilidi kapali", "Admin locked")}
             </div>
             <div className="space-y-2">
               <h2 className="text-3xl font-semibold tracking-tight text-foreground">
-                Haftalik Rapor Editoru
+                {copy(language, "Haftalik Rapor Editoru", "Weekly Report Editor")}
               </h2>
               <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
-                Bu alan haftalik earnings ve IV crush raporlarini duzenlemek,
-                yeni haftalar olusturmak ve yayina almak icin kullanilir. Devam
-                etmek icin <strong>{adminEmail}</strong> hesabina ait gizli
-                anahtari gir.
+                {copy(language, "Bu alan haftalik earnings ve IV crush raporlarini duzenlemek, yeni haftalar olusturmak ve yayina almak icin kullanilir. Devam etmek icin", "This area is used to edit weekly earnings and IV crush reports, create new weeks, and publish them. To continue")}{" "}
+                <strong>{adminEmail}</strong>{" "}
+                {copy(language, "hesabina ait gizli anahtari gir.", "enter the secret key associated with the account.")}
               </p>
             </div>
 
             <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto]">
-              <Field label="Admin secret">
+              <Field label={copy(language, "Admin sifresi", "Admin secret")}>
                 <Input
                   type="password"
                   value={adminSecret}
                   onChange={event => onAdminSecretChange(event.target.value)}
-                  placeholder="Coolify env icindeki REPORT_ADMIN_SECRET"
+                  placeholder={copy(language, "Coolify env icindeki REPORT_ADMIN_SECRET", "REPORT_ADMIN_SECRET in Coolify env")}
                 />
               </Field>
 
@@ -228,7 +230,7 @@ export default function WeeklyReportAdminPanel({
                   onClick={onUnlock}
                   disabled={adminBusy || !adminSecret.trim()}
                 >
-                  {adminBusy ? "Kontrol ediliyor" : "Kilidi ac"}
+                  {adminBusy ? copy(language, "Kontrol ediliyor", "Checking") : copy(language, "Kilidi ac", "Unlock")}
                 </Button>
               </div>
             </div>
@@ -240,12 +242,12 @@ export default function WeeklyReportAdminPanel({
         }
         preview={
           <AdminPanelSurface as="div" tone="muted" className="p-6">
-            <SectionLabel>Bu sayfada neler var</SectionLabel>
+            <SectionLabel>{copy(language, "Bu sayfada neler var", "What's on this page")}</SectionLabel>
             <div className="mt-4 space-y-3 text-sm text-muted-foreground">
-              <p>Yeni haftalik taslak olusturma</p>
-              <p>Ticker bazli earnings ve IV crush duzenleme</p>
-              <p>Draft kaydetme ve publish etme</p>
-              <p>Published raporlardan projection senkronu</p>
+              <p>{copy(language, "Yeni haftalik taslak olusturma", "Create new weekly draft")}</p>
+              <p>{copy(language, "Ticker bazli earnings ve IV crush duzenleme", "Edit ticker-based earnings and IV crush")}</p>
+              <p>{copy(language, "Draft kaydetme ve publish etme", "Save draft and publish")}</p>
+              <p>{copy(language, "Published raporlardan projection senkronu", "Projection sync from published reports")}</p>
             </div>
           </AdminPanelSurface>
         }
@@ -262,21 +264,21 @@ export default function WeeklyReportAdminPanel({
           className="xl:sticky xl:top-24 xl:h-[calc(100vh-8rem)] xl:overflow-y-auto"
         >
         <div className="flex items-center justify-between gap-2">
-          <SectionLabel>Rapor Secimi</SectionLabel>
+          <SectionLabel>{copy(language, "Rapor Secimi", "Report Selection")}</SectionLabel>
           <button
             type="button"
             onClick={onRefresh}
             className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
           >
             <RefreshCw className="size-3.5" />
-            Yenile
+            {copy(language, "Yenile", "Refresh")}
           </button>
         </div>
 
         <div className="mt-3 space-y-3">
           <Select value={selectedReportId} onValueChange={onSelectReport}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Bir rapor sec" />
+              <SelectValue placeholder={copy(language, "Bir rapor sec", "Select a report")} />
             </SelectTrigger>
             <SelectContent>
               {reports.map(report => (
@@ -294,7 +296,7 @@ export default function WeeklyReportAdminPanel({
             onClick={onCreateNextWeek}
           >
             <Plus className="size-4" />
-            Yeni hafta taslagi
+            {copy(language, "Yeni hafta taslagi", "New week draft")}
           </Button>
 
           <Button
@@ -304,12 +306,12 @@ export default function WeeklyReportAdminPanel({
             onClick={onLock}
           >
             <Shield className="size-4" />
-            Kilidi kapat
+            {copy(language, "Kilidi kapat", "Lock")}
           </Button>
         </div>
 
         <div className="mt-6">
-          <SectionLabel>Kayitli Haftalar</SectionLabel>
+          <SectionLabel>{copy(language, "Kayitli Haftalar", "Saved Weeks")}</SectionLabel>
           <div className="mt-3 space-y-2">
             {reports.map(report => {
               const style = strategyPresentation[
@@ -338,7 +340,9 @@ export default function WeeklyReportAdminPanel({
                           : "border-amber-500/30 bg-amber-500/10 text-amber-300"
                       }`}
                     >
-                      {report.status}
+                      {report.status === "published"
+                        ? copy(language, "Yayinda", "Published")
+                        : copy(language, "Taslak", "Draft")}
                     </span>
                   </div>
                   <p className="mt-2 text-xs text-muted-foreground">
@@ -347,7 +351,7 @@ export default function WeeklyReportAdminPanel({
                   <p
                     className={`mt-2 inline-flex rounded-full border px-2 py-1 text-xs ${style.badgeClass}`}
                   >
-                    {report.content.entries.length} hisse
+                    {report.content.entries.length} {copy(language, "hisse", "stocks")}
                   </p>
                 </button>
               );
@@ -363,7 +367,7 @@ export default function WeeklyReportAdminPanel({
           <div className="space-y-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <SectionLabel>Yonetici</SectionLabel>
+                <SectionLabel>{copy(language, "Yonetici", "Admin")}</SectionLabel>
                 <p className="mt-1 text-sm text-foreground">{adminEmail}</p>
               </div>
 
@@ -374,7 +378,7 @@ export default function WeeklyReportAdminPanel({
                   onClick={onSaveDraft}
                   disabled={adminBusy}
                 >
-                  Kaydet
+                  {copy(language, "Kaydet", "Save")}
                 </Button>
                 <Button
                   type="button"
@@ -382,7 +386,7 @@ export default function WeeklyReportAdminPanel({
                   disabled={adminBusy}
                 >
                   <Upload className="size-4" />
-                  Yayinla
+                  {copy(language, "Yayinla", "Publish")}
                 </Button>
               </div>
             </div>
@@ -392,7 +396,7 @@ export default function WeeklyReportAdminPanel({
             ) : null}
 
             <div className="grid gap-4 md:grid-cols-2">
-              <Field label="Rapor basligi">
+              <Field label={copy(language, "Rapor basligi", "Report Title")}>
                 <Input
                   value={draftReport.title}
                   onChange={event =>
@@ -400,7 +404,7 @@ export default function WeeklyReportAdminPanel({
                   }
                 />
               </Field>
-              <Field label="Slug">
+              <Field label={copy(language, "Slug", "Slug")}>
                 <Input
                   value={draftReport.slug}
                   onChange={event =>
@@ -408,7 +412,7 @@ export default function WeeklyReportAdminPanel({
                   }
                 />
               </Field>
-              <Field label="Hafta baslangici">
+              <Field label={copy(language, "Hafta baslangici", "Week Start")}>
                 <Input
                   type="date"
                   value={draftReport.weekStart}
@@ -417,7 +421,7 @@ export default function WeeklyReportAdminPanel({
                   }
                 />
               </Field>
-              <Field label="Hafta bitisi">
+              <Field label={copy(language, "Hafta bitisi", "Week End")}>
                 <Input
                   type="date"
                   value={draftReport.weekEnd}
@@ -426,7 +430,7 @@ export default function WeeklyReportAdminPanel({
                   }
                 />
               </Field>
-              <Field label="Analiz tarihi">
+              <Field label={copy(language, "Analiz tarihi", "Analysis Date")}>
                 <Input
                   type="datetime-local"
                   value={draftReport.analysisDate.slice(0, 16)}
@@ -439,7 +443,7 @@ export default function WeeklyReportAdminPanel({
                   }
                 />
               </Field>
-              <Field label="Durum">
+              <Field label={copy(language, "Durum", "Status")}>
                 <Select
                   value={draftReport.status}
                   onValueChange={value =>
@@ -452,15 +456,15 @@ export default function WeeklyReportAdminPanel({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="draft">draft</SelectItem>
-                    <SelectItem value="published">published</SelectItem>
+                    <SelectItem value="draft">{copy(language, "Taslak", "Draft")}</SelectItem>
+                    <SelectItem value="published">{copy(language, "Yayinda", "Published")}</SelectItem>
                   </SelectContent>
                 </Select>
               </Field>
             </div>
 
             <div className="grid gap-4">
-              <Field label="Ust mesaj">
+              <Field label={copy(language, "Ust mesaj", "Headline")}>
                 <Input
                   value={draftReport.content.headline}
                   onChange={event =>
@@ -468,7 +472,7 @@ export default function WeeklyReportAdminPanel({
                   }
                 />
               </Field>
-              <Field label="Ozet">
+              <Field label={copy(language, "Ozet", "Summary")}>
                 <Textarea
                   rows={4}
                   value={draftReport.content.summary}
@@ -477,7 +481,7 @@ export default function WeeklyReportAdminPanel({
                   }
                 />
               </Field>
-              <Field label="Makro baglam">
+              <Field label={copy(language, "Makro baglam", "Macro Context")}>
                 <Textarea
                   rows={4}
                   value={draftReport.content.marketContext}
@@ -488,7 +492,7 @@ export default function WeeklyReportAdminPanel({
                   }
                 />
               </Field>
-              <Field label="Uygulama notlari">
+              <Field label={copy(language, "Uygulama notlari", "Execution Notes")}>
                 <Textarea
                   rows={3}
                   value={draftReport.content.executionNotes}
@@ -499,7 +503,7 @@ export default function WeeklyReportAdminPanel({
                   }
                 />
               </Field>
-              <Field label="Katalizorler (her satir bir madde)">
+              <Field label={copy(language, "Katalizorler (her satir bir madde)", "Catalysts (one per line)")}>
                 <Textarea
                   rows={3}
                   value={draftReport.content.keyCatalysts.join("\n")}
@@ -518,16 +522,16 @@ export default function WeeklyReportAdminPanel({
             <AdminPanelSurface as="div" tone="muted" className="space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <SectionLabel>Hisse Editoru</SectionLabel>
+                  <SectionLabel>{copy(language, "Hisse Editoru", "Stock Editor")}</SectionLabel>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    Hafta icindeki ticker analizlerini buradan duzenle.
+                    {copy(language, "Hafta icindeki ticker analizlerini buradan duzenle.", "Edit weekly ticker analyses here.")}
                   </p>
                 </div>
 
                 <div className="flex items-center gap-2">
                   <Button type="button" variant="outline" onClick={onAddEntry}>
                     <Plus className="size-4" />
-                    Hisse ekle
+                    {copy(language, "Hisse ekle", "Add Stock")}
                   </Button>
                   {selectedEntry ? (
                     <Button
@@ -536,7 +540,7 @@ export default function WeeklyReportAdminPanel({
                       onClick={() => onRemoveEntry(selectedEntry.id)}
                     >
                       <Trash2 className="size-4" />
-                      Sil
+                      {copy(language, "Sil", "Delete")}
                     </Button>
                   ) : null}
                 </div>
@@ -547,7 +551,7 @@ export default function WeeklyReportAdminPanel({
                 onValueChange={setSelectedEntryId}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Bir ticker sec" />
+                  <SelectValue placeholder={copy(language, "Bir ticker sec", "Select a ticker")} />
                 </SelectTrigger>
                 <SelectContent>
                   {draftReport.content.entries.map(entry => (
@@ -560,7 +564,7 @@ export default function WeeklyReportAdminPanel({
 
               {selectedEntry ? (
                 <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                  <Field label="Ticker">
+                  <Field label={copy(language, "Ticker", "Ticker")}>
                     <Input
                       value={selectedEntry.ticker}
                       onChange={event =>
@@ -570,7 +574,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label="Sirket adi">
+                  <Field label={copy(language, "Sirket adi", "Company Name")}>
                     <Input
                       value={selectedEntry.name}
                       onChange={event =>
@@ -578,7 +582,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label="Sektor">
+                  <Field label={copy(language, "Sektor", "Sector")}>
                     <Input
                       value={selectedEntry.sector}
                       onChange={event =>
@@ -586,7 +590,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label="Earnings tarihi">
+                  <Field label={copy(language, "Earnings tarihi", "Earnings Date")}>
                     <Input
                       type="date"
                       value={selectedEntry.earningsDate}
@@ -595,7 +599,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label="Earnings zamani">
+                  <Field label={copy(language, "Earnings zamani", "Earnings Time")}>
                     <Select
                       value={selectedEntry.earningsTime}
                       onValueChange={value =>
@@ -610,13 +614,19 @@ export default function WeeklyReportAdminPanel({
                       <SelectContent>
                         {["AH", "AMC", "BMO", "BH"].map(option => (
                           <SelectItem key={option} value={option}>
-                            {option}
+                            {option === "AH"
+                              ? copy(language, "Kapanis Sonrasi", "After Hours")
+                              : option === "AMC"
+                              ? copy(language, "Kapanis Sonrasi (AMC)", "After Market Close")
+                              : option === "BMO"
+                              ? copy(language, "Acilis Oncesi", "Before Market Open")
+                              : copy(language, "Is Saatleri", "Business Hours")}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
                   </Field>
-                  <Field label="Yonsel bias">
+                  <Field label={copy(language, "Yonsel bias", "Directional Bias")}>
                     <Select
                       value={selectedEntry.directionalBias}
                       onValueChange={value =>
@@ -632,13 +642,17 @@ export default function WeeklyReportAdminPanel({
                       <SelectContent>
                         {["Bullish", "Neutral", "Bearish"].map(option => (
                           <SelectItem key={option} value={option}>
-                            {option}
+                            {option === "Bullish"
+                              ? copy(language, "Yukari Yonlu", "Bullish")
+                              : option === "Neutral"
+                              ? copy(language, "Notr", "Neutral")
+                              : copy(language, "Asagi Yonlu", "Bearish")}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
                   </Field>
-                  <Field label="Strategy rating">
+                  <Field label={copy(language, "Strategy rating", "Strategy Rating")}>
                     <Select
                       value={selectedEntry.strategyRating}
                       onValueChange={value =>
@@ -654,13 +668,19 @@ export default function WeeklyReportAdminPanel({
                       <SelectContent>
                         {["EXCELLENT", "GOOD", "FAIR", "POOR"].map(option => (
                           <SelectItem key={option} value={option}>
-                            {option}
+                            {option === "EXCELLENT"
+                              ? copy(language, "Mukemmel", "Excellent")
+                              : option === "GOOD"
+                              ? copy(language, "Iyi", "Good")
+                              : option === "FAIR"
+                              ? copy(language, "Orta", "Fair")
+                              : copy(language, "Zayif", "Poor")}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
                   </Field>
-                  <Field label="Risk seviyesi">
+                  <Field label={copy(language, "Risk seviyesi", "Risk Level")}>
                     <Select
                       value={selectedEntry.riskLevel}
                       onValueChange={value =>
@@ -675,13 +695,19 @@ export default function WeeklyReportAdminPanel({
                       <SelectContent>
                         {["LOW", "MEDIUM", "HIGH", "VERY_HIGH"].map(option => (
                           <SelectItem key={option} value={option}>
-                            {option}
+                            {option === "LOW"
+                              ? copy(language, "Dusuk", "Low")
+                              : option === "MEDIUM"
+                              ? copy(language, "Orta", "Medium")
+                              : option === "HIGH"
+                              ? copy(language, "Yuksek", "High")
+                              : copy(language, "Cok Yuksek", "Very High")}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
                   </Field>
-                  <Field label="Momentum skoru">
+                  <Field label={copy(language, "Momentum skoru", "Momentum Score")}>
                     <Input
                       type="number"
                       value={selectedEntry.momentumScore}
@@ -692,7 +718,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label="IV crush skoru">
+                  <Field label={copy(language, "IV crush skoru", "IV Crush Score")}>
                     <Input
                       type="number"
                       value={selectedEntry.ivCrushScore}
@@ -703,7 +729,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label="Expected IV crush %">
+                  <Field label={copy(language, "Expected IV crush %", "Expected IV Crush %")}>
                     <Input
                       type="number"
                       value={selectedEntry.expectedIVCrush}
@@ -714,7 +740,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label="Current IV %">
+                  <Field label={copy(language, "Current IV %", "Current IV %")}>
                     <Input
                       type="number"
                       value={selectedEntry.currentIV}
@@ -725,7 +751,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label="Historical IV %">
+                  <Field label={copy(language, "Historical IV %", "Historical IV %")}>
                     <Input
                       type="number"
                       value={selectedEntry.historicalIV}
@@ -736,7 +762,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label="Implied move %">
+                  <Field label={copy(language, "Implied move %", "Implied Move %")}>
                     <Input
                       type="number"
                       step="0.1"
@@ -748,7 +774,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label="Call gain %">
+                  <Field label={copy(language, "Call gain %", "Call Gain %")}>
                     <Input
                       type="number"
                       value={selectedEntry.callGainFromIV}
@@ -759,7 +785,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label="Put gain %">
+                  <Field label={copy(language, "Put gain %", "Put Gain %")}>
                     <Input
                       type="number"
                       value={selectedEntry.putGainFromIV}
@@ -770,7 +796,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label="Target profit %">
+                  <Field label={copy(language, "Target profit %", "Target Profit %")}>
                     <Input
                       type="number"
                       value={selectedEntry.targetProfit}
@@ -781,7 +807,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label="Max loss %">
+                  <Field label={copy(language, "Max loss %", "Max Loss %")}>
                     <Input
                       type="number"
                       value={selectedEntry.maxLoss}
@@ -792,7 +818,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label="Beat rate %">
+                  <Field label={copy(language, "Beat rate %", "Beat Rate %")}>
                     <Input
                       type="number"
                       value={selectedEntry.beatRate}
@@ -803,7 +829,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label="6A fiyat degisimi %">
+                  <Field label={copy(language, "6A fiyat degisimi %", "6M Price Change %")}>
                     <Input
                       type="number"
                       value={selectedEntry.priceChange6M}
@@ -814,7 +840,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label="RSI 14">
+                  <Field label={copy(language, "RSI 14", "RSI 14")}>
                     <Input
                       type="number"
                       value={selectedEntry.rsi14}
@@ -823,7 +849,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label="Onerilen strateji">
+                  <Field label={copy(language, "Onerilen strateji", "Recommended Strategy")}>
                     <Input
                       value={selectedEntry.recommendedStrategy}
                       onChange={event =>
@@ -833,7 +859,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label="Tez / analiz notu">
+                  <Field label={copy(language, "Tez / analiz notu", "Thesis / Analysis Note")}>
                     <Textarea
                       rows={4}
                       className="md:col-span-2 xl:col-span-3"
@@ -846,8 +872,8 @@ export default function WeeklyReportAdminPanel({
                 </div>
               ) : (
                 <EmptyState
-                  description="Bu raporda duzenlenecek hisse yok."
-                  title="Secili entry bulunamadi"
+                  description={copy(language, "Bu raporda duzenlenecek hisse yok.", "No stocks to edit in this report.")}
+                  title={copy(language, "Secili entry bulunamadi", "No entry selected")}
                 />
               )}
             </AdminPanelSurface>
@@ -855,9 +881,9 @@ export default function WeeklyReportAdminPanel({
             <AdminPanelSurface as="div" tone="muted" className="space-y-3">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <SectionLabel>Advanced JSON</SectionLabel>
+                  <SectionLabel>{copy(language, "Advanced JSON", "Advanced JSON")}</SectionLabel>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    Tum weekly report payload'ina tek editorle mudahale et.
+                    {copy(language, "Tum weekly report payload'ina tek editorle mudahale et.", "Intervene in the entire weekly report payload with a single editor.")}
                   </p>
                 </div>
 
@@ -869,10 +895,10 @@ export default function WeeklyReportAdminPanel({
                       setRawReportJson(JSON.stringify(draftReport, null, 2))
                     }
                   >
-                    Guncel taslagi yukle
+                    {copy(language, "Guncel taslagi yukle", "Load current draft")}
                   </Button>
                   <Button type="button" onClick={handleApplyRawJson}>
-                    JSON'i uygula
+                    {copy(language, "JSON'i uygula", "Apply JSON")}
                   </Button>
                 </div>
               </div>
@@ -891,8 +917,8 @@ export default function WeeklyReportAdminPanel({
         ) : (
           <EmptyState
             className="grid min-h-[560px] place-items-center"
-            description="Kayitli haftalardan birini sec veya yeni hafta taslagi olustur."
-            title="Duzenlenecek bir rapor secilmedi"
+            description={copy(language, "Kayitli haftalardan birini sec veya yeni hafta taslagi olustur.", "Select a saved week or create a new week draft.")}
+            title={copy(language, "Duzenlenecek bir rapor secilmedi", "No report selected to edit")}
           />
         )}
         </AdminPanelSurface>
@@ -900,4 +926,3 @@ export default function WeeklyReportAdminPanel({
     />
   );
 }
-

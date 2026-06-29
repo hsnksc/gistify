@@ -604,7 +604,7 @@ export default function EarningReportPlaybookTab({
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-border/80 text-left text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      <th className="pb-2">Greek</th>
+                      <th className="pb-2">{copy(language, "Greek", "Greek")}</th>
                       <th className="pb-2">{copy(language, "Deger", "Value")}</th>
                       <th className="pb-2">{copy(language, "Aciklama", "Notes")}</th>
                     </tr>

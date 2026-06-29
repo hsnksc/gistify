@@ -8,8 +8,10 @@ import {
   DialogFooter,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { copy, type AppLanguage } from "@/lib/i18n";
 
 interface ManusDialogProps {
+  language?: AppLanguage;
   title?: string;
   logo?: string;
   open?: boolean;
@@ -19,6 +21,7 @@ interface ManusDialogProps {
 }
 
 export function ManusDialog({
+  language = "tr",
   title,
   logo,
   open = false,
@@ -66,7 +69,7 @@ export function ManusDialog({
             </DialogTitle>
           ) : null}
           <DialogDescription className="text-sm text-[#858481] leading-5 tracking-[-0.154px]">
-            Please login with Manus to continue
+            {copy(language, "Devam etmek icin Manus ile giris yapin", "Please login with Manus to continue")}
           </DialogDescription>
         </div>
 
@@ -76,7 +79,7 @@ export function ManusDialog({
             onClick={onLogin}
             className="w-full h-10 bg-[#1a1a19] hover:bg-[#1a1a19]/90 text-white rounded-xl text-sm font-medium leading-5 tracking-[-0.154px]"
           >
-            Login with Manus
+            {copy(language, "Manus ile Giris Yap", "Login with Manus")}
           </Button>
         </DialogFooter>
       </DialogContent>

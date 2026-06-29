@@ -1,3 +1,4 @@
+import { copy, type AppLanguage } from "@/lib/i18n";
 import { useMemo, useRef, useState } from "react";
 import { ImagePlus, LoaderCircle, Trash2 } from "lucide-react";
 import type {
@@ -18,6 +19,7 @@ import { extractApiErrorMessage, readJsonResponse } from "@/lib/api";
 
 interface OpenAiImageAdminPanelProps {
   adminSecret: string;
+  language: AppLanguage;
 }
 
 interface ReferenceImageDraft extends OpenAiImageReferencePayload {
@@ -37,19 +39,19 @@ function createReferenceId() {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
 }
 
-function formatFileSize(bytes: number) {
+function formatFileSize(bytes: number, language: AppLanguage) {
   if (!Number.isFinite(bytes) || bytes <= 0) {
-    return "-";
+    return copy(language, "-", "-");
   }
 
   if (bytes >= 1024 * 1024) {
-    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} ${copy(language, "MB", "MB")}`;
   }
 
-  return `${Math.max(1, Math.round(bytes / 1024))} KB`;
+  return `${Math.max(1, Math.round(bytes / 1024))} ${copy(language, "KB", "KB")}`;
 }
 
-function readFileAsDataUrl(file: File) {
+function readFileAsDataUrl(file: File, language: AppLanguage) {
   return new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => {
@@ -58,15 +60,16 @@ function readFileAsDataUrl(file: File) {
         return;
       }
 
-      reject(new Error(`${file.name} okunamadi.`));
+      reject(new Error(`${file.name} ${copy(language, "okunamadi.", "could not be read.")}`));
     };
-    reader.onerror = () => reject(new Error(`${file.name} okunamadi.`));
+    reader.onerror = () => reject(new Error(`${file.name} ${copy(language, "okunamadi.", "could not be read.")}`));
     reader.readAsDataURL(file);
   });
 }
 
 export default function OpenAiImageAdminPanel({
   adminSecret,
+  language,
 }: OpenAiImageAdminPanelProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [prompt, setPrompt] = useState("");
@@ -81,8 +84,8 @@ export default function OpenAiImageAdminPanel({
       return sum + Math.floor((raw.length * 3) / 4);
     }, 0);
 
-    return formatFileSize(totalBytes);
-  }, [referenceImages]);
+    return formatFileSize(totalBytes, language);
+  }, [referenceImages, language]);
 
   const handlePickImages = async (files: FileList | null) => {
     if (!files?.length) {
@@ -101,15 +104,15 @@ export default function OpenAiImageAdminPanel({
         selectedFiles.map(async file => ({
           id: createReferenceId(),
           name: file.name,
-          dataUrl: await readFileAsDataUrl(file),
-          sizeLabel: formatFileSize(file.size),
+          dataUrl: await readFileAsDataUrl(file, language),
+          sizeLabel: formatFileSize(file.size, language),
         }))
       );
 
       setReferenceImages(current => [...current, ...nextImages]);
     } catch (nextError) {
       setError(
-        nextError instanceof Error ? nextError.message : "Referans gorseller yuklenemedi."
+        nextError instanceof Error ? nextError.message : copy(language, "Referans gorseller yuklenemedi.", "Reference images could not be loaded.")
       );
     }
   };
@@ -117,7 +120,7 @@ export default function OpenAiImageAdminPanel({
   const handleGenerate = async () => {
     const normalizedPrompt = prompt.trim();
     if (!normalizedPrompt) {
-      setError("Prompt gerekli.");
+      setError(copy(language, "Prompt gerekli.", "Prompt is required."));
       return;
     }
 
@@ -146,18 +149,18 @@ export default function OpenAiImageAdminPanel({
 
       const payload = await readJsonResponse<
         OpenAiImageGenerateResponse | { error?: string }
-      >(response, "OpenAI image studio");
+      >(response, copy(language, "OpenAI image studio", "OpenAI image studio"));
 
       if (!response.ok) {
         throw new Error(
-          extractApiErrorMessage(payload, "OpenAI image cagrisi basarisiz oldu.")
+          extractApiErrorMessage(payload, copy(language, "OpenAI image cagrisi basarisiz oldu.", "OpenAI image call failed."))
         );
       }
 
       setResult(payload as OpenAiImageGenerateResponse);
     } catch (nextError) {
       setError(
-        nextError instanceof Error ? nextError.message : "OpenAI image olusturulamadi."
+        nextError instanceof Error ? nextError.message : copy(language, "OpenAI image olusturulamadi.", "OpenAI image could not be created.")
       );
     } finally {
       setBusy(false);
@@ -167,14 +170,12 @@ export default function OpenAiImageAdminPanel({
   return (
     <div className="space-y-3">
       <div className="space-y-1">
-        <AdminSectionLabel tone="accent">OpenAI Image Studio</AdminSectionLabel>
+        <AdminSectionLabel tone="accent">{copy(language, "OpenAI Image Studio", "OpenAI Image Studio")}</AdminSectionLabel>
         <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-          Referans gorsellerle yeni image uret
+          {copy(language, "Referans gorsellerle yeni image uret", "Generate new image with reference images")}
         </h2>
         <p className="text-sm text-muted-foreground">
-          Belgelerdeki gorselleri sec, prompt'u yaz ve sonucu server-side
-          `OPENAI_API_KEY` ile uret. PDF veya DOC degil, dogrudan gorsel dosyasi
-          yuklenir.
+          {copy(language, "Belgelerdeki gorselleri sec, prompt'u yaz ve sonucu server-side `OPENAI_API_KEY` ile uret. PDF veya DOC degil, dogrudan gorsel dosyasi yuklenir.", "Select images from documents, write the prompt and produce the result with server-side `OPENAI_API_KEY`. Not PDF or DOC, direct image file is uploaded.")}
         </p>
       </div>
 
@@ -183,12 +184,12 @@ export default function OpenAiImageAdminPanel({
         main={
           <AdminPanelSurface as="article">
           <div className="space-y-6">
-            <Field label="Prompt">
+            <Field label={copy(language, "Prompt", "Prompt")}>
               <Textarea
                 value={prompt}
                 onChange={event => setPrompt(event.target.value)}
                 className="min-h-36"
-                placeholder="Ornek: Bu iki referans gorseldeki kompozisyonu koru, daha premium bir landing page hero ilustrasyonu uret."
+                placeholder={copy(language, "Ornek: Bu iki referans gorseldeki kompozisyonu koru, daha premium bir landing page hero ilustrasyonu uret.", "Example: Preserve the composition in these two reference images, create a more premium landing page hero illustration.")}
               />
             </Field>
 
@@ -196,10 +197,10 @@ export default function OpenAiImageAdminPanel({
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <p className="text-xs font-medium text-muted-foreground">
-                    Referans gorseller
+                    {copy(language, "Referans gorseller", "Reference Images")}
                   </p>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    Maksimum {OPENAI_IMAGE_MAX_REFERENCES} adet, toplam secim:{" "}
+                    {copy(language, "Maksimum", "Maximum")} {OPENAI_IMAGE_MAX_REFERENCES} {copy(language, "adet, toplam secim:", "images, total selection:")}{" "}
                     {totalSizeLabel}
                   </p>
                 </div>
@@ -211,7 +212,7 @@ export default function OpenAiImageAdminPanel({
                   disabled={referenceImages.length >= OPENAI_IMAGE_MAX_REFERENCES}
                 >
                   <ImagePlus className="size-4" />
-                  Gorsel sec
+                  {copy(language, "Gorsel sec", "Select Image")}
                 </Button>
               </div>
 
@@ -267,8 +268,8 @@ export default function OpenAiImageAdminPanel({
               ) : (
                 <EmptyState
                   className="p-4"
-                  description="Gorsel sec butonuyla kompozisyon referanslarini ekle."
-                  title="Henuz referans gorsel secilmedi"
+                  description={copy(language, "Gorsel sec butonuyla kompozisyon referanslarini ekle.", "Add composition references with the Select Image button.")}
+                  title={copy(language, "Henuz referans gorsel secilmedi", "No reference images selected yet")}
                 />
               )}
             </AdminPanelSurface>
@@ -278,7 +279,7 @@ export default function OpenAiImageAdminPanel({
             <div className="flex flex-wrap items-center gap-3">
               <Button type="button" onClick={() => void handleGenerate()} disabled={busy}>
                 {busy ? <LoaderCircle className="size-4 animate-spin" /> : null}
-                {busy ? "Uretiliyor" : "OpenAI ile uret"}
+                {busy ? copy(language, "Uretiliyor", "Generating") : copy(language, "OpenAI ile uret", "Generate with OpenAI")}
               </Button>
               <Button
                 type="button"
@@ -291,7 +292,7 @@ export default function OpenAiImageAdminPanel({
                 }}
                 disabled={busy}
               >
-                Temizle
+                {copy(language, "Temizle", "Clear")}
               </Button>
             </div>
           </div>
@@ -299,20 +300,20 @@ export default function OpenAiImageAdminPanel({
         }
         preview={
           <AdminPanelSurface as="article">
-          <AdminSectionLabel tone="accent">Son sonuc</AdminSectionLabel>
+          <AdminSectionLabel tone="accent">{copy(language, "Son sonuc", "Latest Result")}</AdminSectionLabel>
 
           {result ? (
             <div className="mt-4 space-y-4">
               <img
                 src={result.imageDataUrl}
-                alt="OpenAI generated"
+                alt={copy(language, "OpenAI uretimi", "OpenAI generated")}
                 className="w-full rounded-xl border border-border bg-background/60 object-cover"
               />
 
               <div className="grid gap-3 sm:grid-cols-2">
                 <div className="rounded-xl border border-border bg-background/50 p-3">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                    Model
+                    {copy(language, "Model", "Model")}
                   </p>
                   <p className="mt-2 text-sm font-medium text-foreground">
                     {result.model}
@@ -320,7 +321,7 @@ export default function OpenAiImageAdminPanel({
                 </div>
                 <div className="rounded-xl border border-border bg-background/50 p-3">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                    Referans
+                    {copy(language, "Referans", "Reference")}
                   </p>
                   <p className="mt-2 text-sm font-medium text-foreground">
                     {result.referenceCount}
@@ -331,12 +332,12 @@ export default function OpenAiImageAdminPanel({
               <div className="flex flex-wrap items-center gap-3">
                 <Button asChild>
                   <a href={result.imageDataUrl} download="gistify-openai-image.png">
-                    PNG indir
+                    {copy(language, "PNG indir", "Download PNG")}
                   </a>
                 </Button>
                 {result.requestId ? (
                   <span className="text-xs text-muted-foreground">
-                    request id: {result.requestId}
+                    {copy(language, "request id:", "request id:")} {result.requestId}
                   </span>
                 ) : null}
               </div>
@@ -344,8 +345,8 @@ export default function OpenAiImageAdminPanel({
           ) : (
             <EmptyState
               className="mt-4"
-              description="OpenAI istegi tamamlandiginda preview burada gosterilecek."
-              title="Uretilen gorsel burada preview olarak gosterilecek"
+              description={copy(language, "OpenAI istegi tamamlandiginda preview burada gosterilecek.", "When the OpenAI request is completed, preview will be shown here.")}
+              title={copy(language, "Uretilen gorsel burada preview olarak gosterilecek", "Generated image will be shown here as preview")}
             />
           )}
           </AdminPanelSurface>

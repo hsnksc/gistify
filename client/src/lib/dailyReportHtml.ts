@@ -18,7 +18,7 @@ interface DailyReportHtmlOptions {
   reportDateLabel: string;
   resolveImage?: (src: string, alt: string) => ResolvedImage;
   sourceLabel?: string;
-  title: string;
+  title?: string;
   updatedAtLabel?: string;
 }
 
@@ -44,14 +44,155 @@ function slugify(value: string) {
     .slice(0, 80);
 }
 
-function renderBadge(value: string, tone: "neutral" | "sky" | "emerald" = "neutral") {
+function cleanInlineMarkdown(value: string) {
+  return value
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1 ($2)")
+    .replace(/\[\^([^\]]+)\^\]/g, "$1")
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, "$1")
+    .replace(/[*_~`]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+interface PremiumReportFeatures {
+  title?: string;
+  headline?: string;
+  metadataItems?: { label: string; value: string }[];
+  executiveSummary?: string[];
+  bodyMarkdown: string;
+}
+
+export function extractPremiumReportFeatures(markdown: string): PremiumReportFeatures {
+  const lines = markdown.split(/\r?\n/);
+  const metadataItems: { label: string; value: string }[] = [];
+  const executiveSummary: string[] = [];
+  let title = "";
+  let headline = "";
+  const keptLines: string[] = [];
+  let i = 0;
+
+  // 1. Title: first H1
+  while (i < lines.length) {
+    const line = lines[i];
+    const h1Match = line.match(/^#\s+(.+)$/);
+    if (h1Match) {
+      title = cleanInlineMarkdown(h1Match[1]);
+      i++;
+      break;
+    }
+    keptLines.push(line);
+    i++;
+  }
+
+  // 2. Headline: first non-empty paragraph before metadata
+  while (i < lines.length) {
+    const line = lines[i].trim();
+    if (!line) {
+      keptLines.push(lines[i]);
+      i++;
+      continue;
+    }
+    if (/^\*\*(.+)\*\*\s+/.test(line)) break;
+    headline = cleanInlineMarkdown(line);
+    i++;
+    break;
+  }
+
+  // 3. Metadata lines: **Label:** Value
+  while (i < lines.length) {
+    const line = lines[i].trim();
+    if (!line) {
+      keptLines.push(lines[i]);
+      i++;
+      continue;
+    }
+    const metaMatch = line.match(/^\*\*(.+)\*\*\s+(.+)$/);
+    if (!metaMatch) break;
+    const label = cleanInlineMarkdown(metaMatch[1]).replace(/:$/, "");
+    const value = cleanInlineMarkdown(metaMatch[2]);
+    if (label && value) metadataItems.push({ label, value });
+    i++;
+  }
+
+  // 4. Skip horizontal rules / blanks
+  while (i < lines.length) {
+    const line = lines[i].trim();
+    if (line === "---" || line === "") {
+      i++;
+      continue;
+    }
+    break;
+  }
+
+  // 5. Executive summary section
+  if (i < lines.length) {
+    const execMatch = lines[i].trim().match(/^##\s+(.+)$/i);
+    if (execMatch) {
+      const headingText = execMatch[1].toLowerCase();
+      const isExecSummary =
+        headingText.includes("executive") ||
+        headingText.includes("yönetici") ||
+        headingText.includes("yönetiçi") ||
+        headingText.includes("ozet") ||
+        headingText.includes("özet");
+      if (isExecSummary) {
+        i++;
+        while (i < lines.length && lines[i].trim() === "") i++;
+        while (i < lines.length) {
+          const line = lines[i].trim();
+          if (line === "---" || /^##/.test(line)) break;
+          const listMatch = line.match(/^[-*]\s+(.+)$/);
+          if (listMatch) {
+            executiveSummary.push(cleanInlineMarkdown(listMatch[1]));
+            i++;
+            continue;
+          }
+          if (line === "") {
+            i++;
+            continue;
+          }
+          break;
+        }
+      }
+    }
+  }
+
+  // 6. Keep remaining lines
+  while (i < lines.length) {
+    keptLines.push(lines[i]);
+    i++;
+  }
+
+  return {
+    title: title || undefined,
+    headline: headline || undefined,
+    metadataItems: metadataItems.length ? metadataItems : undefined,
+    executiveSummary: executiveSummary.length ? executiveSummary : undefined,
+    bodyMarkdown: keptLines.join("\n").trim(),
+  };
+}
+
+function renderBadge(value: string, tone: "neutral" | "sky" | "emerald" | "amber" = "neutral") {
   const className =
     tone === "sky"
       ? "badge badge-sky"
       : tone === "emerald"
         ? "badge badge-emerald"
-        : "badge";
+        : tone === "amber"
+          ? "badge badge-amber"
+          : "badge";
   return `<span class="${className}">${escapeHtml(value)}</span>`;
+}
+
+function detectSummaryTone(text: string): "bullish" | "bearish" | "neutral" {
+  const lowered = text.toLowerCase();
+  const bullish = ["yükseliş", "güçlü", "pozitif", "bullish", "strong", "upside", "break above"];
+  const bearish = ["düşüş", "zayıf", "negatif", "bearish", "weak", "downside", "break below"];
+  const bCount = bullish.reduce((sum, word) => sum + (lowered.includes(word) ? 1 : 0), 0);
+  const bearCount = bearish.reduce((sum, word) => sum + (lowered.includes(word) ? 1 : 0), 0);
+  if (bCount > bearCount) return "bullish";
+  if (bearCount > bCount) return "bearish";
+  return "neutral";
 }
 
 function renderSummaryCards(summary: string[]) {
@@ -59,21 +200,44 @@ function renderSummaryCards(summary: string[]) {
     return "";
   }
 
+  const icons: Record<string, string> = {
+    bullish: "▲",
+    bearish: "▼",
+    neutral: "●",
+  };
+
   return `
     <section class="summary-grid">
       ${summary
         .slice(0, 6)
-        .map(
-          (item, index) => `
-            <article class="summary-card">
-              <span class="summary-index">${String(index + 1).padStart(2, "0")}</span>
+        .map((item, index) => {
+          const tone = detectSummaryTone(item);
+          return `
+            <article class="summary-card summary-card-${tone}">
+              <div class="summary-card-head">
+                <span class="summary-icon">${icons[tone]}</span>
+                <span class="summary-index">${String(index + 1).padStart(2, "0")}</span>
+              </div>
               <p>${escapeHtml(item)}</p>
             </article>
-          `
-        )
+          `;
+        })
         .join("")}
     </section>
   `;
+}
+
+function normalizeMetaLabel(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/[ç]/g, "c")
+    .replace(/[ğ]/g, "g")
+    .replace(/[ı]/g, "i")
+    .replace(/[ö]/g, "o")
+    .replace(/[ş]/g, "s")
+    .replace(/[ü]/g, "u")
+    .replace(/[^a-z0-9]/g, "")
+    .trim();
 }
 
 function renderMetaItems(
@@ -87,14 +251,26 @@ function renderMetaItems(
     research: string;
   }
 ) {
+  const metadataLabels = new Set(
+    (content.metadataItems || []).map(item => normalizeMetaLabel(item.label))
+  );
   const items = [
-    content.author
+    content.author &&
+    !metadataLabels.has(normalizeMetaLabel(labels.author)) &&
+    !metadataLabels.has("hazirlayan") &&
+    !metadataLabels.has("author")
       ? { label: labels.author, value: content.author }
       : null,
-    content.coverage
+    content.coverage &&
+    !metadataLabels.has(normalizeMetaLabel(labels.coverage)) &&
+    !metadataLabels.has("kapsam") &&
+    !metadataLabels.has("coverage")
       ? { label: labels.coverage, value: content.coverage }
       : null,
-    content.methodology
+    content.methodology &&
+    !metadataLabels.has(normalizeMetaLabel(labels.methodology)) &&
+    !metadataLabels.has("metodoloji") &&
+    !metadataLabels.has("methodology")
       ? { label: labels.methodology, value: content.methodology }
       : null,
     content.figureFiles.length
@@ -153,7 +329,10 @@ function renderTickerRail(language: AppLanguage, tickers: string[]) {
       <div class="ticker-list">
         ${tickers
           .slice(0, 36)
-          .map(ticker => renderBadge(ticker, "sky"))
+          .map(
+            ticker =>
+              `<a class="ticker-chip" href="/reports/${escapeHtml(ticker)}" target="_top">$${escapeHtml(ticker)}</a>`
+          )
           .join("")}
       </div>
     </section>
@@ -207,7 +386,7 @@ function renderImage(
       };
 
   return `
-    <figure class="figure-card">
+    <figure class="figure-card" data-figure>
       <img src="${escapeHtml(resolved.src)}" alt="${escapeHtml(
         resolved.alt || block.alt || ""
       )}" loading="lazy" decoding="async" />
@@ -250,31 +429,22 @@ function renderSubheading(
   return `<${level} id="${id}" class="report-subheading">${escapeHtml(block.text)}</${level}>`;
 }
 
+interface BodyRenderResult {
+  html: string;
+  topSections: { id: string; label: string }[];
+}
+
 function renderBodyBlocks(
   blocks: ReportMarkdownBlock[],
   language: AppLanguage,
   resolveImage?: (src: string, alt: string) => ResolvedImage
-) {
-  if (!blocks.length) {
-    return `
-      <section id="full-document" class="report-section">
-        <div class="section-head">
-          <p class="section-kicker">${escapeHtml(
-            copy(language, "Tam Dokuman", "Full Document")
-          )}</p>
-          <h2 class="section-title">${escapeHtml(
-            copy(language, "Rapor Icerigi", "Report Content")
-          )}</h2>
-        </div>
-      </section>
-    `;
-  }
-
+): BodyRenderResult {
   const topAnchors = buildReportHeadingAnchors(blocks, 2);
   const anchorByBlockIndex = new Map(
     topAnchors.map(anchor => [anchor.blockIndex, anchor])
   );
   const parts: string[] = [];
+  const topSections: { id: string; label: string }[] = [];
   let sectionOpen = false;
 
   const openSection = (id: string, title: string) => {
@@ -288,6 +458,7 @@ function renderBodyBlocks(
         </div>
     `);
     sectionOpen = true;
+    topSections.push({ id, label: title });
   };
 
   const closeSection = () => {
@@ -299,13 +470,12 @@ function renderBodyBlocks(
   };
 
   blocks.forEach((block, blockIndex) => {
-    if (block.type === "heading" && block.level <= 2) {
+    if (block.type === "heading" && block.level === 2) {
       closeSection();
       const anchor = anchorByBlockIndex.get(blockIndex);
-      openSection(
-        anchor?.id || `report-section-${blockIndex}-${slugify(block.text) || blockIndex}`,
-        block.text
-      );
+      const sectionId =
+        anchor?.id || `report-section-${blockIndex}-${slugify(block.text) || blockIndex}`;
+      openSection(sectionId, block.text);
       return;
     }
 
@@ -344,7 +514,35 @@ function renderBodyBlocks(
   });
 
   closeSection();
-  return parts.join("");
+  return { html: parts.join(""), topSections };
+}
+
+function renderToc(
+  language: AppLanguage,
+  sections: { id: string; label: string }[]
+) {
+  if (sections.length <= 1) {
+    return "";
+  }
+
+  return `
+    <nav class="toc-panel" aria-label="${escapeHtml(
+      copy(language, "Icerikler", "Table of contents")
+    )}">
+      <p class="toc-title">${escapeHtml(copy(language, "Icerikler", "Contents"))}</p>
+      <ol class="toc-list">
+        ${sections
+          .map(
+            section => `
+              <li>
+                <a href="#${escapeHtml(section.id)}">${escapeHtml(section.label)}</a>
+              </li>
+            `
+          )
+          .join("")}
+      </ol>
+    </nav>
+  `;
 }
 
 export function buildDailyReportHtmlDocument({
@@ -353,10 +551,38 @@ export function buildDailyReportHtmlDocument({
   reportDateLabel,
   resolveImage,
   sourceLabel = "",
-  title,
+  title: titleOverride,
   updatedAtLabel = "",
 }: DailyReportHtmlOptions) {
-  const blocks = parseReportMarkdown(content.markdown || "");
+  const premium = extractPremiumReportFeatures(content.markdown || "");
+  const markdown = premium.bodyMarkdown || content.markdown || "";
+  const blocks = parseReportMarkdown(markdown);
+
+  const effectiveTitle =
+    titleOverride || premium.title || content.title || "";
+  const effectiveHeadline = premium.headline || content.headline || "";
+  const effectiveMetadataItems = premium.metadataItems || content.metadataItems || [];
+  const effectiveExecutiveSummary =
+    premium.executiveSummary || content.executiveSummary || [];
+
+  const contentWithPremium: DailyReportContent = {
+    ...content,
+    markdown,
+    title: effectiveTitle,
+    headline: effectiveHeadline,
+    metadataItems: effectiveMetadataItems,
+    executiveSummary: effectiveExecutiveSummary,
+    author:
+      premium.metadataItems?.find(m => /author|hazirlayan/i.test(m.label))
+        ?.value || content.author,
+    coverage:
+      premium.metadataItems?.find(m => /coverage|kapsam/i.test(m.label))
+        ?.value || content.coverage,
+    methodology:
+      premium.metadataItems?.find(m => /methodology|metodoloji/i.test(m.label))
+        ?.value || content.methodology,
+  };
+
   const labels = {
     author: copy(language, "Hazirlayan", "Author"),
     coverage: copy(language, "Kapsam", "Coverage"),
@@ -368,56 +594,57 @@ export function buildDailyReportHtmlDocument({
     updated: copy(language, "Guncellendi", "Updated"),
   };
 
-  const executiveSummary = Array.isArray(content.executiveSummary)
-    ? content.executiveSummary
+  const executiveSummary = Array.isArray(contentWithPremium.executiveSummary)
+    ? contentWithPremium.executiveSummary
         .filter((item): item is string => typeof item === "string")
         .map(item => normalizeText(item))
         .filter(Boolean)
     : [];
 
-  const tickerUniverse = Array.isArray(content.tickerUniverse)
-    ? content.tickerUniverse
+  const tickerUniverse = Array.isArray(contentWithPremium.tickerUniverse)
+    ? contentWithPremium.tickerUniverse
         .filter((item): item is string => typeof item === "string")
         .map(item => item.trim())
         .filter(Boolean)
     : [];
 
   const heroBadges = [
-    reportDateLabel
-      ? `${labels.reportDate}: ${reportDateLabel}`
-      : "",
-    updatedAtLabel
-      ? `${labels.updated}: ${updatedAtLabel}`
-      : "",
-    sourceLabel
-      ? `${labels.source}: ${sourceLabel}`
-      : "",
+    reportDateLabel ? `${labels.reportDate}: ${reportDateLabel}` : "",
+    updatedAtLabel ? `${labels.updated}: ${updatedAtLabel}` : "",
+    sourceLabel ? `${labels.source}: ${sourceLabel}` : "",
   ].filter(Boolean);
 
-  const bodyMarkup = renderBodyBlocks(blocks, language, resolveImage);
-  const metaMarkup = renderMetaItems(language, content, labels);
+  const { html: bodyMarkup, topSections } = renderBodyBlocks(blocks, language, resolveImage);
+  const metaMarkup = renderMetaItems(language, contentWithPremium, labels);
   const summaryMarkup = renderSummaryCards(executiveSummary);
   const tickerMarkup = renderTickerRail(language, tickerUniverse);
+  const tocMarkup = renderToc(language, topSections);
 
   return `<!doctype html>
 <html lang="${language === "en" ? "en" : "tr"}">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>${escapeHtml(title)}</title>
+    <title>${escapeHtml(effectiveTitle)}</title>
     <style>
       :root {
         color-scheme: dark;
-        --bg: #050c1b;
-        --panel: rgba(10, 18, 34, 0.92);
-        --panel-soft: rgba(16, 26, 48, 0.78);
-        --line: rgba(148, 163, 184, 0.16);
-        --line-strong: rgba(56, 189, 248, 0.24);
-        --text: #e5eefb;
-        --muted: #91a4bf;
+        --bg: #030712;
+        --bg-elevated: #0b1221;
+        --panel: rgba(11, 18, 33, 0.96);
+        --panel-soft: rgba(17, 28, 51, 0.82);
+        --line: rgba(148, 163, 184, 0.14);
+        --line-strong: rgba(56, 189, 248, 0.28);
+        --text: #e6effa;
+        --muted: #8fa0b8;
         --accent: #38bdf8;
         --accent-2: #34d399;
-        --shadow: 0 24px 64px rgba(3, 7, 18, 0.45);
+        --accent-3: #f59e0b;
+        --bull: #34d399;
+        --bear: #f87171;
+        --neutral: #94a3b8;
+        --shadow: 0 28px 70px rgba(2, 6, 16, 0.55);
+        --shadow-sm: 0 10px 30px rgba(2, 6, 16, 0.35);
       }
 
       * {
@@ -426,75 +653,82 @@ export function buildDailyReportHtmlDocument({
 
       html, body {
         margin: 0;
-        background:
-          radial-gradient(circle at top, rgba(56, 189, 248, 0.12), transparent 26%),
-          linear-gradient(180deg, #07111f 0%, #050c1b 100%);
+        background: var(--bg);
         color: var(--text);
         font-family: Inter, "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        scroll-behavior: smooth;
       }
 
       body {
-        padding: 32px 18px 56px;
+        padding: 24px 16px 64px;
       }
 
       .report-shell {
-        width: min(1120px, 100%);
+        width: min(1160px, 100%);
         margin: 0 auto;
         display: grid;
-        gap: 20px;
+        gap: 22px;
       }
 
       .hero {
+        position: relative;
+        overflow: hidden;
         border: 1px solid var(--line-strong);
-        border-radius: 28px;
+        border-radius: 32px;
         background:
-          linear-gradient(135deg, rgba(56, 189, 248, 0.12), rgba(16, 185, 129, 0.07)),
-          var(--panel);
+          radial-gradient(circle at 90% 10%, rgba(56, 189, 248, 0.16), transparent 32%),
+          radial-gradient(circle at 10% 90%, rgba(52, 211, 153, 0.10), transparent 30%),
+          linear-gradient(145deg, rgba(13, 24, 43, 0.98), rgba(7, 14, 28, 0.96));
         box-shadow: var(--shadow);
-        padding: 28px;
+        padding: 34px;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(56, 189, 248, 0.06), transparent 40%);
+        pointer-events: none;
       }
 
       .eyebrow {
-        margin: 0 0 10px;
+        margin: 0 0 12px;
         color: #7dd3fc;
         font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.18em;
+        font-weight: 800;
+        letter-spacing: 0.2em;
         text-transform: uppercase;
       }
 
       .hero h1 {
         margin: 0;
-        font-size: clamp(30px, 4vw, 52px);
-        line-height: 1.03;
+        font-size: clamp(32px, 4.5vw, 56px);
+        line-height: 1.05;
         letter-spacing: -0.04em;
+        font-weight: 800;
       }
 
       .hero p.lead {
-        margin: 14px 0 0;
-        max-width: 880px;
+        margin: 18px 0 0;
+        max-width: 900px;
         color: var(--muted);
-        font-size: 15px;
+        font-size: 16px;
         line-height: 1.8;
       }
 
-      .hero-meta,
-      .ticker-list {
+      .hero-meta {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
-      }
-
-      .hero-meta {
-        margin-top: 18px;
+        margin-top: 22px;
       }
 
       .badge {
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        min-height: 34px;
-        padding: 8px 12px;
+        min-height: 36px;
+        padding: 8px 14px;
         border-radius: 999px;
         border: 1px solid var(--line);
         background: rgba(255, 255, 255, 0.04);
@@ -505,56 +739,88 @@ export function buildDailyReportHtmlDocument({
       }
 
       .badge-sky {
-        border-color: rgba(56, 189, 248, 0.28);
-        background: rgba(56, 189, 248, 0.1);
+        border-color: rgba(56, 189, 248, 0.32);
+        background: rgba(56, 189, 248, 0.11);
         color: #c8efff;
       }
 
       .badge-emerald {
-        border-color: rgba(52, 211, 153, 0.28);
-        background: rgba(52, 211, 153, 0.1);
+        border-color: rgba(52, 211, 153, 0.32);
+        background: rgba(52, 211, 153, 0.11);
         color: #d7ffee;
+      }
+
+      .badge-amber {
+        border-color: rgba(245, 158, 11, 0.32);
+        background: rgba(245, 158, 11, 0.11);
+        color: #fde68a;
       }
 
       .ticker-rail,
       .summary-grid,
       .meta-grid,
-      .report-section {
+      .report-section,
+      .toc-panel {
         border: 1px solid var(--line);
-        border-radius: 24px;
+        border-radius: 26px;
         background: var(--panel);
-        box-shadow: var(--shadow);
+        box-shadow: var(--shadow-sm);
       }
 
       .ticker-rail,
-      .report-section {
-        padding: 22px 24px;
+      .report-section,
+      .toc-panel {
+        padding: 24px;
       }
 
       .ticker-label,
       .section-kicker,
-      .meta-label {
+      .meta-label,
+      .toc-title {
         margin: 0;
         color: #86efac;
         font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 0.16em;
+        font-weight: 800;
+        letter-spacing: 0.18em;
         text-transform: uppercase;
       }
 
       .ticker-list {
-        margin-top: 14px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 16px;
+      }
+
+      .ticker-chip {
+        display: inline-flex;
+        align-items: center;
+        min-height: 34px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(56, 189, 248, 0.28);
+        background: rgba(56, 189, 248, 0.09);
+        color: #c8efff;
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: transform 0.12s ease, background 0.12s ease;
+      }
+
+      .ticker-chip:hover {
+        background: rgba(56, 189, 248, 0.18);
+        transform: translateY(-1px);
       }
 
       .summary-grid,
       .meta-grid {
         display: grid;
-        gap: 14px;
-        padding: 16px;
+        gap: 16px;
+        padding: 18px;
       }
 
       .summary-grid {
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       }
 
       .meta-grid {
@@ -565,9 +831,42 @@ export function buildDailyReportHtmlDocument({
       .meta-card {
         min-width: 0;
         border: 1px solid var(--line);
-        border-radius: 18px;
+        border-radius: 20px;
         background: var(--panel-soft);
-        padding: 16px;
+        padding: 18px;
+      }
+
+      .summary-card-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+
+      .summary-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .summary-card-bullish .summary-icon {
+        background: rgba(52, 211, 153, 0.16);
+        color: var(--bull);
+      }
+
+      .summary-card-bearish .summary-icon {
+        background: rgba(248, 113, 113, 0.16);
+        color: var(--bear);
+      }
+
+      .summary-card-neutral .summary-icon {
+        background: rgba(148, 163, 184, 0.16);
+        color: var(--neutral);
       }
 
       .summary-index {
@@ -577,9 +876,9 @@ export function buildDailyReportHtmlDocument({
         width: 32px;
         height: 32px;
         border-radius: 999px;
-        border: 1px solid rgba(52, 211, 153, 0.26);
-        background: rgba(52, 211, 153, 0.12);
-        color: #d7ffee;
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--muted);
         font-size: 11px;
         font-weight: 800;
         letter-spacing: 0.08em;
@@ -591,9 +890,8 @@ export function buildDailyReportHtmlDocument({
       }
 
       .summary-card p:last-child {
-        margin-top: 12px;
         color: var(--text);
-        font-size: 14px;
+        font-size: 14.5px;
         line-height: 1.75;
       }
 
@@ -603,6 +901,39 @@ export function buildDailyReportHtmlDocument({
         font-size: 15px;
         line-height: 1.6;
         word-break: break-word;
+      }
+
+      .toc-panel {
+        position: sticky;
+        top: 16px;
+        z-index: 10;
+      }
+
+      .toc-title {
+        margin-bottom: 14px;
+      }
+
+      .toc-list {
+        margin: 0;
+        padding-left: 18px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 20px;
+      }
+
+      .toc-list li {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .toc-list a {
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .toc-list a:hover {
+        text-decoration: underline;
       }
 
       .section-head {
@@ -616,22 +947,24 @@ export function buildDailyReportHtmlDocument({
 
       .section-title {
         margin: 0;
-        font-size: clamp(22px, 3vw, 34px);
+        font-size: clamp(24px, 3vw, 36px);
         line-height: 1.12;
         letter-spacing: -0.03em;
+        font-weight: 700;
       }
 
       .report-subheading {
-        margin: 28px 0 12px;
+        margin: 30px 0 14px;
         color: #d3f6ff;
-        font-size: 19px;
+        font-size: 20px;
         line-height: 1.35;
+        font-weight: 600;
       }
 
       .report-paragraph {
         margin: 0 0 16px;
         color: var(--text);
-        font-size: 15px;
+        font-size: 15.5px;
         line-height: 1.85;
       }
 
@@ -648,16 +981,16 @@ export function buildDailyReportHtmlDocument({
 
       .table-shell {
         overflow-x: auto;
-        margin: 6px 0 22px;
+        margin: 8px 0 24px;
         border: 1px solid var(--line);
-        border-radius: 18px;
+        border-radius: 20px;
       }
 
       .report-table {
         width: 100%;
         border-collapse: collapse;
         min-width: 680px;
-        background: rgba(5, 12, 27, 0.78);
+        background: rgba(4, 11, 25, 0.78);
       }
 
       .report-table th,
@@ -673,30 +1006,35 @@ export function buildDailyReportHtmlDocument({
       .report-table th {
         color: #b8ecff;
         background: rgba(56, 189, 248, 0.08);
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 800;
         letter-spacing: 0.08em;
         text-transform: uppercase;
       }
 
+      .report-table tr:last-child td {
+        border-bottom: none;
+      }
+
       .figure-card {
-        margin: 0 0 22px;
+        margin: 0 0 24px;
         overflow: hidden;
         border: 1px solid var(--line);
-        border-radius: 22px;
-        background: rgba(7, 20, 36, 0.96);
+        border-radius: 24px;
+        background: rgba(6, 17, 32, 0.98);
+        cursor: zoom-in;
       }
 
       .figure-card img {
         display: block;
         width: 100%;
-        max-height: 560px;
+        max-height: 580px;
         object-fit: contain;
-        background: #07141a;
+        background: #050e18;
       }
 
       .figure-card figcaption {
-        padding: 12px 16px 16px;
+        padding: 14px 18px 18px;
         color: var(--muted);
         font-size: 13px;
         line-height: 1.6;
@@ -704,9 +1042,9 @@ export function buildDailyReportHtmlDocument({
 
       .quote-block {
         margin: 0 0 20px;
-        padding: 18px 20px;
+        padding: 18px 22px;
         border-left: 3px solid var(--accent);
-        border-radius: 0 18px 18px 0;
+        border-radius: 0 20px 20px 0;
         background: rgba(56, 189, 248, 0.08);
       }
 
@@ -722,50 +1060,89 @@ export function buildDailyReportHtmlDocument({
       }
 
       .code-shell {
-        margin: 0 0 22px;
+        margin: 0 0 24px;
         overflow: hidden;
         border: 1px solid var(--line);
-        border-radius: 18px;
-        background: rgba(4, 10, 22, 0.98);
+        border-radius: 20px;
+        background: rgba(3, 9, 20, 0.98);
       }
 
       .code-label {
-        padding: 10px 14px;
+        padding: 10px 16px;
         border-bottom: 1px solid var(--line);
         color: #7dd3fc;
         font-size: 11px;
-        font-weight: 700;
+        font-weight: 800;
         letter-spacing: 0.16em;
         text-transform: uppercase;
       }
 
       .code-shell pre {
         margin: 0;
-        padding: 16px;
+        padding: 18px;
         overflow-x: auto;
         color: #d9f3ff;
         font-size: 13px;
         line-height: 1.7;
       }
 
+      .disclaimer {
+        margin-top: 8px;
+        padding: 22px;
+        border: 1px dashed var(--line);
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.02);
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.75;
+      }
+
+      #lightbox {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.92);
+        z-index: 1000;
+        padding: 24px;
+      }
+
+      #lightbox.active {
+        display: flex;
+      }
+
+      #lightbox img {
+        max-width: 100%;
+        max-height: 92vh;
+        border-radius: 12px;
+        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
+      }
+
       @media (max-width: 800px) {
         body {
-          padding: 18px 12px 28px;
+          padding: 16px 12px 32px;
         }
 
         .hero,
         .ticker-rail,
-        .report-section {
+        .report-section,
+        .toc-panel {
           padding: 18px;
+          border-radius: 20px;
         }
 
         .summary-grid,
         .meta-grid {
-          padding: 12px;
+          padding: 14px;
         }
 
         .report-table {
           min-width: 560px;
+        }
+
+        .toc-panel {
+          position: static;
         }
       }
     </style>
@@ -774,10 +1151,10 @@ export function buildDailyReportHtmlDocument({
     <main class="report-shell">
       <section id="hero" class="hero">
         <p class="eyebrow">${escapeHtml(copy(language, "Daily Report", "Daily Report"))}</p>
-        <h1>${escapeHtml(title)}</h1>
+        <h1>${escapeHtml(effectiveTitle)}</h1>
         ${
-          content.headline
-            ? `<p class="lead">${escapeHtml(content.headline)}</p>`
+          contentWithPremium.headline
+            ? `<p class="lead">${escapeHtml(contentWithPremium.headline)}</p>`
             : ""
         }
         ${
@@ -788,11 +1165,40 @@ export function buildDailyReportHtmlDocument({
             : ""
         }
       </section>
+      ${tocMarkup}
       ${tickerMarkup}
       ${summaryMarkup}
       ${metaMarkup}
       ${bodyMarkup}
+      <div class="disclaimer">
+        ${escapeHtml(
+          copy(
+            language,
+            "Bu rapor yalnizca bilgilendirme amaclidir; yatirim tavsiyesi degildir. Her trade karari kendi risk toleransiniza gore alinmalidir.",
+            "This report is for informational purposes only and does not constitute investment advice. Every trade decision should be based on your own risk tolerance."
+          )
+        )}
+      </div>
     </main>
+    <div id="lightbox" onclick="this.classList.remove('active')">
+      <img src="" alt="" />
+    </div>
+    <script>
+      (() => {
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = lightbox.querySelector('img');
+        document.querySelectorAll('figure[data-figure] img').forEach(img => {
+          img.addEventListener('click', () => {
+            lightboxImg.src = img.src;
+            lightboxImg.alt = img.alt || '';
+            lightbox.classList.add('active');
+          });
+        });
+        document.addEventListener('keydown', e => {
+          if (e.key === 'Escape') lightbox.classList.remove('active');
+        });
+      })();
+    </script>
   </body>
 </html>`;
 }

@@ -122,7 +122,7 @@ export default function EarningReportCalendarTab({
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)]">
           <div className="space-y-3">
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300">
-              Execution window
+              {copy(language, "Islem Penceresi", "Execution window")}
             </p>
             <h1 className="heading-condensed text-3xl leading-none text-foreground md:text-4xl">
               {copy(language, "Giris ve cikis takvimi", "Entry and exit calendar")}

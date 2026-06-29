@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { copy, type AppLanguage } from "@/lib/i18n";
 
 const DEFAULT_TICKERS = [
   "AAPL",
@@ -53,6 +54,7 @@ interface MomentumReportAdminPanelProps {
   onRefresh: () => void;
   onSaveDraft: () => void;
   onPublish: () => void;
+  language: AppLanguage;
 }
 
 const MOMENTUM_ADMIN_PANEL_CONFIG = {
@@ -71,6 +73,7 @@ export default function MomentumReportAdminPanel({
   onRefresh,
   onSaveDraft,
   onPublish,
+  language,
 }: MomentumReportAdminPanelProps) {
   const [tickersInput, setTickersInput] = useState(DEFAULT_TICKERS.join(", "));
   const [minScore, setMinScore] = useState("45");
@@ -92,8 +95,8 @@ export default function MomentumReportAdminPanel({
       .split(",")
       .map(item => item.trim().toUpperCase())
       .filter(Boolean).length;
-    return `${total} ticker custom universe`;
-  }, [tickersInput]);
+    return `${total} ${copy(language, "hisselik ozel evren", "ticker custom universe")}`;
+  }, [tickersInput, language]);
 
   const handleRunScan = async () => {
     const tickers = tickersInput
@@ -102,7 +105,7 @@ export default function MomentumReportAdminPanel({
       .filter(Boolean);
 
     if (!tickers.length) {
-      setScanError("En az bir ticker gerekli.");
+      setScanError(copy(language, "En az bir ticker gerekli.", "At least one ticker is required."));
       return;
     }
 
@@ -118,7 +121,7 @@ export default function MomentumReportAdminPanel({
       setScanResults(response.stocks);
     } catch (error) {
       setScanError(
-        error instanceof Error ? error.message : "Momentum taramasi basarisiz oldu."
+        error instanceof Error ? error.message : copy(language, "Momentum taramasi basarisiz oldu.", "Momentum scan failed.")
       );
     } finally {
       setScanBusy(false);
@@ -230,7 +233,7 @@ export default function MomentumReportAdminPanel({
       setRawReportError("");
     } catch (error) {
       setRawReportError(
-        error instanceof Error ? error.message : "Raw JSON uygulanamadi."
+        error instanceof Error ? error.message : copy(language, "Raw JSON uygulanamadi.", "Raw JSON could not be applied.")
       );
     }
   };
@@ -241,8 +244,8 @@ export default function MomentumReportAdminPanel({
         config={{ layout: "single" }}
         main={
           <EmptyState
-            description="Momentum publish aracini kullanmak icin once admin kilidini ac."
-            title="Admin kilidi kapali"
+            description={copy(language, "Momentum publish aracini kullanmak icin once admin kilidini ac.", "Unlock admin access to use the momentum publish tool.")}
+            title={copy(language, "Admin kilidi kapali", "Admin Lock is Closed")}
             tone="warning"
           />
         }
@@ -259,21 +262,21 @@ export default function MomentumReportAdminPanel({
           className="xl:sticky xl:top-24 xl:h-[calc(100vh-8rem)] xl:overflow-y-auto"
         >
         <div className="flex items-center justify-between gap-2">
-          <AdminSectionLabel>Momentum Raporlari</AdminSectionLabel>
+          <AdminSectionLabel>{copy(language, "Momentum Raporlari", "Momentum Reports")}</AdminSectionLabel>
           <button
             type="button"
             onClick={onRefresh}
             className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
           >
             <RefreshCw className="size-3.5" />
-            Yenile
+            {copy(language, "Yenile", "Refresh")}
           </button>
         </div>
 
         <div className="mt-3 space-y-3">
           <Select value={selectedReportId} onValueChange={onSelectReport}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Bir momentum raporu sec" />
+              <SelectValue placeholder={copy(language, "Bir momentum raporu sec", "Select a momentum report")} />
             </SelectTrigger>
             <SelectContent>
               {reports.map(report => (
@@ -286,24 +289,24 @@ export default function MomentumReportAdminPanel({
         </div>
 
         <div className="mt-6 space-y-3">
-          <Field label="Ticker evreni">
+          <Field label={copy(language, "Ticker evreni", "Ticker Universe")}>
             <Textarea
               rows={6}
               value={tickersInput}
               onChange={event => setTickersInput(event.target.value)}
-              placeholder="AAPL, MSFT, NVDA..."
+              placeholder={copy(language, "AAPL, MSFT, NVDA...", "AAPL, MSFT, NVDA...")}
             />
           </Field>
 
           <div className="grid gap-3 sm:grid-cols-2">
-            <Field label="Min skor">
+            <Field label={copy(language, "Min skor", "Min Score")}>
               <Input
                 type="number"
                 value={minScore}
                 onChange={event => setMinScore(event.target.value)}
               />
             </Field>
-            <Field label="Sinyal filtresi">
+            <Field label={copy(language, "Sinyal filtresi", "Signal Filter")}>
               <Select value={signalFilter} onValueChange={setSignalFilter}>
                 <SelectTrigger className="w-full">
                   <SelectValue />
@@ -311,7 +314,13 @@ export default function MomentumReportAdminPanel({
                 <SelectContent>
                   {["ALL", "STRONG_BUY", "BUY", "NEUTRAL"].map(option => (
                     <SelectItem key={option} value={option}>
-                      {option}
+                      {option === "ALL"
+                        ? copy(language, "Tumu", "All")
+                        : option === "STRONG_BUY"
+                        ? copy(language, "Guclu Al", "Strong Buy")
+                        : option === "BUY"
+                        ? copy(language, "Al", "Buy")
+                        : copy(language, "Notr", "Neutral")}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -321,7 +330,7 @@ export default function MomentumReportAdminPanel({
 
           <Button type="button" className="w-full" onClick={handleRunScan} disabled={scanBusy}>
             <Radar className="size-4" />
-            {scanBusy ? "Tarama calisiyor" : "Momentum taramasi calistir"}
+            {scanBusy ? copy(language, "Tarama calisiyor", "Scanning...") : copy(language, "Momentum taramasi calistir", "Run Momentum Scan")}
           </Button>
 
           <Button
@@ -331,7 +340,7 @@ export default function MomentumReportAdminPanel({
             onClick={handleImportResults}
             disabled={!draftReport || !scanResults.length}
           >
-            Sonuclari taslaga aktar
+            {copy(language, "Sonuclari taslaga aktar", "Import Results to Draft")}
           </Button>
 
           {scanError ? (
@@ -339,9 +348,9 @@ export default function MomentumReportAdminPanel({
           ) : null}
 
           <AdminPanelSurface as="div" tone="muted">
-            <AdminSectionLabel>Son tarama</AdminSectionLabel>
+            <AdminSectionLabel>{copy(language, "Son tarama", "Last Scan")}</AdminSectionLabel>
             <p className="mt-2 text-sm text-foreground">
-              {scanResults.length ? `${scanResults.length} setup bulundu` : "Henuz tarama yok"}
+              {scanResults.length ? `${scanResults.length} ${copy(language, "setup bulundu", "setups found")}` : copy(language, "Henuz tarama yok", "No scan yet")}
             </p>
           </AdminPanelSurface>
         </div>
@@ -355,9 +364,9 @@ export default function MomentumReportAdminPanel({
             <div className="space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <AdminSectionLabel tone="accent">Publish</AdminSectionLabel>
+                  <AdminSectionLabel tone="accent">{copy(language, "Publish", "Publish")}</AdminSectionLabel>
                   <h3 className="text-2xl font-semibold tracking-tight text-foreground">
-                    Momentum Snapshot Editoru
+                    {copy(language, "Momentum Snapshot Editoru", "Momentum Snapshot Editor")}
                   </h3>
                 </div>
 
@@ -369,11 +378,11 @@ export default function MomentumReportAdminPanel({
                     disabled={adminBusy}
                   >
                     <Save className="size-4" />
-                    Draft kaydet
+                    {copy(language, "Draft kaydet", "Save Draft")}
                   </Button>
                   <Button type="button" onClick={onPublish} disabled={adminBusy}>
                     <Upload className="size-4" />
-                    Yayinla
+                    {copy(language, "Yayinla", "Publish")}
                   </Button>
                 </div>
               </div>
@@ -383,7 +392,7 @@ export default function MomentumReportAdminPanel({
               ) : null}
 
               <div className="grid gap-4 md:grid-cols-2">
-                <Field label="Baslik">
+                <Field label={copy(language, "Baslik", "Title")}>
                   <Input
                     value={draftReport.title}
                     onChange={event =>
@@ -391,7 +400,7 @@ export default function MomentumReportAdminPanel({
                     }
                   />
                 </Field>
-                <Field label="Rapor tarihi">
+                <Field label={copy(language, "Rapor tarihi", "Report Date")}>
                   <Input
                     type="date"
                     value={draftReport.reportDate}
@@ -400,7 +409,7 @@ export default function MomentumReportAdminPanel({
                     }
                   />
                 </Field>
-                <Field label="Headline">
+                <Field label={copy(language, "Headline", "Headline")}>
                   <Input
                     value={draftReport.content.headline}
                     onChange={event =>
@@ -408,7 +417,7 @@ export default function MomentumReportAdminPanel({
                     }
                   />
                 </Field>
-                <Field label="Scanner universe">
+                <Field label={copy(language, "Scanner universe", "Scanner Universe")}>
                   <Input
                     value={draftReport.content.scannerUniverse}
                     onChange={event =>
@@ -421,7 +430,7 @@ export default function MomentumReportAdminPanel({
               </div>
 
               <div className="grid gap-4">
-                <Field label="Ozet">
+                <Field label={copy(language, "Ozet", "Summary")}>
                   <Textarea
                     rows={3}
                     value={draftReport.content.summary}
@@ -430,7 +439,7 @@ export default function MomentumReportAdminPanel({
                     }
                   />
                 </Field>
-                <Field label="Piyasa baglami">
+                <Field label={copy(language, "Piyasa baglami", "Market Context")}>
                   <Textarea
                     rows={3}
                     value={draftReport.content.marketContext}
@@ -439,7 +448,7 @@ export default function MomentumReportAdminPanel({
                     }
                   />
                 </Field>
-                <Field label="Execution notlari">
+                <Field label={copy(language, "Execution notlari", "Execution Notes")}>
                   <Textarea
                     rows={3}
                     value={draftReport.content.executionNotes}
@@ -452,8 +461,8 @@ export default function MomentumReportAdminPanel({
             </div>
           ) : (
             <EmptyState
-              description="Momentum report secip duzenlemeye basla."
-              title="Duzenlenecek momentum raporu bulunamadi"
+              description={copy(language, "Momentum report secip duzenlemeye basla.", "Select a momentum report to start editing.")}
+              title={copy(language, "Duzenlenecek momentum raporu bulunamadi", "No momentum report found to edit")}
             />
           )}
         </AdminPanelSurface>
@@ -462,9 +471,9 @@ export default function MomentumReportAdminPanel({
           <AdminPanelSurface>
             <div className="flex items-center justify-between gap-3">
               <div>
-                <AdminSectionLabel tone="accent">Canli tarama sonucu</AdminSectionLabel>
+                <AdminSectionLabel tone="accent">{copy(language, "Canli tarama sonucu", "Live Scan Result")}</AdminSectionLabel>
                 <h3 className="text-xl font-semibold text-foreground">
-                  Taramadan gelen adaylar
+                  {copy(language, "Taramadan gelen adaylar", "Candidates from Scan")}
                 </h3>
               </div>
               <Button
@@ -473,7 +482,7 @@ export default function MomentumReportAdminPanel({
                 onClick={handleImportResults}
                 disabled={!draftReport}
               >
-                Taslaga aktar
+                {copy(language, "Taslaga aktar", "Import to Draft")}
               </Button>
             </div>
 
@@ -498,25 +507,25 @@ export default function MomentumReportAdminPanel({
                   </div>
                   <div className="mt-3 grid grid-cols-4 gap-2 text-xs">
                     <div>
-                      <p className="text-muted-foreground">Degisim</p>
+                      <p className="text-muted-foreground">{copy(language, "Degisim", "Change")}</p>
                       <p className="font-semibold text-foreground">
                         {stock.priceChangePct.toFixed(2)}%
                       </p>
                     </div>
                     <div>
-                      <p className="text-muted-foreground">RVOL</p>
+                      <p className="text-muted-foreground">{copy(language, "RVOL", "RVOL")}</p>
                       <p className="font-semibold text-foreground">
                         {stock.volumeRatio.toFixed(2)}x
                       </p>
                     </div>
                     <div>
-                      <p className="text-muted-foreground">RSI</p>
+                      <p className="text-muted-foreground">{copy(language, "RSI", "RSI")}</p>
                       <p className="font-semibold text-foreground">
                         {stock.rsi.toFixed(1)}
                       </p>
                     </div>
                     <div>
-                      <p className="text-muted-foreground">Guven</p>
+                      <p className="text-muted-foreground">{copy(language, "Guven", "Confidence")}</p>
                       <p className="font-semibold text-foreground">
                         {stock.confidenceScore || 0}
                       </p>
@@ -529,7 +538,7 @@ export default function MomentumReportAdminPanel({
         ) : null}
 
         <AdminPanelSurface>
-          <AdminSectionLabel tone="accent">Yayinlanacak kartlar</AdminSectionLabel>
+          <AdminSectionLabel tone="accent">{copy(language, "Yayinlanacak kartlar", "Cards to Publish")}</AdminSectionLabel>
           <div className="mt-4 grid gap-4 xl:grid-cols-2">
             {selectedEntries.length ? (
               selectedEntries.map(entry => (
@@ -551,32 +560,32 @@ export default function MomentumReportAdminPanel({
                       className="text-xs text-muted-foreground hover:text-foreground"
                       onClick={() => removeEntry(entry.id)}
                     >
-                      Kaldir
+                      {copy(language, "Kaldir", "Remove")}
                     </button>
                   </div>
 
                   <div className="mt-3 grid grid-cols-4 gap-2 text-xs">
                     <div>
-                      <p className="text-muted-foreground">Skor</p>
+                      <p className="text-muted-foreground">{copy(language, "Skor", "Score")}</p>
                       <p className="font-semibold text-foreground">{entry.score}</p>
                     </div>
                     <div>
-                      <p className="text-muted-foreground">RSI</p>
+                      <p className="text-muted-foreground">{copy(language, "RSI", "RSI")}</p>
                       <p className="font-semibold text-foreground">{entry.rsi}</p>
                     </div>
                     <div>
-                      <p className="text-muted-foreground">RVOL</p>
+                      <p className="text-muted-foreground">{copy(language, "RVOL", "RVOL")}</p>
                       <p className="font-semibold text-foreground">
                         {entry.volumeRatio.toFixed(2)}x
                       </p>
                     </div>
                     <div>
-                      <p className="text-muted-foreground">Sinyal</p>
+                      <p className="text-muted-foreground">{copy(language, "Sinyal", "Signal")}</p>
                       <p className="font-semibold text-foreground">{entry.signal}</p>
                     </div>
                   </div>
 
-                  <Field label="Admin notu">
+                  <Field label={copy(language, "Admin notu", "Admin Note")}>
                     <Textarea
                       rows={3}
                       value={entry.adminNote || ""}
@@ -589,8 +598,7 @@ export default function MomentumReportAdminPanel({
               ))
             ) : (
               <p className="text-sm text-muted-foreground">
-                Henuz yayinlanacak momentum setup secilmedi. Once taramayi calistirip
-                sonuclari taslaga aktar.
+                {copy(language, "Henuz yayinlanacak momentum setup secilmedi. Once taramayi calistirip sonuclari taslaga aktar.", "No momentum setup selected for publishing yet. Run a scan and import results to draft first.")}
               </p>
             )}
           </div>
@@ -600,9 +608,9 @@ export default function MomentumReportAdminPanel({
           <AdminPanelSurface>
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <AdminSectionLabel tone="accent">Advanced JSON</AdminSectionLabel>
+                <AdminSectionLabel tone="accent">{copy(language, "Advanced JSON", "Advanced JSON")}</AdminSectionLabel>
                 <h3 className="mt-1 text-xl font-semibold text-foreground">
-                  Tum report payload'i
+                  {copy(language, "Tum report payload'i", "Full Report Payload")}
                 </h3>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -613,10 +621,10 @@ export default function MomentumReportAdminPanel({
                     setRawReportJson(JSON.stringify(draftReport, null, 2))
                   }
                 >
-                  Guncel taslagi yukle
+                  {copy(language, "Guncel taslagi yukle", "Load Current Draft")}
                 </Button>
                 <Button type="button" onClick={handleApplyRawJson}>
-                  JSON'i uygula
+                  {copy(language, "JSON'i uygula", "Apply JSON")}
                 </Button>
               </div>
             </div>
@@ -631,8 +639,7 @@ export default function MomentumReportAdminPanel({
               <p className="mt-3 text-sm text-destructive">{rawReportError}</p>
             ) : (
               <p className="mt-3 text-xs text-muted-foreground">
-                Featured entry listesi dahil tum momentum raporunu tek editorle
-                degistirmek icin kullan.
+                {copy(language, "Featured entry listesi dahil tum momentum raporunu tek editorle degistirmek icin kullan.", "Use to edit the entire momentum report including the featured entry list in a single editor.")}
               </p>
             )}
           </AdminPanelSurface>
@@ -642,4 +649,3 @@ export default function MomentumReportAdminPanel({
     />
   );
 }
-

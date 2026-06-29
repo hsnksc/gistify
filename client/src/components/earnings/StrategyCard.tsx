@@ -171,7 +171,7 @@ export default function StrategyCard({ language, strategy }: StrategyCardProps) 
       {strategy.greeks ? (
         <div className="mt-5">
           <p className="mb-2.5 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
-            Greeks
+            {copy(language, "Greeks", "Greeks")}
           </p>
           <div className="space-y-2">
             <GreekBar label="Δ" value={strategy.greeks.delta} />

@@ -1,6 +1,7 @@
 export type DailyReportStatus = "draft" | "published";
 export type DailyReportSourceKind = "folder" | "file";
 export type DailyReportContentFormat = "markdown" | "html";
+export type DailyReportLanguage = "tr" | "en";
 
 export interface DailyReportMetadataItem {
   label: string;
@@ -8,6 +9,7 @@ export interface DailyReportMetadataItem {
 }
 
 export interface DailyReportContent {
+  title?: string;
   headline: string;
   author?: string;
   coverage?: string;
@@ -16,6 +18,7 @@ export interface DailyReportContent {
   executiveSummary: string[];
   markdown: string;
   html?: string;
+  translations?: Partial<Record<DailyReportLanguage, string>>;
   sectionFiles: string[];
   figureFiles: string[];
   openAiFigureFiles: string[];
@@ -25,6 +28,8 @@ export interface DailyReportContent {
   contentFormat?: DailyReportContentFormat;
   sourceLabel?: string;
   assetBasePath?: string;
+  language?: DailyReportLanguage;
+  availableLanguages?: DailyReportLanguage[];
 }
 
 export interface DailyReportRecord {
@@ -54,6 +59,7 @@ export interface DailyReportSourcePackage {
   executiveSummary: string[];
   markdown: string;
   html?: string;
+  translations?: Partial<Record<DailyReportLanguage, string>>;
   sectionFiles: string[];
   figureFiles: string[];
   openAiFigureFiles: string[];
@@ -64,6 +70,8 @@ export interface DailyReportSourcePackage {
   contentFormat?: DailyReportContentFormat;
   sourceLabel: string;
   assetBasePath: string;
+  language?: DailyReportLanguage;
+  availableLanguages?: DailyReportLanguage[];
 }
 
 export interface FlowReportComment {

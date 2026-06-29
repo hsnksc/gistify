@@ -1304,7 +1304,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                 description={copy(language, "Kayitli earnings haftalari", "Registered earnings weeks")}
               />
               <SectionCard
-                title="Published"
+                title={copy(language, "Yayinlandi", "Published")}
                 value={String(earningsStats.publishedReports)}
                 description={copy(language, "Canliya alinmis haftalar", "Published weeks")}
               />
@@ -1327,31 +1327,31 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                 description={copy(language, "Kayitli momentum yayinlari", "Registered momentum publications")}
               />
               <SectionCard
-                title="Published"
+                title={copy(language, "Yayinlandi", "Published")}
                 value={String(momentumStats.publishedReports)}
                 description={copy(language, "Canliya alinmis momentum raporlari", "Published momentum reports")}
               />
               <SectionCard
-                title="Featured setup"
+                title={copy(language, "One Cikan Setup", "Featured setup")}
                 value={String(momentumStats.totalEntries)}
                 description={copy(language, "Tum snapshot'lardaki toplam yayin setup'i", "Total published setups across all snapshots")}
               />
               <SectionCard
                 title={copy(language, "Son yayin", "Latest publication")}
                 value={momentumStats.latestDate}
-                description="Latest published momentum snapshot"
+                description={copy(language, "En son yayinlanan momentum snapshot", "Latest published momentum snapshot")}
               />
             </>
           ) : selectedWorkspace === "images" ? (
             <>
               <SectionCard
-                title="Provider"
+                title={copy(language, "Saglayici", "Provider")}
                 value="OpenAI"
-                description="Server-side image generation"
+                description={copy(language, "Sunucu tarafi gorsel uretimi", "Server-side image generation")}
               />
               <SectionCard
-                title="Auth"
-                value="Server env"
+                title={copy(language, "Kimlik Dogrulama", "Auth")}
+                value={copy(language, "Sunucu env", "Server env")}
                 description={copy(language, "API key frontend'e verilmez", "API key is not exposed to frontend")}
               />
               <SectionCard
@@ -1373,19 +1373,19 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                 description={copy(language, "Kayitli daily report yayinlari", "Registered daily report publications")}
               />
               <SectionCard
-                title="Published"
+                title={copy(language, "Yayinlandi", "Published")}
                 value={String(dailyStats.publishedReports)}
                 description={copy(language, "Canliya alinmis gunluk raporlar", "Published daily reports")}
               />
               <SectionCard
-                title="Source package"
+                title={copy(language, "Kaynak Paket", "Source package")}
                 value={String(dailyStats.sourcePackages)}
                 description={copy(language, "dailyreport klasorunde hazir paketler", "Ready packages in dailyreport folder")}
               />
               <SectionCard
                 title={copy(language, "Son yayin", "Latest publication")}
                 value={dailyStats.latestDate}
-                description="Latest published daily report"
+                description={copy(language, "En son yayinlanan gunluk rapor", "Latest published daily report")}
               />
             </>
           )}
@@ -1471,7 +1471,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
           <>
             <section className="grid gap-4 lg:grid-cols-3">
               <ProviderCard
-                title="Earnings import"
+                title={copy(language, "Earnings Ithalat", "Earnings import")}
                 provider={workspaceStatus?.providers.earningsImport.provider || "-"}
                 configured={Boolean(workspaceStatus?.providers.earningsImport.configured)}
                 mode={workspaceStatus?.providers.earningsImport.mode || "disabled"}
@@ -1482,14 +1482,14 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                 }
               />
               <ProviderCard
-                title="Options / IV"
+                title={copy(language, "Opsiyonlar / IV", "Options / IV")}
                 provider={workspaceStatus?.providers.optionsData.provider || "-"}
                 configured={Boolean(workspaceStatus?.providers.optionsData.configured)}
                 mode={workspaceStatus?.providers.optionsData.mode || "heuristic"}
                 note={workspaceStatus?.providers.optionsData.note}
               />
               <ProviderCard
-                title="Momentum enrichment"
+                title={copy(language, "Momentum Zenginlestirme", "Momentum enrichment")}
                 provider={workspaceStatus?.providers.momentumData.provider || "-"}
                 configured={Boolean(workspaceStatus?.providers.momentumData.configured)}
                 mode={workspaceStatus?.providers.momentumData.mode || "live"}
@@ -1670,14 +1670,14 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
           <>
             <section className="grid gap-4 lg:grid-cols-3">
               <ProviderCard
-                title="Primary scanner"
+                title={copy(language, "Birincil Tarayici", "Primary scanner")}
                 provider={workspaceStatus?.providers.momentumData.provider || "-"}
                 configured={Boolean(workspaceStatus?.providers.momentumData.configured)}
                 mode={workspaceStatus?.providers.momentumData.mode || "live"}
                 note={copy(language, "Momentum taramasi default olarak Yahoo uzerinden calisir. Paid fallback provider key'leri varsa kalite/genislik artar.", "Momentum scan runs via Yahoo by default. Paid fallback provider keys improve quality/coverage.")}
               />
               <ProviderCard
-                title="Fallback keys"
+                title={copy(language, "Yedek Anahtarlar", "Fallback keys")}
                 provider="massive / twelvedata / alphavantage"
                 configured={
                   Boolean(workspaceStatus?.providers.momentumData.fallbackKeys.massive) ||
@@ -1702,7 +1702,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                 }`}
               />
               <ProviderCard
-                title="Publish target"
+                title={copy(language, "Yayin Hedefi", "Publish target")}
                 provider="latest snapshot"
                 configured={Boolean(latestPublishedMomentum)}
                 mode={latestPublishedMomentum ? "published" : "draft-only"}
@@ -1813,21 +1813,21 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
           <>
             <section className="grid gap-4 lg:grid-cols-3">
               <ProviderCard
-                title="Source root"
+                title={copy(language, "Kaynak Koku", "Source root")}
                 provider="dailyreport/ + flow/"
                 configured={dailySourcePackages.length > 0}
                 mode={dailySourcePackages.length > 0 ? "live" : "empty"}
                 note={copy(language, "Bu workspace yerel `dailyreport/<tarih>` klasorlerini ve `flow/**.md` dosyalarini source package olarak okur. Sen yeni gunluk paketi bu path'lere biraktikca admin preview edip publish eder.", "This workspace reads local `dailyreport/<date>` folders and `flow/**.md` files as source packages. As you drop new daily packages into those paths, the admin previews and publishes them.")}
               />
               <ProviderCard
-                title="Package count"
+                title={copy(language, "Paket Sayisi", "Package count")}
                 provider="local filesystem"
                 configured={dailySourcePackages.length > 0}
                 mode={`${dailySourcePackages.length} package`}
                 note={copy(language, "Her klasor veya markdown dosyasi tek bir gunluk source package olarak algilanir.", "Each folder or markdown file is treated as a single daily source package.")}
               />
               <ProviderCard
-                title="Latest published"
+                title={copy(language, "En Son Yayinlanan", "Latest published")}
                 provider="daily report viewer"
                 configured={Boolean(latestPublishedDaily)}
                 mode={latestPublishedDaily ? "published" : "draft-only"}

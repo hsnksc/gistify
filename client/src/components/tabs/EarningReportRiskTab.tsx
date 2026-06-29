@@ -79,7 +79,7 @@ export default function EarningReportRiskTab({ report, language = "tr" }: Props)
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(320px,1fr)]">
           <div className="space-y-3">
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-red-300">
-              Risk framework
+              {copy(language, "Risk Cercevesi", "Risk framework")}
             </p>
             <h1 className="heading-condensed text-3xl leading-none text-foreground md:text-4xl">
               {copy(language, "Risk yonetimi ve pozisyon yapisi", "Risk management and position structure")}
@@ -107,7 +107,7 @@ export default function EarningReportRiskTab({ report, language = "tr" }: Props)
             </div>
             <div className="rounded-none border border-border bg-background/50 p-3">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                Coverage
+                {copy(language, "Kapsam", "Coverage")}
               </p>
               <p className="mt-2 data-mono text-lg font-bold text-foreground">
                 {positions.length} setup
@@ -118,7 +118,7 @@ export default function EarningReportRiskTab({ report, language = "tr" }: Props)
             </div>
             <div className="rounded-none border border-border bg-background/50 p-3 sm:col-span-2">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                Golden rule
+                {copy(language, "Altin Kural", "Golden rule")}
               </p>
               <p className="mt-2 text-sm font-semibold text-foreground">
                 {report.goldenRules[0] ||
@@ -229,7 +229,7 @@ export default function EarningReportRiskTab({ report, language = "tr" }: Props)
       <section className="grid gap-4 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
         <article className="rounded-none border border-border bg-card/80 p-4">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300">
-            Golden rules
+            {copy(language, "Altin Kurallar", "Golden rules")}
           </p>
           <ol className="mt-4 space-y-3 text-sm leading-relaxed text-muted-foreground">
             {report.goldenRules.map(rule => (

@@ -1,9 +1,13 @@
-import type { DailyReportContent } from "@shared/dailyReports";
+import { useState } from "react";
+import type { DailyReportContent, DailyReportLanguage } from "@shared/dailyReports";
 import HtmlReportRenderer from "@/components/reports/HtmlReportRenderer";
 import ReportPostShell, {
   type ReportPostItem,
 } from "@/components/reports/ReportPostShell";
-import { buildDailyReportHtmlDocument } from "@/lib/dailyReportHtml";
+import {
+  buildDailyReportHtmlDocument,
+  extractPremiumReportFeatures,
+} from "@/lib/dailyReportHtml";
 import { getDailyReportAssetUrl } from "@/lib/dailyReports";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import {
@@ -14,11 +18,17 @@ import { buildReportSpotlight } from "@/lib/reportSpotlight";
 
 interface DailyReportViewerProps {
   language?: AppLanguage;
-  title: string;
+  title?: string;
   reportDate: string;
   updatedAt?: string;
   sourceFolder: string;
   content: DailyReportContent;
+}
+
+function extractTitleFromMarkdown(markdown: string) {
+  const match = markdown.match(/^#\s+(.+)$/m);
+  if (!match) return "";
+  return match[1].replace(/[*_~`]/g, "").trim();
 }
 
 function formatReportDate(reportDate: string, locale = "tr-TR") {
@@ -125,9 +135,13 @@ export default function DailyReportViewer({
   sourceFolder,
   content,
 }: DailyReportViewerProps) {
-  const locale = language === "en" ? "en-US" : "tr-TR";
+  const [activeLanguage, setActiveLanguage] = useState<DailyReportLanguage>(
+    content.language || language || "tr"
+  );
+  const locale = activeLanguage === "en" ? "en-US" : "tr-TR";
   const normalizedContent = {
     ...content,
+    title: typeof content.title === "string" ? content.title : "",
     headline: typeof content.headline === "string" ? content.headline : "",
     html: typeof content.html === "string" ? content.html : "",
     markdown: typeof content.markdown === "string" ? content.markdown : "",
@@ -170,6 +184,25 @@ export default function DailyReportViewer({
       Number.isFinite(content.researchFileCount)
         ? content.researchFileCount
         : 0,
+    language: content.language || language || "tr",
+    availableLanguages: Array.isArray(content.availableLanguages)
+      ? content.availableLanguages.filter(
+          (item): item is DailyReportLanguage => item === "tr" || item === "en"
+        )
+      : [],
+    translations:
+      content.translations && typeof content.translations === "object"
+        ? {
+            tr:
+              typeof content.translations.tr === "string"
+                ? content.translations.tr
+                : undefined,
+            en:
+              typeof content.translations.en === "string"
+                ? content.translations.en
+                : undefined,
+          }
+        : {},
     contentFormat:
       content.contentFormat === "html" ||
       (typeof content.html === "string" &&
@@ -190,19 +223,46 @@ export default function DailyReportViewer({
   const isHtmlSource = normalizedContent.contentFormat === "html";
   const reportDateLabel = formatReportDate(reportDate, locale);
   const updatedAtLabel = formatUpdateStamp(updatedAt, locale);
-  const spotlight = isHtmlSource
-    ? null
-    : buildReportSpotlight(normalizedContent.markdown);
+
+  const activeMarkdown =
+    activeLanguage === "en" && normalizedContent.translations?.en
+      ? normalizedContent.translations.en
+      : activeLanguage === "tr" && normalizedContent.translations?.tr
+        ? normalizedContent.translations.tr
+        : normalizedContent.markdown;
+
+  const activeTitle =
+    extractTitleFromMarkdown(activeMarkdown) ||
+    title ||
+    normalizedContent.title ||
+    "";
+  const activePremium = extractPremiumReportFeatures(activeMarkdown);
+  const activeHeadline =
+    activePremium.headline || normalizedContent.headline || "";
+  const activeExecutiveSummary =
+    activePremium.executiveSummary || normalizedContent.executiveSummary || [];
+  const activeAuthor =
+    activePremium.metadataItems?.find(m => /author|hazirlayan/i.test(m.label))
+      ?.value || normalizedContent.author;
+  const activeCoverage =
+    activePremium.metadataItems?.find(m => /coverage|kapsam/i.test(m.label))
+      ?.value || normalizedContent.coverage;
+  const activeMethodology =
+    activePremium.metadataItems?.find(m => /methodology|metodoloji/i.test(m.label))
+      ?.value || normalizedContent.methodology;
+
+  const spotlight = isHtmlSource ? null : buildReportSpotlight(activeMarkdown);
   const storyItems = spotlight
     ? []
-    : normalizedContent.executiveSummary.length
-      ? normalizedContent.executiveSummary.slice(0, 4)
+    : activeExecutiveSummary.length
+      ? activeExecutiveSummary.slice(0, 4)
       : isHtmlSource
         ? []
-        : extractLeadParagraphsFromMarkdown(normalizedContent.markdown, 3);
+        : extractLeadParagraphsFromMarkdown(activeMarkdown, 3);
   const snapshotMetrics = isHtmlSource
     ? []
-    : extractSnapshotMetricsFromMarkdown(normalizedContent.markdown, 6);
+    : extractSnapshotMetricsFromMarkdown(activeMarkdown, 6);
+
   const statCards: ReportPostItem[] = snapshotMetrics.length
     ? snapshotMetrics.map(item => ({
         label: item.label,
@@ -261,35 +321,37 @@ export default function DailyReportViewer({
       label: copy(language, "Arastirma", "Research"),
       value: String(normalizedContent.researchFileCount),
     },
-    ...(normalizedContent.author
+    ...(activeAuthor
       ? [
           {
             label: copy(language, "Hazirlayan", "Author"),
-            value: normalizedContent.author,
+            value: activeAuthor,
             tone: "info" as const,
           },
         ]
       : []),
-    ...(normalizedContent.coverage
+    ...(activeCoverage
       ? [
           {
             label: copy(language, "Kapsam", "Coverage"),
-            value: normalizedContent.coverage,
+            value: activeCoverage,
           },
         ]
       : []),
-    ...(normalizedContent.methodology
+    ...(activeMethodology
       ? [
           {
             label: copy(language, "Metodoloji", "Methodology"),
-            value: normalizedContent.methodology,
+            value: activeMethodology,
           },
         ]
       : []),
-    ...normalizedContent.metadataItems.map(item => ({
-      label: item.label,
-      value: item.value,
-    })),
+    ...(activePremium.metadataItems || normalizedContent.metadataItems).map(
+      item => ({
+        label: item.label,
+        value: item.value,
+      })
+    ),
   ];
 
   const galleryFigures = normalizedContent.figureFiles.map(fileName => {
@@ -309,8 +371,8 @@ export default function DailyReportViewer({
   const resolvedHtml = isHtmlSource
     ? normalizedContent.html || ""
     : buildDailyReportHtmlDocument({
-        content: normalizedContent,
-        language,
+        content: { ...normalizedContent, markdown: activeMarkdown },
+        language: activeLanguage,
         reportDateLabel,
         resolveImage: (src, alt) => {
           const resolved = resolveAssetSrc(
@@ -328,7 +390,6 @@ export default function DailyReportViewer({
           };
         },
         sourceLabel,
-        title,
         updatedAtLabel,
       });
 
@@ -336,8 +397,8 @@ export default function DailyReportViewer({
     <ReportPostShell
       language={language}
       categoryLabel={categoryLabel}
-      title={title}
-      headline={normalizedContent.headline}
+      title={activeTitle}
+      headline={activeHeadline}
       reportDateLabel={reportDateLabel}
       updatedAtLabel={updatedAtLabel}
       sourceLabel={sourceLabel}
@@ -351,7 +412,7 @@ export default function DailyReportViewer({
       statCards={statCards}
       metaItems={metaItems}
       storyItems={storyItems}
-      markdown={normalizedContent.markdown}
+      markdown={activeMarkdown}
       documentDescription={
         isHtmlSource
           ? copy(
@@ -367,10 +428,12 @@ export default function DailyReportViewer({
       }
       documentContent={
         <HtmlReportRenderer
-          language={language}
+          language={activeLanguage}
           html={resolvedHtml}
+          availableLanguages={normalizedContent.availableLanguages}
+          onLanguageChange={setActiveLanguage}
           emptyMessage={copy(
-            language,
+            activeLanguage,
             isHtmlSource
               ? "Kaynak HTML icerigi bos."
               : "Kaynak markdown HTML dokumana donusturulemedi.",

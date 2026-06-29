@@ -7,6 +7,7 @@ import {
   useState,
 } from "react";
 import { AlertTriangle, BookOpen, Languages } from "lucide-react";
+import type { DailyReportLanguage } from "@shared/dailyReports";
 import {
   analyzeFlowReportLanguage,
   type FlowReportLanguageInfo,
@@ -21,6 +22,8 @@ interface HtmlReportRendererProps {
   sourceFolder?: string;
   sourceLabel?: string;
   title?: string;
+  availableLanguages?: DailyReportLanguage[];
+  onLanguageChange?: (lang: DailyReportLanguage) => void;
 }
 
 interface HtmlSectionLink {
@@ -329,7 +332,8 @@ function buildNormalizedBodyNode(
 function buildPreparedHtmlReport(
   html: string,
   instanceId: string,
-  language: AppLanguage
+  language: AppLanguage,
+  availableLanguages?: DailyReportLanguage[]
 ): PreparedHtmlReport | null {
   if (!html.trim() || typeof window === "undefined") {
     return null;
@@ -415,6 +419,7 @@ function buildPreparedHtmlReport(
 (() => {
   const instanceId = ${JSON.stringify(instanceId)};
   const preferredLanguage = ${JSON.stringify(reportLanguage)};
+  const availableLanguages = ${JSON.stringify(availableLanguages || [])};
   const MAX_TEXT_LENGTH = ${MAX_RUNTIME_TRANSLATION_TEXT_LENGTH};
   const MAX_BATCH_SIZE = ${MAX_RUNTIME_TRANSLATION_BATCH_SIZE};
   const MAX_BATCH_CHARS = ${MAX_RUNTIME_TRANSLATION_BATCH_CHARS};
@@ -908,6 +913,9 @@ function buildPreparedHtmlReport(
     if (preferredLanguage !== "en") {
       return;
     }
+    if (availableLanguages.includes(preferredLanguage)) {
+      return;
+    }
     collectTranslationNodes(document.body);
     scheduleTranslations();
   };
@@ -1140,9 +1148,14 @@ ${helperScript}
 
 function getTranslationNotice(
   language: AppLanguage,
-  languageInfo: FlowReportLanguageInfo
+  languageInfo: FlowReportLanguageInfo,
+  availableLanguages?: DailyReportLanguage[]
 ) {
   if (language !== "en") {
+    return null;
+  }
+
+  if (availableLanguages?.includes("en")) {
     return null;
   }
 
@@ -1182,6 +1195,8 @@ export default function HtmlReportRenderer({
   sourceFolder = "",
   sourceLabel = "",
   title = "",
+  availableLanguages,
+  onLanguageChange,
 }: HtmlReportRendererProps) {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const rawInstanceId = useId();
@@ -1190,8 +1205,8 @@ export default function HtmlReportRenderer({
     [rawInstanceId]
   );
   const prepared = useMemo(
-    () => buildPreparedHtmlReport(html, instanceId, language),
-    [html, instanceId, language]
+    () => buildPreparedHtmlReport(html, instanceId, language, availableLanguages),
+    [html, instanceId, language, availableLanguages]
   );
   const languageInfo = useMemo(
     () =>
@@ -1205,8 +1220,8 @@ export default function HtmlReportRenderer({
     [html, sourceFolder, sourceLabel, title]
   );
   const translationNotice = useMemo(
-    () => getTranslationNotice(language, languageInfo),
-    [language, languageInfo]
+    () => getTranslationNotice(language, languageInfo, availableLanguages),
+    [language, languageInfo, availableLanguages]
   );
   const [iframeHeight, setIframeHeight] = useState(1600);
   const [translationError, setTranslationError] = useState<string | null>(null);

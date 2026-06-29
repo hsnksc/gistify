@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import type {
+  DailyReportLanguage,
   DailyReportRecord,
   DailyReportSourcePackage,
 } from "../shared/dailyReports";
@@ -348,9 +349,34 @@ function isExcludedFlowSourceFile(filePath: string) {
   );
 }
 
-function pickMainMarkdownFile(folderPath: string) {
+function pickMainMarkdownFile(folderPath: string): {
+  mainPath: string | null;
+  premiumPaths: { tr?: string; en?: string };
+} {
+  const entries = listFiles(folderPath);
+  const premiumTr = entries.find(
+    entry => entry.isFile() && /\.premium\.tr\.md$/i.test(entry.name)
+  );
+  const premiumEn = entries.find(
+    entry => entry.isFile() && /\.premium\.en\.md$/i.test(entry.name)
+  );
+
+  if (premiumTr || premiumEn) {
+    return {
+      mainPath: premiumTr
+        ? path.join(folderPath, premiumTr.name)
+        : premiumEn
+          ? path.join(folderPath, premiumEn.name)
+          : null,
+      premiumPaths: {
+        tr: premiumTr ? path.join(folderPath, premiumTr.name) : undefined,
+        en: premiumEn ? path.join(folderPath, premiumEn.name) : undefined,
+      },
+    };
+  }
+
   const folderDate = toIsoDateFromKey(path.basename(folderPath));
-  const files = listFiles(folderPath)
+  const files = entries
     .filter(entry => entry.isFile() && !isExcludedMarkdownCandidate(entry.name))
     .map(entry => {
       const entryPath = path.join(folderPath, entry.name);
@@ -385,7 +411,7 @@ function pickMainMarkdownFile(folderPath: string) {
       return right.name.localeCompare(left.name);
     });
 
-  return files[0]?.path || null;
+  return { mainPath: files[0]?.path || null, premiumPaths: {} };
 }
 
 function normalizeParagraph(value: string) {
@@ -712,13 +738,18 @@ function extractMetadata(markdown: string) {
   const methodologyMatch = markdown.match(/\*\*Metodoloji:\*\*\s*(.+)/i);
 
   const summaryMatch = markdown.match(
-    /#{1,3}\s+(Executive Summary|Ozet|Özet)\s+([\s\S]*?)(?:\n#{1,3}\s|\n---|\Z)/i
+    /#{1,3}\s+(Executive Summary|Yönetici Özeti|Ozet|Özet)(?:\s+\/\s*[^\n]+)?\s*\n([\s\S]*?)(?:\n#{1,3}\s|\n---|\Z)/i
   );
-  const executiveSummary = (summaryMatch?.[2] || "")
+  const summaryText = summaryMatch?.[2] || "";
+  const listItems = summaryText
+    .split(/\r?\n/)
+    .map(line => line.replace(/^[\-*]\s+/, "").trim())
+    .filter(line => line.length >= 12);
+  const paragraphItems = summaryText
     .split(/\n\s*\n/)
     .map(chunk => normalizeParagraph(chunk))
-    .filter(Boolean)
-    .slice(0, 6);
+    .filter(Boolean);
+  const executiveSummary = (listItems.length >= 2 ? listItems : paragraphItems).slice(0, 6);
   const narrativeParagraphs = extractNarrativeParagraphs(markdown, 4);
   const normalizedSummary = executiveSummary.length
     ? executiveSummary
@@ -1531,6 +1562,7 @@ function buildFlowFileSourcePackage(options: {
     contentFormat: isHtmlSource ? "html" : "markdown",
     sourceLabel,
     assetBasePath,
+    language: "tr",
   } satisfies DailyReportSourcePackage;
 }
 
@@ -1840,18 +1872,25 @@ function buildFolderSourcePackage(folderName: string) {
     return null;
   }
 
-  const mainMarkdownPath = pickMainMarkdownFile(folderPath);
-  if (!mainMarkdownPath) {
+  const picked = pickMainMarkdownFile(folderPath);
+  if (!picked.mainPath) {
     return null;
   }
 
-  const markdown = fs.readFileSync(mainMarkdownPath, "utf8");
+  const markdown = fs.readFileSync(picked.mainPath, "utf8");
+  const translations: Partial<Record<DailyReportLanguage, string>> = {};
+  if (picked.premiumPaths.tr && picked.premiumPaths.tr !== picked.mainPath) {
+    translations.tr = fs.readFileSync(picked.premiumPaths.tr, "utf8");
+  }
+  if (picked.premiumPaths.en && picked.premiumPaths.en !== picked.mainPath) {
+    translations.en = fs.readFileSync(picked.premiumPaths.en, "utf8");
+  }
   const metadata = extractMetadata(markdown);
   const researchPath = path.join(folderPath, "research");
-  const stats = fs.statSync(mainMarkdownPath);
+  const stats = fs.statSync(picked.mainPath);
   const reportDate =
     metadata.reportDate ||
-    parseDateTokenFromFileName(path.basename(mainMarkdownPath)) ||
+    parseDateTokenFromFileName(path.basename(picked.mainPath)) ||
     toIsoDateFromKey(folderName) ||
     new Date(stats.mtimeMs).toISOString().slice(0, 10);
   const markdownFigureFiles = filterAvailableFigureFiles(
@@ -1898,6 +1937,12 @@ function buildFolderSourcePackage(folderName: string) {
     contentFormat: "markdown",
     sourceLabel: folderName,
     assetBasePath: folderName,
+    language: picked.premiumPaths.tr ? "tr" : picked.premiumPaths.en ? "en" : "tr",
+    availableLanguages: [
+      ...(picked.premiumPaths.tr ? ["tr"] : []),
+      ...(picked.premiumPaths.en ? ["en"] : []),
+    ] as DailyReportLanguage[],
+    translations: Object.keys(translations).length ? translations : undefined,
   } satisfies DailyReportSourcePackage;
 }
 
@@ -1931,10 +1976,36 @@ function buildFileSourcePackage({
     .replace(/\.[^/.]+$/i, "");
   const isHtmlSource = fileExt === ".html";
   const fileContents = fs.readFileSync(filePath, "utf8");
-  const markdown = isHtmlSource ? "" : fileContents;
-  const html = isHtmlSource ? fileContents : "";
-  const htmlMetadata = isHtmlSource ? extractHtmlMetadata(html) : null;
-  const metadata = htmlMetadata || extractMetadata(markdown);
+  const rawMarkdown = isHtmlSource ? "" : fileContents;
+  const rawHtml = isHtmlSource ? fileContents : "";
+
+  const premiumTrPath = path.join(sourceDirectoryPath, `${sourceKey}.premium.tr.md`);
+  const premiumEnPath = path.join(sourceDirectoryPath, `${sourceKey}.premium.en.md`);
+  const hasPremiumTr = fs.existsSync(premiumTrPath);
+  const hasPremiumEn = fs.existsSync(premiumEnPath);
+  const hasPremium = hasPremiumTr || hasPremiumEn;
+
+  const translations: Partial<Record<DailyReportLanguage, string>> = {};
+  let activeMarkdown = rawMarkdown;
+  let activeHtml = rawHtml;
+
+  if (hasPremium) {
+    if (hasPremiumTr) {
+      activeMarkdown = fs.readFileSync(premiumTrPath, "utf8");
+      if (hasPremiumEn) {
+        translations.en = fs.readFileSync(premiumEnPath, "utf8");
+      }
+    } else if (hasPremiumEn) {
+      activeMarkdown = fs.readFileSync(premiumEnPath, "utf8");
+      if (hasPremiumTr) {
+        translations.tr = fs.readFileSync(premiumTrPath, "utf8");
+      }
+    }
+    activeHtml = "";
+  }
+
+  const htmlMetadata = isHtmlSource && !hasPremium ? extractHtmlMetadata(activeHtml) : null;
+  const metadata = htmlMetadata || extractMetadata(activeMarkdown);
   const stats = fs.statSync(filePath);
   const normalizedSourceKey = namespace
     ? buildNamespacedSourceKey(namespace, relativeSourceKey)
@@ -1948,7 +2019,7 @@ function buildFileSourcePackage({
     ? []
     : filterAvailableFigureFiles(
         sourceDirectoryPath,
-        extractMarkdownFigureFiles(markdown)
+        extractMarkdownFigureFiles(activeMarkdown)
       );
   const htmlFigureFiles = isHtmlSource
     ? filterAvailableFigureFiles(
@@ -1977,8 +2048,8 @@ function buildFileSourcePackage({
       assetBasePath,
       figureFiles,
       fileName,
-      html,
-      markdown,
+      html: activeHtml,
+      markdown: activeMarkdown,
       metadata,
       normalizedSourceKey,
       openAiFigureFiles,
@@ -2000,8 +2071,8 @@ function buildFileSourcePackage({
     methodology: metadata.methodology || undefined,
     metadataItems: metadata.metadataItems,
     executiveSummary: metadata.executiveSummary,
-    markdown,
-    html,
+    markdown: activeMarkdown,
+    html: activeHtml,
     sectionFiles: [],
     figureFiles,
     openAiFigureFiles,
@@ -2009,9 +2080,15 @@ function buildFileSourcePackage({
     researchFileCount: 0,
     updatedAt,
     sourceKind: "file",
-    contentFormat: isHtmlSource ? "html" : "markdown",
+    contentFormat: hasPremium ? "markdown" : isHtmlSource ? "html" : "markdown",
     sourceLabel,
     assetBasePath,
+    language: hasPremiumTr ? "tr" : hasPremiumEn ? "en" : "tr",
+    availableLanguages: [
+      ...(hasPremiumTr ? ["tr"] : []),
+      ...(hasPremiumEn ? ["en"] : []),
+    ] as DailyReportLanguage[],
+    translations: Object.keys(translations).length ? translations : undefined,
   } satisfies DailyReportSourcePackage;
 }
 
@@ -2116,6 +2193,7 @@ export function buildDailyReportRecordFromSource(
       executiveSummary: source.executiveSummary,
       markdown: source.markdown,
       html: source.html,
+      translations: source.translations,
       sectionFiles: source.sectionFiles,
       figureFiles: source.figureFiles,
       openAiFigureFiles: source.openAiFigureFiles,
@@ -2125,6 +2203,8 @@ export function buildDailyReportRecordFromSource(
       contentFormat: source.contentFormat,
       sourceLabel: source.sourceLabel,
       assetBasePath: source.assetBasePath,
+      language: source.language,
+      availableLanguages: source.availableLanguages,
     },
   } satisfies DailyReportRecord;
 }
