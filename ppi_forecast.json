@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-06-29T00:05:00Z",
+  "generatedAt": "2026-06-29T06:39:00Z",
   "reportDate": "2026-06-29",
   "title": "US PPI Forecast Snapshot",
-  "summary": "May headline PPI surged +1.1% MoM on gasoline +23.4%, but June energy prices have collapsed further with WTI below $71 and US gasoline near $2.90. Core passthrough from petrochemicals and freight remains sticky but should begin fading. The Manifold prediction market prices only a 32% chance of headline PPI at or above +0.3% MoM.",
-  "baseCase": "Headline cools sharply on energy mean-reversion; core fades to +0.3% as lagged passthrough begins to ease",
-  "conviction": 68,
+  "summary": "May headline PPI surged +1.1% MoM on gasoline +23.4%, but June energy prices collapsed further with WTI near $70 and US gasoline near $2.90. Core passthrough from petrochemicals and freight remains sticky but should begin fading. The Fed held rates at the June 17 FOMC and removed easing bias; a cooler PPI would be welcome relief for risk assets.",
+  "baseCase": "Headline cools sharply on energy mean-reversion; core fades to +0.2% as lagged passthrough begins to ease",
+  "conviction": 65,
   "release": {
     "name": "PPI",
     "period": "Jun 2026",
@@ -12,22 +12,22 @@
     "releaseTimeEt": "08:30 ET",
     "headlineMoM": "0.1%",
     "headlineYoY": "6.3%",
-    "coreMoM": "0.3%",
+    "coreMoM": "0.2%",
     "coreYoY": "5.2%",
     "priorHeadlineMoM": "1.1%",
     "priorHeadlineYoY": "6.5%",
     "priorCoreMoM": "0.8%",
     "priorCoreYoY": "5.1%",
     "bias": "COOLER",
-    "confidence": 68,
-    "thesis": "May headline surged +1.1% on gasoline +23.4%, but June energy PPI likely cools dramatically as WTI fell from $115 to below $71. Core goods passthrough remains sticky near +0.3% on lagged petrochemical costs, but should begin fading. The Fed watches core; headline volatility is noise."
+    "confidence": 65,
+    "thesis": "May headline surged +1.1% on gasoline +23.4%, but June energy PPI likely cools dramatically as WTI fell from $115 to near $70. Core goods passthrough remains sticky near +0.2% on lagged petrochemical costs, but should begin fading. The Fed watches core; headline volatility is noise."
   },
   "scenarios": [
     {
       "id": "base",
       "label": "Base case",
       "probability": 55,
-      "outcome": "Headline +0.1%, core +0.3%. Energy mean-reverts sharply; core goods pressure fades but services remain sticky.",
+      "outcome": "Headline +0.1%, core +0.2%. Energy mean-reverts sharply; core goods pressure fades but services remain sticky.",
       "marketReadthrough": "Rates digest the headline but focus on core. No major Fed repricing. Cyclicals stabilize if margin narrative holds. Treasury yields drift lower.",
       "favoredAssets": [
         "Industrials",
@@ -39,8 +39,8 @@
     {
       "id": "hot",
       "label": "Hotter pipeline pressure",
-      "probability": 20,
-      "outcome": "Headline +0.5%, core +0.5%. Energy does not cool enough; core goods re-accelerate on tariff passthrough and freight.",
+      "probability": 25,
+      "outcome": "Headline +0.4%, core +0.4%. Energy does not cool enough; core goods re-accelerate on tariff passthrough and freight.",
       "marketReadthrough": "Rates higher, USD firmer, margin-sensitive equities under pressure. Fed hawkishness extends on core stickiness.",
       "favoredAssets": [
         "USD",
@@ -52,8 +52,8 @@
     {
       "id": "cool",
       "label": "Cleaner disinflation pulse",
-      "probability": 25,
-      "outcome": "Headline -0.2%, core +0.2%. Energy collapses further; core passthrough fades faster than expected.",
+      "probability": 20,
+      "outcome": "Headline -0.2%, core +0.1%. Energy collapses further; core passthrough fades faster than expected.",
       "marketReadthrough": "Fed-cut odds rise, rates soften, broader equity appetite improves. Margin relief narrative strengthens.",
       "favoredAssets": [
         "Growth",
@@ -92,7 +92,7 @@
     {
       "label": "Commodity complex",
       "value": "Oil and metals",
-      "note": "WTI below $71, gasoline near $2.90. War premium erased. If it holds, energy PPI collapses. Watch supply risk and tariff pass-through."
+      "note": "WTI near $70, gasoline near $2.90. War premium largely erased. If it holds, energy PPI collapses. Watch supply risk and tariff pass-through."
     },
     {
       "label": "Pass-through",
@@ -102,7 +102,7 @@
   ],
   "keyDrivers": [
     "May core PPI printed +0.8% MoM — the largest advance since March 2022. This is not just an energy story.",
-    "Oil war premium evaporated further: WTI $115 -> below $71. Gasoline near $2.90. Energy PPI should collapse in June.",
+    "Oil war premium evaporated further: WTI $115 -> near $70. Gasoline near $2.90. Energy PPI should collapse in June.",
     "PPI matters most when it shifts margin expectations or the CPI narrative. June CPI is the transmission confirmation.",
     "Services less trade/transport/warehousing rose +0.7% in May. If this repeats, core stays sticky regardless of energy."
   ],
