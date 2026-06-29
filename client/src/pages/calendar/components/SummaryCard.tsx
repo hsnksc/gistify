@@ -46,7 +46,7 @@ function VixGauge({ value }: { value: number | null }) {
   );
 }
 
-function FearGreedGauge({ value }: { value: number | null }) {
+function FearGreedGauge({ value, language }: { value: number | null; language: AppLanguage }) {
   if (value === null) return null;
   const pct = Math.min(value, 100);
   let color = "bg-emerald-500";
@@ -55,12 +55,12 @@ function FearGreedGauge({ value }: { value: number | null }) {
   else if (value <= 55) color = "bg-slate-400";
   else if (value <= 75) color = "bg-emerald-400";
   else color = "bg-emerald-500";
-  let label = "Neutral";
-  if (value <= 25) label = "Extreme Fear";
-  else if (value <= 45) label = "Fear";
-  else if (value <= 55) label = "Neutral";
-  else if (value <= 75) label = "Greed";
-  else label = "Extreme Greed";
+  let label = copy(language, "Nötr", "Neutral");
+  if (value <= 25) label = copy(language, "Aşırı Korku", "Extreme Fear");
+  else if (value <= 45) label = copy(language, "Korku", "Fear");
+  else if (value <= 55) label = copy(language, "Nötr", "Neutral");
+  else if (value <= 75) label = copy(language, "Açgözlülük", "Greed");
+  else label = copy(language, "Aşırı Açgözlülük", "Extreme Greed");
   return (
     <div className="mt-2">
       <div className="flex items-center justify-between mb-1">
@@ -147,7 +147,7 @@ export function SummaryCard({
             <VixGauge value={vixValue} />
           </div>
           <div className="rounded-xl border border-white/10 bg-black/20 px-3.5 py-3">
-            <FearGreedGauge value={fgValue} />
+            <FearGreedGauge value={fgValue} language={language} />
           </div>
         </div>
       </CardContent>

@@ -39,7 +39,7 @@ export default function Landing({
   const previewTabs = [
     {
       id: "flow" as const,
-      label: "Flow",
+      label: copy(language, "Akis", "Flow"),
       icon: Radar,
       detail: copy(language, "ucretsiz", "free"),
     },

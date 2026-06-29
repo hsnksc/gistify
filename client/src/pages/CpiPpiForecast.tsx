@@ -872,7 +872,7 @@ function ForecastWorkspaceSection({
                 </p>
               </div>
               <h2 className="mt-0.5 heading-condensed text-base leading-none text-foreground md:text-lg">
-                {forecast.title || `${forecast.release.name} Forecast Snapshot`}
+                {forecast.title || `${forecast.release.name} ${copy(language, "Tahmin Ozeti", "Forecast Snapshot")}`}
               </h2>
               <p className="mt-1 text-[12px] leading-5 text-foreground/84">
                 {forecast.summary ||

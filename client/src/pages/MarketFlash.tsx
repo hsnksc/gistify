@@ -1117,7 +1117,7 @@ function EarningsCalendar({
                     </div>
                     {item.expectedMove ? (
                       <span className="text-[12px] text-muted-foreground">
-                        Move {item.expectedMove}
+                        {copy(language, "Hareket", "Move")} {item.expectedMove}
                       </span>
                     ) : null}
                   </div>
@@ -1462,8 +1462,8 @@ function StockDetailModal({
           {mover.week52Range ? (
             <div className="rounded-xl border border-white/10 bg-black/20 p-3">
               <div className="flex items-center justify-between text-[11px] text-muted-foreground">
-                <span>52W Low {formatNumber(low52)}</span>
-                <span>52W High {formatNumber(high52)}</span>
+                <span>{copy(language, "52H Düşük", "52W Low")} {formatNumber(low52)}</span>
+                <span>{copy(language, "52H Yüksek", "52W High")} {formatNumber(high52)}</span>
               </div>
               <div className="mt-2 h-2 overflow-hidden rounded-full bg-muted">
                 <div

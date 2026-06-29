@@ -257,7 +257,7 @@ export default function Home({ language }: { language: AppLanguage }) {
     }
 
     const total = valid.reduce((sum, position) => sum + (position.ivRank || 0), 0);
-    return `%${Math.round(total / valid.length)}`;
+    return language === "en" ? `${Math.round(total / valid.length)}%` : `%${Math.round(total / valid.length)}`;
   }, [positions]);
 
   const avgCpr = useMemo(() => {
