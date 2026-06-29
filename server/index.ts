@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import prerender from "prerender-node";
+import { registerSeoRoutes } from "./seo-routes";
 import { createServer } from "http";
 import crypto from "node:crypto";
 import fs from "node:fs";
@@ -2888,6 +2889,38 @@ function buildSitemapXml(): string {
     });
   }
 
+  // Programmatic SEO pages
+  const progTickers = ["AAPL", "NVDA", "TSLA", "MSFT", "AMD", "AMZN", "META", "GOOGL", "NFLX", "CRM"];
+  for (const ticker of progTickers) {
+    entries.push({
+      loc: `${baseUrl}/earnings/${ticker}`,
+      priority: "0.8",
+      changefreq: "daily",
+    });
+  }
+
+  const progStrategies = [
+    "iron-condor", "0dte-straddle", "earnings-gap-fade",
+    "vwap-bounce", "opening-range-breakout", "momentum-continuation",
+    "bull-call-spread", "bear-put-spread", "calendar-spread", "butterfly-spread",
+  ];
+  for (const slug of progStrategies) {
+    entries.push({
+      loc: `${baseUrl}/strategies/${slug}`,
+      priority: "0.7",
+      changefreq: "weekly",
+    });
+  }
+
+  const progScanners = ["momentum", "high-iv", "pre-earnings", "gap-up", "gap-down", "unusual-volume"];
+  for (const type of progScanners) {
+    entries.push({
+      loc: `${baseUrl}/scanners/${type}`,
+      priority: "0.6",
+      changefreq: "hourly",
+    });
+  }
+
   const urls = entries
     .map(
       entry => `  <url>
@@ -3520,6 +3553,9 @@ async function startServer() {
   app.get("/refund", (_req, res) => {
     res.status(200).type("html").send(renderRefundPageHtml());
   });
+
+  // ── Programmatic SEO Routes ──
+  registerSeoRoutes(app);
 
   // /app and /app/* should not be indexed as a duplicate of the marketing pages.
   app.get(["/app", "/app/*"], (_req, res) => {
