@@ -1,111 +1,109 @@
-# Market Flash Stocks — Intra-Market Hourly Report
-
-**Rapor Tarihi:** 2026-06-26  
-**Uretim Zamani:** 2026-06-26 20:01 TSİ (13:01 ET)  
-**Rapor Tipi:** Intra-Market Hourly  
-**Piyasa Durumu:** Açık (ET 09:30–16:00)
+# Market Flash — Intra-Market Hourly
+**Rapor Tarihi:** 2026-06-29 | **TSİ:** 19:01 | **ET:** 12:01 PM
+**Rapor Tipi:** Intra-Market Hourly | **VIX Rejimi:** Normal (18.42)
 
 ---
 
-## 1. Market Summary (SPY / QQQ / IWM / VIX)
+## 1. Piyasa Özeti (Market Summary)
 
-| Ticker | Fiyat | Değişim % | VWAP | Açılış | High | Low | Önceki Kapanış | Not |
-|--------|-------|-----------|------|--------|------|-----|----------------|-----|
-| **SPY** | $734.69 | +0.05% | $732.69 | $730.40 | $736.53 | $726.86 | $734.30 | VWAP üstünde, risk-on bias. Gap up açılış sonrası continuation. |
-| **QQQ** | $713.41 | -0.41% | $710.59 | $709.09 | $715.56 | $702.81 | $716.38 | VWAP üstünde. Tech mixed — MSFT güçlü, NVDA/INTC zayıf. |
-| **IWM** | $298.57 | -0.11% | $298.11 | $297.81 | $300.03 | $295.73 | $298.91 | VWAP üstünde. Small-cap flat, relative strength var. |
-| **VIX** | ~20.14 | +6.62% | — | $19.70 | $20.38 | $19.52 | $18.89 | Elevated-normal borderline. Opsiyon primleri yüksek. |
+| Ticker | Fiyat | Değişim % | VWAP | Açılış | High | Low | Önceki Kapanış |
+|--------|-------|-----------|------|--------|------|-----|----------------|
+| SPY | 738.74 | 1.34% | 736.91 | 736.525 | 739.895 | 732.09 | 728.99 |
+| QQQ | 719.19 | 1.79% | 714.54 | 714.255 | 719.27 | 705.172 | 706.52 |
+| IWM | 296.83 | -1.0% | 296.89 | 298.11 | 299.16 | 294.68 | 299.83 |
+| VIX | 18.42 | 0.05% | N/A | 18.6 | 18.6 | 18.25 | 18.41 |
 
-> **VIX Kritik Not:** Finnhub API VIX için `{"c":0}` döndürdü. CBOE ve MarketWatch cross-check ile VIX ~20.14 doğrulandı. Regime: 15–20 normal, 20–30 elevated. VIX ~20 = opsiyon primleri pahalı, dikkatli ol.
+**VWAP Durumu:**
+- SPY: VWAP 736.91 **üzerinde** → bullish (fiyat: 738.74)
+- QQQ: VWAP 714.54 **üzerinde** → bullish (fiyat: 719.19)
+- IWM: VWAP 296.89 **altında** → bearish (fiyat: 296.83)
+- VIX: 18.42 (normal rejim, 15-20 band) → options premium moderately priced
 
 ---
 
-## 2. Top Movers
+## 2. Top Movers — Günün En Büyük Hareket Yapanları
 
-### Gainers (5)
-
+### Gainers (Yukarı Yönlü)
 | Ticker | Şirket | Fiyat | Değişim % | Hacim | Katalizör |
 |--------|--------|-------|-----------|-------|-----------|
-| **FCEL** | FuelCell Energy | $24.77 | +26.12% | 13M | Clean energy momentum continuation, sektör rotasyonu |
-| **APOG** | Apogee Enterprises | $50.74 | +19.36% | 338K | Q1 2027 earnings beat: $0.57 vs $0.43 cons |
-| **MRNA** | Moderna | $67.95 | +13.72% | 7M | Biotech sektör momentum, aşı pipeline iyimserliği |
-| **SLS** | SELLAS Life Sciences | $11.95 | +13.38% | 7M | Biotech momentum, klinik gelişmeler |
-| **AMAT** | Applied Materials | $668.00 | +13.42% | 16M | AI infrastructure talebi, yarıiletken ekipman güçlü |
+| CHTR | Charter Communications Inc. | $169.5 | +26.83% | 1.39M | Comcast NBCUniversal spin-off announcement boosted telecom/media sector; Charter perceived as key broadband infrastructure beneficiary |
+| CMCSA | Comcast Corporation | $28.2 | +21.71% | 8.98M | Announced plan to spin off NBCUniversal cable networks into standalone entity; Wall Street views as value-unlocking event |
+| IRDM | Iridium Communications Inc. | $52.24 | +20.04% | 395.16K | Strong Q2 subscriber and service revenue growth; satellite IoT connectivity demand accelerating; earnings day reaction |
+| QDEL | QuidelOrtho Corporation | $16.95 | +22.92% | 65.23K | Turnaround optimism on diagnostic testing stabilization; cost restructuring showing traction; potential M&A chatter in med-tech space |
+| RBLX | Roblox Corporation | $50.5 | +6.18% | 294.49K | Gaming/platform sector recovery; user engagement metrics above Street estimates; metaverse-adjacent momentum in tech rotation |
 
-### Losers (5)
-
+### Losers (Aşağı Yönlü)
 | Ticker | Şirket | Fiyat | Değişim % | Hacim | Katalizör |
 |--------|--------|-------|-----------|-------|-----------|
-| **ON** | ON Semiconductor | $92.81 | -21.87% | 18M | Q2 earnings miss / guidance cut, yarıiletken rotasyonu |
-| **RGC** | Regencell Bioscience | $6.28 | -15.93% | 199K | Biotech volatilitesi, kar realizasyonu |
-| **CAPR** | Capricor Therapeutics | $26.37 | -13.23% | 1M | Biotech kar realizasyonu, rekabet endişeleri |
-| **BE** | Bloom Energy | $270.52 | -12.53% | 8M | Clean energy kar realizasyonu, guidance endişeleri |
-| **WDC** | Western Digital | $603.63 | -10.61% | 5M | Memory/storage zayıflığı, NAND fiyat baskısı |
+| BLD | TopBuild Corp. | $401.18 | -5.72% | 33.62K | Housing/insulation demand concerns; mortgage rates staying elevated squeezes residential construction activity; guidance caution ahead |
+| NSC | Norfolk Southern Corporation | $291.72 | -6.74% | 27 | Rail sector volume softness; intermodal demand down YoY; East Ohio derailment overhang on regulatory risk persists |
+| CHDN | Churchill Downs Inc. | $83.0 | -6.67% | 115 | Gaming/leisure discretionary spending pullback; regional casino competition intensifying; softer premium event attendance |
+| LKQ | LKQ Corporation | $25.0 | -7.51% | 115 | Auto parts aftermarket demand slowing; collision repair volume down; EV adoption shifting parts mix faster than expected |
+| VZ | Verizon Communications Inc. | $43.32 | -6.86% | 25M | Earnings-day pressure; wireless subscriber growth concerns; capex guidance weighing on free cash flow outlook; telecom sector rotation |
 
 ---
 
-## 3. Earnings Takvimi (Bugün Açıklananlar)
+## 3. Earnings Takvimi — 29 Haziran 2026
 
-> ⚠️ **Uyarı:** Earnings günü = IV crush riski. Aşağıdaki hisselerde **0DTE YASAK**.
+| Ticker | Şirket | Zaman | Cons EPS | Cons Rev | Önceki EPS | Önceki Rev | Expected Move | Analyst | Not |
+|--------|--------|-------|----------|----------|------------|------------|---------------|---------|-----|
+| CRMT | America's Car-Mart, Inc. | before-open | -0.66 | 334900000.0 | null | null | null | neutral | Prior EPS and priorRev data not found in available sources. expectedMove and consensusRange not available. IV crush risk: earnings already reported before open - 0DTE YASAK if reaction continues. |
+| CMCSA | Comcast Corporation | before-open | null | null | null | null | null | bullish | Earnings day with NBCUniversal spin-off catalyst. Consensus data not available in scraped sources. IV crush risk - 0DTE YASAK. |
+| HON | Honeywell International Inc. | before-open | null | null | null | null | null | neutral | Earnings day. Stock showing abnormal -50% move likely due to corporate action/spin-off data error in feeds. Verify ticker before trading. IV crush risk - 0DTE YASAK. |
+| IRDM | Iridium Communications Inc. | before-open | null | null | null | null | null | bullish | Earnings day with +20% reaction. Consensus data not available. IV crush risk - 0DTE YASAK. |
+| VZ | Verizon Communications Inc. | before-open | null | null | null | null | null | bearish | Earnings day with -6.86% reaction. Consensus data not available. IV crush risk - 0DTE YASAK. |
+| RKLB | Rocket Lab USA, Inc. | before-open | null | null | null | null | null | bullish | Earnings day. Space/launch sector momentum. Consensus data not available. IV crush risk - 0DTE YASAK. |
+| AVAV | AeroVironment, Inc. | after-close | 1.49 | 570000000.0 | null | null | null | bullish | After-market close. Defense/drone sector. Prior EPS and expectedMove not available. IV crush risk - 0DTE YASAK. |
+| CNXC | Concentrix Corporation | after-close | 2.69 | 2500000000.0 | null | null | null | neutral | After-market close. BPO/customer experience sector. Prior EPS and expectedMove not available. IV crush risk - 0DTE YASAK. |
+| QMCO | Quantum Corporation | after-close | -0.31 | 74200000.0 | null | null | null | neutral | After-market close. Data storage/backup. Prior EPS and expectedMove not available. IV crush risk - 0DTE YASAK. |
 
-| Ticker | Şirket | Zaman | Consensus EPS | Actual EPS | Önceki Yıl EPS | Consensus Rev | Kanaat | Not |
-|--------|--------|-------|---------------|------------|----------------|---------------|--------|-----|
-| **APOG** | Apogee Enterprises | BMO | $0.43 | $0.57 | -$0.13 | $333.8M | Bullish | Beat by $0.14. Mimarlık camı talebi güçlü. |
-| **DRI** | Darden Restaurants | BMO | $3.63 | $3.66 | $2.98 | $3.73B est | Bullish | Beat by $0.03, revenue hafif miss. Olive Garden güçlü. |
-| **SNX** | TD SYNNEX | BMO | $4.07 | $4.85 | $2.80 | $16.80B est | Bullish | Massive beat. Revenue $19.57B vs $16.80B. Stok -3.5% guidance endişesiyle. |
-| **MKC** | McCormick | BMO | $0.69 | — | $0.69 | $1.90B est | Neutral | Flat YoY EPS. Consumer staples defensive. |
-| **AYI** | Acuity Brands | BMO | $5.19 | — | — | — | Bullish | Aydınlatma/endüstriyel talep. Stok +1.28%. |
-| **BB** | BlackBerry | BMO | $0.03 | — | — | — | Neutral | Cybersecurity/IoT turnaround. Stok +8.51%. |
-
----
-
-## 4. CALL / PUT Setups
-
-### CALL Setups (5)
-
-| Ticker | Yön | Entry | Hedef | Stop | R/R | Zaman | Rasyonel | VWAP |
-|--------|-----|-------|-------|------|-----|-------|----------|------|
-| **AMAT** | CALL | $660 | $690 | $645 | 2.0 | Intraday | AI infrastructure talebi, volume confirmation | Üstü |
-| **FCEL** | CALL | $24.00 | $27.00 | $22.80 | 2.5 | 0DTE | Clean energy momentum, RVOL > 2 | Üstü |
-| **APOG** | CALL | $49.50 | $55.00 | $47.00 | 2.2 | Intraday | Earnings beat sonrası momentum | Üstü |
-| **MSFT** | CALL | $360 | $380 | $352 | 2.5 | Intraday | Tech leadership, gap fill continuation | Üstü |
-| **AAPL** | CALL | $273 | $285 | $267 | 2.0 | Intraday | Stabil momentum, large-cap liquidity | Üstü |
-
-### PUT Setups (5)
-
-| Ticker | Yön | Entry | Hedef | Stop | R/R | Zaman | Rasyonel | VWAP |
-|--------|-----|-------|-------|------|-----|-------|----------|------|
-| **ON** | PUT | $94 | $85 | $98 | 2.25 | Intraday | Earnings miss, breakdown continuation | Altı |
-| **INTC** | PUT | $130 | $122 | $134 | 2.0 | Intraday | Tech weakness, gap down continuation | Altı |
-| **BE** | PUT | $275 | $255 | $283 | 2.5 | Intraday | Clean energy distribution, valuation compression | Altı |
-| **WDC** | PUT | $610 | $585 | $622 | 2.08 | Intraday | Storage weakness, breakdown pattern | Altı |
-| **NVDA** | PUT | $196 | $188 | $200 | 2.0 | Intraday | Semiconductor rotasyonu, large-cap PUT liquidity | Altı |
+⚠️ **Earnings günü = IV crush riski.** 0DTE opsiyonlar YASAK. Daha uzun DTE tercih edin.
 
 ---
 
-## 5. VWAP Notları & Risk Değerlendirmesi
+## 4. CALL Setups (5 adet)
 
-### VWAP Notları
-- **SPY** VWAP üstünde (+$2.00), **QQQ** VWAP üstünde (+$2.82), **IWM** VWAP üstünde (+$0.46).
-- Tüm major indexler VWAP üstünde → **risk-on bias**.
-- SPY gap up açılış ($730.40) sonrası $736.53 high yaparak continuation gösterdi. Gap fill riski düşük.
-- Semiconductors (ON, INTC, NVDA) VWAP altında zayıf.
-- Tech mega-caps (MSFT, AAPL) VWAP üstünde güçlü.
-- Clean energy/biotech (FCEL, MRNA, SLS) VWAP üstünde momentum güçlü.
-
-### Risk Assessment
-- **Risk Seviyesi:** Medium
-- **VIX Regime:** VIX ~20.14, elevated-normal borderline. Opsiyon primleri yüksek, directional trade costları artmış.
-- **Sektör Rotasyonu:** Semiconductors zayıf (ON -21.87%, NVDA -0.74%, INTC -3.01%). Clean Energy/Biotech güçlü (FCEL +26%, MRNA +13%). Tech mega-caps karışık (MSFT +5%, AAPL +0.7%).
-- **Earnings Riski:** Bugün 6+ önemli earnings açıklandı. IV crush aktif. Earnings hisselerinde 0DTE YASAK.
-- **Makro Risk:** Geopolitical risk hafifliyor (Iran peace talks). Petrol fiyatları düşüş trendinde. FOMC bekleniyor.
+| Ticker | Yön | Entry | Target | Stop | R/R | Zaman Dilimi | Rationale |
+|--------|-----|-------|--------|------|-----|--------------|-----------|
+| SPY | CALL | 738.5 | 742.0 | 735.0 | 1.0:1 | 0DTE | SPY VWAP 736.91 uzerinde ve gap-fill sonrasi momentum continuation. Volume onayli yukari trend. ET 12:00 sonrasi risk-on bias. |
+| QQQ | CALL | 719.0 | 724.0 | 714.0 | 1.0:1 | 0DTE | QQQ VWAP 714.54 uzerinde guclu tech momentum. NVDA/MSFT/AMZN liderlik. Gap-open sonrasi trend devami. |
+| CHTR | CALL | 169.0 | 175.0 | 164.0 | 1.2:1 | intraday | Comcast spin-off katalizoruyle %26+ momentum. Hacim yuksek (1.39M). VWAP reclaim sonrasi continuation. |
+| CMCSA | CALL | 28.0 | 30.0 | 26.5 | 1.33:1 | intraday | NBCUniversal spin-off deger acma potansiyeli. Earnings day + haber akisi cakismasi. VWAP uzerinde. |
+| AMZN | CALL | 234.0 | 240.0 | 230.0 | 1.5:1 | 0DTE | Consumer discretionary/tech hibrit. Gun ici +4.66% momentum. VWAP uzerinde. Broad market risk-on. |
 
 ---
 
-## 6. Next Day Carry Forward
+## 5. PUT Setups (5 adet)
 
-Hourly raporunda boş array: `[]`
+| Ticker | Yön | Entry | Target | Stop | R/R | Zaman Dilimi | Rationale |
+|--------|-----|-------|--------|------|-----|--------------|-----------|
+| IWM | PUT | 297.0 | 292.0 | 300.0 | 1.67:1 | 0DTE | IWM VWAP 296.89 altinda. Small-cap zayifligi. SPY/QQQ ayrisma - risk-off small-caps. Trend devami. |
+| BLD | PUT | 400.0 | 385.0 | 410.0 | 1.5:1 | intraday | Housing/insulation zayifligi. VWAP altinda breakdown. Mortgage rate yuksek kaliciligi. |
+| VZ | PUT | 43.5 | 41.0 | 45.0 | 1.67:1 | intraday | Earnings day asagisi. Subscriber growth endisesi. VWAP altinda momentum. Telecom sektor rotasyonu. |
+| CHDN | PUT | 83.0 | 78.0 | 86.0 | 1.67:1 | intraday | Gaming/leisure discretionary pullback. VWAP altinda. Zayif hacim ama sektor zayifligi. |
+| NSC | PUT | 292.0 | 280.0 | 298.0 | 2.0:1 | swing | Rail sektor hacim zayifligi. Intermodal dususu. VWAP altinda momentum devami. |
 
 ---
 
-*Rapor dili: Türkçe (finansal jargon İngilizce). Tüm veriler Finnhub API + web araması ile doğrulanmıştır. Eksik alanlar için `null` + note açıklaması kullanılmıştır.*
+## 6. VWAP Notları & Risk Değerlendirmesi
+
+**VWAP Notes:** SPY VWAP 736.91 uzerinde (738.74) -> risk-on bias. QQQ VWAP 714.54 uzerinde (719.19) -> tech guclu. IWM VWAP 296.89 altinda (296.83) -> small-cap zayif. Gap-fill: SPY acilis 736.525 -> kisa gap-up filled ve uzerine cikti. Large-cap / small-cap ayrismasi net: SPY+QQQ pozitif, IWM negatif.
+
+**Risk Assessment:**
+- **Seviye:** medium
+- **VIX Rejimi:** VIX 18.42 (normal, 15-20 band). Kisa vadeli complacency degil ama fear de yok. Options premium moderately priced.
+- **Sektor Rotasyonu:** Communication Services guclu (CMCSA/CHTR/IRDM). Tech guclu (QQQ +1.79%). Small-cap/Industrials zayif (IWM -1.0%). Consumer Discretionary/Construction zayif (BLD).
+- **Earnings Riski:** CMCSA, HON, IRDM, VZ, RKLB earnings gunu. AVAV, CNXC, QMCO after-close. IV crush risk aktif. 0DTE earnings stocks YASAK.
+- **Makro Risk:** FOMC beklentisi yakin (temmuz). Mortgage rates yuksek kaliciligi housing sektorunu baski. Tariff/China trade risk arka planda.
+
+---
+
+## 7. nextDayCarryForward
+
+Hourly raporunda BOŞ array: `[]`
+
+---
+
+*Bu rapor bilgilendirme amacli uretilmistir. Yatirim tavsiyesi degildir. Trading risk icerir.*
+
+**Gistify** → gistify.pro
