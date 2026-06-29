@@ -6,7 +6,6 @@ import {
   Search,
   SearchX,
   Sparkles,
-  UploadCloud,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import EmptyState from "@/components/ui/empty-state";
@@ -23,7 +22,6 @@ import {
 import { copy, type AppLanguage } from "@/lib/i18n";
 import FlowLayout from "../components/FlowLayout";
 import ReportGalleryCard from "../components/reports/ReportGalleryCard";
-import ReportUploadDropzone from "../components/reports/ReportUploadDropzone";
 import { useFlowReportSummaries } from "../hooks/useFlowReportSummaries";
 import {
   adaptFlowReportToStoredReport,
@@ -51,14 +49,11 @@ export default function ReportsIndexPage({
   const { reports: serverReports, loading: serverLoading, error: serverError, reload } =
     useFlowReportSummaries(language, { reportKind: "stock" });
   const {
-    clearUploadQueue,
     error: localError,
     hydrate,
     loading: localLoading,
     removeReport,
     reports: localReports,
-    uploadFiles,
-    uploadQueue,
   } = useReportStore(language);
 
   const serverGalleryReports = useMemo(
@@ -145,8 +140,8 @@ export default function ReportsIndexPage({
       )
     : copy(
         language,
-        "HTML hisse raporlarini yukle, arsivle ve tarih bazli galeride ac.",
-        "Upload HTML stock reports, archive them and open them in a date-based gallery."
+        "HTML hisse raporlarini arsivle ve tarih bazli galeride ac.",
+        "Archive and browse stock HTML reports in a date-based gallery."
       );
 
   usePageMeta({
@@ -165,8 +160,8 @@ export default function ReportsIndexPage({
       }
       description={copy(
         language,
-        "Hisse HTML raporlarini tek yerde yukle, filtrele ve arsivle. Yayinli raporlar ile yerel yuklemeler ayni galeride acilir.",
-        "Upload, filter and archive stock HTML reports in one place. Published reports and local uploads open in the same gallery."
+        "Hisse HTML raporlarini tek yerde filtrele ve arsivle. Yayinli raporlar galeride acilir.",
+        "Filter and archive stock HTML reports in one place. Published reports open in the gallery."
       )}
       actions={
         <>
@@ -216,14 +211,6 @@ export default function ReportsIndexPage({
         </article>
       </section>
 
-      {!forcedTicker ? (
-        <ReportUploadDropzone
-          language={language}
-          onFilesSelected={files => void uploadFiles(files)}
-          onQueueClear={clearUploadQueue}
-          uploadQueue={uploadQueue}
-        />
-      ) : null}
 
       <section className="rounded-xl border border-border bg-card/95 p-6 shadow-2xl">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
@@ -400,27 +387,6 @@ export default function ReportsIndexPage({
         </div>
       )}
 
-      <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
-        <div className="flex items-start gap-3">
-          <UploadCloud className="mt-1 size-4 text-sky-300" />
-          <div className="space-y-2 text-sm leading-7 text-muted-foreground">
-            <p>
-              {copy(
-                language,
-                "Yerel yuklemeler IndexedDB icinde sadece bu tarayicida tutulur. Uretimde bu katman object storage + veritabani ile degistirilebilir.",
-                "Local uploads are stored in IndexedDB only inside this browser. In production this layer can be swapped for object storage + database persistence."
-              )}
-            </p>
-            <p>
-              {copy(
-                language,
-                "Yayinli kaynaklar ise mevcut Flow HTML arsivinden okunur; boylece yeni upload modulu onceki raporlari bozmadan ayni galeriye katilir.",
-                "Published sources are read from the existing Flow HTML archive so the new upload module joins the same gallery without breaking earlier reports."
-              )}
-            </p>
-          </div>
-        </div>
-      </section>
     </FlowLayout>
   );
 }

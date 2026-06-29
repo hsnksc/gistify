@@ -642,7 +642,7 @@ export default function EarningReportPostTab({
 
                   <div className="rounded-xl border border-border bg-card/70 p-2.5">
                     <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                      {copy(language, "Execution / risk", "Execution / risk")}
+                      {copy(language, "İşlem / risk", "Execution / risk")}
                     </p>
                     <ul className="mt-1.5 space-y-1 text-xs leading-5 text-muted-foreground">
                       {position.blueprint.putItems.length ? (
@@ -650,7 +650,7 @@ export default function EarningReportPostTab({
                           <li key={`${position.ticker}-put-${item}`}>{item}</li>
                         ))
                       ) : (
-                        <li>{copy(language, "Ek execution notu yok.", "No extra execution note.")}</li>
+                        <li>{copy(language, "Ek işlem notu yok.", "No extra execution note.")}</li>
                       )}
                     </ul>
                   </div>
@@ -694,7 +694,7 @@ export default function EarningReportPostTab({
         <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <SectionTitle
             eyebrow={copy(language, "Portfolio", "Portfolio")}
-            title={copy(language, "Portfoy ve allocation notlari", "Portfolio and allocation notes")}
+            title={copy(language, "Portföy ve tahsis notları", "Portfolio and allocation notes")}
           />
           <div className="mt-6">
             <DataTable
@@ -718,7 +718,7 @@ export default function EarningReportPostTab({
         <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <SectionTitle
             eyebrow={copy(language, "Risk Matrix", "Risk Matrix")}
-            title={copy(language, "Makro ve setup riskleri", "Macro and setup risks")}
+            title={copy(language, "Makro ve kurulum riskleri", "Macro and setup risks")}
           />
           <div className="mt-6">
             <DataTable

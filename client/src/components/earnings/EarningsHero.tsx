@@ -54,7 +54,7 @@ export default function EarningsHero({
             </div>
             <h1 className="text-2xl font-bold tracking-tight text-white md:text-3xl">
               {data.title ||
-                copy(language, "Earnings Stratejisi", "Earnings Strategy")}
+                copy(language, "Kazanç Stratejisi", "Earnings Strategy")}
             </h1>
             {data.summary ? (
               <p className="max-w-2xl text-sm leading-relaxed text-slate-400">

@@ -125,7 +125,7 @@ export default function GreeksDashboard({
         <div className="mb-4 flex items-center gap-2">
           <Activity className="size-5 text-sky-400" />
           <h2 className="text-lg font-bold text-white">
-            {copy(language, "Greeks Dashboard", "Greeks Dashboard")}
+            {copy(language, "Greeks Panosu", "Greeks Dashboard")}
           </h2>
         </div>
         <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-900/40 p-6 text-center text-sm text-slate-400">
@@ -145,7 +145,7 @@ export default function GreeksDashboard({
         <div className="flex items-center gap-2">
           <Activity className="size-5 text-sky-400" />
           <h2 className="text-lg font-bold text-white">
-            {copy(language, "Greeks Dashboard", "Greeks Dashboard")}
+            {copy(language, "Greeks Panosu", "Greeks Dashboard")}
           </h2>
           <span className="rounded-full bg-slate-800 px-2 py-0.5 text-xs font-bold text-slate-400">
             {sorted.length}

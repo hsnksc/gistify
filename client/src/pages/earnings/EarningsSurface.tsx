@@ -494,7 +494,7 @@ export function ExecutiveSummaryPanel({
         </div>
         <div className="w-full">
           <h2 className="text-xl font-bold text-white">
-            {copy(language, "Executive summary", "Executive summary")}
+            {copy(language, "Yönetici özeti", "Executive summary")}
           </h2>
           <div className="mt-1 h-px w-full bg-gradient-to-r from-sky-500/30 to-transparent" />
         </div>

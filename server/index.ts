@@ -31,9 +31,7 @@ import type {
 } from "../shared/weeklyReports";
 import {
   createBillingStore,
-  type AuthUserRecord,
   type ShopierOrderRecord,
-  type SessionStoreRecord,
   type SubscriptionRecord,
   type SubscriptionStatus,
 } from "./billingStore";
@@ -50,6 +48,8 @@ import {
 } from "./services/flowService";
 import { createAdminAgentsRouter } from "./routes/adminAgents";
 import { createAiRouter } from "./routes/ai";
+import { createAuthRouter } from "./routes/auth";
+import { createBillingRouter } from "./routes/billing";
 import { createDailyReportsRouter } from "./routes/dailyReports";
 import { createFlowCommentsRouter } from "./routes/flow/comments";
 import { createFlowReportsRouter } from "./routes/flow/reports";
@@ -115,19 +115,6 @@ interface AuthPayload {
     isSubscribed: boolean;
   };
   accessMode: AppAccessMode;
-}
-
-interface GoogleTokenResponse {
-  access_token?: string;
-  error?: string;
-  error_description?: string;
-}
-
-interface GoogleUserInfo {
-  sub?: string;
-  email?: string;
-  name?: string;
-  picture?: string;
 }
 
 interface PortfolioPositionUpsertRequestBody {
@@ -203,11 +190,6 @@ interface PaddleSubscriptionEntity {
   current_billing_period?: PaddleSubscriptionPeriod | null;
   custom_data?: unknown;
   management_urls?: PaddleManagementUrls | null;
-}
-
-interface PaddleWebhookPayload {
-  event_type?: unknown;
-  data?: unknown;
 }
 
 interface PaddleCustomerResponse {
@@ -2944,273 +2926,54 @@ async function startServer() {
     })
   );
 
-  app.get("/api/health", (_req, res) => {
-    res.status(200).json({ ok: true });
-  });
+  app.use(
+    "/api",
+    createAuthRouter({
+      authCookieName: COOKIE_NAME,
+      billingStore,
+      buildGoogleAuthUrl,
+      clearCookie,
+      createSession,
+      getGoogleRedirectUri,
+      isPublicAccessMode,
+      normalizeEmail,
+      oauthStateCookieName: OAUTH_STATE_COOKIE,
+      oauthStateTtlSeconds: OAUTH_STATE_TTL_SECONDS,
+      parseCookies,
+      parseSessionIdFromCookie,
+      readAuthPayload,
+      sessionTtlSeconds: SESSION_TTL_SECONDS,
+      setCookie,
+      setPrivateNoStore,
+      signValue,
+    })
+  );
 
-  app.get("/api/auth/google", (req, res) => {
-    if (isPublicAccessMode()) {
-      res.redirect("/");
-      return;
-    }
-
-    if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
-      res.status(500).json({
-        error:
-          "Google OAuth ayarlari eksik. GOOGLE_CLIENT_ID ve GOOGLE_CLIENT_SECRET gerekli.",
-      });
-      return;
-    }
-
-    const state = crypto.randomBytes(24).toString("base64url");
-    setCookie(req, res, OAUTH_STATE_COOKIE, state, {
-      maxAgeSeconds: OAUTH_STATE_TTL_SECONDS,
-      path: "/",
-      httpOnly: true,
-      sameSite: "Lax",
-    });
-
-    const authUrl = buildGoogleAuthUrl(req, state);
-    if (!authUrl) {
-      res.status(500).json({ error: "Google OAuth URL olusturulamadi." });
-      return;
-    }
-
-    res.redirect(authUrl);
-  });
-
-  app.get("/api/auth/google/callback", async (req, res) => {
-    if (isPublicAccessMode()) {
-      res.redirect("/");
-      return;
-    }
-
-    const oauthError =
-      typeof req.query.error === "string" ? req.query.error : undefined;
-    if (oauthError) {
-      res.redirect("/?auth=denied");
-      return;
-    }
-
-    const code =
-      typeof req.query.code === "string" ? req.query.code : undefined;
-    const state =
-      typeof req.query.state === "string" ? req.query.state : undefined;
-    const cookies = parseCookies(req.headers.cookie);
-    const expectedState = cookies[OAUTH_STATE_COOKIE];
-
-    clearCookie(req, res, OAUTH_STATE_COOKIE);
-
-    if (!code || !state || !expectedState || state !== expectedState) {
-      res.redirect("/?auth=invalid_state");
-      return;
-    }
-
-    const clientId = process.env.GOOGLE_CLIENT_ID?.trim();
-    const clientSecret = process.env.GOOGLE_CLIENT_SECRET?.trim();
-    if (!clientId || !clientSecret) {
-      res.redirect("/?auth=missing_config");
-      return;
-    }
-
-    try {
-      const tokenBody = new URLSearchParams({
-        code,
-        client_id: clientId,
-        client_secret: clientSecret,
-        redirect_uri: getGoogleRedirectUri(req),
-        grant_type: "authorization_code",
-      });
-
-      const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: tokenBody.toString(),
-      });
-
-      const tokenData = (await tokenResponse.json()) as GoogleTokenResponse;
-      if (!tokenResponse.ok || !tokenData.access_token) {
-        console.error("Google token exchange failed", {
-          status: tokenResponse.status,
-          error: tokenData.error,
-          description: tokenData.error_description,
-        });
-        res.redirect("/?auth=token_failed");
-        return;
-      }
-
-      const userResponse = await fetch(
-        "https://openidconnect.googleapis.com/v1/userinfo",
-        {
-          headers: {
-            Authorization: `Bearer ${tokenData.access_token}`,
-          },
-        }
-      );
-
-      const userData = (await userResponse.json()) as GoogleUserInfo;
-      if (!userResponse.ok || !userData.sub || !userData.email) {
-        console.error("Google user info fetch failed", {
-          status: userResponse.status,
-          body: userData,
-        });
-        res.redirect("/?auth=userinfo_failed");
-        return;
-      }
-
-      const existingUser = billingStore.getUserById(userData.sub);
-      const nowIso = new Date().toISOString();
-      const normalizedEmail = normalizeEmail(userData.email);
-      const normalizedUser: AuthUser = {
-        id: userData.sub,
-        email: normalizedEmail || userData.email,
-        name: userData.name || normalizedEmail || userData.email,
-        picture: userData.picture,
-        createdAt: existingUser?.createdAt || nowIso,
-        updatedAt: nowIso,
-      };
-      billingStore.upsertUser(normalizedUser as AuthUserRecord);
-
-      const session = createSession(normalizedUser.id);
-      billingStore.upsertSession(session as SessionStoreRecord);
-
-      const signedSessionValue = `${session.id}.${signValue(session.id)}`;
-      setCookie(req, res, COOKIE_NAME, signedSessionValue, {
-        maxAgeSeconds: SESSION_TTL_SECONDS,
-        path: "/",
-        httpOnly: true,
-        sameSite: "Lax",
-      });
-
-      res.redirect("/");
-    } catch (error) {
-      console.error("Google OAuth callback error", error);
-      res.redirect("/?auth=server_error");
-    }
-  });
-
-  app.get("/api/auth/me", (req, res) => {
-    setPrivateNoStore(res);
-    const payload = readAuthPayload(req);
-    res.status(200).json(payload);
-  });
-
-  app.post("/api/auth/logout", (req, res) => {
-    if (isPublicAccessMode()) {
-      clearCookie(req, res, COOKIE_NAME);
-      res.status(204).send();
-      return;
-    }
-
-    const cookies = parseCookies(req.headers.cookie);
-    const sessionId = parseSessionIdFromCookie(cookies[COOKIE_NAME]);
-    if (sessionId) {
-      billingStore.deleteSession(sessionId);
-    }
-
-    clearCookie(req, res, COOKIE_NAME);
-    res.status(204).send();
-  });
-
-  app.get("/api/billing/status", (req, res) => {
-    setPrivateNoStore(res);
-    if (isPublicAccessMode()) {
-      const payload = readAuthPayload(req);
-      res.status(200).json({
-        membership: payload.membership,
-        allowListOverride: false,
-        managedSubscription: null,
-        accessMode: payload.accessMode,
-      });
-      return;
-    }
-
-    const user = getSessionUser(req);
-    if (!user) {
-      res.status(401).json({ error: "Oturum gerekli." });
-      return;
-    }
-
-    const membership = resolveMembershipForUser(user);
-    const managedSubscription = billingStore.getSubscriptionByEmail(
-      normalizeEmail(user.email)
-    );
-
-    res.status(200).json({
-      membership,
-      allowListOverride: isSubscribedEmail(user.email),
-      managedSubscription,
-      accessMode: "managed" as AppAccessMode,
-    });
-  });
-
-  app.get("/api/billing/paddle/public-config", (_req, res) => {
-    setPrivateNoStore(res);
-    const issues = getPaddleCheckoutConfigIssues();
-
-    res.status(200).json({
-      enabled: issues.length === 0,
-      environment: getPaddleEnvironment(),
-      clientToken: issues.length === 0 ? getPaddleClientToken() : null,
-      priceId: issues.length === 0 ? getPaddlePriceId() : null,
-      successUrl: getPaddleSuccessUrl() || null,
-      cancelUrl: getPaddleCancelUrl() || null,
-      issues,
-    });
-  });
-
-  app.get("/api/billing/paddle/manage", async (req, res) => {
-    setPrivateNoStore(res);
-    if (isPublicAccessMode()) {
-      res.status(409).json({
-        error:
-          "Public preview modu acik. Paddle abonelik yonetimi icin APP_ACCESS_MODE=managed olmalidir.",
-        managementUrls: null,
-      });
-      return;
-    }
-
-    const user = getSessionUser(req);
-    if (!user) {
-      res.status(401).json({ error: "Oturum gerekli.", managementUrls: null });
-      return;
-    }
-
-    const localSubscription = billingStore.getSubscriptionByEmail(
-      normalizeEmail(user.email)
-    );
-    if (
-      !localSubscription ||
-      localSubscription.provider !== "paddle" ||
-      !localSubscription.lastOrderId
-    ) {
-      res.status(200).json({
-        subscription: localSubscription,
-        managementUrls: null,
-      });
-      return;
-    }
-
-    try {
-      const managementUrls = await getPaddleManagementUrls(
-        localSubscription.lastOrderId
-      );
-
-      res.status(200).json({
-        subscription: localSubscription,
-        managementUrls,
-      });
-    } catch (error) {
-      console.error("Paddle management URL fetch failed", error);
-      res.status(502).json({
-        error: "Paddle abonelik yonetim linkleri alinamadi.",
-        subscription: localSubscription,
-        managementUrls: null,
-      });
-    }
-  });
+  app.use(
+    "/api",
+    createBillingRouter({
+      billingStore,
+      extractObjectRecord,
+      getPaddleCancelUrl,
+      getPaddleCheckoutConfigIssues,
+      getPaddleClientToken,
+      getPaddleEnvironment,
+      getPaddleManagementUrls,
+      getPaddlePriceId,
+      getPaddleServerConfigIssues,
+      getPaddleSuccessUrl,
+      getSessionUser,
+      isPublicAccessMode,
+      isSubscribedEmail,
+      normalizeEmail,
+      normalizeString,
+      readAuthPayload,
+      resolveMembershipForUser,
+      setPrivateNoStore,
+      upsertPaddleSubscriptionFromEntity,
+      verifyPaddleWebhook,
+    })
+  );
 
   app.use(
     "/api",
@@ -3347,73 +3110,6 @@ async function startServer() {
       setPrivateNoStore,
     })
   );
-
-  app.post("/api/billing/paddle/webhook", async (req, res) => {
-    if (getPaddleServerConfigIssues().length > 0) {
-      res.status(503).json({
-        error:
-          "Paddle webhook hazir degil. PADDLE_API_KEY ve PADDLE_WEBHOOK_SECRET gerekli.",
-      });
-      return;
-    }
-
-    if (!verifyPaddleWebhook(req)) {
-      res.status(401).json({ error: "Paddle imzasi dogrulanamadi." });
-      return;
-    }
-
-    const payload = extractObjectRecord(
-      (req.body ?? {}) as PaddleWebhookPayload
-    );
-    const eventType = normalizeString(payload?.event_type).toLowerCase();
-    const data = extractObjectRecord(payload?.data);
-
-    if (!eventType || !data) {
-      res.status(200).json({ received: true, ignored: true });
-      return;
-    }
-
-    try {
-      switch (eventType) {
-        case "subscription.created":
-        case "subscription.activated":
-        case "subscription.updated":
-        case "subscription.trialing":
-        case "subscription.resumed":
-        case "subscription.canceled":
-        case "subscription.past_due":
-        case "subscription.paused":
-          await upsertPaddleSubscriptionFromEntity(
-            data as PaddleSubscriptionEntity
-          );
-          break;
-        default:
-          break;
-      }
-
-      res.status(200).json({ received: true });
-    } catch (error) {
-      console.error("Paddle webhook processing failed", {
-        eventType,
-        error,
-      });
-      res.status(500).json({ error: "Paddle webhook islenemedi." });
-    }
-  });
-
-  app.post("/api/billing/shopier/checkout", (_req, res) => {
-    res.status(410).json({
-      error:
-        "Shopier odeme akisi kapatildi. Paddle kurulumu tamamlaninca yeni odeme ekrani acilacak.",
-    });
-  });
-
-  app.post("/api/billing/shopier/webhook", (_req, res) => {
-    res.status(410).json({
-      error:
-        "Shopier webhook devre disi. Yeni odeme akisi Paddle uzerinden acilacak.",
-    });
-  });
 
   app.get("/", (_req, res) => {
     res.status(200).type("html").send(renderLandingPageHtml());

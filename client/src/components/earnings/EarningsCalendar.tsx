@@ -42,7 +42,7 @@ export default function EarningsCalendar({
           </div>
           <div>
             <h2 className="text-lg font-bold text-white">
-              {copy(language, "Earnings Takvimi", "Earnings Calendar")}
+              {copy(language, "Kazanç Takvimi", "Earnings Calendar")}
             </h2>
             <p className="text-xs text-slate-400">
               {monthNames.join(" · ")}
