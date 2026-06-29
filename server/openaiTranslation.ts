@@ -76,7 +76,23 @@ function extractOutputText(payload: unknown) {
 }
 
 function getOpenAiTranslationApiKey() {
-  return normalizeString(process.env.OPENAI_API_KEY);
+  const candidates = [
+    "OPENAI_API_KEY",
+    "OPENAI_KEY",
+    "OPENAI_SECRET",
+    "OPENAI_API_SECRET",
+  ];
+  for (const key of candidates) {
+    const value = normalizeString(process.env[key]);
+    if (value) {
+      console.log(`[openaiTranslation] API key found in env var: ${key}`);
+      return value;
+    }
+  }
+  console.warn(
+    `[openaiTranslation] No API key found. Checked: ${candidates.join(", ")}. Available env keys: ${Object.keys(process.env).filter(k => k.toLowerCase().includes("openai")).join(", ") || "none"}`
+  );
+  return "";
 }
 
 function getOpenAiTranslationModel() {
@@ -201,19 +217,30 @@ export async function translateTurkishTextsToEnglish(texts: string[]) {
   const parsedBody = parseJsonSafely(rawBody);
 
   if (!response.ok) {
-    throw new Error(
-      extractErrorMessage(parsedBody, "OpenAI ceviri istegi basarisiz oldu.")
+    const errorMessage = extractErrorMessage(
+      parsedBody,
+      "OpenAI ceviri istegi basarisiz oldu."
     );
+    console.error(
+      `[openaiTranslation] OpenAI API error ${response.status}: ${errorMessage}`,
+      { rawBody: rawBody.slice(0, 500) }
+    );
+    throw new Error(errorMessage);
   }
 
   const outputText = extractOutputText(parsedBody);
   const outputPayload = parseJsonSafely(outputText);
 
   if (!outputPayload || typeof outputPayload !== "object") {
+    console.warn(
+      `[openaiTranslation] Could not parse output JSON. outputText: "${outputText.slice(0, 200)}"`
+    );
     return translations;
   }
 
-  for (const [key, source] of keyedTexts.map(entry => [entry.key, entry.text] as const)) {
+  for (const [key, source] of keyedTexts.map(
+    entry => [entry.key, entry.text] as const
+  )) {
     const candidate = normalizeString(
       (outputPayload as Record<string, unknown>)[key]
     );
