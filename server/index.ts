@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express from "express";
 import prerender from "prerender-node";
 import { createServer } from "http";
