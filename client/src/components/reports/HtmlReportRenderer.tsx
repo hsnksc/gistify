@@ -195,6 +195,116 @@ function dedupeSections(items: HtmlSectionLink[]) {
   return deduped;
 }
 
+function matchesPreferredLanguageRoot(
+  element: HTMLElement,
+  reportLanguage: "tr" | "en"
+) {
+  const normalizedId = element.id.trim().toLowerCase();
+  const dataLang = (element.getAttribute("data-lang") || "").trim().toLowerCase();
+
+  if (dataLang === reportLanguage) {
+    return true;
+  }
+
+  return (
+    normalizedId === `content-${reportLanguage}` ||
+    normalizedId === `${reportLanguage}-content`
+  );
+}
+
+function findPreferredLanguageRoot(
+  root: ParentNode,
+  reportLanguage: "tr" | "en"
+) {
+  const explicitMatch = root.querySelector<HTMLElement>(
+    `#content-${reportLanguage}, #${reportLanguage}-content`
+  );
+  if (explicitMatch) {
+    return explicitMatch;
+  }
+
+  const languageContainers = Array.from(
+    root.querySelectorAll<HTMLElement>(".lang-content")
+  );
+  return (
+    languageContainers.find(node =>
+      matchesPreferredLanguageRoot(node, reportLanguage)
+    ) || null
+  );
+}
+
+function buildNormalizedBodyNode(
+  documentNode: Document,
+  sourceBody: HTMLElement,
+  reportLanguage: "tr" | "en"
+) {
+  const bodyClone = sourceBody.cloneNode(true) as HTMLBodyElement;
+  bodyClone.querySelectorAll("script").forEach(node => node.remove());
+
+  const preferredLanguageRoot = findPreferredLanguageRoot(
+    bodyClone,
+    reportLanguage
+  );
+  const languageContainers = Array.from(
+    bodyClone.querySelectorAll<HTMLElement>(".lang-content")
+  );
+
+  if (preferredLanguageRoot) {
+    languageContainers.forEach(node => {
+      if (node === preferredLanguageRoot) {
+        node.classList.add("active");
+      } else {
+        node.remove();
+      }
+    });
+  }
+
+  const oppositeLanguage = reportLanguage === "en" ? "tr" : "en";
+  bodyClone
+    .querySelectorAll(
+      `.${oppositeLanguage}-only, .${oppositeLanguage}, [data-lang="${oppositeLanguage}"], [data-lang-inline="${oppositeLanguage}"]`
+    )
+    .forEach(node => node.remove());
+  bodyClone
+    .querySelectorAll(
+      `#content-${oppositeLanguage}, #${oppositeLanguage}-content`
+    )
+    .forEach(node => node.remove());
+
+  bodyClone
+    .querySelectorAll(
+      "header, footer, aside, nav, #sidebar, .sidebar, .toc, .toc-title, .toc-nav, .toc-list, .lang-toggle, .lang-switch"
+    )
+    .forEach(node => node.remove());
+
+  const heroNode = bodyClone.querySelector<HTMLElement>("#hero, .hero");
+  if (heroNode && !heroNode.id) {
+    heroNode.id = "hero";
+  }
+
+  const contentRoot =
+    (preferredLanguageRoot && bodyClone.contains(preferredLanguageRoot)
+      ? preferredLanguageRoot
+      : bodyClone.querySelector<HTMLElement>(
+          "main, article, .content, .report-shell, .wrap"
+        )) || bodyClone;
+
+  if (contentRoot === bodyClone) {
+    return bodyClone;
+  }
+
+  const normalizedBody = documentNode.createElement("body") as HTMLBodyElement;
+  const shell = documentNode.createElement("main");
+  shell.className = "gistify-flow-shell";
+  if (heroNode && !contentRoot.contains(heroNode)) {
+    shell.appendChild(heroNode.cloneNode(true));
+  }
+  shell.appendChild(contentRoot.cloneNode(true));
+  normalizedBody.appendChild(shell);
+
+  return normalizedBody;
+}
+
 function buildPreparedHtmlReport(
   html: string,
   instanceId: string,
@@ -206,18 +316,12 @@ function buildPreparedHtmlReport(
 
   const parser = new DOMParser();
   const documentNode = parser.parseFromString(html, "text/html");
-  const bodyClone = documentNode.body.cloneNode(true) as HTMLBodyElement;
   const reportLanguage = language === "en" ? "en" : "tr";
-  bodyClone.querySelectorAll("nav, footer").forEach(node => node.remove());
-  const topHeader = bodyClone.querySelector("header");
-  if (topHeader && topHeader.parentElement === bodyClone) {
-    topHeader.remove();
-  }
-
-  const heroNode = bodyClone.querySelector<HTMLElement>("#hero, .hero");
-  if (heroNode && !heroNode.id) {
-    heroNode.id = "hero";
-  }
+  const bodyClone = buildNormalizedBodyNode(
+    documentNode,
+    documentNode.body,
+    reportLanguage
+  );
 
   const generatedSections = Array.from(
     bodyClone.querySelectorAll<HTMLElement>(".section-head")
@@ -237,7 +341,7 @@ function buildPreparedHtmlReport(
   });
 
   const navSections = Array.from(
-    documentNode.querySelectorAll<HTMLAnchorElement>('nav a[href^="#"]')
+    bodyClone.querySelectorAll<HTMLAnchorElement>('a[href^="#"]')
   ).map(link => ({
     id: (link.getAttribute("href") || "").replace(/^#/, ""),
     label: getLocalizedNodeText(link, language),
@@ -264,16 +368,7 @@ function buildPreparedHtmlReport(
       : getPlainText(section.id),
   }));
 
-  let bodyHtml = bodyClone.innerHTML;
-  bodyHtml = bodyHtml
-    .replace(
-      /let\s+currentLang\s*=\s*['"](tr|en)['"]\s*;/g,
-      `let currentLang = '${reportLanguage}';`
-    )
-    .replace(
-      /window\.setLanguage\(\s*['"](tr|en)['"]\s*\)\s*;/g,
-      `window.setLanguage('${reportLanguage}');`
-    );
+  const bodyHtml = bodyClone.innerHTML;
 
   const bodyClassName = [
     ...Array.from(
@@ -305,6 +400,7 @@ function buildPreparedHtmlReport(
   const pendingTranslations = new Set();
   const translationNodesBySource = new Map();
   const resolvedTranslations = new Map();
+  let activeLanguage = preferredLanguage;
   let translationInFlight = false;
   let translationScheduled = false;
 
@@ -384,38 +480,102 @@ function buildPreparedHtmlReport(
     }
   };
 
-  const syncDataLangVisibility = () => {
+  const updateBodyLanguageClass = languageCode => {
+    if (!document.body) {
+      return;
+    }
+    document.body.classList.remove("lang-tr", "lang-en");
+    document.body.classList.add(languageCode === "en" ? "lang-en" : "lang-tr");
+  };
+
+  const syncDataLangVisibility = (languageCode = activeLanguage) => {
     document.querySelectorAll("[data-lang]").forEach(node => {
-      node.classList.toggle("visible", node.getAttribute("data-lang") === preferredLanguage);
+      node.classList.toggle("visible", node.getAttribute("data-lang") === languageCode);
     });
     document.querySelectorAll("[data-lang-inline]").forEach(node => {
       node.classList.toggle(
         "visible",
-        node.getAttribute("data-lang-inline") === preferredLanguage
+        node.getAttribute("data-lang-inline") === languageCode
       );
     });
     document.querySelectorAll(".lang-btn").forEach(node => {
       const label = (node.textContent || "").trim().toLowerCase();
-      node.classList.toggle("active", label === preferredLanguage);
+      node.classList.toggle("active", label === languageCode);
     });
-    document.documentElement.lang = preferredLanguage;
+    document.documentElement.lang = languageCode;
+  };
+
+  const activateLanguageContent = languageCode => {
+    const normalizedLanguage = languageCode === "en" ? "en" : "tr";
+    const preferredRoot =
+      document.getElementById("content-" + normalizedLanguage) ||
+      document.getElementById(normalizedLanguage + "-content") ||
+      document.querySelector('.lang-content[data-lang="' + normalizedLanguage + '"]');
+    const languageBlocks = Array.from(document.querySelectorAll(".lang-content"));
+
+    if (!languageBlocks.length) {
+      return;
+    }
+
+    languageBlocks.forEach((node, index) => {
+      const isActive = preferredRoot ? node === preferredRoot : index === 0;
+      node.classList.toggle("active", isActive);
+      if (isActive) {
+        node.setAttribute("data-active-language", normalizedLanguage);
+      } else {
+        node.removeAttribute("data-active-language");
+      }
+    });
+  };
+
+  const applyLanguage = languageCode => {
+    activeLanguage = languageCode === "en" ? "en" : "tr";
+    activateLanguageContent(activeLanguage);
+    updateBodyLanguageClass(activeLanguage);
+    syncDataLangVisibility(activeLanguage);
+    scheduleHeight();
+  };
+
+  window.toggle = id => {
+    const element = document.getElementById(String(id || ""));
+    if (element) {
+      element.classList.toggle("collapsed");
+    }
+    scheduleHeight();
+  };
+
+  window.setTab = (tab, contentId) => {
+    if (!tab || !tab.parentElement) {
+      return;
+    }
+
+    const tabContainer = tab.parentElement;
+    tabContainer.querySelectorAll(".tab").forEach(node => {
+      node.classList.remove("active");
+    });
+    tab.classList.add("active");
+
+    const contentContainer = tabContainer.parentElement || document;
+    contentContainer.querySelectorAll(".tab-content").forEach(node => {
+      node.classList.remove("active");
+    });
+
+    const target = document.getElementById(String(contentId || ""));
+    if (target) {
+      target.classList.add("active");
+    }
+    scheduleHeight();
+  };
+
+  window.switchLang = languageCode => {
+    applyLanguage(languageCode);
+  };
+  window.setLang = languageCode => {
+    applyLanguage(languageCode);
   };
 
   const applyPreferredLanguage = () => {
-    if (typeof window.setLanguage === "function") {
-      window.setLanguage(preferredLanguage);
-      return;
-    }
-    if (typeof window.setLang === "function") {
-      window.setLang(preferredLanguage);
-      return;
-    }
-
-    if (document.body) {
-      document.body.classList.remove("lang-tr", "lang-en");
-      document.body.classList.add(preferredLanguage === "en" ? "lang-en" : "lang-tr");
-    }
-    syncDataLangVisibility();
+    applyLanguage(preferredLanguage);
   };
 
   const postHeight = () => {
@@ -585,17 +745,64 @@ function buildPreparedHtmlReport(
 
   const layoutStyle = `
 <style>
+* {
+  box-sizing: border-box;
+}
 html, body {
   background: #050c1b !important;
+  overflow-x: hidden !important;
 }
 body {
   margin: 0 !important;
 }
+body > .gistify-flow-shell {
+  width: min(1120px, 100%) !important;
+  margin: 0 auto !important;
+  padding: 24px 16px 56px !important;
+}
+main,
+article,
+.content,
+.report-shell,
+.wrap {
+  max-width: 100% !important;
+}
 #hero {
-  padding-top: 48px !important;
+  padding-top: 0 !important;
 }
 section {
   scroll-margin-top: 24px;
+}
+img,
+video,
+canvas,
+svg {
+  max-width: 100% !important;
+  height: auto !important;
+}
+table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+pre {
+  overflow-x: auto;
+}
+.lang-toggle,
+.lang-switch,
+#sidebar,
+.sidebar,
+.toc,
+.toc-title,
+.toc-nav,
+.toc-list {
+  display: none !important;
+}
+.lang-content {
+  display: none !important;
+}
+.lang-content.active {
+  display: block !important;
 }
 </style>`;
 
@@ -871,5 +1078,3 @@ export default function HtmlReportRenderer({
     </div>
   );
 }
-
-
