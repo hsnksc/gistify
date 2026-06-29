@@ -10,6 +10,9 @@ import {
   inferFlowTickerFromText,
 } from "../shared/flowInference.ts";
 
+const FLOW_SOURCE_TIMESTAMP_MANIFEST_FILE = ".source-timestamps.json";
+const FLOW_SOURCE_LOCAL_TIME_OFFSET = "+03:00";
+
 function getConfiguredRootPath() {
   const configured = normalizeString(process.env.DAILY_REPORTS_PATH);
   if (!configured) {
@@ -197,6 +200,20 @@ const TURKISH_MONTH_NAMES = [
   "aralık",
   "ara",
 ];
+
+function normalizeTimestamp(value: unknown) {
+  const normalized = normalizeString(value);
+  if (!normalized) {
+    return "";
+  }
+
+  const parsed = new Date(normalized);
+  if (Number.isNaN(parsed.getTime())) {
+    return "";
+  }
+
+  return parsed.toISOString();
+}
 
 function normalizeTurkishDiacritics(str: string): string {
   return str
@@ -698,6 +715,294 @@ function parseAnyDateTokenFromText(value: string) {
     parseDateTokenFromText(value) ||
     parseMonthFirstDateTokenFromText(value)
   );
+}
+
+function buildIsoTimestampFromParts(options: {
+  day: number;
+  hour?: number;
+  minute?: number;
+  month: number;
+  offset?: string;
+  second?: number;
+  year: number;
+}) {
+  const {
+    day,
+    hour = 12,
+    minute = 0,
+    month,
+    offset = FLOW_SOURCE_LOCAL_TIME_OFFSET,
+    second = 0,
+    year,
+  } = options;
+
+  if (
+    !Number.isInteger(year) ||
+    !Number.isInteger(month) ||
+    !Number.isInteger(day) ||
+    !Number.isInteger(hour) ||
+    !Number.isInteger(minute) ||
+    !Number.isInteger(second) ||
+    month < 1 ||
+    month > 12 ||
+    day < 1 ||
+    day > 31 ||
+    hour < 0 ||
+    hour > 23 ||
+    minute < 0 ||
+    minute > 59 ||
+    second < 0 ||
+    second > 59
+  ) {
+    return "";
+  }
+
+  const normalizedOffset = offset.toUpperCase() === "Z" ? "Z" : offset;
+  return normalizeTimestamp(
+    `${String(year).padStart(4, "0")}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}T${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:${String(second).padStart(2, "0")}${normalizedOffset}`
+  );
+}
+
+function resolveSourceTimestampOffset(
+  timezoneToken: string,
+  month: number
+) {
+  const normalized = normalizeTurkishDiacritics(
+    normalizeString(timezoneToken).toLowerCase()
+  );
+  if (!normalized) {
+    return FLOW_SOURCE_LOCAL_TIME_OFFSET;
+  }
+
+  if (["z", "utc", "gmt"].includes(normalized)) {
+    return "Z";
+  }
+
+  if (normalized.startsWith("ts")) {
+    return FLOW_SOURCE_LOCAL_TIME_OFFSET;
+  }
+
+  if (["trt", "eet", "eest"].includes(normalized)) {
+    return normalized === "eet" ? "+02:00" : FLOW_SOURCE_LOCAL_TIME_OFFSET;
+  }
+
+  if (normalized === "edt") {
+    return "-04:00";
+  }
+
+  if (normalized === "est") {
+    return "-05:00";
+  }
+
+  if (normalized === "et") {
+    return month >= 3 && month <= 11 ? "-04:00" : "-05:00";
+  }
+
+  return FLOW_SOURCE_LOCAL_TIME_OFFSET;
+}
+
+function parseSourceTimestampFromText(value: string) {
+  const normalized = cleanMarkdownText(value).trim();
+  if (!normalized) {
+    return "";
+  }
+
+  const directTimestampMatch = normalized.match(
+    /(20\d{2}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2})?(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2}))/i
+  );
+  if (directTimestampMatch) {
+    const directTimestamp = normalizeTimestamp(directTimestampMatch[1]);
+    if (directTimestamp) {
+      return directTimestamp;
+    }
+  }
+
+  const isoDateTimeMatch = normalized.match(
+    /(20\d{2})[-/.](\d{1,2})[-/.](\d{1,2})(?:[ T](\d{1,2}):(\d{2})(?::(\d{2}))?)?(?:\s*(UTC|GMT|Z|TSI|TSİ|TRT|ET|EDT|EST|EET|EEST))?/i
+  );
+  if (isoDateTimeMatch) {
+    const [
+      ,
+      yearToken,
+      monthToken,
+      dayToken,
+      hourToken,
+      minuteToken,
+      secondToken,
+      timezoneToken,
+    ] = isoDateTimeMatch;
+    const year = Number(yearToken);
+    const month = Number(monthToken);
+    const day = Number(dayToken);
+    const hasExplicitTime = Boolean(hourToken && minuteToken);
+    const hour = hasExplicitTime ? Number(hourToken) : 12;
+    const minute = hasExplicitTime ? Number(minuteToken) : 0;
+    const second = secondToken ? Number(secondToken) : 0;
+    const offset = resolveSourceTimestampOffset(
+      timezoneToken || "",
+      month
+    );
+    const parsed = buildIsoTimestampFromParts({
+      day,
+      hour,
+      minute,
+      month,
+      offset,
+      second,
+      year,
+    });
+    if (parsed) {
+      return parsed;
+    }
+  }
+
+  const monthPattern = Array.from(new Set([...ENGLISH_MONTH_NAMES, ...TURKISH_MONTH_NAMES])).join(
+    "|"
+  );
+  const normalizedForTextualDates = normalizeTurkishDiacritics(
+    normalized.toLowerCase()
+  ).replace(/\s+/g, " ");
+  const textualDateMatch = normalizedForTextualDates.match(
+    new RegExp(
+      `(\\d{1,2})\\s+(${monthPattern})\\s+(20\\d{2})(?:\\s*[~\\-–]?\\s*(\\d{1,2}):(\\d{2})(?::(\\d{2}))?)?(?:\\s*(utc|gmt|z|tsi|et|edt|est|eet|eest))?`,
+      "i"
+    )
+  );
+  if (textualDateMatch) {
+    const [, dayToken, monthToken, yearToken, hourToken, minuteToken, secondToken, timezoneToken] =
+      textualDateMatch;
+    const month = MONTH_TOKENS.get(monthToken.toLowerCase()) || "";
+    const hasExplicitTime = Boolean(hourToken && minuteToken);
+    const parsed = buildIsoTimestampFromParts({
+      day: Number(dayToken),
+      hour: hasExplicitTime ? Number(hourToken) : 12,
+      minute: hasExplicitTime ? Number(minuteToken) : 0,
+      month: Number(month || 0),
+      offset: resolveSourceTimestampOffset(
+        timezoneToken || "",
+        Number(month || 0)
+      ),
+      second: secondToken ? Number(secondToken) : 0,
+      year: Number(yearToken),
+    });
+    if (parsed) {
+      return parsed;
+    }
+  }
+
+  const dateOnly = parseAnyDateTokenFromText(normalized);
+  if (dateOnly) {
+    const [yearToken, monthToken, dayToken] = dateOnly.split("-");
+    return buildIsoTimestampFromParts({
+      day: Number(dayToken),
+      month: Number(monthToken),
+      year: Number(yearToken),
+    });
+  }
+
+  return "";
+}
+
+function extractSourceTimestampCandidatesFromMarkdown(markdown: string) {
+  const lines = markdown.split(/\r?\n/);
+  return Array.from(
+    new Set(
+      lines
+        .map(line => cleanMarkdownText(line))
+        .filter(Boolean)
+        .filter(line =>
+          /(veri zaman damgas[ıi]|zaman damgas[ıi]|timestamp|snapshot|generated(?: at)?|rapor uretim|rapor üretim|olusturulma|oluşturulma|created(?: at)?|guncelleme|güncelleme)/i.test(
+            line
+          )
+        )
+    )
+  );
+}
+
+function extractSourceTimestampCandidatesFromHtml(html: string) {
+  const metaTimestampContent = Array.from(
+    html.matchAll(
+      /<meta[^>]+(?:property|name)=["'](?:article:published_time|article:modified_time|og:updated_time|date|publish-date|published-date|timestamp|generated-at|generated_at)["'][^>]+content=["']([^"']+)["'][^>]*>/gi
+    )
+  ).map(match => cleanMarkdownText(match[1] || ""));
+
+  const timeDateContent = Array.from(
+    html.matchAll(/<time[^>]+datetime=["']([^"']+)["'][^>]*>/gi)
+  ).map(match => cleanMarkdownText(match[1] || ""));
+
+  const keywordContent = Array.from(
+    html.matchAll(
+      /(veri zaman damgas[ıi][\s\S]{0,160}|snapshot[\s\S]{0,160}|generated(?: at)?[\s\S]{0,160}|rapor üretim[\s\S]{0,160}|rapor uretim[\s\S]{0,160}|timestamp[\s\S]{0,160}|created(?: at)?[\s\S]{0,160})/gi
+    )
+  )
+    .map(match => stripHtmlTags(match[1] || ""))
+    .map(item => cleanMarkdownText(item))
+    .filter(Boolean);
+
+  return Array.from(
+    new Set([...metaTimestampContent, ...timeDateContent, ...keywordContent])
+  );
+}
+
+function readFlowSourceTimestampManifest(flowRootPath: string) {
+  const manifestPath = path.join(flowRootPath, FLOW_SOURCE_TIMESTAMP_MANIFEST_FILE);
+  if (!fs.existsSync(manifestPath) || !fs.statSync(manifestPath).isFile()) {
+    return new Map<string, string>();
+  }
+
+  try {
+    const parsed = JSON.parse(fs.readFileSync(manifestPath, "utf8")) as {
+      generatedAtBySource?: Record<string, unknown>;
+    };
+    const entries = Object.entries(parsed.generatedAtBySource || {})
+      .map(([key, value]) => [
+        key.replace(/\\/g, "/"),
+        normalizeTimestamp(value),
+      ] as const)
+      .filter(([, value]) => Boolean(value));
+    return new Map(entries);
+  } catch {
+    return new Map<string, string>();
+  }
+}
+
+function resolveFlowSourceUpdatedAt(options: {
+  fileName: string;
+  flowRootPath?: string;
+  html?: string;
+  markdown?: string;
+  statsUpdatedAt: string;
+}) {
+  const {
+    fileName,
+    flowRootPath,
+    html = "",
+    markdown = "",
+    statsUpdatedAt,
+  } = options;
+  const normalizedFileName = fileName.replace(/\\/g, "/");
+
+  if (flowRootPath) {
+    const manifestTimestamp = readFlowSourceTimestampManifest(flowRootPath).get(
+      normalizedFileName
+    );
+    if (manifestTimestamp) {
+      return manifestTimestamp;
+    }
+  }
+
+  const explicitCandidates = [
+    ...extractSourceTimestampCandidatesFromHtml(html),
+    ...extractSourceTimestampCandidatesFromMarkdown(markdown),
+  ];
+  for (const candidate of explicitCandidates) {
+    const parsedTimestamp = parseSourceTimestampFromText(candidate);
+    if (parsedTimestamp) {
+      return parsedTimestamp;
+    }
+  }
+
+  return statsUpdatedAt;
 }
 
 function extractNarrativeParagraphs(markdown: string, limit = 4) {
@@ -1577,7 +1882,15 @@ export function createFlowSourcePackageFromContent(options: {
   const markdown = options.markdown || "";
   const isHtmlSource = Boolean(html.trim());
   const metadata = isHtmlSource ? extractHtmlMetadata(html) : extractMetadata(markdown);
-  const updatedAt = options.updatedAt || new Date().toISOString();
+  const fallbackUpdatedAt = options.updatedAt || new Date().toISOString();
+  const updatedAt =
+    options.updatedAt ||
+    resolveFlowSourceUpdatedAt({
+      fileName: options.fileName,
+      html,
+      markdown,
+      statsUpdatedAt: fallbackUpdatedAt,
+    });
   const reportDate =
     metadata.reportDate ||
     parseDateTokenFromFileName(path.basename(options.fileName)) ||
@@ -2041,7 +2354,17 @@ function buildFileSourcePackage({
       buildDailyReportOpenAiFigureFileName(fileName)
     )
   );
-  const updatedAt = new Date(stats.mtimeMs).toISOString();
+  const statsUpdatedAt = new Date(stats.mtimeMs).toISOString();
+  const updatedAt =
+    namespace === "flow"
+      ? resolveFlowSourceUpdatedAt({
+          fileName,
+          flowRootPath: rootPath,
+          html: activeHtml,
+          markdown: activeMarkdown,
+          statsUpdatedAt,
+        })
+      : statsUpdatedAt;
 
   if (namespace === "flow") {
     return buildFlowFileSourcePackage({

@@ -203,6 +203,46 @@ Paragraf yapisi korunur ama Flow tarafinda sahte ticker uretilmemelidir.
     );
   });
 
+  it("uses explicit html source timestamps for flow ordering metadata", () => {
+    const source = createFlowSourcePackageFromContent({
+      fileName: "daily-market-flash-finansal-earnings-haber-29-haziran-2026.html",
+      sourceLabel:
+        "flow/daily-market-flash-finansal-earnings-haber-29-haziran-2026.html",
+      html: `
+<!doctype html>
+<html>
+  <body>
+    <main>
+      <h1>Market Flash Finansal + Earnings + Haber Derin Analiz</h1>
+      <p><strong>Veri zaman damgasi:</strong> 30 Haziran 2026 ~00:40 TSI (29 Haz ~17:40 ET, piyasa kapali).</p>
+    </main>
+  </body>
+</html>
+      `,
+    });
+
+    expect(source.updatedAt).toBe("2026-06-29T21:40:00.000Z");
+  });
+
+  it("uses explicit markdown snapshot timestamps for flow ordering metadata", () => {
+    const source = createFlowSourcePackageFromContent({
+      fileName: "daily-gistify-watchlist-50-hisse-2026-06-29.md",
+      sourceLabel: "flow/daily-gistify-watchlist-50-hisse-2026-06-29.md",
+      markdown: `
+# Gistify Watchlist
+
+**Snapshot:** 2026-06-29 10:03 UTC
+**Rapor Uretim:** 2026-06-29
+
+## Ozet
+
+Watchlist snapshot markdown source.
+      `,
+    });
+
+    expect(source.updatedAt).toBe("2026-06-29T10:03:00.000Z");
+  });
+
   it("builds distinct archive slugs for duplicate flow titles on the same date", () => {
     const firstSource = createFlowSourcePackageFromContent({
       fileName: "daily-ai-yatirim-donguleri-2026-06-29.html",
