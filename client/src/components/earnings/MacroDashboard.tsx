@@ -22,11 +22,11 @@ export default function MacroDashboard({ language, macro }: MacroDashboardProps)
     { key: "sp500", label: "S&P 500", value: macro.sp500 || "", big: true },
     { key: "nasdaq", label: "Nasdaq", value: macro.nasdaq || "", big: true },
     { key: "russell2000", label: "Russell 2000", value: macro.russell2000 || "" },
-    { key: "tenYearYield", label: "10Y Yield", value: macro.tenYearYield || "" },
+    { key: "tenYearYield", label: copy(language, "10Y Getiri", "10Y Yield"), value: macro.tenYearYield || "" },
     { key: "dxy", label: "DXY", value: macro.dxy || "" },
     { key: "wti", label: "WTI", value: macro.wti || "" },
     { key: "bitcoin", label: "Bitcoin", value: macro.bitcoin || "" },
-    { key: "fearGreed", label: "Fear & Greed", value: macro.fearGreed || "", gauge: true },
+    { key: "fearGreed", label: copy(language, "Korku & Açgözlülük", "Fear & Greed"), value: macro.fearGreed || "", gauge: true },
   ];
 
   return (
