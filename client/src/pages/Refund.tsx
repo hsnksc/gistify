@@ -53,6 +53,7 @@ export default function Refund({
     <PublicShell
       language={language}
       onLanguageChange={onLanguageChange}
+      canonicalPath="/refund"
       eyebrow={copy.eyebrow}
       title={copy.title}
       description={copy.description}

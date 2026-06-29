@@ -680,6 +680,12 @@ export function createBillingStore() {
       updated_at TEXT NOT NULL
     );
 
+    CREATE TABLE IF NOT EXISTS newsletter_subscribers (
+      email TEXT PRIMARY KEY,
+      source TEXT NOT NULL,
+      subscribed_at TEXT NOT NULL
+    );
+
     CREATE INDEX IF NOT EXISTS idx_auth_sessions_user_id
       ON auth_sessions(user_id);
 
@@ -1368,6 +1374,11 @@ export function createBillingStore() {
     LIMIT 1
   `);
 
+  const createNewsletterSubscriberStmt = db.prepare(`
+    INSERT OR IGNORE INTO newsletter_subscribers (email, source, subscribed_at)
+    VALUES (?, ?, ?)
+  `);
+
   const getLatestPublishedDailyReportStmt = db.prepare(`
     SELECT
       id,
@@ -1734,6 +1745,18 @@ export function createBillingStore() {
         record.createdAt,
         record.updatedAt
       );
+    },
+    createNewsletterSubscriber(email: string, source = "homepage") {
+      const normalizedEmail = email.trim().toLowerCase();
+      if (!normalizedEmail || !normalizedEmail.includes("@")) {
+        return false;
+      }
+      createNewsletterSubscriberStmt.run(
+        normalizedEmail,
+        source,
+        new Date().toISOString()
+      );
+      return true;
     },
   };
 }

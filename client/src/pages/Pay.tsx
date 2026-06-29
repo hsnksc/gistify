@@ -9,6 +9,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import type { AppLanguage } from "@/lib/i18n";
 import { getPaddleClient } from "@/lib/paddleClient";
 
@@ -187,6 +188,10 @@ export default function Pay({
   onRefreshAuthState: () => Promise<void>;
 }) {
   const copy = COPY[language];
+  usePageMeta({
+    description: copy.description,
+    title: `${copy.title} | Gistify`,
+  });
   const [config, setConfig] = useState<PaddlePublicConfigResponse | null>(null);
   const [configLoading, setConfigLoading] = useState(true);
   const [configError, setConfigError] = useState<string | null>(null);

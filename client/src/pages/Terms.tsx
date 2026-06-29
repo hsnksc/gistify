@@ -75,6 +75,7 @@ export default function Terms({
     <PublicShell
       language={language}
       onLanguageChange={onLanguageChange}
+      canonicalPath="/terms"
       eyebrow={copy.eyebrow}
       title={copy.title}
       description={copy.description}

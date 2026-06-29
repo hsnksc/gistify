@@ -1,8 +1,10 @@
 import type { ReactNode } from "react";
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { useLocation } from "wouter";
 import LanguageSelector from "@/components/LanguageSelector";
 import { Button } from "@/components/ui/button";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import { copy, type AppLanguage } from "@/lib/i18n";
 
 interface PublicShellProps {
@@ -12,6 +14,7 @@ interface PublicShellProps {
   title: string;
   description: string;
   children: ReactNode;
+  canonicalPath?: string;
   ctaHref?: string;
   ctaLabel?: string;
   heroHighlights?: string[];
@@ -20,6 +23,7 @@ interface PublicShellProps {
     label: string;
     detail?: string;
   }>;
+  noindex?: boolean;
 }
 
 export default function PublicShell({
@@ -29,11 +33,21 @@ export default function PublicShell({
   title,
   description,
   children,
+  canonicalPath,
   ctaHref,
   ctaLabel,
   heroHighlights,
   heroStats,
+  noindex,
 }: PublicShellProps) {
+  const [location] = useLocation();
+  usePageMeta({
+    canonical: canonicalPath ?? location,
+    description,
+    noindex,
+    title,
+  });
+
   const navItems = [
     { href: "/", label: copy(language, "Ana Sayfa", "Home") },
     { href: "/flow", label: copy(language, "Flow", "Flow") },
@@ -62,6 +76,10 @@ export default function PublicShell({
               <img
                 src="/gistifylogo.jpeg?v=20260606-1"
                 alt="Gistify logo"
+                width="48"
+                height="48"
+                loading="eager"
+                decoding="async"
                 className="size-12 rounded-xl border border-border object-cover shadow-[0_12px_30px_rgba(0,0,0,0.18)]"
               />
               <div className="space-y-1">

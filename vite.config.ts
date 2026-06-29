@@ -228,7 +228,18 @@ function vitePluginStorageProxy(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginConditionalAnalytics(), vitePluginStorageProxy()];
+const isProductionBuild = process.env.NODE_ENV === "production";
+const plugins = [
+  react(),
+  tailwindcss(),
+  jsxLocPlugin(),
+  // Debug-only Manus plugins should not ship in production builds.
+  ...(isProductionBuild
+    ? []
+    : [vitePluginManusRuntime(), vitePluginManusDebugCollector()]),
+  vitePluginConditionalAnalytics(),
+  vitePluginStorageProxy(),
+];
 
 export default defineConfig({
   plugins,

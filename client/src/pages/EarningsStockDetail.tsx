@@ -1,6 +1,7 @@
 import EarningsCalendar from "@/components/earnings/EarningsCalendar";
 import EarningsHero from "@/components/earnings/EarningsHero";
 import StrategyCard from "@/components/earnings/StrategyCard";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import { Search } from "lucide-react";
 import type { Strategy } from "@shared/earnings";
@@ -22,6 +23,15 @@ export default function EarningsStockDetailPage({
   language: AppLanguage;
   ticker: string;
 }) {
+  usePageMeta({
+    description: copy(
+      language,
+      `${ticker} kazanc analizi: beklenti, beat riski ve opsiyon cercevesi.`,
+      `${ticker} earnings analysis: expectations, beat risk and options framing.`
+    ),
+    title: `${ticker} Earnings | Gistify`,
+  });
+
   const { data, error, isLoading, isRefreshing, pipeline, refresh } =
     useEarningsStrategy();
 

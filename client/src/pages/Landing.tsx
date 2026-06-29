@@ -268,6 +268,7 @@ export default function Landing({
     <PublicShell
       language={language}
       onLanguageChange={onLanguageChange}
+      canonicalPath="/"
       eyebrow={copy(language, "Event-driven trading workspace", "Event-driven trading workspace")}
       title={copy(
         language,

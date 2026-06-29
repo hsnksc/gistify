@@ -10,6 +10,7 @@ import {
 import { useLocation } from "wouter";
 import MomentumFlowSurface from "@/components/tabs/MomentumFlowSurface";
 import { Button } from "@/components/ui/button";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import WorkspaceHeroPanel from "@/components/workspace/WorkspaceHeroPanel";
 
@@ -18,6 +19,15 @@ interface ScannerRoutePageProps {
 }
 
 export default function Scanner({ language }: ScannerRoutePageProps) {
+  usePageMeta({
+    description: copy(
+      language,
+      "Eski momentum rapor tablari temizlendi. Bu yuzey artik Kimi pipeline'dan gelen veriyi okuyup hisseleri pozitif, neutral ve negatif momentum olarak gerekceleriyle birlikte siralar.",
+      "The old momentum report tabs are stripped out. This surface now reads the Kimi pipeline feed and ranks stocks across positive, neutral, and negative momentum with explicit reasons."
+    ),
+    title: copy(language, "Momentum | Gistify", "Momentum | Gistify"),
+  });
+
   const [, setLocation] = useLocation();
   const [refreshSeed, setRefreshSeed] = useState(0);
 

@@ -20,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import { copy, type AppLanguage } from "@/lib/i18n";
 
 interface DailyReportsResponse {
@@ -161,6 +162,15 @@ export default function DailyReportPage({
 }: {
   language: AppLanguage;
 }) {
+  usePageMeta({
+    description: copy(
+      language,
+      "Gistify gunluk piyasa raporu: makro lens, hisse senedi liderleri ve opsiyon risk cercevesi.",
+      "Gistify daily market report: macro lens, stock leaders and options risk framing."
+    ),
+    title: copy(language, "Gunluk Rapor | Gistify", "Daily Report | Gistify"),
+  });
+
   const [reports, setReports] = useState<ViewerReport[]>([]);
   const [selectedReportId, setSelectedReportId] = useState("");
   const [loading, setLoading] = useState(true);

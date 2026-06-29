@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AlertTriangle, CalendarDays, RefreshCw } from "lucide-react";
 import WorkspaceLoadingState from "@/components/workspace/WorkspaceLoadingState";
 import { Button } from "@/components/ui/button";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import {
@@ -20,6 +21,15 @@ import { VixOutlookCard } from "./calendar/components/VixOutlookCard";
 import { FearGreedOutlookCard } from "./calendar/components/FearGreedOutlookCard";
 
 export default function Calendar({ language }: { language: AppLanguage }) {
+  usePageMeta({
+    description: copy(
+      language,
+      "Makro takvim, FOMC, PMI, istihdam ve onemli event riskini tek yuzeyde izleyin.",
+      "Macro calendar: track FOMC, PMI, jobs and key event risk on one surface."
+    ),
+    title: copy(language, "Makro Takvim | Gistify", "Macro Calendar | Gistify"),
+  });
+
   const {
     data,
     loading,

@@ -1,6 +1,7 @@
 import EarningsCalendar from "@/components/earnings/EarningsCalendar";
 import EarningsHero from "@/components/earnings/EarningsHero";
 import FOMCWarningBanner from "@/components/earnings/FOMCWarningBanner";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import {
   CalendarStatsPanel,
@@ -18,6 +19,19 @@ export default function EarningsCalendarPage({
 }: {
   language: AppLanguage;
 }) {
+  usePageMeta({
+    description: copy(
+      language,
+      "Kazanc takvimi: siradaki raporlari, beklentileri ve tarihleri gorun.",
+      "Earnings calendar: see upcoming reports, expectations and dates."
+    ),
+    title: copy(
+      language,
+      "Kazanc Takvimi | Gistify",
+      "Earnings Calendar | Gistify"
+    ),
+  });
+
   const { data, error, isLoading, isRefreshing, pipeline, refresh } =
     useEarningsStrategy();
 

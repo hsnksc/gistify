@@ -20,6 +20,7 @@ export default function Pricing({
     <PublicShell
       language={language}
       onLanguageChange={onLanguageChange}
+      canonicalPath="/pricing"
       eyebrow={copy(language, "Fiyatlandirma", "Pricing")}
       title={copy(language, "Tek planli aylik abonelik", "Single monthly subscription")}
       description={copy(

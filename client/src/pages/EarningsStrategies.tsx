@@ -1,6 +1,7 @@
 import CPRTable from "@/components/earnings/CPRTable";
 import EarningsHero from "@/components/earnings/EarningsHero";
 import FOMCWarningBanner from "@/components/earnings/FOMCWarningBanner";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import type { AppLanguage } from "@/lib/i18n";
 import { copy } from "@/lib/i18n";
 import {
@@ -19,6 +20,19 @@ export default function EarningsStrategiesPage({
 }: {
   language: AppLanguage;
 }) {
+  usePageMeta({
+    description: copy(
+      language,
+      "Kazanc stratejileri: beat ihtimali, implied move ve opsiyon cercevesi.",
+      "Earnings strategies: beat probability, implied move and options framing."
+    ),
+    title: copy(
+      language,
+      "Kazanc Stratejileri | Gistify",
+      "Earnings Strategies | Gistify"
+    ),
+  });
+
   const { data, error, isLoading, isRefreshing, pipeline, refresh } =
     useEarningsStrategy();
 

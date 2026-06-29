@@ -82,6 +82,7 @@ export default function Home({ language }: { language: AppLanguage }) {
       "Gistify earnings workspace secili markdown raporunu post, playbook, takvim ve risk lensleriyle ayni yuzeyde acar.",
       "The Gistify earnings workspace opens the selected markdown report across post, playbook, calendar and risk lenses on the same surface."
     ),
+    noindex: true,
     title: copy(
       language,
       "Gistify | Kazanc Stratejisi Workspace'i",

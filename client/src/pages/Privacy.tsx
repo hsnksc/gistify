@@ -75,6 +75,7 @@ export default function Privacy({
     <PublicShell
       language={language}
       onLanguageChange={onLanguageChange}
+      canonicalPath="/privacy"
       eyebrow={copy.eyebrow}
       title={copy.title}
       description={copy.description}
