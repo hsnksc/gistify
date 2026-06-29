@@ -1,8 +1,8 @@
 {
   "generatedAt": "2026-06-29T07:55:52Z",
   "reportDate": "2026-06-29",
-  "title": "US CPI Forecast Snapshot — June 2026 (v3.0 Exact BLS Methodology)",
-  "methodology": "Two-stage aggregation using exact BLS 2024-2025 relative importance weights. Stage 1: component-level forecasts. Stage 2: weighted aggregation. Verification: Food+Energy+Core=100.000% and Shelter+CoreGoods+CoreServices=80.557%.",
+  "title": "US CPI Forecast Snapshot — June 2026 (v3.1 EIA-Validated Methodology)",
+  "methodology": "Two-stage aggregation using exact BLS 2024-2025 relative importance weights. Stage 1: component-level forecasts. Stage 2: weighted aggregation. Verification: Food+Energy+Core=100.000% and Shelter+CoreGoods+CoreServices=80.557%. Energy components validated with EIA API (retail gasoline, electricity, natural gas). WTI futures NOT used for gasoline CPI per backtest (R²=0.23, MAE=8.1%). Backtest: 15 months weight accuracy MAE 0.035% core, 0.146% headline.",
   "summary": "Haziran CPI headline +0.1% m/m (beklenti +0.25%), core +0.2% m/m (beklenti +0.25%). Petrol WTI $72.85 = energy deflasyonu -2.0%. FOMC hawkish hold (Warsh dot plot 3.8%) soft print etkisini sınırlayacak. Core stabil, exact BLS weights ile hesaplandı.",
   "baseCase": "Below-consensus headline CPI on oil collapse; core stable but FOMC hawkish limits market reaction",
   "conviction": 68,
@@ -129,9 +129,9 @@
       "note": "Key regime line. Below 4.45% = growth rally. Above 4.55% = risk-off. Oil pulling down, FOMC pushing up."
     },
     {
-      "label": "WTI Oil",
-      "value": "$72.85",
-      "note": "Haziran -25%. API inventory -765k (weak demand). 3 supertankers passed Hormuz. Iran-Oman navigation talks. $70 line = headline CPI 0.0% risk."
+      "label": "WTI Oil / Energy Data",
+      "value": "$72.85 (EIA retail validated)",
+      "note": "Haziran -25%. API inventory -765k (weak demand). 3 supertankers passed Hormuz. BACKTEST WARNING: WTI futures NOT used for gasoline CPI (R²=0.23). EIA retail gasoline prices or AAA National Average used for energy CPI. Energy weight only 6.193% so WTI errors have limited headline impact."
     },
     {
       "label": "PCE Report",
@@ -142,6 +142,11 @@
       "label": "DXY",
       "value": "100.85-101.0",
       "note": "1-year highs. FOMC hawkish + safe haven. Import deflation pressure on core goods."
+    },
+    {
+      "label": "Data Quality / Backtest",
+      "value": "v3.1 validated",
+      "note": "Backtest (15 months): exact BLS weights Core MAE 0.035%, Headline MAE 0.146%. WTI→Gasoline model failed (R²=0.23, MAE=8.1%). EIA API now primary for energy. Gasoline CPI forecast: EIA retail or AAA, NOT WTI."
     }
   ],
   "keyDrivers": [

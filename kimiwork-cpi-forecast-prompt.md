@@ -63,6 +63,22 @@ Build the snapshot around the next scheduled US CPI release and include:
 
 Use the latest available consensus and macro context at run time.
 
+**Energy Data Protocol (Post-Backtest):**
+The backtest (15 months, 2025-2026) revealed that WTI crude oil futures (CL=F) are NOT a reliable proxy for gasoline CPI (R² = 0.23, MAE = 8.1%). For energy component forecasting:
+
+1. **Primary:** Use EIA API for retail gasoline prices (`petroleum/pri/spt`), electricity (`electricity/retail-sales`), and natural gas (`natural-gas/pri/sum`).
+2. **Secondary:** Use AAA National Average (daily) for gasoline if EIA API is unavailable.
+3. **Fallback:** Use BLS historical trend + seasonal pattern. Never use WTI futures as a proxy for gasoline CPI.
+4. **WTI Exception:** WTI may be used as a directional signal for energy sector trades (XLE, XOM, CVX) only, NOT for CPI forecasting.
+
+**Data Quality Rules:**
+- If EIA API is down or returns incomplete data, use AAA National Average for gasoline.
+- If both EIA and AAA are unavailable, downgrade energy confidence and flag as "directional-only."
+- Always note the data source and timestamp for energy components in the `watchItems` or `keyDrivers` fields.
+- If user provides live energy data (e.g., "WTI is $72.85"), use it for sector trades but still verify gasoline CPI with EIA/AAA.
+
+Use the latest available consensus and macro context at run time.
+
 If the next CPI release is still the same event as yesterday, regenerate the file anyway with:
 
 - a fresh `generatedAt`
