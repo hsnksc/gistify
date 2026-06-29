@@ -23,7 +23,10 @@ vi.mock("../../server/dailyReportSources", () => ({
   listDailyReportSourcePackages: () => mockedSourcePackages,
 }));
 
-import { buildViewerDailyReportCatalog } from "../../server/services/flowService";
+import {
+  buildViewerDailyReportCatalog,
+  getViewerFlowReportById,
+} from "../../server/services/flowService";
 
 function createSourcePackage(
   overrides: Partial<DailyReportSourcePackage> = {}
@@ -173,5 +176,87 @@ describe("flow service timestamps smoke", () => {
 
     expect(catalog).toHaveLength(1);
     expect(catalog[0]?.updatedAt).toBe("2026-06-30T09:00:00.000Z");
+  });
+
+  it("keeps only the canonical ISO-dated flow duplicate in the viewer catalog", () => {
+    mockedSourcePackages = [
+      createSourcePackage({
+        folderName: "flow-iso",
+        title: "Yapay Zekada Para Nerede?",
+        reportDate: "2026-06-29",
+        sourceLabel: "flow/daily-ai-yatirim-donguleri-2026-06-29.html",
+        updatedAt: "2026-06-29T10:15:00.000Z",
+        html: '<div class="section-head"></div><div class="section-body"></div>',
+        markdown: "",
+        contentFormat: "html",
+      }),
+      createSourcePackage({
+        folderName: "flow-localized",
+        title: "Yapay Zekada Para Nerede?",
+        reportDate: "2026-06-29",
+        sourceLabel: "flow/daily-ai-yatirim-donguleri-29-haziran-2026.html",
+        updatedAt: "2026-06-29T11:15:00.000Z",
+        html: '<div class="lang-content"></div><script>switchLang("tr")</script>',
+        markdown: "",
+        contentFormat: "html",
+      }),
+    ];
+
+    const catalog = buildViewerDailyReportCatalog([]);
+
+    expect(catalog).toHaveLength(1);
+    expect(catalog[0]?.sourceFolder).toBe("flow-iso");
+    expect(catalog[0]?.content.sourceLabel).toBe(
+      "flow/daily-ai-yatirim-donguleri-2026-06-29.html"
+    );
+  });
+
+  it("maps a stale duplicate flow report id back to the canonical live source", () => {
+    mockedSourcePackages = [
+      createSourcePackage({
+        folderName: "flow-iso",
+        title: "Yapay Zekada Para Nerede?",
+        reportDate: "2026-06-29",
+        sourceLabel: "flow/daily-ai-yatirim-donguleri-2026-06-29.html",
+        updatedAt: "2026-06-29T10:15:00.000Z",
+        html: '<div class="section-head"></div><div class="section-body"></div>',
+        markdown: "",
+        contentFormat: "html",
+      }),
+    ];
+
+    const staleDuplicate = createReport({
+      id: "daily-report-flow-localized",
+      slug: "daily-report-flow-daily-ai-yatirim-donguleri-29-haziran-2026",
+      title: "Yapay Zekada Para Nerede?",
+      reportDate: "2026-06-29",
+      sourceFolder: "flow-localized",
+      updatedAt: "2026-06-29T11:15:00.000Z",
+      content: {
+        headline: "Published Headline",
+        executiveSummary: ["Published summary"],
+        markdown: "",
+        html: '<div class="lang-content"></div><script>switchLang("tr")</script>',
+        sectionFiles: [],
+        figureFiles: [],
+        openAiFigureFiles: [],
+        tickerUniverse: ["MARKET"],
+        researchFileCount: 0,
+        sourceKind: "file",
+        contentFormat: "html",
+        sourceLabel: "flow/daily-ai-yatirim-donguleri-29-haziran-2026.html",
+        assetBasePath: "",
+      },
+    });
+
+    const resolved = getViewerFlowReportById(
+      [staleDuplicate],
+      "daily-report-flow-localized"
+    );
+
+    expect(resolved?.id).toBe("daily-report-flow-iso");
+    expect(resolved?.content.sourceLabel).toBe(
+      "flow/daily-ai-yatirim-donguleri-2026-06-29.html"
+    );
   });
 });

@@ -16,6 +16,11 @@ import {
   listDailyReportSourcePackages,
 } from "../dailyReportSources";
 
+const FLOW_MONTH_TOKEN_PATTERN =
+  /(?:^|[-_/])\d{1,2}-(?:january|february|march|april|may|june|july|august|september|october|november|december|ocak|subat|mart|nisan|mayis|haziran|temmuz|agustos|eylul|ekim|kasim|aralik)(?:$|[-_.])/i;
+const FLOW_ISO_DATE_TOKEN_PATTERN =
+  /(?:^|[-_/])\d{4}-\d{2}-\d{2}(?:$|[-_.])/;
+
 function normalizeString(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
 }
@@ -39,7 +44,138 @@ export function isFlowDailyReport(report: DailyReportRecord) {
   );
 }
 
-export function buildViewerDailyReportCatalog(
+function compareViewerDailyReports(
+  left: DailyReportRecord,
+  right: DailyReportRecord
+) {
+  const byDate = right.reportDate.localeCompare(left.reportDate);
+  if (byDate !== 0) {
+    return byDate;
+  }
+
+  return right.updatedAt.localeCompare(left.updatedAt);
+}
+
+function normalizeFlowDuplicateKeyPart(value: string) {
+  return normalizeString(value)
+    .toLowerCase()
+    .replace(/[ç]/g, "c")
+    .replace(/[ğ]/g, "g")
+    .replace(/[ı]/g, "i")
+    .replace(/[İ]/g, "i")
+    .replace(/[ö]/g, "o")
+    .replace(/[ş]/g, "s")
+    .replace(/[ü]/g, "u")
+    .replace(/[^\w\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function buildFlowDuplicateKey(report: DailyReportRecord) {
+  if (!isFlowDailyReport(report)) {
+    return "";
+  }
+
+  const titleKey = normalizeFlowDuplicateKeyPart(report.title);
+  if (!titleKey || !report.reportDate) {
+    return "";
+  }
+
+  return `${report.reportDate}::${titleKey}`;
+}
+
+function scoreFlowDuplicateCandidate(report: DailyReportRecord) {
+  const sourceLabel = normalizeString(
+    report.content.sourceLabel || report.sourceFolder
+  )
+    .replace(/\\/g, "/")
+    .toLowerCase();
+  const html = normalizeString(report.content.html || "");
+  let score = 0;
+
+  if (isFlowSourceLabel(sourceLabel)) {
+    score += 20;
+  }
+
+  if (FLOW_ISO_DATE_TOKEN_PATTERN.test(sourceLabel)) {
+    score += 120;
+  }
+
+  if (FLOW_MONTH_TOKEN_PATTERN.test(sourceLabel)) {
+    score -= 40;
+  }
+
+  if (/GISTIFY FLOW|section-head|hero-h|section-body/i.test(html)) {
+    score += 60;
+  }
+
+  if (/lang-content|switchLang\s*\(/i.test(html)) {
+    score -= 15;
+  }
+
+  if (report.content.contentFormat === "html") {
+    score += 5;
+  }
+
+  return score;
+}
+
+function comparePreferredFlowDuplicateCandidates(
+  left: DailyReportRecord,
+  right: DailyReportRecord
+) {
+  const byScore =
+    scoreFlowDuplicateCandidate(right) - scoreFlowDuplicateCandidate(left);
+  if (byScore !== 0) {
+    return byScore;
+  }
+
+  const leftLabel = normalizeString(left.content.sourceLabel || left.sourceFolder);
+  const rightLabel = normalizeString(right.content.sourceLabel || right.sourceFolder);
+  const bySourceType =
+    Number(isFlowSourceLabel(rightLabel)) - Number(isFlowSourceLabel(leftLabel));
+  if (bySourceType !== 0) {
+    return bySourceType;
+  }
+
+  const byUpdatedAt = right.updatedAt.localeCompare(left.updatedAt);
+  if (byUpdatedAt !== 0) {
+    return byUpdatedAt;
+  }
+
+  return rightLabel.localeCompare(leftLabel);
+}
+
+function dedupeFlowReports(reports: DailyReportRecord[]) {
+  const passthrough: DailyReportRecord[] = [];
+  const grouped = new Map<string, DailyReportRecord[]>();
+
+  for (const report of reports) {
+    const duplicateKey = buildFlowDuplicateKey(report);
+    if (!duplicateKey) {
+      passthrough.push(report);
+      continue;
+    }
+
+    const group = grouped.get(duplicateKey);
+    if (group) {
+      group.push(report);
+    } else {
+      grouped.set(duplicateKey, [report]);
+    }
+  }
+
+  const deduped = [...passthrough];
+  for (const group of Array.from(grouped.values())) {
+    deduped.push(
+      [...group].sort(comparePreferredFlowDuplicateCandidates)[0] || group[0]
+    );
+  }
+
+  return deduped.sort(compareViewerDailyReports);
+}
+
+function buildViewerDailyReportCatalogRaw(
   publishedReports: DailyReportRecord[]
 ) {
   const publishedBySource = new Map(
@@ -103,14 +239,13 @@ export function buildViewerDailyReportCatalog(
     report => report.sourceFolder && !sourcedKeys.has(report.sourceFolder)
   );
 
-  return [...sourcedReports, ...archivedPublished].sort((left, right) => {
-    const byDate = right.reportDate.localeCompare(left.reportDate);
-    if (byDate !== 0) {
-      return byDate;
-    }
+  return [...sourcedReports, ...archivedPublished].sort(compareViewerDailyReports);
+}
 
-    return right.updatedAt.localeCompare(left.updatedAt);
-  });
+export function buildViewerDailyReportCatalog(
+  publishedReports: DailyReportRecord[]
+) {
+  return dedupeFlowReports(buildViewerDailyReportCatalogRaw(publishedReports));
 }
 
 function applyLimit<T>(items: T[], limit?: number) {
@@ -419,10 +554,35 @@ export function getViewerFlowReportById(
   reportId: string
 ) {
   const normalizedReportId = normalizeString(reportId);
-  return (
-    buildViewerDailyReportCatalog(publishedReports).find(
+  const catalog = buildViewerDailyReportCatalog(publishedReports);
+  const directMatch =
+    catalog.find(
       report => report.id === normalizedReportId && isFlowDailyReport(report)
-    ) || null
+    ) || null;
+  if (directMatch) {
+    return directMatch;
+  }
+
+  const rawCatalog = buildViewerDailyReportCatalogRaw(publishedReports);
+  const requestedDuplicate =
+    rawCatalog.find(
+      report => report.id === normalizedReportId && isFlowDailyReport(report)
+    ) || null;
+  if (!requestedDuplicate) {
+    return null;
+  }
+
+  const duplicateKey = buildFlowDuplicateKey(requestedDuplicate);
+  if (!duplicateKey) {
+    return requestedDuplicate;
+  }
+
+  return (
+    catalog.find(
+      report =>
+        isFlowDailyReport(report) &&
+        buildFlowDuplicateKey(report) === duplicateKey
+    ) || requestedDuplicate
   );
 }
 
