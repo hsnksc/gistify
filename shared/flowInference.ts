@@ -83,6 +83,7 @@ export function inferFlowTickerFromText(...values: string[]): string {
     /^\s*([A-Z][A-Z0-9.-]{0,9})(?=\s*[—\-·:|])/,
     /\bTicker\s*[:\-]\s*([A-Z][A-Z0-9.-]{0,9})\b/i,
     /\$([A-Z][A-Z0-9.-]{0,9})\b/,
+    /\bstock[-_/]([A-Z][A-Z0-9.-]{0,9})(?=[-_/]|\b)/i,
     /(?:^|[-_/])([a-z]{1,8})(?=\d{6,8}(?:$|[-_.]))/i,
   ];
 
@@ -95,6 +96,53 @@ export function inferFlowTickerFromText(...values: string[]): string {
   }
 
   return "";
+}
+
+export function extractFlowTickerUniverseFromText(...values: string[]): string[] {
+  const joined = values.map(value => value.trim()).filter(Boolean).join(" ");
+  if (!joined) {
+    return [];
+  }
+
+  const collected: string[] = [];
+  const seen = new Set<string>();
+  const pushTicker = (value: string) => {
+    const normalized = normalizeFlowTicker(value);
+    if (!normalized || isBlockedFlowTicker(normalized) || seen.has(normalized)) {
+      return;
+    }
+
+    seen.add(normalized);
+    collected.push(normalized);
+  };
+
+  for (const alias of FLOW_TICKER_ALIASES) {
+    if (alias.patterns.some(pattern => pattern.test(joined))) {
+      pushTicker(alias.ticker);
+    }
+  }
+
+  const explicitPatterns = [
+    /\$([A-Z][A-Z0-9.-]{0,9})\b/g,
+    /\(([A-Z][A-Z0-9.-]{0,9})\)/g,
+    /\bTicker\s*[:\-]\s*([A-Z][A-Z0-9.-]{0,9})\b/gi,
+    /\bstock[-_/]([A-Z][A-Z0-9.-]{0,9})(?=[-_/]|\b)/gi,
+    /(?:^|[-_/])([a-z]{1,8})(?=\d{6,8}(?:$|[-_.]))/gi,
+  ];
+
+  for (const pattern of explicitPatterns) {
+    for (const match of Array.from(joined.matchAll(pattern))) {
+      pushTicker(match[1] || "");
+    }
+  }
+
+  pushTicker(inferFlowTickerFromText(...values));
+
+  if (!collected.length && isDailyMarketReportText(...values)) {
+    pushTicker("MARKET");
+  }
+
+  return collected;
 }
 
 export function isDailyMarketReportText(...values: string[]): boolean {

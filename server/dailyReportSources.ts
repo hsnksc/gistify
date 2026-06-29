@@ -4,7 +4,10 @@ import type {
   DailyReportRecord,
   DailyReportSourcePackage,
 } from "../shared/dailyReports";
-import { inferFlowTickerFromText } from "../shared/flowInference.ts";
+import {
+  extractFlowTickerUniverseFromText,
+  inferFlowTickerFromText,
+} from "../shared/flowInference.ts";
 
 function getConfiguredRootPath() {
   const configured = normalizeString(process.env.DAILY_REPORTS_PATH);
@@ -607,6 +610,7 @@ function extractMetadata(markdown: string) {
     metadataItems: headerMetadata.metadataItems,
     executiveSummary: normalizedSummary,
     reportDate: parseDateTokenFromText(reportDateLabel),
+    reportDateLabel,
     tickerUniverse: tickerToken ? [tickerToken] : [],
   };
 }
@@ -719,9 +723,345 @@ function extractHtmlMetadata(html: string) {
       .filter(Boolean)
       .slice(0, 6),
     reportDate,
+    reportDateLabel: cleanMarkdownText(priceDate) || reportDate,
     tickerUniverse: tickerToken ? [tickerToken] : [],
     figureFiles: extractHtmlFigureFiles(html),
   };
+}
+
+function dedupeFlowTexts(values: string[], limit = 6, minLength = 24) {
+  return Array.from(
+    new Set(
+      values
+        .map(value => normalizeParagraph(value))
+        .filter(value => value.length >= minLength)
+    )
+  ).slice(0, limit);
+}
+
+function truncateFlowCopy(value: string, limit = 220) {
+  const normalized = normalizeParagraph(value);
+  if (normalized.length <= limit) {
+    return normalized;
+  }
+
+  return `${normalized.slice(0, Math.max(0, limit - 1)).trimEnd()}…`;
+}
+
+const IGNORED_FLOW_SITE_DOMAINS = [
+  "fonts.googleapis.com",
+  "fonts.gstatic.com",
+  "cdn.jsdelivr.net",
+  "cdnjs.cloudflare.com",
+  "unpkg.com",
+  "ajax.googleapis.com",
+];
+
+function isIgnoredFlowSiteDomain(value: string) {
+  const normalized = normalizeString(value).toLowerCase();
+  if (!normalized) {
+    return false;
+  }
+
+  return IGNORED_FLOW_SITE_DOMAINS.some(
+    domain => normalized === domain || normalized.endsWith(`.${domain}`)
+  );
+}
+
+function extractFirstSiteDomain(value: string) {
+  const normalized = normalizeString(value);
+  if (!normalized) {
+    return "";
+  }
+
+  const domainMatches = Array.from(
+    normalized.matchAll(
+      /(?:https?:\/\/)?([a-z0-9.-]+\.[a-z]{2,})(?:[/:?#\s]|$)/gi
+    )
+  );
+
+  for (const match of domainMatches) {
+    const domain = (match[1] || "").toLowerCase();
+    if (domain && !isIgnoredFlowSiteDomain(domain)) {
+      return domain;
+    }
+  }
+
+  return "";
+}
+
+function extractFlowSiteLabelFromMarkdown(markdown: string) {
+  const sourceMatch =
+    markdown.match(/\*\*(?:Kaynaklar?|Sources?|Source|Site):\*\*\s*(.+)/i) ||
+    markdown.match(/^(?:Kaynaklar?|Sources?|Source|Site)\s*:\s*(.+)$/im);
+
+  const fromSourceLine = extractFirstSiteDomain(sourceMatch?.[1] || "");
+  if (fromSourceLine) {
+    return fromSourceLine;
+  }
+
+  const markdownLinkDomain = extractFirstSiteDomain(
+    markdown.match(/\[[^\]]+\]\((https?:\/\/[^)\s]+)\)/i)?.[1] || ""
+  );
+  if (markdownLinkDomain) {
+    return markdownLinkDomain;
+  }
+
+  return "";
+}
+
+function extractFlowSiteLabelFromHtml(html: string) {
+  const metaSite =
+    normalizeString(
+      html.match(
+        /<meta[^>]+property=["']og:site_name["'][^>]+content=["']([^"']+)["']/i
+      )?.[1]
+    ) ||
+    normalizeString(
+      html.match(
+        /<meta[^>]+name=["']application-name["'][^>]+content=["']([^"']+)["']/i
+      )?.[1]
+    );
+
+  if (metaSite) {
+    return metaSite;
+  }
+
+  const visibleSourceDomain = extractFirstSiteDomain(
+    [
+      ...collectHtmlTextsByClass(html, "src-note", 4),
+      stripHtmlTags(html.match(/<footer[^>]*>([\s\S]*?)<\/footer>/i)?.[1] || ""),
+      stripHtmlTags(html.match(/<main[^>]*>([\s\S]*?)<\/main>/i)?.[1] || ""),
+    ].join(" ")
+  );
+  if (visibleSourceDomain) {
+    return visibleSourceDomain;
+  }
+
+  const firstDomain = extractFirstSiteDomain(html);
+  if (firstDomain) {
+    return firstDomain;
+  }
+
+  return "";
+}
+
+function simplifyFlowTitle(title: string, headline: string) {
+  const normalizedTitle = cleanMarkdownText(title)
+    .split("|")[0]
+    ?.replace(/(?:\s+\$[A-Z][A-Z0-9.-]{0,9}\b)+/g, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+  const normalizedHeadline = cleanMarkdownText(headline);
+
+  if (!normalizedTitle) {
+    return normalizedHeadline || "Flow Post";
+  }
+
+  if (normalizedTitle.length > 120 && normalizedHeadline) {
+    return truncateFlowCopy(normalizedHeadline, 110);
+  }
+
+  return normalizedTitle;
+}
+
+function formatFlowTickerLine(tickerUniverse: string[]) {
+  if (!tickerUniverse.length) {
+    return "$MARKET";
+  }
+
+  return tickerUniverse
+    .map(ticker => (ticker === "MARKET" ? "$MARKET" : `$${ticker}`))
+    .join(" · ");
+}
+
+function buildSimpleFlowMarkdown(options: {
+  sourceLabel: string;
+  title: string;
+  headline: string;
+  reportDate: string;
+  reportDateLabel: string;
+  siteLabel: string;
+  tickerUniverse: string[];
+  summaryItems: string[];
+  narrativeParagraphs: string[];
+}) {
+  const lines: string[] = [`# ${options.title}`, ""];
+  const siteLabel = options.siteLabel || "Manual source";
+  const reportDateLabel = options.reportDateLabel || options.reportDate;
+  const tickerLabel = formatFlowTickerLine(options.tickerUniverse);
+  const lead = truncateFlowCopy(
+    options.summaryItems[0] ||
+      options.headline ||
+      options.narrativeParagraphs[0] ||
+      "Yeni Flow girdisi sayfa formatina uygun olarak normalize edildi.",
+    320
+  );
+  const normalizedLead = normalizeParagraph(lead);
+  const bulletItems = dedupeFlowTexts(
+    [...options.summaryItems.slice(1), ...options.narrativeParagraphs].filter(
+      item => normalizeParagraph(item) !== normalizedLead
+    ),
+    5,
+    18
+  ).map(item => truncateFlowCopy(item, 220));
+  const bodyParagraphs = dedupeFlowTexts(
+    options.narrativeParagraphs.filter(paragraph => paragraph !== lead),
+    3,
+    60
+  ).map(item => truncateFlowCopy(item, 360));
+
+  lines.push(`**Site:** ${siteLabel}`);
+  lines.push(`**Haber Tarihi:** ${reportDateLabel}`);
+  lines.push(`**Ticker:** ${tickerLabel}`);
+  lines.push(`**Kaynak Dosya:** \`${options.sourceLabel}\``);
+  lines.push("");
+
+  if (lead) {
+    lines.push("## Ozet");
+    lines.push(lead);
+    lines.push("");
+  }
+
+  if (bulletItems.length) {
+    lines.push("## One Cikanlar");
+    for (const bullet of bulletItems) {
+      lines.push(`- ${bullet}`);
+    }
+    lines.push("");
+  }
+
+  if (bodyParagraphs.length) {
+    lines.push("## Kisa Not");
+    for (const paragraph of bodyParagraphs) {
+      lines.push(paragraph);
+      lines.push("");
+    }
+  }
+
+  lines.push("## Kaynak");
+  lines.push(
+    `Bu post \`${options.sourceLabel}\` kaynagindan otomatik normalize edildi.`
+  );
+
+  return lines.join("\n").trim();
+}
+
+function buildFlowFileSourcePackage(options: {
+  assetBasePath: string;
+  figureFiles: string[];
+  fileName: string;
+  html: string;
+  markdown: string;
+  metadata: ReturnType<typeof extractMetadata> | ReturnType<typeof extractHtmlMetadata>;
+  normalizedSourceKey: string;
+  openAiFigureFiles: string[];
+  reportDate: string;
+  sourceKind: "file";
+  sourceLabel: string;
+  updatedAt: string;
+}) {
+  const {
+    assetBasePath,
+    figureFiles,
+    fileName,
+    html,
+    markdown,
+    metadata,
+    normalizedSourceKey,
+    openAiFigureFiles,
+    reportDate,
+    sourceKind,
+    sourceLabel,
+    updatedAt,
+  } = options;
+  const narrativeParagraphs = dedupeFlowTexts(
+    metadata.executiveSummary?.length
+      ? metadata.executiveSummary
+      : markdown
+        ? extractNarrativeParagraphs(markdown, 5)
+        : collectHtmlTextsByClass(html, "hero-p", 3),
+    5,
+    24
+  );
+  const tickerUniverse = extractFlowTickerUniverseFromText(
+    sourceLabel,
+    fileName,
+    metadata.title,
+    metadata.headline,
+    metadata.coverage || "",
+    ...narrativeParagraphs
+  );
+  const siteLabel = markdown
+    ? extractFlowSiteLabelFromMarkdown(markdown)
+    : extractFlowSiteLabelFromHtml(html);
+  const title = simplifyFlowTitle(metadata.title, metadata.headline);
+  const preferredHeadline =
+    normalizeMetadataKey(metadata.headline) &&
+    normalizeMetadataKey(metadata.headline) !== normalizeMetadataKey(metadata.title)
+      ? metadata.headline
+      : narrativeParagraphs[0] || metadata.headline || title;
+  const sourceMetadataItems = [
+    { label: "Site", value: siteLabel || "Manual source" },
+    {
+      label: "Haber Tarihi",
+      value: metadata.reportDateLabel || reportDate,
+    },
+    {
+      label: "Ticker",
+      value: formatFlowTickerLine(tickerUniverse),
+    },
+    {
+      label: "Kaynak Dosya",
+      value: sourceLabel,
+    },
+  ];
+  const executiveSummary = dedupeFlowTexts(
+    [preferredHeadline, ...narrativeParagraphs],
+    5,
+    18
+  ).map(item => truncateFlowCopy(item, 220));
+  const normalizedMarkdown = buildSimpleFlowMarkdown({
+    sourceLabel,
+    title,
+    headline: preferredHeadline,
+    reportDate,
+    reportDateLabel: metadata.reportDateLabel || reportDate,
+    siteLabel,
+    tickerUniverse,
+    summaryItems: executiveSummary,
+    narrativeParagraphs,
+  });
+
+  return {
+    id: normalizedSourceKey,
+    folderName: normalizedSourceKey,
+    reportDate,
+    title,
+    headline: truncateFlowCopy(
+      preferredHeadline || executiveSummary[0] || title,
+      220
+    ),
+    author: metadata.author || undefined,
+    coverage: tickerUniverse.length
+      ? `Ticker: ${formatFlowTickerLine(tickerUniverse)}`
+      : undefined,
+    methodology: undefined,
+    metadataItems: sourceMetadataItems,
+    executiveSummary,
+    markdown: normalizedMarkdown,
+    html: "",
+    sectionFiles: [],
+    figureFiles,
+    openAiFigureFiles,
+    tickerUniverse,
+    researchFileCount: 0,
+    updatedAt,
+    sourceKind,
+    contentFormat: "markdown",
+    sourceLabel,
+    assetBasePath,
+  } satisfies DailyReportSourcePackage;
 }
 
 function listSectionFiles(folderPath: string) {
@@ -1121,6 +1461,30 @@ function buildFileSourcePackage({
   const sourceLabel = sourceLabelPrefix
     ? `${sourceLabelPrefix}/${fileName}`
     : fileName;
+  const openAiFigureFiles = filterAvailableFigureFiles(
+    sourceDirectoryPath,
+    figureFiles.map(fileName =>
+      buildDailyReportOpenAiFigureFileName(fileName)
+    )
+  );
+  const updatedAt = new Date(stats.mtimeMs).toISOString();
+
+  if (namespace === "flow") {
+    return buildFlowFileSourcePackage({
+      assetBasePath,
+      figureFiles,
+      fileName,
+      html,
+      markdown,
+      metadata,
+      normalizedSourceKey,
+      openAiFigureFiles,
+      reportDate,
+      sourceKind: "file",
+      sourceLabel,
+      updatedAt,
+    });
+  }
 
   return {
     id: normalizedSourceKey,
@@ -1137,15 +1501,10 @@ function buildFileSourcePackage({
     html,
     sectionFiles: [],
     figureFiles,
-    openAiFigureFiles: filterAvailableFigureFiles(
-      sourceDirectoryPath,
-      figureFiles.map(fileName =>
-        buildDailyReportOpenAiFigureFileName(fileName)
-      )
-    ),
+    openAiFigureFiles,
     tickerUniverse: metadata.tickerUniverse || [],
     researchFileCount: 0,
-    updatedAt: new Date(stats.mtimeMs).toISOString(),
+    updatedAt,
     sourceKind: "file",
     contentFormat: isHtmlSource ? "html" : "markdown",
     sourceLabel,

@@ -140,6 +140,47 @@ function resolveAssetSrc(
   };
 }
 
+function normalizeFlowMetaLabel(value: string) {
+  return value
+    .trim()
+    .toLocaleLowerCase("tr-TR")
+    .replace(/ç/g, "c")
+    .replace(/ğ/g, "g")
+    .replace(/ı/g, "i")
+    .replace(/ö/g, "o")
+    .replace(/ş/g, "s")
+    .replace(/ü/g, "u")
+    .replace(/[^\w\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getFlowMetaValue(
+  items: Array<{ label: string; value: string }>,
+  labels: string[]
+) {
+  const normalizedLabels = labels.map(normalizeFlowMetaLabel);
+  const match = items.find(item =>
+    normalizedLabels.includes(normalizeFlowMetaLabel(item.label))
+  );
+
+  return match?.value?.trim() || "";
+}
+
+function dedupeViewerItems(items: ReportPostItem[]) {
+  const seen = new Set<string>();
+
+  return items.filter(item => {
+    const key = `${normalizeFlowMetaLabel(item.label)}::${item.value.trim()}`;
+    if (!item.label.trim() || !item.value.trim() || seen.has(key)) {
+      return false;
+    }
+
+    seen.add(key);
+    return true;
+  });
+}
+
 
 export function formatFlowReportDate(reportDate: string, locale = "tr-TR") {
   return new Intl.DateTimeFormat(locale, {
@@ -496,8 +537,9 @@ export function buildFlowViewerData(
   const content = normalizeFlowContent(report.content);
   const assetBasePath = content.assetBasePath || report.sourceFolder;
   const sourceLabel = getFlowSourceLabel(report);
+  const usesCanonicalFlowFormat = sourceLabel.toLowerCase().startsWith("flow/");
   const isHtmlSource = content.contentFormat === "html";
-  const spotlight = isHtmlSource
+  const spotlight = isHtmlSource || usesCanonicalFlowFormat
     ? null
     : buildReportSpotlight(content.markdown);
   const storyItems = spotlight
@@ -507,9 +549,26 @@ export function buildFlowViewerData(
       : isHtmlSource
         ? []
         : extractLeadParagraphsFromMarkdown(content.markdown, 3);
-  const snapshotMetrics = isHtmlSource
+  const snapshotMetrics = isHtmlSource || usesCanonicalFlowFormat
     ? []
     : extractSnapshotMetricsFromMarkdown(content.markdown, 6);
+  const normalizedMetadataItems = (content.metadataItems || []).map(item => ({
+    label: item.label,
+    value: item.value,
+  }));
+  const siteValue = getFlowMetaValue(normalizedMetadataItems, ["Site", "Source"]);
+  const tickerValue = getFlowMetaValue(normalizedMetadataItems, ["Ticker"]);
+  const newsDateValue = getFlowMetaValue(normalizedMetadataItems, [
+    "Haber Tarihi",
+    "News Date",
+    "Rapor Tarihi",
+    "Report Date",
+  ]);
+  const statMetaKeys = new Set(
+    ["Site", "Source", "Ticker", "Haber Tarihi", "News Date", "Rapor Tarihi", "Report Date"].map(
+      normalizeFlowMetaLabel
+    )
+  );
   const statCards: ReportPostItem[] = snapshotMetrics.length
     ? snapshotMetrics.map(item => ({
         detail: item.detail,
@@ -517,58 +576,43 @@ export function buildFlowViewerData(
         tone: "info",
         value: item.value,
       }))
-    : [
+    : dedupeViewerItems([
         {
           detail: copy(
             language,
-            "Parser ile cikan ticker evreni.",
-            "Ticker universe parsed from the source."
+            "Kaynagin geldigi site veya yayin alani.",
+            "The site or publishing origin of the source."
+          ),
+          label: copy(language, "Site", "Site"),
+          tone: "info",
+          value: siteValue || copy(language, "Belirtilmedi", "Not set"),
+        },
+        {
+          detail: copy(
+            language,
+            "Akista karti acacak birincil ticker satiri.",
+            "Primary ticker line shown on the flow post."
           ),
           label: copy(language, "Ticker", "Ticker"),
           tone: "bull",
-          value: String(content.tickerUniverse.length),
+          value:
+            tickerValue ||
+            content.tickerUniverse.map(item => `$${item}`).join(" · ") ||
+            "$MARKET",
         },
         {
           detail: copy(
             language,
-            "Yuklenen gorsel adedi.",
-            "Uploaded figure count."
+            "Kaynaktan cikarilan haber tarihi.",
+            "News date parsed from the source."
           ),
-          label: copy(language, "Gorsel", "Figure"),
-          tone: "info",
-          value: String(content.figureFiles.length),
+          label: copy(language, "Haber Tarihi", "News Date"),
+          tone: "caution",
+          value: newsDateValue || formatFlowReportDate(report.reportDate, locale),
         },
-        {
-          detail: copy(
-            language,
-            "Ek arastirma dosyasi sayisi.",
-            "Additional research file count."
-          ),
-          label: copy(language, "Arastirma", "Research"),
-          value: String(content.researchFileCount),
-        },
-      ];
+      ]);
 
-  const metaItems: ReportPostItem[] = [
-    {
-      label: copy(language, "Ticker", "Ticker"),
-      tone: "bull",
-      value: String(content.tickerUniverse.length),
-    },
-    {
-      label: copy(language, "Gorsel", "Figure"),
-      tone: "info",
-      value: String(content.figureFiles.length),
-    },
-    {
-      label: "OpenAI",
-      tone: "caution",
-      value: String(content.openAiFigureFiles.length),
-    },
-    {
-      label: copy(language, "Arastirma", "Research"),
-      value: String(content.researchFileCount),
-    },
+  const metaItems: ReportPostItem[] = dedupeViewerItems([
     ...(content.author
       ? [
           {
@@ -594,11 +638,37 @@ export function buildFlowViewerData(
           },
         ]
       : []),
-    ...(content.metadataItems || []).map(item => ({
+    ...normalizedMetadataItems.map(item => ({
       label: item.label,
       value: item.value,
-    })),
-  ];
+    })).filter(item => !statMetaKeys.has(normalizeFlowMetaLabel(item.label))),
+    ...(content.figureFiles.length
+      ? [
+          {
+            label: copy(language, "Gorsel", "Figure"),
+            tone: "info" as const,
+            value: String(content.figureFiles.length),
+          },
+        ]
+      : []),
+    ...(content.openAiFigureFiles.length
+      ? [
+          {
+            label: "OpenAI",
+            tone: "caution" as const,
+            value: String(content.openAiFigureFiles.length),
+          },
+        ]
+      : []),
+    ...(content.researchFileCount
+      ? [
+          {
+            label: copy(language, "Arastirma", "Research"),
+            value: String(content.researchFileCount),
+          },
+        ]
+      : []),
+  ]);
 
   const galleryFigures: FlowGalleryFigure[] = content.figureFiles.map(
     fileName => {
