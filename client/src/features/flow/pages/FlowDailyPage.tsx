@@ -1,25 +1,7 @@
-import {
-  AlertCircle,
-  ArrowLeft,
-  Clock3,
-  FileSearch,
-  RefreshCw,
-  ScrollText,
-} from "lucide-react";
-import { useLocation } from "wouter";
-import { Button } from "@/components/ui/button";
-import EmptyState from "@/components/ui/empty-state";
-import LoadingState from "@/components/ui/loading-state";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { copy, type AppLanguage } from "@/lib/i18n";
-import FlowLayout from "../components/FlowLayout";
-import FlowReportList from "../components/FlowReportList";
+import FlowFeedScreen from "../components/FlowFeedScreen";
 import { useFlowReportSummaries } from "../hooks/useFlowReportSummaries";
-import {
-  formatFlowReportDate,
-  formatFlowTimestamp,
-  getFlowPreviewText,
-} from "../lib/flowReportHelpers";
 
 export default function FlowDailyPage({
   language,
@@ -27,178 +9,36 @@ export default function FlowDailyPage({
   language: AppLanguage;
   onLanguageChange: (next: AppLanguage) => void;
 }) {
-  const [, setLocation] = useLocation();
   const { reports, loading, error, reload } = useFlowReportSummaries(language, {
     reportKind: "daily",
   });
-  const latestReport = reports[0] || null;
-  const archiveReports = latestReport ? reports.slice(1) : reports;
-  const locale = language === "en" ? "en-US" : "tr-TR";
 
   usePageMeta({
     description: copy(
       language,
-      "Gistify Flow gunluk piyasa raporlari arsivi.",
-      "Gistify Flow daily market report archive."
+      "Gunluk Flow postlari tek akista listelenir.",
+      "Daily Flow posts are listed in a single feed."
     ),
-    title: copy(language, "Gunluk Rapor Arsivi | Gistify", "Daily Report Archive | Gistify"),
+    title: copy(language, "Gunluk Flow | Gistify", "Daily Flow | Gistify"),
   });
 
   return (
-    <FlowLayout
-      language={language}
-      eyebrow={copy(language, "Gunluk", "Daily")}
-      title={copy(language, "Gunluk Rapor Arsivi", "Daily Report Archive")}
+    <FlowFeedScreen
+      backHref="/flow"
+      backLabel={copy(language, "Tum Akis", "Full Feed")}
+      basePath="/flow"
       description={copy(
         language,
-        "Piyasa gunlugu, makro kapanis ozeti ve market-wide HTML raporlar bu yuzeyde toplanir.",
-        "Market journals, macro close summaries and market-wide HTML reports are collected on this surface."
+        "Gunluk ve market geneli postlar burada filtrelenir.",
+        "Daily and market-wide posts are filtered here."
       )}
-      actions={
-        <>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => setLocation("/flow")}
-          >
-            <ArrowLeft className="size-4" />
-            {copy(language, "Rapor Merkezi", "Report Center")}
-          </Button>
-          <Button type="button" variant="outline" onClick={() => void reload()}>
-            <RefreshCw className="size-4" />
-            {copy(language, "Yenile", "Refresh")}
-          </Button>
-        </>
-      }
-    >
-      <section key={latestReport?.id || "empty"} className="grid gap-3 md:grid-cols-3">
-        <article className="rounded-xl border border-border bg-card/90 p-4 shadow-md">
-          <div className="flex items-center gap-2">
-            <ScrollText className="size-4 text-cyan-300" />
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-cyan-300">
-              {copy(language, "Toplam Gunluk", "Total Daily Reports")}
-            </p>
-          </div>
-          <p className="mt-2 text-2xl font-semibold text-foreground">
-            {reports.length}
-          </p>
-        </article>
-
-        <article className="rounded-xl border border-border bg-card/90 p-4 shadow-md">
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-emerald-300">
-            {copy(language, "Son Rapor Tarihi", "Latest Report Date")}
-          </p>
-          <p className="mt-2 text-lg font-semibold text-foreground">
-            {latestReport
-              ? formatFlowReportDate(latestReport.reportDate, locale)
-              : "-"}
-          </p>
-        </article>
-
-        <article className="rounded-xl border border-border bg-card/90 p-4 shadow-md">
-          <div className="flex items-center gap-2">
-            <Clock3 className="size-4 text-amber-300" />
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-amber-300">
-              {copy(language, "Son Guncelleme", "Latest Update")}
-            </p>
-          </div>
-          <p className="mt-2 text-lg font-semibold text-foreground">
-            {latestReport
-              ? formatFlowTimestamp(latestReport.updatedAt, locale)
-              : "-"}
-          </p>
-        </article>
-      </section>
-
-      {loading ? (
-        <LoadingState
-          compact
-          label={copy(
-            language,
-            "Gunluk raporlar yukleniyor.",
-            "Loading daily reports."
-          )}
-        />
-      ) : error ? (
-        <EmptyState
-          description={error}
-          icon={AlertCircle}
-          role="alert"
-          title={copy(
-            language,
-            "Gunluk arsiv yuklenemedi",
-            "Daily archive could not be loaded"
-          )}
-          tone="danger"
-        />
-      ) : !latestReport ? (
-        <EmptyState
-          description={copy(
-            language,
-            "Yeni gunluk raporlar geldikce bu arsiv otomatik dolacak.",
-            "This archive will fill automatically as new daily reports arrive."
-          )}
-          icon={FileSearch}
-          title={copy(
-            language,
-            "Henuz gunluk piyasa raporu bulunamadi.",
-            "No daily market report is available yet."
-          )}
-        />
-      ) : (
-        <>
-          <section className="rounded-xl border border-border bg-card/95 p-4 shadow-md">
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-              <div className="space-y-2">
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-cyan-300">
-                  {copy(language, "One Cikan Rapor", "Featured Daily")}
-                </p>
-                <h2 className="text-xl font-semibold tracking-tight text-foreground md:text-2xl">
-                  {latestReport.title}
-                </h2>
-                <p className="max-w-3xl text-xs leading-5 text-muted-foreground">
-                  {getFlowPreviewText(latestReport, language)}
-                </p>
-                <div className="flex flex-wrap gap-1.5 text-[10px] text-muted-foreground">
-                  <span className="rounded-full border border-border bg-background/60 px-2 py-0.5">
-                    {formatFlowReportDate(latestReport.reportDate, locale)}
-                  </span>
-                  <span className="rounded-full border border-border bg-background/60 px-2 py-0.5">
-                    {formatFlowTimestamp(latestReport.updatedAt, locale)}
-                  </span>
-                </div>
-              </div>
-
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setLocation(`/flow/${encodeURIComponent(latestReport.id)}`)}
-              >
-                {copy(language, "Raporu Ac", "Open Report")}
-              </Button>
-            </div>
-          </section>
-
-          <section className="space-y-3">
-            <div className="rounded-xl border border-border bg-card/90 p-4 shadow-md">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-sky-300">
-                {copy(language, "Arsiv", "Archive")}
-              </p>
-              <h2 className="mt-1 text-lg font-semibold text-foreground">
-                {copy(language, "Tum gunluk raporlar", "All daily reports")}
-              </h2>
-            </div>
-
-            <FlowReportList
-              basePath="/flow"
-              language={language}
-              reports={archiveReports}
-            />
-          </section>
-        </>
-      )}
-    </FlowLayout>
+      error={error}
+      eyebrow={copy(language, "Gunluk", "Daily")}
+      language={language}
+      loading={loading}
+      onRefresh={reload}
+      reports={reports}
+      title={copy(language, "Gunluk Postlar", "Daily Posts")}
+    />
   );
 }
-
-

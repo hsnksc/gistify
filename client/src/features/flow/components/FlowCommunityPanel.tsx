@@ -139,8 +139,8 @@ export default function FlowCommunityPanel({
           <p className="mt-1 text-sm text-muted-foreground">
             {copy(
               language,
-              "Okuma herkese acik kalir. Yorum yazmak icin normal uye girisi gerekir; public preview hesabi yorum gonderemez.",
-              "Reading stays public. Posting requires a normal member sign-in; the public preview account cannot submit comments."
+              "Bu posta yorum birakmak icin giris yapman yeterli.",
+              "Sign in if you want to leave a comment on this post."
             )}
           </p>
         </div>
@@ -195,13 +195,13 @@ export default function FlowCommunityPanel({
                 : isPublicPreviewUser
                   ? copy(
                       language,
-                      "Public preview kullanicisi yorum gonderemez. Kendi Google hesabinla giris yapmalisin.",
-                      "The public preview user cannot post comments. Sign in with your own Google account."
+                      "Public preview hesabi yorum gonderemez. Kendi hesabinla giris yap.",
+                      "The public preview account cannot comment. Sign in with your own account."
                     )
                   : copy(
                       language,
-                      "Yorum yazmak icin Google ile uye girisi yapmalisin. Okuma herkese acik kalir.",
-                      "You need a Google member sign-in to comment. Reading remains public."
+                      "Yorum yazmak icin Google ile giris yap.",
+                      "Sign in with Google to comment."
                     )}
             </p>
             {!authLoading ? (
@@ -275,8 +275,8 @@ export default function FlowCommunityPanel({
           <div className="rounded-xl border border-dashed border-border bg-background/40 p-4 text-sm text-muted-foreground">
             {copy(
               language,
-              "Bu rapor icin henuz yorum yok. Ilk yorumu uye girisi yapan biri birakabilir.",
-              "There are no comments on this report yet. The first one can be posted by any signed-in member."
+              "Henuz yorum yok.",
+              "No comments yet."
             )}
           </div>
         )}

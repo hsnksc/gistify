@@ -1,7 +1,5 @@
-import { useCallback } from "react";
 import type { FlowReport } from "@shared/flow";
-import { AlertCircle, ArrowLeft, FileSearch, RefreshCw, Share2 } from "lucide-react";
-import { toast } from "sonner";
+import { AlertCircle, ArrowLeft, FileSearch, RefreshCw } from "lucide-react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import EmptyState from "@/components/ui/empty-state";
@@ -10,13 +8,13 @@ import { usePageMeta } from "@/hooks/usePageMeta";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import FlowCommunityPanel from "./FlowCommunityPanel";
 import FlowLayout from "./FlowLayout";
+import FlowPostActions from "./FlowPostActions";
 import FlowReportViewer from "./FlowReportViewer";
 import {
   getFlowReportArchiveDetailPath,
   getFlowReportDetailPath,
-  getFlowReportKind,
-  getFlowTickerReportPath,
-  getPrimaryFlowTicker,
+  getFlowReportTickers,
+  getFlowUploadedLabel,
 } from "../lib/flowReportHelpers";
 
 interface FlowReportDetailSurfaceProps {
@@ -39,136 +37,55 @@ export default function FlowReportDetailSurface({
   report,
 }: FlowReportDetailSurfaceProps) {
   const [, setLocation] = useLocation();
-
-  const handleShare = useCallback(async () => {
-    if (typeof window === "undefined" || !report) {
-      return;
-    }
-
-    const sharePath =
-      basePath === "/reports"
-        ? getFlowReportArchiveDetailPath(report, basePath)
-        : getFlowReportDetailPath(report.id, basePath);
-    const shareUrl = `${window.location.origin}${sharePath}`;
-
-    try {
-      if (navigator.share) {
-        await navigator.share({
-          text: report.content.headline || report.title,
-          title: report.title,
-          url: shareUrl,
-        });
-        return;
-      }
-
-      await navigator.clipboard.writeText(shareUrl);
-      toast.success(
-        copy(language, "Flow linki kopyalandi.", "Flow link copied.")
-      );
-    } catch {
-      toast.error(
-        copy(
-          language,
-          "Paylasim tamamlanamadi.",
-          "Share could not be completed."
-        )
-      );
-    }
-  }, [basePath, language, report]);
-
-  const sidebar = report ? (
-    <FlowCommunityPanel language={language} reportId={report.id} />
-  ) : null;
-  const reportKind = report ? getFlowReportKind(report) : "stock";
-  const ticker =
-    report && reportKind === "stock" ? getPrimaryFlowTicker(report) : "";
-  const tickerPath = ticker ? getFlowTickerReportPath(ticker, basePath) : "/flow/daily";
-  const libraryPath = reportKind === "daily" ? "/flow" : basePath;
+  const locale = language === "en" ? "en-US" : "tr-TR";
+  const detailPath = report
+    ? basePath === "/reports"
+      ? getFlowReportArchiveDetailPath(report, basePath)
+      : getFlowReportDetailPath(report.id, basePath)
+    : basePath;
+  const tickers = report ? getFlowReportTickers(report) : [];
+  const backHref = basePath === "/reports" ? "/reports" : "/flow";
 
   usePageMeta({
     description:
       report?.content.headline ||
-      copy(
-        language,
-        "Gistify Flow rapor detayi.",
-        "Gistify Flow report detail."
-      ),
+      copy(language, "Flow post detayi.", "Flow post detail."),
     title: report?.title
       ? `${report.title} | Gistify`
-      : copy(language, "Flow Raporu | Gistify", "Flow Report | Gistify"),
+      : copy(language, "Flow Post | Gistify", "Flow Post | Gistify"),
   });
 
   return (
     <FlowLayout
-      key={report?.id || "empty"}
       language={language}
-      sidebarLayoutClassName="xl:grid-cols-[minmax(0,1fr)_380px]"
       eyebrow={eyebrow}
-      title={report?.title || copy(language, "Flow raporu", "Flow report")}
-      description={
-        report?.content.headline ||
-        copy(
-          language,
-          "Bagimsiz Flow detay sayfasinda kaynak rapor, gorseller ve topluluk yorumlari ayni yuzeyde acilir.",
-          "The standalone flow detail page keeps the source report, visuals and community comments on the same surface."
-        )
-      }
+      title={copy(language, "Post Detayi", "Post Detail")}
+      description={copy(
+        language,
+        "Akistaki secili postun tam icerigi burada acilir.",
+        "The full content of the selected post opens here."
+      )}
       actions={
         <>
-          {reportKind === "daily" ? (
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setLocation("/flow/daily")}
-            >
-              <ArrowLeft className="size-4" />
-              {copy(language, "Gunluk Raporlar", "Daily Reports")}
-            </Button>
-          ) : (
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setLocation(tickerPath)}
-            >
-              <ArrowLeft className="size-4" />
-              {ticker
-                ? copy(language, `${ticker} raporlari`, `${ticker} reports`)
-                : copy(language, "Hisseler", "Tickers")}
-            </Button>
-          )}
           <Button
             type="button"
             variant="outline"
-            onClick={() => setLocation(libraryPath)}
+            onClick={() => setLocation(backHref)}
           >
-            {reportKind === "daily"
-              ? copy(language, "Rapor Merkezi", "Report Center")
-              : copy(language, "Tum Hisseler", "All Tickers")}
+            <ArrowLeft className="size-4" />
+            {copy(language, "Akisa Don", "Back to Feed")}
           </Button>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => void onRefresh?.()}
-          >
+          <Button type="button" variant="outline" onClick={() => void onRefresh?.()}>
             <RefreshCw className="size-4" />
             {copy(language, "Yenile", "Refresh")}
           </Button>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => void handleShare()}
-          >
-            <Share2 className="size-4" />
-            {copy(language, "Paylas", "Share")}
-          </Button>
         </>
       }
-      sidebar={sidebar}
     >
       {loading ? (
         <LoadingState
           compact
-          label={copy(language, "Flow raporu yukleniyor.", "Loading flow report.")}
+          label={copy(language, "Post yukleniyor.", "Loading post.")}
         />
       ) : !report ? (
         <EmptyState
@@ -176,23 +93,72 @@ export default function FlowReportDetailSurface({
             error ||
             copy(
               language,
-              "Arsive geri donup raporu tekrar secmeyi dene.",
-              "Return to the archive and try selecting the report again."
+              "Akisa geri donup postu tekrar sec.",
+              "Return to the feed and pick the post again."
             )
           }
           icon={error ? AlertCircle : FileSearch}
           role={error ? "alert" : "status"}
           title={copy(
             language,
-            "Istenen Flow raporu bulunamadi.",
-            "The requested flow report could not be found."
+            "Istenen post bulunamadi.",
+            "The requested post could not be found."
           )}
           tone={error ? "danger" : "neutral"}
         />
       ) : (
-        <FlowReportViewer language={language} report={report} />
+        <>
+          <section className="rounded-[28px] border border-border bg-card/95 p-6 shadow-sm">
+            <div className="flex items-start gap-4">
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-full border border-sky-400/20 bg-sky-500/10 text-sky-200">
+                F
+              </div>
+
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-2 text-sm">
+                  <p className="font-semibold text-foreground">Flow</p>
+                  <span className="text-muted-foreground">·</span>
+                  <p className="text-xs text-muted-foreground">
+                    {getFlowUploadedLabel(report, locale)}
+                  </p>
+                </div>
+
+                <h1 className="mt-3 text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
+                  {report.title}
+                </h1>
+
+                {tickers.length ? (
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {tickers.map(ticker => (
+                      <span
+                        key={ticker}
+                        className="rounded-full border border-border bg-background/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground"
+                      >
+                        ${ticker}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
+
+                <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
+                  <FlowPostActions
+                    language={language}
+                    reportId={report.id}
+                    sharePath={detailPath}
+                    title={report.title}
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="rounded-[28px] border border-border bg-card/95 p-4 shadow-sm md:p-6">
+            <FlowReportViewer language={language} report={report} />
+          </section>
+
+          <FlowCommunityPanel language={language} reportId={report.id} />
+        </>
       )}
     </FlowLayout>
   );
 }
-

@@ -209,6 +209,13 @@ export function formatFlowTimestamp(value: string, locale = "tr-TR") {
   }).format(parsed);
 }
 
+export function getFlowUploadedLabel(
+  report: FlowReportListEntry,
+  locale = "tr-TR"
+) {
+  return formatFlowTimestamp(report.updatedAt, locale);
+}
+
 export function normalizeFlowContent(
   content: DailyReportContent
 ): DailyReportContent {
@@ -428,6 +435,42 @@ export function getPrimaryFlowTicker(report: FlowReportListEntry) {
     normalizeFlowTicker(report.id) ||
     "FLOW"
   );
+}
+
+export function getFlowReportTickers(report: FlowReportListEntry) {
+  const tickers = isFlowReportSummary(report)
+    ? report.tickerUniverse
+    : normalizeFlowContent(report.content).tickerUniverse;
+
+  const normalized = Array.from(
+    new Set(
+      (tickers || [])
+        .map(item => normalizeFlowTicker(item))
+        .filter(
+          item =>
+            item &&
+            !isBlockedFlowTicker(item) &&
+            item !== "MARKET" &&
+            item !== "FLOW"
+        )
+    )
+  );
+
+  if (normalized.length) {
+    return normalized;
+  }
+
+  const primaryTicker = getPrimaryFlowTicker(report);
+  if (
+    primaryTicker &&
+    primaryTicker !== "MARKET" &&
+    primaryTicker !== "FLOW" &&
+    !isBlockedFlowTicker(primaryTicker)
+  ) {
+    return [primaryTicker];
+  }
+
+  return [];
 }
 
 export function getFlowTickerReportPath(ticker: string, basePath = "/flow") {

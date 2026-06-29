@@ -1102,7 +1102,7 @@ function buildFlowFileSourcePackage(options: {
     methodology: undefined,
     metadataItems: sourceMetadataItems,
     executiveSummary,
-    markdown: normalizedMarkdown,
+    markdown: isHtmlSource ? normalizedMarkdown : markdown || normalizedMarkdown,
     html,
     sectionFiles: [],
     figureFiles,
@@ -1115,6 +1115,39 @@ function buildFlowFileSourcePackage(options: {
     sourceLabel,
     assetBasePath,
   } satisfies DailyReportSourcePackage;
+}
+
+export function createFlowSourcePackageFromContent(options: {
+  fileName: string;
+  html?: string;
+  markdown?: string;
+  sourceLabel?: string;
+  updatedAt?: string;
+}) {
+  const html = options.html || "";
+  const markdown = options.markdown || "";
+  const isHtmlSource = Boolean(html.trim());
+  const metadata = isHtmlSource ? extractHtmlMetadata(html) : extractMetadata(markdown);
+  const updatedAt = options.updatedAt || new Date().toISOString();
+  const reportDate =
+    metadata.reportDate ||
+    parseDateTokenFromFileName(path.basename(options.fileName)) ||
+    updatedAt.slice(0, 10);
+
+  return buildFlowFileSourcePackage({
+    assetBasePath: "",
+    figureFiles: [],
+    fileName: options.fileName,
+    html,
+    markdown,
+    metadata,
+    normalizedSourceKey: buildNamespacedSourceKey("flow", options.sourceLabel || options.fileName),
+    openAiFigureFiles: [],
+    reportDate,
+    sourceKind: "file",
+    sourceLabel: options.sourceLabel || options.fileName,
+    updatedAt,
+  });
 }
 
 function listSectionFiles(folderPath: string) {

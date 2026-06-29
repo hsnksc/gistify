@@ -17,6 +17,7 @@ interface HtmlReportRendererProps {
   language?: AppLanguage;
   html: string;
   emptyMessage?: string;
+  minimal?: boolean;
   sourceFolder?: string;
   sourceLabel?: string;
   title?: string;
@@ -645,6 +646,7 @@ export default function HtmlReportRenderer({
   language = "tr",
   html,
   emptyMessage,
+  minimal = false,
   sourceFolder = "",
   sourceLabel = "",
   title = "",
@@ -775,7 +777,7 @@ export default function HtmlReportRenderer({
 
   return (
     <div className="space-y-6">
-      {translationNotice ? (
+      {translationNotice && !minimal ? (
         <section className="rounded-xl border border-amber-400/25 bg-amber-500/8 p-4 shadow-xl">
           <div className="flex items-start gap-3">
             <Languages className="mt-0.5 size-4 text-amber-300" />
@@ -791,7 +793,7 @@ export default function HtmlReportRenderer({
         </section>
       ) : null}
 
-      {prepared.sections.length > 1 ? (
+      {prepared.sections.length > 1 && !minimal ? (
         <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <div className="flex items-center gap-2">
             <BookOpen className="size-4 text-emerald-300" />
@@ -825,7 +827,7 @@ export default function HtmlReportRenderer({
         />
       </section>
 
-      {prepared.sections.length > 1 ? (
+      {prepared.sections.length > 1 && !minimal ? (
         <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
             {copy(language, "Hizli Gecis", "Quick Jump")}

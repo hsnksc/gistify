@@ -2,7 +2,7 @@ import { FileSearch } from "lucide-react";
 import EmptyState from "@/components/ui/empty-state";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import type { FlowReportListEntry } from "../lib/flowReportHelpers";
-import FlowReportRow from "./FlowReportRow";
+import FlowFeedCard from "./FlowFeedCard";
 
 interface FlowReportListProps {
   basePath?: string;
@@ -22,16 +22,16 @@ export default function FlowReportList({
       <EmptyState
         description={copy(
           language,
-          "Filtreleri gevsetip veya aramayi temizleyip listeyi genisletebilirsin.",
-          "Loosen the filters or clear the search to widen the list."
+          "Yeni post geldikce bu akis dolacak.",
+          "This feed will fill automatically as new posts arrive."
         )}
         icon={FileSearch}
         title={
           emptyMessage ||
           copy(
             language,
-            "Bu filtreye uygun Flow raporu bulunamadi.",
-            "No flow report matched this filter."
+            "Henuz gosterilecek post yok.",
+            "There are no posts to show yet."
           )
         }
       />
@@ -44,7 +44,7 @@ export default function FlowReportList({
       className="grid gap-3"
     >
       {reports.map(report => (
-        <FlowReportRow
+        <FlowFeedCard
           key={report.id}
           basePath={basePath}
           language={language}
