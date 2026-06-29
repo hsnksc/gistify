@@ -1,11 +1,86 @@
 {
   "generatedAt": "2026-06-28T21:00:00Z",
   "reportDate": "2026-06-28",
-  "title": "US PPI Forecast Snapshot — Composite Calibrated Bridge Nowcast",
-  "summary": "Headline PPI near-flat after May's energy shock. Hormuz deal opened the strait; WTI collapsed to $74, gasoline retail fell to $4.05. Composite Calibrated Bridge Nowcast shows energy mean-reversion to -1.5% but core goods lagged passthrough (+0.6%) and sticky services (+0.4%) keep core elevated. The headline is almost entirely an energy story; core is the real signal.",
+  "title": "US PPI Forecast Snapshot — Composite Calibrated Bridge Nowcast v2.5",
+  "summary": "Headline PPI near-flat after May's energy shock. Hormuz deal opened the strait; WTI collapsed to $74, gasoline retail fell to $4.05. Composite Calibrated Bridge Nowcast v2.5 (with adaptive lag correction, regime-dependent bias, and anomaly detection) shows energy mean-reversion to -1.5% but core goods lagged passthrough (+0.6%) and sticky services (+0.4%) keep core elevated. Regime: Normal (VIX 17.87). The headline is almost entirely an energy story; core is the real signal.",
   "baseCase": "Flat headline, sticky core; energy mean-reversion masks upstream persistence",
   "conviction": 65,
-  "methodology": "Composite Calibrated Bridge Nowcast",
+  "regime": "normal",
+  "vix": 17.87,
+  "regimeParameters": {
+    "biasWindow": 3,
+    "energyLag": 1,
+    "coreGoodsLag": 1,
+    "transportSmoothing": 0.5,
+    "ciMultiplier": 1.96
+  },
+  "adaptiveBias": {
+    "energy": 0.0,
+    "foods": 0.3,
+    "coreGoods": 0.3,
+    "tradeServices": -0.6,
+    "transportation": 0.2,
+    "otherServices": 0.2
+  },
+  "lagCorrection": {
+    "energy": { "lagMonths": 1, "dampening": 1.0 },
+    "coreGoods": { "lagMonths": 1, "dampening": 1.0 }
+  },
+  "compositeProxies": {
+    "energy": {
+      "gasoline": -8.0,
+      "diesel": -5.0,
+      "jetFuel": -3.0,
+      "naturalGas": 2.8,
+      "composite": -1.5
+    },
+    "foods": {
+      "cattle": 0.0,
+      "hogs": -0.5,
+      "grains": 0.2,
+      "dairy": 0.0,
+      "usda": 0.0,
+      "composite": 0.3
+    },
+    "coreGoods": {
+      "copper": 0.5,
+      "steel": -0.2,
+      "aluminum": 0.3,
+      "lumber": 0.3,
+      "chemicals": 0.5,
+      "pharma": 0.2,
+      "composite": 0.6
+    },
+    "tradeServices": {
+      "inventorySales": 0.0,
+      "wholesaleMargin": -0.3,
+      "retailSales": -0.2,
+      "fuelMargin": 0.0,
+      "composite": -0.5
+    },
+    "transportation": {
+      "datSpot": 0.0,
+      "diesel": 2.0,
+      "railFreight": 0.0,
+      "airFreight": 0.0,
+      "composite": 1.0
+    },
+    "otherServices": {
+      "eci": 0.0,
+      "sp500vix": 0.4,
+      "healthcare": 0.0,
+      "accommodation": 0.0,
+      "loanRates": 0.0,
+      "composite": 0.4
+    }
+  },
+  "intermediateDemand": {
+    "stage1": 3.2,
+    "stage2": 2.4,
+    "stage3": 1.9,
+    "stage4": 1.1,
+    "uplift": 0.5
+  },
   "release": {
     "name": "PPI",
     "period": "Jun 2026",
@@ -21,58 +96,15 @@
     "priorCoreYoY": "5.1%",
     "bias": "COOLER",
     "confidence": 65,
-    "thesis": "Energy composite (gasoline -$0.25, diesel -$0.29, natgas +2.8%) drives headline mean-reversion. Core goods composite (+0.6%) includes lagged petrochemical passthrough from May's +10.7% energy spike. Services composite (+0.4%) reflects S&P 500 volatility and sticky healthcare."
+    "thesis": "Energy composite (gasoline -$0.253, diesel -$0.291, natgas +2.8%) drives headline mean-reversion. Core goods composite (+0.6%) includes lagged petrochemical passthrough from May's +10.7% energy spike. Services composite (+0.4%) reflects S&P 500 volatility and sticky healthcare. Regime: Normal (VIX 17.87). Adaptive bias applied (3-month window)."
   },
-  "compositeProxies": {
-    "energy": {
-      "weight": 8,
-      "proxies": ["Gasoline -$0.253", "Diesel -$0.291", "Jet Fuel down", "NatGas +2.80%"],
-      "compositeValue": -1.5,
-      "biasCorrection": 0.0,
-      "calibratedForecast": -1.5
-    },
-    "foods": {
-      "weight": 8,
-      "proxies": ["USDA composite stable", "Cattle futures mixed", "Hog futures down", "Grains mixed"],
-      "compositeValue": 0.3,
-      "biasCorrection": 0.3,
-      "calibratedForecast": 0.6
-    },
-    "coreGoods": {
-      "weight": 17,
-      "proxies": ["Copper $6.27", "Steel weak", "Lumber +6.39%", "Industrial chemicals lagged"],
-      "compositeValue": 0.6,
-      "biasCorrection": 0.3,
-      "calibratedForecast": 0.9
-    },
-    "tradeServices": {
-      "weight": 20,
-      "proxies": ["Inventory/sales stable", "Wholesale margins compressing", "Fuel retailing down"],
-      "compositeValue": -0.5,
-      "biasCorrection": -0.6,
-      "calibratedForecast": -1.1
-    },
-    "transportation": {
-      "weight": 5,
-      "proxies": ["DAT spot rates stable", "Diesel $5.059", "Rail freight stable"],
-      "compositeValue": 1.0,
-      "biasCorrection": 0.2,
-      "calibratedForecast": 1.2
-    },
-    "otherServices": {
-      "weight": 39,
-      "proxies": ["S&P 500 7431", "VIX 17.87", "Healthcare stable", "Accommodation stable"],
-      "compositeValue": 0.4,
-      "biasCorrection": 0.2,
-      "calibratedForecast": 0.6
-    }
+  "pointEstimate": {
+    "headline": 0.1,
+    "core": 0.5
   },
-  "intermediateDemand": {
-    "stage1": 3.2,
-    "stage2": 2.4,
-    "stage3": 1.9,
-    "stage4": 1.1,
-    "uplift": 0.5
+  "confidenceInterval": {
+    "headline": [-0.3, 0.5],
+    "core": [0.2, 0.7]
   },
   "scenarios": [
     {
@@ -151,5 +183,20 @@
     "Revisions can dominate the first market read. May 2026 was heavily revised.",
     "Macro tape can be driven by yields or oil even if PPI itself is tame.",
     "Iran deal is 60-day; collapse risk re-energizes energy PPI."
+  ],
+  "sources": [
+    "https://www.bls.gov/news.release/ppi.t.htm",
+    "https://www.eia.gov/petroleum/",
+    "https://www.eia.gov/dnav/ng/hist/rngwhhdm.htm",
+    "https://tradingeconomics.com/commodity/copper",
+    "https://tradingeconomics.com/commodity/steel",
+    "https://tradingeconomics.com/commodity/lumber",
+    "https://finance.yahoo.com/quote/SPX",
+    "https://finance.yahoo.com/quote/VIX",
+    "https://tradingeconomics.com/commodity/live-cattle",
+    "https://tradingeconomics.com/commodity/lean-hogs",
+    "https://tradingeconomics.com/commodity/corn",
+    "https://tradingeconomics.com/commodity/wheat",
+    "https://tradingeconomics.com/commodity/soybeans"
   ]
 }
