@@ -10,7 +10,7 @@ function parseFearGreedNumber(text: string | undefined): number | null {
   return match ? Number(match[1]) : null;
 }
 
-function FearGreedMiniBar({ value }: { value: number | null }) {
+function FearGreedMiniBar({ value, language }: { value: number | null; language: AppLanguage }) {
   if (value === null) return null;
   const pct = Math.min(value, 100);
   let color = "bg-emerald-500";
@@ -18,12 +18,12 @@ function FearGreedMiniBar({ value }: { value: number | null }) {
   else if (value <= 45) color = "bg-amber-500";
   else if (value <= 55) color = "bg-slate-400";
   else if (value <= 75) color = "bg-emerald-400";
-  let label = "Neutral";
-  if (value <= 25) label = "Extreme Fear";
-  else if (value <= 45) label = "Fear";
-  else if (value <= 55) label = "Neutral";
-  else if (value <= 75) label = "Greed";
-  else label = "Extreme Greed";
+  let label = copy(language, "Nötr", "Neutral");
+  if (value <= 25) label = copy(language, "Aşırı Korku", "Extreme Fear");
+  else if (value <= 45) label = copy(language, "Korku", "Fear");
+  else if (value <= 55) label = copy(language, "Nötr", "Neutral");
+  else if (value <= 75) label = copy(language, "Açgözlülük", "Greed");
+  else label = copy(language, "Aşırı Açgözlülük", "Extreme Greed");
   return (
     <div className="mt-3">
       <div className="flex items-center justify-between mb-1.5">
@@ -39,9 +39,9 @@ function FearGreedMiniBar({ value }: { value: number | null }) {
         <div className={cn("h-full rounded-full transition-all duration-700", color)} style={{ width: `${pct}%` }} />
       </div>
       <div className="mt-1.5 flex justify-between text-[10px] text-muted-foreground">
-        <span>Extreme Fear</span>
-        <span>Neutral</span>
-        <span>Extreme Greed</span>
+        <span>{copy(language, "Aşırı Korku", "Extreme Fear")}</span>
+        <span>{copy(language, "Nötr", "Neutral")}</span>
+        <span>{copy(language, "Aşırı Açgözlülük", "Extreme Greed")}</span>
       </div>
     </div>
   );
@@ -65,7 +65,7 @@ export function FearGreedOutlookCard({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <FearGreedMiniBar value={value} />
+        <FearGreedMiniBar value={value} language={language} />
         <div className="mt-3 rounded-lg border border-white/10 bg-black/20 p-3">
           <p className="text-[12px] leading-5 text-foreground/80">{fearGreedOutlook}</p>
         </div>

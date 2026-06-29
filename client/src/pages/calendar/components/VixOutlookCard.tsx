@@ -10,15 +10,15 @@ function parseVixNumber(text: string | undefined): number | null {
   return match ? Number(match[1]) : null;
 }
 
-function VixMiniBar({ value }: { value: number | null }) {
+function VixMiniBar({ value, language }: { value: number | null; language: AppLanguage }) {
   if (value === null) return null;
   const pct = Math.min((value / 50) * 100, 100);
   let color = "bg-emerald-500";
   if (value >= 30) color = "bg-rose-500";
   else if (value >= 22) color = "bg-amber-500";
-  let label = "Low";
-  if (value >= 30) label = "High";
-  else if (value >= 22) label = "Elevated";
+  let label = copy(language, "Düşük", "Low");
+  if (value >= 30) label = copy(language, "Yüksek", "High");
+  else if (value >= 22) label = copy(language, "Yüksekmiş", "Elevated");
   return (
     <div className="mt-3">
       <div className="flex items-center justify-between mb-1.5">
@@ -34,9 +34,9 @@ function VixMiniBar({ value }: { value: number | null }) {
       </div>
       <div className="mt-1.5 flex justify-between text-[10px] text-muted-foreground">
         <span>0</span>
-        <span>Low vol</span>
+        <span>{copy(language, "Düşük vol", "Low vol")}</span>
         <span>25</span>
-        <span>High vol</span>
+        <span>{copy(language, "Yüksek vol", "High vol")}</span>
         <span>50+</span>
       </div>
     </div>
@@ -61,7 +61,7 @@ export function VixOutlookCard({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <VixMiniBar value={value} />
+        <VixMiniBar value={value} language={language} />
         <div className="mt-3 rounded-lg border border-white/10 bg-black/20 p-3">
           <p className="text-[12px] leading-5 text-foreground/80">{vixOutlook}</p>
         </div>

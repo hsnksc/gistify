@@ -1618,7 +1618,7 @@ export default function MidasOpportunitiesTab({
               {typeof signal.apex_score === 'number' ? (
                 <div className="mt-3">
                   <div className="mb-1 flex items-center justify-between gap-3 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-                    <span>Apex Score</span>
+                    <span>{copy(language, "Apex Skoru", "Apex Score")}</span>
                     <span className="data-mono text-foreground/85">{signal.apex_score}/100</span>
                   </div>
                   <div className="h-2 overflow-hidden rounded-full bg-border/60">

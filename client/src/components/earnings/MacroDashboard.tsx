@@ -156,12 +156,12 @@ function MacroCard({ language, item }: { language: AppLanguage; item: MacroItem 
         </div>
       )}
 
-      {item.gauge && <FearGreedGauge value={item.value} />}
+      {item.gauge && <FearGreedGauge value={item.value} language={language} />}
     </div>
   );
 }
 
-function FearGreedGauge({ value }: { value: string }) {
+function FearGreedGauge({ value, language }: { value: string; language: AppLanguage }) {
   const num = parseInt(value.replace(/[^0-9]/g, ""), 10);
   const pct = Number.isFinite(num) ? num : 50;
 
@@ -178,8 +178,8 @@ function FearGreedGauge({ value }: { value: string }) {
         <div className={cn("h-full rounded-full transition-all", color)} style={{ width: `${pct}%` }} />
       </div>
       <div className="mt-1 flex justify-between text-[10px] text-slate-500">
-        <span>Extreme Fear</span>
-        <span>Extreme Greed</span>
+        <span>{copy(language, "Aşırı Korku", "Extreme Fear")}</span>
+        <span>{copy(language, "Aşırı Açgözlülük", "Extreme Greed")}</span>
       </div>
     </div>
   );
