@@ -43,6 +43,23 @@ const MAX_RUNTIME_TRANSLATION_TEXT_LENGTH = 1800;
 const MAX_RUNTIME_TRANSLATION_BATCH_SIZE = 18;
 const MAX_RUNTIME_TRANSLATION_BATCH_CHARS = 12000;
 const runtimeHtmlTranslationCache = new Map<string, string>();
+const FLOW_CHROME_SELECTOR = [
+  "header#header",
+  "header.header",
+  "footer#footer",
+  "footer.footer",
+  "aside#sidebar",
+  "aside.sidebar",
+  "nav#sidebar",
+  "nav.sidebar",
+  "nav.toc-nav",
+  ".toc",
+  ".toc-title",
+  ".toc-nav",
+  ".toc-list",
+  ".lang-toggle",
+  ".lang-switch",
+].join(", ");
 
 function normalizeText(value: string) {
   return value.replace(/\s+/g, " ").trim();
@@ -278,9 +295,7 @@ function buildNormalizedBodyNode(
     .forEach(node => node.remove());
 
   bodyClone
-    .querySelectorAll(
-      "header, footer, aside, nav, #sidebar, .sidebar, .toc, .toc-title, .toc-nav, .toc-list, .lang-toggle, .lang-switch"
-    )
+    .querySelectorAll(FLOW_CHROME_SELECTOR)
     .forEach(node => node.remove());
 
   const heroNode = bodyClone.querySelector<HTMLElement>("#hero, .hero");
