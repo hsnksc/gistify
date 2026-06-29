@@ -51,6 +51,34 @@ $META uzerinden AI, reklam ve platform gelirleri degerlendirildi.
     expect(source.markdown.length).toBeGreaterThan(200);
   });
 
+  it("falls back to MARKET when a flow markdown has no stock ticker", () => {
+    const source = createFlowSourcePackageFromContent({
+      fileName: "generic-tech-note-29-haziran-2026.md",
+      sourceLabel: "flow/generic-tech-note-29-haziran-2026.md",
+      markdown: `
+# Peugeot 308 Klima Teshis Notu
+
+**Tarih:** 29 Haziran 2026
+
+## Ozet
+
+Bu belge herhangi bir hisse senedi degil, genel teknik bir ariza notudur.
+
+Paragraf yapisi korunur ama Flow tarafinda sahte ticker uretilmemelidir.
+      `,
+    });
+
+    expect(source.tickerUniverse).toEqual(["MARKET"]);
+    expect(source.metadataItems).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          label: "Ticker",
+          value: "$MARKET",
+        }),
+      ])
+    );
+  });
+
   it("preserves rich flow html sources as full html reports", () => {
     const source = createFlowSourcePackageFromContent({
       fileName: "daily-10-hisse-analiz-28-haziran-2026.html",

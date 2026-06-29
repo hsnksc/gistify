@@ -1045,6 +1045,7 @@ function buildFlowFileSourcePackage(options: {
     metadata.coverage || "",
     ...narrativeParagraphs
   );
+  const resolvedTickerUniverse = tickerUniverse.length ? tickerUniverse : ["MARKET"];
   const siteLabel = markdown
     ? extractFlowSiteLabelFromMarkdown(markdown)
     : extractFlowSiteLabelFromHtml(html);
@@ -1062,7 +1063,7 @@ function buildFlowFileSourcePackage(options: {
     },
     {
       label: "Ticker",
-      value: formatFlowTickerLine(tickerUniverse),
+      value: formatFlowTickerLine(resolvedTickerUniverse),
     },
     {
       label: "Kaynak Dosya",
@@ -1081,7 +1082,7 @@ function buildFlowFileSourcePackage(options: {
     reportDate,
     reportDateLabel: metadata.reportDateLabel || reportDate,
     siteLabel,
-    tickerUniverse,
+    tickerUniverse: resolvedTickerUniverse,
     summaryItems: executiveSummary,
     narrativeParagraphs,
   });
@@ -1096,8 +1097,8 @@ function buildFlowFileSourcePackage(options: {
       220
     ),
     author: metadata.author || undefined,
-    coverage: tickerUniverse.length
-      ? `Ticker: ${formatFlowTickerLine(tickerUniverse)}`
+    coverage: resolvedTickerUniverse.length
+      ? `Ticker: ${formatFlowTickerLine(resolvedTickerUniverse)}`
       : undefined,
     methodology: undefined,
     metadataItems: sourceMetadataItems,
@@ -1107,7 +1108,7 @@ function buildFlowFileSourcePackage(options: {
     sectionFiles: [],
     figureFiles,
     openAiFigureFiles,
-    tickerUniverse,
+    tickerUniverse: resolvedTickerUniverse,
     researchFileCount: 0,
     updatedAt,
     sourceKind,

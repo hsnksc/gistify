@@ -1,4 +1,5 @@
 import express from "express";
+import prerender from "prerender-node";
 import { createServer } from "http";
 import crypto from "node:crypto";
 import fs from "node:fs";
@@ -45,6 +46,8 @@ import {
 import {
   getDailyReportSourcePackages,
   getViewerDailyReports,
+  getViewerFlowReportSummaries,
+  isFlowDailyReport,
 } from "./services/flowService";
 import { createAdminAgentsRouter } from "./routes/adminAgents";
 import { createAiRouter } from "./routes/ai";
@@ -1896,13 +1899,32 @@ function escapeHtml(value: string) {
     .replaceAll("'", "&#39;");
 }
 
+const SITE_URL = normalizeString(process.env.PUBLIC_SITE_URL) || "https://gistify.pro";
+const SITE_OG_IMAGE = `${SITE_URL}/gistifylogo.png`;
+
 function renderStaticMarketingPage(
   pageTitle: string,
   pageDescription: string,
-  bodyHtml: string
+  bodyHtml: string,
+  options: {
+    canonicalPath?: string;
+    jsonLdSchemas?: Record<string, unknown>[];
+    ogImage?: string;
+    ogType?: string;
+  } = {}
 ) {
   const title = escapeHtml(`${pageTitle} | Gistify`);
   const description = escapeHtml(pageDescription);
+  const canonicalUrl = escapeHtml(`${SITE_URL}${options.canonicalPath || "/"}`);
+  const ogImage = escapeHtml(options.ogImage || SITE_OG_IMAGE);
+  const ogType = escapeHtml(options.ogType || "website");
+
+  const jsonLdTags = (options.jsonLdSchemas || [])
+    .map(
+      schema =>
+        `<script type="application/ld+json">${JSON.stringify(schema)}</script>`
+    )
+    .join("\n    ");
 
   return `<!doctype html>
 <html lang="en">
@@ -1911,6 +1933,18 @@ function renderStaticMarketingPage(
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>${title}</title>
     <meta name="description" content="${description}" />
+    <link rel="canonical" href="${canonicalUrl}" />
+    <meta property="og:type" content="${ogType}" />
+    <meta property="og:title" content="${title}" />
+    <meta property="og:description" content="${description}" />
+    <meta property="og:url" content="${canonicalUrl}" />
+    <meta property="og:image" content="${ogImage}" />
+    <meta property="og:site_name" content="Gistify" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="${title}" />
+    <meta name="twitter:description" content="${description}" />
+    <meta name="twitter:image" content="${ogImage}" />
+    ${jsonLdTags}
     <style>
       :root {
         color-scheme: dark;
@@ -2243,7 +2277,7 @@ function renderLandingPageHtml() {
         <div class="hero-layout">
           <div>
             <div class="eyebrow">Product Overview</div>
-            <h1>One workspace for momentum scans, pre-earnings planning and options risk framing.</h1>
+            <h1>Gistify — Earnings Intelligence &amp; Momentum Workspace for Options Traders</h1>
             <p class="lead">Gistify is built for active traders who want scan results, event context, risk scenarios and an action plan inside one flow. Fewer tabs, faster prep, clearer decisions.</p>
             <div class="hero-chips">
               <span class="chip">Momentum Scanner</span>
@@ -2254,6 +2288,39 @@ function renderLandingPageHtml() {
               <a class="button button-primary" href="/pay">Start Subscription</a>
               <a class="button" href="/pricing">See Pricing</a>
             </div>
+            <form id="newsletter-form" class="newsletter-form" style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+              <input type="email" name="email" required placeholder="Enter your email" aria-label="Email address" style="flex:1 1 220px;min-width:180px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:999px;padding:10px 14px;color:var(--text);font-size:13px;" />
+              <button type="submit" class="button button-primary" style="border:none;cursor:pointer;">Free Earnings Playbook — Get Sunday Prep</button>
+            </form>
+            <p id="newsletter-feedback" style="margin-top:10px;font-size:13px;color:var(--primary);min-height:20px;"></p>
+            <script>
+              (function() {
+                const form = document.getElementById('newsletter-form');
+                const feedback = document.getElementById('newsletter-feedback');
+                if (!form) return;
+                form.addEventListener('submit', async function(e) {
+                  e.preventDefault();
+                  const email = form.email.value;
+                  feedback.textContent = 'Sending...';
+                  try {
+                    const res = await fetch('/api/newsletter/subscribe', {
+                      method: 'POST',
+                      headers: {'Content-Type': 'application/json'},
+                      body: JSON.stringify({email})
+                    });
+                    const data = await res.json().catch(function() { return {}; });
+                    if (res.ok) {
+                      feedback.textContent = data.message || 'Subscribed!';
+                      form.reset();
+                    } else {
+                      feedback.textContent = data.error || 'Something went wrong.';
+                    }
+                  } catch (err) {
+                    feedback.textContent = 'Network error. Please try again.';
+                  }
+                });
+              })();
+            </script>
           </div>
 
           <aside class="hero-stack">
@@ -2414,7 +2481,49 @@ function renderLandingPageHtml() {
           </div>
         </section>
       </div>
-    `
+    `,
+    {
+      canonicalPath: "/",
+      jsonLdSchemas: [
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "Gistify",
+          url: `${SITE_URL}/`,
+          potentialAction: {
+            "@type": "SearchAction",
+            target: {
+              "@type": "EntryPoint",
+              urlTemplate: `${SITE_URL}/flow?q={search_term_string}`,
+            },
+            "query-input": "required name=search_term_string",
+          },
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Gistify",
+          url: `${SITE_URL}/`,
+          logo: `${SITE_URL}/gistifylogo.png`,
+          sameAs: [],
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          name: "Gistify",
+          applicationCategory: "FinanceApplication",
+          operatingSystem: "Web",
+          description:
+            "Gistify brings momentum scans, pre-earnings planning and options risk framing into one subscription workspace.",
+          offers: {
+            "@type": "Offer",
+            price: "250",
+            priceCurrency: "TRY",
+            availability: "https://schema.org/InStock",
+          },
+        },
+      ],
+    }
   );
 }
 
@@ -2446,7 +2555,19 @@ function renderPricingPageHtml() {
           <p>Refund terms are described on the <a href="/refund">Refund Policy</a> page. Legal information is available on the <a href="/terms">Terms &amp; Conditions</a> and <a href="/privacy">Privacy Policy</a> pages.</p>
         </aside>
       </div>
-    `
+    `,
+    {
+      canonicalPath: "/pricing",
+      jsonLdSchemas: [
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: "Pricing | Gistify",
+          description: "Gistify Pro pricing and purchase inclusions.",
+          url: `${SITE_URL}/pricing`,
+        },
+      ],
+    }
   );
 }
 
@@ -2482,7 +2603,19 @@ function renderTermsPageHtml() {
           <p>Support requests related to the service may be sent to <a href="mailto:support@gistify.pro">support@gistify.pro</a>.</p>
         </section>
       </div>
-    `
+    `,
+    {
+      canonicalPath: "/terms",
+      jsonLdSchemas: [
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: "Terms & Conditions | Gistify",
+          description: "Terms and conditions for the Gistify digital subscription service.",
+          url: `${SITE_URL}/terms`,
+        },
+      ],
+    }
   );
 }
 
@@ -2514,7 +2647,19 @@ function renderPrivacyPageHtml() {
           <p>Questions or requests related to privacy may be sent to <a href="mailto:support@gistify.pro">support@gistify.pro</a>.</p>
         </section>
       </div>
-    `
+    `,
+    {
+      canonicalPath: "/privacy",
+      jsonLdSchemas: [
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: "Privacy Policy | Gistify",
+          description: "Privacy policy for Gistify.",
+          url: `${SITE_URL}/privacy`,
+        },
+      ],
+    }
   );
 }
 
@@ -2545,8 +2690,102 @@ function renderRefundPageHtml() {
           <p><a href="https://www.paddle.com/legal/refund-policy" target="_blank" rel="noreferrer">View the official Paddle refund policy</a></p>
         </aside>
       </div>
-    `
+    `,
+    {
+      canonicalPath: "/refund",
+      jsonLdSchemas: [
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: "Refund Policy | Gistify",
+          description: "Refund policy for Gistify purchases processed through Paddle.",
+          url: `${SITE_URL}/refund`,
+        },
+      ],
+    }
   );
+}
+
+function buildSitemapXml(): string {
+  const baseUrl = SITE_URL;
+  const entries: Array<{
+    loc: string;
+    priority: string;
+    changefreq: string;
+    lastmod?: string;
+  }> = [];
+
+  const staticPaths = [
+    { path: "/", priority: "1.0", changefreq: "weekly" },
+    { path: "/flow", priority: "0.9", changefreq: "daily" },
+    { path: "/reports", priority: "0.9", changefreq: "daily" },
+    { path: "/pricing", priority: "0.8", changefreq: "weekly" },
+    { path: "/scanner", priority: "0.7", changefreq: "weekly" },
+    { path: "/momentum", priority: "0.7", changefreq: "weekly" },
+    { path: "/earnings", priority: "0.7", changefreq: "weekly" },
+    { path: "/earnings/calendar", priority: "0.7", changefreq: "weekly" },
+    { path: "/earnings/strategies", priority: "0.7", changefreq: "weekly" },
+    { path: "/daily-report", priority: "0.7", changefreq: "daily" },
+    { path: "/cpi-ppi", priority: "0.7", changefreq: "weekly" },
+    { path: "/calendar", priority: "0.7", changefreq: "daily" },
+    { path: "/marketflash", priority: "0.7", changefreq: "daily" },
+    { path: "/terms", priority: "0.5", changefreq: "monthly" },
+    { path: "/privacy", priority: "0.5", changefreq: "monthly" },
+    { path: "/refund", priority: "0.5", changefreq: "monthly" },
+    { path: "/pay", priority: "0.5", changefreq: "monthly" },
+  ];
+
+  for (const item of staticPaths) {
+    entries.push({
+      loc: `${baseUrl}${item.path}`,
+      priority: item.priority,
+      changefreq: item.changefreq,
+    });
+  }
+
+  const flowReports = getViewerFlowReportSummaries(getPublishedDailyReports());
+  const flowTickers = new Set<string>();
+  for (const report of flowReports) {
+    const ticker = report.ticker || "FLOW";
+    flowTickers.add(ticker);
+    entries.push({
+      loc: `${baseUrl}/flow/${encodeURIComponent(report.id)}`,
+      priority: "0.6",
+      changefreq: "daily",
+      lastmod: report.updatedAt,
+    });
+    entries.push({
+      loc: `${baseUrl}/reports/${encodeURIComponent(ticker)}/${encodeURIComponent(report.reportDate)}`,
+      priority: "0.6",
+      changefreq: "daily",
+      lastmod: report.updatedAt,
+    });
+  }
+
+  for (const ticker of Array.from(flowTickers)) {
+    entries.push({
+      loc: `${baseUrl}/reports/ticker/${encodeURIComponent(ticker)}`,
+      priority: "0.6",
+      changefreq: "weekly",
+    });
+  }
+
+  const urls = entries
+    .map(
+      entry => `  <url>
+    <loc>${escapeHtml(entry.loc)}</loc>
+    <priority>${entry.priority}</priority>
+    <changefreq>${entry.changefreq}</changefreq>${
+        entry.lastmod ? `\n    <lastmod>${escapeHtml(entry.lastmod)}</lastmod>` : ""
+      }
+  </url>`
+    )
+    .join("\n");
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls}
+</urlset>`;
 }
 
 function allowLegacyWebhookVerification() {
@@ -2877,6 +3116,13 @@ const __dirname = path.dirname(__filename);
 
 async function startServer() {
   const app = express();
+
+  // Prerender.io middleware for search-engine friendly SPA snapshots.
+  // Set PRERENDER_TOKEN env var to enable the service.
+  if (process.env.PRERENDER_TOKEN) {
+    app.use(prerender.set("prerenderToken", process.env.PRERENDER_TOKEN));
+  }
+
   const server = createServer(app);
   const midasSignalsSync = createMidasSignalsSyncService();
   const cpiPpiForecastSync = createCpiPpiForecastSyncService();
@@ -3111,6 +3357,31 @@ async function startServer() {
     })
   );
 
+  app.get("/sitemap.xml", (_req, res) => {
+    setPrivateNoStore(res);
+    res.status(200).type("application/xml").send(buildSitemapXml());
+  });
+
+  app.post("/api/newsletter/subscribe", (req, res) => {
+    setPrivateNoStore(res);
+    const email = normalizeEmail(req.body?.email);
+    if (!email || !email.includes("@")) {
+      res.status(400).json({ error: "Lutfen gecerli bir email adresi girin." });
+      return;
+    }
+
+    const created = billingStore.createNewsletterSubscriber(email, "homepage");
+    if (!created) {
+      res.status(400).json({ error: "Lutfen gecerli bir email adresi girin." });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Email adresiniz kaydedildi. Tesekkurler!",
+    });
+  });
+
   app.get("/", (_req, res) => {
     res.status(200).type("html").send(renderLandingPageHtml());
   });
@@ -3129,6 +3400,22 @@ async function startServer() {
 
   app.get("/refund", (_req, res) => {
     res.status(200).type("html").send(renderRefundPageHtml());
+  });
+
+  // /app and /app/* should not be indexed as a duplicate of the marketing pages.
+  app.get(["/app", "/app/*"], (_req, res) => {
+    const indexPath = path.join(staticPath, "index.html");
+    fs.readFile(indexPath, "utf8", (err, html) => {
+      if (err) {
+        res.sendFile(indexPath);
+        return;
+      }
+      const noindexHtml = html.replace(
+        /<head>/i,
+        `<head>\n    <meta name="robots" content="noindex, follow" />`
+      );
+      res.status(200).type("html").send(noindexHtml);
+    });
   });
 
   // Serve static files from dist/public in production

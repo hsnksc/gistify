@@ -170,6 +170,13 @@ export function resolveFlowReportKind(options: {
     return "daily";
   }
 
+  const normalizedUniverse = (options.tickerUniverse || []).map(item =>
+    normalizeFlowTicker(item)
+  );
+  if (normalizedUniverse.includes("MARKET")) {
+    return "daily";
+  }
+
   const inferredTicker = inferFlowTickerFromText(...candidates);
   if (inferredTicker === "MARKET") {
     return "daily";

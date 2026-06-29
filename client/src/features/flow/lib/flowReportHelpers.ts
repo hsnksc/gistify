@@ -364,7 +364,7 @@ export function getFlowSourceLabel(report: FlowReportListEntry) {
     return report.sourceLabel || report.sourceFolder || "Flow source";
   }
 
-  return normalizeFlowContent(report.content).sourceLabel || report.sourceFolder || "Flow source";
+  return normalizeFlowContent(report.content || {}).sourceLabel || report.sourceFolder || "Flow source";
 }
 
 export function compareFlowReports(
@@ -440,7 +440,7 @@ export function getPrimaryFlowTicker(report: FlowReportListEntry) {
 export function getFlowReportTickers(report: FlowReportListEntry) {
   const tickers = isFlowReportSummary(report)
     ? report.tickerUniverse
-    : normalizeFlowContent(report.content).tickerUniverse;
+    : normalizeFlowContent(report.content || {}).tickerUniverse;
 
   const normalized = Array.from(
     new Set(
@@ -463,7 +463,6 @@ export function getFlowReportTickers(report: FlowReportListEntry) {
   const primaryTicker = getPrimaryFlowTicker(report);
   if (
     primaryTicker &&
-    primaryTicker !== "MARKET" &&
     primaryTicker !== "FLOW" &&
     !isBlockedFlowTicker(primaryTicker)
   ) {
@@ -577,7 +576,7 @@ export function buildFlowViewerData(
   language: AppLanguage = "tr"
 ): FlowViewerData {
   const locale = language === "en" ? "en-US" : "tr-TR";
-  const content = normalizeFlowContent(report.content);
+  const content = normalizeFlowContent(report.content || {});
   const assetBasePath = content.assetBasePath || report.sourceFolder;
   const sourceLabel = getFlowSourceLabel(report);
   const usesCanonicalFlowFormat = sourceLabel.toLowerCase().startsWith("flow/");
