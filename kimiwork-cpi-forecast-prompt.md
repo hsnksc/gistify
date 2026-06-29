@@ -71,11 +71,18 @@ The backtest (15 months, 2025-2026) revealed that WTI crude oil futures (CL=F) a
 3. **Fallback:** Use BLS historical trend + seasonal pattern. Never use WTI futures as a proxy for gasoline CPI.
 4. **WTI Exception:** WTI may be used as a directional signal for energy sector trades (XLE, XOM, CVX) only, NOT for CPI forecasting.
 
+**EIA API Execution Steps (Every Run):**
+1. Try EIA API: `https://api.eia.gov/v2/seriesid/ELEC.PRICE.US-ALL.M` (electricity), `https://api.eia.gov/v2/seriesid/NG.N3010US3.M` (natural gas), `https://api.eia.gov/v2/seriesid/PET.EMM_EPMR_PTE_NUS_DPG.W` (gasoline weekly). No API key required for some endpoints; if rate-limited, skip.
+2. If EIA API fails (timeout, 403, 429, empty response): Use web search for "AAA national average gas price today" or browser snapshot of `gasprices.aaa.com`.
+3. If AAA fails: Use BLS historical 12-month average for the component + known seasonal adjustment (e.g., gasoline +3% summer premium, electricity +5% July-Aug).
+4. Always record the source in `watchItems` or `keyDrivers`: `EIA API: {value}` or `AAA: {value}` or `BLS trend + seasonal: {value}`.
+
 **Data Quality Rules:**
 - If EIA API is down or returns incomplete data, use AAA National Average for gasoline.
 - If both EIA and AAA are unavailable, downgrade energy confidence and flag as "directional-only."
 - Always note the data source and timestamp for energy components in the `watchItems` or `keyDrivers` fields.
 - If user provides live energy data (e.g., "WTI is $72.85"), use it for sector trades but still verify gasoline CPI with EIA/AAA.
+- Gasoline CPI forecast source MUST be EIA retail or AAA. If WTI is used for gasoline CPI, downgrade `confidence` by 10 points and flag in `keyDrivers`: "WARNING: WTI used for gasoline CPI due to data unavailability. EIA/AAA preferred per backtest."
 
 Use the latest available consensus and macro context at run time.
 
