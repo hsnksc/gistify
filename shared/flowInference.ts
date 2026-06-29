@@ -83,7 +83,7 @@ export function inferFlowTickerFromText(...values: string[]): string {
     /^\s*([A-Z][A-Z0-9.-]{0,9})(?=\s*[—\-·:|])/,
     /\bTicker\s*[:\-]\s*([A-Z][A-Z0-9.-]{0,9})\b/i,
     /\$([A-Z][A-Z0-9.-]{0,9})\b/,
-    /\bstock[-_/]([A-Z][A-Z0-9.-]{0,9})(?=[-_/]|\b)/i,
+    /\bstock[-_/]([A-Z][A-Z0-9.]{0,9})(?=[-_/]|\b)/i,
     /(?:^|[-_/])([a-z]{1,8})(?=\d{6,8}(?:$|[-_.]))/i,
   ];
 
@@ -126,7 +126,7 @@ export function extractFlowTickerUniverseFromText(...values: string[]): string[]
     /\$([A-Z][A-Z0-9.-]{0,9})\b/g,
     /\(([A-Z][A-Z0-9.-]{0,9})\)/g,
     /\bTicker\s*[:\-]\s*([A-Z][A-Z0-9.-]{0,9})\b/gi,
-    /\bstock[-_/]([A-Z][A-Z0-9.-]{0,9})(?=[-_/]|\b)/gi,
+    /\bstock[-_/]([A-Z][A-Z0-9.]{0,9})(?=[-_/]|\b)/gi,
     /(?:^|[-_/])([a-z]{1,8})(?=\d{6,8}(?:$|[-_.]))/gi,
   ];
 

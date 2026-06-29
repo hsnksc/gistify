@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>META — Meta Platforms, Inc. Advanced Analysis Report | $META</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+/* ─── TOKENS ─────────────────────────────────────────────── */
+:root {
+  --bg:       #050C1B;
+  --surface:  #091525;
+  --card:     #0C1D30;
+  --card2:    #0F2240;
+  --green:    #00C805;
+  --green-d:  #009904;
+  --green-glow: rgba(0,200,5,0.18);
+  --amber:    #F59E0B;
+  --red:      #EF4444;
+  --blue:     #3B82F6;
+  --txt:      #DCE8FF;
+  --txt-muted:#6A83A8;
+  --border:   rgba(255,255,255,0.07);
+  --border-g: rgba(0,200,5,0.15);
+  --r:        12px;
+  --r-lg:     20px;
+}
+
+/* ─── RESET ──────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--txt);
+  line-height:1.6;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ─── DYNAMIC LANGUAGE TOGGLE VISIBILITY ────────────────── */
+body.lang-tr .en-only { display: none !important; }
+body.lang-en .tr-only { display: none !important; }
+
+/* ─── SCROLLBAR ──────────────────────────────────────────── */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--green-d);border-radius:3px}
+
+/* ─── NAV ────────────────────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(5,12,27,0.85);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  padding:0 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  height:60px;
+}
+.nav-brand{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:700;font-size:1.1rem;
+  color:var(--green);letter-spacing:-.5px;
+  display:flex;align-items:center;gap:8px;
+}
+.nav-brand span{color:var(--txt)}
+.nav-links{
+  display:flex;gap:4px;
+  list-style:none;
+}
+.nav-links a{
+  color:var(--txt-muted);
+  text-decoration:none;
+  font-size:.78rem;
+  font-weight:500;
+  padding:6px 12px;
+  border-radius:6px;
+  transition:all .2s;
+  white-space:nowrap;
+}
+.nav-links a:hover{color:var(--green);background:var(--green-glow)}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.nav-pill{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.75rem;font-weight:600;
+  background:var(--green);
+  color:#000;padding:4px 12px;border-radius:20px;
+}
+
+/* ─── LANGUAGE SWITCHER ──────────────────────────────────── */
+.lang-switch {
+  display: flex;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2px;
+  cursor: pointer;
+  user-select: none;
+}
+.lang-btn {
+  font-size: .7rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 18px;
+  transition: all .2s;
+  color: var(--txt-muted);
+}
+body.lang-tr .tr-btn {
+  background: var(--green);
+  color: #000;
+}
+body.lang-en .en-btn {
+  background: var(--green);
+  color: #000;
+}
+
+/* ─── HERO ───────────────────────────────────────────────── */
+#hero{
+  padding:120px 24px 64px;
+  max-width:1200px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;
+}
+.ticker-label{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--green-glow);
+  border:1px solid var(--border-g);
+  border-radius:6px;
+  padding:4px 14px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.75rem;font-weight:600;
+  color:var(--green);
+  margin-bottom:20px;
+}
+.dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--green);
+  animation:pulse 1.8s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+
+.hero-ticker{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:5rem;font-weight:700;
+  line-height:1;letter-spacing:-3px;
+  color:var(--txt);
+  margin-bottom:8px;
+}
+.hero-ticker .dollar{font-size:2.5rem;vertical-align:super;color:var(--green)}
+
+.price-meta{
+  display:flex;align-items:center;gap:16px;
+  margin-bottom:28px;
+}
+.change-badge{
+  background:rgba(0,200,5,.15);
+  border:1px solid rgba(0,200,5,.3);
+  color:var(--green);
+  font-family:'JetBrains Mono',monospace;
+  font-size:.9rem;font-weight:600;
+  padding:5px 14px;border-radius:6px;
+}
+.price-date{color:var(--txt-muted);font-size:.85rem}
+
+.hero-desc{
+  color:var(--txt-muted);font-size:.95rem;line-height:1.7;
+  margin-bottom:32px;max-width:440px;
+}
+
+.verdict-box{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--card);
+  border:1px solid var(--border-g);
+  border-radius:var(--r);
+  padding:14px 20px;
+}
+.verdict-label{font-size:.75rem;color:var(--txt-muted);text-transform:uppercase;letter-spacing:.08em}
+.verdict-val{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:1.1rem;font-weight:700;color:var(--green);
+}
+
+/* ─── HERO STATS GRID ────────────────────────────────────── */
+.hero-stats{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;
+}
+.stat-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  padding:18px 20px;
+  position:relative;
+  overflow:hidden;
+  transition:border-color .2s,transform .2s;
+}
+.stat-card:hover{border-color:var(--border-g);transform:translateY(-2px)}
+.stat-card::after{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--green),transparent);
+  opacity:0;transition:opacity .3s;
+}
+.stat-card:hover::after{opacity:1}
+.stat-card.green{border-top:2px solid var(--green)}
+.stat-card.amber{border-top:2px solid var(--amber)}
+.stat-card.red{border-top:2px solid var(--red)}
+.stat-card.blue{border-top:2px solid var(--blue)}
+
+.sc-label{
+  font-size:.7rem;font-weight:500;
+  color:var(--txt-muted);
+  text-transform:uppercase;letter-spacing:.08em;
+  margin-bottom:6px;
+}
+.sc-val{
+  font-family:'JetBrains Mono',monospace;
+  font-size:1.4rem;font-weight:600;
+  color:var(--txt);
+}
+.sc-sub{font-size:.75rem;color:var(--txt-muted);margin-top:2px}
+.sc-badge{
+  display:inline-block;
+  font-size:.68rem;font-weight:600;
+  padding:2px 8px;border-radius:4px;
+  margin-top:6px;
+}
+.badge-green{background:rgba(0,200,5,.12);color:var(--green)}
+.badge-amber{background:rgba(245,158,11,.12);color:var(--amber)}
+.badge-red{background:rgba(239,68,68,.12);color:var(--red)}
+
+/* ─── SECTION WRAPPER ────────────────────────────────────── */
+.section{
+  max-width:1200px;
+  margin:0 auto 80px;
+  padding:0 24px;
+}
+.section-head{
+  display:flex;align-items:baseline;gap:16px;
+  margin-bottom:32px;
+  padding-bottom:16px;
+  border-bottom:1px solid var(--border);
+}
+.section-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.75rem;font-weight:600;
+  color:var(--green);opacity:.7;
+}
+.section-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:1.6rem;font-weight:700;
+  letter-spacing:-.5px;color:var(--txt);
+}
+
+/* ─── EXECUTIVE SUMMARY ──────────────────────────────────── */
+.thesis-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+  margin-bottom:24px;
+}
+.thesis-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  padding:20px;
+}
+.thesis-icon{font-size:1.4rem;margin-bottom:10px}
+.thesis-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:600;font-size:.9rem;
+  margin-bottom:6px;color:var(--txt);
+}
+.thesis-body{font-size:.82rem;color:var(--txt-muted);line-height:1.55}
+
+/* ─── DATA TABLE ─────────────────────────────────────────── */
+.table-wrap{overflow-x:auto;margin-bottom:24px}
+table{
+  width:100%;border-collapse:collapse;
+  font-size:.84rem;
+}
+thead th{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:.72rem;font-weight:600;
+  text-transform:uppercase;letter-spacing:.07em;
+  color:var(--txt-muted);
+  background:var(--surface);
+  padding:10px 14px;
+  text-align:left;
+  border-bottom:1px solid var(--border);
+}
+tbody tr{
+  border-bottom:1px solid var(--border);
+  transition:background .15s;
+}
+tbody tr:hover{background:rgba(255,255,255,.025)}
+td{
+  padding:11px 14px;
+  color:var(--txt);
+}
+td:first-child{color:var(--txt-muted);font-weight:500}
+.td-green{color:var(--green);font-family:'JetBrains Mono',monospace;font-weight:600}
+.td-amber{color:var(--amber)}
+.td-red{color:var(--red)}
+.td-mono{font-family:'JetBrains Mono',monospace}
+
+/* ─── CHARTS ROW ─────────────────────────────────────────── */
+.charts-row{
+  display:grid;grid-template-columns:1fr 1fr;gap:20px;
+  margin-bottom:24px;
+}
+.charts-row-3{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+  margin-bottom:24px;
+}
+.chart-box{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  padding:24px;
+}
+.chart-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:.9rem;font-weight:600;
+  color:var(--txt);margin-bottom:4px;
+}
+.chart-sub{font-size:.75rem;color:var(--txt-muted);margin-bottom:16px}
+.chart-box canvas{max-height:220px}
+
+/* ─── NEWS TIMELINE ──────────────────────────────────────── */
+.timeline{position:relative;padding-left:28px}
+.timeline::before{
+  content:'';
+  position:absolute;left:8px;top:0;bottom:0;
+  width:2px;background:linear-gradient(to bottom,var(--green),transparent);
+}
+.tl-item{
+  position:relative;margin-bottom:28px;
+}
+.tl-item::before{
+  content:'';
+  position:absolute;left:-24px;top:6px;
+  width:10px;height:10px;border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 0 3px rgba(0,200,5,.15);
+}
+.tl-date{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;font-weight:500;
+  color:var(--green);margin-bottom:4px;
+}
+.tl-head{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:1rem;font-weight:600;
+  color:var(--txt);margin-bottom:6px;
+}
+.tl-body{font-size:.84rem;color:var(--txt-muted);line-height:1.6}
+.tl-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tag{
+  font-size:.7rem;font-weight:600;
+  padding:3px 10px;border-radius:4px;
+  background:var(--green-glow);
+  color:var(--green);
+  border:1px solid rgba(0,200,5,.2);
+}
+.tag.amber{background:rgba(245,158,11,.1);color:var(--amber);border-color:rgba(245,158,11,.2)}
+.stars{color:var(--green);font-size:.8rem;letter-spacing:1px}
+
+/* ─── ANALYST RATINGS ────────────────────────────────────── */
+.ratings-wrap{
+  display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:start;
+}
+.ratings-chart-box{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r);padding:24px;text-align:center;
+}
+.rating-firms{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;
+}
+.firm-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r);padding:16px;
+}
+.firm-name{
+  font-family:'Space Grotesk',sans-serif;font-weight:600;
+  font-size:.85rem;color:var(--txt);margin-bottom:8px;
+}
+.firm-row{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:.8rem;color:var(--txt-muted);margin-bottom:4px;
+}
+.firm-target{
+  font-family:'JetBrains Mono',monospace;font-weight:600;
+  color:var(--green);
+}
+.firm-badge{
+  font-size:.68rem;font-weight:700;
+  padding:2px 8px;border-radius:4px;
+  background:var(--green-glow);color:var(--green);
+}
+
+/* ─── TECHNICAL INDICATORS ───────────────────────────────── */
+.indicators-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+  margin-bottom:24px;
+}
+.ind-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r);padding:18px;text-align:center;
+}
+.ind-label{
+  font-size:.7rem;font-weight:600;
+  text-transform:uppercase;letter-spacing:.08em;
+  color:var(--txt-muted);margin-bottom:8px;
+}
+.ind-val{
+  font-family:'JetBrains Mono',monospace;
+  font-size:1.8rem;font-weight:700;
+}
+.ind-signal{
+  font-size:.75rem;font-weight:600;
+  margin-top:6px;
+}
+
+/* ─── RSI GAUGE ──────────────────────────────────────────── */
+.rsi-bar{
+  height:8px;border-radius:4px;margin:10px 0 4px;
+  background:linear-gradient(90deg,var(--red) 0%,var(--amber) 30%,var(--green) 50%,var(--amber) 70%,var(--red) 100%);
+  position:relative;
+}
+.rsi-needle{
+  position:absolute;
+  top:50%;transform:translate(-50%,-50%);
+  width:14px;height:14px;border-radius:50%;
+  background:#fff;
+  border:2px solid var(--bg);
+  box-shadow:0 0 6px rgba(0,200,5,.6);
+}
+
+/* ─── MA VISUAL ──────────────────────────────────────────── */
+.ma-row{
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:10px;font-size:.85rem;
+}
+.ma-line{
+  flex:1;height:3px;border-radius:2px;
+  position:relative;
+}
+.ma-dot{
+  width:10px;height:10px;border-radius:50%;
+  border:2px solid currentColor;
+  background:var(--bg);
+  position:absolute;top:50%;transform:translateY(-50%);
+}
+.ma-label{color:var(--txt-muted);font-size:.75rem;min-width:90px}
+.ma-price{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.85rem;font-weight:600;
+  min-width:70px;text-align:right;
+}
+
+/* ─── RISK CARDS ─────────────────────────────────────────── */
+.risk-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+}
+.risk-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r);padding:18px;
+  border-left:3px solid transparent;
+  transition:transform .2s;
+}
+.risk-card:hover{transform:translateY(-2px)}
+.risk-card.high{border-left-color:var(--red)}
+.risk-card.med{border-left-color:var(--amber)}
+.risk-card.low{border-left-color:var(--green)}
+.risk-head{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:8px;
+}
+.risk-name{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:600;font-size:.88rem;color:var(--txt);
+}
+.risk-level{
+  font-size:.68rem;font-weight:700;
+  padding:2px 8px;border-radius:4px;
+  text-transform:uppercase;letter-spacing:.06em;
+}
+.risk-card.high .risk-level{background:rgba(239,68,68,.12);color:var(--red)}
+.risk-card.med .risk-level{background:rgba(245,158,11,.12);color:var(--amber)}
+.risk-card.low .risk-level{background:rgba(0,200,5,.12);color:var(--green)}
+.risk-body{font-size:.8rem;color:var(--txt-muted);line-height:1.55}
+
+/* ─── STRATEGY CARDS ─────────────────────────────────────── */
+.strategy-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+}
+.strat-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r);padding:22px;
+  position:relative;overflow:hidden;
+}
+.strat-card::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--green),var(--green-d));
+}
+.strat-horizon{
+  font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:600;
+  color:var(--green);text-transform:uppercase;letter-spacing:.08em;
+  margin-bottom:8px;
+}
+.strat-action{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:1.4rem;font-weight:700;color:var(--txt);
+  margin-bottom:14px;
+}
+.strat-row{
+  display:flex;justify-content:space-between;
+  font-size:.8rem;margin-bottom:6px;
+}
+.strat-key{color:var(--txt-muted)}
+.strat-v{
+  font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--txt);
+}
+.strat-v.green{color:var(--green)}
+.strat-conf{
+  margin-top:14px;
+}
+.conf-label{font-size:.72rem;color:var(--txt-muted);margin-bottom:6px}
+.conf-bar{
+  height:6px;border-radius:3px;
+  background:var(--surface);
+  position:relative;overflow:hidden;
+}
+.conf-fill{
+  height:100%;border-radius:3px;
+  background:linear-gradient(90deg,var(--green-d),var(--green));
+  transition:width 1.5s ease;
+}
+
+/* ─── OPERATIONAL METRICS ────────────────────────────────── */
+.ops-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+}
+.ops-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r);padding:16px;
+}
+.ops-label{font-size:.72rem;color:var(--txt-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px}
+.ops-val{
+  font-family:'JetBrains Mono',monospace;
+  font-size:1.2rem;font-weight:700;color:var(--txt);
+}
+.ops-change{
+  font-size:.75rem;font-weight:600;color:var(--green);margin-top:2px;
+}
+
+/* ─── PERFORMANCE BARS ───────────────────────────────────── */
+.perf-row{
+  display:flex;align-items:center;gap:14px;margin-bottom:12px;
+}
+.perf-period{font-size:.8rem;color:var(--txt-muted);min-width:100px}
+.perf-track{flex:1;height:8px;background:var(--surface);border-radius:4px;overflow:hidden}
+.perf-fill{
+  height:100%;border-radius:4px;
+  background:linear-gradient(90deg,var(--green-d),var(--green));
+}
+.perf-pct{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.82rem;font-weight:600;color:var(--green);
+  min-width:60px;text-align:right;
+}
+
+/* ─── SUPPORT / RESISTANCE ───────────────────────────────── */
+.sr-vis{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r);padding:24px;margin-bottom:16px;
+}
+.sr-track{
+  position:relative;height:8px;
+  background:var(--surface);border-radius:4px;margin:24px 0;
+}
+.sr-zone{
+  position:absolute;top:0;bottom:0;
+  background:rgba(0,200,5,.15);border-radius:2px;
+}
+.sr-pin{
+  position:absolute;top:50%;transform:translate(-50%,-50%);
+  width:14px;height:14px;border-radius:50%;
+  background:var(--green);border:2px solid var(--bg);
+  box-shadow:0 0 0 4px var(--green-glow);
+}
+.sr-label{
+  position:absolute;font-size:.68rem;font-weight:600;
+  font-family:'JetBrains Mono',monospace;
+  transform:translateX(-50%);white-space:nowrap;
+}
+.sr-top{top:-20px;color:var(--txt-muted)}
+.sr-bot{bottom:-20px;color:var(--txt-muted)}
+.sr-row{
+  display:flex;justify-content:space-between;gap:12px;
+}
+.sr-item{
+  flex:1;background:var(--surface);
+  border-radius:8px;padding:12px;text-align:center;
+}
+.sr-type{font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;color:var(--txt-muted);margin-bottom:4px}
+.sr-price{
+  font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;
+}
+.sr-r{color:var(--red)}.sr-s{color:var(--green)}.sr-c{color:#fff}
+
+/* ─── MACRO TABLE ────────────────────────────────────────── */
+.macro-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:20px;
+}
+
+/* ─── DISCLAIMER ─────────────────────────────────────────── */
+.disclaimer{
+  background:rgba(239,68,68,.05);
+  border:1px solid rgba(239,68,68,.2);
+  border-radius:var(--r);padding:24px;
+  font-size:.8rem;color:var(--txt-muted);line-height:1.7;
+}
+.disclaimer strong{color:var(--red)}
+
+/* ─── FOOTER ─────────────────────────────────────────────── */
+footer{
+  border-top:1px solid var(--border);
+  padding:32px 24px;
+  text-align:center;
+  font-size:.78rem;color:var(--txt-muted);
+}
+
+/* ─── REVEAL ANIMATION ───────────────────────────────────── */
+.reveal{
+  opacity:0;transform:translateY(24px);
+  transition:opacity .6s ease,transform .6s ease;
+}
+.reveal.visible{opacity:1;transform:none}
+
+/* ─── RESPONSIVE ─────────────────────────────────────────── */
+@media(max-width:900px){
+  #hero{grid-template-columns:1fr;gap:32px;padding-top:90px}
+  .hero-ticker{font-size:3.5rem}
+  .hero-stats{grid-template-columns:1fr 1fr}
+  .charts-row,.charts-row-3,.indicators-grid,.risk-grid,.strategy-grid,.thesis-grid{grid-template-columns:1fr}
+  .ratings-wrap{grid-template-columns:1fr}
+  .nav-links{display:none}
+  .macro-grid,.ops-grid,.rating-firms{grid-template-columns:1fr 1fr}
+}
+@media(max-width:560px){
+  .hero-stats{grid-template-columns:1fr}
+  .macro-grid,.ops-grid,.rating-firms{grid-template-columns:1fr}
+}
+
+/* ─── GLOW BACKGROUND ────────────────────────────────────── */
+body::before{
+  content:'';
+  position:fixed;
+  width:600px;height:600px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(0,200,5,.04) 0%,transparent 70%);
+  top:-200px;right:-200px;
+  pointer-events:none;z-index:0;
+}
+</style>
+</head>
+<body class="lang-tr">
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#00C805" stroke-width="1.5"/><path d="M7 10.5c0-1.657 1.343-3 3-3s3 1.343 3 3v3H7v-3z" fill="#00C805"/><rect x="9" y="4" width="2" height="2.5" rx="1" fill="#00C805"/></svg>
+    META <span class="tr-only">· Gelişmiş Analiz Raporu</span><span class="en-only">· Advanced Analysis Report</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#fundamentals"><span class="tr-only">Finansallar</span><span class="en-only">Fundamentals</span></a></li>
+    <li><a href="#technical"><span class="tr-only">Teknik</span><span class="en-only">Technical</span></a></li>
+    <li><a href="#news"><span class="tr-only">Haberler & Kararlar</span><span class="en-only">News & Catalysts</span></a></li>
+    <li><a href="#analysts"><span class="tr-only">Analistler</span><span class="en-only">Analysts</span></a></li>
+    <li><a href="#risk"><span class="tr-only">Riskler</span><span class="en-only">Risks</span></a></li>
+    <li><a href="#recommendation"><span class="tr-only">Opsiyon Stratejileri</span><span class="en-only">Options Strategies</span></a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="nav-pill tr-only">16 Haz 2026</div>
+    <div class="nav-pill en-only">Jun 16, 2026</div>
+    
+    <div class="lang-switch">
+      <span class="lang-btn tr-btn" onclick="setLanguage('tr')">TR</span>
+      <span class="lang-btn en-btn" onclick="setLanguage('en')">EN</span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left reveal">
+    <div class="ticker-label">
+      <span class="dot"></span>
+      NASDAQ · META · <span class="tr-only">Canlı Veri</span><span class="en-only">Live Data</span>
+    </div>
+    <div class="hero-ticker">
+      <span class="dollar">$</span><span id="price-counter">593</span>.48
+    </div>
+    <div class="price-meta">
+      <span class="change-badge">▲ +4.68% (<span class="tr-only">Son Seans</span><span class="en-only">Last Session</span>)</span>
+      <span class="price-date tr-only">16 Haziran 2026, Ön-Piyasa</span>
+      <span class="price-date en-only">June 16, 2026, Pre-Market</span>
+    </div>
+    <p class="hero-desc tr-only">
+      Meta Platforms, Inc. (META), agresif üretken yapay zeka yatırımları, devasa kullanıcı ekosistemi ve güçlü nakit akışlarıyla desteklenen karmaşık ama son derece cazip bir yatırım senaryosu sunuyor. Llama 4, Muse Spark entegrasyonu ve son yasal düzenlemeler META'yı siber-teknoloji çağında güçlü bir konuma getiriyor.
+    </p>
+    <p class="hero-desc en-only">
+      Meta Platforms, Inc. (META) presents a complex yet highly compelling investment case driven by aggressive generative AI investments, a massive user ecosystem, and robust underlying cash flows. Llama 4, Muse Spark integration, and recent regulatory shifts position META strongly in the cyber-tech era.
+    </p>
+    <div class="verdict-box">
+      <div>
+        <div class="verdict-label"><span class="tr-only">Analist Konsensüsü</span><span class="en-only">Analyst Consensus</span></div>
+        <div class="verdict-val">🟢 Moderate Buy</div>
+      </div>
+      <div style="width:1px;background:var(--border);margin:0 6px;align-self:stretch"></div>
+      <div>
+        <div class="verdict-label"><span class="tr-only">Ort. Hedef Fiyat</span><span class="en-only">Avg. Target Price</span></div>
+        <div class="verdict-val" style="color:var(--amber)">$110.73</div>
+      </div>
+      <div style="width:1px;background:var(--border);margin:0 6px;align-self:stretch"></div>
+      <div>
+        <div class="verdict-label"><span class="tr-only">Piyasa Değeri</span><span class="en-only">Market Cap</span></div>
+        <div class="verdict-val" style="color:var(--txt)">$1.51T</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-stats reveal">
+    <div class="stat-card green">
+      <div class="sc-label"><span class="tr-only">Öngörülen FY 2026 Capex</span><span class="en-only">FY 2026 Capex Guidance</span></div>
+      <div class="sc-val" style="color:var(--green)">$125B - $145B</div>
+      <div class="sc-sub"><span class="tr-only">Yapay zeka altyapısına büyük yatırım</span><span class="en-only">Massive investment in AI infrastructure</span></div>
+      <span class="sc-badge badge-green"><span class="tr-only">Lider Konum</span><span class="en-only">Market Leader</span></span>
+    </div>
+    <div class="stat-card green">
+      <div class="sc-label"><span class="tr-only">Q1 2026 Geliri</span><span class="en-only">Q1 2026 Revenue</span></div>
+      <div class="sc-val" style="color:var(--green)">$56.31B</div>
+      <div class="sc-sub"><span class="tr-only">Yıllık bazda +%33.1 artış</span><span class="en-only">+33.1% YoY growth</span></div>
+      <span class="sc-badge badge-green"><span class="tr-only">Güçlü</span><span class="en-only">Strong</span></span>
+    </div>
+    <div class="stat-card blue">
+      <div class="sc-label"><span class="tr-only">Threads Aylık Aktif Kullanıcı</span><span class="en-only">Threads MAUs</span></div>
+      <div class="sc-val">200M+</div>
+      <div class="sc-sub"><span class="tr-only">2026 sonu reklam entegrasyonu pilotu</span><span class="en-only">Ad pilot integration late 2026</span></div>
+      <span class="sc-badge" style="background:rgba(59,130,246,.12);color:var(--blue)"><span class="tr-only">Genişleyen</span><span class="en-only">Expanding</span></span>
+    </div>
+    <div class="stat-card amber">
+      <div class="sc-label"><span class="tr-only">F/K Oranı (TTM)</span><span class="en-only">P/E Ratio (TTM)</span></div>
+      <div class="sc-val" style="color:var(--amber)">21.23x</div>
+      <div class="sc-sub"><span class="tr-only">S&P 500 ortalaması ~20.5x</span><span class="en-only">S&P 500 average ~20.5x</span></div>
+      <span class="sc-badge badge-amber"><span class="tr-only">Adil Değer</span><span class="en-only">Fair Value</span></span>
+    </div>
+    <div class="stat-card green">
+      <div class="sc-label"><span class="tr-only">Q1 2026 Net Gelir (Düzeltilmiş)</span><span class="en-only">Q1 2026 Net Income (Normalized)</span></div>
+      <div class="sc-val">$18.74B</div>
+      <div class="sc-sub"><span class="tr-only">$8.03B tek seferlik vergi avantajı hariç</span><span class="en-only">Excl. $8.03B tax benefit (Notice 2026-7)</span></div>
+      <span class="sc-badge badge-green"><span class="tr-only">Sürdürülebilir</span><span class="en-only">Sustainable</span></span>
+    </div>
+    <div class="stat-card blue">
+      <div class="sc-label"><span class="tr-only">Muse Spark API Katkısı</span><span class="en-only">Muse Spark API Impact</span></div>
+      <div class="sc-val">+$10B Est.</div>
+      <div class="sc-sub"><span class="tr-only">Conversational ad premium gelir potansiyeli</span><span class="en-only">Premium conversational ad potential</span></div>
+      <span class="sc-badge" style="background:rgba(59,130,246,.12);color:var(--blue)">AI Boost</span>
+    </div>
+  </div>
+</section>
+
+<!-- PERFORMANCE -->
+<section class="section reveal">
+  <div class="section-head">
+    <span class="section-num">01</span>
+    <h2 class="section-title"><span class="tr-only">Fiyat Performansı</span><span class="en-only">Price Performance</span></h2>
+  </div>
+  <div class="charts-row">
+    <div class="chart-box">
+      <div class="chart-title"><span class="tr-only">Zaman Dilimlerine Göre Getiri</span><span class="en-only">Returns by Timeframe</span></div>
+      <div class="chart-sub"><span class="tr-only">META vs Piyasa Endeksleri</span><span class="en-only">META vs Market Indices</span></div>
+      <canvas id="perfChart"></canvas>
+    </div>
+    <div class="chart-box" style="display:flex;flex-direction:column;justify-content:center">
+      <div class="chart-title" style="margin-bottom:20px"><span class="tr-only">Performans Detayı</span><span class="en-only">Performance Details</span></div>
+      <div class="perf-row">
+        <span class="perf-period"><span class="tr-only">YTD 2026</span><span class="en-only">YTD 2026</span></span>
+        <div class="perf-track"><div class="perf-fill" style="width:50%"></div></div>
+        <span class="perf-pct">+14.50%</span>
+      </div>
+      <div class="perf-row">
+        <span class="perf-period"><span class="tr-only">Son 30 Gün</span><span class="en-only">Last 30 Days</span></span>
+        <div class="perf-track"><div class="perf-fill" style="width:35%"></div></div>
+        <span class="perf-pct">+8.20%</span>
+      </div>
+      <div class="perf-row">
+        <span class="perf-period"><span class="tr-only">Son 3 Gün</span><span class="en-only">Last 3 Days</span></span>
+        <div class="perf-track"><div class="perf-fill" style="width:20%"></div></div>
+        <span class="perf-pct">+4.68%</span>
+      </div>
+      <div class="perf-row">
+        <span class="perf-period"><span class="tr-only">52 Haftalık Getiri</span><span class="en-only">52-Week Return</span></span>
+        <div class="perf-track"><div class="perf-fill" style="width:42%"></div></div>
+        <span class="perf-pct">+11.20%</span>
+      </div>
+      <div class="perf-row">
+        <span class="perf-period">S&P 500 YTD</span>
+        <div class="perf-track"><div class="perf-fill" style="width:40%;background:rgba(59,130,246,.6)"></div></div>
+        <span class="perf-pct" style="color:var(--blue)">+10.40%</span>
+      </div>
+      <div class="perf-row">
+        <span class="perf-period">Nasdaq YTD</span>
+        <div class="perf-track"><div class="perf-fill" style="width:52%;background:rgba(245,158,11,.6)"></div></div>
+        <span class="perf-pct" style="color:var(--amber)">+14.80%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Support / Resistance -->
+  <div class="sr-vis">
+    <div class="chart-title" style="margin-bottom:16px"><span class="tr-only">Destek / Direnç Seviyeleri</span><span class="en-only">Support / Resistance Levels</span></div>
+    <div class="sr-row">
+      <div class="sr-item"><div class="sr-type"><span class="tr-only">Tarihi Zirve (ATH)</span><span class="en-only">All-Time High (ATH)</span></div><div class="sr-price sr-r">$796.25</div></div>
+      <div class="sr-item"><div class="sr-type"><span class="tr-only">Direnç Bölgesi</span><span class="en-only">Resistance Zone</span></div><div class="sr-price sr-r">$615.00 - $630.00</div></div>
+      <div class="sr-item" style="background:rgba(0,200,5,.08);border:1px solid var(--border-g)"><div class="sr-type" style="color:var(--green)"><span class="tr-only">Güncel Fiyat</span><span class="en-only">Current Price</span></div><div class="sr-price sr-c" style="font-size:1.2rem">$593.48</div></div>
+      <div class="sr-item"><div class="sr-type"><span class="tr-only">Destek Bölgesi</span><span class="en-only">Support Zone</span></div><div class="sr-price sr-s">$550.00 - $570.00</div></div>
+      <div class="sr-item"><div class="sr-type"><span class="tr-only">52 Haftalık En Düşük</span><span class="en-only">52-Week Low</span></div><div class="sr-price sr-s">$520.26</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FUNDAMENTALS -->
+<section class="section reveal" id="fundamentals">
+  <div class="section-head">
+    <span class="section-num">02</span>
+    <h2 class="section-title"><span class="tr-only">Temel Analiz</span><span class="en-only">Fundamental Analysis</span></h2>
+  </div>
+
+  <div class="charts-row" style="margin-bottom:20px">
+    <div class="chart-box">
+      <div class="chart-title"><span class="tr-only">Gelir Gelişimi</span><span class="en-only">Revenue Overview</span></div>
+      <div class="chart-sub"><span class="tr-only">Yıllık ve Çeyreksel Karşılaştırma</span><span class="en-only">Annual and Quarterly Comparison</span></div>
+      <canvas id="revenueChart"></canvas>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title"><span class="tr-only">Net Gelir Trendi</span><span class="en-only">Net Income Trend</span></div>
+      <div class="chart-sub"><span class="tr-only">Yıllık Net Kar Karşılaştırması ($B)</span><span class="en-only">Annual Net Profit Comparison ($B)</span></div>
+      <canvas id="incomeChart"></canvas>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th><span class="tr-only">Metrik</span><span class="en-only">Metric</span></th>
+          <th><span class="tr-only">Değer</span><span class="en-only">Value</span></th>
+          <th><span class="tr-only">Dönem</span><span class="en-only">Period</span></th>
+          <th><span class="tr-only">YoY Değişim</span><span class="en-only">YoY Change</span></th>
+          <th><span class="tr-only">Değerlendirme</span><span class="en-only">Evaluation</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="tr-only">Gelir (TTM)</span><span class="en-only">Revenue (TTM)</span></td><td class="td-mono">~$214.96B</td><td>TTM</td><td class="td-green">+22.1%</td><td><span class="sc-badge badge-green"><span class="tr-only">Güçlü</span><span class="en-only">Strong</span></span></td></tr>
+        <tr><td><span class="tr-only">Gelir (FY 2025)</span><span class="en-only">Revenue (FY 2025)</span></td><td class="td-mono">$200.97B</td><td>FY 2025</td><td class="td-green">+22.0%</td><td><span class="sc-badge badge-green"><span class="tr-only">Mükemmel</span><span class="en-only">Excellent</span></span></td></tr>
+        <tr><td><span class="tr-only">Net Gelir (TTM)</span><span class="en-only">Net Income (TTM)</span></td><td class="td-mono">~$70.58B</td><td>TTM</td><td class="td-green">+5.9%</td><td><span class="sc-badge badge-green"><span class="tr-only">Sağlıklı</span><span class="en-only">Healthy</span></span></td></tr>
+        <tr><td><span class="tr-only">Net Gelir (FY 2025)</span><span class="en-only">Net Income (FY 2025)</span></td><td class="td-mono">$60.46B</td><td>FY 2025</td><td class="td-red">-3.05%</td><td><span class="sc-badge badge-amber"><span class="tr-only">Capex Baskısı</span><span class="en-only">Capex Pressured</span></span></td></tr>
+        <tr><td>EPS (TTM)</td><td class="td-mono">~$27.95</td><td>TTM</td><td class="td-green">+10.2%</td><td><span class="sc-badge badge-green"><span class="tr-only">Pozitif (Seyreltilmiş ~$27.51)</span><span class="en-only">Positive (Diluted ~$27.51)</span></span></td></tr>
+        <tr><td><span class="tr-only">Q1 2026 Gelir (Doğrulanmış)</span><span class="en-only">Q1 2026 Revenue (Actual)</span></td><td class="td-mono">$56.31B</td><td>Q1 2026</td><td class="td-green">+33.1%</td><td><span class="sc-badge badge-green"><span class="tr-only">Hızlanan Büyüme</span><span class="en-only">Accelerated Growth</span></span></td></tr>
+        <tr><td><span class="tr-only">Q1 2026 Net Gelir (Doğrulanmış)</span><span class="en-only">Q1 2026 Net Income (Actual)</span></td><td class="td-mono">$26.77B</td><td>Q1 2026</td><td class="td-green">+61.0%</td><td><span class="sc-badge badge-green"><span class="tr-only">Yüksek (Vergi Avantajı*)</span><span class="en-only">High (Incl. Tax Benefit*)</span></span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="disclaimer" style="margin-bottom:24px;border:1px solid rgba(59,130,246,.2);background:rgba(59,130,246,.02)">
+    <p style="color:var(--txt)">
+      <strong>* <span class="tr-only">Q1 2026 Karlılığı Üzerine Teknik Not:</span><span class="en-only">Technical Note on Q1 2026 Profits:</span></strong>
+      <span class="tr-only">Meta'nın Q1 2026'daki 26.77 milyar dolarlık net karı, Treasury Notice 2026-7 vergi düzenlemesinden kaynaklanan tek seferlik 8.03 milyar dolarlık gayri-faal vergi avantajı içermektedir. Bu düzeltme hariç tutulduğunda normalized net gelir 18.74 milyar dolar düzeyindedir ve bu da şirketin yüksek operasyonel disiplinini kanıtlamaktadır.</span>
+      <span class="en-only">Meta's Q1 2026 net income of $26.77B includes a one-time non-operating tax benefit of $8.03B associated with Treasury Notice 2026-7. Excluding this, normalized net income stood at $18.74B, demonstrating solid operating discipline despite heavy ongoing capital expenditure.</span>
+    </p>
+  </div>
+
+  <div class="table-wrap">
+    <div class="chart-title" style="margin-bottom:12px"><span class="tr-only">Değerleme Metrikleri (15 Haziran 2026 İtibarıyla)</span><span class="en-only">Valuation Metrics (As of June 15, 2026)</span></div>
+    <table>
+      <thead>
+        <tr>
+          <th><span class="tr-only">Metrik</span><span class="en-only">Metric</span></th>
+          <th><span class="tr-only">Meta (META)</span><span class="en-only">Meta (META)</span></th>
+          <th><span class="tr-only">Sektör / Endeks Ortalaması</span><span class="en-only">Sector / Index Average</span></th>
+          <th><span class="tr-only">Değerlendirme</span><span class="en-only">Assessment</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="tr-only">F/K Oranı (TTM)</span><span class="en-only">P/E Ratio (TTM)</span></td><td class="td-mono td-green">21.23x</td><td>S&P 500: ~20.50x</td><td><span class="sc-badge badge-green"><span class="tr-only">Adil Değer</span><span class="en-only">Fair Value relative to peers</span></span></td></tr>
+        <tr><td><span class="tr-only">İleri F/K</span><span class="en-only">Forward P/E</span></td><td class="td-mono td-green">18.45x</td><td>Tech Sector Avg: ~24.00x</td><td><span class="sc-badge badge-green"><span class="tr-only">Cazip (Yapay Zeka Ticarileşmesi ile)</span><span class="en-only">Attractive (Assuming AI monetization scales)</span></span></td></tr>
+        <tr><td><span class="tr-only">Tarihi Zirveye Uzaklık</span><span class="en-only">Distance from ATH</span></td><td class="td-mono td-amber">-%25.40</td><td>52-W High: $796.25</td><td><span class="sc-badge badge-amber"><span class="tr-only">Direnç Mevcut</span><span class="en-only">Significant Resistance</span></span></td></tr>
+        <tr><td><span class="tr-only">En Düşük Seviyeden Uzaklık</span><span class="en-only">Distance from Low</span></td><td class="td-mono td-green">+%14.07</td><td>52-W Low: $520.26</td><td><span class="sc-badge badge-green"><span class="tr-only">Güçlü Yapısal Destek</span><span class="en-only">Strong Structural Support</span></span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- TECHNICAL -->
+<section class="section reveal" id="technical">
+  <div class="section-head">
+    <span class="section-num">03</span>
+    <h2 class="section-title"><span class="tr-only">Teknik Analiz</span><span class="en-only">Technical Analysis</span></h2>
+  </div>
+
+  <div class="indicators-grid">
+    <div class="ind-card">
+      <div class="ind-label"><span class="tr-only">RSI (14 Günlük)</span><span class="en-only">RSI (14 Days)</span></div>
+      <div class="ind-val" style="color:var(--green)">60.80</div>
+      <div class="rsi-bar">
+        <div class="rsi-needle" style="left:60.80%"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:.65rem;color:var(--txt-muted)">
+        <span><span class="tr-only">Aşırı Satım</span><span class="en-only">Oversold</span></span>
+        <span><span class="tr-only">Nötr</span><span class="en-only">Neutral</span></span>
+        <span><span class="tr-only">Aşırı Alım</span><span class="en-only">Overbought</span></span>
+      </div>
+      <div class="ind-signal" style="color:var(--green)">
+        <span class="tr-only">▲ Güçlü Alım İştahı (Aşırı Alım Değil)</span><span class="en-only">▲ Robust Accumulation (Not Overbought)</span>
+      </div>
+    </div>
+    <div class="ind-card">
+      <div class="ind-label">MACD (12, 26, 9)</div>
+      <div class="ind-val" style="color:var(--green)">~3.23</div>
+      <div style="margin:10px 0;font-size:.78rem;color:var(--txt-muted)">
+        <span class="tr-only">Pozitif bölgede yükseliş kesişimi</span><span class="en-only">Positive crossover signal</span>
+      </div>
+      <div class="ind-signal" style="color:var(--green)">
+        <span class="tr-only">▲ Kısa Vadeli Al Sinyali</span><span class="en-only">▲ Short-Term Buy Bias</span>
+      </div>
+    </div>
+    <div class="ind-card">
+      <div class="ind-label"><span class="tr-only">50 Günlük EMA</span><span class="en-only">50-Day EMA</span></div>
+      <div class="ind-val" style="color:var(--green)">$574.12</div>
+      <div style="margin:10px 0;font-size:.78rem;color:var(--txt-muted)">
+        <span class="tr-only">Fiyat EMA'nın üzerinde: $593.48</span><span class="en-only">Price is comfortably above 50-EMA</span>
+      </div>
+      <div class="ind-signal" style="color:var(--green)">
+        <span class="tr-only">▲ Yükseliş İvmesi</span><span class="en-only">▲ Strong Momentum</span>
+      </div>
+    </div>
+    <div class="ind-card">
+      <div class="ind-label"><span class="tr-only">200 Günlük EMA</span><span class="en-only">200-Day EMA</span></div>
+      <div class="ind-val" style="color:var(--amber)">$604.50</div>
+      <div style="margin:10px 0;font-size:.78rem;color:var(--txt-muted)">
+        <span class="tr-only">Fiyat EMA'nın altında: $593.48</span><span class="en-only">Price is below 200-EMA</span>
+      </div>
+      <div class="ind-signal" style="color:var(--amber)">
+        <span class="tr-only">⚠ Death Cross Etkisi Azalıyor</span><span class="en-only">⚠ Death Cross Trend Flattening</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="charts-row">
+    <div class="chart-box">
+      <div class="chart-title"><span class="tr-only">Hareketli Ortalamalar vs Güncel Fiyat</span><span class="en-only">Moving Averages vs Current Price</span></div>
+      <div class="chart-sub"><span class="tr-only">Teknik Death Cross yataylaşma sürecinde</span><span class="en-only">Technical Death Cross flattening phase</span></div>
+      <div style="padding:12px 0">
+        <div class="ma-row">
+          <span class="ma-label" style="color:var(--green)"><span class="tr-only">Güncel Fiyat</span><span class="en-only">Current Price</span></span>
+          <div class="ma-line" style="background:linear-gradient(90deg,var(--green),var(--green-d));position:relative">
+            <div class="ma-dot" style="left:72%;color:var(--green)"></div>
+          </div>
+          <span class="ma-price" style="color:var(--green)">$593.48</span>
+        </div>
+        <div class="ma-row">
+          <span class="ma-label" style="color:var(--blue)">50-Day EMA</span>
+          <div class="ma-line" style="background:rgba(59,130,246,.4)">
+            <div class="ma-dot" style="left:52%;color:var(--blue)"></div>
+          </div>
+          <span class="ma-price" style="color:var(--blue)">$574.12</span>
+        </div>
+        <div class="ma-row">
+          <span class="ma-label" style="color:var(--amber)">200-Day EMA</span>
+          <div class="ma-line" style="background:rgba(245,158,11,.4)">
+            <div class="ma-dot" style="left:82%;color:var(--amber)"></div>
+          </div>
+          <span class="ma-price" style="color:var(--amber)">$604.50</span>
+        </div>
+      </div>
+      <div style="font-size:.75rem;color:var(--txt-muted);padding-top:12px;border-top:1px solid var(--border)">
+        <span class="tr-only">Q1 2026 başındaki teknik "Death Cross" (50/200 kesişimi) düzleşmeye başlayarak kalıcı bir düşüş yerine konsolidasyon ve trend dönüş evresine geçiş yapıldığını doğrulamaktadır.</span>
+        <span class="en-only">The early Q1 2026 "Death Cross" is beginning to flatten, suggesting a consolidation or trend-reversal phase rather than a sustained bearish trend.</span>
+      </div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title"><span class="tr-only">Hacim Analizi</span><span class="en-only">Volume Analysis</span></div>
+      <div class="chart-sub"><span class="tr-only">Facebook Search "AI Mode" lansmanı hacim yükselişi</span><span class="en-only">Facebook Search "AI Mode" rollout volume breakout</span></div>
+      <canvas id="volumeChart"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- NEWS -->
+<section class="section reveal" id="news">
+  <div class="section-head">
+    <span class="section-num">04</span>
+    <h2 class="section-title"><span class="tr-only">Haber Akışı & Katalizörler</span><span class="en-only">News Flow & Catalysts</span></h2>
+  </div>
+  <div class="timeline">
+    <!-- Item 1 TR/EN -->
+    <div class="tl-item">
+      <div class="tl-date"><span class="tr-only">15 Haziran 2026</span><span class="en-only">June 15, 2026</span></div>
+      <div class="tl-head">🚀 Facebook "AI Mode" Search Integration</div>
+      <div class="tl-body">
+        <span class="tr-only">Meta, Facebook Arama çubuğu için tamamen Muse Spark modeline dayanan "AI Mode" entegrasyonunu başlattı. Morgan Stanley, bu entegrasyonun başarıyla ölçeklenmesi durumunda premium reklam yerleşimleri aracılığıyla yıllık 10 milyar doların üzerinde ek gelir sağlayabileceğini öngörüyor.</span>
+        <span class="en-only">Meta rolled out an "AI Mode" for Facebook Search powered directly by Muse Spark. Morgan Stanley estimates that if this tool scales successfully to 1 billion active users, it represents an incremental revenue opportunity exceeding $10 Billion annually.</span>
+      </div>
+      <div class="tl-tags">
+        <span class="tag">⭐⭐⭐⭐⭐ <span class="tr-only">Kritik</span><span class="en-only">Critical</span></span>
+        <span class="tag"><span class="tr-only">Yeni Gelir Akışı</span><span class="en-only">New Revenue Stream</span></span>
+        <span class="tag">Muse Spark API</span>
+      </div>
+    </div>
+
+    <!-- Item 2 TR/EN -->
+    <div class="tl-item">
+      <div class="tl-date"><span class="tr-only">2 Haziran 2026</span><span class="en-only">June 2, 2026</span></div>
+      <div class="tl-head">🏛️ Trump AI Executive Order (Voluntary 30-day Review)</div>
+      <div class="tl-body">
+        <span class="tr-only">Başkan Trump, gelişmiş yapay zeka modelleri için gönüllü bir 30 günlük ön sürüm güvenlik incelemesi çerçevesi getiren "Gelişmiş Yapay Zeka İnovasyonunu ve Güvenliğini Teşvik Etme" kararnamesini imzaladı. Meta, uyumluluk gecikmelerini en aza indirgemek için sürece katılacağını açıkladı.</span>
+        <span class="en-only">President Trump’s executive order, "Promoting Advanced Artificial Intelligence Innovation and Security," introduced a voluntary 30-day pre-release review framework for advanced frontier models. Meta has committed to cooperating.</span>
+      </div>
+      <div class="tl-tags">
+        <span class="tag">⭐⭐⭐⭐ <span class="tr-only">Önemli</span><span class="en-only">Important</span></span>
+        <span class="tag"><span class="tr-only">Düzenleme</span><span class="en-only">Regulation</span></span>
+        <span class="tag"><span class="tr-only">Güvenlik</span><span class="en-only">Security</span></span>
+      </div>
+    </div>
+
+    <!-- Item 3 TR/EN -->
+    <div class="tl-item">
+      <div class="tl-date"><span class="tr-only">8 Nisan 2026</span><span class="en-only">April 8, 2026</span></div>
+      <div class="tl-head">🛸 Superintelligence Labs & Muse Spark Unveil</div>
+      <div class="tl-body">
+        <span class="tr-only">Meta'nın yeni kurulan Süper Zeka Laboratuvarları (Superintelligence Labs), ilk kapalı kaynaklı ticari model olan "Muse Spark"ı tanıttı. Llama serisinden farklı olarak bu model, kurumsal API gelirlerini artırmaya odaklanmaktadır.</span>
+        <span class="en-only">Meta’s newly formed Superintelligence Labs launched Muse Spark, the company's first proprietary, closed-source model developed for corporate enterprise API monetization and on-device creative generation.</span>
+      </div>
+      <div class="tl-tags">
+        <span class="tag">⭐⭐⭐⭐⭐ <span class="tr-only">Stratejik</span><span class="en-only">Strategic</span></span>
+        <span class="tag"><span class="tr-only">Kapalı Kaynak</span><span class="en-only">Proprietary Model</span></span>
+        <span class="tag"><span class="tr-only">Monetizasyon</span><span class="en-only">Monetization</span></span>
+      </div>
+    </div>
+
+    <!-- Item 4 TR/EN -->
+    <div class="tl-item">
+      <div class="tl-date"><span class="tr-only">Nisan 2026</span><span class="en-only">April 2026</span></div>
+      <div class="tl-head">📊 FY 2026 Capex Guidance Boost ($125B - $145B)</div>
+      <div class="tl-body">
+        <span class="tr-only">Meta, yıllık sermaye harcamaları kılavuzunu 115-135 milyar dolardan 125-145 milyar dolara revize etti. Bu dev bütçe, B200 GPU alımları, özel MTIA çiplerinin entegrasyonu ve yeni veri merkezlerinin genişletilmesi için kullanılmaktadır.</span>
+        <span class="en-only">Meta raised its FY 2026 Capex guidance to $125 - $145 Billion from the prior $115 - $135 Billion range, aiming to secure high-end B200/H100 GPU clusters and proprietary silicon.</span>
+      </div>
+      <div class="tl-tags">
+        <span class="tag">⭐⭐⭐⭐ <span class="tr-only">Yüksek Risk/Yüksek Ödül</span><span class="en-only">High Risk/Reward</span></span>
+        <span class="tag"><span class="tr-only">Finansal Revizyon</span><span class="en-only">Financial Shift</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANALYSTS -->
+<section class="section reveal" id="analysts">
+  <div class="section-head">
+    <span class="section-num">05</span>
+    <h2 class="section-title"><span class="tr-only">Analist Değerlendirmeleri</span><span class="en-only">Analyst Ratings</span></h2>
+  </div>
+  <div class="ratings-wrap">
+    <div class="ratings-chart-box">
+      <div class="chart-title" style="margin-bottom:4px">
+        <span class="tr-only">Konsensüs Dağılımı</span><span class="en-only">Consensus Distribution</span>
+      </div>
+      <div class="chart-sub">
+        <span class="tr-only">Toplam 32 Wall Street Analisti</span><span class="en-only">Total of 32 Wall Street Analysts</span>
+      </div>
+      <canvas id="ratingsChart" style="max-height:200px"></canvas>
+      <div style="margin-top:16px">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:700;color:var(--green)">Moderate Buy</div>
+        <div style="font-size:.8rem;color:var(--txt-muted);margin-top:4px">
+          <span class="tr-only">25 Al · 6 Tut · 1 Sat</span><span class="en-only">25 Buy · 6 Hold · 1 Sell</span>
+        </div>
+      </div>
+      <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border)">
+        <div style="font-size:.72rem;color:var(--txt-muted);margin-bottom:4px">
+          <span class="tr-only">Ortalama Hedef Fiyat</span><span class="en-only">Average Price Target</span>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:var(--amber)">$645.50</div>
+        <div style="font-size:.75rem;color:var(--green)">
+          <span class="tr-only">▲ %8.76 potansiyel yukarı yön</span><span class="en-only">▲ +8.76% potential upside</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rating-firms">
+      <div class="firm-card">
+        <div class="firm-name">Morgan Sachs / Stanley</div>
+        <div class="firm-row"><span><span class="tr-only">Önceki</span><span class="en-only">Previous</span></span><span>$610</span></div>
+        <div class="firm-row"><span><span class="tr-only">Yeni Hedef</span><span class="en-only">New Target</span></span><span class="firm-target">$655</span></div>
+        <div class="firm-row"><span><span class="tr-only">Tarih</span><span class="en-only">Date</span></span><span>15 Haz 2026</span></div>
+        <span class="firm-badge">Buy</span>
+      </div>
+      <div class="firm-card">
+        <div class="firm-name">Jefferies</div>
+        <div class="firm-row"><span><span class="tr-only">Önceki</span><span class="en-only">Previous</span></span><span>$620</span></div>
+        <div class="firm-row"><span><span class="tr-only">Yeni Hedef</span><span class="en-only">New Target</span></span><span class="firm-target">$660</span></div>
+        <div class="firm-row"><span><span class="tr-only">Tarih</span><span class="en-only">Date</span></span><span>12 Haz 2026</span></div>
+        <span class="firm-badge">Outperform</span>
+      </div>
+      <div class="firm-card">
+        <div class="firm-name">Evercore ISI</div>
+        <div class="firm-row"><span><span class="tr-only">Önceki</span><span class="en-only">Previous</span></span><span>$590</span></div>
+        <div class="firm-row"><span><span class="tr-only">Yeni Hedef</span><span class="en-only">New Target</span></span><span class="firm-target">$630</span></div>
+        <div class="firm-row"><span><span class="tr-only">Tarih</span><span class="en-only">Date</span></span><span>10 Haz 2026</span></div>
+        <span class="firm-badge">Buy</span>
+      </div>
+      <div class="firm-card">
+        <div class="firm-name">Bank of America</div>
+        <div class="firm-row"><span><span class="tr-only">Önceki</span><span class="en-only">Previous</span></span><span>$630</span></div>
+        <div class="firm-row"><span><span class="tr-only">Yeni Hedef</span><span class="en-only">New Target</span></span><span class="firm-target">$650</span></div>
+        <div class="firm-row"><span><span class="tr-only">Tarih</span><span class="en-only">Date</span></span><span>5 Haz 2026</span></div>
+        <span class="firm-badge">Buy</span>
+      </div>
+      <div class="firm-card" style="grid-column:span 2">
+        <div class="firm-name" style="margin-bottom:12px">
+          <span class="tr-only">Fiyat Hedef Aralığı</span><span class="en-only">Price Target Range</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="text-align:center">
+            <div style="font-size:.7rem;color:var(--red)"><span class="tr-only">En Düşük</span><span class="en-only">Lowest</span></div>
+            <div style="font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--red)">$530</div>
+          </div>
+          <div style="flex:1;height:6px;background:linear-gradient(90deg,var(--red),var(--amber),var(--green));border-radius:3px;position:relative">
+            <div style="position:absolute;left:56%;top:50%;transform:translate(-50%,-50%);width:12px;height:12px;border-radius:50%;background:var(--amber);border:2px solid var(--bg)"></div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-size:.7rem;color:var(--green)"><span class="tr-only">En Yüksek</span><span class="en-only">Highest</span></div>
+            <div style="font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--green)">$740</div>
+          </div>
+        </div>
+        <div style="text-align:center;margin-top:8px;font-size:.75rem;color:var(--txt-muted)">
+          <span class="tr-only">Konsensüs:</span><span class="en-only">Consensus:</span> <strong style="color:var(--amber)">$645.50</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RISK -->
+<section class="section reveal" id="risk">
+  <div class="section-head">
+    <span class="section-num">06</span>
+    <h2 class="section-title"><span class="tr-only">Risk Analizi</span><span class="en-only">Risk Analysis</span></h2>
+  </div>
+  <div style="margin-bottom:20px">
+    <div class="chart-box" style="max-width:100%">
+      <div class="chart-title" style="margin-bottom:4px"><span class="tr-only">Ağırlıklı Risk Faktörleri</span><span class="en-only">Weighted Risk Factors</span></div>
+      <div class="chart-sub"><span class="tr-only">Yatırımcı ve finansal operasyonel riskler</span><span class="en-only">Financial and operational risk levels</span></div>
+      <canvas id="riskChart" style="max-height:200px"></canvas>
+    </div>
+  </div>
+  <div class="risk-grid">
+    <!-- Risk 1 -->
+    <div class="risk-card high">
+      <div class="risk-head">
+        <span class="risk-name">⚠️ <span class="tr-only">Sermaye Harcaması (Capex) Riski</span><span class="en-only">Capex Spend Risk</span></span>
+        <span class="risk-level"><span class="tr-only">Kritik</span><span class="en-only">High</span></span>
+      </div>
+      <div class="risk-body tr-only">Guidance'ın 125 - 145 Milyar Dolar bandına yükseltilmesi hisse senedi serbest nakit akışı marjları üzerinde baskı oluşturabilir ve kârlılığı dönemsel olarak sınırlayabilir.</div>
+      <div class="risk-body en-only">Elevating the Capex guidance to $125 - $145B puts pressure on immediate free cash flow margins and might constrain near-term profitability.</div>
+    </div>
+    <!-- Risk 2 -->
+    <div class="risk-card med">
+      <div class="risk-head">
+        <span class="risk-name">🏛️ <span class="tr-only">Düzenleyici Ortam (Trump AI EO)</span><span class="en-only">Regulatory (Trump AI EO)</span></span>
+        <span class="risk-level"><span class="tr-only">Orta</span><span class="en-only">Medium</span></span>
+      </div>
+      <div class="risk-body tr-only">Trump AI Kararnamesi ile getirilen gönüllü 30 günlük önizleme süreci, yeni nesil sınır modellerin pazara çıkışını geciktirebilir veya uyumluluk maliyetlerini artırabilir.</div>
+      <div class="risk-body en-only">The Trump AI EO's voluntary 30-day pre-release review could delay time-to-market for future frontier models and raise regulatory overheads.</div>
+    </div>
+    <!-- Risk 3 -->
+    <div class="risk-card med">
+      <div class="risk-head">
+        <span class="risk-name">🏦 <span class="tr-only">Değerleme ve Teknik Direnç</span><span class="en-only">Valuation & Resistance</span></span>
+        <span class="risk-level"><span class="tr-only">Orta</span><span class="en-only">Medium</span></span>
+      </div>
+      <div class="risk-body tr-only">Kapanışın 200 günlük hareketli ortalamanın ($604.50) altında kalması ve ATH seviyesinin %25.4 altında bulunması teknik direnç baskısı yaratmaktadır.</div>
+      <div class="risk-body en-only">Currently trading 25.4% below ATH and under the 200-day EMA ($604.50) introduces technical overhead resistance.</div>
+    </div>
+    <!-- Risk 4 -->
+    <div class="risk-card low">
+      <div class="risk-head">
+        <span class="risk-name">📊 <span class="tr-only">Opsiyon Expiration & Holiday Riski</span><span class="en-only">Holiday Expiration Risk</span></span>
+        <span class="risk-level"><span class="tr-only">Düşük</span><span class="en-only">Low</span></span>
+      </div>
+      <div class="risk-body tr-only">19 Haziran Juneteenth tatili sebebiyle opsiyon vadelerinin 18 Haziran Perşembe gününe sıkışması "Thursday Triple Witching" ve yüksek anlık Gamma riskleri barındırır.</div>
+      <div class="risk-body en-only">Juneteenth holiday shifting expirations to Thursday, June 18 creates standard weekly concentration, elevating Gamma risk and afternoon volatility.</div>
+    </div>
+  </div>
+</section>
+
+<!-- RECOMMENDATION -->
+<section class="section reveal" id="recommendation">
+  <div class="section-head">
+    <span class="section-num">07</span>
+    <h2 class="section-title"><span class="tr-only">Gelişmiş Opsiyon Stratejileri</span><span class="en-only">Advanced Options Strategies</span></h2>
+  </div>
+
+  <div class="disclaimer" style="margin-bottom:24px;border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.02)">
+    <p style="color:var(--txt)">
+      <strong><span class="tr-only">⚠ Juneteenth Tatili Takas Uyarısı:</span><span class="en-only">⚠ Juneteenth Holiday Expiration Warning:</span></strong>
+      <span class="tr-only">ABD piyasaları 19 Haziran 2026 Cuma günü tatil nedeniyle kapalıdır. Standart aylık opsiyon sözleşmeleri 18 Haziran Perşembe günü vadesini tamamlayacaktır. Lütfen takas, gamma ve zaman kaybı (Theta) yönetiminizi buna göre kurgulayınız.</span>
+      <span class="en-only">US markets are closed on Friday, June 19, 2026. Standard monthly option contracts will expire on Thursday, June 18, 2026. Manage settlement, liquidity, and accelerated Gamma risk accordingly.</span>
+    </p>
+  </div>
+
+  <div class="strategy-grid">
+    <!-- Strategy 1 -->
+    <div class="strat-card">
+      <div class="strat-horizon"><span class="tr-only">Boğa Katalizör Oyunu (Temmuz 17)</span><span class="en-only">Bullish Catalyst Play (July 17)</span></div>
+      <div class="strat-action">🚀 "Search AI" Bull Call Spread</div>
+      <div class="strat-row"><span class="strat-key"><span class="tr-only">Kurulum</span><span class="en-only">Setup</span></span><span class="strat-v">$600 Call Al / $650 Call Sat</span></div>
+      <div class="strat-row"><span class="strat-key"><span class="tr-only">Giriş Maliyeti</span><span class="en-only">Net Debit Cost</span></span><span class="strat-v">Orta (Muted IV)</span></div>
+      <div class="strat-row"><span class="strat-key"><span class="tr-only">Maksimum Zarar</span><span class="en-only">Max Risk</span></span><span class="strat-v" style="color:var(--red)"><span class="tr-only">Ödenen Net Prim</span><span class="en-only">Net Premium Paid</span></span></div>
+      <div class="strat-row"><span class="strat-key"><span class="tr-only">Katalizör</span><span class="en-only">Catalyst</span></span><span class="strat-v">Facebook AI Mode Rollout</span></div>
+      <div class="strat-conf">
+        <div class="conf-label"><span class="tr-only">Güven Seviyesi</span><span class="en-only">Confidence Level</span></div>
+        <div class="conf-bar"><div class="conf-fill" style="width:75%"></div></div>
+        <div style="font-size:.72rem;color:var(--txt-muted);margin-top:4px">75% Confidence</div>
+      </div>
+    </div>
+    <!-- Strategy 2 -->
+    <div class="strat-card" style="border-color:var(--blue)">
+      <div class="strat-horizon"><span class="tr-only">Volatilite Korumalı Bilanço Öncesi</span><span class="en-only">Vol Spread / Pre-Earnings</span></div>
+      <div class="strat-action">📊 Pre-Earnings Straddle (July 17)</div>
+      <div class="strat-row"><span class="strat-key"><span class="tr-only">Kurulum</span><span class="en-only">Setup</span></span><span class="strat-v">Buy $595 Call & Buy $595 Put</span></div>
+      <div class="strat-row"><span class="strat-key"><span class="tr-only">Gerekçe</span><span class="en-only">Rationale</span></span><span class="strat-v"><span class="tr-only">EMA Sıkışması ve IV Genişlemesi</span><span class="en-only">Consolidation at 200 EMA</span></span></div>
+      <div class="strat-row"><span class="strat-key"><span class="tr-only">Zarar Kes</span><span class="en-only">Stop Loss / Exit</span></span><span class="strat-v" style="color:var(--red)"><span class="tr-only">Bilanço günü öncesi çıkış (IV Crush koruması)</span><span class="en-only">Exit before actual Q2 release</span></span></div>
+      <div class="strat-row"><span class="strat-key">Vega / Theta</span><span class="strat-v">Net Vega Long / Theta Negative</span></div>
+      <div class="strat-conf">
+        <div class="conf-label"><span class="tr-only">Güven Seviyesi</span><span class="en-only">Confidence Level</span></div>
+        <div class="conf-bar"><div class="conf-fill" style="width:65%; background: var(--blue)"></div></div>
+        <div style="font-size:.72rem;color:var(--txt-muted);margin-top:4px">65% Confidence</div>
+      </div>
+    </div>
+    <!-- Strategy 3 -->
+    <div class="strat-card">
+      <div class="strat-horizon"><span class="tr-only">Uzun Vadeli Yatırım LEAPS</span><span class="en-only">Long-Term Synthetic LEAPS</span></div>
+      <div class="strat-action">🌱 Deep ITM Jan 2027 Calls</div>
+      <div class="strat-row"><span class="strat-key"><span class="tr-only">Kurulum</span><span class="en-only">Setup</span></span><span class="strat-v">Buy Jan 15, 2027 $550 Call</span></div>
+      <div class="strat-row"><span class="strat-key"><span class="tr-only">Delta Oranı</span><span class="en-only">Estimated Delta</span></span><span class="strat-v">~0.72</span></div>
+      <div class="strat-row"><span class="strat-key"><span class="tr-only">Sermaye Koruması</span><span class="en-only">Capital Efficiency</span></span><span class="strat-v green"><span class="tr-only">&lt;%25 nakit ile benzer getiri</span><span class="en-only">&lt;25% of capital required</span></span></div>
+      <div class="strat-row"><span class="strat-key"><span class="tr-only">Katalizör</span><span class="en-only">Long Catalyst</span></span><span class="strat-v">Muse Spark / Llama 4 Enterprise</span></div>
+      <div class="strat-conf">
+        <div class="conf-label"><span class="tr-only">Güven Seviyesi</span><span class="en-only">Confidence Level</span></div>
+        <div class="conf-bar"><div class="conf-fill" style="width:80%"></div></div>
+        <div style="font-size:.72rem;color:var(--txt-muted);margin-top:4px">80% Confidence</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Position Sizing -->
+  <div style="margin-top:24px">
+    <div class="section-head" style="border:none;margin-bottom:16px;padding:0">
+      <h3 class="section-title" style="font-size:1.1rem"><span class="tr-only">Koruma Kalkanı: Death Cross Defense Collar</span><span class="en-only">Hedging Strategy: Death Cross Defense Collar</span></h3>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th><span class="tr-only">Hisse Sahipliği</span><span class="en-only">Underlying Shares</span></th>
+            <th><span class="tr-only">Koruyucu Put Opsiyonu</span><span class="en-only">Protective Put</span></th>
+            <th><span class="tr-only">Finanse Edici Call Opsiyonu</span><span class="en-only">Covered Call</span></th>
+            <th><span class="tr-only">Korumalı Bölge (Collar)</span><span class="en-only">Hedging Corridor</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>100 Adet META Hissesi ($593.48)</td>
+            <td class="td-mono td-red">Temmuz 17, 2026 $560 Put Al</td>
+            <td class="td-mono td-green">Temmuz 17, 2026 $630 Call Sat</td>
+            <td><span class="tr-only">Maliyet sıfıra yakındır. Maksimum kazanç $630 seviyesinde kilitlenir, maksimum zarar ise $560 seviyesinde tamamen sınırlandırılır.</span><span class="en-only">Zero-cost collar structure. Downside is strictly protected below $560 while upside is capped at $630.</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- MACRO -->
+<section class="section reveal">
+  <div class="section-head">
+    <span class="section-num">08</span>
+    <h2 class="section-title"><span class="tr-only">Makroekonomik Bağlam</span><span class="en-only">Macroeconomic Context</span></h2>
+  </div>
+  <div class="macro-grid">
+    <div class="chart-box">
+      <div class="chart-title" style="margin-bottom:16px">
+        <span class="tr-only">Makro Göstergeler — Haziran 2026</span><span class="en-only">Macro Indicators — June 2026</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;justify-content:space-between;padding:12px;background:var(--surface);border-radius:8px">
+          <span style="font-size:.85rem;color:var(--txt-muted)"><span class="tr-only">Fed Fon Oranı</span><span class="en-only">Fed Funds Rate</span></span>
+          <span style="font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--amber)">~5.33%</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:12px;background:var(--surface);border-radius:8px">
+          <span style="font-size:.85rem;color:var(--txt-muted)"><span class="tr-only">Enflasyon (TÜFE)</span><span class="en-only">Inflation (CPI)</span></span>
+          <span style="font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--amber)">~%3.3 YoY</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:12px;background:var(--surface);border-radius:8px">
+          <span style="font-size:.85rem;color:var(--txt-muted)"><span class="tr-only">İşsizlik Oranı</span><span class="en-only">Unemployment Rate</span></span>
+          <span style="font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--green)">~%4.0</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:12px;background:var(--surface);border-radius:8px">
+          <span style="font-size:.85rem;color:var(--txt-muted)">S&P 500 YTD</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--green)">+%10.40</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:12px;background:var(--surface);border-radius:8px">
+          <span style="font-size:.85rem;color:var(--txt-muted)">Nasdaq YTD</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--green)">+%14.80</span>
+        </div>
+      </div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title" style="margin-bottom:4px">
+        <span class="tr-only">Endeks Karşılaştırması YTD</span><span class="en-only">YTD Index Comparison</span>
+      </div>
+      <div class="chart-sub"><span class="tr-only">META vs Piyasa Endeksleri</span><span class="en-only">META vs Major Indices</span></div>
+      <canvas id="macroChart"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- DISCLAIMER -->
+<section class="section reveal">
+  <div class="section-head">
+    <span class="section-num">⚖️</span>
+    <h2 class="section-title"><span class="tr-only">Yasal Uyarı</span><span class="en-only">Disclaimer</span></h2>
+  </div>
+  <div class="disclaimer">
+    <p><strong>⚠️ <span class="tr-only">ÖNEMLİ UYARI: Bu belge yatırım tavsiyesi değildir.</span><span class="en-only">IMPORTANT DISCLAIMER: This document does not constitute investment advice.</span></strong> <span class="tr-only">Yalnızca bilgilendirme ve eğitim amaçlıdır.</span><span class="en-only">It is prepared solely for informational and educational purposes.</span></p>
+    <br>
+    <p>• <strong><span class="tr-only">Tüm yatırımlar kayıp riski taşır.</span><span class="en-only">All investments carry a risk of loss.</span></strong> <span class="tr-only">Geçmiş performans gelecekteki sonuçların göstergesi değildir.</span><span class="en-only">Past performance is not indicative of future results.</span></p>
+    <p>• <strong><span class="tr-only">Gerçek zamanlı işlem kararlarınız için profesyonel bir finansal danışmana başvurun.</span><span class="en-only">Consult a professional financial advisor for execution and personalized strategies.</span></strong></p>
+    <p>• <span class="tr-only">Veriler gecikmiş olabilir (ücretsiz API'lerde 15–20 dakika). Opsiyon ticareti yüksek risk taşır.</span><span class="en-only">Data feeds may be delayed (typically 15-20 minutes in free APIs). Options trading carries significant risk.</span></p>
+    <p>• <span class="tr-only">Bu raporu hazırlayan kurum/yapay zeka, bu belgede yer alan bilgilerin kullanımından doğabilecek zarar veya kayıplardan sorumlu tutulamaz.</span><span class="en-only">Neither the author nor the AI system shall be held liable for any loss or damage arising from the use of this report.</span></p>
+    <br>
+    <p style="color:var(--txt-muted);font-size:.75rem">
+      <span class="tr-only">Hazırlayan: Financial Research & Options Analysis Group · Tarih: 16 Haziran 2026 · Borsa: NASDAQ · Ticker: META</span>
+      <span class="en-only">Prepared by: Financial Research & Options Analysis Group · Date: June 16, 2026 · Exchange: NASDAQ · Ticker: META</span>
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div style="font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:600;color:var(--green);margin-bottom:8px">
+    META <span class="tr-only">· Meta Platforms, Inc. Gelişmiş Analiz Raporu</span><span class="en-only">· Meta Platforms, Inc. Advanced Analysis Report</span>
+  </div>
+  <div>
+    <span class="tr-only">Haziran 2026 · NASDAQ · Financial Research & Options Analysis Group tarafından hazırlanmıştır</span>
+    <span class="en-only">June 2026 · NASDAQ · Prepared by Financial Research & Options Analysis Group</span>
+  </div>
+  <div style="margin-top:8px;font-size:.7rem">
+    <span class="tr-only">Bu sayfa yatırım tavsiyesi içermez. Tüm veriler bilgilendirme amaçlıdır.</span>
+    <span class="en-only">This page does not contain investment advice. All data is for informational purposes.</span>
+  </div>
+</footer>
+
+<script>
+/* ─── CHART DEFAULTS ─────────────────────────────────────── */
+Chart.defaults.color = '#6A83A8';
+Chart.defaults.font.family = "'Inter', sans-serif";
+Chart.defaults.plugins.legend.labels.boxWidth = 10;
+
+const G = '#00C805', G2='#009904', A='#F59E0B', R='#EF4444', B='#3B82F6';
+const gridLine = { color:'rgba(255,255,255,0.05)' };
+
+let currentLang = 'tr';
+const charts = {};
+
+/* ─── DYNAMIC CHARTS GENERATOR ──────────────────────────── */
+function updateCharts(lang) {
+  const isTr = lang === 'tr';
+
+  // 1. PERFORMANCE CHART
+  if (charts.perf) charts.perf.destroy();
+  charts.perf = new Chart(document.getElementById('perfChart'), {
+    type:'bar',
+    data:{
+      labels: isTr ? ['YTD 2026','Son 30G','Son 3G','52 Hafta','S&P 500','Nasdaq'] : ['YTD 2026','Last 30D','Last 3D','52-Week','S&P 500','Nasdaq'],
+      datasets:[{
+        label: isTr ? 'Getiri (%)' : 'Return (%)',
+        data:[14.50, 8.20, 4.68, 11.20, 10.40, 14.80],
+        backgroundColor:[G+'cc',G+'cc',G+'cc',G+'cc',B+'99',A+'99'],
+        borderRadius:6,
+        borderSkipped:false,
+      }]
+    },
+    options:{
+      responsive:true,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw}%`}}},
+      scales:{
+        x:{grid:gridLine,ticks:{font:{size:11}}},
+        y:{grid:gridLine,ticks:{callback:v=>v+'%',font:{size:11}},min:0,max:25}
+      }
+    }
+  });
+
+  // 2. REVENUE CHART
+  if (charts.revenue) charts.revenue.destroy();
+  charts.revenue = new Chart(document.getElementById('revenueChart'), {
+    type:'bar',
+    data:{
+      labels:['2024','2025','TTM','Q1 2026'],
+      datasets:[
+        {label: isTr ? 'Gelir ($B)' : 'Revenue ($B)',data:[160.00,200.97,214.96,56.31],backgroundColor:G+'bb',borderRadius:6,borderSkipped:false},
+        {label: isTr ? 'Net Gelir ($B)' : 'Net Income ($B)',data:[52.00,60.46,70.58,26.77],backgroundColor:B+'88',borderRadius:6,borderSkipped:false},
+      ]
+    },
+    options:{
+      responsive:true,
+      plugins:{legend:{labels:{color:'#8B9FC4'}}},
+      scales:{
+        x:{grid:gridLine},
+        y:{grid:gridLine,ticks:{callback:v=>'$'+v+'B'}}
+      }
+    }
+  });
+
+  // 3. INCOME CHART
+  if (charts.income) charts.income.destroy();
+  charts.income = new Chart(document.getElementById('incomeChart'), {
+    type:'line',
+    data:{
+      labels: isTr ? ['2023','2024','2025','Q1 2026 (Çeyr.)'] : ['2023','2024','2025','Q1 2026 (Quarter)'],
+      datasets:[{
+        label: isTr ? 'Net Gelir ($B)' : 'Net Income ($B)',
+        data:[39.10,52.00,60.46,26.77],
+        borderColor:G,
+        backgroundColor:G+'22',
+        fill:true,
+        tension:.4,
+        pointBackgroundColor:G,
+        pointRadius:5,
+      }]
+    },
+    options:{
+      responsive:true,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{grid:gridLine},
+        y:{grid:gridLine,ticks:{callback:v=>'$'+v+'B'}}
+      }
+    }
+  });
+
+  // 4. VOLUME CHART
+  if (charts.volume) charts.volume.destroy();
+  charts.volume = new Chart(document.getElementById('volumeChart'), {
+    type:'bar',
+    data:{
+      labels: isTr ? ['10 Haz','11 Haz','12 Haz (Lansman)','15 Haz (AI Mode)'] : ['Jun 10','Jun 11','Jun 12 (Prep)','Jun 15 (AI Mode)'],
+      datasets:[{
+        label: isTr ? 'Hacim (M)' : 'Volume (M)',
+        data:[18.5, 19.2, 24.1, 38.6],
+        backgroundColor:[G+'88',G+'88',G+'88',G+'ee'],
+        borderRadius:5,
+        borderSkipped:false,
+      }]
+    },
+    options:{
+      responsive:true,
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:c=>` ${c.raw}${isTr ? 'M hisse' : 'M shares'}`}}
+      },
+      scales:{
+        x:{grid:gridLine,ticks:{font:{size:10}}},
+        y:{grid:gridLine,ticks:{callback:v=>v+'M'}}
+      }
+    }
+  });
+
+  // 5. RATINGS CHART
+  if (charts.ratings) charts.ratings.destroy();
+  charts.ratings = new Chart(document.getElementById('ratingsChart'), {
+    type:'doughnut',
+    data:{
+      labels: isTr ? ['Al (Buy) — 25','Tut (Hold) — 6','Sat (Sell) — 1'] : ['Buy — 25','Hold — 6','Sell — 1'],
+      datasets:[{
+        data:[25,6,1],
+        backgroundColor:[G+'cc', A+'99', R+'aa'],
+        borderColor:['#091525'],
+        borderWidth:3,
+        hoverOffset:6,
+      }]
+    },
+    options:{
+      responsive:true,
+      cutout:'68%',
+      plugins:{
+        legend:{position:'bottom',labels:{color:'#8B9FC4',padding:12}},
+        tooltip:{callbacks:{label:c=>`${c.label}: ${c.raw} ${isTr ? 'analist' : 'analysts'}`}}
+      }
+    }
+  });
+
+  // 6. RISK CHART
+  if (charts.risk) charts.risk.destroy();
+  charts.risk = new Chart(document.getElementById('riskChart'), {
+    type:'bar',
+    data:{
+      labels: isTr ? ['Sermaye Harcaması','Düzenleyici Risk','Teknik Direnç','Tatil Sıkışması'] : ['Capex Spend','Trump AI EO','EMA Overhead','Gamma Settlement'],
+      datasets:[{
+        label: isTr ? 'Risk Ağırlığı' : 'Risk Weight',
+        data:[90, 70, 75, 45],
+        backgroundColor:[R+'cc',A+'99',A+'88',B+'88'],
+        borderRadius:5,borderSkipped:false,
+      }]
+    },
+    options:{
+      indexAxis:'y',
+      responsive:true,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{grid:gridLine,max:100,ticks:{callback:v=>v}},
+        y:{grid:gridLine,ticks:{font:{size:11}}}
+      }
+    }
+  });
+
+  // 7. MACRO CHART
+  if (charts.macro) charts.macro.destroy();
+  charts.macro = new Chart(document.getElementById('macroChart'), {
+    type:'bar',
+    data:{
+      labels:['META','Nasdaq','S&P 500','Dow Jones'],
+      datasets:[{
+        label: isTr ? 'YTD Getiri (%)' : 'YTD Return (%)',
+        data:[14.50,14.80,10.40,6.20],
+        backgroundColor:[G+'cc',A+'88',B+'88','#8B9FC488'],
+        borderRadius:6,borderSkipped:false,
+      }]
+    },
+    options:{
+      responsive:true,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`+${c.raw}%`}}},
+      scales:{
+        x:{grid:gridLine},
+        y:{grid:gridLine,ticks:{callback:v=>'+'+v+'%'},min:0,max:25}
+      }
+    }
+  });
+}
+
+/* ─── SET LANGUAGE CONTROLLER ───────────────────────────── */
+window.setLanguage = function(lang) {
+  currentLang = lang;
+  if (lang === 'tr') {
+    document.body.classList.remove('lang-en');
+    document.body.classList.add('lang-tr');
+  } else {
+    document.body.classList.remove('lang-tr');
+    document.body.classList.add('lang-en');
+  }
+  updateCharts(lang);
+}
+
+/* ─── DOM CONTENT LOADED INITIALIZERS ───────────────────── */
+document.addEventListener("DOMContentLoaded", () => {
+  window.setLanguage('tr');
+
+  // Scroll Reveal Observer
+  const observer = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible')}});
+  },{threshold:0.08});
+  document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+  // Animasyonlu Fiyat Sayacı
+  const counterEl = document.getElementById('price-counter');
+  let start=500,end=593,dur=1200,startTime=null;
+  function animCounter(ts){
+    if(!startTime)startTime=ts;
+    const prog=Math.min((ts-startTime)/dur,1);
+    const ease=prog<.5?2*prog*prog:-1+(4-2*prog)*prog;
+    counterEl.textContent=Math.floor(ease*(end-start)+start);
+    if(prog<1)requestAnimationFrame(animCounter);
+    else counterEl.textContent=end;
+  }
+  requestAnimationFrame(animCounter);
+});
+</script>
+</body>
+</html>

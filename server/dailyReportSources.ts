@@ -161,7 +161,7 @@ function parseDateTokenFromFileName(fileName: string) {
     const [, day, month, year] = compactNumericMatch;
     const numericDay = Number(day);
     const numericMonth = Number(month);
-    if (
+  if (
       Number.isInteger(numericDay) &&
       Number.isInteger(numericMonth) &&
       numericDay >= 1 &&
@@ -170,6 +170,17 @@ function parseDateTokenFromFileName(fileName: string) {
       numericMonth <= 12
     ) {
       return `${year}-${month}-${day}`;
+    }
+  }
+
+  const dayMonthNameMatch = baseName.match(
+    /(?:^|[_-])(\d{1,2})[_-]?(january|jan|ocak|february|feb|subat|march|mar|mart|april|apr|nisan|may|mayis|june|jun|haziran|july|jul|temmuz|august|aug|agustos|september|sep|sept|eylul|october|oct|ekim|november|nov|kasim|december|dec|aralik)(?:[_-]?(\d{4}))?/i
+  );
+  if (dayMonthNameMatch) {
+    const [, dayToken, monthToken, year] = dayMonthNameMatch;
+    const month = MONTH_TOKENS.get(monthToken.toLowerCase());
+    if (month && year) {
+      return `${year}-${month}-${String(Number(dayToken)).padStart(2, "0")}`;
     }
   }
 
