@@ -115,4 +115,39 @@ Paragraf yapisi korunur ama Flow tarafinda sahte ticker uretilmemelidir.
     expect(source.html).toContain("10 Hisse Senedi Analiz Raporu");
     expect(source.executiveSummary.length).toBeGreaterThanOrEqual(2);
   });
+
+  it("prefers embedded html dates over generated file-name dates", () => {
+    const source = createFlowSourcePackageFromContent({
+      fileName: "daily-generated-29-haziran-2026.html",
+      sourceLabel: "flow/daily-generated-29-haziran-2026.html",
+      html: `
+<!doctype html>
+<html>
+  <head>
+    <title>Macro Note | $SPY</title>
+  </head>
+  <body>
+    <header>
+      <div class="meta">Published: 2026-06-17 · Flow internal note</div>
+    </header>
+    <main>
+      <div class="hero-p">
+        SPY ve QQQ icin piyasa notu. Uretim dosya tarihi sonradan degisse bile kartta gercek rapor tarihi korunmali.
+      </div>
+    </main>
+  </body>
+</html>
+      `,
+    });
+
+    expect(source.reportDate).toBe("2026-06-17");
+    expect(source.metadataItems).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          label: "Haber Tarihi",
+          value: "Published: 2026-06-17 · Flow internal note",
+        }),
+      ])
+    );
+  });
 });

@@ -15,10 +15,11 @@ import FlowLayout from "./FlowLayout";
 import FlowPostActions from "./FlowPostActions";
 import FlowReportViewer from "./FlowReportViewer";
 import {
+  formatFlowReportDate,
+  formatFlowTimestamp,
   getFlowReportArchiveDetailPath,
   getFlowReportDetailPath,
   getFlowReportTickers,
-  getFlowUploadedLabel,
 } from "../lib/flowReportHelpers";
 
 interface FlowReportDetailSurfaceProps {
@@ -131,8 +132,13 @@ export default function FlowReportDetailSurface({
                 <div className="flex flex-wrap items-center gap-2 text-sm">
                   <p className="font-semibold text-foreground">Flow</p>
                   <span className="text-muted-foreground">·</span>
+                  <p className="text-xs font-medium text-muted-foreground">
+                    {formatFlowReportDate(report.reportDate, locale)}
+                  </p>
+                  <span className="text-muted-foreground">·</span>
                   <p className="text-xs text-muted-foreground">
-                    {getFlowUploadedLabel(report, locale)}
+                    {copy(language, "Gunc.", "Upd.")}{" "}
+                    {formatFlowTimestamp(report.updatedAt, locale)}
                   </p>
                 </div>
 

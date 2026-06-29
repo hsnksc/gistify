@@ -242,6 +242,7 @@ function isExcludedFlowSourceFile(filePath: string) {
     normalizedPath.startsWith("flowskill/") ||
     normalizedPath.includes("/flowskill/") ||
     !/\.(md|html)$/i.test(filePath) ||
+    normalizedPath === "index.html" ||
     /^readme\.md$/i.test(baseName) ||
     /^_template\.md$/i.test(baseName) ||
     /^example\.md$/i.test(baseName) ||
@@ -519,6 +520,32 @@ function parseDateTokenFromText(value: string) {
   return `${year}-${month}-${String(Number(dayToken)).padStart(2, "0")}`;
 }
 
+function parseIsoDateTokenFromText(value: string) {
+  const normalized = cleanMarkdownText(value).trim();
+  const match = normalized.match(/(20\d{2})[-/.](\d{1,2})[-/.](\d{1,2})/);
+  if (!match) {
+    return "";
+  }
+
+  const [, yearToken, monthToken, dayToken] = match;
+  const year = Number(yearToken);
+  const month = Number(monthToken);
+  const day = Number(dayToken);
+  if (
+    !Number.isInteger(year) ||
+    !Number.isInteger(month) ||
+    !Number.isInteger(day) ||
+    month < 1 ||
+    month > 12 ||
+    day < 1 ||
+    day > 31
+  ) {
+    return "";
+  }
+
+  return `${String(year).padStart(4, "0")}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+}
+
 function parseMonthFirstDateTokenFromText(value: string) {
   const normalized = cleanMarkdownText(value)
     .toLowerCase()
@@ -539,6 +566,14 @@ function parseMonthFirstDateTokenFromText(value: string) {
   }
 
   return `${year}-${month}-${String(Number(dayToken)).padStart(2, "0")}`;
+}
+
+function parseAnyDateTokenFromText(value: string) {
+  return (
+    parseIsoDateTokenFromText(value) ||
+    parseDateTokenFromText(value) ||
+    parseMonthFirstDateTokenFromText(value)
+  );
 }
 
 function extractNarrativeParagraphs(markdown: string, limit = 4) {
@@ -674,6 +709,34 @@ function extractHtmlFigureFiles(html: string) {
   ).sort((left, right) => left.localeCompare(right));
 }
 
+function extractHtmlDateCandidates(html: string) {
+  const metaDateContent = Array.from(
+    html.matchAll(
+      /<meta[^>]+(?:property|name)=["'](?:article:published_time|article:modified_time|og:updated_time|date|publish-date|published-date)["'][^>]+content=["']([^"']+)["'][^>]*>/gi
+    )
+  ).map(match => cleanMarkdownText(match[1] || ""));
+
+  const timeDateContent = Array.from(
+    html.matchAll(/<time[^>]+datetime=["']([^"']+)["'][^>]*>/gi)
+  ).map(match => cleanMarkdownText(match[1] || ""));
+
+  return dedupeFlowTexts(
+    [
+      ...metaDateContent,
+      ...timeDateContent,
+      extractHtmlTextByClass(html, "price-date"),
+      extractHtmlTextByClass(html, "hero-date"),
+      extractHtmlTextByClass(html, "date"),
+      extractHtmlTextByClass(html, "meta"),
+      extractHtmlTextByClass(html, "subtitle"),
+      stripHtmlTags(html.match(/<header[^>]*>([\s\S]*?)<\/header>/i)?.[1] || ""),
+      stripHtmlTags(html.match(/<footer[^>]*>([\s\S]*?)<\/footer>/i)?.[1] || ""),
+    ].filter(Boolean),
+    10,
+    6
+  );
+}
+
 function extractHtmlMetadata(html: string) {
   const title = extractHtmlTitle(html);
   const heroTitle =
@@ -716,7 +779,9 @@ function extractHtmlMetadata(html: string) {
   const footerText = stripHtmlTags(
     html.match(/<footer[^>]*>([\s\S]*?)<\/footer>/i)?.[1] || ""
   );
+  const dateCandidates = extractHtmlDateCandidates(html);
   const priceDate = extractHtmlTextByClass(html, "price-date");
+  const primaryDateLabel = dateCandidates[0] || priceDate;
   const tickerToken = inferFlowTickerFromText(
     extractHtmlTextByClass(html, "hero-ticker").replace(/\$/g, ""),
     title,
@@ -724,18 +789,14 @@ function extractHtmlMetadata(html: string) {
     heroDescription,
     verdict,
     footerText,
-    priceDate,
+    primaryDateLabel,
     ...sectionTitles
   );
   const reportDate =
-    parseDateTokenFromText(priceDate) ||
-    parseMonthFirstDateTokenFromText(priceDate) ||
-    parseDateTokenFromText(title) ||
-    parseMonthFirstDateTokenFromText(title) ||
-    parseDateTokenFromText(h1Text) ||
-    parseMonthFirstDateTokenFromText(h1Text) ||
-    parseDateTokenFromText(footerText) ||
-    parseMonthFirstDateTokenFromText(footerText);
+    dateCandidates.map(parseAnyDateTokenFromText).find(Boolean) ||
+    parseAnyDateTokenFromText(title) ||
+    parseAnyDateTokenFromText(h1Text) ||
+    parseAnyDateTokenFromText(footerText);
   const metadataItems: { label: string; value: string }[] = [];
 
   if (verdict) {
@@ -775,7 +836,7 @@ function extractHtmlMetadata(html: string) {
       18
     ),
     reportDate,
-    reportDateLabel: cleanMarkdownText(priceDate) || reportDate,
+    reportDateLabel: cleanMarkdownText(primaryDateLabel) || reportDate,
     tickerUniverse: tickerToken ? [tickerToken] : [],
     figureFiles: extractHtmlFigureFiles(html),
   };

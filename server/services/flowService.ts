@@ -52,6 +52,9 @@ export function buildViewerDailyReportCatalog(
   const sourcePackages = listDailyReportSourcePackages();
   const sourcedReports = sourcePackages.map(source => {
     const existing = publishedBySource.get(source.folderName);
+    const preferSourceUpdatedAt = isFlowSourceLabel(
+      source.sourceLabel || source.folderName
+    );
     const sourceRecord = buildDailyReportRecordFromSource(
       source,
       existing?.authorEmail || getReportAdminEmail(),
@@ -76,8 +79,11 @@ export function buildViewerDailyReportCatalog(
       status: "published" as const,
       authorEmail: existing.authorEmail,
       createdAt: existing.createdAt,
-      updatedAt:
-        existing.updatedAt > source.updatedAt ? existing.updatedAt : source.updatedAt,
+      updatedAt: preferSourceUpdatedAt
+        ? source.updatedAt
+        : existing.updatedAt > source.updatedAt
+          ? existing.updatedAt
+          : source.updatedAt,
       publishedAt: existing.publishedAt || source.updatedAt,
       content: {
         ...sourceRecord.content,
