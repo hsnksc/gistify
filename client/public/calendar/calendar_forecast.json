@@ -69,7 +69,7 @@
       "importance": "low",
       "previous": "3.0%",
       "forecast": "",
-      "actual": "",
+      "actual": "3.0%",
       "currency": "EUR",
       "unit": "%",
       "analysis": "Makro veri akisi; piyasa volatilitesine katki."
@@ -83,7 +83,7 @@
       "importance": "low",
       "previous": "0.1%",
       "forecast": "",
-      "actual": "",
+      "actual": "0.1%",
       "currency": "EUR",
       "unit": "%",
       "analysis": "Makro veri akisi; piyasa volatilitesine katki."
@@ -97,7 +97,7 @@
       "importance": "high",
       "previous": "3.2%",
       "forecast": "3.2%",
-      "actual": "",
+      "actual": "3.2%",
       "currency": "EUR",
       "unit": "%",
       "analysis": "Span CPI 3.2% forecast = previous, yani surpriz beklenmiyor. Ancak Eurozone HICP icin oncu gosterge. Energy shock sonrasi upside risk var. 3.4%+ print EUR/USD'yi 1.1350'ye itebilir; 3.0%- print EUR/USD relief rally verebilir."
@@ -251,7 +251,7 @@
       "importance": "low",
       "previous": "65.94K",
       "forecast": "63.00K",
-      "actual": "",
+      "actual": "56.2K",
       "currency": "GBP",
       "unit": "K",
       "analysis": "UK housing market & household debt health."
@@ -293,7 +293,7 @@
       "importance": "low",
       "previous": "93.5",
       "forecast": "94.3",
-      "actual": "",
+      "actual": "95.0",
       "currency": "EUR",
       "unit": "",
       "analysis": "Makro veri akisi; piyasa volatilitesine katki."
@@ -321,7 +321,7 @@
       "importance": "low",
       "previous": "-17.7",
       "forecast": "-17.7",
-      "actual": "",
+      "actual": "-17.7",
       "currency": "EUR",
       "unit": "",
       "analysis": "Eurozone tuketici guveni; recession risk barometresi."
@@ -531,7 +531,7 @@
       "importance": "low",
       "previous": "0.4",
       "forecast": "",
-      "actual": "",
+      "actual": "0.0",
       "currency": "USD",
       "unit": "",
       "analysis": "Texas manufacturing sentiment; oil & gas sector health."
@@ -645,7 +645,7 @@
       "rationale": "Geopolitik risk premium ve seasonal weakness. 2x+ getiri."
     }
   ],
-  "vixOutlook": "VIX 18.41 (Jun 26 close, -0.48 / -2.54%). CNN Fear & Greed Index 25 (Fear). SPY 728.99 (-0.72%), QQQ 706.52 (-1.38%), IWM 299.83 (0.31%). DXY 101.37. Market sentiment is fearful, VIX consolidating below 20, equities sold off on Friday.",
-  "fearGreedOutlook": "CNN Fear & Greed Index: 25/100 — Fear. Market sentiment shifted from Neutral to Fear after Friday's sell-off (SPY -0.72%, QQQ -1.38%). Safe-haven USD demand (DXY 101.37) and rising geopolitical tensions (Hormuz) drove risk-off. 0DTE/weekly PUT strategies on SPY/QQQ and VIX CALLs benefit from elevated fear. Mean reversion watch: if F&G drops below 20 (Extreme Fear), aggressive dip-buying opportunity.",
-  "marketNarrative": "Central bank divergence + risk-off Friday. ECB hawkish hike (Jun 11, deposit 2.25%), Fed hold 3.50-3.75%. CNN Fear & Greed Index at 25 (Fear) — market sentiment deteriorated. VIX 18.41 (-2.54% Fri) still below 20 but rising fear. SPY 728.99 (-0.72%), QQQ 706.52 (-1.38%), IWM 299.83 (+0.31%) small-cap resilience. DXY 101.37 firm. 0DTE/weekly option stratejileri için volatilite premium cazip. Fear spike 25 seviyesinde — 20 altı dip-buying, 35+ greed short fırsatı."
+  "vixOutlook": "VIX 17.78 (Jun 29 close, -0.63 / -3.42%). CNN Fear & Greed 26 (Fear). SPY 741.00 (+1.65%), QQQ 724.58 (+2.56%), IWM veri alınamadı, DXY 101.15 (-0.21%). Market sentiment: Fear zone, VIX below 20, equities rallied after Friday sell-off. [Kaynak: CNN, Yahoo Finance, Cboe, MarketWatch | 2026-06-29T21:02:16.654411+00:00]",
+  "fearGreedOutlook": "CNN Fear & Greed Index: 26/100 — Fear. Monday rally: SPY +1.65%, QQQ +2.56%, VIX -3.42%. Fear persists but risk-on bounce. [Kaynak: CNN Fear & Greed, Yahoo Finance | 2026-06-29T21:02:16.654411+00:00]",
+  "marketNarrative": "Monday risk-on rebound after Friday sell-off. CNN Fear & Greed Index at 26 (Fear). VIX 17.78 (-3.42%), SPY 741.00 (+1.65%), QQQ 724.58 (+2.56%), DXY 101.15 (-0.21%). IWM verisi canlı alınamadı. 0DTE/weekly option stratejileri için volatilite premium sönüyor. [Kaynak: CNN, Yahoo Finance, Cboe, MarketWatch | 2026-06-29T21:02:16.654411+00:00]"
 }
