@@ -125,13 +125,22 @@ async function translateRuntimeHtmlTexts(texts: string[]) {
 
       const resolvedTranslations = payload.translations || {};
       for (const sourceText of batch) {
-        const translated = resolvedTranslations[sourceText] || sourceText;
-        runtimeHtmlTranslationCache.set(sourceText, translated);
-        translations[sourceText] = translated;
+        const translated = resolvedTranslations[sourceText];
+        // Only cache if translation is different from source (real translation)
+        if (translated && translated !== sourceText) {
+          runtimeHtmlTranslationCache.set(sourceText, translated);
+          translations[sourceText] = translated;
+        } else if (!translated) {
+          // API returned empty - don't cache, allow retry
+          translations[sourceText] = sourceText;
+        } else {
+          // Same as source - don't cache, might be fallback
+          translations[sourceText] = sourceText;
+        }
       }
     } catch {
+      // Don't cache on error - allow retry next time
       for (const sourceText of batch) {
-        runtimeHtmlTranslationCache.set(sourceText, sourceText);
         translations[sourceText] = sourceText;
       }
     }
@@ -770,6 +779,19 @@ export default function HtmlReportRenderer({
             language,
             "Kaynak HTML icerigi gosterilemedi.",
             "The source HTML content could not be displayed."
+          )}
+      </div>
+    );
+  }
+
+  if (!prepared) {
+    return (
+      <div className="rounded-xl border border-dashed border-border bg-background/40 p-6 text-sm leading-7 text-muted-foreground">
+        {emptyMessage ||
+          copy(
+            language,
+            "HTML rapor icerigi gosterilemedi.",
+            "The HTML report content could not be displayed."
           )}
       </div>
     );

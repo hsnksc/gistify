@@ -158,7 +158,7 @@ export async function translateTurkishTextsToEnglish(texts: string[]) {
 
   const apiKey = getOpenAiTranslationApiKey();
   if (!apiKey) {
-    return translations;
+    throw new Error("OPENAI_API_KEY not configured. Translation unavailable.");
   }
 
   const keyedTexts = uncachedTexts.map((text, index) => ({
@@ -176,6 +176,7 @@ export async function translateTurkishTextsToEnglish(texts: string[]) {
       model: getOpenAiTranslationModel(),
       input: [
         {
+          type: "message",
           role: "user",
           content: [
             {

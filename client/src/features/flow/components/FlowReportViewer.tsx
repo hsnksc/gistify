@@ -13,7 +13,7 @@ export default function FlowReportViewer({
   language,
   report,
 }: FlowReportViewerProps) {
-  const content = normalizeFlowContent(report.content);
+  const content = normalizeFlowContent(report.content || {});
   const viewer = buildFlowViewerData(report, language);
 
   if (content.contentFormat === "html") {

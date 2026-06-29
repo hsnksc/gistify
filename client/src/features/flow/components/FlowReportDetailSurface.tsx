@@ -6,6 +6,10 @@ import EmptyState from "@/components/ui/empty-state";
 import LoadingState from "@/components/ui/loading-state";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { copy, type AppLanguage } from "@/lib/i18n";
+import {
+  useFlowTitleTranslation,
+  useFlowSummaryTranslation,
+} from "../hooks/useFlowTranslation";
 import FlowCommunityPanel from "./FlowCommunityPanel";
 import FlowLayout from "./FlowLayout";
 import FlowPostActions from "./FlowPostActions";
@@ -46,12 +50,21 @@ export default function FlowReportDetailSurface({
   const tickers = report ? getFlowReportTickers(report) : [];
   const backHref = basePath === "/reports" ? "/reports" : "/flow";
 
+  const translatedTitle = useFlowTitleTranslation(
+    report?.title || "",
+    language
+  );
+  const translatedHeadline = useFlowSummaryTranslation(
+    report?.content.headline,
+    language
+  );
+
   usePageMeta({
     description:
-      report?.content.headline ||
+      translatedHeadline ||
       copy(language, "Flow post detayi.", "Flow post detail."),
-    title: report?.title
-      ? `${report.title} | Gistify`
+    title: translatedTitle
+      ? `${translatedTitle} | Gistify`
       : copy(language, "Flow Post | Gistify", "Flow Post | Gistify"),
   });
 
@@ -124,7 +137,7 @@ export default function FlowReportDetailSurface({
                 </div>
 
                 <h1 className="mt-3 text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
-                  {report.title}
+                  {translatedTitle}
                 </h1>
 
                 {tickers.length ? (
@@ -145,7 +158,7 @@ export default function FlowReportDetailSurface({
                     language={language}
                     reportId={report.id}
                     sharePath={detailPath}
-                    title={report.title}
+                    title={translatedTitle}
                   />
                 </div>
               </div>
