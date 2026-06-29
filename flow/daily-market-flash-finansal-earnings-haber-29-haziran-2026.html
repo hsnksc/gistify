@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Market Flash Derin Analiz — Finansal · Earnings · Haber | $OUST $IRDM $FCEL $VSAT $CBRS $BLD $SNEX $VC $CPRT $MLM $AXON $GLW $CHTR $CRMT $AVAV $CNXC $QMCO</title>
+<style>
+/* GISTIFY FLOW — Unified Dark Theme */
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:720px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.hero-date{display:inline-flex;align-items:center;gap:5px;color:var(--gf-muted)}
+
+/* META PILLS */
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+
+/* SECTIONS */
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s;display:flex;align-items:center;justify-content:space-between}
+.section-head-inner:hover{background:var(--gf-card)}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent);transition:transform .2s}
+.section-head.collapsed .icon{transform:rotate(-90deg)}
+.section-body{padding:18px;display:none}
+.section-head:not(.collapsed) .section-body{display:block}
+
+/* GRID & CARDS */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px;transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-1px);border-color:rgba(56,189,248,.25)}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+
+/* TABS */
+.tabs{display:flex;gap:2px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:14px}
+.tab{flex:1;padding:8px 10px;text-align:center;font-size:0.82rem;font-weight:600;border-radius:6px;cursor:pointer;user-select:none;transition:background .15s,color .15s;border:none;color:var(--gf-muted);background:transparent}
+.tab.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.tab:hover:not(.active){color:var(--gf-text)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.text-right{text-align:right}
+.text-center{text-align:center}
+
+/* PROGRESS */
+.progress-bar{background:var(--gf-card);border-radius:4px;height:18px;overflow:hidden;margin:4px 0}
+.progress-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:0.68rem;font-weight:700;color:#fff}
+.fill-bull{background:linear-gradient(90deg,#16a34a,#4ade80)}
+.fill-base{background:linear-gradient(90deg,#ca8a04,#fbbf24)}
+.fill-bear{background:linear-gradient(90deg,#dc2626,#f87171)}
+
+/* INSIGHT BOX */
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+
+/* TAGS */
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--gf-border)}
+.timeline-item{position:relative;margin-bottom:14px}
+.timeline-item::before{content:'';position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--gf-card);border:2px solid var(--gf-border)}
+.timeline-item.bull::before{border-color:var(--gf-success);background:var(--gf-success)}
+.timeline-item.bear::before{border-color:var(--gf-danger);background:var(--gf-danger)}
+.timeline-item.warn::before{border-color:var(--gf-warning);background:var(--gf-warning)}
+.timeline-date{font-size:0.78rem;color:var(--gf-muted);font-weight:600}
+.timeline-body{font-size:0.85rem;margin-top:3px;color:var(--gf-text)}
+
+/* HEATMAP */
+.heatmap{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;font-size:0.72rem;margin:10px 0}
+.heatmap-cell{padding:6px 2px;text-align:center;border-radius:4px;min-height:36px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.heatmap-cell .day{font-weight:700;font-size:0.78rem}
+.heatmap-cell .val{font-size:0.68rem;opacity:.85}
+.h-strong{background:rgba(74,222,128,.35);color:#aff5b4}
+.h-weak{background:rgba(248,113,113,.35);color:#ffdcd7}
+.h-neu{background:rgba(251,191,36,.2);color:#ffdfb6}
+.h-flat{background:rgba(148,163,184,.15);color:var(--gf-muted)}
+.h-good{background:rgba(74,222,128,.2);color:#aff5b4}
+
+/* FOOTER */
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+.tabs{flex-wrap:wrap}
+.tab{flex:none;min-width:80px}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+}
+
+/* LANG SWITCH */
+.lang-switch{display:inline-flex;gap:4px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:16px}
+.lang-btn{padding:6px 14px;border-radius:8px;font-size:0.8rem;font-weight:600;border:none;cursor:pointer;background:transparent;color:var(--gf-muted);transition:all .15s}
+.lang-btn.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.lang-btn:hover:not(.active){color:var(--gf-text)}
+[data-lang]{display:none}
+[data-lang].visible{display:block}
+[data-lang-inline]{display:none}
+[data-lang-inline].visible{display:inline}
+</style>
+<script>
+function toggle(id){var el=document.getElementById(id);if(!el)return;el.classList.toggle('collapsed');}
+function setTab(btn,tabId){var parent=btn.closest('.tabs');if(parent){parent.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});parent.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});}btn.classList.add('active');var tc=document.getElementById(tabId);if(tc)tc.classList.add('active');}
+</script>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HERO -->
+<div class="hero" id="hero">
+  <h1 class="hero-h">Market Flash Derin Analiz — Finansal · Earnings · Haber</h1>
+  <p class="hero-desc">29/06/2026 Market Flash raporundaki 17 hissenin tamamı için doğrulanmış finansal snapshot, en güncel çeyrek earnings (actual vs. tahmin), tarihli/kaynaklı haber akışı ve yön-bağımsız opsiyon/risk değerlendirmesi. Önceki teknik-odaklı analizin atladığı finansal & earnings & haber katmanını kapatır.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info">📅 29 Haziran 2026 · Kapanış sonrası</span>
+    <span class="meta-pill neu">📊 17 Hisse</span>
+    <span class="meta-pill bull">AVAV Record Beat</span>
+    <span class="meta-pill bear">BLD Delist · CRMT Distressed</span>
+  </div>
+  <div class="hero-meta">
+    <span class="hero-ticker">$OUST</span><span class="hero-ticker">$IRDM</span><span class="hero-ticker">$FCEL</span><span class="hero-ticker">$VSAT</span><span class="hero-ticker">$CBRS</span><span class="hero-ticker">$BLD</span><span class="hero-ticker">$SNEX</span><span class="hero-ticker">$VC</span><span class="hero-ticker">$CPRT</span><span class="hero-ticker">$MLM</span><span class="hero-ticker">$AXON</span><span class="hero-ticker">$GLW</span><span class="hero-ticker">$CHTR</span><span class="hero-ticker">$CRMT</span><span class="hero-ticker">$AVAV</span><span class="hero-ticker">$CNXC</span><span class="hero-ticker">$QMCO</span>
+  </div>
+</div>
+
+<!-- BÖLÜM 1: MAKRO BAĞLAM -->
+<section>
+  <div class="section-head" id="sec-makro">
+    <div class="section-head-inner" onclick="toggle('sec-makro')">
+      <h2 class="section-title">🌐 1. Makro Bağlam (29/06 Kapanış)</h2>
+      <div class="icon">▾</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="grid">
+      <div class="card"><div class="card-label">SPY</div><div class="card-value up">740.86 · +1.58%</div><div class="card-note">Risk-on; geniş market güçlü</div></div>
+      <div class="card"><div class="card-label">QQQ</div><div class="card-value up">723.96 · +2.60%</div><div class="card-note">Tech liderliği (yarı iletken + optik)</div></div>
+      <div class="card"><div class="card-label">IWM</div><div class="card-value neu">298.98 · +0.43%</div><div class="card-note">Small-cap geride; Russell gürültüsü</div></div>
+      <div class="card"><div class="card-label">VIX</div><div class="card-value up">17.71 · -3.80%</div><div class="card-note">Düşük korku → düşük endeks IV</div></div>
+    </div>
+    <div class="insight-box">
+      <strong>Rejim okuması:</strong> Risk-on, düşük VIX, tech/AI liderliği. Endeks-seviyesi IV düşük; ancak earnings açıklayan ve M&A'e konu olan <strong>bireysel hisselerde IV çok yüksek</strong> → bu isimlerde ana risk <strong>IV-crush</strong>.
+    </div>
+    <div class="insight-box warn">
+      <strong>Russell uyarısı:</strong> 29 Haziran = <strong>Russell endeks reconstitution effective day</strong>. SNEX, VC, MLM gibi isimlerdeki sert hareketlerin önemli kısmı temel değil <strong>endeks akışı</strong> kaynaklı — yani mean-reversion zemini.
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 2: MASTER FİNANSAL TABLO -->
+<section>
+  <div class="section-head" id="sec-tablo">
+    <div class="section-head-inner" onclick="toggle('sec-tablo')">
+      <h2 class="section-title">📋 2. Master Finansal Tablo (17 Hisse)</h2>
+      <div class="icon">▾</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <p style="color:var(--gf-muted);font-size:0.82rem;margin-bottom:8px">Kaynak: Yahoo Finance <code>get_stock_info</code> (29/06). P/E ttm = trailing. AH% manuel hesap (Yahoo <code>postMarketChangePercent</code> alanı bozuk).</p>
+    <div style="overflow-x:auto">
+    <table>
+      <thead>
+        <tr><th>Ticker</th><th class="text-right">Fiyat</th><th class="text-right">Piy. Değeri</th><th class="text-right">P/E ttm</th><th class="text-right">Gelir TTM</th><th class="text-right">Büyüme</th><th class="text-right">Net Marj</th><th class="text-right">EPS</th><th class="text-right">Borç/Özk.</th><th class="text-right">Hedef</th><th>Öneri</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>OUST</strong></td><td class="text-right">$54.07</td><td class="text-right">3.44B</td><td class="text-right">—</td><td class="text-right">185.3M</td><td class="text-right up">+48.9%</td><td class="text-right down">neg</td><td class="text-right">-0.93</td><td class="text-right">düşük</td><td class="text-right">$46.86</td><td><span class="tag tag-green">strong_buy</span></td></tr>
+        <tr><td><strong>IRDM</strong></td><td class="text-right">$54.59</td><td class="text-right">5.77B</td><td class="text-right">55</td><td class="text-right">875.8M</td><td class="text-right neu">tek hane</td><td class="text-right up">12.1%</td><td class="text-right">~0.99</td><td class="text-right down">1.79B</td><td class="text-right">$37.88</td><td><span class="tag tag-blue">M&A pinned</span></td></tr>
+        <tr><td><strong>FCEL</strong></td><td class="text-right">$29.80</td><td class="text-right">2.01B</td><td class="text-right">—</td><td class="text-right">~390M</td><td class="text-right neu">değişken</td><td class="text-right down">-99% op</td><td class="text-right down">-6.20</td><td class="text-right down">yüksek</td><td class="text-right">~$22</td><td><span class="tag tag-orange">hold</span></td></tr>
+        <tr><td><strong>VSAT</strong></td><td class="text-right">$76.69</td><td class="text-right">10.47B</td><td class="text-right">—</td><td class="text-right">4.64B</td><td class="text-right neu">tek hane</td><td class="text-right neu">ince</td><td class="text-right">düşük</td><td class="text-right down">147</td><td class="text-right">$94.56</td><td><span class="tag tag-green">buy-lean</span></td></tr>
+        <tr><td><strong>CBRS</strong></td><td class="text-right">$216.16</td><td class="text-right">48.17B</td><td class="text-right down">480</td><td class="text-right">603.9M</td><td class="text-right up">+94.4%</td><td class="text-right neu">~breakeven</td><td class="text-right">düşük</td><td class="text-right up">3.3B nakit</td><td class="text-right">$299.30</td><td><span class="tag tag-green">strong_buy</span></td></tr>
+        <tr><td><strong>BLD</strong></td><td class="text-right">$359.76</td><td class="text-right">~10.8B</td><td class="text-right">20</td><td class="text-right">5.62B</td><td class="text-right neu">düşük</td><td class="text-right up">sağlıklı</td><td class="text-right">17.79</td><td class="text-right">orta</td><td class="text-right">$505 deal</td><td><span class="tag tag-red">⛔ delist 1 Tem</span></td></tr>
+        <tr><td><strong>SNEX</strong></td><td class="text-right">$115.85</td><td class="text-right">~5.6B</td><td class="text-right">~21</td><td class="text-right">150.5B*</td><td class="text-right neu">—</td><td class="text-right neu">ince</td><td class="text-right">5.59</td><td class="text-right">orta</td><td class="text-right">yukarı</td><td><span class="tag tag-green">strong_buy</span></td></tr>
+        <tr><td><strong>VC</strong></td><td class="text-right">$94.94</td><td class="text-right">~2.6B</td><td class="text-right">16</td><td class="text-right">3.79B</td><td class="text-right neu">düşük</td><td class="text-right up">orta</td><td class="text-right">5.98</td><td class="text-right">orta</td><td class="text-right">$133.75</td><td><span class="tag tag-green">buy-lean</span></td></tr>
+        <tr><td><strong>CPRT</strong></td><td class="text-right">$28.10</td><td class="text-right">~27B</td><td class="text-right">17</td><td class="text-right">4.64B</td><td class="text-right up">sağlıklı</td><td class="text-right up">33.5%</td><td class="text-right">~1.65</td><td class="text-right up">borçsuz</td><td class="text-right">yukarı</td><td><span class="tag tag-green">buy</span></td></tr>
+        <tr><td><strong>MLM</strong></td><td class="text-right">$581.23</td><td class="text-right">34.9B</td><td class="text-right">36</td><td class="text-right">6.35B</td><td class="text-right neu">düşük</td><td class="text-right up">yüksek</td><td class="text-right">15.96</td><td class="text-right">orta</td><td class="text-right">$683.09</td><td><span class="tag tag-green">buy</span></td></tr>
+        <tr><td><strong>AXON</strong></td><td class="text-right">$510.60</td><td class="text-right">41.16B</td><td class="text-right down">208</td><td class="text-right">2.98B</td><td class="text-right up">+33.7%</td><td class="text-right neu">düşük</td><td class="text-right">~2.45</td><td class="text-right up">düşük</td><td class="text-right">$662.04</td><td><span class="tag tag-green">strong_buy</span></td></tr>
+        <tr><td><strong>GLW</strong></td><td class="text-right">$255.69</td><td class="text-right">220B</td><td class="text-right down">123</td><td class="text-right">16.32B</td><td class="text-right neu">orta</td><td class="text-right up">orta</td><td class="text-right">~2.08</td><td class="text-right">orta</td><td class="text-right down">$206.07</td><td><span class="tag tag-orange">fiyat>hedef</span></td></tr>
+        <tr><td><strong>CHTR</strong></td><td class="text-right">$146.17</td><td class="text-right">~20B</td><td class="text-right">3.95</td><td class="text-right">54.64B</td><td class="text-right down">düz/neg</td><td class="text-right neu">orta</td><td class="text-right">37.00</td><td class="text-right down">460</td><td class="text-right">yukarı</td><td><span class="tag tag-orange">hold</span></td></tr>
+        <tr><td><strong>CRMT</strong></td><td class="text-right">$2.56</td><td class="text-right down">21.3M</td><td class="text-right">—</td><td class="text-right">1.34B</td><td class="text-right down">neg</td><td class="text-right down">neg</td><td class="text-right down">-11.28</td><td class="text-right down">distressed</td><td class="text-right">—</td><td><span class="tag tag-red">⛔ distressed</span></td></tr>
+        <tr><td><strong>AVAV</strong></td><td class="text-right">$139.00*</td><td class="text-right">~6.4B</td><td class="text-right">—</td><td class="text-right">1.61B</td><td class="text-right up">+143%</td><td class="text-right down">neg</td><td class="text-right">-4.35</td><td class="text-right">orta</td><td class="text-right">$285.99</td><td><span class="tag tag-green">buy</span></td></tr>
+        <tr><td><strong>CNXC</strong></td><td class="text-right">$25.23</td><td class="text-right">~1.6B</td><td class="text-right">—</td><td class="text-right">9.95B</td><td class="text-right neu">düşük</td><td class="text-right down">-1.33B</td><td class="text-right down">neg</td><td class="text-right down">204</td><td class="text-right">$41.25</td><td><span class="tag tag-orange">turnaround</span></td></tr>
+        <tr><td><strong>QMCO</strong></td><td class="text-right">$11.85</td><td class="text-right">466.6M</td><td class="text-right">—</td><td class="text-right">262.8M</td><td class="text-right neu">toparlanma</td><td class="text-right down">neg</td><td class="text-right down">neg</td><td class="text-right down">yüksek</td><td class="text-right">yukarı</td><td><span class="tag tag-orange">spec</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="color:var(--gf-muted);font-size:0.78rem;margin-top:6px">* SNEX 150.5B = brokerage turnover (net gelir değil). AVAV $139.00 = kapanış (earnings AMC'den önce); after-hours ~$162.32 (≈+16.8%).</p>
+    <div class="insight-box warn"><strong>Tabloyu okurken:</strong> "strong_buy/buy" ham analist konsensüsüdür. M&A'e pinlenmiş (IRDM, BLD), fiyatı hedefinin üstünde (GLW) veya distressed (CRMT) isimlerde bu etiket <strong>yanıltıcıdır</strong>. Her hissenin kendi bölümüne bakın.</div>
+  </div>
+</section>
+
+<!-- BÖLÜM 3: AKTİF EARNINGS / KATALİST OYUNLARI -->
+<section>
+  <div class="section-head" id="sec-earnings">
+    <div class="section-head-inner" onclick="toggle('sec-earnings')">
+      <h2 class="section-title">🎯 3. Aktif Earnings / Katalist Oyunları</h2>
+      <div class="icon">▾</div>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <h3 style="color:var(--gf-accent);margin:6px 0 8px">⭐ AVAV — AeroVironment · Q4 FY2026 (29/06 AMC) — RECORD BEAT</h3>
+    <div class="grid">
+      <div class="card"><div class="card-label">Gelir (Actual vs Est)</div><div class="card-value up">$641.6M</div><div class="card-note">vs $559.4M · +14.7% beat · +133% YoY</div></div>
+      <div class="card"><div class="card-label">EPS (Actual vs Est)</div><div class="card-value up">$1.84</div><div class="card-note">vs $1.48 · +24% beat</div></div>
+      <div class="card"><div class="card-label">After-Hours Tepki</div><div class="card-value up">≈+16.8%</div><div class="card-note">$139.00 → ~$162.32; implied ±11.31% AŞILDI</div></div>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item bull"><div class="timeline-date">29 Haziran (AMC)</div><div class="timeline-body">Record beat — gelir + EPS hem aştı; AH +16.8%.</div></div>
+      <div class="timeline-item warn"><div class="timeline-date">8 Temmuz</div><div class="timeline-body">Investor Day — yeni katalist penceresi.</div></div>
+      <div class="timeline-item bear"><div class="timeline-date">27 Temmuz</div><div class="timeline-body">Securities class-action dava deadline — hukuki kuyruk riski.</div></div>
+    </div>
+    <div class="insight-box warn"><strong>Opsiyon notu:</strong> Earnings GEÇTİ → IV-crush başladı, çıplak uzun opsiyon değer kaybeder. Yön yukarı güçlü ama AH'de +16.8% fiyatlandı + 8 Tem / 27 Tem iki yönlü volatilite. <strong>Spread</strong> yapılar çıplak CALL'a tercih edilir. İş kolu: insansız sistemler (Switchblade, Puma/Raven), DoD + Ukrayna + müttefik kontratları.</div>
+
+    <h3 style="color:var(--gf-accent);margin:18px 0 8px">CNXC — Concentrix · Q2 FY26 (29/06 AMC)</h3>
+    <div class="grid">
+      <div class="card"><div class="card-label">Konsensüs EPS / Gelir</div><div class="card-value neu">~$2.64 / $2.474B</div><div class="card-note">Actual rakamlar araştırma anında YAYINLANMAMIŞTI</div></div>
+      <div class="card"><div class="card-label">After-Hours</div><div class="card-value down">≈-22%</div><div class="card-note">implied ±19.6% ile tutarlı (UNVERIFIED)</div></div>
+      <div class="card"><div class="card-label">Bilanço Riski</div><div class="card-value down">D/E 204</div><div class="card-note">Borç 5.69B · net -1.33B · AI-cannibalization korkusu</div></div>
+    </div>
+    <div class="insight-box danger"><strong>Doğrula:</strong> Q2 AMC açıklandı ama <strong>actual EPS/gelir teyit edilmeli</strong> (canlı kontrol). AH -22% IV-crush başlattı. Pozisyon ALMADAN önce rakamları doğrula. İş kolu: CX/BPO outsourcing — AI otomasyonu yapısal baskı.</div>
+
+    <h3 style="color:var(--gf-accent);margin:18px 0 8px">CBRS — AI-altyapı · Q1 FY26 (23/06) BEAT</h3>
+    <div class="grid">
+      <div class="card"><div class="card-label">Çekirdek Gelir</div><div class="card-value up">$191.3M</div><div class="card-note">+92% YoY · near-breakeven</div></div>
+      <div class="card"><div class="card-label">FY26 Guidance</div><div class="card-value neu">$855–865M</div><div class="card-note">Nakit 3.3B (capex yakıtı)</div></div>
+      <div class="card"><div class="card-label">Müşteri Konsantrasyonu</div><div class="card-value down">~%86</div><div class="card-note">G42 + OpenAI · Kasım 2026 lock-up</div></div>
+    </div>
+    <div class="insight-box danger"><strong>Straddle ortamı, çok yüksek IV.</strong> P/E 480 + %86 müşteri konsantrasyonu = iki yönlü aşırı volatilite. Straddle/strangle mantıklı olabilir ama IV pahalı → sadece hareket implied'i aşacaksa. Çıplak yönlü bahis çok riskli.</div>
+
+    <h3 style="color:var(--gf-accent);margin:18px 0 8px">CPRT — Copart · Q3 BEAT + CEO Geçişi (en net yönlü)</h3>
+    <div class="grid">
+      <div class="card"><div class="card-label">Q3 EPS</div><div class="card-value up">$0.43 beat</div><div class="card-note">Net marj %33.5 · borçsuz · FCF 1.0B</div></div>
+      <div class="card"><div class="card-label">Günlük Hareket</div><div class="card-value down">-7.9%</div><div class="card-note">CEO geçişi tetikledi</div></div>
+      <div class="card"><div class="card-label">Yönetim</div><div class="card-value neu">CEO değişimi</div><div class="card-note">J. Liaw 31 Tem ayrılıyor; J. Adair dönüyor</div></div>
+    </div>
+    <div class="insight-box warn"><strong>Opsiyon notu:</strong> En net yönlü katalist (CEO geçişi → kısa vadeli baskı). AMA borçsuz + %33.5 net marj + 1B FCF = <strong>downside sınırlı</strong>. <strong>Tanımlı-riskli PUT spread</strong> mantıklı; çıplak PUT'ta dipte mean-reversion riski.</div>
+  </div>
+</section>
+
+<!-- BÖLÜM 4: SAVUNMA & UZAY + AI ALTYAPI -->
+<section>
+  <div class="section-head" id="sec-savunma">
+    <div class="section-head-inner" onclick="toggle('sec-savunma')">
+      <h2 class="section-title">🛰️ 4. Savunma & Uzay + AI Altyapı</h2>
+      <div class="icon">▾</div>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <h3 style="color:var(--gf-accent);margin:6px 0 8px">⭐ IRDM — Iridium · M&A REJİMİ (en net hikaye)</h3>
+    <div class="insight-box"><strong>Finansal:</strong> $54.59 · 5.77B · P/E 55 · gelir 875.8M · brüt marj 71.6% · op 23.2% · net 12.1% · borç 1.79B. Analist hedef <strong>$37.88 — fiyatın çok altında</strong> = hisse M&A fiyatına pinlendi.</div>
+    <div class="timeline">
+      <div class="timeline-item bull"><div class="timeline-date">29 Haziran</div><div class="timeline-body"><strong>Rocket Lab (RKLB) Iridium'u ~$54/hisse satın alıyor</strong> — ~$27 nakit + RKLB hissesi, ~$8B EV. <strong>Definitive</strong>; kapanış 2027 ortası.</div></div>
+      <div class="timeline-item warn"><div class="timeline-date">Q1 2026</div><div class="timeline-body">EPS $0.20 miss / gelir beat. Earnings artık fiyatı sürmüyor.</div></div>
+    </div>
+    <div class="insight-box danger"><strong>⚠️ CALL CAZİP DEĞİL:</strong> Fiyat teklif seviyesine yapıştı, yukarı kapalı. Bu artık <strong>merger-arbitrage</strong> enstrümanı (dar bant, düşük RV, regülasyon/kapanış kuyruk riski). 2x momentum setup için uygun değil.</div>
+
+    <h3 style="color:var(--gf-accent);margin:18px 0 8px">VSAT — Viasat · Savunma/Satcom Re-rating</h3>
+    <div class="insight-box"><strong>Finansal:</strong> $76.69 · 10.47B · gelir 4.64B · borç <strong>6.94B (D/E 147)</strong> · ince marj · hedef $94.56. Q3 FY26 EPS $0.79 beat; Q4 FY26 rakamları DOĞRULANMADI.</div>
+    <div class="timeline">
+      <div class="timeline-item bull"><div class="timeline-date">Katalist</div><div class="timeline-body">$437.7M Space Force PTS-G kontratı + analist PT artışları ($97/$106/$93) + spin-out söylentisi.</div></div>
+      <div class="timeline-item warn"><div class="timeline-date">29 Haziran</div><div class="timeline-body">Sıçrama büyük olasılıkla satcom M&A sympathy / short-cover (IRDM-RKLB etkisi).</div></div>
+    </div>
+    <div class="insight-box warn"><strong>Opsiyon notu:</strong> Yüksek borç + spin-out belirsizliği iki yönlü volatilite. 29/06 hareketi temel değil sympathy ise → mean-reversion riski. Çıplak yön riskli; katalist (kontrat/spin-out) beklenmeli. İş kolu: uydu broadband (jet/maritime), Space Force/DoD, ViaSat-3.</div>
+
+    <h3 style="color:var(--gf-accent);margin:18px 0 8px">AXON — Axon Enterprise · Q1 2026 BEAT</h3>
+    <div class="insight-box"><strong>Finansal:</strong> $510.60 · 41.16B · P/E <strong>208</strong> · gelir 2.98B (+33.7%) · brüt 59.5% · düşük borç · hedef $662.04. Q1 gelir $807.35M beat; guidance %30–32'ye yükseltildi; Carbyne/Axon 911.</div>
+    <div class="insight-box warn"><strong>Opsiyon notu:</strong> 29/06 spesifik katalist DOĞRULANMADI (büyük olasılıkla QQQ +2.6% beta + savunma teması). P/E 208 = mükemmellik fiyatlanmış; küçük hayal kırıklığı sert düzeltme yaratır. İş kolu: Taser + body-cam + Axon Cloud SaaS + 911/dispatch.</div>
+
+    <h3 style="color:var(--gf-accent);margin:18px 0 8px">⭐ GLW — Corning · AI/Optik Fiber Süper-döngü</h3>
+    <div class="insight-box"><strong>Finansal:</strong> $255.69 · 220B · P/E 123 · gelir 16.32B · hedef <strong>$206.07 (fiyatın ALTINDA)</strong>. Q1 2026 çekirdek gelir $4.35B (+18%), optik segment <strong>+36%</strong>.</div>
+    <div class="timeline">
+      <div class="timeline-item bull"><div class="timeline-date">8 Haziran</div><div class="timeline-body">Amazon ile çok-milyar dolarlık fiber anlaşması.</div></div>
+      <div class="timeline-item bull"><div class="timeline-date">Haziran</div><div class="timeline-body">Meta $6B fiber taahhüdü + 2 hyperscaler + Nvidia $500M ilişkisi → AI datacenter optik super-cycle.</div></div>
+    </div>
+    <div class="insight-box warn"><strong>Opsiyon notu:</strong> Hikaye güçlü ama <strong>fiyat analist hedefinin üstünde</strong> = yukarı tükenmiş olabilir. ⚠️ Fiyat tutarsızlığı: kapanış $255.69 vs stockanalysis $243.08 — giriş öncesi canlı teyit. İş kolu: optik fiber + Gorilla Glass, hyperscaler + Nvidia.</div>
+
+    <h3 style="color:var(--gf-accent);margin:18px 0 8px">OUST — Ouster · LiDAR Momentum (M&A YOK)</h3>
+    <div class="insight-box"><strong>Finansal:</strong> $54.07 · 3.44B · gelir 185.3M (+48.9%) · brüt 47.7% · kâr yok (EPS -0.93) · hedef $46.86 (fiyatın altında).</div>
+    <div class="timeline">
+      <div class="timeline-item warn"><div class="timeline-date">29 Haziran</div><div class="timeline-body">+28.9% = momentum/sympathy (M&A DEĞİL). Tek-katalist DOĞRULANMADI.</div></div>
+      <div class="timeline-item bull"><div class="timeline-date">Haziran</div><div class="timeline-body">AIM, Benchmark, BlueCity, FieldAI ortaklıkları + NVIDIA Hyperion + Hesai NDAA dışlanması.</div></div>
+    </div>
+    <div class="insight-box danger"><strong>⚠️ Yüksek IV-crush riski.</strong> +28.9% katalistsiz/momentum ise hızlı geri verir. Parabolik sönerse fade (PUT) adayı; LiDAR teması canlı kalırsa squeeze sürebilir. Çıplak CALL pahalı; spread tercih.</div>
+
+    <h3 style="color:var(--gf-accent);margin:18px 0 8px">FCEL — FuelCell Energy · Haber-pompalı (RSI ~95)</h3>
+    <div class="insight-box"><strong>Finansal:</strong> $29.80 · 2.01B · derin zarar (EPS -6.20, net -225.5M, op -99%) · nakit 373.2M. Q2 (08/06) miss; net zarar $78.7M ($42.6M impairment).</div>
+    <div class="timeline">
+      <div class="timeline-item bull"><div class="timeline-date">26 Haziran</div><div class="timeline-body">Fit Energy 380 MW datacenter anlaşması + Jefferies upgrade Hold→Buy ($16→$24).</div></div>
+      <div class="timeline-item bear"><div class="timeline-date">Teknik</div><div class="timeline-body">RSI ~95 aşırı alım; zayıf bilanço.</div></div>
+    </div>
+    <div class="insight-box danger"><strong>⚠️⚠️ ÇOK YÜKSEK risk.</strong> Haber-pompalı + Q2 miss + impairment + RSI 95. Bu profil <strong>sekonder ihraç / dilüsyon</strong> ile çöker. Aşırı-alım + zayıf bilanço = fade/PUT tezi güçlü; ama haber momentumu irrasyonel sürebilir → tanımlı-riskli spread şart.</div>
+  </div>
+</section>
+
+<!-- BÖLÜM 5: RUSSELL-AKIŞI MEAN-REVERSION -->
+<section>
+  <div class="section-head" id="sec-russell">
+    <div class="section-head-inner" onclick="toggle('sec-russell')">
+      <h2 class="section-title">🔄 5. Russell-Akışı Mean-Reversion (PUT tezi zayıf)</h2>
+      <div class="icon">▾</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="insight-box warn"><strong>Ortak tema:</strong> 29 Haziran = Russell reconstitution effective day. Aşağıdaki düşüşlerin önemli kısmı <strong>mekanik endeks akışı</strong>, temel bozulma değil → bounce/mean-reversion zemini.</div>
+
+    <h3 style="color:var(--gf-accent);margin:6px 0 8px">SNEX — StoneX · Russell akışı (split DEĞİL)</h3>
+    <div class="insight-box bull"><strong>Düzeltme:</strong> Düşüş <strong>Russell reconstitution</strong> + momentum unwind. 3-for-2 split <strong>20 Temmuz ex-date</strong> — bugünkü düşüş split kaynaklı DEĞİL. Q2 RECORD BEAT → bounce riski yüksek. EPS 5.59, sağlam bilanço. <strong>PUT tezi zayıf.</strong> İş kolu: global brokerage/clearing, emtia/FX.</div>
+
+    <h3 style="color:var(--gf-accent);margin:14px 0 8px">VC — Visteon · Russell + oto/DRAM gölgesi</h3>
+    <div class="insight-box"><strong>Finansal:</strong> $94.94 · P/E 16 · gelir 3.79B · EPS 5.98 · hedef $133.75. -7.6% = Russell akışı + oto zayıflığı + DRAM/çip maliyeti + Ford program kesintisi gölgesi. Q1 FY26 satış beat, EPS düştü. Katalist: ~23 Temmuz earnings. Mean-reversion riski; oto cluster elektroniği (Ford/GM/OEM).</div>
+
+    <h3 style="color:var(--gf-accent);margin:14px 0 8px">MLM — Martin Marietta · Russell + guide endişesi</h3>
+    <div class="insight-box"><strong>Finansal:</strong> $581.23 · 34.9B · P/E 36 · gelir 6.35B · EPS 15.96 · hedef $683.09. -5.5% = Russell + FY26 satış guidance endişesi + diesel. Q1 RECORD → bounce riski; <strong>PUT tezi zayıf.</strong> İş kolu: agrega/çimento/beton; altyapı harcaması yapısal destek.</div>
+  </div>
+</section>
+
+<!-- BÖLÜM 6: M&A / TRADE-DIŞI / DISTRESSED -->
+<section>
+  <div class="section-head" id="sec-distressed">
+    <div class="section-head-inner" onclick="toggle('sec-distressed')">
+      <h2 class="section-title">⛔ 6. M&A / Trade-Dışı / Distressed</h2>
+      <div class="icon">▾</div>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <h3 style="color:var(--gf-danger);margin:6px 0 8px">BLD — TopBuild · 1 TEMMUZ DELIST</h3>
+    <div class="insight-box danger"><strong>⛔ TRADE EDİLEMEZ:</strong> QXO satın alıyor — definitive, <strong>hisse başına $505</strong> (nakit VEYA 20.2 QXO hissesi; ~%45 nakit/%55 hisse). Election deadline 29/06. <strong>Tamamlanma + işlem HALT + DELIST 1 Temmuz TEYİT EDİLDİ.</strong> Fiyat $505/QXO proxy'sine pinlendi — PUT/CALL uygun değil. Listeden çıkar.</div>
+
+    <h3 style="color:var(--gf-danger);margin:14px 0 8px">CRMT — America's Car-Mart · DISTRESSED</h3>
+    <div class="insight-box danger"><strong>⛔ "Bugün earnings" YANLIŞ</strong> — son earnings Q3 FY26 (12 Mart). $60→$2.5 çöküş = <strong>muhasebe restatement</strong> (Tem 2025: "artık güvenilmemeli") + tarife-açıklama class-action + warehouse-financing krizi (42 dealer kapandı). 19 Haziran lender stratejik-inceleme anlaşması. <strong>İflas/delisting riski açık.</strong> Earnings oyunu değil — binary distressed. İş kolu: subprime kullanılmış araç + iç finansman.</div>
+
+    <h3 style="color:var(--gf-warning);margin:14px 0 8px">QMCO — Quantum Corp · GEÇ DOSYALAMA</h3>
+    <div class="insight-box warn"><strong>⚠️ "Bugün earnings" YANLIŞ</strong> — Q4 FY26 15 Haziran planıydı ama <strong>Form NT 10-K (geç dosyalama)</strong>; 10-K ~29 Haziran'a ertelendi. Q3 beat, tape satış 2x, borç -50%, Q4 pre-announce gelir ~$77.5M (guide üstü). Geç dosyalama = risk bayrağı. Earnings listesinden çıkar; dosyalama riskini izle. İş kolu: veri depolama (tape arşiv, video gözetim).</div>
+
+    <h3 style="color:var(--gf-warning);margin:14px 0 8px">CHTR — Charter · Value-Trap (96.82B borç)</h3>
+    <div class="insight-box warn"><strong>Finansal:</strong> $146.17 · P/E <strong>3.95 (aldatıcı ucuz)</strong> · gelir 54.64B · EPS 37.00 · borç <strong>96.82B (D/E 460)</strong> · 52h zirve $422. "Ucuz P/E" tuzak — broadband abone kaybı + FWA rekabeti (T-Mobile/Verizon) + borç yükü temel bozulmayı yansıtır. Yapısal zayıflık PUT bias destekler ama value-trap bounce'ları olur; yüksek kaldıraç iki yönlü volatiliteyi büyütür.</div>
+  </div>
+</section>
+
+<!-- BÖLÜM 7: SINIFLANDIRMA MATRİSİ -->
+<section>
+  <div class="section-head" id="sec-matris">
+    <div class="section-head-inner" onclick="toggle('sec-matris')">
+      <h2 class="section-title">🗂️ 7. Sınıflandırma Matrisi (Opsiyon Perspektifi)</h2>
+      <div class="icon">▾</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <p style="color:var(--gf-muted);font-size:0.82rem;margin-bottom:8px">Yön-bağımsız + 2x momentum + IV-crush farkındalıklı gruplama. <strong>Yatırım tavsiyesi değildir.</strong></p>
+    <table>
+      <thead><tr><th>Grup</th><th>Hisseler</th><th>Yön Bias</th><th>Ana Risk</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tag-green">🟢 Aktif Earnings/Katalist</span></td><td>AVAV · CNXC · CBRS · CPRT</td><td>Karışık (en yüksek bilgi)</td><td>IV-crush, earnings teyidi (CNXC)</td></tr>
+        <tr><td><span class="tag tag-orange">🟡 Sympathy/Momentum</span></td><td>OUST · VSAT · FCEL · GLW · AXON</td><td>İki yönlü</td><td>Katalistsiz hareket, IV-crush, dilüsyon (FCEL)</td></tr>
+        <tr><td><span class="tag tag-blue">🔵 Russell Mean-Reversion</span></td><td>SNEX · MLM · VC</td><td>Bounce (PUT zayıf)</td><td>Endeks akışı geçici; rekor earnings</td></tr>
+        <tr><td><span class="tag tag-red">🔴 Trade-Dışı / Distressed</span></td><td>IRDM · BLD · CRMT · QMCO · CHTR</td><td>Yok / binary</td><td>M&A pin, delist, iflas, geç dosyalama, borç tuzağı</td></tr>
+      </tbody>
+    </table>
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-num up">1</div><div class="kpi-label">Record Beat (AVAV)</div></div>
+      <div class="kpi"><div class="kpi-num neu">3</div><div class="kpi-label">Russell akışı</div></div>
+      <div class="kpi"><div class="kpi-num down">5</div><div class="kpi-label">Trade-dışı/distressed</div></div>
+      <div class="kpi"><div class="kpi-num">2</div><div class="kpi-label">"Earnings" yanlış (CRMT/QMCO)</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 8: KRİTİK DÜZELTMELER -->
+<section>
+  <div class="section-head" id="sec-duzeltme">
+    <div class="section-head-inner" onclick="toggle('sec-duzeltme')">
+      <h2 class="section-title">✅ 8. Kritik Düzeltmeler</h2>
+      <div class="icon">▾</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <table>
+      <thead><tr><th>Hisse</th><th>Yaygın Hata</th><th>DOĞRUSU (kaynaklı)</th></tr></thead>
+      <tbody>
+        <tr><td><strong>CRMT</strong></td><td>"Bugün earnings"</td><td class="down">❌ Son earnings 12 Mart. Bugün = distressed/restatement/iflas riski.</td></tr>
+        <tr><td><strong>QMCO</strong></td><td>"Bugün earnings"</td><td class="down">❌ NT 10-K geç dosyalama; 10-K ~29 Haz'a ertelendi.</td></tr>
+        <tr><td><strong>SNEX</strong></td><td>Düşüş = split</td><td class="down">❌ Russell reconstitution. Split 20 Temmuz ex-date.</td></tr>
+        <tr><td><strong>BLD</strong></td><td>Trade edilebilir</td><td class="down">❌ 1 Temmuz delist (QXO $505).</td></tr>
+        <tr><td><strong>IRDM</strong></td><td>CALL momentum</td><td class="down">❌ RKLB $54 M&A pinned; yukarı kapalı.</td></tr>
+        <tr><td><strong>OUST</strong></td><td>M&A sıçraması</td><td class="down">❌ M&A YOK; momentum/sympathy.</td></tr>
+        <tr><td><strong>CNXC</strong></td><td>Earnings kesin</td><td class="neu">⚠️ Actual rakamlar araştırma anında yayınlanmamıştı.</td></tr>
+        <tr><td><strong>GLW</strong></td><td>Tek fiyat</td><td class="neu">⚠️ Fiyat tutarsızlığı: $255.69 vs $243.08.</td></tr>
+        <tr><td><strong>AVAV</strong></td><td>Earnings öncesi</td><td class="up">✅ Record beat: $641.6M / $1.84; AH +16.8%.</td></tr>
+        <tr><td><strong>Yahoo AH%</strong></td><td>postMarketChangePercent</td><td class="down">❌ Bozuk alan (AVAV +1677%); AH% manuel hesaplandı.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- BÖLÜM 9: SEKTÖR BAĞLAMI -->
+<section>
+  <div class="section-head" id="sec-sektor">
+    <div class="section-head-inner" onclick="toggle('sec-sektor')">
+      <h2 class="section-title">🏭 9. Sektör Bağlamı</h2>
+      <div class="icon">▾</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="grid">
+      <div class="card"><div class="card-label">Savunma & Uzay</div><div class="card-value neu">AVAV · AXON · VSAT · IRDM</div><div class="card-note">Savunma harcaması artışı + uydu/satcom konsolidasyonu (RKLB–IRDM sympathy)</div></div>
+      <div class="card"><div class="card-label">AI Altyapı</div><div class="card-value neu">CBRS · GLW · FCEL · OUST</div><div class="card-note">AI datacenter capex super-cycle: optik, GPU, güç, sensör</div></div>
+      <div class="card"><div class="card-label">Endeks Akışı</div><div class="card-value neu">SNEX · MLM · VC</div><div class="card-note">Russell reconstitution — mekanik, mean-reversion zemini</div></div>
+      <div class="card"><div class="card-label">M&A / Kurumsal</div><div class="card-value neu">IRDM · BLD · CPRT</div><div class="card-note">Aktif M&A, tamamlanan satın alma/delist, yönetim geçişi</div></div>
+      <div class="card"><div class="card-label">Distressed / Özel Durum</div><div class="card-value down">CRMT · QMCO · CHTR</div><div class="card-note">Restatement/iflas, geç dosyalama, borç tuzağı</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 10: KAYNAKLAR & METODOLOJİ -->
+<section>
+  <div class="section-head" id="sec-kaynak">
+    <div class="section-head-inner" onclick="toggle('sec-kaynak')">
+      <h2 class="section-title">📚 10. Kaynaklar & Metodoloji</h2>
+      <div class="icon">▾</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <p style="margin-bottom:8px"><strong>Finansal veri:</strong> Yahoo Finance <code>get_stock_info</code> (29/06 çekildi) — değerleme, marj, gelir, EPS, borç, nakit, analist hedefleri.</p>
+    <p style="margin-bottom:8px"><strong>Earnings & haber:</strong> 4 paralel web-araştırma (WebSearch), her biri tarihli/kaynaklı bulgu üretti.</p>
+    <p style="margin-bottom:8px"><strong>Doğrulama notları:</strong> "DOĞRULANMADI" etiketli iddialar (OUST 29/06 tek-katalist, CNXC actual rakamlar, AXON 29/06 katalist) araştırma anında teyit edilemedi. Yahoo <code>postMarketChangePercent</code> bozuk → AH% manuel. GLW fiyat tutarsızlığı (canlı teyit).</p>
+    <p><strong>Veri zaman damgası:</strong> 30 Haziran 2026 ~00:40 TSİ (29 Haz ~17:40 ET, piyasa kapalı).</p>
+    <div class="insight-box danger"><strong>Yasal uyarı:</strong> Bu rapor analiz amaçlıdır, yatırım tavsiyesi değildir. Opsiyon işlemleri yüksek risk taşır; earnings sonrası IV-crush, M&A pin, delist ve distressed durumlar çıplak pozisyonlarda tam kayba yol açabilir. Pozisyon almadan önce canlı fiyat/earnings teyidi yapın.</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">Gistify Flow · Market Flash Finansal + Earnings + Haber Derin Analiz · 29 Haziran 2026</div>
+
+</div>
+</body>
+</html>
