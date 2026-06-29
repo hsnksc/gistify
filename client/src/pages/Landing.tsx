@@ -14,6 +14,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import PublicShell from "@/components/PublicShell";
+import NewsletterSignup from "@/components/NewsletterSignup";
 
 type PreviewMode = "flow" | "earnings" | "calendar";
 
@@ -636,6 +637,16 @@ export default function Landing({
             ))}
           </div>
         </div>
+      </motion.section>
+
+      <motion.section
+        custom={0.24}
+        initial="hidden"
+        animate="visible"
+        variants={reveal}
+        className="rounded-xl border border-white/10 bg-card/75 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.18)]"
+      >
+        <NewsletterSignup />
       </motion.section>
     </PublicShell>
   );
