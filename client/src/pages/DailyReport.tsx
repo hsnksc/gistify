@@ -248,7 +248,7 @@ export default function DailyReportPage({
               <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
                 <div className="space-y-2">
                   <p className="heading-condensed text-sm uppercase tracking-[0.18em] text-sky-300">
-                    Daily Report
+                    {copy(language, "Gunluk Rapor", "Daily Report")}
                   </p>
                   <h1 className="heading-condensed text-3xl leading-none text-foreground md:text-5xl">
                     {selectedReport?.title ||
@@ -347,17 +347,17 @@ export default function DailyReportPage({
                       />
                       <MetaPill
                         icon={GalleryHorizontal}
-                        label="Figure"
+                        label={copy(language, "Grafik", "Figure")}
                         value={String(selectedStats?.figures || 0)}
                       />
                       <MetaPill
                         icon={Sparkles}
-                        label="OpenAI"
+                        label={copy(language, "OpenAI", "OpenAI")}
                         value={String(selectedStats?.aiFigures || 0)}
                       />
                       <MetaPill
                         icon={Target}
-                        label="Ticker"
+                        label={copy(language, "Hisse", "Ticker")}
                         value={String(selectedStats?.tickers || 0)}
                       />
                     </div>
@@ -384,11 +384,11 @@ export default function DailyReportPage({
               <div className="space-y-2">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="rounded-full border border-sky-500/25 bg-sky-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
-                    Daily intelligence
+                    {copy(language, "Gunluk Istihbarat", "Daily Intelligence")}
                   </span>
                   {selectedStats?.aiFigures ? (
                     <span className="rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                      OpenAI chart enabled
+                      {copy(language, "OpenAI grafigi aktif", "OpenAI chart enabled")}
                     </span>
                   ) : null}
                 </div>
@@ -409,13 +409,13 @@ export default function DailyReportPage({
               {selectedStats ? (
                 <div className="flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
                   <span className="rounded-full border border-border bg-background/70 px-3 py-1">
-                    {selectedStats.figures} figure
+                    {selectedStats.figures} {copy(language, "grafik", "figure")}
                   </span>
                   <span className="rounded-full border border-border bg-background/70 px-3 py-1">
-                    {selectedStats.tickers} ticker
+                    {selectedStats.tickers} {copy(language, "hisse", "ticker")}
                   </span>
                   <span className="rounded-full border border-border bg-background/70 px-3 py-1">
-                    Updated {selectedStats.updatedAt}
+                    {copy(language, "Guncellendi", "Updated")} {selectedStats.updatedAt}
                   </span>
                 </div>
               ) : null}

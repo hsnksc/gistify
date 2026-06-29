@@ -1667,7 +1667,7 @@ export default function MidasOpportunitiesTab({
 
               {signal.factor_breakdown ? (
                 <div className="mt-3 space-y-1">
-                  <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Factor Breakdown</p>
+                  <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{copy(language, "Faktor Dagilimi", "Factor Breakdown")}</p>
                   {[
                     { key: 'f1_momentum_quality', label: 'F1' },
                     { key: 'f2_relative_strength', label: 'F2' },
@@ -1695,25 +1695,25 @@ export default function MidasOpportunitiesTab({
 
               {signal.trade_plan ? (
                 <div className="mt-3 rounded-lg border border-border/60 bg-background/50 px-3 py-2 text-[11px]">
-                  <p className="mb-1 text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Trade Plan</p>
+                  <p className="mb-1 text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{copy(language, "Trade Plan", "Trade Plan")}</p>
                   <div className="flex flex-wrap gap-x-2 gap-y-1">
-                    <span>Entry: {formatPrice(signal.trade_plan.entry)}</span>
-                    <span className="text-rose-300">Stop: {formatPrice(signal.trade_plan.stop)}</span>
+                    <span>{copy(language, "Giris:", "Entry:")} {formatPrice(signal.trade_plan.entry)}</span>
+                    <span className="text-rose-300">{copy(language, "Stop:", "Stop:")} {formatPrice(signal.trade_plan.stop)}</span>
                     <span className="text-emerald-300">T1: {formatPrice(signal.trade_plan.target1)}</span>
                     <span className="text-emerald-300">T2: {formatPrice(signal.trade_plan.target2)}</span>
                     <span>RR: {signal.trade_plan.rr_ratio.toFixed(1)}</span>
-                    <span>Stop%: {signal.trade_plan.stop_pct.toFixed(1)}%</span>
+                    <span>{copy(language, "Stop%:", "Stop%:")} {signal.trade_plan.stop_pct.toFixed(1)}%</span>
                   </div>
                 </div>
               ) : null}
 
               {signal.position_sizing && signal.position_sizing.shares > 0 ? (
                 <div className="mt-3 rounded-lg border border-border/60 bg-background/50 px-3 py-2 text-[11px]">
-                  <p className="mb-1 text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Position Sizing</p>
+                  <p className="mb-1 text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{copy(language, "Pozisyon Buyuklugu", "Position Sizing")}</p>
                   <div className="flex flex-wrap gap-x-2 gap-y-1">
-                    <span>Shares: {signal.position_sizing.shares}</span>
-                    <span>Position: ${signal.position_sizing.position_value.toLocaleString()}</span>
-                    <span>Risk: ${signal.position_sizing.dollar_risk.toFixed(0)} ({signal.position_sizing.risk_pct_of_account.toFixed(1)}%)</span>
+                    <span>{copy(language, "Adet:", "Shares:")} {signal.position_sizing.shares}</span>
+                    <span>{copy(language, "Pozisyon:", "Position:")} ${signal.position_sizing.position_value.toLocaleString()}</span>
+                    <span>{copy(language, "Risk:", "Risk:")} ${signal.position_sizing.dollar_risk.toFixed(0)} ({signal.position_sizing.risk_pct_of_account.toFixed(1)}%)</span>
                     <span className={`rounded px-1.5 py-0.5 text-[10px] font-bold ${
                       signal.position_sizing.kelly_fraction >= 0.25 ? 'bg-emerald-500/20 text-emerald-300' :
                       signal.position_sizing.kelly_fraction >= 0.15 ? 'bg-amber-500/20 text-amber-300' :
