@@ -12,6 +12,28 @@ function slugify(value: string) {
     .slice(0, 100);
 }
 
+function hashString(value: string) {
+  let hash = 2166136261;
+
+  for (let index = 0; index < value.length; index += 1) {
+    hash ^= value.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+
+  return (hash >>> 0).toString(36);
+}
+
+function buildSourceBackedReportSlug(source: DailyReportSourcePackage) {
+  const baseSlug =
+    slugify(`${source.reportDate}-${source.title}`).slice(0, 80) ||
+    "daily-report";
+  const sourceSuffix =
+    hashString(source.folderName || `${source.reportDate}-${source.title}`) ||
+    "source";
+
+  return `${baseSlug}-${sourceSuffix}`;
+}
+
 export function sortDailyReportsNewestFirst(reports: DailyReportRecord[]) {
   return [...reports].sort((left, right) => {
     const byDate = right.reportDate.localeCompare(left.reportDate);
@@ -32,7 +54,7 @@ export function createDailyReportDraftFromSource(
 
   return {
     id: existing?.id || `daily-${source.folderName}`,
-    slug: existing?.slug || slugify(`${source.reportDate}-${source.title}`),
+    slug: existing?.slug || buildSourceBackedReportSlug(source),
     title: source.title,
     reportDate: source.reportDate,
     status: existing?.status || "draft",

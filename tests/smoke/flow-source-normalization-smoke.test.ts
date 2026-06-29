@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { createFlowSourcePackageFromContent } from "../../server/dailyReportSources";
+import {
+  buildDailyReportRecordFromSource,
+  createFlowSourcePackageFromContent,
+} from "../../server/dailyReportSources";
 import { extractFlowTickerUniverseFromText } from "../../shared/flowInference";
 
 describe("flow source normalization smoke", () => {
@@ -198,5 +201,58 @@ Paragraf yapisi korunur ama Flow tarafinda sahte ticker uretilmemelidir.
         }),
       ])
     );
+  });
+
+  it("builds distinct archive slugs for duplicate flow titles on the same date", () => {
+    const firstSource = createFlowSourcePackageFromContent({
+      fileName: "daily-ai-yatirim-donguleri-2026-06-29.html",
+      sourceLabel: "flow/daily-ai-yatirim-donguleri-2026-06-29.html",
+      html: `
+<!doctype html>
+<html>
+  <head>
+    <title>Gistify - AI Yatirim Analizi</title>
+  </head>
+  <body>
+    <main>
+      <h1>Yapay Zekada Para Nerede?</h1>
+      <div class="meta">29 Haziran 2026</div>
+    </main>
+  </body>
+</html>
+      `,
+    });
+    const secondSource = createFlowSourcePackageFromContent({
+      fileName: "daily-ai-yatirim-donguleri-29-haziran-2026.html",
+      sourceLabel: "flow/daily-ai-yatirim-donguleri-29-haziran-2026.html",
+      html: `
+<!doctype html>
+<html>
+  <head>
+    <title>Gistify - AI Yatirim Analizi</title>
+  </head>
+  <body>
+    <main>
+      <h1>Yapay Zekada Para Nerede?</h1>
+      <div class="meta">29 Haziran 2026</div>
+    </main>
+  </body>
+</html>
+      `,
+    });
+
+    const firstRecord = buildDailyReportRecordFromSource(
+      firstSource,
+      "admin@example.com"
+    );
+    const secondRecord = buildDailyReportRecordFromSource(
+      secondSource,
+      "admin@example.com"
+    );
+
+    expect(firstRecord.reportDate).toBe("2026-06-29");
+    expect(secondRecord.reportDate).toBe("2026-06-29");
+    expect(firstRecord.title).toBe(secondRecord.title);
+    expect(firstRecord.slug).not.toBe(secondRecord.slug);
   });
 });
