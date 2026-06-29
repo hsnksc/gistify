@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Applied Materials (AMAT) Derinlemesine Analiz | 29 Haziran 2026 | $AMAT</title>
+<style>
+/* GISTIFY FLOW — Unified Dark Theme */
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:720px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.hero-date{display:inline-flex;align-items:center;gap:5px;color:var(--gf-muted)}
+
+/* META PILLS */
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+
+/* SECTIONS */
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s;display:flex;align-items:center;justify-content:space-between}
+.section-head-inner:hover{background:var(--gf-card)}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent);transition:transform .2s}
+.section-head.collapsed .icon{transform:rotate(-90deg)}
+.section-body{padding:18px;display:none}
+.section-head:not(.collapsed) .section-body{display:block}
+
+/* GRID & CARDS */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px;transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-1px);border-color:rgba(56,189,248,.25)}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+
+/* TABS */
+.tabs{display:flex;gap:2px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:14px}
+.tab{flex:1;padding:8px 10px;text-align:center;font-size:0.82rem;font-weight:600;border-radius:6px;cursor:pointer;user-select:none;transition:background .15s,color .15s;border:none;color:var(--gf-muted);background:transparent}
+.tab.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.tab:hover:not(.active){color:var(--gf-text)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.text-right{text-align:right}
+.text-center{text-align:center}
+
+/* PROGRESS */
+.progress-bar{background:var(--gf-card);border-radius:4px;height:18px;overflow:hidden;margin:4px 0}
+.progress-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:0.68rem;font-weight:700;color:#fff}
+.fill-bull{background:linear-gradient(90deg,#16a34a,#4ade80)}
+.fill-base{background:linear-gradient(90deg,#ca8a04,#fbbf24)}
+.fill-bear{background:linear-gradient(90deg,#dc2626,#f87171)}
+
+/* INSIGHT BOX */
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+
+/* TAGS */
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--gf-border)}
+.timeline-item{position:relative;margin-bottom:14px}
+.timeline-item::before{content:'';position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--gf-card);border:2px solid var(--gf-border)}
+.timeline-item.bull::before{border-color:var(--gf-success);background:var(--gf-success)}
+.timeline-item.bear::before{border-color:var(--gf-danger);background:var(--gf-danger)}
+.timeline-item.warn::before{border-color:var(--gf-warning);background:var(--gf-warning)}
+.timeline-date{font-size:0.78rem;color:var(--gf-muted);font-weight:600}
+.timeline-body{font-size:0.85rem;margin-top:3px;color:var(--gf-text)}
+
+/* HEATMAP */
+.heatmap{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;font-size:0.72rem;margin:10px 0}
+.heatmap-cell{padding:6px 2px;text-align:center;border-radius:4px;min-height:36px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.heatmap-cell .day{font-weight:700;font-size:0.78rem}
+.heatmap-cell .val{font-size:0.68rem;opacity:.85}
+.h-strong{background:rgba(74,222,128,.35);color:#aff5b4}
+.h-weak{background:rgba(248,113,113,.35);color:#ffdcd7}
+.h-neu{background:rgba(251,191,36,.2);color:#ffdfb6}
+.h-flat{background:rgba(148,163,184,.15);color:var(--gf-muted)}
+.h-good{background:rgba(74,222,128,.2);color:#aff5b4}
+
+/* FOOTER */
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+.tabs{flex-wrap:wrap}
+.tab{flex:none;min-width:80px}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+}
+
+/* LANG SWITCH */
+.lang-switch{display:inline-flex;gap:4px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:16px}
+.lang-btn{padding:6px 14px;border-radius:8px;font-size:0.8rem;font-weight:600;border:none;cursor:pointer;background:transparent;color:var(--gf-muted);transition:all .15s}
+.lang-btn.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.lang-btn:hover:not(.active){color:var(--gf-text)}
+[data-lang]{display:none}
+[data-lang].visible{display:block}
+[data-lang-inline]{display:none}
+[data-lang-inline].visible{display:inline}
+</style>
+<script>
+function toggle(id){var el=document.getElementById(id);if(!el)return;el.classList.toggle('collapsed');}
+function setTab(btn,tabId){var parent=btn.closest('.tabs');if(parent){parent.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});parent.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});}btn.classList.add('active');var tc=document.getElementById(tabId);if(tc)tc.classList.add('active');}
+</script>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HERO -->
+<div class="hero" id="hero">
+  <h1 class="hero-h">Applied Materials (AMAT) Derinlemesine Analiz Raporu</h1>
+  <p class="hero-desc">29 Haziran 2026 — Canlı Piyasa Verileri</p>
+  <div class="hero-meta">
+    <span class="meta-pill info">📅 29 Haziran 2026</span>
+    <span class="meta-pill info">$AMAT</span>
+    <span class="meta-pill info">IV Rank 100%</span>
+    <span class="meta-pill bull">Bull</span>
+    <span class="meta-pill bear">Bear</span>
+  </div>
+</div>
+
+<!-- BÖLÜM 1: Güncel Durum Özeti -->
+<section>
+  <div class="section-head" id="sec-ozet" onclick="toggle('sec-ozet')">
+    <div class="section-head-inner">
+      <h2 class="section-title">📊 Güncel Durum Özeti</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Fiyat</div>
+          <div class="card-value up">$698.96</div>
+          <div class="card-note">Canlı fiyat (29 Haziran 2026)</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Günlük Değişim</div>
+          <div class="card-value up">+12.0%</div>
+          <div class="card-note">+$74.96 (Önceki kapanış: $624.00)</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Hacim</div>
+          <div class="card-value">575K</div>
+          <div class="card-note">Önceki gün hacminin ~%73'ü</div>
+        </div>
+        <div class="card">
+          <div class="card-label">52W Zirve</div>
+          <div class="card-value up">$708.985</div>
+          <div class="card-note">Yeni 52 hafta zirvesi kırıldı</div>
+        </div>
+        <div class="card">
+          <div class="card-label">IV Rank</div>
+          <div class="card-value up">100%</div>
+          <div class="card-note">1 yıllık zirve; volatilite olağanüstü yüksek</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Beta</div>
+          <div class="card-value">1.67</div>
+          <div class="card-note">Piyasaya göre belirgin daha volatil</div>
+        </div>
+        <div class="card">
+          <div class="card-label">P/E (Trailing)</div>
+          <div class="card-value">59.02</div>
+          <div class="card-note">Sektör ort. (~79.80) altında, piyasa ort. (~40.19) üzerinde</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Market Cap</div>
+          <div class="card-value">$498B</div>
+          <div class="card-note">Yahoo Finance: $497.69B – $530.36B</div>
+        </div>
+      </div>
+
+      <div class="insight-box bull">
+        <strong>Fırsat:</strong> 29 Haziran gap-up doğrulandı; hisse yeni 52W zirve $708.985'i kırdı. Barchart pre-market ~$701.98 verisi Alpaca API ($698.96) tarafından doğrulanmıştır.
+      </div>
+      <div class="insight-box warn">
+        <strong>Uyarı:</strong> Mevcut fiyat ($698.96), tüm ana kaynakların ortalama hedef fiyatlarının ($518–532) çok üzerinde. Değerleme sıkışması riski yüksek.
+      </div>
+      <div class="insight-box danger">
+        <strong>Risk:</strong> IV Rank 100% — opsiyon primleri 1 yıllık zirvede. Expected Move 3 günde ±$45.52 (6.55%).
+      </div>
+
+      <p style="font-size:0.85rem;color:var(--gf-muted);margin-top:12px">
+        <strong>Anahtar Gündem:</strong> YTD +144.52%, 1Y +244.07%, 3Y +359.52%. Earnings 13 Ağustos 2026 — Q3 konsensüs EPS $3.35. Wells Fargo PT $715 → $740 yükseltmiş.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 2: Temel Analiz -->
+<section>
+  <div class="section-head" id="sec-temel" onclick="toggle('sec-temel')">
+    <div class="section-head-inner">
+      <h2 class="section-title">📈 Temel Analiz</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Q2 FY26 Gelir</div>
+          <div class="card-value">$7.91B</div>
+          <div class="card-note">Y/Y +%11.4 | 25 yılın zirvesi</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Q2 FY26 EPS</div>
+          <div class="card-value up">$2.86</div>
+          <div class="card-note">Beklenti $2.69 — +$0.18 beat</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Brüt Marj</div>
+          <div class="card-value up">%50</div>
+          <div class="card-note">25 yılın en yüksek brüt marjı</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Net Kar Marjı</div>
+          <div class="card-value">%29.31</div>
+          <div class="card-note">Pretax marj %35.77</div>
+        </div>
+        <div class="card">
+          <div class="card-label">ROE</div>
+          <div class="card-value">%36.97 – %39.69</div>
+          <div class="card-note">Özsermaye verimliliği</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Nakit Pozisyonu</div>
+          <div class="card-value">$8.24B</div>
+          <div class="card-note">MRQ; güçlü bilanço</div>
+        </div>
+      </div>
+
+      <h3 style="font-size:0.95rem;margin:16px 0 8px;color:var(--gf-accent)">Segment Performansı</h3>
+      <table>
+        <thead>
+          <tr><th>Segment</th><th>Q2 FY26 Gelir</th><th>Y/Y Büyüme</th><th>Gelir Payı</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Semiconductor Systems</td><td>$5.97B</td><td>+%10</td><td>~%75</td></tr>
+          <tr><td>Applied Global Services (AGS)</td><td>$1.67B</td><td>+%17</td><td>~%21</td></tr>
+          <tr><td>Diğer</td><td>$280M</td><td>—</td><td>~%4</td></tr>
+        </tbody>
+      </table>
+
+      <div class="insight-box bull">
+        <strong>AIx Platform:</strong> AGS segmentinde 35.000+ chamber'a bağlı AI destekli izleme/diyagnostik platformu; yinelenen gelir modeli marj stabilitesi sağlar.
+      </div>
+
+      <h3 style="font-size:0.95rem;margin:16px 0 8px;color:var(--gf-accent)">Değerleme Tablosu</h3>
+      <table>
+        <thead>
+          <tr><th>Metrik</th><th class="text-right">Değer</th><th>Kaynak</th><th>Yorum</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Market Cap</td><td class="text-right">$497.69B – $530.36B</td><td>Yahoo, MarketBeat</td><td>6/26–6/25</td></tr>
+          <tr><td>Enterprise Value</td><td class="text-right">$529.39B</td><td>Yahoo Finance</td><td>—</td></tr>
+          <tr><td>Trailing P/E</td><td class="text-right">58.86 – 62.84</td><td>MarketBeat, Yahoo</td><td>Sektör ort. (~79.80) altında</td></tr>
+          <tr><td>Forward P/E</td><td class="text-right">51.80 – 55.87</td><td>MarketBeat, Yahoo</td><td>Hafif overvalued</td></tr>
+          <tr><td>PEG Ratio (5Y)</td><td class="text-right">1.86 – 2.22</td><td>MarketBeat, Yahoo</td><td>>1; büyüme hızı fiyatlamaya yetmeyebilir</td></tr>
+          <tr><td>Price/Sales (TTM)</td><td class="text-right">17.54 – 18.41</td><td>MarketBeat, Yahoo</td><td>—</td></tr>
+          <tr><td>Price/Book (MRQ)</td><td class="text-right">20.82 – 22.18</td><td>MarketBeat, Yahoo</td><td>Varlık bazlı değerleme açısından yüksek</td></tr>
+          <tr><td>EV/EBITDA</td><td class="text-right">47.49</td><td>Yahoo Finance</td><td>—</td></tr>
+          <tr><td>Dividend Yield</td><td class="text-right">0.32% – 0.34%</td><td>Yahoo, MarketBeat</td><td>—</td></tr>
+          <tr><td>Payout Ratio</td><td class="text-right">19.91%</td><td>MarketBeat</td><td>Sürdürülebilir</td></tr>
+        </tbody>
+      </table>
+
+      <h3 style="font-size:0.95rem;margin:16px 0 8px;color:var(--gf-accent)">Bilanço Gücü</h3>
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Current Ratio</div>
+          <div class="card-value">2.51</div>
+          <div class="card-note">Kısa vadeli yükümlülükleri rahat karşılar</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Quick Ratio</div>
+          <div class="card-value">1.80</div>
+          <div class="card-note">Likidite güçlü</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Borç/Özsermaye</div>
+          <div class="card-value">0.22</div>
+          <div class="card-note">Düşük kaldıraç; faiz riskine karşı koruma</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Defter Değeri</div>
+          <div class="card-value">$30.11</div>
+          <div class="card-note">Hisse fiyatının ~23 katı üzerinde</div>
+        </div>
+      </div>
+
+      <div class="insight-box warn">
+        <strong>Earnings Outlook:</strong> Q3 FY26 guidance — Gelir $8.95B ±$500M, EPS $3.36 ±$0.20. Önceki yıl Q3'e kıyasla %35.08 EPS büyümesi; oldukça yüksek bir bar. 13 Ağustos 2026 kazanç açıklaması kritik.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 3: Teknik Analiz -->
+<section>
+  <div class="section-head" id="sec-teknik" onclick="toggle('sec-teknik')">
+    <div class="section-head-inner">
+      <h2 class="section-title">📉 Teknik Analiz</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <h3 style="font-size:0.95rem;margin:0 0 8px;color:var(--gf-accent)">Destek ve Direnç Seviyeleri</h3>
+      <table>
+        <thead>
+          <tr><th>Seviye</th><th class="text-right">Fiyat</th><th>Tür</th><th>Değerlendirme</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>3rd Resistance (R3)</td><td class="text-right">$730.00</td><td>Direnç</td><td>Psikolojik $730; güçlü momentum devam ederse hedef</td></tr>
+          <tr><td>2nd Resistance (R2)</td><td class="text-right">$720.00</td><td>Direnç</td><td>Gün yükseğinin ($708.985) üzerinde; kâr satışları bölgesi</td></tr>
+          <tr><td>1st Resistance (R1)</td><td class="text-right">$710.00</td><td>Direnç</td><td>Ask seviyesi; ilk direnç ve psikolojik bariyer</td></tr>
+          <tr><td>1st Support (S1)</td><td class="text-right">$690.00</td><td>Destek</td><td>Son 1 dk bar kapanış altında; ilk güvenli liman</td></tr>
+          <tr><td>2nd Support (S2)</td><td class="text-right">$680.00</td><td>Destek</td><td>Günlük açılış ($633.80) üzerinde; gap desteği</td></tr>
+          <tr><td>3rd Support (S3)</td><td class="text-right">$670.00</td><td>Destek</td><td>Eski 52W zirve ($669.22) yakını; dönüşüm desteği</td></tr>
+        </tbody>
+      </table>
+
+      <div class="insight-box warn">
+        <strong>Fibonacci:</strong> 52W Low–High seviyeleri: 61.8% $490.04, 50% $425.97, 38.2% $361.89. Mevcut fiyat ($698.96) Fibonacci seviyelerinin çok üzerinde; trend güçlü ama düzeltme derinliği büyük olabilir.
+      </div>
+
+      <h3 style="font-size:0.95rem;margin:16px 0 8px;color:var(--gf-accent)">Son 30 Günlük Fiyat Hareketi</h3>
+      <table>
+        <thead>
+          <tr><th>Tarih</th><th class="text-right">Kapanış</th><th class="text-right">Değişim</th><th>Not</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Jun 29</strong></td><td class="text-right"><strong>$698.96</strong></td><td class="text-right up"><strong>+12.0%</strong></td><td><strong>Canlı; yeni 52W zirve $708.985; gap-up doğrulandı</strong></td></tr>
+          <tr><td><strong>Jun 26</strong></td><td class="text-right"><strong>$624.00</strong></td><td class="text-right down"><strong>-6.16%</strong></td><td><strong>Rekor hacim (27.5M); 52W zirvesinden geri çekilme</strong></td></tr>
+          <tr><td>Jun 24</td><td class="text-right">$590.91</td><td class="text-right up">+0.86%</td><td>Düşük hacimli toparlanma</td></tr>
+          <tr><td>Jun 23</td><td class="text-right">$585.88</td><td class="text-right down">-8.48%</td><td>Sert satış; 52W zirvesinden uzaklaşma</td></tr>
+          <tr><td>Jun 22</td><td class="text-right">$640.18</td><td class="text-right up">+3.74%</td><td>Yüksek hacimli yükseliş</td></tr>
+          <tr><td>Jun 18</td><td class="text-right">$617.11</td><td class="text-right up">+4.08%</td><td>Güçlü alım baskısı</td></tr>
+          <tr><td>Jun 17</td><td class="text-right">$592.92</td><td class="text-right up">+4.34%</td><td>Düşük hacimli yükseliş</td></tr>
+          <tr><td>Jun 16</td><td class="text-right">$568.23</td><td class="text-right down">-2.99%</td><td>Kâr realizasyonu</td></tr>
+          <tr><td>Jun 11</td><td class="text-right">$552.64</td><td class="text-right up">+11.19%</td><td>Gap-up; bellek çip talebi haberleri</td></tr>
+          <tr><td>Jun 5</td><td class="text-right">$453.01</td><td class="text-right down">-9.71%</td><td>Sert düşüş; piyasa geneli satış</td></tr>
+          <tr><td>May 14</td><td class="text-right">$440.56</td><td class="text-right up">+8.2%</td><td>Q2 FY2026 Earnings — EPS beat ($2.86 vs $2.69)</td></tr>
+          <tr><td>Apr 7</td><td class="text-right">$354.31</td><td class="text-right">—</td><td>Nisan düşük seviyesi</td></tr>
+          <tr><td>Mar 30</td><td class="text-right">$323.12</td><td class="text-right">—</td><td>Mart dip seviyesi</td></tr>
+          <tr><td>Feb 4</td><td class="text-right">$297.60</td><td class="text-right">—</td><td>Şubat dip seviyesi</td></tr>
+          <tr><td>Jan 8</td><td class="text-right">$281.64</td><td class="text-right">—</td><td>Yıl başı dip seviyesi</td></tr>
+        </tbody>
+      </table>
+
+      <h3 style="font-size:0.95rem;margin:16px 0 8px;color:var(--gf-accent)">Gap-Up / Gap-Down Analizi</h3>
+      <table>
+        <thead>
+          <tr><th>Tarih</th><th>Gap Tipi</th><th class="text-right">Büyüklük</th><th>Tetikleyici</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Jun 29</strong></td><td><span class="tag tag-green">Gap-Up</span></td><td class="text-right up"><strong>+1.6% → +12.0%</strong></td><td><strong>Alpaca API doğrulandı; açılış $633.80 → gün yüksek $708.985</strong></td></tr>
+          <tr><td>Jun 26</td><td><span class="tag tag-red">Gap-Down</span></td><td class="text-right down">-6.16%</td><td>52W zirvesi ($669.22) geri çekilme; rekor hacim</td></tr>
+          <tr><td>Jun 23</td><td><span class="tag tag-red">Gap-Down</span></td><td class="text-right down">-8.48%</td><td>Kâr realizasyonu; 52W zirvesi direnci</td></tr>
+          <tr><td>Jun 22</td><td><span class="tag tag-green">Gap-Up</span></td><td class="text-right up">+3.74%</td><td>Goldman Sachs AI capex raporu; BofA upgrade</td></tr>
+          <tr><td>Jun 11</td><td><span class="tag tag-green">Gap-Up</span></td><td class="text-right up">+11.19%</td><td>Bellek çip talebi haberleri; AI capex raporu</td></tr>
+          <tr><td>Jun 5</td><td><span class="tag tag-red">Gap-Down</span></td><td class="text-right down">-9.71%</td><td>Piyasa geneli satış baskısı; makro endişeler</td></tr>
+        </tbody>
+      </table>
+
+      <div class="grid" style="margin-top:16px">
+        <div class="card">
+          <div class="card-label">Barchart Overall</div>
+          <div class="card-value up">Strong Buy (100%)</div>
+          <div class="card-note">Teknik algoritma tamamen bullish</div>
+        </div>
+        <div class="card">
+          <div class="card-label">RSI (14)</div>
+          <div class="card-value up">70+</div>
+          <div class="card-note">Aşırı alım (overbought) bölgesi</div>
+        </div>
+        <div class="card">
+          <div class="card-label">50 Günlük MA</div>
+          <div class="card-value">$524.58</div>
+          <div class="card-note">Mevcut fiyat ile mesafe olağanüstü geniş</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Short Term Rank</div>
+          <div class="card-value up">Top 1%</div>
+          <div class="card-note">Tüm hisseler arasında en üst %1'lik dilim</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 4: Sentiment & Flow -->
+<section>
+  <div class="section-head" id="sec-sentiment" onclick="toggle('sec-sentiment')">
+    <div class="section-head-inner">
+      <h2 class="section-title">🔔 Sentiment & Flow</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <h3 style="font-size:0.95rem;margin:0 0 8px;color:var(--gf-accent)">Analyst Konsensüs</h3>
+      <table>
+        <thead>
+          <tr><th>Kaynak</th><th>Rating</th><th>Analyst</th><th class="text-right">Ort. PT</th><th class="text-right">High PT</th><th class="text-right">Low PT</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Yahoo Finance</td><td>—</td><td>—</td><td class="text-right">$532.34</td><td class="text-right">$720.00</td><td class="text-right">$358.00</td></tr>
+          <tr><td>MarketBeat</td><td><span class="tag tag-green">Moderate Buy</span></td><td>35</td><td class="text-right">$518.19</td><td class="text-right">$790.00</td><td class="text-right">$150.00</td></tr>
+          <tr><td>TipRanks</td><td><span class="tag tag-green">Strong Buy</span></td><td>58</td><td class="text-right">$444.70</td><td class="text-right">$517.00</td><td class="text-right">$380.00</td></tr>
+          <tr><td>Barchart</td><td><span class="tag tag-green">Strong Buy</span></td><td>38</td><td class="text-right">—</td><td class="text-right">—</td><td class="text-right">—</td></tr>
+        </tbody>
+      </table>
+
+      <div class="insight-box danger">
+        <strong>Kritik:</strong> Mevcut fiyat $698.96, tüm ana kaynakların ortalama hedef fiyatlarının ($518–532) çok üzerinde. Wells Fargo 26 Haziran'da PT $715 → $740 yükseltmiş; BofA street-high PT açıklamıştır.
+      </div>
+
+      <h3 style="font-size:0.95rem;margin:16px 0 8px;color:var(--gf-accent)">Kurumsal Sahiplik & Akışlar</h3>
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Kurumsal Sahiplik</div>
+          <div class="card-value up">%80.56</div>
+          <div class="card-note">Güçlü kurumsal güven işareti</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Net Inflow</div>
+          <div class="card-value up">$36.97B</div>
+          <div class="card-note">Giriş vs $18.02B çıkış — ikiye katlıyor</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Insider Ownership</div>
+          <div class="card-value down">%0.30</div>
+          <div class="card-note">Çok düşük; yönetim sahipliği sınırlı</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Insider Satış (3A)</div>
+          <div class="card-value down">$114.1M</div>
+          <div class="card-note">Prabu Raja 50K, Brice Hill 2.5K hisse sattı</div>
+        </div>
+      </div>
+
+      <h3 style="font-size:0.95rem;margin:16px 0 8px;color:var(--gf-accent)">Options Verileri</h3>
+      <table>
+        <thead>
+          <tr><th>Metrik</th><th class="text-right">Değer</th><th>Yorum</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Implied Volatility (IV)</td><td class="text-right up">89.14%</td><td>1 yıllık zirve; opsiyon primleri çok pahalı</td></tr>
+          <tr><td>Historical Volatility (30G)</td><td class="text-right">82.71%</td><td>IV > HV; piyasa gelecekte daha fazla volatilite bekliyor</td></tr>
+          <tr><td>IV Percentile</td><td class="text-right up">100%</td><td>1 yılın en yüksek seviyesi</td></tr>
+          <tr><td>IV Rank</td><td class="text-right up">100.00%</td><td>Tarihi zirve; short premium stratejileri cazip</td></tr>
+          <tr><td>Put/Call Volume Ratio</td><td class="text-right">0.59</td><td>Günlük hacimde call baskın; spekülatif alım</td></tr>
+          <tr><td>Put/Call OI Ratio</td><td class="text-right">1.03</td><td>Açık pozisyonda hafif put ağırlıklı; koruyucu pozisyonlar</td></tr>
+          <tr><td>Expected Move (DTE 3)</td><td class="text-right up">±$45.52 (6.55%)</td><td>3 günde ±$45 hareket beklentisi</td></tr>
+        </tbody>
+      </table>
+
+      <div class="grid" style="margin-top:16px">
+        <div class="card">
+          <div class="card-label">Short % of Float</div>
+          <div class="card-value">2.77%</div>
+          <div class="card-note">Düşük short interest; bearish değil</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Days to Cover</div>
+          <div class="card-value">2.23</div>
+          <div class="card-note">Short squeeze riski sınırlı</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Short Interest Değişimi</div>
+          <div class="card-value up">+9.80%</div>
+          <div class="card-note">Son ay; bearish sentiment hafif yükseliyor</div>
+        </div>
+        <div class="card">
+          <div class="card-label">News Sentiment</div>
+          <div class="card-value up">0.97</div>
+          <div class="card-note">Pozitif; sektör ort. (0.71) üzerinde</div>
+        </div>
+      </div>
+
+      <div class="insight-box bull">
+        <strong>News Flow:</strong> Bu hafta 83 haber — ortalama 14/hafta yerine aşırı yüksek ilgi; hisse medya ve yatırımcı radarında.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 5: Risk Faktörleri -->
+<section>
+  <div class="section-head" id="sec-risk" onclick="toggle('sec-risk')">
+    <div class="section-head-inner">
+      <h2 class="section-title">⚠️ Risk Faktörleri</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <table>
+        <thead>
+          <tr><th>Risk Faktörü</th><th>Olasılık</th><th>Etki</th><th>Seviye</th><th>Detay</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Makro Korelasyon (SPY/QQQ, Faiz)</td><td><span class="tag tag-red">Yüksek</span></td><td>Orta</td><td><span class="tag tag-orange">🟡</span></td><td>Beta 1.67; SPY/QQQ düzeltmesi AMAT'ı derinden etkiler</td></tr>
+          <tr><td>Değerleme Sıkışması (P/E 59)</td><td><span class="tag tag-red">Yüksek</span></td><td><span class="tag tag-red">Yüksek</span></td><td><span class="tag tag-red">🔴</span></td><td>Fiyat ($698.96) analyst PT ($518-532) çok üzerinde; miss = derin düzeltme</td></tr>
+          <tr><td>RSI 70+ / Aşırı Alım</td><td><span class="tag tag-red">Yüksek</span></td><td>Orta</td><td><span class="tag tag-orange">🟡</span></td><td>Mean reversion riski; 50G MA ($524.58) ile mesafe olağanüstü geniş</td></tr>
+          <tr><td>Rekabet (Lam, KLA, ASML, TEL)</td><td>Orta</td><td>Orta</td><td><span class="tag tag-orange">🟡</span></td><td>ASML litografide tekeller; Çinli NAURA/AMEC uzun vadeli tehdit</td></tr>
+          <tr><td>BIS Affiliates Rule (~$600M)</td><td><span class="tag tag-red">Yüksek</span></td><td>Orta</td><td><span class="tag tag-orange">🟡</span></td><td>FY2026 gelirinde ~$600M azalma; Eylül 2025'te yürürlüğe girdi</td></tr>
+          <tr><td>Çin İhracat Kontrolleri</td><td>Orta</td><td><span class="tag tag-red">Yüksek</span></td><td><span class="tag tag-orange">🟡</span></td><td>Kasım 2026 askı sonu; tedarik zinciri ve hammadde maliyetleri etkilenebilir</td></tr>
+          <tr><td>Earnings Miss Riski (Q3)</td><td>Orta</td><td><span class="tag tag-red">Yüksek</span></td><td><span class="tag tag-orange">🟡</span></td><td>Q3 guidance yüksek; miss durumunda derin satış. 13 Ağustos 2026</td></tr>
+          <tr><td>WFE Döngüsü</td><td>Orta</td><td><span class="tag tag-red">Yüksek</span></td><td><span class="tag tag-orange">🟡</span></td><td>Sektör doğası gereği döngüsel; AI capex yavaşlarsa dönüş hızlı ve sert</td></tr>
+          <tr><td>Çin Gelir Normalleşmesi</td><td><span class="tag tag-red">Yüksek</span></td><td>Orta</td><td><span class="tag tag-orange">🟡</span></td><td>Çin gelirleri 2024'te $9.36B'den 2025'te ~$8.23B'ye; NAURA/AMEC pay kaybı</td></tr>
+          <tr><td>Tedarik Zinciri Kısıtlamaları</td><td>Orta</td><td><span class="tag tag-red">Yüksek</span></td><td><span class="tag tag-orange">🟡</span></td><td>2.000 tedarikçi, 8 çeyrek lead time; nadir toprak bağımlılığı</td></tr>
+          <tr><td>Insider Satışı ($114M / 3A)</td><td><span class="tag tag-red">Yüksek</span></td><td>Düşük</td><td><span class="tag tag-green">🟢</span></td><td>Prabu Raja 50K, Brice Hill 2.5K; vergi planlaması bağlamında değerlendirilmeli</td></tr>
+          <tr><td>Short Interest Artışı (+9.80%)</td><td>Orta</td><td>Düşük</td><td><span class="tag tag-green">🟢</span></td><td>Hâlâ düşük (2.77% of float); bearish sentiment hafif yükseliyor</td></tr>
+          <tr><td>Kâr Realizasyonu Baskısı</td><td><span class="tag tag-red">Yüksek</span></td><td>Orta</td><td><span class="tag tag-orange">🟡</span></td><td>YTD +144%; 52W zirvesi ($669.22) direnci kırılamazsa satış derinleşebilir</td></tr>
+          <tr><td>ABD Tüketici Güveni Çöküşü</td><td>Orta</td><td>Orta</td><td><span class="tag tag-orange">🟡</span></td><td>49.5 ile tarihin en düşük 2. seviyesi; teknoloji talebini dolaylı etkiler</td></tr>
+          <tr><td>Bellek Çip Maliyet Artışları</td><td>Düşük</td><td><span class="tag tag-red">Yüksek</span></td><td><span class="tag tag-green">🟢</span></td><td>MSFT, AAPL fiyat artışları — bellek üreticileri kapasite genişletir; AMAT için fırsat</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 6: Senaryo Analizi -->
+<section>
+  <div class="section-head" id="sec-senaryo" onclick="toggle('sec-senaryo')">
+    <div class="section-head-inner">
+      <h2 class="section-title">🔮 Senaryo Analizi</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Bull Senaryo</div>
+          <div class="card-value up">$750 – $800</div>
+          <div class="card-note">12 aylık hedef | Olasılık: %25-30</div>
+          <div style="margin-top:8px">
+            <div class="progress-bar"><div class="progress-fill fill-bull" style="width:30%">30%</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-label">Base Senaryo</div>
+          <div class="card-value neu">$720 – $780</div>
+          <div class="card-note">12 aylık hedef | Olasılık: %45-50</div>
+          <div style="margin-top:8px">
+            <div class="progress-bar"><div class="progress-fill fill-base" style="width:45%">45%</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-label">Bear Senaryo</div>
+          <div class="card-value down">$550 – $600</div>
+          <div class="card-note">12 aylık hedef | Olasılık: %20-25</div>
+          <div style="margin-top:8px">
+            <div class="progress-bar"><div class="progress-fill fill-bear" style="width:25%">25%</div></div>
+          </div>
+        </div>
+      </div>
+
+      <table style="margin-top:16px">
+        <thead>
+          <tr><th>Senaryo</th><th>Hedef Aralık</th><th>Olasılık</th><th>Temel Varsayımlar</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="tag tag-green">BULL</span><br><small>AI Capex Süper Döngüsü</small></td>
+            <td class="text-right up">$750 – $800</td>
+            <td>%25-30</td>
+            <td>Q3 EPS > $3.50; Q4 guidance yukarı; EPIC Center başarılı; P/E 65-70; Çin kısıtlamaları hafifler</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-orange">BASE</span><br><small>Mevcut Momentum</small></td>
+            <td class="text-right neu">$720 – $780</td>
+            <td>%45-50</td>
+            <td>Q3 EPS ~$3.35-3.40; Q4 in-line; AI capex stabil; P/E 55-60; kâr realizasyonu baskısı zaman zaman</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-red">BEAR</span><br><small>Çin + Değerleme Düzeltmesi</small></td>
+            <td class="text-right down">$550 – $600</td>
+            <td>%20-25</td>
+            <td>Q3 EPS < $3.20; guidance düşürülür; Çin kontrolleri sıkılaşır; WFE döngüsü dönüşü; P/E 40-45</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 7: Tahmin & Tavsiye -->
+<section>
+  <div class="section-head" id="sec-tahmin" onclick="toggle('sec-tahmin')">
+    <div class="section-head-inner">
+      <h2 class="section-title">🎯 Tahmin & Tavsiye</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="kpi-row">
+        <div class="kpi">
+          <div class="kpi-num">1-2 Hafta</div>
+          <div class="kpi-label">Zaman Çerçevesi</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-num neu">$680 – $720</div>
+          <div class="kpi-label">Hedef Aralık</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-num up">Yüksek Volatilite</div>
+          <div class="kpi-label">Beklenti</div>
+        </div>
+      </div>
+
+      <div class="kpi-row">
+        <div class="kpi">
+          <div class="kpi-num">1-4 Hafta</div>
+          <div class="kpi-label">Zaman Çerçevesi</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-num neu">$650 – $730</div>
+          <div class="kpi-label">Hedef Aralık</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-num">Earnings Öncesi</div>
+          <div class="kpi-label">13 Ağustos 2026</div>
+        </div>
+      </div>
+
+      <div class="kpi-row">
+        <div class="kpi">
+          <div class="kpi-num">12 Ay</div>
+          <div class="kpi-label">Zaman Çerçevesi</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-num neu">Base $720-780</div>
+          <div class="kpi-label">Hedef Aralık</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-num">Bull $800-850</div>
+          <div class="kpi-label">Üst Senaryo</div>
+        </div>
+      </div>
+
+      <div class="insight-box" style="margin-top:16px">
+        <strong>Tavsiye: HOLD (Tut)</strong> — Yeni Zirve Sonrası Dikkatli İzleme
+      </div>
+
+      <p style="font-size:0.88rem;color:var(--gf-text);margin:12px 0">
+        AMAT temel analiz açısından güçlü: sektör lideri, yüksek marjlı, pozitif FCF, düşük borç/özsermaye, güçlü kurumsal sahiplik. Ancak mevcut fiyat ($698.96), değerleme ölçütleri (P/E ~59, P/B >20) ve analyst hedeflerinin ($518-532) çok üzerinde olması nedeniyle yeni "uzun vadeli yatırım" pozisyonu açmak riskli.
+      </p>
+
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Mevcut Sahipler</div>
+          <div class="card-value neu">Tut & İzle</div>
+          <div class="card-note">Trailing stop, partial sell stratejileri</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Yeni Girişler</div>
+          <div class="card-value down">Bekle</div>
+          <div class="card-note">S1 ($690), S2 ($680), 50G MA ($524.58) bekle</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Opsiyon Trader'ları</div>
+          <div class="card-value up">Fırsat</div>
+          <div class="card-note">IV Rank 100% + Expected Move ±$45.52</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 8: Opsiyon Stratejisi -->
+<section>
+  <div class="section-head" id="sec-opsiyon" onclick="toggle('sec-opsiyon')">
+    <div class="section-head-inner">
+      <h2 class="section-title">💰 Opsiyon Stratejisi</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="insight-box danger">
+        <strong>Önemli Uyarı:</strong> Aşağıdaki stratejiler eğitim ve analiz amaçlıdır. Yatırım tavsiyesi değildir. Opsiyon trading yüksek risk içerir; sadece kaybetmeyi göze alabileceğiniz tutarla işlem yapın. Pozisyon büyüklüğü, portföyünüzün %5'ini geçmemeli.
+      </div>
+
+      <h3 style="font-size:0.95rem;margin:16px 0 8px;color:var(--gf-accent)">Strateji 1: Short Straddle (IV Crush — Nötr)</h3>
+      <table>
+        <thead>
+          <tr><th>Alan</th><th>Detay</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Görüş</td><td><span class="tag tag-orange">Nötr / IV Crush</span></td></tr>
+          <tr><td>Strateji</td><td>Short Straddle (ATM Call + ATM Put satışı)</td></tr>
+          <tr><td>Strike</td><td>Call $700 / Put $700 (ATM)</td></tr>
+          <tr><td>Expiration</td><td>14 Ağustos 2026 (Earnings + 1 gün)</td></tr>
+          <tr><td>Max Risk</td><td>Sınırsız (teorik)</td></tr>
+          <tr><td>Max Profit</td><td>Toplam prim (~$95-110)</td></tr>
+          <tr><td>Breakeven</td><td>Üst: $700 + prim | Alt: $700 – prim (~$590 – $810)</td></tr>
+          <tr><td>Stop</td><td>Underlying $700 ±$100 (pratik: $600 veya $800)</td></tr>
+          <tr><td>Gerekçe</td><td>IV Rank 100% ile primler zirvede. Earnings sonrası IV crush %40-60. Risk: Yönlü hareket $100+ olursa kayıp büyük.</td></tr>
+        </tbody>
+      </table>
+
+      <h3 style="font-size:0.95rem;margin:16px 0 8px;color:var(--gf-accent)">Strateji 2: Bull Call Spread (Bullish Momentum)</h3>
+      <table>
+        <thead>
+          <tr><th>Alan</th><th>Detay</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Görüş</td><td><span class="tag tag-green">Bullish</span></td></tr>
+          <tr><td>Strateji</td><td>Bull Call Spread (Debit Call Spread)</td></tr>
+          <tr><td>Long Strike</td><td>$700 Call (alınan)</td></tr>
+          <tr><td>Short Strike</td><td>$730 Call (satılan)</td></tr>
+          <tr><td>Expiration</td><td>17 Temmuz 2026 (2 hafta) veya 14 Ağustos 2026</td></tr>
+          <tr><td>Max Risk</td><td>Net debit (~$14-18)</td></tr>
+          <tr><td>Max Profit</td><td>~$16-22 (yaklaşık 1.0x – 1.5x getiri)</td></tr>
+          <tr><td>Breakeven</td><td>$700 + net debit (~$714-718)</td></tr>
+          <tr><td>Stop</td><td>Underlying $690 (S1 altı) veya spread değeri %50 düşerse</td></tr>
+          <tr><td>Gerekçe</td><td>Bullish momentum ve yeni 52W zirve senaryosunda limitli risk. Breakeven ~%2-3 yükseliş gerektirir.</td></tr>
+        </tbody>
+      </table>
+
+      <h3 style="font-size:0.95rem;margin:16px 0 8px;color:var(--gf-accent)">Strateji 3: Bear Put Spread (Mean Reversion)</h3>
+      <table>
+        <thead>
+          <tr><th>Alan</th><th>Detay</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Görüş</td><td><span class="tag tag-red">Bearish / Mean Reversion</span></td></tr>
+          <tr><td>Strateji</td><td>Bear Put Spread (Debit Put Spread)</td></tr>
+          <tr><td>Long Strike</td><td>$690 Put (alınan)</td></tr>
+          <tr><td>Short Strike</td><td>$660 Put (satılan)</td></tr>
+          <tr><td>Expiration</td><td>17 Temmuz 2026 (2 hafta) veya 14 Ağustos 2026</td></tr>
+          <tr><td>Max Risk</td><td>Net debit (~$12-15)</td></tr>
+          <tr><td>Max Profit</td><td>~$15-18 (yaklaşık 1.0x – 1.5x getiri)</td></tr>
+          <tr><td>Breakeven</td><td>$690 – net debit (~$675-678)</td></tr>
+          <tr><td>Stop</td><td>Underlying $710 (R1 üzeri) veya spread değeri %50 düşerse</td></tr>
+          <tr><td>Gerekçe</td><td>RSI 70+, değerleme sıkışması, insider satışı — bearish sinyal. $708.985 zirvesinden "double top" riski.</td></tr>
+        </tbody>
+      </table>
+
+      <h3 style="font-size:0.95rem;margin:16px 0 8px;color:var(--gf-accent)">Strateji 4: Long Straddle (Volatilite — Earnings Öncesi)</h3>
+      <table>
+        <thead>
+          <tr><th>Alan</th><th>Detay</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Görüş</td><td><span class="tag tag-blue">Volatilite (Yönsüz)</span></td></tr>
+          <tr><td>Strateji</td><td>Long Straddle (ATM Call + ATM Put alımı)</td></tr>
+          <tr><td>Strike</td><td>$700 Call + $700 Put</td></tr>
+          <tr><td>Expiration</td><td>14 Ağustos 2026 (Earnings günü)</td></tr>
+          <tr><td>Max Risk</td><td>Toplam prim (~$95-110)</td></tr>
+          <tr><td>Max Profit</td><td>Sınırsız (yukarı veya aşağı)</td></tr>
+          <tr><td>Breakeven</td><td>Üst: $700 + prim | Alt: $700 – prim (~$590 ve $810)</td></tr>
+          <tr><td>Stop</td><td>Earnings sonrası IV crush; straddle değeri %50 düşerse çıkış</td></tr>
+          <tr><td>Gerekçe</td><td>Earnings öncesi büyük yönlü hareket bekleniyorsa. Risk: IV crush; volatilite düşerse değer hızla erir.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="insight-box warn" style="margin-top:16px">
+        <strong>Risk Yönetimi:</strong> Pozisyon limiti portföyün %5'ini geçmemeli. Her strateji minimum 2x getiri potansiyeli taşımalı. Net debit'in %50'si pratik stop-loss. Earnings 13 Ağustos — tüm stratejiler için katalizör.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 9: Kilit İzlenecek Metrikler -->
+<section>
+  <div class="section-head" id="sec-metrik" onclick="toggle('sec-metrik')">
+    <div class="section-head-inner">
+      <h2 class="section-title">📋 Kilit İzlenecek Metrikler</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <table>
+        <thead>
+          <tr><th>Metrik</th><th>Kaynak</th><th>Sıklık</th><th>Eşik / Alarm</th><th>Önem</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Fiyat (Kapanış)</td><td>Yahoo, MarketBeat</td><td>Günlük</td><td>$698.96 altında S1 ($690) testi; üzerinde R1 ($710) kırılması</td><td><span class="tag tag-red">Yüksek</span></td></tr>
+          <tr><td>Hacim</td><td>Yahoo Finance</td><td>Günlük</td><td>20G ortalama üzerinde %200+ = momentum veya dağıtım</td><td><span class="tag tag-red">Yüksek</span></td></tr>
+          <tr><td>IV Rank / IV Percentile</td><td>Barchart</td><td>Günlük</td><td>IV Rank < %80'e düşerse short premium stratejileri azalır</td><td><span class="tag tag-red">Yüksek</span></td></tr>
+          <tr><td>Put/Call OI Ratio</td><td>Barchart, Fintel</td><td>Günlük</td><td>OI ratio > 1.20 = bearish artışı; < 0.80 = bullish</td><td><span class="tag tag-orange">Orta</span></td></tr>
+          <tr><td>Expected Move</td><td>Barchart</td><td>Günlük</td><td>Earnings yaklaştıkça genişler; strateji breakeven'lerini güncelle</td><td><span class="tag tag-red">Yüksek</span></td></tr>
+          <tr><td>RSI (14)</td><td>Barchart</td><td>Günlük</td><td>RSI > 75 = aşırı alım; RSI < 40 = momentum zayıflığı</td><td><span class="tag tag-orange">Orta</span></td></tr>
+          <tr><td>Analyst Hedef Fiyat Güncellemeleri</td><td>MarketBeat, Yahoo, TipRanks</td><td>Haftalık</td><td>Ortalama PT $698.96'ya yaklaşırsa = değerleme onayı</td><td><span class="tag tag-red">Yüksek</span></td></tr>
+          <tr><td>Insider Alım/Satım</td><td>EdgarHawk, SEC Form 4</td><td>Haftalık</td><td>Yeni insider satışı > $10M = dikkat; alım = bullish</td><td><span class="tag tag-red">Yüksek</span></td></tr>
+          <tr><td>Short Interest Değişimi</td><td>MarketBeat</td><td>Aylık</td><td>Short % of float > %4 = bearish artışı</td><td><span class="tag tag-orange">Orta</span></td></tr>
+          <tr><td>Kurumsal Inflow/Outflow</td><td>MarketBeat</td><td>Aylık</td><td>Net inflow negatife dönerse = kurumsal güven zayıflığı</td><td><span class="tag tag-red">Yüksek</span></td></tr>
+          <tr><td>Q3 FY2026 Earnings</td><td>AMAT IR, SeekingAlpha</td><td>Takvim</td><td>13 Ağustos 2026 — EPS $3.35 konsensüs; miss = derin satış</td><td><span class="tag tag-red">Yüksek</span></td></tr>
+          <tr><td>Çin İhracat Kontrolü Haberleri</td><td>Reuters, Bloomberg</td><td>Günlük</td><td>Kasım 2026 askı sonu; yeni kısıtlama = tedarik zinciri riski</td><td><span class="tag tag-red">Yüksek</span></td></tr>
+          <tr><td>WFE Harcama Verileri (SEMI)</td><td>SEMI, CMBI</td><td>Çeyreklik</td><td>2026 WFE büyümesi <%20 = sektör döngüsü riski</td><td><span class="tag tag-red">Yüksek</span></td></tr>
+          <tr><td>AI Capex Raporları (CSP'ler)</td><td>Goldman, Morgan Stanley</td><td>Aylık</td><td>Büyük CSP'lerin capex indirimi = AMAT talep riski</td><td><span class="tag tag-red">Yüksek</span></td></tr>
+          <tr><td>VIX / SPY / QQQ Trendi</td><td>Yahoo Finance</td><td>Günlük</td><td>VIX > 25 = piyasa korkusu; SPY/QQQ 50G MA altı = AMAT beta 1.67 ile derin etki</td><td><span class="tag tag-red">Yüksek</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 10: Özet & Anahtar Mesajlar -->
+<section>
+  <div class="section-head" id="sec-ozet10" onclick="toggle('sec-ozet10')">
+    <div class="section-head-inner">
+      <h2 class="section-title">📌 Özet & Anahtar Mesajlar</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <h3 style="font-size:0.95rem;margin:0 0 12px;color:var(--gf-accent)">10 Kilit Mesaj</h3>
+      <div class="timeline">
+        <div class="timeline-item bull">
+          <div class="timeline-date">1. Şirket güçlü, fiyat zengin</div>
+          <div class="timeline-body">AMAT temel analiz açısından sektör lideri; ancak P/E ~59, P/B >20 ve fiyat analyst hedeflerinin ($518-532) üzerinde.</div>
+        </div>
+        <div class="timeline-item warn">
+          <div class="timeline-date">2. IV Rank 100%</div>
+          <div class="timeline-body">Opsiyon primleri 1 yıllık zirvede; volatilite olağanüstü yüksek. Short premium veya straddle stratejileri cazip; ancak yönlü risk yüksek.</div>
+        </div>
+        <div class="timeline-item bull">
+          <div class="timeline-date">3. Earnings 13 Ağustos kritik</div>
+          <div class="timeline-body">Q3 guidance yüksek ($8.95B ±$500M, EPS $3.36 ±$0.20). Beat = momentum devamı; miss = derin düzeltme.</div>
+        </div>
+        <div class="timeline-item warn">
+          <div class="timeline-date">4. Analyst hedefleri geride kalmış</div>
+          <div class="timeline-body">Mevcut fiyat ($698.96), Yahoo ($532), MarketBeat ($518), TipRanks ($444) ortalamalarının üzerinde. Wells Fargo $740, BofA street-high güncellemeleri var.</div>
+        </div>
+        <div class="timeline-item bull">
+          <div class="timeline-date">5. Gap-up doğrulandı</div>
+          <div class="timeline-body">Barchart ~$701.98 pre-market verisi, Alpaca API ($698.96) tarafından doğrulandı. Hisse yeni 52W zirve $708.985'i kırdı.</div>
+        </div>
+        <div class="timeline-item bull">
+          <div class="timeline-date">6. AI capex süper döngüsü ana destek</div>
+          <div class="timeline-body">Goldman Sachs $757B AI capex raporu; EPIC Center; packaging %50+ büyüme. 2030'a kadar talep endişesi devam ediyor.</div>
+        </div>
+        <div class="timeline-item warn">
+          <div class="timeline-date">7. Çin kısıtlamaları başlıca risk</div>
+          <div class="timeline-body">BIS Affiliates Rule ~$600M etki; Kasım 2026'da Çin kontrolleri yeniden değerlendirilecek. NAURA/AMEC uzun vadeli tehdit.</div>
+        </div>
+        <div class="timeline-item bear">
+          <div class="timeline-date">8. Insider satışı $114M / 3 ay</div>
+          <div class="timeline-body">Prabu Raja 50K hisse, Brice Hill 2.5K hisse. Teknik olarak negatif; vergi planlaması bağlamında değerlendirilmeli.</div>
+        </div>
+        <div class="timeline-item warn">
+          <div class="timeline-date">9. Tedarik zinciri 8 çeyrek lead time</div>
+          <div class="timeline-body">2.000 tedarikçi; kapasite genişletmesi yavaş. Nadir toprak bağımlılığı (Çin: %80+ galyum) jeopolitik risk.</div>
+        </div>
+        <div class="timeline-item warn">
+          <div class="timeline-date">10. Beta 1.67 + SPY/QQQ korelasyonu</div>
+          <div class="timeline-body">Makro piyasa hareketlerine aşırı duyarlı. FOMC, enflasyon, teknoloji sektörü trendi yakından izlenmeli.</div>
+        </div>
+      </div>
+
+      <h3 style="font-size:0.95rem;margin:20px 0 8px;color:var(--gf-accent)">Genel Görünüm</h3>
+      <div class="insight-box">
+        <strong>Net Değerlendirme:</strong> Applied Materials (AMAT), yarıiletken üretim ekipmanları sektöründe malzeme mühendisliği, deponizyon, etch ve advanced packaging alanlarında lider konumunu sürdürüyor. Q2 FY2026 performansı — rekor gelir ($7.91B), %50 brüt marj (25 yılın en yükseği), EPS beat ($2.86 vs $2.69) — operasyonel mükemmelliği teyit ediyor. Kurumsal sahiplik %80.56, net inflow $36.97B vs $18.02B — büyük fonlar AMAT'a güveniyor.
+      </div>
+      <div class="insight-box warn">
+        <strong>Değerleme Uyarısı:</strong> Ancak, bu güçlü temellerin karşısında hisse fiyatı olağanüstü hızlı yükselmiş ve değerleme ölçütleri "zengin" seviyelere ulaşmıştır. P/E ~59, P/B >20, P/S >17 ve mevcut fiyatın ($698.96) analyst hedeflerinin ($518-532) çoğunu aşmış olması, yeni "uzun vadeli yatırım" pozisyonu açmak için riskli bir ortam yaratıyor. RSI 70+ aşırı alım, 6/29 gap-up sonrası potansiyel fade, insider satışı ($114M) ve short interest artışı (%9.80) kısa vadeli zayıflık sinyalleri.
+      </div>
+      <div class="insight-box bull">
+        <strong>Opsiyon Perspektifi:</strong> Opsiyon trader'ları için, IV Rank 100% ve Expected Move ±$45.52 (6.55%) ile volatilite oyunları cazip. Short straddle (IV crush), bear put spread (mean reversion), bull call spread (gap-up devamı) ve long straddle (earnings volatilitesi) stratejileri değerlendirilebilir. Ancak her strateji, yönlü risk ve IV crush riskini içerir; pozisyon büyüklüğü portföyün %5'ini geçmemeli, minimum 2x getiri potansiyeli aranmalı ve mutlaka stop-loss konulmalıdır.
+      </div>
+      <p style="font-size:0.88rem;color:var(--gf-text);margin-top:12px">
+        <strong>Net görünüm:</strong> AMAT, güçlü bir şirket ve güçlü bir trend içinde; ancak fiyat "çok şey fiyatlıyor". Mevcut sahipler için "tut ve izle" (hold) stratejisi; yeni girişler için düzeltme seviyeleri (S1 $690, S2 $680, 50G MA $524.58) beklenmeli. 13 Ağustos earnings, senaryolar arasındaki dengeyi değiştirecek kritik bir dönüm noktasıdır.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">Gistify Flow | 29 Haziran 2026 | AMAT.US | Alpaca API verileri</div>
+
+</div>
+</body>
+</html>
