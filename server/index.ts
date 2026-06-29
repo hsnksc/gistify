@@ -2270,7 +2270,7 @@ function renderStaticMarketingPage(
 
 function renderLandingPageHtml() {
   return renderStaticMarketingPage(
-    "Gistify | Momentum, Earnings and Options Research Workspace",
+    "Momentum, Earnings and Options Research Workspace",
     "Gistify brings momentum scans, pre-earnings planning and options risk framing into one subscription workspace.",
     `
       <section class="card hero">
