@@ -56,9 +56,11 @@ function mapSourceToViewerReport(source: DailyReportSourcePackage): ViewerReport
       executiveSummary: source.executiveSummary,
       figureFiles: source.figureFiles,
       headline: source.headline,
+      html: source.html,
       markdown: source.markdown,
       metadataItems: source.metadataItems,
       methodology: source.methodology,
+      contentFormat: source.contentFormat,
       openAiFigureFiles: source.openAiFigureFiles,
       researchFileCount: source.researchFileCount,
       sectionFiles: source.sectionFiles,
@@ -451,6 +453,5 @@ export default function DailyReportPage({
     </div>
   );
 }
-
 
 

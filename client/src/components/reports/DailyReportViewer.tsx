@@ -3,6 +3,7 @@ import HtmlReportRenderer from "@/components/reports/HtmlReportRenderer";
 import ReportPostShell, {
   type ReportPostItem,
 } from "@/components/reports/ReportPostShell";
+import { buildDailyReportHtmlDocument } from "@/lib/dailyReportHtml";
 import { getDailyReportAssetUrl } from "@/lib/dailyReports";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import {
@@ -187,6 +188,8 @@ export default function DailyReportViewer({
     ? copy(language, "Flow Post", "Flow Post")
     : copy(language, "Daily Post", "Daily Post");
   const isHtmlSource = normalizedContent.contentFormat === "html";
+  const reportDateLabel = formatReportDate(reportDate, locale);
+  const updatedAtLabel = formatUpdateStamp(updatedAt, locale);
   const spotlight = isHtmlSource
     ? null
     : buildReportSpotlight(normalizedContent.markdown);
@@ -303,14 +306,40 @@ export default function DailyReportViewer({
     };
   });
 
+  const resolvedHtml = isHtmlSource
+    ? normalizedContent.html || ""
+    : buildDailyReportHtmlDocument({
+        content: normalizedContent,
+        language,
+        reportDateLabel,
+        resolveImage: (src, alt) => {
+          const resolved = resolveAssetSrc(
+            assetBasePath,
+            src,
+            normalizedContent.openAiFigureFiles
+          );
+
+          return {
+            src: resolved.src,
+            alt: alt || prettifyFigureLabel(src),
+            label: resolved.aiEnhanced
+              ? `${prettifyFigureLabel(src)} · OpenAI`
+              : prettifyFigureLabel(src),
+          };
+        },
+        sourceLabel,
+        title,
+        updatedAtLabel,
+      });
+
   return (
     <ReportPostShell
       language={language}
       categoryLabel={categoryLabel}
       title={title}
       headline={normalizedContent.headline}
-      reportDateLabel={formatReportDate(reportDate, locale)}
-      updatedAtLabel={formatUpdateStamp(updatedAt, locale)}
+      reportDateLabel={reportDateLabel}
+      updatedAtLabel={updatedAtLabel}
       sourceLabel={sourceLabel}
       sourceKindLabel={
         isHtmlSource
@@ -330,20 +359,29 @@ export default function DailyReportViewer({
               "Asagida yuklenen HTML kaynak ayni yayin temasinda korunur.",
               "The uploaded HTML source is preserved below inside the publishing theme."
             )
-          : undefined
+          : copy(
+              language,
+              "Asagidaki markdown kaynak yayin temali HTML dokumana donusturulerek gosterilir.",
+              "The markdown source below is converted into a publication-style HTML document."
+            )
       }
       documentContent={
-        isHtmlSource ? (
-          <HtmlReportRenderer
-            language={language}
-            html={normalizedContent.html || ""}
-            emptyMessage={copy(
-              language,
-              "Kaynak HTML icerigi bos.",
-              "The source HTML content is empty."
-            )}
-          />
-        ) : undefined
+        <HtmlReportRenderer
+          language={language}
+          html={resolvedHtml}
+          emptyMessage={copy(
+            language,
+            isHtmlSource
+              ? "Kaynak HTML icerigi bos."
+              : "Kaynak markdown HTML dokumana donusturulemedi.",
+            isHtmlSource
+              ? "The source HTML content is empty."
+              : "The markdown source could not be converted into an HTML document."
+          )}
+          sourceFolder={sourceFolder}
+          sourceLabel={sourceLabel}
+          title={title}
+        />
       }
       emptyMessage={copy(
         language,
