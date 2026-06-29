@@ -676,16 +676,43 @@ function extractHtmlFigureFiles(html: string) {
 
 function extractHtmlMetadata(html: string) {
   const title = extractHtmlTitle(html);
-  const heroDescription = extractHtmlTextByClass(html, "hero-desc");
+  const heroTitle =
+    extractHtmlTextByClass(html, "hero-h") ||
+    stripHtmlTags(html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)?.[1] || "");
+  const heroParagraphs = dedupeFlowTexts(
+    collectHtmlTextsByClass(html, "hero-p", 4),
+    4,
+    24
+  );
+  const heroDescription =
+    extractHtmlTextByClass(html, "hero-desc") || heroParagraphs[0] || "";
   const verdict = extractHtmlTextByClass(html, "verdict-val");
+  const metaPills = dedupeFlowTexts(
+    collectHtmlTextsByClass(html, "meta-pill", 6),
+    6,
+    16
+  );
+  const alertItems = dedupeFlowTexts(
+    [
+      ...collectHtmlTextsByClass(html, "alert", 6),
+      ...collectHtmlTextsByClass(html, "ac", 6),
+    ],
+    6,
+    24
+  );
   const thesisItems = collectHtmlTextsByClass(html, "thesis-body", 4);
   const timelineItems = collectHtmlTextsByClass(html, "tl-body", 2);
-  const sectionTitles = collectHtmlTextsByClass(html, "section-title", 8)
+  const sectionTitles = dedupeFlowTexts(
+    [
+      ...collectHtmlTextsByClass(html, "section-title", 8),
+      ...collectHtmlTextsByClass(html, "st", 8),
+    ],
+    8,
+    6
+  )
     .map(item => item.split(/\s{2,}/)[0] || item)
     .filter(Boolean);
-  const h1Text = stripHtmlTags(
-    html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)?.[1] || ""
-  );
+  const h1Text = heroTitle;
   const footerText = stripHtmlTags(
     html.match(/<footer[^>]*>([\s\S]*?)<\/footer>/i)?.[1] || ""
   );
@@ -721,7 +748,12 @@ function extractHtmlMetadata(html: string) {
 
   return {
     title,
-    headline: heroDescription || verdict || cleanMarkdownText(title),
+    headline:
+      heroDescription ||
+      alertItems[0] ||
+      verdict ||
+      heroTitle ||
+      cleanMarkdownText(title),
     author: "",
     coverage: tickerToken
       ? tickerToken === "MARKET"
@@ -730,9 +762,18 @@ function extractHtmlMetadata(html: string) {
       : "",
     methodology: "",
     metadataItems,
-    executiveSummary: [heroDescription, ...thesisItems, ...timelineItems]
-      .filter(Boolean)
-      .slice(0, 6),
+    executiveSummary: dedupeFlowTexts(
+      [
+        heroDescription,
+        ...heroParagraphs,
+        ...metaPills,
+        ...alertItems,
+        ...thesisItems,
+        ...timelineItems,
+      ].filter(Boolean),
+      8,
+      18
+    ),
     reportDate,
     reportDateLabel: cleanMarkdownText(priceDate) || reportDate,
     tickerUniverse: tickerToken ? [tickerToken] : [],
@@ -986,6 +1027,7 @@ function buildFlowFileSourcePackage(options: {
     sourceLabel,
     updatedAt,
   } = options;
+  const isHtmlSource = Boolean(html.trim());
   const narrativeParagraphs = dedupeFlowTexts(
     metadata.executiveSummary?.length
       ? metadata.executiveSummary
@@ -1061,7 +1103,7 @@ function buildFlowFileSourcePackage(options: {
     metadataItems: sourceMetadataItems,
     executiveSummary,
     markdown: normalizedMarkdown,
-    html: "",
+    html,
     sectionFiles: [],
     figureFiles,
     openAiFigureFiles,
@@ -1069,7 +1111,7 @@ function buildFlowFileSourcePackage(options: {
     researchFileCount: 0,
     updatedAt,
     sourceKind,
-    contentFormat: "markdown",
+    contentFormat: isHtmlSource ? "html" : "markdown",
     sourceLabel,
     assetBasePath,
   } satisfies DailyReportSourcePackage;

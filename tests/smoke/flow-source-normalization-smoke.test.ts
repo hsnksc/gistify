@@ -36,4 +36,20 @@ describe("flow source normalization smoke", () => {
     expect(source?.markdown).toContain("**Ticker:** $META");
     expect(source?.markdown).toContain("## Ozet");
   });
+
+  it("preserves rich flow html sources as full html reports", () => {
+    const source = listDailyReportSourcePackages().find(
+      item =>
+        item.sourceLabel === "flow/daily-10-hisse-analiz-28-haziran-2026.html"
+    );
+
+    expect(source).toBeTruthy();
+    expect(source?.contentFormat).toBe("html");
+    expect(source?.tickerUniverse).toEqual(
+      expect.arrayContaining(["AMD", "NEE", "NVDA", "PFE", "PLTR", "SMCI", "WMT"])
+    );
+    expect(source?.headline).toContain("Growth/Momentum");
+    expect(source?.html).toContain("10 Hisse Senedi Analiz Raporu");
+    expect(source?.executiveSummary.length).toBeGreaterThanOrEqual(3);
+  });
 });
