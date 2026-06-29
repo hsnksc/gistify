@@ -1102,10 +1102,10 @@ pre {
 #index {
   scroll-margin-top: 24px !important;
 }
-.lang-tr,
-.lang-en,
-.blang-tr,
-.blang-en {
+body .lang-tr,
+body .lang-en,
+body .blang-tr,
+body .blang-en {
   display: none !important;
 }
 body.lang-tr .lang-tr {
