@@ -1639,13 +1639,13 @@ export default function MidasOpportunitiesTab({
               {signal.live ? (
                 <div className="mt-3 grid grid-cols-4 gap-2">
                   <div className="rounded-lg border border-border/60 bg-background/50 p-2 text-center">
-                    <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Bull</p>
+                    <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{copy(language, 'Boga', 'Bull')}</p>
                     <p className="data-mono mt-1 text-sm font-semibold text-emerald-300">
                       {signal.live.bullScore}
                     </p>
                   </div>
                   <div className="rounded-lg border border-border/60 bg-background/50 p-2 text-center">
-                    <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Bear</p>
+                    <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{copy(language, 'Ayi', 'Bear')}</p>
                     <p className="data-mono mt-1 text-sm font-semibold text-rose-300">
                       {signal.live.bearScore}
                     </p>
@@ -1699,9 +1699,9 @@ export default function MidasOpportunitiesTab({
                   <div className="flex flex-wrap gap-x-2 gap-y-1">
                     <span>{copy(language, "Giris:", "Entry:")} {formatPrice(signal.trade_plan.entry)}</span>
                     <span className="text-rose-300">{copy(language, "Stop:", "Stop:")} {formatPrice(signal.trade_plan.stop)}</span>
-                    <span className="text-emerald-300">T1: {formatPrice(signal.trade_plan.target1)}</span>
-                    <span className="text-emerald-300">T2: {formatPrice(signal.trade_plan.target2)}</span>
-                    <span>RR: {signal.trade_plan.rr_ratio.toFixed(1)}</span>
+                    <span className="text-emerald-300">{copy(language, 'H1:', 'T1:')} {formatPrice(signal.trade_plan.target1)}</span>
+                    <span className="text-emerald-300">{copy(language, 'H2:', 'T2:')} {formatPrice(signal.trade_plan.target2)}</span>
+                    <span>{copy(language, 'R/O:', 'RR:')} {signal.trade_plan.rr_ratio.toFixed(1)}</span>
                     <span>{copy(language, "Stop%:", "Stop%:")} {signal.trade_plan.stop_pct.toFixed(1)}%</span>
                   </div>
                 </div>

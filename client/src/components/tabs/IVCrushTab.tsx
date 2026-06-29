@@ -322,7 +322,7 @@ export default function IVCrushTab({
                             </span>
                           </div>
                           <div className="flex items-center justify-between gap-3">
-                            <span className="text-muted-foreground">IV Crush</span>
+                            <span className="text-muted-foreground">{copy(language, 'IV Cokusu', 'IV Crush')}</span>
                             <Delta
                               value={coerceChartNumber(datum?.crush as number | string | null | undefined) === null ? null : -coerceChartNumber(datum?.crush as number | string | null | undefined)!}
                               precision={1}
@@ -585,7 +585,7 @@ function IVCrushMobileCard({
           </div>
         </div>
         <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
-          <div className="text-[13px] text-muted-foreground">IV Crush</div>
+          <div className="text-[13px] text-muted-foreground">{copy(language, 'IV Cokusu', 'IV Crush')}</div>
           <div className="mt-1">
             <Delta value={-stock.expectedIVCrush} precision={1} positiveIsGood={false} />
           </div>

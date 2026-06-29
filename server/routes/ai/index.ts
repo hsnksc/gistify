@@ -80,11 +80,15 @@ export function createAiRouter({
       const translations = await translateTurkishTextsToEnglish(texts);
       res.status(200).json({ translations });
     } catch (error) {
+      const statusCode =
+        error && typeof error === "object" && "statusCode" in error
+          ? (error as { statusCode: number }).statusCode
+          : 500;
       const message =
         error instanceof Error
           ? error.message
           : "Ceviri istegi basarisiz oldu.";
-      res.status(500).json({ error: message });
+      res.status(statusCode).json({ error: message });
     }
   });
 

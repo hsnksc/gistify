@@ -494,7 +494,7 @@ export default function EarningReportPlaybookTab({
               </div>
               <div className="rounded-none border border-border bg-background/60 p-2.5">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  Expiry
+                  {copy(language, "Vade", "Expiry")}
                 </p>
                 <div className="mt-1.5 space-y-1 text-sm text-foreground">
                   {activePosition.blueprint.expiryLines.length ? (
@@ -662,7 +662,7 @@ export default function EarningReportPlaybookTab({
                       <th className="pb-2">{copy(language, "Senaryo", "Scenario")}</th>
                       <th className="pb-2">{copy(language, "IV degisimi", "IV change")}</th>
                       <th className="pb-2">{copy(language, "Hisse hareketi", "Stock move")}</th>
-                      <th className="pb-2">Est. P/L</th>
+                      <th className="pb-2">{copy(language, "Tahmini K/Z", "Est. P/L")}</th>
                     </tr>
                   </thead>
                   <tbody>

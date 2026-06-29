@@ -72,7 +72,7 @@ export default function FlowFeedCard({
             </p>
             <span className="text-muted-foreground">·</span>
             <p className="text-xs text-muted-foreground">
-              {copy(language, "Gunc.", "Upd.")}{" "}
+              {copy(language, "Uret.", "Gen.")}{" "}
               {formatFlowTimestamp(report.updatedAt, locale)}
             </p>
           </div>

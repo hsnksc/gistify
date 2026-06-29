@@ -27,8 +27,8 @@ export default function FlowPage({
       basePath="/flow"
       description={copy(
         language,
-        "Yuklenen raporlar burada post gibi akar. Kartta rapor tarihi, guncelleme zamani, baslik ve tickerlar gorunur; devaminda detay acilir.",
-        "Uploaded reports flow here like posts. Each card shows the report date, update time, title and tickers before opening the detail view."
+        "Yuklenen raporlar burada post gibi akar. Kartta rapor tarihi, yerel uretim zamani, baslik ve tickerlar gorunur; devaminda detay acilir.",
+        "Uploaded reports flow here like posts. Each card shows the report date, local generation time, title and tickers before opening the detail view."
       )}
       error={error}
       eyebrow={copy(language, "Flow", "Flow")}

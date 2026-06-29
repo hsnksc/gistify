@@ -117,7 +117,7 @@ export default function FOMCWarningBanner({
                   config.badge
                 )}
               >
-                {status}
+                {copy(language, config.labelTr, config.labelEn)}
               </span>
             </div>
 

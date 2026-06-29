@@ -143,7 +143,7 @@ export default function CalendarTab({
                           <span className="data-mono text-xs font-bold" style={{ color: cfg.color }}>{stock?.momentumScore ?? '-'}</span>
                         </div>
                         <span className="text-xs" style={{ color: 'oklch(0.4 0.015 225)' }}>
-                          Implied Move: <span className="data-mono font-semibold" style={{ color: 'oklch(0.75 0.15 75)' }}>{stock ? `±${stock.impliedMove}%` : '-'}</span>
+                          {copy(language, "Beklenen Hareket:", "Implied Move:")} <span className="data-mono font-semibold" style={{ color: 'oklch(0.75 0.15 75)' }}>{stock ? `±${stock.impliedMove}%` : '-'}</span>
                         </span>
                         <span className="text-xs" style={{ color: 'oklch(0.4 0.015 225)' }}>
                           {copy(language, "6A", "6M")}: <span className="data-mono font-semibold" style={{ color: (stock?.priceChange6M ?? 0) > 0 ? 'oklch(0.78 0.18 160)' : 'oklch(0.65 0.22 25)' }}>
