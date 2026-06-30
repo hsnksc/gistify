@@ -1644,6 +1644,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
               </div>
 
               <WeeklyReportAdminPanel
+                language={language}
                 adminEmail={adminEmail}
                 adminAuthorized={adminAuthorized}
                 adminSecret={adminSecret}
@@ -1801,6 +1802,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
               </div>
 
               <MomentumReportAdminPanel
+                language={language}
                 adminAuthorized={adminAuthorized}
                 adminBusy={adminBusy}
                 adminError={adminError}
@@ -1903,6 +1905,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
               </div>
 
               <DailyReportAdminPanel
+                language={language}
                 adminAuthorized={adminAuthorized}
                 adminBusy={adminBusy}
                 adminError={adminError}
@@ -1953,7 +1956,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
         ) : null}
 
         {adminAuthorized && selectedWorkspace === "images" ? (
-          <OpenAiImageAdminPanel adminSecret={adminSecret} />
+          <OpenAiImageAdminPanel language={language} adminSecret={adminSecret} />
         ) : null}
 
         {adminAuthorized ? (

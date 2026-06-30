@@ -629,22 +629,29 @@ export function buildDailyReportHtmlDocument({
     <style>
       :root {
         color-scheme: dark;
-        --bg: #030712;
+        --bg: #02040a;
         --bg-elevated: #0b1221;
-        --panel: rgba(11, 18, 33, 0.96);
-        --panel-soft: rgba(17, 28, 51, 0.82);
-        --line: rgba(148, 163, 184, 0.14);
-        --line-strong: rgba(56, 189, 248, 0.28);
-        --text: #e6effa;
-        --muted: #8fa0b8;
+        --panel: rgba(13, 21, 38, 0.86);
+        --panel-solid: #0d1526;
+        --panel-soft: rgba(20, 32, 56, 0.72);
+        --line: rgba(148, 163, 184, 0.12);
+        --line-strong: rgba(56, 189, 248, 0.35);
+        --text: #f0f6fc;
+        --text-soft: #d1d5db;
+        --muted: #94a3b8;
         --accent: #38bdf8;
         --accent-2: #34d399;
         --accent-3: #f59e0b;
         --bull: #34d399;
         --bear: #f87171;
         --neutral: #94a3b8;
-        --shadow: 0 28px 70px rgba(2, 6, 16, 0.55);
-        --shadow-sm: 0 10px 30px rgba(2, 6, 16, 0.35);
+        --shadow: 0 32px 80px rgba(2, 8, 22, 0.65);
+        --shadow-sm: 0 12px 40px rgba(2, 8, 22, 0.45);
+        --glow-sky: 0 0 60px rgba(56, 189, 248, 0.18);
+        --glow-emerald: 0 0 60px rgba(52, 211, 153, 0.14);
+        --radius-xl: 28px;
+        --radius-lg: 22px;
+        --radius-md: 16px;
       }
 
       * {
@@ -655,72 +662,115 @@ export function buildDailyReportHtmlDocument({
         margin: 0;
         background: var(--bg);
         color: var(--text);
-        font-family: Inter, "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        font-family: "Inter", "SF Pro Display", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
         scroll-behavior: smooth;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
 
       body {
-        padding: 24px 16px 64px;
+        padding: 28px 18px 80px;
       }
 
       .report-shell {
         width: min(1160px, 100%);
         margin: 0 auto;
         display: grid;
-        gap: 22px;
+        gap: 26px;
       }
 
       .hero {
         position: relative;
         overflow: hidden;
         border: 1px solid var(--line-strong);
-        border-radius: 32px;
+        border-radius: var(--radius-xl);
         background:
-          radial-gradient(circle at 90% 10%, rgba(56, 189, 248, 0.16), transparent 32%),
-          radial-gradient(circle at 10% 90%, rgba(52, 211, 153, 0.10), transparent 30%),
-          linear-gradient(145deg, rgba(13, 24, 43, 0.98), rgba(7, 14, 28, 0.96));
-        box-shadow: var(--shadow);
-        padding: 34px;
+          radial-gradient(circle at 85% 5%, rgba(56, 189, 248, 0.22), transparent 34%),
+          radial-gradient(circle at 15% 95%, rgba(52, 211, 153, 0.16), transparent 32%),
+          radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.06), transparent 60%),
+          linear-gradient(155deg, rgba(16, 28, 50, 0.98), rgba(7, 14, 28, 0.98));
+        box-shadow: var(--shadow), var(--glow-sky);
+        padding: 42px 40px;
       }
 
       .hero::before {
         content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient(135deg, rgba(56, 189, 248, 0.06), transparent 40%);
+        background: linear-gradient(135deg, rgba(56, 189, 248, 0.08), transparent 45%);
+        pointer-events: none;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        top: -40%;
+        right: -20%;
+        width: 520px;
+        height: 520px;
+        background: radial-gradient(circle, rgba(56, 189, 248, 0.14), transparent 65%);
+        filter: blur(40px);
         pointer-events: none;
       }
 
       .eyebrow {
-        margin: 0 0 12px;
+        position: relative;
+        z-index: 1;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0 0 14px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(56, 189, 248, 0.25);
+        background: rgba(56, 189, 248, 0.1);
         color: #7dd3fc;
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 800;
-        letter-spacing: 0.2em;
+        letter-spacing: 0.16em;
         text-transform: uppercase;
+        backdrop-filter: blur(6px);
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #38bdf8;
+        box-shadow: 0 0 10px #38bdf8;
       }
 
       .hero h1 {
+        position: relative;
+        z-index: 1;
         margin: 0;
-        font-size: clamp(32px, 4.5vw, 56px);
-        line-height: 1.05;
-        letter-spacing: -0.04em;
+        font-size: clamp(34px, 5vw, 62px);
+        line-height: 1.06;
+        letter-spacing: -0.045em;
         font-weight: 800;
+        background: linear-gradient(180deg, #fff 0%, #c8e6ff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
 
       .hero p.lead {
-        margin: 18px 0 0;
-        max-width: 900px;
-        color: var(--muted);
-        font-size: 16px;
-        line-height: 1.8;
+        position: relative;
+        z-index: 1;
+        margin: 20px 0 0;
+        max-width: 880px;
+        color: var(--text-soft);
+        font-size: 17px;
+        line-height: 1.75;
       }
 
       .hero-meta {
+        position: relative;
+        z-index: 1;
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
-        margin-top: 22px;
+        margin-top: 26px;
       }
 
       .badge {
@@ -728,31 +778,32 @@ export function buildDailyReportHtmlDocument({
         align-items: center;
         gap: 8px;
         min-height: 36px;
-        padding: 8px 14px;
+        padding: 8px 16px;
         border-radius: 999px;
         border: 1px solid var(--line);
-        background: rgba(255, 255, 255, 0.04);
+        background: rgba(255, 255, 255, 0.05);
         color: var(--text);
         font-size: 12px;
         font-weight: 600;
         letter-spacing: 0.02em;
+        backdrop-filter: blur(6px);
       }
 
       .badge-sky {
         border-color: rgba(56, 189, 248, 0.32);
-        background: rgba(56, 189, 248, 0.11);
+        background: rgba(56, 189, 248, 0.12);
         color: #c8efff;
       }
 
       .badge-emerald {
         border-color: rgba(52, 211, 153, 0.32);
-        background: rgba(52, 211, 153, 0.11);
+        background: rgba(52, 211, 153, 0.12);
         color: #d7ffee;
       }
 
       .badge-amber {
         border-color: rgba(245, 158, 11, 0.32);
-        background: rgba(245, 158, 11, 0.11);
+        background: rgba(245, 158, 11, 0.12);
         color: #fde68a;
       }
 
@@ -762,15 +813,16 @@ export function buildDailyReportHtmlDocument({
       .report-section,
       .toc-panel {
         border: 1px solid var(--line);
-        border-radius: 26px;
+        border-radius: var(--radius-lg);
         background: var(--panel);
         box-shadow: var(--shadow-sm);
+        backdrop-filter: blur(12px);
       }
 
       .ticker-rail,
       .report-section,
       .toc-panel {
-        padding: 24px;
+        padding: 26px;
       }
 
       .ticker-label,
@@ -789,14 +841,14 @@ export function buildDailyReportHtmlDocument({
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
-        margin-top: 16px;
+        margin-top: 18px;
       }
 
       .ticker-chip {
         display: inline-flex;
         align-items: center;
-        min-height: 34px;
-        padding: 8px 14px;
+        min-height: 36px;
+        padding: 8px 16px;
         border-radius: 999px;
         border: 1px solid rgba(56, 189, 248, 0.28);
         background: rgba(56, 189, 248, 0.09);
@@ -804,68 +856,80 @@ export function buildDailyReportHtmlDocument({
         font-size: 13px;
         font-weight: 700;
         text-decoration: none;
-        transition: transform 0.12s ease, background 0.12s ease;
+        transition: transform 0.14s ease, background 0.14s ease, box-shadow 0.14s ease;
+        white-space: nowrap;
       }
 
       .ticker-chip:hover {
         background: rgba(56, 189, 248, 0.18);
-        transform: translateY(-1px);
+        box-shadow: 0 0 18px rgba(56, 189, 248, 0.18);
+        transform: translateY(-2px);
       }
 
       .summary-grid,
       .meta-grid {
         display: grid;
-        gap: 16px;
-        padding: 18px;
+        gap: 18px;
+        padding: 20px;
       }
 
       .summary-grid {
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       }
 
       .meta-grid {
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       }
 
       .summary-card,
       .meta-card {
         min-width: 0;
         border: 1px solid var(--line);
-        border-radius: 20px;
+        border-radius: var(--radius-md);
         background: var(--panel-soft);
-        padding: 18px;
+        padding: 20px;
+        transition: transform 0.14s ease, border-color 0.14s ease, box-shadow 0.14s ease;
+      }
+
+      .summary-card:hover,
+      .meta-card:hover {
+        border-color: rgba(148, 163, 184, 0.22);
+        box-shadow: 0 14px 36px rgba(2, 8, 22, 0.35);
+        transform: translateY(-2px);
       }
 
       .summary-card-head {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 12px;
+        margin-bottom: 14px;
       }
 
       .summary-icon {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 28px;
-        height: 28px;
+        width: 30px;
+        height: 30px;
         border-radius: 999px;
         font-size: 14px;
         font-weight: 800;
       }
 
       .summary-card-bullish .summary-icon {
-        background: rgba(52, 211, 153, 0.16);
+        background: rgba(52, 211, 153, 0.18);
         color: var(--bull);
+        box-shadow: 0 0 14px rgba(52, 211, 153, 0.14);
       }
 
       .summary-card-bearish .summary-icon {
-        background: rgba(248, 113, 113, 0.16);
+        background: rgba(248, 113, 113, 0.18);
         color: var(--bear);
+        box-shadow: 0 0 14px rgba(248, 113, 113, 0.12);
       }
 
       .summary-card-neutral .summary-icon {
-        background: rgba(148, 163, 184, 0.16);
+        background: rgba(148, 163, 184, 0.14);
         color: var(--neutral);
       }
 
@@ -873,8 +937,8 @@ export function buildDailyReportHtmlDocument({
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 32px;
-        height: 32px;
+        width: 34px;
+        height: 34px;
         border-radius: 999px;
         border: 1px solid rgba(148, 163, 184, 0.2);
         background: rgba(255, 255, 255, 0.04);
@@ -891,7 +955,7 @@ export function buildDailyReportHtmlDocument({
 
       .summary-card p:last-child {
         color: var(--text);
-        font-size: 14.5px;
+        font-size: 15px;
         line-height: 1.75;
       }
 
@@ -905,12 +969,12 @@ export function buildDailyReportHtmlDocument({
 
       .toc-panel {
         position: sticky;
-        top: 16px;
+        top: 18px;
         z-index: 10;
       }
 
       .toc-title {
-        margin-bottom: 14px;
+        margin-bottom: 16px;
       }
 
       .toc-list {
@@ -918,7 +982,7 @@ export function buildDailyReportHtmlDocument({
         padding-left: 18px;
         display: flex;
         flex-wrap: wrap;
-        gap: 8px 20px;
+        gap: 10px 22px;
       }
 
       .toc-list li {
@@ -930,72 +994,76 @@ export function buildDailyReportHtmlDocument({
         color: var(--accent);
         text-decoration: none;
         font-weight: 500;
+        transition: color 0.12s ease;
       }
 
       .toc-list a:hover {
+        color: #7dd3fc;
         text-decoration: underline;
       }
 
       .section-head {
         display: flex;
         flex-direction: column;
-        gap: 8px;
-        margin-bottom: 18px;
-        padding-bottom: 16px;
+        gap: 10px;
+        margin-bottom: 22px;
+        padding-bottom: 18px;
         border-bottom: 1px solid var(--line);
       }
 
       .section-title {
         margin: 0;
-        font-size: clamp(24px, 3vw, 36px);
+        font-size: clamp(26px, 3.2vw, 38px);
         line-height: 1.12;
-        letter-spacing: -0.03em;
+        letter-spacing: -0.035em;
         font-weight: 700;
       }
 
       .report-subheading {
-        margin: 30px 0 14px;
+        margin: 34px 0 16px;
         color: #d3f6ff;
-        font-size: 20px;
+        font-size: 21px;
         line-height: 1.35;
         font-weight: 600;
       }
 
       .report-paragraph {
-        margin: 0 0 16px;
-        color: var(--text);
-        font-size: 15.5px;
+        margin: 0 0 18px;
+        color: var(--text-soft);
+        font-size: 16px;
         line-height: 1.85;
       }
 
       .report-list {
-        margin: 0 0 20px;
-        padding-left: 22px;
-        color: var(--text);
+        margin: 0 0 22px;
+        padding-left: 24px;
+        color: var(--text-soft);
       }
 
       .report-list li {
-        margin: 0 0 10px;
+        margin: 0 0 12px;
         line-height: 1.8;
       }
 
       .table-shell {
         overflow-x: auto;
-        margin: 8px 0 24px;
+        margin: 10px 0 26px;
         border: 1px solid var(--line);
-        border-radius: 20px;
+        border-radius: var(--radius-md);
+        -webkit-overflow-scrolling: touch;
       }
 
       .report-table {
         width: 100%;
-        border-collapse: collapse;
+        border-collapse: separate;
+        border-spacing: 0;
         min-width: 680px;
-        background: rgba(4, 11, 25, 0.78);
+        background: rgba(4, 11, 25, 0.6);
       }
 
       .report-table th,
       .report-table td {
-        padding: 14px 16px;
+        padding: 15px 18px;
         border-bottom: 1px solid var(--line);
         text-align: left;
         vertical-align: top;
@@ -1005,70 +1073,89 @@ export function buildDailyReportHtmlDocument({
 
       .report-table th {
         color: #b8ecff;
-        background: rgba(56, 189, 248, 0.08);
+        background: rgba(56, 189, 248, 0.1);
         font-size: 11px;
         font-weight: 800;
-        letter-spacing: 0.08em;
+        letter-spacing: 0.09em;
         text-transform: uppercase;
       }
 
-      .report-table tr:last-child td {
+      .report-table th:first-child {
+        border-radius: var(--radius-md) 0 0 0;
+      }
+
+      .report-table th:last-child {
+        border-radius: 0 var(--radius-md) 0 0;
+      }
+
+      .report-table tbody tr:last-child td {
         border-bottom: none;
       }
 
+      .report-table tbody tr:hover td {
+        background: rgba(56, 189, 248, 0.04);
+      }
+
       .figure-card {
-        margin: 0 0 24px;
+        margin: 0 0 26px;
         overflow: hidden;
         border: 1px solid var(--line);
-        border-radius: 24px;
+        border-radius: var(--radius-lg);
         background: rgba(6, 17, 32, 0.98);
         cursor: zoom-in;
+        transition: transform 0.14s ease, box-shadow 0.14s ease;
+      }
+
+      .figure-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-sm);
       }
 
       .figure-card img {
         display: block;
         width: 100%;
-        max-height: 580px;
+        max-height: 620px;
         object-fit: contain;
         background: #050e18;
       }
 
       .figure-card figcaption {
-        padding: 14px 18px 18px;
+        padding: 16px 20px 20px;
         color: var(--muted);
         font-size: 13px;
         line-height: 1.6;
+        border-top: 1px solid var(--line);
       }
 
       .quote-block {
-        margin: 0 0 20px;
-        padding: 18px 22px;
+        margin: 0 0 22px;
+        padding: 20px 24px;
         border-left: 3px solid var(--accent);
-        border-radius: 0 20px 20px 0;
+        border-radius: 0 var(--radius-md) var(--radius-md) 0;
         background: rgba(56, 189, 248, 0.08);
       }
 
       .quote-block p {
         margin: 0;
         color: #d8f3ff;
-        font-size: 15px;
-        line-height: 1.8;
+        font-size: 15.5px;
+        line-height: 1.85;
       }
 
       .quote-block p + p {
-        margin-top: 10px;
+        margin-top: 12px;
       }
 
       .code-shell {
-        margin: 0 0 24px;
+        margin: 0 0 26px;
         overflow: hidden;
         border: 1px solid var(--line);
-        border-radius: 20px;
+        border-radius: var(--radius-md);
         background: rgba(3, 9, 20, 0.98);
       }
 
       .code-label {
-        padding: 10px 16px;
+        padding: 12px 18px;
         border-bottom: 1px solid var(--line);
         color: #7dd3fc;
         font-size: 11px;
@@ -1079,22 +1166,22 @@ export function buildDailyReportHtmlDocument({
 
       .code-shell pre {
         margin: 0;
-        padding: 18px;
+        padding: 20px;
         overflow-x: auto;
         color: #d9f3ff;
-        font-size: 13px;
+        font-size: 13.5px;
         line-height: 1.7;
       }
 
       .disclaimer {
-        margin-top: 8px;
-        padding: 22px;
-        border: 1px dashed var(--line);
-        border-radius: 20px;
+        margin-top: 10px;
+        padding: 24px;
+        border: 1px dashed rgba(148, 163, 184, 0.25);
+        border-radius: var(--radius-md);
         background: rgba(255, 255, 255, 0.02);
         color: var(--muted);
         font-size: 13px;
-        line-height: 1.75;
+        line-height: 1.8;
       }
 
       #lightbox {
@@ -1104,6 +1191,7 @@ export function buildDailyReportHtmlDocument({
         align-items: center;
         justify-content: center;
         background: rgba(0, 0, 0, 0.92);
+        backdrop-filter: blur(8px);
         z-index: 1000;
         padding: 24px;
       }
@@ -1115,26 +1203,51 @@ export function buildDailyReportHtmlDocument({
       #lightbox img {
         max-width: 100%;
         max-height: 92vh;
-        border-radius: 12px;
+        border-radius: var(--radius-md);
         box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
       }
 
       @media (max-width: 800px) {
         body {
-          padding: 16px 12px 32px;
+          padding: 18px 14px 48px;
         }
 
-        .hero,
+        .report-shell {
+          gap: 18px;
+        }
+
+        .hero {
+          padding: 28px 22px;
+          border-radius: var(--radius-lg);
+        }
+
+        .hero h1 {
+          font-size: clamp(30px, 7vw, 42px);
+        }
+
+        .hero p.lead {
+          font-size: 15px;
+        }
+
         .ticker-rail,
         .report-section,
         .toc-panel {
-          padding: 18px;
-          border-radius: 20px;
+          padding: 20px;
+          border-radius: var(--radius-md);
         }
 
         .summary-grid,
         .meta-grid {
-          padding: 14px;
+          padding: 16px;
+          gap: 14px;
+        }
+
+        .summary-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .meta-grid {
+          grid-template-columns: 1fr;
         }
 
         .report-table {
@@ -1143,6 +1256,62 @@ export function buildDailyReportHtmlDocument({
 
         .toc-panel {
           position: static;
+        }
+
+        .toc-list {
+          display: block;
+          padding-left: 18px;
+        }
+
+        .toc-list li {
+          margin-bottom: 8px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        body {
+          padding: 14px 12px 36px;
+        }
+
+        .hero {
+          padding: 22px 18px;
+        }
+
+        .hero h1 {
+          font-size: clamp(26px, 8vw, 34px);
+        }
+
+        .hero p.lead {
+          font-size: 14px;
+          line-height: 1.7;
+        }
+
+        .badge {
+          font-size: 11px;
+          padding: 7px 12px;
+        }
+
+        .ticker-rail,
+        .report-section,
+        .toc-panel {
+          padding: 16px;
+        }
+
+        .ticker-list {
+          flex-wrap: nowrap;
+          overflow-x: auto;
+          padding-bottom: 6px;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        .report-paragraph {
+          font-size: 15px;
+        }
+
+        .report-table th,
+        .report-table td {
+          padding: 12px 14px;
+          font-size: 13px;
         }
       }
     </style>
