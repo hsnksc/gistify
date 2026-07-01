@@ -167,4 +167,46 @@ describe("flow source timestamps smoke", () => {
     expect(flowSources[0]?.updatedAt).toBe("2026-06-29T00:30:00+03:00");
     expect(flowSources[0]?.reportDate).toBe("2026-06-29");
   });
+
+  it("ignores derived translation files when listing flow sources", () => {
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "gistify-flow-derived-"));
+    process.chdir(tempDir);
+
+    const flowRoot = path.join(tempDir, "flow");
+    fs.mkdirSync(flowRoot, { recursive: true });
+
+    fs.writeFileSync(
+      path.join(flowRoot, "omega-note.html"),
+      `
+<!doctype html>
+<html>
+  <body>
+    <div class="hero" id="hero" data-timestamp="2026-06-29T14:30:00+03:00">
+      <span class="hero-date">📅 29 Haziran 2026</span>
+      <h1>Omega Note</h1>
+    </div>
+  </body>
+</html>
+      `,
+      "utf8"
+    );
+    fs.writeFileSync(
+      path.join(flowRoot, "omega-note.en.html"),
+      "<html><body><h1>Derived translation</h1></body></html>",
+      "utf8"
+    );
+    fs.writeFileSync(
+      path.join(flowRoot, "omega-note.en.md"),
+      "# Derived translation",
+      "utf8"
+    );
+
+    const flowSources = listDailyReportSourcePackages().filter(source =>
+      (source.sourceLabel || "").toLowerCase().startsWith("flow/")
+    );
+
+    expect(flowSources).toHaveLength(1);
+    expect(flowSources[0]?.sourceLabel).toBe("flow/omega-note.html");
+    expect(flowSources[0]?.updatedAt).toBe("2026-06-29T14:30:00+03:00");
+  });
 });
