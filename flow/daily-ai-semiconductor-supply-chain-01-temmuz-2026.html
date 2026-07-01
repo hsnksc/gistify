@@ -44,7 +44,7 @@ html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf
 .icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent);transition:transform .2s}
 .section-head.collapsed .icon{transform:rotate(-90deg)}
 .section-body{padding:18px;display:none}
-.section-head:not(.collapsed) + .section-body{display:block}
+.section-head:not(.collapsed) + .section-body, .section-head:not(.collapsed) .section-body{display:block}
 
 /* GRID & CARDS */
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
@@ -129,13 +129,38 @@ th,td{padding:6px 7px}
 [data-lang].visible{display:block}
 [data-lang-inline]{display:none}
 [data-lang-inline].visible{display:inline}
+
+/* Language Switcher Buttons */
+.lang-switch{display:flex;gap:8px;margin-bottom:20px;justify-content:flex-end}
+.lang-btn{background:var(--gf-elev);border:1px solid var(--gf-border);color:var(--gf-muted);padding:6px 14px;border-radius:8px;font-size:0.82rem;font-weight:600;cursor:pointer;transition:all .15s}
+.lang-btn:hover{border-color:var(--gf-accent);color:var(--gf-accent)}
+.lang-btn.active{background:var(--gf-accent);color:#0a1628;border-color:var(--gf-accent)}
 </style>
 <script>
 function toggle(id){var el=document.getElementById(id);if(!el)return;el.classList.toggle('collapsed');}
+function setLang(l){
+  document.querySelectorAll('[data-lang]').forEach(function(e){e.classList.remove('visible');});
+  document.querySelectorAll('[data-lang-inline]').forEach(function(e){e.classList.remove('visible');});
+  document.querySelectorAll('[data-lang="'+l+'"]').forEach(function(e){e.classList.add('visible');});
+  document.querySelectorAll('[data-lang-inline="'+l+'"]').forEach(function(e){e.classList.add('visible');});
+  document.querySelectorAll('.lang-btn').forEach(function(b){b.classList.remove('active');});
+  var btn=document.querySelector('.lang-btn[data-lang-btn="'+l+'"]');
+  if(btn)btn.classList.add('active');localStorage.setItem('flow-lang',l);
+}
+document.addEventListener('DOMContentLoaded',function(){
+  var saved=localStorage.getItem('flow-lang');
+  if(saved&&saved!='tr')setLang(saved);
+});
 </script>
 </head>
 <body>
 <div class="wrap">
+
+<!-- LANG SWITCH -->
+<div class="lang-switch">
+  <button class="lang-btn active" data-lang-btn="tr" onclick="setLang('tr')">TR</button>
+  <button class="lang-btn" data-lang-btn="en" onclick="setLang('en')">EN</button>
+</div>
 
 <!-- HERO TR -->
 <div class="hero visible" id="hero" data-lang="tr">
