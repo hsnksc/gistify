@@ -235,7 +235,7 @@ export default function Landing({
     },
     {
       title: copy(language, "Desk workspace'a gec", "Upgrade to the desk workspace"),
-      price: copy(language, "250 TRY / ay", "250 TRY / month"),
+      price: copy(language, "$5 / ay", "$5 / month"),
       tone: "border-emerald-400/25 bg-emerald-500/[0.08]",
       bullets: [
         copy(language, "Earnings strategy + playbook + risk matrix", "Earnings strategy + playbook + risk matrix"),
@@ -300,7 +300,7 @@ export default function Landing({
           detail: copy(language, "Scanner sonucu kopuk sekmelerde dagilmaz.", "Scanner output does not fragment across disconnected tabs."),
         },
         {
-          value: "250 TRY",
+          value: "$5",
           label: copy(language, "desk katmani", "desk layer"),
           detail: copy(language, "Ucretsiz Flow ustune kurulu tek paid tier.", "A single paid tier built on top of free Flow."),
         },

@@ -2453,7 +2453,7 @@ function renderLandingPageHtml() {
                 <div class="metric-copy">Scanning, event context and planning live in one repeatable workflow.</div>
               </div>
               <div class="metric">
-                <span class="metric-value">250 TRY</span>
+                <span class="metric-value">$5</span>
                 <span class="metric-label">Monthly Access</span>
                 <div class="metric-copy">One subscription unlocks the public research surface and the app workflow.</div>
               </div>
@@ -2516,7 +2516,7 @@ function renderLandingPageHtml() {
         <aside class="card">
           <span class="pill">Paddle checkout live</span>
           <h2 style="margin-top:18px;">Pricing Snapshot</h2>
-          <div class="price">250 TRY / month</div>
+          <div class="price">$5 / month</div>
           <div class="grid">
             <div class="list-item">Monthly web access to all analysis modules</div>
             <div class="list-item">Momentum scanner and sector view</div>
@@ -2630,8 +2630,8 @@ function renderLandingPageHtml() {
             "Gistify brings momentum scans, pre-earnings planning and options risk framing into one subscription workspace.",
           offers: {
             "@type": "Offer",
-            price: "250",
-            priceCurrency: "TRY",
+            price: "5",
+            priceCurrency: "USD",
             availability: "https://schema.org/InStock",
           },
         },
@@ -2648,12 +2648,12 @@ function renderPricingPageHtml() {
       <section class="card hero">
         <div class="eyebrow">Pricing</div>
         <h1>Single monthly subscription</h1>
-        <p class="lead">Gistify runs on a digital subscription model. Our single active plan is priced at 250 TRY per month and includes web access to all analysis modules.</p>
+        <p class="lead">Gistify runs on a digital subscription model. Our single active plan is priced at $5 per month and includes web access to all analysis modules.</p>
       </section>
       <div class="grid two">
         <section class="card">
           <h2>Gistify Pro</h2>
-          <div class="price">250 TRY / month</div>
+          <div class="price">$5 / month</div>
           <div class="grid">
             <div class="list-item">Momentum scanner</div>
             <div class="list-item">Earnings benchmark dashboard</div>

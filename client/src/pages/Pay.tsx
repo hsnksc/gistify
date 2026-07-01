@@ -63,7 +63,7 @@ const COPY = {
     webhookSync: "Webhook senkronu",
     back: "Siteye don",
     priceLabel: "Aylik plan",
-    priceSuffix: "TRY / ay",
+    priceSuffix: "$ / ay",
     authLoading: "Oturum kontrol ediliyor",
     authLoadingBody:
       "Checkout acmadan once hesap durumu dogrulaniyor.",
@@ -123,7 +123,7 @@ const COPY = {
     webhookSync: "Webhook sync",
     back: "Back to site",
     priceLabel: "Monthly plan",
-    priceSuffix: "TRY / month",
+    priceSuffix: "$ / month",
     authLoading: "Checking session",
     authLoadingBody: "Your account status is being verified before checkout.",
     signInTitle: "Sign in before opening checkout",
@@ -478,7 +478,7 @@ export default function Pay({
                   {copy.priceLabel}
                 </p>
                 <div className="mt-3 flex items-end gap-3">
-                  <span className="text-5xl font-semibold">250</span>
+                  <span className="text-5xl font-semibold">$5</span>
                   <span className="pb-1 text-sm text-muted-foreground">
                     {copy.priceSuffix}
                   </span>

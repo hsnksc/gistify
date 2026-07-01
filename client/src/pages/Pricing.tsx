@@ -25,8 +25,8 @@ export default function Pricing({
       title={copy(language, "Tek planli aylik abonelik", "Single monthly subscription")}
       description={copy(
         language,
-        "Gistify, dijital abonelik modeliyle calisir. Tek aktif planimiz aylik 250 TRY olarak fiyatlanir ve tum analiz modullerine web erisimi saglar.",
-        "Gistify runs on a digital subscription model. Our single active plan is priced at 250 TRY per month and includes web access to all analysis modules."
+        "Gistify, dijital abonelik modeliyle calisir. Tek aktif planimiz aylik 5 ABD dolari olarak fiyatlanir ve tum analiz modullerine web erisimi saglar.",
+        "Gistify runs on a digital subscription model. Our single active plan is priced at $5 per month and includes web access to all analysis modules."
       )}
       ctaHref="/pay"
       ctaLabel={copy(language, "Odeme sayfasini ac", "Open payment page")}
@@ -37,9 +37,9 @@ export default function Pricing({
             {copy(language, "Gistify Pro", "Gistify Pro")}
           </p>
           <div className="mt-3 flex items-end gap-3">
-            <span className="text-5xl font-semibold">250</span>
+            <span className="text-5xl font-semibold">$5</span>
             <span className="pb-1 text-sm text-muted-foreground">
-              {copy(language, "TRY / ay", "TRY / month")}
+              {copy(language, "/ ay", "/ month")}
             </span>
           </div>
 
@@ -70,8 +70,8 @@ export default function Pricing({
             <p>
               {copy(
                 language,
-                "Fiyat TRY uzerinden gosterilir. Checkout ve abonelik yonetimi Paddle uzerinden bu siteye baglandi.",
-                "Pricing is shown in TRY. Checkout and subscription management are wired through Paddle on this site."
+                "Fiyat ABD dolari uzerinden gosterilir. Checkout ve abonelik yonetimi Paddle uzerinden bu siteye baglandi.",
+                "Pricing is shown in USD. Checkout and subscription management are wired through Paddle on this site."
               )}
             </p>
             <p>
