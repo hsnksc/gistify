@@ -52,12 +52,37 @@ function compareViewerDailyReports(
   left: DailyReportRecord,
   right: DailyReportRecord
 ) {
+  const byTimestamp = getViewerDailyReportSortTimestamp(right).localeCompare(
+    getViewerDailyReportSortTimestamp(left)
+  );
+  if (byTimestamp !== 0) {
+    return byTimestamp;
+  }
+
   const byDate = right.reportDate.localeCompare(left.reportDate);
   if (byDate !== 0) {
     return byDate;
   }
 
-  return right.updatedAt.localeCompare(left.updatedAt);
+  const byUpdatedAt = right.updatedAt.localeCompare(left.updatedAt);
+  if (byUpdatedAt !== 0) {
+    return byUpdatedAt;
+  }
+
+  return left.title.localeCompare(right.title);
+}
+
+function getViewerDailyReportSortTimestamp(report: DailyReportRecord) {
+  if (isFlowDailyReport(report)) {
+    return (
+      normalizeString(report.publishedAt || report.updatedAt || report.createdAt) ||
+      (report.reportDate ? `${report.reportDate}T00:00:00.000Z` : "")
+    );
+  }
+
+  return report.reportDate
+    ? `${report.reportDate}T00:00:00.000Z`
+    : normalizeString(report.updatedAt || report.createdAt || report.publishedAt);
 }
 
 function normalizeFlowDuplicateKeyPart(value: string) {

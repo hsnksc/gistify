@@ -382,6 +382,13 @@ export function compareFlowReports(
   left: FlowReportListEntry,
   right: FlowReportListEntry
 ) {
+  const byPostedAt = getFlowPostedTimestamp(right).localeCompare(
+    getFlowPostedTimestamp(left)
+  );
+  if (byPostedAt !== 0) {
+    return byPostedAt;
+  }
+
   const byDate = right.reportDate.localeCompare(left.reportDate);
   if (byDate !== 0) {
     return byDate;
