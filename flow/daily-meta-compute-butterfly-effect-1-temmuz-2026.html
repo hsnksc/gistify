@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meta Compute & Kelebek Etkisi | $META</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Meta Compute & Kelebek Etkisi | $META" />
+<meta property="og:description" content="Gistify: Meta Compute, AI Infrastructure, Butterfly Effect — July 1, 2026" />
+<meta property="og:url" content="https://gistify.pro/flow/daily-meta-compute-butterfly-effect-1-temmuz-2026.html" />
+<meta property="og:image" content="https://gistify.pro/gistifylogo.png" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:720px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s;display:flex;align-items:center;justify-content:space-between}
+.section-head-inner:hover{background:var(--gf-card)}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent);transition:transform .2s}
+.section-head.collapsed .icon{transform:rotate(-90deg)}
+.section-body{padding:18px;display:none}
+.section-head:not(.collapsed) .section-body{display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px;transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-1px);border-color:rgba(56,189,248,.25)}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--gf-border)}
+.timeline-item{position:relative;margin-bottom:14px}
+.timeline-item::before{content:'';position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--gf-card);border:2px solid var(--gf-border)}
+.timeline-item.bull::before{border-color:var(--gf-success);background:var(--gf-success)}
+.timeline-item.bear::before{border-color:var(--gf-danger);background:var(--gf-danger)}
+.timeline-item.warn::before{border-color:var(--gf-warning);background:var(--gf-warning)}
+.timeline-date{font-size:0.78rem;color:var(--gf-muted);font-weight:600}
+.timeline-body{font-size:0.85rem;margin-top:3px;color:var(--gf-text)}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+.text-right{text-align:right}
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+.lang-switch{display:inline-flex;gap:4px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:16px}
+.lang-btn{padding:6px 14px;border-radius:8px;font-size:0.8rem;font-weight:600;border:none;cursor:pointer;background:transparent;color:var(--gf-muted);transition:all .15s}
+.lang-btn.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.lang-btn:hover:not(.active){color:var(--gf-text)}
+[data-lang]{display:none}
+[data-lang].visible{display:block}
+[data-lang-inline]{display:none}
+[data-lang-inline].visible{display:inline}
+.chart-img{width:100%;border-radius:var(--gf-radius);border:1px solid var(--gf-border);margin:12px 0}
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+}
+</style>
+<script>
+function toggle(id){var el=document.getElementById(id);if(!el)return;el.classList.toggle('collapsed');}
+function setLang(lang){
+  document.querySelectorAll('[data-lang]').forEach(function(el){el.classList.toggle('visible', el.getAttribute('data-lang')===lang);});
+  document.querySelectorAll('[data-lang-inline]').forEach(function(el){el.classList.toggle('visible', el.getAttribute('data-lang-inline')===lang);});
+  document.querySelectorAll('.lang-btn').forEach(function(btn){btn.classList.toggle('active', btn.getAttribute('data-lang-btn')===lang);});
+  document.documentElement.lang = lang;
+}
+</script>
+</head>
+<body>
+<div class="wrap">
+
+<div class="lang-switch">
+  <button class="lang-btn active" data-lang-btn="tr" onclick="setLang('tr')">TURKCE</button>
+  <button class="lang-btn" data-lang-btn="en" onclick="setLang('en')">ENGLISH</button>
+</div>
+
+<div class="hero" id="hero" data-timestamp="2026-07-01T22:00:00+03:00">
+  <h1 class="hero-h" data-lang="tr" class="visible">Meta Compute'un Yukselisi ve Kelebek Etkisi</h1>
+  <h1 class="hero-h" data-lang="en">Meta Compute & The Butterfly Effect</h1>
+  <p class="hero-desc" data-lang="tr" class="visible">YZ Altyapi Piyasalarindaki Stratejik Hisse Senedi ve Makroekonomi Analizi</p>
+  <p class="hero-desc" data-lang="en">Strategic Stock & Macroeconomic Analysis of AI Infrastructure Markets</p>
+  <div class="hero-meta">
+    <span class="meta-pill info hero-date">1 Temmuz 2026</span>
+    <span class="meta-pill bull">META +%10.8</span>
+    <span class="meta-pill bear">CRWV -%12.3</span>
+    <span class="meta-pill bear">NBIS -%13.8</span>
+    <span class="hero-ticker">$META</span>
+  </div>
+</div>
+
+<section>
+  <div class="section-head" id="sec-ozet">
+    <h2 class="section-title" data-lang="tr" class="visible">Yonetici Ozeti</h2>
+    <h2 class="section-title" data-lang="en">Executive Summary</h2>
+    <div class="icon">-</div>
+  </div>
+  <div class="section-body">
+    <div data-lang="tr" class="visible">
+      <div class="insight-box"><strong>Arastirma:</strong> 6 bagimsiz arastirma boyutu, 8 kritik hata duzeltildi, 7 yeni insight uretildi.</div>
+      <p>1 Temmuz 2026'da Bloomberg, Meta'nin AI altyapisinin <strong>fazla (excess) kapasitesini</strong> disariya satacagini dogruladi. META +%10.8, CRWV -%12.3, NBIS -%13.8.</p>
+      <div class="grid" style="margin-top:14px">
+        <div class="card"><div class="card-label">META Kapanis</div><div class="card-value up">$618.73</div><div class="card-note">+%10.8</div></div>
+        <div class="card"><div class="card-label">CRWV</div><div class="card-value down">$87.25</div><div class="card-note">-%12.3</div></div>
+        <div class="card"><div class="card-label">NBIS</div><div class="card-value down">$238.07</div><div class="card-note">-%13.8</div></div>
+        <div class="card"><div class="card-label">2026 CapEx</div><div class="card-value neu">$125-145B</div></div>
+      </div>
+      <div class="insight-box danger" style="margin-top:14px"><strong>Kritik Duzeltmeler:</strong> (1) Meta Compute 13 Ocak 2026'da duyuruldu (1 Temmuz haberi planlama). (2) "Atil" yanlis, henuz gercek fazla kapasite yok. (3) GAAP EPS $10.44 atlanmis. (4) CoreWeave RPO $98.8B (değil $33.59B). (5) Trane Technologies +%1.56 yukseldi (kayip degil).</div>
+    </div>
+    <div data-lang="en">
+      <div class="insight-box"><strong>Research:</strong> 6 independent research dimensions, 8 critical corrections, 7 new insights generated.</div>
+      <p>On July 1, 2026, Bloomberg confirmed Meta's plan to sell <strong>excess AI compute capacity</strong> to external customers. META +%10.8, CRWV -%12.3, NBIS -%13.8.</p>
+      <div class="grid" style="margin-top:14px">
+        <div class="card"><div class="card-label">META Close</div><div class="card-value up">$618.73</div><div class="card-note">+%10.8</div></div>
+        <div class="card"><div class="card-label">CRWV</div><div class="card-value down">$87.25</div><div class="card-note">-%12.3</div></div>
+        <div class="card"><div class="card-label">NBIS</div><div class="card-value down">$238.07</div><div class="card-note">-%13.8</div></div>
+        <div class="card"><div class="card-label">2026 CapEx</div><div class="card-value neu">$125-145B</div></div>
+      </div>
+      <div class="insight-box danger" style="margin-top:14px"><strong>Critical Corrections:</strong> (1) Meta Compute announced Jan 13, 2026 (July 1 is planning leak). (2) "Idle" is wrong — no real excess capacity yet. (3) GAAP EPS $10.44 omitted. (4) CoreWeave RPO is $98.8B (not $33.59B). (5) Trane Technologies +%1.56 (not a loss).</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-giris">
+    <h2 class="section-title" data-lang="tr" class="visible">Meta Compute Girisimi</h2>
+    <h2 class="section-title" data-lang="en">Meta Compute Initiative</h2>
+    <div class="icon">-</div>
+  </div>
+  <div class="section-body">
+    <div data-lang="tr" class="visible">
+      <div class="insight-box danger"><strong>DUZELTME:</strong> Meta Compute 13 Ocak 2026'da duyuruldu. 1 Temmuz haberi bulut satis planini gundeme getirdi.</div>
+      <p>Meta Compute iki model sunacak: (1) <strong>MaaS</strong> — API ile Muse Spark erisimi (AWS Bedrock rakibi). (2) <strong>Raw Compute</strong> — GPU kiralama (CoreWeave/Nebius modeli).</p>
+      <div class="insight-box warn"><strong>ONEMLI:</strong> Planlar "henuz gelistirme asamasinda". Bu bir ilan degil, rapor edilen planlama.</div>
+      <p>Zuckerberg, 27 Mayis 2026'da "definitely on the table" dedi — bu sartli bir plan.</p>
+    </div>
+    <div data-lang="en">
+      <div class="insight-box danger"><strong>CORRECTION:</strong> Meta Compute was announced on January 13, 2026. The July 1 news adds cloud-sale planning.</div>
+      <p>Meta Compute will offer two models: (1) <strong>MaaS</strong> — API access to Muse Spark (AWS Bedrock competitor). (2) <strong>Raw Compute</strong> — GPU rental (CoreWeave/Nebius model).</p>
+      <div class="insight-box warn"><strong>IMPORTANT:</strong> Plans are "still in development." This is a reported plan, not an official launch.</div>
+      <p>Zuckerberg said "definitely on the table" on May 27, 2026 — this was a conditional plan.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-yonetim">
+    <h2 class="section-title" data-lang="tr" class="visible">Yonetim Kadrosu</h2>
+    <h2 class="section-title" data-lang="en">Leadership Team</h2>
+    <div class="icon">-</div>
+  </div>
+  <div class="section-body">
+    <div data-lang="tr" class="visible">
+      <div class="grid">
+        <div class="card"><div class="card-label">Altyapi Baskani</div><div class="card-value">Santosh Janardhan</div><div class="card-note">Head of Global Infrastructure / Co-Head of Engineering</div></div>
+        <div class="card"><div class="card-label">AI Vizyonu</div><div class="card-value">Daniel Gross</div><div class="card-note">Apple AI (2013-17), YC, SSI founder. Joined Meta July 2025.</div></div>
+        <div class="card"><div class="card-label">Baskani</div><div class="card-value">Dina Powell McCormick</div><div class="card-note">GS (16 yr), <strong>Deputy</strong> NSA. <span class="tag tag-red">CORRECTED</span></div></div>
+      </div>
+      <div class="insight-box" style="margin-top:14px"><strong>Insight:</strong> Powell McCormick's appointment addresses Meta's lack of enterprise sales DNA. Title is "Deputy" National Security Advisor, not "National Security Advisor."</div>
+    </div>
+    <div data-lang="en">
+      <div class="grid">
+        <div class="card"><div class="card-label">Infra Chief</div><div class="card-value">Santosh Janardhan</div><div class="card-note">Head of Global Infrastructure / Co-Head of Engineering</div></div>
+        <div class="card"><div class="card-label">AI Vision</div><div class="card-value">Daniel Gross</div><div class="card-note">Apple AI (2013-17), YC, SSI founder. Joined Meta July 2025.</div></div>
+        <div class="card"><div class="card-label">President</div><div class="card-value">Dina Powell McCormick</div><div class="card-note">GS (16 yr), <strong>Deputy</strong> NSA. <span class="tag tag-red">CORRECTED</span></div></div>
+      </div>
+      <div class="insight-box" style="margin-top:14px"><strong>Insight:</strong> Powell McCormick's appointment signals Meta's attempt to fill its enterprise-sales DNA gap. Title is "Deputy" National Security Advisor.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-finans">
+    <h2 class="section-title" data-lang="tr" class="visible">Finansal Temeller</h2>
+    <h2 class="section-title" data-lang="en">Financial Foundations</h2>
+    <div class="icon">-</div>
+  </div>
+  <div class="section-body">
+    <div data-lang="tr" class="visible">
+      <div class="insight-box danger"><strong>DUZELTME:</strong> Makale GAAP EPS $10.44'u gormezden geliyor. Bu yatirimciyi yanilticidir.</div>
+      <img src="chart_meta_q1_kpi.png" class="chart-img" alt="Meta Q1 KPI">
+      <table>
+        <thead><tr><th>Metrik</th><th class="text-right">Deger</th><th class="text-right">YoY</th><th>Durum</th></tr></thead>
+        <tbody>
+          <tr><td>Revenue</td><td class="text-right">$56.31B</td><td class="text-right">+%33</td><td><span class="tag tag-green">OK</span></td></tr>
+          <tr><td>Operating Income</td><td class="text-right">$22.87B</td><td class="text-right">+%30</td><td><span class="tag tag-green">OK</span></td></tr>
+          <tr><td>Net Income</td><td class="text-right">$26.77B</td><td class="text-right">+%60</td><td><span class="tag tag-green">OK</span></td></tr>
+          <tr><td>GAAP EPS</td><td class="text-right">$10.44</td><td class="text-right">+%13.7</td><td><span class="tag tag-blue">ADDED</span></td></tr>
+          <tr><td>Adjusted EPS</td><td class="text-right">$7.31</td><td class="text-right">+%10</td><td><span class="tag tag-green">OK</span></td></tr>
+          <tr><td>FCF</td><td class="text-right">$12.39B</td><td class="text-right">-</td><td><span class="tag tag-green">OK</span></td></tr>
+          <tr><td>CapEx (Q1)</td><td class="text-right">$19.84B</td><td class="text-right">-</td><td><span class="tag tag-green">OK</span></td></tr>
+          <tr><td>2026 CapEx Guide</td><td class="text-right">$125-145B</td><td class="text-right">-</td><td><span class="tag tag-green">OK</span></td></tr>
+        </tbody>
+      </table>
+      <div class="insight-box warn"><strong>RISK:</strong> Sell-side: 2026 FCF negatif, 2027 -$24B. Yuksek faiz + negatif FCF = borclanma riski.</div>
+      <img src="chart_capex_projection.png" class="chart-img" alt="CapEx">
+    </div>
+    <div data-lang="en">
+      <div class="insight-box danger"><strong>CORRECTION:</strong> The article omits GAAP EPS of $10.44, presenting only adjusted $7.31. This is misleading.</div>
+      <img src="chart_meta_q1_kpi.png" class="chart-img" alt="Meta Q1 KPI">
+      <table>
+        <thead><tr><th>Metric</th><th class="text-right">Value</th><th class="text-right">YoY</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Revenue</td><td class="text-right">$56.31B</td><td class="text-right">+%33</td><td><span class="tag tag-green">OK</span></td></tr>
+          <tr><td>Operating Income</td><td class="text-right">$22.87B</td><td class="text-right">+%30</td><td><span class="tag tag-green">OK</span></td></tr>
+          <tr><td>Net Income</td><td class="text-right">$26.77B</td><td class="text-right">+%60</td><td><span class="tag tag-green">OK</span></td></tr>
+          <tr><td>GAAP EPS</td><td class="text-right">$10.44</td><td class="text-right">+%13.7</td><td><span class="tag tag-blue">ADDED</span></td></tr>
+          <tr><td>Adjusted EPS</td><td class="text-right">$7.31</td><td class="text-right">+%10</td><td><span class="tag tag-green">OK</span></td></tr>
+          <tr><td>FCF</td><td class="text-right">$12.39B</td><td class="text-right">-</td><td><span class="tag tag-green">OK</span></td></tr>
+          <tr><td>CapEx (Q1)</td><td class="text-right">$19.84B</td><td class="text-right">-</td><td><span class="tag tag-green">OK</span></td></tr>
+          <tr><td>2026 CapEx Guide</td><td class="text-right">$125-145B</td><td class="text-right">-</td><td><span class="tag tag-green">OK</span></td></tr>
+        </tbody>
+      </table>
+      <div class="insight-box warn"><strong>RISK:</strong> Sell-side: 2026 FCF negative, 2027 -$24B. High rates + negative FCF = funding risk.</div>
+      <img src="chart_capex_projection.png" class="chart-img" alt="CapEx">
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-piyasa">
+    <h2 class="section-title" data-lang="tr" class="visible">Piyasa Tepkisi</h2>
+    <h2 class="section-title" data-lang="en">Market Reaction</h2>
+    <div class="icon">-</div>
+  </div>
+  <div class="section-body">
+    <div data-lang="tr" class="visible">
+      <div class="insight-box danger"><strong>DUZELTME:</strong> "4 Haziran'dan bu yana en yuksek kapanis" YANLIS (4 Haziran $627.57 > 1 Temmuz $618.73). AMD gun dusugu $547.06 (değil $518). Trane +%1.56 (kayip degil).</div>
+      <img src="chart_stock_moves.png" class="chart-img" alt="Hisse">
+      <table>
+        <thead><tr><th>Hisse</th><th class="text-right">Degisim</th><th class="text-right">Fiyat</th></tr></thead>
+        <tbody>
+          <tr><td>META</td><td class="text-right" style="color:var(--gf-success)">+%10.8</td><td class="text-right">$618.73</td></tr>
+          <tr><td>MAGS</td><td class="text-right" style="color:var(--gf-success)">+%2.79</td><td class="text-right">$66.10</td></tr>
+          <tr><td>VOO</td><td class="text-right" style="color:var(--gf-success)">+%0.2</td><td class="text-right">-</td></tr>
+          <tr><td>NVDA</td><td class="text-right" style="color:var(--gf-danger)">-%1.5</td><td class="text-right">-</td></tr>
+          <tr><td>AMD</td><td class="text-right" style="color:var(--gf-danger)">-%4.7</td><td class="text-right">$547.06</td></tr>
+          <tr><td>MU</td><td class="text-right" style="color:var(--gf-danger)">-%8.56</td><td class="text-right">-</td></tr>
+          <tr><td>AMAT</td><td class="text-right" style="color:var(--gf-danger)">-%10.3</td><td class="text-right">-</td></tr>
+          <tr><td>TER</td><td class="text-right" style="color:var(--gf-danger)">-%9.99</td><td class="text-right">-</td></tr>
+          <tr><td>GLW</td><td class="text-right" style="color:var(--gf-danger)">-%13.0</td><td class="text-right">-</td></tr>
+          <tr><td>TT</td><td class="text-right" style="color:var(--gf-success)">+%1.56</td><td class="text-right">-</td></tr>
+          <tr><td>CRWV</td><td class="text-right" style="color:var(--gf-danger)">-%12.3</td><td class="text-right">$87.25</td></tr>
+          <tr><td>NBIS</td><td class="text-right" style="color:var(--gf-danger)">-%13.8</td><td class="text-right">$238.07</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div data-lang="en">
+      <div class="insight-box danger"><strong>CORRECTION:</strong> "Highest close since June 4" is FALSE (June 4 $627.57 > July 1 $618.73). AMD day-low $547.06 (not $518). Trane +%1.56 (not a loss).</div>
+      <img src="chart_stock_moves.png" class="chart-img" alt="Stocks">
+      <table>
+        <thead><tr><th>Ticker</th><th class="text-right">Change</th><th class="text-right">Price</th></tr></thead>
+        <tbody>
+          <tr><td>META</td><td class="text-right" style="color:var(--gf-success)">+%10.8</td><td class="text-right">$618.73</td></tr>
+          <tr><td>MAGS</td><td class="text-right" style="color:var(--gf-success)">+%2.79</td><td class="text-right">$66.10</td></tr>
+          <tr><td>VOO</td><td class="text-right" style="color:var(--gf-success)">+%0.2</td><td class="text-right">-</td></tr>
+          <tr><td>NVDA</td><td class="text-right" style="color:var(--gf-danger)">-%1.5</td><td class="text-right">-</td></tr>
+          <tr><td>AMD</td><td class="text-right" style="color:var(--gf-danger)">-%4.7</td><td class="text-right">$547.06</td></tr>
+          <tr><td>MU</td><td class="text-right" style="color:var(--gf-danger)">-%8.56</td><td class="text-right">-</td></tr>
+          <tr><td>AMAT</td><td class="text-right" style="color:var(--gf-danger)">-%10.3</td><td class="text-right">-</td></tr>
+          <tr><td>TER</td><td class="text-right" style="color:var(--gf-danger)">-%9.99</td><td class="text-right">-</td></tr>
+          <tr><td>GLW</td><td class="text-right" style="color:var(--gf-danger)">-%13.0</td><td class="text-right">-</td></tr>
+          <tr><td>TT</td><td class="text-right" style="color:var(--gf-success)">+%1.56</td><td class="text-right">-</td></tr>
+          <tr><td>CRWV</td><td class="text-right" style="color:var(--gf-danger)">-%12.3</td><td class="text-right">$87.25</td></tr>
+          <tr><td>NBIS</td><td class="text-right" style="color:var(--gf-danger)">-%13.8</td><td class="text-right">$238.07</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-sozlesme">
+    <h2 class="section-title" data-lang="tr" class="visible">Sozlesme Detaylari</h2>
+    <h2 class="section-title" data-lang="en">Contract Details</h2>
+    <div class="icon">-</div>
+  </div>
+  <div class="section-body">
+    <div data-lang="tr" class="visible">
+      <div class="insight-box danger"><strong>DUZELTME:</strong> CoreWeave RPO $98.8B (değil $33.59B). Nebius convertible debt ~$4-5B (değil $10.04B). "Meta iptal edemez" abartilidir — cause-based fesih mumkun.</div>
+      <p><strong>CoreWeave:</strong> $21B (Nisan 2026, Aralik 2032). Backlog $99.4B, yukumlulukler $50.81B. "Take-or-pay" ama cause-based fesih var.</p>
+      <p><strong>Nebius:</strong> $3B -> $12B -> $27B potansiyel. Microsoft $19.4B (NJ 300MW).</p>
+      <div class="insight-box"><strong>Insight:</strong> Gercek risk sözlesme iptali degil, Meta'nin pazara girmesiyle kiralama fiyatlarinin (pricing) ezilmesi ve borc servisinin zorlasmasidir.</div>
+    </div>
+    <div data-lang="en">
+      <div class="insight-box danger"><strong>CORRECTION:</strong> CoreWeave RPO is $98.8B (not $33.59B). Nebius convertible debt ~$4-5B (not $10.04B). "Meta cannot cancel" is exaggerated — cause-based termination exists.</div>
+      <p><strong>CoreWeave:</strong> $21B (April 2026, Dec 2032). Backlog $99.4B, liabilities $50.81B. "Take-or-pay" but cause-based termination possible.</p>
+      <p><strong>Nebius:</strong> $3B -> $12B -> $27B potential. Microsoft $19.4B (NJ 300MW).</p>
+      <div class="insight-box"><strong>Insight:</strong> Real risk is not contract cancellation but pricing compression and debt-service strain as Meta enters the market.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-teknoloji">
+    <h2 class="section-title" data-lang="tr" class="visible">Teknolojik Altyapi</h2>
+    <h2 class="section-title" data-lang="en">Technological Infrastructure</h2>
+    <div class="icon">-</div>
+  </div>
+  <div class="section-body">
+    <div data-lang="tr" class="visible">
+      <p><strong>Muse Spark:</strong> 8 Nisan 2026, RL + Test-Time Reasoning. Biyolojik/kimyasal test ve "en dusuk siber kotuye kullanim" iddialari dogrulanamadi.</p>
+      <img src="chart_ai_agents_market.png" class="chart-img" alt="AI Agents">
+      <p><strong>Hyperion:</strong> Louisiana, 5GW (2030). $10B duyuruldu, $200B potansiyel iddiasi dogrulanamadi. 23M galon/gun su iddiasi dogrulanamadi.</p>
+      <div class="timeline">
+        <div class="timeline-item bull"><div class="timeline-date">13 Ocak 2026</div><div class="timeline-body">Meta Compute duyuruldu</div></div>
+        <div class="timeline-item bull"><div class="timeline-date">8 Nisan 2026</div><div class="timeline-body">Muse Spark tanitildi</div></div>
+        <div class="timeline-item bull"><div class="timeline-date">Nisan 2026</div><div class="timeline-body">CoreWeave $21B sözlesme</div></div>
+        <div class="timeline-item bull"><div class="timeline-date">27 Mayis 2026</div><div class="timeline-body">Zuckerberg "on the table"</div></div>
+        <div class="timeline-item warn"><div class="timeline-date">1 Temmuz 2026</div><div class="timeline-body">Bulut satis plani haberi</div></div>
+      </div>
+    </div>
+    <div data-lang="en">
+      <p><strong>Muse Spark:</strong> April 8, 2026, RL + Test-Time Reasoning. Biological/chemical test and "lowest cyber-misuse" claims unverified.</p>
+      <img src="chart_ai_agents_market.png" class="chart-img" alt="AI Agents">
+      <p><strong>Hyperion:</strong> Louisiana, 5GW (2030). $10B announced; $200B potential claim unverified. 23M gal/day water claim unverified.</p>
+      <div class="timeline">
+        <div class="timeline-item bull"><div class="timeline-date">Jan 13, 2026</div><div class="timeline-body">Meta Compute announced</div></div>
+        <div class="timeline-item bull"><div class="timeline-date">Apr 8, 2026</div><div class="timeline-body">Muse Spark unveiled</div></div>
+        <div class="timeline-item bull"><div class="timeline-date">Apr 2026</div><div class="timeline-body">CoreWeave $21B contract</div></div>
+        <div class="timeline-item bull"><div class="timeline-date">May 27, 2026</div><div class="timeline-body">Zuckerberg "on the table"</div></div>
+        <div class="timeline-item warn"><div class="timeline-date">Jul 1, 2026</div><div class="timeline-body">Cloud sale plan reported</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-debunk">
+    <h2 class="section-title" data-lang="tr" class="visible">Abartili Argumanlar</h2>
+    <h2 class="section-title" data-lang="en">Exaggerated Claims</h2>
+    <div class="icon">-</div>
+  </div>
+  <div class="section-body">
+    <div data-lang="tr" class="visible">
+      <div class="insight-box danger"><strong>1.</strong> "Meta Compute AWS/Azure'u yok edecek" — ABARTILI. Meta'nin kurumsal satis DNA'si yok. Baslangicta neobulut pazarina odaklanacak.</div>
+      <div class="insight-box danger"><strong>2.</strong> "Nebius/CoreWeave iflas ediyor, sözlesmeler iptal" — ASILSIZ. Sözlesmeler baglayici RPO. Dusus marj korkusundan.</div>
+      <div class="insight-box danger"><strong>3.</strong> "YZ balonu patladi, tum donanim cokecek" — Degerleme duzeltmesi. 2026 CapEx $750B+ devam ediyor.</div>
+      <img src="chart_butterfly_effect.png" class="chart-img" alt="Butterfly Effect">
+    </div>
+    <div data-lang="en">
+      <div class="insight-box danger"><strong>1.</strong> "Meta Compute will kill AWS/Azure" — EXAGGERATED. Meta lacks enterprise sales DNA. Will target neocloud/startup market first.</div>
+      <div class="insight-box danger"><strong>2.</strong> "Nebius/CoreWeave bankrupt, contracts cancelled" — FALSE. Contracts are binding RPO. Decline is margin-compression fear.</div>
+      <div class="insight-box danger"><strong>3.</strong> "AI bubble burst, all hardware collapses" — VALUATION CORRECTION. 2026 CapEx guidance $750B+ continues.</div>
+      <img src="chart_butterfly_effect.png" class="chart-img" alt="Butterfly Effect">
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-makro">
+    <h2 class="section-title" data-lang="tr" class="visible">Makroekonomik Konjonktur</h2>
+    <h2 class="section-title" data-lang="en">Macroeconomic Context</h2>
+    <div class="icon">-</div>
+  </div>
+  <div class="section-body">
+    <div data-lang="tr" class="visible">
+      <div class="insight-box warn"><strong>DUZELTME:</strong> ABD-Iran catismasi 1 Temmuz'da aktif degil. 28 Subat operasyon, Nisan ateskes, Haziran baris anlasmasi.</div>
+      <div class="grid">
+        <div class="card"><div class="card-label">ISM Manufacturing</div><div class="card-value">53.3</div><div class="card-note">Haziran 2026</div></div>
+        <div class="card"><div class="card-label">10Y Treasury</div><div class="card-value">4.47%</div><div class="card-note">1 Temmuz 2026</div></div>
+        <div class="card"><div class="card-label">Brent Petrol</div><div class="card-value">$72-120</div><div class="card-note">Dalgalı aralik</div></div>
+        <div class="card"><div class="card-label">Hyperscaler CapEx</div><div class="card-value">$750B+</div><div class="card-note">2026 toplam</div></div>
+      </div>
+      <p style="margin-top:14px">FED dot plot: 9/18 uye faiz artisi bekliyor. Kevin Warsh 1 Temmuz ECB Sintra'da konusma yapti. Yuksek faiz = teknoloji DCF baskisi.</p>
+    </div>
+    <div data-lang="en">
+      <div class="insight-box warn"><strong>CORRECTION:</strong> US-Iran conflict was not active on July 1. Feb 28 operation, April ceasefire, June peace agreement.</div>
+      <div class="grid">
+        <div class="card"><div class="card-label">ISM Manufacturing</div><div class="card-value">53.3</div><div class="card-note">June 2026</div></div>
+        <div class="card"><div class="card-label">10Y Treasury</div><div class="card-value">4.47%</div><div class="card-note">July 1, 2026</div></div>
+        <div class="card"><div class="card-label">Brent Oil</div><div class="card-value">$72-120</div><div class="card-note">Volatile range</div></div>
+        <div class="card"><div class="card-label">Hyperscaler CapEx</div><div class="card-value">$750B+</div><div class="card-note">2026 total</div></div>
+      </div>
+      <p style="margin-top:14px">FED dot plot: 9/18 members expect a hike. Kevin Warsh spoke at ECB Sintra on July 1. High rates = tech DCF pressure.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-blueprint">
+    <h2 class="section-title" data-lang="tr" class="visible">Stratejik Blueprint</h2>
+    <h2 class="section-title" data-lang="en">Strategic Blueprint</h2>
+    <div class="icon">-</div>
+  </div>
+  <div class="section-body">
+    <div data-lang="tr" class="visible">
+      <div class="insight-box bull"><strong>1.</strong> Kaliteli kazanci takip. Meta %41 marj, $26.77B net kar. Dususler birikim firsatidir.</div>
+      <div class="insight-box warn"><strong>2.</strong> Donanimdan yazilima kayis. AI Agents 2033'te $182.9B (CAGR %49.6).</div>
+      <div class="insight-box"><strong>3.</strong> Makro duyarlilik. %15-20 nakit/dry powder tutmak hayati.</div>
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">BUY</div><div class="kpi-label">META (uzun vade)</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-warning)">HOLD</div><div class="kpi-label">NVDA (duzeltme)</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-danger)">REDUCE</div><div class="kpi-label">CRWV / NBIS</div></div>
+        <div class="kpi"><div class="kpi-num">%15-20</div><div class="kpi-label">Nakit Hedefi</div></div>
+      </div>
+    </div>
+    <div data-lang="en">
+      <div class="insight-box bull"><strong>1.</strong> Follow quality earnings. Meta 41% margin, $26.77B net income. Drawdowns are accumulation opportunities.</div>
+      <div class="insight-box warn"><strong>2.</strong> Shift from hardware to software. AI Agents market $182.9B by 2033 (CAGR 49.6%).</div>
+      <div class="insight-box"><strong>3.</strong> Macro awareness. Holding 15-20% cash/dry powder is vital in this transition.</div>
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">BUY</div><div class="kpi-label">META (long term)</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-warning)">HOLD</div><div class="kpi-label">NVDA (correction)</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-danger)">REDUCE</div><div class="kpi-label">CRWV / NBIS</div></div>
+        <div class="kpi"><div class="kpi-num">15-20%</div><div class="kpi-label">Cash Target</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">
+  Gistify Flow | 1 July 2026 | Research-based report. Not investment advice.<br>
+  Sources: Bloomberg, Reuters, Meta IR, SEC EDGAR, ISM, FRED, Grand View Research
+</div>
+
+</div>
+</body>
+</html>
