@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-07-01T08:27:29Z",
+  "generatedAt": "2026-07-01T17:40:06Z",
   "reportDate": "2026-07-01",
   "title": "US PPI Forecast Snapshot — Composite Calibrated Bridge Nowcast v2.5 Enhanced",
-  "summary": "Energy drag from June spot mean-reversion (WTI ~$72) pulls headline lower, but ISM Prices Paid at 82.1 and May intermediate demand surge (+3.2% Stage 1) keep core goods pipeline pressure intact. Normal regime (VIX 17.1) supports tighter confidence bands. Services composite holds at +0.2% on ECI passthrough.",
-  "baseCase": "Soft headline on energy unwind, sticky core on ISM and intermediate demand passthrough",
-  "conviction": 62,
+  "summary": "Energy drag from June spot mean-reversion (WTI ~$72) pulls headline lower, but lagged intermediate demand passthrough and still-elevated ISM Prices Paid at 73.0 keep core goods sticky. Normal regime (VIX ~16.5) supports tighter confidence bands. ECI unavailable for Q2; fallback services composite holds at +0.2%.",
+  "baseCase": "Soft headline on energy unwind, sticky core on lagged intermediate demand passthrough",
+  "conviction": 65,
   "regime": "normal",
-  "vix": 17.12,
+  "vix": 16.5,
   "regimeParameters": {
     "biasWindow": 3,
     "energyLag": 1,
@@ -15,9 +15,9 @@
     "ciMultiplier": 1.96
   },
   "adaptiveBias": {
-    "energy": -0.3,
+    "energy": -0.2,
     "foods": 0.0,
-    "coreGoods": -0.2,
+    "coreGoods": -0.15,
     "tradeServices": 0.0,
     "transportation": -0.1,
     "otherServices": 0.05
@@ -53,11 +53,11 @@
       "steel": 0.0,
       "aluminum": 0.0,
       "lumber": 0.0,
-      "chemicals": 0.3,
+      "chemicals": 0.2,
       "pharma": 0.1,
-      "ismPricesPaid": 3.21,
+      "ismPricesPaid": 2.3,
       "importPriceIndex": 0.0,
-      "composite": 0.5
+      "composite": 0.4
     },
     "tradeServices": {
       "inventorySales": 0.0,
@@ -67,14 +67,14 @@
       "composite": 0.0
     },
     "transportation": {
-      "datSpot": 0.0,
+      "datSpot": -1.0,
       "diesel": -3.0,
       "railFreight": 0.0,
       "airFreight": 0.0,
       "composite": -0.4
     },
     "otherServices": {
-      "eci": 0.3,
+      "eci": 0.0,
       "sp500vix": 0.2,
       "healthcare": 0.2,
       "accommodation": 0.2,
@@ -94,26 +94,26 @@
     "period": "Jun 2026",
     "releaseDate": "2026-07-15",
     "releaseTimeEt": "08:30 ET",
-    "headlineMoM": "+0.2%",
-    "headlineYoY": "6.4%",
+    "headlineMoM": "+0.1%",
+    "headlineYoY": "6.3%",
     "coreMoM": "+0.3%",
-    "coreYoY": "5.2%",
+    "coreYoY": "5.3%",
     "priorHeadlineMoM": "+1.1%",
     "priorHeadlineYoY": "6.5%",
     "priorCoreMoM": "+0.8%",
     "priorCoreYoY": "5.1%",
     "bias": "COOLER",
-    "confidence": 62,
-    "thesis": "Energy drag from June spot mean-reversion (WTI ~$72) pulls headline lower, but ISM Prices Paid at 82.1 and May intermediate demand surge (+3.2% Stage 1) keep core goods pipeline pressure intact. Normal regime (VIX 17.1) supports tighter confidence bands. Services composite holds at +0.2% on ECI passthrough."
+    "confidence": 65,
+    "thesis": "Energy drag from June spot mean-reversion pulls headline lower, but May intermediate demand surge (+3.2% Stage 1) keeps core goods pipeline pressure intact. June ISM Prices Paid at 73.0 signals cooling but remains inflationary. Normal regime (VIX ~16.5) supports tighter confidence bands."
   },
   "pointEstimate": {
-    "headline": 0.2,
+    "headline": 0.1,
     "core": 0.3
   },
   "confidenceInterval": {
     "headline": [
       -0.2,
-      0.6
+      0.4
     ],
     "core": [
       0.1,
@@ -125,7 +125,7 @@
       "id": "base",
       "label": "Base case",
       "probability": 55,
-      "outcome": "Headline +0.2%, core +0.3%. Energy drag stabilizes while core goods and services stay sticky.",
+      "outcome": "Headline +0.1%, core +0.3%. Energy drag stabilizes while core goods and services stay sticky.",
       "marketReadthrough": "Rates digest the headline but focus on core. No major Fed repricing.",
       "favoredAssets": [
         "Industrials",
@@ -137,8 +137,8 @@
     {
       "id": "hot",
       "label": "Hotter pipeline pressure",
-      "probability": 25,
-      "outcome": "Headline +0.5%, core +0.6%. ISM passthrough hits harder than expected; intermediate demand keeps feeding through.",
+      "probability": 20,
+      "outcome": "Headline +0.4%, core +0.5%. ISM passthrough hits harder than expected; intermediate demand keeps feeding through.",
       "marketReadthrough": "Rates higher, USD firmer, margin-sensitive equities under pressure.",
       "favoredAssets": [
         "USD",
@@ -150,8 +150,8 @@
     {
       "id": "cool",
       "label": "Cleaner disinflation pulse",
-      "probability": 20,
-      "outcome": "Headline -0.1%, core +0.1%. Energy collapses further; core passthrough fades faster than expected.",
+      "probability": 25,
+      "outcome": "Headline -0.2%, core +0.1%. Energy collapses further; core passthrough fades faster than expected.",
       "marketReadthrough": "Fed-cut odds rise, rates soften, broader equity appetite improves.",
       "favoredAssets": [
         "Growth",
