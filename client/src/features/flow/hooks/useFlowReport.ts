@@ -31,7 +31,7 @@ export function useFlowReport(
 
     try {
       const response = await fetch(
-        `/api/flow-reports/${encodeURIComponent(reportId)}`,
+        `/api/flow-reports/${encodeURIComponent(reportId)}${language === "en" ? "?lang=en" : ""}`,
         {
           cache: "no-store",
           credentials: "include",

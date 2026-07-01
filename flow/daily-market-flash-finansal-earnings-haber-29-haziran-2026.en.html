@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Market Flash Deep Analysis — Financial · Earnings · News | $OUST $IRDM $FCEL $VSAT $CBRS $BLD $SNEX $VC $CPRT $MLM $AXON $GLW $CHTR $CRMT $AVAV $CNXC $QMCO</title>
+<style>
+/* GISTIFY FLOW — Unified Dark Theme */
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:720px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.hero-date{display:inline-flex;align-items:center;gap:5px;color:var(--gf-muted)}
+
+/* META PILLS */
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+
+/* SECTIONS */
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s;display:flex;align-items:center;justify-content:space-between}
+.section-head-inner:hover{background:var(--gf-card)}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent);transition:transform .2s}
+.section-head.collapsed .icon{transform:rotate(-90deg)}
+.section-body{padding:18px;display:none}
+.section-head:not(.collapsed) .section-body{display:block}
+
+/* GRID & CARDS */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px;transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-1px);border-color:rgba(56,189,248,.25)}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+
+/* TABS */
+.tabs{display:flex;gap:2px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:14px}
+.tab{flex:1;padding:8px 10px;text-align:center;font-size:0.82rem;font-weight:600;border-radius:6px;cursor:pointer;user-select:none;transition:background .15s,color .15s;border:none;color:var(--gf-muted);background:transparent}
+.tab.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.tab:hover:not(.active){color:var(--gf-text)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.text-right{text-align:right}
+.text-center{text-align:center}
+
+/* PROGRESS */
+.progress-bar{background:var(--gf-card);border-radius:4px;height:18px;overflow:hidden;margin:4px 0}
+.progress-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:0.68rem;font-weight:700;color:#fff}
+.fill-bull{background:linear-gradient(90deg,#16a34a,#4ade80)}
+.fill-base{background:linear-gradient(90deg,#ca8a04,#fbbf24)}
+.fill-bear{background:linear-gradient(90deg,#dc2626,#f87171)}
+
+/* INSIGHT BOX */
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+
+/* TAGS */
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--gf-border)}
+.timeline-item{position:relative;margin-bottom:14px}
+.timeline-item::before{content:'';position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--gf-card);border:2px solid var(--gf-border)}
+.timeline-item.bull::before{border-color:var(--gf-success);background:var(--gf-success)}
+.timeline-item.bear::before{border-color:var(--gf-danger);background:var(--gf-danger)}
+.timeline-item.warn::before{border-color:var(--gf-warning);background:var(--gf-warning)}
+.timeline-date{font-size:0.78rem;color:var(--gf-muted);font-weight:600}
+.timeline-body{font-size:0.85rem;margin-top:3px;color:var(--gf-text)}
+
+/* HEATMAP */
+.heatmap{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;font-size:0.72rem;margin:10px 0}
+.heatmap-cell{padding:6px 2px;text-align:center;border-radius:4px;min-height:36px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.heatmap-cell .day{font-weight:700;font-size:0.78rem}
+.heatmap-cell .val{font-size:0.68rem;opacity:.85}
+.h-strong{background:rgba(74,222,128,.35);color:#aff5b4}
+.h-weak{background:rgba(248,113,113,.35);color:#ffdcd7}
+.h-neu{background:rgba(251,191,36,.2);color:#ffdfb6}
+.h-flat{background:rgba(148,163,184,.15);color:var(--gf-muted)}
+.h-good{background:rgba(74,222,128,.2);color:#aff5b4}
+
+/* FOOTER */
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+.tabs{flex-wrap:wrap}
+.tab{flex:none;min-width:80px}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+}
+
+/* LANG SWITCH */
+.lang-switch{display:inline-flex;gap:4px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:16px}
+.lang-btn{padding:6px 14px;border-radius:8px;font-size:0.8rem;font-weight:600;border:none;cursor:pointer;background:transparent;color:var(--gf-muted);transition:all .15s}
+.lang-btn.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.lang-btn:hover:not(.active){color:var(--gf-text)}
+[data-lang]{display:none}
+[data-lang].visible{display:block}
+[data-lang-inline]{display:none}
+[data-lang-inline].visible{display:inline}
+</style>
+<script>
+function toggle(id){var el=document.getElementById(id);if(!el)return;el.classList.toggle('collapsed');}
+function setTab(btn,tabId){var parent=btn.closest('.tabs');if(parent){parent.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});parent.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});}btn.classList.add('active');var tc=document.getElementById(tabId);if(tc)tc.classList.add('active');}
+</script>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HERO -->
+<div class="hero" id="hero">
+  <h1 class="hero-h">Market Flash Deep Analysis — Financial · Earnings · News</h1>
+  <p class="hero-desc">For all 17 stocks in the 06/29/2026 Market Flash report: verified financial snapshot, latest quarterly earnings (actual vs. estimate), dated/sourced news flow, and direction-agnostic option/risk assessment. Closes the financial & earnings & news layer that the previous technical-focused analysis skipped.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info">📅 June 29, 2026 · After-hours</span>
+    <span class="meta-pill neu">📊 17 Stocks</span>
+    <span class="meta-pill bull">AVAV Record Beat</span>
+    <span class="meta-pill bear">BLD Delist · CRMT Distressed</span>
+  </div>
+  <div class="hero-meta">
+    <span class="hero-ticker">$OUST</span><span class="hero-ticker">$IRDM</span><span class="hero-ticker">$FCEL</span><span class="hero-ticker">$VSAT</span><span class="hero-ticker">$CBRS</span><span class="hero-ticker">$BLD</span><span class="hero-ticker">$SNEX</span><span class="hero-ticker">$VC</span><span class="hero-ticker">$CPRT</span><span class="hero-ticker">$MLM</span><span class="hero-ticker">$AXON</span><span class="hero-ticker">$GLW</span><span class="hero-ticker">$CHTR</span><span class="hero-ticker">$CRMT</span><span class="hero-ticker">$AVAV</span><span class="hero-ticker">$CNXC</span><span class="hero-ticker">$QMCO</span>
+  </div>
+</div>
+
+<!-- SECTION 1: MACRO CONTEXT -->
+<section>
+  <div class="section-head" id="sec-makro">
+    <div class="section-head-inner" onclick="toggle('sec-makro')">
+      <h2 class="section-title">🌐 1. Macro Context (06/29 Close)</h2>
+      <div class="icon">▾</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="grid">
+      <div class="card"><div class="card-label">SPY</div><div class="card-value up">740.86 · +1.58%</div><div class="card-note">Risk-on; broad market strong</div></div>
+      <div class="card"><div class="card-label">QQQ</div><div class="card-value up">723.96 · +2.60%</div><div class="card-note">Tech leadership (semiconductors + optics)</div></div>
+      <div class="card"><div class="card-label">IWM</div><div class="card-value neu">298.98 · +0.43%</div><div class="card-note">Small-cap lagging; Russell noise</div></div>
+      <div class="card"><div class="card-label">VIX</div><div class="card-value up">17.71 · -3.80%</div><div class="card-note">Low fear → low index IV</div></div>
+    </div>
+    <div class="insight-box">
+      <strong>Regime reading:</strong> Risk-on, low VIX, tech/AI leadership. Index-level IV is low; but in <strong>individual stocks</strong> reporting earnings and subject to M&A <strong>IV is very high</strong> → the main risk in these names is <strong>IV-crush</strong>.
+    </div>
+    <div class="insight-box warn">
+      <strong>Russell warning:</strong> June 29 = <strong>Russell index reconstitution effective day</strong>. A significant part of the sharp moves in names like SNEX, VC, MLM is not fundamental but <strong>index flow</strong> sourced — i.e., mean-reversion ground.
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: MASTER FINANCIAL TABLE -->
+<section>
+  <div class="section-head" id="sec-tablo">
+    <div class="section-head-inner" onclick="toggle('sec-tablo')">
+      <h2 class="section-title">📋 2. Master Financial Table (17 Stocks)</h2>
+      <div class="icon">▾</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <p style="color:var(--gf-muted);font-size:0.82rem;margin-bottom:8px">Source: Yahoo Finance <code>get_stock_info</code> (06/29). P/E ttm = trailing. AH% manually calculated (Yahoo <code>postMarketChangePercent</code> field broken).</p>
+    <div style="overflow-x:auto">
+    <table>
+      <thead>
+        <tr><th>Ticker</th><th class="text-right">Price</th><th class="text-right">Mkt Cap</th><th class="text-right">P/E ttm</th><th class="text-right">Revenue TTM</th><th class="text-right">Growth</th><th class="text-right">Net Margin</th><th class="text-right">EPS</th><th class="text-right">Debt/Eq</th><th class="text-right">Target</th><th>Rating</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>OUST</strong></td><td class="text-right">$54.07</td><td class="text-right">3.44B</td><td class="text-right">—</td><td class="text-right">185.3M</td><td class="text-right up">+48.9%</td><td class="text-right down">neg</td><td class="text-right">-0.93</td><td class="text-right">low</td><td class="text-right">$46.86</td><td><span class="tag tag-green">strong_buy</span></td></tr>
+        <tr><td><strong>IRDM</strong></td><td class="text-right">$54.59</td><td class="text-right">5.77B</td><td class="text-right">55</td><td class="text-right">875.8M</td><td class="text-right neu">single digit</td><td class="text-right up">12.1%</td><td class="text-right">~0.99</td><td class="text-right down">1.79B</td><td class="text-right">$37.88</td><td><span class="tag tag-blue">M&A pinned</span></td></tr>
+        <tr><td><strong>FCEL</strong></td><td class="text-right">$29.80</td><td class="text-right">2.01B</td><td class="text-right">—</td><td class="text-right">~390M</td><td class="text-right neu">variable</td><td class="text-right down">-99% op</td><td class="text-right down">-6.20</td><td class="text-right down">high</td><td class="text-right">~$22</td><td><span class="tag tag-orange">hold</span></td></tr>
+        <tr><td><strong>VSAT</strong></td><td class="text-right">$76.69</td><td class="text-right">10.47B</td><td class="text-right">—</td><td class="text-right">4.64B</td><td class="text-right neu">single digit</td><td class="text-right neu">thin</td><td class="text-right">low</td><td class="text-right down">147</td><td class="text-right">$94.56</td><td><span class="tag tag-green">buy-lean</span></td></tr>
+        <tr><td><strong>CBRS</strong></td><td class="text-right">$216.16</td><td class="text-right">48.17B</td><td class="text-right down">480</td><td class="text-right">603.9M</td><td class="text-right up">+94.4%</td><td class="text-right neu">~breakeven</td><td class="text-right">low</td><td class="text-right up">3.3B cash</td><td class="text-right">$299.30</td><td><span class="tag tag-green">strong_buy</span></td></tr>
+        <tr><td><strong>BLD</strong></td><td class="text-right">$359.76</td><td class="text-right">~10.8B</td><td class="text-right">20</td><td class="text-right">5.62B</td><td class="text-right neu">low</td><td class="text-right up">healthy</td><td class="text-right">17.79</td><td class="text-right">medium</td><td class="text-right">$505 deal</td><td><span class="tag tag-red">⛔ delist 1 Jul</span></td></tr>
+        <tr><td><strong>SNEX</strong></td><td class="text-right">$115.85</td><td class="text-right">~5.6B</td><td class="text-right">~21</td><td class="text-right">150.5B*</td><td class="text-right neu">—</td><td class="text-right neu">thin</td><td class="text-right">5.59</td><td class="text-right">medium</td><td class="text-right">up</td><td><span class="tag tag-green">strong_buy</span></td></tr>
+        <tr><td><strong>VC</strong></td><td class="text-right">$94.94</td><td class="text-right">~2.6B</td><td class="text-right">16</td><td class="text-right">3.79B</td><td class="text-right neu">low</td><td class="text-right up">medium</td><td class="text-right">5.98</td><td class="text-right">medium</td><td class="text-right">$133.75</td><td><span class="tag tag-green">buy-lean</span></td></tr>
+        <tr><td><strong>CPRT</strong></td><td class="text-right">$28.10</td><td class="text-right">~27B</td><td class="text-right">17</td><td class="text-right">4.64B</td><td class="text-right up">healthy</td><td class="text-right up">33.5%</td><td class="text-right">~1.65</td><td class="text-right up">debt-free</td><td class="text-right">up</td><td><span class="tag tag-green">buy</span></td></tr>
+        <tr><td><strong>MLM</strong></td><td class="text-right">$581.23</td><td class="text-right">34.9B</td><td class="text-right">36</td><td class="text-right">6.35B</td><td class="text-right neu">low</td><td class="text-right up">high</td><td class="text-right">15.96</td><td class="text-right">medium</td><td class="text-right">$683.09</td><td><span class="tag tag-green">buy</span></td></tr>
+        <tr><td><strong>AXON</strong></td><td class="text-right">$510.60</td><td class="text-right">41.16B</td><td class="text-right down">208</td><td class="text-right">2.98B</td><td class="text-right up">+33.7%</td><td class="text-right neu">low</td><td class="text-right">~2.45</td><td class="text-right up">low</td><td class="text-right">$662.04</td><td><span class="tag tag-green">strong_buy</span></td></tr>
+        <tr><td><strong>GLW</strong></td><td class="text-right">$255.69</td><td class="text-right">220B</td><td class="text-right down">123</td><td class="text-right">16.32B</td><td class="text-right neu">medium</td><td class="text-right up">medium</td><td class="text-right">~2.08</td><td class="text-right">medium</td><td class="text-right down">$206.07</td><td><span class="tag tag-orange">price>target</span></td></tr>
+        <tr><td><strong>CHTR</strong></td><td class="text-right">$146.17</td><td class="text-right">~20B</td><td class="text-right">3.95</td><td class="text-right">54.64B</td><td class="text-right down">flat/neg</td><td class="text-right neu">medium</td><td class="text-right">37.00</td><td class="text-right down">460</td><td class="text-right">up</td><td><span class="tag tag-orange">hold</span></td></tr>
+        <tr><td><strong>CRMT</strong></td><td class="text-right">$2.56</td><td class="text-right down">21.3M</td><td class="text-right">—</td><td class="text-right">1.34B</td><td class="text-right down">neg</td><td class="text-right down">neg</td><td class="text-right down">-11.28</td><td class="text-right down">distressed</td><td class="text-right">—</td><td><span class="tag tag-red">⛔ distressed</span></td></tr>
+        <tr><td><strong>AVAV</strong></td><td class="text-right">$139.00*</td><td class="text-right">~6.4B</td><td class="text-right">—</td><td class="text-right">1.61B</td><td class="text-right up">+143%</td><td class="text-right down">neg</td><td class="text-right">-4.35</td><td class="text-right">medium</td><td class="text-right">$285.99</td><td><span class="tag tag-green">buy</span></td></tr>
+        <tr><td><strong>CNXC</strong></td><td class="text-right">$25.23</td><td class="text-right">~1.6B</td><td class="text-right">—</td><td class="text-right">9.95B</td><td class="text-right neu">low</td><td class="text-right down">-1.33B</td><td class="text-right down">neg</td><td class="text-right down">204</td><td class="text-right">$41.25</td><td><span class="tag tag-orange">turnaround</span></td></tr>
+        <tr><td><strong>QMCO</strong></td><td class="text-right">$11.85</td><td class="text-right">466.6M</td><td class="text-right">—</td><td class="text-right">262.8M</td><td class="text-right neu">recovery</td><td class="text-right down">neg</td><td class="text-right down">neg</td><td class="text-right down">high</td><td class="text-right">up</td><td><span class="tag tag-orange">spec</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="color:var(--gf-muted);font-size:0.78rem;margin-top:6px">* SNEX 150.5B = brokerage turnover (not net revenue). AVAV $139.00 = closing (before earnings AMC); after-hours ~$162.32 (≈+16.8%).</p>
+    <div class="insight-box warn"><strong>When reading the table:</strong> "strong_buy/buy" is raw analyst consensus. In names pinned to M&A (IRDM, BLD), price above target (GLW), or distressed (CRMT), this label <strong>is misleading</strong>. Check each stock's own section.</div>
+  </div>
+</section>
+
+<!-- SECTION 3: ACTIVE EARNINGS / CATALYST PLAYS -->
+<section>
+  <div class="section-head" id="sec-earnings">
+    <div class="section-head-inner" onclick="toggle('sec-earnings')">
+      <h2 class="section-title">🎯 3. Active Earnings / Catalyst Plays</h2>
+      <div class="icon">▾</div>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <h3 style="color:var(--gf-accent);margin:6px 0 8px">⭐ AVAV — AeroVironment · Q4 FY2026 (06/29 AMC) — RECORD BEAT</h3>
+    <div class="grid">
+      <div class="card"><div class="card-label">Revenue (Actual vs Est)</div><div class="card-value up">$641.6M</div><div class="card-note">vs $559.4M · +14.7% beat · +133% YoY</div></div>
+      <div class="card"><div class="card-label">EPS (Actual vs Est)</div><div class="card-value up">$1.84</div><div class="card-note">vs $1.48 · +24% beat</div></div>
+      <div class="card"><div class="card-label">After-Hours Reaction</div><div class="card-value up">≈+16.8%</div><div class="card-note">$139.00 → ~$162.32; implied ±11.31% EXCEEDED</div></div>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item bull"><div class="timeline-date">June 29 (AMC)</div><div class="timeline-body">Record beat — revenue + EPS both beat; AH +16.8%.</div></div>
+      <div class="timeline-item warn"><div class="timeline-date">July 8</div><div class="timeline-body">Investor Day — new catalyst window.</div></div>
+      <div class="timeline-item bear"><div class="timeline-date">July 27</div><div class="timeline-body">Securities class-action lawsuit deadline — legal tail risk.</div></div>
+    </div>
+    <div class="insight-box warn"><strong>Option note:</strong> Earnings PASSED → IV-crush started, naked long options lose value. Direction is strongly up but AH +16.8% is priced in + July 8 / July 27 two-way volatility. <strong>Spread</strong> structures preferred over naked CALL. Business line: unmanned systems (Switchblade, Puma/Raven), DoD + Ukraine + allied contracts.</div>
+
+    <h3 style="color:var(--gf-accent);margin:18px 0 8px">CNXC — Concentrix · Q2 FY26 (06/29 AMC)</h3>
+    <div class="grid">
+      <div class="card"><div class="card-label">Consensus EPS / Revenue</div><div class="card-value neu">~$2.64 / $2.474B</div><div class="card-note">Actual figures were NOT PUBLISHED at time of research</div></div>
+      <div class="card"><div class="card-label">After-Hours</div><div class="card-value down">≈-22%</div><div class="card-note">consistent with implied ±19.6% (UNVERIFIED)</div></div>
+      <div class="card"><div class="card-label">Balance Sheet Risk</div><div class="card-value down">D/E 204</div><div class="card-note">Debt $5.69B · net -$1.33B · AI cannibalization fear</div></div>
+    </div>
+    <div class="insight-box danger"><strong>Verify:</strong> Q2 AMC announced but <strong>actual EPS/revenue must be verified</strong> (live check). AH -22% started IV-crush. Verify numbers before taking a position. Business line: CX/BPO outsourcing — AI automation structural pressure.</div>
+
+    <h3 style="color:var(--gf-accent);margin:18px 0 8px">CBRS — AI-infrastructure · Q1 FY26 (06/23) BEAT</h3>
+    <div class="grid">
+      <div class="card"><div class="card-label">Core Revenue</div><div class="card-value up">$191.3M</div><div class="card-note">+92% YoY · near-breakeven</div></div>
+      <div class="card"><div class="card-label">FY26 Guidance</div><div class="card-value neu">$855–865M</div><div class="card-note">Cash $3.3B (capex fuel)</div></div>
+      <div class="card"><div class="card-label">Customer Concentration</div><div class="card-value down">~86%</div><div class="card-note">G42 + OpenAI · Nov 2026 lock-up</div></div>
+    </div>
+    <div class="insight-box danger"><strong>Straddle environment, very high IV.</strong> P/E 480 + 86% customer concentration = two-way extreme volatility. Straddle/strangle may make sense but IV is expensive → only if move exceeds implied. Naked directional bet is very risky.</div>
+
+    <h3 style="color:var(--gf-accent);margin:18px 0 8px">CPRT — Copart · Q3 BEAT + CEO Transition (cleanest directional)</h3>
+    <div class="grid">
+      <div class="card"><div class="card-label">Q3 EPS</div><div class="card-value up">$0.43 beat</div><div class="card-note">Net margin 33.5% · debt-free · FCF $1.0B</div></div>
+      <div class="card"><div class="card-label">Daily Move</div><div class="card-value down">-7.9%</div><div class="card-note">CEO transition triggered</div></div>
+      <div class="card"><div class="card-label">Management</div><div class="card-value neu">CEO Change</div><div class="card-note">J. Liaw departing Jul 31; J. Adair returning</div></div>
+    </div>
+    <div class="insight-box warn"><strong>Option note:</strong> Cleanest directional catalyst (CEO transition → short-term pressure). BUT debt-free + 33.5% net margin + $1B FCF = <strong>downside limited</strong>. <strong>Defined-risk PUT spread</strong> makes sense; naked PUT has mean-reversion risk at the bottom.</div>
+  </div>
+</section>
+
+<!-- SECTION 4: DEFENSE & SPACE + AI INFRASTRUCTURE -->
+<section>
+  <div class="section-head" id="sec-savunma">
+    <div class="section-head-inner" onclick="toggle('sec-savunma')">
+      <h2 class="section-title">🛰️ 4. Defense & Space + AI Infrastructure</h2>
+      <div class="icon">▾</div>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <h3 style="color:var(--gf-accent);margin:6px 0 8px">⭐ IRDM — Iridium · M&A REGIME (cleanest story)</h3>
+    <div class="insight-box"><strong>Financial:</strong> $54.59 · $5.77B · P/E 55 · revenue $875.8M · gross margin 71.6% · op 23.2% · net 12.1% · debt $1.79B. Analyst target <strong>$37.88 — well below price</strong> = stock pinned to M&A price.</div>
+    <div class="timeline">
+      <div class="timeline-item bull"><div class="timeline-date">June 29</div><div class="timeline-body"><strong>Rocket Lab (RKLB) acquiring Iridium ~$54/share</strong> — ~$27 cash + RKLB shares, ~$8B EV. <strong>Definitive</strong>; closing mid-2027.</div></div>
+      <div class="timeline-item warn"><div class="timeline-date">Q1 2026</div><div class="timeline-body">EPS $0.20 miss / revenue beat. Earnings no longer driving price.</div></div>
+    </div>
+    <div class="insight-box danger"><strong>⚠️ CALL NOT ATTRACTIVE:</strong> Price stuck at offer level, upside closed. This is now a <strong>merger-arbitrage</strong> instrument (narrow band, low RV, regulation/closing tail risk). Not suitable for 2x momentum setup.</div>
+
+    <h3 style="color:var(--gf-accent);margin:18px 0 8px">VSAT — Viasat · Defense/Satcom Re-rating</h3>
+    <div class="insight-box"><strong>Financial:</strong> $76.69 · $10.47B · revenue $4.64B · debt <strong>$6.94B (D/E 147)</strong> · thin margin · target $94.56. Q3 FY26 EPS $0.79 beat; Q4 FY26 figures NOT VERIFIED.</div>
+    <div class="timeline">
+      <div class="timeline-item bull"><div class="timeline-date">Catalyst</div><div class="timeline-body">$437.7M Space Force PTS-G contract + analyst PT increases ($97/$106/$93) + spin-out rumors.</div></div>
+      <div class="timeline-item warn"><div class="timeline-date">June 29</div><div class="timeline-body">Spike likely satcom M&A sympathy / short-cover (IRDM-RKLB effect).</div></div>
+    </div>
+    <div class="insight-box warn"><strong>Option note:</strong> High debt + spin-out uncertainty = two-way volatility. If 06/29 move is not fundamental but sympathy → mean-reversion risk. Naked directional is risky; catalyst (contract/spin-out) should be awaited. Business line: satellite broadband (jet/maritime), Space Force/DoD, ViaSat-3.</div>
+
+    <h3 style="color:var(--gf-accent);margin:18px 0 8px">AXON — Axon Enterprise · Q1 2026 BEAT</h3>
+    <div class="insight-box"><strong>Financial:</strong> $510.60 · $41.16B · P/E <strong>208</strong> · revenue $2.98B (+33.7%) · gross 59.5% · low debt · target $662.04. Q1 revenue $807.35M beat; guidance raised to 30–32%; Carbyne/Axon 911.</div>
+    <div class="insight-box warn"><strong>Option note:</strong> 06/29 specific catalyst NOT VERIFIED (likely QQQ +2.6% beta + defense theme). P/E 208 = perfection priced in; small disappointment triggers sharp correction. Business line: Taser + body-cam + Axon Cloud SaaS + 911/dispatch.</div>
+
+    <h3 style="color:var(--gf-accent);margin:18px 0 8px">⭐ GLW — Corning · AI/Optical Fiber Super-cycle</h3>
+    <div class="insight-box"><strong>Financial:</strong> $255.69 · $220B · P/E 123 · revenue $16.32B · target <strong>$206.07 (BELOW price)</strong>. Q1 2026 core revenue $4.35B (+18%), optical segment <strong>+36%</strong>.</div>
+    <div class="timeline">
+      <div class="timeline-item bull"><div class="timeline-date">June 8</div><div class="timeline-body">Multi-billion dollar fiber agreement with Amazon.</div></div>
+      <div class="timeline-item bull"><div class="timeline-date">June</div><div class="timeline-body">Meta $6B fiber commitment + 2 hyperscalers + Nvidia $500M relationship → AI datacenter optical super-cycle.</div></div>
+    </div>
+    <div class="insight-box warn"><strong>Option note:</strong> Story is strong but <strong>price is above analyst target</strong> = upside may be exhausted. ⚠️ Price inconsistency: closing $255.69 vs stockanalysis $243.08 — verify live before entry. Business line: optical fiber + Gorilla Glass, hyperscaler + Nvidia.</div>
+
+    <h3 style="color:var(--gf-accent);margin:18px 0 8px">OUST — Ouster · LiDAR Momentum (NO M&A)</h3>
+    <div class="insight-box"><strong>Financial:</strong> $54.07 · $3.44B · revenue $185.3M (+48.9%) · gross 47.7% · no profit (EPS -0.93) · target $46.86 (below price).</div>
+    <div class="timeline">
+      <div class="timeline-item warn"><div class="timeline-date">June 29</div><div class="timeline-body">+28.9% = momentum/sympathy (NOT M&A). Single catalyst NOT VERIFIED.</div></div>
+      <div class="timeline-item bull"><div class="timeline-date">June</div><div class="timeline-body">AIM, Benchmark, BlueCity, FieldAI partnerships + NVIDIA Hyperion + Hesai NDAA exclusion.</div></div>
+    </div>
+    <div class="insight-box danger"><strong>⚠️ High IV-crush risk.</strong> If +28.9% is catalyst-less/momentum, it gives back quickly. If parabolic fades, fade (PUT) candidate; if LiDAR theme stays alive, squeeze may continue. Naked CALL expensive; spread preferred.</div>
+
+    <h3 style="color:var(--gf-accent);margin:18px 0 8px">FCEL — FuelCell Energy · News-pumped (RSI ~95)</h3>
+    <div class="insight-box"><strong>Financial:</strong> $29.80 · $2.01B · deep loss (EPS -6.20, net -$225.5M, op -99%) · cash $373.2M. Q2 (06/08) miss; net loss $78.7M ($42.6M impairment).</div>
+    <div class="timeline">
+      <div class="timeline-item bull"><div class="timeline-date">June 26</div><div class="timeline-body">Fit Energy 380 MW datacenter agreement + Jefferies upgrade Hold→Buy ($16→$24).</div></div>
+      <div class="timeline-item bear"><div class="timeline-date">Technical</div><div class="timeline-body">RSI ~95 overbought; weak balance sheet.</div></div>
+    </div>
+    <div class="insight-box danger"><strong>⚠️⚠️ VERY HIGH risk.</strong> News-pumped + Q2 miss + impairment + RSI 95. This profile <strong>collapses via secondary offering / dilution</strong>. Overbought + weak balance sheet = fade/PUT thesis strong; but news momentum can continue irrationally → defined-risk spread mandatory.</div>
+  </div>
+</section>
+
+<!-- SECTION 5: RUSSELL-FLOW MEAN-REVERSION -->
+<section>
+  <div class="section-head" id="sec-russell">
+    <div class="section-head-inner" onclick="toggle('sec-russell')">
+      <h2 class="section-title">🔄 5. Russell-Flow Mean-Reversion (PUT thesis weak)</h2>
+      <div class="icon">▾</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="insight-box warn"><strong>Common theme:</strong> June 29 = Russell reconstitution effective day. A significant part of the declines below is <strong>mechanical index flow</strong>, not fundamental deterioration → bounce/mean-reversion ground.</div>
+
+    <h3 style="color:var(--gf-accent);margin:6px 0 8px">SNEX — StoneX · Russell flow (NOT split)</h3>
+    <div class="insight-box bull"><strong>Correction:</strong> Decline is <strong>Russell reconstitution</strong> + momentum unwind. 3-for-2 split <strong>July 20 ex-date</strong> — today's decline is NOT split-related. Q2 RECORD BEAT → high bounce risk. EPS 5.59, solid balance sheet. <strong>PUT thesis weak.</strong> Business line: global brokerage/clearing, commodities/FX.</div>
+
+    <h3 style="color:var(--gf-accent);margin:14px 0 8px">VC — Visteon · Russell + auto/DRAM shadow</h3>
+    <div class="insight-box"><strong>Financial:</strong> $94.94 · P/E 16 · revenue $3.79B · EPS 5.98 · target $133.75. -7.6% = Russell flow + auto weakness + DRAM/chip cost + Ford program cut shadow. Q1 FY26 sales beat, EPS dropped. Catalyst: ~July 23 earnings. Mean-reversion risk; auto cluster electronics (Ford/GM/OEM).</div>
+
+    <h3 style="color:var(--gf-accent);margin:14px 0 8px">MLM — Martin Marietta · Russell + guidance concern</h3>
+    <div class="insight-box"><strong>Financial:</strong> $581.23 · $34.9B · P/E 36 · revenue $6.35B · EPS 15.96 · target $683.09. -5.5% = Russell + FY26 sales guidance concern + diesel. Q1 RECORD → bounce risk; <strong>PUT thesis weak.</strong> Business line: aggregate/cement/concrete; infrastructure spending structural support.</div>
+  </div>
+</section>
+
+<!-- SECTION 6: M&A / NON-TRADEABLE / DISTRESSED -->
+<section>
+  <div class="section-head" id="sec-distressed">
+    <div class="section-head-inner" onclick="toggle('sec-distressed')">
+      <h2 class="section-title">⛔ 6. M&A / Non-Tradeable / Distressed</h2>
+      <div class="icon">▾</div>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <h3 style="color:var(--gf-danger);margin:6px 0 8px">BLD — TopBuild · 1 JULY DELIST</h3>
+    <div class="insight-box danger"><strong>⛔ NOT TRADEABLE:</strong> QXO acquiring — definitive, <strong>$505 per share</strong> (cash OR 20.2 QXO shares; ~45% cash/55% shares). Election deadline 06/29. <strong>Completion + trading HALT + DELIST July 1 CONFIRMED.</strong> Price pinned to $505/QXO proxy — PUT/CALL not suitable. Remove from list.</div>
+
+    <h3 style="color:var(--gf-danger);margin:14px 0 8px">CRMT — America's Car-Mart · DISTRESSED</h3>
+    <div class="insight-box danger"><strong>⛔ "Today earnings" is WRONG</strong> — last earnings Q3 FY26 (Mar 12). $60→$2.5 collapse = <strong>accounting restatement</strong> (Jul 2025: "no longer reliable") + tariff-disclosure class-action + warehouse-financing crisis (42 dealers closed). Jun 19 lender strategic-review agreement. <strong>Bankruptcy/delisting risk is open.</strong> Not an earnings play — binary distressed. Business line: subprime used vehicle + in-house financing.</div>
+
+    <h3 style="color:var(--gf-warning);margin:14px 0 8px">QMCO — Quantum Corp · LATE FILING</h3>
+    <div class="insight-box warn"><strong>⚠️ "Today earnings" is WRONG</strong> — Q4 FY26 was planned for June 15 but <strong>Form NT 10-K (late filing)</strong>; 10-K delayed to ~June 29. Q3 beat, tape sales 2x, debt -50%, Q4 pre-announce revenue ~$77.5M (above guide). Late filing = red flag. Remove from earnings list; watch filing risk. Business line: data storage (tape archive, video surveillance).</div>
+
+    <h3 style="color:var(--gf-warning);margin:14px 0 8px">CHTR — Charter · Value-Trap ($96.82B debt)</h3>
+    <div class="insight-box warn"><strong>Financial:</strong> $146.17 · P/E <strong>3.95 (deceptively cheap)</strong> · revenue $54.64B · EPS 37.00 · debt <strong>$96.82B (D/E 460)</strong> · 52-week high $422. "Cheap P/E" trap — broadband subscriber loss + FWA competition (T-Mobile/Verizon) + debt load reflects fundamental deterioration. Structural weakness supports PUT bias but value-trap bounces occur; high leverage amplifies two-way volatility.</div>
+  </div>
+</section>
+
+<!-- SECTION 7: CLASSIFICATION MATRIX -->
+<section>
+  <div class="section-head" id="sec-matris">
+    <div class="section-head-inner" onclick="toggle('sec-matris')">
+      <h2 class="section-title">🗂️ 7. Classification Matrix (Option Perspective)</h2>
+      <div class="icon">▾</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <p style="color:var(--gf-muted);font-size:0.82rem;margin-bottom:8px">Direction-agnostic + 2x momentum + IV-crush aware grouping. <strong>Not investment advice.</strong></p>
+    <table>
+      <thead><tr><th>Group</th><th>Stocks</th><th>Direction Bias</th><th>Main Risk</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tag-green">🟢 Active Earnings/Catalyst</span></td><td>AVAV · CNXC · CBRS · CPRT</td><td>Mixed (highest information)</td><td>IV-crush, earnings verification (CNXC)</td></tr>
+        <tr><td><span class="tag tag-orange">🟡 Sympathy/Momentum</span></td><td>OUST · VSAT · FCEL · GLW · AXON</td><td>Two-way</td><td>Catalyst-less move, IV-crush, dilution (FCEL)</td></tr>
+        <tr><td><span class="tag tag-blue">🔵 Russell Mean-Reversion</span></td><td>SNEX · MLM · VC</td><td>Bounce (PUT weak)</td><td>Index flow temporary; record earnings</td></tr>
+        <tr><td><span class="tag tag-red">🔴 Non-Tradeable / Distressed</span></td><td>IRDM · BLD · CRMT · QMCO · CHTR</td><td>None / binary</td><td>M&A pin, delist, bankruptcy, late filing, debt trap</td></tr>
+      </tbody>
+    </table>
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-num up">1</div><div class="kpi-label">Record Beat (AVAV)</div></div>
+      <div class="kpi"><div class="kpi-num neu">3</div><div class="kpi-label">Russell flow</div></div>
+      <div class="kpi"><div class="kpi-num down">5</div><div class="kpi-label">Non-tradeable/distressed</div></div>
+      <div class="kpi"><div class="kpi-num">2</div><div class="kpi-label">"Earnings" wrong (CRMT/QMCO)</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 8: CRITICAL CORRECTIONS -->
+<section>
+  <div class="section-head" id="sec-duzeltme">
+    <div class="section-head-inner" onclick="toggle('sec-duzeltme')">
+      <h2 class="section-title">✅ 8. Critical Corrections</h2>
+      <div class="icon">▾</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <table>
+      <thead><tr><th>Stock</th><th>Common Error</th><th>CORRECT (sourced)</th></tr></thead>
+      <tbody>
+        <tr><td><strong>CRMT</strong></td><td>"Today earnings"</td><td class="down">❌ Last earnings Mar 12. Today = distressed/restatement/bankruptcy risk.</td></tr>
+        <tr><td><strong>QMCO</strong></td><td>"Today earnings"</td><td class="down">❌ NT 10-K late filing; 10-K delayed to ~Jun 29.</td></tr>
+        <tr><td><strong>SNEX</strong></td><td>Decline = split</td><td class="down">❌ Russell reconstitution. Split July 20 ex-date.</td></tr>
+        <tr><td><strong>BLD</strong></td><td>Tradeable</td><td class="down">❌ July 1 delist (QXO $505).</td></tr>
+        <tr><td><strong>IRDM</strong></td><td>CALL momentum</td><td class="down">❌ RKLB $54 M&A pinned; upside closed.</td></tr>
+        <tr><td><strong>OUST</strong></td><td>M&A spike</td><td class="down">❌ NO M&A; momentum/sympathy.</td></tr>
+        <tr><td><strong>CNXC</strong></td><td>Earnings certain</td><td class="neu">⚠️ Actual figures were not published at time of research.</td></tr>
+        <tr><td><strong>GLW</strong></td><td>Single price</td><td class="neu">⚠️ Price inconsistency: $255.69 vs $243.08.</td></tr>
+        <tr><td><strong>AVAV</strong></td><td>Pre-earnings</td><td class="up">✅ Record beat: $641.6M / $1.84; AH +16.8%.</td></tr>
+        <tr><td><strong>Yahoo AH%</strong></td><td>postMarketChangePercent</td><td class="down">❌ Broken field (AVAV +1677%); AH% manually calculated.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SECTION 9: SECTOR CONTEXT -->
+<section>
+  <div class="section-head" id="sec-sektor">
+    <div class="section-head-inner" onclick="toggle('sec-sektor')">
+      <h2 class="section-title">🏭 9. Sector Context</h2>
+      <div class="icon">▾</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="grid">
+      <div class="card"><div class="card-label">Defense & Space</div><div class="card-value neu">AVAV · AXON · VSAT · IRDM</div><div class="card-note">Defense spending increase + satellite/satcom consolidation (RKLB–IRDM sympathy)</div></div>
+      <div class="card"><div class="card-label">AI Infrastructure</div><div class="card-value neu">CBRS · GLW · FCEL · OUST</div><div class="card-note">AI datacenter capex super-cycle: optics, GPU, power, sensors</div></div>
+      <div class="card"><div class="card-label">Index Flow</div><div class="card-value neu">SNEX · MLM · VC</div><div class="card-note">Russell reconstitution — mechanical, mean-reversion ground</div></div>
+      <div class="card"><div class="card-label">M&A / Corporate</div><div class="card-value neu">IRDM · BLD · CPRT</div><div class="card-note">Active M&A, completed acquisition/delist, management transition</div></div>
+      <div class="card"><div class="card-label">Distressed / Special Situation</div><div class="card-value down">CRMT · QMCO · CHTR</div><div class="card-note">Restatement/bankruptcy, late filing, debt trap</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 10: SOURCES & METHODOLOGY -->
+<section>
+  <div class="section-head" id="sec-kaynak">
+    <div class="section-head-inner" onclick="toggle('sec-kaynak')">
+      <h2 class="section-title">📚 10. Sources & Methodology</h2>
+      <div class="icon">▾</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <p style="margin-bottom:8px"><strong>Financial data:</strong> Yahoo Finance <code>get_stock_info</code> (pulled 06/29) — valuation, margin, revenue, EPS, debt, cash, analyst targets.</p>
+    <p style="margin-bottom:8px"><strong>Earnings & news:</strong> 4 parallel web-research (WebSearch), each produced dated/sourced findings.</p>
+    <p style="margin-bottom:8px"><strong>Verification notes:</strong> Claims labeled "NOT VERIFIED" (OUST 06/29 single catalyst, CNXC actual figures, AXON 06/29 catalyst) could not be confirmed at time of research. Yahoo <code>postMarketChangePercent</code> broken → AH% manual. GLW price inconsistency (verify live).</p>
+    <p><strong>Data timestamp:</strong> June 30, 2026 ~00:40 TRT (Jun 29 ~17:40 ET, market closed).</p>
+    <div class="insight-box danger"><strong>Legal disclaimer:</strong> This report is for analysis purposes, not investment advice. Option trades carry high risk; post-earnings IV-crush, M&A pin, delist and distressed situations can lead to total loss in naked positions. Verify live price/earnings before taking a position.</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">Gistify Flow · Market Flash Financial + Earnings + News Deep Analysis · June 29, 2026</div>
+
+</div>
+</body>
+</html>

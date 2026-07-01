@@ -1,5 +1,5 @@
 import { Router, type Response } from "express";
-import type { DailyReportRecord } from "../../../shared/dailyReports";
+import type { DailyReportLanguage, DailyReportRecord } from "../../../shared/dailyReports";
 import type {
   FlowReportResponse,
   FlowReportsResponse,
@@ -100,7 +100,21 @@ export function createFlowReportsRouter({
       return;
     }
 
-    const payload: FlowReportResponse = { report };
+    const lang = normalizeString(req.query.lang).toLowerCase();
+    const translatedReport =
+      lang === "en" && report.content.translations?.en
+        ? {
+            ...report,
+            content: {
+              ...report.content,
+              html: report.content.contentFormat === "html" ? report.content.translations.en : report.content.html,
+              markdown: report.content.contentFormat === "markdown" ? report.content.translations.en : report.content.markdown,
+              language: "en" as DailyReportLanguage,
+            },
+          }
+        : report;
+
+    const payload: FlowReportResponse = { report: translatedReport };
     res.status(200).json(payload);
   });
 

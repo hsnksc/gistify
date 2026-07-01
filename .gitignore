@@ -127,3 +127,9 @@ midas_signals.md
 # Repo-local skills (managed by Daimon, not source)
 skills/*.md
 
+
+# Temporary files
+tmp-edge-profile/
+tmp-*.html
+tmp-*.md
+

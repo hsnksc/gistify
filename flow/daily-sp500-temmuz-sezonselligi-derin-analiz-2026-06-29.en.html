@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>S&amp;P 500 July Seasonality Deep Analysis | $SPX</title>
+<style>/* GISTIFY FLOW — Unified Dark Theme */
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:720px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.hero-date{display:inline-flex;align-items:center;gap:5px;color:var(--gf-muted)}
+
+/* META PILLS */
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+
+/* SECTIONS */
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head > .section-head-inner{padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s;display:flex;align-items:center;justify-content:space-between}
+.section-head > .section-head-inner:hover{background:var(--gf-card)}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.section-head .icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent);transition:transform .2s}
+.section-head.collapsed .icon{transform:rotate(-90deg)}
+.section-body{padding:18px;display:none}
+.section-head:not(.collapsed) .section-body{display:block}
+
+/* GRID & CARDS */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px;transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-1px);border-color:rgba(56,189,248,.25)}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+
+/* TABS */
+.tabs{display:flex;gap:2px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:14px}
+.tab{flex:1;padding:8px 10px;text-align:center;font-size:0.82rem;font-weight:600;border-radius:6px;cursor:pointer;user-select:none;transition:background .15s,color .15s;border:none;color:var(--gf-muted);background:transparent}
+.tab.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.tab:hover:not(.active){color:var(--gf-text)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.text-right{text-align:right}
+.text-center{text-align:center}
+
+/* PROGRESS */
+.progress-bar{background:var(--gf-card);border-radius:4px;height:18px;overflow:hidden;margin:4px 0}
+.progress-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:0.68rem;font-weight:700;color:#fff}
+.fill-bull{background:linear-gradient(90deg,#16a34a,#4ade80)}
+.fill-base{background:linear-gradient(90deg,#ca8a04,#fbbf24)}
+.fill-bear{background:linear-gradient(90deg,#dc2626,#f87171)}
+
+/* INSIGHT BOX */
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+
+/* TAGS */
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--gf-border)}
+.timeline-item{position:relative;margin-bottom:14px}
+.timeline-item::before{content:'';position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--gf-card);border:2px solid var(--gf-border)}
+.timeline-item.bull::before{border-color:var(--gf-success);background:var(--gf-success)}
+.timeline-item.bear::before{border-color:var(--gf-danger);background:var(--gf-danger)}
+.timeline-item.warn::before{border-color:var(--gf-warning);background:var(--gf-warning)}
+.timeline-date{font-size:0.78rem;color:var(--gf-muted);font-weight:600}
+.timeline-body{font-size:0.85rem;margin-top:3px;color:var(--gf-text)}
+
+/* HEATMAP */
+.heatmap{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;font-size:0.72rem;margin:10px 0}
+.heatmap-cell{padding:6px 2px;text-align:center;border-radius:4px;min-height:36px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.heatmap-cell .day{font-weight:700;font-size:0.78rem}
+.heatmap-cell .val{font-size:0.68rem;opacity:.85}
+.h-strong{background:rgba(74,222,128,.35);color:#aff5b4}
+.h-weak{background:rgba(248,113,113,.35);color:#ffdcd7}
+.h-neu{background:rgba(251,191,36,.2);color:#ffdfb6}
+.h-flat{background:rgba(148,163,184,.15);color:var(--gf-muted)}
+.h-good{background:rgba(74,222,128,.2);color:#aff5b4}
+
+/* FOOTER */
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+.tabs{flex-wrap:wrap}
+.tab{flex:none;min-width:80px}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+}
+
+/* LANG SWITCH */
+.lang-switch{display:inline-flex;gap:4px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:16px}
+.lang-btn{padding:6px 14px;border-radius:8px;font-size:0.8rem;font-weight:600;border:none;cursor:pointer;background:transparent;color:var(--gf-muted);transition:all .15s}
+.lang-btn.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.lang-btn:hover:not(.active){color:var(--gf-text)}
+[data-lang]{display:none}
+[data-lang].visible{display:block}
+[data-lang-inline]{display:none}
+[data-lang-inline].visible{display:inline}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="hero" id="hero">
+<h1 class="hero-h">S&amp;P 500 July Seasonality Deep Analysis</h1>
+<p class="hero-desc">Carson Investment Research claim's 10-dimensional multi-agent validation, 2026 midterm/B-cycle context, and options playbook</p>
+<div class="hero-meta">
+<span>📅 June 29, 2026</span>
+<span>🕔 2 days left</span>
+<span>📈 $SPX 7,354</span>
+<span>📈 VIX 19.29</span>
+<span class="neu meta-pill">Midterm Year</span>
+<span class="info meta-pill">B-Cycle Inversion</span>
+<span class="bear meta-pill">Negative Gamma</span>
+</div>
+</div>
+<!-- CORNER METRICS -->
+<div class="grid" style="margin-bottom:16px;">
+<div class="card">
+<div class="card-label">July Expectation (Weighted)</div>
+<div class="card-value neu">+1.2% — +1.8%</div>
+<div class="card-note">Bull 40% / Base 35% / Bear 25%</div>
+</div>
+<div class="card">
+<div class="card-label">Last 10Y July Win Rate</div>
+<div class="card-value up">91%</div>
+<div class="card-note">10/11 years positive (2014-2024)</div>
+</div>
+<div class="card">
+<div class="card-label">Midterm July Avg.</div>
+<div class="card-value down">+0.7%</div>
+<div class="card-note">Midterm years since 1950</div>
+</div>
+<div class="card">
+<div class="card-label">Gamma Flip</div>
+<div class="card-value down">$7,437</div>
+<div class="card-note">SPX only %1.1 below</div>
+</div>
+<div class="card">
+<div class="card-label">First 10 Days (Historical)</div>
+<div class="card-value up">+1.5%</div>
+<div class="card-note">Strongest 10 days since 1928</div>
+</div>
+<div class="card">
+<div class="card-label">Expected Monthly Move</div>
+<div class="card-value neu">±4.82%</div>
+<div class="card-note">~354 SPX points</div>
+</div>
+</div>
+<!-- SCENARIO TABS -->
+<section>
+<div class="section-head" id="sec-scenarios" onclick="toggle('sec-scenarios')">
+<h2 class="section-title">📈 3 Scenarios — Probability Weights</h2>
+<div class="icon">▾</div>
+</div>
+<div class="section-body">
+<div class="tabs">
+<div class="tab active" onclick="setTab(this,'tab-bull')">Bull (40%)</div>
+<div class="tab" onclick="setTab(this,'tab-base')">Base (35%)</div>
+<div class="tab" onclick="setTab(this,'tab-bear')">Bear (25%)</div>
+</div>
+<div class="tab-content active" id="tab-bull">
+<div class="insight-box bull">
+<strong>Bull Case: SPX +2% → +3%</strong> — Buyback + Q2 earnings + B-cycle momentum carries the first half. XLK/XLV leadership. 7-11 July aggressive long CALL window. Momentum amplification above negative gamma (&gt;$7,437).
+      </div>
+<div class="kpi-row">
+<div class="kpi"><div class="kpi-num up">+2.5%</div><div class="kpi-label">SPX Target</div></div>
+<div class="kpi"><div class="kpi-num up">+5%</div><div class="kpi-label">XLK Outperf</div></div>
+<div class="kpi"><div class="kpi-num up">+4%</div><div class="kpi-label">XLV Outperf</div></div>
+<div class="kpi"><div class="kpi-num">15.6</div><div class="kpi-label">VIX Target</div></div>
+</div>
+<p style="font-size:0.85rem;margin-top:8px;"><strong>Triggers:</strong> Earnings %85+ beat, no tariff surprise, Iran ceasefire continues, Warsh FOMC "as expected" hawkish, A/D line recovers (RSP &gt; SPY).</p>
+</div>
+<div class="tab-content" id="tab-base">
+<div class="insight-box">
+<strong>Base Case: SPX +1% → +2%</strong> — Strong first half (+1.5%), second half fade (+0.5% net). Midterm weakness balanced by B-cycle. Tariff and FOMC add volatility but no crash. 15-24 July profit-taking period.
+      </div>
+<div class="kpi-row">
+<div class="kpi"><div class="kpi-num neu">+1.5%</div><div class="kpi-label">SPX Target</div></div>
+<div class="kpi"><div class="kpi-num neu">+2%</div><div class="kpi-label">XLK</div></div>
+<div class="kpi"><div class="kpi-num neu">+2%</div><div class="kpi-label">XLV</div></div>
+<div class="kpi"><div class="kpi-num">18-22</div><div class="kpi-label">VIX Range</div></div>
+</div>
+<p style="font-size:0.85rem;margin-top:8px;"><strong>Triggers:</strong> Mixed earnings, tariff change creates market confusion, FOMC Warsh uncertainty at first meeting, A/D flat/negative, RSP = SPY.</p>
+</div>
+<div class="tab-content" id="tab-bear">
+<div class="insight-box danger">
+<strong>Bear Case: SPX -2% → -5%</strong> — Iran ceasefire breaks, tariff street (24 July), Warsh hawkish surprise (28-29 July), or AI earnings disappointment. Gamma flip ($7,437) breaks, negative gamma amplification turns -2% drop into -4%. Midterm correction pattern triggered.
+      </div>
+<div class="kpi-row">
+<div class="kpi"><div class="kpi-num down">-3.5%</div><div class="kpi-label">SPX Target</div></div>
+<div class="kpi"><div class="kpi-num down">-5%</div><div class="kpi-label">XLK</div></div>
+<div class="kpi"><div class="kpi-num down">-2%</div><div class="kpi-label">XLV</div></div>
+<div class="kpi"><div class="kpi-num">28-35</div><div class="kpi-label">VIX Target</div></div>
+</div>
+<p style="font-size:0.85rem;margin-top:8px;"><strong>Triggers:</strong> Iran ceasefire breakdown, tariff %10+ surprise, Fed rate hike implied, AI earnings "sell the news", SPX &lt; $7,400 gamma breakdown.</p>
+</div>
+<div class="progress-bar" style="margin-top:14px;">
+<div class="progress-fill fill-bull" style="width:40%;">Bull 40%</div>
+</div>
+<div class="progress-bar">
+<div class="progress-fill fill-base" style="width:35%;">Base 35%</div>
+</div>
+<div class="progress-bar">
+<div class="progress-fill fill-bear" style="width:25%;">Bear 25%</div>
+</div>
+</div>
+</section>
+<!-- CALENDAR -->
+<section>
+<div class="section-head" id="sec-calendar" onclick="toggle('sec-calendar')">
+<h2 class="section-title">📅 July 2026 Catalyst Calendar</h2>
+<div class="icon">▾</div>
+</div>
+<div class="section-body">
+<div class="timeline">
+<div class="timeline-item bull">
+<div class="timeline-date">1-3 July — Short Week</div>
+<div class="timeline-body">3 July Friday holiday (Independence Day observed). Low volume, gap risk. <strong>0DTE small position.</strong></div>
+</div>
+<div class="timeline-item bull">
+<div class="timeline-date">7-11 July — Aggressive Long Window</div>
+<div class="timeline-body">First full week, momentum + seasonality combined. <strong>Aggressive bullish: 0DTE CALL on VWAP reclaim &gt;$7,437. XLK/XLV weekly calls.</strong></div>
+</div>
+<div class="timeline-item warn">
+<div class="timeline-date">13-18 July — Earnings Season Begins</div>
+<div class="timeline-body">JPM, GS, C, NFLX, TSLA first reports. <strong>IV crush risk.</strong> Reduce positions before earnings. After earnings, try short vol on IV crush.</div>
+</div>
+<div class="timeline-item bear">
+<div class="timeline-date">24 July — Section 122 Tariff Deadline</div>
+<div class="timeline-body">New %10-12.5 tariff risk. <strong>Reduce positions to %50. Add put spread hedge.</strong> Pre-midterm "supply chain shock" potential.</div>
+</div>
+<div class="timeline-item bear">
+<div class="timeline-date">28-29 July — FOMC (Warsh First Meeting)</div>
+<div class="timeline-body">Kevin Warsh's first chairmanship meeting. No dot plot. Hawkish surprise risk. <strong>Avoid 0DTE before 2:00 PM. July 30 put spread setup.</strong></div>
+</div>
+<div class="timeline-item neu">
+<div class="timeline-date">31 July — Month End</div>
+<div class="timeline-body">Position evaluation. Time to accumulate bearish setups for August-September. <strong>Harvest, don't chase.</strong></div>
+</div>
+</div>
+</div>
+</section>
+<!-- LEVEL CARD -->
+<section>
+<div class="section-head" id="sec-levels" onclick="toggle('sec-levels')">
+<h2 class="section-title">📌 Critical Technical Levels (SPX)</h2>
+<div class="icon">▾</div>
+</div>
+<div class="section-body">
+<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr));">
+<div class="card" style="border-color:rgba(63,185,80,.3);">
+<div class="card-label">Resistance 1</div>
+<div class="card-value up">7,412</div>
+<div class="card-note">All-Time High</div>
+</div>
+<div class="card" style="border-color:rgba(63,185,80,.3);">
+<div class="card-label">Resistance 2</div>
+<div class="card-value up">7,500</div>
+<div class="card-note">Psychological / Options Wall</div>
+</div>
+<div class="card" style="border-color:rgba(240,136,62,.4);">
+<div class="card-label">Gamma Flip</div>
+<div class="card-value neu">7,437</div>
+<div class="card-note">Dealer GEX Regime Switch</div>
+</div>
+<div class="card" style="border-color:rgba(248,81,73,.3);">
+<div class="card-label">Put Wall</div>
+<div class="card-value down">7,400</div>
+<div class="card-note">Below Gamma Flip</div>
+</div>
+<div class="card" style="border-color:rgba(248,81,73,.3);">
+<div class="card-label">Support 1</div>
+<div class="card-value down">7,260</div>
+<div class="card-note">Near-Term Support</div>
+</div>
+<div class="card" style="border-color:rgba(248,81,73,.3);">
+<div class="card-label">Support 2</div>
+<div class="card-value down">7,000</div>
+<div class="card-note">Psychological / 50 DMA</div>
+</div>
+</div>
+<div class="insight-box danger">
+<strong>Regime Switch:</strong> Above $7,437 = positive gamma / momentum long. Below $7,437 = negative gamma / dealer hedging selling pressure. <strong>Key technical level</strong> for 0DTE traders.
+</div>
+</div>
+</section>
+<!-- 0DTE MATRIX -->
+<section>
+<div class="section-head" id="sec-0dte" onclick="toggle('sec-0dte')">
+<h2 class="section-title">⚡ 0DTE Decision Matrix</h2>
+<div class="icon">▾</div>
+</div>
+<div class="section-body">
+<table>
+<tr><th>Regime</th><th>SPX Level</th><th>Action</th><th>Strategy</th><th>Avoid</th></tr>
+<tr>
+<td><span class="tag tag-green">Above Flip</span></td>
+<td class="text-right">7,437+</td>
+<td><strong>Momentum Long</strong></td>
+<td>Trend-following, gap &amp; go, VWAP reclaim CALL</td>
+<td>Fade, mean-reversion</td>
+</tr>
+<tr>
+<td><span class="tag tag-orange">At Flip</span></td>
+<td class="text-right">~7,437</td>
+<td><strong>Wait</strong></td>
+<td>Wait for breakout/breakdown, 0DTE scalping</td>
+<td>Directional guess</td>
+</tr>
+<tr>
+<td><span class="tag tag-red">Below Flip</span></td>
+<td class="text-right">7,400-7,437</td>
+<td><strong>Put Wall</strong></td>
+<td>Momentum short, dealer hedging selling</td>
+<td>Long call, dip buying</td>
+</tr>
+<tr>
+<td><span class="tag tag-red">Deep</span></td>
+<td class="text-right">&lt;7,400</td>
+<td><strong>Short Bias</strong></td>
+<td>Trend-following down, PUT wall break</td>
+<td>Bottom fishing</td>
+</tr>
+</table>
+<div class="insight-box">
+<strong>0DTE Reflexivity:</strong> Strong seasonality first half → call buying → dealer hedging buying pressure → performance improves → more calls. <strong>Positive feedback loop.</strong> But only above gamma flip. Below: opposite. <em>"Seasonality + 0DTE = amplified seasonality, but only above the gamma flip."</em>
+</div>
+</div>
+</section>
+<!-- SECTOR TABS -->
+<section>
+<div class="section-head" id="sec-sectors" onclick="toggle('sec-sectors')">
+<h2 class="section-title">🏆 Sector Seasonality — July 2026</h2>
+<div class="icon">▾</div>
+</div>
+<div class="section-body">
+<div class="tabs">
+<div class="tab active" onclick="setTab(this,'tab-etf-signal')">ETF Signal</div>
+<div class="tab" onclick="setTab(this,'tab-sect-data')">July Data</div>
+<div class="tab" onclick="setTab(this,'tab-midterm')">Midterm Effect</div>
+</div>
+<div class="tab-content active" id="tab-etf-signal">
+<div class="grid" style="grid-template-columns:1fr 1fr;">
+<div>
+<div class="insight-box bull" style="margin-bottom:10px;"><strong>STRONG OVERWEIGHT</strong></div>
+<table>
+<tr><th>ETF</th><th>July WR</th><th>Why</th></tr>
+<tr><td><strong>XLK</strong> Tech</td><td class="text-right up">90%</td><td>AI structural, buyback, earnings</td></tr>
+<tr><td><strong>XLV</strong> Healthcare</td><td class="text-right up">89%</td><td>Midterm best sector + mean-reversion</td></tr>
+</table>
+</div>
+<div>
+<div class="insight-box danger" style="margin-bottom:10px;"><strong>AVOID</strong></div>
+<table>
+<tr><th>ETF</th><th>Risk</th></tr>
+<tr><td><strong>XLF</strong> Financials</td><td>Midterm worst + Fed uncertainty</td></tr>
+<tr><td><strong>XLRE</strong> Real Estate</td><td>Rate risk</td></tr>
+<tr><td><strong>XLY</strong> Consumer Disc</td><td>Tariff vulnerability</td></tr>
+</table>
+</div>
+</div>
+<div class="insight-box warn" style="margin-top:10px;">
+<strong>XLI Conflict:</strong> 100% July win rate but <strong>midterm years' worst sector</strong>. Midterm seasonality overrides July seasonality. <strong>XLI avoid.</strong>
+</div>
+</div>
+<div class="tab-content" id="tab-sect-data">
+<table>
+<tr><th>Sector (ETF)</th><th>10Y Win Rate</th><th>July Avg.</th><th>Midterm Avg.</th><th>Note</th></tr>
+<tr><td>XLK Tech</td><td class="text-right up">90%</td><td class="text-right up">+4%</td><td class="text-right">~+3%</td><td>AI concentration</td></tr>
+<tr><td>XLI Industrials</td><td class="text-right up">100%</td><td class="text-right up">+3.5%</td><td class="text-right down">+0.6%</td><td>Midterm worst</td></tr>
+<tr><td>XLV Healthcare</td><td class="text-right up">89%</td><td class="text-right up">+3.1%</td><td class="text-right up">+10.7%</td><td>Midterm best</td></tr>
+<tr><td>XLU Utilities</td><td class="text-right up">78%</td><td class="text-right up">+3.3%</td><td class="text-right">~+2%</td><td>Absolutely positive</td></tr>
+<tr><td>XLE Energy</td><td class="text-right">Medium</td><td class="text-right">Medium</td><td class="text-right up">+8.9%</td><td>Geopolitical binary</td></tr>
+<tr><td>XLF Financials</td><td class="text-right down">Low</td><td class="text-right down">Low</td><td class="text-right down">-0.6%</td><td>Fed uncertainty</td></tr>
+</table>
+</div>
+<div class="tab-content" id="tab-midterm">
+<table>
+<tr><th>Midterm Best</th><th>Average</th><th>Midterm Worst</th><th>Average</th></tr>
+<tr><td class="up">Healthcare</td><td class="text-right up">+10.7%</td><td class="down">Financials</td><td class="text-right down">-0.6%</td></tr>
+<tr><td class="up">Energy</td><td class="text-right up">+8.9%</td><td class="down">Industrials</td><td class="text-right">+0.6%</td></tr>
+<tr><td class="up">Consumer Disc</td><td class="text-right up">+6.8%</td><td class="down">Real Estate</td><td class="text-right">-0.3%</td></tr>
+</table>
+<div class="insight-box" style="margin-top:10px;">
+<strong>Midterm + July Combination:</strong> XLV is both July's (%89) and midterm years' strongest sector (+10.7%). XLK combines July's structural strength (%90) with AI momentum. These two ETFs offer better risk/reward than index long.
+      </div>
+</div>
+</div>
+</section>
+<!-- STRATEGY PLAYBOOK -->
+<section>
+<div class="section-head" id="sec-playbook" onclick="toggle('sec-playbook')">
+<h2 class="section-title">📝 Options Playbook — July 2026</h2>
+<div class="icon">▾</div>
+</div>
+<div class="section-body">
+<div class="tabs">
+<div class="tab active" onclick="setTab(this,'tab-play-calls')">Long CALL</div>
+<div class="tab" onclick="setTab(this,'tab-play-hedges')">Hedge / PUT</div>
+<div class="tab" onclick="setTab(this,'tab-play-avoid')">AVOID</div>
+</div>
+<div class="tab-content active" id="tab-play-calls">
+<table>
+<tr><th>Strategy</th><th>Under</th><th>Setup</th><th>Entry</th><th>Target</th><th>Stop</th></tr>
+<tr>
+<td><strong>Bull Call Spread</strong></td>
+<td>SPX/SPY</td>
+<td>ATM / 5% OTM</td>
+<td>Gamma flip &gt;$7,437</td>
+<td>+100% premium</td>
+<td>-50% premium</td>
+</tr>
+<tr>
+<td><strong>Weekly XLK CALL</strong></td>
+<td>XLK</td>
+<td>ATM, 7-11 July expiry</td>
+<td>VWAP reclaim</td>
+<td>+150% premium</td>
+<td>-50% premium</td>
+</tr>
+<tr>
+<td><strong>Weekly XLV CALL</strong></td>
+<td>XLV</td>
+<td>ATM, 7-11 July expiry</td>
+<td>VWAP reclaim</td>
+<td>+100% premium</td>
+<td>-50% premium</td>
+</tr>
+<tr>
+<td><strong>0DTE Momentum</strong></td>
+<td>SPX</td>
+<td>CALL, &gt;$7,437</td>
+<td>VWAP + momentum</td>
+<td>+200% (day trade)</td>
+<td>2:30 PM time stop</td>
+</tr>
+</table>
+<div class="insight-box bull">
+<strong>2x Potential Window:</strong> 7-11 July, VWAP reclaim + above $7,437. 2x+ targetable with 0DTE CALL. But only with live GEX monitoring. Never long below gamma flip.
+      </div>
+</div>
+<div class="tab-content" id="tab-play-hedges">
+<table>
+<tr><th>Strategy</th><th>Under</th><th>Setup</th><th>Entry</th><th>Target</th></tr>
+<tr>
+<td><strong>VIX Call Spread</strong></td>
+<td>VIX</td>
+<td>20/25 Jul 30 expiry</td>
+<td>24-26 July</td>
+<td>+150% premium</td>
+</tr>
+<tr>
+<td><strong>SPX Put Spread</strong></td>
+<td>SPX</td>
+<td>7,300/7,100 Jul 30</td>
+<td>24 July or FOMC</td>
+<td>+200% premium</td>
+</tr>
+<tr>
+<td><strong>XLE Call Hedge</strong></td>
+<td>XLE</td>
+<td>85/90 call spread</td>
+<td>If Iran risk increases</td>
+<td>Tail hedge</td>
+</tr>
+<tr>
+<td><strong>FOMC Straddle</strong></td>
+<td>SPX</td>
+<td>Jul 30 expiry</td>
+<td>28 July 2:00 PM</td>
+<td>+100% (directional)</td>
+</tr>
+</table>
+<div class="insight-box warn">
+<strong>Iran Tail Hedge:</strong> Iran 60-day ceasefire is a known-unknown. Not fully priced in time. If broken: oil $100+, inflation, Fed hawkishness, risk-off. <strong>VIX call spread + XLE call spread = cheap convexity.</strong> <strong>$1 put hedge for every $3 long.</strong>
+</div>
+</div>
+<div class="tab-content" id="tab-play-avoid">
+<table>
+<tr><th>Strategy</th><th>Why</th><th>Risk</th></tr>
+<tr>
+<td><strong>Iron Condor</strong></td>
+<td>Negative gamma + 3 catalysts</td>
+<td>Gap risk, gamma breakdown</td>
+</tr>
+<tr>
+<td><strong>Short Straddle</strong></td>
+<td>Triple catalyst stack</td>
+<td>Undefined risk, destructive</td>
+</tr>
+<tr>
+<td><strong>Long Below Gamma Flip</strong></td>
+<td>Dealer hedging selling pressure</td>
+<td>-2% drop becomes -4%</td>
+</tr>
+<tr>
+<td><strong>Holding After FOMC</strong></td>
+<td>Historical %66.7 fade</td>
+<td>Overnight gap</td>
+</tr>
+</table>
+<div class="insight-box danger">
+<strong>10 Traps:</strong> 1) Iron condor, 2) Short straddle, 3) Call below gamma flip, 4) Holding after FOMC, 5) Early fade (mid-July), 6) Ignore buyback blackout, 7) Credit spread complacency, 8) XLI carry into August, 9) IV crush ignorance, 10) Holiday oversizing.
+      </div>
+</div>
+</div>
+</section>
+<!-- 10 INSIGHTS -->
+<section>
+<div class="section-head" id="sec-insights" onclick="toggle('sec-insights')">
+<h2 class="section-title">🌟 10 Cross-Dimension Insights</h2>
+<div class="icon">▾</div>
+</div>
+<div class="section-body">
+<div class="insight-box danger">
+<strong>1. Gamma-Seasonality Collision:</strong> Normally July = positive gamma + low vol + buyback = calm rally. In 2026: negative gamma (-2.1B) + elevated VIX (19.29) + flat curve = amplified July. <em>Same month, two different regimes: first half positive feedback, second half catalyst-driven breakdown risk.</em>
+</div>
+<div class="insight-box warn">
+<strong>2. B-Cycle Summer Trap:</strong> 2018 parallel: July +3.6% but this led to the "summer rally will continue" fallacy, followed by Q4 -13%. SPX is already up %17 since April. <strong>Harvest July, don't chase August.</strong>
+</div>
+<div class="insight-box">
+<strong>3. Earnings IV Crush → Macro IV Ramp:</strong> 13 July earnings = IV crush. 24-29 July tariff+FOMC = IV ramp. VIX curve flat. <strong>Short premium early July, long convexity late July.</strong>
+</div>
+<div class="insight-box warn">
+<strong>4. AI Narrowing = July Air Pocket:</strong> Mag7 %35, earnings growth %70+. A/D line declining since May 2024. If earnings aren't "good enough," narrowing quickly turns into crash. <em>2024 mid-July: -4.72% drawdown.</em>
+</div>
+<div class="insight-box danger">
+<strong>5. Iran Ceasefire — Biggest Unpriced Tail:</strong> Tariff (24 July) and FOMC (28-29) are known. Iran 60-day ceasefire is known but not fully priced in time. If broken: oil $100+, inflation, Fed hawkishness, risk-off. <strong>VIX call spread + XLE call hedge = cheap convexity.</strong>
+</div>
+<div class="insight-box">
+<strong>6. 0DTE Seasonality Reflexivity:</strong> 0DTE volume %59. Strong first half seasonality → call buying → dealer hedging buying pressure → performance improves → more calls. <strong>Positive feedback loop.</strong> But only above gamma flip ($7,437). <em>"Seasonality + 0DTE = amplified seasonality, but only above the gamma flip."</em>
+</div>
+<div class="insight-box bull">
+<strong>7. XLK/XLV Dispersion &gt; SPX Index Long:</strong> XLK (%90 July) + XLV (%89 + midterm best) combination merges both seasonal and midterm advantages. Sector dispersion offers higher Sharpe than index directional.
+    </div>
+<div class="insight-box warn">
+<strong>8. Buyback Window Hidden Floor:</strong> $925B YTD authorization. Post-earnings windows (15-20 days) create VWAP demand mid-July. <strong>But this floor is conditional:</strong> High rates (3.50-3.75%), late cycle, earnings disappointment. Some companies paused in 2022. <em>"Stealth floor until it breaks."</em>
+</div>
+<div class="insight-box">
+<strong>9. RSP vs. SPY — Breadth Bet:</strong> July is historically a breadth expansion month. But 2024-2026 narrowing is structural. <strong>RSP &gt; SPY = breadth confirmation, rally sustainable. SPY &gt; RSP = narrowing continues, mid-July crash risk.</strong>
+</div>
+<div class="insight-box warn">
+<strong>10. Warsh's First FOMC — Unknown Known:</strong> 28-29 July, Warsh's first chairmanship meeting. No dot plot. Content unknown, date known. Historically, first meeting creates 1.5-2x normal volatility. <strong>VIX Jul 30 call spread = cheap hedge.</strong>
+</div>
+</div>
+</section>
+<!-- JULY HEATMAP -->
+<section>
+<div class="section-head" id="sec-heatmap" onclick="toggle('sec-heatmap')">
+<h2 class="section-title">🔥 July 2026 — Daily Strength Indicator (Estimated)</h2>
+<div class="icon">▾</div>
+</div>
+<div class="section-body">
+<p style="font-size:0.82rem;color:var(--fg2);margin-bottom:10px;">Daily seasonality + catalyst effect display. <strong>H=Strong, h=Weak, ~=Neutral, X=Closed.</strong></p>
+<div class="heatmap">
+<div class="heatmap-cell h-flat"><div class="day">Mon</div><div class="val">—</div></div>
+<div class="heatmap-cell h-flat"><div class="day">Tue</div><div class="val">—</div></div>
+<div class="heatmap-cell h-strong"><div class="day">Wed</div><div class="val">Q3</div></div>
+<div class="heatmap-cell h-good"><div class="day">Thu</div><div class="val">Holiday</div></div>
+<div class="heatmap-cell h-flat"><div class="day">Fri</div><div class="val">Closed</div></div>
+<div class="heatmap-cell h-flat"><div class="day">Sat</div><div class="val">Closed</div></div>
+<div class="heatmap-cell h-flat"><div class="day">Sun</div><div class="val">Closed</div></div>
+<div class="heatmap-cell h-strong"><div class="day">6</div><div class="val">+</div></div>
+<div class="heatmap-cell h-strong"><div class="day">7</div><div class="val">+</div></div>
+<div class="heatmap-cell h-strong"><div class="day">8</div><div class="val">+</div></div>
+<div class="heatmap-cell h-strong"><div class="day">9</div><div class="val">+</div></div>
+<div class="heatmap-cell h-strong"><div class="day">10</div><div class="val">+</div></div>
+<div class="heatmap-cell h-flat"><div class="day">11</div><div class="val">=</div></div>
+<div class="heatmap-cell h-flat"><div class="day">12</div><div class="val">=</div></div>
+<div class="heatmap-cell h-neu"><div class="day">13</div><div class="val">Earnings</div></div>
+<div class="heatmap-cell h-neu"><div class="day">14</div><div class="val">Earnings</div></div>
+<div class="heatmap-cell h-neu"><div class="day">15</div><div class="val">IV</div></div>
+<div class="heatmap-cell h-weak"><div class="day">16</div><div class="val">Fade</div></div>
+<div class="heatmap-cell h-weak"><div class="day">17</div><div class="val">-</div></div>
+<div class="heatmap-cell h-weak"><div class="day">18</div><div class="val">-</div></div>
+<div class="heatmap-cell h-weak"><div class="day">19</div><div class="val">-</div></div>
+<div class="heatmap-cell h-weak"><div class="day">20</div><div class="val">-</div></div>
+<div class="heatmap-cell h-weak"><div class="day">21</div><div class="val">-</div></div>
+<div class="heatmap-cell h-weak"><div class="day">22</div><div class="val">-</div></div>
+<div class="heatmap-cell h-weak"><div class="day">23</div><div class="val">Tariff</div></div>
+<div class="heatmap-cell h-weak"><div class="day">24</div><div class="val">Shock</div></div>
+<div class="heatmap-cell h-weak"><div class="day">25</div><div class="val">-</div></div>
+<div class="heatmap-cell h-weak"><div class="day">26</div><div class="val">-</div></div>
+<div class="heatmap-cell h-weak"><div class="day">27</div><div class="val">FOMC</div></div>
+<div class="heatmap-cell h-weak"><div class="day">28</div><div class="val">FOMC</div></div>
+<div class="heatmap-cell h-weak"><div class="day">29</div><div class="val">Fade</div></div>
+<div class="heatmap-cell h-weak"><div class="day">30</div><div class="val">-</div></div>
+<div class="heatmap-cell h-weak"><div class="day">31</div><div class="val">Close</div></div>
+<div class="heatmap-cell h-flat"><div class="day">1</div><div class="val">Aug</div></div>
+<div class="heatmap-cell h-flat"><div class="day">2</div><div class="val">Aug</div></div>
+</div>
+<div class="insight-box" style="margin-top:10px;">
+<strong>Visual Summary:</strong> First 2 weeks <span class="tag tag-green">strong</span> (buyback + earnings). 13-15 July <span class="tag tag-orange">mixed</span> (IV crush). 16-24 July <span class="tag tag-red">weak</span> (fade + tariff). 27-29 July <span class="tag tag-red">risky</span> (FOMC). <strong>Aggressive: 7-11. Defensive: 21-31.</strong>
+</div>
+</div>
+</section>
+<!-- RISK MANAGEMENT -->
+<section>
+<div class="section-head" id="sec-risk" onclick="toggle('sec-risk')">
+<h2 class="section-title">🛡 Risk Management Rules</h2>
+<div class="icon">▾</div>
+</div>
+<div class="section-body">
+<div class="grid" style="grid-template-columns:1fr 1fr;">
+<div>
+<h3 style="font-size:0.9rem;margin-bottom:8px;color:var(--accent);">Position</h3>
+<ul style="font-size:0.85rem;color:var(--fg2);padding-left:18px;">
+<li>Per 0DTE: <strong>%0.5-1</strong> of capital</li>
+<li>July total risk: <strong>%15</strong> of capital</li>
+<li><strong>$1 put hedge</strong> for every $3 long</li>
+<li>Max 3 open positions (excluding 0DTE)</li>
+</ul>
+</div>
+<div>
+<h3 style="font-size:0.9rem;margin-bottom:8px;color:var(--accent);">Stop &amp; Profit</h3>
+<ul style="font-size:0.85rem;color:var(--fg2);padding-left:18px;">
+<li>Stop: <strong>-50% premium</strong> or 2:30 PM time stop</li>
+<li>Take profit (1-15 July): <strong>%50-75 at +100%</strong></li>
+<li>Second half: Quick exit, reduce positions to %50</li>
+<li>Max drawdown: <strong>-3% normal</strong> within July, -5%+ = fade</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<!-- SUMMARY BOX -->
+<section style="border-color:rgba(88,166,255,.3);background:linear-gradient(135deg,rgba(88,166,255,.06),rgba(88,166,255,.02));">
+<div class="section-head" style="cursor:default;">
+<h2 class="section-title">🏆 Final Word — Decision Tree</h2>
+</div>
+<div class="section-body" style="display:block;">
+<p style="font-size:0.9rem;margin-bottom:12px;">Carson Investment Research's chart is <strong>statistically correct</strong> — July is the best month in the last 10/20 years. However, 2026 is not a "normal" July. Midterm year + B-cycle inversion + negative gamma + triple catalyst stack = <strong>an amplified, two-regime month.</strong></p>
+<div class="grid" style="grid-template-columns:1fr 1fr 1fr;margin:12px 0;">
+<div class="card" style="border-color:rgba(63,185,80,.3);">
+<div class="card-label" style="color:var(--accent2);">1-15 July</div>
+<div class="card-value up">Aggressive Long</div>
+<div class="card-note">XLK/XLV CALL, 0DTE momentum, VWAP&gt;$7,437</div>
+</div>
+<div class="card" style="border-color:rgba(240,136,62,.3);">
+<div class="card-label" style="color:var(--warn);">16-24 July</div>
+<div class="card-value neu">Defensive</div>
+<div class="card-note">Take profit, put hedge, reduce positions to %50</div>
+</div>
+<div class="card" style="border-color:rgba(248,81,73,.3);">
+<div class="card-label" style="color:var(--danger);">25-31 July</div>
+<div class="card-value down">Withdrawal</div>
+<div class="card-note">FOMC risk, accumulate August setups</div>
+</div>
+</div>
+<p style="font-size:0.85rem;color:var(--fg2);">⚠ All financial data sourced from third parties (YCharts, CBOE, FactSet, BofA, BlackRock, Carson, LPL, SpotGamma, etc.). Not investment advice; every trade decision is subject to your own risk management.</p>
+</div>
+</section>
+<div class="footer">
+<p>Multi-Agent Deep Research Swarm (Kimi Work) | June 29, 2026</p>
+<p>10-dimensional analysis on Carson Investment Research / YCharts visual</p>
+</div>
+</div>
+<script>
+function toggle(id){
+  var el=document.getElementById(id);
+  el.classList.toggle('collapsed');
+}
+function setTab(tab,contentId){
+  var parent=tab.parentElement;
+  var tabs=parent.querySelectorAll('.tab');
+  tabs.forEach(function(t){t.classList.remove('active');});
+  tab.classList.add('active');
+  var contents=parent.parentElement.querySelectorAll('.tab-content');
+  contents.forEach(function(c){c.classList.remove('active');});
+  document.getElementById(contentId).classList.add('active');
+}
+// Open first section by default, keep others collapsed
+['sec-scenarios','sec-calendar','sec-levels','sec-0dte','sec-sectors','sec-playbook','sec-insights','sec-heatmap','sec-risk'].forEach(function(id){document.getElementById(id).classList.add('collapsed');});
+document.getElementById('sec-scenarios').classList.remove('collapsed');
+</script>
+</body>
+</html>

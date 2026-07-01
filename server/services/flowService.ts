@@ -415,14 +415,21 @@ function buildFlowReportSummary(report: DailyReportRecord): FlowReportSummary {
   const html = report.content.html || "";
   const contentFormat = detectContentFormat(report);
   const reportKind = detectFlowReportKind(report, html);
-  const languageInfo = analyzeFlowReportLanguage({
-    contentFormat,
-    html,
-    markdown: report.content.markdown || "",
-    sourceFolder: report.sourceFolder,
-    sourceLabel: report.content.sourceLabel || "",
-    title: report.title,
-  });
+  const hasEnTranslation = Boolean(report.content.translations?.en);
+  const languageInfo = hasEnTranslation
+    ? {
+        hasLanguageToggle: true,
+        languageMode: "bilingual" as FlowReportLanguageMode,
+        translationState: "complete" as FlowReportTranslationState,
+      }
+    : analyzeFlowReportLanguage({
+        contentFormat,
+        html,
+        markdown: report.content.markdown || "",
+        sourceFolder: report.sourceFolder,
+        sourceLabel: report.content.sourceLabel || "",
+        title: report.title,
+      });
   const titleInfo =
     reportKind === "daily"
       ? {

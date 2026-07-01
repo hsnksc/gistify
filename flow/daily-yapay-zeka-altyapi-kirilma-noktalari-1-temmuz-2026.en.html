@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Break Points in the AI Infrastructure Cycle | $NVDA $AMD $MU $TSM $SMCI</title>
+<style>
+/* GISTIFY FLOW — Unified Dark Theme */
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--gf-accent),transparent);opacity:.4}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:720px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.hero-date{display:inline-flex;align-items:center;gap:5px;color:var(--gf-muted)}
+
+/* META PILLS */
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+
+/* SECTIONS */
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s;display:flex;align-items:center;justify-content:space-between}
+.section-head-inner:hover{background:var(--gf-card)}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent);transition:transform .2s}
+.section-head.collapsed .icon{transform:rotate(-90deg)}
+.section-body{padding:18px;display:none}
+.section-head:not(.collapsed) .section-body{display:block}
+
+/* GRID & CARDS */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px;transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-1px);border-color:rgba(56,189,248,.25)}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+
+/* TABS */
+.tabs{display:flex;gap:2px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:14px}
+.tab{flex:1;padding:8px 10px;text-align:center;font-size:0.82rem;font-weight:600;border-radius:6px;cursor:pointer;user-select:none;transition:background .15s,color .15s;border:none;color:var(--gf-muted);background:transparent}
+.tab.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.tab:hover:not(.active){color:var(--gf-text)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.text-right{text-align:right}
+.text-center{text-align:center}
+
+/* PROGRESS */
+.progress-bar{background:var(--gf-card);border-radius:4px;height:18px;overflow:hidden;margin:4px 0}
+.progress-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:0.68rem;font-weight:700;color:#fff}
+.fill-bull{background:linear-gradient(90deg,#16a34a,#4ade80)}
+.fill-base{background:linear-gradient(90deg,#ca8a04,#fbbf24)}
+.fill-bear{background:linear-gradient(90deg,#dc2626,#f87171)}
+.fill-accent{background:linear-gradient(90deg,#0284c7,#38bdf8)}
+
+/* INSIGHT BOX */
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+
+/* TAGS */
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.tag-purple{background:rgba(168,85,247,.12);color:#c084fc}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--gf-border)}
+.timeline-item{position:relative;margin-bottom:14px}
+.timeline-item::before{content:'';position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--gf-card);border:2px solid var(--gf-border)}
+.timeline-item.bull::before{border-color:var(--gf-success);background:var(--gf-success)}
+.timeline-item.bear::before{border-color:var(--gf-danger);background:var(--gf-danger)}
+.timeline-item.warn::before{border-color:var(--gf-warning);background:var(--gf-warning)}
+.timeline-item.accent::before{border-color:var(--gf-accent);background:var(--gf-accent)}
+.timeline-date{font-size:0.78rem;color:var(--gf-muted);font-weight:600}
+.timeline-body{font-size:0.85rem;margin-top:3px;color:var(--gf-text)}
+
+/* HEATMAP */
+.heatmap{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;font-size:0.72rem;margin:10px 0}
+.heatmap-cell{padding:6px 2px;text-align:center;border-radius:4px;min-height:36px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.heatmap-cell .day{font-weight:700;font-size:0.78rem}
+.heatmap-cell .val{font-size:0.68rem;opacity:.85}
+.h-strong{background:rgba(74,222,128,.35);color:#aff5b4}
+.h-weak{background:rgba(248,113,113,.35);color:#ffdcd7}
+.h-neu{background:rgba(251,191,36,.2);color:#ffdfb6}
+.h-flat{background:rgba(148,163,184,.15);color:var(--gf-muted)}
+.h-good{background:rgba(74,222,128,.2);color:#aff5b4}
+
+/* HIERARCHY PYRAMID */
+.hierarchy-pyramid{display:flex;flex-direction:column;gap:8px;margin:16px 0;max-width:600px;margin-left:auto;margin-right:auto}
+.hierarchy-level{padding:12px 16px;border-radius:var(--gf-radius);text-align:center;font-weight:600;font-size:0.88rem;position:relative;transition:transform .15s}
+.hierarchy-level:hover{transform:translateX(4px)}
+.hierarchy-level.l1{background:linear-gradient(135deg,rgba(248,113,113,.25),rgba(248,113,113,.08));border:1px solid rgba(248,113,113,.4);color:#fecaca;margin-left:10%;margin-right:10%}
+.hierarchy-level.l2{background:linear-gradient(135deg,rgba(251,191,36,.25),rgba(251,191,36,.08));border:1px solid rgba(251,191,36,.4);color:#fde68a;margin-left:7%;margin-right:7%}
+.hierarchy-level.l3{background:linear-gradient(135deg,rgba(56,189,248,.25),rgba(56,189,248,.08));border:1px solid rgba(56,189,248,.4);color:#bae6fd;margin-left:4%;margin-right:4%}
+.hierarchy-level.l4{background:linear-gradient(135deg,rgba(74,222,128,.25),rgba(74,222,128,.08));border:1px solid rgba(74,222,128,.4);color:#bbf7d0;margin-left:0%;margin-right:0%}
+.hierarchy-label{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:0.7rem;opacity:.7;font-weight:700}
+.hierarchy-num{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:0.7rem;opacity:.7;font-weight:700}
+
+/* DOMINO STAGES */
+.domino-stage{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px;margin-bottom:12px;position:relative;overflow:hidden}
+.domino-stage::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--gf-accent)}
+.domino-stage.s1::before{background:var(--gf-warning)}
+.domino-stage.s2::before{background:var(--gf-danger)}
+.domino-stage.s3::before{background:#c084fc}
+.domino-stage.s4::before{background:var(--gf-accent)}
+.domino-stage-title{font-size:0.95rem;font-weight:700;margin-bottom:6px;color:var(--gf-text)}
+.domino-stage-body{font-size:0.85rem;color:var(--gf-muted);line-height:1.6}
+
+/* SETUP COMPARISON */
+.setup-table th{background:var(--gf-elev)}
+.setup-table td{vertical-align:top}
+.setup-col{width:33.33%}
+.setup-header{background:var(--gf-card);padding:10px;border-radius:var(--gf-radius);text-align:center;font-weight:700;margin-bottom:8px;border:1px solid var(--gf-border)}
+.setup-a .setup-header{border-color:rgba(56,189,248,.4);color:var(--gf-accent)}
+.setup-b .setup-header{border-color:rgba(74,222,128,.4);color:var(--gf-success)}
+.setup-c .setup-header{border-color:rgba(248,113,113,.4);color:var(--gf-danger)}
+
+/* CHIPS COMPARISON */
+.chip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:12px 0}
+.chip-card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:14px;position:relative;overflow:hidden}
+.chip-card.gpu{border-color:rgba(248,113,113,.3)}
+.chip-card.asic{border-color:rgba(74,222,128,.3)}
+.chip-card-badge{position:absolute;top:8px;right:8px;font-size:0.65rem;font-weight:700;padding:2px 6px;border-radius:4px}
+.chip-card-badge.gpu{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.chip-card-badge.asic{background:var(--gf-success-dim);color:var(--gf-success)}
+.chip-card-title{font-size:0.9rem;font-weight:700;margin-bottom:8px}
+.chip-card-spec{font-size:0.78rem;color:var(--gf-muted);line-height:1.7}
+.chip-card-spec strong{color:var(--gf-text)}
+
+/* FOOTER */
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:var(--gf-bg)}
+::-webkit-scrollbar-thumb{background:var(--gf-border);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.3)}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+.tabs{flex-wrap:wrap}
+.tab{flex:none;min-width:80px}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+.hierarchy-level{font-size:0.78rem}
+}
+
+/* LANG SWITCH */
+.lang-switch{display:inline-flex;gap:4px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:16px}
+.lang-btn{padding:6px 14px;border-radius:8px;font-size:0.8rem;font-weight:600;border:none;cursor:pointer;background:transparent;color:var(--gf-muted);transition:all .15s}
+.lang-btn.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.lang-btn:hover:not(.active){color:var(--gf-text)}
+[data-lang]{display:none}
+[data-lang].visible{display:block}
+[data-lang-inline]{display:none}
+[data-lang-inline].visible{display:inline}
+</style>
+<script>
+function toggle(id){var el=document.getElementById(id);if(!el)return;el.classList.toggle('collapsed');}
+function setTab(btn,tabId){var parent=btn.closest('.tabs');if(parent){parent.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});parent.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});}btn.classList.add('active');var tc=document.getElementById(tabId);if(tc)tc.classList.add('active');}
+</script>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HERO -->
+<div class="hero" id="hero">
+  <h1 class="hero-h">Break Points in the AI Infrastructure Cycle</h1>
+  <p class="hero-desc">Hyperscaler Margin Pressures, Systemic Risks and Technological Paradigm Shifts — In-Depth Analysis & Scenario Modeling</p>
+  <div class="hero-meta">
+    <span class="meta-pill info">📅 July 1, 2026</span>
+    <span class="meta-pill neu">⚡ AI Infrastructure</span>
+    <span class="meta-pill bear">🔴 High Risk</span>
+    <span class="meta-pill bull">🟢 Opportunity</span>
+  </div>
+</div>
+
+<!-- EXECUTIVE SUMMARY -->
+<section>
+  <div class="section-head" id="sec-ozet">
+    <div class="section-head-inner" onclick="toggle('sec-ozet')">
+      <h2 class="section-title">🎯 Executive Summary</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="insight-box danger">
+        <strong>Critical Warning:</strong> The global AI ecosystem, behind a seemingly smooth value chain, is hiding cracks forming in hyperscaler balance sheets. The cash flow crisis will leave operating cash flow trailing CapEx by Q3 2026.
+      </div>
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">2026 CapEx (5 Hyperscaler)</div>
+          <div class="card-value">$660B – $725B</div>
+          <div class="card-note">Equivalent to ~%2 of GDP</div>
+        </div>
+        <div class="card">
+          <div class="card-label">2025–2030 Total Investment</div>
+          <div class="card-value">$4.7 Trillion</div>
+          <div class="card-note">Estimated global AI infrastructure</div>
+        </div>
+        <div class="card">
+          <div class="card-label">CapEx / OCF Ratio</div>
+          <div class="card-value down">%93</div>
+          <div class="card-note">2026 estimate (2023: %33)</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Nvidia Market Share</div>
+          <div class="card-value">%87</div>
+          <div class="card-note">Gross margin: %85–88</div>
+        </div>
+        <div class="card">
+          <div class="card-label">ASIC Inference Savings</div>
+          <div class="card-value up">%40–60</div>
+          <div class="card-note">Cost advantage vs GPU</div>
+        </div>
+        <div class="card">
+          <div class="card-label">External Financing Need</div>
+          <div class="card-value down">$1.5T</div>
+          <div class="card-note">Bond + private credit market</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 1: Macroeconomic Context -->
+<section>
+  <div class="section-head" id="sec-makro">
+    <div class="section-head-inner" onclick="toggle('sec-makro')">
+      <h2 class="section-title">📊 1. Macroeconomic Context and Anatomy of the CapEx Supercycle</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--gf-text)">The global technology sector, as of 2025 and 2026, is witnessing the most aggressive and concentrated private-sector capital expenditure (CapEx) cycle in modern economic history. The largest US hyperscaler companies alone—Microsoft, Alphabet (Google), Amazon, Meta, and Oracle—have committed to <strong>$660 billion to $725 billion</strong> in AI infrastructure investment for 2026.</p>
+
+      <div class="insight-box">
+        <strong>Growth Rate:</strong> This massive spending wave represents a %77 jump from approximately $410 billion in 2025, and a %207 surge from 2024 levels, equivalent to roughly %2 of global GDP. Total investment between 2025 and 2030 is expected to reach $4.7 trillion.
+      </div>
+
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--gf-text)">This hyper-growth cycle stems from the simultaneous strategic convergence of tech giants. For decision-makers, the structural fear of being <strong>"under-capacity"</strong> creates a far more dangerous asymmetric career and company-value risk than the risk of "overspending." Microsoft's need to turn away customer demand due to Azure capacity constraints, or the fear of losing market share to competitors, has pushed companies to build supply before demand is fully confirmed.</p>
+
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-label">CapEx Breakdown (Approximate)</div>
+        <div style="margin-top:8px">
+          <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:4px"><span>Processors (GPU, ASIC)</span><span>%50 (~$340B+)</span></div>
+          <div class="progress-bar"><div class="progress-fill fill-accent" style="width:50%">50%</div></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:4px;margin-top:8px"><span>Data Center & Infrastructure</span><span>%35 (~$255B)</span></div>
+          <div class="progress-bar"><div class="progress-fill fill-base" style="width:35%">35%</div></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:4px;margin-top:8px"><span>Energy & PPA</span><span>%15 (~$105B+)</span></div>
+          <div class="progress-bar"><div class="progress-fill fill-bull" style="width:15%">15%</div></div>
+        </div>
+      </div>
+
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--gf-text)">Approximately %75 of total hyperscaler CapEx is allocated directly to AI infrastructure. However, this massive investment ecosystem is built on the assumption that the value chain will expand linearly forever. The value chain extends from the outermost hardware manufacturer (e.g., TSMC) to chip designers (Nvidia, AMD), then to server and memory manufacturers (Micron, SK Hynix), and finally to hyperscalers who purchase or lease the infrastructure.</p>
+
+      <div class="insight-box danger">
+        <strong>Systemic Risk:</strong> The system's sole source of cash is the interaction between the "end customer" (enterprise businesses, government agencies, and end users) and hyperscalers. If end customers, expecting productivity gains and cost optimization, refuse to pay for these services, hyperscalers will be unable to amortize their hardware investments, triggering a systemic crisis.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: Financial Architecture -->
+<section>
+  <div class="section-head" id="sec-finansal">
+    <div class="section-head-inner" onclick="toggle('sec-finansal')">
+      <h2 class="section-title">💰 2. Hyperscaler Financial Architecture: Cash Flow Intersection</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--gf-text)">The astronomical profit margins of hardware manufacturers in the AI ecosystem are financed directly from hyperscaler balance sheets. Historically, companies like Amazon, Microsoft, Alphabet, and Meta have been self-funding structures that grew through massive free cash flow (FCF), offering substantial dividends and share buybacks to shareholders. However, as of 2026, these companies' financing models have fundamentally changed.</p>
+
+      <div class="insight-box warn">
+        <strong>Cash Flow Intersection:</strong> Analysis indicates that the total cash capital expenditures (Cash CapEx) of Microsoft, Amazon, Alphabet, Meta, and Oracle will surpass these companies' operating cash flows (OCF) around Q3 2026. In other words, the pace of AI spending has structurally exceeded the cash-generation speed of their core businesses.
+      </div>
+
+      <div class="grid" style="margin:14px 0">
+        <div class="card">
+          <div class="card-label">2023 CapEx / OCF</div>
+          <div class="card-value up">%33</div>
+          <div class="card-note">Structurally sustainable</div>
+        </div>
+        <div class="card">
+          <div class="card-label">2026 CapEx / OCF (Estimate)</div>
+          <div class="card-value down">%93</div>
+          <div class="card-note">Gap closing — critical threshold</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Amazon FCF Erosion</div>
+          <div class="card-value down">-%94</div>
+          <div class="card-note">%94 of OCF directly to infrastructure</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-label">2026 CapEx Guidance — Hyperscaler Comparison</div>
+        <table style="margin-top:10px">
+          <thead>
+            <tr><th>Company</th><th>2025 CapEx</th><th>2026 CapEx (Mid)</th><th>YoY Growth</th><th>Strategic Nature</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Amazon (AWS)</strong></td><td>~$100B</td><td class="text-center">~$200B</td><td class="text-center up">~%100</td><td><span class="tag tag-blue">Cloud Rental</span></td></tr>
+            <tr><td><strong>Microsoft</strong></td><td>~$95B</td><td class="text-center">~$190B</td><td class="text-center up">~%100</td><td><span class="tag tag-blue">Cloud Rental</span></td></tr>
+            <tr><td><strong>Alphabet (Google)</strong></td><td>~$85B</td><td class="text-center">~$180B</td><td class="text-center up">~%110</td><td><span class="tag tag-orange">Hybrid</span></td></tr>
+            <tr><td><strong>Meta</strong></td><td>~$70B</td><td class="text-center">~$135B</td><td class="text-center up">~%80</td><td><span class="tag tag-green">Internal Consumption</span></td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:0.75rem;color:var(--gf-muted);margin-top:8px">Data: Based on official guidance and analyst estimates (Epoch AI, Goldman Sachs, Morgan Stanley, CreditSights).</p>
+      </div>
+
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--gf-text)"><strong>Dependence on Credit Markets:</strong> This cash flow shortfall has forced hyperscalers into bond and private credit markets. AI-focused tech companies have become the dominant new supply source in the global investment-grade (IG) debt market since 2025.</p>
+
+      <div class="insight-box danger">
+        <strong>Debt Invasion:</strong> Meta's massive $30 billion financing priced in October 2025, or tech companies' bond issuance exceeding $200 billion, proves that previously self-funding business models are now using significant external financing leverage. The estimated $1.5 trillion external financing need for AI infrastructure is expected to be met through private credit, corporate debt, and securitized credit instruments.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: Domino Effect -->
+<section>
+  <div class="section-head" id="sec-domino">
+    <div class="section-head-inner" onclick="toggle('sec-domino')">
+      <h2 class="section-title">🎲 3. Hyperscaler Margin Deterioration: Domino Effect Modeling</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--gf-text)">The highly leveraged balance sheets of hyperscalers create systemic fragility that threatens the entire sector in the event of delayed return on investment (ROI) or a demand-side shock. If end customers—the hospitals, banks, manufacturing plants, and software companies that will make the ultimate payments for AI services—cannot quickly monetize productivity gains, a disaster scenario will be triggered.</p>
+
+      <div class="insight-box warn">
+        <strong>Adaptation Slowness:</strong> In capital-intensive and heavily regulated sectors outside software (healthcare, finance, government, defense), data governance and enterprise process engineering requirements slow AI integration. The expected productivity gains taking years rather than months will cause businesses to cut AI budgets and usage rates on hyperscaler cloud platforms to collapse.
+      </div>
+
+      <h3 style="font-size:1rem;color:var(--gf-accent);margin:18px 0 10px">4-Stage Domino Effect</h3>
+
+      <div class="domino-stage s1">
+        <div class="domino-stage-title">🟠 STAGE 1: Valuation Multiple Contraction and CapEx Freeze</div>
+        <div class="domino-stage-body">Rising debt loads and declining free cash flow at hyperscalers are rapidly punished by markets when not backed by proven revenue streams. Investors begin to distance themselves from AI infrastructure companies where CapEx is debt-financed and operating profit margins are under pressure. Boards of directors are forced to suddenly freeze or downwardly revise 2027 and 2028 CapEx projections to stop the sharp contraction in stock prices (P/E multiples). <strong>Companies announcing they are slowing chip orders creates the first major market shock for all hardware manufacturers.</strong></div>
+      </div>
+
+      <div class="domino-stage s2">
+        <div class="domino-stage-title">🔴 STAGE 2: Custom Silicon (ASIC) Migration Becomes Mandatory</div>
+        <div class="domino-stage-body">Cloud providers with gross margins falling below %40 urgently cut costs by stopping the financing of Nvidia's massive profit margins (%85–88). Hyperscalers shift weight from flexible but expensive general-purpose GPUs (Nvidia H100/B200) to Custom Silicon (ASIC) designed directly for their own workloads. Analysis shows ASICs are <strong>%40 to %60 cheaper</strong> than GPU-based clusters for inference operations. This strategic shift shakes Nvidia's monopoly, rapidly pushing its market share below %75.</div>
+      </div>
+
+      <div class="domino-stage s3">
+        <div class="domino-stage-title">🟣 STAGE 3: "Take-or-Pay" Memory Contract Collapse</div>
+        <div class="domino-stage-body">The most devastating leg of the domino effect occurs in the semiconductor memory market. The memory oligopoly of Samsung, SK Hynix, and Micron has turned HBM scarcity into an opportunity by signing billions of dollars in "take-or-pay" contracts with hyperscalers. These contracts impose minimum purchase guarantees regardless of demand, and Micron alone is estimated to have reached approximately $100 billion in order backlog.<br><br>If the hyperscaler CapEx curve breaks, tech giants become unable to fulfill these contracts. Despite being legally binding, trillion-dollar cloud companies will breach contracts, pay cancellation penalties, or demand restructuring rather than sink billions into idle capacity. <strong>The result: unsustainable gross margins of up to %85 in the memory market reset to zero, supply gluts form, and the industry re-enters its historical boom-bust cycle.</strong></div>
+      </div>
+
+      <div class="domino-stage s4">
+        <div class="domino-stage-title">🔵 STAGE 4: Spillover to Semiconductor Foundries and Equipment Makers</div>
+        <div class="domino-stage-body">Unsold chips and canceled orders hit foundries like Taiwan-based TSMC and extreme ultraviolet (EUV) lithography machine makers like ASML. Advanced chip production is extremely capital-intensive, and foundries plan capacity increases years in advance. With capacity allocated to HBM production lines going idle, billions of dollars in equipment and raw material investment across the global semiconductor supply chain becomes worthless, triggering industry-wide contraction and mass layoffs.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: Existential Hierarchy -->
+<section>
+  <div class="section-head" id="sec-hiyerarsi">
+    <div class="section-head-inner" onclick="toggle('sec-hiyerarsi')">
+      <h2 class="section-title">🏛️ 4. AI's Existential Equation: "Must-Have" Hierarchy</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--gf-text)">To predict how a technological bottleneck will transform market structure in the AI cycle, it is essential to analyze the substitutability of hardware and economic factors. Is the must-have in AI the CPU, GPU, memory, energy, or the customer? The answer forms the market's <strong>"Existential Dependency Hierarchy."</strong></p>
+
+      <div class="hierarchy-pyramid">
+        <div class="hierarchy-level l1">
+          <span class="hierarchy-label">RANK 1</span>
+          <span class="hierarchy-num">🔴</span>
+          <div><strong>End Customer</strong> — Economic Singularity</div>
+          <div style="font-size:0.78rem;opacity:.8;margin-top:4px">Absolutely Irreplaceable</div>
+        </div>
+        <div class="hierarchy-level l2">
+          <span class="hierarchy-label">RANK 2</span>
+          <span class="hierarchy-num">🟠</span>
+          <div><strong>Energy Infrastructure</strong> — Physical and Thermodynamic Constraint</div>
+          <div style="font-size:0.78rem;opacity:.8;margin-top:4px">Irreplaceable</div>
+        </div>
+        <div class="hierarchy-level l3">
+          <span class="hierarchy-label">RANK 3</span>
+          <span class="hierarchy-num">🔵</span>
+          <div><strong>Compute Unit</strong> — GPU / ASIC / CPU / FPGA</div>
+          <div style="font-size:0.78rem;opacity:.8;margin-top:4px">Substitutable and Format-Adaptable</div>
+        </div>
+        <div class="hierarchy-level l4">
+          <span class="hierarchy-label">RANK 4</span>
+          <span class="hierarchy-num">🟢</span>
+          <div><strong>Memory (HBM)</strong> — High Bandwidth Memory</div>
+          <div style="font-size:0.78rem;opacity:.8;margin-top:4px">Highly Optimizable and Reducible</div>
+        </div>
+      </div>
+
+      <div class="insight-box bull" style="margin-top:16px">
+        <strong>Hierarchy Equation:</strong> Customer > Energy > Flexible Compute Unit > Memory<br><br>If a bottleneck explodes in energy, it freezes the entire sector; but a revolution in memory doesn't freeze the sector—instead, it shifts capital, destroying some companies while elevating others.
+      </div>
+
+      <h3 style="font-size:1rem;color:var(--gf-accent);margin:18px 0 10px">Hierarchy Details</h3>
+
+      <div class="card" style="margin-bottom:10px;border-left:3px solid rgba(248,113,113,.5)">
+        <div class="card-label" style="color:#f87171">1. End Customer (Economic Singularity)</div>
+        <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">At the absolute apex of the hierarchy sits the end customer who is expected to finance all expenditures in the chain. Whether a data center is equipped with thousands of GPUs or massive nuclear reactors are brought online; if the end user (individual or institution) refuses to pay the price demanded for the algorithm's outputs, all physical and technological effort becomes meaningless. <strong>Customer loyalty and productivity perception are the sole fuel of the entire capital cycle.</strong></p>
+      </div>
+
+      <div class="card" style="margin-bottom:10px;border-left:3px solid rgba(251,191,36,.5)">
+        <div class="card-label" style="color:#fbbf24">2. Energy Infrastructure (Physical and Thermodynamic Constraint)</div>
+        <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">As long as customer demand exists, the first and most insurmountable barrier the system will encounter is the rules of the physical universe: <strong>Energy.</strong> An NVIDIA GB200 NVL72 rack system drawing over 120 kilowatts (kW) makes air cooling impossible and pushes local power grids to the point of collapse. The primary obstacle in data center construction is not capital or chip supply; it is the capacity shortfall in transformers, switchgear, and high-voltage grid connections. <strong>Without energy, all the silicon pieces in the world are nothing but useless stones.</strong></p>
+      </div>
+
+      <div class="card" style="margin-bottom:10px;border-left:3px solid rgba(56,189,248,.5)">
+        <div class="card-label" style="color:#38bdf8">3. Compute Unit (Substitutable)</div>
+        <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">Current market perception is that Nvidia's GPUs are indispensable for AI. However, technological reality is different. Large language models (LLM) are architecturally based on matrix multiplication (MatMul) operations, and GPUs are popular only because they can parallelize these operations. But the compute unit is inherently flexible. AI models can be perfectly trained and run on Google's TPUs or custom ASICs. <strong>Computation is necessary, but which brand's chip performs that computation is entirely dependent on cost and efficiency variables.</strong></p>
+      </div>
+
+      <div class="card" style="margin-bottom:10px;border-left:3px solid rgba(74,222,128,.5)">
+        <div class="card-label" style="color:#4ade80">4. Memory (HBM) — Optimizable</div>
+        <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">High Bandwidth Memory (HBM) has been a critical bottleneck for storing parameters and rapidly transferring them to the processor. However, memory is the hardware component that can be optimized the most through software engineering and quantization techniques. <strong>When parameter precision is lowered, memory requirements decrease logarithmically.</strong> Therefore, HBM is the most fragile and technologically open element of the system.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5: Custom Silicon -->
+<section>
+  <div class="section-head" id="sec-asic">
+    <div class="section-head-inner" onclick="toggle('sec-asic')">
+      <h2 class="section-title">⚙️ 5. Custom ASIC Strategy: Hardware Diversification</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--gf-text)">The margin pressures faced by hyperscalers and the astronomical pricing brought by Nvidia's market monopoly have forced big tech companies into a radical shift in the chip wars. Nvidia's market share reaching %87 and gross margins hitting %88 as of 2024 proves that H100 and B200 chips are priced far above their unit costs.</p>
+
+      <div class="insight-box">
+        <strong>Cost Analysis:</strong> B200's production cost is approximately $6,400, while the selling price is around $40,000. This is a ~6.25x multiplier. For cloud providers, the biggest cost item is not training the model, but the continuous inference operations serving millions of users.
+      </div>
+
+      <div class="chip-grid">
+        <div class="chip-card gpu">
+          <div class="chip-card-badge gpu">GENERAL PURPOSE</div>
+          <div class="chip-card-title">Nvidia H100 / B200</div>
+          <div class="chip-card-spec">
+            <strong>Developer:</strong> Nvidia<br>
+            <strong>Unit Cost:</strong> $25,000 – $40,000<br>
+            <strong>Energy Efficiency:</strong> Medium<br>
+            <strong>Workload Flexibility:</strong> Very High<br>
+            <strong>Market Impact:</strong> Pressures margins, creates external dependency
+          </div>
+        </div>
+        <div class="chip-card asic">
+          <div class="chip-card-badge asic">CUSTOM ASIC</div>
+          <div class="chip-card-title">TPU / Trainium / Maia</div>
+          <div class="chip-card-spec">
+            <strong>Developer:</strong> Google, Amazon, Microsoft<br>
+            <strong>Unit Cost:</strong> Low (Self-produced)<br>
+            <strong>Energy Efficiency:</strong> 3-5x Better<br>
+            <strong>Workload Flexibility:</strong> Low (Specific)<br>
+            <strong>Market Impact:</strong> >%50 inference market by 2027
+          </div>
+        </div>
+      </div>
+
+      <div class="insight-box bull">
+        <strong>ASIC Economics:</strong> Custom ASICs provide %40 to %60 cost savings compared to Nvidia GPUs in steady-state production environments after model training. According to industry forecasts, custom ASICs' share of the total AI accelerator market is expected to rise from %25 in 2024 to above %50 by 2027. This shows that Nvidia's monopoly invincibility is actually limited by price elasticity, and alternative silicon can become the market's main actor when costs get out of control.
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <div class="card-label">ASIC Market Share Projection</div>
+        <div style="margin-top:10px">
+          <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:4px"><span>2024 — ASIC Share</span><span>%25</span></div>
+          <div class="progress-bar"><div class="progress-fill fill-accent" style="width:25%">25%</div></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:4px;margin-top:8px"><span>2027 — ASIC Share (Estimate)</span><span>>%50</span></div>
+          <div class="progress-bar"><div class="progress-fill fill-bull" style="width:55%">>50%</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6: BitNet -->
+<section>
+  <div class="section-head" id="sec-bitnet">
+    <div class="section-head-inner" onclick="toggle('sec-bitnet')">
+      <h2 class="section-title">🧠 6. Memory-Reducing Models: BitNet b1.58 and the 1-Bit Mathematical Revolution</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--gf-text)">The most potential "black swan" event in the AI ecosystem is occurring not on the hardware side, but entirely on the software and mathematical theory side. If memory-needs-reducing models can scale commercially, market dynamics will be turned upside down. In this context, <strong>Microsoft Research</strong>'s announced BitNet b1.58 and 1-bit / ternary Large Language Models in general are the most critical piece of market analysis.</p>
+
+      <div class="insight-box">
+        <strong>Traditional Architecture Problem:</strong> Traditional Large Language Models (GPT-4, Llama 3, etc.) store billions of parameters in the neural network in 16-bit (FP16 or BF16) floating-point format. For a language model to generate a new token (word), these massive numbers must be multiplied through extremely complex Matrix Multiplication (MatMul) operations. This architecture fuels the hunger for memory bandwidth, forcing expensive HBM chips and extremely energy-consuming Nvidia GPUs.
+      </div>
+
+      <h3 style="font-size:1rem;color:var(--gf-accent);margin:18px 0 10px">BitNet b1.58 Architecture — Ternary Value System</h3>
+
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--gf-text)">The BitNet b1.58 architecture radically pulls parameter weights to ternary values: <strong>Only {-1, 0, +1}.</strong> The hardware implications of this mathematical simplification are enormous:</p>
+
+      <div class="grid" style="margin:14px 0">
+        <div class="card">
+          <div class="card-label">Memory Volume</div>
+          <div class="card-value up">16–32x</div>
+          <div class="card-note">Physical space savings. 7B parameter model fits in ~1.2 GB.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Compute Paradigm</div>
+          <div class="card-value up">MatMul → Addition</div>
+          <div class="card-note">Simple integer addition instead of floating-point multiplication.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Energy Consumption</div>
+          <div class="card-value up">-%71.9 ~ -%82.2</div>
+          <div class="card-note">Verified inference tests on x86 CPUs.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Hardware Requirement</div>
+          <div class="card-value up">Standard CPU</div>
+          <div class="card-note">Runs with bitnet.cpp without GPU support.</div>
+        </div>
+      </div>
+
+      <div class="insight-box bull">
+        <strong>New Silicon Designs:</strong> Chips can be produced that are specially designed to perform only {-1, 0, 1} operations, at strikingly small sizes. For example, the TINT/BoothFlex prototype (VitaLLM) designed with 16 nm production technology at just 0.214 mm², can perform the task of a massive H100 chip on Edge Computing devices.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7: Winners and Losers -->
+<section>
+  <div class="section-head" id="sec-kazananlar">
+    <div class="section-head-inner" onclick="toggle('sec-kazananlar')">
+      <h2 class="section-title">⚡ 7. Disruptive Scenario Analysis: Local Breakdowns After the BitNet Revolution</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--gf-text)">If "MatMul-free" ternary algorithms like BitNet become the industry standard in the coming years, this will not create a systemic collapse (domino) across the market. On the contrary, by flattening AI's cost curve it will save hyperscalers from crisis, but will cause <strong>"local and bloody breakdowns"</strong> in certain monopolies along the value chain.</p>
+
+      <div class="grid" style="margin:14px 0">
+        <div class="card" style="border-top:3px solid var(--gf-danger)">
+          <div class="card-label" style="color:var(--gf-danger)">🔴 BROKEN 1ST LEG</div>
+          <div class="card-value" style="font-size:1.1rem">Semiconductor Memory Oligopoly</div>
+          <div class="card-note">Micron, Samsung, SK Hynix</div>
+          <p style="font-size:0.82rem;color:var(--gf-text);margin-top:8px">Under current market conditions, HBM scarcity provides manufacturers with gross profit margins reaching %85. The BitNet architecture has the <strong>potential to zero out</strong> AI servers' need for costly HBM technology. If a multi-billion-parameter LLM can easily run on standard server DDR5 memory or even edge devices, hyperscalers will urgently seek ways to terminate $100 billion "take-or-pay" HBM contracts. The memory market will return to its completely commoditized, low-margin old days, exiting the value-added technology cycle.</p>
+        </div>
+        <div class="card" style="border-top:3px solid var(--gf-danger)">
+          <div class="card-label" style="color:var(--gf-danger)">🔴 BROKEN 2ND LEG</div>
+          <div class="card-value" style="font-size:1.1rem">Nvidia's CUDA Moats</div>
+          <div class="card-note">GPU Monopoly and Software Ecosystem</div>
+          <p style="font-size:0.82rem;color:var(--gf-text);margin-top:8px">Nvidia's greatest strength in protecting its industry fortress is not just its chips, but the CUDA software ecosystem that AI developers are dependent on. %98 of training and inference code is written in CUDA. However, BitNet eliminates complex matrix operations, allowing algorithms to be processed directly on CPUs (Intel, AMD) or custom FPGAs. Specially designed small chips on edge computing devices will undermine the need for $40,000 B200 chips in massive data centers.</p>
+        </div>
+      </div>
+
+      <div class="grid" style="margin:14px 0">
+        <div class="card" style="border-top:3px solid var(--gf-success)">
+          <div class="card-label" style="color:var(--gf-success)">🟢 SURVIVOR 1</div>
+          <div class="card-value" style="font-size:1.1rem">Hyperscalers</div>
+          <div class="card-note">Microsoft, Amazon, Alphabet, Meta</div>
+          <p style="font-size:0.82rem;color:var(--gf-text);margin-top:8px">The decline in hardware costs thanks to software optimization will benefit Hyperscalers the most. The cash flow crisis mentioned in Section 2 will be resolved, CapEx will normalize, and cloud services will settle on a sustainable profitability base.</p>
+        </div>
+        <div class="card" style="border-top:3px solid var(--gf-success)">
+          <div class="card-label" style="color:var(--gf-success)">🟢 SURVIVOR 2</div>
+          <div class="card-value" style="font-size:1.1rem">End Customer</div>
+          <div class="card-note">SMEs and Institutions</div>
+          <p style="font-size:0.82rem;color:var(--gf-text);margin-top:8px">The return on investment (ROI) problem for the End Customer will be instantly solved. As AI inference costs approach near zero, SMEs and institutions will be able to use AI solutions without cloud cost concerns.</p>
+        </div>
+        <div class="card" style="border-top:3px solid var(--gf-success)">
+          <div class="card-label" style="color:var(--gf-success)">🟢 SURVIVOR 3</div>
+          <div class="card-value" style="font-size:1.1rem">Edge Computing (Edge AI)</div>
+          <div class="card-note">Apple, Microsoft, Lenovo</div>
+          <p style="font-size:0.82rem;color:var(--gf-text);margin-top:8px">Edge Computing devices will begin to replace data centers. Hardware manufacturers like Apple, Microsoft, and Lenovo will embed AI directly into personal computers and phones (On-Device), reducing dependence on the cloud and launching a new device hardware upgrade cycle.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 8: 3 Scenarios -->
+<section>
+  <div class="section-head" id="sec-senaryolar">
+    <div class="section-head-inner" onclick="toggle('sec-senaryolar')">
+      <h2 class="section-title">🔮 8. Sectoral Future Scenarios — 3 Different Setups</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--gf-text)">To provide vision for market analysts and institutional investors, the current value chain and technological potentials can be modeled through three different strategic "Setups" (Scenarios):</p>
+
+      <div class="tabs">
+        <div class="tab active" onclick="setTab(this,'tab-setup-a')">🔵 Setup A<br><span style="font-size:0.7rem">Status Quo</span></div>
+        <div class="tab" onclick="setTab(this,'tab-setup-b')">🟢 Setup B<br><span style="font-size:0.7rem">Optimization</span></div>
+        <div class="tab" onclick="setTab(this,'tab-setup-c')">🔴 Setup C<br><span style="font-size:0.7rem">Credit Crisis</span></div>
+      </div>
+
+      <div id="tab-setup-a" class="tab-content active">
+        <div class="setup-a">
+          <div class="setup-header">🔵 Setup A: Status Quo Supercycle (Brute Force)</div>
+          <div class="grid" style="grid-template-columns:1fr 1fr;gap:12px">
+            <div class="card">
+              <div class="card-label">Core Assumption</div>
+              <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">Transformer architecture and FP16 (Floating-Point) operations remain the industry standard. Investment goes to scale (more data, more parameters) rather than algorithm.</p>
+            </div>
+            <div class="card">
+              <div class="card-label">Primary Bottleneck</div>
+              <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">Energy capacity (transformer and nuclear capacity shortfall) and TSMC chip packaging limits.</p>
+            </div>
+            <div class="card">
+              <div class="card-label">Financial Condition</div>
+              <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">Hyperscalers are forced to make investments approaching $1 trillion annually. Financing comes entirely from credit markets (IG bonds).</p>
+            </div>
+            <div class="card">
+              <div class="card-label">Crisis Risk</div>
+              <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">If customer ROI remains low, a historic bubble bursts in tech stocks. All infrastructure remains as excess supply.</p>
+            </div>
+          </div>
+          <div class="insight-box" style="margin-top:12px">
+            <strong>Winners:</strong> Nvidia, TSMC, HBM manufacturers (Micron, SK Hynix), Data center cooling firms, Nuclear energy and utility companies.
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-setup-b" class="tab-content">
+        <div class="setup-b">
+          <div class="setup-header">🟢 Setup B: Optimization Revolution (Algorithmic Efficiency)</div>
+          <div class="grid" style="grid-template-columns:1fr 1fr;gap:12px">
+            <div class="card">
+              <div class="card-label">Core Assumption</div>
+              <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">BitNet b1.58 and similar 1-bit / ternary models together with Custom Silicon (ASIC) become mainstream.</p>
+            </div>
+            <div class="card">
+              <div class="card-label">Primary Bottleneck</div>
+              <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">Building software engineering infrastructure for new models and adapting old datasets to the new architecture.</p>
+            </div>
+            <div class="card">
+              <div class="card-label">Financial Condition</div>
+              <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">Hyperscaler CapEx burden drops dramatically, profit margins soar. Companies reach peak free cash flow again.</p>
+            </div>
+            <div class="card">
+              <div class="card-label">Crisis Risk</div>
+              <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">Massive value losses in chip and memory markets. The semiconductor industry contracts but technology spreads more widely. Local but severe shocks occur in the market.</p>
+            </div>
+          </div>
+          <div class="insight-box bull" style="margin-top:12px">
+            <strong>Winners:</strong> Hyperscalers, ASIC designers (Broadcom, Marvell), CPU manufacturers (Intel, AMD), Edge Computing focused companies (Apple, hardware vendors).
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-setup-c" class="tab-content">
+        <div class="setup-c">
+          <div class="setup-header">🔴 Setup C: Hyperscaler Credit Crisis (Systemic Collapse)</div>
+          <div class="grid" style="grid-template-columns:1fr 1fr;gap:12px">
+            <div class="card">
+              <div class="card-label">Core Assumption</div>
+              <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">Neither BitNet enters the scene nor can custom silicon replace Nvidia. Costs remain high while inflation and interest rates raise companies' borrowing costs.</p>
+            </div>
+            <div class="card">
+              <div class="card-label">Primary Bottleneck</div>
+              <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">Customer adaptation and credit costs. Companies cannot find efficiency gains.</p>
+            </div>
+            <div class="card">
+              <div class="card-label">Financial Condition</div>
+              <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">A crisis similar to the 2000 Dot-Com bubble begins. Trillions of dollars sunk into infrastructure cannot be repaid.</p>
+            </div>
+            <div class="card">
+              <div class="card-label">Crisis Risk</div>
+              <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">The global technology market goes back ten years, AI investments stop completely, and the AI Winter begins anew.</p>
+            </div>
+          </div>
+          <div class="insight-box danger" style="margin-top:12px">
+            <strong>Winners:</strong> Short-sellers, restructuring advisory firms, Private Equity firms buying bankrupt data centers on the cheap.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 9: Strategic Conclusions -->
+<section>
+  <div class="section-head" id="sec-sonuc">
+    <div class="section-head-inner" onclick="toggle('sec-sonuc')">
+      <h2 class="section-title">🎯 9. Strategic Conclusions and Assessment</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--gf-text)">The global AI ecosystem, while appearing from the outside as a smooth and sequentially operating value chain (chip manufacturer → hardware maker → hyperscaler → customer), data proves that a major crack has formed in its most critical link (hyperscaler financials).</p>
+
+      <div class="insight-box danger">
+        <strong>Value Chain Shock Absorber:</strong> Hyperscalers are the shock absorbers of the value chain. They are holding up the entire sector by leveraging their own balance sheets. If the "Customer" at the top of AI's "Existential Hierarchy" does not inject the expected cash into the system, the first move hyperscalers will make to avoid bankruptcy is to sacrifice the hardware giants (Nvidia, Micron) that are feeding on their profit margins. The termination of "take-or-pay" contracts and the dramatic shift to custom silicon (ASIC) will be the first steps of the economic defense to be waged.
+      </div>
+
+      <div class="insight-box">
+        <strong>Innovation Threat:</strong> The truly lethal threat for hardware monopolies is not capital shortage but innovation itself. The rise of 1-bit architectures like BitNet; by reducing the computation paradigm from floating-point multiplication to simple addition, has the potential to physically render HBM memory and massive GPUs meaningless. Such a software revolution, rather than collapsing the system completely (domino), will create a massive wealth transfer. Capital will be taken from chip manufacturers and returned to algorithm creators, cloud platforms, and end users' pockets.
+      </div>
+
+      <div class="insight-box bull">
+        <strong>Central Principle:</strong> When making long-term analyses and strategic positioning; the fact that hardware components (Chip, Memory) are always substitutable, while the truly unchangeable constraints are the Physical Universe (Energy Capacity) and the Economic Universe (Customer's Willingness to Pay), must be placed at the center. The long-term profitability of any value chain will be shaped by how efficiently it uses the laws of physics and how much value it adds to the human element.
+      </div>
+
+      <div class="kpi-row" style="margin-top:18px">
+        <div class="kpi"><div class="kpi-num">Customer</div><div class="kpi-label">Top hierarchy</div></div>
+        <div class="kpi"><div class="kpi-num">Energy</div><div class="kpi-label">Physical constraint</div></div>
+        <div class="kpi"><div class="kpi-num">Compute</div><div class="kpi-label">Flexible / Substitute</div></div>
+        <div class="kpi"><div class="kpi-num">Memory</div><div class="kpi-label">Most fragile</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">Gistify Flow | AI Infrastructure Analysis | July 1, 2026</div>
+
+</div>
+</body>
+</html>

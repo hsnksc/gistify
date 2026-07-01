@@ -1761,6 +1761,8 @@ function buildFlowFileSourcePackage(options: {
   sourceKind: "file";
   sourceLabel: string;
   updatedAt: string;
+  translations?: Partial<Record<DailyReportLanguage, string>>;
+  availableLanguages?: DailyReportLanguage[];
 }) {
   const {
     assetBasePath,
@@ -1798,12 +1800,24 @@ function buildFlowFileSourcePackage(options: {
   const siteLabel = markdown
     ? extractFlowSiteLabelFromMarkdown(markdown)
     : extractFlowSiteLabelFromHtml(html);
-  const title = simplifyFlowTitle(metadata.title, metadata.headline);
+  const title = (() => {
+    const enHtml = options.translations?.en && isHtmlSource ? options.translations.en : "";
+    const enMd = options.translations?.en && !isHtmlSource ? options.translations.en : "";
+    const enMeta = enHtml ? extractHtmlMetadata(enHtml) : enMd ? extractMetadata(enMd) : null;
+    return simplifyFlowTitle(enMeta?.title || metadata.title, enMeta?.headline || metadata.headline);
+  })();
   const preferredHeadline =
-    normalizeMetadataKey(metadata.headline) &&
-    normalizeMetadataKey(metadata.headline) !== normalizeMetadataKey(metadata.title)
-      ? metadata.headline
-      : narrativeParagraphs[0] || metadata.headline || title;
+    (() => {
+      const enHtml = options.translations?.en && isHtmlSource ? options.translations.en : "";
+      const enMd = options.translations?.en && !isHtmlSource ? options.translations.en : "";
+      const enMeta = enHtml ? extractHtmlMetadata(enHtml) : enMd ? extractMetadata(enMd) : null;
+      const rawHeadline = enMeta?.headline || metadata.headline;
+      const rawTitle = enMeta?.title || metadata.title;
+      return normalizeMetadataKey(rawHeadline) &&
+        normalizeMetadataKey(rawHeadline) !== normalizeMetadataKey(rawTitle)
+        ? rawHeadline
+        : narrativeParagraphs[0] || rawHeadline || title;
+    })();
   const sourceMetadataItems = [
     { label: "Site", value: siteLabel || "Manual source" },
     {
@@ -1867,7 +1881,17 @@ function buildFlowFileSourcePackage(options: {
     contentFormat: isHtmlSource ? "html" : "markdown",
     sourceLabel,
     assetBasePath,
-    language: "tr",
+    language: options.availableLanguages?.includes("tr")
+      ? "tr"
+      : options.availableLanguages?.includes("en")
+        ? "en"
+        : "tr",
+    availableLanguages: options.availableLanguages?.length
+      ? options.availableLanguages
+      : undefined,
+    translations: options.translations && Object.keys(options.translations).length
+      ? options.translations
+      : undefined,
   } satisfies DailyReportSourcePackage;
 }
 
@@ -1877,6 +1901,8 @@ export function createFlowSourcePackageFromContent(options: {
   markdown?: string;
   sourceLabel?: string;
   updatedAt?: string;
+  translations?: Partial<Record<DailyReportLanguage, string>>;
+  availableLanguages?: DailyReportLanguage[];
 }) {
   const html = options.html || "";
   const markdown = options.markdown || "";
@@ -1909,6 +1935,8 @@ export function createFlowSourcePackageFromContent(options: {
     sourceKind: "file",
     sourceLabel: options.sourceLabel || options.fileName,
     updatedAt,
+    translations: options.translations,
+    availableLanguages: options.availableLanguages,
   });
 }
 
@@ -2317,6 +2345,18 @@ function buildFileSourcePackage({
     activeHtml = "";
   }
 
+  // Check for .en.html / .en.md translation files (flow reports, auto-generated)
+  const enHtmlPath = path.join(sourceDirectoryPath, `${sourceKey}.en.html`);
+  const enMdPath = path.join(sourceDirectoryPath, `${sourceKey}.en.md`);
+  const hasEnHtml = fs.existsSync(enHtmlPath);
+  const hasEnMd = fs.existsSync(enMdPath);
+  if ((hasEnHtml || hasEnMd) && !translations.en) {
+    translations.en = fs.readFileSync(
+      hasEnHtml ? enHtmlPath : enMdPath,
+      "utf8"
+    );
+  }
+
   const htmlMetadata = isHtmlSource && !hasPremium ? extractHtmlMetadata(activeHtml) : null;
   const metadata = htmlMetadata || extractMetadata(activeMarkdown);
   const stats = fs.statSync(filePath);
@@ -2367,6 +2407,10 @@ function buildFileSourcePackage({
       : statsUpdatedAt;
 
   if (namespace === "flow") {
+    const availableLanguages = [
+      "tr" as DailyReportLanguage,
+      ...(translations.en ? ["en" as DailyReportLanguage] : []),
+    ];
     return buildFlowFileSourcePackage({
       assetBasePath,
       figureFiles,
@@ -2380,6 +2424,8 @@ function buildFileSourcePackage({
       sourceKind: "file",
       sourceLabel,
       updatedAt,
+      translations: Object.keys(translations).length ? translations : undefined,
+      availableLanguages: availableLanguages.length > 1 ? availableLanguages : undefined,
     });
   }
 
