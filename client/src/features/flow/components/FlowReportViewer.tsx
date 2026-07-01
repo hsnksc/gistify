@@ -39,6 +39,7 @@ export default function FlowReportViewer({
       sourceFolder={report.sourceFolder}
       sourceLabel={content.sourceLabel || report.sourceFolder}
       title={translatedTitle}
+      availableLanguages={content.availableLanguages}
     />
   );
 }

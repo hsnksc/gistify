@@ -2525,9 +2525,13 @@ function buildFileSourcePackage({
         statsUpdatedAt.slice(0, 10);
 
   if (namespace === "flow") {
+    const hasInlineEnglish =
+      isHtmlSource && /\bdata-lang=["']en["']/.test(activeHtml);
     const availableLanguages = [
       "tr" as DailyReportLanguage,
-      ...(translations.en ? ["en" as DailyReportLanguage] : []),
+      ...(translations.en || hasInlineEnglish
+        ? ["en" as DailyReportLanguage]
+        : []),
     ];
     return buildFlowFileSourcePackage({
       assetBasePath,
