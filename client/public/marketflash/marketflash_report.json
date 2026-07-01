@@ -1,349 +1,352 @@
 {
-  "reportType": "after-market",
-  "reportDate": "2026-06-30",
-  "generatedAt": "2026-06-30T21:00:00Z",
+  "reportType": "pre-market",
+  "reportDate": "2026-07-01",
+  "generatedAt": "2026-07-01T14:00:00+03:00",
   "marketSummary": {
     "spy": {
       "price": 746.77,
-      "change": 0.78,
+      "change": 0.7787,
       "vwap": 745.23,
       "open": 741.29,
       "high": 748.02,
       "low": 740.89,
-      "prevClose": 741.0,
-      "volume": 49944582,
-      "note": "SPY günlük range 7.13. VWAP üzerinde kapattı. Gap-up open sonrası gap dolduruldu ve üzerine çıkıldı."
+      "prevClose": 741.00
     },
     "qqq": {
-      "price": 736.4,
-      "change": 1.7,
+      "price": 736.40,
+      "change": 1.7015,
       "vwap": 732.64,
       "open": 724.18,
       "high": 737.62,
       "low": 723.91,
-      "prevClose": 724.08,
-      "volume": null,
-      "note": "QQQ günlük range 13.71. VWAP üzerinde kapattı. Tech liderliği güçlü. [volume data not found in available sources]"
+      "prevClose": 724.08
     },
     "iwm": {
       "price": 300.45,
-      "change": 0.5,
+      "change": 0.495,
       "vwap": 299.62,
       "open": 298.56,
       "high": 300.98,
       "low": 297.44,
-      "prevClose": 298.97,
-      "volume": null,
-      "note": "IWM günlük range 3.54. VWAP üzerinde kapattı ama large-cap gerisinde kaldı. [volume data not found in available sources]"
+      "prevClose": 298.97
     },
     "vix": {
-      "price": 16.45,
-      "change": -6.8,
+      "price": 17.12,
+      "change": 3.10,
       "vwap": null,
-      "open": 17.54,
-      "high": 17.75,
-      "low": 16.27,
-      "prevClose": 17.65,
-      "volume": null,
-      "note": "VIX -6.80% düşerek 16.45 seviyesine geriledi. Normal range (15-20). SKEW 144 — tail hedge demand yükseldi. [vwap data not applicable for VIX index]"
+      "open": 17.11,
+      "high": 17.19,
+      "low": 17.09,
+      "prevClose": 16.45
     }
   },
   "topMovers": {
     "gainers": [
       {
-        "ticker": "RBLX",
-        "company": "Roblox Corp",
-        "price": 54.34,
-        "change": 14.26,
-        "volume": 16861000,
-        "catalyst": "Gaming platform momentum; high-beta tech sector rotation",
-        "sector": null,
-        "marketCap": null,
-        "week52Range": null,
-        "note": "16.8M volume ile güçlü momentum. [sector, marketCap, week52Range data not found in available sources]"
+        "ticker": "AMBA",
+        "company": "Ambarella Inc",
+        "price": 86.76,
+        "change": 29.47,
+        "volume": 4680000,
+        "catalyst": "AI vision chip demand, automotive/edge AI pipeline",
+        "sector": "Semiconductors",
+        "marketCap": 3806000000,
+        "week52Range": [48.30, 96.69]
       },
       {
-        "ticker": "RKLB",
-        "company": "Rocket Lab USA",
-        "price": 98.01,
-        "change": 15.93,
-        "volume": 41915000,
-        "catalyst": "Space sector continuation; satellite launch cadence and NASA contracts",
-        "sector": null,
-        "marketCap": null,
-        "week52Range": null,
-        "note": "41.9M volume ile institutional flow. [sector, marketCap, week52Range data not found in available sources]"
+        "ticker": "AVAV",
+        "company": "AeroVironment Inc",
+        "price": 165.26,
+        "change": 18.89,
+        "volume": 6580000,
+        "catalyst": "Defense/drone contract, sector momentum",
+        "sector": "Aerospace & Defense",
+        "marketCap": 8363000000,
+        "week52Range": [135.20, 417.86]
       },
       {
-        "ticker": "GLW",
-        "company": "Corning Inc",
-        "price": 255.69,
-        "change": 15.67,
-        "volume": 21793000,
-        "catalyst": "AI infrastructure demand; optical fiber connectivity orders",
-        "sector": null,
-        "marketCap": null,
-        "week52Range": null,
-        "note": "21.8M volume ile AI/tech infrastructure talebi. [sector, marketCap, week52Range data not found in available sources]"
+        "ticker": "FCEL",
+        "company": "FuelCell Energy Inc",
+        "price": 35.96,
+        "change": 20.66,
+        "volume": 20101000,
+        "catalyst": "Clean energy/hydrogen demand, government subsidies",
+        "sector": "Electrical Equipment",
+        "marketCap": 2431000000,
+        "week52Range": [3.78, 30.80]
       },
       {
-        "ticker": "QDEL",
-        "company": "QuidelOrtho Corp",
-        "price": 18.23,
-        "change": 32.2,
-        "volume": 6543000,
-        "catalyst": "Diagnostics/healthcare momentum; potential M&A speculation",
-        "sector": null,
-        "marketCap": null,
-        "week52Range": null,
-        "note": "6.5M volume ile healthcare breakout. [sector, marketCap, week52Range data not found in available sources]"
+        "ticker": "MXL",
+        "company": "MaxLinear Inc",
+        "price": 125.57,
+        "change": 15.76,
+        "volume": 3974000,
+        "catalyst": "Semiconductor demand",
+        "sector": "Semiconductors",
+        "marketCap": 11244000000,
+        "week52Range": [12.77, 108.65]
       },
       {
-        "ticker": "OMER",
-        "company": "Omeros Corp",
-        "price": 9.91,
-        "change": 14.3,
-        "volume": 2743000,
-        "catalyst": "Biotech pipeline catalyst; clinical trial update",
-        "sector": null,
-        "marketCap": null,
-        "week52Range": null,
-        "note": "2.7M volume ile biotech momentum. [sector, marketCap, week52Range data not found in available sources]"
+        "ticker": "HSAI",
+        "company": "Hesai Group",
+        "price": 18.18,
+        "change": 15.36,
+        "volume": 4996000,
+        "catalyst": "LiDAR/China autonomous driving",
+        "sector": "Auto Components",
+        "marketCap": 2857000000,
+        "week52Range": [14.40, 30.85]
       }
     ],
     "losers": [
       {
-        "ticker": "CRCL",
-        "company": "Circle Internet Group",
-        "price": 62.53,
-        "change": -17.68,
-        "volume": 34313000,
-        "catalyst": "Stablecoin/DeFi regulatory overhang; crypto sector risk-off",
-        "sector": null,
+        "ticker": "CNXC",
+        "company": "Concentrix Corp",
+        "price": 18.96,
+        "change": -24.83,
+        "volume": 163400,
+        "catalyst": "BPO sector downgrade, Monday earnings miss",
+        "sector": "IT Services",
+        "marketCap": 1540000000,
+        "week52Range": [18.00, 65.00]
+      },
+      {
+        "ticker": "TKO",
+        "company": "TKO Group Holdings Inc",
+        "price": 195.44,
+        "change": -7.65,
+        "volume": 214,
+        "catalyst": "Unknown catalyst",
+        "sector": "Entertainment",
         "marketCap": null,
-        "week52Range": null,
-        "note": "34.3M volume ile crypto proxy selloff. [sector, marketCap, week52Range data not found in available sources]"
+        "week52Range": null
       },
       {
         "ticker": "MSTR",
         "company": "Strategy Inc",
-        "price": 86.93,
-        "change": -6.2,
-        "volume": 31328000,
-        "catalyst": "Bitcoin proxy selloff; BTC overnight reversal from $59.5K",
-        "sector": null,
+        "price": 86.71,
+        "change": -6.44,
+        "volume": 1380000,
+        "catalyst": "Bitcoin decline, crypto risk-off",
+        "sector": "Software",
         "marketCap": null,
-        "week52Range": null,
-        "note": "31.3M volume ile BTC proxy weakness. [sector, marketCap, week52Range data not found in available sources]"
+        "week52Range": null
+      },
+      {
+        "ticker": "ED",
+        "company": "Consolidated Edison Inc",
+        "price": 106.98,
+        "change": -4.73,
+        "volume": 71,
+        "catalyst": "Utility sector pressure, hawkish FOMC",
+        "sector": "Electric Utilities",
+        "marketCap": null,
+        "week52Range": null
       },
       {
         "ticker": "DLR",
-        "company": "Digital Realty Trust",
-        "price": 179.58,
-        "change": -5.77,
-        "volume": 8934000,
-        "catalyst": "REIT/data center sector rotation; rates uncertainty",
-        "sector": null,
+        "company": "Digital Realty Trust Inc",
+        "price": 181.67,
+        "change": -4.68,
+        "volume": 1240000,
+        "catalyst": "REIT sector, interest rate pressure",
+        "sector": "Equity REITs",
         "marketCap": null,
-        "week52Range": null,
-        "note": "8.9M volume ile REIT selloff. [sector, marketCap, week52Range data not found in available sources]"
-      },
-      {
-        "ticker": "ETSY",
-        "company": "Etsy Inc",
-        "price": 75.33,
-        "change": -5.44,
-        "volume": 3529000,
-        "catalyst": "Consumer discretionary weakness; e-commerce demand slowdown",
-        "sector": null,
-        "marketCap": null,
-        "week52Range": null,
-        "note": "3.5M volume ile consumer discretionary baskı. [sector, marketCap, week52Range data not found in available sources]"
-      },
-      {
-        "ticker": "GMED",
-        "company": "Globus Medical Inc",
-        "price": 79.01,
-        "change": -5.87,
-        "volume": 2076000,
-        "catalyst": "Medtech sector rotation; competitive pricing pressure",
-        "sector": null,
-        "marketCap": null,
-        "week52Range": null,
-        "note": "2.1M volume ile medtech weakness. [sector, marketCap, week52Range data not found in available sources]"
+        "week52Range": null
       }
     ]
   },
   "callSetups": [
     {
-      "ticker": "RBLX",
+      "ticker": "AMBA",
       "direction": "call",
-      "entry": 53.5,
-      "target": 58.5,
-      "stop": 51.0,
-      "riskReward": 2.0,
-      "rationale": "VWAP reclaim above 54 with 16.8M volume. Gaming momentum carry-forward. ATR ~2.80",
+      "entry": 86.50,
+      "target": 95.00,
+      "stop": 83.00,
+      "riskReward": 2.2,
+      "rationale": "ORB breakout, AI momentum, 52-week high proximity",
       "timeframe": "0DTE"
     },
     {
-      "ticker": "RKLB",
+      "ticker": "AVAV",
       "direction": "call",
-      "entry": 96.0,
-      "target": 106.0,
-      "stop": 91.0,
-      "riskReward": 2.0,
-      "rationale": "Space sector continuation; above VWAP with 41.9M volume. Strong relative strength vs SPY. ATR ~4.50",
-      "timeframe": "intraday"
+      "entry": 164.00,
+      "target": 178.00,
+      "stop": 159.00,
+      "riskReward": 2.1,
+      "rationale": "Defense sector momentum, drone contracts",
+      "timeframe": "1-week"
     },
     {
-      "ticker": "GLW",
+      "ticker": "FCEL",
       "direction": "call",
-      "entry": 252.0,
-      "target": 265.0,
-      "stop": 247.0,
-      "riskReward": 2.6,
-      "rationale": "AI infrastructure demand; optical fiber orders. 21.8M volume confirms institutional interest. ATR ~6.00",
-      "timeframe": "swing"
+      "entry": 35.50,
+      "target": 41.00,
+      "stop": 33.50,
+      "riskReward": 2.0,
+      "rationale": "Clean energy breakout, parabolic move — caution",
+      "timeframe": "0DTE"
     },
     {
-      "ticker": "QQQ",
+      "ticker": "MBLY",
       "direction": "call",
-      "entry": 733.0,
-      "target": 745.0,
-      "stop": 727.0,
-      "riskReward": 2.0,
-      "rationale": "Tech rebound above VWAP 732.64; semi strength supports Nasdaq-100. VIX 16.5 supportive for CALL bias. ATR ~4.20",
-      "timeframe": "intraday"
+      "entry": 9.40,
+      "target": 10.80,
+      "stop": 8.90,
+      "riskReward": 2.3,
+      "rationale": "Autonomous driving chip, Intel restructuring",
+      "timeframe": "1-week"
     },
     {
-      "ticker": "SPY",
+      "ticker": "VSAT",
       "direction": "call",
-      "entry": 745.0,
-      "target": 755.0,
-      "stop": 740.0,
-      "riskReward": 2.0,
-      "rationale": "Broad market above VWAP 745.23; S&P 500 reclaiming key MA. 49.9M volume. ATR ~3.50",
-      "timeframe": "intraday"
+      "entry": 87.00,
+      "target": 96.00,
+      "stop": 83.50,
+      "riskReward": 2.1,
+      "rationale": "Satellite/space broadband breakout",
+      "timeframe": "1-week"
     }
   ],
   "putSetups": [
     {
-      "ticker": "CRCL",
+      "ticker": "CNXC",
       "direction": "put",
-      "entry": 63.0,
-      "target": 57.0,
-      "stop": 65.0,
-      "riskReward": 3.0,
-      "rationale": "Crypto regulatory overhang; below VWAP with 34.3M volume. Gap-down fill risk. ATR ~4.20",
-      "timeframe": "intraday"
+      "entry": 19.50,
+      "target": 15.50,
+      "stop": 20.20,
+      "riskReward": 2.8,
+      "rationale": "Earnings miss continuation, BPO sector weakness",
+      "timeframe": "0DTE"
     },
     {
       "ticker": "MSTR",
       "direction": "put",
-      "entry": 88.0,
-      "target": 80.0,
-      "stop": 91.0,
-      "riskReward": 2.7,
-      "rationale": "BTC proxy selloff; gap-down continuation. 31.3M volume. ATR ~3.50",
+      "entry": 86.00,
+      "target": 80.00,
+      "stop": 90.00,
+      "riskReward": 2.0,
+      "rationale": "BTC decline correlation, crypto risk-off",
       "timeframe": "0DTE"
     },
     {
       "ticker": "DLR",
       "direction": "put",
-      "entry": 181.0,
-      "target": 172.0,
-      "stop": 185.0,
-      "riskReward": 2.25,
-      "rationale": "REIT sector rotation; rates uncertainty. Below VWAP. 8.9M volume. ATR ~3.00",
-      "timeframe": "intraday"
-    },
-    {
-      "ticker": "ETSY",
-      "direction": "put",
-      "entry": 76.0,
-      "target": 70.0,
-      "stop": 79.0,
+      "entry": 181.00,
+      "target": 173.00,
+      "stop": 186.00,
       "riskReward": 2.0,
-      "rationale": "Consumer discretionary weakness; below VWAP. 3.5M volume. ATR ~2.50",
-      "timeframe": "intraday"
+      "rationale": "REIT interest rate sensitivity, hawkish FOMC",
+      "timeframe": "1-week"
     },
     {
-      "ticker": "COCO",
+      "ticker": "COIN",
       "direction": "put",
-      "entry": 67.0,
-      "target": 62.0,
-      "stop": 69.0,
+      "entry": 145.00,
+      "target": 136.00,
+      "stop": 150.00,
+      "riskReward": 2.9,
+      "rationale": "Crypto risk-off, MSTR correlation",
+      "timeframe": "0DTE"
+    },
+    {
+      "ticker": "TTD",
+      "direction": "put",
+      "entry": 18.00,
+      "target": 15.80,
+      "stop": 18.90,
       "riskReward": 2.5,
-      "rationale": "Consumer staples selloff; below key support. 2.0M volume. ATR ~1.80",
-      "timeframe": "intraday"
+      "rationale": "Ad-tech sector weakness, spending concerns",
+      "timeframe": "1-week"
     }
   ],
   "earningsCalendar": [
     {
-      "ticker": "NKE",
-      "company": "Nike Inc",
-      "time": "after-close",
-      "consensusEps": 0.13,
-      "consensusRev": 10860000000,
-      "priorEps": 0.14,
-      "priorRev": 11090000000,
+      "ticker": "GIS",
+      "company": "General Mills Inc",
+      "time": "before-open",
+      "consensusEps": 0.80,
+      "consensusRev": 4590000000,
+      "priorEps": 0.74,
+      "priorRev": 4600000000,
       "expectedMove": null,
-      "consensusRange": "$0.07 - $0.16",
-      "analystSentiment": "bearish",
-      "note": "EPS $0.20 beat consensus $0.13 by 53%. Revenue $10.97B beat $10.86B but down 1.1% YoY. China sales -12%. Gross margin +8.9% on $986M tariff refund. AH reaction -2%. 0DTE YASAK — IV crush active. [expectedMove data not found in available sources]"
+      "consensusRange": "0.75 - 0.85",
+      "analystSentiment": "neutral",
+      "note": "0DTE YASAK. Q4 FY26. Yoplait closure impact. [expectedMove data not found in source]"
     },
     {
-      "ticker": "STZ",
-      "company": "Constellation Brands",
-      "time": "after-close",
-      "consensusEps": 3.22,
-      "consensusRev": 2389000000,
-      "priorEps": 2.63,
-      "priorRev": 2500000000,
+      "ticker": "FDS",
+      "company": "FactSet Research Systems Inc",
+      "time": "before-open",
+      "consensusEps": 4.45,
+      "consensusRev": 614000000,
+      "priorEps": 4.27,
+      "priorRev": 585500000,
       "expectedMove": null,
-      "consensusRange": null,
+      "consensusRange": "4.30 - 4.60",
+      "analystSentiment": "bullish",
+      "note": "0DTE YASAK. Financial data/AI platform. YTD +19.92%. [expectedMove data not found in source]"
+    },
+    {
+      "ticker": "MSM",
+      "company": "MSC Industrial Direct Co Inc",
+      "time": "before-open",
+      "consensusEps": 1.26,
+      "consensusRev": 1030000000,
+      "priorEps": 1.08,
+      "priorRev": 1080000000,
+      "expectedMove": null,
+      "consensusRange": "1.20 - 1.32",
       "analystSentiment": "neutral",
-      "note": "EPS $3.43 beat consensus $3.22 (comparable +7%). Revenue $2.43B down 3% YoY. Beer net sales +2% to $2.28B. Wine/spirits -47% (divestitures). FY2027 guidance affirmed $11.20-$11.90 EPS. AH reaction data not found. 0DTE YASAK. [expectedMove and consensusRange data not found in available sources]"
+      "note": "0DTE YASAK. Industrial distribution. PMI data related. [expectedMove data not found in source]"
+    },
+    {
+      "ticker": "UNF",
+      "company": "UniFirst Corp",
+      "time": "before-open",
+      "consensusEps": 1.91,
+      "consensusRev": 626000000,
+      "priorEps": 2.17,
+      "priorRev": 610800000,
+      "expectedMove": null,
+      "consensusRange": "1.80 - 2.00",
+      "analystSentiment": "neutral",
+      "note": "0DTE YASAK. Cintas acquisition pending. No conference call. [expectedMove data not found in source]"
+    },
+    {
+      "ticker": "FIZZ",
+      "company": "National Beverage Corp",
+      "time": "after-close",
+      "consensusEps": 0.47,
+      "consensusRev": 301000000,
+      "priorEps": 0.48,
+      "priorRev": 314000000,
+      "expectedMove": null,
+      "consensusRange": "0.42 - 0.52",
+      "analystSentiment": "neutral",
+      "note": "0DTE YASAK. LaCroix producer. Consumer staples. [expectedMove data not found in source]"
+    },
+    {
+      "ticker": "GBX",
+      "company": "Greenbrier Companies Inc",
+      "time": "after-close",
+      "consensusEps": 0.60,
+      "consensusRev": 722000000,
+      "priorEps": 0.92,
+      "priorRev": 1860000000,
+      "expectedMove": null,
+      "consensusRange": "0.50 - 0.70",
+      "analystSentiment": "neutral",
+      "note": "0DTE YASAK. Rail car manufacturing. Transportation/logistics. [expectedMove data not found in source]"
     }
   ],
-  "vwapNotes": "SPY VWAP 745.23 → close 746.77 (+0.21%). QQQ VWAP 732.64 → close 736.40 (+0.51%). IWM VWAP 299.62 → close 300.45 (+0.28%). Tüm indexler VWAP üzerinde kapattı = risk-on bias. Tech (QQQ) liderlik etti, small-cap (IWM) geride kaldı. Gap-up open sonrası gap tamamen dolduruldu ve üzerine çıkıldı.",
+  "vwapNotes": "SPY ($746.77) ve QQQ ($736.40) VWAP üzerinde = risk-on. IWM ($300.45) VWAP yakını = small-cap kararsız. Gap < 1% olduğundan gap-fill riski düşük. ORB 09:30 ET'de güvenle kullanılabilir.",
   "riskAssessment": {
     "level": "medium",
-    "vixRegime": "VIX 16.45 (normal range 15-20). SKEW 144 — tail hedge demand yükseldi, VIX düşerken outlier protection arttı. Split vol signal.",
-    "sectorRotation": "Tech/semiconductors rebounded (QQQ +1.7%). Small-caps (IWM +0.5%) underperformed large-caps. Crypto-adjacent (MSTR) ve consumer staples (HRL, COCO) weak. Beer (STZ) mixed.",
-    "earningsRisk": "NKE beat EPS ama revenue -1.1% YoY; China -12%; AH -2%. STZ beat EPS +7% comp ama revenue -3%. Her ikisinde de IV crush aktif — 0DTE YASAK.",
-    "macroRisk": "Jul 1: ADP employment + ISM PMI + Fed Warsh speech. Jul 2: NFP (HIGH). Jul 3: Independence Day (closed). Jul 8: FOMC minutes. Jul 29: Next FOMC. Iran Strait of Hormuz tension."
+    "vixRegime": "VIX 17.1 — normal regime (15-20). 0DTE playable. VIX rising +3.10% — caution.",
+    "sectorRotation": "Tech strong (AMBA, MXL), Clean energy strong (FCEL), Defense strong (AVAV), REIT weak (DLR), Crypto weak (MSTR, COIN), Ad-tech weak (TTD).",
+    "earningsRisk": "GIS, FDS, MSM, UNF before open. IV crush risk. 0DTE YASAK on these tickers.",
+    "macroRisk": "FOMC hawkish, rate hike priced. JOLTS at 2-year high. NFP Friday. July 4 holiday early close Thursday. Oil quarterly -30%."
   },
-  "nextDayCarryForward": [
-    {
-      "ticker": "RBLX",
-      "reason": "Gaming momentum continuation above VWAP; 16.8M volume confirms institutional interest",
-      "keyLevel": "53.50",
-      "catalyst": "High-beta tech rotation + volume confirmation"
-    },
-    {
-      "ticker": "RKLB",
-      "reason": "Space sector institutional flow; 41.9M volume with strong relative strength",
-      "keyLevel": "96.00",
-      "catalyst": "Satellite launch pipeline + NASA contract momentum"
-    },
-    {
-      "ticker": "NKE",
-      "reason": "Earnings beat but AH selloff; potential reversal on guidance clarity",
-      "keyLevel": "41.50",
-      "catalyst": "FY2027 guidance + $986M tariff refund narrative"
-    },
-    {
-      "ticker": "STZ",
-      "reason": "EPS beat + margin expansion; FY2027 guidance affirmed",
-      "keyLevel": "145.00",
-      "catalyst": "Beer segment strength + comparable margin 34.3%"
-    },
-    {
-      "ticker": "MSTR",
-      "reason": "BTC proxy; if Bitcoin holds $59K, reversal setup possible",
-      "keyLevel": "85.00",
-      "catalyst": "BTC price action + July 4 positioning"
-    }
-  ]
+  "nextDayCarryForward": []
 }
