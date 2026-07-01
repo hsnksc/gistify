@@ -238,8 +238,10 @@ export default function Landing({
       price: copy(language, "$5 / ay", "$5 / month"),
       tone: "border-emerald-400/25 bg-emerald-500/[0.08]",
       bullets: [
-        copy(language, "Earnings strategy + playbook + risk matrix", "Earnings strategy + playbook + risk matrix"),
-        copy(language, "Macro calendar ve CPI/PPI readthrough", "Macro calendar and CPI/PPI readthrough"),
+        copy(language, "Earnings Strategy Workspace + Earnings Workspace + hisse detaylari", "Earnings Strategy Workspace + Earnings Workspace + per-stock detail"),
+        copy(language, "Live Momentum Scanner, Midas Feed ve MomentumFlowSurface", "Live Momentum Scanner, Midas Feed and MomentumFlowSurface"),
+        copy(language, "Daily Report, Market Flash, makro takvim ve CPI/PPI forecast", "Daily Report, Market Flash, macro calendar and CPI/PPI forecast"),
+        copy(language, "Risk matrisi, IV crush gorunumu ve opsiyon playbook'u", "Risk matrix, IV crush view and options playbook"),
         copy(language, "Paid routes, saved framing ve daha derin plan katmani", "Paid routes, saved framing and a deeper planning layer"),
       ],
       ctaHref: "/pay",

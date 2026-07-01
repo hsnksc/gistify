@@ -57,7 +57,7 @@ const COPY = {
     eyebrow: "Gistify Billing",
     title: "Google hesabinla gir, Paddle ile aboneligi ac",
     description:
-      "Odeme akisi artik hazir. Uyelik hesabina bagli olarak Paddle checkout ile scanner, daily ve earning strategy modullerini acabilirsin.",
+      "Odeme akisi hazir. Aylik $5 planla earnings, momentum, makro ve risk modullerinin tamamina hesabinla eslestirilmis erisim ac.",
     secure: "Paddle checkout aktif",
     accountLinked: "Hesap bazli erisim",
     webhookSync: "Webhook senkronu",
@@ -99,7 +99,16 @@ const COPY = {
     settingsTitle: "Kurulum akisi",
     step1: "1. Google girisi ile hesabi dogrula",
     step2: "2. Paddle checkout ac ve odemeyi tamamla",
-    step3: "3. Webhook senkronundan sonra scanner ve raporlar acilsin",
+    step3: "3. Webhook senkronundan sonra tum desk modulleri acilsin",
+    planScopeTitle: "Plan kapsami",
+    planScopeItems: [
+      "Earnings Strategy + Earnings Workspace",
+      "Live Momentum Scanner / Midas Feed",
+      "Daily Report + Market Flash",
+      "Makro Takvim + CPI/PPI Forecast",
+      "Risk Matrisi + IV Crush + Opsiyon Playbook",
+      "Web erisimi ve destek",
+    ],
     accountLabel: "Hesap",
     modeLabel: "Erisim modu",
     billingLabel: "Billing durumu",
@@ -117,7 +126,7 @@ const COPY = {
     eyebrow: "Gistify Billing",
     title: "Sign in with Google, then activate your subscription with Paddle",
     description:
-      "Billing is now ready. You can unlock the scanner, daily, and earning strategy modules through Paddle checkout tied to your account.",
+      "Checkout is ready. Unlock full access to earnings, momentum, macro and risk modules tied to your account for $5/month.",
     secure: "Paddle checkout live",
     accountLinked: "Account-linked access",
     webhookSync: "Webhook sync",
@@ -158,7 +167,16 @@ const COPY = {
     settingsTitle: "Activation flow",
     step1: "1. Confirm the account with Google sign-in",
     step2: "2. Open Paddle checkout and complete payment",
-    step3: "3. Wait for the webhook sync to unlock scanner and reports",
+    step3: "3. Wait for the webhook sync to unlock every desk module",
+    planScopeTitle: "Plan scope",
+    planScopeItems: [
+      "Earnings Strategy + Earnings Workspace",
+      "Live Momentum Scanner / Midas Feed",
+      "Daily Report + Market Flash",
+      "Macro Calendar + CPI/PPI Forecast",
+      "Risk Matrix + IV Crush + Options Playbook",
+      "Web access and support",
+    ],
     accountLabel: "Account",
     modeLabel: "Access mode",
     billingLabel: "Billing status",
@@ -488,6 +506,23 @@ export default function Pay({
               <div className="rounded-full border border-border bg-background/70 px-3 py-1 text-xs font-semibold text-muted-foreground">
                 {statusLabel}
               </div>
+            </div>
+
+            <div className="mt-6 space-y-2">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+                {copy.planScopeTitle}
+              </p>
+              <ul className="grid gap-2 md:grid-cols-2">
+                {copy.planScopeItems.map(item => (
+                  <li
+                    key={item}
+                    className="flex items-start gap-2 rounded-xl border border-border bg-background/60 px-3 py-2 text-sm leading-relaxed text-muted-foreground"
+                  >
+                    <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-emerald-400" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
 
             <div className="mt-6 rounded-xl border border-border bg-background/55 p-6">
