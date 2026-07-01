@@ -3315,6 +3315,14 @@ async function startServer() {
     })
   );
   app.use(
+    "/flow",
+    express.static(getFlowReportRootPath(), {
+      fallthrough: false,
+      index: true,
+      redirect: false,
+    })
+  );
+  app.use(
     "/api/daily-report/assets",
     express.static(getDailyReportRootPath(), {
       fallthrough: false,
