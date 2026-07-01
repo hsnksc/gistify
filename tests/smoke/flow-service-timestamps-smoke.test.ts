@@ -156,10 +156,11 @@ describe("flow service timestamps smoke", () => {
     ]);
 
     expect(catalog).toHaveLength(1);
+    expect(catalog[0]?.reportDate).toBe("2026-06-29");
     expect(catalog[0]?.updatedAt).toBe("2026-06-29T10:15:00.000Z");
   });
 
-  it("exposes publishedAt in flow summaries and falls back to the live source timestamp", () => {
+  it("refreshes publishedAt in flow summaries from the live source timestamp", () => {
     mockedSourcePackages = [
       createSourcePackage({
         folderName: "flow-source-1",
@@ -191,7 +192,7 @@ describe("flow service timestamps smoke", () => {
     ]);
 
     expect(withExistingPublishedAt[0]?.publishedAt).toBe(
-      "2026-06-20T09:00:00.000Z"
+      "2026-06-29T10:15:00.000Z"
     );
 
     const withoutExistingPublishedAt = getViewerFlowReportSummaries([]);
@@ -200,7 +201,7 @@ describe("flow service timestamps smoke", () => {
     );
   });
 
-  it("orders flow summaries by creation timestamp instead of reportDate", () => {
+  it("orders flow summaries by latest reportDate before creation timestamp", () => {
     mockedSourcePackages = [
       createSourcePackage({
         id: "flow-source-a",
@@ -253,6 +254,83 @@ describe("flow service timestamps smoke", () => {
         sourceFolder: "flow-source-b",
         publishedAt: "2026-06-29T11:00:00.000Z",
         updatedAt: "2026-06-29T11:05:00.000Z",
+        content: {
+          headline: "Published Headline",
+          executiveSummary: ["Published summary"],
+          markdown: "# Published",
+          html: "",
+          sectionFiles: [],
+          figureFiles: [],
+          openAiFigureFiles: [],
+          tickerUniverse: ["MARKET"],
+          researchFileCount: 0,
+          sourceKind: "file",
+          contentFormat: "markdown",
+          sourceLabel: "flow/post-b.html",
+          assetBasePath: "",
+        },
+      }),
+    ]);
+
+    expect(summaries.map(report => report.id)).toEqual([
+      "flow-report-b",
+      "flow-report-a",
+    ]);
+  });
+
+  it("breaks flow reportDate ties by live source timestamp", () => {
+    mockedSourcePackages = [
+      createSourcePackage({
+        id: "flow-source-a",
+        folderName: "flow-source-a",
+        title: "Earlier post same report date",
+        reportDate: "2026-06-29",
+        sourceLabel: "flow/post-a.html",
+        updatedAt: "2026-06-29T10:15:00.000Z",
+      }),
+      createSourcePackage({
+        id: "flow-source-b",
+        folderName: "flow-source-b",
+        title: "Later post same report date",
+        reportDate: "2026-06-29",
+        sourceLabel: "flow/post-b.html",
+        updatedAt: "2026-06-29T10:10:00.000Z",
+      }),
+    ];
+
+    const summaries = getViewerFlowReportSummaries([
+      createReport({
+        id: "flow-report-a",
+        slug: "flow-report-a",
+        title: "Later source timestamp same report date",
+        reportDate: "2026-06-29",
+        sourceFolder: "flow-source-a",
+        publishedAt: "2026-06-29T11:00:00.000Z",
+        updatedAt: "2026-06-29T11:05:00.000Z",
+        content: {
+          headline: "Published Headline",
+          executiveSummary: ["Published summary"],
+          markdown: "# Published",
+          html: "",
+          sectionFiles: [],
+          figureFiles: [],
+          openAiFigureFiles: [],
+          tickerUniverse: ["MARKET"],
+          researchFileCount: 0,
+          sourceKind: "file",
+          contentFormat: "markdown",
+          sourceLabel: "flow/post-a.html",
+          assetBasePath: "",
+        },
+      }),
+      createReport({
+        id: "flow-report-b",
+        slug: "flow-report-b",
+        title: "Earlier source timestamp same report date",
+        reportDate: "2026-06-29",
+        sourceFolder: "flow-source-b",
+        publishedAt: "2026-06-29T12:00:00.000Z",
+        updatedAt: "2026-06-29T12:05:00.000Z",
         content: {
           headline: "Published Headline",
           executiveSummary: ["Published summary"],

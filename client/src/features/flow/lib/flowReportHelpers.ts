@@ -195,6 +195,10 @@ export function formatFlowTimestamp(value: string, locale = "tr-TR") {
     return "-";
   }
 
+  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return formatFlowReportDate(value, locale);
+  }
+
   const parsed = new Date(value);
   if (Number.isNaN(parsed.getTime())) {
     return value;
@@ -382,16 +386,17 @@ export function compareFlowReports(
   left: FlowReportListEntry,
   right: FlowReportListEntry
 ) {
-  const byPostedAt = getFlowPostedTimestamp(right).localeCompare(
-    getFlowPostedTimestamp(left)
-  );
-  if (byPostedAt !== 0) {
-    return byPostedAt;
-  }
-
   const byDate = right.reportDate.localeCompare(left.reportDate);
   if (byDate !== 0) {
     return byDate;
+  }
+
+  const byPostedAt = compareFlowTimestampValuesDescending(
+    getFlowPostedTimestamp(left),
+    getFlowPostedTimestamp(right)
+  );
+  if (byPostedAt !== 0) {
+    return byPostedAt;
   }
 
   const byUpdatedAt = right.updatedAt.localeCompare(left.updatedAt);
@@ -400,6 +405,23 @@ export function compareFlowReports(
   }
 
   return left.title.localeCompare(right.title);
+}
+
+function compareFlowTimestampValuesDescending(left: string, right: string) {
+  const leftParsed = Date.parse(left);
+  const rightParsed = Date.parse(right);
+  const leftHasParsed = Number.isFinite(leftParsed);
+  const rightHasParsed = Number.isFinite(rightParsed);
+
+  if (leftHasParsed && rightHasParsed && leftParsed !== rightParsed) {
+    return rightParsed - leftParsed;
+  }
+
+  if (leftHasParsed !== rightHasParsed) {
+    return rightHasParsed ? 1 : -1;
+  }
+
+  return right.localeCompare(left);
 }
 
 export function getPrimaryFlowTicker(report: FlowReportListEntry) {

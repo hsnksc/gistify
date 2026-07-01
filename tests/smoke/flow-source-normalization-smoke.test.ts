@@ -95,14 +95,16 @@ Paragraf yapisi korunur ama Flow tarafinda sahte ticker uretilmemelidir.
   </head>
   <body>
     <main>
-      <div class="hero-h">Growth/Momentum ve Rate-Sensitive Hisseler</div>
-      <div class="hero-p">
-        Bu rapor $AMD $NEE $NVDA $PFE $PLTR $SMCI $WMT tickerlarini ayni akis icinde toplar.
+      <div class="hero" id="hero" data-timestamp="2026-06-28T14:30:00+03:00">
+        <div class="hero-h">Growth/Momentum ve Rate-Sensitive Hisseler</div>
+        <div class="hero-p">
+          Bu rapor $AMD $NEE $NVDA $PFE $PLTR $SMCI $WMT tickerlarini ayni akis icinde toplar.
+        </div>
+        <div class="hero-p">
+          Portfoy yapisi, momentum ve makro baglam ayni post icinde sade bir formatta sunulur.
+        </div>
+        <span class="hero-date">📅 28 Haziran 2026</span>
       </div>
-      <div class="hero-p">
-        Portfoy yapisi, momentum ve makro baglam ayni post icinde sade bir formatta sunulur.
-      </div>
-      <div class="price-date">28 Haziran 2026</div>
       <footer>Kaynak: https://x.com/gistify</footer>
     </main>
   </body>
@@ -136,8 +138,9 @@ Paragraf yapisi korunur ama Flow tarafinda sahte ticker uretilmemelidir.
     <header id="header">Global header</header>
     <aside id="sidebar">Sidebar links</aside>
     <main id="main">
-      <div id="hero" class="hero">
+      <div id="hero" class="hero" data-timestamp="2026-06-29T09:15:00+03:00">
         <h1 class="hero-h">QQQ Momentum Notu</h1>
+        <span class="hero-date">📅 29 Haziran 2026</span>
       </div>
       <div id="content-tr" class="lang-content">
         <section id="tr-1">
@@ -168,7 +171,7 @@ Paragraf yapisi korunur ama Flow tarafinda sahte ticker uretilmemelidir.
     expect(source.html).not.toContain("<script");
   });
 
-  it("prefers embedded html dates over generated file-name dates", () => {
+  it("uses the embedded report date for flow cards while keeping source timestamps for ordering", () => {
     const source = createFlowSourcePackageFromContent({
       fileName: "daily-generated-29-haziran-2026.html",
       sourceLabel: "flow/daily-generated-29-haziran-2026.html",
@@ -183,8 +186,10 @@ Paragraf yapisi korunur ama Flow tarafinda sahte ticker uretilmemelidir.
       <div class="meta">Published: 2026-06-17 · Flow internal note</div>
     </header>
     <main>
-      <div class="hero-p">
-        SPY ve QQQ icin piyasa notu. Uretim dosya tarihi sonradan degisse bile kartta gercek rapor tarihi korunmali.
+      <div class="hero" id="hero" data-timestamp="2026-06-29T18:45:00+03:00">
+        <div class="hero-p">
+          SPY ve QQQ icin piyasa notu. Uretim dosya tarihi sonradan degisse bile kartta gercek rapor tarihi korunmali.
+        </div>
       </div>
     </main>
   </body>
@@ -193,6 +198,7 @@ Paragraf yapisi korunur ama Flow tarafinda sahte ticker uretilmemelidir.
     });
 
     expect(source.reportDate).toBe("2026-06-17");
+    expect(source.updatedAt).toBe("2026-06-29T18:45:00+03:00");
     expect(source.metadataItems).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -213,15 +219,17 @@ Paragraf yapisi korunur ama Flow tarafinda sahte ticker uretilmemelidir.
 <html>
   <body>
     <main>
-      <h1>Market Flash Finansal + Earnings + Haber Derin Analiz</h1>
-      <p><strong>Veri zaman damgasi:</strong> 30 Haziran 2026 ~00:40 TSI (29 Haz ~17:40 ET, piyasa kapali).</p>
+      <div class="hero" id="hero" data-timestamp="2026-06-30T00:40:00+03:00">
+        <h1>Market Flash Finansal + Earnings + Haber Derin Analiz</h1>
+        <span class="hero-date">📅 30 Haziran 2026</span>
+      </div>
     </main>
   </body>
 </html>
       `,
     });
 
-    expect(source.updatedAt).toBe("2026-06-29T21:40:00.000Z");
+    expect(source.updatedAt).toBe("2026-06-30T00:40:00+03:00");
   });
 
   it("uses explicit markdown snapshot timestamps for flow ordering metadata", () => {
@@ -240,7 +248,7 @@ Watchlist snapshot markdown source.
       `,
     });
 
-    expect(source.updatedAt).toBe("2026-06-29T10:03:00.000Z");
+    expect(source.updatedAt).toBe("2026-06-29T10:03:00Z");
   });
 
   it("builds distinct archive slugs for duplicate flow titles on the same date", () => {
@@ -255,8 +263,10 @@ Watchlist snapshot markdown source.
   </head>
   <body>
     <main>
-      <h1>Yapay Zekada Para Nerede?</h1>
-      <div class="meta">29 Haziran 2026</div>
+      <div class="hero" id="hero" data-timestamp="2026-06-29T10:15:00+03:00">
+        <h1>Yapay Zekada Para Nerede?</h1>
+        <span class="hero-date">📅 29 Haziran 2026</span>
+      </div>
     </main>
   </body>
 </html>
@@ -273,8 +283,10 @@ Watchlist snapshot markdown source.
   </head>
   <body>
     <main>
-      <h1>Yapay Zekada Para Nerede?</h1>
-      <div class="meta">29 Haziran 2026</div>
+      <div class="hero" id="hero" data-timestamp="2026-06-29T11:15:00+03:00">
+        <h1>Yapay Zekada Para Nerede?</h1>
+        <span class="hero-date">📅 29 Haziran 2026</span>
+      </div>
     </main>
   </body>
 </html>

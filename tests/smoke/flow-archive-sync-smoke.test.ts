@@ -162,4 +162,38 @@ describe("flow archive sync smoke", () => {
 
     expect(upsertDailyReport).not.toHaveBeenCalled();
   });
+
+  it("refreshes stale flow report dates and publishedAt values from the live source", () => {
+    const upsertDailyReport = vi.fn();
+    mockedSourcePackages = [
+      createSourcePackage({
+        reportDate: "2026-06-29",
+        updatedAt: "2026-06-29T12:00:00.000Z",
+      }),
+    ];
+
+    syncPublishedFlowReportsToArchive(
+      {
+        listDailyReports: () =>
+          [
+            createReport({
+              reportDate: "2026-06-17",
+              updatedAt: "2026-06-20T11:00:00.000Z",
+              publishedAt: "2026-06-20T10:00:00.000Z",
+            }),
+          ] satisfies DailyReportRecord[],
+        upsertDailyReport,
+      },
+      "admin@example.com"
+    );
+
+    expect(upsertDailyReport).toHaveBeenCalledTimes(1);
+    expect(upsertDailyReport).toHaveBeenCalledWith(
+      expect.objectContaining({
+        reportDate: "2026-06-29",
+        updatedAt: "2026-06-29T12:00:00.000Z",
+        publishedAt: "2026-06-29T12:00:00.000Z",
+      })
+    );
+  });
 });

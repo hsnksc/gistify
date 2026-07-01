@@ -59,12 +59,12 @@ export function syncPublishedFlowReportsToArchive(
       id: previousRecord?.id || sourceRecord.id,
       slug: previousRecord?.slug || sourceRecord.slug,
       title: previousRecord?.title || sourceRecord.title,
-      reportDate: previousRecord?.reportDate || sourceRecord.reportDate,
+      reportDate: sourceRecord.reportDate,
       status: "published",
       authorEmail: previousRecord?.authorEmail || sourceRecord.authorEmail,
-      createdAt: previousRecord?.createdAt || sourceRecord.createdAt,
+      createdAt: previousRecord?.createdAt || source.updatedAt,
       updatedAt: source.updatedAt,
-      publishedAt: previousRecord?.publishedAt || source.updatedAt,
+      publishedAt: source.updatedAt,
       content: {
         ...sourceRecord.content,
         headline:

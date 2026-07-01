@@ -52,16 +52,17 @@ function compareViewerDailyReports(
   left: DailyReportRecord,
   right: DailyReportRecord
 ) {
-  const byTimestamp = getViewerDailyReportSortTimestamp(right).localeCompare(
-    getViewerDailyReportSortTimestamp(left)
-  );
-  if (byTimestamp !== 0) {
-    return byTimestamp;
-  }
-
   const byDate = right.reportDate.localeCompare(left.reportDate);
   if (byDate !== 0) {
     return byDate;
+  }
+
+  const byTimestamp = compareTimestampValuesDescending(
+    getViewerDailyReportSortTimestamp(left),
+    getViewerDailyReportSortTimestamp(right)
+  );
+  if (byTimestamp !== 0) {
+    return byTimestamp;
   }
 
   const byUpdatedAt = right.updatedAt.localeCompare(left.updatedAt);
@@ -76,13 +77,33 @@ function getViewerDailyReportSortTimestamp(report: DailyReportRecord) {
   if (isFlowDailyReport(report)) {
     return (
       normalizeString(report.publishedAt || report.updatedAt || report.createdAt) ||
-      (report.reportDate ? `${report.reportDate}T00:00:00.000Z` : "")
+      report.reportDate
     );
   }
 
-  return report.reportDate
-    ? `${report.reportDate}T00:00:00.000Z`
-    : normalizeString(report.updatedAt || report.createdAt || report.publishedAt);
+  return normalizeString(
+    report.updatedAt ||
+      report.createdAt ||
+      report.publishedAt ||
+      (report.reportDate ? `${report.reportDate}T00:00:00.000Z` : "")
+  );
+}
+
+function compareTimestampValuesDescending(left: string, right: string) {
+  const leftParsed = Date.parse(left);
+  const rightParsed = Date.parse(right);
+  const leftHasParsed = Number.isFinite(leftParsed);
+  const rightHasParsed = Number.isFinite(rightParsed);
+
+  if (leftHasParsed && rightHasParsed && leftParsed !== rightParsed) {
+    return rightParsed - leftParsed;
+  }
+
+  if (leftHasParsed !== rightHasParsed) {
+    return rightHasParsed ? 1 : -1;
+  }
+
+  return right.localeCompare(left);
 }
 
 function normalizeFlowDuplicateKeyPart(value: string) {
@@ -240,16 +261,22 @@ function buildViewerDailyReportCatalogRaw(
       id: existing.id,
       slug: existing.slug,
       title: existing.title || sourceRecord.title,
-      reportDate: existing.reportDate || sourceRecord.reportDate,
+      reportDate: preferSourceUpdatedAt
+        ? sourceRecord.reportDate
+        : existing.reportDate || sourceRecord.reportDate,
       status: "published" as const,
       authorEmail: existing.authorEmail,
-      createdAt: existing.createdAt,
+      createdAt: preferSourceUpdatedAt
+        ? existing.createdAt || source.updatedAt
+        : existing.createdAt,
       updatedAt: preferSourceUpdatedAt
         ? source.updatedAt
         : existing.updatedAt > source.updatedAt
           ? existing.updatedAt
           : source.updatedAt,
-      publishedAt: existing.publishedAt || source.updatedAt,
+      publishedAt: preferSourceUpdatedAt
+        ? source.updatedAt
+        : existing.publishedAt || source.updatedAt,
       content: {
         ...sourceRecord.content,
         headline: normalizeString(existing.content.headline) || sourceRecord.content.headline,
