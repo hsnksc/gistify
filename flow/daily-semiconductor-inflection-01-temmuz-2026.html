@@ -922,3 +922,434 @@ function animateCounter(el){var target=parseInt(el.getAttribute('data-target'));
     </div>
   </div>
 </section>
+
+<!-- BSPDN -->
+<section>
+  <div class="section-head collapsed" id="sec-bspdn">
+    <div class="section-head-inner" onclick="toggle('sec-bspdn')">
+      <h2 class="section-title"><span class="section-num">08</span> Backside Power Delivery (BSPDN)</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div data-lang="en" class="visible">
+        <p>Traditionally, both signal routing interconnects and the power delivery network shared the front side of the silicon wafer. As transistor density increases, this shared architecture leads to severe routing congestion and significant voltage drop (IR drop) over microscopic interconnect paths, starving transistors of power.</p>
+        <p>By separating the power delivery network and routing it through wider, lower-resistance metal lines on the <strong>backside of the wafer</strong>, signal integrity on the front side is preserved and power efficiency is dramatically enhanced. This requires highly complex new manufacturing steps: extreme wafer thinning and carrier wafer bonding.</p>
+        
+        <div class="grid grid-3">
+          <div class="card" style="border-left:3px solid var(--gf-success)">
+            <div class="card-label">Intel</div>
+            <div class="card-value up">PowerVia</div>
+            <div class="card-note">Early 2026 production on 18A node</div>
+          </div>
+          <div class="card" style="border-left:3px solid var(--gf-accent)">
+            <div class="card-label">TSMC</div>
+            <div class="card-value">A16</div>
+            <div class="card-note">H2 2026 with Super Power Rail</div>
+          </div>
+          <div class="card" style="border-left:3px solid var(--gf-warning)">
+            <div class="card-label">Samsung</div>
+            <div class="card-value neu">SF2Z</div>
+            <div class="card-note">Targeting 2027 for BSPDN</div>
+          </div>
+        </div>
+
+        <div class="insight-box">
+          <strong>Demand Driver:</strong> This process fundamentally increases total silicon area consumed per finished chip, serving as a major demand driver for bulk silicon wafers. Carrier wafer bonding doubles effective wafer consumption per logic chip.
+        </div>
+      </div>
+      <div data-lang="tr">
+        <p>Geleneksel olarak, hem sinyal yönlendirme bağlantı hatları hem de güç iletim ağı silikon wafer'ın ön yüzünü paylaşırdı. Transistör yoğunluğu arttıkça, bu paylaşılan mimari ciddi yönlendirme tıkanıklığına ve önemli voltaj düşümüne (IR düşümü) yol açar.</p>
+        <p>Güç iletim ağını ayırarak ve <strong>wafer'ın arka yüzü üzerinden</strong> daha geniş, daha düşük dirençli metal hatlarla yönlendirerek, ön yüzdeki sinyal bütünlüğü korunur ve güç verimliliği dramatik şekilde artırılır.</p>
+        
+        <div class="grid grid-3">
+          <div class="card" style="border-left:3px solid var(--gf-success)">
+            <div class="card-label">Intel</div>
+            <div class="card-value up">PowerVia</div>
+            <div class="card-note">2026 başı 18A düğümünde üretim</div>
+          </div>
+          <div class="card" style="border-left:3px solid var(--gf-accent)">
+            <div class="card-label">TSMC</div>
+            <div class="card-value">A16</div>
+            <div class="card-note">H2 2026 Super Power Rail ile</div>
+          </div>
+          <div class="card" style="border-left:3px solid var(--gf-warning)">
+            <div class="card-label">Samsung</div>
+            <div class="card-value neu">SF2Z</div>
+            <div class="card-note">2027 BSPDN hedefi</div>
+          </div>
+        </div>
+
+        <div class="insight-box">
+          <strong>Talep Sürücüsü:</strong> Bu süreç, bitmiş çip başına tüketilen toplam silikon alanını temel olarak artırarak, toplu silikon wafer'ları için önemli bir talep sürücüsü görevi görür. Taşıyıcı wafer bağlama, mantık çipi başına etkili wafer tüketimini ikiye katlar.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPTICAL INTERCONNECTS -->
+<section>
+  <div class="section-head collapsed" id="sec-optical">
+    <div class="section-head-inner" onclick="toggle('sec-optical')">
+      <h2 class="section-title"><span class="section-num">09</span> Optical Interconnects & Photonic SOI</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div data-lang="en" class="visible">
+        <p>The exponential proliferation of AI computing power has shifted the operational bottleneck from processing units to the data transmission corridors connecting them. The migration toward 1.6T optical modules is driving massive demand for compound semiconductors, specifically EML and CW laser chips.</p>
+        
+        <div class="grid" style="grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+          <div class="card">
+            <div class="card-label" style="color:var(--gf-warning)">Indium Phosphide (InP)</div>
+            <div class="card-value neu">Foundation</div>
+            <div class="card-note">High-performance laser substrate. Supply constrained by export controls and yield bottlenecks. Remains essential even in CPO architectures.</div>
+          </div>
+          <div class="card">
+            <div class="card-label" style="color:var(--gf-accent)">Photonic SOI</div>
+            <div class="card-value">Complement</div>
+            <div class="card-note">Cost-effective silicon-integrated platform. ~25% of InP cost. Soitec commands ~70% market share with Smart Cut™ technology.</div>
+          </div>
+        </div>
+
+        <div class="chart-container">
+          <div class="chart-title">📡 Photonic SOI vs InP Cost Comparison</div>
+          <div class="compare-bar">
+            <div class="compare-label">InP Wafers</div>
+            <div class="compare-track">
+              <div class="compare-fill fill-bear" style="--target-width:100%"><span class="bar-label">100% baseline cost</span></div>
+            </div>
+          </div>
+          <div class="compare-bar">
+            <div class="compare-label">Photonic SOI</div>
+            <div class="compare-track">
+              <div class="compare-fill fill-bull" style="--target-width:25%"><span class="bar-label">~25% of InP cost</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="insight-box warn">
+          <strong>Correction:</strong> Photonic SOI <em>complements</em> rather than replaces InP. Even CPO architectures require InP lasers as external light sources — silicon does not lase. Tower Semiconductor has booked $1.3 billion in silicon photonics contracts for 2027, while InP demand is also surging.
+        </div>
+        <p><strong>Soitec</strong> holds an effective monopoly with ~70% of the global photonic SOI market. Supported by proprietary Smart Cut™ technology and a portfolio of over <strong>4,000 patents</strong>. Revenue was approximately <strong>€891 million</strong> in FY2024–2025. Structural demand for photonic SOI as the standard platform for AI data center optical interconnects guarantees secular growth.</p>
+      </div>
+      <div data-lang="tr">
+        <p>AI hesaplama gücünün üstel yayılımı, operasyonel darboğazı işlem birimlerinden bunları birbirine bağlayan veri iletim koridorlarına kaydırdı. 1.6T optik modüllere geçiş, bileşik yarı iletkenler için devasa talep yaratıyor.</p>
+        
+        <div class="grid" style="grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+          <div class="card">
+            <div class="card-label" style="color:var(--gf-warning)">Indium Fosfit (InP)</div>
+            <div class="card-value neu">Temel</div>
+            <div class="card-note">Yüksek performanslı lazer substratı. İhracat kontrolleri ve verim darboğazlarıyla arz kısıtlı. CPO mimarilerinde bile zorunlu.</div>
+          </div>
+          <div class="card">
+            <div class="card-label" style="color:var(--gf-accent)">Fotonik SOI</div>
+            <div class="card-value">Tamamlayıcı</div>
+            <div class="card-note">Maliyet-etkin silikon entegre platform. InP maliyetinin ~%25'i. Soitec Smart Cut™ teknolojisi ile ~%70 pazar payı.</div>
+          </div>
+        </div>
+
+        <div class="chart-container">
+          <div class="chart-title">📡 Fotonik SOI vs InP Maliyet Karşılaştırması</div>
+          <div class="compare-bar">
+            <div class="compare-label">InP Wafer'lar</div>
+            <div class="compare-track">
+              <div class="compare-fill fill-bear" style="--target-width:100%"><span class="bar-label">%100 temel maliyet</span></div>
+            </div>
+          </div>
+          <div class="compare-bar">
+            <div class="compare-label">Fotonik SOI</div>
+            <div class="compare-track">
+              <div class="compare-fill fill-bull" style="--target-width:25%"><span class="bar-label">InP maliyetinin ~%25'i</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="insight-box warn">
+          <strong>Düzeltme:</strong> Fotonik SOI InP'nin yerini almaz, onu <em>tamamlar</em>. CPO mimarileri bile harici ışık kaynağı olarak InP lazerlere ihtiyaç duyar. Tower Semiconductor, 2027 için 1,3 milyar dolarlık silikon fotonik sözleşme rezervasyonu yaptı.
+        </div>
+        <p><strong>Soitec</strong> fotonik SOI pazarının ~%70'ini etkili bir tekel gibi komuta eder. Özel Smart Cut™ teknolojisi ve <strong>4.000'den fazla patent</strong> ile desteklenir. Geliri FY2024–2025'te yaklaşık <strong>891 milyon avro</strong> idi. AI veri merkezi optik bağlantıları için standart platform olarak fotonik SOI'ye yönelik yapısal talep, seküler büyümeyi garanti eder.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BULK SILICON WAFER -->
+<section>
+  <div class="section-head collapsed" id="sec-wafer">
+    <div class="section-head-inner" onclick="toggle('sec-wafer')">
+      <h2 class="section-title"><span class="section-num">10</span> Bulk Silicon Wafer Demand</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div data-lang="en" class="visible">
+        <p>Three structural technology waves are now stacking onto the ~5% annual baseline demand:</p>
+        <div class="grid grid-3">
+          <div class="card" style="border-left:3px solid var(--gf-accent)">
+            <div class="card-label">Wave 1</div>
+            <div class="card-value">BSPDN</div>
+            <div class="card-note">Carrier wafer bonding increases silicon area per logic chip</div>
+          </div>
+          <div class="card" style="border-left:3px solid var(--gf-success)">
+            <div class="card-label">Wave 2</div>
+            <div class="card-value up">Wafer-Bonded NAND</div>
+            <div class="card-note">Peripheral + memory arrays on separate wafers; doubles requirements</div>
+          </div>
+          <div class="card" style="border-left:3px solid var(--gf-warning)">
+            <div class="card-label">Wave 3</div>
+            <div class="card-value neu">Photonic SOI</div>
+            <div class="card-note">Adds incremental wafer volume to global demand</div>
+          </div>
+        </div>
+        
+        <div class="chart-container">
+          <div class="chart-title">🏭 Silicon Wafer Market Concentration</div>
+          <div class="compare-bar">
+            <div class="compare-label">Shin-Etsu</div>
+            <div class="compare-track">
+              <div class="compare-fill fill-accent" style="--target-width:30%"><span class="bar-label">~30%</span></div>
+            </div>
+          </div>
+          <div class="compare-bar">
+            <div class="compare-label">SUMCO</div>
+            <div class="compare-track">
+              <div class="compare-fill fill-accent" style="--target-width:24%"><span class="bar-label">~24%</span></div>
+            </div>
+          </div>
+          <div class="compare-bar">
+            <div class="compare-label">GlobalWafers</div>
+            <div class="compare-track">
+              <div class="compare-fill fill-base" style="--target-width:17%"><span class="bar-label">~17%</span></div>
+            </div>
+          </div>
+          <div class="compare-bar">
+            <div class="compare-label">Others</div>
+            <div class="compare-track">
+              <div class="compare-fill fill-bear" style="--target-width:29%"><span class="bar-label">~29%</span></div>
+            </div>
+          </div>
+        </div>
+
+        <p><strong>Shin-Etsu Chemical and SUMCO Corporation</strong> together control roughly 45–54% of the global market, alongside Taiwan's GlobalWafers as the third-largest player. A <strong>structural supply-demand gap in bare silicon wafers is projected to emerge by 2027</strong> — confirmed by Bernstein research and Silicon Motion executives.</p>
+        <div class="insight-box bull">
+          <strong>Pricing Power:</strong> When this deficit materializes, absolute pricing power will return to the industry oligopoly, enabling sustained increases in long-term contract pricing and generating cascading benefits for wafer reclaim and test wafer segments.
+        </div>
+      </div>
+      <div data-lang="tr">
+        <p>Üç yapısal teknoloji dalgası şimdi ~%5 yıllık temel talebin üzerine yığılıyor:</p>
+        <div class="grid grid-3">
+          <div class="card" style="border-left:3px solid var(--gf-accent)">
+            <div class="card-label">Dalga 1</div>
+            <div class="card-value">BSPDN</div>
+            <div class="card-note">Taşıyıcı wafer bağlama, mantık çipi başına silikon alanını artırır</div>
+          </div>
+          <div class="card" style="border-left:3px solid var(--gf-success)">
+            <div class="card-label">Dalga 2</div>
+            <div class="card-value up">Wafer-Bonded NAND</div>
+            <div class="card-note">Periferik + bellek dizileri ayrı wafer'larda; gereksinimi ikiye katlar</div>
+          </div>
+          <div class="card" style="border-left:3px solid var(--gf-warning)">
+            <div class="card-label">Dalga 3</div>
+            <div class="card-value neu">Fotonik SOI</div>
+            <div class="card-note">Küresel talebe artımsal wafer hacmi ekler</div>
+          </div>
+        </div>
+        
+        <div class="chart-container">
+          <div class="chart-title">🏭 Silikon Wafer Pazar Konsantrasyonu</div>
+          <div class="compare-bar">
+            <div class="compare-label">Shin-Etsu</div>
+            <div class="compare-track">
+              <div class="compare-fill fill-accent" style="--target-width:30%"><span class="bar-label">~%30</span></div>
+            </div>
+          </div>
+          <div class="compare-bar">
+            <div class="compare-label">SUMCO</div>
+            <div class="compare-track">
+              <div class="compare-fill fill-accent" style="--target-width:24%"><span class="bar-label">~%24</span></div>
+            </div>
+          </div>
+          <div class="compare-bar">
+            <div class="compare-label">GlobalWafers</div>
+            <div class="compare-track">
+              <div class="compare-fill fill-base" style="--target-width:17%"><span class="bar-label">~%17</span></div>
+            </div>
+          </div>
+          <div class="compare-bar">
+            <div class="compare-label">Diğerleri</div>
+            <div class="compare-track">
+              <div class="compare-fill fill-bear" style="--target-width:29%"><span class="bar-label">~%29</span></div>
+            </div>
+          </div>
+        </div>
+
+        <p><strong>Shin-Etsu Chemical ve SUMCO Corporation</strong> birlikte küresel pazarın yaklaşık %45–54'ünü kontrol eder. <strong>2027'ye kadar çıplak silikon wafer'larında yapısal bir arz-talep açığının ortaya çıkması öngörülüyor</strong> — Bernstein araştırması ve Silicon Motion yöneticileri tarafından doğrulandı.</p>
+        <div class="insight-box bull">
+          <strong>Fiyatlandırma Gücü:</strong> Bu açık ortaya çıktığında, mutlak fiyatlandırma gücü endüstri oligopolüne geri dönecek; bu, uzun vadeli kontrat fiyatlandırmasında sürdürülebilir artışlara olanak tanıyacaktır.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TSMC & GEOGRAPHICS -->
+<section>
+  <div class="section-head collapsed" id="sec-tsmc">
+    <div class="section-head-inner" onclick="toggle('sec-tsmc')">
+      <h2 class="section-title"><span class="section-num">11</span> TSMC, Geopolitics & Localization</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div data-lang="en" class="visible">
+        <p>TSMC acts as the primary amplifier of supply chain shocks. <strong>2026 capex guidance is $52–56 billion</strong> (not $70B in 2027 as some reports claimed). This supports expansion of advanced wafer fabrication and packaging facilities globally, spanning Taiwan, US, Japan, and Germany.</p>
+        <div class="insight-box warn">
+          <strong>Correction:</strong> TSMC's "Integrated Material Supply Ecosystem" was originally championed in <strong>2017</strong>, not 2024. The "Zero Waste Manufacturing Center" in Taichung commenced operations in November 2024. The localization push is real and accelerating.
+        </div>
+        <h3>Winners in the Localization Push</h3>
+        <div class="grid grid-3">
+          <div class="card" style="border-left:3px solid var(--gf-success)">
+            <div class="card-label">AEMC</div>
+            <div class="card-value up">Pivoted</div>
+            <div class="card-note">Display → semiconductor chemicals. Now in TSMC 2nm process. Capacity expansion underway.</div>
+          </div>
+          <div class="card" style="border-left:3px solid var(--gf-accent)">
+            <div class="card-label">Sunlit + IV Tech</div>
+            <div class="card-value">Breaking In</div>
+            <div class="card-note">High-purity chemicals and polishing pads competing with DuPont.</div>
+          </div>
+          <div class="card" style="border-left:3px solid var(--gf-warning)">
+            <div class="card-label">Advanced Pao Trusval</div>
+            <div class="card-value neu">JV (Aug 2025)</div>
+            <div class="card-note">AEMC + Nan Pao + Trusval. Localizing high-end adhesive tapes for advanced packaging.</div>
+          </div>
+        </div>
+        <div class="insight-box danger">
+          <strong>Asymmetric Risk:</strong> Qualification processes for advanced chipmaking materials are punishing, often requiring years of validation and substantial upfront capex before commercial volumes are guaranteed. Failure to qualify poses an existential threat. For those that succeed, a baseline allocation in an advanced 2nm ramp constitutes a parabolic revenue event.
+        </div>
+      </div>
+      <div data-lang="tr">
+        <p>TSMC, arz zinciri şoklarının birincil amplifikatörü olarak görev yapar. <strong>2026 sermaye harcama rehberi 52–56 milyar dolar</strong> (bazı raporların iddia ettiği 2027'de 70 milyar dolar değil). Bu, Tayvan, ABD, Japonya ve Almanya'yı kapsayan gelişmiş tesislerin genişletilmesini destekler.</p>
+        <div class="insight-box warn">
+          <strong>Düzeltme:</strong> TSMC'nin "Entegre Malzeme Tedarik Ekosistemi" aslen <strong>2017</strong>'de ilan edildi, 2024 değil. Taichung'daki "Sıfır Atık Üretim Merkezi" Kasım 2024'te faaliyete geçti.
+        </div>
+        <h3>Yerelleştirme İtici Gücünde Kazananlar</h3>
+        <div class="grid grid-3">
+          <div class="card" style="border-left:3px solid var(--gf-success)">
+            <div class="card-label">AEMC</div>
+            <div class="card-value up">Döndü</div>
+            <div class="card-note">Ekran → yarı iletken kimyasalları. Artık TSMC 2nm sürecinde. Kapasite genişletmesi devam ediyor.</div>
+          </div>
+          <div class="card" style="border-left:3px solid var(--gf-accent)">
+            <div class="card-label">Sunlit + IV Tech</div>
+            <div class="card-value">Giriyor</div>
+            <div class="card-note">DuPont ile rekabet eden yüksek saflıkta kimyasallar ve parlatma pedleri.</div>
+          </div>
+          <div class="card" style="border-left:3px solid var(--gf-warning)">
+            <div class="card-label">Advanced Pao Trusval</div>
+            <div class="card-value neu">Ortaklık (Ağu 2025)</div>
+            <div class="card-note">AEMC + Nan Pao + Trusval. Gelişmiş paketleme için üst düzey yapışkan bantları yerelleştiriyor.</div>
+          </div>
+        </div>
+        <div class="insight-box danger">
+          <strong>Asimetrik Risk:</strong> Gelişmiş çip üretimi malzemeleri için nitelendirme süreçleri cezalandırıcıdır; genellikle ticari hacimler garanti edilmeden önce yıllarca validasyon ve önemli ön sermaye harcaması gerektirir. Başaranlar için gelişmiş 2nm ramp'ta bir temel tahsis, parabolik bir gelir olayıdır.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INVESTMENT IMPLICATIONS -->
+<section>
+  <div class="section-head collapsed" id="sec-investment">
+    <div class="section-head-inner" onclick="toggle('sec-investment')">
+      <h2 class="section-title"><span class="section-num">12</span> Strategic Investment Implications</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div data-lang="en" class="visible">
+        <p>The evidence points toward the <strong>specialized materials and advanced substrate processing layers</strong> as the most mispriced opportunity. Front-end equipment providers and pure-play foundry equities have largely absorbed AI premiums. The underlying atomic and chemical enablers remain widely underappreciated.</p>
+        
+        <div class="grid" style="grid-template-columns:1fr 1fr;gap:16px;margin:16px 0">
+          <div class="card" style="border:1px solid var(--gf-success);background:linear-gradient(135deg,rgba(74,222,128,.05),transparent)">
+            <div class="card-label" style="color:var(--gf-success)">Vector 1</div>
+            <div class="card-value up">Substrate & TGV Innovators</div>
+            <div class="card-note">As organic ABF substrates hit thermal/electrical limits, the pivot to glass is unavoidable. LPKF (LIDE), E&R Engineering, Ingentec — represent the absolute structural bottleneck for next-gen advanced packaging. Essential for 2027, yet largely outside macro-semiconductor trades.</div>
+          </div>
+          <div class="card" style="border:1px solid var(--gf-accent);background:linear-gradient(135deg,rgba(56,189,248,.05),transparent)">
+            <div class="card-label" style="color:var(--gf-accent)">Vector 2</div>
+            <div class="card-value">Regional Specialty Chemicals</div>
+            <div class="card-note">TSMC's capex is known. What is underappreciated is the localized velocity of capital re-routing into regional supply chains. Small-cap Taiwanese suppliers (AEMC, Sunlit, IV Technologies) capturing share from entrenched Japanese incumbents.</div>
+          </div>
+        </div>
+
+        <h3>Upstream Commodities</h3>
+        <div class="grid grid-3">
+          <div class="card" style="border-left:3px solid var(--gf-accent)">
+            <div class="card-label">Metal-Oxide Resists</div>
+            <div class="card-value">JSR</div>
+            <div class="card-note">Post-privatization, post-Inpria. Qualification cycle guarantees revenue acceleration before High-NA full deployment.</div>
+          </div>
+          <div class="card" style="border-left:3px solid var(--gf-success)">
+            <div class="card-label">12-inch Bulk Wafers</div>
+            <div class="card-value up">Shin-Etsu + SUMCO</div>
+            <div class="card-note">BSPDN + wafer-bonded NAND guarantee demand outstrips capacity by 2027. Cycle-agnostic pricing power.</div>
+          </div>
+          <div class="card" style="border-left:3px solid var(--gf-warning)">
+            <div class="card-label">Photonic SOI</div>
+            <div class="card-value neu">Soitec</div>
+            <div class="card-note">Near-monopoly captures hyperscale CPO value, bypassing the InP supply bottleneck entirely.</div>
+          </div>
+        </div>
+
+        <div class="insight-box bull">
+          <strong>Conclusion:</strong> The timeline is rigid and defined by the physics of semiconductor scaling. 2026 is the volatile ramp setup phase; 2027 is the inflection point for mass production; 2028–2030 cements new market leaders. The most robust capitalization on the AI computing trade requires moving one layer deeper into the supply chain stack — anchoring positions in the specialized materials, localized consumables, and novel substrate technologies that make the angstrom era physically possible.
+        </div>
+      </div>
+      <div data-lang="tr">
+        <p>Kanıtlar, <strong>uzmanlaşmış malzemeler ve gelişmiş substrat işleme katmanlarına</strong> en çok yanlış fiyatlanmış fırsat olarak işaret ediyor. Ön uç ekipman sağlayıcıları ve saf foundry hisseleri büyük ölçüde AI primlerini içeriyor.</p>
+        
+        <div class="grid" style="grid-template-columns:1fr 1fr;gap:16px;margin:16px 0">
+          <div class="card" style="border:1px solid var(--gf-success);background:linear-gradient(135deg,rgba(74,222,128,.05),transparent)">
+            <div class="card-label" style="color:var(--gf-success)">Vektör 1</div>
+            <div class="card-value up">Substrat ve TGV İnovatörleri</div>
+            <div class="card-note">Organik ABF substratlar termal/elektriksel sınırlara ulaştıkça, cam geçişi kaçınılmazdır. LPKF (LIDE), E&R Engineering, Ingentec — yeni nesil gelişmiş paketleme için mutlak yapısal darboğaz. 2027 için zorunlu, ancak tipik makro-yarı iletken ticaretlerinin dışında.</div>
+          </div>
+          <div class="card" style="border:1px solid var(--gf-accent);background:linear-gradient(135deg,rgba(56,189,248,.05),transparent)">
+            <div class="card-label" style="color:var(--gf-accent)">Vektör 2</div>
+            <div class="card-value">Bölgesel Özel Kimyasallar</div>
+            <div class="card-note">TSMC'nin sermaye harcaması bilinen bir makro değişkendir. Yeterince takdir edilmeyen, sermayenin bölgesel tedarik zincirlerine yerelleşmiş hızıdır. Küçük kapitalizasyonlu Tayvanlı tedarikçiler (AEMC, Sunlit, IV Technologies), yerleşik Japon rakiplerinden pay kapıyor.</div>
+          </div>
+        </div>
+
+        <h3>Yukarı Akış Emtiaları</h3>
+        <div class="grid grid-3">
+          <div class="card" style="border-left:3px solid var(--gf-accent)">
+            <div class="card-label">Metal-Oksit Direnci</div>
+            <div class="card-value">JSR</div>
+            <div class="card-note">Özelleştirme sonrası, Inpria satın alması sonrası. Nitelendirme döngüsü, High-NA tam devreye girmeden önce gelir hızlanmasını garanti eder.</div>
+          </div>
+          <div class="card" style="border-left:3px solid var(--gf-success)">
+            <div class="card-label">12 inçlik Toplu Wafer</div>
+            <div class="card-value up">Shin-Etsu + SUMCO</div>
+            <div class="card-note">BSPDN + wafer-bonded NAND, 2027'ye kadar talebin kapasiteyi aşacağını garanti eder. Döngüden bağımsız fiyatlandırma gücü.</div>
+          </div>
+          <div class="card" style="border-left:3px solid var(--gf-warning)">
+            <div class="card-label">Fotonik SOI</div>
+            <div class="card-value neu">Soitec</div>
+            <div class="card-note">Neredeyse tekel, hiper ölçekli CPO değerini yakalar; InP arz darboğazını tamamen atlar.</div>
+          </div>
+        </div>
+
+        <div class="insight-box bull">
+          <strong>Sonuç:</strong> Zaman çizelgesi, yarı iletken ölçeklendirmenin fizikleri tarafından belirlenir ve rijittir. 2026 değişken ramp kurulum fazıdır; 2027 seri üretim için kırılma noktasıdır; 2028–2030 yeni pazar liderlerini pekiştirir. AI hesaplama ticaretinde en sağlam sermayelendirme, arz zinciri yığınında bir katman daha derine inmeyi gerektirir — angstrom çağını fiziksel olarak mümkün kılan uzmanlaşmış malzemelerde, yerelleştirilmiş sarf malzemelerde ve yeni substrat teknolojilerinde pozisyonları sabitlemek.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">Gistify Flow | Semiconductor Inflection Report | 01 July 2026</div>
+
+</div>
+</body>
+</html>
