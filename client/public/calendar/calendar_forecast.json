@@ -1,6 +1,6 @@
 {
   "reportDate": "2026-07-01",
-  "generatedAt": "2026-07-01T13:12:59+03:00",
+  "generatedAt": "2026-07-01T10:40:00.310096+00:00",
   "title": "Günlük Ekonomik Takvim Raporu — 2026-07-01",
   "summary": "Eurozone Flash CPI (%3.1 beklenti) ve ABD Initial Jobless Claims (225K) ile Factory Orders (-1.35%) günün en kritik üç tetikleyicisi. VIX 16-22 aralığında yeni normal; yön bağımsız opsiyon stratejileri için uygun ortam.",
   "events": [
@@ -13,7 +13,7 @@
       "importance": "low",
       "previous": "52.9",
       "forecast": "53.0",
-      "actual": "-",
+      "actual": "52.2",
       "currency": "EUR",
       "unit": "index",
       "analysis": "Italy imalat sektörü Mayıs'ta 52.9'dan genişlemeye devam ediyor. Beklenti 53.0 ile hafif ivme kazancı. Avrupa PMI'nın genel görünümü için destekleyici ama tek başına piyasayı hareket ettirecek güçte değil."
@@ -27,7 +27,7 @@
       "importance": "low",
       "previous": "49.7",
       "forecast": "-",
-      "actual": "-",
+      "actual": "50.7",
       "currency": "EUR",
       "unit": "index",
       "analysis": "Fransa imalat PMI'sı 49.7 ile kontraksiyon bölgesinde. Nihai veri önceki okumayı doğrulamalı; Avrupa'nın ikinci büyük ekonomisinde zayıf üretim sinyali."
@@ -41,7 +41,7 @@
       "importance": "medium",
       "previous": "50.1",
       "forecast": "50.1",
-      "actual": "-",
+      "actual": "50.0",
       "currency": "EUR",
       "unit": "index",
       "analysis": "Almanya imalat PMI 50.1 ile genişleme/kontraksiyon sınırında. Ortadoğu enerji şoku ve yüksek enerji maliyetleri üretimi baskılıyor. Beklenti 50.1 ile stabilizasyon; sapma EUR/USD ve DAX volatilitesi yaratabilir."
@@ -55,7 +55,7 @@
       "importance": "low",
       "previous": "53.3",
       "forecast": "-",
-      "actual": "-",
+      "actual": "53.8",
       "currency": "EUR",
       "unit": "index",
       "analysis": "Yunanistan imalat sektörü 53.3 ile güçlü genişleme gösteriyor. Küçük ekonomi olduğu için piyasa etkisi sınırlı."
@@ -69,7 +69,7 @@
       "importance": "medium",
       "previous": "51.6",
       "forecast": "51.6",
-      "actual": "-",
+      "actual": "51.3",
       "currency": "EUR",
       "unit": "index",
       "analysis": "Euro Bölgesi imalat PMI Mayıs'ta 51.6'ydı, Haziran flash okuması da 51.6 bekleniyor. Bölgesel genişleme devam ediyor ama hizmet sektörü (48.9) kontraksiyonda. Ortadoğu çatışmasının enerji maliyetleri üzerinden üretimi ve talebi baskıladığı bir ortamda, PMI 50 üzerinde kalması pozitif ama zayıf. ECB için büyüme endişeleri devam ediyor."
@@ -83,7 +83,7 @@
       "importance": "high",
       "previous": "3.2%",
       "forecast": "3.1%",
-      "actual": "-",
+      "actual": "2.8%",
       "currency": "EUR",
       "unit": "%",
       "analysis": "Euro Bölgesi flash CPI %3.1 bekleniyor (önceki %3.2). ECB'nin %2 hedefine hâlâ uzak. Ortadoğu enerji şoku nedeniyle enflasyon yukarı yönlü risk taşıyor. ECB'nin Haziran 2026 projeksiyonlarına göre 2026 HICP %2.6 (baseline), %3.0 (adverse scenario). Bir önceki okumaya göre yavaşlama sinyali verirse, ECB'nin daha erken faiz indirimi beklentileri EUR/USD'yi zayıflatabilir. Ama %3.1 bile hâlâ yüksek. Enflasyon üst bandı aşarsa EUR/USD yukarı, tahvil getirileri yukarı; beklentiyi aşağı kırarsa EUR/USD aşağı. Bu günün en kritik olayı."
@@ -97,7 +97,7 @@
       "importance": "low",
       "previous": "2.9%",
       "forecast": "-",
-      "actual": "-",
+      "actual": "7.5%",
       "currency": "EUR",
       "unit": "%",
       "analysis": "Kıbrıs perakende satışları Mayıs'ta %2.9'du. Küçük ekonomi, piyasa etkisi minimal."
@@ -125,7 +125,7 @@
       "importance": "low",
       "previous": "4.9%",
       "forecast": "-",
-      "actual": "-",
+      "actual": "4.9%",
       "currency": "EUR",
       "unit": "%",
       "analysis": "İrlanda işsizlik oranı %4.9 ile düşük. Avrupa işgücü piyasası genel olarak dirençli."
