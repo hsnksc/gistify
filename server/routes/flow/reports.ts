@@ -45,43 +45,104 @@ export function createFlowReportsRouter({
 }: FlowReportsRouterDependencies) {
   const router = Router();
 
+function matchFirstGroup(value: string, patterns: RegExp[]) {
+  for (const pattern of patterns) {
+    const match = value.match(pattern);
+    const next = normalizeString(match?.[1] || "");
+    if (next) {
+      return next;
+    }
+  }
+  return "";
+}
+
+function stripHtml(value: string) {
+  return normalizeString(value.replace(/<[^>]+>/g, " "));
+}
+
+function translateReport(report: DailyReportRecord, lang: string): DailyReportRecord {
+  if (lang !== "en" || !report.content.translations?.en) {
+    return report;
+  }
+  const enHtml = report.content.translations.en;
+  const enTitle = matchFirstGroup(enHtml, [/<title>([^<]+)<\/title>/i]);
+  const enH1Raw = matchFirstGroup(enHtml, [/<h1[^>]*>([\s\S]*?)<\/h1>/i]);
+  const enHeadline = normalizeString(
+    matchFirstGroup(enHtml, [/<meta[^>]*name=["']description["'][^>]*content=["']([^"']+)["']/i]) ||
+    (enH1Raw ? stripHtml(enH1Raw) : "")
+  );
+  return {
+    ...report,
+    title: enTitle || report.title,
+    content: {
+      ...report.content,
+      html: report.content.contentFormat === "html" ? report.content.translations.en : report.content.html,
+      markdown: report.content.contentFormat === "markdown" ? report.content.translations.en : report.content.markdown,
+      headline: enHeadline || report.content.headline,
+      language: "en" as DailyReportLanguage,
+    },
+  };
+}
+
   router.get("/", (req, res) => {
     setPrivateNoStore(res);
+    const lang = normalizeString(req.query.lang).toLowerCase();
+    const reports = getViewerFlowReports(getPublishedReports(), {
+      limit: normalizeLimit(req.query.limit),
+      reportKind: normalizeReportKind(req.query.type),
+      sourceLabel: normalizeString(req.query.source),
+    });
 
-    const payload: FlowReportsResponse = {
-      reports: getViewerFlowReports(getPublishedReports(), {
-        limit: normalizeLimit(req.query.limit),
-        reportKind: normalizeReportKind(req.query.type),
-        sourceLabel: normalizeString(req.query.source),
-      }),
-    };
+    const translatedReports = reports.map(report => {
+      if (lang !== "en" || !report.content.translations?.en) {
+        return report;
+      }
+      const enHtml = report.content.translations.en;
+      const enTitle = matchFirstGroup(enHtml, [/<title>([^<]+)<\/title>/i]);
+      const enH1Raw = matchFirstGroup(enHtml, [/<h1[^>]*>([\s\S]*?)<\/h1>/i]);
+      const enHeadline = normalizeString(
+        matchFirstGroup(enHtml, [/<meta[^>]*name=["']description["'][^>]*content=["']([^"']+)["']/i]) ||
+        (enH1Raw ? stripHtml(enH1Raw) : "")
+      );
+      return {
+        ...report,
+        title: enTitle || report.title,
+        content: {
+          ...report.content,
+          headline: enHeadline || report.content.headline,
+        },
+      };
+    });
 
+    const payload: FlowReportsResponse = { reports: translatedReports };
     res.status(200).json(payload);
   });
 
   router.get("/summary", (req, res) => {
     setPrivateNoStore(res);
-
+    const lang = normalizeString(req.query.lang).toLowerCase();
     const payload: FlowReportSummariesResponse = {
       reports: getViewerFlowReportSummaries(getPublishedReports(), {
         limit: normalizeLimit(req.query.limit),
         reportKind: normalizeReportKind(req.query.type),
         sourceLabel: normalizeString(req.query.source),
+        lang,
       }),
     };
 
     res.status(200).json(payload);
   });
 
-  router.get("/latest", (_req, res) => {
+  router.get("/latest", (req, res) => {
     setPrivateNoStore(res);
+    const lang = normalizeString(req.query.lang).toLowerCase();
+    const report = getViewerFlowReports(getPublishedReports(), {
+      limit: 1,
+      reportKind: normalizeReportKind(req.query.type),
+    })[0] || null;
 
     const payload: FlowReportResponse = {
-      report:
-        getViewerFlowReports(getPublishedReports(), {
-          limit: 1,
-          reportKind: normalizeReportKind(_req.query.type),
-        })[0] || null,
+      report: report ? translateReport(report, lang) : null,
     };
 
     res.status(200).json(payload);
@@ -101,18 +162,7 @@ export function createFlowReportsRouter({
     }
 
     const lang = normalizeString(req.query.lang).toLowerCase();
-    const translatedReport =
-      lang === "en" && report.content.translations?.en
-        ? {
-            ...report,
-            content: {
-              ...report.content,
-              html: report.content.contentFormat === "html" ? report.content.translations.en : report.content.html,
-              markdown: report.content.contentFormat === "markdown" ? report.content.translations.en : report.content.markdown,
-              language: "en" as DailyReportLanguage,
-            },
-          }
-        : report;
+    const translatedReport = translateReport(report, lang);
 
     const payload: FlowReportResponse = { report: translatedReport };
     res.status(200).json(payload);

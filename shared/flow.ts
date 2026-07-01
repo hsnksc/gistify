@@ -38,6 +38,7 @@ export interface FlowReportSummary {
   ticker: string;
   tickerUniverse: string[];
   title: string;
+  publishedAt?: string;
   updatedAt: string;
 }
 

@@ -26,6 +26,7 @@ vi.mock("../../server/dailyReportSources", () => ({
 import {
   buildViewerDailyReportCatalog,
   getViewerFlowReportById,
+  getViewerFlowReportSummaries,
 } from "../../server/services/flowService";
 
 function createSourcePackage(
@@ -156,6 +157,47 @@ describe("flow service timestamps smoke", () => {
 
     expect(catalog).toHaveLength(1);
     expect(catalog[0]?.updatedAt).toBe("2026-06-29T10:15:00.000Z");
+  });
+
+  it("exposes publishedAt in flow summaries and falls back to the live source timestamp", () => {
+    mockedSourcePackages = [
+      createSourcePackage({
+        folderName: "flow-source-1",
+        sourceLabel: "flow/daily-source-1.html",
+        updatedAt: "2026-06-29T10:15:00.000Z",
+      }),
+    ];
+
+    const withExistingPublishedAt = getViewerFlowReportSummaries([
+      createReport({
+        sourceFolder: "flow-source-1",
+        publishedAt: "2026-06-20T09:00:00.000Z",
+        content: {
+          headline: "Published Headline",
+          executiveSummary: ["Published summary"],
+          markdown: "# Published",
+          html: "",
+          sectionFiles: [],
+          figureFiles: [],
+          openAiFigureFiles: [],
+          tickerUniverse: ["MARKET"],
+          researchFileCount: 0,
+          sourceKind: "file",
+          contentFormat: "markdown",
+          sourceLabel: "flow/daily-source-1.html",
+          assetBasePath: "",
+        },
+      }),
+    ]);
+
+    expect(withExistingPublishedAt[0]?.publishedAt).toBe(
+      "2026-06-20T09:00:00.000Z"
+    );
+
+    const withoutExistingPublishedAt = getViewerFlowReportSummaries([]);
+    expect(withoutExistingPublishedAt[0]?.publishedAt).toBe(
+      "2026-06-29T10:15:00.000Z"
+    );
   });
 
   it("keeps the previous max-updatedAt behavior for non-flow reports", () => {

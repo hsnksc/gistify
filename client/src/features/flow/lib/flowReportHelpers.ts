@@ -209,11 +209,22 @@ export function formatFlowTimestamp(value: string, locale = "tr-TR") {
   }).format(parsed);
 }
 
+export function getFlowPostedTimestamp(report: FlowReportListEntry) {
+  return report.publishedAt || report.updatedAt;
+}
+
+export function getFlowPostedLabel(
+  report: FlowReportListEntry,
+  locale = "tr-TR"
+) {
+  return formatFlowTimestamp(getFlowPostedTimestamp(report), locale);
+}
+
 export function getFlowUploadedLabel(
   report: FlowReportListEntry,
   locale = "tr-TR"
 ) {
-  return formatFlowTimestamp(report.updatedAt, locale);
+  return getFlowPostedLabel(report, locale);
 }
 
 export function normalizeFlowContent(

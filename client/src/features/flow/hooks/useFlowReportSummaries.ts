@@ -43,6 +43,9 @@ export function useFlowReportSummaries(
       if (typeof limit === "number" && Number.isFinite(limit) && limit > 0) {
         searchParams.set("limit", String(Math.floor(limit)));
       }
+      if (language === "en") {
+        searchParams.set("lang", "en");
+      }
 
       const response = await fetch(
         `/api/flow-reports/summary${searchParams.size ? `?${searchParams.toString()}` : ""}`,

@@ -16,7 +16,7 @@ import FlowPostActions from "./FlowPostActions";
 import FlowReportViewer from "./FlowReportViewer";
 import {
   formatFlowReportDate,
-  formatFlowTimestamp,
+  getFlowPostedLabel,
   getFlowReportArchiveDetailPath,
   getFlowReportDetailPath,
   getFlowReportTickers,
@@ -137,8 +137,8 @@ export default function FlowReportDetailSurface({
                   </p>
                   <span className="text-muted-foreground">·</span>
                   <p className="text-xs text-muted-foreground">
-                    {copy(language, "Uret.", "Gen.")}{" "}
-                    {formatFlowTimestamp(report.updatedAt, locale)}
+                    {copy(language, "Gonderildi", "Posted")}{" "}
+                    {getFlowPostedLabel(report, locale)}
                   </p>
                 </div>
 

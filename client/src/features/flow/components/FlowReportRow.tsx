@@ -8,8 +8,8 @@ import {
 import {
   type FlowReportListEntry,
   formatFlowReportDate,
-  formatFlowTimestamp,
   getFlowLanguageBadge,
+  getFlowPostedLabel,
   getFlowPreviewText,
   getFlowReportKind,
   getFlowReportArchiveDetailPath,
@@ -59,7 +59,7 @@ export default function FlowReportRow({
             {formatFlowReportDate(report.reportDate, locale)}
           </span>
           <span className="text-[10px] text-muted-foreground">
-            {formatFlowTimestamp(report.updatedAt, locale)}
+            {getFlowPostedLabel(report, locale)}
           </span>
         </div>
 

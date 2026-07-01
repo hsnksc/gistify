@@ -20,10 +20,13 @@ export function useFlowReports(language: AppLanguage): UseFlowReportsResult {
     setError("");
 
     try {
-      const response = await fetch("/api/flow-reports", {
-        cache: "no-store",
-        credentials: "include",
-      });
+      const response = await fetch(
+        `/api/flow-reports${language === "en" ? "?lang=en" : ""}`,
+        {
+          cache: "no-store",
+          credentials: "include",
+        }
+      );
       const payload = await readJsonResponse<FlowReportsResponse>(
         response,
         "flow reports",

@@ -7,8 +7,8 @@ import {
 } from "../hooks/useFlowTranslation";
 import {
   type FlowReportListEntry,
-  formatFlowTimestamp,
   formatFlowReportDate,
+  getFlowPostedLabel,
   getFlowPreviewText,
   getFlowReportArchiveDetailPath,
   getFlowReportDetailPath,
@@ -66,7 +66,7 @@ export default function FlowReportCard({
             {formatFlowReportDate(report.reportDate, locale)}
           </span>
           <span className="text-[10px] text-muted-foreground">
-            {formatFlowTimestamp(report.updatedAt, locale)}
+            {getFlowPostedLabel(report, locale)}
           </span>
         </div>
 

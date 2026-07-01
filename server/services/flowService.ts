@@ -10,7 +10,11 @@ import {
   normalizeFlowTicker,
   resolveFlowReportKind,
 } from "../../shared/flowInference.ts";
-import { analyzeFlowReportLanguage } from "../../shared/flowLanguage";
+import {
+  analyzeFlowReportLanguage,
+  type FlowReportLanguageMode,
+  type FlowReportTranslationState,
+} from "../../shared/flowLanguage";
 import {
   buildDailyReportRecordFromSource,
   listDailyReportSourcePackages,
@@ -411,10 +415,25 @@ function detectFlowReportKind(
   });
 }
 
-function buildFlowReportSummary(report: DailyReportRecord): FlowReportSummary {
+function buildFlowReportSummary(
+  report: DailyReportRecord,
+  lang?: string
+): FlowReportSummary {
   const html = report.content.html || "";
   const contentFormat = detectContentFormat(report);
   const reportKind = detectFlowReportKind(report, html);
+  const isEn = lang === "en";
+  const enHtml = isEn ? report.content.translations?.en : undefined;
+  const enTitle = enHtml ? matchFirstGroup(enHtml, [/<title>([^<]+)<\/title>/i]) : "";
+  const enH1Raw = enHtml ? matchFirstGroup(enHtml, [/<h1[^>]*>([\s\S]*?)<\/h1>/i]) : "";
+  const enHeadline = enHtml
+    ? normalizeString(
+        matchFirstGroup(enHtml, [/<meta[^>]*name=["']description["'][^>]*content=["']([^"']+)["']/i]) ||
+        (enH1Raw ? stripHtml(enH1Raw) : "")
+      )
+    : "";
+  const title = (isEn && enTitle) || report.title;
+  const headline = (isEn && enHeadline) || report.content.headline;
   const hasEnTranslation = Boolean(report.content.translations?.en);
   const languageInfo = hasEnTranslation
     ? {
@@ -433,7 +452,7 @@ function buildFlowReportSummary(report: DailyReportRecord): FlowReportSummary {
   const titleInfo =
     reportKind === "daily"
       ? {
-          companyName: normalizeString(report.title) || "Market report",
+          companyName: normalizeString(title) || "Market report",
           ticker: "MARKET",
         }
       : extractTitleAndCompany(report, html);
@@ -460,13 +479,13 @@ function buildFlowReportSummary(report: DailyReportRecord): FlowReportSummary {
     normalizeString(report.sourceFolder) ||
     "Flow source";
   const previewText =
-    normalizeString(report.content.headline) ||
+    normalizeString(headline) ||
     normalizeString(report.content.executiveSummary[0] || "") ||
     (contentFormat === "html"
       ? normalizeString(extractFirstMeaningfulParagraph(html))
       : "") ||
     normalizeString(report.content.coverage || "") ||
-    report.title;
+    title;
 
   return {
     companyName: titleInfo.companyName,
@@ -479,7 +498,7 @@ function buildFlowReportSummary(report: DailyReportRecord): FlowReportSummary {
       contentFormat === "html"
         ? /<canvas|Chart\.js|new\s+Chart\s*\(/i.test(html)
         : false,
-    headline: normalizeString(report.content.headline),
+    headline: normalizeString(headline),
     id: report.id,
     previewText,
     price: contentFormat === "html" ? detectPrice(html) : null,
@@ -499,7 +518,8 @@ function buildFlowReportSummary(report: DailyReportRecord): FlowReportSummary {
     sourceLabel,
     ticker,
     tickerUniverse,
-    title: report.title,
+    title,
+    publishedAt: report.publishedAt || report.updatedAt,
     updatedAt: report.updatedAt,
   };
 }
@@ -551,9 +571,12 @@ export function getViewerFlowReportSummaries(
     limit?: number;
     reportKind?: FlowReportKind;
     sourceLabel?: string;
+    lang?: string;
   } = {}
 ) {
-  return getViewerFlowReports(publishedReports, options).map(buildFlowReportSummary);
+  return getViewerFlowReports(publishedReports, options).map(report =>
+    buildFlowReportSummary(report, options.lang)
+  );
 }
 
 export function getViewerFlowReportById(
