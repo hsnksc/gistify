@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-07-01T20:31:00Z",
-  "reportDate": "2026-07-01",
+  "generatedAt": "2026-07-02T00:00:00Z",
+  "reportDate": "2026-07-02",
   "title": "US CPI Forecast Snapshot — June 2026 (v3.1 EIA-Validated Methodology)",
   "methodology": "Two-stage aggregation using exact BLS 2024-2025 relative importance weights. Stage 1: component-level forecasts. Stage 2: weighted aggregation. Verification: Food+Energy+Core=100.000% and Shelter+CoreGoods+CoreServices=80.557%. Energy components validated with AAA National Average (EIA API 403). WTI futures NOT used for gasoline CPI per backtest (R²=0.23, MAE=8.1%). Backtest: 15 months weight accuracy MAE 0.035% core, 0.146% headline.",
-  "summary": "June CPI headline +0.1% m/m (consensus +0.2%) on energy deflation. Core +0.2% m/m (consensus +0.2-0.3%). WTI collapsed to ~$68-70 in June (-35% from $107 peak). AAA gas $3.85 (-11% from May avg $4.32). Core PPI printed +0.8% m/m Jun 25 — passthrough risk to core services. Fed dot plot 3.8% = one hike priced for 2026. Warsh hawkish tone limits soft-print reaction. Energy deflation dominates headline; watch core PPI passthrough.",
+  "summary": "June CPI headline +0.1% m/m (consensus +0.2%) on energy deflation. Core +0.2% m/m (consensus +0.2–0.3%). WTI crashed to ~$68–70 in June (-35% from $107 peak). AAA gas $3.83 (-11% from May avg $4.32). Core PPI printed +0.8% m/m Jun 25 — passthrough risk to core services. Fed dot plot 3.8% = one hike priced for 2026. Warsh hawkish tone limits soft-print reaction. Energy deflation dominates headline; watch core PPI passthrough.",
   "baseCase": "Below-consensus headline CPI on energy deflation; core stable at +0.2% but FOMC hawkishness and hot PPI caps market reaction",
   "conviction": 70,
   "weights": {
@@ -37,7 +37,7 @@
     "priorCoreYoY": "2.9%",
     "bias": "BELOW",
     "confidence": 70,
-    "thesis": "WTI crashed from ~$107 to ~$68-70 in June (-35%). AAA gas $3.85 vs May avg $4.32 (-11%). Energy CPI deflation ≈ -2.0% m/m composite. Exact BLS weights: Food 13.25% + Energy 6.19% + Core 80.56%. Core stable (+0.2%) with shelter cooling but services sticky. Core PPI +0.8% m/m Jun 25 = passthrough risk. Fed dot plot 3.8% median = one hike in 2026. Warsh hawkish hold limits soft-CPI market reaction."
+    "thesis": "WTI crashed from ~$107 to ~$68–70 in June (-35%). AAA gas $3.83 vs May avg $4.32 (-11%). Energy CPI deflation ≈ -2.0% m/m composite. Exact BLS weights: Food 13.25% + Energy 6.19% + Core 80.56%. Core stable (+0.2%) with shelter cooling but services sticky. Core PPI +0.8% m/m Jun 25 = passthrough risk. Fed dot plot 3.8% median = one hike in 2026. Warsh hawkish hold limits soft-CPI market reaction."
   },
   "scenarios": [
     {
@@ -45,13 +45,13 @@
       "label": "Base case",
       "probability": 55,
       "outcome": "Headline +0.1% m/m, Core +0.2% m/m — below consensus on oil deflation, core PPI passthrough muted",
-      "marketReadthrough": "10Y yields stable-to-fade (4.40-4.45%), DXY 101-102 range. Airlines (UAL) and homebuilders (DHI) rally on energy/mortgage relief. Tech (NVDA) limited upside due to FOMC hawkishness. Gold (GLD) under pressure from DXY strength.",
+      "marketReadthrough": "10Y yields stable-to-fade (4.40–4.45%), DXY 101–102 range. Airlines ($UAL) and homebuilders ($DHI) rally on energy/mortgage relief. Tech ($NVDA) limited upside due to FOMC hawkishness. Gold ($GLD) under pressure from DXY strength.",
       "favoredAssets": [
-        "UAL",
-        "DHI",
-        "QQQ",
-        "TLT",
-        "GLD_PUT"
+        "$UAL",
+        "$DHI",
+        "$QQQ",
+        "$TLT",
+        "$GLD_PUT"
       ],
       "invalidation": "Core PPI +0.8% passthrough fully realized; core services re-accelerate above +0.30%; Iran deal collapses."
     },
@@ -60,12 +60,12 @@
       "label": "Hotter inflation surprise",
       "probability": 25,
       "outcome": "Headline +0.3% m/m, Core +0.3% m/m — core PPI passthrough, services sticky, oil partial rebound",
-      "marketReadthrough": "10Y yields spike (4.50%+), DXY 102+. Tech (NVDA) and REITs (AMT) selloff. USD long, energy (XLE) short-cover rally. Gold (GLD) squeeze on real-yield uncertainty.",
+      "marketReadthrough": "10Y yields spike (4.50%+), DXY 102+. Tech ($NVDA) and REITs ($AMT) selloff. USD long, energy ($XLE) short-cover rally. Gold ($GLD) squeeze on real-yield uncertainty.",
       "favoredAssets": [
-        "USD",
-        "XLE",
-        "GLD",
-        "SPY_PUT"
+        "$USD",
+        "$XLE",
+        "$GLD",
+        "$SPY_PUT"
       ],
       "invalidation": "Hot print driven by one-off energy component; core services actually stable; PPI passthrough delayed."
     },
@@ -74,13 +74,13 @@
       "label": "Cooler disinflation impulse",
       "probability": 20,
       "outcome": "Headline -0.1% m/m, Core +0.15% m/m — oil collapse fully captured, DXY compression, PPI passthrough absent",
-      "marketReadthrough": "10Y yields drop (4.25-4.35%), DXY 100-101. Growth (QQQ) rallies, airlines (UAL) +10-15%. Homebuilders (DHI) on mortgage relief. Energy (XLE) -5%. TLT duration play.",
+      "marketReadthrough": "10Y yields drop (4.25–4.35%), DXY 100–101. Growth ($QQQ) rallies, airlines ($UAL) +10–15%. Homebuilders ($DHI) on mortgage relief. Energy ($XLE) -5%. TLT duration play.",
       "favoredAssets": [
-        "QQQ",
-        "UAL",
-        "DHI",
-        "AMT",
-        "TLT"
+        "$QQQ",
+        "$UAL",
+        "$DHI",
+        "$AMT",
+        "$TLT"
       ],
       "invalidation": "Market already priced a benign outcome; FOMC hawkish tone prevents rally; PPI passthrough emerges late."
     }
@@ -101,7 +101,7 @@
     {
       "asset": "Airlines — UAL / DAL",
       "bias": "Long — jet fuel collapse + summer demand",
-      "trigger": "WTI $65-72 and CPI headline soft; summer travel bookings strong",
+      "trigger": "WTI $65–72 and CPI headline soft; summer travel bookings strong",
       "invalidation": "Iran deal collapses, WTI above $80, or travel demand disappoints."
     },
     {
@@ -125,13 +125,13 @@
     },
     {
       "label": "10Y UST",
-      "value": "4.465%",
+      "value": "4.48%",
       "note": "Key regime line. Below 4.40% = growth rally. Above 4.55% = risk-off. Oil pulling down, FOMC + PPI pushing up."
     },
     {
       "label": "WTI Oil / Energy Data",
-      "value": "$68.77 (AAA National Average $3.847)",
-      "note": "WTI crashed -35% in June. AAA gas $3.85 (Jul 1) vs $4.32 (May). EIA API 403 — AAA used as primary. BACKTEST WARNING: WTI futures NOT used for gasoline CPI (R²=0.23). Energy weight only 6.193% but gasoline swing is large."
+      "value": "$68.77 (AAA National Average $3.83)",
+      "note": "WTI crashed -35% in June. AAA gas $3.83 (Jul 2) vs $4.32 (May). EIA API 403 — AAA used as primary. BACKTEST WARNING: WTI futures NOT used for gasoline CPI (R²=0.23). Energy weight only 6.193% but gasoline swing is large."
     },
     {
       "label": "Core PPI",
@@ -150,7 +150,7 @@
     }
   ],
   "keyDrivers": [
-    "Oil crash: WTI -35% in June ($107→~$68-70) = gasoline CPI -6% to -8% m/m. AAA national average $3.85 vs May $4.32 (-11%). Energy deflation is the dominant headline driver. EIA API 403 — AAA validated.",
+    "Oil crash: WTI -35% in June ($107→~$68–70) = gasoline CPI -6% to -8% m/m. AAA national average $3.83 vs May $4.32 (-11%). Energy deflation is the dominant headline driver. EIA API 403 — AAA validated.",
     "Core PPI hot: +0.8% m/m Jun 25 (2.7x consensus). Passthrough risk to core CPI with 1-3 month lag. Wholesale services and goods feeding through.",
     "FOMC hawkish hold: Warsh's first meeting. Dot plot 3.8% median = one hike in 2026. PCE forecasts revised up to 3.6%. Limits soft-CPI market reaction.",
     "DXY 101.40: Strong dollar = import deflation on core goods. Partially offsets PPI passthrough. Core goods may see mild deflation.",
