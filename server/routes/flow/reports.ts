@@ -61,27 +61,55 @@ function stripHtml(value: string) {
 }
 
 function translateReport(report: DailyReportRecord, lang: string): DailyReportRecord {
-  if (lang !== "en" || !report.content.translations?.en) {
+  if (lang !== "en") {
     return report;
   }
-  const enHtml = report.content.translations.en;
-  const enTitle = matchFirstGroup(enHtml, [/<title>([^<]+)<\/title>/i]);
-  const enH1Raw = matchFirstGroup(enHtml, [/<h1[^>]*>([\s\S]*?)<\/h1>/i]);
-  const enHeadline = normalizeString(
-    matchFirstGroup(enHtml, [/<meta[^>]*name=["']description["'][^>]*content=["']([^"']+)["']/i]) ||
-    (enH1Raw ? stripHtml(enH1Raw) : "")
-  );
-  return {
-    ...report,
-    title: enTitle || report.title,
-    content: {
-      ...report.content,
-      html: report.content.contentFormat === "html" ? report.content.translations.en : report.content.html,
-      markdown: report.content.contentFormat === "markdown" ? report.content.translations.en : report.content.markdown,
-      headline: enHeadline || report.content.headline,
-      language: "en" as DailyReportLanguage,
-    },
-  };
+
+  if (report.content.translations?.en) {
+    const enHtml = report.content.translations.en;
+    const enTitle = matchFirstGroup(enHtml, [/<title>([^<]+)<\/title>/i]);
+    const enH1Raw = matchFirstGroup(enHtml, [/<h1[^>]*>([\s\S]*?)<\/h1>/i]);
+    const enHeadline = normalizeString(
+      matchFirstGroup(enHtml, [/<meta[^>]*name=["']description["'][^>]*content=["']([^"']+)["']/i]) ||
+      (enH1Raw ? stripHtml(enH1Raw) : "")
+    );
+    return {
+      ...report,
+      title: enTitle || report.title,
+      content: {
+        ...report.content,
+        html: report.content.contentFormat === "html" ? report.content.translations.en : report.content.html,
+        markdown: report.content.contentFormat === "markdown" ? report.content.translations.en : report.content.markdown,
+        headline: enHeadline || report.content.headline,
+        language: "en" as DailyReportLanguage,
+      },
+    };
+  }
+
+  if (report.content.availableLanguages?.includes("en")) {
+    const html = report.content.html || "";
+    const inlineEnH1 = matchFirstGroup(html, [/<h1(?=[^>]*\bdata-lang=["']en["'])[^>]*>([\s\S]*?)<\/h1>/i]);
+    const inlineEnDesc = matchFirstGroup(html, [
+      /<p(?=[^>]*\bdata-lang=["']en["'])(?=[^>]*\bclass=["'][^"']*\bhero-desc\b[^"']*["'])[^>]*>([\s\S]*?)<\/p>/i,
+      /<p(?=[^>]*\bclass=["'][^"']*\bhero-desc\b[^"']*["'])(?=[^>]*\bdata-lang=["']en["'])[^>]*>([\s\S]*?)<\/p>/i,
+    ]);
+    const inlineEnTitle = inlineEnH1 ? stripHtml(inlineEnH1) : "";
+    const inlineEnHeadline = inlineEnDesc ? stripHtml(inlineEnDesc) : "";
+
+    if (inlineEnTitle || inlineEnHeadline) {
+      return {
+        ...report,
+        title: inlineEnTitle || report.title,
+        content: {
+          ...report.content,
+          headline: inlineEnHeadline || report.content.headline,
+          language: "en" as DailyReportLanguage,
+        },
+      };
+    }
+  }
+
+  return report;
 }
 
   router.get("/", (req, res) => {
@@ -93,26 +121,7 @@ function translateReport(report: DailyReportRecord, lang: string): DailyReportRe
       sourceLabel: normalizeString(req.query.source),
     });
 
-    const translatedReports = reports.map(report => {
-      if (lang !== "en" || !report.content.translations?.en) {
-        return report;
-      }
-      const enHtml = report.content.translations.en;
-      const enTitle = matchFirstGroup(enHtml, [/<title>([^<]+)<\/title>/i]);
-      const enH1Raw = matchFirstGroup(enHtml, [/<h1[^>]*>([\s\S]*?)<\/h1>/i]);
-      const enHeadline = normalizeString(
-        matchFirstGroup(enHtml, [/<meta[^>]*name=["']description["'][^>]*content=["']([^"']+)["']/i]) ||
-        (enH1Raw ? stripHtml(enH1Raw) : "")
-      );
-      return {
-        ...report,
-        title: enTitle || report.title,
-        content: {
-          ...report.content,
-          headline: enHeadline || report.content.headline,
-        },
-      };
-    });
+    const translatedReports = reports.map(report => translateReport(report, lang));
 
     const payload: FlowReportsResponse = { reports: translatedReports };
     res.status(200).json(payload);
