@@ -120,28 +120,20 @@ th,td{padding:6px 7px}
 .lang-btn.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
 .lang-btn:hover:not(.active){color:var(--gf-text)}
 
-/* CSS-ONLY BAR CHARTS */
-.css-chart-wrap{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:20px;margin:14px 0}
-.css-chart-title{font-size:0.92rem;font-weight:600;color:var(--gf-text);text-align:center;margin-bottom:14px}
-.css-chart{display:flex;align-items:flex-end;gap:8px;height:240px;padding:0 10px 24px 10px;border-bottom:1px solid var(--gf-border);position:relative}
-.css-chart::before{content:'';position:absolute;left:0;right:0;bottom:24px;height:1px;background:var(--gf-border)}
-.css-chart-bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;position:relative;z-index:1}
-.css-bar-fill{width:100%;border-radius:4px 4px 0 0;min-height:4px;transition:height .3s ease}
-.css-bar-label{font-size:0.72rem;color:var(--gf-muted);text-align:center;white-space:nowrap}
-.css-bar-val{font-size:0.68rem;font-weight:600;color:var(--gf-text);margin-bottom:2px}
-.css-chart-legend{display:flex;justify-content:center;gap:16px;margin-top:12px;font-size:0.78rem;color:var(--gf-muted)}
-.css-chart-legend span{display:flex;align-items:center;gap:5px}
-.css-legend-dot{width:10px;height:10px;border-radius:2px;display:inline-block}
-
-/* Negative bar */
-.css-bar-neg{background:rgba(248,113,113,.5);border:1px solid rgba(248,113,113,.7)}
-.css-bar-pos{background:rgba(74,222,128,.5);border:1px solid rgba(74,222,128,.7)}
-.css-bar-blue{background:rgba(56,189,248,.5);border:1px solid rgba(56,189,248,.7)}
-.css-bar-yellow{background:rgba(251,191,36,.5);border:1px solid rgba(251,191,36,.7)}
-
-/* Grouped bar chart */
-.css-chart-grouped .css-chart-bar{flex-direction:row;align-items:flex-end;gap:2px}
-.css-chart-grouped .css-bar-fill{width:calc(50% - 1px)}
+/* CSS HORIZONTAL BAR CHARTS */
+.hbar-chart{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:20px;margin:14px 0}
+.hbar-title{font-size:0.92rem;font-weight:600;color:var(--gf-text);text-align:center;margin-bottom:16px}
+.hbar-row{display:flex;align-items:center;gap:10px;margin:8px 0;font-size:0.82rem}
+.hbar-label{width:90px;color:var(--gf-muted);text-align:right;flex-shrink:0}
+.hbar-track{flex:1;height:22px;background:var(--gf-elev);border-radius:4px;overflow:hidden;position:relative}
+.hbar-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:0.72rem;font-weight:600;color:#fff;white-space:nowrap}
+.hbar-val{width:70px;color:var(--gf-text);font-weight:600;font-size:0.82rem;flex-shrink:0}
+.hbar-blue{background:linear-gradient(90deg,#0ea5e9,#38bdf8)}
+.hbar-red{background:linear-gradient(90deg,#dc2626,#f87171)}
+.hbar-yellow{background:linear-gradient(90deg,#ca8a04,#fbbf24)}
+.hbar-green{background:linear-gradient(90deg,#16a34a,#4ade80)}
+.hbar-cyan{background:linear-gradient(90deg,#0891b2,#22d3ee)}
+.hbar-purple{background:linear-gradient(90deg,#7c3aed,#a78bfa)}
 </style>
 <script>
 function toggle(id){var el=document.getElementById(id);if(!el)return;el.classList.toggle('collapsed');}
@@ -327,36 +319,28 @@ function setLang(l){
         </div>
       </div>
 
-      <!-- CSS BAR CHART 1: NBIS Q1 2026 -->
-      <div class="css-chart-wrap">
-        <div class="css-chart-title">NBIS Q1 2026: Profitability Illusion Decomposed (Million USD)</div>
-        <div class="css-chart" style="height:200px">
-          <div class="css-chart-bar">
-            <div class="css-bar-val">$399M</div>
-            <div class="css-bar-fill css-bar-blue" style="height:30%"></div>
-            <div class="css-bar-label">Revenue</div>
-          </div>
-          <div class="css-chart-bar">
-            <div class="css-bar-val">-$128M</div>
-            <div class="css-bar-fill css-bar-neg" style="height:10%"></div>
-            <div class="css-bar-label">Op Loss</div>
-          </div>
-          <div class="css-chart-bar">
-            <div class="css-bar-val">$781M</div>
-            <div class="css-bar-fill css-bar-yellow" style="height:60%"></div>
-            <div class="css-bar-label">ClickHouse<br>Reval</div>
-          </div>
-          <div class="css-chart-bar">
-            <div class="css-bar-val">$621M</div>
-            <div class="css-bar-fill css-bar-pos" style="height:48%"></div>
-            <div class="css-bar-label">Net Income</div>
-          </div>
+      <!-- HBAR CHART 1: NBIS Q1 2026 -->
+      <div class="hbar-chart">
+        <div class="hbar-title">NBIS Q1 2026: Profitability Illusion Decomposed (Million USD)</div>
+        <div class="hbar-row">
+          <div class="hbar-label">Revenue</div>
+          <div class="hbar-track"><div class="hbar-fill hbar-blue" style="width:40%">$399M</div></div>
+          <div class="hbar-val">$399M</div>
         </div>
-        <div class="css-chart-legend">
-          <span><span class="css-legend-dot" style="background:#3498db"></span> Revenue</span>
-          <span><span class="css-legend-dot" style="background:rgba(248,113,113,.7)"></span> Op Loss</span>
-          <span><span class="css-legend-dot" style="background:rgba(251,191,36,.7)"></span> ClickHouse Reval</span>
-          <span><span class="css-legend-dot" style="background:rgba(74,222,128,.7)"></span> Net Income</span>
+        <div class="hbar-row">
+          <div class="hbar-label">Op Loss</div>
+          <div class="hbar-track"><div class="hbar-fill hbar-red" style="width:13%">-$128M</div></div>
+          <div class="hbar-val">-$128M</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label">ClickHouse</div>
+          <div class="hbar-track"><div class="hbar-fill hbar-yellow" style="width:78%">$781M</div></div>
+          <div class="hbar-val">$781M</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label">Net Income</div>
+          <div class="hbar-track"><div class="hbar-fill hbar-green" style="width:62%">$621M</div></div>
+          <div class="hbar-val">$621M</div>
         </div>
       </div>
     </div>
@@ -513,26 +497,28 @@ function setLang(l){
         </table>
       </div>
 
-      <!-- CSS BAR CHART 2: CRWV vs NBIS Balance Sheet -->
-      <div class="css-chart-wrap">
-        <div class="css-chart-title">CRWV vs NBIS Balance Sheet Strength (Billion USD)</div>
-        <div class="css-chart css-chart-grouped" style="height:200px">
-          <div class="css-chart-bar">
-            <div class="css-bar-val" style="position:absolute;top:-16px;font-size:0.68rem">$3.32B</div>
-            <div class="css-bar-fill css-bar-blue" style="height:18%"></div>
-            <div class="css-bar-fill css-bar-neg" style="height:90%"></div>
-            <div class="css-bar-label">CRWV</div>
-          </div>
-          <div class="css-chart-bar">
-            <div class="css-bar-val" style="position:absolute;top:-16px;font-size:0.68rem">$9.30B</div>
-            <div class="css-bar-fill css-bar-blue" style="height:50%"></div>
-            <div class="css-bar-fill css-bar-neg" style="height:44%"></div>
-            <div class="css-bar-label">NBIS</div>
-          </div>
+      <!-- HBAR CHART 2: CRWV vs NBIS Balance Sheet -->
+      <div class="hbar-chart">
+        <div class="hbar-title">CRWV vs NBIS Balance Sheet Strength (Billion USD)</div>
+        <div class="hbar-row">
+          <div class="hbar-label">CRWV Cash</div>
+          <div class="hbar-track"><div class="hbar-fill hbar-blue" style="width:17%">$3.32B</div></div>
+          <div class="hbar-val">$3.32B</div>
         </div>
-        <div class="css-chart-legend">
-          <span><span class="css-legend-dot" style="background:rgba(56,189,248,.7)"></span> Cash</span>
-          <span><span class="css-legend-dot" style="background:rgba(248,113,113,.7)"></span> Long-term Debt</span>
+        <div class="hbar-row">
+          <div class="hbar-label">CRWV Debt</div>
+          <div class="hbar-track"><div class="hbar-fill hbar-red" style="width:87%">$17.3B</div></div>
+          <div class="hbar-val">$17.3B</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label">NBIS Cash</div>
+          <div class="hbar-track"><div class="hbar-fill hbar-cyan" style="width:47%">$9.30B</div></div>
+          <div class="hbar-val">$9.30B</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label">NBIS Debt</div>
+          <div class="hbar-track"><div class="hbar-fill hbar-purple" style="width:43%">$8.43B</div></div>
+          <div class="hbar-val">$8.43B</div>
         </div>
       </div>
     </div>
