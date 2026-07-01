@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Küresel Teknoloji Piyasaları | $AAPL</title>
+<style>
+/* GISTIFY FLOW — Unified Dark Theme */
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:720px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.hero-date{display:inline-flex;align-items:center;gap:5px;color:var(--gf-muted)}
+
+/* META PILLS */
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+
+/* SECTIONS */
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s;display:flex;align-items:center;justify-content:space-between}
+.section-head-inner:hover{background:var(--gf-card)}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent);transition:transform .2s}
+.section-head.collapsed .icon{transform:rotate(-90deg)}
+.section-body{padding:18px;display:none}
+.section-head:not(.collapsed) .section-body{display:block}
+
+/* GRID & CARDS */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px;transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-1px);border-color:rgba(56,189,248,.25)}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+
+/* TABS */
+.tabs{display:flex;gap:2px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:14px}
+.tab{flex:1;padding:8px 10px;text-align:center;font-size:0.82rem;font-weight:600;border-radius:6px;cursor:pointer;user-select:none;transition:background .15s,color .15s;border:none;color:var(--gf-muted);background:transparent}
+.tab.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.tab:hover:not(.active){color:var(--gf-text)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.text-right{text-align:right}
+.text-center{text-align:center}
+
+/* PROGRESS */
+.progress-bar{background:var(--gf-card);border-radius:4px;height:18px;overflow:hidden;margin:4px 0}
+.progress-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:0.68rem;font-weight:700;color:#fff}
+.fill-bull{background:linear-gradient(90deg,#16a34a,#4ade80)}
+.fill-base{background:linear-gradient(90deg,#ca8a04,#fbbf24)}
+.fill-bear{background:linear-gradient(90deg,#dc2626,#f87171)}
+
+/* INSIGHT BOX */
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+
+/* TAGS */
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--gf-border)}
+.timeline-item{position:relative;margin-bottom:14px}
+.timeline-item::before{content:'';position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--gf-card);border:2px solid var(--gf-border)}
+.timeline-item.bull::before{border-color:var(--gf-success);background:var(--gf-success)}
+.timeline-item.bear::before{border-color:var(--gf-danger);background:var(--gf-danger)}
+.timeline-item.warn::before{border-color:var(--gf-warning);background:var(--gf-warning)}
+.timeline-date{font-size:0.78rem;color:var(--gf-muted);font-weight:600}
+.timeline-body{font-size:0.85rem;margin-top:3px;color:var(--gf-text)}
+
+/* HEATMAP */
+.heatmap{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;font-size:0.72rem;margin:10px 0}
+.heatmap-cell{padding:6px 2px;text-align:center;border-radius:4px;min-height:36px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.heatmap-cell .day{font-weight:700;font-size:0.78rem}
+.heatmap-cell .val{font-size:0.68rem;opacity:.85}
+.h-strong{background:rgba(74,222,128,.35);color:#aff5b4}
+.h-weak{background:rgba(248,113,113,.35);color:#ffdcd7}
+.h-neu{background:rgba(251,191,36,.2);color:#ffdfb6}
+.h-flat{background:rgba(148,163,184,.15);color:var(--gf-muted)}
+.h-good{background:rgba(74,222,128,.2);color:#aff5b4}
+
+/* FOOTER */
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+.tabs{flex-wrap:wrap}
+.tab{flex:none;min-width:80px}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+}
+
+/* LANG SWITCH */
+.lang-switch{display:inline-flex;gap:4px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:16px}
+.lang-btn{padding:6px 14px;border-radius:8px;font-size:0.8rem;font-weight:600;border:none;cursor:pointer;background:transparent;color:var(--gf-muted);transition:all .15s}
+.lang-btn.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.lang-btn:hover:not(.active){color:var(--gf-text)}
+[data-lang]{display:none}
+[data-lang].visible{display:block}
+[data-lang-inline]{display:none}
+[data-lang-inline].visible{display:inline}
+
+/* Inline paragraphs within blocks */
+.block-tr, .block-en { display: none; }
+.block-tr.visible, .block-en.visible { display: block; }
+</style>
+<script>
+function toggle(id){var el=document.getElementById(id);if(!el)return;el.classList.toggle('collapsed');}
+function setTab(btn,tabId){var parent=btn.closest('.tabs');if(parent){parent.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});parent.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});}btn.classList.add('active');var tc=document.getElementById(tabId);if(tc)tc.classList.add('active');}
+function setLang(lang){
+  document.querySelectorAll('.lang-btn').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.lang-btn[data-lang-btn="'+lang+'"]').forEach(function(b){b.classList.add('active');});
+  document.querySelectorAll('[data-lang]').forEach(function(el){el.classList.remove('visible');});
+  document.querySelectorAll('[data-lang="'+lang+'"]').forEach(function(el){el.classList.add('visible');});
+  document.querySelectorAll('[data-lang-inline]').forEach(function(el){el.classList.remove('visible');});
+  document.querySelectorAll('[data-lang-inline="'+lang+'"]').forEach(function(el){el.classList.add('visible');});
+}
+</script>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HERO -->
+<div class="hero" id="hero">
+  <h1 class="hero-h" data-lang="tr" data-lang-inline="tr">Küresel Teknoloji Piyasaları</h1>
+  <h1 class="hero-h" data-lang="en" data-lang-inline="en">Global Technology Markets</h1>
+  <p class="hero-desc" data-lang="tr">Apple ekosistemindeki yapısal dönüşüm, yarı iletken krizi ve momentum trade fırsatları — 1 Temmuz 2026</p>
+  <p class="hero-desc" data-lang="en">Structural transformation in the Apple ecosystem, semiconductor crisis, and momentum trading opportunities — July 1, 2026</p>
+  <div class="hero-meta">
+    <span class="meta-pill info">📅 1 Temmuz 2026</span>
+    <span class="meta-pill bull">$AAPL</span>
+    <span class="meta-pill neu">Semiconductor</span>
+    <span class="meta-pill bear">Memflation</span>
+  </div>
+</div>
+
+<!-- LANG SWITCHER -->
+<div class="lang-switch">
+  <button class="lang-btn active" data-lang-btn="tr" onclick="setLang('tr')">🇹🇷 TR</button>
+  <button class="lang-btn" data-lang-btn="en" onclick="setLang('en')">🇬🇧 EN</button>
+</div>
+
+<!-- BÖLÜM 2: Yönetici Özeti -->
+<section>
+  <div class="section-head" id="sec-ozet">
+    <h2 class="section-title">📊 <span data-lang="tr">Yönetici Özeti</span><span data-lang="en">Executive Summary</span></h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    <div data-lang="tr">
+      <div class="insight-box bull">
+        <strong>Bull Thesis:</strong> Apple Q2 FY2026'da $111.2B gelir (+17.1% YoY) ve $2.01 EPS (+21.8% YoY) açıkladı. iPhone geliri %21.7 artışla $57.0B'ye ulaştı. Services $31.0B (+16.2%) ile rekor kırdı. Çin pazarı %28.1 büyüme gösterdi ($22.4B). $100B yeni share buyback yetkilendirmesi ve $0.27 temettü artışı hissedar dostu politikayı güçlendiriyor.
+      </div>
+      <div class="insight-box warn">
+        <strong>Memflation Risk:</strong> TrendForce verilerine göre Q1 2026 DRAM kontrat fiyatları %55-60 QoQ, Q2 2026'da %58-63 QoQ arttı. NAND Flash Q2'de %70-75 QoQ sıçradı. Apple Haziran 2026'da global fiyat artışlarına gitti: MacBook Neo $599→$699, MacBook Pro 14" $1,699→$1,999, Mac Studio M3 Ultra $3,999→$5,299. Bellek ve depolama çip kıtlığı ("memflation") fiyatlamayı baskılıyor.
+      </div>
+      <div class="insight-box">
+        <strong>Yapısal Dönüşüm:</strong> Tim Cook 1 Eylül 2026'da CEO koltuğunu John Ternus'a devrediyor. Cook Executive Chairman olarak kalacak. Johny Srouji Chief Hardware Officer olacak. M5 Ultra Mac Studio 2026 sonbaharında (Fusion Architecture, 600+ GB/s bant genişliği) geliyor. macOS 27 Golden Gate, ilk Apple Silicon-only macOS olarak WWDC 2026'da duyuruldu.
+      </div>
+      <div class="insight-box danger">
+        <strong>Opsiyon Stratejisi Notu:</strong> AAPL momentum trade'leri için IV Crush riski yüksek. Earnings sonrası volatilite contraction gözlemlendi. 0DTE/haftalık stratejilerde VWAP oversold bounces ve gap fade setups takip edilmeli. Momentum pozisyonlarında minimum 2x getiri potansiyeli aranmalı.
+      </div>
+    </div>
+    <div data-lang="en">
+      <div class="insight-box bull">
+        <strong>Bull Thesis:</strong> Apple reported Q2 FY2026 revenue of $111.2B (+17.1% YoY) and EPS of $2.01 (+21.8% YoY). iPhone revenue surged 21.7% to $57.0B. Services hit a record $31.0B (+16.2%). China grew 28.1% to $22.4B. A new $100B share buyback authorization and $0.27 dividend hike reinforce shareholder-friendly policy.
+      </div>
+      <div class="insight-box warn">
+        <strong>Memflation Risk:</strong> Per TrendForce, Q1 2026 DRAM contract prices rose 55-60% QoQ, with Q2 2026 up 58-63% QoQ. NAND Flash jumped 70-75% QoQ in Q2. Apple enacted global price hikes in June 2026: MacBook Neo $599→$699, MacBook Pro 14" $1,699→$1,999, Mac Studio M3 Ultra $3,999→$5,299. Memory and storage chip scarcity ("memflation") is pressuring pricing.
+      </div>
+      <div class="insight-box">
+        <strong>Structural Transformation:</strong> Tim Cook hands over CEO role to John Ternus on September 1, 2026. Cook remains Executive Chairman. Johny Srouji becomes Chief Hardware Officer. M5 Ultra Mac Studio arrives in Fall 2026 (Fusion Architecture, 600+ GB/s bandwidth). macOS 27 Golden Gate, the first Apple Silicon-only macOS, was announced at WWDC 2026.
+      </div>
+      <div class="insight-box danger">
+        <strong>Options Strategy Note:</strong> AAPL momentum trades carry elevated IV Crush risk. Post-earnings volatility contraction observed. Monitor VWAP oversold bounces and gap fade setups for 0DTE/weekly strategies. Seek minimum 2x return potential in momentum positions.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 3: Yarı İletken Krizi & Memflation -->
+<section>
+  <div class="section-head" id="sec-memflation">
+    <h2 class="section-title">⚡ <span data-lang="tr">Yarı İletken Krizi &amp; Memflation</span><span data-lang="en">Semiconductor Crisis &amp; Memflation</span></h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    <div data-lang="tr">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">DRAM Kontrat Q1 2026</div>
+          <div class="card-value up">+55-60%</div>
+          <div class="card-note">QoQ artış (TrendForce)</div>
+        </div>
+        <div class="card">
+          <div class="card-label">DRAM Kontrat Q2 2026</div>
+          <div class="card-value up">+58-63%</div>
+          <div class="card-note">QoQ artış (TrendForce)</div>
+        </div>
+        <div class="card">
+          <div class="card-label">NAND Flash Q2 2026</div>
+          <div class="card-value up">+70-75%</div>
+          <div class="card-note">QoQ artış (TrendForce)</div>
+        </div>
+        <div class="card">
+          <div class="card-label">DDR5 Spot</div>
+          <div class="card-value up">+47%</div>
+          <div class="card-note">YoY artış</div>
+        </div>
+        <div class="card">
+          <div class="card-label">HBM3E Durumu</div>
+          <div class="card-value neu">Sold Out</div>
+          <div class="card-note">Q1 2027'ye kadar tükendi</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Fabrika Kaydırması</div>
+          <div class="card-value down">HBM/Server</div>
+          <div class="card-note">Tüketici DRAM/NAND'a kaynak azaldı</div>
+        </div>
+      </div>
+      <div class="insight-box warn">
+        <strong>Memflation:</strong> TrendForce resmi verilerine göre DRAM ve NAND fiyatları tarihi seviyelerde. Fabrikalar üretimi HBM (AI sunucu talebi) ve server DRAM'a kaydırıyor. Tüketici segmentinde (PC, mobil) bellek ve depolama kıtlığı derinleşiyor. Apple'ın Haziran 2026 global zamı bu baskının doğrudan sonucu.
+      </div>
+      <h3 style="margin:16px 0 8px;font-size:1rem;color:var(--gf-text);">Apple Global Fiyat Artışları (Haziran 2026)</h3>
+      <table>
+        <thead><tr><th>Ürün</th><th>Eski Fiyat</th><th>Yeni Fiyat</th><th class="text-right">Artış</th></tr></thead>
+        <tbody>
+          <tr><td>MacBook Neo</td><td>$599</td><td>$699</td><td class="text-right">+$100</td></tr>
+          <tr><td>MacBook Air 13"</td><td>$1,099</td><td>$1,299</td><td class="text-right">+$200</td></tr>
+          <tr><td>MacBook Air 15"</td><td>$1,299</td><td>$1,499</td><td class="text-right">+$200</td></tr>
+          <tr><td>MacBook Pro 14"</td><td>$1,699</td><td>$1,999</td><td class="text-right">+$300</td></tr>
+          <tr><td>MacBook Pro 16"</td><td>$2,699</td><td>$2,999</td><td class="text-right">+$300</td></tr>
+          <tr><td>iMac</td><td>$1,299</td><td>$1,499</td><td class="text-right">+$200</td></tr>
+          <tr><td>Mac Studio M4</td><td>$1,999</td><td>$2,499</td><td class="text-right">+$500</td></tr>
+          <tr><td>Mac Studio M3 Ultra</td><td>$3,999</td><td>$5,299</td><td class="text-right">+$1,300</td></tr>
+          <tr><td>iPad Pro 11"</td><td>$999</td><td>$1,199</td><td class="text-right">+$200</td></tr>
+          <tr><td>iPad Air 11"</td><td>$599</td><td>$749</td><td class="text-right">+$150</td></tr>
+          <tr><td>Vision Pro</td><td>$3,499</td><td>$3,699</td><td class="text-right">+$200</td></tr>
+        </tbody>
+      </table>
+      <div class="insight-box danger">
+        <strong>İşlemci Notu:</strong> M3 Ultra Mac Studio $1,300 zamla en agresif artışı gördü. UltraFusion mimarisi ve yüksek bellek bant genişliği talebi, HBM benzeri bellek kıtlığına karşı en savunmasız segment. M5 Ultra (2026 sonbaharı) Fusion Architecture ile 600+ GB/s bant genişliği sunacak — bu da bellek maliyetlerini daha da baskılayabilir.
+      </div>
+    </div>
+    <div data-lang="en">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">DRAM Contract Q1 2026</div>
+          <div class="card-value up">+55-60%</div>
+          <div class="card-note">QoQ increase (TrendForce)</div>
+        </div>
+        <div class="card">
+          <div class="card-label">DRAM Contract Q2 2026</div>
+          <div class="card-value up">+58-63%</div>
+          <div class="card-note">QoQ increase (TrendForce)</div>
+        </div>
+        <div class="card">
+          <div class="card-label">NAND Flash Q2 2026</div>
+          <div class="card-value up">+70-75%</div>
+          <div class="card-note">QoQ increase (TrendForce)</div>
+        </div>
+        <div class="card">
+          <div class="card-label">DDR5 Spot</div>
+          <div class="card-value up">+47%</div>
+          <div class="card-note">YoY increase</div>
+        </div>
+        <div class="card">
+          <div class="card-label">HBM3E Status</div>
+          <div class="card-value neu">Sold Out</div>
+          <div class="card-note">Through Q1 2027</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Fab Shift</div>
+          <div class="card-value down">HBM/Server</div>
+          <div class="card-note">Consumer DRAM/NAND supply reduced</div>
+        </div>
+      </div>
+      <div class="insight-box warn">
+        <strong>Memflation:</strong> Per official TrendForce data, DRAM and NAND prices are at historic levels. Fabs are shifting production to HBM (AI server demand) and server DRAM. Consumer segment (PC, mobile) memory and storage scarcity is deepening. Apple's June 2026 global price hike is a direct consequence of this pressure.
+      </div>
+      <h3 style="margin:16px 0 8px;font-size:1rem;color:var(--gf-text);">Apple Global Price Hikes (June 2026)</h3>
+      <table>
+        <thead><tr><th>Product</th><th>Old Price</th><th>New Price</th><th class="text-right">Increase</th></tr></thead>
+        <tbody>
+          <tr><td>MacBook Neo</td><td>$599</td><td>$699</td><td class="text-right">+$100</td></tr>
+          <tr><td>MacBook Air 13"</td><td>$1,099</td><td>$1,299</td><td class="text-right">+$200</td></tr>
+          <tr><td>MacBook Air 15"</td><td>$1,299</td><td>$1,499</td><td class="text-right">+$200</td></tr>
+          <tr><td>MacBook Pro 14"</td><td>$1,699</td><td>$1,999</td><td class="text-right">+$300</td></tr>
+          <tr><td>MacBook Pro 16"</td><td>$2,699</td><td>$2,999</td><td class="text-right">+$300</td></tr>
+          <tr><td>iMac</td><td>$1,299</td><td>$1,499</td><td class="text-right">+$200</td></tr>
+          <tr><td>Mac Studio M4</td><td>$1,999</td><td>$2,499</td><td class="text-right">+$500</td></tr>
+          <tr><td>Mac Studio M3 Ultra</td><td>$3,999</td><td>$5,299</td><td class="text-right">+$1,300</td></tr>
+          <tr><td>iPad Pro 11"</td><td>$999</td><td>$1,199</td><td class="text-right">+$200</td></tr>
+          <tr><td>iPad Air 11"</td><td>$599</td><td>$749</td><td class="text-right">+$150</td></tr>
+          <tr><td>Vision Pro</td><td>$3,499</td><td>$3,699</td><td class="text-right">+$200</td></tr>
+        </tbody>
+      </table>
+      <div class="insight-box danger">
+        <strong>Processor Note:</strong> M3 Ultra Mac Studio saw the most aggressive hike at $1,300. The UltraFusion architecture and high memory bandwidth demand make it the most vulnerable segment to HBM-like memory scarcity. M5 Ultra (Fall 2026) will deliver 600+ GB/s bandwidth via Fusion Architecture — potentially further pressuring memory costs.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 4: PC & Workstation Pazarları -->
+<section>
+  <div class="section-head" id="sec-pc">
+    <h2 class="section-title">💻 <span data-lang="tr">PC &amp; Workstation Pazarları</span><span data-lang="en">PC &amp; Workstation Markets</span></h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    <div data-lang="tr">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Lenovo Pazar Payı</div>
+          <div class="card-value neu">~26-27%</div>
+          <div class="card-note">Global PC lideri</div>
+        </div>
+        <div class="card">
+          <div class="card-label">HP Pazar Payı</div>
+          <div class="card-value neu">~19-21%</div>
+          <div class="card-note">İkinci sıra</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Dell Pazar Payı</div>
+          <div class="card-value neu">~16%</div>
+          <div class="card-note">Üçüncü sıra</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Apple Pazar Payı</div>
+          <div class="card-value up">~10-11%</div>
+          <div class="card-note">En hızlı büyüyen (Gartner/IDC)</div>
+        </div>
+      </div>
+      <div class="insight-box">
+        <strong>Gartner Q1 2026:</strong> PC pazarında yaklaşık %4 büyüme gözlendi. Ancak bu artışın ne ölçüde envanter doldurma (inventory restocking) kaynaklı olduğu kesin değil; muhtemel bir etki olarak değerlendirilmeli.
+      </div>
+      <div class="insight-box warn">
+        <strong>IDC Tahmin:</strong> PCD (PC + Tablet) pazarı için 401.9 milyon ünite iddiası doğrudan kaynaklanamadı. IDC'nin genel pazar tahminleri çerçevesinde değerlendirilmeli.
+      </div>
+      <h3 style="margin:16px 0 8px;font-size:1rem;color:var(--gf-text);">Workstation Pazar Trendleri</h3>
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem;">Workstation pazarı CAGR %5.6-9.2 aralığında büyüme öngörüsüne sahip. Kompakt form faktör (CFF) segmenti ivme kazanıyor.</p>
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">HP Z2 Mini</div>
+          <div class="card-value">CFF</div>
+          <div class="card-note">Kompakt workstation lideri</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Dell Precision 3280 Compact</div>
+          <div class="card-value">CFF</div>
+          <div class="card-note">Mühendislik odaklı</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Lenovo ThinkStation P3 Tiny</div>
+          <div class="card-value">CFF</div>
+          <div class="card-note">Kurumsal tercihi</div>
+        </div>
+      </div>
+      <div class="insight-box bull">
+        <strong>Apple Fırsatı:</strong> MacBook Neo $599→$699 zamına rağmen, eğitim fiyatı $499 ile PC pazarında fiyat/performans rekabeti sürdürüyor. Fanless tasarım, 16 saat pil ve A18 Pro chip, mobil workstation alternatifi olarak pozisyonlanıyor.
+      </div>
+    </div>
+    <div data-lang="en">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Lenovo Market Share</div>
+          <div class="card-value neu">~26-27%</div>
+          <div class="card-note">Global PC leader</div>
+        </div>
+        <div class="card">
+          <div class="card-label">HP Market Share</div>
+          <div class="card-value neu">~19-21%</div>
+          <div class="card-note">Second place</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Dell Market Share</div>
+          <div class="card-value neu">~16%</div>
+          <div class="card-note">Third place</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Apple Market Share</div>
+          <div class="card-value up">~10-11%</div>
+          <div class="card-note">Fastest growing (Gartner/IDC)</div>
+        </div>
+      </div>
+      <div class="insight-box">
+        <strong>Gartner Q1 2026:</strong> Approximately 4% growth observed in the PC market. However, the extent to which this increase stems from inventory restocking is uncertain; it should be treated as a probable factor.
+      </div>
+      <div class="insight-box warn">
+        <strong>IDC Estimate:</strong> The claim of 401.9 million units for PCD (PC + Tablet) market could not be directly sourced. It should be evaluated within IDC's general market forecast framework.
+      </div>
+      <h3 style="margin:16px 0 8px;font-size:1rem;color:var(--gf-text);">Workstation Market Trends</h3>
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem;">Workstation market carries a CAGR growth forecast of 5.6-9.2%. The Compact Form Factor (CFF) segment is gaining momentum.</p>
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">HP Z2 Mini</div>
+          <div class="card-value">CFF</div>
+          <div class="card-note">Compact workstation leader</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Dell Precision 3280 Compact</div>
+          <div class="card-value">CFF</div>
+          <div class="card-note">Engineering-focused</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Lenovo ThinkStation P3 Tiny</div>
+          <div class="card-value">CFF</div>
+          <div class="card-note">Enterprise preference</div>
+        </div>
+      </div>
+      <div class="insight-box bull">
+        <strong>Apple Opportunity:</strong> Despite the MacBook Neo $599→$699 hike, the $499 education price maintains price/performance competitiveness in the PC market. Fanless design, 16-hour battery, and A18 Pro chip position it as a mobile workstation alternative.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 5: Apple Donanım Yol Haritası 2026-2028 -->
+<section>
+  <div class="section-head" id="sec-yolharitasi">
+    <h2 class="section-title">🗺️ <span data-lang="tr">Apple Donanım Yol Haritası 2026-2028</span><span data-lang="en">Apple Hardware Roadmap 2026-2028</span></h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    <div data-lang="tr">
+      <div class="timeline">
+        <div class="timeline-item bull">
+          <div class="timeline-date">4 Mart 2026</div>
+          <div class="timeline-body">MacBook Neo duyuruldu: $599 (eğitim $499), A18 Pro (6 CPU, 5 GPU, 16 Neural Engine), 13" Liquid Retina, 8GB RAM, 256/512GB SSD, 16 saat pil, fanless.</div>
+        </div>
+        <div class="timeline-item warn">
+          <div class="timeline-date">Haziran 2026</div>
+          <div class="timeline-body">MacBook Neo $599→$699 zamlandı. Global zam tüm Mac ve iPad line-up'ını etkiledi. Sebep: bellek ve depolama çip kıtlığı ("memflation").</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">8 Haziran 2026 (WWDC)</div>
+          <div class="timeline-body">macOS 27 Golden Gate duyuruldu. İlk Apple Silicon-only macOS (Intel desteği kalktı). Liquid Glass iyileştirmeleri, Siri AI, Search/Indexing rebuild.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Eylül 2026</div>
+          <div class="timeline-body">iPhone 18 Pro / A20 Pro lansmanı. 2nm TSMC, %15 daha hızlı, %30 daha verimli, 12GB RAM, C2 5G modem (mmWave + satellite), Variable aperture f/1.4-f/2.8 (48MP), Dark Cherry renk, Smaller Dynamic Island.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">1 Eylül 2026</div>
+          <div class="timeline-body">John Ternus CEO devri. Tim Cook Executive Chairman. Johny Srouji Chief Hardware Officer.</div>
+        </div>
+        <div class="timeline-item bull">
+          <div class="timeline-date">Ekim 2026</div>
+          <div class="timeline-body">M5 Ultra Mac Studio. Fusion Architecture, 600+ GB/s bellek bant genişliği, termal redesign. M4 Ultra atlandı; M5 Ultra geliyor.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">2027 Baharı</div>
+          <div class="timeline-body">Standart iPhone 18 / iPhone 18e lansmanı (Split launch stratejisi).</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">2028</div>
+          <div class="timeline-body">M7 Ultra bekleniyor. Kasa redesign ( chassis redesign) planlanıyor.</div>
+        </div>
+      </div>
+      <div class="insight-box warn">
+        <strong>Düzeltme:</strong> "Mac Studio RAM 512GB→96GB düşürme" iddiası doğrulanamadı. Üretim kısıtları nedeniyle bazı konfigürasyonlarda gecikmeler yaşanıyor olabilir. "M6 Ultra pas geçilecek" iddiası belirsiz kaynaklıdır. M4 Ultra atlandı, M5 Ultra geliyor. M7 Ultra 2028'de kasa redesign ile bekleniyor.
+      </div>
+    </div>
+    <div data-lang="en">
+      <div class="timeline">
+        <div class="timeline-item bull">
+          <div class="timeline-date">March 4, 2026</div>
+          <div class="timeline-body">MacBook Neo announced: $599 (education $499), A18 Pro (6 CPU, 5 GPU, 16 Neural Engine), 13" Liquid Retina, 8GB RAM, 256/512GB SSD, 16-hour battery, fanless.</div>
+        </div>
+        <div class="timeline-item warn">
+          <div class="timeline-date">June 2026</div>
+          <div class="timeline-body">MacBook Neo hiked $599→$699. Global price increase affected entire Mac and iPad line-up. Cause: memory and storage chip scarcity ("memflation").</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">June 8, 2026 (WWDC)</div>
+          <div class="timeline-body">macOS 27 Golden Gate announced. First Apple Silicon-only macOS (Intel support dropped). Liquid Glass improvements, Siri AI, Search/Indexing rebuild.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">September 2026</div>
+          <div class="timeline-body">iPhone 18 Pro / A20 Pro launch. 2nm TSMC, 15% faster, 30% more efficient, 12GB RAM, C2 5G modem (mmWave + satellite), Variable aperture f/1.4-f/2.8 (48MP), Dark Cherry color, Smaller Dynamic Island.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">September 1, 2026</div>
+          <div class="timeline-body">John Ternus CEO transition. Tim Cook becomes Executive Chairman. Johny Srouji Chief Hardware Officer.</div>
+        </div>
+        <div class="timeline-item bull">
+          <div class="timeline-date">October 2026</div>
+          <div class="timeline-body">M5 Ultra Mac Studio. Fusion Architecture, 600+ GB/s memory bandwidth, thermal redesign. M4 Ultra skipped; M5 Ultra arrives.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Spring 2027</div>
+          <div class="timeline-body">Standard iPhone 18 / iPhone 18e launch (Split launch strategy).</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">2028</div>
+          <div class="timeline-body">M7 Ultra expected. Chassis redesign planned.</div>
+        </div>
+      </div>
+      <div class="insight-box warn">
+        <strong>Correction:</strong> The claim that "Mac Studio RAM was reduced from 512GB to 96GB" could not be verified. Delays in some configurations due to production constraints may be occurring. The claim that "M6 Ultra will be skipped" is from uncertain sources. M4 Ultra was skipped; M5 Ultra is coming. M7 Ultra is expected in 2028 with a chassis redesign.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 6: Yazılım Ekosistemi -->
+<section>
+  <div class="section-head" id="sec-yazilim">
+    <h2 class="section-title">🧠 <span data-lang="tr">Yazılım Ekosistemi: macOS 27, Apple Intelligence, Türkçe</span><span data-lang="en">Software Ecosystem: macOS 27, Apple Intelligence, Turkish</span></h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    <div data-lang="tr">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">macOS 27 Golden Gate</div>
+          <div class="card-value">Apple Silicon-Only</div>
+          <div class="card-note">Intel desteği kalktı</div>
+        </div>
+        <div class="card">
+          <div class="card-label">WWDC 2026</div>
+          <div class="card-value">8 Haziran</div>
+          <div class="card-note">Developer beta başladı</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Public Beta</div>
+          <div class="card-value">Temmuz 2026</div>
+          <div class="card-note">Şu anda devam ediyor</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Final Release</div>
+          <div class="card-value">Eylül 2026</div>
+          <div class="card-note">iPhone 18 Pro ile eşzamanlı</div>
+        </div>
+      </div>
+      <h3 style="margin:16px 0 8px;font-size:1rem;color:var(--gf-text);">Apple Intelligence &amp; Siri AI</h3>
+      <div class="insight-box">
+        <strong>WWDC 2026 Duyuruları:</strong> Apple Intelligence ve Siri AI WWDC 2026'da tanıtıldı. Google Gemini entegrasyonu (Private Cloud Compute üzerinden) yapıldı. Yerel işleme (on-device) öncelikli model. Writing Tools, Genmoji, Clean Up, Image Wand özellikleri aktif. Siri AI standalone uygulama olarak sunuluyor.
+      </div>
+      <div class="insight-box bull">
+        <strong>Türkçe Destek:</strong> Apple Intelligence ve Siri AI, iOS 27/macOS 27 ile sonbahar 2026'da Türkçe dil desteği kazanacak. Türkiye premium segmentte inelastik talep gösteriyor; bu entegrasyon kullanıcı deneyimini derinleştirecek.
+      </div>
+      <div class="insight-box warn">
+        <strong>Entegrasyon Notu:</strong> Private Cloud Compute, hassas verilerin Apple sunucularında şifreli işlenmesini sağlıyor. Google Gemini entegrasyonu sadece bulut tabanlı sorgularda devreye giriyor; yerel işleme öncelikli mimari gizlilik vaadini koruyor.
+      </div>
+    </div>
+    <div data-lang="en">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">macOS 27 Golden Gate</div>
+          <div class="card-value">Apple Silicon-Only</div>
+          <div class="card-note">Intel support dropped</div>
+        </div>
+        <div class="card">
+          <div class="card-label">WWDC 2026</div>
+          <div class="card-value">June 8</div>
+          <div class="card-note">Developer beta launched</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Public Beta</div>
+          <div class="card-value">July 2026</div>
+          <div class="card-note">Currently ongoing</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Final Release</div>
+          <div class="card-value">September 2026</div>
+          <div class="card-note">Aligned with iPhone 18 Pro</div>
+        </div>
+      </div>
+      <h3 style="margin:16px 0 8px;font-size:1rem;color:var(--gf-text);">Apple Intelligence &amp; Siri AI</h3>
+      <div class="insight-box">
+        <strong>WWDC 2026 Announcements:</strong> Apple Intelligence and Siri AI were introduced at WWDC 2026. Google Gemini integration (via Private Cloud Compute) was implemented. On-device processing remains the priority model. Writing Tools, Genmoji, Clean Up, and Image Wand features are active. Siri AI is offered as a standalone app.
+      </div>
+      <div class="insight-box bull">
+        <strong>Turkish Support:</strong> Apple Intelligence and Siri AI will gain Turkish language support in Fall 2026 with iOS 27/macOS 27. Turkey shows inelastic demand in the premium segment; this integration will deepen the user experience.
+      </div>
+      <div class="insight-box warn">
+        <strong>Integration Note:</strong> Private Cloud Compute ensures sensitive data is processed encrypted on Apple servers. Google Gemini integration only activates for cloud-based queries; the on-device processing priority model preserves the privacy promise.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 7: Apple Finansal Analizi & AAPL -->
+<section>
+  <div class="section-head" id="sec-finansal">
+    <h2 class="section-title">📈 <span data-lang="tr">Apple Finansal Analizi &amp; AAPL</span><span data-lang="en">Apple Financial Analysis &amp; AAPL</span></h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    <div data-lang="tr">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Q2 FY2026 Gelir</div>
+          <div class="card-value up">$111.2B</div>
+          <div class="card-note">+17.1% YoY</div>
+        </div>
+        <div class="card">
+          <div class="card-label">EPS</div>
+          <div class="card-value up">$2.01</div>
+          <div class="card-note">+21.8% YoY</div>
+        </div>
+        <div class="card">
+          <div class="card-label">iPhone Geliri</div>
+          <div class="card-value up">$57.0B</div>
+          <div class="card-note">+21.7% YoY</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Services Geliri</div>
+          <div class="card-value up">$31.0B</div>
+          <div class="card-note">+16.2% YoY</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Mac Geliri</div>
+          <div class="card-value up">$8.4B</div>
+          <div class="card-note">+6% YoY</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Gross Margin</div>
+          <div class="card-value up">49.3%</div>
+          <div class="card-note">+220 bps</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Çin Geliri</div>
+          <div class="card-value up">$22.4B</div>
+          <div class="card-note">+28.1% YoY</div>
+        </div>
+        <div class="card">
+          <div class="card-label">İşletme Nakit Akışı</div>
+          <div class="card-value">$28.7B</div>
+          <div class="card-note">Güçlü cash generation</div>
+        </div>
+      </div>
+      <div class="insight-box bull">
+        <strong>Hissedar Dostu Adımlar:</strong> $100B yeni share buyback yetkilendirmesi ve $0.27 temettü (önceki $0.26) artışı, Apple'ın capital return programını güçlendiriyor. Services $31.0B ile rekor kırarak yüksek marjlı, tekrarlayan gelir akışını kanıtlıyor. Gross Margin 49.3% (+220 bps) ürün mix ve Services ağırlığının etkisini gösteriyor.
+      </div>
+      <div class="insight-box warn">
+        <strong>Opsiyon Trader Notu:</strong> AAPL Q2 earnings sonrası IV Crush gözlendi. Momentum stratejilerde (VWAP, mean reversion, gap fade) 0DTE/haftalık opsiyonlarda dikkatli olun. Earnings cycle dışında, teknik seviyelerden dönüşleri (VWAP -2s oversold bounce) takip edin. Temmuz sezonselliği genelde pozitif, ancak "memflation" fiyat artışları tüketici talebini baskılayabilir.
+      </div>
+      <div class="insight-box danger">
+        <strong>Risk:</strong> Çin %28.1 büyüme gösterse de jeopolitik riskler ve yerel regülasyonlar (APP Store, WeChat Pay entegrasyonu) operasyonel risk oluşturuyor. Ayrıca memflation kaynaklı fiyat artışları, tüketici talebini (özellikle gelişmekte olan pazarlarda) baskılayabilir.
+      </div>
+    </div>
+    <div data-lang="en">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Q2 FY2026 Revenue</div>
+          <div class="card-value up">$111.2B</div>
+          <div class="card-note">+17.1% YoY</div>
+        </div>
+        <div class="card">
+          <div class="card-label">EPS</div>
+          <div class="card-value up">$2.01</div>
+          <div class="card-note">+21.8% YoY</div>
+        </div>
+        <div class="card">
+          <div class="card-label">iPhone Revenue</div>
+          <div class="card-value up">$57.0B</div>
+          <div class="card-note">+21.7% YoY</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Services Revenue</div>
+          <div class="card-value up">$31.0B</div>
+          <div class="card-note">+16.2% YoY</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Mac Revenue</div>
+          <div class="card-value up">$8.4B</div>
+          <div class="card-note">+6% YoY</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Gross Margin</div>
+          <div class="card-value up">49.3%</div>
+          <div class="card-note">+220 bps</div>
+        </div>
+        <div class="card">
+          <div class="card-label">China Revenue</div>
+          <div class="card-value up">$22.4B</div>
+          <div class="card-note">+28.1% YoY</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Operating Cash Flow</div>
+          <div class="card-value">$28.7B</div>
+          <div class="card-note">Strong cash generation</div>
+        </div>
+      </div>
+      <div class="insight-box bull">
+        <strong>Shareholder-Friendly Steps:</strong> $100B new share buyback authorization and $0.27 dividend (previously $0.26) hike strengthen Apple's capital return program. Services hit a record $31.0B, proving high-margin, recurring revenue streams. Gross Margin at 49.3% (+220 bps) shows the impact of product mix and Services weight.
+      </div>
+      <div class="insight-box warn">
+        <strong>Options Trader Note:</strong> AAPL post-Q2 earnings IV Crush observed. Be cautious with 0DTE/weekly options in momentum strategies (VWAP, mean reversion, gap fade). Outside earnings cycles, monitor reversals from technical levels (VWAP -2s oversold bounce). July seasonality is generally positive, but "memflation" price hikes may dampen consumer demand.
+      </div>
+      <div class="insight-box danger">
+        <strong>Risk:</strong> Despite China's 28.1% growth, geopolitical risks and local regulations (APP Store, WeChat Pay integration) create operational risks. Additionally, memflation-driven price hikes may pressure consumer demand, especially in emerging markets.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 8: Türkiye Teknoloji Ekosistemi -->
+<section>
+  <div class="section-head" id="sec-turkiye">
+    <h2 class="section-title">🇹🇷 <span data-lang="tr">Türkiye Teknoloji Ekosistemi</span><span data-lang="en">Turkey Technology Ecosystem</span></h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    <div data-lang="tr">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Apple Akıllı Telefon Hedefi</div>
+          <div class="card-value">%25</div>
+          <div class="card-note">Counterpoint Research</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Apple Tablet Hedefi</div>
+          <div class="card-value">%39</div>
+          <div class="card-note">Counterpoint Research</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Apple Mac Hedefi</div>
+          <div class="card-value">%12</div>
+          <div class="card-note">Counterpoint Research</div>
+        </div>
+        <div class="card">
+          <div class="card-label">KDV</div>
+          <div class="card-value">%20</div>
+          <div class="card-note">2026 vergi oranı</div>
+        </div>
+      </div>
+      <div class="insight-box">
+        <strong>Premium Segment:</strong> Apple Türkiye'de premium segmentte inelastik talep gösteriyor. KDV %20 olmasına rağmen, yüksek gelirli tüketici kitlesi fiyat artışlarına karşı dirençli. Counterpoint Research hedefleri: akıllı telefon %25, tablet %39, Mac %12 pazar payı.
+      </div>
+      <div class="insight-box warn">
+        <strong>Fiyatlandırma Notu:</strong> Spesifik TL fiyatları, global zam oranları ve güncel kur üzerinden hesaplanan tahminler olarak değerlendirilmelidir. Resmi Apple Türkiye fiyatları kur dalgalanmalarına göre anlık değişiklik gösterebilir. Yukarıdaki global fiyat artışları tablosu, TL etkisini anlamak için referans alınabilir.
+      </div>
+      <div class="insight-box bull">
+        <strong>Türkçe Siri AI:</strong> iOS 27/macOS 27 ile sonbahar 2026'da Türkçe destek, Apple'ın Türkiye'de premium ekosistem stratejisini güçlendirecek. Yerel dil desteği, kullanıcı bağlılığı (retention) ve Services gelirini artırıcı bir katalizör.
+      </div>
+    </div>
+    <div data-lang="en">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Apple Smartphone Target</div>
+          <div class="card-value">25%</div>
+          <div class="card-note">Counterpoint Research</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Apple Tablet Target</div>
+          <div class="card-value">39%</div>
+          <div class="card-note">Counterpoint Research</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Apple Mac Target</div>
+          <div class="card-value">12%</div>
+          <div class="card-note">Counterpoint Research</div>
+        </div>
+        <div class="card">
+          <div class="card-label">VAT</div>
+          <div class="card-value">20%</div>
+          <div class="card-note">2026 tax rate</div>
+        </div>
+      </div>
+      <div class="insight-box">
+        <strong>Premium Segment:</strong> Apple shows inelastic demand in Turkey's premium segment. Despite 20% VAT, high-income consumer base remains resilient to price hikes. Counterpoint Research targets: smartphone 25%, tablet 39%, Mac 12% market share.
+      </div>
+      <div class="insight-box warn">
+        <strong>Pricing Note:</strong> Specific TRY prices should be treated as estimates based on global hike percentages and current exchange rates. Official Apple Turkey prices may change instantly with exchange rate fluctuations. The global price hike table above can be used as a reference to understand TRY impact.
+      </div>
+      <div class="insight-box bull">
+        <strong>Turkish Siri AI:</strong> Turkish language support in Fall 2026 with iOS 27/macOS 27 will strengthen Apple's premium ecosystem strategy in Turkey. Local language support is a catalyst for increasing user retention and Services revenue.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 9: Stratejik Sonuçlar & Projeksiyonlar -->
+<section>
+  <div class="section-head" id="sec-strateji">
+    <h2 class="section-title">🎯 <span data-lang="tr">Stratejik Sonuçlar &amp; Projeksiyonlar</span><span data-lang="en">Strategic Takeaways &amp; Projections</span></h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    <div data-lang="tr">
+      <div class="tabs">
+        <div class="tab active" onclick="setTab(this,'tab-tr-momentum')">Momentum Trade</div>
+        <div class="tab" onclick="setTab(this,'tab-tr-fundamental')">Fundamental</div>
+        <div class="tab" onclick="setTab(this,'tab-tr-makro')">Makro Risk</div>
+      </div>
+      <div class="tab-content active" id="tab-tr-momentum">
+        <div class="insight-box bull">
+          <strong>AAPL Momentum:</strong> Q2 FY2026 güçlü sonuçlar, Services rekoru ve $100B buyback momentumu destekliyor. 0DTE/haftalık stratejilerde VWAP oversold bounces ve gap fade setups takip edin. Temmuz sezonselliği pozitif bias sunuyor. Minimum 2x getiri potansiyeli arayın.
+        </div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-num up">Bull</div><div class="kpi-label">Yön</div></div>
+          <div class="kpi"><div class="kpi-num">VWAP</div><div class="kpi-label">Entry</div></div>
+          <div class="kpi"><div class="kpi-num">0DTE/Weekly</div><div class="kpi-label">Maturity</div></div>
+          <div class="kpi"><div class="kpi-num">2x+</div><div class="kpi-label">Hedef</div></div>
+        </div>
+      </div>
+      <div class="tab-content" id="tab-tr-fundamental">
+        <div class="insight-box">
+          <strong>Fundamental Görünüm:</strong> Gross Margin 49.3% (+220 bps) yüksek marjlı Services ağırlığını yansıtıyor. iPhone supercycle (iPhone 18 Pro / A20 Pro) Eylül 2026'da başlıyor. Çin %28.1 büyüme, Apple'ın en büyük coğrafyalardan biri olmaya devam ediyor. M5 Ultra Mac Studio (Ekim 2026) yüksek marjlı Pro segmenti güçlendirecek.
+        </div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-num">49.3%</div><div class="kpi-label">Gross Margin</div></div>
+          <div class="kpi"><div class="kpi-num">$31.0B</div><div class="kpi-label">Services</div></div>
+          <div class="kpi"><div class="kpi-num">$100B</div><div class="kpi-label">Buyback</div></div>
+          <div class="kpi"><div class="kpi-num">$28.7B</div><div class="kpi-label">OCF</div></div>
+        </div>
+      </div>
+      <div class="tab-content" id="tab-tr-makro">
+        <div class="insight-box danger">
+          <strong>Makro Riskler:</strong> Memflation (DRAM +55-60% QoQ, NAND +70-75% QoQ) Apple'ın maliyet yapısını baskılıyor. Haziran 2026 global zamı tüketici talebini baskılayabilir. Çin jeopolitik riskleri operasyonel tehdit. FED politika değişiklikleri ve USD güçlülüğü gelişmekte olan pazarlarda (Türkiye dahil) fiyatlama gücünü etkileyebilir.
+        </div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-num down">DRAM +55%</div><div class="kpi-label">QoQ</div></div>
+          <div class="kpi"><div class="kpi-num down">NAND +70%</div><div class="kpi-label">QoQ</div></div>
+          <div class="kpi"><div class="kpi-num down">FED</div><div class="kpi-label">Politika</div></div>
+          <div class="kpi"><div class="kpi-num down">Çin</div><div class="kpi-label">Jeopolitik</div></div>
+        </div>
+      </div>
+    </div>
+    <div data-lang="en">
+      <div class="tabs">
+        <div class="tab active" onclick="setTab(this,'tab-en-momentum')">Momentum Trade</div>
+        <div class="tab" onclick="setTab(this,'tab-en-fundamental')">Fundamental</div>
+        <div class="tab" onclick="setTab(this,'tab-en-macro')">Macro Risk</div>
+      </div>
+      <div class="tab-content active" id="tab-en-momentum">
+        <div class="insight-box bull">
+          <strong>AAPL Momentum:</strong> Q2 FY2026 strong results, Services record, and $100B buyback support momentum. Monitor VWAP oversold bounces and gap fade setups in 0DTE/weekly strategies. July seasonality offers positive bias. Seek minimum 2x return potential.
+        </div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-num up">Bull</div><div class="kpi-label">Direction</div></div>
+          <div class="kpi"><div class="kpi-num">VWAP</div><div class="kpi-label">Entry</div></div>
+          <div class="kpi"><div class="kpi-num">0DTE/Weekly</div><div class="kpi-label">Maturity</div></div>
+          <div class="kpi"><div class="kpi-num">2x+</div><div class="kpi-label">Target</div></div>
+        </div>
+      </div>
+      <div class="tab-content" id="tab-en-fundamental">
+        <div class="insight-box">
+          <strong>Fundamental Outlook:</strong> Gross Margin 49.3% (+220 bps) reflects high-margin Services weight. iPhone supercycle (iPhone 18 Pro / A20 Pro) begins September 2026. China 28.1% growth keeps Apple as one of the largest geographies. M5 Ultra Mac Studio (October 2026) will strengthen high-margin Pro segment.
+        </div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-num">49.3%</div><div class="kpi-label">Gross Margin</div></div>
+          <div class="kpi"><div class="kpi-num">$31.0B</div><div class="kpi-label">Services</div></div>
+          <div class="kpi"><div class="kpi-num">$100B</div><div class="kpi-label">Buyback</div></div>
+          <div class="kpi"><div class="kpi-num">$28.7B</div><div class="kpi-label">OCF</div></div>
+        </div>
+      </div>
+      <div class="tab-content" id="tab-en-macro">
+        <div class="insight-box danger">
+          <strong>Macro Risks:</strong> Memflation (DRAM +55-60% QoQ, NAND +70-75% QoQ) pressures Apple's cost structure. June 2026 global price hike may dampen consumer demand. China geopolitical risks are an operational threat. FED policy shifts and USD strength may affect pricing power in emerging markets (including Turkey).
+        </div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-num down">DRAM +55%</div><div class="kpi-label">QoQ</div></div>
+          <div class="kpi"><div class="kpi-num down">NAND +70%</div><div class="kpi-label">QoQ</div></div>
+          <div class="kpi"><div class="kpi-num down">FED</div><div class="kpi-label">Policy</div></div>
+          <div class="kpi"><div class="kpi-num down">China</div><div class="kpi-label">Geopolitical</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 10: Kaynaklar -->
+<section>
+  <div class="section-head" id="sec-kaynaklar">
+    <h2 class="section-title">📚 <span data-lang="tr">Kaynaklar</span><span data-lang="en">Sources</span></h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    <div data-lang="tr">
+      <p style="margin-bottom:8px;font-size:0.85rem;color:var(--gf-muted);">Bu rapordaki veriler aşağıdaki kaynaklardan derlenmiş ve çapraz doğrulanmıştır:</p>
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Apple Finansallar</div>
+          <div class="card-note">Yahoo Finance, Apple 10-Q, MacStories, Tech-Insider</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Apple Donanım</div>
+          <div class="card-note">Apple Newsroom, Smartprix, Tech-Insider, AppleInsider, MacWorld, Notebookcheck, Apple.com</div>
+        </div>
+        <div class="card">
+          <div class="card-label">CEO Değişimi</div>
+          <div class="card-note">Fortune, Yahoo Finance, RRI (RRI World)</div>
+        </div>
+        <div class="card">
+          <div class="card-label">macOS / WWDC</div>
+          <div class="card-note">TechRadar, Mashable, Mac Install Guide, Detik</div>
+        </div>
+        <div class="card">
+          <div class="card-label">iPhone 18 Pro</div>
+          <div class="card-note">Digit, Notebookcheck, MacRumors, Cashify, IBTimes, Reuz.in</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Apple Intelligence</div>
+          <div class="card-note">Abit.ee, Yarygintech, MacRumors</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Türkçe Destek</div>
+          <div class="card-note">Apple.com, Technopat, Log.com.tr</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Fiyat Artışları</div>
+          <div class="card-note">CNET, TechCabal, MacRumors, Tech-Insider</div>
+        </div>
+        <div class="card">
+          <div class="card-label">TrendForce / Bellek</div>
+          <div class="card-note">TrendForce (resmi), Wedoany, BuySellRAM, Uanalyze, PConline</div>
+        </div>
+        <div class="card">
+          <div class="card-label">PC Pazar Payı</div>
+          <div class="card-note">Gartner, IDC, Wikipedia (genel trend)</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Workstation</div>
+          <div class="card-note">Dataintelo, IntelMarketResearch, SNS Insider, HP.com, Dell.com, Lenovo.com</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Türkiye</div>
+          <div class="card-note">Teknoblog, Evobulut, Counterpoint Research</div>
+        </div>
+      </div>
+      <div class="insight-box warn">
+        <strong>Disclaimer:</strong> Bu rapor bilgilendirme amaçlıdır ve yatırım tavsiyesi değildir. Opsiyon trade'leri yüksek risk içerir. Geçmiş performans gelecek sonuçları garanti etmez. Her yatırım kararı öncesi kendi araştırmanızı yapın.
+      </div>
+    </div>
+    <div data-lang="en">
+      <p style="margin-bottom:8px;font-size:0.85rem;color:var(--gf-muted);">Data in this report has been compiled and cross-verified from the following sources:</p>
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Apple Financials</div>
+          <div class="card-note">Yahoo Finance, Apple 10-Q, MacStories, Tech-Insider</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Apple Hardware</div>
+          <div class="card-note">Apple Newsroom, Smartprix, Tech-Insider, AppleInsider, MacWorld, Notebookcheck, Apple.com</div>
+        </div>
+        <div class="card">
+          <div class="card-label">CEO Transition</div>
+          <div class="card-note">Fortune, Yahoo Finance, RRI (RRI World)</div>
+        </div>
+        <div class="card">
+          <div class="card-label">macOS / WWDC</div>
+          <div class="card-note">TechRadar, Mashable, Mac Install Guide, Detik</div>
+        </div>
+        <div class="card">
+          <div class="card-label">iPhone 18 Pro</div>
+          <div class="card-note">Digit, Notebookcheck, MacRumors, Cashify, IBTimes, Reuz.in</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Apple Intelligence</div>
+          <div class="card-note">Abit.ee, Yarygintech, MacRumors</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Turkish Support</div>
+          <div class="card-note">Apple.com, Technopat, Log.com.tr</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Price Hikes</div>
+          <div class="card-note">CNET, TechCabal, MacRumors, Tech-Insider</div>
+        </div>
+        <div class="card">
+          <div class="card-label">TrendForce / Memory</div>
+          <div class="card-note">TrendForce (official), Wedoany, BuySellRAM, Uanalyze, PConline</div>
+        </div>
+        <div class="card">
+          <div class="card-label">PC Market Share</div>
+          <div class="card-note">Gartner, IDC, Wikipedia (general trend)</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Workstation</div>
+          <div class="card-note">Dataintelo, IntelMarketResearch, SNS Insider, HP.com, Dell.com, Lenovo.com</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Turkey</div>
+          <div class="card-note">Teknoblog, Evobulut, Counterpoint Research</div>
+        </div>
+      </div>
+      <div class="insight-box warn">
+        <strong>Disclaimer:</strong> This report is for informational purposes only and does not constitute investment advice. Options trading carries high risk. Past performance does not guarantee future results. Conduct your own research before any investment decision.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span data-lang="tr">Gistify Flow | Küresel Teknoloji Piyasaları | 1 Temmuz 2026</span>
+  <span data-lang="en">Gistify Flow | Global Technology Markets | July 1, 2026</span>
+</div>
+
+</div>
+<script>
+/* Initialize default language */
+setLang('tr');
+</script>
+</body>
+</html>
