@@ -316,3 +316,12 @@ Stop trading earnings on instinct. Start trading them with data.
 **[Try Gistify's Risk Matrix and free IV Rank Calculator →]**
 
 *Measure the crush before it measures you.*
+
+---
+
+*Last updated: July 1, 2026*
+
+## Related Reading
+- Previous: [The Complete Guide to Trading Earnings with Options](/blog/earnings-strategy/complete-guide-trading-earnings-options)
+- Next: [Momentum Scanner: How to Find High-Probability Setups Every Morning](/blog/momentum-trading/momentum-scanner-high-probability-setups)
+- [Free IV Rank Calculator →](/tools/iv-rank-calculator)

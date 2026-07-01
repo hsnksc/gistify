@@ -362,3 +362,11 @@ You don't need another spreadsheet. You need a system that keeps up with the spe
 **[Open Gistify and start building your next earnings watchlist →]**
 
 *Trade the event. Not the emotion.*
+
+---
+
+*Last updated: July 1, 2026*
+
+## Related Reading
+- Next: [IV Crush Explained: What Happens to Options Before, During, and After Earnings](/blog/iv-crush/iv-crush-explained)
+- [Free IV Rank Calculator →](/tools/iv-rank-calculator)

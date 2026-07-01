@@ -127,3 +127,11 @@ Enter a ticker below and get your IV Rank in seconds. Use it before every trade 
 **[Explore Gistify Scanner →](/scanner)**
 
 *Disclaimer: This calculator is for informational and educational purposes only. It does not constitute financial advice. Options trading involves significant risk of loss. Always do your own research before making trading decisions.*
+
+---
+
+*Last updated: July 1, 2026*
+
+## Related Reading
+- [IV Crush Explained: What Happens to Options Before, During, and After Earnings](/blog/iv-crush/iv-crush-explained)
+- [Options Risk Matrix: Position Sizing for Active Traders](/blog/options-education/options-risk-matrix-position-sizing)

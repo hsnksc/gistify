@@ -642,6 +642,60 @@ export default function Landing({
       </motion.section>
 
       <motion.section
+        custom={0.22}
+        initial="hidden"
+        animate="visible"
+        variants={reveal}
+        className="rounded-xl border border-white/10 bg-card/75 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.18)]"
+      >
+        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
+          {copy(language, "Rehberler ve araclar", "Guides & Tools")}
+        </p>
+        <h2 className="mt-3 text-2xl font-semibold tracking-tight md:text-3xl">
+          {copy(
+            language,
+            "Stratejileri derinlemesine ogrenin",
+            "Go deeper on strategy"
+          )}
+        </h2>
+        <div className="mt-6 grid gap-3 md:grid-cols-2">
+          {[
+            {
+              href: "/blog/earnings-strategy/complete-guide-trading-earnings-options",
+              title: copy(language, "Earnings Rehberi", "Earnings Guide"),
+              body: copy(
+                language,
+                "Kazanc doneminde opsiyon stratejileri, expected move ve IV crush mantigi.",
+                "Options strategies, expected move and IV crush logic around earnings season."
+              ),
+            },
+            {
+              href: "/tools/iv-rank-calculator",
+              title: copy(language, "IV Rank Hesaplayici", "IV Rank Calculator"),
+              body: copy(
+                language,
+                "Herhangi bir hissenin IV rank'ini 10 saniyede olcen ucretsiz arac.",
+                "Free tool to measure any stock's IV rank in 10 seconds."
+              ),
+            },
+          ].map(link => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="group rounded-xl border border-white/10 bg-black/20 p-4 transition-colors hover:border-sky-400/30 hover:bg-sky-500/[0.06]"
+            >
+              <h3 className="text-lg font-semibold text-foreground group-hover:text-sky-300">
+                {link.title}
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                {link.body}
+              </p>
+            </a>
+          ))}
+        </div>
+      </motion.section>
+
+      <motion.section
         custom={0.24}
         initial="hidden"
         animate="visible"

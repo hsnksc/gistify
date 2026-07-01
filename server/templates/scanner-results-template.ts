@@ -340,7 +340,7 @@ const HTML_TEMPLATE = `<!DOCTYPE html>
   </div>
 
   <footer>
-    <p>&copy; ${new Date().getFullYear()} Gistify.pro &mdash; <a href="/">Home</a> &middot; <a href="https://app.gistify.pro">App</a></p>
+    <p>&copy; ${new Date().getFullYear()} Gistify.pro &mdash; <a href="/">Home</a> &middot; <a href="/blog/momentum-trading/momentum-scanner-high-probability-setups">Momentum Guide</a> &middot; <a href="https://app.gistify.pro">App</a></p>
   </footer>
 
   <script>

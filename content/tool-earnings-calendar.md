@@ -204,3 +204,11 @@ Use the structure below to build your own earnings watchlist or embed a calendar
 **[Explore Gistify Earnings →](/earnings)**
 
 *Disclaimer: Earnings data is for informational purposes only. Expected moves are derived from options pricing and are not guarantees of actual price movement. Always verify dates and data before trading. Options trading involves significant risk. Past performance does not guarantee future results.*
+
+---
+
+*Last updated: July 1, 2026*
+
+## Related Reading
+- [The Complete Guide to Trading Earnings with Options](/blog/earnings-strategy/complete-guide-trading-earnings-options)
+- [IV Crush Explained: What Happens to Options Before, During, and After Earnings](/blog/iv-crush/iv-crush-explained)
