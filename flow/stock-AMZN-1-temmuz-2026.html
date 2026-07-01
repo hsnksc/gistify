@@ -143,6 +143,7 @@ th,td{padding:6px 7px}
 [data-lang-inline].visible{display:inline}
 </style>
 <script>
+function setLang(lang){var btn=event.target;document.querySelectorAll('.lang-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');document.querySelectorAll('[data-lang]').forEach(function(e){e.classList.toggle('visible',e.getAttribute('data-lang')===lang);});document.querySelectorAll('[data-lang-inline]').forEach(function(e){e.classList.toggle('visible',e.getAttribute('data-lang-inline')===lang);});}
 function toggle(id){var el=document.getElementById(id);if(!el)return;el.classList.toggle('collapsed');}
 function setTab(btn,tabId){var parent=btn.closest('.tabs');if(parent){parent.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});parent.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});}btn.classList.add('active');var tc=document.getElementById(tabId);if(tc)tc.classList.add('active');}
 </script>
@@ -170,8 +171,8 @@ function setTab(btn,tabId){var parent=btn.closest('.tabs');if(parent){parent.que
 
 <!-- LANGUAGE SWITCH -->
 <div class="lang-switch">
-  <button class="lang-btn active" onclick="document.querySelectorAll('[data-lang]').forEach(e=>e.classList.add('visible'));document.querySelectorAll('[data-lang-inline]').forEach(e=>e.classList.add('visible'));this.classList.add('active');this.nextElementSibling.classList.remove('active');">TR</button>
-  <button class="lang-btn" onclick="document.querySelectorAll('[data-lang]').forEach(e=>e.classList.remove('visible'));document.querySelectorAll('[data-lang-inline]').forEach(e=>e.classList.remove('visible'));this.classList.add('active');this.previousElementSibling.classList.remove('active');">EN</button>
+  <button class="lang-btn active" onclick="setLang('tr')">TR</button>
+  <button class="lang-btn" onclick="setLang('en')">EN</button>
 </div>
 
 <!-- GİRİŞ -->
