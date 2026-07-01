@@ -373,7 +373,7 @@ export function registerSeoRoutes(app: Express): void {
       return;
     }
 
-    const html = generateEarningsPreviewHTML(data);
+    const html = generateEarningsPreviewHTML(ticker, data);
     res.setHeader("Cache-Control", "public, max-age=60");
     res.status(200).type("html").send(html);
   });
@@ -390,7 +390,7 @@ export function registerSeoRoutes(app: Express): void {
       return;
     }
 
-    const html = generateStrategyGuideHTML(data);
+    const html = generateStrategyGuideHTML(slug, data);
     res.setHeader("Cache-Control", "public, max-age=300");
     res.status(200).type("html").send(html);
   });
@@ -407,7 +407,7 @@ export function registerSeoRoutes(app: Express): void {
       return;
     }
 
-    const html = generateScannerResultsHTML(data);
+    const html = generateScannerResultsHTML(type, data);
     res.setHeader("Cache-Control", "public, max-age=30");
     res.status(200).type("html").send(html);
   });

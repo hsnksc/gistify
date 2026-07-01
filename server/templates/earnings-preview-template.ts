@@ -21,7 +21,7 @@ export interface EarningsPreviewData {
 const TICKER = '{TICKER}';
 const COMPANY = '{COMPANY}';
 const REPORT_DATE = '{REPORT_DATE}';
-const REPORT_TIME = '{REPORT_TIME}';
+const REPORT_TIME: string = '{REPORT_TIME}';
 const IV_RANK = '{IV_RANK}';
 const IV_PERCENTILE = '{IV_PERCENTILE}';
 const EXPECTED_MOVE = '{EXPECTED_MOVE}';
