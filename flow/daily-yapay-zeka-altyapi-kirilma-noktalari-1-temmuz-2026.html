@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yapay Zeka Altyapı Döngüsünde Kırılma Noktaları | $NVDA $AMD $MU $TSM $SMCI</title>
+<style>
+/* GISTIFY FLOW — Unified Dark Theme */
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--gf-accent),transparent);opacity:.4}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:720px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.hero-date{display:inline-flex;align-items:center;gap:5px;color:var(--gf-muted)}
+
+/* META PILLS */
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+
+/* SECTIONS */
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s;display:flex;align-items:center;justify-content:space-between}
+.section-head-inner:hover{background:var(--gf-card)}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent);transition:transform .2s}
+.section-head.collapsed .icon{transform:rotate(-90deg)}
+.section-body{padding:18px;display:none}
+.section-head:not(.collapsed) .section-body{display:block}
+
+/* GRID & CARDS */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px;transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-1px);border-color:rgba(56,189,248,.25)}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+
+/* TABS */
+.tabs{display:flex;gap:2px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:14px}
+.tab{flex:1;padding:8px 10px;text-align:center;font-size:0.82rem;font-weight:600;border-radius:6px;cursor:pointer;user-select:none;transition:background .15s,color .15s;border:none;color:var(--gf-muted);background:transparent}
+.tab.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.tab:hover:not(.active){color:var(--gf-text)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.text-right{text-align:right}
+.text-center{text-align:center}
+
+/* PROGRESS */
+.progress-bar{background:var(--gf-card);border-radius:4px;height:18px;overflow:hidden;margin:4px 0}
+.progress-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:0.68rem;font-weight:700;color:#fff}
+.fill-bull{background:linear-gradient(90deg,#16a34a,#4ade80)}
+.fill-base{background:linear-gradient(90deg,#ca8a04,#fbbf24)}
+.fill-bear{background:linear-gradient(90deg,#dc2626,#f87171)}
+.fill-accent{background:linear-gradient(90deg,#0284c7,#38bdf8)}
+
+/* INSIGHT BOX */
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+
+/* TAGS */
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.tag-purple{background:rgba(168,85,247,.12);color:#c084fc}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--gf-border)}
+.timeline-item{position:relative;margin-bottom:14px}
+.timeline-item::before{content:'';position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--gf-card);border:2px solid var(--gf-border)}
+.timeline-item.bull::before{border-color:var(--gf-success);background:var(--gf-success)}
+.timeline-item.bear::before{border-color:var(--gf-danger);background:var(--gf-danger)}
+.timeline-item.warn::before{border-color:var(--gf-warning);background:var(--gf-warning)}
+.timeline-item.accent::before{border-color:var(--gf-accent);background:var(--gf-accent)}
+.timeline-date{font-size:0.78rem;color:var(--gf-muted);font-weight:600}
+.timeline-body{font-size:0.85rem;margin-top:3px;color:var(--gf-text)}
+
+/* HEATMAP */
+.heatmap{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;font-size:0.72rem;margin:10px 0}
+.heatmap-cell{padding:6px 2px;text-align:center;border-radius:4px;min-height:36px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.heatmap-cell .day{font-weight:700;font-size:0.78rem}
+.heatmap-cell .val{font-size:0.68rem;opacity:.85}
+.h-strong{background:rgba(74,222,128,.35);color:#aff5b4}
+.h-weak{background:rgba(248,113,113,.35);color:#ffdcd7}
+.h-neu{background:rgba(251,191,36,.2);color:#ffdfb6}
+.h-flat{background:rgba(148,163,184,.15);color:var(--gf-muted)}
+.h-good{background:rgba(74,222,128,.2);color:#aff5b4}
+
+/* HIERARCHY PYRAMID */
+.hierarchy-pyramid{display:flex;flex-direction:column;gap:8px;margin:16px 0;max-width:600px;margin-left:auto;margin-right:auto}
+.hierarchy-level{padding:12px 16px;border-radius:var(--gf-radius);text-align:center;font-weight:600;font-size:0.88rem;position:relative;transition:transform .15s}
+.hierarchy-level:hover{transform:translateX(4px)}
+.hierarchy-level.l1{background:linear-gradient(135deg,rgba(248,113,113,.25),rgba(248,113,113,.08));border:1px solid rgba(248,113,113,.4);color:#fecaca;margin-left:10%;margin-right:10%}
+.hierarchy-level.l2{background:linear-gradient(135deg,rgba(251,191,36,.25),rgba(251,191,36,.08));border:1px solid rgba(251,191,36,.4);color:#fde68a;margin-left:7%;margin-right:7%}
+.hierarchy-level.l3{background:linear-gradient(135deg,rgba(56,189,248,.25),rgba(56,189,248,.08));border:1px solid rgba(56,189,248,.4);color:#bae6fd;margin-left:4%;margin-right:4%}
+.hierarchy-level.l4{background:linear-gradient(135deg,rgba(74,222,128,.25),rgba(74,222,128,.08));border:1px solid rgba(74,222,128,.4);color:#bbf7d0;margin-left:0%;margin-right:0%}
+.hierarchy-label{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:0.7rem;opacity:.7;font-weight:700}
+.hierarchy-num{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:0.7rem;opacity:.7;font-weight:700}
+
+/* DOMINO STAGES */
+.domino-stage{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px;margin-bottom:12px;position:relative;overflow:hidden}
+.domino-stage::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--gf-accent)}
+.domino-stage.s1::before{background:var(--gf-warning)}
+.domino-stage.s2::before{background:var(--gf-danger)}
+.domino-stage.s3::before{background:#c084fc}
+.domino-stage.s4::before{background:var(--gf-accent)}
+.domino-stage-title{font-size:0.95rem;font-weight:700;margin-bottom:6px;color:var(--gf-text)}
+.domino-stage-body{font-size:0.85rem;color:var(--gf-muted);line-height:1.6}
+
+/* SETUP COMPARISON */
+.setup-table th{background:var(--gf-elev)}
+.setup-table td{vertical-align:top}
+.setup-col{width:33.33%}
+.setup-header{background:var(--gf-card);padding:10px;border-radius:var(--gf-radius);text-align:center;font-weight:700;margin-bottom:8px;border:1px solid var(--gf-border)}
+.setup-a .setup-header{border-color:rgba(56,189,248,.4);color:var(--gf-accent)}
+.setup-b .setup-header{border-color:rgba(74,222,128,.4);color:var(--gf-success)}
+.setup-c .setup-header{border-color:rgba(248,113,113,.4);color:var(--gf-danger)}
+
+/* CHIPS COMPARISON */
+.chip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:12px 0}
+.chip-card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:14px;position:relative;overflow:hidden}
+.chip-card.gpu{border-color:rgba(248,113,113,.3)}
+.chip-card.asic{border-color:rgba(74,222,128,.3)}
+.chip-card-badge{position:absolute;top:8px;right:8px;font-size:0.65rem;font-weight:700;padding:2px 6px;border-radius:4px}
+.chip-card-badge.gpu{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.chip-card-badge.asic{background:var(--gf-success-dim);color:var(--gf-success)}
+.chip-card-title{font-size:0.9rem;font-weight:700;margin-bottom:8px}
+.chip-card-spec{font-size:0.78rem;color:var(--gf-muted);line-height:1.7}
+.chip-card-spec strong{color:var(--gf-text)}
+
+/* FOOTER */
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:var(--gf-bg)}
+::-webkit-scrollbar-thumb{background:var(--gf-border);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:rgba(56,189,248,.3)}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+.tabs{flex-wrap:wrap}
+.tab{flex:none;min-width:80px}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+.hierarchy-level{font-size:0.78rem}
+}
+
+/* LANG SWITCH */
+.lang-switch{display:inline-flex;gap:4px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:16px}
+.lang-btn{padding:6px 14px;border-radius:8px;font-size:0.8rem;font-weight:600;border:none;cursor:pointer;background:transparent;color:var(--gf-muted);transition:all .15s}
+.lang-btn.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.lang-btn:hover:not(.active){color:var(--gf-text)}
+[data-lang]{display:none}
+[data-lang].visible{display:block}
+[data-lang-inline]{display:none}
+[data-lang-inline].visible{display:inline}
+</style>
+<script>
+function toggle(id){var el=document.getElementById(id);if(!el)return;el.classList.toggle('collapsed');}
+function setTab(btn,tabId){var parent=btn.closest('.tabs');if(parent){parent.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});parent.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});}btn.classList.add('active');var tc=document.getElementById(tabId);if(tc)tc.classList.add('active');}
+</script>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HERO -->
+<div class="hero" id="hero">
+  <h1 class="hero-h">Yapay Zeka Altyapı Döngüsünde Kırılma Noktaları</h1>
+  <p class="hero-desc">Hiperskalajcı Marj Baskıları, Sistemik Riskler ve Teknolojik Paradigma Değişimleri — Derinlemesine Analiz & Senaryo Modellemesi</p>
+  <div class="hero-meta">
+    <span class="meta-pill info">📅 1 Temmuz 2026</span>
+    <span class="meta-pill neu">⚡ AI Altyapı</span>
+    <span class="meta-pill bear">🔴 Yüksek Risk</span>
+    <span class="meta-pill bull">🟢 Fırsat</span>
+  </div>
+</div>
+
+<!-- EXECUTIVE SUMMARY -->
+<section>
+  <div class="section-head" id="sec-ozet">
+    <div class="section-head-inner" onclick="toggle('sec-ozet')">
+      <h2 class="section-title">🎯 Executive Summary</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="insight-box danger">
+        <strong>Kritik Uyarı:</strong> Küresel yapay zeka ekosistemi, dışarıdan pürüzsüz görünen bir değer zincirinin arkasında, hiperskalajcı bilançolarında çatlaklar oluştuğunu gizlemektedir. Nakit akışı krişi 2026 Q3'te faaliyet nakit akışını sermaye harcamalarının gerisinde bırakacaktır.
+      </div>
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">2026 CapEx (5 Hyperscaler)</div>
+          <div class="card-value">$660B – $725B</div>
+          <div class="card-note">GSYİH'nın ~%2'sine denk</div>
+        </div>
+        <div class="card">
+          <div class="card-label">2025–2030 Toplam Yatırım</div>
+          <div class="card-value">$4.7 Trilyon</div>
+          <div class="card-note">Tahmini küresel AI altyapı</div>
+        </div>
+        <div class="card">
+          <div class="card-label">CapEx / OCF Oranı</div>
+          <div class="card-value down">%93</div>
+          <div class="card-note">2026 tahmini (2023: %33)</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Nvidia Pazar Payı</div>
+          <div class="card-value">%87</div>
+          <div class="card-note">Brüt marj: %85–88</div>
+        </div>
+        <div class="card">
+          <div class="card-label">ASIC Çıkarım Tasarrufu</div>
+          <div class="card-value up">%40–60</div>
+          <div class="card-note">GPU'ya kıyasla maliyet avantajı</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Dış Finansman İhtiyacı</div>
+          <div class="card-value down">$1.5T</div>
+          <div class="card-note">Tahvil + özel kredi piyasası</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 1: Makroekonomik Bağlam -->
+<section>
+  <div class="section-head" id="sec-makro">
+    <div class="section-head-inner" onclick="toggle('sec-makro')">
+      <h2 class="section-title">📊 1. Makroekonomik Bağlam ve Sermaye Harcaması Süper Döngüsünün Anatomisi</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--gf-text)">Küresel teknoloji sektörü, 2025 ve 2026 yılları itibarıyla modern ekonomik tarihin en agresif ve yoğunlaştırılmış özel sektör sermaye harcaması (CapEx) döngüsüne tanıklık etmektedir. Yalnızca en büyük ABD hiperskalajcı şirketleri—Microsoft, Alphabet (Google), Amazon, Meta ve Oracle—2026 yılı için kümülatif olarak <strong>660 milyar dolar ile 725 milyar dolar</strong> arasında bir yapay zeka (AI) altyapı yatırımı taahhüt etmiştir.</p>
+
+      <div class="insight-box">
+        <strong>Büyüme Hızı:</strong> Bu devasa harcama dalgası, 2025 yılındaki yaklaşık 410 milyar dolarlık seviyeden %77 oranında, 2024 seviyelerinden ise %207 oranında bir sıçramayı temsil etmekte olup, küresel gayrisafi yurt içi hasılanın (GSYİH) yaklaşık %2'sine denk gelmektedir. Yatırımların 2025 ile 2030 yılları arasında toplamda 4.7 trilyon dolara ulaşması beklenmektedir.
+      </div>
+
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--gf-text)">Bu hiper-büyüme döngüsü, teknoloji devlerinin eş zamanlı olarak benzer stratejik çıkarımlara varmasından kaynaklanmaktadır. Karar alıcılar için yapısal olarak <strong>"eksik kapasiteye" (under-capacity) sahip olma korkusu</strong>, "aşırı yatırım yapma" (overspending) riskinden çok daha tehlikeli bir asimetrik kariyer ve şirket değeri riski yaratmaktadır. Microsoft'un Azure kapasite kısıtları nedeniyle müşteri taleplerini geri çevirmek zorunda kalması veya pazar payını rakiplere kaptırma endişesi, şirketleri henüz talep tam olarak kesinleşmeden arzı inşa etmeye itmiştir.</p>
+
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-label">CapEx Dağılımı (Yaklaşık)</div>
+        <div style="margin-top:8px">
+          <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:4px"><span>İşlemciler (GPU, ASIC)</span><span>%50 (~$340B+)</span></div>
+          <div class="progress-bar"><div class="progress-fill fill-accent" style="width:50%">50%</div></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:4px;margin-top:8px"><span>Veri Merkezi & Altyapı</span><span>%35 (~$255B)</span></div>
+          <div class="progress-bar"><div class="progress-fill fill-base" style="width:35%">35%</div></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:4px;margin-top:8px"><span>Enerji & PPA</span><span>%15 (~$105B+)</span></div>
+          <div class="progress-bar"><div class="progress-fill fill-bull" style="width:15%">15%</div></div>
+        </div>
+      </div>
+
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--gf-text)">Hiperskalajcıların toplam sermaye harcamalarının yaklaşık %75'i doğrudan yapay zeka altyapısına tahsis edilmektedir. Ancak bu devasa yatırım ekosistemi, değer zincirinin lineer bir şekilde sonsuza kadar genişleyeceği varsayımı üzerine kurulmuştur. Değer zinciri, en uçtaki donanım üreticisinden (örneğin TSMC) başlayıp çip tasarımcılarına (Nvidia, AMD), oradan sunucu ve bellek üreticilerine (Micron, SK Hynix) ve nihayetinde altyapıyı satın alan veya kiralayan hiperskalajcılara uzanmaktadır.</p>
+
+      <div class="insight-box danger">
+        <strong>Sistemik Risk:</strong> Sistemin yegane nakit kaynağı ise "son müşteri" (kurumsal işletmeler, kamu kurumları ve son kullanıcılar) ile hiperskalajcılar arasındaki etkileşimdir. Son müşteri, üretkenlik artışı ve maliyet optimizasyonu beklentisiyle bu hizmetlere ödeme yapmazsa, hiperskalajcıların donanım yatırımlarını amorti etmeleri imkansız hale gelecek ve sistemik bir kriz tetiklenecektir.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 2: Finansal Mimarisi -->
+<section>
+  <div class="section-head" id="sec-finansal">
+    <div class="section-head-inner" onclick="toggle('sec-finansal')">
+      <h2 class="section-title">💰 2. Hiperskalajcı Finansal Mimarisi: Nakit Akışı Kesişimi</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--gf-text)">Yapay zeka ekosisteminde donanım üreticilerinin astronomik kâr marjları, doğrudan hiperskalajcıların bilançolarından finanse edilmektedir. Tarihsel olarak Amazon, Microsoft, Alphabet ve Meta gibi şirketler, operasyonlarından elde ettikleri devasa serbest nakit akışları (FCF) ile kendi büyümelerini finanse eden, hissedarlara yüklü temettüler ve hisse geri alımları sunan yapılar olmuştur. Ancak 2026 yılı itibarıyla, bu şirketlerin finansman modelleri temelden değişmiştir.</p>
+
+      <div class="insight-box warn">
+        <strong>Nakit Akışı Kesişimi:</strong> Analizler, Microsoft, Amazon, Alphabet, Meta ve Oracle'ın toplam nakit sermaye harcamalarının (Cash CapEx), 2026 yılının 3. çeyreği civarında bu şirketlerin faaliyet nakit akışlarını (Operating Cash Flow) geride bırakacağını göstermektedir. Yani, yapay zeka harcamalarının hızı, ana işletmelerin nakit üretme hızını yapısal olarak aşmıştır.
+      </div>
+
+      <div class="grid" style="margin:14px 0">
+        <div class="card">
+          <div class="card-label">2023 CapEx / OCF</div>
+          <div class="card-value up">%33</div>
+          <div class="card-note">Yapısal olarak sürdürülebilir</div>
+        </div>
+        <div class="card">
+          <div class="card-label">2026 CapEx / OCF (Tahmin)</div>
+          <div class="card-value down">%93</div>
+          <div class="card-note">Makas kapanıyor — kritik eşik</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Amazon FCF Eroziyonu</div>
+          <div class="card-value down">-%94</div>
+          <div class="card-note">OCF'nin %94'ü doğrudan altyapıya</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-label">2026 CapEx Rehberliği — Hiperskalajcı Karşılaştırması</div>
+        <table style="margin-top:10px">
+          <thead>
+            <tr><th>Şirket</th><th>2025 CapEx</th><th>2026 CapEx (Orta)</th><th>YoY Büyüme</th><th>Stratejik Doğa</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Amazon (AWS)</strong></td><td>~$100B</td><td class="text-center">~$200B</td><td class="text-center up">~%100</td><td><span class="tag tag-blue">Bulut Kiralama</span></td></tr>
+            <tr><td><strong>Microsoft</strong></td><td>~$95B</td><td class="text-center">~$190B</td><td class="text-center up">~%100</td><td><span class="tag tag-blue">Bulut Kiralama</span></td></tr>
+            <tr><td><strong>Alphabet (Google)</strong></td><td>~$85B</td><td class="text-center">~$180B</td><td class="text-center up">~%110</td><td><span class="tag tag-orange">Hibrit</span></td></tr>
+            <tr><td><strong>Meta</strong></td><td>~$70B</td><td class="text-center">~$135B</td><td class="text-center up">~%80</td><td><span class="tag tag-green">İç Tüketim</span></td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:0.75rem;color:var(--gf-muted);margin-top:8px">Veriler: Resmi rehberlikler ve analist tahminlerine dayanmaktadır (Epoch AI, Goldman Sachs, Morgan Stanley, CreditSights).</p>
+      </div>
+
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--gf-text)"><strong>Kredi Piyasalarına Bağımlılık:</strong> Nakit akışındaki bu yetersizlik, hiperskalajcıları mecburi olarak tahvil ve özel kredi piyasalarına itmiştir. Yapay zeka odaklı teknoloji şirketleri, 2025 yılından itibaren küresel yatırım yapılabilir (Investment Grade - IG) borçlanma pazarındaki en baskın yeni arz kaynağı haline gelmiştir.</p>
+
+      <div class="insight-box danger">
+        <strong>Borçlanma İstilası:</strong> Meta'nın 2025 Ekim ayında fiyatlandırdığı 30 milyar dolarlık devasa finansman veya genel teknoloji şirketlerinin 200 milyar doların üzerindeki tahvil ihracı, daha önce kendi kendini finanse eden iş modellerinin artık ciddi ölçüde dış finansman kaldıracı kullandığını kanıtlamaktadır. Yapay zeka altyapısına yönelik tahmini 1.5 trilyon dolarlık dış finansman ihtiyacının özel kredi, kurumsal borçlanma ve menkul kıymetleştirilmiş kredi enstrümanlarıyla karşılanması beklenmektedir.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 3: Domino Etkisi -->
+<section>
+  <div class="section-head" id="sec-domino">
+    <div class="section-head-inner" onclick="toggle('sec-domino')">
+      <h2 class="section-title">🎲 3. Hiperskalajcı Marjlarında Bozulma: Domino Etkisi Modellemesi</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--gf-text)">Hiperskalajcıların yüksek oranda kaldıraçlı bilançoları, yatırım getirisinin (ROI) gecikmesi veya talep yönlü bir şok yaşanması durumunda tüm sektörü tehdit eden sistemik bir kırılganlık yaratmaktadır. Eğer son müşteriler—yani yapay zeka hizmetlerine nihai ödemeyi yapacak olan hastaneler, bankalar, üretim tesisleri ve yazılım şirketleri—üretkenlik artışlarını hızlı bir şekilde nakde çeviremezlerse, felaket senaryosu tetiklenecektir.</p>
+
+      <div class="insight-box warn">
+        <strong>Adaptasyon Yavaşlığı:</strong> Yazılım dışındaki sermaye yoğun ve ağır regüle edilen sektörlerde (sağlık, finans, kamu, savunma sanayii), veri yönetişimi ve kurumsal süreç mühendisliği gereksinimleri, yapay zeka entegrasyonunu yavaşlatmaktadır. Beklenen üretkenlik artışının aylar değil yıllar alması, işletmelerin yapay zeka bütçelerini kısmalarına ve hiperskalajcıların bulut platformlarındaki kullanım oranlarının çökmesine neden olacaktır.
+      </div>
+
+      <h3 style="font-size:1rem;color:var(--gf-accent);margin:18px 0 10px">4 Aşamalı Domino Etkisi</h3>
+
+      <div class="domino-stage s1">
+        <div class="domino-stage-title">🟠 AŞAMA 1: Değerleme Çarpanlarında Daralma ve Sermaye Harcaması Dondurması</div>
+        <div class="domino-stage-body">Hiperskalajcıların artan borç yükleri ve azalan serbest nakit akışları, kanıtlanmış bir gelir akışıyla desteklenmediğinde piyasa tarafından hızla cezalandırılır. Yatırımcılar, sermaye harcamalarının borçla finanse edildiği ve faaliyet kâr marjlarının baskılandığı yapay zeka altyapı şirketlerinden uzaklaşmaya başlar. Yönetim kurulları, hisse senedi fiyatlarındaki (P/E çarpanlarındaki) sert daralmayı durdurmak için 2027 ve 2028 yılı CapEx projeksiyonlarını aniden dondurmak veya aşağı yönlü revize etmek zorunda kalır. <strong>Şirketlerin çip siparişlerini yavaşlattıklarını açıklamaları, tüm donanım üreticileri için ilk büyük piyasa şokunu oluşturur.</strong></div>
+      </div>
+
+      <div class="domino-stage s2">
+        <div class="domino-stage-title">🔴 AŞAMA 2: Özel Silikona (ASIC) Yönelişin Zorunlu Hale Gelmesi</div>
+        <div class="domino-stage-body">Brüt marjları %40'ların altına gerileyen bulut sağlayıcıları, maliyetleri acilen kısmak için Nvidia'nın devasa kâr marjlarını (%85–88) finanse etmeyi durdurur. Hiperskalajcılar, esnek ama pahalı olan genel amaçlı GPU'lar (Nvidia H100/B200) yerine, doğrudan kendi iş yükleri için tasarlanmış Özel Silikonlara (ASIC) ağırlık verir. Analizler, ASIC'lerin çıkarım (inference) işlemlerinde GPU tabanlı kümelere kıyasla <strong>%40 ila %60 daha ucuz</strong> olduğunu göstermektedir. Bu stratejik değişim, Nvidia'nın tekelini sarsarak pazar payını hızla %75'in altına iter.</div>
+      </div>
+
+      <div class="domino-stage s3">
+        <div class="domino-stage-title">🟣 AŞAMA 3: "Al ya da Öde" (Take-or-Pay) Bellek Sözleşmelerinin Çöküşü</div>
+        <div class="domino-stage-body">Domino etkisinin en yıkıcı ayağı, yarı iletken bellek pazarında yaşanır. Samsung, SK Hynix ve Micron'dan oluşan bellek oligopolü, HBM kıtlığını bir fırsata çevirerek hiperskalajcılarla milyarlarca dolarlık "Al ya da Öde" sözleşmeleri imzalamıştır. Bu sözleşmeler, müşteriye talepten bağımsız olarak minimum satın alma garantisi dayatmaktadır ve Micron'un tek başına yaklaşık 100 milyar dolarlık bir sipariş birikimine ulaştığı tahmin edilmektedir.<br><br>Eğer hiperskalajcıların sermaye harcaması eğrisi kırılırsa, teknoloji devleri bu sözleşmeleri yerine getiremez hale gelir. Hukuken bağlayıcı olmalarına rağmen, trilyon dolarlık bulut şirketleri milyarlarca doları atıl kapasiteye gömmemek için sözleşmeleri ihlal eder, iptal cezalarını öder veya yeniden yapılandırma talep eder. <strong>Bunun sonucunda bellek pazarındaki %85'e varan sürdürülemez brüt marjlar sıfırlanır, arz fazlası oluşur ve endüstri yeniden tarihsel "patlama ve çöküş" (boom-bust) döngüsüne girer.</strong></div>
+      </div>
+
+      <div class="domino-stage s4">
+        <div class="domino-stage-title">🔵 AŞAMA 4: Yarı İletken Dökümhaneleri ve Ekipman Üreticilerine Sıçrama</div>
+        <div class="domino-stage-body">Satılamayan çipler ve iptal edilen siparişler, Tayvan merkezli TSMC gibi dökümhaneleri (foundries) ve ASML gibi ekstrem ultraviyole (EUV) litografi makinesi üreticilerini vurur. Gelişmiş çip üretimi son derece sermaye yoğundur ve dökümhaneler kapasite artışını yıllar öncesinden planlar. HBM üretim hatlarına ayrılan kapasitelerin boşa çıkmasıyla, küresel yarı iletken tedarik zincirinde milyarlarca dolarlık ekipman ve ham madde yatırımı karşılıksız kalır, sektör genelinde küçülme ve kitlesel işten çıkarmalar yaşanır.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 4: Varoluşsal Hiyerarşi -->
+<section>
+  <div class="section-head" id="sec-hiyerarsi">
+    <div class="section-head-inner" onclick="toggle('sec-hiyerarsi')">
+      <h2 class="section-title">🏛️ 4. Yapay Zekanın Varoluşsal Denklemi: "Olmazsa Olmaz" Hiyerarşisi</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--gf-text)">Yapay zeka döngüsünde teknolojik bir darboğazın pazar yapısını nasıl değiştireceğini öngörebilmek için, donanım ve ekonomik unsurların ikame edilebilirliğini analiz etmek şarttır. Yapay zekada olmazsa olmaz CPU mu, GPU mu, bellek mi, enerji mi, yoksa müşteri mi? sorusunun cevabı, pazarın <strong>"Varoluşsal Bağımlılık Hiyerarşisi"</strong>ni oluşturur.</p>
+
+      <div class="hierarchy-pyramid">
+        <div class="hierarchy-level l1">
+          <span class="hierarchy-label">1. SIRADA</span>
+          <span class="hierarchy-num">🔴</span>
+          <div><strong>Nihai Müşteri</strong> — Ekonomik Singülarite</div>
+          <div style="font-size:0.78rem;opacity:.8;margin-top:4px">Kesinlikle İkame Edilemez</div>
+        </div>
+        <div class="hierarchy-level l2">
+          <span class="hierarchy-label">2. SIRADA</span>
+          <span class="hierarchy-num">🟠</span>
+          <div><strong>Enerji Altyapısı</strong> — Fiziksel ve Termodinamik Kısıt</div>
+          <div style="font-size:0.78rem;opacity:.8;margin-top:4px">İkame Edilemez</div>
+        </div>
+        <div class="hierarchy-level l3">
+          <span class="hierarchy-label">3. SIRADA</span>
+          <span class="hierarchy-num">🔵</span>
+          <div><strong>Hesaplama Birimi</strong> — GPU / ASIC / CPU / FPGA</div>
+          <div style="font-size:0.78rem;opacity:.8;margin-top:4px">İkame Edilebilir ve Format Değiştirebilir</div>
+        </div>
+        <div class="hierarchy-level l4">
+          <span class="hierarchy-label">4. SIRADA</span>
+          <span class="hierarchy-num">🟢</span>
+          <div><strong>Bellek (HBM)</strong> — Yüksek Bant Genişlikli Bellek</div>
+          <div style="font-size:0.78rem;opacity:.8;margin-top:4px">Yüksek Oranda Optimize Edilebilir ve Azaltılabilir</div>
+        </div>
+      </div>
+
+      <div class="insight-box bull" style="margin-top:16px">
+        <strong>Hiyerarşi Denklemi:</strong> Müşteri > Enerji > Esnek Hesaplama Birimi > Bellek<br><br>Bir darboğaz enerjide patlak verirse tüm sektörü dondurur; ancak bellekteki bir devrim, sektörü dondurmak yerine sermayenin el değiştirmesini sağlayarak belirli şirketleri yok ederken diğerlerini yüceltir.
+      </div>
+
+      <h3 style="font-size:1rem;color:var(--gf-accent);margin:18px 0 10px">Hiyerarşi Detayları</h3>
+
+      <div class="card" style="margin-bottom:10px;border-left:3px solid rgba(248,113,113,.5)">
+        <div class="card-label" style="color:#f87171">1. Nihai Müşteri (Ekonomik Singülarite)</div>
+        <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">Hiyerarşinin mutlak zirvesinde, zincirdeki tüm harcamaları finanse etmesi beklenen nihai müşteri yer alır. İster binlerce GPU ile donatılmış bir veri merkezi inşa edilsin, ister devasa nükleer reaktörler devreye alınsın; eğer son kullanıcı (birey veya kurum), algoritmanın çıktıları için talep edilen bedeli ödemeyi reddederse, tüm fiziksel ve teknolojik çaba anlamsızlaşır. <strong>Müşteri sadakati ve üretkenlik algısı, tüm sermaye döngüsünün yegane yakıtıdır.</strong></p>
+      </div>
+
+      <div class="card" style="margin-bottom:10px;border-left:3px solid rgba(251,191,36,.5)">
+        <div class="card-label" style="color:#fbbf24">2. Enerji Altyapısı (Fiziksel ve Termodinamik Kısıt)</div>
+        <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">Müşteri talebi var olduğu sürece, sistemin karşılaşacağı ilk ve en aşılamaz bariyer fiziki evrenin kurallarıdır: <strong>Enerji.</strong> Bir NVIDIA GB200 NVL72 raf sisteminin 120 kilovatın (kW) üzerinde enerji çekmesi, hava soğutmasını imkansız hale getirdiği gibi yerel elektrik şebekelerini de çökertme noktasına getirmektedir. Veri merkezlerinin inşasında birincil engel sermaye veya çip tedariki değil; transformatörler, şalt cihazları (switchgear) ve yüksek gerilim şebeke bağlantılarındaki kapasite yetersizliğidir. <strong>Enerji olmadan, dünyadaki tüm silikon parçaları işlevsiz birer taştan ibarettir.</strong></p>
+      </div>
+
+      <div class="card" style="margin-bottom:10px;border-left:3px solid rgba(56,189,248,.5)">
+        <div class="card-label" style="color:#38bdf8">3. Hesaplama Birimi (İkame Edilebilir)</div>
+        <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">Mevcut pazar algısı, Nvidia'nın GPU'larının yapay zeka için vazgeçilmez olduğu yönündedir. Ancak teknolojik gerçeklik farklıdır. Büyük dil modelleri (LLM), mimari olarak matris çarpımı (MatMul) operasyonlarına dayanır ve GPU'lar sadece bu işlemleri paralel yapabildikleri için popülerdir. Ancak hesaplama birimi doğası gereği esnektir. Yapay zeka modelleri, Google'ın TPU'ları veya özel ASIC'ler üzerinde de mükemmel şekilde eğitilebilir ve çalıştırılabilir. <strong>Hesaplama gereklidir, ancak bu hesaplamanın hangi markanın hangi çipi ile yapılacağı tamamen maliyet ve verimlilik değişkenlerine bağlıdır.</strong></p>
+      </div>
+
+      <div class="card" style="margin-bottom:10px;border-left:3px solid rgba(74,222,128,.5)">
+        <div class="card-label" style="color:#4ade80">4. Bellek (HBM) — Optimize Edilebilir</div>
+        <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">Parametrelerin saklanması ve işlemciye hızlı bir şekilde aktarılması için Yüksek Bant Genişlikli Bellek (HBM) kritik bir darboğaz olmuştur. Ancak bellek, yazılım mühendisliği ve kuantizasyon (quantization) teknikleri kullanılarak en fazla optimize edilebilecek donanım bileşenidir. <strong>Parametre hassasiyeti düşürüldüğünde bellek gereksinimi logaritmik olarak azalır.</strong> Bu nedenle HBM, sistemin en kırılgan ve teknolojik değişime en açık unsurudur.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 5: Özel Silikon -->
+<section>
+  <div class="section-head" id="sec-asic">
+    <div class="section-head-inner" onclick="toggle('sec-asic')">
+      <h2 class="section-title">⚙️ 5. Özel Silikon (Custom ASIC) Stratejisi: Donanım Çeşitlendirmesi</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--gf-text)">Hiperskalajcıların karşılaştığı marj baskıları ve Nvidia'nın pazar tekelinin getirdiği astronomik fiyatlamalar, büyük teknoloji şirketlerini çip savaşlarında radikal bir değişime zorlamıştır. Nvidia'nın 2024 itibarıyla %87'lere ulaşan pazar payı ve %88'leri bulan brüt marjları, H100 ve B200 çiplerinin birim maliyetlerinin çok üzerinde fiyatlandırıldığının kanıtıdır.</p>
+
+      <div class="insight-box">
+        <strong>Maliyet Analizi:</strong> B200'ün üretim maliyeti yaklaşık $6,400 iken, satış fiyatı $40,000 seviyesindedir. Bu, ~6.25x çarpan demektir. Bulut sağlayıcıları için en büyük maliyet kalemi modelin eğitilmesi değil, milyonlarca kullanıcıya sunulan sürekli çıkarım (inference) işlemleridir.
+      </div>
+
+      <div class="chip-grid">
+        <div class="chip-card gpu">
+          <div class="chip-card-badge gpu">GENEL AMAÇLI</div>
+          <div class="chip-card-title">Nvidia H100 / B200</div>
+          <div class="chip-card-spec">
+            <strong>Geliştirici:</strong> Nvidia<br>
+            <strong>Birim Maliyet:</strong> $25,000 – $40,000<br>
+            <strong>Enerji Verimliliği:</strong> Orta<br>
+            <strong>İş Yükü Esnekliği:</strong> Çok Yüksek<br>
+            <strong>Pazar Etkisi:</strong> Marjları baskılar, dışa bağımlılık yaratır
+          </div>
+        </div>
+        <div class="chip-card asic">
+          <div class="chip-card-badge asic">ÖZEL ASIC</div>
+          <div class="chip-card-title">TPU / Trainium / Maia</div>
+          <div class="chip-card-spec">
+            <strong>Geliştirici:</strong> Google, Amazon, Microsoft<br>
+            <strong>Birim Maliyet:</strong> Düşük (Kendi üretimi)<br>
+            <strong>Enerji Verimliliği:</strong> 3-5x Daha İyi<br>
+            <strong>İş Yükü Esnekliği:</strong> Düşük (Spesifik)<br>
+            <strong>Pazar Etkisi:</strong> 2027'de >%50 çıkarım pazarı
+          </div>
+        </div>
+      </div>
+
+      <div class="insight-box bull">
+        <strong>ASIC Ekonomisi:</strong> Özel ASIC'ler, model eğitimi sonrası sürekli üretim ortamlarında (steady-state production) Nvidia GPU'lara kıyasla %40 ila %60 oranında maliyet tasarrufu sağlamaktadır. Sektörel öngörülere göre, özel ASIC'lerin toplam AI hızlandırıcı pazarı içindeki payının 2024'teki %25 seviyesinden, 2027'de %50'nin üzerine çıkması beklenmektedir. Bu durum, Nvidia'nın tekel kırılmazlığının aslında fiyat esnekliğiyle sınırlı olduğunu ve maliyetler kontrolden çıktığında alternatif silikonların pazarın ana aktörü olabileceğini göstermektedir.
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <div class="card-label">ASIC Pazar Payı Projeksiyonu</div>
+        <div style="margin-top:10px">
+          <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:4px"><span>2024 — ASIC Payı</span><span>%25</span></div>
+          <div class="progress-bar"><div class="progress-fill fill-accent" style="width:25%">25%</div></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:4px;margin-top:8px"><span>2027 — ASIC Payı (Tahmin)</span><span>>%50</span></div>
+          <div class="progress-bar"><div class="progress-fill fill-bull" style="width:55%">>50%</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 6: BitNet -->
+<section>
+  <div class="section-head" id="sec-bitnet">
+    <div class="section-head-inner" onclick="toggle('sec-bitnet')">
+      <h2 class="section-title">🧠 6. Bellek İhtiyacını Azaltan Modeller: BitNet b1.58 ve 1-Bit Matematiksel Devrimi</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--gf-text)">Yapay zeka ekosistemindeki en potansiyel "siyah kuğu" (black swan) olayı, donanım tarafında değil, tamamen yazılım ve matematik teorisi tarafında gerçekleşmektedir. Eğer bellek ihtiyacını kökten azaltan modeller ticari olarak ölçeklenebilirse, pazarın dinamikleri tepetaklak olacaktır. Bu bağlamda, <strong>Microsoft Research</strong> tarafından duyurulan BitNet b1.58 ve genel anlamda 1-bit / üçlü (ternary) Büyük Dil Modelleri, pazar analizlerinin en kritik parçasıdır.</p>
+
+      <div class="insight-box">
+        <strong>Geleneksel Mimarinin Problemi:</strong> Geleneksel Büyük Dil Modelleri (GPT-4, Llama 3 vb.), yapay sinir ağlarındaki milyarlarca parametreyi 16-bit (FP16 veya BF16) kayan noktalı (floating-point) formatta depolar. Bir dil modelinin yeni bir kelime (token) üretmesi için devasa boyutlardaki bu sayıların, son derece karmaşık Matris Çarpımı (MatMul) işlemleriyle birbiriyle çarpılması gerekir. Bu mimari, bellek bant genişliğine olan açlığı körüklemekte, pahalı HBM çiplerini ve çok yüksek enerji harcayan Nvidia GPU'larını zorunlu kılmaktadır.
+      </div>
+
+      <h3 style="font-size:1rem;color:var(--gf-accent);margin:18px 0 10px">BitNet b1.58 Mimarisi — Üçlü Değer Sistemi</h3>
+
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--gf-text)">BitNet b1.58 mimarisi, parametre ağırlıklarını radikal bir yaklaşımla üçlü (ternary) değerlere çeker: <strong>Yalnızca {-1, 0, +1}.</strong> Bu matematiksel sadeleştirmenin donanımsal yansımaları devasa boyutlardadır:</p>
+
+      <div class="grid" style="margin:14px 0">
+        <div class="card">
+          <div class="card-label">Bellek Hacmi</div>
+          <div class="card-value up">16–32x</div>
+          <div class="card-note">Fiziksel yer tasarrufu. 7B parametreli model ~1.2 GB'e sığar.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Hesaplama Paradigması</div>
+          <div class="card-value up">MatMul → Toplama</div>
+          <div class="card-note">Kayan noktalı çarpma yerine basit tam sayı toplama.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Enerji Tüketimi</div>
+          <div class="card-value up">-%71.9 ~ -%82.2</div>
+          <div class="card-note">x86 CPU'lar üzerinde doğrulanmış çıkarım testleri.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Donanım Gereksinimi</div>
+          <div class="card-value up">Standart CPU</div>
+          <div class="card-note">GPU desteği olmadan bitnet.cpp ile çalışır.</div>
+        </div>
+      </div>
+
+      <div class="insight-box bull">
+        <strong>Yeni Silikon Tasarımları:</strong> Yalnızca {-1, 0, 1} işlemleri yapmak için özel tasarlanan, çarpıcı derecede küçük boyutlu çipler üretilebilir. Örneğin 16 nm üretim teknolojisiyle tasarlanan ve yalnızca 0.214 mm² boyutunda olan TINT/BoothFlex prototipi (VitaLLM), devasa H100 çipinin görevini Uç Bilişim (Edge) cihazlarında yapabilmektedir.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 7: Kazananlar ve Kaybedenler -->
+<section>
+  <div class="section-head" id="sec-kazananlar">
+    <div class="section-head-inner" onclick="toggle('sec-kazananlar')">
+      <h2 class="section-title">⚡ 7. Yıkıcı Senaryo Analizi: BitNet Devrimi Sonrası Lokal Kırılmalar</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--gf-text)">Eğer BitNet gibi "MatMul-free" (matris çarpımsız) üçlü algoritmalar önümüzdeki yıllarda endüstri standardı haline gelirse, bu durum pazarın genelinde bir sistemik çöküş (domino) yaratmaz. Aksine, yapay zekanın maliyet eğrisini düzelterek hiperskalajcıları krizden kurtarır, ancak değer zincirindeki belirli tekellerde <strong>"lokal ve kanlı kırılmalara"</strong> yol açar.</p>
+
+      <div class="grid" style="margin:14px 0">
+        <div class="card" style="border-top:3px solid var(--gf-danger)">
+          <div class="card-label" style="color:var(--gf-danger)">🔴 KIRILAN 1. BACAK</div>
+          <div class="card-value" style="font-size:1.1rem">Yarı İletken Bellek Oligopolü</div>
+          <div class="card-note">Micron, Samsung, SK Hynix</div>
+          <p style="font-size:0.82rem;color:var(--gf-text);margin-top:8px">Mevcut pazar düzeninde HBM kıtlığı, üreticilere %85'lere varan brüt kâr marjları sağlamaktadır. BitNet mimarisi, yapay zeka sunucularının yüksek maliyetli HBM teknolojisine olan ihtiyacını <strong>sıfırlama potansiyeli</strong> taşır. Eğer milyarlarca parametrelik bir LLM, standart bir sunucu DDR5 belleğinde hatta uç cihazlarda kolaylıkla çalışabiliyorsa, hiperskalajcılar 100 milyar dolarlık "Al ya da Öde" HBM sözleşmelerini acilen feshetme yolları arayacaktır. Bellek pazarı, katma değerli teknoloji döngüsünden çıkarak tamamen emtialaşmış (commoditized), düşük marjlı eski günlerine geri dönecektir.</p>
+        </div>
+        <div class="card" style="border-top:3px solid var(--gf-danger)">
+          <div class="card-label" style="color:var(--gf-danger)">🔴 KIRILAN 2. BACAK</div>
+          <div class="card-value" style="font-size:1.1rem">Nvidia'nın CUDA Hendekleri</div>
+          <div class="card-note">GPU Tekeli ve Yazılım Ekosistemi</div>
+          <p style="font-size:0.82rem;color:var(--gf-text);margin-top:8px">Nvidia'nın sektördeki kalesini koruyan en büyük gücü çipleri kadar, yapay zeka geliştiricilerinin bağımlı olduğu CUDA yazılım ekosistemidir. Eğitim ve çıkarım kodlarının %98'i CUDA ile yazılmıştır. Ancak BitNet, karmaşık matris işlemlerini devreden çıkardığı için algoritmaların doğrudan CPU'larda (Intel, AMD) veya özel FPGA'lerde işlenmesini sağlar. Uç bilişim cihazlarında özel tasarlanmış küçük çipler, dev veri merkezlerindeki 40.000 dolarlık B200 çiplerine olan ihtiyacı baltalayacaktır.</p>
+        </div>
+      </div>
+
+      <div class="grid" style="margin:14px 0">
+        <div class="card" style="border-top:3px solid var(--gf-success)">
+          <div class="card-label" style="color:var(--gf-success)">🟢 KURTULAN 1</div>
+          <div class="card-value" style="font-size:1.1rem">Hiperskalajcılar</div>
+          <div class="card-note">Microsoft, Amazon, Alphabet, Meta</div>
+          <p style="font-size:0.82rem;color:var(--gf-text);margin-top:8px">Yazılım optimizasyonu sayesinde donanım maliyetlerinin düşmesi, en büyük faydayı Hiperskalajcılara sağlayacaktır. Bölüm 2'de bahsedilen nakit akışı krizi çözülecek, sermaye harcamaları normalleşecek ve bulut hizmetleri sürdürülebilir bir kârlılık zeminine oturacaktır.</p>
+        </div>
+        <div class="card" style="border-top:3px solid var(--gf-success)">
+          <div class="card-label" style="color:var(--gf-success)">🟢 KURTULAN 2</div>
+          <div class="card-value" style="font-size:1.1rem">Nihai Müşteri</div>
+          <div class="card-note">KOBİ'ler ve Kurumlar</div>
+          <p style="font-size:0.82rem;color:var(--gf-text);margin-top:8px">Nihai Müşteri için yatırım getirisi (ROI) sorunu anında çözülecektir. AI çıkarım maliyetleri neredeyse sıfıra yaklaşacağından, KOBİ'ler ve kurumlar bulut maliyeti endişesi olmadan AI çözümlerini kullanabilecektir.</p>
+        </div>
+        <div class="card" style="border-top:3px solid var(--gf-success)">
+          <div class="card-label" style="color:var(--gf-success)">🟢 KURTULAN 3</div>
+          <div class="card-value" style="font-size:1.1rem">Uç Bilişim (Edge AI)</div>
+          <div class="card-note">Apple, Microsoft, Lenovo</div>
+          <p style="font-size:0.82rem;color:var(--gf-text);margin-top:8px">Veri merkezlerinin yerini Uç Bilişim cihazları almaya başlayacaktır. Apple, Microsoft ve Lenovo gibi donanım üreticileri, AI'ı doğrudan kişisel bilgisayarların ve telefonların içine (On-Device) gömerek buluta olan bağımlılığı azaltacak ve yeni bir cihaz donanım yükseltme (upgrade) döngüsü başlatacaktır.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 8: 3 Senaryo -->
+<section>
+  <div class="section-head" id="sec-senaryolar">
+    <div class="section-head-inner" onclick="toggle('sec-senaryolar')">
+      <h2 class="section-title">🔮 8. Sektörel Gelecek Kurguları — 3 Farklı Setup</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--gf-text)">Piyasa analistlerine ve kurumsal yatırımcılara vizyon kazandırmak amacıyla, mevcut değer zinciri ve teknolojik potansiyeller üç farklı stratejik "Setup" (Senaryo) üzerinden modellenebilir:</p>
+
+      <div class="tabs">
+        <div class="tab active" onclick="setTab(this,'tab-setup-a')">🔵 Setup A<br><span style="font-size:0.7rem">Statüko</span></div>
+        <div class="tab" onclick="setTab(this,'tab-setup-b')">🟢 Setup B<br><span style="font-size:0.7rem">Optimizasyon</span></div>
+        <div class="tab" onclick="setTab(this,'tab-setup-c')">🔴 Setup C<br><span style="font-size:0.7rem">Kredi Krizi</span></div>
+      </div>
+
+      <div id="tab-setup-a" class="tab-content active">
+        <div class="setup-a">
+          <div class="setup-header">🔵 Setup A: Statüko Süper Döngüsü (Brute Force)</div>
+          <div class="grid" style="grid-template-columns:1fr 1fr;gap:12px">
+            <div class="card">
+              <div class="card-label">Temel Varsayım</div>
+              <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">Transformer mimarisi ve FP16 (Kayan Noktalı) işlemleri sektör standardı olarak kalır. Algoritma yerine ölçeğe (daha fazla veri, daha fazla parametre) yatırım yapılır.</p>
+            </div>
+            <div class="card">
+              <div class="card-label">Birincil Darboğaz</div>
+              <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">Enerji kapasitesi (Transformatör ve nükleer kapasite yetersizliği) ve TSMC'nin çip paketleme sınırları.</p>
+            </div>
+            <div class="card">
+              <div class="card-label">Finansal Durum</div>
+              <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">Hiperskalajcılar yılda 1 trilyon dolara yaklaşan yatırımlar yapmak zorunda kalır. Finansman tamamen kredi piyasalarından (IG tahviller) sağlanır.</p>
+            </div>
+            <div class="card">
+              <div class="card-label">Kriz Riski</div>
+              <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">Müşteri ROI'si düşük kalırsa, teknoloji hisselerinde tarihi bir balon patlar. Tüm altyapı arz fazlası olarak elde kalır.</p>
+            </div>
+          </div>
+          <div class="insight-box" style="margin-top:12px">
+            <strong>Kazananlar:</strong> Nvidia, TSMC, HBM üreticileri (Micron, SK Hynix), Veri merkezi soğutma firmaları, Nükleer enerji ve kamu hizmeti şirketleri.
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-setup-b" class="tab-content">
+        <div class="setup-b">
+          <div class="setup-header">🟢 Setup B: Optimizasyon Devrimi (Algoritmik Verimlilik)</div>
+          <div class="grid" style="grid-template-columns:1fr 1fr;gap:12px">
+            <div class="card">
+              <div class="card-label">Temel Varsayım</div>
+              <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">BitNet b1.58 ve benzeri 1-bit / üçlü modeller ile Özel Silikonlar (ASIC) ana akım haline gelir.</p>
+            </div>
+            <div class="card">
+              <div class="card-label">Birincil Darboğaz</div>
+              <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">Yeni modellere uygun yazılım mühendisliği altyapısının kurulması ve eski veri setlerinin yeni mimariye adaptasyonu.</p>
+            </div>
+            <div class="card">
+              <div class="card-label">Finansal Durum</div>
+              <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">Hiperskalajcı CapEx yükü dramatik biçimde düşer, kâr marjları fırlar. Şirketler serbest nakit akışında tekrar zirveye ulaşır.</p>
+            </div>
+            <div class="card">
+              <div class="card-label">Kriz Riski</div>
+              <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">Çip ve bellek pazarında devasa değer kayıpları. Yarı iletken endüstrisi daralır ancak teknoloji daha tabana yayılır. Piyasada lokal ama şiddetli şoklar yaşanır.</p>
+            </div>
+          </div>
+          <div class="insight-box bull" style="margin-top:12px">
+            <strong>Kazananlar:</strong> Hiperskalajcılar, ASIC tasarımcıları (Broadcom, Marvell), CPU üreticileri (Intel, AMD), Uç Bilişim odaklı şirketler (Apple, donanım satıcıları).
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-setup-c" class="tab-content">
+        <div class="setup-c">
+          <div class="setup-header">🔴 Setup C: Hiperskalajcı Kredi Krizi (Sistemik Çöküş)</div>
+          <div class="grid" style="grid-template-columns:1fr 1fr;gap:12px">
+            <div class="card">
+              <div class="card-label">Temel Varsayım</div>
+              <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">Ne BitNet devreye girer ne de özel silikonlar Nvidia'nın yerini alabilir. Maliyetler yüksek kalmaya devam ederken, enflasyon ve faiz oranları şirketlerin borçlanma maliyetlerini yükseltir.</p>
+            </div>
+            <div class="card">
+              <div class="card-label">Birincil Darboğaz</div>
+              <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">Müşteri adaptasyonu ve Kredi maliyetleri. Şirketler verimlilik artışını bulamaz.</p>
+            </div>
+            <div class="card">
+              <div class="card-label">Finansal Durum</div>
+              <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">2000 Dot-Com balonuna benzer bir kriz başlar. Altyapıya gömülen trilyonlarca dolarlık borç ödenemez.</p>
+            </div>
+            <div class="card">
+              <div class="card-label">Kriz Riski</div>
+              <p style="font-size:0.85rem;color:var(--gf-text);margin-top:6px">Küresel teknoloji pazarının on yıl geriye gitmesi, yapay zeka yatırımlarının tamamen durması ve yapay zeka "kışının" (AI Winter) yeniden başlaması.</p>
+            </div>
+          </div>
+          <div class="insight-box danger" style="margin-top:12px">
+            <strong>Kazananlar:</strong> Açığa satış fonları (Short-sellers), yeniden yapılandırma (restructuring) danışmanlık firmaları, iflas eden veri merkezlerini ucuza toplayan özel sermaye (Private Equity) şirketleri.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 9: Stratejik Çıkarımlar -->
+<section>
+  <div class="section-head" id="sec-sonuc">
+    <div class="section-head-inner" onclick="toggle('sec-sonuc')">
+      <h2 class="section-title">🎯 9. Stratejik Çıkarımlar ve Değerlendirme</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--gf-text)">Küresel yapay zeka ekosistemi, dışarıdan pürüzsüz ve sırayla işleyen bir değer zinciri (çip üreticisi → donanımcı → hiperskalajcı → müşteri) gibi görünse de, veriler bu zincirin en kritik halkasında (hiperskalajcı finansalları) büyük bir çatlak oluştuğunu kanıtlamaktadır.</p>
+
+      <div class="insight-box danger">
+        <strong>Değer Zincirinin Şok Emicisi:</strong> Hiperskalajcılar, değer zincirinin şok emicileridir. Tüm sektörü kendi bilançolarını kaldıraçlandırarak ayakta tutmaktadırlar. Eğer yapay zekanın "Varoluşsal Hiyerarşisi"ndeki en tepe unsur olan "Müşteri", sisteme beklenen nakdi enjekte etmezse, hiperskalajcıların iflas etmemek için yapacağı ilk hamle, kendi kâr marjlarını sömüren donanım devlerini (Nvidia, Micron) feda etmek olacaktır. "Al ya da Öde" (Take-or-pay) sözleşmelerinin feshedilmesi ve özel silikonlara (ASIC) dramatik geçiş, yaşanacak ekonomik savunmanın ilk adımlarıdır.
+      </div>
+
+      <div class="insight-box">
+        <strong>İnovasyon Tehdidi:</strong> Donanım tekelleri için asıl ölümcül tehdit, sermaye eksikliğinden çok inovasyonun kendisidir. BitNet gibi 1-bit mimarilerin yükselişi; hesaplama paradigmasını kayan noktalı çarpma işlemlerinden basit toplama işlemlerine indirgeyerek, HBM bellek ve devasa GPU ihtiyacını fiziksel olarak anlamsız kılma potansiyeline sahiptir. Böylesi bir yazılımsal devrim, sistemi tamamen çökertmek (domino) yerine, devasa bir zenginlik transferi yaratacaktır. Sermaye, çip üreticilerinden alınarak tekrar algoritmaların yaratıcılarına, bulut platformlarına ve son kullanıcıların ceplerine geri dönecektir.
+      </div>
+
+      <div class="insight-box bull">
+        <strong>Merkezî İlke:</strong> Uzun vadeli analizler ve stratejik konumlandırmalar yapılırken; sistemin donanım bileşenlerinin (Çip, Bellek) her zaman ikame edilebilir olduğu, asıl değiştirilemez kısıtların ise Fiziksel Evren (Enerji Kapasitesi) ve Ekonomik Evren (Müşterinin Ödeme İsteği) olduğu gerçeği merkeze alınmalıdır. Herhangi bir değer zincirinin uzun vadeli kârlılığı, fizik kurallarını ne kadar verimli kullandığına ve insan unsuruna ne kadar değer kattığına bağlı olarak şekillenecektir.
+      </div>
+
+      <div class="kpi-row" style="margin-top:18px">
+        <div class="kpi"><div class="kpi-num">Müşteri</div><div class="kpi-label">En üst hiyerarşi</div></div>
+        <div class="kpi"><div class="kpi-num">Enerji</div><div class="kpi-label">Fiziksel kısıt</div></div>
+        <div class="kpi"><div class="kpi-num">Hesaplama</div><div class="kpi-label">Esnek / İkame</div></div>
+        <div class="kpi"><div class="kpi-num">Bellek</div><div class="kpi-label">En kırılgan</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">Gistify Flow | Yapay Zeka Altyapı Analizi | 1 Temmuz 2026</div>
+
+</div>
+</body>
+</html>
