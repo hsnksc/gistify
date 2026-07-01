@@ -1,110 +1,138 @@
-# Market Flash — Pre-Market (ET 09:00 | TSİ 16:00)
+# Market Flash — Pre-Market Momentum
 
-**Tarih:** 1 Temmuz 2026  
-**Rapor Tipi:** Pre-Market Momentum  
-**VIX Rejimi:** Normal (16.67)
-
----
-
-## Market Summary
-
-| Symbol | Price | Change | VWAP | Open | High | Low | Prev Close |
-|--------|-------|--------|------|------|------|-----|------------|
-| $SPY   | 746.77 | +0.78% | 745.23 | 741.29 | 748.02 | 740.89 | 741.00 |
-| $QQQ   | 736.40 | +1.70% | 732.64 | 724.18 | 737.62 | 723.91 | 724.08 |
-| $IWM   | 300.45 | +0.50% | 299.62 | 298.56 | 300.98 | 297.44 | 298.97 |
-| $VIX   | 16.67  | +1.34% | 16.83  | 17.11  | 17.19  | 16.64  | 16.45  |
-
-Tüm indexler **VWAP üzerinde** açılıyor. $SPY gap-up, $QQQ tech leadership gösteriyor. VIX 16.67 ile normal rejimde; fear yok, complacency var ama extreme değil. **Risk-on bias** hakim.
+**Rapor Tarihi:** 1 Temmuz 2026 (TSİ 20:01 / ET 13:01)  
+**Rapor Tipi:** Pre-Market  
+**VIX Regime:** Normal (16.05)
 
 ---
 
-## Top Movers — Pre-Market
+## Market Özeti
 
-### Gainers (5)
+| Ticker | Fiyat | Değişim | VWAP | Açılış | Gün Yüksek | Gün Düşük | Önceki Kapanış |
+|--------|-------|---------|------|--------|------------|-----------|----------------|
+| $SPY   | 747.81 | +0.14% | 746.54 | 745.00 | 749.44 | 742.38 | 746.77 |
+| $QQQ   | 728.47 | -1.08% | 728.64 | 730.81 | 731.92 | 725.52 | 736.40 |
+| $IWM   | 301.83 | +0.46% | 301.16 | 299.93 | 302.72 | 298.92 | 300.45 |
+| $VIX   | 16.05 | -2.43% | 16.47 | 17.11 | 17.30 | 16.07 | 16.45 |
 
-| Ticker | Company | Price | Change | Volume | Catalyst |
-|--------|---------|-------|--------|--------|----------|
-| $ENPH | Enphase Energy Inc. | 53.05 | **+9.75%** | 956.7K | Solar/renewable momentum; pre-market volume spike |
-| $EVRG | Evergy Inc. | 91.70 | +5.39% | 313.4K | Utility defensive rotation; rate-base stability |
-| $APD | Air Products & Chemicals | 291.05 | +7.26% | 14.4K | Industrial gas demand + hydrogen outlook |
-| $FSLR | First Solar Inc. | 240.31 | +3.22% | 40.7K | Solar infrastructure buildout narrative |
-| $BLD | TopBuild Corp. | 376.99 | +4.79% | 3.8K | Building products/energy efficiency demand |
-
-**Not:** $BLD pre-market volume çok düşük (3.8K); fill risk yüksek. $APD de thin — dikkat.
-
-### Losers (5)
-
-| Ticker | Company | Price | Change | Volume | Catalyst |
-|--------|---------|-------|--------|--------|----------|
-| $CNXC | Concentrix Corp. | 18.96 | **-24.83%** | 163.4K | Q2 earnings miss + guidance cut; gap-down |
-| $MSTR | Strategy Inc (MicroStrategy) | 86.71 | -6.44% | 1.38M | BTC volatility + mark-to-market losses; BTIG PT cut $350→$250 |
-| $DLR | Digital Realty Trust | 181.67 | -4.68% | 1.24M | REIT rotation out; high-valuation data center REITs under pressure |
-| $COIN | Coinbase Global | 145.68 | -3.94% | 157.5K | Crypto correlation with MSTR; trading volume concerns |
-| $TTD | Trade Desk Inc. | 18.02 | -3.38% | 554.4K | Ad-tech valuation pressure; post-earnings drift |
+$SPY VWAP üzerinde, risk-on sinyali. $QQQ VWAP altında, tech weakness gösteriyor. $IWM VWAP üzerinde, small cap relative strength var. VIX 16 seviyesinde normal — complacency değil, ama fear değil.
 
 ---
 
-## Earnings Calendar — Bugün (1 Temmuz 2026)
+## Top Movers — Gainers (5)
 
-| Ticker | Time | Consensus EPS | Prior EPS (YoY) | Consensus Rev | Prior Rev | Note |
-|--------|------|---------------|-----------------|---------------|-----------|------|
-| $FDS | Before Open | $4.45 | $4.27 | $614.1M | $585.5M | **0DTE YASAK** — IV crush risk. Financial data terminal. |
-| $GIS | Before Open | $0.80 | $0.74 | $4.59B | $4.60B | **0DTE YASAK** — IV crush risk. Consumer staples. |
-| $MSM | Before Open | $1.27 | $1.08 | $1.03B | $1.08B | **0DTE YASAK** — IV crush risk. Industrial distribution. |
-| $UNF | Before Open | $1.91 | $2.17 | $625.8M | $610.8M | **0DTE YASAK** — IV crush risk. Pending Cintas acquisition; no call. |
-| $GBX | After Close | $0.60 | $1.86 | $612.7M | $842.7M | **0DTE YASAK** — IV crush risk. Railcar manufacturing headwinds. |
+| Ticker | Şirket | Fiyat | Değişim | Hacim | Katalizör | Sektör |
+|--------|--------|-------|---------|-------|-----------|--------|
+| $META | Meta Platforms Inc | $598.48 | +6.25% | 308.7K | AI/tech sentiment recovery; broad tech rotation | Media |
+| $NOW | ServiceNow Inc | $103.74 | +4.49% | 902.0K | Enterprise software strength; SaaS rotation | Technology |
+| $CRM | Salesforce Inc | $162.51 | +3.73% | 235.2K | Cloud sector rebound; enterprise demand | Technology |
+| $FMC | FMC Corp | $12.49 | +8.61% | 117.7K | Agrochemical sector momentum; commodity speculation | Chemicals |
+| $RRX | Regal Rexnord Corp | $249.00 | +4.54% | 18.7K | Industrial manufacturing demand strength | Industrials |
 
-**Toplam:** 5 earnings (4 BMO + 1 AMC). expectedMove ve consensusRange verileri kaynaklarda bulunamadı → null + note ile raporlandı.
+**Not:** $META ve $NOW en yüksek tradeability skoruna sahip — hacim yüksek, fiyat $5+, katalizör net.
+
+---
+
+## Top Movers — Losers (5)
+
+| Ticker | Şirket | Fiyat | Değişim | Hacim | Katalizör | Sektör |
+|--------|--------|-------|---------|-------|-----------|--------|
+| $MU | Micron Technology Inc | $1,085.80 | -5.93% | 1.79M | Semiconductor sector-wide rotation; memory selloff | Semiconductors |
+| $GLW | Corning Inc | $240.61 | -5.80% | 272.6K | Optical communications demand concerns | Electrical Equipment |
+| $AMAT | Applied Materials Inc | $692.10 | -4.27% | 147.1K | Semiconductor equipment pressure; AI trade reversal | Semiconductors |
+| $MRVL | Marvell Technology Inc | $285.76 | -4.07% | 416.6K | Chip sector broad selloff; AI infrastructure unwind | Semiconductors |
+| $WDC | Western Digital Corp | $612.00 | -4.18% | 142.5K | Storage/memory weakness; data center demand concerns | Technology |
+
+**Not:** Semiconductor selloff derin — $MU, $AMAT, $MRVL, $GLW, $WDC hepsi aynı sector rotation dalgasında. Bu bir "tek bir haber" değil, broad risk-off from AI infrastructure.
+
+---
+
+## Earnings Takvimi — 1 Temmuz 2026
+
+### Before-Open (Zaten Açıklandı)
+
+| Ticker | Şirket | Consensus EPS | Gerçek EPS | Sürpriz | Not |
+|--------|--------|---------------|------------|---------|-----|
+| $GIS | General Mills Inc | $0.80 | $0.95 | +19.2% | Beat. IV crush tamamlandı. |
+| $FDS | FactSet Research Systems Inc | $4.45 | $4.53 | +1.8% | Beat. Revenue $622.9M vs $617.9M est. IV crush tamamlandı. |
+| $MSM | MSC Industrial Direct Co Inc | $1.27 | $1.43 | +12.6% | Beat. Industrial demand solid. IV crush tamamlandı. |
+| $UNF | UniFirst Corporation | $1.91 | $2.06 | +8.1% | Beat. Uniform rental services. IV crush tamamlandı. |
+| $NKLR | Terra Innovatum Global N.V. | -$0.04 | -$0.03 | +21% | Beat. Micro cap. IV crush tamamlandı. |
+| $VCIG | VCI Global Limited | — | — | — | Micro cap. Limited data. |
+
+### After-Close (Bekleniyor — 0DTE YASAK)
+
+| Ticker | Şirket | Consensus EPS | Not |
+|--------|--------|---------------|-----|
+| $FIZZ | National Beverage Corp | $0.47 | 0DTE YASAK — IV crush risk. Beverage sector. |
+| $GBX | The Greenbrier Companies Inc | $0.60 | 0DTE YASAK — IV crush risk. Railcar manufacturing. |
+| $RR | Richtech Robotics Inc | -$0.03 | 0DTE YASAK — IV crush risk. Micro cap robotics. |
+| $FC | Franklin Covey Co | $0.36 | 0DTE YASAK — IV crush risk. Corporate training. |
+| $AREC | American Resources Corp | -$0.12 | 0DTE YASAK — IV crush risk. Mining/real estate. |
+| $BSET | Bassett Furniture Industries Inc | $0.23 | 0DTE YASAK — IV crush risk. Furniture retail. |
+| $SRL | Scully Royalty Ltd | — | 0DTE YASAK — IV crush risk. Royalty company. |
+| $CULP | Culp Inc | -$0.11 | 0DTE YASAK — IV crush risk. Textile manufacturing. |
+| $MAXN | Maxeon Solar Technologies Ltd | — | 0DTE YASAK — IV crush risk. Solar panel manufacturing. |
+| $REE | REE Automotive Ltd | — | 0DTE YASAK — IV crush risk. EV startup. |
+| $NCT | Intercont (Cayman) Limited | — | 0DTE YASAK — IV crush risk. Micro cap. |
+| $NVVE | Nuvve Holding Corp | — | 0DTE YASAK — IV crush risk. EV charging. |
+
+**Toplam 18 şirket.** 6'sı zaten açıklandı ve beat etti. 12'si akşam bekleniyor. **0DTE option'lar earnings stock'larında YASAK.**
 
 ---
 
 ## CALL Setups (5)
 
-| Ticker | Entry | Target | Stop | R/R | Timeframe | Rationale |
-|--------|-------|--------|------|-----|-----------|-----------|
-| $SPY | 745.50 | 751.50 | 742.50 | **2.0:1** | Intraday | Gap-up + VWAP üzerinde (745.23). ORB bekleniyor. |
-| $QQQ | 735.00 | 743.00 | 731.00 | **2.0:1** | Intraday | Tech leadership, VWAP reclaim. Pre-market gap + volume. |
-| $ENPH | 53.00 | 57.00 | 51.00 | **2.0:1** | Intraday | Solar momentum +9.75% pre-market. VWAP üzerinde. |
-| $FSLR | 240.00 | 247.00 | 236.50 | **2.0:1** | Intraday | Solar infrastructure narrative. Positive sector flow. |
-| $APD | 291.00 | 298.00 | 287.50 | **2.0:1** | Intraday | Industrial gas + hydrogen outlook. Low volume risk noted. |
+| Ticker | Yön | Entry | Stop | Target | R/R | Timeframe | Rationale |
+|--------|-----|-------|------|--------|-----|-----------|-----------|
+| $META | CALL | $598.50 | $590.00 | $615.00 | 2.1:1 | 0DTE | Pre-market +6.25% momentum, VWAP üzerinde kalıcılık bekleniyor. Hacim 308K+ yeterli. Tech sentiment recovery. Earnings yok. |
+| $NOW | CALL | $103.50 | $100.00 | $109.50 | 2.0:1 | intraday | SaaS/enterprise software güçlü. Pre-market +4.49%, hacim 902K yüksek. VWAP reclaim. Earnings yok. |
+| $SPY | CALL | $746.00 | $740.00 | $758.00 | 2.0:1 | intraday | SPY VWAP üzerinde, VIX normal seviyede. Small cap relative strength (IWM pozitif) risk-on işareti. |
+| $IWM | CALL | $301.00 | $296.50 | $310.00 | 2.0:1 | swing | Small cap outperformance, SPY'e göre güçlü. VWAP üzerinde, momentum devamı bekleniyor. |
+| $PLTR | CALL | $120.00 | $116.00 | $128.00 | 2.0:1 | 0DTE | Pre-market +3.33%, hacim 1.13M yüksek. AI/defense contract momentum. VWAP üzerinde. Earnings yok. |
+
+---
 
 ## PUT Setups (5)
 
-| Ticker | Entry | Target | Stop | R/R | Timeframe | Rationale |
-|--------|-------|--------|------|-----|-----------|-----------|
-| $CNXC | 19.00 | 17.00 | 20.00 | **2.0:1** | Intraday | Earnings miss gap-down -24.83%. Breakdown below support. |
-| $MSTR | 87.00 | 80.00 | 90.50 | **2.0:1** | Intraday | BTC volatility, mark-to-market losses. Below VWAP. |
-| $DLR | 182.00 | 175.00 | 185.50 | **2.0:1** | Intraday | REIT rotation out; breakdown below 180 support. |
-| $COIN | 146.00 | 138.00 | 150.00 | **2.0:1** | Intraday | Crypto correlation; breakdown from support. |
-| $TTD | 18.00 | 16.50 | 18.75 | **2.0:1** | Intraday | Ad-tech drift; breakdown below 18.50 support. |
+| Ticker | Yön | Entry | Stop | Target | R/R | Timeframe | Rationale |
+|--------|-----|-------|------|--------|-----|-----------|-----------|
+| $MU | PUT | $1,086.00 | $1,105.00 | $1,040.00 | 2.4:1 | 0DTE | Semiconductor sector-wide selloff, memory names hardest hit. VWAP altında, momentum devamı bekleniyor. Earnings yok. |
+| $QQQ | PUT | $728.00 | $738.00 | $708.00 | 2.0:1 | intraday | QQQ VWAP altında, tech weakness. SPY'e underperform ediyor. Gap fill potansiyeli. |
+| $AMAT | PUT | $692.00 | $703.00 | $670.00 | 2.0:1 | intraday | Semiconductor equipment weakness, AI trade reversal. VWAP altında, breakdown. Earnings yok. |
+| $GLW | PUT | $240.50 | $245.50 | $230.00 | 2.1:1 | intraday | Optical communications demand concerns, cyclical rotation. VWAP altında. Earnings yok. |
+| $MRVL | PUT | $286.00 | $294.00 | $270.00 | 2.0:1 | intraday | Chip sector broad selloff, AI infrastructure trade unwinding. VWAP altında. Earnings yok. |
 
 ---
 
-## VWAP Notes
+## VWAP Notları
 
-- **$SPY**: VWAP 745.23 | Price 746.77 → **ABOVE** → Risk-on
-- **$QQQ**: VWAP 732.64 | Price 736.40 → **ABOVE** → Tech leadership
-- **$IWM**: VWAP 299.62 | Price 300.45 → **ABOVE** → Small-caps takip ediyor
-
-Tüm indexler VWAP üzerinde. Momentum bias **CALL** yönünde. Gap fill riski düşük görünüyor ama 09:30 ORB sonrası teyit beklenmeli.
-
----
-
-## Risk Assessment
-
-- **Level:** `medium`
-- **VIX Regime:** VIX 16.67 — normal rejim (15-20). Premium selling favorable. Fear yok.
-- **Sector Rotation:** Tech (QQQ) güçlü; REITs ve crypto-correlated isimler zayıf. Energy/utilities defensive. Solar alt-sektörü hot.
-- **Earnings Risk:** 5 isim bugün. IV crush riski yüksek. Earnings hisselerinde 0DTE setup'ları **yasak**.
-- **Macro Risk:** 4 Temmuz haftası (Cuma kapanış). FOMC minutes hazmediliyor, bugün önemli macro veri yok. Likidite Perşembe'den itibaren azalabilir.
+- **$SPY:** VWAP (~746.5) üzerinde — risk-on, broad market güçlü.
+- **$QQQ:** VWAP (~728.6) altında — tech weakness, semiconductor selloff baskısı.
+- **$IWM:** VWAP (~301.2) üzerinde — small cap outperformance, risk-on alt segment.
+- **Gap durumu:** $SPY gap açık (açılış 745, önceki kapanış 746.77 — actually gap down ama şimdi pozitif). $QQQ gap down açık (730.81 vs 736.40). $IWM gap açık (299.93 vs 300.45, gap down sonra pozitif döndü).
+- **Ayrışma:** $SPY/$IWM pozitifken $QQQ negatif — tech selloff + small cap strength kombinasyonu.
 
 ---
 
-## nextDayCarryForward
+## Risk Değerlendirmesi
 
-Pre-market raporu → **[]** (boş array)
+| Risk Faktörü | Değerlendirme |
+|--------------|---------------|
+| **Seviye** | Medium |
+| **VIX Regime** | VIX 16.05 — normal seviye (15-20 aralığı). Geçen haftaya göre düşüş trendi. Complacency değil, ama fear değil. |
+| **Sektör Rotasyonu** | Semiconductor (MU, AMAT, MRVL, GLW, WDC) sert satış baskısı altında. Tech/software (META, NOW, CRM) alıcı buluyor. Small cap (IWM) outperformance. Defensive rotation yok. |
+| **Earnings Riski** | Bugün 18 şirket earnings açıklıyor. 6'sı zaten beat etti. Akşam 12 şirket kaldı — 0DTE earnings stock'larında IV crush riski yüksek. |
+| **Makro Risk** | FOMC öncesi dönem. ABD-İran gerilimi azaldı (petrol ambargosu 60 gün muafiyet). DXY güçlü. Tarife tehditleri devam ediyor. Büyüme endişeleri hafif. |
 
 ---
 
-*Generated at 2026-07-01T16:07:23+03:00. Veriler Finnhub API, MarketWatch, CBOE, Kiplinger ve Yahoo Finance kaynaklarından derlenmiştir. Finansal tavsiye değildir.*
+## Next Day Carry Forward
+
+Pre-market raporu — **BOŞ** `[]`.
+
+---
+
+*Rapor Gistify Market Flash pipeline tarafından üretildi.  
+Kaynaklar: Finnhub API, MarketWatch, Yahoo Finance, CBOE, AlphaStreet.  
+⚠️ Bu rapor yatırım tavsiyesi değildir. Her trade kendi riskinizdedir. Max 2% position size.*
