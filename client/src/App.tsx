@@ -549,7 +549,7 @@ function WorkspaceNavigation({
 
   return (
     <>
-      <nav className="terminal-scrollbar hidden max-w-full md:flex md:items-center md:gap-1 md:overflow-x-auto md:rounded-full md:border md:border-border md:bg-card md:p-1">
+      <nav className="hidden max-w-full md:flex md:flex-wrap md:items-center md:gap-1 md:rounded-2xl md:border md:border-border md:bg-card md:p-1">
         {items.map(item => {
           const Icon = item.icon;
           const isLocked = item.requiresSubscription && !canAccessPaidRoutes;
