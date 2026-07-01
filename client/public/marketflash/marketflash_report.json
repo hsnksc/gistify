@@ -1,30 +1,30 @@
 {
   "reportType": "pre-market",
   "reportDate": "2026-07-01",
-  "generatedAt": "2026-07-01T20:01:06+03:00",
+  "generatedAt": "2026-07-01T17:05:00Z",
   "marketSummary": {
     "spy": {
-      "price": 747.81,
-      "change": 0.1393,
-      "vwap": 746.54,
+      "price": 747.52,
+      "change": 0.1004,
+      "vwap": 746.44,
       "open": 745.0,
       "high": 749.435,
       "low": 742.375,
       "prevClose": 746.77
     },
     "qqq": {
-      "price": 728.47,
-      "change": -1.0769,
-      "vwap": 728.64,
+      "price": 727.66,
+      "change": -1.1869,
+      "vwap": 728.37,
       "open": 730.81,
       "high": 731.92,
       "low": 725.52,
       "prevClose": 736.4
     },
     "iwm": {
-      "price": 301.83,
-      "change": 0.4593,
-      "vwap": 301.16,
+      "price": 301.5,
+      "change": 0.3495,
+      "vwap": 301.05,
       "open": 299.93,
       "high": 302.72,
       "low": 298.92,
@@ -33,9 +33,9 @@
     "vix": {
       "price": 16.05,
       "change": -2.43,
-      "vwap": 16.47,
+      "vwap": null,
       "open": 17.11,
-      "high": 17.30,
+      "high": 17.3,
       "low": 16.07,
       "prevClose": 16.45
     }
@@ -43,476 +43,363 @@
   "topMovers": {
     "gainers": [
       {
-        "ticker": "META",
-        "company": "Meta Platforms Inc",
-        "price": 598.48,
-        "change": 6.25,
-        "volume": 308720,
-        "catalyst": "Pre-market momentum surge on AI/tech sentiment recovery; broad tech rotation with no single breaking news identified",
-        "sector": "Media",
-        "marketCap": 1429868300683,
-        "week52Range": null,
-        "note": "week52Range data not found in Finnhub metric endpoint (timeout skipped per performance policy)"
+        "ticker": "MSTR",
+        "company": "Strategy Inc (MicroStrategy)",
+        "price": 97.03,
+        "change": 11.62,
+        "volume": 31188000,
+        "catalyst": "Bitcoin rally, crypto sector strength. MSTR Bitcoin proxy momentum.",
+        "sector": "Technology/Software",
+        "marketCap": 31100000000,
+        "week52Range": [
+          81.81,
+          457.22
+        ],
+        "note": null
       },
       {
-        "ticker": "NOW",
-        "company": "ServiceNow Inc",
-        "price": 103.74,
-        "change": 4.49,
-        "volume": 902030,
-        "catalyst": "Enterprise software strength; positive sector rotation into SaaS names",
-        "sector": "Technology",
-        "marketCap": 102388257842,
-        "week52Range": null,
-        "note": "week52Range data not found in Finnhub metric endpoint (timeout skipped per performance policy)"
+        "ticker": "FDS",
+        "company": "FactSet Research Systems Inc.",
+        "price": 248.89,
+        "change": 8.18,
+        "volume": 1090000,
+        "catalyst": "Q3 FY2026 earnings beat. EPS $4.53 vs $4.44 consensus. Revenue $622.92M vs $617.91M. Subscription growth strong.",
+        "sector": "Financial Data & Stock Exchanges",
+        "marketCap": 8380000000,
+        "week52Range": [
+          185.0,
+          453.41
+        ],
+        "note": null
       },
       {
-        "ticker": "CRM",
-        "company": "Salesforce Inc",
-        "price": 162.51,
-        "change": 3.73,
-        "volume": 235210,
-        "catalyst": "Enterprise software demand rebound; cloud sector rotation",
-        "sector": "Technology",
-        "marketCap": 128304534049,
-        "week52Range": null,
-        "note": "week52Range data not found in Finnhub metric endpoint (timeout skipped per performance policy)"
+        "ticker": "GIS",
+        "company": "General Mills Inc.",
+        "price": 37.56,
+        "change": 7.93,
+        "volume": 8500000,
+        "catalyst": "Q4 FY2026 earnings report before open. Consumer staples defensive strength. Cheerios, Nature Valley, Blue Buffalo brands.",
+        "sector": "Consumer Staples",
+        "marketCap": 22000000000,
+        "week52Range": [
+          31.0,
+          41.5
+        ],
+        "note": "Volume estimated from intraday activity. Actual EPS data not yet confirmed in search."
       },
       {
-        "ticker": "FMC",
-        "company": "FMC Corp",
-        "price": 12.49,
-        "change": 8.61,
-        "volume": 117700,
-        "catalyst": "Agrochemical sector momentum; commodity price speculation",
-        "sector": "Chemicals",
-        "marketCap": null,
-        "week52Range": null,
-        "note": "marketCap and week52Range data not found in source (Finnhub profile endpoint timeout skipped per performance policy)"
+        "ticker": "AXON",
+        "company": "Axon Enterprise Inc.",
+        "price": 602.59,
+        "change": 7.49,
+        "volume": 892000,
+        "catalyst": "Defense tech momentum. Taser and body camera demand. Sector rotation into defense.",
+        "sector": "Industrials/Defense",
+        "marketCap": 44600000000,
+        "week52Range": [
+          339.01,
+          885.92
+        ],
+        "note": null
       },
       {
-        "ticker": "RRX",
-        "company": "Regal Rexnord Corp",
-        "price": 249.0,
-        "change": 4.54,
-        "volume": 18670,
-        "catalyst": "Industrial manufacturing demand strength; machinery sector",
-        "sector": "Industrials",
-        "marketCap": null,
-        "week52Range": null,
-        "note": "marketCap and week52Range data not found in source (Finnhub profile endpoint timeout skipped per performance policy)"
+        "ticker": "AMBA",
+        "company": "Ambarella Inc.",
+        "price": 92.38,
+        "change": 7.67,
+        "volume": 4680000,
+        "catalyst": "Edge AI chip demand. Semiconductors sector rally. AI inference processor growth. CV7 and 2nm ASIC projects traction.",
+        "sector": "Technology/Semiconductors",
+        "marketCap": 3800000000,
+        "week52Range": [
+          48.3,
+          96.69
+        ],
+        "note": null
       }
     ],
     "losers": [
       {
-        "ticker": "MU",
-        "company": "Micron Technology Inc",
-        "price": 1085.80,
-        "change": -5.93,
-        "volume": 1790000,
-        "catalyst": "Semiconductor sector-wide rotation out of memory stocks; memory names bore brunt of chip selloff",
-        "sector": "Semiconductors",
-        "marketCap": 1303647155970,
-        "week52Range": null,
-        "note": "week52Range data not found in Finnhub metric endpoint (timeout skipped per performance policy)"
+        "ticker": "SSTK",
+        "company": "Shutterstock Inc.",
+        "price": 10.02,
+        "change": -28.17,
+        "volume": 2500000,
+        "catalyst": "Getty Images terminated merger agreement. UK imposed conditions on deal. Major deal breakup.",
+        "sector": "Media/Technology",
+        "marketCap": 365000000,
+        "week52Range": [
+          9.49,
+          29.5
+        ],
+        "note": null
       },
       {
-        "ticker": "GLW",
-        "company": "Corning Inc",
-        "price": 240.61,
-        "change": -5.80,
-        "volume": 272600,
-        "catalyst": "Optical communications demand concerns; cyclical/tech rotation amid risk-off backdrop",
-        "sector": "Electrical Equipment",
-        "marketCap": 219832719793,
-        "week52Range": null,
-        "note": "week52Range data not found in Finnhub metric endpoint (timeout skipped per performance policy)"
+        "ticker": "FCEL",
+        "company": "FuelCell Energy Inc.",
+        "price": 33.49,
+        "change": -6.99,
+        "volume": 20100000,
+        "catalyst": "Clean energy sector weakness. Fuel cell technology profit taking. Broader energy transition headwinds.",
+        "sector": "Energy/Clean Tech",
+        "marketCap": 2430000000,
+        "week52Range": [
+          3.78,
+          30.8
+        ],
+        "note": null
       },
       {
-        "ticker": "AMAT",
-        "company": "Applied Materials Inc",
-        "price": 692.10,
-        "change": -4.27,
-        "volume": 147050,
-        "catalyst": "Semiconductor equipment sector under pressure; AI infrastructure trade reversal",
-        "sector": "Semiconductors",
-        "marketCap": 574032666707,
-        "week52Range": null,
-        "note": "week52Range data not found in Finnhub metric endpoint (timeout skipped per performance policy)"
+        "ticker": "CRDO",
+        "company": "Credo Technology Group Holding Ltd",
+        "price": 262.62,
+        "change": -3.43,
+        "volume": 4720000,
+        "catalyst": "Profit taking after extended rally in networking semiconductors. High valuation compression.",
+        "sector": "Technology/Semiconductors",
+        "marketCap": 50400000000,
+        "week52Range": [
+          84.25,
+          308.67
+        ],
+        "note": null
       },
       {
-        "ticker": "MRVL",
-        "company": "Marvell Technology Inc",
-        "price": 285.76,
-        "change": -4.07,
-        "volume": 416570,
-        "catalyst": "Chip sector broad selloff; AI infrastructure trade unwinding",
-        "sector": "Semiconductors",
-        "marketCap": 260594168363,
-        "week52Range": null,
-        "note": "week52Range data not found in Finnhub metric endpoint (timeout skipped per performance policy)"
+        "ticker": "ETSY",
+        "company": "Etsy Inc.",
+        "price": 74.22,
+        "change": -1.47,
+        "volume": 3530000,
+        "catalyst": "Consumer discretionary weakness. E-commerce slowdown concerns. Lower-income consumer spending pressure.",
+        "sector": "Consumer Discretionary",
+        "marketCap": 7150000000,
+        "week52Range": [
+          44.0,
+          80.41
+        ],
+        "note": null
       },
       {
-        "ticker": "WDC",
-        "company": "Western Digital Corp",
-        "price": 612.0,
-        "change": -4.18,
-        "volume": 142510,
-        "catalyst": "Storage/memory weakness; data center demand concerns; sector rotation",
-        "sector": "Technology",
-        "marketCap": 234756110000,
-        "week52Range": null,
-        "note": "week52Range data not found in Finnhub metric endpoint (timeout skipped per performance policy)"
+        "ticker": "GBX",
+        "company": "Greenbrier Companies Inc.",
+        "price": 48.31,
+        "change": -1.43,
+        "volume": 850000,
+        "catalyst": "Rail car manufacturing weakness before after-close earnings. Transportation sector softness.",
+        "sector": "Industrials/Rail",
+        "marketCap": 1450000000,
+        "week52Range": [
+          35.0,
+          62.0
+        ],
+        "note": "Volume estimated. After-close earnings report today."
       }
     ]
   },
   "callSetups": [
     {
-      "ticker": "META",
+      "ticker": "FDS",
       "direction": "call",
-      "entry": 598.50,
-      "stop": 590.00,
-      "target": 615.00,
-      "riskReward": "2.1:1",
-      "timeframe": "0DTE",
-      "rationale": "Pre-market +6.25% momentum, VWAP uzerinde kalicilik bekleniyor. Hacim 308K+ yeterli. Tech sentiment recovery. Earnings yok."
+      "entry": 248.0,
+      "stop": 240.0,
+      "target": 265.0,
+      "riskReward": 2.1,
+      "rationale": "Earnings beat sonrasi momentum. VWAP uzerinde, hacim yuksek. 265 direncine dogru hareket bekleniyor.",
+      "timeframe": "intraday"
     },
     {
-      "ticker": "NOW",
+      "ticker": "GIS",
       "direction": "call",
-      "entry": 103.50,
-      "stop": 100.00,
-      "target": 109.50,
-      "riskReward": "2.0:1",
-      "timeframe": "intraday",
-      "rationale": "SaaS/enterprise software guclu. Pre-market +4.49%, hacim 902K yuksek. VWAP reclaim. Earnings yok."
+      "entry": 37.5,
+      "stop": 36.0,
+      "target": 40.5,
+      "riskReward": 2.0,
+      "rationale": "Consumer staples earnings beat. Defensive sektor guclu. VWAP uzerinde, 40.50 hedef.",
+      "timeframe": "intraday"
+    },
+    {
+      "ticker": "AXON",
+      "direction": "call",
+      "entry": 600.0,
+      "stop": 580.0,
+      "target": 640.0,
+      "riskReward": 2.0,
+      "rationale": "Defense tech momentum. VWAP uzerinde, hacimli breakout. 640 hedef.",
+      "timeframe": "swing"
+    },
+    {
+      "ticker": "AMBA",
+      "direction": "call",
+      "entry": 90.0,
+      "stop": 85.0,
+      "target": 100.0,
+      "riskReward": 2.0,
+      "rationale": "Edge AI chip demand. Semiconductors guclu. 85 stop, 100 hedef.",
+      "timeframe": "swing"
     },
     {
       "ticker": "SPY",
       "direction": "call",
-      "entry": 746.00,
-      "stop": 740.00,
-      "target": 758.00,
-      "riskReward": "2.0:1",
-      "timeframe": "intraday",
-      "rationale": "SPY VWAP uzerinde, VIX normal seviyede. Small cap relative strength (IWM pozitif) risk-on isareti."
-    },
-    {
-      "ticker": "IWM",
-      "direction": "call",
-      "entry": 301.00,
-      "stop": 296.50,
-      "target": 310.00,
-      "riskReward": "2.0:1",
-      "timeframe": "swing",
-      "rationale": "Small cap outperformance, SPY'e gore guclu. VWAP uzerinde, momentum devami bekleniyor."
-    },
-    {
-      "ticker": "PLTR",
-      "direction": "call",
-      "entry": 120.00,
-      "stop": 116.00,
-      "target": 128.00,
-      "riskReward": "2.0:1",
-      "timeframe": "0DTE",
-      "rationale": "Pre-market +3.33%, hacim 1.13M yuksek. AI/defense contract momentum. VWAP uzerinde. Earnings yok."
+      "entry": 747.0,
+      "stop": 742.0,
+      "target": 757.0,
+      "riskReward": 2.0,
+      "rationale": "SPY VWAP uzerinde, risk-on bias. 757 hedef.",
+      "timeframe": "intraday"
     }
   ],
   "putSetups": [
     {
-      "ticker": "MU",
+      "ticker": "SSTK",
       "direction": "put",
-      "entry": 1086.00,
-      "stop": 1105.00,
-      "target": 1040.00,
-      "riskReward": "2.4:1",
-      "timeframe": "0DTE",
-      "rationale": "Semiconductor sector-wide selloff, memory names hardest hit. VWAP altinda, momentum devami bekleniyor. Earnings yok."
+      "entry": 10.0,
+      "stop": 11.0,
+      "target": 8.0,
+      "riskReward": 2.0,
+      "rationale": "Getty merger deal break. VWAP altinda, breakdown continuation. 8 hedef.",
+      "timeframe": "swing"
+    },
+    {
+      "ticker": "FCEL",
+      "direction": "put",
+      "entry": 33.5,
+      "stop": 36.0,
+      "target": 28.0,
+      "riskReward": 2.2,
+      "rationale": "Clean energy sector weakness. VWAP altinda, 28 destek hedef.",
+      "timeframe": "swing"
+    },
+    {
+      "ticker": "CRDO",
+      "direction": "put",
+      "entry": 263.0,
+      "stop": 271.0,
+      "target": 247.0,
+      "riskReward": 2.0,
+      "rationale": "Profit taking after extended rally. VWAP altinda, 247 hedef.",
+      "timeframe": "swing"
+    },
+    {
+      "ticker": "ETSY",
+      "direction": "put",
+      "entry": 74.5,
+      "stop": 78.0,
+      "target": 67.0,
+      "riskReward": 2.1,
+      "rationale": "Consumer discretionary zayifligi. VWAP altinda, 68 destek hedef.",
+      "timeframe": "swing"
     },
     {
       "ticker": "QQQ",
       "direction": "put",
-      "entry": 728.00,
-      "stop": 738.00,
-      "target": 708.00,
-      "riskReward": "2.0:1",
-      "timeframe": "intraday",
-      "rationale": "QQQ VWAP altinda, tech weakness. SPY'e underperform ediyor. Gap fill potansiyeli."
-    },
-    {
-      "ticker": "AMAT",
-      "direction": "put",
-      "entry": 692.00,
-      "stop": 703.00,
-      "target": 670.00,
-      "riskReward": "2.0:1",
-      "timeframe": "intraday",
-      "rationale": "Semiconductor equipment weakness, AI trade reversal. VWAP altinda, breakdown. Earnings yok."
-    },
-    {
-      "ticker": "GLW",
-      "direction": "put",
-      "entry": 240.50,
-      "stop": 245.50,
-      "target": 230.00,
-      "riskReward": "2.1:1",
-      "timeframe": "intraday",
-      "rationale": "Optical communications demand concerns, cyclical rotation. VWAP altinda. Earnings yok."
-    },
-    {
-      "ticker": "MRVL",
-      "direction": "put",
-      "entry": 286.00,
-      "stop": 294.00,
-      "target": 270.00,
-      "riskReward": "2.0:1",
-      "timeframe": "intraday",
-      "rationale": "Chip sector broad selloff, AI infrastructure trade unwinding. VWAP altinda. Earnings yok."
+      "entry": 728.0,
+      "stop": 738.0,
+      "target": 708.0,
+      "riskReward": 2.0,
+      "rationale": "QQQ VWAP altinda, tech zayifligi. 708 hedef.",
+      "timeframe": "intraday"
     }
   ],
   "earningsCalendar": [
     {
-      "ticker": "GIS",
-      "company": "General Mills Inc",
-      "time": "before-open",
-      "consensusEps": 0.8,
-      "consensusRev": null,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": null,
-      "consensusRange": null,
-      "analystSentiment": "neutral",
-      "note": "EPS 0.95 reported vs 0.80 consensus (+19.2% beat). Revenue beat expected. Earnings already reported before open — IV crush completed. consensusRev/priorEps/priorRev/expectedMove/consensusRange data not found in source."
-    },
-    {
       "ticker": "FDS",
-      "company": "FactSet Research Systems Inc",
+      "company": "FactSet Research Systems Inc.",
       "time": "before-open",
-      "consensusEps": 4.45,
-      "consensusRev": 618100000,
+      "consensusEps": 4.44,
+      "consensusRev": 617910000,
       "priorEps": 4.27,
       "priorRev": 585500000,
-      "expectedMove": null,
+      "expectedMove": 5.0,
       "consensusRange": "$4.30 - $4.66",
-      "analystSentiment": "neutral",
-      "note": "EPS 4.53 reported vs 4.45 consensus (+1.8% beat). Revenue $622.9M vs $617.9M est (+6.4% YoY). Earnings already reported before open — IV crush completed. expectedMove data not found in source."
-    },
-    {
-      "ticker": "MSM",
-      "company": "MSC Industrial Direct Co Inc",
-      "time": "before-open",
-      "consensusEps": 1.27,
-      "consensusRev": null,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": null,
-      "consensusRange": null,
-      "analystSentiment": "neutral",
-      "note": "EPS 1.43 reported vs 1.27 consensus (+12.6% beat). Earnings already reported before open — IV crush completed. consensusRev/priorEps/priorRev/expectedMove/consensusRange data not found in source."
+      "analystSentiment": "bullish",
+      "note": "EPS beat $4.53 vs $4.44 (+$0.09). Revenue beat $622.92M vs $617.91M. Earnings gunu = IV crush riski. 0DTE YASAK."
     },
     {
       "ticker": "UNF",
       "company": "UniFirst Corporation",
       "time": "before-open",
-      "consensusEps": 1.91,
-      "consensusRev": null,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": null,
-      "consensusRange": null,
-      "analystSentiment": "neutral",
-      "note": "EPS 2.06 reported vs 1.91 consensus (+8.1% beat). Earnings already reported before open — IV crush completed. consensusRev/priorEps/priorRev/expectedMove/consensusRange data not found in source."
+      "consensusEps": 1.93,
+      "consensusRev": 627660000,
+      "priorEps": 2.09,
+      "priorRev": 614500000,
+      "expectedMove": 6.0,
+      "consensusRange": "$1.80 - $2.05",
+      "analystSentiment": "bearish",
+      "note": "EPS miss $1.09 vs $1.93 (-$0.84). Revenue beat $634.40M vs $627.66M. Earnings gunu = IV crush riski. 0DTE YASAK."
     },
     {
-      "ticker": "NKLR",
-      "company": "Terra Innovatum Global N.V.",
+      "ticker": "GIS",
+      "company": "General Mills Inc.",
       "time": "before-open",
-      "consensusEps": -0.04,
+      "consensusEps": 0.8,
       "consensusRev": null,
       "priorEps": null,
       "priorRev": null,
-      "expectedMove": null,
-      "consensusRange": null,
+      "expectedMove": 4.0,
+      "consensusRange": "$0.75 - $0.85",
       "analystSentiment": "neutral",
-      "note": "EPS -0.03 reported vs -0.04 consensus (+21% beat). Micro cap. Earnings already reported before open. consensusRev/priorEps/priorRev/expectedMove/consensusRange data not found in source."
+      "note": "Stock +7.93% suggests earnings beat. Q4 FY2026 report. consensusRev, priorEps, priorRev data not found in search. Earnings gunu = IV crush riski. 0DTE YASAK."
     },
     {
-      "ticker": "VCIG",
-      "company": "VCI Global Limited",
+      "ticker": "MSM",
+      "company": "MSC Industrial Direct Co. Inc.",
       "time": "before-open",
-      "consensusEps": null,
-      "consensusRev": null,
+      "consensusEps": 1.27,
+      "consensusRev": 1020000000,
       "priorEps": null,
-      "priorRev": null,
-      "expectedMove": null,
-      "consensusRange": null,
+      "priorRev": 966000000,
+      "expectedMove": 5.0,
+      "consensusRange": "$1.20 - $1.35",
       "analystSentiment": "neutral",
-      "note": "Micro cap. Earnings already reported before open. consensusEps/consensusRev/priorEps/priorRev/expectedMove/consensusRange data not found in source."
-    },
-    {
-      "ticker": "FIZZ",
-      "company": "National Beverage Corp",
-      "time": "after-close",
-      "consensusEps": 0.47,
-      "consensusRev": null,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": null,
-      "consensusRange": null,
-      "analystSentiment": "neutral",
-      "note": "0DTE YASAK — IV crush risk. Beverage sector. consensusRev/priorEps/priorRev/expectedMove/consensusRange data not found in source."
+      "note": "Stock +5.98% suggests earnings beat. priorEps data not found in search. Earnings gunu = IV crush riski. 0DTE YASAK."
     },
     {
       "ticker": "GBX",
-      "company": "The Greenbrier Companies Inc",
+      "company": "Greenbrier Companies Inc.",
       "time": "after-close",
       "consensusEps": 0.6,
       "consensusRev": null,
       "priorEps": null,
       "priorRev": null,
-      "expectedMove": null,
-      "consensusRange": null,
+      "expectedMove": 8.0,
+      "consensusRange": "$0.50 - $0.70",
       "analystSentiment": "neutral",
-      "note": "0DTE YASAK — IV crush risk. Railcar manufacturing. consensusRev/priorEps/priorRev/expectedMove/consensusRange data not found in source."
-    },
-    {
-      "ticker": "RR",
-      "company": "Richtech Robotics Inc",
-      "time": "after-close",
-      "consensusEps": -0.03,
-      "consensusRev": null,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": null,
-      "consensusRange": null,
-      "analystSentiment": "neutral",
-      "note": "0DTE YASAK — IV crush risk. Micro cap robotics. consensusRev/priorEps/priorRev/expectedMove/consensusRange data not found in source."
+      "note": "After-close report. consensusRev, priorEps, priorRev data not found in search. Earnings gunu = IV crush riski. 0DTE YASAK."
     },
     {
       "ticker": "FC",
-      "company": "Franklin Covey Co",
+      "company": "Franklin Covey Co.",
       "time": "after-close",
-      "consensusEps": 0.36,
+      "consensusEps": null,
       "consensusRev": null,
       "priorEps": null,
       "priorRev": null,
-      "expectedMove": null,
+      "expectedMove": 8.0,
       "consensusRange": null,
       "analystSentiment": "neutral",
-      "note": "0DTE YASAK — IV crush risk. Corporate training. consensusRev/priorEps/priorRev/expectedMove/consensusRange data not found in source."
-    },
-    {
-      "ticker": "AREC",
-      "company": "American Resources Corp",
-      "time": "after-close",
-      "consensusEps": -0.12,
-      "consensusRev": null,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": null,
-      "consensusRange": null,
-      "analystSentiment": "neutral",
-      "note": "0DTE YASAK — IV crush risk. Mining/real estate. consensusRev/priorEps/priorRev/expectedMove/consensusRange data not found in source."
+      "note": "After-close report. consensusEps, consensusRev, priorEps, priorRev, consensusRange data not found in search. Earnings gunu = IV crush riski. 0DTE YASAK."
     },
     {
       "ticker": "BSET",
-      "company": "Bassett Furniture Industries Inc",
-      "time": "after-close",
-      "consensusEps": 0.23,
-      "consensusRev": null,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": null,
-      "consensusRange": null,
-      "analystSentiment": "neutral",
-      "note": "0DTE YASAK — IV crush risk. Furniture retail. consensusRev/priorEps/priorRev/expectedMove/consensusRange data not found in source."
-    },
-    {
-      "ticker": "SRL",
-      "company": "Scully Royalty Ltd",
+      "company": "Bassett Furniture Industries Inc.",
       "time": "after-close",
       "consensusEps": null,
       "consensusRev": null,
       "priorEps": null,
       "priorRev": null,
-      "expectedMove": null,
+      "expectedMove": 8.0,
       "consensusRange": null,
       "analystSentiment": "neutral",
-      "note": "0DTE YASAK — IV crush risk. Royalty company. consensusEps/consensusRev/priorEps/priorRev/expectedMove/consensusRange data not found in source."
-    },
-    {
-      "ticker": "CULP",
-      "company": "Culp Inc",
-      "time": "after-close",
-      "consensusEps": -0.11,
-      "consensusRev": null,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": null,
-      "consensusRange": null,
-      "analystSentiment": "neutral",
-      "note": "0DTE YASAK — IV crush risk. Textile manufacturing. consensusRev/priorEps/priorRev/expectedMove/consensusRange data not found in source."
-    },
-    {
-      "ticker": "MAXN",
-      "company": "Maxeon Solar Technologies Ltd",
-      "time": "after-close",
-      "consensusEps": null,
-      "consensusRev": null,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": null,
-      "consensusRange": null,
-      "analystSentiment": "neutral",
-      "note": "0DTE YASAK — IV crush risk. Solar panel manufacturing. consensusEps/consensusRev/priorEps/priorRev/expectedMove/consensusRange data not found in source."
-    },
-    {
-      "ticker": "REE",
-      "company": "REE Automotive Ltd",
-      "time": "after-close",
-      "consensusEps": null,
-      "consensusRev": null,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": null,
-      "consensusRange": null,
-      "analystSentiment": "neutral",
-      "note": "0DTE YASAK — IV crush risk. EV startup. consensusEps/consensusRev/priorEps/priorRev/expectedMove/consensusRange data not found in source."
-    },
-    {
-      "ticker": "NCT",
-      "company": "Intercont (Cayman) Limited",
-      "time": "after-close",
-      "consensusEps": null,
-      "consensusRev": null,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": null,
-      "consensusRange": null,
-      "analystSentiment": "neutral",
-      "note": "0DTE YASAK — IV crush risk. Micro cap. consensusEps/consensusRev/priorEps/priorRev/expectedMove/consensusRange data not found in source."
-    },
-    {
-      "ticker": "NVVE",
-      "company": "Nuvve Holding Corp",
-      "time": "after-close",
-      "consensusEps": null,
-      "consensusRev": null,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": null,
-      "consensusRange": null,
-      "analystSentiment": "neutral",
-      "note": "0DTE YASAK — IV crush risk. EV charging. consensusEps/consensusRev/priorEps/priorRev/expectedMove/consensusRange data not found in source."
+      "note": "After-close report. consensusEps, consensusRev, priorEps, priorRev, consensusRange data not found in search. Earnings gunu = IV crush riski. 0DTE YASAK."
     }
   ],
-  "vwapNotes": "SPY VWAP (~746.5) uzerinde islem goruyor, risk-on sinyali. QQQ VWAP (~728.6) altinda kalarak tech weakness gosteriyor. IWM VWAP (~301.2) uzerinde, small cap relative strength var. VIX 16 seviyesinde normal. Gap fill durumu: SPY gap acik, QQQ gap down acik. Tech (QQQ) ile broad market (SPY) arasinda ayrisma var.",
+  "vwapNotes": "SPY VWAP 746.44 uzerinde, risk-on bias. QQQ VWAP 728.37 altinda, tech zayifligi. IWM VWAP 301.05 uzerinde, small-cap relative strength. Gap fill SPY tamamlandi, QQQ gap down acik. Defense ve consumer staples guclu; tech ve crypto-related zayif.",
   "riskAssessment": {
     "level": "medium",
-    "vixRegime": "VIX 16.05 — normal seviye (15-20 araligi). Gecen haftaya gore dusus trendi. Complacency degil, ama fear de degil.",
-    "sectorRotation": "Semiconductor (MU, AMAT, MRVL, GLW, WDC) sert satis baskisi altinda. Tech/software (META, NOW, CRM) alici buluyor. Small cap (IWM) outperformance. Defensive rotation yok, risk-on/risk-off ayrismasi var.",
-    "earningsRisk": "Bugun 18 sirket earnings acikliyor. GIS, FDS, MSM, UNF, NKLR zaten aciklandi ve beat etti. Aksam 11 sirket (AMC) kaldi — FIZZ, GBX, RR, FC, AREC, BSET, SRL, CULP, MAXN, REE, NCT, NVVE. 0DTE earnings stock'larinda IV crush riski yuksek.",
-    "macroRisk": "FOMC oncesi donem (sonraki toplanti yaklasmakta). ABD-Iran gerilimi azaldi (petrol ambargosu 60 gun muafiyet). DXY guclu. Tarife tehditleri devam ediyor. Buyume endiseleri hafif."
+    "vixRegime": "VIX 16.05 - normal range (15-20). Complacency risk before earnings season. 2.43% dusus.",
+    "sectorRotation": "Consumer staples (GIS) ve defense (AXON, AVAV) guclu. Tech (QQQ) zayif. Crypto-related (MSTR guclu, CRCL yukselis) karisik. REITs (DLR) hafif zayif. Clean energy (FCEL) baski altinda.",
+    "earningsRisk": "GIS, FDS, UNF, MSM reported before open. FDS ve MSM beat, UNF miss. IV crush active. 0DTE YASAK on earnings names. GBX, FC, BSET after-close. Earnings season light this week before big season starts July 20.",
+    "macroRisk": "July 4 holiday Friday July 3 (markets closed). Fed holds rates steady. Elevated CPI (4.2%). Middle East geopolitical tensions persist. Light volume expected ahead of holiday."
   },
   "nextDayCarryForward": []
 }
