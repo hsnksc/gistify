@@ -14,7 +14,6 @@
 <meta name="twitter:title" content="Nebius (NBIS) vs CoreWeave (CRWV) Derin Analiz" />
 <meta name="twitter:description" content="AI Neocloud karşılaştırması: finansal doğrulama, stratejik riskler ve yatırımcı çıkarımı" />
 <meta name="twitter:image" content="https://gistify.pro/gistifylogo.png" />
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 /* GISTIFY FLOW — Unified Dark Theme */
 :root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
@@ -59,29 +58,12 @@ html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf
 .card-value.neu{color:var(--gf-warning)}
 .card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
 
-/* TABS */
-.tabs{display:flex;gap:2px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:14px}
-.tab{flex:1;padding:8px 10px;text-align:center;font-size:0.82rem;font-weight:600;border-radius:6px;cursor:pointer;user-select:none;transition:background .15s,color .15s;border:none;color:var(--gf-muted);background:transparent}
-.tab.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
-.tab:hover:not(.active){color:var(--gf-text)}
-.tab-content{display:none}
-.tab-content.active{display:block}
-
-/* TABLE */
-table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
-th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
-th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
-tr:hover td{background:rgba(56,189,248,.04)}
-td{font-variant-numeric:tabular-nums}
-.text-right{text-align:right}
-.text-center{text-align:center}
-
-/* PROGRESS */
-.progress-bar{background:var(--gf-card);border-radius:4px;height:18px;overflow:hidden;margin:4px 0}
-.progress-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:0.68rem;font-weight:700;color:#fff}
-.fill-bull{background:linear-gradient(90deg,#16a34a,#4ade80)}
-.fill-base{background:linear-gradient(90deg,#ca8a04,#fbbf24)}
-.fill-bear{background:linear-gradient(90deg,#dc2626,#f87171)}
+/* TAGS */
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
 
 /* INSIGHT BOX */
 .insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
@@ -93,12 +75,14 @@ td{font-variant-numeric:tabular-nums}
 .insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
 .insight-box.bull strong{color:var(--gf-success)}
 
-/* TAGS */
-.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
-.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
-.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
-.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
-.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.text-right{text-align:right}
+.text-center{text-align:center}
 
 /* KPI */
 .kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
@@ -117,17 +101,6 @@ td{font-variant-numeric:tabular-nums}
 .timeline-date{font-size:0.78rem;color:var(--gf-muted);font-weight:600}
 .timeline-body{font-size:0.85rem;margin-top:3px;color:var(--gf-text)}
 
-/* HEATMAP */
-.heatmap{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;font-size:0.72rem;margin:10px 0}
-.heatmap-cell{padding:6px 2px;text-align:center;border-radius:4px;min-height:36px;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.heatmap-cell .day{font-weight:700;font-size:0.78rem}
-.heatmap-cell .val{font-size:0.68rem;opacity:.85}
-.h-strong{background:rgba(74,222,128,.35);color:#aff5b4}
-.h-weak{background:rgba(248,113,113,.35);color:#ffdcd7}
-.h-neu{background:rgba(251,191,36,.2);color:#ffdfb6}
-.h-flat{background:rgba(148,163,184,.15);color:var(--gf-muted)}
-.h-good{background:rgba(74,222,128,.2);color:#aff5b4}
-
 /* FOOTER */
 .footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
 
@@ -137,8 +110,6 @@ td{font-variant-numeric:tabular-nums}
 .hero-h{font-size:1.25rem}
 .grid{grid-template-columns:1fr}
 .kpi-row{grid-template-columns:repeat(2,1fr)}
-.tabs{flex-wrap:wrap}
-.tab{flex:none;min-width:80px}
 table{font-size:0.78rem}
 th,td{padding:6px 7px}
 }
@@ -148,18 +119,32 @@ th,td{padding:6px 7px}
 .lang-btn{padding:6px 14px;border-radius:8px;font-size:0.8rem;font-weight:600;border:none;cursor:pointer;background:transparent;color:var(--gf-muted);transition:all .15s}
 .lang-btn.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
 .lang-btn:hover:not(.active){color:var(--gf-text)}
-[data-lang]{display:none}
-[data-lang].visible{display:block}
-[data-lang-inline]{display:none}
-[data-lang-inline]:first-of-type{display:inline}
-[data-lang-inline].visible{display:inline}
 
-/* CHART CONTAINER */
-.chart-container{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px;margin:12px 0;position:relative;height:320px}
+/* CSS-ONLY BAR CHARTS */
+.css-chart-wrap{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:20px;margin:14px 0}
+.css-chart-title{font-size:0.92rem;font-weight:600;color:var(--gf-text);text-align:center;margin-bottom:14px}
+.css-chart{display:flex;align-items:flex-end;gap:8px;height:240px;padding:0 10px 24px 10px;border-bottom:1px solid var(--gf-border);position:relative}
+.css-chart::before{content:'';position:absolute;left:0;right:0;bottom:24px;height:1px;background:var(--gf-border)}
+.css-chart-bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;position:relative;z-index:1}
+.css-bar-fill{width:100%;border-radius:4px 4px 0 0;min-height:4px;transition:height .3s ease}
+.css-bar-label{font-size:0.72rem;color:var(--gf-muted);text-align:center;white-space:nowrap}
+.css-bar-val{font-size:0.68rem;font-weight:600;color:var(--gf-text);margin-bottom:2px}
+.css-chart-legend{display:flex;justify-content:center;gap:16px;margin-top:12px;font-size:0.78rem;color:var(--gf-muted)}
+.css-chart-legend span{display:flex;align-items:center;gap:5px}
+.css-legend-dot{width:10px;height:10px;border-radius:2px;display:inline-block}
+
+/* Negative bar */
+.css-bar-neg{background:rgba(248,113,113,.5);border:1px solid rgba(248,113,113,.7)}
+.css-bar-pos{background:rgba(74,222,128,.5);border:1px solid rgba(74,222,128,.7)}
+.css-bar-blue{background:rgba(56,189,248,.5);border:1px solid rgba(56,189,248,.7)}
+.css-bar-yellow{background:rgba(251,191,36,.5);border:1px solid rgba(251,191,36,.7)}
+
+/* Grouped bar chart */
+.css-chart-grouped .css-chart-bar{flex-direction:row;align-items:flex-end;gap:2px}
+.css-chart-grouped .css-bar-fill{width:calc(50% - 1px)}
 </style>
 <script>
 function toggle(id){var el=document.getElementById(id);if(!el)return;el.classList.toggle('collapsed');}
-function setTab(btn,tabId){var parent=btn.closest('.tabs');if(parent){parent.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});parent.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});}btn.classList.add('active');var tc=document.getElementById(tabId);if(tc)tc.classList.add('active');}
 function setLang(l){
   document.querySelectorAll('[data-lang]').forEach(function(e){e.classList.toggle('visible',e.dataset.lang===l);});
   document.querySelectorAll('[data-lang-inline]').forEach(function(e){e.classList.toggle('visible',e.dataset.langInline===l);});
@@ -173,11 +158,11 @@ function setLang(l){
 <!-- HERO -->
 <div class="hero" id="hero" data-timestamp="2026-07-02T01:08:00+03:00">
   <h1 class="hero-h">
-    <span data-lang-inline="tr">Nebius (NBIS) vs CoreWeave (CRWV): Neocloud Titanları Karşılaştırması</span>
+    <span data-lang-inline="tr" class="visible">Nebius (NBIS) vs CoreWeave (CRWV): Neocloud Titanları Karşılaştırması</span>
     <span data-lang-inline="en">Nebius (NBIS) vs CoreWeave (CRWV): Neocloud Titans Compared</span>
   </h1>
   <p class="hero-desc">
-    <span data-lang-inline="tr">AI altyapısının iki devi: finansal doğrulama, stratejik riskler ve yatırımcı çıkarımı</span>
+    <span data-lang-inline="tr" class="visible">AI altyapısının iki devi: finansal doğrulama, stratejik riskler ve yatırımcı çıkarımı</span>
     <span data-lang-inline="en">Two giants of AI infrastructure: financial verification, strategic risks, and investor takeaways</span>
   </p>
   <div class="hero-meta">
@@ -201,14 +186,14 @@ function setLang(l){
   <div class="section-head" id="sec-ozet">
     <div class="section-head-inner" onclick="toggle('sec-ozet')">
       <h2 class="section-title">
-        <span data-lang-inline="tr">📊 Yönetici Özeti</span>
+        <span data-lang-inline="tr" class="visible">📊 Yönetici Özeti</span>
         <span data-lang-inline="en">📊 Executive Summary</span>
       </h2>
       <div class="icon">▾</div>
     </div>
     <div class="section-body">
       <div data-lang="tr" class="visible">
-        <p>Yapay zeka devrimi, geleneksel bulut sağlayıcılarının ötesinde, yalnızca GPU tabanlı hızlandırılmış hesaplamaya odaklanan <strong>"Neocloud"</strong> şirketlerinin yükselişine sahne olmaktadır. Bu ekosistemin en dikkat çekici oyuncularından biri <strong>Nebius Group N.V. (NASDAQ: NBIS)</strong>’dir.</p>
+        <p>Yapay zeka devrimi, geleneksel bulut sağlayıcılarının ötesinde, yalnızca GPU tabanlı hızlandırılmış hesaplamaya odaklanan <strong>"Neocloud"</strong> şirketlerinin yükselişine sahne olmaktadır. Bu ekosistemin en dikkat çekici oyuncularından biri <strong>Nebius Group N.V. (NASDAQ: NBIS)</strong>'dir.</p>
         <div class="insight-box warn">
           <strong>⚠️ Önemli Uyarı:</strong> NBIS'in raporlanan yüksek net karı ($621.2M) operasyonel değil; <strong>ClickHouse</strong> yeniden değerlemesinden kaynaklanan nakit dışı bir kardır. Gerçek operasyonel cephede her iki şirket de başa baş bir marj savaşı vermektedir.
         </div>
@@ -230,7 +215,7 @@ function setLang(l){
   <div class="section-head" id="sec-kurumsal">
     <div class="section-head-inner" onclick="toggle('sec-kurumsal')">
       <h2 class="section-title">
-        <span data-lang-inline="tr">🏢 Kurumsal Evrim</span>
+        <span data-lang-inline="tr" class="visible">🏢 Kurumsal Evrim</span>
         <span data-lang-inline="en">🏢 Corporate Evolution</span>
       </h2>
       <div class="icon">▾</div>
@@ -259,7 +244,7 @@ function setLang(l){
   <div class="section-head" id="sec-finansal">
     <div class="section-head-inner" onclick="toggle('sec-finansal')">
       <h2 class="section-title">
-        <span data-lang-inline="tr">💰 Finansal Gerçekler: "Karlılık" İllüzyonu</span>
+        <span data-lang-inline="tr" class="visible">💰 Finansal Gerçekler: "Karlılık" İllüzyonu</span>
         <span data-lang-inline="en">💰 Financial Reality: The "Profitability" Illusion</span>
       </h2>
       <div class="icon">▾</div>
@@ -341,8 +326,38 @@ function setLang(l){
           <strong>🔴 Critical:</strong> The vast majority of the $621.2M net income ($780.6M) comes from <strong>ClickHouse equity revaluation gain</strong>. Core operations (Adjusted Net Loss) remain at <strong>$(100.3)M</strong>. This is a critical distinction in earnings quality.
         </div>
       </div>
-      <div class="chart-container">
-        <canvas id="chart1"></canvas>
+
+      <!-- CSS BAR CHART 1: NBIS Q1 2026 -->
+      <div class="css-chart-wrap">
+        <div class="css-chart-title">NBIS Q1 2026: Profitability Illusion Decomposed (Million USD)</div>
+        <div class="css-chart" style="height:200px">
+          <div class="css-chart-bar">
+            <div class="css-bar-val">$399M</div>
+            <div class="css-bar-fill css-bar-blue" style="height:30%"></div>
+            <div class="css-bar-label">Revenue</div>
+          </div>
+          <div class="css-chart-bar">
+            <div class="css-bar-val">-$128M</div>
+            <div class="css-bar-fill css-bar-neg" style="height:10%"></div>
+            <div class="css-bar-label">Op Loss</div>
+          </div>
+          <div class="css-chart-bar">
+            <div class="css-bar-val">$781M</div>
+            <div class="css-bar-fill css-bar-yellow" style="height:60%"></div>
+            <div class="css-bar-label">ClickHouse<br>Reval</div>
+          </div>
+          <div class="css-chart-bar">
+            <div class="css-bar-val">$621M</div>
+            <div class="css-bar-fill css-bar-pos" style="height:48%"></div>
+            <div class="css-bar-label">Net Income</div>
+          </div>
+        </div>
+        <div class="css-chart-legend">
+          <span><span class="css-legend-dot" style="background:#3498db"></span> Revenue</span>
+          <span><span class="css-legend-dot" style="background:rgba(248,113,113,.7)"></span> Op Loss</span>
+          <span><span class="css-legend-dot" style="background:rgba(251,191,36,.7)"></span> ClickHouse Reval</span>
+          <span><span class="css-legend-dot" style="background:rgba(74,222,128,.7)"></span> Net Income</span>
+        </div>
       </div>
     </div>
   </div>
@@ -353,7 +368,7 @@ function setLang(l){
   <div class="section-head" id="sec-stratejik">
     <div class="section-head-inner" onclick="toggle('sec-stratejik')">
       <h2 class="section-title">
-        <span data-lang-inline="tr">🚀 Stratejik Büyüme ve Satın Almalar</span>
+        <span data-lang-inline="tr" class="visible">🚀 Stratejik Büyüme ve Satın Almalar</span>
         <span data-lang-inline="en">🚀 Strategic Growth & Acquisitions</span>
       </h2>
       <div class="icon">▾</div>
@@ -402,7 +417,7 @@ function setLang(l){
   <div class="section-head" id="sec-sozlesmeler">
     <div class="section-head-inner" onclick="toggle('sec-sozlesmeler')">
       <h2 class="section-title">
-        <span data-lang-inline="tr">🏗️ Mega Altyapı Sözleşmeleri</span>
+        <span data-lang-inline="tr" class="visible">🏗️ Mega Altyapı Sözleşmeleri</span>
         <span data-lang-inline="en">🏗️ Mega Infrastructure Contracts</span>
       </h2>
       <div class="icon">▾</div>
@@ -461,7 +476,7 @@ function setLang(l){
   <div class="section-head" id="sec-karsilastirma">
     <div class="section-head-inner" onclick="toggle('sec-karsilastirma')">
       <h2 class="section-title">
-        <span data-lang-inline="tr">⚔️ CRWV vs NBIS: Büyük Karşılaştırma</span>
+        <span data-lang-inline="tr" class="visible">⚔️ CRWV vs NBIS: Büyük Karşılaştırma</span>
         <span data-lang-inline="en">⚔️ CRWV vs NBIS: The Big Comparison</span>
       </h2>
       <div class="icon">▾</div>
@@ -497,8 +512,28 @@ function setLang(l){
           </tbody>
         </table>
       </div>
-      <div class="chart-container">
-        <canvas id="chart2"></canvas>
+
+      <!-- CSS BAR CHART 2: CRWV vs NBIS Balance Sheet -->
+      <div class="css-chart-wrap">
+        <div class="css-chart-title">CRWV vs NBIS Balance Sheet Strength (Billion USD)</div>
+        <div class="css-chart css-chart-grouped" style="height:200px">
+          <div class="css-chart-bar">
+            <div class="css-bar-val" style="position:absolute;top:-16px;font-size:0.68rem">$3.32B</div>
+            <div class="css-bar-fill css-bar-blue" style="height:18%"></div>
+            <div class="css-bar-fill css-bar-neg" style="height:90%"></div>
+            <div class="css-bar-label">CRWV</div>
+          </div>
+          <div class="css-chart-bar">
+            <div class="css-bar-val" style="position:absolute;top:-16px;font-size:0.68rem">$9.30B</div>
+            <div class="css-bar-fill css-bar-blue" style="height:50%"></div>
+            <div class="css-bar-fill css-bar-neg" style="height:44%"></div>
+            <div class="css-bar-label">NBIS</div>
+          </div>
+        </div>
+        <div class="css-chart-legend">
+          <span><span class="css-legend-dot" style="background:rgba(56,189,248,.7)"></span> Cash</span>
+          <span><span class="css-legend-dot" style="background:rgba(248,113,113,.7)"></span> Long-term Debt</span>
+        </div>
       </div>
     </div>
   </div>
@@ -509,7 +544,7 @@ function setLang(l){
   <div class="section-head" id="sec-sonuc">
     <div class="section-head-inner" onclick="toggle('sec-sonuc')">
       <h2 class="section-title">
-        <span data-lang-inline="tr">🎯 Sonuç ve Yatırımcı Çıkarımı</span>
+        <span data-lang-inline="tr" class="visible">🎯 Sonuç ve Yatırımcı Çıkarımı</span>
         <span data-lang-inline="en">🎯 Conclusion & Investor Takeaway</span>
       </h2>
       <div class="icon">▾</div>
@@ -554,98 +589,5 @@ function setLang(l){
 </div>
 
 </div>
-
-<script>
-// Chart 1: NBIS Q1 2026 Financial Reality
-document.addEventListener('DOMContentLoaded', function(){
-  var ctx1 = document.getElementById('chart1').getContext('2d');
-  new Chart(ctx1, {
-    type: 'bar',
-    data: {
-      labels: ['Revenue', 'Operating Loss', 'ClickHouse Reval', 'Net Income'],
-      datasets: [{
-        label: 'Million USD',
-        data: [399.0, -128.0, 780.6, 621.2],
-        backgroundColor: ['#3498db', '#e74c3c', '#f1c40f', '#2ecc71'],
-        borderColor: ['#3498db', '#e74c3c', '#f1c40f', '#2ecc71'],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        title: {
-          display: true,
-          text: 'NBIS Q1 2026: Profitability Illusion Decomposed',
-          color: '#e2e8f0',
-          font: { size: 14, weight: 'bold' }
-        },
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            label: function(context) {
-              return context.dataset.label + ': $' + context.raw + 'M';
-            }
-          }
-        }
-      },
-      scales: {
-        x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(30,58,95,0.3)' } },
-        y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(30,58,95,0.3)' }, title: { display: true, text: 'Million USD', color: '#94a3b8' } }
-      }
-    }
-  });
-
-  // Chart 2: CRWV vs NBIS Balance Sheet
-  var ctx2 = document.getElementById('chart2').getContext('2d');
-  new Chart(ctx2, {
-    type: 'bar',
-    data: {
-      labels: ['Cash', 'Long-term Debt'],
-      datasets: [
-        {
-          label: 'CoreWeave (CRWV)',
-          data: [3.32, 17.3],
-          backgroundColor: '#3498db',
-          borderColor: '#3498db',
-          borderWidth: 1
-        },
-        {
-          label: 'Nebius (NBIS)',
-          data: [9.30, 8.43],
-          backgroundColor: '#2ecc71',
-          borderColor: '#2ecc71',
-          borderWidth: 1
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        title: {
-          display: true,
-          text: 'CRWV vs NBIS Balance Sheet Strength (Billion USD)',
-          color: '#e2e8f0',
-          font: { size: 14, weight: 'bold' }
-        },
-        legend: { labels: { color: '#e2e8f0' } },
-        tooltip: {
-          callbacks: {
-            label: function(context) {
-              return context.dataset.label + ': $' + context.raw + 'B';
-            }
-          }
-        }
-      },
-      scales: {
-        x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(30,58,95,0.3)' } },
-        y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(30,58,95,0.3)' }, title: { display: true, text: 'Billion USD', color: '#94a3b8' } }
-      }
-    }
-  });
-});
-</script>
 </body>
 </html>
