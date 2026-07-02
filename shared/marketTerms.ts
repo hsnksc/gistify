@@ -124,7 +124,7 @@ export const MARKET_TERMS = [
   "naked call",
   "naked put",
   "cash-secured put",
-  " protective put",
+  "protective put",
   "bull call spread",
   "bear put spread",
   "credit spread",
@@ -140,7 +140,7 @@ export const MARKET_TERMS = [
   "open interest",
   "OI",
   "volume",
-  " Greeks",
+  "Greeks",
   "VWAP",
   "vwap",
 

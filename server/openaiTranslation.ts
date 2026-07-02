@@ -79,7 +79,7 @@ function restoreMarketTerms(
 ): string {
   let result = text;
   for (const { placeholder, original } of replacements) {
-    result = result.replaceAll(placeholder, original);
+    result = result.replace(new RegExp(escapeRegex(placeholder), "g"), original);
   }
   return result;
 }
