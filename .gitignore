@@ -49,6 +49,8 @@ pids
 coverage/
 !client/src/features/coverage/
 !client/src/features/coverage/**
+!reports/coverage/
+!reports/coverage/**
 *.lcov
 
 # nyc test coverage

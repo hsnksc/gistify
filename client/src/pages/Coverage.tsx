@@ -39,12 +39,13 @@ import {
   type CoverageStoredRecord,
   type CoverageTableBlock,
 } from "@/features/coverage/lib/coverageParser";
+import { fetchCoverageReports } from "@/features/coverage/lib/coverageApi";
 import { getCoverageSeedRecords } from "@/features/coverage/lib/coverageSeed";
+import LoadingState from "@/components/ui/loading-state";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
-const LIBRARY_STORAGE_KEY = "gistify:coverage:library:v1";
 const WATCH_STORAGE_KEY = "gistify:coverage:watch:v1";
 const CHECKLIST_STORAGE_KEY = "gistify:coverage:checklist:v1";
 
@@ -53,37 +54,6 @@ type ChecklistState = Record<string, boolean>;
 
 const INLINE_PATTERN =
   /(\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)|\*\*([^*]+)\*\*|`([^`]+)`)/g;
-
-function readCoverageLibrary() {
-  if (typeof window === "undefined") {
-    return getCoverageSeedRecords();
-  }
-
-  try {
-    const raw = window.localStorage.getItem(LIBRARY_STORAGE_KEY);
-    const parsed = raw ? (JSON.parse(raw) as CoverageStoredRecord[]) : [];
-    const byId = new Map<string, CoverageStoredRecord>();
-    for (const record of parsed) {
-      if (
-        record &&
-        typeof record.id === "string" &&
-        typeof record.importedAt === "string" &&
-        typeof record.raw === "string" &&
-        typeof record.sourceName === "string"
-      ) {
-        byId.set(record.id, record);
-      }
-    }
-    for (const seed of getCoverageSeedRecords()) {
-      if (!byId.has(seed.id)) {
-        byId.set(seed.id, seed);
-      }
-    }
-    return Array.from(byId.values());
-  } catch {
-    return getCoverageSeedRecords();
-  }
-}
 
 function readWatchlist() {
   if (typeof window === "undefined") {
@@ -513,9 +483,9 @@ export default function Coverage({
   ticker?: string;
 }) {
   const [location, setLocation] = useLocation();
-  const [records] = useState<CoverageStoredRecord[]>(() =>
-    readCoverageLibrary()
-  );
+  const [records, setRecords] = useState<CoverageStoredRecord[]>([]);
+  const [recordsLoading, setRecordsLoading] = useState(true);
+  const [recordsError, setRecordsError] = useState<string | null>(null);
   const [watchlist, setWatchlist] = useState<Set<string>>(() => readWatchlist());
   const [checklistState, setChecklistState] = useState<ChecklistState>(() =>
     readChecklistState()
@@ -524,6 +494,34 @@ export default function Coverage({
   const [selectedVersionIdState, setSelectedVersionIdState] = useState(() =>
     getSelectedVersionId()
   );
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      try {
+        const apiRecords = await fetchCoverageReports();
+        if (!cancelled) {
+          setRecords(apiRecords.length > 0 ? apiRecords : getCoverageSeedRecords());
+          setRecordsLoading(false);
+        }
+      } catch (error) {
+        console.error("[Coverage] Failed to load reports from API:", error);
+        if (!cancelled) {
+          setRecords(getCoverageSeedRecords());
+          setRecordsError(
+            "Could not load coverage reports from server. Showing sample data."
+          );
+          setRecordsLoading(false);
+        }
+      }
+    }
+
+    void load();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     persistWatchlist(watchlist);
@@ -810,6 +808,24 @@ export default function Coverage({
       }
       sidebar={sidebar}
     >
+      {recordsLoading ? (
+        <LoadingState
+          label={copy(language, "Yukleniyor...", "Loading...")}
+          description={copy(
+            language,
+            "Coverage raporlari yukleniyor.",
+            "Loading coverage reports."
+          )}
+        />
+      ) : recordsError ? (
+        <Card className="gap-4 border-amber-500/30" interactive={false}>
+          <CardHeader className="gap-2">
+            <CardTitle>{copy(language, "Uyari", "Warning")}</CardTitle>
+            <CardDescription>{recordsError}</CardDescription>
+          </CardHeader>
+        </Card>
+      ) : null}
+
       <section className="grid gap-4 md:grid-cols-3">
         {stats.map(stat => (
           <Card key={stat.label} className="gap-4" interactive={false}>
