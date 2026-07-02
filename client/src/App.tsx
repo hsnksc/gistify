@@ -10,6 +10,7 @@ import {
 import type { ComponentType } from "react";
 import {
   Activity,
+  BookOpen,
   CalendarDays,
   LayoutDashboard,
   Layers3,
@@ -67,6 +68,7 @@ const ReportsDateDetailPage = lazy(
   () => import("./features/flow/pages/ReportsDateDetailPage")
 );
 const CpiPpiForecastPage = lazy(() => import("./pages/CpiPpiForecast"));
+const CoveragePage = lazy(() => import("./pages/Coverage"));
 const EarningsPage = lazy(() => import("./pages/Earnings"));
 const EarningsStockDetailPage = lazy(
   () => import("./pages/EarningsStockDetail")
@@ -242,6 +244,7 @@ function copy(language: AppLanguage, tr: string, en: string) {
 type WorkspaceLabelKey =
   | "admin"
   | "calendar"
+  | "coverage"
   | "cpiPpi"
   | "earnings"
   | "earningsStrategy"
@@ -255,6 +258,8 @@ function workspaceLabel(language: AppLanguage, key: WorkspaceLabelKey) {
       return copy(language, "Yonetim", "Admin");
     case "calendar":
       return copy(language, "Takvim", "Calendar");
+    case "coverage":
+      return copy(language, "Coverage", "Coverage");
     case "cpiPpi":
       return "CPI/PPI";
     case "earnings":
@@ -333,6 +338,21 @@ function Router({
         </Route>
         <Route path={"/calendar"}>
           {() => <CalendarPage language={language} />}
+        </Route>
+        <Route path={"/coverage/calendar"}>
+          {() => <CoveragePage language={language} mode="calendar" />}
+        </Route>
+        <Route path={"/coverage/:ticker"}>
+          {params => (
+            <CoveragePage
+              language={language}
+              mode="detail"
+              ticker={params.ticker || ""}
+            />
+          )}
+        </Route>
+        <Route path={"/coverage"}>
+          {() => <CoveragePage language={language} mode="index" />}
         </Route>
         <Route path={"/marketflash"}>
           {() => <MarketFlash />}
@@ -512,6 +532,13 @@ function WorkspaceNavigation({
       icon: Zap,
       active: location.startsWith("/marketflash"),
       requiresSubscription: true,
+    },
+    {
+      href: "/coverage",
+      label: workspaceLabel(language, "coverage"),
+      icon: BookOpen,
+      active: location.startsWith("/coverage"),
+      requiresSubscription: false,
     },
     {
       href: "/flow",
@@ -708,6 +735,10 @@ function getWorkspaceSectionLabel(path: string, language: AppLanguage) {
     return workspaceLabel(language, "marketFlash");
   }
 
+  if (path.startsWith("/coverage")) {
+    return workspaceLabel(language, "coverage");
+  }
+
   if (path.startsWith("/flow") || path.startsWith("/reports")) {
     return workspaceLabel(language, "flow");
   }
@@ -721,6 +752,7 @@ function getWorkspaceSectionLabel(path: string, language: AppLanguage) {
 
 function SiteFooter({ language }: { language: AppLanguage }) {
   const links = [
+    { href: "/coverage", label: workspaceLabel(language, "coverage") },
     { href: "/flow", label: workspaceLabel(language, "flow") },
     { href: "/reports", label: copy(language, "Raporlar", "Reports") },
     { href: "/pricing", label: copy(language, "Fiyatlandirma", "Pricing") },
@@ -789,8 +821,8 @@ function SubscriptionRequiredView({
               <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
                 {copy(
                   language,
-                  "Akis herkese acik kalir. Kazanc Stratejisi, Momentum, Gunluk, CPI/PPI, Takvim ve Market Flash modullerini acmak icin Paddle uzerinden aktif abonelik gerekir.",
-                  "Flow stays open to everyone. Unlocking Earnings Strategy, Momentum, Daily, CPI/PPI, Calendar and Market Flash requires an active Paddle subscription."
+                  "Akis ve Coverage herkese acik kalir. Kazanc Stratejisi, Momentum, Gunluk, CPI/PPI, Takvim ve Market Flash modullerini acmak icin Paddle uzerinden aktif abonelik gerekir.",
+                  "Flow and Coverage stay open to everyone. Unlocking Earnings Strategy, Momentum, Daily, CPI/PPI, Calendar and Market Flash requires an active Paddle subscription."
                 )}
               </p>
               <div className="flex flex-wrap gap-3 pt-2">
@@ -842,6 +874,7 @@ function SubscriptionRequiredView({
                   workspaceLabel(language, "marketFlash"),
                   copy(language, "Abonelik", "Subscription"),
                 ],
+                [workspaceLabel(language, "coverage"), copy(language, "Acik", "Open")],
                 [workspaceLabel(language, "flow"), copy(language, "Acik", "Open")],
               ].map(([label, value]) => (
                 <div
@@ -923,11 +956,13 @@ function App() {
   const runtimeTranslationInFlightRef = useRef(false);
   const maskOriginalRef = useRef(new WeakMap<Text, string>());
   const isPaymentRoute = location === "/pay";
+  const isCoverageRoute = location.startsWith("/coverage");
   const isFlowRoute = location.startsWith("/flow");
   const isReportsRoute = location.startsWith("/reports");
   const isMarketingRoute =
     ["/", "/pricing", "/terms", "/privacy", "/refund"].includes(location) ||
     location.startsWith("/daily-report") ||
+    isCoverageRoute ||
     isFlowRoute ||
     isReportsRoute;
   const isLockedWorkspaceRoute =
@@ -941,7 +976,8 @@ function App() {
     location.startsWith("/marketflash");
   const shouldShowWorkspaceHeader =
     !isPaymentRoute &&
-    (isFlowRoute ||
+    (isCoverageRoute ||
+      isFlowRoute ||
       isReportsRoute ||
       (authState.status !== "loading" && !isMarketingRoute));
   const hasStandaloneWorkspaceHeader =
@@ -1652,8 +1688,8 @@ function App() {
                     <p className="text-sm text-muted-foreground leading-relaxed">
                       {copy(
                         language,
-                        "Akis herkese acik. Kazanc Stratejisi, Momentum ve Gunluk modullerini acmak icin once Google ile uye girisi yapman gerekir; aktif abonelik yoksa odeme ekranina gecersin.",
-                        "Flow is open to everyone. To open Earnings Strategy, Momentum and Daily, sign in with Google first; if the account is not subscribed, you will be taken to the payment step."
+                        "Akis ve Coverage herkese acik. Kazanc Stratejisi, Momentum ve Gunluk modullerini acmak icin once Google ile uye girisi yapman gerekir; aktif abonelik yoksa odeme ekranina gecersin.",
+                        "Flow and Coverage are open to everyone. To open Earnings Strategy, Momentum and Daily, sign in with Google first; if the account is not subscribed, you will be taken to the payment step."
                       )}
                     </p>
                   </div>

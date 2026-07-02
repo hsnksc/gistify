@@ -47,6 +47,8 @@ pids
 
 # Coverage directory used by tools like istanbul
 coverage/
+!client/src/features/coverage/
+!client/src/features/coverage/**
 *.lcov
 
 # nyc test coverage
@@ -132,4 +134,3 @@ skills/*.md
 tmp-edge-profile/
 tmp-*.html
 tmp-*.md
-
