@@ -73,7 +73,7 @@ describe("ai router smoke", () => {
         setPrivateNoStore: res => {
           res.setHeader("Cache-Control", "private, no-store");
         },
-        translateTurkishTextsToEnglish: async texts =>
+        translateTexts: async (texts, _source, _target) =>
           Object.fromEntries(texts.map(text => [text, `${text}-en`])),
       })
     );

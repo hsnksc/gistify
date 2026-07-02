@@ -33,8 +33,10 @@ type AiRouterDependencies = {
   normalizeTranslationTexts: (value: unknown) => string[];
   requireWeeklyReportAdmin: (req: Request, res: Response) => boolean;
   setPrivateNoStore: (res: Response) => void;
-  translateTurkishTextsToEnglish: (
-    texts: string[]
+  translateTexts: (
+    texts: string[],
+    source: string,
+    target: string
   ) => Promise<Record<string, string>>;
 };
 
@@ -48,7 +50,7 @@ export function createAiRouter({
   normalizeTranslationTexts,
   requireWeeklyReportAdmin,
   setPrivateNoStore,
-  translateTurkishTextsToEnglish,
+  translateTexts,
 }: AiRouterDependencies): Router {
   const router = express.Router();
 
@@ -69,7 +71,8 @@ export function createAiRouter({
       return;
     }
 
-    if (source !== "tr" || target !== "en") {
+    const supportedPairs = new Set(["tr:en", "en:tr"]);
+    if (!supportedPairs.has(`${source}:${target}`)) {
       res.status(200).json({
         translations: Object.fromEntries(texts.map(text => [text, text])),
       });
@@ -77,7 +80,7 @@ export function createAiRouter({
     }
 
     try {
-      const translations = await translateTurkishTextsToEnglish(texts);
+      const translations = await translateTexts(texts, source, target);
       res.status(200).json({ translations });
     } catch (error) {
       const statusCode =

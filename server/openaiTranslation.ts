@@ -167,11 +167,24 @@ export function normalizeTranslationTexts(value: unknown) {
   return Array.from(new Set(normalized));
 }
 
-async function translateWithOpenAI(keyedTexts: { key: string; text: string }[]) {
+function languageDisplayName(code: string) {
+  if (code === "tr") return "Turkish";
+  if (code === "en") return "English";
+  return code;
+}
+
+async function translateWithOpenAI(
+  keyedTexts: { key: string; text: string }[],
+  source: string,
+  target: string
+) {
   const apiKey = getOpenAiTranslationApiKey();
   if (!apiKey) {
     return null;
   }
+
+  const sourceName = languageDisplayName(source);
+  const targetName = languageDisplayName(target);
 
   const response = await fetch(OPENAI_RESPONSES_URL, {
     method: "POST",
@@ -189,9 +202,9 @@ async function translateWithOpenAI(keyedTexts: { key: string; text: string }[]) 
             {
               type: "input_text",
               text: [
-                "Translate each Turkish string into natural English.",
+                `Translate each ${sourceName} string into natural ${targetName}.`,
                 "Preserve markdown, bullet markers, whitespace structure, URLs, dates, ticker symbols, numbers, and casing where it carries meaning.",
-                "Do not summarize. Do not omit details. If text is already English or should stay unchanged, return it as-is.",
+                `Do not summarize. Do not omit details. If text is already ${targetName} or should stay unchanged, return it as-is.`,
                 "Return only valid JSON in the shape {\"t1\":\"...\",\"t2\":\"...\"}.",
                 JSON.stringify(keyedTexts),
               ].join("\n\n"),
@@ -221,11 +234,18 @@ async function translateWithOpenAI(keyedTexts: { key: string; text: string }[]) 
   return parseJsonSafely(outputText);
 }
 
-async function translateWithMistral(keyedTexts: { key: string; text: string }[]) {
+async function translateWithMistral(
+  keyedTexts: { key: string; text: string }[],
+  source: string,
+  target: string
+) {
   const apiKey = getMistralApiKey();
   if (!apiKey) {
     return null;
   }
+
+  const sourceName = languageDisplayName(source);
+  const targetName = languageDisplayName(target);
 
   const response = await fetch(MISTRAL_API_URL, {
     method: "POST",
@@ -241,15 +261,15 @@ async function translateWithMistral(keyedTexts: { key: string; text: string }[])
         {
           role: "system",
           content:
-            "You are a professional Turkish-to-English translator for financial and market-analysis reports. " +
-            "Return only valid JSON mapping each input id to its English translation.",
+            `You are a professional ${sourceName}-to-${targetName} translator for financial and market-analysis reports. ` +
+            "Return only valid JSON mapping each input id to its translation.",
         },
         {
           role: "user",
           content: [
-            "Translate each Turkish string into natural English.",
+            `Translate each ${sourceName} string into natural ${targetName}.`,
             "Preserve markdown, bullet markers, whitespace structure, URLs, dates, ticker symbols, numbers, and casing where it carries meaning.",
-            "Do not summarize. Do not omit details. If text is already English or should stay unchanged, return it as-is.",
+            `Do not summarize. Do not omit details. If text is already ${targetName} or should stay unchanged, return it as-is.`,
             "Return only valid JSON in the shape {\"t1\":\"...\",\"t2\":\"...\"}.",
             JSON.stringify(keyedTexts),
           ].join("\n\n"),
@@ -286,7 +306,11 @@ async function translateWithMistral(keyedTexts: { key: string; text: string }[])
   return parseJsonSafely(content);
 }
 
-export async function translateTurkishTextsToEnglish(texts: string[]) {
+export async function translateTexts(
+  texts: string[],
+  source: string,
+  target: string
+) {
   const uniqueTexts = normalizeTranslationTexts(texts);
   const translations = Object.fromEntries(
     uniqueTexts.map(text => [text, text])
@@ -328,11 +352,11 @@ export async function translateTurkishTextsToEnglish(texts: string[]) {
 
   try {
     if (openAiKey) {
-      outputPayload = await translateWithOpenAI(keyedTexts);
+      outputPayload = await translateWithOpenAI(keyedTexts, source, target);
     }
 
     if (!outputPayload && mistralKey) {
-      outputPayload = await translateWithMistral(keyedTexts);
+      outputPayload = await translateWithMistral(keyedTexts, source, target);
     }
   } catch (providerError) {
     console.error(
@@ -349,16 +373,20 @@ export async function translateTurkishTextsToEnglish(texts: string[]) {
     return translations;
   }
 
-  for (const [key, source] of keyedTexts.map(
+  for (const [key, sourceText] of keyedTexts.map(
     entry => [entry.key, entry.text] as const
   )) {
     const candidate = normalizeString(
       (outputPayload as Record<string, unknown>)[key]
     );
-    const translated = candidate || source;
-    translations[source] = translated;
-    setCacheValue(source, translated);
+    const translated = candidate || sourceText;
+    translations[sourceText] = translated;
+    setCacheValue(sourceText, translated);
   }
 
   return translations;
+}
+
+export async function translateTurkishTextsToEnglish(texts: string[]) {
+  return translateTexts(texts, "tr", "en");
 }
