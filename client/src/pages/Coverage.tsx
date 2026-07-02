@@ -1,21 +1,12 @@
-import {
-  type ChangeEvent,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type ReactNode,
-} from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import {
   ArrowLeft,
   BookOpen,
   CalendarDays,
   Clock3,
-  FileText,
   GitCompareArrows,
   Search,
   Star,
-  Upload,
 } from "lucide-react";
 import { useLocation } from "wouter";
 import { Badge } from "@/components/ui/badge";
@@ -37,10 +28,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Textarea } from "@/components/ui/textarea";
 import FlowLayout from "@/features/flow/components/FlowLayout";
 import {
-  buildCoverageRecordId,
   compareCoverageReports,
   groupCoverageReports,
   parseCoverageReport,
@@ -94,14 +83,6 @@ function readCoverageLibrary() {
   } catch {
     return getCoverageSeedRecords();
   }
-}
-
-function persistCoverageLibrary(records: CoverageStoredRecord[]) {
-  if (typeof window === "undefined") {
-    return;
-  }
-
-  window.localStorage.setItem(LIBRARY_STORAGE_KEY, JSON.stringify(records));
 }
 
 function readWatchlist() {
@@ -532,8 +513,7 @@ export default function Coverage({
   ticker?: string;
 }) {
   const [location, setLocation] = useLocation();
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [records, setRecords] = useState<CoverageStoredRecord[]>(() =>
+  const [records] = useState<CoverageStoredRecord[]>(() =>
     readCoverageLibrary()
   );
   const [watchlist, setWatchlist] = useState<Set<string>>(() => readWatchlist());
@@ -541,16 +521,9 @@ export default function Coverage({
     readChecklistState()
   );
   const [search, setSearch] = useState("");
-  const [rawInput, setRawInput] = useState("");
   const [selectedVersionIdState, setSelectedVersionIdState] = useState(() =>
     getSelectedVersionId()
   );
-  const [importMessage, setImportMessage] = useState("");
-  const [importError, setImportError] = useState("");
-
-  useEffect(() => {
-    persistCoverageLibrary(records);
-  }, [records]);
 
   useEffect(() => {
     persistWatchlist(watchlist);
@@ -803,68 +776,6 @@ export default function Coverage({
     }));
   };
 
-  const importCoverage = (raw: string, sourceName: string) => {
-    setImportError("");
-    setImportMessage("");
-
-    const trimmed = raw.trim();
-    if (!trimmed) {
-      setImportError(
-        copy(language, "Coverage markdown bos.", "Coverage markdown is empty.")
-      );
-      return;
-    }
-
-    const nextRecord: CoverageStoredRecord = {
-      id: buildCoverageRecordId(trimmed, sourceName),
-      importedAt: new Date().toISOString(),
-      raw: trimmed,
-      sourceName,
-    };
-
-    let parsed: CoverageReport;
-    try {
-      parsed = parseCoverageReport(nextRecord);
-    } catch {
-      setImportError(
-        copy(
-          language,
-          "Markdown parse edilemedi. Frontmatter ve baslik yapisini kontrol et.",
-          "Could not parse this markdown. Check the frontmatter and heading structure."
-        )
-      );
-      return;
-    }
-
-    setRecords(previous => {
-      if (previous.some(record => record.id === nextRecord.id)) {
-        return previous;
-      }
-      return [...previous, nextRecord];
-    });
-    setRawInput("");
-    setImportMessage(
-      copy(
-        language,
-        "Coverage kutuphaneye eklendi.",
-        "Coverage report added to the library."
-      )
-    );
-    setSelectedVersionIdState(parsed.id);
-    setLocation(buildVersionHref(parsed.ticker, parsed.id));
-  };
-
-  const handleFileSelection = async (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) {
-      return;
-    }
-
-    const raw = await file.text();
-    importCoverage(raw, file.name);
-    event.target.value = "";
-  };
-
   return (
     <FlowLayout
       language={language}
@@ -915,50 +826,17 @@ export default function Coverage({
 
       <Card className="gap-4" interactive={false}>
         <CardHeader className="gap-2">
-          <CardTitle>{copy(language, "Import paneli", "Import panel")}</CardTitle>
+          <CardTitle>
+            {copy(language, "Yonetilen kutuphane", "Managed library")}
+          </CardTitle>
           <CardDescription>
             {copy(
               language,
-              "Markdown yapistir ya da .md dosyasi yukle. Frontmatter icindeki ticker/date bilgisi surum arsivini otomatik kurar.",
-              "Paste markdown or upload a .md file. The frontmatter ticker/date fields automatically build the version archive."
+              "Coverage arsivi bu yuzeyden duzenlenmez. Yeni rapor ve surumler yalnizca admin yayin akisi uzerinden eklenir.",
+              "The coverage archive is not editable from this surface. New reports and versions are published only through the admin workflow."
             )}
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <Textarea
-            value={rawInput}
-            onChange={event => setRawInput(event.target.value)}
-            className="min-h-44 rounded-xl border-border bg-background/45"
-            placeholder={copy(
-              language,
-              "Buraya coverage markdown yapistir...",
-              "Paste coverage markdown here..."
-            )}
-          />
-          <div className="flex flex-wrap items-center gap-3">
-            <Button onClick={() => importCoverage(rawInput, "manual-entry.md")}>
-              <Upload className="size-4" />
-              {copy(language, "Markdown ekle", "Add markdown")}
-            </Button>
-            <Button variant="outline" onClick={() => fileInputRef.current?.click()}>
-              <FileText className="size-4" />
-              {copy(language, "Dosya yukle", "Upload file")}
-            </Button>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept=".md,.markdown,text/markdown,text/plain"
-              className="hidden"
-              onChange={handleFileSelection}
-            />
-            {importMessage ? (
-              <span className="text-sm text-emerald-300">{importMessage}</span>
-            ) : null}
-            {importError ? (
-              <span className="text-sm text-rose-300">{importError}</span>
-            ) : null}
-          </div>
-        </CardContent>
       </Card>
 
       {mode === "index" ? (
