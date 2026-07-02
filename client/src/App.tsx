@@ -68,8 +68,6 @@ const ReportsDateDetailPage = lazy(
 );
 const CpiPpiForecastPage = lazy(() => import("./pages/CpiPpiForecast"));
 const EarningsPage = lazy(() => import("./pages/Earnings"));
-const EarningsCalendarPage = lazy(() => import("./pages/EarningsCalendar"));
-const EarningsStrategiesPage = lazy(() => import("./pages/EarningsStrategies"));
 const EarningsStockDetailPage = lazy(
   () => import("./pages/EarningsStockDetail")
 );
@@ -298,10 +296,10 @@ function Router({
         </Route>
         <Route path={"/app"}>{() => <Home language={language} />}</Route>
         <Route path={"/earnings/calendar"}>
-          {() => <EarningsCalendarPage language={language} />}
+          {() => <RouteRedirect href="/earnings" />}
         </Route>
         <Route path={"/earnings/strategies"}>
-          {() => <EarningsStrategiesPage language={language} />}
+          {() => <RouteRedirect href="/earnings" />}
         </Route>
         <Route path={"/earnings/:ticker"}>
           {params => (
@@ -1510,7 +1508,10 @@ function App() {
               >
                 <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3">
                   <div className="flex min-w-0 items-center gap-3 md:gap-4">
-                    <div className="inline-flex shrink-0 items-center gap-3 rounded-full border border-border bg-card/90 px-3 py-2 shadow-[0_12px_28px_rgba(0,0,0,0.14)]">
+                    <a
+                      href="/"
+                      className="inline-flex shrink-0 items-center gap-3 rounded-full border border-border bg-card/90 px-3 py-2 shadow-[0_12px_28px_rgba(0,0,0,0.14)] transition-colors hover:border-primary/30"
+                    >
                       <img
                         src="/gistifylogo.jpeg?v=20260606-1"
                         alt="Gistify logo"
@@ -1524,7 +1525,7 @@ function App() {
                           Earnings Intelligence
                         </p>
                       </div>
-                    </div>
+                    </a>
 
                     <WorkspaceNavigation
                       language={language}

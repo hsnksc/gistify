@@ -72,7 +72,10 @@ export default function PublicShell({
           className="rounded-xl border border-border bg-[linear-gradient(135deg,rgba(17,24,39,0.95),rgba(15,23,42,0.88))] p-4 shadow-[0_28px_80px_rgba(0,0,0,0.28)] backdrop-blur"
         >
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex items-center gap-3">
+            <a
+              href="/"
+              className="flex items-center gap-3 rounded-xl transition-colors hover:text-foreground"
+            >
               <img
                 src="/gistifylogo.jpeg?v=20260606-1"
                 alt="Gistify logo"
@@ -90,7 +93,7 @@ export default function PublicShell({
                   {copy(language, "Earnings intelligence ve momentum arastirma platformu", "Earnings intelligence and momentum research platform")}
                 </p>
               </div>
-            </div>
+            </a>
 
             <div className="flex flex-wrap items-center gap-2">
               <LanguageSelector
@@ -209,5 +212,4 @@ export default function PublicShell({
     </div>
   );
 }
-
 
