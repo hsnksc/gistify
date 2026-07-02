@@ -349,26 +349,37 @@ export async function translateTexts(
   }));
 
   let outputPayload: unknown = null;
+  let lastProviderError: unknown = null;
 
-  try {
-    if (openAiKey) {
-      outputPayload = await translateWithOpenAI(keyedTexts, source, target);
-    }
-
-    if (!outputPayload && mistralKey) {
+  // Prefer Mistral (highest-quality model) first, then fall back to OpenAI.
+  if (mistralKey) {
+    try {
       outputPayload = await translateWithMistral(keyedTexts, source, target);
+    } catch (providerError) {
+      lastProviderError = providerError;
+      console.error(
+        "[openaiTranslation] Mistral translation failed.",
+        providerError instanceof Error ? providerError.message : providerError
+      );
     }
-  } catch (providerError) {
-    console.error(
-      "[openaiTranslation] Translation provider failed, returning source texts.",
-      providerError instanceof Error ? providerError.message : providerError
-    );
-    return translations;
+  }
+
+  if (!outputPayload && openAiKey) {
+    try {
+      outputPayload = await translateWithOpenAI(keyedTexts, source, target);
+    } catch (providerError) {
+      lastProviderError = providerError;
+      console.error(
+        "[openaiTranslation] OpenAI translation failed.",
+        providerError instanceof Error ? providerError.message : providerError
+      );
+    }
   }
 
   if (!outputPayload || typeof outputPayload !== "object") {
-    console.warn(
-      `[openaiTranslation] Could not parse output JSON.`
+    console.error(
+      "[openaiTranslation] All translation providers failed, returning source texts.",
+      lastProviderError instanceof Error ? lastProviderError.message : lastProviderError
     );
     return translations;
   }
