@@ -240,7 +240,7 @@ export default function Landing({
       bullets: [
         copy(language, "Earnings Strategy Workspace + Earnings Workspace + hisse detaylari", "Earnings Strategy Workspace + Earnings Workspace + per-stock detail"),
         copy(language, "Live Momentum Scanner, Midas Feed ve MomentumFlowSurface", "Live Momentum Scanner, Midas Feed and MomentumFlowSurface"),
-        copy(language, "Daily Report, Market Flash, makro takvim ve CPI/PPI forecast", "Daily Report, Market Flash, macro calendar and CPI/PPI forecast"),
+        copy(language, "Market Flash, makro takvim ve CPI/PPI forecast", "Market Flash, macro calendar and CPI/PPI forecast"),
         copy(language, "Risk matrisi, IV crush gorunumu ve opsiyon playbook'u", "Risk matrix, IV crush view and options playbook"),
         copy(language, "Paid routes, saved framing ve daha derin plan katmani", "Paid routes, saved framing and a deeper planning layer"),
       ],

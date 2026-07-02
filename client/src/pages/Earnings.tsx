@@ -19,7 +19,6 @@ import {
   Target,
   BarChart3,
   Wallet,
-  Activity,
 } from "lucide-react";
 import {
   CalendarStatsPanel,
@@ -35,7 +34,7 @@ import {
 import { useEarningsStrategy } from "./earnings/useEarningsStrategy";
 import { toast } from "sonner";
 
-type TabKey = "overview" | "calendar" | "strategies" | "cpr" | "portfolio" | "greeks";
+type TabKey = "overview" | "calendar" | "strategies" | "cpr" | "portfolio";
 const ACTIVE_TAB_STORAGE_KEY = "gistify:earnings:active-tab";
 
 function isTabKey(value: string | null): value is TabKey {
@@ -44,8 +43,7 @@ function isTabKey(value: string | null): value is TabKey {
     value === "calendar" ||
     value === "strategies" ||
     value === "cpr" ||
-    value === "portfolio" ||
-    value === "greeks"
+    value === "portfolio"
   );
 }
 
@@ -81,7 +79,6 @@ const TABS: { key: TabKey; labelTr: string; labelEn: string; icon: React.ReactNo
   { key: "strategies", labelTr: "Stratejiler", labelEn: "Strategies", icon: <Target className="size-4" /> },
   { key: "cpr", labelTr: "CPR & Greeks", labelEn: "CPR & Greeks", icon: <BarChart3 className="size-4" /> },
   { key: "portfolio", labelTr: "Portföy", labelEn: "Portfolio", icon: <Wallet className="size-4" /> },
-  { key: "greeks", labelTr: "Greeks", labelEn: "Greeks", icon: <Activity className="size-4" /> },
 ];
 
 export default function EarningsPage({
@@ -301,16 +298,6 @@ export default function EarningsPage({
             portfolio={data.portfolio}
           />
           <PortfolioPanel language={language} levels={data.portfolio} />
-        </div>
-      )}
-
-      {/* Greeks Tab */}
-      {activeTab === "greeks" && (
-        <div className="space-y-6">
-          <GreeksDashboard
-            language={language}
-            strategies={data.strategies}
-          />
         </div>
       )}
     </EarningsWorkspaceFrame>

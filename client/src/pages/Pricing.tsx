@@ -19,8 +19,8 @@ export default function Pricing({
         ),
         copy(
           language,
-          "Earnings Workspace — Overview, Calendar, Strategies, CPR & Greeks, Portfolio",
-          "Earnings Workspace — Overview, Calendar, Strategies, CPR & Greeks, Portfolio"
+          "Earnings Workspace — Overview, Calendar, Strategies, CPR/Greeks, Portfolio",
+          "Earnings Workspace — Overview, Calendar, Strategies, CPR/Greeks, Portfolio"
         ),
         copy(
           language,
@@ -57,11 +57,6 @@ export default function Pricing({
     {
       title: copy(language, "Makro & Piyasa", "Macro & Market"),
       items: [
-        copy(
-          language,
-          "Gunluk piyasa raporu (Daily Report) — markdown + HTML + figurler",
-          "Daily market report — markdown + HTML + figures"
-        ),
         copy(
           language,
           "Makro ekonomik takvim — FOMC, PMI, istihdam, VIX/Fear-Greed outlook",

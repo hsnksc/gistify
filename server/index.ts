@@ -92,7 +92,7 @@ import {
 } from "./openaiImageStudio";
 import {
   normalizeTranslationTexts,
-  translateTurkishTextsToEnglish,
+  translateTexts,
 } from "./openaiTranslation";
 
 type MembershipPlan = "guest" | "member" | "pro";
@@ -2841,7 +2841,6 @@ function buildSitemapXml(): string {
     { path: "/earnings", priority: "0.7", changefreq: "weekly" },
     { path: "/earnings/calendar", priority: "0.7", changefreq: "weekly" },
     { path: "/earnings/strategies", priority: "0.7", changefreq: "weekly" },
-    { path: "/daily-report", priority: "0.7", changefreq: "daily" },
     { path: "/cpi-ppi", priority: "0.7", changefreq: "weekly" },
     { path: "/blog/earnings-strategy/complete-guide-trading-earnings-options", priority: "0.7", changefreq: "weekly" },
     { path: "/blog/options-education/iv-crush-explained", priority: "0.7", changefreq: "weekly" },
@@ -3490,7 +3489,7 @@ async function startServer() {
       normalizeTranslationTexts,
       requireWeeklyReportAdmin,
       setPrivateNoStore,
-      translateTurkishTextsToEnglish,
+      translateTexts,
     })
   );
 

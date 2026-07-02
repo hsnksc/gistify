@@ -104,7 +104,6 @@ const COPY = {
     planScopeItems: [
       "Earnings Strategy + Earnings Workspace",
       "Live Momentum Scanner / Midas Feed",
-      "Daily Report + Market Flash",
       "Makro Takvim + CPI/PPI Forecast",
       "Risk Matrisi + IV Crush + Opsiyon Playbook",
       "Web erisimi ve destek",
@@ -172,7 +171,6 @@ const COPY = {
     planScopeItems: [
       "Earnings Strategy + Earnings Workspace",
       "Live Momentum Scanner / Midas Feed",
-      "Daily Report + Market Flash",
       "Macro Calendar + CPI/PPI Forecast",
       "Risk Matrix + IV Crush + Options Playbook",
       "Web access and support",
@@ -728,4 +726,3 @@ export default function Pay({
     </div>
   );
 }
-

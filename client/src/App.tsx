@@ -11,7 +11,6 @@ import type { ComponentType } from "react";
 import {
   Activity,
   CalendarDays,
-  FileText,
   LayoutDashboard,
   Layers3,
   LogOut,
@@ -49,7 +48,6 @@ const Landing = lazy(() => import("./pages/Landing"));
 const Home = lazy(() => import("./pages/Home"));
 const ReportsAdmin = lazy(() => import("./pages/ReportsAdmin"));
 const Scanner = lazy(() => import("./pages/Scanner"));
-const DailyReport = lazy(() => import("./pages/DailyReport"));
 const FlowPage = lazy(() => import("./features/flow/pages/FlowPage"));
 const FlowDailyPage = lazy(() => import("./features/flow/pages/FlowDailyPage"));
 const FlowTickerPage = lazy(() => import("./features/flow/pages/FlowTickerPage"));
@@ -237,7 +235,6 @@ type WorkspaceLabelKey =
   | "admin"
   | "calendar"
   | "cpiPpi"
-  | "daily"
   | "earnings"
   | "earningsStrategy"
   | "flow"
@@ -252,8 +249,6 @@ function workspaceLabel(language: AppLanguage, key: WorkspaceLabelKey) {
       return copy(language, "Takvim", "Calendar");
     case "cpiPpi":
       return "CPI/PPI";
-    case "daily":
-      return copy(language, "Gunluk", "Daily");
     case "earnings":
       return copy(language, "Earnings", "Earnings");
     case "earningsStrategy":
@@ -284,8 +279,8 @@ function Router({
             className="mx-auto max-w-7xl"
             description={copy(
               language,
-              "Kazanc stratejisi, momentum, gunluk ve portfoy modulleri baglaniyor.",
-              "The earnings strategy, momentum, daily and portfolio modules are connecting."
+              "Kazanc stratejisi, momentum, flow ve portfoy modulleri baglaniyor.",
+              "The earnings strategy, momentum, flow and portfolio modules are connecting."
             )}
             label={copy(language, "Calisma alani yukleniyor", "Loading workspace")}
           />
@@ -323,7 +318,7 @@ function Router({
           {() => <Scanner language={language} />}
         </Route>
         <Route path={"/daily-report"}>
-          {() => <DailyReport language={language} />}
+          {() => <RouteRedirect href="/flow" />}
         </Route>
         <Route path={"/cpi-ppi"}>
           {() => <CpiPpiForecastPage language={language} />}
@@ -432,6 +427,16 @@ function Router({
   );
 }
 
+function RouteRedirect({ href }: { href: string }) {
+  const [, setLocation] = useLocation();
+
+  useEffect(() => {
+    setLocation(href, { replace: true });
+  }, [href, setLocation]);
+
+  return null;
+}
+
 function WorkspaceNavigation({
   language,
   authState,
@@ -487,13 +492,6 @@ function WorkspaceNavigation({
       requiresSubscription: true,
     },
     {
-      href: "/daily-report",
-      label: workspaceLabel(language, "daily"),
-      icon: FileText,
-      active: location.startsWith("/daily-report"),
-      requiresSubscription: true,
-    },
-    {
       href: "/cpi-ppi",
       label: workspaceLabel(language, "cpiPpi"),
       icon: Activity,
@@ -537,7 +535,6 @@ function WorkspaceNavigation({
     "/app",
     "/earnings",
     "/momentum",
-    "/daily-report",
     "/flow",
   ]);
   const mobilePrimaryItems = items.filter(item =>
@@ -699,10 +696,6 @@ function getWorkspaceSectionLabel(path: string, language: AppLanguage) {
     return workspaceLabel(language, "momentum");
   }
 
-  if (path.startsWith("/daily-report")) {
-    return workspaceLabel(language, "daily");
-  }
-
   if (path.startsWith("/cpi-ppi")) {
     return workspaceLabel(language, "cpiPpi");
   }
@@ -834,7 +827,7 @@ function SubscriptionRequiredView({
                   copy(language, "Abonelik", "Subscription"),
                 ],
                 [
-                  workspaceLabel(language, "daily"),
+                  workspaceLabel(language, "earnings"),
                   copy(language, "Abonelik", "Subscription"),
                 ],
                 [
@@ -934,6 +927,7 @@ function App() {
   const isReportsRoute = location.startsWith("/reports");
   const isMarketingRoute =
     ["/", "/pricing", "/terms", "/privacy", "/refund"].includes(location) ||
+    location.startsWith("/daily-report") ||
     isFlowRoute ||
     isReportsRoute;
   const isLockedWorkspaceRoute =
@@ -942,7 +936,6 @@ function App() {
     location.startsWith("/earnings") ||
     location.startsWith("/momentum") ||
     location.startsWith("/scanner") ||
-    location.startsWith("/daily-report") ||
     location.startsWith("/cpi-ppi") ||
     location.startsWith("/calendar") ||
     location.startsWith("/marketflash");
