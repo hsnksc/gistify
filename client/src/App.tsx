@@ -17,7 +17,6 @@ import {
   Menu,
   Radar,
   Shield,
-  TrendingUp,
   Zap,
 } from "lucide-react";
 import LanguageSelector from "@/components/LanguageSelector";
@@ -475,13 +474,6 @@ function WorkspaceNavigation({
       requiresSubscription: true,
     },
     {
-      href: "/earnings",
-      label: workspaceLabel(language, "earnings"),
-      icon: TrendingUp,
-      active: location.startsWith("/earnings"),
-      requiresSubscription: true,
-    },
-    {
       href: "/momentum",
       label: workspaceLabel(language, "momentum"),
       icon: Radar,
@@ -531,7 +523,6 @@ function WorkspaceNavigation({
 
   const mobilePrimaryHrefs = new Set([
     "/app",
-    "/earnings",
     "/momentum",
     "/flow",
   ]);
