@@ -1,4 +1,6 @@
 import "dotenv/config";
+import { config as dotenvConfig } from "dotenv";
+dotenvConfig({ path: ".env.local" });
 import express from "express";
 import prerender from "prerender-node";
 import { registerSeoRoutes } from "./seo-routes";

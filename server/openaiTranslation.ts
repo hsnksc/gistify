@@ -1,5 +1,7 @@
 const OPENAI_RESPONSES_URL = "https://api.openai.com/v1/responses";
 const DEFAULT_TRANSLATION_MODEL = "gpt-4.1";
+const MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions";
+const DEFAULT_MISTRAL_MODEL = "mistral-large-latest";
 const MAX_TEXTS_PER_REQUEST = 24;
 const MAX_TEXT_LENGTH = 2_000;
 const MAX_TOTAL_TEXT_LENGTH = 18_000;
@@ -85,13 +87,9 @@ function getOpenAiTranslationApiKey() {
   for (const key of candidates) {
     const value = normalizeString(process.env[key]);
     if (value) {
-      console.log(`[openaiTranslation] API key found in env var: ${key}`);
       return value;
     }
   }
-  console.warn(
-    `[openaiTranslation] No API key found. Checked: ${candidates.join(", ")}. Available env keys: ${Object.keys(process.env).filter(k => k.toLowerCase().includes("openai")).join(", ") || "none"}`
-  );
   return "";
 }
 
@@ -99,6 +97,27 @@ function getOpenAiTranslationModel() {
   return (
     normalizeString(process.env.OPENAI_TRANSLATION_MODEL) ||
     DEFAULT_TRANSLATION_MODEL
+  );
+}
+
+function getMistralApiKey() {
+  const candidates = [
+    "MISTRAL_API_KEY",
+    "MISTRAL_KEY",
+  ];
+  for (const key of candidates) {
+    const value = normalizeString(process.env[key]);
+    if (value) {
+      return value;
+    }
+  }
+  return "";
+}
+
+function getMistralModel() {
+  return (
+    normalizeString(process.env.MISTRAL_TRANSLATION_MODEL) ||
+    DEFAULT_MISTRAL_MODEL
   );
 }
 
@@ -148,41 +167,11 @@ export function normalizeTranslationTexts(value: unknown) {
   return Array.from(new Set(normalized));
 }
 
-export async function translateTurkishTextsToEnglish(texts: string[]) {
-  const uniqueTexts = normalizeTranslationTexts(texts);
-  const translations = Object.fromEntries(
-    uniqueTexts.map(text => [text, text])
-  ) as Record<string, string>;
-
-  if (!uniqueTexts.length) {
-    return translations;
-  }
-
-  const uncachedTexts = uniqueTexts.filter(text => {
-    const cached = translationCache.get(text);
-    if (cached) {
-      translations[text] = cached;
-      return false;
-    }
-
-    return true;
-  });
-
-  if (!uncachedTexts.length) {
-    return translations;
-  }
-
+async function translateWithOpenAI(keyedTexts: { key: string; text: string }[]) {
   const apiKey = getOpenAiTranslationApiKey();
   if (!apiKey) {
-    const error = new Error("OPENAI_API_KEY not configured. Translation unavailable.");
-    (error as Error & { statusCode?: number }).statusCode = 503;
-    throw error;
+    return null;
   }
-
-  const keyedTexts = uncachedTexts.map((text, index) => ({
-    key: `t${index + 1}`,
-    text,
-  }));
 
   const response = await fetch(OPENAI_RESPONSES_URL, {
     method: "POST",
@@ -229,11 +218,133 @@ export async function translateTurkishTextsToEnglish(texts: string[]) {
   }
 
   const outputText = extractOutputText(parsedBody);
-  const outputPayload = parseJsonSafely(outputText);
+  return parseJsonSafely(outputText);
+}
+
+async function translateWithMistral(keyedTexts: { key: string; text: string }[]) {
+  const apiKey = getMistralApiKey();
+  if (!apiKey) {
+    return null;
+  }
+
+  const response = await fetch(MISTRAL_API_URL, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model: getMistralModel(),
+      temperature: 0.3,
+      response_format: { type: "json_object" },
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are a professional Turkish-to-English translator for financial and market-analysis reports. " +
+            "Return only valid JSON mapping each input id to its English translation.",
+        },
+        {
+          role: "user",
+          content: [
+            "Translate each Turkish string into natural English.",
+            "Preserve markdown, bullet markers, whitespace structure, URLs, dates, ticker symbols, numbers, and casing where it carries meaning.",
+            "Do not summarize. Do not omit details. If text is already English or should stay unchanged, return it as-is.",
+            "Return only valid JSON in the shape {\"t1\":\"...\",\"t2\":\"...\"}.",
+            JSON.stringify(keyedTexts),
+          ].join("\n\n"),
+        },
+      ],
+    }),
+  });
+
+  const rawBody = await response.text();
+  const parsedBody = parseJsonSafely(rawBody);
+
+  if (!response.ok) {
+    const errorMessage = extractErrorMessage(
+      parsedBody,
+      "Mistral ceviri istegi basarisiz oldu."
+    );
+    console.error(
+      `[openaiTranslation] Mistral API error ${response.status}: ${errorMessage}`,
+      { rawBody: rawBody.slice(0, 500) }
+    );
+    throw new Error(errorMessage);
+  }
+
+  const content =
+    parsedBody &&
+    typeof parsedBody === "object" &&
+    Array.isArray((parsedBody as { choices?: unknown[] }).choices)
+      ? normalizeString(
+          ((parsedBody as { choices: Array<{ message?: { content?: unknown } }> }).choices[0] || {})
+            .message?.content
+        )
+      : "";
+
+  return parseJsonSafely(content);
+}
+
+export async function translateTurkishTextsToEnglish(texts: string[]) {
+  const uniqueTexts = normalizeTranslationTexts(texts);
+  const translations = Object.fromEntries(
+    uniqueTexts.map(text => [text, text])
+  ) as Record<string, string>;
+
+  if (!uniqueTexts.length) {
+    return translations;
+  }
+
+  const uncachedTexts = uniqueTexts.filter(text => {
+    const cached = translationCache.get(text);
+    if (cached) {
+      translations[text] = cached;
+      return false;
+    }
+
+    return true;
+  });
+
+  if (!uncachedTexts.length) {
+    return translations;
+  }
+
+  const openAiKey = getOpenAiTranslationApiKey();
+  const mistralKey = getMistralApiKey();
+
+  if (!openAiKey && !mistralKey) {
+    const error = new Error("No translation API key configured. Translation unavailable.");
+    (error as Error & { statusCode?: number }).statusCode = 503;
+    throw error;
+  }
+
+  const keyedTexts = uncachedTexts.map((text, index) => ({
+    key: `t${index + 1}`,
+    text,
+  }));
+
+  let outputPayload: unknown = null;
+
+  try {
+    if (openAiKey) {
+      outputPayload = await translateWithOpenAI(keyedTexts);
+    }
+
+    if (!outputPayload && mistralKey) {
+      outputPayload = await translateWithMistral(keyedTexts);
+    }
+  } catch (providerError) {
+    console.error(
+      "[openaiTranslation] Translation provider failed, returning source texts.",
+      providerError instanceof Error ? providerError.message : providerError
+    );
+    return translations;
+  }
 
   if (!outputPayload || typeof outputPayload !== "object") {
     console.warn(
-      `[openaiTranslation] Could not parse output JSON. outputText: "${outputText.slice(0, 200)}"`
+      `[openaiTranslation] Could not parse output JSON.`
     );
     return translations;
   }
