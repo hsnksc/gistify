@@ -14,6 +14,7 @@ export interface CoverageChecklistItem {
 export interface CoverageTableBlock {
   headers: string[];
   rows: string[][];
+  signature?: string;
   type: "table";
 }
 
@@ -58,6 +59,7 @@ export interface CoverageMetrics {
   earningsDate?: string;
   high52?: number;
   iv?: number;
+  ivRank?: number;
   low52?: number;
   optionExpiry?: string;
   price?: number;
@@ -66,6 +68,15 @@ export interface CoverageMetrics {
   rsi?: number;
   shortFloat?: number;
   targetAvg?: number;
+}
+
+export interface CoverageStrategy {
+  breakeven: number;
+  cost: number;
+  legs: string;
+  max_gain: number;
+  max_loss: number;
+  name: string;
 }
 
 export interface CoverageReport {
@@ -81,6 +92,7 @@ export interface CoverageReport {
   sections: CoverageSection[];
   signal: string;
   sourceName: string;
+  strategy?: CoverageStrategy;
   summary: string;
   ticker: string;
   title: string;
@@ -140,7 +152,6 @@ function stripLocaleNoise(value: string) {
     .replace(/Ç/g, "c")
     .replace(/Ğ/g, "g")
     .replace(/İ/g, "i")
-    .replace(/I/g, "i")
     .replace(/Ö/g, "o")
     .replace(/Ş/g, "s")
     .replace(/Ü/g, "u");
@@ -154,6 +165,19 @@ export function normalizeCoverageKey(value: string) {
     .trim();
 }
 
+function detectTableSignature(headers: string[]): string {
+  const normalized = headers.map(h => normalizeCoverageKey(h));
+  if (normalized.includes('strike') && normalized.includes('bid') && normalized.includes('ask')) return 'options-chain';
+  if (normalized.includes('hisse') && normalized.includes('pl')) return 'payoff';
+  if (normalized.includes('seviye') && normalized.includes('tur') && normalized.includes('guc')) return 'level-ladder';
+  if (normalized.includes('tarih') && normalized.includes('olay')) return 'catalyst-timeline';
+  if (normalized.includes('donem') && normalized.includes('eps')) return 'earnings-history';
+  if (normalized.includes('kriter')) return 'comparison-matrix';
+  if (normalized.includes('senaryo')) return 'scenario-cards';
+  if (normalized.includes('kaynak') && normalized.includes('url')) return 'source-list';
+  if (normalized.includes('katalizor') && normalized.includes('etki')) return 'catalyst-matrix';
+  return 'table';
+}
 function slugify(value: string) {
   return normalizeCoverageKey(value)
     .replace(/[^\w\s-]/g, "")
@@ -175,28 +199,67 @@ function splitFrontmatter(raw: string) {
   if (!match) {
     return {
       body: raw.trim(),
-      frontmatter: {} as Record<string, string>,
+      frontmatter: {} as Record<string, unknown>,
     };
   }
 
-  const frontmatter: Record<string, string> = {};
-  for (const line of match[1].split(/\r?\n/)) {
-    const separatorIndex = line.indexOf(":");
-    if (separatorIndex <= 0) {
-      continue;
-    }
-
-    const key = normalizeCoverageKey(line.slice(0, separatorIndex));
-    const value = line.slice(separatorIndex + 1).trim();
-    if (key) {
-      frontmatter[key] = value;
-    }
-  }
+  const frontmatter = parseYamlFrontmatter(match[1]);
 
   return {
     body: raw.slice(match[0].length).trim(),
     frontmatter,
   };
+}
+
+function parseYamlFrontmatter(text: string): Record<string, unknown> {
+  const result: Record<string, unknown> = {};
+  const lines = text.split(/\r?\n/);
+  let i = 0;
+
+  while (i < lines.length) {
+    const line = lines[i];
+    const separatorIndex = line.indexOf(":");
+    if (separatorIndex <= 0 || line.trim().startsWith("#")) {
+      i += 1;
+      continue;
+    }
+
+    const key = line.slice(0, separatorIndex).trim();
+    const valueAfterColon = line.slice(separatorIndex + 1);
+
+    // Check if next line is indented → nested object
+    if (i + 1 < lines.length && /^\s+/.test(lines[i + 1])) {
+      const nested: Record<string, unknown> = {};
+      i += 1;
+      while (i < lines.length && /^\s+/.test(lines[i])) {
+        const nestedLine = lines[i].trim();
+        const nestedSep = nestedLine.indexOf(":");
+        if (nestedSep > 0) {
+          const nestedKey = nestedLine.slice(0, nestedSep).trim();
+          const nestedValue = nestedLine.slice(nestedSep + 1).trim();
+          nested[nestedKey] = parseYamlValue(nestedValue);
+        }
+        i += 1;
+      }
+      result[key] = nested;
+      continue;
+    }
+
+    result[key] = parseYamlValue(valueAfterColon.trim());
+    i += 1;
+  }
+
+  return result;
+}
+
+function parseYamlValue(value: string): unknown {
+  if (value === "true") return true;
+  if (value === "false") return false;
+  if (value === "null" || value === "~") return null;
+  if (value === "") return "";
+  const numMatch = value.replace(/,/g, "").match(/^-?\d+(?:\.\d+)?$/);
+  if (numMatch) return Number(numMatch[0]);
+  return value;
 }
 
 function splitTableRow(line: string) {
@@ -246,6 +309,7 @@ function parseBlocks(lines: string[]): CoverageBlock[] {
         blocks.push({
           headers,
           rows: dataRows,
+          signature: detectTableSignature(headers),
           type: "table",
         });
       }
@@ -521,43 +585,64 @@ function extractSummary(sections: CoverageSection[]) {
 }
 
 function extractMetrics(
-  frontmatter: Record<string, string>,
+  frontmatter: Record<string, unknown>,
   metricRows: Map<string, string>
 ): CoverageMetrics {
+  // Support nested frontmatter.metrics object
+  const fmMetrics =
+    typeof frontmatter.metrics === "object" && frontmatter.metrics !== null
+      ? (frontmatter.metrics as Record<string, unknown>)
+      : ({} as Record<string, unknown>);
+
   const reportTimestamp =
-    extractIsoTimestamp(frontmatter.timestamp || "") ||
-    extractIsoTimestamp(frontmatter.date || "") ||
+    extractIsoTimestamp(String(frontmatter.timestamp || "")) ||
+    extractIsoTimestamp(String(frontmatter.date || "")) ||
     extractIsoTimestamp(readMetricValue(metricRows, METRIC_LABELS.reportDate));
   const reportDate =
-    extractIsoDate(frontmatter.date || "") ||
+    extractIsoDate(String(frontmatter.date || "")) ||
     extractIsoDate(readMetricValue(metricRows, METRIC_LABELS.reportDate));
-  const price = parseNumber(readMetricValue(metricRows, METRIC_LABELS.price));
-  const changePct = parseNumber(
-    readMetricValue(metricRows, METRIC_LABELS.changePct)
+
+  const price =
+    parseNumber(String(fmMetrics.price || "")) ||
+    parseNumber(readMetricValue(metricRows, METRIC_LABELS.price));
+  const changePct =
+    parseNumber(String(fmMetrics.change_pct || "")) ||
+    parseNumber(readMetricValue(metricRows, METRIC_LABELS.changePct));
+  const targetAvg =
+    parseNumber(String(fmMetrics.target_avg || "")) ||
+    parseNumber(readMetricValue(metricRows, METRIC_LABELS.targetAvg));
+  const iv =
+    parseNumber(String(fmMetrics.iv || "")) ||
+    parseNumber(readMetricValue(metricRows, METRIC_LABELS.iv));
+  const ivRank =
+    parseNumber(String(fmMetrics.iv_rank || ""));
+  const shortFloat =
+    parseNumber(String(fmMetrics.short_float || "")) ||
+    parseNumber(readMetricValue(metricRows, METRIC_LABELS.shortFloat));
+  const rsi =
+    parseNumber(String(fmMetrics.rsi || "")) ||
+    parseNumber(readMetricValue(metricRows, METRIC_LABELS.rsi));
+  const budget =
+    parseNumber(String(fmMetrics.budget || "")) ||
+    parseNumber(readMetricValue(metricRows, METRIC_LABELS.budget));
+  const range = parseRange(
+    readMetricValue(metricRows, METRIC_LABELS.range52) ||
+    String(fmMetrics.low52 || "") + " - " + String(fmMetrics.high52 || "")
   );
-  const targetAvg = parseNumber(
-    readMetricValue(metricRows, METRIC_LABELS.targetAvg)
-  );
-  const iv = parseNumber(readMetricValue(metricRows, METRIC_LABELS.iv));
-  const shortFloat = parseNumber(
-    readMetricValue(metricRows, METRIC_LABELS.shortFloat)
-  );
-  const rsi = parseNumber(readMetricValue(metricRows, METRIC_LABELS.rsi));
-  const budget = parseNumber(readMetricValue(metricRows, METRIC_LABELS.budget));
-  const range = parseRange(readMetricValue(metricRows, METRIC_LABELS.range52));
 
   return {
     budget,
     changePct,
-    earningsDate: extractIsoDate(
-      readMetricValue(metricRows, METRIC_LABELS.earningsDate)
-    ),
-    high52: range.high52,
+    earningsDate:
+      extractIsoDate(String(fmMetrics.earnings_date || "")) ||
+      extractIsoDate(readMetricValue(metricRows, METRIC_LABELS.earningsDate)),
+    high52: range.high52 || parseNumber(String(fmMetrics.high52 || "")),
     iv,
-    low52: range.low52,
-    optionExpiry: extractIsoDate(
-      readMetricValue(metricRows, METRIC_LABELS.optionExpiry)
-    ),
+    ivRank,
+    low52: range.low52 || parseNumber(String(fmMetrics.low52 || "")),
+    optionExpiry:
+      extractIsoDate(String(fmMetrics.option_expiry || "")) ||
+      extractIsoDate(readMetricValue(metricRows, METRIC_LABELS.optionExpiry)),
     price,
     reportDate,
     reportTimestamp,
@@ -576,29 +661,50 @@ export function parseCoverageReport(record: CoverageStoredRecord): CoverageRepor
   const { prelude, sections, title } = parseSections(body);
   const metricRows = readMetricRows(prelude, sections);
   const metrics = extractMetrics(frontmatter, metricRows);
+
   const ticker =
-    (frontmatter.ticker || "").trim().toUpperCase() ||
+    String(frontmatter.ticker || "").trim().toUpperCase() ||
     title.match(/\(([A-Z.:-]+)\)/)?.[1]?.split(":").pop()?.trim() ||
     "UNKNOWN";
   const company =
-    (frontmatter.company || "").trim() ||
+    String(frontmatter.company || "").trim() ||
     title.replace(/\(.*?\)/g, "").trim() ||
     ticker;
-  const reportDate = metrics.reportDate || frontmatter.date || record.importedAt.slice(0, 10);
+  const reportDate =
+    metrics.reportDate ||
+    String(frontmatter.date || "").trim() ||
+    record.importedAt.slice(0, 10);
   const searchText = [
     ticker,
     company,
     title,
-    frontmatter.signal || "",
-    frontmatter.sector || "",
+    String(frontmatter.signal || ""),
+    String(frontmatter.sector || ""),
     record.sourceName,
   ]
     .join(" ")
     .toLowerCase();
 
+  // Extract strategy from frontmatter if available
+  const fmStrategy =
+    typeof frontmatter.strategy === "object" && frontmatter.strategy !== null
+      ? (frontmatter.strategy as Record<string, unknown>)
+      : undefined;
+
+  const strategy: CoverageStrategy | undefined = fmStrategy
+    ? {
+        name: String(fmStrategy.name || ""),
+        legs: String(fmStrategy.legs || ""),
+        cost: Number(fmStrategy.cost || 0),
+        max_gain: Number(fmStrategy.max_gain || 0),
+        max_loss: Number(fmStrategy.max_loss || 0),
+        breakeven: Number(fmStrategy.breakeven || 0),
+      }
+    : undefined;
+
   return {
     company,
-    exchange: (frontmatter.exchange || "").trim(),
+    exchange: String(frontmatter.exchange || "").trim(),
     id: record.id,
     importedAt: record.importedAt,
     metrics: {
@@ -608,14 +714,15 @@ export function parseCoverageReport(record: CoverageStoredRecord): CoverageRepor
     raw: record.raw,
     reportDate,
     searchText,
-    sector: (frontmatter.sector || "").trim(),
+    sector: String(frontmatter.sector || "").trim(),
     sections,
-    signal: (frontmatter.signal || "").trim(),
+    signal: String(frontmatter.signal || "").trim(),
     sourceName: record.sourceName,
+    strategy,
     summary: extractSummary(sections),
     ticker,
     title: title || `${ticker} Coverage Report`,
-    type: (frontmatter.type || "").trim(),
+    type: String(frontmatter.type || "").trim(),
   };
 }
 

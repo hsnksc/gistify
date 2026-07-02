@@ -45,6 +45,19 @@ import LoadingState from "@/components/ui/loading-state";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+import {
+  StrategyCard,
+  LevelLadder,
+  CatalystTimeline,
+  ProbabilityBars,
+  EcosystemChips,
+  RSIGauge,
+} from "@/features/coverage/components";
+import {
+  PayoffChart,
+  EarningsHistoryChart,
+  OptionsChainHeatmap,
+} from "@/features/coverage/components/charts";
 
 const WATCH_STORAGE_KEY = "gistify:coverage:watch:v1";
 const CHECKLIST_STORAGE_KEY = "gistify:coverage:checklist:v1";
@@ -254,7 +267,7 @@ function getSelectedVersionId() {
   return new URLSearchParams(window.location.search).get("v") || "";
 }
 
-function summarizeDiff(current: CoverageReport, previous: CoverageReport | null) {
+function summarizeDiff(current: CoverageReport, previous: CoverageReport | null, language: AppLanguage) {
   if (!previous) {
     return {
       changedMetrics: [] as Array<{ label: string; next: string; previous: string }>,
@@ -263,25 +276,25 @@ function summarizeDiff(current: CoverageReport, previous: CoverageReport | null)
   }
 
   const metricLabels = [
-    ["Price", formatUsd(current.metrics.price), formatUsd(previous.metrics.price)],
+    [copy(language, "Fiyat", "Price"), formatUsd(current.metrics.price), formatUsd(previous.metrics.price)],
     [
-      "Change",
+      copy(language, "Degisim", "Change"),
       formatPercent(current.metrics.changePct),
       formatPercent(previous.metrics.changePct),
     ],
     [
-      "Target Avg",
+      copy(language, "Hedef Ortalama", "Target Avg"),
       formatUsd(current.metrics.targetAvg),
       formatUsd(previous.metrics.targetAvg),
     ],
-    ["IV", formatPercent(current.metrics.iv), formatPercent(previous.metrics.iv)],
+    [copy(language, "IV", "IV"), formatPercent(current.metrics.iv), formatPercent(previous.metrics.iv)],
     [
-      "Short Float",
+      copy(language, "Short Float", "Short Float"),
       formatPercent(current.metrics.shortFloat),
       formatPercent(previous.metrics.shortFloat),
     ],
-    ["RSI", formatPlainNumber(current.metrics.rsi), formatPlainNumber(previous.metrics.rsi)],
-    ["Budget", formatUsd(current.metrics.budget), formatUsd(previous.metrics.budget)],
+    [copy(language, "RSI", "RSI"), formatPlainNumber(current.metrics.rsi), formatPlainNumber(previous.metrics.rsi)],
+    [copy(language, "Butce", "Budget"), formatUsd(current.metrics.budget), formatUsd(previous.metrics.budget)],
   ]
     .filter(([, next, prior]) => next !== prior)
     .map(([label, next, prior]) => ({
@@ -307,14 +320,18 @@ function CoverageBlocks({
   blockPrefix,
   blocks,
   checklistState,
+  language,
   onChecklistChange,
+  report,
   reportId,
   sectionId,
 }: {
   blockPrefix: string;
   blocks: CoverageBlock[];
   checklistState: ChecklistState;
+  language: AppLanguage;
   onChecklistChange: (key: string, checked: boolean) => void;
+  report?: CoverageReport;
   reportId: string;
   sectionId: string;
 }) {
@@ -379,6 +396,8 @@ function CoverageBlocks({
             key={`${blockPrefix}-${index}`}
             block={block}
             blockPrefix={blockPrefix}
+            language={language}
+            report={report}
           />
         );
       })}
@@ -389,10 +408,135 @@ function CoverageBlocks({
 function TableBlockView({
   block,
   blockPrefix,
+  language,
+  report,
 }: {
   block: CoverageTableBlock;
   blockPrefix: string;
+  language: AppLanguage;
+  report?: CoverageReport;
 }) {
+  if (block.signature === "options-chain") {
+    const data = block.rows.map(row => ({
+      strike: parseFloat(row[0].replace(/[^0-9.]/g, "")) || 0,
+      bid: parseFloat(row[1].replace(/[^0-9.]/g, "")) || 0,
+      ask: parseFloat(row[2].replace(/[^0-9.]/g, "")) || 0,
+      volume: row[3] ? parseInt(row[3].replace(/,/g, ""), 10) || undefined : undefined,
+      iv: row[4] ? parseFloat(row[4].replace(/[^0-9.]/g, "")) || undefined : undefined,
+      delta: row[5] ? parseFloat(row[5].replace(/[^0-9.]/g, "")) || undefined : undefined,
+    }));
+    return (
+      <OptionsChainHeatmap
+        data={data}
+        price={report?.metrics.price}
+        language={language === "tr" ? "tr" : "en"}
+      />
+    );
+  }
+
+  if (block.signature === "payoff") {
+    const data = block.rows.map(row => ({
+      price: parseFloat(row[0].replace(/[^0-9.]/g, "")) || 0,
+      pnl: parseFloat(row[1].replace(/[^0-9.-]/g, "")) || 0,
+      roi: row[2] ? parseFloat(row[2].replace(/[^0-9.-]/g, "")) || undefined : undefined,
+    }));
+    return (
+      <PayoffChart
+        data={data}
+        breakeven={report?.strategy?.breakeven}
+        currentPrice={report?.metrics.price}
+        language={language === "tr" ? "tr" : "en"}
+      />
+    );
+  }
+
+  if (block.signature === "level-ladder") {
+    const levels = block.rows.map(row => ({
+      seviye: parseFloat(row[0].replace(/[^0-9.]/g, "")) || 0,
+      tur: row[1] || "",
+      guc: row[2] || "",
+      gerekce: row[3] || "",
+    }));
+    return (
+      <LevelLadder
+        levels={levels}
+        price={report?.metrics.price}
+        language={language === "tr" ? "tr" : "en"}
+      />
+    );
+  }
+
+  if (block.signature === "catalyst-timeline") {
+    const items = block.rows.map(row => ({
+      tarih: row[0] || "",
+      olay: row[1] || "",
+      onem: row[2] || undefined,
+    }));
+    return (
+      <CatalystTimeline
+        items={items}
+        language={language === "tr" ? "tr" : "en"}
+      />
+    );
+  }
+
+  if (block.signature === "earnings-history") {
+    const data = block.rows.map(row => ({
+      donem: row[0] || "",
+      epsTahmin: parseFloat(row[1].replace(/[^0-9.-]/g, "")) || 0,
+      epsGercek: parseFloat(row[2].replace(/[^0-9.-]/g, "")) || 0,
+      surpriz: row[3] ? parseFloat(row[3].replace(/[^0-9.-]/g, "")) || undefined : undefined,
+    }));
+    return (
+      <EarningsHistoryChart
+        data={data}
+        language={language === "tr" ? "tr" : "en"}
+      />
+    );
+  }
+
+  if (block.signature === "catalyst-matrix") {
+    return (
+      <div className="overflow-hidden rounded-xl border border-border bg-background/30">
+        <Table>
+          <TableHeader>
+            <TableRow className="border-border">
+              {block.headers.map((header, index) => (
+                <TableHead
+                  key={`${blockPrefix}-head-${index}`}
+                  className="px-4 py-3 text-xs uppercase tracking-[0.16em] text-muted-foreground"
+                >
+                  {header}
+                </TableHead>
+              ))}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {block.rows.map((row, rowIndex) => (
+              <TableRow
+                key={`${blockPrefix}-row-${rowIndex}`}
+                className="border-border/70"
+              >
+                {row.map((cell, cellIndex) => (
+                  <TableCell
+                    key={`${blockPrefix}-cell-${rowIndex}-${cellIndex}`}
+                    className="px-4 py-3 align-top whitespace-normal text-sm text-muted-foreground"
+                  >
+                    {renderInlineText(
+                      cell,
+                      `${blockPrefix}-${rowIndex}-${cellIndex}`
+                    )}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    );
+  }
+
+  // Default: plain table
   return (
     <div className="overflow-hidden rounded-xl border border-border bg-background/30">
       <Table>
@@ -610,8 +754,8 @@ export default function Coverage({
     return currentIndex >= 0 ? currentGroup[currentIndex + 1] || null : null;
   }, [currentGroup, currentReport]);
   const diffSummary = useMemo(
-    () => (currentReport ? summarizeDiff(currentReport, previousReport) : null),
-    [currentReport, previousReport]
+    () => (currentReport ? summarizeDiff(currentReport, previousReport, language) : null),
+    [currentReport, previousReport, language]
   );
 
   const calendarItems = useMemo(
@@ -947,7 +1091,7 @@ export default function Coverage({
                     </div>
                     <div className="rounded-xl border border-border bg-background/35 px-3 py-3">
                       <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                        Price
+                        {copy(language, "Fiyat", "Price")}
                       </p>
                       <p className="mt-1 text-sm font-semibold text-foreground">
                         {formatUsd(group.latest.metrics.price)}
@@ -955,7 +1099,7 @@ export default function Coverage({
                     </div>
                     <div className="rounded-xl border border-border bg-background/35 px-3 py-3">
                       <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                        IV
+                        {copy(language, "IV", "IV")}
                       </p>
                       <p className="mt-1 text-sm font-semibold text-foreground">
                         {formatPercent(group.latest.metrics.iv)}
@@ -963,7 +1107,7 @@ export default function Coverage({
                     </div>
                     <div className="rounded-xl border border-border bg-background/35 px-3 py-3">
                       <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                        Versions
+                        {copy(language, "Versiyon", "Versions")}
                       </p>
                       <p className="mt-1 text-sm font-semibold text-foreground">
                         {group.reports.length}
@@ -1048,7 +1192,7 @@ export default function Coverage({
                 <div className="grid grid-cols-2 gap-3">
                   <div className="rounded-xl border border-border bg-background/35 px-3 py-3">
                     <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                      Price
+                      {copy(language, "Fiyat", "Price")}
                     </p>
                     <p className="mt-1 text-sm font-semibold text-foreground">
                       {formatUsd(report.metrics.price)}
@@ -1056,7 +1200,7 @@ export default function Coverage({
                   </div>
                   <div className="rounded-xl border border-border bg-background/35 px-3 py-3">
                     <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                      Budget
+                      {copy(language, "Butce", "Budget")}
                     </p>
                     <p className="mt-1 text-sm font-semibold text-foreground">
                       {formatUsd(report.metrics.budget)}
@@ -1064,7 +1208,7 @@ export default function Coverage({
                   </div>
                   <div className="rounded-xl border border-border bg-background/35 px-3 py-3">
                     <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                      IV
+                      {copy(language, "IV", "IV")}
                     </p>
                     <p className="mt-1 text-sm font-semibold text-foreground">
                       {formatPercent(report.metrics.iv)}
@@ -1072,7 +1216,7 @@ export default function Coverage({
                   </div>
                   <div className="rounded-xl border border-border bg-background/35 px-3 py-3">
                     <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                      RSI
+                      {copy(language, "RSI", "RSI")}
                     </p>
                     <p className="mt-1 text-sm font-semibold text-foreground">
                       {formatPlainNumber(report.metrics.rsi)}
@@ -1147,7 +1291,7 @@ export default function Coverage({
                 </div>
                 <div className="rounded-xl border border-border bg-background/35 px-4 py-4">
                   <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                    Price
+                    {copy(language, "Fiyat", "Price")}
                   </p>
                   <p className="mt-1 text-base font-semibold text-foreground">
                     {formatUsd(currentReport.metrics.price)}
@@ -1179,7 +1323,7 @@ export default function Coverage({
                 </div>
                 <div className="rounded-xl border border-border bg-background/35 px-4 py-4">
                   <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                    IV
+                    {copy(language, "IV", "IV")}
                   </p>
                   <p className="mt-1 text-base font-semibold text-foreground">
                     {formatPercent(currentReport.metrics.iv)}
@@ -1187,7 +1331,7 @@ export default function Coverage({
                 </div>
                 <div className="rounded-xl border border-border bg-background/35 px-4 py-4">
                   <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                    RSI
+                    {copy(language, "RSI", "RSI")}
                   </p>
                   <p className="mt-1 text-base font-semibold text-foreground">
                     {formatPlainNumber(currentReport.metrics.rsi)}
@@ -1211,6 +1355,28 @@ export default function Coverage({
                 </div>
               </CardContent>
             </Card>
+
+            {currentReport.strategy ? (
+              <Card className="gap-4" interactive={false}>
+                <CardContent className="pt-6">
+                  <StrategyCard
+                    strategy={currentReport.strategy}
+                    language={language === "tr" ? "tr" : "en"}
+                  />
+                </CardContent>
+              </Card>
+            ) : null}
+
+            {currentReport.metrics.rsi !== undefined ? (
+              <Card className="gap-4" interactive={false}>
+                <CardContent className="pt-6">
+                  <RSIGauge
+                    rsi={currentReport.metrics.rsi}
+                    language={language === "tr" ? "tr" : "en"}
+                  />
+                </CardContent>
+              </Card>
+            ) : null}
 
             {diffSummary ? (
               <Card className="gap-4" interactive={false}>
@@ -1317,7 +1483,9 @@ export default function Coverage({
                     blockPrefix={section.id}
                     blocks={section.blocks}
                     checklistState={checklistState}
+                    language={language}
                     onChecklistChange={handleChecklistChange}
+                    report={currentReport}
                     reportId={currentReport.id}
                     sectionId={section.id}
                   />
