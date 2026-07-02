@@ -1,3 +1,9 @@
+import {
+  buildProtectedTerms,
+  MARKET_TERMS,
+  MARKET_TICKERS,
+} from "../shared/marketTerms";
+
 const OPENAI_RESPONSES_URL = "https://api.openai.com/v1/responses";
 const DEFAULT_TRANSLATION_MODEL = "gpt-4.1";
 const MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions";
@@ -8,6 +14,7 @@ const MAX_TOTAL_TEXT_LENGTH = 18_000;
 const MAX_CACHE_ENTRIES = 2_000;
 
 const translationCache = new Map<string, string>();
+const protectedTerms = buildProtectedTerms();
 
 function normalizeString(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
@@ -29,6 +36,52 @@ function parseJsonSafely(value: string) {
   } catch {
     return null;
   }
+}
+
+interface TermReplacement {
+  placeholder: string;
+  original: string;
+}
+
+function escapeRegex(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function protectMarketTerms(text: string, startIndex: number): {
+  text: string;
+  replacements: TermReplacement[];
+} {
+  let result = text;
+  const replacements: TermReplacement[] = [];
+
+  for (let i = 0; i < protectedTerms.length; i++) {
+    const term = protectedTerms[i];
+    if (!term) continue;
+
+    const regex = new RegExp(
+      `(?<=^|[^a-zA-Z0-9._])${escapeRegex(term)}(?=[^a-zA-Z0-9._]|$)`,
+      "g"
+    );
+
+    result = result.replace(regex, match => {
+      const placeholder = `__GISTIFY_TERM_${startIndex}_${replacements.length}__`;
+      replacements.push({ placeholder, original: match });
+      return placeholder;
+    });
+  }
+
+  return { text: result, replacements };
+}
+
+function restoreMarketTerms(
+  text: string,
+  replacements: TermReplacement[]
+): string {
+  let result = text;
+  for (const { placeholder, original } of replacements) {
+    result = result.replaceAll(placeholder, original);
+  }
+  return result;
 }
 
 function extractErrorMessage(payload: unknown, fallback: string) {
@@ -343,9 +396,15 @@ export async function translateTexts(
     throw error;
   }
 
-  const keyedTexts = uncachedTexts.map((text, index) => ({
+  const protectedTexts = uncachedTexts.map((text, index) =>
+    protectMarketTerms(text, index)
+  );
+
+  const keyedTexts = protectedTexts.map(({ text: protectedText }, index) => ({
     key: `t${index + 1}`,
-    text,
+    text: protectedText,
+    originalText: uncachedTexts[index]!,
+    replacements: protectedTexts[index]!.replacements,
   }));
 
   let outputPayload: unknown = null;
@@ -384,15 +443,15 @@ export async function translateTexts(
     return translations;
   }
 
-  for (const [key, sourceText] of keyedTexts.map(
-    entry => [entry.key, entry.text] as const
-  )) {
+  for (const { key, originalText, replacements } of keyedTexts) {
     const candidate = normalizeString(
       (outputPayload as Record<string, unknown>)[key]
     );
-    const translated = candidate || sourceText;
-    translations[sourceText] = translated;
-    setCacheValue(sourceText, translated);
+    const translated = candidate
+      ? restoreMarketTerms(candidate, replacements) || originalText
+      : originalText;
+    translations[originalText] = translated;
+    setCacheValue(originalText, translated);
   }
 
   return translations;
