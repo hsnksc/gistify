@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-07-01T17:40:06Z",
-  "reportDate": "2026-07-01",
-  "title": "US PPI Forecast Snapshot — Composite Calibrated Bridge Nowcast v2.5 Enhanced",
-  "summary": "Energy drag from June spot mean-reversion (WTI ~$72) pulls headline lower, but lagged intermediate demand passthrough and still-elevated ISM Prices Paid at 73.0 keep core goods sticky. Normal regime (VIX ~16.5) supports tighter confidence bands. ECI unavailable for Q2; fallback services composite holds at +0.2%.",
+  "generatedAt": "2026-07-02T21:05:00Z",
+  "reportDate": "2026-07-03",
+  "title": "US PPI Forecast Snapshot \u2014 Composite Calibrated Bridge Nowcast v2.5 Enhanced",
+  "summary": "Energy drag from June spot mean-reversion (gasoline -5%, diesel -8%) pulls headline lower, but lagged intermediate demand passthrough and still-elevated ISM Prices Paid at 73.0 keep core goods sticky. Normal regime (VIX ~16.7) supports tighter confidence bands. ECI Q1 interpolated at +0.30% MoM feeds services pipeline. Daily refresh \u2014 no material change since July 1.",
   "baseCase": "Soft headline on energy unwind, sticky core on lagged intermediate demand passthrough",
   "conviction": 65,
   "regime": "normal",
-  "vix": 16.5,
+  "vix": 16.7,
   "regimeParameters": {
     "biasWindow": 3,
     "energyLag": 1,
@@ -74,7 +74,7 @@
       "composite": -0.4
     },
     "otherServices": {
-      "eci": 0.0,
+      "eci": 0.3,
       "sp500vix": 0.2,
       "healthcare": 0.2,
       "accommodation": 0.2,
@@ -104,7 +104,7 @@
     "priorCoreYoY": "5.1%",
     "bias": "COOLER",
     "confidence": 65,
-    "thesis": "Energy drag from June spot mean-reversion pulls headline lower, but May intermediate demand surge (+3.2% Stage 1) keeps core goods pipeline pressure intact. June ISM Prices Paid at 73.0 signals cooling but remains inflationary. Normal regime (VIX ~16.5) supports tighter confidence bands."
+    "thesis": "Energy drag from June spot mean-reversion pulls headline lower, but May intermediate demand surge (+3.2% Stage 1) keeps core goods pipeline pressure intact. June ISM Prices Paid at 73.0 signals cooling but remains inflationary. Normal regime (VIX ~16.7) supports tighter confidence bands. ECI Q1 interpolated monthly proxy (+0.30% MoM) anchors services."
   },
   "pointEstimate": {
     "headline": 0.1,
@@ -226,6 +226,10 @@
     "https://tradingeconomics.com/commodity/soybeans",
     "https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/",
     "https://www.bls.gov/eci/",
-    "https://www.census.gov/wholesale/"
+    "https://www.census.gov/wholesale/",
+    "https://fred.stlouisfed.org/series/VIXCLS",
+    "https://www.cboe.com/tradable-products/vix/",
+    "https://www.prnewswire.com/news-releases/manufacturing-pmi-at-54-may-2026-ism-manufacturing-pmi-report-302786165.html",
+    "https://www.textileworld.com/textile-world/2026/07/manufacturing-pmi-at-53-3-june-2026-ism-manufacturing-pmi-report/"
   ]
 }
