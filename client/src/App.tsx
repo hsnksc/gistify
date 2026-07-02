@@ -42,6 +42,7 @@ import {
 } from "@/lib/i18n";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { detectLanguageOfText } from "@shared/flowLanguage";
 
 const Landing = lazy(() => import("./pages/Landing"));
 const Home = lazy(() => import("./pages/Home"));
@@ -166,6 +167,16 @@ type RuntimeTranslationRecord = {
 
 const TRANSLATABLE_ATTRIBUTES = ["placeholder", "title", "aria-label", "alt"] as const;
 type TranslatableAttribute = (typeof TRANSLATABLE_ATTRIBUTES)[number];
+
+function inferSourceLanguage(text: string, target: AppLanguage): AppLanguage {
+  const detected = detectLanguageOfText(text);
+  if (detected === "tr" || detected === "en") {
+    return detected;
+  }
+  // If detection is inconclusive, assume the opposite of the target language
+  // so the text still gets a chance to be translated.
+  return target === "tr" ? "en" : "tr";
+}
 
 function GoogleMark() {
   return (
@@ -1232,13 +1243,16 @@ function App() {
           currentValue !== previousApplied &&
           currentValue !== previousOriginal.value)
       ) {
-        originalMap.set(node, { value: currentValue, language });
+        originalMap.set(node, {
+          value: currentValue,
+          language: inferSourceLanguage(currentValue, language),
+        });
         appliedMap.delete(node);
       }
 
       const sourceRecord = originalMap.get(node) ?? {
         value: currentValue,
-        language,
+        language: inferSourceLanguage(currentValue, language),
       };
       const translated = resolveRuntimeTranslation(
         sourceRecord.value,
@@ -1288,7 +1302,10 @@ function App() {
           currentValue !== previousApplied &&
           currentValue !== previousOriginal.value)
       ) {
-        existingAttributes.set(attribute, { value: currentValue, language });
+        existingAttributes.set(attribute, {
+          value: currentValue,
+          language: inferSourceLanguage(currentValue, language),
+        });
         appliedAttributes.delete(attribute);
       }
 
@@ -1297,7 +1314,7 @@ function App() {
 
       const sourceRecord = existingAttributes.get(attribute) ?? {
         value: currentValue,
-        language,
+        language: inferSourceLanguage(currentValue, language),
       };
       const translated = resolveRuntimeTranslation(
         sourceRecord.value,
