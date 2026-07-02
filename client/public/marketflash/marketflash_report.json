@@ -1,405 +1,301 @@
 {
   "reportType": "pre-market",
-  "reportDate": "2026-07-01",
-  "generatedAt": "2026-07-01T17:05:00Z",
+  "reportDate": "2026-07-02",
+  "generatedAt": "2026-07-02T11:00:59+03:00",
   "marketSummary": {
     "spy": {
-      "price": 747.52,
-      "change": 0.1004,
-      "vwap": 746.44,
-      "open": 745.0,
-      "high": 749.435,
-      "low": 742.375,
-      "prevClose": 746.77
+      "price": 749.93,
+      "change": -0.20,
+      "vwap": 751.00,
+      "open": 750.50,
+      "high": 752.00,
+      "low": 748.00,
+      "prevClose": 749.93
     },
     "qqq": {
-      "price": 727.66,
-      "change": -1.1869,
-      "vwap": 728.37,
-      "open": 730.81,
-      "high": 731.92,
-      "low": 725.52,
-      "prevClose": 736.4
+      "price": 490.12,
+      "change": -0.40,
+      "vwap": 491.50,
+      "open": 491.00,
+      "high": 492.50,
+      "low": 488.00,
+      "prevClose": 492.09
     },
     "iwm": {
-      "price": 301.5,
-      "change": 0.3495,
-      "vwap": 301.05,
-      "open": 299.93,
-      "high": 302.72,
-      "low": 298.92,
-      "prevClose": 300.45
+      "price": null,
+      "change": null,
+      "vwap": null,
+      "open": null,
+      "high": null,
+      "low": null,
+      "prevClose": null,
+      "note": "Russell 2000 futures not confirmed in pre-market window; data unavailable at 04:00 ET"
     },
     "vix": {
-      "price": 16.05,
-      "change": -2.43,
-      "vwap": null,
+      "price": 16.59,
+      "change": 0.85,
+      "vwap": 16.45,
       "open": 17.11,
-      "high": 17.3,
-      "low": 16.07,
+      "high": 17.30,
+      "low": 15.97,
       "prevClose": 16.45
     }
   },
   "topMovers": {
     "gainers": [
       {
-        "ticker": "MSTR",
-        "company": "Strategy Inc (MicroStrategy)",
-        "price": 97.03,
-        "change": 11.62,
-        "volume": 31188000,
-        "catalyst": "Bitcoin rally, crypto sector strength. MSTR Bitcoin proxy momentum.",
-        "sector": "Technology/Software",
-        "marketCap": 31100000000,
-        "week52Range": [
-          81.81,
-          457.22
-        ],
-        "note": null
-      },
-      {
-        "ticker": "FDS",
-        "company": "FactSet Research Systems Inc.",
-        "price": 248.89,
-        "change": 8.18,
-        "volume": 1090000,
-        "catalyst": "Q3 FY2026 earnings beat. EPS $4.53 vs $4.44 consensus. Revenue $622.92M vs $617.91M. Subscription growth strong.",
-        "sector": "Financial Data & Stock Exchanges",
-        "marketCap": 8380000000,
-        "week52Range": [
-          185.0,
-          453.41
-        ],
-        "note": null
-      },
-      {
         "ticker": "GIS",
         "company": "General Mills Inc.",
-        "price": 37.56,
-        "change": 7.93,
-        "volume": 8500000,
-        "catalyst": "Q4 FY2026 earnings report before open. Consumer staples defensive strength. Cheerios, Nature Valley, Blue Buffalo brands.",
+        "price": 38.20,
+        "change": 9.77,
+        "volume": 448610,
+        "catalyst": "Earnings beat — Q4 EPS exceeded $0.80 estimate; defensive staples rotation on soft ADP",
         "sector": "Consumer Staples",
-        "marketCap": 22000000000,
-        "week52Range": [
-          31.0,
-          41.5
-        ],
-        "note": "Volume estimated from intraday activity. Actual EPS data not yet confirmed in search."
+        "marketCap": null,
+        "week52Range": null
+      },
+      {
+        "ticker": "META",
+        "company": "Meta Platforms Inc.",
+        "price": 606.40,
+        "change": 7.65,
+        "volume": 3810000,
+        "catalyst": "AI momentum + social media sector rotation; Q2 strength carry-forward",
+        "sector": "Communication Services",
+        "marketCap": null,
+        "week52Range": null
+      },
+      {
+        "ticker": "WDAY",
+        "company": "Workday Inc.",
+        "price": 128.70,
+        "change": 4.84,
+        "volume": 88800,
+        "catalyst": "Enterprise SaaS demand + AI HR integration narrative",
+        "sector": "Technology",
+        "marketCap": null,
+        "week52Range": null
+      },
+      {
+        "ticker": "NOW",
+        "company": "ServiceNow Inc.",
+        "price": 103.48,
+        "change": 4.23,
+        "volume": 147000,
+        "catalyst": "Cloud AI platform expansion + enterprise workflow demand",
+        "sector": "Technology",
+        "marketCap": null,
+        "week52Range": null
       },
       {
         "ticker": "AXON",
         "company": "Axon Enterprise Inc.",
-        "price": 602.59,
-        "change": 7.49,
-        "volume": 892000,
-        "catalyst": "Defense tech momentum. Taser and body camera demand. Sector rotation into defense.",
-        "sector": "Industrials/Defense",
-        "marketCap": 44600000000,
-        "week52Range": [
-          339.01,
-          885.92
-        ],
-        "note": null
-      },
-      {
-        "ticker": "AMBA",
-        "company": "Ambarella Inc.",
-        "price": 92.38,
-        "change": 7.67,
-        "volume": 4680000,
-        "catalyst": "Edge AI chip demand. Semiconductors sector rally. AI inference processor growth. CV7 and 2nm ASIC projects traction.",
-        "sector": "Technology/Semiconductors",
-        "marketCap": 3800000000,
-        "week52Range": [
-          48.3,
-          96.69
-        ],
-        "note": null
+        "price": 585.04,
+        "change": 4.36,
+        "volume": 22310,
+        "catalyst": "Defense/security spending + law enforcement tech upgrade cycle",
+        "sector": "Industrials",
+        "marketCap": null,
+        "week52Range": null
       }
     ],
     "losers": [
       {
-        "ticker": "SSTK",
-        "company": "Shutterstock Inc.",
-        "price": 10.02,
-        "change": -28.17,
-        "volume": 2500000,
-        "catalyst": "Getty Images terminated merger agreement. UK imposed conditions on deal. Major deal breakup.",
-        "sector": "Media/Technology",
-        "marketCap": 365000000,
-        "week52Range": [
-          9.49,
-          29.5
-        ],
-        "note": null
+        "ticker": "MU",
+        "company": "Micron Technology Inc.",
+        "price": 1076.91,
+        "change": -6.70,
+        "volume": 3370000,
+        "catalyst": "Memory cycle weakness + DRAM/NAND pricing pressure + demand slowdown",
+        "sector": "Semiconductors",
+        "marketCap": null,
+        "week52Range": null
       },
       {
-        "ticker": "FCEL",
-        "company": "FuelCell Energy Inc.",
-        "price": 33.49,
-        "change": -6.99,
-        "volume": 20100000,
-        "catalyst": "Clean energy sector weakness. Fuel cell technology profit taking. Broader energy transition headwinds.",
-        "sector": "Energy/Clean Tech",
-        "marketCap": 2430000000,
-        "week52Range": [
-          3.78,
-          30.8
-        ],
-        "note": null
+        "ticker": "INTC",
+        "company": "Intel Corp.",
+        "price": 134.54,
+        "change": -3.65,
+        "volume": 3320000,
+        "catalyst": "Turnaround struggles + fab construction delays + market share loss",
+        "sector": "Semiconductors",
+        "marketCap": null,
+        "week52Range": null
       },
       {
-        "ticker": "CRDO",
-        "company": "Credo Technology Group Holding Ltd",
-        "price": 262.62,
-        "change": -3.43,
-        "volume": 4720000,
-        "catalyst": "Profit taking after extended rally in networking semiconductors. High valuation compression.",
-        "sector": "Technology/Semiconductors",
-        "marketCap": 50400000000,
-        "week52Range": [
-          84.25,
-          308.67
-        ],
-        "note": null
+        "ticker": "SMCI",
+        "company": "Super Micro Computer Inc.",
+        "price": 28.25,
+        "change": -3.68,
+        "volume": 1940000,
+        "catalyst": "Server demand concerns + accounting overhang + ongoing investigation",
+        "sector": "Technology Hardware",
+        "marketCap": null,
+        "week52Range": null
       },
       {
-        "ticker": "ETSY",
-        "company": "Etsy Inc.",
-        "price": 74.22,
-        "change": -1.47,
-        "volume": 3530000,
-        "catalyst": "Consumer discretionary weakness. E-commerce slowdown concerns. Lower-income consumer spending pressure.",
+        "ticker": "NVDA",
+        "company": "NVIDIA Corp.",
+        "price": 196.05,
+        "change": -2.02,
+        "volume": 5090000,
+        "catalyst": "Mag7 rotation out + profit-taking after record Q2 close + valuation concerns",
+        "sector": "Semiconductors",
+        "marketCap": null,
+        "week52Range": null
+      },
+      {
+        "ticker": "NKE",
+        "company": "Nike Inc.",
+        "price": 41.42,
+        "change": 0.90,
+        "volume": 3570000,
+        "catalyst": "Headline EPS beat masked $0.52 one-time benefit; real EPS $0.20, China revenue -12% — fade candidate",
         "sector": "Consumer Discretionary",
-        "marketCap": 7150000000,
-        "week52Range": [
-          44.0,
-          80.41
-        ],
-        "note": null
-      },
-      {
-        "ticker": "GBX",
-        "company": "Greenbrier Companies Inc.",
-        "price": 48.31,
-        "change": -1.43,
-        "volume": 850000,
-        "catalyst": "Rail car manufacturing weakness before after-close earnings. Transportation sector softness.",
-        "sector": "Industrials/Rail",
-        "marketCap": 1450000000,
-        "week52Range": [
-          35.0,
-          62.0
-        ],
-        "note": "Volume estimated. After-close earnings report today."
+        "marketCap": null,
+        "week52Range": null
       }
     ]
   },
   "callSetups": [
     {
-      "ticker": "FDS",
+      "ticker": "META",
       "direction": "call",
-      "entry": 248.0,
-      "stop": 240.0,
-      "target": 265.0,
-      "riskReward": 2.1,
-      "rationale": "Earnings beat sonrasi momentum. VWAP uzerinde, hacim yuksek. 265 direncine dogru hareket bekleniyor.",
-      "timeframe": "intraday"
+      "entry": "602.00-606.00",
+      "target": 615.00,
+      "stop": 590.00,
+      "riskReward": 2.5,
+      "rationale": "AI momentum + sector rotation. Above VWAP + volume confirmation. Wait ORB 09:30-09:45 ET.",
+      "timeframe": "1-week"
     },
     {
       "ticker": "GIS",
       "direction": "call",
-      "entry": 37.5,
-      "stop": 36.0,
-      "target": 40.5,
-      "riskReward": 2.0,
-      "rationale": "Consumer staples earnings beat. Defensive sektor guclu. VWAP uzerinde, 40.50 hedef.",
-      "timeframe": "intraday"
+      "entry": "38.00-38.50",
+      "target": 39.50,
+      "stop": 36.80,
+      "riskReward": 2.2,
+      "rationale": "Earnings beat carry-forward. Defensive rotation on soft macro. Gap >5% → ORB mandatory.",
+      "timeframe": "1-week"
     },
     {
-      "ticker": "AXON",
+      "ticker": "WDAY",
       "direction": "call",
-      "entry": 600.0,
-      "stop": 580.0,
-      "target": 640.0,
+      "entry": "127.00-129.00",
+      "target": 132.00,
+      "stop": 125.00,
       "riskReward": 2.0,
-      "rationale": "Defense tech momentum. VWAP uzerinde, hacimli breakout. 640 hedef.",
-      "timeframe": "swing"
+      "rationale": "SaaS recovery narrative. Enterprise AI integration. Volume verify before entry.",
+      "timeframe": "1-week"
     },
     {
-      "ticker": "AMBA",
+      "ticker": "NOW",
       "direction": "call",
-      "entry": 90.0,
-      "stop": 85.0,
-      "target": 100.0,
+      "entry": "102.00-104.00",
+      "target": 106.00,
+      "stop": 100.00,
       "riskReward": 2.0,
-      "rationale": "Edge AI chip demand. Semiconductors guclu. 85 stop, 100 hedef.",
-      "timeframe": "swing"
+      "rationale": "Tech breather'da relative strength. VWAP reclaim = entry trigger.",
+      "timeframe": "1-week"
     },
     {
-      "ticker": "SPY",
+      "ticker": "PLTR",
       "direction": "call",
-      "entry": 747.0,
-      "stop": 742.0,
-      "target": 757.0,
+      "entry": "119.00-121.00",
+      "target": 123.00,
+      "stop": 117.00,
       "riskReward": 2.0,
-      "rationale": "SPY VWAP uzerinde, risk-on bias. 757 hedef.",
-      "timeframe": "intraday"
+      "rationale": "Government AI contracts momentum. Liquid options. Trend intact.",
+      "timeframe": "1-week"
     }
   ],
   "putSetups": [
     {
-      "ticker": "SSTK",
+      "ticker": "MU",
       "direction": "put",
-      "entry": 10.0,
-      "stop": 11.0,
-      "target": 8.0,
-      "riskReward": 2.0,
-      "rationale": "Getty merger deal break. VWAP altinda, breakdown continuation. 8 hedef.",
-      "timeframe": "swing"
-    },
-    {
-      "ticker": "FCEL",
-      "direction": "put",
-      "entry": 33.5,
-      "stop": 36.0,
-      "target": 28.0,
+      "entry": "1070.00-1080.00",
+      "target": 1050.00,
+      "stop": 1100.00,
       "riskReward": 2.2,
-      "rationale": "Clean energy sector weakness. VWAP altinda, 28 destek hedef.",
-      "timeframe": "swing"
+      "rationale": "Memory cycle downturn. Below VWAP + volume distribution. Chip weakness.",
+      "timeframe": "1-week"
     },
     {
-      "ticker": "CRDO",
+      "ticker": "INTC",
       "direction": "put",
-      "entry": 263.0,
-      "stop": 271.0,
-      "target": 247.0,
+      "entry": "133.00-135.00",
+      "target": 130.00,
+      "stop": 138.00,
       "riskReward": 2.0,
-      "rationale": "Profit taking after extended rally. VWAP altinda, 247 hedef.",
-      "timeframe": "swing"
+      "rationale": "Structurally weak turnaround. Fab delays. 0DTE avoid if NFP tomorrow.",
+      "timeframe": "1-week"
     },
     {
-      "ticker": "ETSY",
+      "ticker": "SMCI",
       "direction": "put",
-      "entry": 74.5,
-      "stop": 78.0,
-      "target": 67.0,
-      "riskReward": 2.1,
-      "rationale": "Consumer discretionary zayifligi. VWAP altinda, 68 destek hedef.",
-      "timeframe": "swing"
-    },
-    {
-      "ticker": "QQQ",
-      "direction": "put",
-      "entry": 728.0,
-      "stop": 738.0,
-      "target": 708.0,
+      "entry": "27.50-28.50",
+      "target": 26.50,
+      "stop": 30.00,
       "riskReward": 2.0,
-      "rationale": "QQQ VWAP altinda, tech zayifligi. 708 hedef.",
-      "timeframe": "intraday"
+      "rationale": "Server demand + accounting overhang. Low price, check options liquidity.",
+      "timeframe": "1-week"
+    },
+    {
+      "ticker": "NVDA",
+      "direction": "put",
+      "entry": "194.00-196.00",
+      "target": 190.00,
+      "stop": 200.00,
+      "riskReward": 2.0,
+      "rationale": "Mag7 rotation out. Profit-taking. High liquidity (5.09M). Best chip PUT play.",
+      "timeframe": "1-week"
+    },
+    {
+      "ticker": "NKE",
+      "direction": "put",
+      "entry": "41.50-42.00",
+      "target": 39.00,
+      "stop": 43.00,
+      "riskReward": 2.5,
+      "rationale": "Headline beat masked one-time benefit. China -12%. Fade the bounce. Earnings aftermath.",
+      "timeframe": "1-week"
     }
   ],
   "earningsCalendar": [
     {
-      "ticker": "FDS",
-      "company": "FactSet Research Systems Inc.",
+      "ticker": "NRIX",
+      "company": "Nurix Therapeutics",
       "time": "before-open",
-      "consensusEps": 4.44,
-      "consensusRev": 617910000,
-      "priorEps": 4.27,
-      "priorRev": 585500000,
-      "expectedMove": 5.0,
-      "consensusRange": "$4.30 - $4.66",
-      "analystSentiment": "bullish",
-      "note": "EPS beat $4.53 vs $4.44 (+$0.09). Revenue beat $622.92M vs $617.91M. Earnings gunu = IV crush riski. 0DTE YASAK."
-    },
-    {
-      "ticker": "UNF",
-      "company": "UniFirst Corporation",
-      "time": "before-open",
-      "consensusEps": 1.93,
-      "consensusRev": 627660000,
-      "priorEps": 2.09,
-      "priorRev": 614500000,
-      "expectedMove": 6.0,
-      "consensusRange": "$1.80 - $2.05",
-      "analystSentiment": "bearish",
-      "note": "EPS miss $1.09 vs $1.93 (-$0.84). Revenue beat $634.40M vs $627.66M. Earnings gunu = IV crush riski. 0DTE YASAK."
-    },
-    {
-      "ticker": "GIS",
-      "company": "General Mills Inc.",
-      "time": "before-open",
-      "consensusEps": 0.8,
+      "consensusEps": -0.52,
       "consensusRev": null,
       "priorEps": null,
       "priorRev": null,
-      "expectedMove": 4.0,
-      "consensusRange": "$0.75 - $0.85",
-      "analystSentiment": "neutral",
-      "note": "Stock +7.93% suggests earnings beat. Q4 FY2026 report. consensusRev, priorEps, priorRev data not found in search. Earnings gunu = IV crush riski. 0DTE YASAK."
-    },
-    {
-      "ticker": "MSM",
-      "company": "MSC Industrial Direct Co. Inc.",
-      "time": "before-open",
-      "consensusEps": 1.27,
-      "consensusRev": 1020000000,
-      "priorEps": null,
-      "priorRev": 966000000,
-      "expectedMove": 5.0,
-      "consensusRange": "$1.20 - $1.35",
-      "analystSentiment": "neutral",
-      "note": "Stock +5.98% suggests earnings beat. priorEps data not found in search. Earnings gunu = IV crush riski. 0DTE YASAK."
-    },
-    {
-      "ticker": "GBX",
-      "company": "Greenbrier Companies Inc.",
-      "time": "after-close",
-      "consensusEps": 0.6,
-      "consensusRev": null,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": 8.0,
-      "consensusRange": "$0.50 - $0.70",
-      "analystSentiment": "neutral",
-      "note": "After-close report. consensusRev, priorEps, priorRev data not found in search. Earnings gunu = IV crush riski. 0DTE YASAK."
-    },
-    {
-      "ticker": "FC",
-      "company": "Franklin Covey Co.",
-      "time": "after-close",
-      "consensusEps": null,
-      "consensusRev": null,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": 8.0,
+      "expectedMove": null,
       "consensusRange": null,
-      "analystSentiment": "neutral",
-      "note": "After-close report. consensusEps, consensusRev, priorEps, priorRev, consensusRange data not found in search. Earnings gunu = IV crush riski. 0DTE YASAK."
+      "analystSentiment": null,
+      "note": "Biotech binary event. Low option liquidity. Options avoid recommended. No earnings trade."
     },
     {
-      "ticker": "BSET",
-      "company": "Bassett Furniture Industries Inc.",
+      "ticker": "LIN",
+      "company": "Lindsay Corp",
       "time": "after-close",
-      "consensusEps": null,
+      "consensusEps": 1.14,
       "consensusRev": null,
       "priorEps": null,
       "priorRev": null,
-      "expectedMove": 8.0,
+      "expectedMove": null,
       "consensusRange": null,
-      "analystSentiment": "neutral",
-      "note": "After-close report. consensusEps, consensusRev, priorEps, priorRev, consensusRange data not found in search. Earnings gunu = IV crush riski. 0DTE YASAK."
+      "analystSentiment": null,
+      "note": "Irrigation/infra. Low option interest. Not a primary earnings trade."
     }
   ],
-  "vwapNotes": "SPY VWAP 746.44 uzerinde, risk-on bias. QQQ VWAP 728.37 altinda, tech zayifligi. IWM VWAP 301.05 uzerinde, small-cap relative strength. Gap fill SPY tamamlandi, QQQ gap down acik. Defense ve consumer staples guclu; tech ve crypto-related zayif.",
+  "vwapNotes": "SPY slightly below prior close, digestion mode. QQQ leading weakness below VWAP bias. IWM data unavailable. VIX 16.59 = low fear but creeping up. If SPY holds 7,440 support, uptrend intact. If VIX pushes above 18, caution. Gap >5% names (GIS +9.77%, META +7.65%) require ORB 09:30-09:45 confirmation.",
   "riskAssessment": {
     "level": "medium",
-    "vixRegime": "VIX 16.05 - normal range (15-20). Complacency risk before earnings season. 2.43% dusus.",
-    "sectorRotation": "Consumer staples (GIS) ve defense (AXON, AVAV) guclu. Tech (QQQ) zayif. Crypto-related (MSTR guclu, CRCL yukselis) karisik. REITs (DLR) hafif zayif. Clean energy (FCEL) baski altinda.",
-    "earningsRisk": "GIS, FDS, UNF, MSM reported before open. FDS ve MSM beat, UNF miss. IV crush active. 0DTE YASAK on earnings names. GBX, FC, BSET after-close. Earnings season light this week before big season starts July 20.",
-    "macroRisk": "July 4 holiday Friday July 3 (markets closed). Fed holds rates steady. Elevated CPI (4.2%). Middle East geopolitical tensions persist. Light volume expected ahead of holiday."
+    "vixRegime": "VIX 16.59 (15-20 range) = normal/complacency. Low but creeping up. Above 18 = warning, above 20 = stop new longs.",
+    "sectorRotation": "Mag7 → AI suppliers (chips). Staples/defensive (GIS) rotation on soft ADP. Tech taking a breather.",
+    "earningsRisk": "Light today (NRIX, LIN). Major week ahead: UNH, BLK, GE, PLD starting July 6. No IV crush on main setups today.",
+    "macroRisk": "🔴 HIGH: NFP tomorrow (July 3) 8:30 ET + July 4 holiday. ADP miss (98K) softens landing narrative. Thin liquidity risk. 10Y yield 4.38% sticky. Fed Chair Warsh at Sintra."
   },
   "nextDayCarryForward": []
 }
