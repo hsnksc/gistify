@@ -3317,8 +3317,8 @@ async function startServer() {
   app.use(
     "/flow",
     express.static(getFlowReportRootPath(), {
-      fallthrough: false,
-      index: true,
+      fallthrough: true,
+      index: false,
       redirect: false,
     })
   );
