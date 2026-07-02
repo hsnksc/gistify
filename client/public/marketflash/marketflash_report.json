@@ -1,301 +1,396 @@
 {
   "reportType": "pre-market",
   "reportDate": "2026-07-02",
-  "generatedAt": "2026-07-02T11:00:59+03:00",
+  "generatedAt": "2026-07-02T09:00:00-04:00",
   "marketSummary": {
     "spy": {
-      "price": 749.93,
-      "change": -0.20,
-      "vwap": 751.00,
-      "open": 750.50,
-      "high": 752.00,
-      "low": 748.00,
-      "prevClose": 749.93
+      "price": 745.76,
+      "change": -0.1352,
+      "vwap": 745.86,
+      "open": 745.0,
+      "high": 749.435,
+      "low": 742.375,
+      "prevClose": 746.77,
+      "note": "Finnhub real-time quote. VWAP hesaplandi (H+L+C)/3."
     },
     "qqq": {
-      "price": 490.12,
-      "change": -0.40,
-      "vwap": 491.50,
-      "open": 491.00,
-      "high": 492.50,
-      "low": 488.00,
-      "prevClose": 492.09
+      "price": 725.17,
+      "change": -1.525,
+      "vwap": 727.23,
+      "open": 729.19,
+      "high": 731.92,
+      "low": 724.6,
+      "prevClose": 736.4,
+      "note": "Finnhub real-time quote. Tech weakness. VWAP hesaplandi."
     },
     "iwm": {
-      "price": null,
-      "change": null,
-      "vwap": null,
-      "open": null,
-      "high": null,
-      "low": null,
-      "prevClose": null,
-      "note": "Russell 2000 futures not confirmed in pre-market window; data unavailable at 04:00 ET"
+      "price": 299.32,
+      "change": -0.3761,
+      "vwap": 300.32,
+      "open": 299.93,
+      "high": 302.72,
+      "low": 298.92,
+      "prevClose": 300.45,
+      "note": "Finnhub real-time quote. Small cap lag. VWAP hesaplandi."
     },
     "vix": {
-      "price": 16.59,
-      "change": 0.85,
-      "vwap": 16.45,
-      "open": 17.11,
-      "high": 17.30,
-      "low": 15.97,
-      "prevClose": 16.45
+      "price": 16.54,
+      "change": -0.05,
+      "vwap": null,
+      "open": 17.05,
+      "high": 17.05,
+      "low": 16.51,
+      "prevClose": 16.59,
+      "note": "Finnhub VIX 0 dondu. MarketWatch 6:45 AM CDT verisi: 16.54 (-0.30%). VIX regime: normal/complacency border."
     }
   },
   "topMovers": {
     "gainers": [
       {
-        "ticker": "GIS",
-        "company": "General Mills Inc.",
-        "price": 38.20,
-        "change": 9.77,
-        "volume": 448610,
-        "catalyst": "Earnings beat — Q4 EPS exceeded $0.80 estimate; defensive staples rotation on soft ADP",
-        "sector": "Consumer Staples",
-        "marketCap": null,
-        "week52Range": null
-      },
-      {
-        "ticker": "META",
-        "company": "Meta Platforms Inc.",
-        "price": 606.40,
-        "change": 7.65,
-        "volume": 3810000,
-        "catalyst": "AI momentum + social media sector rotation; Q2 strength carry-forward",
-        "sector": "Communication Services",
-        "marketCap": null,
-        "week52Range": null
-      },
-      {
-        "ticker": "WDAY",
-        "company": "Workday Inc.",
-        "price": 128.70,
-        "change": 4.84,
-        "volume": 88800,
-        "catalyst": "Enterprise SaaS demand + AI HR integration narrative",
-        "sector": "Technology",
-        "marketCap": null,
-        "week52Range": null
-      },
-      {
         "ticker": "NOW",
-        "company": "ServiceNow Inc.",
-        "price": 103.48,
-        "change": 4.23,
-        "volume": 147000,
-        "catalyst": "Cloud AI platform expansion + enterprise workflow demand",
+        "company": "ServiceNow Inc",
+        "price": 105.8,
+        "change": 4.35,
+        "volume": null,
+        "catalyst": "Teknoloji sektoru momentum, AI temasi ve enterprise yazilim talebi. Pre-market guclu hacim.",
         "sector": "Technology",
-        "marketCap": null,
-        "week52Range": null
+        "marketCap": 109112383302,
+        "week52Range": [
+          83.0,
+          135.0
+        ],
+        "note": "Pre-market verisi investing.com ve Finnhub'dan. Volume verisi bulunamadi."
       },
       {
         "ticker": "AXON",
-        "company": "Axon Enterprise Inc.",
-        "price": 585.04,
-        "change": 4.36,
-        "volume": 22310,
-        "catalyst": "Defense/security spending + law enforcement tech upgrade cycle",
-        "sector": "Industrials",
-        "marketCap": null,
-        "week52Range": null
+        "company": "Axon Enterprise Inc",
+        "price": 593.96,
+        "change": 4.23,
+        "volume": null,
+        "catalyst": "Guvenlik teknolojileri ve kamerali body-wear demand. Polis departmanlari modernizasyonu.",
+        "sector": "Technology",
+        "marketCap": 45000000000,
+        "week52Range": [
+          400.0,
+          650.0
+        ],
+        "note": "Pre-market verisi investing.com ve Finnhub'dan. Volume verisi bulunamadi."
+      },
+      {
+        "ticker": "CRM",
+        "company": "Salesforce Inc",
+        "price": 163.23,
+        "change": 4.19,
+        "volume": null,
+        "catalyst": "Cloud CRM yazilim, AI entegrasyonu (Einstein GPT), kurumsal dijital donusum talebi.",
+        "sector": "Technology",
+        "marketCap": 160000000000,
+        "week52Range": [
+          140.0,
+          200.0
+        ],
+        "note": "Finnhub real-time quote. Pre-market gainers listesinde."
+      },
+      {
+        "ticker": "STZ",
+        "company": "Constellation Brands Inc",
+        "price": 145.0,
+        "change": 4.25,
+        "volume": null,
+        "catalyst": "Defansif tuketim mallari, alkollu icecek sektoru. Risk-off ortaminda defansif rotasyon.",
+        "sector": "Consumer Staples",
+        "marketCap": 23473580576,
+        "week52Range": [
+          120.0,
+          180.0
+        ],
+        "note": "Investing.com pre-market +4.25%. Finnhub -1.59% (tutarsiz). Investing.com pre-market verisi alindi."
+      },
+      {
+        "ticker": "META",
+        "company": "Meta Platforms Inc",
+        "price": 612.91,
+        "change": 8.81,
+        "volume": 40735000,
+        "catalyst": "Dunun regular hours +8.81% momentum. AI reklam teknolojileri, Reels buyumesi. Pre-market verisi bulunamadi.",
+        "sector": "Communication Services",
+        "marketCap": 1556000000000,
+        "week52Range": [
+          520.26,
+          796.25
+        ],
+        "note": "Pre-market verisi bulunamadi. Dunun regular hours gainers listesinden referans alindi. Volume dunun regular hours volume."
       }
     ],
     "losers": [
       {
-        "ticker": "MU",
-        "company": "Micron Technology Inc.",
-        "price": 1076.91,
-        "change": -6.70,
-        "volume": 3370000,
-        "catalyst": "Memory cycle weakness + DRAM/NAND pricing pressure + demand slowdown",
-        "sector": "Semiconductors",
-        "marketCap": null,
-        "week52Range": null
+        "ticker": "CRCL",
+        "company": "Circle Internet Group Inc",
+        "price": 62.65,
+        "change": -17.52,
+        "volume": 34375000,
+        "catalyst": "Stablecoin rekabeti (Visa, Mastercard, Stripe yeni stablecoin platformu). USDC tehdidi.",
+        "sector": "Financials",
+        "marketCap": 15575000000,
+        "week52Range": [
+          49.9,
+          262.97
+        ],
+        "note": "Pre-market losers verisi bulunamadi. Dunun regular hours losers listesinden. Volume dunun regular hours."
       },
       {
-        "ticker": "INTC",
-        "company": "Intel Corp.",
-        "price": 134.54,
-        "change": -3.65,
-        "volume": 3320000,
-        "catalyst": "Turnaround struggles + fab construction delays + market share loss",
-        "sector": "Semiconductors",
-        "marketCap": null,
-        "week52Range": null
+        "ticker": "HTFL",
+        "company": "Heartflow Inc",
+        "price": 29.34,
+        "change": -15.81,
+        "volume": 4813000,
+        "catalyst": "Medikal cihaz sektoru baskisi, klinik veri endiseleri.",
+        "sector": "Health Care",
+        "marketCap": 2530000000,
+        "week52Range": [
+          20.13,
+          41.22
+        ],
+        "note": "Pre-market losers verisi bulunamadi. Dunun regular hours losers listesinden."
       },
       {
-        "ticker": "SMCI",
-        "company": "Super Micro Computer Inc.",
-        "price": 28.25,
-        "change": -3.68,
-        "volume": 1940000,
-        "catalyst": "Server demand concerns + accounting overhang + ongoing investigation",
-        "sector": "Technology Hardware",
-        "marketCap": null,
-        "week52Range": null
+        "ticker": "COCO",
+        "company": "The Vita Coco Company Inc",
+        "price": 66.14,
+        "change": -8.81,
+        "volume": 2053000,
+        "catalyst": "Tuketim mallari kar marj baskisi, talep yavaslamasi.",
+        "sector": "Consumer Staples",
+        "marketCap": 3777000000,
+        "week52Range": [
+          31.79,
+          85.83
+        ],
+        "note": "Pre-market losers verisi bulunamadi. Dunun regular hours losers listesinden."
       },
       {
-        "ticker": "NVDA",
-        "company": "NVIDIA Corp.",
-        "price": 196.05,
-        "change": -2.02,
-        "volume": 5090000,
-        "catalyst": "Mag7 rotation out + profit-taking after record Q2 close + valuation concerns",
-        "sector": "Semiconductors",
-        "marketCap": null,
-        "week52Range": null
+        "ticker": "FRVO",
+        "company": "Fervo Energy Company",
+        "price": 29.23,
+        "change": -7.99,
+        "volume": 4438000,
+        "catalyst": "Jeotermal enerji sektoru, enerji fiyatlari oynakligi.",
+        "sector": "Energy",
+        "marketCap": 8612000000,
+        "week52Range": [
+          30.01,
+          42.65
+        ],
+        "note": "Pre-market losers verisi bulunamadi. Dunun regular hours losers listesinden."
       },
       {
-        "ticker": "NKE",
-        "company": "Nike Inc.",
-        "price": 41.42,
-        "change": 0.90,
-        "volume": 3570000,
-        "catalyst": "Headline EPS beat masked $0.52 one-time benefit; real EPS $0.20, China revenue -12% — fade candidate",
+        "ticker": "KARD",
+        "company": "Kardigan Inc",
+        "price": 23.85,
+        "change": -7.92,
+        "volume": 808453,
+        "catalyst": "Perakende giyim sektoru baskisi, marj endiseleri.",
         "sector": "Consumer Discretionary",
-        "marketCap": null,
-        "week52Range": null
+        "marketCap": 2131000000,
+        "week52Range": [
+          16.25,
+          27.0
+        ],
+        "note": "Pre-market losers verisi bulunamadi. Dunun regular hours losers listesinden."
       }
     ]
   },
   "callSetups": [
     {
-      "ticker": "META",
-      "direction": "call",
-      "entry": "602.00-606.00",
-      "target": 615.00,
-      "stop": 590.00,
-      "riskReward": 2.5,
-      "rationale": "AI momentum + sector rotation. Above VWAP + volume confirmation. Wait ORB 09:30-09:45 ET.",
-      "timeframe": "1-week"
-    },
-    {
-      "ticker": "GIS",
-      "direction": "call",
-      "entry": "38.00-38.50",
-      "target": 39.50,
-      "stop": 36.80,
-      "riskReward": 2.2,
-      "rationale": "Earnings beat carry-forward. Defensive rotation on soft macro. Gap >5% → ORB mandatory.",
-      "timeframe": "1-week"
-    },
-    {
-      "ticker": "WDAY",
-      "direction": "call",
-      "entry": "127.00-129.00",
-      "target": 132.00,
-      "stop": 125.00,
-      "riskReward": 2.0,
-      "rationale": "SaaS recovery narrative. Enterprise AI integration. Volume verify before entry.",
-      "timeframe": "1-week"
-    },
-    {
       "ticker": "NOW",
       "direction": "call",
-      "entry": "102.00-104.00",
-      "target": 106.00,
-      "stop": 100.00,
-      "riskReward": 2.0,
-      "rationale": "Tech breather'da relative strength. VWAP reclaim = entry trigger.",
-      "timeframe": "1-week"
+      "entry": 105.5,
+      "target": 110.0,
+      "stop": 103.0,
+      "riskReward": 2.2,
+      "rationale": "Pre-market momentum +4.35%. AI enterprise software talebi. VWAP reclaim onaylanirsa momentum devam eder.",
+      "timeframe": "0DTE"
     },
     {
-      "ticker": "PLTR",
+      "ticker": "AXON",
       "direction": "call",
-      "entry": "119.00-121.00",
-      "target": 123.00,
-      "stop": 117.00,
+      "entry": 590.0,
+      "target": 610.0,
+      "stop": 580.0,
       "riskReward": 2.0,
-      "rationale": "Government AI contracts momentum. Liquid options. Trend intact.",
-      "timeframe": "1-week"
+      "rationale": "Pre-market gap +4.23%. Guvenlik teknolojileri demand. Yeni high test.",
+      "timeframe": "0DTE"
+    },
+    {
+      "ticker": "CRM",
+      "direction": "call",
+      "entry": 163.0,
+      "target": 168.0,
+      "stop": 160.5,
+      "riskReward": 2.0,
+      "rationale": "Cloud momentum +4.19%. AI entegrasyonu (Einstein). Destek 160 ustunde kalirsa.",
+      "timeframe": "0DTE"
+    },
+    {
+      "ticker": "SPY",
+      "direction": "call",
+      "entry": 745.0,
+      "target": 750.0,
+      "stop": 742.5,
+      "riskReward": 2.0,
+      "rationale": "VWAP oversold bounce. S&P 500 stabilite. QQQ zayif ama SPY dayanikli. Non-Farm Payrolls oncesi.",
+      "timeframe": "0DTE"
+    },
+    {
+      "ticker": "META",
+      "direction": "call",
+      "entry": 610.0,
+      "target": 620.0,
+      "stop": 605.0,
+      "riskReward": 2.0,
+      "rationale": "Dun momentum +8.81% devami. AI reklam tech. 610 ustu CALL bias. Yeni momentum.",
+      "timeframe": "0DTE"
     }
   ],
   "putSetups": [
     {
-      "ticker": "MU",
+      "ticker": "QQQ",
       "direction": "put",
-      "entry": "1070.00-1080.00",
-      "target": 1050.00,
-      "stop": 1100.00,
-      "riskReward": 2.2,
-      "rationale": "Memory cycle downturn. Below VWAP + volume distribution. Chip weakness.",
-      "timeframe": "1-week"
-    },
-    {
-      "ticker": "INTC",
-      "direction": "put",
-      "entry": "133.00-135.00",
-      "target": 130.00,
-      "stop": 138.00,
+      "entry": 725.0,
+      "target": 715.0,
+      "stop": 730.0,
       "riskReward": 2.0,
-      "rationale": "Structurally weak turnaround. Fab delays. 0DTE avoid if NFP tomorrow.",
-      "timeframe": "1-week"
+      "rationale": "Tech weakness -1.5%. VWAP altinda (727.23). Nasdaq 100 underperform. Momentum short.",
+      "timeframe": "0DTE"
     },
     {
-      "ticker": "SMCI",
+      "ticker": "CRCL",
       "direction": "put",
-      "entry": "27.50-28.50",
-      "target": 26.50,
-      "stop": 30.00,
+      "entry": 62.5,
+      "target": 58.0,
+      "stop": 64.5,
+      "riskReward": 2.25,
+      "rationale": "Stablecoin rekabeti korkusu. Visa/Mastercard/Stripe yeni stablecoin. Kritik destek kirilimi.",
+      "timeframe": "swing"
+    },
+    {
+      "ticker": "HTFL",
+      "direction": "put",
+      "entry": 29.3,
+      "target": 27.5,
+      "stop": 30.2,
       "riskReward": 2.0,
-      "rationale": "Server demand + accounting overhang. Low price, check options liquidity.",
-      "timeframe": "1-week"
+      "rationale": "Dun -15.81% weakness devami. Medikal cihaz baskisi. 30 altinda PUT bias.",
+      "timeframe": "swing"
     },
     {
-      "ticker": "NVDA",
+      "ticker": "IWM",
       "direction": "put",
-      "entry": "194.00-196.00",
-      "target": 190.00,
-      "stop": 200.00,
+      "entry": 299.0,
+      "target": 295.0,
+      "stop": 301.0,
       "riskReward": 2.0,
-      "rationale": "Mag7 rotation out. Profit-taking. High liquidity (5.09M). Best chip PUT play.",
-      "timeframe": "1-week"
+      "rationale": "Small cap lag -0.38%. VWAP altinda (300.32). Russell 2000 underperform. Risk-off.",
+      "timeframe": "0DTE"
     },
     {
-      "ticker": "NKE",
+      "ticker": "MSTR",
       "direction": "put",
-      "entry": "41.50-42.00",
-      "target": 39.00,
-      "stop": 43.00,
-      "riskReward": 2.5,
-      "rationale": "Headline beat masked one-time benefit. China -12%. Fade the bounce. Earnings aftermath.",
-      "timeframe": "1-week"
+      "entry": 87.0,
+      "target": 82.0,
+      "stop": 89.5,
+      "riskReward": 2.0,
+      "rationale": "Crypto weakness. Bitcoin yorgun. Dun -6.20% dusus. High beta short.",
+      "timeframe": "0DTE"
     }
   ],
   "earningsCalendar": [
     {
-      "ticker": "NRIX",
-      "company": "Nurix Therapeutics",
+      "ticker": "LNN",
+      "company": "Lindsay Corporation",
       "time": "before-open",
-      "consensusEps": -0.52,
-      "consensusRev": null,
-      "priorEps": null,
-      "priorRev": null,
-      "expectedMove": null,
-      "consensusRange": null,
-      "analystSentiment": null,
-      "note": "Biotech binary event. Low option liquidity. Options avoid recommended. No earnings trade."
+      "consensusEps": 1.21,
+      "consensusRev": 157800000,
+      "priorEps": 1.78,
+      "priorRev": 169460000,
+      "expectedMove": 4.5,
+      "consensusRange": "$0.89 - $1.48",
+      "analystSentiment": "bearish",
+      "note": "IV crush risk. 0DTE YASAK. EPS estimates 90 gunde %37.3 asagi revize edildi. Q3 2025 EPS $1.78."
     },
     {
-      "ticker": "LIN",
-      "company": "Lindsay Corp",
+      "ticker": "AVXL",
+      "company": "Anavex Life Sciences Corp",
+      "time": "before-open",
+      "consensusEps": -0.07,
+      "consensusRev": 0,
+      "priorEps": -0.14,
+      "priorRev": 0,
+      "expectedMove": 10.0,
+      "consensusRange": "-$0.08 - -$0.06",
+      "analystSentiment": "bullish",
+      "note": "IV crush risk. 0DTE YASAK. Biotech, klinik veri bekleniyor. 2 Buy rating."
+    },
+    {
+      "ticker": "BMNR",
+      "company": "Bitmine Immersion Technologies Inc",
       "time": "after-close",
-      "consensusEps": 1.14,
+      "consensusEps": 0.18,
+      "consensusRev": 8200000,
+      "priorEps": -0.58,
+      "priorRev": 1517000,
+      "expectedMove": 12.0,
+      "consensusRange": "$0.15 - $0.21",
+      "analystSentiment": "neutral",
+      "note": "IV crush risk. Crypto exposure, ETH treasury. High volatility expected."
+    },
+    {
+      "ticker": "RR",
+      "company": "Richtech Robotics Inc",
+      "time": "after-close",
+      "consensusEps": -0.03,
       "consensusRev": null,
       "priorEps": null,
       "priorRev": null,
-      "expectedMove": null,
+      "expectedMove": 8.0,
       "consensusRange": null,
-      "analystSentiment": null,
-      "note": "Irrigation/infra. Low option interest. Not a primary earnings trade."
+      "analystSentiment": "neutral",
+      "note": "Micro-cap, illiquid. Data limited. IV crush risk."
+    },
+    {
+      "ticker": "WSHP",
+      "company": "WeShop Holdings Limited",
+      "time": "before-open",
+      "consensusEps": null,
+      "consensusRev": null,
+      "priorEps": null,
+      "priorRev": null,
+      "expectedMove": 5.0,
+      "consensusRange": null,
+      "analystSentiment": "neutral",
+      "note": "Micro-cap, data limited. Pre-market earnings."
+    },
+    {
+      "ticker": "AREC",
+      "company": "American Resources Corporation",
+      "time": "after-close",
+      "consensusEps": -0.12,
+      "consensusRev": null,
+      "priorEps": null,
+      "priorRev": null,
+      "expectedMove": 6.0,
+      "consensusRange": null,
+      "analystSentiment": "neutral",
+      "note": "Micro-cap, illiquid. Data limited."
     }
   ],
-  "vwapNotes": "SPY slightly below prior close, digestion mode. QQQ leading weakness below VWAP bias. IWM data unavailable. VIX 16.59 = low fear but creeping up. If SPY holds 7,440 support, uptrend intact. If VIX pushes above 18, caution. Gap >5% names (GIS +9.77%, META +7.65%) require ORB 09:30-09:45 confirmation.",
+  "vwapNotes": "SPY: 745.76 fiyat VWAP (745.86) hemen altinda, stabil. QQQ: 725.17 fiyat VWAP (727.23) altinda, tech weakness. IWM: 299.32 fiyat VWAP (300.32) altinda, small cap lag. Genel gorunum: QQQ ve IWM VWAP altinda = risk-off bias. SPY VWAP'a yakin = S&P 500 dayanikli. Tech zayif, defansif ve small cap baski altinda. Gap fill riski dusuk.",
   "riskAssessment": {
     "level": "medium",
-    "vixRegime": "VIX 16.59 (15-20 range) = normal/complacency. Low but creeping up. Above 18 = warning, above 20 = stop new longs.",
-    "sectorRotation": "Mag7 → AI suppliers (chips). Staples/defensive (GIS) rotation on soft ADP. Tech taking a breather.",
-    "earningsRisk": "Light today (NRIX, LIN). Major week ahead: UNH, BLK, GE, PLD starting July 6. No IV crush on main setups today.",
-    "macroRisk": "🔴 HIGH: NFP tomorrow (July 3) 8:30 ET + July 4 holiday. ADP miss (98K) softens landing narrative. Thin liquidity risk. 10Y yield 4.38% sticky. Fed Chair Warsh at Sintra."
+    "vixRegime": "VIX 16.54 (normal, complacency border). 15-20 arasi normal. Asiri korku yok ama dusuk VIX = surprise risk.",
+    "sectorRotation": "Tech weakness (QQQ -1.5%), Defansif staples guclu (STZ +4.25%), Crypto under pressure (CRCL -17.5%, MSTR -6.2%). Energy karisik.",
+    "earningsRisk": "LNN ve AVXL before-open. BMNR after-close. IV crush risk. 0DTE YASAK on earnings names. LNN EPS estimate 90 gunde %37 revize edildi.",
+    "macroRisk": "Non-Farm Payrolls Jul 2 8:30 AM ET + Unemployment Rate. Holiday weekend (Jul 3-4) thin liquidity. FOMC beklentileri."
   },
   "nextDayCarryForward": []
 }
