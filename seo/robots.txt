@@ -3,10 +3,12 @@ Allow: /
 
 # Disallow private / app-only routes from general crawlers
 Disallow: /app
+Disallow: /app/admin
 Disallow: /account
 Disallow: /settings
 Disallow: /api/
 Disallow: /auth/
+Disallow: /__manus__/
 Disallow: /_next/
 
 # Cloudflare-managed bot blocks (preserve existing)
@@ -38,6 +40,9 @@ User-agent: Claude-Web
 Disallow: /
 
 User-agent: ClaudeBot
+Disallow: /
+
+User-agent: CloudflareBrowserRenderingCrawler
 Disallow: /
 
 User-agent: cohere-ai

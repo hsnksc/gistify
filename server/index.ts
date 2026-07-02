@@ -2830,6 +2830,18 @@ function buildSitemapXml(): string {
     changefreq: string;
     lastmod?: string;
   }> = [];
+  const seen = new Set<string>();
+
+  function addEntry(
+    loc: string,
+    priority: string,
+    changefreq: string,
+    lastmod?: string
+  ) {
+    if (seen.has(loc)) return;
+    seen.add(loc);
+    entries.push({ loc, priority, changefreq, lastmod });
+  }
 
   const staticPaths = [
     { path: "/", priority: "1.0", changefreq: "weekly" },
@@ -2856,11 +2868,7 @@ function buildSitemapXml(): string {
   ];
 
   for (const item of staticPaths) {
-    entries.push({
-      loc: `${baseUrl}${item.path}`,
-      priority: item.priority,
-      changefreq: item.changefreq,
-    });
+    addEntry(`${baseUrl}${item.path}`, item.priority, item.changefreq);
   }
 
   const flowReports = getViewerFlowReportSummaries(getPublishedDailyReports());
@@ -2868,36 +2876,32 @@ function buildSitemapXml(): string {
   for (const report of flowReports) {
     const ticker = report.ticker || "FLOW";
     flowTickers.add(ticker);
-    entries.push({
-      loc: `${baseUrl}/flow/${encodeURIComponent(report.id)}`,
-      priority: "0.6",
-      changefreq: "daily",
-      lastmod: report.updatedAt,
-    });
-    entries.push({
-      loc: `${baseUrl}/reports/${encodeURIComponent(ticker)}/${encodeURIComponent(report.reportDate)}`,
-      priority: "0.6",
-      changefreq: "daily",
-      lastmod: report.updatedAt,
-    });
+    addEntry(
+      `${baseUrl}/flow/${encodeURIComponent(report.id)}`,
+      "0.6",
+      "daily",
+      report.updatedAt
+    );
+    addEntry(
+      `${baseUrl}/reports/${encodeURIComponent(ticker)}/${encodeURIComponent(report.reportDate)}`,
+      "0.6",
+      "daily",
+      report.updatedAt
+    );
   }
 
   for (const ticker of Array.from(flowTickers)) {
-    entries.push({
-      loc: `${baseUrl}/reports/ticker/${encodeURIComponent(ticker)}`,
-      priority: "0.6",
-      changefreq: "weekly",
-    });
+    addEntry(
+      `${baseUrl}/reports/ticker/${encodeURIComponent(ticker)}`,
+      "0.6",
+      "weekly"
+    );
   }
 
   // Programmatic SEO pages
   const progTickers = ["AAPL", "NVDA", "TSLA", "MSFT", "AMD", "AMZN", "META", "GOOGL", "NFLX", "CRM"];
   for (const ticker of progTickers) {
-    entries.push({
-      loc: `${baseUrl}/earnings/${ticker}`,
-      priority: "0.8",
-      changefreq: "daily",
-    });
+    addEntry(`${baseUrl}/earnings/${ticker}`, "0.8", "daily");
   }
 
   const progStrategies = [
@@ -2906,20 +2910,12 @@ function buildSitemapXml(): string {
     "bull-call-spread", "bear-put-spread", "calendar-spread", "butterfly-spread",
   ];
   for (const slug of progStrategies) {
-    entries.push({
-      loc: `${baseUrl}/strategies/${slug}`,
-      priority: "0.7",
-      changefreq: "weekly",
-    });
+    addEntry(`${baseUrl}/strategies/${slug}`, "0.7", "weekly");
   }
 
   const progScanners = ["momentum", "high-iv", "pre-earnings", "gap-up", "gap-down", "unusual-volume"];
   for (const type of progScanners) {
-    entries.push({
-      loc: `${baseUrl}/scanners/${type}`,
-      priority: "0.6",
-      changefreq: "hourly",
-    });
+    addEntry(`${baseUrl}/scanners/${type}`, "0.6", "hourly");
   }
 
   const urls = entries
