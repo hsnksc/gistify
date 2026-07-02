@@ -42,7 +42,7 @@ import {
 } from "@/lib/i18n";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import { detectLanguageOfText } from "@shared/flowLanguage";
+import { detectLanguageOfText } from "@/lib/languageDetection";
 
 const Landing = lazy(() => import("./pages/Landing"));
 const Home = lazy(() => import("./pages/Home"));
