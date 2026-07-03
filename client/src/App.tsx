@@ -24,6 +24,7 @@ import LanguageSelector from "@/components/LanguageSelector";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import LoadingState from "@/components/ui/loading-state";
+import { GA4PageTracker, HotjarPageTracker } from "@/components/analytics/AnalyticsTrackers";
 import {
   Sheet,
   SheetContent,
