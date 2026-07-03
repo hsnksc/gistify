@@ -253,6 +253,19 @@ export const vizSpecSchema = z.union([
 
 export type CoverageVizSpec = z.infer<typeof vizSpecSchema>;
 
+export type LadderSpec = z.infer<typeof ladderSchema>;
+export type GaugeSpec = z.infer<typeof gaugeSchema>;
+export type BulletSpec = z.infer<typeof bulletSchema>;
+export type PayoffSpec = z.infer<typeof payoffSchema>;
+export type EarningsSpec = z.infer<typeof earningsSchema>;
+export type RangeDotSpec = z.infer<typeof rangeDotSchema>;
+export type DonutSpec = z.infer<typeof donutSchema>;
+export type NetworkSpec = z.infer<typeof networkSchema>;
+export type ChainVizSpec = z.infer<typeof chainVizSchema>;
+export type ProbSpec = z.infer<typeof probSchema>;
+export type TimelineSpec = z.infer<typeof timelineSchema>;
+export type ScenarioSpec = z.infer<typeof scenarioSchema>;
+
 export type VizType = CoverageVizSpec["type"];
 
 export interface CoverageVizBlock {

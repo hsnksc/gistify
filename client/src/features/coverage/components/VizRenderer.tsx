@@ -1,16 +1,26 @@
 import { AlertCircle } from "lucide-react";
-import { type AppLanguage, copy } from "@/lib/i18n";
+import { type AppLanguage } from "@/lib/i18n";
 import { type CoverageVizBlock, vizLabel } from "../lib/vizSchema";
+import {
+  BulletViz,
+  ChainViz,
+  DonutViz,
+  EarningsViz,
+  GaugeViz,
+  LadderViz,
+  NetworkViz,
+  PayoffViz,
+  ProbViz,
+  RangeDotViz,
+  ScenarioViz,
+  TimelineViz,
+} from "./viz";
 
 interface VizRendererProps {
   block: CoverageVizBlock;
   language: AppLanguage;
 }
 
-/**
- * Faz 1 placeholder: viz bloklarını doğrular ve metadata kartı olarak gösterir.
- * Faz 2'de her `spec.type` için karşılık gelen SVG bileşeni buraya bağlanacak.
- */
 export default function VizRenderer({ block, language }: VizRendererProps) {
   const { spec, error, raw } = block;
 
@@ -43,37 +53,44 @@ export default function VizRenderer({ block, language }: VizRendererProps) {
     );
   }
 
-  return (
-    <figure className="rounded-xl border border-border bg-background/30 p-4">
-      <figcaption className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-        <span className="inline-flex h-2 w-2 rounded-full bg-sky-400" />
-        {vizLabel(language, spec.type)}
-      </figcaption>
-
-      <div className="mt-4 rounded-lg border border-dashed border-border bg-background/40 p-8 text-center text-sm text-muted-foreground">
-        {copy(
-          language,
-          "Bu görselleştirme Faz 2'de SVG olarak render edilecek.",
-          "This visualization will render as SVG in Phase 2."
-        )}
-      </div>
-
-      {spec.caption ? (
-        <p className="mt-3 text-xs text-muted-foreground/80">
-          <span className="font-medium text-muted-foreground">
-            {vizLabel(language, "howToRead")}:{" "}
-          </span>
-          {spec.caption}
-        </p>
-      ) : null}
-      {spec.insight ? (
-        <p className="mt-2 text-xs text-foreground/90">
-          <span className="font-medium text-muted-foreground">
-            {vizLabel(language, "keyTakeaway")}:{" "}
-          </span>
-          {spec.insight}
-        </p>
-      ) : null}
-    </figure>
-  );
+  switch (spec.type) {
+    case "ladder":
+      return <LadderViz language={language} spec={spec} />;
+    case "gauge":
+      return <GaugeViz language={language} spec={spec} />;
+    case "bullet":
+      return <BulletViz language={language} spec={spec} />;
+    case "payoff":
+      return <PayoffViz language={language} spec={spec} />;
+    case "earnings":
+      return <EarningsViz language={language} spec={spec} />;
+    case "rangeDot":
+      return <RangeDotViz language={language} spec={spec} />;
+    case "donut":
+      return <DonutViz language={language} spec={spec} />;
+    case "network":
+      return <NetworkViz language={language} spec={spec} />;
+    case "chainViz":
+      return <ChainViz language={language} spec={spec} />;
+    case "prob":
+      return <ProbViz language={language} spec={spec} />;
+    case "timeline":
+      return <TimelineViz language={language} spec={spec} />;
+    case "scenario":
+      return <ScenarioViz language={language} spec={spec} />;
+    default:
+      return (
+        <div
+          role="alert"
+          className="rounded-xl border border-amber-500/25 bg-amber-500/8 p-4"
+        >
+          <p className="text-sm font-semibold text-amber-200">
+            {vizLabel(language, "unknownType")}
+          </p>
+          <pre className="mt-2 max-h-48 overflow-auto rounded-lg bg-amber-950/30 p-3 text-[11px] text-amber-100/80">
+            <code>{raw}</code>
+          </pre>
+        </div>
+      );
+  }
 }
