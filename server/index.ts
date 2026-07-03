@@ -3570,6 +3570,20 @@ async function startServer() {
     res.status(200).type("html").send(renderRefundPageHtml());
   });
 
+  // Turkish content routes — serve /tr/:slug without .html extension
+  app.get("/tr/:slug", (req, res) => {
+    const filePath = path.join(__dirname, "public/tr", req.params.slug + ".html");
+    if (fs.existsSync(filePath)) {
+      res.sendFile(filePath);
+    } else {
+      res.status(404).send("Not found");
+    }
+  });
+  // Redirect /tr/:slug/ (trailing slash) to /tr/:slug
+  app.get("/tr/:slug/", (req, res) => {
+    res.redirect(301, "/tr/" + req.params.slug);
+  });
+
   // ── Programmatic SEO Routes ──
   registerSeoRoutes(app);
 
