@@ -34,12 +34,12 @@ describe("coverage parser backward compatibility", () => {
     const crwv = reports.find(r => r.ticker === "CRWV" && r.reportDate === "2026-07-02");
     expect(crwv).toBeDefined();
     expect(crwv!.sections.map(s => s.title)).toEqual([
-      "Executive Summary",
-      "Positioning",
-      "Options Structure",
-      "Watchlist",
-      "Timeline",
-      "Sources",
+      "1. Executive Summary",
+      "2. Positioning",
+      "3. Options Structure",
+      "4. Watchlist",
+      "5. Timeline",
+      "6. Sources",
     ]);
   });
 
