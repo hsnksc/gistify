@@ -126,6 +126,8 @@ temp/
 .playwright-mcp/
 %TEMP%*
 *.png
+!client/public/favicon-*.png
+!client/public/favicon-source.png
 midas-*.json
 midas-*.md
 
