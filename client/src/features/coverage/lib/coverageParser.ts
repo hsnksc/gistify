@@ -5,6 +5,12 @@ export interface CoverageStoredRecord {
   sourceName: string;
 }
 
+import {
+  parseVizSpec,
+  type CoverageVizBlock,
+  type CoverageVizSpec,
+} from "./vizSchema";
+
 export interface CoverageChecklistItem {
   checked: boolean;
   id: string;
@@ -43,7 +49,8 @@ export type CoverageBlock =
   | CoverageListBlock
   | CoverageParagraphBlock
   | CoverageQuoteBlock
-  | CoverageTableBlock;
+  | CoverageTableBlock
+  | CoverageVizBlock;
 
 export interface CoverageSection {
   blocks: CoverageBlock[];
@@ -67,6 +74,7 @@ export interface CoverageMetrics {
   reportTimestamp?: string;
   rsi?: number;
   shortFloat?: number;
+  spark?: number[];
   targetAvg?: number;
 }
 
@@ -74,7 +82,7 @@ export interface CoverageStrategy {
   breakeven: number;
   cost: number;
   legs: string;
-  max_gain: number;
+  max_gain: number | "unlimited";
   max_loss: number;
   name: string;
 }
@@ -289,6 +297,14 @@ function buildSectionId(title: string, level: 2 | 3, index: number) {
   return `${level === 2 ? "h2" : "h3"}-${index + 1}-${slug}`;
 }
 
+function parseVizBlock(raw: string): CoverageVizBlock {
+  const result = parseVizSpec(raw);
+  if (result.success) {
+    return { raw, spec: result.spec, type: "viz" };
+  }
+  return { raw, error: result.error, type: "viz" };
+}
+
 function parseBlocks(lines: string[]): CoverageBlock[] {
   const blocks: CoverageBlock[] = [];
   let index = 0;
@@ -297,6 +313,24 @@ function parseBlocks(lines: string[]): CoverageBlock[] {
     const current = lines[index].trim();
     if (!current) {
       index += 1;
+      continue;
+    }
+
+    // Viz DSL fenced block: ```viz ... ```
+    if (current.startsWith("```viz")) {
+      const fenceLines: string[] = [];
+      index += 1;
+      while (index < lines.length && !lines[index].trim().startsWith("```")) {
+        fenceLines.push(lines[index]);
+        index += 1;
+      }
+      if (index < lines.length) {
+        index += 1; // skip closing ```
+      }
+      const raw = fenceLines.join("\n").trim();
+      if (raw) {
+        blocks.push(parseVizBlock(raw));
+      }
       continue;
     }
 
@@ -636,6 +670,15 @@ function extractMetrics(
     String(fmMetrics.low52 || "") + " - " + String(fmMetrics.high52 || "")
   );
 
+  const spark =
+    typeof fmMetrics.spark === "object" &&
+    fmMetrics.spark !== null &&
+    Array.isArray((fmMetrics.spark as Record<string, unknown>).price)
+      ? ((fmMetrics.spark as Record<string, unknown>).price as unknown[]).map(
+          v => (typeof v === "number" ? v : Number(v) || 0)
+        )
+      : undefined;
+
   return {
     budget,
     changePct,
@@ -654,6 +697,7 @@ function extractMetrics(
     reportTimestamp,
     rsi,
     shortFloat,
+    spark,
     targetAvg,
   };
 }
@@ -703,7 +747,10 @@ export function parseCoverageReport(record: CoverageStoredRecord): CoverageRepor
         name: String(fmStrategy.name || ""),
         legs: String(fmStrategy.legs || ""),
         cost: Number(fmStrategy.cost || 0),
-        max_gain: Number(fmStrategy.max_gain || 0),
+        max_gain:
+          String(fmStrategy.max_gain || "").trim().toLowerCase() === "unlimited"
+            ? "unlimited"
+            : Number(fmStrategy.max_gain || 0),
         max_loss: Number(fmStrategy.max_loss || 0),
         breakeven: Number(fmStrategy.breakeven || 0),
       }

@@ -58,6 +58,7 @@ import {
   EcosystemChips,
   RSIGauge,
 } from "@/features/coverage/components";
+import VizRenderer from "@/features/coverage/components/VizRenderer";
 import {
   PayoffChart,
   EarningsHistoryChart,
@@ -440,6 +441,16 @@ function CoverageBlocks({
               onChecklistChange={onChecklistChange}
               reportId={reportId}
               sectionId={sectionId}
+            />
+          );
+        }
+
+        if (block.type === "viz") {
+          return (
+            <VizRenderer
+              key={`${blockPrefix}-${index}`}
+              block={block}
+              language={language}
             />
           );
         }

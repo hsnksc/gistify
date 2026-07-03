@@ -8,7 +8,7 @@ export interface StrategyCardProps {
     breakeven: number;
     cost: number;
     legs: string;
-    max_gain: number;
+    max_gain: number | "unlimited";
     max_loss: number;
     name: string;
   };
@@ -16,7 +16,9 @@ export interface StrategyCardProps {
 
 export default function StrategyCard({ strategy, language = "tr" }: StrategyCardProps) {
   const { name, legs, cost, max_gain, max_loss, breakeven } = strategy;
-  const roi = cost > 0 ? ((max_gain - cost) / cost) * 100 : 0;
+  const isUnlimited = max_gain === "unlimited";
+  const numericGain = isUnlimited ? Number.POSITIVE_INFINITY : max_gain;
+  const roi = !isUnlimited && cost > 0 ? ((numericGain - cost) / cost) * 100 : null;
 
   return (
     <div className="space-y-4 rounded-xl border border-border bg-background/30 p-5">
@@ -49,7 +51,9 @@ export default function StrategyCard({ strategy, language = "tr" }: StrategyCard
             </span>
           </div>
           <p className="mt-1 text-lg font-bold text-emerald-200">
-            ${max_gain.toLocaleString()}
+            {isUnlimited
+              ? copy(language, "Sınırsız", "Unlimited")
+              : `$${numericGain.toLocaleString()}`}
           </p>
         </div>
 
@@ -78,11 +82,19 @@ export default function StrategyCard({ strategy, language = "tr" }: StrategyCard
         </div>
       </div>
 
-      {roi > 0 && (
+      {roi !== null && roi > 0 && (
         <div className="rounded-lg border border-sky-500/20 bg-sky-500/8 p-3">
           <p className="text-xs text-muted-foreground">
             {copy(language, "ROI Potansiyeli", "ROI Potential")}: {" "}
             <span className="font-bold text-emerald-300">+{roi.toFixed(0)}%</span>
+          </p>
+        </div>
+      )}
+      {isUnlimited && (
+        <div className="rounded-lg border border-sky-500/20 bg-sky-500/8 p-3">
+          <p className="text-xs text-muted-foreground">
+            {copy(language, "ROI Potansiyeli", "ROI Potential")}: {" "}
+            <span className="font-bold text-emerald-300">∞</span>
           </p>
         </div>
       )}
