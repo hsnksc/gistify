@@ -2,10 +2,13 @@ import fs from "node:fs";
 import path from "node:path";
 
 export interface CoverageStoredRecord {
+  availableLanguages?: ("tr" | "en")[];
   id: string;
   importedAt: string;
+  language?: "tr" | "en";
   raw: string;
   sourceName: string;
+  translations?: Partial<Record<"tr" | "en", string>>;
 }
 
 function normalizeString(value: unknown) {
@@ -80,12 +83,16 @@ function extractCoverageTitle(raw: string) {
 }
 
 function extractCoverageDateFromSourceName(sourceName: string) {
-  const match = normalizeString(sourceName).match(/(\d{4}-\d{2}-\d{2})/);
+  const match = normalizeString(stripCoverageLanguageSuffix(sourceName)).match(/(\d{4}-\d{2}-\d{2})/);
   return match?.[1] || "";
 }
 
 function normalizeCoverageId(sourceName: string) {
-  return path.basename(sourceName).replace(/\.md$/i, "");
+  return path.basename(stripCoverageLanguageSuffix(sourceName)).replace(/\.md$/i, "");
+}
+
+function stripCoverageLanguageSuffix(fileName: string) {
+  return fileName.replace(/\.en(?=\.md$)/i, "");
 }
 
 function isSampleCoverageFile(fileName: string) {
@@ -117,6 +124,7 @@ function listCoverageReportFileNames(): string[] {
       entry =>
         entry.isFile() &&
         entry.name.endsWith(".md") &&
+        !/\.en\.md$/i.test(entry.name) &&
         !isSampleCoverageFile(entry.name)
     )
     .map(entry => entry.name)
@@ -127,12 +135,24 @@ function readCoverageRecord(root: string, fileName: string): CoverageStoredRecor
   const filePath = path.join(root, fileName);
   const raw = fs.readFileSync(filePath, "utf8");
   const stat = fs.statSync(filePath);
+  const enFileName = fileName.replace(/\.md$/i, ".en.md");
+  const enFilePath = path.join(root, enFileName);
+  const enTranslation = fs.existsSync(enFilePath)
+    ? fs.readFileSync(enFilePath, "utf8")
+    : "";
+  const availableLanguages: Array<"tr" | "en"> = [
+    "tr",
+    ...(enTranslation ? (["en"] as const) : []),
+  ];
 
   return {
+    availableLanguages,
     id: normalizeCoverageId(fileName),
     importedAt: stat.mtime.toISOString(),
+    language: "tr",
     raw,
     sourceName: fileName,
+    translations: enTranslation ? { en: enTranslation } : undefined,
   };
 }
 
@@ -162,8 +182,31 @@ export function mergeCoverageReports(
   const merged = new Map<string, CoverageStoredRecord>();
 
   for (const report of [...primaryReports, ...fallbackReports]) {
-    const key = normalizeString(report.sourceName).toLowerCase() || report.id;
-    if (merged.has(key)) {
+    const key =
+      normalizeCoverageId(report.sourceName || report.id).toLowerCase() ||
+      normalizeCoverageId(report.id).toLowerCase();
+    const existing = merged.get(key);
+    if (existing) {
+      const translations = {
+        ...(report.translations || {}),
+        ...(existing.translations || {}),
+      };
+      const availableLanguages = Array.from(
+        new Set([
+          ...(report.availableLanguages || []),
+          ...(existing.availableLanguages || []),
+        ])
+      ) as Array<"tr" | "en">;
+
+      merged.set(key, {
+        ...report,
+        ...existing,
+        availableLanguages: availableLanguages.length
+          ? availableLanguages
+          : undefined,
+        language: existing.language || report.language,
+        translations: Object.keys(translations).length ? translations : undefined,
+      });
       continue;
     }
 

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import EmptyState from "@/components/ui/empty-state";
 import LoadingState from "@/components/ui/loading-state";
 import { usePageMeta } from "@/hooks/usePageMeta";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import {
   useFlowTitleTranslation,
   useFlowSummaryTranslation,
@@ -35,7 +35,7 @@ interface FlowReportDetailSurfaceProps {
 export default function FlowReportDetailSurface({
   language,
   basePath = "/flow",
-  eyebrow = copy(language, "Flow", "Flow"),
+  eyebrow = "Flow",
   error = "",
   loading = false,
   onRefresh,
@@ -63,22 +63,18 @@ export default function FlowReportDetailSurface({
   usePageMeta({
     description:
       translatedHeadline ||
-      copy(language, "Flow post detayi.", "Flow post detail."),
+      t("flow:flowPostDetail"),
     title: translatedTitle
       ? `${translatedTitle} | Gistify`
-      : copy(language, "Flow Post | Gistify", "Flow Post | Gistify"),
+      : "Flow Post | Gistify",
   });
 
   return (
     <FlowLayout
       language={language}
       eyebrow={eyebrow}
-      title={copy(language, "Post Detayi", "Post Detail")}
-      description={copy(
-        language,
-        "Akistaki secili postun tam icerigi burada acilir.",
-        "The full content of the selected post opens here."
-      )}
+      title={t("flow:postDetail")}
+      description={t("flow:theFullContentOfThe")}
       actions={
         <>
           <Button
@@ -87,11 +83,11 @@ export default function FlowReportDetailSurface({
             onClick={() => setLocation(backHref)}
           >
             <ArrowLeft className="size-4" />
-            {copy(language, "Akisa Don", "Back to Feed")}
+            {t("flow:backToFeed")}
           </Button>
           <Button type="button" variant="outline" onClick={() => void onRefresh?.()}>
             <RefreshCw className="size-4" />
-            {copy(language, "Yenile", "Refresh")}
+            {t("common:refresh")}
           </Button>
         </>
       }
@@ -99,25 +95,17 @@ export default function FlowReportDetailSurface({
       {loading ? (
         <LoadingState
           compact
-          label={copy(language, "Post yukleniyor.", "Loading post.")}
+          label={t("flow:loadingPost")}
         />
       ) : !report ? (
         <EmptyState
           description={
             error ||
-            copy(
-              language,
-              "Akisa geri donup postu tekrar sec.",
-              "Return to the feed and pick the post again."
-            )
+            t("flow:returnToTheFeedAnd")
           }
           icon={error ? AlertCircle : FileSearch}
           role={error ? "alert" : "status"}
-          title={copy(
-            language,
-            "Istenen post bulunamadi.",
-            "The requested post could not be found."
-          )}
+          title={t("flow:noExchange")}
           tone={error ? "danger" : "neutral"}
         />
       ) : (
@@ -137,7 +125,7 @@ export default function FlowReportDetailSurface({
                   </p>
                   <span className="text-muted-foreground">·</span>
                   <p className="text-xs text-muted-foreground">
-                    {copy(language, "Gonderildi", "Posted")}{" "}
+                    {t("flow:posted")}{" "}
                     {getFlowPostedLabel(report, locale)}
                   </p>
                 </div>

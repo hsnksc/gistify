@@ -1,5 +1,5 @@
-import { type AppLanguage } from "@/lib/i18n";
-import { copy } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
+
 import { cn } from "@/lib/utils";
 
 export interface EarningsHistoryChartProps {
@@ -45,7 +45,7 @@ export default function EarningsHistoryChart({
   return (
     <div className="space-y-3 rounded-xl border border-border bg-background/30 p-5">
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-        {copy(language, "EPS Gecmisi", "Earnings History")}
+        {t("coverage:earningsHistory")}
       </p>
 
       <div className="relative w-full overflow-x-auto">
@@ -183,11 +183,11 @@ export default function EarningsHistoryChart({
           <g transform={`translate(${padding.left + 10}, 18)`}>
             <rect x="0" y="0" width="10" height="10" rx="2" className="fill-zinc-500/30" />
             <text x="16" y="9" className="fill-muted-foreground text-[9px]">
-              {copy(language, "Tahmin", "Estimate")}
+              {t("coverage:estimate")}
             </text>
             <rect x="70" y="0" width="10" height="10" rx="2" className="fill-emerald-400/70" />
             <text x="86" y="9" className="fill-muted-foreground text-[9px]">
-              {copy(language, "Gercek", "Actual")}
+              {t("coverage:actual")}
             </text>
           </g>
         </svg>

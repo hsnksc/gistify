@@ -2,8 +2,8 @@ import CPRTable from "@/components/earnings/CPRTable";
 import EarningsHero from "@/components/earnings/EarningsHero";
 import FOMCWarningBanner from "@/components/earnings/FOMCWarningBanner";
 import { usePageMeta } from "@/hooks/usePageMeta";
-import type { AppLanguage } from "@/lib/i18n";
-import { copy } from "@/lib/i18n";
+import { AppLanguage, t } from "@/lib/i18n";
+
 import {
   EarningsLoadingState,
   EarningsPipelinePanel,
@@ -21,16 +21,8 @@ export default function EarningsStrategiesPage({
   language: AppLanguage;
 }) {
   usePageMeta({
-    description: copy(
-      language,
-      "Kazanc stratejileri: beat ihtimali, implied move ve opsiyon cercevesi.",
-      "Earnings strategies: beat probability, implied move and options framing."
-    ),
-    title: copy(
-      language,
-      "Kazanc Stratejileri | Gistify",
-      "Earnings Strategies | Gistify"
-    ),
+    description: t("earnings:earningsStrategiesBeatProbabilityImplied"),
+    title: t("earnings:earningsStrategiesGistify"),
   });
 
   const { data, error, isLoading, isRefreshing, pipeline, refresh } =
@@ -49,11 +41,11 @@ export default function EarningsStrategiesPage({
           const result = await refresh();
           if (result.ok) {
             toast.success(
-              copy(language, "Strateji workspace'i yenilendi.", "The strategy workspace refreshed.")
+              t("earnings:theStrategyWorkspaceRefreshed")
             );
             return;
           }
-          toast.error(copy(language, "Yenileme basarisiz.", "Refresh failed."), {
+          toast.error(t("common:refreshFailed"), {
             description: result.error,
           });
         }}
@@ -65,11 +57,11 @@ export default function EarningsStrategiesPage({
     const result = await refresh();
     if (result.ok) {
       toast.success(
-        copy(language, "Strateji workspace'i yenilendi.", "The strategy workspace refreshed.")
+        t("earnings:theStrategyWorkspaceRefreshed")
       );
       return;
     }
-    toast.error(copy(language, "Yenileme basarisiz.", "Refresh failed."), {
+    toast.error(t("scanner:targetIs24Away"), {
       description: result.error,
     });
   };
@@ -87,31 +79,23 @@ export default function EarningsStrategiesPage({
       <EarningsWorkspaceToolbar
         language={language}
         pipeline={pipeline}
-        sectionLabel={copy(language, "Stratejiler", "Strategies")}
+        sectionLabel={t("earnings:strategies")}
       />
       <EarningsPipelinePanel language={language} pipeline={pipeline} />
       {data.fomc ? (
         <FOMCWarningBanner fomc={data.fomc} language={language} />
       ) : null}
       <StrategyCollectionPanel
-        description={copy(
-          language,
-          "Ana senaryo ve IV/CPR ciftini tasiyan yuksek oncelikli stratejiler.",
-          "Higher-priority strategies carrying the main scenario and IV/CPR setup."
-        )}
+        description={t("earnings:higherPriorityStrategiesCarryingThe")}
         language={language}
         strategies={data.strategies}
-        title={copy(language, "Ana stratejiler", "Core strategies")}
+        title={t("scanner:refreshFlow")}
       />
       <StrategyCollectionPanel
-        description={copy(
-          language,
-          "Daha dusuk sermaye ile ayni event'i oynayan alternatif kurulumlar.",
-          "Alternative structures that express the same event with smaller capital."
-        )}
+        description={t("earnings:alternativeStructuresThatExpressThe")}
         language={language}
         strategies={data.budgetStrategies}
-        title={copy(language, "Butce dostu stratejiler", "Budget strategies")}
+        title={t("earnings:budgetStrategies")}
       />
       <CPRTable language={language} stocks={data.cprStocks} />
     </EarningsWorkspaceFrame>

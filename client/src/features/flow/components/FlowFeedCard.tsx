@@ -1,7 +1,7 @@
 import { ArrowRight, Layers3 } from "lucide-react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import FlowPostActions from "./FlowPostActions";
 import {
   useFlowTitleTranslation,
@@ -72,7 +72,7 @@ export default function FlowFeedCard({
             </p>
             <span className="text-muted-foreground">·</span>
             <p className="text-xs text-muted-foreground">
-              {copy(language, "Gonderildi", "Posted")}{" "}
+              {t("flow:posted")}{" "}
               {getFlowPostedLabel(report, locale)}
             </p>
           </div>
@@ -124,7 +124,7 @@ export default function FlowFeedCard({
               onClick={openDetail}
             >
               <ArrowRight className="size-4" />
-              {copy(language, "Devami", "Continue")}
+              {t("flow:continue")}
             </Button>
           </div>
         </div>

@@ -4,7 +4,7 @@
  * Tüm skorları güvenli aralığa [0, 100] clamp eder.
  */
 
-import { type AppLanguage, copy } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 
 // ===================== Temel Güvenlik Fonksiyonları =====================
 
@@ -50,10 +50,10 @@ export function validateFactorScores(factors: Record<string, number>, language: 
 
   for (const [key, val] of Object.entries(factors)) {
     if (!isSafeNumber(val)) {
-      issues.push(copy(language, `Faktör "${key}" güvensiz değer: ${val} → 50`, `Factor "${key}" unsafe value: ${val} → 50`));
+      issues.push(t("scanner:factorUnsafeValue50", { key, val }));
       sanitized[key] = 50;
     } else if (val < 0 || val > 100) {
-      issues.push(copy(language, `Faktör "${key}" aralık dışı: ${val.toFixed(2)} → clamp`, `Factor "${key}" out of range: ${val.toFixed(2)} → clamp`));
+      issues.push(t("scanner:factorOutOfRangeClamp", { key, tofixed2: val.toFixed(2) }));
       sanitized[key] = clamp100(val);
     } else {
       sanitized[key] = val;
@@ -83,10 +83,10 @@ export function sanityGate(inputs: {
   const safeScores: Record<string, number> = {};
   for (const [key, val] of Object.entries(scores)) {
     if (!isSafeNumber(val)) {
-      issues.push(copy(language, `[SanityGate] ${key} = ${String(val)} (NaN/Infinity/null) → 50`, `[SanityGate] ${key} = ${String(val)} (NaN/Infinity/null) → 50`));
+      issues.push(`[SanityGate] ${key} = ${String(val)} (NaN/Infinity/null) → 50`);
       safeScores[key] = 50;
     } else if (val < 0 || val > 100) {
-      issues.push(copy(language, `[SanityGate] ${key} = ${val.toFixed(2)} (aralık dışı) → clamp`, `[SanityGate] ${key} = ${val.toFixed(2)} (out of range) → clamp`));
+      issues.push(t("scanner:sanitygateOutOfRangeClamp", { key, tofixed2: val.toFixed(2) }));
       safeScores[key] = clamp100(val);
     } else {
       safeScores[key] = val;
@@ -97,14 +97,14 @@ export function sanityGate(inputs: {
   let weightSum = 0;
   for (const [key, w] of Object.entries(weights)) {
     if (!isSafeNumber(w)) {
-      issues.push(copy(language, `[SanityGate] Ağırlık ${key} = ${String(w)} → 0`, `[SanityGate] Weight ${key} = ${String(w)} → 0`));
+      issues.push(t("scanner:sanitygateWeight0", { key, stringW: String(w) }));
       weights[key] = 0;
     } else {
       weightSum += w;
     }
   }
   if (Math.abs(weightSum - 1.0) > 0.01) {
-    issues.push(copy(language, `[SanityGate] Ağırlık toplamı = ${weightSum.toFixed(4)} (normalizasyon uygulanıyor)`, `[SanityGate] Weight sum = ${weightSum.toFixed(4)} (normalizing)`));
+    issues.push(t("scanner:sanitygateWeightSumNormalizing", { tofixed4: weightSum.toFixed(4) }));
     // Normalize et
     for (const key of Object.keys(weights)) {
       weights[key] = weightSum > 0 ? (weights[key] ?? 0) / weightSum : 0;
@@ -129,7 +129,7 @@ export function sanityGate(inputs: {
   // 4. Final clamp
   const finalScore = clamp100(score);
   if (finalScore !== score) {
-    issues.push(copy(language, `[SanityGate] Final skor ${score} → clamp100 → ${finalScore}`, `[SanityGate] Final score ${score} → clamp100 → ${finalScore}`));
+    issues.push(t("scanner:sanitygateFinalScoreClamp100", { score, finalscore: finalScore }));
   }
 
   if (issues.length > 0) {
@@ -151,13 +151,13 @@ export interface YahooValidationResult {
 export function validateYahooResponse(json: any, language: AppLanguage = "tr"): YahooValidationResult {
   // Temel yapı kontrolü
   if (!json || typeof json !== "object") {
-    return { isValid: false, error: copy(language, "Yanıt JSON değil", "Response is not JSON"), dataQuality: 0 };
+    return { isValid: false, error: t("scanner:responseIsNotJson"), dataQuality: 0 };
   }
   if (!json.chart?.result?.[0]) {
     if (json.chart?.error) {
-      return { isValid: false, error: copy(language, `Yahoo API hatası: ${json.chart.error.description || json.chart.error.code}`, `Yahoo API error: ${json.chart.error.description || json.chart.error.code}`), dataQuality: 0 };
+      return { isValid: false, error: t("scanner:yahooApiError", { code: json.chart.error.description || json.chart.error.code }), dataQuality: 0 };
     }
-    return { isValid: false, error: copy(language, "Geçersiz yanıt yapısı (chart.result eksik)", "Invalid response structure (chart.result missing)"), dataQuality: 0 };
+    return { isValid: false, error: t("scanner:invalidResponseStructureChartResult"), dataQuality: 0 };
   }
 
   const result = json.chart.result[0];
@@ -167,17 +167,17 @@ export function validateYahooResponse(json: any, language: AppLanguage = "tr"): 
 
   // Meta kontrolü
   if (!meta || !isSafeNumber(meta.regularMarketPrice)) {
-    return { isValid: false, error: copy(language, "Meta verisi eksik veya geçersiz", "Meta data missing or invalid"), dataQuality: 0 };
+    return { isValid: false, error: t("scanner:metaDataMissingOrInvalid"), dataQuality: 0 };
   }
 
   // Quote kontrolü
   if (!quote || !Array.isArray(quote.close) || quote.close.length === 0) {
-    return { isValid: false, error: copy(language, "Fiyat verisi eksik", "Price data missing"), dataQuality: 0 };
+    return { isValid: false, error: t("scanner:priceDataMissing"), dataQuality: 0 };
   }
 
   // Timestamp kontrolü
   if (!Array.isArray(timestamps) || timestamps.length === 0) {
-    return { isValid: false, error: copy(language, "Timestamp verisi eksik", "Timestamp data missing"), dataQuality: 0 };
+    return { isValid: false, error: t("scanner:timestampDataMissing"), dataQuality: 0 };
   }
 
   // Null oranını hesapla
@@ -191,7 +191,7 @@ export function validateYahooResponse(json: any, language: AppLanguage = "tr"): 
 
   // Minimum veri uzunluğu
   if (quote.close.filter((c: unknown) => c !== null).length < 20) {
-    return { isValid: false, error: copy(language, `Yetersiz veri: ${total} gün (minimum 20)`, `Insufficient data: ${total} days (minimum 20)`), dataQuality };
+    return { isValid: false, error: t("scanner:insufficientDataDaysMinimum20", { total }), dataQuality };
   }
 
   return { isValid: true, dataQuality };
@@ -208,25 +208,25 @@ export function validateCandleData(
   language: AppLanguage = "tr"
 ): { isValid: boolean; error?: string } {
   if (!Array.isArray(timestamps) || timestamps.length < 20) {
-    return { isValid: false, error: copy(language, `Yetersiz timestamp: ${timestamps?.length ?? 0}`, `Insufficient timestamps: ${timestamps?.length ?? 0}`) };
+    return { isValid: false, error: t("scanner:insufficientTimestamps", { length0: timestamps?.length ?? 0 }) };
   }
   if (!Array.isArray(close) || close.length < 20) {
-    return { isValid: false, error: copy(language, `Yetersiz close verisi: ${close?.length ?? 0}`, `Insufficient close data: ${close?.length ?? 0}`) };
+    return { isValid: false, error: t("scanner:insufficientCloseData", { length0: close?.length ?? 0 }) };
   }
   if (!Array.isArray(volume) || volume.length < 20) {
-    return { isValid: false, error: copy(language, `Yetersiz volume verisi: ${volume?.length ?? 0}`, `Insufficient volume data: ${volume?.length ?? 0}`) };
+    return { isValid: false, error: t("scanner:insufficientVolumeData", { length0: volume?.length ?? 0 }) };
   }
 
   // Array uzunlukları eşit mi?
   const len = timestamps.length;
   if (open.length !== len || high.length !== len || low.length !== len || close.length !== len || volume.length !== len) {
-    return { isValid: false, error: copy(language, `Array uzunlukları uyuşmuyor: ts=${len}, o=${open.length}, h=${high.length}, l=${low.length}, c=${close.length}, v=${volume.length}`, `Array length mismatch: ts=${len}, o=${open.length}, h=${high.length}, l=${low.length}, c=${close.length}, v=${volume.length}`) };
+    return { isValid: false, error: t("scanner:arrayLengthMismatchTsO", { len, length: open.length, length2: high.length, length3: low.length, length4: close.length, length5: volume.length }) };
   }
 
   // Tüm close değerleri sayısal mı?
   const invalidClose = close.filter((c) => !isSafeNumber(c));
   if (invalidClose.length > close.length * 0.3) {
-    return { isValid: false, error: copy(language, `Çok fazla geçersiz close değeri: ${invalidClose.length}/${close.length}`, `Too many invalid close values: ${invalidClose.length}/${close.length}`) };
+    return { isValid: false, error: t("scanner:tooManyInvalidCloseValues", { length: invalidClose.length, length2: close.length }) };
   }
 
   return { isValid: true };

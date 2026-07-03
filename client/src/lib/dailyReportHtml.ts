@@ -1,5 +1,5 @@
 import type { DailyReportContent } from "@shared/dailyReports";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import {
   buildReportHeadingAnchors,
   parseReportMarkdown,
@@ -324,7 +324,7 @@ function renderTickerRail(language: AppLanguage, tickers: string[]) {
   return `
     <section class="ticker-rail">
       <p class="ticker-label">${escapeHtml(
-        copy(language, "Ticker Evreni", "Ticker Universe")
+        t("common:tickerUniverse")
       )}</p>
       <div class="ticker-list">
         ${tickers
@@ -452,7 +452,7 @@ function renderBodyBlocks(
       <section id="${escapeHtml(id)}" class="report-section">
         <div class="section-head">
           <p class="section-kicker">${escapeHtml(
-            copy(language, "Bolum", "Section")
+            t("common:section")
           )}</p>
           <h2 class="section-title">${escapeHtml(title)}</h2>
         </div>
@@ -482,7 +482,7 @@ function renderBodyBlocks(
     if (!sectionOpen) {
       openSection(
         "full-document",
-        copy(language, "Rapor Icerigi", "Report Content")
+        t("common:reportContent")
       );
     }
 
@@ -527,9 +527,9 @@ function renderToc(
 
   return `
     <nav class="toc-panel" aria-label="${escapeHtml(
-      copy(language, "Icerikler", "Table of contents")
+      t("common:tableOfContents")
     )}">
-      <p class="toc-title">${escapeHtml(copy(language, "Icerikler", "Contents"))}</p>
+      <p class="toc-title">${escapeHtml(t("common:contents"))}</p>
       <ol class="toc-list">
         ${sections
           .map(
@@ -584,14 +584,14 @@ export function buildDailyReportHtmlDocument({
   };
 
   const labels = {
-    author: copy(language, "Hazirlayan", "Author"),
-    coverage: copy(language, "Kapsam", "Coverage"),
-    figures: copy(language, "Gorsel", "Figures"),
-    methodology: copy(language, "Metodoloji", "Methodology"),
-    research: copy(language, "Arastirma", "Research"),
-    reportDate: copy(language, "Rapor Tarihi", "Report Date"),
-    source: copy(language, "Kaynak", "Source"),
-    updated: copy(language, "Guncellendi", "Updated"),
+    author: t("common:author"),
+    coverage: t("common:coverage"),
+    figures: t("common:figures"),
+    methodology: t("common:methodology"),
+    research: t("common:research"),
+    reportDate: t("scanner:notEnoughDataForAnalysis"),
+    source: t("common:source"),
+    updated: t("common:updated"),
   };
 
   const executiveSummary = Array.isArray(contentWithPremium.executiveSummary)
@@ -1319,7 +1319,7 @@ export function buildDailyReportHtmlDocument({
   <body>
     <main class="report-shell">
       <section id="hero" class="hero">
-        <p class="eyebrow">${escapeHtml(copy(language, "Daily Report", "Daily Report"))}</p>
+        <p class="eyebrow">${escapeHtml("Daily Report")}</p>
         <h1>${escapeHtml(effectiveTitle)}</h1>
         ${
           contentWithPremium.headline
@@ -1341,11 +1341,7 @@ export function buildDailyReportHtmlDocument({
       ${bodyMarkup}
       <div class="disclaimer">
         ${escapeHtml(
-          copy(
-            language,
-            "Bu rapor yalnizca bilgilendirme amaclidir; yatirim tavsiyesi degildir. Her trade karari kendi risk toleransiniza gore alinmalidir.",
-            "This report is for informational purposes only and does not constitute investment advice. Every trade decision should be based on your own risk tolerance."
-          )
+          t("common:thisReportIsForInformational492e")
         )}
       </div>
     </main>

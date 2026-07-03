@@ -3,18 +3,7 @@
 // API endpoint: POST /api/newsletter/subscribe (already live in production)
 
 import React, { useState } from "react";
-import { copy, type AppLanguage } from "@/lib/i18n";
-import { trackNewsletterSubscribe } from "@/utils/ga4";
-
-// Simple email hash for GA4 (no PII)
-function hashEmail(email: string): string {
-  let hash = 0;
-  for (let i = 0; i < email.length; i++) {
-    const char = email.charCodeAt(i);
-    hash = ((hash << 5) - hash + char) | 0;
-  }
-  return `user_${Math.abs(hash).toString(16).substring(0, 8)}`;
-}
+import { type AppLanguage, t } from "@/lib/i18n";
 
 interface NewsletterSignupProps {
   language?: AppLanguage;
@@ -29,7 +18,7 @@ export default function NewsletterSignup({ language = "tr" }: NewsletterSignupPr
     e.preventDefault();
     if (!email || !email.includes("@")) {
       setStatus("error");
-      setMessage(copy(language, "Lutfen gecerli bir e-posta adresi girin.", "Please enter a valid email address."));
+      setMessage(t("common:pleaseEnterAValidEmail"));
       return;
     }
     setStatus("loading");
@@ -43,22 +32,16 @@ export default function NewsletterSignup({ language = "tr" }: NewsletterSignupPr
       if (res.ok) {
         setStatus("success");
         setMessage(
-          copy(
-            language,
-            "Basariyla kaydoldunuz! Sunday Prep haber bulteni yolda.",
-            "You're in! Sunday Prep newsletter coming your way."
-          )
+          t("common:youReInSundayPrep")
         );
-        // ✅ GA4 tracking — newsletter subscribe
-        trackNewsletterSubscribe(hashEmail(email), "landing_hero");
         setEmail("");
       } else {
         setStatus("error");
-        setMessage(data.error || copy(language, "Bir hata olustu. Lutfen tekrar deneyin.", "Something went wrong. Try again."));
+        setMessage(data.error || t("common:somethingWentWrongTryAgain"));
       }
     } catch {
       setStatus("error");
-      setMessage(copy(language, "Ag hatasi. Lutfen tekrar deneyin.", "Network error. Please try again."));
+      setMessage(t("common:networkErrorPleaseTryAgain"));
     }
   };
 
@@ -82,7 +65,7 @@ export default function NewsletterSignup({ language = "tr" }: NewsletterSignupPr
           fontWeight: 600,
         }}
       >
-        {copy(language, "Ucretsiz Earnings Playbook", "Free Earnings Playbook")}
+        {t("common:freeEarningsPlaybook")}
       </h3>
       <p
         style={{
@@ -92,11 +75,7 @@ export default function NewsletterSignup({ language = "tr" }: NewsletterSignupPr
           lineHeight: 1.5,
         }}
       >
-        {copy(
-          language,
-          "Sunday Prep bulteni ile en iyi earnings play'leri, momentum taramalarini ve makro gorunumu haftalik olarak alin.",
-          "Get the Sunday Prep newsletter — top earnings plays, momentum scans, and macro outlook delivered weekly."
-        )}
+        {t("common:getTheSundayPrepNewsletter")}
       </p>
       <form
         onSubmit={handleSubmit}
@@ -106,7 +85,7 @@ export default function NewsletterSignup({ language = "tr" }: NewsletterSignupPr
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder={copy(language, "eposta@ornek.com", "your@email.com")}
+          placeholder={t("scanner:ivNeutral")}
           disabled={status === "loading"}
           required
           style={{
@@ -137,8 +116,8 @@ export default function NewsletterSignup({ language = "tr" }: NewsletterSignupPr
           }}
         >
           {status === "loading"
-            ? copy(language, "Kaydediliyor...", "Joining...")
-            : copy(language, "Ucretsiz Al", "Get It Free")}
+            ? t("common:joining")
+            : t("common:getItFree")}
         </button>
       </form>
       {status === "success" && (

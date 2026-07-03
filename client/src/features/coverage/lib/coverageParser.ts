@@ -1,15 +1,15 @@
 export interface CoverageStoredRecord {
+  availableLanguages?: CoverageLanguage[];
   id: string;
   importedAt: string;
+  language?: CoverageLanguage;
   raw: string;
   sourceName: string;
+  sourceLanguage?: CoverageLanguage;
+  translations?: Partial<Record<CoverageLanguage, string>>;
 }
 
-import {
-  parseVizSpec,
-  type CoverageVizBlock,
-  type CoverageVizSpec,
-} from "./vizSchema";
+export type CoverageLanguage = "tr" | "en";
 
 export interface CoverageChecklistItem {
   checked: boolean;
@@ -49,8 +49,7 @@ export type CoverageBlock =
   | CoverageListBlock
   | CoverageParagraphBlock
   | CoverageQuoteBlock
-  | CoverageTableBlock
-  | CoverageVizBlock;
+  | CoverageTableBlock;
 
 export interface CoverageSection {
   blocks: CoverageBlock[];
@@ -74,7 +73,6 @@ export interface CoverageMetrics {
   reportTimestamp?: string;
   rsi?: number;
   shortFloat?: number;
-  spark?: number[];
   targetAvg?: number;
 }
 
@@ -82,13 +80,15 @@ export interface CoverageStrategy {
   breakeven: number;
   cost: number;
   legs: string;
-  max_gain: number | "unlimited";
+  max_gain: number;
   max_loss: number;
   name: string;
 }
 
 export interface CoverageReport {
+  availableLanguages: CoverageLanguage[];
   company: string;
+  displayedLanguage: CoverageLanguage;
   exchange: string;
   id: string;
   importedAt: string;
@@ -96,6 +96,7 @@ export interface CoverageReport {
   raw: string;
   reportDate: string;
   searchText: string;
+  sourceLanguage: CoverageLanguage;
   sector: string;
   sections: CoverageSection[];
   signal: string;
@@ -297,14 +298,6 @@ function buildSectionId(title: string, level: 2 | 3, index: number) {
   return `${level === 2 ? "h2" : "h3"}-${index + 1}-${slug}`;
 }
 
-function parseVizBlock(raw: string): CoverageVizBlock {
-  const result = parseVizSpec(raw);
-  if (result.success) {
-    return { raw, spec: result.spec, type: "viz" };
-  }
-  return { raw, error: result.error, type: "viz" };
-}
-
 function parseBlocks(lines: string[]): CoverageBlock[] {
   const blocks: CoverageBlock[] = [];
   let index = 0;
@@ -313,24 +306,6 @@ function parseBlocks(lines: string[]): CoverageBlock[] {
     const current = lines[index].trim();
     if (!current) {
       index += 1;
-      continue;
-    }
-
-    // Viz DSL fenced block: ```viz ... ```
-    if (current.startsWith("```viz")) {
-      const fenceLines: string[] = [];
-      index += 1;
-      while (index < lines.length && !lines[index].trim().startsWith("```")) {
-        fenceLines.push(lines[index]);
-        index += 1;
-      }
-      if (index < lines.length) {
-        index += 1; // skip closing ```
-      }
-      const raw = fenceLines.join("\n").trim();
-      if (raw) {
-        blocks.push(parseVizBlock(raw));
-      }
       continue;
     }
 
@@ -670,15 +645,6 @@ function extractMetrics(
     String(fmMetrics.low52 || "") + " - " + String(fmMetrics.high52 || "")
   );
 
-  const spark =
-    typeof fmMetrics.spark === "object" &&
-    fmMetrics.spark !== null &&
-    Array.isArray((fmMetrics.spark as Record<string, unknown>).price)
-      ? ((fmMetrics.spark as Record<string, unknown>).price as unknown[]).map(
-          v => (typeof v === "number" ? v : Number(v) || 0)
-        )
-      : undefined;
-
   return {
     budget,
     changePct,
@@ -697,13 +663,44 @@ function extractMetrics(
     reportTimestamp,
     rsi,
     shortFloat,
-    spark,
     targetAvg,
   };
 }
 
 export function buildCoverageRecordId(raw: string, sourceName: string) {
   return `${slugify(sourceName || "coverage") || "coverage"}-${hashString(raw)}`;
+}
+
+export function resolveCoverageRecordLanguage(
+  record: CoverageStoredRecord,
+  language: CoverageLanguage
+) : CoverageStoredRecord {
+  const sourceLanguage: CoverageLanguage =
+    record.language === "en" ? "en" : "tr";
+  const availableLanguages = Array.from(
+    new Set([
+      ...(record.availableLanguages || []),
+      ...(record.translations?.en ? (["en"] as const) : []),
+      sourceLanguage,
+    ])
+  ) as CoverageLanguage[];
+
+  if (language === "en" && record.translations?.en) {
+    return {
+      ...record,
+      availableLanguages,
+      language: "en" as const,
+      raw: record.translations.en,
+      sourceLanguage,
+    };
+  }
+
+  return {
+    ...record,
+    availableLanguages,
+    language: sourceLanguage,
+    sourceLanguage,
+  };
 }
 
 export function parseCoverageReport(record: CoverageStoredRecord): CoverageReport {
@@ -747,17 +744,19 @@ export function parseCoverageReport(record: CoverageStoredRecord): CoverageRepor
         name: String(fmStrategy.name || ""),
         legs: String(fmStrategy.legs || ""),
         cost: Number(fmStrategy.cost || 0),
-        max_gain:
-          String(fmStrategy.max_gain || "").trim().toLowerCase() === "unlimited"
-            ? "unlimited"
-            : Number(fmStrategy.max_gain || 0),
+        max_gain: Number(fmStrategy.max_gain || 0),
         max_loss: Number(fmStrategy.max_loss || 0),
         breakeven: Number(fmStrategy.breakeven || 0),
       }
     : undefined;
 
   return {
+    availableLanguages:
+      record.availableLanguages?.length
+        ? record.availableLanguages
+        : [record.language === "en" ? "en" : "tr"],
     company,
+    displayedLanguage: record.language === "en" ? "en" : "tr",
     exchange: String(frontmatter.exchange || "").trim(),
     id: record.id,
     importedAt: record.importedAt,
@@ -768,6 +767,7 @@ export function parseCoverageReport(record: CoverageStoredRecord): CoverageRepor
     raw: record.raw,
     reportDate,
     searchText,
+    sourceLanguage: record.sourceLanguage === "en" ? "en" : "tr",
     sector: String(frontmatter.sector || "").trim(),
     sections,
     signal: String(frontmatter.signal || "").trim(),

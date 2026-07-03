@@ -3,25 +3,14 @@ import { FileUp, RefreshCw, Save, Upload } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+  Card, CardContent, CardDescription, CardHeader, CardTitle, } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  fetchCoverageAdminReports,
-  importLocalCoverageAdminReports,
-  upsertCoverageAdminReport,
-} from "@/features/coverage/lib/coverageApi";
+  fetchCoverageAdminReports, importLocalCoverageAdminReports, upsertCoverageAdminReport, } from "@/features/coverage/lib/coverageApi";
 import {
-  parseCoverageReport,
-  type CoverageReport,
-  type CoverageStoredRecord,
-} from "@/features/coverage/lib/coverageParser";
-import { copy, type AppLanguage } from "@/lib/i18n";
+  parseCoverageReport, type CoverageReport, type CoverageStoredRecord, } from "@/features/coverage/lib/coverageParser";
+import { type AppLanguage, t } from "@/lib/i18n";
 
 function formatDate(value: string, language: AppLanguage) {
   const parsed = new Date(value);
@@ -87,11 +76,7 @@ export default function CoverageAdminPanel({
         error:
           previewError instanceof Error
             ? previewError.message
-            : copy(
-                language,
-                "Coverage markdown onizlemesi olusturulamadi.",
-                "Coverage markdown preview could not be created."
-              ),
+            : t("flow:coverageMarkdownPreviewCouldNot"),
         report: null,
       };
     }
@@ -122,11 +107,7 @@ export default function CoverageAdminPanel({
       setError(
         loadError instanceof Error
           ? loadError.message
-          : copy(
-              language,
-              "Coverage admin listesi yuklenemedi.",
-              "Coverage admin list could not be loaded."
-            )
+          : t("common:weak")
       );
     } finally {
       setBusy(false);
@@ -145,21 +126,13 @@ export default function CoverageAdminPanel({
       const payload = await importLocalCoverageAdminReports(adminSecret);
       setReports(payload.reports || []);
       setMessage(
-        copy(
-          language,
-          `${payload.imported} yerel coverage dosyasi admin arsivine aktarıldı.`,
-          `${payload.imported} local coverage files were imported into the admin archive.`
-        )
+        t("flow:localCoverageFilesWereImported", { imported: payload.imported })
       );
     } catch (importError) {
       setError(
         importError instanceof Error
           ? importError.message
-          : copy(
-              language,
-              "Yerel coverage dosyalari ice aktarilamadi.",
-              "Local coverage files could not be imported."
-            )
+          : t("flow:localCoverageFilesCouldNot")
       );
     } finally {
       setBusy(false);
@@ -183,21 +156,13 @@ export default function CoverageAdminPanel({
       setSelectedId(payload.report?.id || "");
       setDraftSourceName(payload.report?.sourceName || draftSourceName);
       setMessage(
-        copy(
-          language,
-          `Coverage raporu kaydedildi: ${payload.report?.sourceName || ""}`,
-          `Coverage report saved: ${payload.report?.sourceName || ""}`
-        )
+        t("flow:coverageReportSaved", { sourcename: payload.report?.sourceName || "" })
       );
     } catch (saveError) {
       setError(
         saveError instanceof Error
           ? saveError.message
-          : copy(
-              language,
-              "Coverage raporu kaydedilemedi.",
-              "Coverage report could not be saved."
-            )
+          : t("flow:coverageReportCouldNotBe")
       );
     } finally {
       setBusy(false);
@@ -238,21 +203,13 @@ export default function CoverageAdminPanel({
     <section className="space-y-4">
       <div className="space-y-1">
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-          {copy(language, "Coverage arsivi", "Coverage archive")}
+          {t("flow:coverageArchive")}
         </p>
         <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-          {copy(
-            language,
-            "Coverage markdown publish hatti",
-            "Coverage markdown publish pipeline"
-          )}
+          {t("flow:coverageMarkdownPublishPipeline")}
         </h2>
         <p className="text-sm text-muted-foreground">
-          {copy(
-            language,
-            "Public /coverage artik bu admin arsivinden beslenir. Markdown'i buradan yukle, onizle ve kaydet.",
-            "Public /coverage now reads from this admin archive. Upload, preview and save markdown here."
-          )}
+          {t("flow:publicCoverageNowReadsFrom")}
         </p>
       </div>
 
@@ -262,24 +219,20 @@ export default function CoverageAdminPanel({
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
                 <CardTitle>
-                  {copy(language, "Kayitlar", "Archive entries")}
+                  {t("flow:archiveEntries")}
                 </CardTitle>
                 <CardDescription>
-                  {copy(
-                    language,
-                    "Admin tarafinda saklanan coverage raporlari.",
-                    "Coverage reports stored through the admin workflow."
-                  )}
+                  {t("flow:coverageReportsStoredThroughThe")}
                 </CardDescription>
               </div>
               <div className="flex flex-wrap items-center gap-2">
                 <Button type="button" variant="outline" onClick={() => void load()} disabled={busy}>
                   <RefreshCw className="size-4" />
-                  {copy(language, "Yenile", "Refresh")}
+                  {t("common:refresh")}
                 </Button>
                 <Button type="button" variant="outline" onClick={() => void handleImportLocal()} disabled={busy}>
                   <FileUp className="size-4" />
-                  {copy(language, "Yereli aktar", "Import local")}
+                  {t("flow:importLocal")}
                 </Button>
               </div>
             </div>
@@ -287,15 +240,11 @@ export default function CoverageAdminPanel({
           <CardContent className="space-y-4">
             <div className="rounded-xl border border-border bg-background/35 px-4 py-3 text-sm text-muted-foreground">
               <p className="font-medium text-foreground">
-                {copy(language, "Legacy klasor", "Legacy folder")}
+                {t("flow:legacyFolder")}
               </p>
               <p className="mt-1 break-all">{rootPath || "reports/coverage"}</p>
               <p className="mt-2 text-xs">
-                {copy(
-                  language,
-                  "Buradaki markdown dosyalari istenirse tek tikla admin arsivine alinabilir.",
-                  "Markdown files in this folder can be imported into the admin archive with one click."
-                )}
+                {t("flow:markdownFilesInThisFolder")}
               </p>
             </div>
 
@@ -324,11 +273,7 @@ export default function CoverageAdminPanel({
                 ))
               ) : (
                 <div className="rounded-xl border border-dashed border-border bg-background/20 px-4 py-4 text-sm text-muted-foreground">
-                  {copy(
-                    language,
-                    "Henuz admin coverage kaydi yok.",
-                    "No admin coverage record exists yet."
-                  )}
+                  {t("flow:noAdminCoverageRecordExists")}
                 </div>
               )}
             </div>
@@ -336,13 +281,13 @@ export default function CoverageAdminPanel({
             {legacyOnlyReports.length > 0 ? (
               <div className="space-y-2 rounded-xl border border-amber-500/20 bg-amber-500/6 p-4">
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-amber-200">
-                  {copy(language, "Henüz aktarilmayan yerel dosyalar", "Local files not imported yet")}
+                  {t("flow:localFilesNotImportedYet")}
                 </p>
                 {legacyOnlyReports.map(report => (
                   <div key={report.id} className="flex items-center justify-between gap-3 text-sm">
                     <span className="text-muted-foreground">{report.sourceName}</span>
                     <Button type="button" variant="ghost" size="sm" onClick={() => openInEditor(report)}>
-                      {copy(language, "Ac", "Open")}
+                      {t("marketing:flowFreeAndOpen")}
                     </Button>
                   </div>
                 ))}
@@ -355,14 +300,10 @@ export default function CoverageAdminPanel({
           <Card className="gap-4" interactive={false}>
             <CardHeader className="gap-2">
               <CardTitle>
-                {copy(language, "Editor", "Editor")}
+                {"Editor"}
               </CardTitle>
               <CardDescription>
-                {copy(
-                  language,
-                  "Markdown'i yapistir veya `.md` dosyasi sec. `sourceName` bos kalirsa server bunu `ticker` + `date` frontmatter'indan uretir.",
-                  "Paste markdown or select a `.md` file. If `sourceName` is empty, the server derives it from frontmatter `ticker` + `date`."
-                )}
+                {t("flow:pasteMarkdownOrSelectA")}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -370,11 +311,11 @@ export default function CoverageAdminPanel({
                 <Input
                   value={draftSourceName}
                   onChange={event => setDraftSourceName(event.target.value)}
-                  placeholder={copy(language, "CRWV-2026-07-02.md", "CRWV-2026-07-02.md")}
+                  placeholder={"CRWV-2026-07-02.md"}
                 />
                 <label className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground shadow-xs transition-colors hover:bg-accent hover:text-accent-foreground">
                   <Upload className="size-4" />
-                  {copy(language, "Dosya sec", "Choose file")}
+                  {t("flow:chooseFile")}
                   <input
                     type="file"
                     accept=".md,text/markdown,text/plain"
@@ -389,18 +330,14 @@ export default function CoverageAdminPanel({
               <Textarea
                 value={draftRaw}
                 onChange={event => setDraftRaw(event.target.value)}
-                placeholder={copy(
-                  language,
-                  "Coverage markdown'i buraya yapistir...",
-                  "Paste coverage markdown here..."
-                )}
+                placeholder={t("flow:pasteCoverageMarkdownHere")}
                 className="min-h-[460px] font-mono text-xs"
               />
 
               <div className="flex flex-wrap items-center gap-2">
                 <Button type="button" onClick={() => void handleSave()} disabled={busy || !draftRaw.trim()}>
                   <Save className="size-4" />
-                  {copy(language, "Kaydet", "Save")}
+                  {t("flow:save")}
                 </Button>
                 <Button
                   type="button"
@@ -414,7 +351,7 @@ export default function CoverageAdminPanel({
                   }}
                   disabled={busy}
                 >
-                  {copy(language, "Temizle", "Clear")}
+                  {t("flow:clear")}
                 </Button>
               </div>
 
@@ -435,14 +372,10 @@ export default function CoverageAdminPanel({
           <Card className="gap-4" interactive={false}>
             <CardHeader className="gap-2">
               <CardTitle>
-                {copy(language, "Onizleme", "Preview")}
+                {t("flow:preview")}
               </CardTitle>
               <CardDescription>
-                {copy(
-                  language,
-                  "Client parser bu markdown'i nasil okuyacak, burada gorursun.",
-                  "See how the client parser will interpret this markdown."
-                )}
+                {t("flow:seeHowTheClientParser")}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -472,7 +405,7 @@ export default function CoverageAdminPanel({
                   <div className="grid gap-3 md:grid-cols-2">
                     <div className="rounded-xl border border-border bg-background/35 px-4 py-3">
                       <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                        {copy(language, "Bolum", "Sections")}
+                        {t("flow:sections")}
                       </p>
                       <p className="mt-1 text-lg font-semibold text-foreground">
                         {parsedPreview.report.sections.length}
@@ -480,7 +413,7 @@ export default function CoverageAdminPanel({
                     </div>
                     <div className="rounded-xl border border-border bg-background/35 px-4 py-3">
                       <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                        {copy(language, "Kaynak", "Source")}
+                        {t("common:source")}
                       </p>
                       <p className="mt-1 text-sm font-semibold text-foreground">
                         {draftSourceName || parsedPreview.report.sourceName}
@@ -498,11 +431,7 @@ export default function CoverageAdminPanel({
                 </div>
               ) : (
                 <div className="rounded-xl border border-dashed border-border bg-background/20 px-4 py-4 text-sm text-muted-foreground">
-                  {copy(
-                    language,
-                    "Editor'a markdown geldikten sonra parser onizlemesi burada gorunur.",
-                    "Parser preview appears here once markdown is loaded into the editor."
-                  )}
+                  {t("scanner:belowVwap")}
                 </div>
               )}
             </CardContent>

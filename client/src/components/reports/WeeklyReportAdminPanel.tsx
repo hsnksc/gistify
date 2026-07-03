@@ -2,24 +2,15 @@ import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { Plus, RefreshCw, Shield, Trash2, Upload } from "lucide-react";
 import type { WeeklyReportEntry, WeeklyReportRecord } from "@shared/weeklyReports";
 import {
-  AdminField as Field,
-  AdminPanel,
-  AdminPanelSurface,
-  AdminSectionLabel as SectionLabel,
-} from "@/components/reports/AdminPanel";
+  AdminField as Field, AdminPanel, AdminPanelSurface, AdminSectionLabel as SectionLabel, } from "@/components/reports/AdminPanel";
 import { Button } from "@/components/ui/button";
 import EmptyState from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { strategyPresentation } from "@/lib/weeklyReports";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 
 interface WeeklyReportAdminPanelProps {
   language: AppLanguage;
@@ -188,7 +179,7 @@ export default function WeeklyReportAdminPanel({
       setRawReportError("");
     } catch (error) {
       setRawReportError(
-        error instanceof Error ? error.message : copy(language, "Raw JSON uygulanamadi.", "Raw JSON could not be applied.")
+        error instanceof Error ? error.message : t("flow:rawJsonCouldNotBed679")
       );
     }
   };
@@ -201,26 +192,26 @@ export default function WeeklyReportAdminPanel({
           <AdminPanelSurface>
             <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-200">
               <Shield className="size-4" />
-              {copy(language, "Yonetici kilidi kapali", "Admin locked")}
+              {t("flow:adminLocked")}
             </div>
             <div className="space-y-2">
               <h2 className="text-3xl font-semibold tracking-tight text-foreground">
-                {copy(language, "Haftalik Rapor Editoru", "Weekly Report Editor")}
+                {t("flow:weeklyReportEditor")}
               </h2>
               <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
-                {copy(language, "Bu alan haftalik earnings ve IV crush raporlarini duzenlemek, yeni haftalar olusturmak ve yayina almak icin kullanilir. Devam etmek icin", "This area is used to edit weekly earnings and IV crush reports, create new weeks, and publish them. To continue")}{" "}
+                {t("flow:thisAreaIsUsedTo")}{" "}
                 <strong>{adminEmail}</strong>{" "}
-                {copy(language, "hesabina ait gizli anahtari gir.", "enter the secret key associated with the account.")}
+                {t("flow:enterTheSecretKeyAssociated")}
               </p>
             </div>
 
             <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto]">
-              <Field label={copy(language, "Admin sifresi", "Admin secret")}>
+              <Field label={t("flow:adminSecret")}>
                 <Input
                   type="password"
                   value={adminSecret}
                   onChange={event => onAdminSecretChange(event.target.value)}
-                  placeholder={copy(language, "Coolify env icindeki REPORT_ADMIN_SECRET", "REPORT_ADMIN_SECRET in Coolify env")}
+                  placeholder={t("flow:reportAdminSecretInCoolify")}
                 />
               </Field>
 
@@ -230,7 +221,7 @@ export default function WeeklyReportAdminPanel({
                   onClick={onUnlock}
                   disabled={adminBusy || !adminSecret.trim()}
                 >
-                  {adminBusy ? copy(language, "Kontrol ediliyor", "Checking") : copy(language, "Kilidi ac", "Unlock")}
+                  {adminBusy ? t("flow:checking") : t("flow:unlock")}
                 </Button>
               </div>
             </div>
@@ -242,12 +233,12 @@ export default function WeeklyReportAdminPanel({
         }
         preview={
           <AdminPanelSurface as="div" tone="muted" className="p-6">
-            <SectionLabel>{copy(language, "Bu sayfada neler var", "What's on this page")}</SectionLabel>
+            <SectionLabel>{t("flow:whatSOnThisPage")}</SectionLabel>
             <div className="mt-4 space-y-3 text-sm text-muted-foreground">
-              <p>{copy(language, "Yeni haftalik taslak olusturma", "Create new weekly draft")}</p>
-              <p>{copy(language, "Ticker bazli earnings ve IV crush duzenleme", "Edit ticker-based earnings and IV crush")}</p>
-              <p>{copy(language, "Draft kaydetme ve publish etme", "Save draft and publish")}</p>
-              <p>{copy(language, "Published raporlardan projection senkronu", "Projection sync from published reports")}</p>
+              <p>{t("flow:createNewWeeklyDraft")}</p>
+              <p>{t("flow:editTickerBasedEarningsAnd")}</p>
+              <p>{t("flow:saveDraftAndPublish")}</p>
+              <p>{t("flow:projectionSyncFromPublishedReports")}</p>
             </div>
           </AdminPanelSurface>
         }
@@ -264,21 +255,21 @@ export default function WeeklyReportAdminPanel({
           className="xl:sticky xl:top-24 xl:h-[calc(100vh-8rem)] xl:overflow-y-auto"
         >
         <div className="flex items-center justify-between gap-2">
-          <SectionLabel>{copy(language, "Rapor Secimi", "Report Selection")}</SectionLabel>
+          <SectionLabel>{t("flow:reportSelection")}</SectionLabel>
           <button
             type="button"
             onClick={onRefresh}
             className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
           >
             <RefreshCw className="size-3.5" />
-            {copy(language, "Yenile", "Refresh")}
+            {t("common:refresh")}
           </button>
         </div>
 
         <div className="mt-3 space-y-3">
           <Select value={selectedReportId} onValueChange={onSelectReport}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder={copy(language, "Bir rapor sec", "Select a report")} />
+              <SelectValue placeholder={t("flow:selectAReport")} />
             </SelectTrigger>
             <SelectContent>
               {reports.map(report => (
@@ -296,7 +287,7 @@ export default function WeeklyReportAdminPanel({
             onClick={onCreateNextWeek}
           >
             <Plus className="size-4" />
-            {copy(language, "Yeni hafta taslagi", "New week draft")}
+            {t("flow:newWeekDraft")}
           </Button>
 
           <Button
@@ -306,12 +297,12 @@ export default function WeeklyReportAdminPanel({
             onClick={onLock}
           >
             <Shield className="size-4" />
-            {copy(language, "Kilidi kapat", "Lock")}
+            {t("flow:lock")}
           </Button>
         </div>
 
         <div className="mt-6">
-          <SectionLabel>{copy(language, "Kayitli Haftalar", "Saved Weeks")}</SectionLabel>
+          <SectionLabel>{t("flow:savedWeeks")}</SectionLabel>
           <div className="mt-3 space-y-2">
             {reports.map(report => {
               const style = strategyPresentation[
@@ -341,8 +332,8 @@ export default function WeeklyReportAdminPanel({
                       }`}
                     >
                       {report.status === "published"
-                        ? copy(language, "Yayinda", "Published")
-                        : copy(language, "Taslak", "Draft")}
+                        ? t("flow:published2a74")
+                        : t("flow:draft")}
                     </span>
                   </div>
                   <p className="mt-2 text-xs text-muted-foreground">
@@ -351,7 +342,7 @@ export default function WeeklyReportAdminPanel({
                   <p
                     className={`mt-2 inline-flex rounded-full border px-2 py-1 text-xs ${style.badgeClass}`}
                   >
-                    {report.content.entries.length} {copy(language, "hisse", "stocks")}
+                    {report.content.entries.length} {t("scanner:popMaxProfitRR")}
                   </p>
                 </button>
               );
@@ -367,7 +358,7 @@ export default function WeeklyReportAdminPanel({
           <div className="space-y-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <SectionLabel>{copy(language, "Yonetici", "Admin")}</SectionLabel>
+                <SectionLabel>{t("flow:admin")}</SectionLabel>
                 <p className="mt-1 text-sm text-foreground">{adminEmail}</p>
               </div>
 
@@ -378,7 +369,7 @@ export default function WeeklyReportAdminPanel({
                   onClick={onSaveDraft}
                   disabled={adminBusy}
                 >
-                  {copy(language, "Kaydet", "Save")}
+                  {t("flow:save")}
                 </Button>
                 <Button
                   type="button"
@@ -386,7 +377,7 @@ export default function WeeklyReportAdminPanel({
                   disabled={adminBusy}
                 >
                   <Upload className="size-4" />
-                  {copy(language, "Yayinla", "Publish")}
+                  {t("flow:publish0047")}
                 </Button>
               </div>
             </div>
@@ -396,7 +387,7 @@ export default function WeeklyReportAdminPanel({
             ) : null}
 
             <div className="grid gap-4 md:grid-cols-2">
-              <Field label={copy(language, "Rapor basligi", "Report Title")}>
+              <Field label={t("flow:reportTitle")}>
                 <Input
                   value={draftReport.title}
                   onChange={event =>
@@ -404,7 +395,7 @@ export default function WeeklyReportAdminPanel({
                   }
                 />
               </Field>
-              <Field label={copy(language, "Slug", "Slug")}>
+              <Field label={"Slug"}>
                 <Input
                   value={draftReport.slug}
                   onChange={event =>
@@ -412,7 +403,7 @@ export default function WeeklyReportAdminPanel({
                   }
                 />
               </Field>
-              <Field label={copy(language, "Hafta baslangici", "Week Start")}>
+              <Field label={t("flow:weekStart")}>
                 <Input
                   type="date"
                   value={draftReport.weekStart}
@@ -421,7 +412,7 @@ export default function WeeklyReportAdminPanel({
                   }
                 />
               </Field>
-              <Field label={copy(language, "Hafta bitisi", "Week End")}>
+              <Field label={t("flow:weekEnd")}>
                 <Input
                   type="date"
                   value={draftReport.weekEnd}
@@ -430,7 +421,7 @@ export default function WeeklyReportAdminPanel({
                   }
                 />
               </Field>
-              <Field label={copy(language, "Analiz tarihi", "Analysis Date")}>
+              <Field label={t("flow:analysisDate")}>
                 <Input
                   type="datetime-local"
                   value={draftReport.analysisDate.slice(0, 16)}
@@ -443,7 +434,7 @@ export default function WeeklyReportAdminPanel({
                   }
                 />
               </Field>
-              <Field label={copy(language, "Durum", "Status")}>
+              <Field label={t("common:status")}>
                 <Select
                   value={draftReport.status}
                   onValueChange={value =>
@@ -456,15 +447,15 @@ export default function WeeklyReportAdminPanel({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="draft">{copy(language, "Taslak", "Draft")}</SelectItem>
-                    <SelectItem value="published">{copy(language, "Yayinda", "Published")}</SelectItem>
+                    <SelectItem value="draft">{t("flow:draft")}</SelectItem>
+                    <SelectItem value="published">{t("flow:published2a74")}</SelectItem>
                   </SelectContent>
                 </Select>
               </Field>
             </div>
 
             <div className="grid gap-4">
-              <Field label={copy(language, "Ust mesaj", "Headline")}>
+              <Field label={t("flow:headline")}>
                 <Input
                   value={draftReport.content.headline}
                   onChange={event =>
@@ -472,7 +463,7 @@ export default function WeeklyReportAdminPanel({
                   }
                 />
               </Field>
-              <Field label={copy(language, "Ozet", "Summary")}>
+              <Field label={t("flow:summary")}>
                 <Textarea
                   rows={4}
                   value={draftReport.content.summary}
@@ -481,7 +472,7 @@ export default function WeeklyReportAdminPanel({
                   }
                 />
               </Field>
-              <Field label={copy(language, "Makro baglam", "Macro Context")}>
+              <Field label={t("flow:macroContext")}>
                 <Textarea
                   rows={4}
                   value={draftReport.content.marketContext}
@@ -492,7 +483,7 @@ export default function WeeklyReportAdminPanel({
                   }
                 />
               </Field>
-              <Field label={copy(language, "Uygulama notlari", "Execution Notes")}>
+              <Field label={t("flow:executionNotes7122")}>
                 <Textarea
                   rows={3}
                   value={draftReport.content.executionNotes}
@@ -503,7 +494,7 @@ export default function WeeklyReportAdminPanel({
                   }
                 />
               </Field>
-              <Field label={copy(language, "Katalizorler (her satir bir madde)", "Catalysts (one per line)")}>
+              <Field label={t("flow:catalystsOnePerLine")}>
                 <Textarea
                   rows={3}
                   value={draftReport.content.keyCatalysts.join("\n")}
@@ -522,16 +513,16 @@ export default function WeeklyReportAdminPanel({
             <AdminPanelSurface as="div" tone="muted" className="space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <SectionLabel>{copy(language, "Hisse Editoru", "Stock Editor")}</SectionLabel>
+                  <SectionLabel>{t("flow:stockEditor")}</SectionLabel>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    {copy(language, "Hafta icindeki ticker analizlerini buradan duzenle.", "Edit weekly ticker analyses here.")}
+                    {t("flow:editWeeklyTickerAnalysesHere")}
                   </p>
                 </div>
 
                 <div className="flex items-center gap-2">
                   <Button type="button" variant="outline" onClick={onAddEntry}>
                     <Plus className="size-4" />
-                    {copy(language, "Hisse ekle", "Add Stock")}
+                    {t("flow:addStock")}
                   </Button>
                   {selectedEntry ? (
                     <Button
@@ -540,7 +531,7 @@ export default function WeeklyReportAdminPanel({
                       onClick={() => onRemoveEntry(selectedEntry.id)}
                     >
                       <Trash2 className="size-4" />
-                      {copy(language, "Sil", "Delete")}
+                      {t("flow:delete")}
                     </Button>
                   ) : null}
                 </div>
@@ -551,7 +542,7 @@ export default function WeeklyReportAdminPanel({
                 onValueChange={setSelectedEntryId}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder={copy(language, "Bir ticker sec", "Select a ticker")} />
+                  <SelectValue placeholder={t("flow:selectATicker")} />
                 </SelectTrigger>
                 <SelectContent>
                   {draftReport.content.entries.map(entry => (
@@ -564,7 +555,7 @@ export default function WeeklyReportAdminPanel({
 
               {selectedEntry ? (
                 <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                  <Field label={copy(language, "Ticker", "Ticker")}>
+                  <Field label={"Ticker"}>
                     <Input
                       value={selectedEntry.ticker}
                       onChange={event =>
@@ -574,7 +565,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label={copy(language, "Sirket adi", "Company Name")}>
+                  <Field label={t("flow:companyName")}>
                     <Input
                       value={selectedEntry.name}
                       onChange={event =>
@@ -582,7 +573,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label={copy(language, "Sektor", "Sector")}>
+                  <Field label={t("common:sectorc5c4")}>
                     <Input
                       value={selectedEntry.sector}
                       onChange={event =>
@@ -590,7 +581,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label={copy(language, "Earnings tarihi", "Earnings Date")}>
+                  <Field label={t("flow:earningsDate")}>
                     <Input
                       type="date"
                       value={selectedEntry.earningsDate}
@@ -599,7 +590,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label={copy(language, "Earnings zamani", "Earnings Time")}>
+                  <Field label={t("flow:earningsTime")}>
                     <Select
                       value={selectedEntry.earningsTime}
                       onValueChange={value =>
@@ -615,18 +606,18 @@ export default function WeeklyReportAdminPanel({
                         {["AH", "AMC", "BMO", "BH"].map(option => (
                           <SelectItem key={option} value={option}>
                             {option === "AH"
-                              ? copy(language, "Kapanis Sonrasi", "After Hours")
+                              ? t("flow:afterHours")
                               : option === "AMC"
-                              ? copy(language, "Kapanis Sonrasi (AMC)", "After Market Close")
+                              ? t("flow:afterMarketClose")
                               : option === "BMO"
-                              ? copy(language, "Acilis Oncesi", "Before Market Open")
-                              : copy(language, "Is Saatleri", "Business Hours")}
+                              ? t("scanner:onlyPullbackFromHighStrong")
+                              : t("flow:businessHours")}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
                   </Field>
-                  <Field label={copy(language, "Yonsel bias", "Directional Bias")}>
+                  <Field label={t("flow:directionalBias")}>
                     <Select
                       value={selectedEntry.directionalBias}
                       onValueChange={value =>
@@ -643,16 +634,16 @@ export default function WeeklyReportAdminPanel({
                         {["Bullish", "Neutral", "Bearish"].map(option => (
                           <SelectItem key={option} value={option}>
                             {option === "Bullish"
-                              ? copy(language, "Yukari Yonlu", "Bullish")
+                              ? t("flow:bullish")
                               : option === "Neutral"
-                              ? copy(language, "Notr", "Neutral")
-                              : copy(language, "Asagi Yonlu", "Bearish")}
+                              ? t("common:neutral")
+                              : t("flow:bearish")}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
                   </Field>
-                  <Field label={copy(language, "Strategy rating", "Strategy Rating")}>
+                  <Field label={t("flow:strategyRating")}>
                     <Select
                       value={selectedEntry.strategyRating}
                       onValueChange={value =>
@@ -669,18 +660,18 @@ export default function WeeklyReportAdminPanel({
                         {["EXCELLENT", "GOOD", "FAIR", "POOR"].map(option => (
                           <SelectItem key={option} value={option}>
                             {option === "EXCELLENT"
-                              ? copy(language, "Mukemmel", "Excellent")
+                              ? t("flow:excellent")
                               : option === "GOOD"
-                              ? copy(language, "Iyi", "Good")
+                              ? t("flow:good")
                               : option === "FAIR"
-                              ? copy(language, "Orta", "Fair")
-                              : copy(language, "Zayif", "Poor")}
+                              ? t("flow:fair")
+                              : t("flow:poor")}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
                   </Field>
-                  <Field label={copy(language, "Risk seviyesi", "Risk Level")}>
+                  <Field label={t("flow:riskLevel")}>
                     <Select
                       value={selectedEntry.riskLevel}
                       onValueChange={value =>
@@ -696,18 +687,18 @@ export default function WeeklyReportAdminPanel({
                         {["LOW", "MEDIUM", "HIGH", "VERY_HIGH"].map(option => (
                           <SelectItem key={option} value={option}>
                             {option === "LOW"
-                              ? copy(language, "Dusuk", "Low")
+                              ? t("common:low")
                               : option === "MEDIUM"
-                              ? copy(language, "Orta", "Medium")
+                              ? t("common:medium")
                               : option === "HIGH"
-                              ? copy(language, "Yuksek", "High")
-                              : copy(language, "Cok Yuksek", "Very High")}
+                              ? t("common:high")
+                              : t("flow:veryHigh")}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
                   </Field>
-                  <Field label={copy(language, "Momentum skoru", "Momentum Score")}>
+                  <Field label={t("flow:momentumScore")}>
                     <Input
                       type="number"
                       value={selectedEntry.momentumScore}
@@ -718,7 +709,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label={copy(language, "IV crush skoru", "IV Crush Score")}>
+                  <Field label={t("flow:ivCrushScore")}>
                     <Input
                       type="number"
                       value={selectedEntry.ivCrushScore}
@@ -729,7 +720,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label={copy(language, "Expected IV crush %", "Expected IV Crush %")}>
+                  <Field label={t("flow:expectedIvCrush")}>
                     <Input
                       type="number"
                       value={selectedEntry.expectedIVCrush}
@@ -740,7 +731,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label={copy(language, "Current IV %", "Current IV %")}>
+                  <Field label={"Current IV %"}>
                     <Input
                       type="number"
                       value={selectedEntry.currentIV}
@@ -751,7 +742,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label={copy(language, "Historical IV %", "Historical IV %")}>
+                  <Field label={"Historical IV %"}>
                     <Input
                       type="number"
                       value={selectedEntry.historicalIV}
@@ -762,7 +753,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label={copy(language, "Implied move %", "Implied Move %")}>
+                  <Field label={t("flow:impliedMove")}>
                     <Input
                       type="number"
                       step="0.1"
@@ -774,7 +765,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label={copy(language, "Call gain %", "Call Gain %")}>
+                  <Field label={t("flow:callGain")}>
                     <Input
                       type="number"
                       value={selectedEntry.callGainFromIV}
@@ -785,7 +776,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label={copy(language, "Put gain %", "Put Gain %")}>
+                  <Field label={t("flow:putGain")}>
                     <Input
                       type="number"
                       value={selectedEntry.putGainFromIV}
@@ -796,7 +787,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label={copy(language, "Target profit %", "Target Profit %")}>
+                  <Field label={t("flow:targetProfit")}>
                     <Input
                       type="number"
                       value={selectedEntry.targetProfit}
@@ -807,7 +798,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label={copy(language, "Max loss %", "Max Loss %")}>
+                  <Field label={t("flow:maxLoss")}>
                     <Input
                       type="number"
                       value={selectedEntry.maxLoss}
@@ -818,7 +809,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label={copy(language, "Beat rate %", "Beat Rate %")}>
+                  <Field label={t("flow:beatRate")}>
                     <Input
                       type="number"
                       value={selectedEntry.beatRate}
@@ -829,7 +820,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label={copy(language, "6A fiyat degisimi %", "6M Price Change %")}>
+                  <Field label={t("flow:6mPriceChange")}>
                     <Input
                       type="number"
                       value={selectedEntry.priceChange6M}
@@ -840,7 +831,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label={copy(language, "RSI 14", "RSI 14")}>
+                  <Field label={"RSI 14"}>
                     <Input
                       type="number"
                       value={selectedEntry.rsi14}
@@ -849,7 +840,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label={copy(language, "Onerilen strateji", "Recommended Strategy")}>
+                  <Field label={t("flow:recommendedStrategy")}>
                     <Input
                       value={selectedEntry.recommendedStrategy}
                       onChange={event =>
@@ -859,7 +850,7 @@ export default function WeeklyReportAdminPanel({
                       }
                     />
                   </Field>
-                  <Field label={copy(language, "Tez / analiz notu", "Thesis / Analysis Note")}>
+                  <Field label={t("flow:thesisAnalysisNote")}>
                     <Textarea
                       rows={4}
                       className="md:col-span-2 xl:col-span-3"
@@ -872,8 +863,8 @@ export default function WeeklyReportAdminPanel({
                 </div>
               ) : (
                 <EmptyState
-                  description={copy(language, "Bu raporda duzenlenecek hisse yok.", "No stocks to edit in this report.")}
-                  title={copy(language, "Secili entry bulunamadi", "No entry selected")}
+                  description={t("flow:noStocksToEditIn")}
+                  title={t("coverage:loadingCoverageReports")}
                 />
               )}
             </AdminPanelSurface>
@@ -881,9 +872,9 @@ export default function WeeklyReportAdminPanel({
             <AdminPanelSurface as="div" tone="muted" className="space-y-3">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <SectionLabel>{copy(language, "Advanced JSON", "Advanced JSON")}</SectionLabel>
+                  <SectionLabel>{"Advanced JSON"}</SectionLabel>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    {copy(language, "Tum weekly report payload'ina tek editorle mudahale et.", "Intervene in the entire weekly report payload with a single editor.")}
+                    {t("flow:interveneInTheEntireWeekly")}
                   </p>
                 </div>
 
@@ -895,10 +886,10 @@ export default function WeeklyReportAdminPanel({
                       setRawReportJson(JSON.stringify(draftReport, null, 2))
                     }
                   >
-                    {copy(language, "Guncel taslagi yukle", "Load current draft")}
+                    {t("flow:loadCurrentDraft2105")}
                   </Button>
                   <Button type="button" onClick={handleApplyRawJson}>
-                    {copy(language, "JSON'i uygula", "Apply JSON")}
+                    {t("common:applyJson")}
                   </Button>
                 </div>
               </div>
@@ -917,8 +908,8 @@ export default function WeeklyReportAdminPanel({
         ) : (
           <EmptyState
             className="grid min-h-[560px] place-items-center"
-            description={copy(language, "Kayitli haftalardan birini sec veya yeni hafta taslagi olustur.", "Select a saved week or create a new week draft.")}
-            title={copy(language, "Duzenlenecek bir rapor secilmedi", "No report selected to edit")}
+            description={t("flow:selectASavedWeekOr")}
+            title={t("flow:noReportSelectedToEdit")}
           />
         )}
         </AdminPanelSurface>

@@ -1,29 +1,14 @@
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 import {
-  AlertTriangle,
-  CalendarDays,
-  ListTodo,
-  Target,
-  Wallet,
-  ChevronDown,
-  ChevronUp,
-  BarChart3,
-  Zap,
-  PieChart,
-  ArrowRight,
-  Search,
-} from "lucide-react";
+  AlertTriangle, CalendarDays, ListTodo, Target, Wallet, ChevronDown, ChevronUp, BarChart3, Zap, PieChart, ArrowRight, Search, } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import EmptyState from "@/components/ui/empty-state";
 import LoadingState from "@/components/ui/loading-state";
 import StrategyCard from "@/components/earnings/StrategyCard";
 import {
-  EarningsFreshnessBadge,
-  EarningsWorkspaceToolbar,
-  getPipelineStatusMeta,
-} from "@/components/earnings/EarningsWorkspaceChrome";
-import { copy, type AppLanguage } from "@/lib/i18n";
+  EarningsFreshnessBadge, EarningsWorkspaceToolbar, getPipelineStatusMeta, } from "@/components/earnings/EarningsWorkspaceChrome";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type {
   EarningsStrategyPipelineMetadata,
@@ -53,12 +38,8 @@ export function EarningsLoadingState({
     <div className="px-4 py-8">
       <LoadingState
         className="mx-auto max-w-7xl"
-        description={copy(
-          language,
-          "Earnings strateji workspace'i ve senaryo katmani yukleniyor.",
-          "The earnings strategy workspace and scenario layer are loading."
-        )}
-        label={copy(language, "Earnings workspace yukleniyor", "Loading earnings workspace")}
+        description={t("earnings:theEarningsStrategyWorkspaceAnd")}
+        label={t("earnings:loadingEarningsWorkspace")}
       />
     </div>
   );
@@ -81,34 +62,18 @@ export function EarningsUnavailableState({
         tone={hasRuntimeError ? "danger" : "info"}
         title={
           hasRuntimeError
-            ? copy(
-                language,
-                "Earnings workspace baglanamadi",
-                "The earnings workspace could not connect"
-              )
-            : copy(
-                language,
-                "Earnings workspace bos dondu",
-                "The earnings workspace returned empty"
-              )
+            ? t("earnings:theEarningsWorkspaceCouldNot")
+            : t("earnings:theEarningsWorkspaceReturnedEmpty")
         }
         description={
           hasRuntimeError
             ? error
-            : copy(
-                language,
-                "Pipeline verisi henuz gelmedi. Kaynagi kontrol edip tekrar deneyin.",
-                "The pipeline data has not arrived yet. Check the source and retry."
-              )
+            : t("earnings:thePipelineDataHasNot")
         }
         icon={hasRuntimeError ? AlertTriangle : Search}
         action={
           <Button type="button" variant="outline" onClick={onRetry}>
-            {copy(
-              language,
-              hasRuntimeError ? "Tekrar dene" : "Kaynagi tekrar yokla",
-              hasRuntimeError ? "Retry" : "Retry source"
-            )}
+            {(language === "en" ? hasRuntimeError ? "Retry" : "Retry source" : hasRuntimeError ? "Tekrar dene" : "Kaynagi tekrar yokla")}
           </Button>
         }
       />
@@ -144,7 +109,7 @@ export function EarningsPipelinePanel({
       >
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-400">
-            {copy(language, "Pipeline durumu", "Pipeline status")}
+            {t("earnings:pipelineStatus")}
           </p>
           <div className="mt-2 flex flex-wrap items-center gap-2">
             <span
@@ -161,11 +126,7 @@ export function EarningsPipelinePanel({
           </div>
         </div>
         <span className="inline-flex items-center gap-2 text-sm text-slate-400">
-          {copy(
-            language,
-            isExpanded ? "Detayi gizle" : "Detayi goster",
-            isExpanded ? "Hide details" : "Show details"
-          )}
+          {(language === "en" ? isExpanded ? "Hide details" : "Show details" : isExpanded ? "Detayi gizle" : "Detayi goster")}
           {isExpanded ? (
             <ChevronUp className="size-4" />
           ) : (
@@ -179,29 +140,25 @@ export function EarningsPipelinePanel({
           <div>
             <p className="max-w-2xl text-sm leading-6 text-slate-400">
               {pipeline.error ||
-                copy(
-                  language,
-                  "Kaynak markdown dosyasi duzenli olarak taraniyor ve son snapshot burada sunuluyor.",
-                  "The source markdown is polled regularly and the latest snapshot is surfaced here."
-                )}
+                t("earnings:theSourceMarkdownIsPolled")}
             </p>
           </div>
           <div className="grid gap-2 rounded-2xl border border-white/10 bg-slate-900/50 p-5 text-sm text-slate-400 md:min-w-[300px]">
             <p>
               <span className="text-slate-500">
-                {copy(language, "Son senkron", "Last sync")}:{" "}
+                {t("common:lastSync")}:{" "}
               </span>
               {pipeline.lastSyncedAt || "—"}
             </p>
             <p>
               <span className="text-slate-500">
-                {copy(language, "Kaynak degisti", "Source modified")}:{" "}
+                {t("earnings:sourceModified")}:{" "}
               </span>
               {pipeline.lastSourceModifiedAt || "—"}
             </p>
             <p className="truncate">
               <span className="text-slate-500">
-                {copy(language, "Kaynak", "Source")}:{" "}
+                {t("common:source")}:{" "}
               </span>
               {pipeline.resolvedSourceFile || pipeline.sourceFolder || "—"}
             </p>
@@ -228,7 +185,7 @@ export function StrategyCollectionPanel({
   const hasMore = strategies.length > 6;
 
   const displayTitle = title === "Core strategies" || title === "Core Strategies"
-    ? copy(language, "Öne Çıkan Stratejiler", "Core Strategies")
+    ? t("earnings:coreStrategies")
     : title;
 
   if (strategies.length === 0) {
@@ -236,16 +193,8 @@ export function StrategyCollectionPanel({
       <section className="panel p-6 md:p-8">
         <EmptyState
           tone="neutral"
-          title={copy(
-            language,
-            "Bu bolumde uygun strategy yok",
-            "No strategy is available in this section"
-          )}
-          description={copy(
-            language,
-            "Pipeline bu lens icin henuz setup cikarmadi.",
-            "The pipeline has not produced a setup for this lens yet."
-          )}
+          title={t("earnings:noStrategyIsAvailableIn")}
+          description={t("earnings:thePipelineHasNotProduced")}
           icon={Zap}
         />
       </section>
@@ -302,16 +251,12 @@ export function StrategyCollectionPanel({
             {showAll ? (
               <>
                 <ChevronUp className="mr-2 size-4" />
-                {copy(language, "Daha Az Göster", "Show Less")}
+                {t("earnings:showLess")}
               </>
             ) : (
               <>
                 <ChevronDown className="mr-2 size-4" />
-                {copy(
-                  language,
-                  `Tümünü Göster (${strategies.length})`,
-                  `Show All (${strategies.length})`
-                )}
+                {t("earnings:showAll", { length: strategies.length })}
               </>
             )}
           </Button>
@@ -343,7 +288,7 @@ export function ActionPlanPanel({
         </div>
         <div className="w-full">
           <h2 className="text-xl font-bold text-white">
-            {copy(language, "Aksiyon plani", "Action plan")}
+            {t("earnings:actionPlance97")}
           </h2>
           <div className="mt-1 h-px w-full bg-gradient-to-r from-sky-500/30 to-transparent" />
         </div>
@@ -362,7 +307,7 @@ export function ActionPlanPanel({
             <div className="flex items-center gap-2">
               <span className="text-lg">{WEEK_EMOJIS[index % WEEK_EMOJIS.length]}</span>
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-sky-400">
-                {item.week || item.dateRange || copy(language, "Plan", "Plan")}
+                {item.week || item.dateRange || "Plan"}
               </p>
             </div>
             {item.focus ? (
@@ -416,7 +361,7 @@ export function PortfolioPanel({
         </div>
         <div className="w-full">
           <h2 className="text-xl font-bold text-white">
-            {copy(language, "Portfoy katmanlari", "Portfolio layers")}
+            {t("earnings:portfolioLayers")}
           </h2>
           <div className="mt-1 h-px w-full bg-gradient-to-r from-sky-500/30 to-transparent" />
         </div>
@@ -435,7 +380,7 @@ export function PortfolioPanel({
               {level.budget}
             </p>
             <p className="mt-2 text-sm text-slate-400">
-              {copy(language, "Toplam tahsis", "Total allocation")}:{" "}
+              {t("earnings:totalAllocation63ee")}:{" "}
               <span className="font-bold text-white">
                 {level.totalAllocation || "—"}
               </span>
@@ -494,7 +439,7 @@ export function ExecutiveSummaryPanel({
         </div>
         <div className="w-full">
           <h2 className="text-xl font-bold text-white">
-            {copy(language, "Yönetici özeti", "Executive summary")}
+            {t("earnings:executiveSummary")}
           </h2>
           <div className="mt-1 h-px w-full bg-gradient-to-r from-sky-500/30 to-transparent" />
         </div>
@@ -533,13 +478,13 @@ export function CalendarStatsPanel({
 }) {
   const items = [
     {
-      label: copy(language, "Toplam event", "Total events"),
+      label: t("earnings:totalEvents"),
       value: String(totalCount),
       icon: <BarChart3 className="size-5 text-sky-400" />,
       color: "text-white",
     },
     {
-      label: copy(language, "Yuksek onem", "High importance"),
+      label: t("earnings:highImportance"),
       value: String(highImportanceCount),
       icon: <Target className="size-5 text-amber-400" />,
       color: "text-amber-400",
@@ -569,7 +514,7 @@ export function CalendarStatsPanel({
         </div>
         <div className="w-full">
           <h2 className="text-xl font-bold text-white">
-            {copy(language, "Takvim ozeti", "Calendar snapshot")}
+            {t("earnings:calendarSnapshot")}
           </h2>
           <div className="mt-1 h-px w-full bg-gradient-to-r from-sky-500/30 to-transparent" />
         </div>

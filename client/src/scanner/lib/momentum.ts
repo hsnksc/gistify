@@ -9,7 +9,7 @@
  * - Score Explanation: Her faktörün nedenini doğal dilde açıklama
  */
 
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import type { StockData } from "./yahooFinance";
 import type { StockResult, ScoreExplanation, ConfidenceBreakdown, RankingInfo } from "@/scanner/types";
 import { FACTOR_WEIGHTS, CONFIDENCE_WEIGHTS, RANKING_WEIGHTS, getFactorLabels, clamp100, confidenceLabel, dataQualityLabel } from "./scoreConfig";
@@ -266,9 +266,9 @@ function minutesSinceMarketOpen(): number {
 // ===================== Tarama zaman uyarısı =====================
 export function getScanTimingWarning(language: AppLanguage = "tr"): string | null {
   const min = minutesSinceMarketOpen();
-  if (min === 0) return copy(language, "\u23F0 Piyasa henüz açılmadı (09:30 EST). En erken 10:00 EST'de tarayın.", "\u23F0 Market not yet open (09:30 EST). Scan earliest at 10:00 EST.");
-  if (min < 30) return copy(language, `\u23F0 Piyasa yeni açıldı (${min} dk). 30dk dolmadan ORB kırılım testi anlamsız. 10:00 EST'yi bekleyin.`, `\u23F0 Market just opened (${min} min). ORB breakout test meaningless before 30 min. Wait until 10:00 EST.`);
-  if (min < 60) return copy(language, `\u26A0\uFE0F Piyasa ${min} dk açık. İdeal tarama: 10:00-10:30 EST arası.`, `\u26A0\uFE0F Market open ${min} min. Ideal scan window: 10:00-10:30 EST.`);
+  if (min === 0) return t("scanner:marketNotYetOpen09");
+  if (min < 30) return t("scanner:marketJustOpenedMinOrb", { min });
+  if (min < 60) return t("scanner:marketOpenMinIdealScan", { min });
   return null;
 }
 
@@ -364,91 +364,91 @@ function buildExplanations(
     switch (key) {
       case "rvolS": {
         const rvol = Number(rawValues.rvol ?? 0);
-        if (rvol >= 4) { reason = copy(language, "Hacim patlaması - çok güçlü ilgi", "Volume explosion - very strong interest"); detail = copy(language, `RVOL ${rvol.toFixed(1)}x: Normalin 4 katı üzerinde hacim, institüsel ilgi işareti.`, `RVOL ${rvol.toFixed(1)}x: 4x+ normal volume, institutional interest signal.`); }
-        else if (rvol >= 2) { reason = copy(language, "Yüksek hacim - güçlü ilgi", "High volume - strong interest"); detail = copy(language, `RVOL ${rvol.toFixed(1)}x: Normalin 2 katı hacim, yukarı yönlü momentum desteği.`, `RVOL ${rvol.toFixed(1)}x: 2x normal volume, upward momentum support.`); }
-        else if (rvol >= 1) { reason = copy(language, "Normal hacim", "Normal volume"); detail = copy(language, `RVOL ${rvol.toFixed(1)}x: Ortalama hacim civarında.`, `RVOL ${rvol.toFixed(1)}x: Around average volume.`); }
-        else { reason = copy(language, "Düşük hacim", "Low volume"); detail = copy(language, `RVOL ${rvol.toFixed(1)}x: Normalin altında hacim, momentum zayıflığı.`, `RVOL ${rvol.toFixed(1)}x: Below normal volume, momentum weakness.`); }
+        if (rvol >= 4) { reason = t("scanner:volumeExplosionVeryStrongInterest"); detail = t("scanner:rvolX4xNormalVolume", { tofixed1: rvol.toFixed(1) }); }
+        else if (rvol >= 2) { reason = t("scanner:highVolumeStrongInterest"); detail = t("scanner:rvolX2xNormalVolume", { tofixed1: rvol.toFixed(1) }); }
+        else if (rvol >= 1) { reason = t("scanner:normalVolume"); detail = t("scanner:rvolXAroundAverageVolume", { tofixed1: rvol.toFixed(1) }); }
+        else { reason = t("scanner:lowVolume"); detail = t("scanner:rvolXBelowNormalVolume", { tofixed1: rvol.toFixed(1) }); }
         break;
       }
       case "gap": {
         const gapPct = Number(rawValues.gapPct ?? 0);
-        if (gapPct >= 1 && gapPct <= 4) { reason = copy(language, "İdeal GAP aralığı", "Ideal GAP range"); detail = copy(language, `GAP %${gapPct.toFixed(2)}: Momentumcu açılış, fazla geri çekilme riski düşük.`, `GAP %${gapPct.toFixed(2)}: Momentum open, low pullback risk.`); }
-        else if (gapPct > 4 && gapPct <= 8) { reason = copy(language, "Geniş GAP - dikkat", "Wide GAP - caution"); detail = copy(language, `GAP %${gapPct.toFixed(2)}: Fazla geniş, geri doldurma (gap fill) riski var.`, `GAP %${gapPct.toFixed(2)}: Too wide, gap fill risk present.`); }
-        else if (gapPct > 0) { reason = copy(language, "Zayıf GAP", "Weak GAP"); detail = copy(language, `GAP %${gapPct.toFixed(2)}: Minimum açılış boşluğu.`, `GAP %${gapPct.toFixed(2)}: Minimum opening gap.`); }
-        else { reason = copy(language, "Negatif GAP / Düz açılış", "Negative GAP / Flat open"); detail = copy(language, `GAP %${gapPct.toFixed(2)}: Momentumcu açılış yok.`, `GAP %${gapPct.toFixed(2)}: No momentum open.`); }
+        if (gapPct >= 1 && gapPct <= 4) { reason = t("scanner:idealGapRange"); detail = t("scanner:gapMomentumOpenLowPullback", { tofixed2: gapPct.toFixed(2) }); }
+        else if (gapPct > 4 && gapPct <= 8) { reason = t("scanner:wideGapCaution"); detail = t("scanner:gapTooWideGapFill", { tofixed2: gapPct.toFixed(2) }); }
+        else if (gapPct > 0) { reason = t("scanner:weakGap"); detail = t("scanner:gapMinimumOpeningGap", { tofixed2: gapPct.toFixed(2) }); }
+        else { reason = t("scanner:negativeGapFlatOpen"); detail = t("scanner:gapNoMomentumOpen", { tofixed2: gapPct.toFixed(2) }); }
         break;
       }
       case "orbScore": {
         const orbValid = rawValues.orbValid === "true";
         const minsOpen = Number(rawValues.minsOpen ?? 0);
-        if (!orbValid && minsOpen < 30) { reason = copy(language, "ORB henüz geçersiz", "ORB not yet valid"); detail = copy(language, `Piyasa sadece ${Math.round(minsOpen)} dk açık. 30 dk sonra kırılım testi yapılabilir.`, `Market only open ${Math.round(minsOpen)} min. Breakout test valid after 30 min.`); }
-        else if (score >= 80) { reason = copy(language, "Güçlü ORB kırılımı", "Strong ORB breakout"); detail = copy(language, "Fiyat opening range'in üzerine çıktı, yükseliş momentumu güçlü.", "Price broke above opening range, strong bullish momentum."); }
-        else if (score >= 60) { reason = copy(language, "ORB kırılımı", "ORB breakout"); detail = copy(language, "Fiyat ORB üst bandına yaklaşıyor veya kırdı.", "Price approaching or broke ORB upper band."); }
-        else { reason = copy(language, "Zayıf ORB", "Weak ORB"); detail = copy(language, "Opening range içinde sıkışma devam ediyor.", "Consolidation within opening range continues."); }
+        if (!orbValid && minsOpen < 30) { reason = t("scanner:orbNotYetValid"); detail = t("scanner:marketOnlyOpenMinBreakout", { roundMinsopen: Math.round(minsOpen) }); }
+        else if (score >= 80) { reason = t("scanner:strongOrbBreakout"); detail = t("scanner:priceBrokeAboveOpeningRange"); }
+        else if (score >= 60) { reason = t("scanner:orbBreakout"); detail = t("scanner:priceApproachingOrBrokeOrb"); }
+        else { reason = t("scanner:weakOrb"); detail = t("scanner:consolidationWithinOpeningRangeContinues"); }
         break;
       }
       case "vwap": {
         const dev = Number(rawValues.vwapDev ?? 0);
         const slope = Number(rawValues.vwapSlope ?? 0);
-        if (dev > 1.5 && slope > 0.0005) { reason = copy(language, "Güçlü VWAP üstü + yükselen", "Strong VWAP above + rising"); detail = copy(language, `VWAP üstünde %${dev.toFixed(2)} ve eğim pozitif, boğa kontrolü.`, `VWAP above %${dev.toFixed(2)} and slope positive, bull control.`); }
-        else if (dev > 0) { reason = copy(language, "VWAP üstünde", "Above VWAP"); detail = copy(language, `VWAP üstünde %${dev.toFixed(2)}, kısa vadeli pozitif.`, `VWAP above %${dev.toFixed(2)}, short-term positive.`); }
-        else { reason = copy(language, "VWAP altında", "Below VWAP"); detail = copy(language, `VWAP altında %${Math.abs(dev).toFixed(2)}, ayı baskısı.`, `VWAP below %${Math.abs(dev).toFixed(2)}, bear pressure.`); }
+        if (dev > 1.5 && slope > 0.0005) { reason = t("scanner:strongVwapAboveRising"); detail = t("scanner:vwapAboveAndSlopePositive", { tofixed2: dev.toFixed(2) }); }
+        else if (dev > 0) { reason = t("scanner:aboveVwap"); detail = t("scanner:vwapAboveShortTermPositive", { tofixed2: dev.toFixed(2) }); }
+        else { reason = t("scanner:belowVwap"); detail = t("scanner:vwapBelowBearPressure", { tofixed2: Math.abs(dev).toFixed(2) }); }
         break;
       }
       case "structure": {
-        if (score >= 70) { reason = copy(language, "Higher Highs + Higher Lows", "Higher Highs + Higher Lows"); detail = copy(language, "Yükselen tepe ve dip seviyeleri - güçlü trend yapısı.", "Rising peaks and troughs - strong trend structure."); }
-        else if (score >= 55) { reason = copy(language, "Karışık yapı", "Mixed structure"); detail = copy(language, "Bazı higher highs/lower lows karışımı, net trend yok.", "Mixed higher highs/lower lows, no clear trend."); }
-        else { reason = copy(language, "Düşük yapı skoru", "Weak structure score"); detail = copy(language, "Lower lows veya düz seyir, trend zayıflığı.", "Lower lows or flat, trend weakness."); }
+        if (score >= 70) { reason = "Higher Highs + Higher Lows"; detail = t("scanner:risingPeaksAndTroughsStrong"); }
+        else if (score >= 55) { reason = t("scanner:mixedStructure"); detail = t("scanner:mixedHigherHighsLowerLows"); }
+        else { reason = t("scanner:weakStructureScore"); detail = t("scanner:lowerLowsOrFlatTrend"); }
         break;
       }
       case "rsiShort": {
         const rsi = Number(rawValues.rsi7 ?? 50);
-        if (rsi >= 60 && rsi < 75) { reason = copy(language, "Optimum RSI aralığı", "Optimum RSI range"); detail = copy(language, `RSI ${rsi.toFixed(1)}: Momentum güçlü ama aşırı alım değil.`, `RSI ${rsi.toFixed(1)}: Momentum strong but not overbought.`); }
-        else if (rsi >= 75) { reason = copy(language, "Aşırı alım yakını", "Near overbought"); detail = copy(language, `RSI ${rsi.toFixed(1)}: Dikkat, geri çekilme riski artıyor.`, `RSI ${rsi.toFixed(1)}: Caution, pullback risk rising.`); }
-        else if (rsi >= 45) { reason = copy(language, "Nötr RSI", "Neutral RSI"); detail = copy(language, `RSI ${rsi.toFixed(1)}: Ne aşırı alım ne satım.`, `RSI ${rsi.toFixed(1)}: Neither overbought nor oversold.`); }
-        else { reason = copy(language, "Zayıf RSI", "Weak RSI"); detail = copy(language, `RSI ${rsi.toFixed(1)}: Momentum zayıf veya aşırı satım.`, `RSI ${rsi.toFixed(1)}: Momentum weak or oversold.`); }
+        if (rsi >= 60 && rsi < 75) { reason = t("scanner:optimumRsiRange"); detail = t("scanner:rsiMomentumStrongButNot", { tofixed1: rsi.toFixed(1) }); }
+        else if (rsi >= 75) { reason = t("scanner:nearOverbought"); detail = t("scanner:rsiCautionPullbackRiskRising", { tofixed1: rsi.toFixed(1) }); }
+        else if (rsi >= 45) { reason = t("scanner:neutralRsi"); detail = t("scanner:rsiNeitherOverboughtNorOversold", { tofixed1: rsi.toFixed(1) }); }
+        else { reason = t("scanner:weakRsi"); detail = t("scanner:rsiMomentumWeakOrOversold", { tofixed1: rsi.toFixed(1) }); }
         break;
       }
       case "velDir": {
         const dirMove = Number(rawValues.dirMove ?? 0);
-        if (score >= 85) { reason = copy(language, "Güçlü yukarı momentum", "Strong upward momentum"); detail = copy(language, `ATR bazlı hareket: ${dirMove.toFixed(2)}x ATR yukarı.`, `ATR-based move: ${dirMove.toFixed(2)}x ATR upward.`); }
-        else if (score >= 55) { reason = copy(language, "Pozitif yön", "Positive direction"); detail = copy(language, `ATR bazlı hareket: ${dirMove.toFixed(2)}x ATR.`, `ATR-based move: ${dirMove.toFixed(2)}x ATR.`); }
-        else if (score >= 25) { reason = copy(language, "Zayıf yön", "Weak direction"); detail = copy(language, `ATR bazlı hareket: ${dirMove.toFixed(2)}x ATR.`, `ATR-based move: ${dirMove.toFixed(2)}x ATR.`); }
-        else { reason = copy(language, "Negatif yön", "Negative direction"); detail = copy(language, `ATR bazlı hareket: ${dirMove.toFixed(2)}x ATR aşağı.`, `ATR-based move: ${dirMove.toFixed(2)}x ATR down.`); }
+        if (score >= 85) { reason = t("scanner:strongUpwardMomentum"); detail = t("scanner:atrBasedMoveXAtr", { tofixed2: dirMove.toFixed(2) }); }
+        else if (score >= 55) { reason = t("scanner:positiveDirection"); detail = t("scanner:atrBasedMoveXAtr4070", { tofixed2: dirMove.toFixed(2) }); }
+        else if (score >= 25) { reason = t("scanner:weakDirection"); detail = t("scanner:atrBasedMoveXAtr4070", { tofixed2: dirMove.toFixed(2) }); }
+        else { reason = t("scanner:negativeDirection"); detail = t("scanner:atrBasedMoveXAtr589f", { tofixed2: dirMove.toFixed(2) }); }
         break;
       }
       case "velVol": {
         const volR = Number(rawValues.volRatio ?? 0);
-        if (score >= 70) { reason = copy(language, "Yüksek volatilite", "High volatility"); detail = copy(language, `Gün içi range ATR'nin ${volR.toFixed(2)} katı - hareketli gün.`, `Intraday range ${volR.toFixed(2)}x ATR - active day.`); }
-        else if (score >= 40) { reason = copy(language, "Normal volatilite", "Normal volatility"); detail = copy(language, "Ortalama volatilite seviyeleri.", "Average volatility levels."); }
-        else { reason = copy(language, "Düşük volatilite", "Low volatility"); detail = copy(language, "Sığ hareket, opsiyon stratejileri için uygun olmayabilir.", "Narrow movement, may not suit option strategies."); }
+        if (score >= 70) { reason = t("scanner:highVolatility00b4"); detail = t("scanner:intradayRangeXAtrActive", { tofixed2: volR.toFixed(2) }); }
+        else if (score >= 40) { reason = t("scanner:normalVolatility"); detail = t("scanner:averageVolatilityLevels"); }
+        else { reason = t("scanner:lowVolatility9ab2"); detail = t("scanner:narrowMovementMayNotSuit"); }
         break;
       }
       case "mktCap": {
         const mcap = Number(rawValues.mktCap ?? 0);
-        if (mcap > 200_000_000_000) { reason = copy(language, "Mega cap - yüksek likidite", "Mega cap - high liquidity"); detail = copy(language, "200B+ piyasa değeri, en yüksek likidite ve opsiyon derinliği.", "200B+ market cap, highest liquidity and option depth."); }
-        else if (mcap > 10_000_000_000) { reason = copy(language, "Large cap - iyi likidite", "Large cap - good liquidity"); detail = copy(language, "10B+ piyasa değeri, yeterli opsiyon hacmi.", "10B+ market cap, sufficient option volume."); }
-        else { reason = copy(language, "Düşük market cap", "Low market cap"); detail = copy(language, "Opsiyon spreadleri geniş olabilir, dikkat.", "Option spreads may be wide, caution."); }
+        if (mcap > 200_000_000_000) { reason = t("scanner:megaCapHighLiquidity"); detail = t("scanner:200bMarketCapHighestLiquidity"); }
+        else if (mcap > 10_000_000_000) { reason = t("scanner:largeCapGoodLiquidity"); detail = t("scanner:10bMarketCapSufficientOption"); }
+        else { reason = t("scanner:lowMarketCap"); detail = t("scanner:optionSpreadsMayBeWide"); }
         break;
       }
       case "retention": {
         const pb = Number(rawValues.pullback ?? 0);
-        if (score >= 85) { reason = copy(language, "Mükemmel tutma", "Excellent retention"); detail = copy(language, `Yüksekten sadece %${pb.toFixed(2)} geri çekilme - güçlü alıcılar.`, `Only %${pb.toFixed(2)} pullback from high - strong buyers.`); }
-        else if (score >= 55) { reason = copy(language, "İyi tutma", "Good retention"); detail = copy(language, `Yüksekten %${pb.toFixed(2)} geri çekilme - normal.`, `%${pb.toFixed(2)} pullback from high - normal.`); }
-        else { reason = copy(language, "Zayıf tutma", "Weak retention"); detail = copy(language, `Yüksekten %${pb.toFixed(2)} geri çekilme - kar realizasyonu baskısı.`, `%${pb.toFixed(2)} pullback from high - profit-taking pressure.`); }
+        if (score >= 85) { reason = t("scanner:excellentRetention"); detail = t("scanner:onlyPullbackFromHighStrong", { tofixed2: pb.toFixed(2) }); }
+        else if (score >= 55) { reason = t("scanner:goodRetention"); detail = t("scanner:pullbackFromHighNormal", { tofixed2: pb.toFixed(2) }); }
+        else { reason = t("scanner:weakRetention"); detail = t("scanner:pullbackFromHighProfitTaking", { tofixed2: pb.toFixed(2) }); }
         break;
       }
       case "pcS": {
         const pc = Number(rawValues.priceChangePct ?? 0);
-        if (pc > 5) { reason = copy(language, "Güçlü günlük kazanç", "Strong daily gain"); detail = copy(language, `+%${pc.toFixed(2)}: Gün içi güçlü yükseliş.`, `+%${pc.toFixed(2)}: Strong intraday rise.`); }
-        else if (pc > 2) { reason = copy(language, "İyi günlük kazanç", "Good daily gain"); detail = copy(language, `+%${pc.toFixed(2)}: Pozitif seyir.`, `+%${pc.toFixed(2)}: Positive drift.`); }
-        else if (pc > 0) { reason = copy(language, "Hafif pozitif", "Slightly positive"); detail = copy(language, `+%${pc.toFixed(2)}: Zayıf pozitif.`, `+%${pc.toFixed(2)}: Weak positive.`); }
-        else { reason = copy(language, "Negatif/flat", "Negative/flat"); detail = copy(language, `%${pc.toFixed(2)}: Gün içi düşüş veya yatay.`, `%${pc.toFixed(2)}: Intraday decline or flat.`); }
+        if (pc > 5) { reason = t("scanner:strongDailyGain"); detail = t("scanner:strongIntradayRise", { tofixed2: pc.toFixed(2) }); }
+        else if (pc > 2) { reason = t("scanner:goodDailyGain"); detail = t("scanner:positiveDrift", { tofixed2: pc.toFixed(2) }); }
+        else if (pc > 0) { reason = t("scanner:slightlyPositive"); detail = t("scanner:weakPositive", { tofixed2: pc.toFixed(2) }); }
+        else { reason = t("scanner:negativeFlat"); detail = t("scanner:intradayDeclineOrFlat", { tofixed2: pc.toFixed(2) }); }
         break;
       }
       default:
-        reason = score >= 70 ? copy(language, "Güçlü", "Strong") : score >= 50 ? copy(language, "Nötr", "Neutral") : copy(language, "Zayıf", "Weak");
-        detail = copy(language, `${label} faktör skoru: ${score.toFixed(0)}/100`, `${label} factor score: ${score.toFixed(0)}/100`);
+        reason = score >= 70 ? t("scanner:strong") : score >= 50 ? t("common:neutral0964") : t("scanner:weak");
+        detail = t("scanner:factorScore100", { label, tofixed0: score.toFixed(0) });
     }
 
     explanations.push({
@@ -654,7 +654,7 @@ export function analyzeStock(
   const openMom = openPrice > 0 ? ((high30m - openPrice) / openPrice) * 100 : 0;
   const tgt = targetPrice(currentPrice, atr14d, totalScore);
   const earnWarn = EARNINGS_TICKERS.includes(data.ticker)
-    ? copy(language, `\u26A0 ${data.ticker} yakın zamanda kazanç açıklayabilir. IV crush riskine dikkat edin.`, `\u26A0 ${data.ticker} may announce earnings soon. Watch IV crush risk.`)
+    ? t("scanner:mayAnnounceEarningsSoonWatch", { ticker: data.ticker })
     : null;
 
   // Signal (momentum score bazlı) + RSI RED filtresi
@@ -665,13 +665,13 @@ export function analyzeStock(
 
   if (rsi14 >= 80) {
     sig = "OVERBOUGHT_RED";
-    rsiWarning = copy(language, `🚨 RSI ${rsi14.toFixed(1)} = AŞIRI ALIM! Bu hisse çok tehlikeli. Geri çekilme an meselesi. KESİNLİKLE girmeyin.`, `🚨 RSI ${rsi14.toFixed(1)} = OVERBOUGHT! This stock is very dangerous. Pullback is imminent. DO NOT enter.`);
+    rsiWarning = t("scanner:rsiOverboughtThisStockIs", { tofixed1: rsi14.toFixed(1) });
   } else if (rsi14 >= 75) {
     sig = "CAUTION_HOT";
-    rsiWarning = copy(language, `⚠️ RSI ${rsi14.toFixed(1)} = SICAK BÖLGE. Momentum yüksek ama geri çekilme riski çok yüksek. Stop-loss şart, küçük pozisyon.`, `⚠️ RSI ${rsi14.toFixed(1)} = HOT ZONE. Momentum is high but pullback risk is very high. Stop-loss required, small position.`);
+    rsiWarning = t("scanner:rsiHotZoneMomentumIs", { tofixed1: rsi14.toFixed(1) });
   } else if (rsi14 <= 25) {
     sig = "OVERSOLD_CAUTION";
-    rsiWarning = copy(language, `⚠️ RSI ${rsi14.toFixed(1)} = AŞIRI SATIM. Dönüş potansiyeli var ama yakalanan bıçağa dikkat.`, `⚠️ RSI ${rsi14.toFixed(1)} = OVERSOLD. Reversal potential exists but watch for falling knife.`);
+    rsiWarning = t("scanner:rsiOversoldReversalPotentialExists", { tofixed1: rsi14.toFixed(1) });
   } else if (totalScore >= 75) {
     sig = "STRONG_BUY";
   } else if (totalScore >= 60) {

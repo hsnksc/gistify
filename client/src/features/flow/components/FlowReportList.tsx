@@ -1,6 +1,6 @@
 import { FileSearch } from "lucide-react";
 import EmptyState from "@/components/ui/empty-state";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import type { FlowReportListEntry } from "../lib/flowReportHelpers";
 import FlowFeedCard from "./FlowFeedCard";
 
@@ -20,19 +20,11 @@ export default function FlowReportList({
   if (!reports.length) {
     return (
       <EmptyState
-        description={copy(
-          language,
-          "Yeni post geldikce bu akis dolacak.",
-          "This feed will fill automatically as new posts arrive."
-        )}
+        description={t("flow:thisFeedWillFillAutomatically0a38")}
         icon={FileSearch}
         title={
           emptyMessage ||
-          copy(
-            language,
-            "Henuz gosterilecek post yok.",
-            "There are no posts to show yet."
-          )
+          t("common:neutral0964")
         }
       />
     );
@@ -40,7 +32,7 @@ export default function FlowReportList({
 
   return (
     <section
-      aria-label={copy(language, "Flow rapor listesi", "Flow report list")}
+      aria-label={t("flow:flowReportList")}
       className="grid gap-3"
     >
       {reports.map(report => (

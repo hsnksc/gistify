@@ -1,15 +1,7 @@
 import type { ReactNode } from "react";
-import {
-  BookOpen,
-  CalendarRange,
-  Clock3,
-  Files,
-  Layers3,
-  ScrollText,
-  Target,
-} from "lucide-react";
+import { BookOpen, CalendarRange, Clock3, Files, Layers3, ScrollText, Target, } from "lucide-react";
 import MarkdownReportRenderer from "@/components/reports/MarkdownReportRenderer";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 
 export type ReportTone = "neutral" | "bull" | "bear" | "caution" | "info";
 
@@ -181,14 +173,14 @@ export default function ReportPostShell({
               {sourceLabel ? (
                 <MetaPill
                   icon={Files}
-                  label={copy(language, "Kaynak", "Source")}
+                  label={t("common:source")}
                   value={sourceLabel}
                 />
               ) : null}
               {reportDateLabel ? (
                 <MetaPill
                   icon={CalendarRange}
-                  label={copy(language, "Tarih", "Date")}
+                  label={t("common:date")}
                   value={reportDateLabel}
                 />
               ) : null}
@@ -224,7 +216,7 @@ export default function ReportPostShell({
           <div className="flex items-center gap-2">
             <BookOpen className="size-4 text-emerald-300" />
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-              {copy(language, "Okuma Notlari", "Reading Notes")}
+              {t("flow:readingNotes")}
             </p>
           </div>
           <div className="mt-4 grid gap-3">
@@ -252,15 +244,11 @@ export default function ReportPostShell({
           <ScrollText className="size-4 text-emerald-300" />
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-              {copy(language, "Tam Dokuman", "Full Document")}
+              {t("flow:fullDocument")}
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
               {documentDescription ||
-                copy(
-                  language,
-                  "Asagida yuklenen kaynak dosyanin tam akisi tema ile uyumlu sekilde korunur.",
-                  "The full flow of the uploaded source file is preserved below in the site theme."
-                )}
+                t("flow:theFullFlowOfThe")}
             </p>
           </div>
         </div>

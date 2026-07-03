@@ -1,4 +1,4 @@
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { useMemo, useRef, useState } from "react";
 import { ImagePlus, LoaderCircle, Trash2 } from "lucide-react";
 import type {
@@ -41,14 +41,14 @@ function createReferenceId() {
 
 function formatFileSize(bytes: number, language: AppLanguage) {
   if (!Number.isFinite(bytes) || bytes <= 0) {
-    return copy(language, "-", "-");
+    return "-";
   }
 
   if (bytes >= 1024 * 1024) {
-    return `${(bytes / (1024 * 1024)).toFixed(1)} ${copy(language, "MB", "MB")}`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} ${"MB"}`;
   }
 
-  return `${Math.max(1, Math.round(bytes / 1024))} ${copy(language, "KB", "KB")}`;
+  return `${Math.max(1, Math.round(bytes / 1024))} ${"KB"}`;
 }
 
 function readFileAsDataUrl(file: File, language: AppLanguage) {
@@ -60,9 +60,9 @@ function readFileAsDataUrl(file: File, language: AppLanguage) {
         return;
       }
 
-      reject(new Error(`${file.name} ${copy(language, "okunamadi.", "could not be read.")}`));
+      reject(new Error(`${file.name} ${t("flow:couldNotBeRead")}`));
     };
-    reader.onerror = () => reject(new Error(`${file.name} ${copy(language, "okunamadi.", "could not be read.")}`));
+    reader.onerror = () => reject(new Error(`${file.name} ${t("common:noEarningBenchmarkDataTo")}`));
     reader.readAsDataURL(file);
   });
 }
@@ -112,7 +112,7 @@ export default function OpenAiImageAdminPanel({
       setReferenceImages(current => [...current, ...nextImages]);
     } catch (nextError) {
       setError(
-        nextError instanceof Error ? nextError.message : copy(language, "Referans gorseller yuklenemedi.", "Reference images could not be loaded.")
+        nextError instanceof Error ? nextError.message : t("flow:referenceImagesCouldNotBe")
       );
     }
   };
@@ -120,7 +120,7 @@ export default function OpenAiImageAdminPanel({
   const handleGenerate = async () => {
     const normalizedPrompt = prompt.trim();
     if (!normalizedPrompt) {
-      setError(copy(language, "Prompt gerekli.", "Prompt is required."));
+      setError(t("common:primaryMarketModeUsedTo"));
       return;
     }
 
@@ -149,18 +149,18 @@ export default function OpenAiImageAdminPanel({
 
       const payload = await readJsonResponse<
         OpenAiImageGenerateResponse | { error?: string }
-      >(response, copy(language, "OpenAI image studio", "OpenAI image studio"));
+      >(response, "OpenAI image studio");
 
       if (!response.ok) {
         throw new Error(
-          extractApiErrorMessage(payload, copy(language, "OpenAI image cagrisi basarisiz oldu.", "OpenAI image call failed."))
+          extractApiErrorMessage(payload, t("flow:openaiImageCallFailed"))
         );
       }
 
       setResult(payload as OpenAiImageGenerateResponse);
     } catch (nextError) {
       setError(
-        nextError instanceof Error ? nextError.message : copy(language, "OpenAI image olusturulamadi.", "OpenAI image could not be created.")
+        nextError instanceof Error ? nextError.message : t("flow:openaiImageCouldNotBe")
       );
     } finally {
       setBusy(false);
@@ -170,12 +170,12 @@ export default function OpenAiImageAdminPanel({
   return (
     <div className="space-y-3">
       <div className="space-y-1">
-        <AdminSectionLabel tone="accent">{copy(language, "OpenAI Image Studio", "OpenAI Image Studio")}</AdminSectionLabel>
+        <AdminSectionLabel tone="accent">{"OpenAI Image Studio"}</AdminSectionLabel>
         <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-          {copy(language, "Referans gorsellerle yeni image uret", "Generate new image with reference images")}
+          {t("flow:generateNewImageWithReference")}
         </h2>
         <p className="text-sm text-muted-foreground">
-          {copy(language, "Belgelerdeki gorselleri sec, prompt'u yaz ve sonucu server-side `OPENAI_API_KEY` ile uret. PDF veya DOC degil, dogrudan gorsel dosyasi yuklenir.", "Select images from documents, write the prompt and produce the result with server-side `OPENAI_API_KEY`. Not PDF or DOC, direct image file is uploaded.")}
+          {t("flow:selectImagesFromDocumentsWrite")}
         </p>
       </div>
 
@@ -184,12 +184,12 @@ export default function OpenAiImageAdminPanel({
         main={
           <AdminPanelSurface as="article">
           <div className="space-y-6">
-            <Field label={copy(language, "Prompt", "Prompt")}>
+            <Field label={"Prompt"}>
               <Textarea
                 value={prompt}
                 onChange={event => setPrompt(event.target.value)}
                 className="min-h-36"
-                placeholder={copy(language, "Ornek: Bu iki referans gorseldeki kompozisyonu koru, daha premium bir landing page hero ilustrasyonu uret.", "Example: Preserve the composition in these two reference images, create a more premium landing page hero illustration.")}
+                placeholder={t("flow:examplePreserveTheCompositionIn")}
               />
             </Field>
 
@@ -197,10 +197,10 @@ export default function OpenAiImageAdminPanel({
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <p className="text-xs font-medium text-muted-foreground">
-                    {copy(language, "Referans gorseller", "Reference Images")}
+                    {t("scanner:marketRegime")}
                   </p>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    {copy(language, "Maksimum", "Maximum")} {OPENAI_IMAGE_MAX_REFERENCES} {copy(language, "adet, toplam secim:", "images, total selection:")}{" "}
+                    {t("flow:maximum")} {OPENAI_IMAGE_MAX_REFERENCES} {t("flow:imagesTotalSelection")}{" "}
                     {totalSizeLabel}
                   </p>
                 </div>
@@ -212,7 +212,7 @@ export default function OpenAiImageAdminPanel({
                   disabled={referenceImages.length >= OPENAI_IMAGE_MAX_REFERENCES}
                 >
                   <ImagePlus className="size-4" />
-                  {copy(language, "Gorsel sec", "Select Image")}
+                  {t("flow:selectImage")}
                 </Button>
               </div>
 
@@ -268,8 +268,8 @@ export default function OpenAiImageAdminPanel({
               ) : (
                 <EmptyState
                   className="p-4"
-                  description={copy(language, "Gorsel sec butonuyla kompozisyon referanslarini ekle.", "Add composition references with the Select Image button.")}
-                  title={copy(language, "Henuz referans gorsel secilmedi", "No reference images selected yet")}
+                  description={t("flow:addCompositionReferencesWithThe")}
+                  title={t("flow:noReferenceImagesSelectedYet")}
                 />
               )}
             </AdminPanelSurface>
@@ -279,7 +279,7 @@ export default function OpenAiImageAdminPanel({
             <div className="flex flex-wrap items-center gap-3">
               <Button type="button" onClick={() => void handleGenerate()} disabled={busy}>
                 {busy ? <LoaderCircle className="size-4 animate-spin" /> : null}
-                {busy ? copy(language, "Uretiliyor", "Generating") : copy(language, "OpenAI ile uret", "Generate with OpenAI")}
+                {busy ? t("flow:generating") : t("flow:generateWithOpenai")}
               </Button>
               <Button
                 type="button"
@@ -292,7 +292,7 @@ export default function OpenAiImageAdminPanel({
                 }}
                 disabled={busy}
               >
-                {copy(language, "Temizle", "Clear")}
+                {t("flow:clear")}
               </Button>
             </div>
           </div>
@@ -300,20 +300,20 @@ export default function OpenAiImageAdminPanel({
         }
         preview={
           <AdminPanelSurface as="article">
-          <AdminSectionLabel tone="accent">{copy(language, "Son sonuc", "Latest Result")}</AdminSectionLabel>
+          <AdminSectionLabel tone="accent">{t("flow:latestResult")}</AdminSectionLabel>
 
           {result ? (
             <div className="mt-4 space-y-4">
               <img
                 src={result.imageDataUrl}
-                alt={copy(language, "OpenAI uretimi", "OpenAI generated")}
+                alt={t("flow:openaiGenerated")}
                 className="w-full rounded-xl border border-border bg-background/60 object-cover"
               />
 
               <div className="grid gap-3 sm:grid-cols-2">
                 <div className="rounded-xl border border-border bg-background/50 p-3">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                    {copy(language, "Model", "Model")}
+                    {"Model"}
                   </p>
                   <p className="mt-2 text-sm font-medium text-foreground">
                     {result.model}
@@ -321,7 +321,7 @@ export default function OpenAiImageAdminPanel({
                 </div>
                 <div className="rounded-xl border border-border bg-background/50 p-3">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                    {copy(language, "Referans", "Reference")}
+                    {t("flow:reference")}
                   </p>
                   <p className="mt-2 text-sm font-medium text-foreground">
                     {result.referenceCount}
@@ -332,12 +332,12 @@ export default function OpenAiImageAdminPanel({
               <div className="flex flex-wrap items-center gap-3">
                 <Button asChild>
                   <a href={result.imageDataUrl} download="gistify-openai-image.png">
-                    {copy(language, "PNG indir", "Download PNG")}
+                    {t("flow:downloadPng")}
                   </a>
                 </Button>
                 {result.requestId ? (
                   <span className="text-xs text-muted-foreground">
-                    {copy(language, "request id:", "request id:")} {result.requestId}
+                    {"request id:"} {result.requestId}
                   </span>
                 ) : null}
               </div>
@@ -345,8 +345,8 @@ export default function OpenAiImageAdminPanel({
           ) : (
             <EmptyState
               className="mt-4"
-              description={copy(language, "OpenAI istegi tamamlandiginda preview burada gosterilecek.", "When the OpenAI request is completed, preview will be shown here.")}
-              title={copy(language, "Uretilen gorsel burada preview olarak gosterilecek", "Generated image will be shown here as preview")}
+              description={t("scanner:loss2002xCredit")}
+              title={t("flow:generatedImageWillBeShown")}
             />
           )}
           </AdminPanelSurface>

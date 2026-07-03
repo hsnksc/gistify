@@ -11,6 +11,7 @@ Important:
 
 - the live product name is `Earning Strategy`, not the old `Earnings Benchmark`
 - `benchmark/` and `v2/` are legacy reference folders, not the current runtime architecture
+- UI i18n now lives in `client/src/locales/{tr,en}` and routes are language-prefixed at `/tr/...` and `/en/...`
 
 ---
 
@@ -26,6 +27,26 @@ Pure React 19 + Tailwind 4 template with shadcn/ui baked in. **Use this README a
 
 - Client-only routing powered by React + Wouter.
 - Design tokens live entirely in `client/src/index.css`—keep that file intact.
+
+## i18n Workflow
+
+- Add new UI strings to `client/src/locales/tr/*.json` and `client/src/locales/en/*.json`.
+- Read UI strings through `t("namespace:key")` from `client/src/lib/i18n.ts`.
+- Keep placeholder names identical between TR and EN values.
+- Validate locale integrity with `corepack pnpm i18n:check`.
+- Route links should be language-aware. Prefer `localizePath()` from `client/src/lib/i18n.ts` for internal href generation.
+
+## Content Translation
+
+- Flow and daily report content should be stored per language instead of translated at render time.
+- Coverage markdown can ship language sidecars such as `report.en.md`; the server falls back to the source-language copy when a requested locale is missing.
+- Use `corepack pnpm translate:content` to generate missing translated content files through the shared server-side translation pipeline.
+- Runtime translation is reserved for real user-generated content only and currently flows through `client/src/lib/translateDynamic.ts` for flow comments.
+- Shared translation prompt assets live in `server/i18n/`.
+- Audit, QA, and SEO notes live in:
+  - `docs/i18n-audit.md`
+  - `docs/i18n-qa.md`
+  - `docs/i18n-seo-next-steps.md`
 
 ## Auth + Billing Setup
 

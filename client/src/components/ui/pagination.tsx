@@ -1,11 +1,7 @@
 import * as React from "react";
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  MoreHorizontalIcon,
-} from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon, } from "lucide-react";
 
-import { copy, useAppLanguage } from "@/lib/i18n";
+import { useAppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 
@@ -74,13 +70,13 @@ function PaginationPrevious({
 
   return (
     <PaginationLink
-      aria-label={copy(language, "Onceki sayfaya git", "Go to previous page")}
+      aria-label={t("common:goToPreviousPage")}
       size="default"
       className={cn("gap-1 px-2.5 sm:pl-2.5", className)}
       {...props}
     >
       <ChevronLeftIcon />
-      <span className="hidden sm:block">{copy(language, "Onceki", "Previous")}</span>
+      <span className="hidden sm:block">{t("common:previous")}</span>
     </PaginationLink>
   );
 }
@@ -93,12 +89,12 @@ function PaginationNext({
 
   return (
     <PaginationLink
-      aria-label={copy(language, "Sonraki sayfaya git", "Go to next page")}
+      aria-label={t("flow:share")}
       size="default"
       className={cn("gap-1 px-2.5 sm:pr-2.5", className)}
       {...props}
     >
-      <span className="hidden sm:block">{copy(language, "Sonraki", "Next")}</span>
+      <span className="hidden sm:block">{t("common:next")}</span>
       <ChevronRightIcon />
     </PaginationLink>
   );
@@ -119,7 +115,7 @@ function PaginationEllipsis({
     >
       <MoreHorizontalIcon className="size-4" />
       <span className="sr-only">
-        {copy(language, "Daha fazla sayfa", "More pages")}
+        {t("calendar:fearGreedOutlook")}
       </span>
     </span>
   );

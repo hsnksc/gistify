@@ -1,5 +1,5 @@
-import { type AppLanguage } from "@/lib/i18n";
-import { copy } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
+
 
 export interface ProbabilityBarsProps {
   items: Array<{
@@ -29,7 +29,7 @@ export default function ProbabilityBars({
   return (
     <div className="space-y-4 rounded-xl border border-border bg-background/30 p-5">
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-        {copy(language, "Olasilik Dagilimi", "Probability Distribution")}
+        {t("coverage:probabilityDistribution")}
       </p>
 
       <div className="space-y-3">
@@ -69,7 +69,7 @@ export default function ProbabilityBars({
       </div>
 
       <p className="text-xs text-muted-foreground">
-        {copy(language, "Toplam", "Total")}: {total}%
+        {t("coverage:total")}: {total}%
       </p>
     </div>
   );

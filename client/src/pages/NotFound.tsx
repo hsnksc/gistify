@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { copy, useAppLanguage } from "@/lib/i18n";
+import { useAppLanguage, t } from "@/lib/i18n";
 import { AlertCircle, Home } from "lucide-react";
 import { useLocation } from "wouter";
 
@@ -31,21 +31,13 @@ export default function NotFound() {
           <h1 className="mb-2 text-5xl font-bold text-white">404</h1>
 
           <h2 className="mb-4 text-xl font-semibold text-slate-100">
-            {copy(language, "Sayfa bulunamadi", "Page not found")}
+            {t("common:pageNotFound")}
           </h2>
 
           <p className="mb-8 leading-relaxed text-slate-400">
-            {copy(
-              language,
-              "Aradigin sayfa yok, tasinmis olabilir veya erisim linki gecersizdir.",
-              "The page you are looking for does not exist, may have moved, or the access link is invalid."
-            )}
+            {t("common:thePageYouAreLooking")}
             <br />
-            {copy(
-              language,
-              "Ana gorunume donup akisi devam ettirebilirsin.",
-              "You can return to the main view and continue the flow."
-            )}
+            {t("common:youCanReturnToThe")}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -54,7 +46,7 @@ export default function NotFound() {
               className="rounded-lg border border-sky-400/30 bg-sky-500/90 px-6 py-2.5 text-white transition-all duration-200 shadow-[0_16px_40px_rgba(79,70,229,0.28)] hover:bg-sky-400"
             >
               <Home className="w-4 h-4 mr-2" />
-              {copy(language, "Ana sayfaya don", "Return home")}
+              {t("common:returnHome")}
             </Button>
           </div>
         </CardContent>

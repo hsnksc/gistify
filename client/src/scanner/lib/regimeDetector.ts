@@ -5,7 +5,7 @@
  */
 
 import type { MarketRegime, IVCurve, TermStructure, VixRegime } from "./optionsTypes";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 
 // ─── VIX REGIME THRESHOLDS ───
 const VIX_LEVELS = {
@@ -63,7 +63,7 @@ function regimeRules(regime: VixRegime, term: TermStructure, vixTrendDir: "RISIN
     rules.longPremiumAllowed = true;  // Long vol faydalı
     rules.maxDteRecommendation = 30;
     rules.sizingFactor = 0.5;         // Pozisyon yarıya
-    rules.note = copy(language, "⚠️ BACKWARDATION: Credit spread SATMA. Long premium tercih et. Pozisyon yarıya.", "⚠️ BACKWARDATION: Do NOT sell credit spread. Prefer long premium. Halve position.");
+    rules.note = t("scanner:backwardationDoNotSellCredit");
     return rules;
   }
 
@@ -74,7 +74,7 @@ function regimeRules(regime: VixRegime, term: TermStructure, vixTrendDir: "RISIN
       rules.longPremiumAllowed = false;   // IV zirvede, long vol pahalı
       rules.maxDteRecommendation = 30;
       rules.sizingFactor = 0.7;
-      rules.note = copy(language, "🚨 VIX 35+: Credit spread sat (IV zirvede), long premium AÇMA, vade 30 gün max.", "🚨 VIX 35+: Sell credit spread (IV at peak), do NOT open long premium, max 30 days.");
+      rules.note = t("scanner:vix35SellCreditSpread");
       break;
 
     case "FEAR":
@@ -82,7 +82,7 @@ function regimeRules(regime: VixRegime, term: TermStructure, vixTrendDir: "RISIN
       rules.longPremiumAllowed = false;
       rules.maxDteRecommendation = 35;
       rules.sizingFactor = 0.8;
-      rules.note = copy(language, "⚠️ VIX 25+: Credit spread tercih edilebilir, short vol mantıklı.", "⚠️ VIX 25+: Credit spread preferable, short vol makes sense.");
+      rules.note = t("scanner:vix25CreditSpreadPreferable");
       break;
 
     case "NORMAL":
@@ -90,7 +90,7 @@ function regimeRules(regime: VixRegime, term: TermStructure, vixTrendDir: "RISIN
       rules.longPremiumAllowed = true;
       rules.maxDteRecommendation = 45;
       rules.sizingFactor = 1.0;
-      rules.note = copy(language, "✅ VIX normal. Standart stratejiler uygulanabilir.", "✅ VIX normal. Standard strategies applicable.");
+      rules.note = t("scanner:vixNormalStandardStrategiesApplicable");
       break;
 
     case "COMPLACENT":
@@ -99,7 +99,7 @@ function regimeRules(regime: VixRegime, term: TermStructure, vixTrendDir: "RISIN
       rules.maxDteRecommendation = 45;
       rules.sizingFactor = 1.0;
       if (vixTrendDir === "FALLING") {
-        rules.note = copy(language, "⚠️ VIX düşüş trendinde. Short vol risk artıyor, hedge düşün.", "⚠️ VIX falling trend. Short vol risk rising, consider hedge.");
+        rules.note = t("scanner:vixFallingTrendShortVol");
       }
       break;
 
@@ -108,7 +108,7 @@ function regimeRules(regime: VixRegime, term: TermStructure, vixTrendDir: "RISIN
       rules.longPremiumAllowed = true;    // Long vol hedge mantıklı
       rules.maxDteRecommendation = 45;
       rules.sizingFactor = 0.7;
-      rules.note = copy(language, "🔥 VIX 12-: Aşırı complacent! Short vol DARBOĞAZ riski. Long vol hedge şart.", "🔥 VIX 12-: Extreme complacent! Short vol SQUEEZE risk. Long vol hedge required.");
+      rules.note = t("scanner:vix12ExtremeComplacentShort");
       break;
   }
 

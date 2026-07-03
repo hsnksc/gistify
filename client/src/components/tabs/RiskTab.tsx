@@ -6,21 +6,11 @@
 import { stocksData, signalConfig, riskConfig, type StockData } from '@/lib/stockData';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart';
 import {
-  chartAxisLabel,
-  chartAxisTick,
-  chartCursorLine,
-  chartGrid,
-  chartPalette,
-  formatChartNumber,
-  formatChartPercent,
-  getChartAriaLabel,
-  getSignalChartColor,
-} from '@/lib/chartTheme';
-import { copy } from '@/lib/i18n';
+  chartAxisLabel, chartAxisTick, chartCursorLine, chartGrid, chartPalette, formatChartNumber, formatChartPercent, getChartAriaLabel, getSignalChartColor, } from '@/lib/chartTheme';
+
 import type { AppLanguage } from '@/lib/i18n';
-import {
-  ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Cell,
-} from 'recharts';
+import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Cell, } from 'recharts';import { t } from "@/lib/i18n";
+
 
 interface Props {
   onStockClick: (ticker: string) => void;
@@ -42,11 +32,11 @@ export default function RiskTab({ onStockClick, stocks = stocksData, language }:
   }));
   const matrixChartConfig = {
     y: {
-      label: copy(language, 'Momentum', 'Momentum'),
+      label: 'Momentum',
       color: chartPalette.accent,
     },
     x: {
-      label: copy(language, 'Beat İhtimali', 'Beat Probability'),
+      label: t("common:15dPrior"),
       color: chartPalette.warning,
     },
   } satisfies ChartConfig;
@@ -64,11 +54,11 @@ export default function RiskTab({ onStockClick, stocks = stocksData, language }:
         <div className="flex items-center gap-2 mb-1">
           <div className="w-1 h-5" style={{ background: 'oklch(0.65 0.22 25)' }} />
           <h1 className="heading-condensed text-xl" style={{ color: 'oklch(0.92 0.01 220)' }}>
-            {copy(language, 'RİSK MATRİSİ', 'RISK MATRIX')}
+            {t("earnings:theEarningsWorkspaceReturnedEmpty")}
           </h1>
         </div>
         <p className="text-sm ml-3" style={{ color: 'oklch(0.5 0.015 225)' }}>
-          {copy(language, 'Beat İhtimali × Momentum Skoru · Renk = Sinyal Gücü', 'Beat Probability × Momentum Score · Color = Signal Strength')}
+          {t("common:beatProbabilityMomentumScoreColor")}
         </p>
       </div>
 
@@ -78,21 +68,21 @@ export default function RiskTab({ onStockClick, stocks = stocksData, language }:
           <div className="flex items-center gap-2 mb-3">
             <div className="w-1 h-4" style={{ background: 'oklch(0.65 0.22 25)' }} />
             <h2 className="heading-condensed text-base" style={{ color: 'oklch(0.92 0.01 220)' }}>
-              {copy(language, 'BEAT İHTİMALİ vs MOMENTUM', 'BEAT PROBABILITY vs MOMENTUM')}
+              {t("common:beatProbabilityVsMomentum")}
             </h2>
           </div>
           <div className="data-card p-4 relative" style={{ height: '360px' }}>
             {/* Quadrant labels */}
             <div className="absolute top-8 right-8 text-xs font-semibold" style={{ color: 'oklch(0.78 0.18 160 / 0.5)' }}>
-              {copy(language, 'İDEAL BÖLGE ↗', 'IDEAL ZONE ↗')}
+              {t("common:idealZone")}
             </div>
             <div className="absolute bottom-12 left-8 text-xs font-semibold" style={{ color: 'oklch(0.65 0.22 25 / 0.5)' }}>
-              {copy(language, 'RİSKLİ BÖLGE ↙', 'RISKY ZONE ↙')}
+              {t("common:riskyZone")}
             </div>
             <ChartContainer
               aria-label={getChartAriaLabel(
-                copy(language, 'Risk matrisi scatter grafiği', 'Risk matrix scatter chart'),
-                copy(language, 'X ekseni beat ihtimalini, Y ekseni momentum skorunu ve nokta rengi sinyal gücünü gösterir.', 'The X axis shows beat probability, the Y axis shows momentum score, and point color shows signal strength.')
+                t("common:riskMatrixScatterChart"),
+                t("flow:reportDetail")
               )}
               className="h-full aspect-auto"
               config={matrixChartConfig}
@@ -101,18 +91,18 @@ export default function RiskTab({ onStockClick, stocks = stocksData, language }:
                 <CartesianGrid {...chartGrid} />
                 <XAxis
                   dataKey="x"
-                  name={copy(language, 'Beat İhtimali', 'Beat Probability')}
+                  name={t("common:beatProbability")}
                   unit="%"
                   domain={[30, 85]}
                   tick={chartAxisTick}
-                  label={chartAxisLabel(copy(language, 'Beat İhtimali (%)', 'Beat Probability (%)'), { position: 'insideBottom', offset: -15 })}
+                  label={chartAxisLabel(t("common:beatProbabilityb6a2"), { position: 'insideBottom', offset: -15 })}
                 />
                 <YAxis
                   dataKey="y"
-                  name={copy(language, 'Momentum', 'Momentum')}
+                  name={'Momentum'}
                   domain={[20, 100]}
                   tick={chartAxisTick}
-                  label={chartAxisLabel(copy(language, 'Momentum', 'Momentum'), { angle: -90, position: 'insideLeft' })}
+                  label={chartAxisLabel('Momentum', { angle: -90, position: 'insideLeft' })}
                 />
                 <ChartTooltip
                   cursor={chartCursorLine}
@@ -126,7 +116,7 @@ export default function RiskTab({ onStockClick, stocks = stocksData, language }:
                           </div>
                           <div className="flex items-center justify-between gap-3">
                             <span className="text-muted-foreground">
-                              {copy(language, 'Beat İhtimali', 'Beat Probability')}
+                              {t("common:beatProbability")}
                             </span>
                             <span className="data-mono font-semibold text-foreground">
                               {formatChartPercent(datum?.x)}
@@ -134,7 +124,7 @@ export default function RiskTab({ onStockClick, stocks = stocksData, language }:
                           </div>
                           <div className="flex items-center justify-between gap-3">
                             <span className="text-muted-foreground">
-                              {copy(language, 'Momentum', 'Momentum')}
+                              {'Momentum'}
                             </span>
                             <span className="data-mono font-semibold text-foreground">
                               {formatChartNumber(datum?.y)}
@@ -142,7 +132,7 @@ export default function RiskTab({ onStockClick, stocks = stocksData, language }:
                           </div>
                           <div className="flex items-center justify-between gap-3">
                             <span className="text-muted-foreground">
-                              {copy(language, 'Risk', 'Risk')}
+                              {'Risk'}
                             </span>
                             <span className="data-mono font-semibold text-foreground">
                               {typeof datum?.riskLabel === 'string' ? datum.riskLabel : '-'}
@@ -153,7 +143,7 @@ export default function RiskTab({ onStockClick, stocks = stocksData, language }:
                     />
                   }
                 />
-                <Scatter data={matrixData} name={copy(language, 'Hisseler', 'Stocks')}>
+                <Scatter data={matrixData} name={t("common:stocksa823")}>
                   {matrixData.map((entry, i) => (
                     <Cell key={i} fill={getSignalChartColor(entry.signal)} />
                   ))}
@@ -168,7 +158,7 @@ export default function RiskTab({ onStockClick, stocks = stocksData, language }:
           <div className="flex items-center gap-2 mb-3">
             <div className="w-1 h-4" style={{ background: 'oklch(0.75 0.15 75)' }} />
             <h2 className="heading-condensed text-base" style={{ color: 'oklch(0.92 0.01 220)' }}>
-              {copy(language, 'RİSK DAĞILIMI', 'RISK DISTRIBUTION')}
+              {t("common:riskDistribution")}
             </h2>
           </div>
           <div className="space-y-2">
@@ -188,7 +178,7 @@ export default function RiskTab({ onStockClick, stocks = stocksData, language }:
                       <span className="text-xs" style={{ color: 'oklch(0.5 0.015 225)' }}>{stock.sector}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className={`data-mono text-xs font-bold ${rCfg.textClass}`}>{rCfg.label} {copy(language, 'Risk', 'Risk')}</span>
+                      <span className={`data-mono text-xs font-bold ${rCfg.textClass}`}>{rCfg.label} {'Risk'}</span>
                       <span className={`text-xs font-bold px-2 py-0.5 border ${cfg.bgClass} ${cfg.textClass} ${cfg.borderClass}`} style={{ borderRadius: 0 }}>
                         {cfg.label}
                       </span>
@@ -197,7 +187,7 @@ export default function RiskTab({ onStockClick, stocks = stocksData, language }:
                   <div className="flex items-center gap-4 mt-1.5">
                     <div className="flex-1">
                       <div className="flex items-center justify-between mb-0.5">
-                        <span className="text-xs" style={{ color: 'oklch(0.4 0.015 225)' }}>{copy(language, 'Momentum', 'Momentum')}</span>
+                        <span className="text-xs" style={{ color: 'oklch(0.4 0.015 225)' }}>{'Momentum'}</span>
                         <span className="data-mono text-xs" style={{ color: cfg.color }}>{stock.momentumScore}</span>
                       </div>
                       <div className="score-bar">
@@ -205,11 +195,11 @@ export default function RiskTab({ onStockClick, stocks = stocksData, language }:
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-xs" style={{ color: 'oklch(0.4 0.015 225)' }}>{copy(language, 'Beat İht.', 'Beat Prob.')}</div>
+                      <div className="text-xs" style={{ color: 'oklch(0.4 0.015 225)' }}>{t("scanner:rsiRange")}</div>
                       <div className="data-mono text-xs font-bold" style={{ color: 'oklch(0.78 0.18 160)' }}>%{stock.earningsBeatProbability}</div>
                     </div>
                     <div className="text-right">
-                      <div className="text-xs" style={{ color: 'oklch(0.4 0.015 225)' }}>{copy(language, 'Implied', 'Implied')}</div>
+                      <div className="text-xs" style={{ color: 'oklch(0.4 0.015 225)' }}>{'Implied'}</div>
                       <div className="data-mono text-xs font-bold" style={{ color: 'oklch(0.75 0.15 75)' }}>±{stock.impliedMove}%</div>
                     </div>
                   </div>
@@ -225,38 +215,38 @@ export default function RiskTab({ onStockClick, stocks = stocksData, language }:
         <div className="flex items-center gap-2 mb-3">
           <div className="w-1 h-4" style={{ background: 'oklch(0.78 0.18 160)' }} />
           <h2 className="heading-condensed text-base" style={{ color: 'oklch(0.92 0.01 220)' }}>
-            {copy(language, 'PORTFÖY STRATEJİSİ ÖNERİSİ', 'PORTFOLIO STRATEGY RECOMMENDATION')}
+            {t("common:portfolioStrategyRecommendation")}
           </h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
           {[
             {
-              title: copy(language, 'GÜÇLÜ AL', 'STRONG BUY'),
+              title: t("scanner:shortLossStreaksDaysStrategy"),
               stocks: strongBuy,
               color: 'oklch(0.78 0.18 160)',
-              desc: copy(language, 'Earnings öncesi pozisyon açılabilir. Yüksek momentum + güçlü sektörel destek.', 'Position can be opened before earnings. High momentum + strong sectoral support.'),
-              action: copy(language, 'Pozisyon Aç', 'Open Position'),
+              desc: t("common:positionCanBeOpenedBefore"),
+              action: t("common:openPosition"),
             },
             {
-              title: copy(language, 'AL', 'BUY'),
+              title: t("scanner:highVolatilityDirectionIndependent"),
               stocks: buy,
               color: '#4ade80',
-              desc: copy(language, 'Earnings öncesi dikkatli pozisyon. İyi fundamentaller, makul risk.', 'Cautious position before earnings. Good fundamentals, reasonable risk.'),
-              action: copy(language, 'Küçük Pozisyon', 'Small Position'),
+              desc: t("common:cautiousPositionBeforeEarningsGood"),
+              action: t("common:smallPosition"),
             },
             {
-              title: copy(language, 'NÖTR', 'NEUTRAL'),
+              title: t("common:neutral43cc"),
               stocks: neutral,
               color: 'oklch(0.75 0.15 75)',
-              desc: copy(language, 'Earnings sonrasına kadar bekle. Karışık sinyaller, yüksek "haberle sat" riski.', 'Wait until after earnings. Mixed signals, high "sell the news" risk.'),
-              action: copy(language, 'İzle', 'Watch'),
+              desc: t("common:waitUntilAfterEarningsMixed"),
+              action: t("flow:oldest"),
             },
             {
-              title: copy(language, 'SAT / GÜÇLÜ SAT', 'SELL / STRONG SELL'),
+              title: t("common:sellStrongSell"),
               stocks: sell,
               color: 'oklch(0.65 0.22 25)',
-              desc: copy(language, 'Kırılmış momentum, zayıf sektörel destek. Earnings öncesi kaçın.', 'Broken momentum, weak sectoral support. Avoid before earnings.'),
-              action: copy(language, 'Kaçın', 'Avoid'),
+              desc: t("common:brokenMomentumWeakSectoralSupport"),
+              action: t("common:avoid"),
             },
           ].map(group => (
             <div key={group.title} className="data-card p-4" style={{ borderLeftColor: group.color }}>
@@ -283,23 +273,23 @@ export default function RiskTab({ onStockClick, stocks = stocksData, language }:
       {/* Key Risk Factors */}
       <div className="data-card p-6" style={{ borderLeftColor: 'oklch(0.65 0.22 25)', borderLeftWidth: '4px' }}>
         <div className="heading-condensed text-base mb-3" style={{ color: 'oklch(0.65 0.22 25)' }}>
-          {copy(language, '⚠ GENEL RİSK FAKTÖRLERİ', '⚠ GENERAL RISK FACTORS')}
+          {t("common:generalRiskFactors")}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
           {[
             {
-              title: copy(language, 'RSI Aşırı Alım', 'RSI Overbought'),
-              desc: copy(language, 'PANW (RSI 78) ve CRWD (RSI 72) aşırı alım bölgesine yakın. Earnings iyi gelse bile "haberle sat" dinamiği devreye girebilir.', 'PANW (RSI 78) and CRWD (RSI 72) are near the overbought zone. Even if earnings are good, "sell the news" dynamics may kick in.'),
+              title: t("common:rsiOverbought"),
+              desc: t("common:panwRsi78AndCrwd"),
               color: 'oklch(0.75 0.15 75)',
             },
             {
-              title: copy(language, 'Hacim-Fiyat Uyumsuzluğu', 'Volume-Price Divergence'),
-              desc: copy(language, 'CRM yüksek hacimde düşüş gösteriyor (distribution sinyali). DELL ise fiyat yükselirken hacim düşüyor (yorgunluk sinyali).', 'CRM is showing decline on high volume (distribution signal). DELL is seeing volume drop while price rises (fatigue signal).'),
+              title: t("common:volumePriceDivergence"),
+              desc: t("common:crmIsShowingDeclineOn"),
               color: 'oklch(0.65 0.22 25)',
             },
             {
-              title: copy(language, 'Kırılmış Momentum', 'Broken Momentum'),
-              desc: copy(language, 'SNOW (-35%), CRM (-33%), ZS (-40%) son 6 ayda ciddi kayıp yaşadı. Earnings iyi gelse bile güçlü toparlanma için güçlü katalizör gerekiyor.', 'SNOW (-35%), CRM (-33%), ZS (-40%) suffered serious losses in the last 6 months. Even if earnings are good, a strong catalyst is needed for a strong recovery.'),
+              title: t("common:brokenMomentum"),
+              desc: t("common:snow35Crm33Zs"),
               color: 'oklch(0.65 0.22 25)',
             },
           ].map(risk => (

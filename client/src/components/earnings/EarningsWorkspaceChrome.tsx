@@ -1,20 +1,9 @@
 import { useEffect, useState } from "react";
 import {
-  AlertTriangle,
-  CheckCircle2,
-  ChevronDown,
-  ChevronUp,
-  Clock3,
-  Info,
-  Minus,
-  Shield,
-  Star,
-  TrendingDown,
-  TrendingUp,
-} from "lucide-react";
+  AlertTriangle, CheckCircle2, ChevronDown, ChevronUp, Clock3, Info, Minus, Shield, Star, TrendingDown, TrendingUp, } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type {
   EarningsStrategyPipelineMetadata,
@@ -39,7 +28,7 @@ function getPipelineStatusMeta(
       chipClassName:
         "border-emerald-500/25 bg-emerald-500/10 text-emerald-300",
       Icon: CheckCircle2,
-      label: copy(language, "Guncel", "Current"),
+      label: t("earnings:current"),
       pulse: false,
     };
   }
@@ -48,7 +37,7 @@ function getPipelineStatusMeta(
     return {
       chipClassName: "border-amber-500/25 bg-amber-500/10 text-amber-300",
       Icon: Clock3,
-      label: copy(language, "Bayat", "Stale"),
+      label: t("earnings:stale"),
       pulse: true,
     };
   }
@@ -57,7 +46,7 @@ function getPipelineStatusMeta(
     return {
       chipClassName: "border-rose-500/25 bg-rose-500/10 text-rose-300",
       Icon: AlertTriangle,
-      label: copy(language, "Hata", "Error"),
+      label: t("common:error"),
       pulse: false,
     };
   }
@@ -65,7 +54,7 @@ function getPipelineStatusMeta(
   return {
     chipClassName: "border-slate-500/20 bg-slate-500/10 text-slate-300",
     Icon: Info,
-    label: copy(language, "Beklemede", "Idle"),
+    label: t("common:idle"),
     pulse: false,
   };
 }
@@ -76,44 +65,32 @@ function formatRelativeTime(
   now: number
 ) {
   if (!value) {
-    return copy(language, "guncel zaman yok", "no sync yet");
+    return t("earnings:noSyncYet");
   }
 
   const timestamp = new Date(value).getTime();
   if (!Number.isFinite(timestamp)) {
-    return copy(language, "gecersiz zaman", "invalid time");
+    return t("earnings:invalidTime");
   }
 
   const diffMs = Math.max(0, now - timestamp);
   const diffMinutes = Math.floor(diffMs / 60_000);
 
   if (diffMinutes < 1) {
-    return copy(language, "az once guncellendi", "updated just now");
+    return t("earnings:updatedJustNow");
   }
 
   if (diffMinutes < 60) {
-    return copy(
-      language,
-      `${diffMinutes} dk once guncellendi`,
-      `updated ${diffMinutes}m ago`
-    );
+    return t("earnings:updatedMAgo", { diffminutes: diffMinutes });
   }
 
   const diffHours = Math.floor(diffMinutes / 60);
   if (diffHours < 24) {
-    return copy(
-      language,
-      `${diffHours} sa once guncellendi`,
-      `updated ${diffHours}h ago`
-    );
+    return t("earnings:updatedHAgo", { diffhours: diffHours });
   }
 
   const diffDays = Math.floor(diffHours / 24);
-  return copy(
-    language,
-    `${diffDays} gun once guncellendi`,
-    `updated ${diffDays}d ago`
-  );
+  return t("earnings:updatedDAgo", { diffdays: diffDays });
 }
 
 function useRelativeClock() {
@@ -203,14 +180,10 @@ export function EarningsLegendSurface({
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
-            {copy(language, "Anlam sozlugu", "Workspace legend")}
+            {t("earnings:workspaceLegend")}
           </p>
           <p className="mt-1 text-sm text-slate-400">
-            {copy(
-              language,
-              "Renklerin yanina ikon ve etiket eklenir; kritik anlamlar tek yerden okunur.",
-              "Icons and labels reinforce color so critical meanings are readable from one place."
-            )}
+            {t("earnings:iconsAndLabelsReinforceColor")}
           </p>
         </div>
         <Button
@@ -223,12 +196,12 @@ export function EarningsLegendSurface({
           {expanded ? (
             <>
               <ChevronUp className="mr-2 size-4" />
-              {copy(language, "Legend'i daralt", "Collapse legend")}
+              {t("earnings:collapseLegend")}
             </>
           ) : (
             <>
               <ChevronDown className="mr-2 size-4" />
-              {copy(language, "Legend'i ac", "Open legend")}
+              {t("earnings:openLegend")}
             </>
           )}
         </Button>
@@ -238,27 +211,27 @@ export function EarningsLegendSurface({
         <LegendChip
           accentClassName="border-emerald-500/25 bg-emerald-500/10 text-emerald-300"
           icon="▲"
-          label={copy(language, "Bullish / destekleyici", "Bullish / supportive")}
+          label={t("earnings:bullishSupportive")}
         />
         <LegendChip
           accentClassName="border-rose-500/25 bg-rose-500/10 text-rose-300"
           icon="▼"
-          label={copy(language, "Bearish / baski", "Bearish / pressured")}
+          label={t("earnings:bearishPressured")}
         />
         <LegendChip
           accentClassName="border-slate-500/25 bg-slate-500/10 text-slate-300"
           icon="•"
-          label={copy(language, "Neutral", "Neutral")}
+          label={"Neutral"}
         />
         <LegendChip
           accentClassName="border-emerald-500/25 bg-emerald-500/10 text-emerald-300"
           icon="BMO"
-          label={copy(language, "Acilis oncesi", "Before market open")}
+          label={t("earnings:beforeMarketOpen")}
         />
         <LegendChip
           accentClassName="border-violet-500/25 bg-violet-500/10 text-violet-300"
           icon="AMC"
-          label={copy(language, "Kapanis sonrasi", "After market close")}
+          label={t("earnings:afterMarketClose")}
         />
       </div>
 
@@ -266,69 +239,69 @@ export function EarningsLegendSurface({
         <div className="mt-4 grid gap-4 lg:grid-cols-3">
           <div className="rounded-xl border border-white/8 bg-slate-950/35 p-4">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
-              {copy(language, "Onem", "Importance")}
+              {t("common:allCandidatesFromTheNewly")}
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
               <LegendChip
                 accentClassName="border-amber-500/25 bg-amber-500/10 text-amber-300"
                 icon="★★★"
-                label={copy(language, "Yuksek onem", "High importance")}
+                label={t("earnings:highImportance")}
               />
               <LegendChip
                 accentClassName="border-slate-500/25 bg-slate-500/10 text-slate-300"
                 icon="★"
-                label={copy(language, "Standart event", "Standard event")}
+                label={t("earnings:standardEvent")}
               />
             </div>
           </div>
 
           <div className="rounded-xl border border-white/8 bg-slate-950/35 p-4">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
-              {copy(language, "Risk", "Risk")}
+              {"Risk"}
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
               <LegendChip
                 accentClassName="border-emerald-500/25 bg-emerald-500/10 text-emerald-300"
                 icon="🛡"
-                label={copy(language, "Dusuk risk", "Low risk")}
+                label={t("earnings:lowRisk")}
               />
               <LegendChip
                 accentClassName="border-amber-500/25 bg-amber-500/10 text-amber-300"
                 icon="⚠"
-                label={copy(language, "Orta risk", "Medium risk")}
+                label={t("earnings:mediumRisk")}
               />
               <LegendChip
                 accentClassName="border-rose-500/25 bg-rose-500/10 text-rose-300"
                 icon="▲"
-                label={copy(language, "Yuksek risk", "High risk")}
+                label={t("earnings:highRisk")}
               />
             </div>
           </div>
 
           <div className="rounded-xl border border-white/8 bg-slate-950/35 p-4">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
-              {copy(language, "FOMC siddeti", "FOMC severity")}
+              {t("earnings:fomcSeverity")}
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
               <LegendChip
                 accentClassName="border-slate-500/25 bg-slate-500/10 text-slate-300"
                 icon="○"
-                label={copy(language, "Distant", "Distant")}
+                label={"Distant"}
               />
               <LegendChip
                 accentClassName="border-amber-500/25 bg-amber-500/10 text-amber-300"
                 icon="◔"
-                label={copy(language, "Approaching", "Approaching")}
+                label={"Approaching"}
               />
               <LegendChip
                 accentClassName="border-orange-500/25 bg-orange-500/10 text-orange-300"
                 icon="◕"
-                label={copy(language, "Imminent", "Imminent")}
+                label={"Imminent"}
               />
               <LegendChip
                 accentClassName="border-rose-500/25 bg-rose-500/10 text-rose-300"
                 icon="⬤"
-                label={copy(language, "Blackout", "Blackout")}
+                label={"Blackout"}
               />
             </div>
           </div>
@@ -354,7 +327,7 @@ export function EarningsWorkspaceToolbar({
       <div className="flex flex-col gap-3 rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 backdrop-blur-sm md:flex-row md:items-center md:justify-between">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-            {copy(language, "Aktif lens", "Active lens")}
+            {t("earnings:activeLens")}
           </p>
           <p className="mt-1 text-sm font-semibold text-slate-200">
             {sectionLabel}

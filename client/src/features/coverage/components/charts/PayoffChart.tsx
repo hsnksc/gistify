@@ -1,5 +1,5 @@
-import { type AppLanguage } from "@/lib/i18n";
-import { copy } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
+
 import { cn } from "@/lib/utils";
 import { useMemo, useState } from "react";
 
@@ -80,7 +80,7 @@ export default function PayoffChart({
   return (
     <div className="space-y-3 rounded-xl border border-border bg-background/30 p-5">
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-        {copy(language, "Payoff Grafigi", "Payoff Chart")}
+        {t("coverage:payoffChart")}
       </p>
 
       <div className="relative w-full overflow-x-auto">

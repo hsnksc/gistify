@@ -1,14 +1,6 @@
 import { useMemo } from "react";
 import {
-  AlertCircle,
-  ArrowLeft,
-  FileSearch,
-  Globe2,
-  Languages,
-  MessageSquareText,
-  RefreshCw,
-  Trash2,
-} from "lucide-react";
+  AlertCircle, ArrowLeft, FileSearch, Globe2, Languages, MessageSquareText, RefreshCw, Trash2, } from "lucide-react";
 import { useLocation } from "wouter";
 import HtmlReportRenderer from "@/components/reports/HtmlReportRenderer";
 import { Button } from "@/components/ui/button";
@@ -16,7 +8,7 @@ import { Delta } from "@/components/ui/delta";
 import EmptyState from "@/components/ui/empty-state";
 import LoadingState from "@/components/ui/loading-state";
 import { usePageMeta } from "@/hooks/usePageMeta";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import FlowLayout from "../components/FlowLayout";
 import { useFlowReport } from "../hooks/useFlowReport";
 import { useFlowReportSummaries } from "../hooks/useFlowReportSummaries";
@@ -85,18 +77,10 @@ export default function ReportsDateDetailPage({
   const error = [serverError, localError].filter(Boolean).join(" · ");
   const pageTitle = report
     ? `${report.ticker} · ${report.companyName || report.fileName} · Gistify`
-    : copy(language, "Gistify Rapor Detayi", "Gistify Report Detail");
+    : t("calendar:fearGreedOutlook");
   const pageDescription = report
-    ? copy(
-        language,
-        `${report.ticker} icin ${report.reportDate} tarihli HTML rapor detayi.`,
-        `HTML report detail for ${report.ticker} dated ${report.reportDate}.`
-      )
-    : copy(
-        language,
-        "Secilen ticker ve tarih icin rapor detay gorunumu.",
-        "Report detail view for the selected ticker and date."
-      );
+    ? t("flow:htmlReportDetailForDated", { ticker: report.ticker, reportdate: report.reportDate })
+    : t("flow:reportDetailViewForThe");
 
   usePageMeta({
     description: pageDescription,
@@ -106,24 +90,16 @@ export default function ReportsDateDetailPage({
   return (
     <FlowLayout
       language={language}
-      eyebrow={copy(language, "Raporlar", "Reports")}
+      eyebrow={t("common:reports")}
       title={
         report
           ? `${report.ticker} · ${report.companyName || report.fileName}`
-          : copy(language, "Rapor detayi", "Report detail")
+          : t("flow:reportDetail")
       }
       description={
         report
-          ? copy(
-              language,
-              "HTML rapor sandbox'li iframe icinde calisir; ustte parse edilmis ozet seridi kalir ve dil butonlari dogrudan rapor dilini degistirir.",
-              "The HTML report runs in a sandboxed iframe; a parsed summary strip stays above it and the language buttons switch the report language directly."
-            )
-          : copy(
-              language,
-              "Secilen ticker ve tarihe ait rapor detay gorunumu.",
-              "Detail view for the selected ticker and date."
-            )
+          ? t("flow:theHtmlReportRunsIn")
+          : t("flow:detailViewForTheSelected")
       }
       actions={
         <>
@@ -133,18 +109,18 @@ export default function ReportsDateDetailPage({
             onClick={() => setLocation(`/reports/ticker/${encodeURIComponent(ticker)}`)}
           >
             <ArrowLeft className="size-4" />
-            {copy(language, "Ticker Arsivi", "Ticker Archive")}
+            {t("flow:tickerArchive")}
           </Button>
           <Button type="button" variant="outline" onClick={() => setLocation("/reports")}>
-            {copy(language, "Tum Raporlar", "All Reports")}
+            {t("scanner:layer2OpenPositions")}
           </Button>
           <Button type="button" variant="outline" onClick={() => void hydrate()}>
             <RefreshCw className="size-4" />
-            {copy(language, "Yereli Yenile", "Refresh Local")}
+            {t("flow:refreshLocal")}
           </Button>
           <Button type="button" variant="outline" onClick={() => void reload()}>
             <RefreshCw className="size-4" />
-            {copy(language, "Yayinliyi Yenile", "Refresh Published")}
+            {t("flow:refreshPublished")}
           </Button>
         </>
       }
@@ -152,29 +128,17 @@ export default function ReportsDateDetailPage({
       {loading ? (
         <LoadingState
           compact
-          label={copy(
-            language,
-            "Rapor detayi yukleniyor.",
-            "Loading report detail."
-          )}
+          label={t("flow:stockHtmlReportGallery")}
         />
       ) : !report ? (
         <EmptyState
           description={
             error ||
-            copy(
-              language,
-              "Ticker, tarih veya secili rapor kimligini kontrol et.",
-              "Check the ticker, date or selected report id."
-            )
+            t("flow:checkTheTickerDateOr")
           }
           icon={error ? AlertCircle : FileSearch}
           role={error ? "alert" : "status"}
-          title={copy(
-            language,
-            "Bu ticker ve tarih icin rapor bulunamadi.",
-            "No report was found for this ticker and date."
-          )}
+          title={t("flow:noReportWasFoundFor")}
           tone={error ? "danger" : "neutral"}
         />
       ) : (
@@ -187,7 +151,7 @@ export default function ReportsDateDetailPage({
                     {report.reportDate}
                   </span>
                   <span className="rounded-full border border-border bg-background/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                    {report.exchange || copy(language, "Borsa yok", "No exchange")}
+                    {report.exchange || t("flow:noExchange")}
                   </span>
                   <span
                     className={`rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] ${getRecommendationTone(report.recommendation)}`}
@@ -199,7 +163,7 @@ export default function ReportsDateDetailPage({
                 <div className="grid gap-3 md:grid-cols-4">
                   <article className="rounded-xl border border-border bg-background/55 p-4">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                      {copy(language, "Fiyat", "Price")}
+                      {t("common:price")}
                     </p>
                     <p className="mt-2 text-xl font-semibold text-foreground">
                       {formatReportPrice(report.price, language)}
@@ -208,21 +172,21 @@ export default function ReportsDateDetailPage({
                   </article>
                   <article className="rounded-xl border border-border bg-background/55 p-4">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                      {copy(language, "Bolumler", "Sections")}
+                      {t("flow:sections03e0")}
                     </p>
                     <p className="mt-2 text-xl font-semibold text-foreground">
                       {report.sections.length}
                     </p>
                     <p className="mt-1 text-sm text-muted-foreground">
-                      {report.sections.join(" · ") || copy(language, "Algilanmadi", "Not detected")}
+                      {report.sections.join(" · ") || t("marketing:openFlow")}
                     </p>
                   </article>
                   <article className="rounded-xl border border-border bg-background/55 p-4">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                      {copy(language, "Grafik", "Charts")}
+                      {t("flow:charts")}
                     </p>
                     <p className="mt-2 text-xl font-semibold text-foreground">
-                      {report.hasCharts ? copy(language, "Var", "Yes") : copy(language, "Yok", "No")}
+                      {report.hasCharts ? t("flow:yes") : t("flow:no")}
                     </p>
                     <p className="mt-1 text-sm text-muted-foreground">
                       {report.sourceLabel}
@@ -230,7 +194,7 @@ export default function ReportsDateDetailPage({
                   </article>
                   <article className="rounded-xl border border-border bg-background/55 p-4">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                      {copy(language, "Dil", "Language")}
+                      {t("flow:language")}
                     </p>
                     <div className="mt-2 flex items-center gap-2">
                       <Button
@@ -241,7 +205,7 @@ export default function ReportsDateDetailPage({
                         className="rounded-full"
                       >
                         <Languages className="size-3.5" />
-                        {copy(language, "TR", "TR")}
+                        {"TR"}
                       </Button>
                       <Button
                         type="button"
@@ -251,7 +215,7 @@ export default function ReportsDateDetailPage({
                         className="rounded-full"
                       >
                         <Globe2 className="size-3.5" />
-                        {copy(language, "EN", "EN")}
+                        {"EN"}
                       </Button>
                     </div>
                   </article>
@@ -269,7 +233,7 @@ export default function ReportsDateDetailPage({
                     }}
                   >
                     <Trash2 className="size-4" />
-                    {copy(language, "Yerel Kaydi Sil", "Delete Local Copy")}
+                    {t("flow:deleteLocalCopy")}
                   </Button>
                 ) : null}
                 {report.serverReportId ? (
@@ -279,7 +243,7 @@ export default function ReportsDateDetailPage({
                     onClick={() => setLocation(`/flow/${encodeURIComponent(report.serverReportId || "")}`)}
                   >
                     <MessageSquareText className="size-4" />
-                    {copy(language, "Community View", "Community View")}
+                    {"Community View"}
                   </Button>
                 ) : null}
               </div>
@@ -287,11 +251,7 @@ export default function ReportsDateDetailPage({
           </section>
 
           <section className="rounded-xl border border-border bg-card/90 p-6 text-sm leading-7 text-muted-foreground shadow-xl">
-            {copy(
-              language,
-              "Guvenlik notu: rapor ana uygulama DOM'una basilmiyor; iframe `sandbox=\"allow-scripts\"` ile izole aciliyor ve `allow-same-origin` verilmedigi icin rapor script'leri uygulama kabuguna erisemiyor.",
-              "Security note: the report is not injected into the main app DOM; it runs inside an iframe with `sandbox=\"allow-scripts\"` and without `allow-same-origin`, so report scripts cannot reach the app shell."
-            )}
+            {t("flow:securityNoteTheReportIs")}
           </section>
 
           <HtmlReportRenderer
@@ -303,11 +263,7 @@ export default function ReportsDateDetailPage({
             }
             emptyMessage={
               serverDetailError ||
-              copy(
-                language,
-                "Rapor HTML icerigi yuklenemedi.",
-                "The report HTML content could not be loaded."
-              )
+              t("flow:theReportHtmlContentCould")
             }
             sourceLabel={report.sourceLabel}
             title={report.companyName || report.fileName}

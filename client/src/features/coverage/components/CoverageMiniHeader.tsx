@@ -1,7 +1,7 @@
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import LanguageSelector from "@/components/LanguageSelector";
-import { type AppLanguage, copy } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/contexts/ThemeContext";
 import { type CoverageReport } from "../lib/coverageParser";
@@ -83,8 +83,8 @@ export default function CoverageMiniHeader({
             variant="outline"
             size="icon"
             onClick={toggleTheme}
-            aria-label={copy(language, "Temayi degistir", "Toggle theme")}
-            title={copy(language, "Temayi degistir", "Toggle theme")}
+            aria-label={t("coverage:themeToggle")}
+            title={t("coverage:themeToggle")}
           >
             {theme === "dark" ? (
               <Sun className="size-4" />

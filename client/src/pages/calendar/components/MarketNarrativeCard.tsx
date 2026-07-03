@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Zap, BookOpen } from "lucide-react";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { THEME } from "../Calendar.theme";
 
@@ -13,18 +13,14 @@ export function MarketNarrativeCard({
 }) {
   const safeNarrative =
     narrative ||
-    copy(
-      language,
-      "Piyasa hikayesi henuz yuklenmedi.",
-      "Market narrative has not loaded yet."
-    );
+    t("calendar:marketNarrativeHasNotLoaded");
 
   return (
     <Card className={cn("overflow-hidden", THEME.softCardClassName)}>
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center gap-2 text-base">
           <BookOpen className={cn("size-4", THEME.iconClassName)} />
-          {copy(language, "Piyasa Hikayesi", "Market Narrative")}
+          {t("calendar:marketNarrative")}
         </CardTitle>
       </CardHeader>
       <CardContent>

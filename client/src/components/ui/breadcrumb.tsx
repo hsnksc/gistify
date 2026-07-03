@@ -2,7 +2,7 @@ import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { ChevronRight, MoreHorizontal } from "lucide-react";
 
-import { copy, useAppLanguage } from "@/lib/i18n";
+import { useAppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 function Breadcrumb({ ...props }: React.ComponentProps<"nav">) {
@@ -96,7 +96,7 @@ function BreadcrumbEllipsis({
       {...props}
     >
       <MoreHorizontal className="size-4" />
-      <span className="sr-only">{copy(language, "Daha fazla", "More")}</span>
+      <span className="sr-only">{t("common:more")}</span>
     </span>
   );
 }

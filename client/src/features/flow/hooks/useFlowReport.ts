@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import type { FlowReport, FlowReportResponse } from "@shared/flow";
 import { extractApiErrorMessage, readJsonResponse } from "@/lib/api";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 
 interface UseFlowReportResult {
   error: string;
@@ -47,7 +47,7 @@ export function useFlowReport(
         throw new Error(
           extractApiErrorMessage(
             payload,
-            copy(language, "Flow raporu yuklenemedi.", "Flow report could not be loaded.")
+            t("flow:flowReportCouldNotBe")
           )
         );
       }
@@ -57,7 +57,7 @@ export function useFlowReport(
       setError(
         caughtError instanceof Error
           ? caughtError.message
-          : copy(language, "Flow raporu yuklenemedi.", "Flow report could not be loaded.")
+          : t("flow:flowReportCouldNotBe")
       );
       setReport(null);
     } finally {

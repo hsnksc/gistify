@@ -1,13 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import {
-  ArrowLeft,
-  BadgeCheck,
-  CreditCard,
-  LoaderCircle,
-  LockKeyhole,
-  ShieldCheck,
-  Sparkles,
-} from "lucide-react";
+  ArrowLeft, BadgeCheck, CreditCard, LoaderCircle, LockKeyhole, ShieldCheck, Sparkles, } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import type { AppLanguage } from "@/lib/i18n";

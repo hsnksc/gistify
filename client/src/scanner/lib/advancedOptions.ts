@@ -7,7 +7,7 @@
 
 import type { StockResult } from "../types";
 import type { MarketRegime } from "./advancedPattern";
-import { type AppLanguage, copy } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 
 export interface StrikeRecommendation {
   type: "ATM" | "SLIGHT_OTM" | "AGGRESSIVE_OTM";
@@ -50,10 +50,7 @@ export function recommendStrike(
       deltaRange: "0.45 – 0.55",
       suggestedStrike: strike,
       estimatedPremium: Math.round(atrPremium * 0.8 * 100) / 100,
-      rationale: copy(language,
-        "Fiyat hedefe yakın. ATM seçmek en yüksek delta ve en iyi risk/ödül dengesi sağlar.",
-        "Price near target. ATM offers highest delta and best risk/reward balance."
-      ),
+      rationale: t("scanner:priceNearTargetAtmOffers"),
     };
   } else if (Math.abs(pctDiff) < 4) {
     // Slight OTM
@@ -68,10 +65,7 @@ export function recommendStrike(
       deltaRange: "0.30 – 0.45",
       suggestedStrike: strike,
       estimatedPremium: Math.round(atrPremium * 0.5 * 100) / 100,
-      rationale: copy(language,
-        "Hedefe %2-4 mesafe var. Hafif OTM prim maliyetini düşürür, hâlâ güçlü delta sağlar.",
-        "Target is 2-4% away. Slight OTM lowers premium cost while still providing strong delta."
-      ),
+      rationale: t("scanner:targetIs24Away"),
     };
   } else {
     // Aggressive OTM
@@ -86,10 +80,7 @@ export function recommendStrike(
       deltaRange: "0.20 – 0.30",
       suggestedStrike: strike,
       estimatedPremium: Math.round(atrPremium * 0.25 * 100) / 100,
-      rationale: copy(language,
-        "Hedef uzak. Agresif OTM ucuz prim sunar ama kazanma olasılığı daha düşüktür.",
-        "Target is far. Aggressive OTM offers cheap premium but lower probability of profit."
-      ),
+      rationale: t("scanner:targetIsFarAggressiveOtm"),
     };
   }
 }
@@ -108,11 +99,8 @@ export function recommendExpiry(
     const dte = todayDayOfWeek >= 4 ? 14 : 10; // Thu/Fri → 2 weeks
     return {
       recommendedDte: dte,
-      label: dte >= 14 ? copy(language, "2 haftalık vade", "2-week expiry") : copy(language, "~10 günlük vade", "~10 day expiry"),
-      rationale: copy(language,
-        "Yüksek volatilite rejimi. Uzun vade seçerek theta kaybını sınırlayın ve fırsat penceresini genişletin.",
-        "High volatility regime. Choose longer expiry to limit theta decay and widen the opportunity window."
-      ),
+      label: dte >= 14 ? t("scanner:2WeekExpiry") : t("scanner:10DayExpiry"),
+      rationale: t("scanner:highVolatilityRegimeChooseLonger"),
     };
   }
 
@@ -121,11 +109,8 @@ export function recommendExpiry(
     const dte = todayDayOfWeek >= 3 ? 7 : 5; // Wed+ → weekly
     return {
       recommendedDte: dte,
-      label: dte <= 5 ? copy(language, "Haftalık (Cuma) vade", "Weekly (Friday) expiry") : copy(language, "~7 günlük vade", "~7 day expiry"),
-      rationale: copy(language,
-        "Düşük volatilite rejimi. Kısa vade ile gamma'dan faydalanın; hareket beklentisi yüksek.",
-        "Low volatility regime. Use shorter expiry to benefit from gamma; high movement expected."
-      ),
+      label: dte <= 5 ? t("scanner:weeklyFridayExpiry") : t("scanner:7DayExpiry"),
+      rationale: t("scanner:lowVolatilityRegimeUseShorter"),
     };
   }
 
@@ -134,18 +119,15 @@ export function recommendExpiry(
     // Wednesday onwards → next week or 2-week
     return {
       recommendedDte: 10,
-      label: copy(language, "Gelecek hafta + 3 gün (~10 gün)", "Next week + 3 days (~10 days)"),
-      rationale: copy(language,
-        "Hafta ortası/sonu yaklaştığında bir sonraki haftanın sonuna kadar vade seçin.",
-        "Mid/late week approaching. Choose expiry through the end of next week."
-      ),
+      label: t("scanner:nextWeek3Days10"),
+      rationale: t("scanner:midLateWeekApproachingChoose"),
     };
   }
 
   return {
     recommendedDte: 5,
-    label: copy(language, "Bu hafta sonu (Cuma) vade", "This week end (Friday) expiry"),
-    rationale: copy(language, "Hafta başındayız, Cuma vadeli opsiyon uygun.", "Early in the week, Friday expiry is appropriate."),
+    label: t("scanner:thisWeekEndFridayExpiry"),
+    rationale: t("scanner:earlyInTheWeekFriday"),
   };
 }
 
@@ -220,12 +202,12 @@ export function buildCompleteRecommendation(
       : null;
 
   const notes: string[] = [];
-  notes.push(copy(language, `ATM/OTM: ${strikeRec.type} (${strikeRec.deltaRange} delta)`, `ATM/OTM: ${strikeRec.type} (${strikeRec.deltaRange} delta)`));
-  notes.push(copy(language, `Vade: ${expiryRec.label} (~${expiryRec.recommendedDte} gün)`, `Expiry: ${expiryRec.label} (~${expiryRec.recommendedDte} days)`));
+  notes.push(`ATM/OTM: ${strikeRec.type} (${strikeRec.deltaRange} delta)`);
+  notes.push(t("scanner:expiryDays", { label: expiryRec.label, recommendeddte: expiryRec.recommendedDte }));
   if (positionSizing) {
-    notes.push(copy(language, `Maksimum ${positionSizing.maxContracts} kontrat (${positionSizing.maxPremium}$ prim)`, `Maximum ${positionSizing.maxContracts} contracts (${positionSizing.maxPremium}$ premium)`));
+    notes.push(t("scanner:maximumContractsPremium", { maxcontracts: positionSizing.maxContracts, maxpremium: positionSizing.maxPremium }));
   }
-  notes.push(copy(language, `Hedef: $${targetPrice} / Durdurma: $${stopLossPrice}`, `Target: $${targetPrice} / Stop: $${stopLossPrice}`));
+  notes.push(t("scanner:targetStop", { targetprice: targetPrice, stoplossprice: stopLossPrice }));
 
   return {
     strikeRec,

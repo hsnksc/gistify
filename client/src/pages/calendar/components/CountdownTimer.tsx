@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Clock } from "lucide-react";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 
 function getRemainingSeconds(target: string): number {
   return Math.floor((new Date(target).getTime() - Date.now()) / 1000);
@@ -33,7 +33,7 @@ export function CountdownTimer({
   if (remaining <= 0) {
     return (
       <span className="text-xs font-medium text-emerald-400">
-        {copy(language, "Yayinda", "Live")}
+        {t("calendar:live")}
       </span>
     );
   }

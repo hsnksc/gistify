@@ -1,13 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import {
-  PieChart,
-  CalendarDays,
-  TrendingUp,
-  Shield,
-  AlertTriangle,
-  ArrowRight,
-} from "lucide-react";
-import { copy, type AppLanguage } from "@/lib/i18n";
+  PieChart, CalendarDays, TrendingUp, Shield, AlertTriangle, ArrowRight, } from "lucide-react";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { PortfolioLevel } from "@shared/earnings";
 
@@ -156,7 +150,7 @@ export default function PortfolioBuilder({
       <div className="mb-4 flex items-center gap-2">
         <PieChart className="size-5 text-sky-400" />
         <h2 className="text-lg font-bold text-white">
-          {copy(language, "Portföy Önerileri", "Portfolio Recommendations")}
+          {t("earnings:portfolioRecommendations")}
         </h2>
       </div>
 
@@ -186,7 +180,7 @@ export default function PortfolioBuilder({
 
       {!level || recs.length === 0 ? (
         <p className="text-sm text-slate-400">
-          {copy(language, "Bu bütçe için öneri bulunamadı.", "No recommendations for this budget.")}
+          {t("flow:unknown")}
         </p>
       ) : (
         <div className="space-y-5">
@@ -195,7 +189,7 @@ export default function PortfolioBuilder({
             {/* Pie chart */}
             <div className="rounded-2xl border border-white/10 bg-slate-800/50 p-5">
               <p className="mb-3 text-xs font-bold uppercase tracking-wider text-slate-400">
-                {copy(language, "Sektör Dağılımı", "Sector Allocation")}
+                {t("earnings:sectorAllocation")}
               </p>
               <div className="flex items-center gap-4">
                 <div
@@ -216,7 +210,7 @@ export default function PortfolioBuilder({
                     </div>
                   ))}
                   {sectorBreakdown.length === 0 && (
-                    <p className="text-xs text-slate-500">{copy(language, "Veri yok", "No data")}</p>
+                    <p className="text-xs text-slate-500">{t("common:noData")}</p>
                   )}
                 </div>
               </div>
@@ -225,19 +219,19 @@ export default function PortfolioBuilder({
             {/* Expected return + total allocation */}
             <div className="rounded-2xl border border-white/10 bg-slate-800/50 p-5">
               <p className="mb-1 text-xs font-bold uppercase tracking-wider text-slate-400">
-                {copy(language, "Beklenen Getiri", "Expected Return")}
+                {t("earnings:expectedReturn")}
               </p>
               <p className="text-3xl font-bold text-emerald-400">
                 +{expectedReturnSum.toFixed(1)}%
               </p>
               <p className="mt-2 text-xs text-slate-500">
-                {copy(language, "Tahmini portföy getirisi", "Estimated portfolio return")}
+                {t("macro:coreYoy")}
               </p>
 
               <div className="mt-5">
                 <div className="mb-1.5 flex items-center justify-between">
                   <span className="text-xs font-semibold text-slate-300">
-                    {copy(language, "Toplam Ağırlık", "Total Allocation")}
+                    {t("earnings:totalAllocation")}
                   </span>
                   <span className="text-xs font-bold text-sky-400">{totalAllocation.toFixed(0)}%</span>
                 </div>
@@ -253,7 +247,7 @@ export default function PortfolioBuilder({
             {/* Risk matrix */}
             <div className="rounded-2xl border border-white/10 bg-slate-800/50 p-5">
               <p className="mb-3 text-xs font-bold uppercase tracking-wider text-slate-400">
-                {copy(language, "Risk Matrisi", "Risk Matrix")}
+                {t("earnings:riskMatrix")}
               </p>
               <div className="grid grid-cols-2 gap-2">
                 {[
@@ -269,7 +263,7 @@ export default function PortfolioBuilder({
                       cell.color
                     )}
                   >
-                    {copy(language, cell.tr, cell.en)}
+                    {(language === "en" ? cell.en : cell.tr)}
                   </div>
                 ))}
               </div>
@@ -279,7 +273,7 @@ export default function PortfolioBuilder({
           {/* Allocation list */}
           <div className="rounded-2xl border border-white/10 bg-slate-800/50 p-5">
             <p className="mb-3 text-xs font-bold uppercase tracking-wider text-slate-400">
-              {copy(language, "Ayrıntılı Dağılım", "Detailed Allocation")}
+              {t("earnings:detailedAllocation")}
             </p>
             <div className="space-y-3">
               {recs.map((rec, idx) => {
@@ -302,18 +296,18 @@ export default function PortfolioBuilder({
 
                     <div className="flex items-center gap-4">
                       <div className="text-right">
-                        <p className="text-xs text-slate-500">{copy(language, "Ağırlık", "Allocation")}</p>
+                        <p className="text-xs text-slate-500">{t("earnings:allocation")}</p>
                         <p className="text-sm font-bold text-sky-400">{rec.allocation}</p>
                       </div>
                       <div className="text-right">
-                        <p className="text-xs text-slate-500">{copy(language, "Getiri", "Return")}</p>
+                        <p className="text-xs text-slate-500">{t("earnings:return")}</p>
                         <p className="flex items-center gap-1 text-sm font-bold text-emerald-400">
                           <TrendingUp className="size-3" />
                           {rec.expectedReturn || "—"}
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-xs text-slate-500">{copy(language, "Risk", "Risk")}</p>
+                        <p className="text-xs text-slate-500">{"Risk"}</p>
                         <span
                           className={cn(
                             "inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-bold",
@@ -328,7 +322,7 @@ export default function PortfolioBuilder({
                       </div>
                       {rec.fomcRisk && (
                         <div className="text-right">
-                          <p className="text-xs text-slate-500">{copy(language, "FOMC", "FOMC")}</p>
+                          <p className="text-xs text-slate-500">{"FOMC"}</p>
                           <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-400">
                             <AlertTriangle className="size-3" />
                             {rec.fomcRisk}
@@ -341,7 +335,7 @@ export default function PortfolioBuilder({
                     <div className="flex items-center gap-2 rounded-lg border border-slate-800/40 bg-slate-950/30 px-3 py-2 sm:ml-auto">
                       <CalendarDays className="size-3.5 text-slate-500" />
                       <span className="text-[10px] text-slate-400">
-                        {rec.entryWindow || copy(language, "Giriş/Çıkış", "Entry/Exit")}
+                        {rec.entryWindow || t("earnings:entryExit")}
                       </span>
                       <ArrowRight className="size-3 text-slate-600" />
                       <span className="text-[10px] text-slate-400">

@@ -4,21 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+  Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, } from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+  Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, } from "@/components/ui/tooltip";
 import { useIsMobile } from "@/hooks/useMobile";
-import { copy, useAppLanguage } from "@/lib/i18n";
+import { useAppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, VariantProps } from "class-variance-authority";
@@ -199,13 +190,9 @@ function Sidebar({
           side={side}
         >
           <SheetHeader className="sr-only">
-            <SheetTitle>{copy(language, "Kenar cubugu", "Sidebar")}</SheetTitle>
+            <SheetTitle>{t("common:sidebar")}</SheetTitle>
             <SheetDescription>
-              {copy(
-                language,
-                "Mobil kenar cubugunu gosterir.",
-                "Displays the mobile sidebar."
-              )}
+              {t("common:displaysTheMobileSidebar")}
             </SheetDescription>
           </SheetHeader>
           <div className="flex h-full w-full flex-col">{children}</div>
@@ -291,7 +278,7 @@ function SidebarTrigger({
     >
       <PanelLeftIcon />
       <span className="sr-only">
-        {copy(language, "Kenar cubugunu ac veya kapat", "Toggle Sidebar")}
+        {t("common:toggleSidebar")}
       </span>
     </Button>
   );
@@ -305,10 +292,10 @@ function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
     <button
       data-sidebar="rail"
       data-slot="sidebar-rail"
-      aria-label={copy(language, "Kenar cubugunu ac veya kapat", "Toggle Sidebar")}
+      aria-label={t("common:toggleSidebar")}
       tabIndex={-1}
       onClick={toggleSidebar}
-      title={copy(language, "Kenar cubugunu ac veya kapat", "Toggle Sidebar")}
+      title={t("common:toggleSidebar")}
       className={cn(
         "hover:after:bg-sidebar-border absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-linear group-data-[side=left]:-right-4 group-data-[side=right]:left-0 after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] sm:flex",
         "in-data-[side=left]:cursor-w-resize in-data-[side=right]:cursor-e-resize",

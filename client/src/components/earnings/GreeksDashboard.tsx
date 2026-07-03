@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { Activity, ArrowUpDown, Filter } from "lucide-react";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t as i18nT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { Strategy } from "@shared/earnings";
 
@@ -125,15 +125,11 @@ export default function GreeksDashboard({
         <div className="mb-4 flex items-center gap-2">
           <Activity className="size-5 text-sky-400" />
           <h2 className="text-lg font-bold text-white">
-            {copy(language, "Greeks Panosu", "Greeks Dashboard")}
+            {i18nT("earnings:greeksDashboard")}
           </h2>
         </div>
         <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-900/40 p-6 text-center text-sm text-slate-400">
-          {copy(
-            language,
-            "Henüz Greeks verisi gelmedi. Opsiyon risk haritasi veri bekliyor.",
-            "Greeks data not yet available. Option risk map awaiting data."
-          )}
+          {i18nT("earnings:greeksDataNotYetAvailable")}
         </div>
       </section>
     );
@@ -145,7 +141,7 @@ export default function GreeksDashboard({
         <div className="flex items-center gap-2">
           <Activity className="size-5 text-sky-400" />
           <h2 className="text-lg font-bold text-white">
-            {copy(language, "Greeks Panosu", "Greeks Dashboard")}
+            {i18nT("earnings:greeksDashboard")}
           </h2>
           <span className="rounded-full bg-slate-800 px-2 py-0.5 text-xs font-bold text-slate-400">
             {sorted.length}
@@ -174,11 +170,7 @@ export default function GreeksDashboard({
 
       {sorted.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-900/40 p-6 text-center text-sm text-slate-400">
-          {copy(
-            language,
-            "Aktif filtre ile eslesen Greeks satiri yok.",
-            "No Greeks rows match the active filter."
-          )}
+          {i18nT("earnings:noGreeksRowsMatchThe")}
         </div>
       ) : (
         <div className="max-h-[500px] overflow-y-auto rounded-2xl border border-white/10">
@@ -190,7 +182,7 @@ export default function GreeksDashboard({
                   onClick={() => handleSort("ticker")}
                 >
                   <div className="flex items-center gap-1">
-                    {copy(language, "Hisse", "Ticker")}
+                    {i18nT("common:ticker")}
                     <ArrowUpDown className="size-3" />
                   </div>
                 </th>
@@ -265,19 +257,19 @@ export default function GreeksDashboard({
       <div className="mt-4 flex flex-wrap items-center gap-4 text-[10px] text-slate-400">
         <div className="flex items-center gap-1.5">
           <span className="inline-block size-2.5 rounded-sm bg-emerald-500/40" />
-          <span>{copy(language, "Delta / Theta pozitif", "Delta / Theta positive")}</span>
+          <span>{i18nT("flow:adminMetaCouldNotBe")}</span>
         </div>
         <div className="flex items-center gap-1.5">
           <span className="inline-block size-2.5 rounded-sm bg-rose-500/40" />
-          <span>{copy(language, "Delta / Theta negatif", "Delta / Theta negative")}</span>
+          <span>{i18nT("earnings:deltaThetaNegative")}</span>
         </div>
         <div className="flex items-center gap-1.5">
           <span className="inline-block size-2.5 rounded-sm bg-emerald-500/40" />
-          <span>{copy(language, "Vega negatif (IV crush kazancı)", "Vega negative (IV crush gain)")}</span>
+          <span>{i18nT("earnings:vegaNegativeIvCrushGain")}</span>
         </div>
         <div className="flex items-center gap-1.5">
           <span className="inline-block size-2.5 rounded-sm bg-amber-500/40" />
-          <span>{copy(language, "Gamma yüksek (risk)", "Gamma high (risk)")}</span>
+          <span>{i18nT("earnings:gammaHighRisk")}</span>
         </div>
       </div>
     </section>

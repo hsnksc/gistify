@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { CalendarDayReport, CalendarImportance } from "@shared/calendar";
 import { THEME } from "../Calendar.theme";
@@ -55,12 +55,12 @@ function FearGreedGauge({ value, language }: { value: number | null; language: A
   else if (value <= 55) color = "bg-slate-400";
   else if (value <= 75) color = "bg-emerald-400";
   else color = "bg-emerald-500";
-  let label = copy(language, "Nötr", "Neutral");
-  if (value <= 25) label = copy(language, "Aşırı Korku", "Extreme Fear");
-  else if (value <= 45) label = copy(language, "Korku", "Fear");
-  else if (value <= 55) label = copy(language, "Nötr", "Neutral");
-  else if (value <= 75) label = copy(language, "Açgözlülük", "Greed");
-  else label = copy(language, "Aşırı Açgözlülük", "Extreme Greed");
+  let label = t("common:neutral0964");
+  if (value <= 25) label = t("common:sell");
+  else if (value <= 45) label = t("calendar:fear");
+  else if (value <= 55) label = t("common:neutral0964");
+  else if (value <= 75) label = t("calendar:greed");
+  else label = t("common:extremeGreed");
   return (
     <div className="mt-2">
       <div className="flex items-center justify-between mb-1">
@@ -104,11 +104,7 @@ export function SummaryCard({
           <div>
             <CardTitle className="text-lg text-foreground">
               {report.title ||
-                copy(
-                  language,
-                  "Bugunun Makro Olaylari",
-                  "Today's Macro Events"
-                )}
+                t("calendar:todaySMacroEvents")}
             </CardTitle>
             <DayThemeBadge events={report.events} language={language} />
           </div>
@@ -124,23 +120,15 @@ export function SummaryCard({
 
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <CompactStatCard
-            label={copy(language, "Yuksek Onemli", "High Importance")}
+            label={t("calendar:highImportance")}
             value={String(report.highImportanceCount)}
-            hint={copy(
-              language,
-              "Bugun takvime giren kritik olay",
-              "Critical events on today's calendar"
-            )}
+            hint={t("calendar:criticalEventsOnTodayS")}
             onClick={() => onFilter?.("high")}
           />
           <CompactStatCard
-            label={copy(language, "Toplam Olay", "Total Events")}
+            label={t("calendar:totalEvents")}
             value={String(report.events.length)}
-            hint={copy(
-              language,
-              "Tum onem seviyelerindeki olaylar",
-              "Events across all importance levels"
-            )}
+            hint={t("calendar:eventsAcrossAllImportanceLevels")}
             onClick={() => onFilter?.("all")}
           />
           <div className="rounded-xl border border-white/10 bg-black/20 px-3.5 py-3">

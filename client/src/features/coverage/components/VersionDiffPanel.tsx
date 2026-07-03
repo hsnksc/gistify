@@ -1,7 +1,7 @@
 import { ArrowDown, ArrowRight, ArrowUp, GitCompareArrows } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { type AppLanguage, copy } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 interface DiffItem {
@@ -52,26 +52,18 @@ export default function VersionDiffPanel({
       <CardHeader className="gap-2">
         <div className="flex items-center gap-2">
           <GitCompareArrows className="size-4 text-sky-500" />
-          <CardTitle>{copy(language, "Version diff", "Version diff")}</CardTitle>
+          <CardTitle>{t("coverage:versionDiff")}</CardTitle>
         </div>
         <CardDescription>
           {hasPrevious
-            ? copy(
-                language,
-                "Secili surum bir onceki raporla karsilastirildi.",
-                "The selected version is compared against the previous report."
-              )
-            : copy(
-                language,
-                "Bu ticker icin su an sadece tek surum var.",
-                "There is only one version for this ticker right now."
-              )}
+            ? t("coverage:theSelectedVersionIsCompared")
+            : t("coverage:thereIsOnlyOneVersion")}
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4 lg:grid-cols-[1fr_1fr]">
         <div className="rounded-xl border border-border bg-background/35 px-4 py-4">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-            {copy(language, "Degisen metrikler", "Changed metrics")}
+            {t("coverage:changedMetrics")}
           </p>
           <div className="mt-4 space-y-3">
             {changedMetrics.length > 0 ? (
@@ -117,7 +109,7 @@ export default function VersionDiffPanel({
               })
             ) : (
               <p className="text-sm text-muted-foreground">
-                {copy(language, "Metrik farki yok.", "No metric delta.")}
+                {t("coverage:noMetricDelta")}
               </p>
             )}
           </div>
@@ -125,7 +117,7 @@ export default function VersionDiffPanel({
 
         <div className="rounded-xl border border-border bg-background/35 px-4 py-4">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-            {copy(language, "Degisen bolumler", "Changed sections")}
+            {t("coverage:changedSections")}
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             {changedSections.length > 0 ? (
@@ -140,7 +132,7 @@ export default function VersionDiffPanel({
               )))
              : (
               <span className="text-sm text-muted-foreground">
-                {copy(language, "Yeni bolum farki yok.", "No section-level delta.")}
+                {t("coverage:noSectionLevelDelta")}
               </span>
             )}
           </div>

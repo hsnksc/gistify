@@ -3,7 +3,7 @@ import { AlertTriangle, CalendarDays, RefreshCw } from "lucide-react";
 import WorkspaceLoadingState from "@/components/workspace/WorkspaceLoadingState";
 import { Button } from "@/components/ui/button";
 import { usePageMeta } from "@/hooks/usePageMeta";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import {
   formatDateLabel,
@@ -22,12 +22,8 @@ import { FearGreedOutlookCard } from "./calendar/components/FearGreedOutlookCard
 
 export default function Calendar({ language }: { language: AppLanguage }) {
   usePageMeta({
-    description: copy(
-      language,
-      "Makro takvim, FOMC, PMI, istihdam ve onemli event riskini tek yuzeyde izleyin.",
-      "Macro calendar: track FOMC, PMI, jobs and key event risk on one surface."
-    ),
-    title: copy(language, "Makro Takvim | Gistify", "Macro Calendar | Gistify"),
+    description: t("calendar:macroCalendarTrackFomcPmi"),
+    title: t("calendar:macroCalendarGistify"),
   });
 
   const {
@@ -48,11 +44,7 @@ export default function Calendar({ language }: { language: AppLanguage }) {
       <div className="min-h-screen bg-background">
         <div className="container py-6 md:py-8">
           <WorkspaceLoadingState
-            label={copy(
-              language,
-              "Ekonomik takvim yukleniyor.",
-              "Loading the economic calendar."
-            )}
+            label={t("calendar:loadingTheEconomicCalendar")}
           />
         </div>
       </div>
@@ -66,11 +58,7 @@ export default function Calendar({ language }: { language: AppLanguage }) {
           <WorkspaceLoadingState
             label={
               error ||
-              copy(
-                language,
-                "Henüz ekonomik takvim snapshot'i bulunmuyor.",
-                "No economic calendar snapshot available yet."
-              )
+              t("calendar:noEconomicCalendarSnapshotAvailable")
             }
           />
         </div>
@@ -119,23 +107,15 @@ export default function Calendar({ language }: { language: AppLanguage }) {
                         THEME.eyebrowClassName
                       )}
                     >
-                      {copy(language, "Ekonomik Takvim", "Economic Calendar")}
+                      {t("calendar:economicCalendar")}
                     </p>
                   </div>
                   <h1 className="mt-2 heading-condensed text-[1.65rem] leading-none text-foreground md:text-[1.9rem]">
-                    {copy(
-                      language,
-                      "Gunun Makro Olaylari",
-                      "Today's Macro Events"
-                    )}
+                    {t("calendar:todaySMacroEvents236f")}
                   </h1>
                   <p className="mt-2 text-[13px] leading-6 text-foreground/82">
                     {formatDateLabel(report.reportDate, language)} ·{" "}
-                    {copy(
-                      language,
-                      "ABD ve global veri takvimi",
-                      "US and global data calendar"
-                    )}
+                    {t("calendar:usAndGlobalDataCalendar")}
                   </p>
                 </div>
 
@@ -146,7 +126,7 @@ export default function Calendar({ language }: { language: AppLanguage }) {
                       pipelineStatusClass(pipeline.status)
                     )}
                   >
-                    {copy(language, "Pipeline", "Pipeline")}:{" "}
+                    {"Pipeline"}:{" "}
                     {pipelineStatusLabel(pipeline.status, language)}
                   </span>
 
@@ -163,7 +143,7 @@ export default function Calendar({ language }: { language: AppLanguage }) {
                         refreshing && "animate-spin"
                       )}
                     />
-                    {copy(language, "Yenile", "Refresh")}
+                    {t("common:refresh")}
                   </Button>
 
                   <Button
@@ -178,16 +158,8 @@ export default function Calendar({ language }: { language: AppLanguage }) {
                   >
                     <CalendarDays className="mr-1.5 size-4" />
                     {autoRefresh
-                      ? copy(
-                          language,
-                          "Oto. yenileme acik",
-                          "Auto refresh on"
-                        )
-                      : copy(
-                          language,
-                          "Oto. yenileme kapali",
-                          "Auto refresh off"
-                        )}
+                      ? t("calendar:autoRefreshOn")
+                      : t("calendar:autoRefreshOff")}
                   </Button>
                 </div>
               </div>
@@ -246,7 +218,7 @@ export default function Calendar({ language }: { language: AppLanguage }) {
                         THEME.eyebrowClassName
                       )}
                     >
-                      {copy(language, "Pipeline", "Pipeline")}
+                      {"Pipeline"}
                     </p>
                     <h3 className="mt-1 text-sm font-semibold text-foreground">
                       {pipelineStatusLabel(pipeline.status, language)}
@@ -263,13 +235,13 @@ export default function Calendar({ language }: { language: AppLanguage }) {
                 </div>
                 <div className="mt-3 space-y-2 text-[12px] text-muted-foreground">
                   <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
-                    {copy(language, "Son senkron", "Last sync")}:{" "}
+                    {t("common:lastSync")}:{" "}
                     <span className="text-foreground">
                       {formatTimestamp(pipeline.lastSyncedAt, language)}
                     </span>
                   </div>
                   <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
-                    {copy(language, "Kaynak", "Source")}:{" "}
+                    {t("common:source")}:{" "}
                     <span className="break-all text-foreground">
                       {pipeline.resolvedSourceFile ||
                         pipeline.configuredSourceFile ||

@@ -1,13 +1,12 @@
-import { AlertCircle, ArrowLeft, FileSearch, RefreshCw, Languages } from "lucide-react";
+import { AlertCircle, ArrowLeft, FileSearch, RefreshCw } from "lucide-react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import EmptyState from "@/components/ui/empty-state";
 import LoadingState from "@/components/ui/loading-state";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import type { FlowReportSummary } from "@shared/flow";
 import FlowLayout from "./FlowLayout";
 import FlowReportList from "./FlowReportList";
-import { useTranslationHealth } from "../hooks/useTranslationHealth";
 
 interface FlowFeedScreenProps {
   backHref?: string;
@@ -41,7 +40,6 @@ export default function FlowFeedScreen({
   title,
 }: FlowFeedScreenProps) {
   const [, setLocation] = useLocation();
-  const { available: translationAvailable } = useTranslationHealth(language);
 
   return (
     <FlowLayout
@@ -63,51 +61,34 @@ export default function FlowFeedScreen({
           ) : null}
           <Button type="button" variant="outline" onClick={() => void onRefresh?.()}>
             <RefreshCw className="size-4" />
-            {copy(language, "Yenile", "Refresh")}
+            {t("common:refresh")}
           </Button>
         </>
       }
     >
-      {translationAvailable === false && language === "en" ? (
-        <div className="mb-4 flex items-center gap-2 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
-          <Languages className="size-4 shrink-0" />
-          <span>
-            {copy(
-              language,
-              "Ceviri servisi su an kullanılamıyor. İçerik Türkçe görüntüleniyor.",
-              "Translation service is currently unavailable. Content is displayed in Turkish."
-            )}
-          </span>
-        </div>
-      ) : null}
-
       {loading ? (
         <LoadingState
           compact
-          label={copy(language, "Flow akisi yukleniyor.", "Loading flow feed.")}
+          label={t("flow:loadingFlowFeed")}
         />
       ) : error ? (
         <EmptyState
           description={error}
           icon={AlertCircle}
           role="alert"
-          title={copy(language, "Flow yuklenemedi", "Flow could not be loaded")}
+          title={t("marketing:ivCrushViewCallPut")}
           tone="danger"
         />
       ) : !reports.length ? (
         <EmptyState
           description={
             emptyDescription ||
-            copy(
-              language,
-              "Yeni markdown raporlar geldikce bu akis dolacak.",
-              "This feed will fill automatically as new markdown reports arrive."
-            )
+            t("flow:thisFeedWillFillAutomatically")
           }
           icon={FileSearch}
           title={
             emptyTitle ||
-            copy(language, "Henuz post yok.", "There are no posts yet.")
+            t("flow:thereAreNoPostsYet")
           }
         />
       ) : (

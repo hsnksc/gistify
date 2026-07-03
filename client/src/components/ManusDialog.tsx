@@ -2,13 +2,8 @@ import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { copy, type AppLanguage } from "@/lib/i18n";
+  Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle, } from "@/components/ui/dialog";
+import { type AppLanguage, t } from "@/lib/i18n";
 
 interface ManusDialogProps {
   language?: AppLanguage;
@@ -58,7 +53,7 @@ export function ManusDialog({
         <div className="flex flex-col items-center gap-2 p-6 pt-12">
           {logo ? (
             <div className="w-16 h-16 bg-white rounded-xl border border-[rgba(0,0,0,0.08)] flex items-center justify-center">
-              <img src={logo} alt={copy(language, "Diyalog grafiği", "Dialog graphic")} className="w-10 h-10 rounded-md" />
+              <img src={logo} alt={t("common:dialogGraphic")} className="w-10 h-10 rounded-md" />
             </div>
           ) : null}
 
@@ -69,7 +64,7 @@ export function ManusDialog({
             </DialogTitle>
           ) : null}
           <DialogDescription className="text-sm text-[#858481] leading-5 tracking-[-0.154px]">
-            {copy(language, "Devam etmek icin Manus ile giris yapin", "Please login with Manus to continue")}
+            {t("common:pleaseLoginWithManusTo")}
           </DialogDescription>
         </div>
 
@@ -79,7 +74,7 @@ export function ManusDialog({
             onClick={onLogin}
             className="w-full h-10 bg-[#1a1a19] hover:bg-[#1a1a19]/90 text-white rounded-xl text-sm font-medium leading-5 tracking-[-0.154px]"
           >
-            {copy(language, "Manus ile Giris Yap", "Login with Manus")}
+            {t("common:loginWithManus")}
           </Button>
         </DialogFooter>
       </DialogContent>

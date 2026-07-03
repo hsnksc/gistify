@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { usePageMeta } from "@/hooks/usePageMeta";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import FlowFeedScreen from "../components/FlowFeedScreen";
 import { useFlowReportSummaries } from "../hooks/useFlowReportSummaries";
 import { getFlowReportTickers } from "../lib/flowReportHelpers";
@@ -33,43 +33,27 @@ export default function FlowTickerPage({
   );
 
   usePageMeta({
-    description: copy(
-      language,
-      `${normalizedTicker || "Ticker"} icin Flow postlari.`,
-      `Flow posts for ${normalizedTicker || "this ticker"}.`
-    ),
+    description: (language === "en" ? `Flow posts for ${normalizedTicker || "this ticker"}.` : `${normalizedTicker || "Ticker"} icin Flow postlari.`),
     title: normalizedTicker
       ? `${normalizedTicker} | Flow`
-      : copy(language, "Ticker | Flow", "Ticker | Flow"),
+      : "Ticker | Flow",
   });
 
   return (
     <FlowFeedScreen
       backHref={basePath}
-      backLabel={copy(language, "Tum Akis", "Full Feed")}
+      backLabel={t("calendar:macroCalendarGistify")}
       basePath={basePath}
-      description={copy(
-        language,
-        `${normalizedTicker} gecen postlar burada toplanir.`,
-        `Posts that mention ${normalizedTicker} are collected here.`
-      )}
-      emptyDescription={copy(
-        language,
-        "Bu ticker icin henuz bir post bulunmuyor.",
-        "There are no posts for this ticker yet."
-      )}
-      emptyTitle={copy(
-        language,
-        "Ticker postu bulunamadi.",
-        "No ticker post was found."
-      )}
+      description={t("earnings:theEarningsCalendarRefreshed", { normalizedticker: normalizedTicker })}
+      emptyDescription={t("flow:thereAreNoPostsFor")}
+      emptyTitle={t("calendar:lowVol")}
       error={error}
       eyebrow={eyebrow}
       language={language}
       loading={loading}
       onRefresh={reload}
       reports={filteredReports}
-      title={normalizedTicker ? `$${normalizedTicker}` : copy(language, "Ticker", "Ticker")}
+      title={normalizedTicker ? `$${normalizedTicker}` : "Ticker"}
     />
   );
 }

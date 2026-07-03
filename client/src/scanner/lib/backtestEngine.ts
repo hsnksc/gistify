@@ -15,7 +15,7 @@ import { fetchYF } from "./yahooFinance";
 import type { StockResult } from "../types";
 import { sanityGate, isSafeNumber } from "./sanityGate";
 import { FACTOR_WEIGHTS, clamp100 } from "./scoreConfig";
-import { type AppLanguage, copy } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 
 // ===================== Tipler =====================
 
@@ -503,13 +503,13 @@ function calculateBacktestStats(
 
   // Güne göre performans
   const dayNames = (lang: AppLanguage) => [
-    copy(lang, "Pazar", "Sunday"),
-    copy(lang, "Pazartesi", "Monday"),
-    copy(lang, "Salı", "Tuesday"),
-    copy(lang, "Çarşamba", "Wednesday"),
-    copy(lang, "Perşembe", "Thursday"),
-    copy(lang, "Cuma", "Friday"),
-    copy(lang, "Cumartesi", "Saturday"),
+    t("scanner:sunday"),
+    t("scanner:monday"),
+    t("scanner:tuesday"),
+    t("scanner:wednesday"),
+    t("scanner:consolidationWithinOpeningRangeContinues"),
+    t("scanner:friday"),
+    t("scanner:saturday"),
   ];
   const performanceByDay = [1, 2, 3, 4, 5].map((dow) => {
     const subset = trades.filter((t) => t.dayOfWeek === dow);

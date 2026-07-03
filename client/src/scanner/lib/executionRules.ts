@@ -10,7 +10,7 @@
  *  - %2 NLV max risk per trade
  */
 
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import type { PositionManagement, ManagementAction, ExecutionPlan } from "./optionsTypes";
 
 // ─── POZİSYON BOYUTU: KELLY SİZİNG (v4.0) ───
@@ -71,7 +71,7 @@ export function kellySizing(
     contracts: Math.max(1, contracts),
     perContractRisk: Math.round(perContractRisk * 100) / 100,
     kellyFraction: Math.round(fractionalKelly * 1000) / 10, // as %
-    note: copy(language, `Kelly %${(kellyPct * 100).toFixed(1)} × %25 fraksiyon × ${regimeMultiplier}x rejim = %${(fractionalKelly * 100).toFixed(2)} | Sınır %2 = $${Math.round(maxRisk)} | ${Math.max(1, contracts)} kontrat`, `Kelly %${(kellyPct * 100).toFixed(1)} × %25 fraction × ${regimeMultiplier}x regime = %${(fractionalKelly * 100).toFixed(2)} | Cap %2 = $${Math.round(maxRisk)} | ${Math.max(1, contracts)} contract`),
+    note: t("scanner:kelly25FractionXRegime", { tofixed1: (kellyPct * 100).toFixed(1), regimemultiplier: regimeMultiplier, tofixed2: (fractionalKelly * 100).toFixed(2), roundMaxrisk: Math.round(maxRisk), max1Contracts: Math.max(1, contracts) }),
   };
 }
 
@@ -97,7 +97,7 @@ export function calculatePositionSize(
     contracts: Math.max(1, contracts),
     perContractRisk: Math.round(perContractRisk * 100) / 100,
     kellyFraction: 50, // %50 Kelly = ~%2 NLV (legacy)
-    note: copy(language, `NLV $${netLiquidationValue} × %2 = $${Math.round(maxRisk)} maks risk. ${Math.max(1, contracts)} kontrat @ $${Math.round(perContractRisk)}/risk.`, `NLV $${netLiquidationValue} × %2 = $${Math.round(maxRisk)} max risk. ${Math.max(1, contracts)} contract @ $${Math.round(perContractRisk)}/risk.`),
+    note: t("scanner:nlv2MaxRiskContract", { netliquidationvalue: netLiquidationValue, roundMaxrisk: Math.round(maxRisk), max1Contracts: Math.max(1, contracts), roundPercontractrisk: Math.round(perContractRisk) }),
   };
 }
 
@@ -121,39 +121,39 @@ export function createManagementRules(
 
   const actions: ManagementAction[] = [
     {
-      trigger: copy(language, `Kâr >= %50 ($${profit50Pct})`, `Profit >= %50 ($${profit50Pct})`),
-      action: copy(language, "TAKE_PROFİT: Pozisyonun %50'sini kapat, gerisini stop ile takip", "TAKE_PROFIT: Close 50% of position, trail rest with stop"),
+      trigger: t("scanner:profit50", { profit50pct: profit50Pct }),
+      action: t("scanner:takeProfitClose50Of"),
       priority: 1,
     },
     {
-      trigger: copy(language, `Zarar >= 2x kredi ($${stop2xCredit})`, `Loss >= 2x credit ($${stop2xCredit})`),
-      action: copy(language, "CLOSE: Pozisyonu tamamen kapat, zararı sınırla", "CLOSE: Fully close position, limit loss"),
+      trigger: t("scanner:loss2xCredit", { stop2xcredit: stop2xCredit }),
+      action: t("scanner:closeFullyClosePositionLimit"),
       priority: 1,
     },
     {
-      trigger: copy(language, `DTE <= ${dteRoll} gün`, `DTE <= ${dteRoll} days`),
-      action: copy(language, "ROLL: Sonraki aya aynı striplere taşı veya kapat", "ROLL: Roll to next month same strikes or close"),
+      trigger: t("scanner:dteDays", { dteroll: dteRoll }),
+      action: t("scanner:rollRollToNextMonth"),
       priority: 2,
     },
     {
-      trigger: copy(language, `DTE <= ${timeStop} gün (son çare)`, `DTE <= ${timeStop} days (last resort)`),
-      action: copy(language, "CLOSE: Vade riski çok yüksek, pozisyonu kapat", "CLOSE: Time risk too high, close position"),
+      trigger: t("scanner:dteDaysLastResort", { timestop: timeStop }),
+      action: t("scanner:closeTimeRiskTooHigh"),
       priority: 3,
     },
     {
-      trigger: copy(language, "Underlying short strike'a dokunursa", "If underlying touches short strike"),
-      action: copy(language, "ADJUST: Strike'leri uzaklaştır veya pozisyonu kapat", "ADJUST: Widen strikes or close position"),
+      trigger: t("scanner:ifUnderlyingTouchesShortStrike"),
+      action: t("scanner:adjustWidenStrikesOrClose"),
       priority: 2,
     },
   ];
 
   return {
     entryRules: [
-      copy(language, "IV Rank >= 50 (credit spread) veya <= 30 (long premium)", "IV Rank >= 50 (credit spread) or <= 30 (long premium)"),
-      copy(language, "DTE 30-45 gün (optimal theta decay zone)", "DTE 30-45 days (optimal theta decay zone)"),
-      copy(language, "Expected Move < Spread Width", "Expected Move < Spread Width"),
-      copy(language, "Liquidity: Bid-Ask spread < %5", "Liquidity: Bid-Ask spread < %5"),
-      copy(language, "Pozisyon büyüklüğü NLV'nin %2'sini aşmasın", "Position size must not exceed %2 of NLV"),
+      t("scanner:ivRank50CreditSpread"),
+      t("scanner:dte3045DaysOptimal"),
+      "Expected Move < Spread Width",
+      "Liquidity: Bid-Ask spread < %5",
+      t("scanner:positionSizeMustNotExceed"),
     ],
     profitTarget: 50,
     profitTargetDollar: profit50Pct,
@@ -185,13 +185,13 @@ interface WindowProfile {
 
 function getWindowProfiles(language: AppLanguage = "tr"): Record<ExecutionWindow, WindowProfile> {
   return {
-    OPEN_930:    { label: copy(language, "09:30 Açılış", "09:30 Open"), slippagePct: 15, fillProb: 70, volatility: "EXTREME", allowed: false, reason: copy(language, "Slippage %15+ — Market emir YASAK", "Slippage %15+ — Market order BANNED") },
-    EARLY_1000:  { label: copy(language, "10:00 Erken", "10:00 Early"), slippagePct: 8, fillProb: 80, volatility: "HIGH", allowed: false, reason: copy(language, "Volatilite yüksek, fiyat henüz yerleşmedi", "Volatility high, price not settled yet") },
-    OPTIMAL_1030:{ label: copy(language, "10:30 Optimal", "10:30 Optimal"), slippagePct: 3, fillProb: 90, volatility: "MEDIUM", allowed: true, reason: copy(language, "Likidite zirvesi, fiyat yerleşti", "Liquidity peak, price settled") },
-    MID_1100:    { label: copy(language, "11:00 Altın Saat", "11:00 Golden Hour"), slippagePct: 2, fillProb: 95, volatility: "LOW", allowed: true, reason: copy(language, "En iyi likidite + en düşük slippage", "Best liquidity + lowest slippage") },
-    NOON_1200:   { label: copy(language, "12:00 Öğlen", "12:00 Noon"), slippagePct: 4, fillProb: 85, volatility: "LOW", allowed: true, reason: copy(language, "Lunch fade riski — stratejiye bağlı", "Lunch fade risk — strategy dependent") },
-    AFTERNOON_1400:{ label: copy(language, "14:00 Öğleden Sonra", "14:00 Afternoon"), slippagePct: 5, fillProb: 82, volatility: "MEDIUM", allowed: true, reason: copy(language, "Power Hour öncesi hazırlık", "Pre-Power Hour preparation") },
-    CLOSE_1530:  { label: copy(language, "15:30 Kapanış", "15:30 Close"), slippagePct: 12, fillProb: 75, volatility: "HIGH", allowed: false, reason: copy(language, "MOC emirleri, slippage %10+", "MOC orders, slippage %10+") },
+    OPEN_930:    { label: t("scanner:0930Open"), slippagePct: 15, fillProb: 70, volatility: "EXTREME", allowed: false, reason: t("scanner:slippage15MarketOrderBanned") },
+    EARLY_1000:  { label: t("scanner:1000Early"), slippagePct: 8, fillProb: 80, volatility: "HIGH", allowed: false, reason: t("scanner:volatilityHighPriceNotSettled") },
+    OPTIMAL_1030:{ label: "10:30 Optimal", slippagePct: 3, fillProb: 90, volatility: "MEDIUM", allowed: true, reason: t("scanner:liquidityPeakPriceSettled") },
+    MID_1100:    { label: t("scanner:1100GoldenHour"), slippagePct: 2, fillProb: 95, volatility: "LOW", allowed: true, reason: t("scanner:bestLiquidityLowestSlippage") },
+    NOON_1200:   { label: t("scanner:1200Noon"), slippagePct: 4, fillProb: 85, volatility: "LOW", allowed: true, reason: t("scanner:lunchFadeRiskStrategyDependent") },
+    AFTERNOON_1400:{ label: t("scanner:1400Afternoon"), slippagePct: 5, fillProb: 82, volatility: "MEDIUM", allowed: true, reason: t("scanner:prePowerHourPreparation") },
+    CLOSE_1530:  { label: t("scanner:1530Close"), slippagePct: 12, fillProb: 75, volatility: "HIGH", allowed: false, reason: t("scanner:mocOrdersSlippage10") },
   };
 }
 
@@ -266,13 +266,13 @@ export function createExecutionPlan(
     fillProbability: rec.profile.fillProb,
     timing: rec.window,
     notes: [
-      copy(language, `v4.0 Limit emir: $${midPrice} (midpoint)`, `v4.0 Limit order: $${midPrice} (midpoint)`),
-      copy(language, `Slippage: %${effectiveSlippage} ${isSafe ? "✅ ≤%5 kabul" : "❌ >%5 RED"}`, `Slippage: %${effectiveSlippage} ${isSafe ? "✅ ≤%5 acceptable" : "❌ >%5 RED"}`),
-      copy(language, `Fill: %${rec.profile.fillProb} | Pencere: ${rec.profile.label}`, `Fill: %${rec.profile.fillProb} | Window: ${rec.profile.label}`),
+      t("scanner:v40LimitOrderMidpoint", { midprice: midPrice }),
+      (language === "en" ? `Slippage: %${effectiveSlippage} ${isSafe ? "✅ ≤%5 acceptable" : "❌ >%5 RED"}` : `Slippage: %${effectiveSlippage} ${isSafe ? "✅ ≤%5 kabul" : "❌ >%5 RED"}`),
+      t("scanner:highVolatilityDirectionIndependent", { fillprob: rec.profile.fillProb, label: rec.profile.label }),
       isOpening
-        ? copy(language, "09:30 AÇILIŞTA market emir KESİNLİKLE yok — slippage %15+", "09:30 OPEN absolutely NO market order — slippage %15+")
-        : copy(language, "15:30 KAPANIŞTA market emir yok — MOC riski", "15:30 CLOSE no market order — MOC risk"),
-      copy(language, `v4.0 Kural: Midpoint limit + Slippage ≤%5 + ${rec.profile.label} penceresi`, `v4.0 Rule: Midpoint limit + Slippage ≤%5 + ${rec.profile.label} window`),
+        ? t("scanner:0930OpenAbsolutelyNo")
+        : t("scanner:1530CloseNoMarket"),
+      t("scanner:v40RuleMidpointLimit", { label: rec.profile.label }),
     ],
   };
 }
@@ -300,11 +300,11 @@ export function determineAction(
 
   // 1. Kâr hedefi (%50)
   if (pnlPct >= 50) {
-    details.push(copy(language, `Kâr %${Math.round(pnlPct)} ≥ %50 hedef`, `Profit %${Math.round(pnlPct)} ≥ %50 target`));
-    details.push(copy(language, `Kredi: $${credit}, Kazanç: $${Math.round(credit * pnlPct / 100 * 100)/100}`, `Credit: $${credit}, Gain: $${Math.round(credit * pnlPct / 100 * 100)/100}`));
+    details.push(t("scanner:profit50Target", { roundPnlpct: Math.round(pnlPct) }));
+    details.push(t("scanner:creditGain", { credit, roundCreditPnlpct100100100: Math.round(credit * pnlPct / 100 * 100)/100 }));
     return {
-      action: copy(language, "KÂR REALİZE ET — Pozisyonun %50'sini kapat", "TAKE PROFIT — Close 50% of position"),
-      reason: copy(language, "Kurumsal kural: %50 kârda kapanır. Gerçekleşmiş kâr > beklenen kâr.", "Institutional rule: Close at %50 profit. Realized profit > expected profit."),
+      action: t("scanner:takeProfitClose50Of1cba"),
+      reason: t("scanner:institutionalRuleCloseAt50"),
       urgency: "INFO",
       details,
     };
@@ -312,10 +312,10 @@ export function determineAction(
 
   // 2. Stop loss (2x credit loss = -200% of credit)
   if (pnlPct <= -200) {
-    details.push(copy(language, `Zarar %${Math.round(pnlPct)} ≤ -%200 (2x kredi)`, `Loss %${Math.round(pnlPct)} ≤ -%200 (2x credit)`));
+    details.push(t("scanner:loss2002xCredit", { roundPnlpct: Math.round(pnlPct) }));
     return {
-      action: copy(language, "POZİSYONU KAPAT — Zarar limit aşıldı", "CLOSE POSITION — Loss limit exceeded"),
-      reason: copy(language, "2x kredi kuralı: Max zarar $" + Math.round(spreadWidth * 100) / 100, "2x credit rule: Max loss $" + Math.round(spreadWidth * 100) / 100),
+      action: t("scanner:closePositionLossLimitExceeded"),
+      reason: (language === "en" ? "2x credit rule: Max loss $" + Math.round(spreadWidth * 100) / 100 : "2x kredi kuralı: Max zarar $" + Math.round(spreadWidth * 100) / 100),
       urgency: "CRITICAL",
       details,
     };
@@ -323,10 +323,10 @@ export function determineAction(
 
   // 3. 21 DTE Roll
   if (dte <= 21 && dte > 14) {
-    details.push(copy(language, `DTE: ${dte} gün kaldı`, `DTE: ${dte} days left`));
+    details.push(t("scanner:dteDaysLeft", { dte }));
     return {
-      action: copy(language, "ROLL DÜŞÜN — Sonraki aya taşı veya kapat", "CONSIDER ROLL — Move to next month or close"),
-      reason: copy(language, "21 DTE kuralı: Theta decay hızlanıyor, gamma riski artıyor.", "21 DTE rule: Theta decay accelerating, gamma risk increasing."),
+      action: t("scanner:considerRollMoveToNext"),
+      reason: t("scanner:21DteRuleThetaDecay"),
       urgency: "WARNING",
       details,
     };
@@ -334,10 +334,10 @@ export function determineAction(
 
   // 4. 14 DTE Time Stop
   if (dte <= 14) {
-    details.push(copy(language, `DTE: ${dte} gün — VADE RİSKİ ÇOK YÜKSEK`, `DTE: ${dte} days — TIME RISK VERY HIGH`));
+    details.push(t("scanner:dteDaysTimeRiskVery", { dte }));
     return {
-      action: copy(language, "KAPAT — Vade sonu yaklaştı", "CLOSE — Expiration approaching"),
-      reason: copy(language, "14 DTE son çare kuralı: Assignment riski, gamma riski çok yüksek.", "14 DTE last resort rule: Assignment risk, gamma risk very high."),
+      action: t("scanner:closeExpirationApproaching"),
+      reason: t("scanner:14DteLastResortRule"),
       urgency: "CRITICAL",
       details,
     };
@@ -346,10 +346,10 @@ export function determineAction(
   // 5. Short strike test
   const distanceToShort = Math.abs(underlyingPrice - shortStrike) / underlyingPrice * 100;
   if (distanceToShort < 2) {
-    details.push(copy(language, `Spot $${underlyingPrice} short strike $${shortStrike}'e %${distanceToShort.toFixed(1)} yakın`, `Spot $${underlyingPrice} %${distanceToShort.toFixed(1)} close to short strike $${shortStrike}`));
+    details.push((language === "en" ? `Spot $${underlyingPrice} %${distanceToShort.toFixed(1)} close to short strike $${shortStrike}` : `Spot $${underlyingPrice} short strike $${shortStrike}'e %${distanceToShort.toFixed(1)} yakın`));
     return {
-      action: copy(language, "HEDGE DÜŞÜN — Strike'a çok yaklaşıldı", "CONSIDER HEDGE — Too close to strike"),
-      reason: copy(language, "Pin riski artıyor. Strike'leri uzaklaştır veya pozisyonu kapat.", "Pin risk increasing. Widen strikes or close position."),
+      action: t("scanner:considerHedgeTooCloseTo"),
+      reason: t("scanner:pinRiskIncreasingWidenStrikes"),
       urgency: "WARNING",
       details,
     };
@@ -357,21 +357,21 @@ export function determineAction(
 
   // 6. IV değişimi
   if (ivRank < 30 && pnlPct < 0) {
-    details.push(copy(language, `IV Rank ${ivRank} çok düşük, IV crush devam ediyor`, `IV Rank ${ivRank} very low, IV crush continuing`));
+    details.push(t("scanner:ivRankVeryLowIv", { ivrank: ivRank }));
     return {
-      action: copy(language, "ZARARI KABUL ET — IV crush bitmeden kapat", "ACCEPT LOSS — Close before IV crush ends"),
-      reason: copy(language, "Düşük IV ortamında zarar büyüyebilir. Kuralsız beklemek riskli.", "In low IV environment loss can grow. Waiting without rules is risky."),
+      action: t("scanner:acceptLossCloseBeforeIv"),
+      reason: t("scanner:inLowIvEnvironmentLoss"),
       urgency: "WARNING",
       details,
     };
   }
 
   // Default: tut
-  details.push(copy(language, `DTE: ${dte} gün | Kâr/Zarar: %${Math.round(pnlPct)}`, `DTE: ${dte} days | P/L: %${Math.round(pnlPct)}`));
-  details.push(copy(language, `Short strike'a mesafe: %${distanceToShort.toFixed(1)}`, `Distance to short strike: %${distanceToShort.toFixed(1)}`));
+  details.push(t("scanner:dteDaysPL", { dte, roundPnlpct: Math.round(pnlPct) }));
+  details.push(t("scanner:distanceToShortStrike", { tofixed1: distanceToShort.toFixed(1) }));
   return {
-    action: copy(language, "TUT — Henüz aksiyon gerekmez", "HOLD — No action needed yet"),
-    reason: copy(language, "Tüm yönetim kuralları içinde. Takibe devam.", "All management rules within limits. Continue monitoring."),
+    action: t("scanner:holdNoActionNeededYet"),
+    reason: t("scanner:allManagementRulesWithinLimits"),
     urgency: "INFO",
     details,
   };
@@ -388,13 +388,13 @@ export function liquidityCheck(
   const issues: string[] = [];
 
   if (bidAskSpread > 0.10) {
-    issues.push(copy(language, `Bid-Ask spread $${bidAskSpread} > $0.10 — Slipaj riski yüksek`, `Bid-Ask spread $${bidAskSpread} > $0.10 — Slippage risk high`));
+    issues.push(t("scanner:bidAskSpread010", { bidaskspread: bidAskSpread }));
   }
   if (openInterest < 100) {
-    issues.push(copy(language, `Open Interest ${openInterest} < 100 — Likidite düşük`, `Open Interest ${openInterest} < 100 — Liquidity low`));
+    issues.push(t("scanner:openInterest100LiquidityLow", { openinterest: openInterest }));
   }
   if (volume < 10) {
-    issues.push(copy(language, `Volume ${volume} < 10 — Çıkış zor olabilir`, `Volume ${volume} < 10 — Exit may be difficult`));
+    issues.push(t("scanner:orbBreakout", { volume }));
   }
 
   return {
@@ -417,20 +417,20 @@ export function riskNotification(
   const riskPct = (totalPortfolioRisk / netLiquidationValue) * 100;
 
   if (riskPct > 10) {
-    notifications.push(copy(language, `🚨 Toplam risk $${Math.round(totalPortfolioRisk)} (NLV'nin %${riskPct.toFixed(1)}'i) > %10 limit!`, `🚨 Total risk $${Math.round(totalPortfolioRisk)} (%${riskPct.toFixed(1)} of NLV) > %10 limit!`));
+    notifications.push(t("scanner:totalRiskOfNlv10", { roundTotalportfoliorisk: Math.round(totalPortfolioRisk), tofixed1: riskPct.toFixed(1) }));
   } else if (riskPct > 7) {
-    notifications.push(copy(language, `⚠️ Toplam risk $${Math.round(totalPortfolioRisk)} (NLV'nin %${riskPct.toFixed(1)}'i) — Dikkat`, `⚠️ Total risk $${Math.round(totalPortfolioRisk)} (%${riskPct.toFixed(1)} of NLV) — Caution`));
+    notifications.push(t("scanner:totalRiskOfNlvCaution", { roundTotalportfoliorisk: Math.round(totalPortfolioRisk), tofixed1: riskPct.toFixed(1) }));
   }
 
   const vegaLimit = netLiquidationValue * 0.02;
   if (Math.abs(totalVega) > vegaLimit) {
-    notifications.push(copy(language, `⚠️ Total Vega $${Math.round(totalVega)} > limit $${Math.round(vegaLimit)} → IV hareketine aşırı duyarlı`, `⚠️ Total Vega $${Math.round(totalVega)} > limit $${Math.round(vegaLimit)} → Too sensitive to IV movement`));
+    notifications.push(t("scanner:totalVegaLimitTooSensitive", { roundTotalvega: Math.round(totalVega), roundVegalimit: Math.round(vegaLimit) }));
   }
 
   if (sectorConcentration > 30) {
-    notifications.push(copy(language, `🚨 Sektör konsantrasyonu %${sectorConcentration.toFixed(0)} > %30 → Tek sektöre bet yapıyorsun!`, `🚨 Sector concentration %${sectorConcentration.toFixed(0)} > %30 → You're betting on one sector!`));
+    notifications.push(t("scanner:sectorConcentration30YouRe", { tofixed0: sectorConcentration.toFixed(0) }));
   } else if (sectorConcentration > 25) {
-    notifications.push(copy(language, `⚠️ Sektör konsantrasyonu %${sectorConcentration.toFixed(0)} — Çeşitlendir`, `⚠️ Sector concentration %${sectorConcentration.toFixed(0)} — Diversify`));
+    notifications.push(t("scanner:sectorConcentrationDiversify", { tofixed0: sectorConcentration.toFixed(0) }));
   }
 
   return notifications;
@@ -484,15 +484,15 @@ export function isT1Suitable(
 
   if (persistenceScore < 65) {
     suitable = false;
-    reasons.push(copy(language, `Persistence skoru düşük: ${persistenceScore}/100`, `Persistence score low: ${persistenceScore}/100`));
+    reasons.push(t("scanner:persistenceScoreLow100", { persistencescore: persistenceScore }));
   }
   if (daysToEarnings !== null && daysToEarnings <= 5) {
     suitable = false;
-    reasons.push(copy(language, `Earnings ${daysToEarnings} gün içinde — gap riski`, `Earnings in ${daysToEarnings} days — gap risk`));
+    reasons.push(t("scanner:earningsInDaysGapRisk", { daystoearnings: daysToEarnings }));
   }
   if (stock.rsi >= 80 || stock.rsi <= 20) {
     suitable = false;
-    reasons.push(copy(language, `RSI aşırı bölgede (${stock.rsi.toFixed(1)}) — mean reversion riski`, `RSI extreme zone (${stock.rsi.toFixed(1)}) — mean reversion risk`));
+    reasons.push(t("scanner:rsiExtremeZoneMeanReversion", { tofixed1: stock.rsi.toFixed(1) }));
   }
 
   return { suitable, reasons, score: persistenceScore, warnings: [] };

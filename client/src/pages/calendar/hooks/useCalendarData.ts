@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import type { CalendarData } from "@shared/calendar";
 
 const SNAPSHOT_REFRESH_INTERVAL_MS = 60 * 1000;
@@ -29,11 +29,7 @@ export function useCalendarData(language: AppLanguage) {
             } | null) || null;
           throw new Error(
             payload?.error ||
-              copy(
-                language,
-                "Ekonomik takvim verisi yuklenemedi.",
-                "Failed to load the economic calendar."
-              )
+              t("calendar:failedToLoadTheEconomic")
           );
         }
 
@@ -43,11 +39,7 @@ export function useCalendarData(language: AppLanguage) {
         setError(
           loadError instanceof Error && loadError.message
             ? loadError.message
-            : copy(
-                language,
-                "Ekonomik takvim verisi yuklenemedi.",
-                "Failed to load the economic calendar."
-              )
+            : t("calendar:failedToLoadTheEconomic")
         );
       } finally {
         setLoading(false);

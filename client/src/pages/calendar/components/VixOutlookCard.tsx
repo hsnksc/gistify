@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp, Activity } from "lucide-react";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { THEME } from "../Calendar.theme";
 
@@ -16,9 +16,9 @@ function VixMiniBar({ value, language }: { value: number | null; language: AppLa
   let color = "bg-emerald-500";
   if (value >= 30) color = "bg-rose-500";
   else if (value >= 22) color = "bg-amber-500";
-  let label = copy(language, "Düşük", "Low");
-  if (value >= 30) label = copy(language, "Yüksek", "High");
-  else if (value >= 22) label = copy(language, "Yüksekmiş", "Elevated");
+  let label = t("calendar:low");
+  if (value >= 30) label = t("calendar:high");
+  else if (value >= 22) label = t("calendar:elevated");
   return (
     <div className="mt-3">
       <div className="flex items-center justify-between mb-1.5">
@@ -34,9 +34,9 @@ function VixMiniBar({ value, language }: { value: number | null; language: AppLa
       </div>
       <div className="mt-1.5 flex justify-between text-[10px] text-muted-foreground">
         <span>0</span>
-        <span>{copy(language, "Düşük vol", "Low vol")}</span>
+        <span>{t("calendar:lowVol")}</span>
         <span>25</span>
-        <span>{copy(language, "Yüksek vol", "High vol")}</span>
+        <span>{t("scanner:layer1MarketRegime")}</span>
         <span>50+</span>
       </div>
     </div>
@@ -57,7 +57,7 @@ export function VixOutlookCard({
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center gap-2 text-base">
           <Activity className={cn("size-4", THEME.iconClassName)} />
-          {copy(language, "VIX Gorusu", "VIX Outlook")}
+          {t("calendar:vixOutlook")}
         </CardTitle>
       </CardHeader>
       <CardContent>

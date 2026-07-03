@@ -4,7 +4,7 @@ import * as React from "react";
 import * as SheetPrimitive from "@radix-ui/react-dialog";
 import { XIcon } from "lucide-react";
 
-import { copy, useAppLanguage } from "@/lib/i18n";
+import { useAppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
@@ -76,12 +76,12 @@ function SheetContent({
       >
         {children}
         <SheetPrimitive.Close
-          aria-label={copy(language, "Kapat", "Close")}
-          title={copy(language, "Kapat", "Close")}
+          aria-label={t("common:close")}
+          title={t("common:close")}
           className="absolute top-4 right-4 rounded-lg border border-border/60 bg-background/35 p-2 text-muted-foreground transition-[background-color,color,border-color,opacity] duration-150 hover:border-border hover:bg-accent/10 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-popover focus:outline-hidden disabled:pointer-events-none"
         >
           <XIcon className="size-4" />
-          <span className="sr-only">{copy(language, "Kapat", "Close")}</span>
+          <span className="sr-only">{t("common:close")}</span>
         </SheetPrimitive.Close>
       </SheetPrimitive.Content>
     </SheetPortal>

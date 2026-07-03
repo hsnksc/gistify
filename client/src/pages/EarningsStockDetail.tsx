@@ -2,7 +2,7 @@ import EarningsCalendar from "@/components/earnings/EarningsCalendar";
 import EarningsHero from "@/components/earnings/EarningsHero";
 import StrategyCard from "@/components/earnings/StrategyCard";
 import { usePageMeta } from "@/hooks/usePageMeta";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { Search } from "lucide-react";
 import type { Strategy } from "@shared/earnings";
 import {
@@ -24,11 +24,7 @@ export default function EarningsStockDetailPage({
   ticker: string;
 }) {
   usePageMeta({
-    description: copy(
-      language,
-      `${ticker} kazanc analizi: beklenti, beat riski ve opsiyon cercevesi.`,
-      `${ticker} earnings analysis: expectations, beat risk and options framing.`
-    ),
+    description: t("earnings:earningsAnalysisExpectationsBeatRisk", { ticker }),
     title: `${ticker} Earnings | Gistify`,
   });
 
@@ -48,11 +44,11 @@ export default function EarningsStockDetailPage({
           const result = await refresh();
           if (result.ok) {
             toast.success(
-              copy(language, "Ticker workspace'i yenilendi.", "The ticker workspace refreshed.")
+              t("earnings:theTickerWorkspaceRefreshed")
             );
             return;
           }
-          toast.error(copy(language, "Yenileme basarisiz.", "Refresh failed."), {
+          toast.error(t("common:refreshFailed"), {
             description: result.error,
           });
         }}
@@ -72,11 +68,11 @@ export default function EarningsStockDetailPage({
     const result = await refresh();
     if (result.ok) {
       toast.success(
-        copy(language, "Ticker workspace'i yenilendi.", "The ticker workspace refreshed.")
+        t("earnings:theTickerWorkspaceRefreshed")
       );
       return;
     }
-    toast.error(copy(language, "Yenileme basarisiz.", "Refresh failed."), {
+    toast.error(t("common:refreshFailed"), {
       description: result.error,
     });
   };
@@ -94,14 +90,14 @@ export default function EarningsStockDetailPage({
       <EarningsWorkspaceToolbar
         language={language}
         pipeline={pipeline}
-        sectionLabel={`${copy(language, "Ticker", "Ticker")}: ${normalizedTicker}`}
+        sectionLabel={`${"Ticker"}: ${normalizedTicker}`}
       />
       <EarningsPipelinePanel language={language} pipeline={pipeline} />
       {strategy ? (
         <div className="grid gap-6 xl:grid-cols-[0.85fr_1.15fr]">
           <section className="panel p-4">
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
-              {copy(language, "Secili strateji", "Selected strategy")}
+              {t("earnings:selectedStrategy")}
             </p>
             <div className="mt-4">
               <StrategyCard language={language} strategy={strategy} />
@@ -115,7 +111,7 @@ export default function EarningsStockDetailPage({
             ) : null}
             <section className="panel p-4">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
-                {copy(language, "Desk note", "Desk note")}
+                {"Desk note"}
               </p>
               <div className="mt-3 space-y-2">
                 {(strategy.notes || []).length > 0 ? (
@@ -129,11 +125,7 @@ export default function EarningsStockDetailPage({
                   ))
                 ) : (
                   <div className="rounded-xl border border-border bg-background/60 px-4 py-3 text-sm leading-6 text-muted-foreground">
-                    {copy(
-                      language,
-                      "Bu ticker icin ek not gelmemis. Greeks, CPR ve event zamanlamasi ana karar cercevesi olarak kalir.",
-                      "No extra note arrived for this ticker. Greeks, CPR and event timing remain the primary decision frame."
-                    )}
+                    {t("earnings:noExtraNoteArrivedFor")}
                   </div>
                 )}
               </div>
@@ -142,13 +134,9 @@ export default function EarningsStockDetailPage({
         </div>
       ) : (
         <EmptyState
-          description={copy(
-            language,
-            `${normalizedTicker} icin strategy snapshot bulunamadi. Pipeline'da sadece takvim verisi olabilir.`,
-            `No strategy snapshot was found for ${normalizedTicker}. The pipeline may only contain calendar data.`
-          )}
+          description={t("earnings:noStrategySnapshotWasFound", { normalizedticker: normalizedTicker })}
           icon={Search}
-          title={copy(language, "Ticker bulunamadi", "Ticker not found")}
+          title={t("earnings:tickerNotFound")}
           tone="info"
         />
       )}
@@ -164,14 +152,14 @@ function StrategyDetailPanel({
   strategy: Strategy;
 }) {
   const fields = [
-    [copy(language, "Entry", "Entry"), strategy.entry],
-    [copy(language, "Exit", "Exit"), strategy.exit],
-    [copy(language, "Max hold", "Max hold"), strategy.maxHold],
-    [copy(language, "Profit target", "Profit target"), strategy.profitTarget],
-    [copy(language, "Position size", "Position size"), strategy.positionSize],
-    [copy(language, "Stop loss", "Stop loss"), strategy.stopLoss],
-    [copy(language, "IV crush", "IV crush"), strategy.ivCrush],
-    [copy(language, "Optimal exit", "Optimal exit"), strategy.optimalExit],
+    ["Entry", strategy.entry],
+    ["Exit", strategy.exit],
+    ["Max hold", strategy.maxHold],
+    ["Profit target", strategy.profitTarget],
+    ["Position size", strategy.positionSize],
+    ["Stop loss", strategy.stopLoss],
+    ["IV crush", strategy.ivCrush],
+    ["Optimal exit", strategy.optimalExit],
   ].filter(([, value]) => Boolean(value));
 
   if (fields.length === 0 && strategy.budgetOptions.length === 0) {
@@ -201,7 +189,7 @@ function StrategyDetailPanel({
       {strategy.budgetOptions.length > 0 ? (
         <section className="rounded-xl border border-border bg-background/60 p-4">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
-            {copy(language, "Butce varyasyonlari", "Budget variations")}
+            {t("earnings:budgetVariations")}
           </p>
           <div className="mt-3 space-y-2">
             {strategy.budgetOptions.map(option => (
@@ -222,7 +210,7 @@ function StrategyDetailPanel({
                 </p>
                 {option.maxProfit ? (
                   <p className="mt-2 text-xs text-muted-foreground">
-                    {copy(language, "Max profit", "Max profit")}:{" "}
+                    {"Max profit"}:{" "}
                     {option.maxProfit}
                   </p>
                 ) : null}

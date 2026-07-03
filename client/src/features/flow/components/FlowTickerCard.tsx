@@ -1,6 +1,6 @@
 import { ArrowRight, CalendarRange, Files, History } from "lucide-react";
 import { Link } from "wouter";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import {
   useFlowTitleTranslation,
   useFlowSummaryTranslation,
@@ -46,7 +46,7 @@ export default function FlowTickerCard({
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-[10px] font-semibold uppercase tracking-wider text-sky-300">
-            {copy(language, "Hisse Basligi", "Ticker View")}
+            {t("calendar:failedToLoadTheEconomic")}
           </p>
           <h2 className="mt-1 text-2xl font-semibold tracking-tight text-foreground transition-colors group-hover:text-sky-200">
             {group.ticker}
@@ -54,7 +54,7 @@ export default function FlowTickerCard({
         </div>
         <span className="rounded-full border border-sky-500/25 bg-sky-500/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-sky-300">
           {group.reports.length}{" "}
-          {copy(language, "rapor", "reports")}
+          {t("flow:reports")}
         </span>
       </div>
 
@@ -84,24 +84,16 @@ export default function FlowTickerCard({
           </span>
           <span className="inline-flex items-center gap-1 rounded-full border border-border bg-background/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
             <History className="size-3" />
-            {`${Math.max(group.reports.length - 1, 0)} ${copy(
-              language,
-              "arsiv",
-              "archive"
-            )}`}
+            {`${Math.max(group.reports.length - 1, 0)} ${t("flow:archive")}`}
           </span>
           <span className="inline-flex items-center gap-1 rounded-full border border-border bg-background/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
             <Files className="size-3" />
-            {`${group.sourceLabels.length} ${copy(
-              language,
-              "kaynak",
-              "sources"
-            )}`}
+            {`${group.sourceLabels.length} ${t("flow:sources")}`}
           </span>
         </div>
 
         <span className="inline-flex items-center gap-1 text-xs font-semibold text-foreground transition-colors group-hover:text-sky-200">
-          {copy(language, "Raporlari Ac", "Open Reports")}
+          {t("flow:openReports")}
           <ArrowRight className="size-3.5" />
         </span>
       </div>

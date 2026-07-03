@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import type { FlowReport, FlowReportsResponse } from "@shared/flow";
 import { extractApiErrorMessage, readJsonResponse } from "@/lib/api";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 
 interface UseFlowReportsResult {
   error: string;
@@ -37,11 +37,7 @@ export function useFlowReports(language: AppLanguage): UseFlowReportsResult {
         throw new Error(
           extractApiErrorMessage(
             payload,
-            copy(
-              language,
-              "Flow raporlari yuklenemedi.",
-              "Flow reports could not be loaded."
-            )
+            t("flow:flowReportsCouldNotBe")
           )
         );
       }
@@ -51,11 +47,7 @@ export function useFlowReports(language: AppLanguage): UseFlowReportsResult {
       setError(
         caughtError instanceof Error
           ? caughtError.message
-          : copy(
-              language,
-              "Flow raporlari yuklenemedi.",
-              "Flow reports could not be loaded."
-            )
+          : t("flow:flowReportsCouldNotBe")
       );
       setReports([]);
     } finally {

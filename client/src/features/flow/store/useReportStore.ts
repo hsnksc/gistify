@@ -1,5 +1,5 @@
 import { useEffect, useSyncExternalStore } from "react";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import {
   parseReportHtml,
   type StoredReportRecord,
@@ -159,11 +159,7 @@ export async function hydrateReportStore(language: AppLanguage) {
       error:
         caughtError instanceof Error
           ? caughtError.message
-          : copy(
-              language,
-              "Yerel rapor arsivi yuklenemedi.",
-              "Local report archive could not be loaded."
-            ),
+          : t("flow:localReportArchiveCouldNot"),
       hydrated: true,
       loading: false,
       reports: [],
@@ -185,11 +181,7 @@ export async function removeUploadedReport(
       error:
         caughtError instanceof Error
           ? caughtError.message
-          : copy(
-              language,
-              "Rapor silinemedi.",
-              "The report could not be deleted."
-            ),
+          : t("flow:theReportCouldNotBe"),
     });
   }
 }
@@ -203,11 +195,7 @@ export async function uploadHtmlReports(
 
   if (!htmlFiles.length && invalidFiles.length) {
     setState({
-      error: copy(
-        language,
-        "Sadece .html dosyalari kabul edilir.",
-        "Only .html files are accepted."
-      ),
+      error: t("flow:onlyHtmlFilesAreAccepted"),
     });
     return;
   }
@@ -219,7 +207,7 @@ export async function uploadHtmlReports(
   const queueSeed = htmlFiles.map(file => ({
     fileName: file.name,
     id: `${file.name}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-    message: copy(language, "Parse ediliyor", "Parsing"),
+    message: t("flow:parsing"),
     status: "parsing" as const,
     ticker: "",
   }));
@@ -227,11 +215,7 @@ export async function uploadHtmlReports(
   setState({
     error:
       invalidFiles.length > 0
-        ? copy(
-            language,
-            `${invalidFiles.length} dosya atlandi. Sadece .html kabul edilir.`,
-            `${invalidFiles.length} file(s) were skipped. Only .html is allowed.`
-          )
+        ? t("flow:fileSWereSkippedOnly", { length: invalidFiles.length })
         : "",
     uploadQueue: [...queueSeed, ...state.uploadQueue].slice(0, 18),
     uploading: true,
@@ -261,11 +245,7 @@ export async function uploadHtmlReports(
       let duplicateOf: string | null = null;
       if (duplicate && typeof window !== "undefined") {
         const overwrite = window.confirm(
-          copy(
-            language,
-            `${parsed.ticker} ${parsed.reportDate} icin kayit var. OK = uzerine yaz, Cancel = kopya tut.`,
-            `A report already exists for ${parsed.ticker} ${parsed.reportDate}. OK = overwrite, Cancel = keep a duplicate.`
-          )
+          t("flow:aReportAlreadyExistsFor", { ticker: parsed.ticker, reportdate: parsed.reportDate })
         );
 
         if (!overwrite) {
@@ -292,7 +272,7 @@ export async function uploadHtmlReports(
       setState({ reports: nextReports });
 
       updateQueueItem(queueItem.id, {
-        message: copy(language, "Kaydedildi", "Saved"),
+        message: t("flow:saved"),
         status: "saved",
         ticker: record.ticker,
       });
@@ -301,11 +281,7 @@ export async function uploadHtmlReports(
         message:
           caughtError instanceof Error
             ? caughtError.message
-            : copy(
-                language,
-                "Dosya parse edilemedi.",
-                "The file could not be parsed."
-              ),
+            : t("flow:theFileCouldNotBe"),
         status: "error",
       });
     }

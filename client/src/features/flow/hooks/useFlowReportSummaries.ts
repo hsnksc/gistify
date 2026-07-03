@@ -1,10 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import type {
-  FlowReportSummariesResponse,
-  FlowReportSummary,
-} from "@shared/flow";
+  FlowReportSummariesResponse, FlowReportSummary, } from "@shared/flow";
 import { extractApiErrorMessage, readJsonResponse } from "@/lib/api";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import type { FlowReportKind } from "@shared/flow";
 
 interface UseFlowReportSummariesResult {
@@ -65,11 +63,7 @@ export function useFlowReportSummaries(
         throw new Error(
           extractApiErrorMessage(
             payload,
-            copy(
-              language,
-              "Flow rapor ozetleri yuklenemedi.",
-              "Flow report summaries could not be loaded."
-            )
+            t("flow:flowReportSummariesCouldNot")
           )
         );
       }
@@ -80,18 +74,10 @@ export function useFlowReportSummaries(
         caughtError instanceof DOMException && caughtError.name === "AbortError";
       setError(
         isAbortError
-          ? copy(
-              language,
-              "Flow rapor ozetleri zamaninda gelmedi. Yeniden dene.",
-              "Flow report summaries took too long to arrive. Try again."
-            )
+          ? t("flow:flowReportSummariesTookToo")
           : caughtError instanceof Error
             ? caughtError.message
-            : copy(
-                language,
-                "Flow rapor ozetleri yuklenemedi.",
-                "Flow report summaries could not be loaded."
-              )
+            : t("flow:flowReportSummariesCouldNot")
       );
       setReports([]);
     } finally {

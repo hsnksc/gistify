@@ -1,22 +1,19 @@
 import { CalendarClock, Gauge, Radar, TrendingDown, TrendingUp } from "lucide-react";
 import type {
-  MomentumCandidateGroup,
-  MomentumCandidateRow,
-  MomentumReportSource,
-} from "@/lib/momentumReportSource";
-import { copy } from "@/lib/i18n";
+  MomentumCandidateGroup, MomentumCandidateRow, MomentumReportSource, } from "@/lib/momentumReportSource";
+import { t } from "@/lib/i18n";
 import type { AppLanguage } from "@/lib/i18n";
 
 function groupLabel(group: MomentumCandidateGroup, language: AppLanguage) {
   if (group === "upside") {
-    return copy(language, "Yukari Donus", "Upside Reversal");
+    return t("scanner:upsideReversal");
   }
 
   if (group === "downside") {
-    return copy(language, "Asagi Momentum", "Downside Momentum");
+    return t("scanner:downsideMomentum");
   }
 
-  return copy(language, "Defensive", "Defensive");
+  return "Defensive";
 }
 
 function groupTone(group: MomentumCandidateGroup) {
@@ -87,13 +84,13 @@ function CandidateCard({
       <div className="mt-4 space-y-3 text-sm leading-7">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-            {copy(language, "Tez", "Thesis")}
+            {t("scanner:thesis")}
           </p>
           <p className="mt-1 text-foreground">{row.reason}</p>
         </div>
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-            {copy(language, "Risk", "Risk")}
+            {"Risk"}
           </p>
           <p className="mt-1 text-muted-foreground">{row.risk}</p>
         </div>
@@ -112,11 +109,7 @@ function CandidateTable({
   if (!report.candidates.length) {
     return (
       <EmptyPanel
-        message={copy(
-          language,
-          "Bu raporda parse edilen setup bulunmuyor.",
-          "No parsed setups are available in this report."
-        )}
+        message={t("scanner:noParsedSetupsAreAvailable")}
       />
     );
   }
@@ -128,11 +121,11 @@ function CandidateTable({
           <thead className="border-b border-border bg-background/70">
             <tr>
               {[
-                copy(language, "Ticker", "Ticker"),
-                copy(language, "Grup", "Group"),
-                copy(language, "Skor", "Score"),
-                copy(language, "Tez", "Thesis"),
-                copy(language, "Risk", "Risk"),
+                "Ticker",
+                t("scanner:group"),
+                t("common:score"),
+                t("scanner:thesis"),
+                "Risk",
               ].map(header => (
                 <th
                   key={header}
@@ -190,17 +183,13 @@ export default function MomentumSetupsTab({
           </div>
           <div className="space-y-2">
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-              {copy(language, "Setup Library", "Setup Library")}
+              {"Setup Library"}
             </p>
             <h2 className="heading-condensed text-3xl text-foreground">
-              {copy(language, "Sade setup gorunumu", "Simplified setup view")}
+              {t("scanner:simplifiedSetupView")}
             </h2>
             <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-              {copy(
-                language,
-                "Skor grafiklerini kaldirip butun setup'lari tez, risk ve grup bazinda dogrudan okunabilir kart ve tablolarla gosteriyoruz.",
-                "The score charts are removed and every setup is shown through directly readable cards and tables grouped by thesis, risk and bucket."
-              )}
+              {t("scanner:theScoreChartsAreRemoved")}
             </p>
           </div>
         </div>
@@ -208,27 +197,27 @@ export default function MomentumSetupsTab({
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <SetupStat
-          label={copy(language, "Piyasa Rejimi", "Market Regime")}
+          label={t("scanner:marketRegime")}
           value={report.regimeLabel || "-"}
-          hint={copy(language, "Setup seciminde ana baglam.", "Primary context for setup selection.")}
+          hint={t("scanner:primaryContextForSetupSelection")}
           accentClassName="text-foreground"
         />
         <SetupStat
-          label={copy(language, "Yukari Setup", "Bullish Setup")}
+          label={t("scanner:bullishSetup")}
           value={String(bullishCount)}
-          hint={copy(language, "Donus / tepki adaylari.", "Reversal / bounce candidates.")}
+          hint={t("scanner:reversalBounceCandidates")}
           accentClassName="text-emerald-300"
         />
         <SetupStat
-          label={copy(language, "Asagi Setup", "Bearish Setup")}
+          label={t("scanner:bearishSetup")}
           value={String(bearishCount)}
-          hint={copy(language, "Asagi devam adaylari.", "Downside continuation candidates.")}
+          hint={t("scanner:downsideContinuationCandidates")}
           accentClassName="text-red-300"
         />
         <SetupStat
-          label={copy(language, "Defensive", "Defensive")}
+          label={"Defensive"}
           value={String(defensiveCount)}
-          hint={copy(language, "Koruyucu rota ve dusuk beta blok.", "Protective route and lower beta block.")}
+          hint={t("scanner:protectiveRouteAndLowerBeta")}
           accentClassName="text-amber-300"
         />
       </section>
@@ -237,7 +226,7 @@ export default function MomentumSetupsTab({
         <div className="flex items-center gap-2">
           <Radar className="size-4 text-emerald-300" />
           <h3 className="heading-condensed text-xl text-foreground">
-            {copy(language, "Tum setup tablosu", "All setups table")}
+            {t("scanner:allSetupsTable")}
           </h3>
         </div>
         <div className="mt-4">
@@ -250,7 +239,7 @@ export default function MomentumSetupsTab({
           <div className="flex items-center gap-2">
             <TrendingUp className="size-4 text-emerald-300" />
             <h3 className="heading-condensed text-xl text-foreground">
-              {copy(language, "Yukari Donus", "Upside Reversal")}
+              {t("scanner:upsideReversal")}
             </h3>
           </div>
           <div className="mt-4 space-y-3">
@@ -261,7 +250,7 @@ export default function MomentumSetupsTab({
                   <CandidateCard key={`${row.group}-${row.ticker}-${row.name}`} row={row} language={language} />
                 ))
             ) : (
-              <EmptyPanel message={copy(language, "Bu raporda yukari donus setup'i yok.", "This report has no upside reversal setup.")} />
+              <EmptyPanel message={t("scanner:thisReportHasNoUpside")} />
             )}
           </div>
         </section>
@@ -270,7 +259,7 @@ export default function MomentumSetupsTab({
           <div className="flex items-center gap-2">
             <TrendingDown className="size-4 text-red-300" />
             <h3 className="heading-condensed text-xl text-foreground">
-              {copy(language, "Asagi Momentum", "Downside Momentum")}
+              {t("scanner:downsideMomentum")}
             </h3>
           </div>
           <div className="mt-4 space-y-3">
@@ -281,7 +270,7 @@ export default function MomentumSetupsTab({
                   <CandidateCard key={`${row.group}-${row.ticker}-${row.name}`} row={row} language={language} />
                 ))
             ) : (
-              <EmptyPanel message={copy(language, "Bu raporda asagi momentum setup'i yok.", "This report has no downside momentum setup.")} />
+              <EmptyPanel message={t("scanner:thisReportHasNoDownside")} />
             )}
           </div>
         </section>
@@ -290,7 +279,7 @@ export default function MomentumSetupsTab({
           <div className="flex items-center gap-2">
             <Gauge className="size-4 text-amber-300" />
             <h3 className="heading-condensed text-xl text-foreground">
-              {copy(language, "Defansif", "Defensive")}
+              {t("common:defensive")}
             </h3>
           </div>
           <div className="mt-4 space-y-3">
@@ -301,7 +290,7 @@ export default function MomentumSetupsTab({
                   <CandidateCard key={`${row.group}-${row.ticker}-${row.name}`} row={row} language={language} />
                 ))
             ) : (
-              <EmptyPanel message={copy(language, "Bu raporda defensive setup yok.", "This report has no defensive setup.")} />
+              <EmptyPanel message={t("scanner:thisReportHasNoDefensive")} />
             )}
           </div>
         </section>
@@ -312,7 +301,7 @@ export default function MomentumSetupsTab({
           <div className="flex items-center gap-2">
             <CalendarClock className="size-4 text-cyan-300" />
             <h3 className="heading-condensed text-xl text-foreground">
-              {copy(language, "Takvim Katalizorleri", "Calendar Catalysts")}
+              {t("scanner:calendarCatalysts")}
             </h3>
           </div>
           <div className="mt-4 overflow-hidden rounded-xl border border-border bg-background/45">
@@ -320,7 +309,7 @@ export default function MomentumSetupsTab({
               <table className="min-w-full text-left text-sm">
                 <thead className="border-b border-border bg-background/70">
                   <tr>
-                    {[copy(language, "Tarih", "Date"), copy(language, "Olay", "Event"), copy(language, "Etki", "Impact")].map(header => (
+                    {[t("common:date"), t("common:event"), t("common:impact")].map(header => (
                       <th
                         key={header}
                         className="px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground"
@@ -342,7 +331,7 @@ export default function MomentumSetupsTab({
                   ) : (
                     <tr>
                       <td className="px-4 py-4 text-sm text-muted-foreground" colSpan={3}>
-                        {copy(language, "Bu raporda takvim katalizoru parse edilemedi.", "Calendar catalysts could not be parsed from this report.")}
+                        {t("scanner:calendarCatalystsCouldNotBe")}
                       </td>
                     </tr>
                   )}
@@ -356,7 +345,7 @@ export default function MomentumSetupsTab({
           <div className="flex items-center gap-2">
             <Gauge className="size-4 text-cyan-300" />
             <h3 className="heading-condensed text-xl text-foreground">
-              {copy(language, "RSI ve Katalizor Notlari", "RSI and Catalyst Notes")}
+              {t("scanner:rsiAndCatalystNotes")}
             </h3>
           </div>
           <div className="mt-4 space-y-3">
@@ -378,14 +367,14 @@ export default function MomentumSetupsTab({
                 </article>
               ))
             ) : (
-              <EmptyPanel message={copy(language, "RSI bloklari bu raporda yok.", "RSI blocks are missing in this report.")} />
+              <EmptyPanel message={t("scanner:rsiBlocksAreMissingIn")} />
             )}
 
             {(weakestRsi || hottestRsi) ? (
               <div className="grid gap-3 md:grid-cols-2">
                 <article className="rounded-xl border border-border bg-background/55 p-4">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                    {copy(language, "En zayif RSI", "Weakest RSI")}
+                    {t("scanner:ivRankVeryLowIv")}
                   </p>
                   <p className="mt-2 text-sm font-semibold text-foreground">
                     {weakestRsi?.subject || "-"}
@@ -396,7 +385,7 @@ export default function MomentumSetupsTab({
                 </article>
                 <article className="rounded-xl border border-border bg-background/55 p-4">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                    {copy(language, "En guclu RSI", "Strongest RSI")}
+                    {t("scanner:strongestRsi")}
                   </p>
                   <p className="mt-2 text-sm font-semibold text-foreground">
                     {hottestRsi?.subject || "-"}
@@ -411,7 +400,7 @@ export default function MomentumSetupsTab({
             {report.specialCatalysts.length ? (
               <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/8 p-4">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                  {copy(language, "Ozel Katalizorler", "Special Catalysts")}
+                  {t("scanner:specialCatalysts")}
                 </p>
                 <div className="mt-2 space-y-2 text-sm leading-7 text-foreground/90">
                   {report.specialCatalysts.map(item => (

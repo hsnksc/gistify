@@ -6,21 +6,11 @@
 import { optionStrategyData, strategyConfig, riskLevelConfig, type OptionStrategy } from '@/lib/optionStrategyData';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart';
 import {
-  chartAxisLabel,
-  chartAxisTick,
-  chartCursorLine,
-  chartGrid,
-  chartLineDot,
-  chartPalette,
-  formatChartCurrency,
-  formatChartNumber,
-  getChartAriaLabel,
-} from '@/lib/chartTheme';
-import { copy } from '@/lib/i18n';
+  chartAxisLabel, chartAxisTick, chartCursorLine, chartGrid, chartLineDot, chartPalette, formatChartCurrency, formatChartNumber, getChartAriaLabel, } from '@/lib/chartTheme';
+
 import type { AppLanguage } from '@/lib/i18n';
-import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid,
-} from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, } from 'recharts';import { t } from "@/lib/i18n";
+
 
 interface Props {
   selectedTicker: string | null;
@@ -45,43 +35,43 @@ export default function OptionDetailTab({
   // Timeline data
   const timelineData = [
     {
-      day: copy(language, '15 gün öncesi', '15 days before'),
-      axisLabel: copy(language, '15g once', '15d prior'),
+      day: t("common:15DaysBefore"),
+      axisLabel: t("common:15dPrior"),
       iv: stock.historicalIV,
       callPrice: stock.callPremiumBuy,
       status: 'BUY',
     },
     {
-      day: copy(language, '10 gün öncesi', '10 days before'),
-      axisLabel: copy(language, '10g once', '10d prior'),
+      day: t("common:10DaysBefore"),
+      axisLabel: t("common:10dPrior"),
       iv: stock.historicalIV + 8,
       callPrice: stock.callPremiumBuy + 0.5,
       status: 'HOLD',
     },
     {
-      day: copy(language, '5 gün öncesi', '5 days before'),
-      axisLabel: copy(language, '5g once', '5d prior'),
+      day: t("common:5DaysBefore"),
+      axisLabel: t("common:5dPrior"),
       iv: stock.currentIV - 15,
       callPrice: stock.callPremiumBuy + 1.2,
       status: 'HOLD',
     },
     {
-      day: copy(language, '2 gün öncesi', '2 days before'),
-      axisLabel: copy(language, '2g once', '2d prior'),
+      day: t("common:2DaysBefore"),
+      axisLabel: t("common:2dPrior"),
       iv: stock.currentIV - 5,
       callPrice: stock.callPremiumSell - 0.3,
       status: 'HOLD',
     },
     {
-      day: copy(language, '1 gün öncesi', '1 day before'),
-      axisLabel: copy(language, '1g once', '1d prior'),
+      day: t("common:1DayBefore"),
+      axisLabel: t("common:1dPrior"),
       iv: stock.currentIV,
       callPrice: stock.callPremiumSell,
       status: 'SELL',
     },
     {
-      day: copy(language, 'Earnings sonrası', 'After earnings'),
-      axisLabel: copy(language, 'Sonrasi', 'After ER'),
+      day: t("common:afterEarnings"),
+      axisLabel: t("common:afterEr"),
       iv: stock.currentIV - stock.expectedIVCrush,
       callPrice:
         stock.callPremiumSell -
@@ -95,7 +85,7 @@ export default function OptionDetailTab({
       color: chartPalette.warning,
     },
     callPrice: {
-      label: copy(language, 'Call Fiyatı', 'Call Price'),
+      label: t("common:callPrice"),
       color: chartPalette.bull,
     },
   } satisfies ChartConfig;
@@ -143,30 +133,30 @@ export default function OptionDetailTab({
                   borderColor: stock.directionalBias === 'CALL' ? 'oklch(0.78 0.18 160 / 0.4)' : stock.directionalBias === 'PUT' ? 'oklch(0.65 0.22 25 / 0.4)' : 'oklch(0.75 0.15 75 / 0.4)',
                 }}
               >
-                {copy(language, 'YÖN', 'DIRECTION')}: {stock.directionalBias} %{stock.biasStrength}
+                {t("common:direction")}: {stock.directionalBias} %{stock.biasStrength}
               </span>
             </div>
             <div className="text-base" style={{ color: 'oklch(0.65 0.015 225)' }}>{stock.name}</div>
             <div className="text-sm mt-1" style={{ color: 'oklch(0.5 0.015 225)' }}>
-              {copy(language, 'Earnings', 'Earnings')}: {stock.earningsDate} · {copy(language, 'Sektor', 'Sector')}: {stock.sector}
+              {'Earnings'}: {stock.earningsDate} · {t("common:sectorc5c4")}: {stock.sector}
             </div>
           </div>
           <div className="flex gap-4 flex-wrap">
             <div className="text-center">
               <div className="data-mono text-2xl font-bold" style={{ color: cfg.color }}>{stock.ivCrushScore}</div>
-              <div className="text-xs" style={{ color: 'oklch(0.45 0.015 225)' }}>{copy(language, 'IV Crush Skoru', 'IV Crush Score')}</div>
+              <div className="text-xs" style={{ color: 'oklch(0.45 0.015 225)' }}>{t("common:ivCrushScore")}</div>
             </div>
             <div className="text-center">
               <div className="data-mono text-2xl font-bold" style={{ color: 'oklch(0.78 0.18 160)' }}>+{stock.callGainFromIV}%</div>
-              <div className="text-xs" style={{ color: 'oklch(0.45 0.015 225)' }}>{copy(language, 'Call Kazancı', 'Call Profit')}</div>
+              <div className="text-xs" style={{ color: 'oklch(0.45 0.015 225)' }}>{t("common:callProfit")}</div>
             </div>
             <div className="text-center">
               <div className="data-mono text-2xl font-bold" style={{ color: 'oklch(0.75 0.15 75)' }}>{stock.targetProfit}%</div>
-              <div className="text-xs" style={{ color: 'oklch(0.45 0.015 225)' }}>{copy(language, 'Hedef Kar', 'Target Profit')}</div>
+              <div className="text-xs" style={{ color: 'oklch(0.45 0.015 225)' }}>{t("common:targetProfit")}</div>
             </div>
             <div className="text-center">
               <div className={`data-mono text-2xl font-bold ${rCfg.textClass}`}>{rCfg.label}</div>
-              <div className="text-xs" style={{ color: 'oklch(0.45 0.015 225)' }}>{copy(language, 'Risk', 'Risk')}</div>
+              <div className="text-xs" style={{ color: 'oklch(0.45 0.015 225)' }}>{'Risk'}</div>
             </div>
           </div>
         </div>
@@ -175,13 +165,13 @@ export default function OptionDetailTab({
       {/* Yönsel Analiz & Momentum Section */}
       <div className="data-card p-4" style={{ borderLeftColor: stock.directionalBias === 'CALL' ? 'oklch(0.78 0.18 160)' : stock.directionalBias === 'PUT' ? 'oklch(0.65 0.22 25)' : 'oklch(0.75 0.15 75)' }}>
         <div className="flex items-center gap-2 mb-3">
-          <div className="heading-condensed text-sm" style={{ color: 'oklch(0.92 0.01 220)' }}>{copy(language, 'YÖNSEL ANALİZ & MOMENTUM GEREKÇESİ', 'DIRECTIONAL ANALYSIS & MOMENTUM RATIONALE')}</div>
+          <div className="heading-condensed text-sm" style={{ color: 'oklch(0.92 0.01 220)' }}>{t("common:directionalAnalysisMomentumRationale")}</div>
           <div className="flex-1 h-[1px]" style={{ background: 'oklch(0.22 0.03 225)' }} />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="space-y-3">
             <div>
-              <div className="text-[10px] uppercase font-bold mb-1" style={{ color: 'oklch(0.45 0.015 225)' }}>{copy(language, 'Ağırlıklı Yön', 'Weighted Direction')}</div>
+              <div className="text-[10px] uppercase font-bold mb-1" style={{ color: 'oklch(0.45 0.015 225)' }}>{t("common:weightedDirection")}</div>
               <div className="flex items-center gap-2">
                 <span className="data-mono text-xl font-bold" style={{ color: stock.directionalBias === 'CALL' ? 'oklch(0.78 0.18 160)' : stock.directionalBias === 'PUT' ? 'oklch(0.65 0.22 25)' : 'oklch(0.75 0.15 75)' }}>
                   {stock.directionalBias}
@@ -200,13 +190,9 @@ export default function OptionDetailTab({
             </div>
           </div>
           <div className="md:col-span-2">
-            <div className="text-[10px] uppercase font-bold mb-1" style={{ color: 'oklch(0.45 0.015 225)' }}>{copy(language, 'Analiz Özeti', 'Analysis Summary')}</div>
+            <div className="text-[10px] uppercase font-bold mb-1" style={{ color: 'oklch(0.45 0.015 225)' }}>{t("common:analysisSummary")}</div>
             <p className="text-sm leading-relaxed" style={{ color: 'oklch(0.85 0.01 220)' }}>
-              {copy(
-                language,
-                `${stock.biasReason} Momentum skoru (${stock.momentumScore}/100) ve RSI-14 (${stock.rsi14}) verileri ışığında, 15 gün öncesinden kurulacak pozisyonlarda ${stock.directionalBias} tarafının %${stock.biasStrength} olasılıkla daha avantajlı olduğu değerlendirilmektedir.`,
-                `${stock.biasReason} Based on momentum score (${stock.momentumScore}/100) and RSI-14 (${stock.rsi14}) data, for positions established 15 days in advance, the ${stock.directionalBias} side is assessed to be more advantageous with a ${stock.biasStrength}% probability.`
-              )}
+              {t("common:basedOnMomentumScore100", { biasreason: stock.biasReason, momentumscore: stock.momentumScore, rsi14: stock.rsi14, directionalbias: stock.directionalBias, biasstrength: stock.biasStrength })}
             </p>
           </div>
         </div>
@@ -215,13 +201,13 @@ export default function OptionDetailTab({
       {/* Strategy Timeline */}
       <div className="data-card p-4">
         <div className="text-xs font-semibold tracking-widest uppercase mb-3" style={{ color: 'oklch(0.45 0.015 225)' }}>
-          {copy(language, 'Strateji Timeline: IV Expansion Fırsat', 'Strategy Timeline: IV Expansion Opportunity')}
+          {t("common:strategyTimelineIvExpansionOpportunity")}
         </div>
         <div style={{ height: '250px' }}>
           <ChartContainer
             aria-label={getChartAriaLabel(
-              copy(language, 'IV ve call fiyatı timeline grafiği', 'IV and call price timeline chart'),
-              copy(language, 'Çizgiler earnings öncesi günlerde implied volatility ve call premium değişimini birlikte gösterir.', 'The lines show implied volatility and call premium changes together across the days leading into earnings.')
+              t("common:ivAndCallPriceTimeline"),
+              t("common:theLinesShowImpliedVolatility")
             )}
             className="h-full aspect-auto"
             config={timelineChartConfig}
@@ -244,7 +230,7 @@ export default function OptionDetailTab({
                 orientation="right"
                 tick={chartAxisTick}
                 tickMargin={8}
-                label={chartAxisLabel(copy(language, 'Call Fiyatı ($)', 'Call Price ($)'), { angle: 90, position: 'insideRight' })}
+                label={chartAxisLabel(t("common:callPricea605"), { angle: 90, position: 'insideRight' })}
               />
               <ChartTooltip
                 cursor={chartCursorLine}
@@ -264,7 +250,7 @@ export default function OptionDetailTab({
                         </div>
                         <div className="flex items-center justify-between gap-3">
                           <span className="text-muted-foreground">
-                            {copy(language, 'Call Fiyatı', 'Call Price')}
+                            {t("common:callPrice")}
                           </span>
                           <span className="data-mono font-semibold text-foreground">
                             {formatChartCurrency(datum?.callPrice)}
@@ -272,7 +258,7 @@ export default function OptionDetailTab({
                         </div>
                         <div className="flex items-center justify-between gap-3">
                           <span className="text-muted-foreground">
-                            {copy(language, 'Durum', 'Status')}
+                            {t("common:status")}
                           </span>
                           <span className="data-mono font-semibold" style={{ color: cfg.color }}>
                             {typeof datum?.status === 'string' ? datum.status : '-'}
@@ -295,15 +281,15 @@ export default function OptionDetailTab({
         {/* Call Strategy */}
         <div className="data-card p-4">
           <div className="text-xs font-semibold tracking-widest uppercase mb-3" style={{ color: 'oklch(0.45 0.015 225)' }}>
-            {copy(language, '📞 CALL OPSİYON STRATEJİSİ', '📞 CALL OPTION STRATEGY')}
+            {t("common:callOptionStrategy")}
           </div>
           <div className="space-y-2">
             {[
-              { label: copy(language, 'Satın Al (15 gün öncesi)', 'Buy (15 days before)'), value: `$${stock.callPremiumBuy.toFixed(2)}`, color: 'oklch(0.78 0.18 160)' },
-              { label: copy(language, 'Sat (1-2 gün öncesi)', 'Sell (1-2 days before)'), value: `$${stock.callPremiumSell.toFixed(2)}`, color: 'oklch(0.75 0.15 75)' },
-              { label: copy(language, 'Brüt Kar', 'Gross Profit'), value: `$${(stock.callPremiumSell - stock.callPremiumBuy).toFixed(2)}`, color: 'oklch(0.78 0.18 160)' },
-              { label: copy(language, 'Kar Yüzdesi', 'Profit Percentage'), value: `+${stock.callGainFromIV}%`, color: 'oklch(0.78 0.18 160)' },
-              { label: copy(language, 'IV Expansion Katkısı', 'IV Expansion Contribution'), value: copy(language, `${stock.expectedIVCrush}% IV crush'tan kaçınma`, `${stock.expectedIVCrush}% avoid IV crush`), color: 'oklch(0.75 0.15 75)' },
+              { label: t("common:buy15DaysBefore"), value: `$${stock.callPremiumBuy.toFixed(2)}`, color: 'oklch(0.78 0.18 160)' },
+              { label: t("common:sell12DaysBefore"), value: `$${stock.callPremiumSell.toFixed(2)}`, color: 'oklch(0.75 0.15 75)' },
+              { label: t("common:grossProfit"), value: `$${(stock.callPremiumSell - stock.callPremiumBuy).toFixed(2)}`, color: 'oklch(0.78 0.18 160)' },
+              { label: t("common:profitPercentage"), value: `+${stock.callGainFromIV}%`, color: 'oklch(0.78 0.18 160)' },
+              { label: t("common:ivExpansionContribution"), value: t("common:avoidIvCrush", { expectedivcrush: stock.expectedIVCrush }), color: 'oklch(0.75 0.15 75)' },
             ].map(m => (
               <div key={m.label} className="flex items-center justify-between py-1.5" style={{ borderBottom: '1px solid oklch(0.18 0.025 225)' }}>
                 <span className="text-xs" style={{ color: 'oklch(0.45 0.015 225)' }}>{m.label}</span>
@@ -316,15 +302,15 @@ export default function OptionDetailTab({
         {/* Put Strategy */}
         <div className="data-card p-4">
           <div className="text-xs font-semibold tracking-widest uppercase mb-3" style={{ color: 'oklch(0.45 0.015 225)' }}>
-            {copy(language, '📉 PUT OPSİYON STRATEJİSİ', '📉 PUT OPTION STRATEGY')}
+            {t("common:putOptionStrategy")}
           </div>
           <div className="space-y-2">
             {[
-              { label: copy(language, 'Satın Al (15 gün öncesi)', 'Buy (15 days before)'), value: `$${stock.putPremiumBuy.toFixed(2)}`, color: 'oklch(0.78 0.18 160)' },
-              { label: copy(language, 'Sat (1-2 gün öncesi)', 'Sell (1-2 days before)'), value: `$${stock.putPremiumSell.toFixed(2)}`, color: 'oklch(0.75 0.15 75)' },
-              { label: copy(language, 'Brüt Kar', 'Gross Profit'), value: `$${(stock.putPremiumSell - stock.putPremiumBuy).toFixed(2)}`, color: 'oklch(0.78 0.18 160)' },
-              { label: copy(language, 'Kar Yüzdesi', 'Profit Percentage'), value: `+${stock.putGainFromIV}%`, color: 'oklch(0.78 0.18 160)' },
-              { label: copy(language, 'Directional Hedging', 'Directional Hedging'), value: copy(language, 'Aşağı yönlü korunma sağlar', 'Provides downside protection'), color: 'oklch(0.75 0.15 75)' },
+              { label: t("common:buy15DaysBefore"), value: `$${stock.putPremiumBuy.toFixed(2)}`, color: 'oklch(0.78 0.18 160)' },
+              { label: t("common:sell12DaysBefore"), value: `$${stock.putPremiumSell.toFixed(2)}`, color: 'oklch(0.75 0.15 75)' },
+              { label: t("common:grossProfit"), value: `$${(stock.putPremiumSell - stock.putPremiumBuy).toFixed(2)}`, color: 'oklch(0.78 0.18 160)' },
+              { label: t("common:profitPercentage"), value: `+${stock.putGainFromIV}%`, color: 'oklch(0.78 0.18 160)' },
+              { label: 'Directional Hedging', value: t("common:providesDownsideProtection"), color: 'oklch(0.75 0.15 75)' },
             ].map(m => (
               <div key={m.label} className="flex items-center justify-between py-1.5" style={{ borderBottom: '1px solid oklch(0.18 0.025 225)' }}>
                 <span className="text-xs" style={{ color: 'oklch(0.45 0.015 225)' }}>{m.label}</span>
@@ -338,13 +324,13 @@ export default function OptionDetailTab({
       {/* Risk vs Reward */}
       <div className="data-card p-4">
         <div className="text-xs font-semibold tracking-widest uppercase mb-3" style={{ color: 'oklch(0.45 0.015 225)' }}>
-          {copy(language, '⚖ RİSK vs ÖDÜL', '⚖ RISK vs REWARD')}
+          {t("common:riskVsReward")}
         </div>
         <div className="grid grid-cols-3 gap-3">
           {[
-            { label: copy(language, 'Hedef Kar', 'Target Profit'), value: `+${stock.targetProfit}%`, color: 'oklch(0.78 0.18 160)' },
-            { label: copy(language, 'Max Zarar', 'Max Loss'), value: `-${stock.maxLoss}%`, color: 'oklch(0.65 0.22 25)' },
-            { label: copy(language, 'Ödül/Risk Oranı', 'Reward/Risk Ratio'), value: `${(stock.targetProfit / stock.maxLoss).toFixed(1)}:1`, color: 'oklch(0.75 0.15 75)' },
+            { label: t("common:targetProfit"), value: `+${stock.targetProfit}%`, color: 'oklch(0.78 0.18 160)' },
+            { label: t("common:maxLoss"), value: `-${stock.maxLoss}%`, color: 'oklch(0.65 0.22 25)' },
+            { label: t("common:rewardRiskRatio"), value: `${(stock.targetProfit / stock.maxLoss).toFixed(1)}:1`, color: 'oklch(0.75 0.15 75)' },
           ].map(m => (
             <div key={m.label} className="text-center p-3" style={{ background: 'oklch(0.13 0.025 230)', borderRadius: 0 }}>
               <div className="text-xs" style={{ color: 'oklch(0.45 0.015 225)' }}>{m.label}</div>
@@ -357,39 +343,39 @@ export default function OptionDetailTab({
       {/* Recommended Strategy */}
       <div className="data-card p-4" style={{ borderLeftColor: cfg.color }}>
         <div className="text-xs font-semibold tracking-widest uppercase mb-2" style={{ color: 'oklch(0.45 0.015 225)' }}>
-          {copy(language, '✅ ÖNERİLEN STRATEJİ', '✅ RECOMMENDED STRATEGY')}
+          {t("common:recommendedStrategy")}
         </div>
         <div className="text-sm font-semibold mb-2" style={{ color: cfg.color }}>{stock.recommendedStrategy}</div>
         <p className="text-sm leading-relaxed" style={{ color: 'oklch(0.65 0.015 225)' }}>
-          {stock.ticker === 'MRVL' && copy(language, "Yüksek momentum + Yüksek IV crush potansiyeli. Long Call satın al 15 gün öncesi, 1-2 gün öncesi sat. IV expansion'dan maksimum faydalanma.", 'High momentum + High IV crush potential. Buy Long Call 15 days before, sell 1-2 days before. Maximize benefit from IV expansion.')}
-          {stock.ticker === 'CRWD' && copy(language, 'Güçlü momentum + Orta-yüksek IV crush. Bull Call Spread veya Long Call. Earnings öncesi IV yükselmesinden faydalanma.', 'Strong momentum + Medium-high IV crush. Bull Call Spread or Long Call. Benefit from pre-earnings IV rise.')}
-          {stock.ticker === 'AVGO' && copy(language, 'Güvenli play. Düşük IV crush ama stabil. Long Call, IV crush riski minimal. Earnings miss riski düşük.', 'Safe play. Low IV crush but stable. Long Call, IV crush risk is minimal. Earnings miss risk is low.')}
-          {stock.ticker === 'COST' && copy(language, 'Çok stabil hisse. Iron Condor tercih edilir. Limited profit ama risk de sınırlı.', 'Very stable stock. Iron Condor preferred. Limited profit but risk is also limited.')}
-          {stock.ticker === 'DELL' && copy(language, 'Orta momentum + Orta IV crush. Bull Call Spread optimal. Maliyeti düşürmek için spread kullan.', 'Medium momentum + Medium IV crush. Bull Call Spread optimal. Use spread to reduce cost.')}
-          {stock.ticker === 'PANW' && copy(language, 'Aşırı alım (RSI 87). Covered Call veya Put satış. Kar realizasyonu için iyi fırsat.', 'Overbought (RSI 87). Covered Call or Put sale. Good opportunity for profit realization.')}
-          {stock.ticker === 'ADSK' && copy(language, 'Nötr momentum. Iron Condor tercih edilir. Earnings miss riski yüksek, spread stratejileri tercih et.', 'Neutral momentum. Iron Condor preferred. Earnings miss risk is high, prefer spread strategies.')}
-          {stock.ticker === 'CRM' && copy(language, 'Kırılmış momentum. Kaçın veya çok küçük pozisyon. Earnings miss riski yüksek.', 'Broken momentum. Avoid or very small position. Earnings miss risk is high.')}
-          {stock.ticker === 'SNOW' && copy(language, "Yüksek IV crush ama çok riskli. Sell Straddle veya IV crush play tercih et, directional risk'ten kaçın.", 'High IV crush but very risky. Prefer Sell Straddle or IV crush play, avoid directional risk.')}
-          {stock.ticker === 'ZS' && copy(language, "Yüksek IV crush ama çok riskli. Kaçın veya IV crush play yap, directional risk'ten kaçın.", 'High IV crush but very risky. Avoid or do IV crush play, avoid directional risk.')}
+          {stock.ticker === 'MRVL' && t("common:highMomentumHighIvCrush")}
+          {stock.ticker === 'CRWD' && t("common:strongMomentumMediumHighIv")}
+          {stock.ticker === 'AVGO' && t("common:safePlayLowIvCrush")}
+          {stock.ticker === 'COST' && t("common:veryStableStockIronCondor")}
+          {stock.ticker === 'DELL' && t("common:mediumMomentumMediumIvCrush")}
+          {stock.ticker === 'PANW' && t("common:overboughtRsi87CoveredCall")}
+          {stock.ticker === 'ADSK' && t("common:neutralMomentumIronCondorPreferred")}
+          {stock.ticker === 'CRM' && t("common:brokenMomentumAvoidOrVery")}
+          {stock.ticker === 'SNOW' && t("common:highIvCrushButVery")}
+          {stock.ticker === 'ZS' && t("common:highIvCrushButVeryd2f9")}
         </p>
       </div>
 
       {/* Risk Factors */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         <div className="data-card p-3" style={{ borderLeftColor: 'oklch(0.65 0.22 25)' }}>
-          <div className="text-xs font-semibold mb-1" style={{ color: 'oklch(0.65 0.22 25)' }}>{copy(language, 'Earnings Miss Riski', 'Earnings Miss Risk')}</div>
+          <div className="text-xs font-semibold mb-1" style={{ color: 'oklch(0.65 0.22 25)' }}>{t("common:earningsMissRisk98c9")}</div>
           <div className="data-mono text-2xl font-bold mb-1" style={{ color: 'oklch(0.65 0.22 25)' }}>{stock.earningsMissRisk}%</div>
-          <div className="text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>{copy(language, 'Fiyat keskin düşüş riski', 'Risk of sharp price drop')}</div>
+          <div className="text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>{t("common:riskOfSharpPriceDrop")}</div>
         </div>
         <div className="data-card p-3" style={{ borderLeftColor: 'oklch(0.75 0.15 75)' }}>
-          <div className="text-xs font-semibold mb-1" style={{ color: 'oklch(0.75 0.15 75)' }}>{copy(language, 'Gap Riski', 'Gap Risk')}</div>
+          <div className="text-xs font-semibold mb-1" style={{ color: 'oklch(0.75 0.15 75)' }}>{t("common:gapRisk")}</div>
           <div className="data-mono text-2xl font-bold mb-1" style={{ color: 'oklch(0.75 0.15 75)' }}>{stock.gapRisk}%</div>
-          <div className="text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>{copy(language, 'Earnings sonrası gap açılma riski', 'Risk of gap opening after earnings')}</div>
+          <div className="text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>{t("common:riskOfGapOpeningAfter")}</div>
         </div>
         <div className="data-card p-3" style={{ borderLeftColor: 'oklch(0.78 0.18 160)' }}>
-          <div className="text-xs font-semibold mb-1" style={{ color: 'oklch(0.78 0.18 160)' }}>{copy(language, 'Tarihsel Beat Oranı', 'Historical Beat Rate')}</div>
+          <div className="text-xs font-semibold mb-1" style={{ color: 'oklch(0.78 0.18 160)' }}>{t("common:historicalBeatRate")}</div>
           <div className="data-mono text-2xl font-bold mb-1" style={{ color: 'oklch(0.78 0.18 160)' }}>%{stock.beatRate}</div>
-          <div className="text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>{copy(language, 'Son 4 çeyrekte beat oranı', 'Beat rate over the last 4 quarters')}</div>
+          <div className="text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>{t("common:beatRateOverTheLast")}</div>
         </div>
       </div>
     </div>

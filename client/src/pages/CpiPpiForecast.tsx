@@ -1,29 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type {
-  CpiPpiForecastData,
-  CpiPpiForecastPipelineState,
-  MacroForecastBias,
-  MacroForecastPipelineMetadata,
-  MacroForecastPipelineStatus,
-  MacroForecastRelease,
-  MacroForecastScenario,
-  MacroForecastWorkspaceData,
-  MacroForecastWorkspaceKey,
-} from "@shared/cpiPpiForecast";
+  CpiPpiForecastData, CpiPpiForecastPipelineState, MacroForecastBias, MacroForecastPipelineMetadata, MacroForecastPipelineStatus, MacroForecastRelease, MacroForecastScenario, MacroForecastWorkspaceData, MacroForecastWorkspaceKey, } from "@shared/cpiPpiForecast";
 import {
-  Activity,
-  CalendarDays,
-  Database,
-  RefreshCw,
-  ShieldAlert,
-  Sparkles,
-  Target,
-  TrendingUp,
-} from "lucide-react";
+  Activity, CalendarDays, Database, RefreshCw, ShieldAlert, Sparkles, Target, TrendingUp, } from "lucide-react";
 import WorkspaceLoadingState from "@/components/workspace/WorkspaceLoadingState";
 import { Button } from "@/components/ui/button";
 import { usePageMeta } from "@/hooks/usePageMeta";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 const SNAPSHOT_REFRESH_INTERVAL_MS = 60 * 1000;
@@ -126,13 +109,13 @@ function pipelineStatusLabel(
 ) {
   switch (status) {
     case "ok":
-      return copy(language, "Senkron", "Synced");
+      return t("common:synced");
     case "stale":
-      return copy(language, "Eski veri", "Stale");
+      return t("common:stale");
     case "error":
-      return copy(language, "Hata", "Error");
+      return t("common:error");
     default:
-      return copy(language, "Beklemede", "Idle");
+      return t("common:idle");
   }
 }
 
@@ -152,11 +135,11 @@ function pipelineStatusClass(status: MacroForecastPipelineStatus) {
 function biasLabel(bias: MacroForecastBias, language: AppLanguage) {
   switch (bias) {
     case "HOTTER":
-      return copy(language, "Beklentiden sicak", "Hotter than expected");
+      return t("macro:hotterThanExpected");
     case "COOLER":
-      return copy(language, "Beklentiden soguk", "Cooler than expected");
+      return t("macro:coolerThanExpected");
     default:
-      return copy(language, "Beklentiye yakin", "In line");
+      return t("macro:inLine");
   }
 }
 
@@ -227,22 +210,14 @@ function workspaceDescriptor(
 ) {
   if (key === "cpi") {
     return {
-      title: copy(language, "Tüketici enflasyonu", "Consumer inflation"),
-      summary: copy(
-        language,
-        "Tuketici fiyatlarindaki yonu, oran baskisini ve risk varliklarin ilk tepkisini izler.",
-        "Tracks consumer pricing direction, rate pressure, and the first reaction in risk assets."
-      ),
+      title: t("macro:consumerInflation"),
+      summary: t("macro:tracksConsumerPricingDirectionRate"),
     };
   }
 
   return {
-    title: copy(language, "Üretici enflasyonu", "Producer pipeline"),
-    summary: copy(
-      language,
-      "Uretici fiyatlarindaki baskiyi, marj anlatisini ve CPI'ya gecis riskini izler.",
-      "Tracks upstream price pressure, margin narrative, and the pass-through risk into CPI."
-    ),
+    title: t("macro:producerPipeline"),
+    summary: t("macro:tracksUpstreamPricePressureMargin"),
   };
 }
 
@@ -268,20 +243,20 @@ function localizeReleaseMetricLabel(
 ) {
   switch (key) {
     case "headlineMoM":
-      return copy(language, "Manşet Aylık", "Headline MoM");
+      return t("macro:headlineMom");
     case "headlineYoY":
-      return copy(language, "Manşet Yıllık", "Headline YoY");
+      return t("macro:headlineYoy");
     case "coreMoM":
-      return copy(language, "Çekirdek Aylık", "Core MoM");
+      return t("macro:coreMom");
     case "coreYoY":
-      return copy(language, "Çekirdek Yıllık", "Core YoY");
+      return t("macro:coreYoy");
   }
 }
 
 function workspaceLabel(key: MacroForecastWorkspaceKey, language: AppLanguage) {
   return key === "cpi"
-    ? copy(language, "TÜFE", "CPI")
-    : copy(language, "ÜFE", "PPI");
+    ? t("macro:cpi")
+    : t("macro:ppi");
 }
 
 function CompactStatCard({
@@ -333,7 +308,7 @@ function ReleaseCard({
             )}
           >
             {workspaceLabel(slotKey, language)}{" "}
-            {copy(language, "yayın çerçevesi", "release frame")}
+            {t("macro:releaseFrame")}
           </p>
           <h3 className="mt-1 heading-condensed text-lg leading-none text-foreground">
             {release.period || release.name}
@@ -388,7 +363,7 @@ function ReleaseCard({
       <div className="mt-2 grid grid-cols-2 gap-2">
         <div className="rounded-lg border border-white/10 bg-black/20 px-2.5 py-2">
           <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-            {copy(language, "Guven", "Confidence")}
+            {t("common:confidence")}
           </p>
           <p className="mt-1 data-mono text-sm font-semibold text-foreground">
             {formatProbability(release.confidence, language)}
@@ -396,7 +371,7 @@ function ReleaseCard({
         </div>
         <div className="rounded-lg border border-white/10 bg-black/20 px-2.5 py-2">
           <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-            {copy(language, "Onceki", "Prior")}
+            {t("macro:prior")}
           </p>
           <p className="mt-1 text-sm text-foreground">
             {release.priorHeadlineMoM || "-"} / {release.priorCoreMoM || "-"}
@@ -406,10 +381,10 @@ function ReleaseCard({
 
       <div className="mt-2 rounded-lg border border-white/10 bg-black/20 px-2.5 py-2.5">
         <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-          {copy(language, "Tahmin tezi", "Forecast thesis")}
+          {t("macro:forecastThesis")}
         </p>
         <p className="mt-1.5 text-[13px] leading-6 text-foreground/88">
-          {release.thesis || copy(language, "Tez henuz gelmedi.", "No thesis yet.")}
+          {release.thesis || t("macro:noThesisYet")}
         </p>
       </div>
 
@@ -510,7 +485,7 @@ function SimpleListCard({
           ))
         ) : (
           <div className="rounded-lg border border-dashed border-white/10 bg-black/15 px-2.5 py-1.5 text-xs text-muted-foreground">
-            {copy(language, "Veri yok.", "No data yet.")}
+            {t("macro:noDataYet")}
           </div>
         )}
       </div>
@@ -535,7 +510,7 @@ function WatchlistCard({
         <Target className={`size-3.5 ${theme.eyebrowClassName}`} />
         <h3 className="heading-condensed text-sm text-foreground">
           {workspaceLabel(slotKey, language)}{" "}
-          {copy(language, "izleme listesi", "watchlist")}
+          {t("macro:watchlist")}
         </h3>
       </div>
       <div className="mt-2 space-y-2">
@@ -558,11 +533,7 @@ function WatchlistCard({
           ))
         ) : (
           <div className="rounded-lg border border-dashed border-white/10 bg-black/15 px-2.5 py-1.5 text-xs text-muted-foreground">
-            {copy(
-              language,
-              "Watchlist henuz gelmedi.",
-              "The watchlist has not been populated yet."
-            )}
+            {t("macro:theWatchlistHasNotBeen")}
           </div>
         )}
       </div>
@@ -587,7 +558,7 @@ function PlaybookTable({
         <Activity className={`size-3.5 ${theme.eyebrowClassName}`} />
         <h3 className="heading-condensed text-sm text-foreground">
           {workspaceLabel(slotKey, language)}{" "}
-          {copy(language, "işlem planı", "playbook")}
+          {t("macro:playbook")}
         </h3>
       </div>
       <div className="mt-2 overflow-hidden rounded-xl border border-white/10 bg-black/20">
@@ -596,10 +567,10 @@ function PlaybookTable({
             <thead className="border-b border-white/10 bg-black/25">
               <tr>
                 {[
-                  copy(language, "Varlik", "Asset"),
-                  copy(language, "Bias", "Bias"),
-                  copy(language, "Trigger", "Trigger"),
-                  copy(language, "Invalidation", "Invalidation"),
+                  t("macro:asset"),
+                  "Bias",
+                  "Trigger",
+                  "Invalidation",
                 ].map(header => (
                   <th
                     key={`${forecast.release.name}-${header}`}
@@ -634,11 +605,7 @@ function PlaybookTable({
               ) : (
                 <tr>
                   <td className="px-2 py-2 text-xs text-muted-foreground" colSpan={4}>
-                    {copy(
-                      language,
-                      "Playbook henuz gelmedi.",
-                      "The playbook has not been populated yet."
-                    )}
+                    {t("macro:thePlaybookHasNotBeen")}
                   </td>
                 </tr>
               )}
@@ -674,7 +641,7 @@ function PipelineCard({
             )}
           >
             {workspaceLabel(slotKey, language)}{" "}
-            {copy(language, "pipeline", "pipeline")}
+            {"pipeline"}
           </p>
           <h3 className="mt-0.5 text-xs font-semibold text-foreground">
             {pipelineStatusLabel(pipeline.status, language)}
@@ -691,13 +658,13 @@ function PipelineCard({
 
       <div className="mt-2 space-y-1.5 text-[10px] text-muted-foreground">
         <div className="rounded-lg border border-white/10 bg-black/20 px-2.5 py-1">
-          {copy(language, "Son senkron", "Last sync")}:{" "}
+          {t("common:lastSync")}:{" "}
           <span className="text-foreground">
             {formatTimestamp(pipeline.lastSyncedAt ?? undefined, language)}
           </span>
         </div>
         <div className="rounded-lg border border-white/10 bg-black/20 px-2.5 py-1">
-          {copy(language, "Kaynak", "Source")}:{" "}
+          {t("common:source")}:{" "}
           <span className="line-clamp-1 break-all text-foreground">
             {pipeline.resolvedSourceFile
               ? pipeline.resolvedSourceFile.replace(/\\/g, "/")
@@ -747,18 +714,14 @@ function MissingWorkspacePanel({
                   )}
                 >
                   {workspaceLabel(slotKey, language)}{" "}
-                  {copy(language, "workspace", "workspace")}
+                  {"workspace"}
                 </p>
               </div>
               <h2 className="mt-1 heading-condensed text-lg leading-none text-foreground">
-                {copy(language, "Kaynak bekleniyor", "Waiting for source")}
+                {t("macro:waitingForSource")}
               </h2>
               <p className="mt-1 line-clamp-2 text-xs leading-4 text-foreground/82">
-                {copy(
-                  language,
-                  `${theme.label} alani sayfada hazir. Snapshot gelince bu yarim otomatik dolar.`,
-                  `The ${theme.label} half of the page is ready. As soon as the snapshot lands, this side fills automatically.`
-                )}
+                {t("macro:theHalfOfThePage", { label: theme.label })}
               </p>
               <p className="mt-1 line-clamp-1 text-[10px] leading-4 text-muted-foreground">
                 {descriptor.summary}
@@ -775,17 +738,13 @@ function MissingWorkspacePanel({
 
           <div className="grid gap-2 sm:grid-cols-2">
             <CompactStatCard
-              label={copy(language, "Beklenen dosya", "Expected file")}
+              label={t("macro:expectedFile")}
               value={expectedFileName(slotKey)}
-              hint={copy(
-                language,
-                "Repo kokunde veya mounted data path icinde olmali.",
-                "It should exist in repo root or in the mounted data path."
-              )}
+              hint={t("macro:itShouldExistInRepo")}
               className={theme.cardClassName}
             />
             <CompactStatCard
-              label={copy(language, "Tercih edilen hedef", "Preferred target")}
+              label={t("macro:preferredTarget")}
               value={preferredDeployTarget(slotKey)}
               hint={`${envVarName(slotKey)} / ${repoMirrorTarget(slotKey)}`}
               className={theme.cardClassName}
@@ -796,29 +755,21 @@ function MissingWorkspacePanel({
             <div className="flex items-center gap-1.5">
               <Database className={`size-3.5 ${theme.iconClassName}`} />
               <h3 className="heading-condensed text-sm text-foreground">
-                {copy(language, "Deploy notu", "Deploy note")}
+                {t("macro:deployNote")}
               </h3>
             </div>
             <div className="mt-2 space-y-1 text-xs leading-4 text-foreground/82">
               <p className="line-clamp-2">
-                {copy(
-                  language,
-                  "Pipeline bu dosyayi sadece gecici klasorde birakmamali. Final artifact gorulebilir hedefe yazilmali.",
-                  "The pipeline must not leave this file only in a private scratch folder. The final artifact has to land on a readable target."
-                )}
+                {t("macro:thePipelineMustNotLeave")}
               </p>
               <p className="line-clamp-2 text-muted-foreground">
-                {copy(
-                  language,
-                  `Repo deploy kullaniyorsa ./${expectedFileName(slotKey)} uretip push etmeli. Container path kullaniyorsa ${envVarName(
-                    slotKey
-                  )} ya da ${preferredDeployTarget(slotKey)} hedeflenmeli.`,
-                  `If the workspace deploys through the repo, it should write ./${expectedFileName(
+                {(language === "en" ? `If the workspace deploys through the repo, it should write ./${expectedFileName(
                     slotKey
                   )} and push it. If it deploys into the container path, it should target ${envVarName(
                     slotKey
-                  )} or ${preferredDeployTarget(slotKey)}.`
-                )}
+                  )} or ${preferredDeployTarget(slotKey)}.` : `Repo deploy kullaniyorsa ./${expectedFileName(slotKey)} uretip push etmeli. Container path kullaniyorsa ${envVarName(
+                    slotKey
+                  )} ya da ${preferredDeployTarget(slotKey)} hedeflenmeli.`)}
               </p>
             </div>
           </div>
@@ -872,15 +823,11 @@ function ForecastWorkspaceSection({
                 </p>
               </div>
               <h2 className="mt-0.5 heading-condensed text-base leading-none text-foreground md:text-lg">
-                {forecast.title || `${forecast.release.name} ${copy(language, "Tahmin Ozeti", "Forecast Snapshot")}`}
+                {forecast.title || `${forecast.release.name} ${t("macro:forecastSnapshot")}`}
               </h2>
               <p className="mt-1 text-[12px] leading-5 text-foreground/84">
                 {forecast.summary ||
-                  copy(
-                    language,
-                    `${forecast.release.name} snapshot'i geldigi anda bu alan otomatik guncellenir.`,
-                    `This section updates automatically as soon as the ${forecast.release.name} snapshot arrives.`
-                  )}
+                  t("macro:thisSectionUpdatesAutomaticallyAs", { name: forecast.release.name })}
               </p>
             </div>
             <div className="flex flex-wrap gap-1.5">
@@ -896,7 +843,7 @@ function ForecastWorkspaceSection({
                   forecast.pipeline?.status || "idle"
                 )}`}
               >
-                {copy(language, "Pipeline", "Pipeline")}:{" "}
+                {"Pipeline"}:{" "}
                 {pipelineStatusLabel(forecast.pipeline?.status || "idle", language)}
               </span>
             </div>
@@ -904,7 +851,7 @@ function ForecastWorkspaceSection({
 
           <div className={cn("rounded-xl border p-3", theme.cardClassName)}>
             <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              {copy(language, "Ana tahmin", "Lead forecast")}
+              {t("macro:leadForecast")}
             </p>
             <p className="mt-1.5 text-sm font-semibold leading-6 text-foreground">
               {forecast.baseCase || "-"}
@@ -912,13 +859,13 @@ function ForecastWorkspaceSection({
             <p className="mt-1.5 text-[11px] leading-5 text-muted-foreground">
               {leadScenario
                 ? `${leadScenario.label} · ${formatProbability(leadScenario.probability, language)}`
-                : copy(language, "Senaryo gelmedi.", "No scenario loaded.")}
+                : t("macro:noScenarioLoaded")}
             </p>
           </div>
 
           <div className="grid gap-2 sm:grid-cols-3">
             <CompactStatCard
-              label={copy(language, "Release", "Release")}
+              label={"Release"}
               value={formatDateLabel(forecast.release.releaseDate, language)}
               hint={`${forecast.release.period || forecast.release.name} · ${
                 forecast.release.releaseTimeEt || "08:30 ET"
@@ -926,13 +873,13 @@ function ForecastWorkspaceSection({
               className={theme.cardClassName}
             />
             <CompactStatCard
-              label={copy(language, "Conviction", "Conviction")}
+              label={"Conviction"}
               value={formatProbability(forecast.conviction, language)}
-              hint={copy(language, "Tahmin guven skoru", "Forecast conviction score")}
+              hint={t("macro:forecastConvictionScore")}
               className={theme.cardClassName}
             />
             <CompactStatCard
-              label={copy(language, "Snapshot", "Snapshot")}
+              label={"Snapshot"}
               value={formatTimestamp(forecast.generatedAt, language)}
               hint={`${formatDateLabel(forecast.reportDate, language)} · ${deployTimeLabel()}`}
               className={theme.cardClassName}
@@ -961,7 +908,7 @@ function ForecastWorkspaceSection({
                   <Sparkles className={`size-3.5 ${theme.eyebrowClassName}`} />
                   <h3 className="heading-condensed text-sm text-foreground">
                     {workspaceLabel(slotKey, language)}{" "}
-                    {copy(language, "senaryo matrisi", "scenario matrix")}
+                    {t("macro:scenarioMatrix")}
                   </h3>
                 </div>
                 <div className="mt-2 space-y-1.5">
@@ -977,11 +924,7 @@ function ForecastWorkspaceSection({
                     ))
                   ) : (
                     <div className="rounded-lg border border-dashed border-white/10 bg-black/15 px-3 py-2 text-xs text-muted-foreground">
-                      {copy(
-                        language,
-                        "Senaryo kartlari henuz gelmedi.",
-                        "Scenario cards have not been populated yet."
-                      )}
+                      {t("macro:scenarioCardsHaveNotBeen")}
                     </div>
                   )}
                 </div>
@@ -1005,11 +948,7 @@ function ForecastWorkspaceSection({
                 icon={TrendingUp}
                 items={forecast.keyDrivers}
                 language={language}
-                title={`${workspaceLabel(slotKey, language)} ${copy(
-                  language,
-                  "key drivers",
-                  "key drivers"
-                )}`}
+                title={`${workspaceLabel(slotKey, language)} ${"key drivers"}`}
                 slotKey={slotKey}
               />
 
@@ -1017,11 +956,7 @@ function ForecastWorkspaceSection({
                 icon={ShieldAlert}
                 items={forecast.risks}
                 language={language}
-                title={`${workspaceLabel(slotKey, language)} ${copy(
-                  language,
-                  "risk map",
-                  "risk map"
-                )}`}
+                title={`${workspaceLabel(slotKey, language)} ${"risk map"}`}
                 tone="risk"
                 slotKey={slotKey}
               />
@@ -1044,16 +979,8 @@ export default function CpiPpiForecastPage({
   const [error, setError] = useState<string | null>(null);
 
   usePageMeta({
-    description: copy(
-      language,
-      "CPI ve PPI snapshotlari ayni workspace icinde release tarihi, senaryo matrisi ve cross-asset playbook ile izlenir.",
-      "CPI and PPI snapshots are tracked in one workspace with release dates, scenario matrices and cross-asset playbooks."
-    ),
-    title: copy(
-      language,
-      "Gistify | CPI & PPI Tahmin Workspace",
-      "Gistify | CPI & PPI Forecast Workspace"
-    ),
+    description: t("macro:cpiAndPpiSnapshotsAre"),
+    title: t("macro:gistifyCpiPpiForecastWorkspace"),
   });
 
   const loadForecast = useCallback(
@@ -1075,11 +1002,7 @@ export default function CpiPpiForecastPage({
             null;
           throw new Error(
             payload?.error ||
-              copy(
-                language,
-                "CPI/PPI forecast verisi yuklenemedi.",
-                "Failed to load the CPI/PPI forecast."
-              )
+              t("macro:failedToLoadTheCpi")
           );
         }
 
@@ -1089,11 +1012,7 @@ export default function CpiPpiForecastPage({
         setError(
           loadError instanceof Error && loadError.message
             ? loadError.message
-            : copy(
-                language,
-                "CPI/PPI forecast verisi yuklenemedi.",
-                "Failed to load the CPI/PPI forecast."
-              )
+            : t("macro:failedToLoadTheCpi")
         );
       } finally {
         setLoading(false);
@@ -1130,11 +1049,7 @@ export default function CpiPpiForecastPage({
       <div className="min-h-screen bg-background">
         <div className="container py-6 md:py-8">
           <WorkspaceLoadingState
-            label={copy(
-              language,
-              "CPI/PPI tahmin workspace yukleniyor.",
-              "Loading the CPI/PPI forecast workspace."
-            )}
+            label={t("macro:loadingTheCpiPpiForecast")}
           />
         </div>
       </div>
@@ -1148,11 +1063,7 @@ export default function CpiPpiForecastPage({
           <WorkspaceLoadingState
             label={
               error ||
-              copy(
-                language,
-                "Henuz CPI veya PPI forecast snapshot'i bulunmuyor. Pipeline cpi_forecast.json ya da ppi_forecast.json uretince bu alan otomatik dolacak.",
-                "There is no CPI or PPI forecast snapshot yet. This page will populate automatically once the pipeline produces cpi_forecast.json or ppi_forecast.json."
-              )
+              t("macro:thereIsNoCpiOr")
             }
           />
         </div>
@@ -1182,18 +1093,14 @@ export default function CpiPpiForecastPage({
               <div className="space-y-2">
                 <div className="flex flex-wrap items-center gap-1.5">
                   <span className="badge-strong text-[9px]">
-                    {copy(
-                      language,
-                      "İkili makro workspace",
-                      "Dual macro workspace"
-                    )}
+                    {t("macro:dualMacroWorkspace")}
                   </span>
                   <span
                     className={`rounded-full border px-2 py-0.5 text-[9px] ${pipelineStatusClass(
                       pipelineStatus
                     )}`}
                   >
-                    {copy(language, "Pipeline", "Pipeline")}:{" "}
+                    {"Pipeline"}:{" "}
                     {pipelineStatusLabel(pipelineStatus, language)}
                   </span>
                   <span className="badge-warning text-[9px]">{deployTimeLabel()}</span>
@@ -1201,32 +1108,28 @@ export default function CpiPpiForecastPage({
 
                 <div className="space-y-1.5">
                   <p className="heading-condensed text-xs uppercase tracking-[0.18em] text-sky-300">
-                    {copy(language, "TÜFE / ÜFE Tahmini", "CPI / PPI Forecast")}
+                    {t("macro:cpiPpiForecast")}
                   </p>
                   <h1 className="heading-condensed max-w-4xl text-xl leading-none text-foreground md:text-2xl">
-                    {copy(
-                      language,
-                      "CPI solda, PPI sagda. Iki workspace ayni zeminde.",
-                      "CPI on the left, PPI on the right. Two workspaces on one surface."
-                    )}
+                    {t("macro:cpiOnTheLeftPpi")}
                   </h1>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2 rounded-xl border border-white/10 bg-black/20 px-3 py-1.5 text-[10px] text-muted-foreground">
                   <span className="flex items-center gap-1">
                     <Activity className="size-3 text-emerald-300" />
-                    {copy(language, "Aktif workspace", "Active workspaces")}:{" "}
+                    {t("macro:activeWorkspaces")}:{" "}
                     {availableWorkspaces.map(workspace => workspace.release.name).join(" / ")}
                   </span>
                   <span className="h-2.5 w-px bg-white/10" />
                   <span className="flex items-center gap-1">
                     <CalendarDays className="size-3 text-sky-300" />
-                    {copy(language, "Gunluk deploy", "Daily deploy")}: {deployTimeLabel()}
+                    {t("macro:dailyDeploy")}: {deployTimeLabel()}
                   </span>
                   <span className="h-2.5 w-px bg-white/10" />
                   <span className="flex items-center gap-1">
                     <Sparkles className="size-3 text-amber-300" />
-                    {copy(language, "Son senkron", "Last sync")}:{" "}
+                    {t("common:lastSync")}:{" "}
                     {formatTimestamp(lastSyncAt, language)}
                   </span>
                 </div>
@@ -1235,37 +1138,29 @@ export default function CpiPpiForecastPage({
               <div className="space-y-2">
                 <div className="grid gap-2 sm:grid-cols-2">
                   <CompactStatCard
-                    label={copy(language, "TÜFE durumu", "CPI status")}
+                    label={t("macro:cpiStatus")}
                     value={pipelineStatusLabel(forecast.pipeline.cpi.status, language)}
                     hint={
                       forecast.cpi
                         ? formatDateLabel(forecast.cpi.release.releaseDate, language)
-                        : copy(language, "Snapshot bekleniyor", "Waiting for snapshot")
+                        : t("macro:waitingForSnapshot")
                     }
                     className={WORKSPACE_THEME.cpi.cardClassName}
                   />
                   <CompactStatCard
-                    label={copy(language, "ÜFE durumu", "PPI status")}
+                    label={t("macro:ppiStatus")}
                     value={pipelineStatusLabel(forecast.pipeline.ppi.status, language)}
                     hint={
                       forecast.ppi
                         ? formatDateLabel(forecast.ppi.release.releaseDate, language)
-                        : copy(language, "Snapshot bekleniyor", "Waiting for snapshot")
+                        : t("macro:waitingForSnapshot")
                     }
                     className={WORKSPACE_THEME.ppi.cardClassName}
                   />
                   <CompactStatCard
-                    label={copy(language, "Canlı kaynak", "Live source")}
-                    value={copy(
-                      language,
-                      `${availableWorkspaces.length}/2 hazir`,
-                      `${availableWorkspaces.length}/2 ready`
-                    )}
-                    hint={copy(
-                      language,
-                      "Bir taraf eksikse son gecerli snapshot korunur.",
-                      "If one side is missing, the last valid snapshot stays visible."
-                    )}
+                    label={t("macro:liveSource")}
+                    value={t("macro:2Ready", { length: availableWorkspaces.length })}
+                    hint={t("macro:ifOneSideIsMissing")}
                   />
                   <div className="rounded-xl border border-white/10 bg-black/20 p-1.5">
                     <Button
@@ -1276,7 +1171,7 @@ export default function CpiPpiForecastPage({
                       onClick={() => void loadForecast()}
                     >
                       <RefreshCw className={`size-3 ${refreshing ? "animate-spin" : ""}`} />
-                      {copy(language, "Yenile", "Refresh")}
+                      {t("common:refresh")}
                     </Button>
                   </div>
                 </div>

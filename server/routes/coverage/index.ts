@@ -37,6 +37,17 @@ export function createCoverageRouter({
 }: CoverageRouterDependencies): Router {
   const router = express.Router();
 
+  const resolveCoverageRawForLanguage = (
+    report: CoverageStoredRecord,
+    language: string
+  ) => {
+    if (language === "en" && report.translations?.en) {
+      return report.translations.en;
+    }
+
+    return report.raw;
+  };
+
   const listPublishedCoverageReports = () =>
     mergeCoverageReports(
       billingStore.listCoverageReports() as CoverageStoredRecord[],
@@ -78,7 +89,9 @@ export function createCoverageRouter({
       "Content-Disposition",
       `attachment; filename="${report.sourceName}"`
     );
-    res.status(200).send(report.raw);
+    res
+      .status(200)
+      .send(resolveCoverageRawForLanguage(report, normalizeString(req.query.lang)));
   });
 
   router.get("/coverage/reports/:id", (req, res) => {

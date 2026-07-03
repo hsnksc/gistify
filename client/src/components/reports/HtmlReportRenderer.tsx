@@ -1,18 +1,9 @@
-import {
-  useCallback,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { AlertTriangle, BookOpen, Languages } from "lucide-react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState, } from "react";
+import { BookOpen, Languages } from "lucide-react";
 import type { DailyReportLanguage } from "@shared/dailyReports";
 import {
-  analyzeFlowReportLanguage,
-  type FlowReportLanguageInfo,
-} from "@shared/flowLanguage";
-import { copy, type AppLanguage } from "@/lib/i18n";
+  analyzeFlowReportLanguage, type FlowReportLanguageInfo, } from "@shared/flowLanguage";
+import { type AppLanguage, t } from "@/lib/i18n";
 
 interface HtmlReportRendererProps {
   language?: AppLanguage;
@@ -36,16 +27,6 @@ interface PreparedHtmlReport {
   srcDoc: string;
 }
 
-interface TranslationRequestMessage {
-  instanceId?: string;
-  texts?: string[];
-  type?: string;
-}
-
-const MAX_RUNTIME_TRANSLATION_TEXT_LENGTH = 1800;
-const MAX_RUNTIME_TRANSLATION_BATCH_SIZE = 18;
-const MAX_RUNTIME_TRANSLATION_BATCH_CHARS = 12000;
-const runtimeHtmlTranslationCache = new Map<string, string>();
 const FLOW_CHROME_SELECTOR = [
   "header#header",
   "header.header",
@@ -66,113 +47,6 @@ const FLOW_CHROME_SELECTOR = [
 
 function normalizeText(value: string) {
   return value.replace(/\s+/g, " ").trim();
-}
-
-function normalizeTranslationTexts(texts: string[]) {
-  const normalized: string[] = [];
-  let totalLength = 0;
-
-  for (const value of texts) {
-    if (typeof value !== "string") {
-      continue;
-    }
-
-    const trimmed = value.trim();
-    if (!trimmed) {
-      continue;
-    }
-
-    const sliced = value.slice(0, MAX_RUNTIME_TRANSLATION_TEXT_LENGTH);
-    if (!sliced.trim()) {
-      continue;
-    }
-
-    if (normalized.length >= MAX_RUNTIME_TRANSLATION_BATCH_SIZE) {
-      break;
-    }
-
-    if (totalLength + sliced.length > MAX_RUNTIME_TRANSLATION_BATCH_CHARS) {
-      break;
-    }
-
-    normalized.push(sliced);
-    totalLength += sliced.length;
-  }
-
-  return Array.from(new Set(normalized));
-}
-
-async function translateRuntimeHtmlTexts(texts: string[]) {
-  const requestedTexts = Array.from(new Set(texts)).filter(Boolean);
-  const translations = Object.fromEntries(
-    requestedTexts.map(text => [text, runtimeHtmlTranslationCache.get(text) || text])
-  ) as Record<string, string>;
-  const pendingTexts = requestedTexts.filter(
-    text => !runtimeHtmlTranslationCache.has(text)
-  );
-
-  if (!pendingTexts.length) {
-    return translations;
-  }
-
-  const queue = [...pendingTexts];
-
-  while (queue.length > 0) {
-    const batch = normalizeTranslationTexts(queue);
-    if (!batch.length) {
-      break;
-    }
-
-    queue.splice(0, batch.length);
-
-    try {
-      const response = await fetch("/api/i18n/translate", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          source: "tr",
-          target: "en",
-          texts: batch,
-        }),
-      });
-
-      if (!response.ok) {
-        const errorPayload = (await response.json().catch(() => ({}))) as { error?: string };
-        throw new Error(errorPayload.error || `Translation API returned ${response.status}`);
-      }
-
-      const payload = (await response.json()) as {
-        translations?: Record<string, string>;
-      };
-
-      const resolvedTranslations = payload.translations || {};
-      for (const sourceText of batch) {
-        const translated = resolvedTranslations[sourceText];
-        // Only cache if translation is different from source (real translation)
-        if (translated && translated !== sourceText) {
-          runtimeHtmlTranslationCache.set(sourceText, translated);
-          translations[sourceText] = translated;
-        } else if (!translated) {
-          // API returned empty - don't cache, allow retry
-          translations[sourceText] = sourceText;
-        } else {
-          // Same as source - don't cache, might be fallback
-          translations[sourceText] = sourceText;
-        }
-      }
-    } catch (err) {
-      // Don't cache on error - allow retry next time
-      for (const sourceText of batch) {
-        translations[sourceText] = sourceText;
-      }
-      throw err;
-    }
-  }
-
-  return translations;
 }
 
 function slugifySectionId(value: string) {
@@ -376,7 +250,7 @@ function buildPreparedHtmlReport(
     ? [
         {
           id: "hero",
-          label: copy(language, "Genel Bakis", "Overview"),
+          label: t("flow:overview"),
         },
       ]
     : [];
@@ -419,16 +293,7 @@ function buildPreparedHtmlReport(
 (() => {
   const instanceId = ${JSON.stringify(instanceId)};
   const preferredLanguage = ${JSON.stringify(reportLanguage)};
-  const availableLanguages = ${JSON.stringify(availableLanguages || [])};
-  const MAX_TEXT_LENGTH = ${MAX_RUNTIME_TRANSLATION_TEXT_LENGTH};
-  const MAX_BATCH_SIZE = ${MAX_RUNTIME_TRANSLATION_BATCH_SIZE};
-  const MAX_BATCH_CHARS = ${MAX_RUNTIME_TRANSLATION_BATCH_CHARS};
-  const pendingTranslations = new Set();
-  const translationNodesBySource = new Map();
-  const resolvedTranslations = new Map();
   let activeLanguage = preferredLanguage;
-  let translationInFlight = false;
-  let translationScheduled = false;
 
   const normalizeAscii = value =>
     String(value || "")
@@ -439,72 +304,6 @@ function buildPreparedHtmlReport(
       .replace(/ö/g, "o")
       .replace(/ş/g, "s")
       .replace(/ü/g, "u");
-
-  const looksTurkish = value => {
-    const source = String(value || "");
-    const trimmed = source.trim();
-    if (!trimmed || trimmed.length > MAX_TEXT_LENGTH) {
-      return false;
-    }
-    if (/^[\\d\\s.,:%$+\\-()/#]+$/.test(trimmed)) {
-      return false;
-    }
-
-    const normalized = normalizeAscii(trimmed);
-    return (
-      /[çğıöşüÇĞİÖŞÜ]/.test(trimmed) ||
-      /\\b(?:ve|ile|icin|olarak|guncel|gunluk|sabit|beklenti|rapor|tarih|son|orani|risk|oneri|analiz|degisim|gelir|kar|fiyat|hisse|borsa|sirket|arsiv|ceviri|dil|kismi|ozet)\\b/i.test(normalized)
-    );
-  };
-
-  const isNodeHidden = node => {
-    const parent = node.parentElement;
-    if (!parent) {
-      return true;
-    }
-    if (parent.closest("script, style, textarea, input, pre, code, noscript")) {
-      return true;
-    }
-    const style = window.getComputedStyle(parent);
-    return style.display === "none" || style.visibility === "hidden";
-  };
-
-  const queueTranslationNode = node => {
-    if (!node || isNodeHidden(node)) {
-      return;
-    }
-
-    const source = node.nodeValue || "";
-    if (!looksTurkish(source)) {
-      return;
-    }
-
-    const resolved = resolvedTranslations.get(source);
-    if (resolved) {
-      if (node.nodeValue !== resolved) {
-        node.nodeValue = resolved;
-      }
-      return;
-    }
-
-    const existing = translationNodesBySource.get(source);
-    if (existing) {
-      existing.push(node);
-    } else {
-      translationNodesBySource.set(source, [node]);
-    }
-    pendingTranslations.add(source);
-  };
-
-  const collectTranslationNodes = root => {
-    const walker = document.createTreeWalker(root || document.body, NodeFilter.SHOW_TEXT);
-    let current = walker.nextNode();
-
-    while (current) {
-      queueTranslationNode(current);
-      current = walker.nextNode();
-    }
-  };
 
   const updateBodyLanguageClass = languageCode => {
     if (!document.body) {
@@ -829,102 +628,10 @@ function buildPreparedHtmlReport(
 
   const scheduleHeight = () => window.requestAnimationFrame(postHeight);
 
-  const flushTranslations = () => {
-    translationScheduled = false;
-
-    if (
-      preferredLanguage !== "en" ||
-      translationInFlight ||
-      pendingTranslations.size === 0
-    ) {
-      return;
-    }
-
-    const batch = [];
-    let batchCharCount = 0;
-
-    for (const source of Array.from(pendingTranslations)) {
-      const wouldExceedChars =
-        batch.length > 0 && batchCharCount + source.length > MAX_BATCH_CHARS;
-
-      if (batch.length >= MAX_BATCH_SIZE || wouldExceedChars) {
-        break;
-      }
-
-      batch.push(source);
-      batchCharCount += source.length;
-    }
-
-    batch.forEach(source => pendingTranslations.delete(source));
-
-    if (!batch.length) {
-      return;
-    }
-
-    translationInFlight = true;
-    parent.postMessage(
-      {
-        type: "gistify-flow-html-translate-request",
-        instanceId,
-        texts: batch,
-      },
-      "*"
-    );
-  };
-
-  const scheduleTranslations = () => {
-    if (
-      preferredLanguage !== "en" ||
-      translationInFlight ||
-      pendingTranslations.size === 0 ||
-      translationScheduled
-    ) {
-      return;
-    }
-
-    translationScheduled = true;
-    window.requestAnimationFrame(flushTranslations);
-  };
-
-  const applyTranslationResponse = translations => {
-    translationInFlight = false;
-    const nextTranslations = translations && typeof translations === "object" ? translations : {};
-
-    Object.entries(nextTranslations).forEach(([source, translated]) => {
-      const resolved =
-        typeof translated === "string" && translated.trim() ? translated : source;
-      resolvedTranslations.set(source, resolved);
-      const nodes = translationNodesBySource.get(source) || [];
-      nodes.forEach(node => {
-        if (node && node.nodeValue !== resolved) {
-          node.nodeValue = resolved;
-        }
-      });
-      translationNodesBySource.delete(source);
-    });
-
-    if (pendingTranslations.size > 0) {
-      scheduleTranslations();
-    }
-    scheduleHeight();
-  };
-
-  const translateVisibleTurkishText = () => {
-    if (preferredLanguage !== "en") {
-      return;
-    }
-    if (availableLanguages.includes(preferredLanguage)) {
-      return;
-    }
-    collectTranslationNodes(document.body);
-    scheduleTranslations();
-  };
-
   applyPreferredLanguage();
 
   window.addEventListener("load", () => {
     applyPreferredLanguage();
-    translateVisibleTurkishText();
     postHeight();
     window.setTimeout(postHeight, 250);
     window.setTimeout(postHeight, 1000);
@@ -954,28 +661,6 @@ function buildPreparedHtmlReport(
   });
 
   new MutationObserver(mutations => {
-    for (const mutation of mutations) {
-      if (
-        mutation.type === "characterData" &&
-        mutation.target.nodeType === Node.TEXT_NODE
-      ) {
-        queueTranslationNode(mutation.target);
-        continue;
-      }
-
-      mutation.addedNodes.forEach(node => {
-        if (node.nodeType === Node.TEXT_NODE) {
-          queueTranslationNode(node);
-          return;
-        }
-
-        if (node.nodeType === Node.ELEMENT_NODE) {
-          collectTranslationNodes(node);
-        }
-      });
-    }
-
-    scheduleTranslations();
     scheduleHeight();
   }).observe(document.documentElement, {
     subtree: true,
@@ -992,15 +677,8 @@ function buildPreparedHtmlReport(
 
     if (data.type === "gistify-flow-html-scroll") {
       scrollToTarget(String(data.sectionId || ""));
-      return;
-    }
-
-    if (data.type === "gistify-flow-html-translate-response") {
-      applyTranslationResponse(data.translations);
     }
   });
-
-  window.setTimeout(translateVisibleTurkishText, 140);
 })();
 </script>`;
 
@@ -1151,22 +829,21 @@ function getTranslationNotice(
   languageInfo: FlowReportLanguageInfo,
   availableLanguages?: DailyReportLanguage[]
 ) {
-  if (language !== "en") {
+  if (availableLanguages?.includes(language)) {
     return null;
   }
 
-  if (availableLanguages?.includes("en")) {
-    return null;
-  }
-
-  if (languageInfo.languageMode === "tr") {
+  if (languageInfo.languageMode === "tr" && language === "en") {
     return {
-      body: copy(
-        language,
-        "Kaynak rapor Turkce. Gorunur kalan Turkce bolumler icin calisma aninda Ingilizce fallback uygulanir.",
-        "The source report is Turkish. Visible Turkish passages are translated into English at runtime as a fallback."
-      ),
-      title: copy(language, "Canli Ceviri", "Runtime Translation"),
+      body: t("flow:theSourceReportIsTurkish"),
+      title: t("flow:runtimeTranslation"),
+    };
+  }
+
+  if (languageInfo.languageMode === "en" && language === "tr") {
+    return {
+      body: t("flow:theSourceReportIsEnglish"),
+      title: t("flow:runtimeTranslation"),
     };
   }
 
@@ -1175,12 +852,8 @@ function getTranslationNotice(
     languageInfo.translationState === "partial"
   ) {
     return {
-      body: copy(
-        language,
-        "Raporun gomulu EN kopyasi kismi. Eksik kalan Turkce bolumler mumkun oldugunda otomatik Ingilizceye cevrilir.",
-        "The embedded English copy is partial. Remaining Turkish sections are translated into English automatically when possible."
-      ),
-      title: copy(language, "Kismi Ceviri", "Partial Translation"),
+      body: t("flow:theSelectedLanguageCopyIs"),
+      title: t("flow:partialTranslation"),
     };
   }
 
@@ -1204,10 +877,6 @@ export default function HtmlReportRenderer({
     () => rawInstanceId.replace(/[:]/g, "-"),
     [rawInstanceId]
   );
-  const prepared = useMemo(
-    () => buildPreparedHtmlReport(html, instanceId, language, availableLanguages),
-    [html, instanceId, language, availableLanguages]
-  );
   const languageInfo = useMemo(
     () =>
       analyzeFlowReportLanguage({
@@ -1219,12 +888,35 @@ export default function HtmlReportRenderer({
       }),
     [html, sourceFolder, sourceLabel, title]
   );
+  const renderedLanguage = useMemo<DailyReportLanguage>(() => {
+    if (availableLanguages?.includes(language)) {
+      return language;
+    }
+
+    return languageInfo.languageMode === "en" ? "en" : "tr";
+  }, [availableLanguages, language, languageInfo.languageMode]);
+  const effectiveAvailableLanguages = useMemo<DailyReportLanguage[]>(
+    () =>
+      availableLanguages?.length
+        ? availableLanguages
+        : [renderedLanguage],
+    [availableLanguages, renderedLanguage]
+  );
+  const prepared = useMemo(
+    () =>
+      buildPreparedHtmlReport(
+        html,
+        instanceId,
+        renderedLanguage,
+        effectiveAvailableLanguages
+      ),
+    [effectiveAvailableLanguages, html, instanceId, renderedLanguage]
+  );
   const translationNotice = useMemo(
     () => getTranslationNotice(language, languageInfo, availableLanguages),
     [language, languageInfo, availableLanguages]
   );
   const [iframeHeight, setIframeHeight] = useState(1600);
-  const [translationError, setTranslationError] = useState<string | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -1257,59 +949,6 @@ export default function HtmlReportRenderer({
     return () => window.removeEventListener("message", handleMessage);
   }, [instanceId]);
 
-  useEffect(() => {
-    if (typeof window === "undefined" || language !== "en") {
-      return;
-    }
-
-    const handleTranslationRequest = async (event: MessageEvent) => {
-      const data = event.data as TranslationRequestMessage | undefined;
-      if (
-        !data ||
-        data.type !== "gistify-flow-html-translate-request" ||
-        data.instanceId !== instanceId ||
-        !Array.isArray(data.texts) ||
-        !iframeRef.current?.contentWindow
-      ) {
-        return;
-      }
-
-      const texts = data.texts.filter(
-        (value): value is string => typeof value === "string" && value.trim().length > 0
-      );
-      if (!texts.length) {
-        return;
-      }
-
-      try {
-        const translations = await translateRuntimeHtmlTexts(texts);
-        iframeRef.current.contentWindow.postMessage(
-          {
-            type: "gistify-flow-html-translate-response",
-            instanceId,
-            translations,
-          },
-          "*"
-        );
-      } catch (err) {
-        const message = err instanceof Error ? err.message : "Translation failed";
-        setTranslationError(message);
-        // Still send empty response so iframe stops waiting
-        iframeRef.current.contentWindow.postMessage(
-          {
-            type: "gistify-flow-html-translate-response",
-            instanceId,
-            translations: {},
-          },
-          "*"
-        );
-      }
-    };
-
-    window.addEventListener("message", handleTranslationRequest);
-    return () => window.removeEventListener("message", handleTranslationRequest);
-  }, [instanceId, language]);
-
   const scrollToSection = useCallback(
     (sectionId: string) => {
       iframeRef.current?.contentWindow?.postMessage(
@@ -1328,11 +967,7 @@ export default function HtmlReportRenderer({
     return (
       <div className="rounded-xl border border-dashed border-border bg-background/40 p-6 text-sm leading-7 text-muted-foreground">
         {emptyMessage ||
-          copy(
-            language,
-            "Kaynak HTML icerigi gosterilemedi.",
-            "The source HTML content could not be displayed."
-          )}
+          t("flow:theSourceHtmlContentCould")}
       </div>
     );
   }
@@ -1341,11 +976,7 @@ export default function HtmlReportRenderer({
     return (
       <div className="rounded-xl border border-dashed border-border bg-background/40 p-6 text-sm leading-7 text-muted-foreground">
         {emptyMessage ||
-          copy(
-            language,
-            "HTML rapor icerigi gosterilemedi.",
-            "The HTML report content could not be displayed."
-          )}
+          t("flow:theHtmlReportContentCould")}
       </div>
     );
   }
@@ -1368,32 +999,12 @@ export default function HtmlReportRenderer({
         </section>
       ) : null}
 
-      {translationError && !minimal ? (
-        <section className="rounded-xl border border-rose-400/25 bg-rose-500/8 p-4 shadow-xl">
-          <div className="flex items-start gap-3">
-            <AlertTriangle className="mt-0.5 size-4 text-rose-300" />
-            <div className="space-y-1">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-rose-300">
-                {copy(language, "Ceviri Hatasi", "Translation Error")}
-              </p>
-              <p className="text-sm leading-6 text-muted-foreground">
-                {copy(
-                  language,
-                  `Canli ceviri hizmeti gecici olarak kullanilamiyor: ${translationError}. Lutfen sayfayi yenileyin veya daha sonra tekrar deneyin.`,
-                  `Live translation service is temporarily unavailable: ${translationError}. Please refresh the page or try again later.`
-                )}
-              </p>
-            </div>
-          </div>
-        </section>
-      ) : null}
-
       {prepared.sections.length > 1 && !minimal ? (
         <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <div className="flex items-center gap-2">
             <BookOpen className="size-4 text-emerald-300" />
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-              {copy(language, "Bolum Haritasi", "Section Map")}
+              {t("flow:sectionMap")}
             </p>
           </div>
           <div className="mt-4 flex flex-wrap gap-2">
@@ -1414,7 +1025,7 @@ export default function HtmlReportRenderer({
       <section className="overflow-hidden rounded-xl border border-border bg-card/90 shadow-xl">
         <iframe
           ref={iframeRef}
-          title={copy(language, "HTML rapor gorunumu", "HTML report view")}
+          title={t("flow:htmlReportView")}
           srcDoc={prepared.srcDoc}
           sandbox="allow-scripts"
           className="block w-full border-0 bg-[#050c1b]"
@@ -1425,7 +1036,7 @@ export default function HtmlReportRenderer({
       {prepared.sections.length > 1 && !minimal ? (
         <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
-            {copy(language, "Hizli Gecis", "Quick Jump")}
+            {t("flow:quickJump")}
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             {prepared.sections.map(section => (

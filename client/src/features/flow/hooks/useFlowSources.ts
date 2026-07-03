@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import type { FlowSource, FlowSourcesResponse } from "@shared/flow";
 import { extractApiErrorMessage, readJsonResponse } from "@/lib/api";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 
 interface UseFlowSourcesResult {
   error: string;
@@ -34,11 +34,7 @@ export function useFlowSources(language: AppLanguage): UseFlowSourcesResult {
         throw new Error(
           extractApiErrorMessage(
             payload,
-            copy(
-              language,
-              "Flow kaynaklari yuklenemedi.",
-              "Flow sources could not be loaded."
-            )
+            t("flow:flowSourcesCouldNotBe")
           )
         );
       }
@@ -48,11 +44,7 @@ export function useFlowSources(language: AppLanguage): UseFlowSourcesResult {
       setError(
         caughtError instanceof Error
           ? caughtError.message
-          : copy(
-              language,
-              "Flow kaynaklari yuklenemedi.",
-              "Flow sources could not be loaded."
-            )
+          : t("flow:flowSourcesCouldNotBe")
       );
       setSources([]);
     } finally {

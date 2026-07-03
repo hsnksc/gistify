@@ -1,25 +1,14 @@
 import { useMemo, useState } from "react";
 import {
-  AlertCircle,
-  Database,
-  RefreshCw,
-  Search,
-  SearchX,
-  Sparkles,
-} from "lucide-react";
+  AlertCircle, Database, RefreshCw, Search, SearchX, Sparkles, } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import EmptyState from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
 import LoadingState from "@/components/ui/loading-state";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { copy, type AppLanguage } from "@/lib/i18n";
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
+import { type AppLanguage, t } from "@/lib/i18n";
 import FlowLayout from "../components/FlowLayout";
 import ReportGalleryCard from "../components/reports/ReportGalleryCard";
 import { useFlowReportSummaries } from "../hooks/useFlowReportSummaries";
@@ -130,19 +119,11 @@ export default function ReportsIndexPage({
     totalCount: allReports.length,
   };
   const pageTitle = forcedTicker
-    ? `${forcedTicker.toUpperCase()} · ${copy(language, "Rapor Galerisi", "Report Gallery")}`
-    : copy(language, "Gistify Rapor Galerisi", "Gistify Report Gallery");
+    ? `${forcedTicker.toUpperCase()} · ${t("flow:reportGallery")}`
+    : t("flow:gistifyReportGallery");
   const pageDescription = forcedTicker
-    ? copy(
-        language,
-        `${forcedTicker.toUpperCase()} icin tum HTML raporlar, filtreler ve arsiv akisi.`,
-        `All HTML reports, filters and archive flow for ${forcedTicker.toUpperCase()}.`
-      )
-    : copy(
-        language,
-        "HTML hisse raporlarini arsivle ve tarih bazli galeride ac.",
-        "Archive and browse stock HTML reports in a date-based gallery."
-      );
+    ? t("flow:allHtmlReportsFiltersAnd", { touppercase: forcedTicker.toUpperCase() })
+    : t("flow:archiveAndBrowseStockHtml");
 
   usePageMeta({
     description: pageDescription,
@@ -152,26 +133,22 @@ export default function ReportsIndexPage({
   return (
     <FlowLayout
       language={language}
-      eyebrow={copy(language, "Raporlar", "Reports")}
+      eyebrow={t("common:reports")}
       title={
         forcedTicker
-          ? `${forcedTicker.toUpperCase()} ${copy(language, "Rapor Galerisi", "Report Gallery")}`
-          : copy(language, "Hisse HTML Rapor Galerisi", "Stock HTML Report Gallery")
+          ? `${forcedTicker.toUpperCase()} ${t("flow:reportGallery")}`
+          : t("flow:stockHtmlReportGallery")
       }
-      description={copy(
-        language,
-        "Hisse HTML raporlarini tek yerde filtrele ve arsivle. Yayinli raporlar galeride acilir.",
-        "Filter and archive stock HTML reports in one place. Published reports open in the gallery."
-      )}
+      description={t("flow:filterAndArchiveStockHtml")}
       actions={
         <>
           <Button type="button" variant="outline" onClick={() => void hydrate()}>
             <Database className="size-4" />
-            {copy(language, "Yereli Yenile", "Refresh Local")}
+            {t("flow:refreshLocal")}
           </Button>
           <Button type="button" variant="outline" onClick={() => void reload()}>
             <RefreshCw className="size-4" />
-            {copy(language, "Yayinliyi Yenile", "Refresh Published")}
+            {t("flow:refreshPublished")}
           </Button>
         </>
       }
@@ -179,7 +156,7 @@ export default function ReportsIndexPage({
       <section className="grid gap-4 md:grid-cols-4">
         <article className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-            {copy(language, "Toplam Rapor", "Total Reports")}
+            {t("flow:totalReports")}
           </p>
           <p className="mt-4 text-3xl font-semibold text-foreground">
             {summary.totalCount}
@@ -187,7 +164,7 @@ export default function ReportsIndexPage({
         </article>
         <article className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
-            {copy(language, "Yerel Arsiv", "Local Archive")}
+            {t("flow:localArchive")}
           </p>
           <p className="mt-4 text-3xl font-semibold text-foreground">
             {summary.localCount}
@@ -195,7 +172,7 @@ export default function ReportsIndexPage({
         </article>
         <article className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300">
-            {copy(language, "Yayinli Arsiv", "Published Archive")}
+            {t("flow:publishedArchive")}
           </p>
           <p className="mt-4 text-3xl font-semibold text-foreground">
             {summary.serverCount}
@@ -203,7 +180,7 @@ export default function ReportsIndexPage({
         </article>
         <article className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-300">
-            {copy(language, "Bugun", "Today")}
+            {t("scanner:premiumSaleMakesSenseIv")}
           </p>
           <p className="mt-4 text-3xl font-semibold text-foreground">
             {summary.todayCount}
@@ -216,10 +193,10 @@ export default function ReportsIndexPage({
         <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
           <div className="space-y-2">
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
-              {copy(language, "Filtreler", "Filters")}
+              {t("flow:filters")}
             </p>
             <h2 className="text-xl font-semibold text-foreground">
-              {copy(language, "Ara, filtrele ve tarihe gore grupla", "Search, filter and group by date")}
+              {t("flow:searchFilterAndGroupBy")}
             </h2>
           </div>
 
@@ -232,7 +209,7 @@ export default function ReportsIndexPage({
               }
             >
               <Sparkles className="size-4" />
-              {copy(language, "Bugunun Raporlari", "Today's Reports")}
+              {t("flow:todaySReports")}
             </Button>
             <Button
               type="button"
@@ -245,7 +222,7 @@ export default function ReportsIndexPage({
                 setSortOrder("newest");
               }}
             >
-              {copy(language, "Sifirla", "Reset")}
+              {t("flow:reset")}
             </Button>
           </div>
         </div>
@@ -258,11 +235,7 @@ export default function ReportsIndexPage({
                 value={forcedTicker || searchValue}
                 onChange={event => setSearchValue(event.target.value)}
                 disabled={Boolean(forcedTicker)}
-                placeholder={copy(
-                  language,
-                  "Ticker veya sirket ara",
-                  "Search ticker or company"
-                )}
+                placeholder={t("flow:searchTickerOrCompany")}
                 className="h-11 rounded-xl border-border bg-background/60 pl-10"
               />
             </div>
@@ -270,22 +243,22 @@ export default function ReportsIndexPage({
 
           <Select value={recommendationFilter} onValueChange={setRecommendationFilter}>
             <SelectTrigger className="h-11 w-full rounded-xl border-border bg-background/60">
-              <SelectValue placeholder={copy(language, "Oneri", "Recommendation")} />
+              <SelectValue placeholder={t("flow:recommendation")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">{copy(language, "Tum Oneriler", "All Recommendations")}</SelectItem>
-              <SelectItem value="BUY">{copy(language, "AL", "BUY")}</SelectItem>
-              <SelectItem value="HOLD">{copy(language, "TUT", "HOLD")}</SelectItem>
-              <SelectItem value="SELL">{copy(language, "SAT", "SELL")}</SelectItem>
+              <SelectItem value="all">{t("flow:allRecommendations")}</SelectItem>
+              <SelectItem value="BUY">{t("common:buy36db")}</SelectItem>
+              <SelectItem value="HOLD">{t("common:hold")}</SelectItem>
+              <SelectItem value="SELL">{t("common:sell")}</SelectItem>
             </SelectContent>
           </Select>
 
           <Select value={exchangeFilter} onValueChange={setExchangeFilter}>
             <SelectTrigger className="h-11 w-full rounded-xl border-border bg-background/60">
-              <SelectValue placeholder={copy(language, "Borsa", "Exchange")} />
+              <SelectValue placeholder={t("flow:exchange")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">{copy(language, "Tum Borsalar", "All Exchanges")}</SelectItem>
+              <SelectItem value="all">{t("flow:allExchanges")}</SelectItem>
               {exchangeOptions.map(exchange => (
                 <SelectItem key={exchange} value={exchange}>
                   {exchange}
@@ -306,8 +279,8 @@ export default function ReportsIndexPage({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="newest">{copy(language, "En Yeni", "Newest")}</SelectItem>
-                <SelectItem value="oldest">{copy(language, "En Eski", "Oldest")}</SelectItem>
+                <SelectItem value="newest">{t("flow:newest")}</SelectItem>
+                <SelectItem value="oldest">{t("flow:oldest")}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -319,11 +292,7 @@ export default function ReportsIndexPage({
           description={[serverError, localError].filter(Boolean).join(" · ")}
           icon={AlertCircle}
           role="alert"
-          title={copy(
-            language,
-            "Rapor galerisi yuklenemedi",
-            "Report gallery could not be loaded"
-          )}
+          title={t("flow:reportGalleryCouldNotBe")}
           tone="danger"
         />
       ) : null}
@@ -331,25 +300,13 @@ export default function ReportsIndexPage({
       {serverLoading || localLoading ? (
         <LoadingState
           compact
-          label={copy(
-            language,
-            "Rapor galerisi yukleniyor.",
-            "Loading report gallery."
-          )}
+          label={t("flow:loadingReportGallery")}
         />
       ) : !groupedReports.length ? (
         <EmptyState
-          description={copy(
-            language,
-            "Aramayi, tarih filtresini veya oneriyi degistirip galeriyi genislet.",
-            "Adjust the search, date or recommendation filters to widen the gallery."
-          )}
+          description={t("flow:adjustTheSearchDateOr")}
           icon={SearchX}
-          title={copy(
-            language,
-            "Secilen filtrelerle eslesen rapor bulunamadi.",
-            "No reports matched the current filters."
-          )}
+          title={t("flow:noReportsMatchedTheCurrent")}
         />
       ) : (
         <div className="space-y-6">
@@ -361,14 +318,14 @@ export default function ReportsIndexPage({
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                    {copy(language, "Tarih Grubu", "Date Group")}
+                    {t("flow:dateGroup")}
                   </p>
                   <h2 className="mt-2 text-2xl font-semibold text-foreground">
                     {getReportDateHeading(reportDate, language)}
                   </h2>
                 </div>
                 <span className="rounded-full border border-border bg-background/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                  {reports.length} {copy(language, "rapor", "reports")}
+                  {reports.length} {t("flow:reports")}
                 </span>
               </div>
 

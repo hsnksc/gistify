@@ -9,7 +9,7 @@
  */
 
 import type { MarketRegime, IVCurve, SpreadMetrics } from "./optionsTypes";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { getDynamicWeights, volatilityAdjustedScore, portfolioHeatCheck, type VixRegime } from "./scoreConfig";
 import { detectMarketRegime, calculateIVCurve } from "./regimeDetector";
 import { calculateExpectedMove, calculatePOP, calculateSpreadMetrics } from "./optionAnalytics";
@@ -228,8 +228,8 @@ export function v4GenerateSetup(
   const slip = estimateSlippage(rec.window, 1.5, spreadWidth, language);
 
   // 7. Neden
-  const ivAdj = stock.ivSignal === "SELL_PREMIUM" ? copy(language, " (Premium satışı mantıklı — IV yüksek)", " (Premium sale makes sense — IV high)") : "";
-  const rationale = copy(language, `Skor ${stock.finalScore}/100${ivAdj}. POP %${metrics.pop.popPercent}. Breakeven $${metrics.breakeven} (%${((metrics.breakeven / stock.price - 1) * 100).toFixed(1)} OTM).`, `Score ${stock.finalScore}/100${ivAdj}. POP %${metrics.pop.popPercent}. Breakeven $${metrics.breakeven} (%${((metrics.breakeven / stock.price - 1) * 100).toFixed(1)} OTM).`);
+  const ivAdj = stock.ivSignal === "SELL_PREMIUM" ? t("scanner:premiumSaleMakesSenseIv") : "";
+  const rationale = t("scanner:score100PopBreakevenOtm", { finalscore: stock.finalScore, ivadj: ivAdj, poppercent: metrics.pop.popPercent, breakeven: metrics.breakeven, tofixed1: ((metrics.breakeven / stock.price - 1) * 100).toFixed(1) });
 
   return {
     ticker: stock.ticker,
@@ -255,8 +255,8 @@ export function v4GenerateSetup(
     expectedMove: metrics.expectedMove.moveDollars,
     rationale,
     ifFails: stock.regime.termStructure === "BACKWARDATION"
-      ? copy(language, "BACKWARDATION: IV patlaması + put skew artışı. Strike'a assignment riski yüksek.", "BACKWARDATION: IV spike + put skew increase. High assignment risk to strike.")
-      : copy(language, "IV crush veya yön değişirse zarar. 2x kredi stop ile korun.", "IV crush or direction change means loss. Protected by 2x credit stop."),
+      ? t("scanner:backwardationIvSpikePutSkew")
+      : t("scanner:ivCrushOrDirectionChange"),
   };
 }
 
@@ -297,9 +297,9 @@ export function generateV4Report(
   const heat = portfolioHeatCheck(totalPortfolioRisk, netLiquidationValue);
 
   const priorities: string[] = [];
-  if (!heat.canTrade) priorities.push(copy(language, `PORTFÖY ISI ${heat.heatPct}% ≥ %5 → Yeni işlem YASAK`, `PORTFOLIO HEAT ${heat.heatPct}% ≥ %5 → New trades BANNED`));
-  if (regime.termStructure === "BACKWARDATION") priorities.push(copy(language, "BACKWARDATION → Credit spread YASAK", "BACKWARDATION → Credit spread BANNED"));
-  if (regime.vixRegime === "EXTREME_FEAR") priorities.push(copy(language, `VIX ${regime.vixLevel}: Premium zengini — disiplin ile fırsat`, `VIX ${regime.vixLevel}: Premium rich — opportunity with discipline`));
+  if (!heat.canTrade) priorities.push(t("scanner:portfolioHeat5NewTrades", { heatpct: heat.heatPct }));
+  if (regime.termStructure === "BACKWARDATION") priorities.push(t("scanner:backwardationCreditSpreadBanned"));
+  if (regime.vixRegime === "EXTREME_FEAR") priorities.push(t("scanner:vixPremiumRichOpportunityWith", { vixlevel: regime.vixLevel }));
 
   return {
     version: "4.0",
@@ -309,14 +309,14 @@ export function generateV4Report(
     stocks: stocks.sort((a, b) => b.finalScore - a.finalScore),
     setups: setups.sort((a, b) => b.score - a.score),
     executionRules: [
-      copy(language, "1. Midpoint limit emir (piyasa emiri YASAK)", "1. Midpoint limit order (market order BANNED)"),
-      copy(language, "2. Slippage ≤%5 (üzerinde RED)", "2. Slippage ≤%5 (above RED)"),
-      copy(language, "3. Giriş: 10:30-11:30 EDT (OPTIMAL/MID penceresi)", "3. Entry: 10:30-11:30 EDT (OPTIMAL/MID window)"),
-      copy(language, "4. Kelly sizing: Edge'e göre, max NLV %2", "4. Kelly sizing: Based on edge, max NLV %2"),
-      copy(language, "5. %50 kar al → yarısını kapat", "5. %50 take profit → close half"),
-      copy(language, "6. 21 DTE roll, 14 DTE time stop", "6. 21 DTE roll, 14 DTE time stop"),
-      copy(language, "7. 2x kredi = stop loss", "7. 2x credit = stop loss"),
-      copy(language, "8. Portföy ısısı %5 → yeni işlem DURUR", "8. Portfolio heat %5 → new trades STOP"),
+      t("scanner:1MidpointLimitOrderMarket"),
+      t("scanner:2Slippage5AboveRed"),
+      t("scanner:3Entry103011"),
+      t("scanner:4KellySizingBasedOn"),
+      t("scanner:550TakeProfitClose"),
+      "6. 21 DTE roll, 14 DTE time stop",
+      t("scanner:72xCreditStopLoss"),
+      t("scanner:8PortfolioHeat5New"),
     ],
     priorities,
   };

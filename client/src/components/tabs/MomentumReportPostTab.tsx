@@ -1,5 +1,5 @@
-import type { AppLanguage } from "@/lib/i18n";
-import { copy } from "@/lib/i18n";
+import { AppLanguage, t } from "@/lib/i18n";
+
 import ReportPostShell, {
   type ReportPostItem,
   type ReportTone,
@@ -30,14 +30,14 @@ function groupTone(group: MomentumCandidateRow["group"]): ReportTone {
 
 function groupLabel(group: MomentumCandidateRow["group"], language: AppLanguage) {
   if (group === "upside") {
-    return copy(language, "Yukari Donus", "Upside Reversal");
+    return t("common:upsideReversal");
   }
 
   if (group === "downside") {
-    return copy(language, "Asagi Momentum", "Downside Momentum");
+    return t("common:downsideMomentum");
   }
 
-  return copy(language, "Defensive", "Defensive");
+  return "Defensive";
 }
 
 function DataTable({
@@ -137,46 +137,34 @@ export default function MomentumReportPostTab({
 
   const statCards: ReportPostItem[] = [
     {
-      label: copy(language, "Piyasa Rejimi", "Market Regime"),
+      label: t("common:marketRegime"),
       value: report.regimeLabel || "-",
-      detail: copy(
-        language,
-        "Tum setup filtrelerinin uzerine kuruldugu ana piyasa modu.",
-        "Primary market mode used to interpret every setup filter."
-      ),
+      detail: t("common:primaryMarketModeUsedTo"),
       tone: "info",
     },
     {
-      label: copy(language, "Top Setup", "Top Setup"),
+      label: "Top Setup",
       value: topSetup?.ticker || topSetup?.name || "-",
-      detail: topSetup?.scoreLabel || copy(language, "Skor bilgisi yok.", "No score information."),
+      detail: topSetup?.scoreLabel || t("common:noScoreInformation"),
       tone: topSetup ? groupTone(topSetup.group) : "neutral",
     },
     {
-      label: copy(language, "Setup Sayisi", "Setup Count"),
+      label: t("common:setupCount"),
       value: String(report.candidates.length),
-      detail: copy(
-        language,
-        "Secili momentum markdown dosyasindan parse edilen toplam aday.",
-        "Total candidates parsed from the selected momentum markdown file."
-      ),
+      detail: t("flow:allHtmlReportsFiltersAnd"),
       tone: "bull",
     },
     {
-      label: copy(language, "Negatif Breadth", "Negative Breadth"),
+      label: t("common:negativeBreadth"),
       value: String(negativeBreadth),
-      detail: copy(
-        language,
-        "Negatif endeks veya zayiflayan blok sayisi.",
-        "Number of negative index or weakening breadth blocks."
-      ),
+      detail: t("common:numberOfNegativeIndexOr"),
       tone: negativeBreadth ? "bear" : "neutral",
     },
   ];
 
   const metaItems: ReportPostItem[] = [
     {
-      label: copy(language, "Rapor Tarihi", "Report Date"),
+      label: t("common:reportDate"),
       value: report.reportDateLabel || report.reportDate,
     },
     {
@@ -190,11 +178,11 @@ export default function MomentumReportPostTab({
       tone: "caution",
     },
     {
-      label: copy(language, "Okuma Suresi", "Reading Time"),
+      label: t("common:analystBuy"),
       value: report.readingTimeLabel || "-",
     },
     {
-      label: copy(language, "Kaynak Dosya", "Source File"),
+      label: t("common:sourceFile"),
       value: report.sourceFile,
     },
   ];
@@ -202,37 +190,25 @@ export default function MomentumReportPostTab({
   return (
     <ReportPostShell
       language={language}
-      categoryLabel={copy(language, "Momentum Post", "Momentum Post")}
+      categoryLabel={"Momentum Post"}
       title={report.title}
       subtitle={report.subtitle}
-      headline={copy(
-        language,
-        "Bu gorunum, secili momentum markdown dosyasini post formunda acar; rejim, adaylar, katalizorler ve tam kaynak icerigi tek akis halinde gorunur.",
-        "This view opens the selected momentum markdown file as a post flow where regime, candidates, catalysts, and the full source content stay in one readable stream."
-      )}
+      headline={t("common:thisViewOpensTheSelected")}
       reportDateLabel={report.reportDateLabel || report.reportDate}
       updatedAtLabel={updatedAtLabel}
       sourceLabel={report.sourceFile}
-      sourceKindLabel={copy(language, "Markdown Dosyasi", "Markdown File")}
+      sourceKindLabel={t("common:markdownFile")}
       statCards={statCards}
       metaItems={metaItems}
       storyItems={storyItems}
       markdown={report.rawMarkdown}
-      emptyMessage={copy(
-        language,
-        "Momentum markdown icerigi bos.",
-        "The momentum markdown content is empty."
-      )}
+      emptyMessage={t("common:theMomentumMarkdownContentIs")}
     >
       <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
         <SectionTitle
-          eyebrow={copy(language, "Candidate Board", "Candidate Board")}
-          title={copy(language, "Aday setuplar", "Candidate setups")}
-          description={copy(
-            language,
-            "Yeni yuklenen momentum raporundaki tum adaylar burada grup, tez ve risk bilgisiyle acilir.",
-            "All candidates from the newly uploaded momentum report open here with group, thesis, and risk context."
-          )}
+          eyebrow={"Candidate Board"}
+          title={t("common:candidateSetups")}
+          description={t("common:allCandidatesFromTheNewly")}
         />
 
         <div className="mt-6 grid gap-4 xl:grid-cols-2">
@@ -274,7 +250,7 @@ export default function MomentumReportPostTab({
             ))
           ) : (
             <article className="rounded-xl border border-dashed border-border bg-background/35 p-4 text-sm text-muted-foreground xl:col-span-2">
-              {copy(language, "Bu raporda parse edilen setup yok.", "No setups were parsed from this report.")}
+              {t("common:6meba0")}
             </article>
           )}
         </div>
@@ -283,17 +259,17 @@ export default function MomentumReportPostTab({
       <section className="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
         <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <SectionTitle
-            eyebrow={copy(language, "Market Snapshot", "Market Snapshot")}
-            title={copy(language, "Endeks ve sektor resmi", "Index and sector picture")}
+            eyebrow={"Market Snapshot"}
+            title={t("common:indexAndSectorPicture")}
           />
           <div className="mt-6 space-y-6">
             <DataTable
               headers={[
-                copy(language, "Endeks", "Index"),
-                copy(language, "Kapanis", "Close"),
-                copy(language, "Degisim", "Change"),
-                copy(language, "% Degisim", "% Change"),
-                copy(language, "Yorum", "Comment"),
+                t("common:index"),
+                t("common:closef0cc"),
+                t("common:change"),
+                t("common:change8e00"),
+                t("common:comment"),
               ]}
               rows={report.indexRows.map(row => [
                 row.index,
@@ -302,19 +278,15 @@ export default function MomentumReportPostTab({
                 row.pctChangeLabel,
                 row.comment,
               ])}
-              emptyMessage={copy(
-                language,
-                "Endeks tablosu parse edilemedi.",
-                "The index table could not be parsed."
-              )}
+              emptyMessage={t("common:theIndexTableCouldNot")}
             />
 
             <DataTable
               headers={[
-                copy(language, "Sektor", "Sector"),
-                copy(language, "Gunluk", "Daily"),
-                copy(language, "Haftalik", "Weekly"),
-                copy(language, "Yorum", "Comment"),
+                t("common:sectorc5c4"),
+                t("common:daily"),
+                t("common:weekly"),
+                t("common:comment"),
               ]}
               rows={report.sectorRows.map(row => [
                 row.sector,
@@ -322,55 +294,43 @@ export default function MomentumReportPostTab({
                 row.weeklyLabel,
                 row.comment,
               ])}
-              emptyMessage={copy(
-                language,
-                "Sektor tablosu parse edilemedi.",
-                "The sector table could not be parsed."
-              )}
+              emptyMessage={t("common:theSectorTableCouldNot")}
             />
           </div>
         </section>
 
         <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <SectionTitle
-            eyebrow={copy(language, "Catalysts", "Catalysts")}
-            title={copy(language, "Takvim ve senaryo", "Calendar and scenario")}
+            eyebrow={"Catalysts"}
+            title={t("common:calendarAndScenario")}
           />
           <div className="mt-6 space-y-6">
             <DataTable
               headers={[
-                copy(language, "Tarih", "Date"),
-                copy(language, "Olay", "Event"),
-                copy(language, "Etki", "Impact"),
+                t("common:date"),
+                t("common:event"),
+                t("scanner:v40RuleMidpointLimit"),
               ]}
               rows={report.calendarEvents.map(item => [
                 item.date,
                 item.event,
                 item.impact,
               ])}
-              emptyMessage={copy(
-                language,
-                "Takvim katalizorleri parse edilemedi.",
-                "Calendar catalysts could not be parsed."
-              )}
+              emptyMessage={t("common:calendarCatalystsCouldNotBe")}
             />
 
             <DataTable
               headers={[
-                copy(language, "Senaryo", "Scenario"),
-                copy(language, "Olasilik", "Probability"),
-                copy(language, "Aksiyon", "Action"),
+                t("common:event"),
+                t("common:probability"),
+                t("common:action"),
               ]}
               rows={report.scenarios.map(item => [
                 item.scenario,
                 item.probabilityLabel,
                 item.action,
               ])}
-              emptyMessage={copy(
-                language,
-                "Senaryo tablosu parse edilemedi.",
-                "The scenario table could not be parsed."
-              )}
+              emptyMessage={t("common:theScenarioTableCouldNot")}
             />
           </div>
         </section>
@@ -379,8 +339,8 @@ export default function MomentumReportPostTab({
       <section className="grid gap-6 xl:grid-cols-2">
         <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <SectionTitle
-            eyebrow={copy(language, "Risk Factors", "Risk Factors")}
-            title={copy(language, "Acil dikkat maddeleri", "Priority watchpoints")}
+            eyebrow={"Risk Factors"}
+            title={t("common:priorityWatchpoints")}
           />
           <div className="mt-6 space-y-3">
             {report.riskFactors.length ? (
@@ -395,7 +355,7 @@ export default function MomentumReportPostTab({
               ))
             ) : (
               <article className="rounded-xl border border-dashed border-border bg-background/35 p-4 text-sm text-muted-foreground">
-                {copy(language, "Risk faktoru parse edilemedi.", "Risk factors could not be parsed.")}
+                {t("common:riskFactorsCouldNotBe")}
               </article>
             )}
           </div>
@@ -403,8 +363,8 @@ export default function MomentumReportPostTab({
 
         <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <SectionTitle
-            eyebrow={copy(language, "Option Route", "Option Route")}
-            title={copy(language, "Opsiyon ve rota notlari", "Options and route notes")}
+            eyebrow={"Option Route"}
+            title={t("common:optionsAndRouteNotes")}
           />
           <div className="mt-6 space-y-3">
             {report.optionStrategies.length ? (
@@ -422,7 +382,7 @@ export default function MomentumReportPostTab({
               ))
             ) : (
               <article className="rounded-xl border border-dashed border-border bg-background/35 p-4 text-sm text-muted-foreground">
-                {copy(language, "Opsiyon rota notu parse edilemedi.", "Option route notes could not be parsed.")}
+                {t("common:optionRouteNotesCouldNot")}
               </article>
             )}
           </div>

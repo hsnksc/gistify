@@ -1,18 +1,11 @@
 import { useEffect, useState } from "react";
 import { FileText, RefreshCw, Save, Upload } from "lucide-react";
 import type {
-  DailyReportContent,
-  DailyReportRecord,
-  DailyReportSourcePackage,
-} from "@shared/dailyReports";
+  DailyReportContent, DailyReportRecord, DailyReportSourcePackage, } from "@shared/dailyReports";
 import {
-  AdminField as Field,
-  AdminPanel,
-  AdminPanelSurface,
-  AdminSectionLabel,
-} from "@/components/reports/AdminPanel";
+  AdminField as Field, AdminPanel, AdminPanelSurface, AdminSectionLabel, } from "@/components/reports/AdminPanel";
 import DailyReportViewer from "@/components/reports/DailyReportViewer";
-import { copy } from "@/lib/i18n";
+import { t } from "@/lib/i18n";
 import type { AppLanguage } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import EmptyState from "@/components/ui/empty-state";
@@ -209,8 +202,8 @@ export default function DailyReportAdminPanel({
         config={{ layout: "single" }}
         main={
           <EmptyState
-            description={copy(language, "Daily report publish aracını kullanmak için önce admin kilidini aç.", "Unlock admin access to use the daily report publishing tool.")}
-            title={copy(language, "Admin kilidi kapalı", "Admin lock is closed")}
+            description={t("flow:unlockAdminAccessToUse")}
+            title={t("flow:adminLockIsClosed")}
             tone="warning"
           />
         }
@@ -257,7 +250,7 @@ export default function DailyReportAdminPanel({
       setRawDraftJsonError("");
     } catch (error) {
       setRawDraftJsonError(
-        error instanceof Error ? error.message : copy(language, "Raw JSON uygulanamadı.", "Raw JSON could not be applied.")
+        error instanceof Error ? error.message : t("flow:rawJsonCouldNotBe")
       );
     }
   };
@@ -271,20 +264,20 @@ export default function DailyReportAdminPanel({
           className="xl:sticky xl:top-24 xl:h-[calc(100vh-8rem)] xl:overflow-y-auto"
         >
         <div className="flex items-center justify-between gap-2">
-          <AdminSectionLabel>{copy(language, "Source Packages", "Source Packages")}</AdminSectionLabel>
+          <AdminSectionLabel>{"Source Packages"}</AdminSectionLabel>
           <button
             type="button"
             onClick={onRefreshSources}
             className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
           >
             <RefreshCw className="size-3.5" />
-            {copy(language, "Yenile", "Refresh")}
+            {t("marketing:5Month")}
           </button>
         </div>
         <div className="mt-3 space-y-3">
           <Select value={selectedSourceId} onValueChange={onSelectSource}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder={copy(language, "Bir source folder seç", "Select a source folder")} />
+              <SelectValue placeholder={t("flow:selectASourceFolder")} />
             </SelectTrigger>
             <SelectContent>
               {sources.map(source => (
@@ -301,19 +294,19 @@ export default function DailyReportAdminPanel({
             disabled={!selectedSource}
           >
             <FileText className="size-4" />
-            {copy(language, "Taslaga donustur", "Convert to Draft")}
+            {t("flow:convertToDraft")}
           </Button>
         </div>
         <div className="mt-6">
           <div className="flex items-center justify-between gap-2">
-            <AdminSectionLabel>{copy(language, "Kayıtlı Daily Reports", "Saved Daily Reports")}</AdminSectionLabel>
+            <AdminSectionLabel>{t("flow:savedDailyReports")}</AdminSectionLabel>
             <button
               type="button"
               onClick={onRefreshReports}
               className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
             >
               <RefreshCw className="size-3.5" />
-              {copy(language, "Yenile", "Refresh")}
+              {t("common:refresh")}
             </button>
           </div>
           <div className="mt-3 space-y-2">
@@ -339,7 +332,7 @@ export default function DailyReportAdminPanel({
                         : "border-amber-500/30 bg-amber-500/10 text-amber-300"
                     }`}
                   >
-                    {report.status === "published" ? copy(language, "Yayınlandı", "Published") : copy(language, "Taslak", "Draft")}
+                    {report.status === "published" ? t("flow:published") : t("flow:draft")}
                   </span>
                 </div>
                 <p className="mt-2 text-xs text-muted-foreground">
@@ -358,9 +351,9 @@ export default function DailyReportAdminPanel({
             <div className="space-y-6">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <AdminSectionLabel tone="accent">{copy(language, "Publish", "Publish")}</AdminSectionLabel>
+                  <AdminSectionLabel tone="accent">{"Publish"}</AdminSectionLabel>
                   <h3 className="text-2xl font-semibold tracking-tight text-foreground">
-                    {copy(language, "Daily Report Editörü", "Daily Report Editor")}
+                    {t("flow:dailyReportEditor")}
                   </h3>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
@@ -371,7 +364,7 @@ export default function DailyReportAdminPanel({
                     disabled={adminBusy}
                   >
                     <Save className="size-4" />
-                    {copy(language, "Draft kaydet", "Save Draft")}
+                    {t("flow:saveDraft")}
                   </Button>
                   <Button
                     type="button"
@@ -379,7 +372,7 @@ export default function DailyReportAdminPanel({
                     disabled={adminBusy}
                   >
                     <Upload className="size-4" />
-                    {copy(language, "Yayınla", "Publish")}
+                    {t("flow:publish")}
                   </Button>
                 </div>
               </div>
@@ -388,9 +381,9 @@ export default function DailyReportAdminPanel({
               ) : null}
               <div className="grid gap-4 xl:grid-cols-2">
                 <AdminPanelSurface as="div" tone="muted" className="space-y-4">
-                  <AdminSectionLabel tone="accent">{copy(language, "Metadata", "Metadata")}</AdminSectionLabel>
+                  <AdminSectionLabel tone="accent">{"Metadata"}</AdminSectionLabel>
                   <div className="grid gap-4 md:grid-cols-2">
-                    <Field label={copy(language, "Başlık", "Title")}>
+                    <Field label={t("flow:title")}>
                       <Input
                         value={draftReport.title}
                         onChange={event =>
@@ -398,7 +391,7 @@ export default function DailyReportAdminPanel({
                         }
                       />
                     </Field>
-                    <Field label={copy(language, "Slug", "Slug")}>
+                    <Field label={"Slug"}>
                       <Input
                         value={draftReport.slug}
                         onChange={event =>
@@ -406,7 +399,7 @@ export default function DailyReportAdminPanel({
                         }
                       />
                     </Field>
-                    <Field label={copy(language, "Rapor tarihi", "Report Date")}>
+                    <Field label={t("flow:reportDate")}>
                       <Input
                         type="date"
                         value={draftReport.reportDate}
@@ -415,7 +408,7 @@ export default function DailyReportAdminPanel({
                         }
                       />
                     </Field>
-                    <Field label={copy(language, "Durum", "Status")}>
+                    <Field label={t("common:status")}>
                       <Select
                         value={draftReport.status}
                         onValueChange={value =>
@@ -428,12 +421,12 @@ export default function DailyReportAdminPanel({
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="draft">{copy(language, "Taslak", "Draft")}</SelectItem>
-                          <SelectItem value="published">{copy(language, "Yayınlandı", "Published")}</SelectItem>
+                          <SelectItem value="draft">{t("flow:draft")}</SelectItem>
+                          <SelectItem value="published">{t("flow:published")}</SelectItem>
                         </SelectContent>
                       </Select>
                     </Field>
-                    <Field label={copy(language, "Source folder", "Source Folder")}>
+                    <Field label={t("flow:sourceFolder")}>
                       <Input
                         value={draftReport.sourceFolder}
                         onChange={event =>
@@ -441,7 +434,7 @@ export default function DailyReportAdminPanel({
                         }
                       />
                     </Field>
-                    <Field label={copy(language, "Author email", "Author Email")}>
+                    <Field label={t("flow:authorEmail")}>
                       <Input
                         value={draftReport.authorEmail}
                         onChange={event =>
@@ -452,9 +445,9 @@ export default function DailyReportAdminPanel({
                   </div>
                 </AdminPanelSurface>
                 <AdminPanelSurface as="div" tone="muted" className="space-y-4">
-                  <AdminSectionLabel tone="accent">{copy(language, "Narrative", "Narrative")}</AdminSectionLabel>
+                  <AdminSectionLabel tone="accent">{"Narrative"}</AdminSectionLabel>
                   <div className="grid gap-4 md:grid-cols-2">
-                    <Field label={copy(language, "Headline", "Headline")}>
+                    <Field label={"Headline"}>
                       <Input
                         value={draftReport.content.headline}
                         onChange={event =>
@@ -462,7 +455,7 @@ export default function DailyReportAdminPanel({
                         }
                       />
                     </Field>
-                    <Field label={copy(language, "Yazar", "Author")}>
+                    <Field label={t("flow:author")}>
                       <Input
                         value={draftReport.content.author || ""}
                         onChange={event =>
@@ -470,7 +463,7 @@ export default function DailyReportAdminPanel({
                         }
                       />
                     </Field>
-                    <Field label={copy(language, "Coverage", "Coverage")}>
+                    <Field label={"Coverage"}>
                       <Input
                         value={draftReport.content.coverage || ""}
                         onChange={event =>
@@ -478,7 +471,7 @@ export default function DailyReportAdminPanel({
                         }
                       />
                     </Field>
-                    <Field label={copy(language, "Methodology", "Methodology")}>
+                    <Field label={"Methodology"}>
                       <Input
                         value={draftReport.content.methodology || ""}
                         onChange={event =>
@@ -486,7 +479,7 @@ export default function DailyReportAdminPanel({
                         }
                       />
                     </Field>
-                    <Field label={copy(language, "Source kind", "Source Kind")}>
+                    <Field label={t("flow:sourceKind")}>
                       <Select
                         value={draftReport.content.sourceKind || "folder"}
                         onValueChange={value =>
@@ -500,12 +493,12 @@ export default function DailyReportAdminPanel({
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="folder">{copy(language, "folder", "Folder")}</SelectItem>
-                          <SelectItem value="file">{copy(language, "file", "File")}</SelectItem>
+                          <SelectItem value="folder">{t("flow:folder")}</SelectItem>
+                          <SelectItem value="file">{t("flow:file")}</SelectItem>
                         </SelectContent>
                       </Select>
                     </Field>
-                    <Field label={copy(language, "Source label", "Source Label")}>
+                    <Field label={t("flow:sourceLabel")}>
                       <Input
                         value={draftReport.content.sourceLabel || ""}
                         onChange={event =>
@@ -513,7 +506,7 @@ export default function DailyReportAdminPanel({
                         }
                       />
                     </Field>
-                    <Field label={copy(language, "Asset base path", "Asset Base Path")}>
+                    <Field label={t("flow:assetBasePath")}>
                       <Input
                         value={draftReport.content.assetBasePath || ""}
                         onChange={event =>
@@ -521,7 +514,7 @@ export default function DailyReportAdminPanel({
                         }
                       />
                     </Field>
-                    <Field label={copy(language, "Research file count", "Research File Count")}>
+                    <Field label={t("macro:thePlaybookHasNotBeen")}>
                       <Input
                         type="number"
                         value={draftReport.content.researchFileCount}
@@ -536,7 +529,7 @@ export default function DailyReportAdminPanel({
                 </AdminPanelSurface>
               </div>
               <div className="grid gap-4 xl:grid-cols-2">
-                <Field label={copy(language, "Executive summary (boş satırla ayır)", "Executive Summary (separate with blank lines)")}>
+                <Field label={t("flow:executiveSummarySeparateWithBlank")}>
                   <Textarea
                     rows={8}
                     value={draftReport.content.executiveSummary.join("\n\n")}
@@ -549,7 +542,7 @@ export default function DailyReportAdminPanel({
                     }
                   />
                 </Field>
-                <Field label={copy(language, "Ticker universe (her satır bir ticker)", "Ticker Universe (one ticker per line)")}>
+                <Field label={t("flow:tickerUniverseOneTickerPer")}>
                   <Textarea
                     rows={8}
                     value={draftReport.content.tickerUniverse.join("\n")}
@@ -560,7 +553,7 @@ export default function DailyReportAdminPanel({
                     }
                   />
                 </Field>
-                <Field label={copy(language, "Section files (her satır bir dosya)", "Section Files (one file per line)")}>
+                <Field label={t("flow:sectionFilesOneFilePer")}>
                   <Textarea
                     rows={6}
                     value={draftReport.content.sectionFiles.join("\n")}
@@ -571,7 +564,7 @@ export default function DailyReportAdminPanel({
                     }
                   />
                 </Field>
-                <Field label={copy(language, "Figure files (her satır bir dosya)", "Figure Files (one file per line)")}>
+                <Field label={t("flow:figureFilesOneFilePer")}>
                   <Textarea
                     rows={6}
                     value={draftReport.content.figureFiles.join("\n")}
@@ -582,7 +575,7 @@ export default function DailyReportAdminPanel({
                     }
                   />
                 </Field>
-                <Field label={copy(language, "OpenAI figure files (her satır bir dosya)", "OpenAI Figure Files (one file per line)")}>
+                <Field label={t("flow:openaiFigureFilesOneFile")}>
                   <Textarea
                     rows={6}
                     value={draftReport.content.openAiFigureFiles.join("\n")}
@@ -594,7 +587,7 @@ export default function DailyReportAdminPanel({
                   />
                 </Field>
               </div>
-              <Field label={copy(language, "Tam markdown", "Full Markdown")}>
+              <Field label={t("flow:fullMarkdown")}>
                 <Textarea
                   className="min-h-[320px]"
                   value={draftReport.content.markdown}
@@ -605,17 +598,17 @@ export default function DailyReportAdminPanel({
               </Field>
               <AdminPanelSurface as="div" tone="muted" className="space-y-3">
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                  <AdminSectionLabel tone="accent">{copy(language, "Advanced JSON", "Advanced JSON")}</AdminSectionLabel>
+                  <AdminSectionLabel tone="accent">{"Advanced JSON"}</AdminSectionLabel>
                   <div className="flex flex-wrap gap-2">
                     <Button
                       type="button"
                       variant="outline"
                       onClick={() => setRawDraftJson(formatJson(draftReport))}
                     >
-                      {copy(language, "Güncel taslağı yükle", "Load Current Draft")}
+                      {t("flow:loadCurrentDraft")}
                     </Button>
                     <Button type="button" onClick={applyRawDraftJson}>
-                      {copy(language, "JSON'i uygula", "Apply JSON")}
+                      {t("common:applyJson")}
                     </Button>
                   </div>
                 </div>
@@ -630,15 +623,15 @@ export default function DailyReportAdminPanel({
                   </p>
                 ) : (
                   <p className="text-xs text-muted-foreground">
-                    {copy(language, "Tüm alanlara tek seferde müdahale etmek için rapor payload'ini buradan düzenle.", "Edit the report payload here to intervene on all fields at once.")}
+                    {t("flow:editTheReportPayloadHere")}
                   </p>
                 )}
               </AdminPanelSurface>
             </div>
           ) : (
             <EmptyState
-              description={copy(language, "Önce bir source package seçip taslaga dönüştür.", "Select a source package and convert it to draft first.")}
-              title={copy(language, "Düzenlenecek daily report taslağı yok", "No daily report draft to edit")}
+              description={t("flow:selectASourcePackageAnd")}
+              title={t("flow:noDailyReportDraftTo")}
             />
           )}
         </AdminPanelSurface>
@@ -647,7 +640,7 @@ export default function DailyReportAdminPanel({
           <AdminPanelSurface>
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <AdminSectionLabel tone="accent">{copy(language, "Source Preview", "Source Preview")}</AdminSectionLabel>
+                <AdminSectionLabel tone="accent">{"Source Preview"}</AdminSectionLabel>
                 <h3 className="mt-1 text-xl font-semibold text-foreground">
                   {selectedSource.title}
                 </h3>
@@ -657,27 +650,27 @@ export default function DailyReportAdminPanel({
                 variant="outline"
                 onClick={onCreateDraftFromSource}
               >
-                {copy(language, "Bu source'u kullan", "Use This Source")}
+                {t("flow:useThisSource")}
               </Button>
             </div>
             <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_220px_auto]">
-              <Field label={copy(language, "OpenAI chart prompt", "OpenAI Chart Prompt")}>
+              <Field label={t("flow:openaiChartPrompt")}>
                 <Textarea
                   rows={5}
                   value={openAiChartPrompt}
                   onChange={event =>
                     onOpenAiChartPromptChange(event.target.value)
                   }
-                  placeholder={copy(language, "Grafikleri daha okunabilir, premium ve editorial bir formatta yeniden üret.", "Regenerate charts in a more readable, premium, and editorial format.")}
+                  placeholder={t("flow:regenerateChartsInAMore")}
                 />
               </Field>
-              <Field label={copy(language, "Seçili grafik", "Selected Chart")}>
+              <Field label={t("flow:selectedChart")}>
                 <Select
                   value={selectedOpenAiFigureFile}
                   onValueChange={onSelectOpenAiFigureFile}
                 >
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder={copy(language, "Grafik seç", "Select Chart")} />
+                    <SelectValue placeholder={t("common:mitigation")} />
                   </SelectTrigger>
                   <SelectContent>
                     {selectedSource.figureFiles.map(fileName => (
@@ -699,7 +692,7 @@ export default function DailyReportAdminPanel({
                     !selectedOpenAiFigureFile
                   }
                 >
-                  {copy(language, "Seçili grafiği üret", "Generate Selected Chart")}
+                  {t("flow:generateSelectedChart")}
                 </Button>
                 <Button
                   type="button"
@@ -708,16 +701,16 @@ export default function DailyReportAdminPanel({
                     openAiChartBusy || !selectedSource.figureFiles.length
                   }
                 >
-                  {copy(language, "Tüm grafikleri tek tek üret", "Generate All Charts One by One")}
+                  {t("flow:generateAllChartsOneBy")}
                 </Button>
               </div>
             </div>
             <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
               <span>
-                {copy(language, "OpenAI varyantları:", "OpenAI Variants:")} {selectedSource.openAiFigureFiles.length} /{" "}
+                {t("flow:openaiVariants")} {selectedSource.openAiFigureFiles.length} /{" "}
                 {selectedSource.figureFiles.length}
               </span>
-              {openAiChartBusy ? <span>{copy(language, "Üretim sürüyor...", "Generation in progress...")}</span> : null}
+              {openAiChartBusy ? <span>{t("flow:generationInProgress")}</span> : null}
               {openAiChartMessage ? (
                 <span className="text-emerald-300">{openAiChartMessage}</span>
               ) : null}

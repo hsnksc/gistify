@@ -10,8 +10,8 @@ import GreeksDashboard from "@/components/earnings/GreeksDashboard";
 import ActionPlan from "@/components/earnings/ActionPlan";
 import ReportDownload from "@/components/earnings/ReportDownload";
 import { usePageMeta } from "@/hooks/usePageMeta";
-import type { AppLanguage } from "@/lib/i18n";
-import { copy } from "@/lib/i18n";
+import { AppLanguage, t } from "@/lib/i18n";
+
 import { cn } from "@/lib/utils";
 import {
   LayoutDashboard,
@@ -91,16 +91,8 @@ export default function EarningsPage({
   const [activeTab, setActiveTab] = useState<TabKey>(() => readStoredTab());
 
   usePageMeta({
-    description: copy(
-      language,
-      "Gistify earnings workspace takvim, strateji, CPR, Greeks ve portfoy katmanini tek karar yuzeyinde birlestirir.",
-      "The Gistify earnings workspace combines calendar, strategy, CPR, Greeks and portfolio layers on one decision surface."
-    ),
-    title: copy(
-      language,
-      "Gistify | Earnings Workspace",
-      "Gistify | Earnings Workspace"
-    ),
+    description: t("earnings:theGistifyEarningsWorkspaceCombines"),
+    title: "Gistify | Earnings Workspace",
   });
 
   useEffect(() => {
@@ -125,20 +117,16 @@ export default function EarningsPage({
           const result = await refresh();
           if (result.ok) {
             toast.success(
-              copy(language, "Earnings workspace yenilendi.", "The earnings workspace refreshed.")
+              t("earnings:theEarningsWorkspaceRefreshed")
             );
             return;
           }
           toast.error(
-            copy(language, "Yenileme basarisiz.", "Refresh failed."),
+            t("common:refreshFailed"),
             {
               description:
                 result.error ||
-                copy(
-                  language,
-                  "Pipeline verisi alinamadi.",
-                  "The pipeline data could not be loaded."
-                ),
+                t("earnings:thePipelineDataCouldNot"),
             }
           );
         }}
@@ -150,26 +138,18 @@ export default function EarningsPage({
     const result = await refresh();
     if (result.ok) {
       toast.success(
-        copy(language, "Earnings workspace yenilendi.", "The earnings workspace refreshed."),
+        t("earnings:theEarningsWorkspaceRefreshed"),
         {
-          description: copy(
-            language,
-            "Takvim, strateji ve portfoy snapshot'i guncellendi.",
-            "The calendar, strategy, and portfolio snapshot were refreshed."
-          ),
+          description: t("earnings:theCalendarStrategyAndPortfolio"),
         }
       );
       return;
     }
 
-    toast.error(copy(language, "Yenileme basarisiz.", "Refresh failed."), {
+    toast.error(t("common:refreshFailed"), {
       description:
         result.error ||
-        copy(
-          language,
-          "Pipeline verisi alinamadi.",
-          "The pipeline data could not be loaded."
-        ),
+        t("earnings:thePipelineDataCouldNot"),
     });
   };
 
@@ -203,7 +183,7 @@ export default function EarningsPage({
               )}
             >
               {tab.icon}
-              {copy(language, tab.labelTr, tab.labelEn)}
+              {(language === "en" ? tab.labelEn : tab.labelTr)}
             </button>
           ))}
         </div>
@@ -212,11 +192,7 @@ export default function EarningsPage({
       <EarningsWorkspaceToolbar
         language={language}
         pipeline={pipeline}
-        sectionLabel={copy(
-          language,
-          TABS.find(tab => tab.key === activeTab)?.labelTr || "Genel Bakış",
-          TABS.find(tab => tab.key === activeTab)?.labelEn || "Overview"
-        )}
+        sectionLabel={(language === "en" ? TABS.find(tab => tab.key === activeTab)?.labelEn || "Overview" : TABS.find(tab => tab.key === activeTab)?.labelTr || "Genel Bakış")}
       />
 
       {/* Overview Tab */}
@@ -268,7 +244,7 @@ export default function EarningsPage({
             description={data.summary}
             language={language}
             strategies={data.strategies}
-            title={copy(language, "Tüm Stratejiler", "All Strategies")}
+            title={t("earnings:allStrategies")}
           />
           <BudgetMatrix
             language={language}

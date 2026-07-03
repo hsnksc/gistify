@@ -4,13 +4,10 @@ import type {
   FlowReportKind,
   FlowReportSummary,
 } from "@shared/flow";
-import {
-  analyzeFlowReportLanguage,
-  type FlowReportLanguageInfo,
-} from "@shared/flowLanguage";
+import { analyzeFlowReportLanguage, type FlowReportLanguageInfo, } from "@shared/flowLanguage";
 import type { ReportPostItem } from "@/components/reports/ReportPostShell";
 import { getDailyReportAssetUrl } from "@/lib/dailyReports";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import {
   extractLeadParagraphsFromMarkdown,
   extractSnapshotMetricsFromMarkdown,
@@ -329,8 +326,8 @@ export function getFlowLanguageBadge(
     return {
       label:
         languageInfo.translationState === "partial"
-          ? copy(language, "TR + EN kismi", "TR + EN partial")
-          : copy(language, "TR + EN", "TR + EN"),
+          ? t("flow:trEnPartial")
+          : "TR + EN",
       toneClassName:
         languageInfo.translationState === "partial"
           ? "border-amber-400/30 bg-amber-500/10 text-amber-300"
@@ -340,14 +337,14 @@ export function getFlowLanguageBadge(
 
   if (languageInfo.languageMode === "tr") {
     return {
-      label: copy(language, "TR", "TR"),
+      label: "TR",
       toneClassName: "border-emerald-400/30 bg-emerald-500/10 text-emerald-300",
     };
   }
 
   if (languageInfo.languageMode === "en") {
     return {
-      label: copy(language, "EN", "EN"),
+      label: "EN",
       toneClassName: "border-blue-400/30 bg-blue-500/10 text-blue-300",
     };
   }
@@ -585,11 +582,7 @@ export function getFlowPreviewText(report: FlowReportListEntry, language: AppLan
     return (
       report.previewText ||
       report.headline ||
-      copy(
-        language,
-        "Bu Flow raporu icin onizleme metni hazirlanamadi.",
-        "No preview text is available for this flow report."
-      )
+      t("flow:noPreviewTextIsAvailable")
     );
   }
 
@@ -603,11 +596,7 @@ export function getFlowPreviewText(report: FlowReportListEntry, language: AppLan
 
   return (
     lead ||
-    copy(
-      language,
-      "Bu Flow raporu icin onizleme metni hazirlanamadi.",
-      "No preview text is available for this flow report."
-    )
+    t("flow:noPreviewTextIsAvailable")
   );
 }
 
@@ -660,22 +649,14 @@ export function buildFlowViewerData(
       }))
     : dedupeViewerItems([
         {
-          detail: copy(
-            language,
-            "Kaynagin geldigi site veya yayin alani.",
-            "The site or publishing origin of the source."
-          ),
-          label: copy(language, "Site", "Site"),
+          detail: t("flow:theSiteOrPublishingOrigin"),
+          label: "Site",
           tone: "info",
-          value: siteValue || copy(language, "Belirtilmedi", "Not set"),
+          value: siteValue || t("flow:notSet"),
         },
         {
-          detail: copy(
-            language,
-            "Akista karti acacak birincil ticker satiri.",
-            "Primary ticker line shown on the flow post."
-          ),
-          label: copy(language, "Ticker", "Ticker"),
+          detail: t("flow:primaryTickerLineShownOn"),
+          label: "Ticker",
           tone: "bull",
           value:
             tickerValue ||
@@ -683,12 +664,8 @@ export function buildFlowViewerData(
             "$MARKET",
         },
         {
-          detail: copy(
-            language,
-            "Kaynaktan cikarilan haber tarihi.",
-            "News date parsed from the source."
-          ),
-          label: copy(language, "Haber Tarihi", "News Date"),
+          detail: t("flow:newsDateParsedFromThe"),
+          label: t("flow:newsDate"),
           tone: "caution",
           value: newsDateValue || formatFlowReportDate(report.reportDate, locale),
         },
@@ -698,7 +675,7 @@ export function buildFlowViewerData(
     ...(content.author
       ? [
           {
-            label: copy(language, "Hazirlayan", "Author"),
+            label: t("common:author"),
             tone: "info" as const,
             value: content.author,
           },
@@ -707,7 +684,7 @@ export function buildFlowViewerData(
     ...(content.coverage
       ? [
           {
-            label: copy(language, "Kapsam", "Coverage"),
+            label: t("common:coverage"),
             value: content.coverage,
           },
         ]
@@ -715,7 +692,7 @@ export function buildFlowViewerData(
     ...(content.methodology
       ? [
           {
-            label: copy(language, "Metodoloji", "Methodology"),
+            label: t("common:methodology"),
             value: content.methodology,
           },
         ]
@@ -727,7 +704,7 @@ export function buildFlowViewerData(
     ...(content.figureFiles.length
       ? [
           {
-            label: copy(language, "Gorsel", "Figure"),
+            label: t("flow:figure"),
             tone: "info" as const,
             value: String(content.figureFiles.length),
           },
@@ -745,7 +722,7 @@ export function buildFlowViewerData(
     ...(content.researchFileCount
       ? [
           {
-            label: copy(language, "Arastirma", "Research"),
+            label: t("common:research"),
             value: String(content.researchFileCount),
           },
         ]
@@ -770,12 +747,8 @@ export function buildFlowViewerData(
 
   return {
     contentFormat: isHtmlSource ? "html" : "markdown",
-    categoryLabel: copy(language, "Flow Post", "Flow Post"),
-    emptyMessage: copy(
-      language,
-      "Kaynak icerik gosterilemedi.",
-      "The source content could not be displayed."
-    ),
+    categoryLabel: "Flow Post",
+    emptyMessage: t("flow:theSourceContentCouldNot"),
     galleryFigures,
     headline: content.headline,
     html: content.html || "",
@@ -799,10 +772,10 @@ export function buildFlowViewerData(
       };
     },
     sourceKindLabel: isHtmlSource
-      ? copy(language, "HTML Dosyasi", "HTML File")
+      ? t("flow:htmlFile")
       : content.sourceKind === "file"
-        ? copy(language, "Markdown Dosyasi", "Markdown File")
-        : copy(language, "Arastirma Paketi", "Research Package"),
+        ? t("common:markdownFile")
+        : t("flow:researchPackage"),
     sourceLabel,
     spotlight,
     statCards,

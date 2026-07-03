@@ -1,5 +1,5 @@
 import { AlertTriangle, ShieldAlert, Clock, ChevronRight, MinusCircle } from "lucide-react";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import type { FOMCData, FOMCStatus } from "@shared/earnings";
@@ -109,7 +109,7 @@ export default function FOMCWarningBanner({
           <div>
             <div className="flex flex-wrap items-center gap-2">
               <h3 className={cn("text-xl font-bold", config.text)}>
-                {copy(language, config.labelTr, config.labelEn)}
+                {(language === "en" ? config.labelEn : config.labelTr)}
               </h3>
               <span
                 className={cn(
@@ -117,47 +117,35 @@ export default function FOMCWarningBanner({
                   config.badge
                 )}
               >
-                {copy(language, config.labelTr, config.labelEn)}
+                {(language === "en" ? config.labelEn : config.labelTr)}
               </span>
             </div>
 
             <p className="mt-1 text-base font-semibold text-white">
-              {copy(
-                language,
-                `${fomc.date || "—"} tarihinde FOMC toplantısı var.`,
-                `FOMC meeting on ${fomc.date || "—"}.`
-              )}
+              {t("earnings:fomcMeetingOn", { date: fomc.date || "—" })}
             </p>
 
             <div className="mt-3 flex flex-wrap gap-2">
               {fomc.blackoutStart && fomc.date ? (
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-orange-500/30 bg-orange-500/10 px-2.5 py-1 text-xs font-semibold text-orange-300">
                   <Clock className="size-3" />
-                  {copy(
-                    language,
-                    `Blackout araligi: ${fomc.blackoutStart} -> ${fomc.date}`,
-                    `Blackout window: ${fomc.blackoutStart} -> ${fomc.date}`
-                  )}
+                  {t("earnings:blackoutWindow", { blackoutstart: fomc.blackoutStart, date: fomc.date })}
                 </span>
               ) : null}
               {fomc.blackoutStart && (
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-rose-500/30 bg-rose-500/10 px-2.5 py-1 text-xs font-semibold text-rose-300">
                   <ShieldAlert className="size-3" />
-                  {copy(
-                    language,
-                    `Blackout: ${fomc.blackoutStart}`,
-                    `Blackout: ${fomc.blackoutStart}`
-                  )}
+                  {`Blackout: ${fomc.blackoutStart}`}
                 </span>
               )}
               {fomc.currentRate && (
                 <span className="rounded-full bg-slate-900/40 px-2.5 py-1 text-xs text-slate-300">
-                  {copy(language, "Faiz", "Rate")}: {fomc.currentRate}
+                  {t("flow:rawJsonCouldNotBed679")}: {fomc.currentRate}
                 </span>
               )}
               {fomc.marketExpectation && (
                 <span className="rounded-full bg-slate-900/40 px-2.5 py-1 text-xs text-slate-300">
-                  {copy(language, "Beklenti", "Expectation")}: {fomc.marketExpectation}
+                  {t("earnings:expectation")}: {fomc.marketExpectation}
                 </span>
               )}
             </div>
@@ -166,11 +154,7 @@ export default function FOMCWarningBanner({
               <div className="mt-4 flex items-start gap-2 rounded-xl border border-white/5 bg-slate-900/40 px-3 py-2.5">
                 <ShieldAlert className="mt-0.5 size-4 shrink-0 text-amber-400" />
                 <p className="text-xs leading-5 text-slate-300">
-                  {copy(
-                    language,
-                    "FOMC yaklaştıkça pozisyon büyüklüğünü azaltmayı ve IV crush riskine karşı hedge'leri gözden geçirmeyi düşünün.",
-                    "Consider reducing position size and reviewing hedges against IV crush risk as FOMC approaches."
-                  )}
+                  {t("flow:selectImagesFromDocumentsWrite")}
                 </p>
               </div>
             )}
@@ -185,7 +169,7 @@ export default function FOMCWarningBanner({
               {days}
             </p>
             <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">
-              {copy(language, "Gün Kaldı", "Days Left")}
+              {t("earnings:daysLeft2519")}
             </p>
           </div>
         )}
@@ -201,8 +185,8 @@ export default function FOMCWarningBanner({
             />
           </div>
           <div className="mt-1.5 flex justify-between text-[10px] font-medium text-slate-500">
-            <span>{copy(language, "Şimdi", "Now")}</span>
-            <span>{copy(language, "FOMC", "FOMC")}</span>
+            <span>{t("earnings:now")}</span>
+            <span>{"FOMC"}</span>
           </div>
         </div>
       )}
@@ -219,14 +203,14 @@ export default function FOMCWarningBanner({
           )}
         >
           <MinusCircle className="mr-1.5 size-3.5" />
-          {copy(language, "Pozisyonları Azalt", "Reduce Positions")}
+          {t("earnings:reducePositions")}
         </Button>
         <Button
           variant="ghost"
           size="sm"
           className="rounded-xl px-4 text-xs font-semibold text-slate-400 hover:text-white"
         >
-          {copy(language, "Detaylar", "Details")}
+          {t("earnings:details")}
           <ChevronRight className="ml-1 size-3.5" />
         </Button>
       </div>

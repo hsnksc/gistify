@@ -1,5 +1,5 @@
-import { type AppLanguage } from "@/lib/i18n";
-import { copy } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
+
 import { BadgeDollarSign, TrendingDown, TrendingUp, Target } from "lucide-react";
 
 export interface StrategyCardProps {
@@ -8,7 +8,7 @@ export interface StrategyCardProps {
     breakeven: number;
     cost: number;
     legs: string;
-    max_gain: number | "unlimited";
+    max_gain: number;
     max_loss: number;
     name: string;
   };
@@ -16,15 +16,13 @@ export interface StrategyCardProps {
 
 export default function StrategyCard({ strategy, language = "tr" }: StrategyCardProps) {
   const { name, legs, cost, max_gain, max_loss, breakeven } = strategy;
-  const isUnlimited = max_gain === "unlimited";
-  const numericGain = isUnlimited ? Number.POSITIVE_INFINITY : max_gain;
-  const roi = !isUnlimited && cost > 0 ? ((numericGain - cost) / cost) * 100 : null;
+  const roi = cost > 0 ? ((max_gain - cost) / cost) * 100 : 0;
 
   return (
     <div className="space-y-4 rounded-xl border border-border bg-background/30 p-5">
       <div className="space-y-1">
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-          {copy(language, "Strateji", "Strategy")}
+          {t("common:strategy")}
         </p>
         <h3 className="text-lg font-bold text-foreground">{name}</h3>
         <p className="text-sm text-muted-foreground">{legs}</p>
@@ -35,7 +33,7 @@ export default function StrategyCard({ strategy, language = "tr" }: StrategyCard
           <div className="flex items-center gap-2">
             <BadgeDollarSign className="size-4 text-rose-300" />
             <span className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-              {copy(language, "Maliyet", "Cost")}
+              {t("coverage:cost")}
             </span>
           </div>
           <p className="mt-1 text-lg font-bold text-rose-200">
@@ -47,13 +45,11 @@ export default function StrategyCard({ strategy, language = "tr" }: StrategyCard
           <div className="flex items-center gap-2">
             <TrendingUp className="size-4 text-emerald-300" />
             <span className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-              {copy(language, "Max Gain", "Max Gain")}
+              {"Max Gain"}
             </span>
           </div>
           <p className="mt-1 text-lg font-bold text-emerald-200">
-            {isUnlimited
-              ? copy(language, "Sınırsız", "Unlimited")
-              : `$${numericGain.toLocaleString()}`}
+            ${max_gain.toLocaleString()}
           </p>
         </div>
 
@@ -61,7 +57,7 @@ export default function StrategyCard({ strategy, language = "tr" }: StrategyCard
           <div className="flex items-center gap-2">
             <TrendingDown className="size-4 text-rose-300" />
             <span className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-              {copy(language, "Max Loss", "Max Loss")}
+              {"Max Loss"}
             </span>
           </div>
           <p className="mt-1 text-lg font-bold text-rose-200">
@@ -73,7 +69,7 @@ export default function StrategyCard({ strategy, language = "tr" }: StrategyCard
           <div className="flex items-center gap-2">
             <Target className="size-4 text-amber-300" />
             <span className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-              {copy(language, "Breakeven", "Breakeven")}
+              {"Breakeven"}
             </span>
           </div>
           <p className="mt-1 text-lg font-bold text-amber-200">
@@ -82,19 +78,11 @@ export default function StrategyCard({ strategy, language = "tr" }: StrategyCard
         </div>
       </div>
 
-      {roi !== null && roi > 0 && (
+      {roi > 0 && (
         <div className="rounded-lg border border-sky-500/20 bg-sky-500/8 p-3">
           <p className="text-xs text-muted-foreground">
-            {copy(language, "ROI Potansiyeli", "ROI Potential")}: {" "}
+            {t("coverage:roiPotential")}: {" "}
             <span className="font-bold text-emerald-300">+{roi.toFixed(0)}%</span>
-          </p>
-        </div>
-      )}
-      {isUnlimited && (
-        <div className="rounded-lg border border-sky-500/20 bg-sky-500/8 p-3">
-          <p className="text-xs text-muted-foreground">
-            {copy(language, "ROI Potansiyeli", "ROI Potential")}: {" "}
-            <span className="font-bold text-emerald-300">∞</span>
           </p>
         </div>
       )}

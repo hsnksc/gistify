@@ -1,5 +1,5 @@
 import type { FlowReportSummary } from "@shared/flow";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { getFlowSourceLabel } from "./flowReportHelpers";
 import {
   type ReportRecommendation,
@@ -53,15 +53,15 @@ export function formatRecommendationLabel(
   language: AppLanguage
 ) {
   if (recommendation === "BUY") {
-    return copy(language, "AL", "BUY");
+    return t("common:buy36db");
   }
   if (recommendation === "HOLD") {
-    return copy(language, "TUT", "HOLD");
+    return t("common:hold");
   }
   if (recommendation === "SELL") {
-    return copy(language, "SAT", "SELL");
+    return t("common:sell");
   }
-  return copy(language, "Yok", "N/A");
+  return t("flow:nA");
 }
 
 export function getRecommendationTone(recommendation: ReportRecommendation) {
@@ -82,7 +82,7 @@ export function formatPriceChange(
   language: AppLanguage
 ) {
   if (value === null || !Number.isFinite(value)) {
-    return copy(language, "Degisim yok", "No change");
+    return t("flow:noChange");
   }
 
   const locale = language === "en" ? "en-US" : "tr-TR";
@@ -98,7 +98,7 @@ export function formatReportPrice(
   language: AppLanguage
 ) {
   if (price === null || !Number.isFinite(price)) {
-    return copy(language, "Fiyat yok", "No price");
+    return t("flow:noPrice");
   }
 
   return new Intl.NumberFormat(language === "en" ? "en-US" : "tr-TR", {

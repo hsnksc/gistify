@@ -4,7 +4,7 @@ import { PUBLIC_ACCESS_USER_ID } from "@shared/flow";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { toast } from "sonner";
 import { useFlowComments } from "../hooks/useFlowComments";
 
@@ -109,16 +109,12 @@ export default function FlowCommunityPanel({
     try {
       await submitComment(draftComment);
       setDraftComment("");
-      toast.success(copy(language, "Yorum paylasildi.", "Comment posted."));
+      toast.success(t("flow:commentPosted"));
     } catch (caughtError) {
       toast.error(
         caughtError instanceof Error
           ? caughtError.message
-          : copy(
-              language,
-              "Yorum gonderilemedi.",
-              "Comment could not be posted."
-            )
+          : t("flow:commentCouldNotBePosted")
       );
     }
   }, [draftComment, language, submitComment]);
@@ -130,23 +126,19 @@ export default function FlowCommunityPanel({
           <div className="flex items-center gap-2">
             <MessageSquareText className="size-4 text-emerald-300" />
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-              {copy(language, "Topluluk", "Community")}
+              {t("flow:community")}
             </p>
           </div>
           <h3 className="mt-2 text-xl font-semibold text-foreground">
-            {copy(language, "Yorumlar", "Comments")}
+            {t("flow:comments")}
           </h3>
           <p className="mt-1 text-sm text-muted-foreground">
-            {copy(
-              language,
-              "Bu posta yorum birakmak icin giris yapman yeterli.",
-              "Sign in if you want to leave a comment on this post."
-            )}
+            {t("flow:signInIfYouWant")}
           </p>
         </div>
 
         <span className="rounded-full border border-border bg-background/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-          {comments.length} {copy(language, "yorum", "comments")}
+          {comments.length} {t("flow:comments1237")}
         </span>
       </div>
 
@@ -156,21 +148,13 @@ export default function FlowCommunityPanel({
             <Textarea
               value={draftComment}
               onChange={event => setDraftComment(event.target.value)}
-              placeholder={copy(
-                language,
-                "Yorumu buraya yaz. Bu yorum bu Flow raporunda herkese acik gorunur.",
-                "Write your comment here. It will appear publicly on this flow report."
-              )}
+              placeholder={t("flow:writeYourCommentHereIt")}
               rows={4}
               maxLength={1200}
             />
             <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
               <p className="text-xs text-muted-foreground">
-                {copy(
-                  language,
-                  "Yorum icin ucretli abonelik gerekmiyor.",
-                  "A paid subscription is not required to comment."
-                )}
+                {t("flow:aPaidSubscriptionIsNot")}
               </p>
               <Button
                 type="button"
@@ -179,7 +163,7 @@ export default function FlowCommunityPanel({
                 aria-busy={submitting}
               >
                 <Send className="size-4" />
-                {copy(language, "Yorumu Gonder", "Post Comment")}
+                {t("flow:postComment")}
               </Button>
             </div>
           </div>
@@ -187,32 +171,16 @@ export default function FlowCommunityPanel({
           <div className="rounded-xl border border-dashed border-border bg-background/40 p-4">
             <p className="text-sm text-muted-foreground">
               {authLoading
-                ? copy(
-                    language,
-                    "Yorum izinleri kontrol ediliyor.",
-                    "Checking comment permissions."
-                  )
+                ? t("earnings:sourceModified")
                 : isPublicPreviewUser
-                  ? copy(
-                      language,
-                      "Public preview hesabi yorum gonderemez. Kendi hesabinla giris yap.",
-                      "The public preview account cannot comment. Sign in with your own account."
-                    )
-                  : copy(
-                      language,
-                      "Yorum yazmak icin Google ile giris yap.",
-                      "Sign in with Google to comment."
-                    )}
+                  ? t("flow:thePublicPreviewAccountCannot")
+                  : t("flow:signInWithGoogleTo")}
             </p>
             {!authLoading ? (
               <div className="mt-3">
                 <Button asChild variant="outline">
                   <a href="/api/auth/google">
-                    {copy(
-                      language,
-                      "Google ile Giris Yap",
-                      "Sign in with Google"
-                    )}
+                    {t("marketing:importantNotes")}
                   </a>
                 </Button>
               </div>
@@ -226,7 +194,7 @@ export default function FlowCommunityPanel({
             aria-live="polite"
             className="rounded-xl border border-border bg-background/40 p-4 text-sm text-muted-foreground"
           >
-            {copy(language, "Yorumlar yukleniyor.", "Loading comments.")}
+            {t("flow:loadingComments")}
           </div>
         ) : error && !comments.length ? (
           <div
@@ -273,11 +241,7 @@ export default function FlowCommunityPanel({
           </div>
         ) : (
           <div className="rounded-xl border border-dashed border-border bg-background/40 p-4 text-sm text-muted-foreground">
-            {copy(
-              language,
-              "Henuz yorum yok.",
-              "No comments yet."
-            )}
+            {t("flow:noCommentsYet")}
           </div>
         )}
       </div>

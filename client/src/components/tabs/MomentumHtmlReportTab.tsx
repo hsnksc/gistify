@@ -1,6 +1,6 @@
 import HtmlReportRenderer from "@/components/reports/HtmlReportRenderer";
-import type { AppLanguage } from "@/lib/i18n";
-import { copy } from "@/lib/i18n";
+import { AppLanguage, t } from "@/lib/i18n";
+
 import type { MomentumSourceRecord } from "@shared/momentumSources";
 
 export default function MomentumHtmlReportTab({
@@ -15,11 +15,7 @@ export default function MomentumHtmlReportTab({
       <HtmlReportRenderer
         language={language}
         html={report.html}
-        emptyMessage={copy(
-          language,
-          "Momentum HTML icerigi gosterilemedi.",
-          "The momentum HTML content could not be displayed."
-        )}
+        emptyMessage={t("common:theMomentumHtmlContentCould")}
       />
     </div>
   );

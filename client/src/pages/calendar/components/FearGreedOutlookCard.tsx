@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Zap, Gauge } from "lucide-react";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { THEME } from "../Calendar.theme";
 
@@ -18,12 +18,12 @@ function FearGreedMiniBar({ value, language }: { value: number | null; language:
   else if (value <= 45) color = "bg-amber-500";
   else if (value <= 55) color = "bg-slate-400";
   else if (value <= 75) color = "bg-emerald-400";
-  let label = copy(language, "Nötr", "Neutral");
-  if (value <= 25) label = copy(language, "Aşırı Korku", "Extreme Fear");
-  else if (value <= 45) label = copy(language, "Korku", "Fear");
-  else if (value <= 55) label = copy(language, "Nötr", "Neutral");
-  else if (value <= 75) label = copy(language, "Açgözlülük", "Greed");
-  else label = copy(language, "Aşırı Açgözlülük", "Extreme Greed");
+  let label = t("common:neutral0964");
+  if (value <= 25) label = t("common:extremeFear");
+  else if (value <= 45) label = t("calendar:fear");
+  else if (value <= 55) label = t("common:neutral0964");
+  else if (value <= 75) label = t("calendar:greed");
+  else label = t("common:extremeGreed");
   return (
     <div className="mt-3">
       <div className="flex items-center justify-between mb-1.5">
@@ -39,9 +39,9 @@ function FearGreedMiniBar({ value, language }: { value: number | null; language:
         <div className={cn("h-full rounded-full transition-all duration-700", color)} style={{ width: `${pct}%` }} />
       </div>
       <div className="mt-1.5 flex justify-between text-[10px] text-muted-foreground">
-        <span>{copy(language, "Aşırı Korku", "Extreme Fear")}</span>
-        <span>{copy(language, "Nötr", "Neutral")}</span>
-        <span>{copy(language, "Aşırı Açgözlülük", "Extreme Greed")}</span>
+        <span>{t("common:extremeFear")}</span>
+        <span>{t("common:neutral0964")}</span>
+        <span>{t("common:extremeGreed")}</span>
       </div>
     </div>
   );
@@ -61,7 +61,7 @@ export function FearGreedOutlookCard({
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center gap-2 text-base">
           <Gauge className={cn("size-4", THEME.iconClassName)} />
-          {copy(language, "Fear & Greed Gorusu", "Fear & Greed Outlook")}
+          {t("calendar:fearGreedOutlook")}
         </CardTitle>
       </CardHeader>
       <CardContent>

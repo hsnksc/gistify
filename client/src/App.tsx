@@ -1,50 +1,22 @@
-import {
-  Suspense,
-  lazy,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState, } from "react";
 import type { ComponentType } from "react";
 import {
-  Activity,
-  BookOpen,
-  CalendarDays,
-  LayoutDashboard,
-  Layers3,
-  LogOut,
-  Menu,
-  Radar,
-  Shield,
-  Zap,
-} from "lucide-react";
+  Activity, BookOpen, CalendarDays, LayoutDashboard, Layers3, LogOut, Menu, Radar, Shield, Zap, } from "lucide-react";
 import LanguageSelector from "@/components/LanguageSelector";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import LoadingState from "@/components/ui/loading-state";
 import { GA4PageTracker, HotjarPageTracker } from "@/components/analytics/AnalyticsTrackers";
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+  Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, } from "@/components/ui/sheet";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useIsMobile } from "@/hooks/useMobile";
 import NotFound from "@/pages/NotFound";
-import { Route, Switch, useLocation } from "wouter";
-import {
-  APP_LANGUAGE_STORAGE_KEY,
-  AppLanguageContext,
-  type AppLanguage,
-} from "@/lib/i18n";
+import { Route, Router as WouterRouter, Switch, useLocation } from "wouter";
+import { AppLanguageContext, localizePath, resolvePreferredLanguage, stripLanguagePrefix, syncI18nLanguage, type AppLanguage, t } from "@/lib/i18n";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import { detectLanguageOfText } from "@/lib/languageDetection";
 
 const Landing = lazy(() => import("./pages/Landing"));
 const Home = lazy(() => import("./pages/Home"));
@@ -70,6 +42,7 @@ const ReportsDateDetailPage = lazy(
 );
 const CpiPpiForecastPage = lazy(() => import("./pages/CpiPpiForecast"));
 const CoveragePage = lazy(() => import("./pages/Coverage"));
+const VizGallery = lazy(() => import("./features/coverage/components/VizGallery"));
 const EarningsPage = lazy(() => import("./pages/Earnings"));
 const EarningsStockDetailPage = lazy(
   () => import("./pages/EarningsStockDetail")
@@ -119,33 +92,56 @@ type AuthState =
 
 const NUMBER_PATTERN = /\d[\d.,]*/g;
 const AUTH_REQUEST_TIMEOUT_MS = 8000;
-const MAX_RUNTIME_TRANSLATION_TEXT_LENGTH = 1800;
-const MAX_RUNTIME_TRANSLATION_BATCH_SIZE = 18;
-const MAX_RUNTIME_TRANSLATION_BATCH_CHARS = 12000;
+const I18N_CACHE_VERSION = "1";
+const I18N_CACHE_VERSION_STORAGE_KEY = "i18n_cache_version";
 
-function readStoredLanguage(): AppLanguage {
-  if (typeof window === "undefined") {
-    return "tr";
+function isLegacyI18nCacheKey(key: string) {
+  const normalized = key.trim().toLowerCase();
+  if (
+    !normalized ||
+    normalized === "app_language" ||
+    normalized === I18N_CACHE_VERSION_STORAGE_KEY
+  ) {
+    return false;
   }
 
-  try {
-    return window.localStorage.getItem(APP_LANGUAGE_STORAGE_KEY) === "en"
-      ? "en"
-      : "tr";
-  } catch {
-    return "tr";
-  }
+  return (
+    /(translation|translate|i18n)/.test(normalized) &&
+    /(gistify|flow|runtime)/.test(normalized)
+  );
 }
 
-function persistLanguage(language: AppLanguage) {
+function migrateLegacyI18nCache() {
   if (typeof window === "undefined") {
     return;
   }
 
   try {
-    window.localStorage.setItem(APP_LANGUAGE_STORAGE_KEY, language);
+    if (
+      window.localStorage.getItem(I18N_CACHE_VERSION_STORAGE_KEY) ===
+      I18N_CACHE_VERSION
+    ) {
+      return;
+    }
+
+    const keysToDelete: string[] = [];
+    for (let index = 0; index < window.localStorage.length; index += 1) {
+      const storageKey = window.localStorage.key(index);
+      if (storageKey && isLegacyI18nCacheKey(storageKey)) {
+        keysToDelete.push(storageKey);
+      }
+    }
+
+    for (const storageKey of keysToDelete) {
+      window.localStorage.removeItem(storageKey);
+    }
+
+    window.localStorage.setItem(
+      I18N_CACHE_VERSION_STORAGE_KEY,
+      I18N_CACHE_VERSION
+    );
   } catch {
-    // Ignore storage failures so auth bootstrap cannot get stuck behind UI preferences.
+    // Ignore storage failures to keep boot resilient.
   }
 }
 
@@ -161,24 +157,6 @@ function walkTextNodes(root: Node, callback: (node: Text) => void) {
     callback(current as Text);
     current = walker.nextNode();
   }
-}
-
-type RuntimeTranslationRecord = {
-  value: string;
-  language: AppLanguage;
-};
-
-const TRANSLATABLE_ATTRIBUTES = ["placeholder", "title", "aria-label", "alt"] as const;
-type TranslatableAttribute = (typeof TRANSLATABLE_ATTRIBUTES)[number];
-
-function inferSourceLanguage(text: string, target: AppLanguage): AppLanguage {
-  const detected = detectLanguageOfText(text);
-  if (detected === "tr" || detected === "en") {
-    return detected;
-  }
-  // If detection is inconclusive, assume the opposite of the target language
-  // so the text still gets a chance to be translated.
-  return target === "tr" ? "en" : "tr";
 }
 
 function GoogleMark() {
@@ -238,10 +216,6 @@ async function fetchAuthState(): Promise<AuthResponse> {
   return (await response.json()) as AuthResponse;
 }
 
-function copy(language: AppLanguage, tr: string, en: string) {
-  return language === "en" ? en : tr;
-}
-
 type WorkspaceLabelKey =
   | "admin"
   | "calendar"
@@ -256,23 +230,23 @@ type WorkspaceLabelKey =
 function workspaceLabel(language: AppLanguage, key: WorkspaceLabelKey) {
   switch (key) {
     case "admin":
-      return copy(language, "Yonetim", "Admin");
+      return t("common:admin");
     case "calendar":
-      return copy(language, "Takvim", "Calendar");
+      return t("common:calendar");
     case "coverage":
-      return copy(language, "Coverage", "Coverage");
+      return "Coverage";
     case "cpiPpi":
       return "CPI/PPI";
     case "earnings":
-      return copy(language, "Earnings", "Earnings");
+      return "Earnings";
     case "earningsStrategy":
-      return copy(language, "Kazanc Stratejisi", "Earnings Strategy");
+      return t("common:earningsStrategy");
     case "flow":
-      return copy(language, "Akis", "Flow");
+      return t("common:flow");
     case "marketFlash":
-      return copy(language, "Market Flash", "Market Flash");
+      return "Market Flash";
     case "momentum":
-      return copy(language, "Momentum", "Momentum");
+      return "Momentum";
     default:
       return "";
   }
@@ -291,12 +265,8 @@ function Router({
         <div className="px-4 py-8">
           <LoadingState
             className="mx-auto max-w-7xl"
-            description={copy(
-              language,
-              "Kazanc stratejisi, momentum, flow ve portfoy modulleri baglaniyor.",
-              "The earnings strategy, momentum, flow and portfolio modules are connecting."
-            )}
-            label={copy(language, "Calisma alani yukleniyor", "Loading workspace")}
+            description={t("common:directionalAnalysisMomentumRationale")}
+            label={t("common:loadingWorkspace")}
           />
         </div>
       }
@@ -340,33 +310,25 @@ function Router({
         <Route path={"/calendar"}>
           {() => <CalendarPage language={language} />}
         </Route>
+        {import.meta.env.DEV ? (
+          <Route path="/dev/viz-gallery">
+            {() => <VizGallery language={language} />}
+          </Route>
+        ) : null}
         <Route path={"/coverage/calendar"}>
-          {() => (
-            <CoveragePage
-              language={language}
-              mode="calendar"
-              onLanguageChange={onLanguageChange}
-            />
-          )}
+          {() => <CoveragePage language={language} mode="calendar" />}
         </Route>
         <Route path={"/coverage/:ticker"}>
           {params => (
             <CoveragePage
               language={language}
               mode="detail"
-              onLanguageChange={onLanguageChange}
               ticker={params.ticker || ""}
             />
           )}
         </Route>
         <Route path={"/coverage"}>
-          {() => (
-            <CoveragePage
-              language={language}
-              mode="index"
-              onLanguageChange={onLanguageChange}
-            />
-          )}
+          {() => <CoveragePage language={language} mode="index" />}
         </Route>
         <Route path={"/marketflash"}>
           {() => <MarketFlash />}
@@ -601,8 +563,8 @@ function WorkspaceNavigation({
                 item.active
                   ? "bg-primary text-primary-foreground"
                   : isLocked
-                    ? "text-muted-foreground hover:text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? "text-foreground/80 hover:text-foreground"
+                    : "text-foreground/80 hover:text-foreground"
               }`}
             >
               <Icon className="size-3.5" />
@@ -625,24 +587,20 @@ function WorkspaceNavigation({
             size="sm"
             className="min-h-11 rounded-full px-4 text-[clamp(0.875rem,2.8vw,0.95rem)]"
             onClick={() => setIsMobileNavOpen(true)}
-            aria-label={copy(language, "Workspace menusu", "Workspace menu")}
+            aria-label={t("common:workspaceMenu")}
           >
             <Menu className="size-4" />
-            {copy(language, "Menu", "Menu")}
+            {"Menu"}
           </Button>
         </div>
 
         <SheetContent side="left" className="w-[min(88vw,24rem)] p-0">
           <SheetHeader className="border-b border-white/10 pb-4">
             <SheetTitle>
-              {copy(language, "Workspace menusu", "Workspace menu")}
+              {t("common:workspaceMenu")}
             </SheetTitle>
             <SheetDescription>
-              {copy(
-                language,
-                "Tum modullere mobilde buradan gecis yap.",
-                "Switch between all modules from here on mobile."
-              )}
+              {t("common:switchBetweenAllModulesFrom")}
             </SheetDescription>
           </SheetHeader>
           <div className="flex-1 overflow-y-auto px-4 pb-6">
@@ -714,11 +672,11 @@ function WorkspaceNavigation({
                   ? "bg-primary/14 text-foreground"
                   : "text-muted-foreground hover:text-foreground"
               }`}
-              aria-label={copy(language, "Daha fazla", "More")}
+              aria-label={t("common:more")}
             >
               <Menu className="size-4.5" />
               <span className="mt-1 text-[clamp(0.875rem,2.4vw,0.95rem)] font-semibold leading-none">
-                {copy(language, "Diger", "More")}
+                {t("common:more6dd7")}
               </span>
             </button>
           </nav>
@@ -768,12 +726,12 @@ function SiteFooter({ language }: { language: AppLanguage }) {
   const links = [
     { href: "/coverage", label: workspaceLabel(language, "coverage") },
     { href: "/flow", label: workspaceLabel(language, "flow") },
-    { href: "/reports", label: copy(language, "Raporlar", "Reports") },
-    { href: "/pricing", label: copy(language, "Fiyatlandirma", "Pricing") },
-    { href: "/terms", label: copy(language, "Kosullar", "Terms") },
-    { href: "/privacy", label: copy(language, "Gizlilik", "Privacy") },
-    { href: "/refund", label: copy(language, "Iade", "Refund") },
-    { href: "/pay", label: copy(language, "Odeme", "Billing") },
+    { href: "/reports", label: t("common:reports") },
+    { href: "/pricing", label: t("common:pricing") },
+    { href: "/terms", label: t("common:terms") },
+    { href: "/privacy", label: t("common:privacy") },
+    { href: "/refund", label: t("scanner:excellentRetention") },
+    { href: "/pay", label: t("common:billing") },
   ];
 
   return (
@@ -782,14 +740,10 @@ function SiteFooter({ language }: { language: AppLanguage }) {
         <div className="space-y-1">
           <p className="text-sm font-semibold text-foreground">Gistify</p>
           <p className="text-xs text-muted-foreground">
-            {copy(
-              language,
-              "Momentum tarama, earnings oncesi analiz ve opsiyon arastirmasi icin earnings intelligence platformu.",
-              "Earnings intelligence platform for momentum scanning, pre-earnings analysis and options research."
-            )}
+            {t("common:earningsIntelligencePlatformForMomentum")}
           </p>
           <p className="text-xs text-muted-foreground">
-            {copy(language, "Destek", "Support")}: support@gistify.pro
+            {t("common:support")}: support@gistify.pro
           </p>
         </div>
 
@@ -823,40 +777,28 @@ function SubscriptionRequiredView({
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="space-y-2">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                {copy(language, "Abonelik kilidi", "Subscription gate")}
+                {t("common:subscriptionGate")}
               </p>
               <h2 className="text-2xl font-semibold tracking-tight">
-                {copy(
-                  language,
-                  `${sectionLabel} modulu aktif abonelik gerektiriyor`,
-                  `${sectionLabel} requires an active subscription`
-                )}
+                {t("common:requiresAnActiveSubscription", { sectionlabel: sectionLabel })}
               </h2>
               <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-                {copy(
-                  language,
-                  "Akis ve Coverage herkese acik kalir. Kazanc Stratejisi, Momentum, Gunluk, CPI/PPI, Takvim ve Market Flash modullerini acmak icin Paddle uzerinden aktif abonelik gerekir.",
-                  "Flow and Coverage stay open to everyone. Unlocking Earnings Strategy, Momentum, Daily, CPI/PPI, Calendar and Market Flash requires an active Paddle subscription."
-                )}
+                {t("common:flowAndCoverageStayOpen")}
               </p>
               <div className="flex flex-wrap gap-3 pt-2">
                 <Button asChild>
-                  <a href="/pay">
-                    {copy(language, "Odeme ekranini ac", "Open payment screen")}
+                  <a href={localizePath("/pay", language)}>
+                    {t("common:openPaymentScreen")}
                   </a>
                 </Button>
                 <Button asChild variant="outline" className="bg-background/70">
-                  <a href="/flow">
-                    {copy(language, "Akis'a git", "Go to Flow")}
+                  <a href={localizePath("/flow", language)}>
+                    {t("common:goToFlow")}
                   </a>
                 </Button>
                 <Button asChild variant="outline" className="bg-background/70">
-                  <a href="/pricing">
-                    {copy(
-                      language,
-                      "Plan detaylarini gor",
-                      "View plan details"
-                    )}
+                  <a href={localizePath("/pricing", language)}>
+                    {t("common:viewPlanDetails")}
                   </a>
                 </Button>
               </div>
@@ -866,30 +808,30 @@ function SubscriptionRequiredView({
               {[
                 [
                   workspaceLabel(language, "earningsStrategy"),
-                  copy(language, "Abonelik", "Subscription"),
+                  t("common:subscription"),
                 ],
                 [
                   workspaceLabel(language, "momentum"),
-                  copy(language, "Abonelik", "Subscription"),
+                  t("common:subscription"),
                 ],
                 [
                   workspaceLabel(language, "earnings"),
-                  copy(language, "Abonelik", "Subscription"),
+                  t("common:subscription"),
                 ],
                 [
                   workspaceLabel(language, "cpiPpi"),
-                  copy(language, "Abonelik", "Subscription"),
+                  t("common:subscription"),
                 ],
                 [
                   workspaceLabel(language, "calendar"),
-                  copy(language, "Abonelik", "Subscription"),
+                  t("common:subscription"),
                 ],
                 [
                   workspaceLabel(language, "marketFlash"),
-                  copy(language, "Abonelik", "Subscription"),
+                  t("common:subscription"),
                 ],
-                [workspaceLabel(language, "coverage"), copy(language, "Acik", "Open")],
-                [workspaceLabel(language, "flow"), copy(language, "Acik", "Open")],
+                [workspaceLabel(language, "coverage"), t("common:open")],
+                [workspaceLabel(language, "flow"), t("common:open")],
               ].map(([label, value]) => (
                 <div
                   key={label}
@@ -907,21 +849,9 @@ function SubscriptionRequiredView({
 
         <section className="grid gap-4 md:grid-cols-3">
           {[
-            copy(
-              language,
-              "Abonelik acildiginda kazanc stratejisi workspace'ini tam verilerle kullanirsin.",
-              "After activation, the earnings strategy workspace opens with full data."
-            ),
-            copy(
-              language,
-              "Momentum scanner, daily yuzeyi, CPI/PPI forecast, Economic Calendar ve Market Flash ayni uyelikle acilir.",
-              "Momentum scanner, the daily surface, the CPI/PPI forecast, Economic Calendar and Market Flash unlock with the same subscription."
-            ),
-            copy(
-              language,
-              "Flow kamuya acik kalir; yorum yazmak icin sadece giris yeterlidir.",
-              "Flow remains public; posting comments only requires sign-in."
-            ),
+            t("common:afterActivationTheEarningsStrategy"),
+            t("common:momentumScannerTheDailySurface"),
+            t("common:flowRemainsPublicPostingComments"),
           ].map(title => (
             <div
               key={title}
@@ -942,32 +872,21 @@ function SubscriptionRequiredView({
 }
 
 function App() {
-  const [location] = useLocation();
+  const [rawLocation, setRawLocation] = useLocation();
+  const location = stripLanguagePrefix(rawLocation);
   const callbackError = useMemo(() => {
     const params = new URLSearchParams(window.location.search);
     return params.get("auth");
   }, []);
 
   const [language, setLanguage] = useState<AppLanguage>(() =>
-    readStoredLanguage()
+    resolvePreferredLanguage(
+      typeof window === "undefined" ? "/" : window.location.pathname
+    )
   );
   const [authState, setAuthState] = useState<AuthState>({ status: "loading" });
   const appRootRef = useRef<HTMLDivElement | null>(null);
   const protectedViewRef = useRef<HTMLDivElement | null>(null);
-  const translationOriginalRef = useRef(
-    new WeakMap<Text, RuntimeTranslationRecord>()
-  );
-  const translationAppliedRef = useRef(new WeakMap<Text, string>());
-  const attributeOriginalRef = useRef(
-    new WeakMap<Element, Map<TranslatableAttribute, RuntimeTranslationRecord>>()
-  );
-  const attributeAppliedRef = useRef(
-    new WeakMap<Element, Map<TranslatableAttribute, string>>()
-  );
-  const runtimeTranslationCacheRef = useRef(new Map<string, string>());
-  const pendingRuntimeTranslationRef = useRef(new Map<string, { source: AppLanguage; target: AppLanguage }>());
-  const runtimeTranslationTimerRef = useRef<number | null>(null);
-  const runtimeTranslationInFlightRef = useRef(false);
   const maskOriginalRef = useRef(new WeakMap<Text, string>());
   const isPaymentRoute = location === "/pay";
   const isCoverageRoute = location.startsWith("/coverage");
@@ -1010,9 +929,31 @@ function App() {
   );
 
   useEffect(() => {
-    persistLanguage(language);
-    document.documentElement.lang = language;
+    migrateLegacyI18nCache();
+  }, []);
+
+  useEffect(() => {
+    void syncI18nLanguage(language);
   }, [language]);
+
+  useEffect(() => {
+    const pathname =
+      typeof window === "undefined" ? rawLocation : window.location.pathname;
+    const prefixedLanguage = resolvePreferredLanguage(pathname);
+
+    if (prefixedLanguage !== language) {
+      setLanguage(prefixedLanguage);
+      return;
+    }
+
+    if (pathname === "/" || !/^\/(?:tr|en)(?=\/|$)/i.test(pathname)) {
+      const nextPath =
+        typeof window === "undefined"
+          ? localizePath(rawLocation || "/", language)
+          : `${localizePath(window.location.pathname, language)}${window.location.search}${window.location.hash}`;
+      setRawLocation(nextPath, { replace: true });
+    }
+  }, [language, rawLocation, setRawLocation]);
 
   const refreshAuthState = useCallback(async () => {
     try {
@@ -1086,358 +1027,6 @@ function App() {
     });
     setAuthState({ status: "anonymous" });
   };
-
-  useEffect(() => {
-    const root = document.body;
-    if (!root || (authState.status === "loading" && !isPaymentRoute)) {
-      return;
-    }
-
-    const originalMap = translationOriginalRef.current;
-    const appliedMap = translationAppliedRef.current;
-    const attributeOriginalMap = attributeOriginalRef.current;
-    const attributeAppliedMap = attributeAppliedRef.current;
-    const pendingMap = pendingRuntimeTranslationRef.current;
-    let disposed = false;
-
-    const clearPendingTimer = () => {
-      if (runtimeTranslationTimerRef.current !== null) {
-        window.clearTimeout(runtimeTranslationTimerRef.current);
-        runtimeTranslationTimerRef.current = null;
-      }
-    };
-
-    const shouldSkipNode = (node: Text) => {
-      const parent = node.parentElement;
-      if (!parent) {
-        return true;
-      }
-
-      return Boolean(
-        parent.closest(
-          "[data-no-translate], script, style, textarea, input, pre, code"
-        )
-      );
-    };
-
-    const flushRuntimeTranslations = async () => {
-      if (
-        runtimeTranslationInFlightRef.current ||
-        pendingMap.size === 0 ||
-        disposed
-      ) {
-        return;
-      }
-
-      runtimeTranslationInFlightRef.current = true;
-      const batch: Array<{ text: string; source: AppLanguage; target: AppLanguage }> = [];
-      let batchCharCount = 0;
-
-      for (const [cacheKey, direction] of Array.from(pendingMap.entries())) {
-        const [text] = cacheKey.split("\u0000");
-        const wouldExceedChars =
-          batch.length > 0 &&
-          batchCharCount + text.length > MAX_RUNTIME_TRANSLATION_BATCH_CHARS;
-
-        if (
-          batch.length >= MAX_RUNTIME_TRANSLATION_BATCH_SIZE ||
-          wouldExceedChars
-        ) {
-          break;
-        }
-
-        batch.push({
-          text,
-          source: direction.source,
-          target: direction.target,
-        });
-        batchCharCount += text.length;
-        pendingMap.delete(cacheKey);
-      }
-
-      try {
-        const groupedBatches = new Map<
-          string,
-          { source: AppLanguage; target: AppLanguage; texts: string[] }
-        >();
-
-        for (const item of batch) {
-          const key = `${item.source}:${item.target}`;
-          const existing = groupedBatches.get(key);
-          if (existing) {
-            existing.texts.push(item.text);
-          } else {
-            groupedBatches.set(key, {
-              source: item.source,
-              target: item.target,
-              texts: [item.text],
-            });
-          }
-        }
-
-        for (const request of Array.from(groupedBatches.values())) {
-          const response = await fetch("/api/i18n/translate", {
-            method: "POST",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              source: request.source,
-              target: request.target,
-              texts: request.texts,
-            }),
-          });
-
-          if (response.ok) {
-            const payload = (await response.json()) as {
-              translations?: Record<string, string>;
-            };
-
-            const translations = payload.translations || {};
-            for (const sourceText of request.texts) {
-              runtimeTranslationCacheRef.current.set(
-                `${sourceText}\u0000${request.source}\u0000${request.target}`,
-                translations[sourceText] || sourceText
-              );
-            }
-          } else {
-            for (const sourceText of request.texts) {
-              runtimeTranslationCacheRef.current.set(
-                `${sourceText}\u0000${request.source}\u0000${request.target}`,
-                sourceText
-              );
-            }
-          }
-        }
-      } catch {
-        for (const item of batch) {
-          runtimeTranslationCacheRef.current.set(
-            `${item.text}\u0000${item.source}\u0000${item.target}`,
-            item.text
-          );
-        }
-      } finally {
-        runtimeTranslationInFlightRef.current = false;
-      }
-
-      if (disposed) {
-        return;
-      }
-
-      walkTextNodes(root, translateNode);
-      translateElementAttributes(root);
-
-      if (pendingMap.size > 0) {
-        scheduleRuntimeTranslations();
-      }
-    };
-
-    const scheduleRuntimeTranslations = () => {
-      if (
-        pendingMap.size === 0 ||
-        runtimeTranslationInFlightRef.current ||
-        runtimeTranslationTimerRef.current !== null ||
-        disposed
-      ) {
-        return;
-      }
-
-      runtimeTranslationTimerRef.current = window.setTimeout(() => {
-        runtimeTranslationTimerRef.current = null;
-        void flushRuntimeTranslations();
-      }, 120);
-    };
-
-    const resolveRuntimeTranslation = (
-      source: string,
-      sourceLanguage: AppLanguage,
-      targetLanguage: AppLanguage
-    ) => {
-      if (sourceLanguage === targetLanguage) {
-        return source;
-      }
-
-      const cacheKey = `${source}\u0000${sourceLanguage}\u0000${targetLanguage}`;
-      const runtimeValue = runtimeTranslationCacheRef.current.get(cacheKey);
-      if (runtimeValue) {
-        return runtimeValue;
-      }
-
-      if (source.length <= MAX_RUNTIME_TRANSLATION_TEXT_LENGTH) {
-        pendingMap.set(cacheKey, {
-          source: sourceLanguage,
-          target: targetLanguage,
-        });
-      }
-
-      scheduleRuntimeTranslations();
-      return source;
-    };
-
-    function translateNode(node: Text) {
-      if (shouldSkipNode(node)) {
-        return;
-      }
-
-      const currentValue = node.nodeValue ?? "";
-      if (!currentValue.trim()) {
-        return;
-      }
-
-      const previousOriginal = originalMap.get(node);
-      const previousApplied = appliedMap.get(node);
-      if (
-        !previousOriginal ||
-        (previousApplied !== undefined &&
-          currentValue !== previousApplied &&
-          currentValue !== previousOriginal.value)
-      ) {
-        originalMap.set(node, {
-          value: currentValue,
-          language: inferSourceLanguage(currentValue, language),
-        });
-        appliedMap.delete(node);
-      }
-
-      const sourceRecord = originalMap.get(node) ?? {
-        value: currentValue,
-        language: inferSourceLanguage(currentValue, language),
-      };
-      const translated = resolveRuntimeTranslation(
-        sourceRecord.value,
-        sourceRecord.language,
-        language
-      );
-
-      if (node.nodeValue !== translated) {
-        node.nodeValue = translated;
-      }
-
-      appliedMap.set(node, translated);
-    }
-
-    const shouldSkipElement = (element: Element) =>
-      Boolean(
-        element.closest(
-          "[data-no-translate], script, style, textarea, input, pre, code"
-        )
-      );
-
-    const translateAttribute = (
-      element: Element,
-      attribute: TranslatableAttribute
-    ) => {
-      if (shouldSkipElement(element) || !element.hasAttribute(attribute)) {
-        return;
-      }
-
-      const currentValue = element.getAttribute(attribute) ?? "";
-      if (!currentValue.trim()) {
-        return;
-      }
-
-      const existingAttributes =
-        attributeOriginalMap.get(element) ||
-        new Map<TranslatableAttribute, RuntimeTranslationRecord>();
-      const appliedAttributes =
-        attributeAppliedMap.get(element) ||
-        new Map<TranslatableAttribute, string>();
-      const previousOriginal = existingAttributes.get(attribute);
-      const previousApplied = appliedAttributes.get(attribute);
-
-      if (
-        !previousOriginal ||
-        (previousApplied !== undefined &&
-          currentValue !== previousApplied &&
-          currentValue !== previousOriginal.value)
-      ) {
-        existingAttributes.set(attribute, {
-          value: currentValue,
-          language: inferSourceLanguage(currentValue, language),
-        });
-        appliedAttributes.delete(attribute);
-      }
-
-      attributeOriginalMap.set(element, existingAttributes);
-      attributeAppliedMap.set(element, appliedAttributes);
-
-      const sourceRecord = existingAttributes.get(attribute) ?? {
-        value: currentValue,
-        language: inferSourceLanguage(currentValue, language),
-      };
-      const translated = resolveRuntimeTranslation(
-        sourceRecord.value,
-        sourceRecord.language,
-        language
-      );
-
-      if (element.getAttribute(attribute) !== translated) {
-        element.setAttribute(attribute, translated);
-      }
-
-      appliedAttributes.set(attribute, translated);
-    };
-
-    function translateElementAttributes(rootNode: Node) {
-      if (rootNode.nodeType === Node.ELEMENT_NODE) {
-        const element = rootNode as Element;
-        TRANSLATABLE_ATTRIBUTES.forEach(attribute =>
-          translateAttribute(element, attribute)
-        );
-      }
-
-      if ("querySelectorAll" in rootNode) {
-        (rootNode as ParentNode)
-          .querySelectorAll("[placeholder], [title], [aria-label], img[alt]")
-          .forEach(element => {
-            TRANSLATABLE_ATTRIBUTES.forEach(attribute =>
-              translateAttribute(element, attribute)
-            );
-          });
-      }
-    }
-
-    walkTextNodes(root, translateNode);
-    translateElementAttributes(root);
-    scheduleRuntimeTranslations();
-
-    const observer = new MutationObserver(mutations => {
-      for (const mutation of mutations) {
-        if (
-          mutation.type === "characterData" &&
-          mutation.target.nodeType === Node.TEXT_NODE
-        ) {
-          translateNode(mutation.target as Text);
-          continue;
-        }
-
-        for (const addedNode of Array.from(mutation.addedNodes)) {
-          if (addedNode.nodeType === Node.TEXT_NODE) {
-            translateNode(addedNode as Text);
-            continue;
-          }
-
-          walkTextNodes(addedNode, translateNode);
-          translateElementAttributes(addedNode);
-        }
-      }
-
-      scheduleRuntimeTranslations();
-    });
-
-    observer.observe(root, {
-      childList: true,
-      subtree: true,
-      characterData: true,
-    });
-
-    return () => {
-      disposed = true;
-      clearPendingTimer();
-      observer.disconnect();
-    };
-  }, [authState.status, isPaymentRoute, language]);
 
   useEffect(() => {
     const root = protectedViewRef.current;
@@ -1533,16 +1122,19 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <ThemeProvider defaultTheme="dark" switchable>
+      <ThemeProvider defaultTheme="dark">
         <TooltipProvider>
           <AppLanguageContext.Provider value={language}>
-            <div
-              ref={appRootRef}
-              className={`min-h-screen bg-background text-foreground ${
-                shouldShowWorkspaceHeader ? "pb-24 md:pb-0" : ""
-              }`}
-            >
-            <Toaster />
+            <WouterRouter base={`/${language}`}>
+              <GA4PageTracker />
+              <HotjarPageTracker />
+              <div
+                ref={appRootRef}
+                className={`min-h-screen bg-background text-foreground ${
+                  shouldShowWorkspaceHeader ? "pb-24 md:pb-0" : ""
+                }`}
+              >
+              <Toaster />
 
             {isPaymentRoute ? (
               <Pay
@@ -1567,7 +1159,7 @@ function App() {
                 <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3">
                   <div className="flex min-w-0 items-center gap-3 md:gap-4">
                     <a
-                      href="/"
+                      href={localizePath("/", language)}
                       className="inline-flex shrink-0 items-center gap-3 rounded-full border border-border bg-card/90 px-3 py-2 shadow-[0_12px_28px_rgba(0,0,0,0.14)] transition-colors hover:border-primary/30"
                     >
                       <img
@@ -1643,11 +1235,7 @@ function App() {
                 data-no-mask
                 className="border-b border-emerald-500/20 bg-emerald-500/8 px-4 py-2 text-center text-xs text-emerald-200"
               >
-                {copy(
-                  language,
-                  "Public preview modu acik. Google girisi ve Paddle billing tekrar acildiysa bu modu kapatip `APP_ACCESS_MODE=managed` kullan.",
-                  "Public preview mode is active. If Google sign-in and Paddle billing are enabled again, turn this off and use `APP_ACCESS_MODE=managed`."
-                )}
+                {t("common:publicPreviewModeIsActive")}
               </div>
             ) : null}
 
@@ -1661,18 +1249,10 @@ function App() {
               <div className="min-h-screen grid place-items-center px-4 text-center">
                 <div className="space-y-2">
                   <h1 className="text-xl font-semibold">
-                    {copy(
-                      language,
-                      "Oturum kontrol ediliyor",
-                      "Checking session"
-                    )}
+                    {t("common:checkingSession")}
                   </h1>
                   <p className="text-sm text-muted-foreground">
-                    {copy(
-                      language,
-                      "Birkac saniye surebilir.",
-                      "This may take a few seconds."
-                    )}
+                    {t("common:thisMayTakeAFew")}
                   </p>
                 </div>
               </div>
@@ -1686,25 +1266,13 @@ function App() {
                   <div className="space-y-2">
                     <div className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
                       <GoogleMark />
-                      {copy(
-                        language,
-                        "Google OAuth Kimlik Dogrulama",
-                        "Google OAuth Authentication"
-                      )}
+                      {t("common:googleOauthAuthentication")}
                     </div>
                     <h1 className="text-2xl font-semibold tracking-tight">
-                      {copy(
-                        language,
-                        `${lockedWorkspaceSectionLabel} icin giris yap`,
-                        `Sign in to open ${lockedWorkspaceSectionLabel}`
-                      )}
+                      {t("common:signInToOpen", { lockedworkspacesectionlabel: lockedWorkspaceSectionLabel })}
                     </h1>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      {copy(
-                        language,
-                        "Akis ve Coverage herkese acik. Kazanc Stratejisi, Momentum ve Gunluk modullerini acmak icin once Google ile uye girisi yapman gerekir; aktif abonelik yoksa odeme ekranina gecersin.",
-                        "Flow and Coverage are open to everyone. To open Earnings Strategy, Momentum and Daily, sign in with Google first; if the account is not subscribed, you will be taken to the payment step."
-                      )}
+                      {t("common:flowAndCoverageAreOpen")}
                     </p>
                   </div>
 
@@ -1720,11 +1288,7 @@ function App() {
                     onClick={startGoogleLogin}
                   >
                     <GoogleMark />
-                    {copy(
-                      language,
-                      "Google ile giris yap",
-                      "Sign in with Google"
-                    )}
+                    {t("common:signInWithGoogle")}
                   </Button>
                 </div>
               </div>
@@ -1750,7 +1314,8 @@ function App() {
               </div>
             ) : null}
               {!isPaymentRoute ? <SiteFooter language={language} /> : null}
-            </div>
+              </div>
+            </WouterRouter>
           </AppLanguageContext.Provider>
         </TooltipProvider>
       </ThemeProvider>

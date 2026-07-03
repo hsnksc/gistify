@@ -1,4 +1,4 @@
-import { type AppLanguage, copy } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 interface DteBadgeProps {
@@ -17,7 +17,7 @@ export default function DteBadge({ className, date, language }: DteBadgeProps) {
 
   const label =
     diff === 0
-      ? copy(language, "Bugün", "Today")
+      ? t("flow:today")
       : diff > 0
         ? `T-${diff}`
         : `T+${Math.abs(diff)}`;

@@ -10,9 +10,50 @@ import type {
 } from "../../../shared/openaiImageStudio";
 
 interface TranslateRequestBody {
+  items?: unknown;
   source?: unknown;
   target?: unknown;
   texts?: unknown;
+}
+
+const TRANSLATION_RATE_LIMIT_MAX_REQUESTS = 30;
+const TRANSLATION_RATE_LIMIT_WINDOW_MS = 60_000;
+
+const translationRateLimitStore = new Map<
+  string,
+  { count: number; resetAt: number }
+>();
+
+function getTranslationRateLimitKey(req: Request) {
+  return req.ip || "unknown";
+}
+
+function consumeTranslationRateLimit(key: string) {
+  const now = Date.now();
+  const current = translationRateLimitStore.get(key);
+
+  if (!current || current.resetAt <= now) {
+    translationRateLimitStore.set(key, {
+      count: 1,
+      resetAt: now + TRANSLATION_RATE_LIMIT_WINDOW_MS,
+    });
+    return { allowed: true, retryAfterSeconds: 0 };
+  }
+
+  if (current.count >= TRANSLATION_RATE_LIMIT_MAX_REQUESTS) {
+    return {
+      allowed: false,
+      retryAfterSeconds: Math.max(
+        1,
+        Math.ceil((current.resetAt - now) / 1_000)
+      ),
+    };
+  }
+
+  current.count += 1;
+  translationRateLimitStore.set(key, current);
+
+  return { allowed: true, retryAfterSeconds: 0 };
 }
 
 type AiRouterDependencies = {
@@ -29,12 +70,26 @@ type AiRouterDependencies = {
   normalizeOpenAiImageGenerateRequest: (
     value: unknown
   ) => OpenAiImageGenerateRequest;
+  normalizeTranslationItems: (value: unknown) => Array<{
+    context?: string;
+    id: string;
+    text: string;
+  }>;
   normalizeString: (value: unknown) => string;
   normalizeTranslationTexts: (value: unknown) => string[];
   requireWeeklyReportAdmin: (req: Request, res: Response) => boolean;
   setPrivateNoStore: (res: Response) => void;
   translateTexts: (
     texts: string[],
+    source: string,
+    target: string
+  ) => Promise<Record<string, string>>;
+  translateStructuredItems: (
+    items: Array<{
+      context?: string;
+      id: string;
+      text: string;
+    }>,
     source: string,
     target: string
   ) => Promise<Record<string, string>>;
@@ -46,10 +101,12 @@ export function createAiRouter({
   isOpenAiImageStudioConfigured,
   normalizeDailyReportOpenAiChartGenerateRequest,
   normalizeOpenAiImageGenerateRequest,
+  normalizeTranslationItems,
   normalizeString,
   normalizeTranslationTexts,
   requireWeeklyReportAdmin,
   setPrivateNoStore,
+  translateStructuredItems,
   translateTexts,
 }: AiRouterDependencies): Router {
   const router = express.Router();
@@ -65,9 +122,10 @@ export function createAiRouter({
     const source = normalizeString(body.source).toLowerCase();
     const target = normalizeString(body.target).toLowerCase();
     const texts = normalizeTranslationTexts(body.texts);
+    const items = normalizeTranslationItems(body.items);
 
-    if (!texts.length) {
-      res.status(200).json({ translations: {} });
+    if (!texts.length && !items.length) {
+      res.status(200).json({ items: [], translations: {} });
       return;
     }
 
@@ -79,9 +137,36 @@ export function createAiRouter({
       return;
     }
 
+    const rateLimit = consumeTranslationRateLimit(
+      getTranslationRateLimitKey(req)
+    );
+    if (!rateLimit.allowed) {
+      res.setHeader("Retry-After", String(rateLimit.retryAfterSeconds));
+      res.status(429).json({
+        error: "Too many translation requests. Please retry shortly.",
+      });
+      return;
+    }
+
     try {
+      if (items.length) {
+        const translations = await translateStructuredItems(
+          items,
+          source,
+          target
+        );
+        res.status(200).json({
+          items: items.map(item => ({
+            id: item.id,
+            text: translations[item.id] || item.text,
+          })),
+          translations,
+        });
+        return;
+      }
+
       const translations = await translateTexts(texts, source, target);
-      res.status(200).json({ translations });
+      res.status(200).json({ items: [], translations });
     } catch (error) {
       const statusCode =
         error && typeof error === "object" && "statusCode" in error

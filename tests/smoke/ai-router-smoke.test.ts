@@ -58,6 +58,12 @@ describe("ai router smoke", () => {
           };
         },
         normalizeString: value => (typeof value === "string" ? value.trim() : ""),
+        normalizeTranslationItems: value =>
+          Array.isArray(value)
+            ? value.filter((item): item is { id: string; text: string; context?: string } =>
+                item && typeof item === "object" && "id" in item && "text" in item
+              )
+            : [],
         normalizeTranslationTexts: value =>
           Array.isArray(value)
             ? value.filter((item): item is string => typeof item === "string")

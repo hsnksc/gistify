@@ -1,6 +1,6 @@
 import { CalendarRange, Files, GalleryHorizontal, Target } from "lucide-react";
 import { Link } from "wouter";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import {
   useFlowTitleTranslation,
   useFlowSummaryTranslation,
@@ -87,7 +87,7 @@ export default function FlowReportCard({
               "content" in report
                 ? content?.figureFiles.length || 0
                 : report.figureCount
-            } ${copy(language, "figure", "figures")}`}
+            } ${t("flow:figures")}`}
           />
           <MetaChip
             icon={Target}
@@ -95,7 +95,7 @@ export default function FlowReportCard({
               "content" in report
                 ? content?.tickerUniverse.length || 0
                 : report.tickerUniverse.length
-            } ${copy(language, "ticker", "ticker")}`}
+            } ${"ticker"}`}
           />
         </div>
       </div>

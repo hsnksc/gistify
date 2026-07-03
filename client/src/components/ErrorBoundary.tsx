@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { AlertTriangle, RotateCcw } from "lucide-react";
 import { Component, ReactNode } from "react";
-import { AppLanguageContext, copy, type AppLanguage } from "@/lib/i18n";
+import { AppLanguageContext, type AppLanguage, t } from "@/lib/i18n";
 
 interface Props {
   children: ReactNode;
@@ -38,7 +38,7 @@ class ErrorBoundary extends Component<Props, State> {
             />
 
             <h2 className="text-xl mb-4">
-              {copy(language, "Beklenmeyen bir hata olustu.", "An unexpected error occurred.")}
+              {t("common:anUnexpectedErrorOccurred")}
             </h2>
 
             <div className="p-4 w-full rounded bg-muted overflow-auto mb-6">
@@ -49,7 +49,7 @@ class ErrorBoundary extends Component<Props, State> {
 
             <button
               onClick={() => window.location.reload()}
-              title={copy(language, "Sayfayi yeniden yukle", "Reload page")}
+              title={t("common:reloadPage")}
               className={cn(
                 "flex items-center gap-2 px-4 py-2 rounded-lg",
                 "bg-primary text-primary-foreground",
@@ -57,7 +57,7 @@ class ErrorBoundary extends Component<Props, State> {
               )}
             >
               <RotateCcw size={16} />
-              {copy(language, "Sayfayi yenile", "Reload Page")}
+              {t("flow:liked")}
             </button>
           </div>
         </div>

@@ -92,7 +92,9 @@ import {
   normalizeOpenAiImageGenerateRequest,
 } from "./openaiImageStudio";
 import {
+  normalizeTranslationItems,
   normalizeTranslationTexts,
+  translateStructuredItems,
   translateTexts,
 } from "./openaiTranslation";
 
@@ -221,6 +223,11 @@ interface PaddleSubscriptionResponse {
 type RequestWithRawBody = express.Request & {
   rawBody?: string;
 };
+
+type ServerAppLanguage = "tr" | "en";
+
+const APP_LANGUAGE_COOKIE_NAME = "app_language";
+const LANGUAGE_PREFIX_PATTERN = /^\/(?:tr|en)(?=\/|$)/i;
 
 function stripWrappingQuotes(value: string) {
   if (
@@ -621,6 +628,55 @@ function normalizeString(value: unknown) {
   }
 
   return value.trim();
+}
+
+function normalizeAppLanguage(value: unknown): ServerAppLanguage | null {
+  const normalized = normalizeString(value).toLowerCase();
+  if (normalized === "tr" || normalized === "en") {
+    return normalized;
+  }
+
+  return null;
+}
+
+function getPreferredRequestLanguage(req: express.Request): ServerAppLanguage {
+  const cookieLanguage = normalizeAppLanguage(
+    parseCookies(req.headers.cookie)[APP_LANGUAGE_COOKIE_NAME]
+  );
+  if (cookieLanguage) {
+    return cookieLanguage;
+  }
+
+  const acceptLanguage = normalizeString(req.header("accept-language")).toLowerCase();
+  if (!acceptLanguage) {
+    return "tr";
+  }
+
+  return acceptLanguage.startsWith("tr") ? "tr" : "en";
+}
+
+function localizeServerPath(pathname: string, language: ServerAppLanguage) {
+  if (!pathname || pathname === "/") {
+    return `/${language}`;
+  }
+
+  const stripped = pathname.replace(/^\/(?:tr|en)(?=\/|$)/i, "") || "/";
+  return stripped === "/" ? `/${language}` : `/${language}${stripped}`;
+}
+
+function shouldRedirectLegacyPath(pathname: string) {
+  if (
+    !pathname ||
+    pathname === "/" ||
+    LANGUAGE_PREFIX_PATTERN.test(pathname) ||
+    pathname.startsWith("/api/") ||
+    pathname === "/api" ||
+    pathname.startsWith("/app")
+  ) {
+    return false;
+  }
+
+  return !/\.[a-z0-9]+$/i.test(pathname);
 }
 
 function normalizeEmail(value: unknown) {
@@ -2826,22 +2882,24 @@ function renderRefundPageHtml() {
 function buildSitemapXml(): string {
   const baseUrl = SITE_URL;
   const entries: Array<{
-    loc: string;
+    path: string;
     priority: string;
     changefreq: string;
     lastmod?: string;
   }> = [];
   const seen = new Set<string>();
+  const languages: ServerAppLanguage[] = ["tr", "en"];
 
   function addEntry(
-    loc: string,
+    path: string,
     priority: string,
     changefreq: string,
     lastmod?: string
   ) {
-    if (seen.has(loc)) return;
-    seen.add(loc);
-    entries.push({ loc, priority, changefreq, lastmod });
+    const normalizedPath = path === "/" ? "/" : path.replace(/\/+$/, "");
+    if (seen.has(normalizedPath)) return;
+    seen.add(normalizedPath);
+    entries.push({ path: normalizedPath, priority, changefreq, lastmod });
   }
 
   const staticPaths = [
@@ -2869,7 +2927,7 @@ function buildSitemapXml(): string {
   ];
 
   for (const item of staticPaths) {
-    addEntry(`${baseUrl}${item.path}`, item.priority, item.changefreq);
+    addEntry(item.path, item.priority, item.changefreq);
   }
 
   const flowReports = getViewerFlowReportSummaries(getPublishedDailyReports());
@@ -2878,13 +2936,13 @@ function buildSitemapXml(): string {
     const ticker = report.ticker || "FLOW";
     flowTickers.add(ticker);
     addEntry(
-      `${baseUrl}/flow/${encodeURIComponent(report.id)}`,
+      `/flow/${encodeURIComponent(report.id)}`,
       "0.6",
       "daily",
       report.updatedAt
     );
     addEntry(
-      `${baseUrl}/reports/${encodeURIComponent(ticker)}/${encodeURIComponent(report.reportDate)}`,
+      `/reports/${encodeURIComponent(ticker)}/${encodeURIComponent(report.reportDate)}`,
       "0.6",
       "daily",
       report.updatedAt
@@ -2892,17 +2950,13 @@ function buildSitemapXml(): string {
   }
 
   for (const ticker of Array.from(flowTickers)) {
-    addEntry(
-      `${baseUrl}/reports/ticker/${encodeURIComponent(ticker)}`,
-      "0.6",
-      "weekly"
-    );
+    addEntry(`/reports/ticker/${encodeURIComponent(ticker)}`, "0.6", "weekly");
   }
 
   // Programmatic SEO pages
   const progTickers = ["AAPL", "NVDA", "TSLA", "MSFT", "AMD", "AMZN", "META", "GOOGL", "NFLX", "CRM"];
   for (const ticker of progTickers) {
-    addEntry(`${baseUrl}/earnings/${ticker}`, "0.8", "daily");
+    addEntry(`/earnings/${ticker}`, "0.8", "daily");
   }
 
   const progStrategies = [
@@ -2911,28 +2965,37 @@ function buildSitemapXml(): string {
     "bull-call-spread", "bear-put-spread", "calendar-spread", "butterfly-spread",
   ];
   for (const slug of progStrategies) {
-    addEntry(`${baseUrl}/strategies/${slug}`, "0.7", "weekly");
+    addEntry(`/strategies/${slug}`, "0.7", "weekly");
   }
 
   const progScanners = ["momentum", "high-iv", "pre-earnings", "gap-up", "gap-down", "unusual-volume"];
   for (const type of progScanners) {
-    addEntry(`${baseUrl}/scanners/${type}`, "0.6", "hourly");
+    addEntry(`/scanners/${type}`, "0.6", "hourly");
   }
 
   const urls = entries
-    .map(
-      entry => `  <url>
-    <loc>${escapeHtml(entry.loc)}</loc>
+    .flatMap(entry =>
+      languages.map(language => {
+        const localizedPath = localizeServerPath(entry.path, language);
+        const localizedUrl = `${baseUrl}${localizedPath}`;
+        const alternateTr = `${baseUrl}${localizeServerPath(entry.path, "tr")}`;
+        const alternateEn = `${baseUrl}${localizeServerPath(entry.path, "en")}`;
+        return `  <url>
+    <loc>${escapeHtml(localizedUrl)}</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="${escapeHtml(alternateTr)}" />
+    <xhtml:link rel="alternate" hreflang="en" href="${escapeHtml(alternateEn)}" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeHtml(alternateTr)}" />
     <priority>${entry.priority}</priority>
     <changefreq>${entry.changefreq}</changefreq>${
-        entry.lastmod ? `\n    <lastmod>${escapeHtml(entry.lastmod)}</lastmod>` : ""
-      }
-  </url>`
+          entry.lastmod ? `\n    <lastmod>${escapeHtml(entry.lastmod)}</lastmod>` : ""
+        }
+  </url>`;
+      })
     )
     .join("\n");
 
   return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${urls}
 </urlset>`;
 }
@@ -3482,10 +3545,12 @@ async function startServer() {
       isOpenAiImageStudioConfigured,
       normalizeDailyReportOpenAiChartGenerateRequest,
       normalizeOpenAiImageGenerateRequest,
+      normalizeTranslationItems,
       normalizeString,
       normalizeTranslationTexts,
       requireWeeklyReportAdmin,
       setPrivateNoStore,
+      translateStructuredItems,
       translateTexts,
     })
   );
@@ -3550,6 +3615,27 @@ async function startServer() {
     });
   });
 
+  app.use((req, res, next) => {
+    if (req.path === "/") {
+      const language = getPreferredRequestLanguage(req);
+      const search = req.originalUrl.includes("?")
+        ? req.originalUrl.slice(req.originalUrl.indexOf("?"))
+        : "";
+      res.redirect(302, `/${language}${search}`);
+      return;
+    }
+
+    if (!shouldRedirectLegacyPath(req.path)) {
+      next();
+      return;
+    }
+
+    const search = req.originalUrl.includes("?")
+      ? req.originalUrl.slice(req.originalUrl.indexOf("?"))
+      : "";
+    res.redirect(301, `${localizeServerPath(req.path, "tr")}${search}`);
+  });
+
   app.get("/", (_req, res) => {
     res.status(200).type("html").send(renderLandingPageHtml());
   });
@@ -3568,20 +3654,6 @@ async function startServer() {
 
   app.get("/refund", (_req, res) => {
     res.status(200).type("html").send(renderRefundPageHtml());
-  });
-
-  // Turkish content routes — serve /tr/:slug without .html extension
-  app.get("/tr/:slug", (req, res) => {
-    const filePath = path.join(__dirname, "public/tr", req.params.slug + ".html");
-    if (fs.existsSync(filePath)) {
-      res.sendFile(filePath);
-    } else {
-      res.status(404).send("Not found");
-    }
-  });
-  // Redirect /tr/:slug/ (trailing slash) to /tr/:slug
-  app.get("/tr/:slug/", (req, res) => {
-    res.redirect(301, "/tr/" + req.params.slug);
   });
 
   // ── Programmatic SEO Routes ──

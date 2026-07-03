@@ -1,5 +1,5 @@
-import type { AppLanguage } from "@/lib/i18n";
-import { copy } from "@/lib/i18n";
+import { AppLanguage, t } from "@/lib/i18n";
+
 import type {
   CalendarEvent,
   CalendarImportance,
@@ -30,14 +30,14 @@ export function formatRelativeTime(
   if (Number.isNaN(parsed.getTime())) return value;
   const diff = Date.now() - parsed.getTime();
   const mins = Math.floor(diff / 60000);
-  if (mins < 1) return copy(language, "Az once", "Just now");
+  if (mins < 1) return t("calendar:justNow");
   if (mins < 60)
-    return `${mins} ${copy(language, "dk once", "min ago")}`;
+    return `${mins} ${t("calendar:minAgo")}`;
   const hours = Math.floor(mins / 60);
   if (hours < 24)
-    return `${hours} ${copy(language, "sa once", "h ago")}`;
+    return `${hours} ${t("calendar:hAgo")}`;
   const days = Math.floor(hours / 24);
-  return `${days} ${copy(language, "gun once", "d ago")}`;
+  return `${days} ${t("calendar:dAgo")}`;
 }
 
 export function formatDateLabel(
@@ -67,13 +67,13 @@ export function pipelineStatusLabel(
 ) {
   switch (status) {
     case "ok":
-      return copy(language, "Senkron", "Synced");
+      return t("common:synced");
     case "stale":
-      return copy(language, "Eski veri", "Stale");
+      return t("common:stale");
     case "error":
-      return copy(language, "Hata", "Error");
+      return t("common:error");
     default:
-      return copy(language, "Beklemede", "Idle");
+      return t("common:idle");
   }
 }
 
@@ -96,11 +96,11 @@ export function importanceLabel(
 ) {
   switch (importance) {
     case "high":
-      return copy(language, "Yuksek", "High");
+      return t("common:high");
     case "medium":
-      return copy(language, "Orta", "Medium");
+      return t("common:medium");
     default:
-      return copy(language, "Dusuk", "Low");
+      return t("common:low");
   }
 }
 
@@ -132,11 +132,11 @@ export function biasLabel(
 ) {
   switch (bias) {
     case "bullish":
-      return copy(language, "Yukari yonlu", "Bullish");
+      return t("calendar:bullish");
     case "bearish":
-      return copy(language, "Asagi yonlu", "Bearish");
+      return t("calendar:bearish");
     default:
-      return copy(language, "Notr", "Neutral");
+      return t("common:neutral");
   }
 }
 
@@ -187,13 +187,13 @@ export function getDayTheme(
 ): string | null {
   const names = events.map((e) => e.eventName.toLowerCase());
   if (names.some((n) => n.includes("fed") && n.includes("faiz")))
-    return copy(language, "Fed Gunu", "Fed Day");
+    return t("calendar:fedDay");
   if (names.some((n) => n.includes("nfp") || n.includes("tarim disi")))
-    return copy(language, "NFP Gunu", "NFP Day");
+    return t("calendar:nfpDay");
   if (names.some((n) => n.includes("boe") || n.includes("ingiltere")))
-    return copy(language, "BoE Gunu", "BoE Day");
+    return t("calendar:boeDay");
   if (names.some((n) => n.includes("ecb") || n.includes("avro")))
-    return copy(language, "ECB Gunu", "ECB Day");
+    return t("calendar:ecbDay");
   return null;
 }
 
@@ -209,18 +209,18 @@ export function getCurrentMarketSession(
   const hour = now.getUTCHours();
   if (hour >= 13 && hour < 20) {
     return {
-      label: copy(language, "Acik Piyasa", "Open Market"),
+      label: t("calendar:openMarket"),
       className: "border-emerald-500/25 bg-emerald-500/12 text-emerald-200",
     };
   }
   if (hour >= 8 && hour < 13) {
     return {
-      label: copy(language, "On Piyasa", "Pre-Market"),
+      label: t("calendar:preMarket"),
       className: "border-amber-500/25 bg-amber-500/12 text-amber-200",
     };
   }
   return {
-    label: copy(language, "Kapali", "Closed"),
+    label: t("calendar:closed"),
     className: "border-slate-500/25 bg-slate-500/10 text-slate-300",
   };
 }

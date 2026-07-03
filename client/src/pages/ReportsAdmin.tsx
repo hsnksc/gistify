@@ -1,19 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
-  ArrowLeft,
-  BookOpen,
-  ChartCandlestick,
-  FileText,
-  FileSpreadsheet,
-  Radar,
-  RefreshCw,
-  Shield,
-  Sparkles,
-} from "lucide-react";
+  ArrowLeft, BookOpen, ChartCandlestick, FileText, FileSpreadsheet, Radar, RefreshCw, Shield, Sparkles, } from "lucide-react";
 import type {
-  DailyReportRecord,
-  DailyReportSourcePackage,
-} from "@shared/dailyReports";
+  DailyReportRecord, DailyReportSourcePackage, } from "@shared/dailyReports";
 import type { DailyReportOpenAiChartGenerateResponse } from "@shared/dailyReportOpenAiCharts";
 import type { MomentumReportRecord } from "@shared/momentumReports";
 import type { WeeklyReportRecord } from "@shared/weeklyReports";
@@ -25,22 +14,13 @@ import WeeklyReportAdminPanel from "@/components/reports/WeeklyReportAdminPanel"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
-  REPORT_ADMIN_SECRET_STORAGE_KEY,
-  createEmptyEntry,
-  createNextWeeklyReportDraft,
-  deepCloneReport,
-  formatWeekRange,
-  sortReportsNewestFirst,
-} from "@/lib/weeklyReports";
+  REPORT_ADMIN_SECRET_STORAGE_KEY, createEmptyEntry, createNextWeeklyReportDraft, deepCloneReport, formatWeekRange, sortReportsNewestFirst, } from "@/lib/weeklyReports";
 import { createEmptyMomentumReportDraft } from "@/lib/momentumReports";
 import {
-  createDailyReportDraftFromSource,
-  syncDailyReportDraftWithSource,
-  sortDailyReportsNewestFirst,
-} from "@/lib/dailyReports";
+  createDailyReportDraftFromSource, syncDailyReportDraftWithSource, sortDailyReportsNewestFirst, } from "@/lib/dailyReports";
 import { extractApiErrorMessage, readJsonResponse } from "@/lib/api";
 import { useLocation } from "wouter";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { toast } from "sonner";
 
 type WorkspaceKey = "earnings" | "momentum" | "daily" | "coverage" | "images";
@@ -220,7 +200,7 @@ function ProviderCard({
         </span>
       </div>
       <p className="mt-2 text-sm text-muted-foreground">
-        {copy(language, "Sağlayıcı:", "Provider:")} {provider}
+        {t("flow:provider")} {provider}
       </p>
       {note ? (
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
@@ -273,11 +253,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
   const [draftDailyReport, setDraftDailyReport] =
     useState<DailyReportRecord | null>(null);
   const [dailyOpenAiChartPrompt, setDailyOpenAiChartPrompt] = useState(
-    copy(
-      language,
-      "Kaynak chart'i premium institutional research kalitesinde yeniden uret. Tum sayisal iliskileri, eksenleri, tarihleri, anotasyonlari, ok yonlerini, legend'i ve veri hiyerarsisini birebir koru. Yalnizca netlik, tipografi, kontrast ve okunabilirligi iyilestir; veri uydurma veya yorum ekleme.",
-      "Reproduce the source chart at premium institutional research quality. Preserve all numerical relationships, axes, dates, annotations, arrow directions, legend and data hierarchy exactly. Only improve clarity, typography, contrast and readability; do not fabricate data or add commentary."
-    )
+    t("flow:reproduceTheSourceChartAt")
   );
   const [selectedDailyFigureFile, setSelectedDailyFigureFile] = useState("");
   const [dailyOpenAiChartBusy, setDailyOpenAiChartBusy] = useState(false);
@@ -331,12 +307,12 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
       });
 
       if (!response.ok) {
-        throw new Error(copy(language, "Admin meta yuklenemedi.", "Admin meta could not be loaded."));
+        throw new Error(t("flow:adminMetaCouldNotBe"));
       }
 
       const payload = await readJsonResponse<WeeklyReportsApiResponse>(
         response,
-        copy(language, "Admin meta", "Admin meta")
+        "Admin meta"
       );
       setAdminEmail(payload.admin?.email || "hsnksc@gmail.com");
       setAdminAuthorized(Boolean(payload.admin?.authorized));
@@ -354,12 +330,12 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
       });
 
       if (!response.ok) {
-        throw new Error(copy(language, "Workspace provider durumlari yuklenemedi.", "Workspace provider statuses could not be loaded."));
+        throw new Error(t("scanner:30IvSpike"));
       }
 
       const payload = await readJsonResponse<AdminMarketDataStatus>(
         response,
-        copy(language, "Workspace provider durumu", "Workspace provider status")
+        t("flow:workspaceProviderStatus")
       );
       setWorkspaceStatus(payload);
     },
@@ -375,12 +351,12 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
       });
 
       if (!response.ok) {
-        throw new Error(copy(language, "Earnings raporlari yuklenemedi.", "Earnings reports could not be loaded."));
+        throw new Error(t("flow:earningsReportsCouldNotBe"));
       }
 
       const payload = await readJsonResponse<WeeklyReportsApiResponse>(
         response,
-        copy(language, "Earnings raporlari", "Earnings reports")
+        t("flow:earningsReports")
       );
       const nextReports = sortReportsNewestFirst(payload.reports || []);
       setReports(nextReports);
@@ -399,13 +375,13 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
       });
 
       if (!response.ok) {
-        throw new Error(copy(language, "Canli earnings onerileri yuklenemedi.", "Live earnings suggestions could not be loaded."));
+        throw new Error(t("flow:liveEarningsSuggestionsCouldNot"));
       }
 
       const payload = await readJsonResponse<{
         suggestions?: WeeklyReportSuggestion[];
         mode?: "live" | "empty";
-      }>(response, copy(language, "Canli earnings onerileri", "Live earnings suggestions"));
+      }>(response, t("flow:liveEarningsSuggestions"));
       setSuggestions(payload.suggestions || []);
       setSuggestionMode(payload.mode || "empty");
     },
@@ -421,12 +397,12 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
       });
 
       if (!response.ok) {
-        throw new Error(copy(language, "Momentum raporlari yuklenemedi.", "Momentum reports could not be loaded."));
+        throw new Error(t("flow:momentumReportsCouldNotBe"));
       }
 
       const payload = await readJsonResponse<MomentumReportsApiResponse>(
         response,
-        copy(language, "Momentum raporlari", "Momentum reports")
+        t("flow:momentumReports90b5")
       );
       const nextReports = sortMomentumReportsNewestFirst(payload.reports || []);
       setMomentumReports(nextReports);
@@ -445,12 +421,12 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
       });
 
       if (!response.ok) {
-        throw new Error(copy(language, "Daily report source paketleri yuklenemedi.", "Daily report source packages could not be loaded."));
+        throw new Error(t("flow:dailyReportSourcePackagesCould"));
       }
 
       const payload = await readJsonResponse<DailyReportSourcesApiResponse>(
         response,
-        copy(language, "Daily report source paketleri", "Daily report source packages")
+        t("flow:dailyReportSourcePackages")
       );
       const nextSources = sortDailySourcesNewestFirst(payload.sources || []);
       setDailySourcePackages(nextSources);
@@ -480,12 +456,12 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
       );
 
       if (!response.ok) {
-        throw new Error(copy(language, "Daily report source detayi yuklenemedi.", "Daily report source detail could not be loaded."));
+        throw new Error(t("flow:dailyReportSourceDetailCould"));
       }
 
       const payload = await readJsonResponse<DailyReportSourcesApiResponse>(
         response,
-        copy(language, "Daily report source detayi", "Daily report source detail")
+        t("flow:dailyReportSourceDetail")
       );
       setSelectedDailySource(payload.source || null);
     },
@@ -501,12 +477,12 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
       });
 
       if (!response.ok) {
-        throw new Error(copy(language, "Daily report kayitlari yuklenemedi.", "Daily report records could not be loaded."));
+        throw new Error(t("flow:dailyReportRecordsCouldNot"));
       }
 
       const payload = await readJsonResponse<DailyReportsApiResponse>(
         response,
-        copy(language, "Daily report kayitlari", "Daily report records")
+        t("flow:dailyReportRecords")
       );
       const nextReports = sortDailyReportsNewestFirst(payload.reports || []);
       setDailyReports(nextReports);
@@ -571,7 +547,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
             setAdminError(
               error instanceof Error
                 ? error.message
-                : copy(language, "Admin workspace yuklenemedi.", "Admin workspace could not be loaded.")
+                : t("flow:adminWorkspaceCouldNotBe")
             );
             if (secretOverride.trim()) {
               writeStoredAdminSecret("");
@@ -581,7 +557,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
         }
       } catch (error) {
         setPageError(
-          error instanceof Error ? error.message : copy(language, "Admin sayfasi acilamadi.", "Admin page could not be opened.")
+          error instanceof Error ? error.message : t("flow:adminPageCouldNotBe")
         );
       } finally {
         setLoading(false);
@@ -636,7 +612,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
   const handleUnlock = async () => {
     setAdminBusy(true);
     setAdminBusyLabel(
-      copy(language, "Admin kilidi aciliyor", "Unlocking admin workspace")
+      t("flow:unlockingAdminWorkspace")
     );
     setAdminError("");
 
@@ -645,7 +621,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
       const isAuthorized = Boolean(payload.admin?.authorized || adminSecret.trim());
 
       if (!isAuthorized) {
-        throw new Error(copy(language, "Admin kilidi acilamadi.", "Admin lock could not be opened."));
+        throw new Error(t("flow:adminLockCouldNotBe"));
       }
 
       await loadAuthorizedWorkspace(
@@ -657,14 +633,14 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
       writeStoredAdminSecret(adminSecret);
       setAdminAuthorized(true);
       toast.success(
-        copy(language, "Admin workspace acildi.", "Admin workspace unlocked.")
+        t("flow:adminWorkspaceUnlocked")
       );
     } catch (error) {
       writeStoredAdminSecret("");
       setAdminAuthorized(false);
       handleAdminFailure(
         error,
-        copy(language, "Admin kilidi acilamadi.", "Admin lock could not be opened.")
+        t("flow:adminLockCouldNotBe")
       );
     } finally {
       setAdminBusy(false);
@@ -799,8 +775,8 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
     setAdminBusy(true);
     setAdminBusyLabel(
       status === "published"
-        ? copy(language, "Earnings raporu yayinlaniyor", "Publishing earnings report")
-        : copy(language, "Earnings taslagi kaydediliyor", "Saving earnings draft")
+        ? t("flow:publishingEarningsReport")
+        : t("flow:savingEarningsDraft")
     );
     setAdminError("");
 
@@ -828,11 +804,16 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
         WeeklyReportsApiResponse & {
           report?: WeeklyReportRecord;
         }
-      >(response, copy(language, "Earnings raporu kaydi", "Earnings report record"));
+      >(response, t("flow:earningsReportRecord"));
 
       if (!response.ok) {
         throw new Error(
-          extractApiErrorMessage(payload, copy(language, copy(language, "Earnings raporu kaydedilemedi.", "Earnings report could not be saved."), "Earnings report could not be saved."))
+          extractApiErrorMessage(
+            payload,
+            language === "en"
+              ? "Earnings report could not be saved."
+              : "Earnings raporu kaydedilemedi."
+          )
         );
       }
 
@@ -847,17 +828,13 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
       await loadSuggestions(adminSecret);
       toast.success(
         status === "published"
-          ? copy(language, "Earnings raporu yayinlandi.", "Earnings report published.")
-          : copy(language, "Earnings taslagi kaydedildi.", "Earnings draft saved.")
+          ? t("flow:earningsReportPublished")
+          : t("flow:earningsDraftSaved")
       );
     } catch (error) {
       handleAdminFailure(
         error,
-        copy(
-          language,
-          "Earnings raporu kaydedilemedi.",
-          "Earnings report could not be saved."
-        )
+        t("flow:earningsReportCouldNotBe")
       );
     } finally {
       setAdminBusy(false);
@@ -876,8 +853,8 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
     setAdminBusy(true);
     setAdminBusyLabel(
       status === "published"
-        ? copy(language, "Momentum snapshot yayinlaniyor", "Publishing momentum snapshot")
-        : copy(language, "Momentum taslagi kaydediliyor", "Saving momentum draft")
+        ? t("flow:publishingMomentumSnapshot")
+        : t("flow:savingMomentumDraft")
     );
     setAdminError("");
 
@@ -905,11 +882,16 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
         MomentumReportsApiResponse & {
           report?: MomentumReportRecord;
         }
-      >(response, copy(language, "Momentum raporu kaydi", "Momentum report record"));
+      >(response, t("flow:momentumReportRecord"));
 
       if (!response.ok) {
         throw new Error(
-          extractApiErrorMessage(payload, copy(language, copy(language, "Momentum raporu kaydedilemedi.", "Momentum report could not be saved."), "Momentum report could not be saved."))
+          extractApiErrorMessage(
+            payload,
+            language === "en"
+              ? "Momentum report could not be saved."
+              : "Momentum raporu kaydedilemedi."
+          )
         );
       }
 
@@ -924,17 +906,13 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
       setDraftMomentumReport(JSON.parse(JSON.stringify(savedReport)));
       toast.success(
         status === "published"
-          ? copy(language, "Momentum snapshot yayinlandi.", "Momentum snapshot published.")
-          : copy(language, "Momentum taslagi kaydedildi.", "Momentum draft saved.")
+          ? t("flow:momentumSnapshotPublished")
+          : t("flow:momentumDraftSaved")
       );
     } catch (error) {
       handleAdminFailure(
         error,
-        copy(
-          language,
-          "Momentum raporu kaydedilemedi.",
-          "Momentum report could not be saved."
-        )
+        t("flow:momentumReportCouldNotBe")
       );
     } finally {
       setAdminBusy(false);
@@ -953,8 +931,8 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
     setAdminBusy(true);
     setAdminBusyLabel(
       status === "published"
-        ? copy(language, "Daily report yayinlaniyor", "Publishing daily report")
-        : copy(language, "Daily taslak kaydediliyor", "Saving daily draft")
+        ? t("flow:publishingDailyReport")
+        : t("flow:savingDailyDraft")
     );
     setAdminError("");
 
@@ -982,11 +960,16 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
         DailyReportsApiResponse & {
           report?: DailyReportRecord;
         }
-      >(response, copy(language, "Daily report kaydi", "Daily report record"));
+      >(response, t("flow:dailyReportRecord"));
 
       if (!response.ok) {
         throw new Error(
-          extractApiErrorMessage(payload, copy(language, copy(language, "Daily report kaydedilemedi.", "Daily report could not be saved."), "Daily report could not be saved."))
+          extractApiErrorMessage(
+            payload,
+            language === "en"
+              ? "Daily report could not be saved."
+              : "Daily report kaydedilemedi."
+          )
         );
       }
 
@@ -1001,17 +984,13 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
       setDraftDailyReport(JSON.parse(JSON.stringify(savedReport)));
       toast.success(
         status === "published"
-          ? copy(language, "Daily report yayinlandi.", "Daily report published.")
-          : copy(language, "Daily taslak kaydedildi.", "Daily draft saved.")
+          ? t("flow:dailyReportPublished")
+          : t("flow:dailyDraftSaved")
       );
     } catch (error) {
       handleAdminFailure(
         error,
-        copy(
-          language,
-          "Daily report kaydedilemedi.",
-          "Daily report could not be saved."
-        )
+        t("flow:dailyReportCouldNotBe")
       );
     } finally {
       setAdminBusy(false);
@@ -1029,13 +1008,13 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
         ? figureFileNames
         : selectedDailySource.figureFiles;
     if (!nextFigureFileNames.length) {
-      setDailyOpenAiChartError(copy(language, "Kaynak grafik bulunamadi.", "Source chart not found."));
+      setDailyOpenAiChartError(t("flow:sourceChartNotFound"));
       return;
     }
 
     const normalizedPrompt = dailyOpenAiChartPrompt.trim();
     if (!normalizedPrompt) {
-      setDailyOpenAiChartError(copy(language, "OpenAI chart prompt gerekli.", "OpenAI chart prompt is required."));
+      setDailyOpenAiChartError(t("flow:openaiChartPromptIsRequired"));
       return;
     }
 
@@ -1068,11 +1047,11 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
         const payload = await readJsonResponse<
           | DailyReportOpenAiChartGenerateResponse
           | DailyReportOpenAiChartErrorResponse
-        >(response, copy(language, "Daily report OpenAI chart uretimi", "Daily report OpenAI chart generation"));
+        >(response, t("flow:dailyReportOpenaiChartGeneration"));
 
         if (!response.ok) {
           throw new Error(
-            extractApiErrorMessage(payload, copy(language, "OpenAI chart generation basarisiz oldu.", "OpenAI chart generation failed."))
+            extractApiErrorMessage(payload, t("flow:openaiChartGenerationFailed"))
           );
         }
 
@@ -1099,7 +1078,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
       if (nextFigureFileNames.length === 1) {
         const result = await requestChartGeneration(nextFigureFileNames);
         applyGeneratedSource(result);
-        const successMessage = `${result.generatedFiles.length} ${copy(language, "grafik icin OpenAI varyanti uretildi.", "OpenAI variant(s) generated for chart(s).")}`;
+        const successMessage = `${result.generatedFiles.length} ${t("flow:openaiVariantSGeneratedFor")}`;
         setDailyOpenAiChartMessage(successMessage);
         toast.success(successMessage);
         return;
@@ -1108,34 +1087,34 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
       for (const figureFileName of nextFigureFileNames) {
         currentFigureFileName = figureFileName;
         setDailyOpenAiChartMessage(
-          `${completed}/${total} ${copy(language, "tamamlandi. Siradaki grafik:", "completed. Next chart:")} ${figureFileName}`
+          `${completed}/${total} ${t("flow:completedNextChart")} ${figureFileName}`
         );
         const result = await requestChartGeneration([figureFileName]);
         applyGeneratedSource(result);
         completed += 1;
         setDailyOpenAiChartMessage(
-          `${completed}/${total} ${copy(language, "grafik tek tek uretildi.", "charts generated one by one.")}`
+          `${completed}/${total} ${t("flow:chartsGeneratedOneByOne")}`
         );
       }
 
       if (completed > 0) {
         toast.success(
-          `${completed}/${total} ${copy(language, "grafik uretildi.", "charts generated.")}`
+          `${completed}/${total} ${t("flow:chartsGenerated")}`
         );
       }
     } catch (error) {
       const message =
         completed > 0
-          ? `${completed}/${total} ${copy(language, "grafik uretildi.", "charts generated.")} ${
-              currentFigureFileName ? `${currentFigureFileName} ${copy(language, "asamasinda", "at stage")} ` : ""
+          ? `${completed}/${total} ${t("flow:chartsGenerated")} ${
+              currentFigureFileName ? `${currentFigureFileName} ${t("flow:atStage")} ` : ""
             }${
               error instanceof Error
                 ? error.message
-                : copy(language, "OpenAI chart generation tamamlanamadi.", "OpenAI chart generation could not be completed.")
+                : t("flow:openaiChartGenerationCouldNot")
             }`
           : error instanceof Error
             ? error.message
-            : copy(language, "OpenAI chart generation tamamlanamadi.", "OpenAI chart generation could not be completed.");
+            : t("flow:openaiChartGenerationCouldNot");
       setDailyOpenAiChartError(message);
       toast.error(message);
     } finally {
@@ -1193,10 +1172,10 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
       <div className="px-4 py-8">
         <div className="mx-auto max-w-7xl rounded-xl border border-border bg-card/95 p-8 shadow-2xl">
           <h1 className="text-2xl font-semibold tracking-tight">
-            {copy(language, "Admin workspace yukleniyor", "Admin workspace loading")}
+            {t("flow:adminWorkspaceLoading")}
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            {copy(language, "Earnings ve momentum yayinlama araclari hazirlaniyor.", "Earnings and momentum publishing tools are loading.")}
+            {t("flow:earningsAndMomentumPublishingTools")}
           </p>
         </div>
       </div>
@@ -1208,11 +1187,11 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
       <div className="px-4 py-8">
         <div className="mx-auto max-w-4xl rounded-xl border border-destructive/30 bg-card/95 p-8 shadow-2xl">
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-            {copy(language, "Admin sayfasi acilamadi", "Admin page could not be opened")}
+            {t("flow:adminPageCouldNotBeff5d")}
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">{pageError}</p>
           <Button className="mt-6" onClick={() => void refreshPage(adminSecret)}>
-            {copy(language, "Tekrar dene", "Try again")}
+            {t("flow:tryAgain")}
           </Button>
         </div>
       </div>
@@ -1227,13 +1206,13 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
             <RefreshCw className="mt-0.5 size-4 shrink-0 animate-spin text-emerald-300" />
             <div className="space-y-1">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                {copy(language, "Islem devam ediyor", "Action in progress")}
+                {t("flow:actionInProgress")}
               </p>
               <p className="text-sm font-medium text-foreground">
-                {adminBusyLabel || copy(language, "Admin islemi suruyor.", "Admin action is running.")}
+                {adminBusyLabel || t("flow:adminActionIsRunning")}
               </p>
               <p className="text-sm text-muted-foreground">
-                {copy(language, "Kayit veya publish tamamlanana kadar bu pencere beklemede kalir.", "This overlay stays open until the save or publish step completes.")}
+                {t("flow:thisOverlayStaysOpenUntil")}
               </p>
             </div>
           </div>
@@ -1251,7 +1230,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                 onClick={() => setLocation("/app")}
               >
                 <ArrowLeft className="size-4" />
-                {copy(language, "Workspace'e don", "Back to workspace")}
+                {t("flow:backToWorkspace")}
               </Button>
 
               <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
@@ -1261,10 +1240,10 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
 
               <div className="space-y-2">
                 <h1 className="text-4xl font-semibold tracking-tight text-foreground">
-                  {copy(language, "Earnings, Coverage, Daily ve Image Yonetimi", "Earnings, Coverage, Daily and Image Management")}
+                  {t("flow:earningsCoverageDailyAndImage")}
                 </h1>
                 <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
-                  {copy(language, "Sistem earnings haftalarini ve aday hisseleri bulur, momentum scanner yayinlanabilir setup listesini uretir, coverage arsivi ise kontratli markdown raporlarla beslenir. Admin burada gozden gecirir, ince ayar yapar, coverage markdown'larini kilitli arsive alir, yayina alir ve gerekirse referans gorsellerden yeni image uretir.", "The system finds earnings weeks and candidate stocks, the momentum scanner produces a publishable setup list, and the coverage archive is fed with contract-based markdown reports. The admin reviews, fine-tunes, moves coverage markdown into the locked archive, publishes, and generates new images from reference visuals when needed.")}
+                  {t("flow:theSystemFindsEarningsWeeks")}
                 </p>
               </div>
             </div>
@@ -1290,14 +1269,14 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                       <Sparkles className="size-4" />
                     )}
                     {workspace === "earnings"
-                      ? copy(language, "Earnings Workspace", "Earnings Workspace")
+                      ? "Earnings Workspace"
                       : workspace === "momentum"
-                        ? copy(language, "Momentum Workspace", "Momentum Workspace")
+                        ? "Momentum Workspace"
                         : workspace === "coverage"
-                          ? copy(language, "Coverage Workspace", "Coverage Workspace")
+                          ? "Coverage Workspace"
                         : workspace === "daily"
-                          ? copy(language, "Daily Report", "Daily Report")
-                          : copy(language, "Image Studio", "Image Studio")}
+                          ? "Daily Report"
+                          : "Image Studio"}
                   </Button>
                 )
               )}
@@ -1309,116 +1288,116 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
           {selectedWorkspace === "earnings" ? (
             <>
               <SectionCard
-                title={copy(language, "Toplam rapor", "Total reports")}
+                title={t("flow:totalReports37ae")}
                 value={String(earningsStats.totalReports)}
-                description={copy(language, "Kayitli earnings haftalari", "Registered earnings weeks")}
+                description={t("flow:registeredEarningsWeeks")}
               />
               <SectionCard
-                title={copy(language, "Yayinlandi", "Published")}
+                title={t("flow:publisheda780")}
                 value={String(earningsStats.publishedReports)}
-                description={copy(language, "Canliya alinmis haftalar", "Published weeks")}
+                description={t("flow:publishedWeeks")}
               />
               <SectionCard
-                title={copy(language, "Toplam entry", "Total entries")}
+                title={t("flow:totalEntries")}
                 value={String(earningsStats.totalEntries)}
-                description={copy(language, "Haftalara dagitilan toplam hisse", "Total stocks distributed across weeks")}
+                description={t("flow:totalStocksDistributedAcrossWeeks")}
               />
               <SectionCard
-                title={copy(language, "En yeni hafta", "Latest week")}
+                title={t("flow:latestWeek")}
                 value={earningsStats.latestWeek}
-                description={copy(language, "Editor acilisinda ustte gorunen hafta", "Week shown at the top when editor opens")}
+                description={t("flow:weekShownAtTheTop")}
               />
             </>
           ) : selectedWorkspace === "momentum" ? (
             <>
               <SectionCard
-                title={copy(language, "Toplam snapshot", "Total snapshots")}
+                title={t("flow:totalSnapshots")}
                 value={String(momentumStats.totalReports)}
-                description={copy(language, "Kayitli momentum yayinlari", "Registered momentum publications")}
+                description={t("flow:registeredMomentumPublications")}
               />
               <SectionCard
-                title={copy(language, "Yayinlandi", "Published")}
+                title={t("flow:publisheda780")}
                 value={String(momentumStats.publishedReports)}
-                description={copy(language, "Canliya alinmis momentum raporlari", "Published momentum reports")}
+                description={t("flow:publishedMomentumReports")}
               />
               <SectionCard
-                title={copy(language, "One Cikan Setup", "Featured setup")}
+                title={t("flow:featuredSetup")}
                 value={String(momentumStats.totalEntries)}
-                description={copy(language, "Tum snapshot'lardaki toplam yayin setup'i", "Total published setups across all snapshots")}
+                description={t("flow:totalPublishedSetupsAcrossAll")}
               />
               <SectionCard
-                title={copy(language, "Son yayin", "Latest publication")}
+                title={t("flow:latestPublication")}
                 value={momentumStats.latestDate}
-                description={copy(language, "En son yayinlanan momentum snapshot", "Latest published momentum snapshot")}
+                description={t("flow:latestPublishedMomentumSnapshot")}
               />
             </>
           ) : selectedWorkspace === "coverage" ? (
             <>
               <SectionCard
-                title={copy(language, "Publish modu", "Publish mode")}
-                value={copy(language, "Admin kilitli", "Admin locked")}
-                description={copy(language, "Public /coverage arsivi yalnızca bu panelden beslenir.", "The public /coverage archive is fed only from this panel.")}
+                title={t("flow:publishMode")}
+                value={t("flow:adminLockedf69f")}
+                description={t("flow:thePublicCoverageArchiveIs")}
               />
               <SectionCard
-                title={copy(language, "Arsiv formatı", "Archive format")}
+                title={t("flow:archiveFormat")}
                 value="coverage-md/1"
-                description={copy(language, "Skill ve renderer ayni markdown kontratini kullanir.", "Skill and renderer share the same markdown contract.")}
+                description={t("flow:skillAndRendererShareThe")}
               />
               <SectionCard
-                title={copy(language, "Legacy kaynak", "Legacy source")}
+                title={t("flow:legacySource")}
                 value="reports/coverage"
-                description={copy(language, "Yerel markdown klasoru gerekirse tek tikla admin arsivine aktarilir.", "The local markdown folder can be imported into the admin archive with one click when needed.")}
+                description={t("flow:theLocalMarkdownFolderCan")}
               />
               <SectionCard
-                title={copy(language, "Kalici arsiv", "Persistent archive")}
+                title={t("flow:persistentArchive")}
                 value="SQLite"
-                description={copy(language, "Yeni coverage raporlari transient runtime dosyasi yerine kalici store'a yazilir.", "New coverage reports are written to the persistent store instead of transient runtime files.")}
+                description={t("flow:newCoverageReportsAreWritten")}
               />
             </>
           ) : selectedWorkspace === "images" ? (
             <>
               <SectionCard
-                title={copy(language, "Saglayici", "Provider")}
+                title={t("flow:provider5edb")}
                 value="OpenAI"
-                description={copy(language, "Sunucu tarafi gorsel uretimi", "Server-side image generation")}
+                description={t("flow:serverSideImageGeneration")}
               />
               <SectionCard
-                title={copy(language, "Kimlik Dogrulama", "Auth")}
-                value={copy(language, "Sunucu env", "Server env")}
-                description={copy(language, "API key frontend'e verilmez", "API key is not exposed to frontend")}
+                title={t("flow:auth")}
+                value={t("flow:serverEnv")}
+                description={t("flow:apiKeyIsNotExposed")}
               />
               <SectionCard
-                title={copy(language, "Referans limit", "Reference limit")}
+                title={t("flow:referenceLimit")}
                 value="4"
-                description={copy(language, "Tek seferde en fazla gorsel", "Maximum images per batch")}
+                description={t("flow:maximumImagesPerBatch")}
               />
               <SectionCard
-                title={copy(language, "Cikis", "Output")}
+                title={t("flow:output")}
                 value="PNG"
-                description={copy(language, "Preview ve indirme ayni panelde", "Preview and download in the same panel")}
+                description={t("flow:previewAndDownloadInThe")}
               />
             </>
           ) : (
             <>
               <SectionCard
-                title={copy(language, "Toplam daily", "Total daily")}
+                title={t("flow:totalDaily")}
                 value={String(dailyStats.totalReports)}
-                description={copy(language, "Kayitli daily report yayinlari", "Registered daily report publications")}
+                description={t("flow:registeredDailyReportPublications")}
               />
               <SectionCard
-                title={copy(language, "Yayinlandi", "Published")}
+                title={t("flow:publisheda780")}
                 value={String(dailyStats.publishedReports)}
-                description={copy(language, "Canliya alinmis gunluk raporlar", "Published daily reports")}
+                description={t("flow:publishedDailyReports")}
               />
               <SectionCard
-                title={copy(language, "Kaynak Paket", "Source package")}
+                title={t("flow:sourcePackage")}
                 value={String(dailyStats.sourcePackages)}
-                description={copy(language, "dailyreport klasorunde hazir paketler", "Ready packages in dailyreport folder")}
+                description={t("flow:readyPackagesInDailyreportFolder")}
               />
               <SectionCard
-                title={copy(language, "Son yayin", "Latest publication")}
+                title={t("flow:latestPublication")}
                 value={dailyStats.latestDate}
-                description={copy(language, "En son yayinlanan gunluk rapor", "Latest published daily report")}
+                description={t("flow:latestPublishedDailyReport")}
               />
             </>
           )}
@@ -1430,15 +1409,15 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
               <div className="space-y-6">
                 <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-200">
                   <Shield className="size-4" />
-                  {copy(language, "Yonetici kilidi kapali", "Admin lock is closed")}
+                  {t("flow:adminLockIsClosed50b1")}
                 </div>
 
                 <div className="space-y-2">
                   <h2 className="text-3xl font-semibold tracking-tight text-foreground">
-                    {copy(language, "Yayina almadan once kilidi ac", "Unlock before publishing")}
+                    {t("flow:unlockBeforePublishing")}
                   </h2>
                   <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
-                    {copy(language, `Bu workspace canli earnings verisi, scanner sonuclari ve yayinlama aksiyonlarini acar. Devam etmek icin ${adminEmail} hesabina tanimli gizli anahtari gir.`, `This workspace opens live earnings data, scanner results and publishing actions. Enter the secret key assigned to the ${adminEmail} account to continue.`)}
+                    {t("flow:thisWorkspaceOpensLiveEarnings", { adminemail: adminEmail })}
                   </p>
                 </div>
 
@@ -1454,7 +1433,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                         setAdminSecret(event.target.value);
                         setAdminError("");
                       }}
-                      placeholder={copy(language, "Coolify env icindeki REPORT_ADMIN_SECRET", "REPORT_ADMIN_SECRET in Coolify env")}
+                      placeholder={t("flow:reportAdminSecretInCoolify")}
                     />
                   </label>
 
@@ -1464,7 +1443,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                       onClick={() => void handleUnlock()}
                       disabled={adminBusy || !adminSecret.trim()}
                     >
-                      {adminBusy ? copy(language, "Kontrol ediliyor", "Checking") : copy(language, "Kilidi ac", "Unlock")}
+                      {adminBusy ? t("flow:checking") : t("flow:unlock")}
                     </Button>
                   </div>
                 </div>
@@ -1476,23 +1455,23 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
 
               <div className="rounded-xl border border-border bg-background/60 p-6">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  {copy(language, "Gerekli env ve veri", "Required env and data")}
+                  {t("flow:requiredEnvAndData")}
                 </p>
                 <div className="mt-4 space-y-3 text-sm text-muted-foreground">
                   <p>
-                    {copy(language, "`REPORT_ADMIN_SECRET`: admin publish kilidi icin zorunlu", "`REPORT_ADMIN_SECRET`: required for admin publish lock")}
+                    {t("flow:reportAdminSecretRequiredFor")}
                   </p>
                   <p>
-                    {copy(language, "`FMP_API_KEY`: gercek earnings takvimi ve hisse verisi icin zorunlu", "`FMP_API_KEY`: required for real earnings calendar and stock data")}
+                    {t("flow:fmpApiKeyRequiredFor")}
                   </p>
                   <p>
-                    {copy(language, "`OPENAI_API_KEY`: Image Studio ile referans gorselden yeni image uretmek icin zorunlu", "`OPENAI_API_KEY`: required to generate new images from reference visuals via Image Studio")}
+                    {t("flow:openaiApiKeyRequiredTo")}
                   </p>
                   <p>
-                    {copy(language, "`VITE_SCANNER_MASSIVE_API_KEY`, `VITE_SCANNER_TWELVEDATA_API_KEY`, `VITE_SCANNER_ALPHAVANTAGE_API_KEY`: momentum scanner fallback'i icin opsiyonel", "`VITE_SCANNER_MASSIVE_API_KEY`, `VITE_SCANNER_TWELVEDATA_API_KEY`, `VITE_SCANNER_ALPHAVANTAGE_API_KEY`: optional for momentum scanner fallback")}
+                    {t("flow:viteScannerMassiveApiKey")}
                   </p>
                   <p>
-                    {copy(language, "Daily report icin ek API key gerekmiyor. Yeni paketleri `dailyreport/DDMMYYYY/` klasorune veya `flow/**.md` olarak birakman yeterli.", "No extra API key needed for Daily report. Just drop new packages into `dailyreport/DDMMYYYY/` folders or as `flow/**.md` files.")}
+                    {t("flow:noExtraApiKeyNeeded")}
                   </p>
                 </div>
               </div>
@@ -1504,19 +1483,19 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
           <>
             <section className="grid gap-4 lg:grid-cols-3">
               <ProviderCard
-                title={copy(language, "Earnings Ithalat", "Earnings import")}
+                title={t("flow:earningsImport")}
                 provider={workspaceStatus?.providers.earningsImport.provider || "-"}
                 configured={Boolean(workspaceStatus?.providers.earningsImport.configured)}
                 mode={workspaceStatus?.providers.earningsImport.mode || "disabled"}
                 note={
                   workspaceStatus?.providers.earningsImport.configured
-                    ? copy(language, "Onumuzdeki iki hafta icin gercek earnings takvimi ve fiyat verisi cekiliyor.", "Real earnings calendar and price data are being pulled for the next two weeks.")
-                    : copy(language, "Canli import kapali. `FMP_API_KEY` eklenmezse weekly suggestion listesi bos kalir.", "Live import is disabled. Weekly suggestion list will remain empty if `FMP_API_KEY` is not added.")
+                    ? t("flow:realEarningsCalendarAndPrice")
+                    : t("flow:liveImportIsDisabledWeekly")
                 }
                 language={language}
               />
               <ProviderCard
-                title={copy(language, "Opsiyonlar / IV", "Options / IV")}
+                title={t("flow:optionsIv")}
                 provider={workspaceStatus?.providers.optionsData.provider || "-"}
                 configured={Boolean(workspaceStatus?.providers.optionsData.configured)}
                 mode={workspaceStatus?.providers.optionsData.mode || "heuristic"}
@@ -1524,11 +1503,11 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                 language={language}
               />
               <ProviderCard
-                title={copy(language, "Momentum Zenginlestirme", "Momentum enrichment")}
+                title={t("flow:momentumEnrichment")}
                 provider={workspaceStatus?.providers.momentumData.provider || "-"}
                 configured={Boolean(workspaceStatus?.providers.momentumData.configured)}
                 mode={workspaceStatus?.providers.momentumData.mode || "live"}
-                note={copy(language, "Momentum skoru, RSI ve fiyat davranisi earnings draftlarini zenginlestirmek icin kullanilir.", "Momentum score, RSI and price behavior are used to enrich earnings drafts.")}
+                note={t("flow:momentumScoreRsiAndPrice")}
                 language={language}
               />
             </section>
@@ -1537,13 +1516,13 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div className="space-y-2">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                    {copy(language, "1. Sistem Onerileri", "1. System Suggestions")}
+                    {t("flow:1SystemSuggestions")}
                   </p>
                   <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-                    {copy(language, "Gercek veriden uretilecek haftalar", "Weeks to be generated from real data")}
+                    {t("flow:weeksToBeGeneratedFrom")}
                   </h2>
                   <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
-                    {copy(language, "Sistem once canli provider ile haftalari bulur, sonra admin sadece taslagi acar veya direkt yayinlar.", "The system first finds weeks with the live provider, then the admin simply opens the draft or publishes directly.")}
+                    {t("flow:theSystemFirstFindsWeeks")}
                   </p>
                 </div>
 
@@ -1558,7 +1537,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                     disabled={adminBusy}
                   >
                     <Sparkles className="size-4" />
-                    {copy(language, "Onerileri yenile", "Refresh suggestions")}
+                    {t("flow:refreshSuggestions")}
                   </Button>
                 </div>
               </div>
@@ -1586,7 +1565,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                             </span>
                             {suggestion.alreadyExists ? (
                               <span className="rounded-full border border-sky-500/30 bg-sky-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
-                                {copy(language, "mevcut", "exists")}
+                                {t("flow:exists")}
                               </span>
                             ) : null}
                           </div>
@@ -1611,7 +1590,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
 
                       <div className="mt-4 rounded-xl border border-border bg-card/70 p-4">
                         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                          {copy(language, "One cikan tickerlar", "Highlighted tickers")}
+                          {t("flow:highlightedTickers")}
                         </p>
                         <p className="mt-2 text-sm text-foreground">{topTickers || "-"}</p>
                       </div>
@@ -1623,7 +1602,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                             variant="outline"
                             onClick={() => handleSelectReport(suggestion.report.id)}
                           >
-                            {copy(language, "Mevcut raporu ac", "Open existing report")}
+                            {t("flow:openExistingReport")}
                           </Button>
                         ) : (
                           <>
@@ -1633,7 +1612,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                               onClick={() => void persistWeeklyReport("draft", suggestion.report)}
                               disabled={adminBusy}
                             >
-                              {copy(language, "Taslak olarak al", "Take as draft")}
+                              {t("flow:takeAsDraft")}
                             </Button>
                             <Button
                               type="button"
@@ -1642,7 +1621,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                               }
                               disabled={adminBusy}
                             >
-                              {copy(language, "Direkt yayinla", "Publish directly")}
+                              {t("flow:publishDirectly")}
                             </Button>
                           </>
                         )}
@@ -1654,7 +1633,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
 
               {!suggestions.length ? (
                 <div className="mt-6 rounded-xl border border-dashed border-border bg-background/50 p-6 text-sm text-muted-foreground">
-                  {copy(language, "Bu an icin sistem oneri uretmedi. Static seed fallback kapali; `FMP_API_KEY` tanimli degilse veya provider veri donmezse bu alan bilerek bos kalir.", "The system did not generate suggestions at this time. Static seed fallback is disabled; this area intentionally remains empty if `FMP_API_KEY` is not set or the provider returns no data.")}
+                  {t("flow:theSystemDidNotGenerate")}
                 </div>
               ) : null}
             </section>
@@ -1662,13 +1641,13 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
             <section className="space-y-3">
               <div className="space-y-1">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                  {copy(language, "2. Gelismis Duzenleme", "2. Advanced Editing")}
+                  {t("flow:2AdvancedEditing")}
                 </p>
                 <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-                  {copy(language, "Ince ayar ve publish", "Fine-tuning and publish")}
+                  {t("flow:fineTuningAndPublish")}
                 </h2>
                 <p className="text-sm text-muted-foreground">
-                  {copy(language, "Sistem draftlari yeterli olmadiginda buradan headline, strateji, IV alanlari ve ticker bazli tezleri duzenleyip yayina al.", "When system drafts are insufficient, edit headlines, strategies, IV fields and ticker-based theses here and publish.")}
+                  {t("flow:whenSystemDraftsAreInsufficient")}
                 </p>
               </div>
 
@@ -1707,15 +1686,15 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
           <>
             <section className="grid gap-4 lg:grid-cols-3">
               <ProviderCard
-                title={copy(language, "Birincil Tarayici", "Primary scanner")}
+                title={t("flow:primaryScanner")}
                 provider={workspaceStatus?.providers.momentumData.provider || "-"}
                 configured={Boolean(workspaceStatus?.providers.momentumData.configured)}
                 mode={workspaceStatus?.providers.momentumData.mode || "live"}
-                note={copy(language, "Momentum taramasi default olarak Yahoo uzerinden calisir. Paid fallback provider key'leri varsa kalite/genislik artar.", "Momentum scan runs via Yahoo by default. Paid fallback provider keys improve quality/coverage.")}
+                note={t("flow:momentumScanRunsViaYahoo")}
                 language={language}
               />
               <ProviderCard
-                title={copy(language, "Yedek Anahtarlar", "Fallback keys")}
+                title={t("flow:fallbackKeys")}
                 provider="massive / twelvedata / alphavantage"
                 configured={
                   Boolean(workspaceStatus?.providers.momentumData.fallbackKeys.massive) ||
@@ -1727,28 +1706,28 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                 mode="optional"
                 note={`Massive: ${
                   workspaceStatus?.providers.momentumData.fallbackKeys.massive
-                    ? copy(language, "hazir", "ready")
-                    : copy(language, "yok", "missing")
+                    ? t("flow:ready")
+                    : t("flow:missing")
                 } · TwelveData: ${
                   workspaceStatus?.providers.momentumData.fallbackKeys.twelvedata
-                    ? copy(language, "hazir", "ready")
-                    : copy(language, "yok", "missing")
+                    ? t("flow:ready")
+                    : t("flow:missing")
                 } · AlphaVantage: ${
                   workspaceStatus?.providers.momentumData.fallbackKeys.alphavantage
-                    ? copy(language, "hazir", "ready")
-                    : copy(language, "yok", "missing")
+                    ? t("flow:ready")
+                    : t("flow:missing")
                 }`}
                 language={language}
               />
               <ProviderCard
-                title={copy(language, "Yayin Hedefi", "Publish target")}
+                title={t("flow:publishTarget")}
                 provider="latest snapshot"
                 configured={Boolean(latestPublishedMomentum)}
                 mode={latestPublishedMomentum ? "published" : "draft-only"}
                 note={
                   latestPublishedMomentum
-                    ? `${latestPublishedMomentum.title} ${copy(language, "son canli momentum yayini.", "is the latest live momentum publication.")}`
-                    : copy(language, "Henuz yayinlanmis momentum snapshot yok.", "No momentum snapshot has been published yet.")
+                    ? `${latestPublishedMomentum.title} ${t("flow:isTheLatestLiveMomentum")}`
+                    : t("flow:noMomentumSnapshotHasBeen")
                 }
                 language={language}
               />
@@ -1758,13 +1737,13 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div className="space-y-2">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                    {copy(language, "1. Son Yayin", "1. Latest Publication")}
+                    {t("flow:1LatestPublication")}
                   </p>
                   <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-                    {copy(language, "Kullaniciya gidecek momentum snapshot", "Momentum snapshot for users")}
+                    {t("flow:momentumSnapshotForUsers")}
                   </h2>
                   <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
-                    {copy(language, "Admin scanner sonucunu secip buradan yayinlar. `/momentum` sayfasi ustte bu snapshot'i gosterir, altta ise canli scanner acik kalir.", "The admin selects the scanner result and publishes it here. The `/momentum` page shows this snapshot at the top, while the live scanner remains open below.")}
+                    {t("flow:theAdminSelectsTheScanner")}
                   </p>
                 </div>
 
@@ -1776,11 +1755,11 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                     disabled={adminBusy}
                   >
                     <RefreshCw className="size-4" />
-                    {copy(language, "Listeyi yenile", "Refresh list")}
+                    {t("flow:refreshList")}
                   </Button>
                   <Button type="button" onClick={handleCreateMomentumDraft}>
                     <ChartCandlestick className="size-4" />
-                    {copy(language, "Yeni snapshot taslagi", "New snapshot draft")}
+                    {t("flow:newSnapshotDraft")}
                   </Button>
                 </div>
               </div>
@@ -1812,7 +1791,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                 </div>
               ) : (
                 <div className="mt-6 rounded-xl border border-dashed border-border bg-background/50 p-6 text-sm text-muted-foreground">
-                  {copy(language, "Henuz yayinlanmis momentum snapshot yok. Once taramayi calistir, sonuclari taslaga aktar ve publish et.", "No momentum snapshot has been published yet. First run the scan, transfer results to draft and publish.")}
+                  {t("flow:noMomentumSnapshotHasBeenbbd3")}
                 </div>
               )}
             </section>
@@ -1820,13 +1799,13 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
             <section className="space-y-3">
               <div className="space-y-1">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                  {copy(language, "2. Scanner ve Editor", "2. Scanner and Editor")}
+                  {t("flow:2ScannerAndEditor")}
                 </p>
                 <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-                  {copy(language, "Tarama sonucunu analize donustur", "Turn scan result into analysis")}
+                  {t("flow:turnScanResultIntoAnalysis")}
                 </h2>
                 <p className="text-sm text-muted-foreground">
-                  {copy(language, "Ticker evrenini sec, scanner'i calistir, en iyi setup'lari taslaga aktar ve admin notlariyla yayina hazirla.", "Select the ticker universe, run the scanner, transfer the best setups to draft and prepare for publication with admin notes.")}
+                  {t("flow:selectTheTickerUniverseRun")}
                 </p>
               </div>
 
@@ -1858,30 +1837,30 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
           <>
             <section className="grid gap-4 lg:grid-cols-3">
               <ProviderCard
-                title={copy(language, "Kaynak Koku", "Source root")}
+                title={t("flow:sourceRoot")}
                 provider="dailyreport/ + flow/"
                 configured={dailySourcePackages.length > 0}
                 mode={dailySourcePackages.length > 0 ? "live" : "empty"}
-                note={copy(language, "Bu workspace yerel `dailyreport/<tarih>` klasorlerini ve `flow/**.md` dosyalarini source package olarak okur. Sen yeni gunluk paketi bu path'lere biraktikca admin preview edip publish eder.", "This workspace reads local `dailyreport/<date>` folders and `flow/**.md` files as source packages. As you drop new daily packages into those paths, the admin previews and publishes them.")}
+                note={t("flow:thisWorkspaceReadsLocalDailyreport")}
                 language={language}
               />
               <ProviderCard
-                title={copy(language, "Paket Sayisi", "Package count")}
+                title={t("flow:packageCount")}
                 provider="local filesystem"
                 configured={dailySourcePackages.length > 0}
                 mode={`${dailySourcePackages.length} package`}
-                note={copy(language, "Her klasor veya markdown dosyasi tek bir gunluk source package olarak algilanir.", "Each folder or markdown file is treated as a single daily source package.")}
+                note={t("flow:eachFolderOrMarkdownFile")}
                 language={language}
               />
               <ProviderCard
-                title={copy(language, "En Son Yayinlanan", "Latest published")}
+                title={t("flow:latestPublished")}
                 provider="daily report viewer"
                 configured={Boolean(latestPublishedDaily)}
                 mode={latestPublishedDaily ? "published" : "draft-only"}
                 note={
                   latestPublishedDaily
-                    ? `${latestPublishedDaily.title} ${copy(language, "son canli gunluk rapor.", "is the latest live daily report.")}`
-                    : copy(language, "Henuz yayinlanmis daily report yok.", "No daily report has been published yet.")
+                    ? `${latestPublishedDaily.title} ${t("flow:isTheLatestLiveDaily")}`
+                    : t("flow:noDailyReportHasBeen")
                 }
                 language={language}
               />
@@ -1891,13 +1870,13 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div className="space-y-2">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                    {copy(language, "1. Source Packages", "1. Source Packages")}
+                    {"1. Source Packages"}
                   </p>
                   <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-                    {copy(language, "Yerel gunluk source paketleri", "Local daily source packages")}
+                    {t("flow:localDailySourcePackages")}
                   </h2>
                   <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
-                    {copy(language, "Yeni klasoru `dailyreport/` altina veya yeni markdown dosyasini `flow/` altina birakman yeterli. Sistem source'u listeler, admin preview eder ve tek tikla daily report draft'i olusturur.", "Just drop the new folder under `dailyreport/` or the new markdown file under `flow/`. The system lists the source, the admin previews it and creates a daily report draft with one click.")}
+                    {t("flow:justDropTheNewFolder")}
                   </p>
                 </div>
 
@@ -1909,7 +1888,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                     disabled={adminBusy}
                   >
                     <RefreshCw className="size-4" />
-                    {copy(language, "Source'lari yenile", "Refresh sources")}
+                    {t("flow:refreshSources")}
                   </Button>
                   <Button
                     type="button"
@@ -1918,7 +1897,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                     disabled={adminBusy}
                   >
                     <RefreshCw className="size-4" />
-                    {copy(language, "Kayitlari yenile", "Refresh records")}
+                    {t("flow:refreshRecords")}
                   </Button>
                 </div>
               </div>
@@ -1930,10 +1909,10 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                   2. Preview ve Publish
                 </p>
                 <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-                  {copy(language, "Daily report publish hatti", "Daily report publish pipeline")}
+                  {t("flow:dailyReportPublishPipeline")}
                 </h2>
                 <p className="text-sm text-muted-foreground">
-                  {copy(language, "Source package'i sec, sistemin cikardigi taslagi kontrol et ve yayina al. Istersen baslik ve executive summary duzeltmesi yap.", "Select the source package, review the draft extracted by the system and publish. You may also edit the title and executive summary.")}
+                  {t("flow:selectTheSourcePackageReview")}
                 </p>
               </div>
 
@@ -1997,16 +1976,16 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  {copy(language, "Kilit ve session", "Lock and session")}
+                  {t("flow:lockAndSession")}
                 </p>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  {copy(language, "Editor `REPORT_ADMIN_SECRET` ile acik. Bu sayfa public route uzerinde olsa da publish aksiyonlari yine secret ile korunur.", "Editor is open with `REPORT_ADMIN_SECRET`. Even though this page is on a public route, publish actions are still protected by the secret.")}
+                  {t("flow:editorIsOpenWithReport")}
                 </p>
               </div>
 
               <Button type="button" variant="ghost" onClick={handleLock}>
                 <Shield className="size-4" />
-                {copy(language, "Kilidi kapat", "Lock")}
+                {t("flow:lock")}
               </Button>
             </div>
           </section>

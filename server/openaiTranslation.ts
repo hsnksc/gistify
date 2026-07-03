@@ -1,8 +1,12 @@
+import crypto from "node:crypto";
+import fs from "node:fs";
+import path from "node:path";
+import { buildProtectedTerms } from "../shared/marketTerms";
+import { buildTranslationSystemPrompt } from "./i18n/prompt";
 import {
-  buildProtectedTerms,
-  MARKET_TERMS,
-  MARKET_TICKERS,
-} from "../shared/marketTerms";
+  getTranslationMemoryEntry,
+  upsertTranslationMemoryEntry,
+} from "./i18n/translationMemory";
 
 const OPENAI_RESPONSES_URL = "https://api.openai.com/v1/responses";
 const DEFAULT_TRANSLATION_MODEL = "gpt-4.1";
@@ -11,10 +15,69 @@ const DEFAULT_MISTRAL_MODEL = "mistral-medium-latest";
 const MAX_TEXTS_PER_REQUEST = 24;
 const MAX_TEXT_LENGTH = 2_000;
 const MAX_TOTAL_TEXT_LENGTH = 18_000;
+const MAX_DOCUMENT_TEXT_LENGTH = 80_000;
 const MAX_CACHE_ENTRIES = 2_000;
 
 const translationCache = new Map<string, string>();
 const protectedTerms = buildProtectedTerms();
+
+export interface TranslationItem {
+  context?: string;
+  id: string;
+  text: string;
+}
+
+interface TranslationGlossary {
+  [term: string]: {
+    en: string;
+  };
+}
+
+interface TermReplacement {
+  original: string;
+  placeholder: string;
+}
+
+interface PreparedTranslationItem {
+  cacheKey: string;
+  context: string;
+  originalIds: string[];
+  originalText: string;
+  protectedText: string;
+  providerId: string;
+  replacements: TermReplacement[];
+  sourceHash: string;
+}
+
+function readTranslationJsonFile<T>(fileName: string, fallback: T) {
+  try {
+    return JSON.parse(
+      fs.readFileSync(
+        path.resolve(process.cwd(), "server", "i18n", fileName),
+        "utf8"
+      )
+    ) as T;
+  } catch (error) {
+    console.warn(
+      `[openaiTranslation] Failed to read server/i18n/${fileName}. Using fallback.`,
+      error instanceof Error ? error.message : error
+    );
+    return fallback;
+  }
+}
+
+const translationGlossary = readTranslationJsonFile<TranslationGlossary>(
+  "glossary.json",
+  {}
+);
+const translationDoNotTranslate = readTranslationJsonFile<string[]>(
+  "do-not-translate.json",
+  []
+);
+const translationSystemPrompt = buildTranslationSystemPrompt({
+  doNotTranslate: translationDoNotTranslate,
+  glossary: translationGlossary,
+});
 
 function normalizeString(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
@@ -38,9 +101,34 @@ function parseJsonSafely(value: string) {
   }
 }
 
-interface TermReplacement {
-  placeholder: string;
-  original: string;
+function hashTranslationPayload(parts: {
+  context?: string;
+  source: string;
+  target: string;
+  text: string;
+}) {
+  return crypto
+    .createHash("sha256")
+    .update(
+      JSON.stringify({
+        context: parts.context || "",
+        source: parts.source,
+        target: parts.target,
+        text: parts.text,
+      })
+    )
+    .digest("hex");
+}
+
+function buildTranslationCacheKey(parts: {
+  context?: string;
+  source: string;
+  target: string;
+  text: string;
+}) {
+  return [parts.source, parts.target, parts.context || "", parts.text].join(
+    "\u0001"
+  );
 }
 
 function escapeRegex(value: string) {
@@ -48,15 +136,17 @@ function escapeRegex(value: string) {
 }
 
 function protectMarketTerms(text: string, startIndex: number): {
-  text: string;
   replacements: TermReplacement[];
+  text: string;
 } {
   let result = text;
   const replacements: TermReplacement[] = [];
 
-  for (let i = 0; i < protectedTerms.length; i++) {
+  for (let i = 0; i < protectedTerms.length; i += 1) {
     const term = protectedTerms[i];
-    if (!term) continue;
+    if (!term) {
+      continue;
+    }
 
     const regex = new RegExp(
       `(?<=^|[^a-zA-Z0-9._])${escapeRegex(term)}(?=[^a-zA-Z0-9._]|$)`,
@@ -65,12 +155,12 @@ function protectMarketTerms(text: string, startIndex: number): {
 
     result = result.replace(regex, match => {
       const placeholder = `__GISTIFY_TERM_${startIndex}_${replacements.length}__`;
-      replacements.push({ placeholder, original: match });
+      replacements.push({ original: match, placeholder });
       return placeholder;
     });
   }
 
-  return { text: result, replacements };
+  return { replacements, text: result };
 }
 
 function restoreMarketTerms(
@@ -78,7 +168,7 @@ function restoreMarketTerms(
   replacements: TermReplacement[]
 ): string {
   let result = text;
-  for (const { placeholder, original } of replacements) {
+  for (const { original, placeholder } of replacements) {
     result = result.replace(new RegExp(escapeRegex(placeholder), "g"), original);
   }
   return result;
@@ -154,10 +244,7 @@ function getOpenAiTranslationModel() {
 }
 
 function getMistralApiKey() {
-  const candidates = [
-    "MISTRAL_API_KEY",
-    "MISTRAL_KEY",
-  ];
+  const candidates = ["MISTRAL_API_KEY", "MISTRAL_KEY"];
   for (const key of candidates) {
     const value = normalizeString(process.env[key]);
     if (value) {
@@ -174,8 +261,8 @@ function getMistralModel() {
   );
 }
 
-function setCacheValue(source: string, translation: string) {
-  translationCache.set(source, translation);
+function setCacheValue(cacheKey: string, translation: string) {
+  translationCache.set(cacheKey, translation);
   if (translationCache.size <= MAX_CACHE_ENTRIES) {
     return;
   }
@@ -220,24 +307,62 @@ export function normalizeTranslationTexts(value: unknown) {
   return Array.from(new Set(normalized));
 }
 
-function languageDisplayName(code: string) {
-  if (code === "tr") return "Turkish";
-  if (code === "en") return "English";
-  return code;
+export function normalizeTranslationItems(value: unknown) {
+  if (!Array.isArray(value)) {
+    return [] as TranslationItem[];
+  }
+
+  const normalized: TranslationItem[] = [];
+  const seenIds = new Set<string>();
+  let totalLength = 0;
+
+  for (let index = 0; index < value.length; index += 1) {
+    const entry = value[index];
+    if (!entry || typeof entry !== "object") {
+      continue;
+    }
+
+    const item = entry as {
+      context?: unknown;
+      id?: unknown;
+      text?: unknown;
+    };
+    const text = normalizeString(item.text).slice(0, MAX_TEXT_LENGTH);
+    if (!text) {
+      continue;
+    }
+
+    if (normalized.length >= MAX_TEXTS_PER_REQUEST) {
+      break;
+    }
+
+    if (totalLength + text.length > MAX_TOTAL_TEXT_LENGTH) {
+      break;
+    }
+
+    const rawId = normalizeString(item.id) || `item-${index + 1}`;
+    const id = seenIds.has(rawId) ? `${rawId}-${index + 1}` : rawId;
+    seenIds.add(id);
+
+    normalized.push({
+      context: normalizeString(item.context),
+      id,
+      text,
+    });
+    totalLength += text.length;
+  }
+
+  return normalized;
 }
 
 async function translateWithOpenAI(
-  keyedTexts: { key: string; text: string }[],
-  source: string,
+  keyedTexts: { context?: string; key: string; text: string }[],
   target: string
 ) {
   const apiKey = getOpenAiTranslationApiKey();
   if (!apiKey) {
     return null;
   }
-
-  const sourceName = languageDisplayName(source);
-  const targetName = languageDisplayName(target);
 
   const response = await fetch(OPENAI_RESPONSES_URL, {
     method: "POST",
@@ -246,6 +371,7 @@ async function translateWithOpenAI(
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
+      instructions: translationSystemPrompt,
       model: getOpenAiTranslationModel(),
       input: [
         {
@@ -254,13 +380,14 @@ async function translateWithOpenAI(
           content: [
             {
               type: "input_text",
-              text: [
-                `Translate each ${sourceName} string into natural ${targetName}.`,
-                "Preserve markdown, bullet markers, whitespace structure, URLs, dates, ticker symbols, numbers, and casing where it carries meaning.",
-                `Do not summarize. Do not omit details. If text is already ${targetName} or should stay unchanged, return it as-is.`,
-                "Return only valid JSON in the shape {\"t1\":\"...\",\"t2\":\"...\"}.",
-                JSON.stringify(keyedTexts),
-              ].join("\n\n"),
+              text: JSON.stringify({
+                items: keyedTexts.map(({ context, key, text }) => ({
+                  context: context || "",
+                  id: key,
+                  text,
+                })),
+                targetLang: target,
+              }),
             },
           ],
         },
@@ -288,17 +415,13 @@ async function translateWithOpenAI(
 }
 
 async function translateWithMistral(
-  keyedTexts: { key: string; text: string }[],
-  source: string,
+  keyedTexts: { context?: string; key: string; text: string }[],
   target: string
 ) {
   const apiKey = getMistralApiKey();
   if (!apiKey) {
     return null;
   }
-
-  const sourceName = languageDisplayName(source);
-  const targetName = languageDisplayName(target);
 
   const response = await fetch(MISTRAL_API_URL, {
     method: "POST",
@@ -308,24 +431,23 @@ async function translateWithMistral(
     },
     body: JSON.stringify({
       model: getMistralModel(),
-      temperature: 0.3,
       response_format: { type: "json_object" },
+      temperature: 0.2,
       messages: [
         {
           role: "system",
-          content:
-            `You are a professional ${sourceName}-to-${targetName} translator for financial and market-analysis reports. ` +
-            "Return only valid JSON mapping each input id to its translation.",
+          content: translationSystemPrompt,
         },
         {
           role: "user",
-          content: [
-            `Translate each ${sourceName} string into natural ${targetName}.`,
-            "Preserve markdown, bullet markers, whitespace structure, URLs, dates, ticker symbols, numbers, and casing where it carries meaning.",
-            `Do not summarize. Do not omit details. If text is already ${targetName} or should stay unchanged, return it as-is.`,
-            "Return only valid JSON in the shape {\"t1\":\"...\",\"t2\":\"...\"}.",
-            JSON.stringify(keyedTexts),
-          ].join("\n\n"),
+          content: JSON.stringify({
+            items: keyedTexts.map(({ context, key, text }) => ({
+              context: context || "",
+              id: key,
+              text,
+            })),
+            targetLang: target,
+          }),
         },
       ],
     }),
@@ -351,69 +473,176 @@ async function translateWithMistral(
     typeof parsedBody === "object" &&
     Array.isArray((parsedBody as { choices?: unknown[] }).choices)
       ? normalizeString(
-          ((parsedBody as { choices: Array<{ message?: { content?: unknown } }> }).choices[0] || {})
-            .message?.content
+          ((parsedBody as {
+            choices: Array<{ message?: { content?: unknown } }>;
+          }).choices[0] || {}).message?.content
         )
       : "";
 
   return parseJsonSafely(content);
 }
 
-export async function translateTexts(
-  texts: string[],
-  source: string,
-  target: string
-) {
-  const uniqueTexts = normalizeTranslationTexts(texts);
-  const translations = Object.fromEntries(
-    uniqueTexts.map(text => [text, text])
-  ) as Record<string, string>;
-
-  if (!uniqueTexts.length) {
-    return translations;
+function extractTranslatedItems(payload: unknown) {
+  if (!payload || typeof payload !== "object") {
+    return null;
   }
 
-  const uncachedTexts = uniqueTexts.filter(text => {
-    const cached = translationCache.get(text);
-    if (cached) {
-      translations[text] = cached;
-      return false;
+  const items = (payload as { items?: unknown }).items;
+  if (Array.isArray(items)) {
+    const translations: Record<string, string> = {};
+
+    for (const item of items) {
+      if (!item || typeof item !== "object") {
+        continue;
+      }
+
+      const id = normalizeString((item as { id?: unknown }).id);
+      const text =
+        typeof (item as { text?: unknown }).text === "string"
+          ? ((item as { text?: string }).text as string)
+          : "";
+      if (!id || !text.trim()) {
+        continue;
+      }
+
+      translations[id] = text;
     }
 
-    return true;
-  });
-
-  if (!uncachedTexts.length) {
-    return translations;
+    return Object.keys(translations).length ? translations : null;
   }
 
+  const directEntries = Object.entries(payload as Record<string, unknown>).filter(
+    ([key, value]) =>
+      normalizeString(key) && typeof value === "string" && value.trim()
+  );
+  if (!directEntries.length) {
+    return null;
+  }
+
+  return Object.fromEntries(
+    directEntries.map(([key, value]) => [key, value as string])
+  );
+}
+
+function ensureTranslationProviderConfigured() {
   const openAiKey = getOpenAiTranslationApiKey();
   const mistralKey = getMistralApiKey();
 
   if (!openAiKey && !mistralKey) {
-    const error = new Error("No translation API key configured. Translation unavailable.");
+    const error = new Error(
+      "No translation API key configured. Translation unavailable."
+    );
     (error as Error & { statusCode?: number }).statusCode = 503;
     throw error;
   }
 
-  const protectedTexts = uncachedTexts.map((text, index) =>
-    protectMarketTerms(text, index)
-  );
+  return { mistralKey, openAiKey };
+}
 
-  const keyedTexts = protectedTexts.map(({ text: protectedText }, index) => ({
-    key: `t${index + 1}`,
-    text: protectedText,
-    originalText: uncachedTexts[index]!,
-    replacements: protectedTexts[index]!.replacements,
-  }));
+function readCachedTranslation(cacheKey: string, sourceHash: string, target: string) {
+  const memoryValue = translationCache.get(cacheKey);
+  if (memoryValue) {
+    return memoryValue;
+  }
 
+  const persisted = getTranslationMemoryEntry(sourceHash, target);
+  if (!persisted?.translatedText) {
+    return "";
+  }
+
+  setCacheValue(cacheKey, persisted.translatedText);
+  return persisted.translatedText;
+}
+
+function writeCachedTranslation(
+  item: PreparedTranslationItem,
+  provider: string,
+  source: string,
+  target: string,
+  translatedText: string
+) {
+  setCacheValue(item.cacheKey, translatedText);
+  upsertTranslationMemoryEntry({
+    createdAt: new Date().toISOString(),
+    provider,
+    sourceHash: item.sourceHash,
+    sourceLang: source,
+    sourceText: item.originalText,
+    targetLang: target,
+    translatedText,
+  });
+}
+
+function prepareStructuredItems(
+  items: TranslationItem[],
+  source: string,
+  target: string
+) {
+  const grouped = new Map<string, PreparedTranslationItem>();
+  let providerIndex = 0;
+
+  for (const item of items) {
+    const originalText = normalizeString(item.text);
+    const context = normalizeString(item.context);
+    const itemId = normalizeString(item.id);
+
+    if (!itemId || !originalText) {
+      continue;
+    }
+
+    const cacheKey = buildTranslationCacheKey({
+      context,
+      source,
+      target,
+      text: originalText,
+    });
+    const existing = grouped.get(cacheKey);
+    if (existing) {
+      existing.originalIds.push(itemId);
+      continue;
+    }
+
+    const protectedItem = protectMarketTerms(originalText, providerIndex);
+    providerIndex += 1;
+
+    grouped.set(cacheKey, {
+      cacheKey,
+      context,
+      originalIds: [itemId],
+      originalText,
+      protectedText: protectedItem.text,
+      providerId: `t${providerIndex}`,
+      replacements: protectedItem.replacements,
+      sourceHash: hashTranslationPayload({
+        context,
+        source,
+        target,
+        text: originalText,
+      }),
+    });
+  }
+
+  return Array.from(grouped.values());
+}
+
+async function requestStructuredTranslations(
+  items: PreparedTranslationItem[]
+) {
+  const { mistralKey, openAiKey } = ensureTranslationProviderConfigured();
   let outputPayload: unknown = null;
   let lastProviderError: unknown = null;
+  let provider = "";
 
-  // Prefer Mistral (highest-quality model) first, then fall back to OpenAI.
+  const providerItems = items.map(item => ({
+    context: item.context,
+    key: item.providerId,
+    text: item.protectedText,
+  }));
+
   if (mistralKey) {
     try {
-      outputPayload = await translateWithMistral(keyedTexts, source, target);
+      outputPayload = await translateWithMistral(providerItems, "en");
+      provider = "mistral";
     } catch (providerError) {
       lastProviderError = providerError;
       console.error(
@@ -425,7 +654,8 @@ export async function translateTexts(
 
   if (!outputPayload && openAiKey) {
     try {
-      outputPayload = await translateWithOpenAI(keyedTexts, source, target);
+      outputPayload = await translateWithOpenAI(providerItems, "en");
+      provider = "openai";
     } catch (providerError) {
       lastProviderError = providerError;
       console.error(
@@ -435,28 +665,251 @@ export async function translateTexts(
     }
   }
 
-  if (!outputPayload || typeof outputPayload !== "object") {
+  const translatedItems = extractTranslatedItems(outputPayload);
+  if (!translatedItems) {
     console.error(
       "[openaiTranslation] All translation providers failed, returning source texts.",
-      lastProviderError instanceof Error ? lastProviderError.message : lastProviderError
+      lastProviderError instanceof Error
+        ? lastProviderError.message
+        : lastProviderError
     );
-    return translations;
+    return null;
   }
 
-  for (const { key, originalText, replacements } of keyedTexts) {
-    const candidate = normalizeString(
-      (outputPayload as Record<string, unknown>)[key]
-    );
-    const translated = candidate
-      ? restoreMarketTerms(candidate, replacements) || originalText
-      : originalText;
-    translations[originalText] = translated;
-    setCacheValue(originalText, translated);
+  return { provider: provider || "unknown", translatedItems };
+}
+
+async function requestStructuredTranslationsForTarget(
+  items: PreparedTranslationItem[],
+  target: string
+) {
+  const { mistralKey, openAiKey } = ensureTranslationProviderConfigured();
+  let outputPayload: unknown = null;
+  let lastProviderError: unknown = null;
+  let provider = "";
+
+  const providerItems = items.map(item => ({
+    context: item.context,
+    key: item.providerId,
+    text: item.protectedText,
+  }));
+
+  if (mistralKey) {
+    try {
+      outputPayload = await translateWithMistral(providerItems, target);
+      provider = "mistral";
+    } catch (providerError) {
+      lastProviderError = providerError;
+      console.error(
+        "[openaiTranslation] Mistral translation failed.",
+        providerError instanceof Error ? providerError.message : providerError
+      );
+    }
   }
 
-  return translations;
+  if (!outputPayload && openAiKey) {
+    try {
+      outputPayload = await translateWithOpenAI(providerItems, target);
+      provider = "openai";
+    } catch (providerError) {
+      lastProviderError = providerError;
+      console.error(
+        "[openaiTranslation] OpenAI translation failed.",
+        providerError instanceof Error ? providerError.message : providerError
+      );
+    }
+  }
+
+  const translatedItems = extractTranslatedItems(outputPayload);
+  if (!translatedItems) {
+    console.error(
+      "[openaiTranslation] All translation providers failed, returning source texts.",
+      lastProviderError instanceof Error
+        ? lastProviderError.message
+        : lastProviderError
+    );
+    return null;
+  }
+
+  return { provider: provider || "unknown", translatedItems };
+}
+
+export async function translateStructuredItems(
+  items: TranslationItem[],
+  source: string,
+  target: string
+) {
+  const normalizedSource = normalizeString(source).toLowerCase();
+  const normalizedTarget = normalizeString(target).toLowerCase();
+  const results = Object.fromEntries(
+    items.map(item => [item.id, normalizeString(item.text)])
+  ) as Record<string, string>;
+
+  if (!items.length || !normalizedSource || !normalizedTarget) {
+    return results;
+  }
+
+  if (normalizedSource === normalizedTarget) {
+    return results;
+  }
+
+  const preparedItems = prepareStructuredItems(
+    items,
+    normalizedSource,
+    normalizedTarget
+  );
+  const uncachedItems: PreparedTranslationItem[] = [];
+
+  for (const item of preparedItems) {
+    const cachedTranslation = readCachedTranslation(
+      item.cacheKey,
+      item.sourceHash,
+      normalizedTarget
+    );
+    if (cachedTranslation) {
+      for (const originalId of item.originalIds) {
+        results[originalId] = cachedTranslation;
+      }
+      continue;
+    }
+
+    uncachedItems.push(item);
+  }
+
+  if (!uncachedItems.length) {
+    return results;
+  }
+
+  const response = await requestStructuredTranslationsForTarget(
+    uncachedItems,
+    normalizedTarget
+  );
+  if (!response) {
+    return results;
+  }
+
+  for (const item of uncachedItems) {
+    const candidate =
+      typeof response.translatedItems[item.providerId] === "string"
+        ? response.translatedItems[item.providerId]
+        : "";
+    const translatedText = candidate
+      ? restoreMarketTerms(candidate, item.replacements) || item.originalText
+      : item.originalText;
+
+    for (const originalId of item.originalIds) {
+      results[originalId] = translatedText;
+    }
+
+    writeCachedTranslation(
+      item,
+      response.provider,
+      normalizedSource,
+      normalizedTarget,
+      translatedText
+    );
+  }
+
+  return results;
+}
+
+export async function translateTexts(texts: string[], source: string, target: string) {
+  const uniqueTexts = normalizeTranslationTexts(texts);
+  const keyedItems = uniqueTexts.map((text, index) => ({
+    id: `text-${index + 1}`,
+    text,
+  }));
+  const translatedItems = await translateStructuredItems(
+    keyedItems,
+    source,
+    target
+  );
+
+  return Object.fromEntries(
+    keyedItems.map(item => [item.text, translatedItems[item.id] || item.text])
+  ) as Record<string, string>;
 }
 
 export async function translateTurkishTextsToEnglish(texts: string[]) {
   return translateTexts(texts, "tr", "en");
+}
+
+export async function translateContentDocument(
+  text: string,
+  source: string,
+  target: string,
+  context = ""
+) {
+  const rawText = typeof text === "string" ? text : String(text ?? "");
+  const normalizedText = rawText.slice(0, MAX_DOCUMENT_TEXT_LENGTH);
+  const normalizedSource = normalizeString(source).toLowerCase();
+  const normalizedTarget = normalizeString(target).toLowerCase();
+  const normalizedContext = normalizeString(context);
+
+  if (!normalizedText.trim() || !normalizedSource || !normalizedTarget) {
+    return normalizedText;
+  }
+
+  if (normalizedSource === normalizedTarget) {
+    return normalizedText;
+  }
+
+  const cacheKey = buildTranslationCacheKey({
+    context: normalizedContext,
+    source: normalizedSource,
+    target: normalizedTarget,
+    text: normalizedText,
+  });
+  const sourceHash = hashTranslationPayload({
+    context: normalizedContext,
+    source: normalizedSource,
+    target: normalizedTarget,
+    text: normalizedText,
+  });
+  const cachedTranslation = readCachedTranslation(
+    cacheKey,
+    sourceHash,
+    normalizedTarget
+  );
+  if (cachedTranslation) {
+    return cachedTranslation;
+  }
+
+  const protectedDocument = protectMarketTerms(normalizedText, 0);
+  const preparedItem: PreparedTranslationItem = {
+    cacheKey,
+    context: normalizedContext,
+    originalIds: ["doc"],
+    originalText: normalizedText,
+    protectedText: protectedDocument.text,
+    providerId: "doc",
+    replacements: protectedDocument.replacements,
+    sourceHash,
+  };
+
+  const response = await requestStructuredTranslationsForTarget(
+    [preparedItem],
+    normalizedTarget
+  );
+  if (!response) {
+    return normalizedText;
+  }
+
+  const candidate =
+    typeof response.translatedItems.doc === "string"
+      ? response.translatedItems.doc
+      : "";
+  const translatedText = candidate
+    ? restoreMarketTerms(candidate, preparedItem.replacements) || normalizedText
+    : normalizedText;
+
+  writeCachedTranslation(
+    preparedItem,
+    response.provider,
+    normalizedSource,
+    normalizedTarget,
+    translatedText
+  );
+
+  return translatedText;
 }

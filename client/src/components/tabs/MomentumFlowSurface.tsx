@@ -1,25 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
-  Activity,
-  ArrowRightLeft,
-  BarChart3,
-  Clock,
-  LineChart,
-  Loader2,
-  RefreshCw,
-  ShieldAlert,
-  TrendingDown,
-  TrendingUp,
-  Zap,
-} from "lucide-react";
+  Activity, ArrowRightLeft, BarChart3, Clock, LineChart, Loader2, RefreshCw, ShieldAlert, TrendingDown, TrendingUp, Zap, } from "lucide-react";
 import type {
-  MidasActionSignal as ActionSignal,
-  MidasRiskLevel,
-  MidasSignalRecord,
-  MidasSignalsData,
-} from "@shared/midasSignals";
+  MidasActionSignal as ActionSignal, MidasRiskLevel, MidasSignalRecord, MidasSignalsData, } from "@shared/midasSignals";
 import { runMomentumScan, type StockResult } from "@/scanner";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 
 type SurfaceMode = "overview" | "positive" | "neutral" | "negative" | "shifts";
 type SignalDirection = "positive" | "negative" | "neutral";
@@ -87,28 +72,28 @@ function riskBadgeClass(riskLevel: MidasRiskLevel | undefined) {
 function riskLabel(riskLevel: MidasRiskLevel | undefined, language: AppLanguage) {
   switch (riskLevel) {
     case "LOW":
-      return copy(language, "Dusuk risk", "Low risk");
+      return t("common:lowRisk");
     case "HIGH":
-      return copy(language, "Yuksek risk", "High risk");
+      return t("coverage:total");
     case "MEDIUM":
-      return copy(language, "Orta risk", "Medium risk");
+      return t("common:mediumRisk");
     default:
-      return copy(language, "Risk n/a", "Risk n/a");
+      return "Risk n/a";
   }
 }
 
 function signalLabel(signal: ActionSignal, language: AppLanguage) {
   switch (signal) {
     case "STRONG_BUY":
-      return copy(language, "GUCLU AL", "STRONG BUY");
+      return t("common:strongBuybe09");
     case "BUY":
-      return copy(language, "AL", "BUY");
+      return t("common:buy36db");
     case "SELL":
-      return copy(language, "SAT", "SELL");
+      return t("common:sell");
     case "STRONG_SELL":
-      return copy(language, "GUCLU SAT", "STRONG SELL");
+      return t("flow:htmlReportDetailForDated");
     default:
-      return copy(language, "TUT", "HOLD");
+      return t("common:hold");
   }
 }
 
@@ -119,19 +104,19 @@ function scannerSignalLabel(signal: string, language: AppLanguage) {
     case "BUY":
       return signalLabel("BUY", language);
     case "NEUTRAL_BULLISH":
-      return copy(language, "NOTR-POZITIF", "NEUTRAL-BULLISH");
+      return t("common:neutralBullish71fe");
     case "NEUTRAL":
-      return copy(language, "NOTR", "NEUTRAL");
+      return t("common:neutral0dc3");
     case "NEUTRAL_BEARISH":
-      return copy(language, "NOTR-NEGATIF", "NEUTRAL-BEARISH");
+      return t("common:neutralBearishd74b");
     case "WEAK":
-      return copy(language, "ZAYIF", "WEAK");
+      return t("common:weak");
     case "CAUTION_HOT":
-      return copy(language, "SICAK BOLGE", "HOT ZONE");
+      return t("common:hotZone0372");
     case "OVERBOUGHT_RED":
-      return copy(language, "ASIRI ALIM", "OVERBOUGHT");
+      return t("common:overbought836a");
     case "OVERSOLD_CAUTION":
-      return copy(language, "ASIRI SATIM", "OVERSOLD");
+      return t("common:oversold6192");
     default:
       return signal;
   }
@@ -209,33 +194,33 @@ function deriveStats(signals: Array<{ resolvedSignal: ActionSignal }>) {
 function describeSnapshotTag(tag: string, language: AppLanguage) {
   switch (tag) {
     case "DAILY_STRONG_UP":
-      return copy(language, "Gun ici hareket sert yukari.", "Intraday momentum is accelerating higher.");
+      return t("common:intradayMomentumIsAcceleratingHigher");
     case "DAILY_UP":
-      return copy(language, "Gun ici akis yukari yone donuk.", "Intraday flow is tilted higher.");
+      return t("common:intradayFlowIsTiltedHigher");
     case "WEEKLY_STRONG_UP":
-      return copy(language, "Haftalik trend guclu sekilde pozitif.", "The weekly trend is strongly positive.");
+      return t("common:theWeeklyTrendIsStrongly");
     case "WEEKLY_UP":
-      return copy(language, "Haftalik momentum destek veriyor.", "Weekly momentum is supportive.");
+      return t("common:weeklyMomentumIsSupportive");
     case "MONTHLY_STRONG_UP":
-      return copy(language, "Aylik trend liderlik ediyor.", "The monthly trend is showing leadership.");
+      return t("common:theMonthlyTrendIsShowing");
     case "MONTHLY_UP":
-      return copy(language, "Aylik momentum pozitif tarafta.", "Monthly momentum remains positive.");
+      return t("common:monthlyMomentumRemainsPositive");
     case "ALL_UP":
-      return copy(language, "Tum zaman pencereleri yukari bakiyor.", "Every major timeframe is aligned higher.");
+      return t("common:everyMajorTimeframeIsAligned");
     case "DAILY_STRONG_DOWN":
-      return copy(language, "Gun ici satis baskisi sert.", "Intraday selling pressure is sharp.");
+      return t("common:intradaySellingPressureIsSharp");
     case "DAILY_DOWN":
-      return copy(language, "Gun ici akis asagi yone kayiyor.", "Intraday flow is leaning lower.");
+      return t("common:intradayFlowIsLeaningLower");
     case "WEEKLY_STRONG_DOWN":
-      return copy(language, "Haftalik zayiflik derinlesiyor.", "Weekly weakness is deepening.");
+      return t("common:weeklyWeaknessIsDeepening");
     case "WEEKLY_DOWN":
-      return copy(language, "Haftalik momentum negatif.", "Weekly momentum is negative.");
+      return t("common:weeklyMomentumIsNegative");
     case "MONTHLY_STRONG_DOWN":
-      return copy(language, "Aylik trend belirgin sekilde bozuk.", "The monthly trend is decisively broken.");
+      return t("common:theMonthlyTrendIsDecisively");
     case "MONTHLY_DOWN":
-      return copy(language, "Aylik momentum zayif.", "Monthly momentum is weak.");
+      return t("common:monthlyMomentumIsWeak");
     case "ALL_DOWN":
-      return copy(language, "Tum zaman pencereleri asagi bakiyor.", "Every major timeframe is aligned lower.");
+      return t("common:everyMajorTimeframeIsAlignedc31c");
     default:
       return tag.replace(/_/g, " ");
   }
@@ -249,25 +234,25 @@ function buildHeadline(
 ) {
   if (live && live.action !== signal.signal) {
     if (getDirectionalBias(resolvedSignal) === "positive") {
-      return copy(language, "Canli motor sinyali yukari revize etti.", "The live engine upgraded the setup to the upside.");
+      return t("common:theLiveEngineUpgradedThe");
     }
 
     if (getDirectionalBias(resolvedSignal) === "negative") {
-      return copy(language, "Canli motor sinyali asagi revize etti.", "The live engine downgraded the setup to the downside.");
+      return t("common:theLiveEngineDowngradedThe");
     }
   }
 
   switch (resolvedSignal) {
     case "STRONG_BUY":
-      return copy(language, "Trend, breadth ve hiz ayni yone bakiyor.", "Trend, breadth, and velocity are aligned higher.");
+      return t("common:trendBreadthAndVelocityAre");
     case "BUY":
-      return copy(language, "Yukari momentum korunuyor.", "Upside momentum remains intact.");
+      return t("common:upsideMomentumRemainsIntact");
     case "SELL":
-      return copy(language, "Asagi momentum one cikiyor.", "Downside momentum is taking control.");
+      return t("common:downsideMomentumIsTakingControl");
     case "STRONG_SELL":
-      return copy(language, "Satis baskisi hizlaniyor.", "Selling pressure is accelerating.");
+      return t("common:sellingPressureIsAccelerating");
     default:
-      return copy(language, "Yon kararsiz; gecis bolgesi.", "Direction is mixed; this is a transition zone.");
+      return t("common:directionIsMixedThisIs");
   }
 }
 
@@ -282,26 +267,26 @@ function buildReasonDetails(
   const reasons: string[] = [];
   if (live) {
     if (direction === "positive") {
-      reasons.push(copy(language, `Canli motor bull ${live.bullScore} / bear ${live.bearScore} uretiyor.`, `The live engine prints bull ${live.bullScore} versus bear ${live.bearScore}.`));
+      reasons.push(t("common:theLiveEnginePrintsBull", { bullscore: live.bullScore, bearscore: live.bearScore }));
     } else if (direction === "negative") {
-      reasons.push(copy(language, `Canli motor bear ${live.bearScore} / bull ${live.bullScore} uretiyor.`, `The live engine prints bear ${live.bearScore} versus bull ${live.bullScore}.`));
+      reasons.push(t("common:theLiveEnginePrintsBear", { bearscore: live.bearScore, bullscore: live.bullScore }));
     }
 
     if (live.volumeRatio >= 1.25) {
-      reasons.push(copy(language, `Hacim destegi RVOL ${live.volumeRatio.toFixed(2)}x seviyesinde.`, `Volume support is running at ${live.volumeRatio.toFixed(2)}x RVOL.`));
+      reasons.push(t("common:volumeSupportIsRunningAt", { tofixed2: live.volumeRatio.toFixed(2) }));
     }
   }
 
   if (direction === "positive") {
-    if (dayChange > 0) reasons.push(copy(language, `Gunluk akis ${formatPct(dayChange)} ile pozitif.`, `Daily flow is positive at ${formatPct(dayChange)}.`));
-    if (signal.weekly_pct > 0) reasons.push(copy(language, `Haftalik momentum ${formatPct(signal.weekly_pct)} seviyesinde.`, `Weekly momentum is running at ${formatPct(signal.weekly_pct)}.`));
-    if (signal.monthly_pct > 0) reasons.push(copy(language, `Aylik ivme ${formatPct(signal.monthly_pct)} ile destek veriyor.`, `Monthly acceleration supports the move at ${formatPct(signal.monthly_pct)}.`));
+    if (dayChange > 0) reasons.push(t("common:dailyFlowIsPositiveAt", { formatpctDaychange: formatPct(dayChange) }));
+    if (signal.weekly_pct > 0) reasons.push(t("common:weeklyMomentumIsRunningAt", { weekly_pct: formatPct(signal.weekly_pct) }));
+    if (signal.monthly_pct > 0) reasons.push(t("common:monthlyAccelerationSupportsTheMove", { monthly_pct: formatPct(signal.monthly_pct) }));
   }
 
   if (direction === "negative") {
-    if (dayChange < 0) reasons.push(copy(language, `Gunluk akis ${formatPct(dayChange)} ile asagi yone egiliyor.`, `Daily flow is leaning lower at ${formatPct(dayChange)}.`));
-    if (signal.weekly_pct < 0) reasons.push(copy(language, `Haftalik momentum ${formatPct(signal.weekly_pct)} ile zayif.`, `Weekly momentum is weak at ${formatPct(signal.weekly_pct)}.`));
-    if (signal.monthly_pct < 0) reasons.push(copy(language, `Aylik trend ${formatPct(signal.monthly_pct)} ile bozuluyor.`, `The monthly trend is deteriorating at ${formatPct(signal.monthly_pct)}.`));
+    if (dayChange < 0) reasons.push(t("common:dailyFlowIsLeaningLower", { formatpctDaychange: formatPct(dayChange) }));
+    if (signal.weekly_pct < 0) reasons.push(t("common:weeklyMomentumIsWeakAt", { weekly_pct: formatPct(signal.weekly_pct) }));
+    if (signal.monthly_pct < 0) reasons.push(t("common:theMonthlyTrendIsDeteriorating", { monthly_pct: formatPct(signal.monthly_pct) }));
   }
 
   for (const tag of signal.signals.slice(0, 4)) {
@@ -314,13 +299,13 @@ function buildReasonDetails(
 function pipelineStatusLabel(status: string, language: AppLanguage) {
   switch (status) {
     case "ok":
-      return copy(language, "Senkron", "Synced");
+      return t("common:synced");
     case "stale":
-      return copy(language, "Eski veri", "Stale");
+      return t("common:stale");
     case "error":
-      return copy(language, "Hata", "Error");
+      return t("common:error");
     default:
-      return copy(language, "Beklemede", "Idle");
+      return t("earnings:gammaHighRisk");
   }
 }
 
@@ -456,7 +441,7 @@ function MomentumSignalCard({
             <span className="data-mono rounded-full border border-border bg-background/60 px-2 py-0.5">{formatPrice(currentPrice)}</span>
             {signal.live ? (
               <span className="rounded-full border border-border bg-background/60 px-2 py-0.5">
-                {copy(language, "Scanner", "Scanner")}: {scannerSignalLabel(signal.live.scannerSignal, language)}
+                {"Scanner"}: {scannerSignalLabel(signal.live.scannerSignal, language)}
               </span>
             ) : null}
           </div>
@@ -470,7 +455,7 @@ function MomentumSignalCard({
       <div className={`flex flex-wrap gap-1.5 ${compact ? "mt-2.5 text-[9px]" : "mt-3 text-[10px]"}`}>
         {displayConfidenceLabel ? (
           <span className="rounded-full border border-sky-400/20 bg-sky-500/10 px-2 py-0.5 text-sky-100">
-            {copy(language, "Guven", "Confidence")}: {displayConfidenceLabel}
+            {t("common:confidence")}: {displayConfidenceLabel}
           </span>
         ) : null}
         {signal.riskLevel ? (
@@ -480,14 +465,14 @@ function MomentumSignalCard({
         ) : null}
         {signal.live && snapshotConfidenceLabel ? (
           <span className="rounded-full border border-border bg-background/70 px-2 py-0.5 text-muted-foreground">
-            {copy(language, "Snapshot guven", "Snapshot confidence")}: {snapshotConfidenceLabel}
+            {t("common:snapshotConfidence")}: {snapshotConfidenceLabel}
           </span>
         ) : null}
       </div>
 
       <div className={compact ? "mt-2.5" : "mt-3"}>
         <div className={`mb-1.5 flex items-center justify-between gap-3 uppercase tracking-[0.16em] text-muted-foreground ${compact ? "text-[9px]" : "text-[10px]"}`}>
-          <span>{copy(language, "Momentum gucu", "Momentum conviction")}</span>
+          <span>{t("common:momentumConviction")}</span>
           <span className="data-mono text-foreground/85">{convictionWidth}/100</span>
         </div>
         <div className={`${compact ? "h-1.5" : "h-1.5"} overflow-hidden rounded-full bg-background/75`}>
@@ -496,12 +481,12 @@ function MomentumSignalCard({
       </div>
 
       <div className={`flex flex-wrap gap-1.5 ${compact ? "mt-2.5 text-[9px]" : "mt-3 text-[10px]"}`}>
-        <span className={`data-mono rounded-full border border-border bg-background/70 px-2 py-0.5 ${pctClass(currentDayPct)}`}>{copy(language, "Gunluk", "Daily")}: {formatPct(currentDayPct)}</span>
-        <span className={`data-mono rounded-full border border-border bg-background/70 px-2 py-0.5 ${pctClass(signal.weekly_pct)}`}>{copy(language, "Haftalik", "Weekly")}: {formatPct(signal.weekly_pct)}</span>
-        <span className={`data-mono rounded-full border border-border bg-background/70 px-2 py-0.5 ${pctClass(signal.monthly_pct)}`}>{copy(language, "Aylik", "Monthly")}: {formatPct(signal.monthly_pct)}</span>
+        <span className={`data-mono rounded-full border border-border bg-background/70 px-2 py-0.5 ${pctClass(currentDayPct)}`}>{t("common:daily")}: {formatPct(currentDayPct)}</span>
+        <span className={`data-mono rounded-full border border-border bg-background/70 px-2 py-0.5 ${pctClass(signal.weekly_pct)}`}>{t("common:weekly")}: {formatPct(signal.weekly_pct)}</span>
+        <span className={`data-mono rounded-full border border-border bg-background/70 px-2 py-0.5 ${pctClass(signal.monthly_pct)}`}>{t("common:monthly")}: {formatPct(signal.monthly_pct)}</span>
         {signal.live ? (
           <span className="data-mono rounded-full border border-border bg-background/70 px-2 py-0.5 text-muted-foreground">
-            {copy(language, "Bull", "Bull")} {signal.live.bullScore} / {copy(language, "Bear", "Bear")} {signal.live.bearScore}
+            {"Bull"} {signal.live.bullScore} / {"Bear"} {signal.live.bearScore}
           </span>
         ) : null}
       </div>
@@ -510,7 +495,7 @@ function MomentumSignalCard({
         <div className="mt-3 flex items-center gap-2 rounded-lg border border-sky-400/20 bg-sky-500/10 px-2.5 py-1.5 text-[10px] text-sky-100">
           <ArrowRightLeft className="size-3.5" />
           <span>
-            {copy(language, "Snapshot", "Snapshot")} {signalLabel(signal.signal, language)} - {copy(language, "Canli", "Live")} {signalLabel(signal.resolvedSignal, language)}
+            {"Snapshot"} {signalLabel(signal.signal, language)} - {t("common:live")} {signalLabel(signal.resolvedSignal, language)}
           </span>
         </div>
       ) : null}
@@ -518,7 +503,7 @@ function MomentumSignalCard({
       {signal.notes ? (
         <div className={`mt-3 rounded-lg border border-sky-400/18 bg-sky-500/[0.08] px-2.5 py-2 text-[11px] leading-5 text-sky-50/88 ${compact ? "hidden" : ""}`}>
           <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-sky-200/78">
-            {copy(language, "Analist notu", "Analyst note")}
+            {t("common:analystNote")}
           </p>
           <p>{signal.notes}</p>
         </div>
@@ -535,19 +520,19 @@ function MomentumSignalCard({
       {hasLayers && !compact ? (
         <div className="mt-3 grid gap-1.5 sm:grid-cols-2">
           <div className="rounded-lg border border-border/70 bg-background/60 px-2.5 py-1.5 text-[11px] text-muted-foreground">
-            <p className="text-[10px] uppercase tracking-[0.14em]">{copy(language, "Momentum", "Momentum")}</p>
+            <p className="text-[10px] uppercase tracking-[0.14em]">{"Momentum"}</p>
             <p className="data-mono mt-1 text-[13px] text-foreground">{signal.layers?.momentumScore ?? "-"}</p>
           </div>
           <div className="rounded-lg border border-border/70 bg-background/60 px-2.5 py-1.5 text-[11px] text-muted-foreground">
-            <p className="text-[10px] uppercase tracking-[0.14em]">{copy(language, "Osilator", "Oscillator")}</p>
+            <p className="text-[10px] uppercase tracking-[0.14em]">{t("common:oscillator")}</p>
             <p className="data-mono mt-1 text-[13px] text-foreground">{signal.layers?.oscillatorScore ?? "-"}</p>
           </div>
           <div className="rounded-lg border border-border/70 bg-background/60 px-2.5 py-1.5 text-[11px] text-muted-foreground">
-            <p className="text-[10px] uppercase tracking-[0.14em]">{copy(language, "Trend", "Trend")}</p>
+            <p className="text-[10px] uppercase tracking-[0.14em]">{"Trend"}</p>
             <p className="data-mono mt-1 text-[13px] text-foreground">{signal.layers?.trendScore ?? "-"}</p>
           </div>
           <div className="rounded-lg border border-border/70 bg-background/60 px-2.5 py-1.5 text-[11px] text-muted-foreground">
-            <p className="text-[10px] uppercase tracking-[0.14em]">{copy(language, "Uyum", "Confluence")}</p>
+            <p className="text-[10px] uppercase tracking-[0.14em]">{t("common:confluence")}</p>
             <p className="data-mono mt-1 text-[13px] text-foreground">{signal.layers?.confluenceScore ?? "-"}</p>
           </div>
         </div>
@@ -562,8 +547,8 @@ function MomentumSignalCard({
       </div>
 
       <div className={`flex flex-wrap items-center gap-2 text-muted-foreground ${compact ? "mt-2.5 text-[9px]" : "mt-3 text-[10px]"}`}>
-        <span>{copy(language, "Snapshot", "Snapshot")}: {formatTimestamp(signal.timestamp || snapshotTimestamp, language)}</span>
-        {signal.live ? <span>{copy(language, "Canli", "Live")}: {formatTimestamp(signal.live.updatedAt, language)}</span> : null}
+        <span>{"Snapshot"}: {formatTimestamp(signal.timestamp || snapshotTimestamp, language)}</span>
+        {signal.live ? <span>{t("common:live")}: {formatTimestamp(signal.live.updatedAt, language)}</span> : null}
       </div>
     </article>
   );
@@ -586,7 +571,7 @@ function MarketOverviewStrip({
       <div className="mb-3 flex items-center gap-2">
         <BarChart3 className="size-4 text-sky-300" />
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-200">
-          {copy(language, "Genis piyasa atimi", "Broad market pulse")}
+          {t("common:broadMarketPulse")}
         </p>
       </div>
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
@@ -810,7 +795,7 @@ export default function MomentumFlowSurface({
       setData((await response.json()) as MidasSignalsData);
       setError(null);
     } catch (loadError) {
-      setError(loadError instanceof Error && loadError.message ? loadError.message : copy(language, "Midas sinyal verisi yuklenemedi.", "Failed to load Midas signal data."));
+      setError(loadError instanceof Error && loadError.message ? loadError.message : t("common:failedToLoadMidasSignal"));
     } finally {
       setLoading(false);
       setSnapshotRefreshing(false);
@@ -855,7 +840,7 @@ export default function MomentumFlowSurface({
       setLiveScanTime(response.scanTime);
     } catch {
       if (liveRunRef.current !== runId) return;
-      setLiveError(copy(language, "Canli scanner verisi uretilemedi. Snapshot gorunumu korunuyor.", "Live scanner data could not be produced. Snapshot view remains active."));
+      setLiveError(t("common:liveScannerDataCouldNot"));
     } finally {
       if (liveRunRef.current === runId) setLiveLoading(false);
     }
@@ -934,7 +919,7 @@ export default function MomentumFlowSurface({
       <div className="workspace-card p-6">
         <div className="flex items-center gap-2">
           <LineChart className="size-4 animate-pulse text-sky-300" />
-          <p className="text-sm text-foreground">{copy(language, "Momentum akisi yukleniyor...", "Loading momentum flow...")}</p>
+          <p className="text-sm text-foreground">{t("common:loadingMomentumFlow")}</p>
         </div>
       </div>
     );
@@ -988,26 +973,26 @@ export default function MomentumFlowSurface({
       : "grid gap-3 md:grid-cols-2";
   const balanceHeadline =
     neutralCount >= positiveCount && neutralCount >= negativeCount && neutralCount > 0
-      ? copy(language, "Piyasa bekleme bandinda", "The market is sitting in a wait zone")
+      ? t("common:theMarketIsSittingIn")
       : positiveCount > negativeCount
-      ? copy(language, "Akis yukari yone egimli", "Flow is tilted to the upside")
+      ? t("common:flowIsTiltedToThe")
       : negativeCount > positiveCount
-        ? copy(language, "Asagi baski agir basiyor", "Downside pressure is in control")
-        : copy(language, "Momentum dengede", "Momentum is balanced");
+        ? t("common:downsidePressureIsInControl")
+        : t("common:momentumIsBalanced");
   const balanceDescription =
     neutralCount >= positiveCount && neutralCount >= negativeCount && neutralCount > 0
-      ? copy(language, "Neutral blok genisledi; piyasa karar vermeden once gecis isimlerini izlemek daha kritik.", "The neutral block has expanded, so transition names matter more than outright leaders.")
+      ? t("common:theNeutralBlockHasExpanded")
       : positiveCount > negativeCount
-      ? copy(language, "Pozitif tarafta daha fazla lider var; canli motor buy tarafini one cikariyor.", "There are more leaders on the positive side, and the live engine is favoring buy setups.")
+      ? t("common:thereAreMoreLeadersOn")
       : negativeCount > positiveCount
-        ? copy(language, "Negatif tarafta daha fazla bozulma var; risk yuzeyi kalinlasiyor.", "More names are deteriorating on the negative side, and the risk surface is thickening.")
-        : copy(language, "Liste simdilik daginik; liderleri ve bozulmalari secmek daha onemli.", "The list is mixed for now, so isolating leaders and breakdowns matters more.");
+        ? t("common:moreNamesAreDeterioratingOn")
+        : t("common:theListIsMixedFor");
   const viewButtons: Array<{ id: SurfaceMode; label: string; count: number; icon: typeof TrendingUp }> = [
-    { id: "overview", label: copy(language, "Komuta gorunumu", "Command view"), count: mergedSignals.length, icon: BarChart3 },
-    { id: "positive", label: copy(language, "Liderler", "Leaders"), count: positiveSignals.length, icon: TrendingUp },
-    { id: "neutral", label: copy(language, "Notr radar", "Neutral radar"), count: neutralSignals.length, icon: LineChart },
-    { id: "negative", label: copy(language, "Riskler", "Risks"), count: negativeSignals.length, icon: TrendingDown },
-    { id: "shifts", label: copy(language, "Degisimler", "Shifts"), count: orderedChangedSignals.length, icon: ArrowRightLeft },
+    { id: "overview", label: t("common:commandView"), count: mergedSignals.length, icon: BarChart3 },
+    { id: "positive", label: t("common:leaders"), count: positiveSignals.length, icon: TrendingUp },
+    { id: "neutral", label: t("common:neutralRadar"), count: neutralSignals.length, icon: LineChart },
+    { id: "negative", label: t("common:risks"), count: negativeSignals.length, icon: TrendingDown },
+    { id: "shifts", label: t("common:shifts"), count: orderedChangedSignals.length, icon: ArrowRightLeft },
   ];
 
   return (
@@ -1018,34 +1003,34 @@ export default function MomentumFlowSurface({
             <div className="flex items-center gap-2">
               <Activity className="size-4 text-sky-300" />
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-200">
-                {copy(language, "Momentum komuta katmani", "Momentum command layer")}
+                {t("common:momentumCommandLayer")}
               </p>
             </div>
             <h3 className="heading-condensed text-3xl text-foreground md:text-[2rem]">{balanceHeadline}</h3>
             <p className="max-w-3xl text-sm leading-7 text-foreground/90">
-              {copy(language, "Bu yuzey once snapshot'i ceker, sonra ayni evreni canli scanner ile yeniden tartar. Ust katman sana aninda piyasa dengesini, alt katman ise liderleri, bozulmalari ve sinyal kaymalarini verir.", "This surface first pulls the snapshot, then re-weighs the same universe through the live scanner. The upper layer gives you the market balance at a glance, while the lower layer surfaces leaders, breakdowns, and signal shifts.")}
+              {t("common:thisSurfaceFirstPullsThe")}
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
             <button type="button" onClick={() => void loadSnapshot()} disabled={snapshotRefreshing} className="inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-background/70 px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-background disabled:cursor-not-allowed disabled:opacity-60">
               {snapshotRefreshing ? <Loader2 className="size-4 animate-spin" /> : <RefreshCw className="size-4" />}
-              {copy(language, "Kaynagi yenile", "Refresh source")}
+              {t("common:refreshSource")}
             </button>
             <button type="button" onClick={() => void runLiveRefresh(data.signals.map((signal) => signal.symbol))} disabled={liveLoading} className="inline-flex items-center justify-center gap-2 rounded-lg border border-sky-400/30 bg-sky-500/12 px-4 py-2 text-sm font-semibold text-sky-100 transition-colors hover:bg-sky-500/18 disabled:cursor-not-allowed disabled:opacity-60">
               {liveLoading ? <Loader2 className="size-4 animate-spin" /> : <Zap className="size-4" />}
-              {copy(language, "Canli yeniden tara", "Run live rescore")}
+              {t("common:runLiveRescore")}
             </button>
           </div>
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2 text-[11px] text-muted-foreground">
-          <span className="rounded-full border border-border bg-background/70 px-3 py-1">{copy(language, "Snapshot: ", "Snapshot: ")}{snapshotTimestampLabel}</span>
-          <span className="rounded-full border border-border bg-background/70 px-3 py-1">{copy(language, "Canli update", "Live update")}: {liveTimestampLabel}</span>
-          <span className={`rounded-full border px-3 py-1 ${pipelineStatusClass(data.pipeline?.status || "idle")}`}>{copy(language, "Pipeline", "Pipeline")}: {pipelineStatusLabel(data.pipeline?.status || "idle", language)}</span>
-          <span className="rounded-full border border-border bg-background/70 px-3 py-1">{liveCoverageCount}/{data.symbol_count} {copy(language, "sembol tarandi", "symbols scanned")}</span>
-          <span className="rounded-full border border-border bg-background/70 px-3 py-1">{orderedChangedSignals.length} {copy(language, "sinyal degisti", "signals changed")}</span>
-          {data.pipeline?.pollIntervalMs ? <span className="rounded-full border border-border bg-background/70 px-3 py-1">{copy(language, "Cekim araligi", "Poll interval")}: {Math.round(data.pipeline.pollIntervalMs / 1000)}s</span> : null}
+          <span className="rounded-full border border-border bg-background/70 px-3 py-1">{"Snapshot: "}{snapshotTimestampLabel}</span>
+          <span className="rounded-full border border-border bg-background/70 px-3 py-1">{t("common:liveUpdate")}: {liveTimestampLabel}</span>
+          <span className={`rounded-full border px-3 py-1 ${pipelineStatusClass(data.pipeline?.status || "idle")}`}>{"Pipeline"}: {pipelineStatusLabel(data.pipeline?.status || "idle", language)}</span>
+          <span className="rounded-full border border-border bg-background/70 px-3 py-1">{liveCoverageCount}/{data.symbol_count} {t("common:symbolsScanned")}</span>
+          <span className="rounded-full border border-border bg-background/70 px-3 py-1">{orderedChangedSignals.length} {t("common:signalsChanged")}</span>
+          {data.pipeline?.pollIntervalMs ? <span className="rounded-full border border-border bg-background/70 px-3 py-1">{t("common:pollInterval")}: {Math.round(data.pipeline.pollIntervalMs / 1000)}s</span> : null}
         </div>
 
         {liveLoading ? (
@@ -1054,7 +1039,7 @@ export default function MomentumFlowSurface({
               <div className="h-full rounded-full bg-gradient-to-r from-sky-500 to-sky-500 transition-all duration-300" style={{ width: `${progressPct}%` }} />
             </div>
             <p className="text-xs text-muted-foreground">
-              {scanProgress.current ? `${scanProgress.current} ${copy(language, "icin canli skor uretiliyor.", "is being rescored live.")}` : copy(language, "Momentum evreni canli yeniden skorlanuyor.", "The momentum universe is being rescored live.")}
+              {scanProgress.current ? `${scanProgress.current} ${t("common:isBeingRescoredLive")}` : t("common:theMomentumUniverseIsBeingcaf6")}
             </p>
           </div>
         ) : null}
@@ -1066,11 +1051,11 @@ export default function MomentumFlowSurface({
           <div className="rounded-xl border border-border bg-background/38 p-3.5">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">{copy(language, "Akis haritasi", "Flow map")}</p>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">{t("common:flowMap")}</p>
                 <p className="mt-1 text-[13px] leading-6 text-foreground/90">{balanceDescription}</p>
               </div>
               <div className="rounded-full border border-border bg-background/60 px-2.5 py-1 text-[10px] text-muted-foreground">
-                {copy(language, "Mod", "Mode")}: <span className="data-mono">{data.mode}</span>
+                {t("common:mode")}: <span className="data-mono">{data.mode}</span>
               </div>
             </div>
 
@@ -1085,25 +1070,25 @@ export default function MomentumFlowSurface({
             <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
               <FlowMetricCard
                 icon={TrendingUp}
-                label={copy(language, "Pozitif", "Positive")}
+                label={t("common:positive")}
                 value={positiveCount}
                 tone="positive"
               />
               <FlowMetricCard
                 icon={LineChart}
-                label={copy(language, "Notr", "Neutral")}
+                label={t("common:neutral")}
                 value={neutralCount}
                 tone="neutral"
               />
               <FlowMetricCard
                 icon={ShieldAlert}
-                label={copy(language, "Negatif", "Negative")}
+                label={t("common:negative")}
                 value={negativeCount}
                 tone="negative"
               />
               <FlowMetricCard
                 icon={ArrowRightLeft}
-                label={copy(language, "Kaymalar", "Shifts")}
+                label={t("common:shiftse1fc")}
                 value={orderedChangedSignals.length}
                 tone="shift"
               />
@@ -1113,16 +1098,16 @@ export default function MomentumFlowSurface({
           <div className="grid gap-2.5 sm:grid-cols-2">
             <HeroInsightCard
               icon={TrendingUp}
-              label={copy(language, "Oncu uzun taraf", "Lead long setup")}
+              label={t("common:leadLongSetup")}
               symbol={strongestPositive?.symbol || "--"}
               detail={
                 strongestPositive
                   ? formatPct(strongestPositive.dayChange)
-                  : copy(language, "Beklemede", "Waiting")
+                  : t("common:waiting")
               }
               description={
                 strongestPositive?.headline ||
-                copy(language, "Su an net bir lider yok.", "There is no clear leader right now.")
+                t("common:thereIsNoClearLeader")
               }
               tone="positive"
               onClick={() => setSurfaceMode("positive")}
@@ -1130,16 +1115,16 @@ export default function MomentumFlowSurface({
 
             <HeroInsightCard
               icon={LineChart}
-              label={copy(language, "Gecis radari", "Transition radar")}
+              label={t("common:transitionRadar")}
               symbol={strongestNeutral?.symbol || "--"}
               detail={
                 strongestNeutral
                   ? formatPct(strongestNeutral.dayChange)
-                  : copy(language, "Beklemede", "Waiting")
+                  : t("common:waiting")
               }
               description={
                 strongestNeutral?.headline ||
-                copy(language, "Su an on plana cikan bir neutral gecis yok.", "There is no neutral transition name standing out right now.")
+                t("common:thereIsNoNeutralTransition")
               }
               tone="neutral"
               onClick={() => setSurfaceMode("neutral")}
@@ -1147,16 +1132,16 @@ export default function MomentumFlowSurface({
 
             <HeroInsightCard
               icon={ShieldAlert}
-              label={copy(language, "Oncu kisa taraf", "Lead short setup")}
+              label={t("common:leadShortSetup")}
               symbol={strongestNegative?.symbol || "--"}
               detail={
                 strongestNegative
                   ? formatPct(strongestNegative.dayChange)
-                  : copy(language, "Beklemede", "Waiting")
+                  : t("common:waiting")
               }
               description={
                 strongestNegative?.headline ||
-                copy(language, "Su an net bir bozulma lideri yok.", "There is no clear breakdown leader right now.")
+                t("common:thereIsNoClearBreakdown")
               }
               tone="negative"
               onClick={() => setSurfaceMode("negative")}
@@ -1166,8 +1151,8 @@ export default function MomentumFlowSurface({
               icon={featuredShift ? ArrowRightLeft : Zap}
               label={
                 featuredShift
-                  ? copy(language, "Canli revizyon", "Live revision")
-                  : copy(language, "Hizli hareket", "Fast move")
+                  ? t("common:liveRevision")
+                  : t("common:fastMove")
               }
               symbol={featuredShift?.symbol || biggestMover?.symbol || "--"}
               detail={
@@ -1175,13 +1160,13 @@ export default function MomentumFlowSurface({
                   ? `${signalLabel(featuredShift.signal, language)} -> ${signalLabel(featuredShift.resolvedSignal, language)}`
                   : biggestMover
                     ? formatPct(biggestMover.dayChange)
-                    : copy(language, "Beklemede", "Waiting")
+                    : t("common:waiting")
               }
               description={
                 featuredShift?.headline ||
                 (biggestMover
-                  ? copy(language, "Canli sinyal kaymasi yoksa gun ici en sert hareketi burada sabitliyoruz.", "When there is no live signal shift, we pin the sharpest intraday move here.")
-                  : copy(language, "Henuz one cikan bir hizli hareket yok.", "There is no standout fast move yet."))
+                  ? t("common:whenThereIsNoLive")
+                  : t("common:thereIsNoStandoutFast"))
               }
               tone="shift"
               onClick={() => setSurfaceMode(featuredShift ? "shifts" : "overview")}
@@ -1211,7 +1196,7 @@ export default function MomentumFlowSurface({
 
           <div className="ml-auto flex items-center gap-2 rounded-xl border border-border bg-background/55 px-3 py-2 text-[11px] text-muted-foreground">
             <Clock className="size-3.5" />
-            {copy(language, "Otomatik cekim", "Auto pull")}: <span className="data-mono">{Math.round((data.pipeline?.pollIntervalMs || SNAPSHOT_REFRESH_INTERVAL_MS) / 1000)}s</span>
+            {t("common:autoPull")}: <span className="data-mono">{Math.round((data.pipeline?.pollIntervalMs || SNAPSHOT_REFRESH_INTERVAL_MS) / 1000)}s</span>
           </div>
         </div>
       </div>
@@ -1222,17 +1207,17 @@ export default function MomentumFlowSurface({
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <ArrowRightLeft className="size-4 text-sky-200" />
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-200">{copy(language, "Sinyal kaymalari", "Signal shifts")}</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-200">{t("common:signalShifts1180")}</p>
               </div>
-              <h3 className="heading-condensed text-2xl text-sky-50">{copy(language, "Canli motorun revize ettigi isimler", "Names revised by the live engine")}</h3>
+              <h3 className="heading-condensed text-2xl text-sky-50">{t("common:namesRevisedByTheLive")}</h3>
               <p className="max-w-3xl text-sm leading-7 text-sky-50/78">
-                {copy(language, "Snapshot ile canli motor ayni yone bakmiyorsa, once bu blok okunmali. Burasi en kritik rejim degisimlerini biriktirir.", "If the snapshot and the live engine disagree, this block should be read first. It collects the most important regime shifts.")}
+                {t("common:ifTheSnapshotAndThe")}
               </p>
             </div>
 
             {surfaceMode === "overview" && orderedChangedSignals.length > MAX_OVERVIEW_SHIFTS ? (
               <button type="button" onClick={() => setSurfaceMode("shifts")} className="inline-flex items-center gap-2 rounded-lg border border-sky-400/20 bg-background/35 px-3 py-2 text-xs font-semibold text-sky-100 transition-colors hover:bg-background/50">
-                {copy(language, "Tum kaymalari ac", "Open all shifts")}
+                {t("common:openAllShifts")}
               </button>
             ) : null}
           </div>
@@ -1250,20 +1235,20 @@ export default function MomentumFlowSurface({
                   </div>
 
                   <div className="mt-4 flex flex-wrap gap-2 text-[11px]">
-                    <span className="rounded-full border border-border bg-background/55 px-2.5 py-1 text-muted-foreground">{copy(language, "Snapshot", "Snapshot")}: {signalLabel(signal.signal, language)}</span>
-                    <span className="rounded-full border border-sky-400/18 bg-sky-500/10 px-2.5 py-1 text-sky-100">{copy(language, "Canli", "Live")}: {signalLabel(signal.resolvedSignal, language)}</span>
+                    <span className="rounded-full border border-border bg-background/55 px-2.5 py-1 text-muted-foreground">{"Snapshot"}: {signalLabel(signal.signal, language)}</span>
+                    <span className="rounded-full border border-sky-400/18 bg-sky-500/10 px-2.5 py-1 text-sky-100">{t("common:live")}: {signalLabel(signal.resolvedSignal, language)}</span>
                   </div>
 
                   <div className="mt-4 flex flex-wrap gap-2 text-[11px]">
-                    <span className={`data-mono rounded-full border border-border bg-background/55 px-2.5 py-1 ${pctClass(signal.dayChange)}`}>{copy(language, "Gunluk", "Daily")}: {formatPct(signal.dayChange)}</span>
-                    {signal.live ? <span className="data-mono rounded-full border border-border bg-background/55 px-2.5 py-1 text-muted-foreground">{copy(language, "Bull", "Bull")} {signal.live.bullScore} / {copy(language, "Bear", "Bear")} {signal.live.bearScore}</span> : null}
+                    <span className={`data-mono rounded-full border border-border bg-background/55 px-2.5 py-1 ${pctClass(signal.dayChange)}`}>{t("common:daily")}: {formatPct(signal.dayChange)}</span>
+                    {signal.live ? <span className="data-mono rounded-full border border-border bg-background/55 px-2.5 py-1 text-muted-foreground">{"Bull"} {signal.live.bullScore} / {"Bear"} {signal.live.bearScore}</span> : null}
                   </div>
                 </div>
               ))}
             </div>
           ) : (
             <div className="mt-4 rounded-xl border border-dashed border-sky-400/18 bg-background/30 p-6 text-sm text-sky-50/78">
-              {copy(language, "Su an snapshot ile canli motor ayni yone bakiyor; dikkat edilmesi gereken acik bir sinyal kaymasi yok.", "The snapshot and the live engine are aligned right now, so there is no meaningful signal shift to escalate.")}
+              {t("common:theSnapshotAndTheLive")}
             </div>
           )}
         </section>
@@ -1275,14 +1260,14 @@ export default function MomentumFlowSurface({
             <div className="flex items-start gap-3">
               <LineChart className="mt-0.5 size-4 text-amber-300" />
               <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-amber-300/80">{copy(language, "Neutral radar", "Neutral radar")}</p>
-                <h3 className="mt-1 heading-condensed text-xl text-amber-100">{copy(language, "Karar vermeyen ama izlenmesi gereken isimler", "Names in transition that still deserve attention")}</h3>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-amber-300/80">{"Neutral radar"}</p>
+                <h3 className="mt-1 heading-condensed text-xl text-amber-100">{t("common:namesInTransitionThatStill")}</h3>
                 <p className="mt-1.5 text-xs leading-6 text-amber-50/85">
-                  {copy(language, "Hold sinyalleri burada kaybolmuyor. Yon netlesmeden once yuksek hareket, rejim gecisi veya kararsiz konviksiyon tasiyan isimleri bu blokta topluyoruz.", "Hold signals do not disappear here. This block collects names carrying movement, regime transition, or unresolved conviction before direction becomes clear.")}
+                  {t("common:holdSignalsDoNotDisappear")}
                 </p>
               </div>
             </div>
-            <div className="rounded-full border border-amber-500/18 bg-background/35 px-2.5 py-0.5 text-[10px] text-amber-100">{neutralSignals.length} {copy(language, "isim", "names")}</div>
+            <div className="rounded-full border border-amber-500/18 bg-background/35 px-2.5 py-0.5 text-[10px] text-amber-100">{neutralSignals.length} {t("common:names")}</div>
           </div>
 
           {visibleNeutralSignals.length > 0 ? (
@@ -1298,12 +1283,12 @@ export default function MomentumFlowSurface({
               ))}
             </div>
           ) : (
-            <div className="rounded-xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">{copy(language, "Su an neutral watchlist'e giren isim yok.", "There are no names in the neutral watchlist right now.")}</div>
+            <div className="rounded-xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">{t("common:thereAreNoNamesIn8306")}</div>
           )}
 
           {surfaceMode === "overview" && neutralSignals.length > MAX_OVERVIEW_NEUTRALS ? (
             <button type="button" onClick={() => setSurfaceMode("neutral")} className="inline-flex items-center gap-2 rounded-lg border border-amber-500/18 bg-amber-500/[0.08] px-3 py-2 text-xs font-semibold text-amber-100 transition-colors hover:bg-amber-500/[0.12]">
-              {copy(language, "Tum neutral listeyi ac", "Open the full neutral list")}
+              {t("common:openTheFullNeutralList")}
             </button>
           ) : null}
         </section>
@@ -1316,14 +1301,14 @@ export default function MomentumFlowSurface({
               <div className="flex items-start gap-3">
                 <TrendingUp className="mt-0.5 size-4 text-emerald-300" />
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-emerald-300/80">{copy(language, "Pozitif momentum", "Positive momentum")}</p>
-                  <h3 className="mt-1 heading-condensed text-xl text-emerald-100">{copy(language, "Yukari yone guclu isimler", "Upside leaders")}</h3>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-emerald-300/80">{t("common:positiveMomentum")}</p>
+                  <h3 className="mt-1 heading-condensed text-xl text-emerald-100">{t("common:upsideLeaders")}</h3>
                   <p className="mt-1.5 text-xs leading-6 text-emerald-50/85">
-                    {copy(language, "Al ve guclu al sinyalleri burada konviksiyon, haftalik ivme ve aylik devam gucu ile siralanir.", "Buy and strong buy names are ranked here by conviction, weekly acceleration, and monthly continuation strength.")}
+                    {t("common:buyAndStrongBuyNames")}
                   </p>
                 </div>
               </div>
-              <div className="rounded-full border border-emerald-500/18 bg-background/35 px-2.5 py-0.5 text-[10px] text-emerald-100">{positiveSignals.length} {copy(language, "isim", "names")}</div>
+              <div className="rounded-full border border-emerald-500/18 bg-background/35 px-2.5 py-0.5 text-[10px] text-emerald-100">{positiveSignals.length} {t("common:names")}</div>
             </div>
 
             {visiblePositiveSignals.length > 0 ? (
@@ -1339,12 +1324,12 @@ export default function MomentumFlowSurface({
                 ))}
               </div>
             ) : (
-              <div className="rounded-xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">{copy(language, "Su an pozitif momentum listesine giren isim yok.", "There are no names in the positive momentum list right now.")}</div>
+              <div className="rounded-xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">{t("common:thereAreNoNamesIn")}</div>
             )}
 
             {surfaceMode === "overview" && positiveSignals.length > MAX_OVERVIEW_SIGNALS ? (
               <button type="button" onClick={() => setSurfaceMode("positive")} className="inline-flex items-center gap-2 rounded-lg border border-emerald-500/18 bg-emerald-500/[0.08] px-3 py-2 text-xs font-semibold text-emerald-100 transition-colors hover:bg-emerald-500/[0.12]">
-                {copy(language, "Tum pozitif listeyi ac", "Open the full positive list")}
+                {t("common:openTheFullPositiveList")}
               </button>
             ) : null}
           </section>
@@ -1356,14 +1341,14 @@ export default function MomentumFlowSurface({
               <div className="flex items-start gap-3">
                 <ShieldAlert className="mt-0.5 size-4 text-rose-300" />
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-rose-300/80">{copy(language, "Negatif momentum", "Negative momentum")}</p>
-                  <h3 className="mt-1 heading-condensed text-xl text-rose-100">{copy(language, "Asagi yone baski altindaki isimler", "Names under downside pressure")}</h3>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-rose-300/80">{t("common:negativeMomentum")}</p>
+                  <h3 className="mt-1 heading-condensed text-xl text-rose-100">{t("common:namesUnderDownsidePressure")}</h3>
                   <p className="mt-1.5 text-xs leading-6 text-rose-50/85">
-                    {copy(language, "Sat ve guclu sat sinyalleri burada canli bear skoru, kisa vade zayiflik ve trend bozulmasi ile one cikar.", "Sell and strong sell names stand out here through live bear score, short-term weakness, and broader trend deterioration.")}
+                    {t("common:sellAndStrongSellNames")}
                   </p>
                 </div>
               </div>
-              <div className="rounded-full border border-rose-500/18 bg-background/35 px-2.5 py-0.5 text-[10px] text-rose-100">{negativeSignals.length} {copy(language, "isim", "names")}</div>
+              <div className="rounded-full border border-rose-500/18 bg-background/35 px-2.5 py-0.5 text-[10px] text-rose-100">{negativeSignals.length} {t("common:names")}</div>
             </div>
 
             {visibleNegativeSignals.length > 0 ? (
@@ -1379,12 +1364,12 @@ export default function MomentumFlowSurface({
                 ))}
               </div>
             ) : (
-              <div className="rounded-xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">{copy(language, "Su an negatif momentum listesine giren isim yok.", "There are no names in the negative momentum list right now.")}</div>
+              <div className="rounded-xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">{t("common:thereAreNoNamesIn5027")}</div>
             )}
 
             {surfaceMode === "overview" && negativeSignals.length > MAX_OVERVIEW_SIGNALS ? (
               <button type="button" onClick={() => setSurfaceMode("negative")} className="inline-flex items-center gap-2 rounded-lg border border-rose-500/18 bg-rose-500/[0.08] px-3 py-2 text-xs font-semibold text-rose-100 transition-colors hover:bg-rose-500/[0.12]">
-                {copy(language, "Tum negatif listeyi ac", "Open the full negative list")}
+                {t("common:openTheFullNegativeList")}
               </button>
             ) : null}
           </section>
@@ -1393,8 +1378,8 @@ export default function MomentumFlowSurface({
 
       <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
         <Clock className="size-3.5" />
-        <span className="data-mono">{snapshotTimestampLabel} - {data.mode} mode - {data.successful}/{data.symbol_count} {copy(language, "sembol", "symbols")}</span>
-        {data.pipeline?.resolvedSourceFile ? <span className="rounded-full border border-border bg-background/60 px-2.5 py-1 text-[11px]">{copy(language, "Kaynak", "Source")}: {data.pipeline.resolvedSourceFile}</span> : null}
+        <span className="data-mono">{snapshotTimestampLabel} - {data.mode} mode - {data.successful}/{data.symbol_count} {t("common:symbols")}</span>
+        {data.pipeline?.resolvedSourceFile ? <span className="rounded-full border border-border bg-background/60 px-2.5 py-1 text-[11px]">{t("common:source")}: {data.pipeline.resolvedSourceFile}</span> : null}
       </div>
     </div>
   );

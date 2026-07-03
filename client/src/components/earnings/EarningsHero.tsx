@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import {
   RefreshCw,
@@ -50,11 +50,11 @@ export default function EarningsHero({
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 rounded-full border border-sky-500/20 bg-sky-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-400">
               <Calendar className="size-3.5" />
-              {copy(language, "Rolling 2-Aylık Strateji", "Rolling 2-Month Strategy")}
+              {t("earnings:rolling2MonthStrategy")}
             </div>
             <h1 className="text-2xl font-bold tracking-tight text-white md:text-3xl">
               {data.title ||
-                copy(language, "Kazanç Stratejisi", "Earnings Strategy")}
+                t("earnings:earningsStrategy")}
             </h1>
             {data.summary ? (
               <p className="max-w-2xl text-sm leading-relaxed text-slate-400">
@@ -75,7 +75,7 @@ export default function EarningsHero({
               <RefreshCw
                 className={cn("mr-2 size-4", isRefreshing && "animate-spin")}
               />
-              {copy(language, "Yenile", "Refresh")}
+              {t("common:refresh")}
             </Button>
             <Button
               variant="outline"
@@ -85,7 +85,7 @@ export default function EarningsHero({
             >
               <a href="/api/earnings/download?format=md" download>
                 <Download className="mr-2 size-4" />
-                {copy(language, "Rapor", "Report")}
+                {t("earnings:report")}
               </a>
             </Button>
           </div>
@@ -94,19 +94,19 @@ export default function EarningsHero({
         {/* Month ribbon */}
         <div className="mt-6 flex flex-wrap items-stretch gap-3">
           <MonthCard
-            label={copy(language, "Mevcut Ay", "Current Month")}
+            label={t("earnings:currentMonth")}
             value={currentMonth}
             active
           />
           {nextMonth ? (
             <MonthCard
-              label={copy(language, "Sonraki Ay", "Next Month")}
+              label={t("common:marketRegime")}
               value={nextMonth}
             />
           ) : (
             <MonthCard
-              label={copy(language, "Sonraki Ay", "Next Month")}
-              value={copy(language, "Bekleniyor", "Pending")}
+              label={t("marketing:singleMonthlySubscription")}
+              value={t("earnings:pending")}
               muted
             />
           )}
@@ -116,18 +116,18 @@ export default function EarningsHero({
         <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
           <MetricCard
             icon={<Activity className="size-4" />}
-            label={copy(language, "VIX", "VIX")}
-            value={data.macro.vix || copy(language, "Bekleniyor", "Pending")}
+            label={"VIX"}
+            value={data.macro.vix || t("earnings:pending")}
             tone={getVixTone(data.macro.vix)}
           />
           <MetricCard
             icon={<BarChart3 className="size-4" />}
-            label={copy(language, "S&P 500", "S&P 500")}
+            label={"S&P 500"}
             value={data.macro.sp500}
           />
           <MetricCard
             icon={<BarChart3 className="size-4" />}
-            label={copy(language, "Nasdaq", "Nasdaq")}
+            label={"Nasdaq"}
             value={data.macro.nasdaq}
           />
           <FOMCCard fomc={data.fomc} language={language} />
@@ -227,8 +227,8 @@ function FOMCCard({
     return (
       <MetricCard
         icon={<Clock className="size-4" />}
-        label={copy(language, "FOMC", "FOMC")}
-        value={copy(language, "Veri yok", "No data")}
+        label={"FOMC"}
+        value={t("common:noData")}
       />
     );
   }
@@ -254,11 +254,11 @@ function FOMCCard({
       </div>
       <div className="min-w-0">
         <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-          {copy(language, "FOMC", "FOMC")}
+          {"FOMC"}
         </p>
         <p className="truncate text-base font-bold text-white">
           {fomc.daysUntil ?? "—"}{" "}
-          {copy(language, "gün kaldı", "days left")}
+          {t("earnings:daysLeft")}
         </p>
         <p className="truncate text-[10px] text-slate-400">{fomc.date}</p>
       </div>

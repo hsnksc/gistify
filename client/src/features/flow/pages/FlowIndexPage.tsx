@@ -1,16 +1,11 @@
 import { useEffect, useMemo } from "react";
 import {
-  AlertCircle,
-  Clock3,
-  FileSearch,
-  Layers3,
-  RefreshCw,
-} from "lucide-react";
+  AlertCircle, Clock3, FileSearch, Layers3, RefreshCw, } from "lucide-react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import EmptyState from "@/components/ui/empty-state";
 import LoadingState from "@/components/ui/loading-state";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import FlowLayout from "../components/FlowLayout";
 import FlowTickerCard from "../components/FlowTickerCard";
 import { useFlowReportSummaries } from "../hooks/useFlowReportSummaries";
@@ -23,7 +18,7 @@ export default function FlowIndexPage({
   language,
   basePath = "/flow",
   description,
-  eyebrow = copy(language, "Flow", "Flow"),
+  eyebrow = "Flow",
   title,
 }: {
   basePath?: string;
@@ -64,20 +59,16 @@ export default function FlowIndexPage({
       language={language}
       eyebrow={eyebrow}
       title={
-        title || copy(language, "Flow Hisse Kutuphanesi", "Flow Stock Library")
+        title || t("flow:flowStockLibrary")
       }
       description={
         description ||
-        copy(
-          language,
-          "Flow artik hisse bazinda aciliyor. Her yeni ticker kendi kartini alir; karta girince guncel rapor ve gecmis arsivi birlikte gorunur.",
-          "Flow now opens by ticker. Every new stock gets its own card, and each card leads to the current report plus its historical archive."
-        )
+        t("flow:flowNowOpensByTicker")
       }
       actions={
         <Button type="button" variant="outline" onClick={() => void reload()}>
           <RefreshCw className="size-4" />
-          {copy(language, "Yenile", "Refresh")}
+          {t("coverage:total")}
         </Button>
       }
     >
@@ -86,34 +77,26 @@ export default function FlowIndexPage({
           <div className="flex items-center gap-2">
             <Layers3 className="size-4 text-emerald-300" />
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-              {copy(language, "Hisse Kartlari", "Ticker Cards")}
+              {t("flow:tickerCards")}
             </p>
           </div>
           <p className="mt-4 text-3xl font-semibold text-foreground">
             {tickerGroups.length}
           </p>
           <p className="mt-2 text-sm leading-7 text-muted-foreground">
-            {copy(
-              language,
-              "Flow icinde otomatik olusan toplam hisse basligi.",
-              "Total stock headings generated automatically inside Flow."
-            )}
+            {t("flow:totalStockHeadingsGeneratedAutomatically")}
           </p>
         </article>
 
         <article className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
-            {copy(language, "Toplam Rapor", "Total Reports")}
+            {t("flow:totalReports")}
           </p>
           <p className="mt-4 text-3xl font-semibold text-foreground">
             {reports.length}
           </p>
           <p className="mt-2 text-sm leading-7 text-muted-foreground">
-            {copy(
-              language,
-              "Guncel ve arsivdeki tum Flow raporlarinin toplami.",
-              "All current and archived Flow reports combined."
-            )}
+            {t("flow:allCurrentAndArchivedFlow")}
           </p>
         </article>
 
@@ -121,7 +104,7 @@ export default function FlowIndexPage({
           <div className="flex items-center gap-2">
             <Clock3 className="size-4 text-amber-300" />
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300">
-              {copy(language, "Son Yukleme", "Latest Load")}
+              {t("flow:latestLoad")}
             </p>
           </div>
           <p className="mt-4 text-xl font-semibold text-foreground">
@@ -130,11 +113,7 @@ export default function FlowIndexPage({
               : "-"}
           </p>
           <p className="mt-2 text-sm leading-7 text-muted-foreground">
-            {copy(
-              language,
-              "En son guncellenen Flow raporunun yuklenme zamani.",
-              "Load timestamp of the most recently updated Flow report."
-            )}
+            {t("flow:loadTimestampOfTheMost")}
           </p>
         </article>
       </section>
@@ -142,41 +121,25 @@ export default function FlowIndexPage({
       {loading ? (
         <LoadingState
           compact
-          label={copy(
-            language,
-            "Flow hisse kartlari yukleniyor.",
-            "Loading flow ticker cards."
-          )}
+          label={t("flow:loadingFlowTickerCards")}
         />
       ) : error ? (
         <EmptyState
           description={error}
           icon={AlertCircle}
           role="alert"
-          title={copy(
-            language,
-            "Flow hisse kutuphanesi yuklenemedi",
-            "Flow stock library could not be loaded"
-          )}
+          title={t("flow:flowStockLibraryCouldNot")}
           tone="danger"
         />
       ) : !tickerGroups.length ? (
         <EmptyState
-          description={copy(
-            language,
-            "Yeni ticker raporlari geldiginde kutuphane burada acilacak.",
-            "The library will open here as new ticker reports arrive."
-          )}
+          description={t("flow:theLibraryWillOpenHere")}
           icon={FileSearch}
-          title={copy(
-            language,
-            "Henuz gosterilecek Flow hissesi bulunamadi.",
-            "There are no Flow tickers to display yet."
-          )}
+          title={t("flow:thereAreNoFlowTickers")}
         />
       ) : (
         <section
-          aria-label={copy(language, "Flow hisse listesi", "Flow ticker list")}
+          aria-label={t("flow:flowTickerList")}
           className="grid gap-4 lg:grid-cols-2"
         >
           {tickerGroups.map(group => (

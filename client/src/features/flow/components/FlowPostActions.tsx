@@ -2,7 +2,7 @@ import type { MouseEvent } from "react";
 import { Heart, Share2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { useFlowLike } from "../hooks/useFlowLike";
 
 interface FlowPostActionsProps {
@@ -49,10 +49,10 @@ export default function FlowPostActions({
       }
 
       await navigator.clipboard.writeText(shareUrl);
-      toast.success(copy(language, "Baglanti kopyalandi.", "Link copied."));
+      toast.success(t("flow:linkCopied"));
     } catch {
       toast.error(
-        copy(language, "Paylasim tamamlanamadi.", "Share could not be completed.")
+        t("flow:shareCouldNotBeCompleted")
       );
     }
   };
@@ -72,8 +72,8 @@ export default function FlowPostActions({
       >
         <Heart className={`size-4 ${liked ? "fill-current text-rose-300" : ""}`} />
         {liked
-          ? copy(language, "Begendin", "Liked")
-          : copy(language, "Begen", "Like")}
+          ? t("flow:liked")
+          : t("flow:like")}
       </Button>
       <Button
         type="button"
@@ -82,7 +82,7 @@ export default function FlowPostActions({
         onClick={handleShare}
       >
         <Share2 className="size-4" />
-        {copy(language, "Paylas", "Share")}
+        {t("flow:share")}
       </Button>
     </div>
   );

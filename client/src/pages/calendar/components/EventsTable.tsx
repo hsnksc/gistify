@@ -3,26 +3,13 @@ import { Globe, Search, SlidersHorizontal, ChevronDown } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@/components/ui/toggle-group";
+  ToggleGroup, ToggleGroupItem, } from "@/components/ui/toggle-group";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { copy, type AppLanguage } from "@/lib/i18n";
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { CalendarEvent } from "@shared/calendar";
 import { THEME } from "../Calendar.theme";
@@ -79,13 +66,13 @@ export function EventsTable({
   };
 
   const headers = [
-    copy(language, "Saat", "Time"),
-    copy(language, "Ulke", "Country"),
-    copy(language, "Olay", "Event"),
-    copy(language, "Onem", "Imp."),
-    copy(language, "Onceki", "Prev"),
-    copy(language, "Beklenen", "Fcst"),
-    copy(language, "Gerceklesen", "Actual"),
+    t("calendar:time"),
+    t("calendar:country"),
+    t("common:event"),
+    t("calendar:imp"),
+    t("calendar:prev"),
+    t("calendar:fcst"),
+    t("calendar:actual"),
     "",
   ];
 
@@ -95,7 +82,7 @@ export function EventsTable({
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <CardTitle className="flex items-center gap-2 text-lg">
             <Globe className={cn("size-5", THEME.iconClassName)} />
-            {copy(language, "Makro Olaylar", "Macro Events")}
+            {t("calendar:macroEvents")}
             <Badge
               variant="outline"
               className="ml-1 text-[10px] font-medium border-white/10 bg-white/5"
@@ -107,7 +94,7 @@ export function EventsTable({
             <div className="relative w-full sm:w-auto">
               <Search className="absolute left-3 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
               <Input
-                placeholder={copy(language, "Ara...", "Search...")}
+                placeholder={t("calendar:search")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="h-8 w-full bg-background/60 pl-8 text-xs border-white/10 focus:border-emerald-500/40"
@@ -123,7 +110,7 @@ export function EventsTable({
                 value="all"
                 className="h-8 text-xs px-2.5 data-[state=on]:bg-white/10 data-[state=on]:border-white/20"
               >
-                {copy(language, "Tumu", "All")}{" "}
+                {t("calendar:all")}{" "}
                 <span className="ml-1 text-[10px] text-muted-foreground">
                   {filterCounts.all}
                 </span>
@@ -133,7 +120,7 @@ export function EventsTable({
                 className="h-8 text-xs px-2.5 data-[state=on]:bg-rose-500/20 data-[state=on]:border-rose-500/40 data-[state=on]:text-rose-200"
               >
                 <span className="mr-1 inline-block size-2 rounded-full bg-rose-500" />
-                {copy(language, "Yuksek", "High")}
+                {t("common:high")}
                 <span className="ml-1 text-[10px] text-muted-foreground">
                   {filterCounts.high}
                 </span>
@@ -143,7 +130,7 @@ export function EventsTable({
                 className="h-8 text-xs px-2.5 data-[state=on]:bg-amber-500/20 data-[state=on]:border-amber-500/40 data-[state=on]:text-amber-200"
               >
                 <span className="mr-1 inline-block size-2 rounded-full bg-amber-500" />
-                {copy(language, "Orta", "Med")}
+                {t("calendar:med")}
                 <span className="ml-1 text-[10px] text-muted-foreground">
                   {filterCounts.medium}
                 </span>
@@ -153,7 +140,7 @@ export function EventsTable({
                 className="h-8 text-xs px-2.5 data-[state=on]:bg-emerald-500/20 data-[state=on]:border-emerald-500/40 data-[state=on]:text-emerald-200"
               >
                 <span className="mr-1 inline-block size-2 rounded-full bg-emerald-500" />
-                {copy(language, "Dusuk", "Low")}
+                {t("common:low")}
                 <span className="ml-1 text-[10px] text-muted-foreground">
                   {filterCounts.low}
                 </span>
@@ -169,13 +156,13 @@ export function EventsTable({
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="time">
-                  {copy(language, "Saat", "Time")}
+                  {t("calendar:time")}
                 </SelectItem>
                 <SelectItem value="importance">
-                  {copy(language, "Onem", "Importance")}
+                  {t("calendar:importance")}
                 </SelectItem>
                 <SelectItem value="country">
-                  {copy(language, "Ulke", "Country")}
+                  {t("calendar:country")}
                 </SelectItem>
               </SelectContent>
             </Select>
@@ -214,7 +201,7 @@ export function EventsTable({
                     colSpan={headers.length}
                     className="text-sm text-muted-foreground py-6 text-center"
                   >
-                    {copy(language, "Bulunamadi", "No results found")}
+                    {t("calendar:noResultsFound")}
                   </TableCell>
                 </TableRow>
               )}
@@ -235,7 +222,7 @@ export function EventsTable({
             ))
           ) : (
             <div className="rounded-xl border border-dashed border-white/10 bg-black/15 px-4 py-3 text-sm text-muted-foreground text-center">
-              {copy(language, "Bulunamadi", "No results found")}
+              {t("calendar:noResultsFound")}
             </div>
           )}
         </div>
@@ -296,19 +283,19 @@ function MobileEventCard({
         <div className="mt-2.5 grid grid-cols-3 gap-2">
           <div className="rounded-md border border-white/10 bg-black/30 px-2 py-1.5">
             <p className="text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
-              {copy(language, "Onceki", "Prev")}
+              {t("calendar:prev")}
             </p>
             <p className="mt-0.5 text-xs font-medium text-foreground">{event.previous || "-"}</p>
           </div>
           <div className="rounded-md border border-white/10 bg-black/30 px-2 py-1.5">
             <p className="text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
-              {copy(language, "Beklenen", "Fcst")}
+              {t("calendar:fcst")}
             </p>
             <p className="mt-0.5 text-xs font-medium text-foreground">{event.forecast || "-"}</p>
           </div>
           <div className="rounded-md border border-white/10 bg-black/30 px-2 py-1.5">
             <p className="text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
-              {copy(language, "Gerceklesen", "Actual")}
+              {t("calendar:actual")}
             </p>
             <p
               className={cn(
@@ -335,7 +322,7 @@ function MobileEventCard({
           {event.analysis && (
             <div className="rounded-md border border-emerald-500/10 bg-emerald-500/[0.04] p-2.5">
               <p className="text-[10px] font-semibold uppercase tracking-wider text-emerald-300 mb-1">
-                {copy(language, "Analiz", "Analysis")}
+                {t("calendar:analysis")}
               </p>
               <p className="text-xs leading-relaxed text-foreground/80">
                 {event.analysis}

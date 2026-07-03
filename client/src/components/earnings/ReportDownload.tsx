@@ -1,5 +1,5 @@
 import { FileText, Download, CalendarDays } from "lucide-react";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 interface ReportDownloadProps {
@@ -19,12 +19,8 @@ export default function ReportDownload({
     {
       key: "md",
       format: "md",
-      title: copy(language, "Markdown", "Markdown"),
-      desc: copy(
-        language,
-        "Gistify raporunu markdown formatında indirin. GitHub ve Notion ile uyumlu.",
-        "Download Gistify report in markdown format. Compatible with GitHub and Notion."
-      ),
+      title: "Markdown",
+      desc: t("earnings:downloadGistifyReportInMarkdown"),
       border: "border-emerald-500/20",
       bg: "bg-emerald-500/5",
       iconColor: "text-emerald-400",
@@ -34,12 +30,8 @@ export default function ReportDownload({
     {
       key: "docx",
       format: "docx",
-      title: copy(language, "Word", "Word"),
-      desc: copy(
-        language,
-        "DOCX formatında indirin. Microsoft Word ve Google Docs ile uyumlu.",
-        "Download in DOCX format. Compatible with Microsoft Word and Google Docs."
-      ),
+      title: "Word",
+      desc: t("earnings:downloadInDocxFormatCompatible"),
       border: "border-blue-500/20",
       bg: "bg-blue-500/5",
       iconColor: "text-blue-400",
@@ -53,7 +45,7 @@ export default function ReportDownload({
       <div className="mb-5 flex items-center gap-2">
         <FileText className="size-5 text-sky-400" />
         <h2 className="text-lg font-bold text-white">
-          {copy(language, "Rapor İndir", "Download Report")}
+          {t("scanner:liveMidasFeed")}
         </h2>
       </div>
 
@@ -105,11 +97,7 @@ export default function ReportDownload({
               ) : (
                 <div className="mb-4 rounded-lg border border-slate-700/50 bg-slate-900/30 p-3">
                   <p className="text-xs text-slate-500">
-                    {copy(
-                      language,
-                      "Henüz rapor üretilmedi. Önce analiz tamamlayın.",
-                      "No report generated yet. Complete analysis first."
-                    )}
+                    {t("earnings:noReportGeneratedYetComplete")}
                   </p>
                 </div>
               )}
@@ -126,7 +114,7 @@ export default function ReportDownload({
                   )}
                 >
                   <Download className="size-4" />
-                  {copy(language, "İndir", "Download")}
+                  {t("earnings:download")}
                 </a>
               ) : (
                 <button
@@ -134,7 +122,7 @@ export default function ReportDownload({
                   className="inline-flex cursor-not-allowed items-center justify-center gap-2 rounded-xl border border-slate-700/50 bg-slate-800/50 px-4 py-2.5 text-sm font-bold text-slate-500"
                 >
                   <Download className="size-4" />
-                  {copy(language, "İndir", "Download")}
+                  {t("earnings:download")}
                 </button>
               )}
             </div>

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import type {
   EarningReportSource,
   EarningsPosition,
@@ -176,7 +176,7 @@ function WeightMeter({
     return (
       <div className="rounded-none border border-border bg-background/40 px-3 py-2 text-sm text-muted-foreground">
         {position.blueprint.ratioText ||
-          copy(language, "Call / Put orani belirtilmedi", "Call / Put ratio not specified")}
+          t("common:callPutRatioNotSpecified")}
       </div>
     );
   }
@@ -184,7 +184,7 @@ function WeightMeter({
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-        <span>{copy(language, "Call / Put orani", "Call / Put ratio")}</span>
+        <span>{t("common:callPutRatio")}</span>
         <span className="data-mono text-foreground">
           {callWeight}% / {putWeight}%
         </span>
@@ -241,17 +241,13 @@ export default function EarningReportPlaybookTab({
       <div className="p-6">
         <section className="rounded-none border border-border bg-card/80 p-6">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300">
-            {copy(language, "Rapor verisi bulunamadi", "Report data unavailable")}
+            {t("common:reportDataUnavailable")}
           </p>
           <h1 className="mt-3 heading-condensed text-3xl text-foreground">
-            {copy(language, "Playbook olusturulacak setup yok", "No setup available for playbook")}
+            {t("common:noSetupAvailableForPlaybook")}
           </h1>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            {copy(
-              language,
-              "Kaynak markdown dosyasinda parse edilebilen hisse setup bloku yok.",
-              "No parseable stock setup block was found in the source markdown file."
-            )}
+            {t("common:noParseableStockSetupBlock")}
           </p>
         </section>
       </div>
@@ -264,7 +260,7 @@ export default function EarningReportPlaybookTab({
         <div className="grid gap-4 xl:grid-cols-[minmax(0,1.15fr)_minmax(340px,0.85fr)]">
           <div className="space-y-3">
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-              {copy(language, "Rapor ozeti", "Report summary")}
+              {t("common:reportSummary")}
             </p>
             <h1 className="heading-condensed text-2xl leading-none text-foreground md:text-3xl">
               {report.title}
@@ -272,7 +268,7 @@ export default function EarningReportPlaybookTab({
             <p className="text-sm text-muted-foreground">{report.subtitle}</p>
             <div className="rounded-none border border-emerald-400/20 bg-emerald-500/5 px-3 py-2.5">
               <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                {copy(language, "Ana pencere", "Core window")}
+                {t("common:coreWindow")}
               </p>
               <p className="mt-1 text-xs leading-6 text-muted-foreground">
                 {report.coreWindow}
@@ -305,7 +301,7 @@ export default function EarningReportPlaybookTab({
         <div className="flex items-center gap-2">
           <div className="h-4 w-1 bg-emerald-400" />
           <h2 className="heading-condensed text-base text-foreground">
-            {copy(language, "Hisse secimi", "Ticker selection")}
+            {t("common:tickerSelection")}
           </h2>
         </div>
         <div className="grid gap-2.5 md:grid-cols-2 xl:grid-cols-4">
@@ -333,7 +329,7 @@ export default function EarningReportPlaybookTab({
                 <span>{position.earningsDate}</span>
                 <span>{position.earningsTime}</span>
                 <span>
-                  {position.daysLeft} {copy(language, "gun", "days")}
+                  {position.daysLeft} {t("common:days")}
                 </span>
               </div>
               <div className="mt-2 flex flex-wrap gap-1.5 text-[10px] uppercase tracking-[0.16em]">
@@ -360,7 +356,7 @@ export default function EarningReportPlaybookTab({
                 {activePosition.earningsTime}
               </span>
               <span className="rounded-none border border-border bg-background/60 px-2 py-0.5">
-                {activePosition.daysLeft} {copy(language, "gun kaldi", "days left")}
+                {activePosition.daysLeft} {t("common:daysLeft")}
               </span>
             </div>
 
@@ -383,13 +379,13 @@ export default function EarningReportPlaybookTab({
 
             <div className="flex flex-wrap gap-2 text-xs">
               <span className="rounded-none border border-border bg-background/60 px-2.5 py-1 text-[11px] text-muted-foreground">
-                {copy(language, "Sermaye", "Capital")}:{" "}
+                {t("common:capital")}:{" "}
                 <span className="data-mono font-semibold text-foreground">
                   {activePosition.allocationCapital}
                 </span>
               </span>
               <span className="rounded-none border border-border bg-background/60 px-2.5 py-1 text-[11px] text-muted-foreground">
-                {copy(language, "Risk", "Risk")}:{" "}
+                {"Risk"}:{" "}
                 <span className="data-mono font-semibold text-foreground">
                   {activePosition.allocationRisk}
                 </span>
@@ -399,30 +395,30 @@ export default function EarningReportPlaybookTab({
 
           <div className="grid gap-2.5 sm:grid-cols-2 xl:w-[420px]">
             <SummaryMetric
-              label={copy(language, "Fiyat", "Price")}
+              label={t("common:price")}
               value={findMetricValue(activePosition, ["Fiyat", "Son Fiyat"])}
-              hint={copy(language, "Rapor anindaki spot", "Spot price at report time")}
+              hint={t("common:spotPriceAtReportTime")}
             />
             <SummaryMetric
-              label={copy(language, "IV Sıralaması", "IV Rank")}
+              label={t("common:ivRank")}
               value={findMetricValue(activePosition, ["IV Rank"])}
-              hint={copy(language, "Opsiyon maliyet rejimi", "Options cost regime")}
+              hint={t("common:optionsCostRegime")}
               accentClass="text-amber-300"
             />
             <SummaryMetric
-              label={copy(language, "CPR", "CPR")}
+              label={"CPR"}
               value={findMetricValue(activePosition, ["Hacim CPR"]) || "-"}
-              hint={copy(language, "Call / put dengesinin ozeti", "Fast read on call / put balance")}
+              hint={t("common:fastReadOnCallPut")}
             />
             <SummaryMetric
-              label={copy(language, "Giris Penceresi", "Entry Window")}
+              label={t("common:entryWindow")}
               value={
                 activePosition.blueprint.entry ||
                 findMetricValue(activePosition, ["Entry Penceresi"]) ||
                 findMetricValue(activePosition, ["K.O. Olasılığı", "K.O. Olasiligi"]) ||
                 "-"
               }
-              hint={copy(language, "En kritik execution checkpoint", "Most important execution checkpoint")}
+              hint={t("common:mostImportantExecutionCheckpoint")}
               accentClass="text-emerald-300"
             />
           </div>
@@ -433,7 +429,7 @@ export default function EarningReportPlaybookTab({
         <article className="rounded-none border border-border bg-card/80 p-3.5">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-              {copy(language, "Strateji ozeti", "Strategy summary")}
+              {t("common:strategySummary")}
             </p>
             <h4 className={`mt-1.5 text-sm font-semibold ${getBiasTone(activePosition)}`}>
               {activePosition.strategyTitle}
@@ -454,7 +450,7 @@ export default function EarningReportPlaybookTab({
                       <li key={`${activePosition.ticker}-call-${item}`}>{item}</li>
                     ))
                   ) : (
-                    <li>{copy(language, "Call leg detayi belirtilmedi.", "Call leg detail not specified.")}</li>
+                    <li>{t("common:callLegDetailNotSpecified")}</li>
                   )}
                 </ul>
               </div>
@@ -469,7 +465,7 @@ export default function EarningReportPlaybookTab({
                       <li key={`${activePosition.ticker}-put-${item}`}>{item}</li>
                     ))
                   ) : (
-                    <li>{copy(language, "Put leg detayi belirtilmedi.", "Put leg detail not specified.")}</li>
+                    <li>{t("common:putLegDetailNotSpecified")}</li>
                   )}
                 </ul>
               </div>
@@ -478,7 +474,7 @@ export default function EarningReportPlaybookTab({
             <div className="grid gap-2.5 sm:grid-cols-3">
               <div className="rounded-none border border-border bg-background/60 p-2.5">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  {copy(language, "Giris", "Entry")}
+                  {t("common:entry")}
                 </p>
                 <p className="mt-1.5 text-sm text-foreground">
                   {activePosition.blueprint.entry || "-"}
@@ -486,7 +482,7 @@ export default function EarningReportPlaybookTab({
               </div>
               <div className="rounded-none border border-border bg-background/60 p-2.5">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  {copy(language, "Cikis", "Exit")}
+                  {t("common:exit")}
                 </p>
                 <p className="mt-1.5 text-sm text-foreground">
                   {activePosition.blueprint.exit || "-"}
@@ -494,7 +490,7 @@ export default function EarningReportPlaybookTab({
               </div>
               <div className="rounded-none border border-border bg-background/60 p-2.5">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  {copy(language, "Vade", "Expiry")}
+                  {t("common:expiry")}
                 </p>
                 <div className="mt-1.5 space-y-1 text-sm text-foreground">
                   {activePosition.blueprint.expiryLines.length ? (
@@ -511,7 +507,7 @@ export default function EarningReportPlaybookTab({
             {activePosition.warnings.length ? (
               <div className="rounded-none border border-red-400/30 bg-red-500/6 p-3">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-red-300">
-                  {copy(language, "Kritik uyarilar", "Critical warnings")}
+                  {t("common:criticalWarnings")}
                 </p>
                 <div className="mt-2 space-y-1.5 text-xs leading-6 text-red-100/90">
                   {activePosition.warnings.map(warning => (
@@ -526,10 +522,10 @@ export default function EarningReportPlaybookTab({
         <article className="rounded-none border border-border bg-card/80 p-4">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-200">
-              {copy(language, "Haberler ve catalystler", "News and catalysts")}
+              {t("common:newsAndCatalysts")}
             </p>
             <h4 className="mt-2 text-sm font-semibold text-foreground">
-              {copy(language, "Secili hisse akisi", "Selected ticker flow")}
+              {t("common:selectedTickerFlow")}
             </h4>
           </div>
 
@@ -561,11 +557,7 @@ export default function EarningReportPlaybookTab({
                 ))
               ) : (
                 <div className="rounded-none border border-border bg-background/50 p-4 text-sm leading-relaxed text-muted-foreground">
-                  {copy(
-                    language,
-                    "Bu hissede ek haber notu parse edilmedi.",
-                    "No additional news notes were parsed for this ticker."
-                  )}
+                  {t("common:noAdditionalNewsNotesWere")}
                 </div>
               )}
             </div>
@@ -576,7 +568,7 @@ export default function EarningReportPlaybookTab({
       <section className="grid gap-4 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
         <article className="rounded-none border border-border bg-card/80 p-4">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            {copy(language, "Metrik kartlari", "Metric cards")}
+            {t("common:metricCards")}
           </p>
           <div className="mt-4 space-y-2">
             {remainingMetrics(activePosition).length ? (
@@ -593,7 +585,7 @@ export default function EarningReportPlaybookTab({
               ))
             ) : (
               <div className="text-sm text-muted-foreground">
-                {copy(language, "Ek metrik bulunmuyor.", "No additional metrics available.")}
+                {t("common:noAdditionalMetricsAvailable")}
               </div>
             )}
           </div>
@@ -604,9 +596,9 @@ export default function EarningReportPlaybookTab({
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-border/80 text-left text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      <th className="pb-2">{copy(language, "Greek", "Greek")}</th>
-                      <th className="pb-2">{copy(language, "Deger", "Value")}</th>
-                      <th className="pb-2">{copy(language, "Aciklama", "Notes")}</th>
+                      <th className="pb-2">{"Greek"}</th>
+                      <th className="pb-2">{t("common:value")}</th>
+                      <th className="pb-2">{t("common:notes")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -651,7 +643,7 @@ export default function EarningReportPlaybookTab({
 
         <article className="rounded-none border border-border bg-card/80 p-4">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            {copy(language, "Kar / zarar senaryolari", "P/L scenarios")}
+            {t("common:pLScenarios")}
           </p>
           {activePosition.scenarios.length ? (
             <div className="mt-4">
@@ -659,10 +651,10 @@ export default function EarningReportPlaybookTab({
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-border/80 text-left text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      <th className="pb-2">{copy(language, "Senaryo", "Scenario")}</th>
-                      <th className="pb-2">{copy(language, "IV degisimi", "IV change")}</th>
-                      <th className="pb-2">{copy(language, "Hisse hareketi", "Stock move")}</th>
-                      <th className="pb-2">{copy(language, "Tahmini K/Z", "Est. P/L")}</th>
+                      <th className="pb-2">{t("common:scenario")}</th>
+                      <th className="pb-2">{t("common:ivChange")}</th>
+                      <th className="pb-2">{t("common:stockMove")}</th>
+                      <th className="pb-2">{t("common:estPL")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -703,13 +695,13 @@ export default function EarningReportPlaybookTab({
                     <div className="mt-3 grid gap-2 text-sm">
                       <div className="flex items-center justify-between gap-3">
                         <span className="text-muted-foreground">
-                          {copy(language, "IV degisimi", "IV change")}
+                          {t("common:ivChange")}
                         </span>
                         <span className="data-mono text-foreground">{row.ivChange}</span>
                       </div>
                       <div className="flex items-center justify-between gap-3">
                         <span className="text-muted-foreground">
-                          {copy(language, "Hisse hareketi", "Stock move")}
+                          {t("common:stockMove")}
                         </span>
                         <span className="data-mono text-foreground">{row.stockMove}</span>
                       </div>
@@ -720,11 +712,7 @@ export default function EarningReportPlaybookTab({
             </div>
           ) : (
             <div className="mt-4 rounded-none border border-border bg-background/50 p-4 text-sm leading-relaxed text-muted-foreground">
-              {copy(
-                language,
-                "Bu rapor versiyonunda tablo bazli P/L senaryosu verilmedi. Ana yon, call/put orani ve giris/cikis penceresi strategy board ustunden okunmali.",
-                "No table-based P/L scenario was provided in this report version. Main direction, call/put ratio and entry/exit window should be read from the strategy board."
-              )}
+              {t("common:noTableBasedPL")}
             </div>
           )}
         </article>

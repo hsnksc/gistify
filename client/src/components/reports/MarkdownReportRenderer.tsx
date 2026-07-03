@@ -1,17 +1,10 @@
 import { useMemo, useState } from "react";
 import { BookOpen, Expand, Quote, X } from "lucide-react";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  Dialog, DialogContent, DialogDescription, DialogTitle, } from "@/components/ui/dialog";
 import {
-  buildReportHeadingAnchors,
-  parseReportMarkdown,
-  type ReportMarkdownBlock,
-} from "@/lib/reportMarkdown";
-import { copy, type AppLanguage } from "@/lib/i18n";
+  buildReportHeadingAnchors, parseReportMarkdown, type ReportMarkdownBlock, } from "@/lib/reportMarkdown";
+import { type AppLanguage, t } from "@/lib/i18n";
 
 interface ResolvedImage {
   src: string;
@@ -84,11 +77,7 @@ export default function MarkdownReportRenderer({
     return (
       <div className="rounded-xl border border-dashed border-border bg-background/40 p-6 text-sm leading-7 text-muted-foreground">
         {emptyMessage ||
-          copy(
-            language,
-            "Kaynak markdown icerigi gosterilemedi.",
-            "The source markdown content could not be displayed."
-          )}
+          t("flow:theSourceMarkdownContentCould")}
       </div>
     );
   }
@@ -184,7 +173,7 @@ export default function MarkdownReportRenderer({
                   className="overflow-hidden rounded-xl border border-border bg-[#08131a]"
                 >
                   <div className="border-b border-white/10 px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                    {block.language || copy(language, "Kod blogu", "Code block")}
+                    {block.language || t("flow:codeBlock")}
                   </div>
                   <pre className="overflow-x-auto px-4 py-4 text-xs leading-6 text-emerald-100/90">
                     <code>{block.code}</code>
@@ -194,11 +183,13 @@ export default function MarkdownReportRenderer({
             }
 
             if (block.type === "image") {
+              const imageLabel = block.alt || t("flow:reportImage");
               const resolved = resolveImage
                 ? resolveImage(block.src, block.alt)
                 : {
                     src: block.src,
-                    alt: block.alt || copy(language, "Rapor gorseli", "Report image"),
+                    alt: imageLabel,
+                    label: imageLabel,
                   };
 
               return (
@@ -216,7 +207,7 @@ export default function MarkdownReportRenderer({
                       className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/25 bg-emerald-500/10 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-300 transition-colors hover:border-emerald-300/45 hover:bg-emerald-500/16"
                     >
                       <Expand className="size-3.5" />
-                      {copy(language, "Buyut", "Expand")}
+                      {t("flow:expand")}
                     </button>
                   </div>
                   <button
@@ -264,7 +255,7 @@ export default function MarkdownReportRenderer({
                     className="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-foreground transition-colors hover:border-white/24 hover:bg-white/[0.08]"
                   >
                     <X className="size-3.5" />
-                    {copy(language, "Kapat", "Close")}
+                    {t("common:comment")}
                   </button>
                 </div>
               </div>

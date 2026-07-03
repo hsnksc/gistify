@@ -1,5 +1,5 @@
-import type { AppLanguage } from "@/lib/i18n";
-import { copy } from "@/lib/i18n";
+import { AppLanguage, t } from "@/lib/i18n";
+
 import ReportPostShell, {
   type ReportPostItem,
   type ReportTone,
@@ -93,14 +93,14 @@ function getBiasLabel(position: EarningsPosition, language: AppLanguage) {
   const tone = getBiasTone(position);
 
   if (tone === "bull") {
-    return copy(language, "Call agirlikli", "Call-heavy");
+    return t("common:callHeavy");
   }
 
   if (tone === "bear") {
-    return copy(language, "Put agirlikli", "Put-heavy");
+    return t("common:putHeavy");
   }
 
-  return copy(language, "Dengeli", "Balanced");
+  return t("common:returnHome");
 }
 
 function getRiskTone(position: EarningsPosition): ReportTone {
@@ -153,59 +153,43 @@ function buildStatCards(
 
   return [
     {
-      label: copy(language, "Setup Sayisi", "Setup Count"),
+      label: t("common:setupCount"),
       value: String(positions.length),
-      detail: copy(
-        language,
-        "Secili earnings dosyasindan parse edilen ticker adedi.",
-        "Number of tickers parsed from the selected earnings file."
-      ),
+      detail: t("common:numberOfTickersParsedFrom"),
       tone: "info",
     },
     {
-      label: copy(language, "En Yuksek IV Rank", "Highest IV Rank"),
+      label: t("common:phase1Buy1015"),
       value: topIvPosition ? `${topIvPosition.ticker} · ${formatPercentValue(topIvPosition.ivRank, 2)}` : "-",
       detail: topIvPosition
         ? topIvPosition.strategyTitle
-        : copy(language, "IV Rank verisi bulunamadi.", "IV Rank data is unavailable."),
+        : t("common:ivRankDataIsUnavailable"),
       tone: "caution",
     },
     {
       label: "Avg CPR",
       value: avgCpr !== null ? avgCpr.toFixed(2) : "-",
-      detail: copy(
-        language,
-        "Hacim CPR ortalamasi; yon dengesini hizli okuma icin.",
-        "Average volume CPR for a fast read on directional balance."
-      ),
+      detail: t("common:averageVolumeCprForA"),
       tone: "bull",
     },
     {
-      label: copy(language, "FOMC Yuksek Risk", "High FOMC Risk"),
+      label: t("earnings:noStrategySnapshotWasFound"),
       value: String(highRiskCount),
-      detail: copy(
-        language,
-        "Kirmizi risk etiketi alan setup sayisi.",
-        "Number of setups tagged with the highest risk label."
-      ),
+      detail: t("calendar:totalEvents"),
       tone: "bear",
     },
     {
-      label: copy(language, "En Yakin Event", "Nearest Event"),
+      label: t("common:avoidIvCrushProfitFrom"),
       value: nextEvent ? `${nextEvent.ticker} · ${nextEvent.earningsDate}` : "-",
       detail: nextEvent
-        ? `${nextEvent.daysLeft} ${copy(language, "gun kaldi", "days left")}`
-        : copy(language, "Takvim parse edilmedi.", "Calendar was not parsed."),
+        ? `${nextEvent.daysLeft} ${t("common:daysLeft")}`
+        : t("common:calendarWasNotParsed"),
       tone: nextEvent ? getBiasTone(nextEvent) : "neutral",
     },
     {
       label: "VIX",
       value: report.vixLabel || "-",
-      detail: copy(
-        language,
-        "Makro volatilite baglami.",
-        "Macro volatility context."
-      ),
+      detail: t("common:macroVolatilityContext"),
       tone: "caution",
     },
   ] satisfies ReportPostItem[];
@@ -250,7 +234,7 @@ function BiasMeter({
     return (
       <div className="rounded-xl border border-border bg-background/45 px-3 py-2 text-xs text-muted-foreground">
         {position.blueprint.ratioText ||
-          copy(language, "Call / Put dagilimi verilmedi.", "Call / put split was not provided.")}
+          t("common:callPutSplitWasNot")}
       </div>
     );
   }
@@ -258,7 +242,7 @@ function BiasMeter({
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between gap-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-        <span>{copy(language, "Call / Put", "Call / Put")}</span>
+        <span>{"Call / Put"}</span>
         <span className="text-foreground">
           {callWeight}% / {putWeight}%
         </span>
@@ -351,7 +335,7 @@ function ConvictionCard({
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-emerald-300">
-            {copy(language, "Yuksek Oncelik", "High Conviction")}
+            {t("common:highConviction")}
           </p>
           <h4 className="mt-2 text-lg font-semibold text-foreground">
             {position.ticker}
@@ -390,7 +374,7 @@ function ConvictionCard({
         </div>
         <div className="rounded-xl border border-border bg-card/70 p-3">
           <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-            {copy(language, "Giris", "Entry")}
+            {t("common:entry")}
           </p>
           <p className="mt-2 text-sm font-semibold text-foreground">{entryWindow}</p>
         </div>
@@ -436,12 +420,12 @@ export default function EarningReportPostTab({
       value: item.value,
     })),
     {
-      label: copy(language, "Ana Pencere", "Core Window"),
+      label: t("common:coreWindow0bcd"),
       value: report.coreWindow || "-",
       tone: "info",
     },
     {
-      label: copy(language, "Kaynak Dosya", "Source File"),
+      label: t("common:sourceFile"),
       value: report.sourceFile,
     },
   ];
@@ -449,38 +433,26 @@ export default function EarningReportPostTab({
   return (
     <ReportPostShell
       language={language}
-      categoryLabel={copy(language, "Earnings Post", "Earnings Post")}
+      categoryLabel={"Earnings Post"}
       title={report.title}
       subtitle={report.subtitle}
-      headline={copy(
-        language,
-        "Secili rapordaki setup'lar, strateji kartlari ve teknik metrikler asagida.",
-        "Setups, strategy cards and technical metrics from the selected report are below."
-      )}
+      headline={t("common:setupsStrategyCardsAndTechnical")}
       reportDateLabel={reportDateLabel || report.reportDate}
       updatedAtLabel={updatedAtLabel}
       sourceLabel={report.sourceFile}
-      sourceKindLabel={copy(language, "Markdown Dosyasi", "Markdown File")}
+      sourceKindLabel={t("common:markdownFile")}
       statCards={buildStatCards(report, positions, language)}
       metaItems={metaItems}
       storyItems={storyItems}
       markdown={report.rawMarkdown}
-      emptyMessage={copy(
-        language,
-        "Earnings markdown icerigi bos.",
-        "The earnings markdown content is empty."
-      )}
+      emptyMessage={t("common:theEarningsMarkdownContentIs")}
     >
       {convictionBoard.length ? (
         <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <SectionTitle
-            eyebrow={copy(language, "Top Picks", "Top Picks")}
-            title={copy(language, "Rapordaki en guclu setup'lar", "Highest-conviction setups in the report")}
-            description={copy(
-              language,
-              "Executive summary tarafinda one cikan isimler burada dogrudan setup kartlarina baglanir.",
-              "The names highlighted in the executive summary are tied directly to their setup cards here."
-            )}
+            eyebrow={"Top Picks"}
+            title={t("common:highestConvictionSetupsInThe")}
+            description={t("common:theNamesHighlightedInThe")}
           />
 
           <div className="mt-6 grid gap-4 xl:grid-cols-2">
@@ -498,13 +470,9 @@ export default function EarningReportPostTab({
 
       <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
         <SectionTitle
-          eyebrow={copy(language, "Setup Atlas", "Setup Atlas")}
-          title={copy(language, "Ticker bazli oyun plani", "Ticker-by-ticker game plan")}
-          description={copy(
-            language,
-            "Her yuklenen earnings raporu, parse edilen tum setup'lari eksik metrikleri one cikarmadan okunabilir kartlar halinde acar.",
-            "Each uploaded earnings report opens every parsed setup as readable cards without surfacing fake or missing metrics."
-          )}
+          eyebrow={"Setup Atlas"}
+          title={t("common:tickerByTickerGamePlan")}
+          description={t("common:eachUploadedEarningsReportOpens")}
         />
 
         <div className="mt-4 grid gap-3 xl:grid-cols-2 2xl:grid-cols-3">
@@ -535,7 +503,7 @@ export default function EarningReportPostTab({
                     </p>
                     <p className="mt-1.5 text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
                       {position.earningsDate} {position.earningsTime !== "-" ? `· ${position.earningsTime}` : ""} ·{" "}
-                      {position.daysLeft} {copy(language, "gun", "days")}
+                      {position.daysLeft} {t("common:days")}
                     </p>
                   </div>
                   <div className="flex flex-col items-end gap-1.5">
@@ -561,7 +529,7 @@ export default function EarningReportPostTab({
                               : "border-border bg-background/60 text-muted-foreground"
                       }`}
                     >
-                      {position.allocationRisk || copy(language, "Risk notu yok", "No risk tag")}
+                      {position.allocationRisk || t("common:noRiskTag")}
                     </span>
                   </div>
                 </div>
@@ -571,7 +539,7 @@ export default function EarningReportPostTab({
                 <div className="mt-3 grid gap-2 sm:grid-cols-2">
                   <div className="rounded-xl border border-border bg-card/70 p-2.5">
                     <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                      {copy(language, "Fiyat", "Price")}
+                      {t("common:price")}
                     </p>
                     <p className="mt-1.5 text-[13px] font-semibold text-foreground">{price}</p>
                   </div>
@@ -589,7 +557,7 @@ export default function EarningReportPostTab({
                   </div>
                   <div className="rounded-xl border border-border bg-card/70 p-2.5">
                     <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                      {copy(language, "Giris Penceresi", "Entry Window")}
+                      {t("common:entryWindow")}
                     </p>
                     <p className="mt-1.5 text-[13px] font-semibold text-foreground">{entryWindow}</p>
                   </div>
@@ -599,7 +567,7 @@ export default function EarningReportPostTab({
                   <div className="grid gap-2 sm:grid-cols-3">
                     <div>
                       <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                        {copy(language, "Sermaye", "Capital")}
+                        {t("common:capital")}
                       </p>
                       <p className="mt-1.5 text-[13px] font-semibold text-foreground">
                         {position.allocationCapital}
@@ -607,13 +575,13 @@ export default function EarningReportPostTab({
                     </div>
                     <div>
                       <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                        {copy(language, "Cikis", "Exit")}
+                        {t("common:exit")}
                       </p>
                       <p className="mt-1.5 text-[13px] font-semibold text-foreground">{exitWindow}</p>
                     </div>
                     <div>
                       <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                        {copy(language, "KO / Hedef", "KO / Target")}
+                        {t("common:koTarget")}
                       </p>
                       <p className="mt-1.5 text-[13px] font-semibold text-foreground">{knockout}</p>
                     </div>
@@ -627,7 +595,7 @@ export default function EarningReportPostTab({
                 <div className="mt-3 grid gap-2 sm:grid-cols-2">
                   <div className="rounded-xl border border-emerald-500/15 bg-emerald-500/5 p-2.5">
                     <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-300">
-                      {copy(language, "Primary setup", "Primary setup")}
+                      {"Primary setup"}
                     </p>
                     <ul className="mt-1.5 space-y-1 text-xs leading-5 text-muted-foreground">
                       {position.blueprint.callItems.length ? (
@@ -642,7 +610,7 @@ export default function EarningReportPostTab({
 
                   <div className="rounded-xl border border-border bg-card/70 p-2.5">
                     <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                      {copy(language, "İşlem / risk", "Execution / risk")}
+                      {t("common:executionRisk")}
                     </p>
                     <ul className="mt-1.5 space-y-1 text-xs leading-5 text-muted-foreground">
                       {position.blueprint.putItems.length ? (
@@ -650,7 +618,7 @@ export default function EarningReportPostTab({
                           <li key={`${position.ticker}-put-${item}`}>{item}</li>
                         ))
                       ) : (
-                        <li>{copy(language, "Ek işlem notu yok.", "No extra execution note.")}</li>
+                        <li>{t("common:noExtraExecutionNote")}</li>
                       )}
                     </ul>
                   </div>
@@ -670,45 +638,37 @@ export default function EarningReportPostTab({
       <section className="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
         <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <SectionTitle
-            eyebrow={copy(language, "Execution", "Execution")}
-            title={copy(language, "Takvim ve islem sirasi", "Timeline and execution order")}
+            eyebrow={"Execution"}
+            title={t("macro:itShouldExistInRepo")}
           />
           <div className="mt-6">
             <DataTable
               headers={[
-                copy(language, "Tarih", "Date"),
-                copy(language, "Hisse", "Ticker"),
-                copy(language, "Aksiyon", "Action"),
-                copy(language, "Not", "Note"),
+                t("common:date"),
+                t("common:ticker"),
+                t("common:action"),
+                t("common:note"),
               ]}
               rows={report.tradeSchedule.map(item => [item.date, item.ticker, item.action, item.note])}
-              emptyMessage={copy(
-                language,
-                "Bu raporda ayri bir trade schedule tablosu yok.",
-                "This report does not contain a separate trade schedule table."
-              )}
+              emptyMessage={t("common:thisReportDoesNotContain")}
             />
           </div>
         </section>
 
         <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <SectionTitle
-            eyebrow={copy(language, "Portfolio", "Portfolio")}
-            title={copy(language, "Portföy ve tahsis notları", "Portfolio and allocation notes")}
+            eyebrow={"Portfolio"}
+            title={t("common:portfolioAndAllocationNotes")}
           />
           <div className="mt-6">
             <DataTable
               headers={[
-                copy(language, "Hisse", "Ticker"),
-                copy(language, "Sermaye", "Capital"),
-                copy(language, "Allocation notu", "Allocation note"),
+                t("common:ticker"),
+                t("common:capital"),
+                t("common:allocationNote"),
               ]}
               rows={report.allocations.map(item => [item.ticker, item.capital, item.riskLevel])}
-              emptyMessage={copy(
-                language,
-                "Bu raporda parse edilen allocation tablosu yok.",
-                "No parsed allocation table is available in this report."
-              )}
+              emptyMessage={t("common:noParsedAllocationTableIs")}
             />
           </div>
         </section>
@@ -717,16 +677,16 @@ export default function EarningReportPostTab({
       <section className="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
         <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <SectionTitle
-            eyebrow={copy(language, "Risk Matrix", "Risk Matrix")}
-            title={copy(language, "Makro ve kurulum riskleri", "Macro and setup risks")}
+            eyebrow={"Risk Matrix"}
+            title={t("common:macroAndSetupRisks")}
           />
           <div className="mt-6">
             <DataTable
               headers={[
-                copy(language, "Risk", "Risk"),
-                copy(language, "Olasilik", "Probability"),
-                copy(language, "Etki", "Impact"),
-                copy(language, "Onlem", "Mitigation"),
+                "Risk",
+                t("common:probability"),
+                t("common:impact"),
+                t("common:mitigation"),
               ]}
               rows={report.risks.map(item => [
                 item.risk,
@@ -734,24 +694,16 @@ export default function EarningReportPostTab({
                 item.impact,
                 item.mitigation,
               ])}
-              emptyMessage={copy(
-                language,
-                "Bu raporda parse edilen risk matrisi yok.",
-                "No parsed risk matrix is available in this report."
-              )}
+              emptyMessage={t("common:noParsedRiskMatrixIs")}
             />
           </div>
         </section>
 
         <section className="rounded-xl border border-border bg-card/90 p-6 shadow-xl">
           <SectionTitle
-            eyebrow={copy(language, "Kurallar", "Rules")}
-            title={copy(language, "Golden rules", "Golden rules")}
-            description={copy(
-              language,
-              "Raporun global disiplin kurallari burada operasyonel maddeler olarak korunur.",
-              "The report's global discipline rules are preserved here as operational items."
-            )}
+            eyebrow={t("common:rules")}
+            title={"Golden rules"}
+            description={t("common:theReportSGlobalDiscipline")}
           />
           <ol className="mt-6 space-y-3 text-sm leading-7 text-muted-foreground">
             {report.goldenRules.length ? (
@@ -765,14 +717,14 @@ export default function EarningReportPostTab({
               ))
             ) : (
               <li className="rounded-xl border border-dashed border-border bg-background/35 px-4 py-3">
-                {copy(language, "Golden rule parse edilemedi.", "Golden rules could not be parsed.")}
+                {t("common:goldenRulesCouldNotBe")}
               </li>
             )}
           </ol>
 
           <div className="mt-6 border-t border-border pt-6">
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-200">
-              {copy(language, "Gunluk kontrol listesi", "Daily checklist")}
+              {t("common:dailyChecklist")}
             </p>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               {report.checklist.length ? (
@@ -786,7 +738,7 @@ export default function EarningReportPostTab({
                 ))
               ) : (
                 <article className="rounded-xl border border-dashed border-border bg-background/35 px-4 py-3 text-sm text-muted-foreground sm:col-span-2">
-                  {copy(language, "Checklist parse edilemedi.", "Checklist could not be parsed.")}
+                  {t("common:checklistCouldNotBeParsed")}
                 </article>
               )}
             </div>

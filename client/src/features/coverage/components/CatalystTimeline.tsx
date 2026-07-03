@@ -1,5 +1,5 @@
-import { type AppLanguage } from "@/lib/i18n";
-import { copy } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
+
 import { Circle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -32,7 +32,7 @@ export default function CatalystTimeline({
   return (
     <div className="space-y-4 rounded-xl border border-border bg-background/30 p-5">
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-        {copy(language, "Katalizor Takvimi", "Catalyst Timeline")}
+        {t("coverage:catalystTimeline")}
       </p>
 
       <div className="relative space-y-4 pl-4">

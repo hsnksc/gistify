@@ -5,7 +5,7 @@ import { useLocation } from "wouter";
 import LanguageSelector from "@/components/LanguageSelector";
 import { Button } from "@/components/ui/button";
 import { usePageMeta } from "@/hooks/usePageMeta";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { localizePath, type AppLanguage, t } from "@/lib/i18n";
 
 interface PublicShellProps {
   language: AppLanguage;
@@ -17,7 +17,6 @@ interface PublicShellProps {
   canonicalPath?: string;
   ctaHref?: string;
   ctaLabel?: string;
-  onCtaClick?: () => void;
   heroHighlights?: string[];
   heroStats?: Array<{
     value: string;
@@ -37,7 +36,6 @@ export default function PublicShell({
   canonicalPath,
   ctaHref,
   ctaLabel,
-  onCtaClick,
   heroHighlights,
   heroStats,
   noindex,
@@ -46,15 +44,17 @@ export default function PublicShell({
   usePageMeta({
     canonical: canonicalPath ?? location,
     description,
+    language,
     noindex,
     title,
   });
 
   const navItems = [
-    { href: "/", label: copy(language, "Ana Sayfa", "Home") },
-    { href: "/flow", label: copy(language, "Flow", "Flow") },
-    { href: "/app", label: copy(language, "Uygulamayi Ac", "Open App") },
-    { href: "/pricing", label: copy(language, "Fiyatlandirma", "Pricing") },
+    { href: localizePath("/", language), label: t("marketing:home") },
+    { href: localizePath("/pricing", language), label: t("common:pricing") },
+    { href: localizePath("/flow", language), label: "Flow" },
+    { href: localizePath("/coverage", language), label: "Coverage" },
+    { href: localizePath("/app", language), label: t("marketing:openApp") },
   ];
   const hasHeroAside = Boolean(
     (ctaHref && ctaLabel) || (heroStats && heroStats.length > 0)
@@ -75,7 +75,7 @@ export default function PublicShell({
         >
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <a
-              href="/"
+              href={localizePath("/", language)}
               className="flex items-center gap-3 rounded-xl transition-colors hover:text-foreground"
             >
               <img
@@ -92,7 +92,7 @@ export default function PublicShell({
                   Gistify
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {copy(language, "Earnings intelligence ve momentum arastirma platformu", "Earnings intelligence and momentum research platform")}
+                  {t("marketing:earningsIntelligenceAndMomentumResearch")}
                 </p>
               </div>
             </a>
@@ -167,7 +167,7 @@ export default function PublicShell({
               <div className="grid gap-4 xl:justify-items-end">
                 {ctaHref && ctaLabel ? (
                   <Button asChild size="lg" className="h-11 min-w-[220px]">
-                    <a href={ctaHref} onClick={onCtaClick}>
+                    <a href={localizePath(ctaHref, language)}>
                       {ctaLabel}
                       <ArrowRight className="size-4" />
                     </a>
@@ -214,4 +214,3 @@ export default function PublicShell({
     </div>
   );
 }
-

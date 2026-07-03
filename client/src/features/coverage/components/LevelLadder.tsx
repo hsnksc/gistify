@@ -1,5 +1,5 @@
-import { type AppLanguage } from "@/lib/i18n";
-import { copy } from "@/lib/i18n";
+import { type AppLanguage, t as i18nT } from "@/lib/i18n";
+
 import { ArrowDown, ArrowUp, Minus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -43,7 +43,7 @@ export default function LevelLadder({
   return (
     <div className="space-y-3 rounded-xl border border-border bg-background/30 p-5">
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-        {copy(language, "Seviye Merdiveni", "Level Ladder")}
+        {i18nT("coverage:levelLadder")}
       </p>
 
       <div className="space-y-2">
@@ -96,7 +96,7 @@ export default function LevelLadder({
 
               {isNearPrice && (
                 <span className="rounded-full bg-amber-500/20 px-2 py-0.5 text-[10px] font-medium text-amber-200">
-                  {copy(language, "Mevcut", "Current")}
+                  {i18nT("coverage:current")}
                 </span>
               )}
             </div>
@@ -106,7 +106,7 @@ export default function LevelLadder({
 
       {price !== undefined && (
         <p className="text-xs text-muted-foreground">
-          {copy(language, "Mevcut fiyat", "Current price")}: ${price.toFixed(2)}
+          {i18nT("coverage:currentPrice")}: ${price.toFixed(2)}
         </p>
       )}
     </div>

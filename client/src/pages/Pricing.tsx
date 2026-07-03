@@ -1,6 +1,5 @@
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import PublicShell from "@/components/PublicShell";
-import { trackProUpgrade } from "@/utils/ga4";
 
 export default function Pricing({
   language,
@@ -11,108 +10,44 @@ export default function Pricing({
 }) {
   const categories = [
     {
-      title: copy(language, "Kazanc & Strateji", "Earnings & Strategy"),
+      title: t("marketing:earningsStrategy"),
       items: [
-        copy(
-          language,
-          "Earnings Strategy Workspace — Post, Playbook, Calendar ve Risk sekmeleri",
-          "Earnings Strategy Workspace — Post, Playbook, Calendar and Risk tabs"
-        ),
-        copy(
-          language,
-          "Earnings Workspace — Overview, Calendar, Strategies, CPR/Greeks, Portfolio",
-          "Earnings Workspace — Overview, Calendar, Strategies, CPR/Greeks, Portfolio"
-        ),
-        copy(
-          language,
-          "Hisse bazli kazanc detayi, strategy card'lar ve desk notlari",
-          "Per-stock earnings detail, strategy cards and desk notes"
-        ),
-        copy(
-          language,
-          "Kazanc takvimi ve pre-earnings analiz sekmeleri",
-          "Earnings calendar and pre-earnings analysis tabs"
-        ),
+        t("marketing:earningsStrategyWorkspacePostPlaybook"),
+        "Earnings Workspace — Overview, Calendar, Strategies, CPR/Greeks, Portfolio",
+        t("marketing:perStockEarningsDetailStrategy"),
+        t("marketing:earningsCalendarAndPreEarnings"),
       ],
     },
     {
-      title: copy(language, "Momentum & Scanner", "Momentum & Scanner"),
+      title: "Momentum & Scanner",
       items: [
-        copy(
-          language,
-          "Live Momentum Scanner / Midas Feed",
-          "Live Momentum Scanner / Midas Feed"
-        ),
-        copy(
-          language,
-          "MomentumFlowSurface — piyasa pulse'u ve momentum sinyalleri",
-          "MomentumFlowSurface — market pulse and momentum signals"
-        ),
-        copy(
-          language,
-          "Hero insight kartlari, canli scanner overlay ve snapshot karsilastirma",
-          "Hero insight cards, live scanner overlay and snapshot comparison"
-        ),
+        "Live Momentum Scanner / Midas Feed",
+        t("marketing:momentumflowsurfaceMarketPulseAndMomentum"),
+        t("marketing:heroInsightCardsLiveScanner"),
       ],
     },
     {
-      title: copy(language, "Makro & Piyasa", "Macro & Market"),
+      title: t("marketing:macroMarket"),
       items: [
-        copy(
-          language,
-          "Makro ekonomik takvim — FOMC, PMI, istihdam, VIX/Fear-Greed outlook",
-          "Macro economic calendar — FOMC, PMI, employment, VIX/Fear-Greed outlook"
-        ),
-        copy(
-          language,
-          "CPI/PPI forecast, scenario matrix ve playbook",
-          "CPI/PPI forecast, scenario matrix and playbook"
-        ),
-        copy(
-          language,
-          "Market Flash — pre/after-market, saatlik rapor, movers, setups, 0DTE",
-          "Market Flash — pre/after-market, hourly report, movers, setups, 0DTE"
-        ),
+        t("marketing:macroEconomicCalendarFomcPmi"),
+        t("marketing:cpiPpiForecastScenarioMatrix"),
+        t("marketing:marketFlashPreAfterMarket"),
       ],
     },
     {
-      title: copy(language, "Risk & Opsiyon", "Risk & Options"),
+      title: t("marketing:riskOptions"),
       items: [
-        copy(
-          language,
-          "Risk matrisi — beat ihtimali x momentum scatter ve risk dagilimi",
-          "Risk matrix — beat probability x momentum scatter and risk distribution"
-        ),
-        copy(
-          language,
-          "IV crush gorunumu, call/put kar potansiyeli siralamasi",
-          "IV crush view, call/put profit potential ranking"
-        ),
-        copy(
-          language,
-          "Opsiyon playbook, expected move ve portfoy stratejisi",
-          "Options playbook, expected move and portfolio strategy"
-        ),
+        t("marketing:riskMatrixBeatProbabilityX"),
+        t("marketing:ivCrushViewCallPut"),
+        t("marketing:optionsPlaybookExpectedMoveAnd"),
       ],
     },
     {
-      title: copy(language, "Erisim & Destek", "Access & Support"),
+      title: t("marketing:accessSupport"),
       items: [
-        copy(
-          language,
-          "Web uzerinden tum locked workspace'lere sinirsiz erisim",
-          "Unlimited web access to all locked workspaces"
-        ),
-        copy(
-          language,
-          "support@gistify.pro uzerinden dogrudan operator destegi",
-          "Direct operator support via support@gistify.pro"
-        ),
-        copy(
-          language,
-          "Paddle uzerinden guvenli odeme ve abonelik yonetimi",
-          "Secure checkout and subscription management via Paddle"
-        ),
+        t("marketing:unlimitedWebAccessToAll"),
+        t("marketing:directOperatorSupportViaSupport"),
+        t("marketing:secureCheckoutAndSubscriptionManagement"),
       ],
     },
   ];
@@ -122,43 +57,28 @@ export default function Pricing({
       language={language}
       onLanguageChange={onLanguageChange}
       canonicalPath="/pricing"
-      eyebrow={copy(language, "Fiyatlandirma", "Pricing")}
-      title={copy(
-        language,
-        "Tek planli aylik abonelik",
-        "Single monthly subscription"
-      )}
-      description={copy(
-        language,
-        "Gistify, dijital abonelik modeliyle calisir. Tek aktif planimiz aylik 5 ABD dolari olarak fiyatlanir; tum earnings, momentum, makro ve risk modullerine web erisimi saglar.",
-        "Gistify runs on a digital subscription model. Our single active plan is priced at $5 per month and includes web access to all earnings, momentum, macro and risk modules."
-      )}
+      eyebrow={t("common:pricing")}
+      title={t("marketing:singleMonthlySubscription")}
+      description={t("marketing:gistifyRunsOnADigital")}
       ctaHref="/pay"
-      ctaLabel={copy(language, "Odeme sayfasini ac", "Open payment page")}
-      onCtaClick={() =>
-        trackProUpgrade("Gistify Pro", 5, "USD", "pricing_page")
-      }
+      ctaLabel={t("marketing:openPaymentPage")}
     >
       <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
         <section className="rounded-xl border border-border bg-card/85 p-6 shadow-xl">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-                {copy(language, "Gistify Pro", "Gistify Pro")}
+                {"Gistify Pro"}
               </p>
               <div className="mt-3 flex items-end gap-3">
                 <span className="text-5xl font-semibold">$5</span>
                 <span className="pb-1 text-sm text-muted-foreground">
-                  {copy(language, "/ ay", "/ month")}
+                  {t("marketing:month")}
                 </span>
               </div>
             </div>
             <p className="max-w-xs text-right text-xs leading-relaxed text-muted-foreground">
-              {copy(
-                language,
-                "Tum desk modullerini tek aylik planla acin.",
-                "Unlock every desk module with a single monthly plan."
-              )}
+              {t("marketing:unlockEveryDeskModuleWith")}
             </p>
           </div>
 
@@ -189,45 +109,29 @@ export default function Pricing({
 
         <section className="rounded-xl border border-border bg-card/80 p-6 shadow-xl">
           <h2 className="text-xl font-semibold">
-            {copy(language, "Onemli notlar", "Important notes")}
+            {t("marketing:importantNotes")}
           </h2>
           <div className="mt-4 space-y-4 text-sm leading-relaxed text-muted-foreground">
             <p>
-              {copy(
-                language,
-                "Abonelik, web uygulamasina erisim icin kullanilir. Fiziksel urun gonderimi yoktur; teslimat tamamen dijitaldir.",
-                "The subscription is used for access to the web application. No physical product is shipped; delivery is fully digital."
-              )}
+              {t("marketing:theSubscriptionIsUsedFor")}
             </p>
             <p>
-              {copy(
-                language,
-                "Fiyat ABD dolari uzerinden gosterilir. Checkout ve abonelik yonetimi Paddle uzerinden bu siteye baglandi.",
-                "Pricing is shown in USD. Checkout and subscription management are wired through Paddle on this site."
-              )}
+              {t("marketing:pricingIsShownInUsd")}
             </p>
             <p>
-              {copy(
-                language,
-                "Guncel iade kosullari icin ",
-                "For current refund terms, see the "
-              )}
+              {t("marketing:forCurrentRefundTermsSee")}
               <a className="text-primary underline" href="/refund">
-                {copy(language, "iade politikasi", "refund policy")}
+                {t("marketing:refundPolicy")}
               </a>
-              {copy(
-                language,
-                ", diger hukuki sartlar icin ",
-                ". For other legal terms, review the "
-              )}
+              {t("marketing:forOtherLegalTermsReview")}
               <a className="text-primary underline" href="/terms">
-                {copy(language, "kullanim kosullari", "terms of service")}
+                {t("marketing:termsOfService")}
               </a>
-              {copy(language, " ve ", " and the ")}
+              {t("marketing:andThe")}
               <a className="text-primary underline" href="/privacy">
-                {copy(language, "gizlilik politikasi", "privacy policy")}
+                {t("marketing:privacyPolicy")}
               </a>
-              {copy(language, " sayfalarina bak.", ".")}
+              {t("marketing:text")}
             </p>
           </div>
         </section>

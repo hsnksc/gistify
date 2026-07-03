@@ -2,7 +2,7 @@ import EarningsCalendar from "@/components/earnings/EarningsCalendar";
 import EarningsHero from "@/components/earnings/EarningsHero";
 import FOMCWarningBanner from "@/components/earnings/FOMCWarningBanner";
 import { usePageMeta } from "@/hooks/usePageMeta";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import {
   CalendarStatsPanel,
   EarningsLoadingState,
@@ -20,16 +20,8 @@ export default function EarningsCalendarPage({
   language: AppLanguage;
 }) {
   usePageMeta({
-    description: copy(
-      language,
-      "Kazanc takvimi: siradaki raporlari, beklentileri ve tarihleri gorun.",
-      "Earnings calendar: see upcoming reports, expectations and dates."
-    ),
-    title: copy(
-      language,
-      "Kazanc Takvimi | Gistify",
-      "Earnings Calendar | Gistify"
-    ),
+    description: t("earnings:earningsCalendarSeeUpcomingReports"),
+    title: t("earnings:earningsCalendarGistify"),
   });
 
   const { data, error, isLoading, isRefreshing, pipeline, refresh } =
@@ -48,11 +40,11 @@ export default function EarningsCalendarPage({
           const result = await refresh();
           if (result.ok) {
             toast.success(
-              copy(language, "Earnings takvimi yenilendi.", "The earnings calendar refreshed.")
+              t("earnings:theEarningsCalendarRefreshed")
             );
             return;
           }
-          toast.error(copy(language, "Yenileme basarisiz.", "Refresh failed."), {
+          toast.error(t("common:refreshFailed"), {
             description: result.error,
           });
         }}
@@ -69,11 +61,11 @@ export default function EarningsCalendarPage({
     const result = await refresh();
     if (result.ok) {
       toast.success(
-        copy(language, "Earnings takvimi yenilendi.", "The earnings calendar refreshed.")
+        t("earnings:theEarningsCalendarRefreshed")
       );
       return;
     }
-    toast.error(copy(language, "Yenileme basarisiz.", "Refresh failed."), {
+    toast.error(t("common:refreshFailed"), {
       description: result.error,
     });
   };
@@ -91,7 +83,7 @@ export default function EarningsCalendarPage({
       <EarningsWorkspaceToolbar
         language={language}
         pipeline={pipeline}
-        sectionLabel={copy(language, "Takvim", "Calendar")}
+        sectionLabel={t("common:calendar")}
       />
       <EarningsPipelinePanel language={language} pipeline={pipeline} />
       {data.fomc ? (

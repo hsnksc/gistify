@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { CalendarDays, Star, ChevronLeft, ChevronRight } from "lucide-react";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { EarningsEvent, EarningsTime } from "@shared/earnings";
 
@@ -18,13 +18,13 @@ export default function EarningsCalendar({
     [events, language]
   );
   const dayLabels = [
-    copy(language, "Pzt", "Mon"),
-    copy(language, "Sal", "Tue"),
-    copy(language, "Çar", "Wed"),
-    copy(language, "Per", "Thu"),
-    copy(language, "Cum", "Fri"),
-    copy(language, "Cmt", "Sat"),
-    copy(language, "Paz", "Sun"),
+    t("flow:thisFeedWillFillAutomatically0a38"),
+    t("earnings:tue"),
+    t("earnings:wed"),
+    t("earnings:thu"),
+    t("earnings:fri"),
+    t("earnings:sat"),
+    t("common:pleaseEnterAValidEmail"),
   ];
   const [hoveredTicker, setHoveredTicker] = useState<string | null>(null);
 
@@ -42,7 +42,7 @@ export default function EarningsCalendar({
           </div>
           <div>
             <h2 className="text-lg font-bold text-white">
-              {copy(language, "Kazanç Takvimi", "Earnings Calendar")}
+              {t("earnings:earningsCalendar")}
             </h2>
             <p className="text-xs text-slate-400">
               {monthNames.join(" · ")}
@@ -61,7 +61,7 @@ export default function EarningsCalendar({
           />
           <Badge
             icon={<Star className="size-3 text-amber-400" />}
-            label={`${copy(language, "Yüksek Önem", "High Imp.")} ${highCount}`}
+            label={`${t("common:idle")} ${highCount}`}
           />
         </div>
       </div>

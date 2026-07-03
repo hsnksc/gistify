@@ -1,7 +1,7 @@
 import { FileText } from "lucide-react";
 import MarkdownReportRenderer from "@/components/reports/MarkdownReportRenderer";
 import type { MomentumReportSource } from "@/lib/momentumReportSource";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 
 export default function MomentumReportDocumentTab({
   report,
@@ -19,17 +19,13 @@ export default function MomentumReportDocumentTab({
           </div>
           <div className="space-y-2">
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-              {copy(language, "Kaynak Dokuman", "Source Document")}
+              {t("common:sourceDocument")}
             </p>
             <h2 className="heading-condensed text-3xl text-foreground">
-              {copy(language, "Tam momentum markdown", "Full momentum markdown")}
+              {t("common:fullMomentumMarkdown")}
             </h2>
             <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-              {copy(
-                language,
-                "Market, setup ve strategy panellerine ek olarak yuklenen momentum dosyasinin tum icerigi burada birebir okunur.",
-                "In addition to the market, setup and strategy panels, the full uploaded momentum file is rendered here as-is."
-              )}
+              {t("common:inAdditionToTheMarket")}
             </p>
           </div>
         </div>
@@ -38,11 +34,7 @@ export default function MomentumReportDocumentTab({
       <MarkdownReportRenderer
         language={language}
         markdown={report.rawMarkdown}
-        emptyMessage={copy(
-          language,
-          "Momentum markdown icerigi okunamadi.",
-          "The momentum markdown content could not be read."
-        )}
+        emptyMessage={t("common:theMomentumMarkdownContentCould")}
       />
     </div>
   );

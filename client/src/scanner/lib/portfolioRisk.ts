@@ -5,7 +5,7 @@
 
 import type { PortfolioRisk, SectorExposure, StressTestResult, Greeks, BetaMatrix } from "./optionsTypes";
 import { parametricVaR, historicalVaR, expectedShortfall, stressTestShock, calculateGreeksLimits, checkGreeksLimits, SHOCK_SCENARIOS } from "./varEngine";
-import { type AppLanguage, copy } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 
 // ─── SEKTÖR BETA MATRİSİ ───
 
@@ -108,29 +108,20 @@ export function correlationCheck(
   // Check concentration
   const maxSector = Object.entries(sectorCount).sort((a, b) => b[1] - a[1])[0];
   if (maxSector && maxSector[1] >= 3) {
-    warnings.push(copy(language,
-    `🚨 ${maxSector[0]} sektöründe ${maxSector[1]} pozisyon → Tek sektöre %${(maxSector[1] / positions.length * 100).toFixed(0)} bet`,
-    `🚨 ${maxSector[1]} positions in ${maxSector[0]} sector → %${(maxSector[1] / positions.length * 100).toFixed(0)} bet on single sector`
-  ));
+    warnings.push((language === "en" ? `🚨 ${maxSector[1]} positions in ${maxSector[0]} sector → %${(maxSector[1] / positions.length * 100).toFixed(0)} bet on single sector` : `🚨 ${maxSector[0]} sektöründe ${maxSector[1]} pozisyon → Tek sektöre %${(maxSector[1] / positions.length * 100).toFixed(0)} bet`));
   }
 
   // Check tech concentration (common mistake)
   const techTickers = positions.filter((p) => getBeta(p.ticker).sector === "Technology");
   if (techTickers.length >= 3) {
     const names = techTickers.map((p) => p.ticker).join(", ");
-    warnings.push(copy(language,
-    `⚠️ Teknoloji bet'i: ${names} → SPY/Q düşerse hepsi zarar eder`,
-    `⚠️ Tech bet: ${names} → All lose if SPY/Q drops`
-  ));
+    warnings.push(t("scanner:techBetAllLoseIf", { names }));
   }
 
   // Check meme/high-beta concentration
   const highBeta = positions.filter((p) => getBeta(p.ticker).betaSPY > 1.5);
   if (highBeta.length >= 3) {
-    warnings.push(copy(language,
-    `⚠️ ${highBeta.length} yüksek beta hisse (β>1.5) → Piyasa düşerse amplifiye kayıp`,
-    `⚠️ ${highBeta.length} high-beta stocks (β>1.5) → Amplified loss if market drops`
-  ));
+    warnings.push(t("scanner:highBetaStocks15", { length: highBeta.length }));
   }
 
   return warnings;

@@ -1,34 +1,12 @@
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  useTransition,
-} from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, useTransition, } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  AlertTriangle,
-  BarChart3,
-  CalendarDays,
-  ClipboardList,
-  Clock3,
-  FileText,
-  Layers3,
-  Radar,
-  RefreshCw,
-  Target,
-  TrendingDown,
-  TrendingUp,
-  Zap,
-} from "lucide-react";
+  AlertTriangle, BarChart3, CalendarDays, ClipboardList, Clock3, FileText, Layers3, Radar, RefreshCw, Target, TrendingDown, TrendingUp, Zap, } from "lucide-react";
 import { useLocation } from "wouter";
 import type {
-  EarningReportSourceRecord,
-  EarningReportSourceSummary,
-} from "@shared/earningReports";
-import type { AppLanguage } from "@/lib/i18n";
-import { copy } from "@/lib/i18n";
+  EarningReportSourceRecord, EarningReportSourceSummary, } from "@shared/earningReports";
+import { AppLanguage, t } from "@/lib/i18n";
+
 import { Button } from "@/components/ui/button";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import WorkspaceHeroPanel from "@/components/workspace/WorkspaceHeroPanel";
@@ -49,10 +27,10 @@ type TabId = "post" | "playbook" | "calendar" | "risk";
 
 function getTabs(language: AppLanguage) {
   return [
-    { id: "post" as const, label: copy(language, "Post", "Post"), icon: FileText },
-    { id: "playbook" as const, label: copy(language, "Playbook", "Playbook"), icon: ClipboardList },
-    { id: "calendar" as const, label: copy(language, "Takvim", "Calendar"), icon: CalendarDays },
-    { id: "risk" as const, label: copy(language, "Risk", "Risk"), icon: AlertTriangle },
+    { id: "post" as const, label: "Post", icon: FileText },
+    { id: "playbook" as const, label: "Playbook", icon: ClipboardList },
+    { id: "calendar" as const, label: t("common:calendar"), icon: CalendarDays },
+    { id: "risk" as const, label: "Risk", icon: AlertTriangle },
   ];
 }
 
@@ -77,17 +55,9 @@ export default function Home({ language }: { language: AppLanguage }) {
   const contentRef = useRef<HTMLDivElement | null>(null);
 
   usePageMeta({
-    description: copy(
-      language,
-      "Gistify earnings workspace secili markdown raporunu post, playbook, takvim ve risk lensleriyle ayni yuzeyde acar.",
-      "The Gistify earnings workspace opens the selected markdown report across post, playbook, calendar and risk lenses on the same surface."
-    ),
+    description: t("common:theGistifyEarningsWorkspaceOpens"),
     noindex: true,
-    title: copy(
-      language,
-      "Gistify | Kazanc Stratejisi Workspace'i",
-      "Gistify | Earnings Strategy Workspace"
-    ),
+    title: t("common:gistifyEarningsStrategyWorkspace"),
   });
 
   useEffect(() => {
@@ -286,18 +256,14 @@ export default function Home({ language }: { language: AppLanguage }) {
   const selectedHeadline =
     parsedReport?.subtitle ||
     selectedSummary?.headline ||
-    copy(
-      language,
-      "Secili earnings raporunun ana tezleri, strateji setleri ve takvim akisi.",
-      "Core thesis, strategy sets and calendar flow for the selected earnings report."
-    );
+    t("common:coreThesisStrategySetsAnd");
   const selectedReportDateLabel = selectedSummary
     ? formatEarningReportDate(selectedSummary.reportDate, locale)
     : "-";
   const selectedVixLabel =
     selectedSummary?.vixLabel ||
     parsedReport?.vixLabel ||
-    copy(language, "Bekleniyor", "Pending");
+    t("common:pending");
 
   const handleTickerSelect = (ticker: string) => {
     setSelectedTicker(ticker);
@@ -314,7 +280,7 @@ export default function Home({ language }: { language: AppLanguage }) {
     if (loadingReports || loadingDetail) {
       return (
         <WorkspaceLoadingState
-          label={copy(language, "Earnings report workspace yukleniyor.", "Loading earnings workspace.")}
+          label={t("common:loadingEarningsWorkspace")}
         />
       );
     }
@@ -322,11 +288,7 @@ export default function Home({ language }: { language: AppLanguage }) {
     if (!parsedReport) {
       return (
         <WorkspaceLoadingState
-          label={copy(
-            language,
-            "Henuz goruntulenebilir bir earnings raporu yok. `earningreport/` klasorune yeni rapor yuklendiginde burada otomatik listelenecek.",
-            "There is no viewable earnings report yet. When a new report is added under `earningreport/`, it will appear here automatically."
-          )}
+          label={t("common:thereIsNoViewableEarnings")}
         />
       );
     }
@@ -380,33 +342,25 @@ export default function Home({ language }: { language: AppLanguage }) {
           overlayClassName="bg-[radial-gradient(circle_at_top_right,rgba(14,165,233,0.22),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(16,185,129,0.14),transparent_28%)]"
           badges={
             <>
-              <span className="badge-strong">{bullishCount} {copy(language, "bullish egilim", "bullish bias")}</span>
-              <span className="badge-danger">{bearishCount} {copy(language, "bearish egilim", "bearish bias")}</span>
+              <span className="badge-strong">{bullishCount} {t("scanner:30IvSpike")}</span>
+              <span className="badge-danger">{bearishCount} {t("common:bearishBias")}</span>
               <span className="badge-warning">
-                {balancedCount} {copy(language, "dengeli", "balanced")}
+                {balancedCount} {t("common:balanced08d9")}
               </span>
             </>
           }
-          eyebrow={copy(
-            language,
-            "Kazanc Stratejisi Workspace'i",
-            "Earnings Strategy Workspace"
-          )}
-          title={copy(language, "Guncel kazanc stratejisi paneli", "Current earnings strategy panel")}
-          description={copy(
-            language,
-            "Tum yuklenen earnings markdown dosyalari arsivde tutulur. Varsayilan gorunum, secili dosyayi eksiksiz bir post gibi acar; playbook, takvim ve risk sekmeleri destek katmani olarak kalir.",
-            "Every uploaded earnings markdown file stays in the archive. The default view opens the selected file as a complete post, while playbook, calendar, and risk tabs stay as supporting layers."
-          )}
+          eyebrow={t("common:earningsStrategyWorkspace")}
+          title={t("common:currentEarningsStrategyPanel")}
+          description={t("common:everyUploadedEarningsMarkdownFile")}
           actions={
             <>
               <Button type="button" variant="outline" onClick={() => void loadReports()}>
                 <RefreshCw className="size-4" />
-                {copy(language, "Yenile", "Refresh")}
+                {t("common:refresh")}
               </Button>
               <Button type="button" variant="outline" onClick={() => setLocation("/momentum")}>
                 <Radar className="size-4" />
-                {copy(language, "Momentum", "Momentum")}
+                {"Momentum"}
               </Button>
             </>
           }
@@ -417,17 +371,17 @@ export default function Home({ language }: { language: AppLanguage }) {
                   <div className="space-y-3">
                     <div className="flex items-center gap-2">
                       <span className="inline-flex items-center rounded-full border border-emerald-500/25 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-300">
-                        {copy(language, "CANLI", "LIVE")}
+                        {t("common:live9031")}
                       </span>
                       <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-amber-300">
-                        {latestReport.vixLabel || copy(language, "VIX bekleniyor", "VIX pending")}
+                        {latestReport.vixLabel || t("common:vixPending")}
                       </span>
                     </div>
                     <h3 className="text-2xl font-semibold tracking-tight text-foreground">
                       {formatEarningReportDateTime(latestReport.updatedAt, locale)}
                     </h3>
                     <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-                      {latestReport.headline || copy(language, "Earnings raporu", "Earnings report")}
+                      {latestReport.headline || t("common:earningsReport")}
                     </p>
                     <div className="flex items-center gap-2 text-xs text-muted-foreground">
                       <CalendarDays className="size-3.5" />
@@ -437,18 +391,18 @@ export default function Home({ language }: { language: AppLanguage }) {
                   <div className="flex flex-wrap items-center gap-3">
                     <Button type="button" variant="outline" onClick={() => setLocation("/reports")}>
                       <Layers3 className="size-4" />
-                      {copy(language, "Tum Arsivi Gor", "View Full Archive")}
+                      {t("common:viewFullArchive")}
                     </Button>
                     {reports.length > 1 && (
                       <span className="inline-flex items-center rounded-full border border-border bg-background/60 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                        +{reports.length - 1} {copy(language, "rapor arsivde", "reports in archive")}
+                        +{reports.length - 1} {t("common:reportsInArchive")}
                       </span>
                     )}
                   </div>
                 </div>
               ) : (
                 <div className="rounded-xl border border-dashed border-border bg-background/35 p-4 text-sm text-muted-foreground">
-                  {copy(language, "Henuz rapor yok.", "No reports yet.")}
+                  {t("common:noReportsYet")}
                 </div>
               )}
             </div>
@@ -458,34 +412,34 @@ export default function Home({ language }: { language: AppLanguage }) {
               <div className="inline-flex max-w-full flex-wrap items-center gap-3 rounded-xl border border-border bg-background/40 px-4 py-3 text-xs text-muted-foreground">
                 <span className="flex items-center gap-1.5">
                   <BarChart3 className="size-3.5 text-sky-300" />
-                  {positions.length} {copy(language, "earnings eventi", "earnings event")}
+                  {positions.length} {t("common:earningsEvent")}
                 </span>
                 <span className="h-3 w-px bg-border" />
                 <span className="flex items-center gap-1.5">
                   <TrendingUp className="size-3.5 text-emerald-300" />
-                  {bullishCount} {copy(language, "bullish", "bullish")}
+                  {bullishCount} {"bullish"}
                 </span>
                 <span className="h-3 w-px bg-border" />
                 <span className="flex items-center gap-1.5">
                   <TrendingDown className="size-3.5 text-red-300" />
-                  {bearishCount} {copy(language, "bearish", "bearish")}
+                  {bearishCount} {"bearish"}
                 </span>
                 <span className="h-3 w-px bg-border" />
                 <span className="flex items-center gap-1.5">
                   <Zap className="size-3.5 text-amber-300" />
-                  {copy(language, "Ort. IV Rank", "Avg IV Rank")} {avgIvRank}
+                  {t("common:avgIvRank")} {avgIvRank}
                 </span>
                 <span className="h-3 w-px bg-border" />
                 <span className="flex items-center gap-1.5">
                   <Target className="size-3.5 text-sky-300" />
-                  {copy(language, "Ort. CPR", "Avg CPR")} {avgCpr}
+                  {t("common:avgCpr")} {avgCpr}
                 </span>
               </div>
             ) : (
               <div className="inline-flex max-w-full flex-wrap items-center gap-2 rounded-xl border border-dashed border-border bg-background/35 px-4 py-3 text-xs text-muted-foreground">
                 {loadingReports
-                  ? copy(language, "Earnings report listesi yukleniyor.", "Loading earnings report list.")
-                  : copy(language, "`earningreport/` kaynagi gelince stat bar otomatik dolacak.", "The stat bar will populate automatically when an `earningreport/` source is available.")}
+                  ? t("common:loadingEarningsReportList")
+                  : t("common:theStatBarWillPopulate")}
               </div>
             )
           }
@@ -502,7 +456,7 @@ export default function Home({ language }: { language: AppLanguage }) {
                 <div className="flex flex-col gap-4 border-b border-border pb-4 md:flex-row md:items-end md:justify-between">
                   <div className="space-y-2">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
-                      {copy(language, "Secili rapor", "Selected report")}
+                      {t("common:selectedReport")}
                     </p>
                     <h2 className="heading-condensed text-2xl text-foreground md:text-3xl">
                       {selectedUploadLabel}
@@ -514,23 +468,23 @@ export default function Home({ language }: { language: AppLanguage }) {
 
                   <div className="grid gap-3 sm:grid-cols-3 md:min-w-[420px]">
                     <WorkspaceSummaryCard
-                      label={copy(language, "Rapor tarihi", "Report date")}
+                      label={t("common:reportDateae39")}
                       value={selectedReportDateLabel}
-                      hint={copy(language, "Parser ile okunan ana tarih", "Primary date parsed from the report")}
+                      hint={t("common:primaryDateParsedFromThe")}
                       icon={CalendarDays}
                       tone="info"
                     />
                     <WorkspaceSummaryCard
                       label="VIX"
                       value={selectedVixLabel}
-                      hint={copy(language, "Secili rapor volatilite baglami", "Volatility context for the selected report")}
+                      hint={t("common:volatilityContextForTheSelected")}
                       icon={Zap}
                       tone="caution"
                     />
                     <WorkspaceSummaryCard
-                      label={copy(language, "Yuklenme", "Loaded")}
+                      label={t("common:loaded")}
                       value={selectedUploadLabel}
-                      hint={copy(language, "Liste siralamasi bu zamana gore", "List ordering uses this timestamp")}
+                      hint={t("common:listOrderingUsesThisTimestamp")}
                       icon={Clock3}
                       tone="bull"
                     />
@@ -539,8 +493,8 @@ export default function Home({ language }: { language: AppLanguage }) {
               ) : (
                 <div className="rounded-xl border border-dashed border-border bg-background/35 p-4 text-sm leading-7 text-muted-foreground">
                   {loadingReports
-                    ? copy(language, "Secili earnings raporu yukleniyor.", "Loading selected earnings report.")
-                    : copy(language, "Henuz secilebilir bir earnings raporu yok. Yeni source geldikten sonra bu alan otomatik dolacak.", "There is no selectable earnings report yet. This area will populate automatically when a new source arrives.")}
+                    ? t("common:loadingSelectedEarningsReport")
+                    : t("common:thereIsNoSelectableEarnings")}
                 </div>
               )}
 
@@ -571,7 +525,7 @@ export default function Home({ language }: { language: AppLanguage }) {
               <div className="mt-6 space-y-6">
                 {isTabPending ? (
                   <div className="rounded-xl border border-sky-500/18 bg-sky-500/10 px-3 py-2 text-xs text-sky-200">
-                    {copy(language, "Gorunum degisiyor...", "Switching view...")}
+                    {t("common:switchingView")}
                   </div>
                 ) : null}
                 <AnimatePresence mode="wait" initial={false}>
@@ -595,47 +549,47 @@ export default function Home({ language }: { language: AppLanguage }) {
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      {copy(language, "Guncel snapshot", "Current snapshot")}
+                      {t("common:currentSnapshot")}
                     </p>
                     <h3 className="mt-2 heading-condensed text-xl text-foreground">
                       {selectedReportDateLabel}
                     </h3>
                   </div>
                   <span className="badge-strong">
-                    {copy(language, "canli endeks", "live index")}
+                    {t("common:liveIndex")}
                   </span>
                 </div>
 
                 {hasReports ? (
                   <div className="mt-4 space-y-3">
                     <WorkspaceSummaryCard
-                      label={copy(language, "Rapor adedi", "Report count")}
+                      label={t("common:reportCount")}
                       value={String(visibleReports.length)}
-                      hint={copy(language, "Tum yuklenen raporlar arsivde listelenir", "All uploaded reports stay listed in the archive")}
+                      hint={t("common:allUploadedReportsStayListed")}
                       icon={BarChart3}
                       tone="info"
                     />
                     <WorkspaceSummaryCard
-                      label={copy(language, "Son yukleme", "Latest load")}
+                      label={t("common:latestLoad")}
                       value={latestUploadLabel}
-                      hint={copy(language, "Varsayilan acilan rapor", "Default report opened on entry")}
+                      hint={t("common:defaultReportOpenedOnEntry")}
                       icon={RefreshCw}
                       tone="bull"
                     />
                     <WorkspaceSummaryCard
-                      label={copy(language, "Aktif setup", "Active setups")}
+                      label={t("common:activeSetups")}
                       value={String(positions.length)}
-                      hint={copy(language, "Secili rapordaki ticker", "Tickers in the selected report")}
+                      hint={t("common:tickersInTheSelectedReport")}
                       icon={Target}
                       tone="info"
                     />
                     <WorkspaceSummaryCard
-                      label={copy(language, "Yakin event", "Nearest event")}
+                      label={t("common:nearestEventc30d")}
                       value={nextEvent?.ticker || "-"}
                       hint={
                         nextEvent
-                          ? `${nextEvent.earningsDate} · ${nextEvent.daysLeft} ${copy(language, "gun", "days")}`
-                          : copy(language, "Secili rapordan", "From the selected report")
+                          ? `${nextEvent.earningsDate} · ${nextEvent.daysLeft} ${t("common:days")}`
+                          : t("common:fromTheSelectedReport")
                       }
                       icon={CalendarDays}
                       tone="caution"
@@ -644,8 +598,8 @@ export default function Home({ language }: { language: AppLanguage }) {
                 ) : (
                   <div className="mt-4 rounded-xl border border-dashed border-border bg-background/35 p-4 text-sm leading-6 text-muted-foreground">
                     {loadingReports
-                      ? copy(language, "Sidebar snapshot hazirlaniyor.", "Preparing sidebar snapshot.")
-                      : copy(language, "Rapor gelmeden ozet kartlari bos gosterilmeyecek; veri geldiginde burada dolacak.", "Summary cards stay hidden until data is available and will populate automatically.")}
+                      ? t("common:preparingSidebarSnapshot")
+                      : t("common:summaryCardsStayHiddenUntil")}
                   </div>
                 )}
               </section>

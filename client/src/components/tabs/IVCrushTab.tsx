@@ -6,33 +6,13 @@
 import { strategyConfig, riskLevelConfig, type OptionStrategy } from '@/lib/optionStrategyData';
 import { Delta } from '@/components/ui/delta';
 import {
-  ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
-  ChartTooltip,
-  ChartTooltipContent,
-  type ChartConfig,
-} from '@/components/ui/chart';
+  ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent, type ChartConfig, } from '@/components/ui/chart';
 import {
-  chartAxisLabel,
-  chartAxisStrongTick,
-  chartAxisTick,
-  chartCursorLine,
-  chartCursorZone,
-  chartGrid,
-  chartPalette,
-  coerceChartNumber,
-  formatChartNumber,
-  formatChartPercent,
-  getChartAriaLabel,
-  getRatingChartColor,
-} from '@/lib/chartTheme';
-import { copy } from '@/lib/i18n';
+  chartAxisLabel, chartAxisStrongTick, chartAxisTick, chartCursorLine, chartCursorZone, chartGrid, chartPalette, coerceChartNumber, formatChartNumber, formatChartPercent, getChartAriaLabel, getRatingChartColor, } from '@/lib/chartTheme';
+
 import type { AppLanguage } from '@/lib/i18n';
-import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Cell,
-  ScatterChart, Scatter,
-} from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Cell, ScatterChart, Scatter, } from 'recharts';import { t } from "@/lib/i18n";
+
 
 interface Props {
   onStockClick: (ticker: string) => void;
@@ -50,17 +30,13 @@ export default function IVCrushTab({
       <div className="p-6">
         <section className="rounded-none border border-border bg-card/80 p-6">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300">
-            {copy(language, 'Published Options Layer Bekleniyor', 'Published Options Layer Awaiting')}
+            {t("common:publishedOptionsLayerAwaiting")}
           </p>
           <h1 className="mt-3 heading-condensed text-3xl text-foreground">
-            {copy(language, 'Gosterilecek opsiyon setup verisi yok', 'No option setup data to display')}
+            {t("common:noOptionSetupDataTo")}
           </h1>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            {copy(
-              language,
-              'Bu sekme artik static IV crush fallback gostermiyor. Publish edilmis weekly report icinde opsiyon/IV katmani geldikce burada siralama ve grafikler olusur.',
-              'This tab no longer shows static IV crush fallback. As the option/IV layer arrives in published weekly reports, rankings and charts will form here.'
-            )}
+            {t("common:thisTabNoLongerShows")}
           </p>
         </section>
       </div>
@@ -85,21 +61,21 @@ export default function IVCrushTab({
   }));
   const scatterChartConfig = {
     y: {
-      label: copy(language, 'Momentum', 'Momentum'),
+      label: 'Momentum',
       color: chartPalette.accent,
     },
     x: {
-      label: copy(language, 'Mevcut IV', 'Current IV'),
+      label: t("common:currentIv"),
       color: chartPalette.warning,
     },
   } satisfies ChartConfig;
   const profitChartConfig = {
     callGain: {
-      label: copy(language, 'Call Kazancı', 'Call Profit'),
+      label: t("common:neutralBearish"),
       color: chartPalette.bull,
     },
     putGain: {
-      label: copy(language, 'Put Kazancı', 'Put Profit'),
+      label: t("common:putProfit"),
       color: chartPalette.warning,
     },
   } satisfies ChartConfig;
@@ -111,31 +87,31 @@ export default function IVCrushTab({
         <div className="flex items-center gap-2 mb-1">
           <div className="w-1 h-5" style={{ background: 'oklch(0.78 0.18 160)' }} />
           <h1 className="heading-condensed text-xl" style={{ color: 'oklch(0.92 0.01 220)' }}>
-            {copy(language, 'OPSIYON IV CRUSH STRATEJİSİ', 'OPTION IV CRUSH STRATEGY')}
+            {t("common:optionIvCrushStrategy")}
           </h1>
         </div>
         <p className="text-sm ml-3" style={{ color: 'oklch(0.5 0.015 225)' }}>
-          {copy(language, "Düşük IV'de satın al, yüksek IV'de sat · Earnings öncesi IV expansion'dan faydalanma", "Buy at low IV, sell at high IV · Benefit from pre-earnings IV expansion")}
+          {t("common:buyAtLowIvSell")}
         </p>
       </div>
 
       {/* Strategy Explanation */}
       <div className="data-card p-6" style={{ borderLeftColor: 'oklch(0.78 0.18 160)', borderLeftWidth: '4px' }}>
         <div className="heading-condensed text-base mb-3" style={{ color: 'oklch(0.78 0.18 160)' }}>
-          {copy(language, '💡 Strateji Mantığı', '💡 Strategy Logic')}
+          {t("common:strategyLogic")}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
           <div>
-            <div className="font-semibold mb-1" style={{ color: 'oklch(0.85 0.01 220)' }}>{copy(language, 'Aşama 1: Satın Al (10-15 gün öncesi)', 'Phase 1: Buy (10-15 days before)')}</div>
-            <div style={{ color: 'oklch(0.65 0.015 225)' }}>{copy(language, 'IV düşük olduğunda CALL veya PUT satın al. Maliyet minimal.', 'Buy CALL or PUT when IV is low. Cost is minimal.')}</div>
+            <div className="font-semibold mb-1" style={{ color: 'oklch(0.85 0.01 220)' }}>{t("common:phase1Buy1015")}</div>
+            <div style={{ color: 'oklch(0.65 0.015 225)' }}>{t("common:buyCallOrPutWhen")}</div>
           </div>
           <div>
-            <div className="font-semibold mb-1" style={{ color: 'oklch(0.85 0.01 220)' }}>{copy(language, 'Aşama 2: Sat (1-2 gün öncesi)', 'Phase 2: Sell (1-2 days before)')}</div>
-            <div style={{ color: 'oklch(0.65 0.015 225)' }}>{copy(language, "IV maksimum seviyede opsiyon satış. IV expansion'dan faydalanma.", 'Sell options at maximum IV. Benefit from IV expansion.')}</div>
+            <div className="font-semibold mb-1" style={{ color: 'oklch(0.85 0.01 220)' }}>{t("common:phase2Sell12")}</div>
+            <div style={{ color: 'oklch(0.65 0.015 225)' }}>{t("common:sellOptionsAtMaximumIv")}</div>
           </div>
           <div>
-            <div className="font-semibold mb-1" style={{ color: 'oklch(0.85 0.01 220)' }}>{copy(language, 'Aşama 3: Kar', 'Phase 3: Profit')}</div>
-            <div style={{ color: 'oklch(0.65 0.015 225)' }}>{copy(language, "IV crush'tan kaçın, IV expansion'dan kazanç sağla. Earnings riski yok.", 'Avoid IV crush, profit from IV expansion. No earnings risk.')}</div>
+            <div className="font-semibold mb-1" style={{ color: 'oklch(0.85 0.01 220)' }}>{t("common:phase3Profit")}</div>
+            <div style={{ color: 'oklch(0.65 0.015 225)' }}>{t("common:avoidIvCrushProfitFrom")}</div>
           </div>
         </div>
       </div>
@@ -145,7 +121,7 @@ export default function IVCrushTab({
         <div className="flex items-center gap-2 mb-3">
           <div className="w-1 h-4" style={{ background: 'oklch(0.78 0.18 160)' }} />
           <h2 className="heading-condensed text-base" style={{ color: 'oklch(0.92 0.01 220)' }}>
-            {copy(language, 'IV CRUSH FIRASAT SIRALAMASI', 'IV CRUSH OPPORTUNITY RANKING')}
+            {t("common:ivCrushOpportunityRanking")}
           </h2>
         </div>
         <div className="hidden md:block overflow-x-auto">
@@ -153,16 +129,16 @@ export default function IVCrushTab({
             <thead>
               <tr style={{ borderBottom: '2px solid oklch(0.22 0.03 225)', background: 'oklch(0.13 0.025 230)' }}>
                 {[
-                  copy(language, 'Sıra', 'Rank'),
-                  copy(language, 'Hisse', 'Stock'),
-                  copy(language, 'Rating', 'Rating'),
-                  copy(language, 'IV Crush Skoru', 'IV Crush Score'),
-                  copy(language, 'Yönsel Ağırlık', 'Directional Weight'),
-                  copy(language, 'Mevcut IV', 'Current IV'),
-                  copy(language, 'Beklenen IV Crush', 'Expected IV Crush'),
-                  copy(language, 'Hedef Kar', 'Target Profit'),
-                  copy(language, 'Risk', 'Risk'),
-                  copy(language, 'Strateji', 'Strategy'),
+                  t("common:rank"),
+                  t("common:stock"),
+                  'Rating',
+                  t("common:ivCrushScore"),
+                  t("common:directionalWeight"),
+                  t("common:currentIv"),
+                  t("common:expectedIvCrush"),
+                  t("common:targetProfit"),
+                  'Risk',
+                  t("common:strategy"),
                 ].map(h => (
                   <th key={h} className="px-3 py-2 text-left heading-condensed text-xs tracking-wider" style={{ color: 'oklch(0.55 0.015 225)' }}>
                     {h}
@@ -270,14 +246,14 @@ export default function IVCrushTab({
           <div className="flex items-center gap-2 mb-3">
             <div className="w-1 h-4" style={{ background: 'oklch(0.6 0.12 250)' }} />
             <h2 className="heading-condensed text-base" style={{ color: 'oklch(0.92 0.01 220)' }}>
-              {copy(language, 'MEVCUT IV vs MOMENTUM SKORU', 'CURRENT IV vs MOMENTUM SCORE')}
+              {t("common:currentIvVsMomentumScore")}
             </h2>
           </div>
           <div className="data-card p-4" style={{ height: '300px' }}>
             <ChartContainer
               aria-label={getChartAriaLabel(
-                copy(language, 'Mevcut IV ve momentum scatter grafiği', 'Current IV and momentum scatter chart'),
-                copy(language, 'X ekseni mevcut implied volatility, Y ekseni momentum skoru ve nokta rengi strateji ratingini gösterir.', 'The X axis shows current implied volatility, the Y axis shows momentum score, and point color shows strategy rating.')
+                t("common:brokenMomentumWeakSectoralSupport"),
+                t("common:theXAxisShowsCurrent")
               )}
               className="h-full aspect-auto"
               config={scatterChartConfig}
@@ -286,16 +262,16 @@ export default function IVCrushTab({
                 <CartesianGrid {...chartGrid} />
                 <XAxis
                   dataKey="x"
-                  name={copy(language, 'Mevcut IV', 'Current IV')}
+                  name={t("common:currentIv")}
                   unit=""
                   tick={chartAxisTick}
-                  label={chartAxisLabel(copy(language, 'Mevcut IV', 'Current IV'), { position: 'insideBottom', offset: -10 })}
+                  label={chartAxisLabel(t("flow:loadingDailyReportLibrary"), { position: 'insideBottom', offset: -10 })}
                 />
                 <YAxis
                   dataKey="y"
-                  name={copy(language, 'Momentum', 'Momentum')}
+                  name={'Momentum'}
                   tick={chartAxisTick}
-                  label={chartAxisLabel(copy(language, 'Momentum Skoru', 'Momentum Score'), { angle: -90, position: 'insideLeft' })}
+                  label={chartAxisLabel(t("scanner:red"), { angle: -90, position: 'insideLeft' })}
                 />
                 <ChartTooltip
                   cursor={chartCursorLine}
@@ -315,14 +291,14 @@ export default function IVCrushTab({
                           </div>
                           <div className="flex items-center justify-between gap-3">
                             <span className="text-muted-foreground">
-                              {copy(language, 'Momentum', 'Momentum')}
+                              {'Momentum'}
                             </span>
                             <span className="data-mono font-semibold text-foreground">
                               {formatChartNumber(datum?.y)}
                             </span>
                           </div>
                           <div className="flex items-center justify-between gap-3">
-                            <span className="text-muted-foreground">{copy(language, 'IV Cokusu', 'IV Crush')}</span>
+                            <span className="text-muted-foreground">{t("common:ivCrush")}</span>
                             <Delta
                               value={coerceChartNumber(datum?.crush as number | string | null | undefined) === null ? null : -coerceChartNumber(datum?.crush as number | string | null | undefined)!}
                               precision={1}
@@ -334,7 +310,7 @@ export default function IVCrushTab({
                     />
                   }
                 />
-                <Scatter data={scatterData} name={copy(language, 'Hisseler', 'Stocks')}>
+                <Scatter data={scatterData} name={t("common:stocksa823")}>
                   {scatterData.map((entry, i) => (
                     <Cell key={i} fill={getRatingChartColor(entry.rating)} />
                   ))}
@@ -349,14 +325,14 @@ export default function IVCrushTab({
           <div className="flex items-center gap-2 mb-3">
             <div className="w-1 h-4" style={{ background: 'oklch(0.75 0.15 75)' }} />
             <h2 className="heading-condensed text-base" style={{ color: 'oklch(0.92 0.01 220)' }}>
-              {copy(language, 'CALL vs PUT KAR POTANSİYELİ', 'CALL vs PUT PROFIT POTENTIAL')}
+              {t("common:callVsPutProfitPotential")}
             </h2>
           </div>
           <div className="data-card p-4" style={{ height: '300px' }}>
             <ChartContainer
               aria-label={getChartAriaLabel(
-                copy(language, 'Call ve put kar potansiyeli grafiği', 'Call and put profit potential chart'),
-                copy(language, 'Her hisse için call ve put tarafındaki potansiyel IV getirisi yan yana gösterilir.', 'Shows potential IV-driven returns for call and put positions side by side for each stock.')
+                t("common:callAndPutProfitPotential"),
+                t("common:showsPotentialIvDrivenReturns")
               )}
               className="h-full aspect-auto"
               config={profitChartConfig}
@@ -377,19 +353,19 @@ export default function IVCrushTab({
                           </div>
                           <div className="flex items-center justify-between gap-3">
                             <span className="text-muted-foreground">
-                              {copy(language, 'Call Kazancı', 'Call Profit')}
+                              {t("common:callProfit")}
                             </span>
                             <Delta value={coerceChartNumber(datum?.callGain as number | string | null | undefined)} precision={1} />
                           </div>
                           <div className="flex items-center justify-between gap-3">
                             <span className="text-muted-foreground">
-                              {copy(language, 'Put Kazancı', 'Put Profit')}
+                              {t("common:putProfit")}
                             </span>
                             <Delta value={coerceChartNumber(datum?.putGain as number | string | null | undefined)} precision={1} />
                           </div>
                           <div className="flex items-center justify-between gap-3">
                             <span className="text-muted-foreground">
-                              {copy(language, 'Hedef Kar', 'Target Profit')}
+                              {t("common:targetProfit")}
                             </span>
                             <span className="data-mono font-semibold text-foreground">
                               {formatChartPercent(datum?.targetProfit, 1)}
@@ -401,8 +377,8 @@ export default function IVCrushTab({
                   }
                 />
                 <ChartLegend content={<ChartLegendContent />} />
-                <Bar dataKey="callGain" name={copy(language, 'Call Kazancı', 'Call Profit')} fill={chartPalette.bull} maxBarSize={20} />
-                <Bar dataKey="putGain" name={copy(language, 'Put Kazancı', 'Put Profit')} fill={chartPalette.warning} maxBarSize={20} />
+                <Bar dataKey="callGain" name={t("common:callProfit")} fill={chartPalette.bull} maxBarSize={20} />
+                <Bar dataKey="putGain" name={t("common:putProfit")} fill={chartPalette.warning} maxBarSize={20} />
               </BarChart>
             </ChartContainer>
           </div>
@@ -414,7 +390,7 @@ export default function IVCrushTab({
         <div className="flex items-center gap-2 mb-3">
           <div className="w-1 h-4" style={{ background: 'oklch(0.78 0.18 160)' }} />
           <h2 className="heading-condensed text-base" style={{ color: 'oklch(0.92 0.01 220)' }}>
-            {copy(language, 'EN İYİ FIRASAT HISSELER', 'TOP OPPORTUNITY STOCKS')}
+            {t("common:topOpportunityStocks")}
           </h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -442,24 +418,24 @@ export default function IVCrushTab({
                 <div className="text-sm mb-3" style={{ color: 'oklch(0.65 0.015 225)' }}>{stock.name}</div>
                 <div className="grid grid-cols-2 gap-2 mb-3">
                   <div>
-                    <div className="text-xs" style={{ color: 'oklch(0.4 0.015 225)' }}>{copy(language, 'Mevcut IV', 'Current IV')}</div>
+                    <div className="text-xs" style={{ color: 'oklch(0.4 0.015 225)' }}>{t("common:currentIv")}</div>
                     <div className="data-mono text-sm font-bold" style={{ color: 'oklch(0.75 0.15 75)' }}>{stock.currentIV}</div>
                   </div>
                   <div>
-                    <div className="text-xs" style={{ color: 'oklch(0.4 0.015 225)' }}>{copy(language, 'IV Crush', 'IV Crush')}</div>
+                    <div className="text-xs" style={{ color: 'oklch(0.4 0.015 225)' }}>{'IV Crush'}</div>
                     <div className="data-mono text-sm font-bold" style={{ color: 'oklch(0.78 0.18 160)' }}>-{stock.expectedIVCrush}%</div>
                   </div>
                   <div>
-                    <div className="text-xs" style={{ color: 'oklch(0.4 0.015 225)' }}>{copy(language, 'Yönsel Neden', 'Directional Reason')}</div>
+                    <div className="text-xs" style={{ color: 'oklch(0.4 0.015 225)' }}>{t("common:directionalReason")}</div>
                     <div className="text-[10px] leading-tight" style={{ color: biasColor }}>{stock.biasReason}</div>
                   </div>
                   <div>
-                    <div className="text-xs" style={{ color: 'oklch(0.4 0.015 225)' }}>{copy(language, 'Hedef Kar', 'Target Profit')}</div>
+                    <div className="text-xs" style={{ color: 'oklch(0.4 0.015 225)' }}>{t("common:targetProfit")}</div>
                     <div className="data-mono text-sm font-bold" style={{ color: 'oklch(0.75 0.15 75)' }}>{stock.targetProfit}%</div>
                   </div>
                 </div>
                 <div className="text-xs" style={{ color: 'oklch(0.55 0.015 225)' }}>
-                  <strong>{copy(language, 'Strateji:', 'Strategy:')}</strong> {stock.recommendedStrategy}
+                  <strong>{t("common:strategyac72")}</strong> {stock.recommendedStrategy}
                 </div>
               </button>
             );
@@ -470,24 +446,24 @@ export default function IVCrushTab({
       {/* Risk Warning */}
       <div className="data-card p-4" style={{ borderLeftColor: 'oklch(0.65 0.22 25)', borderLeftWidth: '4px' }}>
         <div className="heading-condensed text-sm mb-2" style={{ color: 'oklch(0.65 0.22 25)' }}>
-          {copy(language, '⚠ RİSK UYARISI', '⚠ RISK WARNING')}
+          {t("common:riskWarning")}
         </div>
         <div className="text-sm space-y-1.5" style={{ color: 'oklch(0.65 0.015 225)' }}>
           <p>
-            <strong>{copy(language, 'Earnings Miss Riski:', 'Earnings Miss Risk:')}</strong>{' '}
-            {copy(language, "Fiyat keskin düşüş yaşayabilir. IV crush play'i yaparken, directional risk'ten kaçınmak için spread stratejileri (Bull Call Spread, Iron Condor) kullın.", 'Price may drop sharply. When playing IV crush, use spread strategies (Bull Call Spread, Iron Condor) to avoid directional risk.')}
+            <strong>{t("common:earningsMissRisk")}</strong>{' '}
+            {t("common:priceMayDropSharplyWhen")}
           </p>
           <p>
-            <strong>{copy(language, 'Gap Risk:', 'Gap Risk:')}</strong>{' '}
-            {copy(language, "Earnings sonrası gap açılabilir. Pozisyon sizing'i küçük tutun.", 'Gap may open after earnings. Keep position sizing small.')}
+            <strong>{'Gap Risk:'}</strong>{' '}
+            {t("common:gapMayOpenAfterEarnings")}
           </p>
           <p>
-            <strong>{copy(language, 'IV Expansion Riski:', 'IV Expansion Risk:')}</strong>{' '}
-            {copy(language, 'Bazı durumlarda IV crush yerine expansion olabilir (ör. geopolitik kriz). Tarihsel IV crush oranlarını kontrol edin.', 'In some cases, expansion may occur instead of IV crush (e.g. geopolitical crisis). Check historical IV crush rates.')}
+            <strong>{t("common:ivExpansionRisk")}</strong>{' '}
+            {t("common:inSomeCasesExpansionMay")}
           </p>
           <p>
-            <strong>{copy(language, 'Friday Kapanış:', 'Friday Close:')}</strong>{' '}
-            {copy(language, "Earnings Perşembe/Cuma açıklanırsa, Friday options çok riskli. Önceki hafta Friday options tercih edin.", "If earnings are announced Thursday/Friday, Friday options are very risky. Prefer the previous week's Friday options.")}
+            <strong>{t("common:fridayClose")}</strong>{' '}
+            {t("common:ifEarningsAreAnnouncedThursday")}
           </p>
         </div>
       </div>
@@ -544,7 +520,7 @@ function IVCrushMobileCard({
         </div>
         <div className="text-right">
           <div className="text-[13px] text-muted-foreground">
-            {copy(language, 'IV Crush Skoru', 'IV Crush Score')}
+            {t("common:ivCrushScore")}
           </div>
           <div className="data-mono text-lg font-bold" style={{ color: cfg.color }}>
             {stock.ivCrushScore}
@@ -578,21 +554,21 @@ function IVCrushMobileCard({
       <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
         <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
           <div className="text-[13px] text-muted-foreground">
-            {copy(language, 'Mevcut IV', 'Current IV')}
+            {t("common:currentIv")}
           </div>
           <div className="mt-1 data-mono font-semibold text-foreground">
             {stock.currentIV}
           </div>
         </div>
         <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
-          <div className="text-[13px] text-muted-foreground">{copy(language, 'IV Cokusu', 'IV Crush')}</div>
+          <div className="text-[13px] text-muted-foreground">{t("common:ivCrush")}</div>
           <div className="mt-1">
             <Delta value={-stock.expectedIVCrush} precision={1} positiveIsGood={false} />
           </div>
         </div>
         <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
           <div className="text-[13px] text-muted-foreground">
-            {copy(language, 'Hedef Kar', 'Target Profit')}
+            {t("common:targetProfit")}
           </div>
           <div className="mt-1">
             <Delta value={stock.targetProfit} precision={1} />
@@ -600,7 +576,7 @@ function IVCrushMobileCard({
         </div>
         <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
           <div className="text-[13px] text-muted-foreground">
-            {copy(language, 'Strateji', 'Strategy')}
+            {t("common:strategy")}
           </div>
           <div className="mt-1 text-sm font-semibold text-foreground">
             {stock.recommendedStrategy.split('(')[0].trim()}

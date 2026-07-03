@@ -1,19 +1,7 @@
-import {
-  Activity,
-  CandlestickChart,
-  ShieldAlert,
-  TrendingDown,
-  TrendingUp,
-  Waves,
-} from "lucide-react";
+import { Activity, CandlestickChart, ShieldAlert, TrendingDown, TrendingUp, Waves, } from "lucide-react";
 import type {
-  MacroRow,
-  MomentumHavenRow,
-  MomentumMoverRow,
-  MomentumReportSource,
-  MomentumSectorRow,
-} from "@/lib/momentumReportSource";
-import { copy } from "@/lib/i18n";
+  MacroRow, MomentumHavenRow, MomentumMoverRow, MomentumReportSource, MomentumSectorRow, } from "@/lib/momentumReportSource";
+import { t } from "@/lib/i18n";
 import type { AppLanguage } from "@/lib/i18n";
 
 function SimpleMetricCard({
@@ -129,11 +117,7 @@ function MacroStack({ title, rows, language }: { title: string; rows: MacroRow[]
           ))
         ) : (
           <EmptyPanel
-            message={copy(
-              language,
-              "Bu blokta parse edilen veri yok.",
-              "No parsed data is available in this block."
-            )}
+            message={t("scanner:noParsedDataIsAvailable")}
           />
         )}
       </div>
@@ -196,16 +180,8 @@ function MoversStack({
           <EmptyPanel
             message={
               positive
-                ? copy(
-                    language,
-                    "Yukari momentum listesi bu raporda ayri gelmedi.",
-                    "The upside momentum list did not come through separately in this report."
-                  )
-                : copy(
-                    language,
-                    "Asagi momentum listesi bu raporda ayri gelmedi.",
-                    "The downside momentum list did not come through separately in this report."
-                  )
+                ? t("scanner:theUpsideMomentumListDid")
+                : t("scanner:theDownsideMomentumListDid")
             }
           />
         )}
@@ -221,7 +197,7 @@ function HavenStack({ rows, language }: { rows: MomentumHavenRow[]; language: Ap
       <div className="flex items-center gap-2">
         <ShieldAlert className="size-4 text-amber-300" />
         <h3 className="heading-condensed text-xl text-foreground">
-          {copy(language, "Defansif", "Defensive")}
+          {t("common:defensive")}
         </h3>
       </div>
       <div className="mt-4 space-y-3">
@@ -244,11 +220,7 @@ function HavenStack({ rows, language }: { rows: MomentumHavenRow[]; language: Ap
           ))
         ) : (
           <EmptyPanel
-            message={copy(
-              language,
-              "Defensive veya hedge notu bu raporda ayri gelmedi.",
-              "The defensive or hedge note did not come through separately in this report."
-            )}
+            message={t("scanner:theDefensiveOrHedgeNote")}
           />
         )}
       </div>
@@ -284,17 +256,13 @@ export default function MomentumMarketTab({
           </div>
           <div className="space-y-2">
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-              {copy(language, "Market Pulse", "Market Pulse")}
+              {"Market Pulse"}
             </p>
             <h2 className="heading-condensed text-3xl text-foreground">
-              {copy(language, "Sade piyasa okuma katmani", "Simplified market reading layer")}
+              {t("scanner:simplifiedMarketReadingLayer")}
             </h2>
             <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-              {copy(
-                language,
-                "Grafik yerine secili momentum markdown dosyasindaki endeks, VIX, sektor ve makro bloklari dogrudan okunur tablolarla gosterilir.",
-                "Instead of charts, the index, VIX, sector and macro blocks from the selected momentum markdown are shown in direct readable tables."
-              )}
+              {t("scanner:insteadOfChartsTheIndex")}
             </p>
           </div>
         </div>
@@ -304,35 +272,35 @@ export default function MomentumMarketTab({
         <SimpleMetricCard
           label="VIX"
           value={vixClose?.value || report.vixRows[0]?.value || report.regimeLabel || "-"}
-          note={vixClose?.comment || report.vixCommentary[0] || copy(language, "Secili rapordan okunur.", "Read from the selected report.")}
+          note={vixClose?.comment || report.vixCommentary[0] || t("scanner:readFromTheSelectedReport")}
         />
         <SimpleMetricCard
-          label={copy(language, "Gunluk VIX", "Daily VIX")}
+          label={t("scanner:dailyVix")}
           value={vixChange?.value || "-"}
-          note={vixChange?.comment || copy(language, "Kisa vade korku temposu.", "Short-term fear tempo.")}
+          note={vixChange?.comment || t("scanner:shortTermFearTempo")}
         />
         <SimpleMetricCard
-          label={copy(language, "Rejim", "Regime")}
+          label={t("common:regime")}
           value={report.regimeLabel || "-"}
-          note={copy(language, "Tum setup yorumu bu rejimden turetilir.", "All setup interpretation is derived from this regime.")}
+          note={t("scanner:allSetupInterpretationIsDerived")}
         />
         <SimpleMetricCard
-          label={copy(language, "Okuma Suresi", "Reading Time")}
+          label={t("scanner:readingTime")}
           value={report.readingTimeLabel || "-"}
-          note={copy(language, "Kaynak raporda belirtilen tahmini sure.", "Estimated time stated in the source report.")}
+          note={t("scanner:estimatedTimeStatedInThe")}
         />
       </section>
 
       <section className="grid gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
         <DataTable
-          eyebrow={copy(language, "Ana Endeksler", "Major Indices")}
-          title={copy(language, "Endeks hareketleri", "Index moves")}
+          eyebrow={t("scanner:majorIndices")}
+          title={t("scanner:indexMoves")}
           headers={[
-            copy(language, "Endeks", "Index"),
-            copy(language, "Kapanis", "Close"),
-            copy(language, "Degisim", "Change"),
-            copy(language, "% Degisim", "% Change"),
-            copy(language, "Yorum", "Comment"),
+            t("scanner:index"),
+            t("scanner:close"),
+            t("common:change"),
+            t("scanner:change"),
+            t("scanner:comment"),
           ]}
           rows={report.indexRows.map(row => [
             row.index,
@@ -347,7 +315,7 @@ export default function MomentumMarketTab({
           <div className="flex items-center gap-2">
             <Waves className="size-4 text-cyan-300" />
             <h3 className="heading-condensed text-xl text-foreground">
-              {copy(language, "Volatilite Notlari", "Volatility Notes")}
+              {t("scanner:volatilityNotes")}
             </h3>
           </div>
           <div className="mt-4 space-y-3">
@@ -372,18 +340,14 @@ export default function MomentumMarketTab({
               ))
             ) : (
               <EmptyPanel
-                message={copy(
-                  language,
-                  "VIX bloklari bu raporda parse edilemedi.",
-                  "VIX blocks could not be parsed from this report."
-                )}
+                message={t("scanner:vixBlocksCouldNotBe")}
               />
             )}
 
             {report.vixCommentary.length ? (
               <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/8 p-4">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                  {copy(language, "Editor Notu", "Editor Note")}
+                  {t("scanner:editorNote")}
                 </p>
                 <div className="mt-2 space-y-2 text-sm leading-7 text-foreground/90">
                   {report.vixCommentary.map(line => (
@@ -397,26 +361,26 @@ export default function MomentumMarketTab({
       </section>
 
       <DataTable
-        eyebrow={copy(language, "Sektorler", "Sectors")}
-        title={copy(language, "Sektor dagilimi", "Sector distribution")}
+        eyebrow={t("scanner:sectors")}
+        title={t("scanner:sectorDistributiond3a7")}
         headers={[
-          copy(language, "Sektor", "Sector"),
-          copy(language, "Gunluk", "Daily"),
-          copy(language, "Haftalik", "Weekly"),
-          copy(language, "Yorum", "Comment"),
+          t("common:sectorc5c4"),
+          t("common:daily"),
+          t("common:weekly"),
+          t("scanner:comment"),
         ]}
         rows={formatSectorRows(report.sectorRows)}
       />
 
       <section className="grid gap-6 xl:grid-cols-3">
         <MoversStack
-          title={copy(language, "Guclu Yukselenler", "Strong Gainers")}
+          title={t("scanner:strongGainers")}
           rows={report.gainerRows}
           positive
           language={language}
         />
         <MoversStack
-          title={copy(language, "Zayiflayanlar", "Weakening Names")}
+          title={t("scanner:weakeningNames")}
           rows={report.loserRows}
           positive={false}
           language={language}
@@ -425,9 +389,9 @@ export default function MomentumMarketTab({
       </section>
 
       <section className="grid gap-6 xl:grid-cols-3">
-        <MacroStack title={copy(language, "Makro Takvim", "Macro Calendar")} rows={report.rateRows} language={language} />
-        <MacroStack title={copy(language, "Buyume / Veri", "Growth / Data")} rows={report.growthRows} language={language} />
-        <MacroStack title={copy(language, "Risk / Outlook", "Risk / Outlook")} rows={report.forecastRows} language={language} />
+        <MacroStack title={t("scanner:macroCalendar")} rows={report.rateRows} language={language} />
+        <MacroStack title={t("scanner:growthData")} rows={report.growthRows} language={language} />
+        <MacroStack title={"Risk / Outlook"} rows={report.forecastRows} language={language} />
       </section>
     </div>
   );

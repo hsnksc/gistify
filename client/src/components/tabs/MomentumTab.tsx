@@ -4,35 +4,15 @@
  */
 
 import { stocksData, signalConfig, riskConfig, type StockData } from '@/lib/stockData';
-import { copy, type AppLanguage } from '@/lib/i18n';
+import { type AppLanguage } from "@/lib/i18n";
 import { Delta } from '@/components/ui/delta';
 import {
-  ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
-  ChartTooltip,
-  ChartTooltipContent,
-  type ChartConfig,
-} from '@/components/ui/chart';
+  ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent, type ChartConfig, } from '@/components/ui/chart';
 import {
-  chartAxisLabel,
-  chartAxisStrongTick,
-  chartAxisTick,
-  chartCursorLine,
-  chartCursorZone,
-  chartGrid,
-  chartPalette,
-  coerceChartNumber,
-  formatChartNumber,
-  formatChartPercent,
-  getChartAriaLabel,
-  getMomentumBandColor,
-  getSignalChartColor,
-} from '@/lib/chartTheme';
+  chartAxisLabel, chartAxisStrongTick, chartAxisTick, chartCursorLine, chartCursorZone, chartGrid, chartPalette, coerceChartNumber, formatChartNumber, formatChartPercent, getChartAriaLabel, getMomentumBandColor, getSignalChartColor, } from '@/lib/chartTheme';
 import {
-  ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Cell,
-  BarChart, Bar,
-} from 'recharts';
+  ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Cell, BarChart, Bar, } from 'recharts';import { t } from "@/lib/i18n";
+
 
 interface Props {
   onStockClick: (ticker: string) => void;
@@ -58,17 +38,17 @@ export default function MomentumTab({ onStockClick, stocks = stocksData, languag
   }));
   const scatterChartConfig = {
     y: {
-      label: copy(language, 'Momentum', 'Momentum'),
+      label: 'Momentum',
       color: chartPalette.accent,
     },
   } satisfies ChartConfig;
   const volumeChartConfig = {
     mevcut: {
-      label: copy(language, 'Mevcut Hacim', 'Current Volume'),
+      label: t("common:currentVolume"),
       color: chartPalette.bull,
     },
     ortalama: {
-      label: copy(language, '3A Ortalama Hacim', '3M Avg Volume'),
+      label: t("common:3mAvgVolume"),
       color: chartPalette.warning,
     },
   } satisfies ChartConfig;
@@ -80,26 +60,26 @@ export default function MomentumTab({ onStockClick, stocks = stocksData, languag
         <div className="flex items-center gap-2 mb-1">
           <div className="w-1 h-5" style={{ background: 'oklch(0.78 0.18 160)' }} />
           <h1 className="heading-condensed text-xl" style={{ color: 'oklch(0.92 0.01 220)' }}>
-            {copy(language, 'GERÇEK MOMENTUM SKORLAMASI', 'REAL MOMENTUM SCORING')}
+            {t("common:realMomentumScoring")}
           </h1>
         </div>
         <p className="text-sm ml-3" style={{ color: 'oklch(0.5 0.015 225)' }}>
-          {copy(language, 'Fiyat + Hacim + Sektörel Destek + Korelasyon Uyumu + Analist Konsensüsü', 'Price + Volume + Sector Support + Correlation Alignment + Analyst Consensus')}
+          {t("common:priceVolumeSectorSupportCorrelation")}
         </p>
       </div>
 
       {/* Methodology */}
       <div className="p-4 border-l-2" style={{ borderColor: 'oklch(0.75 0.15 75)', background: 'oklch(0.75 0.15 75 / 0.05)' }}>
         <div className="text-xs font-semibold mb-2 tracking-wide uppercase" style={{ color: 'oklch(0.75 0.15 75)' }}>
-          {copy(language, 'Metodoloji', 'Methodology')}
+          {t("common:methodology")}
         </div>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
           {[
-            { id: 'Fiyat Momentum', label: copy(language, 'Fiyat Momentum', 'Price Momentum'), weight: '25%', desc: copy(language, '6A + 1A getiri', '6M + 1M return') },
-            { id: 'Hacim Analizi', label: copy(language, 'Hacim Analizi', 'Volume Analysis'), weight: '20%', desc: copy(language, 'Fiyat-hacim uyumu', 'Price-volume alignment') },
-            { id: 'Sektörel Destek', label: copy(language, 'Sektörel Destek', 'Sector Support'), weight: '20%', desc: copy(language, 'ETF korelasyonu', 'ETF correlation') },
-            { id: 'Analist Konsensüs', label: copy(language, 'Analist Konsensüs', 'Analyst Consensus'), weight: '20%', desc: copy(language, 'Buy % + hedef', 'Buy % + target') },
-            { id: 'Earnings Geçmişi', label: copy(language, 'Earnings Geçmişi', 'Earnings History'), weight: '15%', desc: copy(language, 'Beat oranı + büyüme', 'Beat rate + growth') },
+            { id: 'Fiyat Momentum', label: t("common:priceMomentum"), weight: '25%', desc: t("common:6m1mReturn") },
+            { id: 'Hacim Analizi', label: t("common:volumeAnalysis"), weight: '20%', desc: t("common:priceVolumeAlignment") },
+            { id: 'Sektörel Destek', label: t("common:sectorSupport"), weight: '20%', desc: t("common:etfCorrelation") },
+            { id: 'Analist Konsensüs', label: t("common:analystConsensus"), weight: '20%', desc: t("common:buyTarget") },
+            { id: 'Earnings Geçmişi', label: t("common:earningsHistory"), weight: '15%', desc: t("common:beatRateGrowth") },
           ].map(m => (
             <div key={m.id} className="text-center">
               <div className="data-mono text-lg font-bold" style={{ color: 'oklch(0.78 0.18 160)' }}>{m.weight}</div>
@@ -115,7 +95,7 @@ export default function MomentumTab({ onStockClick, stocks = stocksData, languag
         <div className="flex items-center gap-2 mb-3">
           <div className="w-1 h-4" style={{ background: 'oklch(0.78 0.18 160)' }} />
           <h2 className="heading-condensed text-base" style={{ color: 'oklch(0.92 0.01 220)' }}>
-            {copy(language, 'TAM SKORLAMA TABLOSU', 'FULL SCORING TABLE')}
+            {t("common:fullScoringTable")}
           </h2>
         </div>
         <div className="hidden md:block overflow-x-auto">
@@ -123,17 +103,17 @@ export default function MomentumTab({ onStockClick, stocks = stocksData, languag
             <thead>
               <tr style={{ borderBottom: '2px solid oklch(0.22 0.03 225)', background: 'oklch(0.13 0.025 230)' }}>
                 {[
-                  copy(language, 'Sıra', 'Rank'),
-                  copy(language, 'Hisse', 'Ticker'),
-                  copy(language, 'Sinyal', 'Signal'),
-                  copy(language, 'Momentum', 'Momentum'),
-                  copy(language, 'Beat İht.', 'Beat Prob.'),
-                  copy(language, '6A Getiri', '6M Return'),
-                  copy(language, 'RSI', 'RSI'),
-                  copy(language, 'Hacim', 'Volume'),
-                  copy(language, 'Analist Buy%', 'Analyst Buy%'),
-                  copy(language, 'Risk', 'Risk'),
-                  copy(language, 'Earnings', 'Earnings'),
+                  t("common:rank"),
+                  t("common:ticker"),
+                  t("common:signal"),
+                  'Momentum',
+                  t("common:beatProb3e17"),
+                  t("common:6mReturn"),
+                  'RSI',
+                  t("common:volume"),
+                  t("common:analystBuy"),
+                  'Risk',
+                  'Earnings',
                 ].map((h, idx) => (
                   <th key={idx} className="px-3 py-2 text-left heading-condensed text-xs tracking-wider" style={{ color: 'oklch(0.55 0.015 225)' }}>
                     {h}
@@ -222,12 +202,12 @@ export default function MomentumTab({ onStockClick, stocks = stocksData, languag
                         'text-amber-400'
                       }`}>
                         {stock.volumeStatus === 'VERY_HIGH'
-                          ? copy(language, 'Çok Yüksek', 'Very High')
+                          ? t("common:veryHigh")
                           : stock.volumeStatus === 'HIGH'
-                            ? copy(language, 'Yüksek', 'High')
+                            ? t("common:highbd6c")
                             : stock.volumeStatus === 'LOW'
-                              ? copy(language, 'Düşük', 'Low')
-                              : copy(language, 'Normal', 'Normal')}
+                              ? t("common:low2982")
+                              : 'Normal'}
                       </span>
                     </td>
                     <td className="px-3 py-2.5">
@@ -271,14 +251,14 @@ export default function MomentumTab({ onStockClick, stocks = stocksData, languag
           <div className="flex items-center gap-2 mb-3">
             <div className="w-1 h-4" style={{ background: 'oklch(0.6 0.12 250)' }} />
             <h2 className="heading-condensed text-base" style={{ color: 'oklch(0.92 0.01 220)' }}>
-              {copy(language, '6A GETİRİ vs MOMENTUM SKORU', '6M RETURN vs MOMENTUM SCORE')}
+              {t("common:6mReturnVsMomentumScore")}
             </h2>
           </div>
           <div className="data-card p-4" style={{ height: '320px' }}>
             <ChartContainer
               aria-label={getChartAriaLabel(
-                copy(language, '6A getiri ve momentum saçılım grafiği', '6M return and momentum scatter chart'),
-                copy(language, 'X ekseni altı aylık getiriyi, Y ekseni momentum skorunu ve nokta rengi sinyal gücünü gösterir.', 'X axis shows six-month return, Y axis shows momentum score, and dot color shows signal strength.')
+                t("common:6mReturnAndMomentumScatter"),
+                t("common:xAxisShowsSixMonth")
               )}
               className="h-full aspect-auto"
               config={scatterChartConfig}
@@ -287,16 +267,16 @@ export default function MomentumTab({ onStockClick, stocks = stocksData, languag
                 <CartesianGrid {...chartGrid} />
                 <XAxis
                   dataKey="x"
-                  name={copy(language, '6A Getiri', '6M Return')}
+                  name={t("common:6mReturn")}
                   unit="%"
                   tick={chartAxisTick}
-                  label={chartAxisLabel(copy(language, '6A Getiri (%)', '6M Return (%)'), { position: 'insideBottom', offset: -10 })}
+                  label={chartAxisLabel(t("common:6mReturn5a67"), { position: 'insideBottom', offset: -10 })}
                 />
                 <YAxis
                   dataKey="y"
-                  name={copy(language, 'Momentum', 'Momentum')}
+                  name={'Momentum'}
                   tick={chartAxisTick}
-                  label={chartAxisLabel(copy(language, 'Momentum', 'Momentum'), { angle: -90, position: 'insideLeft' })}
+                  label={chartAxisLabel('Momentum', { angle: -90, position: 'insideLeft' })}
                 />
                 <ChartTooltip
                   cursor={chartCursorLine}
@@ -309,17 +289,17 @@ export default function MomentumTab({ onStockClick, stocks = stocksData, languag
                             {label}
                           </div>
                           <div className="flex items-center justify-between gap-3">
-                            <span className="text-muted-foreground">{copy(language, '6A Getiri', '6M Return')}</span>
+                            <span className="text-muted-foreground">{t("common:6mReturn")}</span>
                             <Delta value={coerceChartNumber(datum?.x as number | string | null | undefined)} precision={1} />
                           </div>
                           <div className="flex items-center justify-between gap-3">
-                            <span className="text-muted-foreground">{copy(language, 'Momentum', 'Momentum')}</span>
+                            <span className="text-muted-foreground">{'Momentum'}</span>
                             <span className="data-mono font-semibold text-foreground">
                               {formatChartNumber(datum?.y)}
                             </span>
                           </div>
                           <div className="flex items-center justify-between gap-3">
-                            <span className="text-muted-foreground">{copy(language, 'Beat İht.', 'Beat Prob.')}</span>
+                            <span className="text-muted-foreground">{t("common:beatProb3e17")}</span>
                             <span className="data-mono font-semibold text-foreground">
                               {formatChartPercent(datum?.beat)}
                             </span>
@@ -329,7 +309,7 @@ export default function MomentumTab({ onStockClick, stocks = stocksData, languag
                     />
                   }
                 />
-                <Scatter data={scatterData} name={copy(language, 'Hisseler', 'Tickers')}>
+                <Scatter data={scatterData} name={t("flow:ticker")}>
                   {scatterData.map((entry, i) => (
                     <Cell key={i} fill={getSignalChartColor(entry.signal)} />
                   ))}
@@ -344,14 +324,14 @@ export default function MomentumTab({ onStockClick, stocks = stocksData, languag
           <div className="flex items-center gap-2 mb-3">
             <div className="w-1 h-4" style={{ background: 'oklch(0.75 0.15 75)' }} />
             <h2 className="heading-condensed text-base" style={{ color: 'oklch(0.92 0.01 220)' }}>
-              {copy(language, 'HACİM ANALİZİ (MEVCUT vs 3A ORT.)', 'VOLUME ANALYSIS (CURRENT vs 3M AVG)')}
+              {t("common:volumeAnalysisCurrentVs3m")}
             </h2>
           </div>
           <div className="data-card p-4" style={{ height: '320px' }}>
             <ChartContainer
               aria-label={getChartAriaLabel(
-                copy(language, 'Hacim karşılaştırma grafiği', 'Volume comparison chart'),
-                copy(language, 'Her hisse için mevcut hacim ile üç aylık ortalama hacim yan yana gösterilir.', 'Current volume vs three-month average volume shown side by side for each ticker.')
+                t("common:volumeComparisonChart"),
+                t("common:currentVolumeVsThreeMonth")
               )}
               className="h-full aspect-auto"
               config={volumeChartConfig}
@@ -371,13 +351,13 @@ export default function MomentumTab({ onStockClick, stocks = stocksData, languag
                             {label}
                           </div>
                           <div className="flex items-center justify-between gap-3">
-                            <span className="text-muted-foreground">{copy(language, 'Mevcut', 'Current')}</span>
+                            <span className="text-muted-foreground">{t("common:current")}</span>
                             <span className="data-mono font-semibold text-foreground">
                               {formatChartNumber(datum?.mevcut)}M
                             </span>
                           </div>
                           <div className="flex items-center justify-between gap-3">
-                            <span className="text-muted-foreground">{copy(language, '3A Ortalama', '3M Average')}</span>
+                            <span className="text-muted-foreground">{t("common:3mAverage")}</span>
                             <span className="data-mono font-semibold text-foreground">
                               {formatChartNumber(datum?.ortalama)}M
                             </span>
@@ -388,8 +368,8 @@ export default function MomentumTab({ onStockClick, stocks = stocksData, languag
                   }
                 />
                 <ChartLegend content={<ChartLegendContent />} />
-                <Bar dataKey="mevcut" name={copy(language, 'Mevcut Hacim', 'Current Volume')} fill={chartPalette.bull} maxBarSize={20} />
-                <Bar dataKey="ortalama" name={copy(language, '3A Ortalama Hacim', '3M Avg Volume')} fill={chartPalette.warningSoft} maxBarSize={20} />
+                <Bar dataKey="mevcut" name={t("common:currentVolume")} fill={chartPalette.bull} maxBarSize={20} />
+                <Bar dataKey="ortalama" name={t("common:3mAvgVolume")} fill={chartPalette.warningSoft} maxBarSize={20} />
               </BarChart>
             </ChartContainer>
           </div>
@@ -445,7 +425,7 @@ function MomentumMobileCard({
           </div>
         </div>
         <div className="text-right">
-          <div className="text-[13px] text-muted-foreground">{copy(language, 'Momentum', 'Momentum')}</div>
+          <div className="text-[13px] text-muted-foreground">{'Momentum'}</div>
           <div className="data-mono text-lg font-bold" style={{ color: momentumColor }}>
             {stock.momentumScore}
           </div>
@@ -461,25 +441,25 @@ function MomentumMobileCard({
 
       <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
         <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
-          <div className="text-[13px] text-muted-foreground">{copy(language, 'Beat İht.', 'Beat Prob.')}</div>
+          <div className="text-[13px] text-muted-foreground">{t("common:beatProb3e17")}</div>
           <div className="mt-1 data-mono font-semibold text-foreground">
             %{stock.earningsBeatProbability}
           </div>
         </div>
         <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
-          <div className="text-[13px] text-muted-foreground">{copy(language, '6A Getiri', '6M Return')}</div>
+          <div className="text-[13px] text-muted-foreground">{t("common:6mReturn")}</div>
           <div className="mt-1">
             <Delta value={stock.priceChange6M} precision={1} />
           </div>
         </div>
         <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
-          <div className="text-[13px] text-muted-foreground">{copy(language, 'RSI', 'RSI')}</div>
+          <div className="text-[13px] text-muted-foreground">{'RSI'}</div>
           <div className="mt-1 data-mono font-semibold text-foreground">
             {stock.rsi14}
           </div>
         </div>
         <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
-          <div className="text-[13px] text-muted-foreground">{copy(language, 'Analist Buy%', 'Analyst Buy%')}</div>
+          <div className="text-[13px] text-muted-foreground">{t("common:analystBuy")}</div>
           <div className="mt-1 data-mono font-semibold text-foreground">
             %{stock.analystBuyConsensus}
           </div>
@@ -488,18 +468,18 @@ function MomentumMobileCard({
 
       <div className="mt-3 flex flex-wrap items-center gap-3 text-sm">
         <span className="text-muted-foreground">
-          {copy(language, 'Earnings:', 'Earnings:')} <span className="data-mono text-foreground">{stock.earningsDate}</span>
+          {'Earnings:'} <span className="data-mono text-foreground">{stock.earningsDate}</span>
         </span>
         <span className="text-muted-foreground">
-          {copy(language, 'Hacim:', 'Volume:')}{" "}
+          {t("common:volume9346")}{" "}
           <span className="font-semibold text-foreground">
             {stock.volumeStatus === 'VERY_HIGH'
-              ? copy(language, 'Çok Yüksek', 'Very High')
+              ? t("common:veryHigh")
               : stock.volumeStatus === 'HIGH'
-                ? copy(language, 'Yüksek', 'High')
+                ? t("common:highbd6c")
                 : stock.volumeStatus === 'LOW'
-                  ? copy(language, 'Düşük', 'Low')
-                  : copy(language, 'Normal', 'Normal')}
+                  ? t("common:low2982")
+                  : 'Normal'}
           </span>
         </span>
       </div>

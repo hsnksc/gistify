@@ -2,14 +2,11 @@ import { useState } from "react";
 import type { DailyReportContent, DailyReportLanguage } from "@shared/dailyReports";
 import HtmlReportRenderer from "@/components/reports/HtmlReportRenderer";
 import ReportPostShell, {
-  type ReportPostItem,
-} from "@/components/reports/ReportPostShell";
+  type ReportPostItem, } from "@/components/reports/ReportPostShell";
 import {
-  buildDailyReportHtmlDocument,
-  extractPremiumReportFeatures,
-} from "@/lib/dailyReportHtml";
+  buildDailyReportHtmlDocument, extractPremiumReportFeatures, } from "@/lib/dailyReportHtml";
 import { getDailyReportAssetUrl } from "@/lib/dailyReports";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import {
   extractLeadParagraphsFromMarkdown,
   extractSnapshotMetricsFromMarkdown,
@@ -216,10 +213,10 @@ export default function DailyReportViewer({
   const sourceLabel =
     normalizedContent.sourceLabel ||
     sourceFolder ||
-    copy(language, "Daily report source", "Daily report source");
+    "Daily report source";
   const categoryLabel = sourceLabel.toLowerCase().startsWith("flow/")
-    ? copy(language, "Flow Post", "Flow Post")
-    : copy(language, "Daily Post", "Daily Post");
+    ? "Flow Post"
+    : "Daily Post";
   const isHtmlSource = normalizedContent.contentFormat === "html";
   const reportDateLabel = formatReportDate(reportDate, locale);
   const updatedAtLabel = formatUpdateStamp(updatedAt, locale);
@@ -274,31 +271,19 @@ export default function DailyReportViewer({
         {
           label: "Ticker",
           value: String(normalizedContent.tickerUniverse.length),
-          detail: copy(
-            language,
-            "Parser ile cikan ticker evreni.",
-            "Ticker universe parsed from the source."
-          ),
+          detail: t("flow:tickerUniverseParsedFromThe"),
           tone: "bull",
         },
         {
           label: "Figure",
           value: String(normalizedContent.figureFiles.length),
-          detail: copy(
-            language,
-            "Yuklenen gorsel adedi.",
-            "Uploaded figure count."
-          ),
+          detail: t("flow:uploadedFigureCount"),
           tone: "info",
         },
         {
-          label: copy(language, "Arastirma", "Research"),
+          label: t("common:research"),
           value: String(normalizedContent.researchFileCount),
-          detail: copy(
-            language,
-            "Ek arastirma dosyasi sayisi.",
-            "Additional research file count."
-          ),
+          detail: t("flow:additionalResearchFileCount"),
         },
       ];
   const metaItems: ReportPostItem[] = [
@@ -318,13 +303,13 @@ export default function DailyReportViewer({
       tone: "caution",
     },
     {
-      label: copy(language, "Arastirma", "Research"),
+      label: t("common:research"),
       value: String(normalizedContent.researchFileCount),
     },
     ...(activeAuthor
       ? [
           {
-            label: copy(language, "Hazirlayan", "Author"),
+            label: t("common:author"),
             value: activeAuthor,
             tone: "info" as const,
           },
@@ -333,7 +318,7 @@ export default function DailyReportViewer({
     ...(activeCoverage
       ? [
           {
-            label: copy(language, "Kapsam", "Coverage"),
+            label: t("common:coverage"),
             value: activeCoverage,
           },
         ]
@@ -341,7 +326,7 @@ export default function DailyReportViewer({
     ...(activeMethodology
       ? [
           {
-            label: copy(language, "Metodoloji", "Methodology"),
+            label: t("common:methodology"),
             value: activeMethodology,
           },
         ]
@@ -404,10 +389,10 @@ export default function DailyReportViewer({
       sourceLabel={sourceLabel}
       sourceKindLabel={
         isHtmlSource
-          ? copy(language, "HTML Dosyasi", "HTML File")
+          ? t("flow:htmlFile")
           : normalizedContent.sourceKind === "file"
-            ? copy(language, "Markdown Dosyasi", "Markdown File")
-            : copy(language, "Arastirma Paketi", "Research Package")
+            ? t("common:markdownFile")
+            : t("scanner:rsiRedFilterActiveScore")
       }
       statCards={statCards}
       metaItems={metaItems}
@@ -415,16 +400,8 @@ export default function DailyReportViewer({
       markdown={activeMarkdown}
       documentDescription={
         isHtmlSource
-          ? copy(
-              language,
-              "Asagida yuklenen HTML kaynak ayni yayin temasinda korunur.",
-              "The uploaded HTML source is preserved below inside the publishing theme."
-            )
-          : copy(
-              language,
-              "Asagidaki markdown kaynak yayin temali HTML dokumana donusturulerek gosterilir.",
-              "The markdown source below is converted into a publication-style HTML document."
-            )
+          ? t("flow:theUploadedHtmlSourceIs")
+          : t("flow:theMarkdownSourceBelowIs")
       }
       documentContent={
         <HtmlReportRenderer
@@ -432,29 +409,21 @@ export default function DailyReportViewer({
           html={resolvedHtml}
           availableLanguages={normalizedContent.availableLanguages}
           onLanguageChange={setActiveLanguage}
-          emptyMessage={copy(
-            activeLanguage,
-            isHtmlSource
-              ? "Kaynak HTML icerigi bos."
-              : "Kaynak markdown HTML dokumana donusturulemedi.",
-            isHtmlSource
+          emptyMessage={(activeLanguage === "en" ? isHtmlSource
               ? "The source HTML content is empty."
-              : "The markdown source could not be converted into an HTML document."
-          )}
+              : "The markdown source could not be converted into an HTML document." : isHtmlSource
+              ? "Kaynak HTML icerigi bos."
+              : "Kaynak markdown HTML dokumana donusturulemedi.")}
           sourceFolder={sourceFolder}
           sourceLabel={sourceLabel}
           title={title}
         />
       }
-      emptyMessage={copy(
-        language,
-        isHtmlSource
-          ? "Kaynak HTML icerigi bos."
-          : "Kaynak markdown icerigi bos.",
-        isHtmlSource
+      emptyMessage={(language === "en" ? isHtmlSource
           ? "The source HTML content is empty."
-          : "The source markdown content is empty."
-      )}
+          : "The source markdown content is empty." : isHtmlSource
+          ? "Kaynak HTML icerigi bos."
+          : "Kaynak markdown icerigi bos.")}
       resolveImage={(src, alt) => {
         const resolved = resolveAssetSrc(
           assetBasePath,
@@ -477,15 +446,11 @@ export default function DailyReportViewer({
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                  {copy(language, "One Cikanlar", "Key Spotlight")}
+                  {t("flow:keySpotlight")}
                 </p>
                 <h3 className="mt-2 text-xl font-semibold text-foreground">
                   {spotlight.title === "Spotlight"
-                    ? copy(
-                        language,
-                        "Raporun can alici kisimlari",
-                        "The report's most important points"
-                      )
+                    ? t("flow:theReportSMostImportant")
                     : spotlight.title}
                 </h3>
               </div>
@@ -513,7 +478,7 @@ export default function DailyReportViewer({
                     </div>
                     {item.anchorId ? (
                       <span className="shrink-0 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-300">
-                        {copy(language, "Detaya Git", "Jump")}
+                        {t("flow:jump")}
                       </span>
                     ) : null}
                   </div>
@@ -545,14 +510,10 @@ export default function DailyReportViewer({
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                  {copy(language, "Gorsel Arsivi", "Figure Archive")}
+                  {t("flow:figureArchive")}
                 </p>
                 <h3 className="mt-2 text-xl font-semibold text-foreground">
-                  {copy(
-                    language,
-                    "Yuklenen grafik ve gorseller",
-                    "Uploaded charts and visuals"
-                  )}
+                  {t("flow:uploadedChartsAndVisuals")}
                 </h3>
               </div>
               <span className="rounded-full border border-border bg-background/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">

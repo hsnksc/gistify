@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Wallet, TrendingUp, DollarSign, Minus } from "lucide-react";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { Strategy } from "@shared/earnings";
 
@@ -90,15 +90,11 @@ export default function BudgetMatrix({
         <div className="mb-5 flex items-center gap-2">
           <Wallet className="size-5 text-sky-400" />
           <h2 className="text-lg font-bold text-white">
-            {copy(language, "Bütçe Dostu Stratejiler", "Budget Friendly Strategies")}
+            {t("earnings:budgetFriendlyStrategies")}
           </h2>
         </div>
         <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-900/40 p-6 text-center text-sm text-slate-400">
-          {copy(
-            language,
-            "Bu lens icin henuz butceye gore eslesmis setup yok.",
-            "No budget-aligned setup is available for this lens yet."
-          )}
+          {t("earnings:noBudgetAlignedSetupIs")}
         </div>
       </section>
     );
@@ -155,7 +151,7 @@ export default function BudgetMatrix({
       <div className="mb-5 flex items-center gap-2">
         <Wallet className="size-5 text-sky-400" />
         <h2 className="text-lg font-bold text-white">
-          {copy(language, "Bütçe Dostu Stratejiler", "Budget Friendly Strategies")}
+          {t("earnings:budgetFriendlyStrategies")}
         </h2>
       </div>
 
@@ -177,7 +173,7 @@ export default function BudgetMatrix({
                   {bucket.label}
                 </p>
                 <p className={cn("text-xs", bucket.accentMuted)}>
-                  {copy(language, bucket.note, bucket.note)}
+                  {bucket.note}
                 </p>
               </div>
 
@@ -263,11 +259,7 @@ export default function BudgetMatrix({
                   <div className="rounded-xl border border-dashed border-slate-700/70 bg-slate-900/30 px-3 py-4 text-center">
                     <Minus className="mx-auto size-4 text-slate-500" />
                     <p className="mt-2 text-xs text-slate-500">
-                      {copy(
-                        language,
-                        "Bu butce bandinda uygun setup yok.",
-                        "No matching setup in this budget band."
-                      )}
+                      {t("earnings:noMatchingSetupInThis")}
                     </p>
                   </div>
                 )}
@@ -276,10 +268,10 @@ export default function BudgetMatrix({
               {items.length > 0 && (
                 <div className="mt-4 flex items-center justify-between">
                   <span className={cn("rounded-full px-2.5 py-1 text-[10px] font-bold", bucket.badgeBg, bucket.badgeText)}>
-                    {items.length} {copy(language, "hisse", "tickers")}
+                    {items.length} {t("scanner:backwardationCreditSpreadBanned")}
                   </span>
                   <span className="text-[10px] text-slate-500">
-                    {copy(language, "2x potansiyel", "2x potential")}
+                    {t("earnings:2xPotential")}
                   </span>
                 </div>
               )}

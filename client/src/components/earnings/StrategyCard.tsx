@@ -1,18 +1,6 @@
-import {
-  Target,
-  TrendingUp,
-  TrendingDown,
-  Minus,
-  DollarSign,
-  Shield,
-  Clock,
-  Crosshair,
-  CalendarDays,
-  LogOut,
-  AlertCircle,
-} from "lucide-react";
+import { Target, TrendingUp, TrendingDown, Minus, DollarSign, Shield, Clock, Crosshair, CalendarDays, LogOut, AlertCircle, } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { Strategy, StrategyType } from "@shared/earnings";
 
@@ -76,7 +64,7 @@ export default function StrategyCard({ language, strategy }: StrategyCardProps) 
             {strategy.ivRank && (
               <span className="flex items-center gap-1.5 text-sm font-semibold text-slate-200">
                 <Crosshair className="size-4 text-violet-400" />
-                {copy(language, "IV Sıralaması", "IV Rank")} {strategy.ivRank}
+                {t("earnings:ivRank")} {strategy.ivRank}
               </span>
             )}
           </div>
@@ -103,7 +91,7 @@ export default function StrategyCard({ language, strategy }: StrategyCardProps) 
           <div className="flex items-center gap-2 rounded-xl border border-white/5 bg-slate-900/50 px-3 py-2.5">
             <CalendarDays className="size-4 text-sky-400" />
             <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">
-              {copy(language, "Giriş", "Entry")}
+              {t("earnings:entry")}
             </span>
             <span className="ml-auto text-xs font-medium text-slate-200">
               {strategy.entry}
@@ -114,7 +102,7 @@ export default function StrategyCard({ language, strategy }: StrategyCardProps) 
           <div className="flex items-center gap-2 rounded-xl border border-white/5 bg-slate-900/50 px-3 py-2.5">
             <LogOut className="size-4 text-emerald-400" />
             <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">
-              {copy(language, "Çıkış", "Exit")}
+              {t("earnings:exit")}
             </span>
             <span className="ml-auto text-xs font-medium text-slate-200">
               {strategy.exit}
@@ -125,7 +113,7 @@ export default function StrategyCard({ language, strategy }: StrategyCardProps) 
           <div className="flex items-center gap-2 rounded-xl border border-white/5 bg-slate-900/50 px-3 py-2.5">
             <Clock className="size-4 text-amber-400" />
             <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">
-              {copy(language, "Max Tutma", "Max Hold")}
+              {t("earnings:maxHold")}
             </span>
             <span className="ml-auto text-xs font-medium text-slate-200">
               {strategy.maxHold}
@@ -140,7 +128,7 @@ export default function StrategyCard({ language, strategy }: StrategyCardProps) 
           <div className="flex flex-col items-center gap-1 rounded-xl border border-white/5 bg-slate-900/50 px-2 py-2.5 text-center">
             <DollarSign className="size-3.5 text-sky-400" />
             <span className="text-[9px] font-semibold uppercase tracking-wider text-slate-500">
-              {copy(language, "Kredi", "Credit")}
+              {t("earnings:credit")}
             </span>
             <span className="text-xs font-bold text-slate-200">{strategy.credit}</span>
           </div>
@@ -149,7 +137,7 @@ export default function StrategyCard({ language, strategy }: StrategyCardProps) 
           <div className="flex flex-col items-center gap-1 rounded-xl border border-white/5 bg-slate-900/50 px-2 py-2.5 text-center">
             <Shield className="size-3.5 text-rose-400" />
             <span className="text-[9px] font-semibold uppercase tracking-wider text-slate-500">
-              {copy(language, "Max Risk", "Max Risk")}
+              {"Max Risk"}
             </span>
             <span className="text-xs font-bold text-slate-200">{strategy.maxRisk}</span>
           </div>
@@ -158,7 +146,7 @@ export default function StrategyCard({ language, strategy }: StrategyCardProps) 
           <div className="flex flex-col items-center gap-1 rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-2 py-2.5 text-center">
             <Target className="size-3.5 text-emerald-400" />
             <span className="text-[9px] font-semibold uppercase tracking-wider text-emerald-500/70">
-              {copy(language, "K.O.", "K.O.")}
+              {"K.O."}
             </span>
             <span className="text-xs font-bold text-emerald-300">
               {strategy.koProbability}
@@ -171,7 +159,7 @@ export default function StrategyCard({ language, strategy }: StrategyCardProps) 
       {strategy.greeks ? (
         <div className="mt-5">
           <p className="mb-2.5 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
-            {copy(language, "Greeks", "Greeks")}
+            {"Greeks"}
           </p>
           <div className="space-y-2">
             <GreekBar label="Δ" value={strategy.greeks.delta} />
@@ -184,7 +172,7 @@ export default function StrategyCard({ language, strategy }: StrategyCardProps) 
         <div className="mt-5 flex items-center gap-2 rounded-xl border border-dashed border-slate-700/60 bg-slate-900/30 px-3 py-3">
           <AlertCircle className="size-4 text-slate-500" />
           <span className="text-xs text-slate-500">
-            {copy(language, "Greeks verisi bekleniyor", "Greeks data pending")}
+            {t("earnings:greeksDataPending")}
           </span>
         </div>
       )}
@@ -193,7 +181,7 @@ export default function StrategyCard({ language, strategy }: StrategyCardProps) 
       {strategy.budgetOptions.length > 0 && (
         <div className="mt-5">
           <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
-            {copy(language, "Bütçe Dostu", "Budget Friendly")}
+            {t("marketing:text")}
           </p>
           <div className="flex flex-wrap gap-2">
             {strategy.budgetOptions.slice(0, 3).map((option, idx) => (
@@ -234,7 +222,7 @@ export default function StrategyCard({ language, strategy }: StrategyCardProps) 
           className="rounded-xl border-white/10 bg-slate-900/50 text-slate-100 hover:bg-slate-800/70"
         >
           <a href={`/earnings/${strategy.ticker}`}>
-            {copy(language, "Ticker detayi", "Ticker detail")}
+            {t("earnings:tickerDetail")}
           </a>
         </Button>
         {portfolioHref ? (
@@ -245,7 +233,7 @@ export default function StrategyCard({ language, strategy }: StrategyCardProps) 
             className="rounded-xl text-sky-300 hover:bg-sky-500/10 hover:text-sky-200"
           >
             <a href={portfolioHref}>
-              {copy(language, "Portfoy lensi", "Portfolio lens")}
+              {t("earnings:portfolioLens")}
             </a>
           </Button>
         ) : null}
@@ -285,7 +273,7 @@ function CPRBadge({ cpr, language }: { cpr?: string; language: AppLanguage }) {
       )}
     >
       <Icon className="size-3.5" />
-      <span>{copy(language, "CPR", "CPR")} {cpr || "—"}</span>
+      <span>{"CPR"} {cpr || "—"}</span>
     </div>
   );
 }

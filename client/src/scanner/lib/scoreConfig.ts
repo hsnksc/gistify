@@ -4,7 +4,7 @@
  * Kesin ağırlık normalizasyonu (∑w_i = 1.0000)
  */
 
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 
 // ===================== 11 Faktör Ağırlıkları (Temel) =====================
 // Toplam KESİNLİKLE 1.00 olmalı — 0.97 hatası v4.0'da düzeltildi
@@ -122,20 +122,20 @@ export function portfolioHeatCheck(
     return {
       canTrade: false,
       heatPct: Math.round(heatPct * 10) / 10,
-      message: copy(language, `PORTFÖY ISI ${heatPct.toFixed(1)}% ≥ %5 LİMİT! Yeni işlem YASAK. Önce pozisyon küçült.`, `PORTFOLIO HEAT ${heatPct.toFixed(1)}% ≥ %5 LIMIT! New trades FORBIDDEN. Reduce positions first.`),
+      message: t("scanner:portfolioHeat5LimitNew", { tofixed1: heatPct.toFixed(1) }),
     };
   }
   if (heatPct >= 4.0) {
     return {
       canTrade: true,
       heatPct: Math.round(heatPct * 10) / 10,
-      message: copy(language, `UYARI: Portföy ısısı ${heatPct.toFixed(1)}% — Yakında %5 limit. Çok küçük pozisyon.`, `WARNING: Portfolio heat ${heatPct.toFixed(1)}% — Near %5 limit. Very small position only.`),
+      message: t("scanner:warningPortfolioHeatNear5", { tofixed1: heatPct.toFixed(1) }),
     };
   }
   return {
     canTrade: true,
     heatPct: Math.round(heatPct * 10) / 10,
-    message: copy(language, `Portföy ısısı ${heatPct.toFixed(1)}% — Güvenli bölgede.`, `Portfolio heat ${heatPct.toFixed(1)}% — Safe zone.`),
+    message: t("scanner:portfolioHeatSafeZone", { tofixed1: heatPct.toFixed(1) }),
   };
 }
 
@@ -218,17 +218,17 @@ export const NORMS = {
 // ===================== Faktör İsimleri (Display) =====================
 export function getFactorLabels(language: AppLanguage = "tr"): Record<string, string> {
   return {
-    rvol: copy(language, "RVOL (Göreceli Hacim)", "RVOL (Relative Volume)"),
-    gap: copy(language, "GAP Kalitesi", "GAP Quality"),
-    orb: copy(language, "ORB (Açılış Kırılım)", "ORB (Opening Range Break)"),
-    vwap: copy(language, "VWAP Pozisyon/Eğim", "VWAP Position/Slope"),
-    structure: copy(language, "Fiyat Yapısı (HH/HL)", "Price Structure (HH/HL)"),
-    rsi_short: copy(language, "RSI Kısa Vade", "RSI Short Term"),
-    velocity_dir: copy(language, "Velocity Yön", "Velocity Direction"),
-    velocity_vol: copy(language, "Velocity Volatilite", "Velocity Volatility"),
-    marketCap: copy(language, "Piyasa Değeri", "Market Cap"),
-    retention: copy(language, "Intraday Retention", "Intraday Retention"),
-    price_change: copy(language, "Günlük Değişim", "Daily Change"),
+    rvol: t("scanner:rvolRelativeVolume"),
+    gap: t("scanner:gapQuality"),
+    orb: t("scanner:orbOpeningRangeBreak"),
+    vwap: t("scanner:vwapPositionSlope"),
+    structure: t("scanner:priceStructureHhHl"),
+    rsi_short: t("scanner:rsiShortTerm"),
+    velocity_dir: t("scanner:velocityDirection"),
+    velocity_vol: t("scanner:velocityVolatility"),
+    marketCap: t("scanner:marketCap"),
+    retention: "Intraday Retention",
+    price_change: t("scanner:dailyChange"),
   };
 }
 
@@ -289,15 +289,15 @@ export function signalBg(signal: string): string {
 
 export function signalLabel(signal: string, language: AppLanguage = "tr"): string {
   switch (signal) {
-    case "OVERBOUGHT_RED": return copy(language, "🚨 AŞIRI ALIM - KESİNLİKLE GİRME!", "🚨 OVERBOUGHT - DO NOT ENTER!");
-    case "CAUTION_HOT": return copy(language, "⚠️ SICAK BÖLGE - DİKKAT", "⚠️ HOT ZONE - CAUTION");
-    case "OVERSOLD_CAUTION": return copy(language, "⚠️ AŞIRI SATIM - RİSKLİ", "⚠️ OVERSOLD - RISKY");
-    case "STRONG_BUY": return copy(language, "GÜÇLÜ AL", "STRONG BUY");
-    case "BUY": return copy(language, "AL", "BUY");
-    case "NEUTRAL_BULLISH": return copy(language, "NÖTR-POZİTİF", "NEUTRAL-BULLISH");
-    case "NEUTRAL": return copy(language, "NÖTR", "NEUTRAL");
-    case "NEUTRAL_BEARISH": return copy(language, "NÖTR-NEGATİF", "NEUTRAL-BEARISH");
-    case "WEAK": return copy(language, "ZAYIF", "WEAK");
+    case "OVERBOUGHT_RED": return t("scanner:overboughtDoNotEnter");
+    case "CAUTION_HOT": return t("scanner:hotZoneCaution");
+    case "OVERSOLD_CAUTION": return t("scanner:oversoldRisky");
+    case "STRONG_BUY": return t("common:strongBuy4b0a");
+    case "BUY": return t("common:hold");
+    case "NEUTRAL_BULLISH": return t("scanner:neutralBullish");
+    case "NEUTRAL": return t("common:neutral43cc");
+    case "NEUTRAL_BEARISH": return t("scanner:neutralBearish");
+    case "WEAK": return t("common:weak");
     default: return signal;
   }
 }

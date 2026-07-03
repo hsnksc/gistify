@@ -1,27 +1,14 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type {
-  DailyReportContent,
-  DailyReportSourcePackage,
-} from "@shared/dailyReports";
+  DailyReportContent, DailyReportSourcePackage, } from "@shared/dailyReports";
 import {
-  BookOpen,
-  CalendarRange,
-  GalleryHorizontal,
-  RefreshCw,
-  Sparkles,
-  Target,
-} from "lucide-react";
+  BookOpen, CalendarRange, GalleryHorizontal, RefreshCw, Sparkles, Target, } from "lucide-react";
 import DailyReportViewer from "@/components/reports/DailyReportViewer";
 import { Button } from "@/components/ui/button";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
 import { usePageMeta } from "@/hooks/usePageMeta";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 
 interface DailyReportsResponse {
   sources?: DailyReportSourcePackage[];
@@ -165,12 +152,8 @@ export default function DailyReportPage({
   language: AppLanguage;
 }) {
   usePageMeta({
-    description: copy(
-      language,
-      "Gistify gunluk piyasa raporu: makro lens, hisse senedi liderleri ve opsiyon risk cercevesi.",
-      "Gistify daily market report: macro lens, stock leaders and options risk framing."
-    ),
-    title: copy(language, "Gunluk Rapor | Gistify", "Daily Report | Gistify"),
+    description: t("flow:gistifyDailyMarketReportMacro"),
+    title: t("flow:dailyReportGistify"),
   });
 
   const [reports, setReports] = useState<ViewerReport[]>([]);
@@ -248,25 +231,21 @@ export default function DailyReportPage({
               <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
                 <div className="space-y-2">
                   <p className="heading-condensed text-sm uppercase tracking-[0.18em] text-sky-300">
-                    {copy(language, "Gunluk Rapor", "Daily Report")}
+                    {t("flow:dailyReport")}
                   </p>
                   <h1 className="heading-condensed text-3xl leading-none text-foreground md:text-5xl">
                     {selectedReport?.title ||
-                      copy(language, "Gunluk raporlar", "Daily reports")}
+                      t("flow:dailyReports")}
                   </h1>
                   <p className="max-w-3xl text-sm leading-7 text-muted-foreground md:text-[15px]">
-                    {copy(
-                      language,
-                      "Daily source paketleri burada tarih bazli secilir ve okuma panelinde dogrudan acilir.",
-                      "Daily source packages are selected by date here and opened directly in the reading panel."
-                    )}
+                    {t("flow:dailySourcePackagesAreSelected")}
                   </p>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
                   <Button type="button" variant="outline" onClick={() => void loadReports()}>
                     <RefreshCw className="size-4" />
-                    {copy(language, "Yenile", "Refresh")}
+                    {t("common:refresh")}
                   </Button>
                 </div>
               </div>
@@ -276,7 +255,7 @@ export default function DailyReportPage({
                   <div className="grid gap-4 xl:grid-cols-[320px_minmax(0,1fr)]">
                     <div className="rounded-xl border border-border bg-background/45 p-4">
                       <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                        {copy(language, "En Guncel", "Latest")}
+                        {t("flow:latest")}
                       </p>
                       <p className="mt-2 text-lg font-semibold text-foreground">
                         {latestReport?.title || "-"}
@@ -292,7 +271,7 @@ export default function DailyReportPage({
                     <div className="space-y-3 rounded-xl border border-border bg-background/45 p-4">
                       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                          {copy(language, "Gunluk Rapor Secimi", "Daily report selection")}
+                          {t("flow:dailyReportSelection")}
                         </p>
                         <div className="w-full md:max-w-[360px]">
                           <Select
@@ -301,11 +280,7 @@ export default function DailyReportPage({
                           >
                             <SelectTrigger className="w-full">
                               <SelectValue
-                                placeholder={copy(
-                                  language,
-                                  "Bir daily report sec",
-                                  "Select a daily report"
-                                )}
+                                placeholder={t("flow:selectADailyReport")}
                               />
                             </SelectTrigger>
                             <SelectContent>
@@ -337,27 +312,27 @@ export default function DailyReportPage({
                     <div className="flex flex-wrap gap-2">
                       <MetaPill
                         icon={BookOpen}
-                        label={copy(language, "Kaynak", "Source")}
+                        label={t("common:source")}
                         value={selectedReport.content.sourceLabel || selectedReport.sourceFolder}
                       />
                       <MetaPill
                         icon={CalendarRange}
-                        label={copy(language, "Rapor Tarihi", "Report date")}
+                        label={t("flow:reportDate2275")}
                         value={formatReportDate(selectedReport.reportDate, locale)}
                       />
                       <MetaPill
                         icon={GalleryHorizontal}
-                        label={copy(language, "Grafik", "Figure")}
+                        label={t("flow:figure7f0f")}
                         value={String(selectedStats?.figures || 0)}
                       />
                       <MetaPill
                         icon={Sparkles}
-                        label={copy(language, "OpenAI", "OpenAI")}
+                        label={"OpenAI"}
                         value={String(selectedStats?.aiFigures || 0)}
                       />
                       <MetaPill
                         icon={Target}
-                        label={copy(language, "Hisse", "Ticker")}
+                        label={t("common:ticker")}
                         value={String(selectedStats?.tickers || 0)}
                       />
                     </div>
@@ -366,12 +341,8 @@ export default function DailyReportPage({
               ) : (
                 <div className="rounded-xl border border-dashed border-border bg-background/35 px-4 py-3 text-sm text-muted-foreground">
                   {loading
-                    ? copy(language, "Daily report kutuphanesi yukleniyor.", "Loading daily report library.")
-                    : copy(
-                        language,
-                        "`dailyreport/` icinde gosterilebilir bir rapor bulunamadi.",
-                        "No displayable report was found inside `dailyreport/`."
-                      )}
+                    ? t("flow:loadingDailyReportLibrary")
+                    : t("flow:noDisplayableReportWasFound")}
                 </div>
               )}
             </div>
@@ -384,38 +355,34 @@ export default function DailyReportPage({
               <div className="space-y-2">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="rounded-full border border-sky-500/25 bg-sky-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
-                    {copy(language, "Gunluk Istihbarat", "Daily Intelligence")}
+                    {t("flow:dailyIntelligence")}
                   </span>
                   {selectedStats?.aiFigures ? (
                     <span className="rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-                      {copy(language, "OpenAI grafigi aktif", "OpenAI chart enabled")}
+                      {t("flow:openaiChartEnabled")}
                     </span>
                   ) : null}
                 </div>
                 <h2 className="heading-condensed text-2xl text-foreground md:text-3xl">
                   {selectedReport?.title ||
-                    copy(language, "Daily report sec", "Select a daily report")}
+                    t("flow:selectADailyReport6aef")}
                 </h2>
                 <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
                   {selectedReport?.content.headline ||
-                    copy(
-                      language,
-                      "Ustteki secim alanindan bir daily report secildiginde okuma paneli burada acilir.",
-                      "The reading panel opens here when you select a daily report above."
-                    )}
+                    t("flow:theReadingPanelOpensHere")}
                 </p>
               </div>
 
               {selectedStats ? (
                 <div className="flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
                   <span className="rounded-full border border-border bg-background/70 px-3 py-1">
-                    {selectedStats.figures} {copy(language, "grafik", "figure")}
+                    {selectedStats.figures} {t("scanner:acceptLossCloseBeforeIv")}
                   </span>
                   <span className="rounded-full border border-border bg-background/70 px-3 py-1">
-                    {selectedStats.tickers} {copy(language, "hisse", "ticker")}
+                    {selectedStats.tickers} {t("flow:ticker")}
                   </span>
                   <span className="rounded-full border border-border bg-background/70 px-3 py-1">
-                    {copy(language, "Guncellendi", "Updated")} {selectedStats.updatedAt}
+                    {t("flow:updated")} {selectedStats.updatedAt}
                   </span>
                 </div>
               ) : null}
@@ -438,11 +405,7 @@ export default function DailyReportPage({
                 <div className="text-center">
                   <BookOpen className="mx-auto size-10 text-muted-foreground" />
                   <p className="mt-4 text-sm text-muted-foreground">
-                    {copy(
-                      language,
-                      "Ustteki secim alanindan bir daily report secildiginde okuma paneli burada acilacak.",
-                      "The reading panel will open here when you select a daily report above."
-                    )}
+                    {t("flow:theReadingPanelWillOpen")}
                   </p>
                 </div>
               </div>

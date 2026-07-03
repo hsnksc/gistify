@@ -1,60 +1,23 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import {
-  ArrowLeft,
-  BookOpen,
-  CalendarDays,
-  Clock3,
-  Download,
-  GitCompareArrows,
-  Printer,
-  Search,
-  Star,
-} from "lucide-react";
+  ArrowLeft, BookOpen, CalendarDays, Clock3, Download, GitCompareArrows, Printer, Search, Star, } from "lucide-react";
 import { useLocation } from "wouter";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+  Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/table";
 import FlowLayout from "@/features/flow/components/FlowLayout";
 import {
-  compareCoverageReports,
-  groupCoverageReports,
-  parseCoverageReport,
-  type CoverageBlock,
-  type CoverageChecklistBlock,
-  type CoverageReport,
-  type CoverageStoredRecord,
-  type CoverageTableBlock,
-} from "@/features/coverage/lib/coverageParser";
+  compareCoverageReports, groupCoverageReports, parseCoverageReport, resolveCoverageRecordLanguage, type CoverageBlock, type CoverageChecklistBlock, type CoverageReport, type CoverageStoredRecord, type CoverageTableBlock, } from "@/features/coverage/lib/coverageParser";
 import {
-  fetchCoverageReports,
-  getCoverageMarkdownDownloadHref,
-  getCoverageZipDownloadHref,
-} from "@/features/coverage/lib/coverageApi";
+  fetchCoverageReports, getCoverageMarkdownDownloadHref, getCoverageZipDownloadHref, } from "@/features/coverage/lib/coverageApi";
 import LoadingState from "@/components/ui/loading-state";
 import { usePageMeta } from "@/hooks/usePageMeta";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import MetricSparkline from "@/features/coverage/components/MetricSparkline";
-import DteBadge from "@/features/coverage/components/DteBadge";
-import CoverageMiniHeader from "@/features/coverage/components/CoverageMiniHeader";
-import CoverageToc from "@/features/coverage/components/CoverageToc";
-import VersionDiffPanel from "@/features/coverage/components/VersionDiffPanel";
 import {
   StrategyCard,
   LevelLadder,
@@ -63,7 +26,6 @@ import {
   EcosystemChips,
   RSIGauge,
 } from "@/features/coverage/components";
-import VizRenderer from "@/features/coverage/components/VizRenderer";
 import {
   PayoffChart,
   EarningsHistoryChart,
@@ -324,25 +286,25 @@ function summarizeDiff(current: CoverageReport, previous: CoverageReport | null,
   }
 
   const metricLabels = [
-    [copy(language, "Fiyat", "Price"), formatUsd(current.metrics.price), formatUsd(previous.metrics.price)],
+    [t("common:price"), formatUsd(current.metrics.price), formatUsd(previous.metrics.price)],
     [
-      copy(language, "Degisim", "Change"),
+      t("common:change"),
       formatPercent(current.metrics.changePct),
       formatPercent(previous.metrics.changePct),
     ],
     [
-      copy(language, "Hedef Ortalama", "Target Avg"),
+      t("coverage:targetAvg"),
       formatUsd(current.metrics.targetAvg),
       formatUsd(previous.metrics.targetAvg),
     ],
-    [copy(language, "IV", "IV"), formatPercent(current.metrics.iv), formatPercent(previous.metrics.iv)],
+    ["IV", formatPercent(current.metrics.iv), formatPercent(previous.metrics.iv)],
     [
-      copy(language, "Short Float", "Short Float"),
+      "Short Float",
       formatPercent(current.metrics.shortFloat),
       formatPercent(previous.metrics.shortFloat),
     ],
-    [copy(language, "RSI", "RSI"), formatPlainNumber(current.metrics.rsi), formatPlainNumber(previous.metrics.rsi)],
-    [copy(language, "Butce", "Budget"), formatUsd(current.metrics.budget), formatUsd(previous.metrics.budget)],
+    ["RSI", formatPlainNumber(current.metrics.rsi), formatPlainNumber(previous.metrics.rsi)],
+    [t("coverage:budget"), formatUsd(current.metrics.budget), formatUsd(previous.metrics.budget)],
   ]
     .filter(([, next, prior]) => next !== prior)
     .map(([label, next, prior]) => ({
@@ -446,16 +408,6 @@ function CoverageBlocks({
               onChecklistChange={onChecklistChange}
               reportId={reportId}
               sectionId={sectionId}
-            />
-          );
-        }
-
-        if (block.type === "viz") {
-          return (
-            <VizRenderer
-              key={`${blockPrefix}-${index}`}
-              block={block}
-              language={language}
             />
           );
         }
@@ -705,73 +657,46 @@ function TableBlockView({
   if (block.signature === "catalyst-matrix") {
     return (
       <div className="grid gap-3 md:grid-cols-2">
-        {block.rows.map((row, rowIndex) => {
-          const title = row[0] || "";
-          const effect = row[1] || "";
-          const effectLower = effect.toLowerCase();
-          const tone = effectLower.includes("negatif")
-            ? "bear"
-            : effectLower.includes("pozitif")
-              ? "bull"
-              : "neutral";
-          const importanceMatch = row.slice(2).join(" ").match(/(\d)\s*\/\s*5|([1-5])\s*yildiz|⭐{1,5}/);
-          const importance = importanceMatch
-            ? importanceMatch[0].includes("⭐")
-              ? importanceMatch[0].length
-              : Number(importanceMatch[1] || importanceMatch[2] || 0)
-            : 0;
-
-          return (
-            <article
-              key={`${blockPrefix}-catalyst-${rowIndex}`}
-              className="rounded-xl border border-border bg-background/30 p-4"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <p className="break-words text-sm font-semibold text-foreground line-clamp-2">
-                  {title}
-                </p>
-                <Badge
-                  variant="outline"
-                  className={cn(
-                    "shrink-0",
-                    tone === "bear"
-                      ? "border-rose-500/30 bg-rose-500/10 text-rose-500 dark:text-rose-200"
-                      : tone === "bull"
-                        ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-500 dark:text-emerald-200"
-                        : "border-amber-500/30 bg-amber-500/10 text-amber-500 dark:text-amber-200"
-                  )}
+        {block.rows.map((row, rowIndex) => (
+          <article
+            key={`${blockPrefix}-catalyst-${rowIndex}`}
+            className="rounded-xl border border-border bg-background/30 p-4"
+          >
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-sm font-semibold text-foreground">{row[0]}</p>
+              <Badge
+                variant="outline"
+                className={
+                  row[1]?.toLowerCase().includes("negatif")
+                    ? "border-rose-500/30 bg-rose-500/10 text-rose-200"
+                    : row[1]?.toLowerCase().includes("pozitif")
+                      ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-200"
+                      : "border-amber-500/30 bg-amber-500/10 text-amber-200"
+                }
+              >
+                {row[1] || "Catalyst"}
+              </Badge>
+            </div>
+            <div className="mt-3 space-y-2 text-sm text-muted-foreground">
+              {block.headers.slice(2).map((header, headerIndex) => (
+                <div
+                  key={`${blockPrefix}-catalyst-meta-${rowIndex}-${headerIndex}`}
+                  className="flex items-start justify-between gap-3"
                 >
-                  {effect || "Catalyst"}
-                </Badge>
-              </div>
-              {importance > 0 ? (
-                <div className="mt-2 flex items-center gap-0.5 text-[10px] text-amber-500">
-                  {Array.from({ length: 5 }, (_, i) => (
-                    <span key={i}>{i < importance ? "★" : "☆"}</span>
-                  ))}
+                  <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground/80">
+                    {header}
+                  </span>
+                  <span className="text-right">
+                    {renderInlineText(
+                      row[headerIndex + 2] || "—",
+                      `${blockPrefix}-catalyst-cell-${rowIndex}-${headerIndex}`
+                    )}
+                  </span>
                 </div>
-              ) : null}
-              <div className="mt-3 space-y-2 text-sm text-muted-foreground">
-                {block.headers.slice(2).map((header, headerIndex) => (
-                  <div
-                    key={`${blockPrefix}-catalyst-meta-${rowIndex}-${headerIndex}`}
-                    className="flex items-start justify-between gap-3"
-                  >
-                    <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground/80">
-                      {header}
-                    </span>
-                    <span className="break-words text-right">
-                      {renderInlineText(
-                        row[headerIndex + 2] || "—",
-                        `${blockPrefix}-catalyst-cell-${rowIndex}-${headerIndex}`
-                      )}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </article>
-          );
-        })}
+              ))}
+            </div>
+          </article>
+        ))}
       </div>
     );
   }
@@ -822,12 +747,10 @@ function ChecklistBlockView({
 export default function Coverage({
   language,
   mode = "index",
-  onLanguageChange,
   ticker,
 }: {
   language: AppLanguage;
   mode?: CoverageMode;
-  onLanguageChange?: (lang: AppLanguage) => void;
   ticker?: string;
 }) {
   const [location, setLocation] = useLocation();
@@ -842,21 +765,6 @@ export default function Coverage({
   const [selectedVersionIdState, setSelectedVersionIdState] = useState(() =>
     getSelectedVersionId()
   );
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [showMiniHeader, setShowMiniHeader] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      setScrollProgress(docHeight > 0 ? scrollTop / docHeight : 0);
-      setShowMiniHeader(scrollTop > 240);
-    };
-
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -874,11 +782,7 @@ export default function Coverage({
         if (!cancelled) {
           setRecords([]);
           setRecordsError(
-            copy(
-              language,
-              "Coverage arsivi server'dan yuklenemedi. Baglanti duzelince sayfayi yenile.",
-              "Coverage archive could not be loaded from the server. Refresh once the connection is back."
-            )
+            t("coverage:coverageArchiveCouldNotBe")
           );
           setRecordsLoading(false);
         }
@@ -919,7 +823,12 @@ export default function Coverage({
       records
         .map(record => {
           try {
-            return parseCoverageReport(record);
+            return parseCoverageReport(
+              resolveCoverageRecordLanguage(
+                record,
+                language === "en" ? "en" : "tr"
+              )
+            );
           } catch {
             return null;
           }
@@ -981,6 +890,10 @@ export default function Coverage({
     () => (currentReport ? summarizeDiff(currentReport, previousReport, language) : null),
     [currentReport, previousReport, language]
   );
+  const showCoverageTranslationNotice = Boolean(
+    currentReport &&
+      !currentReport.availableLanguages.includes(language === "en" ? "en" : "tr")
+  );
 
   const calendarItems = useMemo(
     () =>
@@ -1020,18 +933,18 @@ export default function Coverage({
 
   const stats = [
     {
-      detail: copy(language, "Toplam ticker kutuphanesi", "Tracked tickers"),
-      label: copy(language, "Ticker", "Ticker"),
+      detail: t("coverage:trackedTickers"),
+      label: "Ticker",
       value: String(reportGroups.length),
     },
     {
-      detail: copy(language, "Tum versiyonler dahil", "All archived versions"),
-      label: copy(language, "Rapor", "Reports"),
+      detail: t("coverage:allArchivedVersions"),
+      label: t("coverage:reports"),
       value: String(reports.length),
     },
     {
-      detail: copy(language, "Yildizlanan coverage listesi", "Starred coverage names"),
-      label: copy(language, "Watch", "Watch"),
+      detail: t("coverage:starredCoverageNames"),
+      label: "Watch",
       value: String(watchlist.size),
     },
   ];
@@ -1042,14 +955,10 @@ export default function Coverage({
         <Card className="gap-4" interactive={false}>
           <CardHeader className="gap-2">
             <CardTitle className="text-base">
-              {copy(language, "Surum seridi", "Version strip")}
+              {t("coverage:versionStrip")}
             </CardTitle>
             <CardDescription>
-              {copy(
-                language,
-                "Ayni ticker icindeki coverage raporlari.",
-                "Coverage versions within the same ticker."
-              )}
+              {t("coverage:coverageVersionsWithinTheSame")}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
@@ -1091,7 +1000,7 @@ export default function Coverage({
           <CardHeader className="gap-2">
             <CardTitle className="text-base">TOC</CardTitle>
             <CardDescription>
-              {copy(language, "Bolumler arasi hizli gecis", "Jump across sections")}
+              {t("coverage:jumpAcrossSections")}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
@@ -1158,17 +1067,9 @@ export default function Coverage({
   return (
     <FlowLayout
       language={language}
-      eyebrow={copy(language, "Coverage Workspace", "Coverage Workspace")}
-      title={copy(
-        language,
-        "Versionlu coverage kutuphanesi",
-        "Versioned coverage library"
-      )}
-      description={copy(
-        language,
-        "Markdown coverage notlarini kutuphanede topla, ayni ticker icinde surumleri karsilastir ve earnings takvimini tek ekranda izle.",
-        "Collect markdown coverage notes in one library, compare versions inside each ticker and watch the earnings calendar from the same screen."
-      )}
+      eyebrow={"Coverage Workspace"}
+      title={t("coverage:versionedCoverageLibrary")}
+      description={t("coverage:collectMarkdownCoverageNotesIn")}
       actions={
         <div className="flex flex-wrap items-center gap-2">
           <Button
@@ -1176,20 +1077,20 @@ export default function Coverage({
             onClick={() => setLocation("/coverage")}
           >
             <BookOpen className="size-4" />
-            {copy(language, "Kutuphane", "Library")}
+            {t("coverage:library")}
           </Button>
           <Button
             variant={mode === "calendar" ? "default" : "outline"}
             onClick={() => setLocation("/coverage/calendar")}
           >
             <CalendarDays className="size-4" />
-            {copy(language, "Takvim", "Calendar")}
+            {t("common:calendar")}
           </Button>
           {reports.length > 0 ? (
             <Button asChild variant="outline">
               <a href={getCoverageZipDownloadHref()}>
                 <Download className="size-4" />
-                {copy(language, "Tumunu indir", "Download all")}
+                {t("coverage:downloadAll")}
               </a>
             </Button>
           ) : null}
@@ -1199,17 +1100,13 @@ export default function Coverage({
     >
       {recordsLoading ? (
         <LoadingState
-          label={copy(language, "Yukleniyor...", "Loading...")}
-          description={copy(
-            language,
-            "Coverage raporlari yukleniyor.",
-            "Loading coverage reports."
-          )}
+          label={t("coverage:loading")}
+          description={t("coverage:loadingCoverageReports")}
         />
       ) : recordsError ? (
         <Card className="gap-4 border-amber-500/30" interactive={false}>
           <CardHeader className="gap-2">
-            <CardTitle>{copy(language, "Uyari", "Warning")}</CardTitle>
+            <CardTitle>{t("coverage:warning")}</CardTitle>
             <CardDescription>{recordsError}</CardDescription>
           </CardHeader>
         </Card>
@@ -1232,14 +1129,10 @@ export default function Coverage({
       <Card className="gap-4" interactive={false}>
         <CardHeader className="gap-2">
           <CardTitle>
-            {copy(language, "Yonetilen kutuphane", "Managed library")}
+            {t("coverage:managedLibrary")}
           </CardTitle>
           <CardDescription>
-            {copy(
-              language,
-              "Coverage arsivi bu yuzeyden duzenlenmez. Yeni rapor ve surumler yalnizca `/app/admin` icindeki Coverage paneli uzerinden eklenir.",
-              "The coverage archive is not editable from this surface. New reports and versions are published only through the Coverage panel inside `/app/admin`."
-            )}
+            {t("coverage:theCoverageArchiveIsNot")}
           </CardDescription>
         </CardHeader>
       </Card>
@@ -1250,14 +1143,10 @@ export default function Coverage({
             <CardHeader className="gap-2 md:flex-row md:items-center md:justify-between">
               <div className="space-y-2">
                 <CardTitle>
-                  {copy(language, "Coverage index", "Coverage index")}
+                  {"Coverage index"}
                 </CardTitle>
                 <CardDescription>
-                  {copy(
-                    language,
-                    "Ticker, sirket veya signal ile filtrele.",
-                    "Filter by ticker, company or signal."
-                  )}
+                  {t("coverage:filterByTickerCompanyOr")}
                 </CardDescription>
               </div>
               <div className="relative w-full max-w-md">
@@ -1265,11 +1154,7 @@ export default function Coverage({
                 <Input
                   value={search}
                   onChange={event => setSearch(event.target.value)}
-                  placeholder={copy(
-                    language,
-                    "CRWV, NBIS, bullish...",
-                    "CRWV, NBIS, bullish..."
-                  )}
+                  placeholder={"CRWV, NBIS, bullish..."}
                   className="pl-10"
                 />
               </div>
@@ -1304,11 +1189,7 @@ export default function Coverage({
                         variant="ghost"
                         size="icon-sm"
                         onClick={() => toggleWatch(group.ticker)}
-                        aria-label={copy(
-                          language,
-                          "Watchlist'e ekle",
-                          "Toggle watchlist"
-                        )}
+                        aria-label={t("coverage:toggleWatchlist")}
                       >
                         <Star
                           className={cn(
@@ -1329,7 +1210,7 @@ export default function Coverage({
                     <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
                       <div className="rounded-xl border border-border bg-background/35 px-3 py-3">
                         <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                          {copy(language, "Rapor", "Report")}
+                          {t("coverage:report")}
                         </p>
                         <p className="mt-1 text-sm font-semibold text-foreground">
                           {formatDate(group.latest.reportDate, language)}
@@ -1337,7 +1218,7 @@ export default function Coverage({
                       </div>
                       <div className="rounded-xl border border-border bg-background/35 px-3 py-3">
                         <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                          {copy(language, "Fiyat", "Price")}
+                          {t("common:price")}
                         </p>
                         <p className="mt-1 text-sm font-semibold text-foreground">
                           {formatUsd(group.latest.metrics.price)}
@@ -1345,7 +1226,7 @@ export default function Coverage({
                       </div>
                       <div className="rounded-xl border border-border bg-background/35 px-3 py-3">
                         <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                          {copy(language, "IV", "IV")}
+                          {"IV"}
                         </p>
                         <p className="mt-1 text-sm font-semibold text-foreground">
                           {formatPercent(group.latest.metrics.iv)}
@@ -1353,7 +1234,7 @@ export default function Coverage({
                       </div>
                       <div className="rounded-xl border border-border bg-background/35 px-3 py-3">
                         <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                          {copy(language, "Versiyon", "Versions")}
+                          {t("coverage:versions")}
                         </p>
                         <p className="mt-1 text-sm font-semibold text-foreground">
                           {group.reports.length}
@@ -1364,14 +1245,14 @@ export default function Coverage({
                   <CardFooter className="justify-between border-t border-border pt-6">
                     <div className="text-xs text-muted-foreground">
                       {group.latest.metrics.earningsDate
-                        ? `${copy(language, "Earnings", "Earnings")}: ${formatDate(group.latest.metrics.earningsDate, language)}`
+                        ? `${"Earnings"}: ${formatDate(group.latest.metrics.earningsDate, language)}`
                         : group.latest.exchange || "NASDAQ"}
                     </div>
                     <Button
                       variant="outline"
                       onClick={() => navigateToTicker(group.latest)}
                     >
-                      {copy(language, "Detayi ac", "Open detail")}
+                      {t("coverage:openDetail")}
                     </Button>
                   </CardFooter>
                 </Card>
@@ -1380,14 +1261,10 @@ export default function Coverage({
               <Card className="gap-4 lg:col-span-2" interactive={false}>
                 <CardHeader className="gap-2">
                   <CardTitle>
-                    {copy(language, "Coverage arsivi bos", "Coverage archive is empty")}
+                    {t("coverage:coverageArchiveIsEmpty")}
                   </CardTitle>
                   <CardDescription>
-                    {copy(
-                      language,
-                      "Bu yuzeyde rapor yoksa admin `/app/admin` icindeki Coverage panelinden markdown yuklemelidir.",
-                      "If there are no reports here, an admin must upload markdown from the Coverage panel inside `/app/admin`."
-                    )}
+                    {t("coverage:ifThereAreNoReports")}
                   </CardDescription>
                 </CardHeader>
               </Card>
@@ -1415,7 +1292,7 @@ export default function Coverage({
                 </div>
                 <div className="rounded-xl border border-border bg-background/35 px-4 py-3 text-right">
                   <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                    {copy(language, "Ana tarih", "Anchor date")}
+                    {t("coverage:anchorDate")}
                   </p>
                   <p className="mt-1 text-sm font-semibold text-foreground">
                     {formatDate(
@@ -1436,7 +1313,7 @@ export default function Coverage({
                       className="border-border bg-background/35"
                     >
                       <Clock3 className="size-3" />
-                      {copy(language, "Rapor", "Report")}:{" "}
+                      {t("coverage:report")}:{" "}
                       {formatDate(report.reportDate, language)}
                     </Badge>
                     {report.metrics.optionExpiry ? (
@@ -1445,7 +1322,7 @@ export default function Coverage({
                         className="border-border bg-background/35"
                       >
                         <CalendarDays className="size-3" />
-                        {copy(language, "Vade", "Expiry")}:{" "}
+                        {t("coverage:expiry")}:{" "}
                         {formatDate(report.metrics.optionExpiry, language)}
                       </Badge>
                     ) : null}
@@ -1454,7 +1331,7 @@ export default function Coverage({
                 <div className="grid grid-cols-2 gap-3">
                   <div className="rounded-xl border border-border bg-background/35 px-3 py-3">
                     <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                      {copy(language, "Fiyat", "Price")}
+                      {t("common:price")}
                     </p>
                     <p className="mt-1 text-sm font-semibold text-foreground">
                       {formatUsd(report.metrics.price)}
@@ -1462,7 +1339,7 @@ export default function Coverage({
                   </div>
                   <div className="rounded-xl border border-border bg-background/35 px-3 py-3">
                     <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                      {copy(language, "Butce", "Budget")}
+                      {t("coverage:budget")}
                     </p>
                     <p className="mt-1 text-sm font-semibold text-foreground">
                       {formatUsd(report.metrics.budget)}
@@ -1470,7 +1347,7 @@ export default function Coverage({
                   </div>
                   <div className="rounded-xl border border-border bg-background/35 px-3 py-3">
                     <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                      {copy(language, "IV", "IV")}
+                      {"IV"}
                     </p>
                     <p className="mt-1 text-sm font-semibold text-foreground">
                       {formatPercent(report.metrics.iv)}
@@ -1478,7 +1355,7 @@ export default function Coverage({
                   </div>
                   <div className="rounded-xl border border-border bg-background/35 px-3 py-3">
                     <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                      {copy(language, "RSI", "RSI")}
+                      {"RSI"}
                     </p>
                     <p className="mt-1 text-sm font-semibold text-foreground">
                       {formatPlainNumber(report.metrics.rsi)}
@@ -1488,7 +1365,7 @@ export default function Coverage({
               </CardContent>
               <CardFooter className="justify-end border-t border-border pt-6">
                 <Button variant="outline" onClick={() => navigateToTicker(report)}>
-                  {copy(language, "Ticker sayfasina git", "Open ticker page")}
+                  {t("coverage:openTickerPage")}
                 </Button>
               </CardFooter>
             </Card>
@@ -1499,6 +1376,22 @@ export default function Coverage({
       {mode === "detail" ? (
         currentReport ? (
           <div className="space-y-4">
+            {showCoverageTranslationNotice ? (
+              <Card
+                className="gap-4 border-amber-400/25 bg-amber-500/8"
+                interactive={false}
+              >
+                <CardHeader className="gap-2">
+                  <CardTitle className="text-base">
+                    {t("coverage:translationPendingTitle")}
+                  </CardTitle>
+                  <CardDescription>
+                    {t("coverage:translationPendingBody")}
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            ) : null}
+
             <Card className="gap-4 overflow-hidden" interactive={false}>
               <CardHeader className="gap-4 border-b border-border pb-6">
                 <div className="flex flex-wrap items-center gap-2">
@@ -1508,7 +1401,7 @@ export default function Coverage({
                     onClick={() => setLocation("/coverage")}
                   >
                     <ArrowLeft className="size-4" />
-                    {copy(language, "Kutuphaneye don", "Back to library")}
+                    {t("coverage:backToLibrary")}
                   </Button>
                   <Badge
                     variant="outline"
@@ -1542,9 +1435,14 @@ export default function Coverage({
                   </CardDescription>
                   <div className="flex flex-wrap items-center gap-2">
                     <Button asChild variant="outline">
-                      <a href={getCoverageMarkdownDownloadHref(currentReport.id)}>
+                      <a
+                        href={getCoverageMarkdownDownloadHref(
+                          currentReport.id,
+                          currentReport.displayedLanguage
+                        )}
+                      >
                         <Download className="size-4" />
-                        {copy(language, "MD indir", "Download MD")}
+                        {t("coverage:downloadMd")}
                       </a>
                     </Button>
                     <Button
@@ -1553,7 +1451,7 @@ export default function Coverage({
                       onClick={() => window.print()}
                     >
                       <Printer className="size-4" />
-                      {copy(language, "Yazdir / PDF", "Print / PDF")}
+                      {t("coverage:printPdf")}
                     </Button>
                   </div>
                 </div>
@@ -1561,68 +1459,47 @@ export default function Coverage({
               <CardContent className="grid gap-4 pt-0 md:grid-cols-2 xl:grid-cols-4">
                 <div className="rounded-xl border border-border bg-background/35 px-4 py-4">
                   <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                    {copy(language, "Rapor tarihi", "Report date")}
+                    {t("coverage:reportDate")}
                   </p>
                   <p className="mt-1 text-base font-semibold text-foreground">
                     {formatDate(currentReport.reportDate, language)}
                   </p>
                 </div>
                 <div className="rounded-xl border border-border bg-background/35 px-4 py-4">
-                  <div className="flex items-start justify-between gap-2">
-                    <div>
-                      <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                        {copy(language, "Fiyat", "Price")}
-                      </p>
-                      <p className="mt-1 text-base font-semibold text-foreground">
-                        {formatUsd(currentReport.metrics.price)}
-                      </p>
-                    </div>
-                    {currentReport.metrics.spark ? (
-                      <MetricSparkline data={currentReport.metrics.spark} />
-                    ) : null}
-                  </div>
+                  <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+                    {t("common:price")}
+                  </p>
+                  <p className="mt-1 text-base font-semibold text-foreground">
+                    {formatUsd(currentReport.metrics.price)}
+                  </p>
                   <p
                     className={cn(
-                      "mt-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium",
-                      currentReport.metrics.changePct && currentReport.metrics.changePct >= 0
-                        ? "bg-emerald-500/10 text-emerald-500"
-                        : "bg-rose-500/10 text-rose-500"
+                      "mt-2 text-xs font-medium",
+                      metricTone(currentReport.metrics.changePct)
                     )}
                   >
                     {formatPercent(currentReport.metrics.changePct)}
                   </p>
                 </div>
                 <div className="rounded-xl border border-border bg-background/35 px-4 py-4">
-                  <div className="flex items-start justify-between gap-2">
-                    <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                      {copy(language, "Earnings", "Earnings")}
-                    </p>
-                    <DteBadge
-                      date={currentReport.metrics.earningsDate}
-                      language={language}
-                    />
-                  </div>
+                  <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+                    {"Earnings"}
+                  </p>
                   <p className="mt-1 text-base font-semibold text-foreground">
                     {formatDate(currentReport.metrics.earningsDate, language)}
                   </p>
                 </div>
                 <div className="rounded-xl border border-border bg-background/35 px-4 py-4">
-                  <div className="flex items-start justify-between gap-2">
-                    <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                      {copy(language, "Opsiyon vadesi", "Option expiry")}
-                    </p>
-                    <DteBadge
-                      date={currentReport.metrics.optionExpiry}
-                      language={language}
-                    />
-                  </div>
+                  <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+                    {t("coverage:optionExpiry")}
+                  </p>
                   <p className="mt-1 text-base font-semibold text-foreground">
                     {formatDate(currentReport.metrics.optionExpiry, language)}
                   </p>
                 </div>
                 <div className="rounded-xl border border-border bg-background/35 px-4 py-4">
                   <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                    {copy(language, "IV", "IV")}
+                    {"IV"}
                   </p>
                   <p className="mt-1 text-base font-semibold text-foreground">
                     {formatPercent(currentReport.metrics.iv)}
@@ -1630,7 +1507,7 @@ export default function Coverage({
                 </div>
                 <div className="rounded-xl border border-border bg-background/35 px-4 py-4">
                   <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                    {copy(language, "RSI", "RSI")}
+                    {"RSI"}
                   </p>
                   <p className="mt-1 text-base font-semibold text-foreground">
                     {formatPlainNumber(currentReport.metrics.rsi)}
@@ -1638,7 +1515,7 @@ export default function Coverage({
                 </div>
                 <div className="rounded-xl border border-border bg-background/35 px-4 py-4">
                   <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                    {copy(language, "Short float", "Short float")}
+                    {"Short float"}
                   </p>
                   <p className="mt-1 text-base font-semibold text-foreground">
                     {formatPercent(currentReport.metrics.shortFloat)}
@@ -1646,7 +1523,7 @@ export default function Coverage({
                 </div>
                 <div className="rounded-xl border border-border bg-background/35 px-4 py-4">
                   <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                    {copy(language, "Butce", "Budget")}
+                    {t("coverage:budget")}
                   </p>
                   <p className="mt-1 text-base font-semibold text-foreground">
                     {formatUsd(currentReport.metrics.budget)}
@@ -1678,99 +1555,122 @@ export default function Coverage({
             ) : null}
 
             {diffSummary ? (
-              <VersionDiffPanel
-                changedMetrics={diffSummary.changedMetrics}
-                changedSections={diffSummary.changedSections}
-                hasPrevious={!!previousReport}
-                language={language}
-              />
+              <Card className="gap-4" interactive={false}>
+                <CardHeader className="gap-2">
+                  <div className="flex items-center gap-2">
+                    <GitCompareArrows className="size-4 text-sky-300" />
+                    <CardTitle>
+                      {"Version diff"}
+                    </CardTitle>
+                  </div>
+                  <CardDescription>
+                    {previousReport
+                      ? t("coverage:theSelectedVersionIsCompared")
+                      : t("coverage:thereIsOnlyOneVersion")}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="grid gap-4 lg:grid-cols-[0.95fr_1.05fr]">
+                  <div className="rounded-xl border border-border bg-background/35 px-4 py-4">
+                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                      {t("coverage:changedMetrics")}
+                    </p>
+                    <div className="mt-4 space-y-3">
+                      {diffSummary.changedMetrics.length > 0 ? (
+                        diffSummary.changedMetrics.map(item => (
+                          <div
+                            key={item.label}
+                            className="flex items-center justify-between gap-3 rounded-xl border border-border/80 bg-background/45 px-3 py-3"
+                          >
+                            <span className="text-sm text-muted-foreground">
+                              {item.label}
+                            </span>
+                            <span className="text-xs text-muted-foreground">
+                              {item.previous} {"->"}{" "}
+                              <strong className="text-foreground">
+                                {item.next}
+                              </strong>
+                            </span>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="text-sm text-muted-foreground">
+                          {t("coverage:noMetricDelta")}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="rounded-xl border border-border bg-background/35 px-4 py-4">
+                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                      {t("coverage:changedSections")}
+                    </p>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {diffSummary.changedSections.length > 0 ? (
+                        diffSummary.changedSections.map(sectionTitle => (
+                          <Badge
+                            key={sectionTitle}
+                            variant="outline"
+                            className="border-amber-500/30 bg-amber-500/10 text-amber-100"
+                          >
+                            {sectionTitle}
+                          </Badge>
+                        ))
+                      ) : (
+                        <span className="text-sm text-muted-foreground">
+                          {t("coverage:noSectionLevelDelta")}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             ) : null}
 
-            {showMiniHeader && (
-              <CoverageMiniHeader
-                className={showMiniHeader ? "translate-y-0" : "-translate-y-full"}
-                language={language}
-                onLanguageChange={onLanguageChange ?? (() => {})}
-                progress={scrollProgress}
-                report={currentReport}
-              />
-            )}
-
-            <div className="grid gap-6 lg:grid-cols-[1fr_240px]">
-              <div className="space-y-4">
-                {currentReport.sections.map(section => {
-                  const hasProbViz = section.blocks.some(
-                    block => block.type === "viz" && block.spec?.type === "prob"
-                  );
-                  const filteredBlocks = hasProbViz
-                    ? section.blocks.filter(
-                        block =>
-                          !(
-                            block.type === "list" &&
-                            extractProbabilityItems(block.items).length > 0
-                          )
-                      )
-                    : section.blocks;
-
-                  if (filteredBlocks.length === 0) {
-                    return null;
-                  }
-
-                  return (
-                    <Card
-                      key={section.id}
-                      id={section.id}
-                      className="gap-4 scroll-mt-28 print:break-inside-avoid"
-                      interactive={false}
-                    >
-                      <CardHeader className="gap-2 border-b border-border pb-6">
-                        <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground/70">
-                          {section.level === 2
-                            ? copy(language, "Bolum", "Section")
-                            : copy(language, "Alt Bolum", "Subsection")}
-                        </span>
-                        <CardTitle className="text-2xl">{section.title}</CardTitle>
-                      </CardHeader>
-                      <CardContent className="pt-0">
-                        <CoverageBlocks
-                          blockPrefix={section.id}
-                          blocks={filteredBlocks}
-                          checklistState={checklistState}
-                          language={language}
-                          onChecklistChange={handleChecklistChange}
-                          onNavigateTicker={navigateToTickerSymbol}
-                          report={currentReport}
-                          reportId={currentReport.id}
-                          sectionId={section.id}
-                        />
-                      </CardContent>
-                    </Card>
-                  );
-                })}
-              </div>
-
-              <div className="hidden lg:block">
-                <CoverageToc language={language} sections={currentReport.sections} />
-              </div>
-            </div>
+            {currentReport.sections.map(section => (
+              <Card
+                key={section.id}
+                id={section.id}
+                className="gap-4 scroll-mt-28"
+                interactive={false}
+              >
+                <CardHeader className="gap-2 border-b border-border pb-6">
+                  <Badge
+                    variant="outline"
+                    className="w-fit border-border bg-background/35"
+                  >
+                    H{section.level}
+                  </Badge>
+                  <CardTitle className="text-2xl">{section.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <CoverageBlocks
+                    blockPrefix={section.id}
+                    blocks={section.blocks}
+                    checklistState={checklistState}
+                    language={language}
+                    onChecklistChange={handleChecklistChange}
+                    onNavigateTicker={navigateToTickerSymbol}
+                    report={currentReport}
+                    reportId={currentReport.id}
+                    sectionId={section.id}
+                  />
+                </CardContent>
+              </Card>
+            ))}
           </div>
         ) : (
           <Card className="gap-4" interactive={false}>
             <CardHeader className="gap-2">
               <CardTitle>
-                {copy(language, "Coverage bulunamadi", "Coverage not found")}
+                {t("coverage:coverageNotFound")}
               </CardTitle>
               <CardDescription>
-                {copy(
-                  language,
-                  "Bu ticker icin kutuphanede rapor yok. Yeni coverage raporu eklemek icin admin panelindeki Coverage arsivini kullan.",
-                  "No report exists for this ticker. Use the Coverage archive inside the admin panel to add a new report."
-                )}
+                {t("coverage:noReportExistsForThis")}
               </CardDescription>
             </CardHeader>
             <CardFooter>
               <Button onClick={() => setLocation("/coverage")}>
-                {copy(language, "Kutuphane", "Open library")}
+                {t("coverage:openLibrary")}
               </Button>
             </CardFooter>
           </Card>

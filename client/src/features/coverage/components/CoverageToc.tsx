@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { type AppLanguage, copy } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { type CoverageSection } from "../lib/coverageParser";
 
@@ -44,10 +44,10 @@ export default function CoverageToc({ className, language, sections }: CoverageT
         "sticky top-24 max-h-[calc(100vh-6rem)] overflow-y-auto rounded-xl border border-border bg-background/50 p-4 backdrop-blur-sm",
         className
       )}
-      aria-label={copy(language, "Bolum navigasyonu", "Section navigation")}
+      aria-label={t("common:tableOfContents")}
     >
       <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-        {copy(language, "Icerik", "Contents")}
+        {t("common:contents")}
       </p>
       <ul className="space-y-1">
         {sections.map(section => (

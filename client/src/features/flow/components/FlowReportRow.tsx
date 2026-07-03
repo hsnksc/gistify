@@ -1,6 +1,6 @@
 import { CalendarRange, FileText } from "lucide-react";
 import { Link } from "wouter";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import {
   useFlowTitleTranslation,
   useFlowSummaryTranslation,
@@ -74,8 +74,8 @@ export default function FlowReportRow({
         <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
           <span className="inline-flex items-center rounded-full border border-border bg-background/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
             {reportKind === "daily"
-              ? copy(language, "Gunluk", "Daily")
-              : copy(language, "Hisse", "Stock")}
+              ? t("common:daily")
+              : t("flow:stock")}
           </span>
           {languageBadge ? (
             <span

@@ -1,27 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
-  Activity,
-  ArrowDown,
-  ArrowRightLeft,
-  ArrowUp,
-  BarChart3,
-  Clock,
-  Filter,
-  LineChart,
-  Loader2,
-  RefreshCw,
-  ShieldAlert,
-  TrendingDown,
-  TrendingUp,
-  Zap,
-} from "lucide-react";
+  Activity, ArrowDown, ArrowRightLeft, ArrowUp, BarChart3, Clock, Filter, LineChart, Loader2, RefreshCw, ShieldAlert, TrendingDown, TrendingUp, Zap, } from "lucide-react";
 import type {
-  MidasActionSignal as ActionSignal,
-  MidasSignalRecord,
-  MidasSignalsData,
-} from "@shared/midasSignals";
+  MidasActionSignal as ActionSignal, MidasSignalRecord, MidasSignalsData, } from "@shared/midasSignals";
 import { runMomentumScan, type StockResult } from "@/scanner";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 
 type SignalDirection = "positive" | "negative" | "neutral";
 type SurfaceMode = "overview" | "positive" | "negative" | "shifts";
@@ -79,15 +62,15 @@ function signalBadgeClass(signal: ActionSignal) {
 function signalLabel(signal: ActionSignal, language: AppLanguage) {
   switch (signal) {
     case "STRONG_BUY":
-      return copy(language, "GÜÇLÜ AL", "STRONG BUY");
+      return t("common:strongBuy4b0a");
     case "BUY":
-      return copy(language, "AL", "BUY");
+      return t("common:buy36db");
     case "SELL":
-      return copy(language, "SAT", "SELL");
+      return t("common:sell");
     case "STRONG_SELL":
-      return copy(language, "GÜÇLÜ SAT", "STRONG SELL");
+      return t("common:strongSell");
     default:
-      return copy(language, "TUT", "HOLD");
+      return t("common:hold");
   }
 }
 
@@ -98,19 +81,19 @@ function scannerSignalLabel(signal: string, language: AppLanguage) {
     case "BUY":
       return signalLabel("BUY", language);
     case "NEUTRAL_BULLISH":
-      return copy(language, "NÖTR-POZİTİF", "NEUTRAL-BULLISH");
+      return t("common:neutralBullish");
     case "NEUTRAL":
-      return copy(language, "NÖTR", "NEUTRAL");
+      return t("common:neutral43cc");
     case "NEUTRAL_BEARISH":
-      return copy(language, "NÖTR-NEGATİF", "NEUTRAL-BEARISH");
+      return t("common:neutralBearish");
     case "WEAK":
-      return copy(language, "ZAYIF", "WEAK");
+      return t("common:weak");
     case "CAUTION_HOT":
-      return copy(language, "SICAK BÖLGE", "HOT ZONE");
+      return t("common:hotZone");
     case "OVERBOUGHT_RED":
-      return copy(language, "AŞIRI ALIM", "OVERBOUGHT");
+      return t("common:overbought");
     case "OVERSOLD_CAUTION":
-      return copy(language, "AŞIRI SATIM", "OVERSOLD");
+      return t("common:volumeAnalysis");
     default:
       return signal;
   }
@@ -185,33 +168,33 @@ function getDirectionalBias(signal: ActionSignal): SignalDirection {
 function describeSnapshotTag(tag: string, language: AppLanguage) {
   switch (tag) {
     case "DAILY_STRONG_UP":
-      return copy(language, "Gun ici hareket sert yukari.", "Intraday momentum is accelerating higher.");
+      return t("common:intradayMomentumIsAcceleratingHigher");
     case "DAILY_UP":
-      return copy(language, "Gun ici akis yukari yone donuk.", "Intraday flow is tilted higher.");
+      return t("common:featuredSetup");
     case "WEEKLY_STRONG_UP":
-      return copy(language, "Haftalik trend guclu sekilde pozitif.", "The weekly trend is strongly positive.");
+      return t("common:theWeeklyTrendIsStrongly");
     case "WEEKLY_UP":
-      return copy(language, "Haftalik momentum destek veriyor.", "Weekly momentum is supportive.");
+      return t("common:weeklyMomentumIsSupportive");
     case "MONTHLY_STRONG_UP":
-      return copy(language, "Aylik trend liderlik ediyor.", "The monthly trend is showing leadership.");
+      return t("common:theMonthlyTrendIsShowing");
     case "MONTHLY_UP":
-      return copy(language, "Aylik momentum pozitif tarafta.", "Monthly momentum remains positive.");
+      return t("common:monthlyMomentumRemainsPositive");
     case "ALL_UP":
-      return copy(language, "Tum zaman pencereleri yukari bakiyor.", "Every major timeframe is aligned higher.");
+      return t("common:everyMajorTimeframeIsAligned");
     case "DAILY_STRONG_DOWN":
-      return copy(language, "Gun ici satis baskisi sert.", "Intraday selling pressure is sharp.");
+      return t("common:intradaySellingPressureIsSharp");
     case "DAILY_DOWN":
-      return copy(language, "Gun ici akis asagi yone kayiyor.", "Intraday flow is leaning lower.");
+      return t("common:intradayFlowIsLeaningLower");
     case "WEEKLY_STRONG_DOWN":
-      return copy(language, "Haftalik zayiflik derinlesiyor.", "Weekly weakness is deepening.");
+      return t("common:weeklyWeaknessIsDeepening");
     case "WEEKLY_DOWN":
-      return copy(language, "Haftalik momentum negatif.", "Weekly momentum is negative.");
+      return t("common:weeklyMomentumIsNegative");
     case "MONTHLY_STRONG_DOWN":
-      return copy(language, "Aylik trend belirgin sekilde bozuk.", "The monthly trend is decisively broken.");
+      return t("common:theMonthlyTrendIsDecisively");
     case "MONTHLY_DOWN":
-      return copy(language, "Aylik momentum zayif.", "Monthly momentum is weak.");
+      return t("common:monthlyMomentumIsWeak");
     case "ALL_DOWN":
-      return copy(language, "Tum zaman pencereleri asagi bakiyor.", "Every major timeframe is aligned lower.");
+      return t("common:topProbabilityStocks");
     default:
       return tag.replace(/_/g, " ");
   }
@@ -225,37 +208,25 @@ function buildHeadline(
 ) {
   if (live && live.action !== signal.signal) {
     if (getDirectionalBias(resolvedSignal) === "positive") {
-      return copy(
-        language,
-        "Canli motor sinyali yukari revize etti.",
-        "The live engine upgraded the setup to the upside."
-      );
+      return t("common:theLiveEngineUpgradedThe");
     }
 
     if (getDirectionalBias(resolvedSignal) === "negative") {
-      return copy(
-        language,
-        "Canli motor sinyali asagi revize etti.",
-        "The live engine downgraded the setup to the downside."
-      );
+      return t("common:theLiveEngineDowngradedThe");
     }
   }
 
   switch (resolvedSignal) {
     case "STRONG_BUY":
-      return copy(
-        language,
-        "Trend, breadth ve hiz ayni yone bakiyor.",
-        "Trend, breadth, and velocity are aligned higher."
-      );
+      return t("common:trendBreadthAndVelocityAre");
     case "BUY":
-      return copy(language, "Yukari momentum korunuyor.", "Upside momentum remains intact.");
+      return t("common:upsideMomentumRemainsIntact");
     case "SELL":
-      return copy(language, "Asagi momentum one cikiyor.", "Downside momentum is taking control.");
+      return t("common:downsideMomentumIsTakingControl");
     case "STRONG_SELL":
-      return copy(language, "Satis baskisi hizlaniyor.", "Selling pressure is accelerating.");
+      return t("common:sellingPressureIsAccelerating");
     default:
-      return copy(language, "Yon kararsiz; gecis bolgesi.", "Direction is mixed; this is a transition zone.");
+      return t("scanner:insufficientVolumeData");
   }
 }
 
@@ -272,49 +243,29 @@ function buildReasonDetails(
   if (live) {
     if (direction === "positive") {
       reasons.push(
-        copy(
-          language,
-          `Canli motor bull ${live.bullScore} / bear ${live.bearScore} uretiyor.`,
-          `The live engine prints bull ${live.bullScore} versus bear ${live.bearScore}.`
-        )
+        t("common:theLiveEnginePrintsBull", { bullscore: live.bullScore, bearscore: live.bearScore })
       );
     } else if (direction === "negative") {
       reasons.push(
-        copy(
-          language,
-          `Canli motor bear ${live.bearScore} / bull ${live.bullScore} uretiyor.`,
-          `The live engine prints bear ${live.bearScore} versus bull ${live.bullScore}.`
-        )
+        t("common:theLiveEnginePrintsBear", { bearscore: live.bearScore, bullscore: live.bullScore })
       );
     }
 
     if (live.volumeRatio >= 1.25) {
       reasons.push(
-        copy(
-          language,
-          `Hacim destegi RVOL ${live.volumeRatio.toFixed(2)}x seviyesinde.`,
-          `Volume support is running at ${live.volumeRatio.toFixed(2)}x RVOL.`
-        )
+        t("common:volumeSupportIsRunningAt", { tofixed2: live.volumeRatio.toFixed(2) })
       );
     }
 
     if (direction === "positive" && live.rsi >= 58) {
       reasons.push(
-        copy(
-          language,
-          `RSI ${live.rsi.toFixed(1)} ile yukari momentum teyitli.`,
-          `RSI at ${live.rsi.toFixed(1)} confirms upside momentum.`
-        )
+        t("common:rsiAtConfirmsUpsideMomentum", { tofixed1: live.rsi.toFixed(1) })
       );
     }
 
     if (direction === "negative" && live.rsi <= 45) {
       reasons.push(
-        copy(
-          language,
-          `RSI ${live.rsi.toFixed(1)} ile zayiflik teyit ediliyor.`,
-          `RSI at ${live.rsi.toFixed(1)} confirms the weakness.`
-        )
+        t("common:rsiAtConfirmsTheWeakness", { tofixed1: live.rsi.toFixed(1) })
       );
     }
   }
@@ -322,19 +273,19 @@ function buildReasonDetails(
   if (direction === "positive") {
     if (dayChange > 0) {
       reasons.push(
-        copy(language, `Gunluk akis ${formatPct(dayChange)} ile pozitif.`, `Daily flow is positive at ${formatPct(dayChange)}.`)
+        t("scanner:expectedMoveAcceptableRange", { formatpctDaychange: formatPct(dayChange) })
       );
     }
 
     if (signal.weekly_pct > 0) {
       reasons.push(
-        copy(language, `Haftalik momentum ${formatPct(signal.weekly_pct)} seviyesinde.`, `Weekly momentum is running at ${formatPct(signal.weekly_pct)}.`)
+        t("common:weeklyMomentumIsRunningAt", { weekly_pct: formatPct(signal.weekly_pct) })
       );
     }
 
     if (signal.monthly_pct > 0) {
       reasons.push(
-        copy(language, `Aylik ivme ${formatPct(signal.monthly_pct)} ile destek veriyor.`, `Monthly acceleration supports the move at ${formatPct(signal.monthly_pct)}.`)
+        t("common:monthlyAccelerationSupportsTheMove", { monthly_pct: formatPct(signal.monthly_pct) })
       );
     }
   }
@@ -342,19 +293,19 @@ function buildReasonDetails(
   if (direction === "negative") {
     if (dayChange < 0) {
       reasons.push(
-        copy(language, `Gunluk akis ${formatPct(dayChange)} ile asagi yone egiliyor.`, `Daily flow is leaning lower at ${formatPct(dayChange)}.`)
+        t("common:dailyFlowIsLeaningLower", { formatpctDaychange: formatPct(dayChange) })
       );
     }
 
     if (signal.weekly_pct < 0) {
       reasons.push(
-        copy(language, `Haftalik momentum ${formatPct(signal.weekly_pct)} ile zayif.`, `Weekly momentum is weak at ${formatPct(signal.weekly_pct)}.`)
+        t("common:weeklyMomentumIsWeakAt", { weekly_pct: formatPct(signal.weekly_pct) })
       );
     }
 
     if (signal.monthly_pct < 0) {
       reasons.push(
-        copy(language, `Aylik trend ${formatPct(signal.monthly_pct)} ile bozuluyor.`, `The monthly trend is deteriorating at ${formatPct(signal.monthly_pct)}.`)
+        t("common:theMonthlyTrendIsDeteriorating", { monthly_pct: formatPct(signal.monthly_pct) })
       );
     }
   }
@@ -369,13 +320,13 @@ function buildReasonDetails(
 function pipelineStatusLabel(status: string, language: AppLanguage) {
   switch (status) {
     case "ok":
-      return copy(language, "Senkron", "Synced");
+      return t("common:synced");
     case "stale":
-      return copy(language, "Eski veri", "Stale");
+      return t("common:stale");
     case "error":
-      return copy(language, "Hata", "Error");
+      return t("common:error");
     default:
-      return copy(language, "Beklemede", "Idle");
+      return t("common:idle");
   }
 }
 
@@ -505,7 +456,7 @@ function MomentumSignalCard({
             </span>
             {signal.live ? (
               <span className="rounded-full border border-border bg-background/60 px-2.5 py-1">
-                {copy(language, "Scanner", "Scanner")}:{" "}
+                {"Scanner"}:{" "}
                 {scannerSignalLabel(signal.live.scannerSignal, language)}
               </span>
             ) : null}
@@ -534,7 +485,7 @@ function MomentumSignalCard({
                 ? 'border-emerald-400/25 bg-emerald-500/10 text-emerald-300'
                 : 'border-rose-400/25 bg-rose-500/10 text-rose-300'
             }`}>
-              {signal.direction === 'LONG' ? copy(language, "↑ LONG", "↑ LONG") : copy(language, "↓ SHORT", "↓ SHORT")}
+              {signal.direction === 'LONG' ? "↑ LONG" : "↓ SHORT"}
             </span>
           ) : null}
           {signal.conviction_tier ? (
@@ -553,7 +504,7 @@ function MomentumSignalCard({
 
       <div className="mt-4">
         <div className="mb-2 flex items-center justify-between gap-3 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-          <span>{copy(language, "Momentum gucu", "Momentum conviction")}</span>
+          <span>{t("common:momentumConviction")}</span>
           <span className="data-mono text-foreground/85">{convictionWidth}/100</span>
         </div>
         <div className="h-2 overflow-hidden rounded-full bg-background/75">
@@ -567,7 +518,7 @@ function MomentumSignalCard({
       {typeof signal.apex_score === 'number' ? (
         <div className="mt-4">
           <div className="mb-1 flex items-center justify-between gap-3 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-            <span>{copy(language, "Apex Skoru", "Apex Score")}</span>
+            <span>{t("common:apexScore")}</span>
             <span className="data-mono text-foreground/85">{signal.apex_score}/100</span>
           </div>
           <div className="h-2 overflow-hidden rounded-full bg-background/75">
@@ -587,16 +538,16 @@ function MomentumSignalCard({
 
       <div className="mt-4 flex flex-wrap gap-2 text-[11px]">
         <span className={`data-mono rounded-full border border-border bg-background/70 px-2.5 py-1 ${pctClass(currentDayPct)}`}>
-          {copy(language, "Gunluk", "Daily")}: {formatPct(currentDayPct)}
+          {t("common:daily")}: {formatPct(currentDayPct)}
         </span>
         <span className={`data-mono rounded-full border border-border bg-background/70 px-2.5 py-1 ${pctClass(signal.weekly_pct)}`}>
-          {copy(language, "Haftalik", "Weekly")}: {formatPct(signal.weekly_pct)}
+          {t("scanner:averageVolatilityLevels")}: {formatPct(signal.weekly_pct)}
         </span>
         <span className={`data-mono rounded-full border border-border bg-background/70 px-2.5 py-1 ${pctClass(signal.monthly_pct)}`}>
-          {copy(language, "Aylik", "Monthly")}: {formatPct(signal.monthly_pct)}
+          {t("common:monthly")}: {formatPct(signal.monthly_pct)}
         </span>
         <span className="rounded-full border border-border bg-background/70 px-2.5 py-1 text-muted-foreground">
-          {copy(language, "Konviksiyon", "Conviction")}: {Math.round(signal.conviction)}
+          {t("common:conviction")}: {Math.round(signal.conviction)}
         </span>
         {signal.live ? (
           <span className="data-mono rounded-full border border-border bg-background/70 px-2.5 py-1 text-muted-foreground">
@@ -609,8 +560,8 @@ function MomentumSignalCard({
         <div className="mt-4 flex items-center gap-2 rounded-xl border border-sky-400/20 bg-sky-500/10 px-3 py-2 text-[11px] text-sky-100">
           <ArrowRightLeft className="size-3.5" />
           <span>
-            {copy(language, "Snapshot", "Snapshot")} {signalLabel(signal.signal, language)} -{" "}
-            {copy(language, "Canli", "Live")} {signalLabel(signal.resolvedSignal, language)}
+            {"Snapshot"} {signalLabel(signal.signal, language)} -{" "}
+            {t("common:live")} {signalLabel(signal.resolvedSignal, language)}
           </span>
         </div>
       ) : null}
@@ -664,14 +615,14 @@ function MomentumSignalCard({
 
       {signal.factor_breakdown ? (
         <div className="mt-4 space-y-1.5">
-          <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">{copy(language, "Faktor Dagilimi", "Factor Breakdown")}</p>
+          <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">{t("common:factorBreakdown")}</p>
           {[
-            { key: 'f1_momentum_quality', label: copy(language, 'F1', 'F1') },
-            { key: 'f2_relative_strength', label: copy(language, 'F2', 'F2') },
-            { key: 'f3_volume_liquidity', label: copy(language, 'F3', 'F3') },
-            { key: 'f4_technical_structure', label: copy(language, 'F4', 'F4') },
-            { key: 'f5_volatility_regime', label: copy(language, 'F5', 'F5') },
-            { key: 'f6_catalyst_flow', label: copy(language, 'F6', 'F6') },
+            { key: 'f1_momentum_quality', label: 'F1' },
+            { key: 'f2_relative_strength', label: 'F2' },
+            { key: 'f3_volume_liquidity', label: 'F3' },
+            { key: 'f4_technical_structure', label: 'F4' },
+            { key: 'f5_volatility_regime', label: 'F5' },
+            { key: 'f6_catalyst_flow', label: 'F6' },
           ].map((f) => {
             const score = signal.factor_breakdown![f.key as keyof NonNullable<typeof signal.factor_breakdown>] ?? 0;
             return (
@@ -692,31 +643,31 @@ function MomentumSignalCard({
 
       {signal.trade_plan ? (
         <div className="mt-4 rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-[11px]">
-          <p className="mb-1.5 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">{copy(language, "Trade Plan", "Trade Plan")}</p>
+          <p className="mb-1.5 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">{"Trade Plan"}</p>
           <div className="flex flex-wrap gap-x-3 gap-y-1">
-            <span>{copy(language, "Giris:", "Entry:")} {formatPrice(signal.trade_plan.entry)}</span>
-            <span className="text-rose-300">{copy(language, "Stop:", "Stop:")} {formatPrice(signal.trade_plan.stop)}</span>
-            <span className="text-emerald-300">{copy(language, "T1:", "T1:")} {formatPrice(signal.trade_plan.target1)}</span>
-            <span className="text-emerald-300">{copy(language, "T2:", "T2:")} {formatPrice(signal.trade_plan.target2)}</span>
-            <span>{copy(language, "RR:", "RR:")} {signal.trade_plan.rr_ratio.toFixed(1)}</span>
-            <span>{copy(language, "Stop%:", "Stop%:")} {signal.trade_plan.stop_pct.toFixed(1)}%</span>
+            <span>{t("common:entry9e74")} {formatPrice(signal.trade_plan.entry)}</span>
+            <span className="text-rose-300">{"Stop:"} {formatPrice(signal.trade_plan.stop)}</span>
+            <span className="text-emerald-300">{"T1:"} {formatPrice(signal.trade_plan.target1)}</span>
+            <span className="text-emerald-300">{"T2:"} {formatPrice(signal.trade_plan.target2)}</span>
+            <span>{"RR:"} {signal.trade_plan.rr_ratio.toFixed(1)}</span>
+            <span>{"Stop%:"} {signal.trade_plan.stop_pct.toFixed(1)}%</span>
           </div>
         </div>
       ) : null}
 
       {signal.position_sizing && signal.position_sizing.shares > 0 ? (
         <div className="mt-4 rounded-xl border border-border/70 bg-background/60 px-3 py-2 text-[11px]">
-          <p className="mb-1.5 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">{copy(language, "Pozisyon Buyuklugu", "Position Sizing")}</p>
+          <p className="mb-1.5 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">{t("common:positionSizing")}</p>
           <div className="flex flex-wrap gap-x-3 gap-y-1">
-            <span>{copy(language, "Adet:", "Shares:")} {signal.position_sizing.shares}</span>
-            <span>{copy(language, "Pozisyon:", "Position:")} ${signal.position_sizing.position_value.toLocaleString()}</span>
-            <span>{copy(language, "Risk:", "Risk:")} ${signal.position_sizing.dollar_risk.toFixed(0)} ({signal.position_sizing.risk_pct_of_account.toFixed(1)}%)</span>
+            <span>{t("common:shares")} {signal.position_sizing.shares}</span>
+            <span>{t("common:position")} ${signal.position_sizing.position_value.toLocaleString()}</span>
+            <span>{"Risk:"} ${signal.position_sizing.dollar_risk.toFixed(0)} ({signal.position_sizing.risk_pct_of_account.toFixed(1)}%)</span>
             <span className={`rounded px-1.5 py-0.5 text-[10px] font-bold ${
               signal.position_sizing.kelly_fraction >= 0.25 ? 'bg-emerald-500/20 text-emerald-300' :
               signal.position_sizing.kelly_fraction >= 0.15 ? 'bg-amber-500/20 text-amber-300' :
               'bg-rose-500/20 text-rose-300'
             }`}>
-              {copy(language, "Kelly:", "Kelly:")} {(signal.position_sizing.kelly_fraction * 100).toFixed(0)}%
+              {"Kelly:"} {(signal.position_sizing.kelly_fraction * 100).toFixed(0)}%
             </span>
           </div>
         </div>
@@ -724,12 +675,12 @@ function MomentumSignalCard({
 
       <div className="mt-4 flex flex-wrap items-center gap-3 text-[10px] text-muted-foreground">
         <span>
-          {copy(language, "Snapshot", "Snapshot")}:{" "}
+          {"Snapshot"}:{" "}
           {formatTimestamp(signal.timestamp || snapshotTimestamp, language)}
         </span>
         {signal.live ? (
           <span>
-            {copy(language, "Canli", "Live")}: {formatTimestamp(signal.live.updatedAt, language)}
+            {t("common:live")}: {formatTimestamp(signal.live.updatedAt, language)}
           </span>
         ) : null}
       </div>
@@ -789,11 +740,7 @@ export default function MidasOpportunitiesTab({
         const message =
           loadError instanceof Error && loadError.message
             ? loadError.message
-            : copy(
-                language,
-                "Midas sinyal verisi yuklenemedi.",
-                "Failed to load Midas signal data."
-              );
+            : t("common:failedToLoadMidasSignal");
         setError(message);
       } finally {
         setLoading(false);
@@ -852,11 +799,7 @@ export default function MidasOpportunitiesTab({
         if (liveRunRef.current !== runId) return;
 
         setLiveError(
-          copy(
-            language,
-            "Canli scanner verisi uretilemedi. Snapshot gorunumu korunuyor.",
-            "Live scanner data could not be produced. Snapshot view remains active."
-          )
+          t("common:liveScannerDataCouldNot")
         );
       } finally {
         if (liveRunRef.current === runId) {
@@ -992,7 +935,7 @@ export default function MidasOpportunitiesTab({
         <div className="flex items-center gap-2">
           <LineChart className="size-4 animate-pulse text-sky-300" />
           <p className="text-sm text-foreground">
-            {copy(language, "Momentum akisi yukleniyor...", "Loading momentum flow...")}
+            {t("common:loadingMomentumFlow")}
           </p>
         </div>
       </div>
@@ -1017,11 +960,11 @@ export default function MidasOpportunitiesTab({
     label: string;
     icon: typeof TrendingUp;
   }> = [
-    { id: "all", label: copy(language, "Tum Sinyaller", "All Signals"), icon: BarChart3 },
-    { id: "buy", label: copy(language, "Al Firsatlari", "Buy Opportunities"), icon: TrendingUp },
-    { id: "sell", label: copy(language, "Sat Firsatlari", "Sell Opportunities"), icon: TrendingDown },
-    { id: "top_up", label: copy(language, "Gunun Yuksekleri", "Top Gainers"), icon: ArrowUp },
-    { id: "top_down", label: copy(language, "Gunun Dusukleri", "Top Losers"), icon: ArrowDown },
+    { id: "all", label: t("common:allSignals"), icon: BarChart3 },
+    { id: "buy", label: t("common:buyOpportunities"), icon: TrendingUp },
+    { id: "sell", label: t("common:sellOpportunities"), icon: TrendingDown },
+    { id: "top_up", label: t("common:topGainers"), icon: ArrowUp },
+    { id: "top_down", label: t("common:topLosers"), icon: ArrowDown },
   ];
   const snapshotTimestampLabel = formatTimestamp(data.timestamp, language);
   const liveTimestampLabel = formatTimestamp(liveScanTime || undefined, language);
@@ -1038,15 +981,11 @@ export default function MidasOpportunitiesTab({
             <div className="flex items-center gap-2">
               <Activity className="size-4 text-sky-300" />
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-200">
-                {copy(language, "Canli momentum orkestra", "Live momentum orchestration")}
+                {t("common:liveMomentumOrchestration")}
               </p>
             </div>
             <p className="max-w-3xl text-sm leading-7 text-foreground/90">
-              {copy(
-                language,
-                "Sayfa pipeline snapshot'ini dakikalik olarak yeniden ceker. Gelen evren daha sonra canli scanner ile tekrar skorlanir ve hisseler pozitif ya da negatif momentum yonune gore yeniden siralanir.",
-                "The page re-pulls the pipeline snapshot on a rolling basis. The incoming universe is then rescored by the live scanner and ranked again by positive or negative momentum direction."
-              )}
+              {t("common:thePageRePullsThe")}
             </p>
           </div>
 
@@ -1062,7 +1001,7 @@ export default function MidasOpportunitiesTab({
               ) : (
                 <RefreshCw className="size-4" />
               )}
-              {copy(language, "Kaynagi yenile", "Refresh source")}
+              {t("common:refreshSource")}
             </button>
             <button
               type="button"
@@ -1071,7 +1010,7 @@ export default function MidasOpportunitiesTab({
               className="inline-flex items-center justify-center gap-2 rounded-lg border border-sky-400/30 bg-sky-500/12 px-4 py-2 text-sm font-semibold text-sky-100 transition-colors hover:bg-sky-500/18 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {liveLoading ? <Loader2 className="size-4 animate-spin" /> : <Zap className="size-4" />}
-              {copy(language, "Canli yeniden tara", "Run live rescore")}
+              {t("common:runLiveRescore")}
             </button>
           </div>
         </div>
@@ -1081,25 +1020,25 @@ export default function MidasOpportunitiesTab({
             Snapshot: {snapshotTimestampLabel}
           </span>
           <span className="rounded-full border border-border bg-background/70 px-3 py-1">
-            {copy(language, "Canli update", "Live update")}: {liveTimestampLabel}
+            {t("common:liveUpdate")}: {liveTimestampLabel}
           </span>
           <span
             className={`rounded-full border px-3 py-1 ${pipelineStatusClass(
               data.pipeline?.status || "idle"
             )}`}
           >
-            {copy(language, "Pipeline", "Pipeline")}:{" "}
+            {"Pipeline"}:{" "}
             {pipelineStatusLabel(data.pipeline?.status || "idle", language)}
           </span>
           <span className="rounded-full border border-border bg-background/70 px-3 py-1">
-            {liveCoverageCount}/{data!.symbol_count} {copy(language, "sembol tarandi", "symbols scanned")}
+            {liveCoverageCount}/{data!.symbol_count} {t("common:symbolsScanned")}
           </span>
           <span className="rounded-full border border-border bg-background/70 px-3 py-1">
-            {changedSignals.length} {copy(language, "sinyal degisti", "signals changed")}
+            {changedSignals.length} {t("common:signalsChanged")}
           </span>
           {data.pipeline?.pollIntervalMs ? (
             <span className="rounded-full border border-border bg-background/70 px-3 py-1">
-              {copy(language, "Cekim araligi", "Poll interval")}:{" "}
+              {t("common:pollInterval")}:{" "}
               {Math.round(data.pipeline.pollIntervalMs / 1000)}s
             </span>
           ) : null}
@@ -1115,8 +1054,8 @@ export default function MidasOpportunitiesTab({
             </div>
             <p className="text-xs text-muted-foreground">
               {scanProgress.current
-                ? `${scanProgress.current} ${copy(language, "icin canli skor uretiliyor.", "is being rescored live.")}`
-                : copy(language, "Momentum evreni canli yeniden skorlanıyor.", "The momentum universe is being rescored live.")}
+                ? `${scanProgress.current} ${t("common:isBeingRescoredLive")}`
+                : t("common:theMomentumUniverseIsBeing")}
             </p>
           </div>
         ) : null}
@@ -1136,7 +1075,7 @@ export default function MidasOpportunitiesTab({
         <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
           <div className="rounded-xl border border-emerald-500/25 bg-emerald-500/10 p-3">
             <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-300/80">
-              {copy(language, "Pozitif", "Positive")}
+              {t("common:positive")}
             </p>
             <p className="heading-condensed mt-1 text-2xl text-emerald-100">
               {stats.strongBuy + stats.buy}
@@ -1144,7 +1083,7 @@ export default function MidasOpportunitiesTab({
           </div>
           <div className="rounded-xl border border-rose-500/25 bg-rose-500/10 p-3">
             <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-rose-300/80">
-              {copy(language, "Negatif", "Negative")}
+              {t("common:negative")}
             </p>
             <p className="heading-condensed mt-1 text-2xl text-rose-100">
               {stats.sell + stats.strongSell}
@@ -1152,13 +1091,13 @@ export default function MidasOpportunitiesTab({
           </div>
           <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-3">
             <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-amber-300/80">
-              {copy(language, "Notr", "Neutral")}
+              {t("common:neutral")}
             </p>
             <p className="heading-condensed mt-1 text-2xl text-amber-100">{neutralCount}</p>
           </div>
           <div className="rounded-xl border border-sky-500/20 bg-sky-500/10 p-3">
             <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-sky-200">
-              {copy(language, "Sinyal degisenler", "Signal shifts")}
+              {t("common:signalShifts")}
             </p>
             <p className="heading-condensed mt-1 text-2xl text-sky-100">
               {changedSignals.length}
@@ -1166,12 +1105,12 @@ export default function MidasOpportunitiesTab({
           </div>
           <div className="rounded-xl border border-border bg-background/55 p-3">
             <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-              {copy(language, "Kaynak modu", "Source mode")}
+              {t("common:sourceMode")}
             </p>
             <p className="mt-1 text-sm text-foreground">
               {liveCoverageCount > 0
-                ? copy(language, "Snapshot + canli motor", "Snapshot + live engine")
-                : copy(language, "Snapshot", "Snapshot")}
+                ? t("common:snapshotLiveEngine")
+                : "Snapshot"}
             </p>
           </div>
         </div>
@@ -1182,7 +1121,7 @@ export default function MidasOpportunitiesTab({
           <div className="flex items-center gap-2 mb-3">
             <BarChart3 className="size-4 text-sky-300" />
             <p className="text-sm font-semibold text-foreground">
-              {copy(language, "Genel Piyasa", "Broad Market")}
+              {t("common:broadMarket")}
             </p>
           </div>
           <div className="grid gap-3 sm:grid-cols-3">
@@ -1216,7 +1155,7 @@ export default function MidasOpportunitiesTab({
           <div className="flex items-center gap-2">
             <ArrowRightLeft className="size-4 text-sky-200" />
             <p className="text-sm font-semibold text-sky-100">
-              {copy(language, "Canli motorun revize ettigi isimler", "Names revised by the live engine")}
+              {t("common:namesRevisedByTheLive")}
             </p>
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
@@ -1239,17 +1178,13 @@ export default function MidasOpportunitiesTab({
             <TrendingUp className="mt-0.5 size-5 text-emerald-300" />
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300/80">
-                {copy(language, "Pozitif momentum", "Positive momentum")}
+                {t("common:positiveMomentum")}
               </p>
               <h3 className="mt-1 heading-condensed text-2xl text-emerald-100">
-                {copy(language, "Yukari yone guclu isimler", "Upside leaders")}
+                {t("common:upsideLeaders")}
               </h3>
               <p className="mt-2 text-sm leading-7 text-emerald-50/85">
-                {copy(
-                  language,
-                  "Al ve guclu al sinyalleri burada konviksiyon, haftalik ivme ve aylik devam gucu ile siralanir.",
-                  "Buy and strong buy names are ranked here by conviction, weekly acceleration, and monthly continuation strength."
-                )}
+                {t("common:buyAndStrongBuyNames")}
               </p>
             </div>
           </div>
@@ -1265,11 +1200,7 @@ export default function MidasOpportunitiesTab({
             ))
           ) : (
             <div className="rounded-xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">
-              {copy(
-                language,
-                "Su an pozitif momentum listesine giren isim yok.",
-                "There are no names in the positive momentum list right now."
-              )}
+              {t("common:thereAreNoNamesIn")}
             </div>
           )}
         </section>
@@ -1279,17 +1210,13 @@ export default function MidasOpportunitiesTab({
             <ShieldAlert className="mt-0.5 size-5 text-rose-300" />
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-rose-300/80">
-                {copy(language, "Negatif momentum", "Negative momentum")}
+                {t("common:negativeMomentum")}
               </p>
               <h3 className="mt-1 heading-condensed text-2xl text-rose-100">
-                {copy(language, "Asagi yone baski altindaki isimler", "Names under downside pressure")}
+                {t("common:namesUnderDownsidePressure")}
               </h3>
               <p className="mt-2 text-sm leading-7 text-rose-50/85">
-                {copy(
-                  language,
-                  "Sat ve guclu sat sinyalleri burada canli bear skoru, kisa vade zayiflik ve trend bozulmasi ile one cikar.",
-                  "Sell and strong sell names stand out here through live bear score, short-term weakness, and broader trend deterioration."
-                )}
+                {t("common:sellAndStrongSellNames")}
               </p>
             </div>
           </div>
@@ -1305,11 +1232,7 @@ export default function MidasOpportunitiesTab({
             ))
           ) : (
             <div className="rounded-xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">
-              {copy(
-                language,
-                "Su an negatif momentum listesine giren isim yok.",
-                "There are no names in the negative momentum list right now."
-              )}
+              {t("common:thereAreNoNamesIn5027")}
             </div>
           )}
         </section>
@@ -1319,7 +1242,7 @@ export default function MidasOpportunitiesTab({
         <Clock className="size-3.5" />
         <span className="data-mono">
           {snapshotTimestampLabel} - {data.mode} mode - {data.successful}/{data!.symbol_count}{" "}
-          {copy(language, "sembol", "symbols")}
+          {t("common:symbols")}
         </span>
       </div>
     </div>
@@ -1333,15 +1256,11 @@ export default function MidasOpportunitiesTab({
             <div className="flex items-center gap-2">
               <Activity className="size-4 text-sky-300" />
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-200">
-                {copy(language, "Canli Kimi Signal Engine", "Live Kimi Signal Engine")}
+                {t("common:liveKimiSignalEngine")}
               </p>
             </div>
             <p className="text-sm leading-7 text-foreground/90">
-              {copy(
-                language,
-                "Midas snapshot evreni ayni anda canli scanner motorundan geciyor. Karttaki ana AL / TUT / SAT rozeti, canli tarama geldiyse guncel sinyali; gelmediyse snapshot sinyalini gosterir.",
-                "The Midas snapshot universe is rescanned through the live scanner engine. When live data is available, the main BUY / HOLD / SELL badge uses the fresh signal; otherwise it falls back to the snapshot."
-              )}
+              {t("common:theMidasSnapshotUniverseIs")}
             </p>
           </div>
 
@@ -1353,8 +1272,8 @@ export default function MidasOpportunitiesTab({
           >
             {liveLoading ? <Loader2 className="size-4 animate-spin" /> : <RefreshCw className="size-4" />}
             {liveLoading
-              ? copy(language, "Canli tarama calisiyor", "Running live scan")
-              : copy(language, "Canli sinyalleri yenile", "Refresh live signals")}
+              ? t("common:runningLiveScan")
+              : t("common:refreshLiveSignals")}
           </button>
         </div>
 
@@ -1363,13 +1282,13 @@ export default function MidasOpportunitiesTab({
             Snapshot: {snapshotTimestampLabel}
           </span>
           <span className="rounded-full border border-border bg-background/70 px-3 py-1">
-            {copy(language, "Canli update", "Live update")}: {liveTimestampLabel}
+            {t("common:liveUpdate")}: {liveTimestampLabel}
           </span>
           <span className="rounded-full border border-border bg-background/70 px-3 py-1">
-            {liveCoverageCount}/{data!.symbol_count} {copy(language, "sembol tarandi", "symbols scanned")}
+            {liveCoverageCount}/{data!.symbol_count} {t("common:symbolsScanned")}
           </span>
           <span className="rounded-full border border-border bg-background/70 px-3 py-1">
-            {changedCount} {copy(language, "sinyal degisti", "signals changed")}
+            {changedCount} {t("common:signalsChanged")}
           </span>
         </div>
 
@@ -1383,8 +1302,8 @@ export default function MidasOpportunitiesTab({
             </div>
             <p className="text-xs text-muted-foreground">
               {scanProgress.current
-                ? `${scanProgress.current} ${copy(language, "icin canli sinyal uretiliyor.", "is being scored live.")}`
-                : copy(language, "Midas evreni canli taraniyor.", "Scanning the Midas universe live.")}
+                ? `${scanProgress.current} ${t("common:isBeingScoredLive")}`
+                : t("common:scanningTheMidasUniverseLive")}
             </p>
           </div>
         ) : null}
@@ -1398,38 +1317,38 @@ export default function MidasOpportunitiesTab({
         <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
           <div className="rounded-xl border border-border bg-background/55 p-3">
             <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-              {copy(language, "Snapshot", "Snapshot")}
+              {"Snapshot"}
             </p>
             <p className="mt-1 text-sm text-foreground">
-              {snapshotStats.strongBuy + snapshotStats.buy} {copy(language, "bullish", "bullish")} /{" "}
-              {snapshotStats.sell + snapshotStats.strongSell} {copy(language, "bearish", "bearish")}
+              {snapshotStats.strongBuy + snapshotStats.buy} {"bullish"} /{" "}
+              {snapshotStats.sell + snapshotStats.strongSell} {"bearish"}
             </p>
           </div>
           <div className="rounded-xl border border-border bg-background/55 p-3">
             <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-              {copy(language, "Canli Motor", "Live Engine")}
+              {t("common:liveEngine")}
             </p>
             <p className="mt-1 text-sm text-foreground">
-              {stats.strongBuy + stats.buy} {copy(language, "al", "buy")} / {stats.sell + stats.strongSell}{" "}
-              {copy(language, "sat", "sell")}
+              {stats.strongBuy + stats.buy} {t("common:buyc45a")} / {stats.sell + stats.strongSell}{" "}
+              {t("common:sell90ed")}
             </p>
           </div>
           <div className="rounded-xl border border-border bg-background/55 p-3">
             <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-              {copy(language, "Kaynak Modu", "Source Mode")}
+              {t("common:sourceMode0b54")}
             </p>
             <p className="mt-1 text-sm text-foreground">
               {liveCoverageCount > 0
-                ? copy(language, "Canli + Snapshot Blend", "Live + Snapshot Blend")
-                : copy(language, "Snapshot Only", "Snapshot Only")}
+                ? t("common:liveSnapshotBlend")
+                : "Snapshot Only"}
             </p>
           </div>
           <div className="rounded-xl border border-border bg-background/55 p-3">
             <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-              {copy(language, "Tarama Kapsami", "Scan Coverage")}
+              {t("common:scanCoverage")}
             </p>
             <p className="mt-1 text-sm text-foreground">
-              {data!.successful}/{data!.symbol_count} {copy(language, "snapshot", "snapshot")}
+              {data!.successful}/{data!.symbol_count} {"snapshot"}
             </p>
           </div>
         </div>
@@ -1440,7 +1359,7 @@ export default function MidasOpportunitiesTab({
           <TrendingUp className="size-5 text-emerald-300" />
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-300/80">
-              {copy(language, "Guclu Al", "Strong Buy")}
+              {t("common:strongBuy")}
             </p>
             <p className="heading-condensed text-2xl text-emerald-100">{stats.strongBuy}</p>
           </div>
@@ -1449,7 +1368,7 @@ export default function MidasOpportunitiesTab({
           <TrendingUp className="size-5 text-emerald-300/80" />
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-300/70">
-              {copy(language, "Al", "Buy")}
+              {t("common:buy")}
             </p>
             <p className="heading-condensed text-2xl text-emerald-100/90">{stats.buy}</p>
           </div>
@@ -1458,7 +1377,7 @@ export default function MidasOpportunitiesTab({
           <BarChart3 className="size-5 text-amber-300/80" />
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-amber-300/70">
-              {copy(language, "Tut", "Hold")}
+              {t("common:holdad45")}
             </p>
             <p className="heading-condensed text-2xl text-amber-100/90">{stats.hold}</p>
           </div>
@@ -1467,7 +1386,7 @@ export default function MidasOpportunitiesTab({
           <TrendingDown className="size-5 text-rose-300/80" />
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-rose-300/70">
-              {copy(language, "Sat", "Sell")}
+              {t("common:sellfd26")}
             </p>
             <p className="heading-condensed text-2xl text-rose-100/90">{stats.sell}</p>
           </div>
@@ -1476,7 +1395,7 @@ export default function MidasOpportunitiesTab({
           <TrendingDown className="size-5 text-rose-300" />
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-rose-300/80">
-              {copy(language, "Guclu Sat", "Strong Sell")}
+              {t("common:strongSell66ce")}
             </p>
             <p className="heading-condensed text-2xl text-rose-100">{stats.strongSell}</p>
           </div>
@@ -1487,7 +1406,7 @@ export default function MidasOpportunitiesTab({
         <div className="flex items-center gap-1.5 px-2 py-1.5">
           <Filter className="size-3.5 text-muted-foreground" />
           <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-            {copy(language, "Filtre", "Filter")}
+            {t("common:filter")}
           </span>
         </div>
         {filterButtons.map((button) => {
@@ -1553,7 +1472,7 @@ export default function MidasOpportunitiesTab({
                         ? 'border-emerald-400/25 bg-emerald-500/10 text-emerald-300'
                         : 'border-rose-400/25 bg-rose-500/10 text-rose-300'
                     }`}>
-                      {signal.direction === 'LONG' ? copy(language, "↑ LONG", "↑ LONG") : copy(language, "↓ SHORT", "↓ SHORT")}
+                      {signal.direction === 'LONG' ? "↑ LONG" : "↓ SHORT"}
                     </span>
                   ) : null}
                   {signal.conviction_tier ? (
@@ -1576,22 +1495,22 @@ export default function MidasOpportunitiesTab({
                 </span>
                 {signal.live ? (
                   <span className="rounded-full border border-sky-400/25 bg-sky-500/10 px-2 py-0.5 text-[10px] font-medium text-sky-200">
-                    {copy(language, "Scanner", "Scanner")}: {scannerSignalLabel(signal.live.scannerSignal, language)}
+                    {"Scanner"}: {scannerSignalLabel(signal.live.scannerSignal, language)}
                   </span>
                 ) : null}
               </div>
 
               {signalChanged ? (
                 <div className="mt-3 rounded-lg border border-sky-400/18 bg-sky-500/10 px-3 py-2 text-[11px] text-sky-100">
-                  {copy(language, "Snapshot", "Snapshot")} {signalLabel(signal.signal, language)} →{" "}
-                  {copy(language, "Canli", "Live")} {signalLabel(signal.resolvedSignal, language)}
+                  {"Snapshot"} {signalLabel(signal.signal, language)} →{" "}
+                  {t("common:live")} {signalLabel(signal.resolvedSignal, language)}
                 </div>
               ) : null}
 
               <div className="mt-4 grid grid-cols-3 gap-2">
                 <div className="rounded-lg border border-border/60 bg-background/50 p-2 text-center">
                   <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                    {copy(language, "Gunluk", "Daily")}
+                    {t("common:daily")}
                   </p>
                   <p className={`data-mono mt-1 text-sm font-semibold ${pctClass(currentDayPct)}`}>
                     {formatPct(currentDayPct)}
@@ -1599,7 +1518,7 @@ export default function MidasOpportunitiesTab({
                 </div>
                 <div className="rounded-lg border border-border/60 bg-background/50 p-2 text-center">
                   <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                    {copy(language, "Haftalik", "Weekly")}
+                    {t("common:weekly")}
                   </p>
                   <p className={`data-mono mt-1 text-sm font-semibold ${pctClass(signal.weekly_pct)}`}>
                     {formatPct(signal.weekly_pct)}
@@ -1607,7 +1526,7 @@ export default function MidasOpportunitiesTab({
                 </div>
                 <div className="rounded-lg border border-border/60 bg-background/50 p-2 text-center">
                   <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                    {copy(language, "Aylik", "Monthly")}
+                    {t("common:monthly")}
                   </p>
                   <p className={`data-mono mt-1 text-sm font-semibold ${pctClass(signal.monthly_pct)}`}>
                     {formatPct(signal.monthly_pct)}
@@ -1618,7 +1537,7 @@ export default function MidasOpportunitiesTab({
               {typeof signal.apex_score === 'number' ? (
                 <div className="mt-3">
                   <div className="mb-1 flex items-center justify-between gap-3 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-                    <span>{copy(language, "Apex Skoru", "Apex Score")}</span>
+                    <span>{t("common:apexScore")}</span>
                     <span className="data-mono text-foreground/85">{signal.apex_score}/100</span>
                   </div>
                   <div className="h-2 overflow-hidden rounded-full bg-border/60">
@@ -1639,13 +1558,13 @@ export default function MidasOpportunitiesTab({
               {signal.live ? (
                 <div className="mt-3 grid grid-cols-4 gap-2">
                   <div className="rounded-lg border border-border/60 bg-background/50 p-2 text-center">
-                    <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{copy(language, 'Boga', 'Bull')}</p>
+                    <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{t("common:bull")}</p>
                     <p className="data-mono mt-1 text-sm font-semibold text-emerald-300">
                       {signal.live.bullScore}
                     </p>
                   </div>
                   <div className="rounded-lg border border-border/60 bg-background/50 p-2 text-center">
-                    <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{copy(language, 'Ayi', 'Bear')}</p>
+                    <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{t("common:bear")}</p>
                     <p className="data-mono mt-1 text-sm font-semibold text-rose-300">
                       {signal.live.bearScore}
                     </p>
@@ -1667,14 +1586,14 @@ export default function MidasOpportunitiesTab({
 
               {signal.factor_breakdown ? (
                 <div className="mt-3 space-y-1">
-                  <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{copy(language, "Faktor Dagilimi", "Factor Breakdown")}</p>
+                  <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{t("common:factorBreakdown")}</p>
                   {[
-                    { key: 'f1_momentum_quality', label: copy(language, 'F1', 'F1') },
-                    { key: 'f2_relative_strength', label: copy(language, 'F2', 'F2') },
-                    { key: 'f3_volume_liquidity', label: copy(language, 'F3', 'F3') },
-                    { key: 'f4_technical_structure', label: copy(language, 'F4', 'F4') },
-                    { key: 'f5_volatility_regime', label: copy(language, 'F5', 'F5') },
-                    { key: 'f6_catalyst_flow', label: copy(language, 'F6', 'F6') },
+                    { key: 'f1_momentum_quality', label: 'F1' },
+                    { key: 'f2_relative_strength', label: 'F2' },
+                    { key: 'f3_volume_liquidity', label: 'F3' },
+                    { key: 'f4_technical_structure', label: 'F4' },
+                    { key: 'f5_volatility_regime', label: 'F5' },
+                    { key: 'f6_catalyst_flow', label: 'F6' },
                   ].map((f) => {
                     const score = signal.factor_breakdown![f.key as keyof NonNullable<typeof signal.factor_breakdown>] ?? 0;
                     return (
@@ -1695,25 +1614,25 @@ export default function MidasOpportunitiesTab({
 
               {signal.trade_plan ? (
                 <div className="mt-3 rounded-lg border border-border/60 bg-background/50 px-3 py-2 text-[11px]">
-                  <p className="mb-1 text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{copy(language, "Trade Plan", "Trade Plan")}</p>
+                  <p className="mb-1 text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{"Trade Plan"}</p>
                   <div className="flex flex-wrap gap-x-2 gap-y-1">
-                    <span>{copy(language, "Giris:", "Entry:")} {formatPrice(signal.trade_plan.entry)}</span>
-                    <span className="text-rose-300">{copy(language, "Stop:", "Stop:")} {formatPrice(signal.trade_plan.stop)}</span>
-                    <span className="text-emerald-300">{copy(language, 'H1:', 'T1:')} {formatPrice(signal.trade_plan.target1)}</span>
-                    <span className="text-emerald-300">{copy(language, 'H2:', 'T2:')} {formatPrice(signal.trade_plan.target2)}</span>
-                    <span>{copy(language, 'R/O:', 'RR:')} {signal.trade_plan.rr_ratio.toFixed(1)}</span>
-                    <span>{copy(language, "Stop%:", "Stop%:")} {signal.trade_plan.stop_pct.toFixed(1)}%</span>
+                    <span>{t("common:entry9e74")} {formatPrice(signal.trade_plan.entry)}</span>
+                    <span className="text-rose-300">{"Stop:"} {formatPrice(signal.trade_plan.stop)}</span>
+                    <span className="text-emerald-300">{t("common:t1")} {formatPrice(signal.trade_plan.target1)}</span>
+                    <span className="text-emerald-300">{t("common:t2")} {formatPrice(signal.trade_plan.target2)}</span>
+                    <span>{t("common:rr")} {signal.trade_plan.rr_ratio.toFixed(1)}</span>
+                    <span>{"Stop%:"} {signal.trade_plan.stop_pct.toFixed(1)}%</span>
                   </div>
                 </div>
               ) : null}
 
               {signal.position_sizing && signal.position_sizing.shares > 0 ? (
                 <div className="mt-3 rounded-lg border border-border/60 bg-background/50 px-3 py-2 text-[11px]">
-                  <p className="mb-1 text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{copy(language, "Pozisyon Buyuklugu", "Position Sizing")}</p>
+                  <p className="mb-1 text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{t("common:positionSizing")}</p>
                   <div className="flex flex-wrap gap-x-2 gap-y-1">
-                    <span>{copy(language, "Adet:", "Shares:")} {signal.position_sizing.shares}</span>
-                    <span>{copy(language, "Pozisyon:", "Position:")} ${signal.position_sizing.position_value.toLocaleString()}</span>
-                    <span>{copy(language, "Risk:", "Risk:")} ${signal.position_sizing.dollar_risk.toFixed(0)} ({signal.position_sizing.risk_pct_of_account.toFixed(1)}%)</span>
+                    <span>{t("common:shares")} {signal.position_sizing.shares}</span>
+                    <span>{t("common:position")} ${signal.position_sizing.position_value.toLocaleString()}</span>
+                    <span>{"Risk:"} ${signal.position_sizing.dollar_risk.toFixed(0)} ({signal.position_sizing.risk_pct_of_account.toFixed(1)}%)</span>
                     <span className={`rounded px-1.5 py-0.5 text-[10px] font-bold ${
                       signal.position_sizing.kelly_fraction >= 0.25 ? 'bg-emerald-500/20 text-emerald-300' :
                       signal.position_sizing.kelly_fraction >= 0.15 ? 'bg-amber-500/20 text-amber-300' :
@@ -1754,12 +1673,12 @@ export default function MidasOpportunitiesTab({
                 <div className="mt-1 flex items-center justify-between gap-3 text-[10px] text-muted-foreground">
                   <span>
                     {signal.live
-                      ? `${copy(language, "Bull", "Bull")}: ${signal.live.bullScore} / ${copy(language, "Bear", "Bear")}: ${signal.live.bearScore}`
-                      : `${copy(language, "Guc", "Strength")}: ${signal.strength}`}
+                      ? `${"Bull"}: ${signal.live.bullScore} / ${"Bear"}: ${signal.live.bearScore}`
+                      : `${t("common:strength")}: ${signal.strength}`}
                   </span>
                   {signal.live ? (
                     <span>
-                      {copy(language, "Guven", "Confidence")}: {signal.live.confidenceScore}
+                      {t("common:confidence")}: {signal.live.confidenceScore}
                     </span>
                   ) : null}
                 </div>
@@ -1767,12 +1686,12 @@ export default function MidasOpportunitiesTab({
 
               <div className="mt-3 flex items-center justify-between gap-3 text-[10px] text-muted-foreground">
                 <span>
-                  {copy(language, "Snapshot", "Snapshot")}:{" "}
+                  {"Snapshot"}:{" "}
                   {formatTimestamp(signal.timestamp || data!.timestamp, language)}
                 </span>
                 {signal.live ? (
                   <span>
-                    {copy(language, "Canli", "Live")}: {formatTimestamp(signal.live.updatedAt, language)}
+                    {t("common:live")}: {formatTimestamp(signal.live.updatedAt, language)}
                   </span>
                 ) : null}
               </div>
@@ -1783,11 +1702,7 @@ export default function MidasOpportunitiesTab({
 
       {filteredSignals.length === 0 ? (
         <div className="rounded-xl border border-dashed border-border bg-background/35 p-6 text-center text-sm text-muted-foreground">
-          {copy(
-            language,
-            "Bu filtreye uygun sinyal bulunamadi.",
-            "No signals match this filter."
-          )}
+          {t("common:noSignalsMatchThisFilter")}
         </div>
       ) : null}
     </div>

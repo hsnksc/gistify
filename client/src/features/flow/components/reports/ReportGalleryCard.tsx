@@ -1,14 +1,8 @@
-import {
-  BarChart3,
-  Building2,
-  CalendarRange,
-  Trash2,
-  TrendingUp,
-} from "lucide-react";
+import { BarChart3, Building2, CalendarRange, Trash2, TrendingUp, } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Delta } from "@/components/ui/delta";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { StoredReportRecord } from "../../lib/parseReport";
 import {
@@ -26,8 +20,8 @@ function getLanguageBadge(
     return {
       label:
         report.translationState === "partial"
-          ? copy(language, "TR + EN kismi", "TR + EN partial")
-          : copy(language, "TR + EN", "TR + EN"),
+          ? t("flow:trEnPartial")
+          : "TR + EN",
       toneClassName:
         report.translationState === "partial"
           ? "border-amber-400/30 bg-amber-500/10 text-amber-300"
@@ -37,14 +31,14 @@ function getLanguageBadge(
 
   if (report.languageMode === "tr") {
     return {
-      label: copy(language, "TR", "TR"),
+      label: "TR",
       toneClassName: "border-emerald-400/30 bg-emerald-500/10 text-emerald-300",
     };
   }
 
   if (report.languageMode === "en") {
     return {
-      label: copy(language, "EN", "EN"),
+      label: "EN",
       toneClassName: "border-blue-400/30 bg-blue-500/10 text-blue-300",
     };
   }
@@ -71,8 +65,8 @@ export default function ReportGalleryCard({
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
             {report.sourceType === "upload"
-              ? copy(language, "Yerel Yukleme", "Local Upload")
-              : copy(language, "Yayinli Kaynak", "Published Source")}
+              ? t("flow:localUpload")
+              : t("flow:publishedSource")}
           </p>
           <div className="mt-2 flex flex-wrap items-center gap-2">
             <h3 className="text-3xl font-semibold tracking-tight text-foreground">
@@ -107,7 +101,7 @@ export default function ReportGalleryCard({
         </p>
         <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
           <span className="rounded-full border border-border bg-background/60 px-2.5 py-1">
-            {report.exchange || copy(language, "Borsa yok", "No exchange")}
+            {report.exchange || t("flow:noExchange")}
           </span>
           <span className="rounded-full border border-border bg-background/60 px-2.5 py-1">
             {report.sourceLabel}
@@ -119,7 +113,7 @@ export default function ReportGalleryCard({
         <div className="rounded-xl border border-border bg-background/55 p-3">
           <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
             <TrendingUp className="size-3.5 text-emerald-300" />
-            {copy(language, "Fiyat", "Price")}
+            {t("common:price")}
           </div>
           <p className="mt-2 text-lg font-semibold text-foreground">
             {formatReportPrice(report.price, language)}
@@ -133,17 +127,13 @@ export default function ReportGalleryCard({
         <div className="rounded-xl border border-border bg-background/55 p-3">
           <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
             <CalendarRange className="size-3.5 text-amber-300" />
-            {copy(language, "Rapor Tarihi", "Report Date")}
+            {t("common:reportDate")}
           </div>
           <p className="mt-2 text-lg font-semibold text-foreground">
             {report.reportDate}
           </p>
           <p className="mt-1 text-sm text-muted-foreground">
-            {copy(
-              language,
-              `${report.sections.length} bolum algilandi`,
-              `${report.sections.length} sections detected`
-            )}
+            {t("scanner:14DteTimeStopTime", { length: report.sections.length })}
           </p>
         </div>
       </div>
@@ -152,13 +142,13 @@ export default function ReportGalleryCard({
         <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/60 px-2.5 py-1">
             <Building2 className="size-3.5 text-sky-300" />
-            {report.exchange || copy(language, "Belirsiz", "Unknown")}
+            {report.exchange || t("flow:unknown")}
           </span>
           <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/60 px-2.5 py-1">
             <BarChart3 className="size-3.5 text-emerald-300" />
             {report.hasCharts
-              ? copy(language, "Grafik var", "Charts present")
-              : copy(language, "Grafik yok", "No charts")}
+              ? t("flow:chartsPresent")
+              : t("flow:noCharts")}
           </span>
         </div>
 
@@ -172,7 +162,7 @@ export default function ReportGalleryCard({
               className="rounded-full"
             >
               <Trash2 className="size-3.5" />
-              {copy(language, "Sil", "Delete")}
+              {t("flow:delete")}
             </Button>
           ) : null}
 
@@ -180,7 +170,7 @@ export default function ReportGalleryCard({
             href={buildStoredReportPath(report)}
             className="inline-flex items-center justify-center rounded-xl border border-sky-400/35 bg-sky-500/12 px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-sky-500/18"
           >
-            {copy(language, "Raporu Ac", "Open Report")}
+            {t("flow:openReport")}
           </Link>
         </div>
       </div>

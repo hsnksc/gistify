@@ -1,19 +1,25 @@
 import { useCallback, useEffect, useState } from "react";
 import type { FlowReportComment } from "@shared/dailyReports";
 import type {
-  FlowCommentsResponse,
-  FlowReportCommentCreateRequestBody,
-} from "@shared/flow";
+  FlowCommentsResponse, FlowReportCommentCreateRequestBody, } from "@shared/flow";
 import { extractApiErrorMessage, readJsonResponse } from "@/lib/api";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
+import { detectLanguageOfText } from "@/lib/languageDetection";
+import { translateDynamic } from "@/lib/translateDynamic";
 
 interface CreateCommentResponse extends FlowCommentsResponse {
   comment?: FlowReportComment;
   error?: string;
 }
 
+export interface FlowCommentViewModel extends FlowReportComment {
+  bodyOriginal: string;
+  isTranslated: boolean;
+  sourceLanguage: AppLanguage | "unknown";
+}
+
 interface UseFlowCommentsResult {
-  comments: FlowReportComment[];
+  comments: FlowCommentViewModel[];
   error: string;
   loading: boolean;
   reload: () => Promise<void>;
@@ -25,10 +31,40 @@ export function useFlowComments(
   reportId: string,
   language: AppLanguage
 ): UseFlowCommentsResult {
-  const [comments, setComments] = useState<FlowReportComment[]>([]);
+  const [comments, setComments] = useState<FlowCommentViewModel[]>([]);
   const [loading, setLoading] = useState(Boolean(reportId));
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+
+  const localizeComments = useCallback(
+    async (inputComments: FlowReportComment[]) => {
+      if (!inputComments.length) {
+        return [] as FlowCommentViewModel[];
+      }
+
+      const translations = await translateDynamic(
+        inputComments.map(comment => ({
+          context: `Flow community comment for report ${reportId}`,
+          id: comment.id,
+          text: comment.body,
+        })),
+        language
+      );
+
+      return inputComments.map(comment => {
+        const translatedBody = translations[comment.id] || comment.body;
+
+        return {
+          ...comment,
+          body: translatedBody,
+          bodyOriginal: comment.body,
+          isTranslated: translatedBody !== comment.body,
+          sourceLanguage: detectLanguageOfText(comment.body),
+        };
+      });
+    },
+    [language, reportId]
+  );
 
   const reload = useCallback(async () => {
     if (!reportId) {
@@ -59,17 +95,20 @@ export function useFlowComments(
         throw new Error(
           extractApiErrorMessage(
             payload,
-            copy(language, "Yorumlar yuklenemedi.", "Comments could not be loaded.")
+            t("common:refreshFailed")
           )
         );
       }
 
-      setComments(Array.isArray(payload.comments) ? payload.comments : []);
+      const normalizedComments = Array.isArray(payload.comments)
+        ? payload.comments
+        : [];
+      setComments(await localizeComments(normalizedComments));
     } catch (caughtError) {
       setError(
         caughtError instanceof Error
           ? caughtError.message
-          : copy(language, "Yorumlar yuklenemedi.", "Comments could not be loaded.")
+          : t("flow:flowNowOpensByTicker")
       );
       setComments([]);
     } finally {
@@ -111,13 +150,16 @@ export function useFlowComments(
           throw new Error(
             extractApiErrorMessage(
               payload,
-              copy(language, "Yorum gonderilemedi.", "Comment could not be posted.")
+              t("flow:commentCouldNotBePosted")
             )
           );
         }
 
         if (payload.comment) {
-          setComments(current => [payload.comment as FlowReportComment, ...current]);
+          const [localizedComment] = await localizeComments([
+            payload.comment as FlowReportComment,
+          ]);
+          setComments(current => [localizedComment, ...current]);
           return;
         }
 
@@ -126,14 +168,14 @@ export function useFlowComments(
         const message =
           caughtError instanceof Error
             ? caughtError.message
-            : copy(language, "Yorum gonderilemedi.", "Comment could not be posted.");
+            : t("marketing:nextEvent");
         setError(message);
         throw caughtError;
       } finally {
         setSubmitting(false);
       }
     },
-    [language, reload, reportId]
+    [language, localizeComments, reload, reportId]
   );
 
   useEffect(() => {

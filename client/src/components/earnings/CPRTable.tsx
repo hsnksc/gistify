@@ -1,15 +1,7 @@
 import { useMemo, useState } from "react";
 import {
-  ArrowUpDown,
-  Filter,
-  TrendingUp,
-  TrendingDown,
-  Minus,
-  Search,
-  ArrowUp,
-  ArrowDown,
-} from "lucide-react";
-import { copy, type AppLanguage } from "@/lib/i18n";
+  ArrowUpDown, Filter, TrendingUp, TrendingDown, Minus, Search, ArrowUp, ArrowDown, } from "lucide-react";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import type { CPRStock } from "@shared/earnings";
@@ -104,7 +96,7 @@ export default function CPRTable({ language, stocks }: CPRTableProps) {
         <div className="flex items-center gap-2">
           <TrendingUp className="size-5 text-sky-400" />
           <h2 className="text-lg font-bold text-white">
-            {copy(language, "CPR Sıralaması", "CPR Ranking")}
+            {t("earnings:cprRanking")}
           </h2>
           <span className="rounded-full bg-slate-800 px-2.5 py-0.5 text-xs font-semibold text-slate-400">
             {sorted.length}
@@ -116,7 +108,7 @@ export default function CPRTable({ language, stocks }: CPRTableProps) {
             <Search className="absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-slate-500" />
             <input
               type="text"
-              placeholder={copy(language, "Ara...", "Search...")}
+              placeholder={t("earnings:search")}
               value={search}
               onChange={e => setSearch(e.target.value)}
               className="h-9 rounded-xl border border-slate-700 bg-slate-900/60 pl-9 pr-3 text-xs text-slate-200 placeholder:text-slate-600 focus:border-sky-500/50 focus:outline-none"
@@ -137,7 +129,7 @@ export default function CPRTable({ language, stocks }: CPRTableProps) {
               : "bg-slate-800 text-slate-400 hover:bg-slate-700"
           )}
         >
-          {copy(language, "Tümü", "All")}
+          {t("earnings:all")}
         </button>
         {sectors.map(s => (
           <button
@@ -157,11 +149,7 @@ export default function CPRTable({ language, stocks }: CPRTableProps) {
 
       {sorted.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-900/40 p-6 text-center text-sm text-slate-400">
-          {copy(
-            language,
-            "Aktif arama veya sektor filtresiyle eslesen CPR kaydi yok.",
-            "No CPR entries match the active search or sector filter."
-          )}
+          {t("earnings:noCprEntriesMatchThe")}
         </div>
       ) : (
         <div className="max-h-[500px] overflow-y-auto rounded-2xl border border-white/10 overflow-hidden">
@@ -169,7 +157,7 @@ export default function CPRTable({ language, stocks }: CPRTableProps) {
             <thead className="bg-slate-800/80 text-xs font-semibold uppercase tracking-wider text-sky-300">
               <tr>
                 <Th
-                  label={copy(language, "Hisse", "Ticker")}
+                  label={t("common:ticker")}
                   sortKey="ticker"
                   sortBy={sortBy}
                   sortDesc={sortDesc}
@@ -177,7 +165,7 @@ export default function CPRTable({ language, stocks }: CPRTableProps) {
                   onDirection={() => setSortDesc(d => !d)}
                 />
                   <Th
-                  label={copy(language, "Hacim CPR", "Volume CPR")}
+                  label={t("earnings:volumeCpr")}
                   sortKey="hacimCPR"
                   sortBy={sortBy}
                   sortDesc={sortDesc}
@@ -185,7 +173,7 @@ export default function CPRTable({ language, stocks }: CPRTableProps) {
                   onDirection={() => setSortDesc(d => !d)}
                 />
                 <Th
-                  label={copy(language, "OI CPR", "OI CPR")}
+                  label={"OI CPR"}
                   sortKey="oiCPR"
                   sortBy={sortBy}
                   sortDesc={sortDesc}
@@ -193,7 +181,7 @@ export default function CPRTable({ language, stocks }: CPRTableProps) {
                   onDirection={() => setSortDesc(d => !d)}
                 />
                 <Th
-                  label={copy(language, "Sektör", "Sector")}
+                  label={t("earnings:sector")}
                   sortKey="sector"
                   sortBy={sortBy}
                   sortDesc={sortDesc}
@@ -201,7 +189,7 @@ export default function CPRTable({ language, stocks }: CPRTableProps) {
                   onDirection={() => setSortDesc(d => !d)}
                 />
                 <Th
-                  label={copy(language, "Sentiment", "Sentiment")}
+                  label={"Sentiment"}
                   sortKey="sentiment"
                   sortBy={sortBy}
                   sortDesc={sortDesc}
@@ -209,7 +197,7 @@ export default function CPRTable({ language, stocks }: CPRTableProps) {
                   onDirection={() => setSortDesc(d => !d)}
                 />
                 <Th
-                  label={copy(language, "IV Rank", "IV Rank")}
+                  label={"IV Rank"}
                   sortKey="ivRank"
                   sortBy={sortBy}
                   sortDesc={sortDesc}
@@ -268,7 +256,7 @@ export default function CPRTable({ language, stocks }: CPRTableProps) {
                         )}
                       >
                         {SENTIMENT_EMOJI[sentimentEn(stock.sentiment)] || "❓"}
-                        {copy(language, stock.sentiment, sentimentEn(stock.sentiment))}
+                        {(language === "en" ? sentimentEn(stock.sentiment) : stock.sentiment)}
                       </span>
                     ) : (
                       "—"

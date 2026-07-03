@@ -1,5 +1,5 @@
-import { type AppLanguage } from "@/lib/i18n";
-import { copy } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
+
 import { cn } from "@/lib/utils";
 
 export interface OptionsChainHeatmapProps {
@@ -51,7 +51,7 @@ export default function OptionsChainHeatmap({
   return (
     <div className="space-y-3 rounded-xl border border-border bg-background/30 p-5">
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-        {copy(language, "Opsiyon Zinciri", "Options Chain")}
+        {t("coverage:optionsChain")}
       </p>
 
       <div className="overflow-x-auto">
@@ -59,7 +59,7 @@ export default function OptionsChainHeatmap({
           <thead>
             <tr className="border-b border-border">
               <th className="px-3 py-2 text-left text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
-                {copy(language, "Strike", "Strike")}
+                {"Strike"}
               </th>
               <th className="px-3 py-2 text-right text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
                 Bid
@@ -68,7 +68,7 @@ export default function OptionsChainHeatmap({
                 Ask
               </th>
               <th className="px-3 py-2 text-right text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
-                {copy(language, "Hacim", "Volume")}
+                {t("common:volume")}
               </th>
               <th className="px-3 py-2 text-right text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
                 IV

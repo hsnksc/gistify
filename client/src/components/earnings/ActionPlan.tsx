@@ -1,15 +1,7 @@
 import { useState } from "react";
 import {
-  CalendarCheck,
-  CheckCircle2,
-  AlertCircle,
-  Clock,
-  Calendar,
-  AlertTriangle,
-  Target,
-  ChevronRight,
-} from "lucide-react";
-import { copy, type AppLanguage } from "@/lib/i18n";
+  CalendarCheck, CheckCircle2, AlertCircle, Clock, Calendar, AlertTriangle, Target, ChevronRight, } from "lucide-react";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { ActionPlanItem } from "@shared/earnings";
 
@@ -94,7 +86,7 @@ export default function ActionPlan({ language, items }: ActionPlanProps) {
       <div className="mb-5 flex items-center gap-2">
         <CalendarCheck className="size-5 text-sky-400" />
         <h2 className="text-lg font-bold text-white">
-          {copy(language, "Eylem Planı", "Action Plan")}
+          {t("earnings:actionPlan")}
         </h2>
       </div>
 
@@ -137,7 +129,7 @@ export default function ActionPlan({ language, items }: ActionPlanProps) {
                 <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                   <div>
                     <p className={cn("text-xl font-bold", colors.title)}>
-                      {item.week || copy(language, `Hafta ${idx + 1}`, `Week ${idx + 1}`)}
+                      {item.week || t("earnings:week", { idx1: idx + 1 })}
                     </p>
                     {item.dateRange && (
                       <p className="text-xs text-slate-500">{item.dateRange}</p>
@@ -244,16 +236,16 @@ export default function ActionPlan({ language, items }: ActionPlanProps) {
       {/* Daily checklist section */}
       <div className="mt-8 rounded-2xl border border-white/10 bg-slate-800/50 p-5">
         <p className="mb-3 text-xs font-bold uppercase tracking-wider text-slate-400">
-          {copy(language, "Günlük Checklist", "Daily Checklist")}
+          {t("earnings:dailyChecklist")}
         </p>
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
           {[
-            copy(language, "Pre-market momentum taraması", "Pre-market momentum scan"),
-            copy(language, "VIX & Fear & Greed kontrolü", "VIX & Fear & Greed check"),
-            copy(language, "Earnings calendar gözden geçir", "Review earnings calendar"),
-            copy(language, "Greeks dashboard kontrolü", "Check Greeks dashboard"),
-            copy(language, "Entry/Exit seviyelerini güncelle", "Update entry/exit levels"),
-            copy(language, "Pozisyon risk limiti kontrolü", "Position risk limit check"),
+            t("earnings:preMarketMomentumScan"),
+            t("earnings:vixFearGreedCheck"),
+            t("earnings:reviewEarningsCalendar"),
+            t("earnings:checkGreeksDashboard"),
+            t("earnings:updateEntryExitLevels"),
+            t("earnings:positionRiskLimitCheck"),
           ].map((task, i) => {
             const key = `daily-${i}`;
             const isDone = checked[key];
@@ -284,7 +276,7 @@ export default function ActionPlan({ language, items }: ActionPlanProps) {
                     isDone ? "text-sky-300 line-through" : "text-slate-300"
                   )}
                 >
-                  {copy(language, task, task)}
+                  {task}
                 </span>
               </button>
             );

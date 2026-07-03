@@ -1,27 +1,12 @@
 import { useState } from "react";
 import {
-  ChevronDown,
-  Lightbulb,
-  TrendingUp,
-  ArrowUp,
-  ArrowDown,
-  Minus,
-  Target,
-  ShieldAlert,
-} from "lucide-react";
+  ChevronDown, Lightbulb, TrendingUp, ArrowUp, ArrowDown, Minus, Target, ShieldAlert, } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+  Card, CardContent, CardHeader, CardTitle, } from "@/components/ui/card";
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { copy, type AppLanguage } from "@/lib/i18n";
+  Collapsible, CollapsibleContent, CollapsibleTrigger, } from "@/components/ui/collapsible";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { CalendarOptionSetup } from "@shared/calendar";
 import { THEME } from "../Calendar.theme";
@@ -53,11 +38,7 @@ export function OptionSetupsCard({
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-base">
           <TrendingUp className={cn("size-4", THEME.iconClassName)} />
-          {copy(
-            language,
-            "Opsiyon Stratejisi Onerileri",
-            "Option Strategy Setups"
-          )}
+          {t("calendar:optionStrategySetups")}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-2.5">
@@ -123,7 +104,7 @@ export function OptionSetupsCard({
                       <div className="flex items-center gap-1.5 mb-1">
                         <Target className="size-3 text-emerald-300" />
                         <p className="text-[10px] font-semibold uppercase tracking-wider text-emerald-300">
-                          {copy(language, "Tetik", "Trigger")}
+                          {t("calendar:trigger")}
                         </p>
                       </div>
                       <p className="text-[12px] leading-5 text-foreground/85">
@@ -134,7 +115,7 @@ export function OptionSetupsCard({
                       <div className="flex items-center gap-1.5 mb-1">
                         <ShieldAlert className="size-3 text-rose-300" />
                         <p className="text-[10px] font-semibold uppercase tracking-wider text-rose-300">
-                          {copy(language, "Invalidasyon", "Invalidation")}
+                          {t("calendar:invalidation")}
                         </p>
                       </div>
                       <p className="text-[12px] leading-5 text-foreground/85">
@@ -147,7 +128,7 @@ export function OptionSetupsCard({
                       <div className="flex items-center gap-1.5 mb-1">
                         <Lightbulb className="size-3 text-amber-300" />
                         <p className="text-[10px] font-semibold uppercase tracking-wider text-amber-300">
-                          {copy(language, "Rationale", "Rationale")}
+                          {"Rationale"}
                         </p>
                       </div>
                       <p className="text-[12px] leading-5 text-foreground/85">
@@ -161,11 +142,7 @@ export function OptionSetupsCard({
           })
         ) : (
           <div className="rounded-lg border border-dashed border-white/10 bg-black/15 px-4 py-3 text-sm text-muted-foreground text-center">
-            {copy(
-              language,
-              "Bugun icin opsiyon setup'i bulunmuyor.",
-              "No option setups for today."
-            )}
+            {t("calendar:noOptionSetupsForToday")}
           </div>
         )}
       </CardContent>

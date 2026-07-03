@@ -126,8 +126,12 @@ export async function importLocalCoverageAdminReports(adminSecret: string) {
   return (await response.json()) as CoverageAdminImportResponse;
 }
 
-export function getCoverageMarkdownDownloadHref(id: string) {
-  return `/api/coverage/reports/${encodeURIComponent(id)}/markdown`;
+export function getCoverageMarkdownDownloadHref(
+  id: string,
+  language?: "tr" | "en"
+) {
+  const query = language === "en" ? "?lang=en" : "";
+  return `/api/coverage/reports/${encodeURIComponent(id)}/markdown${query}`;
 }
 
 export function getCoverageZipDownloadHref() {

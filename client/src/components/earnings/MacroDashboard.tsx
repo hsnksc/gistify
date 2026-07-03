@@ -1,13 +1,5 @@
-import {
-  Activity,
-  TrendingUp,
-  TrendingDown,
-  Minus,
-  DollarSign,
-  Bitcoin,
-  Gauge,
-} from "lucide-react";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { Activity, TrendingUp, TrendingDown, Minus, DollarSign, Bitcoin, Gauge, } from "lucide-react";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { MacroData } from "@shared/earnings";
 
@@ -22,11 +14,11 @@ export default function MacroDashboard({ language, macro }: MacroDashboardProps)
     { key: "sp500", label: "S&P 500", value: macro.sp500 || "", big: true },
     { key: "nasdaq", label: "Nasdaq", value: macro.nasdaq || "", big: true },
     { key: "russell2000", label: "Russell 2000", value: macro.russell2000 || "" },
-    { key: "tenYearYield", label: copy(language, "10Y Getiri", "10Y Yield"), value: macro.tenYearYield || "" },
+    { key: "tenYearYield", label: t("earnings:10yYield"), value: macro.tenYearYield || "" },
     { key: "dxy", label: "DXY", value: macro.dxy || "" },
     { key: "wti", label: "WTI", value: macro.wti || "" },
     { key: "bitcoin", label: "Bitcoin", value: macro.bitcoin || "" },
-    { key: "fearGreed", label: copy(language, "Korku & Açgözlülük", "Fear & Greed"), value: macro.fearGreed || "", gauge: true },
+    { key: "fearGreed", label: t("earnings:fearGreed"), value: macro.fearGreed || "", gauge: true },
   ];
 
   return (
@@ -34,7 +26,7 @@ export default function MacroDashboard({ language, macro }: MacroDashboardProps)
       <div className="mb-4 flex items-center gap-2">
         <Activity className="size-5 text-sky-400" />
         <h2 className="text-lg font-bold text-white">
-          {copy(language, "Makro Dashboard", "Macro Dashboard")}
+          {t("earnings:macroDashboard")}
         </h2>
       </div>
       <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
@@ -47,7 +39,7 @@ export default function MacroDashboard({ language, macro }: MacroDashboardProps)
       {macro.regime && (
         <div className="mt-4 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-5 py-4">
           <p className="text-xs font-semibold uppercase tracking-wider text-amber-400">
-            {copy(language, "Rejim", "Regime")}
+            {t("common:regime")}
           </p>
           <p className="mt-1 text-lg font-bold text-white">{macro.regime}</p>
           {macro.notes && macro.notes.length > 0 && (
@@ -178,8 +170,8 @@ function FearGreedGauge({ value, language }: { value: string; language: AppLangu
         <div className={cn("h-full rounded-full transition-all", color)} style={{ width: `${pct}%` }} />
       </div>
       <div className="mt-1 flex justify-between text-[10px] text-slate-500">
-        <span>{copy(language, "Aşırı Korku", "Extreme Fear")}</span>
-        <span>{copy(language, "Aşırı Açgözlülük", "Extreme Greed")}</span>
+        <span>{t("common:extremeFear")}</span>
+        <span>{t("common:extremeGreed")}</span>
       </div>
     </div>
   );

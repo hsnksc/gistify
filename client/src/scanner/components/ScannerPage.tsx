@@ -1,23 +1,12 @@
 import { Fragment, useCallback, useEffect, useState } from "react";
 import {
-  Activity,
-  BarChart3,
-  ChevronDown,
-  ChevronUp,
-  Clock,
-  FileText,
-  Filter,
-  Loader2,
-  Radar,
-  Shield,
-  TrendingUp,
-} from "lucide-react";
+  Activity, BarChart3, ChevronDown, ChevronUp, Clock, FileText, Filter, Loader2, Radar, Shield, TrendingUp, } from "lucide-react";
 import { runMomentumScan } from "@/scanner";
 import { useScannerI18n } from "@/scanner/useScannerI18n";
 import { scoreColor, signalBg, signalLabel } from "@/scanner/lib/scoreConfig";
 import { getScanTimingWarning } from "@/scanner/lib/momentum";
 import type { ScanResponse, StockResult } from "@/scanner/types";
-import { copy } from "@/lib/i18n";
+import { t } from "@/lib/i18n";
 import type { AppLanguage } from "@/lib/i18n";
 import { Delta } from "@/components/ui/delta";
 import EnterpriseReport from "./EnterpriseReport";
@@ -37,10 +26,10 @@ const DEFAULT_TICKERS = [
 ];
 
 function getFilterLabel(signal: string, lang: AppLanguage) {
-  if (signal === "ALL") return copy(lang, "Tümü", "All");
-  if (signal === "STRONG_BUY") return copy(lang, "Guclu Al", "Strong Buy");
-  if (signal === "BUY") return copy(lang, "Al", "Buy");
-  if (signal === "NEUTRAL") return copy(lang, "Notr", "Neutral");
+  if (signal === "ALL") return t("scanner:all");
+  if (signal === "STRONG_BUY") return t("common:strongBuy");
+  if (signal === "BUY") return t("common:buy");
+  if (signal === "NEUTRAL") return t("common:refreshFailed");
   return signal;
 }
 
@@ -94,7 +83,7 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
         setScanResponse(response);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : copy(lang, "Tarama basarisiz", "Scan failed"));
+      setError(err instanceof Error ? err.message : t("scanner:scanFailed"));
     } finally {
       setIsScanning(false);
     }
@@ -167,8 +156,8 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
             >
               <FileText className="h-4 w-4" />
               {showReport
-                ? copy(lang, "Raporu Gizle", "Hide Report")
-                : copy(lang, "Kurumsal Rapor", "Enterprise Report")}
+                ? t("scanner:hideReport")
+                : t("scanner:enterpriseReport")}
             </button>
           ) : null}
 
@@ -216,8 +205,8 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
             </div>
             <p className="text-xs text-muted-foreground">
               {scanProgress.current
-                ? `${scanProgress.current} ${copy(lang, "analiz ediliyor", "analyzing")}`
-                : copy(lang, "Tarama evreni isleniyor.", "Universe is being scanned.")}
+                ? `${scanProgress.current} ${t("scanner:lunchFadeRiskStrategyDependent")}`
+                : t("scanner:universeIsBeingScanned")}
             </p>
           </div>
         ) : null}
@@ -227,22 +216,18 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-sm font-semibold text-foreground">
-                  {copy(lang, "Acilis ivmesi radar paneli", "Premarket and opening-drive radar")}
+                  {t("scanner:premarketAndOpeningDriveRadar")}
                 </p>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  {copy(
-                    lang,
-                    "Tarayici 60 likit hisseyi momentum, hacim patlamasi, yapi ve intraday retention ile siralar.",
-                    "The scanner ranks 60 liquid names by momentum, volume expansion, structure and intraday retention."
-                  )}
+                  {t("scanner:theScannerRanks60Liquid")}
                 </p>
               </div>
               <div className="flex flex-wrap gap-2 text-[11px] text-muted-foreground">
                 <span className="rounded-full border border-border bg-background/70 px-3 py-1">
-                  {copy(lang, "Evren: 60 hisse", "Universe: 60 names")}
+                  {t("scanner:universe60Names")}
                 </span>
                 <span className="rounded-full border border-border bg-background/70 px-3 py-1">
-                  {copy(lang, "Ana veri: Yahoo", "Primary feed: Yahoo")}
+                  {t("scanner:primaryFeedYahoo")}
                 </span>
               </div>
             </div>
@@ -321,7 +306,7 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
                         </span>
                         {stock.rsiWarning ? (
                           <span className="ml-2 text-[9px] font-medium text-red-400">
-                            {copy(lang, "KIRMIZI", "RED")}
+                            {t("scanner:red")}
                           </span>
                         ) : null}
                       </td>
@@ -438,8 +423,8 @@ function StockDetail({ stock, t, lang }: { stock: StockResult; t: (key: string) 
             }`}
           >
             {stock.signal === "OVERBOUGHT_RED"
-              ? copy(lang, "🚨 AŞIRI ALIM", "🚨 OVERBOUGHT")
-              : copy(lang, "⚠️ SICAK BÖLGE", "⚠️ HOT ZONE")}
+              ? t("scanner:overbought60a9")
+              : t("scanner:hotZone")}
           </p>
           <p className="mt-1 text-xs text-muted-foreground">{stock.rsiWarning}</p>
         </div>

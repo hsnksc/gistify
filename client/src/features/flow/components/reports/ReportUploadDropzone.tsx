@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 import { FileUp, LoaderCircle, UploadCloud, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import type { UploadQueueItem } from "../../store/useReportStore";
 
 interface ReportUploadDropzoneProps {
@@ -29,21 +29,13 @@ export default function ReportUploadDropzone({
       <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
         <div className="space-y-3">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-            {copy(language, "HTML Yukleme", "HTML Upload")}
+            {t("flow:htmlUpload")}
           </p>
           <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-            {copy(
-              language,
-              "Gunluk hisse raporlarini surukle ve kaydet",
-              "Drop daily stock reports and keep them locally"
-            )}
+            {t("flow:dropDailyStockReportsAnd")}
           </h2>
           <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-            {copy(
-              language,
-              "Self-contained HTML raporlar burada parse edilir, metadata cikarilir ve IndexedDB icinde ayni tarayicida saklanir.",
-              "Self-contained HTML reports are parsed here, metadata is extracted and the result stays in IndexedDB inside this browser."
-            )}
+            {t("marketing:heroInsightCardsLiveScanner")}
           </p>
         </div>
 
@@ -54,11 +46,11 @@ export default function ReportUploadDropzone({
             onClick={() => inputRef.current?.click()}
           >
             <FileUp className="size-4" />
-            {copy(language, "Dosya Sec", "Choose Files")}
+            {t("flow:chooseFiles")}
           </Button>
           {uploadQueue.length ? (
             <Button type="button" variant="ghost" onClick={onQueueClear}>
-              {copy(language, "Kuyrugu Temizle", "Clear Queue")}
+              {t("flow:clearQueue")}
             </Button>
           ) : null}
         </div>
@@ -112,18 +104,10 @@ export default function ReportUploadDropzone({
           <UploadCloud className="size-6" />
         </span>
         <p className="mt-4 text-lg font-semibold text-foreground">
-          {copy(
-            language,
-            "HTML dosyalarini buraya birak",
-            "Drop HTML files here"
-          )}
+          {t("flow:dropHtmlFilesHere")}
         </p>
         <p className="mt-2 max-w-2xl text-sm leading-7 text-muted-foreground">
-          {copy(
-            language,
-            "Coklu dosya kabul edilir. .html disindaki dosyalar nazikce atlanir. Ayni ticker + tarih gelirse uzerine yazma secenegi sunulur.",
-            "Multiple files are accepted. Non-HTML files are skipped gracefully. Duplicate ticker + date uploads offer an overwrite option."
-          )}
+          {t("flow:multipleFilesAreAcceptedNon")}
         </p>
       </button>
 
@@ -140,7 +124,7 @@ export default function ReportUploadDropzone({
                     {item.fileName}
                   </p>
                   <p className="mt-1 text-xs uppercase tracking-[0.16em] text-muted-foreground">
-                    {item.ticker || copy(language, "Parse bekliyor", "Waiting for parse")}
+                    {item.ticker || t("flow:waitingForParse")}
                   </p>
                 </div>
                 {item.status === "parsing" ? (
@@ -166,11 +150,7 @@ export default function ReportUploadDropzone({
 
       {activeUploads.length ? (
         <p className="mt-4 text-xs text-muted-foreground">
-          {copy(
-            language,
-            `${activeUploads.length} dosya parse ediliyor.`,
-            `${activeUploads.length} file(s) are being parsed.`
-          )}
+          {t("flow:fileSAreBeingParsed", { length: activeUploads.length })}
         </p>
       ) : null}
     </section>

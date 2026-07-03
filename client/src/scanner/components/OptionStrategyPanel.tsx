@@ -1,5 +1,5 @@
 import type { StockResult } from "@/scanner/types";
-import { copy } from "@/lib/i18n";
+import { t } from "@/lib/i18n";
 import type { AppLanguage } from "@/lib/i18n";
 import {
   TrendingUp,
@@ -77,13 +77,13 @@ function calculateV4Metrics(stock: StockResult, language: AppLanguage): v4Metric
   let ivSignalLabel: string;
   if (iv > 60) {
     ivSignal = "SELL_PREMIUM";
-    ivSignalLabel = copy(language, "Premium Satışı (IV Yüksek)", "Premium Sale (High IV)");
+    ivSignalLabel = t("scanner:premiumSaleHighIv");
   } else if (iv < 30) {
     ivSignal = "BUY_PREMIUM";
-    ivSignalLabel = copy(language, "Premium Alımı (IV Düşük)", "Premium Purchase (Low IV)");
+    ivSignalLabel = t("scanner:premiumPurchaseLowIv");
   } else {
     ivSignal = "NEUTRAL";
-    ivSignalLabel = copy(language, "IV Nötr", "IV Neutral");
+    ivSignalLabel = t("scanner:ivNeutral");
   }
 
   // ─── SPREAD METRİKLERİ ───
@@ -112,18 +112,18 @@ function calculateV4Metrics(stock: StockResult, language: AppLanguage): v4Metric
 
   // ─── EXECUTION ───
   const entryWindow = iv > 50
-    ? copy(language, "10:30-11:00 AM (volatilite yüksek, sabah bekle)", "10:30-11:00 AM (volatility high, wait for morning)")
-    : copy(language, "10:30-11:30 AM", "10:30-11:30 AM");
+    ? t("scanner:10301100Am")
+    : "10:30-11:30 AM";
   const orderType = "MIDPOINT LIMIT";
   const slippageEstimate = rvol > 2 ? 3 : rvol > 1 ? 2 : 1;
 
   // ─── YÖNETİM KURALLARI ───
   const managementRules = [
-    copy(language, `✅ %50 kârda ($${(maxProfit * 0.5).toFixed(2)}) → yarısını kapat`, `✅ At 50% profit ($${(maxProfit * 0.5).toFixed(2)}) → close half`),
-    copy(language, `📅 21 DTE'de roll düşün (vade: ${dte} gün)`, `📅 Consider roll at 21 DTE (term: ${dte} days)`),
-    copy(language, `🛑 2x kredi ($${(maxLoss * 2).toFixed(2)}) → zararda kapat`, `🛑 2x credit ($${(maxLoss * 2).toFixed(2)}) → close at loss`),
-    copy(language, `⏰ 14 DTE time stop → zaman değeri eriyor`, `⏰ 14 DTE time stop → time value eroding`),
-    copy(language, `📊 Limit emir: Midpoint giriş, slippage ≤%${slippageEstimate}`, `📊 Limit order: Midpoint entry, slippage ≤%${slippageEstimate}`),
+    t("scanner:at50ProfitCloseHalf", { tofixed2: (maxProfit * 0.5).toFixed(2) }),
+    t("scanner:considerRollAt21Dte", { dte }),
+    t("scanner:2xCreditCloseAtLoss", { tofixed2: (maxLoss * 2).toFixed(2) }),
+    t("scanner:14DteTimeStopTime"),
+    t("scanner:limitOrderMidpointEntrySlippage", { slippageestimate: slippageEstimate }),
   ];
 
   return {
@@ -191,28 +191,28 @@ function suggestStrategy(stock: StockResult, language: AppLanguage): StrategySug
     const shortCall = atmStrike;
     const longCall = roundTo5(atmStrike + metrics.spreadWidth);
     return {
-      name: copy(language, "Ayı Call Spread'i (Kredi)", "Bear Call Spread"),
+      name: t("scanner:bearCallSpread"),
       nameTr: "Ayı Call Spread'i (Kredi)",
       direction: "BEARISH",
-      setup: `${copy(language, "Sat", "Sell")} ${shortCall}C / ${copy(language, "Al", "Buy")} ${longCall}C`,
+      setup: `${t("common:sellfd26")} ${shortCall}C / ${t("common:buy")} ${longCall}C`,
       strikes: `${shortCall}C / ${longCall}C`,
       dte,
       popEstimate: `%${metrics.pop}`,
       maxRisk: `$${metrics.maxLoss.toFixed(2)}`,
       breakeven: `$${metrics.breakeven.toFixed(2)}`,
       notes: [
-        copy(language, `📊 POP: %${metrics.pop} | Maks Kâr: $${metrics.maxProfit.toFixed(2)} | R/R: ${(metrics.maxProfit / metrics.maxLoss).toFixed(2)}`, `📊 POP: %${metrics.pop} | Max Profit: $${metrics.maxProfit.toFixed(2)} | R/R: ${(metrics.maxProfit / metrics.maxLoss).toFixed(2)}`),
-        copy(language, `📈 IV Rank: ${iv}/100 — ${metrics.ivSignalLabel}`, `📈 IV Rank: ${iv}/100 — ${metrics.ivSignalLabel}`),
-        copy(language, `🎯 Beklenen Hareket: $${metrics.expectedMove.toFixed(2)} (%${metrics.expectedMovePct.toFixed(1)})`, `🎯 Expected Move: $${metrics.expectedMove.toFixed(2)} (%${metrics.expectedMovePct.toFixed(1)})`),
-        copy(language, `💰 Kelly Boyutlandırma: ${metrics.kellyContracts} ${copy(language, "kontrat", "contract")} ($${metrics.kellyRisk.toFixed(0)} ${copy(language, "risk", "risk")})`, `💰 Kelly Sizing: ${metrics.kellyContracts} contract ($${metrics.kellyRisk.toFixed(0)} risk)`),
-        copy(language, `⏰ Giriş: ${metrics.entryWindow}`, `⏰ Entry: ${metrics.entryWindow}`),
-        copy(language, `📋 Emir: ${metrics.orderType} (${copy(language, "slippage", "slippage")} ≤%${metrics.slippageEstimate})`, `📋 Order: ${metrics.orderType} (slippage ≤%${metrics.slippageEstimate})`),
+        t("scanner:popMaxProfitRR", { pop: metrics.pop, tofixed2: metrics.maxProfit.toFixed(2), tofixed22: (metrics.maxProfit / metrics.maxLoss).toFixed(2) }),
+        `📈 IV Rank: ${iv}/100 — ${metrics.ivSignalLabel}`,
+        t("scanner:expectedMove", { tofixed2: metrics.expectedMove.toFixed(2), tofixed1: metrics.expectedMovePct.toFixed(1) }),
+        (language === "en" ? `💰 Kelly Sizing: ${metrics.kellyContracts} contract ($${metrics.kellyRisk.toFixed(0)} risk)` : `💰 Kelly Boyutlandırma: ${metrics.kellyContracts} ${t("scanner:contract")} ($${metrics.kellyRisk.toFixed(0)} ${"risk"})`),
+        t("scanner:entry", { entrywindow: metrics.entryWindow }),
+        (language === "en" ? `📋 Order: ${metrics.orderType} (slippage ≤%${metrics.slippageEstimate})` : `📋 Emir: ${metrics.orderType} (${"slippage"} ≤%${metrics.slippageEstimate})`),
       ],
       warnings: [
         stock.earningsWarning || null,
-        rsi >= 80 ? copy(language, `🚨 RSI ${rsi.toFixed(1)} — Aşırı alım, geri çekilme yakın`, `🚨 RSI ${rsi.toFixed(1)} — Overbought, pullback near`) : null,
-        change > 5 ? copy(language, `⚠️ Gün içi %${change.toFixed(1)} — Slippage riski yüksek`, `⚠️ Intraday %${change.toFixed(1)} — Slippage risk high`) : null,
-        metrics.ivSignal === "SELL_PREMIUM" ? copy(language, "✅ IV yüksek — Premium satışı mantıklı", "✅ High IV — Premium sale makes sense") : null,
+        rsi >= 80 ? t("scanner:rsiOverboughtPullbackNear", { tofixed1: rsi.toFixed(1) }) : null,
+        change > 5 ? t("scanner:intradaySlippageRiskHigh", { tofixed1: change.toFixed(1) }) : null,
+        metrics.ivSignal === "SELL_PREMIUM" ? t("scanner:highIvPremiumSaleMakes") : null,
       ].filter(Boolean) as string[],
       color: "text-red-400",
       metrics,
@@ -224,27 +224,27 @@ function suggestStrategy(stock: StockResult, language: AppLanguage): StrategySug
     const shortPut = atmStrike;
     const longPut = roundTo5(Math.max(atmStrike - metrics.spreadWidth, 1));
     return {
-      name: copy(language, "Boğa Put Spread'i (Kredi)", "Bull Put Spread"),
+      name: t("scanner:bullPutSpread"),
       nameTr: "Boğa Put Spread'i (Kredi)",
       direction: "BULLISH",
-      setup: `${copy(language, "Sat", "Sell")} ${shortPut}P / ${copy(language, "Al", "Buy")} ${longPut}P`,
+      setup: `${t("common:sellfd26")} ${shortPut}P / ${t("common:thereIsNoViewableEarnings")} ${longPut}P`,
       strikes: `${shortPut}P / ${longPut}P`,
       dte,
       popEstimate: `%${metrics.pop}`,
       maxRisk: `$${metrics.maxLoss.toFixed(2)}`,
       breakeven: `$${(shortPut - metrics.netCredit).toFixed(2)}`,
       notes: [
-        copy(language, `📊 POP: %${metrics.pop} | Maks Kâr: $${metrics.maxProfit.toFixed(2)} | R/R: ${(metrics.maxProfit / metrics.maxLoss).toFixed(2)}`, `📊 POP: %${metrics.pop} | Max Profit: $${metrics.maxProfit.toFixed(2)} | R/R: ${(metrics.maxProfit / metrics.maxLoss).toFixed(2)}`),
-        copy(language, `📈 IV Rank: ${iv}/100 — ${metrics.ivSignalLabel}`, `📈 IV Rank: ${iv}/100 — ${metrics.ivSignalLabel}`),
-        copy(language, `🎯 Beklenen Hareket: $${metrics.expectedMove.toFixed(2)} (%${metrics.expectedMovePct.toFixed(1)})`, `🎯 Expected Move: $${metrics.expectedMove.toFixed(2)} (%${metrics.expectedMovePct.toFixed(1)})`),
-        copy(language, `💰 Kelly Boyutlandırma: ${metrics.kellyContracts} ${copy(language, "kontrat", "contract")} ($${metrics.kellyRisk.toFixed(0)} ${copy(language, "risk", "risk")})`, `💰 Kelly Sizing: ${metrics.kellyContracts} contract ($${metrics.kellyRisk.toFixed(0)} risk)`),
-        copy(language, `⏰ Giriş: ${metrics.entryWindow}`, `⏰ Entry: ${metrics.entryWindow}`),
-        copy(language, `📋 Emir: ${metrics.orderType} (${copy(language, "slippage", "slippage")} ≤%${metrics.slippageEstimate})`, `📋 Order: ${metrics.orderType} (slippage ≤%${metrics.slippageEstimate})`),
+        t("scanner:popMaxProfitRR", { pop: metrics.pop, tofixed2: metrics.maxProfit.toFixed(2), tofixed22: (metrics.maxProfit / metrics.maxLoss).toFixed(2) }),
+        `📈 IV Rank: ${iv}/100 — ${metrics.ivSignalLabel}`,
+        t("scanner:expectedMove", { tofixed2: metrics.expectedMove.toFixed(2), tofixed1: metrics.expectedMovePct.toFixed(1) }),
+        (language === "en" ? `💰 Kelly Sizing: ${metrics.kellyContracts} contract ($${metrics.kellyRisk.toFixed(0)} risk)` : `💰 Kelly Boyutlandırma: ${metrics.kellyContracts} ${t("scanner:contract")} ($${metrics.kellyRisk.toFixed(0)} ${"risk"})`),
+        t("scanner:entry", { entrywindow: metrics.entryWindow }),
+        (language === "en" ? `📋 Order: ${metrics.orderType} (slippage ≤%${metrics.slippageEstimate})` : `📋 Emir: ${metrics.orderType} (${"slippage"} ≤%${metrics.slippageEstimate})`),
       ],
       warnings: [
         stock.earningsWarning || null,
-        copy(language, `⚠️ RSI ${rsi.toFixed(1)} — Aşırı satım, dönüş potansiyeli ama riskli`, `⚠️ RSI ${rsi.toFixed(1)} — Oversold, reversal potential but risky`),
-        metrics.ivSignal === "BUY_PREMIUM" ? copy(language, "✅ IV düşük — Long premium mantıklı", "✅ Low IV — Long premium makes sense") : null,
+        t("scanner:rsiOversoldReversalPotentialBut", { tofixed1: rsi.toFixed(1) }),
+        metrics.ivSignal === "BUY_PREMIUM" ? t("scanner:lowIvLongPremiumMakes") : null,
       ].filter(Boolean) as string[],
       color: "text-amber-400",
       metrics,
@@ -254,28 +254,28 @@ function suggestStrategy(stock: StockResult, language: AppLanguage): StrategySug
   if (signal === "STRONG_BUY" || signal === "BUY" || signal === "NEUTRAL_BULLISH") {
     // Bullish momentum
     return {
-      name: copy(language, "Boğa Call Spread'i (Debit)", "Bull Call Spread"),
+      name: t("scanner:bullCallSpread"),
       nameTr: "Boğa Call Spread'i (Debit)",
       direction: "BULLISH",
-      setup: `${copy(language, "Al", "Buy")} ${itmStrike}C / ${copy(language, "Sat", "Sell")} ${otmStrike}C`,
+      setup: `${t("common:buy")} ${itmStrike}C / ${t("common:sellfd26")} ${otmStrike}C`,
       strikes: `${itmStrike}C / ${otmStrike}C`,
       dte,
       popEstimate: `%${metrics.pop}`,
       maxRisk: `$${metrics.netDebit.toFixed(2)}`,
       breakeven: `$${(itmStrike + metrics.netDebit).toFixed(2)}`,
       notes: [
-        copy(language, `📊 POP: %${metrics.pop} | Maks Kâr: $${(otmStrike - itmStrike - metrics.netDebit).toFixed(2)} | R/R: ${((otmStrike - itmStrike - metrics.netDebit) / metrics.netDebit).toFixed(2)}`, `📊 POP: %${metrics.pop} | Max Profit: $${(otmStrike - itmStrike - metrics.netDebit).toFixed(2)} | R/R: ${((otmStrike - itmStrike - metrics.netDebit) / metrics.netDebit).toFixed(2)}`),
-        copy(language, `📈 IV Rank: ${iv}/100 — ${metrics.ivSignalLabel}`, `📈 IV Rank: ${iv}/100 — ${metrics.ivSignalLabel}`),
-        copy(language, `🎯 Beklenen Hareket: $${metrics.expectedMove.toFixed(2)} (%${metrics.expectedMovePct.toFixed(1)})`, `🎯 Expected Move: $${metrics.expectedMove.toFixed(2)} (%${metrics.expectedMovePct.toFixed(1)})`),
-        copy(language, `💰 Kelly Boyutlandırma: ${metrics.kellyContracts} ${copy(language, "kontrat", "contract")} ($${metrics.kellyRisk.toFixed(0)} ${copy(language, "risk", "risk")})`, `💰 Kelly Sizing: ${metrics.kellyContracts} contract ($${metrics.kellyRisk.toFixed(0)} risk)`),
-        copy(language, `⏰ Giriş: ${metrics.entryWindow}`, `⏰ Entry: ${metrics.entryWindow}`),
-        copy(language, `📋 Emir: ${metrics.orderType} (${copy(language, "slippage", "slippage")} ≤%${metrics.slippageEstimate})`, `📋 Order: ${metrics.orderType} (slippage ≤%${metrics.slippageEstimate})`),
+        t("scanner:popMaxProfitRR", { pop: metrics.pop, tofixed2: (otmStrike - itmStrike - metrics.netDebit).toFixed(2), tofixed22: ((otmStrike - itmStrike - metrics.netDebit) / metrics.netDebit).toFixed(2) }),
+        `📈 IV Rank: ${iv}/100 — ${metrics.ivSignalLabel}`,
+        t("scanner:creditGain", { tofixed2: metrics.expectedMove.toFixed(2), tofixed1: metrics.expectedMovePct.toFixed(1) }),
+        (language === "en" ? `💰 Kelly Sizing: ${metrics.kellyContracts} contract ($${metrics.kellyRisk.toFixed(0)} risk)` : `💰 Kelly Boyutlandırma: ${metrics.kellyContracts} ${t("scanner:contract")} ($${metrics.kellyRisk.toFixed(0)} ${"risk"})`),
+        t("scanner:entry", { entrywindow: metrics.entryWindow }),
+        (language === "en" ? `📋 Order: ${metrics.orderType} (slippage ≤%${metrics.slippageEstimate})` : `📋 Emir: ${metrics.orderType} (${"slippage"} ≤%${metrics.slippageEstimate})`),
       ],
       warnings: [
         stock.earningsWarning || null,
         stock.rsiWarning || null,
-        stock.volumeRatio < 1 ? copy(language, "⚠️ Düşük hacim — Büyük pozisyonlardan kaçının", "⚠️ Low volume — Avoid large positions") : null,
-        metrics.ivSignal === "SELL_PREMIUM" ? copy(language, "⚠️ IV yüksek — Debit spread pahalı olabilir, credit düşün", "⚠️ High IV — Debit spread may be expensive, consider credit") : null,
+        stock.volumeRatio < 1 ? t("scanner:lowVolumeAvoidLargePositions") : null,
+        metrics.ivSignal === "SELL_PREMIUM" ? t("scanner:highIvDebitSpreadMay") : null,
       ].filter(Boolean) as string[],
       color: "text-emerald-400",
       metrics,
@@ -284,19 +284,19 @@ function suggestStrategy(stock: StockResult, language: AppLanguage): StrategySug
 
   // Default: Neutral / Weak
   return {
-    name: copy(language, "Uygun Setup Yok", "No Setup"),
+    name: t("scanner:noSetup"),
     nameTr: "Uygun Setup Yok",
     direction: "NEUTRAL",
-    setup: copy(language, "Bekle", "Wait"),
+    setup: t("scanner:wait"),
     strikes: "—",
     dte: 0,
     popEstimate: "—",
     maxRisk: "—",
     breakeven: "—",
     notes: [
-      copy(language, `Sinyal: ${signal} — Momentum zayıf`, `Signal: ${signal} — Momentum weak`),
-      copy(language, "Bugün için opsiyon setup'ı önerilmiyor", "No option setup recommended for today"),
-      copy(language, "Yarın tekrar tarama yapın", "Scan again tomorrow"),
+      t("scanner:signalMomentumWeak", { signal }),
+      t("scanner:noOptionSetupRecommendedFor"),
+      t("scanner:scanAgainTomorrow"),
     ],
     warnings: [],
     color: "text-slate-400",
@@ -315,13 +315,9 @@ export default function OptionStrategyPanel({ stock, language }: OptionStrategyP
   if (strategy.direction === "NEUTRAL") {
     return (
       <div className="rounded-lg border border-slate-700/50 bg-slate-800/20 p-3">
-        <p className="text-xs text-slate-500">{copy(language, "Opsiyon Stratejisi", "Option Strategy")}</p>
+        <p className="text-xs text-slate-500">{t("scanner:optionStrategy")}</p>
         <p className="mt-1 text-sm text-slate-400">
-          {copy(
-            language,
-            `${strategy.nameTr} — Bugün için uygun setup yok`,
-            `${strategy.name} — No suitable setup for today`
-          )}
+          {(language === "en" ? `${strategy.name} — No suitable setup for today` : `${strategy.nameTr} — Bugün için uygun setup yok`)}
         </p>
       </div>
     );
@@ -336,29 +332,25 @@ export default function OptionStrategyPanel({ stock, language }: OptionStrategyP
         ) : (
           <TrendingDown className="h-3.5 w-3.5 text-red-400" />
         )}
-        {copy(
-          language,
-          `v4.0 Kurumsal Opsiyon Analizi — ${strategy.nameTr}`,
-          `v4.0 Enterprise Option Analysis — ${strategy.name}`
-        )}
+        {(language === "en" ? `v4.0 Enterprise Option Analysis — ${strategy.name}` : `v4.0 Kurumsal Opsiyon Analizi — ${strategy.nameTr}`)}
       </h4>
 
       {/* Primary Metrics Grid */}
       <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
         <div className="rounded-lg border border-slate-700/50 bg-slate-800/30 p-2.5">
-          <p className="text-[10px] text-slate-500">{copy(language, "Kurulum", "Setup")}</p>
+          <p className="text-[10px] text-slate-500">{t("scanner:setup")}</p>
           <p className={`text-sm font-bold ${strategy.color}`}>{strategy.setup}</p>
         </div>
         <div className="rounded-lg border border-slate-700/50 bg-slate-800/30 p-2.5">
-          <p className="text-[10px] text-slate-500">{copy(language, "Vade (DTE)", "Term (DTE)")}</p>
-          <p className="text-sm font-bold text-white">{strategy.dte} {copy(language, "gün", "days")}</p>
+          <p className="text-[10px] text-slate-500">{t("scanner:termDte")}</p>
+          <p className="text-sm font-bold text-white">{strategy.dte} {t("scanner:days")}</p>
         </div>
         <div className="rounded-lg border border-slate-700/50 bg-slate-800/30 p-2.5">
           <p className="text-[10px] text-slate-500">POP</p>
           <p className="text-sm font-bold text-white">{strategy.popEstimate}</p>
         </div>
         <div className="rounded-lg border border-slate-700/50 bg-slate-800/30 p-2.5">
-          <p className="text-[10px] text-slate-500">{copy(language, "Max Risk", "Max Risk")}</p>
+          <p className="text-[10px] text-slate-500">{"Max Risk"}</p>
           <p className="text-sm font-bold text-white">{strategy.maxRisk}</p>
         </div>
       </div>
@@ -368,23 +360,23 @@ export default function OptionStrategyPanel({ stock, language }: OptionStrategyP
         <div className="rounded-lg border border-slate-700/50 bg-slate-800/30 p-2.5">
           <div className="flex items-center gap-1.5 text-[10px] text-slate-500">
             <Target className="h-3 w-3" />
-            {copy(language, "Breakeven", "Breakeven")}
+            {"Breakeven"}
           </div>
           <p className="text-sm font-bold text-white">{strategy.breakeven}</p>
         </div>
         <div className="rounded-lg border border-slate-700/50 bg-slate-800/30 p-2.5">
           <div className="flex items-center gap-1.5 text-[10px] text-slate-500">
             <Clock className="h-3 w-3" />
-            {copy(language, "Giriş Penceresi", "Entry Window")}
+            {t("scanner:entryWindow")}
           </div>
           <p className="text-sm font-bold text-white">{m.entryWindow}</p>
         </div>
         <div className="rounded-lg border border-slate-700/50 bg-slate-800/30 p-2.5">
           <div className="flex items-center gap-1.5 text-[10px] text-slate-500">
             <DollarSign className="h-3 w-3" />
-            {copy(language, "Kelly Boyutlandırma", "Kelly Sizing")}
+            {t("scanner:kellySizing")}
           </div>
-          <p className="text-sm font-bold text-white">{m.kellyContracts} {copy(language, "lot", "lot")} (%2 {copy(language, "NLV", "NLV")})</p>
+          <p className="text-sm font-bold text-white">{m.kellyContracts} {"lot"} (%2 {"NLV"})</p>
         </div>
       </div>
 
@@ -392,25 +384,25 @@ export default function OptionStrategyPanel({ stock, language }: OptionStrategyP
       <div className="rounded-lg border border-slate-700/30 bg-slate-800/20 p-3">
         <h5 className="mb-2 flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-slate-400">
           <BarChart3 className="h-3 w-3" />
-          {copy(language, "v4.0 Kurumsal Metrikler", "v4.0 Enterprise Metrics")}
+          {t("scanner:v40EnterpriseMetrics")}
         </h5>
         <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
           <div>
-            <p className="text-[10px] text-slate-500">{copy(language, "Beklenen Hareket", "Expected Move")}</p>
+            <p className="text-[10px] text-slate-500">{t("scanner:expectedMove261e")}</p>
             <p className="text-xs font-bold text-white">${m.expectedMove.toFixed(2)} ({m.expectedMovePct.toFixed(1)}%)</p>
           </div>
           <div>
-            <p className="text-[10px] text-slate-500">{copy(language, "IV Sinyali", "IV Signal")}</p>
+            <p className="text-[10px] text-slate-500">{t("scanner:rsiMomentumStrongButNot")}</p>
             <p className={`text-xs font-bold ${m.ivSignal === "SELL_PREMIUM" ? "text-emerald-400" : m.ivSignal === "BUY_PREMIUM" ? "text-amber-400" : "text-slate-400"}`}>
               {m.ivSignalLabel}
             </p>
           </div>
           <div>
-            <p className="text-[10px] text-slate-500">{copy(language, "Spread Genişliği", "Spread Width")}</p>
+            <p className="text-[10px] text-slate-500">{t("scanner:spreadWidth")}</p>
             <p className="text-xs font-bold text-white">${m.spreadWidth.toFixed(2)}</p>
           </div>
           <div>
-            <p className="text-[10px] text-slate-500">{copy(language, "R-Adj Getiri", "R-Adj Return")}</p>
+            <p className="text-[10px] text-slate-500">{t("scanner:rAdjReturn")}</p>
             <p className="text-xs font-bold text-white">{m.rReturn.toFixed(2)}</p>
           </div>
         </div>
@@ -433,7 +425,7 @@ export default function OptionStrategyPanel({ stock, language }: OptionStrategyP
         <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-3">
           <h5 className="mb-2 flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-emerald-400">
             <Activity className="h-3 w-3" />
-            {copy(language, "Yönetim Kuralları (Kurumsal Disiplin)", "Management Rules (Enterprise Discipline)")}
+            {t("scanner:managementRulesEnterpriseDiscipline")}
           </h5>
           <div className="space-y-1">
             {m.managementRules.map((rule, i) => (

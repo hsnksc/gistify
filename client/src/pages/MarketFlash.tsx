@@ -1,66 +1,23 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type {
-  MarketFlashCarryForward,
-  MarketFlashEarningsItem,
-  MarketFlashIndexQuote,
-  MarketFlashMarketSummary,
-  MarketFlashMover,
-  MarketFlashReport,
-  MarketFlashRiskAssessment,
-  MarketFlashReportType,
-  MarketFlashSetup,
-} from "@shared/marketFlash";
+  MarketFlashCarryForward, MarketFlashEarningsItem, MarketFlashIndexQuote, MarketFlashMarketSummary, MarketFlashMover, MarketFlashReport, MarketFlashRiskAssessment, MarketFlashReportType, MarketFlashSetup, } from "@shared/marketFlash";
 import {
-  AlertTriangle,
-  ArrowDown,
-  ArrowUp,
-  BarChart3,
-  CalendarDays,
-  ChevronRight,
-  Clock,
-  Flame,
-  History,
-  Info,
-  RefreshCw,
-  Target,
-  TrendingDown,
-  TrendingUp,
-  Zap,
-} from "lucide-react";
+  AlertTriangle, ArrowDown, ArrowUp, BarChart3, CalendarDays, ChevronRight, Clock, Flame, History, Info, RefreshCw, Target, TrendingDown, TrendingUp, Zap, } from "lucide-react";
 import WorkspaceLoadingState from "@/components/workspace/WorkspaceLoadingState";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+  Accordion, AccordionContent, AccordionItem, AccordionTrigger, } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+  Card, CardContent, CardHeader, CardTitle, } from "@/components/ui/card";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, } from "@/components/ui/dialog";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/table";
 import MarkdownReportRenderer from "@/components/reports/MarkdownReportRenderer";
 import { usePageMeta } from "@/hooks/usePageMeta";
-import { copy, useAppLanguage, type AppLanguage } from "@/lib/i18n";
+import { useAppLanguage, type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 const DEFAULT_POLL_INTERVAL_MS = 60 * 1000;
@@ -574,11 +531,11 @@ function getReportTypeLabel(
 ) {
   switch (reportType) {
     case "pre-market":
-      return copy(language, "Pre-Market Raporu", "Pre-Market Report");
+      return t("marketFlash:preMarketReport");
     case "after-market":
-      return copy(language, "After-Market Raporu", "After-Market Report");
+      return t("marketFlash:afterMarketReport");
     default:
-      return copy(language, "Saatlik Rapor", "Hourly Report");
+      return t("marketFlash:hourlyReport");
   }
 }
 
@@ -697,7 +654,7 @@ function IndexPill({
             variant="outline"
             className="border-rose-500/25 bg-rose-500/12 text-rose-200 text-[9px]"
           >
-            {copy(language, "VIX", "VIX")} {formatNumber(quote.price)}
+            {"VIX"} {formatNumber(quote.price)}
           </Badge>
         ) : null}
       </div>
@@ -712,7 +669,7 @@ function IndexPill({
       </div>
       {isFiniteNumber(quote.vwap) ? (
         <p className="mt-1 text-[11px] text-muted-foreground">
-          {copy(language, "VWAP", "VWAP")} {formatNumber(quote.vwap)}
+          {"VWAP"} {formatNumber(quote.vwap)}
         </p>
       ) : null}
     </div>
@@ -778,11 +735,11 @@ function MoversTable({
   tone: "gainer" | "loser";
 }) {
   const headers = [
-    copy(language, "Hisse", "Ticker"),
-    copy(language, "Fiyat", "Price"),
-    copy(language, "Degisim", "Change"),
-    copy(language, "Hacim", "Volume"),
-    copy(language, "Katalizor", "Catalyst"),
+    t("common:ticker"),
+    t("common:price"),
+    t("common:apexScore"),
+    t("common:volume"),
+    t("marketFlash:catalyst"),
   ];
 
   return (
@@ -836,7 +793,7 @@ function MoversTable({
                     colSpan={headers.length}
                     className="text-sm text-muted-foreground"
                   >
-                    {copy(language, "Veri yok.", "No data.")}
+                    {t("marketFlash:noData")}
                   </TableCell>
                 </TableRow>
               )}
@@ -875,7 +832,7 @@ function MoversTable({
             ))
           ) : (
             <div className="rounded-xl border border-dashed border-white/10 bg-black/15 px-4 py-3 text-sm text-muted-foreground">
-              {copy(language, "Veri yok.", "No data.")}
+              {t("marketFlash:noData")}
             </div>
           )}
         </div>
@@ -944,7 +901,7 @@ function SetupCard({
       <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
         <div className="rounded-xl border border-white/10 bg-black/20 px-2.5 py-1.5">
           <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-            {copy(language, "Giris", "Entry")}
+            {t("common:entry")}
           </p>
           <p className="mt-0.5 font-medium text-foreground">
             {formatNumber(setup.entry)}
@@ -952,7 +909,7 @@ function SetupCard({
         </div>
         <div className="rounded-xl border border-white/10 bg-black/20 px-2.5 py-1.5">
           <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-            {copy(language, "Stop", "Stop")}
+            {"Stop"}
           </p>
           <p className="mt-0.5 font-medium text-rose-300">
             {formatNumber(setup.stop)}
@@ -960,7 +917,7 @@ function SetupCard({
         </div>
         <div className="rounded-xl border border-white/10 bg-black/20 px-2.5 py-1.5">
           <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-            {copy(language, "Hedef", "Target")}
+            {t("marketFlash:target")}
           </p>
           <p className="mt-0.5 font-medium text-emerald-300">
             {formatNumber(setup.target)}
@@ -968,7 +925,7 @@ function SetupCard({
         </div>
         <div className="rounded-xl border border-white/10 bg-black/20 px-2.5 py-1.5">
           <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-            {copy(language, "R/R", "R/R")}
+            {"R/R"}
           </p>
           <p className="mt-0.5 font-medium text-foreground">
             {isFiniteNumber(setup.rr) ? `1:${setup.rr.toFixed(1)}` : "-"}
@@ -987,8 +944,8 @@ function SetupCard({
           )}
         >
           {rrHigh
-            ? copy(language, "Yuksek", "High")
-            : copy(language, "Orta", "Medium")}
+            ? t("common:high")
+            : t("common:medium")}
         </Badge>
         <Badge
           variant="outline"
@@ -1021,12 +978,12 @@ function EarningsCalendar({
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2 text-lg">
             <CalendarDays className={cn("size-5", THEME.iconClassName)} />
-            {copy(language, "Earnings Takvimi", "Earnings Calendar")}
+            {t("marketFlash:earningsCalendar")}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="rounded-xl border border-dashed border-white/10 bg-black/15 px-4 py-3 text-sm text-muted-foreground">
-            {copy(language, "Bugun earnings takvimi bos.", "No earnings on the calendar today.")}
+            {t("marketFlash:noEarningsOnTheCalendar")}
           </div>
         </CardContent>
       </Card>
@@ -1038,7 +995,7 @@ function EarningsCalendar({
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-lg">
           <CalendarDays className={cn("size-5", THEME.iconClassName)} />
-          {copy(language, "Earnings Takvimi", "Earnings Calendar")}
+          {t("marketFlash:earningsCalendar")}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -1047,25 +1004,25 @@ function EarningsCalendar({
             const metrics = [
               isFiniteNumber(item.consensusEps)
                 ? {
-                    label: copy(language, "EPS Beklenen", "Consensus EPS"),
+                    label: t("marketFlash:consensusEps"),
                     value: `$${formatNumber(item.consensusEps)}`,
                   }
                 : null,
               isFiniteNumber(item.consensusRev)
                 ? {
-                    label: copy(language, "Rev Beklenen", "Consensus Rev"),
+                    label: t("marketFlash:consensusRev"),
                     value: `$${formatCompactNumber(item.consensusRev)}`,
                   }
                 : null,
               isFiniteNumber(item.priorEps)
                 ? {
-                    label: copy(language, "Onceki EPS", "Prior EPS"),
+                    label: t("marketFlash:priorEps"),
                     value: `$${formatNumber(item.priorEps)}`,
                   }
                 : null,
               isFiniteNumber(item.priorRev)
                 ? {
-                    label: copy(language, "Onceki Rev", "Prior Rev"),
+                    label: t("marketFlash:priorRev"),
                     value: `$${formatCompactNumber(item.priorRev)}`,
                   }
                 : null,
@@ -1103,10 +1060,10 @@ function EarningsCalendar({
                           )}
                         >
                           {item.time === "before-open"
-                            ? copy(language, "BMO", "BMO")
+                            ? "BMO"
                             : item.time === "after-close"
-                              ? copy(language, "AMC", "AMC")
-                              : copy(language, "Intraday", "Intraday")}
+                              ? "AMC"
+                              : "Intraday"}
                         </Badge>
                       </div>
                       {item.company ? (
@@ -1117,7 +1074,7 @@ function EarningsCalendar({
                     </div>
                     {item.expectedMove ? (
                       <span className="text-[12px] text-muted-foreground">
-                        {copy(language, "Hareket", "Move")} {item.expectedMove}
+                        {t("marketFlash:move")} {item.expectedMove}
                       </span>
                     ) : null}
                   </div>
@@ -1139,7 +1096,7 @@ function EarningsCalendar({
                       {item.consensusRange ? (
                         <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 sm:col-span-2">
                           <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                            {copy(language, "Konsensus Araligi", "Consensus Range")}
+                            {t("marketFlash:consensusRange")}
                           </p>
                           <p className="mt-0.5 text-foreground">{item.consensusRange}</p>
                         </div>
@@ -1147,7 +1104,7 @@ function EarningsCalendar({
                       {item.analystSentiment ? (
                         <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 sm:col-span-2">
                           <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                            {copy(language, "Analist Gorusu", "Analyst Sentiment")}
+                            {t("marketFlash:analystSentiment")}
                           </p>
                           <p className="mt-0.5 capitalize text-foreground">
                             {item.analystSentiment}
@@ -1157,7 +1114,7 @@ function EarningsCalendar({
                       {item.note ? (
                         <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 sm:col-span-2">
                           <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                            {copy(language, "Not", "Note")}
+                            {t("marketFlash:note")}
                           </p>
                           <p className="mt-0.5 text-foreground">{item.note}</p>
                         </div>
@@ -1168,7 +1125,7 @@ function EarningsCalendar({
                       {item.consensusRange ? (
                         <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 sm:col-span-2">
                           <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                            {copy(language, "Konsensus Araligi", "Consensus Range")}
+                            {t("marketFlash:consensusRange")}
                           </p>
                           <p className="mt-0.5 text-foreground">{item.consensusRange}</p>
                         </div>
@@ -1176,7 +1133,7 @@ function EarningsCalendar({
                       {item.analystSentiment ? (
                         <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 sm:col-span-2">
                           <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                            {copy(language, "Analist Gorusu", "Analyst Sentiment")}
+                            {t("marketFlash:analystSentiment")}
                           </p>
                           <p className="mt-0.5 capitalize text-foreground">
                             {item.analystSentiment}
@@ -1186,7 +1143,7 @@ function EarningsCalendar({
                       {item.note ? (
                         <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 sm:col-span-2">
                           <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                            {copy(language, "Not", "Note")}
+                            {t("marketFlash:note")}
                           </p>
                           <p className="mt-0.5 text-foreground">{item.note}</p>
                         </div>
@@ -1215,17 +1172,17 @@ function RiskAlert({
   const config = {
     low: {
       icon: Info,
-      title: copy(language, "Dusuk Risk", "Low Risk"),
+      title: t("marketFlash:lowRisk"),
       className: "border-emerald-500/25 bg-emerald-500/10 text-emerald-100",
     },
     medium: {
       icon: AlertTriangle,
-      title: copy(language, "Orta Risk", "Medium Risk"),
+      title: t("marketFlash:mediumRisk"),
       className: "border-amber-500/25 bg-amber-500/10 text-amber-100",
     },
     high: {
       icon: Flame,
-      title: copy(language, "Yuksek Risk", "High Risk"),
+      title: t("marketFlash:highRisk"),
       className: "border-rose-500/25 bg-rose-500/10 text-rose-100",
     },
   }[level];
@@ -1248,11 +1205,7 @@ function RiskAlert({
           variant="outline"
           className="border-white/15 bg-black/20 text-[10px] uppercase tracking-[0.14em] text-current"
         >
-          {copy(
-            language,
-            level === "high" ? "Yuksek" : level === "low" ? "Dusuk" : "Orta",
-            level
-          )}
+          {(language === "en" ? level : level === "high" ? "Yuksek" : level === "low" ? "Dusuk" : "Orta")}
         </Badge>
       </AlertTitle>
       <AlertDescription className="text-foreground/80">
@@ -1277,11 +1230,11 @@ function CarryForwardTable({
   language: AppLanguage;
 }) {
   const headers = [
-    copy(language, "Hisse", "Ticker"),
-    copy(language, "Bugun %", "Today %"),
-    copy(language, "Gap", "Gap"),
-    copy(language, "Bias", "Bias"),
-    copy(language, "Setup", "Setup"),
+    t("common:ticker"),
+    t("marketFlash:today"),
+    "Gap",
+    "Bias",
+    "Setup",
   ];
 
   return (
@@ -1289,7 +1242,7 @@ function CarryForwardTable({
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-lg">
           <History className={cn("size-5", THEME.iconClassName)} />
-          {copy(language, "Yarina Tasinanlar", "Carry Forward")}
+          {t("marketFlash:carryForward")}
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">
@@ -1347,7 +1300,7 @@ function CarryForwardTable({
                     colSpan={headers.length}
                     className="text-sm text-muted-foreground"
                   >
-                    {copy(language, "Veri yok.", "No data.")}
+                    {t("marketFlash:noData")}
                   </TableCell>
                 </TableRow>
               )}
@@ -1388,7 +1341,7 @@ function CarryForwardTable({
             ))
           ) : (
             <div className="rounded-xl border border-dashed border-white/10 bg-black/15 px-4 py-3 text-sm text-muted-foreground">
-              {copy(language, "Veri yok.", "No data.")}
+              {t("marketFlash:noData")}
             </div>
           )}
         </div>
@@ -1443,17 +1396,17 @@ function StockDetailModal({
           <div className="grid grid-cols-2 gap-3">
             <div className="rounded-xl border border-white/10 bg-black/20 p-3">
               <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                {copy(language, "Market Cap", "Market Cap")}
+                {"Market Cap"}
               </p>
               <p className="mt-1 text-foreground">
                 {isFiniteNumber(mover.marketCap)
                   ? formatCompactNumber(mover.marketCap)
-                  : copy(language, "Veri mevcut degil", "Data unavailable")}
+                  : t("marketFlash:dataUnavailable")}
               </p>
             </div>
             <div className="rounded-xl border border-white/10 bg-black/20 p-3">
               <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                {copy(language, "Hacim", "Volume")}
+                {t("common:volume")}
               </p>
               <p className="mt-1 text-foreground">{formatVolume(mover.volume)}</p>
             </div>
@@ -1462,8 +1415,8 @@ function StockDetailModal({
           {mover.week52Range ? (
             <div className="rounded-xl border border-white/10 bg-black/20 p-3">
               <div className="flex items-center justify-between text-[11px] text-muted-foreground">
-                <span>{copy(language, "52H Düşük", "52W Low")} {formatNumber(low52)}</span>
-                <span>{copy(language, "52H Yüksek", "52W High")} {formatNumber(high52)}</span>
+                <span>{t("marketFlash:52wLow")} {formatNumber(low52)}</span>
+                <span>{t("marketFlash:52wHigh")} {formatNumber(high52)}</span>
               </div>
               <div className="mt-2 h-2 overflow-hidden rounded-full bg-muted">
                 <div
@@ -1476,7 +1429,7 @@ function StockDetailModal({
 
           <div className="rounded-xl border border-white/10 bg-black/20 p-3">
             <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-              {copy(language, "Katalizor", "Catalyst")}
+              {t("marketFlash:catalyst")}
             </p>
             <p className="mt-1 text-[13px] leading-5 text-foreground/88">
               {mover.catalyst}
@@ -1498,12 +1451,8 @@ export default function MarketFlash() {
   const [selectedMover, setSelectedMover] = useState<MarketFlashMover | null>(null);
 
   usePageMeta({
-    description: copy(
-      language,
-      "Market Flash intraday tape, index, VIX, movers ve carry-forward riskini tek ekranda toplar.",
-      "Market Flash combines the intraday tape, indices, VIX, movers and carry-forward risk on one screen."
-    ),
-    title: copy(language, "Gistify | Market Flash", "Gistify | Market Flash"),
+    description: t("marketFlash:marketFlashCombinesTheIntraday"),
+    title: "Gistify | Market Flash",
   });
 
   const pollIntervalMs = useMemo(() => {
@@ -1526,11 +1475,7 @@ export default function MarketFlash() {
 
         if (!response.ok) {
           throw new Error(
-            copy(
-              language,
-              "Market Flash raporu yuklenemedi.",
-              "Failed to load Market Flash report."
-            )
+            t("marketFlash:failedToLoadMarketFlash")
           );
         }
 
@@ -1540,11 +1485,7 @@ export default function MarketFlash() {
         setError(
           loadError instanceof Error && loadError.message
             ? loadError.message
-            : copy(
-                language,
-                "Market Flash raporu yuklenemedi.",
-                "Failed to load Market Flash report."
-              )
+            : t("marketFlash:failedToLoadMarketFlash")
         );
       } finally {
         setLoading(false);
@@ -1576,11 +1517,7 @@ export default function MarketFlash() {
       <div className="min-h-screen bg-background">
         <div className="container py-6 md:py-8">
           <WorkspaceLoadingState
-            label={copy(
-              language,
-              "Market Flash yukleniyor.",
-              "Loading Market Flash."
-            )}
+            label={t("marketFlash:loadingMarketFlash")}
           />
         </div>
       </div>
@@ -1594,11 +1531,7 @@ export default function MarketFlash() {
           <WorkspaceLoadingState
             label={
               error ||
-              copy(
-                language,
-                "Henuz Market Flash raporu bulunmuyor.",
-                "There is no Market Flash report yet."
-              )
+              t("marketFlash:thereIsNoMarketFlash")
             }
           />
         </div>
@@ -1647,7 +1580,7 @@ export default function MarketFlash() {
                         THEME.eyebrowClassName
                       )}
                     >
-                      {copy(language, "Market Flash", "Market Flash")}
+                      {"Market Flash"}
                     </p>
                   </div>
                   <h1 className="mt-2 heading-condensed text-[1.65rem] leading-none text-foreground md:text-[1.9rem]">
@@ -1655,11 +1588,7 @@ export default function MarketFlash() {
                   </h1>
                   <p className="mt-2 text-[13px] leading-6 text-foreground/82">
                     {formatReportDate(report.reportDate, language)} ·{" "}
-                    {copy(
-                      language,
-                      "Son guncelleme",
-                      "Last updated"
-                    )}{" "}
+                    {t("marketFlash:lastUpdated")}{" "}
                     {formatTimestamp(report.generatedAt, language)}
                   </p>
                 </div>
@@ -1689,7 +1618,7 @@ export default function MarketFlash() {
                     <RefreshCw
                       className={cn("mr-1.5 size-4", refreshing && "animate-spin")}
                     />
-                    {copy(language, "Yenile", "Refresh")}
+                    {t("common:refresh")}
                   </Button>
 
                   <Button
@@ -1704,8 +1633,8 @@ export default function MarketFlash() {
                   >
                     <Clock className="mr-1.5 size-4" />
                     {autoRefresh
-                      ? copy(language, "Oto. yenileme acik", "Auto refresh on")
-                      : copy(language, "Oto. yenileme kapali", "Auto refresh off")}
+                      ? t("marketFlash:autoRefreshOn")
+                      : t("marketFlash:autoRefreshOff")}
                   </Button>
                 </div>
               </div>
@@ -1731,7 +1660,7 @@ export default function MarketFlash() {
 
               <div className="grid gap-4 lg:grid-cols-2">
                 <MoversTable
-                  title={copy(language, "Gainers", "Gainers")}
+                  title={"Gainers"}
                   icon={TrendingUp}
                   movers={report.topMovers.gainers}
                   onSelect={setSelectedMover}
@@ -1739,7 +1668,7 @@ export default function MarketFlash() {
                   tone="gainer"
                 />
                 <MoversTable
-                  title={copy(language, "Losers", "Losers")}
+                  title={"Losers"}
                   icon={TrendingDown}
                   movers={report.topMovers.losers}
                   onSelect={setSelectedMover}
@@ -1753,7 +1682,7 @@ export default function MarketFlash() {
                   <CardHeader className="pb-3">
                     <CardTitle className="flex items-center gap-2 text-lg text-emerald-200">
                       <Target className="size-5" />
-                      {copy(language, "CALL Setup'lari", "CALL Setups")}
+                      {t("marketFlash:callSetups")}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
@@ -1768,7 +1697,7 @@ export default function MarketFlash() {
                       ))
                     ) : (
                       <div className="rounded-xl border border-dashed border-white/10 bg-black/15 px-4 py-3 text-sm text-muted-foreground">
-                        {copy(language, "CALL setup'i yok.", "No CALL setups.")}
+                        {t("marketFlash:noCallSetups")}
                       </div>
                     )}
                   </CardContent>
@@ -1778,7 +1707,7 @@ export default function MarketFlash() {
                   <CardHeader className="pb-3">
                     <CardTitle className="flex items-center gap-2 text-lg text-rose-200">
                       <Target className="size-5" />
-                      {copy(language, "PUT Setup'lari", "PUT Setups")}
+                      {t("marketFlash:putSetups")}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
@@ -1793,7 +1722,7 @@ export default function MarketFlash() {
                       ))
                     ) : (
                       <div className="rounded-xl border border-dashed border-white/10 bg-black/15 px-4 py-3 text-sm text-muted-foreground">
-                        {copy(language, "PUT setup'i yok.", "No PUT setups.")}
+                        {t("marketFlash:noPutSetups")}
                       </div>
                     )}
                   </CardContent>
@@ -1811,18 +1740,14 @@ export default function MarketFlash() {
                     <CardHeader className="pb-3">
                       <CardTitle className="flex items-center gap-2 text-lg">
                         <BarChart3 className={cn("size-5", THEME.iconClassName)} />
-                        {copy(language, "VWAP & Teknik Notlar", "VWAP & Technical Notes")}
+                        {t("marketFlash:vwapTechnicalNotes")}
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
                       <MarkdownReportRenderer
                         language={language}
                         markdown={report.vwapNotes}
-                        emptyMessage={copy(
-                          language,
-                          "Teknik not bulunmuyor.",
-                          "No technical notes."
-                        )}
+                        emptyMessage={t("marketFlash:noTechnicalNotes")}
                       />
                     </CardContent>
                   </Card>
@@ -1842,17 +1767,13 @@ export default function MarketFlash() {
                     <CardHeader className="pb-3">
                       <CardTitle className="flex items-center gap-2 text-lg">
                         <Info className={cn("size-5", THEME.iconClassName)} />
-                        {copy(language, "Veri Kaynagi", "Data Source")}
+                        {t("marketFlash:dataSource")}
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-2 text-[12px] text-muted-foreground">
                         <p>
-                          {copy(
-                            language,
-                            "Rapor her piyasa saati boyunca Kimi tarafindan uretilir ve uzerine yazilir.",
-                            "Report is generated and overwritten by Kimi during market hours."
-                          )}
+                          {t("marketFlash:reportIsGeneratedAndOverwritten")}
                         </p>
                         <p className="flex items-center gap-1 text-foreground/70">
                           <ChevronRight className="size-3" />
@@ -1861,11 +1782,7 @@ export default function MarketFlash() {
                           </code>
                         </p>
                         <p>
-                          {copy(
-                            language,
-                            "Yenileme araligi: ",
-                            "Refresh interval: "
-                          )}
+                          {t("marketFlash:refreshInterval")}
                           <span className="text-foreground">
                             {isUsMarketOpen()
                               ? "60s"

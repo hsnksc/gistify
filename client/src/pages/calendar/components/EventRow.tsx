@@ -1,7 +1,7 @@
 import { ChevronDown, Clock, MapPin, BarChart3 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { copy, type AppLanguage } from "@/lib/i18n";
+import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { CalendarEvent } from "@shared/calendar";
 import {
@@ -112,7 +112,7 @@ export function EventRow({
                     <div className="flex items-center gap-1.5 mb-2">
                       <BarChart3 className="size-3.5 text-emerald-300" />
                       <p className="text-xs font-semibold uppercase tracking-wider text-emerald-300">
-                        {copy(language, "Analiz", "Analysis")}
+                        {t("calendar:analysis")}
                       </p>
                     </div>
                     <p className="text-[13px] leading-relaxed text-foreground/85">
