@@ -4,6 +4,17 @@
 
 import React, { useState } from "react";
 import { copy, type AppLanguage } from "@/lib/i18n";
+import { trackNewsletterSubscribe } from "@/utils/ga4";
+
+// Simple email hash for GA4 (no PII)
+function hashEmail(email: string): string {
+  let hash = 0;
+  for (let i = 0; i < email.length; i++) {
+    const char = email.charCodeAt(i);
+    hash = ((hash << 5) - hash + char) | 0;
+  }
+  return `user_${Math.abs(hash).toString(16).substring(0, 8)}`;
+}
 
 interface NewsletterSignupProps {
   language?: AppLanguage;
@@ -38,6 +49,8 @@ export default function NewsletterSignup({ language = "tr" }: NewsletterSignupPr
             "You're in! Sunday Prep newsletter coming your way."
           )
         );
+        // ✅ GA4 tracking — newsletter subscribe
+        trackNewsletterSubscribe(hashEmail(email), "landing_hero");
         setEmail("");
       } else {
         setStatus("error");
