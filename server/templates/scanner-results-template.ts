@@ -335,12 +335,12 @@ const HTML_TEMPLATE = `<!DOCTYPE html>
     <div class="cta-section">
       <div class="cta-title">Get Real-Time Scanner Data</div>
       <div class="cta-sub">Access live momentum, IV rank, and earnings scanners with real-time updates on Gistify.</div>
-      <a href="https://app.gistify.pro" class="cta-btn">Open Gistify App</a>
+      <a href="https://gistify.pro" class="cta-btn">Open Gistify App</a>
     </div>
   </div>
 
   <footer>
-    <p>&copy; ${new Date().getFullYear()} Gistify.pro &mdash; <a href="/">Home</a> &middot; <a href="/blog/momentum-trading/momentum-scanner-high-probability-setups">Momentum Guide</a> &middot; <a href="https://app.gistify.pro">App</a></p>
+    <p>&copy; ${new Date().getFullYear()} Gistify.pro &mdash; <a href="/">Home</a> &middot; <a href="/blog/momentum-trading/momentum-scanner-high-probability-setups">Momentum Guide</a> &middot; <a href="https://gistify.pro">App</a></p>
   </footer>
 
   <script>
