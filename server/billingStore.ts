@@ -223,6 +223,13 @@ interface DailyReportDbRow {
   content_json: string;
 }
 
+interface CoverageReportDbRow {
+  id: string;
+  source_name: string;
+  imported_at: string;
+  raw: string;
+}
+
 interface FlowReportCommentDbRow {
   id: string;
   report_id: string;
@@ -496,6 +503,15 @@ function mapDailyReportRow(row: DailyReportDbRow): DailyReportRecord {
   };
 }
 
+function mapCoverageReportRow(row: CoverageReportDbRow) {
+  return {
+    id: row.id,
+    importedAt: row.imported_at,
+    raw: row.raw,
+    sourceName: row.source_name,
+  };
+}
+
 function mapFlowReportCommentRow(
   row: FlowReportCommentDbRow
 ): FlowReportComment {
@@ -667,6 +683,13 @@ export function createBillingStore() {
       updated_at TEXT NOT NULL,
       published_at TEXT,
       content_json TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS coverage_reports (
+      id TEXT PRIMARY KEY,
+      source_name TEXT NOT NULL UNIQUE,
+      imported_at TEXT NOT NULL,
+      raw TEXT NOT NULL
     );
 
     CREATE TABLE IF NOT EXISTS flow_report_comments (
@@ -1425,6 +1448,51 @@ export function createBillingStore() {
       content_json = excluded.content_json
   `);
 
+  const listCoverageReportsStmt = db.prepare(`
+    SELECT
+      id,
+      source_name,
+      imported_at,
+      raw
+    FROM coverage_reports
+    ORDER BY imported_at DESC, source_name ASC
+  `);
+
+  const getCoverageReportByIdStmt = db.prepare(`
+    SELECT
+      id,
+      source_name,
+      imported_at,
+      raw
+    FROM coverage_reports
+    WHERE id = ?
+    LIMIT 1
+  `);
+
+  const getCoverageReportBySourceNameStmt = db.prepare(`
+    SELECT
+      id,
+      source_name,
+      imported_at,
+      raw
+    FROM coverage_reports
+    WHERE source_name = ?
+    LIMIT 1
+  `);
+
+  const upsertCoverageReportStmt = db.prepare(`
+    INSERT INTO coverage_reports (
+      id,
+      source_name,
+      imported_at,
+      raw
+    ) VALUES (?, ?, ?, ?)
+    ON CONFLICT(id) DO UPDATE SET
+      source_name = excluded.source_name,
+      imported_at = excluded.imported_at,
+      raw = excluded.raw
+  `);
+
   const listFlowReportCommentsByReportIdStmt = db.prepare(`
     SELECT
       id,
@@ -1726,6 +1794,36 @@ export function createBillingStore() {
         record.updatedAt,
         record.publishedAt || null,
         JSON.stringify(record.content)
+      );
+    },
+    listCoverageReports() {
+      const rows =
+        listCoverageReportsStmt.all() as unknown as CoverageReportDbRow[];
+      return rows.map(mapCoverageReportRow);
+    },
+    getCoverageReportById(reportId: string) {
+      const row = getCoverageReportByIdStmt.get(reportId) as
+        | CoverageReportDbRow
+        | undefined;
+      return row ? mapCoverageReportRow(row) : null;
+    },
+    getCoverageReportBySourceName(sourceName: string) {
+      const row = getCoverageReportBySourceNameStmt.get(sourceName) as
+        | CoverageReportDbRow
+        | undefined;
+      return row ? mapCoverageReportRow(row) : null;
+    },
+    upsertCoverageReport(record: {
+      id: string;
+      importedAt: string;
+      raw: string;
+      sourceName: string;
+    }) {
+      upsertCoverageReportStmt.run(
+        record.id,
+        record.sourceName,
+        record.importedAt,
+        record.raw
       );
     },
     listFlowReportCommentsByReportId(reportId: string) {

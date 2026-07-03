@@ -4,7 +4,9 @@ import {
   BookOpen,
   CalendarDays,
   Clock3,
+  Download,
   GitCompareArrows,
+  Printer,
   Search,
   Star,
 } from "lucide-react";
@@ -39,8 +41,11 @@ import {
   type CoverageStoredRecord,
   type CoverageTableBlock,
 } from "@/features/coverage/lib/coverageParser";
-import { fetchCoverageReports } from "@/features/coverage/lib/coverageApi";
-import { getCoverageSeedRecords } from "@/features/coverage/lib/coverageSeed";
+import {
+  fetchCoverageReports,
+  getCoverageMarkdownDownloadHref,
+  getCoverageZipDownloadHref,
+} from "@/features/coverage/lib/coverageApi";
 import LoadingState from "@/components/ui/loading-state";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { copy, type AppLanguage } from "@/lib/i18n";
@@ -255,6 +260,43 @@ function renderInlineText(text: string, keyPrefix: string) {
   return nodes;
 }
 
+function extractProbabilityItems(items: string[]) {
+  const parsed = items
+    .map(item => {
+      const match =
+        item.match(/^%?\s*(\d{1,3}(?:[.,]\d+)?)%\s*(.+)$/i) ||
+        item.match(/^%?\s*(\d{1,3}(?:[.,]\d+)?)\s*(?:olasilik|probability)\s*:\s*(.+)$/i);
+
+      if (!match) {
+        return null;
+      }
+
+      const probability = Number(match[1].replace(",", "."));
+      if (!Number.isFinite(probability)) {
+        return null;
+      }
+
+      return {
+        label: match[2].replace(/^:\s*/, "").trim(),
+        probability,
+      };
+    })
+    .filter(
+      (
+        item
+      ): item is {
+        label: string;
+        probability: number;
+      } => item !== null
+    );
+
+  if (parsed.length < 2 || parsed.length !== items.length) {
+    return [];
+  }
+
+  return parsed;
+}
+
 function buildVersionHref(ticker: string, versionId: string) {
   return `/coverage/${ticker}?v=${encodeURIComponent(versionId)}`;
 }
@@ -322,6 +364,7 @@ function CoverageBlocks({
   checklistState,
   language,
   onChecklistChange,
+  onNavigateTicker,
   report,
   reportId,
   sectionId,
@@ -331,6 +374,7 @@ function CoverageBlocks({
   checklistState: ChecklistState;
   language: AppLanguage;
   onChecklistChange: (key: string, checked: boolean) => void;
+  onNavigateTicker?: (ticker: string) => void;
   report?: CoverageReport;
   reportId: string;
   sectionId: string;
@@ -361,20 +405,29 @@ function CoverageBlocks({
         }
 
         if (block.type === "list") {
+          const probabilityItems = extractProbabilityItems(block.items);
           return (
-            <ul
-              key={`${blockPrefix}-${index}`}
-              className="space-y-2 pl-5 text-sm leading-7 text-muted-foreground"
-            >
-              {block.items.map((item, itemIndex) => (
-                <li
-                  key={`${blockPrefix}-${index}-${itemIndex}`}
-                  className="list-disc"
-                >
-                  {renderInlineText(item, `${blockPrefix}-${index}-${itemIndex}`)}
-                </li>
-              ))}
-            </ul>
+            <div key={`${blockPrefix}-${index}`} className="space-y-4">
+              {probabilityItems.length > 0 ? (
+                <ProbabilityBars
+                  items={probabilityItems}
+                  language={language}
+                />
+              ) : null}
+              <ul className="space-y-2 pl-5 text-sm leading-7 text-muted-foreground">
+                {block.items.map((item, itemIndex) => (
+                  <li
+                    key={`${blockPrefix}-${index}-${itemIndex}`}
+                    className="list-disc"
+                  >
+                    {renderInlineText(
+                      item,
+                      `${blockPrefix}-${index}-${itemIndex}`
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
           );
         }
 
@@ -397,6 +450,7 @@ function CoverageBlocks({
             block={block}
             blockPrefix={blockPrefix}
             language={language}
+            onNavigateTicker={onNavigateTicker}
             report={report}
           />
         );
@@ -409,13 +463,59 @@ function TableBlockView({
   block,
   blockPrefix,
   language,
+  onNavigateTicker,
   report,
 }: {
   block: CoverageTableBlock;
   blockPrefix: string;
   language: AppLanguage;
+  onNavigateTicker?: (ticker: string) => void;
   report?: CoverageReport;
 }) {
+  const renderPlainTable = (options?: {
+    getCellClassName?: (cell: string, rowIndex: number, cellIndex: number) => string;
+  }) => (
+    <div className="overflow-hidden rounded-xl border border-border bg-background/30">
+      <Table>
+        <TableHeader>
+          <TableRow className="border-border">
+            {block.headers.map((header, index) => (
+              <TableHead
+                key={`${blockPrefix}-head-${index}`}
+                className="px-4 py-3 text-xs uppercase tracking-[0.16em] text-muted-foreground"
+              >
+                {header}
+              </TableHead>
+            ))}
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {block.rows.map((row, rowIndex) => (
+            <TableRow
+              key={`${blockPrefix}-row-${rowIndex}`}
+              className="border-border/70"
+            >
+              {row.map((cell, cellIndex) => (
+                <TableCell
+                  key={`${blockPrefix}-cell-${rowIndex}-${cellIndex}`}
+                  className={
+                    options?.getCellClassName?.(cell, rowIndex, cellIndex) ||
+                    "px-4 py-3 align-top whitespace-normal text-sm text-muted-foreground"
+                  }
+                >
+                  {renderInlineText(
+                    cell,
+                    `${blockPrefix}-${rowIndex}-${cellIndex}`
+                  )}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+
   if (block.signature === "options-chain") {
     const data = block.rows.map(row => ({
       strike: parseFloat(row[0].replace(/[^0-9.]/g, "")) || 0,
@@ -495,86 +595,145 @@ function TableBlockView({
     );
   }
 
-  if (block.signature === "catalyst-matrix") {
+  if (block.signature === "ecosystem-grid") {
+    const items = block.rows.map(row => ({
+      sirket: row[0] || "",
+      ticker: row[1] || "",
+      iliski: row[2] || "",
+      onem: row[3] || undefined,
+      detay: row[4] || undefined,
+    }));
     return (
-      <div className="overflow-hidden rounded-xl border border-border bg-background/30">
-        <Table>
-          <TableHeader>
-            <TableRow className="border-border">
-              {block.headers.map((header, index) => (
-                <TableHead
-                  key={`${blockPrefix}-head-${index}`}
-                  className="px-4 py-3 text-xs uppercase tracking-[0.16em] text-muted-foreground"
-                >
-                  {header}
-                </TableHead>
-              ))}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {block.rows.map((row, rowIndex) => (
-              <TableRow
-                key={`${blockPrefix}-row-${rowIndex}`}
-                className="border-border/70"
-              >
-                {row.map((cell, cellIndex) => (
-                  <TableCell
-                    key={`${blockPrefix}-cell-${rowIndex}-${cellIndex}`}
-                    className="px-4 py-3 align-top whitespace-normal text-sm text-muted-foreground"
-                  >
-                    {renderInlineText(
-                      cell,
-                      `${blockPrefix}-${rowIndex}-${cellIndex}`
-                    )}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+      <EcosystemChips
+        items={items}
+        language={language === "tr" ? "tr" : "en"}
+        onNavigate={onNavigateTicker}
+      />
+    );
+  }
+
+  if (block.signature === "source-list") {
+    return (
+      <div className="space-y-3">
+        {block.rows.map((row, rowIndex) => (
+          <a
+            key={`${blockPrefix}-source-${rowIndex}`}
+            href={row[1] || "#"}
+            target="_blank"
+            rel="noreferrer"
+            className="block rounded-xl border border-border bg-background/30 px-4 py-4 transition-colors hover:border-sky-500/20 hover:bg-background/45"
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-sm font-semibold text-foreground">
+                  {row[0] || row[1]}
+                </p>
+                <p className="mt-1 break-all text-xs text-sky-300">{row[1]}</p>
+              </div>
+              {row[2] ? (
+                <span className="text-xs text-muted-foreground">{row[2]}</span>
+              ) : null}
+            </div>
+          </a>
+        ))}
       </div>
     );
   }
 
-  // Default: plain table
-  return (
-    <div className="overflow-hidden rounded-xl border border-border bg-background/30">
-      <Table>
-        <TableHeader>
-          <TableRow className="border-border">
-            {block.headers.map((header, index) => (
-              <TableHead
-                key={`${blockPrefix}-head-${index}`}
-                className="px-4 py-3 text-xs uppercase tracking-[0.16em] text-muted-foreground"
-              >
-                {header}
-              </TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {block.rows.map((row, rowIndex) => (
-            <TableRow
-              key={`${blockPrefix}-row-${rowIndex}`}
-              className="border-border/70"
-            >
-              {row.map((cell, cellIndex) => (
-                <TableCell
-                  key={`${blockPrefix}-cell-${rowIndex}-${cellIndex}`}
-                  className="px-4 py-3 align-top whitespace-normal text-sm text-muted-foreground"
+  if (block.signature === "scenario-cards") {
+    return (
+      <div className="grid gap-3 md:grid-cols-2">
+        {block.rows.map((row, rowIndex) => (
+          <article
+            key={`${blockPrefix}-scenario-${rowIndex}`}
+            className="rounded-xl border border-border bg-background/30 p-4"
+          >
+            <p className="text-sm font-semibold text-foreground">{row[0]}</p>
+            <div className="mt-3 space-y-2 text-sm text-muted-foreground">
+              {block.headers.slice(1).map((header, headerIndex) => (
+                <div
+                  key={`${blockPrefix}-scenario-${rowIndex}-${headerIndex}`}
+                  className="flex items-start justify-between gap-3"
                 >
-                  {renderInlineText(
-                    cell,
-                    `${blockPrefix}-${rowIndex}-${cellIndex}`
-                  )}
-                </TableCell>
+                  <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground/80">
+                    {header}
+                  </span>
+                  <span className="text-right">
+                    {renderInlineText(
+                      row[headerIndex + 1] || "—",
+                      `${blockPrefix}-scenario-cell-${rowIndex}-${headerIndex}`
+                    )}
+                  </span>
+                </div>
               ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
-  );
+            </div>
+          </article>
+        ))}
+      </div>
+    );
+  }
+
+  if (block.signature === "comparison-matrix") {
+    return renderPlainTable({
+      getCellClassName: (cell, _rowIndex, cellIndex) => {
+        const highlighted =
+          cellIndex > 0 &&
+          (cell.includes("✅") || cell.includes("⭐⭐") || cell.includes("⭐"));
+        return highlighted
+          ? "px-4 py-3 align-top whitespace-normal text-sm font-semibold text-emerald-200"
+          : "px-4 py-3 align-top whitespace-normal text-sm text-muted-foreground";
+      },
+    });
+  }
+
+  if (block.signature === "catalyst-matrix") {
+    return (
+      <div className="grid gap-3 md:grid-cols-2">
+        {block.rows.map((row, rowIndex) => (
+          <article
+            key={`${blockPrefix}-catalyst-${rowIndex}`}
+            className="rounded-xl border border-border bg-background/30 p-4"
+          >
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-sm font-semibold text-foreground">{row[0]}</p>
+              <Badge
+                variant="outline"
+                className={
+                  row[1]?.toLowerCase().includes("negatif")
+                    ? "border-rose-500/30 bg-rose-500/10 text-rose-200"
+                    : row[1]?.toLowerCase().includes("pozitif")
+                      ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-200"
+                      : "border-amber-500/30 bg-amber-500/10 text-amber-200"
+                }
+              >
+                {row[1] || "Catalyst"}
+              </Badge>
+            </div>
+            <div className="mt-3 space-y-2 text-sm text-muted-foreground">
+              {block.headers.slice(2).map((header, headerIndex) => (
+                <div
+                  key={`${blockPrefix}-catalyst-meta-${rowIndex}-${headerIndex}`}
+                  className="flex items-start justify-between gap-3"
+                >
+                  <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground/80">
+                    {header}
+                  </span>
+                  <span className="text-right">
+                    {renderInlineText(
+                      row[headerIndex + 2] || "—",
+                      `${blockPrefix}-catalyst-cell-${rowIndex}-${headerIndex}`
+                    )}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+    );
+  }
+
+  return renderPlainTable();
 }
 
 function ChecklistBlockView({
@@ -646,15 +805,20 @@ export default function Coverage({
       try {
         const apiRecords = await fetchCoverageReports();
         if (!cancelled) {
-          setRecords(apiRecords.length > 0 ? apiRecords : getCoverageSeedRecords());
+          setRecords(apiRecords);
+          setRecordsError(null);
           setRecordsLoading(false);
         }
       } catch (error) {
         console.error("[Coverage] Failed to load reports from API:", error);
         if (!cancelled) {
-          setRecords(getCoverageSeedRecords());
+          setRecords([]);
           setRecordsError(
-            "Could not load coverage reports from server. Showing sample data."
+            copy(
+              language,
+              "Coverage arsivi server'dan yuklenemedi. Baglanti duzelince sayfayi yenile.",
+              "Coverage archive could not be loaded from the server. Refresh once the connection is back."
+            )
           );
           setRecordsLoading(false);
         }
@@ -665,7 +829,7 @@ export default function Coverage({
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [language]);
 
   useEffect(() => {
     persistWatchlist(watchlist);
@@ -899,6 +1063,19 @@ export default function Coverage({
     setLocation(buildVersionHref(report.ticker, report.id));
   };
 
+  const navigateToTickerSymbol = (targetTicker: string) => {
+    const tickerMatch = reportGroups.find(
+      group => group.ticker === targetTicker.toUpperCase()
+    );
+
+    if (tickerMatch) {
+      navigateToTicker(tickerMatch.latest);
+      return;
+    }
+
+    setLocation(`/coverage/${targetTicker.toUpperCase()}`);
+  };
+
   const toggleWatch = (targetTicker: string) => {
     setWatchlist(previous => {
       const next = new Set(previous);
@@ -948,6 +1125,14 @@ export default function Coverage({
             <CalendarDays className="size-4" />
             {copy(language, "Takvim", "Calendar")}
           </Button>
+          {reports.length > 0 ? (
+            <Button asChild variant="outline">
+              <a href={getCoverageZipDownloadHref()}>
+                <Download className="size-4" />
+                {copy(language, "Tumunu indir", "Download all")}
+              </a>
+            </Button>
+          ) : null}
         </div>
       }
       sidebar={sidebar}
@@ -992,8 +1177,8 @@ export default function Coverage({
           <CardDescription>
             {copy(
               language,
-              "Coverage arsivi bu yuzeyden duzenlenmez. Yeni rapor ve surumler yalnizca admin yayin akisi uzerinden eklenir.",
-              "The coverage archive is not editable from this surface. New reports and versions are published only through the admin workflow."
+              "Coverage arsivi bu yuzeyden duzenlenmez. Yeni rapor ve surumler yalnizca `/app/admin` icindeki Coverage paneli uzerinden eklenir.",
+              "The coverage archive is not editable from this surface. New reports and versions are published only through the Coverage panel inside `/app/admin`."
             )}
           </CardDescription>
         </CardHeader>
@@ -1032,104 +1217,121 @@ export default function Coverage({
           </Card>
 
           <div className="grid gap-4 lg:grid-cols-2">
-            {filteredGroups.map(group => (
-              <Card
-                key={group.ticker}
-                className="gap-4 border-border/80"
-                interactive={false}
-              >
-                <CardHeader className="gap-3">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <CardTitle className="text-2xl">{group.ticker}</CardTitle>
-                        <Badge
-                          variant="outline"
-                          className={signalBadgeClass(group.latest.signal)}
-                        >
-                          {group.latest.signal || "Coverage"}
-                        </Badge>
+            {filteredGroups.length > 0 ? (
+              filteredGroups.map(group => (
+                <Card
+                  key={group.ticker}
+                  className="gap-4 border-border/80"
+                  interactive={false}
+                >
+                  <CardHeader className="gap-3">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <CardTitle className="text-2xl">{group.ticker}</CardTitle>
+                          <Badge
+                            variant="outline"
+                            className={signalBadgeClass(group.latest.signal)}
+                          >
+                            {group.latest.signal || "Coverage"}
+                          </Badge>
+                        </div>
+                        <CardDescription className="mt-2">
+                          {group.latest.company}
+                        </CardDescription>
                       </div>
-                      <CardDescription className="mt-2">
-                        {group.latest.company}
-                      </CardDescription>
+                      <Button
+                        variant="ghost"
+                        size="icon-sm"
+                        onClick={() => toggleWatch(group.ticker)}
+                        aria-label={copy(
+                          language,
+                          "Watchlist'e ekle",
+                          "Toggle watchlist"
+                        )}
+                      >
+                        <Star
+                          className={cn(
+                            "size-4",
+                            watchlist.has(group.ticker)
+                              ? "fill-amber-300 text-amber-300"
+                              : "text-muted-foreground"
+                          )}
+                        />
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="grid gap-4">
+                    <p className="text-sm leading-7 text-muted-foreground">
+                      {group.latest.summary}
+                    </p>
+
+                    <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+                      <div className="rounded-xl border border-border bg-background/35 px-3 py-3">
+                        <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+                          {copy(language, "Rapor", "Report")}
+                        </p>
+                        <p className="mt-1 text-sm font-semibold text-foreground">
+                          {formatDate(group.latest.reportDate, language)}
+                        </p>
+                      </div>
+                      <div className="rounded-xl border border-border bg-background/35 px-3 py-3">
+                        <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+                          {copy(language, "Fiyat", "Price")}
+                        </p>
+                        <p className="mt-1 text-sm font-semibold text-foreground">
+                          {formatUsd(group.latest.metrics.price)}
+                        </p>
+                      </div>
+                      <div className="rounded-xl border border-border bg-background/35 px-3 py-3">
+                        <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+                          {copy(language, "IV", "IV")}
+                        </p>
+                        <p className="mt-1 text-sm font-semibold text-foreground">
+                          {formatPercent(group.latest.metrics.iv)}
+                        </p>
+                      </div>
+                      <div className="rounded-xl border border-border bg-background/35 px-3 py-3">
+                        <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+                          {copy(language, "Versiyon", "Versions")}
+                        </p>
+                        <p className="mt-1 text-sm font-semibold text-foreground">
+                          {group.reports.length}
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="justify-between border-t border-border pt-6">
+                    <div className="text-xs text-muted-foreground">
+                      {group.latest.metrics.earningsDate
+                        ? `${copy(language, "Earnings", "Earnings")}: ${formatDate(group.latest.metrics.earningsDate, language)}`
+                        : group.latest.exchange || "NASDAQ"}
                     </div>
                     <Button
-                      variant="ghost"
-                      size="icon-sm"
-                      onClick={() => toggleWatch(group.ticker)}
-                      aria-label={copy(
-                        language,
-                        "Watchlist'e ekle",
-                        "Toggle watchlist"
-                      )}
+                      variant="outline"
+                      onClick={() => navigateToTicker(group.latest)}
                     >
-                      <Star
-                        className={cn(
-                          "size-4",
-                          watchlist.has(group.ticker)
-                            ? "fill-amber-300 text-amber-300"
-                            : "text-muted-foreground"
-                        )}
-                      />
+                      {copy(language, "Detayi ac", "Open detail")}
                     </Button>
-                  </div>
+                  </CardFooter>
+                </Card>
+              ))
+            ) : (
+              <Card className="gap-4 lg:col-span-2" interactive={false}>
+                <CardHeader className="gap-2">
+                  <CardTitle>
+                    {copy(language, "Coverage arsivi bos", "Coverage archive is empty")}
+                  </CardTitle>
+                  <CardDescription>
+                    {copy(
+                      language,
+                      "Bu yuzeyde rapor yoksa admin `/app/admin` icindeki Coverage panelinden markdown yuklemelidir.",
+                      "If there are no reports here, an admin must upload markdown from the Coverage panel inside `/app/admin`."
+                    )}
+                  </CardDescription>
                 </CardHeader>
-                <CardContent className="grid gap-4">
-                  <p className="text-sm leading-7 text-muted-foreground">
-                    {group.latest.summary}
-                  </p>
-
-                  <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-                    <div className="rounded-xl border border-border bg-background/35 px-3 py-3">
-                      <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                        {copy(language, "Rapor", "Report")}
-                      </p>
-                      <p className="mt-1 text-sm font-semibold text-foreground">
-                        {formatDate(group.latest.reportDate, language)}
-                      </p>
-                    </div>
-                    <div className="rounded-xl border border-border bg-background/35 px-3 py-3">
-                      <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                        {copy(language, "Fiyat", "Price")}
-                      </p>
-                      <p className="mt-1 text-sm font-semibold text-foreground">
-                        {formatUsd(group.latest.metrics.price)}
-                      </p>
-                    </div>
-                    <div className="rounded-xl border border-border bg-background/35 px-3 py-3">
-                      <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                        {copy(language, "IV", "IV")}
-                      </p>
-                      <p className="mt-1 text-sm font-semibold text-foreground">
-                        {formatPercent(group.latest.metrics.iv)}
-                      </p>
-                    </div>
-                    <div className="rounded-xl border border-border bg-background/35 px-3 py-3">
-                      <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                        {copy(language, "Versiyon", "Versions")}
-                      </p>
-                      <p className="mt-1 text-sm font-semibold text-foreground">
-                        {group.reports.length}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-                <CardFooter className="justify-between border-t border-border pt-6">
-                  <div className="text-xs text-muted-foreground">
-                    {group.latest.metrics.earningsDate
-                      ? `${copy(language, "Earnings", "Earnings")}: ${formatDate(group.latest.metrics.earningsDate, language)}`
-                      : group.latest.exchange || "NASDAQ"}
-                  </div>
-                  <Button
-                    variant="outline"
-                    onClick={() => navigateToTicker(group.latest)}
-                  >
-                    {copy(language, "Detayi ac", "Open detail")}
-                  </Button>
-                </CardFooter>
               </Card>
-            ))}
+            )}
           </div>
         </>
       ) : null}
@@ -1278,6 +1480,22 @@ export default function Coverage({
                   <CardDescription className="max-w-4xl text-sm leading-7 md:text-[15px]">
                     {currentReport.summary}
                   </CardDescription>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Button asChild variant="outline">
+                      <a href={getCoverageMarkdownDownloadHref(currentReport.id)}>
+                        <Download className="size-4" />
+                        {copy(language, "MD indir", "Download MD")}
+                      </a>
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => window.print()}
+                    >
+                      <Printer className="size-4" />
+                      {copy(language, "Yazdir / PDF", "Print / PDF")}
+                    </Button>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent className="grid gap-4 pt-0 md:grid-cols-2 xl:grid-cols-4">
@@ -1485,6 +1703,7 @@ export default function Coverage({
                     checklistState={checklistState}
                     language={language}
                     onChecklistChange={handleChecklistChange}
+                    onNavigateTicker={navigateToTickerSymbol}
                     report={currentReport}
                     reportId={currentReport.id}
                     sectionId={section.id}
@@ -1502,8 +1721,8 @@ export default function Coverage({
               <CardDescription>
                 {copy(
                   language,
-                  "Bu ticker icin kutuphanede rapor yok. Index'e donup yeni markdown import et.",
-                  "No report exists for this ticker. Return to the index and import a new markdown file."
+                  "Bu ticker icin kutuphanede rapor yok. Yeni coverage raporu eklemek icin admin panelindeki Coverage arsivini kullan.",
+                  "No report exists for this ticker. Use the Coverage archive inside the admin panel to add a new report."
                 )}
               </CardDescription>
             </CardHeader>

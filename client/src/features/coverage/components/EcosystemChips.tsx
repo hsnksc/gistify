@@ -41,7 +41,11 @@ export default function EcosystemChips({ items, language = "tr", onNavigate }: E
       </h3>
       <div className="flex flex-wrap gap-2">
         {items.map((item, index) => {
-          const clickable = !!onNavigate;
+          const clickable =
+            !!onNavigate &&
+            item.ticker.trim().toUpperCase() !== "ÖZEL" &&
+            item.ticker.trim().toUpperCase() !== "OZEL" &&
+            item.ticker.trim().toUpperCase() !== "PRIVATE";
           return (
             <button
               key={index}

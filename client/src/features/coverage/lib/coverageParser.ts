@@ -172,6 +172,7 @@ function detectTableSignature(headers: string[]): string {
   if (normalized.includes('seviye') && normalized.includes('tur') && normalized.includes('guc')) return 'level-ladder';
   if (normalized.includes('tarih') && normalized.includes('olay')) return 'catalyst-timeline';
   if (normalized.includes('donem') && normalized.includes('eps')) return 'earnings-history';
+  if (normalized.includes('ticker') && normalized.includes('iliski')) return 'ecosystem-grid';
   if (normalized.includes('kriter')) return 'comparison-matrix';
   if (normalized.includes('senaryo')) return 'scenario-cards';
   if (normalized.includes('kaynak') && normalized.includes('url')) return 'source-list';
@@ -184,6 +185,11 @@ function slugify(value: string) {
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-")
     .replace(/^-|-$/g, "");
+}
+
+function extractDateFromSourceName(sourceName: string) {
+  const match = sourceName.match(/(\d{4}-\d{2}-\d{2})/);
+  return match?.[1] || "";
 }
 
 function hashString(value: string) {
@@ -673,6 +679,7 @@ export function parseCoverageReport(record: CoverageStoredRecord): CoverageRepor
   const reportDate =
     metrics.reportDate ||
     String(frontmatter.date || "").trim() ||
+    extractDateFromSourceName(record.sourceName) ||
     record.importedAt.slice(0, 10);
   const searchText = [
     ticker,

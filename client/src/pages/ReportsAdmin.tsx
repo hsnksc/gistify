@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ArrowLeft,
+  BookOpen,
   ChartCandlestick,
   FileText,
   FileSpreadsheet,
@@ -17,6 +18,7 @@ import type { DailyReportOpenAiChartGenerateResponse } from "@shared/dailyReport
 import type { MomentumReportRecord } from "@shared/momentumReports";
 import type { WeeklyReportRecord } from "@shared/weeklyReports";
 import DailyReportAdminPanel from "@/components/reports/DailyReportAdminPanel";
+import CoverageAdminPanel from "@/components/reports/CoverageAdminPanel";
 import MomentumReportAdminPanel from "@/components/reports/MomentumReportAdminPanel";
 import OpenAiImageAdminPanel from "@/components/reports/OpenAiImageAdminPanel";
 import WeeklyReportAdminPanel from "@/components/reports/WeeklyReportAdminPanel";
@@ -41,7 +43,7 @@ import { useLocation } from "wouter";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import { toast } from "sonner";
 
-type WorkspaceKey = "earnings" | "momentum" | "daily" | "images";
+type WorkspaceKey = "earnings" | "momentum" | "daily" | "coverage" | "images";
 
 interface WeeklyReportsApiResponse {
   reports?: WeeklyReportRecord[];
@@ -1259,16 +1261,16 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
 
               <div className="space-y-2">
                 <h1 className="text-4xl font-semibold tracking-tight text-foreground">
-                  {copy(language, "Earnings, Daily ve Image Yonetimi", "Earnings, Daily and Image Management")}
+                  {copy(language, "Earnings, Coverage, Daily ve Image Yonetimi", "Earnings, Coverage, Daily and Image Management")}
                 </h1>
                 <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
-                  {copy(language, "Sistem earnings haftalarini ve aday hisseleri bulur, momentum scanner ise yayinlanabilir setup listesini uretir. Admin burada sadece gozden gecirir, ince ayar yapar, yayina alir ve gerekirse referans gorsellerden yeni image uretir.", "The system finds earnings weeks and candidate stocks, while the momentum scanner produces a publishable setup list. The admin only reviews, fine-tunes, publishes and generates new images from reference visuals when needed.")}
+                  {copy(language, "Sistem earnings haftalarini ve aday hisseleri bulur, momentum scanner yayinlanabilir setup listesini uretir, coverage arsivi ise kontratli markdown raporlarla beslenir. Admin burada gozden gecirir, ince ayar yapar, coverage markdown'larini kilitli arsive alir, yayina alir ve gerekirse referans gorsellerden yeni image uretir.", "The system finds earnings weeks and candidate stocks, the momentum scanner produces a publishable setup list, and the coverage archive is fed with contract-based markdown reports. The admin reviews, fine-tunes, moves coverage markdown into the locked archive, publishes, and generates new images from reference visuals when needed.")}
                 </p>
               </div>
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              {(["earnings", "momentum", "daily", "images"] as WorkspaceKey[]).map(
+              {(["earnings", "momentum", "coverage", "daily", "images"] as WorkspaceKey[]).map(
                 workspace => (
                   <Button
                     key={workspace}
@@ -1280,6 +1282,8 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                       <FileSpreadsheet className="size-4" />
                     ) : workspace === "momentum" ? (
                       <Radar className="size-4" />
+                    ) : workspace === "coverage" ? (
+                      <BookOpen className="size-4" />
                     ) : workspace === "daily" ? (
                       <FileText className="size-4" />
                     ) : (
@@ -1289,6 +1293,8 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                       ? copy(language, "Earnings Workspace", "Earnings Workspace")
                       : workspace === "momentum"
                         ? copy(language, "Momentum Workspace", "Momentum Workspace")
+                        : workspace === "coverage"
+                          ? copy(language, "Coverage Workspace", "Coverage Workspace")
                         : workspace === "daily"
                           ? copy(language, "Daily Report", "Daily Report")
                           : copy(language, "Image Studio", "Image Studio")}
@@ -1344,6 +1350,29 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                 title={copy(language, "Son yayin", "Latest publication")}
                 value={momentumStats.latestDate}
                 description={copy(language, "En son yayinlanan momentum snapshot", "Latest published momentum snapshot")}
+              />
+            </>
+          ) : selectedWorkspace === "coverage" ? (
+            <>
+              <SectionCard
+                title={copy(language, "Publish modu", "Publish mode")}
+                value={copy(language, "Admin kilitli", "Admin locked")}
+                description={copy(language, "Public /coverage arsivi yalnızca bu panelden beslenir.", "The public /coverage archive is fed only from this panel.")}
+              />
+              <SectionCard
+                title={copy(language, "Arsiv formatı", "Archive format")}
+                value="coverage-md/1"
+                description={copy(language, "Skill ve renderer ayni markdown kontratini kullanir.", "Skill and renderer share the same markdown contract.")}
+              />
+              <SectionCard
+                title={copy(language, "Legacy kaynak", "Legacy source")}
+                value="reports/coverage"
+                description={copy(language, "Yerel markdown klasoru gerekirse tek tikla admin arsivine aktarilir.", "The local markdown folder can be imported into the admin archive with one click when needed.")}
+              />
+              <SectionCard
+                title={copy(language, "Kalici arsiv", "Persistent archive")}
+                value="SQLite"
+                description={copy(language, "Yeni coverage raporlari transient runtime dosyasi yerine kalici store'a yazilir.", "New coverage reports are written to the persistent store instead of transient runtime files.")}
               />
             </>
           ) : selectedWorkspace === "images" ? (
@@ -1821,6 +1850,10 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
           </>
         ) : null}
 
+        {adminAuthorized && selectedWorkspace === "coverage" ? (
+          <CoverageAdminPanel language={language} adminSecret={adminSecret} />
+        ) : null}
+
         {adminAuthorized && selectedWorkspace === "daily" ? (
           <>
             <section className="grid gap-4 lg:grid-cols-3">
@@ -1982,4 +2015,3 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
     </div>
   );
 }
-

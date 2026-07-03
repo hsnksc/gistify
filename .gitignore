@@ -47,6 +47,14 @@ pids
 
 # Coverage directory used by tools like istanbul
 coverage/
+!coverage/
+coverage/*
+!coverage/SKILL.md
+!coverage/sablon-rapor.md
+!coverage/coverage-kullanim-kilavuzu.md
+!coverage/coverage-report-authoring.zip
+!coverage/coverage-report-authoring.skill
+coverage/.package/
 !client/src/features/coverage/
 !client/src/features/coverage/**
 !reports/coverage/

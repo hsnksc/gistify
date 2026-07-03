@@ -4,10 +4,6 @@ dotenvConfig({ path: ".env.local" });
 import express from "express";
 import prerender from "prerender-node";
 import { registerSeoRoutes } from "./seo-routes";
-import {
-  getCoverageReport,
-  listCoverageReports,
-} from "./coverageSources";
 import { createServer } from "http";
 import crypto from "node:crypto";
 import fs from "node:fs";
@@ -63,6 +59,7 @@ import { createAiRouter } from "./routes/ai";
 import { createAuthRouter } from "./routes/auth";
 import { createBillingRouter } from "./routes/billing";
 import { createDailyReportsRouter } from "./routes/dailyReports";
+import { createCoverageRouter } from "./routes/coverage";
 import { createFlowCommentsRouter } from "./routes/flow/comments";
 import { createFlowReportsRouter } from "./routes/flow/reports";
 import { createFlowSourcesRouter } from "./routes/flow/sources";
@@ -3495,6 +3492,16 @@ async function startServer() {
 
   app.use(
     "/api",
+    createCoverageRouter({
+      billingStore,
+      normalizeString,
+      requireWeeklyReportAdmin,
+      setPrivateNoStore,
+    })
+  );
+
+  app.use(
+    "/api",
     createWorkspaceFeedsRouter({
       buildEarningsApiResponse,
       getCalendarPipeline: () => calendarSync.getPipeline(),
@@ -3565,22 +3572,6 @@ async function startServer() {
 
   // ── Programmatic SEO Routes ──
   registerSeoRoutes(app);
-
-  // ── Coverage Reports API ──
-  app.get("/api/coverage/reports", (_req, res) => {
-    setPrivateNoStore(res);
-    res.status(200).json({ reports: listCoverageReports() });
-  });
-
-  app.get("/api/coverage/reports/:id", (req, res) => {
-    setPrivateNoStore(res);
-    const report = getCoverageReport(req.params.id);
-    if (!report) {
-      res.status(404).json({ error: "Coverage report not found" });
-      return;
-    }
-    res.status(200).json({ report });
-  });
 
   // /app and /app/* should not be indexed as a duplicate of the marketing pages.
   app.get(["/app", "/app/*"], (_req, res) => {
