@@ -472,7 +472,20 @@ export function normalizeMidasSignalsData(
   value: unknown,
   fallbackTimestamp = new Date().toISOString()
 ) {
-  const source = extractObjectRecord(value);
+  let unwrapped = value;
+  // Unwrap ok/data envelope if present (pipeline outputs { ok: true, data: { ... } })
+  if (
+    typeof value === "object" &&
+    value !== null &&
+    !Array.isArray(value) &&
+    (value as Record<string, unknown>).ok === true &&
+    typeof (value as Record<string, unknown>).data === "object" &&
+    (value as Record<string, unknown>).data !== null
+  ) {
+    unwrapped = (value as Record<string, unknown>).data;
+  }
+
+  const source = extractObjectRecord(unwrapped);
   if (!source) {
     return null;
   }

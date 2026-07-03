@@ -1,164 +1,36 @@
 {
   "ok": true,
   "data": {
-    "timestamp": "2026-07-02T18:30:00.304111+00:00",
+    "timestamp": "2026-07-02T22:03:12.217248+00:00",
     "mode": "default",
-    "symbol_count": 20,
-    "successful": 20,
-    "failed": 0,
+    "symbol_count": 50,
+    "successful": 49,
+    "failed": 1,
     "summary": {
-      "strong_buy": 19,
-      "buy": 1,
+      "strong_buy": 7,
+      "buy": 7,
       "hold": 0,
-      "sell": 0,
-      "strong_sell": 0,
-      "avg_confidence": 93.3,
-      "market_sentiment": "BULLISH"
+      "sell": 11,
+      "strong_sell": 24,
+      "avg_confidence": 89.7,
+      "market_sentiment": "BEARISH"
     },
     "signals": [
       {
-        "symbol": "SOXS",
-        "signal": "STRONG_BUY",
-        "strength": 6.0,
-        "signals": [
-          "DAILY_STRONG_UP",
-          "WEEKLY_STRONG_UP",
-          "MONTHLY_STRONG_UP",
-          "ALL_UP"
-        ],
-        "daily_pct": 18.5,
-        "weekly_pct": 8.02,
-        "monthly_pct": 41.36,
-        "price": 4.58,
-        "timestamp": "2026-07-02T18:30:00.302916+00:00"
-      },
-      {
-        "symbol": "MRNA",
-        "signal": "STRONG_BUY",
-        "strength": 6.0,
-        "signals": [
-          "DAILY_STRONG_UP",
-          "WEEKLY_STRONG_UP",
-          "MONTHLY_STRONG_UP",
-          "ALL_UP"
-        ],
-        "daily_pct": 8.84,
-        "weekly_pct": 17.29,
-        "monthly_pct": 12.71,
-        "price": 78.88,
-        "timestamp": "2026-07-02T18:30:00.303027+00:00"
-      },
-      {
-        "symbol": "NFLX",
-        "signal": "STRONG_BUY",
-        "strength": 6.0,
-        "signals": [
-          "DAILY_STRONG_UP",
-          "WEEKLY_STRONG_UP",
-          "MONTHLY_UP",
-          "ALL_UP"
-        ],
-        "daily_pct": 5.51,
-        "weekly_pct": 6.32,
-        "monthly_pct": 9.65,
-        "price": 78.25,
-        "timestamp": "2026-07-02T18:30:00.303082+00:00"
-      },
-      {
-        "symbol": "HONA",
-        "signal": "STRONG_BUY",
-        "strength": 6.0,
-        "signals": [
-          "DAILY_STRONG_UP",
-          "WEEKLY_STRONG_UP",
-          "MONTHLY_UP",
-          "ALL_UP"
-        ],
-        "daily_pct": 5.3,
-        "weekly_pct": 8.25,
-        "monthly_pct": 8.29,
-        "price": 238.79,
-        "timestamp": "2026-07-02T18:30:00.303168+00:00"
-      },
-      {
-        "symbol": "HCA",
-        "signal": "STRONG_BUY",
-        "strength": 6.0,
-        "signals": [
-          "DAILY_STRONG_UP",
-          "WEEKLY_STRONG_UP",
-          "MONTHLY_UP",
-          "ALL_UP"
-        ],
-        "daily_pct": 5.19,
-        "weekly_pct": 5.6,
-        "monthly_pct": 6.11,
-        "price": 413.68,
-        "timestamp": "2026-07-02T18:30:00.303211+00:00"
-      },
-      {
-        "symbol": "SPGI",
-        "signal": "STRONG_BUY",
-        "strength": 6.0,
-        "signals": [
-          "DAILY_STRONG_UP",
-          "WEEKLY_STRONG_UP",
-          "MONTHLY_UP",
-          "ALL_UP"
-        ],
-        "daily_pct": 5.05,
-        "weekly_pct": 6.97,
-        "monthly_pct": 7.29,
-        "price": 436.61,
-        "timestamp": "2026-07-02T18:30:00.303253+00:00"
-      },
-      {
-        "symbol": "EFX",
-        "signal": "STRONG_BUY",
-        "strength": 6.0,
-        "signals": [
-          "DAILY_STRONG_UP",
-          "WEEKLY_STRONG_UP",
-          "MONTHLY_UP",
-          "ALL_UP"
-        ],
-        "daily_pct": 5.03,
-        "weekly_pct": 7.55,
-        "monthly_pct": 7.34,
-        "price": 170.37,
-        "timestamp": "2026-07-02T18:30:00.303297+00:00"
-      },
-      {
-        "symbol": "ISRG",
-        "signal": "STRONG_BUY",
-        "strength": 6.0,
-        "signals": [
-          "DAILY_UP",
-          "WEEKLY_UP",
-          "MONTHLY_UP",
-          "ALL_UP"
-        ],
-        "daily_pct": 4.98,
-        "weekly_pct": 4.35,
-        "monthly_pct": 6.2,
-        "price": 422.36,
-        "timestamp": "2026-07-02T18:30:00.303339+00:00"
-      },
-      {
-        "symbol": "AJG",
+        "symbol": "HOOD",
         "signal": "STRONG_BUY",
         "strength": 6.0,
         "signals": [
           "DAILY_UP",
           "WEEKLY_STRONG_UP",
-          "MONTHLY_UP",
+          "MONTHLY_STRONG_UP",
           "ALL_UP"
         ],
-        "daily_pct": 4.96,
-        "weekly_pct": 11.29,
-        "monthly_pct": 9.47,
-        "price": 251.25,
-        "timestamp": "2026-07-02T18:30:00.303381+00:00"
+        "daily_pct": 3.71,
+        "weekly_pct": 14.18,
+        "monthly_pct": 12.4,
+        "price": 112.71,
+        "timestamp": "2026-07-02T22:03:12.216084+00:00"
       },
       {
         "symbol": "ADBE",
@@ -170,30 +42,14 @@
           "MONTHLY_UP",
           "ALL_UP"
         ],
-        "daily_pct": 4.88,
-        "weekly_pct": 9.12,
-        "monthly_pct": 7.92,
-        "price": 221.23,
-        "timestamp": "2026-07-02T18:30:00.303421+00:00"
+        "daily_pct": 4.13,
+        "weekly_pct": 8.34,
+        "monthly_pct": 7.15,
+        "price": 219.65,
+        "timestamp": "2026-07-02T22:03:12.216227+00:00"
       },
       {
-        "symbol": "ADSK",
-        "signal": "STRONG_BUY",
-        "strength": 6.0,
-        "signals": [
-          "DAILY_UP",
-          "WEEKLY_STRONG_UP",
-          "MONTHLY_UP",
-          "ALL_UP"
-        ],
-        "daily_pct": 4.88,
-        "weekly_pct": 6.85,
-        "monthly_pct": 7.78,
-        "price": 209.46,
-        "timestamp": "2026-07-02T18:30:00.303463+00:00"
-      },
-      {
-        "symbol": "WDAY",
+        "symbol": "PLTR",
         "signal": "STRONG_BUY",
         "strength": 6.0,
         "signals": [
@@ -202,27 +58,57 @@
           "MONTHLY_STRONG_UP",
           "ALL_UP"
         ],
-        "daily_pct": 4.68,
-        "weekly_pct": 10.01,
-        "monthly_pct": 11.45,
-        "price": 136.4,
-        "timestamp": "2026-07-02T18:30:00.303501+00:00"
+        "daily_pct": 2.73,
+        "weekly_pct": 14.5,
+        "monthly_pct": 10.75,
+        "price": 129.07,
+        "timestamp": "2026-07-02T22:03:12.216247+00:00"
       },
       {
-        "symbol": "NOC",
+        "symbol": "PLTU",
         "signal": "STRONG_BUY",
         "strength": 6.0,
         "signals": [
-          "DAILY_UP",
+          "DAILY_STRONG_UP",
           "WEEKLY_STRONG_UP",
-          "MONTHLY_UP",
+          "MONTHLY_STRONG_UP",
           "ALL_UP"
         ],
-        "daily_pct": 4.59,
-        "weekly_pct": 8.8,
-        "monthly_pct": 6.75,
-        "price": 544.4,
-        "timestamp": "2026-07-02T18:30:00.303536+00:00"
+        "daily_pct": 5.87,
+        "weekly_pct": 30.08,
+        "monthly_pct": 22.27,
+        "price": 30.83,
+        "timestamp": "2026-07-02T22:03:12.216266+00:00"
+      },
+      {
+        "symbol": "SOXS",
+        "signal": "STRONG_BUY",
+        "strength": 6.0,
+        "signals": [
+          "DAILY_STRONG_UP",
+          "WEEKLY_STRONG_UP",
+          "MONTHLY_STRONG_UP",
+          "ALL_UP"
+        ],
+        "daily_pct": 16.69,
+        "weekly_pct": 6.37,
+        "monthly_pct": 39.2,
+        "price": 4.45,
+        "timestamp": "2026-07-02T22:03:12.216422+00:00"
+      },
+      {
+        "symbol": "AMZN",
+        "signal": "STRONG_BUY",
+        "strength": 6.0,
+        "signals": [
+          "WEEKLY_STRONG_UP",
+          "ALL_UP"
+        ],
+        "daily_pct": 0.23,
+        "weekly_pct": 5.07,
+        "monthly_pct": 1.71,
+        "price": 242.3,
+        "timestamp": "2026-07-02T22:03:12.216441+00:00"
       },
       {
         "symbol": "AAPL",
@@ -234,107 +120,652 @@
           "MONTHLY_UP",
           "ALL_UP"
         ],
-        "daily_pct": 4.43,
-        "weekly_pct": 9.3,
-        "monthly_pct": 6.3,
-        "price": 307.35,
-        "timestamp": "2026-07-02T18:30:00.303654+00:00"
+        "daily_pct": 4.69,
+        "weekly_pct": 9.57,
+        "monthly_pct": 6.57,
+        "price": 308.43,
+        "timestamp": "2026-07-02T22:03:12.216478+00:00"
       },
       {
-        "symbol": "LDOS",
-        "signal": "STRONG_BUY",
-        "strength": 6.0,
+        "symbol": "HIMS",
+        "signal": "BUY",
+        "strength": 4.0,
         "signals": [
-          "DAILY_UP",
+          "DAILY_DOWN",
           "WEEKLY_STRONG_UP",
-          "MONTHLY_UP",
-          "ALL_UP"
+          "MONTHLY_UP"
         ],
-        "daily_pct": 4.4,
-        "weekly_pct": 5.8,
-        "monthly_pct": 4.55,
-        "price": 107.63,
-        "timestamp": "2026-07-02T18:30:00.303698+00:00"
+        "daily_pct": -2.0,
+        "weekly_pct": 8.62,
+        "monthly_pct": 6.11,
+        "price": 36.79,
+        "timestamp": "2026-07-02T22:03:12.216134+00:00"
       },
       {
-        "symbol": "BSX",
-        "signal": "STRONG_BUY",
-        "strength": 6.0,
+        "symbol": "META",
+        "signal": "BUY",
+        "strength": 4.0,
         "signals": [
-          "DAILY_UP",
+          "DAILY_DOWN",
+          "WEEKLY_STRONG_UP",
+          "MONTHLY_UP"
+        ],
+        "daily_pct": -4.93,
+        "weekly_pct": 5.97,
+        "monthly_pct": 3.49,
+        "price": 582.76,
+        "timestamp": "2026-07-02T22:03:12.216183+00:00"
+      },
+      {
+        "symbol": "MSFT",
+        "signal": "BUY",
+        "strength": 4.0,
+        "signals": [
           "WEEKLY_UP",
           "MONTHLY_UP",
           "ALL_UP"
         ],
-        "daily_pct": 4.32,
-        "weekly_pct": 1.77,
-        "monthly_pct": 5.22,
-        "price": 44.88,
-        "timestamp": "2026-07-02T18:30:00.303742+00:00"
+        "daily_pct": 1.41,
+        "weekly_pct": 4.88,
+        "monthly_pct": 4.52,
+        "price": 390.3,
+        "timestamp": "2026-07-02T22:03:12.216460+00:00"
       },
       {
-        "symbol": "FISV",
-        "signal": "STRONG_BUY",
-        "strength": 6.0,
+        "symbol": "GOOG",
+        "signal": "BUY",
+        "strength": 4.0,
         "signals": [
-          "DAILY_UP",
-          "WEEKLY_STRONG_UP",
-          "MONTHLY_UP",
-          "ALL_UP"
+          "WEEKLY_STRONG_UP"
         ],
-        "daily_pct": 4.32,
-        "weekly_pct": 7.03,
-        "monthly_pct": 7.84,
-        "price": 52.93,
-        "timestamp": "2026-07-02T18:30:00.303785+00:00"
+        "daily_pct": -0.52,
+        "weekly_pct": 6.41,
+        "monthly_pct": 0.79,
+        "price": 356.03,
+        "timestamp": "2026-07-02T22:03:12.216515+00:00"
       },
       {
-        "symbol": "PTC",
-        "signal": "STRONG_BUY",
-        "strength": 6.0,
+        "symbol": "GOOGL",
+        "signal": "BUY",
+        "strength": 4.0,
         "signals": [
-          "DAILY_UP",
-          "WEEKLY_STRONG_UP",
-          "MONTHLY_UP",
-          "ALL_UP"
+          "WEEKLY_STRONG_UP"
         ],
-        "daily_pct": 4.3,
-        "weekly_pct": 8.02,
-        "monthly_pct": 9.97,
-        "price": 124.95,
-        "timestamp": "2026-07-02T18:30:00.303829+00:00"
+        "daily_pct": -0.42,
+        "weekly_pct": 7.12,
+        "monthly_pct": 0.69,
+        "price": 359.07,
+        "timestamp": "2026-07-02T22:03:12.216539+00:00"
       },
       {
-        "symbol": "MDT",
-        "signal": "STRONG_BUY",
-        "strength": 6.0,
+        "symbol": "GGLL",
+        "signal": "BUY",
+        "strength": 4.0,
         "signals": [
-          "DAILY_UP",
-          "WEEKLY_UP",
-          "MONTHLY_UP",
-          "ALL_UP"
+          "WEEKLY_STRONG_UP"
         ],
-        "daily_pct": 4.19,
-        "weekly_pct": 1.89,
-        "monthly_pct": 5.46,
-        "price": 82.49,
-        "timestamp": "2026-07-02T18:30:00.303870+00:00"
+        "daily_pct": -0.73,
+        "weekly_pct": 13.94,
+        "monthly_pct": 1.27,
+        "price": 115.3,
+        "timestamp": "2026-07-02T22:03:12.216558+00:00"
       },
       {
-        "symbol": "ACN",
+        "symbol": "AAPX",
         "signal": "BUY",
         "strength": 2.0,
         "signals": [
           "DAILY_STRONG_UP",
           "WEEKLY_STRONG_UP"
         ],
-        "daily_pct": 5.36,
-        "weekly_pct": 7.13,
+        "daily_pct": 7.18,
+        "weekly_pct": 17.44,
         "monthly_pct": 0.0,
-        "price": 138.12,
-        "timestamp": "2026-07-02T18:30:00.303125+00:00"
+        "price": 35.36,
+        "timestamp": "2026-07-02T22:03:12.216495+00:00"
+      },
+      {
+        "symbol": "AVGO",
+        "signal": "SELL",
+        "strength": -4.0,
+        "signals": [
+          "DAILY_DOWN",
+          "MONTHLY_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -2.39,
+        "weekly_pct": -0.94,
+        "monthly_pct": -4.52,
+        "price": 360.5,
+        "timestamp": "2026-07-02T22:03:12.216674+00:00"
+      },
+      {
+        "symbol": "ADI",
+        "signal": "SELL",
+        "strength": -4.0,
+        "signals": [
+          "DAILY_DOWN",
+          "WEEKLY_DOWN",
+          "MONTHLY_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -2.97,
+        "weekly_pct": -1.86,
+        "monthly_pct": -4.9,
+        "price": 377.44,
+        "timestamp": "2026-07-02T22:03:12.216861+00:00"
+      },
+      {
+        "symbol": "NXPI",
+        "signal": "SELL",
+        "strength": -4.0,
+        "signals": [
+          "DAILY_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -2.06,
+        "weekly_pct": -0.9,
+        "monthly_pct": -2.65,
+        "price": 273.5,
+        "timestamp": "2026-07-02T22:03:12.216922+00:00"
+      },
+      {
+        "symbol": "TSM",
+        "signal": "SELL",
+        "strength": -2.0,
+        "signals": [
+          "DAILY_DOWN",
+          "MONTHLY_DOWN"
+        ],
+        "daily_pct": -2.13,
+        "weekly_pct": 0.63,
+        "monthly_pct": -8.93,
+        "price": 435.44,
+        "timestamp": "2026-07-02T22:03:12.216162+00:00"
+      },
+      {
+        "symbol": "NVDA",
+        "signal": "SELL",
+        "strength": -2.0,
+        "signals": [
+          "DAILY_DOWN"
+        ],
+        "daily_pct": -1.53,
+        "weekly_pct": 1.32,
+        "monthly_pct": -2.71,
+        "price": 194.51,
+        "timestamp": "2026-07-02T22:03:12.216363+00:00"
+      },
+      {
+        "symbol": "NVDU",
+        "signal": "SELL",
+        "strength": -2.0,
+        "signals": [
+          "DAILY_DOWN",
+          "MONTHLY_DOWN"
+        ],
+        "daily_pct": -3.34,
+        "weekly_pct": 0.75,
+        "monthly_pct": -5.45,
+        "price": 112.16,
+        "timestamp": "2026-07-02T22:03:12.216386+00:00"
+      },
+      {
+        "symbol": "TSLA",
+        "signal": "SELL",
+        "strength": -2.0,
+        "signals": [
+          "DAILY_STRONG_DOWN",
+          "WEEKLY_UP",
+          "MONTHLY_DOWN"
+        ],
+        "daily_pct": -7.65,
+        "weekly_pct": 3.65,
+        "monthly_pct": -6.55,
+        "price": 393.39,
+        "timestamp": "2026-07-02T22:03:12.216617+00:00"
+      },
+      {
+        "symbol": "BE",
+        "signal": "SELL",
+        "strength": -2.0,
+        "signals": [
+          "DAILY_STRONG_DOWN",
+          "WEEKLY_STRONG_UP",
+          "MONTHLY_STRONG_DOWN"
+        ],
+        "daily_pct": -6.34,
+        "weekly_pct": 7.02,
+        "monthly_pct": -10.46,
+        "price": 271.02,
+        "timestamp": "2026-07-02T22:03:12.216768+00:00"
+      },
+      {
+        "symbol": "TQQQ",
+        "signal": "SELL",
+        "strength": -2.0,
+        "signals": [
+          "DAILY_STRONG_DOWN",
+          "WEEKLY_UP",
+          "MONTHLY_DOWN"
+        ],
+        "daily_pct": -5.41,
+        "weekly_pct": 2.37,
+        "monthly_pct": -9.49,
+        "price": 73.38,
+        "timestamp": "2026-07-02T22:03:12.216787+00:00"
+      },
+      {
+        "symbol": "TXN",
+        "signal": "SELL",
+        "strength": -2.0,
+        "signals": [
+          "DAILY_DOWN",
+          "WEEKLY_UP"
+        ],
+        "daily_pct": -1.82,
+        "weekly_pct": 2.69,
+        "monthly_pct": -1.65,
+        "price": 293.1,
+        "timestamp": "2026-07-02T22:03:12.216824+00:00"
+      },
+      {
+        "symbol": "ON",
+        "signal": "SELL",
+        "strength": -2.0,
+        "signals": [
+          "DAILY_DOWN",
+          "MONTHLY_DOWN"
+        ],
+        "daily_pct": -3.7,
+        "weekly_pct": 0.96,
+        "monthly_pct": -3.58,
+        "price": 91.25,
+        "timestamp": "2026-07-02T22:03:12.216976+00:00"
+      },
+      {
+        "symbol": "MU",
+        "signal": "STRONG_SELL",
+        "strength": -6.0,
+        "signals": [
+          "DAILY_STRONG_DOWN",
+          "WEEKLY_STRONG_DOWN",
+          "MONTHLY_STRONG_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -5.54,
+        "weekly_pct": -13.21,
+        "monthly_pct": -15.34,
+        "price": 974.23,
+        "timestamp": "2026-07-02T22:03:12.216206+00:00"
+      },
+      {
+        "symbol": "AMD",
+        "signal": "STRONG_SELL",
+        "strength": -6.0,
+        "signals": [
+          "DAILY_DOWN",
+          "MONTHLY_STRONG_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -4.19,
+        "weekly_pct": -0.37,
+        "monthly_pct": -10.73,
+        "price": 518.25,
+        "timestamp": "2026-07-02T22:03:12.216285+00:00"
+      },
+      {
+        "symbol": "AMDL",
+        "signal": "STRONG_SELL",
+        "strength": -6.0,
+        "signals": [
+          "DAILY_STRONG_DOWN",
+          "WEEKLY_DOWN",
+          "MONTHLY_STRONG_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -8.72,
+        "weekly_pct": -2.69,
+        "monthly_pct": -21.45,
+        "price": 65.11,
+        "timestamp": "2026-07-02T22:03:12.216304+00:00"
+      },
+      {
+        "symbol": "SMCX",
+        "signal": "STRONG_SELL",
+        "strength": -6.0,
+        "signals": [
+          "DAILY_DOWN",
+          "WEEKLY_STRONG_DOWN",
+          "MONTHLY_STRONG_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -3.54,
+        "weekly_pct": -22.41,
+        "monthly_pct": -14.5,
+        "price": 7.63,
+        "timestamp": "2026-07-02T22:03:12.216324+00:00"
+      },
+      {
+        "symbol": "SMCI",
+        "signal": "STRONG_SELL",
+        "strength": -6.0,
+        "signals": [
+          "DAILY_DOWN",
+          "WEEKLY_STRONG_DOWN",
+          "MONTHLY_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -1.57,
+        "weekly_pct": -11.15,
+        "monthly_pct": -7.19,
+        "price": 27.22,
+        "timestamp": "2026-07-02T22:03:12.216344+00:00"
+      },
+      {
+        "symbol": "SOXL",
+        "signal": "STRONG_SELL",
+        "strength": -6.0,
+        "signals": [
+          "DAILY_STRONG_DOWN",
+          "WEEKLY_STRONG_DOWN",
+          "MONTHLY_STRONG_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -16.61,
+        "weekly_pct": -15.56,
+        "monthly_pct": -31.93,
+        "price": 182.98,
+        "timestamp": "2026-07-02T22:03:12.216404+00:00"
+      },
+      {
+        "symbol": "QCOM",
+        "signal": "STRONG_SELL",
+        "strength": -6.0,
+        "signals": [
+          "DAILY_DOWN",
+          "WEEKLY_STRONG_DOWN",
+          "MONTHLY_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -3.2,
+        "weekly_pct": -6.62,
+        "monthly_pct": -4.67,
+        "price": 176.12,
+        "timestamp": "2026-07-02T22:03:12.216578+00:00"
+      },
+      {
+        "symbol": "ARM",
+        "signal": "STRONG_SELL",
+        "strength": -6.0,
+        "signals": [
+          "DAILY_STRONG_DOWN",
+          "WEEKLY_STRONG_DOWN",
+          "MONTHLY_STRONG_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -6.55,
+        "weekly_pct": -5.75,
+        "monthly_pct": -11.04,
+        "price": 315.31,
+        "timestamp": "2026-07-02T22:03:12.216598+00:00"
+      },
+      {
+        "symbol": "AMUU",
+        "signal": "STRONG_SELL",
+        "strength": -6.0,
+        "signals": [
+          "DAILY_STRONG_DOWN",
+          "WEEKLY_DOWN",
+          "MONTHLY_STRONG_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -10.03,
+        "weekly_pct": -3.05,
+        "monthly_pct": -21.17,
+        "price": 228.41,
+        "timestamp": "2026-07-02T22:03:12.216636+00:00"
+      },
+      {
+        "symbol": "INTC",
+        "signal": "STRONG_SELL",
+        "strength": -6.0,
+        "signals": [
+          "DAILY_STRONG_DOWN",
+          "WEEKLY_STRONG_DOWN",
+          "MONTHLY_STRONG_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -5.26,
+        "weekly_pct": -5.71,
+        "monthly_pct": -13.73,
+        "price": 120.6,
+        "timestamp": "2026-07-02T22:03:12.216655+00:00"
+      },
+      {
+        "symbol": "MRVL",
+        "signal": "STRONG_SELL",
+        "strength": -6.0,
+        "signals": [
+          "DAILY_STRONG_DOWN",
+          "WEEKLY_STRONG_DOWN",
+          "MONTHLY_STRONG_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -9.85,
+        "weekly_pct": -7.67,
+        "monthly_pct": -17.52,
+        "price": 248.59,
+        "timestamp": "2026-07-02T22:03:12.216692+00:00"
+      },
+      {
+        "symbol": "ASML",
+        "signal": "STRONG_SELL",
+        "strength": -6.0,
+        "signals": [
+          "DAILY_DOWN",
+          "MONTHLY_STRONG_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -4.01,
+        "weekly_pct": -1.44,
+        "monthly_pct": -10.97,
+        "price": 1769.68,
+        "timestamp": "2026-07-02T22:03:12.216711+00:00"
+      },
+      {
+        "symbol": "ORCL",
+        "signal": "STRONG_SELL",
+        "strength": -6.0,
+        "signals": [
+          "DAILY_DOWN",
+          "WEEKLY_STRONG_DOWN",
+          "MONTHLY_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -1.74,
+        "weekly_pct": -5.62,
+        "monthly_pct": -4.36,
+        "price": 140.73,
+        "timestamp": "2026-07-02T22:03:12.216729+00:00"
+      },
+      {
+        "symbol": "LSCC",
+        "signal": "STRONG_SELL",
+        "strength": -6.0,
+        "signals": [
+          "DAILY_STRONG_DOWN",
+          "MONTHLY_STRONG_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -6.79,
+        "weekly_pct": -1.29,
+        "monthly_pct": -10.79,
+        "price": 136.47,
+        "timestamp": "2026-07-02T22:03:12.216749+00:00"
+      },
+      {
+        "symbol": "TSMX",
+        "signal": "STRONG_SELL",
+        "strength": -6.0,
+        "signals": [
+          "DAILY_DOWN",
+          "MONTHLY_STRONG_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -4.66,
+        "weekly_pct": -0.39,
+        "monthly_pct": -17.97,
+        "price": 86.34,
+        "timestamp": "2026-07-02T22:03:12.216806+00:00"
+      },
+      {
+        "symbol": "LRCX",
+        "signal": "STRONG_SELL",
+        "strength": -6.0,
+        "signals": [
+          "DAILY_STRONG_DOWN",
+          "WEEKLY_STRONG_DOWN",
+          "MONTHLY_STRONG_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -10.19,
+        "weekly_pct": -7.01,
+        "monthly_pct": -18.91,
+        "price": 351.5,
+        "timestamp": "2026-07-02T22:03:12.216843+00:00"
+      },
+      {
+        "symbol": "KLAC",
+        "signal": "STRONG_SELL",
+        "strength": -6.0,
+        "signals": [
+          "DAILY_STRONG_DOWN",
+          "WEEKLY_DOWN",
+          "MONTHLY_STRONG_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -11.54,
+        "weekly_pct": -4.74,
+        "monthly_pct": -21.79,
+        "price": 235.81,
+        "timestamp": "2026-07-02T22:03:12.216881+00:00"
+      },
+      {
+        "symbol": "AMAT",
+        "signal": "STRONG_SELL",
+        "strength": -6.0,
+        "signals": [
+          "DAILY_STRONG_DOWN",
+          "WEEKLY_DOWN",
+          "MONTHLY_STRONG_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -7.31,
+        "weekly_pct": -3.31,
+        "monthly_pct": -16.56,
+        "price": 603.33,
+        "timestamp": "2026-07-02T22:03:12.216903+00:00"
+      },
+      {
+        "symbol": "MPWR",
+        "signal": "STRONG_SELL",
+        "strength": -6.0,
+        "signals": [
+          "DAILY_DOWN",
+          "WEEKLY_DOWN",
+          "MONTHLY_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -3.17,
+        "weekly_pct": -1.63,
+        "monthly_pct": -6.7,
+        "price": 1289.34,
+        "timestamp": "2026-07-02T22:03:12.216940+00:00"
+      },
+      {
+        "symbol": "MCHP",
+        "signal": "STRONG_SELL",
+        "strength": -6.0,
+        "signals": [
+          "DAILY_DOWN",
+          "WEEKLY_DOWN",
+          "MONTHLY_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -4.6,
+        "weekly_pct": -3.4,
+        "monthly_pct": -7.17,
+        "price": 84.64,
+        "timestamp": "2026-07-02T22:03:12.216958+00:00"
+      },
+      {
+        "symbol": "TER",
+        "signal": "STRONG_SELL",
+        "strength": -6.0,
+        "signals": [
+          "DAILY_STRONG_DOWN",
+          "WEEKLY_STRONG_DOWN",
+          "MONTHLY_STRONG_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -13.61,
+        "weekly_pct": -15.33,
+        "monthly_pct": -23.71,
+        "price": 369.03,
+        "timestamp": "2026-07-02T22:03:12.216995+00:00"
+      },
+      {
+        "symbol": "ENTG",
+        "signal": "STRONG_SELL",
+        "strength": -6.0,
+        "signals": [
+          "DAILY_STRONG_DOWN",
+          "WEEKLY_STRONG_DOWN",
+          "MONTHLY_STRONG_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -11.33,
+        "weekly_pct": -9.25,
+        "monthly_pct": -18.54,
+        "price": 146.49,
+        "timestamp": "2026-07-02T22:03:12.217013+00:00"
+      },
+      {
+        "symbol": "SWKS",
+        "signal": "STRONG_SELL",
+        "strength": -6.0,
+        "signals": [
+          "DAILY_STRONG_DOWN",
+          "WEEKLY_STRONG_DOWN",
+          "MONTHLY_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -5.02,
+        "weekly_pct": -7.79,
+        "monthly_pct": -7.73,
+        "price": 62.58,
+        "timestamp": "2026-07-02T22:03:12.217031+00:00"
+      },
+      {
+        "symbol": "ONTO",
+        "signal": "STRONG_SELL",
+        "strength": -6.0,
+        "signals": [
+          "DAILY_STRONG_DOWN",
+          "WEEKLY_DOWN",
+          "MONTHLY_STRONG_DOWN",
+          "ALL_DOWN"
+        ],
+        "daily_pct": -12.3,
+        "weekly_pct": -4.73,
+        "monthly_pct": -18.48,
+        "price": 308.54,
+        "timestamp": "2026-07-02T22:03:12.217049+00:00"
       }
     ],
-    "errors": []
+    "errors": [
+      "SFTBY: fiyat verisi alinamadi"
+    ]
   }
 }
