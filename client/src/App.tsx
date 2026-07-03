@@ -341,19 +341,32 @@ function Router({
           {() => <CalendarPage language={language} />}
         </Route>
         <Route path={"/coverage/calendar"}>
-          {() => <CoveragePage language={language} mode="calendar" />}
+          {() => (
+            <CoveragePage
+              language={language}
+              mode="calendar"
+              onLanguageChange={onLanguageChange}
+            />
+          )}
         </Route>
         <Route path={"/coverage/:ticker"}>
           {params => (
             <CoveragePage
               language={language}
               mode="detail"
+              onLanguageChange={onLanguageChange}
               ticker={params.ticker || ""}
             />
           )}
         </Route>
         <Route path={"/coverage"}>
-          {() => <CoveragePage language={language} mode="index" />}
+          {() => (
+            <CoveragePage
+              language={language}
+              mode="index"
+              onLanguageChange={onLanguageChange}
+            />
+          )}
         </Route>
         <Route path={"/marketflash"}>
           {() => <MarketFlash />}
@@ -1520,7 +1533,7 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <ThemeProvider defaultTheme="dark">
+      <ThemeProvider defaultTheme="dark" switchable>
         <TooltipProvider>
           <AppLanguageContext.Provider value={language}>
             <div

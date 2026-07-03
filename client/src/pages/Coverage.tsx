@@ -50,6 +50,11 @@ import LoadingState from "@/components/ui/loading-state";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+import MetricSparkline from "@/features/coverage/components/MetricSparkline";
+import DteBadge from "@/features/coverage/components/DteBadge";
+import CoverageMiniHeader from "@/features/coverage/components/CoverageMiniHeader";
+import CoverageToc from "@/features/coverage/components/CoverageToc";
+import VersionDiffPanel from "@/features/coverage/components/VersionDiffPanel";
 import {
   StrategyCard,
   LevelLadder,
@@ -700,46 +705,73 @@ function TableBlockView({
   if (block.signature === "catalyst-matrix") {
     return (
       <div className="grid gap-3 md:grid-cols-2">
-        {block.rows.map((row, rowIndex) => (
-          <article
-            key={`${blockPrefix}-catalyst-${rowIndex}`}
-            className="rounded-xl border border-border bg-background/30 p-4"
-          >
-            <div className="flex items-center justify-between gap-3">
-              <p className="text-sm font-semibold text-foreground">{row[0]}</p>
-              <Badge
-                variant="outline"
-                className={
-                  row[1]?.toLowerCase().includes("negatif")
-                    ? "border-rose-500/30 bg-rose-500/10 text-rose-200"
-                    : row[1]?.toLowerCase().includes("pozitif")
-                      ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-200"
-                      : "border-amber-500/30 bg-amber-500/10 text-amber-200"
-                }
-              >
-                {row[1] || "Catalyst"}
-              </Badge>
-            </div>
-            <div className="mt-3 space-y-2 text-sm text-muted-foreground">
-              {block.headers.slice(2).map((header, headerIndex) => (
-                <div
-                  key={`${blockPrefix}-catalyst-meta-${rowIndex}-${headerIndex}`}
-                  className="flex items-start justify-between gap-3"
+        {block.rows.map((row, rowIndex) => {
+          const title = row[0] || "";
+          const effect = row[1] || "";
+          const effectLower = effect.toLowerCase();
+          const tone = effectLower.includes("negatif")
+            ? "bear"
+            : effectLower.includes("pozitif")
+              ? "bull"
+              : "neutral";
+          const importanceMatch = row.slice(2).join(" ").match(/(\d)\s*\/\s*5|([1-5])\s*yildiz|⭐{1,5}/);
+          const importance = importanceMatch
+            ? importanceMatch[0].includes("⭐")
+              ? importanceMatch[0].length
+              : Number(importanceMatch[1] || importanceMatch[2] || 0)
+            : 0;
+
+          return (
+            <article
+              key={`${blockPrefix}-catalyst-${rowIndex}`}
+              className="rounded-xl border border-border bg-background/30 p-4"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <p className="break-words text-sm font-semibold text-foreground line-clamp-2">
+                  {title}
+                </p>
+                <Badge
+                  variant="outline"
+                  className={cn(
+                    "shrink-0",
+                    tone === "bear"
+                      ? "border-rose-500/30 bg-rose-500/10 text-rose-500 dark:text-rose-200"
+                      : tone === "bull"
+                        ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-500 dark:text-emerald-200"
+                        : "border-amber-500/30 bg-amber-500/10 text-amber-500 dark:text-amber-200"
+                  )}
                 >
-                  <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground/80">
-                    {header}
-                  </span>
-                  <span className="text-right">
-                    {renderInlineText(
-                      row[headerIndex + 2] || "—",
-                      `${blockPrefix}-catalyst-cell-${rowIndex}-${headerIndex}`
-                    )}
-                  </span>
+                  {effect || "Catalyst"}
+                </Badge>
+              </div>
+              {importance > 0 ? (
+                <div className="mt-2 flex items-center gap-0.5 text-[10px] text-amber-500">
+                  {Array.from({ length: 5 }, (_, i) => (
+                    <span key={i}>{i < importance ? "★" : "☆"}</span>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </article>
-        ))}
+              ) : null}
+              <div className="mt-3 space-y-2 text-sm text-muted-foreground">
+                {block.headers.slice(2).map((header, headerIndex) => (
+                  <div
+                    key={`${blockPrefix}-catalyst-meta-${rowIndex}-${headerIndex}`}
+                    className="flex items-start justify-between gap-3"
+                  >
+                    <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground/80">
+                      {header}
+                    </span>
+                    <span className="break-words text-right">
+                      {renderInlineText(
+                        row[headerIndex + 2] || "—",
+                        `${blockPrefix}-catalyst-cell-${rowIndex}-${headerIndex}`
+                      )}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </article>
+          );
+        })}
       </div>
     );
   }
@@ -790,10 +822,12 @@ function ChecklistBlockView({
 export default function Coverage({
   language,
   mode = "index",
+  onLanguageChange,
   ticker,
 }: {
   language: AppLanguage;
   mode?: CoverageMode;
+  onLanguageChange?: (lang: AppLanguage) => void;
   ticker?: string;
 }) {
   const [location, setLocation] = useLocation();
@@ -808,6 +842,21 @@ export default function Coverage({
   const [selectedVersionIdState, setSelectedVersionIdState] = useState(() =>
     getSelectedVersionId()
   );
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [showMiniHeader, setShowMiniHeader] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(docHeight > 0 ? scrollTop / docHeight : 0);
+      setShowMiniHeader(scrollTop > 240);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -1519,33 +1568,54 @@ export default function Coverage({
                   </p>
                 </div>
                 <div className="rounded-xl border border-border bg-background/35 px-4 py-4">
-                  <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                    {copy(language, "Fiyat", "Price")}
-                  </p>
-                  <p className="mt-1 text-base font-semibold text-foreground">
-                    {formatUsd(currentReport.metrics.price)}
-                  </p>
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+                        {copy(language, "Fiyat", "Price")}
+                      </p>
+                      <p className="mt-1 text-base font-semibold text-foreground">
+                        {formatUsd(currentReport.metrics.price)}
+                      </p>
+                    </div>
+                    {currentReport.metrics.spark ? (
+                      <MetricSparkline data={currentReport.metrics.spark} />
+                    ) : null}
+                  </div>
                   <p
                     className={cn(
-                      "mt-2 text-xs font-medium",
-                      metricTone(currentReport.metrics.changePct)
+                      "mt-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium",
+                      currentReport.metrics.changePct && currentReport.metrics.changePct >= 0
+                        ? "bg-emerald-500/10 text-emerald-500"
+                        : "bg-rose-500/10 text-rose-500"
                     )}
                   >
                     {formatPercent(currentReport.metrics.changePct)}
                   </p>
                 </div>
                 <div className="rounded-xl border border-border bg-background/35 px-4 py-4">
-                  <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                    {copy(language, "Earnings", "Earnings")}
-                  </p>
+                  <div className="flex items-start justify-between gap-2">
+                    <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+                      {copy(language, "Earnings", "Earnings")}
+                    </p>
+                    <DteBadge
+                      date={currentReport.metrics.earningsDate}
+                      language={language}
+                    />
+                  </div>
                   <p className="mt-1 text-base font-semibold text-foreground">
                     {formatDate(currentReport.metrics.earningsDate, language)}
                   </p>
                 </div>
                 <div className="rounded-xl border border-border bg-background/35 px-4 py-4">
-                  <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                    {copy(language, "Opsiyon vadesi", "Option expiry")}
-                  </p>
+                  <div className="flex items-start justify-between gap-2">
+                    <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+                      {copy(language, "Opsiyon vadesi", "Option expiry")}
+                    </p>
+                    <DteBadge
+                      date={currentReport.metrics.optionExpiry}
+                      language={language}
+                    />
+                  </div>
                   <p className="mt-1 text-base font-semibold text-foreground">
                     {formatDate(currentReport.metrics.optionExpiry, language)}
                   </p>
@@ -1608,120 +1678,81 @@ export default function Coverage({
             ) : null}
 
             {diffSummary ? (
-              <Card className="gap-4" interactive={false}>
-                <CardHeader className="gap-2">
-                  <div className="flex items-center gap-2">
-                    <GitCompareArrows className="size-4 text-sky-300" />
-                    <CardTitle>
-                      {copy(language, "Version diff", "Version diff")}
-                    </CardTitle>
-                  </div>
-                  <CardDescription>
-                    {previousReport
-                      ? copy(
-                          language,
-                          "Secili surum bir onceki raporla karsilastirildi.",
-                          "The selected version is compared against the previous report."
-                        )
-                      : copy(
-                          language,
-                          "Bu ticker icin su an sadece tek surum var.",
-                          "There is only one version for this ticker right now."
-                        )}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="grid gap-4 lg:grid-cols-[0.95fr_1.05fr]">
-                  <div className="rounded-xl border border-border bg-background/35 px-4 py-4">
-                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                      {copy(language, "Degisen metrikler", "Changed metrics")}
-                    </p>
-                    <div className="mt-4 space-y-3">
-                      {diffSummary.changedMetrics.length > 0 ? (
-                        diffSummary.changedMetrics.map(item => (
-                          <div
-                            key={item.label}
-                            className="flex items-center justify-between gap-3 rounded-xl border border-border/80 bg-background/45 px-3 py-3"
-                          >
-                            <span className="text-sm text-muted-foreground">
-                              {item.label}
-                            </span>
-                            <span className="text-xs text-muted-foreground">
-                              {item.previous} {"->"}{" "}
-                              <strong className="text-foreground">
-                                {item.next}
-                              </strong>
-                            </span>
-                          </div>
-                        ))
-                      ) : (
-                        <p className="text-sm text-muted-foreground">
-                          {copy(language, "Metrik farki yok.", "No metric delta.")}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="rounded-xl border border-border bg-background/35 px-4 py-4">
-                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                      {copy(language, "Degisen bolumler", "Changed sections")}
-                    </p>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {diffSummary.changedSections.length > 0 ? (
-                        diffSummary.changedSections.map(sectionTitle => (
-                          <Badge
-                            key={sectionTitle}
-                            variant="outline"
-                            className="border-amber-500/30 bg-amber-500/10 text-amber-100"
-                          >
-                            {sectionTitle}
-                          </Badge>
-                        ))
-                      ) : (
-                        <span className="text-sm text-muted-foreground">
-                          {copy(
-                            language,
-                            "Yeni bolum farki yok.",
-                            "No section-level delta."
-                          )}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <VersionDiffPanel
+                changedMetrics={diffSummary.changedMetrics}
+                changedSections={diffSummary.changedSections}
+                hasPrevious={!!previousReport}
+                language={language}
+              />
             ) : null}
 
-            {currentReport.sections.map(section => (
-              <Card
-                key={section.id}
-                id={section.id}
-                className="gap-4 scroll-mt-28"
-                interactive={false}
-              >
-                <CardHeader className="gap-2 border-b border-border pb-6">
-                  <Badge
-                    variant="outline"
-                    className="w-fit border-border bg-background/35"
-                  >
-                    H{section.level}
-                  </Badge>
-                  <CardTitle className="text-2xl">{section.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <CoverageBlocks
-                    blockPrefix={section.id}
-                    blocks={section.blocks}
-                    checklistState={checklistState}
-                    language={language}
-                    onChecklistChange={handleChecklistChange}
-                    onNavigateTicker={navigateToTickerSymbol}
-                    report={currentReport}
-                    reportId={currentReport.id}
-                    sectionId={section.id}
-                  />
-                </CardContent>
-              </Card>
-            ))}
+            {showMiniHeader && (
+              <CoverageMiniHeader
+                className={showMiniHeader ? "translate-y-0" : "-translate-y-full"}
+                language={language}
+                onLanguageChange={onLanguageChange ?? (() => {})}
+                progress={scrollProgress}
+                report={currentReport}
+              />
+            )}
+
+            <div className="grid gap-6 lg:grid-cols-[1fr_240px]">
+              <div className="space-y-4">
+                {currentReport.sections.map(section => {
+                  const hasProbViz = section.blocks.some(
+                    block => block.type === "viz" && block.spec?.type === "prob"
+                  );
+                  const filteredBlocks = hasProbViz
+                    ? section.blocks.filter(
+                        block =>
+                          !(
+                            block.type === "list" &&
+                            extractProbabilityItems(block.items).length > 0
+                          )
+                      )
+                    : section.blocks;
+
+                  if (filteredBlocks.length === 0) {
+                    return null;
+                  }
+
+                  return (
+                    <Card
+                      key={section.id}
+                      id={section.id}
+                      className="gap-4 scroll-mt-28 print:break-inside-avoid"
+                      interactive={false}
+                    >
+                      <CardHeader className="gap-2 border-b border-border pb-6">
+                        <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground/70">
+                          {section.level === 2
+                            ? copy(language, "Bolum", "Section")
+                            : copy(language, "Alt Bolum", "Subsection")}
+                        </span>
+                        <CardTitle className="text-2xl">{section.title}</CardTitle>
+                      </CardHeader>
+                      <CardContent className="pt-0">
+                        <CoverageBlocks
+                          blockPrefix={section.id}
+                          blocks={filteredBlocks}
+                          checklistState={checklistState}
+                          language={language}
+                          onChecklistChange={handleChecklistChange}
+                          onNavigateTicker={navigateToTickerSymbol}
+                          report={currentReport}
+                          reportId={currentReport.id}
+                          sectionId={section.id}
+                        />
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+
+              <div className="hidden lg:block">
+                <CoverageToc language={language} sections={currentReport.sections} />
+              </div>
+            </div>
           </div>
         ) : (
           <Card className="gap-4" interactive={false}>

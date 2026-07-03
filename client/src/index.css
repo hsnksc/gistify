@@ -599,3 +599,103 @@
   }
 }
 
+/* ==========================================================================
+   Print styles for coverage reports
+   ========================================================================== */
+
+@media print {
+  :root {
+    color-scheme: light !important;
+  }
+
+  html {
+    background: #fff !important;
+  }
+
+  body {
+    background: #fff !important;
+    color: #0f172a !important;
+    font-size: 11pt !important;
+  }
+
+  /* Hide interactive / non-essential chrome */
+  nav,
+  aside,
+  .fixed,
+  [role="banner"],
+  [data-slot="sheet"],
+  .no-print {
+    display: none !important;
+  }
+
+  /* Force light surfaces */
+  [data-slot="card"],
+  .rounded-xl,
+  .rounded-lg,
+  .bg-background\/30,
+  .bg-background\/35,
+  .bg-background\/40,
+  .bg-background\/45,
+  .bg-background\/55,
+  .bg-background\/60 {
+    background: #fff !important;
+    box-shadow: none !important;
+    border-color: #cbd5e1 !important;
+  }
+
+  /* Text contrast */
+  .text-foreground,
+  .text-card-foreground,
+  h1, h2, h3, h4, h5, h6 {
+    color: #0f172a !important;
+  }
+
+  .text-muted-foreground,
+  .text-secondary {
+    color: #475569 !important;
+  }
+
+  /* Keep SVG charts visible and crisp */
+  svg {
+    max-width: 100% !important;
+  }
+
+  /* Page breaks */
+  h2, h3,
+  [data-slot="card"] {
+    break-inside: avoid;
+  }
+
+  /* Links show URLs */
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #64748b;
+  }
+
+  /* Tone colors must stay readable in grayscale-ish print */
+  .text-emerald-500,
+  .text-emerald-300,
+  .text-emerald-200 {
+    color: #047857 !important;
+  }
+
+  .text-rose-500,
+  .text-rose-300,
+  .text-rose-200 {
+    color: #b91c1c !important;
+  }
+
+  .text-amber-500,
+  .text-amber-300,
+  .text-amber-200 {
+    color: #b45309 !important;
+  }
+
+  .text-sky-500,
+  .text-sky-300,
+  .text-sky-200 {
+    color: #0369a1 !important;
+  }
+}
+
