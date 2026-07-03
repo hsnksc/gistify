@@ -20,7 +20,7 @@ export interface GA4EventParams {
   [key: string]: string | number | boolean | undefined;
 }
 
-const GA4_ID = import.meta.env.VITE_GA4_ID || "";
+const GA4_ID = import.meta.env.VITE_GA4_ID || "G-D87NYSSNP0";
 
 function getGtag(): typeof window.gtag | undefined {
   return typeof window !== "undefined" ? window.gtag : undefined;
