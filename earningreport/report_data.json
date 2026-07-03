@@ -1,0 +1,1051 @@
+{
+  "prices": {
+    "AAPL": {
+      "price": 308.43,
+      "open": 294.335,
+      "high": 294.69,
+      "low": 294.24,
+      "change": 14.01,
+      "change_1m": -0.03,
+      "change_pct": 4.76
+    },
+    "AMZN": {
+      "price": 242.3,
+      "open": 241.865,
+      "high": 241.89,
+      "low": 241.85,
+      "change": 0.56,
+      "change_1m": 0.01,
+      "change_pct": 0.23
+    },
+    "GOOGL": {
+      "price": 359.07,
+      "open": 361.345,
+      "high": 361.36,
+      "low": 361.33,
+      "change": -2.12,
+      "change_1m": 0.0,
+      "change_pct": -0.59
+    },
+    "META": {
+      "price": 582.76,
+      "open": 613.415,
+      "high": 613.42,
+      "low": 613.25,
+      "change": -30.21,
+      "change_1m": -0.02,
+      "change_pct": -4.93
+    },
+    "MSFT": {
+      "price": 390.3,
+      "open": 384.03,
+      "high": 384.08,
+      "low": 384.03,
+      "change": 5.92,
+      "change_1m": 0.01,
+      "change_pct": 1.54
+    },
+    "NFLX": {
+      "price": 77.59,
+      "open": 74.22,
+      "high": 74.22,
+      "low": 74.21,
+      "change": 3.4,
+      "change_1m": 0.0,
+      "change_pct": 4.58
+    },
+    "TSLA": {
+      "price": 393.39,
+      "open": 425.66,
+      "high": 425.66,
+      "low": 425.57,
+      "change": -31.97,
+      "change_1m": 0.0,
+      "change_pct": -7.52
+    },
+    "AMD": {
+      "price": 518.25,
+      "open": 539.198,
+      "high": 539.34,
+      "low": 539.12,
+      "change": -22.64,
+      "change_1m": 0.03,
+      "change_pct": -4.19
+    },
+    "NVDA": {
+      "price": 194.51,
+      "open": 197.725,
+      "high": 197.9,
+      "low": 197.7,
+      "change": -3.03,
+      "change_1m": 0.09,
+      "change_pct": -1.53
+    },
+    "JPM": {
+      "price": 334.26,
+      "open": 334.01,
+      "high": 334.23,
+      "low": 333.7,
+      "change": 0.2,
+      "change_1m": 0.02,
+      "change_pct": 0.06
+    },
+    "BAC": {
+      "price": 58.69,
+      "open": 58.36,
+      "high": 58.4,
+      "low": 58.35,
+      "change": 0.3,
+      "change_1m": 0.04,
+      "change_pct": 0.52
+    },
+    "GS": {
+      "price": 1020.895,
+      "open": 1019.4,
+      "high": 1020.52,
+      "low": 1019.3,
+      "change": 1.35,
+      "change_1m": 0.03,
+      "change_pct": 0.13
+    },
+    "WFC": {
+      "price": 85.51,
+      "open": 85.895,
+      "high": 85.95,
+      "low": 85.86,
+      "change": -0.42,
+      "change_1m": 0.05,
+      "change_pct": -0.49
+    },
+    "C": {
+      "price": 139.97,
+      "open": 140.2,
+      "high": 140.27,
+      "low": 140.04,
+      "change": -0.19,
+      "change_1m": -0.05,
+      "change_pct": -0.13
+    },
+    "UNH": {
+      "price": 424.95,
+      "open": 426.64,
+      "high": 426.69,
+      "low": 425.95,
+      "change": -1.57,
+      "change_1m": -0.05,
+      "change_pct": -0.37
+    },
+    "JNJ": {
+      "price": 263.04,
+      "open": 253.75,
+      "high": 254.09,
+      "low": 253.71,
+      "change": 9.01,
+      "change_1m": 0.08,
+      "change_pct": 3.55
+    },
+    "PFE": {
+      "price": 24.31,
+      "open": 23.875,
+      "high": 23.905,
+      "low": 23.87,
+      "change": 0.41,
+      "change_1m": 0.08,
+      "change_pct": 1.72
+    },
+    "ABT": {
+      "price": 95.28,
+      "open": 92.09,
+      "high": 92.17,
+      "low": 92.07,
+      "change": 3.11,
+      "change_1m": 0.08,
+      "change_pct": 3.38
+    },
+    "TMO": {
+      "price": 523.39,
+      "open": 513.71,
+      "high": 514.04,
+      "low": 513.25,
+      "change": 9.87,
+      "change_1m": -0.04,
+      "change_pct": 1.92
+    },
+    "MRK": {
+      "price": 129.51,
+      "open": 125.3,
+      "high": 125.45,
+      "low": 125.15,
+      "change": 4.12,
+      "change_1m": 0.09,
+      "change_pct": 3.29
+    },
+    "XOM": {
+      "price": 136.97,
+      "open": 136.05,
+      "high": 136.28,
+      "low": 136.045,
+      "change": 0.72,
+      "change_1m": 0.16,
+      "change_pct": 0.52
+    },
+    "CVX": {
+      "price": 169.13,
+      "open": 165.68,
+      "high": 165.8,
+      "low": 165.6,
+      "change": 3.43,
+      "change_1m": 0.01,
+      "change_pct": 2.07
+    },
+    "V": {
+      "price": 361.65,
+      "open": 351.37,
+      "high": 351.45,
+      "low": 351.06,
+      "change": 10.37,
+      "change_1m": -0.08,
+      "change_pct": 2.95
+    },
+    "MA": {
+      "price": 539.355,
+      "open": 522.64,
+      "high": 522.935,
+      "low": 522.27,
+      "change": 16.77,
+      "change_1m": -0.02,
+      "change_pct": 3.21
+    },
+    "DIS": {
+      "price": 99.43,
+      "open": 95.685,
+      "high": 95.765,
+      "low": 95.681,
+      "change": 3.68,
+      "change_1m": 0.06,
+      "change_pct": 3.84
+    },
+    "BA": {
+      "price": 226.37,
+      "open": 218.8,
+      "high": 218.94,
+      "low": 218.52,
+      "change": 7.76,
+      "change_1m": -0.09,
+      "change_pct": 3.55
+    },
+    "NKE": {
+      "price": 44.075,
+      "open": 43.125,
+      "high": 43.28,
+      "low": 43.075,
+      "change": 0.95,
+      "change_1m": 0.01,
+      "change_pct": 2.19
+    },
+    "HD": {
+      "price": 357.78,
+      "open": 351.44,
+      "high": 351.55,
+      "low": 350.87,
+      "change": 6.85,
+      "change_1m": -0.15,
+      "change_pct": 1.95
+    },
+    "COIN": {
+      "price": 165.44,
+      "open": 159.235,
+      "high": 159.36,
+      "low": 159.15,
+      "change": 6.12,
+      "change_1m": 0.08,
+      "change_pct": 3.84
+    },
+    "HOOD": {
+      "price": 112.71,
+      "open": 108.625,
+      "high": 108.63,
+      "low": 108.62,
+      "change": 4.03,
+      "change_1m": 0.0,
+      "change_pct": 3.71
+    },
+    "MU": {
+      "price": 974.23,
+      "open": 1037.15,
+      "high": 1037.55,
+      "low": 1037.045,
+      "change": -58.41,
+      "change_1m": 0.03,
+      "change_pct": -5.66
+    },
+    "INTC": {
+      "price": 120.6,
+      "open": 126.965,
+      "high": 127.03,
+      "low": 126.961,
+      "change": -6.48,
+      "change_1m": 0.05,
+      "change_pct": -5.1
+    },
+    "PLTR": {
+      "price": 129.07,
+      "open": 125.83,
+      "high": 125.86,
+      "low": 125.64,
+      "change": 3.32,
+      "change_1m": -0.1,
+      "change_pct": 2.64
+    },
+    "LLY": {
+      "price": 1210.79,
+      "open": 1190.67,
+      "high": 1192.27,
+      "low": 1190.33,
+      "change": 18.65,
+      "change_1m": 0.1,
+      "change_pct": 1.56
+    },
+    "CRM": {
+      "price": 166.14,
+      "open": 163.31,
+      "high": 163.405,
+      "low": 163.215,
+      "change": 2.85,
+      "change_1m": 0.01,
+      "change_pct": 1.75
+    },
+    "ORCL": {
+      "price": 140.73,
+      "open": 143.21,
+      "high": 143.3,
+      "low": 143.21,
+      "change": -2.04,
+      "change_1m": 0.05,
+      "change_pct": -1.43
+    },
+    "ADBE": {
+      "price": 219.65,
+      "open": 211.085,
+      "high": 211.09,
+      "low": 210.98,
+      "change": 8.71,
+      "change_1m": -0.01,
+      "change_pct": 4.13
+    },
+    "AVGO": {
+      "price": 360.5,
+      "open": 369.645,
+      "high": 369.66,
+      "low": 369.62,
+      "change": -8.83,
+      "change_1m": 0.0,
+      "change_pct": -2.39
+    },
+    "QCOM": {
+      "price": 176.125,
+      "open": 181.91,
+      "high": 181.97,
+      "low": 181.9,
+      "change": -5.82,
+      "change_1m": 0.03,
+      "change_pct": -3.2
+    },
+    "MRVL": {
+      "price": 248.59,
+      "open": 271.95,
+      "high": 272.06,
+      "low": 271.95,
+      "change": -23.69,
+      "change_1m": 0.04,
+      "change_pct": -8.7
+    },
+    "CRWD": {
+      "price": 193.73,
+      "open": 772.52,
+      "high": 773.67,
+      "low": 772.3,
+      "change": -2.5,
+      "change_1m": -0.01,
+      "change_pct": -1.27
+    },
+    "PANW": {
+      "price": 347.875,
+      "open": 352.13,
+      "high": 352.4,
+      "low": 351.995,
+      "change": -4.21,
+      "change_1m": -0.01,
+      "change_pct": -1.2
+    },
+    "ZS": {
+      "price": 147.33,
+      "open": 146.45,
+      "high": 146.69,
+      "low": 146.395,
+      "change": 0.73,
+      "change_1m": 0.0,
+      "change_pct": 0.5
+    },
+    "UBER": {
+      "price": 74.45,
+      "open": 72.59,
+      "high": 72.68,
+      "low": 72.583,
+      "change": 1.78,
+      "change_1m": 0.11,
+      "change_pct": 2.46
+    },
+    "SHOP": {
+      "price": 119.515,
+      "open": 121.615,
+      "high": 121.74,
+      "low": 121.59,
+      "change": -2.11,
+      "change_1m": 0.01,
+      "change_pct": -1.74
+    },
+    "SNOW": {
+      "price": 260.12,
+      "open": 260.71,
+      "high": 261.32,
+      "low": 260.685,
+      "change": -1.01,
+      "change_1m": 0.11,
+      "change_pct": -0.39
+    },
+    "NET": {
+      "price": 242.285,
+      "open": 246.215,
+      "high": 246.615,
+      "low": 246.14,
+      "change": -4.05,
+      "change_1m": 0.06,
+      "change_pct": -1.64
+    },
+    "DDOG": {
+      "price": 260.2,
+      "open": 264.305,
+      "high": 264.6,
+      "low": 264.28,
+      "change": -4.25,
+      "change_1m": 0.05,
+      "change_pct": -1.61
+    },
+    "MSTR": {
+      "price": 100.75,
+      "open": 93.5,
+      "high": 93.57,
+      "low": 93.36,
+      "change": 7.36,
+      "change_1m": -0.12,
+      "change_pct": 7.88
+    },
+    "IBM": {
+      "price": 289.22,
+      "open": 286.03,
+      "high": 286.36,
+      "low": 285.97,
+      "change": 2.94,
+      "change_1m": 0.08,
+      "change_pct": 1.03
+    },
+    "WMT": {
+      "price": 111.72,
+      "open": 108.87,
+      "high": 108.89,
+      "low": 108.82,
+      "change": 2.88,
+      "change_1m": -0.01,
+      "change_pct": 2.64
+    },
+    "MCD": {
+      "price": 280.39,
+      "open": 269.73,
+      "high": 269.78,
+      "low": 269.39,
+      "change": 10.95,
+      "change_1m": -0.1,
+      "change_pct": 4.07
+    },
+    "SBUX": {
+      "price": 104.28,
+      "open": 103.36,
+      "high": 103.47,
+      "low": 103.35,
+      "change": 0.87,
+      "change_1m": 0.04,
+      "change_pct": 0.84
+    },
+    "KO": {
+      "price": 83.96,
+      "open": 81.275,
+      "high": 81.355,
+      "low": 81.275,
+      "change": 2.64,
+      "change_1m": 0.05,
+      "change_pct": 3.25
+    },
+    "SPY": {
+      "price": 744.07,
+      "change": -1.59,
+      "change_pct": -0.21
+    },
+    "QQQ": {
+      "price": 712.53,
+      "change": -12.79,
+      "change_pct": -1.76
+    },
+    "IWM": {
+      "price": 297.54,
+      "change": -1.85,
+      "change_pct": -0.62
+    },
+    "DIA": {
+      "price": 527.76,
+      "change": 5.36,
+      "change_pct": 1.03
+    }
+  },
+  "vix": 16.15,
+  "calendar": {
+    "July 2026": [
+      [
+        "WFC",
+        "2026-07-09",
+        "BMO",
+        "Finansal",
+        "Q2 Earnings"
+      ],
+      [
+        "JPM",
+        "2026-07-14",
+        "BMO",
+        "Finansal",
+        "Q2 Earnings"
+      ],
+      [
+        "C",
+        "2026-07-15",
+        "BMO",
+        "Finansal",
+        "Q2 Earnings"
+      ],
+      [
+        "GS",
+        "2026-07-16",
+        "BMO",
+        "Finansal",
+        "Q2 Earnings"
+      ],
+      [
+        "NFLX",
+        "2026-07-16",
+        "AMC",
+        "Teknoloji",
+        "Q2 Earnings"
+      ],
+      [
+        "BAC",
+        "2026-07-21",
+        "BMO",
+        "Finansal",
+        "Q2 Earnings"
+      ],
+      [
+        "TSLA",
+        "2026-07-22",
+        "AMC",
+        "Otomotiv",
+        "Q2 Earnings"
+      ],
+      [
+        "GOOGL",
+        "2026-07-23",
+        "AMC",
+        "Teknoloji",
+        "Q2 Earnings"
+      ],
+      [
+        "META",
+        "2026-07-23",
+        "AMC",
+        "Teknoloji",
+        "Q2 Earnings"
+      ],
+      [
+        "MSFT",
+        "2026-07-24",
+        "AMC",
+        "Teknoloji",
+        "Q4 FY26"
+      ],
+      [
+        "INTC",
+        "2026-07-24",
+        "AMC",
+        "Teknoloji",
+        "Q2 Earnings"
+      ],
+      [
+        "IBM",
+        "2026-07-24",
+        "BMO",
+        "Teknoloji",
+        "Q2 Earnings"
+      ],
+      [
+        "AAPL",
+        "2026-07-29",
+        "AMC",
+        "Teknoloji",
+        "Q3 FY26"
+      ],
+      [
+        "AMZN",
+        "2026-07-29",
+        "AMC",
+        "Teknoloji",
+        "Q2 Earnings"
+      ],
+      [
+        "AMD",
+        "2026-07-30",
+        "AMC",
+        "Teknoloji",
+        "Q2 Earnings"
+      ],
+      [
+        "QCOM",
+        "2026-07-30",
+        "BMO",
+        "Teknoloji",
+        "Q3 FY26"
+      ],
+      [
+        "SBUX",
+        "2026-07-29",
+        "BMO",
+        "Tüketici",
+        "Q3 FY26"
+      ],
+      [
+        "MCD",
+        "2026-07-29",
+        "BMO",
+        "Tüketici",
+        "Q2 Earnings"
+      ],
+      [
+        "PFE",
+        "2026-07-28",
+        "BMO",
+        "Sağlık",
+        "Q2 Earnings"
+      ],
+      [
+        "MRK",
+        "2026-07-28",
+        "BMO",
+        "Sağlık",
+        "Q2 Earnings"
+      ]
+    ],
+    "August 2026": [
+      [
+        "DDOG",
+        "2026-08-07",
+        "BMO",
+        "Teknoloji",
+        "Q2 Earnings"
+      ],
+      [
+        "NET",
+        "2026-08-07",
+        "BMO",
+        "Teknoloji",
+        "Q2 Earnings"
+      ],
+      [
+        "UBER",
+        "2026-08-05",
+        "BMO",
+        "Teknoloji",
+        "Q2 Earnings"
+      ],
+      [
+        "SHOP",
+        "2026-08-06",
+        "BMO",
+        "Teknoloji",
+        "Q2 Earnings"
+      ],
+      [
+        "DIS",
+        "2026-08-06",
+        "AMC",
+        "Tüketici",
+        "Q3 FY26"
+      ],
+      [
+        "PLTR",
+        "2026-08-04",
+        "BMO",
+        "Teknoloji",
+        "Q2 Earnings"
+      ],
+      [
+        "COIN",
+        "2026-08-06",
+        "BMO",
+        "Finansal",
+        "Q2 Earnings"
+      ],
+      [
+        "HOOD",
+        "2026-08-05",
+        "BMO",
+        "Finansal",
+        "Q2 Earnings"
+      ],
+      [
+        "ORCL",
+        "2026-08-12",
+        "BMO",
+        "Teknoloji",
+        "Q1 FY27"
+      ],
+      [
+        "ADBE",
+        "2026-08-14",
+        "AMC",
+        "Teknoloji",
+        "Q3 FY26"
+      ],
+      [
+        "NVDA",
+        "2026-08-20",
+        "AMC",
+        "Teknoloji",
+        "Q2 FY27"
+      ],
+      [
+        "SNOW",
+        "2026-08-20",
+        "BMO",
+        "Teknoloji",
+        "Q2 FY27"
+      ],
+      [
+        "PANW",
+        "2026-08-18",
+        "BMO",
+        "Teknoloji",
+        "Q4 FY26"
+      ],
+      [
+        "AVGO",
+        "2026-08-21",
+        "BMO",
+        "Teknoloji",
+        "Q3 FY26"
+      ],
+      [
+        "MRVL",
+        "2026-08-28",
+        "BMO",
+        "Teknoloji",
+        "Q2 FY26"
+      ],
+      [
+        "ZS",
+        "2026-08-26",
+        "BMO",
+        "Teknoloji",
+        "Q4 FY26"
+      ],
+      [
+        "CRWD",
+        "2026-08-27",
+        "BMO",
+        "Teknoloji",
+        "Q2 FY27"
+      ],
+      [
+        "CRM",
+        "2026-08-27",
+        "BMO",
+        "Teknoloji",
+        "Q2 FY27"
+      ],
+      [
+        "V",
+        "2026-08-05",
+        "BMO",
+        "Finansal",
+        "Q3 FY26"
+      ],
+      [
+        "MA",
+        "2026-08-05",
+        "BMO",
+        "Finansal",
+        "Q2 Earnings"
+      ],
+      [
+        "LLY",
+        "2026-08-12",
+        "BMO",
+        "Sağlık",
+        "Q2 Earnings"
+      ],
+      [
+        "UNH",
+        "2026-08-12",
+        "BMO",
+        "Sağlık",
+        "Q2 Earnings"
+      ],
+      [
+        "XOM",
+        "2026-08-01",
+        "BMO",
+        "Enerji",
+        "Q2 Earnings"
+      ],
+      [
+        "CVX",
+        "2026-08-01",
+        "BMO",
+        "Enerji",
+        "Q2 Earnings"
+      ],
+      [
+        "BA",
+        "2026-08-05",
+        "BMO",
+        "Savunma",
+        "Q2 Earnings"
+      ],
+      [
+        "NKE",
+        "2026-08-08",
+        "BMO",
+        "Tüketici",
+        "Q1 FY27"
+      ],
+      [
+        "WMT",
+        "2026-08-15",
+        "BMO",
+        "Tüketici",
+        "Q2 Earnings"
+      ],
+      [
+        "KO",
+        "2026-08-05",
+        "BMO",
+        "Tüketici",
+        "Q2 Earnings"
+      ]
+    ]
+  },
+  "sectors": {
+    "AAPL": "Teknoloji",
+    "AMZN": "Teknoloji",
+    "GOOGL": "Teknoloji",
+    "META": "Teknoloji",
+    "MSFT": "Teknoloji",
+    "NFLX": "Teknoloji",
+    "TSLA": "Otomotiv",
+    "AMD": "Teknoloji",
+    "NVDA": "Teknoloji",
+    "JPM": "Finansal",
+    "BAC": "Finansal",
+    "GS": "Finansal",
+    "WFC": "Finansal",
+    "C": "Finansal",
+    "UNH": "Sağlık",
+    "JNJ": "Sağlık",
+    "PFE": "Sağlık",
+    "ABT": "Sağlık",
+    "TMO": "Sağlık",
+    "MRK": "Sağlık",
+    "XOM": "Enerji",
+    "CVX": "Enerji",
+    "V": "Finansal",
+    "MA": "Finansal",
+    "DIS": "Tüketici",
+    "BA": "Savunma",
+    "NKE": "Tüketici",
+    "HD": "Tüketici",
+    "COIN": "Finansal",
+    "HOOD": "Finansal",
+    "MU": "Teknoloji",
+    "INTC": "Teknoloji",
+    "PLTR": "Teknoloji",
+    "LLY": "Sağlık",
+    "CRM": "Teknoloji",
+    "ORCL": "Teknoloji",
+    "ADBE": "Teknoloji",
+    "AVGO": "Teknoloji",
+    "QCOM": "Teknoloji",
+    "MRVL": "Teknoloji",
+    "CRWD": "Teknoloji",
+    "PANW": "Teknoloji",
+    "ZS": "Teknoloji",
+    "UBER": "Teknoloji",
+    "SHOP": "Teknoloji",
+    "SNOW": "Teknoloji",
+    "NET": "Teknoloji",
+    "DDOG": "Teknoloji",
+    "MSTR": "Teknoloji",
+    "IBM": "Teknoloji",
+    "WMT": "Tüketici",
+    "MCD": "Tüketici",
+    "SBUX": "Tüketici",
+    "KO": "Tüketici"
+  },
+  "iv_ranks": {
+    "NFLX": 72,
+    "TSLA": 85,
+    "AMD": 78,
+    "NVDA": 92,
+    "META": 68,
+    "GOOGL": 58,
+    "AMZN": 65,
+    "AAPL": 52,
+    "MSFT": 45,
+    "INTC": 75,
+    "PLTR": 88,
+    "MU": 70,
+    "CRWD": 82,
+    "PANW": 76,
+    "ZS": 80,
+    "SNOW": 74,
+    "DDOG": 71,
+    "NET": 69,
+    "SHOP": 73,
+    "UBER": 66,
+    "COIN": 90,
+    "HOOD": 87,
+    "MSTR": 95,
+    "DIS": 60,
+    "BA": 78,
+    "NKE": 55,
+    "WMT": 42,
+    "JPM": 48,
+    "BAC": 58,
+    "GS": 62,
+    "WFC": 55,
+    "C": 65,
+    "V": 40,
+    "MA": 45,
+    "UNH": 50,
+    "JNJ": 38,
+    "PFE": 62,
+    "ABT": 44,
+    "TMO": 48,
+    "MRK": 52,
+    "LLY": 58,
+    "XOM": 46,
+    "CVX": 50,
+    "IBM": 48,
+    "CRM": 68,
+    "ORCL": 42,
+    "ADBE": 64,
+    "AVGO": 72,
+    "QCOM": 60,
+    "MRVL": 70,
+    "KO": 35,
+    "SBUX": 50,
+    "MCD": 38,
+    "HD": 44
+  },
+  "cpr": {
+    "AAPL": 1.15,
+    "AMZN": 1.05,
+    "GOOGL": 0.95,
+    "META": 1.25,
+    "MSFT": 1.1,
+    "NFLX": 0.85,
+    "TSLA": 0.75,
+    "AMD": 0.8,
+    "NVDA": 0.9,
+    "JPM": 1.2,
+    "BAC": 1.05,
+    "GS": 1.15,
+    "WFC": 1.1,
+    "C": 0.95,
+    "UNH": 1.05,
+    "JNJ": 1.15,
+    "PFE": 0.9,
+    "ABT": 1.1,
+    "TMO": 1.05,
+    "MRK": 1.0,
+    "XOM": 0.95,
+    "CVX": 1.0,
+    "V": 1.2,
+    "MA": 1.15,
+    "DIS": 0.9,
+    "BA": 0.85,
+    "NKE": 1.0,
+    "HD": 1.1,
+    "COIN": 0.7,
+    "HOOD": 0.75,
+    "MU": 0.8,
+    "INTC": 0.85,
+    "PLTR": 0.8,
+    "LLY": 1.3,
+    "CRM": 1.1,
+    "ORCL": 1.05,
+    "ADBE": 0.95,
+    "AVGO": 1.0,
+    "QCOM": 1.05,
+    "MRVL": 0.85,
+    "CRWD": 0.9,
+    "PANW": 0.95,
+    "ZS": 0.8,
+    "UBER": 1.1,
+    "SHOP": 0.85,
+    "SNOW": 0.9,
+    "NET": 0.85,
+    "DDOG": 0.9,
+    "MSTR": 0.7,
+    "IBM": 1.05,
+    "WMT": 1.15,
+    "MCD": 1.1,
+    "SBUX": 0.95,
+    "KO": 1.2
+  },
+  "macro": {
+    "vix": 16.15,
+    "vix_prev": 16.59,
+    "vix_change": -0.44,
+    "spy": 744.07,
+    "spy_change_pct": -0.21,
+    "qqq": 712.53,
+    "qqq_change_pct": -1.76,
+    "iwm": 297.54,
+    "iwm_change_pct": -0.62,
+    "dia": 527.76,
+    "dia_change_pct": 1.03,
+    "fear_greed": 34,
+    "fear_greed_label": "fear",
+    "fear_greed_prev": 32,
+    "ten_year_yield": 4.21,
+    "dxy": 99.5,
+    "wti": 78.4,
+    "btc": 64200,
+    "report_date": "2026-07-03",
+    "data_date": "2026-07-02"
+  },
+  "regime": {
+    "label": "neutral",
+    "read": "Tech zayıf (QQQ -1.76%), Dow güçlü (DIA +1.03%). VIX 16.15'te düşük volatilite. Fear & Greed 34 (fear). Mixed regime.",
+    "tech_weak": true,
+    "dow_strong": true,
+    "vix_low": true,
+    "fear_greed_fear": true
+  }
+}
