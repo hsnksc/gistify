@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kazanç Dönemi (Earnings) Opsiyon Stratejileri: Beat mi, Miss mi?</title>
+<meta name="description" content="Earnings sezonunda straddle, strangle, vertical spread, gap fade. IV Crush hesaplama, 5 dakikalık watchlist rutini, risk yönetimi.">
+<meta name="keywords" content="earnings opsiyon, kazanç dönemi stratejileri, IV Crush, straddle, strangle, gap fade, earnings play">
+<meta name="author" content="Gistify">
+<meta property="og:title" content="Kazanç Dönemi (Earnings) Opsiyon Stratejileri: Beat mi, Miss mi?">
+<meta property="og:description" content="Earnings sezonunda straddle, strangle, vertical spread, gap fade. IV Crush hesaplama, 5 dakikalık watchlist rutini, risk yönetimi.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://gistify.pro/tr/kazanc-donemi-opsiyon-stratejileri">
+<meta property="og:image" content="https://gistify.pro/gistifylogo.jpeg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kazanç Dönemi (Earnings) Opsiyon Stratejileri: Beat mi, Miss mi?">
+<meta name="twitter:description" content="Earnings sezonunda straddle, strangle, vertical spread, gap fade. IV Crush hesaplama, 5 dakikalık watchlist rutini, risk yönetimi.">
+<link rel="canonical" href="https://gistify.pro/tr/kazanc-donemi-opsiyon-stratejileri">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#0f172a;color:#e2e8f0;line-height:1.6;font-size:16px}
+.container{max-width:800px;margin:0 auto;padding:2rem 1rem}
+header{text-align:center;padding:3rem 0 2rem;border-bottom:1px solid #1e293b;margin-bottom:2rem}
+header h1{font-size:2rem;font-weight:700;color:#10b981;margin-bottom:1rem;line-height:1.2}
+header .meta{color:#94a3b8;font-size:.875rem}
+header .meta span{margin:0 .5rem}
+article h2{font-size:1.5rem;color:#10b981;margin:2.5rem 0 1rem;font-weight:600}
+article h3{font-size:1.25rem;color:#34d399;margin:2rem 0 .75rem;font-weight:600}
+article p{margin-bottom:1.25rem;color:#cbd5e1}
+article ul,article ol{margin-bottom:1.25rem;padding-left:1.5rem}
+article li{margin-bottom:.5rem;color:#cbd5e1}
+article strong{color:#e2e8f0}
+article blockquote{border-left:4px solid #10b981;padding-left:1rem;margin:1.5rem 0;color:#94a3b8;font-style:italic}
+article table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.875rem}
+article th{background:#1e293b;color:#10b981;padding:.75rem;text-align:left;font-weight:600;border:1px solid #334155}
+article td{padding:.75rem;border:1px solid #334155;color:#cbd5e1}
+article tr:nth-child(even){background:#1e293b33}
+article code{background:#1e293b;padding:.2rem .4rem;border-radius:4px;font-size:.875rem;color:#34d399}
+article pre{background:#1e293b;padding:1rem;border-radius:8px;overflow-x:auto;margin:1.5rem 0}
+article pre code{background:none;padding:0}
+.cta{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:2rem;margin:3rem 0;text-align:center}
+.cta h3{color:#10b981;margin-bottom:1rem}
+.cta p{color:#94a3b8;margin-bottom:1.5rem}
+.cta a{display:inline-block;background:#10b981;color:#fff;padding:.75rem 1.5rem;border-radius:6px;text-decoration:none;font-weight:600}
+.cta a:hover{background:#059669}
+.back{display:inline-block;margin-bottom:2rem;color:#94a3b8;text-decoration:none;font-size:.875rem}
+.back:hover{color:#10b981}
+footer{text-align:center;padding:2rem 0;border-top:1px solid #1e293b;margin-top:3rem;color:#64748b;font-size:.875rem}
+@media(max-width:640px){header h1{font-size:1.5rem}article h2{font-size:1.25rem}body{font-size:15px}}
+</style>
+</head>
+<body>
+<div class="container">
+<a href="/" class="back">← Gistify Ana Sayfa</a>
+<header>
+<h1>Kazanç Dönemi (Earnings) Opsiyon Stratejileri: Beat mi, Miss mi?</h1>
+<div class="meta">
+<span>📅 1 Temmuz 2026</span>
+<span>⏱️ 15 dk okuma</span>
+<span>🏷️ Earnings Stratejileri</span>
+</div>
+</header>
+<article>
+<h1>Kazanç Dönemi (Earnings) Opsiyon Stratejileri: Beat mi, Miss mi?</h1>
+
+<p>Kazanç dönemi (earnings season), ABD borsalarının en heyecanlı ve en riskli dönemidir. Her çeyrekte, binlerce şirket aynı anda bilançolarını açıklar. Fiyatlar %5, %10, hatta %20 anlık hareketler yapar. Bu hareketler, doğru opsiyon stratejisi ile <strong>2x, 3x, hatta 5x getiri</strong> potansiyeli taşır. Ama yanlış strateji ile, <strong>IV Crush</strong> adlı sessiz katil, pozisyonunuzu anında eritebilir.</p>
+
+<p>Bu rehber, <strong>target keyword:</strong> `kazanç dönemi opsiyon` ile başlayan ve `earnings opsiyon`, `earnings play`, `IV crush kazanç` gibi kritik konuları derinlemesine ele alan kapsamlı bir kaynaktır. Earnings öncesi stratejiden, sonrası gap fade'e, risk yönetiminden Gistify entegrasyonuna kadar her şeyi bulacaksınız.</p>
+
+<p>---</p>
+
+<h2>Kazanç Dönemi Nedir? Neden Önemli?</h2>
+
+<p><strong>Kazanç dönemi (Earnings Season)</strong>, ABD şirketlerinin üç aylık (çeyreklik) finansal sonuçlarını açıkladığı dönemdir. Her yıl dört kez tekrarlanır:</p>
+
+<p>- <strong>Q1 (Ocak-Mart):</strong> Nisan ortasında açıklanır
+- <strong>Q2 (Nisan-Haziran):</strong> Temmuz ortasında açıklanır
+- <strong>Q3 (Temmuz-Eylül):</strong> Ekim ortasında açıklanır
+- <strong>Q4 (Ekim-Aralık):</strong> Ocak-Şubat'ta açıklanır</p>
+
+<p>Bu dönemlerde, şirketlerin <strong>EPS (Earnings Per Share)</strong> ve <strong>Revenue (Gelir)</strong> verileri piyasa beklentileriyle karşılaştırılır. <strong>Beat</strong> (beklentiyi aştı), <strong>Miss</strong> (beklentinin altında kaldı), veya <strong>In-line</strong> (beklentiye paralel) olarak sonuçlanır.</p>
+
+<h3>Neden Önemli?</h3>
+
+<ul><li><strong>Volatilite patlaması:</strong> Earnings öncesi Implied Volatility (IV) tarihsel olarak çok yükselir. Bu, opsiyon primlerini şişirir.</li>
+<li><strong>Yön bağımsız fırsatlar:</strong> Şirket beat verse de, guidance (gelecek dönem beklentisi) kötüyse hisse düşebilir. Yön tahmini zordur, ama volatilite tahmini daha kolaydır.</li>
+<li><strong>IV Crush:</strong> Earnings sonrası IV çöker. Bu, opsiyon alıcılarının en büyük düşmanıdır.</li>
+<li><strong>Haber volatilitesi:</strong> Earnings, tek başına bir "catalyst"tir. Catalyst varsa, momentum var demektir.</li>
+</ul>
+<blockquote><strong>Önemli:</strong> Earnings oynamak, yön bağımsız trade arayan bir trader için ideal bir alandır. Put ya da call farketmez — volatilite oynanabilir. Ama minimum 2x getiri potansiyeli olan fırsatları bulmak için, doğru stratejiyi ve doğru zamanlamayı bilmek şarttır.</blockquote>
+
+<p>---</p>
+
+<h2>Earnings Takvimi Nasıl Okunur?</h2>
+
+<p>Earnings takvimi, hangi şirketin ne zaman kazanç açıklayacağını gösteren bir pusuladır. Bu takvimi doğru okumak, earnings stratejisinin ilk adımıdır.</p>
+
+<h3>Earnings Takvimi Kaynakları</h3>
+
+<p>- <strong>Earnings Whispers:</strong> (earningswhispers.com) — Tahmini açıklama tarihleri ve analist beklentileri.
+- <strong>Yahoo Finance:</strong> Her hissenin earnings tarihi ve geçmiş verileri.
+- <strong>Gistify Earnings Brief:</strong> Tüm earnings takvimi, IV Rank, CPR (Central Pivot Range), ve teknik seviyeler tek ekranda.
+- <strong>SEC EDGAR:</strong> Resmi kayıtlar, en güvenilir kaynak.</p>
+
+<h3>Takvimde Ne Okumalısınız?</h3>
+
+<ul><li><strong>Tarih:</strong> Şirketin earnings açıklama tarihi (genellikle BMO = Before Market Open, veya AMC = After Market Close).</li>
+<li><strong>EPS Estimate:</strong> Analistlerin EPS beklentisi. Geçmiş çeyreklere göre trend nedir?</li>
+<li><strong>Revenue Estimate:</strong> Gelir beklentisi.</li>
+<li><strong> whisper number:</strong> Earnings Whispers gibi sitelerde, analist beklentisinden farklı olarak piyasanın "fısıldadığı" rakam. Whisper > Estimate = yüksek beklenti = daha zor beat.</li>
+<li><strong>Historical Beat Rate:</strong> Şirket geçmişte kaç çeyreldir beat ediyor? (örneğin AAPL son 8 çeyreldir beat ediyor)</li>
+<li><strong>Average Move:</strong> Şirketin geçmiş earnings sonrası ortalama hareketi. %5 mi, %10 mi? Bu, straddle maliyetini değerlendirirken kritik.</li>
+</ul>
+<h3>BMO vs. AMC</h3>
+
+<p>- <strong>BMO (Before Market Open):</strong> Şirket, piyasa açılmadan önce (06:00-09:30 EDT arası) açıklar. Ertesi gün açılışta fiyat hareketi görülür. Pre-market volatilitesi yüksektir.
+- <strong>AMC (After Market Close):</strong> Şirket, piyasa kapandıktan sonra (16:00-18:00 EDT arası) açıklar. Ertesi gün açılışta fiyat hareketi görülür. After-hours volatilitesi yüksektir.</p>
+
+<p><strong>Stratejik fark:</strong> BMO earnings, açılışta anlık reaksiyon verir. AMC earnings, gece boyunca haberler yayıldığı için ertesi gün açılışta daha büyük gap'ler oluşabilir.</p>
+
+<p>---</p>
+
+<h2>4 Earnings Stratejisi</h2>
+
+<p>Earnings döneminde en yaygın kullanılan 4 opsiyon stratejisini detaylıca inceleyelim. Her strateji, farklı bir piyasa görüşüne ve risk toleransına hitap eder.</p>
+
+<h3>1. Straddle (Yönsüz Volatilite)</h3>
+
+<p><strong>Straddle</strong>, aynı strike ve vadede hem CALL hem PUT almaktır. Yön tahmini yapmadan, volatiliteyi oynarsınız. Hisse ne tarafa güçlü hareket ederse, o taraf kazanır.</p>
+
+<p><strong>Ne zaman kullanılır:</strong>
+- Earnings öncesi, hissenin geçmişte earnings sonrası ortalama hareketi > straddle maliyeti
+- IV yükselişi (Vega) de kazanç potansiyeli varsa (erken kurulum)
+- Yön tahmini yapmak istemediğinizde</p>
+
+<blockquote><strong>Örnek:</strong> NVDA earnings öncesi. Hisse 120 USD. Strike 120 straddle (7 gün vadeli). CALL premium = 6 USD, PUT premium = 6 USD. Toplam maliyet = 12 USD × 100 = 1,200 USD. NVDA'nın geçmiş 8 çeyrekteki ortalama earnings hareketi = %8. %8 hareket = 120 × 0.08 = 9.6 USD. Straddle maliyeti = 12 USD. 9.6 < 12 → straddle pahalı. Bu setup, IV Crush riski yüksek. Eğer ortalama hareket %12 olsaydı (14.4 USD), straddle değerlidir.</blockquote>
+
+<p>- <strong>Maksimum risk:</strong> 1,200 USD (toplam premium)
+- <strong>Maksimum ödül:</strong> Sınırsız (tek yönlü)
+- <strong>Breakeven:</strong> 120 ± 12 = 108 ve 132 USD
+- <strong>IV Crush riski:</strong> Çok yüksek. Hisse %6 hareket edip IV %80'den %30'a çökerse, her iki bacak da zarar edebilir.</p>
+
+<h3>2. Strangle (Yönsüz, Daha Ucuz)</h3>
+
+<p><strong>Strangle</strong>, straddle'a benzer ama strike fiyatları farklıdır. OTM CALL + OTM PUT alınır. Maliyet daha düşük, ama hareket gereksinimi daha yüksektir.</p>
+
+<blockquote><strong>Örnek:</strong> NVDA 120 USD. Strike 125 CALL (premium 4 USD) + Strike 115 PUT (premium 4 USD). Toplam maliyet = 8 USD × 100 = 800 USD. Breakeven: 125 + 8 = 133 (CALL tarafı) ve 115 - 8 = 107 (PUT tarafı). Hareket gereksinimi daha geniş. Ama maliyet daha düşük. Eğer NVDA 130'a çıkarsa, CALL intrinsic = 5, maliyet 8 → hâlâ zarar. 134'e çıkarsa, kârlı.</blockquote>
+
+<p>- <strong>Maksimum risk:</strong> 800 USD
+- <strong>Maksimum ödül:</strong> Sınırsız
+- <strong>Breakeven:</strong> Daha geniş (107 ve 133)
+- <strong>Avantaj:</strong> Daha düşük maliyet, straddle'dan daha az IV Crush riski (OTM olduğu için)
+- <strong>Dezavantaj:</strong> Daha büyük hareket gerekiyor</p>
+
+<h3>3. Vertical Spread (Yönlü, Sınırlı Risk)</h3>
+
+<p><strong>Vertical Spread</strong>, yön tahmini yaptığınızda kullanılır ve straddle/strangle'dan çok daha az IV Crush riski taşır. Çünkü spread'lerde bir bacak satılır, bu da IV Crush'tan kısmen korur.</p>
+
+<p><strong>Bull Call Spread (Yükseliş beklentisi):</strong>
+- ATM veya hafif OTM CALL al
+- Daha yüksek strike OTM CALL sat
+- Maliyet düşer, kâr sınırlı, risk sınırlı</p>
+
+<blockquote><strong>Örnek:</strong> NVDA 120 USD. Earnings öncesi yükseliş bekliyorsunuz. Strike 120 CALL al (premium 6 USD), Strike 130 CALL sat (premium 2 USD). Net maliyet = 4 USD × 100 = 400 USD. Maksimum kâr = (10 - 4) × 100 = 600 USD. Risk/Ödül = 1:1.5. NVDA 130'un üzerine çıkarsa, maksimum kâr. 120-130 arasında kâr artar. 120'nin altına düşerse, maksimum risk = 400 USD.</blockquote>
+
+<p>- <strong>Maksimum risk:</strong> 400 USD
+- <strong>Maksimum ödül:</strong> 600 USD
+- <strong>IV Crush etkisi:</strong> Daha az. Çünkü aldığınız CALL'ın IV Crush'u, sattığınız CALL'ın IV Crush'u ile kısmen dengelenir.
+- <strong>Breakeven:</strong> Alınan strike + net maliyet = 120 + 4 = 124 USD</p>
+
+<p><strong>Bear Put Spread (Düşüş beklentisi):</strong>
+- ATM PUT al, daha düşük strike PUT sat
+- Düşüş beklentisi için aynı mantık</p>
+
+<h3>4. Directional (Yönlü, Tek Bacak)</h3>
+
+<p><strong>Directional strateji</strong>, güçlü bir yön tahmininiz varsa kullanılır. Tek bacaklı CALL veya PUT alırsınız. En yüksek risk/yüksek ödül profili.</p>
+
+<blockquote><strong>Örnek:</strong> AAPL earnings öncesi. Analistler beklentiyi çok düşük koymuş, whisper number çok yüksek, supply chain verileri güçlü. Siz güçlü bir yükseliş bekliyorsunuz. Strike 185 CALL alıyorsunuz (premium 5 USD). AAPL 195'e çıkarsa, intrinsic = 10, kâr = 5 × 100 = 500 USD. Risk/Ödül = 1:1. Ama 200'e çıkarsa, kâr = 15 × 100 = 1,500 USD. Risk/Ödül = 1:3.</blockquote>
+
+<p>- <strong>Maksimum risk:</strong> Premium (örnekte 500 USD)
+- <strong>Maksimum ödül:</strong> Sınırsız
+- <strong>IV Crush riski:</strong> Çok yüksek. Yön doğru bile olsa, IV Crush kârı azaltabilir veya batırabilir.
+- <strong>Kullanım zamanı:</strong> Yön konusunda çok güçlü konviksiyonunuz varsa, ve erken kurulum (IV henüz çok patlamamış) yapıyorsanız.</p>
+
+<h3>Karşılaştırma Tablosu: 4 Earnings Stratejisi</h3>
+
+<table>
+<tr><th>Strateji</th><th>Yön Tahmini</th><th>Maliyet</th><th>Maks. Risk</th><th>IV Crush Riski</th><th>En İyi Zaman</th></tr>
+<tr><td><strong>Straddle</strong></td><td>Hayır</td><td>Yüksek</td><td>Premium</td><td>Çok Yüksek</td><td>IV henüz düşük, hareket beklentisi yüksek</td></tr>
+<tr><td><strong>Strangle</strong></td><td>Hayır</td><td>Orta</td><td>Premium</td><td>Yüksek</td><td>Straddle'a göre daha ucuz, daha geniş breakeven</td></tr>
+<tr><td><strong>Vertical Spread</strong></td><td>Evet</td><td>Düşük</td><td>Sınırlı</td><td>Düşük</td><td>Yön tahmini güçlü, risk sınırlı olmalı</td></tr>
+<tr><td><strong>Directional</strong></td><td>Evet</td><td>Orta</td><td>Premium</td><td>Çok Yüksek</td><td>Güçlü konviksiyon, erken kurulum</td></tr>
+</table>
+
+<p>---</p>
+
+<h2>IV Crush: Kazanç Tuzağı</h2>
+
+<p><strong>IV Crush</strong>, earnings sonrası Implied Volatility'nin (IV) çok hızlı ve sert düşmesidir. Bu olay, earnings opsiyon stratejilerinin en büyük tuzağıdır ve birçok trader'ın bilmediği bir "gizli katil"dir.</p>
+
+<h3>IV Crush Nasıl Çalışır?</h3>
+
+<p>Earnings öncesi, piyasa şirketin bilançosundan büyük bir hareket bekler. Bu beklenti, opsiyon alıcılarının prim ödemeye razı olmasına neden olur. IV yükselir, opsiyonlar pahalanır. Earnings açıklandığında, belirsizlik ortadan kalkar. IV çöker. Opsiyon fiyatları, hareketin büyüklüğüne rağmen, IV'nin çökmesiyle birlikte değer kaybedebilir.</p>
+
+<blockquote><strong>Gerçek Örnek:</strong> META earnings öncesi. Hisse 500 USD. Straddle maliyeti = 25 USD (2,500 USD). Earnings sonrası META %3 yükseldi (515 USD). Yön tahmini doğru. Ama IV %100'den %40'e çöktü. Straddle'ın CALL tarafı 15 USD değer kazandı, ama PUT tarafı 20 USD değer kaybetti. IV Crush, CALL'ın kazancının çoğunu eritti. Net sonuç: -500 USD zarar. Yön doğru, ama strateji yanlış.</blockquote>
+
+<h3>IV Crush'tan Korunma Yöntemleri</h3>
+
+<ul><li><strong>Spread kullanın:</strong> Vertical spread'ler, IV Crush'tan çok daha az etkilenir. Alınan ve satılan bacakların IV Crush'u birbirini dengeler.</li>
+<li><strong>IV Rank kontrolü:</strong> IV Rank > 80 ise, straddle/strangle çok risklidir. Eğer IV Rank > 90 ise, spread veya direkt hisse alımı düşünün.</li>
+<li><strong>Erken kurulum:</strong> Earnings'den 5-10 gün önce straddle kurun. IV yükseldikçe (Vega), straddle değer kazanır. Earnings günü öncesi satarak sadece volatilite artışından kâr elde edin. Buna "volatilite long" denir.</li>
+<li><strong>Straddle maliyeti vs. ortalama hareket:</strong> Şirketin geçmiş earnings sonrası ortalama hareketi, straddle maliyetinden büyük mü? Eğer ortalama hareket %5, straddle maliyeti %8 ise, bu setup IV Crush'a mahkumdur.</li>
+<li><strong>0DTE veya 1DTE kullanın:</strong> Earnings gününe çok yakın (0-1 gün) vadeli opsiyonlarda IV henüz çok patlamamış olabilir. Ama bu, hareket zamanlamasını çok doğru yapmanızı gerektirir.</li>
+</ul>
+<h3>IV Crush Hesaplama</h3>
+
+<p>Bir straddle'ın IV Crush sonrası teorik değerini hesaplamak için basit bir formül:</p>
+
+<p>```
+Straddle Değeri ≈ |Hisse Fiyatı - Strike| + (Yeni IV × Vega × 100)
+```</p>
+
+<p>Eğer hisse çok hareket etmemişse, `|Hisse - Strike|` küçüktür. IV Crush sonrası yeni IV düşükse, ikinci terim de küçüktür. Toplam, ödenen premium'dan düşük olabilir.</p>
+
+<blockquote><strong>Örnek:</strong> AAPL 180. Straddle maliyeti 10 USD. Earnings sonrası AAPL 182 (sadece %1.1 hareket). Yeni IV = %30 (eski IV = %80). Vega = 0.15. Yeni straddle değeri ≈ 2 + (0.30 × 0.15 × 100) = 2 + 4.5 = 6.5 USD. Ödediğiniz 10 USD, şimdi 6.5 USD. Zarar = 3.5 USD × 100 = 350 USD. Yön doğru bile olsa, IV Crush zarar ettirdi.</blockquote>
+
+<p>---</p>
+
+<h2>5 Dakikalık Earnings Watchlist</h2>
+
+<p>Aktif bir trader için earnings dönemi, disiplinli bir watchlist rutini gerektirir. İşte her gün uygulayabileceğiniz 5 dakikalık earnings watchlist oluşturma süreci:</p>
+
+<h3>Adım 1: Günün Earnings Takvimi (1 dakika)</h3>
+- Gistify earnings brief veya Earnings Whispers'a bakın.
+- Bugün (ve yarın) earnings açıklayacak şirketleri listeleyin.
+- Özellikle takip ettiğiniz sektörlerden (tech, finance, energy) hisselere odaklanın.
+
+<h3>Adım 2: IV Rank ve Ortalama Hareket Filtresi (1 dakika)</h3>
+- Her hisse için IV Rank kontrolü. IV Rank > 70 olanlar = volatilite beklentisi yüksek.
+- Geçmiş 8 çeyrekteki ortalama earnings hareketini kontrol edin.
+- Straddle/strangle maliyeti hesaplayın (basitçe: ATM CALL + ATM PUT premium toplamı).
+- Ortalama hareket > straddle maliyeti mi? Eğer evet, straddle değerlidir.
+
+<h3>Adım 3: Teknik Seviyeler (1.5 dakika)</h3>
+- Her hisse için destek ve direnç seviyelerini belirleyin.
+- CPR (Central Pivot Range) veya önceki günün high/low/close değerlerini kullanın.
+- Earnings sonrası gap up yaparsa, ilk direnç nerede? Gap down yaparsa, ilk destek nerede?
+
+<h3>Adım 4: Strateji Seçimi (1 dakika)</h3>
+- Her hisse için en uygun stratejiyi belirleyin:
+  - Yön tahmini yok + maliyet uygunsa → Straddle/Strangle
+  - Yön tahmini güçlü + risk sınırlı olmalı → Vertical Spread
+  - IV çok yüksek → Spread veya hisse (opsiyon yerine)
+  - IV düşük, hareket beklentisi yüksek → Straddle (erken kurulum)
+
+<h3>Adım 5: Risk Planı (0.5 dakika)</h3>
+- Her pozisyon için: Entry, Stop, Hedef, Max Loss yazın.
+- 1% kuralını uygulayın.
+- Eğer straddle kullanıyorsanız, IV Crush senaryosunda max loss'u kabul edebiliyor musunuz?
+
+<p>---</p>
+
+<h2>Post-Earnings: Gap Fade Stratejisi</h2>
+
+<p>Earnings sonrası, hisse genellikle aşırı tepki verir. Bu aşırı tepki, ertesi gün veya sonraki günlerde tersine çevrilebilir. <strong>Gap fade</strong>, bu aşırı tepkiyi oynama stratejisidir.</p>
+
+<h3>Gap Fade Long (Aşırı Düşüş Sonrası)</h3>
+
+<p>- Earnings sonrası hisse %5-10 gap down yapmış.
+- Düşüş sebebi, geçici bir faktör (guidance cut, ama temel veriler iyi).
+- Hacim, açılışta spike yaptıktan sonra düşüyor (divergence).
+- RSI aşırı satım (< 30), Bollinger %B < 0.1.
+- Ertesi gün veya 2-3 gün içinde gap fill beklenir.</p>
+
+<blockquote><strong>Örnek:</strong> TSLA earnings sonrası %8 gap down, açılış 220 USD. Ertesi gün hacim düşüyor, RSI 25, fiyat 218-220 arasında yataylaşıyor. Gap fill bölgesi = 235-240. 2-3 gün içinde 235'e yürüme potansiyeli. Risk: 215 altı. Ödül: 235. Risk/Ödül = 1:3.5. Mükemmel bir setup. Ama trend günlerinde gap devam eder, bu yüzden trend günü olup olmadığını anlamak şart.</blockquote>
+
+<h3>Gap Fade Short (Aşırı Yükseliş Sonrası)</h3>
+
+<p>- Earnings sonrası hisse %5-10 gap up yapmış.
+- Yükseliş sebebi, geçici bir faktör (beat etti ama guidance zayıf).
+- Hacim, açılışta spike yaptıktan sonra düşüyor.
+- RSI aşırı alım (> 75), Bollinger %B > 0.9.
+- Ertesi gün veya sonraki günlerde gap fill beklenir.</p>
+
+<blockquote><strong>Örnek:</strong> NVDA earnings sonrası %12 gap up, açılış 135 USD. Ertesi gün hacim düşüyor, RSI 78, fiyat 135-137 arasında yataylaşıyor. Gap fill bölgesi = 120-122. Bear put spread veya direkt PUT. Risk: 140 üzeri. Ödül: 122. Risk/Ödül = 1:2.6. "Too quiet" piyasada veya sektör zayıflığında bu setup güçlüdür. Trend günlerinde kaçının.</blockquote>
+
+<h3>Gap Fade Riskleri</h3>
+
+<p>- <strong>Trend günü:</strong> Eğer piyasa genel trend güçlüyse, gap devam eder. Gap fade, trend günlerinde tehlikelidir. Momentum tabanlı girişler ve mean reversion arasındaki ayrımı iyi yapın.
+- <strong>Haber devamı:</strong> Earnings sonrası analist downgradeleri, haber akışı gap fade'i engelleyebilir.
+- <strong>Zaman:</strong> Gap fill hemen olmayabilir. 2-5 gün beklemeniz gerekebilir. Opsiyon vadesi seçerken buna dikkat edin.</p>
+
+<p>---</p>
+
+<h2>Position Sizing + Risk</h2>
+
+<p>Earnings opsiyon stratejileri, normal opsiyon stratejilerinden çok daha yüksek risk içerir. Risk yönetimi, burada hayati önem taşır.</p>
+
+<h3>1% Kuralı — Earnings Versiyonu</h3>
+
+<p>Earnings döneminde, risk toleransınızı daha da düşürün. Normalde %1 olan pozisyon limitini, earnings pozisyonları için %0.5'e çekin. Eğer aynı gün 3-4 earnings pozisyonu açacaksanız, toplam risk %1-2'yi geçmemeli.</p>
+
+<blockquote><strong>Örnek:</strong> Portföy 50,000 USD. Normal pozisyon risk limiti = 500 USD. Earnings pozisyonu risk limiti = 250 USD. Straddle maliyeti 1,000 USD. Eğer 0.25 kontrat (veya spread) ile giremiyorsanız, bu setup'u atlayın veya vertical spread seçin.</blockquote>
+
+<h3>Earnings Döneminde Portfolio Heat</h3>
+
+<p>Aynı anda çok fazla earnings pozisyonu açmayın. Her pozisyon, aynı "sistematik risk"e (piyasa genelinin earnings sonrası reaksiyonu) maruz kalır. Eğer piyasa genel olarak earnings'leri kötü karşılıyorsa, tüm pozisyonlarınız zarar edebilir.</p>
+
+<p>- <strong>Maksimum açık earnings pozisyonu:</strong> Portföy büyüklüğüne göre, aynı anda 2-5 earnings pozisyonu.
+- <strong>Farklı sektörler:</strong> Tüm pozisyonları tech sektöründe açmayın. Finans, energy, healthcare gibi sektörlerden de earnings pozisyonları seçin.
+- <strong>Hedge:</strong> Portföyünüzün genel riskini hedge etmek için SPY veya QQQ put'ları düşünün.</p>
+
+<h3>Earnings Sonrası Pozisyon Yönetimi</h3>
+
+<p>Earnings açıklandıktan sonra:
+- Eğer pozisyon kazançta ve hedefe yakınsa, kâr realize edin. Earnings sonrası volatilite hızla azalır.
+- Eğer pozisyon zararda ama yön doğruysa, IV Crush'ın etkisini bekleyin. Ertesi gün IV biraz toparlanabilir.
+- Eğer pozisyon zararda ve yön yanlışsa, stop loss'u uygulayın. Earnings sonrası "bekle ve gör" stratejisi genellikle işe yaramaz.</p>
+
+<p>---</p>
+
+<h2>Sık Sorulan Sorular (SSS)</h2>
+
+<h3>1. Earnings öncesi straddle ne zaman kurulmalı?</h3>
+
+<p>En iyi zaman, earnings'den 3-7 gün öncesidir. Bu dönemde IV henüz çok patlamamış olabilir (Vega avantajı). Ama çok erken kurmak (10+ gün önce) Theta decay'e maruz bırakır. Earnings'den 1-2 gün önce kurmak, IV'nin zaten zirve yaptığı dönemdir, maliyet yüksektir.</p>
+
+<h3>2. Earnings sonrası hemen pozisyon açmalı mıyım?</h3>
+
+<p>Genellikle hayır. Earnings sonrası ilk 30-60 dakika, spread'ler çok geniş, volatilite çok yüksektir. "Chop" (yatay dalgalanma) yaygındır. Ertesi gün açılışta veya öğleden sonra, teknik seviyeler netleştiğinde pozisyon açmak daha güvenli.</p>
+
+<h3>3. Tüm şirketler earnings sonrası IV Crush yaşar mı?</h3>
+
+<p>Evet, neredeyse tüm şirketler. Earnings öncesi IV, "event risk" primi içerir. Earnings sonrası event risk ortadan kalkar, IV çöker. Ama çöküşün büyüklüğü değişir. Volatilitesi yüksek hisseler (TSLA, NVDA) %60-80 IV çökerken, daha sakin hisseler (KO, JNJ) %30-40 çöker.</p>
+
+<h3>4. Earnings stratejisi için hangi vadeyi seçmeliyim?</h3>
+
+<p>Earnings'e en yakın vadeyi seçin (genellikle haftalık veya aylık). Earnings sonrası vadeye çok zaman varsa, IV Crush'un etkisi daha uzun süreli olur. Eğer gap fade stratejisi izliyorsanız, 7-14 gün vade daha esnek olabilir.</p>
+
+<h3>5. Earnings öncesi hisse almak yerine opsiyon mu almalıyım?</h3>
+
+<p>Eğer yön tahmininiz güçlüyse ve IV Crush riskini azaltmak istiyorsanız, direkt hisse almak veya CFD kullanmak opsiyonlara göre daha güvenli olabilir. Hisse, IV Crush'tan etkilenmez. Ama kaldıraç (leverage) istiyorsanız, opsiyon veya spread daha uygun.</p>
+
+<h3>6. Earnings takviminde "confirmed" ve "estimated" ne demek?</h3>
+
+<p>- <strong>Confirmed:</strong> Şirket, resmi olarak earnings tarihini ve saatini açıkladı.
+- <strong>Estimated:</strong> Earnings tarihi, geçmiş dönemlerden veya analist tahminlerinden tahmin ediliyor. Kesin değil. Estimated tarihlerde plan yaparken dikkatli olun.</p>
+
+<h3>7. Earnings stratejisi için kaç hisse takip etmeliyim?</h3>
+
+<p>Kalite, miktarı yener. 5-10 hisseyi derinlemesine takip etmek, 50 hisseyi yüzeysel takip etmekten çok daha iyidir. Gistify earnings brief ile, takip ettiğiniz hisselerin IV Rank, CPR, ve teknik seviyelerini otomatik olarak izleyebilirsiniz.</p>
+
+<p>---</p>
+
+<h2>Gistify ile Kazanç Dönemi Stratejilerinizi Güçlendirin</h2>
+
+<p>Kazanç dönemi opsiyon stratejileri, doğru bilgi, doğru zamanlama, ve disiplinli risk yönetimi gerektirir. <strong>Gistify</strong>, bu üç unsurun bir araya geldiği bir dark-themed finance workspace'tir.</p>
+
+<p>Gistify'da şunları bulacaksınız:
+- <strong>Rolling 2-aylık Earnings Brief:</strong> Mevcut ay ve gelecek ayın earnings takvimi, IV Rank, CPR, teknik seviyeler, ve straddle maliyeti — tek ekranda.
+- <strong>IV Rank ve IV Percentile:</strong> Her hissenin volatilite durumunu tarihsel bağlamda değerlendirin. IV Rank > 90 olan hisselerde straddle yerine spread düşünün.
+- <strong>Risk Matrix:</strong> Açık earnings pozisyonlarınızın toplam risk maruziyetini, Greek'lerini, ve portfolio heat'ini anlık takip edin.
+- <strong>Dark Workspace:</strong> Gece gündüz aktif trader'lar için göz yormayan, odaklanmayı artıran bir arayüz. Earnings döneminde saatlerce ekran başında kalmanız gerekebilir — Gistify bunu göz yorulmadan yapmanızı sağlar.</p>
+
+<p>Yön bağımsız trade arıyorsanız, kazanç döneminde minimum 2x getiri potansiyeli olan fırsatları yakalamak istiyorsanız, ve IV Crush tuzağına düşmek istemiyorsanız — Gistify sizin için burada.</p>
+
+<h3>🎯 Earnings Sezonuna Hazırlık Planı</h3>
+
+<ul><li>Earnings takviminizi oluşturun (Gistify earnings brief veya Earnings Whispers)</li>
+<li>Her hisse için IV Rank, ortalama hareket, ve straddle maliyetini hesaplayın</li>
+<li>5-10 hisseye odaklanın, derinlemesine teknik analiz yapın</li>
+<li>Her hisse için strateji seçin: straddle, strangle, spread, veya directional</li>
+<li>Risk planını yazın: entry, stop, hedef, max loss</li>
+<li>1% kuralını (earnings için %0.5) uygulayın</li>
+<li>Paper trading ile pratik yapın</li>
+<li>Gistify scanner ve risk matrix ile süreci otomatize edin</li>
+</ul>
+<p>Kazanç dönemi, ABD opsiyon piyasalarının en verimli ve en tehlikeli dönemidir. Doğru strateji ile, bu dönem portföyünüzü önemli ölçüde büyütebilir. Yanlış strateji ile, IV Crush portföyünüzü eritebilir. Seçim sizin — ve Gistify, doğru seçimi yapmanız için yanınızda.</p>
+
+<p>---</p>
+
+<p><em>Son güncelleme: 1 Temmuz 2026</em></p>
+
+<p><em>Bu rehber eğitim amaçlıdır ve yatım tavsiyesi değildir. Earnings opsiyon stratejileri yüksek risk içerir. IV Crush, beklenmedik kayıplara neden olabilir. Her zaman kendi araştırmanızı yapın ve profesyonel finansal danışmanlık alın.</em></p>
+</article>
+<div class="cta">
+<h3>Gistify ile ABD Opsiyon Piyasalarında Edge Kazanın</h3>
+<p>Scanner, earnings brief, risk matrix ve dark workspace — hepsi tek platformda.</p>
+<a href="/?lang=tr">🚀 Gistify'yi Keşfedin</a>
+</div>
+<footer>
+<p>© 2026 Gistify. Tüm hakları saklıdır.</p>
+<p><small>Bu rehber eğitim amaçlıdır ve yatırım tavsiyesi değildir.</small></p>
+</footer>
+</div>
+</body>
+</html>
