@@ -17,6 +17,7 @@ interface PublicShellProps {
   canonicalPath?: string;
   ctaHref?: string;
   ctaLabel?: string;
+  onCtaClick?: () => void;
   heroHighlights?: string[];
   heroStats?: Array<{
     value: string;
@@ -36,6 +37,7 @@ export default function PublicShell({
   canonicalPath,
   ctaHref,
   ctaLabel,
+  onCtaClick,
   heroHighlights,
   heroStats,
   noindex,
@@ -165,7 +167,7 @@ export default function PublicShell({
               <div className="grid gap-4 xl:justify-items-end">
                 {ctaHref && ctaLabel ? (
                   <Button asChild size="lg" className="h-11 min-w-[220px]">
-                    <a href={ctaHref}>
+                    <a href={ctaHref} onClick={onCtaClick}>
                       {ctaLabel}
                       <ArrowRight className="size-4" />
                     </a>

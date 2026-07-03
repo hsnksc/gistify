@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import WorkspaceHeroPanel from "@/components/workspace/WorkspaceHeroPanel";
+import { trackScannerUse, trackCTAClick } from "@/utils/ga4";
 
 interface ScannerRoutePageProps {
   language: AppLanguage;
@@ -66,7 +67,10 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => setRefreshSeed(current => current + 1)}
+                onClick={() => {
+                  trackScannerUse("momentum_flow", "refresh", 0, false);
+                  setRefreshSeed(current => current + 1);
+                }}
               >
                 <RefreshCw className="size-4" />
                 {copy(language, "Akisi yenile", "Refresh flow")}
@@ -74,7 +78,10 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => setLocation("/daily-report")}
+                onClick={() => {
+                  trackCTAClick(copy(language, "Gunluk", "Daily"), "scanner_page", "/daily-report");
+                  setLocation("/daily-report");
+                }}
               >
                 <Activity className="size-4" />
                 {copy(language, "Gunluk", "Daily")}

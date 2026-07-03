@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { copy, type AppLanguage } from "@/lib/i18n";
 import PublicShell from "@/components/PublicShell";
 import NewsletterSignup from "@/components/NewsletterSignup";
+import { trackCTAClick } from "@/utils/ga4";
 
 type PreviewMode = "flow" | "earnings" | "calendar";
 
@@ -285,6 +286,13 @@ export default function Landing({
       )}
       ctaHref="/pay"
       ctaLabel={copy(language, "Desk erisimini ac", "Unlock desk access")}
+      onCtaClick={() =>
+        trackCTAClick(
+          copy(language, "Desk erisimini ac", "Unlock desk access"),
+          "landing_hero",
+          "/pay"
+        )
+      }
       heroHighlights={[
         copy(language, "Flow ucretsiz acik", "Flow free and open"),
         copy(language, "Earnings + macro + options", "Earnings + macro + options"),
@@ -521,7 +529,12 @@ export default function Landing({
             </div>
             <div className="mt-5">
               <Button asChild size="lg" variant={lane.ctaHref === "/pay" ? "default" : "outline"}>
-                <a href={lane.ctaHref}>
+                <a
+                  href={lane.ctaHref}
+                  onClick={() =>
+                    trackCTAClick(lane.ctaLabel, "landing_access_lane", lane.ctaHref)
+                  }
+                >
                   {lane.ctaLabel}
                   <ArrowRight className="size-4" />
                 </a>

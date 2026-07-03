@@ -1,5 +1,6 @@
 import { copy, type AppLanguage } from "@/lib/i18n";
 import PublicShell from "@/components/PublicShell";
+import { trackProUpgrade } from "@/utils/ga4";
 
 export default function Pricing({
   language,
@@ -134,6 +135,9 @@ export default function Pricing({
       )}
       ctaHref="/pay"
       ctaLabel={copy(language, "Odeme sayfasini ac", "Open payment page")}
+      onCtaClick={() =>
+        trackProUpgrade("Gistify Pro", 5, "USD", "pricing_page")
+      }
     >
       <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
         <section className="rounded-xl border border-border bg-card/85 p-6 shadow-xl">
