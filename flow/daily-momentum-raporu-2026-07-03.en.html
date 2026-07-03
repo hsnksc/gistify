@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Momentum Report — July 3, 2026 | $PLTR $MSTR $NVDA</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Daily Momentum Report — July 3, 2026 | $PLTR $MSTR $NVDA" />
+<meta property="og:description" content="Pre-market momentum analysis: 10 stocks, option setups, risk warnings. Independence Day early close." />
+<meta property="og:url" content="https://gistify.pro/flow/daily-momentum-raporu-2026-07-03.en.html" />
+<meta property="og:image" content="https://gistify.pro/gistifylogo.png" />
+<meta property="og:site_name" content="Gistify" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Daily Momentum Report — July 3, 2026 | $PLTR $MSTR $NVDA" />
+<meta name="twitter:description" content="Pre-market momentum analysis: 10 stocks, option setups, risk warnings." />
+<meta name="twitter:image" content="https://gistify.pro/gistifylogo.png" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:720px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.hero-date{display:inline-flex;align-items:center;gap:5px;color:var(--gf-muted)}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s;display:flex;align-items:center;justify-content:space-between}
+.section-head-inner:hover{background:var(--gf-card)}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent);transition:transform .2s}
+.section-head.collapsed .icon{transform:rotate(-90deg)}
+.section-body{padding:18px;display:none}
+.section-head:not(.collapsed) .section-body{display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px;transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-1px);border-color:rgba(56,189,248,.25)}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+.tabs{display:flex;gap:2px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:14px}
+.tab{flex:1;padding:8px 10px;text-align:center;font-size:0.82rem;font-weight:600;border-radius:6px;cursor:pointer;user-select:none;transition:background .15s,color .15s;border:none;color:var(--gf-muted);background:transparent}
+.tab.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.tab:hover:not(.active){color:var(--gf-text)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.text-right{text-align:right}
+.text-center{text-align:center}
+.progress-bar{background:var(--gf-card);border-radius:4px;height:18px;overflow:hidden;margin:4px 0}
+.progress-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:0.68rem;font-weight:700;color:#fff}
+.fill-bull{background:linear-gradient(90deg,#16a34a,#4ade80)}
+.fill-base{background:linear-gradient(90deg,#ca8a04,#fbbf24)}
+.fill-bear{background:linear-gradient(90deg,#dc2626,#f87171)}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--gf-border)}
+.timeline-item{position:relative;margin-bottom:14px}
+.timeline-item::before{content:'';position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--gf-card);border:2px solid var(--gf-border)}
+.timeline-item.bull::before{border-color:var(--gf-success);background:var(--gf-success)}
+.timeline-item.bear::before{border-color:var(--gf-danger);background:var(--gf-danger)}
+.timeline-item.warn::before{border-color:var(--gf-warning);background:var(--gf-warning)}
+.timeline-item.neu::before{border-color:var(--gf-muted);background:var(--gf-muted)}
+.timeline-date{font-size:0.78rem;color:var(--gf-muted);font-weight:600}
+.timeline-body{font-size:0.85rem;margin-top:3px;color:var(--gf-text)}
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+@media(max-width:640px){.wrap{padding:16px 10px} .hero-h{font-size:1.25rem} .grid{grid-template-columns:1fr} .kpi-row{grid-template-columns:repeat(2,1fr)} .tabs{flex-wrap:wrap} .tab{flex:none;min-width:80px} table{font-size:0.78rem} th,td{padding:6px 7px}}
+</style>
+<script>
+function toggle(id){var el=document.getElementById(id);if(!el)return;el.classList.toggle('collapsed');}
+function setTab(btn,tabId){var parent=btn.closest('.tabs');if(parent){parent.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});parent.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});}btn.classList.add('active');var tc=document.getElementById(tabId);if(tc)tc.classList.add('active');}
+</script>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-03T04:00:00-04:00">
+  <h1 class="hero-h">Daily Momentum Report — July 3, 2026</h1>
+  <p class="hero-desc">Pre-market momentum analysis: 10 stocks, 5 CALL + 5 PUT option setups, Independence Day early-close risk warnings.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info hero-date">📅 July 3, 2026</span>
+    <span class="meta-pill info hero-date" data-timestamp="2026-07-03T04:00:00-04:00">⏰ 04:00 ET</span>
+    <span class="meta-pill neu">Pre-Market</span>
+    <span class="meta-pill bull">VIX 16.15</span>
+    <span class="meta-pill bear">Early Close</span>
+  </div>
+</div>
+
+<section>
+  <div class="section-head" id="sec-market">
+    <h2 class="section-title">📊 Market Overview</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    <div class="grid">
+      <div class="card">
+        <div class="card-label">VIX</div>
+        <div class="card-value neu">16.15</div>
+        <div class="card-note">-2.65% — Normal regime (15-20). Holiday complacency risk.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">SPY (Jul 2 Close)</div>
+        <div class="card-value neu">$745.28</div>
+        <div class="card-note">S&P 500 flat close. Near record highs.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">QQQ (Jul 2 Close)</div>
+        <div class="card-value down">$713.49</div>
+        <div class="card-note">Nasdaq-100 -0.80%. Tech selloff.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">IWM (Jul 2 Close)</div>
+        <div class="card-value down">$297.57</div>
+        <div class="card-note">Russell 2000 -0.55%. Small-cap weak.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">WTI Crude</div>
+        <div class="card-value down">$68.77</div>
+        <div class="card-note">4-month low. US-Iran Doha talks.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Gold</div>
+        <div class="card-value up">$4175.25</div>
+        <div class="card-note">+1.25% safe-haven bid.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">10-Yr Yield</div>
+        <div class="card-value neu">4.38%</div>
+        <div class="card-note">Firm near 4.38%. Fed Chair Warsh at Sintra.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Fear & Greed</div>
+        <div class="card-value neu">Neutral</div>
+        <div class="card-note">Post-record-quarter digestion.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-momentum">
+    <h2 class="section-title">📈 Momentum Stocks</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    <div class="insight-box warn">
+      <strong>Warning:</strong> Independence Day early close (13:00 ET) — low volume, high false breakout/breakdown risk. Gap &gt;5% stocks carry elevated gap-fill risk.
+    </div>
+    <table>
+      <thead>
+        <tr><th>Ticker</th><th>Company</th><th>Price</th><th>Change</th><th>Volume</th><th>Catalyst</th><th>Setup</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>$PLTR</strong></td><td>Palantir Technologies</td><td>$131.18</td><td class="text-right up">+4.33%</td><td>1.16M</td><td>DA Davidson upgrade → Buy, AI gov edge</td><td><span class="tag tag-green">CALL</span></td></tr>
+        <tr><td><strong>$MSTR</strong></td><td>Strategy Inc.</td><td>$98.85</td><td class="text-right up">+5.85%</td><td>762K</td><td>Bitcoin proxy, volatile pre-market</td><td><span class="tag tag-green">CALL</span></td></tr>
+        <tr><td><strong>$HONA</strong></td><td>Honeywell Aerospace</td><td>$247.15</td><td class="text-right up">+8.74%</td><td>4.12M</td><td>BMO coverage Outperform, $276 PT</td><td><span class="tag tag-green">CALL</span></td></tr>
+        <tr><td><strong>$DHI</strong></td><td>D.R. Horton</td><td>$166.01</td><td class="text-right up">+5.70%</td><td>61K</td><td>Home builder momentum, housing data</td><td><span class="tag tag-green">CALL</span></td></tr>
+        <tr><td><strong>$JCI</strong></td><td>Johnson Controls</td><td>$151.81</td><td class="text-right up">+4.84%</td><td>70K</td><td>Industrial momentum, HVAC demand</td><td><span class="tag tag-green">CALL</span></td></tr>
+        <tr><td><strong>$HOOD</strong></td><td>Robinhood Markets</td><td>$111.77</td><td class="text-right up">+2.87%</td><td>390K</td><td>Retail fintech volume leader</td><td><span class="tag tag-green">CALL</span></td></tr>
+        <tr><td><strong>$NVDA</strong></td><td>NVIDIA Corp.</td><td>$194.83</td><td class="text-right down">-1.39%</td><td>142M</td><td>Semicon leader, most active, below VWAP</td><td><span class="tag tag-red">PUT</span></td></tr>
+        <tr><td><strong>$AMD</strong></td><td>Advanced Micro Devices</td><td>$532.51</td><td class="text-right down">-1.55%</td><td>277K</td><td>Semicon selloff, below VWAP</td><td><span class="tag tag-red">PUT</span></td></tr>
+        <tr><td><strong>$MU</strong></td><td>Micron Technology</td><td>$1008.60</td><td class="text-right down">-2.29%</td><td>1.52M</td><td>Memory weakness, semicon correction</td><td><span class="tag tag-red">PUT</span></td></tr>
+        <tr><td><strong>$VLO</strong></td><td>Valero Energy</td><td>$258.62</td><td class="text-right down">-4.02%</td><td>139K</td><td>Oil 4-month low, refiner margin squeeze</td><td><span class="tag tag-red">PUT</span></td></tr>
+      </tbody>
+    </table>
+    <div class="insight-box danger">
+      <strong>Gap &gt;5% Risk:</strong> $MSTR (+5.85%), $DHI (+5.70%), $HONA (+8.74%) — pre-market gap &gt;5% stocks have high probability of gap-fill. NO entry before ORB (09:30-09:45 ET) confirmation. Tight stop required.
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-options">
+    <h2 class="section-title">🎯 Option Setups</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    <div class="tabs">
+      <div class="tab active" onclick="setTab(this,'tab-call')">📈 CALL (5)</div>
+      <div class="tab" onclick="setTab(this,'tab-put')">📉 PUT (5)</div>
+    </div>
+    <div class="tab-content active" id="tab-call">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">$PLTR CALL</div>
+          <div class="card-value">Strike 135 | Exp Jul 10</div>
+          <div class="card-note" style="margin-top:8px">
+            <strong>Entry:</strong> $131.50<br>
+            <strong>Stop:</strong> $129.00<br>
+            <strong>Target:</strong> $136.00<br>
+            <strong>R/R:</strong> <span class="card-value up">1.8:1</span><br>
+            <strong>Rationale:</strong> DA Davidson upgrade + AI gov momentum. Above VWAP. Entry on pre-market high reclaim.
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-label">$HOOD CALL</div>
+          <div class="card-value">Strike 115 | Exp Jul 10</div>
+          <div class="card-note" style="margin-top:8px">
+            <strong>Entry:</strong> $112.00<br>
+            <strong>Stop:</strong> $110.00<br>
+            <strong>Target:</strong> $116.00<br>
+            <strong>R/R:</strong> <span class="card-value up">2.0:1</span><br>
+            <strong>Rationale:</strong> Retail fintech volume leader. Break above $112 = momentum continuation.
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-label">$DHI CALL</div>
+          <div class="card-value">Strike 170 | Exp Jul 10</div>
+          <div class="card-note" style="margin-top:8px">
+            <strong>Entry:</strong> $166.00<br>
+            <strong>Stop:</strong> $163.50<br>
+            <strong>Target:</strong> $171.00<br>
+            <strong>R/R:</strong> <span class="card-value up">2.0:1</span><br>
+            <strong>Rationale:</strong> Home builder breakout on housing data. Gap >5% = gap-fill watch.
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-label">$MSTR CALL</div>
+          <div class="card-value">Strike 105 | Exp Jul 10</div>
+          <div class="card-note" style="margin-top:8px">
+            <strong>Entry:</strong> $99.00<br>
+            <strong>Stop:</strong> $96.00<br>
+            <strong>Target:</strong> $105.00<br>
+            <strong>R/R:</strong> <span class="card-value up">2.0:1</span><br>
+            <strong>Rationale:</strong> Bitcoin proxy, volatile. Gap >5% = high gap-fill risk. Tight stop.
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-label">$JCI CALL</div>
+          <div class="card-value">Strike 155 | Exp Jul 10</div>
+          <div class="card-note" style="margin-top:8px">
+            <strong>Entry:</strong> $152.00<br>
+            <strong>Stop:</strong> $149.50<br>
+            <strong>Target:</strong> $157.00<br>
+            <strong>R/R:</strong> <span class="card-value up">2.0:1</span><br>
+            <strong>Rationale:</strong> Industrial momentum, HVAC demand. Clean breakout above $152.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-content" id="tab-put">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">$NVDA PUT</div>
+          <div class="card-value">Strike 190 | Exp Jul 10</div>
+          <div class="card-note" style="margin-top:8px">
+            <strong>Entry:</strong> $195.00<br>
+            <strong>Stop:</strong> $198.50<br>
+            <strong>Target:</strong> $188.00<br>
+            <strong>R/R:</strong> <span class="card-value up">2.0:1</span><br>
+            <strong>Rationale:</strong> Semicon leader, below VWAP. Sector selloff continuation. Entry on VWAP reject.
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-label">$AMD PUT</div>
+          <div class="card-value">Strike 525 | Exp Jul 10</div>
+          <div class="card-note" style="margin-top:8px">
+            <strong>Entry:</strong> $532.00<br>
+            <strong>Stop:</strong> $539.00<br>
+            <strong>Target:</strong> $518.00<br>
+            <strong>R/R:</strong> <span class="card-value up">2.0:1</span><br>
+            <strong>Rationale:</strong> Semicon weakness. Below VWAP = PUT bias. Entry on ORB fail.
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-label">$MU PUT</div>
+          <div class="card-value">Strike 990 | Exp Jul 10</div>
+          <div class="card-note" style="margin-top:8px">
+            <strong>Entry:</strong> $1008.00<br>
+            <strong>Stop:</strong> $1022.00<br>
+            <strong>Target:</strong> $980.00<br>
+            <strong>R/R:</strong> <span class="card-value up">1.9:1</span><br>
+            <strong>Rationale:</strong> Memory sector correction. High price = wide bid/ask, reduce size.
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-label">$INTC PUT</div>
+          <div class="card-value">Strike 120 | Exp Jul 10</div>
+          <div class="card-note" style="margin-top:8px">
+            <strong>Entry:</strong> $125.00<br>
+            <strong>Stop:</strong> $127.50<br>
+            <strong>Target:</strong> $120.00<br>
+            <strong>R/R:</strong> <span class="card-value up">2.0:1</span><br>
+            <strong>Rationale:</strong> Weak chip, below VWAP. Entry on $125 breakdown.
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-label">$VLO PUT</div>
+          <div class="card-value">Strike 250 | Exp Jul 10</div>
+          <div class="card-note" style="margin-top:8px">
+            <strong>Entry:</strong> $258.00<br>
+            <strong>Stop:</strong> $262.00<br>
+            <strong>Target:</strong> $250.00<br>
+            <strong>R/R:</strong> <span class="card-value up">2.0:1</span><br>
+            <strong>Rationale:</strong> Oil 4-month low, energy selloff. Break below $258 = momentum.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="insight-box warn">
+      <strong>0DTE BANNED:</strong> Independence Day early close (13:00 ET) and Jul 3 expiry = 0DTE is BANNED. All setups are 1-week (Jul 10 expiry).
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-risk">
+    <h2 class="section-title">⚠️ Risk & Warnings</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    <div class="insight-box danger">
+      <strong>Independence Day Early Close:</strong> Markets close at 13:00 ET today. Low volume + wide spreads = high false breakout risk. Reduce position size by 50%. Trust momentum setups only after 10:00 ET.
+    </div>
+    <div class="insight-box warn">
+      <strong>Semiconductor Selloff:</strong> ACLS -18.97%, VECO -18.48%, VICR -19.21%, AEHR -17.13%, UCTT -17.84%, MXL -17.15%. Major semicon sector crash. $NVDA, $AMD, $MU PUTs play continuation. Use tight stops.
+    </div>
+    <div class="insight-box warn">
+      <strong>Gap-Fill Risk:</strong> Gap &gt;5% stocks ($HONA +8.74%, $MSTR +5.85%, $DHI +5.70%) have high probability of gap-fill between 09:30-10:00. Wait for ORB (09:30-09:45) confirmation before entry.
+    </div>
+    <div class="insight-box bull">
+      <strong>Opportunity:</strong> VIX 16.15 = complacency. Post-record-quarter digestion. SPY 7,483 near record. Pullback = buying opportunity or failed breakout? 7,440 support is critical.
+    </div>
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-num">2%</div><div class="kpi-label">Max Per Ticker</div></div>
+      <div class="kpi"><div class="kpi-num">15%</div><div class="kpi-label">Max Per Sector</div></div>
+      <div class="kpi"><div class="kpi-num">2.0x</div><div class="kpi-label">Min R/R</div></div>
+      <div class="kpi"><div class="kpi-num">09:30</div><div class="kpi-label">ORB Start</div></div>
+      <div class="kpi"><div class="kpi-num">13:00</div><div class="kpi-label">Early Close ET</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-macro">
+    <h2 class="section-title">📅 Earnings & Macro</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    <div class="timeline">
+      <div class="timeline-item bear">
+        <div class="timeline-date">Today, Jul 3</div>
+        <div class="timeline-body">Independence Day öncesi — piyasa 13:00 ET'de kapanıyor (early close). Düşük hacim, yüksek volatilite riski.</div>
+      </div>
+      <div class="timeline-item neu">
+        <div class="timeline-date">Today, Jul 3</div>
+        <div class="timeline-body">Earnings takvimi: Hemen hemen boş. Makro data: Yok.</div>
+      </div>
+      <div class="timeline-item bear">
+        <div class="timeline-date">Jul 4, Saturday</div>
+        <div class="timeline-body">ABD Tatil — Piyasalar kapalı.</div>
+      </div>
+      <div class="timeline-item warn">
+        <div class="timeline-date">Jul 7, Tuesday</div>
+        <div class="timeline-body">Makro: ISM Services (Jun), S&P PMI Final.</div>
+      </div>
+      <div class="timeline-item danger">
+        <div class="timeline-date">Jul 14, Tuesday</div>
+        <div class="timeline-body">CPI (Jun) — High impact. Beklenen: 0.5% MoM, 4.2% YoY.</div>
+      </div>
+      <div class="timeline-item danger">
+        <div class="timeline-date">Jul 15, Wednesday</div>
+        <div class="timeline-body">PPI (Jun) — High impact. Beklenen: 1.1% YoY.</div>
+      </div>
+      <div class="timeline-item danger">
+        <div class="timeline-date">Jul 29, Wednesday</div>
+        <div class="timeline-body">FOMC Meeting — Rate decision + statement.</div>
+      </div>
+    </div>
+    <div class="insight-box" style="margin-top:16px">
+      <strong>Last Week Recap:</strong> NFP 57K (exp 115K) — very soft. ADP 98K (exp 110K). ISM Manufacturing 53.3% (exp 53.9%). Labor market slowing. Fed rate cut expectations rising. 10-yr yield 4.38% = high mortgage rates, weak housing data.
+    </div>
+  </div>
+</section>
+
+<div class="footer">Gistify Flow | {date_en}</div>
+
+</div>
+</body>
+</html>
