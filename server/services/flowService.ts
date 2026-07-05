@@ -138,8 +138,8 @@ function scoreFlowDuplicateCandidate(report: DailyReportRecord) {
   const sourceLabel = normalizeString(
     report.content.sourceLabel || report.sourceFolder
   )
-    .replace(/\\/g, "/")
-    .toLowerCase();
+  .replace(/\\/g, "/")
+  .toLowerCase();
   const html = normalizeString(report.content.html || "");
   let score = 0;
 
@@ -338,6 +338,47 @@ function matchFirstGroup(value: string, patterns: RegExp[]) {
   return "";
 }
 
+function extractEnTitle(enContent: string, contentFormat: string): string {
+  if (contentFormat === "html" || enContent.trim().startsWith("<")) {
+    return (
+      matchFirstGroup(enContent, [/<title>([^<]+)<\/title>/i]) ||
+      stripHtml(matchFirstGroup(enContent, [/<h1[^>]*>([\s\S]*?)<\/h1>/i]))
+    );
+  }
+  // Markdown: frontmatter title or first h1 heading
+  return (
+    matchFirstGroup(enContent, [/^title:\s*(.+)$/im]) ||
+    matchFirstGroup(enContent, [/^#\s+(.+)$/m])
+  );
+}
+
+function extractEnHeadline(enContent: string, contentFormat: string): string {
+  if (contentFormat === "html" || enContent.trim().startsWith("<")) {
+    return (
+      normalizeString(
+        matchFirstGroup(enContent, [
+          /<meta[^>]*name=["']description["'][^>]*content=["']([^"']+)["']/i,
+        ])
+      ) ||
+      stripHtml(matchFirstGroup(enContent, [/<h1[^>]*>([\s\S]*?)<\/h1>/i]))
+    );
+  }
+  // Markdown: first meaningful paragraph after title/heading
+  const lines = enContent.split("\n");
+  let foundHeading = false;
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#") || trimmed.startsWith("title:")) {
+      if (trimmed.startsWith("#")) foundHeading = true;
+      continue;
+    }
+    if (foundHeading || trimmed.length > 20) {
+      return trimmed;
+    }
+  }
+  return "";
+}
+
 function extractTitleAndCompany(report: DailyReportRecord, html: string) {
   const htmlTitle = matchFirstGroup(html, [/<title>([^<]+)<\/title>/i]);
   const sourceTitle = htmlTitle || report.title;
@@ -475,15 +516,10 @@ function buildFlowReportSummary(
   const contentFormat = detectContentFormat(report);
   const reportKind = detectFlowReportKind(report, html);
   const isEn = lang === "en";
-  const enHtml = isEn ? report.content.translations?.en : undefined;
-  const enTitle = enHtml ? matchFirstGroup(enHtml, [/<title>([^<]+)<\/title>/i]) : "";
-  const enH1Raw = enHtml ? matchFirstGroup(enHtml, [/<h1[^>]*>([\s\S]*?)<\/h1>/i]) : "";
-  const enHeadline = enHtml
-    ? normalizeString(
-        matchFirstGroup(enHtml, [/<meta[^>]*name=["']description["'][^>]*content=["']([^"']+)["']/i]) ||
-        (enH1Raw ? stripHtml(enH1Raw) : "")
-      )
-    : "";
+  const enContent = isEn ? report.content.translations?.en : undefined;
+  const actualFormat = report.content.contentFormat || contentFormat;
+  const enTitle = enContent ? extractEnTitle(enContent, actualFormat) : "";
+  const enHeadline = enContent ? extractEnHeadline(enContent, actualFormat) : "";
   const title = (isEn && enTitle) || report.title;
   const headline = (isEn && enHeadline) || report.content.headline;
   const hasEnTranslation = Boolean(report.content.translations?.en);
