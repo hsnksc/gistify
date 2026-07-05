@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMD vs NVIDIA Değerleme Ayrışması: CPU Bottleneck Trade | $AMD $NVDA</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="AMD vs NVIDIA Değerleme Ayrışması: CPU Bottleneck Trade | $AMD $NVDA" />
+<meta property="og:description" content="Gistify flow deep research: AMD vs NVIDIA valuation decoupling, CPU bottleneck trade, agentic AI infrastructure demand" />
+<meta property="og:url" content="https://gistify.pro/flow/daily-amd-nvidia-valuation-decoupling-6-temmuz-2026.html" />
+<meta property="og:image" content="https://gistify.pro/gistifylogo.png" />
+<meta property="og:site_name" content="Gistify" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="AMD vs NVIDIA Değerleme Ayrışması: CPU Bottleneck Trade | $AMD $NVDA" />
+<meta name="twitter:description" content="Gistify flow deep research: AMD vs NVIDIA valuation decoupling, CPU bottleneck trade, agentic AI infrastructure demand" />
+<meta name="twitter:image" content="https://gistify.pro/gistifylogo.png" />
+<style>
+/* GISTIFY FLOW — Unified Dark Theme */
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:720px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.hero-date{display:inline-flex;align-items:center;gap:5px;color:var(--gf-muted)}
+
+/* META PILLS */
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+
+/* SECTIONS */
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s;display:flex;align-items:center;justify-content:space-between}
+.section-head-inner:hover{background:var(--gf-card)}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent);transition:transform .2s}
+.section-head.collapsed .icon{transform:rotate(-90deg)}
+.section-body{padding:18px;display:none}
+.section-head:not(.collapsed) .section-body{display:block}
+
+/* GRID & CARDS */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px;transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-1px);border-color:rgba(56,189,248,.25)}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+
+/* TABS */
+.tabs{display:flex;gap:2px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:14px}
+.tab{flex:1;padding:8px 10px;text-align:center;font-size:0.82rem;font-weight:600;border-radius:6px;cursor:pointer;user-select:none;transition:background .15s,color .15s;border:none;color:var(--gf-muted);background:transparent}
+.tab.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.tab:hover:not(.active){color:var(--gf-text)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.text-right{text-align:right}
+.text-center{text-align:center}
+
+/* PROGRESS */
+.progress-bar{background:var(--gf-card);border-radius:4px;height:18px;overflow:hidden;margin:4px 0}
+.progress-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:0.68rem;font-weight:700;color:#fff}
+.fill-bull{background:linear-gradient(90deg,#16a34a,#4ade80)}
+.fill-base{background:linear-gradient(90deg,#ca8a04,#fbbf24)}
+.fill-bear{background:linear-gradient(90deg,#dc2626,#f87171)}
+
+/* INSIGHT BOX */
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+
+/* TAGS */
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--gf-border)}
+.timeline-item{position:relative;margin-bottom:14px}
+.timeline-item::before{content:'';position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--gf-card);border:2px solid var(--gf-border)}
+.timeline-item.bull::before{border-color:var(--gf-success);background:var(--gf-success)}
+.timeline-item.bear::before{border-color:var(--gf-danger);background:var(--gf-danger)}
+.timeline-item.warn::before{border-color:var(--gf-warning);background:var(--gf-warning)}
+.timeline-date{font-size:0.78rem;color:var(--gf-muted);font-weight:600}
+.timeline-body{font-size:0.85rem;margin-top:3px;color:var(--gf-text)}
+
+/* FOOTER */
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+.tabs{flex-wrap:wrap}
+.tab{flex:none;min-width:80px}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+}
+
+/* LANG SWITCH */
+.lang-switch{display:inline-flex;gap:4px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:16px}
+.lang-btn{padding:6px 14px;border-radius:8px;font-size:0.8rem;font-weight:600;border:none;cursor:pointer;background:transparent;color:var(--gf-muted);transition:all .15s}
+.lang-btn.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.lang-btn:hover:not(.active){color:var(--gf-text)}
+[data-lang]{display:none}
+[data-lang].visible{display:block}
+[data-lang-inline]{display:none}
+[data-lang-inline].visible{display:inline}
+</style>
+<script>
+function toggle(id){var el=document.getElementById(id);if(!el)return;el.classList.toggle('collapsed');}
+function setTab(btn,tabId){var parent=btn.closest('.tabs');if(parent){parent.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});parent.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});}btn.classList.add('active');var tc=document.getElementById(tabId);if(tc)tc.classList.add('active');}
+</script>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HERO -->
+<div class="hero" id="hero" data-timestamp="2026-07-06T01:30:00+03:00">
+  <h1 class="hero-h">AMD vs NVIDIA Değerleme Ayrışması: CPU Bottleneck Trade</h1>
+  <p class="hero-desc">Deep Research Analysis — 4 boyut, 70+ kaynak, çapraz doğrulama. NVIDIA'nın 16x Fwd P/E'si mi yoksa AMD'nin 40x Fwd P/E'si mi haklı? Agentic AI CPU talebi ve hyperscaler 6GW anlaşmaları üzerine kapsamlı araştırma.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info hero-date">📅 6 Temmuz 2026</span>
+    <span class="meta-pill info hero-date" data-timestamp="2026-07-06T01:30:00+03:00">⏰ 01:30 İstanbul</span>
+    <span class="hero-ticker">$AMD</span>
+    <span class="hero-ticker">$NVDA</span>
+    <span class="meta-pill bull">Deep Research</span>
+    <span class="meta-pill neu">CPU Bottleneck</span>
+    <span class="meta-pill bear">Valuation</span>
+  </div>
+</div>
+
+<!-- BÖLÜM 1: ÖZET METRİKLERİ -->
+<section>
+  <div class="section-head" id="sec-ozet">
+    <div class="section-head-inner" onclick="toggle('sec-ozet')">
+      <h2 class="section-title">📊 Özet Metrikleri</h2>
+      <div class="icon">▾</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="grid">
+      <div class="card">
+        <div class="card-label">AMD Fiyat (2 Temmuz)</div>
+        <div class="card-value">$517.82</div>
+        <div class="card-note">YTD +141.79% | Market Cap $844.36B</div>
+      </div>
+      <div class="card">
+        <div class="card-label">NVIDIA Fiyat (2 Temmuz)</div>
+        <div class="card-value">$194.83</div>
+        <div class="card-note">YTD +4% | Market Cap $4.719T</div>
+      </div>
+      <div class="card">
+        <div class="card-label">AMD Forward P/E</div>
+        <div class="card-value up">~40.0x</div>
+        <div class="card-note">Trailing P/E 172.6x | PEG 0.44-1.35x</div>
+      </div>
+      <div class="card">
+        <div class="card-label">NVIDIA Forward P/E</div>
+        <div class="card-value down">~16.0x</div>
+        <div class="card-note">Trailing P/E 29.5x | PEG 0.43-0.60x</div>
+      </div>
+      <div class="card">
+        <div class="card-label">AMD Data Center Q1</div>
+        <div class="card-value up">$5.8B</div>
+        <div class="card-note">+57% YoY | Toplam revenue $10.3B (+38%)</div>
+      </div>
+      <div class="card">
+        <div class="card-label">NVIDIA Data Center Q1</div>
+        <div class="card-value up">~$81.6B</div>
+        <div class="card-note">~13x AMD büyüklüğünde | Gross Margin 75%</div>
+      </div>
+      <div class="card">
+        <div class="card-label">EPYC Revenue Share</div>
+        <div class="card-value up">46.2%</div>
+        <div class="card-note">Unit share 27.4% | ~70% ASP premium</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Hyperscaler Commitments</div>
+        <div class="card-value neu">6GW x 3</div>
+        <div class="card-note">Meta + OpenAI + Oracle | H2 2026 ramp</div>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <strong>Ana Tez:</strong> AMD'nin ~40x Fwd P/E'si ile NVIDIA'nın ~16x Fwd P/E'si arasındaki 2.6x ayrışma, büyüme ve marj farkıyla açıklanamaz. Bu bir "narrative premium" — AMD'nin AI underdog hikayesi (MI450/Helios) için spekülatif bir prim. DCF baz senaryosunda AMD $490 (mevcut fiyat $518), NVIDIA $320 (mevcut $195) — yani AMD primli, NVIDIA indirimli.
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 2: DOĞRULANMIŞ BULGULAR -->
+<section>
+  <div class="section-head" id="sec-bulgular">
+    <div class="section-head-inner" onclick="toggle('sec-bulgular')">
+      <h2 class="section-title">✅ Doğrulanmış Bulgular (High Confidence)</h2>
+      <div class="icon">▾</div>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="tabs">
+      <div class="tab active" onclick="setTab(this,'tab-val')">Değerleme</div>
+      <div class="tab" onclick="setTab(this,'tab-gpu')">GPU & ROCm</div>
+      <div class="tab" onclick="setTab(this,'tab-cpu')">CPU & EPYC</div>
+      <div class="tab" onclick="setTab(this,'tab-deal')">Anlaşmalar</div>
+      <div class="tab" onclick="setTab(this,'tab-risk')">Riskler</div>
+    </div>
+
+    <div id="tab-val" class="tab-content active">
+      <h3 style="font-size:0.95rem;margin:0 0 10px;color:var(--gf-accent)">Valuation Metrics — Güncel Veriler</h3>
+      <table>
+        <thead>
+          <tr><th>Metrik</th><th class="text-right">AMD</th><th class="text-right">NVIDIA</th><th class="text-right">Ratio</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Forward P/E</td><td class="text-right">38.9-41.0x</td><td class="text-right">15.1-17.0x</td><td class="text-right">~2.6x</td></tr>
+          <tr><td>Trailing P/E</td><td class="text-right">169-194x</td><td class="text-right">29.5-34x</td><td class="text-right">~5-6x</td></tr>
+          <tr><td>EV/EBITDA</td><td class="text-right">81-116x</td><td class="text-right">24-30x</td><td class="text-right">~3.4-4.8x</td></tr>
+          <tr><td>P/S Ratio</td><td class="text-right">22.7x</td><td class="text-right">18.6-18.8x</td><td class="text-right">~1.2x</td></tr>
+          <tr><td>PEG (Forward)</td><td class="text-right">0.44-1.35x</td><td class="text-right">0.43-0.60x</td><td class="text-right">Karşılaştırılabilir</td></tr>
+          <tr><td>Net Margin</td><td class="text-right">13.4%</td><td class="text-right">63.0%</td><td class="text-right">0.21x</td></tr>
+          <tr><td>DCF Baz Senaryo</td><td class="text-right">$490</td><td class="text-right">$320</td><td class="text-right">—</td></tr>
+          <tr><td>Analyst Hedef</td><td class="text-right">$508 ($320-$700)</td><td class="text-right">$302</td><td class="text-right">—</td></tr>
+        </tbody>
+      </table>
+      <div class="insight-box warn">
+        <strong>Kaynak Raporun Hatası:</strong> Kullanıcının sağladığı orijinal rapor (5 Temmuz 2026) AMD Fwd P/E'yi 58-59x, NVIDIA'yı 19-20x olarak belirtiyor. Derin araştırma ile bu rakamların güncel değil olduğu tespit edildi: AMD konsensus Fwd P/E ~40x, NVIDIA ~16x. Ratio ~2.6x (3x değil).
+      </div>
+    </div>
+
+    <div id="tab-gpu" class="tab-content">
+      <h3 style="font-size:0.95rem;margin:0 0 10px;color:var(--gf-accent)">GPU Market Share & MI450</h3>
+      <table>
+        <thead>
+          <tr><th>Metrik</th><th class="text-right">NVIDIA</th><th class="text-right">AMD</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>AI Accelerator Share (Revenue)</td><td class="text-right">80-90% (87% 2024 → 75% 2026E)</td><td class="text-right">5-7% (~$7-8B)</td></tr>
+          <tr><td>Data Center Revenue</td><td class="text-right">~$81.6B/q (Q1 FY2027)</td><td class="text-right">$5.8B (Q1 2026)</td></tr>
+          <tr><td>Next-Gen Mimarisi</td><td class="text-right">Vera Rubin R100: 3nm, 288GB HBM4, 50 PFLOPS FP4</td><td class="text-right">MI450: CDNA 5, 2nm, 432GB HBM4, 40 PFLOPS FP4</td></tr>
+          <tr><td>Rack-Scale</td><td class="text-right">NVL72 Rubin: ~1.5 exaFLOPS FP8</td><td class="text-right">Helios 72 MI455X: 2.9 exaFLOPS FP4, 31TB HBM4</td></tr>
+          <tr><td>Custom Silicon Tehdidi</td><td class="text-right">$25B+ by 2026 (27.8% market)</td><td class="text-right">Açık pazar stratejisi</td></tr>
+        </tbody>
+      </table>
+      <div class="insight-box">
+        <strong>ROCm vs CUDA:</strong> ROCm inference'da CUDA'nın 75-85%'ini, training'de 70-80%'ini yakalıyor. PyTorch + vLLM + SGLang production-ready. Meta %100 Llama 405B inference'ı MI300X üzerinde çalıştırıyor. Ama TensorRT-LLM ve FlashAttention 3 hala CUDA-only. Ekosistem gap'i 3-5 yıl daha sürecek.
+      </div>
+    </div>
+
+    <div id="tab-cpu" class="tab-content">
+      <h3 style="font-size:0.95rem;margin:0 0 10px;color:var(--gf-accent)">EPYC Pricing Power & CPU Bottleneck</h3>
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">EPYC Revenue Share Q1 2026</div>
+          <div class="card-value up">46.2%</div>
+          <div class="card-note">Unit share 27.4% | ~70% ASP premium</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Server CPU TAM 2030</div>
+          <div class="card-value up">$120-170B</div>
+          <div class="card-note">$35B'dan (2025) | >35% CAGR</div>
+        </div>
+        <div class="card">
+          <div class="card-label">CPU:GPU Ratio Shift</div>
+          <div class="card-value neu">1:4-1:8 → 1:1-1:2</div>
+          <div class="card-note">Agentic AI confirmed by TrendForce, Intel, AMD</div>
+        </div>
+        <div class="card">
+          <div class="card-label">EPYC Supply Status</div>
+          <div class="card-value up">Sold Out</div>
+          <div class="card-note">Lead times >30 weeks | Intel de 6 ay</div>
+        </div>
+      </div>
+      <div class="insight-box bull">
+        <strong>CPU Bottleneck Trade GERÇEK:</strong> Georgia Tech araştırması agentic AI workload'larında CPU latency'nin toplam latency'nin %90.6'sını oluşturduğunu gösteriyor. 1GW agentic data center 30M CPU core (legacy) yerine 120M core gerektiriyor — 4x artış. Bu yapısal bir talep artışı, döngüsel değil.
+      </div>
+    </div>
+
+    <div id="tab-deal" class="tab-content">
+      <h3 style="font-size:0.95rem;margin:0 0 10px;color:var(--gf-accent)">Hyperscaler Anlaşmaları</h3>
+      <div class="timeline">
+        <div class="timeline-item bull">
+          <div class="timeline-date">6 Ekim 2025</div>
+          <div class="timeline-body"><strong>OpenAI — 6GW AMD Instinct:</strong> Definitive agreement. 160M share warrant ($0.01/share). H2 2026'da 1GW MI450. AMD'ye "tens of billions" revenue.</div>
+        </div>
+        <div class="timeline-item bull">
+          <div class="timeline-date">14 Ekim 2025</div>
+          <div class="timeline-body"><strong>Oracle — 50,000 MI450:</strong> Q3 2026'da başlıyor. İlk public AI supercluster on Helios racks. Venice CPU + Vulcano DPU.</div>
+        </div>
+        <div class="timeline-item bull">
+          <div class="timeline-date">24 Şubat 2026</div>
+          <div class="timeline-body"><strong>Meta — 6GW AMD Instinct:</strong> Custom MI450, Helios rack, Venice CPU lead customer. 160M share warrant. Meta 17 Şubat'ta NVIDIA ile anlaşmıştı — dual-vendor strateji.</div>
+        </div>
+        <div class="timeline-item warn">
+          <div class="timeline-date">16 Haziran 2026</div>
+          <div class="timeline-body"><strong>Rackspace — 30MW:</strong> Definitive agreement, late 2026-2028. Bazı ticari şartlar henüz netleşmedi.</div>
+        </div>
+      </div>
+      <div class="insight-box warn">
+        <strong>Morgan Stanley Uyarısı:</strong> "12GW'lik hedef biraz aspirational — henüz rack teslimatı yapılmadı." Anlaşmalar bağlayıcı ama uygulama riski var. "Stock-for-watts" modeli AMD'den müşteriye nakit akışı yaratıyor, tersine değil.
+      </div>
+    </div>
+
+    <div id="tab-risk" class="tab-content">
+      <h3 style="font-size:0.95rem;margin:0 0 10px;color:var(--gf-accent)">Risk Faktörleri</h3>
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">AMD IV Rank</div>
+          <div class="card-value up">100%</div>
+          <div class="card-note">IV ~71-79% | 52-haftalık zirve</div>
+        </div>
+        <div class="card">
+          <div class="card-label">AMD Put-Call OI</div>
+          <div class="card-value down">2.45</div>
+          <div class="card-note">Ayısal hedge | Short interest 2.88%</div>
+        </div>
+        <div class="card">
+          <div class="card-label">AMD Insider</div>
+          <div class="card-value down">-7.01%</div>
+          <div class="card-note">Kurum +14.09% | İçeriden satış</div>
+        </div>
+        <div class="card">
+          <div class="card-label">TSMC Risk</div>
+          <div class="card-value down">16%</div>
+          <div class="card-note">Polymarket: Tayvan çatışma ihtimali</div>
+        </div>
+      </div>
+      <div class="insight-box danger">
+        <strong>AMD Riskleri:</strong> MI450/Helios gecikme riski, hyperscaler capex yavaşlaması, ROCm olgunlaşmama, Intel Xeon 6/7 rekabeti, TSMC bağımlılığı, marj baskısı. AMD 12GW taahhütlerini karşılayamazsa 40x P/E sıkışabilir.
+      </div>
+      <div class="insight-box danger">
+        <strong>NVIDIA Riskleri:</strong> Marj sıkıştırma 78% → 71-72%, custom silicon tehdidi, müşteri konsantrasyonu (top 2 = 39% revenue), Blackwell → Rubin geçiş riski, Çin ihracat kısıtlamaları ($4.5B charge).
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 3: ÇELİŞKİ ÇÖZÜMLEMESİ -->
+<section>
+  <div class="section-head" id="sec-celiski">
+    <div class="section-head-inner" onclick="toggle('sec-celiski')">
+      <h2 class="section-title">⚠️ Çelişki Çözümlemesi</h2>
+      <div class="icon">▾</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <table>
+      <thead>
+        <tr><th>Konu</th><th>Kaynak Rapor</th><th>Doğrulanmış Gerçek</th><th>Durum</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>AMD Forward P/E</td><td>58-59x</td><td>~38.9-41.0x (konsensus)</td><td><span class="tag tag-red">YANLIŞ</span></td></tr>
+        <tr><td>NVIDIA Forward P/E</td><td>19-20x</td><td>~15.1-17.0x</td><td><span class="tag tag-red">GÜNCEL DEĞİL</span></td></tr>
+        <tr><td>MI450 Mimarisi</td><td>CDNA 4, 3nm, 288GB HBM3e</td><td>CDNA 5, 2nm, 432GB HBM4</td><td><span class="tag tag-red">ESKİ</span></td></tr>
+        <tr><td>AMD GPU Share</td><td>~5-10%</td><td>~5-7% ($7-8B)</td><td><span class="tag tag-orange">YAKIN</span></td></tr>
+        <tr><td>NVIDIA GPU Share</td><td>~90%</td><td>80-90%, 87%→75%</td><td><span class="tag tag-green">DOĞRU</span></td></tr>
+        <tr><td>Deal Firmness</td><td>"Taahhütler"</td><td>Definitive ama Morgan Stanley "aspirational"</td><td><span class="tag tag-orange">YORUM</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- BÖLÜM 4: DERİN ANALİZ — 7 INSIGHT -->
+<section>
+  <div class="section-head" id="sec-insight">
+    <div class="section-head-inner" onclick="toggle('sec-insight')">
+      <h2 class="section-title">🔬 7 Cross-Dimension Insight</h2>
+      <div class="icon">▾</div>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="insight-box">
+      <strong>Insight 1: Narrative Premium, Not Growth Premium</strong><br>
+      AMD'nin 2.6x Fwd P/E premium'u büyüme oranları (AMD ~46% vs NVDA ~85-120%) veya marjlar (AMD 13% vs NVDA 63%) ile açıklanamaz. Bu bir "AI underdog" hikayesi primi. DCF baz senaryosunda AMD $490 (mevcut $518), NVIDIA $320 (mevcut $195). Pazar AMD'yi mükemmellik için, NVIDIA'yı yavaşlama için fiyatlıyor.
+    </div>
+
+    <div class="insight-box">
+      <strong>Insight 2: Custom Silicon > AMD as Real NVIDIA Threat</strong><br>
+      NVIDIA'ya en büyük tehdit AMD değil, custom silicon (TPU, Trainium, MTIA, Maia). 2026'da $25B+ pazar, share 20.9%→27.8%. Hyperscaler'lar hem NVIDIA bağımlılığını azaltıyor hem de AMD'nin açık pazar fırsatını daraltıyor. Broadcom $100B custom AI chip revenue 2027 hedefi belirledi.
+    </div>
+
+    <div class="insight-box warn">
+      <strong>Insight 3: "Stock-for-Watts" Model — Yeni Bir Risk</strong><br>
+      Meta ve OpenAI'ya 160M'er share warrant (toplam 320M hisse, ~%20 potansiyel sulandırma). AMD müşterilere hisse vererek müşteri olmalarını sağlıyor. Morgan Stanley: "finansal taahhüt AMD'den müşteriye doğru." EPS büyümesi hisse sayısı artışıyla dengeleyebilir.
+    </div>
+
+    <div class="insight-box bull">
+      <strong>Insight 4: Agentic AI = CPU TAM Expansion, Not GPU Replacement</strong><br>
+      Server CPU TAM $35B→$120-170B (2030). CPU:GPU ratio 1:4-1:8'den 1:1-1:2'ye. Bu eklemeli, değiştirici değil. AMD hem rekabetçi CPU (EPYC) hem GPU (Instinct) satan tek şirket. NVIDIA'nın açık pazar CPU'su yok (Grace captive). Intel'in AI GPU'su yok.
+    </div>
+
+    <div class="insight-box bull">
+      <strong>Insight 5: NVIDIA's 16x P/E = "Dominance Discount"</strong><br>
+      NVIDIA 16x Fwd P/E ile S&P 500 ortalamasının (20x) altında işlem görüyor. Pazar NVIDIA'nın 90% share, 75% marj ve $1T revenue path'in sürdürülemez olduğunu fiyatlıyor. Ama PEG 0.60 — eğer AI buildout devam ederse bu bir value trap değil, bir fırsat.
+    </div>
+
+    <div class="insight-box warn">
+      <strong>Insight 6: Intel's Collapse = AMD's Pricing Power Window</strong><br>
+      AMD'nin ~70% ASP premium'ı ve 46.2% revenue share'ı sadece EPYC'ın teknik üstünlüğünden değil, Intel'in multi-yıllık rekabet boşluğundan kaynaklanıyor. Diamond Rapids 2027'ye ertelendi. Intel 18A yield sorunları. Ama Lip-Bu Tan'ın dönüşümü veya ARM'nin volume segment baskısı bu pencereyi kapatabilir.
+    </div>
+
+    <div class="insight-box">
+      <strong>Insight 7: Inference Inflection = AMD's Best Opportunity & Ceiling</strong><br>
+      Inference 2026'da training'i ilk kez geçiyor ($20.6B). Inference 80-90% lifetime AI maliyeti. AMD memory-rich mimarisi inference'da avantajlı. Meta %100 Llama on MI300X bunu kanıtlıyor. Ama inference daha düşük marjlı ve custom silicon'a daha açık. AMD'nin GPU marjları NVIDIA'nın altında kalabilir.
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 5: YATIRIM STRATEJİSİ -->
+<section>
+  <div class="section-head" id="sec-strateji">
+    <div class="section-head-inner" onclick="toggle('sec-strateji')">
+      <h2 class="section-title">🎯 Yatırım Stratejisi</h2>
+      <div class="icon">▾</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="tabs">
+      <div class="tab active" onclick="setTab(this,'tab-bull')">Bull Case</div>
+      <div class="tab" onclick="setTab(this,'tab-base')">Base Case</div>
+      <div class="tab" onclick="setTab(this,'tab-bear')">Bear Case</div>
+    </div>
+
+    <div id="tab-bull" class="tab-content active">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">AMD Bull</div>
+          <div class="card-value up">$720</div>
+          <div class="card-note">65% revenue CAGR, 48x exit multiple | 12GW executes, EPYC TAM expands to $170B</div>
+        </div>
+        <div class="card">
+          <div class="card-label">NVIDIA Bull</div>
+          <div class="card-value up">$425</div>
+          <div class="card-note">80% revenue CAGR, 52x exit | $1T converts, dominance discount reverses</div>
+        </div>
+      </div>
+      <div class="insight-box bull">
+        <strong>Optimal Barbell:</strong> Her ikisini de tut. NVIDIA = düşük volatilite, yüksek marj, makul değerleme (16x). AMD = yüksek beta, büyük upside (12GW), CPU exposure. Correlation 0.48 — sınırlı çeşitlendirme. Doğru ağırlık: risk toleransına göre %60 NVDA / %40 AMD (dengeli) veya %40 NVDA / %60 AMD (agresif).
+      </div>
+    </div>
+
+    <div id="tab-base" class="tab-content">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">AMD Base</div>
+          <div class="card-value neu">$490</div>
+          <div class="card-note">45% revenue CAGR, 35x exit | EPYC güçlü, GPU 10-15% share</div>
+        </div>
+        <div class="card">
+          <div class="card-label">NVIDIA Base</div>
+          <div class="card-value neu">$320</div>
+          <div class="card-note">60% revenue CAGR, 38x exit | Marj 71-72%, custom silicon 25%</div>
+        </div>
+      </div>
+      <div class="insight-box">
+        <strong>Base Senaryo:</strong> AMD mevcut fiyatının (%6) hafif altında, NVIDIA %66 upside potansiyeli. Pazar NVIDIA'yı undervalued, AMD'yi fair-valued olarak fiyatlıyor. Beklenti: AMD'nin 12GW'sinin yarısı zamanında teslim, NVIDIA marjları 71-72% seviyesinde stabilizasyon.
+      </div>
+    </div>
+
+    <div id="tab-bear" class="tab-content">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">AMD Bear</div>
+          <div class="card-value down">$154</div>
+          <div class="card-note">15% revenue CAGR, 22x exit | MI450 gecikme, hyperscaler capex cut</div>
+        </div>
+        <div class="card">
+          <div class="card-label">NVIDIA Bear</div>
+          <div class="card-value down">$115</div>
+          <div class="card-note">20% revenue CAGR, 22x exit | AI bubble burst, custom silicon 40%</div>
+        </div>
+      </div>
+      <div class="insight-box danger">
+        <strong>Bear Tetikleyiciler:</strong> Hyperscaler capex-to-sales oranları zaten rekor seviyede (Meta 55%, Microsoft 54%). AI spending digestion cycle başlarsa NVIDIA ilk ve en sert etkilenecek. AMD narrative premium'u en hızlı kaybedecek olan. IV Rank 100% = binary event risk.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 6: KATALİZOR ZAMAN ÇİZELGESİ -->
+<section>
+  <div class="section-head" id="sec-timeline">
+    <div class="section-head-inner" onclick="toggle('sec-timeline')">
+      <h2 class="section-title">⏱️ Katalizor Zaman Çizelgesi</h2>
+      <div class="icon">▾</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="timeline">
+      <div class="timeline-item warn">
+        <div class="timeline-date">29 Temmuz 2026</div>
+        <div class="timeline-body"><strong>AMD Q2 2026 Earnings:</strong> Guidance $11.2B ± $300M. 56% gross margin hedefi. MI450/Helios status update. Pazar reaksiyonu katalizör.</div>
+      </div>
+      <div class="timeline-item warn">
+        <div class="timeline-date">Ağustos 2026</div>
+        <div class="timeline-body"><strong>NVIDIA Q2 FY2027 Earnings:</strong> Blackwell ramp, Rubin guidance, margin trajectory. $1T path update.</div>
+      </div>
+      <div class="timeline-item bull">
+        <div class="timeline-date">Q3 2026</div>
+        <div class="timeline-body"><strong>Oracle MI450 Deploy:</strong> İlk 50,000 MI450 teslimatı başlıyor. Helios rack public availability.</div>
+      </div>
+      <div class="timeline-item bull">
+        <div class="timeline-date">H2 2026</div>
+        <div class="timeline-body"><strong>Meta/OpenAI 1GW MI450:</strong> İlk 1GW teslimatları. ROCm gerçek dünya performans kanıtı.</div>
+      </div>
+      <div class="timeline-item neu">
+        <div class="timeline-date">2027</div>
+        <div class="timeline-body"><strong>NVIDIA Vera Rubin Ramp:</strong> 2nm AMD Venice vs 3nm Rubin rekabeti. Intel Diamond Rapids piyasaya çıkışı.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">
+  Gistify Flow | Deep Research Analysis | 6 Temmuz 2026<br>
+  <span style="opacity:0.7">Bu rapor bilgilendirme amaçlıdır; yatırım tavsiyesi değildir.</span>
+</div>
+
+</div>
+</body>
+</html>
