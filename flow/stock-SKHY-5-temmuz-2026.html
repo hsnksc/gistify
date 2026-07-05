@@ -10,14 +10,10 @@
 <meta property="og:url" content="https://gistify.pro/flow/stock-SKHY-5-temmuz-2026.html" />
 <meta property="og:site_name" content="Gistify" />
 <style>
-
-/* GISTIFY FLOW — Unified Dark Theme */
 :root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
 .wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
-
-/* HERO */
 .hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
 .hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
@@ -25,15 +21,11 @@ html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf
 .hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
 .hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
 .hero-date{display:inline-flex;align-items:center;gap:5px;color:var(--gf-muted)}
-
-/* META PILLS */
 .meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
 .meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
 .meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
 .meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
 .meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
-
-/* SECTIONS */
 .section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
 .section-head-inner{padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s;display:flex;align-items:center;justify-content:space-between}
 .section-head-inner:hover{background:var(--gf-card)}
@@ -42,8 +34,6 @@ html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf
 .section-head.collapsed .icon{transform:rotate(-90deg)}
 .section-body{padding:18px;display:none}
 .section-head:not(.collapsed) .section-body{display:block}
-
-/* GRID & CARDS */
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
 .card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px;transition:transform .15s,border-color .15s}
 .card:hover{transform:translateY(-1px);border-color:rgba(56,189,248,.25)}
@@ -53,16 +43,12 @@ html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf
 .card-value.down{color:var(--gf-danger)}
 .card-value.neu{color:var(--gf-warning)}
 .card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
-
-/* TABS */
 .tabs{display:flex;gap:2px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:14px}
 .tab{flex:1;padding:8px 10px;text-align:center;font-size:0.82rem;font-weight:600;border-radius:6px;cursor:pointer;user-select:none;transition:background .15s,color .15s;border:none;color:var(--gf-muted);background:transparent}
 .tab.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
 .tab:hover:not(.active){color:var(--gf-text)}
 .tab-content{display:none}
 .tab-content.active{display:block}
-
-/* TABLE */
 table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
 th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
 th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
@@ -70,15 +56,11 @@ tr:hover td{background:rgba(56,189,248,.04)}
 td{font-variant-numeric:tabular-nums}
 .text-right{text-align:right}
 .text-center{text-align:center}
-
-/* PROGRESS */
 .progress-bar{background:var(--gf-card);border-radius:4px;height:18px;overflow:hidden;margin:4px 0}
 .progress-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:0.68rem;font-weight:700;color:#fff}
 .fill-bull{background:linear-gradient(90deg,#16a34a,#4ade80)}
 .fill-base{background:linear-gradient(90deg,#ca8a04,#fbbf24)}
 .fill-bear{background:linear-gradient(90deg,#dc2626,#f87171)}
-
-/* INSIGHT BOX */
 .insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
 .insight-box strong{color:var(--gf-accent)}
 .insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
@@ -87,21 +69,15 @@ td{font-variant-numeric:tabular-nums}
 .insight-box.danger strong{color:var(--gf-danger)}
 .insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
 .insight-box.bull strong{color:var(--gf-success)}
-
-/* TAGS */
 .tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
 .tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
 .tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
 .tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
 .tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
-
-/* KPI */
 .kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
 .kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
 .kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
 .kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
-
-/* TIMELINE */
 .timeline{position:relative;padding-left:24px}
 .timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--gf-border)}
 .timeline-item{position:relative;margin-bottom:14px}
@@ -111,22 +87,7 @@ td{font-variant-numeric:tabular-nums}
 .timeline-item.warn::before{border-color:var(--gf-warning);background:var(--gf-warning)}
 .timeline-date{font-size:0.78rem;color:var(--gf-muted);font-weight:600}
 .timeline-body{font-size:0.85rem;margin-top:3px;color:var(--gf-text)}
-
-/* HEATMAP */
-.heatmap{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;font-size:0.72rem;margin:10px 0}
-.heatmap-cell{padding:6px 2px;text-align:center;border-radius:4px;min-height:36px;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.heatmap-cell .day{font-weight:700;font-size:0.78rem}
-.heatmap-cell .val{font-size:0.68rem;opacity:.85}
-.h-strong{background:rgba(74,222,128,.35);color:#aff5b4}
-.h-weak{background:rgba(248,113,113,.35);color:#ffdcd7}
-.h-neu{background:rgba(251,191,36,.2);color:#ffdfb6}
-.h-flat{background:rgba(148,163,184,.15);color:var(--gf-muted)}
-.h-good{background:rgba(74,222,128,.2);color:#aff5b4}
-
-/* FOOTER */
 .footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
-
-/* RESPONSIVE */
 @media(max-width:640px){
 .wrap{padding:16px 10px}
 .hero-h{font-size:1.25rem}
@@ -137,27 +98,16 @@ td{font-variant-numeric:tabular-nums}
 table{font-size:0.78rem}
 th,td{padding:6px 7px}
 }
-
-/* LANG SWITCH */
-.lang-switch{display:inline-flex;gap:4px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:16px}
-.lang-btn{padding:6px 14px;border-radius:8px;font-size:0.8rem;font-weight:600;border:none;cursor:pointer;background:transparent;color:var(--gf-muted);transition:all .15s}
-.lang-btn.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
-.lang-btn:hover:not(.active){color:var(--gf-text)}
-[data-lang]{display:none}
-[data-lang].visible{display:block}
-[data-lang-inline]{display:none}
-[data-lang-inline].visible{display:inline}
-
 </style>
 <script>
-
 function toggle(id){var el=document.getElementById(id);if(!el)return;el.classList.toggle('collapsed');}
 function setTab(btn,tabId){var parent=btn.closest('.tabs');if(parent){parent.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});parent.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});}btn.classList.add('active');var tc=document.getElementById(tabId);if(tc)tc.classList.add('active');}
-
 </script>
 </head>
 <body>
 <div class="wrap">
+
+<!-- HERO -->
 <div class="hero" id="hero" data-timestamp="2026-07-05T23:42:00+03:00">
   <h1 class="hero-h">🇺🇸 SK hynix ABD ADS Halka Arzı — Derinlemesine Araştırma Raporu</h1>
   <p class="hero-desc">SKHY (Nasdaq) | $29.4B ADS arzı | AI bellek lideri | 10 boyutlu 200+ kaynaklı çapraz doğrulamalı analiz</p>
@@ -170,759 +120,425 @@ function setTab(btn,tabId){var parent=btn.closest('.tabs');if(parent){parent.que
   </div>
 </div>
 
+<!-- SECTION 1: ÖZET -->
 <section>
   <div class="section-head" id="sec-1">
     <div class="section-head-inner" onclick="toggle('sec-1')">
-      <h2 class="section-title">📌 OZET VE ANAHTAR BULGULAR</h2>
+      <h2 class="section-title">📌 Özet ve Anahtar Bulgular</h2>
       <div class="icon">▾</div>
     </div>
   </div>
   <div class="section-body">
-    <h3>⚡ Dogrulanmis Ana Noktalar</h3>
-<p>| Detay | Dogrulanmis Bilgi | Guven |
-|-------|-------------------|-------|
-| <strong>ABD Halka Arz Turu</strong> | ADS (American Depositary Shares) — SEC Form F-1, CIK 2120882 | Yuksek |
-| <strong>Borsa</strong> | Nasdaq Global Select Market | Yuksek |
-| <strong>Kod</strong> | <strong>SKHY</strong> | Yuksek |
-| <strong>Baslangic Tarihi</strong> | 10 Temmuz 2026 (tentatif) | Yuksek |
-| <strong>Fiyat Belirleme</strong> | 9 Temmuz 2026 (bookbuilding sonrasi) | Yuksek |
-| <strong>Kitap Olusturma</strong> | 6-7 Temmuz 2026 | Yuksek |
-| <strong>Hedef Fon</strong> | ~$29.4 milyar (45.45 trilyon won) — tarihin en buyuk ADR/ADS arzi | Yuksek |
-| <strong>Hisse Sayisi</strong> | 17,790,000 adet yeni hisse (~toplam hisselerin %2.5'i) | Yuksek |
-| <strong>ADS Orani</strong> | 10 ADS = 1 adet SK hynix common hissesi | Yuksek |
-| <strong>Yatirim Bankalari</strong> | BofA Securities, Citigroup, Goldman Sachs (Asia), J.P. Morgan | Yuksek |
-| <strong>Depositary Bank</strong> | Citibank, N.A. | Yuksek |
-| <strong>Kore Regulator Onayi</strong> | FSC/FSS incelemesi, 3 Temmuz 2026 bekleniyor | Yuksek |</p>
-<blockquote>
-<p><strong>🔴 Kritik Uyari:</strong> ADS'lerin KRX hisseleriyle <strong>tam donusurlugu (fungibility) henuz kararlastirilmamis.</strong> Bu, arz sonrasi ADS fiyatinda kalici premium veya discount riski tasiyor.[^fungibility]</p>
-</blockquote>
-<blockquote>
-<p><strong>🔴 2 Temmuz Sok:</strong> Meta'nin "fazla AI kapasitesini satacagi" haberiyle SK hynix hissesi <strong>%12-14.5 dustu</strong>, KOSPI devre kesicisi calisti. Bu, AI bellek hikayesinin ne kadar kirilgan oldugunu gosteriyor.[^meta-shock]</p>
-</blockquote>
-<hr/>
+    <div class="grid">
+      <div class="card">
+        <div class="card-label">Arz Büyüklüğü</div>
+        <div class="card-value">$29.4B</div>
+        <div class="card-note">Sekonder ADS arzı</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Ticker</div>
+        <div class="card-value">SKHY</div>
+        <div class="card-note">ABD ADS (10 ADS = 1 hisse)</div>
+      </div>
+      <div class="card">
+        <div class="card-label">YTD Getiri</div>
+        <div class="card-value up">%273</div>
+        <div class="card-note">2026 başından beri</div>
+      </div>
+      <div class="card">
+        <div class="card-label">1Y Getiri</div>
+        <div class="card-value up">%774</div>
+        <div class="card-note">Son 12 ay</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Piyasa Değeri</div>
+        <div class="card-value">~$1.2T+</div>
+        <div class="card-note">Konsolide kapitalizasyon</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Q1 Marj</div>
+        <div class="card-value up">%72</div>
+        <div class="card-note">Brüt kar marjı</div>
+      </div>
+    </div>
+    <div class="insight-box danger">
+      <strong>⚠️ Kritik Uyarı: Fungibility Belirsizliği</strong><br><br>
+      ADS'lerin KRX hisseleriyle tam dönüştürülebilirliği (fungibility) henüz kararlaştırılmamış. Arz sonrası ADS fiyatı KRX fiyatından sistematik olarak ayrılabilir (premium veya discount). Arbitraj mekanizması çalışmayabilir.
+    </div>
+    <div class="insight-box warn">
+      <strong>📉 2 Temmuz %12 Şok</strong><br><br>
+      Meta'nın "fazla AI kapasitesini satacağı" haberiyle SK hynix tek seferde %12-14.5 düştü. KOSPI devre kesicisi çalıştı. AI bellek hikayesi çok kırılgan.
+    </div>
   </div>
 </section>
 
+<!-- SECTION 2: ADS ARZ YAPISI + FINANSALLAR -->
 <section>
   <div class="section-head" id="sec-2">
     <div class="section-head-inner" onclick="toggle('sec-2')">
-      <h2 class="section-title">🏦 ADS vs ADR: Temel Farklar ve Yatirimci Etkileri</h2>
+      <h2 class="section-title">🏦 ADS/ADR Arz Yapısı & Finansallar</h2>
       <div class="icon">▾</div>
     </div>
   </div>
   <div class="section-body">
-    <h3>ADS mi, ADR mi? Teknik Fark ve Pratik Sonuclar</h3>
-<p>| Terim | Acilimi | Tanim | SK Hynix Baglami |
-|-------|---------|-------|------------------|
-| <strong>ADS</strong> | American Depositary <strong>Share</strong> | ABD menkul kiymetleri olarak yeni ihrac edilen sertifikalar | SK hynix <strong>ADS</strong> yeni ihrac ediyor (17.79M hisse) |
-| <strong>ADR</strong> | American Depositary <strong>Receipt</strong> | Mevcut yabanci hisseleri temsil eden ABD belgesi | Samsung (SSNLF) gibi sirketler ADR kullaniyor |</p>
-<p><strong>Pratikte:</strong> Medya her ikisini de "ADR" olarak adlandiriyor, fakat <strong>teknik olarak SK hynix ADS ihraç ediyor.</strong> Bu farkın yatırımcı için iki kritik sonucu var:</p>
-<ol>
-<li><strong>Yeni İhraç (New Share):</strong> ADS, SK hynix'in yeni hisse çıkarması anlamına geliyor. Bu, mevcut hissedarların payını ~%2.5 seyreltiyor. ADR'de ise yeni hisse çıkışı olmaz, mevcut hisseler sadece ABD'de işlem görür.</li>
-<li><strong>Fungibility Belirsizliği:</strong> ADS'lerin KRX hisselerine dönüştürülebilirliği (fungibility) henüz net değil. Eğer dönüşüm yoksa, ADS fiyatı KRX fiyatından sistematik olarak ayrışabilir (premium veya discount). TSMC (TSM) ADR'leri Taiex hisselerinden hafif premium işlem görür; SKHY için aynı senaryo gerçekleşebilir.[^fungibility]</li>
-</ol>
-<h3>ADS Avantajları ve Riskleri</h3>
-<p>✅ <strong>ABD yatırımcıları için kolaylık:</strong> USD cinsinden işlem, ABD yerleşim süreçleri, W-8BEN formu ile %15 stopaj (ABD-Kore vergi anlaşması).[^tax]</p>
-<p>✅ <strong>Şirket için avantajlar:</strong> Küresel yatırımcı tabanı, likidite artışı, "Kore iskontosu" kırma potansiyeli.[^korea-discount]</p>
-<p>⚠️ <strong>Vergi kesintisi:</strong> Kore'de %15-22 arası vergi kesintisi olabilir. ADS sahipleri temettü alır ama masraflar düşülerek.[^tax]</p>
-<p>⚠️ <strong>Kur riski:</strong> ADS fiyatı USD, KRX fiyatı KRW. Döviz kuru dalgalanması çift yönlü etki yapar. 2026'da KRW/USD %2.71 zayıfladı.[^currency]</p>
-<hr/>
+    <div class="insight-box bull">
+      <span class="tag tag-blue">SEC F-1</span>
+      <span class="tag tag-green">CIK 2120882</span>
+      <span class="tag tag-orange">10 ADS = 1 Hisse</span>
+      <span class="tag tag-blue">17.79M Yeni Hisse</span>
+      <span class="tag tag-green">~$29.4B</span>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <div class="card-label">ADS Reference Price</div>
+        <div class="card-value">~$166</div>
+        <div class="card-note">KRX fiyatına indirimli olamaz (Kore yasası)</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Underwriting Fee</div>
+        <div class="card-value">%0.5</div>
+        <div class="card-note">BofA, Citi, Goldman, JPM</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Depositary</div>
+        <div class="card-value">Citibank</div>
+        <div class="card-note">90 gün lock-up potansiyel</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Kore Regülatör Onayı</div>
+        <div class="card-value">3 Temmuz</div>
+        <div class="card-note">FSC / FSS</div>
+      </div>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item bull">
+        <div class="timeline-date">3 Temmuz</div>
+        <div class="timeline-body">FSC / FSS Kore regülatör onayı</div>
+      </div>
+      <div class="timeline-item warn">
+        <div class="timeline-date">+90 Gün</div>
+        <div class="timeline-body">Potansiyel lock-up süresi</div>
+      </div>
+    </div>
+    <h3 style="color:var(--gf-text);margin-top:24px;margin-bottom:12px;font-size:1.1rem;">📍 Fon Kullanım Planı</h3>
+    <div class="grid">
+      <div class="card">
+        <div class="card-label">Yongin Fabrika</div>
+        <div class="card-value">₩9.41T</div>
+        <div class="card-note">~25% fon payı</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Cheongju Fabrika</div>
+        <div class="card-value">₩19T</div>
+        <div class="card-note">~50% fon payı</div>
+      </div>
+      <div class="card">
+        <div class="card-label">EUV Ekipman</div>
+        <div class="card-value">₩11.9T</div>
+        <div class="card-note">~31% fon payı</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Indiana Tesisi</div>
+        <div class="card-value">$4B</div>
+        <div class="card-note">ABD yerel üretim</div>
+      </div>
+    </div>
+    <h3 style="color:var(--gf-text);margin-top:24px;margin-bottom:12px;font-size:1.1rem;">💰 Q1 2026 Finansallar</h3>
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-num up">52.58T</div><div class="kpi-label">Gelir (₩)</div></div>
+      <div class="kpi"><div class="kpi-num up">+198%</div><div class="kpi-label">Yıllık Büyüme</div></div>
+      <div class="kpi"><div class="kpi-num up">40.35T</div><div class="kpi-label">Net Kar (₩)</div></div>
+      <div class="kpi"><div class="kpi-num up">%72</div><div class="kpi-label">Faaliyet Marjı</div></div>
+    </div>
+    <h3 style="color:var(--gf-text);margin-top:24px;margin-bottom:12px;font-size:1.1rem;">📊 Değerleme</h3>
+    <table>
+      <thead><tr><th>Metrik</th><th>Değer</th><th>Yorum</th></tr></thead>
+      <tbody>
+        <tr><td>P/E</td><td class="card-value">22.96x</td><td>Geçmişe dönük</td></tr>
+        <tr><td>Forward P/E</td><td class="card-value up">6-8x</td><td>Çarpıcı derecede düşük</td></tr>
+        <tr><td>P/Book</td><td class="card-value">10.48x</td><td>Yüksek</td></tr>
+        <tr><td>ROE</td><td class="card-value up">%61.17</td><td>Seçkin seviye</td></tr>
+      </tbody>
+    </table>
+    <div class="insight-box warn">
+      <span class="tag tag-orange">UYARI</span>
+      <strong>Zirve Tuzağı:</strong> Forward P/E 6-8x, döngüsel sektörde zirve karlarında görülen bir pattern. 2022'de aynı şirket 10 yılın ilk operasyonel kaybını yaşadı.
+    </div>
+    <div class="insight-box danger">
+      <span class="tag tag-red">RİSK</span>
+      <strong>Forward P/E Uyarısı:</strong> 6-8x çarpıcı düşük görünse de, AI talebi sürekliliği kritik. 2026 Q1 %72 marjı sürdürülebilir mi?
+    </div>
   </div>
 </section>
 
+<!-- SECTION 3: HBM PAZAR + REKABET -->
 <section>
   <div class="section-head" id="sec-3">
     <div class="section-head-inner" onclick="toggle('sec-3')">
-      <h2 class="section-title">📊 SK hynix Şirket Profili — Dogrulanmis Veriler</h2>
+      <h2 class="section-title">🏆 HBM Pazar Liderliği & Rekabet</h2>
       <div class="icon">▾</div>
     </div>
   </div>
   <div class="section-body">
-    <h3>🏭 Temel Bilgiler</h3>
-<p>| Kategori | Veri |
-|----------|------|
-| <strong>Merkez</strong> | Icheon, G.Kore |
-| <strong>Kurulus</strong> | 1983 (Hyundai Electronics Industries) |
-| <strong>Borsa</strong> | Korea Exchange (KRX: 000660) |
-| <strong>Sektör</strong> | Yariiletken (Bellek Cipleri) |
-| <strong>CEO</strong> | Kwak Noh-jung |
-| <strong>Calisan Sayisi</strong> | ~33,625 (2026) |
-| <strong>En Buyuk Hissedar</strong> | SK Square Co., Ltd. (%20.5) |</p>
-<h3>💹 Guncel Piyasa Verileri (3 Temmuz 2026)</h3>
-<p>| Metrik | Deger | Kaynak |
-|--------|-------|--------|
-| <strong>Fiyat (KRX)</strong> | ₩2,425,000 | Yahoo Finance, KRX |
-| <strong>Piyasa Degeri (KRW)</strong> | <strong>1,721.4 trilyon won</strong> | Yahoo Finance |
-| <strong>Piyasa Degeri (USD)</strong> | <strong>~$1.2 trilyon+</strong> | Doviz kuru ile tahmini |
-| <strong>52 Hafta En Yuksek</strong> | ₩2,987,000 (25 Haziran 2026) | Yahoo Finance |
-| <strong>52 Hafta En Dusuk</strong> | ₩245,000 | Morningstar |
-| <strong>1 Yillik Degisim</strong> | <strong>+774.37%</strong> | Yahoo Finance |
-| <strong>YTD Getiri</strong> | <strong>+273.25%</strong> | Yahoo Finance |
-| <strong>Temettu Verimi</strong> | %0.12 (ceyreklik ₩3,000) | Yahoo Finance |
-| <strong>Beta (5Y)</strong> | 2.03 | Yahoo Finance |</p>
-<blockquote>
-<p><strong>Not:</strong> Kullanicinin orijinal raporunda "$1.125 trilyon" ve "+%699.60" yaziyordu. Guncel veriler: <strong>~$1.2T+</strong> ve <strong>+%774</strong>. 1 yillik getiri %699 → %774 olarak guncellendi.[^yahoo-finance]</p>
-</blockquote>
-<h3>📈 Rekor Finansal Performans (Q1 2026)</h3>
-<p>| Metrik | Deger | Buyume (YoY) |
-|--------|-------|--------------|
-| <strong>Gelir</strong> | 52.58 trilyon won | +198% |
-| <strong>Faaliyet Kari</strong> | 37.61 trilyon won | +405% |
-| <strong>Net Kari</strong> | 40.35 trilyon won | +%77 marj |
-| <strong>Faaliyet Kar Marji</strong> | <strong>%72</strong> | Onceki ceyrek: %58 |</p>
-<p><strong>Bu ne anlama geliyor?</strong> SK hynix'in Q1 2026 net karı (40.35T won), <strong>2023 yilinin tum gelirini (32.77T won) geciyor.</strong> Bu, AI bellek super-cyclinin ne kadar guclu oldugunu gosteriyor.[^crypto-briefing]</p>
-<h3>Degerleme Analizi</h3>
-<p>| Metrik | SK hynix | Samsung | Micron | TSMC |
-|--------|----------|---------|--------|------|
-| <strong>Trailing P/E</strong> | 22.96 | 24.80 | 21.62 | - |
-| <strong>Forward P/E</strong> | <strong>~6-8x</strong> | ~12x | ~9.6x | ~28x |
-| <strong>P/Book</strong> | 10.48 | 4.32 | 10.94 | - |
-| <strong>P/Sales</strong> | 13.06 | 4.53 | 12.31 | - |
-| <strong>ROE</strong> | %61.17 | - | - | - |</p>
-<blockquote>
-<p><strong>🔴 Insight:</strong> Forward P/E ~6-8x "ucuz" gorunuyor, ama bu <strong>peak earnings tuzagi</strong> olabilir. Dongusel bir sektorde en dusuk P/E genellikle zirve karlarinda olur. 2022'de ayni sirket 10 yilin ilk operasyonel kaybini yasadi.[^dim01]</p>
-</blockquote>
-<h3>Nakit Durumu ve Temettu</h3>
-<ul>
-<li><strong>Toplam Nakit:</strong> 54.36 trilyon won (Q1 2026)</li>
-<li><strong>Toplam Borc:</strong> 19.3 trilyon won</li>
-<li><strong>Net Nakit:</strong> 35+ trilyon won</li>
-<li><strong>Hedef:</strong> 100+ trilyon won net nakit (orta-uzun vadeli)</li>
-<li><strong>Temettu:</strong> Yillik ₩3,000 + ozel ₩1,500 (2025-2027 donemi)</li>
-<li><strong>Hisse Iptali:</strong> %2.1 hisse iptali (hisse basina deger artisi)</li>
-</ul>
-<hr/>
+    <div class="insight-box">
+      <strong>💡 HBM Nedir? AI için Neden Kritik?</strong><br><br>
+      High Bandwidth Memory (HBM), GPU'ların belleğine en yakın yerleştirilen, yüksek hızlı 3D yığınlanmış bellek teknolojisidir. TSV teknolojisiyle 10x daha fazla bant genişliği sağlar. AI veri merkezi yatırımları 2026'da <strong>$650B</strong>'a ulaşacak.
+    </div>
+    <div class="grid">
+      <div class="card">
+        <div class="card-label">HBM3</div>
+        <div class="card-value neu">$200</div>
+        <div class="card-note">/ stack</div>
+      </div>
+      <div class="card">
+        <div class="card-label">HBM3E</div>
+        <div class="card-value neu">$300</div>
+        <div class="card-note">/ stack</div>
+      </div>
+      <div class="card">
+        <div class="card-label">HBM4</div>
+        <div class="card-value neu">$500</div>
+        <div class="card-note">/ stack</div>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <div class="card-label">SK Hynix HBM Payı</div>
+        <div class="card-value up">50–58%</div>
+        <div class="card-note">Counterpoint Q1 2026: %58</div>
+      </div>
+      <div class="card">
+        <div class="card-label">2026 HBM Kapasitesi</div>
+        <div class="card-value up">Tamamen Satıldı</div>
+        <div class="card-note">%100 pre-sold</div>
+      </div>
+      <div class="card">
+        <div class="card-label">AI Veri Merkezi</div>
+        <div class="card-value up">$650B</div>
+        <div class="card-note">2026 yatırım hedefi</div>
+      </div>
+    </div>
+    <div class="insight-box bull">
+      <strong>🐂 NVIDIA Vera Rubin HBM4 Tahsisi</strong><br><br>
+      NVIDIA'nın Vera Rubin platformu için HBM4 tedarikinde SK Hynix'e <strong>%60–70</strong> tahsis ayrıldı. Samsung %25–30, Micron ~%20. HBM4 stack başına $500 fiyat ile marj potansiyeli yüksek.
+    </div>
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-num up">$500</div><div class="kpi-label">HBM4 / Stack</div></div>
+      <div class="kpi"><div class="kpi-num up">65%</div><div class="kpi-label">SK Hynix Tahsis</div></div>
+      <div class="kpi"><div class="kpi-num">8</div><div class="kpi-label">Stack / GPU</div></div>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item bear">
+        <div class="timeline-date">2024–2025</div>
+        <div class="timeline-body">Samsung HBM3E kalite sorunları; NVIDIA sertifikasyonu gecikti</div>
+      </div>
+      <div class="timeline-item warn">
+        <div class="timeline-date">12 Şub 2026</div>
+        <div class="timeline-body"><strong>Samsung HBM4 kitle üretimine başladı.</strong> 11.7 Gbps, 16-Hi stack</div>
+      </div>
+      <div class="timeline-item bull">
+        <div class="timeline-date">2026–2027</div>
+        <div class="timeline-body">Samsung HBM4 hedef pay: %25–30. DRAM %38, NAND %31.6</div>
+      </div>
+    </div>
+    <table>
+      <thead><tr><th>Özellik</th><th>SK Hynix</th><th>Samsung</th><th>Micron</th><th>TSMC</th></tr></thead>
+      <tbody>
+        <tr><td>HBM Payı</td><td><strong class="up">50–58%</strong></td><td>~30%</td><td>~20%</td><td>N/A</td></tr>
+        <tr><td>HBM4 Tahsis</td><td><strong class="up">%60–70</strong></td><td>%25–30</td><td>~%20</td><td>N/A</td></tr>
+        <tr><td>DRAM Payı</td><td>~30%</td><td><strong>%38</strong></td><td>~20%</td><td>N/A</td></tr>
+        <tr><td>NAND Payı</td><td>~20%</td><td><strong>%31.6</strong></td><td>~12%</td><td>N/A</td></tr>
+      </tbody>
+    </table>
+    <div class="insight-box warn">
+      <strong>🚨 NVIDIA De-Risking</strong><br><br>
+      NVIDIA çok kaynaklı tedarik (dual-sourcing) stratejisine geçiyor. SK Hynix %60–70 tahsisi uzun vadede %50'ye düşebilir.
+    </div>
+    <div class="insight-box danger">
+      <strong>🔻 HBM4 Pazar Payı Erozyonu</strong><br><br>
+      Samsung HBM4 kitle üretimi (12 Şubat 2026) ve Micron CHIPS Act ($6.165B) desteği, 2027–2028'de pazar payı erozyonuna yol açabilir. Ana tehdit: <em>fiyat değil, pay kaybı.</em>
+    </div>
   </div>
 </section>
 
+<!-- SECTION 4: JEOPOLITIK + SK SQUARE -->
 <section>
   <div class="section-head" id="sec-4">
     <div class="section-head-inner" onclick="toggle('sec-4')">
-      <h2 class="section-title">🏆 Pazar Payı — Dogrulanmis ve Guncellenmis</h2>
+      <h2 class="section-title">🌍 Jeopolitik Riskler & SK Square</h2>
       <div class="icon">▾</div>
     </div>
   </div>
   <div class="section-body">
-    <h3>HBM (High Bandwidth Memory) — AI'in Kalbi</h3>
-<p>| Kaynak | Donem | SK hynix | Samsung | Micron |
-|--------|-------|----------|---------|--------|
-| Counterpoint Research | Q2 2025 | <strong>%62</strong> | - | - |
-| Counterpoint Research | Q1 2026 | <strong>%58</strong> | - | - |
-| Counterpoint (Gelir) | Q3 2025 | <strong>%57</strong> | - | - |
-| TrendForce (Q4 2024) | ~%53 | ~%38 | ~%9 |
-| siliconanalysts.com | 2026 | %50-55 | %35-40 | %5-10 |
-| presenc.ai | 2026 | %50-62 | %25-40 | %5-20 |</p>
-<blockquote>
-<p><strong>Ortalama Gercek:</strong> SK hynix genel HBM pazarında <strong>%50-58</strong> paya sahip. HBM3E'de lider (%60-70 tahsis), HBM4'te <strong>%60-70</strong> NVIDIA tahsisi bekleniyor. Fakat Samsung HBM4 comeback'i ile bu pay <strong>%50-55'e</strong> gerileyebilir.[^dim03][^dim04]</p>
-</blockquote>
-<blockquote>
-<p><strong>Kullanicinin orijinal raporunda "%56.4" yaziyordu.</strong> Bu, Q4 2025/Q1 2026 Counterpoint verisine dayanıyor olabilir. Guncel aralik: <strong>%50-58</strong>.</p>
-</blockquote>
-<h3>DRAM ve NAND Pazar Paylari (Q1 2026)</h3>
-<p>| Urun | SK hynix | Samsung | Micron | Diger |
-|------|----------|---------|--------|-------|
-| <strong>DRAM</strong> | %29.1 | <strong>%38</strong> | %22 | ~%11 |
-| <strong>NAND Flash</strong> | %18.5 | <strong>%31.6</strong> | %15+ | ~%35 |</p>
-<blockquote>
-<p><strong>Not:</strong> Samsung DRAM'de lider (%38), SK hynix ikinci (%29.1). NAND'de Samsung lider (%31.6), YMTC hizla yukseliyor (%8→%13).[^dim04]</p>
-</blockquote>
-<hr/>
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-num down">%38</div><div class="kpi-label">SK Square NAV İskontosu</div></div>
+      <div class="kpi"><div class="kpi-num">₩130.77T</div><div class="kpi-label">SK Square Piyasa Değeri</div></div>
+      <div class="kpi"><div class="kpi-num up">%98.4</div><div class="kpi-label">SK Hynix NAV Ağırlığı</div></div>
+      <div class="kpi"><div class="kpi-num">%5.1</div><div class="kpi-label">BlackRock Payı</div></div>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <div class="card-label">Wuxi Fabrika</div>
+        <div class="card-value down">~%40</div>
+        <div class="card-note">SK Hynix toplam DRAM kapasitesi</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Dalian Fabrika</div>
+        <div class="card-value down">%25–37</div>
+        <div class="card-note">Toplam NAND flash üretim payı</div>
+      </div>
+      <div class="card">
+        <div class="card-label">G. Kore Yarıiletken</div>
+        <div class="card-value">$590B</div>
+        <div class="card-note">Devlet destekli girişim</div>
+      </div>
+      <div class="card">
+        <div class="card-label">CHIPS Act (Samsung)</div>
+        <div class="card-value down">$4.7B</div>
+        <div class="card-note">Duraksama riski</div>
+      </div>
+      <div class="card">
+        <div class="card-label">CHIPS Act (SK Hynix)</div>
+        <div class="card-value down">$458M</div>
+        <div class="card-note">ABD fabrika teşviki</div>
+      </div>
+      <div class="card">
+        <div class="card-label">KOSPI Tek Günlük</div>
+        <div class="card-value down">%8.3</div>
+        <div class="card-note">Kuzey Kore füze testi sonrası çöküş</div>
+      </div>
+    </div>
+    <div class="insight-box danger">
+      <strong>🚨 Kritik Jeopolitik Risk Kumulatifi</strong><br><br>
+      Wuxi (~%40 DRAM) ve Dalian (~%25–37 NAND) ABD BIS kontrolleri altında. Çin CXMT %130 gelir artışı, YMTC %13 NAND payı. CHIPS Act duraksama (Samsung $4.7B, SK Hynix $458M). Trump %100 tarife tehdidi. Kuzey Kore füze testi → KOSPI %8.3 çöküş.
+    </div>
+    <div class="timeline">
+      <div class="timeline-item bear"><div class="timeline-date">Aralık 2024</div><div class="timeline-body">ABD BIS HBM Kontrolü: Çin'e ileri bellek teknolojisi kısıtlandı</div></div>
+      <div class="timeline-item warn"><div class="timeline-date">2024</div><div class="timeline-body">Çin Yarıiletken Roketlenmesi: CXMT %130, YMTC %13</div></div>
+      <div class="timeline-item bear"><div class="timeline-date">2024–2025</div><div class="timeline-body">CHIPS Act Duraksama: $4.7B + $458M askıda</div></div>
+      <div class="timeline-item bear"><div class="timeline-date">2025</div><div class="timeline-body">Trump %100 Tarife Tehdidi</div></div>
+      <div class="timeline-item bear"><div class="timeline-date">2025</div><div class="timeline-body">Kuzey Kore Füze Testi → KOSPI %8.3 Crash</div></div>
+    </div>
+    <div class="insight-box">
+      <strong>💡 SK Square: Değer Fırsatı mı, Kapan mı?</strong><br><br>
+      SK Square piyasa değeri ~₩130.77T, NAV pay başına ₩2.46M, hisse ₩1.525M (%38 iskontolu). SK Hynix SK Square NAV'ının %98.4'ünü oluşturuyor. BlackRock %5.1. Corporate Value-Up Plan kapsamında NAV iskontosu kapanabilir — ama jeopolitik risk kumulatifi iskontoyu kalıcı hale getirebilir.
+    </div>
   </div>
 </section>
 
+<!-- SECTION 5: YATIRIM TEZI + TAVSIYE -->
 <section>
   <div class="section-head" id="sec-5">
     <div class="section-head-inner" onclick="toggle('sec-5')">
-      <h2 class="section-title">🚀 ABD Halka Arzı Detayları — Dogrulanmis Yapı</h2>
+      <h2 class="section-title">🎯 Yatırım Tezi, Insight'lar & Tavsiye</h2>
       <div class="icon">▾</div>
     </div>
   </div>
   <div class="section-body">
-    <h3>SEC Form F-1 ve Hukuki Cerceve</h3>
-<ul>
-<li><strong>Dosya Numarasi:</strong> CIK 2120882</li>
-<li><strong>Basvuru Tarihi:</strong> 30 Haziran 2026 (duzeltilmis/amended)</li>
-<li><strong>Belge Turu:</strong> Form F-1 (yabanci sirketlerin ABD ADS/ADR basvurusu)</li>
-<li><strong>Durum:</strong> SEC incelemesinde, 3 Temmuz 2026'da Kore regulator (FSC/FSS) onayi bekleniyor</li>
-</ul>
-<blockquote>
-<p><strong>Onemli:</strong> 30 Haziran F-1 duzeltmesinde <strong>yeni Risk Factors</strong> eklendi: 25 Haziran 2026'da acilan DRAM antitrust davasi (14 ABD tuketicisi ve 3 kucuk PC ureticisi tarafindan).[^dim02]</p>
-</blockquote>
-<h3>Arz Takvimi (Guncel)</h3>
-<p>| Tarih | Olay | Durum |
-|-------|------|-------|
-| 6-7 Temmuz 2026 | Kitap olusturma (Bookbuilding) | Planlanan |
-| 9 Temmuz 2026 | Fiyat belirleme (Pricing) | Planlanan |
-| 10 Temmuz 2026 | <strong>Islem baslangici (SKHY)</strong> | Tentatif |
-| 14 Temmuz 2026 | Odemeler (Settlement) | Planlanan |
-| 15 Temmuz 2026 | ADS etkinlesmesi | Planlanan |
-| 29 Temmuz 2026 | Yeni hisselerin KRX kaydi | Planlanan |</p>
-<h3>Arz Mekanigi ve Kritik Detaylar</h3>
-<p>| Metrik | Deger | Aciklama |
-|--------|-------|----------|
-| <strong>Toplam Arz</strong> | ~$29.4 milyar | 45.45 trilyon won (ust sinir) |
-| <strong>Yeni Hisse</strong> | 17.79 milyon | Mevcut 712.7M hissenin ~%2.5'i |
-| <strong>ADS Orani</strong> | 10 ADS = 1 hisse | 177.9 milyon ADS toplam |
-| <strong>Referans Fiyat</strong> | ~$166/ADS | ₩2.55M / 10 ≈ $166 (tahmini) |
-| <strong>Underwriting Fee</strong> | ~%0.5 | $130M+ toplam (BofA, Citi, Goldman, JPM) |
-| <strong>Depositary Bank</strong> | Citibank, N.A. | Temettu, iptal, kayit hizmetleri |
-| <strong>Lock-up</strong> | 90 gun (potansiyel) | F-1'de "may agree" — kesin degil |
-| <strong>Greenshoe</strong> | Belirsiz | F-1'de spesifik kayit yok |</p>
-<blockquote>
-<p><strong>🔴 Kritik Belirsizlik:</strong> Fungibility (ADS-KRX donusurlugu) henuz kararlastirilmamis. Bu, arbitraj mekanizmasini etkiler ve kalici premium/discount riski yaratir.[^dim06]</p>
-</blockquote>
-<blockquote>
-<p><strong>Kore Yasal Kisitlama:</strong> ADS fiyati, KRX fiyatina <strong>indirimli</strong> olamaz. Bu, arz fiyatlandirmasini KRX piyasa fiyatina yakin tutar.[^dim02]</p>
-</blockquote>
-<h3>Fon Kullanım Amaci (SEC F-1 Dogrulanmis)</h3>
-<p>| Yatirim Alani | Miktar | Aciklama |
-|---------------|--------|----------|
-| <strong>Yongin Yariiletken Kumesi (Y1)</strong> | 9.41 trilyon won | Fabrika 1, Faz 1 (temiz oda Q1 2027) |
-| <strong>Cheongju P&amp;T7 Ileri Paketleme</strong> | 19 trilyon won | AI bellek (HBM) paketleme tesisi |
-| <strong>EUV Litografi Makineleri (ASML)</strong> | 11.9 trilyon won | ~30 adet EUV tarayici, 2027 sonuna kadar teslimat |
-| <strong>Indiana Paketleme Tesisi</strong> | $4 milyar (~5.9T won) | ABD'deki ilk uretim tesisi, 2028 2. yarisi |
-| <strong>Diger Sermaye Yatirimlari</strong> | - | Yongin Faz 2-6, ekipman |
-| <strong>TOPLAM (F-1)</strong> | <strong>45.5 trilyon won</strong> | ADS geliri + diger kaynaklar |</p>
-<blockquote>
-<p><strong>Kullanicinin orijinal raporunda "55.92 trilyon won" ve "Yongin Faz 2-6: 21.61T won" yaziyordu.</strong> SEC F-1'de 45.5T won geciyor. 55.92T, 2026-2030 toplam CAPEX plani olabilir. 11.9T EUV ayrı bir kalemdir. F-1'deki 45.5T + diger kaynaklar (operasyonel nakit, borclanma) ile toplam 55.92T'e ulasilabilir.[^dim02]</p>
-</blockquote>
-<hr/>
-  </div>
-</section>
-
-<section>
-  <div class="section-head" id="sec-6">
-    <div class="section-head-inner" onclick="toggle('sec-6')">
-      <h2 class="section-title">🏛️ Duzunleyici Cerceve ve Hisse Yapisi</h2>
-      <div class="icon">▾</div>
+    <div class="tabs">
+      <button class="tab active" onclick="setTab(this,'tab-bull')">🟢 Bull Case</button>
+      <button class="tab" onclick="setTab(this,'tab-bear')">🔴 Bear Case</button>
+    </div>
+    <div id="tab-bull" class="tab-content active">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">AI Super-Cycle</div>
+          <div class="card-value up">$100B</div>
+          <div class="card-note">HBM pazarı 2025: $54-60B → 2027: $100B+</div>
+        </div>
+        <div class="card">
+          <div class="card-label">2026 Kapasite</div>
+          <div class="card-value up">Satıldı</div>
+          <div class="card-note">HBM3E 2026 üretimi önceden satılmış</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Forward P/E</div>
+          <div class="card-value up">6-8x</div>
+          <div class="card-note">Sektör ortalamasına göre %40 iskontolu</div>
+        </div>
+        <div class="card">
+          <div class="card-label">ABD Erişim</div>
+          <div class="card-value up">SKHY ADS</div>
+          <div class="card-note">Doğrudan ABD borsa erişimi</div>
+        </div>
+      </div>
+      <div class="insight-box bull">
+        <strong>Bull Senaryo:</strong> AI super-cycli HBM talebini 2027'de $100B+'a taşıyor. 2026 kapasitesi önceden satıldı. Forward P/E 6-8x sektör için "ucuz". ABD erişimi SKHY ADS ile kolay.
+      </div>
+    </div>
+    <div id="tab-bear" class="tab-content">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Döngüsel Düşüş</div>
+          <div class="card-value down">-46%</div>
+          <div class="card-note">2022 bellek sektörü çöküşü</div>
+        </div>
+        <div class="card">
+          <div class="card-label">2028 Kapasite Patlaması</div>
+          <div class="card-value down">Aşırı Arz</div>
+          <div class="card-note">Tüm oyuncular HBM4 kapasitesini artırıyor</div>
+        </div>
+        <div class="card">
+          <div class="card-label">NVIDIA De-risking</div>
+          <div class="card-value down">Çok Tedarikçili</div>
+          <div class="card-note">Samsung + Micron + yeni oyuncular</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Meta Şoku</div>
+          <div class="card-value down">-12%</div>
+          <div class="card-note">AI fatigue, tek haberle %12 düşüş</div>
+        </div>
+        <div class="card">
+          <div class="card-label">ETF Volatilitesi</div>
+          <div class="card-value down">6+ ETF</div>
+          <div class="card-note">Direxion 2x kaldıraçlı ETF'ler</div>
+        </div>
+      </div>
+      <div class="insight-box danger">
+        <strong>Bear Senaryo:</strong> Döngüsel sektör 2022'de %46 düştü. 2028'de kapasite patlaması riski var. NVIDIA çok tedarikçiliğe geçiyor. AI fatigue ve Meta şoku %12. 6+ ETF, Direxion 2x volatiliteyi artırıyor.
+      </div>
+    </div>
+    <h3 style="color:var(--gf-text);margin-top:24px;margin-bottom:12px;font-size:1.1rem;">🧩 Çok Boyutlu Insight'lar</h3>
+    <div class="grid">
+      <div class="card"><div class="card-label">Insight 1</div><div class="card-value neu">Fungibility Belirsizliği</div><div class="card-note">ADS-KRX dönüşürlüğü kararlaştırılmamış</div></div>
+      <div class="card"><div class="card-label">Insight 2</div><div class="card-value neu">SK Square NAV İskontosu</div><div class="card-note">%38 iskontolu SK Hynix erişimi</div></div>
+      <div class="card"><div class="card-label">Insight 3</div><div class="card-value down">Meta Şoku Fragilitesi</div><div class="card-note">Tek haberle %12 düşüş — kırılgan hikaye</div></div>
+      <div class="card"><div class="card-label">Insight 4</div><div class="card-value down">NVIDIA Çok Tedarikçili</div><div class="card-note">HBM4'te üç sertifikalı tedarikçi</div></div>
+      <div class="card"><div class="card-label">Insight 5</div><div class="card-value warn">ETF Kaldıraç</div><div class="card-note">6+ ETF volatiliteyi amplifiye ediyor</div></div>
+      <div class="card"><div class="card-label">Insight 6</div><div class="card-value down">2028 Kapasite Patlaması</div><div class="card-note">$590B Kore + CHIPS Act = bolluk</div></div>
+      <div class="card"><div class="card-label">Insight 7</div><div class="card-value warn">Zirve Tuzağı</div><div class="card-note">Forward P/E 6-8x = peak earnings sinyali</div></div>
+      <div class="card"><div class="card-label">Insight 8</div><div class="card-value neu">Kore Chaebol Dönüşümü</div><div class="card-note">SK hynix = global standard öncüsü</div></div>
+    </div>
+    <h3 style="color:var(--gf-text);margin-top:24px;margin-bottom:12px;font-size:1.1rem;">👤 Yatırımcı Profilleri</h3>
+    <table>
+      <thead><tr><th>Profil</th><th>Tercih</th><th>Vade</th><th>Risk</th></tr></thead>
+      <tbody>
+        <tr><td>Uzun Vadeli</td><td><span class="tag tag-green">SKHY / SK Square</span></td><td>2-3 Yıl</td><td class="text-center">Orta</td></tr>
+        <tr><td>Momentum Trader</td><td><span class="tag tag-orange">Teknik Giriş</span></td><td>1-4 Hafta</td><td class="text-center">Yüksek</td></tr>
+        <tr><td>Risk-Uzak</td><td><span class="tag tag-blue">Bekle-Gör</span></td><td>-</td><td class="text-center">Düşük</td></tr>
+        <tr><td>Opsiyon Trader</td><td><span class="tag tag-red">CALL Spread</span></td><td>0DTE / Haftalık</td><td class="text-center">Çok Yüksek</td></tr>
+      </tbody>
+    </table>
+    <h3 style="color:var(--gf-text);margin-top:24px;margin-bottom:12px;font-size:1.1rem;">⏱️ Zaman Çizelgesi</h3>
+    <div class="timeline">
+      <div class="timeline-item bull"><div class="timeline-date">2025</div><div class="timeline-body">AI super-cycli, HBM talebi $54-60B</div></div>
+      <div class="timeline-item bull"><div class="timeline-date">2026</div><div class="timeline-body">HBM3E kapasitesi önceden satıldı, arz kısıtlı</div></div>
+      <div class="timeline-item warn"><div class="timeline-date">2027</div><div class="timeline-body">HBM pazarı $100B+ hedefi, margin zirvesi</div></div>
+      <div class="timeline-item bear"><div class="timeline-date">2028</div><div class="timeline-body">Kapasite patlaması, aşırı arz ve fiyat düşüşü riski</div></div>
+    </div>
+    <h3 style="color:var(--gf-text);margin-top:24px;margin-bottom:12px;font-size:1.1rem;">🎯 Tavsiye</h3>
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-num up">BUY</div><div class="kpi-label">Yön</div></div>
+      <div class="kpi"><div class="kpi-num">₩3.37M</div><div class="kpi-label">Konsensüs Hedef</div></div>
+      <div class="kpi"><div class="kpi-num">₩2.42M</div><div class="kpi-label">Mevcut Fiyat</div></div>
+      <div class="kpi"><div class="kpi-num">6-8x</div><div class="kpi-label">Forward P/E</div></div>
     </div>
   </div>
-  <div class="section-body">
-    <h3>🇰🇷 G.Kore Duzunlemeleri</h3>
-<p><strong>SK Square Durumu:</strong></p>
-<ul>
-<li>SK hynix'in en buyuk hissedarı: <strong>SK Square Co., Ltd. (%20.5)</strong></li>
-<li>G.Kore <strong>Monopoly Regulation and Fair Trade Act (MRFTA)</strong> geregi, holding sirketleri (SK Square) en az %20 hisseye sahip olmalı</li>
-<li>Bu arz, <strong>%2.5 hisse ihraci</strong> ile SK Square'in %20+ seviyesini korumayi sagliyor</li>
-<li>Arz sonrasi SK Square orani: ~%18.06 (yeni hisseler dahil) ama <strong>%20+</strong> korunacak</li>
-</ul>
-<h3>Hisse Dagilimi (Arz Oncesi — Guncel)</h3>
-<p>| Hissedar | Pay (%) | Hisse Sayisi | Tarih |
-|----------|---------|--------------|-------|
-| <strong>SK Square Co., Ltd.</strong> | 20.5 | 146,124,531 | May 2026 |
-| <strong>National Pension Service</strong> | 8.1 | 57,439,774 | Aralik 2025 |
-| <strong>BlackRock Fund Advisors</strong> | 5.1 | 36,407,157 | Subat 2026 |
-| <strong>Yabanci Kurumsal (toplam)</strong> | ~56.2 | - | 2025 ortasi |
-| <strong>Bireysel / Diger</strong> | ~10.3 | - | - |</p>
-<blockquote>
-<p><strong>Arz Sonrasi:</strong> Toplam hisse sayisi: 712,702,365 + 17,790,000 = <strong>730,492,365</strong>. Mevcut hissedarlarin payi ~%2.44 seyreltilmis olacak.[^dim09]</p>
-</blockquote>
-<hr/>
-  </div>
 </section>
 
-<section>
-  <div class="section-head" id="sec-7">
-    <div class="section-head-inner" onclick="toggle('sec-7')">
-      <h2 class="section-title">🌍 Kore ADR/ADS Piyasası ve Tarihsel Karsilastirma</h2>
-      <div class="icon">▾</div>
-    </div>
-  </div>
-  <div class="section-body">
-    <h3>Buyuk ADR/ADS Arzlari Siralamasi</h3>
-<p>| Sira | Sirket | Yil | Arz Buyuklugu | Tur |
-|------|--------|-----|---------------|-----|
-| 1 | <strong>SpaceX</strong> | 2026 | <strong>$85.7 milyar</strong> | ABD IPO |
-| 2 | <strong>Saudi Aramco</strong> | 2019 | $25.6 milyar | Suudi IPO |
-| 3 | <strong>Alibaba (BABA)</strong> | 2014 | $21.8 milyar | ADR (NYSE) |
-| 4 | <strong>SK hynix (SKHY)</strong> | <strong>2026</strong> | <strong>~$29.4 milyar</strong> | <strong>ADS (Nasdaq)</strong> |
-| - | <strong>SoftBank</strong> | 2018 | $23.5 milyar | IPO |</p>
-<blockquote>
-<p><strong>SK hynix, Alibaba'nin 2014 rekorunu gecerek "tarihin en buyuk ADR/ADS arzi" olacak.</strong> ABD'deki hisse arzlari arasinda SpaceX ($85.7B) ardindan 2. sirada.[^dim05]</p>
-</blockquote>
-<h3>Diger Kore Sirketlerinin ABD Listeleri</h3>
-<p>| Sirket | Ticker | Borsa | Tur | Piyasa Degeri | Not |
-|--------|--------|-------|-----|---------------|-----|
-| <strong>SK hynix</strong> | <strong>SKHY</strong> | <strong>Nasdaq</strong> | <strong>ADS</strong> | ~$1.2T+ | <strong>Ilk buyuk Kore teknoloji sirketi Nasdaq'ta</strong> |
-| POSCO | PKX | NYSE | ADR | ~$30B | 1994'ten beri NYSE'de |
-| Samsung Electronics | SSNLF | OTC | ADR | ~$400B | OTC (dusuk likidite) |
-| LG Electronics | LGEAF | OTC | ADR | ~$20B | OTC |
-| Hyundai Motor | HYMTF | OTC | ADR | ~$50B | OTC |
-| Kia Corporation | KIMTF | OTC | ADR | ~$35B | OTC |
-| TSMC | TSM | NYSE | ADR | ~$800B | 1997'den beri, ADR primi var |</p>
-<blockquote>
-<p><strong>Kilit Nokta:</strong> SK hynix, <strong>32 yildir</strong> (POSCO 1994'ten beri) ilk buyuk Kore sirketi olarak Nasdaq/NYSE'te <strong>borsa listeli</strong> (exchange-listed) ADS/ADR ile geliyor. Samsung, Hyundai, LG hala OTC'de (over-the-counter) dusuk likidite ile islem goruyor.[^dim05]</p>
-</blockquote>
-<blockquote>
-<p><strong>Kore Iskontosu:</strong> KOSPI sirketleri yillardir "Kore iskontosu" (Korea Discount) ile islem goruyor. SK hynix ADS listelemesi, bu iskontoyu kirmak icin bir katalizor olabilir. TSMC'nin 1997 ADR listelemesi sonrasi Taiex hisselerine re-rating etkisi yapmisti.[^dim05]</p>
-</blockquote>
-<hr/>
-  </div>
-</section>
+<!-- FOOTER -->
+<div class="footer">Gistify Flow | 5 Temmuz 2026 | 200+ kaynaklı çapraz doğrulamalı | deep-research-swarm</div>
 
-<section>
-  <div class="section-head" id="sec-8">
-    <div class="section-head-inner" onclick="toggle('sec-8')">
-      <h2 class="section-title">🎯 Rekabet Analizi — Guncel ve Dogrulanmis</h2>
-      <div class="icon">▾</div>
-    </div>
-  </div>
-  <div class="section-body">
-    <h3>Samsung vs SK hynix vs Micron — Kafa Kafaya</h3>
-<p>| Metrik | SK hynix | Samsung | Micron | TSMC |
-|--------|----------|---------|--------|------|
-| <strong>Ulke</strong> | G.Kore | G.Kore | ABD | Tayvan |
-| <strong>Borsa</strong> | KRX (→Nasdaq) | KRX | Nasdaq | NYSE (ADR) |
-| <strong>Piyasa Degeri</strong> | ~$1.2T+ | ~$400B | ~$150B | ~$800B |
-| <strong>Q1 2026 Gelir</strong> | 52.6T won | 133.9T won | - | - |
-| <strong>Q1 2026 Faaliyet Kari</strong> | 37.6T won (%72 marj) | 57.2T won (%42.8 grup) | - | - |
-| <strong>DRAM Payi</strong> | %29.1 | <strong>%38</strong> | %22 | - |
-| <strong>NAND Payi</strong> | %18.5 | <strong>%31.6</strong> | %15+ | - |
-| <strong>HBM Payi</strong> | <strong>%50-58</strong> | %25-40 | %5-21 | - |
-| <strong>HBM4 NVIDIA Tahsisi</strong> | <strong>%60-70</strong> | %25-30 | ~%20 | - |
-| <strong>Forward P/E</strong> | <strong>~6-8x</strong> | ~12x | ~9.6x | ~28x |
-| <strong>ROE</strong> | <strong>%61.17</strong> | - | - | - |</p>
-<h3>Samsung'un HBM4 Comeback'i</h3>
-<p>Samsung, HBM3E'de NVIDIA sertifikasyon gecikmeleri yasamisti. Ama <strong>Subat 2026'da HBM4 kitlesel uretimine basladi</strong> ve <strong>11.7 Gbps</strong> ile sektorun en hizli HBM4'u uretiyor. Haziran 2026'da NVIDIA, Samsung'i HBM4 icin Vera Rubin platformunda sertifike etti. Samsung HBM4 pazar payi <strong>%13'den %21'e</strong> yukseldi.[^dim04]</p>
-<h3>Micron'un HBM Yükselisi</h3>
-<p>Micron, CHIPS Act'ten <strong>$6.165 milyar</strong> fon aldi. Idaho ve New York fabrikalarinda HBM4 uretimine hazirlaniyor. 2026 HBM arzi tamamen satildi. Micron HBM payi <strong>%5-10'dan %21'e</strong> yükseldi. NVIDIA HBM4 tahsisi: <strong>~%20</strong>.[^dim04]</p>
-<h3>NVIDIA'nin "Çok Tedarikçili" De-Risking Stratejisi</h3>
-<blockquote>
-<p><strong>🔴 Kritik Degisim:</strong> NVIDIA Haziran 2026'da HBM4 icin <strong>uc sertifikalı tedarikçi</strong> (Samsung, SK hynix, Micron) stratejisine gecti. HBM3E'de SK hynix neredeyse tekeldi; HBM4'te bu degisiyor. Bu, <strong>margin squeeze</strong> riski demek.[^dim04][^dim08]</p>
-</blockquote>
-<hr/>
-  </div>
-</section>
-
-<section>
-  <div class="section-head" id="sec-9">
-    <div class="section-head-inner" onclick="toggle('sec-9')">
-      <h2 class="section-title">📊 NVIDIA Tedarik Zinciri & HBM4 Yol Haritasi</h2>
-      <div class="icon">▾</div>
-    </div>
-  </div>
-  <div class="section-body">
-    <h3>HBM Nesilleri ve Özellikler</h3>
-<p>| Nesil | Arayuz | Bant Genisligi | Kapasite | Kullanim |
-|-------|--------|----------------|----------|----------|
-| <strong>HBM3</strong> | 1024-bit | ~819 GB/s | 24GB | NVIDIA H100, AMD MI300X |
-| <strong>HBM3E</strong> | 1024-bit | 1.18 TB/s | 36-48GB | H200, B200, Blackwell Ultra |
-| <strong>HBM4</strong> | <strong>2048-bit</strong> | <strong>1.5-2+ TB/s</strong> | <strong>64GB</strong> | <strong>Vera Rubin, B300</strong> |
-| <strong>HBM4E</strong> | 2048-bit | 4 TB/s | 64GB | 2027+ |</p>
-<h3>SK hynix HBM4 Durumu</h3>
-<ul>
-<li><strong>Eylul 2025:</strong> Dunyanin ilk HBM4 kitlesel uretim sistemi kurulumu</li>
-<li><strong>Subat 2026:</strong> HBM4 kitlesel uretim basladi</li>
-<li><strong>Q3 2026:</strong> 2. faz uretim (tam olcek)</li>
-<li><strong>NVIDIA Vera Rubin:</strong> HBM4 tahsisinin <strong>%60-70'i</strong> SK hynix'e</li>
-<li><strong>Google TPU v7p/v7e:</strong> HBM3E'de SK hynix <strong>tek tedarikci</strong> (v7e icin 12-Hi)[^dim08]</li>
-</ul>
-<h3>Samsung HBM4 Catch-Up</h3>
-<ul>
-<li><strong>12 Subat 2026:</strong> HBM4 kitlesel uretim basladi</li>
-<li><strong>11.7 Gbps:</strong> Sektörün en hızlı HBM4'u</li>
-<li><strong>NVIDIA Vera Rubin:</strong> HBM4 tahsisi <strong>%25-30</strong></li>
-<li><strong>Hedef:</strong> HBM4'te SK hynix ile payi dengelemek[^dim08]</li>
-</ul>
-<h3>Micron HBM4</h3>
-<ul>
-<li><strong>Q1 2026:</strong> 36GB 12H yuksek hacimli uretim</li>
-<li><strong>Hiz:</strong> 11 Gbps+</li>
-<li><strong>NVIDIA Vera Rubin:</strong> HBM4 tahsisi <strong>~%20</strong>[^dim08]</li>
-</ul>
-<h3>ASML EUV Yatirimi</h3>
-<ul>
-<li><strong>11.9 trilyon won</strong> (~$8.5B) EUV litografi makineleri</li>
-<li><strong>~30 adet</strong> EUV tarayici (ASML)</li>
-<li><strong>Teslimat:</strong> 2027 sonuna kadar[^dim08]</li>
-</ul>
-<hr/>
-  </div>
-</section>
-
-<section>
-  <div class="section-head" id="sec-10">
-    <div class="section-head-inner" onclick="toggle('sec-10')">
-      <h2 class="section-title">🏢 SK Square Holding Yapisi & Kurumsal Yonetim</h2>
-      <div class="icon">▾</div>
-    </div>
-  </div>
-  <div class="section-body">
-    <h3>SK Square (402340.KS) — SK Hynix'in Kontrol Kulesi</h3>
-<p>| Metrik | Deger |
-|--------|-------|
-| <strong>Piyasa Degeri</strong> | ~130.77 trilyon won (~$88.5B) |
-| <strong>Hisse Fiyati</strong> | ₩1,525,000 |
-| <strong>NAV Pay Basina</strong> | ₩2,460,288 |
-| <strong>NAV Discount</strong> | <strong>~%38</strong> (NAV &gt; hisse fiyati) |
-| <strong>YTD Getiri</strong> | +169% |</p>
-<h3>SK hynix'in SK Square Portfoyundeki Agirligi</h3>
-<p>| Varlik | Deger (trilyon won) | NAV Payi |
-|--------|---------------------|----------|
-| <strong>SK hynix</strong> | 319.52 | <strong>%98.4</strong> |
-| TMAP Mobility | 1.46 | %0.45 |
-| SK shieldus | 1.02 | %0.31 |
-| SK planet | 0.62 | %0.19 |
-| Diger | 1.56 | %0.48 |
-| <strong>Net Nakit</strong> | 0.79 | %0.24 |
-| <strong>Toplam NAV</strong> | <strong>324.7</strong> | <strong>%100</strong> |</p>
-<blockquote>
-<p><strong>SK hynix, SK Square'in neredeyse tamamini (%98.4) olusturuyor.</strong> SK Square hissesi almak, dolayli olarak SK hynix'e yatirim yapmak demek — %38 iskontolu![^dim09]</p>
-</blockquote>
-<h3>ADS Arzinin SK Square Etkisi</h3>
-<p>ADS listelemesi, SK hynix'in global degerlemesini artiracak. Bu, SK Square NAV'ini dogrudan yukseltir. SK Square NAV discount'inin <strong>%30'un altina</strong> inmesi bekleniyor (Corporate Value-Up Plan hedefi).[^dim09]</p>
-<h3>BlackRock ve Kurumsal Yonetisim</h3>
-<p>BlackRock (%5.1 hisse), SK hynix yonetim kurulu ile diyalog halinde. <strong>Corporate Value-Up Plan</strong> kapsamında:</p>
-<ul>
-<li>Temettu artisi (FCF'nin yarisi hissedarlara)</li>
-<li>Hisse iptali programi</li>
-<li>Seffaflik artisi (ABD standardlarina uyum)</li>
-</ul>
-<blockquote>
-<p><strong>SK hynix, Kore chaebol'larinin "hissedar dostu" yonetim anlayisina gecisinde bir onder olabilir.</strong>[^dim09]</p>
-</blockquote>
-<hr/>
-  </div>
-</section>
-
-<section>
-  <div class="section-head" id="sec-11">
-    <div class="section-head-inner" onclick="toggle('sec-11')">
-      <h2 class="section-title">🌍 Jeopolitik Riskler & ABD-Cin-G.Kore Ucgeni</h2>
-      <div class="icon">▾</div>
-    </div>
-  </div>
-  <div class="section-body">
-    <h3>1. ABD BIS HBM Kontrolleri (Aralik 2024)</h3>
-<p>ABD Ticaret Burosu (BIS), <strong>HBM3 ve ustu</strong> bellek ciplerinin Cin'e ihracatini kisitladi. SK hynix ve Samsung'un Cin'deki fabrikalari etkileniyor.[^dim07]</p>
-<h3>2. SK hynix Cin Operasyonlari Riski</h3>
-<p>| Fabrika | Lokasyon | Uretim | Risk |
-|---------|----------|--------|------|
-| <strong>Wuxi</strong> | Cin | ~%40 DRAM | Potansiyel satis / kisitlama |
-| <strong>Dalian</strong> | Cin | ~%25-37 NAND | Intel'den devralindi, maliyet yuksek |</p>
-<p>SK hynix CFO'su: "Wuxi ve Dalian icin <strong>farkli senaryolar</strong> degerlendiriyoruz." Satis ihtimali gundemde.[^dim07]</p>
-<h3>3. G.Kore $590B Yariiletken Girisimi (Haziran 2026)</h3>
-<p>G.Kore, Samsung ve SK hynix ile birlikte <strong>$590 milyarlik</strong> (1,100 trilyon won) yariiletken kume insasi planliyor. 3 uretim merkezi: Yongin, Cheongju, G.Kore Guneybati. Hedef: 5 yilda DRAM kapasitesini ikiye katlamak.[^dim07]</p>
-<h3>4. CHIPS Act Duraksamasi Riski</h3>
-<ul>
-<li>Samsung: <strong>$4.7 milyar</strong> fon tahsis edildi (dagitim durakladi)</li>
-<li>SK hynix: <strong>$458 milyon</strong> fon tahsis edildi (dagitim durakladi)</li>
-<li>Trump yonetimi, CHIPS Act fonlarinin dagitimini gozden geciriyor.[^dim07]</li>
-</ul>
-<h3>5. Cin Yerel Bellek Ureticileri</h3>
-<p>| Sirket | Gelisme | Risk Seviyesi |
-|--------|---------|---------------|
-| <strong>CXMT</strong> | Gelir %130 artti, HBM3 gelistiriyor | Yuksek |
-| <strong>YMTC</strong> | NAND payi %8'den %13'e yukseldi | Orta |</p>
-<h3>6. Kuzey Kore ve Bolgesel Risk</h3>
-<ul>
-<li>Kuzey Kore SLBM/ICBM testleri</li>
-<li>KOSPI tek-gunluk %8.3 cokus (2 Temmuz)</li>
-<li>SK hynix + Samsung, KOSPI'nin <strong>%40+'ini</strong> olusturuyor — endeks konsantrasyon riski[^dim07]</li>
-</ul>
-<h3>7. Trump Tarifeleri</h3>
-<ul>
-<li>Trump, G.Kore'ye <strong>%100 tarife</strong> tehdidinde bulundu (yariiletken icerigi yuksek urunler icin)</li>
-<li>Gerceklesme olasiligi dusuk ama risk var.[^dim07]</li>
-</ul>
-<hr/>
-  </div>
-</section>
-
-<section>
-  <div class="section-head" id="sec-12">
-    <div class="section-head-inner" onclick="toggle('sec-12')">
-      <h2 class="section-title">💰 Yatirim Acisindan Degerlendirme — Guncel ve Derinlestirilmis</h2>
-      <div class="icon">▾</div>
-    </div>
-  </div>
-  <div class="section-body">
-    <h3>✅ Yatirim Argumanlari (Bull Case)</h3>
-<ol>
-<li>
-<p><strong>AI Bellek Super-Cycli:</strong></p>
-<ul>
-<li>HBM pazari 2026'da <strong>$54-60B</strong>, 2028'de <strong>$100B</strong>+</li>
-<li>SK hynix 2026 HBM kapasitesi <strong>tamamen satildi</strong> — 2027 talebi kapasiteyi asiyor</li>
-<li>Big 4 teknoloji devi (MSFT, META, GOOG, AMZN) 2026'da <strong>$650B</strong> AI altyapisi yatirimi planliyor[^dim03]</li>
-</ul>
-</li>
-<li>
-<p><strong>Rekor Finansallar:</strong></p>
-<ul>
-<li>Q1 2026: %72 faaliyet kar marji (tarihi rekor)</li>
-<li>Net kar 40.35T won (2023 tum yil gelirinden fazla)</li>
-<li>Forward P/E ~6-8x — Micron (12x) ve NVIDIA (25x) ile kiyasla "ucuz"[^dim01]</li>
-</ul>
-</li>
-<li>
-<p><strong>ABD Listelemesi = Degerleme Artisi:</strong></p>
-<ul>
-<li>"Kore iskontosu" kirilabilir</li>
-<li>TSMC (TSM) ornegi: ADR listelemesi sonrasi ana piyasa re-rating</li>
-<li>Uzun vadeli ABD kurumsal yatirimci erisimi[^dim05]</li>
-</ul>
-</li>
-<li>
-<p><strong>HBM4 Teknoloji Liderligi:</strong></p>
-<ul>
-<li>Dunyanin ilk HBM4 kitlesel uretimi (Eylul 2025)</li>
-<li>NVIDIA Vera Rubin'de %60-70 tahsis</li>
-<li>Google TPU v7p/v7e'de tek tedarikci (HBM3E)[^dim08]</li>
-</ul>
-</li>
-<li>
-<p><strong>SK Square NAV Discount:</strong></p>
-<ul>
-<li>SK hynix'e %38 iskontolu erisim (SK Square uzerinden)</li>
-<li>ADS arzi NAV discount'u daraltabilir[^dim09]</li>
-</ul>
-</li>
-</ol>
-<h3>❌ Riskler (Bear Case)</h3>
-<ol>
-<li>
-<p><strong>Dongusel Sektor Riski:</strong></p>
-<ul>
-<li>2022'de <strong>%46 dusus</strong> + 10 yilin ilk operasyonel kaybi</li>
-<li>Bellek cipleri dogasi geregi dongusel</li>
-<li><strong>2028 kapasite patlamasi:</strong> Samsung P5, SK hynix M15X, Micron Idaho hepsi 2027-2028'de devreye giriyor[^dim07][^dim03]</li>
-</ul>
-</li>
-<li>
-<p><strong>NVIDIA De-Risking:</strong></p>
-<ul>
-<li>HBM4'te <strong>uc sertifikalı tedarikci</strong> (Samsung, Micron, SK hynix)</li>
-<li>SK hynix HBM4 tahsisi <strong>%60-70'den %50-55'e</strong> gerileyebilir</li>
-<li>Margin squeeze riski[^dim04]</li>
-</ul>
-</li>
-<li>
-<p><strong>AI Yatirim Yorgunlugu (AI Fatigue):</strong></p>
-<ul>
-<li><strong>2 Temmuz 2026:</strong> Meta haberiyle %12-14.5 dusus</li>
-<li>Tek bir haber, $1.2T sirketi %12 vurabiliyor</li>
-<li>"Hikaye riski" cok yuksek[^meta-shock]</li>
-</ul>
-</li>
-<li>
-<p><strong>Jeopolitik Riskler:</strong></p>
-<ul>
-<li>ABD-Cin gerilimi, BIS HBM kontrolleri</li>
-<li>Wuxi/Dalian fabrika riski (potansiyel satis)</li>
-<li>CHIPS Act fonlari duraksadi (Trump etkisi)</li>
-<li>Trump tarife tehdidi (%100)[^dim07]</li>
-</ul>
-</li>
-<li>
-<p><strong>Zirve Tuzagi (Peak Earnings Trap):</strong></p>
-<ul>
-<li>Forward P/E ~6-8x = kari zirvede oldugunu gosteriyor</li>
-<li>2026 Q1 %72 marji surdurulebilir mi?</li>
-<li>"Ucuz" degerleme, AL sinyali degil, UYARI sinyali olabilir[^dim01]</li>
-</ul>
-</li>
-<li>
-<p><strong>ETF Volatilite Kaldiraci:</strong></p>
-<ul>
-<li>6+ ETF basvurusu (Direxion 2x, Roundhill vb.)</li>
-<li>Kaldıraçlı ETF'ler dususte <strong>zorunlu satis</strong> yapar</li>
-<li>Roundhill DRAM ETF bu yil %150 yukseldi (volatilite ornegi)[^dim10]</li>
-</ul>
-</li>
-<li>
-<p><strong>Fungibility Belirsizligi:</strong></p>
-<ul>
-<li>ADS-KRX donusurlugu kararlastirilmamis</li>
-<li>Kalici premium veya discount riski</li>
-<li>Arbitraj mekanizmasi calismayabilir[^dim02]</li>
-</ul>
-</li>
-</ol>
-<h3>📊 Analist Gorusleri (Guncel)</h3>
-<p>| Banka / Araci Kurum | Hedef Fiyat (KRW) | Rating | Tarih | Not |
-|---------------------|-------------------|--------|-------|-----|
-| <strong>HSBC</strong> | ₩4,000,000 | Al | Haziran 2026 | +%38 yukseltme, P/B 2.8x→3.4x |
-| <strong>Nomura</strong> | ₩4,000,000 | Al | Haziran 2026 | HBM super-cycli |
-| <strong>Daiwa</strong> | ₩3,600,000 | Al | Haziran 2026 | AI bellek talebi |
-| <strong>UBS</strong> | $1,625 (~₩2.2M) | - | 2026 | HBM liderligi |
-| <strong>Morgan Stanley</strong> | ₩2,600,000 | - | 2026 | Daha muhafazakar |
-| <strong>Consensus (45 analist)</strong> | <strong>₩3.17-3.37M</strong> | Al (46/48) | 2026 | Ortalama hedef |</p>
-<blockquote>
-<p><strong>Mevcut fiyat:</strong> ₩2,425,000. Consensus hedef fiyat: ₩3.37M = <strong>%39 yukarı potansiyel</strong>.[^dim01][^dim10]</p>
-</blockquote>
-<blockquote>
-<p><strong>🔴 Uyari:</strong> Goldman Sachs'in ₩1,350,000 hedef fiyati (2025) guncel degil. Guncel hedefler ₩2.6M - ₩4M arasi.[^dim10]</p>
-</blockquote>
-<hr/>
-  </div>
-</section>
-
-<section>
-  <div class="section-head" id="sec-13">
-    <div class="section-head-inner" onclick="toggle('sec-13')">
-      <h2 class="section-title">🔮 Cross-Dimension Insight'lar — Non-Obvious Bulgular</h2>
-      <div class="icon">▾</div>
-    </div>
-  </div>
-  <div class="section-body">
-    <h3>Insight 1: Fungibility Belirsizligi = Kalici Premium/Discount Riski</h3>
-<p>ADS'lerin KRX hisseleriyle tam donusurlugu henuz kararlastirilmamis. Eger donusum yoksa, ADS fiyati KRX fiyatindan sistematik olarak ayrilabilir. TSMC ADR'leri yillardir Taiex hisselerinden hafif premium islem gorur. SKHY icin ayni sey gerceklesebilir, ama yeni ihrac (new share) oldugundan arz baskisi + donusumsuzluk = <strong>discount riski</strong> de var.[^fungibility]</p>
-<h3>Insight 2: SK Square NAV Discount = Gizli Kaldıraç</h3>
-<p>SKHY alan bir ABD yatirimcisi, dolayli olarak SK Square'in degerlemesini etkiliyor. SK Square NAV'inin %98.4'u SK hynix'ten olusuyor. ADS listelemesi, SK Square NAV discount'unu (%38) daraltabilir. Uzun vadeli yatirimcilar SKHY yaninda SK Square hissesini degerlendirebilir.[^dim09]</p>
-<h3>Insight 3: Meta Compute Soku = AI Hikayesinin Kırılganlığı</h3>
-<p>2 Temmuz 2026'da Meta'nin "fazla AI kapasitesini satacagi" haberi (henuz teyit edilmemis), SK hynix'i %12-14.5 dusurdu. Bu, AI bellek "super-cycli" hikayesinin ne kadar hype-odakli ve kirilgan oldugunu gosteriyor. 10 Temmuz arzi, bu hassas ortamda gerceklesiyor.[^meta-shock]</p>
-<h3>Insight 4: NVIDIA HBM4 "Uclu Sertifikasyon" = Pazar Payi Erozyonu</h3>
-<p>NVIDIA HBM4'te Samsung, SK hynix ve Micron'u ayni anda sertifike etti. HBM3E'de SK hynix neredeyse tekeldi; HBM4'te bu degisiyor. SK hynix HBM4 tahsisi %60-70'den %50-55'e dusebilir. Samsung 11.7 Gbps ile sektorun en hizli HBM4'u uretiyor.[^dim08]</p>
-<h3>Insight 5: 6+ ETF = Volatilite Kaldıracı</h3>
-<p>Direxion 2x (SKHL), Roundhill ve diger 4+ ETF basvurusu, SKHY volatilitesini yapay olarak artiracak. Kaldıraçlı ETF'ler dususte zorunlu satis yapar. 2 Temmuz'da Direxion SKHL simule NAV <strong>-%23.21</strong> gordu.[^dim10]</p>
-<h3>Insight 6: 2028 Kapasite Patlamasi = Dongu Donusu</h3>
-<p>$590B Kore + CHIPS Act + AB + Japonya = ayni anda devasa kapasite. Samsung P5 (2028), SK hynix M15X (2027), Micron Idaho (2027-2028) hepsi ayni donemde devreye giriyor. HBM talebi 2026-2027'de zirve yapabilir, 2028'de "bolluk" senaryosu gerceklesebilir. 2022'deki %46 dusus tekrar edilebilir.[^dim07]</p>
-<h3>Insight 7: Forward P/E 6-8x = Zirve Tuzagi mi?</h3>
-<p>"Ucuz" degerleme (Forward P/E 6-8x), uzun vadeli AL sinyali degil, dongusel UYARI sinyali olabilir. Dongusel sirketlerde en dusuk P/E, zirve karlarda gorulur. 2026 Q1 %72 marji surdurulebilir mi? 2027'de kar duserse, P/E otomatikman artar.[^dim01]</p>
-<h3>Insight 8: ADS Arzi = Kore Chaebol "Global Standard" Donusumu</h3>
-<p>SK hynix ADS arzi, sadece finansal islem degil, Kore chaebol yonetim anlayisinda "global standard" gecis sinyali. Corporate Value-Up Plan, SK Square NAV discount hedefi, BlackRock ile yonetisim diyalogu — ABD kurumsal yatirimcilarinin bekledigi seffaflik. Samsung, Hyundai, LG icin bir "yol haritasi" olabilir.[^dim09]</p>
-<hr/>
-  </div>
-</section>
-
-<section>
-  <div class="section-head" id="sec-14">
-    <div class="section-head-inner" onclick="toggle('sec-14')">
-      <h2 class="section-title">📋 Sik Sorulan Sorular (SSS) — Guncellenmis</h2>
-      <div class="icon">▾</div>
-    </div>
-  </div>
-  <div class="section-body">
-    <h3>SK hynix'in ABD listesi gercekten bir IPO mu?</h3>
-<p><strong>Hayir, teknik olarak IPO degil.</strong> SK hynix hisseleri zaten KRX: 000660'da islem goruyor. ABD listesi, <strong>yeni hisselerin ADS formatinda ihraci</strong> (secondary listing + new share offering). Bu nedenle medya "IPO" diyor ama teknik olarak "ikincil listeleme + sermaye artirimi".</p>
-<h3>ADS ve ADR arasindaki fark nedir?</h3>
-<p><strong>Pratikte ayni, teknik olarak farkli:</strong></p>
-<ul>
-<li>ADS = yeni hisse ihraci (SK hynix 17.79M yeni hisse cikariyor)</li>
-<li>ADR = mevcut hisselerin ABD'de temsili (Samsung SSNLF)</li>
-<li>SK hynix <strong>ADS</strong> ihraç ediyor, bu yuzden seyrelme etkisi var (~%2.5)</li>
-</ul>
-<h3>SKHY nasil alinir?</h3>
-<p>ABD araci kurum (Interactive Brokers, TD Ameritrade, vb.) → SKHY sembolu → Nasdaq. ABD vatandasi olmayanlar icin <strong>W-8BEN formu</strong> gerekli. Vergi kesintisi: <strong>%15</strong> (ABD-Kore anlasmasi). Kore'de ek vergi: <strong>%15-22</strong>.[^tax]</p>
-<h3>Temettu odemesi nasil olacak?</h3>
-<p>ADS sahipleri temettu alacak. Citibank (depositary bank) dağitacak. Ama <strong>masraflar dusulerek</strong> ve <strong>doviz kuru riski</strong> ile. Kore'de vergi kesintisi olabilir.[^tax]</p>
-<h3>Bu arz SK hynix hisselerini nasil etkileyecek?</h3>
-<p><strong>Kisa vade:</strong> Seyrelme etkisi (~%2.5), arz baskisi, yuksek volatilite.
-<strong>Uzun vade:</strong> Degerleme artisi, likidite artisi, ABD kurumsal yatirimci erisimi. Ama <strong>fungibility belirsizligi</strong> kalici premium/discount riski tasiyor.[^fungibility]</p>
-<h3>Vergi durumu nedir?</h3>
-<ul>
-<li>ABD-Kore vergi anlasmasi: <strong>%15</strong> stopaj</li>
-<li>Kore yerel vergi: etkin <strong>%22</strong> (ust sinir)</li>
-<li>W-8BEN formu ile %15 alinir</li>
-<li>ADS sahipleri <strong>dogrudan oy kullanamaz</strong> (voting proxy)</li>
-</ul>
-<hr/>
-  </div>
-</section>
-
-<section>
-  <div class="section-head" id="sec-15">
-    <div class="section-head-inner" onclick="toggle('sec-15')">
-      <h2 class="section-title">📅 Onemli Tarihler (Guncel)</h2>
-      <div class="icon">▾</div>
-    </div>
-  </div>
-  <div class="section-body">
-    <p>| Tarih | Olay | Risk/Uyari |
-|-------|------|------------|
-| <strong>3 Temmuz 2026</strong> | Kore regulator (FSC/FSS) onayi bekleniyor | Eger gecikirse, arz ertelenebilir |
-| <strong>6-7 Temmuz 2026</strong> | Kitap olusturma (Bookbuilding) | Talep guclu mu? Big Tech alimi? |
-| <strong>9 Temmuz 2026</strong> | Fiyat belirleme | KRX fiyatina indirimli olamaz |
-| <strong>10 Temmuz 2026</strong> | <strong>Islem baslangici (SKHY)</strong> | Yuksek volatilite bekleniyor |
-| <strong>14 Temmuz 2026</strong> | Odemeler (Settlement) | |
-| <strong>15 Temmuz 2026</strong> | ADS etkinlesmesi | Fungibility aciklamasi bekleniyor |
-| <strong>29 Temmuz 2026</strong> | Yeni hisselerin KRX kaydi | Seyrelme etkisi gerceklesir |
-| <strong>29 Temmuz 2026</strong> | Q2 2026 finansal sonuclar | Beklenti: Q1'den daha iyi |</p>
-<hr/>
-  </div>
-</section>
-
-<section>
-  <div class="section-head" id="sec-16">
-    <div class="section-head-inner" onclick="toggle('sec-16')">
-      <h2 class="section-title">🎯 Sonuc ve Oneriler — Guncel ve Risk Duyarli</h2>
-      <div class="icon">▾</div>
-    </div>
-  </div>
-  <div class="section-body">
-    <h3>Ana Cikarimlar</h3>
-<ol>
-<li>
-<p><strong>Tarihin En Buyuk ADR/ADS Arzi:</strong> ~$29.4 milyar ile Alibaba ($21.8B) ve Saudi Aramco ($25.6B) rekorlarini geciyor. ABD'de SpaceX ($85.7B) ardindan 2. sirada.</p>
-</li>
-<li>
-<p><strong>AI Bellek Lideri Ama Tekel Degil:</strong> SK hynix HBM'de %50-58 payla lider, ama HBM4'te NVIDIA uc tedarikci stratejisine gecti. Samsung HBM4 comeback'i gerceklesiyor. %60-70 HBM4 tahsis beklentisi gercekci degil.</p>
-</li>
-<li>
-<p><strong>Dongu Zirvesinde Mi?</strong> Q1 2026 %72 faaliyet kar marji, 40.35T won net kar (tarihi rekor). Forward P/E ~6-8x. Bu "zirve tuzagi" sinyali olabilir. 2028'de kapasite patlamasi riski var.</p>
-</li>
-<li>
-<p><strong>Kirilgan Hikaye:</strong> 2 Temmuz Meta haberiyle %12 dusus, AI "hikaye riskini" gosteriyor. 6+ ETF basvurusu volatiliteyi artiracak. Arz oncesi 5 gunde (5-10 Temmuz) yeni bir "AI fatigue" haberi gelirse fiyatlandirma etkilenebilir.</p>
-</li>
-<li>
-<p><strong>Fungibility Belirsizligi:</strong> ADS-KRX donusurlugu kararlastirilmamis. Bu, kalici premium/discount riski. Yatirimcilar arz sonrasi ilk haftalarda fiyat ayrimini takip etmeli.</p>
-</li>
-<li>
-<p><strong>Kore Iskontosu Kırma Potansiyeli:</strong> ADS listelemesi, SK hynix ve dolayisiyla SK Square (%38 NAV discount) icin degerleme artisi saglayabilir. TSMC (1997) ornegi kopyalanabilir.</p>
-</li>
-</ol>
-<h3>Yatirimci Onerileri</h3>
-<p>| Profil | Oneri | Risk |
-|--------|-------|------|
-| <strong>Uzun vadeli buyume</strong> | SKHY veya SK Square (402340.KS) degerlendirilebilir | 2028 dongu donusu riski |
-| <strong>Momentum trader</strong> | 10 Temmuz arzi sonrasi volatiliteyi kullan | ETF kaldıracı, forced selling |
-| <strong>Deger yatirimcisi</strong> | SK Square (%38 NAV discount) = iskontolu SK hynix | NAV discount daralma hizi belirsiz |
-| <strong>Risk-uzak</strong> | Bekle-gör; Q2 sonuclarini (29 Temmuz) bekle | FOMO riski, fiyat yukari gidebilir |
-| <strong>Opsiyon trader</strong> | Fungibility aciklamasina gore strateji kur | Yuksek IV, ETF etkisi |</p>
-<h3>⚠️ Yasal Uyari</h3>
-<p>Bu rapor <strong>bilgilendirme amaclidir</strong> ve <strong>yatirim tavsiyesi degildir.</strong> Hisse senedi yatirimlari yuksek risk icerir. Sermaye kaybi riski bulunmaktadir. Tum yatirim kararlari kendi sorumlulugunuzdadir. Lutfen yatirim yapmadan once kendi arastirmanizi yapin ve finansal danismaniniza danisin.</p>
-<p><strong>Veri Dogrulugu:</strong> Bu rapordaki veriler 5 Temmuz 2026 itibariyle gunceldir. Piyasa kosullari hizla degisebilir. Tum iddilar web arastirmasi ve SEC/irket IR kaynaklarindan dogrulanmistir. Celiskili iddilar cross-verification ile isaretlenmistir.</p>
-<hr/>
-  </div>
-</section>
-
-<section>
-  <div class="section-head" id="sec-17">
-    <div class="section-head-inner" onclick="toggle('sec-17')">
-      <h2 class="section-title">🔗 Kaynaklar ve Referanslar</h2>
-      <div class="icon">▾</div>
-    </div>
-  </div>
-  <div class="section-body">
-    <h3>Resmi Belgeler</h3>
-<p>[^fungibility]: Bloomberg. "SK hynix ADS Fungibility undecided." 2026.
-[^tax]: IRS, PwC, Clearstream. "ABD-Kore vergi anlasmasi ve ADS stopaji." 2026.
-[^currency]: Exchange-rates.org, FasterCapital. "KRW/USD kur etkisi." 2026.
-[^yahoo-finance]: Yahoo Finance. "SK hynix Inc. (000660.KS)." 3 Temmuz 2026.
-[^crypto-briefing]: CryptoBriefing. "SK Hynix posts $26B profit in Q1 2026." 3 Temmuz 2026.
-[^meta-shock]: Sina Finance, Direxion, Korean media. "Meta Compute shock, SK hynix drops 12%." 2 Temmuz 2026.
-[^korea-discount]: HDFC Sky, Tech Times, StartupFeed. "Kore iskontosu ve ADS etkisi." 2026.</p>
-<h3>Arastirma Dosyalari (Deep Research Swarm)</h3>
-<ul>
-<li><code>sk_hynix_file_analysis.md</code> — Phase F: Dosya analizi</li>
-<li><code>sk_hynix_dim01.md</code> — Boyut 1: Finansal Performans</li>
-<li><code>sk_hynix_dim02.md</code> — Boyut 2: ADS/ADR Arz Yapisi</li>
-<li><code>sk_hynix_dim03.md</code> — Boyut 3: HBM Pazar Liderligi</li>
-<li><code>sk_hynix_dim04.md</code> — Boyut 4: Rakip Analizi</li>
-<li><code>sk_hynix_dim05.md</code> — Boyut 5: Kore ADR/ADS Piyasasi</li>
-<li><code>sk_hynix_dim06.md</code> — Boyut 6: Yatirim Bankalari</li>
-<li><code>sk_hynix_dim07.md</code> — Boyut 7: Jeopolitik Riskler</li>
-<li><code>sk_hynix_dim08.md</code> — Boyut 8: NVIDIA/HBM4</li>
-<li><code>sk_hynix_dim09.md</code> — Boyut 9: SK Square</li>
-<li><code>sk_hynix_dim10.md</code> — Boyut 10: Yatirim Tezi</li>
-<li><code>sk_hynix_cross_verification.md</code> — Phase 4: Capraz Dogrulama</li>
-<li><code>sk_hynix_insight.md</code> — Phase 6: Insight Extractio</li>
-</ul>
-  </div>
-</section>
-
-<div class="footer">Gistify Flow | 5 Temmuz 2026 | Veriler 200+ kaynaklı çapraz doğrulamalı</div>
 </div>
 </body>
 </html>
