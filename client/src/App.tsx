@@ -936,6 +936,23 @@ function App() {
     void syncI18nLanguage(language);
   }, [language]);
 
+  const handleLanguageChange = useCallback(
+    (next: AppLanguage) => {
+      if (next === language) {
+        return;
+      }
+
+      const nextPath =
+        typeof window === "undefined"
+          ? localizePath(rawLocation || "/", next)
+          : `${localizePath(window.location.pathname, next)}${window.location.search}${window.location.hash}`;
+
+      setLanguage(next);
+      setRawLocation(nextPath);
+    },
+    [language, rawLocation, setRawLocation]
+  );
+
   useEffect(() => {
     const pathname =
       typeof window === "undefined" ? rawLocation : window.location.pathname;
@@ -1139,7 +1156,7 @@ function App() {
             {isPaymentRoute ? (
               <Pay
                 language={language}
-                onLanguageChange={setLanguage}
+                onLanguageChange={handleLanguageChange}
                 authState={authState}
                 onSignIn={startGoogleLogin}
                 onRefreshAuthState={refreshAuthState}
@@ -1188,7 +1205,7 @@ function App() {
                   <div className="flex items-center gap-2">
                     <LanguageSelector
                       language={language}
-                      onChange={setLanguage}
+                      onChange={handleLanguageChange}
                     />
 
                     {isPublicAccessMode ? (
@@ -1240,7 +1257,10 @@ function App() {
             ) : null}
 
             {!isPaymentRoute && isMarketingRoute ? (
-              <Router language={language} onLanguageChange={setLanguage} />
+              <Router
+                language={language}
+                onLanguageChange={handleLanguageChange}
+              />
             ) : null}
 
             {authState.status === "loading" &&
@@ -1307,7 +1327,7 @@ function App() {
                   <div ref={protectedViewRef}>
                     <Router
                       language={language}
-                      onLanguageChange={setLanguage}
+                      onLanguageChange={handleLanguageChange}
                     />
                   </div>
                 )}
