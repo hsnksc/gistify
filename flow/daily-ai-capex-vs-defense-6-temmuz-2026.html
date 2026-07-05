@@ -10,6 +10,10 @@
 <meta property="og:url" content="https://gistify.pro/flow/daily-ai-capex-vs-defense-6-temmuz-2026.html" />
 <meta property="og:image" content="https://gistify.pro/gistifylogo.png" />
 <meta property="og:site_name" content="Gistify" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="AI CapEx vs. Savunma Bütçesi | Deep Research" />
+<meta name="twitter:description" content="Gistify flow report: 12 boyutlu derin analiz" />
+<meta name="twitter:image" content="https://gistify.pro/gistifylogo.png" />
 <style>
 :root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -20,6 +24,8 @@ html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf
 .hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
 .hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:720px}
 .hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.hero-date{display:inline-flex;align-items:center;gap:5px;color:var(--gf-muted)}
 .meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
 .meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
 .meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
@@ -42,6 +48,12 @@ html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf
 .card-value.down{color:var(--gf-danger)}
 .card-value.neu{color:var(--gf-warning)}
 .card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+.tabs{display:flex;gap:2px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:14px}
+.tab{flex:1;padding:8px 10px;text-align:center;font-size:0.82rem;font-weight:600;border-radius:6px;cursor:pointer;user-select:none;transition:background .15s,color .15s;border:none;color:var(--gf-muted);background:transparent}
+.tab.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.tab:hover:not(.active){color:var(--gf-text)}
+.tab-content{display:none}
+.tab-content.active{display:block}
 table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
 th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
 th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
@@ -49,6 +61,11 @@ tr:hover td{background:rgba(56,189,248,.04)}
 td{font-variant-numeric:tabular-nums}
 .text-right{text-align:right}
 .text-center{text-align:center}
+.progress-bar{background:var(--gf-card);border-radius:4px;height:18px;overflow:hidden;margin:4px 0}
+.progress-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:0.68rem;font-weight:700;color:#fff}
+.fill-bull{background:linear-gradient(90deg,#16a34a,#4ade80)}
+.fill-base{background:linear-gradient(90deg,#ca8a04,#fbbf24)}
+.fill-bear{background:linear-gradient(90deg,#dc2626,#f87171)}
 .insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
 .insight-box strong{color:var(--gf-accent)}
 .insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
@@ -66,16 +83,31 @@ td{font-variant-numeric:tabular-nums}
 .kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
 .kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
 .kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--gf-border)}
+.timeline-item{position:relative;margin-bottom:14px}
+.timeline-item::before{content:'';position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--gf-card);border:2px solid var(--gf-border)}
+.timeline-item.bull::before{border-color:var(--gf-success);background:var(--gf-success)}
+.timeline-item.bear::before{border-color:var(--gf-danger);background:var(--gf-danger)}
+.timeline-item.warn::before{border-color:var(--gf-warning);background:var(--gf-warning)}
+.timeline-date{font-size:0.78rem;color:var(--gf-muted);font-weight:600}
+.timeline-body{font-size:0.85rem;margin-top:3px;color:var(--gf-text)}
 .footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
 h1{font-size:1.4rem;font-weight:700;color:var(--gf-text);margin:18px 0 10px}
 h2{font-size:1.15rem;font-weight:600;color:var(--gf-text);margin:14px 0 8px}
 h3{font-size:1.0rem;font-weight:600;color:var(--gf-muted);margin:10px 0 6px}
+h4{font-size:0.92rem;font-weight:600;color:var(--gf-muted);margin:8px 0 4px}
 p{margin:8px 0}
 ul,ol{margin:8px 0;padding-left:20px}
 li{margin:4px 0}
-code{background:var(--gf-card);padding:2px 6px;border-radius:4px;font-family:var(--gf-mono);font-size:0.85rem}
-pre{background:var(--gf-card);padding:12px;border-radius:var(--gf-radius);overflow-x:auto;margin:10px 0}
-blockquote{border-left:3px solid var(--gf-accent);padding-left:12px;margin:10px 0;color:var(--gf-muted)}
+code{background:var(--gf-card);padding:2px 6px;border-radius:4px;font-family:var(--gf-mono);font-size:0.85rem;color:var(--gf-accent)}
+pre{background:var(--gf-card);padding:12px;border-radius:var(--gf-radius);overflow-x:auto;margin:10px 0;border:1px solid var(--gf-border)}
+pre code{background:transparent;padding:0}
+blockquote{border-left:3px solid var(--gf-accent);padding-left:12px;margin:10px 0;color:var(--gf-muted);font-style:italic}
+hr{border:none;border-top:1px solid var(--gf-border);margin:16px 0}
+a{color:var(--gf-accent);text-decoration:none}
+a:hover{text-decoration:underline}
+strong{color:var(--gf-text);font-weight:600}
 @media(max-width:640px){.wrap{padding:16px 10px}.hero-h{font-size:1.25rem}.grid{grid-template-columns:1fr}.kpi-row{grid-template-columns:repeat(2,1fr)}table{font-size:0.78rem}th,td{padding:6px 7px}}
 </style>
 <script>
@@ -86,9 +118,9 @@ function toggle(id){var el=document.getElementById(id);if(!el)return;el.classLis
 <div class="wrap">
 
 <!-- HERO -->
-<div class="hero" id="hero">
+<div class="hero" id="hero" data-timestamp="2026-07-06T00:00:00+03:00">
   <h1 class="hero-h">AI CapEx vs. Savunma Bütçesi: Tarihi Bir Dönüm Noktası</h1>
-  <p class="hero-desc">ABD'de yapay zeka altyapı yatırımları 2027'de ulusal savunma harcamalarını ilk kez geride bırakıyor. 12 boyutlu derinlemesine analiz, 3 senaryo, 7 şirket, 10 risk.</p>
+  <p class="hero-desc">ABD'de yapay zeka altyapı yatırımları 2027'de ulusal savunma harcamalarını ilk kez geride bırakıyor. 12 boyutlu derin analiz, 3 senaryo, 7 şirket, 10 risk, 12 içgörü.</p>
   <div class="hero-meta">
     <span class="meta-pill info">📅 6 Temmuz 2026</span>
     <span class="meta-pill neu">Deep Research</span>
@@ -97,7 +129,14 @@ function toggle(id){var el=document.getElementById(id);if(!el)return;el.classLis
   </div>
 </div>
 
-<h1 id="ai-sermaye-harcamalar-vs-ulusal-savunma-butcesi-tarihi-bir-donum-noktas">🔍 AI Sermaye Harcamaları vs. Ulusal Savunma Bütçesi: Tarihi Bir Dönüm Noktası</h1>
+
+<section>
+  <div class="section-head" id="sec-00">
+    <h2 class="section-title">📌 Giriş</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    <h1 id="ai-sermaye-harcamalar-vs-ulusal-savunma-butcesi-tarihi-bir-donum-noktas">🔍 AI Sermaye Harcamaları vs. Ulusal Savunma Bütçesi: Tarihi Bir Dönüm Noktası</h1>
 <p><strong>Derin Araştırma Raporu | Deep Research Report</strong><br />
 <strong>Analiz Tarihi: 6 Temmuz 2026 | Analysis Date: July 6, 2026</strong><br />
 <strong>Kaynaklar: Morgan Stanley, CBO, IMF, Goldman Sachs, JPMorgan, Moody's, SEC Filings, SIPRI, BEA, CRFB</strong></p>
@@ -1588,31 +1627,31 @@ function toggle(id){var el=document.getElementById(id);if(!el)return;el.classLis
 <p><strong>En temel çelişki:</strong> OMB, %3.0 GSYİH büyümesi varsayımıyla $1.5T savunma bütçesini "sürdürülebilir" gösteriyor. CBO'nun %1.8 varsayımı aynı bütçeyi borç/GSYİH'yı %120'ye taşıyor [^fortune1]. <strong>Bu, ABD'nin savunma harcamalarının büyüklüğü değil, finansmanının sürdürülebilirliği sorusudur.</strong> Her $100B ek savunma harcaması, borçlanma gereksinimini artırır. CBO'ya göre, borçlanılan her $1'ın $0.66'sı faize gider [^cbo2]. Bu, $350B reconciliation'ın aslında $230B etkisiz (faize giden) olduğu anlamına gelir. Savunma ile faiz arasında doğrudan bir trade-off vardır.</p>
 <hr />
 <h2 id="kaynakca">Kaynakça</h2>
-<p>[^cbo1]: Congressional Budget Office, "The Budget and Economic Outlook: 2026 to 2036", Feb 11, 2026, https://www.cbo.gov/publication/62105
-[^cbo2]: CBO Baseline — House Budget Committee, https://budget.house.gov/imo/media/doc/cbo_baseline_february_2026.pdf
-[^cbo3]: CBO, "Future Years Defense Program Analysis", May 2025, https://www.cbo.gov/topics/defense-and-national-security/military-personnel
-[^cbo_nuclear]: CBO, "Projected Costs of U.S. Nuclear Forces, 2025 to 2034", Apr 24, 2025, https://www.cbo.gov/publication/61362
-[^crs_nuclear]: CRS, "The Nuclear Triad (IF10519)", Aug 15, 2025, https://www.everycrsreport.com/files/2025-08-15_IF10519_6acc3999e85032d6cc404610e31ac16781a608fd.html
-[^cbo_navy]: CBO, "An Analysis of the Navy's 2025 Shipbuilding Plan", Jan 6, 2025, https://www.cbo.gov/publication/60732
-[^cbo_personnel]: CBO, "Military Personnel", May 9, 2025, https://www.cbo.gov/topics/defense-and-national-security/military-personnel
-[^crfb1]: CRFB, "An Overview of the President's FY 2027 Budget", Apr 3, 2026, https://www.crfb.org/blogs/overview-presidents-fy-2027-budget
-[^crfb_stmt]: CRFB Statement on President's FY 2027 Budget, Apr 3, 2026, https://www.crfb.org/press-releases/crfb-statement-presidents-fy-2027-budget
-[^fortune1]: Fortune, "Trump just raised the $39 trillion national debt with the largest budget hike since World War II", Apr 3, 2026, https://fortune.com/2026/04/03/trump-1-5-trillion-defense-budget-largest-since-world-war-ii/
-[^insidedef]: Inside Defense, "White House's historic FY-27 defense budget fueled by $350B reconciliation request", Apr 2, 2026, https://insidedefense.com/share/226872
-[^spaceforce1]: Air &amp; Space Forces Magazine, "Space Force Poised for 80 Percent Funding Boost in 2027 Budget", Apr 6, 2026, https://www.airandspaceforces.com/space-force-80-percent-funding-boost-2027-budget/
-[^drone1]: Robotics.press, "FY2027 defense budget: $63B for drone/unmanned technology", May 30, 2026, https://robotics.press/news/fy2027-defense-budget-63b-drone-unmanned-6x-surge/
-[^defscoop1]: DefenseScoop, "DOD moves to make its largest-ever investment in drones and anti-drone weapons", Apr 21, 2026, https://defensescoop.com/2026/04/21/dod-plans-largest-ever-investment-drones-anti-drone-weapons/
-[^govexec1]: Government Executive, "Budget debate pits military retiree interests against those in active duty", Feb 2012, https://www.govexec.com/defense/2012/02/budget-debate-pits-military-retiree-interests-against-those-active-duty-analysts-warn/41141/
-[^sipri1]: SIPRI, "Global military spending rise continues", Apr 27, 2026, https://www.sipri.org/media/press-release/2026/global-military-spending-rise-continues-european-and-asian-expenditures-surge
-[^macrotrends1]: MacroTrends, "China Military Spending/Defense Budget", 2025, https://www.macrotrends.net/global-metrics/countries/chn/china/military-spending-defense-budget
-[^mit1]: MIT SSP, "China Defense Spending Estimate Method", Jun 2024, https://ssp.mit.edu/files/ssp/imce/publications/2024/Fravel_Gilboy_Heginbotham_TNSR_Appendix_20240601_UPDATED.pdf
-[^sipri_nato]: SIPRI, "NATO's new spending target: challenges and risks", Jun 27, 2025, https://www.sipri.org/commentary/essay/2025/natos-new-spending-target-challenges-and-risks-associated-political-signal
-[^euractiv1]: Euractiv, "Only three NATO allies set to meet new 3.5% spending target in 2025", Sep 1, 2025, https://www.euractiv.com/news/only-three-nato-allies-set-to-meet-new-3-5-spending-target-in-2025/
-[^iiss1]: IISS, "NATO agrees on investment pledge", Jun 30, 2025, https://www.iiss.org/online-analysis/military-balance/2025/062/nato-agrees-on-investment-pledge/
-[^epic1]: EPIC for America, "Interest on the Debt Surging Past National Defense", Apr 10, 2025, https://epicforamerica.org/federal-budget/interest-on-the-debt-surging-past-national-defense/
-[^bpc1]: Bipartisan Policy Center, "The Fiscal Outlook in CBO's Latest 10-Year Baseline", Jun 24, 2026, https://bipartisanpolicy.org/explainer/the-fiscal-outlook-in-cbos-latest-10-year-baseline/
-[^fox1]: Fox Business, "Trump's call for $1.5 trillion defense budget", Jan 8, 2026, https://www.foxbusiness.com/politics/trumps-call-1-5-trillion-defense-budget-would-add-trillions-debt-crfb
-[^ballotpedia1]: Ballotpedia, "One Big Beautiful Bill Act", Dec 11, 2024, https://ballotpedia.org/One_Big_Big_Beautiful_Bill_Act
+<p>[^cbo1]: Congressional Budget Office, "The Budget and Economic Outlook: 2026 to 2036", Feb 11, 2026, https://www.cbo.gov/publication/62105<br />
+[^cbo2]: CBO Baseline — House Budget Committee, https://budget.house.gov/imo/media/doc/cbo_baseline_february_2026.pdf<br />
+[^cbo3]: CBO, "Future Years Defense Program Analysis", May 2025, https://www.cbo.gov/topics/defense-and-national-security/military-personnel<br />
+[^cbo_nuclear]: CBO, "Projected Costs of U.S. Nuclear Forces, 2025 to 2034", Apr 24, 2025, https://www.cbo.gov/publication/61362<br />
+[^crs_nuclear]: CRS, "The Nuclear Triad (IF10519)", Aug 15, 2025, https://www.everycrsreport.com/files/2025-08-15_IF10519_6acc3999e85032d6cc404610e31ac16781a608fd.html<br />
+[^cbo_navy]: CBO, "An Analysis of the Navy's 2025 Shipbuilding Plan", Jan 6, 2025, https://www.cbo.gov/publication/60732<br />
+[^cbo_personnel]: CBO, "Military Personnel", May 9, 2025, https://www.cbo.gov/topics/defense-and-national-security/military-personnel<br />
+[^crfb1]: CRFB, "An Overview of the President's FY 2027 Budget", Apr 3, 2026, https://www.crfb.org/blogs/overview-presidents-fy-2027-budget<br />
+[^crfb_stmt]: CRFB Statement on President's FY 2027 Budget, Apr 3, 2026, https://www.crfb.org/press-releases/crfb-statement-presidents-fy-2027-budget<br />
+[^fortune1]: Fortune, "Trump just raised the $39 trillion national debt with the largest budget hike since World War II", Apr 3, 2026, https://fortune.com/2026/04/03/trump-1-5-trillion-defense-budget-largest-since-world-war-ii/<br />
+[^insidedef]: Inside Defense, "White House's historic FY-27 defense budget fueled by $350B reconciliation request", Apr 2, 2026, https://insidedefense.com/share/226872<br />
+[^spaceforce1]: Air &amp; Space Forces Magazine, "Space Force Poised for 80 Percent Funding Boost in 2027 Budget", Apr 6, 2026, https://www.airandspaceforces.com/space-force-80-percent-funding-boost-2027-budget/<br />
+[^drone1]: Robotics.press, "FY2027 defense budget: $63B for drone/unmanned technology", May 30, 2026, https://robotics.press/news/fy2027-defense-budget-63b-drone-unmanned-6x-surge/<br />
+[^defscoop1]: DefenseScoop, "DOD moves to make its largest-ever investment in drones and anti-drone weapons", Apr 21, 2026, https://defensescoop.com/2026/04/21/dod-plans-largest-ever-investment-drones-anti-drone-weapons/<br />
+[^govexec1]: Government Executive, "Budget debate pits military retiree interests against those in active duty", Feb 2012, https://www.govexec.com/defense/2012/02/budget-debate-pits-military-retiree-interests-against-those-active-duty-analysts-warn/41141/<br />
+[^sipri1]: SIPRI, "Global military spending rise continues", Apr 27, 2026, https://www.sipri.org/media/press-release/2026/global-military-spending-rise-continues-european-and-asian-expenditures-surge<br />
+[^macrotrends1]: MacroTrends, "China Military Spending/Defense Budget", 2025, https://www.macrotrends.net/global-metrics/countries/chn/china/military-spending-defense-budget<br />
+[^mit1]: MIT SSP, "China Defense Spending Estimate Method", Jun 2024, https://ssp.mit.edu/files/ssp/imce/publications/2024/Fravel_Gilboy_Heginbotham_TNSR_Appendix_20240601_UPDATED.pdf<br />
+[^sipri_nato]: SIPRI, "NATO's new spending target: challenges and risks", Jun 27, 2025, https://www.sipri.org/commentary/essay/2025/natos-new-spending-target-challenges-and-risks-associated-political-signal<br />
+[^euractiv1]: Euractiv, "Only three NATO allies set to meet new 3.5% spending target in 2025", Sep 1, 2025, https://www.euractiv.com/news/only-three-nato-allies-set-to-meet-new-3-5-spending-target-in-2025/<br />
+[^iiss1]: IISS, "NATO agrees on investment pledge", Jun 30, 2025, https://www.iiss.org/online-analysis/military-balance/2025/062/nato-agrees-on-investment-pledge/<br />
+[^epic1]: EPIC for America, "Interest on the Debt Surging Past National Defense", Apr 10, 2025, https://epicforamerica.org/federal-budget/interest-on-the-debt-surging-past-national-defense/<br />
+[^bpc1]: Bipartisan Policy Center, "The Fiscal Outlook in CBO's Latest 10-Year Baseline", Jun 24, 2026, https://bipartisanpolicy.org/explainer/the-fiscal-outlook-in-cbos-latest-10-year-baseline/<br />
+[^fox1]: Fox Business, "Trump's call for $1.5 trillion defense budget", Jan 8, 2026, https://www.foxbusiness.com/politics/trumps-call-1-5-trillion-defense-budget-would-add-trillions-debt-crfb<br />
+[^ballotpedia1]: Ballotpedia, "One Big Beautiful Bill Act", Dec 11, 2024, https://ballotpedia.org/One_Big_Big_Beautiful_Bill_Act<br />
 [^user1]: Kullanıcı raporu, <code>ai-capex-vs-defense-user-report.md</code>, Jul 5, 2026</p>
 <hr />
 <h1 id="bolum-5-karslastrmal-analiz-ai-capex-vs-savunma-gsyih">Bölüm 5: Karşılaştırmalı Analiz — AI CapEx vs Savunma (%GSYİH)</h1>
@@ -2208,23 +2247,23 @@ function toggle(id){var el=document.getElementById(id);if(!el)return;el.classLis
 </ul>
 <hr />
 <h2 id="kaynakca_1">Kaynakça</h2>
-<p>[^cbo1]: Congressional Budget Office, "The Budget and Economic Outlook: 2026 to 2036", Feb 11, 2026, https://www.cbo.gov/publication/62105
-[^crfb1]: CRFB, "An Overview of the President's FY 2027 Budget", Apr 3, 2026, https://www.crfb.org/blogs/overview-presidents-fy-2027-budget
-[^imf1]: IMF, "World Economic Outlook, April 2026", Apr 2026, https://www.imf.org/en/publications/weo/issues/2026/04/14/world-economic-outlook-april-2026
-[^fed1]: Federal Reserve, "Summary of Economic Projections", Dec 2024, https://www.federalreserve.gov/monetarypolicy/2025-02-mpr-part3.htm
-[^dim03]: Dim-03 analiz modülü, "ABD GSYİH Projeksiyonları ve Deflatör Etkisi", Jul 6, 2026, <code>ai-capex-vs-defense_dim03.md</code>
-[^cross]: Cross-Verification raporu, "AI CapEx vs. Defense Spending", Jul 6, 2026, <code>ai-capex-vs-defense_cross_verification.md</code>
-[^phase1]: Phase 1 Landscape Scan, "AI CapEx vs. Defense Spending", Jul 6, 2026, <code>ai-capex-vs-defense_phase1.md</code>
-[^ms1]: Morgan Stanley, "Midyear Economic Outlook: AI Drives Resilient Growth", May 15, 2026, https://www.morganstanley.com/insights/articles/economic-outlook-midyear-2026
-[^moody]: DataCenterDynamics, "US hyperscaler capex to top $700bn in 2026, Moody's", Jun 24, 2026, https://www.datacenterdynamics.com/en/news/us-hyperscaler-capex-to-top-700bn-in-2026-investors-fear-overbuild-and-weak-returns-moodys/
-[^eco3]: Eco3min, "AI Capex 2025–2026: $1.1T vs Apollo, Marshall, Manhattan", Jun 30, 2026, https://eco3min.fr/en/ai-capex-vs-historical-mega-investments/
-[^yahoo1]: Yahoo Finance, "David Sacks Says AI Could Drive 75% Of US GDP Growth", May 5, 2026, https://finance.yahoo.com/economy/articles/david-sacks-says-ai-could-220110765.html
-[^user1]: Kullanıcı raporu, <code>ai-capex-vs-defense-user-report.md</code>, Jul 5, 2026
-[^td1]: TD Economics, "The Economic &amp; Fiscal Impacts of U.S. Defense Spending in 2026 and Beyond", Oct 22, 2025, https://economics.td.com/us-defense-spending-impacts
-[^bea1]: U.S. Bureau of Economic Analysis, "GDP (Third Estimate), 1st Quarter 2026", Jun 25, 2026, https://www.bea.gov/
-[^spaceforce1]: Air &amp; Space Forces Magazine, "Space Force Poised for 80 Percent Funding Boost in 2027 Budget", Apr 6, 2026, https://www.airandspaceforces.com/space-force-80-percent-funding-boost-2027-budget/
-[^crfb15]: CRFB, "1% Higher Interest Rates Add $3.5 Trillion in Debt", Apr 22, 2026, https://www.crfb.org/blogs/1-higher-interest-rates-add-35-trillion-debt
-[^salute1]: Salute.com, "What the One Big Beautiful Bill Act Means for AI Infrastructure", Aug 20, 2025, https://salute.com/resources/news/what-the-one-big-beautiful-bill-means-for-ai-infrastructure-and-data-center-strategy/
+<p>[^cbo1]: Congressional Budget Office, "The Budget and Economic Outlook: 2026 to 2036", Feb 11, 2026, https://www.cbo.gov/publication/62105<br />
+[^crfb1]: CRFB, "An Overview of the President's FY 2027 Budget", Apr 3, 2026, https://www.crfb.org/blogs/overview-presidents-fy-2027-budget<br />
+[^imf1]: IMF, "World Economic Outlook, April 2026", Apr 2026, https://www.imf.org/en/publications/weo/issues/2026/04/14/world-economic-outlook-april-2026<br />
+[^fed1]: Federal Reserve, "Summary of Economic Projections", Dec 2024, https://www.federalreserve.gov/monetarypolicy/2025-02-mpr-part3.htm<br />
+[^dim03]: Dim-03 analiz modülü, "ABD GSYİH Projeksiyonları ve Deflatör Etkisi", Jul 6, 2026, <code>ai-capex-vs-defense_dim03.md</code><br />
+[^cross]: Cross-Verification raporu, "AI CapEx vs. Defense Spending", Jul 6, 2026, <code>ai-capex-vs-defense_cross_verification.md</code><br />
+[^phase1]: Phase 1 Landscape Scan, "AI CapEx vs. Defense Spending", Jul 6, 2026, <code>ai-capex-vs-defense_phase1.md</code><br />
+[^ms1]: Morgan Stanley, "Midyear Economic Outlook: AI Drives Resilient Growth", May 15, 2026, https://www.morganstanley.com/insights/articles/economic-outlook-midyear-2026<br />
+[^moody]: DataCenterDynamics, "US hyperscaler capex to top $700bn in 2026, Moody's", Jun 24, 2026, https://www.datacenterdynamics.com/en/news/us-hyperscaler-capex-to-top-700bn-in-2026-investors-fear-overbuild-and-weak-returns-moodys/<br />
+[^eco3]: Eco3min, "AI Capex 2025–2026: $1.1T vs Apollo, Marshall, Manhattan", Jun 30, 2026, https://eco3min.fr/en/ai-capex-vs-historical-mega-investments/<br />
+[^yahoo1]: Yahoo Finance, "David Sacks Says AI Could Drive 75% Of US GDP Growth", May 5, 2026, https://finance.yahoo.com/economy/articles/david-sacks-says-ai-could-220110765.html<br />
+[^user1]: Kullanıcı raporu, <code>ai-capex-vs-defense-user-report.md</code>, Jul 5, 2026<br />
+[^td1]: TD Economics, "The Economic &amp; Fiscal Impacts of U.S. Defense Spending in 2026 and Beyond", Oct 22, 2025, https://economics.td.com/us-defense-spending-impacts<br />
+[^bea1]: U.S. Bureau of Economic Analysis, "GDP (Third Estimate), 1st Quarter 2026", Jun 25, 2026, https://www.bea.gov/<br />
+[^spaceforce1]: Air &amp; Space Forces Magazine, "Space Force Poised for 80 Percent Funding Boost in 2027 Budget", Apr 6, 2026, https://www.airandspaceforces.com/space-force-80-percent-funding-boost-2027-budget/<br />
+[^crfb15]: CRFB, "1% Higher Interest Rates Add $3.5 Trillion in Debt", Apr 22, 2026, https://www.crfb.org/blogs/1-higher-interest-rates-add-35-trillion-debt<br />
+[^salute1]: Salute.com, "What the One Big Beautiful Bill Act Means for AI Infrastructure", Aug 20, 2025, https://salute.com/resources/news/what-the-one-big-beautiful-bill-means-for-ai-infrastructure-and-data-center-strategy/<br />
 [^multistate1]: MultiState, "State Data Center Policy: Governors Restrict Tax Exemptions", Jun 22, 2026, https://www.multistate.us/insider/2026/6/22/state-data-center-policy-shifts-as-governors-impose-new-restrictions</p>
 <hr />
 <h1 id="bolum-6-tarihi-baglam-mega-yatrmlarn-anatomisi">Bölüm 6: Tarihi Bağlam — Mega Yatırımların Anatomisi</h1>
@@ -2683,42 +2722,42 @@ function toggle(id){var el=document.getElementById(id);if(!el)return;el.classLis
 </tr>
 </tbody>
 </table>
-<p><strong>Risk Değerlendirmesi:</strong>
-- <strong>Optimist (Orta):</strong> AI talebi sürer; monetizasyon hızlanır; FCF 2027/28'de toparlanır.
-- <strong>Temel (Yüksek):</strong> Yavaş talep büyümesi; bazı neocloud birleşmeleri; Oracle downgrade; spread genişlemesi.
+<p><strong>Risk Değerlendirmesi:</strong><br />
+- <strong>Optimist (Orta):</strong> AI talebi sürer; monetizasyon hızlanır; FCF 2027/28'de toparlanır.<br />
+- <strong>Temel (Yüksek):</strong> Yavaş talep büyümesi; bazı neocloud birleşmeleri; Oracle downgrade; spread genişlemesi.<br />
 - <strong>Kötümser (Düşük-Orta):</strong> AI talebi çöker; CoreWeave default; GPU ABS not düşüşü; Enron-style OBS krizi; telecom tarzı iflas dalgası.</p>
 <p>CoreWeave, bu risklerin episentriğidir: IPO $40 → $183 → $89, Masaitis v. CoreWeave menkul kıymetler dolandırıcılığı davası (No. 2:26-cv-00355) [^42][^43], ve NVIDIA'nın $2B lifeline'ı [^41]. Bu yapı, <strong>katmanlı kaldıraç</strong> (layered leverage) örneğidir: IG → leveraged → GPU ABS → DC securitization → private credit → OBS → vendor financing. Her katman, bir üst katmanın teminatı veya borçlusuna bağlı. Bir neocloud default'u, zincirleme çöküşü tetikleyebilir [^16].</p>
 <hr />
-<p>[^1]: JPMorgan Research, "Global data center and AI infra spend to hit $5 trillion", DataCenterDynamics, 12 Nov 2025, https://www.datacenterdynamics.com/en/news/jpmorgan-global-data-center-and-ai-infra-spend-to-hit-5-trillion/
-[^2]: JPMorgan, "JPMorgan raises power and AI capex estimates", CryptoBriefing, 16 Jun 2026, https://cryptobriefing.com/jpmorgan-ai-capex-data-center-debt/
-[^3]: Morgan Stanley Research, "Bridging a $1.5tr Data Center Financing Gap", Jul 2025, https://www.morganstanley.com/content/dam/msdotcom/en/assets/pdfs/Research_Bridging-Data-Center-Gap.pdf
-[^4]: Cresset Capital, "The AI Debt Wave: What It Means for Investors", 24 Feb 2026, https://cressetcapital.com/articles/market-update/market-update-2-24-26-the-ai-debt-wave-what-it-means-for-investors/
-[^5]: Insurance Journal, "The $3 Trillion AI Data Center Build-Out Becomes All-Consuming For Debt Markets", 4 Feb 2026, https://www.insurancejournal.com/news/international/2026/02/03/856623.htm
-[^6]: BondSupermart / iFAST, "Credit Update: META offers 5+% to 6+% yields", 4 Jun 2026, https://www.bondsupermart.com/bsm/article-detail/credit-update-meta-offers-5-to-6-yields-usd-while-it-ramps-up-its-ai-monetisation-RSS316
-[^7]: FI-Desk, "Meta sold US$30 billion of AI bonds on 30 October", 12 Nov 2025, https://www.fi-desk.com/origination-meta-sold-us30-billion-of-ai-bonds-on-30-october/
-[^8]: StartupFortune, "Big Tech's $725 billion AI spending wave is turning free cash flow into a distant memory", 8 May 2026, https://startupfortune.com/big-techs-725-billion-ai-spending-wave-is-turning-free-cash-flow-into-a-distant-memory/
-[^10]: Global Data Center Hub, "Amazon And Meta's $335B Q1: The Free Cash Flow Inflection", 14 May 2026, https://www.globaldatacenterhub.com/p/amazon-and-metas-335b-q1-the-free
-[^11]: ProCapInsights, "These 2 large-cap stocks have grown free cash flow while hyperscaler capex has exploded", 29 Apr 2026, https://www.procapinsights.com/reports/stock-picks-large-cap-free-cash-flow-hyperscaler-capex-ai
-[^12]: SystemFracture, "The AI Equity Bubble &amp; Hyperscaler Debt", 2026, https://www.systemfracture.net/part-two/ai-equity-bubble-hyperscaler.html
-[^15]: WorldFinance, "Is computing power ABS on the horizon to fund AI?", 2025, https://www.worldfinance.com/markets/is-computing-power-abs-on-the-horizon-to-fund-ai
-[^16]: Quinn Emanuel, "Emerging Litigation Risks in Financing AI Data Centers Boom", 13 Mar 2026, https://www.quinnemanuel.com/the-firm/publications/client-alert-emerging-litigation-risks-in-financing-ai-data-centers-boom/
-[^17]: TwoBirds, "GPU-Based Financing in the Global Data Center Market", 9 Dec 2025, https://www.twobirds.com/en/insights/2025/germany/gpubased-financing-in-the-global-data-center-market
-[^18]: AOL/Finance, "Uh-Oh! Is Meta Platforms Following in Enron's Footsteps?", 12 Feb 2026, https://www.aol.com/finance/uh-oh-meta-platforms-following-172135524.html
-[^20]: Platformonomics, "CAPEX Trends: Analysis of 2025's Record Expenditures", 25 Feb 2026, https://platformonomics.com/2026/02/follow-the-capex-2025-retrospective/
-[^21]: SavvyWealth, "The Coming Credit Reckoning: Tight Spreads, Tech Leverage, and Systemic Risk", 2026, https://www.savvywealth.com/blog-posts/the-titanic-has-left-port-tight-spreads-tech-debt-and-the-coming-reckoning-in-credit
-[^30]: Technobezz, "OpenAI's $500 Billion Stargate Data Center Project Stalls Amid Partner Disputes", 23 Feb 2026, https://www.technobezz.com/news/openais-500-billion-stargate-data-center-project-stalls-amid-partner-disputes
-[^32]: Pomegra, "Private Equity and Alternative Finance: Blackstone, KKR, and Apollo", 2026, https://pomegra.io/learn/library/track-f-lifecycle/sector-investing/chapter-07-financials/private-equity-analysis
-[^36]: Breckinridge, "The Price of AI: How Capex Is Rewriting Tech Balance Sheets", 23 Apr 2026, https://www.breckinridge.com/insights/the-price-of-ai-how-capex-is-rewriting-tech-balance-sheets
-[^37]: FI-Desk, "Ratings &amp; Analysis: Hyperscaler spending rings credit alarm bells", 27 May 2026, https://www.fi-desk.com/ratings-analysis-hyperscaler-spending-rings-credit-alarm-bells/
-[^38]: SourceryIntel, "The Hidden Financial Bubble in AI Infrastructure", 5 May 2026, https://sourceryintel.com/reports/ai-infrastructure-financial-bubble.html
-[^39]: IOFund, "Nvidia, CoreWeave, and Nebius: Inside the Circular Financing of the GPU Boom", 12 Jun 2026, https://io-fund.com/ai-stocks/nvidia-coreweave-nebius-circular-financing-gpu-boom
-[^40]: Yahoo Finance, "CoreWeave CEO Calls Nvidia Circular Financing Claims 'Ridiculous'", 14 Jan 2026, https://finance.yahoo.com/news/coreweave-ceo-calls-nvidia-circular-013121853.html
-[^41]: AOL, "Nvidia Just Invested Another $2 Billion Into CoreWeave", 26 Jan 2026, https://www.aol.com/articles/nvidia-just-invested-another-2-145316768.html
-[^42]: ZLK Law, "CoreWeave, Inc. Class Action Lawsuit – CRWV", 13 Mar 2026, https://zlk.com/cases/coreweave-inc-class-action-lawsuit-crwv
-[^43]: GlobeNewswire, "CRWV COURT UPDATE: The CoreWeave, Inc. Deadline", 5 Feb 2026, https://www.globenewswire.com/news-release/2026/02/05/3232782/0/en/CRWV-COURT-UPDATE-The-CoreWeave-Inc-Deadline-in-the-Securities-Class-Action-is-Imminent
-[^44]: IEEE ComSoc / FT, "New benchmarks for Gen AI models; Neocloud groups leverage Nvidia chips to borrow &gt;$11B", 10 Nov 2024, https://techblog.comsoc.org/2024/11/10/ft-new-benchmarks-for-gen-ai-models-neocloud-groups-leverage-nvidia-chips-to-borrow-11b/
-[^45]: 7GC&amp;Co, "AI Capex and the Telecom Bubble: A Comparative Analysis", 9 Dec 2025, https://www.7gc.co/insights/ai-capex-and-the-telecom-bubble-a-comparative-analysis
-[^46]: DataCenterDynamics, "Moody's: US hyperscaler capex to top $700bn in 2026", 24 Jun 2026, https://www.datacenterdynamics.com/en/news/us-hyperscaler-capex-to-top-700bn-in-2026-investors-fear-overbuild-and-weak-returns-moodys/
+<p>[^1]: JPMorgan Research, "Global data center and AI infra spend to hit $5 trillion", DataCenterDynamics, 12 Nov 2025, https://www.datacenterdynamics.com/en/news/jpmorgan-global-data-center-and-ai-infra-spend-to-hit-5-trillion/<br />
+[^2]: JPMorgan, "JPMorgan raises power and AI capex estimates", CryptoBriefing, 16 Jun 2026, https://cryptobriefing.com/jpmorgan-ai-capex-data-center-debt/<br />
+[^3]: Morgan Stanley Research, "Bridging a $1.5tr Data Center Financing Gap", Jul 2025, https://www.morganstanley.com/content/dam/msdotcom/en/assets/pdfs/Research_Bridging-Data-Center-Gap.pdf<br />
+[^4]: Cresset Capital, "The AI Debt Wave: What It Means for Investors", 24 Feb 2026, https://cressetcapital.com/articles/market-update/market-update-2-24-26-the-ai-debt-wave-what-it-means-for-investors/<br />
+[^5]: Insurance Journal, "The $3 Trillion AI Data Center Build-Out Becomes All-Consuming For Debt Markets", 4 Feb 2026, https://www.insurancejournal.com/news/international/2026/02/03/856623.htm<br />
+[^6]: BondSupermart / iFAST, "Credit Update: META offers 5+% to 6+% yields", 4 Jun 2026, https://www.bondsupermart.com/bsm/article-detail/credit-update-meta-offers-5-to-6-yields-usd-while-it-ramps-up-its-ai-monetisation-RSS316<br />
+[^7]: FI-Desk, "Meta sold US$30 billion of AI bonds on 30 October", 12 Nov 2025, https://www.fi-desk.com/origination-meta-sold-us30-billion-of-ai-bonds-on-30-october/<br />
+[^8]: StartupFortune, "Big Tech's $725 billion AI spending wave is turning free cash flow into a distant memory", 8 May 2026, https://startupfortune.com/big-techs-725-billion-ai-spending-wave-is-turning-free-cash-flow-into-a-distant-memory/<br />
+[^10]: Global Data Center Hub, "Amazon And Meta's $335B Q1: The Free Cash Flow Inflection", 14 May 2026, https://www.globaldatacenterhub.com/p/amazon-and-metas-335b-q1-the-free<br />
+[^11]: ProCapInsights, "These 2 large-cap stocks have grown free cash flow while hyperscaler capex has exploded", 29 Apr 2026, https://www.procapinsights.com/reports/stock-picks-large-cap-free-cash-flow-hyperscaler-capex-ai<br />
+[^12]: SystemFracture, "The AI Equity Bubble &amp; Hyperscaler Debt", 2026, https://www.systemfracture.net/part-two/ai-equity-bubble-hyperscaler.html<br />
+[^15]: WorldFinance, "Is computing power ABS on the horizon to fund AI?", 2025, https://www.worldfinance.com/markets/is-computing-power-abs-on-the-horizon-to-fund-ai<br />
+[^16]: Quinn Emanuel, "Emerging Litigation Risks in Financing AI Data Centers Boom", 13 Mar 2026, https://www.quinnemanuel.com/the-firm/publications/client-alert-emerging-litigation-risks-in-financing-ai-data-centers-boom/<br />
+[^17]: TwoBirds, "GPU-Based Financing in the Global Data Center Market", 9 Dec 2025, https://www.twobirds.com/en/insights/2025/germany/gpubased-financing-in-the-global-data-center-market<br />
+[^18]: AOL/Finance, "Uh-Oh! Is Meta Platforms Following in Enron's Footsteps?", 12 Feb 2026, https://www.aol.com/finance/uh-oh-meta-platforms-following-172135524.html<br />
+[^20]: Platformonomics, "CAPEX Trends: Analysis of 2025's Record Expenditures", 25 Feb 2026, https://platformonomics.com/2026/02/follow-the-capex-2025-retrospective/<br />
+[^21]: SavvyWealth, "The Coming Credit Reckoning: Tight Spreads, Tech Leverage, and Systemic Risk", 2026, https://www.savvywealth.com/blog-posts/the-titanic-has-left-port-tight-spreads-tech-debt-and-the-coming-reckoning-in-credit<br />
+[^30]: Technobezz, "OpenAI's $500 Billion Stargate Data Center Project Stalls Amid Partner Disputes", 23 Feb 2026, https://www.technobezz.com/news/openais-500-billion-stargate-data-center-project-stalls-amid-partner-disputes<br />
+[^32]: Pomegra, "Private Equity and Alternative Finance: Blackstone, KKR, and Apollo", 2026, https://pomegra.io/learn/library/track-f-lifecycle/sector-investing/chapter-07-financials/private-equity-analysis<br />
+[^36]: Breckinridge, "The Price of AI: How Capex Is Rewriting Tech Balance Sheets", 23 Apr 2026, https://www.breckinridge.com/insights/the-price-of-ai-how-capex-is-rewriting-tech-balance-sheets<br />
+[^37]: FI-Desk, "Ratings &amp; Analysis: Hyperscaler spending rings credit alarm bells", 27 May 2026, https://www.fi-desk.com/ratings-analysis-hyperscaler-spending-rings-credit-alarm-bells/<br />
+[^38]: SourceryIntel, "The Hidden Financial Bubble in AI Infrastructure", 5 May 2026, https://sourceryintel.com/reports/ai-infrastructure-financial-bubble.html<br />
+[^39]: IOFund, "Nvidia, CoreWeave, and Nebius: Inside the Circular Financing of the GPU Boom", 12 Jun 2026, https://io-fund.com/ai-stocks/nvidia-coreweave-nebius-circular-financing-gpu-boom<br />
+[^40]: Yahoo Finance, "CoreWeave CEO Calls Nvidia Circular Financing Claims 'Ridiculous'", 14 Jan 2026, https://finance.yahoo.com/news/coreweave-ceo-calls-nvidia-circular-013121853.html<br />
+[^41]: AOL, "Nvidia Just Invested Another $2 Billion Into CoreWeave", 26 Jan 2026, https://www.aol.com/articles/nvidia-just-invested-another-2-145316768.html<br />
+[^42]: ZLK Law, "CoreWeave, Inc. Class Action Lawsuit – CRWV", 13 Mar 2026, https://zlk.com/cases/coreweave-inc-class-action-lawsuit-crwv<br />
+[^43]: GlobeNewswire, "CRWV COURT UPDATE: The CoreWeave, Inc. Deadline", 5 Feb 2026, https://www.globenewswire.com/news-release/2026/02/05/3232782/0/en/CRWV-COURT-UPDATE-The-CoreWeave-Inc-Deadline-in-the-Securities-Class-Action-is-Imminent<br />
+[^44]: IEEE ComSoc / FT, "New benchmarks for Gen AI models; Neocloud groups leverage Nvidia chips to borrow &gt;$11B", 10 Nov 2024, https://techblog.comsoc.org/2024/11/10/ft-new-benchmarks-for-gen-ai-models-neocloud-groups-leverage-nvidia-chips-to-borrow-11b/<br />
+[^45]: 7GC&amp;Co, "AI Capex and the Telecom Bubble: A Comparative Analysis", 9 Dec 2025, https://www.7gc.co/insights/ai-capex-and-the-telecom-bubble-a-comparative-analysis<br />
+[^46]: DataCenterDynamics, "Moody's: US hyperscaler capex to top $700bn in 2026", 24 Jun 2026, https://www.datacenterdynamics.com/en/news/us-hyperscaler-capex-to-top-700bn-in-2026-investors-fear-overbuild-and-weak-returns-moodys/<br />
 [^50]: Coinlaw, "Asset-Backed Securities Industry Statistics 2026", 12 Jun 2026, https://coinlaw.io/asset-backed-securities-industry-statistics/</p>
 <hr />
 <h1 id="bolum-9-overbuild-riski-ve-balon-degerlendirmesi">Bölüm 9: Overbuild Riski ve Balon Değerlendirmesi</h1>
@@ -2769,9 +2808,9 @@ function toggle(id){var el=document.getElementById(id);if(!el)return;el.classLis
 </tr>
 </tbody>
 </table>
-<p>Bu bilinmezlik, <strong>overbuild vs. capacity-constrained tartışmasının teknik olarak çözülemez</strong> olduğunu gösterir:
-- Eğer utilization &gt;80%: CapEx makuldür, talep gerçekten supply'ı aşıyor demektir. CreditSights haklıdır.
-- Eğer utilization &lt;40%: Ciddi overbuild vardır, asset'ler değer kaybediyor demektir. Sourcery Intel haklıdır.
+<p>Bu bilinmezlik, <strong>overbuild vs. capacity-constrained tartışmasının teknik olarak çözülemez</strong> olduğunu gösterir:<br />
+- Eğer utilization &gt;80%: CapEx makuldür, talep gerçekten supply'ı aşıyor demektir. CreditSights haklıdır.<br />
+- Eğer utilization &lt;40%: Ciddi overbuild vardır, asset'ler değer kaybediyor demektir. Sourcery Intel haklıdır.<br />
 - <strong>Hiçbir veri yok: Her iki senaryo da eşit olarak muhtemel. Bu, risk yönetimi açısından en kötü durumdur.</strong></p>
 <p><strong>Veri boşluğunun kendisi bir sinyaldir.</strong> Eğer utilization gerçekten yüksek olsaydı, hiperskaler'lar ve neocloud'lar bunu pazarlama ve yatırımcı ikna malzemesi olarak yaygın şekilde kullanırdı. Bu verinin sessizliği, ya (a) utilization düşük ve utanç verici, veya (b) ölçüm altyapısı henüz olgunlaşmadı anlamına gelir — her iki durum da endişe vericidir.</p>
 <h2 id="enterprise-ai-talep-yaratyor-mu-yoksa-ykyor-mu">Enterprise AI: Talep Yaratıyor mu, Yoksa Yıkıyor mu?</h2>
@@ -2928,17 +2967,17 @@ function toggle(id){var el=document.getElementById(id);if(!el)return;el.classLis
 <p>Telecom balonunda, fiber-optik altyapı <strong>sonunda kullanıldı</strong> — ama iflaslardan ve write-down'lardan önce değil. AI altyapısı da benzer şekilde, <strong>balon patlasa bile</strong> uzun vadede ekonomiye fayda sağlayabilir. "Overbuild, yarının foundation'ıdır" [^23].</p>
 <p>RBC BlueBay, teknoloji yatırımının (AI dahil) ABD toplam özel sabit yatırımının <strong>%28'ine</strong> ulaştığını (2025) belirtiyor — bu, UK demiryolu balonunun zirvesindeki paydan (%71) çok daha düşük [^24]. Demiryolu şirketlerinin çoğu iflas etti, ama demiryolu altyapısı ekonomiyi dönüştürdü. Değer, <strong>altyapıyı inşa edenlerden</strong> değil, <strong>onu kullananlardan</strong> (müşteriler) accrue etti [^23].</p>
 <h2 id="jpmorgan-10-roi-threshold-650byr-gerekli-realistic-degil">JPMorgan %10 ROI Threshold: $650B/yr Gerekli — Realistic Değil</h2>
-<p>JPMorgan modeline göre, 2030'a kadar modelled AI yatırımlarında <strong>%10 getiri</strong> sağlamak için, "ebediyete kadar" yıllık <strong>$650B</strong> gelir gerekir [^25]. Bu:
-- <strong>Her iPhone kullanıcısından</strong> ayda $34.72
-- <strong>Her Netflix abonesinden</strong> ayda $180
+<p>JPMorgan modeline göre, 2030'a kadar modelled AI yatırımlarında <strong>%10 getiri</strong> sağlamak için, "ebediyete kadar" yıllık <strong>$650B</strong> gelir gerekir [^25]. Bu:<br />
+- <strong>Her iPhone kullanıcısından</strong> ayda $34.72<br />
+- <strong>Her Netflix abonesinden</strong> ayda $180<br />
 - <strong>Sonsuza kadar</strong> (in perpetuity) [^25]</p>
 <p>Bu, realistic değil. 1.5 milyar aktif iPhone kullanıcısı var, ama çoğu AI için <strong>ödeme yapmayacak</strong>. Netflix aboneleri zaten $15–20/ay ödüyor; $180/ay AI ek ücreti absürd. OpenAI $25B + Anthropic $47B = $72B. <strong>Diğer tüm AI şirketleri birlikte $578B daha gelir üretmeli.</strong> McKinsey, GenAI'nin küresel ekonomiye <strong>$2.6–4.4T/yıl</strong> değer ekleyebileceğini öngörüyor [^26] — ama bu, <strong>AI şirketlerinin geliri</strong> değil, <strong>ekonomik değer</strong> (consumer surplus dahil). Şirketler, bu değerin küçük bir kısmını capture eder.</p>
 <h2 id="uc-senaryo-paradigma-balonparadigma-crash">Üç Senaryo: Paradigma, Balon+Paradigma, Crash</h2>
-<p><strong>SENARYO A: Paradigma Değişimi (Bull Case) — Olasılık: %30–40</strong>
+<p><strong>SENARYO A: Paradigma Değişimi (Bull Case) — Olasılık: %30–40</strong><br />
 AI, internet kadar temel bir teknoloji. Overbuild, yarının altyapısıdır. Hyperscaler'lar, kendi operasyonları için CapEx harcıyor — bu, "yatırım" değil "yaşam maliyeti." Enterprise adoption, POC aşamasından üretime geçiyor. Gartner'ın %28 başarı oranı, erken evre normlarıdır; zamanla iyileşecek. GPU obsolescence, NVIDIA'nın Rubin/Blackwell roadmap'iyle yönetilebilir.</p>
-<p><strong>SENARYO B: Balon + Paradigma Değişimi (Maybe Both) — Olasılık: %40–50</strong>
+<p><strong>SENARYO B: Balon + Paradigma Değişimi (Maybe Both) — Olasılık: %40–50</strong><br />
 RBC BlueBay'in başlığı: <strong>"Artificial Intelligence: paradigm shift or bubble? Maybe it's both"</strong> [^24]. Teknoloji gerçek, ama finansal mimari sürdürülemez değil. Telecom 2000: Fiber gerçekten kullanıldı, ama orijinal yatırımcılar yok edildi. Demiryolu 1860–70: Altyapı kaldı, şirketler iflas etti. AI: Altyapı kalacak, ama çok sayıda şirket (CoreWeave, neocloud'lar, GPU-backed lender'lar) iflas edebilir. Larry Fink (BlackRock CEO): <strong>"AI investment race will produce bankruptcies"</strong> [^5]. Norway SWF CEO (Nicolai Tangen, Mart 2026): AI balonu, fonun <strong>%35'ini</strong> silebilir [^5]. Moody's: AI şirket değerlemelerinde <strong>%40 düşüş</strong> senaryosu modelledi [^5].</p>
-<p><strong>SENARYO C: Balon Patlaması (Bear Case) — Olasılık: %15–25</strong>
+<p><strong>SENARYO C: Balon Patlaması (Bear Case) — Olasılık: %15–25</strong><br />
 Enterprise AI talebi, %95 başarısızlık oranıyla çöker. Hyperscaler'lar, CapEx'i 2027'de ilk kez kısar — bu, kaskat etki yaratır. GPU-backed debt piyasası çöker, NVIDIA circular financing unwind olur. Data center REIT'leri, %40–50 değer kaybı yaşar. Sam Altman, bir podcast'te (Microsoft CEO Satya Nadella ile) <strong>"beklenmedik bir breakthrough, overcapacity yaratabilir"</strong> riskini tartıştı [^25].</p>
 <h2 id="son-soz">Son Söz</h2>
 <blockquote>
@@ -2948,32 +2987,32 @@ Enterprise AI talebi, %95 başarısızlık oranıyla çöker. Hyperscaler'lar, C
 </blockquote>
 <p><strong>Utilization Black Hole</strong>, bu değerlendirmenin merkezinde duruyor. Hiçbir kaynak somut utilization verisi sağlamıyor. Bu bilinmezlik, overbuild argümanını kanıtlayamayacağımız gibi, capacity-constrained argümanını da çürütemeyeceğimiz anlamına gelir. Yatırımcı için, bu epistemik boşluk <strong>en yüksek risk sinyalidir</strong> — çünkü piyasa, bilmediği bir şey üzerine $725B+ yatırım yapıyor.</p>
 <hr />
-<p>[^1]: ValueAddVC, "Big Tech AI Capex 2026: $725B Combined", May 2026, https://valueaddvc.com/blog/big-tech-ai-capex-in-2025-microsoft-google-meta-amazon-and-the-spending-race
-[^2]: Goldman Sachs / Yahoo Finance, "Meta, Microsoft, Amazon, and Alphabet are about to spend a shocking amount of money", Jun 2026, https://finance.yahoo.com/sectors/technology/article/meta-microsoft-amazon-and-alphabet-are-about-to-spend-a-shocking-amount-of-money-to-dominate-the-ai-era-115359575.html
-[^3]: DataCenterDynamics, "US hyperscaler capex to top $700bn in 2026, Moody's", Jun 2026, https://www.datacenterdynamics.com/en/news/us-hyperscaler-capex-to-top-700bn-in-2026-investors-fear-overbuild-and-weak-returns-moodys/
-[^4]: ValueAddVC, "AI Company Valuations 2026", Jun 2026, https://valueaddvc.com/ai-valuations
-[^5]: Sourcery Intel, "The Hidden Financial Bubble in AI Infrastructure", May 2026, https://sourceryintel.com/reports/ai-infrastructure-financial-bubble.html
-[^7]: DataCenterDynamics, "US hyperscaler capex to top $700bn in 2026, Moody's", Jun 2026, https://www.datacenterdynamics.com/en/news/us-hyperscaler-capex-to-top-700bn-in-2026-investors-fear-overbuild-and-weak-returns-moodys/
-[^8]: Morgan Stanley / Yahoo Finance, "David Sacks Says AI Could Drive 75% Of US GDP Growth", May 2026, https://finance.yahoo.com/economy/articles/david-sacks-says-ai-could-220110765.html
-[^9]: CreditSights, "Technology: Hyperscaler Capex 2026 Estimates", Nov 2025, https://know.creditsights.com/insights/technology-hyperscaler-capex-2026-estimates/
-[^10]: SR Analytics, "Why 95% of AI Projects Fail and How Data Fixes It", Feb 2026, https://sranalytics.io/blog/why-95-of-ai-projects-fail/
-[^11]: Pertama Partners, "AI Project Failure Statistics 2026", Feb 2026, https://www.pertamapartners.com/insights/ai-project-failure-statistics-2026
-[^12]: Gartner, "AI Projects in I&amp;O Stall Ahead of Meaningful ROI Returns", Apr 2026, https://www.gartner.com/en/newsroom/press-releases/2026-04-07-gartner-says-artificial-intelligence-projects-in-infrastructure-and-operations-stall-ahead-of-meaningful-roi-returns
-[^13]: Talyx.ai, "Why 90% of Enterprise AI Implementations Fail (2026)", Jan 2026, https://talyx.ai/insights/enterprise-ai-implementation-failure
-[^14]: Rivergroup.ai, "The Year Everyone Adopted AI (But Few Made Money)", Dec 2025, https://rivergroup.ai/insights/the-year-everyone-adopted-ai
-[^15]: Futurum Group, "AI Capex 2026: The $690B Infrastructure Sprint", Feb 2026, https://futurumgroup.com/insights/ai-capex-2026-the-690b-infrastructure-sprint/
-[^16]: Tom's Hardware, "Nvidia's H100 AI GPU shortages ease as lead times drop", Apr 2024, https://www.tomshardware.com/pc-components/gpus/nvidias-h100-ai-gpu-shortages-ease-as-lead-times-drop-from-up-to-four-months-to-8-12-weeks
-[^17]: I/O Fund, "Nvidia, CoreWeave, and Nebius: Circular Financing of the GPU Boom", Jun 2026, https://io-fund.com/ai-stocks/nvidia-coreweave-nebius-circular-financing-gpu-boom
-[^18]: Capright, "Data Center Market Update – April 2026", Apr 2026, https://www.capright.com/data-center-market-update-april-2026/
-[^19]: Yahoo Finance / 24/7 Wall St., "Nebius Has 40% Upside in 2026 as Global AI Data Center Shortage Worsens", Jun 2026, https://finance.yahoo.com/technology/ai/articles/nebius-40-upside-2026-global-155307908.html
-[^20]: Agentic Brew, "AI Infrastructure Spend and US Data-Center Bans", May 2026, https://www.agenticbrew.ai/news/ac3823a0-7e68-4319-90ec-f02b01794b6f/ai-infrastructure-spend-and-us-data-center-bans
-[^21]: PA News Lab, "'Water shortage'—the hidden Achilles' heel of AI infrastructure", Jun 2026, https://www.panewslab.com/en/articles/019e8624-79e0-7758-8b4e-7b466fea1872
-[^22]: Fortune, "Everyone's wondering if, and when, the AI bubble will pop. Here's what went down 25 years ago", Sep 2025, https://fortune.com/2025/09/28/ai-dot-com-bubble-parallels-history-explained-companies-revenue-infrastructure/
-[^23]: Sparkline Capital, "Surviving the AI Capex Boom", Oct 2025, https://www.sparklinecapital.com/post/surviving-the-ai-capex-boom
-[^24]: RBC BlueBay, "Artificial Intelligence: paradigm shift or bubble? Maybe it's both", 2026, https://www.rbcbluebay.com/globalassets/documents/ai-paradigm-shift-or-bubble.pdf
-[^25]: Yahoo Finance, "J.P. Morgan calls out AI spend, says $650 billion in annual revenue required to deliver mere 10% return", Nov 2025, https://finance.yahoo.com/news/j-p-morgan-calls-ai-204449468.html
-[^26]: Datavault AI / McKinsey, Nov 2025, https://www.quiverquant.com/news/Datavault+AI+Inc.+Engages+with+Global+Governments+and+Corporations+to+Tokenize+Trillions+in+Real+World+Assets%2C+Updates+Revenue+Guidance+for+2025+and+2026
-[^28]: MAN Group, "The AI Bubble: Hidden Risks and Opportunities", Nov 2025, https://www.man.com/insights/the-ai-bubble
+<p>[^1]: ValueAddVC, "Big Tech AI Capex 2026: $725B Combined", May 2026, https://valueaddvc.com/blog/big-tech-ai-capex-in-2025-microsoft-google-meta-amazon-and-the-spending-race<br />
+[^2]: Goldman Sachs / Yahoo Finance, "Meta, Microsoft, Amazon, and Alphabet are about to spend a shocking amount of money", Jun 2026, https://finance.yahoo.com/sectors/technology/article/meta-microsoft-amazon-and-alphabet-are-about-to-spend-a-shocking-amount-of-money-to-dominate-the-ai-era-115359575.html<br />
+[^3]: DataCenterDynamics, "US hyperscaler capex to top $700bn in 2026, Moody's", Jun 2026, https://www.datacenterdynamics.com/en/news/us-hyperscaler-capex-to-top-700bn-in-2026-investors-fear-overbuild-and-weak-returns-moodys/<br />
+[^4]: ValueAddVC, "AI Company Valuations 2026", Jun 2026, https://valueaddvc.com/ai-valuations<br />
+[^5]: Sourcery Intel, "The Hidden Financial Bubble in AI Infrastructure", May 2026, https://sourceryintel.com/reports/ai-infrastructure-financial-bubble.html<br />
+[^7]: DataCenterDynamics, "US hyperscaler capex to top $700bn in 2026, Moody's", Jun 2026, https://www.datacenterdynamics.com/en/news/us-hyperscaler-capex-to-top-700bn-in-2026-investors-fear-overbuild-and-weak-returns-moodys/<br />
+[^8]: Morgan Stanley / Yahoo Finance, "David Sacks Says AI Could Drive 75% Of US GDP Growth", May 2026, https://finance.yahoo.com/economy/articles/david-sacks-says-ai-could-220110765.html<br />
+[^9]: CreditSights, "Technology: Hyperscaler Capex 2026 Estimates", Nov 2025, https://know.creditsights.com/insights/technology-hyperscaler-capex-2026-estimates/<br />
+[^10]: SR Analytics, "Why 95% of AI Projects Fail and How Data Fixes It", Feb 2026, https://sranalytics.io/blog/why-95-of-ai-projects-fail/<br />
+[^11]: Pertama Partners, "AI Project Failure Statistics 2026", Feb 2026, https://www.pertamapartners.com/insights/ai-project-failure-statistics-2026<br />
+[^12]: Gartner, "AI Projects in I&amp;O Stall Ahead of Meaningful ROI Returns", Apr 2026, https://www.gartner.com/en/newsroom/press-releases/2026-04-07-gartner-says-artificial-intelligence-projects-in-infrastructure-and-operations-stall-ahead-of-meaningful-roi-returns<br />
+[^13]: Talyx.ai, "Why 90% of Enterprise AI Implementations Fail (2026)", Jan 2026, https://talyx.ai/insights/enterprise-ai-implementation-failure<br />
+[^14]: Rivergroup.ai, "The Year Everyone Adopted AI (But Few Made Money)", Dec 2025, https://rivergroup.ai/insights/the-year-everyone-adopted-ai<br />
+[^15]: Futurum Group, "AI Capex 2026: The $690B Infrastructure Sprint", Feb 2026, https://futurumgroup.com/insights/ai-capex-2026-the-690b-infrastructure-sprint/<br />
+[^16]: Tom's Hardware, "Nvidia's H100 AI GPU shortages ease as lead times drop", Apr 2024, https://www.tomshardware.com/pc-components/gpus/nvidias-h100-ai-gpu-shortages-ease-as-lead-times-drop-from-up-to-four-months-to-8-12-weeks<br />
+[^17]: I/O Fund, "Nvidia, CoreWeave, and Nebius: Circular Financing of the GPU Boom", Jun 2026, https://io-fund.com/ai-stocks/nvidia-coreweave-nebius-circular-financing-gpu-boom<br />
+[^18]: Capright, "Data Center Market Update – April 2026", Apr 2026, https://www.capright.com/data-center-market-update-april-2026/<br />
+[^19]: Yahoo Finance / 24/7 Wall St., "Nebius Has 40% Upside in 2026 as Global AI Data Center Shortage Worsens", Jun 2026, https://finance.yahoo.com/technology/ai/articles/nebius-40-upside-2026-global-155307908.html<br />
+[^20]: Agentic Brew, "AI Infrastructure Spend and US Data-Center Bans", May 2026, https://www.agenticbrew.ai/news/ac3823a0-7e68-4319-90ec-f02b01794b6f/ai-infrastructure-spend-and-us-data-center-bans<br />
+[^21]: PA News Lab, "'Water shortage'—the hidden Achilles' heel of AI infrastructure", Jun 2026, https://www.panewslab.com/en/articles/019e8624-79e0-7758-8b4e-7b466fea1872<br />
+[^22]: Fortune, "Everyone's wondering if, and when, the AI bubble will pop. Here's what went down 25 years ago", Sep 2025, https://fortune.com/2025/09/28/ai-dot-com-bubble-parallels-history-explained-companies-revenue-infrastructure/<br />
+[^23]: Sparkline Capital, "Surviving the AI Capex Boom", Oct 2025, https://www.sparklinecapital.com/post/surviving-the-ai-capex-boom<br />
+[^24]: RBC BlueBay, "Artificial Intelligence: paradigm shift or bubble? Maybe it's both", 2026, https://www.rbcbluebay.com/globalassets/documents/ai-paradigm-shift-or-bubble.pdf<br />
+[^25]: Yahoo Finance, "J.P. Morgan calls out AI spend, says $650 billion in annual revenue required to deliver mere 10% return", Nov 2025, https://finance.yahoo.com/news/j-p-morgan-calls-ai-204449468.html<br />
+[^26]: Datavault AI / McKinsey, Nov 2025, https://www.quiverquant.com/news/Datavault+AI+Inc.+Engages+with+Global+Governments+and+Corporations+to+Tokenize+Trillions+in+Real+World+Assets%2C+Updates+Revenue+Guidance+for+2025+and+2026<br />
+[^28]: MAN Group, "The AI Bubble: Hidden Risks and Opportunities", Nov 2025, https://www.man.com/insights/the-ai-bubble<br />
 [^29]: Craig McCaskill, "The Bubble That Knows It's a Bubble", Aug 2025, https://craigmccaskill.com/ai-bubble-history/</p>
 <hr />
 <h1 id="bolum-10-enerji-ve-altyap-kstlar-yapay-zekann-gorunmez-duvar">Bölüm 10: Enerji ve Altyapı Kısıtları — Yapay Zekanın Görünmez Duvarı</h1>
@@ -3088,45 +3127,45 @@ Enterprise AI talebi, %95 başarısızlık oranıyla çöker. Hyperscaler'lar, C
 <p><strong>Verdict:</strong> Verimlilik kazançları, daha büyük modellere, daha fazla kullanıcıya, daha fazla inference'a ve daha fazla ajan'a yeniden yatırılacaktır. Birim başına verimlilik arttıkça, toplam enerji talebi de artacaktır. Jevons Paradoksu, yapay zekanın enerji sorununu tek başına çözemeyeceğini gösteren yapısal bir kısıttır.</p>
 <p><strong>Microsoft'un 2030 karbon negatif hedefi risk altındadır:</strong> TheEnergy.co, Microsoft'un "%100 zaman-eşleşmeli (time-matched) yenilenebilir" planını terk etmeye baktığını, gerekçe olarak AI'nin üstel büyümesini gösterdiğini raporlamıştır [^tec1].</p>
 <h2 id="kaynakca_2">Kaynakça</h2>
-<p>[^iea1]: IEA, "Key Questions on Energy and AI -- Executive Summary," Nis 2026. https://www.iea.org/reports/key-questions-on-energy-and-ai/executive-summary
-[^gart1]: Gartner, "Data Center Electricity Demand to Grow 26 Percent in 2026," Haz 2026. https://www.gartner.com/en/newsroom/press-releases/2026-06-10-gartner-says-data-center-electricity-demand-to-grow-26-percent-in-2026
-[^gs1]: Goldman Sachs Research, "US Utilities Plan $1.4T for AI Data Centers," Haz 2026.
-[^mck1]: McKinsey, "AI Computing Demand Is Pushing Global Power Grids to the Breaking Point," Haz 2026.
-[^del1]: Deloitte, "US Utilities Plan $1.4T for AI Data Centers," Haz 2026.
-[^jpm1]: JPMorgan, "Decoded -- Technology Law Insights," Kas 2025. https://www.jdsupra.com/legalnews/decoded-technology-law-insights-volume-6754116/
-[^doe1]: US DOE / LBNL, "Report on U.S. Data Center Energy Use," Ara 2024. https://www.energy.gov/articles/doe-releases-new-report-evaluating-increase-electricity-demand-data-centers
-[^fort1]: Fortune / Pandaily, "AI Computing Demand Is Pushing Global Power Grids to the Breaking Point," Haz 2026.
-[^lum1]: Luminix, "Powering the AI Boom: Where the Grid Breaks First (2026-2030)," Nis 2026. https://www.useluminix.com/reports/industry-analysis/powering-the-ai-boom-where-the-grid-breaks-first-2026-2030
-[^erc1]: Texas Commercial Plans, "ERCOT's 410 GW Load Queue," Nis 2026. https://texascommercialplans.com/market-news/ercot-410-gw-load-queue-commercial-electricity-impact/
-[^int1]: Introl, "PJM Grid Crisis: 6GW Shortfall Threatens 40% of AI Data Centers by 2027," Şub 2026.
-[^frg1]: Frontier Group, "Data center energy use is giving old, dirty power plants a new lease on life," Oca 2026.
-[^gsr1]: Grid Strategies LLC, "National Load Growth Report 2025." https://gridstrategiesllc.com/
-[^aha1]: AhaSignals, "AI Infrastructure Stress Index (AISI)," Mar 2026. https://ahasignals.com/ai-infrastructure-stress-index/
-[^dcd1]: DataCenterDynamics, "US gov't looks to extend life of coal plants to meet AI data center demand," Eyl 2025.
-[^eesi1]: EESI, "Data Center Buildout Is Hungry for Fossil Fuels," Eki 2024.
-[^ud1]: Utility Dive, "Coal- and gas-fired power plants have a new best friend," Tem 2025.
-[^dt1]: DailyTickers, "Energy Grid Optimization -- Nuclear Renaissance," 2026.
-[^grnf1]: GreenFront Energy, "Energy Transition Market Update Q4'24."
-[^kai1]: Kairos Power / EFG Hub, "SMR Update," Eki 2025.
-[^efg1]: Energy for Growth Hub, "SMR Update," Eki 2025.
-[^res1]: ResearchIntelo, "AI Data Center Power &amp; Energy Supply Chain Market Research Report 2034," May 2026.
-[^liq1]: Introl, "Liquid cooling for AI," Şub 2026.
-[^tone1]: ToneCooling, "2025 Liquid Cooling Industry Sector," Nis 2026.
-[^nv1]: NVIDIA Blog, "Chill Factor: Blackwell Platform Boosts Water Efficiency by Over 300x," Nis 2025.
-[^enk3]: EnkiAI, "AWS Liquid Cooling 2025," Nis 2026.
-[^dq1]: DQ India / TrendForce, "Liquid cooling to scale in AI data centers," Ağu 2025.
-[^dcw1]: Data Center Watch, "$64 billion of data center projects have been blocked or delayed amid local opposition," May 2025.
-[^pex1]: Pexapark, "Why Soaring PPA Values in PJM's Data Center Alley May Have More Room to Grow," Eyl 2025.
-[^gmi1]: GMI Insights, "Power Purchase Agreement Platform Market Size," Ara 2025.
-[^int3]: Introl, "Hyperscaler CapEx Hits $690B in 2026," Şub 2026.
-[^avis1]: Avisen Legal, "How Long Does It Take to Develop a Data Center?" Oca 2025.
-[^arch1]: Archdesk, "2026 Global AI Data Center Construction: Costs, Timelines, Outlook," Nis 2026.
-[^ms2]: Microsoft Blog, "A milestone achievement in our journey to carbon negative," Şub 2026.
-[^tec1]: TheEnergy.co, "Data centre energy promise hides emissions reality," May 2026.
-[^usr1]: User's original report, "AI Capital Expenditures vs. National Defense Spending," Tem 2026.
-[^arxiv1]: arXiv, "Energy and AI Efficiency Rebound," 2025.
-[^mit1]: MIT Thesis / DSpace, "Data Center Energy and Jevons Paradox," 2023.
-[^ms3]: Microsoft, "2025 Environmental Sustainability Report / Fact Sheet," May 2025.
+<p>[^iea1]: IEA, "Key Questions on Energy and AI -- Executive Summary," Nis 2026. https://www.iea.org/reports/key-questions-on-energy-and-ai/executive-summary<br />
+[^gart1]: Gartner, "Data Center Electricity Demand to Grow 26 Percent in 2026," Haz 2026. https://www.gartner.com/en/newsroom/press-releases/2026-06-10-gartner-says-data-center-electricity-demand-to-grow-26-percent-in-2026<br />
+[^gs1]: Goldman Sachs Research, "US Utilities Plan $1.4T for AI Data Centers," Haz 2026.<br />
+[^mck1]: McKinsey, "AI Computing Demand Is Pushing Global Power Grids to the Breaking Point," Haz 2026.<br />
+[^del1]: Deloitte, "US Utilities Plan $1.4T for AI Data Centers," Haz 2026.<br />
+[^jpm1]: JPMorgan, "Decoded -- Technology Law Insights," Kas 2025. https://www.jdsupra.com/legalnews/decoded-technology-law-insights-volume-6754116/<br />
+[^doe1]: US DOE / LBNL, "Report on U.S. Data Center Energy Use," Ara 2024. https://www.energy.gov/articles/doe-releases-new-report-evaluating-increase-electricity-demand-data-centers<br />
+[^fort1]: Fortune / Pandaily, "AI Computing Demand Is Pushing Global Power Grids to the Breaking Point," Haz 2026.<br />
+[^lum1]: Luminix, "Powering the AI Boom: Where the Grid Breaks First (2026-2030)," Nis 2026. https://www.useluminix.com/reports/industry-analysis/powering-the-ai-boom-where-the-grid-breaks-first-2026-2030<br />
+[^erc1]: Texas Commercial Plans, "ERCOT's 410 GW Load Queue," Nis 2026. https://texascommercialplans.com/market-news/ercot-410-gw-load-queue-commercial-electricity-impact/<br />
+[^int1]: Introl, "PJM Grid Crisis: 6GW Shortfall Threatens 40% of AI Data Centers by 2027," Şub 2026.<br />
+[^frg1]: Frontier Group, "Data center energy use is giving old, dirty power plants a new lease on life," Oca 2026.<br />
+[^gsr1]: Grid Strategies LLC, "National Load Growth Report 2025." https://gridstrategiesllc.com/<br />
+[^aha1]: AhaSignals, "AI Infrastructure Stress Index (AISI)," Mar 2026. https://ahasignals.com/ai-infrastructure-stress-index/<br />
+[^dcd1]: DataCenterDynamics, "US gov't looks to extend life of coal plants to meet AI data center demand," Eyl 2025.<br />
+[^eesi1]: EESI, "Data Center Buildout Is Hungry for Fossil Fuels," Eki 2024.<br />
+[^ud1]: Utility Dive, "Coal- and gas-fired power plants have a new best friend," Tem 2025.<br />
+[^dt1]: DailyTickers, "Energy Grid Optimization -- Nuclear Renaissance," 2026.<br />
+[^grnf1]: GreenFront Energy, "Energy Transition Market Update Q4'24."<br />
+[^kai1]: Kairos Power / EFG Hub, "SMR Update," Eki 2025.<br />
+[^efg1]: Energy for Growth Hub, "SMR Update," Eki 2025.<br />
+[^res1]: ResearchIntelo, "AI Data Center Power &amp; Energy Supply Chain Market Research Report 2034," May 2026.<br />
+[^liq1]: Introl, "Liquid cooling for AI," Şub 2026.<br />
+[^tone1]: ToneCooling, "2025 Liquid Cooling Industry Sector," Nis 2026.<br />
+[^nv1]: NVIDIA Blog, "Chill Factor: Blackwell Platform Boosts Water Efficiency by Over 300x," Nis 2025.<br />
+[^enk3]: EnkiAI, "AWS Liquid Cooling 2025," Nis 2026.<br />
+[^dq1]: DQ India / TrendForce, "Liquid cooling to scale in AI data centers," Ağu 2025.<br />
+[^dcw1]: Data Center Watch, "$64 billion of data center projects have been blocked or delayed amid local opposition," May 2025.<br />
+[^pex1]: Pexapark, "Why Soaring PPA Values in PJM's Data Center Alley May Have More Room to Grow," Eyl 2025.<br />
+[^gmi1]: GMI Insights, "Power Purchase Agreement Platform Market Size," Ara 2025.<br />
+[^int3]: Introl, "Hyperscaler CapEx Hits $690B in 2026," Şub 2026.<br />
+[^avis1]: Avisen Legal, "How Long Does It Take to Develop a Data Center?" Oca 2025.<br />
+[^arch1]: Archdesk, "2026 Global AI Data Center Construction: Costs, Timelines, Outlook," Nis 2026.<br />
+[^ms2]: Microsoft Blog, "A milestone achievement in our journey to carbon negative," Şub 2026.<br />
+[^tec1]: TheEnergy.co, "Data centre energy promise hides emissions reality," May 2026.<br />
+[^usr1]: User's original report, "AI Capital Expenditures vs. National Defense Spending," Tem 2026.<br />
+[^arxiv1]: arXiv, "Energy and AI Efficiency Rebound," 2025.<br />
+[^mit1]: MIT Thesis / DSpace, "Data Center Energy and Jevons Paradox," 2023.<br />
+[^ms3]: Microsoft, "2025 Environmental Sustainability Report / Fact Sheet," May 2025.<br />
 [^iea2]: IEA, "Energy and AI -- Energy Supply for AI," Haz 2026.</p>
 <hr />
 <h1 id="bolum-11-jeopolitik-ve-savunma-teknolojisi-asimetrik-yatrmn-stratejik-anlam">Bölüm 11: Jeopolitik ve Savunma Teknolojisi — Asimetrik Yatırımın Stratejik Anlamı</h1>
@@ -3184,10 +3223,10 @@ Enterprise AI talebi, %95 başarısızlık oranıyla çöker. Hyperscaler'lar, C
 </table>
 <h2 id="113-drone-dominance-63b-ile-otonom-silahlanma">11.3 Drone Dominance: $63B ile Otonom Silahlanma</h2>
 <p>FY2027 Pentagon bütçe talebinde, insansız sistemlere ayrılan pay <strong>$10.5 milyar'dan $63 milyar'a</strong> (6x) fırlatılmıştır [^11]. Bu rakam, Almanya'nın tüm savunma bütçesinden ($58 milyar) büyüktür. Pentagon'un Drone Dominance Programı, <strong>200.000+ otonom sistem</strong> hedefi taşımaktadır [^11]. ABD endüstriyel üretim kapasitesi 2025'te yılda 10.000-15.000 taktik drone seviyesindedir; 200.000 birimlik hedef mevcut kapasiteye göre 2-4 yıl geride kalabilir [^11].</p>
-<p>Ana şirketler ve pozisyonları:
-- <strong>Anduril</strong>: Lattice OS ve Ghost-X platformları; yazılım-tanımlı otonom sistemlerde lider [^11]
-- <strong>Shield AI</strong>: Hivemind otonom yığını; $2 milyar fon toplama, $12.7 milyar değerleme [^18]
-- <strong>General Atomics</strong>: MQ-9/MQ-1C'den Mojave/Sparrowhawk attritable sistemlere kayış [^11]
+<p>Ana şirketler ve pozisyonları:<br />
+- <strong>Anduril</strong>: Lattice OS ve Ghost-X platformları; yazılım-tanımlı otonom sistemlerde lider [^11]<br />
+- <strong>Shield AI</strong>: Hivemind otonom yığını; $2 milyar fon toplama, $12.7 milyar değerleme [^18]<br />
+- <strong>General Atomics</strong>: MQ-9/MQ-1C'den Mojave/Sparrowhawk attritable sistemlere kayış [^11]<br />
 - <strong>AeroVironment</strong>: Switchblade loitering munition, BlueHalo satın alması [^11]</p>
 <p>Çin, 2025 yazından bu yana en gelişmiş insansız sistemlerden bazılarını test etmiştir: envai edici drone sürüleri, elektromanyetik kediapultlu <strong>Type 076 LHD "Sichuan"</strong> drone carrier (GJ-21 stealth drone ile test edilmiştir) [^27], otonom kara araçları şehir operasyonları için [^27]. PLA envanterinde <strong>50.000+ taktik drone</strong> bulunmaktadır (ABD'nin 200.000 hedefine kıyasla mevcut üstünlük) [^11]. Eski J-7/J-8 jetleri, AI güdümlü otonom filolara dönüştürülebilir [^28].</p>
 <h2 id="114-nukleer-triad-sentinelden-columbiaya-946b">11.4 Nükleer Triad: Sentinel'den Columbia'ya $946B</h2>
@@ -3227,10 +3266,10 @@ Enterprise AI talebi, %95 başarısızlık oranıyla çöker. Hyperscaler'lar, C
 <p>Çin tarafında, 2024'te 100 yeni füze silosu inşa edilmiş; AI entegrasyonu ile hipersonik manevra yetenekleri geliştirilmektedir [^28].</p>
 <h2 id="115-space-force-71b-ve-uzay-yars">11.5 Space Force: $71B ve Uzay Yarışı</h2>
 <p>Space Force, FY2027'de <strong>$71 milyar</strong> bütçe talep etmektedir; bu, FY2026'daki $30.3 milyardan <strong>%80 artış</strong> anlamına gelir ve 20.000 personel hedefini taşır [^17][^18]. $31 milyarlık artış, füze uyarı/savunma, uydu iletişim ve uzay tabanlı yeteneklere yöneliktir [^18].</p>
-<p>Önemli sözleşmeler:
-- <strong>SpaceX Starshield</strong>: $2.29 milyar Space Force kontratı; Space Data Network omurgası; 2027 sonuna kadar tam operasyonel prototip [^18]
-- <strong>Anduril</strong>: $100 milyon (tavan $200 milyon) Space Force mesh networking modifikasyonu [^18]
-- <strong>Viasat/Intelsat</strong>: $437.7 milyon PTS-G (Protected Tactical Satellite-Global) [^18]
+<p>Önemli sözleşmeler:<br />
+- <strong>SpaceX Starshield</strong>: $2.29 milyar Space Force kontratı; Space Data Network omurgası; 2027 sonuna kadar tam operasyonel prototip [^18]<br />
+- <strong>Anduril</strong>: $100 milyon (tavan $200 milyon) Space Force mesh networking modifikasyonu [^18]<br />
+- <strong>Viasat/Intelsat</strong>: $437.7 milyon PTS-G (Protected Tactical Satellite-Global) [^18]<br />
 - <strong>Rocket Lab + Raytheon</strong>: Space Based Interceptor programı, hipersonik tehdit karşıtı [^18]</p>
 <p>Çin, uzay tabanlı ISR yeteneklerini hızla genişletmektedir. PLA Stratejik Destek Kuvvetleri (SSF), AI güdümlü platformlar aracılığıyla durumsal farkındalık ve karar desteği sağlamaktadır [^28]. Çin'in karşı-uzay yetenekleri (directed energy, co-orbital systems, jamming), ABD uydu ağına yönelik tehdit oluşturmaktadır. Çin ayrıca kendi LEO megaconstellation'ını (Starlink rakibi) geliştirmektedir.</p>
 <h2 id="116-nato-35-hedefi-ve-free-riding">11.6 NATO: %3.5 Hedefi ve "Free-Riding"</h2>
@@ -3312,10 +3351,10 @@ Enterprise AI talebi, %95 başarısızlık oranıyla çöker. Hyperscaler'lar, C
 </tbody>
 </table>
 <p>TSMC Arizona zaman çizelgesi: Fab 1 (4nm) 2025 başında üretime girdi; Fab 2 (3nm/2nm) 2026-2027; Fab 3 (A16/1.6nm) 2028+ [^8][^9]. NVIDIA, 2025 sonbaharında Arizona'da ilk Blackwell wafer üretimini kutlamıştır [^8].</p>
-<p>ABD, NVIDIA H20/B20 gibi gelişmiş AI çiplerinin Çin'e ihracatını kısıtlamaktadır. Çin karşılığında:
-- <strong>SMIC</strong>, EUV olmadan 7nm multi-patterning ile üretim başlatmış; verim <strong>%65</strong> (TSMC'nin %90'sına karşı) [^7]
-- <strong>Huawei</strong>, DUV ile 2nm sınıfı çip üretme patenti almıştır [^32]
-- <strong>Devlet sübvansiyonları</strong>: 2020'den bu yana $150 milyar toplam yarı iletken sübvansiyonu; 2026 için ek $50 milyar fon [^7]
+<p>ABD, NVIDIA H20/B20 gibi gelişmiş AI çiplerinin Çin'e ihracatını kısıtlamaktadır. Çin karşılığında:<br />
+- <strong>SMIC</strong>, EUV olmadan 7nm multi-patterning ile üretim başlatmış; verim <strong>%65</strong> (TSMC'nin %90'sına karşı) [^7]<br />
+- <strong>Huawei</strong>, DUV ile 2nm sınıfı çip üretme patenti almıştır [^32]<br />
+- <strong>Devlet sübvansiyonları</strong>: 2020'den bu yana $150 milyar toplam yarı iletken sübvansiyonu; 2026 için ek $50 milyar fon [^7]<br />
 - <strong>Göç</strong>: 3.000+ Çinli mühendis Tayvan, Güney Kore ve ABD'den geri dönmüştür [^7]</p>
 <p>ASML, EUV (Extreme Ultraviolet) litografi makinelerinde %100 tekel, DUV'da %50+ pazar payına sahiptir. Bir EUV makinesi €150 milyon+, DUV makinesi €27 milyon+ maliyetindedir [^31]. ABD, Nisan 2026'da MATCH Act (Multilateral Alignment of Technology Controls on Hardware Act) ile Çin'e DUV ihracatını yasaklamayı teklif etmiştir; bu, ASML'in %20 gelirini riske atar [^31]. Çin'in SMIC'in 7nm DUV sistemleri ve Huawei'in patentleri, ASML bağımlılığını azaltma çabasını gösterir [^32].</p>
 <p>Çin AI chip self-sufficiency oranı, <strong>%41'den %85'e</strong> çıkmıştır [^7]. Çin'in yapay zekâ ekosistemi (Baidu, Alibaba, Tencent, ByteDance, Huawei) 2025'te <strong>490 milyar yuan</strong> (yaklaşık $67 milyar) harcama yapmıştır.</p>
@@ -3332,40 +3371,40 @@ Enterprise AI talebi, %95 başarısızlık oranıyla çöker. Hyperscaler'lar, C
 <p>Bu asimetri, iki zıt risk taşır: (1) askeri AI yetenekleri, özel sektörün piyasa rüzgârlarına bağımlı hale gelir; (2) aşırı yatırım (overbuild) riski, JPMorgan'ın belirttiği gibi, yıllık $40 milyar amortisman vs. $15-20 milyar gelir dengesizliğiyle finansal bir balon oluşturabilir [^38]. GPU ömrü 3-5 yıl; askeri sistemlerin 20-30 yıllık yaşam döngüsüyle zıttır [^38].</p>
 <p><strong>Sonuç:</strong> ABD, 2026-2027 döneminde teknolojik üstünlüğü geleneksel savunmadan daha stratejik bir öncelik olarak konumlandırmıştır. Bu tercih, Çin ile olan büyük güç rekabetinde uzun vadeli bir üstünlük sağlayabilir; ancak kısa vadede askeri hazırlık, NATO dayanıklılığı ve nükleer modernizasyon gibi geleneksel güvenlik alanlarında kaynak sıkışıklığı yaratmaktadır. 250x gap, bu tercihin ölçeğini rakamsal olarak somutlaştırmaktadır.</p>
 <h2 id="kaynakca_3">Kaynakça</h2>
-<p>[^1]: SIPRI, "Trends in World Military Expenditure 2025", Nis 2026. https://www.sipri.org/sites/default/files/2026-04/2604_milex_2025.pdf
-[^2]: CEPR VoxEU, "China's military rise: Comparative military spending in China and the US", 2024. https://cepr.org/voxeu/columns/chinas-military-rise-comparative-military-spending-china-and-the-us
-[^3]: TNSR, Fravel et al., "Estimating China's Defense Spending", 2024. https://tnsr.org/wp-content/uploads/2024/06/TNSR-Journal-Vol-7-Issue-3-FRAVEL-2.pdf
-[^4]: Euractiv, "Only three NATO allies set to meet new 3.5% spending target in 2025", Eyl 2025. https://www.euractiv.com/section/defence/news/only-three-nato-allies-set-to-meet-new-3-5-spending-target-in-2025/
-[^5]: NATO, "The 5% Hague defence commitment", 2026. https://www.nato.int/en/what-we-do/introduction-to-nato/defence-expenditures-and-natos-5-commitment
-[^6]: ICDS, "Hague Summit Series: The Central Issue. Defence Spending", Eki 2025. https://icds.ee/en/hague-summit-series-the-central-issue-defence-spending/
-[^7]: World Understood, "China's Semiconductor Independence: The 2026 Acceleration", Ara 2025.
-[^8]: Expert Market Research, "US Semiconductor Market 2025-2035", 2026.
-[^9]: Oplexa, "TSMC AI Investment: The $7 Trillion Bet", Mar 2026.
-[^10]: iFactory, "CHIPS Act Incentives 2026", Haz 2026.
-[^11]: Robotics.press / Deep Signal, "FY2027 US defense budget: $63B for drone/unmanned technology", May 2026.
-[^12]: Motley Fool Discussion, "OT:China Development of Swarm Drone Warfare", Şub 2026.
-[^13]: Arms Control, "Trump Proposes Trillion Dollar Defense Budget", Haz 2025.
-[^14]: CBO, "Projected Costs of U.S. Nuclear Forces, 2021 to 2030" / "2025 to 2034", 2021/2025.
-[^15]: UK House of Commons / CRS, "Nuclear Weapons Modernization", CBP-9082.
-[^17]: Orbital Intel, "Space Defense Spending: $60B+ Global Budget", 2026.
-[^18]: Industrial Base Alpha, "Space Force $71B FY2027", Tem 2026.
-[^19]: RNG Strategy Consulting, "Joint All-Domain Command and Control (JADC2)", Haz 2026; Robozaps/Polaris, "Project Maven 100% Machine-Generated Intelligence".
-[^20]: Polaris Market Research, "Golden Dome, Hypersonics &amp; the AI Kill Chain", Haz 2026.
-[^21]: Defense Scoop, "Pentagon requesting more than $3B for AI, JADC2", Mar 2023.
-[^22]: Forecast International, "Budget Trends and the Future of AI in U.S. Defense", Mar 2025.
-[^23]: Washington Technology, "DOD's $66B IT budget pivots to AI and efficiency", Şub 2026.
-[^25]: GM Insights, "Artificial Intelligence in Military Market Trends &amp; Analysis", Mar 2025.
-[^26]: Forecast International, "Analysis of China's 15th Five-Year Plan and Military Modernization", Oca 2026.
-[^27]: ISW-CDOT, "Lessons-learned with Chinese Characteristics", Nis 2026.
-[^28]: Çeşitli açık kaynak istihbarat kaynakları; PLA modernizasyon verileri.
-[^31]: Tech Times, "ASML EUV China Accusation: Lutnick Claims Breach", Haz 2026.
-[^32]: Digitimes, "SMEE wins China lithography order" / "Huawei patent reveals DUV method to replicate 2nm-class chipmaking", Ara 2025.
-[^33]: NATO, "Defence Expenditure of NATO Countries (2014-2025)", Haz 2025.
-[^37]: White House, "America's AI Action Plan", Tem 2025.
-[^38]: Sourcery Intel, "The Hidden Financial Bubble in AI Infrastructure", May 2026.
-[^40]: GM Insights, "China AI in Military Market", 2025.
-[^eco3]: Eco3min, "AI Capex 2025–2026: $1.1T vs Apollo, Marshall, Manhattan", Haz 2026.
-[^yahoo2]: Yahoo Finance, "Meta, Microsoft, Amazon, and Alphabet are about to spend a shocking amount of money", Haz 2026.
+<p>[^1]: SIPRI, "Trends in World Military Expenditure 2025", Nis 2026. https://www.sipri.org/sites/default/files/2026-04/2604_milex_2025.pdf<br />
+[^2]: CEPR VoxEU, "China's military rise: Comparative military spending in China and the US", 2024. https://cepr.org/voxeu/columns/chinas-military-rise-comparative-military-spending-china-and-the-us<br />
+[^3]: TNSR, Fravel et al., "Estimating China's Defense Spending", 2024. https://tnsr.org/wp-content/uploads/2024/06/TNSR-Journal-Vol-7-Issue-3-FRAVEL-2.pdf<br />
+[^4]: Euractiv, "Only three NATO allies set to meet new 3.5% spending target in 2025", Eyl 2025. https://www.euractiv.com/section/defence/news/only-three-nato-allies-set-to-meet-new-3-5-spending-target-in-2025/<br />
+[^5]: NATO, "The 5% Hague defence commitment", 2026. https://www.nato.int/en/what-we-do/introduction-to-nato/defence-expenditures-and-natos-5-commitment<br />
+[^6]: ICDS, "Hague Summit Series: The Central Issue. Defence Spending", Eki 2025. https://icds.ee/en/hague-summit-series-the-central-issue-defence-spending/<br />
+[^7]: World Understood, "China's Semiconductor Independence: The 2026 Acceleration", Ara 2025.<br />
+[^8]: Expert Market Research, "US Semiconductor Market 2025-2035", 2026.<br />
+[^9]: Oplexa, "TSMC AI Investment: The $7 Trillion Bet", Mar 2026.<br />
+[^10]: iFactory, "CHIPS Act Incentives 2026", Haz 2026.<br />
+[^11]: Robotics.press / Deep Signal, "FY2027 US defense budget: $63B for drone/unmanned technology", May 2026.<br />
+[^12]: Motley Fool Discussion, "OT:China Development of Swarm Drone Warfare", Şub 2026.<br />
+[^13]: Arms Control, "Trump Proposes Trillion Dollar Defense Budget", Haz 2025.<br />
+[^14]: CBO, "Projected Costs of U.S. Nuclear Forces, 2021 to 2030" / "2025 to 2034", 2021/2025.<br />
+[^15]: UK House of Commons / CRS, "Nuclear Weapons Modernization", CBP-9082.<br />
+[^17]: Orbital Intel, "Space Defense Spending: $60B+ Global Budget", 2026.<br />
+[^18]: Industrial Base Alpha, "Space Force $71B FY2027", Tem 2026.<br />
+[^19]: RNG Strategy Consulting, "Joint All-Domain Command and Control (JADC2)", Haz 2026; Robozaps/Polaris, "Project Maven 100% Machine-Generated Intelligence".<br />
+[^20]: Polaris Market Research, "Golden Dome, Hypersonics &amp; the AI Kill Chain", Haz 2026.<br />
+[^21]: Defense Scoop, "Pentagon requesting more than $3B for AI, JADC2", Mar 2023.<br />
+[^22]: Forecast International, "Budget Trends and the Future of AI in U.S. Defense", Mar 2025.<br />
+[^23]: Washington Technology, "DOD's $66B IT budget pivots to AI and efficiency", Şub 2026.<br />
+[^25]: GM Insights, "Artificial Intelligence in Military Market Trends &amp; Analysis", Mar 2025.<br />
+[^26]: Forecast International, "Analysis of China's 15th Five-Year Plan and Military Modernization", Oca 2026.<br />
+[^27]: ISW-CDOT, "Lessons-learned with Chinese Characteristics", Nis 2026.<br />
+[^28]: Çeşitli açık kaynak istihbarat kaynakları; PLA modernizasyon verileri.<br />
+[^31]: Tech Times, "ASML EUV China Accusation: Lutnick Claims Breach", Haz 2026.<br />
+[^32]: Digitimes, "SMEE wins China lithography order" / "Huawei patent reveals DUV method to replicate 2nm-class chipmaking", Ara 2025.<br />
+[^33]: NATO, "Defence Expenditure of NATO Countries (2014-2025)", Haz 2025.<br />
+[^37]: White House, "America's AI Action Plan", Tem 2025.<br />
+[^38]: Sourcery Intel, "The Hidden Financial Bubble in AI Infrastructure", May 2026.<br />
+[^40]: GM Insights, "China AI in Military Market", 2025.<br />
+[^eco3]: Eco3min, "AI Capex 2025–2026: $1.1T vs Apollo, Marshall, Manhattan", Haz 2026.<br />
+[^yahoo2]: Yahoo Finance, "Meta, Microsoft, Amazon, and Alphabet are about to spend a shocking amount of money", Haz 2026.<br />
 [^vavc]: ValueAddVC, "Big Tech AI Capex 2026: $725B Combined", May 2026.</p>
 <hr />
 <h1 id="bolum-12-piyasa-ve-sektorel-etkiler">Bölüm 12: Piyasa ve Sektörel Etkiler</h1>
@@ -3606,9 +3645,9 @@ Enterprise AI talebi, %95 başarısızlık oranıyla çöker. Hyperscaler'lar, C
 <p><strong>Kritik risk:</strong> Eğer AI liderler (özellikle NVIDIA, Microsoft, Alphabet) beklenen getirileri sunamazsa, S&amp;P 500'de aşağı yönlü risk büyük. Top 10 hisse, endeksin %35'i kadarını oluşturduğundan, tek bir hissenin %30 düşüşü endeksi <strong>%2.1</strong> kayba uğratır [^n61]. Equal-weight'da bu risk sadece <strong>%0.06</strong>'dır [^n61]. Tarihçe, 1990'lar dot-com balonu sonrasında equal-weight'in 7 yıl üst üste cap-weight'i yendiğini gösteriyor [^n62].</p>
 <h2 id="degerleme-peak-uncertainty-ve-ai-laggards-vs-leaders">Değerleme: "Peak Uncertainty" ve AI Laggards vs Leaders</h2>
 <p>Wall Street, AI CapEx'in devasa boyutu ve getiri belirsizliği arasında bölünmüş durumda. Bernstein analisti Mark Shmulik, "Bir hafta önce bu beat alınırdı, ama Şubat'tayız ve hiçbir gelir beat'i yeterli görünmüyor" dedi [^n3]. Bu "peak uncertainty" dönemi, AI laggards ve leaders arasında net bir değerleme farkı yaratıyor.</p>
-<p>BCG araştırmasına göre, AI liderleri ("future-built") laggard'lara göre [^n55]:
-- <strong>1.7x gelir büyümesi</strong>
-- <strong>3.6x 3 yıllık hissedar getirisi (TSR)</strong>
+<p>BCG araştırmasına göre, AI liderleri ("future-built") laggard'lara göre [^n55]:<br />
+- <strong>1.7x gelir büyümesi</strong><br />
+- <strong>3.6x 3 yıllık hissedar getirisi (TSR)</strong><br />
 - <strong>1.6x EBIT marjı</strong></p>
 <p>AI liderleri, 2025'te laggard'lara göre <strong>2x fazla AI harcaması</strong> planlıyor [^n55]. Premium varlıklar 5 özellik paylaşıyor: yüksek gross revenue retention, düşük AI disintermediation riski, karlılık, kategori liderliği ve dayanıklı müşteri tutma [^n57]. AI özellikleri tek başına premium getirmiyor; bunlar temel iş metriklerini güçlendirmeli.</p>
 <p>B2B yazılım sektöründe EV/Sales NTM <strong>4.2x</strong> (10 yıllık ortalama 6.6x). High-growth şirketler 7.3x, low-growth 3.0x çarpanla işlem görüyor [^n54]. Revenue growth premium over FCF margin, Mart 2025'teki %77 zirvesinden Nisan 2026'da <strong>%29</strong>'a düştü [^n54].</p>
@@ -3720,10 +3759,10 @@ Enterprise AI talebi, %95 başarısızlık oranıyla çöker. Hyperscaler'lar, C
 </table>
 <p>[^9] [^10]</p>
 <p>Trump, Truth Social'dan yaptığı açıklamada: <em>"Bu çok sıkıntılı ve tehlikeli zamanlarda, 2027 için Askeri Bütçemiz $1 Trilyon Dolar değil, $1.5 Trilyon Dolar olmalıdır"</em> dedi [^11].</p>
-<p><strong>One Big Beautiful Bill Act (OBBBA)</strong>, 4 Temmuz 2025'te imzalanan 940 sayfalık bir reconciliation faturasıdır. Temel özellikleri [^12]:
-- <strong>TCJA uzatması:</strong> 2017 vergi indirimlerinin kalıcı hale getirilmesi
-- <strong>Yeni vergi indirimleri:</strong> Bahşiş/fazla mesai vergisi kaldırma, yaşlılar ek standart indirimi, $40,000 SALT cap'i (2030'a kadar)
-- <strong>Harcama kesintileri:</strong> Medicaid, SNAP, öğrenci kredileri
+<p><strong>One Big Beautiful Bill Act (OBBBA)</strong>, 4 Temmuz 2025'te imzalanan 940 sayfalık bir reconciliation faturasıdır. Temel özellikleri [^12]:<br />
+- <strong>TCJA uzatması:</strong> 2017 vergi indirimlerinin kalıcı hale getirilmesi<br />
+- <strong>Yeni vergi indirimleri:</strong> Bahşiş/fazla mesai vergisi kaldırma, yaşlılar ek standart indirimi, $40,000 SALT cap'i (2030'a kadar)<br />
+- <strong>Harcama kesintileri:</strong> Medicaid, SNAP, öğrenci kredileri<br />
 - <strong>Savunma ve sınır güvenliği artışları:</strong> $175 milyar savunma fonksiyonu 050 fonu</p>
 <p>OBBBA'nın CBO tarafından tahmin edilen net maliyeti: <strong>$3.4 trilyon</strong> (10 yıl), faiz dahil <strong>$4 trilyon</strong>'u aşıyor [^12].</p>
 <p><strong>Freedom Caucus Muhalefeti:</strong> House çoğunluğu <strong>220-215</strong> gibi dar bir farkla korunuyor. Bu durum, herhangi bir partinin 3 vekilinin muhalefet etmesi halinde faturanın çökmesi anlamına geliyor [^13]. Freedom Caucus üyeleri, bütçe açığını artıracağı gerekçesiyle OBBBA'ya ve FY2027 savunma artışlarına şiddetle karşı çıkıyor [^13]. Reconciliation süreci, Senato'da filibuster'ı aşan basit çoğunlukla geçiş imkanı tanısa da, House'daki dar çoğunluk yasama manevra alanını ciddi şekilde kısıtlıyor.</p>
@@ -3731,16 +3770,16 @@ Enterprise AI talebi, %95 başarısızlık oranıyla çöker. Hyperscaler'lar, C
 <h2 id="cbo-vs-omb-263-trilyon-mu-195-trilyon-mu">CBO vs OMB: $26.3 Trilyon mu, $19.5 Trilyon mu?</h2>
 <p>ABD'nin 10 yıllık bütçe görünümü, iki kurum arasında uçurumlu bir farkla sunuluyor: CBO <strong>$26.3 trilyon</strong> açık öngörürken, OMB <strong>$19.5 trilyon</strong> açık projeksiyonu sunuyor. Aradaki <strong>$7.8 trilyon</strong> farkın büyük çoğunluğu (<strong>$6.3 trilyon</strong>) ekonomik varsayımlardan kaynaklanıyor [^1] [^2].</p>
 <h3 id="cbo-subat-2026-baz-projeksiyonu">CBO Şubat 2026 Baz Projeksiyonu</h3>
-<p>CBO'nun Şubat 2026 tarihli "The Budget and Economic Outlook: 2026 to 2036" raporu [^3] [^14]:
-- <strong>10 yıllık toplam açık:</strong> $26.3 trilyon (değerlendirme dönemi 2026-2036)
-- <strong>2026 açığı:</strong> $1.9 trilyon (%5.8 GSYİH)
-- <strong>2036 açığı:</strong> $3.1 trilyon (%6.7 GSYİH)
-- <strong>Borç/GSYİH oranı:</strong> 2025 sonunda %101 → 2036'da <strong>%120</strong> (rekor seviye)
+<p>CBO'nun Şubat 2026 tarihli "The Budget and Economic Outlook: 2026 to 2036" raporu [^3] [^14]:<br />
+- <strong>10 yıllık toplam açık:</strong> $26.3 trilyon (değerlendirme dönemi 2026-2036)<br />
+- <strong>2026 açığı:</strong> $1.9 trilyon (%5.8 GSYİH)<br />
+- <strong>2036 açığı:</strong> $3.1 trilyon (%6.7 GSYİH)<br />
+- <strong>Borç/GSYİH oranı:</strong> 2025 sonunda %101 → 2036'da <strong>%120</strong> (rekor seviye)<br />
 - <strong>Faiz giderleri:</strong> 2026'da $1.0T → 2036'da $2.1T</p>
 <h3 id="omb-fy2027-butce-projeksiyonu">OMB FY2027 Bütçe Projeksiyonu</h3>
-<p>OMB'nin FY2027 bütçe talebi ekindeki projeksiyonlar [^1] [^2]:
-- <strong>10 yıllık toplam açık:</strong> ~$19.5 trilyon (tahmini)
-- <strong>Borç/GSYİH oranı:</strong> 2036'da <strong>%94</strong> (CBO'nun %120'sine karşı)
+<p>OMB'nin FY2027 bütçe talebi ekindeki projeksiyonlar [^1] [^2]:<br />
+- <strong>10 yıllık toplam açık:</strong> ~$19.5 trilyon (tahmini)<br />
+- <strong>Borç/GSYİH oranı:</strong> 2036'da <strong>%94</strong> (CBO'nun %120'sine karşı)<br />
 - <strong>Ek gelir tahmini:</strong> $7.8 trilyon (CBO'ya göre 10 yılda)</p>
 <h3 id="78-trilyon-fark-nereden-geliyor">$7.8 Trilyon Fark Nereden Geliyor?</h3>
 <table>
@@ -3821,10 +3860,10 @@ Enterprise AI talebi, %95 başarısızlık oranıyla çöker. Hyperscaler'lar, C
 </table>
 <p>[^3] [^4] [^16]</p>
 <p>House Budget Committee Chairman Jodey Arrington'ın CBO baz projeksiyonu üzerine açıklaması: <em>"Önümüzdeki on yılda, federal hükümetin borç aldığı her doların 66 senti, ulusal borcun faizini ödemeye gidecek."</em> [^17] Bu oran, 2021'de faiz giderlerinin federal gelirin %9'u iken, 2026'da %19'a ve 2036'da <strong>%26'ya</strong> çıkacağını gösteriyor [^17].</p>
-<p>10 yıllık Hazine tahvili getirisi projeksiyonları [^3] [^18] [^19]:
-- <strong>CBO 2026 tahmini:</strong> %4.3 (ortalama)
-- <strong>CBO 2031 tahmini:</strong> %4.4 (yükselen trend)
-- <strong>ING Stratejistleri (Aralık 2025):</strong> 2026'da %4.0-%4.10 aralığında kalacak, %4.1 üzeri çıkış "2026'nın yapısal teması" olacak [^19]
+<p>10 yıllık Hazine tahvili getirisi projeksiyonları [^3] [^18] [^19]:<br />
+- <strong>CBO 2026 tahmini:</strong> %4.3 (ortalama)<br />
+- <strong>CBO 2031 tahmini:</strong> %4.4 (yükselen trend)<br />
+- <strong>ING Stratejistleri (Aralık 2025):</strong> 2026'da %4.0-%4.10 aralığında kalacak, %4.1 üzeri çıkış "2026'nın yapısal teması" olacak [^19]<br />
 - <strong>Nuveen (Temmuz 2026):</strong> %4.25-%4.50 aralığı [^18]</p>
 <p>2025 sonu itibarıyla toplam kamu borcu $38.6 trilyon (%123.1 GSYİH), 2036'da $63.7 trilyona (%136.4 GSYİH) ulaşacak [^17].</p>
 <h2 id="vergi-politikas-tcja-tarifeler-ve-ai-sektoru">Vergi Politikası: TCJA, Tarifeler ve AI Sektörü</h2>
@@ -3842,42 +3881,42 @@ Enterprise AI talebi, %95 başarısızlık oranıyla çöker. Hyperscaler'lar, C
 <p>Tax Foundation tahminlerine göre, TCJA'nın tamamının kalıcı hale getirilmesi ekonomiyi %1.1 büyütecek, ancak 2025-2034 döneminde <strong>$4.5 trilyon</strong> maliyet taşıyacak [^20].</p>
 <p><strong>AI sektörüne etki:</strong> TCJA uzatması, teknoloji şirketlerinin vergi yükünü azaltarak CapEx finansmanına dolaylı destek sağlıyor. Ancak bu, aynı zamanda federal gelir kaybı anlamına geliyor ve bütçe açığını derinleştiriyor. AI şirketleri, özellikle R&amp;D derhal gider yazma hakkı ve bonus amortisman uzatmasından doğrudan faydalanıyor.</p>
 <h3 id="tarife-gelirleri-ieepa-yuksek-mahkeme-karar-illegal">Tarife Gelirleri: IEEPA Yüksek Mahkeme Kararı (Illegal)</h3>
-<p>20 Şubat 2026'da Yüksek Mahkeme, Trump'ın IEEPA (International Emergency Economic Powers Act) kapsamında uyguladığı tarifeleri <strong>6-3 kararla illegal</strong> ilan etti [^6] [^22]:
-- <strong>Kayıp gelir:</strong> $1.7 trilyon (FY2026-2036, CRFB tahmini) [^6] [^22]
-- <strong>Alternatif tarife:</strong> Section 122 kapsamında %10 geçici tarife (150 gün sınırlı) — yalnızca $35 milyar getiri [^22]
+<p>20 Şubat 2026'da Yüksek Mahkeme, Trump'ın IEEPA (International Emergency Economic Powers Act) kapsamında uyguladığı tarifeleri <strong>6-3 kararla illegal</strong> ilan etti [^6] [^22]:<br />
+- <strong>Kayıp gelir:</strong> $1.7 trilyon (FY2026-2036, CRFB tahmini) [^6] [^22]<br />
+- <strong>Alternatif tarife:</strong> Section 122 kapsamında %10 geçici tarife (150 gün sınırlı) — yalnızca $35 milyar getiri [^22]<br />
 - <strong>Section 122 kalıcı:</strong> %10 → $925 milyar; %15 → $1.3 trilyon (hâlâ $1.7T'nin altında) [^22]</p>
 <p>CRFB: <em>"Tarife gelirleri, önerilen savunma artışının maliyetinin sadece %15'ini karşılayacaktır."</em> [^11]</p>
-<p><strong>AI sektörüne etki:</strong> Trump tarifelerinin AI sektörü üzerindeki etkileri çok yönlü [^23]:
-- Çin'den ithal GPU/çip tarifeleri, AI altyapı donanım maliyetlerini artırıyor
-- Yüksek Mahkeme kararı sonrası 2025'te toplanan $160 milyar+ tarife geri ödenebilir [^6]
-- AI çip üretiminde kullanılan nadir toprak elementleri ve yarıiletken ekipman için Çin bağımlılığı
+<p><strong>AI sektörüne etki:</strong> Trump tarifelerinin AI sektörü üzerindeki etkileri çok yönlü [^23]:<br />
+- Çin'den ithal GPU/çip tarifeleri, AI altyapı donanım maliyetlerini artırıyor<br />
+- Yüksek Mahkeme kararı sonrası 2025'te toplanan $160 milyar+ tarife geri ödenebilir [^6]<br />
+- AI çip üretiminde kullanılan nadir toprak elementleri ve yarıiletken ekipman için Çin bağımlılığı<br />
 - OBBBA'nın IRA/CHIPS kredi alanları için Foreign Entities of Concern (FEOC) kısıtlamaları, Çin kaynaklı ekipman kullanan AI veri merkezlerini etkiliyor [^23]</p>
 <h2 id="ai-vergi-tesvikleri-federal-ve-eyalet-duzeyinde-catsma">AI Vergi Teşvikleri: Federal ve Eyalet Düzeyinde Çatışma</h2>
 <h3 id="chips-act-527b-ve-irs-section-48d">CHIPS Act ($52.7B) ve IRS Section 48D</h3>
-<p>CHIPS and Science Act (9 Ağustos 2022'de imzalandı) AI ve yarıiletken üretimi için temel teşvikleri içeriyor [^24] [^25] [^26]:
-- <strong>Doğrudan hibeler:</strong> $39 milyar (üretim tesisleri, paketleme, R&amp;D)
-- <strong>Section 48D Advanced Manufacturing Investment Credit:</strong> Orijinal oran %25; OBBBA ile <strong>%35</strong>'e çıkarıldı (2025 sonrası hizmete giren tesisler için). Doğrudan ödeme (direct pay) seçeneği mevcut — vergi yükümlülüğü olmayanlar için nakit iadesi etkisi [^25]
-- <strong>R&amp;D ve iş gücü geliştirme:</strong> $13.2 milyar
+<p>CHIPS and Science Act (9 Ağustos 2022'de imzalandı) AI ve yarıiletken üretimi için temel teşvikleri içeriyor [^24] [^25] [^26]:<br />
+- <strong>Doğrudan hibeler:</strong> $39 milyar (üretim tesisleri, paketleme, R&amp;D)<br />
+- <strong>Section 48D Advanced Manufacturing Investment Credit:</strong> Orijinal oran %25; OBBBA ile <strong>%35</strong>'e çıkarıldı (2025 sonrası hizmete giren tesisler için). Doğrudan ödeme (direct pay) seçeneği mevcut — vergi yükümlülüğü olmayanlar için nakit iadesi etkisi [^25]<br />
+- <strong>R&amp;D ve iş gücü geliştirme:</strong> $13.2 milyar<br />
 - <strong>Uluslararası ICT güvenliği:</strong> $500 milyon</p>
 <h3 id="ira-clean-energy-tax-credits-ve-ai-veri-merkezleri">IRA Clean Energy Tax Credits ve AI Veri Merkezleri</h3>
-<p>Inflation Reduction Act (IRA), AI veri merkezlerinin enerji ihtiyacı için dolaylı teşvikler sağlıyor [^27] [^28] [^29]:
-- <strong>Section 48 (ITC) / Section 48E (CEITC):</strong> %30 vergi kredisi — güneş, rüzgar, jeotermal, enerji depolama
-- <strong>Section 45Y (CEPTC):</strong> Zero-emission elektrik üretimi için üretim vergi kredisi
-- <strong>Section 45Q:</strong> Karbon yakalama ve depolama kredisi ($12-$85/metrik ton)
-- <strong>Section 45U:</strong> Nükleer santral üretim kredisi (enflasyon güncellemeli)
+<p>Inflation Reduction Act (IRA), AI veri merkezlerinin enerji ihtiyacı için dolaylı teşvikler sağlıyor [^27] [^28] [^29]:<br />
+- <strong>Section 48 (ITC) / Section 48E (CEITC):</strong> %30 vergi kredisi — güneş, rüzgar, jeotermal, enerji depolama<br />
+- <strong>Section 45Y (CEPTC):</strong> Zero-emission elektrik üretimi için üretim vergi kredisi<br />
+- <strong>Section 45Q:</strong> Karbon yakalama ve depolama kredisi ($12-$85/metrik ton)<br />
+- <strong>Section 45U:</strong> Nükleer santral üretim kredisi (enflasyon güncellemeli)<br />
 - <strong>Section 179D:</strong> Enerji verimli ticari binalar için ek indirim</p>
 <p>OBBBA'nın IRA üzerindeki etkisi: Rüzgar ve güneş projeleri için 4 Temmuz 2026'ya kadar inşaat başlamazsa ve 31 Aralık 2027'ye kadar hizmete girmezse krediler kaybedilecek [^23]. Bu, AI veri merkezlerinin yenilenebilir enerji PPAs'ını kilitleme acelesini artırıyor.</p>
 <h3 id="rd-tax-credit-ve-section-174a">R&amp;D Tax Credit ve Section 174A</h3>
-<p>OBBBA ile getirilen en önemli değişikliklerden biri domestic R&amp;D harcamaları için derhal gider yazma hakkıdır [^30] [^31] [^32]:
-- <strong>Section 174A (yeni):</strong> ABD'de yapılan R&amp;D harcamaları için <strong>derhal gider yazma</strong> (2025 ve sonrası vergi yılları için kalıcı)
-- <strong>Yabancı R&amp;D:</strong> Hâlâ 15 yıllık amortisman (eski Section 174 kuralı)
-- <strong>Section 41 R&amp;D Kredisi:</strong> %20 baz aşım kredisi — Section 174A ile birlikte kullanılabilir
+<p>OBBBA ile getirilen en önemli değişikliklerden biri domestic R&amp;D harcamaları için derhal gider yazma hakkıdır [^30] [^31] [^32]:<br />
+- <strong>Section 174A (yeni):</strong> ABD'de yapılan R&amp;D harcamaları için <strong>derhal gider yazma</strong> (2025 ve sonrası vergi yılları için kalıcı)<br />
+- <strong>Yabancı R&amp;D:</strong> Hâlâ 15 yıllık amortisman (eski Section 174 kuralı)<br />
+- <strong>Section 41 R&amp;D Kredisi:</strong> %20 baz aşım kredisi — Section 174A ile birlikte kullanılabilir<br />
 - <strong>Küçük işletme geriye dönük düzeltme:</strong> $31 milyon ortalama gelir altındaki işletmeler 2022-2024 için değişiklik yapabilir (son tarih: 6 Temmuz 2026)</p>
 <p>ABGi USA analizine göre, Section 174A ile birlikte Section 41 kredisi, "her dolar hem derhal indirim hem de kredi üretiyor — nakit faydasını çarpan etkisi yaratıyor" [^31].</p>
 <h3 id="ai-infrastructure-depreciation-bonus-amortisman">AI Infrastructure Depreciation (Bonus Amortisman)</h3>
-<p>OBBBA kapsamında [^20] [^23]:
-- <strong>%100 Bonus Depreciation:</strong> Kısa ömürlü varlıklar (örn. AI GPU'ları, sunucular) için 2029'a kadar uzatıldı
-- <strong>Section 179D:</strong> Enerji verimli veri merkezi binaları için ek indirim (30 Haziran 2026'dan sonra başlayan yapılar için kademeli azalma)
+<p>OBBBA kapsamında [^20] [^23]:<br />
+- <strong>%100 Bonus Depreciation:</strong> Kısa ömürlü varlıklar (örn. AI GPU'ları, sunucular) için 2029'a kadar uzatıldı<br />
+- <strong>Section 179D:</strong> Enerji verimli veri merkezi binaları için ek indirim (30 Haziran 2026'dan sonra başlayan yapılar için kademeli azalma)<br />
 - <strong>AI fabrikaları için yapı gider yazma:</strong> OBBBA, seçili sektörlerde (AI altyapısı dahil) yapılar için tam ve derhal gider yazma sağlıyor [^20]</p>
 <h3 id="eyalet-incentiveleri-daralma-baslyor">Eyalet İncentiveleri: Daralma Başlıyor</h3>
 <p>AI veri merkezleri için eyalet düzeyinde vergi teşvikleri 2026'da gerilemeye başlıyor [^33] [^34] [^35]:</p>
@@ -3921,33 +3960,33 @@ Enterprise AI talebi, %95 başarısızlık oranıyla çöker. Hyperscaler'lar, C
 <p>Good Jobs First raporuna göre, veri merkezi muafiyetleri "neredeyse otomatik" hale geldi ve çoğu eyalet programı üst sınır veya süre sınırı içermiyor [^35]. Texas'ta 121 veri merkezi satış vergisi muafiyeti alıyor ve eyalet yılda <strong>$1 milyar gelir kaybediyor</strong> [^34].</p>
 <h2 id="monetary-politika-ve-ai-finansman">Monetary Politika ve AI Finansmanı</h2>
 <h3 id="federal-reserve-faiz-oranlar-2026">Federal Reserve Faiz Oranları (2026)</h3>
-<p>FOMC 2026 toplantılarına göre federal funds rate [^42] [^43]:
-- <strong>Mart 2026:</strong> %3.50-%3.75 (değiştirilmedi)
-- <strong>Haziran 2026:</strong> %3.50-%3.75 (değiştirilmedi, 12-0 oyla) [^42]
-- <strong>FOMC üyelerinin 2026 projeksiyonu:</strong> Çoğu üye faiz indirimini 2026 sonu/2027 başı bekliyor [^43]
+<p>FOMC 2026 toplantılarına göre federal funds rate [^42] [^43]:<br />
+- <strong>Mart 2026:</strong> %3.50-%3.75 (değiştirilmedi)<br />
+- <strong>Haziran 2026:</strong> %3.50-%3.75 (değiştirilmedi, 12-0 oyla) [^42]<br />
+- <strong>FOMC üyelerinin 2026 projeksiyonu:</strong> Çoğu üye faiz indirimini 2026 sonu/2027 başı bekliyor [^43]<br />
 - <strong>Trading Economics uzun vadeli tahmini:</strong> 2027'de %4.25 trend [^44]</p>
 <p>FOMC Haziran 2026 açıklaması: <em>"Ekonomik faaliyet sağlam bir tempoda genişliyor... Enflasyon Komitenin %2 hedefinin üzerinde kalmaya devam ediyor."</em> [^42]</p>
 <h3 id="ai-capexi-finanse-etmek-icin-borc-maliyeti">AI CapEx'i Finanse Etmek İçin Borç Maliyeti</h3>
-<p>Teknoloji şirketleri AI CapEx'i için büyük ölçekli borçlanmaya başladı [^39] [^45]:
-- <strong>Meta (Ekim 2025):</strong> $30 milyar — tarihin en büyük tekli non-M&amp;A yüksek dereceli tahvil satışı [^45]
-- <strong>Oracle (Eylül 2025):</strong> $18 milyar [^45]
-- <strong>Alphabet (Kasım 2025):</strong> $17.5 milyar [^45]
-- <strong>Amazon (Kasım 2025):</strong> $15 milyar [^45]
-- <strong>2025 toplam teknoloji sektörü:</strong> $100 milyar+ yüksek dereceli tahvil [^45]
+<p>Teknoloji şirketleri AI CapEx'i için büyük ölçekli borçlanmaya başladı [^39] [^45]:<br />
+- <strong>Meta (Ekim 2025):</strong> $30 milyar — tarihin en büyük tekli non-M&amp;A yüksek dereceli tahvil satışı [^45]<br />
+- <strong>Oracle (Eylül 2025):</strong> $18 milyar [^45]<br />
+- <strong>Alphabet (Kasım 2025):</strong> $17.5 milyar [^45]<br />
+- <strong>Amazon (Kasım 2025):</strong> $15 milyar [^45]<br />
+- <strong>2025 toplam teknoloji sektörü:</strong> $100 milyar+ yüksek dereceli tahvil [^45]<br />
 - <strong>Barclays 2026 tahmini:</strong> Toplam ABD kurumsal tahvil ihracı $2.46 trilyon (%11.8 artış) [^45]</p>
-<p>Cap Rate Compression ve Spread Genişlemesi:
-- <strong>Bloomberg US Corporate Bond Index:</strong> Spread yaklaşık <strong>75 baz puan</strong> (Temmuz 2026) [^18]
-- <strong>Yüksek dereceli teknoloji spread'leri:</strong> Tarihsel ortalama ~30 bp'nin altından genişleyerek ana piyasa ile aynı seviyeye geldi [^39]
-- <strong>Oracle CDS:</strong> 5 yıllık CDS üç katına çıktı (Eylül 2025'ten bu yana) — yatırımcılar AI downside riskine karşı korunma arıyor [^45]
+<p>Cap Rate Compression ve Spread Genişlemesi:<br />
+- <strong>Bloomberg US Corporate Bond Index:</strong> Spread yaklaşık <strong>75 baz puan</strong> (Temmuz 2026) [^18]<br />
+- <strong>Yüksek dereceli teknoloji spread'leri:</strong> Tarihsel ortalama ~30 bp'nin altından genişleyerek ana piyasa ile aynı seviyeye geldi [^39]<br />
+- <strong>Oracle CDS:</strong> 5 yıllık CDS üç katına çıktı (Eylül 2025'ten bu yana) — yatırımcılar AI downside riskine karşı korunma arıyor [^45]<br />
 - <strong>ABD 10Y Treasury:</strong> %4.25-%4.50 aralığı (Yüksek Mahkeme tarife kararı, bütçe açığı ve enflasyon belirsizliği ile yukarı baskı) [^18] [^19]</p>
 <h2 id="ai-duzenleyici-cerceve-federal-preemption-vs-eyalet-yasalar">AI Düzenleyici Çerçeve: Federal Preemption vs. Eyalet Yasaları</h2>
-<p>Trump yönetiminin AI politikası, Biden'ın EO 14110'unu (AI güvenlik testi gereksinimleri) iptal ederek yeniden şekillendi [^49] [^50] [^51]:
-- <strong>23 Ocak 2025:</strong> EO 14110 kaldırıldı
-- <strong>23 Temmuz 2025:</strong> America's AI Action Plan — federal politika yeniden inovasyon ve rekabetçilik odaklı [^49]
-- <strong>11 Aralık 2025:</strong> EO 14365 — "Ensuring a National Policy Framework for Artificial Intelligence" [^50] [^51]
-  - Amaç: Eyalet düzeyindeki AI yasalarını zayıflatmak
-  - Araçlar: DOJ tarafından yönetilen dava (litigation), mevcut yasaların yönetimsel yeniden yorumlanması, koşullu federal fonlama, federal çerçeve üzerinden eyalet yasalarının önüne geçme (preemption)
-  - <strong>10 yıllık moratoryum</strong> OBBBA'dan çıkarıldı (Senato 99-1 reddetti) [^49]
+<p>Trump yönetiminin AI politikası, Biden'ın EO 14110'unu (AI güvenlik testi gereksinimleri) iptal ederek yeniden şekillendi [^49] [^50] [^51]:<br />
+- <strong>23 Ocak 2025:</strong> EO 14110 kaldırıldı<br />
+- <strong>23 Temmuz 2025:</strong> America's AI Action Plan — federal politika yeniden inovasyon ve rekabetçilik odaklı [^49]<br />
+- <strong>11 Aralık 2025:</strong> EO 14365 — "Ensuring a National Policy Framework for Artificial Intelligence" [^50] [^51]<br />
+  - Amaç: Eyalet düzeyindeki AI yasalarını zayıflatmak<br />
+  - Araçlar: DOJ tarafından yönetilen dava (litigation), mevcut yasaların yönetimsel yeniden yorumlanması, koşullu federal fonlama, federal çerçeve üzerinden eyalet yasalarının önüne geçme (preemption)<br />
+  - <strong>10 yıllık moratoryum</strong> OBBBA'dan çıkarıldı (Senato 99-1 reddetti) [^49]<br />
 - <strong>20 Mart 2026:</strong> National Policy Framework for AI — 7 temel direk üzerine Kongre'ye yasama tavsiyeleri [^52]</p>
 <p>Eyalet düzeyinde 2025'te <strong>100'den fazla</strong> yeni AI yasası kabul edildi [^53]. Connecticut, hassas veri tanımını genişletti ve LLM eğitiminde kişisel veri kullanımı için AI açıklama zorunluluğu getirdi [^53]. Kaliforniya, 127 sayfalık yeni düzenleme yayınladı — otomatik karar teknolojisi, risk değerlendirmesi, siber güvenlik denetimi [^53].</p>
 <p><strong>Düzenlemelerin CapEx'e Etkisi:</strong></p>
@@ -4270,9 +4309,9 @@ Enterprise AI talebi, %95 başarısızlık oranıyla çöker. Hyperscaler'lar, C
 <p><strong>Çıkarımlar:</strong> ABD, AI CapEx patlamasıyla dolaylı olarak şunu söylüyor: "Özel sektörüm AI'da herkesi geride bırakacak, o yüzden geleneksel savunmaya o kadar harcamaya gerek yok." Bu, radikal bir stratejik değişim; kamuoyunda tartışılmamış. FY2027 $63B drone artışı, Pentagon'un bu bahse yavaş yavaş katıldığını gösteriyor — otonom, tüketilebilir sistemler, legacy platformlardan (uçak gemileri, tanklar, bombardıman uçakları) daha ucuz. Ancak AI CapEx ($725B) ile savunma AI harcaması ($3B) arasındaki uçurum, askerin AI büyümesinden asıl faydalanan taraf olmadığını gösteriyor. [^drone1] [^bs1]</p>
 <p><strong>Confidence:</strong> Yüksek.</p>
 <hr />
-<p><em>Rapor hazırlanma tarihi: 6 Temmuz 2026</em>
-<em>Toplam kaynak: 100+ birincil ve ikincil kaynak</em>
-<em>Analiz kapsamı: 11 ülke, 8 derin insight, 20+ bağımsız web araştırması</em>
+<p><em>Rapor hazırlanma tarihi: 6 Temmuz 2026</em><br />
+<em>Toplam kaynak: 100+ birincil ve ikincil kaynak</em><br />
+<em>Analiz kapsamı: 11 ülke, 8 derin insight, 20+ bağımsız web araştırması</em><br />
 <em>Bu rapor bilgilendirme amaçlıdır ve yatırım tavsiyesi değildir.</em></p>
 <hr />
 <h1 id="bolum-16-riskler-ve-belirsizlikler">Bölüm 16: Riskler ve Belirsizlikler</h1>
@@ -4420,8 +4459,11 @@ Enterprise AI talebi, %95 başarısızlık oranıyla çöker. Hyperscaler'lar, C
 <h2 id="yasal-uyar-disclaimer">Yasal Uyarı (Disclaimer)</h2>
 <p>Bu rapor yalnızca bilgilendirme amaçlıdır ve yatırım tavsiyesi niteliği taşımaz. Rapor içindeki tüm analizler, araştırma bulguları ve öneriler, yazarların yorumlarıdır ve herhangi bir menkul kıymetin alım, satım veya tutma tavsiyesi olarak değerlendirilmemelidir. Geçmiş performans, gelecek performansın garantisi değildir. Hisse senedi ve opsiyon yatırımları, sermaye kaybı riski içerir ve tüm yatırımcılar için uygun olmayabilir. Yatırım kararları vermeden önce, lisanslı bir finansal danışmana veya yatırım uzmanına başvurmanız şiddetle tavsiye edilir. Bu raporda yer alan veriler, üçüncü taraf kaynaklardan (CBO, IMF, Morgan Stanley, Goldman Sachs, JPMorgan, Moody's, SIPRI, vb.) derlenmiş olup, bu kaynakların doğruluğu ve güncelliği garanti edilemez. Rapor, araştırma tarihindeki mevcut bilgiler ışığında hazırlanmıştır; piyasa koşulları, politika değişiklikleri veya yeni veriler, raporun sonuçlarını ve önerilerini geçersiz kılabilir. Yazarlar ve yayıncı, bu raporun kullanımından doğabilecek doğrudan veya dolaylı zararlardan sorumlu tutulamaz.</p>
 <hr />
+  </div>
+</section>
 
-<div class="footer">Gistify Flow | AI CapEx vs. Defense Spending Deep Research | 6 Temmuz 2026</div>
+
+<div class="footer">Gistify Flow | AI CapEx vs. Defense Spending Deep Research | 6 Temmuz 2026 | 12 Boyut • 17 Bölüm • 31.800+ Kelime</div>
 
 </div>
 </body>

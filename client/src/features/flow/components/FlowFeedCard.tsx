@@ -4,10 +4,6 @@ import { Button } from "@/components/ui/button";
 import { type AppLanguage, t } from "@/lib/i18n";
 import FlowPostActions from "./FlowPostActions";
 import {
-  useFlowTitleTranslation,
-  useFlowSummaryTranslation,
-} from "../hooks/useFlowTranslation";
-import {
   formatFlowReportDate,
   type FlowReportListEntry,
   getFlowPostedLabel,
@@ -35,11 +31,8 @@ export default function FlowFeedCard({
       ? getFlowReportArchiveDetailPath(report, basePath)
       : getFlowReportDetailPath(report.id, basePath);
 
-  const translatedTitle = useFlowTitleTranslation(report.title, language);
-  const translatedSummary = useFlowSummaryTranslation(
-    "previewText" in report ? report.previewText : "",
-    language
-  );
+  const title = report.title;
+  const preview = "previewText" in report ? report.previewText : "";
 
   const openDetail = () => {
     setLocation(href);
@@ -83,13 +76,13 @@ export default function FlowFeedCard({
             className="mt-3 block text-left"
           >
             <h2 className="text-lg font-semibold leading-7 tracking-tight text-foreground transition-colors hover:text-sky-200 md:text-[1.35rem]">
-              {translatedTitle}
+              {title}
             </h2>
           </button>
 
-          {translatedSummary ? (
+          {preview ? (
             <p className="mt-2 text-sm text-muted-foreground line-clamp-3">
-              {translatedSummary}
+              {preview}
             </p>
           ) : null}
 
@@ -114,7 +107,7 @@ export default function FlowFeedCard({
               language={language}
               reportId={report.id}
               sharePath={href}
-              title={translatedTitle}
+              title={title}
             />
 
             <Button

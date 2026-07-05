@@ -2,10 +2,6 @@ import { CalendarRange, FileText } from "lucide-react";
 import { Link } from "wouter";
 import { type AppLanguage, t } from "@/lib/i18n";
 import {
-  useFlowTitleTranslation,
-  useFlowSummaryTranslation,
-} from "../hooks/useFlowTranslation";
-import {
   type FlowReportListEntry,
   formatFlowReportDate,
   getFlowLanguageBadge,
@@ -38,11 +34,8 @@ export default function FlowReportRow({
   const reportKind = getFlowReportKind(report);
   const languageBadge = getFlowLanguageBadge(report, language);
 
-  const translatedTitle = useFlowTitleTranslation(report.title, language);
-  const translatedPreview = useFlowSummaryTranslation(
-    getFlowPreviewText(report, language),
-    language
-  );
+  const title = report.title;
+  const preview = getFlowPreviewText(report, language);
 
   return (
     <Link
@@ -64,11 +57,11 @@ export default function FlowReportRow({
         </div>
 
         <h3 className="mt-0.5 truncate text-sm font-semibold text-foreground transition-colors group-hover:text-sky-200">
-          {translatedTitle}
+          {title}
         </h3>
 
         <p className="line-clamp-2 text-xs leading-5 text-muted-foreground">
-          {translatedPreview}
+          {preview}
         </p>
 
         <div className="mt-1.5 flex flex-wrap items-center gap-1.5">

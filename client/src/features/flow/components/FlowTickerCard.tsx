@@ -2,10 +2,6 @@ import { ArrowRight, CalendarRange, Files, History } from "lucide-react";
 import { Link } from "wouter";
 import { type AppLanguage, t } from "@/lib/i18n";
 import {
-  useFlowTitleTranslation,
-  useFlowSummaryTranslation,
-} from "../hooks/useFlowTranslation";
-import {
   formatFlowReportDate,
   getFlowLanguageBadge,
   getFlowPreviewText,
@@ -29,14 +25,8 @@ export default function FlowTickerCard({
   const languageBadge = getFlowLanguageBadge(latestReport, language);
   const href = getFlowTickerReportPath(group.ticker, basePath);
 
-  const translatedTitle = useFlowTitleTranslation(
-    latestReport.title,
-    language
-  );
-  const translatedPreview = useFlowSummaryTranslation(
-    getFlowPreviewText(latestReport, language),
-    language
-  );
+  const title = latestReport.title;
+  const preview = getFlowPreviewText(latestReport, language);
 
   return (
     <Link
@@ -61,7 +51,7 @@ export default function FlowTickerCard({
       <div className="space-y-1">
         <div className="flex flex-wrap items-center gap-2">
           <p className="line-clamp-1 text-sm font-semibold text-foreground">
-            {translatedTitle}
+            {title}
           </p>
           {languageBadge ? (
             <span
@@ -72,7 +62,7 @@ export default function FlowTickerCard({
           ) : null}
         </div>
         <p className="line-clamp-2 text-xs leading-5 text-muted-foreground">
-          {translatedPreview}
+          {preview}
         </p>
       </div>
 
@@ -100,5 +90,3 @@ export default function FlowTickerCard({
     </Link>
   );
 }
-
-

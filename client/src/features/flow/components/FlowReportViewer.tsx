@@ -2,7 +2,6 @@ import HtmlReportRenderer from "@/components/reports/HtmlReportRenderer";
 import { buildDailyReportHtmlDocument } from "@/lib/dailyReportHtml";
 import type { AppLanguage } from "@/lib/i18n";
 import type { FlowReport } from "@shared/flow";
-import { useFlowTitleTranslation } from "../hooks/useFlowTranslation";
 import { normalizeFlowContent, buildFlowViewerData } from "../lib/flowReportHelpers";
 
 interface FlowReportViewerProps {
@@ -16,7 +15,7 @@ export default function FlowReportViewer({
 }: FlowReportViewerProps) {
   const content = normalizeFlowContent(report.content || {});
   const viewer = buildFlowViewerData(report, language);
-  const translatedTitle = useFlowTitleTranslation(report.title, language);
+  const title = report.title;
   const resolvedHtml =
     content.contentFormat === "html"
       ? content.html || ""
@@ -26,7 +25,7 @@ export default function FlowReportViewer({
           reportDateLabel: viewer.reportDateLabel,
           resolveImage: viewer.resolveImage,
           sourceLabel: content.sourceLabel || report.sourceFolder,
-          title: translatedTitle,
+          title,
           updatedAtLabel: viewer.updatedAtLabel,
         });
 
@@ -38,7 +37,7 @@ export default function FlowReportViewer({
       minimal
       sourceFolder={report.sourceFolder}
       sourceLabel={content.sourceLabel || report.sourceFolder}
-      title={translatedTitle}
+      title={title}
       availableLanguages={content.availableLanguages}
     />
   );

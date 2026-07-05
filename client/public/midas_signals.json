@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-03T13:04:41.455892+00:00",
+  "timestamp": "2026-07-05T22:03:18.943725+00:00",
   "symbol_count": 50,
   "successful": 50,
   "failed": 0,
@@ -84,7 +84,7 @@
       ],
       "risk_level": "HIGH",
       "notes": "Daily +3.76% | Weekly +20.61% | Monthly +36.07%",
-      "timestamp": "2026-07-03T13:04:41.141083+00:00"
+      "timestamp": "2026-07-05T22:03:18.611110+00:00"
     },
     {
       "symbol": "AAPX",
@@ -123,7 +123,7 @@
       ],
       "risk_level": "HIGH",
       "notes": "Daily +9.79% | Weekly +24.32% | Monthly -3.17%",
-      "timestamp": "2026-07-03T13:04:41.238479+00:00"
+      "timestamp": "2026-07-05T22:03:18.731096+00:00"
     },
     {
       "symbol": "SOXS",
@@ -163,7 +163,7 @@
       ],
       "risk_level": "HIGH",
       "notes": "Daily +16.84% | Weekly +24.24% | Monthly -7.08%",
-      "timestamp": "2026-07-03T13:04:41.217713+00:00"
+      "timestamp": "2026-07-05T22:03:18.705787+00:00"
     },
     {
       "symbol": "AAPL",
@@ -202,7 +202,7 @@
       ],
       "risk_level": "MEDIUM",
       "notes": "Daily +4.84% | Weekly +12.17% | Monthly -0.53%",
-      "timestamp": "2026-07-03T13:04:41.231955+00:00"
+      "timestamp": "2026-07-05T22:03:18.723689+00:00"
     },
     {
       "symbol": "PLTU",
@@ -242,7 +242,7 @@
       ],
       "risk_level": "MEDIUM",
       "notes": "Daily +5.39% | Weekly +43.10% | Monthly -20.54%",
-      "timestamp": "2026-07-03T13:04:41.178889+00:00"
+      "timestamp": "2026-07-05T22:03:18.654143+00:00"
     },
     {
       "symbol": "PLTR",
@@ -282,7 +282,7 @@
       ],
       "risk_level": "MEDIUM",
       "notes": "Daily +2.84% | Weekly +20.54% | Monthly -9.07%",
-      "timestamp": "2026-07-03T13:04:41.173706+00:00"
+      "timestamp": "2026-07-05T22:03:18.649070+00:00"
     },
     {
       "symbol": "ADBE",
@@ -322,7 +322,7 @@
       ],
       "risk_level": "MEDIUM",
       "notes": "Daily +4.14% | Weekly +13.60% | Monthly -14.25%",
-      "timestamp": "2026-07-03T13:04:41.168815+00:00"
+      "timestamp": "2026-07-05T22:03:18.644354+00:00"
     },
     {
       "symbol": "HIMS",
@@ -362,7 +362,7 @@
       ],
       "risk_level": "MEDIUM",
       "notes": "Daily -2.05% | Weekly +12.50% | Monthly +33.77%",
-      "timestamp": "2026-07-03T13:04:41.145740+00:00"
+      "timestamp": "2026-07-05T22:03:18.618652+00:00"
     },
     {
       "symbol": "MSFT",
@@ -402,7 +402,7 @@
       ],
       "risk_level": "MEDIUM",
       "notes": "Daily +1.62% | Weekly +10.67% | Monthly -8.62%",
-      "timestamp": "2026-07-03T13:04:41.227285+00:00"
+      "timestamp": "2026-07-05T22:03:18.715078+00:00"
     },
     {
       "symbol": "GGLL",
@@ -441,7 +441,7 @@
       ],
       "risk_level": "LOW",
       "notes": "Daily -1.08% | Weekly +9.03% | Monthly -1.72%",
-      "timestamp": "2026-07-03T13:04:41.259609+00:00"
+      "timestamp": "2026-07-05T22:03:18.753102+00:00"
     },
     {
       "symbol": "AMZN",
@@ -479,7 +479,7 @@
       ],
       "risk_level": "LOW",
       "notes": "Daily +0.40% | Weekly +6.90% | Monthly -2.94%",
-      "timestamp": "2026-07-03T13:04:41.222244+00:00"
+      "timestamp": "2026-07-05T22:03:18.710442+00:00"
     },
     {
       "symbol": "GOOG",
@@ -517,7 +517,7 @@
       ],
       "risk_level": "LOW",
       "notes": "Daily -0.48% | Weekly +4.09% | Monthly +0.20%",
-      "timestamp": "2026-07-03T13:04:41.246388+00:00"
+      "timestamp": "2026-07-05T22:03:18.736757+00:00"
     },
     {
       "symbol": "GOOGL",
@@ -555,7 +555,7 @@
       ],
       "risk_level": "LOW",
       "notes": "Daily -0.36% | Weekly +4.71% | Monthly +0.32%",
-      "timestamp": "2026-07-03T13:04:41.253729+00:00"
+      "timestamp": "2026-07-05T22:03:18.744811+00:00"
     },
     {
       "symbol": "AMAT",
@@ -595,7 +595,7 @@
       ],
       "risk_level": "LOW",
       "notes": "Daily -7.35% | Weekly -9.72% | Monthly +20.42%",
-      "timestamp": "2026-07-03T13:04:41.405427+00:00"
+      "timestamp": "2026-07-05T22:03:18.894157+00:00"
     },
     {
       "symbol": "ASML",
@@ -634,7 +634,7 @@
       ],
       "risk_level": "LOW",
       "notes": "Daily -4.00% | Weekly -3.90% | Monthly +2.49%",
-      "timestamp": "2026-07-03T13:04:41.328005+00:00"
+      "timestamp": "2026-07-05T22:03:18.806512+00:00"
     },
     {
       "symbol": "TSM",
@@ -672,7 +672,7 @@
       ],
       "risk_level": "LOW",
       "notes": "Daily -2.27% | Weekly -0.19% | Monthly -0.35%",
-      "timestamp": "2026-07-03T13:04:41.152122+00:00"
+      "timestamp": "2026-07-05T22:03:18.625761+00:00"
     },
     {
       "symbol": "SFTBY",
@@ -712,7 +712,7 @@
       ],
       "risk_level": "LOW",
       "notes": "Daily +4.18% | Weekly -11.64% | Monthly -29.58%",
-      "timestamp": "2026-07-03T13:04:41.342567+00:00"
+      "timestamp": "2026-07-05T22:03:18.825601+00:00"
     },
     {
       "symbol": "META",
@@ -752,7 +752,7 @@
       ],
       "risk_level": "LOW",
       "notes": "Daily -4.90% | Weekly +7.37% | Monthly -6.35%",
-      "timestamp": "2026-07-03T13:04:41.157821+00:00"
+      "timestamp": "2026-07-05T22:03:18.633791+00:00"
     },
     {
       "symbol": "TSLA",
@@ -792,7 +792,7 @@
       ],
       "risk_level": "LOW",
       "notes": "Daily -7.49% | Weekly +4.89% | Monthly -7.14%",
-      "timestamp": "2026-07-03T13:04:41.290329+00:00"
+      "timestamp": "2026-07-05T22:03:18.775192+00:00"
     },
     {
       "symbol": "INTC",
@@ -832,7 +832,7 @@
       ],
       "risk_level": "MEDIUM",
       "notes": "Daily -5.25% | Weekly -9.42% | Monthly +6.78%",
-      "timestamp": "2026-07-03T13:04:41.306882+00:00"
+      "timestamp": "2026-07-05T22:03:18.788008+00:00"
     },
     {
       "symbol": "NVDA",
@@ -871,7 +871,7 @@
       ],
       "risk_level": "MEDIUM",
       "notes": "Daily -1.39% | Weekly -0.46% | Monthly -9.17%",
-      "timestamp": "2026-07-03T13:04:41.203679+00:00"
+      "timestamp": "2026-07-05T22:03:18.688959+00:00"
     },
     {
       "symbol": "NVDU",
@@ -910,7 +910,7 @@
       ],
       "risk_level": "MEDIUM",
       "notes": "Daily -3.08% | Weekly -1.79% | Monthly -19.56%",
-      "timestamp": "2026-07-03T13:04:41.208698+00:00"
+      "timestamp": "2026-07-05T22:03:18.695451+00:00"
     },
     {
       "symbol": "AMD",
@@ -948,7 +948,7 @@
       ],
       "risk_level": "MEDIUM",
       "notes": "Daily -4.26% | Weekly -2.77% | Monthly -4.55%",
-      "timestamp": "2026-07-03T13:04:41.183865+00:00"
+      "timestamp": "2026-07-05T22:03:18.661329+00:00"
     },
     {
       "symbol": "TXN",
@@ -988,7 +988,7 @@
       ],
       "risk_level": "MEDIUM",
       "notes": "Daily -1.79% | Weekly -6.01% | Monthly -5.03%",
-      "timestamp": "2026-07-03T13:04:41.375253+00:00"
+      "timestamp": "2026-07-05T22:03:18.869906+00:00"
     },
     {
       "symbol": "ADI",
@@ -1003,9 +1003,9 @@
         "rsi_14": 39.7,
         "stoch_k": 50,
         "stoch_d": 50,
-        "macd_line": -4.535,
-        "macd_signal": 0.5451,
-        "macd_histogram": -5.0801,
+        "macd_line": -4.7087,
+        "macd_signal": 0.3338,
+        "macd_histogram": -5.0425,
         "bollinger_pct_b": 4.03,
         "ichimoku_tenkan": 409.28,
         "ichimoku_kijun": 409.28,
@@ -1017,7 +1017,7 @@
       "layers": {
         "momentum_score": 1.29,
         "oscillator_score": 1.03,
-        "trend_score": 9.07,
+        "trend_score": 9.42,
         "confluence_score": 1.72
       },
       "fired_rules": [
@@ -1028,7 +1028,7 @@
       ],
       "risk_level": "MEDIUM",
       "notes": "Daily -3.04% | Weekly -9.76% | Monthly -13.83%",
-      "timestamp": "2026-07-03T13:04:41.390969+00:00"
+      "timestamp": "2026-07-05T22:03:18.883072+00:00"
     },
     {
       "symbol": "NXPI",
@@ -1068,7 +1068,7 @@
       ],
       "risk_level": "MEDIUM",
       "notes": "Daily -2.08% | Weekly -8.47% | Monthly -14.79%",
-      "timestamp": "2026-07-03T13:04:41.414328+00:00"
+      "timestamp": "2026-07-05T22:03:18.901565+00:00"
     },
     {
       "symbol": "KLAC",
@@ -1108,7 +1108,7 @@
       ],
       "risk_level": "MEDIUM",
       "notes": "Daily -11.51% | Weekly -8.98% | Monthly +10.84%",
-      "timestamp": "2026-07-03T13:04:41.399111+00:00"
+      "timestamp": "2026-07-05T22:03:18.888871+00:00"
     },
     {
       "symbol": "TQQQ",
@@ -1147,7 +1147,7 @@
       ],
       "risk_level": "MEDIUM",
       "notes": "Daily -5.31% | Weekly -2.13% | Monthly -15.26%",
-      "timestamp": "2026-07-03T13:04:41.361013+00:00"
+      "timestamp": "2026-07-05T22:03:18.849102+00:00"
     },
     {
       "symbol": "TSMX",
@@ -1186,7 +1186,7 @@
       ],
       "risk_level": "MEDIUM",
       "notes": "Daily -4.75% | Weekly -1.85% | Monthly -5.15%",
-      "timestamp": "2026-07-03T13:04:41.368689+00:00"
+      "timestamp": "2026-07-05T22:03:18.856918+00:00"
     },
     {
       "symbol": "AVGO",
@@ -1226,7 +1226,7 @@
       ],
       "risk_level": "MEDIUM",
       "notes": "Daily -2.41% | Weekly -4.87% | Monthly -24.67%",
-      "timestamp": "2026-07-03T13:04:41.312268+00:00"
+      "timestamp": "2026-07-05T22:03:18.793688+00:00"
     },
     {
       "symbol": "ORCL",
@@ -1266,7 +1266,7 @@
       ],
       "risk_level": "MEDIUM",
       "notes": "Daily -1.56% | Weekly -8.00% | Monthly -39.10%",
-      "timestamp": "2026-07-03T13:04:41.336280+00:00"
+      "timestamp": "2026-07-05T22:03:18.815689+00:00"
     },
     {
       "symbol": "LSCC",
@@ -1306,7 +1306,7 @@
       ],
       "risk_level": "MEDIUM",
       "notes": "Daily -6.68% | Weekly -5.32% | Monthly -11.69%",
-      "timestamp": "2026-07-03T13:04:41.347935+00:00"
+      "timestamp": "2026-07-05T22:03:18.834071+00:00"
     },
     {
       "symbol": "ONTO",
@@ -1346,7 +1346,7 @@
       ],
       "risk_level": "MEDIUM",
       "notes": "Daily -12.46% | Weekly -10.65% | Monthly +9.86%",
-      "timestamp": "2026-07-03T13:04:41.455796+00:00"
+      "timestamp": "2026-07-05T22:03:18.943637+00:00"
     },
     {
       "symbol": "LRCX",
@@ -1385,7 +1385,7 @@
       ],
       "risk_level": "HIGH",
       "notes": "Daily -10.19% | Weekly -12.55% | Monthly +2.31%",
-      "timestamp": "2026-07-03T13:04:41.383564+00:00"
+      "timestamp": "2026-07-05T22:03:18.877424+00:00"
     },
     {
       "symbol": "ENTG",
@@ -1424,7 +1424,7 @@
       ],
       "risk_level": "HIGH",
       "notes": "Daily -11.22% | Weekly -16.80% | Monthly +4.51%",
-      "timestamp": "2026-07-03T13:04:41.446261+00:00"
+      "timestamp": "2026-07-05T22:03:18.933608+00:00"
     },
     {
       "symbol": "QCOM",
@@ -1464,7 +1464,7 @@
       ],
       "risk_level": "HIGH",
       "notes": "Daily -3.12% | Weekly -13.98% | Monthly -29.24%",
-      "timestamp": "2026-07-03T13:04:41.268014+00:00"
+      "timestamp": "2026-07-05T22:03:18.760617+00:00"
     },
     {
       "symbol": "ARM",
@@ -1504,7 +1504,7 @@
       ],
       "risk_level": "HIGH",
       "notes": "Daily -6.58% | Weekly -9.33% | Monthly -23.44%",
-      "timestamp": "2026-07-03T13:04:41.279631+00:00"
+      "timestamp": "2026-07-05T22:03:18.768063+00:00"
     },
     {
       "symbol": "MPWR",
@@ -1544,7 +1544,7 @@
       ],
       "risk_level": "HIGH",
       "notes": "Daily -3.27% | Weekly -10.30% | Monthly -23.66%",
-      "timestamp": "2026-07-03T13:04:41.422642+00:00"
+      "timestamp": "2026-07-05T22:03:18.908321+00:00"
     },
     {
       "symbol": "MU",
@@ -1584,7 +1584,7 @@
       ],
       "risk_level": "HIGH",
       "notes": "Daily -5.49% | Weekly -19.61% | Monthly -9.63%",
-      "timestamp": "2026-07-03T13:04:41.163806+00:00"
+      "timestamp": "2026-07-05T22:03:18.638927+00:00"
     },
     {
       "symbol": "BE",
@@ -1624,7 +1624,7 @@
       ],
       "risk_level": "HIGH",
       "notes": "Daily -6.43% | Weekly -12.38% | Monthly -5.72%",
-      "timestamp": "2026-07-03T13:04:41.354133+00:00"
+      "timestamp": "2026-07-05T22:03:18.842765+00:00"
     },
     {
       "symbol": "MCHP",
@@ -1664,7 +1664,7 @@
       ],
       "risk_level": "HIGH",
       "notes": "Daily -4.57% | Weekly -10.07% | Monthly -12.34%",
-      "timestamp": "2026-07-03T13:04:41.430041+00:00"
+      "timestamp": "2026-07-05T22:03:18.913056+00:00"
     },
     {
       "symbol": "AMDL",
@@ -1704,7 +1704,7 @@
       ],
       "risk_level": "HIGH",
       "notes": "Daily -8.78% | Weekly -7.15% | Monthly -15.39%",
-      "timestamp": "2026-07-03T13:04:41.188516+00:00"
+      "timestamp": "2026-07-05T22:03:18.666377+00:00"
     },
     {
       "symbol": "AMUU",
@@ -1744,7 +1744,7 @@
       ],
       "risk_level": "HIGH",
       "notes": "Daily -8.23% | Weekly -6.15% | Monthly -13.88%",
-      "timestamp": "2026-07-03T13:04:41.300123+00:00"
+      "timestamp": "2026-07-05T22:03:18.781901+00:00"
     },
     {
       "symbol": "SMCI",
@@ -1784,7 +1784,7 @@
       ],
       "risk_level": "HIGH",
       "notes": "Daily -1.56% | Weekly -14.08% | Monthly -42.60%",
-      "timestamp": "2026-07-03T13:04:41.198899+00:00"
+      "timestamp": "2026-07-05T22:03:18.680076+00:00"
     },
     {
       "symbol": "SWKS",
@@ -1824,7 +1824,7 @@
       ],
       "risk_level": "HIGH",
       "notes": "Daily -5.11% | Weekly -10.55% | Monthly -22.44%",
-      "timestamp": "2026-07-03T13:04:41.451088+00:00"
+      "timestamp": "2026-07-05T22:03:18.938897+00:00"
     },
     {
       "symbol": "ON",
@@ -1864,7 +1864,7 @@
       ],
       "risk_level": "HIGH",
       "notes": "Daily -3.60% | Weekly -23.18% | Monthly -31.89%",
-      "timestamp": "2026-07-03T13:04:41.435598+00:00"
+      "timestamp": "2026-07-05T22:03:18.917923+00:00"
     },
     {
       "symbol": "MRVL",
@@ -1904,7 +1904,7 @@
       ],
       "risk_level": "HIGH",
       "notes": "Daily -9.84% | Weekly -12.79% | Monthly -18.68%",
-      "timestamp": "2026-07-03T13:04:41.319386+00:00"
+      "timestamp": "2026-07-05T22:03:18.800600+00:00"
     },
     {
       "symbol": "SMCX",
@@ -1944,7 +1944,7 @@
       ],
       "risk_level": "HIGH",
       "notes": "Daily -3.66% | Weekly -27.88% | Monthly -75.15%",
-      "timestamp": "2026-07-03T13:04:41.193696+00:00"
+      "timestamp": "2026-07-05T22:03:18.671659+00:00"
     },
     {
       "symbol": "TER",
@@ -1984,7 +1984,7 @@
       ],
       "risk_level": "HIGH",
       "notes": "Daily -13.63% | Weekly -21.80% | Monthly -9.91%",
-      "timestamp": "2026-07-03T13:04:41.440358+00:00"
+      "timestamp": "2026-07-05T22:03:18.926208+00:00"
     },
     {
       "symbol": "SOXL",
@@ -2024,7 +2024,7 @@
       ],
       "risk_level": "HIGH",
       "notes": "Daily -16.58% | Weekly -28.16% | Monthly -35.31%",
-      "timestamp": "2026-07-03T13:04:41.213199+00:00"
+      "timestamp": "2026-07-05T22:03:18.700634+00:00"
     }
   ],
   "errors": []
