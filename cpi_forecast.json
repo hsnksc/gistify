@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-07-03T00:00:00Z",
-  "reportDate": "2026-07-03",
+  "generatedAt": "2026-07-06T00:00:00Z",
+  "reportDate": "2026-07-06",
   "title": "US CPI Forecast Snapshot — June 2026 (v3.1 EIA-Validated Methodology)",
-  "methodology": "Two-stage aggregation using exact BLS 2024-2025 relative importance weights. Stage 1: component-level forecasts. Stage 2: weighted aggregation. Verification: Food+Energy+Core=100.000% and Shelter+CoreGoods+CoreServices=80.557%. Energy components validated with AAA National Average (EIA API 403). WTI futures NOT used for gasoline CPI per backtest (R²=0.23, MAE=8.1%). Backtest: 15 months weight accuracy MAE 0.035% core, 0.146% headline.",
-  "summary": "June CPI headline +0.1% m/m (consensus +0.2%) on energy deflation. Core +0.2% m/m (consensus +0.2–0.3%). WTI crashed to ~$67.55 in July 2 close (-37% from $107 peak). AAA gas $3.838 (-11% from May avg $4.32). Core PPI printed +0.8% m/m Jun 25 — passthrough risk to core services. Fed dot plot 3.8% = one hike priced for 2026. Warsh hawkish tone limits soft-print reaction. Energy deflation dominates headline; watch core PPI passthrough.",
+  "methodology": "Two-stage aggregation using exact BLS 2024-2025 relative importance weights. Stage 1: component-level forecasts. Stage 2: weighted aggregation. Verification: Food+Energy+Core=100.000% and Shelter+CoreGoods+CoreServices=80.557%. Energy components validated with EIA retail gasoline ($3.831/gal Jun 29). WTI futures NOT used for gasoline CPI per backtest (R²=0.23, MAE=8.1%). Backtest: 15 months weight accuracy MAE 0.035% core, 0.146% headline.",
+  "summary": "June CPI headline +0.1% m/m (consensus +0.2%) on energy deflation. Core +0.2% m/m (consensus +0.2–0.3%). EIA retail gasoline $3.831/gal Jun 29, down from May avg ~$4.32. Cleveland Fed nowcast 3.96% YoY. Core PPI +0.8% m/m Jun 25 passthrough risk to core services. FOMC Jun 16-17 hawkish hold; dot plot 3.8% = one hike in 2026. Energy deflation dominates headline; watch core PPI passthrough and shelter normalization.",
   "baseCase": "Below-consensus headline CPI on energy deflation; core stable at +0.2% but FOMC hawkishness and hot PPI caps market reaction",
   "conviction": 70,
   "weights": {
@@ -25,19 +25,19 @@
   "release": {
     "name": "CPI",
     "period": "Jun 2026",
-    "releaseDate": "2026-07-10",
+    "releaseDate": "2026-07-14",
     "releaseTimeEt": "08:30 ET",
     "headlineMoM": "+0.1%",
-    "headlineYoY": "4.0%",
+    "headlineYoY": "3.9%",
     "coreMoM": "+0.2%",
-    "coreYoY": "2.9%",
+    "coreYoY": "2.8%",
     "priorHeadlineMoM": "+0.5%",
     "priorHeadlineYoY": "4.2%",
     "priorCoreMoM": "+0.2%",
     "priorCoreYoY": "2.9%",
-    "bias": "BELOW",
+    "bias": "COOLER",
     "confidence": 70,
-    "thesis": "WTI crashed from ~$107 to ~$67.55 in June-July (-37%). AAA gas $3.838 vs May avg $4.32 (-11%). Energy CPI deflation ≈ -2.0% m/m composite. Exact BLS weights: Food 13.25% + Energy 6.19% + Core 80.56%. Core stable (+0.2%) with shelter cooling but services sticky. Core PPI +0.8% m/m Jun 25 = passthrough risk. Fed dot plot 3.8% median = one hike in 2026. Warsh hawkish hold limits soft-CPI market reaction."
+    "thesis": "EIA retail gasoline $3.831/gal Jun 29 vs May avg ~$4.32 (-11%). Energy CPI deflation ≈ -2.0% m/m composite. Exact BLS weights: Food 13.25% + Energy 6.19% + Core 80.56%. Core stable (+0.2%) with shelter cooling but services sticky. Core PPI +0.8% m/m Jun 25 = passthrough risk. Cleveland Fed nowcast 3.96% YoY. FOMC dot plot 3.8% median = one hike in 2026. Warsh hawkish hold limits soft-print market reaction."
   },
   "scenarios": [
     {
@@ -45,7 +45,7 @@
       "label": "Base case",
       "probability": 55,
       "outcome": "Headline +0.1% m/m, Core +0.2% m/m — below consensus on oil deflation, core PPI passthrough muted",
-      "marketReadthrough": "10Y yields stable-to-fade (4.40–4.45%), DXY 101–102 range. Airlines ($UAL) and homebuilders ($DHI) rally on energy/mortgage relief. Tech ($NVDA) limited upside due to FOMC hawkishness. Gold ($GLD) under pressure from DXY strength.",
+      "marketReadthrough": "10Y yields stable-to-fade (4.40–4.45%), DXY 101–102 range. Airlines ($UAL) and homebuilders ($DHI) rally on energy/mortgage relief. Tech ($QQQ) limited upside due to FOMC hawkishness. Gold ($GLD) under pressure from DXY strength.",
       "favoredAssets": [
         "$UAL",
         "$DHI",
@@ -129,9 +129,9 @@
       "note": "Key regime line. Below 4.40% = growth rally. Above 4.55% = risk-off. Oil pulling down, FOMC + PPI pushing up."
     },
     {
-      "label": "WTI Oil / Energy Data",
-      "value": "$67.55 (AAA National Average $3.838)",
-      "note": "WTI crashed -37% from June peak. AAA gas $3.838 (Jul 2) vs $4.32 (May). EIA API 403 — AAA used as primary. BACKTEST WARNING: WTI futures NOT used for gasoline CPI (R²=0.23). Energy weight only 6.193% but gasoline swing is large."
+      "label": "EIA Retail Gasoline",
+      "value": "$3.831/gal (Jun 29)",
+      "note": "EIA weekly retail all formulations US average. Down from $4.052 (Jun 15) and ~$4.32 May avg. Primary energy CPI input. BACKTEST: EIA retail > WTI futures (R²=0.23 failed)."
     },
     {
       "label": "Core PPI",
@@ -144,13 +144,13 @@
       "note": "Strong dollar = import deflation on core goods. Partially offsets PPI passthrough."
     },
     {
-      "label": "Data Quality / Backtest",
-      "value": "v3.1 validated",
-      "note": "Backtest (15 months): exact BLS weights Core MAE 0.035%, Headline MAE 0.146%. WTI→Gasoline model failed (R²=0.23, MAE=8.1%). AAA National Average used as EIA API unavailable."
+      "label": "Cleveland Fed Nowcast",
+      "value": "3.96% YoY",
+      "note": "Cleveland Fed CPI Nowcast model estimate for June 2026 headline YoY. Anchor for consensus range."
     }
   ],
   "keyDrivers": [
-    "Oil crash: WTI -37% from June peak ($107→$67.55) = gasoline CPI -6% to -8% m/m. AAA national average $3.838 vs May $4.32 (-11%). Energy deflation is the dominant headline driver. EIA API 403 — AAA validated.",
+    "Oil deflation: EIA retail gasoline $3.831/gal Jun 29 vs May avg ~$4.32 (-11%). Energy CPI deflation ≈ -2.0% m/m composite. EIA retail is primary source; WTI futures NOT used for gasoline CPI per backtest (R²=0.23, MAE=8.1%).",
     "Core PPI hot: +0.8% m/m Jun 25 (2.7x consensus). Passthrough risk to core CPI with 1-3 month lag. Wholesale services and goods feeding through.",
     "FOMC hawkish hold: Warsh's first meeting. Dot plot 3.8% median = one hike in 2026. PCE forecasts revised up to 3.6%. Limits soft-CPI market reaction.",
     "DXY 101.40: Strong dollar = import deflation on core goods. Partially offsets PPI passthrough. Core goods may see mild deflation.",
