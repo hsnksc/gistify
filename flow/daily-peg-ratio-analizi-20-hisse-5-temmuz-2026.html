@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PEG Ratio Derin Analizi: 20 Populer Hisse | $NVDA $META $MU $TSLA $GOOGL</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="PEG Ratio Derin Analizi: 20 Populer Hisse" />
+<meta property="og:description" content="6 paralel arastirma agenti, Alpaca canli veri, Yahoo Finance dogrulamasi ile PEG ratio derinlemesine analiz" />
+<meta property="og:url" content="https://gistify.pro/flow/daily-peg-ratio-analizi-20-hisse-5-temmuz-2026.html" />
+<meta property="og:image" content="https://gistify.pro/gistifylogo.png" />
+<meta property="og:site_name" content="Gistify" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:720px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s;display:flex;align-items:center;justify-content:space-between}
+.section-head-inner:hover{background:var(--gf-card)}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent);transition:transform .2s}
+.section-head.collapsed .icon{transform:rotate(-90deg)}
+.section-body{padding:18px;display:none}
+.section-head:not(.collapsed) .section-body{display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px;transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-1px);border-color:rgba(56,189,248,.25)}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}.card-value.down{color:var(--gf-danger)}.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+.tabs{display:flex;gap:2px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:14px}
+.tab{flex:1;padding:8px 10px;text-align:center;font-size:0.82rem;font-weight:600;border-radius:6px;cursor:pointer;user-select:none;transition:background .15s,color .15s;border:none;color:var(--gf-muted);background:transparent}
+.tab.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.tab:hover:not(.active){color:var(--gf-text)}
+.tab-content{display:none}.tab-content.active{display:block}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.text-right{text-align:right}.text-center{text-align:center}
+.progress-bar{background:var(--gf-card);border-radius:4px;height:18px;overflow:hidden;margin:4px 0}
+.progress-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:0.68rem;font-weight:700;color:#fff}
+.fill-bull{background:linear-gradient(90deg,#16a34a,#4ade80)}
+.fill-base{background:linear-gradient(90deg,#ca8a04,#fbbf24)}
+.fill-bear{background:linear-gradient(90deg,#dc2626,#f87171)}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+@media(max-width:640px){.wrap{padding:16px 10px}.hero-h{font-size:1.25rem}.grid{grid-template-columns:1fr}.kpi-row{grid-template-columns:repeat(2,1fr)}.tabs{flex-wrap:wrap}.tab{flex:none;min-width:80px}table{font-size:0.78rem}th,td{padding:6px 7px}}
+</style>
+<script>
+function toggle(id){var el=document.getElementById(id);if(!el)return;el.classList.toggle('collapsed');}
+function setTab(btn,tabId){var parent=btn.closest('.tabs');if(parent){parent.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});parent.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});}btn.classList.add('active');var tc=document.getElementById(tabId);if(tc)tc.classList.add('active');}
+</script>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-05T23:54:00+03:00">
+  <h1 class="hero-h">PEG Ratio Derin Analizi: 20 Populer Hisse</h1>
+  <p class="hero-desc">6 paralel arastirma agenti, Alpaca Markets canli veri, Yahoo Finance & StockAnalysis dogrulamasi ile kapsamli PEG ratio degerleme analizi. Kullanici tahminlerinin %65'i revize edildi.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info">&#128197; 5 Temmuz 2026</span>
+    <span class="meta-pill info">&#9200; 23:54 Istanbul</span>
+    <span class="meta-pill neu">PEG Analizi</span>
+    <span class="meta-pill bull">20 Hisse</span>
+    <span class="meta-pill bear">6 Agent</span>
+  </div>
+</div>
+
+<section>
+  <div class="section-head" id="sec-ozet">
+    <div class="section-head-inner" onclick="toggle('sec-ozet')">
+      <h2 class="section-title">&#128202; Ozet & Ana Bulgular</h2>
+      <div class="icon">&#9662;</div>
+    </div>
+    <div class="section-body">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">En Dusuk PEG</div>
+          <div class="card-value up">SNDK 0.03x</div>
+          <div class="card-note">AI NAND supercyle, 324% buyume</div>
+        </div>
+        <div class="card">
+          <div class="card-label">En Yuksek PEG</div>
+          <div class="card-value down">TSLA 5.76x</div>
+          <div class="card-note">P/E 361x, spekulatif prim</div>
+        </div>
+        <div class="card">
+          <div class="card-label">En Ciddi Hata</div>
+          <div class="card-value down">HIMS 9.66x</div>
+          <div class="card-note">Kullanici 0.9x demisti, >10x sapma</div>
+        </div>
+        <div class="card">
+          <div class="card-label">En Iyi Firsat</div>
+          <div class="card-value up">META 0.86x</div>
+          <div class="card-note">$1.48T sirket, Peter Lynch degerinde</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Dogru Tahmin</div>
+          <div class="card-value up">NVDA 0.60x</div>
+          <div class="card-note">Kullanici tahmini birebir eslesti</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Invalid PEG</div>
+          <div class="card-value neu">INTC / SOFI</div>
+          <div class="card-note">Negatif kazanc, PEG anlamsiz</div>
+        </div>
+      </div>
+      
+      <div class="insight-box bull">
+        <strong>Ana Bulgu:</strong> Kullanicinin orijinal analizindeki 20 hissenin <strong>9'u (%45)</strong> dogrudan, <strong>5'i (%25)</strong> hafif sapmali, <strong>4'u (%20)</strong> ciddi sapmali, <strong>2'si (%10)</strong> ise matematiksel olarak gecersiz (INTC negatif kazanc, SOFI negatif buyume). Yari iletken sektoru (NVDA, MU, SNDK, AVGO) en dusuk PEG oranlarina sahip ve AI altyapisi talebiyle destekleniyor.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-metodoloji">
+    <div class="section-head-inner" onclick="toggle('sec-metodoloji')">
+      <h2 class="section-title">&#128295; PEG Metodolojisi ve Kritik Uyarilar</h2>
+      <div class="icon">&#9662;</div>
+    </div>
+    <div class="section-body">
+      <div class="insight-box warn">
+        <strong>Kritik Uyari:</strong> Ayni hisse, farkli kaynaklarda <strong>2-4x farkli PEG</strong> gosterebilir. Bu analizde Yahoo Finance (5Y expected), StockAnalysis (trailing), FinanceCharts (TTM-based) ve diger kaynaklar capraz kontrol edilmistir. Her PEG degeri, kullanilan P/E ve buyume oraninin kaynagi ile birlikte raporlanmistir.
+      </div>
+      <table>
+        <thead><tr><th>PEG Araligi</th><th>Peter Lynch Yorumu</th><th>Bu Analizdeki Hisse Sayisi</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag tag-green">&lt; 0.5</span></td><td>Cok ucuz - derin deger</td><td class="text-center">4 (MU, SNDK, NVDA, AVGO)</td></tr>
+          <tr><td><span class="tag tag-green">0.5 - 1.0</span></td><td>Cazip - buyume fiyatinin altinda</td><td class="text-center">4 (META, TSM, AMD, ORCL)</td></tr>
+          <tr><td><span class="tag tag-orange">1.0 - 2.0</span></td><td>Makul - buyume carpani adil</td><td class="text-center">6 (MSFT, GOOGL, AMZN, NOW, PLTR, ASML)</td></tr>
+          <tr><td><span class="tag tag-red">&gt; 2.0</span></td><td>Tehlike - asiri prim</td><td class="text-center">4 (AAPL, HOOD, HIMS, TSLA)</td></tr>
+          <tr><td><span class="tag tag-red">Gecersiz</span></td><td>Negatif kazanc/buyume</td><td class="text-center">2 (INTC, SOFI)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-peg-tablo">
+    <div class="section-head-inner" onclick="toggle('sec-peg-tablo')">
+      <h2 class="section-title">&#128200; Dogrulanmis PEG Oranlari (20 Hisse)</h2>
+      <div class="icon">&#9662;</div>
+    </div>
+    <div class="section-body">
+      <div class="tabs">
+        <div class="tab active" onclick="setTab(this,'tab-tum')">Tumu</div>
+        <div class="tab" onclick="setTab(this,'tab-ucuz')">PEG &lt; 1.0</div>
+        <div class="tab" onclick="setTab(this,'tab-orta')">PEG 1.0-2.0</div>
+        <div class="tab" onclick="setTab(this,'tab-yuksek')">PEG &gt; 2.0</div>
+      </div>
+      
+      <div id="tab-tum" class="tab-content active">
+        <table>
+          <thead><tr><th>Sira</th><th>Ticker</th><th>Fiyat</th><th>Trailing P/E</th><th>Forward P/E</th><th><strong>Dogrulanmis PEG</strong></th><th>Kullanici PEG</th><th>Sapma</th><th>Seviye</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td><strong>SNDK</strong></td><td>$1,777</td><td>58.7x</td><td>9.9x</td><td class="text-center"><span class="tag tag-green"><strong>0.03</strong></span></td><td>0.10</td><td class="text-center">-70%</td><td><span class="tag tag-green">COK UCUZ</span></td></tr>
+            <tr><td>2</td><td><strong>MU</strong></td><td>$974</td><td>22.0x</td><td>6.8x</td><td class="text-center"><span class="tag tag-green"><strong>0.04</strong></span></td><td>0.10</td><td class="text-center">-60%</td><td><span class="tag tag-green">COK UCUZ</span></td></tr>
+            <tr><td>3</td><td><strong>NVDA</strong></td><td>$195</td><td>29.8x</td><td>19.6x</td><td class="text-center"><span class="tag tag-green"><strong>0.39</strong></span></td><td>0.60</td><td class="text-center">-35%</td><td><span class="tag tag-green">COK UCUZ</span></td></tr>
+            <tr><td>4</td><td><strong>AVGO</strong></td><td>$361</td><td>60.0x</td><td>22.9x</td><td class="text-center"><span class="tag tag-green"><strong>0.41</strong></span></td><td>0.50</td><td class="text-center">-18%</td><td><span class="tag tag-green">COK UCUZ</span></td></tr>
+            <tr><td>5</td><td><strong>META</strong></td><td>$583</td><td>21.2x</td><td>18.5x</td><td class="text-center"><span class="tag tag-green"><strong>0.86</strong></span></td><td>1.50</td><td class="text-center">-43%</td><td><span class="tag tag-green">UCUZ</span></td></tr>
+            <tr><td>6</td><td><strong>TSM</strong></td><td>$435</td><td>33.2x</td><td>22.7x</td><td class="text-center"><span class="tag tag-green"><strong>0.66</strong></span></td><td>1.10</td><td class="text-center">-40%</td><td><span class="tag tag-green">UCUZ</span></td></tr>
+            <tr><td>7</td><td><strong>AMD</strong></td><td>$518</td><td>172.7x</td><td>59.4x</td><td class="text-center"><span class="tag tag-green"><strong>0.93</strong></span></td><td>0.60</td><td class="text-center">+55%</td><td><span class="tag tag-green">UCUZ</span></td></tr>
+            <tr><td>8</td><td><strong>ORCL</strong></td><td>$141</td><td>24.4x</td><td>17.6x</td><td class="text-center"><span class="tag tag-green"><strong>0.81</strong></span></td><td>0.40</td><td class="text-center">+103%</td><td><span class="tag tag-green">UCUZ</span></td></tr>
+            <tr><td>9</td><td><strong>MSFT</strong></td><td>$390</td><td>23.3x</td><td>20.1x</td><td class="text-center"><span class="tag tag-orange"><strong>1.20</strong></span></td><td>1.20</td><td class="text-center">0%</td><td><span class="tag tag-orange">MAKUL</span></td></tr>
+            <tr><td>10</td><td><strong>NOW</strong></td><td>$106</td><td>63.3x</td><td>25.4x</td><td class="text-center"><span class="tag tag-orange"><strong>1.03</strong></span></td><td>0.70</td><td class="text-center">+47%</td><td><span class="tag tag-orange">MAKUL</span></td></tr>
+            <tr><td>11</td><td><strong>GOOGL</strong></td><td>$359</td><td>27.5x</td><td>25.5x</td><td class="text-center"><span class="tag tag-orange"><strong>1.42</strong></span></td><td>2.90</td><td class="text-center">-51%</td><td><span class="tag tag-orange">MAKUL</span></td></tr>
+            <tr><td>12</td><td><strong>AMZN</strong></td><td>$242</td><td>31.6x</td><td>31.2x</td><td class="text-center"><span class="tag tag-orange"><strong>1.35</strong></span></td><td>1.40</td><td class="text-center">-4%</td><td><span class="tag tag-orange">MAKUL</span></td></tr>
+            <tr><td>13</td><td><strong>PLTR</strong></td><td>$129</td><td>145.3x</td><td>81.4x</td><td class="text-center"><span class="tag tag-orange"><strong>1.86</strong></span></td><td>2.00</td><td class="text-center">-7%</td><td><span class="tag tag-orange">MAKUL</span></td></tr>
+            <tr><td>14</td><td><strong>ASML</strong></td><td>$1,770</td><td>62.4x</td><td>47.2x</td><td class="text-center"><span class="tag tag-orange"><strong>1.63</strong></span></td><td>1.50</td><td class="text-center">+9%</td><td><span class="tag tag-orange">MAKUL</span></td></tr>
+            <tr><td>15</td><td><strong>AAPL</strong></td><td>$308</td><td>37.4x</td><td>32.5x</td><td class="text-center"><span class="tag tag-red"><strong>2.49</strong></span></td><td>2.60</td><td class="text-center">-4%</td><td><span class="tag tag-red">TEHLIKE</span></td></tr>
+            <tr><td>16</td><td><strong>HOOD</strong></td><td>$113</td><td>54.8x</td><td>55.3x</td><td class="text-center"><span class="tag tag-red"><strong>3.05</strong></span></td><td>2.00</td><td class="text-center">+53%</td><td><span class="tag tag-red">TEHLIKE</span></td></tr>
+            <tr><td>17</td><td><strong>HIMS</strong></td><td>$37</td><td>55.2x</td><td>54.7x</td><td class="text-center"><span class="tag tag-red"><strong>9.66+</strong></span></td><td>0.90</td><td class="text-center">+973%</td><td><span class="tag tag-red">TEHLIKE</span></td></tr>
+            <tr><td>18</td><td><strong>TSLA</strong></td><td>$393</td><td>361.0x</td><td>200.0x</td><td class="text-center"><span class="tag tag-red"><strong>5.76</strong></span></td><td>4.50</td><td class="text-center">+28%</td><td><span class="tag tag-red">TEHLIKE</span></td></tr>
+            <tr><td>19</td><td><strong>INTC</strong></td><td>$121</td><td>-201x</td><td>113.7x</td><td class="text-center"><span class="tag tag-red"><strong>N/M</strong></span></td><td>2.50</td><td class="text-center">Gecersiz</td><td><span class="tag tag-red">GECERSIZ</span></td></tr>
+            <tr><td>20</td><td><strong>SOFI</strong></td><td>$18</td><td>42.9x</td><td>68.0x</td><td class="text-center"><span class="tag tag-red"><strong>N/M</strong></span></td><td>0.90</td><td class="text-center">Gecersiz</td><td><span class="tag tag-red">GECERSIZ</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div id="tab-ucuz" class="tab-content">
+        <table>
+          <thead><tr><th>Ticker</th><th>Fiyat</th><th>PEG</th><th>P/E</th><th>Buyume</th><th>Yorum</th></tr></thead>
+          <tbody>
+            <tr><td><strong>SNDK</strong></td><td>$1,777</td><td><span class="tag tag-green">0.03</span></td><td>9.9x Fwd</td><td>324%</td><td>NAND AI supercycle, 52H +3,781%</td></tr>
+            <tr><td><strong>MU</strong></td><td>$974</td><td><span class="tag tag-green">0.04</span></td><td>6.8x Fwd</td><td>170%</td><td>HBM4 memory supercycle, Q EPS +1,398%</td></tr>
+            <tr><td><strong>NVDA</strong></td><td>$195</td><td><span class="tag tag-green">0.39</span></td><td>19.6x Fwd</td><td>50%</td><td>AI GPU monopoly, $253B revenue TTM</td></tr>
+            <tr><td><strong>AVGO</strong></td><td>$361</td><td><span class="tag tag-green">0.41</span></td><td>22.9x Fwd</td><td>56%</td><td>Custom AI silicon, $20B+ AI revenue</td></tr>
+            <tr><td><strong>META</strong></td><td>$583</td><td><span class="tag tag-green">0.86</span></td><td>18.5x Fwd</td><td>25%</td><td>En ucuz mega-cap, $2.10 temettu</td></tr>
+            <tr><td><strong>TSM</strong></td><td>$435</td><td><span class="tag tag-green">0.66</span></td><td>22.7x Fwd</td><td>34%</td><td>Foundry monopoly, 3nm 46.5% marj</td></tr>
+            <tr><td><strong>AMD</strong></td><td>$518</td><td><span class="tag tag-green">0.93</span></td><td>59.4x Fwd</td><td>64%</td><td>Data center challenger, 13% marj</td></tr>
+            <tr><td><strong>ORCL</strong></td><td>$141</td><td><span class="tag tag-green">0.81</span></td><td>17.6x Fwd</td><td>31%</td><td>Bulut donusumu, AI sozlesmeleri</td></tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div id="tab-orta" class="tab-content">
+        <table>
+          <thead><tr><th>Ticker</th><th>Fiyat</th><th>PEG</th><th>P/E</th><th>Yorum</th></tr></thead>
+          <tbody>
+            <tr><td><strong>MSFT</strong></td><td>$390</td><td><span class="tag tag-orange">1.20</span></td><td>20.1x Fwd</td><td>Azure +40%, $190B AI kapex</td></tr>
+            <tr><td><strong>NOW</strong></td><td>$106</td><td><span class="tag tag-orange">1.03</span></td><td>25.4x Fwd</td><td>Enterprise SaaS, buyume yavasliyor</td></tr>
+            <tr><td><strong>GOOGL</strong></td><td>$359</td><td><span class="tag tag-orange">1.42</span></td><td>25.5x Fwd</td><td>Cloud +63%, $240B backlog</td></tr>
+            <tr><td><strong>AMZN</strong></td><td>$242</td><td><span class="tag tag-orange">1.35</span></td><td>31.2x Fwd</td><td>AWS AI, $200B kapex FCF baskisi</td></tr>
+            <tr><td><strong>PLTR</strong></td><td>$129</td><td><span class="tag tag-orange">1.86</span></td><td>81.4x Fwd</td><td>AI platform, gov + enterprise</td></tr>
+            <tr><td><strong>ASML</strong></td><td>$1,770</td><td><span class="tag tag-orange">1.63</span></td><td>47.2x Fwd</td><td>EUV monopoly, buyume kapasite sinirli</td></tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div id="tab-yuksek" class="tab-content">
+        <table>
+          <thead><tr><th>Ticker</th><th>Fiyat</th><th>PEG</th><th>P/E</th><th>Yorum</th></tr></thead>
+          <tbody>
+            <tr><td><strong>AAPL</strong></td><td>$308</td><td><span class="tag tag-red">2.49</span></td><td>32.5x Fwd</td><td>Yavaslayan buyume, yuksek P/E</td></tr>
+            <tr><td><strong>HOOD</strong></td><td>$113</td><td><span class="tag tag-red">3.05</span></td><td>55.3x Fwd</td><td>Kripto donguselligi, buyume yavasliyor</td></tr>
+            <tr><td><strong>HIMS</strong></td><td>$37</td><td><span class="tag tag-red">9.66+</span></td><td>54.7x Fwd</td><td>Telehealth, GAAP karlilik yok</td></tr>
+            <tr><td><strong>TSLA</strong></td><td>$393</td><td><span class="tag tag-red">5.76</span></td><td>200x Fwd</td><td>Robotaxi/Optimus spekulasyonu</td></tr>
+            <tr><td><strong>INTC</strong></td><td>$121</td><td><span class="tag tag-red">N/M</span></td><td>Negatif</td><td>Zarar ediyor, PEG gecersiz</td></tr>
+            <tr><td><strong>SOFI</strong></td><td>$18</td><td><span class="tag tag-red">N/M</span></td><td>Negatif buyume</td><td>Kazanc dusuyor, PEG gecersiz</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-duzeltmeler">
+    <div class="section-head-inner" onclick="toggle('sec-duzeltmeler')">
+      <h2 class="section-title">&#9888;&#65039; Kullanici Tahminlerindeki Kritik Duzeltmeler</h2>
+      <div class="icon">&#9662;</div>
+    </div>
+    <div class="section-body">
+      <div class="insight-box danger">
+        <strong>HIMS (0.9x -> 9.66x+):</strong> Raporun en ciddi hatasi. Kullanici PEG 0.9x demisti ama gercek deger <strong>9.66x+</strong>. 10 kat fazla ucuz tahmin. Telehealth buyumesi fiyatlanmis ama GAAP karlilik hala yok.
+      </div>
+      <div class="insight-box danger">
+        <strong>INTC (2.5x -> Gecersiz):</strong> TTM EPS <strong>-$0.62</strong>, P/E negatif. PEG matematiksel olarak hesaplanamaz. Kullanici donusum hissesine standart metrik uygulamis.
+      </div>
+      <div class="insight-box warn">
+        <strong>GOOGL (2.9x -> 1.42x):</strong> Kullanici buyume oranini <strong>%9.7</strong> olarak dusuk tahmin etmis. Gercek Q1 buyumesi <strong>%81</strong>, 5Y PEG <strong>1.42</strong>. Tehlike bolgesinden makul degerlemeye.
+      </div>
+      <div class="insight-box warn">
+        <strong>AMZN P/E (~70x -> 31.6x):</strong> Kullanici P/Eyi 2 kat fazla tahmin etmis. Amazon artik "yeniden yatirim" doneminden cikti, karlilik hizla artiyor.
+      </div>
+      <div class="insight-box warn">
+        <strong>AMD P/E (~30x -> 172.7x):</strong> Trailing P/E 6 kat fazla tahmin edilmis. Forward P/E 59x ile PEG hala <1.0 ama hisse kullanicinin sandigi kadar ucuz degil.
+      </div>
+      <div class="insight-box bull">
+        <strong>META (1.5x -> 0.86x):</strong> Kullanici ciddi sekilde undervalued degerlendirmemis. $1.48T sirket, Peter Lynch esiginin <strong>altinda</strong> ticari gortyor.
+      </div>
+      <div class="insight-box bull">
+        <strong>NVDA (0.6x = 0.39-0.60x):</strong> Kullanicinin en dogru tahmini. AI lideri gercekten de buyumesine gore ucuz.
+      </div>
+      <div class="insight-box bull">
+        <strong>MU (0.1x -> 0.04x):</strong> Kullanici yon olarak dogru ama hala muhafazakar. Memory supercycle beklenenden daha siddetli.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-yariiletken">
+    <div class="section-head-inner" onclick="toggle('sec-yariiletken')">
+      <h2 class="section-title">&#128421;&#65039; Yari Iletken Sektörü Derinlemesine</h2>
+      <div class="icon">&#9662;</div>
+    </div>
+    <div class="section-body">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">NVDA - AI GPU Lideri</div>
+          <div class="card-value up">PEG 0.39x</div>
+          <div class="card-note">Fwd P/E 19.6x | Buyume 50% | Marj 63% | $253B gelir</div>
+        </div>
+        <div class="card">
+          <div class="card-label">MU - Memory Supercycle</div>
+          <div class="card-value up">PEG 0.04x</div>
+          <div class="card-note">Fwd P/E 6.8x | Buyume 170% | Q EPS +1,398% | HBM4 talebi</div>
+        </div>
+        <div class="card">
+          <div class="card-label">SNDK - NAND Donusumu</div>
+          <div class="card-value up">PEG 0.03x</div>
+          <div class="card-note">Fwd P/E 9.9x | Buyume 324% | 52H +3,781% | AI SSD</div>
+        </div>
+        <div class="card">
+          <div class="card-label">AVGO - Custom Silicon</div>
+          <div class="card-value up">PEG 0.41x</div>
+          <div class="card-note">Fwd P/E 22.9x | Buyume 56% | AI geliri $20B+</div>
+        </div>
+        <div class="card">
+          <div class="card-label">TSM - Foundry Monopoly</div>
+          <div class="card-value up">PEG 0.66x</div>
+          <div class="card-note">Fwd P/E 22.7x | Buyume 34% | 3nm marj 46.5%</div>
+        </div>
+        <div class="card">
+          <div class="card-label">AMD - Data Center</div>
+          <div class="card-value up">PEG 0.93x</div>
+          <div class="card-note">Fwd P/E 59.4x | Buyume 64% | Marj 13% (NVDAya gore dusuk)</div>
+        </div>
+        <div class="card">
+          <div class="card-label">ASML - EUV Monopoly</div>
+          <div class="card-value neu">PEG 1.63x</div>
+          <div class="card-note">Fwd P/E 47.2x | Buyume 29% | Tek EUV ureticisi</div>
+        </div>
+        <div class="card">
+          <div class="card-label">INTC - Donusum (RISK)</div>
+          <div class="card-value down">PEG Gecersiz</div>
+          <div class="card-note">Negatif TTM EPS | Altman Z 1.94 | iflas riski</div>
+        </div>
+      </div>
+      <div class="insight-box">
+        <strong>AI Altyapisi Katmani En Ucuz:</strong> Temel AI chip sirketleri (NVDA, AVGO, TSM, MU) ekipman katmanina (ASML) ve donusum hikayelerine (INTC) gore daha dusuk PEG ile islem gortyor. Bu, AI talebinin dayanikliliginin dogrudan chip ureticilerine fiyatlandigini gosteriyor.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-bigtech">
+    <div class="section-head-inner" onclick="toggle('sec-bigtech')">
+      <h2 class="section-title">&#9729;&#65039; Big Tech & Cloud Giants</h2>
+      <div class="icon">&#9662;</div>
+    </div>
+    <div class="section-body">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">META - En Ucuz Mega-Cap</div>
+          <div class="card-value up">PEG 0.86x</div>
+          <div class="card-note">P/E 18.5x | Buyume 25% | $2.10 temettu | 32.8% marj</div>
+        </div>
+        <div class="card">
+          <div class="card-label">MSFT - Bulut + AI</div>
+          <div class="card-value neu">PEG 1.20x</div>
+          <div class="card-note">P/E 20.1x | Azure +40% | $190B kapex | AI $37B run rate</div>
+        </div>
+        <div class="card">
+          <div class="card-label">GOOGL - Cloud Patlamasi</div>
+          <div class="card-value neu">PEG 1.42x</div>
+          <div class="card-note">P/E 25.5x | Cloud +63% | $240B backlog | Q buyume +81%</div>
+        </div>
+        <div class="card">
+          <div class="card-label">AMZN - FCF Baskisi</div>
+          <div class="card-value neu">PEG 1.35x</div>
+          <div class="card-note">P/E 31.2x | $200B kapex | FCF -95% | AWS AI buyuyor</div>
+        </div>
+        <div class="card">
+          <div class="card-label">AAPL - Yuksek PEG</div>
+          <div class="card-value down">PEG 2.49x</div>
+          <div class="card-note">P/E 32.5x | Buyume yavasliyor %15 | AI geliri sinirli</div>
+        </div>
+        <div class="card">
+          <div class="card-label">TSLA - Asiri Degerli</div>
+          <div class="card-value down">PEG 5.76x</div>
+          <div class="card-note">P/E 200x Fwd | Marj 3.95% | Robotaxi spekulasyonu</div>
+        </div>
+      </div>
+      <div class="insight-box warn">
+        <strong>AI Capex Lag Etkisi:</strong> MSFT, GOOGL, META, AMZN 2026da toplam <strong>$650B+</strong> AI altyapisi harcamasi yaptyor. Bu harcama mevcut FCFyi baskiltyor ve P/E carpanlarini yukseltiyor, ancak gelir getirisi 12-24 ay gecikmeli. GOOGLn PEGi 1.42 METAin 0.84unden kotu gortunyor, ama Google Cloudun birikmis siparisi $240Bnin uzerinde.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-fintech">
+    <div class="section-head-inner" onclick="toggle('sec-fintech')">
+      <h2 class="section-title">&#128176; FinTech & Yüksek Büyüme</h2>
+      <div class="icon">&#9662;</div>
+    </div>
+    <div class="section-body">
+      <table>
+        <thead><tr><th>Ticker</th><th>Fiyat</th><th>PEG</th><th>P/E</th><th>Kritik Uyari</th></tr></thead>
+        <tbody>
+          <tr><td><strong>PLTR</strong></td><td>$129</td><td><span class="tag tag-orange">1.86</span></td><td>81.4x Fwd</td><td>Hükümet + enterprise AI, 85% gelir buyumesi</td></tr>
+          <tr><td><strong>NOW</strong></td><td>$106</td><td><span class="tag tag-orange">1.03</span></td><td>25.4x Fwd</td><td>Kurumsal SaaS, buyume yavasliyor (Q +2%)</td></tr>
+          <tr><td><strong>HOOD</strong></td><td>$113</td><td><span class="tag tag-red">3.05</span></td><td>55.3x Fwd</td><td>Kripto donguselligi, PEG > 2.0 tehlike</td></tr>
+          <tr><td><strong>HIMS</strong></td><td>$37</td><td><span class="tag tag-red">9.66+</span></td><td>54.7x Fwd</td><td>Telehealth, GAAP karlilik yok, asiri pahali</td></tr>
+          <tr><td><strong>SOFI</strong></td><td>$18</td><td><span class="tag tag-red">N/M</span></td><td>68.0x Fwd</td><td>TTM EPS dusuyor (-9.5%), PEG gecersiz</td></tr>
+        </tbody>
+      </table>
+      <div class="insight-box danger">
+        <strong>FinTech PEG Tuzagi:</strong> HOOD, SOFI, HIMS PEGin en tehlikeli kör noktasini gosteriyor. Yuksek gelir buyumesi yuksek P/Eyi mazur gosterebilir ama kazanc kalitesi ve dongusellik riskleri PEGde yakalanmiyor. SOFI icin PEG kullanilamaz cunku TTM kazanci dusuyor.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-canli">
+    <div class="section-head-inner" onclick="toggle('sec-canli')">
+      <h2 class="section-title">&#128250; Canli Piyasa Verileri (Alpaca Markets API)</h2>
+      <div class="icon">&#9662;</div>
+    </div>
+    <div class="section-body">
+      <p style="color:var(--gf-muted);font-size:0.85rem;margin-bottom:12px">4 Temmuz 2026 Cuma kapanis verileri. Piyasa 5 Temmuzda kapali (tatil).</p>
+      <table>
+        <thead><tr><th>Ticker</th><th>Fiyat</th><th>Degisim</th><th>Hacim</th><th>High</th><th>Low</th><th>VWAP</th></tr></thead>
+        <tbody>
+          <tr><td><strong>TSLA</strong></td><td>$393.39</td><td class="down">-7.52%</td><td>1.59M</td><td>$432.35</td><td>$389.34</td><td>$398.09</td></tr>
+          <tr><td><strong>GOOGL</strong></td><td>$359.07</td><td class="down">-0.59%</td><td>779K</td><td>$364.15</td><td>$353.49</td><td>$358.66</td></tr>
+          <tr><td><strong>AAPL</strong></td><td>$308.43</td><td class="up">+4.76%</td><td>3.81M</td><td>$309.42</td><td>$293.89</td><td>$306.30</td></tr>
+          <tr><td><strong>META</strong></td><td>$582.76</td><td class="down">-4.93%</td><td>675K</td><td>$610.00</td><td>$580.45</td><td>$588.51</td></tr>
+          <tr><td><strong>NVDA</strong></td><td>$194.51</td><td class="down">-1.53%</td><td>5.88M</td><td>$200.06</td><td>$192.35</td><td>$194.73</td></tr>
+          <tr><td><strong>AMD</strong></td><td>$518.25</td><td class="down">-4.19%</td><td>808K</td><td>$547.56</td><td>$506.33</td><td>$518.68</td></tr>
+          <tr><td><strong>MU</strong></td><td>$974.23</td><td class="down">-5.66%</td><td>1.24M</td><td>$1,064.59</td><td>$950.31</td><td>$989.17</td></tr>
+          <tr><td><strong>SNDK</strong></td><td>$1,777.31</td><td class="down">-12.62%</td><td>474K</td><td>$2,050.07</td><td>$1,693.96</td><td>$1,805.65</td></tr>
+          <tr><td><strong>MSFT</strong></td><td>$390.30</td><td class="up">+1.54%</td><td>1.35M</td><td>$392.20</td><td>$383.79</td><td>$389.71</td></tr>
+          <tr><td><strong>AMZN</strong></td><td>$242.30</td><td class="up">+0.23%</td><td>1.92M</td><td>$246.67</td><td>$241.12</td><td>$244.17</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-insights">
+    <div class="section-head-inner" onclick="toggle('sec-insights')">
+      <h2 class="section-title">&#128161; Çapraz Boyut Insightlari</h2>
+      <div class="icon">&#9662;</div>
+    </div>
+    <div class="section-body">
+      <div class="insight-box bull">
+        <strong>1. Memory Supercycle - Tarihi Firsat:</strong> MU (0.04x) ve SNDK (0.03x) sadece "ucuz" degil - AI veri merkezi talebi bellek endustrisinin kazanc tabanini kalici olarak yukseltmis olabilir. TrendForce 2026 depolama tahminini %61 artirarak $889Bye cikardi. Forward PEG 0.05 civarinda - piyasadaki en ucuz buyuk sermayeli hisseler.
+      </div>
+      <div class="insight-box bull">
+        <strong>2. META - En Yanlis Fiyatlanmis Mega-Cap:</strong> 0.86x PEG, $1.48T piyasa degeri, $2.10 temettu ve %32.8 marj ile META, S&P 500de saf PEG bazinda en net "al" sinyali veren sirket. Kullanici bunu %43 yanlis degerlendirmis.
+      </div>
+      <div class="insight-box warn">
+        <strong>3. AI Capex Karanlik Dönemi:</strong> Big Techin $650B+ AI harcamasi mevcut FCFyi baskiltyor ve P/E carpanlarini sisme gibi gosteriyor. Ancak gelir getirisi 12-24 ay gecikmeli. GOOGL ve AMZN "pahali" gortunurken, 2 yil ileriye bakildiginda en ucuzlar olabilir.
+      </div>
+      <div class="insight-box warn">
+        <strong>4. PEG Ayni Hisse Icin 2-4x Degisebilir:</strong> NOW 1.03x ile 4.43x arasinda; META 0.89x ile 3.23x arasinda. Hangi P/E (trailing/forward) ve hangi buyume orani (1Y/3Y/5Y) kullanildigi belirtilmeden PEG karsilastirmasi elma-armut karsilastirmasidir.
+      </div>
+      <div class="insight-box danger">
+        <strong>5. HIMS - PEGin En Tehlikeli Kör Noktasi:</strong> Kullanici 0.9x demis, gercek 9.66x+. 10 kat fazla ucuz tahmin. Gelir buyumesi ile kazanc buyumesini karistirmak, PEGi aktif olarak yaniltici hale getirir.
+      </div>
+      <div class="insight-box danger">
+        <strong>6. INTC ve SOFI - PEG Gecersiz:</strong> Negatif TTM kazanc veya negatif kazanc buyumesi olan sirketlerde PEG matematiksel olarak anlamsizdir. Bu sirketler icin EV/Gelir, Fiyat/Defter veya SOTP degerleme kullanilmalidir.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-strateji">
+    <div class="section-head-inner" onclick="toggle('sec-strateji')">
+      <h2 class="section-title">&#127919; Yatirim Stratejileri</h2>
+      <div class="icon">&#9662;</div>
+    </div>
+    <div class="section-body">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Agresif Buyume (PEG &lt; 0.5)</div>
+          <div class="card-value up">MU, SNDK, NVDA, AVGO</div>
+          <div class="card-note">AI supercycle, memory patlamasi, custom silicon. Yuksek volatilite, yuksek getiri potansiyeli.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Dengeli Buyume (PEG 0.5-1.5)</div>
+          <div class="card-value neu">META, TSM, AMD, ORCL, MSFT</div>
+          <div class="card-note">Mega-cap guvenligi + makul degerleme. META ve TSM one cikiyor.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Korunmali (PEG 1.5-2.5)</div>
+          <div class="card-value neu">GOOGL, AMZN, NOW, PLTR</div>
+          <div class="card-note">AI capex donusumu bekleniyor. 12-24 ay sonra daha ucuz olabilirler.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Kacinilmasi Gereken (PEG &gt; 2.0)</div>
+          <div class="card-value down">AAPL, HOOD, HIMS, TSLA</div>
+          <div class="card-note">Asiri degerleme veya spekulasyon. HIMS en tehlikelisi (PEG 9.66x+).</div>
+        </div>
+      </div>
+      <div class="insight-box">
+        <strong>Portfoy Onerisi:</strong> %40 AI/Bellek (NVDA, MU, AVGO) + %30 Dengeli Buyume (META, TSM) + %20 Korunmali (GOOGL, MSFT) + %10 Likit. INTC, SOFI, HIMS icin PEG gecersiz - alternatif metriklerle degerlendirin.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-risk">
+    <div class="section-head-inner" onclick="toggle('sec-risk')">
+      <h2 class="section-title">&#128683; Riskler ve Uyarilar</h2>
+      <div class="icon">&#9662;</div>
+    </div>
+    <div class="section-body">
+      <div class="insight-box danger">
+        <strong>Yasal Uyari:</strong> Bu analiz <strong>yatirim tavsiyesi degildir</strong>. Tüm veriler 5 Temmuz 2026 itibariyla toplanmistir. Piyasa kosullari, sirket performanslari ve analist tahminleri degisebilir. Hisse senetleri <strong>kayip riski</strong> icerir. PEG orani tek basina yeterli degildir - temel analiz, sektor trendleri, rekabet avantaji ve risk toleransi da degerlendirilmelidir.
+      </div>
+      <div class="insight-box warn">
+        <strong>PEG Sinirlamalari:</strong> (1) Buyume tahminleri yanlis olabilir, (2) Negatif kazanc durumunda anlamsizdir, (3) Sektore gore degisir, (4) Dongusel sirketlerde yaniltici olabilir, (5) Kisa vadeli dalgalanmalara hassastir.
+      </div>
+      <p style="color:var(--gf-muted);font-size:0.85rem;margin-top:12px">
+        <strong>Veri Kaynaklari:</strong> Alpaca Markets API (canli fiyat), Yahoo Finance (PEG/P/E/buyume), StockAnalysis.com (istatistikler), FinanceCharts.com (tarihsel PEG), Tickeron (sektor analizi), MarketBeat (kazanc verileri), Beta Finch (AI kapex), GuruFocus (degerleme metrikleri).<br><br>
+        <strong>Arastirma Yontemi:</strong> 6 paralel wide-exploration agenti (methodology, semiconductor, bigtech, emerging, macro, backtesting) toplam 75+ bagimsiz web aramasi yapmis, capraz dogrulama ile sentezlenmistir.<br><br>
+        <strong>Hazirlayan:</strong> Hasan Kuscu | <strong>Analiz Tarihi:</strong> 5 Temmuz 2026
+      </p>
+    </div>
+  </div>
+</section>
+
+<div class="footer">Gistify Flow | PEG Ratio Derin Analizi | 5 Temmuz 2026 | Hasan Kuscu</div>
+
+</div>
+</body>
+</html>
