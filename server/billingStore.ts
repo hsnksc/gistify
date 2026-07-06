@@ -1557,10 +1557,7 @@ export function createBillingStore() {
       updated_at
     ) VALUES (?, ?, 1, ?, ?, ?)
     ON CONFLICT(report_id, actor_key) DO UPDATE SET
-      read_count = CASE
-        WHEN flow_report_engagements.read_count > 0 THEN flow_report_engagements.read_count
-        ELSE 1
-      END,
+      read_count = flow_report_engagements.read_count + 1,
       first_read_at = COALESCE(flow_report_engagements.first_read_at, excluded.first_read_at),
       last_read_at = excluded.last_read_at,
       updated_at = excluded.updated_at
@@ -1624,9 +1621,9 @@ export function createBillingStore() {
         `
           SELECT
             report_id,
-            SUM(CASE WHEN read_count > 0 THEN 1 ELSE 0 END) AS read_count,
+            SUM(read_count) AS read_count,
             SUM(CASE WHEN liked = 1 THEN 1 ELSE 0 END) AS like_count,
-            SUM(CASE WHEN share_count > 0 THEN 1 ELSE 0 END) AS share_count
+            SUM(share_count) AS share_count
           FROM flow_report_engagements
           WHERE report_id IN (${placeholders})
           GROUP BY report_id

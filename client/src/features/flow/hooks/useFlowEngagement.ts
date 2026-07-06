@@ -137,12 +137,7 @@ export function useFlowEngagement(
 
   useEffect(() => {
     setEngagement(normalizeFlowEngagement(initialEngagement));
-  }, [
-    initialEngagement?.likeCount,
-    initialEngagement?.readCount,
-    initialEngagement?.shareCount,
-    reportId,
-  ]);
+  }, [reportId]);
 
   useEffect(() => {
     if (!reportId) {
