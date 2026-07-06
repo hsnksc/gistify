@@ -1,0 +1,15 @@
+services:
+  gistify:
+    image: hsanksc/gistify:latest
+    container_name: gistify
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      MIDAS_PIPELINE_SOURCE_FILE: /data/midas/midas_signals.json
+      BILLING_DB_PATH: /app/data/billing.sqlite
+    volumes:
+      - /srv/gistify/midas:/data/midas:ro
+      - /srv/gistify/data:/app/data
+    restart: unless-stopped
