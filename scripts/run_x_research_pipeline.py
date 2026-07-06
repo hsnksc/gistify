@@ -130,13 +130,29 @@ def run_flow_converter_stage(date_slug: str, dry_run: bool) -> bool:
 def run_deploy_stage(date_slug: str, dry_run: bool) -> bool:
     """
     deploy_flow.py'yi subprocess olarak calistirir.
+    Son uretilen Flow HTML dosyasini otomatik olarak bulur ve deploy eder.
     """
     script_path = Path(__file__).parent / "deploy_flow.py"
     if not script_path.exists():
         log(f"[FAIL] deploy_flow.py bulunamadi: {script_path}")
         return False
 
-    cmd = [sys.executable, str(script_path)]
+    repo_root = Path(__file__).parent.parent
+    flow_dir = repo_root / "flow"
+    html_files = sorted(
+        flow_dir.glob("daily-*.html"),
+        key=lambda p: p.stat().st_mtime,
+        reverse=True,
+    )
+    if not html_files:
+        log("[FAIL] Deploy edilecek Flow HTML dosyasi bulunamadi")
+        return False
+
+    target_file = html_files[0]
+    target_arg = str(target_file.relative_to(repo_root))
+    log(f"[DEPLOY] Deploy hedefi: {target_arg}")
+
+    cmd = [sys.executable, str(script_path), target_arg]
     if dry_run:
         cmd.append("--dry-run")
 

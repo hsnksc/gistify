@@ -54,6 +54,12 @@ import {
   isFlowDailyReport,
 } from "./services/flowService";
 import { syncPublishedFlowReportsToArchive } from "./services/flowArchiveSync";
+import { createFlowEngagementStore } from "./services/flowEngagementStore";
+import { createJobCoordinator } from "./services/jobCoordinator";
+import { createAdminJobsRouter } from "./routes/adminJobs";
+import { createAdminDiagnosticsRouter } from "./routes/adminDiagnostics";
+import { CRON_JOB_DEFINITIONS } from "./jobs/definitions";
+import { recordStartupDeploy } from "./services/deployHistoryStore";
 import { createAdminAgentsRouter } from "./routes/adminAgents";
 import { createAiRouter } from "./routes/ai";
 import { createAuthRouter } from "./routes/auth";
@@ -81,6 +87,10 @@ import {
 } from "./momentumReportSources";
 import { createMidasSignalsSyncService } from "./midasSignals";
 import { createCpiPpiForecastSyncService } from "./cpiPpiForecast";
+import {
+  createGistifyDb,
+  closeGistifyDb,
+} from "./db";
 import { createCalendarSyncService } from "./calendarSync";
 import {
   createEarningsStrategySyncService,
@@ -284,6 +294,10 @@ const PUBLIC_ACCESS_USER = {
 } as const;
 
 const billingStore = createBillingStore();
+const gistifyDb = createGistifyDb();
+const flowEngagementStore = createFlowEngagementStore();
+const jobCoordinator = createJobCoordinator();
+jobCoordinator.ensureCronJobs(CRON_JOB_DEFINITIONS);
 
 const LEGACY_WEEKLY_SEED_SIGNATURES = new Map<string, string>([
   ["weekly-report-2026-06-01", "2026-06-02T08:30:00.000Z"],
@@ -3344,6 +3358,7 @@ async function startServer() {
     pollIntervalMs: Number(process.env.CALENDAR_PIPELINE_POLL_INTERVAL_MS) || 60_000,
   });
   billingStore.pruneExpiredSessions();
+  recordStartupDeploy();
   await midasSignalsSync.start();
   await cpiPpiForecastSync.start();
   await earningsStrategySync.start();
@@ -3534,11 +3549,10 @@ async function startServer() {
     createFlowReportsRouter({
       setPrivateNoStore,
       getPublishedReports: getPublishedDailyReports,
-      listEngagementsByReportIds:
-        billingStore.listFlowReportEngagementsByReportIds,
-      recordView: billingStore.recordFlowReportView,
-      recordLike: billingStore.recordFlowReportLike,
-      recordShare: billingStore.recordFlowReportShare,
+      listEngagementsByReportIds: flowEngagementStore.getEngagementByFlowIds,
+      recordView: flowEngagementStore.recordView,
+      recordLike: flowEngagementStore.recordLike,
+      recordShare: flowEngagementStore.recordShare,
     })
   );
 
@@ -3590,6 +3604,23 @@ async function startServer() {
       listEarningReportSourceSummaries,
       normalizeString,
       refreshMidasSignals: () => midasSignalsSync.refresh({ force: true }),
+      requireWeeklyReportAdmin,
+      setPrivateNoStore,
+    })
+  );
+
+  app.use(
+    "/api",
+    createAdminJobsRouter({
+      jobCoordinator,
+      requireWeeklyReportAdmin,
+      setPrivateNoStore,
+    })
+  );
+
+  app.use(
+    "/api",
+    createAdminDiagnosticsRouter({
       requireWeeklyReportAdmin,
       setPrivateNoStore,
     })
@@ -3702,12 +3733,28 @@ async function startServer() {
 
   server.listen(port, () => {
     console.log(`Billing DB initialized at ${billingStore.dbPath}`);
+    console.log(`Gistify DB initialized at ${gistifyDb.dbPath}`);
     console.log(`Server running on http://localhost:${port}/`);
     console.log(`App access mode: ${getAppAccessMode()}`);
     console.log(
       `Paddle checkout issues: ${getPaddleCheckoutConfigIssues().join(", ") || "none"}`
     );
   });
+
+  const shutdownSignals: NodeJS.Signals[] = ["SIGTERM", "SIGINT"];
+  for (const signal of shutdownSignals) {
+    process.on(signal, () => {
+      console.log(`[server] Received ${signal}, shutting down gracefully...`);
+      server.close(() => {
+        console.log("[server] HTTP server closed.");
+        closeGistifyDb();
+        process.exit(0);
+      });
+    });
+  }
 }
+
+(globalThis as unknown as { gistifyStartTime: number }).gistifyStartTime =
+  Date.now();
 
 startServer().catch(console.error);

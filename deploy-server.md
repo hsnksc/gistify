@@ -1,5 +1,7 @@
 # Midas Pipeline — Production Deploy & Sync Guide
 
+> **Note:** For the post-SQLite-migration deployment guide (central persistence, cron/lock setup, backup/restore and diagnostics), see [`docs/deployment.md`](./docs/deployment.md). This document remains focused on the Midas signal pipeline.
+
 > **Goal:** Run Midas pipeline on the production VPS and make Gistify serve `/api/midas/signals` from a canonical, atomically-updated `midas_signals.json` file without requiring a redeploy on every refresh.
 
 > **Production URL:** `https://gistify.pro`

@@ -9,6 +9,9 @@ services:
       PORT: 3000
       MIDAS_PIPELINE_SOURCE_FILE: /data/midas/midas_signals.json
       BILLING_DB_PATH: /app/data/billing.sqlite
+      GISTIFY_DB_PATH: /app/data/gistify.sqlite
+      GIT_SHA: ${GIT_SHA:-}
+      GIT_BRANCH: ${GIT_BRANCH:-}
     volumes:
       - /srv/gistify/midas:/data/midas:ro
       - /srv/gistify/data:/app/data

@@ -13,6 +13,10 @@ import type {
   MacroForecastWorkspaceData,
   MacroForecastWorkspaceKey,
 } from "../shared/cpiPpiForecast";
+import {
+  createMacroArchiveStore,
+  type MacroArchiveStore,
+} from "./services/macroArchiveStore";
 
 const DEFAULT_POLL_INTERVAL_MS = 5 * 60 * 1000;
 const MIN_POLL_INTERVAL_MS = 30 * 1000;
@@ -396,7 +400,9 @@ function locateSourceFile(candidates: string[]): LocatedSourceFile | null {
   return null;
 }
 
-export function createCpiPpiForecastSyncService(): CpiPpiForecastSyncService {
+export function createCpiPpiForecastSyncService(
+  macroArchiveStore: MacroArchiveStore = createMacroArchiveStore()
+): CpiPpiForecastSyncService {
   const pollIntervalMs = resolvePollIntervalMs();
   const runtimeState: Record<MacroForecastWorkspaceKey, SourceRuntimeState> = {
     cpi: {
@@ -541,6 +547,22 @@ export function createCpiPpiForecastSyncService(): CpiPpiForecastSyncService {
       runtime.lastKnownMtimeMs = locatedSource.mtimeMs;
       runtime.lastError = null;
       runtime.status = "ok";
+
+      try {
+        const archiveMonth = normalized.reportDate.slice(0, 7);
+        macroArchiveStore.saveArchive(
+          key,
+          archiveMonth,
+          normalized,
+          locatedSource.filePath
+        );
+      } catch (archiveError) {
+        console.error(
+          `[cpiPpiForecast] Failed to archive ${key} snapshot:`,
+          archiveError
+        );
+      }
+
       return runtime.snapshot;
     } catch (error) {
       runtime.lastError =

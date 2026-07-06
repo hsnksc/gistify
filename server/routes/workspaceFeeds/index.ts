@@ -7,6 +7,7 @@ import type {
   EarningsStrategyData,
   EarningsStrategyPipelineMetadata,
 } from "../../../shared/earnings";
+import { createMacroArchiveStore } from "../../services/macroArchiveStore";
 
 type WorkspaceFeedsRouterDependencies = {
   buildEarningsApiResponse: (
@@ -125,6 +126,59 @@ export function createWorkspaceFeedsRouter({
     }
 
     res.status(200).json(snapshot);
+  });
+
+  router.get("/cpi-ppi/forecast/archive", (req, res) => {
+    setPrivateNoStore(res);
+
+    const workspace = normalizeString(req.query.workspace).toLowerCase();
+    if (workspace !== "cpi" && workspace !== "ppi") {
+      res.status(400).json({ error: "workspace must be 'cpi' or 'ppi'." });
+      return;
+    }
+
+    const rawLimit = Number(req.query.limit);
+    const limit = Number.isFinite(rawLimit) && rawLimit > 0 ? rawLimit : 12;
+
+    const macroArchiveStore = createMacroArchiveStore();
+    const records = macroArchiveStore.listArchives(workspace, limit);
+
+    res.status(200).json({
+      workspace,
+      records: records.map(record => ({
+        id: record.id,
+        month: record.month,
+        source: record.source,
+        createdAt: record.createdAt,
+        payload: record.payload,
+      })),
+    });
+  });
+
+  router.get("/cpi-ppi/forecast/compare", (req, res) => {
+    setPrivateNoStore(res);
+
+    const workspace = normalizeString(req.query.workspace).toLowerCase();
+    if (workspace !== "cpi" && workspace !== "ppi") {
+      res.status(400).json({ error: "workspace must be 'cpi' or 'ppi'." });
+      return;
+    }
+
+    const month = normalizeString(req.query.month);
+    if (!month || !/^\d{4}-\d{2}$/.test(month)) {
+      res.status(400).json({ error: "month must be YYYY-MM." });
+      return;
+    }
+
+    const macroArchiveStore = createMacroArchiveStore();
+    const comparison = macroArchiveStore.getComparison(workspace, month);
+
+    res.status(200).json({
+      workspace,
+      month,
+      current: comparison.current,
+      previous: comparison.previous,
+    });
   });
 
   router.get("/calendar", (_req, res) => {

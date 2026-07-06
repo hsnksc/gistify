@@ -23,13 +23,9 @@ interface FlowReportsRouterDependencies {
   listEngagementsByReportIds: (
     reportIds: string[]
   ) => Map<string, FlowReportEngagement>;
-  recordView: (reportId: string, actorKey: string) => FlowReportEngagement;
-  recordLike: (
-    reportId: string,
-    actorKey: string,
-    liked: boolean
-  ) => FlowReportEngagement;
-  recordShare: (reportId: string, actorKey: string) => FlowReportEngagement;
+  recordView: (reportId: string) => FlowReportEngagement;
+  recordLike: (reportId: string, liked: boolean) => FlowReportEngagement;
+  recordShare: (reportId: string) => FlowReportEngagement;
 }
 
 function normalizeString(value: unknown) {
@@ -303,7 +299,7 @@ function translateReport<T extends DailyReportRecord>(report: T, lang: string): 
     }
 
     const payload: FlowReportEngagementResponse = {
-      engagement: recordView(report.id, getEngagementActorKey(req)),
+      engagement: recordView(report.id),
     };
     res.status(200).json(payload);
   });
@@ -326,11 +322,7 @@ function translateReport<T extends DailyReportRecord>(report: T, lang: string): 
         ? (req.body as FlowReportEngagementRequestBody)
         : {};
     const payload: FlowReportEngagementResponse = {
-      engagement: recordLike(
-        report.id,
-        getEngagementActorKey(req),
-        Boolean(body.liked)
-      ),
+      engagement: recordLike(report.id, Boolean(body.liked)),
     };
     res.status(200).json(payload);
   });
@@ -349,7 +341,7 @@ function translateReport<T extends DailyReportRecord>(report: T, lang: string): 
     }
 
     const payload: FlowReportEngagementResponse = {
-      engagement: recordShare(report.id, getEngagementActorKey(req)),
+      engagement: recordShare(report.id),
     };
     res.status(200).json(payload);
   });
