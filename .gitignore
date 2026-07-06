@@ -146,3 +146,5 @@ skills/*.md
 tmp-edge-profile/
 tmp-*.html
 tmp-*.md
+!coverage/reports/
+!coverage/reports/**
