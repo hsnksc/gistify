@@ -1018,7 +1018,7 @@ Sitemap: https://gistify.pro/sitemap.xml
 <!-- Open Graph -->
 <meta property="og:title" content="Gistify — Earnings Intelligence & Momentum Workspace">
 <meta property="og:description" content="Gistify brings earnings intelligence, momentum scanning, macro event framing and options research into one dark finance workspace.">
-<meta property="og:image" content="https://gistify.pro/og-image-1200x630.png">
+<meta property="og:image" content="https://gistify.pro/gistifylogo.png">
 <meta property="og:url" content="https://gistify.pro/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Gistify">
@@ -1027,7 +1027,7 @@ Sitemap: https://gistify.pro/sitemap.xml
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Gistify — Earnings Intelligence & Momentum Workspace">
 <meta name="twitter:description" content="Gistify brings earnings intelligence, momentum scanning, macro event framing and options research into one dark finance workspace.">
-<meta name="twitter:image" content="https://gistify.pro/og-image-1200x630.png">
+<meta name="twitter:image" content="https://gistify.pro/gistifylogo.png">
 <meta name="twitter:site" content="@gistify">
 ```
 

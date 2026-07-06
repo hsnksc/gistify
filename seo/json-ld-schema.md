@@ -28,7 +28,7 @@ Use this on the Gistify homepage (`https://gistify.pro/`).
   },
   "description": "Gistify brings earnings intelligence, momentum scanning, macro event framing and options research into one dark finance workspace.",
   "url": "https://gistify.pro/",
-  "image": "https://gistify.pro/gistifylogo.png",
+  "image": "https://gistify.pro/gistifylogo.png?v=20260706",
   "author": {
     "@type": "Organization",
     "name": "Gistify"
@@ -59,7 +59,7 @@ Use this site-wide (every page).
   "@type": "Organization",
   "name": "Gistify",
   "url": "https://gistify.pro/",
-  "logo": "https://gistify.pro/gistifylogo.png",
+  "logo": "https://gistify.pro/gistifylogo.png?v=20260706",
   "sameAs": [
     "https://twitter.com/gistify",
     "https://www.linkedin.com/company/gistify"
@@ -345,7 +345,7 @@ For individual blog posts:
   "@type": "BlogPosting",
   "headline": "AAPL Q3 2025 Earnings Strategy: IV Crush & Momentum Setup",
   "description": "Deep-dive earnings play on Apple with IV rank analysis, CPR levels, and 0DTE option strategy.",
-  "image": "https://gistify.pro/blog/aapl-q3-2025-og.png",
+  "image": "https://gistify.pro/gistifylogo.png?v=20260706",
   "author": {
     "@type": "Organization",
     "name": "Gistify"
@@ -355,7 +355,7 @@ For individual blog posts:
     "name": "Gistify",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://gistify.pro/gistifylogo.png"
+      "url": "https://gistify.pro/gistifylogo.png?v=20260706"
     }
   },
   "datePublished": "2025-07-28T10:00:00-04:00",

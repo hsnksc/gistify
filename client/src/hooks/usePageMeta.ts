@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { DEFAULT_LANGUAGE, getLanguageFromPathname, getOgLocale, localizePath, type AppLanguage } from "@/lib/i18n";
 
 const SITE_URL = "https://gistify.pro";
-const DEFAULT_OG_IMAGE = `${SITE_URL}/gistifylogo.png`;
+const DEFAULT_OG_IMAGE = `${SITE_URL}/gistifylogo.png?v=20260706`;
 
 function ensureMetaTag(
   selector: string,

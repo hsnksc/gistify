@@ -449,7 +449,7 @@ export function generateStrategyGuideHTML(
   data: StrategyGuideData
 ): string {
   const canonical = `https://gistify.pro/strategies/${slug}`;
-  const ogImage = `https://gistify.pro/gistifylogo.png`;
+  const ogImage = `https://gistify.pro/gistifylogo.png?v=20260706`;
 
   const setupStepsHTML = data.setupSteps
     .map((step, i) => `<li data-index="${i + 1}">${step}</li>`)
@@ -494,7 +494,7 @@ export function generateStrategyGuideHTML(
     publisher: {
       '@type': 'Organization',
       name: 'Gistify',
-      logo: { '@type': 'ImageObject', url: 'https://gistify.pro/gistifylogo.png' },
+      logo: { '@type': 'ImageObject', url: 'https://gistify.pro/gistifylogo.png?v=20260706' },
     },
     datePublished: new Date().toISOString(),
     dateModified: new Date().toISOString(),

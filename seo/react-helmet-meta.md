@@ -59,7 +59,7 @@ export interface SEOProps {
   robots?: string;
 }
 
-const DEFAULT_OG_IMAGE = 'https://gistify.pro/gistifylogo.png';
+const DEFAULT_OG_IMAGE = 'https://gistify.pro/gistifylogo.png?v=20260706';
 const SITE_URL = 'https://gistify.pro';
 
 export const SEO: React.FC<SEOProps> = ({
@@ -160,7 +160,7 @@ export const DefaultSEO: React.FC = () => {
       title="Gistify — Earnings Intelligence & Momentum Scanning for Options Traders"
       description="Gistify brings earnings intelligence, momentum scanning, macro event framing and options research into one dark finance workspace."
       canonical="/"
-      ogImage="https://gistify.pro/gistifylogo.png"
+      ogImage="https://gistify.pro/gistifylogo.png?v=20260706"
       ogType="website"
       twitterCard="summary_large_image"
       hreflang={[
@@ -187,7 +187,7 @@ export const DefaultSEO: React.FC = () => {
           '@type': 'Organization',
           name: 'Gistify',
           url: 'https://gistify.pro/',
-          logo: 'https://gistify.pro/gistifylogo.png',
+          logo: 'https://gistify.pro/gistifylogo.png?v=20260706',
           sameAs: [
             'https://twitter.com/gistify',
             'https://www.linkedin.com/company/gistify',
@@ -224,7 +224,7 @@ const HomePage: React.FC = () => {
         title="Gistify — Earnings Intelligence & Momentum Scanning for Options Traders"
         description="Gistify brings earnings intelligence, momentum scanning, macro event framing and options research into one dark finance workspace."
         canonical="/"
-        ogImage="https://gistify.pro/og-image-home.png"
+        ogImage="https://gistify.pro/gistifylogo.png?v=20260706"
         ogType="website"
         hreflang={[
           { lang: 'en', url: 'https://gistify.pro/' },
@@ -249,7 +249,7 @@ const HomePage: React.FC = () => {
           description:
             'Gistify brings earnings intelligence, momentum scanning, macro event framing and options research into one dark finance workspace.',
           url: 'https://gistify.pro/',
-          image: 'https://gistify.pro/gistifylogo.png',
+          image: 'https://gistify.pro/gistifylogo.png?v=20260706',
         }}
       />
       {/* Page content */}
@@ -276,7 +276,7 @@ const AppDashboard: React.FC = () => {
         title="Dashboard — Gistify Trading Workspace"
         description="Access your personalized trading dashboard with momentum scanners, earnings plays, and macro event alerts."
         canonical="/app"
-        ogImage="https://gistify.pro/og-image-dashboard.png"
+        ogImage="https://gistify.pro/gistifylogo.png?v=20260706"
         ogType="website"
         noindex={true} // Private app area — do not index
         hreflang={[
@@ -362,7 +362,7 @@ const BlogPost: React.FC = () => {
               name: 'Gistify',
               logo: {
                 '@type': 'ImageObject',
-                url: 'https://gistify.pro/gistifylogo.png',
+                url: 'https://gistify.pro/gistifylogo.png?v=20260706',
               },
             },
             datePublished: post.publishedAt,
@@ -428,7 +428,7 @@ const IVRankCalculator: React.FC = () => {
         title="IV Rank Calculator — Compare Implied Volatility Percentiles"
         description="Free IV Rank Calculator for options traders. Compare current implied volatility against 52-week range for any US stock."
         canonical="/tools/iv-rank-calculator"
-        ogImage="https://gistify.pro/og-image-tools.png"
+        ogImage="https://gistify.pro/gistifylogo.png?v=20260706"
         ogType="product"
         keywords="IV Rank, implied volatility, options calculator, volatility percentile, options trading"
         hreflang={[
@@ -449,7 +449,7 @@ const IVRankCalculator: React.FC = () => {
           description:
             'Free IV Rank Calculator for options traders. Compare current implied volatility against 52-week range for any US stock.',
           url: 'https://gistify.pro/tools/iv-rank-calculator',
-          image: 'https://gistify.pro/og-image-tools.png',
+          image: 'https://gistify.pro/gistifylogo.png?v=20260706',
         }}
       />
       {/* Page content */}
@@ -480,7 +480,7 @@ const EarningsPage: React.FC = () => {
         title={`${upperTicker} Earnings Strategy — IV Crush & Option Setup | Gistify`}
         description={`Complete earnings play analysis for ${upperTicker}. IV Rank, CPR levels, expected move, and 0DTE/weekly option strategies.`}
         canonical={`/earnings/${upperTicker}`}
-        ogImage={`https://gistify.pro/og-image-earnings/${upperTicker}.png`}
+        ogImage={`https://gistify.pro/gistifylogo.png?v=20260706`}
         ogType="article"
         keywords={`${upperTicker}, earnings, options strategy, IV crush, ${upperTicker} earnings, ${upperTicker} options`}
         hreflang={[
@@ -499,7 +499,7 @@ const EarningsPage: React.FC = () => {
             '@type': 'Article',
             headline: `${upperTicker} Earnings Strategy — IV Crush & Option Setup`,
             description: `Complete earnings play analysis for ${upperTicker}. IV Rank, CPR levels, expected move, and 0DTE/weekly option strategies.`,
-            image: `https://gistify.pro/og-image-earnings/${upperTicker}.png`,
+            image: `https://gistify.pro/gistifylogo.png?v=20260706`,
             author: {
               '@type': 'Organization',
               name: 'Gistify',
@@ -509,7 +509,7 @@ const EarningsPage: React.FC = () => {
               name: 'Gistify',
               logo: {
                 '@type': 'ImageObject',
-                url: 'https://gistify.pro/logo.png',
+                url: 'https://gistify.pro/gistifylogo.png?v=20260706',
               },
             },
             datePublished: new Date().toISOString(),

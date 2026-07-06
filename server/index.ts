@@ -2073,7 +2073,7 @@ function escapeHtml(value: string) {
 }
 
 const SITE_URL = normalizeString(process.env.PUBLIC_SITE_URL) || "https://gistify.pro";
-const SITE_OG_IMAGE = `${SITE_URL}/gistifylogo.png`;
+const SITE_OG_IMAGE = `${SITE_URL}/gistifylogo.png?v=20260706`;
 
 function renderStaticMarketingPage(
   pageTitle: string,
@@ -2677,7 +2677,7 @@ function renderLandingPageHtml() {
           "@type": "Organization",
           name: "Gistify",
           url: `${SITE_URL}/`,
-          logo: `${SITE_URL}/gistifylogo.png`,
+          logo: `${SITE_URL}/gistifylogo.png?v=20260706`,
           sameAs: [],
         },
         {

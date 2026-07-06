@@ -2291,12 +2291,12 @@ Flow route'u sosyal katman içerir: beğenme, yorum, paylaşım, görüntülenme
 {
   "title": "META Güncel Durum Raporu — Gistify",
   "description": "11 Haziran 2026 META teknik ve temel analiz. Günlük momentum, IV crush, earnings setup.",
-  "image": "https://gistify.pro/og/flow-meta-guncel-durum-raporu-11haziran2026.png",
+  "image": "https://gistify.pro/gistifylogo.png",
   "url": "https://gistify.pro/flow/meta-guncel-durum-raporu-11haziran2026",
   "ogTags": {
     "og:title": "META Güncel Durum Raporu — Gistify",
     "og:description": "11 Haziran 2026 META teknik ve temel analiz...",
-    "og:image": "https://gistify.pro/og/...",
+    "og:image": "https://gistify.pro/gistifylogo.png",
     "og:url": "https://gistify.pro/flow/...",
     "og:type": "article",
     "twitter:card": "summary_large_image"

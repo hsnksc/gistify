@@ -404,7 +404,7 @@ export function generateEarningsPreviewHTML(
   data: EarningsPreviewData
 ): string {
   const canonical = `https://gistify.pro/earnings/${ticker.toUpperCase()}`;
-  const ogImage = `https://gistify.pro/gistifylogo.png`;
+  const ogImage = `https://gistify.pro/gistifylogo.png?v=20260706`;
   const reportDateStr = new Date(data.reportDate).toLocaleDateString('en-US', {
     weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',
   });
@@ -428,7 +428,7 @@ export function generateEarningsPreviewHTML(
     publisher: {
       '@type': 'Organization',
       name: 'Gistify',
-      logo: { '@type': 'ImageObject', url: 'https://gistify.pro/gistifylogo.png' },
+      logo: { '@type': 'ImageObject', url: 'https://gistify.pro/gistifylogo.png?v=20260706' },
     },
     datePublished: data.reportDate,
     dateModified: new Date().toISOString(),

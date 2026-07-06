@@ -79,7 +79,7 @@ export default function PublicShell({
               className="flex items-center gap-3 rounded-xl transition-colors hover:text-foreground"
             >
               <img
-                src="/gistifylogo.png?v=20260606-1"
+                src="/gistifylogo.png?v=20260706"
                 alt="Gistify logo"
                 width="48"
                 height="48"
