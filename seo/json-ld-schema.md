@@ -28,7 +28,7 @@ Use this on the Gistify homepage (`https://gistify.pro/`).
   },
   "description": "Gistify brings earnings intelligence, momentum scanning, macro event framing and options research into one dark finance workspace.",
   "url": "https://gistify.pro/",
-  "image": "https://gistify.pro/og-image.png",
+  "image": "https://gistify.pro/gistifylogo.png",
   "author": {
     "@type": "Organization",
     "name": "Gistify"
@@ -59,7 +59,7 @@ Use this site-wide (every page).
   "@type": "Organization",
   "name": "Gistify",
   "url": "https://gistify.pro/",
-  "logo": "https://gistify.pro/logo.png",
+  "logo": "https://gistify.pro/gistifylogo.png",
   "sameAs": [
     "https://twitter.com/gistify",
     "https://www.linkedin.com/company/gistify"
@@ -355,7 +355,7 @@ For individual blog posts:
     "name": "Gistify",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://gistify.pro/logo.png"
+      "url": "https://gistify.pro/gistifylogo.png"
     }
   },
   "datePublished": "2025-07-28T10:00:00-04:00",

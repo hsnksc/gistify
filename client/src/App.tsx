@@ -1180,7 +1180,7 @@ function App() {
                       className="inline-flex shrink-0 items-center gap-3 rounded-full border border-border bg-card/90 px-3 py-2 shadow-[0_12px_28px_rgba(0,0,0,0.14)] transition-colors hover:border-primary/30"
                     >
                       <img
-                        src="/gistifylogo.jpeg?v=20260606-1"
+                        src="/gistifylogo.png?v=20260606-1"
                         alt="Gistify logo"
                         className="size-10 rounded-full border border-border object-cover md:size-11"
                       />

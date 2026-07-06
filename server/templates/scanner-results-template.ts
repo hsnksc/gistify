@@ -382,7 +382,7 @@ export function generateScannerResultsHTML(
   data: ScannerResultsData
 ): string {
   const canonical = `https://gistify.pro/scanners/${type}`;
-  const ogImage = `https://gistify.pro/og/scanners/${type}.png`;
+  const ogImage = `https://gistify.pro/gistifylogo.png`;
   const lastUpdatedStr = new Date(data.lastUpdated).toLocaleString('en-US', {
     weekday: 'short',
     year: 'numeric',
@@ -417,7 +417,7 @@ export function generateScannerResultsHTML(
     publisher: {
       '@type': 'Organization',
       name: 'Gistify',
-      logo: { '@type': 'ImageObject', url: 'https://gistify.pro/logo.png' },
+      logo: { '@type': 'ImageObject', url: 'https://gistify.pro/gistifylogo.png' },
     },
     datePublished: data.lastUpdated,
     dateModified: new Date().toISOString(),

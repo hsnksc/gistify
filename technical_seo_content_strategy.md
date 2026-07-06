@@ -930,7 +930,7 @@ Tool pages are **link magnets** — they attract backlinks, social shares, and o
   },
   "description": "Gistify brings earnings intelligence, momentum scanning, macro event framing and options research into one dark finance workspace.",
   "url": "https://gistify.pro/",
-  "image": "https://gistify.pro/og-image.png"
+  "image": "https://gistify.pro/gistifylogo.png"
 }
 ```
 
@@ -941,7 +941,7 @@ Tool pages are **link magnets** — they attract backlinks, social shares, and o
   "@type": "Organization",
   "name": "Gistify",
   "url": "https://gistify.pro/",
-  "logo": "https://gistify.pro/logo.png",
+  "logo": "https://gistify.pro/gistifylogo.png",
   "sameAs": [
     "https://twitter.com/gistify",
     "https://www.linkedin.com/company/gistify"

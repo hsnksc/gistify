@@ -59,7 +59,7 @@ export interface SEOProps {
   robots?: string;
 }
 
-const DEFAULT_OG_IMAGE = 'https://gistify.pro/og-image.png';
+const DEFAULT_OG_IMAGE = 'https://gistify.pro/gistifylogo.png';
 const SITE_URL = 'https://gistify.pro';
 
 export const SEO: React.FC<SEOProps> = ({
@@ -160,7 +160,7 @@ export const DefaultSEO: React.FC = () => {
       title="Gistify — Earnings Intelligence & Momentum Scanning for Options Traders"
       description="Gistify brings earnings intelligence, momentum scanning, macro event framing and options research into one dark finance workspace."
       canonical="/"
-      ogImage="https://gistify.pro/og-image.png"
+      ogImage="https://gistify.pro/gistifylogo.png"
       ogType="website"
       twitterCard="summary_large_image"
       hreflang={[
@@ -187,7 +187,7 @@ export const DefaultSEO: React.FC = () => {
           '@type': 'Organization',
           name: 'Gistify',
           url: 'https://gistify.pro/',
-          logo: 'https://gistify.pro/logo.png',
+          logo: 'https://gistify.pro/gistifylogo.png',
           sameAs: [
             'https://twitter.com/gistify',
             'https://www.linkedin.com/company/gistify',
@@ -249,7 +249,7 @@ const HomePage: React.FC = () => {
           description:
             'Gistify brings earnings intelligence, momentum scanning, macro event framing and options research into one dark finance workspace.',
           url: 'https://gistify.pro/',
-          image: 'https://gistify.pro/og-image.png',
+          image: 'https://gistify.pro/gistifylogo.png',
         }}
       />
       {/* Page content */}
@@ -362,7 +362,7 @@ const BlogPost: React.FC = () => {
               name: 'Gistify',
               logo: {
                 '@type': 'ImageObject',
-                url: 'https://gistify.pro/logo.png',
+                url: 'https://gistify.pro/gistifylogo.png',
               },
             },
             datePublished: post.publishedAt,

@@ -8659,7 +8659,7 @@ test.describe("Smoke Test", () => {
   });
 
   test("static assets are served", async ({ request }) => {
-    const res = await request.get("http://localhost:5173/gistifylogo.jpeg");
+    const res = await request.get("http://localhost:5173/gistifylogo.png");
     expect(res.status()).toBe(200);
     expect(res.headers()["content-type"]).toContain("image");
   });
