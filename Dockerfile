@@ -25,6 +25,8 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
 ENV BILLING_DB_PATH=/app/data/billing.sqlite
+ENV GISTIFY_DB_PATH=/app/data/gistify.sqlite
+ENV GISTIFY_MIGRATIONS_DIR=/app/server/db/migrations
 
 RUN mkdir -p /app/data
 
@@ -32,6 +34,8 @@ COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/client/public ./client/public
+COPY --from=build /app/server/db/migrations ./server/db/migrations
+COPY --from=build /app/server/i18n ./server/i18n
 COPY --from=build /app/scripts ./scripts
 COPY --from=build /app/dailyreport ./dailyreport
 COPY --from=build /app/earningreport ./earningreport

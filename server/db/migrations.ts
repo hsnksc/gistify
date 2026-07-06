@@ -16,9 +16,25 @@ function ensureMigrationsTable(db: DatabaseSync) {
   `);
 }
 
+function getMigrationsDir(): string {
+  if (process.env.GISTIFY_MIGRATIONS_DIR) {
+    return path.resolve(process.env.GISTIFY_MIGRATIONS_DIR);
+  }
+
+  // When bundled with esbuild, import.meta.dirname points to /app/dist,
+  // but migrations live at /app/server/db/migrations in the runtime image.
+  const bundledDir = path.resolve(import.meta.dirname, "migrations");
+  if (fs.existsSync(bundledDir)) {
+    return bundledDir;
+  }
+
+  return path.resolve(process.cwd(), "server", "db", "migrations");
+}
+
 function listMigrationFiles(): string[] {
-  const migrationsDir = path.resolve(import.meta.dirname, "migrations");
+  const migrationsDir = getMigrationsDir();
   if (!fs.existsSync(migrationsDir)) {
+    console.warn(`[gistify-db] Migrations directory not found: ${migrationsDir}`);
     return [];
   }
 
@@ -54,7 +70,7 @@ export function runMigrations(db: DatabaseSync) {
       continue;
     }
 
-    const filePath = path.resolve(import.meta.dirname, "migrations", file);
+    const filePath = path.resolve(getMigrationsDir(), file);
     const sql = fs.readFileSync(filePath, "utf8");
 
     db.exec(sql);
