@@ -2,195 +2,270 @@
   "schemaVersion": "2.0",
   "reportType": "after-market",
   "reportDate": "2026-07-06",
-  "generatedAt": "2026-07-06T20:21:41Z",
-  "marketSummary": {
-    "spy": {
-      "price": 751.27,
-      "change": 0.86,
-      "vwap": 750.65,
-      "open": 748.22,
-      "high": 752.4,
-      "low": 747.455,
-      "prevClose": 744.86,
-      "volume": 1519330
-    },
-    "qqq": {
-      "price": 722.68,
-      "change": 1.42,
-      "vwap": 723.23,
-      "open": 719.65,
-      "high": 726.03,
-      "low": 718.58,
-      "prevClose": 712.53,
-      "volume": 637412
-    },
-    "iwm": {
-      "price": 298.83,
-      "change": 0.43,
-      "vwap": 299.5,
-      "open": 297.745,
-      "high": 300.395,
-      "low": 297.74,
-      "prevClose": 297.54,
-      "volume": 1256820
-    },
-    "vix": {
-      "level": 15.63,
-      "change": -1.14,
-      "regime": "normal"
-    }
-  },
+  "generatedAt": "2026-07-06T21:31:53.310098Z",
   "marketRegime": {
-    "vix": 15.63,
+    "vix": 15.97,
     "regime": "normal",
-    "breadth": null,
+    "breadth": "NYSE 1.42:1 pozitif, Nasdaq 0.95:1 negatif",
     "riskMode": "AGRESIF",
     "paramsVersion": 2,
-    "note": "Kisitli veri modu - Alpaca bars 60 gun donmedi; skorlama web verileri uzerinden"
+    "note": "Kısıtlı veri modu — Alpaca bars 1 günlük döndü, RVOL ve teknik metrikler web tahmini + bugünkü bar."
+  },
+  "marketSummary": {
+    "spy": {
+      "price": 751.28,
+      "change": 0.86,
+      "vwap": 750.64,
+      "open": 748.74,
+      "high": 752.41,
+      "low": 747.41,
+      "prevClose": 744.86,
+      "volume": 50567240,
+      "note": null
+    },
+    "qqq": {
+      "price": 722.82,
+      "change": 1.43,
+      "vwap": 722.5,
+      "open": 719.7,
+      "high": 726.08,
+      "low": 718.47,
+      "prevClose": 712.6,
+      "volume": 29416923,
+      "note": null
+    },
+    "iwm": {
+      "price": 298.9,
+      "change": 0.4,
+      "vwap": 299.51,
+      "open": 297.75,
+      "high": 300.41,
+      "low": 297.62,
+      "prevClose": 297.7,
+      "volume": 18510899,
+      "note": null
+    },
+    "vix": {
+      "price": 15.97,
+      "change": -1.1,
+      "regime": "normal",
+      "note": null
+    }
   },
   "topMovers": {
     "gainers": [
       {
-        "ticker": "AXTI",
-        "company": "AXT Inc",
-        "price": 63.52,
-        "change": 15.82,
-        "volume": 9188000,
-        "vwap": null,
-        "catalyst": "Semiconductor substrate demand",
-        "sector": "Technology",
-        "marketCap": null,
-        "week52Range": null
+        "ticker": "WDC",
+        "company": "Western Digital",
+        "price": 577.46,
+        "change": 7.14,
+        "volume": 7553044,
+        "catalyst": "AI data center storage demand",
+        "vwap": 580.77
       },
       {
-        "ticker": "ENOV",
-        "company": "Enovis Corp",
-        "price": 26.05,
-        "change": 14.84,
-        "volume": 1000000,
-        "vwap": null,
-        "catalyst": "Medical device spin-off clarity",
-        "sector": "Healthcare",
-        "marketCap": null,
-        "week52Range": null
+        "ticker": "TSLA",
+        "company": "Tesla",
+        "price": 419.77,
+        "change": 6.69,
+        "volume": 54266934,
+        "catalyst": "EV demand stabilization bounce",
+        "vwap": 411.93
       },
       {
-        "ticker": "IMOS",
-        "company": "ChipMOS TECHNOLOGIES",
-        "price": 72.74,
-        "change": 14.8,
-        "volume": 152063,
-        "vwap": null,
-        "catalyst": "Memory testing demand spike",
-        "sector": "Technology",
-        "marketCap": null,
-        "week52Range": null
+        "ticker": "AMD",
+        "company": "AMD",
+        "price": 552.05,
+        "change": 6.61,
+        "volume": 29733061,
+        "catalyst": "GS PT raise to $640, AI optimism",
+        "vwap": 557.72
       },
       {
-        "ticker": "IREN",
-        "company": "IREN Limited",
-        "price": 44.05,
-        "change": 13.47,
-        "volume": 38625000,
-        "vwap": null,
-        "catalyst": "Bitcoin mining / energy pivot",
-        "sector": "Technology",
-        "marketCap": null,
-        "week52Range": null
+        "ticker": "ANET",
+        "company": "Arista Networks",
+        "price": 173.28,
+        "change": 4.0,
+        "volume": 8501627,
+        "catalyst": "AI infra networking demand",
+        "vwap": 172.71
       },
       {
-        "ticker": "LCID",
-        "company": "Lucid Group",
-        "price": 6.65,
-        "change": 10.48,
-        "volume": 9312000,
-        "vwap": null,
-        "catalyst": "EV delivery optimism",
-        "sector": "Consumer Discretionary",
-        "marketCap": null,
-        "week52Range": null
+        "ticker": "INTC",
+        "company": "Intel",
+        "price": 122.2,
+        "change": 1.41,
+        "volume": 86344164,
+        "catalyst": "Turnaround/foundry narrative",
+        "vwap": 124.16
       }
     ],
     "losers": [
       {
-        "ticker": "SOLS",
-        "company": "Solstice Advanced Materials",
-        "price": 68.04,
-        "change": -15.15,
-        "volume": 11897000,
-        "vwap": null,
-        "catalyst": "Material science hype fade",
-        "sector": "Materials",
-        "marketCap": null,
-        "week52Range": null
+        "ticker": "AZO",
+        "company": "AutoZone",
+        "price": 2957.71,
+        "change": -5.82,
+        "volume": 341164,
+        "catalyst": "Auto parts sector rotation out",
+        "vwap": 2981.31
       },
       {
-        "ticker": "AAP",
-        "company": "Advance Auto Parts",
-        "price": 56.37,
-        "change": -8.39,
-        "volume": 1943000,
-        "vwap": null,
-        "catalyst": "Weak consumer / margin pressure",
-        "sector": "Consumer Discretionary",
-        "marketCap": null,
-        "week52Range": null
+        "ticker": "AMAT",
+        "company": "Applied Materials",
+        "price": 592.79,
+        "change": -5.56,
+        "volume": 8586027,
+        "catalyst": "Semiconductor profit-taking",
+        "vwap": 600.9
       },
       {
-        "ticker": "ULS",
-        "company": "UL Solutions Inc",
-        "price": 89.33,
-        "change": -8.05,
-        "volume": 1833000,
-        "vwap": null,
-        "catalyst": "Testing demand slowdown fears",
-        "sector": "Industrials",
-        "marketCap": null,
-        "week52Range": null
+        "ticker": "LRCX",
+        "company": "Lam Research",
+        "price": 350.2,
+        "change": -4.14,
+        "volume": 13545830,
+        "catalyst": "SOX index -2.6% drag",
+        "vwap": 354.79
       },
       {
-        "ticker": "RKLB",
-        "company": "Rocket Lab Corp",
-        "price": 93.14,
-        "change": -7.31,
-        "volume": 17379000,
-        "vwap": null,
-        "catalyst": "Profit-taking after space rally",
-        "sector": "Industrials",
-        "marketCap": null,
-        "week52Range": null
+        "ticker": "ORLY",
+        "company": "O'Reilly Automotive",
+        "price": 90.25,
+        "change": -2.63,
+        "volume": 12891270,
+        "catalyst": "Auto parts profit-taking post-Q1",
+        "vwap": 91.5
       },
       {
-        "ticker": "CAVA",
-        "company": "CAVA Group",
-        "price": 71.78,
-        "change": -6.67,
-        "volume": 3034000,
-        "vwap": null,
-        "catalyst": "Restaurant sector rotation out",
-        "sector": "Consumer Discretionary",
-        "marketCap": null,
-        "week52Range": null
+        "ticker": "MU",
+        "company": "Micron",
+        "price": 984.75,
+        "change": -2.21,
+        "volume": 36411349,
+        "catalyst": "Memory sector profit-taking",
+        "vwap": 999.04
       }
     ]
   },
   "momentumLeaders": [
     {
-      "rank": 1,
-      "ticker": "ULS",
-      "company": "UL Solutions Inc",
-      "sector": "Industrials",
-      "price": 89.33,
-      "changePct": -8.05,
-      "rvol": 2.11,
-      "mss": 67.4,
-      "grade": "A",
-      "phase": "İVME (Gün 1)",
+      "ticker": "ANET",
+      "company": "Arista Networks, Inc.",
+      "sector": "Computer Hardware",
+      "price": 173.28,
+      "changePct": 4.0,
+      "rvol": 0.92,
+      "mss": 64,
+      "grade": "B",
+      "phase": "ATEŞLEME (Gün 1)",
       "scoreBreakdown": {
-        "volumeProfile": 17.0,
+        "volumeProfile": 5.0,
         "catalystDurability": 14.0,
-        "priceStructure": 13.5,
-        "trendPosition": 7.2,
+        "priceStructure": 15.0,
+        "trendPosition": 9.0,
+        "relativeStrength": 7.5,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 3.2,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "Cloud networking demand resilient, Arista outperformance in AI infrastructure buildout",
+        "tier": 2,
+        "halfLife": "haftalar"
+      },
+      "historicalStats": {
+        "momentumAge": 1,
+        "consecutiveHigherLows": null,
+        "closeStrength3d": 1.0,
+        "volumeTrend": "mixed",
+        "atrExtension": null,
+        "continuationBaseRate": null,
+        "distFrom52wHighPct": null
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Alpaca Markets (dailyBar)",
+        "Yahoo Finance",
+        "Robinhood"
+      ],
+      "rank": 1,
+      "tradePlan": {
+        "entryZone": "171.55–175.01",
+        "stop": 162.88,
+        "t1": 188.88,
+        "t2": 199.28,
+        "rr": 1.5,
+        "positionNote": "%50 pozisyon"
+      }
+    },
+    {
+      "ticker": "TSLA",
+      "company": "Tesla, Inc.",
+      "sector": "Auto Manufacturers",
+      "price": 419.77,
+      "changePct": 6.69,
+      "rvol": 1.1,
+      "mss": 62,
+      "grade": "B",
+      "phase": "ATEŞLEME (Gün 1)",
+      "scoreBreakdown": {
+        "volumeProfile": 5.0,
+        "catalystDurability": 10.0,
+        "priceStructure": 15.0,
+        "trendPosition": 9.0,
+        "relativeStrength": 10.0,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 3.2,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "Momentum rebound from 52-week low territory, EV demand stabilization narrative",
+        "tier": 3,
+        "halfLife": "günler"
+      },
+      "historicalStats": {
+        "momentumAge": 1,
+        "consecutiveHigherLows": null,
+        "closeStrength3d": 1.0,
+        "volumeTrend": "mixed",
+        "atrExtension": null,
+        "continuationBaseRate": null,
+        "distFrom52wHighPct": null
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Alpaca Markets (dailyBar)",
+        "Yahoo Finance",
+        "Robinhood"
+      ],
+      "rank": 2,
+      "tradePlan": {
+        "entryZone": "415.57–423.97",
+        "stop": 394.58,
+        "t1": 457.55,
+        "t2": 482.75,
+        "rr": 1.5,
+        "positionNote": "%50 pozisyon"
+      }
+    },
+    {
+      "ticker": "META",
+      "company": "Meta Platforms, Inc.",
+      "sector": "Communication Services",
+      "price": 600.29,
+      "changePct": 0.92,
+      "rvol": 0.96,
+      "mss": 59,
+      "grade": "B",
+      "phase": "İVME (Gün 2-3)",
+      "scoreBreakdown": {
+        "volumeProfile": 5.0,
+        "catalystDurability": 14.0,
+        "priceStructure": 15.0,
+        "trendPosition": 9.0,
         "relativeStrength": 2.5,
         "historicalBaseRate": 5.0,
         "institutionalFlow": 3.2,
@@ -198,247 +273,237 @@
         "exhaustionPenalty": 0
       },
       "catalyst": {
-        "summary": "Testing demand slowdown fears",
+        "summary": "Communication Services sector leadership (+2.4%), ad revenue resilience",
+        "tier": 2,
+        "halfLife": "haftalar"
+      },
+      "historicalStats": {
+        "momentumAge": 2,
+        "consecutiveHigherLows": null,
+        "closeStrength3d": 1.0,
+        "volumeTrend": "mixed",
+        "atrExtension": null,
+        "continuationBaseRate": null,
+        "distFrom52wHighPct": null
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Alpaca Markets (dailyBar)",
+        "Yahoo Finance",
+        "Robinhood"
+      ],
+      "rank": 3,
+      "tradePlan": {
+        "entryZone": "594.29–606.29",
+        "stop": 564.27,
+        "t1": 654.32,
+        "t2": 690.34,
+        "rr": 1.5,
+        "positionNote": "%50 pozisyon"
+      }
+    },
+    {
+      "ticker": "AMD",
+      "company": "Advanced Micro Devices, Inc.",
+      "sector": "Semiconductors",
+      "price": 552.05,
+      "changePct": 6.61,
+      "rvol": 0.8,
+      "mss": 58,
+      "grade": "B",
+      "phase": "ATEŞLEME (Gün 1)",
+      "scoreBreakdown": {
+        "volumeProfile": 5.0,
+        "catalystDurability": 14.0,
+        "priceStructure": 6.8,
+        "trendPosition": 9.0,
+        "relativeStrength": 10.0,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 3.2,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "Goldman Sachs price target raise $450 → $640, AI chip demand optimism",
         "tier": 2,
         "halfLife": "haftalar"
       },
       "historicalStats": {
         "momentumAge": 1,
         "consecutiveHigherLows": null,
-        "closeStrength3d": null,
-        "volumeTrend": "yukari",
+        "closeStrength3d": 0.45,
+        "volumeTrend": "mixed",
         "atrExtension": null,
         "continuationBaseRate": null,
-        "distFrom52wHighPct": null,
-        "note": "Kisitli veri modu - Alpaca bars 60 gun donmedi; historicalStats proxy"
-      },
-      "tradePlan": {
-        "entryZone": "88.44-90.22",
-        "stop": 92.9,
-        "t1": 83.97,
-        "t2": 80.4,
-        "rr": 1.5,
-        "positionNote": "tam pozisyon"
+        "distFrom52wHighPct": null
       },
       "exhaustionFlags": [],
       "sources": [
+        "Alpaca Markets (dailyBar)",
         "Yahoo Finance",
-        "Alpaca snapshot"
-      ]
-    }
-  ],
-  "callSetups": [
-    {
-      "ticker": "ENOV",
-      "direction": "call",
-      "entry": 25.92,
-      "target": 28.13,
-      "stop": 24.49,
-      "riskReward": 1.55,
-      "rationale": "Medical device spin-off clarity | MSS 61.9 | RVOL 1.0",
-      "timeframe": "swing (2-5 gun)"
-    },
-    {
-      "ticker": "IMOS",
-      "direction": "call",
-      "entry": 72.38,
-      "target": 78.56,
-      "stop": 68.38,
-      "riskReward": 1.55,
-      "rationale": "Memory testing demand spike | MSS 60.9 | RVOL 1.49",
-      "timeframe": "swing (2-5 gun)"
-    },
-    {
-      "ticker": "IREN",
-      "direction": "call",
-      "entry": 43.83,
-      "target": 47.57,
-      "stop": 41.41,
-      "riskReward": 1.55,
-      "rationale": "Bitcoin mining / energy pivot | MSS 57.9 | RVOL 0.84",
-      "timeframe": "swing (2-5 gun)"
-    },
-    {
-      "ticker": "LMND",
-      "direction": "call",
-      "entry": 78.22,
-      "target": 84.9,
-      "stop": 73.89,
-      "riskReward": 1.54,
-      "rationale": "Insurtech AI growth narrative | MSS 57.9 | RVOL 1.08",
-      "timeframe": "swing (2-5 gun)"
-    },
-    {
-      "ticker": "AXTI",
-      "direction": "call",
-      "entry": 63.2,
-      "target": 68.6,
-      "stop": 59.71,
-      "riskReward": 1.55,
-      "rationale": "Semiconductor substrate demand | MSS 49.9 | RVOL 0.84",
-      "timeframe": "swing (2-5 gun)"
-    }
-  ],
-  "putSetups": [
-    {
-      "ticker": "ULS",
-      "direction": "put",
-      "entry": 89.78,
-      "target": 82.18,
-      "stop": 92.9,
-      "riskReward": 2.44,
-      "rationale": "Testing demand slowdown fears | MSS 67.4 | RVOL 2.11",
-      "timeframe": "swing (2-5 gun)"
+        "Robinhood"
+      ],
+      "rank": 4,
+      "tradePlan": {
+        "entryZone": "546.53–557.57",
+        "stop": 536.81,
+        "t1": 574.91,
+        "t2": 590.15,
+        "rr": 1.5,
+        "positionNote": "%50 pozisyon"
+      }
     },
     {
       "ticker": "ORLY",
-      "direction": "put",
-      "entry": 84.67,
-      "target": 77.51,
-      "stop": 87.62,
-      "riskReward": 2.43,
-      "rationale": "Auto parts demand concerns | MSS 61.2 | RVOL 1.75",
-      "timeframe": "swing (2-5 gun)"
+      "company": "O'Reilly Automotive, Inc.",
+      "sector": "Specialty Retail",
+      "price": 90.25,
+      "changePct": -2.63,
+      "rvol": 1.91,
+      "mss": 58,
+      "grade": "B",
+      "phase": "ATEŞLEME (Gün 1)",
+      "scoreBreakdown": {
+        "volumeProfile": 17.0,
+        "catalystDurability": 10.0,
+        "priceStructure": 6.8,
+        "trendPosition": 9.0,
+        "relativeStrength": 2.5,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 3.2,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "Auto parts sector rotation outflow, profit-taking after Q1 earnings beat",
+        "tier": 3,
+        "halfLife": "günler"
+      },
+      "historicalStats": {
+        "momentumAge": 1,
+        "consecutiveHigherLows": null,
+        "closeStrength3d": 0.45,
+        "volumeTrend": "mixed",
+        "atrExtension": null,
+        "continuationBaseRate": null,
+        "distFrom52wHighPct": null
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Alpaca Markets (dailyBar)",
+        "Yahoo Finance",
+        "Robinhood"
+      ],
+      "rank": 5,
+      "tradePlan": {
+        "entryZone": "89.35–91.15",
+        "stop": 87.76,
+        "t1": 93.98,
+        "t2": 96.47,
+        "rr": 1.5,
+        "positionNote": "%50 pozisyon"
+      }
     },
     {
-      "ticker": "AAP",
-      "direction": "put",
-      "entry": 56.65,
-      "target": 51.86,
-      "stop": 58.62,
-      "riskReward": 2.43,
-      "rationale": "Weak consumer / margin pressure | MSS 54.4 | RVOL 1.05",
-      "timeframe": "swing (2-5 gun)"
-    },
-    {
-      "ticker": "CAVA",
-      "direction": "put",
-      "entry": 72.14,
-      "target": 66.04,
-      "stop": 74.65,
-      "riskReward": 2.43,
-      "rationale": "Restaurant sector rotation out | MSS 52.2 | RVOL 1.0",
-      "timeframe": "swing (2-5 gun)"
-    },
-    {
-      "ticker": "SOLS",
-      "direction": "put",
-      "entry": 68.38,
-      "target": 62.6,
-      "stop": 70.76,
-      "riskReward": 2.43,
-      "rationale": "Material science hype fade | MSS 42.4 | RVOL 6.0",
-      "timeframe": "swing (2-5 gun)"
+      "ticker": "MSFT",
+      "company": "Microsoft Corporation",
+      "sector": "Technology",
+      "price": 386.74,
+      "changePct": 1.45,
+      "rvol": 1.31,
+      "mss": 52,
+      "grade": "B",
+      "phase": "İVME (Gün 2-3)",
+      "scoreBreakdown": {
+        "volumeProfile": 7.0,
+        "catalystDurability": 14.0,
+        "priceStructure": 11.2,
+        "trendPosition": 9.0,
+        "relativeStrength": 2.5,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 3.2,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": -5
+      },
+      "catalyst": {
+        "summary": "3-day consecutive gain streak, AI business ARR $37B narrative, cheap valuation at 19x FY27",
+        "tier": 2,
+        "halfLife": "haftalar"
+      },
+      "historicalStats": {
+        "momentumAge": 3,
+        "consecutiveHigherLows": null,
+        "closeStrength3d": 0.75,
+        "volumeTrend": "mixed",
+        "atrExtension": null,
+        "continuationBaseRate": null,
+        "distFrom52wHighPct": null
+      },
+      "exhaustionFlags": [
+        "GAP_FADE"
+      ],
+      "sources": [
+        "Alpaca Markets (dailyBar)",
+        "Yahoo Finance",
+        "Robinhood"
+      ],
+      "rank": 6,
+      "tradePlan": {
+        "entryZone": "382.87–390.61",
+        "stop": 370.5,
+        "t1": 411.1,
+        "t2": 427.34,
+        "rr": 1.5,
+        "positionNote": "%50 pozisyon"
+      }
     }
   ],
   "watchlist": [
     {
-      "ticker": "ENOV",
-      "mss": 61.9,
-      "upgradeTrigger": "ENOV uzerinde guclu kapanis + RVOL > 2"
+      "ticker": "AAPL",
+      "mss": 49,
+      "upgradeTrigger": "RVOL > 1.5 + günlük kapanış üst yarıda → yeniden skorla"
     },
     {
-      "ticker": "IMOS",
-      "mss": 60.9,
-      "upgradeTrigger": "IMOS uzerinde guclu kapanis + RVOL > 2"
+      "ticker": "INTC",
+      "mss": 41,
+      "upgradeTrigger": "RVOL > 1.5 + günlük kapanış üst yarıda → yeniden skorla"
     },
     {
-      "ticker": "IREN",
-      "mss": 57.9,
-      "upgradeTrigger": "IREN uzerinde guclu kapanis + RVOL > 2"
+      "ticker": "LRCX",
+      "mss": 40,
+      "upgradeTrigger": "RVOL > 1.5 + günlük kapanış üst yarıda → yeniden skorla"
     },
     {
-      "ticker": "LMND",
-      "mss": 57.9,
-      "upgradeTrigger": "LMND uzerinde guclu kapanis + RVOL > 2"
+      "ticker": "AZO",
+      "mss": 38,
+      "upgradeTrigger": "RVOL > 1.5 + günlük kapanış üst yarıda → yeniden skorla"
     },
     {
-      "ticker": "AXTI",
-      "mss": 49.9,
-      "upgradeTrigger": "AXTI uzerinde guclu kapanis + RVOL > 2"
+      "ticker": "AMAT",
+      "mss": 38,
+      "upgradeTrigger": "RVOL > 1.5 + günlük kapanış üst yarıda → yeniden skorla"
     },
     {
-      "ticker": "SOLS",
-      "mss": 42.4,
-      "upgradeTrigger": "SOLS uzerinde guclu kapanis + RVOL > 2"
+      "ticker": "MU",
+      "mss": 38,
+      "upgradeTrigger": "RVOL > 1.5 + günlük kapanış üst yarıda → yeniden skorla"
+    },
+    {
+      "ticker": "MRVL",
+      "mss": 38,
+      "upgradeTrigger": "RVOL > 1.5 + günlük kapanış üst yarıda → yeniden skorla"
     }
   ],
   "carryForwardHealthCheck": [],
   "disqualified": [
     {
-      "ticker": "CRDO",
-      "reason": "RVOL < 0.8"
+      "ticker": "WDC",
+      "reason": "RVOL 0.59 < 0.8 (Alpaca free-tier hacim uyumsuzluğu, web verisiyle cross-check yapılmalı)"
     },
     {
-      "ticker": "AMD",
-      "reason": "RVOL < 0.8"
-    },
-    {
-      "ticker": "ANET",
-      "reason": "RVOL < 0.8"
-    },
-    {
-      "ticker": "QNT",
-      "reason": "RVOL < 0.8"
-    },
-    {
-      "ticker": "SEDG",
-      "reason": "RVOL < 0.8"
-    },
-    {
-      "ticker": "BE",
-      "reason": "RVOL < 0.8"
-    },
-    {
-      "ticker": "LCID",
-      "reason": "RVOL < 0.8"
-    },
-    {
-      "ticker": "RKLB",
-      "reason": "RVOL < 0.8"
-    },
-    {
-      "ticker": "AZO",
-      "reason": "RVOL < 0.8"
-    },
-    {
-      "ticker": "CBRS",
-      "reason": "RVOL < 0.8"
-    }
-  ],
-  "earningsCalendar": [],
-  "vwapNotes": "SPY VWAP 750.65 uzerinde kapanis (+0.86%) — risk-on. QQQ VWAP 723.23 uzerinde (+1.42%) — tech leadership. IWM VWAP 299.5 yakininda (+0.43%) — broad market karisik.",
-  "riskAssessment": {
-    "level": "low",
-    "vixRegime": "VIX 15.63 (normal, complacency altinda)",
-    "sectorRotation": "Technology guclu (semiconductor, AI networking, quantum). Consumer Discretionary zayif (auto parts, restaurants).",
-    "earningsRisk": "Kritik earnings yok - sessiz takvim.",
-    "macroRisk": "FOMC sonrasi sakin piyasa, likidite destegi devam ediyor."
-  },
-  "nextDayCarryForward": [
-    {
-      "ticker": "ULS",
-      "reason": "MSS 67.4 | Testing demand slowdown fears",
-      "keyLevel": 92.9,
-      "catalyst": "Momentum devami"
-    },
-    {
-      "ticker": "ORLY",
-      "reason": "MSS 61.2 | Auto parts demand concerns",
-      "keyLevel": 87.62,
-      "catalyst": "Momentum devami"
-    },
-    {
-      "ticker": "AAP",
-      "reason": "MSS 54.4 | Weak consumer / margin pressure",
-      "keyLevel": 58.62,
-      "catalyst": "Momentum devami"
-    },
-    {
-      "ticker": "CAVA",
-      "reason": "MSS 52.2 | Restaurant sector rotation out",
-      "keyLevel": 74.65,
-      "catalyst": "Momentum devami"
+      "ticker": "NVDA",
+      "reason": "RVOL 0.37 < 0.8 (Alpaca free-tier hacim uyumsuzluğu, web verisiyle cross-check yapılmalı)"
     }
   ],
   "systemPerformance": {
@@ -447,6 +512,223 @@
     "avgReturnT3Pct": null,
     "gradeAHitRateT3": null,
     "gradeBHitRateT3": null,
-    "calibrationNote": "Ledger bos - sistem yeni basladi. Tier-2 katalizorlu tech hisseleri (AI networking, quantum) guclu momentum gosteriyor."
-  }
+    "calibrationNote": "Ledger yeni başlatıldı — sistem karnesi için 30 örnek toplandıktan sonra kalibrasyon notu üretilecek. Tier-1/2 katalizör + İVME fazı kombinasyonu T+3'te en güçlü küme olarak bekleniyor."
+  },
+  "callSetups": [
+    {
+      "ticker": "ANET",
+      "direction": "call",
+      "entry": "171.55–175.01",
+      "target": "188.88",
+      "stop": "162.88",
+      "riskReward": 1.5,
+      "rationale": "ATEŞLEME (Gün 1) fazında Cloud networking demand resilient, Arista outperformance in AI infrastructure buildout. VWAP üzeri kapanış.",
+      "timeframe": "swing (3-5 gün)"
+    },
+    {
+      "ticker": "TSLA",
+      "direction": "call",
+      "entry": "415.57–423.97",
+      "target": "457.55",
+      "stop": "394.58",
+      "riskReward": 1.5,
+      "rationale": "ATEŞLEME (Gün 1) fazında Momentum rebound from 52-week low territory, EV demand stabilization narrative. VWAP üzeri kapanış.",
+      "timeframe": "swing (3-5 gün)"
+    },
+    {
+      "ticker": "META",
+      "direction": "call",
+      "entry": "594.29–606.29",
+      "target": "654.32",
+      "stop": "564.27",
+      "riskReward": 1.5,
+      "rationale": "İVME (Gün 2-3) fazında Communication Services sector leadership (+2.4%), ad revenue resilience. VWAP üzeri kapanış.",
+      "timeframe": "swing (3-5 gün)"
+    },
+    {
+      "ticker": "AMD",
+      "direction": "call",
+      "entry": "546.53–557.57",
+      "target": "574.91",
+      "stop": "536.81",
+      "riskReward": 1.5,
+      "rationale": "ATEŞLEME (Gün 1) fazında Goldman Sachs price target raise $450 → $640, AI chip demand optimism. VWAP üzeri kapanış.",
+      "timeframe": "swing (3-5 gün)"
+    },
+    {
+      "ticker": "MSFT",
+      "direction": "call",
+      "entry": "382.87–390.61",
+      "target": "411.1",
+      "stop": "370.5",
+      "riskReward": 1.5,
+      "rationale": "İVME (Gün 2-3) fazında 3-day consecutive gain streak, AI business ARR $37B narrative, cheap valuation at 19x FY27. VWAP üzeri kapanış.",
+      "timeframe": "swing (3-5 gün)"
+    }
+  ],
+  "putSetups": [
+    {
+      "ticker": "ORLY",
+      "direction": "put",
+      "entry": "89.35–91.15",
+      "target": "93.98",
+      "stop": "87.76",
+      "riskReward": 1.5,
+      "rationale": "ATEŞLEME (Gün 1) fazında breakdown momentum. VWAP altı kapanış.",
+      "timeframe": "swing (3-5 gün)"
+    },
+    {
+      "ticker": "LRCX",
+      "direction": "put",
+      "entry": "346.7–353.7",
+      "target": "336.19",
+      "stop": "360.71",
+      "riskReward": 1.3,
+      "rationale": "İzleme listesinden — Semiconductor profit-taking continues, SOX index -2.6% drag. Yükseltme tetiği: breakdown + hacim artışı.",
+      "timeframe": "swing"
+    },
+    {
+      "ticker": "AZO",
+      "direction": "put",
+      "entry": "2928.13–2987.29",
+      "target": "2839.4",
+      "stop": "3046.44",
+      "riskReward": 1.3,
+      "rationale": "İzleme listesinden — Auto parts sector rotation outflow, high price = low liquidity risk. Yükseltme tetiği: breakdown + hacim artışı.",
+      "timeframe": "swing"
+    },
+    {
+      "ticker": "AMAT",
+      "direction": "put",
+      "entry": "586.86–598.72",
+      "target": "569.08",
+      "stop": "610.57",
+      "riskReward": 1.3,
+      "rationale": "İzleme listesinden — Semiconductor equipment profit-taking, prior run-up reversal. Yükseltme tetiği: breakdown + hacim artışı.",
+      "timeframe": "swing"
+    },
+    {
+      "ticker": "MU",
+      "direction": "put",
+      "entry": "974.9–994.6",
+      "target": "945.36",
+      "stop": "1014.29",
+      "riskReward": 1.3,
+      "rationale": "İzleme listesinden — Memory sector profit-taking after strong Q2 run, Micron guidance watch. Yükseltme tetiği: breakdown + hacim artışı.",
+      "timeframe": "swing"
+    }
+  ],
+  "earningsCalendar": [
+    {
+      "ticker": "AMD",
+      "company": "Advanced Micro Devices",
+      "time": "after-close",
+      "consensusEps": 0.95,
+      "consensusRev": 10500000000.0,
+      "priorEps": 0.69,
+      "priorRev": 5840000000.0,
+      "expectedMove": 6.5,
+      "consensusRange": "0.91 - 0.99",
+      "analystSentiment": "bullish",
+      "note": "Q2 earnings Ağustos 4. AI chip demand focus. 0DTE YASAK."
+    },
+    {
+      "ticker": "ANET",
+      "company": "Arista Networks",
+      "time": "after-close",
+      "consensusEps": 0.88,
+      "consensusRev": 2850000000.0,
+      "priorEps": 0.59,
+      "priorRev": 1690000000.0,
+      "expectedMove": 5.8,
+      "consensusRange": "0.85 - 0.92",
+      "analystSentiment": "bullish",
+      "note": "Q2 earnings Ağustos 4. Cloud networking demand. 0DTE YASAK."
+    },
+    {
+      "ticker": "TSLA",
+      "company": "Tesla",
+      "time": "after-close",
+      "consensusEps": 0.72,
+      "consensusRev": 24500000000.0,
+      "priorEps": 0.52,
+      "priorRev": 24930000000.0,
+      "expectedMove": 7.2,
+      "consensusRange": "0.65 - 0.80",
+      "analystSentiment": "neutral",
+      "note": "Q2 earnings Temmuz 22. Robotaxi/Cybercab update risk. 0DTE YASAK."
+    },
+    {
+      "ticker": "WDC",
+      "company": "Western Digital",
+      "time": "after-close",
+      "consensusEps": 1.45,
+      "consensusRev": 3450000000.0,
+      "priorEps": 0.32,
+      "priorRev": 3760000000.0,
+      "expectedMove": 6.0,
+      "consensusRange": "1.30 - 1.60",
+      "analystSentiment": "bullish",
+      "note": "Q4 FY26 earnings Temmuz 29. Memory pricing tailwinds. 0DTE YASAK."
+    },
+    {
+      "ticker": "ORLY",
+      "company": "O'Reilly Automotive",
+      "time": "after-close",
+      "consensusEps": 3.2,
+      "consensusRev": 4750000000.0,
+      "priorEps": 2.67,
+      "priorRev": 4330000000.0,
+      "expectedMove": 4.5,
+      "consensusRange": "3.10 - 3.30",
+      "analystSentiment": "bullish",
+      "note": "Q2 earnings Temmuz 29. Auto parts demand stable. 0DTE YASAK."
+    }
+  ],
+  "vwapNotes": "SPY VWAP üzerinde kapandı ($750.64), risk-on imzası. QQQ VWAP'a yakın ($722.50), tech kararsız. IWM VWAP üzerinde ($299.51), small-cap katılımı pozitif. Gap fill: SPY açılış gap'i kapanışta tuttu; QQQ gap-up sonrası kar satışı.",
+  "riskAssessment": {
+    "level": "low",
+    "vixRegime": "VIX 15.97 — normal/complacency bölgesi, opsiyon premium ucuz",
+    "sectorRotation": "Communication Services (+2.4%) ve Financials (+2.2%) lider; Tech (-2.6%) ve Utilities (-1.3%) geride. Rotation aktif.",
+    "earningsRisk": "Q2 earnings sezonu Ağustos başında yoğunlaşıyor. AMD/ANET Ağustos 4, TSLA Temmuz 22.",
+    "macroRisk": "ISM Services PMI bekleniyor. FOMC minutes Temmuz 8. Zayıf jobs report Fed dovish beklentilerini destekliyor."
+  },
+  "nextDayCarryForward": [
+    {
+      "ticker": "ANET",
+      "reason": "B grade, MSS 64",
+      "keyLevel": "162.88",
+      "catalyst": "Cloud networking demand resilient, Arista outperformance in AI infrastructure buildout"
+    },
+    {
+      "ticker": "TSLA",
+      "reason": "B grade, MSS 62",
+      "keyLevel": "394.58",
+      "catalyst": "Momentum rebound from 52-week low territory, EV demand stabilization narrative"
+    },
+    {
+      "ticker": "META",
+      "reason": "B grade, MSS 59",
+      "keyLevel": "564.27",
+      "catalyst": "Communication Services sector leadership (+2.4%), ad revenue resilience"
+    },
+    {
+      "ticker": "AMD",
+      "reason": "B grade, MSS 58",
+      "keyLevel": "536.81",
+      "catalyst": "Goldman Sachs price target raise $450 → $640, AI chip demand optimism"
+    },
+    {
+      "ticker": "ORLY",
+      "reason": "B grade, MSS 58",
+      "keyLevel": "87.76",
+      "catalyst": "Auto parts sector rotation outflow, profit-taking after Q1 earnings beat"
+    },
+    {
+      "ticker": "MSFT",
+      "reason": "B grade, MSS 52",
+      "keyLevel": "370.5",
+      "catalyst": "3-day consecutive gain streak, AI business ARR $37B narrative, cheap valuation at 19x FY27"
+    }
+  ]
 }
