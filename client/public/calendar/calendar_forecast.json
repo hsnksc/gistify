@@ -887,7 +887,7 @@
       "rationale": "CFTC Gold net long 181.3K — aşırı uzun. Stagflation narrative kırılırsa (growth weak + inflation falling) gold'un iki desteği gider. GLD 1% decline = 2–3x OTM put return."
     }
   ],
-  "vixOutlook": "Pre-market VIX ~15.5–16.5 konsolide. 16:45–17:00 ardışık PMI/ISM datası ve 18:00 Waller konuşması volatilite spike riski taşıyor. ISM Prices 70+ ve hawkish Waller kombosu VIX 19+ potansiyeli. Soft landing senaryosunda VIX 14–15 compress.",
-  "fearGreedOutlook": "CNN Fear & Greed Index 32 (Fear). Geopolitik risk, stagflation korkuları ve FOMC belirsizliği retail/institutional sentiment'i baskılıyor. Extreme Fear (25 altı) değil; ama Fear bandında oversold bounce potansiyeli yüksek. Bad news = aşırı reaksiyon, good news = relief rally.",
-  "marketNarrative": "ABD piyasaları (SPY 745.28, QQQ 713.49, IWM 297.57) dar bantta kapanmış. Tech momentum kırılgan. FOMC Haziran'da rate hike door açtı; Waller 18:00'de bu tonu teyit veya yumuşatabilir. ECB Haziran'da 25 bps hike yaptı; Lagarde 19:00'da enflasyon broadening vurgusu yapabilir. Eurozone PPI +5.7% YoY beklentisi ECB hawkish repricing riski. Ortadoğu savaşı enerji fiyatları ve services inflation üzerinde baskı oluşturuyor. CFTC S&P 500 net short (-35.4K) piyasayı hem short squeeze hem momentum amplification riskine açık hale getiriyor."
+  "vixOutlook": "VIX 15.66 (Jul 6 close, -0.49 / -3.03%). CNN Fear & Greed 44 (Fear). SPY 751.28 (+0.87%), QQQ 722.82 (+1.43%), IWM 298.90 (+0.44%), DXY 100.91 (+0.05%). [Kaynak: CNN, Yahoo Finance, MarketWatch | 2026-07-06T21:01:21.600413+00:00]",
+  "fearGreedOutlook": "CNN Fear & Greed Index: 44/100 — Fear. [Kaynak: CNN | 2026-07-06T21:01:21.600413+00:00]",
+  "marketNarrative": "ABD piyasaları (SPY 751.28, QQQ 722.82, IWM 298.90) dar bantta kapanmış. Tech momentum kırılgan. VIX 15.66 (-3.03%) — volatilite compress. CNN Fear & Greed 44 (Fear). DXY 100.91 (+0.05%). [Kaynak: CNN, Yahoo Finance, MarketWatch | 2026-07-06T21:01:21.600413+00:00]"
 }
