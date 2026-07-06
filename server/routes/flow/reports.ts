@@ -145,13 +145,35 @@ function translateReport<T extends DailyReportRecord>(report: T, lang: string): 
   }
 
   if (report.content.translations?.en) {
-    const enHtml = report.content.translations.en;
-    const enTitle = matchFirstGroup(enHtml, [/<title>([^<]+)<\/title>/i]);
-    const enH1Raw = matchFirstGroup(enHtml, [/<h1[^>]*>([\s\S]*?)<\/h1>/i]);
-    const enHeadline = normalizeString(
-      matchFirstGroup(enHtml, [/<meta[^>]*name=["']description["'][^>]*content=["']([^"']+)["']/i]) ||
-      (enH1Raw ? stripHtml(enH1Raw) : "")
-    );
+    const enContent = report.content.translations.en;
+    const isHtml = report.content.contentFormat === "html" || enContent.trim().startsWith("<");
+    let enTitle: string;
+    let enHeadline: string;
+    if (isHtml) {
+      enTitle = matchFirstGroup(enContent, [/<title>([^<]+)<\/title>/i]) || stripHtml(matchFirstGroup(enContent, [/<h1[^>]*>([\s\S]*?)<\/h1>/i]));
+      enHeadline = normalizeString(
+        matchFirstGroup(enContent, [/<meta[^>]*name=["']description["'][^>]*content=["']([^"']+)["']/i]) ||
+        stripHtml(matchFirstGroup(enContent, [/<h1[^>]*>([\s\S]*?)<\/h1>/i]))
+      );
+    } else {
+      // Markdown: frontmatter title or first h1 heading
+      enTitle = matchFirstGroup(enContent, [/^title:\s*(.+)$/im]) || matchFirstGroup(enContent, [/^#\s+(.+)$/m]);
+      // First meaningful paragraph after title/heading
+      const lines = enContent.split("\n");
+      let foundHeading = false;
+      enHeadline = "";
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.startsWith("#") || trimmed.startsWith("title:")) {
+          if (trimmed.startsWith("#")) foundHeading = true;
+          continue;
+        }
+        if (foundHeading || trimmed.length > 20) {
+          enHeadline = trimmed;
+          break;
+        }
+      }
+    }
     return {
       ...report,
       title: enTitle || report.title,
@@ -276,7 +298,7 @@ function translateReport<T extends DailyReportRecord>(report: T, lang: string): 
     );
 
     if (!report) {
-      res.status(404).json({ error: "Flow report bulunamadi." });
+      res.status(404).json({ error: "Flow report not found." });
       return;
     }
 
@@ -295,7 +317,7 @@ function translateReport<T extends DailyReportRecord>(report: T, lang: string): 
     );
 
     if (!report) {
-      res.status(404).json({ error: "Flow report bulunamadi." });
+      res.status(404).json({ error: "Flow report not found." });
       return;
     }
 
@@ -322,7 +344,7 @@ function translateReport<T extends DailyReportRecord>(report: T, lang: string): 
     );
 
     if (!report) {
-      res.status(404).json({ error: "Flow report bulunamadi." });
+      res.status(404).json({ error: "Flow report not found." });
       return;
     }
 
@@ -341,7 +363,7 @@ function translateReport<T extends DailyReportRecord>(report: T, lang: string): 
     );
 
     if (!report) {
-      res.status(404).json({ error: "Flow report bulunamadi." });
+      res.status(404).json({ error: "Flow report not found." });
       return;
     }
 

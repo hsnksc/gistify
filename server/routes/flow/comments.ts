@@ -37,13 +37,13 @@ function requireCommentActor(
   const payload = readAuthPayload(req);
 
   if (!payload.authenticated || !payload.user) {
-    res.status(401).json({ error: "Yorum yazmak icin uye girisi gerekli." });
+    res.status(401).json({ error: "Login required to post comments." });
     return null;
   }
 
   if (payload.user.id === PUBLIC_ACCESS_USER_ID) {
     res.status(403).json({
-      error: "Public access oturumlari yorum yazamaz.",
+      error: "Public access sessions cannot post comments.",
       code: "AUTHENTICATION_REQUIRED",
     });
     return null;
@@ -70,7 +70,7 @@ export function createFlowCommentsRouter({
     const report = getViewerFlowReportById(getPublishedReports(), reportId);
 
     if (!report) {
-      res.status(404).json({ error: "Flow report bulunamadi." });
+      res.status(404).json({ error: "Flow report not found." });
       return;
     }
 
@@ -95,7 +95,7 @@ export function createFlowCommentsRouter({
     const report = getViewerFlowReportById(getPublishedReports(), reportId);
 
     if (!report) {
-      res.status(404).json({ error: "Flow report bulunamadi." });
+      res.status(404).json({ error: "Flow report not found." });
       return;
     }
 
@@ -106,12 +106,12 @@ export function createFlowCommentsRouter({
     const commentBody = normalizeString(body.body);
 
     if (commentBody.length < 2) {
-      res.status(400).json({ error: "Yorum en az 2 karakter olmali." });
+      res.status(400).json({ error: "Comment must be at least 2 characters." });
       return;
     }
 
     if (commentBody.length > 1200) {
-      res.status(400).json({ error: "Yorum 1200 karakteri gecemez." });
+      res.status(400).json({ error: "Comment cannot exceed 1200 characters." });
       return;
     }
 
