@@ -29,6 +29,7 @@ ENV GISTIFY_DB_PATH=/app/data/gistify.sqlite
 ENV GISTIFY_MIGRATIONS_DIR=/app/server/db/migrations
 
 RUN mkdir -p /app/data
+RUN apk add --no-cache python3 py3-pip
 
 COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/node_modules ./node_modules
