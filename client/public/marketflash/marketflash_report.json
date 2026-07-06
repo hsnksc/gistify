@@ -1,301 +1,451 @@
 {
-  "reportType": "pre-market",
-  "reportDate": "2026-07-03",
-  "generatedAt": "2026-07-03T09:01:00-04:00",
+  "schemaVersion": "2.0",
+  "reportType": "hourly",
+  "reportDate": "2026-07-06",
+  "generatedAt": "2026-07-06T19:46:41.305697",
   "marketSummary": {
     "spy": {
-      "price": 744.78,
-      "change": -0.1314,
-      "vwap": null,
-      "open": 747.4,
-      "high": 751.31,
-      "low": 740.03,
-      "prevClose": 745.76,
-      "volume": null,
-      "note": "Finnhub quote does not include volume or VWAP"
+      "price": 750.97,
+      "change": 0.82,
+      "vwap": 749.55,
+      "volume": 536555,
+      "prevClose": 744.86,
+      "open": 748.22,
+      "high": 751.1,
+      "low": 747.455
     },
     "qqq": {
-      "price": 712.60,
-      "change": -1.7334,
-      "vwap": null,
-      "open": 725.58,
-      "high": 730.83,
-      "low": 707.56,
-      "prevClose": 725.17,
-      "volume": null,
-      "note": "Finnhub quote does not include volume or VWAP"
+      "price": 725.41,
+      "change": 1.81,
+      "vwap": 723.24,
+      "volume": 273928,
+      "prevClose": 712.53,
+      "open": 719.65,
+      "high": 726.03,
+      "low": 718.58
     },
     "iwm": {
-      "price": 297.58,
-      "change": -0.5813,
-      "vwap": null,
-      "open": 300.54,
-      "high": 302.23,
-      "low": 294.98,
-      "prevClose": 299.32,
-      "volume": null,
-      "note": "Finnhub quote does not include volume or VWAP"
+      "price": 300.04,
+      "change": 0.84,
+      "vwap": 299.43,
+      "volume": 705947,
+      "prevClose": 297.54,
+      "open": 297.745,
+      "high": 300.395,
+      "low": 297.74
     },
     "vix": {
-      "price": 15.95,
-      "change": -1.24,
-      "vwap": null,
-      "open": 17.05,
-      "high": 16.01,
-      "low": 15.95,
-      "prevClose": 16.15,
-      "volume": null,
-      "note": "VIX spot from CBOE futures table Jul 3 pre-market; Finnhub returns 0 for VIX"
+      "level": 15.9,
+      "prevClose": 15.81,
+      "changePct": 0.57,
+      "regime": "normal"
     }
+  },
+  "marketRegime": {
+    "vix": 15.9,
+    "regime": "normal",
+    "breadth": null,
+    "riskMode": "AGRESIF",
+    "paramsVersion": 1,
+    "note": "Kısıtlı veri modu — Alpaca SIP subscription olmadığı için tarihsel bars hesaplanamadı"
+  },
+  "momentumLeaders": [
+    {
+      "rank": 1,
+      "ticker": "TSLA",
+      "company": "Tesla Inc",
+      "sector": "Consumer Cyclical",
+      "price": 416.63,
+      "changePct": 6.13,
+      "rvol": null,
+      "mss": 73.2,
+      "grade": "B",
+      "phase": "İVME (Gün 2-3)",
+      "scoreBreakdown": {
+        "volumeProfile": 20.0,
+        "catalystDurability": 14.0,
+        "priceStructure": 15.0,
+        "trendPosition": 6.0,
+        "relativeStrength": 5.0,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 3.2,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "Tesla robotik/AI pozisyonlaması + kurumsal birikim",
+        "tier": 2,
+        "halfLife": "günler"
+      },
+      "historicalStats": {
+        "momentumAge": null,
+        "consecutiveHigherLows": null,
+        "closeStrength3d": null,
+        "volumeTrend": null,
+        "atrExtension": null,
+        "continuationBaseRate": null,
+        "distFrom52wHighPct": null,
+        "note": "Kısıtlı veri modu — Alpaca SIP subscription olmadığı için tarihsel bars hesaplanamadı"
+      },
+      "tradePlan": {
+        "entryZone": "414.55–418.71",
+        "stop": 404.13,
+        "t1": 429.13,
+        "t2": 437.46,
+        "rr": 1.0,
+        "positionNote": "B = %50–75"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Alpaca Markets snapshot",
+        "CBOE VIX",
+        "Kimi search"
+      ]
+    },
+    {
+      "rank": 2,
+      "ticker": "PLTR",
+      "company": "Palantir Technologies",
+      "sector": "Technology",
+      "price": 133.32,
+      "changePct": 3.32,
+      "rvol": null,
+      "mss": 73.2,
+      "grade": "B",
+      "phase": "İVME (Gün 2-3)",
+      "scoreBreakdown": {
+        "volumeProfile": 20.0,
+        "catalystDurability": 14.0,
+        "priceStructure": 15.0,
+        "trendPosition": 6.0,
+        "relativeStrength": 5.0,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 3.2,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "AI/data analytics talebi + devlet kontratları",
+        "tier": 2,
+        "halfLife": "günler"
+      },
+      "historicalStats": {
+        "momentumAge": null,
+        "consecutiveHigherLows": null,
+        "closeStrength3d": null,
+        "volumeTrend": null,
+        "atrExtension": null,
+        "continuationBaseRate": null,
+        "distFrom52wHighPct": null,
+        "note": "Kısıtlı veri modu — Alpaca SIP subscription olmadığı için tarihsel bars hesaplanamadı"
+      },
+      "tradePlan": {
+        "entryZone": "132.65–133.99",
+        "stop": 129.32,
+        "t1": 137.32,
+        "t2": 139.99,
+        "rr": 1.0,
+        "positionNote": "B = %50–75"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Alpaca Markets snapshot",
+        "CBOE VIX",
+        "Kimi search"
+      ]
+    },
+    {
+      "rank": 3,
+      "ticker": "NVDA",
+      "company": "NVIDIA Corp",
+      "sector": "Technology",
+      "price": 197.14,
+      "changePct": 1.85,
+      "rvol": null,
+      "mss": 73.2,
+      "grade": "B",
+      "phase": "OLGUN (Gün 4-5)",
+      "scoreBreakdown": {
+        "volumeProfile": 20.0,
+        "catalystDurability": 14.0,
+        "priceStructure": 15.0,
+        "trendPosition": 6.0,
+        "relativeStrength": 5.0,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 3.2,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "AI çip talebi + sektör liderliği",
+        "tier": 2,
+        "halfLife": "günler"
+      },
+      "historicalStats": {
+        "momentumAge": null,
+        "consecutiveHigherLows": null,
+        "closeStrength3d": null,
+        "volumeTrend": null,
+        "atrExtension": null,
+        "continuationBaseRate": null,
+        "distFrom52wHighPct": null,
+        "note": "Kısıtlı veri modu — Alpaca SIP subscription olmadığı için tarihsel bars hesaplanamadı"
+      },
+      "tradePlan": {
+        "entryZone": "196.15–198.13",
+        "stop": 191.23,
+        "t1": 203.05,
+        "t2": 207.0,
+        "rr": 1.0,
+        "positionNote": "B = %50–75"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Alpaca Markets snapshot",
+        "CBOE VIX",
+        "Kimi search"
+      ]
+    },
+    {
+      "rank": 4,
+      "ticker": "AAPL",
+      "company": "Apple Inc",
+      "sector": "Technology",
+      "price": 312.46,
+      "changePct": 2.15,
+      "rvol": null,
+      "mss": 73.2,
+      "grade": "B",
+      "phase": "OLGUN (Gün 4-5)",
+      "scoreBreakdown": {
+        "volumeProfile": 20.0,
+        "catalystDurability": 14.0,
+        "priceStructure": 15.0,
+        "trendPosition": 6.0,
+        "relativeStrength": 5.0,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 3.2,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "AI entegrasyonu + iPhone cycle",
+        "tier": 2,
+        "halfLife": "günler"
+      },
+      "historicalStats": {
+        "momentumAge": null,
+        "consecutiveHigherLows": null,
+        "closeStrength3d": null,
+        "volumeTrend": null,
+        "atrExtension": null,
+        "continuationBaseRate": null,
+        "distFrom52wHighPct": null,
+        "note": "Kısıtlı veri modu — Alpaca SIP subscription olmadığı için tarihsel bars hesaplanamadı"
+      },
+      "tradePlan": {
+        "entryZone": "310.9–314.02",
+        "stop": 303.09,
+        "t1": 321.83,
+        "t2": 328.08,
+        "rr": 1.0,
+        "positionNote": "B = %50–75"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Alpaca Markets snapshot",
+        "CBOE VIX",
+        "Kimi search"
+      ]
+    },
+    {
+      "rank": 5,
+      "ticker": "INTC",
+      "company": "Intel Corp",
+      "sector": "Technology",
+      "price": 124.49,
+      "changePct": 2.45,
+      "rvol": null,
+      "mss": 65.0,
+      "grade": "B",
+      "phase": "OLGUN (Gün 4-5)",
+      "scoreBreakdown": {
+        "volumeProfile": 20.0,
+        "catalystDurability": 14.0,
+        "priceStructure": 6.8,
+        "trendPosition": 6.0,
+        "relativeStrength": 5.0,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 3.2,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "Yeni fabrika yatırımları + AI çip stratejisi",
+        "tier": 2,
+        "halfLife": "günler"
+      },
+      "historicalStats": {
+        "momentumAge": null,
+        "consecutiveHigherLows": null,
+        "closeStrength3d": null,
+        "volumeTrend": null,
+        "atrExtension": null,
+        "continuationBaseRate": null,
+        "distFrom52wHighPct": null,
+        "note": "Kısıtlı veri modu — Alpaca SIP subscription olmadığı için tarihsel bars hesaplanamadı"
+      },
+      "tradePlan": {
+        "entryZone": "123.87–125.11",
+        "stop": 120.76,
+        "t1": 128.22,
+        "t2": 130.71,
+        "rr": 1.0,
+        "positionNote": "B = %50–75"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Alpaca Markets snapshot",
+        "CBOE VIX",
+        "Kimi search"
+      ]
+    }
+  ],
+  "watchlist": [
+    {
+      "ticker": "F",
+      "mss": 63.2,
+      "upgradeTrigger": "RVOL > 2 + günlük kapanış VWAP üstü → yeniden skorla"
+    },
+    {
+      "ticker": "SOFI",
+      "mss": 60.2,
+      "upgradeTrigger": "RVOL > 2 + günlük kapanış VWAP üstü → yeniden skorla"
+    },
+    {
+      "ticker": "PATH",
+      "mss": 60.2,
+      "upgradeTrigger": "RVOL > 2 + günlük kapanış VWAP üstü → yeniden skorla"
+    },
+    {
+      "ticker": "NOK",
+      "mss": 58.0,
+      "upgradeTrigger": "RVOL > 2 + günlük kapanış VWAP üstü → yeniden skorla"
+    },
+    {
+      "ticker": "IREN",
+      "mss": 57.2,
+      "upgradeTrigger": "RVOL > 2 + günlük kapanış VWAP üstü → yeniden skorla"
+    },
+    {
+      "ticker": "OPEN",
+      "mss": 57.2,
+      "upgradeTrigger": "RVOL > 2 + günlük kapanış VWAP üstü → yeniden skorla"
+    },
+    {
+      "ticker": "BMNR",
+      "mss": 54.2,
+      "upgradeTrigger": "RVOL > 2 + günlük kapanış VWAP üstü → yeniden skorla"
+    },
+    {
+      "ticker": "ONDS",
+      "mss": 54.2,
+      "upgradeTrigger": "RVOL > 2 + günlük kapanış VWAP üstü → yeniden skorla"
+    },
+    {
+      "ticker": "KEEL",
+      "mss": 54.2,
+      "upgradeTrigger": "RVOL > 2 + günlük kapanış VWAP üstü → yeniden skorla"
+    },
+    {
+      "ticker": "DRAM",
+      "mss": 50.5,
+      "upgradeTrigger": "RVOL > 2 + günlük kapanış VWAP üstü → yeniden skorla"
+    }
+  ],
+  "carryForwardHealthCheck": [],
+  "disqualified": [
+    {
+      "ticker": "SNXX",
+      "reason": "GAP_FADE — MSS 38.0"
+    },
+    {
+      "ticker": "WULF",
+      "reason": "GAP_FADE, KAPANIS_ZAYIF — MSS 29.2"
+    },
+    {
+      "ticker": "LHSW",
+      "reason": "GAP_FADE, KAPANIS_ZAYIF, PARABOLIK — MSS 16.2"
+    }
+  ],
+  "systemPerformance": {
+    "sampleSize": 0,
+    "hitRateT3": null,
+    "avgReturnT3Pct": null,
+    "gradeAHitRateT3": null,
+    "gradeBHitRateT3": null,
+    "calibrationNote": "Ledger boş — ilk rapor; T+3/T+5 takibi başlatılacak"
   },
   "topMovers": {
     "gainers": [
       {
-        "ticker": "RIVN",
-        "company": "Rivian Automotive Inc",
-        "price": 18.63,
-        "change": 8.44,
-        "volume": 77783000,
-        "catalyst": "EV delivery momentum and sector rotation; strong pre-market volume continuation from Jul 2 close",
-        "sector": "Automobiles",
-        "marketCap": 23481583081,
-        "week52Range": [11.57, 22.69],
-        "vwap": null,
-        "note": "VWAP data not available from Finnhub; confirm on platform"
+        "ticker": "IREN",
+        "company": "Iris Energy Ltd",
+        "price": 44.66,
+        "change": 15.01,
+        "volume": 1094927,
+        "vwap": 43.85,
+        "catalyst": "Bitcoin madencilik + AI data center pozisyonu"
       },
       {
-        "ticker": "MSTR",
-        "company": "Strategy Inc",
-        "price": 100.77,
-        "change": 7.90,
-        "volume": 30715000,
-        "catalyst": "Bitcoin proxy rally; crypto momentum continuation post-Jul 2 close",
-        "sector": "Technology",
-        "marketCap": 35314606152,
-        "week52Range": [81.81, 457.22],
-        "vwap": null,
-        "note": "VWAP data not available from Finnhub; confirm on platform"
+        "ticker": "WULF",
+        "company": "TeraWulf Inc",
+        "price": 23.67,
+        "change": 11.78,
+        "volume": 1881756,
+        "vwap": 24.17,
+        "catalyst": "Bitcoin madencilik hissesi + kripto momentumu"
       },
       {
-        "ticker": "AVAV",
-        "company": "AeroVironment Inc",
-        "price": 190.89,
-        "change": 10.70,
-        "volume": 3957000,
-        "catalyst": "Defense / AI drone demand; post-earnings momentum continuation",
-        "sector": "Aerospace & Defense",
-        "marketCap": 9660567408,
-        "week52Range": [135.20, 417.86],
-        "vwap": null,
-        "note": "VWAP data not available from Finnhub; confirm on platform"
+        "ticker": "TSLA",
+        "company": "Tesla Inc",
+        "price": 416.63,
+        "change": 6.13,
+        "volume": 26655092,
+        "vwap": 406.27,
+        "catalyst": "Tesla robotik/AI pozisyonlaması + kurumsal birikim"
       },
       {
-        "ticker": "MRNA",
-        "company": "Moderna Inc",
-        "price": 79.76,
-        "change": 10.01,
-        "volume": 12511000,
-        "catalyst": "Positive pipeline data and vaccine news flow; biotech momentum",
-        "sector": "Biotechnology",
-        "marketCap": 31647671689,
-        "week52Range": [22.28, 81.40],
-        "vwap": null,
-        "note": "VWAP data not available from Finnhub; confirm on platform"
+        "ticker": "BMNR",
+        "company": "Biominerals NV",
+        "price": 15.86,
+        "change": 11.22,
+        "volume": 588641,
+        "vwap": 15.31,
+        "catalyst": "Teknik kırılım ve hacim artışı"
       },
       {
-        "ticker": "GPC",
-        "company": "Genuine Parts Co",
-        "price": 132.57,
-        "change": 12.92,
-        "volume": 4409000,
-        "catalyst": "Strong distribution demand and earnings reaction; value rotation",
-        "sector": "Distributors",
-        "marketCap": 18244885801,
-        "week52Range": [90.78, 151.57],
-        "vwap": null,
-        "note": "VWAP data not available from Finnhub; confirm on platform"
+        "ticker": "DRAM",
+        "company": "DTCloud Corp",
+        "price": 65.5,
+        "change": 7.87,
+        "volume": 697661,
+        "vwap": 65.29,
+        "catalyst": "Teknik kırılım ve hacim artışı"
       }
     ],
-    "losers": [
-      {
-        "ticker": "AIP",
-        "company": "Arteris Inc",
-        "price": 35.06,
-        "change": -19.97,
-        "volume": 2000000,
-        "catalyst": "Earnings miss and guidance cut; semiconductor network-on-chip weakness",
-        "sector": "Technology",
-        "marketCap": 1618789733,
-        "week52Range": [8.42, 50.26],
-        "vwap": null,
-        "note": "VWAP data not available from Finnhub; confirm on platform"
-      },
-      {
-        "ticker": "VICR",
-        "company": "Vicor Corp",
-        "price": 282.95,
-        "change": -19.21,
-        "volume": 1000000,
-        "catalyst": "Revenue warning and power module demand slowdown; breakdown",
-        "sector": "Electrical Equipment",
-        "marketCap": 14607020000,
-        "week52Range": [41.76, 382.65],
-        "vwap": null,
-        "note": "VWAP data not available from Finnhub; confirm on platform"
-      },
-      {
-        "ticker": "ACLS",
-        "company": "Axcelis Technologies Inc",
-        "price": 144.50,
-        "change": -18.97,
-        "volume": 1000000,
-        "catalyst": "Chip capex cut and China export restriction fears; gap down",
-        "sector": "Semiconductors",
-        "marketCap": 4441048054,
-        "week52Range": [65.64, 193.78],
-        "vwap": null,
-        "note": "VWAP data not available from Finnhub; confirm on platform"
-      },
-      {
-        "ticker": "VECO",
-        "company": "Veeco Instruments Inc",
-        "price": 57.49,
-        "change": -18.48,
-        "volume": 3000000,
-        "catalyst": "Weak semiconductor equipment outlook; guidance disappointment",
-        "sector": "Semiconductors",
-        "marketCap": 4163704542,
-        "week52Range": [19.29, 86.63],
-        "vwap": null,
-        "note": "VWAP data not available from Finnhub; confirm on platform"
-      },
-      {
-        "ticker": "MXL",
-        "company": "Maxlinear Inc",
-        "price": 93.12,
-        "change": -17.15,
-        "volume": 5000000,
-        "catalyst": "Broadband demand slowdown and earnings miss; bearish continuation",
-        "sector": "Semiconductors",
-        "marketCap": 8338519700,
-        "week52Range": [12.87, 128.30],
-        "vwap": null,
-        "note": "VWAP data not available from Finnhub; confirm on platform"
-      }
-    ]
+    "losers": []
   },
+  "callSetups": [],
+  "putSetups": [],
   "earningsCalendar": [],
-  "callSetups": [
-    {
-      "ticker": "RIVN",
-      "direction": "call",
-      "entry": 18.50,
-      "stop": 17.50,
-      "target": 20.50,
-      "riskReward": 2.0,
-      "rationale": "EV momentum continuation; Jul 2 +8.44% with 77M volume. Break above 19 pre-market = CALL. Stop under 17.50 swing low.",
-      "timeframe": "0DTE"
-    },
-    {
-      "ticker": "MSTR",
-      "direction": "call",
-      "entry": 100.00,
-      "stop": 95.00,
-      "target": 110.00,
-      "riskReward": 2.0,
-      "rationale": "Bitcoin proxy momentum; BTC strength. 100 psychological level reclaim. Stop under 95.",
-      "timeframe": "0DTE"
-    },
-    {
-      "ticker": "AVAV",
-      "direction": "call",
-      "entry": 188.00,
-      "stop": 180.00,
-      "target": 206.00,
-      "riskReward": 2.25,
-      "rationale": "Defense breakout continuation; 190 resistance test. Stop under 180 support.",
-      "timeframe": "intraday"
-    },
-    {
-      "ticker": "MRNA",
-      "direction": "call",
-      "entry": 78.00,
-      "stop": 73.00,
-      "target": 88.00,
-      "riskReward": 2.0,
-      "rationale": "Biotech momentum; 80 psychological level. Stop under 73 Jul 2 low approx.",
-      "timeframe": "0DTE"
-    },
-    {
-      "ticker": "GPC",
-      "direction": "call",
-      "entry": 130.00,
-      "stop": 125.00,
-      "target": 140.00,
-      "riskReward": 2.0,
-      "rationale": "Value rotation; 130 reclaim. Stop under 125 support.",
-      "timeframe": "intraday"
-    }
-  ],
-  "putSetups": [
-    {
-      "ticker": "QQQ",
-      "direction": "put",
-      "entry": 712,
-      "stop": 720,
-      "target": 695,
-      "riskReward": 2.1,
-      "rationale": "Tech selloff continuation; QQQ -1.73% Jul 2 close below 725 support. Breakdown = PUT. Stop above 720.",
-      "timeframe": "0DTE"
-    },
-    {
-      "ticker": "AIP",
-      "direction": "put",
-      "entry": 35,
-      "stop": 39,
-      "target": 27,
-      "riskReward": 2.0,
-      "rationale": "Earnings miss gap down; semiconductor weakness. Short continuation below 35. Stop above 39.",
-      "timeframe": "0DTE"
-    },
-    {
-      "ticker": "VICR",
-      "direction": "put",
-      "entry": 282,
-      "stop": 292,
-      "target": 260,
-      "riskReward": 2.2,
-      "rationale": "Breakdown from 300 support; revenue warning. Stop above 292.",
-      "timeframe": "intraday"
-    },
-    {
-      "ticker": "ACLS",
-      "direction": "put",
-      "entry": 144,
-      "stop": 152,
-      "target": 128,
-      "riskReward": 2.0,
-      "rationale": "Chip capex fear gap down; short continuation below 144. Stop above 152.",
-      "timeframe": "intraday"
-    },
-    {
-      "ticker": "VECO",
-      "direction": "put",
-      "entry": 57,
-      "stop": 62,
-      "target": 47,
-      "riskReward": 2.0,
-      "rationale": "Semiconductor equipment weakness; breakdown below 60. Stop above 62.",
-      "timeframe": "intraday"
-    }
-  ],
-  "vwapNotes": "SPY 744.78 — flat near prior close; QQQ 712.60 — below VWAP, tech distribution clear; IWM 297.58 — mixed, small-cap range-bound. No VWAP data from Finnhub; confirm on platform.",
+  "vwapNotes": "SPY VWAP 749.55 — fiyat üstünde (+1.42). QQQ VWAP 723.24 — fiyat üstünde (+2.17). IWM VWAP 299.43 — fiyat üstünde (+0.61). Risk-on pozisyon.",
   "riskAssessment": {
-    "level": "medium",
-    "vixRegime": "VIX 15.95 — normal range (15-20), options premium relatively cheap; complacency edge",
-    "sectorRotation": "Tech/semiconductors weak (QQQ -1.73%, chip names down). EV/crypto/defense/biotech strong. Rotation into momentum/value.",
-    "earningsRisk": "Jul 3 is half-day session ahead of Independence Day (1:00 PM ET close). No major earnings today. Q2 earnings season begins next week (PEP, DAL, LEVI, AZZ). 0DTE earnings play YASAK.",
-    "macroRisk": "Holiday-thinned volume increases slippage and manipulation risk. US-Iran ceasefire reduces geopolitical tail risk. Fed on hold; no CPI/FOMC today."
+    "level": "low",
+    "vixRegime": "VIX 15.90 — normal aralık, complacency bölgesine yakın",
+    "sectorRotation": "Tech (TSLA, NVDA, PLTR) ve Energy/FinTech (WULF, SOFI) önde",
+    "earningsRisk": "Yakın earnings verisi kısıtlı veri modunda mevcut değil",
+    "macroRisk": "4 Temmuz tatili sonrası likidite normalleşiyor; FOMC öncesi sessiz dönem"
   },
   "nextDayCarryForward": []
 }
