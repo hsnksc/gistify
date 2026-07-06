@@ -27,7 +27,7 @@
       "importance": "low",
       "previous": "-0.3%",
       "forecast": "",
-      "actual": "",
+      "actual": "-0.4%",
       "currency": "AUD",
       "unit": "",
       "analysis": "Avustralya enflasyon göstergesi. Zayıf veri RBA dovish beklentilerini artırır; AUD/USD minimal etki."
@@ -41,7 +41,7 @@
       "importance": "low",
       "previous": "0.7%",
       "forecast": "",
-      "actual": "",
+      "actual": "-1.0%",
       "currency": "NZD",
       "unit": "",
       "analysis": "Yeni Zelanda emtia fiyatları yatay. NZD/USD ve emtia cross’ları üzerinde sınırlı etki."
@@ -55,7 +55,7 @@
       "importance": "low",
       "previous": "5.4%",
       "forecast": "",
-      "actual": "",
+      "actual": "3.0%",
       "currency": "SGD",
       "unit": "",
       "analysis": "Eurozone perakende yıllık +1.5% beklenti. Zayıf growth + yüksek inflation = stagflation riski."
@@ -69,7 +69,7 @@
       "importance": "low",
       "previous": "0.3%",
       "forecast": "",
-      "actual": "",
+      "actual": "-2.3%",
       "currency": "SGD",
       "unit": "",
       "analysis": "Eurozone perakende aylık +0.2% beklenti. Tüketici güveni zayıfken rebound sınırlı."
@@ -83,7 +83,7 @@
       "importance": "medium",
       "previous": "-3.8%",
       "forecast": "1.1%",
-      "actual": "",
+      "actual": "1.9%",
       "currency": "EUR",
       "unit": "",
       "analysis": "Almanya sipariş verisi volatil. -3.8% sonrası +1.1% rebound bekleniyor. Büyük sipariş etkisi; sürdürülebilirlik şüpheli. EUR/USD 30 pip hareket potansiyeli."
@@ -97,7 +97,7 @@
       "importance": "low",
       "previous": "3.1%",
       "forecast": "3.1%",
-      "actual": "",
+      "actual": "2.9%",
       "currency": "CHF",
       "unit": "",
       "analysis": "İsviçre işsizlik stabil (%3.1). CHF minimal etki; güvenli liman akışları zayıf."
@@ -111,7 +111,7 @@
       "importance": "low",
       "previous": "3.0%",
       "forecast": "3.0%",
-      "actual": "",
+      "actual": "3.1%",
       "currency": "CHF",
       "unit": "",
       "analysis": "Mevsimsel düzeltilmiş işsizlik %3.0. İsviçre iş gücü piyasası sıkı."
@@ -125,7 +125,7 @@
       "importance": "low",
       "previous": "49.4",
       "forecast": "",
-      "actual": "",
+      "actual": "45.4",
       "currency": "EUR",
       "unit": "",
       "analysis": "İtalya inşaat sektörü kontraksiyonda (49.4). Güney Avrupa inşaat zayıflığı devam ediyor."
@@ -139,7 +139,7 @@
       "importance": "low",
       "previous": "42.4",
       "forecast": "",
-      "actual": "",
+      "actual": "44.8",
       "currency": "EUR",
       "unit": "",
       "analysis": "Almanya inşaat derin kontraksiyonda (42.4). Enerji maliyetleri ve talep zayıflığı baskısı."
@@ -153,7 +153,7 @@
       "importance": "low",
       "previous": "39.6",
       "forecast": "",
-      "actual": "",
+      "actual": "38.2",
       "currency": "EUR",
       "unit": "",
       "analysis": "Fransa inşaat çok zayıf (39.6). Eurozone inşaat sektörü bütünsel olarak durgun."
@@ -167,7 +167,7 @@
       "importance": "low",
       "previous": "43.7",
       "forecast": "",
-      "actual": "",
+      "actual": "42.8",
       "currency": "EUR",
       "unit": "",
       "analysis": "Eurozone inşaat PMI 43.7. Yapı sektörü resesyonda; ECB için growth risk sinyali."
@@ -195,7 +195,7 @@
       "importance": "low",
       "previous": "160,662.0",
       "forecast": "",
-      "actual": "",
+      "actual": "213,166.0",
       "currency": "GBP",
       "unit": "",
       "analysis": "160,662 kayıt. Otomotiv sektörü talebi izole gösterge."
@@ -209,7 +209,7 @@
       "importance": "medium",
       "previous": "38.2",
       "forecast": "40.1",
-      "actual": "",
+      "actual": "38.4",
       "currency": "GBP",
       "unit": "",
       "analysis": "UK inşaat PMI 40.1 beklenti (önceki 38.2). Hâlâ derin kontraksiyon; GBP zayıf."
@@ -223,7 +223,7 @@
       "importance": "low",
       "previous": "-13.4",
       "forecast": "-8.9",
-      "actual": "",
+      "actual": "-3.1",
       "currency": "EUR",
       "unit": "",
       "analysis": "Eurozone yatırımcı güveni -8.9 beklenti (önceki -13.4). Hafif bottoming sinyali; EUR/USD ve DAX için relief potansiyeli."
@@ -237,7 +237,7 @@
       "importance": "low",
       "previous": "0.6%",
       "forecast": "0.2%",
-      "actual": "",
+      "actual": "0.2%",
       "currency": "EUR",
       "unit": "",
       "analysis": "Eurozone üretici fiyatları aylık +0.2% bekleniyor. Yüksek enerji maliyetleri pass-through riski."
@@ -251,7 +251,7 @@
       "importance": "low",
       "previous": "4.9%",
       "forecast": "5.7%",
-      "actual": "",
+      "actual": "5.9%",
       "currency": "EUR",
       "unit": "",
       "analysis": "Eurozone PPI yıllık +5.7% bekleniyor (önceki +4.9%). Re-acceleration; ECB hawkish repricing riski. EUR/USD spike potansiyeli."
@@ -265,7 +265,7 @@
       "importance": "low",
       "previous": "-0.4%",
       "forecast": "0.2%",
-      "actual": "",
+      "actual": "0.2%",
       "currency": "EUR",
       "unit": "",
       "analysis": "Eurozone perakende aylık +0.2% beklenti. Tüketici güveni zayıfken rebound sınırlı."
@@ -279,7 +279,7 @@
       "importance": "low",
       "previous": "1.0%",
       "forecast": "1.5%",
-      "actual": "",
+      "actual": "1.6%",
       "currency": "EUR",
       "unit": "",
       "analysis": "Eurozone perakende yıllık +1.5% beklenti. Zayıf growth + yüksek inflation = stagflation riski."
@@ -307,7 +307,7 @@
       "importance": "low",
       "previous": "126.9B",
       "forecast": "",
-      "actual": "",
+      "actual": "126.4B",
       "currency": "CAD",
       "unit": "",
       "analysis": "Kanada rezerv varlıkları 126.9B önceki. CAD/USD üzerinde sınırlı etki."
@@ -321,7 +321,7 @@
       "importance": "low",
       "previous": "2.579%",
       "forecast": "",
-      "actual": "",
+      "actual": "2.548%",
       "currency": "EUR",
       "unit": "",
       "analysis": "Fransa kısa vadeli tahvil ihalesi. Avrupa yield curve front-end; ECB politika ile korele."
@@ -335,7 +335,7 @@
       "importance": "low",
       "previous": "2.377%",
       "forecast": "",
-      "actual": "",
+      "actual": "2.374%",
       "currency": "EUR",
       "unit": "",
       "analysis": "3-aylık BTF. Kısa vadeli likidite göstergesi."
@@ -349,7 +349,7 @@
       "importance": "low",
       "previous": "2.483%",
       "forecast": "",
-      "actual": "",
+      "actual": "2.455%",
       "currency": "EUR",
       "unit": "",
       "analysis": "6-aylık BTF. Orta vadeli borçlanma maliyeti."
@@ -363,7 +363,7 @@
       "importance": "medium",
       "previous": "52.2",
       "forecast": "52.2",
-      "actual": "",
+      "actual": "51.9",
       "currency": "USD",
       "unit": "",
       "analysis": "ABD kompozit PMI 52.2 beklenti. İmalat + hizmetler birleşimi; growth stabil ama zayıf."
@@ -377,7 +377,7 @@
       "importance": "high",
       "previous": "51.3",
       "forecast": "51.3",
-      "actual": "",
+      "actual": "51.2",
       "currency": "USD",
       "unit": "",
       "analysis": "ABD hizmetler PMI 51.3 beklenti (preliminary zaten 51.3). Services growth marjinal; new orders ve employment alt bileşenleri kritik. 50 altı sürpriz = stagflation korkusu."
@@ -391,7 +391,7 @@
       "importance": "low",
       "previous": "107.01",
       "forecast": "",
-      "actual": "",
+      "actual": "106.69",
       "currency": "USD",
       "unit": "",
       "analysis": "Conference Board istihdam trendi 107.01 önceki. ISM Employment ile korelasyonlu; iş gücü piyasası yavaşlaması sinyali."
@@ -405,7 +405,7 @@
       "importance": "low",
       "previous": "57.7",
       "forecast": "",
-      "actual": "",
+      "actual": "55.4",
       "currency": "USD",
       "unit": "",
       "analysis": "ISM Business Activity 57.7 önceki. Hizmetler aktivitesi güçlü; momentum kaybı takip edilmeli."
@@ -419,7 +419,7 @@
       "importance": "medium",
       "previous": "47.9",
       "forecast": "",
-      "actual": "",
+      "actual": "51.2",
       "currency": "USD",
       "unit": "",
       "analysis": "ISM Employment 47.9 önceki (kontraksiyon). Beklenti yok; eğer 50+ gelirse soft landing güçlenir."
@@ -433,7 +433,7 @@
       "importance": "low",
       "previous": "57.3",
       "forecast": "",
-      "actual": "",
+      "actual": "55.1",
       "currency": "USD",
       "unit": "",
       "analysis": "ISM New Orders 57.3 önceki. Talep güçlü; gerileme = services demand zayıflığı."
@@ -447,7 +447,7 @@
       "importance": "high",
       "previous": "54.5",
       "forecast": "54.2",
-      "actual": "",
+      "actual": "54.0",
       "currency": "USD",
       "unit": "",
       "analysis": "ABD hizmetler PMI 54.2 beklenti (önceki 54.5). Hafif yavaşlama; 50 üzeri = genişleme. S&P Global PMI ile divergence varsa piyasa karışık."
@@ -461,7 +461,7 @@
       "importance": "high",
       "previous": "71.3",
       "forecast": "",
-      "actual": "",
+      "actual": "67.7",
       "currency": "USD",
       "unit": "",
       "analysis": "ISM Prices 71.3 önceki — çok yüksek. Hizmetler enflasyon baskısı. Fed politika yolu için en kritik veri. 70+ kalırsa hawkish Waller riski artar."
@@ -517,7 +517,7 @@
       "importance": "low",
       "previous": "3.740%",
       "forecast": "",
-      "actual": "",
+      "actual": "3.735%",
       "currency": "USD",
       "unit": "",
       "analysis": "ABD 3-aylık bono ihalesi 3.740% önceki. Treasury yield curve front-end; Fed fonlama maliyeti."
@@ -531,7 +531,7 @@
       "importance": "low",
       "previous": "3.840%",
       "forecast": "",
-      "actual": "",
+      "actual": "3.830%",
       "currency": "USD",
       "unit": "",
       "analysis": "ABD 6-aylık bono 3.840% önceki. Kısa vadeli faiz beklentileri."
@@ -587,7 +587,7 @@
       "importance": "medium",
       "previous": "-105.7K",
       "forecast": "",
-      "actual": "",
+      "actual": "-102.1K",
       "currency": "GBP",
       "unit": "",
       "analysis": "GBP net short -105.7K. Sterling üzerinde aşırı bearish positioning; short squeeze veya continuation riski."
@@ -601,7 +601,7 @@
       "importance": "low",
       "previous": "0.8K",
       "forecast": "",
-      "actual": "",
+      "actual": "0.6K",
       "currency": "USD",
       "unit": "",
       "analysis": "Alüminyum net long +0.8K. Minimal positioning; emtia sınırlı etki."
@@ -615,7 +615,7 @@
       "importance": "low",
       "previous": "71.6K",
       "forecast": "",
-      "actual": "",
+      "actual": "64.8K",
       "currency": "USD",
       "unit": "",
       "analysis": "Bakır net long +71.6K. Global imalat talebi göstergesi; 7 haftadır azalıyor. Çin zayıflığı sinyali."
@@ -629,7 +629,7 @@
       "importance": "low",
       "previous": "58.3K",
       "forecast": "",
-      "actual": "",
+      "actual": "64.2K",
       "currency": "USD",
       "unit": "",
       "analysis": "Mısır net long +58.3K. Tarım emtia; hava durumu ve talep dinamikleri."
@@ -643,7 +643,7 @@
       "importance": "medium",
       "previous": "114.6K",
       "forecast": "",
-      "actual": "",
+      "actual": "110.5K",
       "currency": "USD",
       "unit": "",
       "analysis": "Ham petrol net long +114.6K. Ortadoğu risk primi embedded; jeopolitik sakinleşme = long squeeze."
@@ -657,7 +657,7 @@
       "importance": "medium",
       "previous": "181.3K",
       "forecast": "",
-      "actual": "",
+      "actual": "194.0K",
       "currency": "USD",
       "unit": "",
       "analysis": "Altın net long +181.3K. Aşırı uzun; DXY güçlenirse veya ISM Prices düşerse long liquidation = $50–80 düşüş."
@@ -671,7 +671,7 @@
       "importance": "medium",
       "previous": "-9.1K",
       "forecast": "",
-      "actual": "",
+      "actual": "-7.6K",
       "currency": "USD",
       "unit": "",
       "analysis": "Nasdaq 100 net short -9.1K. Tech bearish positioning; short squeeze veya momentum amplification."
@@ -685,7 +685,7 @@
       "importance": "low",
       "previous": "-176.7K",
       "forecast": "",
-      "actual": "",
+      "actual": "-170.8K",
       "currency": "USD",
       "unit": "",
       "analysis": "Doğal gaz net short -176.7K. Aşırı bearish; hava durumu sürprizi = short squeeze."
@@ -699,7 +699,7 @@
       "importance": "medium",
       "previous": "-35.4K",
       "forecast": "",
-      "actual": "",
+      "actual": "-37.6K",
       "currency": "USD",
       "unit": "",
       "analysis": "S&P 500 net short -35.4K. Aşırı bearish; bad news = momentum amplification, good news = short squeeze."
@@ -713,7 +713,7 @@
       "importance": "low",
       "previous": "23.8K",
       "forecast": "",
-      "actual": "",
+      "actual": "27.4K",
       "currency": "USD",
       "unit": "",
       "analysis": "Gümüş net long +23.8K. Altın ile korele; industrial demand zayıf."
@@ -727,7 +727,7 @@
       "importance": "low",
       "previous": "100.8K",
       "forecast": "",
-      "actual": "",
+      "actual": "76.6K",
       "currency": "USD",
       "unit": "",
       "analysis": "Soya net long +100.8K. Tarım talebi; Çin ithalatı kritik."
@@ -741,7 +741,7 @@
       "importance": "low",
       "previous": "-48.4K",
       "forecast": "",
-      "actual": "",
+      "actual": "-55.0K",
       "currency": "USD",
       "unit": "",
       "analysis": "Buğday net short -48.4K. Karadeniz rekabeti ve arz baskısı."
@@ -755,7 +755,7 @@
       "importance": "low",
       "previous": "-146.8K",
       "forecast": "",
-      "actual": "",
+      "actual": "-150.8K",
       "currency": "CAD",
       "unit": "",
       "analysis": "CAD net short -146.8K. Kanada doları üzerinde aşırı bearish; petrol fiyatları ile ters korelasyon."
@@ -769,7 +769,7 @@
       "importance": "low",
       "previous": "-41.1K",
       "forecast": "",
-      "actual": "",
+      "actual": "-39.0K",
       "currency": "CHF",
       "unit": "",
       "analysis": "CHF net short -41.1K. Güvenli liman talebi zayıf; jeopolitik risk artarsa short squeeze."
@@ -783,7 +783,7 @@
       "importance": "medium",
       "previous": "-13.0K",
       "forecast": "",
-      "actual": "",
+      "actual": "-17.7K",
       "currency": "AUD",
       "unit": "",
       "analysis": "AUD net short -13.0K. Avustralya doları hafif bearish; emtia ve Çin talebi etkisi."
@@ -797,7 +797,7 @@
       "importance": "medium",
       "previous": "43.7K",
       "forecast": "",
-      "actual": "",
+      "actual": "44.7K",
       "currency": "BRL",
       "unit": "",
       "analysis": "BRL net long +43.7K. Brezilya real pozitif; emtia ve carry trade."
@@ -811,7 +811,7 @@
       "importance": "medium",
       "previous": "-146.1K",
       "forecast": "",
-      "actual": "",
+      "actual": "-155.1K",
       "currency": "JPY",
       "unit": "",
       "analysis": "JPY net short -146.1K. Yen üzerinde aşırı bearish; BOJ intervention riski ve risk-off = short squeeze."
@@ -825,7 +825,7 @@
       "importance": "low",
       "previous": "-54.8K",
       "forecast": "",
-      "actual": "",
+      "actual": "-63.3K",
       "currency": "NZD",
       "unit": "",
       "analysis": "NZD net short -54.8K. Yeni Zelanda doları bearish; tarım ve emtia talebi zayıf."
@@ -839,7 +839,7 @@
       "importance": "medium",
       "previous": "30.2K",
       "forecast": "",
-      "actual": "",
+      "actual": "1.1K",
       "currency": "EUR",
       "unit": "",
       "analysis": "EUR net long +30.2K. Euro hafif bullish; ECB hawkish pivot ile devam edebilir."
@@ -887,7 +887,7 @@
       "rationale": "CFTC Gold net long 181.3K — aşırı uzun. Stagflation narrative kırılırsa (growth weak + inflation falling) gold'un iki desteği gider. GLD 1% decline = 2–3x OTM put return."
     }
   ],
-  "vixOutlook": "VIX 15.66 (Jul 6 close, -0.49 / -3.03%). CNN Fear & Greed 44 (Fear). SPY 751.28 (+0.87%), QQQ 722.82 (+1.43%), IWM 298.90 (+0.44%), DXY 100.91 (+0.05%). [Kaynak: CNN, Yahoo Finance, MarketWatch | 2026-07-06T21:01:21.600413+00:00]",
-  "fearGreedOutlook": "CNN Fear & Greed Index: 44/100 — Fear. [Kaynak: CNN | 2026-07-06T21:01:21.600413+00:00]",
-  "marketNarrative": "ABD piyasaları (SPY 751.28, QQQ 722.82, IWM 298.90) dar bantta kapanmış. Tech momentum kırılgan. VIX 15.66 (-3.03%) — volatilite compress. CNN Fear & Greed 44 (Fear). DXY 100.91 (+0.05%). [Kaynak: CNN, Yahoo Finance, MarketWatch | 2026-07-06T21:01:21.600413+00:00]"
+  "vixOutlook": "VIX 15.66 (Jul 6 close, -0.49 / -3.03%). CNN Fear & Greed 44 (Fear). SPY 751.28 (+0.87%), QQQ 722.82 (+1.43%), IWM 298.90 (+0.44%), DXY 100.91 (+0.05%). [Kaynak: CNN, Yahoo Finance, MarketWatch | 2026-07-06T21:02:11.635181+00:00]",
+  "fearGreedOutlook": "CNN Fear & Greed Index: 44/100 — Fear. [Kaynak: CNN | 2026-07-06T21:02:11.635181+00:00]",
+  "marketNarrative": "ABD piyasaları (SPY 751.28, QQQ 722.82, IWM 298.90) dar bantta kapanmış. Tech momentum kırılgan. VIX 15.66 (-3.03%) — volatilite compress. CNN Fear & Greed 44 (Fear). DXY 100.91 (+0.05%). [Kaynak: CNN, Yahoo Finance, MarketWatch | 2026-07-06T21:02:11.635181+00:00]"
 }
