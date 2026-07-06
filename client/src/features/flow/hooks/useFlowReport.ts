@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import type { FlowReport, FlowReportResponse } from "@shared/flow";
 import { extractApiErrorMessage, readJsonResponse } from "@/lib/api";
 import { type AppLanguage, t } from "@/lib/i18n";
+import { postFlowEngagement } from "./useFlowEngagement";
 
 interface UseFlowReportResult {
   error: string;
@@ -52,7 +53,23 @@ export function useFlowReport(
         );
       }
 
-      setReport(payload.report || null);
+      const nextReport = payload.report || null;
+      setReport(nextReport);
+
+      if (nextReport) {
+        void postFlowEngagement(nextReport.id, "view", language)
+          .then(engagement => {
+            setReport(current =>
+              current?.id === nextReport.id
+                ? {
+                    ...current,
+                    engagement,
+                  }
+                : current
+            );
+          })
+          .catch(() => undefined);
+      }
     } catch (caughtError) {
       setError(
         caughtError instanceof Error

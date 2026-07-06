@@ -579,6 +579,11 @@ function buildFlowReportSummary(
     companyName: titleInfo.companyName,
     contentFormat,
     exchange: contentFormat === "html" ? detectExchange(html) : "",
+    engagement: {
+      likeCount: 0,
+      readCount: 0,
+      shareCount: 0,
+    },
     figureCount: Array.isArray(report.content.figureFiles)
       ? report.content.figureFiles.length
       : 0,

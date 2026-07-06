@@ -3534,6 +3534,11 @@ async function startServer() {
     createFlowReportsRouter({
       setPrivateNoStore,
       getPublishedReports: getPublishedDailyReports,
+      listEngagementsByReportIds:
+        billingStore.listFlowReportEngagementsByReportIds,
+      recordView: billingStore.recordFlowReportView,
+      recordLike: billingStore.recordFlowReportLike,
+      recordShare: billingStore.recordFlowReportShare,
     })
   );
 

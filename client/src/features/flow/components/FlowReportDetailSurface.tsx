@@ -139,6 +139,7 @@ export default function FlowReportDetailSurface({
 
                 <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
                   <FlowPostActions
+                    engagement={report.engagement}
                     language={language}
                     reportId={report.id}
                     sharePath={detailPath}

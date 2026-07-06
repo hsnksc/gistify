@@ -10,7 +10,15 @@ import type {
 
 export const PUBLIC_ACCESS_USER_ID = "public-access";
 
-export type FlowReport = DailyReportRecord;
+export interface FlowReportEngagement {
+  readCount: number;
+  likeCount: number;
+  shareCount: number;
+}
+
+export type FlowReport = DailyReportRecord & {
+  engagement?: FlowReportEngagement;
+};
 export type FlowSource = DailyReportSourcePackage;
 export type FlowReportKind = "stock" | "daily";
 
@@ -22,6 +30,7 @@ export interface FlowReportSummary {
   hasCharts: boolean;
   headline: string;
   id: string;
+  engagement: FlowReportEngagement;
   previewText: string;
   price: number | null;
   priceChangePct: number | null;
@@ -64,4 +73,13 @@ export interface FlowCommentsResponse {
 
 export interface FlowReportCommentCreateRequestBody {
   body?: string;
+}
+
+export interface FlowReportEngagementResponse {
+  engagement: FlowReportEngagement;
+}
+
+export interface FlowReportEngagementRequestBody {
+  liked?: boolean;
+  visitorId?: string;
 }

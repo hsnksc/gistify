@@ -104,6 +104,7 @@ export default function FlowFeedCard({
           <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
             <FlowPostActions
               compact
+              engagement={report.engagement}
               language={language}
               reportId={report.id}
               sharePath={href}

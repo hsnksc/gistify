@@ -1,9 +1,15 @@
-import { Router, type Response } from "express";
+import crypto from "node:crypto";
+import { Router, type Request, type Response } from "express";
 import type { DailyReportLanguage, DailyReportRecord } from "../../../shared/dailyReports";
 import type {
+  FlowReport,
+  FlowReportEngagement,
+  FlowReportEngagementRequestBody,
+  FlowReportEngagementResponse,
   FlowReportResponse,
   FlowReportsResponse,
   FlowReportSummariesResponse,
+  FlowReportSummary,
 } from "../../../shared/flow";
 import {
   getViewerFlowReportById,
@@ -14,6 +20,16 @@ import {
 interface FlowReportsRouterDependencies {
   setPrivateNoStore: (res: Response) => void;
   getPublishedReports: () => DailyReportRecord[];
+  listEngagementsByReportIds: (
+    reportIds: string[]
+  ) => Map<string, FlowReportEngagement>;
+  recordView: (reportId: string, actorKey: string) => FlowReportEngagement;
+  recordLike: (
+    reportId: string,
+    actorKey: string,
+    liked: boolean
+  ) => FlowReportEngagement;
+  recordShare: (reportId: string, actorKey: string) => FlowReportEngagement;
 }
 
 function normalizeString(value: unknown) {
@@ -39,9 +55,72 @@ function normalizeLimit(value: unknown) {
   return Math.min(parsed, 100);
 }
 
+function getEmptyEngagement(): FlowReportEngagement {
+  return {
+    likeCount: 0,
+    readCount: 0,
+    shareCount: 0,
+  };
+}
+
+function attachReportEngagement(
+  report: DailyReportRecord,
+  engagement: FlowReportEngagement
+): FlowReport {
+  return {
+    ...report,
+    engagement,
+  };
+}
+
+function attachSummaryEngagement(
+  summary: FlowReportSummary,
+  engagement: FlowReportEngagement
+): FlowReportSummary {
+  return {
+    ...summary,
+    engagement,
+  };
+}
+
+function getEngagement(
+  engagementByReportId: Map<string, FlowReportEngagement>,
+  reportId: string
+) {
+  return engagementByReportId.get(reportId) || getEmptyEngagement();
+}
+
+function normalizeVisitorId(value: unknown) {
+  const normalized = normalizeString(value);
+  return /^[a-zA-Z0-9:_-]{8,120}$/.test(normalized) ? normalized : "";
+}
+
+function buildFallbackActorKey(req: Request) {
+  const userAgent = normalizeString(req.get("user-agent"));
+  const digest = crypto
+    .createHash("sha256")
+    .update(`${req.ip || ""}|${userAgent}`)
+    .digest("hex")
+    .slice(0, 32);
+  return `fingerprint:${digest}`;
+}
+
+function getEngagementActorKey(req: Request) {
+  const body =
+    req.body && typeof req.body === "object"
+      ? (req.body as FlowReportEngagementRequestBody)
+      : {};
+  const visitorId = normalizeVisitorId(body.visitorId);
+  return visitorId ? `visitor:${visitorId}` : buildFallbackActorKey(req);
+}
+
 export function createFlowReportsRouter({
   setPrivateNoStore,
   getPublishedReports,
+  listEngagementsByReportIds,
+  recordView,
+  recordLike,
+  recordShare,
 }: FlowReportsRouterDependencies) {
   const router = Router();
 
@@ -60,7 +139,7 @@ function stripHtml(value: string) {
   return normalizeString(value.replace(/<[^>]+>/g, " "));
 }
 
-function translateReport(report: DailyReportRecord, lang: string): DailyReportRecord {
+function translateReport<T extends DailyReportRecord>(report: T, lang: string): T {
   if (lang !== "en") {
     return report;
   }
@@ -83,7 +162,7 @@ function translateReport(report: DailyReportRecord, lang: string): DailyReportRe
         headline: enHeadline || report.content.headline,
         language: "en" as DailyReportLanguage,
       },
-    };
+    } as T;
   }
 
   if (report.content.availableLanguages?.includes("en")) {
@@ -105,7 +184,7 @@ function translateReport(report: DailyReportRecord, lang: string): DailyReportRe
           headline: inlineEnHeadline || report.content.headline,
           language: "en" as DailyReportLanguage,
         },
-      };
+      } as T;
     }
   }
 
@@ -120,8 +199,19 @@ function translateReport(report: DailyReportRecord, lang: string): DailyReportRe
       reportKind: normalizeReportKind(req.query.type),
       sourceLabel: normalizeString(req.query.source),
     });
+    const engagementByReportId = listEngagementsByReportIds(
+      reports.map(report => report.id)
+    );
 
-    const translatedReports = reports.map(report => translateReport(report, lang));
+    const translatedReports = reports.map(report =>
+      translateReport(
+        attachReportEngagement(
+          report,
+          getEngagement(engagementByReportId, report.id)
+        ),
+        lang
+      )
+    );
 
     const payload: FlowReportsResponse = { reports: translatedReports };
     res.status(200).json(payload);
@@ -130,13 +220,22 @@ function translateReport(report: DailyReportRecord, lang: string): DailyReportRe
   router.get("/summary", (req, res) => {
     setPrivateNoStore(res);
     const lang = normalizeString(req.query.lang).toLowerCase();
+    const summaries = getViewerFlowReportSummaries(getPublishedReports(), {
+      limit: normalizeLimit(req.query.limit),
+      reportKind: normalizeReportKind(req.query.type),
+      sourceLabel: normalizeString(req.query.source),
+      lang,
+    });
+    const engagementByReportId = listEngagementsByReportIds(
+      summaries.map(report => report.id)
+    );
     const payload: FlowReportSummariesResponse = {
-      reports: getViewerFlowReportSummaries(getPublishedReports(), {
-        limit: normalizeLimit(req.query.limit),
-        reportKind: normalizeReportKind(req.query.type),
-        sourceLabel: normalizeString(req.query.source),
-        lang,
-      }),
+      reports: summaries.map(summary =>
+        attachSummaryEngagement(
+          summary,
+          getEngagement(engagementByReportId, summary.id)
+        )
+      ),
     };
 
     res.status(200).json(payload);
@@ -149,11 +248,87 @@ function translateReport(report: DailyReportRecord, lang: string): DailyReportRe
       limit: 1,
       reportKind: normalizeReportKind(req.query.type),
     })[0] || null;
+    const engagementByReportId = report
+      ? listEngagementsByReportIds([report.id])
+      : new Map<string, FlowReportEngagement>();
 
     const payload: FlowReportResponse = {
-      report: report ? translateReport(report, lang) : null,
+      report: report
+        ? translateReport(
+            attachReportEngagement(
+              report,
+              getEngagement(engagementByReportId, report.id)
+            ),
+            lang
+          )
+        : null,
     };
 
+    res.status(200).json(payload);
+  });
+
+  router.post("/:reportId/engagement/view", (req, res) => {
+    setPrivateNoStore(res);
+
+    const report = getViewerFlowReportById(
+      getPublishedReports(),
+      req.params.reportId
+    );
+
+    if (!report) {
+      res.status(404).json({ error: "Flow report bulunamadi." });
+      return;
+    }
+
+    const payload: FlowReportEngagementResponse = {
+      engagement: recordView(report.id, getEngagementActorKey(req)),
+    };
+    res.status(200).json(payload);
+  });
+
+  router.post("/:reportId/engagement/like", (req, res) => {
+    setPrivateNoStore(res);
+
+    const report = getViewerFlowReportById(
+      getPublishedReports(),
+      req.params.reportId
+    );
+
+    if (!report) {
+      res.status(404).json({ error: "Flow report bulunamadi." });
+      return;
+    }
+
+    const body =
+      req.body && typeof req.body === "object"
+        ? (req.body as FlowReportEngagementRequestBody)
+        : {};
+    const payload: FlowReportEngagementResponse = {
+      engagement: recordLike(
+        report.id,
+        getEngagementActorKey(req),
+        Boolean(body.liked)
+      ),
+    };
+    res.status(200).json(payload);
+  });
+
+  router.post("/:reportId/engagement/share", (req, res) => {
+    setPrivateNoStore(res);
+
+    const report = getViewerFlowReportById(
+      getPublishedReports(),
+      req.params.reportId
+    );
+
+    if (!report) {
+      res.status(404).json({ error: "Flow report bulunamadi." });
+      return;
+    }
+
+    const payload: FlowReportEngagementResponse = {
+      engagement: recordShare(report.id, getEngagementActorKey(req)),
+    };
     res.status(200).json(payload);
   });
 
@@ -171,7 +346,14 @@ function translateReport(report: DailyReportRecord, lang: string): DailyReportRe
     }
 
     const lang = normalizeString(req.query.lang).toLowerCase();
-    const translatedReport = translateReport(report, lang);
+    const engagementByReportId = listEngagementsByReportIds([report.id]);
+    const translatedReport = translateReport(
+      attachReportEngagement(
+        report,
+        getEngagement(engagementByReportId, report.id)
+      ),
+      lang
+    );
 
     const payload: FlowReportResponse = { report: translatedReport };
     res.status(200).json(payload);

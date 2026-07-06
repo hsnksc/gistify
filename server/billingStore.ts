@@ -15,6 +15,7 @@ import type {
   DailyReportRecord,
   DailyReportStatus,
 } from "../shared/dailyReports";
+import type { FlowReportEngagement } from "../shared/flow";
 import type {
   MomentumReportRecord,
   MomentumReportStatus,
@@ -239,6 +240,13 @@ interface FlowReportCommentDbRow {
   body: string;
   created_at: string;
   updated_at: string;
+}
+
+interface FlowReportEngagementDbRow {
+  report_id: string;
+  read_count: number | null;
+  like_count: number | null;
+  share_count: number | null;
 }
 
 function getDatabasePath() {
@@ -703,6 +711,21 @@ export function createBillingStore() {
       updated_at TEXT NOT NULL
     );
 
+    CREATE TABLE IF NOT EXISTS flow_report_engagements (
+      report_id TEXT NOT NULL,
+      actor_key TEXT NOT NULL,
+      read_count INTEGER NOT NULL DEFAULT 0,
+      liked INTEGER NOT NULL DEFAULT 0,
+      share_count INTEGER NOT NULL DEFAULT 0,
+      first_read_at TEXT,
+      last_read_at TEXT,
+      liked_at TEXT,
+      first_shared_at TEXT,
+      last_shared_at TEXT,
+      updated_at TEXT NOT NULL,
+      PRIMARY KEY (report_id, actor_key)
+    );
+
     CREATE TABLE IF NOT EXISTS newsletter_subscribers (
       email TEXT PRIMARY KEY,
       source TEXT NOT NULL,
@@ -744,6 +767,9 @@ export function createBillingStore() {
 
     CREATE INDEX IF NOT EXISTS idx_flow_report_comments_user_id
       ON flow_report_comments(user_id);
+
+    CREATE INDEX IF NOT EXISTS idx_flow_report_engagements_report_id
+      ON flow_report_engagements(report_id);
   `);
 
   const subscriptionTableInfo = db
@@ -1521,6 +1547,111 @@ export function createBillingStore() {
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
+  const recordFlowReportViewStmt = db.prepare(`
+    INSERT INTO flow_report_engagements (
+      report_id,
+      actor_key,
+      read_count,
+      first_read_at,
+      last_read_at,
+      updated_at
+    ) VALUES (?, ?, 1, ?, ?, ?)
+    ON CONFLICT(report_id, actor_key) DO UPDATE SET
+      read_count = CASE
+        WHEN flow_report_engagements.read_count > 0 THEN flow_report_engagements.read_count
+        ELSE 1
+      END,
+      first_read_at = COALESCE(flow_report_engagements.first_read_at, excluded.first_read_at),
+      last_read_at = excluded.last_read_at,
+      updated_at = excluded.updated_at
+  `);
+
+  const recordFlowReportLikeStmt = db.prepare(`
+    INSERT INTO flow_report_engagements (
+      report_id,
+      actor_key,
+      liked,
+      liked_at,
+      updated_at
+    ) VALUES (?, ?, ?, ?, ?)
+    ON CONFLICT(report_id, actor_key) DO UPDATE SET
+      liked = excluded.liked,
+      liked_at = excluded.liked_at,
+      updated_at = excluded.updated_at
+  `);
+
+  const recordFlowReportShareStmt = db.prepare(`
+    INSERT INTO flow_report_engagements (
+      report_id,
+      actor_key,
+      share_count,
+      first_shared_at,
+      last_shared_at,
+      updated_at
+    ) VALUES (?, ?, 1, ?, ?, ?)
+    ON CONFLICT(report_id, actor_key) DO UPDATE SET
+      share_count = flow_report_engagements.share_count + 1,
+      first_shared_at = COALESCE(flow_report_engagements.first_shared_at, excluded.first_shared_at),
+      last_shared_at = excluded.last_shared_at,
+      updated_at = excluded.updated_at
+  `);
+
+  function getEmptyFlowReportEngagement(): FlowReportEngagement {
+    return {
+      likeCount: 0,
+      readCount: 0,
+      shareCount: 0,
+    };
+  }
+
+  function listFlowReportEngagementsByReportIds(reportIds: string[]) {
+    const uniqueReportIds = Array.from(
+      new Set(reportIds.map(item => item.trim()).filter(Boolean))
+    );
+
+    const engagementByReportId = new Map<string, FlowReportEngagement>();
+    for (const reportId of uniqueReportIds) {
+      engagementByReportId.set(reportId, getEmptyFlowReportEngagement());
+    }
+
+    if (!uniqueReportIds.length) {
+      return engagementByReportId;
+    }
+
+    const placeholders = uniqueReportIds.map(() => "?").join(", ");
+    const rows = db
+      .prepare(
+        `
+          SELECT
+            report_id,
+            SUM(CASE WHEN read_count > 0 THEN 1 ELSE 0 END) AS read_count,
+            SUM(CASE WHEN liked = 1 THEN 1 ELSE 0 END) AS like_count,
+            SUM(CASE WHEN share_count > 0 THEN 1 ELSE 0 END) AS share_count
+          FROM flow_report_engagements
+          WHERE report_id IN (${placeholders})
+          GROUP BY report_id
+        `
+      )
+      .all(...uniqueReportIds) as unknown as FlowReportEngagementDbRow[];
+
+    for (const row of rows) {
+      engagementByReportId.set(row.report_id, {
+        likeCount: Number(row.like_count || 0),
+        readCount: Number(row.read_count || 0),
+        shareCount: Number(row.share_count || 0),
+      });
+    }
+
+    return engagementByReportId;
+  }
+
+  function getFlowReportEngagementByReportId(reportId: string) {
+    return (
+      listFlowReportEngagementsByReportIds([reportId]).get(reportId) ||
+      getEmptyFlowReportEngagement()
+    );
+  }
+
   return {
     dbPath,
     pruneExpiredSessions(now = Date.now()) {
@@ -1843,6 +1974,34 @@ export function createBillingStore() {
         record.createdAt,
         record.updatedAt
       );
+    },
+    listFlowReportEngagementsByReportIds(reportIds: string[]) {
+      return listFlowReportEngagementsByReportIds(reportIds);
+    },
+    recordFlowReportView(reportId: string, actorKey: string) {
+      const nowIso = new Date().toISOString();
+      recordFlowReportViewStmt.run(reportId, actorKey, nowIso, nowIso, nowIso);
+      return getFlowReportEngagementByReportId(reportId);
+    },
+    recordFlowReportLike(
+      reportId: string,
+      actorKey: string,
+      liked: boolean
+    ) {
+      const nowIso = new Date().toISOString();
+      recordFlowReportLikeStmt.run(
+        reportId,
+        actorKey,
+        liked ? 1 : 0,
+        liked ? nowIso : null,
+        nowIso
+      );
+      return getFlowReportEngagementByReportId(reportId);
+    },
+    recordFlowReportShare(reportId: string, actorKey: string) {
+      const nowIso = new Date().toISOString();
+      recordFlowReportShareStmt.run(reportId, actorKey, nowIso, nowIso, nowIso);
+      return getFlowReportEngagementByReportId(reportId);
     },
     createNewsletterSubscriber(email: string, source = "homepage") {
       const normalizedEmail = email.trim().toLowerCase();

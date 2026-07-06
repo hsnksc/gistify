@@ -1144,6 +1144,7 @@ export interface I18nResourceShape {
     "editTickerBasedEarningsAnd": string;
     "editWeeklyTickerAnalysesHere": string;
     "editorIsOpenWithReport": string;
+    "engagementCouldNotBeUpdated": string;
     "enterTheSecretKeyAssociated": string;
     "examplePreserveTheCompositionIn": string;
     "excellent": string;
@@ -1377,6 +1378,7 @@ export interface I18nResourceShape {
     "rawJsonCouldNotBe": string;
     "rawJsonCouldNotBed679": string;
     "readingNotes": string;
+    "readers": string;
     "ready": string;
     "readyPackagesInDailyreportFolder": string;
     "realEarningsCalendarAndPrice": string;
