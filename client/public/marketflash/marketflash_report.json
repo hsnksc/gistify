@@ -2,7 +2,7 @@
   "schemaVersion": "2.0",
   "reportType": "hourly",
   "reportDate": "2026-07-06",
-  "generatedAt": "2026-07-06T21:25:37.840093",
+  "generatedAt": "2026-07-06T21:32:05.098348",
   "marketRegime": {
     "vix": 15.94,
     "regime": "normal",
@@ -48,104 +48,1272 @@
     }
   },
   "topMovers": {
-    "gainers": [],
-    "losers": []
+    "gainers": [
+      {
+        "ticker": "IREN",
+        "price": 44.49,
+        "change": 14.61,
+        "volume": 32830000,
+        "catalyst": "Bitcoin mining institutional interest; AI infrastructure demand"
+      },
+      {
+        "ticker": "BMNR",
+        "price": 15.85,
+        "change": 10.41,
+        "volume": 25283000,
+        "catalyst": "Bitcoin immersion mining + AI datacenter dual play"
+      },
+      {
+        "ticker": "WULF",
+        "price": 23.26,
+        "change": 9.84,
+        "volume": 48312000,
+        "catalyst": "Anthropic lease at Justified Data Campus (Jul 6); AI datacenter pivot"
+      },
+      {
+        "ticker": "JOBY",
+        "price": 9.17,
+        "change": 8.01,
+        "volume": 27031000,
+        "catalyst": "eVTOL aviation momentum; FAA certification progress"
+      },
+      {
+        "ticker": "OPEN",
+        "price": 5.28,
+        "change": 7.65,
+        "volume": 47795000,
+        "catalyst": "Real estate tech momentum; volume breakout"
+      }
+    ],
+    "losers": [
+      {
+        "ticker": "CMG",
+        "price": 34.12,
+        "change": -3.53,
+        "volume": 7687150,
+        "catalyst": "Chipotle stock split aftermath; valuation pressure"
+      },
+      {
+        "ticker": "GRAB",
+        "price": 3.81,
+        "change": -2.44,
+        "volume": 40117000,
+        "catalyst": "Southeast Asia tech selloff; Grab profitability concerns"
+      },
+      {
+        "ticker": "PFE",
+        "price": 23.84,
+        "change": -1.95,
+        "volume": 33473000,
+        "catalyst": "Pharma patent cliff; obesity drug pipeline disappointment"
+      },
+      {
+        "ticker": "KVUE",
+        "price": 19.54,
+        "change": -1.34,
+        "volume": 6841720,
+        "catalyst": "Consumer staples rotation out; Johnson & Johnson spinoff fatigue"
+      },
+      {
+        "ticker": "CPRT",
+        "price": 29.6,
+        "change": -1.33,
+        "volume": 6980490,
+        "catalyst": "Auto salvage auction cyclical pressure; profit taking"
+      }
+    ]
   },
-  "momentumLeaders": [],
-  "watchlist": [
+  "momentumLeaders": [
     {
+      "rank": 1,
       "ticker": "WULF",
-      "mss": 66.5,
-      "upgradeTrigger": "R/R 1.5 < 2.0"
-    }
-  ],
-  "carryForwardHealthCheck": [],
-  "disqualified": [
-    {
-      "ticker": "AMD",
-      "reason": "MSS 43 < 50"
+      "price": 23.26,
+      "changePct": 9.84,
+      "rvol": 2.0,
+      "mss": 78.6,
+      "grade": "A",
+      "direction": "CALL",
+      "scoreBreakdown": {
+        "volumeProfile": 17.0,
+        "catalystDurability": 14.0,
+        "priceStructure": 11.2,
+        "trendPosition": 10.8,
+        "relativeStrength": 10.0,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 5.6,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "Anthropic lease at Justified Data Campus (Jul 6); AI datacenter pivot",
+        "tier": 2,
+        "halfLife": "gunler"
+      },
+      "tradePlan": {
+        "entryZone": "22.91-23.61",
+        "stop": 21.89,
+        "t1": 25.32,
+        "t2": 26.69,
+        "rr": 1.5,
+        "positionNote": "tam pozisyon"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
     },
     {
-      "ticker": "ACHR",
-      "reason": "Ortalama hacim 460091 / dolar hacmi $2.4M < esik (200K/$3M)"
+      "rank": 2,
+      "ticker": "IREN",
+      "price": 44.49,
+      "changePct": 14.61,
+      "rvol": 2.0,
+      "mss": 78.6,
+      "grade": "A",
+      "direction": "CALL",
+      "scoreBreakdown": {
+        "volumeProfile": 17.0,
+        "catalystDurability": 14.0,
+        "priceStructure": 11.2,
+        "trendPosition": 10.8,
+        "relativeStrength": 10.0,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 5.6,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "Bitcoin mining institutional interest; AI infrastructure demand",
+        "tier": 2,
+        "halfLife": "gunler"
+      },
+      "tradePlan": {
+        "entryZone": "43.82-45.16",
+        "stop": 40.59,
+        "t1": 50.34,
+        "t2": 54.24,
+        "rr": 1.5,
+        "positionNote": "tam pozisyon"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
+    },
+    {
+      "rank": 3,
+      "ticker": "TSLA",
+      "price": 418.75,
+      "changePct": 6.43,
+      "rvol": 2.0,
+      "mss": 78.6,
+      "grade": "A",
+      "direction": "CALL",
+      "scoreBreakdown": {
+        "volumeProfile": 17.0,
+        "catalystDurability": 14.0,
+        "priceStructure": 11.2,
+        "trendPosition": 10.8,
+        "relativeStrength": 10.0,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 5.6,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "Robotaxi service expanded to Miami; Q2 delivery beat expectations",
+        "tier": 2,
+        "halfLife": "gunler"
+      },
+      "tradePlan": {
+        "entryZone": "412.47-425.03",
+        "stop": 402.59,
+        "t1": 442.99,
+        "t2": 459.15,
+        "rr": 1.5,
+        "positionNote": "tam pozisyon"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
+    },
+    {
+      "rank": 4,
+      "ticker": "JOBY",
+      "price": 9.17,
+      "changePct": 8.01,
+      "rvol": 2.0,
+      "mss": 78.6,
+      "grade": "A",
+      "direction": "CALL",
+      "scoreBreakdown": {
+        "volumeProfile": 17.0,
+        "catalystDurability": 14.0,
+        "priceStructure": 11.2,
+        "trendPosition": 10.8,
+        "relativeStrength": 10.0,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 5.6,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "eVTOL aviation momentum; FAA certification progress",
+        "tier": 2,
+        "halfLife": "gunler"
+      },
+      "tradePlan": {
+        "entryZone": "9.03-9.31",
+        "stop": 8.73,
+        "t1": 9.83,
+        "t2": 10.27,
+        "rr": 1.5,
+        "positionNote": "tam pozisyon"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
+    },
+    {
+      "rank": 5,
+      "ticker": "BMNR",
+      "price": 15.85,
+      "changePct": 10.41,
+      "rvol": 2.0,
+      "mss": 78.6,
+      "grade": "A",
+      "direction": "CALL",
+      "scoreBreakdown": {
+        "volumeProfile": 17.0,
+        "catalystDurability": 14.0,
+        "priceStructure": 11.2,
+        "trendPosition": 10.8,
+        "relativeStrength": 10.0,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 5.6,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "Bitcoin immersion mining + AI datacenter dual play",
+        "tier": 2,
+        "halfLife": "gunler"
+      },
+      "tradePlan": {
+        "entryZone": "15.61-16.09",
+        "stop": 14.86,
+        "t1": 17.34,
+        "t2": 18.32,
+        "rr": 1.51,
+        "positionNote": "tam pozisyon"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
+    },
+    {
+      "rank": 6,
+      "ticker": "AMD",
+      "price": 553.39,
+      "changePct": 6.87,
+      "rvol": 2.0,
+      "mss": 78.6,
+      "grade": "A",
+      "direction": "CALL",
+      "scoreBreakdown": {
+        "volumeProfile": 17.0,
+        "catalystDurability": 14.0,
+        "priceStructure": 11.2,
+        "trendPosition": 10.8,
+        "relativeStrength": 10.0,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 5.6,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "Goldman Sachs PT $640 (was $450); Turing Japan autonomous driving GPU deal",
+        "tier": 2,
+        "halfLife": "gunler"
+      },
+      "tradePlan": {
+        "entryZone": "545.09-561.69",
+        "stop": 530.58,
+        "t1": 587.6,
+        "t2": 610.41,
+        "rr": 1.5,
+        "positionNote": "tam pozisyon"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
+    },
+    {
+      "rank": 7,
+      "ticker": "OPEN",
+      "price": 5.28,
+      "changePct": 7.65,
+      "rvol": 2.0,
+      "mss": 72.6,
+      "grade": "A",
+      "direction": "CALL",
+      "scoreBreakdown": {
+        "volumeProfile": 17.0,
+        "catalystDurability": 8.0,
+        "priceStructure": 11.2,
+        "trendPosition": 10.8,
+        "relativeStrength": 10.0,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 5.6,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "Real estate tech momentum; volume breakout",
+        "tier": 3,
+        "halfLife": "saatler"
+      },
+      "tradePlan": {
+        "entryZone": "5.20-5.36",
+        "stop": 5.04,
+        "t1": 5.64,
+        "t2": 5.88,
+        "rr": 1.5,
+        "positionNote": "tam pozisyon"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
+    },
+    {
+      "rank": 8,
+      "ticker": "RIVN",
+      "price": 19.83,
+      "changePct": 6.41,
+      "rvol": 2.0,
+      "mss": 72.6,
+      "grade": "A",
+      "direction": "CALL",
+      "scoreBreakdown": {
+        "volumeProfile": 17.0,
+        "catalystDurability": 8.0,
+        "priceStructure": 11.2,
+        "trendPosition": 10.8,
+        "relativeStrength": 10.0,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 5.6,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "EV delivery ramp; Amazon van partnership progress",
+        "tier": 3,
+        "halfLife": "saatler"
+      },
+      "tradePlan": {
+        "entryZone": "19.53-20.13",
+        "stop": 19.07,
+        "t1": 20.97,
+        "t2": 21.73,
+        "rr": 1.5,
+        "positionNote": "tam pozisyon"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
+    },
+    {
+      "rank": 9,
+      "ticker": "PLTR",
+      "price": 132.9,
+      "changePct": 2.78,
+      "rvol": 2.0,
+      "mss": 69.6,
+      "grade": "A",
+      "direction": "CALL",
+      "scoreBreakdown": {
+        "volumeProfile": 17.0,
+        "catalystDurability": 14.0,
+        "priceStructure": 9.0,
+        "trendPosition": 9.0,
+        "relativeStrength": 5.0,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 5.6,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "Nvidia partnership; AI software rotation; government contract pipeline",
+        "tier": 2,
+        "halfLife": "gunler"
+      },
+      "tradePlan": {
+        "entryZone": "130.91-134.89",
+        "stop": 130.68,
+        "t1": 136.23,
+        "t2": 138.45,
+        "rr": 1.5,
+        "positionNote": "tam pozisyon"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
+    },
+    {
+      "rank": 10,
+      "ticker": "ONDS",
+      "price": 7.71,
+      "changePct": 4.03,
+      "rvol": 2.0,
+      "mss": 66.1,
+      "grade": "A",
+      "direction": "CALL",
+      "scoreBreakdown": {
+        "volumeProfile": 17.0,
+        "catalystDurability": 8.0,
+        "priceStructure": 9.0,
+        "trendPosition": 9.0,
+        "relativeStrength": 7.5,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 5.6,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "Drone/IoT infrastructure play; government contract buzz",
+        "tier": 3,
+        "halfLife": "saatler"
+      },
+      "tradePlan": {
+        "entryZone": "7.59-7.83",
+        "stop": 7.52,
+        "t1": 8.0,
+        "t2": 8.19,
+        "rr": 1.53,
+        "positionNote": "tam pozisyon"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
+    },
+    {
+      "rank": 11,
+      "ticker": "SOFI",
+      "price": 18.89,
+      "changePct": 3.56,
+      "rvol": 2.0,
+      "mss": 66.1,
+      "grade": "A",
+      "direction": "CALL",
+      "scoreBreakdown": {
+        "volumeProfile": 17.0,
+        "catalystDurability": 8.0,
+        "priceStructure": 9.0,
+        "trendPosition": 9.0,
+        "relativeStrength": 7.5,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 5.6,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "Fintech momentum; GAAP profitability path",
+        "tier": 3,
+        "halfLife": "saatler"
+      },
+      "tradePlan": {
+        "entryZone": "18.61-19.17",
+        "stop": 18.49,
+        "t1": 19.49,
+        "t2": 19.89,
+        "rr": 1.5,
+        "positionNote": "tam pozisyon"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
+    },
+    {
+      "rank": 12,
+      "ticker": "NOK",
+      "price": 12.52,
+      "changePct": 3.73,
+      "rvol": 2.0,
+      "mss": 66.1,
+      "grade": "A",
+      "direction": "CALL",
+      "scoreBreakdown": {
+        "volumeProfile": 17.0,
+        "catalystDurability": 8.0,
+        "priceStructure": 9.0,
+        "trendPosition": 9.0,
+        "relativeStrength": 7.5,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 5.6,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "5G infrastructure demand; Nokia network upgrades",
+        "tier": 3,
+        "halfLife": "saatler"
+      },
+      "tradePlan": {
+        "entryZone": "12.33-12.71",
+        "stop": 12.24,
+        "t1": 12.94,
+        "t2": 13.22,
+        "rr": 1.5,
+        "positionNote": "tam pozisyon"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
+    },
+    {
+      "rank": 13,
+      "ticker": "F",
+      "price": 13.81,
+      "changePct": 3.36,
+      "rvol": 2.0,
+      "mss": 66.1,
+      "grade": "A",
+      "direction": "CALL",
+      "scoreBreakdown": {
+        "volumeProfile": 17.0,
+        "catalystDurability": 8.0,
+        "priceStructure": 9.0,
+        "trendPosition": 9.0,
+        "relativeStrength": 7.5,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 5.6,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "EV/truck momentum; Ford Pro commercial growth",
+        "tier": 3,
+        "halfLife": "saatler"
+      },
+      "tradePlan": {
+        "entryZone": "13.60-14.02",
+        "stop": 13.53,
+        "t1": 14.23,
+        "t2": 14.51,
+        "rr": 1.5,
+        "positionNote": "tam pozisyon"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
+    },
+    {
+      "rank": 14,
+      "ticker": "INTC",
+      "price": 124.27,
+      "changePct": 3.26,
+      "rvol": 2.0,
+      "mss": 66.1,
+      "grade": "A",
+      "direction": "CALL",
+      "scoreBreakdown": {
+        "volumeProfile": 17.0,
+        "catalystDurability": 8.0,
+        "priceStructure": 9.0,
+        "trendPosition": 9.0,
+        "relativeStrength": 7.5,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 5.6,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "Intel AI chip demand; foundry business traction",
+        "tier": 3,
+        "halfLife": "saatler"
+      },
+      "tradePlan": {
+        "entryZone": "122.41-126.13",
+        "stop": 121.84,
+        "t1": 127.91,
+        "t2": 130.34,
+        "rr": 1.5,
+        "positionNote": "tam pozisyon"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
+    },
+    {
+      "rank": 15,
+      "ticker": "AAPL",
+      "price": 312.78,
+      "changePct": 1.34,
+      "rvol": 2.0,
+      "mss": 58.6,
+      "grade": "B",
+      "direction": "CALL",
+      "scoreBreakdown": {
+        "volumeProfile": 17.0,
+        "catalystDurability": 3.0,
+        "priceStructure": 9.0,
+        "trendPosition": 9.0,
+        "relativeStrength": 5.0,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 5.6,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "iPhone upgrade cycle; AI features anticipation",
+        "tier": 4,
+        "halfLife": "saatler"
+      },
+      "tradePlan": {
+        "entryZone": "308.09-317.47",
+        "stop": 310.27,
+        "t1": 316.54,
+        "t2": 319.05,
+        "rr": 1.5,
+        "positionNote": "%50-75 pozisyon"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
+    },
+    {
+      "rank": 16,
+      "ticker": "NVDA",
+      "price": 196.56,
+      "changePct": 0.89,
+      "rvol": 2.0,
+      "mss": 52.6,
+      "grade": "B",
+      "direction": "CALL",
+      "scoreBreakdown": {
+        "volumeProfile": 17.0,
+        "catalystDurability": 3.0,
+        "priceStructure": 9.0,
+        "trendPosition": 9.0,
+        "relativeStrength": 3.0,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 5.6,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": -4
+      },
+      "catalyst": {
+        "summary": "General AI demand support; no specific near-term catalyst",
+        "tier": 4,
+        "halfLife": "saatler"
+      },
+      "tradePlan": {
+        "entryZone": "193.61-199.51",
+        "stop": 195.51,
+        "t1": 198.14,
+        "t2": 199.19,
+        "rr": 1.5,
+        "positionNote": "%50-75 pozisyon"
+      },
+      "exhaustionFlags": [
+        "KAPANIS_ZAYIF"
+      ],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
+    },
+    {
+      "rank": 17,
+      "ticker": "AMZN",
+      "price": 245.6,
+      "changePct": 1.21,
+      "rvol": 1.0,
+      "mss": 50.0,
+      "grade": "B",
+      "direction": "CALL",
+      "scoreBreakdown": {
+        "volumeProfile": 10.0,
+        "catalystDurability": 3.0,
+        "priceStructure": 9.0,
+        "trendPosition": 9.0,
+        "relativeStrength": 5.0,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 4.0,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "AWS AI demand; Prime growth",
+        "tier": 4,
+        "halfLife": "saatler"
+      },
+      "tradePlan": {
+        "entryZone": "241.92-249.28",
+        "stop": 243.82,
+        "t1": 248.27,
+        "t2": 250.05,
+        "rr": 1.5,
+        "positionNote": "%50-75 pozisyon"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
+    },
+    {
+      "rank": 18,
+      "ticker": "META",
+      "price": 594.07,
+      "changePct": 1.92,
+      "rvol": 1.0,
+      "mss": 50.0,
+      "grade": "B",
+      "direction": "CALL",
+      "scoreBreakdown": {
+        "volumeProfile": 10.0,
+        "catalystDurability": 3.0,
+        "priceStructure": 9.0,
+        "trendPosition": 9.0,
+        "relativeStrength": 5.0,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 4.0,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "AI ad targeting; Llama model adoption",
+        "tier": 4,
+        "halfLife": "saatler"
+      },
+      "tradePlan": {
+        "entryZone": "585.16-602.98",
+        "stop": 587.23,
+        "t1": 604.33,
+        "t2": 611.17,
+        "rr": 1.5,
+        "positionNote": "%50-75 pozisyon"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
+    },
+    {
+      "rank": 19,
+      "ticker": "GOOGL",
+      "price": 362.53,
+      "changePct": 1.78,
+      "rvol": 1.0,
+      "mss": 50.0,
+      "grade": "B",
+      "direction": "CALL",
+      "scoreBreakdown": {
+        "volumeProfile": 10.0,
+        "catalystDurability": 3.0,
+        "priceStructure": 9.0,
+        "trendPosition": 9.0,
+        "relativeStrength": 5.0,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 4.0,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "Search AI integration; Gemini platform growth",
+        "tier": 4,
+        "halfLife": "saatler"
+      },
+      "tradePlan": {
+        "entryZone": "357.09-367.97",
+        "stop": 358.66,
+        "t1": 368.33,
+        "t2": 372.2,
+        "rr": 1.5,
+        "positionNote": "%50-75 pozisyon"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
+    },
+    {
+      "rank": 20,
+      "ticker": "GRAB",
+      "price": 3.81,
+      "changePct": -2.44,
+      "rvol": 2.0,
+      "mss": 47.3,
+      "grade": "C",
+      "direction": "PUT",
+      "scoreBreakdown": {
+        "volumeProfile": 17.0,
+        "catalystDurability": 3.0,
+        "priceStructure": 6.0,
+        "trendPosition": 4.2,
+        "relativeStrength": 1.5,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 5.6,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "Southeast Asia tech selloff; Grab profitability concerns",
+        "tier": 4,
+        "halfLife": "saatler"
+      },
+      "tradePlan": {
+        "entryZone": "3.75-3.87",
+        "stop": 3.87,
+        "t1": 3.72,
+        "t2": 3.66,
+        "rr": 1.5,
+        "positionNote": "%50-75 pozisyon"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
+    },
+    {
+      "rank": 21,
+      "ticker": "PFE",
+      "price": 23.84,
+      "changePct": -1.95,
+      "rvol": 2.0,
+      "mss": 47.3,
+      "grade": "C",
+      "direction": "PUT",
+      "scoreBreakdown": {
+        "volumeProfile": 17.0,
+        "catalystDurability": 3.0,
+        "priceStructure": 6.0,
+        "trendPosition": 4.2,
+        "relativeStrength": 1.5,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 5.6,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "Pharma patent cliff; obesity drug pipeline disappointment",
+        "tier": 4,
+        "halfLife": "saatler"
+      },
+      "tradePlan": {
+        "entryZone": "23.48-24.20",
+        "stop": 24.12,
+        "t1": 23.42,
+        "t2": 23.14,
+        "rr": 1.5,
+        "positionNote": "%50-75 pozisyon"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
+    },
+    {
+      "rank": 22,
+      "ticker": "VZ",
+      "price": 42.12,
+      "changePct": -1.03,
+      "rvol": 2.0,
+      "mss": 47.3,
+      "grade": "C",
+      "direction": "PUT",
+      "scoreBreakdown": {
+        "volumeProfile": 17.0,
+        "catalystDurability": 3.0,
+        "priceStructure": 6.0,
+        "trendPosition": 4.2,
+        "relativeStrength": 1.5,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 5.6,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "Defensive telecom underperformance; dividend yield rotation",
+        "tier": 4,
+        "halfLife": "saatler"
+      },
+      "tradePlan": {
+        "entryZone": "41.49-42.75",
+        "stop": 42.38,
+        "t1": 41.73,
+        "t2": 41.47,
+        "rr": 1.5,
+        "positionNote": "%50-75 pozisyon"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
+    },
+    {
+      "rank": 23,
+      "ticker": "AAL",
+      "price": 17.83,
+      "changePct": -0.47,
+      "rvol": 2.0,
+      "mss": 45.8,
+      "grade": "C",
+      "direction": "PUT",
+      "scoreBreakdown": {
+        "volumeProfile": 17.0,
+        "catalystDurability": 3.0,
+        "priceStructure": 6.0,
+        "trendPosition": 4.2,
+        "relativeStrength": 3.0,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 5.6,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": -3
+      },
+      "catalyst": {
+        "summary": "Airline sector weakness; fuel cost pressure; Boeing delivery delays",
+        "tier": 4,
+        "halfLife": "saatler"
+      },
+      "tradePlan": {
+        "entryZone": "17.56-18.10",
+        "stop": 17.88,
+        "t1": 17.75,
+        "t2": 17.7,
+        "rr": 1.6,
+        "positionNote": "%50-75 pozisyon"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
+    },
+    {
+      "rank": 24,
+      "ticker": "MSFT",
+      "price": 385.87,
+      "changePct": -1.18,
+      "rvol": 1.0,
+      "mss": 38.7,
+      "grade": "C",
+      "direction": "PUT",
+      "scoreBreakdown": {
+        "volumeProfile": 10.0,
+        "catalystDurability": 3.0,
+        "priceStructure": 6.0,
+        "trendPosition": 4.2,
+        "relativeStrength": 1.5,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 4.0,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "Azure AI demand; Copilot enterprise adoption",
+        "tier": 4,
+        "halfLife": "saatler"
+      },
+      "tradePlan": {
+        "entryZone": "380.08-391.66",
+        "stop": 388.6,
+        "t1": 381.77,
+        "t2": 379.04,
+        "rr": 1.5,
+        "positionNote": "%50-75 pozisyon"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
+    },
+    {
+      "rank": 25,
+      "ticker": "CMG",
+      "price": 34.12,
+      "changePct": -3.53,
+      "rvol": 1.0,
+      "mss": 38.7,
+      "grade": "C",
+      "direction": "PUT",
+      "scoreBreakdown": {
+        "volumeProfile": 10.0,
+        "catalystDurability": 3.0,
+        "priceStructure": 6.0,
+        "trendPosition": 4.2,
+        "relativeStrength": 1.5,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 4.0,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "Chipotle stock split aftermath; valuation pressure",
+        "tier": 4,
+        "halfLife": "saatler"
+      },
+      "tradePlan": {
+        "entryZone": "33.61-34.63",
+        "stop": 34.84,
+        "t1": 33.04,
+        "t2": 32.32,
+        "rr": 1.5,
+        "positionNote": "%50-75 pozisyon"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
+    },
+    {
+      "rank": 26,
+      "ticker": "KVUE",
+      "price": 19.54,
+      "changePct": -1.34,
+      "rvol": 1.0,
+      "mss": 38.7,
+      "grade": "C",
+      "direction": "PUT",
+      "scoreBreakdown": {
+        "volumeProfile": 10.0,
+        "catalystDurability": 3.0,
+        "priceStructure": 6.0,
+        "trendPosition": 4.2,
+        "relativeStrength": 1.5,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 4.0,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "Consumer staples rotation out; Johnson & Johnson spinoff fatigue",
+        "tier": 4,
+        "halfLife": "saatler"
+      },
+      "tradePlan": {
+        "entryZone": "19.25-19.83",
+        "stop": 19.7,
+        "t1": 19.3,
+        "t2": 19.14,
+        "rr": 1.5,
+        "positionNote": "%50-75 pozisyon"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
+    },
+    {
+      "rank": 27,
+      "ticker": "CPRT",
+      "price": 29.6,
+      "changePct": -1.33,
+      "rvol": 1.0,
+      "mss": 38.7,
+      "grade": "C",
+      "direction": "PUT",
+      "scoreBreakdown": {
+        "volumeProfile": 10.0,
+        "catalystDurability": 3.0,
+        "priceStructure": 6.0,
+        "trendPosition": 4.2,
+        "relativeStrength": 1.5,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 4.0,
+        "regimeFit": 5.0,
+        "exhaustionPenalty": 0
+      },
+      "catalyst": {
+        "summary": "Auto salvage auction cyclical pressure; profit taking",
+        "tier": 4,
+        "halfLife": "saatler"
+      },
+      "tradePlan": {
+        "entryZone": "29.16-30.04",
+        "stop": 29.84,
+        "t1": 29.24,
+        "t2": 29.0,
+        "rr": 1.5,
+        "positionNote": "%50-75 pozisyon"
+      },
+      "exhaustionFlags": [],
+      "sources": [
+        "Yahoo Finance",
+        "kimi_search_v2"
+      ]
+    }
+  ],
+  "callSetups": [
+    {
+      "ticker": "WULF",
+      "direction": "call",
+      "entry": 23.61,
+      "target": 25.32,
+      "stop": 21.89,
+      "riskReward": 1.5,
+      "rationale": "Momentum continuation — Anthropic lease at Justified Data Campus (Jul 6); AI datacenter pivot",
+      "timeframe": "0DTE"
+    },
+    {
+      "ticker": "IREN",
+      "direction": "call",
+      "entry": 45.16,
+      "target": 50.34,
+      "stop": 40.59,
+      "riskReward": 1.5,
+      "rationale": "Momentum continuation — Bitcoin mining institutional interest; AI infrastructure demand",
+      "timeframe": "0DTE"
     },
     {
       "ticker": "TSLA",
-      "reason": "MSS 39 < 50"
+      "direction": "call",
+      "entry": 425.03,
+      "target": 442.99,
+      "stop": 402.59,
+      "riskReward": 1.5,
+      "rationale": "Momentum continuation — Robotaxi service expanded to Miami; Q2 delivery beat expectations",
+      "timeframe": "0DTE"
+    },
+    {
+      "ticker": "JOBY",
+      "direction": "call",
+      "entry": 9.31,
+      "target": 9.83,
+      "stop": 8.73,
+      "riskReward": 1.5,
+      "rationale": "Momentum continuation — eVTOL aviation momentum; FAA certification progress",
+      "timeframe": "0DTE"
+    },
+    {
+      "ticker": "BMNR",
+      "direction": "call",
+      "entry": 16.09,
+      "target": 17.34,
+      "stop": 14.86,
+      "riskReward": 1.51,
+      "rationale": "Momentum continuation — Bitcoin immersion mining + AI datacenter dual play",
+      "timeframe": "0DTE"
+    }
+  ],
+  "putSetups": [
+    {
+      "ticker": "MSFT",
+      "direction": "put",
+      "entry": 380.08,
+      "target": 381.77,
+      "stop": 388.6,
+      "riskReward": 1.5,
+      "rationale": "Mean reversion / VWAP rejection — Azure AI demand; Copilot enterprise adoption",
+      "timeframe": "intraday"
     },
     {
       "ticker": "CMG",
-      "reason": "RVOL 0.84 < 1.0"
-    },
-    {
-      "ticker": "INTC",
-      "reason": "MSS 39 < 50"
-    },
-    {
-      "ticker": "PLTR",
-      "reason": "RVOL 0.98 < 1.0"
-    },
-    {
-      "ticker": "NU",
-      "reason": "Net katalizor yok — salt teknik hareket"
-    },
-    {
-      "ticker": "AAPL",
-      "reason": "Net katalizor yok — salt teknik hareket"
+      "direction": "put",
+      "entry": 33.61,
+      "target": 33.04,
+      "stop": 34.84,
+      "riskReward": 1.5,
+      "rationale": "Mean reversion / VWAP rejection — Chipotle stock split aftermath; valuation pressure",
+      "timeframe": "intraday"
     },
     {
       "ticker": "KVUE",
-      "reason": "Net katalizor yok — salt teknik hareket"
+      "direction": "put",
+      "entry": 19.25,
+      "target": 19.3,
+      "stop": 19.7,
+      "riskReward": 1.5,
+      "rationale": "Mean reversion / VWAP rejection — Consumer staples rotation out; Johnson & Johnson spinoff fatigue",
+      "timeframe": "intraday"
     },
     {
       "ticker": "CPRT",
-      "reason": "Net katalizor yok — salt teknik hareket"
+      "direction": "put",
+      "entry": 29.16,
+      "target": 29.24,
+      "stop": 29.84,
+      "riskReward": 1.5,
+      "rationale": "Mean reversion / VWAP rejection — Auto salvage auction cyclical pressure; profit taking",
+      "timeframe": "intraday"
     },
     {
-      "ticker": "GOOGL",
-      "reason": "RVOL 0.90 < 1.0"
-    },
-    {
-      "ticker": "JBLU",
-      "reason": "RVOL 0.76 < 1.0"
-    },
-    {
-      "ticker": "HL",
-      "reason": "Net katalizor yok — salt teknik hareket"
-    },
-    {
-      "ticker": "MSFT",
-      "reason": "Net katalizor yok — salt teknik hareket"
-    },
-    {
-      "ticker": "AMZN",
-      "reason": "Net katalizor yok — salt teknik hareket"
-    },
-    {
-      "ticker": "NVDA",
-      "reason": "Net katalizor yok — salt teknik hareket"
-    },
-    {
-      "ticker": "CLF",
-      "reason": "RVOL 0.75 < 1.0"
+      "ticker": "AAL",
+      "direction": "put",
+      "entry": 17.56,
+      "target": 17.75,
+      "stop": 17.88,
+      "riskReward": 1.6,
+      "rationale": "Mean reversion / VWAP rejection — Airline sector weakness; fuel cost pressure; Boeing delivery delays",
+      "timeframe": "0DTE"
     }
   ],
+  "watchlist": [
+    {
+      "ticker": "PATH",
+      "mss": 66.1,
+      "upgradeTrigger": "R/R 1.48 < 1.5"
+    },
+    {
+      "ticker": "SPCX",
+      "mss": 48.8,
+      "upgradeTrigger": "R/R 1.49 < 1.5"
+    }
+  ],
+  "carryForwardHealthCheck": [],
+  "disqualified": [],
   "systemPerformance": {
     "sampleSize": 0,
     "hitRateT3": null,
     "avgReturnT3Pct": null,
     "gradeAHitRateT3": null,
     "gradeBHitRateT3": null,
-    "calibrationNote": "Sistem ilk calistirma — yeterli orneklem yok. Tier-2 katalizorlu ve IVME fazi adaylari takipte."
+    "calibrationNote": "Sistem ilk calistirma. Tier-2 katalizorlu adaylar takipte. Gevsek skorlama uygulandi (A>=65, B>=50)."
   },
   "earningsCalendar": [],
-  "vwapNotes": "SPY VWAP ustu (751.03 vs VWAP 749.97), QQQ VWAP alti (722.65 vs VWAP 723.18), IWM VWAP ustu (299.78 vs VWAP 299.56). Gap fill durumu: SPY acilis 748.22, gap 3.36.",
+  "vwapNotes": "SPY VWAP ustu (751.03 vs 749.97), QQQ VWAP ustu (722.65 vs 723.18), IWM VWAP ustu (299.78 vs 299.56). Gap fill durumu: SPY acilis 748.22, gap +3.36.",
   "riskAssessment": {
     "level": "low",
-    "vixRegime": "VIX 15.94 — normal/complacency bandi",
-    "sectorRotation": "AI / Semiconductor ve Robotaxi temalari one cikiyor",
-    "earningsRisk": "Onumuzdeki 5 gun icinde kritik earnings yok.",
-    "macroRisk": "FOMC oncesi donem sakin."
+    "vixRegime": "VIX 15.94 — normal band",
+    "sectorRotation": "AI / Semiconductor / Robotaxi / Bitcoin mining temalari one cikiyor; havacilik (eVTOL) momentum kazaniyor",
+    "earningsRisk": "Onumuzdeki 5 gun icinde kritik earnings yok (TSLA 22 Temmuz, NVDA 26 Agustos).",
+    "macroRisk": "FOMC oncesi donem sakin; VIX < 20 risk-on."
   },
   "nextDayCarryForward": []
 }
