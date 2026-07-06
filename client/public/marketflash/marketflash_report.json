@@ -2,380 +2,132 @@
   "schemaVersion": "2.0",
   "reportType": "hourly",
   "reportDate": "2026-07-06",
-  "generatedAt": "2026-07-06T19:46:41.305697",
-  "marketSummary": {
-    "spy": {
-      "price": 750.97,
-      "change": 0.82,
-      "vwap": 749.55,
-      "volume": 536555,
-      "prevClose": 744.86,
-      "open": 748.22,
-      "high": 751.1,
-      "low": 747.455
-    },
-    "qqq": {
-      "price": 725.41,
-      "change": 1.81,
-      "vwap": 723.24,
-      "volume": 273928,
-      "prevClose": 712.53,
-      "open": 719.65,
-      "high": 726.03,
-      "low": 718.58
-    },
-    "iwm": {
-      "price": 300.04,
-      "change": 0.84,
-      "vwap": 299.43,
-      "volume": 705947,
-      "prevClose": 297.54,
-      "open": 297.745,
-      "high": 300.395,
-      "low": 297.74
-    },
-    "vix": {
-      "level": 15.9,
-      "prevClose": 15.81,
-      "changePct": 0.57,
-      "regime": "normal"
-    }
-  },
+  "generatedAt": "2026-07-06T21:25:37.840093",
   "marketRegime": {
-    "vix": 15.9,
+    "vix": 15.94,
     "regime": "normal",
     "breadth": null,
     "riskMode": "AGRESIF",
-    "paramsVersion": 1,
-    "note": "Kısıtlı veri modu — Alpaca SIP subscription olmadığı için tarihsel bars hesaplanamadı"
+    "paramsVersion": 1
   },
-  "momentumLeaders": [
-    {
-      "rank": 1,
-      "ticker": "TSLA",
-      "company": "Tesla Inc",
-      "sector": "Consumer Cyclical",
-      "price": 416.63,
-      "changePct": 6.13,
-      "rvol": null,
-      "mss": 73.2,
-      "grade": "B",
-      "phase": "İVME (Gün 2-3)",
-      "scoreBreakdown": {
-        "volumeProfile": 20.0,
-        "catalystDurability": 14.0,
-        "priceStructure": 15.0,
-        "trendPosition": 6.0,
-        "relativeStrength": 5.0,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 3.2,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "Tesla robotik/AI pozisyonlaması + kurumsal birikim",
-        "tier": 2,
-        "halfLife": "günler"
-      },
-      "historicalStats": {
-        "momentumAge": null,
-        "consecutiveHigherLows": null,
-        "closeStrength3d": null,
-        "volumeTrend": null,
-        "atrExtension": null,
-        "continuationBaseRate": null,
-        "distFrom52wHighPct": null,
-        "note": "Kısıtlı veri modu — Alpaca SIP subscription olmadığı için tarihsel bars hesaplanamadı"
-      },
-      "tradePlan": {
-        "entryZone": "414.55–418.71",
-        "stop": 404.13,
-        "t1": 429.13,
-        "t2": 437.46,
-        "rr": 1.0,
-        "positionNote": "B = %50–75"
-      },
-      "exhaustionFlags": [],
-      "sources": [
-        "Alpaca Markets snapshot",
-        "CBOE VIX",
-        "Kimi search"
-      ]
+  "marketSummary": {
+    "spy": {
+      "price": 751.03,
+      "change": 0.83,
+      "vwap": 749.97,
+      "open": 748.22,
+      "high": 751.52,
+      "low": 747.455,
+      "volume": 857420,
+      "prevClose": 744.86
     },
-    {
-      "rank": 2,
-      "ticker": "PLTR",
-      "company": "Palantir Technologies",
-      "sector": "Technology",
-      "price": 133.32,
-      "changePct": 3.32,
-      "rvol": null,
-      "mss": 73.2,
-      "grade": "B",
-      "phase": "İVME (Gün 2-3)",
-      "scoreBreakdown": {
-        "volumeProfile": 20.0,
-        "catalystDurability": 14.0,
-        "priceStructure": 15.0,
-        "trendPosition": 6.0,
-        "relativeStrength": 5.0,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 3.2,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "AI/data analytics talebi + devlet kontratları",
-        "tier": 2,
-        "halfLife": "günler"
-      },
-      "historicalStats": {
-        "momentumAge": null,
-        "consecutiveHigherLows": null,
-        "closeStrength3d": null,
-        "volumeTrend": null,
-        "atrExtension": null,
-        "continuationBaseRate": null,
-        "distFrom52wHighPct": null,
-        "note": "Kısıtlı veri modu — Alpaca SIP subscription olmadığı için tarihsel bars hesaplanamadı"
-      },
-      "tradePlan": {
-        "entryZone": "132.65–133.99",
-        "stop": 129.32,
-        "t1": 137.32,
-        "t2": 139.99,
-        "rr": 1.0,
-        "positionNote": "B = %50–75"
-      },
-      "exhaustionFlags": [],
-      "sources": [
-        "Alpaca Markets snapshot",
-        "CBOE VIX",
-        "Kimi search"
-      ]
+    "qqq": {
+      "price": 722.65,
+      "change": 1.42,
+      "vwap": 723.18,
+      "open": 719.65,
+      "high": 726.03,
+      "low": 718.58,
+      "volume": 392902,
+      "prevClose": 712.53
     },
-    {
-      "rank": 3,
-      "ticker": "NVDA",
-      "company": "NVIDIA Corp",
-      "sector": "Technology",
-      "price": 197.14,
-      "changePct": 1.85,
-      "rvol": null,
-      "mss": 73.2,
-      "grade": "B",
-      "phase": "OLGUN (Gün 4-5)",
-      "scoreBreakdown": {
-        "volumeProfile": 20.0,
-        "catalystDurability": 14.0,
-        "priceStructure": 15.0,
-        "trendPosition": 6.0,
-        "relativeStrength": 5.0,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 3.2,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "AI çip talebi + sektör liderliği",
-        "tier": 2,
-        "halfLife": "günler"
-      },
-      "historicalStats": {
-        "momentumAge": null,
-        "consecutiveHigherLows": null,
-        "closeStrength3d": null,
-        "volumeTrend": null,
-        "atrExtension": null,
-        "continuationBaseRate": null,
-        "distFrom52wHighPct": null,
-        "note": "Kısıtlı veri modu — Alpaca SIP subscription olmadığı için tarihsel bars hesaplanamadı"
-      },
-      "tradePlan": {
-        "entryZone": "196.15–198.13",
-        "stop": 191.23,
-        "t1": 203.05,
-        "t2": 207.0,
-        "rr": 1.0,
-        "positionNote": "B = %50–75"
-      },
-      "exhaustionFlags": [],
-      "sources": [
-        "Alpaca Markets snapshot",
-        "CBOE VIX",
-        "Kimi search"
-      ]
+    "iwm": {
+      "price": 299.78,
+      "change": 0.75,
+      "vwap": 299.56,
+      "open": 297.745,
+      "high": 300.395,
+      "low": 297.74,
+      "volume": 988997,
+      "prevClose": 297.54
     },
-    {
-      "rank": 4,
-      "ticker": "AAPL",
-      "company": "Apple Inc",
-      "sector": "Technology",
-      "price": 312.46,
-      "changePct": 2.15,
-      "rvol": null,
-      "mss": 73.2,
-      "grade": "B",
-      "phase": "OLGUN (Gün 4-5)",
-      "scoreBreakdown": {
-        "volumeProfile": 20.0,
-        "catalystDurability": 14.0,
-        "priceStructure": 15.0,
-        "trendPosition": 6.0,
-        "relativeStrength": 5.0,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 3.2,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "AI entegrasyonu + iPhone cycle",
-        "tier": 2,
-        "halfLife": "günler"
-      },
-      "historicalStats": {
-        "momentumAge": null,
-        "consecutiveHigherLows": null,
-        "closeStrength3d": null,
-        "volumeTrend": null,
-        "atrExtension": null,
-        "continuationBaseRate": null,
-        "distFrom52wHighPct": null,
-        "note": "Kısıtlı veri modu — Alpaca SIP subscription olmadığı için tarihsel bars hesaplanamadı"
-      },
-      "tradePlan": {
-        "entryZone": "310.9–314.02",
-        "stop": 303.09,
-        "t1": 321.83,
-        "t2": 328.08,
-        "rr": 1.0,
-        "positionNote": "B = %50–75"
-      },
-      "exhaustionFlags": [],
-      "sources": [
-        "Alpaca Markets snapshot",
-        "CBOE VIX",
-        "Kimi search"
-      ]
-    },
-    {
-      "rank": 5,
-      "ticker": "INTC",
-      "company": "Intel Corp",
-      "sector": "Technology",
-      "price": 124.49,
-      "changePct": 2.45,
-      "rvol": null,
-      "mss": 65.0,
-      "grade": "B",
-      "phase": "OLGUN (Gün 4-5)",
-      "scoreBreakdown": {
-        "volumeProfile": 20.0,
-        "catalystDurability": 14.0,
-        "priceStructure": 6.8,
-        "trendPosition": 6.0,
-        "relativeStrength": 5.0,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 3.2,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "Yeni fabrika yatırımları + AI çip stratejisi",
-        "tier": 2,
-        "halfLife": "günler"
-      },
-      "historicalStats": {
-        "momentumAge": null,
-        "consecutiveHigherLows": null,
-        "closeStrength3d": null,
-        "volumeTrend": null,
-        "atrExtension": null,
-        "continuationBaseRate": null,
-        "distFrom52wHighPct": null,
-        "note": "Kısıtlı veri modu — Alpaca SIP subscription olmadığı için tarihsel bars hesaplanamadı"
-      },
-      "tradePlan": {
-        "entryZone": "123.87–125.11",
-        "stop": 120.76,
-        "t1": 128.22,
-        "t2": 130.71,
-        "rr": 1.0,
-        "positionNote": "B = %50–75"
-      },
-      "exhaustionFlags": [],
-      "sources": [
-        "Alpaca Markets snapshot",
-        "CBOE VIX",
-        "Kimi search"
-      ]
+    "vix": {
+      "price": 15.94,
+      "change": -0.33,
+      "regime": "normal"
     }
-  ],
+  },
+  "topMovers": {
+    "gainers": [],
+    "losers": []
+  },
+  "momentumLeaders": [],
   "watchlist": [
     {
-      "ticker": "F",
-      "mss": 63.2,
-      "upgradeTrigger": "RVOL > 2 + günlük kapanış VWAP üstü → yeniden skorla"
-    },
-    {
-      "ticker": "SOFI",
-      "mss": 60.2,
-      "upgradeTrigger": "RVOL > 2 + günlük kapanış VWAP üstü → yeniden skorla"
-    },
-    {
-      "ticker": "PATH",
-      "mss": 60.2,
-      "upgradeTrigger": "RVOL > 2 + günlük kapanış VWAP üstü → yeniden skorla"
-    },
-    {
-      "ticker": "NOK",
-      "mss": 58.0,
-      "upgradeTrigger": "RVOL > 2 + günlük kapanış VWAP üstü → yeniden skorla"
-    },
-    {
-      "ticker": "IREN",
-      "mss": 57.2,
-      "upgradeTrigger": "RVOL > 2 + günlük kapanış VWAP üstü → yeniden skorla"
-    },
-    {
-      "ticker": "OPEN",
-      "mss": 57.2,
-      "upgradeTrigger": "RVOL > 2 + günlük kapanış VWAP üstü → yeniden skorla"
-    },
-    {
-      "ticker": "BMNR",
-      "mss": 54.2,
-      "upgradeTrigger": "RVOL > 2 + günlük kapanış VWAP üstü → yeniden skorla"
-    },
-    {
-      "ticker": "ONDS",
-      "mss": 54.2,
-      "upgradeTrigger": "RVOL > 2 + günlük kapanış VWAP üstü → yeniden skorla"
-    },
-    {
-      "ticker": "KEEL",
-      "mss": 54.2,
-      "upgradeTrigger": "RVOL > 2 + günlük kapanış VWAP üstü → yeniden skorla"
-    },
-    {
-      "ticker": "DRAM",
-      "mss": 50.5,
-      "upgradeTrigger": "RVOL > 2 + günlük kapanış VWAP üstü → yeniden skorla"
+      "ticker": "WULF",
+      "mss": 66.5,
+      "upgradeTrigger": "R/R 1.5 < 2.0"
     }
   ],
   "carryForwardHealthCheck": [],
   "disqualified": [
     {
-      "ticker": "SNXX",
-      "reason": "GAP_FADE — MSS 38.0"
+      "ticker": "AMD",
+      "reason": "MSS 43 < 50"
     },
     {
-      "ticker": "WULF",
-      "reason": "GAP_FADE, KAPANIS_ZAYIF — MSS 29.2"
+      "ticker": "ACHR",
+      "reason": "Ortalama hacim 460091 / dolar hacmi $2.4M < esik (200K/$3M)"
     },
     {
-      "ticker": "LHSW",
-      "reason": "GAP_FADE, KAPANIS_ZAYIF, PARABOLIK — MSS 16.2"
+      "ticker": "TSLA",
+      "reason": "MSS 39 < 50"
+    },
+    {
+      "ticker": "CMG",
+      "reason": "RVOL 0.84 < 1.0"
+    },
+    {
+      "ticker": "INTC",
+      "reason": "MSS 39 < 50"
+    },
+    {
+      "ticker": "PLTR",
+      "reason": "RVOL 0.98 < 1.0"
+    },
+    {
+      "ticker": "NU",
+      "reason": "Net katalizor yok — salt teknik hareket"
+    },
+    {
+      "ticker": "AAPL",
+      "reason": "Net katalizor yok — salt teknik hareket"
+    },
+    {
+      "ticker": "KVUE",
+      "reason": "Net katalizor yok — salt teknik hareket"
+    },
+    {
+      "ticker": "CPRT",
+      "reason": "Net katalizor yok — salt teknik hareket"
+    },
+    {
+      "ticker": "GOOGL",
+      "reason": "RVOL 0.90 < 1.0"
+    },
+    {
+      "ticker": "JBLU",
+      "reason": "RVOL 0.76 < 1.0"
+    },
+    {
+      "ticker": "HL",
+      "reason": "Net katalizor yok — salt teknik hareket"
+    },
+    {
+      "ticker": "MSFT",
+      "reason": "Net katalizor yok — salt teknik hareket"
+    },
+    {
+      "ticker": "AMZN",
+      "reason": "Net katalizor yok — salt teknik hareket"
+    },
+    {
+      "ticker": "NVDA",
+      "reason": "Net katalizor yok — salt teknik hareket"
+    },
+    {
+      "ticker": "CLF",
+      "reason": "RVOL 0.75 < 1.0"
     }
   ],
   "systemPerformance": {
@@ -384,68 +136,16 @@
     "avgReturnT3Pct": null,
     "gradeAHitRateT3": null,
     "gradeBHitRateT3": null,
-    "calibrationNote": "Ledger boş — ilk rapor; T+3/T+5 takibi başlatılacak"
+    "calibrationNote": "Sistem ilk calistirma — yeterli orneklem yok. Tier-2 katalizorlu ve IVME fazi adaylari takipte."
   },
-  "topMovers": {
-    "gainers": [
-      {
-        "ticker": "IREN",
-        "company": "Iris Energy Ltd",
-        "price": 44.66,
-        "change": 15.01,
-        "volume": 1094927,
-        "vwap": 43.85,
-        "catalyst": "Bitcoin madencilik + AI data center pozisyonu"
-      },
-      {
-        "ticker": "WULF",
-        "company": "TeraWulf Inc",
-        "price": 23.67,
-        "change": 11.78,
-        "volume": 1881756,
-        "vwap": 24.17,
-        "catalyst": "Bitcoin madencilik hissesi + kripto momentumu"
-      },
-      {
-        "ticker": "TSLA",
-        "company": "Tesla Inc",
-        "price": 416.63,
-        "change": 6.13,
-        "volume": 26655092,
-        "vwap": 406.27,
-        "catalyst": "Tesla robotik/AI pozisyonlaması + kurumsal birikim"
-      },
-      {
-        "ticker": "BMNR",
-        "company": "Biominerals NV",
-        "price": 15.86,
-        "change": 11.22,
-        "volume": 588641,
-        "vwap": 15.31,
-        "catalyst": "Teknik kırılım ve hacim artışı"
-      },
-      {
-        "ticker": "DRAM",
-        "company": "DTCloud Corp",
-        "price": 65.5,
-        "change": 7.87,
-        "volume": 697661,
-        "vwap": 65.29,
-        "catalyst": "Teknik kırılım ve hacim artışı"
-      }
-    ],
-    "losers": []
-  },
-  "callSetups": [],
-  "putSetups": [],
   "earningsCalendar": [],
-  "vwapNotes": "SPY VWAP 749.55 — fiyat üstünde (+1.42). QQQ VWAP 723.24 — fiyat üstünde (+2.17). IWM VWAP 299.43 — fiyat üstünde (+0.61). Risk-on pozisyon.",
+  "vwapNotes": "SPY VWAP ustu (751.03 vs VWAP 749.97), QQQ VWAP alti (722.65 vs VWAP 723.18), IWM VWAP ustu (299.78 vs VWAP 299.56). Gap fill durumu: SPY acilis 748.22, gap 3.36.",
   "riskAssessment": {
     "level": "low",
-    "vixRegime": "VIX 15.90 — normal aralık, complacency bölgesine yakın",
-    "sectorRotation": "Tech (TSLA, NVDA, PLTR) ve Energy/FinTech (WULF, SOFI) önde",
-    "earningsRisk": "Yakın earnings verisi kısıtlı veri modunda mevcut değil",
-    "macroRisk": "4 Temmuz tatili sonrası likidite normalleşiyor; FOMC öncesi sessiz dönem"
+    "vixRegime": "VIX 15.94 — normal/complacency bandi",
+    "sectorRotation": "AI / Semiconductor ve Robotaxi temalari one cikiyor",
+    "earningsRisk": "Onumuzdeki 5 gun icinde kritik earnings yok.",
+    "macroRisk": "FOMC oncesi donem sakin."
   },
   "nextDayCarryForward": []
 }
