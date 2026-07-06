@@ -58,8 +58,8 @@ cd /srv/gistify
 | `MIDAS_PIPELINE_SOURCE_FILE` | `/data/midas/midas_signals.json` | Market signal feed |
 | `GIT_SHA` | — | Commit SHA recorded in `deploy_history` |
 | `GIT_BRANCH` | — | Branch recorded in `deploy_history` |
+| `REPORT_ADMIN_SECRET` | — | Shared secret for `x-gistify-admin-secret` header (required for job-triggered server refresh) |
 | `REPORT_ADMIN_EMAIL` | `hsnksc@gmail.com` | Admin session email |
-| `REPORT_ADMIN_SECRET` | — | Shared secret for `x-gistify-admin-secret` header |
 
 ---
 
@@ -170,6 +170,7 @@ Authenticated admins can inspect the persistence layer via:
 - `GET /api/admin/cron/runs?job=&status=&limit=` — job run history
 - `GET /api/admin/deploys?limit=` — deploy history
 - `GET /api/admin/macro/archive?workspace=cpi|ppi&limit=` — macro archive records
+- `GET /api/admin/signals/snapshots?kind=midas&limit=` — signal snapshots (midas, calendar, earnings)
 - `GET /api/admin/artifacts?kind=&limit=` — artifact records
 
 Auth: valid admin session (email matches `REPORT_ADMIN_EMAIL`) or `x-gistify-admin-secret` header matching `REPORT_ADMIN_SECRET`.
@@ -201,9 +202,10 @@ One-time helper scripts are provided to import existing data:
 ```bash
 npx tsx scripts/migrate-flow-engagement.ts
 npx tsx scripts/migrate-macro-json.ts
+npx tsx scripts/migrate-signals-json.ts
 ```
 
-Both are idempotent and safe to re-run.
+All three are idempotent and safe to re-run.
 
 ---
 

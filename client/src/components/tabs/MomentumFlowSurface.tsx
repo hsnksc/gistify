@@ -10,6 +10,7 @@ import {
   MssGradeBadge,
   ParamsVersionBadge,
 } from "@/components/momentum/MomentumV3Cards";
+import { MidasWatchlistCard } from "@/components/momentum/MidasWatchlistCard";
 import { runMomentumScan, type StockResult } from "@/scanner";
 import { type AppLanguage, t } from "@/lib/i18n";
 import { useMomentumV3Data, type MomentumParams } from "@/lib/momentumV3";

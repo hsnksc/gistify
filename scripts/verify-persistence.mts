@@ -18,6 +18,7 @@ import { createGistifyDb, closeGistifyDb } from "../server/db";
 import { runMigrations, getAppliedMigrations } from "../server/db/migrations";
 import { createFlowEngagementStore } from "../server/services/flowEngagementStore";
 import { createMacroArchiveStore } from "../server/services/macroArchiveStore";
+import { createSignalSnapshotStore } from "../server/services/signalSnapshotStore";
 import {
   createJobCoordinator,
   JobSkippedError,
@@ -183,6 +184,42 @@ async function runTests() {
   assert(
     runs.some(run => run.status === "skipped"),
     "there should be a skipped run"
+  );
+  console.log("[verify]   OK");
+
+  // Test 5: signal snapshots
+  console.log("[verify] Test 5: signal snapshots");
+  const signalStore = createSignalSnapshotStore();
+  const signalPayload = {
+    timestamp: new Date().toISOString(),
+    symbol_count: 3,
+    successful: 3,
+    failed: 0,
+    mode: "default",
+    signals: [
+      { symbol: "AAPL", signal: "BUY", strength: 0.8, price: 100 },
+      { symbol: "TSLA", signal: "HOLD", strength: 0.5, price: 200 },
+      { symbol: "NVDA", signal: "STRONG_BUY", strength: 0.95, price: 300 },
+    ],
+  };
+
+  signalStore.saveSnapshot("midas", signalPayload, "verify-test");
+  const latest = signalStore.getLatestSnapshot<typeof signalPayload>("midas");
+  assert(latest !== null, "latest signal snapshot should exist");
+  assert(
+    latest?.payload.symbol_count === 3,
+    `expected symbol_count 3, got ${latest?.payload.symbol_count}`
+  );
+  assert(
+    latest?.payload.signals.length === 3,
+    `expected 3 signals, got ${latest?.payload.signals.length}`
+  );
+
+  signalStore.saveSnapshot("midas", { ...signalPayload, symbol_count: 5 }, "verify-test-2");
+  const updated = signalStore.getLatestSnapshot<typeof signalPayload>("midas");
+  assert(
+    updated?.payload.symbol_count === 5,
+    `expected updated symbol_count 5, got ${updated?.payload.symbol_count}`
   );
   console.log("[verify]   OK");
 
