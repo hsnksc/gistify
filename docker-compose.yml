@@ -12,6 +12,7 @@ services:
       GISTIFY_DB_PATH: /app/data/gistify.sqlite
       GIT_SHA: ${GIT_SHA:-}
       GIT_BRANCH: ${GIT_BRANCH:-}
+      REPORT_ADMIN_SECRET: ${REPORT_ADMIN_SECRET:-}
     volumes:
       - /srv/gistify/midas:/data/midas:ro
       - /srv/gistify/data:/app/data

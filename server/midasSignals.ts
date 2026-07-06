@@ -9,6 +9,10 @@ import type {
   MidasSignalRecord,
   MidasSignalsData,
 } from "../shared/midasSignals";
+import {
+  createSignalSnapshotStore,
+  type SignalSnapshotStore,
+} from "./services/signalSnapshotStore";
 
 const DEFAULT_POLL_INTERVAL_MS = 5 * 60 * 1000;
 const MIN_POLL_INTERVAL_MS = 30 * 1000;
@@ -809,7 +813,9 @@ function locateSourceFile(candidates: string[]): LocatedSourceFile | null {
   return null;
 }
 
-export function createMidasSignalsSyncService(): MidasSignalsSyncService {
+export function createMidasSignalsSyncService(
+  signalSnapshotStore: SignalSnapshotStore = createSignalSnapshotStore()
+): MidasSignalsSyncService {
   const pollIntervalMs = resolvePollIntervalMs();
   let currentSnapshot: MidasSignalsData | null = null;
   let timer: ReturnType<typeof setInterval> | null = null;
@@ -885,6 +891,34 @@ export function createMidasSignalsSyncService(): MidasSignalsSyncService {
       }
     }
 
+    // DB fallback: if no JSON source is available, try the latest persisted snapshot.
+    if (!locatedSource) {
+      try {
+        const dbSnapshot =
+          signalSnapshotStore.getLatestSnapshot<MidasSignalsData>("midas");
+        if (dbSnapshot?.payload) {
+          const normalized = normalizeMidasSignalsData(
+            dbSnapshot.payload,
+            new Date(dbSnapshot.updatedAt).toISOString()
+          );
+          if (normalized) {
+            resolvedSourceFile = null;
+            lastSourceModifiedAt =
+              new Date(dbSnapshot.updatedAt).toISOString();
+            usingFallback = true;
+            lastKnownMtimeMs = dbSnapshot.updatedAt;
+            lastSyncedAt = new Date().toISOString();
+            lastError = null;
+            status = "ok";
+            currentSnapshot = attachPipeline(normalized);
+            return currentSnapshot;
+          }
+        }
+      } catch (dbError) {
+        console.error("[Midas] DB snapshot fallback failed:", dbError);
+      }
+    }
+
     if (!locatedSource) {
       lastError =
         "Midas pipeline source file not found and Alpaca fallback failed. Set MIDAS_PIPELINE_SOURCE_FILE or generate midas_signals.json.";
@@ -950,6 +984,13 @@ export function createMidasSignalsSyncService(): MidasSignalsSyncService {
       lastError = null;
       status = "ok";
       currentSnapshot = attachPipeline(normalized);
+
+      try {
+        signalSnapshotStore.saveSnapshot("midas", normalized, locatedSource.filePath);
+      } catch (dbError) {
+        console.error("[Midas] Failed to persist snapshot to DB:", dbError);
+      }
+
       return currentSnapshot;
     } catch (error) {
       lastError =

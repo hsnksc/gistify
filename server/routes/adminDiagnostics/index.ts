@@ -3,6 +3,7 @@ import express from "express";
 import { getAdminDiagnostics } from "../../services/adminDiagnostics";
 import { createDeployHistoryStore } from "../../services/deployHistoryStore";
 import { createMacroArchiveStore } from "../../services/macroArchiveStore";
+import { createSignalSnapshotStore } from "../../services/signalSnapshotStore";
 
 interface AdminDiagnosticsRouterDependencies {
   requireWeeklyReportAdmin: (req: Request, res: Response) => boolean;
@@ -79,6 +80,34 @@ export function createAdminDiagnosticsRouter({
       limit,
       artifacts: [],
       note: "Artifact writes will be wired in the pipeline integration phase.",
+    });
+  });
+
+  router.get("/admin/signals/snapshots", (req, res) => {
+    setPrivateNoStore(res);
+    if (!requireWeeklyReportAdmin(req, res)) {
+      return;
+    }
+
+    const kind = normalizeString(req.query.kind).toLowerCase();
+    if (!kind) {
+      res.status(400).json({ error: "kind query parameter is required." });
+      return;
+    }
+
+    const limit = parseLimit(req.query.limit, 10);
+    const store = createSignalSnapshotStore();
+    const records = store.listSnapshots(kind as "midas" | "calendar" | "earnings", limit);
+
+    res.status(200).json({
+      kind,
+      records: records.map(record => ({
+        kind: record.kind,
+        source: record.source,
+        createdAt: record.createdAt,
+        updatedAt: record.updatedAt,
+        payload: record.payload,
+      })),
     });
   });
 

@@ -83,12 +83,36 @@ function buildJobFn(jobName: string): () => Promise<unknown> {
 
     case "midas-signals":
       return async () => {
+        const outputPath =
+          process.env.MIDAS_PIPELINE_SOURCE_FILE ||
+          "client/public/midas_signals.json";
         const result = await runSubprocess("python", [
           "scripts/midas_alpaca_pipeline.py",
+          "--output",
+          outputPath,
         ]);
-        // midas_alpaca_pipeline.py may exit 0 even when it falls back; we
-        // still record the run. The server fallback remains available.
-        return { exitCode: result.exitCode };
+
+        // Trigger the server-side refresh so the snapshot is normalized
+        // and persisted to gistify.sqlite by the application process.
+        const adminSecret = process.env.REPORT_ADMIN_SECRET?.trim();
+        if (adminSecret) {
+          const refreshResponse = await fetch(
+            "http://localhost:3000/api/admin/midas/signals/refresh",
+            {
+              method: "POST",
+              headers: {
+                "x-gistify-admin-secret": adminSecret,
+              },
+            }
+          );
+          if (!refreshResponse.ok) {
+            throw new Error(
+              `Server refresh failed: ${refreshResponse.status} ${refreshResponse.statusText}`
+            );
+          }
+        }
+
+        return { exitCode: result.exitCode, refreshed: Boolean(adminSecret) };
       };
 
     case "sync-flow-source-timestamps":
