@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-07-02T21:05:00Z",
-  "reportDate": "2026-07-03",
-  "title": "US PPI Forecast Snapshot \u2014 Composite Calibrated Bridge Nowcast v2.5 Enhanced",
-  "summary": "Energy drag from June spot mean-reversion (gasoline -5%, diesel -8%) pulls headline lower, but lagged intermediate demand passthrough and still-elevated ISM Prices Paid at 73.0 keep core goods sticky. Normal regime (VIX ~16.7) supports tighter confidence bands. ECI Q1 interpolated at +0.30% MoM feeds services pipeline. Daily refresh \u2014 no material change since July 1.",
-  "baseCase": "Soft headline on energy unwind, sticky core on lagged intermediate demand passthrough",
-  "conviction": 65,
+  "generatedAt": "2026-07-06T11:14:43Z",
+  "reportDate": "2026-07-06",
+  "title": "US PPI Forecast Snapshot — Composite Calibrated Bridge Nowcast v2.5 Enhanced",
+  "summary": "Energy drag from post-Hormuz spot mean-reversion (crude -25% MoM, gasoline -3.7%) pulls headline near flat, but ISM Prices Paid at 73.0 and lagged intermediate demand keep core sticky. Normal regime (VIX ~16.4) supports tighter confidence bands. ECI Q1 interpolated at +0.30% MoM feeds services pipeline. Daily refresh — composite updated with July 6 spot inputs.",
+  "baseCase": "Flat headline on energy unwind, sticky core on still-elevated ISM passthrough",
+  "conviction": 60,
   "regime": "normal",
-  "vix": 16.7,
+  "vix": 16.37,
   "regimeParameters": {
     "biasWindow": 3,
     "energyLag": 1,
@@ -34,28 +34,28 @@
   },
   "compositeProxies": {
     "energy": {
-      "gasoline": -6.0,
-      "diesel": -4.0,
-      "jetFuel": -3.0,
+      "gasoline": -4.5,
+      "diesel": -4.5,
+      "jetFuel": -2.5,
       "naturalGas": 0.0,
-      "composite": -2.5
+      "composite": -2.0
     },
     "foods": {
-      "cattle": 0.0,
-      "hogs": -0.5,
+      "cattle": -0.15,
+      "hogs": -0.05,
       "grains": 0.0,
       "dairy": 0.0,
       "usda": 0.0,
-      "composite": 0.0
+      "composite": -0.1
     },
     "coreGoods": {
-      "copper": 0.1,
+      "copper": 0.0,
       "steel": 0.0,
-      "aluminum": 0.0,
-      "lumber": 0.0,
-      "chemicals": 0.2,
+      "aluminum": -0.05,
+      "lumber": 0.05,
+      "chemicals": 0.1,
       "pharma": 0.1,
-      "ismPricesPaid": 2.3,
+      "ismPricesPaid": 2.0,
       "importPriceIndex": 0.0,
       "composite": 0.4
     },
@@ -67,57 +67,57 @@
       "composite": 0.0
     },
     "transportation": {
-      "datSpot": -1.0,
-      "diesel": -3.0,
+      "datSpot": -0.5,
+      "diesel": -2.0,
       "railFreight": 0.0,
       "airFreight": 0.0,
-      "composite": -0.4
+      "composite": -0.3
     },
     "otherServices": {
       "eci": 0.3,
-      "sp500vix": 0.2,
+      "sp500vix": 0.1,
       "healthcare": 0.2,
       "accommodation": 0.2,
       "loanRates": 0.0,
-      "composite": 0.2
+      "composite": 0.4
     }
   },
   "intermediateDemand": {
-    "stage1": 3.2,
-    "stage2": 2.4,
-    "stage3": 1.9,
-    "stage4": 1.1,
-    "uplift": 0.3
+    "stage1": 2.8,
+    "stage2": 2.0,
+    "stage3": 1.5,
+    "stage4": 1.0,
+    "uplift": 0.15
   },
   "release": {
     "name": "PPI",
     "period": "Jun 2026",
     "releaseDate": "2026-07-15",
     "releaseTimeEt": "08:30 ET",
-    "headlineMoM": "+0.1%",
-    "headlineYoY": "6.3%",
-    "coreMoM": "+0.3%",
-    "coreYoY": "5.3%",
+    "headlineMoM": "+0.0%",
+    "headlineYoY": "6.4%",
+    "coreMoM": "+0.2%",
+    "coreYoY": "5.2%",
     "priorHeadlineMoM": "+1.1%",
     "priorHeadlineYoY": "6.5%",
     "priorCoreMoM": "+0.8%",
     "priorCoreYoY": "5.1%",
     "bias": "COOLER",
-    "confidence": 65,
-    "thesis": "Energy drag from June spot mean-reversion pulls headline lower, but May intermediate demand surge (+3.2% Stage 1) keeps core goods pipeline pressure intact. June ISM Prices Paid at 73.0 signals cooling but remains inflationary. Normal regime (VIX ~16.7) supports tighter confidence bands. ECI Q1 interpolated monthly proxy (+0.30% MoM) anchors services."
+    "confidence": 60,
+    "thesis": "Energy collapse from Hormuz reopening pulls headline toward zero, but still-elevated ISM Prices Paid at 73.0 and sticky services pipeline keep core above +0.2% MoM. Normal regime (VIX ~16.4) supports modest confidence bands. ECI Q1 interpolated monthly proxy (+0.30% MoM) anchors services."
   },
   "pointEstimate": {
-    "headline": 0.1,
-    "core": 0.3
+    "headline": 0.0,
+    "core": 0.2
   },
   "confidenceInterval": {
     "headline": [
       -0.2,
-      0.4
+      0.2
     ],
     "core": [
-      0.1,
-      0.5
+      0.0,
+      0.4
     ]
   },
   "scenarios": [
@@ -125,20 +125,20 @@
       "id": "base",
       "label": "Base case",
       "probability": 55,
-      "outcome": "Headline +0.1%, core +0.3%. Energy drag stabilizes while core goods and services stay sticky.",
+      "outcome": "Headline +0.0%, core +0.2%. Energy drag stabilizes while core goods and services stay sticky.",
       "marketReadthrough": "Rates digest the headline but focus on core. No major Fed repricing.",
       "favoredAssets": [
         "Industrials",
         "Quality growth",
         "Gold"
       ],
-      "invalidation": "Core services re-accelerate above +0.5% MoM."
+      "invalidation": "Core services re-accelerate above +0.4% MoM."
     },
     {
       "id": "hot",
       "label": "Hotter pipeline pressure",
-      "probability": 20,
-      "outcome": "Headline +0.4%, core +0.5%. ISM passthrough hits harder than expected; intermediate demand keeps feeding through.",
+      "probability": 25,
+      "outcome": "Headline +0.3%, core +0.4%. ISM passthrough hits harder than expected; intermediate demand keeps feeding through.",
       "marketReadthrough": "Rates higher, USD firmer, margin-sensitive equities under pressure.",
       "favoredAssets": [
         "USD",
@@ -150,7 +150,7 @@
     {
       "id": "cool",
       "label": "Cleaner disinflation pulse",
-      "probability": 25,
+      "probability": 20,
       "outcome": "Headline -0.2%, core +0.1%. Energy collapses further; core passthrough fades faster than expected.",
       "marketReadthrough": "Fed-cut odds rise, rates soften, broader equity appetite improves.",
       "favoredAssets": [
@@ -165,7 +165,7 @@
     {
       "asset": "UST 10Y / $TLT",
       "bias": "Long duration if core PPI cools without hawkish spillover",
-      "trigger": "Core PPI <= +0.3% m/m and revisions are benign",
+      "trigger": "Core PPI <= +0.2% m/m and revisions are benign",
       "invalidation": "Broad upstream re-acceleration with hawkish rates repricing"
     },
     {
@@ -190,7 +190,7 @@
     {
       "label": "Commodity complex",
       "value": "Oil and metals",
-      "note": "Important for headline direction but not enough alone. WTI $70-76 range is the new equilibrium until Hormuz stability is fully confirmed."
+      "note": "Important for headline direction but not enough alone. WTI $68-74 range is the new equilibrium until Hormuz stability is fully confirmed."
     },
     {
       "label": "Pass-through",
@@ -229,7 +229,11 @@
     "https://www.census.gov/wholesale/",
     "https://fred.stlouisfed.org/series/VIXCLS",
     "https://www.cboe.com/tradable-products/vix/",
-    "https://www.prnewswire.com/news-releases/manufacturing-pmi-at-54-may-2026-ism-manufacturing-pmi-report-302786165.html",
-    "https://www.textileworld.com/textile-world/2026/07/manufacturing-pmi-at-53-3-june-2026-ism-manufacturing-pmi-report/"
+    "https://www.prnewswire.com/news-releases/manufacturing-pmi-at-53-3-june-2026-ism-manufacturing-pmi-report-302814991.html",
+    "https://www.textileworld.com/textile-world/2026/07/manufacturing-pmi-at-53-3-june-2026-ism-manufacturing-pmi-report/",
+    "https://tradingeconomics.com/commodity/crude-oil",
+    "https://tradingeconomics.com/commodity/gasoline",
+    "https://tradingeconomics.com/commodity/natural-gas",
+    "https://tradingeconomics.com/commodity/aluminum"
   ]
 }
