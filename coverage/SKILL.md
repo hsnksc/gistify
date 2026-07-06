@@ -99,7 +99,7 @@ Kurallar:
 
 ## 2. Dosya Adı, Push ve Versiyonlama
 
-- Dosya adı / sourceName: `{TICKER}-{YYYY-MM-DD}.md` · legacy local path: `reports/coverage/{TICKER}-{YYYY-MM-DD}.md` · aynı gün ikinci rapor: `...-b.md`
+- Dosya adı / sourceName: `{TICKER}-{YYYY-MM-DD}.md` · local path: `coverage/reports/{TICKER}-{YYYY-MM-DD}.md` (eski `reports/coverage/` hâlâ desteklenir) · aynı gün ikinci rapor: `...-b.md`
 - Commit mesajı önerisi: `report: CRWV 2026-07-02`
 - **Güncelleme = yeni dosya.** Eski raporu asla düzenleme; site aynı `ticker + type` zincirinde
   yeni versiyonu öne alır, eskisini arşivler ve diff'i otomatik üretir.

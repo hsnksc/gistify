@@ -99,21 +99,29 @@ function isSampleCoverageFile(fileName: string) {
   return /^sample(?:-|\.|$)/i.test(normalizeString(fileName));
 }
 
-export function getCoverageReportsRootPath() {
+export function getCoverageReportsRootPaths(): string[] {
   const configured = normalizeString(process.env.COVERAGE_REPORTS_PATH);
-  if (!configured) {
-    return path.resolve(process.cwd(), "reports", "coverage");
+  const paths: string[] = [];
+
+  if (configured) {
+    paths.push(
+      path.isAbsolute(configured)
+        ? configured
+        : path.resolve(process.cwd(), configured)
+    );
   }
 
-  if (path.isAbsolute(configured)) {
-    return configured;
-  }
+  paths.push(path.resolve(process.cwd(), "coverage", "reports"));
+  paths.push(path.resolve(process.cwd(), "reports", "coverage"));
 
-  return path.resolve(process.cwd(), configured);
+  return paths;
 }
 
-function listCoverageReportFileNames(): string[] {
-  const root = getCoverageReportsRootPath();
+export function getCoverageReportsRootPath() {
+  return getCoverageReportsRootPaths()[0];
+}
+
+function listCoverageReportFileNames(root: string): string[] {
   if (!fs.existsSync(root)) {
     return [];
   }
@@ -157,22 +165,37 @@ function readCoverageRecord(root: string, fileName: string): CoverageStoredRecor
 }
 
 export function listLocalCoverageReports(): CoverageStoredRecord[] {
-  const root = getCoverageReportsRootPath();
-  const names = listCoverageReportFileNames();
-  return names.map(name => readCoverageRecord(root, name));
+  const records: CoverageStoredRecord[] = [];
+  const seenNames = new Set<string>();
+
+  for (const root of getCoverageReportsRootPaths()) {
+    const names = listCoverageReportFileNames(root);
+    for (const name of names) {
+      const lowerName = name.toLowerCase();
+      if (seenNames.has(lowerName)) {
+        continue;
+      }
+
+      seenNames.add(lowerName);
+      records.push(readCoverageRecord(root, name));
+    }
+  }
+
+  return records;
 }
 
 export function getLocalCoverageReport(id: string): CoverageStoredRecord | null {
-  const root = getCoverageReportsRootPath();
   const safeId = normalizeCoverageId(path.basename(id));
   const fileName = `${safeId}.md`;
-  const filePath = path.join(root, fileName);
 
-  if (!fs.existsSync(filePath)) {
-    return null;
+  for (const root of getCoverageReportsRootPaths()) {
+    const filePath = path.join(root, fileName);
+    if (fs.existsSync(filePath)) {
+      return readCoverageRecord(root, fileName);
+    }
   }
 
-  return readCoverageRecord(root, fileName);
+  return null;
 }
 
 export function mergeCoverageReports(
