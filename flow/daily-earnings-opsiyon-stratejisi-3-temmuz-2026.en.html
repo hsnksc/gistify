@@ -1,0 +1,4276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Earnings Option Strategy | AAPL AMZN GOOGL META MSFT NFLX TSLA AMD NVDA MU INTC PLTR ASML TSM JPM BAC GS UNH JNJ PFE XOM CVX V MA DIS BA NKE HD COIN HOOD DAL PEP</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Earnings Option Strategy | AAPL AMZN GOOGL META MSFT NFLX TSLA AMD NVDA MU INTC PLTR ASML TSM JPM BAC GS UNH JNJ PFE XOM CVX V MA DIS BA NKE HD COIN HOOD DAL PEP" />
+<meta property="og:description" content="Gistify flow report: Rolling 2-month earnings option strategy — July + August 2026" />
+<meta property="og:url" content="https://gistify.pro/flow/daily-earnings-opsiyon-stratejisi-3-temmuz-2026.html" />
+<meta property="og:image" content="https://gistify.pro/gistifylogo.png?v=20260706" />
+<meta property="og:site_name" content="Gistify" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Earnings Option Strategy | AAPL AMZN GOOGL META MSFT NFLX TSLA AMD NVDA MU INTC PLTR ASML TSM JPM BAC GS UNH JNJ PFE XOM CVX V MA DIS BA NKE HD COIN HOOD DAL PEP" />
+<meta name="twitter:description" content="Gistify flow report: Rolling 2-month earnings option strategy" />
+<meta name="twitter:image" content="https://gistify.pro/gistifylogo.png?v=20260706" />
+<style>
+/* GISTIFY FLOW — Unified Dark Theme */
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:720px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.hero-date{display:inline-flex;align-items:center;gap:5px;color:var(--gf-muted)}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden;cursor:pointer;user-select:none;transition:background .15s}
+.section-head:hover{background:var(--gf-card)}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0;padding:14px 18px}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent);transition:transform .2s;float:right;margin:14px 18px 0 0}
+.section-head.collapsed .icon{transform:rotate(-90deg)}
+.section-body{padding:18px;display:none;border-top:1px solid var(--gf-border)}
+.section-head:not(.collapsed) + .section-body{display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px;transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-1px);border-color:rgba(56,189,248,.25)}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+.tabs{display:flex;gap:2px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:14px}
+.tab{flex:1;padding:8px 10px;text-align:center;font-size:0.82rem;font-weight:600;border-radius:6px;cursor:pointer;user-select:none;transition:background .15s,color .15s;border:none;color:var(--gf-muted);background:transparent}
+.tab.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.tab:hover:not(.active){color:var(--gf-text)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.text-right{text-align:right}
+.text-center{text-align:center}
+.progress-bar{background:var(--gf-card);border-radius:4px;height:18px;overflow:hidden;margin:4px 0}
+.progress-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:0.68rem;font-weight:700;color:#fff}
+.fill-bull{background:linear-gradient(90deg,#16a34a,#4ade80)}
+.fill-base{background:linear-gradient(90deg,#ca8a04,#fbbf24)}
+.fill-bear{background:linear-gradient(90deg,#dc2626,#f87171)}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--gf-border)}
+.timeline-item{position:relative;margin-bottom:14px}
+.timeline-item::before{content:'';position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--gf-card);border:2px solid var(--gf-border)}
+.timeline-item.bull::before{border-color:var(--gf-success);background:var(--gf-success)}
+.timeline-item.bear::before{border-color:var(--gf-danger);background:var(--gf-danger)}
+.timeline-item.warn::before{border-color:var(--gf-warning);background:var(--gf-warning)}
+.timeline-date{font-size:0.78rem;color:var(--gf-muted);font-weight:600}
+.timeline-body{font-size:0.85rem;margin-top:3px;color:var(--gf-text)}
+.heatmap{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;font-size:0.72rem;margin:10px 0}
+.heatmap-cell{padding:6px 2px;text-align:center;border-radius:4px;min-height:36px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.heatmap-cell .day{font-weight:700;font-size:0.78rem}
+.heatmap-cell .val{font-size:0.68rem;opacity:.85}
+.h-strong{background:rgba(74,222,128,.35);color:#aff5b4}
+.h-weak{background:rgba(248,113,113,.35);color:#ffdcd7}
+.h-neu{background:rgba(251,191,36,.2);color:#ffdfb6}
+.h-flat{background:rgba(148,163,184,.15);color:var(--gf-muted)}
+.h-good{background:rgba(74,222,128,.2);color:#aff5b4}
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+@media(max-width:640px){.wrap{padding:16px 10px}.hero-h{font-size:1.25rem}.grid{grid-template-columns:1fr}.kpi-row{grid-template-columns:repeat(2,1fr)}.tabs{flex-wrap:wrap}.tab{flex:none;min-width:80px}table{font-size:0.78rem}th,td{padding:6px 7px}}
+.lang-switch{display:inline-flex;gap:4px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:16px}
+.lang-btn{padding:6px 14px;border-radius:8px;font-size:0.8rem;font-weight:600;border:none;cursor:pointer;background:transparent;color:var(--gf-muted);transition:all .15s}
+.lang-btn.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.lang-btn:hover:not(.active){color:var(--gf-text)}
+[data-lang]{display:none}
+[data-lang].visible{display:block}
+[data-lang-inline]{display:none}
+[data-lang-inline].visible{display:inline}
+/* Override for sibling section-body */
+.section-head.collapsed + .section-body { display: none !important; }
+.section-head:not(.collapsed) + .section-body { display: block !important; }
+/* Markdown generated styles */
+blockquote { border-left: 3px solid var(--gf-border); padding-left: 12px; margin: 10px 0; color: var(--gf-muted); }
+code { background: var(--gf-card); padding: 2px 6px; border-radius: 4px; font-family: var(--gf-mono); font-size: 0.85rem; }
+pre { background: var(--gf-card); padding: 12px; border-radius: var(--gf-radius); overflow-x: auto; border: 1px solid var(--gf-border); }
+h3 { font-size: 1.1rem; color: var(--gf-accent); margin: 16px 0 8px; }
+h4 { font-size: 0.95rem; color: var(--gf-muted); margin: 12px 0 6px; }
+p { margin: 8px 0; }
+ul, ol { margin: 8px 0; padding-left: 20px; }
+li { margin: 4px 0; }
+hr { border: none; border-top: 1px solid var(--gf-border); margin: 16px 0; }
+a { color: var(--gf-accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+strong { color: var(--gf-text); }
+</style>
+<script>
+function toggle(id){var el=document.getElementById(id);if(!el)return;el.classList.toggle('collapsed');}
+function setTab(btn,tabId){var parent=btn.closest('.tabs');if(parent){parent.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});parent.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});}btn.classList.add('active');var tc=document.getElementById(tabId);if(tc)tc.classList.add('active');}
+</script>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HERO -->
+<div class="hero" id="hero" data-timestamp="2026-07-03T09:48:00+03:00">
+  <h1 class="hero-h">Gistify Earnings Strategy — Option Master Strategy</h1>
+  <p class="hero-desc">Rolling 2-month earnings option strategy: July 2026 + August 2026</p>
+  <div class="hero-meta">
+    <span class="meta-pill info hero-date">📅 July 3, 2026</span>
+    <span class="meta-pill info hero-date" data-timestamp="2026-07-03T09:48:00+03:00">⏰ 09:48 Istanbul</span>
+    <span class="meta-pill neu">VIX 16.15</span>
+    <span class="meta-pill bull">SPY +0.00%</span>
+    <span class="meta-pill bear">QQQ —</span>
+    <span class="meta-pill info">42 Stocks</span>
+  </div>
+</div>
+
+<!-- SECTIONS -->
+<section>
+  <div class="section-head" id="sec-july-2026--august-2026--report-date-2026-1" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">📄 July 2026 + August 2026 | Report Date: 2026-07-03</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-i̇çindekiler-table-of-contents-2" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">📄 Table of Contents</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<ul>
+<li><a href="#1-executive-summary">1. Executive Summary</a></li>
+<li><a href="#2-macro-dashboard--piyasa-rejimi">2. Macro Dashboard &amp; Market Regime</a></li>
+<li><a href="#3-earnings-takvimi-özeti">3. Earnings Calendar Summary</a></li>
+<li><a href="#4-teknoloji-sektörü-analizi">4. Technology Sector Analysis</a></li>
+<li><a href="#5-finansal--sağlık--enerji--diğer-sektörler">5. Financials + Health Care + Energy + Other Sectors</a></li>
+<li><a href="#6-risk-yönetimi-bütçe--portföy-stratejisi">6. Risk Management, Budget &amp; Portfolio Strategy</a></li>
+<li><a href="#7-haftalık-eylem-planı-jul-6jul-10">7. Weekly Action Plan (Jul 6–Jul 10)</a></li>
+<li><a href="#8-appendices">8. Appendices</a></li>
+<li><a href="#iv-crush-sektör-dashboard">IV Crush Sector Dashboard</a></li>
+<li><a href="#greeks-cheat-sheet">Greeks Cheat Sheet</a></li>
+<li><a href="#karşılaştırma-matrisi-top-10">Comparison Matrix (Top 10)</a></li>
+<li><a href="#9-yasal-uyarı--sorumluluk-reddi">9. Legal Disclaimer &amp; Risk Disclosure</a></li>
+</ul>
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-1-executive-summary-3" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">📋 1. Executive Summary</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<p><strong>Market Regime Summary:</strong> VIX <strong>16.15</strong> — we are in a low volatility regime. This is a "green light" for long-volatility earnings plays — options are relatively cheap and IV expansion can be profitable. SPY <strong>$744.86</strong>, QQQ <strong>$712.53</strong>, IWM <strong>$297.54</strong> — broad market is trading near peaks. QQQ leadership will amplify tech stocks' earnings reactions.</p>
+<p><strong>⚠️ Risk Flags:</strong>
+- <strong>FOMC Blackout:</strong> from ~Jul 19 Fed officials will go silent. Jul 20–25 week may face a dual headwind of earnings IV crush + pre-FOMC vol expansion.
+- <strong>Low VIX = Complacency Risk:</strong> VIX &lt; 20, a single bad macro event can spike VIX 5–10 points. Do not use margin.
+- <strong>Crypto/FinTech Extreme IV:</strong> COIN (%81.5) and HOOD (%78.2) — premium is extremely expensive, sell strategies preferred.</p>
+<p><strong>Top 10 Earnings Play (All Sectors)</strong></p>
+<table>
+<thead>
+<tr>
+<th>Rank</th>
+<th>Ticker</th>
+<th>Earnings Date</th>
+<th>Strategy</th>
+<th>Budget</th>
+<th>Conviction</th>
+<th>Risk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td><strong>META</strong></td>
+<td>Late Jul</td>
+<td>Bull Call Spread $590/$610</td>
+<td>$50–$200</td>
+<td>⭐⭐⭐⭐⭐</td>
+<td>🟡</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td><strong>TSM</strong></td>
+<td>Jul 16</td>
+<td>Bull Call Spread $440/$460</td>
+<td>$50–$200</td>
+<td>⭐⭐⭐⭐⭐</td>
+<td>🟡</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td><strong>NFLX</strong></td>
+<td>Jul 16</td>
+<td>Bull Call Spread $80/$90</td>
+<td>$50–$200</td>
+<td>⭐⭐⭐⭐</td>
+<td>🔴</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td><strong>DAL</strong></td>
+<td>Jul 10 BMO</td>
+<td>Call Debit Spread $90/$95</td>
+<td>$50–$200</td>
+<td>⭐⭐⭐⭐</td>
+<td>🟡</td>
+</tr>
+<tr>
+<td><strong>5</strong></td>
+<td><strong>PEP</strong></td>
+<td>Jul 9 BMO</td>
+<td>Butterfly $143/$145/$147</td>
+<td>$200–$500</td>
+<td>⭐⭐⭐⭐</td>
+<td>🟢</td>
+</tr>
+<tr>
+<td><strong>6</strong></td>
+<td><strong>JPM</strong></td>
+<td>Mid-Jul</td>
+<td>Long Straddle $335</td>
+<td>$200–$500</td>
+<td>⭐⭐⭐⭐</td>
+<td>🟡</td>
+</tr>
+<tr>
+<td><strong>7</strong></td>
+<td><strong>UNH</strong></td>
+<td>Jul 16</td>
+<td>Call Debit Spread $430/$440</td>
+<td>$50–$200</td>
+<td>⭐⭐⭐⭐</td>
+<td>🟡</td>
+</tr>
+<tr>
+<td><strong>8</strong></td>
+<td><strong>HOOD</strong></td>
+<td>Early Aug</td>
+<td>Iron Condor $100/$110/$120/$130</td>
+<td>$200–$500</td>
+<td>⭐⭐⭐</td>
+<td>🟡</td>
+</tr>
+<tr>
+<td><strong>9</strong></td>
+<td><strong>AAPL</strong></td>
+<td>Late Jul / Early Aug</td>
+<td>Bull Call Spread $310/$325</td>
+<td>$50–$200</td>
+<td>⭐⭐⭐⭐</td>
+<td>🟢</td>
+</tr>
+<tr>
+<td><strong>10</strong></td>
+<td><strong>TSLA</strong></td>
+<td>Late Jul</td>
+<td>Bull Call Spread $400/$420</td>
+<td>$50–$200</td>
+<td>⭐⭐⭐</td>
+<td>🔴</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Week Ahead (Jul 6–10):</strong>
+- <strong>This week:</strong> Jul 6'da position openings — EPAC &amp; PENG (Jul 7), HELE/PSMT/LEVI/AZZ (Jul 8), PEP/SMPL/WDFC (Jul 9), DAL (Jul 10).
+- <strong>Next week:</strong> Jul 15 ASML, Jul 16 NFLX/TSM/UNH — mega earnings day.
+- <strong>Late Jul / Early Aug:</strong> AAPL, AMZN, TSLA, META, GOOGL, MSFT, NVDA, AMD, PLTR, ASML — mega-cap tech wave.</p>
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-2-macro-dashboard-amp-piyasa-rejimi-4" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">📊 2. Macro Dashboard &amp;amp; Piyasa Rejimi</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<h3 id="vix-degerlendirmesi-ve-rejim-yorumu">VIX Assessment and Regime Commentary</h3>
+<ul>
+<li><strong>VIX = 16.15</strong> (Low Volatility Regime)</li>
+<li>VIX &lt; 20, long-volatility earnings plays are a "green light" — options are relatively cheap and IV expansion can be profitable.</li>
+<li><strong>Warning:</strong> Low VIX can also be a sign of complacency. A single bad macro event can spike VIX 5–10 points. Do not use margin.</li>
+</ul>
+<h3 id="endeks-performans">Index Performance</h3>
+<table>
+<thead>
+<tr>
+<th>Index</th>
+<th>Price</th>
+<th>Daily Change</th>
+<th>Commentary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SPY</strong></td>
+<td><strong>$744.86</strong></td>
+<td>Near peak</td>
+<td>Broad market strong</td>
+</tr>
+<tr>
+<td><strong>QQQ</strong></td>
+<td><strong>$712.53</strong></td>
+<td>Leader</td>
+<td>Will amplify tech stocks' earnings reactions</td>
+</tr>
+<tr>
+<td><strong>IWM</strong></td>
+<td><strong>$297.54</strong></td>
+<td>Moderate</td>
+<td>Small-cap stocks at risk of stalling</td>
+</tr>
+<tr>
+<td><strong>DIA</strong></td>
+<td><strong>$527.76</strong></td>
+<td>—</td>
+<td>DOW index, less volatile</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sektor-rotasyon-ipuclar">Sector Rotation Clues</h3>
+<ul>
+<li><strong>Tech leadership:</strong> QQQ strongest trend — mega-cap tech earnings (late Jul / early Aug) will determine market direction.</li>
+<li><strong>Financials:</strong> Banking Q2 earnings (JPM, BAC, GS, WFC, C, MS) in mid-July with interest rate and capital markets activity catalysts.</li>
+<li><strong>Health Care:</strong> UNH (Jul 16) Medicare Advantage rate clarity; JNJ (+3.55% momentum) and ABT (+3.38%) showing accumulation signals.</li>
+<li><strong>Energy:</strong> XOM and CVX late-Jul — oil prices and refining margins are impactful.</li>
+<li><strong>Crypto/FinTech:</strong> COIN and HOOD extreme IV (%79+), sell strategies (Iron Condor, Put Credit Spread) should be preferred.</li>
+</ul>
+<h3 id="fomc-takvimi-ve-blackout-etkileri">FOMC Calendar and Blackout Effects</h3>
+<ul>
+<li><strong>Next FOMC:</strong> 29–30 Jul 2026 estimated.</li>
+<li><strong>Blackout Period:</strong> ~19–20 Jul'dan itibaren Fed officials will go silent.</li>
+<li><strong>Impact:</strong> earnings plays in the Jul 20–31 week <strong>dual headwind</strong> (earnings IV crush + pre-FOMC vol expansion) will carry risk. Positions should be closed by Jul 18 if possible.</li>
+<li><strong>Rate Expectations:</strong> VIX is low and SPY is at highs — market is pricing a "pause" or 25bps cut. A surprise hawkish turn would punish tech longs.</li>
+</ul>
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-3-earnings-takvimi-özeti-5" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">📅 3. Earnings Calendar Summary</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<p><strong>Rolling Window:</strong> Current month (Jul 2026) + next month (Aug 2026) earnings reports are covered. Updated daily; past earnings reports (e.g., Jul 2: LNN, BMNR, RR) are filtered out.</p>
+<h3 id="bu-hafta-jul-610-earnings">This Week: Jul 6–10 Earnings</h3>
+<table>
+<thead>
+<tr>
+<th>Ticker</th>
+<th>Date</th>
+<th>Time</th>
+<th>Sector</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>EPAC</strong></td>
+<td>Jul 7</td>
+<td>BMO</td>
+<td>Industrial</td>
+<td>EPS est $0.50 — weak setup, entry very narrow</td>
+</tr>
+<tr>
+<td><strong>PENG</strong></td>
+<td>Jul 7</td>
+<td>BMO</td>
+<td>AI Infrastructure</td>
+<td>-10.86% drop after binary setup, high risk/reward</td>
+</tr>
+<tr>
+<td><strong>HELE</strong></td>
+<td>Jul 8</td>
+<td>AMC</td>
+<td>Consumer</td>
+<td>EPS est $0.01 — weak momentum, avoid</td>
+</tr>
+<tr>
+<td><strong>AZZ</strong></td>
+<td>Jul 8</td>
+<td>BMO</td>
+<td>Industrial</td>
+<td>Metal coating, direction unclear</td>
+</tr>
+<tr>
+<td><strong>LEVI</strong></td>
+<td>Jul 8</td>
+<td>BMO</td>
+<td>Textile</td>
+<td>EPS est $0.24, weak close</td>
+</tr>
+<tr>
+<td><strong>PSMT</strong></td>
+<td>Jul 8</td>
+<td>BMO</td>
+<td>Retail</td>
+<td>Latin America warehouse, small float</td>
+</tr>
+<tr>
+<td><strong>PEP</strong></td>
+<td>Jul 9</td>
+<td>BMO</td>
+<td>Consumer</td>
+<td>Pricing power, Frito-Lay margins — clean setup</td>
+</tr>
+<tr>
+<td><strong>SMPL</strong></td>
+<td>Jul 9</td>
+<td>BMO</td>
+<td>Consumer</td>
+<td>Low carb, small cap — lottery ticket</td>
+</tr>
+<tr>
+<td><strong>WDFC</strong></td>
+<td>Jul 9</td>
+<td>BMO</td>
+<td>Consumer</td>
+<td>WD-40, narrow spread options</td>
+</tr>
+<tr>
+<td><strong>DAL</strong></td>
+<td>Jul 10</td>
+<td>BMO</td>
+<td>Aviation</td>
+<td>International demand, fuel hedge — Jul 10 catalyst</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sonraki-hafta-jul-1317-mega-earnings-baslyor">Next Week: Jul 13–17 (Mega Earnings Begin)</h3>
+<table>
+<thead>
+<tr>
+<th>Ticker</th>
+<th>Date</th>
+<th>Time</th>
+<th>Sector</th>
+<th>Strategy Recommendation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ASML</strong></td>
+<td>Jul 15</td>
+<td>BMO</td>
+<td>Semiconductor</td>
+<td>Jul 18 expiry bull spread — exit at BMO</td>
+</tr>
+<tr>
+<td><strong>NFLX</strong></td>
+<td>Jul 16</td>
+<td>BMO</td>
+<td>Streaming</td>
+<td>$80/$90 Call Spread — Jul 18 expiry</td>
+</tr>
+<tr>
+<td><strong>TSM</strong></td>
+<td>Jul 16</td>
+<td>BMO</td>
+<td>Foundry</td>
+<td>$440/$460 Call Spread — AI demand structural</td>
+</tr>
+<tr>
+<td><strong>UNH</strong></td>
+<td>Jul 16</td>
+<td>BMO</td>
+<td>Health Care</td>
+<td>$430/$440 Call Spread — Medicare catalyst</td>
+</tr>
+</tbody>
+</table>
+<h3 id="gec-jul-erken-agu-mega-cap-tech-wave">Late Jul / Early Aug (Mega-Cap Tech Wave)</h3>
+<table>
+<thead>
+<tr>
+<th>Ticker</th>
+<th>Beklenen Date</th>
+<th>Time</th>
+<th>Catalyst</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AAPL</strong></td>
+<td>Late Jul / Early Aug</td>
+<td>BMO/AMC</td>
+<td>China iPhone demand, services growth</td>
+</tr>
+<tr>
+<td><strong>AMZN</strong></td>
+<td>Late Jul / Early Aug</td>
+<td>BMO/AMC</td>
+<td>AWS margin, advertising profitability</td>
+</tr>
+<tr>
+<td><strong>TSLA</strong></td>
+<td>Late Jul</td>
+<td>BMO/AMC</td>
+<td>Delivery/robotaxi, FSD narrative</td>
+</tr>
+<tr>
+<td><strong>META</strong></td>
+<td>Late Jul</td>
+<td>BMO/AMC</td>
+<td>Reels monetization, AI infrastructure spend</td>
+</tr>
+<tr>
+<td><strong>GOOGL</strong></td>
+<td>Late Jul</td>
+<td>BMO/AMC</td>
+<td>Cloud, AI capex, YouTube ad revenue</td>
+</tr>
+<tr>
+<td><strong>MSFT</strong></td>
+<td>Late Jul</td>
+<td>BMO/AMC</td>
+<td>Azure growth, Copilot monetization</td>
+</tr>
+<tr>
+<td><strong>NVDA</strong></td>
+<td>Late Jul / Early Aug</td>
+<td>BMO/AMC</td>
+<td>Blackwell ramp, data center revenue</td>
+</tr>
+<tr>
+<td><strong>AMD</strong></td>
+<td>Late Jul / Early Aug</td>
+<td>BMO/AMC</td>
+<td>MI300 GPU, data center momentum</td>
+</tr>
+<tr>
+<td><strong>PLTR</strong></td>
+<td>Early Aug</td>
+<td>BMO/AMC</td>
+<td>Government contract, AIP commercial adoption</td>
+</tr>
+<tr>
+<td><strong>LLY</strong></td>
+<td>Early Aug</td>
+<td>BMO</td>
+<td>Mounjaro/Zepbound demand, supply constraints</td>
+</tr>
+<tr>
+<td><strong>DIS</strong></td>
+<td>Early Aug</td>
+<td>BMO/AMC</td>
+<td>Park pricing, streaming profitability</td>
+</tr>
+<tr>
+<td><strong>HD</strong></td>
+<td>Mid-Aug</td>
+<td>BMO</td>
+<td>Housing/remodel demand, pro segment</td>
+</tr>
+<tr>
+<td><strong>COIN</strong></td>
+<td>Early Aug</td>
+<td>BMO</td>
+<td>Crypto vol, regulatory clarity</td>
+</tr>
+<tr>
+<td><strong>HOOD</strong></td>
+<td>Early Aug</td>
+<td>BMO</td>
+<td>Gold subscription, international expansion</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Past Earnings Filter:</strong> Reporting on Jul 2, LNN, BMNR, RR were removed from report scope. Positions should not remain open.</p>
+</blockquote>
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-4-teknoloji-sektörü-analizi-6" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">💻 4. Technology Sector Analysis</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-aapl--apple-inc-7" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">📄 AAPL — Apple Inc</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Current Price</td>
+<td>$308.24</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+4.69%</td>
+</tr>
+<tr>
+<td>Volume vs Avg</td>
+<td>3.81M (prev 2.43M) → <strong>Above avg</strong></td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>36.3%</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Late Jul / Early Aug (Q3 FY2026)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO/AMC: 2-4hrs or next morning</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Price Action:</strong> Strong +4.69% bounce on Jul 2 after testing ~$290 support. Volume expansion confirms institutional interest. Currently ~$308 with key resistance at $310-$315.</p>
+<h3 id="strategy-1-lottery-ticket-long-call-bullish-bias">Strategy 1: Lottery Ticket Long Call (Bullish Bias)</h3>
+<ul>
+<li><strong>Budget:</strong> $10-$50</li>
+<li><strong>Setup:</strong> Buy Jul 25 or Aug 1 $315 Call (slightly OTM)</li>
+<li><strong>Estimated Cost:</strong> $25-$40 per contract</li>
+<li><strong>Target:</strong> Close at 50-75% gain if AAPL pushes toward $320 post-earnings</li>
+<li><strong>Entry:</strong> 2-3 days before earnings date (watch calendar for exact date)</li>
+<li><strong>Exit:</strong> Same day or next morning after earnings</li>
+<li><strong>Risk:</strong> 100% of premium if AAPL stays below $315</li>
+</ul>
+<h3 id="strategy-2-bull-call-spread-moderate-bullish">Strategy 2: Bull Call Spread (Moderate Bullish)</h3>
+<ul>
+<li><strong>Budget:</strong> $50-$200</li>
+<li><strong>Setup:</strong> Buy $310 Call / Sell $325 Call (Jul 25 or Aug 1 expiry)</li>
+<li><strong>Estimated Cost:</strong> $80-$150 per spread</li>
+<li><strong>Max Return:</strong> ~2-3x if AAPL closes near $325</li>
+<li><strong>Entry:</strong> 2-5 days before earnings</li>
+<li><strong>Exit:</strong> 1-2 days after earnings or at 50% profit</li>
+<li><strong>Risk:</strong> 100% of debit paid</li>
+</ul>
+<h3 id="strategy-3-butterfly-neutral-to-bullish-pin">Strategy 3: Butterfly (Neutral-to-Bullish Pin)</h3>
+<ul>
+<li><strong>Budget:</strong> $200-$500</li>
+<li><strong>Setup:</strong> Buy $305 Call / Sell 2x $315 Call / Buy $325 Call</li>
+<li><strong>Estimated Cost:</strong> $250-$400 per butterfly</li>
+<li><strong>Max Return:</strong> ~1x if AAPL pins near $315 post-earnings</li>
+<li><strong>Entry:</strong> 2-3 days before earnings</li>
+<li><strong>Exit:</strong> Immediately after IV crush (BMO/AMC timing)</li>
+<li><strong>Risk:</strong> 100% of premium if AAPL moves beyond $325 or below $305</li>
+</ul>
+<p><strong>Risk Notee:</strong> AAPL is a low-IV tech name (36.3%) relative to the sector. IV crush risk is moderate, but directional edge matters more. Watch for China iPhone demand commentary and services revenue growth. Avoid if AAPL breaks below $290 before earnings.</p>
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-amzn--amazoncom-8" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">📄 AMZN — Amazon.com</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Current Price</td>
+<td>$242.30</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+0.23%</td>
+</tr>
+<tr>
+<td>Volume vs Avg</td>
+<td>1.92M (prev 2.92M) → <strong>Below avg</strong></td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>42.1%</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Late Jul / Early Aug (Q2 2026)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO/AMC: 2-4hrs or next morning</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Price Action:</strong> Flat +0.23% on Jul 2 in a tight $241-$247 range. Low volume suggests consolidation before a catalyst. AWS growth rate and advertising margins will be key drivers.</p>
+<h3 id="strategy-1-bull-call-spread">Strategy 1: Bull Call Spread</h3>
+<ul>
+<li><strong>Budget:</strong> $50-$200</li>
+<li><strong>Setup:</strong> Buy $245 Call / Sell $260 Call (Aug 1 expiry)</li>
+<li><strong>Estimated Cost:</strong> $90-$140 per spread</li>
+<li><strong>Max Return:</strong> 2-3x if AMZN pushes toward $260</li>
+<li><strong>Entry:</strong> 3-5 days before earnings</li>
+<li><strong>Exit:</strong> 1-2 days after earnings</li>
+<li><strong>Risk:</strong> 100% of debit paid</li>
+</ul>
+<h3 id="strategy-2-long-call-lottery-ticket">Strategy 2: Long Call Lottery Ticket</h3>
+<ul>
+<li><strong>Budget:</strong> $10-$50</li>
+<li><strong>Setup:</strong> Buy $250 Call (Aug 1 expiry)</li>
+<li><strong>Estimated Cost:</strong> $20-$40 per contract</li>
+<li><strong>Target:</strong> 50-75% gain if AMZN breaks $250</li>
+<li><strong>Entry:</strong> 2-3 days before earnings</li>
+<li><strong>Exit:</strong> Same day or next morning after earnings</li>
+<li><strong>Risk:</strong> 100% of premium</li>
+</ul>
+<h3 id="strategy-3-iron-condor-range-play">Strategy 3: Iron Condor (Range Play)</h3>
+<ul>
+<li><strong>Budget:</strong> $200-$500</li>
+<li><strong>Setup:</strong> Sell $230 Put / Buy $220 Put / Sell $255 Call / Buy $265 Call</li>
+<li><strong>Estimated Credit:</strong> $200-$350 per condor</li>
+<li><strong>Max Return:</strong> Credit received if AMZN stays between $230-$255</li>
+<li><strong>Entry:</strong> 2-3 days before earnings</li>
+<li><strong>Exit:</strong> Next morning after IV crush</li>
+<li><strong>Risk:</strong> Width of spread minus credit received (~$650 max loss)</li>
+</ul>
+<p><strong>Risk Notee:</strong> AMZN rarely moves less than 5% on earnings. Iron Condor is high-risk despite neutral bias. Prefer directional spreads. Watch for AWS margin expansion guidance.</p>
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-googl--alphabet-inc-9" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">📄 GOOGL — Alphabet Inc</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Current Price</td>
+<td>$359.69</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>-0.42%</td>
+</tr>
+<tr>
+<td>Volume vs Avg</td>
+<td>780K (prev 1.18M) → <strong>Below avg</strong></td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>46.2%</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Late Jul (Q2 2026)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO/AMC: 2-4hrs or next morning</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Price Action:</strong> Mild -0.42% pullback on light volume. Cloud revenue and AI capex commentary are the earnings focal points. Currently consolidating near $360.</p>
+<h3 id="strategy-1-bull-call-spread_1">Strategy 1: Bull Call Spread</h3>
+<ul>
+<li><strong>Budget:</strong> $50-$200</li>
+<li><strong>Setup:</strong> Buy $360 Call / Sell $375 Call (Aug 1 expiry)</li>
+<li><strong>Estimated Cost:</strong> $100-$160 per spread</li>
+<li><strong>Max Return:</strong> 2-3x if GOOGL closes near $375</li>
+<li><strong>Entry:</strong> 2-5 days before earnings</li>
+<li><strong>Exit:</strong> 1-2 days after earnings</li>
+<li><strong>Risk:</strong> 100% of debit paid</li>
+</ul>
+<h3 id="strategy-2-long-call-lottery-ticket_1">Strategy 2: Long Call Lottery Ticket</h3>
+<ul>
+<li><strong>Budget:</strong> $10-$50</li>
+<li><strong>Setup:</strong> Buy $370 Call (Aug 1 expiry)</li>
+<li><strong>Estimated Cost:</strong> $25-$45 per contract</li>
+<li><strong>Target:</strong> 50-75% gain if GOOGL breaks $370</li>
+<li><strong>Entry:</strong> 2-3 days before earnings</li>
+<li><strong>Exit:</strong> Same day or next morning after earnings</li>
+<li><strong>Risk:</strong> 100% of premium</li>
+</ul>
+<h3 id="strategy-3-put-credit-spread-bullish-income">Strategy 3: Put Credit Spread (Bullish Income)</h3>
+<ul>
+<li><strong>Budget:</strong> $50-$200</li>
+<li><strong>Setup:</strong> Sell $350 Put / Buy $340 Put (Aug 1 expiry)</li>
+<li><strong>Estimated Credit:</strong> $60-$100 per spread</li>
+<li><strong>Max Return:</strong> Credit received if GOOGL stays above $350</li>
+<li><strong>Entry:</strong> 3-4 days before earnings</li>
+<li><strong>Exit:</strong> Next morning after IV crush</li>
+<li><strong>Risk:</strong> $1000 per spread minus credit</li>
+</ul>
+<p><strong>Risk Notee:</strong> GOOGL has been range-bound ($350-$370). Antitrust overhang is a non-earnings risk. Prefer debit spreads over naked long options due to moderate IV. Watch YouTube ad revenue and Cloud profitability.</p>
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-meta--meta-platforms-10" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">📄 META — Meta Platforms</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Current Price</td>
+<td>$582.76</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>-4.93%</td>
+</tr>
+<tr>
+<td>Volume vs Avg</td>
+<td>675K (prev 1.52M) → <strong>Below avg</strong></td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>46.1%</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Late Jul (Q2 2026)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO/AMC: 2-4hrs or next morning</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Price Action:</strong> Sharp -4.93% decline from $613 to $583 on Jul 2, but volume was lighter than the previous day. This suggests a gap-down or emotional flush rather than sustained distribution. Key support at $580. If held, a mean-reversion bounce into earnings is plausible.</p>
+<h3 id="strategy-1-bull-call-spread-mean-reversion-play">Strategy 1: Bull Call Spread (Mean Reversion Play)</h3>
+<ul>
+<li><strong>Budget:</strong> $50-$200</li>
+<li><strong>Setup:</strong> Buy $590 Call / Sell $610 Call (Aug 1 expiry)</li>
+<li><strong>Estimated Cost:</strong> $110-$170 per spread</li>
+<li><strong>Max Return:</strong> 2-3x if META reclaims $610</li>
+<li><strong>Entry:</strong> 2-5 days before earnings</li>
+<li><strong>Exit:</strong> 1-2 days after earnings</li>
+<li><strong>Risk:</strong> 100% of debit paid</li>
+</ul>
+<h3 id="strategy-2-long-call-lottery-ticket_2">Strategy 2: Long Call Lottery Ticket</h3>
+<ul>
+<li><strong>Budget:</strong> $10-$50</li>
+<li><strong>Setup:</strong> Buy $600 Call (Aug 1 expiry)</li>
+<li><strong>Estimated Cost:</strong> $30-$50 per contract</li>
+<li><strong>Target:</strong> 50-75% gain if META pushes back toward $610</li>
+<li><strong>Entry:</strong> 2-3 days before earnings</li>
+<li><strong>Exit:</strong> Same day or next morning after earnings</li>
+<li><strong>Risk:</strong> 100% of premium</li>
+</ul>
+<h3 id="strategy-3-put-credit-spread-support-bounce">Strategy 3: Put Credit Spread (Support Bounce)</h3>
+<ul>
+<li><strong>Budget:</strong> $50-$200</li>
+<li><strong>Setup:</strong> Sell $570 Put / Buy $555 Put (Aug 1 expiry)</li>
+<li><strong>Estimated Credit:</strong> $70-$120 per spread</li>
+<li><strong>Max Return:</strong> Credit received if META stays above $570</li>
+<li><strong>Entry:</strong> 3-4 days before earnings</li>
+<li><strong>Exit:</strong> Next morning after IV crush</li>
+<li><strong>Risk:</strong> $1500 per spread minus credit</li>
+</ul>
+<p><strong>Risk Notee:</strong> META is a high-conviction mean-reversion candidate after the -4.93% flush. If $580 support fails, reassess. Reels monetization and AI infrastructure spend will drive the post-earnings move. Avoid if $570 breaks before earnings.</p>
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-msft--microsoft-corp-11" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">📄 MSFT — Microsoft Corp</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Current Price</td>
+<td>$389.79</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+1.41%</td>
+</tr>
+<tr>
+<td>Volume vs Avg</td>
+<td>1.35M (prev 1.54M) → <strong>Slightly below avg</strong></td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>44.6%</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Late Jul (Q4 FY2026)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO/AMC: 2-4hrs or next morning</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Price Action:</strong> +1.41% bounce from $384 to $390 on Jul 2. Azure growth rate and Copilot monetization will be the focus. Steady uptrend intact.</p>
+<h3 id="strategy-1-bull-call-spread_2">Strategy 1: Bull Call Spread</h3>
+<ul>
+<li><strong>Budget:</strong> $50-$200</li>
+<li><strong>Setup:</strong> Buy $395 Call / Sell $410 Call (Aug 1 expiry)</li>
+<li><strong>Estimated Cost:</strong> $100-$150 per spread</li>
+<li><strong>Max Return:</strong> 2-3x if MSFT closes near $410</li>
+<li><strong>Entry:</strong> 2-5 days before earnings</li>
+<li><strong>Exit:</strong> 1-2 days after earnings</li>
+<li><strong>Risk:</strong> 100% of debit paid</li>
+</ul>
+<h3 id="strategy-2-long-call-lottery-ticket_3">Strategy 2: Long Call Lottery Ticket</h3>
+<ul>
+<li><strong>Budget:</strong> $10-$50</li>
+<li><strong>Setup:</strong> Buy $400 Call (Aug 1 expiry)</li>
+<li><strong>Estimated Cost:</strong> $25-$40 per contract</li>
+<li><strong>Target:</strong> 50-75% gain if MSFT breaks $400</li>
+<li><strong>Entry:</strong> 2-3 days before earnings</li>
+<li><strong>Exit:</strong> Same day or next morning after earnings</li>
+<li><strong>Risk:</strong> 100% of premium</li>
+</ul>
+<h3 id="strategy-3-butterfly-pin-play">Strategy 3: Butterfly (Pin Play)</h3>
+<ul>
+<li><strong>Budget:</strong> $200-$500</li>
+<li><strong>Setup:</strong> Buy $385 Call / Sell 2x $400 Call / Buy $415 Call</li>
+<li><strong>Estimated Cost:</strong> $250-$400 per butterfly</li>
+<li><strong>Max Return:</strong> ~1x if MSFT pins near $400</li>
+<li><strong>Entry:</strong> 2-3 days before earnings</li>
+<li><strong>Exit:</strong> Immediately after IV crush</li>
+<li><strong>Risk:</strong> 100% of premium if MSFT moves beyond $415 or below $385</li>
+</ul>
+<p><strong>Risk Notee:</strong> MSFT is the safest mega-cap tech play. IV is moderate (44.6%). Azure growth deceleration is the biggest downside risk. Conservative traders should favor spreads over naked options.</p>
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-nflx--netflix-inc-12" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">📄 NFLX — Netflix Inc</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Current Price</td>
+<td>$77.59</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+4.58%</td>
+</tr>
+<tr>
+<td>Volume vs Avg</td>
+<td>3.61M (prev 3.19M) → <strong>Above avg</strong></td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>64.8%</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Jul 16</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO/AMC: 2-4hrs or next morning</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Price Action:</strong> Strong +4.58% rally to $77.59 on above-average volume. Earnings are on Jul 16 — this is an <strong>imminent play</strong>. Subscriber adds and ad-tier growth are the catalysts. High IV (64.8%) means expensive options but also large expected move.</p>
+<h3 id="strategy-1-bull-call-spread-aggressive">Strategy 1: Bull Call Spread (Aggressive)</h3>
+<ul>
+<li><strong>Budget:</strong> $50-$200</li>
+<li><strong>Setup:</strong> Buy $80 Call / Sell $90 Call (Jul 18 expiry — post-earnings weekly)</li>
+<li><strong>Estimated Cost:</strong> $100-$160 per spread</li>
+<li><strong>Max Return:</strong> 2-3x if NFLX closes near $90</li>
+<li><strong>Entry:</strong> By Jul 11-12 (4-5 days before)</li>
+<li><strong>Exit:</strong> Jul 17 morning after earnings</li>
+<li><strong>Risk:</strong> 100% of debit paid</li>
+</ul>
+<h3 id="strategy-2-long-call-lottery-ticket_4">Strategy 2: Long Call Lottery Ticket</h3>
+<ul>
+<li><strong>Budget:</strong> $10-$50</li>
+<li><strong>Setup:</strong> Buy $85 Call (Jul 18 expiry)</li>
+<li><strong>Estimated Cost:</strong> $20-$40 per contract</li>
+<li><strong>Target:</strong> 50-75% gain if NFLX breaks $85</li>
+<li><strong>Entry:</strong> Jul 11-13</li>
+<li><strong>Exit:</strong> Jul 17 morning after IV crush</li>
+<li><strong>Risk:</strong> 100% of premium</li>
+</ul>
+<h3 id="strategy-3-iron-condor-high-risk-range-play">Strategy 3: Iron Condor (High-Risk Range Play)</h3>
+<ul>
+<li><strong>Budget:</strong> $200-$500</li>
+<li><strong>Setup:</strong> Sell $70 Put / Buy $65 Put / Sell $85 Call / Buy $90 Call (Jul 18)</li>
+<li><strong>Estimated Credit:</strong> $150-$250 per condor</li>
+<li><strong>Max Return:</strong> Credit received if NFLX stays $70-$85</li>
+<li><strong>Entry:</strong> Jul 12-13</li>
+<li><strong>Exit:</strong> Jul 17 morning</li>
+<li><strong>Risk:</strong> $500 max loss per condor</li>
+</ul>
+<p><strong>Risk Notee:</strong> NFLX is the most time-sensitive play in the tech basket (Jul 16). High IV = expensive entry. This is a momentum trade — the +4.58% pre-earnings run could extend or reverse. Tight stops recommended. Avoid holding through Jul 16 close.</p>
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-tsla--tesla-inc-13" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">📄 TSLA — Tesla Inc</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Current Price</td>
+<td>$392.82</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>-7.65%</td>
+</tr>
+<tr>
+<td>Volume vs Avg</td>
+<td>1.59M (prev 1.06M) → <strong>Above avg</strong></td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>47.95%</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Late Jul</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO/AMC: 2-4hrs or next morning</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Price Action:</strong> Massive -7.65% crash on Jul 2 with volume spike. This is the largest single-day decline in the tech basket. TSLA is now below $400. The move likely reflects Q2 delivery concerns or robotaxi skepticism. However, this also creates an <strong>oversold bounce opportunity</strong> if earnings surprise positively.</p>
+<h3 id="strategy-1-bull-call-spread-oversold-bounce">Strategy 1: Bull Call Spread (Oversold Bounce)</h3>
+<ul>
+<li><strong>Budget:</strong> $50-$200</li>
+<li><strong>Setup:</strong> Buy $400 Call / Sell $420 Call (Aug 1 expiry)</li>
+<li><strong>Estimated Cost:</strong> $100-$170 per spread</li>
+<li><strong>Max Return:</strong> 2-3x if TSLA reclaims $420</li>
+<li><strong>Entry:</strong> 2-5 days before earnings</li>
+<li><strong>Exit:</strong> 1-2 days after earnings</li>
+<li><strong>Risk:</strong> 100% of debit paid</li>
+</ul>
+<h3 id="strategy-2-long-call-lottery-ticket-high-risk-high-reward">Strategy 2: Long Call Lottery Ticket (High Risk / High Reward)</h3>
+<ul>
+<li><strong>Budget:</strong> $10-$50</li>
+<li><strong>Setup:</strong> Buy $410 Call (Aug 1 expiry)</li>
+<li><strong>Estimated Cost:</strong> $25-$45 per contract</li>
+<li><strong>Target:</strong> 50-75% gain if TSLA bounces toward $410</li>
+<li><strong>Entry:</strong> 2-3 days before earnings</li>
+<li><strong>Exit:</strong> Same day or next morning after earnings</li>
+<li><strong>Risk:</strong> 100% of premium</li>
+</ul>
+<h3 id="strategy-3-put-credit-spread-extreme-support-play">Strategy 3: Put Credit Spread (Extreme Support Play)</h3>
+<ul>
+<li><strong>Budget:</strong> $50-$200</li>
+<li><strong>Setup:</strong> Sell $380 Put / Buy $360 Put (Aug 1 expiry)</li>
+<li><strong>Estimated Credit:</strong> $80-$140 per spread</li>
+<li><strong>Max Return:</strong> Credit received if TSLA stays above $380</li>
+<li><strong>Entry:</strong> 3-4 days before earnings</li>
+<li><strong>Exit:</strong> Next morning after IV crush</li>
+<li><strong>Risk:</strong> $2000 per spread minus credit</li>
+</ul>
+<p><strong>Risk Notee:</strong> TSLA is the highest-risk, highest-reward play in the basket. The -7.65% flush may continue, so directional conviction is required. If you believe the sell-off is overdone, the bull spreads offer asymmetric upside. If TSLA breaks $380, all bullish structures are at risk. FSD/robotaxi narrative is the wildcard.</p>
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-amd--advanced-micro-devices-14" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">📄 AMD — Advanced Micro Devices</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Current Price</td>
+<td>$518.25</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>-4.18%</td>
+</tr>
+<tr>
+<td>Volume vs Avg</td>
+<td>808K (prev 853K) → <strong>Average</strong></td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>73.8%</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Late Jul / Early Aug</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO/AMC: 2-4hrs or next morning</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Price Action:</strong> -4.18% drop to $518 on Jul 2. The stock is down from a recent high near $564. Data center GPU revenue (MI300) vs NVDA competition is the earnings focal point. Very high IV (73.8%) makes options expensive but also implies a large expected move.</p>
+<h3 id="strategy-1-bull-call-spread_3">Strategy 1: Bull Call Spread</h3>
+<ul>
+<li><strong>Budget:</strong> $50-$200</li>
+<li><strong>Setup:</strong> Buy $530 Call / Sell $550 Call (Aug 1 expiry)</li>
+<li><strong>Estimated Cost:</strong> $120-$180 per spread</li>
+<li><strong>Max Return:</strong> 2-3x if AMD reclaims $550</li>
+<li><strong>Entry:</strong> 2-5 days before earnings</li>
+<li><strong>Exit:</strong> 1-2 days after earnings</li>
+<li><strong>Risk:</strong> 100% of debit paid</li>
+</ul>
+<h3 id="strategy-2-long-call-lottery-ticket_5">Strategy 2: Long Call Lottery Ticket</h3>
+<ul>
+<li><strong>Budget:</strong> $10-$50</li>
+<li><strong>Setup:</strong> Buy $540 Call (Aug 1 expiry)</li>
+<li><strong>Estimated Cost:</strong> $30-$50 per contract</li>
+<li><strong>Target:</strong> 50-75% gain if AMD breaks $540</li>
+<li><strong>Entry:</strong> 2-3 days before earnings</li>
+<li><strong>Exit:</strong> Same day or next morning after earnings</li>
+<li><strong>Risk:</strong> 100% of premium</li>
+</ul>
+<h3 id="strategy-3-ratio-spread-leveraged-bullish">Strategy 3: Ratio Spread (Leveraged Bullish)</h3>
+<ul>
+<li><strong>Budget:</strong> $500-$1000</li>
+<li><strong>Setup:</strong> Buy 1x $520 Call / Sell 2x $550 Call (Aug 1 expiry)</li>
+<li><strong>Estimated Cost:</strong> $400-$600 net debit</li>
+<li><strong>Max Return:</strong> 2-4x if AMD pins near $550</li>
+<li><strong>Entry:</strong> 2-3 days before earnings</li>
+<li><strong>Exit:</strong> Next morning after IV crush</li>
+<li><strong>Risk:</strong> Unlimited above $580 (naked call risk on the extra short); hedge with a long $570 Call if needed</li>
+</ul>
+<p><strong>Risk Notee:</strong> AMD's 73.8% IV is the highest in the tech mega-caps. The options market is pricing a massive move. If you're wrong on direction, IV crush will accelerate losses. Tight risk management is mandatory. MI300 guidance is the make-or-break catalyst.</p>
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-nvda--nvidia-corp-15" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">📄 NVDA — NVIDIA Corp</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Current Price</td>
+<td>$194.51</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>-1.53%</td>
+</tr>
+<tr>
+<td>Volume vs Avg</td>
+<td>5.88M (prev 6.08M) → <strong>Average</strong></td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>50.4%</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Late Jul / Early Aug</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO/AMC: 2-4hrs or next morning</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Price Action:</strong> Mild -1.53% consolidation at $194.50. Volume is consistent. NVDA remains the most-watched AI chip stock. Blackwell ramp guidance and data center revenue trajectory are the key earnings drivers.</p>
+<h3 id="strategy-1-bull-call-spread_4">Strategy 1: Bull Call Spread</h3>
+<ul>
+<li><strong>Budget:</strong> $50-$200</li>
+<li><strong>Setup:</strong> Buy $200 Call / Sell $210 Call (Aug 1 expiry)</li>
+<li><strong>Estimated Cost:</strong> $80-$130 per spread</li>
+<li><strong>Max Return:</strong> 2-3x if NVDA closes near $210</li>
+<li><strong>Entry:</strong> 2-5 days before earnings</li>
+<li><strong>Exit:</strong> 1-2 days after earnings</li>
+<li><strong>Risk:</strong> 100% of debit paid</li>
+</ul>
+<h3 id="strategy-2-long-call-lottery-ticket_6">Strategy 2: Long Call Lottery Ticket</h3>
+<ul>
+<li><strong>Budget:</strong> $10-$50</li>
+<li><strong>Setup:</strong> Buy $205 Call (Aug 1 expiry)</li>
+<li><strong>Estimated Cost:</strong> $20-$40 per contract</li>
+<li><strong>Target:</strong> 50-75% gain if NVDA breaks $205</li>
+<li><strong>Entry:</strong> 2-3 days before earnings</li>
+<li><strong>Exit:</strong> Same day or next morning after earnings</li>
+<li><strong>Risk:</strong> 100% of premium</li>
+</ul>
+<h3 id="strategy-3-calendar-spread-iv-crush-harvest">Strategy 3: Calendar Spread (IV Crush Harvest)</h3>
+<ul>
+<li><strong>Budget:</strong> $500-$1000</li>
+<li><strong>Setup:</strong> Sell Jul 25 $195 Call / Buy Aug 1 $195 Call</li>
+<li><strong>Estimated Cost:</strong> $400-$600 net debit</li>
+<li><strong>Max Return:</strong> 2-4x if NVDA stays near $195 through Jul 25, then moves favorably</li>
+<li><strong>Entry:</strong> 5-7 days before Jul 25 expiry</li>
+<li><strong>Exit:</strong> Roll or close Jul 25 short after Jul 25 expiry; hold Aug 1 long for earnings</li>
+<li><strong>Risk:</strong> 100% of debit if NVDA makes a large move before Jul 25</li>
+</ul>
+<p><strong>Risk Notee:</strong> NVDA has a 50.4% IV, which is elevated but not extreme for this name. The stock tends to move 5-8% on earnings. Blackwell shipment delays or China export restrictions are the headline risks. Calendar spread is only for experienced traders.</p>
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-mu--micron-technology-16" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">💻 MU — Micron Technology</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Current Price</td>
+<td>$975.41</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>-5.54%</td>
+</tr>
+<tr>
+<td>Volume vs Avg</td>
+<td>1.24M (prev 1.08M) → <strong>Above avg</strong></td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>N/A (not in options snapshot)</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Late Jul / Early Aug (Q3 FY2026)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO/AMC: 2-4hrs or next morning</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Price Action:</strong> Sharp -5.54% decline on above-average volume. MU is highly cyclical and sensitive to memory pricing (DRAM/NAND). The sell-off may reflect memory spot price weakness. Earnings will provide clarity on HBM3e demand and data center memory trends.</p>
+<h3 id="strategy-1-bull-call-spread-oversold-rebound">Strategy 1: Bull Call Spread (Oversold Rebound)</h3>
+<ul>
+<li><strong>Budget:</strong> $50-$200</li>
+<li><strong>Setup:</strong> Buy $1000 Call / Sell $1050 Call (Aug 1 expiry)</li>
+<li><strong>Estimated Cost:</strong> $120-$180 per spread (estimated, no IV data)</li>
+<li><strong>Max Return:</strong> 2-3x if MU reclaims $1050</li>
+<li><strong>Entry:</strong> 2-5 days before earnings</li>
+<li><strong>Exit:</strong> 1-2 days after earnings</li>
+<li><strong>Risk:</strong> 100% of debit paid</li>
+</ul>
+<h3 id="strategy-2-long-call-lottery-ticket_7">Strategy 2: Long Call Lottery Ticket</h3>
+<ul>
+<li><strong>Budget:</strong> $10-$50</li>
+<li><strong>Setup:</strong> Buy $1000 Call (Aug 1 expiry)</li>
+<li><strong>Estimated Cost:</strong> $40-$60 per contract (estimated)</li>
+<li><strong>Target:</strong> 50-75% gain if MU bounces toward $1000</li>
+<li><strong>Entry:</strong> 2-3 days before earnings</li>
+<li><strong>Exit:</strong> Same day or next morning after earnings</li>
+<li><strong>Risk:</strong> 100% of premium</li>
+</ul>
+<h3 id="strategy-3-put-credit-spread-support-defense">Strategy 3: Put Credit Spread (Support Defense)</h3>
+<ul>
+<li><strong>Budget:</strong> $50-$200</li>
+<li><strong>Setup:</strong> Sell $950 Put / Buy $900 Put (Aug 1 expiry)</li>
+<li><strong>Estimated Credit:</strong> $100-$150 per spread (estimated)</li>
+<li><strong>Max Return:</strong> Credit received if MU stays above $950</li>
+<li><strong>Entry:</strong> 3-4 days before earnings</li>
+<li><strong>Exit:</strong> Next morning after IV crush</li>
+<li><strong>Risk:</strong> $5000 per spread minus credit</li>
+</ul>
+<p><strong>Risk Notee:</strong> No IV data available for MU in the snapshot, so cost estimates are rough. The -5.54% drop makes it a high-risk mean-reversion candidate. Memory pricing is notoriously volatile. Only trade MU if you have conviction on the semiconductor cycle. Avoid if MU breaks below $900.</p>
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-intc--intel-corp-17" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">📄 INTC — Intel Corp</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Current Price</td>
+<td>$120.40</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>-5.26%</td>
+</tr>
+<tr>
+<td>Volume vs Avg</td>
+<td>2.56M (prev 2.96M) → <strong>Below avg</strong></td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>N/A (not in options snapshot)</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Late Jul</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO/AMC: 2-4hrs or next morning</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Price Action:</strong> Severe -5.26% decline on Jul 2. INTC continues to struggle with foundry execution and market share losses to TSM. The stock is testing critical support near $120. Any earnings miss could accelerate the decline.</p>
+<h3 id="strategy-1-bear-put-spread-trend-follow">Strategy 1: Bear Put Spread (Trend Follow)</h3>
+<ul>
+<li><strong>Budget:</strong> $50-$200</li>
+<li><strong>Setup:</strong> Buy $120 Put / Sell $110 Put (Aug 1 expiry)</li>
+<li><strong>Estimated Cost:</strong> $80-$140 per spread (estimated)</li>
+<li><strong>Max Return:</strong> 2-3x if INTC falls toward $110</li>
+<li><strong>Entry:</strong> 2-5 days before earnings</li>
+<li><strong>Exit:</strong> 1-2 days after earnings</li>
+<li><strong>Risk:</strong> 100% of debit paid</li>
+</ul>
+<h3 id="strategy-2-long-put-lottery-ticket-bearish-bias">Strategy 2: Long Put Lottery Ticket (Bearish Bias)</h3>
+<ul>
+<li><strong>Budget:</strong> $10-$50</li>
+<li><strong>Setup:</strong> Buy $115 Put (Aug 1 expiry)</li>
+<li><strong>Estimated Cost:</strong> $20-$40 per contract (estimated)</li>
+<li><strong>Target:</strong> 50-75% gain if INTC breaks $115</li>
+<li><strong>Entry:</strong> 2-3 days before earnings</li>
+<li><strong>Exit:</strong> Same day or next morning after earnings</li>
+<li><strong>Risk:</strong> 100% of premium</li>
+</ul>
+<h3 id="strategy-3-iron-condor-range-play-low-conviction">Strategy 3: Iron Condor (Range Play — Low Conviction)</h3>
+<ul>
+<li><strong>Budget:</strong> $200-$500</li>
+<li><strong>Setup:</strong> Sell $110 Put / Buy $100 Put / Sell $130 Call / Buy $140 Call</li>
+<li><strong>Estimated Credit:</strong> $150-$250 per condor (estimated)</li>
+<li><strong>Max Return:</strong> Credit received if INTC stays $110-$130</li>
+<li><strong>Entry:</strong> 2-3 days before earnings</li>
+<li><strong>Exit:</strong> Next morning after IV crush</li>
+<li><strong>Risk:</strong> $1000 max loss per condor</li>
+</ul>
+<p><strong>Risk Notee:</strong> INTC is the weakest semiconductor name in the basket. The -5.26% drop on below-average volume is concerning. Bearish structures are preferred unless there's a clear turnaround narrative. Foundry losses and CPU market share erosion are structural headwinds. Avoid bullish plays unless there's a specific catalyst.</p>
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-pltr--palantir-technologies-18" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">💻 PLTR — Palantir Technologies</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Current Price</td>
+<td>$129.18</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+2.73%</td>
+</tr>
+<tr>
+<td>Volume vs Avg</td>
+<td>1.82M (prev 2.16M) → <strong>Below avg</strong></td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>58.1%</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Early Aug (Q2 2026)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO/AMC: 2-4hrs or next morning</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Price Action:</strong> +2.73% bounce to $129 on Jul 2. PLTR is the AI/software darling with high retail ownership. Government contract renewals and AIP (AI Platform) commercial adoption are the earnings drivers. IV at 58.1% is elevated but typical for this name.</p>
+<h3 id="strategy-1-bull-call-spread_5">Strategy 1: Bull Call Spread</h3>
+<ul>
+<li><strong>Budget:</strong> $50-$200</li>
+<li><strong>Setup:</strong> Buy $135 Call / Sell $150 Call (Aug 8 expiry)</li>
+<li><strong>Estimated Cost:</strong> $90-$150 per spread</li>
+<li><strong>Max Return:</strong> 2-3x if PLTR closes near $150</li>
+<li><strong>Entry:</strong> 2-5 days before earnings (late Jul)</li>
+<li><strong>Exit:</strong> 1-2 days after earnings</li>
+<li><strong>Risk:</strong> 100% of debit paid</li>
+</ul>
+<h3 id="strategy-2-long-call-lottery-ticket_8">Strategy 2: Long Call Lottery Ticket</h3>
+<ul>
+<li><strong>Budget:</strong> $10-$50</li>
+<li><strong>Setup:</strong> Buy $140 Call (Aug 8 expiry)</li>
+<li><strong>Estimated Cost:</strong> $25-$45 per contract</li>
+<li><strong>Target:</strong> 50-75% gain if PLTR breaks $140</li>
+<li><strong>Entry:</strong> 2-3 days before earnings</li>
+<li><strong>Exit:</strong> Same day or next morning after earnings</li>
+<li><strong>Risk:</strong> 100% of premium</li>
+</ul>
+<h3 id="strategy-3-butterfly-pin-play_1">Strategy 3: Butterfly (Pin Play)</h3>
+<ul>
+<li><strong>Budget:</strong> $200-$500</li>
+<li><strong>Setup:</strong> Buy $125 Call / Sell 2x $140 Call / Buy $155 Call (Aug 8)</li>
+<li><strong>Estimated Cost:</strong> $250-$400 per butterfly</li>
+<li><strong>Max Return:</strong> ~1x if PLTR pins near $140</li>
+<li><strong>Entry:</strong> 2-3 days before earnings</li>
+<li><strong>Exit:</strong> Immediately after IV crush</li>
+<li><strong>Risk:</strong> 100% of premium if PLTR moves beyond $155 or below $125</li>
+</ul>
+<p><strong>Risk Notee:</strong> PLTR is a high-volatility, retail-driven name. It can move 10-15% on earnings in either direction. The +2.73% pre-earnings run suggests optimism. Government spending scrutiny is a non-earnings risk. Avoid if PLTR breaks below $120 before earnings.</p>
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-asml--asml-holding-19" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">📄 ASML — ASML Holding</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Current Price</td>
+<td>$1,769.69</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>-4.01%</td>
+</tr>
+<tr>
+<td>Volume vs Avg</td>
+<td>151K (prev 165K) → <strong>Below avg</strong></td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>70.1%</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Jul 15</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO/AMC: 2-4hrs or next morning</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Price Action:</strong> -4.01% decline to $1,770 on Jul 2. ASML is the most expensive stock in the basket (price-wise). Earnings are on <strong>Jul 15</strong> — this is an <strong>imminent play</strong>. EUV order backlog and China export restrictions are the key themes. Extremely high IV at 70.1%.</p>
+<h3 id="strategy-1-bull-call-spread-high-priced-stock">Strategy 1: Bull Call Spread (High-Priced Stock)</h3>
+<ul>
+<li><strong>Budget:</strong> $200-$500</li>
+<li><strong>Setup:</strong> Buy $1800 Call / Sell $1900 Call (Jul 18 expiry)</li>
+<li><strong>Estimated Cost:</strong> $300-$450 per spread</li>
+<li><strong>Max Return:</strong> ~2x if ASML reclaims $1900</li>
+<li><strong>Entry:</strong> By Jul 10-11 (4-5 days before)</li>
+<li><strong>Exit:</strong> Jul 16 morning after earnings</li>
+<li><strong>Risk:</strong> 100% of debit paid</li>
+</ul>
+<h3 id="strategy-2-long-call-lottery-ticket_9">Strategy 2: Long Call Lottery Ticket</h3>
+<ul>
+<li><strong>Budget:</strong> $50-$200</li>
+<li><strong>Setup:</strong> Buy $1850 Call (Jul 18 expiry)</li>
+<li><strong>Estimated Cost:</strong> $60-$100 per contract (high stock price = high premium)</li>
+<li><strong>Target:</strong> 50-75% gain if ASML breaks $1850</li>
+<li><strong>Entry:</strong> Jul 10-12</li>
+<li><strong>Exit:</strong> Jul 16 morning after IV crush</li>
+<li><strong>Risk:</strong> 100% of premium</li>
+</ul>
+<h3 id="strategy-3-put-credit-spread-support-defense_1">Strategy 3: Put Credit Spread (Support Defense)</h3>
+<ul>
+<li><strong>Budget:</strong> $200-$500</li>
+<li><strong>Setup:</strong> Sell $1700 Put / Buy $1600 Put (Jul 18 expiry)</li>
+<li><strong>Estimated Credit:</strong> $150-$250 per spread</li>
+<li><strong>Max Return:</strong> Credit received if ASML stays above $1700</li>
+<li><strong>Entry:</strong> Jul 11-12</li>
+<li><strong>Exit:</strong> Jul 16 morning</li>
+<li><strong>Risk:</strong> $10,000 per spread minus credit</li>
+</ul>
+<p><strong>Risk Notee:</strong> ASML is the most expensive stock to trade options on (high absolute price = high premium). The 70.1% IV makes options very expensive. Jul 15 earnings means this is a <strong>next-week play</strong> — must be sized accordingly. China export ban headlines are the wildcard. Only trade if you have conviction on lithography demand. Avoid if ASML breaks below $1700.</p>
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-tsm--taiwan-semiconductor-20" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">📄 TSM — Taiwan Semiconductor</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Current Price</td>
+<td>$434.64</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>-2.13%</td>
+</tr>
+<tr>
+<td>Volume vs Avg</td>
+<td>889K (prev 844K) → <strong>Average</strong></td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>60.5%</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Jul 16</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO/AMC: 2-4hrs or next morning</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Price Action:</strong> -2.13% decline to $435 on Jul 2. Earnings are on <strong>Jul 16</strong> — another <strong>imminent play</strong>. TSM is the foundry king; AI chip demand (NVDA/AMD) and advanced node utilization (3nm/2nm) are the earnings focus. IV at 60.5% is high but justified.</p>
+<h3 id="strategy-1-bull-call-spread_6">Strategy 1: Bull Call Spread</h3>
+<ul>
+<li><strong>Budget:</strong> $50-$200</li>
+<li><strong>Setup:</strong> Buy $440 Call / Sell $460 Call (Jul 18 expiry)</li>
+<li><strong>Estimated Cost:</strong> $100-$160 per spread</li>
+<li><strong>Max Return:</strong> 2-3x if TSM closes near $460</li>
+<li><strong>Entry:</strong> By Jul 11-12 (4-5 days before)</li>
+<li><strong>Exit:</strong> Jul 17 morning after earnings</li>
+<li><strong>Risk:</strong> 100% of debit paid</li>
+</ul>
+<h3 id="strategy-2-long-call-lottery-ticket_10">Strategy 2: Long Call Lottery Ticket</h3>
+<ul>
+<li><strong>Budget:</strong> $10-$50</li>
+<li><strong>Setup:</strong> Buy $450 Call (Jul 18 expiry)</li>
+<li><strong>Estimated Cost:</strong> $25-$45 per contract</li>
+<li><strong>Target:</strong> 50-75% gain if TSM breaks $450</li>
+<li><strong>Entry:</strong> Jul 11-13</li>
+<li><strong>Exit:</strong> Jul 17 morning after IV crush</li>
+<li><strong>Risk:</strong> 100% of premium</li>
+</ul>
+<h3 id="strategy-3-butterfly-pin-play_2">Strategy 3: Butterfly (Pin Play)</h3>
+<ul>
+<li><strong>Budget:</strong> $200-$500</li>
+<li><strong>Setup:</strong> Buy $430 Call / Sell 2x $450 Call / Buy $470 Call (Jul 18)</li>
+<li><strong>Estimated Cost:</strong> $250-$400 per butterfly</li>
+<li><strong>Max Return:</strong> ~1x if TSM pins near $450</li>
+<li><strong>Entry:</strong> Jul 12-13</li>
+<li><strong>Exit:</strong> Jul 17 morning</li>
+<li><strong>Risk:</strong> 100% of premium if TSM moves beyond $470 or below $430</li>
+</ul>
+<p><strong>Risk Notee:</strong> TSM is a high-probability AI beneficiary. Jul 16 earnings make this a tight-turnaround play. The 60.5% IV is elevated but manageable. Geopolitical risk (Taiwan tensions) is always a non-earnings overhang. Prefer bull spreads over butterflies given the strong AI demand narrative. Avoid if TSM breaks below $420.</p>
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-tech-sector-summary-21" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">📋 Tech Sector Summary</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<h3 id="top-3-best-plays">Top 3 Best Plays</h3>
+<table>
+<thead>
+<tr>
+<th>Rank</th>
+<th>Ticker</th>
+<th>Setup</th>
+<th>Conviction</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td><strong>META</strong></td>
+<td>Bull Call Spread ($590/$610)</td>
+<td>⭐⭐⭐⭐⭐</td>
+<td>-4.93% flush on light volume = classic mean-reversion setup. $580 is key support. If held, earnings rally potential is high. IV at 46.1% is not extreme. Reels monetization and AI capex could surprise positively.</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td><strong>TSM</strong></td>
+<td>Bull Call Spread ($440/$460)</td>
+<td>⭐⭐⭐⭐⭐</td>
+<td>Jul 16 earnings = imminent catalyst. AI foundry demand is structural. -2.13% pre-earnings dip offers better entry. 60.5% IV is high but justified by expected move. NVDA/AMD dependency = TSM wins regardless of which AI chip dominates.</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td><strong>NFLX</strong></td>
+<td>Bull Call Spread ($80/$90)</td>
+<td>⭐⭐⭐⭐</td>
+<td>Jul 16 earnings = tight timeline. +4.58% pre-earnings momentum suggests bullish positioning. Subscriber beat and ad-tier growth could drive another leg higher. 64.8% IV is expensive, so spread is preferred over naked call.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="honorable-mentions">Honorable Mentions</h3>
+<table>
+<thead>
+<tr>
+<th>Ticker</th>
+<th>Setup</th>
+<th>Notee</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AAPL</strong></td>
+<td>Bull Call Spread ($310/$325)</td>
+<td>Strong +4.69% bounce, low IV (36.3%), safe mega-cap play. Less explosive but higher probability.</td>
+</tr>
+<tr>
+<td><strong>TSLA</strong></td>
+<td>Bull Call Spread ($400/$420)</td>
+<td>-7.65% crash = oversold, but high risk. Only for traders with high conviction on delivery/robotaxi surprise.</td>
+</tr>
+<tr>
+<td><strong>AMD</strong></td>
+<td>Bull Call Spread ($530/$550)</td>
+<td>73.8% IV makes it expensive, but MI300 data center momentum could drive a sharp rebound.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sector-context">Sector Context</h3>
+<ul>
+<li><strong>VIX 16.15</strong> = Low volatility regime. This is favorable for earnings plays because underlying moves are less likely to be distorted by macro shocks. However, it also means options sellers are less fearful, so IV may not be as elevated as in a high-VIX environment.</li>
+<li><strong>QQQ 712.53</strong> = Tech is the market leader. Earnings reactions will likely be amplified.</li>
+<li><strong>Key Risk:</strong> FOMC is typically late July. Earnings season overlaps with the FOMC blackout period (usually 7 days before the meeting). This can suppress volatility but also means any Fed surprise after earnings could reverse gains.</li>
+</ul>
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-5-finansal--sağlık--enerji--diğer-sektör-22" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">🏦 5. Financials + Health Care + Energy + Other Sectors</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-sector-financials-23" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">🏦 Sector: Financials</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<h3 id="jpm-jpmorgan-chase">JPM (JPMorgan Chase)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$334.26</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+0.06% (+$0.20)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>33.3%</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Mid-July (Q2)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>Banking Q2 with strong capital markets activity; NII headwinds persist. Low IV (33.3%) creates asymmetric long-vol entry.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $50-$200:</strong> Jul 17 $340/$330 Call Debit Spread (~$150). JPM has coiled near $334; any breakout toward $340+ pays 2x. Entry 3-5 days pre-earnings. Exit by first hour post-BMO.
+2. <strong>Budget $200-$500:</strong> Long Straddle Jul 17 $335 Strike (~$350). IV is cheap at 33.3% — a 2-3% move into or out of earnings pays the spread. Close 50% at first pop, remainder at 75%.
+3. <strong>Budget $500-$1000:</strong> Calendar Spread — sell Jul 17 $335 Call, buy Aug $335 Call (~$700). Captures IV crush on the short leg while keeping upside through August. Roll short leg if JPM stays pinned.</p>
+<h3 id="bac-bank-of-america">BAC (Bank of America)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$58.69</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+0.52% (+$0.30)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Mid-July (Q2)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>Consumer banking strength; reserve build and deposit pricing are key Q2 variables.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $50-$200:</strong> $60/$62.5 Call Debit Spread (~$80). BAC tends to drift into $60 on beats; 2x return on a 3% post-earnings move.
+2. <strong>Budget $200-$500:</strong> Put Credit Spread $55/$57.5 (~$220). Collect premium if BAC holds above $57.5; max gain 50% of width. Close at 50% profit by next morning.
+3. <strong>Budget $10-$50:</strong> Lottery $60 Call (~$15). Low-risk directional play if BAC breaks above $60 resistance on a beat.</p>
+<h3 id="gs-goldman-sachs">GS (Goldman Sachs)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$1,020.90</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+0.13% (+$1.35)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Mid-July (Q2)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>Trading and advisory revenues are volatile; M&amp;A pipeline improving. High-dollar stock — spreads are wide.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $50-$200:</strong> $1,020/$1,050 Call Debit Spread (~$150). GS needs a 2.5%+ move; this spread captures 2x on a beat-driven rally to $1,050.
+2. <strong>Budget $200-$500:</strong> Iron Condor $980/$1,000/$1,050/$1,070 (~$400). If GS pins between $1,000-$1,050, collect ~50% of width. Close by noon post-earnings.
+3. <strong>Budget $500-$1000:</strong> Ratio Call Spread — buy 1x $1,020 Call, sell 2x $1,050 Calls (~$700). Profits up to $1,050; max risk above $1,080. Best if GS rallies but doesn't explode.</p>
+<h3 id="wfc-wells-fargo">WFC (Wells Fargo)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$85.51</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>-0.49% (-$0.43)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Mid-July (Q2)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>Asset cap remains overhang; expense discipline is key. Weak close on Jul 2 suggests caution.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $50-$200:</strong> $85/$87.5 Call Debit Spread (~$90). WFC needs to reclaim $87.5 for 2x; entry 2-3 days pre-earnings.
+2. <strong>Budget $10-$50:</strong> $82.5 Put (~$20). Hedge/play if WFC breaks $84 on a miss; 100% risk, high leverage.
+3. <strong>Budget $200-$500:</strong> Butterfly $84/$86/$88 Put (~$250). WFC has been rangebound; this pays 2x if it pins near $86 post-earnings. Close at 75% profit or next morning.</p>
+<h3 id="c-citigroup">C (Citigroup)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$139.97</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>-0.13% (-$0.19)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Mid-July (Q2)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>Restructuring charges and international exposure are Q2 wildcards. Flat price action — no strong directional edge.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $50-$200:</strong> $140/$145 Call Debit Spread (~$120). C needs to break $145 for 2x+; entry 3 days before.
+2. <strong>Budget $200-$500:</strong> Short Strangle $130/$150 (~$350). C rarely moves &gt;5% on earnings; collect premium if it stays between $130-$150. Close at 50% by next morning.
+3. <strong>Budget $10-$50:</strong> Lottery $145 Call (~$18). Directional long shot if C surprises on restructuring progress.</p>
+<h3 id="ms-morgan-stanley">MS (Morgan Stanley)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$213.89</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+0.95% (+$2.01)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Mid-July (Q2)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>Wealth management steady; trading desks volatile. Strong Jul 2 close (+0.95%) shows momentum.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $50-$200:</strong> $215/$220 Call Debit Spread (~$100). MS is pushing $215; a break above $220 pays 2.5x. Entry 2-4 days pre-earnings.
+2. <strong>Budget $200-$500:</strong> Butterfly $210/$215/$220 Call (~$280). Best if MS pins near $215; max profit at $215. Close next morning at 75% or stop at 50% loss.
+3. <strong>Budget $500-$1000:</strong> Ratio Put Spread — buy 1x $215 Put, sell 2x $210 Puts (~$550). Protects downside if MS fades from $215; max risk below $205.</p>
+<h3 id="blk-blackrock">BLK (BlackRock)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$994.65</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+1.43% (+$14.00)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Mid-July (Q2)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>AUM flows and ETF dominance drive Q2. Strong +1.43% move on Jul 2 — institutions accumulating.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $50-$200:</strong> $1,000/$1,020 Call Debit Spread (~$150). BLK needs to clear $1,020 for 2x; momentum is bullish. Entry 3 days before.
+2. <strong>Budget $200-$500:</strong> Long Call $1,000 Strike (~$350). BLK is a $1,000 stock; a $20 move is only 2% but pays 1.5-2x on the option. Close 50% at first target, hold remainder for 75%.
+3. <strong>Budget $500-$1000:</strong> Calendar Call Spread — sell Jul 17 $1,000, buy Aug $1,000 (~$700). BLK's low IV makes the calendar attractive; captures time decay on the short while riding the long through August.</p>
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-sector-health-care-24" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">💊 Sector: Health Care</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<h3 id="unh-unitedhealth-group">UNH (UnitedHealth Group)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$424.95</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>-0.37% (-$1.57)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>50.3%</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>July 16</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>Medicare Advantage rates and medical cost trends are key. High IV (50.3%) prices in a big move.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $50-$200:</strong> $430/$440 Call Debit Spread (~$120). UNH needs a 3.5% rally to $440 for 2x+; if cost trends are benign, this pays. Entry 3-5 days before Jul 16.
+2. <strong>Budget $200-$500:</strong> Long Straddle $425 Strike (~$450). At 50.3% IV, a 3% move in either direction pays. Close 50% at first profit, 75% at second target. Do not hold past next morning.
+3. <strong>Budget $500-$1000:</strong> Iron Condor $400/$415/$435/$450 (~$600). If UNH stays between $415-$435 (its recent range), collect ~50% of premium. Close next morning regardless.</p>
+<h3 id="jnj-johnson-johnson">JNJ (Johnson &amp; Johnson)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$263.04</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+3.55% (+$9.01)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Mid-July (Q2)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>Pharma + medtech split; talc litigation overhang easing. Explosive +3.55% move on Jul 2 — momentum building.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $50-$200:</strong> $265/$270 Call Debit Spread (~$100). JNJ is breaking out; $270 target gives 2.5x on a 2.5% continuation. Entry 2-3 days pre-earnings.
+2. <strong>Budget $200-$500:</strong> Long Call $260 Strike (~$300). Ride the momentum; a $5 move pays 1.5x. Close 50% at first target, trail remainder.
+3. <strong>Budget $10-$50:</strong> Lottery $270 Call (~$15). High-risk/reward if JNJ's momentum carries into a beat.</p>
+<h3 id="pfe-pfizer">PFE (Pfizer)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$24.31</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+1.71% (+$0.41)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Late July (Q2)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>Post-COVID revenue cliff; oncology pipeline is the new narrative. Low stock price = cheap options.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $10-$50:</strong> $25 Call (~$12). PFE at $24.31; a move to $25.50 pays 2-3x. Pure lottery with defined risk.
+2. <strong>Budget $50-$200:</strong> $24/$26 Call Debit Spread (~$60). PFE needs to clear $26 for max profit; this is a 7% move, aggressive but pays 3x if it hits.
+3. <strong>Budget $200-$500:</strong> Put Credit Spread $22/$23 (~$180). Collect premium if PFE holds above $23; close at 50% profit next morning.</p>
+<h3 id="abt-abbott-laboratories">ABT (Abbott Laboratories)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$95.28</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+3.38% (+$3.12)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Mid-July (Q2)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>Medical devices and diagnostics steady; strong Jul 2 rally (+3.38%) suggests accumulation ahead of earnings.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $50-$200:</strong> $95/$100 Call Debit Spread (~$110). ABT is pushing $95; a move to $100 pays 2.5x. Entry 2-4 days before.
+2. <strong>Budget $200-$500:</strong> Long Call $95 Strike (~$250). ABT's momentum is real; a 2-3% continuation pays 1.5x. Close 50% at first target, remainder at 75%.
+3. <strong>Budget $10-$50:</strong> Lottery $100 Call (~$15). Cheap bet if ABT's momentum surprises to the upside on earnings.</p>
+<h3 id="tmo-thermo-fisher-scientific">TMO (Thermo Fisher Scientific)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$523.39</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+1.92% (+$9.87)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Late July (Q2)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>Biotech tooling demand stabilizing; pharma capex budgets are key. Steady uptrend.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $50-$200:</strong> $525/$535 Call Debit Spread (~$130). TMO needs a 2.5% move to $535 for 2x; entry 3-5 days before.
+2. <strong>Budget $200-$500:</strong> Butterfly $520/$525/$530 Call (~$280). TMO tends to pin; this pays 2x if it closes near $525. Close next morning.
+3. <strong>Budget $500-$1000:</strong> Calendar Spread — sell Jul 17 $525 Call, buy Aug $525 Call (~$600). TMO's low implied vol makes calendars efficient; roll the short leg if needed.</p>
+<h3 id="mrk-merck">MRK (Merck)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$129.51</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+3.29% (+$4.12)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Late July (Q2)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>Keytruda franchise is the engine; pipeline readouts can gap the stock. Strong +3.29% move on Jul 2.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $50-$200:</strong> $130/$135 Call Debit Spread (~$120). MRK is breaking $130; a run to $135 pays 2.5x. Entry 2-4 days before.
+2. <strong>Budget $200-$500:</strong> Long Call $130 Strike (~$280). MRK's momentum is strong; a 3% move to $133 pays 1.5x. Close 50% at first target.
+3. <strong>Budget $10-$50:</strong> Lottery $135 Call (~$18). Aggressive play if Keytruda revenue surprises.</p>
+<h3 id="lly-eli-lilly">LLY (Eli Lilly)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$1,210.79</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+1.56% (+$18.65)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Early August (Q2)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>Mounjaro/Zepbound demand is the dominant narrative; supply constraints are the risk. Early August earnings.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $50-$200:</strong> $1,220/$1,250 Call Debit Spread (~$140). LLY needs to clear $1,250 for 3x; momentum is bullish. Entry 3-5 days before early-Aug earnings.
+2. <strong>Budget $200-$500:</strong> Long Call $1,220 Strike (~$350). LLY moves $20-30 on earnings routinely; a 2% move pays 1.5x. Close 50% at first target, trail rest.
+3. <strong>Budget $500-$1000:</strong> Ratio Call Spread — buy 1x $1,220 Call, sell 2x $1,260 Calls (~$700). Profits up to $1,260; max risk above $1,300. Best if LLY rallies but doesn't gap 5%+.</p>
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-sector-energy-25" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">⛽ Sector: Energy</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<h3 id="xom-exxon-mobil">XOM (Exxon Mobil)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$136.97</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+0.52% (+$0.72)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Late July (Q2)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>Oil prices and refining margins drive Q2; Permian production growth is key. Steady, low-vol name.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $50-$200:</strong> $138/$142 Call Debit Spread (~$100). XOM needs a 3.5% move to $142 for 2x; entry 3-5 days before.
+2. <strong>Budget $200-$500:</strong> Put Credit Spread $132/$135 (~$220). Collect premium if XOM holds above $135; close at 50% profit next morning.
+3. <strong>Budget $10-$50:</strong> Lottery $140 Call (~$15). Low-cost directional bet if refining margins surprise.</p>
+<h3 id="cvx-chevron">CVX (Chevron)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$169.13</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+2.07% (+$3.43)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Late July (Q2)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>Hess acquisition integration and Guyana production are Q2 catalysts. Strong +2.07% move on Jul 2.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $50-$200:</strong> $170/$175 Call Debit Spread (~$110). CVX is pushing $170; a break to $175 pays 2.5x. Entry 2-4 days before.
+2. <strong>Budget $200-$500:</strong> Long Call $170 Strike (~$280). CVX's momentum is real; a 2% move to $172.50 pays 1.5x. Close 50% at first target.
+3. <strong>Budget $10-$50:</strong> Lottery $175 Call (~$18). Cheap upside if Guyana production surprises.</p>
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-sector-other-26" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">📄 Sector: Other</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<h3 id="v-visa">V (Visa)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$361.65</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+2.95% (+$10.37)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Late July (Q3 FY2026)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>Cross-border volume recovery and payment processing growth are key. Strong +2.95% Jul 2 rally.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $50-$200:</strong> $365/$375 Call Debit Spread (~$130). V needs to clear $375 for 2.5x; momentum is bullish. Entry 3-5 days before.
+2. <strong>Budget $200-$500:</strong> Long Call $365 Strike (~$300). V's steady uptrend; a 2% move to $369 pays 1.5x. Close 50% at first target, trail rest.
+3. <strong>Budget $10-$50:</strong> Lottery $375 Call (~$20). High-reward if cross-border volume surprises.</p>
+<h3 id="ma-mastercard">MA (Mastercard)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$539.36</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+3.21% (+$16.78)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Late July (Q2)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>Same dynamics as Visa; MA outperformed on Jul 2 with +3.21%. B2B payments growth is the story.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $50-$200:</strong> $540/$550 Call Debit Spread (~$120). MA is breaking $540; $550 target gives 2.5x. Entry 2-4 days before.
+2. <strong>Budget $200-$500:</strong> Long Call $540 Strike (~$280). MA's momentum is strong; a 2% move pays 1.5x. Close 50% at first target.
+3. <strong>Budget $500-$1000:</strong> Butterfly $535/$540/$545 Call (~$450). If MA pins near $540, this pays 2x. Close next morning at 75% or stop at 50% loss.</p>
+<h3 id="dis-walt-disney">DIS (Walt Disney)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$99.43</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+3.84% (+$3.68)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Early August (Q3 FY2026)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>Parks pricing, streaming profitability, and ESPN pivot are key. Strong +3.84% Jul 2 move — Iger optimism building.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $50-$200:</strong> $100/$105 Call Debit Spread (~$100). DIS needs to clear $105 for 2.5x; entry 3-5 days before early-Aug earnings.
+2. <strong>Budget $200-$500:</strong> Long Call $100 Strike (~$250). DIS broke $100 on Jul 2; a hold above $100 into earnings is bullish. A 3% move to $102.50 pays 1.5x. Close 50% at first target.
+3. <strong>Budget $10-$50:</strong> Lottery $105 Call (~$15). Cheap upside if streaming profitability surprises.</p>
+<h3 id="ba-boeing">BA (Boeing)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$226.37</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+3.55% (+$7.76)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Late July (Q2)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>737 MAX production recovery and cash flow burn are key. Strong +3.55% Jul 2 rally — relief trade.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $50-$200:</strong> $230/$240 Call Debit Spread (~$120). BA is pushing $230; a move to $240 pays 2.5x. Entry 3-5 days before.
+2. <strong>Budget $200-$500:</strong> Long Call $230 Strike (~$280). BA's volatility is high; a 4% move to $235 pays 2x. Close 50% at first target, trail rest.
+3. <strong>Budget $10-$50:</strong> Lottery $240 Call (~$18). High-reward if production guidance surprises.</p>
+<h3 id="nke-nike">NKE (Nike)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$44.08</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+2.19% (+$0.95)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Late June / Early July (Q4 FY2026)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>Inventory clearance and China recovery are key. Already in earnings window; may have reported or reporting imminently. Check calendar.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $10-$50:</strong> $45 Call (~$15). NKE at $44; a move to $46 pays 2-3x. Low-risk lottery if earnings are still ahead.
+2. <strong>Budget $50-$200:</strong> $44/$47 Call Debit Spread (~$80). NKE needs to clear $47 for 2.5x; entry only if earnings date is confirmed.
+3. <strong>Budget $200-$500:</strong> Put Credit Spread $40/$42 (~$220). Collect premium if NKE holds above $42; close at 50% next morning.</p>
+<h3 id="hd-home-depot">HD (Home Depot)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$357.78</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+1.95% (+$6.85)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Mid-August (Q2)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>Housing/remodel demand and pro-segment growth are key. August earnings — still early for positioning.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $50-$200:</strong> $360/$370 Call Debit Spread (~$130). HD is pushing $360; a move to $370 pays 2x. Entry 3-5 days before mid-Aug earnings.
+2. <strong>Budget $200-$500:</strong> Long Call $360 Strike (~$300). HD's steady trend; a 2% move to $365 pays 1.5x. Close 50% at first target.
+3. <strong>Budget $500-$1000:</strong> Calendar Spread — sell near-term call, buy Aug $360 Call (~$700). HD is far out; use calendar to harvest theta until closer to earnings.</p>
+<h3 id="coin-coinbase">COIN (Coinbase)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$165.44</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+3.84% (+$6.12)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>81.5%</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Early August (Q2)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>Crypto trading volumes and regulatory clarity are key. Extreme IV (81.5%) — premium is rich. Sell strategies preferred.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $200-$500:</strong> Iron Condor $140/$150/$180/$190 (~$450). COIN's IV is extreme; if it stays between $150-$180, collect 50% of width. Close next morning.
+2. <strong>Budget $500-$1000:</strong> Short Straddle $165 Strike (~$900). Sell the inflated IV; if COIN moves &lt;8%, this pays 1x. Close at 50% by next morning. High risk if crypto gaps overnight.
+3. <strong>Budget $50-$200:</strong> Put Credit Spread $150/$155 (~$100). Collect premium if COIN holds above $155; close at 50% next morning. Defined risk on a volatile name.</p>
+<h3 id="hood-robinhood">HOOD (Robinhood)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$112.71</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+3.71% (+$4.03)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>78.2%</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>Early August (Q2)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>Crypto/ equities trading volumes, Gold subscription growth, and international expansion are key. IV at 78.2% is extreme.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $200-$500:</strong> Iron Condor $100/$110/$120/$130 (~$400). HOOD's IV is extreme; if it pins between $110-$120, collect 50% of width. Close next morning.
+2. <strong>Budget $500-$1000:</strong> Short Straddle $110 Strike (~$850). Sell the inflated IV; if HOOD moves &lt;7%, this pays 1x. Close at 50% by next morning. High overnight risk.
+3. <strong>Budget $50-$200:</strong> Put Credit Spread $105/$110 (~$120). Collect premium if HOOD holds above $110; close at 50% next morning. Defined risk on a meme-volatile name.</p>
+<h3 id="dal-delta-air-lines">DAL (Delta Air Lines)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$92.78</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>-0.31% (-$0.29)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>58.0%</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>July 10 (BMO)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>International travel demand, premium cabin strength, and fuel cost hedges are key. High IV (58.0%) — approaching earnings Jul 10.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $50-$200:</strong> $95/$100 Call Debit Spread (~$100). DAL is near $93; a move to $100 pays 2.5x. Entry by Jul 7-8 (2-3 days before).
+2. <strong>Budget $200-$500:</strong> Long Straddle $93 Strike (~$380). At 58% IV, a 4% move pays. Close 50% at first profit, 75% at second target. Must exit by Jul 10 midday.
+3. <strong>Budget $10-$50:</strong> Lottery $95 Call (~$20). DAL needs to clear $95 for 2x; low-cost directional play.</p>
+<h3 id="pep-pepsico">PEP (PepsiCo)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$144.16</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+2.09% (+$2.96)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>39.0%</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>July 9 (BMO)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>Pricing power, volume trends, and Frito-Lay margins are key. Moderate IV (39.0%) — earnings Jul 9.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $50-$200:</strong> $145/$150 Call Debit Spread (~$110). PEP is pushing $145; a move to $150 pays 2x. Entry by Jul 6-7 (2-3 days before).
+2. <strong>Budget $200-$500:</strong> Butterfly $143/$145/$147 Call (~$250). PEP tends to pin; this pays 2x if it closes near $145. Close next morning.
+3. <strong>Budget $10-$50:</strong> Lottery $150 Call (~$15). Cheap upside if pricing power surprises.</p>
+<h3 id="levi-levi-strauss">LEVI (Levi Strauss)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$24.43</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>-0.33% (-$0.08)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>July 8 (BMO)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>EPS est $0.24. Small-cap apparel; weak Jul 2 close. Concise note: no strong directional setup. Avoid unless seeking pure lottery.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $10-$50:</strong> Lottery $25 Call (~$12). Low-cost directional bet if Levi's beats margin expectations. Close by Jul 8 midday.</p>
+<h3 id="azz-azz-inc">AZZ (AZZ Inc)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$149.90</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>-0.08% (-$0.12)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>July 8 (BMO)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>EPS est $1.69. Industrial metal coatings; flat price action. No strong setup.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $10-$50:</strong> No strong directional edge. Skip or play $150/$155 Call Spread (~$80) if bullish on industrial demand.</p>
+<h3 id="psmt-pricesmart">PSMT (PriceSmart)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$197.92</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+1.16% (+$2.28)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>July 8 (BMO)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>EPS est $1.32. Latin America warehouse club; small float, thin options. Mild bullish close.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $10-$50:</strong> Lottery $200 Call (~$18). Thin market; wide spreads expected. Only for high-risk tolerance. Close by Jul 8 midday.</p>
+<h3 id="hele-helen-of-troy">HELE (Helen of Troy)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$28.16</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>-3.92% (-$1.15)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>July 8 (AMC)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>AMC: next morning</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>EPS est $0.01. Consumer staples housewares; big drop on Jul 2 suggests weakness. Avoid.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $10-$50:</strong> No strong setup. The -3.92% drop on Jul 2 suggests negative sentiment. Skip unless playing a snap-back lottery with $28/$30 Call Spread (~$60).</p>
+<h3 id="epac-enerpac-tool-group">EPAC (Enerpac Tool Group)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$34.87</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>-0.26% (-$0.09)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>July 7</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>EPS est $0.50. Industrial tools; flat price action. No strong setup.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $10-$50:</strong> Skip. Earnings Jul 7 — too close for meaningful entry. No directional edge.</p>
+<h3 id="peng-penguin-solutions">PENG (Penguin Solutions)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$61.38</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>-10.86% (-$7.48)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>July 7</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>EPS est $0.54. AI infrastructure / data center solutions; massive -10.86% drop on Jul 2. Potential oversold bounce or further downside.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $10-$50:</strong> Lottery $65 Call (~$15) OR $60 Put (~$20). PENG is a binary setup after the Jul 2 drop. Earnings Jul 7 means entry must be immediate. High risk, high reward. Close by next morning.
+2. <strong>Budget $50-$200:</strong> Straddle $60 Strike (~$100). The Jul 2 drop created a binary event; a 5% move in either direction pays. Close next morning.</p>
+<h3 id="smpl-simply-good-foods">SMPL (Simply Good Foods)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$13.72</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+1.55% (+$0.21)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>July 9 (BMO)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>EPS est $0.35. Low-carb snacks / Atkins bars; small cap, low float. Mild bullish close.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $10-$50:</strong> Lottery $14 Call (~$12). SMPL is a sub-$15 stock; a 5% move pays 2-3x. Close by Jul 9 midday.</p>
+<h3 id="wdfc-wd-40">WDFC (WD-40)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Price</td>
+<td>$245.74</td>
+</tr>
+<tr>
+<td>Daily Change</td>
+<td>+1.81% (+$4.37)</td>
+</tr>
+<tr>
+<td>Avg IV (Jul 17)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Earnings Date</td>
+<td>July 9 (BMO)</td>
+</tr>
+<tr>
+<td>IV Crush</td>
+<td>BMO: 2-4hrs</td>
+</tr>
+<tr>
+<td>Sector Context</td>
+<td>EPS est $1.56. Niche consumer staples; thin options, wide spreads. Mild bullish close.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Earnings Play Strategies:</strong>
+1. <strong>Budget $50-$200:</strong> $250/$260 Call Debit Spread (~$130). WDFC needs a 4% move to $260 for 2x; entry by Jul 6-7. Close by Jul 9 midday.</p>
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-top-5-sector-picks-27" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">📄 Top 5 Sector Picks</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<table>
+<thead>
+<tr>
+<th>Rank</th>
+<th>Symbol</th>
+<th>Sector</th>
+<th>Setup</th>
+<th>Strategy</th>
+<th>Budget</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>DAL</strong></td>
+<td>Other</td>
+<td>Jul 10 BMO, IV=58%</td>
+<td>Long Straddle $93</td>
+<td>$200-$500</td>
+<td>High IV + near-term earnings (Jul 10) = immediate catalyst. Airline demand and fuel cost narratives are binary. Entry by Jul 7.</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>PEP</strong></td>
+<td>Other</td>
+<td>Jul 9 BMO, IV=39%</td>
+<td>Butterfly $143/$145/$147</td>
+<td>$200-$500</td>
+<td>Moderate IV, pinning tendency, earnings in 6 days. Pricing power narrative is intact. Clean risk/reward.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>JPM</strong></td>
+<td>Financials</td>
+<td>Mid-Jul, IV=33.3%</td>
+<td>Long Straddle $335</td>
+<td>$200-$500</td>
+<td>Lowest IV among majors = cheapest vol entry. Banking Q2 has rate and capital markets catalysts. Asymmetric upside.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>UNH</strong></td>
+<td>Health Care</td>
+<td>Jul 16, IV=50.3%</td>
+<td>Call Debit Spread $430/$440</td>
+<td>$50-$200</td>
+<td>Medicare Advantage rate clarity is a catalyst. High IV prices in a move, but spread reduces cost. Strong sector momentum.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>HOOD</strong></td>
+<td>Other</td>
+<td>Early Aug, IV=78.2%</td>
+<td>Iron Condor $100/$110/$120/$130</td>
+<td>$200-$500</td>
+<td>Extreme IV (78.2%) = premium is inflated. HOOD tends to pin after crypto-led rallies. Collect premium if it stays between $110-$120.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Honorable Mentions:</strong>
+- <strong>COIN</strong> (Other): Same extreme IV logic as HOOD. Iron Condor or Put Credit Spread to harvest premium.
+- <strong>CVX</strong> (Energy): Strong +2.07% momentum + Hess/Guyana catalysts. Call Debit Spread for late-July earnings.
+- <strong>DIS</strong> (Other): Early August, but +3.84% momentum is notable. Long Call $100 if momentum holds into earnings window.
+- <strong>ABT</strong> (Health Care): +3.38% Jul 2 rally. Call Debit Spread $95/$100 for mid-July earnings.
+- <strong>PENG</strong> (Other): Jul 7 earnings, -10.86% drop = binary oversold play. Straddle or lottery for aggressive traders only.</p>
+<hr />
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-6-risk-yönetimi-bütçe-amp-portföy-strate-28" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">⚠️ 6. Risk Management, Budget &amp; Portfolio Strategy</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<hr />
+<h3 id="61-budget-friendly-strategy-matrix">6.1 Budget-Friendly Strategy Matrix</h3>
+<table>
+<thead>
+<tr>
+<th>Budget</th>
+<th>Strategy</th>
+<th>Cost</th>
+<th>Max Return</th>
+<th>Risk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$10–$50</td>
+<td>Lottery Ticket (Long Call/Put)</td>
+<td>~$10–$50</td>
+<td>Unlimited</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>$50–$200</td>
+<td>Debit Spread</td>
+<td>~$50–$200</td>
+<td>2–3x</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>$200–$500</td>
+<td>Butterfly / Iron Condor</td>
+<td>~$200–$500</td>
+<td>1x</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>$500–$1000</td>
+<td>Ratio / Calendar Spread</td>
+<td>~$500–$1000</td>
+<td>2–4x</td>
+<td>100%</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tier-1-1050-lottery-tickets">Tier 1: $10–$50 — Lottery Tickets</h3>
+<table>
+<thead>
+<tr>
+<th>Ticker</th>
+<th>Price</th>
+<th>Earnings</th>
+<th>Strategy</th>
+<th>Strike</th>
+<th>Est. Cost</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SMPL</strong></td>
+<td>$13.72</td>
+<td>Jul 9 BMO</td>
+<td>Long Call</td>
+<td>$14.00</td>
+<td>~$35–$45</td>
+<td>Low dollar price = cheap options. BMO = fast exit next morning.</td>
+</tr>
+<tr>
+<td><strong>PFE</strong></td>
+<td>$24.31</td>
+<td>Late Jul</td>
+<td>Long Call</td>
+<td>$25.00</td>
+<td>~$35–$50</td>
+<td>Pharma volatility tends to spike into earnings. Low base price.</td>
+</tr>
+<tr>
+<td><strong>HELE</strong></td>
+<td>$28.16</td>
+<td>Jul 8 AMC</td>
+<td>Long Call</td>
+<td>$28.00</td>
+<td>~$40–$55</td>
+<td>Tiny consumer name, AMC = overnight hold. Low IV pre-event.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Notee:</strong> HELE reports Jul 8 AMC. If entering today (Jul 3), that is a weekend+Monday gap. Consider entering Jul 6 or Jul 7 for a tighter window.</p>
+</blockquote>
+<h3 id="tier-2-50200-debit-spreads">Tier 2: $50–$200 — Debit Spreads</h3>
+<table>
+<thead>
+<tr>
+<th>Ticker</th>
+<th>Price</th>
+<th>Earnings</th>
+<th>Strategy</th>
+<th>Strikes</th>
+<th>Est. Cost</th>
+<th>Max Return</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DAL</strong></td>
+<td>$92.78</td>
+<td>Jul 10 BMO</td>
+<td>Call Debit Spread</td>
+<td>$90 / $95</td>
+<td>~$150–$200</td>
+<td>2.5x–3x</td>
+<td>Travel demand narrative. BMO = clean next-morning exit.</td>
+</tr>
+<tr>
+<td><strong>EPAC</strong></td>
+<td>$34.87</td>
+<td>Jul 7 BMO</td>
+<td>Call Debit Spread</td>
+<td>$35 / $37.50</td>
+<td>~$100–$150</td>
+<td>2x–2.5x</td>
+<td>Industrial small-cap. Narrow spread = lower cost.</td>
+</tr>
+<tr>
+<td><strong>PENG</strong></td>
+<td>$61.38</td>
+<td>Jul 7 BMO</td>
+<td>Call Debit Spread</td>
+<td>$60 / $65</td>
+<td>~$150–$200</td>
+<td>2.5x–3x</td>
+<td>Semi-capital equipment. Reports early in week.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Notee:</strong> EPAC and PENG report Jul 7 (Tuesday). Entering Jul 6 gives 1 day pre-event. Tight window — size accordingly.</p>
+</blockquote>
+<h3 id="tier-3-200500-butterfly-iron-condor">Tier 3: $200–$500 — Butterfly / Iron Condor</h3>
+<table>
+<thead>
+<tr>
+<th>Ticker</th>
+<th>Price</th>
+<th>Earnings</th>
+<th>Strategy</th>
+<th>Strikes</th>
+<th>Est. Cost</th>
+<th>Max Return</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PEP</strong></td>
+<td>$144.16</td>
+<td>Jul 9 BMO</td>
+<td>Call Butterfly</td>
+<td>$140 / $145 / $150</td>
+<td>~$180–$220</td>
+<td>~2.5x (max $500)</td>
+<td>Consumer staples = lower directional risk. Pin risk at $145.</td>
+</tr>
+<tr>
+<td><strong>NFLX</strong></td>
+<td>$77.59</td>
+<td>Jul 16</td>
+<td>Call Butterfly</td>
+<td>$75 / $80 / $85</td>
+<td>~$180–$240</td>
+<td>~2x (max $500)</td>
+<td>Known range-bound after earnings. High IV = rich wings.</td>
+</tr>
+<tr>
+<td><strong>TSM</strong></td>
+<td>$435.44</td>
+<td>Jul 16</td>
+<td>Iron Condor</td>
+<td>$420/430 / 440/450</td>
+<td>~$250–$350</td>
+<td>~$500–$650 (max)</td>
+<td>Wide expected move. Collect premium on both sides.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Notee:</strong> TSM Iron Condor requires higher margin. Ensure account can support the short-leg margin.</p>
+</blockquote>
+<h3 id="tier-4-5001000-ratio-calendar-spread">Tier 4: $500–$1000 — Ratio / Calendar Spread</h3>
+<table>
+<thead>
+<tr>
+<th>Ticker</th>
+<th>Price</th>
+<th>Earnings</th>
+<th>Strategy</th>
+<th>Strikes</th>
+<th>Est. Cost</th>
+<th>Max Return</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>META</strong></td>
+<td>$582.76</td>
+<td>Late Jul</td>
+<td>Calendar Call Spread</td>
+<td>Buy Aug $580 / Sell Jul $580</td>
+<td>~$600–$850</td>
+<td>2x–3x if pinned</td>
+<td>Sell inflated front-month, buy cheaper back-month. Vega long.</td>
+</tr>
+<tr>
+<td><strong>NVDA</strong></td>
+<td>$194.51</td>
+<td>Late Jul</td>
+<td>Calendar Call Spread</td>
+<td>Buy Aug $195 / Sell Jul $195</td>
+<td>~$400–$600</td>
+<td>2x–3x if pinned</td>
+<td>Same vol-capture logic. Lower dollar price = tighter spread.</td>
+</tr>
+<tr>
+<td><strong>TSLA</strong></td>
+<td>$393.39</td>
+<td>Late Jul</td>
+<td>Calendar Put Spread</td>
+<td>Buy Aug $390 / Sell Jul $390</td>
+<td>~$550–$800</td>
+<td>2x–3x if pinned</td>
+<td>TSLA IV skew often favors put calendars post-earnings.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Calendar Spread Risk:</strong> Requires the stock to pin near the strike after earnings. If the stock moves &gt;5%, the spread can lose 50%+. Only use if directional conviction is low.</p>
+</blockquote>
+<hr />
+<h3 id="62-risk-management-protocol">6.2 Risk Management Protocol</h3>
+<h3 id="vix-assessment-currently-1615-low-volatility-regime">VIX Assessment — Currently 16.15 (Low Volatility Regime)</h3>
+<ul>
+<li><strong>Interpretation:</strong> VIX &lt; 20 is a "green light" for long-volatility earnings plays. Options are relatively cheap, and IV expansion into earnings is more likely to reward buyers.</li>
+<li><strong>Position Sizing:</strong> Use full "normal" sizing (max 2% per ticker, 15% per sector) when VIX &lt; 20.</li>
+<li><strong>Caveat:</strong> Low VIX can also mean complacency. A single bad macro event can spike VIX 5–10 points overnight. Do not use margin on low-VIX days.</li>
+</ul>
+<h3 id="fomc-outlook">FOMC Outlook</h3>
+<ul>
+<li><strong>Next FOMC:</strong> Typically scheduled for July 29–30, 2026.</li>
+<li><strong>Blackout Period:</strong> Fed officials go silent approximately 7 days before the meeting (~July 19–20). This means macro volatility may start expanding in the week of July 20–25.</li>
+<li><strong>Implication:</strong> Earnings plays in the week of July 20–31 will face <strong>dual headwinds</strong>: earnings IV crush + pre-FOMC vol expansion. Tighten exits and consider closing by July 18 if possible.</li>
+<li><strong>Rate Expectations:</strong> With VIX low and SPY near highs, the market is pricing a "pause" or 25bps cut. Any surprise hawkish shift will punish tech longs immediately.</li>
+</ul>
+<h3 id="position-sizing-rules-hard-stops">Position Sizing Rules (Hard Stops)</h3>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Threshold</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Per-Ticker Max</td>
+<td>2% of account</td>
+<td>Never exceed on a single earnings play</td>
+</tr>
+<tr>
+<td>Per-Sector Max</td>
+<td>15% of account</td>
+<td>Diversify across Tech, Health, Financials, Energy</td>
+</tr>
+<tr>
+<td>Correlated Exposure</td>
+<td>2+ MAG7</td>
+<td>Count as one "sector" for sizing purposes</td>
+</tr>
+<tr>
+<td>Overnight Margin</td>
+<td>0%</td>
+<td>No margin on lottery tickets or debit spreads</td>
+</tr>
+</tbody>
+</table>
+<h3 id="vix-escalation-rules">VIX Escalation Rules</h3>
+<table>
+<thead>
+<tr>
+<th>VIX Level</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>16–20</strong> (Current)</td>
+<td>Normal operation. Full sizing allowed.</td>
+</tr>
+<tr>
+<td><strong>21–25</strong></td>
+<td>Reduce new position entries by 25%. Tighten profit targets to 50%.</td>
+</tr>
+<tr>
+<td><strong>25–35</strong></td>
+<td>Reduce all positions by 50%. Avoid new long-vol entries. Favor Iron Condors or cash.</td>
+</tr>
+<tr>
+<td><strong>&gt;35</strong></td>
+<td>Reduce all positions by 75% or go to cash. Earnings plays become coin flips with expensive options.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="63-portfolio-sizing-recommendations">6.3 Portfolio Sizing Recommendations</h3>
+<h3 id="model-portfolios-by-account-size">Model Portfolios by Account Size</h3>
+<h4 id="500-account-starter-portfolio-3-plays">$500 Account — "Starter" Portfolio (3 Plays)</h4>
+<table>
+<thead>
+<tr>
+<th>Ticker</th>
+<th>Strategy</th>
+<th>Allocation</th>
+<th>Est. Cost</th>
+<th>Notees</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SMPL</td>
+<td>Long $14 Call</td>
+<td>8%</td>
+<td>~$40</td>
+<td>Jul 9 BMO — fast turnaround</td>
+</tr>
+<tr>
+<td>PFE</td>
+<td>Long $25 Call</td>
+<td>10%</td>
+<td>~$50</td>
+<td>Late Jul — pharma vol expansion</td>
+</tr>
+<tr>
+<td>DAL</td>
+<td>$90/$95 Call Spread</td>
+<td>30%</td>
+<td>~$150</td>
+<td>Jul 10 BMO — travel narrative</td>
+</tr>
+<tr>
+<td><strong>Cash Reserve</strong></td>
+<td>—</td>
+<td>52%</td>
+<td>~$260</td>
+<td>Buffer for rolls or second entries</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Total Deployed:</strong> ~$240 (48% of account). <strong>Max Risk:</strong> $240. <strong>Profit Target:</strong> $120–$180 (50–75% of premium).</p>
+</blockquote>
+<hr />
+<h4 id="2000-account-diversified-portfolio-4-plays">$2,000 Account — "Diversified" Portfolio (4 Plays)</h4>
+<table>
+<thead>
+<tr>
+<th>Ticker</th>
+<th>Strategy</th>
+<th>Allocation</th>
+<th>Est. Cost</th>
+<th>Notees</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SMPL</td>
+<td>Long $14 Call</td>
+<td>2%</td>
+<td>~$40</td>
+<td>Lottery ticket</td>
+</tr>
+<tr>
+<td>DAL</td>
+<td>$90/$95 Call Spread</td>
+<td>8%</td>
+<td>~$160</td>
+<td>Debit spread</td>
+</tr>
+<tr>
+<td>EPAC</td>
+<td>$35/$37.50 Call Spread</td>
+<td>6%</td>
+<td>~$120</td>
+<td>Jul 7 — tight window</td>
+</tr>
+<tr>
+<td>NFLX</td>
+<td>$75/$80/$85 Butterfly</td>
+<td>10%</td>
+<td>~$200</td>
+<td>Jul 16 — range play</td>
+</tr>
+<tr>
+<td><strong>Cash Reserve</strong></td>
+<td>—</td>
+<td>74%</td>
+<td>~$1,480</td>
+<td>Roll buffer</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Total Deployed:</strong> ~$520 (26% of account). <strong>Max Risk:</strong> $520. <strong>Profit Target:</strong> $260–$390.</p>
+</blockquote>
+<hr />
+<h4 id="5000-account-balanced-portfolio-5-plays">$5,000 Account — "Balanced" Portfolio (5 Plays)</h4>
+<table>
+<thead>
+<tr>
+<th>Ticker</th>
+<th>Strategy</th>
+<th>Allocation</th>
+<th>Est. Cost</th>
+<th>Notees</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PFE</td>
+<td>Long $25 Call</td>
+<td>1%</td>
+<td>~$50</td>
+<td>Lottery</td>
+</tr>
+<tr>
+<td>DAL</td>
+<td>$90/$95 Call Spread</td>
+<td>4%</td>
+<td>~$200</td>
+<td>Spread</td>
+</tr>
+<tr>
+<td>PEP</td>
+<td>$140/$145/$150 Butterfly</td>
+<td>4%</td>
+<td>~$220</td>
+<td>Butterfly</td>
+</tr>
+<tr>
+<td>NVDA</td>
+<td>Calendar $195 Call</td>
+<td>8%</td>
+<td>~$400</td>
+<td>Calendar</td>
+</tr>
+<tr>
+<td>META</td>
+<td>Calendar $580 Call</td>
+<td>12%</td>
+<td>~$600</td>
+<td>Calendar</td>
+</tr>
+<tr>
+<td><strong>Cash Reserve</strong></td>
+<td>—</td>
+<td>71%</td>
+<td>~$3,530</td>
+<td>Major buffer</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Total Deployed:</strong> ~$1,470 (29% of account). <strong>Max Risk:</strong> $1,470. <strong>Profit Target:</strong> $735–$1,100.</p>
+</blockquote>
+<hr />
+<h4 id="10000-account-aggressive-portfolio-5-plays">$10,000 Account — "Aggressive" Portfolio (5 Plays)</h4>
+<table>
+<thead>
+<tr>
+<th>Ticker</th>
+<th>Strategy</th>
+<th>Allocation</th>
+<th>Est. Cost</th>
+<th>Notees</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HELE</td>
+<td>Long $28 Call</td>
+<td>0.5%</td>
+<td>~$50</td>
+<td>Lottery (Jul 8 AMC)</td>
+</tr>
+<tr>
+<td>DAL</td>
+<td>$90/$95 Call Spread</td>
+<td>2%</td>
+<td>~$200</td>
+<td>Spread</td>
+</tr>
+<tr>
+<td>NFLX</td>
+<td>$75/$80/$85 Butterfly</td>
+<td>2%</td>
+<td>~$200</td>
+<td>Butterfly (Jul 16)</td>
+</tr>
+<tr>
+<td>TSM</td>
+<td>Iron Condor $420/430/440/450</td>
+<td>3%</td>
+<td>~$300</td>
+<td>Iron Condor</td>
+</tr>
+<tr>
+<td>META</td>
+<td>Calendar $580 Call</td>
+<td>8%</td>
+<td>~$800</td>
+<td>Calendar (Late Jul)</td>
+</tr>
+<tr>
+<td><strong>Cash Reserve</strong></td>
+<td>—</td>
+<td>84.5%</td>
+<td>~$8,450</td>
+<td>Large buffer for pyramiding</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Total Deployed:</strong> ~$1,550 (15.5% of account). <strong>Max Risk:</strong> $1,550. <strong>Profit Target:</strong> $775–$1,160.</p>
+</blockquote>
+<hr />
+<h4 id="25000-account-professional-portfolio-5-plays-hedge">$25,000 Account — "Professional" Portfolio (5 Plays + Hedge)</h4>
+<table>
+<thead>
+<tr>
+<th>Ticker</th>
+<th>Strategy</th>
+<th>Allocation</th>
+<th>Est. Cost</th>
+<th>Notees</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PFE</td>
+<td>Long $25 Call</td>
+<td>0.2%</td>
+<td>~$50</td>
+<td>Lottery</td>
+</tr>
+<tr>
+<td>DAL</td>
+<td>$90/$95 Call Spread</td>
+<td>0.8%</td>
+<td>~$200</td>
+<td>Spread</td>
+</tr>
+<tr>
+<td>TSM</td>
+<td>Iron Condor $420/430/440/450</td>
+<td>1.2%</td>
+<td>~$300</td>
+<td>Iron Condor</td>
+</tr>
+<tr>
+<td>NVDA</td>
+<td>Calendar $195 Call</td>
+<td>2%</td>
+<td>~$500</td>
+<td>Calendar</td>
+</tr>
+<tr>
+<td>META</td>
+<td>Calendar $580 Call</td>
+<td>3%</td>
+<td>~$800</td>
+<td>Calendar</td>
+</tr>
+<tr>
+<td>VIXY</td>
+<td>Long Shares</td>
+<td>1%</td>
+<td>~$250</td>
+<td>Hedge against VIX spike</td>
+</tr>
+<tr>
+<td><strong>Cash Reserve</strong></td>
+<td>—</td>
+<td>91.8%</td>
+<td>~$22,950</td>
+<td>Institutional-sized buffer</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Total Deployed:</strong> ~$2,100 (8.4% of account). <strong>Max Risk:</strong> $2,100. <strong>Profit Target:</strong> $1,050–$1,575.<br />
+<strong>Rationale:</strong> At $25K, risk management dominates. Only 8–10% capital at risk at any time preserves the portfolio through a 5-play losing streak.</p>
+</blockquote>
+<hr />
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-7-haftalık-eylem-planı-jul-6jul-10-29" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">🗓️ 7. Weekly Action Plan (Jul 6–Jul 10)</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<h3 id="Monday-jul-6-setup-day">Monday, Jul 6 — "Setup Day"</h3>
+<ul>
+<li>[ ] <strong>Open positions:</strong> EPAC (Jul 7), PENG (Jul 7), HELE (Jul 8 AMC), AZZ (Jul 8 BMO), LEVI (Jul 8 BMO), PSMT (Jul 8 BMO)</li>
+<li>[ ] <strong>Maximum allocation:</strong> 20% of account (distributed across 3–4 names)</li>
+<li>[ ] <strong>Avoid:</strong> Over-concentration in Jul 7 names (EPAC, PENG) — only 1–2 days left</li>
+<li>[ ] <strong>Macro watch:</strong> ISM Services (if on calendar), large-cap guidance news</li>
+<li>[ ] <strong>Portfolio check:</strong> Ensure no open positions on past earnings (LNN, BMNR, etc.)</li>
+</ul>
+<h3 id="sal-jul-7-ilk-earnings-dalgas">Tuesday, Jul 7 — "First Earnings Wave"</h3>
+<ul>
+<li>[ ] <strong>EPAC reports BMO</strong> — Exit at 11:00 AM EDT if profitable. &gt;%20 cut immediately if down.</li>
+<li>[ ] <strong>PENG reports BMO</strong> — Same protocol. Industrial small-cap can gap 10%+.</li>
+<li>[ ] <strong>No new entries</strong> for Jul 7 names after 9:30 AM (too late)</li>
+<li>[ ] <strong>Start entries:</strong> Jul 8 names (HELE, AZZ, LEVI, PSMT) — if not done yet</li>
+<li>[ ] <strong>Macro watch:</strong> Fed speech calendar (if any), oil inventories</li>
+</ul>
+<h3 id="carsamba-jul-8-hafta-ortas-iv-crush">Wednesday, Jul 8 — "Midweek IV Crush"</h3>
+<ul>
+<li>[ ] <strong>AZZ reports BMO</strong> — Exit at 11:00 AM EDT. IV crush window: 2–4 hours.</li>
+<li>[ ] <strong>LEVI reports BMO</strong> — Exit at 11:00 AM EDT. Consumer = macro-sensitive.</li>
+<li>[ ] <strong>PSMT reports BMO</strong> — Exit at 11:00 AM EDT. Latin America retail.</li>
+<li>[ ] <strong>HELE reports AMC</strong> — Overnight hold. Exit at Thursday 9:35 AM. Max hold = 1 day.</li>
+<li>[ ] <strong>Start entries:</strong> Jul 9 names (PEP, SMPL, WDFC)</li>
+<li>[ ] <strong>Macro watch:</strong> Crude oil inventories (EIA), FOMC speculation</li>
+</ul>
+<h3 id="persembe-jul-9-arka-arkaya-iv-crush">Thursday, Jul 9 — "Back-to-Back IV Crush"</h3>
+<ul>
+<li>[ ] <strong>PEP reports BMO</strong> — Exit at 11:00 AM EDT. Large cap = fast IV decay.</li>
+<li>[ ] <strong>SMPL reports BMO</strong> — Exit at 11:00 AM EDT. Small cap = may take longer.</li>
+<li>[ ] <strong>WDFC reports BMO</strong> — Exit at 11:00 AM EDT. Niche consumer = narrow option spreads.</li>
+<li>[ ] <strong>Start entries:</strong> DAL (Jul 10 BMO) — last chance for Jul 10 play</li>
+<li>[ ] <strong>Macro watch:</strong> Unemployment claims, surprise news</li>
+<li>[ ] <strong>No new entries</strong> for Jul 9 names after 9:30 AM</li>
+</ul>
+<h3 id="Friday-jul-10-hafta-kapans">Friday, Jul 10 — "Week Close"</h3>
+<ul>
+<li>[ ] <strong>DAL reports BMO</strong> — Exit at 11:00 AM EDT. Aviation = fuel costs + guidance volatility.</li>
+<li>[ ] <strong>Close all remaining Jul 6–9 positions</strong> 3:00 PM EDT'de close — if not yet closed</li>
+<li>[ ] <strong>Weekend risk:</strong> No overnight position carrying except calendar spreads <strong>yok</strong></li>
+<li>[ ] <strong>Next week preparation:</strong> Jul 15 (ASML), Jul 16 (NFLX, TSM, UNH) — Entry planning for Monday Jul 13</li>
+<li>[ ] <strong>Portfolio review:</strong> Calculate P&amp;L, adjust next week's sizing based on win/loss ratio</li>
+</ul>
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-8-appendices-30" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">📎 8. Appendices</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<h3 id="iv-crush-sektor-dashboard">IV Crush Sector Dashboard</h3>
+<table>
+<thead>
+<tr>
+<th>Sector</th>
+<th>Avg IV</th>
+<th>Expected IV Crush</th>
+<th>Magnitude</th>
+<th>Notees</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Crypto / FinTech</strong></td>
+<td>79.9%</td>
+<td>COIN 81.5%, HOOD 78.2%</td>
+<td><strong>EXTREME</strong></td>
+<td>50–70% IV crush expected. These names re-price violently.</td>
+</tr>
+<tr>
+<td><strong>Semiconductors</strong></td>
+<td>55.8%</td>
+<td>NVDA 50.4%, AMD 73.8%, TSM 60.5%, MU N/A, INTC N/A, ASML 70.1%</td>
+<td><strong>HIGH</strong></td>
+<td>40–60% IV crush. ASML and AMD most vulnerable.</td>
+</tr>
+<tr>
+<td><strong>Streaming / Tech Growth</strong></td>
+<td>56.5%</td>
+<td>NFLX 64.8%, META 46.1%, PLTR 58.1%</td>
+<td><strong>HIGH</strong></td>
+<td>NFLX crushes hardest. META more resilient due to size.</td>
+</tr>
+<tr>
+<td><strong>Health Care</strong></td>
+<td>~35%</td>
+<td>UNH 50.3%, LLY N/A, PFE N/A, JNJ N/A, ABT N/A, TMO N/A, MRK N/A</td>
+<td><strong>MODERATE–HIGH</strong></td>
+<td>UNH = 35–45% crush. Others lower due to lower baseline IV.</td>
+</tr>
+<tr>
+<td><strong>Travel / Leisure</strong></td>
+<td>58.0%</td>
+<td>DAL 58.0%</td>
+<td><strong>HIGH</strong></td>
+<td>Single-name concentration. 40–50% crush expected.</td>
+</tr>
+<tr>
+<td><strong>Consumer Staples</strong></td>
+<td>39.0%</td>
+<td>PEP 39.0%</td>
+<td><strong>MODERATE</strong></td>
+<td>25–35% crush. Lower risk for premium sellers.</td>
+</tr>
+<tr>
+<td><strong>Financials</strong></td>
+<td>33.3%</td>
+<td>JPM 33.3% (proxy for sector)</td>
+<td><strong>LOW–MODERATE</strong></td>
+<td>20–30% crush. Boring = predictable. Good for butterflies.</td>
+</tr>
+<tr>
+<td><strong>Energy</strong></td>
+<td>~N/A</td>
+<td>XOM, CVX (no IV data)</td>
+<td><strong>MODERATE</strong></td>
+<td>Historical energy IV crush = 30–40%. Oil price correlation adds noise.</td>
+</tr>
+<tr>
+<td><strong>Industrials / Small-Cap</strong></td>
+<td>N/A</td>
+<td>AZZ, EPAC, PENG, HELE, WDFC, SMPL, LEVI, PSMT</td>
+<td><strong>MODERATE–HIGH</strong></td>
+<td>Small-cap options often illiquid. Wider bid-ask = higher effective crush.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="iv-crush-timing-guide">IV Crush Timing Guide</h3>
+<table>
+<thead>
+<tr>
+<th>Call Time</th>
+<th>Entry</th>
+<th>Latest Exit</th>
+<th>IV Crush Window</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BMO</td>
+<td>2–5 days before</td>
+<td>1–2 days after</td>
+<td>2–4 hours post-open</td>
+</tr>
+<tr>
+<td>AMC</td>
+<td>2–5 days before</td>
+<td>1–2 days after</td>
+<td>Next morning open (9:30–10:30 AM)</td>
+</tr>
+<tr>
+<td>TNS / TAS</td>
+<td>Avoid</td>
+<td>—</td>
+<td>Uncertain timing</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="greeks-cheat-sheet">Greeks Cheat Sheet</h3>
+<table>
+<thead>
+<tr>
+<th>Strategy</th>
+<th>Primary Greek</th>
+<th>Secondary Greek</th>
+<th>What to Watch</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Long Call / Long Put</strong></td>
+<td>Delta</td>
+<td>Vega</td>
+<td>Delta = how much you make per $1 move. Vega = how much IV changes help/hurt.</td>
+</tr>
+<tr>
+<td><strong>Debit Spread</strong></td>
+<td>Delta</td>
+<td>Theta</td>
+<td>Net Delta drives P&amp;L. Theta is negative but small.</td>
+</tr>
+<tr>
+<td><strong>Butterfly</strong></td>
+<td>Theta</td>
+<td>Vega</td>
+<td>Theta = time decay harvest. Vega = IV crush hurts (long vol at center).</td>
+</tr>
+<tr>
+<td><strong>Iron Condor</strong></td>
+<td>Theta</td>
+<td>Vega</td>
+<td>Theta = main profit engine. Vega = short vol benefits from crush.</td>
+</tr>
+<tr>
+<td><strong>Calendar Spread</strong></td>
+<td>Vega</td>
+<td>Theta</td>
+<td>Vega = long back-month benefits from IV expansion. Theta = front-month decay pays you.</td>
+</tr>
+<tr>
+<td><strong>Ratio Spread</strong></td>
+<td>Delta</td>
+<td>Gamma</td>
+<td>Gamma risk on the extra short leg. Need pin accuracy.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="greek-sign-quick-reference">Greek Sign Quick Reference</h3>
+<table>
+<thead>
+<tr>
+<th>Greek</th>
+<th>Long Call</th>
+<th>Long Put</th>
+<th>Debit Spread</th>
+<th>Butterfly</th>
+<th>Iron Condor</th>
+<th>Calendar</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Delta</td>
+<td>+</td>
+<td>−</td>
+<td>+/-</td>
+<td>~0</td>
+<td>~0</td>
+<td>~0</td>
+</tr>
+<tr>
+<td>Theta</td>
+<td>−</td>
+<td>−</td>
+<td>−</td>
+<td>+</td>
+<td>+</td>
+<td>+/−</td>
+</tr>
+<tr>
+<td>Vega</td>
+<td>+</td>
+<td>+</td>
+<td>+</td>
+<td>+</td>
+<td>−</td>
+<td>+</td>
+</tr>
+<tr>
+<td>Gamma</td>
+<td>+</td>
+<td>+</td>
+<td>+</td>
+<td>−</td>
+<td>−</td>
+<td>+/−</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Rule of Thumb:</strong> If you are buying premium (long calls, debit spreads, butterflies), you are <strong>long Vega</strong> — you want IV to go up or stay flat. If you are selling premium (Iron Condor, ratio spreads), you are <strong>short Vega</strong> — you want IV crush.</p>
+</blockquote>
+<hr />
+<h3 id="karslastrma-matrisi-top-10">Comparison Matrix (Top 10)</h3>
+<table>
+<thead>
+<tr>
+<th>Rank</th>
+<th>Ticker</th>
+<th>Earnings</th>
+<th>Strategy</th>
+<th>IV</th>
+<th>Budget</th>
+<th>Conviction</th>
+<th>Risk Level</th>
+<th>Primary Risk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>META</strong></td>
+<td>Late Jul</td>
+<td>Bull Call Spread $590/$610</td>
+<td>%46.1</td>
+<td>$50–$200</td>
+<td>⭐⭐⭐⭐⭐</td>
+<td>🟡</td>
+<td>Reassess if $580 support breaks</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>TSM</strong></td>
+<td>Jul 16</td>
+<td>Bull Call Spread $440/$460</td>
+<td>%60.5</td>
+<td>$50–$200</td>
+<td>⭐⭐⭐⭐⭐</td>
+<td>🟡</td>
+<td>Geopolitical Taiwan risk, avoid below $420</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>NFLX</strong></td>
+<td>Jul 16</td>
+<td>Bull Call Spread $80/$90</td>
+<td>%64.8</td>
+<td>$50–$200</td>
+<td>⭐⭐⭐⭐</td>
+<td>🔴</td>
+<td>Most time-sensitive play, IV expensive, tight stop</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>DAL</strong></td>
+<td>Jul 10</td>
+<td>Call Spread $90/$95</td>
+<td>%58.0</td>
+<td>$50–$200</td>
+<td>⭐⭐⭐⭐</td>
+<td>🟡</td>
+<td>Fuel costs + international demand binary</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>PEP</strong></td>
+<td>Jul 9</td>
+<td>Butterfly $143/$145/$147</td>
+<td>%39.0</td>
+<td>$200–$500</td>
+<td>⭐⭐⭐⭐</td>
+<td>🟢</td>
+<td>Consumer staples, low IV = safer pin risk</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>JPM</strong></td>
+<td>Mid-Jul</td>
+<td>Long Straddle $335</td>
+<td>%33.3</td>
+<td>$200–$500</td>
+<td>⭐⭐⭐⭐</td>
+<td>🟡</td>
+<td>Lowest IV = cheapest vol entry, 2–3% sufficient</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>UNH</strong></td>
+<td>Jul 16</td>
+<td>Call Spread $430/$440</td>
+<td>%50.3</td>
+<td>$50–$200</td>
+<td>⭐⭐⭐⭐</td>
+<td>🟡</td>
+<td>Medicare cost trends catalyst</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>HOOD</strong></td>
+<td>Early Aug</td>
+<td>Iron Condor $100/$110/$120/$130</td>
+<td>%78.2</td>
+<td>$200–$500</td>
+<td>⭐⭐⭐</td>
+<td>🟡</td>
+<td>Crypto volatility, overnight gap risk</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>AAPL</strong></td>
+<td>Late Jul</td>
+<td>Bull Call Spread $310/$325</td>
+<td>%36.3</td>
+<td>$50–$200</td>
+<td>⭐⭐⭐⭐</td>
+<td>🟢</td>
+<td>Safest mega-cap tech, avoid below $290</td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>TSLA</strong></td>
+<td>Late Jul</td>
+<td>Bull Call Spread $400/$420</td>
+<td>%47.95</td>
+<td>$50–$200</td>
+<td>⭐⭐⭐</td>
+<td>🔴</td>
+<td>Highest risk/reward, -7.65% flush may continue</td>
+</tr>
+</tbody>
+</table>
+<hr />
+
+  </div>
+</section>
+<section>
+  <div class="section-head" id="sec-9-yasal-uyarı-amp-sorumluluk-reddi-31" onclick="this.classList.toggle('collapsed')">
+    <h2 class="section-title">⚖️ 9. Legal Disclaimer &amp; Risk Disclosure</h2>
+    <div class="icon">▾</div>
+  </div>
+  <div class="section-body">
+    
+<p>This report is <strong>for informational and educational purposes only</strong>. It does not constitute financial advice. All option trades carry risk of loss; debit structures risk losing 100% of premium. Always adjust position size according to your personal risk tolerance. Past performance does not guarantee future results.</p>
+<ul>
+<li>Entry and exit prices, strike prices, and cost estimates are approximate — verify live market prices.</li>
+<li>None of these strategies are investment advice; every trader must do their own due diligence.</li>
+<li>Earnings plays are short-term, speculative trades. Trade only with the portion of your account you can afford to lose.</li>
+<li>"VWAP", "IV Crush", "BMO", "AMC", "DTE", "CALL", "PUT" and all similar financial terms are option market jargon; using these terms does not indicate experience or licensing.</li>
+</ul>
+<p><strong>Report generated by Gistify Earnings Strategy Synthesis Agent v4.0 | All strike prices and cost estimates are approximate based on ATM +/- 5% with current IV regime. Verify live prices before entry.</strong></p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">Gistify Flow | Earnings Option Strategy | {hero_date}</div>
+
+</div>
+</body>
+</html>

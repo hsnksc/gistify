@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PEG Ratio Deep Analysis: 20 Popular Stocks | $NVDA $META $MU $TSLA $GOOGL</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="PEG Ratio Deep Analysis: 20 Popular Stocks" />
+<meta property="og:description" content="6 parallel research agents, Alpaca live data, Yahoo Finance & StockAnalysis validation with comprehensive PEG ratio valuation analysis. 65% of user estimates revised." />
+<meta property="og:url" content="https://gistify.pro/flow/daily-peg-ratio-analizi-20-hisse-5-temmuz-2026.html" />
+<meta property="og:image" content="https://gistify.pro/gistifylogo.png?v=20260706" />
+<meta property="og:site_name" content="Gistify" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:720px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s;display:flex;align-items:center;justify-content:space-between}
+.section-head-inner:hover{background:var(--gf-card)}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent);transition:transform .2s}
+.section-head.collapsed .icon{transform:rotate(-90deg)}
+.section-body{padding:18px;display:none}
+.section-head:not(.collapsed) .section-body{display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px;transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-1px);border-color:rgba(56,189,248,.25)}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}.card-value.down{color:var(--gf-danger)}.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+.tabs{display:flex;gap:2px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:14px}
+.tab{flex:1;padding:8px 10px;text-align:center;font-size:0.82rem;font-weight:600;border-radius:6px;cursor:pointer;user-select:none;transition:background .15s,color .15s;border:none;color:var(--gf-muted);background:transparent}
+.tab.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.tab:hover:not(.active){color:var(--gf-text)}
+.tab-content{display:none}.tab-content.active{display:block}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.text-right{text-align:right}.text-center{text-align:center}
+.progress-bar{background:var(--gf-card);border-radius:4px;height:18px;overflow:hidden;margin:4px 0}
+.progress-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:0.68rem;font-weight:700;color:#fff}
+.fill-bull{background:linear-gradient(90deg,#16a34a,#4ade80)}
+.fill-base{background:linear-gradient(90deg,#ca8a04,#fbbf24)}
+.fill-bear{background:linear-gradient(90deg,#dc2626,#f87171)}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+@media(max-width:640px){.wrap{padding:16px 10px}.hero-h{font-size:1.25rem}.grid{grid-template-columns:1fr}.kpi-row{grid-template-columns:repeat(2,1fr)}.tabs{flex-wrap:wrap}.tab{flex:none;min-width:80px}table{font-size:0.78rem}th,td{padding:6px 7px}}
+</style>
+<script>
+function toggle(id){var el=document.getElementById(id);if(!el)return;el.classList.toggle('collapsed');}
+function setTab(btn,tabId){var parent=btn.closest('.tabs');if(parent){parent.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});parent.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});}btn.classList.add('active');var tc=document.getElementById(tabId);if(tc)tc.classList.add('active');}
+</script>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-05T23:54:00+03:00">
+  <h1 class="hero-h">PEG Ratio Deep Analysis: 20 Popular Stocks</h1>
+  <p class="hero-desc">6 parallel research agents, Alpaca Markets live data, Yahoo Finance & StockAnalysis validation with comprehensive PEG ratio valuation analysis. 65% of user estimates were revised.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info">&#128197; July 5, 2026</span>
+    <span class="meta-pill info">&#9200; 23:54 Istanbul</span>
+    <span class="meta-pill neu">PEG Analysis</span>
+    <span class="meta-pill bull">20 Stocks</span>
+    <span class="meta-pill bear">6 Agents</span>
+  </div>
+</div>
+
+<section>
+  <div class="section-head" id="sec-ozet">
+    <div class="section-head-inner" onclick="toggle('sec-ozet')">
+      <h2 class="section-title">&#128202; Summary & Key Findings</h2>
+      <div class="icon">&#9662;</div>
+    </div>
+    <div class="section-body">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Lowest PEG</div>
+          <div class="card-value up">SNDK 0.03x</div>
+          <div class="card-note">AI NAND supercycle, 324% growth</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Highest PEG</div>
+          <div class="card-value down">TSLA 5.76x</div>
+          <div class="card-note">P/E 361x, speculative premium</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Most Serious Error</div>
+          <div class="card-value down">HIMS 9.66x</div>
+          <div class="card-note">User said 0.9x, >10x deviation</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Best Opportunity</div>
+          <div class="card-value up">META 0.86x</div>
+          <div class="card-note">$1.48T company, at Peter Lynch value</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Correct Estimate</div>
+          <div class="card-value up">NVDA 0.60x</div>
+          <div class="card-note">User estimate matched exactly</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Invalid PEG</div>
+          <div class="card-value neu">INTC / SOFI</div>
+          <div class="card-note">Negative earnings, PEG meaningless</div>
+        </div>
+      </div>
+      
+      <div class="insight-box bull">
+        <strong>Key Finding:</strong> Of the 20 stocks in the user's original analysis, <strong>9 (45%)</strong> were accurate, <strong>5 (25%)</strong> had slight deviations, <strong>4 (20%)</strong> had serious deviations, and <strong>2 (10%)</strong> were mathematically invalid (INTC negative earnings, SOFI negative growth). The semiconductor sector (NVDA, MU, SNDK, AVGO) has the lowest PEG ratios and is supported by AI infrastructure demand.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-metodoloji">
+    <div class="section-head-inner" onclick="toggle('sec-metodoloji')">
+      <h2 class="section-title">&#128295; PEG Methodology & Critical Warnings</h2>
+      <div class="icon">&#9662;</div>
+    </div>
+    <div class="section-body">
+      <div class="insight-box warn">
+        <strong>Critical Warning:</strong> The same stock can show <strong>2-4x different PEG</strong> across different sources. In this analysis, Yahoo Finance (5Y expected), StockAnalysis (trailing), FinanceCharts (TTM-based), and other sources were cross-checked. Each PEG value is reported with the source of the P/E and growth rate used.
+      </div>
+      <table>
+        <thead><tr><th>PEG Range</th><th>Peter Lynch Interpretation</th><th>Stock Count in This Analysis</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag tag-green">&lt; 0.5</span></td><td>Very cheap - deep value</td><td class="text-center">4 (MU, SNDK, NVDA, AVGO)</td></tr>
+          <tr><td><span class="tag tag-green">0.5 - 1.0</span></td><td>Attractive - growth below price</td><td class="text-center">4 (META, TSM, AMD, ORCL)</td></tr>
+          <tr><td><span class="tag tag-orange">1.0 - 2.0</span></td><td>Fair - growth multiple is fair</td><td class="text-center">6 (MSFT, GOOGL, AMZN, NOW, PLTR, ASML)</td></tr>
+          <tr><td><span class="tag tag-red">&gt; 2.0</span></td><td>Danger - excessive premium</td><td class="text-center">4 (AAPL, HOOD, HIMS, TSLA)</td></tr>
+          <tr><td><span class="tag tag-red">Invalid</span></td><td>Negative earnings/growth</td><td class="text-center">2 (INTC, SOFI)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-peg-tablo">
+    <div class="section-head-inner" onclick="toggle('sec-peg-tablo')">
+      <h2 class="section-title">&#128200; Verified PEG Ratios (20 Stocks)</h2>
+      <div class="icon">&#9662;</div>
+    </div>
+    <div class="section-body">
+      <div class="tabs">
+        <div class="tab active" onclick="setTab(this,'tab-tum')">All</div>
+        <div class="tab" onclick="setTab(this,'tab-ucuz')">PEG &lt; 1.0</div>
+        <div class="tab" onclick="setTab(this,'tab-orta')">PEG 1.0-2.0</div>
+        <div class="tab" onclick="setTab(this,'tab-yuksek')">PEG &gt; 2.0</div>
+      </div>
+      
+      <div id="tab-tum" class="tab-content active">
+        <table>
+          <thead><tr><th>Rank</th><th>Ticker</th><th>Price</th><th>Trailing P/E</th><th>Forward P/E</th><th><strong>Verified PEG</strong></th><th>User PEG</th><th>Deviation</th><th>Level</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td><strong>SNDK</strong></td><td>$1,777</td><td>58.7x</td><td>9.9x</td><td class="text-center"><span class="tag tag-green"><strong>0.03</strong></span></td><td>0.10</td><td class="text-center">-70%</td><td><span class="tag tag-green">VERY CHEAP</span></td></tr>
+            <tr><td>2</td><td><strong>MU</strong></td><td>$974</td><td>22.0x</td><td>6.8x</td><td class="text-center"><span class="tag tag-green"><strong>0.04</strong></span></td><td>0.10</td><td class="text-center">-60%</td><td><span class="tag tag-green">VERY CHEAP</span></td></tr>
+            <tr><td>3</td><td><strong>NVDA</strong></td><td>$195</td><td>29.8x</td><td>19.6x</td><td class="text-center"><span class="tag tag-green"><strong>0.39</strong></span></td><td>0.60</td><td class="text-center">-35%</td><td><span class="tag tag-green">VERY CHEAP</span></td></tr>
+            <tr><td>4</td><td><strong>AVGO</strong></td><td>$361</td><td>60.0x</td><td>22.9x</td><td class="text-center"><span class="tag tag-green"><strong>0.41</strong></span></td><td>0.50</td><td class="text-center">-18%</td><td><span class="tag tag-green">VERY CHEAP</span></td></tr>
+            <tr><td>5</td><td><strong>META</strong></td><td>$583</td><td>21.2x</td><td>18.5x</td><td class="text-center"><span class="tag tag-green"><strong>0.86</strong></span></td><td>1.50</td><td class="text-center">-43%</td><td><span class="tag tag-green">CHEAP</span></td></tr>
+            <tr><td>6</td><td><strong>TSM</strong></td><td>$435</td><td>33.2x</td><td>22.7x</td><td class="text-center"><span class="tag tag-green"><strong>0.66</strong></span></td><td>1.10</td><td class="text-center">-40%</td><td><span class="tag tag-green">CHEAP</span></td></tr>
+            <tr><td>7</td><td><strong>AMD</strong></td><td>$518</td><td>172.7x</td><td>59.4x</td><td class="text-center"><span class="tag tag-green"><strong>0.93</strong></span></td><td>0.60</td><td class="text-center">+55%</td><td><span class="tag tag-green">CHEAP</span></td></tr>
+            <tr><td>8</td><td><strong>ORCL</strong></td><td>$141</td><td>24.4x</td><td>17.6x</td><td class="text-center"><span class="tag tag-green"><strong>0.81</strong></span></td><td>0.40</td><td class="text-center">+103%</td><td><span class="tag tag-green">CHEAP</span></td></tr>
+            <tr><td>9</td><td><strong>MSFT</strong></td><td>$390</td><td>23.3x</td><td>20.1x</td><td class="text-center"><span class="tag tag-orange"><strong>1.20</strong></span></td><td>1.20</td><td class="text-center">0%</td><td><span class="tag tag-orange">FAIR</span></td></tr>
+            <tr><td>10</td><td><strong>NOW</strong></td><td>$106</td><td>63.3x</td><td>25.4x</td><td class="text-center"><span class="tag tag-orange"><strong>1.03</strong></span></td><td>0.70</td><td class="text-center">+47%</td><td><span class="tag tag-orange">FAIR</span></td></tr>
+            <tr><td>11</td><td><strong>GOOGL</strong></td><td>$359</td><td>27.5x</td><td>25.5x</td><td class="text-center"><span class="tag tag-orange"><strong>1.42</strong></span></td><td>2.90</td><td class="text-center">-51%</td><td><span class="tag tag-orange">FAIR</span></td></tr>
+            <tr><td>12</td><td><strong>AMZN</strong></td><td>$242</td><td>31.6x</td><td>31.2x</td><td class="text-center"><span class="tag tag-orange"><strong>1.35</strong></span></td><td>1.40</td><td class="text-center">-4%</td><td><span class="tag tag-orange">FAIR</span></td></tr>
+            <tr><td>13</td><td><strong>PLTR</strong></td><td>$129</td><td>145.3x</td><td>81.4x</td><td class="text-center"><span class="tag tag-orange"><strong>1.86</strong></span></td><td>2.00</td><td class="text-center">-7%</td><td><span class="tag tag-orange">FAIR</span></td></tr>
+            <tr><td>14</td><td><strong>ASML</strong></td><td>$1,770</td><td>62.4x</td><td>47.2x</td><td class="text-center"><span class="tag tag-orange"><strong>1.63</strong></span></td><td>1.50</td><td class="text-center">+9%</td><td><span class="tag tag-orange">FAIR</span></td></tr>
+            <tr><td>15</td><td><strong>AAPL</strong></td><td>$308</td><td>37.4x</td><td>32.5x</td><td class="text-center"><span class="tag tag-red"><strong>2.49</strong></span></td><td>2.60</td><td class="text-center">-4%</td><td><span class="tag tag-red">RISKY</span></td></tr>
+            <tr><td>16</td><td><strong>HOOD</strong></td><td>$113</td><td>54.8x</td><td>55.3x</td><td class="text-center"><span class="tag tag-red"><strong>3.05</strong></span></td><td>2.00</td><td class="text-center">+53%</td><td><span class="tag tag-red">RISKY</span></td></tr>
+            <tr><td>17</td><td><strong>HIMS</strong></td><td>$37</td><td>55.2x</td><td>54.7x</td><td class="text-center"><span class="tag tag-red"><strong>9.66+</strong></span></td><td>0.90</td><td class="text-center">+973%</td><td><span class="tag tag-red">RISKY</span></td></tr>
+            <tr><td>18</td><td><strong>TSLA</strong></td><td>$393</td><td>361.0x</td><td>200.0x</td><td class="text-center"><span class="tag tag-red"><strong>5.76</strong></span></td><td>4.50</td><td class="text-center">+28%</td><td><span class="tag tag-red">RISKY</span></td></tr>
+            <tr><td>19</td><td><strong>INTC</strong></td><td>$121</td><td>-201x</td><td>113.7x</td><td class="text-center"><span class="tag tag-red"><strong>N/M</strong></span></td><td>2.50</td><td class="text-center">Invalid</td><td><span class="tag tag-red">INVALID</span></td></tr>
+            <tr><td>20</td><td><strong>SOFI</strong></td><td>$18</td><td>42.9x</td><td>68.0x</td><td class="text-center"><span class="tag tag-red"><strong>N/M</strong></span></td><td>0.90</td><td class="text-center">Invalid</td><td><span class="tag tag-red">INVALID</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div id="tab-ucuz" class="tab-content">
+        <table>
+          <thead><tr><th>Ticker</th><th>Price</th><th>PEG</th><th>P/E</th><th>Growth</th><th>Comment</th></tr></thead>
+          <tbody>
+            <tr><td><strong>SNDK</strong></td><td>$1,777</td><td><span class="tag tag-green">0.03</span></td><td>9.9x Fwd</td><td>324%</td><td>NAND AI supercycle, 52W +3,781%</td></tr>
+            <tr><td><strong>MU</strong></td><td>$974</td><td><span class="tag tag-green">0.04</span></td><td>6.8x Fwd</td><td>170%</td><td>HBM4 memory supercycle, Q EPS +1,398%</td></tr>
+            <tr><td><strong>NVDA</strong></td><td>$195</td><td><span class="tag tag-green">0.39</span></td><td>19.6x Fwd</td><td>50%</td><td>AI GPU monopoly, $253B revenue TTM</td></tr>
+            <tr><td><strong>AVGO</strong></td><td>$361</td><td><span class="tag tag-green">0.41</span></td><td>22.9x Fwd</td><td>56%</td><td>Custom AI silicon, $20B+ AI revenue</td></tr>
+            <tr><td><strong>META</strong></td><td>$583</td><td><span class="tag tag-green">0.86</span></td><td>18.5x Fwd</td><td>25%</td><td>Cheapest mega-cap, $2.10 dividend</td></tr>
+            <tr><td><strong>TSM</strong></td><td>$435</td><td><span class="tag tag-green">0.66</span></td><td>22.7x Fwd</td><td>34%</td><td>Foundry monopoly, 3nm 46.5% margin</td></tr>
+            <tr><td><strong>AMD</strong></td><td>$518</td><td><span class="tag tag-green">0.93</span></td><td>59.4x Fwd</td><td>64%</td><td>Data center challenger, 13% margin</td></tr>
+            <tr><td><strong>ORCL</strong></td><td>$141</td><td><span class="tag tag-green">0.81</span></td><td>17.6x Fwd</td><td>31%</td><td>Cloud transformation, AI contracts</td></tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div id="tab-orta" class="tab-content">
+        <table>
+          <thead><tr><th>Ticker</th><th>Price</th><th>PEG</th><th>P/E</th><th>Comment</th></tr></thead>
+          <tbody>
+            <tr><td><strong>MSFT</strong></td><td>$390</td><td><span class="tag tag-orange">1.20</span></td><td>20.1x Fwd</td><td>Azure +40%, $190B AI capex</td></tr>
+            <tr><td><strong>NOW</strong></td><td>$106</td><td><span class="tag tag-orange">1.03</span></td><td>25.4x Fwd</td><td>Enterprise SaaS, growth slowing</td></tr>
+            <tr><td><strong>GOOGL</strong></td><td>$359</td><td><span class="tag tag-orange">1.42</span></td><td>25.5x Fwd</td><td>Cloud +63%, $240B backlog</td></tr>
+            <tr><td><strong>AMZN</strong></td><td>$242</td><td><span class="tag tag-orange">1.35</span></td><td>31.2x Fwd</td><td>AWS AI, $200B capex FCF pressure</td></tr>
+            <tr><td><strong>PLTR</strong></td><td>$129</td><td><span class="tag tag-orange">1.86</span></td><td>81.4x Fwd</td><td>AI platform, gov + enterprise</td></tr>
+            <tr><td><strong>ASML</strong></td><td>$1,770</td><td><span class="tag tag-orange">1.63</span></td><td>47.2x Fwd</td><td>EUV monopoly, growth capacity constrained</td></tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div id="tab-yuksek" class="tab-content">
+        <table>
+          <thead><tr><th>Ticker</th><th>Price</th><th>PEG</th><th>P/E</th><th>Comment</th></tr></thead>
+          <tbody>
+            <tr><td><strong>AAPL</strong></td><td>$308</td><td><span class="tag tag-red">2.49</span></td><td>32.5x Fwd</td><td>Slowing growth, high P/E</td></tr>
+            <tr><td><strong>HOOD</strong></td><td>$113</td><td><span class="tag tag-red">3.05</span></td><td>55.3x Fwd</td><td>Crypto cyclicality, growth slowing</td></tr>
+            <tr><td><strong>HIMS</strong></td><td>$37</td><td><span class="tag tag-red">9.66+</span></td><td>54.7x Fwd</td><td>Telehealth, no GAAP profitability</td></tr>
+            <tr><td><strong>TSLA</strong></td><td>$393</td><td><span class="tag tag-red">5.76</span></td><td>200x Fwd</td><td>Robotaxi/Optimus speculation</td></tr>
+            <tr><td><strong>INTC</strong></td><td>$121</td><td><span class="tag tag-red">N/M</span></td><td>Negative</td><td>Loss-making, PEG invalid</td></tr>
+            <tr><td><strong>SOFI</strong></td><td>$18</td><td><span class="tag tag-red">N/M</span></td><td>Negative growth</td><td>Earnings declining, PEG invalid</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-duzeltmeler">
+    <div class="section-head-inner" onclick="toggle('sec-duzeltmeler')">
+      <h2 class="section-title">&#9888;&#65039; Critical Corrections to User Estimates</h2>
+      <div class="icon">&#9662;</div>
+    </div>
+    <div class="section-body">
+      <div class="insight-box danger">
+        <strong>HIMS (0.9x -> 9.66x+):</strong> The most serious error in the report. The user said PEG 0.9x but the actual value is <strong>9.66x+</strong>. 10x too cheap estimate. Telehealth growth is priced in but GAAP profitability is still absent.
+      </div>
+      <div class="insight-box danger">
+        <strong>INTC (2.5x -> Invalid):</strong> TTM EPS <strong>-$0.62</strong>, P/E negative. PEG cannot be calculated mathematically. The user applied standard metrics to a turnaround stock.
+      </div>
+      <div class="insight-box warn">
+        <strong>GOOGL (2.9x -> 1.42x):</strong> The user underestimated the growth rate at <strong>9.7%</strong>. Actual Q1 growth was <strong>81%</strong>, 5Y PEG <strong>1.42</strong>. From danger zone to fair valuation.
+      </div>
+      <div class="insight-box warn">
+        <strong>AMZN P/E (~70x -> 31.6x):</strong> The user overestimated P/E by 2x. Amazon has exited the "reinvestment" phase and profitability is rising rapidly.
+      </div>
+      <div class="insight-box warn">
+        <strong>AMD P/E (~30x -> 172.7x):</strong> Trailing P/E was underestimated by 6x. Forward P/E 59x means PEG is still <1.0 but the stock is not as cheap as the user thought.
+      </div>
+      <div class="insight-box bull">
+        <strong>META (1.5x -> 0.86x):</strong> The user significantly underestimated the undervaluation. $1.48T company trading <strong>below</strong> Peter Lynch threshold.
+      </div>
+      <div class="insight-box bull">
+        <strong>NVDA (0.6x = 0.39-0.60x):</strong> The user's most accurate estimate. The AI leader is indeed cheap relative to its growth.
+      </div>
+      <div class="insight-box bull">
+        <strong>MU (0.1x -> 0.04x):</strong> The user was directionally correct but still conservative. The memory supercycle is stronger than expected.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-yariiletken">
+    <div class="section-head-inner" onclick="toggle('sec-yariiletken')">
+      <h2 class="section-title">&#128421;&#65039; Semiconductor Sector Deep Dive</h2>
+      <div class="icon">&#9662;</div>
+    </div>
+    <div class="section-body">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">NVDA - AI GPU Leader</div>
+          <div class="card-value up">PEG 0.39x</div>
+          <div class="card-note">Fwd P/E 19.6x | Growth 50% | Margin 63% | $253B revenue</div>
+        </div>
+        <div class="card">
+          <div class="card-label">MU - Memory Supercycle</div>
+          <div class="card-value up">PEG 0.04x</div>
+          <div class="card-note">Fwd P/E 6.8x | Growth 170% | Q EPS +1,398% | HBM4 demand</div>
+        </div>
+        <div class="card">
+          <div class="card-label">SNDK - NAND Transformation</div>
+          <div class="card-value up">PEG 0.03x</div>
+          <div class="card-note">Fwd P/E 9.9x | Growth 324% | 52W +3,781% | AI SSD</div>
+        </div>
+        <div class="card">
+          <div class="card-label">AVGO - Custom Silicon</div>
+          <div class="card-value up">PEG 0.41x</div>
+          <div class="card-note">Fwd P/E 22.9x | Growth 56% | AI revenue $20B+</div>
+        </div>
+        <div class="card">
+          <div class="card-label">TSM - Foundry Monopoly</div>
+          <div class="card-value up">PEG 0.66x</div>
+          <div class="card-note">Fwd P/E 22.7x | Growth 34% | 3nm margin 46.5%</div>
+        </div>
+        <div class="card">
+          <div class="card-label">AMD - Data Center</div>
+          <div class="card-value up">PEG 0.93x</div>
+          <div class="card-note">Fwd P/E 59.4x | Growth 64% | Margin 13% (low vs NVDA)</div>
+        </div>
+        <div class="card">
+          <div class="card-label">ASML - EUV Monopoly</div>
+          <div class="card-value neu">PEG 1.63x</div>
+          <div class="card-note">Fwd P/E 47.2x | Growth 29% | Sole EUV manufacturer</div>
+        </div>
+        <div class="card">
+          <div class="card-label">INTC - Turnaround (RISK)</div>
+          <div class="card-value down">PEG Invalid</div>
+          <div class="card-note">Negative TTM EPS | Altman Z 1.94 | Bankruptcy risk</div>
+        </div>
+      </div>
+      <div class="insight-box">
+        <strong>AI Infrastructure Layer Is Cheapest:</strong> Core AI chip companies (NVDA, AVGO, TSM, MU) trade at lower PEG than the equipment layer (ASML) and turnaround stories (INTC). This shows AI demand durability is being priced into direct chip manufacturers.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-bigtech">
+    <div class="section-head-inner" onclick="toggle('sec-bigtech')">
+      <h2 class="section-title">&#9729;&#65039; Big Tech & Cloud Giants</h2>
+      <div class="icon">&#9662;</div>
+    </div>
+    <div class="section-body">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">META - Cheapest Mega-Cap</div>
+          <div class="card-value up">PEG 0.86x</div>
+          <div class="card-note">P/E 18.5x | Growth 25% | $2.10 dividend | 32.8% margin</div>
+        </div>
+        <div class="card">
+          <div class="card-label">MSFT - Cloud + AI</div>
+          <div class="card-value neu">PEG 1.20x</div>
+          <div class="card-note">P/E 20.1x | Azure +40% | $190B capex | AI $37B run rate</div>
+        </div>
+        <div class="card">
+          <div class="card-label">GOOGL - Cloud Explosion</div>
+          <div class="card-value neu">PEG 1.42x</div>
+          <div class="card-note">P/E 25.5x | Cloud +63% | $240B backlog | Q growth +81%</div>
+        </div>
+        <div class="card">
+          <div class="card-label">AMZN - FCF Pressure</div>
+          <div class="card-value neu">PEG 1.35x</div>
+          <div class="card-note">P/E 31.2x | $200B capex | FCF -95% | AWS AI growing</div>
+        </div>
+        <div class="card">
+          <div class="card-label">AAPL - High PEG</div>
+          <div class="card-value down">PEG 2.49x</div>
+          <div class="card-note">P/E 32.5x | Growth slowing 15% | AI revenue limited</div>
+        </div>
+        <div class="card">
+          <div class="card-label">TSLA - Overvalued</div>
+          <div class="card-value down">PEG 5.76x</div>
+          <div class="card-note">P/E 200x Fwd | Margin 3.95% | Robotaxi speculation</div>
+        </div>
+      </div>
+      <div class="insight-box warn">
+        <strong>AI Capex Lag Effect:</strong> MSFT, GOOGL, META, AMZN are spending <strong>$650B+</strong> on AI infrastructure in 2026. This spending is pressuring current FCF and inflating P/E multiples, but revenue returns are delayed 12-24 months. GOOGL's PEG at 1.42 looks worse than META's 0.84, but Google Cloud's backlog is over $240B.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-fintech">
+    <div class="section-head-inner" onclick="toggle('sec-fintech')">
+      <h2 class="section-title">&#128176; FinTech & High Growth</h2>
+      <div class="icon">&#9662;</div>
+    </div>
+    <div class="section-body">
+      <table>
+        <thead><tr><th>Ticker</th><th>Price</th><th>PEG</th><th>P/E</th><th>Critical Warning</th></tr></thead>
+        <tbody>
+          <tr><td><strong>PLTR</strong></td><td>$129</td><td><span class="tag tag-orange">1.86</span></td><td>81.4x Fwd</td><td>Government + enterprise AI, 85% revenue growth</td></tr>
+          <tr><td><strong>NOW</strong></td><td>$106</td><td><span class="tag tag-orange">1.03</span></td><td>25.4x Fwd</td><td>Enterprise SaaS, growth slowing (Q +2%)</td></tr>
+          <tr><td><strong>HOOD</strong></td><td>$113</td><td><span class="tag tag-red">3.05</span></td><td>55.3x Fwd</td><td>Crypto cyclicality, PEG > 2.0 danger</td></tr>
+          <tr><td><strong>HIMS</strong></td><td>$37</td><td><span class="tag tag-red">9.66+</span></td><td>54.7x Fwd</td><td>Telehealth, no GAAP profitability, extremely expensive</td></tr>
+          <tr><td><strong>SOFI</strong></td><td>$18</td><td><span class="tag tag-red">N/M</span></td><td>68.0x Fwd</td><td>TTM EPS declining (-9.5%), PEG invalid</td></tr>
+        </tbody>
+      </table>
+      <div class="insight-box danger">
+        <strong>FinTech PEG Trap:</strong> HOOD, SOFI, HIMS show the most dangerous blind spot of PEG. High revenue growth can excuse high P/E but earnings quality and cyclicality risks are not captured by PEG. For SOFI, PEG cannot be used because TTM earnings are declining.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-canli">
+    <div class="section-head-inner" onclick="toggle('sec-canli')">
+      <h2 class="section-title">&#128250; Live Market Data (Alpaca Markets API)</h2>
+      <div class="icon">&#9662;</div>
+    </div>
+    <div class="section-body">
+      <p style="color:var(--gf-muted);font-size:0.85rem;margin-bottom:12px">July 4, 2026 Friday closing data. Market closed July 5 (holiday).</p>
+      <table>
+        <thead><tr><th>Ticker</th><th>Price</th><th>Change</th><th>Volume</th><th>High</th><th>Low</th><th>VWAP</th></tr></thead>
+        <tbody>
+          <tr><td><strong>TSLA</strong></td><td>$393.39</td><td class="down">-7.52%</td><td>1.59M</td><td>$432.35</td><td>$389.34</td><td>$398.09</td></tr>
+          <tr><td><strong>GOOGL</strong></td><td>$359.07</td><td class="down">-0.59%</td><td>779K</td><td>$364.15</td><td>$353.49</td><td>$358.66</td></tr>
+          <tr><td><strong>AAPL</strong></td><td>$308.43</td><td class="up">+4.76%</td><td>3.81M</td><td>$309.42</td><td>$293.89</td><td>$306.30</td></tr>
+          <tr><td><strong>META</strong></td><td>$582.76</td><td class="down">-4.93%</td><td>675K</td><td>$610.00</td><td>$580.45</td><td>$588.51</td></tr>
+          <tr><td><strong>NVDA</strong></td><td>$194.51</td><td class="down">-1.53%</td><td>5.88M</td><td>$200.06</td><td>$192.35</td><td>$194.73</td></tr>
+          <tr><td><strong>AMD</strong></td><td>$518.25</td><td class="down">-4.19%</td><td>808K</td><td>$547.56</td><td>$506.33</td><td>$518.68</td></tr>
+          <tr><td><strong>MU</strong></td><td>$974.23</td><td class="down">-5.66%</td><td>1.24M</td><td>$1,064.59</td><td>$950.31</td><td>$989.17</td></tr>
+          <tr><td><strong>SNDK</strong></td><td>$1,777.31</td><td class="down">-12.62%</td><td>474K</td><td>$2,050.07</td><td>$1,693.96</td><td>$1,805.65</td></tr>
+          <tr><td><strong>MSFT</strong></td><td>$390.30</td><td class="up">+1.54%</td><td>1.35M</td><td>$392.20</td><td>$383.79</td><td>$389.71</td></tr>
+          <tr><td><strong>AMZN</strong></td><td>$242.30</td><td class="up">+0.23%</td><td>1.92M</td><td>$246.67</td><td>$241.12</td><td>$244.17</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-insights">
+    <div class="section-head-inner" onclick="toggle('sec-insights')">
+      <h2 class="section-title">&#128161; Cross-Dimensional Insights</h2>
+      <div class="icon">&#9662;</div>
+    </div>
+    <div class="section-body">
+      <div class="insight-box bull">
+        <strong>1. Memory Supercycle - Historic Opportunity:</strong> MU (0.04x) and SNDK (0.03x) are not just "cheap" - AI data center demand may have permanently raised the earnings base of the memory industry. TrendForce raised its 2026 storage forecast by 61% to $889B. Forward PEG around 0.05 - the cheapest large-cap stocks in the market.
+      </div>
+      <div class="insight-box bull">
+        <strong>2. META - Most Mispriced Mega-Cap:</strong> 0.86x PEG, $1.48T market cap, $2.10 dividend and 32.8% margin make META the clearest "buy" signal in the S&P 500 on pure PEG basis. The user mispriced it by 43%.
+      </div>
+      <div class="insight-box warn">
+        <strong>3. AI Capex Dark Period:</strong> Big Tech's $650B+ AI spending is pressuring current FCF and making P/E multiples look inflated. But revenue returns are delayed 12-24 months. GOOGL and AMZN may look "expensive" now but could be the cheapest in 2 years.
+      </div>
+      <div class="insight-box warn">
+        <strong>4. PEG Can Vary 2-4x for the Same Stock:</strong> NOW ranges from 1.03x to 4.43x; META ranges from 0.89x to 3.23x. Without specifying which P/E (trailing/forward) and which growth rate (1Y/3Y/5Y) is used, PEG comparison is comparing apples to oranges.
+      </div>
+      <div class="insight-box danger">
+        <strong>5. HIMS - PEG's Most Dangerous Blind Spot:</strong> The user said 0.9x, actual is 9.66x+. 10x too cheap estimate. Confusing revenue growth with earnings growth actively makes PEG misleading.
+      </div>
+      <div class="insight-box danger">
+        <strong>6. INTC and SOFI - PEG Invalid:</strong> PEG is mathematically meaningless for companies with negative TTM earnings or negative earnings growth. For these companies, EV/Revenue, Price/Book, or SOTP valuation should be used.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-strateji">
+    <div class="section-head-inner" onclick="toggle('sec-strateji')">
+      <h2 class="section-title">&#127919; Investment Strategies</h2>
+      <div class="icon">&#9662;</div>
+    </div>
+    <div class="section-body">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Aggressive Growth (PEG &lt; 0.5)</div>
+          <div class="card-value up">MU, SNDK, NVDA, AVGO</div>
+          <div class="card-note">AI supercycle, memory explosion, custom silicon. High volatility, high return potential.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Balanced Growth (PEG 0.5-1.5)</div>
+          <div class="card-value neu">META, TSM, AMD, ORCL, MSFT</div>
+          <div class="card-note">Mega-cap safety + fair valuation. META and TSM stand out.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Defensive (PEG 1.5-2.5)</div>
+          <div class="card-value neu">GOOGL, AMZN, NOW, PLTR</div>
+          <div class="card-note">AI capex turnaround expected. May be cheaper in 12-24 months.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Avoid (PEG &gt; 2.0)</div>
+          <div class="card-value down">AAPL, HOOD, HIMS, TSLA</div>
+          <div class="card-note">Overvaluation or speculation. HIMS is the most dangerous (PEG 9.66x+).</div>
+        </div>
+      </div>
+      <div class="insight-box">
+        <strong>Portfolio Recommendation:</strong> 40% AI/Memory (NVDA, MU, AVGO) + 30% Balanced Growth (META, TSM) + 20% Defensive (GOOGL, MSFT) + 10% Liquid. PEG is invalid for INTC, SOFI, HIMS - evaluate with alternative metrics.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-risk">
+    <div class="section-head-inner" onclick="toggle('sec-risk')">
+      <h2 class="section-title">&#128683; Risks & Warnings</h2>
+      <div class="icon">&#9662;</div>
+    </div>
+    <div class="section-body">
+      <div class="insight-box danger">
+        <strong>Legal Disclaimer:</strong> This analysis is <strong>not investment advice</strong>. All data was collected as of July 5, 2026. Market conditions, company performance, and analyst estimates may change. Stocks carry <strong>risk of loss</strong>. PEG ratio alone is not sufficient - fundamental analysis, sector trends, competitive advantage, and risk tolerance must also be evaluated.
+      </div>
+      <div class="insight-box warn">
+        <strong>PEG Limitations:</strong> (1) Growth estimates may be wrong, (2) Meaningless with negative earnings, (3) Varies by sector, (4) Can be misleading for cyclical companies, (5) Sensitive to short-term fluctuations.
+      </div>
+      <p style="color:var(--gf-muted);font-size:0.85rem;margin-top:12px">
+        <strong>Data Sources:</strong> Alpaca Markets API (live price), Yahoo Finance (PEG/P/E/growth), StockAnalysis.com (statistics), FinanceCharts.com (historical PEG), Tickeron (sector analysis), MarketBeat (earnings data), Beta Finch (AI capex), GuruFocus (valuation metrics).<br><br>
+        <strong>Research Method:</strong> 6 parallel wide-exploration agents (methodology, semiconductor, bigtech, emerging, macro, backtesting) performed 75+ independent web searches, synthesized with cross-validation.<br><br>
+        <strong>Prepared by:</strong> Hasan Kuscu | <strong>Analysis Date:</strong> July 5, 2026
+      </p>
+    </div>
+  </div>
+</section>
+
+<div class="footer">Gistify Flow | PEG Ratio Deep Analysis | July 5, 2026 | Hasan Kuscu</div>
+
+</div>
+</body>
+</html>

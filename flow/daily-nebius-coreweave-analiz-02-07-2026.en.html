@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nebius (NBIS) vs CoreWeave (CRWV) Deep Analysis | NBIS CRWV</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Nebius (NBIS) vs CoreWeave (CRWV) Deep Analysis" />
+<meta property="og:description" content="AI Neocloud comparison: financial verification, strategic risks, and investor takeaways" />
+<meta property="og:url" content="https://gistify.pro/flow/daily-nebius-coreweave-analiz-02-07-2026.en.html" />
+<meta property="og:image" content="https://gistify.pro/gistifylogo.png?v=20260706" />
+<meta property="og:site_name" content="Gistify" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Nebius (NBIS) vs CoreWeave (CRWV) Deep Analysis" />
+<meta name="twitter:description" content="AI Neocloud comparison: financial verification, strategic risks, and investor takeaways" />
+<meta name="twitter:image" content="https://gistify.pro/gistifylogo.png?v=20260706" />
+<style>
+/* GISTIFY FLOW — Unified Dark Theme */
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:720px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.hero-date{display:inline-flex;align-items:center;gap:5px;color:var(--gf-muted)}
+
+/* META PILLS */
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+
+/* SECTIONS */
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s;display:flex;align-items:center;justify-content:space-between}
+.section-head-inner:hover{background:var(--gf-card)}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent);transition:transform .2s}
+.section-head.collapsed .icon{transform:rotate(-90deg)}
+.section-body{padding:18px;display:none}
+.section-head:not(.collapsed) .section-body{display:block}
+
+/* GRID & CARDS */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px;transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-1px);border-color:rgba(56,189,248,.25)}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+
+/* TAGS */
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+
+/* INSIGHT BOX */
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.text-right{text-align:right}
+.text-center{text-align:center}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--gf-border)}
+.timeline-item{position:relative;margin-bottom:14px}
+.timeline-item::before{content:'';position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--gf-card);border:2px solid var(--gf-border)}
+.timeline-item.bull::before{border-color:var(--gf-success);background:var(--gf-success)}
+.timeline-item.bear::before{border-color:var(--gf-danger);background:var(--gf-danger)}
+.timeline-item.warn::before{border-color:var(--gf-warning);background:var(--gf-warning)}
+.timeline-date{font-size:0.78rem;color:var(--gf-muted);font-weight:600}
+.timeline-body{font-size:0.85rem;margin-top:3px;color:var(--gf-text)}
+
+/* FOOTER */
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+}
+
+/* CSS HORIZONTAL BAR CHARTS */
+.hbar-chart{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:20px;margin:14px 0}
+.hbar-title{font-size:0.92rem;font-weight:600;color:var(--gf-text);text-align:center;margin-bottom:16px}
+.hbar-row{display:flex;align-items:center;gap:10px;margin:8px 0;font-size:0.82rem}
+.hbar-label{width:90px;color:var(--gf-muted);text-align:right;flex-shrink:0}
+.hbar-track{flex:1;height:22px;background:var(--gf-elev);border-radius:4px;overflow:hidden;position:relative}
+.hbar-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:0.72rem;font-weight:600;color:#fff;white-space:nowrap}
+.hbar-val{width:70px;color:var(--gf-text);font-weight:600;font-size:0.82rem;flex-shrink:0}
+.hbar-blue{background:linear-gradient(90deg,#0ea5e9,#38bdf8)}
+.hbar-red{background:linear-gradient(90deg,#dc2626,#f87171)}
+.hbar-yellow{background:linear-gradient(90deg,#ca8a04,#fbbf24)}
+.hbar-green{background:linear-gradient(90deg,#16a34a,#4ade80)}
+.hbar-cyan{background:linear-gradient(90deg,#0891b2,#22d3ee)}
+.hbar-purple{background:linear-gradient(90deg,#7c3aed,#a78bfa)}
+</style>
+<script>
+function toggle(id){var el=document.getElementById(id);if(!el)return;el.classList.toggle('collapsed');}
+</script>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HERO -->
+<div class="hero" id="hero" data-timestamp="2026-07-02T01:08:00+03:00">
+  <h1 class="hero-h">
+    Nebius (NBIS) vs CoreWeave (CRWV): Neocloud Titans Compared
+  </h1>
+  <p class="hero-desc">
+    Two giants of AI infrastructure: financial verification, strategic risks, and investor takeaways
+  </p>
+  <div class="hero-meta">
+    <span class="meta-pill info hero-date">📅 July 2, 2026</span>
+    <span class="meta-pill info hero-date" data-timestamp="2026-07-02T01:08:00+03:00">⏰ 01:08 Istanbul</span>
+    <span class="hero-ticker">$NBIS</span>
+    <span class="hero-ticker">$CRWV</span>
+    <span class="meta-pill neu">Neocloud</span>
+    <span class="meta-pill bear">Risk</span>
+  </div>
+</div>
+
+<!-- SECTION 1: Executive Summary -->
+<section>
+  <div class="section-head" id="sec-ozet">
+    <div class="section-head-inner" onclick="toggle('sec-ozet')">
+      <h2 class="section-title">
+        📊 Executive Summary
+      </h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p>The AI revolution is witnessing the rise of <strong>"Neocloud"</strong> companies focused exclusively on GPU-based accelerated computing. One of the most compelling players is <strong>Nebius Group N.V. (NASDAQ: NBIS)</strong>.</p>
+      <div class="insight-box warn">
+        <strong>⚠️ Key Warning:</strong> NBIS's reported high net income ($621.2M) is not operational; it is a <strong>non-cash gain</strong> from ClickHouse revaluation. Both companies are engaged in a tight margin battle on the operational front.
+      </div>
+      <p>This report examines Nebius's spin-off from Yandex, <strong>Q1 2026</strong> real financial data (verified by SEC 8-K Exhibit 99.1), multi-billion-dollar infrastructure contracts with Microsoft and Meta, and acquisitions transforming the company from a hardware leasing model to an <strong>"Agentic AI"</strong> platform.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: Corporate Evolution -->
+<section>
+  <div class="section-head" id="sec-kurumsal">
+    <div class="section-head-inner" onclick="toggle('sec-kurumsal')">
+      <h2 class="section-title">
+        🏢 Corporate Evolution
+      </h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p><strong>Nebius Group N.V.</strong> emerged in mid-2024 from the corporate split of Russian tech giant Yandex, designed to shed geopolitical sanctions. Under <strong>Arkady Volozh</strong>, headquartered in Amsterdam, the company operates with approximately <strong>1,500 employees</strong> (including AI engineers) across R&D centers in Europe, North America, and Israel.</p>
+      <div class="insight-box">
+        <strong>Note:</strong> While the company retains Yandex's former autonomous driving project <strong>Avride</strong> and edtech startup <strong>TripleTen</strong>, its primary focus is a massive "Neocloud" infrastructure provider (Nebius AI Cloud).
+      </div>
+      <p>Trading resumed on <strong>Nasdaq on October 21, 2024</strong>, with the goal of building one of Europe's largest commercial AI infrastructures.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: Financial Reality -->
+<section>
+  <div class="section-head" id="sec-finansal">
+    <div class="section-head-inner" onclick="toggle('sec-finansal')">
+      <h2 class="section-title">
+        💰 Financial Reality: The "Profitability" Illusion
+      </h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p>NBIS Q1 2026 data (verified by SEC 8-K Exhibit 99.1):</p>
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Q1 2026 REVENUE</div>
+          <div class="card-value up">$399.0M</div>
+          <div class="card-note">Q1 2025: $50.9M → +684% growth</div>
+        </div>
+        <div class="card">
+          <div class="card-label">GROSS MARGIN</div>
+          <div class="card-value up">~74%</div>
+          <div class="card-note">Cost of Revenues: $103.8M</div>
+        </div>
+        <div class="card">
+          <div class="card-label">OPERATING LOSS</div>
+          <div class="card-value down">$(128.0)M</div>
+          <div class="card-note">SG&A $143.8M + D&A $212.0M</div>
+        </div>
+        <div class="card">
+          <div class="card-label">NET INCOME</div>
+          <div class="card-value up">$621.2M</div>
+          <div class="card-note">ClickHouse reval: $780.6M</div>
+        </div>
+        <div class="card">
+          <div class="card-label">ADJUSTED NET LOSS</div>
+          <div class="card-value down">$(100.3)M</div>
+          <div class="card-note">Operational reality</div>
+        </div>
+        <div class="card">
+          <div class="card-label">CASH</div>
+          <div class="card-value up">$9.30B</div>
+          <div class="card-note">$9.298 billion</div>
+        </div>
+      </div>
+      <div class="insight-box danger">
+        <strong>🔴 Critical:</strong> The vast majority of the $621.2M net income ($780.6M) comes from <strong>ClickHouse equity revaluation gain</strong>. Core operations (Adjusted Net Loss) remain at <strong>$(100.3)M</strong>. This is a critical distinction in earnings quality.
+      </div>
+
+      <!-- HBAR CHART 1: NBIS Q1 2026 -->
+      <div class="hbar-chart">
+        <div class="hbar-title">NBIS Q1 2026: Profitability Illusion Decomposed (Million USD)</div>
+        <div class="hbar-row">
+          <div class="hbar-label">Revenue</div>
+          <div class="hbar-track"><div class="hbar-fill hbar-blue" style="width:40%">$399M</div></div>
+          <div class="hbar-val">$399M</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label">Op Loss</div>
+          <div class="hbar-track"><div class="hbar-fill hbar-red" style="width:13%">-$128M</div></div>
+          <div class="hbar-val">-$128M</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label">ClickHouse</div>
+          <div class="hbar-track"><div class="hbar-fill hbar-yellow" style="width:78%">$781M</div></div>
+          <div class="hbar-val">$781M</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label">Net Income</div>
+          <div class="hbar-track"><div class="hbar-fill hbar-green" style="width:62%">$621M</div></div>
+          <div class="hbar-val">$621M</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: Strategic Growth & Acquisitions -->
+<section>
+  <div class="section-head" id="sec-stratejik">
+    <div class="section-head-inner" onclick="toggle('sec-stratejik')">
+      <h2 class="section-title">
+        🚀 Strategic Growth & Acquisitions
+      </h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p>Nebius has made critical acquisitions to transform from a capacity leasing company into a full-stack AI cloud:</p>
+      <div class="timeline">
+        <div class="timeline-item bull">
+          <div class="timeline-date">February 10, 2026</div>
+          <div class="timeline-body"><strong>Tavily</strong> acquisition: Initially $275M, <strong>up to $400M</strong> with milestones. Adds "agentic search" capabilities, enabling autonomous AI agents to work with current data without hallucination.</div>
+        </div>
+        <div class="timeline-item bull">
+          <div class="timeline-date">May 1, 2026</div>
+          <div class="timeline-body"><strong>Eigen AI</strong> acquisition: ~$643M, closing June 10, 2026. High-speed inference and model optimization technology. Significantly reduces GPU fleet "cost per token."</div>
+        </div>
+        <div class="timeline-item warn">
+          <div class="timeline-date">July 1, 2026</div>
+          <div class="timeline-body"><strong>Meta Compute</strong> announcement: Meta will lease its excess capacity to external customers. NBIS and CRWV shares dropped ~15% at the open.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5: Mega Infrastructure Contracts -->
+<section>
+  <div class="section-head" id="sec-sozlesmeler">
+    <div class="section-head-inner" onclick="toggle('sec-sozlesmeler')">
+      <h2 class="section-title">
+        🏗️ Mega Infrastructure Contracts
+      </h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">MICROSOFT</div>
+          <div class="card-value up">$17.4-19.4B</div>
+          <div class="card-note">5 years, Sept 2025. Vineland NJ 300-400 MW</div>
+        </div>
+        <div class="card">
+          <div class="card-label">META</div>
+          <div class="card-value up">~$27B</div>
+          <div class="card-note">5 years, Mar 2026. $12B + $15B optional</div>
+        </div>
+        <div class="card">
+          <div class="card-label">PENNSYLVANIA</div>
+          <div class="card-value up">1.2 GW</div>
+          <div class="card-note">AI factory, 250-350 MW goes live in 2027</div>
+        </div>
+      </div>
+      <div class="insight-box warn">
+        <strong>⚠️ Risk:</strong> Meta Compute means Nebius's largest customer suddenly becomes its most dangerous competitor. This has dealt a major blow to the "scarcity premium."
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6: The Big Comparison -->
+<section>
+  <div class="section-head" id="sec-karsilastirma">
+    <div class="section-head-inner" onclick="toggle('sec-karsilastirma')">
+      <h2 class="section-title">
+        ⚔️ CRWV vs NBIS: The Big Comparison
+      </h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <table>
+        <thead>
+          <tr><th>Criteria</th><th>CoreWeave (CRWV)</th><th>Nebius (NBIS)</th><th>Winner</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Revenue (Q1 2026)</td><td>$2.078B</td><td>$399.0M</td><td><span class="tag tag-green">CRWV</span></td></tr>
+          <tr><td>Backlog</td><td>$99.4B</td><td>~$46.4B</td><td><span class="tag tag-green">CRWV</span></td></tr>
+          <tr><td>Operating Loss</td><td>$(144)M</td><td>$(128)M</td><td><span class="tag tag-orange">TIE</span></td></tr>
+          <tr><td>Cash</td><td>$3.32B</td><td>$9.30B</td><td><span class="tag tag-green">NBIS</span></td></tr>
+          <tr><td>Long-term Debt</td><td>$17.3B</td><td>$8.43B</td><td><span class="tag tag-green">NBIS</span></td></tr>
+          <tr><td>Software Moat</td><td>W&B (ARIA)</td><td>Tavily + Eigen</td><td><span class="tag tag-orange">TIE</span></td></tr>
+        </tbody>
+      </table>
+
+      <!-- HBAR CHART 2: CRWV vs NBIS Balance Sheet -->
+      <div class="hbar-chart">
+        <div class="hbar-title">CRWV vs NBIS Balance Sheet Strength (Billion USD)</div>
+        <div class="hbar-row">
+          <div class="hbar-label">CRWV Cash</div>
+          <div class="hbar-track"><div class="hbar-fill hbar-blue" style="width:17%">$3.32B</div></div>
+          <div class="hbar-val">$3.32B</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label">CRWV Debt</div>
+          <div class="hbar-track"><div class="hbar-fill hbar-red" style="width:87%">$17.3B</div></div>
+          <div class="hbar-val">$17.3B</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label">NBIS Cash</div>
+          <div class="hbar-track"><div class="hbar-fill hbar-cyan" style="width:47%">$9.30B</div></div>
+          <div class="hbar-val">$9.30B</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label">NBIS Debt</div>
+          <div class="hbar-track"><div class="hbar-fill hbar-purple" style="width:43%">$8.43B</div></div>
+          <div class="hbar-val">$8.43B</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7: Conclusion & Investor Takeaway -->
+<section>
+  <div class="section-head" id="sec-sonuc">
+    <div class="section-head-inner" onclick="toggle('sec-sonuc')">
+      <h2 class="section-title">
+        🎯 Conclusion & Investor Takeaway
+      </h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p>CoreWeave (CRWV) and Nebius (NBIS) are two giants building the digital infrastructure of the AI era.</p>
+      <div class="insight-box bull">
+        <strong>🐂 CoreWeave (CRWV):</strong> Strategy based on absolute growth velocity, massive market share, and aggressive scaling. Unquestionable leader with quarterly $2B+ revenue and $99.4B unique backlog. However, carries massive risks like <strong>$17.3B long-term debt</strong>.
+      </div>
+      <div class="insight-box">
+        <strong>🛡️ Nebius (NBIS):</strong> For those worried about harsher competition where giants like Meta and Microsoft sell their own infrastructure. Offers a much safer, asymmetric risk-reward profile with <strong>$9.3B cash</strong>, manageable debt, and a technology moat via Tavily/Eigen acquisitions.
+      </div>
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-num up">CRWV</div><div class="kpi-label">Growth Leader</div></div>
+        <div class="kpi"><div class="kpi-num up">NBIS</div><div class="kpi-label">Balance Sheet Safety</div></div>
+        <div class="kpi"><div class="kpi-num neu">Meta Compute</div><div class="kpi-label">Sector Threat</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">
+  Gistify Flow | July 2, 2026 | Data verified against SEC EDGAR, Yahoo Finance, Reuters sources
+</div>
+
+</div>
+</body>
+</html>
