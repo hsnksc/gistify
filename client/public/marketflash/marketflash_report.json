@@ -1,1878 +1,513 @@
 {
-  "schemaVersion": "2.1",
+  "schemaVersion": "2.0",
   "reportType": "hourly",
   "reportDate": "2026-07-06",
-  "generatedAt": "2026-07-06T21:57:59.069082",
+  "generatedAt": "2026-07-06T19:27:18.772760+00:00",
   "marketRegime": {
-    "vix": 15.94,
+    "vix": 15.82,
     "regime": "normal",
     "breadth": null,
     "riskMode": "AGRESIF",
-    "paramsVersion": "2.1"
+    "paramsVersion": 2
   },
   "marketSummary": {
     "spy": {
-      "price": 751.03,
-      "change": 0.83,
-      "vwap": 749.97,
+      "price": 752.27,
+      "change": 0.99,
+      "vwap": 750.308891,
       "open": 748.22,
-      "high": 751.52,
+      "high": 752.4,
       "low": 747.455,
-      "volume": 857420,
-      "prevClose": 744.86
+      "prevClose": 744.86,
+      "volume": 1071277
     },
     "qqq": {
-      "price": 722.65,
-      "change": 1.42,
-      "vwap": 723.18,
+      "price": 724.98,
+      "change": 1.75,
+      "vwap": 723.264656,
       "open": 719.65,
       "high": 726.03,
       "low": 718.58,
-      "volume": 392902,
-      "prevClose": 712.53
+      "prevClose": 712.53,
+      "volume": 458974
     },
     "iwm": {
-      "price": 299.78,
-      "change": 0.75,
-      "vwap": 299.56,
+      "price": 299.49,
+      "change": 0.66,
+      "vwap": 299.547073,
       "open": 297.745,
       "high": 300.395,
       "low": 297.74,
-      "volume": 988997,
-      "prevClose": 297.54
+      "prevClose": 297.54,
+      "volume": 1125333
+    },
+    "vix": {
+      "price": 15.82,
+      "change": -0.33,
+      "note": "CBOE VIX Spot, marketwatch verisi"
     }
   },
   "topMovers": {
     "gainers": [
       {
         "ticker": "IREN",
-        "price": 44.49,
-        "change": 14.61,
+        "company": "IREN Limited",
+        "price": 43.715,
+        "change": 12.58,
         "volume": 32830000,
-        "catalyst": "Bitcoin mining institutional interest; AI infrastructure demand"
+        "vwap": 43.928228,
+        "catalyst": "Momentum breakout",
+        "sector": null,
+        "marketCap": 15.9,
+        "week52Range": null
       },
       {
         "ticker": "BMNR",
-        "price": 15.85,
-        "change": 10.41,
+        "company": "Bitmine Immersion Technologies",
+        "price": 15.87,
+        "change": 10.55,
         "volume": 25283000,
-        "catalyst": "Bitcoin immersion mining + AI datacenter dual play"
-      },
-      {
-        "ticker": "WULF",
-        "price": 23.26,
-        "change": 9.84,
-        "volume": 48312000,
-        "catalyst": "Anthropic lease at Justified Data Campus (Jul 6); AI datacenter pivot"
+        "vwap": 15.484481,
+        "catalyst": "Momentum breakout",
+        "sector": null,
+        "marketCap": 9.031,
+        "week52Range": null
       },
       {
         "ticker": "JOBY",
-        "price": 9.17,
-        "change": 8.01,
+        "company": "Joby Aviation, Inc.",
+        "price": 9.12,
+        "change": 7.42,
         "volume": 27031000,
-        "catalyst": "eVTOL aviation momentum; FAA certification progress"
+        "vwap": 9.138103,
+        "catalyst": "Momentum breakout",
+        "sector": null,
+        "marketCap": 9.02,
+        "week52Range": null
       },
       {
-        "ticker": "OPEN",
-        "price": 5.28,
-        "change": 7.65,
-        "volume": 47795000,
-        "catalyst": "Real estate tech momentum; volume breakout"
+        "ticker": "CIFR",
+        "company": "Cipher Digital Inc.",
+        "price": 21.49,
+        "change": 6.89,
+        "volume": 31109000,
+        "vwap": 21.89491,
+        "catalyst": "Momentum breakout",
+        "sector": null,
+        "marketCap": 8.197,
+        "week52Range": null
+      },
+      {
+        "ticker": "NVTS",
+        "company": "Navitas Semiconductor",
+        "price": 15.38,
+        "change": 6.29,
+        "volume": 29486000,
+        "vwap": 15.601638,
+        "catalyst": "Momentum breakout",
+        "sector": null,
+        "marketCap": 3.522,
+        "week52Range": null
       }
     ],
     "losers": [
       {
-        "ticker": "CMG",
-        "price": 34.12,
-        "change": -3.53,
-        "volume": 7687150,
-        "catalyst": "Chipotle stock split aftermath; valuation pressure"
+        "ticker": "TTMI",
+        "company": "TTM Technologies, Inc.",
+        "price": 149.8,
+        "change": -3.95,
+        "volume": 3099000,
+        "vwap": 154.495945,
+        "catalyst": "Sector weakness / breakdown",
+        "sector": null,
+        "marketCap": 16.199,
+        "week52Range": null
       },
       {
-        "ticker": "GRAB",
-        "price": 3.81,
-        "change": -2.44,
-        "volume": 40117000,
-        "catalyst": "Southeast Asia tech selloff; Grab profitability concerns"
+        "ticker": "VECO",
+        "company": "Veeco Instruments Inc.",
+        "price": 55.445,
+        "change": -3.72,
+        "volume": 2674000,
+        "vwap": 56.743334,
+        "catalyst": "Sector weakness / breakdown",
+        "sector": null,
+        "marketCap": 3.509,
+        "week52Range": null
+      },
+      {
+        "ticker": "SPCX",
+        "company": "Space Exploration Technologies Corp.",
+        "price": 156.185,
+        "change": -3.49,
+        "volume": 37140000,
+        "vwap": 160.971733,
+        "catalyst": "Sector weakness / breakdown",
+        "sector": null,
+        "marketCap": 2123,
+        "week52Range": null
+      },
+      {
+        "ticker": "FORM",
+        "company": "FormFactor, Inc.",
+        "price": 120.19,
+        "change": -2.72,
+        "volume": 2104000,
+        "vwap": 124.051048,
+        "catalyst": "Sector weakness / breakdown",
+        "sector": null,
+        "marketCap": 9.634,
+        "week52Range": null
       },
       {
         "ticker": "PFE",
-        "price": 23.84,
-        "change": -1.95,
+        "company": "Pfizer Inc.",
+        "price": 23.785,
+        "change": -2.16,
         "volume": 33473000,
-        "catalyst": "Pharma patent cliff; obesity drug pipeline disappointment"
-      },
-      {
-        "ticker": "KVUE",
-        "price": 19.54,
-        "change": -1.34,
-        "volume": 6841720,
-        "catalyst": "Consumer staples rotation out; Johnson & Johnson spinoff fatigue"
-      },
-      {
-        "ticker": "CPRT",
-        "price": 29.6,
-        "change": -1.33,
-        "volume": 6980490,
-        "catalyst": "Auto salvage auction cyclical pressure; profit taking"
+        "vwap": 23.746923,
+        "catalyst": "Sector weakness / breakdown",
+        "sector": null,
+        "marketCap": 135.903,
+        "week52Range": null
       }
     ]
   },
   "momentumLeaders": [
     {
       "rank": 1,
-      "ticker": "WULF",
-      "price": 23.26,
-      "changePct": 9.84,
-      "rvol": 4.98,
-      "mss": 78.6,
+      "ticker": "TSLA",
+      "company": "Tesla, Inc.",
+      "sector": null,
+      "price": 416.9,
+      "changePct": 6.13,
+      "rvol": 0.56,
+      "mss": 75,
       "grade": "A",
-      "direction": "CALL",
+      "phase": "ATEŞLEME (Gün 1)",
       "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 14.0,
+        "volumeProfile": 15.0,
+        "catalystDurability": 15.0,
         "priceStructure": 11.2,
-        "trendPosition": 10.8,
-        "relativeStrength": 10.0,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 5.6,
-        "regimeFit": 5.0,
+        "trendPosition": 9.0,
+        "relativeStrength": 7.5,
+        "historicalBaseRate": 7.5,
+        "institutionalFlow": 6.0,
+        "regimeFit": 3.8,
         "exhaustionPenalty": 0
       },
       "catalyst": {
-        "summary": "Anthropic lease at Justified Data Campus (Jul 6); AI datacenter pivot",
-        "tier": 2,
-        "halfLife": "gunler"
+        "summary": "Momentum breakout with volume",
+        "tier": 3,
+        "halfLife": "saatler–1 gün"
+      },
+      "historicalStats": {
+        "momentumAge": 1,
+        "consecutiveHigherLows": 1,
+        "closeStrength3d": 0.91,
+        "volumeTrend": "karışık",
+        "atrExtension": 3.07,
+        "continuationBaseRate": null,
+        "distFrom52wHighPct": null
       },
       "tradePlan": {
-        "entryZone": "22.91-23.61",
-        "stop": 21.89,
-        "t1": 25.32,
-        "t2": 26.69,
+        "entryZone": "410.67–414.82",
+        "stop": 404.39,
+        "t1": 430.47,
+        "t2": 440.89,
         "rr": 1.5,
         "positionNote": "tam pozisyon"
       },
       "exhaustionFlags": [],
-      "validationNote": "Fiyat farki 4.8%: Alpaca=22.145, Web=23.26; Hacim farki 16.6x: Alpaca=2,910,669, Web=48,312,000; Degisim farki 5.3%: Alpaca=4.58, Web=9.84",
-      "dataSource": "web"
+      "sources": [
+        "Alpaca IEX snapshot",
+        "Yahoo Finance most active"
+      ]
     },
     {
       "rank": 2,
-      "ticker": "IREN",
-      "price": 44.49,
-      "changePct": 14.61,
-      "rvol": 6.26,
-      "mss": 78.6,
+      "ticker": "RIVN",
+      "company": "Rivian Automotive, Inc.",
+      "sector": null,
+      "price": 19.785,
+      "changePct": 6.26,
+      "rvol": 0.72,
+      "mss": 73,
       "grade": "A",
-      "direction": "CALL",
+      "phase": "ATEŞLEME (Gün 1)",
       "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 14.0,
-        "priceStructure": 11.2,
-        "trendPosition": 10.8,
-        "relativeStrength": 10.0,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 5.6,
-        "regimeFit": 5.0,
+        "volumeProfile": 14.6,
+        "catalystDurability": 14.6,
+        "priceStructure": 10.9,
+        "trendPosition": 8.8,
+        "relativeStrength": 7.3,
+        "historicalBaseRate": 7.3,
+        "institutionalFlow": 5.8,
+        "regimeFit": 3.7,
         "exhaustionPenalty": 0
       },
       "catalyst": {
-        "summary": "Bitcoin mining institutional interest; AI infrastructure demand",
-        "tier": 2,
-        "halfLife": "gunler"
+        "summary": "Momentum breakout with volume",
+        "tier": 3,
+        "halfLife": "saatler–1 gün"
+      },
+      "historicalStats": {
+        "momentumAge": 1,
+        "consecutiveHigherLows": 1,
+        "closeStrength3d": 0.92,
+        "volumeTrend": "karışık",
+        "atrExtension": 3.13,
+        "continuationBaseRate": null,
+        "distFrom52wHighPct": null
       },
       "tradePlan": {
-        "entryZone": "43.82-45.16",
-        "stop": 40.59,
-        "t1": 50.34,
-        "t2": 54.24,
+        "entryZone": "19.49–19.69",
+        "stop": 19.19,
+        "t1": 20.44,
+        "t2": 20.94,
         "rr": 1.5,
         "positionNote": "tam pozisyon"
       },
       "exhaustionFlags": [],
-      "validationNote": "Fiyat farki 1.5%: Alpaca=43.82, Web=44.49; Hacim farki 20.9x: Alpaca=1,574,068, Web=32,830,000; Degisim farki 1.8%: Alpaca=12.85, Web=14.61",
-      "dataSource": "web"
+      "sources": [
+        "Alpaca IEX snapshot",
+        "Yahoo Finance most active"
+      ]
     },
     {
       "rank": 3,
-      "ticker": "TSLA",
-      "price": 418.75,
-      "changePct": 6.43,
-      "rvol": 10.16,
-      "mss": 78.6,
-      "grade": "A",
-      "direction": "CALL",
-      "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 14.0,
-        "priceStructure": 11.2,
-        "trendPosition": 10.8,
-        "relativeStrength": 10.0,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 5.6,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "Robotaxi service expanded to Miami; Q2 delivery beat expectations",
-        "tier": 2,
-        "halfLife": "gunler"
-      },
-      "tradePlan": {
-        "entryZone": "412.47-425.03",
-        "stop": 402.59,
-        "t1": 442.99,
-        "t2": 459.15,
-        "rr": 1.5,
-        "positionNote": "tam pozisyon"
-      },
-      "exhaustionFlags": [],
-      "validationNote": "Hacim farki 33.9x: Alpaca=905,293, Web=30,666,000",
-      "dataSource": "web"
-    },
-    {
-      "rank": 4,
-      "ticker": "JOBY",
-      "price": 9.17,
-      "changePct": 8.01,
-      "rvol": 7.61,
-      "mss": 78.6,
-      "grade": "A",
-      "direction": "CALL",
-      "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 14.0,
-        "priceStructure": 11.2,
-        "trendPosition": 10.8,
-        "relativeStrength": 10.0,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 5.6,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "eVTOL aviation momentum; FAA certification progress",
-        "tier": 2,
-        "halfLife": "gunler"
-      },
-      "tradePlan": {
-        "entryZone": "9.03-9.31",
-        "stop": 8.73,
-        "t1": 9.83,
-        "t2": 10.27,
-        "rr": 1.5,
-        "positionNote": "tam pozisyon"
-      },
-      "exhaustionFlags": [],
-      "validationNote": "Hacim farki 25.4x: Alpaca=1,065,601, Web=27,031,000; Degisim farki 1.5%: Alpaca=6.48, Web=8.01",
-      "dataSource": "web"
-    },
-    {
-      "rank": 5,
       "ticker": "BMNR",
-      "price": 15.85,
-      "changePct": 10.41,
-      "rvol": 8.34,
-      "mss": 78.6,
+      "company": "Bitmine Immersion Technologies",
+      "sector": null,
+      "price": 15.87,
+      "changePct": 10.55,
+      "rvol": 0.65,
+      "mss": 71,
       "grade": "A",
-      "direction": "CALL",
+      "phase": "ATEŞLEME (Gün 1)",
       "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 14.0,
-        "priceStructure": 11.2,
-        "trendPosition": 10.8,
-        "relativeStrength": 10.0,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 5.6,
-        "regimeFit": 5.0,
+        "volumeProfile": 14.2,
+        "catalystDurability": 14.2,
+        "priceStructure": 10.7,
+        "trendPosition": 8.5,
+        "relativeStrength": 7.1,
+        "historicalBaseRate": 7.1,
+        "institutionalFlow": 5.7,
+        "regimeFit": 3.6,
         "exhaustionPenalty": 0
       },
       "catalyst": {
-        "summary": "Bitcoin immersion mining + AI datacenter dual play",
-        "tier": 2,
-        "halfLife": "gunler"
-      },
-      "tradePlan": {
-        "entryZone": "15.61-16.09",
-        "stop": 14.86,
-        "t1": 17.34,
-        "t2": 18.32,
-        "rr": 1.51,
-        "positionNote": "tam pozisyon"
-      },
-      "exhaustionFlags": [],
-      "validationNote": "Fiyat farki 2.3%: Alpaca=15.49, Web=15.85; Hacim farki 27.8x: Alpaca=909,110, Web=25,283,000; Degisim farki 2.5%: Alpaca=7.91, Web=10.41",
-      "dataSource": "web"
-    },
-    {
-      "rank": 6,
-      "ticker": "AMD",
-      "price": 553.39,
-      "changePct": 6.87,
-      "rvol": 9.63,
-      "mss": 78.6,
-      "grade": "A",
-      "direction": "CALL",
-      "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 14.0,
-        "priceStructure": 11.2,
-        "trendPosition": 10.8,
-        "relativeStrength": 10.0,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 5.6,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "Goldman Sachs PT $640 (was $450); Turing Japan autonomous driving GPU deal",
-        "tier": 2,
-        "halfLife": "gunler"
-      },
-      "tradePlan": {
-        "entryZone": "545.09-561.69",
-        "stop": 530.58,
-        "t1": 587.6,
-        "t2": 610.41,
-        "rr": 1.5,
-        "positionNote": "tam pozisyon"
-      },
-      "exhaustionFlags": [],
-      "validationNote": "Hacim farki 32.1x: Alpaca=626,555, Web=20,111,724",
-      "dataSource": "web"
-    },
-    {
-      "rank": 7,
-      "ticker": "OPEN",
-      "price": 5.28,
-      "changePct": 7.65,
-      "rvol": 5.36,
-      "mss": 74.6,
-      "grade": "A",
-      "direction": "CALL",
-      "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 10.0,
-        "priceStructure": 11.2,
-        "trendPosition": 10.8,
-        "relativeStrength": 10.0,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 5.6,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "Real estate tech momentum; volume breakout",
+        "summary": "Momentum breakout with volume",
         "tier": 3,
-        "halfLife": "saatler"
+        "halfLife": "saatler–1 gün"
+      },
+      "historicalStats": {
+        "momentumAge": 1,
+        "consecutiveHigherLows": 1,
+        "closeStrength3d": 0.84,
+        "volumeTrend": "karışık",
+        "atrExtension": 5.29,
+        "continuationBaseRate": null,
+        "distFrom52wHighPct": null
       },
       "tradePlan": {
-        "entryZone": "5.20-5.36",
-        "stop": 5.04,
-        "t1": 5.64,
-        "t2": 5.88,
+        "entryZone": "15.63–15.79",
+        "stop": 15.39,
+        "t1": 16.39,
+        "t2": 16.79,
         "rr": 1.5,
         "positionNote": "tam pozisyon"
       },
       "exhaustionFlags": [],
-      "validationNote": "Fiyat farki 3.2%: Alpaca=5.11, Web=5.28; Hacim farki 17.9x: Alpaca=2,676,120, Web=47,795,000; Degisim farki 3.8%: Alpaca=3.86, Web=7.65",
-      "dataSource": "web"
+      "sources": [
+        "Alpaca IEX snapshot",
+        "Yahoo Finance most active"
+      ]
+    }
+  ],
+  "watchlist": [
+    {
+      "ticker": "VECO",
+      "mss": 49,
+      "upgradeTrigger": "$55.445 üstü günlük kapanış + RVOL > 2 → yeniden skorla"
     },
     {
-      "rank": 8,
-      "ticker": "RIVN",
-      "price": 19.83,
-      "changePct": 6.41,
-      "rvol": 4.89,
-      "mss": 74.6,
-      "grade": "A",
-      "direction": "CALL",
-      "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 10.0,
-        "priceStructure": 11.2,
-        "trendPosition": 10.8,
-        "relativeStrength": 10.0,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 5.6,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "EV delivery ramp; Amazon van partnership progress",
-        "tier": 3,
-        "halfLife": "saatler"
-      },
-      "tradePlan": {
-        "entryZone": "19.53-20.13",
-        "stop": 19.07,
-        "t1": 20.97,
-        "t2": 21.73,
-        "rr": 1.5,
-        "positionNote": "tam pozisyon"
-      },
-      "exhaustionFlags": [],
-      "validationNote": "Hacim farki 16.3x: Alpaca=1,348,772, Web=21,973,000",
-      "dataSource": "web"
+      "ticker": "ONTO",
+      "mss": 49,
+      "upgradeTrigger": "$304.24 üstü günlük kapanış + RVOL > 2 → yeniden skorla"
     },
     {
-      "rank": 9,
-      "ticker": "PLTR",
-      "price": 132.9,
-      "changePct": 2.78,
-      "rvol": 6.05,
-      "mss": 69.6,
-      "grade": "A",
-      "direction": "CALL",
-      "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 14.0,
-        "priceStructure": 9.0,
-        "trendPosition": 9.0,
-        "relativeStrength": 5.0,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 5.6,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "Nvidia partnership; AI software rotation; government contract pipeline",
-        "tier": 2,
-        "halfLife": "gunler"
-      },
-      "tradePlan": {
-        "entryZone": "130.91-134.89",
-        "stop": 130.68,
-        "t1": 136.23,
-        "t2": 138.45,
-        "rr": 1.5,
-        "positionNote": "tam pozisyon"
-      },
-      "exhaustionFlags": [],
-      "validationNote": "Hacim farki 20.2x: Alpaca=1,106,070, Web=22,314,000",
-      "dataSource": "web"
+      "ticker": "CIFR",
+      "mss": 48,
+      "upgradeTrigger": "$21.49 üstü günlük kapanış + RVOL > 2 → yeniden skorla"
     },
     {
-      "rank": 10,
-      "ticker": "ONDS",
-      "price": 7.71,
-      "changePct": 4.03,
-      "rvol": 15.29,
-      "mss": 68.1,
-      "grade": "A",
-      "direction": "CALL",
-      "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 10.0,
-        "priceStructure": 9.0,
-        "trendPosition": 9.0,
-        "relativeStrength": 7.5,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 5.6,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "Drone/IoT infrastructure play; government contract buzz",
-        "tier": 3,
-        "halfLife": "saatler"
-      },
-      "tradePlan": {
-        "entryZone": "7.59-7.83",
-        "stop": 7.52,
-        "t1": 8.0,
-        "t2": 8.19,
-        "rr": 1.53,
-        "positionNote": "tam pozisyon"
-      },
-      "exhaustionFlags": [],
-      "validationNote": "Hacim farki 51.0x: Alpaca=811,663, Web=41,372,000",
-      "dataSource": "web"
+      "ticker": "PATH",
+      "mss": 47,
+      "upgradeTrigger": "$11.965 üstü günlük kapanış + RVOL > 2 → yeniden skorla"
     },
     {
-      "rank": 11,
-      "ticker": "SOFI",
-      "price": 18.89,
-      "changePct": 3.56,
-      "rvol": 9.46,
-      "mss": 68.1,
-      "grade": "A",
-      "direction": "CALL",
-      "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 10.0,
-        "priceStructure": 9.0,
-        "trendPosition": 9.0,
-        "relativeStrength": 7.5,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 5.6,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "Fintech momentum; GAAP profitability path",
-        "tier": 3,
-        "halfLife": "saatler"
-      },
-      "tradePlan": {
-        "entryZone": "18.61-19.17",
-        "stop": 18.49,
-        "t1": 19.49,
-        "t2": 19.89,
-        "rr": 1.5,
-        "positionNote": "tam pozisyon"
-      },
-      "exhaustionFlags": [],
-      "validationNote": "Hacim farki 31.5x: Alpaca=1,371,696, Web=43,239,000",
-      "dataSource": "web"
+      "ticker": "ALGM",
+      "mss": 47,
+      "upgradeTrigger": "$57.55 üstü günlük kapanış + RVOL > 2 → yeniden skorla"
     },
     {
-      "rank": 12,
+      "ticker": "WULF",
+      "mss": 46,
+      "upgradeTrigger": "$22.28 üstü günlük kapanış + RVOL > 2 → yeniden skorla"
+    },
+    {
+      "ticker": "ACLS",
+      "mss": 45,
+      "upgradeTrigger": "$141.825 üstü günlük kapanış + RVOL > 2 → yeniden skorla"
+    },
+    {
+      "ticker": "UCTT",
+      "mss": 45,
+      "upgradeTrigger": "$106.87 üstü günlük kapanış + RVOL > 2 → yeniden skorla"
+    },
+    {
+      "ticker": "OUST",
+      "mss": 45,
+      "upgradeTrigger": "$50.14 üstü günlük kapanış + RVOL > 2 → yeniden skorla"
+    },
+    {
+      "ticker": "ACMR",
+      "mss": 45,
+      "upgradeTrigger": "$99.435 üstü günlük kapanış + RVOL > 2 → yeniden skorla"
+    }
+  ],
+  "carryForwardHealthCheck": [],
+  "disqualified": [
+    {
       "ticker": "NOK",
-      "price": 12.52,
-      "changePct": 3.73,
-      "rvol": 4.3,
-      "mss": 68.1,
-      "grade": "A",
-      "direction": "CALL",
-      "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 10.0,
-        "priceStructure": 9.0,
-        "trendPosition": 9.0,
-        "relativeStrength": 7.5,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 5.6,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "5G infrastructure demand; Nokia network upgrades",
-        "tier": 3,
-        "halfLife": "saatler"
-      },
-      "tradePlan": {
-        "entryZone": "12.33-12.71",
-        "stop": 12.24,
-        "t1": 12.94,
-        "t2": 13.22,
-        "rr": 1.5,
-        "positionNote": "tam pozisyon"
-      },
-      "exhaustionFlags": [],
-      "validationNote": "Hacim farki 14.3x: Alpaca=2,501,830, Web=35,854,000",
-      "dataSource": "web"
+      "reason": "MSS 34 — skor düşük, sönümlenme: KAPANIS_ZAYIF"
     },
     {
-      "rank": 13,
-      "ticker": "F",
-      "price": 13.81,
-      "changePct": 3.36,
-      "rvol": 4.85,
-      "mss": 68.1,
-      "grade": "A",
-      "direction": "CALL",
-      "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 10.0,
-        "priceStructure": 9.0,
-        "trendPosition": 9.0,
-        "relativeStrength": 7.5,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 5.6,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "EV/truck momentum; Ford Pro commercial growth",
-        "tier": 3,
-        "halfLife": "saatler"
-      },
-      "tradePlan": {
-        "entryZone": "13.60-14.02",
-        "stop": 13.53,
-        "t1": 14.23,
-        "t2": 14.51,
-        "rr": 1.5,
-        "positionNote": "tam pozisyon"
-      },
-      "exhaustionFlags": [],
-      "validationNote": "Hacim farki 16.2x: Alpaca=1,776,197, Web=28,693,000",
-      "dataSource": "web"
-    },
-    {
-      "rank": 14,
-      "ticker": "INTC",
-      "price": 124.27,
-      "changePct": 3.26,
-      "rvol": 8.59,
-      "mss": 68.1,
-      "grade": "A",
-      "direction": "CALL",
-      "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 10.0,
-        "priceStructure": 9.0,
-        "trendPosition": 9.0,
-        "relativeStrength": 7.5,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 5.6,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "Intel AI chip demand; foundry business traction",
-        "tier": 3,
-        "halfLife": "saatler"
-      },
-      "tradePlan": {
-        "entryZone": "122.41-126.13",
-        "stop": 121.84,
-        "t1": 127.91,
-        "t2": 130.34,
-        "rr": 1.5,
-        "positionNote": "tam pozisyon"
-      },
-      "exhaustionFlags": [],
-      "validationNote": "Hacim farki 28.6x: Alpaca=1,696,172, Web=48,580,000; Degisim farki 1.6%: Alpaca=1.67, Web=3.26",
-      "dataSource": "web"
-    },
-    {
-      "rank": 15,
-      "ticker": "AAPL",
-      "price": 312.78,
-      "changePct": 1.34,
-      "rvol": 7.09,
-      "mss": 59.6,
-      "grade": "B",
-      "direction": "CALL",
-      "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 4.0,
-        "priceStructure": 9.0,
-        "trendPosition": 9.0,
-        "relativeStrength": 5.0,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 5.6,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "iPhone upgrade cycle; AI features anticipation",
-        "tier": 4,
-        "halfLife": "saatler"
-      },
-      "tradePlan": {
-        "entryZone": "308.09-317.47",
-        "stop": 310.27,
-        "t1": 316.54,
-        "t2": 319.05,
-        "rr": 1.5,
-        "positionNote": "%50-75 pozisyon"
-      },
-      "exhaustionFlags": [],
-      "validationNote": "Hacim farki 23.6x: Alpaca=1,115,402, Web=26,379,000",
-      "dataSource": "web"
-    },
-    {
-      "rank": 16,
-      "ticker": "AMZN",
-      "price": 245.6,
-      "changePct": 1.21,
-      "rvol": 2.83,
-      "mss": 58.0,
-      "grade": "B",
-      "direction": "CALL",
-      "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 4.0,
-        "priceStructure": 9.0,
-        "trendPosition": 9.0,
-        "relativeStrength": 5.0,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 4.0,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "AWS AI demand; Prime growth",
-        "tier": 4,
-        "halfLife": "saatler"
-      },
-      "tradePlan": {
-        "entryZone": "241.92-249.28",
-        "stop": 243.82,
-        "t1": 248.27,
-        "t2": 250.05,
-        "rr": 1.5,
-        "positionNote": "%50-75 pozisyon"
-      },
-      "exhaustionFlags": [],
-      "validationNote": "Hacim farki 9.4x: Alpaca=1,297,335, Web=12,237,370",
-      "dataSource": "web"
-    },
-    {
-      "rank": 17,
-      "ticker": "META",
-      "price": 594.07,
-      "changePct": 1.92,
-      "rvol": 9.07,
-      "mss": 58.0,
-      "grade": "B",
-      "direction": "CALL",
-      "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 4.0,
-        "priceStructure": 9.0,
-        "trendPosition": 9.0,
-        "relativeStrength": 5.0,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 4.0,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "AI ad targeting; Llama model adoption",
-        "tier": 4,
-        "halfLife": "saatler"
-      },
-      "tradePlan": {
-        "entryZone": "585.16-602.98",
-        "stop": 587.23,
-        "t1": 604.33,
-        "t2": 611.17,
-        "rr": 1.5,
-        "positionNote": "%50-75 pozisyon"
-      },
-      "exhaustionFlags": [],
-      "validationNote": "Hacim farki 30.2x: Alpaca=495,879, Web=15,000,000; Degisim farki 1.2%: Alpaca=3.08, Web=1.92",
-      "dataSource": "web"
-    },
-    {
-      "rank": 18,
-      "ticker": "GOOGL",
-      "price": 362.53,
-      "changePct": 1.78,
-      "rvol": 7.65,
-      "mss": 58.0,
-      "grade": "B",
-      "direction": "CALL",
-      "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 4.0,
-        "priceStructure": 9.0,
-        "trendPosition": 9.0,
-        "relativeStrength": 5.0,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 4.0,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "Search AI integration; Gemini platform growth",
-        "tier": 4,
-        "halfLife": "saatler"
-      },
-      "tradePlan": {
-        "entryZone": "357.09-367.97",
-        "stop": 358.66,
-        "t1": 368.33,
-        "t2": 372.2,
-        "rr": 1.5,
-        "positionNote": "%50-75 pozisyon"
-      },
-      "exhaustionFlags": [],
-      "validationNote": "Hacim farki 25.5x: Alpaca=587,954, Web=15,000,000",
-      "dataSource": "web"
-    },
-    {
-      "rank": 19,
-      "ticker": "NVDA",
-      "price": 196.56,
-      "changePct": 0.89,
-      "rvol": 4.18,
-      "mss": 53.6,
-      "grade": "B",
-      "direction": "CALL",
-      "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 4.0,
-        "priceStructure": 9.0,
-        "trendPosition": 9.0,
-        "relativeStrength": 3.0,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 5.6,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": -4
-      },
-      "catalyst": {
-        "summary": "General AI demand support; no specific near-term catalyst",
-        "tier": 4,
-        "halfLife": "saatler"
-      },
-      "tradePlan": {
-        "entryZone": "193.61-199.51",
-        "stop": 195.51,
-        "t1": 198.14,
-        "t2": 199.19,
-        "rr": 1.5,
-        "positionNote": "%50-75 pozisyon"
-      },
-      "exhaustionFlags": [
-        "KAPANIS_ZAYIF"
-      ],
-      "validationNote": "Hacim farki 13.9x: Alpaca=3,622,876, Web=50,424,000",
-      "dataSource": "web"
-    },
-    {
-      "rank": 20,
-      "ticker": "GRAB",
-      "price": 3.81,
-      "changePct": -2.44,
-      "rvol": 3.2,
-      "mss": 48.3,
-      "grade": "C",
-      "direction": "PUT",
-      "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 4.0,
-        "priceStructure": 6.0,
-        "trendPosition": 4.2,
-        "relativeStrength": 1.5,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 5.6,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "Southeast Asia tech selloff; Grab profitability concerns",
-        "tier": 4,
-        "halfLife": "saatler"
-      },
-      "tradePlan": {
-        "entryZone": "3.75-3.87",
-        "stop": 3.87,
-        "t1": 3.72,
-        "t2": 3.66,
-        "rr": 1.5,
-        "positionNote": "%50-75 pozisyon"
-      },
-      "exhaustionFlags": [],
-      "validationNote": "Hacim farki 10.7x: Alpaca=3,755,435, Web=40,117,000; Degisim farki 1.2%: Alpaca=-1.28, Web=-2.44",
-      "dataSource": "web"
-    },
-    {
-      "rank": 21,
-      "ticker": "PFE",
-      "price": 23.84,
-      "changePct": -1.95,
-      "rvol": 3.87,
-      "mss": 48.3,
-      "grade": "C",
-      "direction": "PUT",
-      "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 4.0,
-        "priceStructure": 6.0,
-        "trendPosition": 4.2,
-        "relativeStrength": 1.5,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 5.6,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "Pharma patent cliff; obesity drug pipeline disappointment",
-        "tier": 4,
-        "halfLife": "saatler"
-      },
-      "tradePlan": {
-        "entryZone": "23.48-24.20",
-        "stop": 24.12,
-        "t1": 23.42,
-        "t2": 23.14,
-        "rr": 1.5,
-        "positionNote": "%50-75 pozisyon"
-      },
-      "exhaustionFlags": [],
-      "validationNote": "Hacim farki 12.9x: Alpaca=2,596,654, Web=33,473,000",
-      "dataSource": "web"
-    },
-    {
-      "rank": 22,
-      "ticker": "VZ",
-      "price": 42.12,
-      "changePct": -1.03,
-      "rvol": 3.21,
-      "mss": 48.3,
-      "grade": "C",
-      "direction": "PUT",
-      "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 4.0,
-        "priceStructure": 6.0,
-        "trendPosition": 4.2,
-        "relativeStrength": 1.5,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 5.6,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "Defensive telecom underperformance; dividend yield rotation",
-        "tier": 4,
-        "halfLife": "saatler"
-      },
-      "tradePlan": {
-        "entryZone": "41.49-42.75",
-        "stop": 42.38,
-        "t1": 41.73,
-        "t2": 41.47,
-        "rr": 1.5,
-        "positionNote": "%50-75 pozisyon"
-      },
-      "exhaustionFlags": [],
-      "validationNote": "Hacim farki 10.7x: Alpaca=3,039,766, Web=32,520,000",
-      "dataSource": "web"
-    },
-    {
-      "rank": 23,
       "ticker": "AAL",
-      "price": 17.83,
-      "changePct": -0.47,
-      "rvol": 9.29,
-      "mss": 46.8,
-      "grade": "C",
-      "direction": "PUT",
-      "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 4.0,
-        "priceStructure": 6.0,
-        "trendPosition": 4.2,
-        "relativeStrength": 3.0,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 5.6,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": -3
-      },
-      "catalyst": {
-        "summary": "Airline sector weakness; fuel cost pressure; Boeing delivery delays",
-        "tier": 4,
-        "halfLife": "saatler"
-      },
-      "tradePlan": {
-        "entryZone": "17.56-18.10",
-        "stop": 17.88,
-        "t1": 17.75,
-        "t2": 17.7,
-        "rr": 1.6,
-        "positionNote": "%50-75 pozisyon"
-      },
-      "exhaustionFlags": [],
-      "validationNote": "Hacim farki 31.0x: Alpaca=2,098,191, Web=64,984,000",
-      "dataSource": "web"
-    },
-    {
-      "rank": 24,
-      "ticker": "MSFT",
-      "price": 385.87,
-      "changePct": -1.18,
-      "rvol": 4.9,
-      "mss": 46.7,
-      "grade": "C",
-      "direction": "PUT",
-      "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 4.0,
-        "priceStructure": 6.0,
-        "trendPosition": 4.2,
-        "relativeStrength": 1.5,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 4.0,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "Azure AI demand; Copilot enterprise adoption",
-        "tier": 4,
-        "halfLife": "saatler"
-      },
-      "tradePlan": {
-        "entryZone": "380.08-391.66",
-        "stop": 388.6,
-        "t1": 381.77,
-        "t2": 379.04,
-        "rr": 1.5,
-        "positionNote": "%50-75 pozisyon"
-      },
-      "exhaustionFlags": [],
-      "validationNote": "Hacim farki 16.3x: Alpaca=918,943, Web=15,000,000",
-      "dataSource": "web"
-    },
-    {
-      "rank": 25,
-      "ticker": "CMG",
-      "price": 34.12,
-      "changePct": -3.53,
-      "rvol": 2.77,
-      "mss": 46.7,
-      "grade": "C",
-      "direction": "PUT",
-      "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 4.0,
-        "priceStructure": 6.0,
-        "trendPosition": 4.2,
-        "relativeStrength": 1.5,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 4.0,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "Chipotle stock split aftermath; valuation pressure",
-        "tier": 4,
-        "halfLife": "saatler"
-      },
-      "tradePlan": {
-        "entryZone": "33.61-34.63",
-        "stop": 34.84,
-        "t1": 33.04,
-        "t2": 32.32,
-        "rr": 1.5,
-        "positionNote": "%50-75 pozisyon"
-      },
-      "exhaustionFlags": [],
-      "validationNote": "Hacim farki 9.2x: Alpaca=833,030, Web=7,687,150",
-      "dataSource": "web"
-    },
-    {
-      "rank": 26,
-      "ticker": "KVUE",
-      "price": 19.54,
-      "changePct": -1.34,
-      "rvol": 2.86,
-      "mss": 46.7,
-      "grade": "C",
-      "direction": "PUT",
-      "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 4.0,
-        "priceStructure": 6.0,
-        "trendPosition": 4.2,
-        "relativeStrength": 1.5,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 4.0,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "Consumer staples rotation out; Johnson & Johnson spinoff fatigue",
-        "tier": 4,
-        "halfLife": "saatler"
-      },
-      "tradePlan": {
-        "entryZone": "19.25-19.83",
-        "stop": 19.7,
-        "t1": 19.3,
-        "t2": 19.14,
-        "rr": 1.5,
-        "positionNote": "%50-75 pozisyon"
-      },
-      "exhaustionFlags": [],
-      "validationNote": "Hacim farki 9.5x: Alpaca=717,245, Web=6,841,720",
-      "dataSource": "web"
-    },
-    {
-      "rank": 27,
-      "ticker": "CPRT",
-      "price": 29.6,
-      "changePct": -1.33,
-      "rvol": 2.76,
-      "mss": 46.7,
-      "grade": "C",
-      "direction": "PUT",
-      "scoreBreakdown": {
-        "volumeProfile": 17.0,
-        "catalystDurability": 4.0,
-        "priceStructure": 6.0,
-        "trendPosition": 4.2,
-        "relativeStrength": 1.5,
-        "historicalBaseRate": 5.0,
-        "institutionalFlow": 4.0,
-        "regimeFit": 5.0,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "Auto salvage auction cyclical pressure; profit taking",
-        "tier": 4,
-        "halfLife": "saatler"
-      },
-      "tradePlan": {
-        "entryZone": "29.16-30.04",
-        "stop": 29.84,
-        "t1": 29.24,
-        "t2": 29.0,
-        "rr": 1.5,
-        "positionNote": "%50-75 pozisyon"
-      },
-      "exhaustionFlags": [],
-      "validationNote": "Hacim farki 9.2x: Alpaca=758,739, Web=6,980,490",
-      "dataSource": "web"
+      "reason": "MSS 32 — skor düşük, sönümlenme: KAPANIS_ZAYIF"
     }
   ],
   "callSetups": [
     {
-      "ticker": "WULF",
-      "direction": "call",
-      "entry": 23.61,
-      "target": 25.32,
-      "stop": 21.89,
-      "riskReward": 1.5,
-      "rationale": "Momentum continuation — Anthropic lease at Justified Data Campus (Jul 6); AI datacenter pivot",
-      "timeframe": "0DTE"
-    },
-    {
-      "ticker": "IREN",
-      "direction": "call",
-      "entry": 45.16,
-      "target": 50.34,
-      "stop": 40.59,
-      "riskReward": 1.5,
-      "rationale": "Momentum continuation — Bitcoin mining institutional interest; AI infrastructure demand",
-      "timeframe": "0DTE"
-    },
-    {
       "ticker": "TSLA",
       "direction": "call",
-      "entry": 425.03,
-      "target": 442.99,
-      "stop": 402.59,
-      "riskReward": 1.5,
-      "rationale": "Momentum continuation — Robotaxi service expanded to Miami; Q2 delivery beat expectations",
+      "entry": "414.82",
+      "target": "435.68",
+      "stop": "404.39",
+      "riskReward": 2.0,
+      "rationale": "MSS 75 — momentum + RVOL 0.56x, VWAP üstü kapanış gücü 0.91",
       "timeframe": "0DTE"
     },
     {
-      "ticker": "JOBY",
+      "ticker": "RIVN",
       "direction": "call",
-      "entry": 9.31,
-      "target": 9.83,
-      "stop": 8.73,
-      "riskReward": 1.5,
-      "rationale": "Momentum continuation — eVTOL aviation momentum; FAA certification progress",
+      "entry": "19.69",
+      "target": "20.69",
+      "stop": "19.19",
+      "riskReward": 2.0,
+      "rationale": "MSS 73 — momentum + RVOL 0.72x, VWAP üstü kapanış gücü 0.92",
       "timeframe": "0DTE"
     },
     {
       "ticker": "BMNR",
       "direction": "call",
-      "entry": 16.09,
-      "target": 17.34,
-      "stop": 14.86,
-      "riskReward": 1.51,
-      "rationale": "Momentum continuation — Bitcoin immersion mining + AI datacenter dual play",
+      "entry": "15.79",
+      "target": "16.59",
+      "stop": "15.39",
+      "riskReward": 2.0,
+      "rationale": "MSS 71 — momentum + RVOL 0.65x, VWAP üstü kapanış gücü 0.84",
+      "timeframe": "0DTE"
+    },
+    {
+      "ticker": "JOBY",
+      "direction": "call",
+      "entry": "9.07",
+      "target": "9.51",
+      "stop": "8.85",
+      "riskReward": 2.0,
+      "rationale": "MSS 63 — B grade momentum, RVOL 0.81x, VWAP üstü",
+      "timeframe": "0DTE"
+    },
+    {
+      "ticker": "IREN",
+      "direction": "call",
+      "entry": "43.5",
+      "target": "45.7",
+      "stop": "42.4",
+      "riskReward": 2.0,
+      "rationale": "MSS 61 — B grade momentum, RVOL 0.71x, VWAP üstü",
       "timeframe": "0DTE"
     }
   ],
   "putSetups": [
     {
-      "ticker": "MSFT",
+      "ticker": "VECO",
       "direction": "put",
-      "entry": 380.08,
-      "target": 381.77,
-      "stop": 388.6,
-      "riskReward": 1.5,
-      "rationale": "Mean reversion / VWAP rejection — Azure AI demand; Copilot enterprise adoption",
-      "timeframe": "intraday"
+      "entry": "55.72",
+      "target": "53.18",
+      "stop": "56.99",
+      "riskReward": 2.0,
+      "rationale": "MSS 49 — breakdown momentum, RVOL 1.63x, sector weakness",
+      "timeframe": "swing"
     },
     {
-      "ticker": "CMG",
+      "ticker": "ONTO",
       "direction": "put",
-      "entry": 33.61,
-      "target": 33.04,
-      "stop": 34.84,
-      "riskReward": 1.5,
-      "rationale": "Mean reversion / VWAP rejection — Chipotle stock split aftermath; valuation pressure",
-      "timeframe": "intraday"
+      "entry": "305.76",
+      "target": "302.46",
+      "stop": "307.41",
+      "riskReward": 2.0,
+      "rationale": "MSS 49 — breakdown momentum, RVOL 1.61x, sector weakness",
+      "timeframe": "swing"
     },
     {
-      "ticker": "KVUE",
+      "ticker": "ACLS",
       "direction": "put",
-      "entry": 19.25,
-      "target": 19.3,
-      "stop": 19.7,
-      "riskReward": 1.5,
-      "rationale": "Mean reversion / VWAP rejection — Consumer staples rotation out; Johnson & Johnson spinoff fatigue",
-      "timeframe": "intraday"
+      "entry": "142.53",
+      "target": "140.11",
+      "stop": "143.74",
+      "riskReward": 2.0,
+      "rationale": "MSS 45 — breakdown momentum, RVOL 1.49x, sector weakness",
+      "timeframe": "swing"
     },
     {
-      "ticker": "CPRT",
+      "ticker": "FORM",
       "direction": "put",
-      "entry": 29.16,
-      "target": 29.24,
-      "stop": 29.84,
-      "riskReward": 1.5,
-      "rationale": "Mean reversion / VWAP rejection — Auto salvage auction cyclical pressure; profit taking",
-      "timeframe": "intraday"
+      "entry": "120.79",
+      "target": "117.11",
+      "stop": "122.63",
+      "riskReward": 2.0,
+      "rationale": "MSS 45 — breakdown momentum, RVOL 1.04x, sector weakness",
+      "timeframe": "swing"
     },
     {
-      "ticker": "AAL",
+      "ticker": "TTMI",
       "direction": "put",
-      "entry": 17.56,
-      "target": 17.75,
-      "stop": 17.88,
-      "riskReward": 1.6,
-      "rationale": "Mean reversion / VWAP rejection — Airline sector weakness; fuel cost pressure; Boeing delivery delays",
-      "timeframe": "0DTE"
+      "entry": "150.55",
+      "target": "143.17",
+      "stop": "154.24",
+      "riskReward": 2.0,
+      "rationale": "MSS 45 — breakdown momentum, RVOL 1.19x, sector weakness",
+      "timeframe": "swing"
     }
   ],
-  "watchlist": [
-    {
-      "ticker": "PATH",
-      "mss": 68.1,
-      "upgradeTrigger": "R/R 1.48 < 1.5"
-    },
-    {
-      "ticker": "SPCX",
-      "mss": 49.8,
-      "upgradeTrigger": "R/R 1.49 < 1.5"
-    }
-  ],
-  "carryForwardHealthCheck": [],
-  "disqualified": [],
+  "earningsCalendar": [],
+  "vwapNotes": "SPY VWAP 750.308891 üstünde (752.27 vs VWAP) → risk-on. QQQ güçlü momentum (+1.75%). IWM Russell 2000 yatay.",
+  "riskAssessment": {
+    "level": "low",
+    "vixRegime": "VIX 15.82 (<20) — complacency/normal, AGRESIF mod",
+    "sectorRotation": "Semiconductor/tech güçlü satış baskısı altında (VICR, ACLS, VECO, TER -13% ila -19%). EV/momentum hisseleri (TSLA, RIVN, JOBY) alıcılı. Crypto miners (IREN, WULF) güçlü.",
+    "earningsRisk": "Bugün taramaya giren hisseler arasında yakın earnings yok.",
+    "macroRisk": "FOMC öncesi sessizlik, VIX düşük. Yarım gün değil."
+  },
+  "nextDayCarryForward": [],
   "systemPerformance": {
     "sampleSize": 0,
     "hitRateT3": null,
     "avgReturnT3Pct": null,
     "gradeAHitRateT3": null,
     "gradeBHitRateT3": null,
-    "calibrationNote": "Dual-source validation: Alpaca + Web karsilastirildi. Alpaca paper free-tier hacim verisi gercek piyasayla uyusmuyor (AMD 625K vs 20M+, TSLA 905K vs 30M+). Fiyat tutarli ise Alpaca, hacim farki >2x ise Web tercih edildi. Tum hisselerde Web hacmi gercekci bulundu ve tercih edildi."
-  },
-  "earningsCalendar": [],
-  "vwapNotes": "SPY VWAP ustu (751.03 vs 749.97), QQQ VWAP ustu (722.65 vs 723.18), IWM VWAP ustu (299.78 vs 299.56). Gap fill durumu: SPY acilis 748.22, gap +3.36.",
-  "riskAssessment": {
-    "level": "low",
-    "vixRegime": "VIX 15.94 normal band",
-    "sectorRotation": "AI / Semiconductor / Robotaxi / Bitcoin mining temalari one cikiyor; havacilik (eVTOL) momentum kazaniyor",
-    "earningsRisk": "Onumuzdeki 5 gun icinde kritik earnings yok (TSLA 22 Temmuz, NVDA 26 Agustos).",
-    "macroRisk": "FOMC oncesi donem sakin; VIX < 20 risk-on."
-  },
-  "dataValidation": {
-    "method": "dual-source",
-    "alpacaStatus": "success",
-    "symbolsWithAlpaca": [
-      "WULF",
-      "IREN",
-      "TSLA",
-      "JOBY",
-      "BMNR",
-      "AMD",
-      "OPEN",
-      "ONDS",
-      "SOFI",
-      "NOK",
-      "F",
-      "PATH",
-      "RIVN",
-      "PLTR",
-      "INTC",
-      "NVDA",
-      "AAPL",
-      "AMZN",
-      "META",
-      "GOOGL",
-      "MSFT",
-      "CMG",
-      "KVUE",
-      "CPRT",
-      "AAL",
-      "GRAB",
-      "PFE",
-      "VZ",
-      "SPCX"
-    ],
-    "discrepancies": [
-      {
-        "ticker": "WULF",
-        "alpaca": {
-          "price": 22.145,
-          "prev_close": 21.175,
-          "change": 4.58,
-          "volume": 2910669,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 23.26,
-          "change": 9.84,
-          "volume": 48312000
-        },
-        "notes": "Fiyat farki 4.8%: Alpaca=22.145, Web=23.26; Hacim farki 16.6x: Alpaca=2,910,669, Web=48,312,000; Degisim farki 5.3%: Alpaca=4.58, Web=9.84",
-        "chosen": "web"
-      },
-      {
-        "ticker": "IREN",
-        "alpaca": {
-          "price": 43.82,
-          "prev_close": 38.83,
-          "change": 12.85,
-          "volume": 1574068,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 44.49,
-          "change": 14.61,
-          "volume": 32830000
-        },
-        "notes": "Fiyat farki 1.5%: Alpaca=43.82, Web=44.49; Hacim farki 20.9x: Alpaca=1,574,068, Web=32,830,000; Degisim farki 1.8%: Alpaca=12.85, Web=14.61",
-        "chosen": "web"
-      },
-      {
-        "ticker": "TSLA",
-        "alpaca": {
-          "price": 417.055,
-          "prev_close": 392.82,
-          "change": 6.17,
-          "volume": 905293,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 418.75,
-          "change": 6.43,
-          "volume": 30666000
-        },
-        "notes": "Hacim farki 33.9x: Alpaca=905,293, Web=30,666,000",
-        "chosen": "web"
-      },
-      {
-        "ticker": "JOBY",
-        "alpaca": {
-          "price": 9.04,
-          "prev_close": 8.49,
-          "change": 6.48,
-          "volume": 1065601,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 9.17,
-          "change": 8.01,
-          "volume": 27031000
-        },
-        "notes": "Hacim farki 25.4x: Alpaca=1,065,601, Web=27,031,000; Degisim farki 1.5%: Alpaca=6.48, Web=8.01",
-        "chosen": "web"
-      },
-      {
-        "ticker": "BMNR",
-        "alpaca": {
-          "price": 15.49,
-          "prev_close": 14.355,
-          "change": 7.91,
-          "volume": 909110,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 15.85,
-          "change": 10.41,
-          "volume": 25283000
-        },
-        "notes": "Fiyat farki 2.3%: Alpaca=15.49, Web=15.85; Hacim farki 27.8x: Alpaca=909,110, Web=25,283,000; Degisim farki 2.5%: Alpaca=7.91, Web=10.41",
-        "chosen": "web"
-      },
-      {
-        "ticker": "AMD",
-        "alpaca": {
-          "price": 553.99,
-          "prev_close": 518.25,
-          "change": 6.9,
-          "volume": 626555,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 553.39,
-          "change": 6.87,
-          "volume": 20111724
-        },
-        "notes": "Hacim farki 32.1x: Alpaca=626,555, Web=20,111,724",
-        "chosen": "web"
-      },
-      {
-        "ticker": "OPEN",
-        "alpaca": {
-          "price": 5.11,
-          "prev_close": 4.92,
-          "change": 3.86,
-          "volume": 2676120,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 5.28,
-          "change": 7.65,
-          "volume": 47795000
-        },
-        "notes": "Fiyat farki 3.2%: Alpaca=5.11, Web=5.28; Hacim farki 17.9x: Alpaca=2,676,120, Web=47,795,000; Degisim farki 3.8%: Alpaca=3.86, Web=7.65",
-        "chosen": "web"
-      },
-      {
-        "ticker": "ONDS",
-        "alpaca": {
-          "price": 7.69,
-          "prev_close": 7.41,
-          "change": 3.78,
-          "volume": 811663,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 7.71,
-          "change": 4.03,
-          "volume": 41372000
-        },
-        "notes": "Hacim farki 51.0x: Alpaca=811,663, Web=41,372,000",
-        "chosen": "web"
-      },
-      {
-        "ticker": "SOFI",
-        "alpaca": {
-          "price": 18.8,
-          "prev_close": 18.26,
-          "change": 2.96,
-          "volume": 1371696,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 18.89,
-          "change": 3.56,
-          "volume": 43239000
-        },
-        "notes": "Hacim farki 31.5x: Alpaca=1,371,696, Web=43,239,000",
-        "chosen": "web"
-      },
-      {
-        "ticker": "NOK",
-        "alpaca": {
-          "price": 12.475,
-          "prev_close": 12.055,
-          "change": 3.48,
-          "volume": 2501830,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 12.52,
-          "change": 3.73,
-          "volume": 35854000
-        },
-        "notes": "Hacim farki 14.3x: Alpaca=2,501,830, Web=35,854,000",
-        "chosen": "web"
-      },
-      {
-        "ticker": "F",
-        "alpaca": {
-          "price": 13.825,
-          "prev_close": 13.345,
-          "change": 3.6,
-          "volume": 1776197,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 13.81,
-          "change": 3.36,
-          "volume": 28693000
-        },
-        "notes": "Hacim farki 16.2x: Alpaca=1,776,197, Web=28,693,000",
-        "chosen": "web"
-      },
-      {
-        "ticker": "PATH",
-        "alpaca": {
-          "price": 12.035,
-          "prev_close": 11.69,
-          "change": 2.95,
-          "volume": 1309160,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 12.24,
-          "change": 4.52,
-          "volume": 29719000
-        },
-        "notes": "Fiyat farki 1.7%: Alpaca=12.035, Web=12.24; Hacim farki 22.7x: Alpaca=1,309,160, Web=29,719,000; Degisim farki 1.6%: Alpaca=2.95, Web=4.52",
-        "chosen": "web"
-      },
-      {
-        "ticker": "RIVN",
-        "alpaca": {
-          "price": 19.75,
-          "prev_close": 18.62,
-          "change": 6.07,
-          "volume": 1348772,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 19.83,
-          "change": 6.41,
-          "volume": 21973000
-        },
-        "notes": "Hacim farki 16.3x: Alpaca=1,348,772, Web=21,973,000",
-        "chosen": "web"
-      },
-      {
-        "ticker": "PLTR",
-        "alpaca": {
-          "price": 132.64,
-          "prev_close": 129.18,
-          "change": 2.68,
-          "volume": 1106070,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 132.9,
-          "change": 2.78,
-          "volume": 22314000
-        },
-        "notes": "Hacim farki 20.2x: Alpaca=1,106,070, Web=22,314,000",
-        "chosen": "web"
-      },
-      {
-        "ticker": "INTC",
-        "alpaca": {
-          "price": 122.41,
-          "prev_close": 120.395,
-          "change": 1.67,
-          "volume": 1696172,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 124.27,
-          "change": 3.26,
-          "volume": 48580000
-        },
-        "notes": "Hacim farki 28.6x: Alpaca=1,696,172, Web=48,580,000; Degisim farki 1.6%: Alpaca=1.67, Web=3.26",
-        "chosen": "web"
-      },
-      {
-        "ticker": "NVDA",
-        "alpaca": {
-          "price": 196.51,
-          "prev_close": 194.51,
-          "change": 1.03,
-          "volume": 3622876,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 196.56,
-          "change": 0.89,
-          "volume": 50424000
-        },
-        "notes": "Hacim farki 13.9x: Alpaca=3,622,876, Web=50,424,000",
-        "chosen": "web"
-      },
-      {
-        "ticker": "AAPL",
-        "alpaca": {
-          "price": 313.29,
-          "prev_close": 308.235,
-          "change": 1.64,
-          "volume": 1115402,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 312.78,
-          "change": 1.34,
-          "volume": 26379000
-        },
-        "notes": "Hacim farki 23.6x: Alpaca=1,115,402, Web=26,379,000",
-        "chosen": "web"
-      },
-      {
-        "ticker": "AMZN",
-        "alpaca": {
-          "price": 245.6,
-          "prev_close": 242.3,
-          "change": 1.36,
-          "volume": 1297335,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 245.6,
-          "change": 1.21,
-          "volume": 12237370
-        },
-        "notes": "Hacim farki 9.4x: Alpaca=1,297,335, Web=12,237,370",
-        "chosen": "web"
-      },
-      {
-        "ticker": "META",
-        "alpaca": {
-          "price": 600.68,
-          "prev_close": 582.76,
-          "change": 3.08,
-          "volume": 495879,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 594.07,
-          "change": 1.92,
-          "volume": 15000000
-        },
-        "notes": "Hacim farki 30.2x: Alpaca=495,879, Web=15,000,000; Degisim farki 1.2%: Alpaca=3.08, Web=1.92",
-        "chosen": "web"
-      },
-      {
-        "ticker": "GOOGL",
-        "alpaca": {
-          "price": 366.35,
-          "prev_close": 359.69,
-          "change": 1.85,
-          "volume": 587954,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 362.53,
-          "change": 1.78,
-          "volume": 15000000
-        },
-        "notes": "Hacim farki 25.5x: Alpaca=587,954, Web=15,000,000",
-        "chosen": "web"
-      },
-      {
-        "ticker": "MSFT",
-        "alpaca": {
-          "price": 385.9,
-          "prev_close": 389.79,
-          "change": -1.0,
-          "volume": 918943,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 385.87,
-          "change": -1.18,
-          "volume": 15000000
-        },
-        "notes": "Hacim farki 16.3x: Alpaca=918,943, Web=15,000,000",
-        "chosen": "web"
-      },
-      {
-        "ticker": "CMG",
-        "alpaca": {
-          "price": 34.26,
-          "prev_close": 35.385,
-          "change": -3.18,
-          "volume": 833030,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 34.12,
-          "change": -3.53,
-          "volume": 7687150
-        },
-        "notes": "Hacim farki 9.2x: Alpaca=833,030, Web=7,687,150",
-        "chosen": "web"
-      },
-      {
-        "ticker": "KVUE",
-        "alpaca": {
-          "price": 19.615,
-          "prev_close": 19.81,
-          "change": -0.98,
-          "volume": 717245,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 19.54,
-          "change": -1.34,
-          "volume": 6841720
-        },
-        "notes": "Hacim farki 9.5x: Alpaca=717,245, Web=6,841,720",
-        "chosen": "web"
-      },
-      {
-        "ticker": "CPRT",
-        "alpaca": {
-          "price": 29.535,
-          "prev_close": 30.005,
-          "change": -1.57,
-          "volume": 758739,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 29.6,
-          "change": -1.33,
-          "volume": 6980490
-        },
-        "notes": "Hacim farki 9.2x: Alpaca=758,739, Web=6,980,490",
-        "chosen": "web"
-      },
-      {
-        "ticker": "AAL",
-        "alpaca": {
-          "price": 17.9,
-          "prev_close": 17.91,
-          "change": -0.06,
-          "volume": 2098191,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 17.83,
-          "change": -0.47,
-          "volume": 64984000
-        },
-        "notes": "Hacim farki 31.0x: Alpaca=2,098,191, Web=64,984,000",
-        "chosen": "web"
-      },
-      {
-        "ticker": "GRAB",
-        "alpaca": {
-          "price": 3.85,
-          "prev_close": 3.9,
-          "change": -1.28,
-          "volume": 3755435,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 3.81,
-          "change": -2.44,
-          "volume": 40117000
-        },
-        "notes": "Hacim farki 10.7x: Alpaca=3,755,435, Web=40,117,000; Degisim farki 1.2%: Alpaca=-1.28, Web=-2.44",
-        "chosen": "web"
-      },
-      {
-        "ticker": "PFE",
-        "alpaca": {
-          "price": 23.825,
-          "prev_close": 24.31,
-          "change": -2.0,
-          "volume": 2596654,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 23.84,
-          "change": -1.95,
-          "volume": 33473000
-        },
-        "notes": "Hacim farki 12.9x: Alpaca=2,596,654, Web=33,473,000",
-        "chosen": "web"
-      },
-      {
-        "ticker": "VZ",
-        "alpaca": {
-          "price": 41.92,
-          "prev_close": 42.555,
-          "change": -1.49,
-          "volume": 3039766,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 42.12,
-          "change": -1.03,
-          "volume": 32520000
-        },
-        "notes": "Hacim farki 10.7x: Alpaca=3,039,766, Web=32,520,000",
-        "chosen": "web"
-      },
-      {
-        "ticker": "SPCX",
-        "alpaca": {
-          "price": 155.99,
-          "prev_close": 161.83,
-          "change": -3.61,
-          "volume": 1835236,
-          "sma20": null,
-          "avg_vol": null,
-          "rvol": null,
-          "source": "Alpaca"
-        },
-        "web": {
-          "price": 161.18,
-          "change": -0.51,
-          "volume": 37140000
-        },
-        "notes": "Fiyat farki 3.2%: Alpaca=155.99, Web=161.18; Hacim farki 20.2x: Alpaca=1,835,236, Web=37,140,000; Degisim farki 3.1%: Alpaca=-3.61, Web=-0.51",
-        "chosen": "web"
-      }
-    ],
-    "summary": "29 sembolde fark tespit edildi. Hacim: Alpaca paper tier hacimleri gercek piyasaya gore 10-50x dusuk. Fiyat: Alpaca ve Web arasinda fark <2% (tutarli). Degisim: Fark <1% (tutarli). Sonuc: Hacim icin Web (Yahoo Finance) tercih edildi; fiyat/degisim icin Alpaca onaylandi."
-  },
-  "nextDayCarryForward": []
+    "calibrationNote": "Ledger boş — sistem karnesi after-market fazında ilk kez doldurulacak."
+  }
 }
