@@ -19,6 +19,7 @@ Kullanim:
 
 import argparse
 import importlib
+import os
 import subprocess
 import sys
 import time
@@ -81,6 +82,48 @@ def run_stage_module(module_name: str, func_name: str, date_slug: str, dry_run: 
 
     except Exception as e:
         log(f"[FAIL] Stage {module_name} hata: {e}")
+        return False
+
+
+def run_flow_converter_stage(date_slug: str, dry_run: bool) -> bool:
+    """
+    flow_converter.py'yi subprocess olarak calistirir.
+    """
+    script_path = Path(__file__).parent / "flow_converter.py"
+    if not script_path.exists():
+        log(f"[FAIL] flow_converter.py bulunamadi: {script_path}")
+        return False
+
+    meta_path = Path("data/x_research/articles") / f"makale_{date_slug}_meta.json"
+    cmd = [sys.executable, str(script_path), "--meta", str(meta_path)]
+    if dry_run:
+        log("[DRY-RUN] flow_converter calistirilacak: " + " ".join(cmd))
+        return True
+
+    try:
+        result = subprocess.run(
+            cmd,
+            cwd=str(Path(__file__).parent.parent),
+            capture_output=True,
+            text=True,
+            timeout=300,
+        )
+        if result.returncode == 0:
+            if result.stdout:
+                for line in result.stdout.strip().splitlines():
+                    log(f"  [converter] {line}")
+            return True
+        else:
+            log(f"[FAIL] flow_converter.py exit code {result.returncode}")
+            if result.stderr:
+                for line in result.stderr.strip().splitlines():
+                    log(f"  [converter-err] {line}")
+            return False
+    except subprocess.TimeoutExpired:
+        log("[FAIL] flow_converter.py timeout (300s)")
+        return False
+    except Exception as e:
+        log(f"[FAIL] flow_converter.py hata: {e}")
         return False
 
 
