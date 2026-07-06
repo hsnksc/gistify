@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import type {
   CpiPpiForecastData, CpiPpiForecastPipelineState, MacroForecastBias, MacroForecastPipelineMetadata, MacroForecastPipelineStatus, MacroForecastRelease, MacroForecastScenario, MacroForecastWorkspaceData, MacroForecastWorkspaceKey, } from "@shared/cpiPpiForecast";
 import {
-  Activity, CalendarDays, Database, RefreshCw, ShieldAlert, Sparkles, Target, TrendingUp, } from "lucide-react";
+  Activity, Archive, CalendarDays, ChevronDown, Database, RefreshCw, ShieldAlert, Sparkles, Target, TrendingUp, } from "lucide-react";
 import WorkspaceLoadingState from "@/components/workspace/WorkspaceLoadingState";
 import { Button } from "@/components/ui/button";
 import { usePageMeta } from "@/hooks/usePageMeta";
@@ -283,6 +283,74 @@ function CompactStatCard({
       <p className="mt-1.5 text-sm font-semibold text-foreground">{value}</p>
       <p className="mt-1 text-[11px] leading-5 text-muted-foreground">{hint}</p>
     </article>
+  );
+}
+
+function ForecastArchiveBanner({
+  onToggle,
+  open,
+}: {
+  onToggle: () => void;
+  open: boolean;
+}) {
+  return (
+    <section className="mt-3 rounded-xl border border-cyan-300/30 bg-[linear-gradient(180deg,rgba(34,211,238,0.12),rgba(8,47,73,0.24))] px-4 py-3">
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex min-w-0 items-start gap-3">
+          <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg border border-cyan-300/30 bg-cyan-300/12">
+            <Archive className="size-4 text-cyan-100" />
+          </span>
+          <div className="min-w-0">
+            <p className="heading-condensed text-xs uppercase tracking-[0.16em] text-cyan-100">
+              {t("macro:archiveBannerTitle")}
+            </p>
+            <p className="mt-1 text-sm leading-6 text-foreground/84">
+              {t("macro:archiveBannerBody")}
+            </p>
+          </div>
+        </div>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="h-9 border-cyan-200/30 bg-cyan-300/18 text-cyan-50 shadow-none hover:bg-cyan-300/28"
+          onClick={onToggle}
+        >
+          <Archive className="size-3.5" />
+          {t("macro:archiveBannerTitle")}
+          <ChevronDown
+            className={cn("size-3.5 transition-transform", open ? "rotate-180" : "")}
+          />
+        </Button>
+      </div>
+
+      {open ? (
+        <div className="mt-3 flex flex-wrap gap-2">
+          {[
+            {
+              href: "/cpi_forecast_june_2026.json",
+              label: t("macro:cpiJune2026Archive"),
+            },
+            {
+              href: "/ppi_forecast_june_2026.json",
+              label: t("macro:ppiJune2026Archive"),
+            },
+          ].map(item => (
+            <Button
+              asChild
+              key={item.href}
+              size="sm"
+              className="h-9 rounded-lg border border-cyan-200/30 bg-cyan-300/18 text-cyan-50 shadow-none hover:bg-cyan-300/28"
+            >
+              <a href={item.href} rel="noreferrer" target="_blank">
+                <Archive className="size-3.5" />
+                {item.label}
+              </a>
+            </Button>
+          ))}
+        </div>
+      ) : null}
+    </section>
   );
 }
 
@@ -976,6 +1044,7 @@ export default function CpiPpiForecastPage({
   const [forecast, setForecast] = useState<CpiPpiForecastData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [showJuneComparison, setShowJuneComparison] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   usePageMeta({
@@ -1185,6 +1254,11 @@ export default function CpiPpiForecastPage({
             {error}
           </div>
         ) : null}
+
+        <ForecastArchiveBanner
+          onToggle={() => setShowJuneComparison(current => !current)}
+          open={showJuneComparison}
+        />
 
         <main className="mt-3 grid grid-cols-1 gap-3 lg:grid-cols-2 items-start">
           {workspaceSlots.map(item =>
