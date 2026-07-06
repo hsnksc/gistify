@@ -12,8 +12,10 @@
 
 | Target | Host path | Container path | Env |
 |--------|-----------|----------------|-----|
-| **Docker** | `/srv/gistify/midas/midas_signals.json` | `/data/midas/midas_signals.json` | `MIDAS_PIPELINE_SOURCE_FILE=/data/midas/midas_signals.json` |
-| **Bare metal** | `/var/gistify/data/midas/midas_signals.json` | — | `MIDAS_PIPELINE_SOURCE_FILE=/var/gistify/data/midas/midas_signals.json` |
+| **Midas signals (Docker)** | `/srv/gistify/midas/midas_signals.json` | `/data/midas/midas_signals.json` | `MIDAS_PIPELINE_SOURCE_FILE=/data/midas/midas_signals.json` |
+| **Midas signals (Bare metal)** | `/var/gistify/data/midas/midas_signals.json` | — | `MIDAS_PIPELINE_SOURCE_FILE=/var/gistify/data/midas/midas_signals.json` |
+| **SQLite DB (Docker)** | `/srv/gistify/data` | `/app/data` | `BILLING_DB_PATH=/app/data/billing.sqlite` |
+| **SQLite DB (Bare metal)** | `/var/gistify/data` | — | `BILLING_DB_PATH=/var/gistify/data/billing.sqlite` |
 
 > The server already supports this via `server/midasSignals.ts` fallback chain.
 
@@ -37,7 +39,9 @@ docker run -d \
   -e NODE_ENV=production \
   -e PORT=3000 \
   -e MIDAS_PIPELINE_SOURCE_FILE=/data/midas/midas_signals.json \
+  -e BILLING_DB_PATH=/app/data/billing.sqlite \
   -v /srv/gistify/midas:/data/midas:ro \
+  -v /srv/gistify/data:/app/data \
   hsanksc/gistify:latest
 ```
 
@@ -58,6 +62,7 @@ services:
       MIDAS_PIPELINE_SOURCE_FILE: /data/midas/midas_signals.json
     volumes:
       - /srv/gistify/midas:/data/midas:ro
+      - /srv/gistify/data:/app/data
     restart: unless-stopped
 ```
 
@@ -69,7 +74,9 @@ services:
 
 ```bash
 sudo mkdir -p /var/gistify/data/midas
+sudo mkdir -p /var/gistify/data
 sudo chown $(id -u):$(id -g) /var/gistify/data/midas
+sudo chown $(id -u):$(id -g) /var/gistify/data
 ```
 
 ### 3.2 systemd service unit
@@ -87,6 +94,7 @@ WorkingDirectory=/var/gistify/app
 ExecStart=/usr/bin/node dist/index.js
 Environment="NODE_ENV=production"
 Environment="PORT=3000"
+Environment="BILLING_DB_PATH=/var/gistify/data/billing.sqlite"
 Environment="MIDAS_PIPELINE_SOURCE_FILE=/var/gistify/data/midas/midas_signals.json"
 Restart=on-failure
 RestartSec=5
@@ -160,11 +168,47 @@ Option C — Keep the Windows pipeline writing locally, and run a tiny sync scri
 
 ---
 
-## 7. What to change right now
+## 7. Migrating existing SQLite data (one-time)
+
+If flow engagement counts currently exist only inside the running container, copy them to the host volume **before** recreating the container:
+
+```bash
+# 1. Create the host directory
+sudo mkdir -p /srv/gistify/data
+sudo chown $(id -u):$(id -g) /srv/gistify/data
+
+# 2. Stop the container so SQLite files are flushed and consistent
+docker stop gistify
+
+# 3. Copy the DB + WAL files from the stopped container
+docker cp gistify:/app/data/billing.sqlite /srv/gistify/data/billing.sqlite
+docker cp gistify:/app/data/billing.sqlite-shm /srv/gistify/data/billing.sqlite-shm 2>/dev/null || true
+docker cp gistify:/app/data/billing.sqlite-wal /srv/gistify/data/billing.sqlite-wal 2>/dev/null || true
+
+# 4. Recreate the container with the data volume mounted
+docker rm gistify
+docker run -d \
+  --name gistify \
+  -p 3000:3000 \
+  -e NODE_ENV=production \
+  -e PORT=3000 \
+  -e MIDAS_PIPELINE_SOURCE_FILE=/data/midas/midas_signals.json \
+  -e BILLING_DB_PATH=/app/data/billing.sqlite \
+  -v /srv/gistify/midas:/data/midas:ro \
+  -v /srv/gistify/data:/app/data \
+  hsanksc/gistify:latest
+```
+
+> **Important:** Stop the container before copying the SQLite files so WAL files are flushed and the copy is consistent.
+
+---
+
+## 8. What to change right now
 
 1. **On the VPS:** create `/srv/gistify/midas` and mount it into the container with `MIDAS_PIPELINE_SOURCE_FILE=/data/midas/midas_signals.json`.
-2. **In the skill:** update `midas_sync.py` to write to the VPS path (or copy via `scp` / `rsync`).
-3. **In the cron job:** if the pipeline stays on Windows, append an `scp` step to the prompt; if it moves to the VPS, replace the Windows cron with a VPS systemd timer.
+2. **Persist SQLite / flow engagement data:** create `/srv/gistify/data` and mount it into the container with `BILLING_DB_PATH=/app/data/billing.sqlite`. This prevents likes/shares/reads from resetting after every deploy.
+3. **In the skill:** update `midas_sync.py` to write to the VPS path (or copy via `scp` / `rsync`).
+4. **In the cron job:** if the pipeline stays on Windows, append an `scp` step to the prompt; if it moves to the VPS, replace the Windows cron with a VPS systemd timer.
 
 ---
 

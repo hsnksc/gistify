@@ -24,6 +24,7 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV PORT=3000
+ENV BILLING_DB_PATH=/app/data/billing.sqlite
 
 RUN mkdir -p /app/data
 
@@ -39,5 +40,7 @@ COPY --from=build /app/momentum ./momentum
 COPY --from=build /app/reports/coverage ./reports/coverage
 
 EXPOSE 3000
+
+VOLUME ["/app/data"]
 
 CMD ["node", "dist/index.js"]
