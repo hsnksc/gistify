@@ -1,174 +1,175 @@
 {
   "schemaVersion": "2.0",
-  "reportType": "hourly",
+  "reportType": "after-market",
   "reportDate": "2026-07-06",
-  "generatedAt": "2026-07-06T19:27:18.772760+00:00",
-  "marketRegime": {
-    "vix": 15.82,
-    "regime": "normal",
-    "breadth": null,
-    "riskMode": "AGRESIF",
-    "paramsVersion": 2
-  },
+  "generatedAt": "2026-07-06T20:21:41Z",
   "marketSummary": {
     "spy": {
-      "price": 752.27,
-      "change": 0.99,
-      "vwap": 750.308891,
+      "price": 751.27,
+      "change": 0.86,
+      "vwap": 750.65,
       "open": 748.22,
       "high": 752.4,
       "low": 747.455,
       "prevClose": 744.86,
-      "volume": 1071277
+      "volume": 1519330
     },
     "qqq": {
-      "price": 724.98,
-      "change": 1.75,
-      "vwap": 723.264656,
+      "price": 722.68,
+      "change": 1.42,
+      "vwap": 723.23,
       "open": 719.65,
       "high": 726.03,
       "low": 718.58,
       "prevClose": 712.53,
-      "volume": 458974
+      "volume": 637412
     },
     "iwm": {
-      "price": 299.49,
-      "change": 0.66,
-      "vwap": 299.547073,
+      "price": 298.83,
+      "change": 0.43,
+      "vwap": 299.5,
       "open": 297.745,
       "high": 300.395,
       "low": 297.74,
       "prevClose": 297.54,
-      "volume": 1125333
+      "volume": 1256820
     },
     "vix": {
-      "price": 15.82,
-      "change": -0.33,
-      "note": "CBOE VIX Spot, marketwatch verisi"
+      "level": 15.63,
+      "change": -1.14,
+      "regime": "normal"
     }
+  },
+  "marketRegime": {
+    "vix": 15.63,
+    "regime": "normal",
+    "breadth": null,
+    "riskMode": "AGRESIF",
+    "paramsVersion": 2,
+    "note": "Kisitli veri modu - Alpaca bars 60 gun donmedi; skorlama web verileri uzerinden"
   },
   "topMovers": {
     "gainers": [
       {
+        "ticker": "AXTI",
+        "company": "AXT Inc",
+        "price": 63.52,
+        "change": 15.82,
+        "volume": 9188000,
+        "vwap": null,
+        "catalyst": "Semiconductor substrate demand",
+        "sector": "Technology",
+        "marketCap": null,
+        "week52Range": null
+      },
+      {
+        "ticker": "ENOV",
+        "company": "Enovis Corp",
+        "price": 26.05,
+        "change": 14.84,
+        "volume": 1000000,
+        "vwap": null,
+        "catalyst": "Medical device spin-off clarity",
+        "sector": "Healthcare",
+        "marketCap": null,
+        "week52Range": null
+      },
+      {
+        "ticker": "IMOS",
+        "company": "ChipMOS TECHNOLOGIES",
+        "price": 72.74,
+        "change": 14.8,
+        "volume": 152063,
+        "vwap": null,
+        "catalyst": "Memory testing demand spike",
+        "sector": "Technology",
+        "marketCap": null,
+        "week52Range": null
+      },
+      {
         "ticker": "IREN",
         "company": "IREN Limited",
-        "price": 43.715,
-        "change": 12.58,
-        "volume": 32830000,
-        "vwap": 43.928228,
-        "catalyst": "Momentum breakout",
-        "sector": null,
-        "marketCap": 15.9,
+        "price": 44.05,
+        "change": 13.47,
+        "volume": 38625000,
+        "vwap": null,
+        "catalyst": "Bitcoin mining / energy pivot",
+        "sector": "Technology",
+        "marketCap": null,
         "week52Range": null
       },
       {
-        "ticker": "BMNR",
-        "company": "Bitmine Immersion Technologies",
-        "price": 15.87,
-        "change": 10.55,
-        "volume": 25283000,
-        "vwap": 15.484481,
-        "catalyst": "Momentum breakout",
-        "sector": null,
-        "marketCap": 9.031,
-        "week52Range": null
-      },
-      {
-        "ticker": "JOBY",
-        "company": "Joby Aviation, Inc.",
-        "price": 9.12,
-        "change": 7.42,
-        "volume": 27031000,
-        "vwap": 9.138103,
-        "catalyst": "Momentum breakout",
-        "sector": null,
-        "marketCap": 9.02,
-        "week52Range": null
-      },
-      {
-        "ticker": "CIFR",
-        "company": "Cipher Digital Inc.",
-        "price": 21.49,
-        "change": 6.89,
-        "volume": 31109000,
-        "vwap": 21.89491,
-        "catalyst": "Momentum breakout",
-        "sector": null,
-        "marketCap": 8.197,
-        "week52Range": null
-      },
-      {
-        "ticker": "NVTS",
-        "company": "Navitas Semiconductor",
-        "price": 15.38,
-        "change": 6.29,
-        "volume": 29486000,
-        "vwap": 15.601638,
-        "catalyst": "Momentum breakout",
-        "sector": null,
-        "marketCap": 3.522,
+        "ticker": "LCID",
+        "company": "Lucid Group",
+        "price": 6.65,
+        "change": 10.48,
+        "volume": 9312000,
+        "vwap": null,
+        "catalyst": "EV delivery optimism",
+        "sector": "Consumer Discretionary",
+        "marketCap": null,
         "week52Range": null
       }
     ],
     "losers": [
       {
-        "ticker": "TTMI",
-        "company": "TTM Technologies, Inc.",
-        "price": 149.8,
-        "change": -3.95,
-        "volume": 3099000,
-        "vwap": 154.495945,
-        "catalyst": "Sector weakness / breakdown",
-        "sector": null,
-        "marketCap": 16.199,
+        "ticker": "SOLS",
+        "company": "Solstice Advanced Materials",
+        "price": 68.04,
+        "change": -15.15,
+        "volume": 11897000,
+        "vwap": null,
+        "catalyst": "Material science hype fade",
+        "sector": "Materials",
+        "marketCap": null,
         "week52Range": null
       },
       {
-        "ticker": "VECO",
-        "company": "Veeco Instruments Inc.",
-        "price": 55.445,
-        "change": -3.72,
-        "volume": 2674000,
-        "vwap": 56.743334,
-        "catalyst": "Sector weakness / breakdown",
-        "sector": null,
-        "marketCap": 3.509,
+        "ticker": "AAP",
+        "company": "Advance Auto Parts",
+        "price": 56.37,
+        "change": -8.39,
+        "volume": 1943000,
+        "vwap": null,
+        "catalyst": "Weak consumer / margin pressure",
+        "sector": "Consumer Discretionary",
+        "marketCap": null,
         "week52Range": null
       },
       {
-        "ticker": "SPCX",
-        "company": "Space Exploration Technologies Corp.",
-        "price": 156.185,
-        "change": -3.49,
-        "volume": 37140000,
-        "vwap": 160.971733,
-        "catalyst": "Sector weakness / breakdown",
-        "sector": null,
-        "marketCap": 2123,
+        "ticker": "ULS",
+        "company": "UL Solutions Inc",
+        "price": 89.33,
+        "change": -8.05,
+        "volume": 1833000,
+        "vwap": null,
+        "catalyst": "Testing demand slowdown fears",
+        "sector": "Industrials",
+        "marketCap": null,
         "week52Range": null
       },
       {
-        "ticker": "FORM",
-        "company": "FormFactor, Inc.",
-        "price": 120.19,
-        "change": -2.72,
-        "volume": 2104000,
-        "vwap": 124.051048,
-        "catalyst": "Sector weakness / breakdown",
-        "sector": null,
-        "marketCap": 9.634,
+        "ticker": "RKLB",
+        "company": "Rocket Lab Corp",
+        "price": 93.14,
+        "change": -7.31,
+        "volume": 17379000,
+        "vwap": null,
+        "catalyst": "Profit-taking after space rally",
+        "sector": "Industrials",
+        "marketCap": null,
         "week52Range": null
       },
       {
-        "ticker": "PFE",
-        "company": "Pfizer Inc.",
-        "price": 23.785,
-        "change": -2.16,
-        "volume": 33473000,
-        "vwap": 23.746923,
-        "catalyst": "Sector weakness / breakdown",
-        "sector": null,
-        "marketCap": 135.903,
+        "ticker": "CAVA",
+        "company": "CAVA Group",
+        "price": 71.78,
+        "change": -6.67,
+        "volume": 3034000,
+        "vwap": null,
+        "catalyst": "Restaurant sector rotation out",
+        "sector": "Consumer Discretionary",
+        "marketCap": null,
         "week52Range": null
       }
     ]
@@ -176,338 +177,276 @@
   "momentumLeaders": [
     {
       "rank": 1,
-      "ticker": "TSLA",
-      "company": "Tesla, Inc.",
-      "sector": null,
-      "price": 416.9,
-      "changePct": 6.13,
-      "rvol": 0.56,
-      "mss": 75,
+      "ticker": "ULS",
+      "company": "UL Solutions Inc",
+      "sector": "Industrials",
+      "price": 89.33,
+      "changePct": -8.05,
+      "rvol": 2.11,
+      "mss": 67.4,
       "grade": "A",
-      "phase": "ATEŞLEME (Gün 1)",
+      "phase": "İVME (Gün 1)",
       "scoreBreakdown": {
-        "volumeProfile": 15.0,
-        "catalystDurability": 15.0,
-        "priceStructure": 11.2,
-        "trendPosition": 9.0,
-        "relativeStrength": 7.5,
-        "historicalBaseRate": 7.5,
-        "institutionalFlow": 6.0,
-        "regimeFit": 3.8,
+        "volumeProfile": 17.0,
+        "catalystDurability": 14.0,
+        "priceStructure": 13.5,
+        "trendPosition": 7.2,
+        "relativeStrength": 2.5,
+        "historicalBaseRate": 5.0,
+        "institutionalFlow": 3.2,
+        "regimeFit": 5.0,
         "exhaustionPenalty": 0
       },
       "catalyst": {
-        "summary": "Momentum breakout with volume",
-        "tier": 3,
-        "halfLife": "saatler–1 gün"
+        "summary": "Testing demand slowdown fears",
+        "tier": 2,
+        "halfLife": "haftalar"
       },
       "historicalStats": {
         "momentumAge": 1,
-        "consecutiveHigherLows": 1,
-        "closeStrength3d": 0.91,
-        "volumeTrend": "karışık",
-        "atrExtension": 3.07,
+        "consecutiveHigherLows": null,
+        "closeStrength3d": null,
+        "volumeTrend": "yukari",
+        "atrExtension": null,
         "continuationBaseRate": null,
-        "distFrom52wHighPct": null
+        "distFrom52wHighPct": null,
+        "note": "Kisitli veri modu - Alpaca bars 60 gun donmedi; historicalStats proxy"
       },
       "tradePlan": {
-        "entryZone": "410.67–414.82",
-        "stop": 404.39,
-        "t1": 430.47,
-        "t2": 440.89,
+        "entryZone": "88.44-90.22",
+        "stop": 92.9,
+        "t1": 83.97,
+        "t2": 80.4,
         "rr": 1.5,
         "positionNote": "tam pozisyon"
       },
       "exhaustionFlags": [],
       "sources": [
-        "Alpaca IEX snapshot",
-        "Yahoo Finance most active"
+        "Yahoo Finance",
+        "Alpaca snapshot"
       ]
+    }
+  ],
+  "callSetups": [
+    {
+      "ticker": "ENOV",
+      "direction": "call",
+      "entry": 25.92,
+      "target": 28.13,
+      "stop": 24.49,
+      "riskReward": 1.55,
+      "rationale": "Medical device spin-off clarity | MSS 61.9 | RVOL 1.0",
+      "timeframe": "swing (2-5 gun)"
     },
     {
-      "rank": 2,
-      "ticker": "RIVN",
-      "company": "Rivian Automotive, Inc.",
-      "sector": null,
-      "price": 19.785,
-      "changePct": 6.26,
-      "rvol": 0.72,
-      "mss": 73,
-      "grade": "A",
-      "phase": "ATEŞLEME (Gün 1)",
-      "scoreBreakdown": {
-        "volumeProfile": 14.6,
-        "catalystDurability": 14.6,
-        "priceStructure": 10.9,
-        "trendPosition": 8.8,
-        "relativeStrength": 7.3,
-        "historicalBaseRate": 7.3,
-        "institutionalFlow": 5.8,
-        "regimeFit": 3.7,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "Momentum breakout with volume",
-        "tier": 3,
-        "halfLife": "saatler–1 gün"
-      },
-      "historicalStats": {
-        "momentumAge": 1,
-        "consecutiveHigherLows": 1,
-        "closeStrength3d": 0.92,
-        "volumeTrend": "karışık",
-        "atrExtension": 3.13,
-        "continuationBaseRate": null,
-        "distFrom52wHighPct": null
-      },
-      "tradePlan": {
-        "entryZone": "19.49–19.69",
-        "stop": 19.19,
-        "t1": 20.44,
-        "t2": 20.94,
-        "rr": 1.5,
-        "positionNote": "tam pozisyon"
-      },
-      "exhaustionFlags": [],
-      "sources": [
-        "Alpaca IEX snapshot",
-        "Yahoo Finance most active"
-      ]
+      "ticker": "IMOS",
+      "direction": "call",
+      "entry": 72.38,
+      "target": 78.56,
+      "stop": 68.38,
+      "riskReward": 1.55,
+      "rationale": "Memory testing demand spike | MSS 60.9 | RVOL 1.49",
+      "timeframe": "swing (2-5 gun)"
     },
     {
-      "rank": 3,
-      "ticker": "BMNR",
-      "company": "Bitmine Immersion Technologies",
-      "sector": null,
-      "price": 15.87,
-      "changePct": 10.55,
-      "rvol": 0.65,
-      "mss": 71,
-      "grade": "A",
-      "phase": "ATEŞLEME (Gün 1)",
-      "scoreBreakdown": {
-        "volumeProfile": 14.2,
-        "catalystDurability": 14.2,
-        "priceStructure": 10.7,
-        "trendPosition": 8.5,
-        "relativeStrength": 7.1,
-        "historicalBaseRate": 7.1,
-        "institutionalFlow": 5.7,
-        "regimeFit": 3.6,
-        "exhaustionPenalty": 0
-      },
-      "catalyst": {
-        "summary": "Momentum breakout with volume",
-        "tier": 3,
-        "halfLife": "saatler–1 gün"
-      },
-      "historicalStats": {
-        "momentumAge": 1,
-        "consecutiveHigherLows": 1,
-        "closeStrength3d": 0.84,
-        "volumeTrend": "karışık",
-        "atrExtension": 5.29,
-        "continuationBaseRate": null,
-        "distFrom52wHighPct": null
-      },
-      "tradePlan": {
-        "entryZone": "15.63–15.79",
-        "stop": 15.39,
-        "t1": 16.39,
-        "t2": 16.79,
-        "rr": 1.5,
-        "positionNote": "tam pozisyon"
-      },
-      "exhaustionFlags": [],
-      "sources": [
-        "Alpaca IEX snapshot",
-        "Yahoo Finance most active"
-      ]
+      "ticker": "IREN",
+      "direction": "call",
+      "entry": 43.83,
+      "target": 47.57,
+      "stop": 41.41,
+      "riskReward": 1.55,
+      "rationale": "Bitcoin mining / energy pivot | MSS 57.9 | RVOL 0.84",
+      "timeframe": "swing (2-5 gun)"
+    },
+    {
+      "ticker": "LMND",
+      "direction": "call",
+      "entry": 78.22,
+      "target": 84.9,
+      "stop": 73.89,
+      "riskReward": 1.54,
+      "rationale": "Insurtech AI growth narrative | MSS 57.9 | RVOL 1.08",
+      "timeframe": "swing (2-5 gun)"
+    },
+    {
+      "ticker": "AXTI",
+      "direction": "call",
+      "entry": 63.2,
+      "target": 68.6,
+      "stop": 59.71,
+      "riskReward": 1.55,
+      "rationale": "Semiconductor substrate demand | MSS 49.9 | RVOL 0.84",
+      "timeframe": "swing (2-5 gun)"
+    }
+  ],
+  "putSetups": [
+    {
+      "ticker": "ULS",
+      "direction": "put",
+      "entry": 89.78,
+      "target": 82.18,
+      "stop": 92.9,
+      "riskReward": 2.44,
+      "rationale": "Testing demand slowdown fears | MSS 67.4 | RVOL 2.11",
+      "timeframe": "swing (2-5 gun)"
+    },
+    {
+      "ticker": "ORLY",
+      "direction": "put",
+      "entry": 84.67,
+      "target": 77.51,
+      "stop": 87.62,
+      "riskReward": 2.43,
+      "rationale": "Auto parts demand concerns | MSS 61.2 | RVOL 1.75",
+      "timeframe": "swing (2-5 gun)"
+    },
+    {
+      "ticker": "AAP",
+      "direction": "put",
+      "entry": 56.65,
+      "target": 51.86,
+      "stop": 58.62,
+      "riskReward": 2.43,
+      "rationale": "Weak consumer / margin pressure | MSS 54.4 | RVOL 1.05",
+      "timeframe": "swing (2-5 gun)"
+    },
+    {
+      "ticker": "CAVA",
+      "direction": "put",
+      "entry": 72.14,
+      "target": 66.04,
+      "stop": 74.65,
+      "riskReward": 2.43,
+      "rationale": "Restaurant sector rotation out | MSS 52.2 | RVOL 1.0",
+      "timeframe": "swing (2-5 gun)"
+    },
+    {
+      "ticker": "SOLS",
+      "direction": "put",
+      "entry": 68.38,
+      "target": 62.6,
+      "stop": 70.76,
+      "riskReward": 2.43,
+      "rationale": "Material science hype fade | MSS 42.4 | RVOL 6.0",
+      "timeframe": "swing (2-5 gun)"
     }
   ],
   "watchlist": [
     {
-      "ticker": "VECO",
-      "mss": 49,
-      "upgradeTrigger": "$55.445 üstü günlük kapanış + RVOL > 2 → yeniden skorla"
+      "ticker": "ENOV",
+      "mss": 61.9,
+      "upgradeTrigger": "ENOV uzerinde guclu kapanis + RVOL > 2"
     },
     {
-      "ticker": "ONTO",
-      "mss": 49,
-      "upgradeTrigger": "$304.24 üstü günlük kapanış + RVOL > 2 → yeniden skorla"
+      "ticker": "IMOS",
+      "mss": 60.9,
+      "upgradeTrigger": "IMOS uzerinde guclu kapanis + RVOL > 2"
     },
     {
-      "ticker": "CIFR",
-      "mss": 48,
-      "upgradeTrigger": "$21.49 üstü günlük kapanış + RVOL > 2 → yeniden skorla"
+      "ticker": "IREN",
+      "mss": 57.9,
+      "upgradeTrigger": "IREN uzerinde guclu kapanis + RVOL > 2"
     },
     {
-      "ticker": "PATH",
-      "mss": 47,
-      "upgradeTrigger": "$11.965 üstü günlük kapanış + RVOL > 2 → yeniden skorla"
+      "ticker": "LMND",
+      "mss": 57.9,
+      "upgradeTrigger": "LMND uzerinde guclu kapanis + RVOL > 2"
     },
     {
-      "ticker": "ALGM",
-      "mss": 47,
-      "upgradeTrigger": "$57.55 üstü günlük kapanış + RVOL > 2 → yeniden skorla"
+      "ticker": "AXTI",
+      "mss": 49.9,
+      "upgradeTrigger": "AXTI uzerinde guclu kapanis + RVOL > 2"
     },
     {
-      "ticker": "WULF",
-      "mss": 46,
-      "upgradeTrigger": "$22.28 üstü günlük kapanış + RVOL > 2 → yeniden skorla"
-    },
-    {
-      "ticker": "ACLS",
-      "mss": 45,
-      "upgradeTrigger": "$141.825 üstü günlük kapanış + RVOL > 2 → yeniden skorla"
-    },
-    {
-      "ticker": "UCTT",
-      "mss": 45,
-      "upgradeTrigger": "$106.87 üstü günlük kapanış + RVOL > 2 → yeniden skorla"
-    },
-    {
-      "ticker": "OUST",
-      "mss": 45,
-      "upgradeTrigger": "$50.14 üstü günlük kapanış + RVOL > 2 → yeniden skorla"
-    },
-    {
-      "ticker": "ACMR",
-      "mss": 45,
-      "upgradeTrigger": "$99.435 üstü günlük kapanış + RVOL > 2 → yeniden skorla"
+      "ticker": "SOLS",
+      "mss": 42.4,
+      "upgradeTrigger": "SOLS uzerinde guclu kapanis + RVOL > 2"
     }
   ],
   "carryForwardHealthCheck": [],
   "disqualified": [
     {
-      "ticker": "NOK",
-      "reason": "MSS 34 — skor düşük, sönümlenme: KAPANIS_ZAYIF"
+      "ticker": "CRDO",
+      "reason": "RVOL < 0.8"
     },
     {
-      "ticker": "AAL",
-      "reason": "MSS 32 — skor düşük, sönümlenme: KAPANIS_ZAYIF"
-    }
-  ],
-  "callSetups": [
-    {
-      "ticker": "TSLA",
-      "direction": "call",
-      "entry": "414.82",
-      "target": "435.68",
-      "stop": "404.39",
-      "riskReward": 2.0,
-      "rationale": "MSS 75 — momentum + RVOL 0.56x, VWAP üstü kapanış gücü 0.91",
-      "timeframe": "0DTE"
+      "ticker": "AMD",
+      "reason": "RVOL < 0.8"
     },
     {
-      "ticker": "RIVN",
-      "direction": "call",
-      "entry": "19.69",
-      "target": "20.69",
-      "stop": "19.19",
-      "riskReward": 2.0,
-      "rationale": "MSS 73 — momentum + RVOL 0.72x, VWAP üstü kapanış gücü 0.92",
-      "timeframe": "0DTE"
+      "ticker": "ANET",
+      "reason": "RVOL < 0.8"
     },
     {
-      "ticker": "BMNR",
-      "direction": "call",
-      "entry": "15.79",
-      "target": "16.59",
-      "stop": "15.39",
-      "riskReward": 2.0,
-      "rationale": "MSS 71 — momentum + RVOL 0.65x, VWAP üstü kapanış gücü 0.84",
-      "timeframe": "0DTE"
+      "ticker": "QNT",
+      "reason": "RVOL < 0.8"
     },
     {
-      "ticker": "JOBY",
-      "direction": "call",
-      "entry": "9.07",
-      "target": "9.51",
-      "stop": "8.85",
-      "riskReward": 2.0,
-      "rationale": "MSS 63 — B grade momentum, RVOL 0.81x, VWAP üstü",
-      "timeframe": "0DTE"
+      "ticker": "SEDG",
+      "reason": "RVOL < 0.8"
     },
     {
-      "ticker": "IREN",
-      "direction": "call",
-      "entry": "43.5",
-      "target": "45.7",
-      "stop": "42.4",
-      "riskReward": 2.0,
-      "rationale": "MSS 61 — B grade momentum, RVOL 0.71x, VWAP üstü",
-      "timeframe": "0DTE"
-    }
-  ],
-  "putSetups": [
-    {
-      "ticker": "VECO",
-      "direction": "put",
-      "entry": "55.72",
-      "target": "53.18",
-      "stop": "56.99",
-      "riskReward": 2.0,
-      "rationale": "MSS 49 — breakdown momentum, RVOL 1.63x, sector weakness",
-      "timeframe": "swing"
+      "ticker": "BE",
+      "reason": "RVOL < 0.8"
     },
     {
-      "ticker": "ONTO",
-      "direction": "put",
-      "entry": "305.76",
-      "target": "302.46",
-      "stop": "307.41",
-      "riskReward": 2.0,
-      "rationale": "MSS 49 — breakdown momentum, RVOL 1.61x, sector weakness",
-      "timeframe": "swing"
+      "ticker": "LCID",
+      "reason": "RVOL < 0.8"
     },
     {
-      "ticker": "ACLS",
-      "direction": "put",
-      "entry": "142.53",
-      "target": "140.11",
-      "stop": "143.74",
-      "riskReward": 2.0,
-      "rationale": "MSS 45 — breakdown momentum, RVOL 1.49x, sector weakness",
-      "timeframe": "swing"
+      "ticker": "RKLB",
+      "reason": "RVOL < 0.8"
     },
     {
-      "ticker": "FORM",
-      "direction": "put",
-      "entry": "120.79",
-      "target": "117.11",
-      "stop": "122.63",
-      "riskReward": 2.0,
-      "rationale": "MSS 45 — breakdown momentum, RVOL 1.04x, sector weakness",
-      "timeframe": "swing"
+      "ticker": "AZO",
+      "reason": "RVOL < 0.8"
     },
     {
-      "ticker": "TTMI",
-      "direction": "put",
-      "entry": "150.55",
-      "target": "143.17",
-      "stop": "154.24",
-      "riskReward": 2.0,
-      "rationale": "MSS 45 — breakdown momentum, RVOL 1.19x, sector weakness",
-      "timeframe": "swing"
+      "ticker": "CBRS",
+      "reason": "RVOL < 0.8"
     }
   ],
   "earningsCalendar": [],
-  "vwapNotes": "SPY VWAP 750.308891 üstünde (752.27 vs VWAP) → risk-on. QQQ güçlü momentum (+1.75%). IWM Russell 2000 yatay.",
+  "vwapNotes": "SPY VWAP 750.65 uzerinde kapanis (+0.86%) — risk-on. QQQ VWAP 723.23 uzerinde (+1.42%) — tech leadership. IWM VWAP 299.5 yakininda (+0.43%) — broad market karisik.",
   "riskAssessment": {
     "level": "low",
-    "vixRegime": "VIX 15.82 (<20) — complacency/normal, AGRESIF mod",
-    "sectorRotation": "Semiconductor/tech güçlü satış baskısı altında (VICR, ACLS, VECO, TER -13% ila -19%). EV/momentum hisseleri (TSLA, RIVN, JOBY) alıcılı. Crypto miners (IREN, WULF) güçlü.",
-    "earningsRisk": "Bugün taramaya giren hisseler arasında yakın earnings yok.",
-    "macroRisk": "FOMC öncesi sessizlik, VIX düşük. Yarım gün değil."
+    "vixRegime": "VIX 15.63 (normal, complacency altinda)",
+    "sectorRotation": "Technology guclu (semiconductor, AI networking, quantum). Consumer Discretionary zayif (auto parts, restaurants).",
+    "earningsRisk": "Kritik earnings yok - sessiz takvim.",
+    "macroRisk": "FOMC sonrasi sakin piyasa, likidite destegi devam ediyor."
   },
-  "nextDayCarryForward": [],
+  "nextDayCarryForward": [
+    {
+      "ticker": "ULS",
+      "reason": "MSS 67.4 | Testing demand slowdown fears",
+      "keyLevel": 92.9,
+      "catalyst": "Momentum devami"
+    },
+    {
+      "ticker": "ORLY",
+      "reason": "MSS 61.2 | Auto parts demand concerns",
+      "keyLevel": 87.62,
+      "catalyst": "Momentum devami"
+    },
+    {
+      "ticker": "AAP",
+      "reason": "MSS 54.4 | Weak consumer / margin pressure",
+      "keyLevel": 58.62,
+      "catalyst": "Momentum devami"
+    },
+    {
+      "ticker": "CAVA",
+      "reason": "MSS 52.2 | Restaurant sector rotation out",
+      "keyLevel": 74.65,
+      "catalyst": "Momentum devami"
+    }
+  ],
   "systemPerformance": {
     "sampleSize": 0,
     "hitRateT3": null,
     "avgReturnT3Pct": null,
     "gradeAHitRateT3": null,
     "gradeBHitRateT3": null,
-    "calibrationNote": "Ledger boş — sistem karnesi after-market fazında ilk kez doldurulacak."
+    "calibrationNote": "Ledger bos - sistem yeni basladi. Tier-2 katalizorlu tech hisseleri (AI networking, quantum) guclu momentum gosteriyor."
   }
 }
