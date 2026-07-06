@@ -46,6 +46,4 @@ COPY --from=build /app/reports/coverage ./reports/coverage
 
 EXPOSE 3000
 
-VOLUME ["/app/data"]
-
 CMD ["node", "dist/index.js"]
