@@ -41,8 +41,10 @@ function toggle(id){var el=document.getElementById(id);if(!el)return;el.classLis
 
 <section>
   <div class="section-head" id="sec-kpi">
-    <h2 class="section-title">📊 Ana Metrikler</h2>
-    <div class="icon">▾</div>
+    <div class="section-head-inner" onclick="toggle('sec-kpi')">
+      <h2 class="section-title">📊 Ana Metrikler</h2>
+      <div class="icon">▾</div>
+    </div>
   </div>
   <div class="section-body">
     <div class="grid">
@@ -58,8 +60,10 @@ function toggle(id){var el=document.getElementById(id);if(!el)return;el.classLis
 
 <section>
   <div class="section-head" id="sec-01">
-    <h2 class="section-title">📌 Özet</h2>
-    <div class="icon">▾</div>
+    <div class="section-head-inner" onclick="toggle('sec-01')">
+      <h2 class="section-title">📌 Özet</h2>
+      <div class="icon">▾</div>
+    </div>
   </div>
   <div class="section-body">
 <p>Bank of America (BofA) Global Research ve TrendForce'un Temmuz 2026 revizyonları, DRAM ve NAND flash bellek pazarının en heyecan verici dönemecine işaret ediyor: <strong>yapay zeka sunucu talebinin devam etmesine rağmen, fiyat artış hızı 2026 yılının ikinci çeyreğinden itibaren belirgin şekilde yavaşlıyor.</strong> TrendForce'un 3Ç26 konvansiyonel DRAM sözleşme fiyatları tahminini %3-8'den %13-18'e yükseltmiş olması[^1], piyasada yükselişin bittiği anlamına gelmiyor — aksine, önceki çeyreklerdeki %90-95 ve %58-63'lük rekor artışlara kıyasla <strong>büyümenin momentumunun kırıldığını</strong> net bir şekilde gösteriyor.</p>
@@ -71,8 +75,10 @@ function toggle(id){var el=document.getElementById(id);if(!el)return;el.classLis
 </section>
 <section>
   <div class="section-head" id="sec-02">
-    <h2 class="section-title">🎯 Giriş: Araştırma Sorusu</h2>
-    <div class="icon">▾</div>
+    <div class="section-head-inner" onclick="toggle('sec-02')">
+      <h2 class="section-title">🎯 Giriş: Araştırma Sorusu</h2>
+      <div class="icon">▾</div>
+    </div>
   </div>
   <div class="section-body">
 <p>X platformunda son aylarda dolaşan grafikler, DRAM ve NAND ASP tahminlerindeki revizyonları göz önüne seriyor: bir yanda TrendForce'un %90-95'lik 1Ç26 rekoru, diğer yanda BofA'nın 4Ç26 için +7% QoQ'lik neredeyse düz çizgisi. Bu iki uç arasındaki fark, sadece bir tahmin değişikliği değil; <strong>bellek pazarının yapısal olarak dönüştüğünün kanıtı.</strong></p>
@@ -89,8 +95,10 @@ function toggle(id){var el=document.getElementById(id);if(!el)return;el.classLis
 </section>
 <section>
   <div class="section-head" id="sec-03">
-    <h2 class="section-title">📊 Bölüm 1: Tahminlerin Zaman Çizelgesi</h2>
-    <div class="icon">▾</div>
+    <div class="section-head-inner" onclick="toggle('sec-03')">
+      <h2 class="section-title">📊 Bölüm 1: Tahminlerin Zaman Çizelgesi</h2>
+      <div class="icon">▾</div>
+    </div>
   </div>
   <div class="section-body">
 <p>Bellek pazarındaki tahminler, son altı ayda neredeyse her çeyrekte revize edildi. Bu revizyonların kronolojisi, pazarın ne kadar hızlı ve beklenmedik bir şekilde evrildiğini gösteriyor.</p>
@@ -225,8 +233,10 @@ function toggle(id){var el=document.getElementById(id);if(!el)return;el.classLis
 </section>
 <section>
   <div class="section-head" id="sec-04">
-    <h2 class="section-title">🔥 Bölüm 2: Pazar Dinamikleri — Yükselişin ve Yavaşlamanın Arkası</h2>
-    <div class="icon">▾</div>
+    <div class="section-head-inner" onclick="toggle('sec-04')">
+      <h2 class="section-title">🔥 Bölüm 2: Pazar Dinamikleri — Yükselişin ve Yavaşlamanın Arkası</h2>
+      <div class="icon">▾</div>
+    </div>
   </div>
   <div class="section-body">
 <h3>AI Sunucu Talebi: HBM ve Veri Merkezi</h3>
@@ -245,8 +255,10 @@ function toggle(id){var el=document.getElementById(id);if(!el)return;el.classLis
 </section>
 <section>
   <div class="section-head" id="sec-05">
-    <h2 class="section-title">🏭 Bölüm 3: Üretici Analizi — Samsung, SK Hynix, Micron</h2>
-    <div class="icon">▾</div>
+    <div class="section-head-inner" onclick="toggle('sec-05')">
+      <h2 class="section-title">🏭 Bölüm 3: Üretici Analizi — Samsung, SK Hynix, Micron</h2>
+      <div class="icon">▾</div>
+    </div>
   </div>
   <div class="section-body">
 <p>Bellek sektöründeki üç büyük üretici, 2026 H2'de farklı stratejik pozisyonlarla öne çıkıyor. Bu ayrışma, "bellek sektörü" tek sepet yatırım tezinin geçersiz olduğunu gösteriyor — <strong>üretici seçimi, kadar LTA modeli seçimi de yatırım kararını etkileyecek.</strong></p>
@@ -304,8 +316,10 @@ function toggle(id){var el=document.getElementById(id);if(!el)return;el.classLis
 </section>
 <section>
   <div class="section-head" id="sec-06">
-    <h2 class="section-title">📉 Bölüm 4: Çatışan Tahminler ve Riskler</h2>
-    <div class="icon">▾</div>
+    <div class="section-head-inner" onclick="toggle('sec-06')">
+      <h2 class="section-title">📉 Bölüm 4: Çatışan Tahminler ve Riskler</h2>
+      <div class="icon">▾</div>
+    </div>
   </div>
   <div class="section-body">
 <h3>Tahmin Çatışması: TrendForce vs BofA vs Jefferies</h3>
@@ -374,8 +388,10 @@ function toggle(id){var el=document.getElementById(id);if(!el)return;el.classLis
 </section>
 <section>
   <div class="section-head" id="sec-07">
-    <h2 class="section-title">🔮 Bölüm 5: 2027-2028 Görünümü ve Senaryolar</h2>
-    <div class="icon">▾</div>
+    <div class="section-head-inner" onclick="toggle('sec-07')">
+      <h2 class="section-title">🔮 Bölüm 5: 2027-2028 Görünümü ve Senaryolar</h2>
+      <div class="icon">▾</div>
+    </div>
   </div>
   <div class="section-body">
 <h3>Üç Senaryo</h3>
@@ -425,8 +441,10 @@ function toggle(id){var el=document.getElementById(id);if(!el)return;el.classLis
 </section>
 <section>
   <div class="section-head" id="sec-08">
-    <h2 class="section-title">💡 Bölüm 6: Çok Boyutlu Insight'lar</h2>
-    <div class="icon">▾</div>
+    <div class="section-head-inner" onclick="toggle('sec-08')">
+      <h2 class="section-title">💡 Bölüm 6: Çok Boyutlu Insight'lar</h2>
+      <div class="icon">▾</div>
+    </div>
   </div>
   <div class="section-body">
 <p>Dört bağımsız araştırma boyutunun (DIM01-DIM04) çapraz analizi, tek bir boyutta görülemeyecek derin çıkarımlar üretti. Bu bölümde, en kritik 6 insight'ı entegre ediyoruz:</p>
@@ -453,8 +471,10 @@ function toggle(id){var el=document.getElementById(id);if(!el)return;el.classLis
 </section>
 <section>
   <div class="section-head" id="sec-09">
-    <h2 class="section-title">🎯 Sonuç ve Yatırımcı Tavsiyeleri</h2>
-    <div class="icon">▾</div>
+    <div class="section-head-inner" onclick="toggle('sec-09')">
+      <h2 class="section-title">🎯 Sonuç ve Yatırımcı Tavsiyeleri</h2>
+      <div class="icon">▾</div>
+    </div>
   </div>
   <div class="section-body">
 <p>BofA ve TrendForce'un son tahminleri, <strong>2026 yılının ikinci çeyreğinden itibaren DRAM ve NAND ASP'lerde çeyrekler arası büyüme hızının belirgin şekilde yavaşlayacağını</strong> gösteriyor. Bu yavaşlama, AI sunucu talebinin devam etmesine rağmen, tüketici talebinin zayıflaması, yüksek baz etkileri ve fiyat toleransının sınırlarına ulaşması nedeniyle gerçekleşiyor. Ancak bu, süper döngünün bittiği anlamına gelmiyor — aksine, pazarın <strong>yapısal bir evrim geçirdiğinin</strong> kanıtı.</p>
@@ -485,8 +505,10 @@ function toggle(id){var el=document.getElementById(id);if(!el)return;el.classLis
 </section>
 <section>
   <div class="section-head" id="sec-10">
-    <h2 class="section-title">Kaynakça</h2>
-    <div class="icon">▾</div>
+    <div class="section-head-inner" onclick="toggle('sec-10')">
+      <h2 class="section-title">Kaynakça</h2>
+      <div class="icon">▾</div>
+    </div>
   </div>
   <div class="section-body">
 <p>[^1]: TrendForce Press Center, "Conventional DRAM contract prices forecast to rise 13-18% QoQ in 3Q26". 3 Temmuz 2026. https://www.trendforce.com/presscenter/news/20260703-13134.html</p>
