@@ -55,6 +55,13 @@ export interface MarketRegime {
   spy_5d_return: number;
 }
 
+export interface MomentumScoreOutcome {
+  hit?: boolean;
+  retPct?: number;
+  status?: string;
+  date?: string;
+}
+
 export interface MidasSignalRecord {
   // existing fields
   symbol: string;
@@ -84,6 +91,20 @@ export interface MidasSignalRecord {
     spread_bps: number;
   };
   technical?: Record<string, any>;
+  // v3 momentum learning fields
+  mss?: number;
+  grade?: string;
+  phase?: string;
+  catalystTier?: string;
+  exhaustionFlags?: string[];
+  paramsVersion?: string;
+  componentScores?: Record<string, number>;
+  mssChallenger?: number;
+  trackType?: string;
+  status?: string;
+  t1?: MomentumScoreOutcome;
+  t3?: MomentumScoreOutcome;
+  t5?: MomentumScoreOutcome;
 }
 
 export interface MidasPipelineMetadata {
@@ -123,6 +144,18 @@ export interface MidasSignalsData {
   };
   market_regime?: MarketRegime;
   market_overview?: Record<string, MarketOverviewItem>;
+  paramsVersion?: string;
+  calibrationDate?: string;
+  summaryNote?: string;
+  rolling20HitRateT3?: number;
+  gradeAHitRate?: number;
+  gradeAHitCount?: number;
+  gradeATotal?: number;
+  gradeCounts?: Record<string, number>;
+  phaseCounts?: Record<string, number>;
+  mssTrend?: number[];
+  exhaustionFlags?: string[];
+  carryForwardHealth?: Record<string, unknown>;
   signals: MidasSignalRecord[];
   errors?: string[];
   pipeline?: MidasPipelineMetadata;

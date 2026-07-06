@@ -1,0 +1,16 @@
+{
+  "topic": "Fed, AI ve Küresel Piyasalar",
+  "tr_posts_used": 3,
+  "en_posts_used": 2,
+  "tr_sources": [
+    "https://www.tcmb.gov.tr/",
+    "https://www.bloomberght.com/",
+    "https://www.haberturk.com/"
+  ],
+  "en_sources": [
+    "https://www.federalreserve.gov/",
+    "https://www.reuters.com/",
+    "https://www.coindesk.com/"
+  ],
+  "generated_at": "2026-07-06T11:55:00+03:00"
+}

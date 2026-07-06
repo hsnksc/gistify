@@ -1,0 +1,14 @@
+# Gistify X Research Pipeline — Python Bağımlılıkları
+
+# HTTP istekleri (Mistral API, WebBridge)
+requests>=2.31.0
+
+# .env dosya okuma
+python-dotenv>=1.0.0
+
+# Markdown → HTML dönüşümü
+markdown>=3.5.0
+
+# ── Opsiyonel ─────────────────────────────────────────────────────────────────
+# Post dil tespiti (post_filter.py içinde kullanılabilir)
+langdetect>=1.0.9

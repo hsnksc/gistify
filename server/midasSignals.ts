@@ -92,12 +92,129 @@ function normalizeStringArray(value: unknown) {
     .slice(0, 24);
 }
 
+function normalizeOptionalString(value: unknown) {
+  const raw = normalizeString(value);
+  return raw || undefined;
+}
+
+function normalizeBoolean(value: unknown) {
+  if (typeof value === "boolean") {
+    return value;
+  }
+
+  const raw = normalizeString(value).toLowerCase();
+  if (!raw) {
+    return undefined;
+  }
+
+  if (["1", "true", "yes", "hit", "success"].includes(raw)) {
+    return true;
+  }
+
+  if (["0", "false", "no", "miss", "fail"].includes(raw)) {
+    return false;
+  }
+
+  return undefined;
+}
+
 function extractObjectRecord(value: unknown): Record<string, unknown> | null {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     return null;
   }
 
   return value as Record<string, unknown>;
+}
+
+function normalizeNumberRecord(value: unknown) {
+  const source = extractObjectRecord(value);
+  if (!source) {
+    return undefined;
+  }
+
+  const normalized: Record<string, number> = {};
+  for (const [key, rawValue] of Object.entries(source)) {
+    const nextValue = normalizeOptionalNumber(rawValue);
+    if (nextValue !== undefined) {
+      normalized[key] = nextValue;
+    }
+  }
+
+  return Object.keys(normalized).length ? normalized : undefined;
+}
+
+function normalizeNumberArray(value: unknown) {
+  if (!Array.isArray(value)) {
+    return undefined;
+  }
+
+  const normalized = value
+    .map(item => normalizeOptionalNumber(item))
+    .filter((item): item is number => item !== undefined);
+
+  return normalized.length ? normalized.slice(0, 40) : undefined;
+}
+
+function normalizeOutcome(value: unknown): MidasSignalRecord["t1"] {
+  const directReturnPct = normalizeOptionalNumber(value);
+  if (directReturnPct !== undefined) {
+    return {
+      retPct: directReturnPct,
+    };
+  }
+
+  const source = extractObjectRecord(value);
+  if (!source) {
+    return undefined;
+  }
+
+  const hit = normalizeBoolean(source.hit ?? source.success ?? source.is_hit ?? source.isHit);
+  const retPct = normalizeOptionalNumber(
+    source.retPct ??
+      source.ret_pct ??
+      source.returnPct ??
+      source.return_pct ??
+      source.return ??
+      source.pct
+  );
+  const status = normalizeOptionalString(source.status);
+  const date = normalizeOptionalString(source.date ?? source.timestamp);
+
+  if (hit === undefined && retPct === undefined && !status && !date) {
+    return undefined;
+  }
+
+  return {
+    hit,
+    retPct,
+    status,
+    date,
+  };
+}
+
+function normalizeDirection(value: unknown): MidasSignalRecord["direction"] {
+  const raw = normalizeString(value).toUpperCase();
+  if (raw === "LONG" || raw === "SHORT") {
+    return raw;
+  }
+
+  return undefined;
+}
+
+function normalizeConvictionTier(
+  value: unknown
+): MidasSignalRecord["conviction_tier"] {
+  const raw = normalizeString(value).toUpperCase();
+  switch (raw) {
+    case "A+":
+    case "A":
+    case "B":
+    case "C":
+    case "D":
+      return raw;
+    default:
+      return undefined;
+  }
 }
 
 function normalizeActionSignal(value: unknown): MidasActionSignal {
@@ -173,7 +290,7 @@ function normalizeSignalRecord(
     return null;
   }
 
-  return {
+  const normalized: MidasSignalRecord = {
     symbol,
     signal: normalizeActionSignal(source.signal),
     strength: normalizeNumber(source.strength),
@@ -188,6 +305,70 @@ function normalizeSignalRecord(
     layers: normalizeSignalLayers(source.layers),
     timestamp: normalizeTimestamp(source.timestamp, fallbackTimestamp),
   };
+
+  const apexScore = normalizeOptionalNumber(source.apex_score ?? source.apexScore);
+  const rawApex = normalizeOptionalNumber(source.raw_apex ?? source.rawApex);
+  const direction = normalizeDirection(source.direction);
+  const convictionTier = normalizeConvictionTier(
+    source.conviction_tier ?? source.convictionTier
+  );
+  const setupType = normalizeOptionalString(source.setup_type ?? source.setupType);
+  const factorBreakdown = normalizeNumberRecord(
+    source.factor_breakdown ?? source.factorBreakdown
+  );
+  const componentScores = normalizeNumberRecord(
+    source.componentScores ?? source.component_scores
+  );
+  const mss = normalizeOptionalNumber(
+    source.mss ?? source.MSS ?? source.momentum_score ?? source.momentumScore
+  );
+  const mssChallenger = normalizeOptionalNumber(
+    source.mssChallenger ?? source.mss_challenger
+  );
+  const exhaustionFlags = normalizeStringArray(
+    source.exhaustionFlags ?? source.exhaustion_flags
+  );
+
+  if (apexScore !== undefined) normalized.apex_score = apexScore;
+  if (rawApex !== undefined) normalized.raw_apex = rawApex;
+  if (direction) normalized.direction = direction;
+  if (convictionTier) normalized.conviction_tier = convictionTier;
+  if (setupType) normalized.setup_type = setupType;
+  if (factorBreakdown) {
+    normalized.factor_breakdown =
+      factorBreakdown as unknown as MidasSignalRecord["factor_breakdown"];
+  }
+  if (componentScores) normalized.componentScores = componentScores;
+  if (mss !== undefined) normalized.mss = mss;
+  if (mssChallenger !== undefined) normalized.mssChallenger = mssChallenger;
+  if (exhaustionFlags.length) normalized.exhaustionFlags = exhaustionFlags;
+
+  const catalystTier = normalizeOptionalString(
+    source.catalystTier ?? source.catalyst_tier
+  );
+  const paramsVersion = normalizeOptionalString(
+    source.paramsVersion ?? source.params_version
+  );
+  const grade = normalizeOptionalString(source.grade);
+  const phase = normalizeOptionalString(source.phase);
+  const trackType = normalizeOptionalString(source.trackType ?? source.track_type);
+  const status = normalizeOptionalString(source.status);
+
+  if (catalystTier) normalized.catalystTier = catalystTier;
+  if (paramsVersion) normalized.paramsVersion = paramsVersion;
+  if (grade) normalized.grade = grade;
+  if (phase) normalized.phase = phase;
+  if (trackType) normalized.trackType = trackType;
+  if (status) normalized.status = status;
+
+  const t1 = normalizeOutcome(source.t1 ?? source.T1 ?? source.t_1);
+  const t3 = normalizeOutcome(source.t3 ?? source.T3 ?? source.t_3);
+  const t5 = normalizeOutcome(source.t5 ?? source.T5 ?? source.t_5);
+  if (t1) normalized.t1 = t1;
+  if (t3) normalized.t3 = t3;
+  if (t5) normalized.t5 = t5;
+
+  return normalized;
 }
 
 function normalizeMidasBacktestData(
@@ -510,6 +691,46 @@ export function normalizeMidasSignalsData(
   const errors = Array.isArray(source.errors)
     ? source.errors.map(item => normalizeString(item)).filter(Boolean)
     : [];
+  const params = extractObjectRecord(source.params);
+  const paramsVersion = normalizeOptionalString(
+    source.paramsVersion ?? source.params_version ?? params?.version
+  );
+  const calibrationDate = normalizeOptionalString(
+    source.calibrationDate ??
+      source.calibration_date ??
+      source.lastCalibrationDate ??
+      source.last_calibration_date
+  );
+  const summaryNote = normalizeOptionalString(
+    source.summaryNote ?? source.summary_note
+  );
+  const rolling20HitRateT3 = normalizeOptionalNumber(
+    source.rolling20HitRateT3 ??
+      source.rolling_20_hit_rate_t3 ??
+      source.rolling20_t3_hit_rate
+  );
+  const gradeAHitRate = normalizeOptionalNumber(
+    source.gradeAHitRate ?? source.grade_a_hit_rate
+  );
+  const gradeAHitCount = normalizeOptionalNumber(
+    source.gradeAHitCount ?? source.grade_a_hit_count
+  );
+  const gradeATotal = normalizeOptionalNumber(
+    source.gradeATotal ?? source.grade_a_total
+  );
+  const gradeCounts = normalizeNumberRecord(
+    source.gradeCounts ?? source.grade_counts ?? source.mssDistribution
+  );
+  const phaseCounts = normalizeNumberRecord(
+    source.phaseCounts ?? source.phase_counts ?? source.phaseMap
+  );
+  const mssTrend = normalizeNumberArray(source.mssTrend ?? source.mss_trend);
+  const exhaustionFlags = normalizeStringArray(
+    source.exhaustionFlags ?? source.exhaustion_flags
+  );
+  const carryForwardHealth = extractObjectRecord(
+    source.carryForwardHealth ?? source.carry_forward_health
+  );
 
   return {
     timestamp,
@@ -517,8 +738,21 @@ export function normalizeMidasSignalsData(
     successful,
     failed,
     mode: normalizeString(source.mode) || "aggressive",
+    version: normalizeOptionalString(source.version),
     signals,
     errors,
+    paramsVersion,
+    calibrationDate,
+    summaryNote,
+    rolling20HitRateT3,
+    gradeAHitRate,
+    gradeAHitCount,
+    gradeATotal,
+    gradeCounts,
+    phaseCounts,
+    mssTrend,
+    exhaustionFlags,
+    carryForwardHealth: carryForwardHealth || undefined,
   } satisfies MidasSignalsData;
 }
 

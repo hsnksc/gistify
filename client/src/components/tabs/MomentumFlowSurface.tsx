@@ -3,8 +3,16 @@ import {
   Activity, ArrowRightLeft, BarChart3, Clock, LineChart, Loader2, RefreshCw, ShieldAlert, TrendingDown, TrendingUp, Zap, } from "lucide-react";
 import type {
   MidasActionSignal as ActionSignal, MidasRiskLevel, MidasSignalRecord, MidasSignalsData, } from "@shared/midasSignals";
+import {
+  ExhaustionFlagsBadge,
+  getSignalFlags,
+  MomentumV3Dashboard,
+  MssGradeBadge,
+  ParamsVersionBadge,
+} from "@/components/momentum/MomentumV3Cards";
 import { runMomentumScan, type StockResult } from "@/scanner";
 import { type AppLanguage, t } from "@/lib/i18n";
+import { useMomentumV3Data, type MomentumParams } from "@/lib/momentumV3";
 
 type SurfaceMode = "overview" | "positive" | "neutral" | "negative" | "shifts";
 type SignalDirection = "positive" | "negative" | "neutral";
@@ -377,11 +385,17 @@ function MomentumSignalCard({
   language,
   signal,
   snapshotTimestamp,
+  paramsVersion,
+  momentumParams,
+  showChallenger = false,
   compact = false,
 }: {
   language: AppLanguage;
   signal: MergedSignalRecord;
   snapshotTimestamp: string;
+  paramsVersion?: string;
+  momentumParams?: MomentumParams;
+  showChallenger?: boolean;
   compact?: boolean;
 }) {
   const currentPrice = signal.live?.currentPrice ?? signal.price;
@@ -466,6 +480,14 @@ function MomentumSignalCard({
         {signal.live && snapshotConfidenceLabel ? (
           <span className="rounded-full border border-border bg-background/70 px-2 py-0.5 text-muted-foreground">
             {t("common:snapshotConfidence")}: {snapshotConfidenceLabel}
+          </span>
+        ) : null}
+        <MssGradeBadge signal={signal} params={momentumParams} compact={compact} />
+        <ParamsVersionBadge value={signal.paramsVersion || paramsVersion} compact={compact} />
+        <ExhaustionFlagsBadge flags={getSignalFlags(signal)} compact={compact} />
+        {showChallenger && typeof signal.mssChallenger === "number" ? (
+          <span className="rounded-full border border-violet-400/20 bg-violet-500/10 px-2 py-0.5 text-violet-100">
+            Challenger MSS {Math.round(signal.mssChallenger)}
           </span>
         ) : null}
       </div>
@@ -774,6 +796,18 @@ export default function MomentumFlowSurface({
   const [scanProgress, setScanProgress] = useState<ScanProgressState>({ scanned: 0, total: 0, current: "" });
   const liveRunRef = useRef(0);
   const lastAutoScanKeyRef = useRef("");
+  const momentumV3 = useMomentumV3Data();
+  const showMssChallenger = useMemo(() => {
+    if (import.meta.env.DEV) {
+      return true;
+    }
+
+    if (typeof window === "undefined") {
+      return false;
+    }
+
+    return new URLSearchParams(window.location.search).get("dev") === "1";
+  }, []);
 
   const loadSnapshot = useCallback(async (silent = false) => {
     if (!silent) {
@@ -994,6 +1028,12 @@ export default function MomentumFlowSurface({
     { id: "negative", label: t("common:risks"), count: negativeSignals.length, icon: TrendingDown },
     { id: "shifts", label: t("common:shifts"), count: orderedChangedSignals.length, icon: ArrowRightLeft },
   ];
+  const paramsVersion =
+    data.paramsVersion ||
+    momentumV3.params.version ||
+    momentumV3.report?.paramsVersion ||
+    momentumV3.calibration?.paramsVersion ||
+    data.version;
 
   return (
     <div className="space-y-6">
@@ -1179,6 +1219,16 @@ export default function MomentumFlowSurface({
         <MarketOverviewStrip language={language} marketOverview={data.market_overview} />
       ) : null}
 
+      <MomentumV3Dashboard
+        data={data}
+        report={momentumV3.report}
+        params={momentumV3.params}
+        calibration={momentumV3.calibration}
+        ledger={momentumV3.ledger}
+        signals={mergedSignals}
+        language={language}
+      />
+
       <div className="sticky top-4 z-10 rounded-xl border border-border bg-background/75 p-1.5 shadow-[0_18px_48px_rgba(3,7,18,0.24)] backdrop-blur">
         <div className="flex flex-wrap items-center gap-1.5">
           {viewButtons.map((button) => {
@@ -1278,6 +1328,9 @@ export default function MomentumFlowSurface({
                   language={language}
                   signal={signal}
                   snapshotTimestamp={data.timestamp}
+                  paramsVersion={paramsVersion}
+                  momentumParams={momentumV3.params}
+                  showChallenger={showMssChallenger}
                   compact={surfaceMode === "overview"}
                 />
               ))}
@@ -1319,6 +1372,9 @@ export default function MomentumFlowSurface({
                     language={language}
                     signal={signal}
                     snapshotTimestamp={data.timestamp}
+                    paramsVersion={paramsVersion}
+                    momentumParams={momentumV3.params}
+                    showChallenger={showMssChallenger}
                     compact={surfaceMode === "overview"}
                   />
                 ))}
@@ -1359,6 +1415,9 @@ export default function MomentumFlowSurface({
                     language={language}
                     signal={signal}
                     snapshotTimestamp={data.timestamp}
+                    paramsVersion={paramsVersion}
+                    momentumParams={momentumV3.params}
+                    showChallenger={showMssChallenger}
                     compact={surfaceMode === "overview"}
                   />
                 ))}

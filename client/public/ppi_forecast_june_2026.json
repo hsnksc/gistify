@@ -1,0 +1,239 @@
+{
+  "generatedAt": "2026-07-06T11:14:43Z",
+  "reportDate": "2026-07-06",
+  "title": "US PPI Forecast Snapshot — Composite Calibrated Bridge Nowcast v2.5 Enhanced",
+  "summary": "Energy drag from post-Hormuz spot mean-reversion (crude -25% MoM, gasoline -3.7%) pulls headline near flat, but ISM Prices Paid at 73.0 and lagged intermediate demand keep core sticky. Normal regime (VIX ~16.4) supports tighter confidence bands. ECI Q1 interpolated at +0.30% MoM feeds services pipeline. Daily refresh — composite updated with July 6 spot inputs.",
+  "baseCase": "Flat headline on energy unwind, sticky core on still-elevated ISM passthrough",
+  "conviction": 60,
+  "regime": "normal",
+  "vix": 16.37,
+  "regimeParameters": {
+    "biasWindow": 3,
+    "energyLag": 1,
+    "coreGoodsLag": 1,
+    "transportSmoothing": 0.5,
+    "ciMultiplier": 1.96
+  },
+  "adaptiveBias": {
+    "energy": -0.2,
+    "foods": 0.0,
+    "coreGoods": -0.15,
+    "tradeServices": 0.0,
+    "transportation": -0.1,
+    "otherServices": 0.05
+  },
+  "lagCorrection": {
+    "energy": {
+      "lagMonths": 1,
+      "dampening": 1.0
+    },
+    "coreGoods": {
+      "lagMonths": 1,
+      "dampening": 1.0
+    }
+  },
+  "compositeProxies": {
+    "energy": {
+      "gasoline": -4.5,
+      "diesel": -4.5,
+      "jetFuel": -2.5,
+      "naturalGas": 0.0,
+      "composite": -2.0
+    },
+    "foods": {
+      "cattle": -0.15,
+      "hogs": -0.05,
+      "grains": 0.0,
+      "dairy": 0.0,
+      "usda": 0.0,
+      "composite": -0.1
+    },
+    "coreGoods": {
+      "copper": 0.0,
+      "steel": 0.0,
+      "aluminum": -0.05,
+      "lumber": 0.05,
+      "chemicals": 0.1,
+      "pharma": 0.1,
+      "ismPricesPaid": 2.0,
+      "importPriceIndex": 0.0,
+      "composite": 0.4
+    },
+    "tradeServices": {
+      "inventorySales": 0.0,
+      "wholesaleMargin": 0.0,
+      "retailSales": 0.0,
+      "fuelMargin": 0.0,
+      "composite": 0.0
+    },
+    "transportation": {
+      "datSpot": -0.5,
+      "diesel": -2.0,
+      "railFreight": 0.0,
+      "airFreight": 0.0,
+      "composite": -0.3
+    },
+    "otherServices": {
+      "eci": 0.3,
+      "sp500vix": 0.1,
+      "healthcare": 0.2,
+      "accommodation": 0.2,
+      "loanRates": 0.0,
+      "composite": 0.4
+    }
+  },
+  "intermediateDemand": {
+    "stage1": 2.8,
+    "stage2": 2.0,
+    "stage3": 1.5,
+    "stage4": 1.0,
+    "uplift": 0.15
+  },
+  "release": {
+    "name": "PPI",
+    "period": "Jun 2026",
+    "releaseDate": "2026-07-15",
+    "releaseTimeEt": "08:30 ET",
+    "headlineMoM": "+0.0%",
+    "headlineYoY": "6.4%",
+    "coreMoM": "+0.2%",
+    "coreYoY": "5.2%",
+    "priorHeadlineMoM": "+1.1%",
+    "priorHeadlineYoY": "6.5%",
+    "priorCoreMoM": "+0.8%",
+    "priorCoreYoY": "5.1%",
+    "bias": "COOLER",
+    "confidence": 60,
+    "thesis": "Energy collapse from Hormuz reopening pulls headline toward zero, but still-elevated ISM Prices Paid at 73.0 and sticky services pipeline keep core above +0.2% MoM. Normal regime (VIX ~16.4) supports modest confidence bands. ECI Q1 interpolated monthly proxy (+0.30% MoM) anchors services."
+  },
+  "pointEstimate": {
+    "headline": 0.0,
+    "core": 0.2
+  },
+  "confidenceInterval": {
+    "headline": [
+      -0.2,
+      0.2
+    ],
+    "core": [
+      0.0,
+      0.4
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "base",
+      "label": "Base case",
+      "probability": 55,
+      "outcome": "Headline +0.0%, core +0.2%. Energy drag stabilizes while core goods and services stay sticky.",
+      "marketReadthrough": "Rates digest the headline but focus on core. No major Fed repricing.",
+      "favoredAssets": [
+        "Industrials",
+        "Quality growth",
+        "Gold"
+      ],
+      "invalidation": "Core services re-accelerate above +0.4% MoM."
+    },
+    {
+      "id": "hot",
+      "label": "Hotter pipeline pressure",
+      "probability": 25,
+      "outcome": "Headline +0.3%, core +0.4%. ISM passthrough hits harder than expected; intermediate demand keeps feeding through.",
+      "marketReadthrough": "Rates higher, USD firmer, margin-sensitive equities under pressure.",
+      "favoredAssets": [
+        "USD",
+        "Energy",
+        "Value"
+      ],
+      "invalidation": "Hot print is driven by narrow commodity volatility with weak pass-through."
+    },
+    {
+      "id": "cool",
+      "label": "Cleaner disinflation pulse",
+      "probability": 20,
+      "outcome": "Headline -0.2%, core +0.1%. Energy collapses further; core passthrough fades faster than expected.",
+      "marketReadthrough": "Fed-cut odds rise, rates soften, broader equity appetite improves.",
+      "favoredAssets": [
+        "Growth",
+        "Small caps",
+        "Duration"
+      ],
+      "invalidation": "Market already priced a benign outcome before release."
+    }
+  ],
+  "setups": [
+    {
+      "asset": "UST 10Y / $TLT",
+      "bias": "Long duration if core PPI cools without hawkish spillover",
+      "trigger": "Core PPI <= +0.2% m/m and revisions are benign",
+      "invalidation": "Broad upstream re-acceleration with hawkish rates repricing"
+    },
+    {
+      "asset": "Industrial cyclicals",
+      "bias": "Constructive only if margin pressure eases",
+      "trigger": "Goods and services pipeline both avoid upside surprise",
+      "invalidation": "Input cost shock restarts (Hormuz re-closes, energy spikes)"
+    },
+    {
+      "asset": "USD",
+      "bias": "Long on hotter PPI surprise with rates follow-through",
+      "trigger": "Headline and core both beat with higher terminal-rate pricing",
+      "invalidation": "Rates fade despite the beat"
+    }
+  ],
+  "watchItems": [
+    {
+      "label": "Final demand services",
+      "value": "Key swing bucket",
+      "note": "A hot services print can overwhelm softer goods. Portfolio management and healthcare are slow-moving but sticky."
+    },
+    {
+      "label": "Commodity complex",
+      "value": "Oil and metals",
+      "note": "Important for headline direction but not enough alone. WTI $68-74 range is the new equilibrium until Hormuz stability is fully confirmed."
+    },
+    {
+      "label": "Pass-through",
+      "value": "Margin pressure watch",
+      "note": "Focus on whether PPI changes the CPI path or earnings narrative. Stage 1-4 intermediate demand is the leading indicator."
+    }
+  ],
+  "keyDrivers": [
+    "Goods deflation helps, but services pipeline matters more for readthrough.",
+    "Commodity moves can distort the headline without changing core pass-through.",
+    "PPI matters most when it shifts margin expectations or the CPI narrative.",
+    "Hormuz reopening is a temporary supply shock reversal; geopolitical risk premium can return quickly."
+  ],
+  "risks": [
+    "Consensus may already expect a benign upstream print after Hormuz deal.",
+    "Revisions can dominate the first market read. May 2026 was heavily revised.",
+    "Macro tape can be driven by yields or oil even if PPI itself is tame.",
+    "Iran deal is 60-day; collapse risk re-energizes energy PPI."
+  ],
+  "sources": [
+    "https://www.bls.gov/news.release/ppi.t.htm",
+    "https://www.eia.gov/petroleum/",
+    "https://www.eia.gov/dnav/ng/hist/rngwhhdm.htm",
+    "https://tradingeconomics.com/commodity/copper",
+    "https://tradingeconomics.com/commodity/steel",
+    "https://tradingeconomics.com/commodity/lumber",
+    "https://finance.yahoo.com/quote/SPX",
+    "https://finance.yahoo.com/quote/VIX",
+    "https://tradingeconomics.com/commodity/live-cattle",
+    "https://tradingeconomics.com/commodity/lean-hogs",
+    "https://tradingeconomics.com/commodity/corn",
+    "https://tradingeconomics.com/commodity/wheat",
+    "https://tradingeconomics.com/commodity/soybeans",
+    "https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/",
+    "https://www.bls.gov/eci/",
+    "https://www.census.gov/wholesale/",
+    "https://fred.stlouisfed.org/series/VIXCLS",
+    "https://www.cboe.com/tradable-products/vix/",
+    "https://www.prnewswire.com/news-releases/manufacturing-pmi-at-53-3-june-2026-ism-manufacturing-pmi-report-302814991.html",
+    "https://www.textileworld.com/textile-world/2026/07/manufacturing-pmi-at-53-3-june-2026-ism-manufacturing-pmi-report/",
+    "https://tradingeconomics.com/commodity/crude-oil",
+    "https://tradingeconomics.com/commodity/gasoline",
+    "https://tradingeconomics.com/commodity/natural-gas",
+    "https://tradingeconomics.com/commodity/aluminum"
+  ]
+}

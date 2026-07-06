@@ -22,6 +22,8 @@ const Landing = lazy(() => import("./pages/Landing"));
 const Home = lazy(() => import("./pages/Home"));
 const ReportsAdmin = lazy(() => import("./pages/ReportsAdmin"));
 const Scanner = lazy(() => import("./pages/Scanner"));
+const MomentumCalibrationPage = lazy(() => import("./pages/MomentumCalibrationPage"));
+const MomentumLedgerPage = lazy(() => import("./pages/MomentumLedgerPage"));
 const FlowPage = lazy(() => import("./features/flow/pages/FlowPage"));
 const FlowDailyPage = lazy(() => import("./features/flow/pages/FlowDailyPage"));
 const FlowTickerPage = lazy(() => import("./features/flow/pages/FlowTickerPage"));
@@ -297,6 +299,12 @@ function Router({
         </Route>
         <Route path={"/earnings"}>
           {() => <EarningsPage language={language} />}
+        </Route>
+        <Route path={"/momentum/calibration"}>
+          {() => <MomentumCalibrationPage language={language} />}
+        </Route>
+        <Route path={"/momentum/ledger"}>
+          {() => <MomentumLedgerPage language={language} />}
         </Route>
         <Route path={"/momentum"}>
           {() => <Scanner language={language} />}
