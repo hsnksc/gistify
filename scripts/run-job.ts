@@ -1,12 +1,11 @@
-#!/usr/bin/env node
 /**
  * CLI wrapper to run a Gistify job through the central job coordinator.
  *
  * Usage:
- *   npx tsx scripts/run-job.mts <job-name>
+ *   node dist/scripts/run-job.js <job-name>
  *
  * Example host cron entry:
- *   */10 * * * * cd /srv/gistify && docker exec gistify npx tsx scripts/run-job.mts midas-signals >> /var/log/gistify-cron.log 2>&1
+ *   * /10 * * * * docker exec gistify node dist/scripts/run-job.js midas-signals >> /var/log/gistify-cron.log 2>&1
  */
 
 import { spawn } from "node:child_process";
@@ -20,7 +19,7 @@ import { CRON_JOB_DEFINITIONS } from "../server/jobs/definitions";
 const name = process.argv[2]?.trim();
 
 if (!name) {
-  console.error("[run-job] Usage: npx tsx scripts/run-job.mts <job-name>");
+  console.error("[run-job] Usage: node dist/scripts/run-job.js <job-name>");
   process.exit(1);
 }
 
@@ -117,9 +116,8 @@ function buildJobFn(jobName: string): () => Promise<unknown> {
 
     case "sync-flow-source-timestamps":
       return async () => {
-        const result = await runSubprocess("npx", [
-          "tsx",
-          "scripts/sync-flow-source-timestamps.ts",
+        const result = await runSubprocess("node", [
+          "dist/scripts/sync-flow-source-timestamps.js",
         ]);
         if (result.exitCode !== 0) {
           throw new Error(
