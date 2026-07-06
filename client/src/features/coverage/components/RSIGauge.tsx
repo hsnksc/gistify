@@ -27,7 +27,7 @@ export default function RSIGauge({ rsi, language = "tr" }: RSIGaugeProps) {
     <div className="rounded-xl border border-border bg-background/40 p-5">
       <h3 className="mb-4 text-sm font-semibold text-foreground">RSI</h3>
       <div className="flex flex-col items-center">
-        <svg viewBox="0 0 200 110" className="w-full max-w-[200px]">
+        <svg viewBox="0 0 200 150" className="w-full max-w-[220px]">
           {/* Background arc */}
           <path
             d="M 20 100 A 80 80 0 0 1 180 100"
