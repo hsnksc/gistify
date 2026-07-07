@@ -201,7 +201,7 @@ describe("flow service timestamps smoke", () => {
     );
   });
 
-  it("orders flow summaries by latest reportDate before creation timestamp", () => {
+  it("orders flow summaries by post timestamp before reportDate", () => {
     mockedSourcePackages = [
       createSourcePackage({
         id: "flow-source-a",
@@ -273,8 +273,85 @@ describe("flow service timestamps smoke", () => {
     ]);
 
     expect(summaries.map(report => report.id)).toEqual([
-      "flow-report-b",
       "flow-report-a",
+      "flow-report-b",
+    ]);
+  });
+
+  it("falls back to reportDate after post timestamp when ordering flow summaries", () => {
+    mockedSourcePackages = [
+      createSourcePackage({
+        id: "flow-source-a",
+        folderName: "flow-source-a",
+        title: "Older report date newer post",
+        reportDate: "2026-06-20",
+        sourceLabel: "flow/post-a.html",
+        updatedAt: "2026-06-29T10:15:00.000Z",
+      }),
+      createSourcePackage({
+        id: "flow-source-b",
+        folderName: "flow-source-b",
+        title: "Newer report date older post",
+        reportDate: "2026-06-29",
+        sourceLabel: "flow/post-b.html",
+        updatedAt: "2026-06-29T10:10:00.000Z",
+      }),
+    ];
+
+    const summaries = getViewerFlowReportSummaries([
+      createReport({
+        id: "flow-report-a",
+        slug: "flow-report-a",
+        title: "Older report date newer post",
+        reportDate: "2026-06-20",
+        sourceFolder: "flow-source-a",
+        publishedAt: "2026-06-29T12:00:00.000Z",
+        updatedAt: "2026-06-29T12:05:00.000Z",
+        content: {
+          headline: "Published Headline",
+          executiveSummary: ["Published summary"],
+          markdown: "# Published",
+          html: "",
+          sectionFiles: [],
+          figureFiles: [],
+          openAiFigureFiles: [],
+          tickerUniverse: ["MARKET"],
+          researchFileCount: 0,
+          sourceKind: "file",
+          contentFormat: "markdown",
+          sourceLabel: "flow/post-a.html",
+          assetBasePath: "",
+        },
+      }),
+      createReport({
+        id: "flow-report-b",
+        slug: "flow-report-b",
+        title: "Newer report date older post",
+        reportDate: "2026-06-29",
+        sourceFolder: "flow-source-b",
+        publishedAt: "2026-06-29T11:00:00.000Z",
+        updatedAt: "2026-06-29T11:05:00.000Z",
+        content: {
+          headline: "Published Headline",
+          executiveSummary: ["Published summary"],
+          markdown: "# Published",
+          html: "",
+          sectionFiles: [],
+          figureFiles: [],
+          openAiFigureFiles: [],
+          tickerUniverse: ["MARKET"],
+          researchFileCount: 0,
+          sourceKind: "file",
+          contentFormat: "markdown",
+          sourceLabel: "flow/post-b.html",
+          assetBasePath: "",
+        },
+      }),
+    ]);
+
+    expect(summaries.map(report => report.id)).toEqual([
+      "flow-report-a",
+      "flow-report-b",
     ]);
   });
 
