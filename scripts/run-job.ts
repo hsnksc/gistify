@@ -9,6 +9,7 @@
  */
 
 import { spawn } from "node:child_process";
+import path from "node:path";
 import { createGistifyDb } from "../server/db";
 import {
   createJobCoordinator,
@@ -116,9 +117,12 @@ function buildJobFn(jobName: string): () => Promise<unknown> {
 
     case "marketflash-momentum":
       return async () => {
+        const defaultOutputPath =
+          process.env.NODE_ENV === "production"
+            ? path.resolve(__dirname, "..", "public", "marketflash", "marketflash_report.json")
+            : "client/public/marketflash/marketflash_report.json";
         const outputPath =
-          process.env.MARKETFLASH_OUTPUT_FILE ||
-          "client/public/marketflash/marketflash_report.json";
+          process.env.MARKETFLASH_OUTPUT_FILE || defaultOutputPath;
         const verbose = process.env.MARKETFLASH_VERBOSE === "1";
         const args = [
           "scripts/marketflash_marketdata_pipeline.py",
