@@ -10,12 +10,15 @@
 
 import { spawn } from "node:child_process";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { createGistifyDb } from "../server/db";
 import {
   createJobCoordinator,
   JobSkippedError,
 } from "../server/services/jobCoordinator";
 import { CRON_JOB_DEFINITIONS } from "../server/jobs/definitions";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const name = process.argv[2]?.trim();
 
