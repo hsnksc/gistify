@@ -69,7 +69,7 @@ function buildJobFn(jobName: string): () => Promise<unknown> {
   switch (jobName) {
     case "x-research-pipeline":
       return async () => {
-        const result = await runSubprocess("python", [
+        const result = await runSubprocess("python3", [
           "scripts/run_x_research_pipeline.py",
         ]);
         if (result.exitCode !== 0) {
@@ -85,7 +85,7 @@ function buildJobFn(jobName: string): () => Promise<unknown> {
         const outputPath =
           process.env.MIDAS_PIPELINE_SOURCE_FILE ||
           "client/public/midas_signals.json";
-        const result = await runSubprocess("python", [
+        const result = await runSubprocess("python3", [
           "scripts/midas_alpaca_pipeline.py",
           "--output",
           outputPath,
