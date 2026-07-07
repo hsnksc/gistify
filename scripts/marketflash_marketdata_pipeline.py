@@ -36,11 +36,25 @@ except Exception:
 # ─── CONFIGURATION ───────────────────────────────────────────────────────────
 
 DEFAULT_SYMBOLS = [
-    "HOOD", "HIMS", "TSM", "META", "MU", "ADBE", "PLTR", "PLTU", "AMD", "AMDL",
-    "SMCX", "SMCI", "NVDA", "NVDU", "SOXL", "SOXS", "AMZN", "MSFT", "AAPL", "AAPX",
-    "GOOG", "GOOGL", "GGLL", "QCOM", "ARM", "TSLA", "AMUU", "INTC", "AVGO", "MRVL",
-    "ASML", "ORCL", "SFTBY", "LSCC", "BE", "TQQQ", "TSMX", "TXN", "LRCX", "ADI",
-    "KLAC", "AMAT", "NXPI", "MPWR", "MCHP", "ON", "TER", "ENTG", "SWKS", "ONTO",
+    # Mega / liquid tech
+    "AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "META", "TSLA", "AVGO", "AMD", "INTC",
+    "QCOM", "ARM", "ORCL", "CRM", "NFLX", "ADBE", "CSCO", "IBM", "UBER", "ABNB",
+    # Semiconductors / hardware
+    "TSM", "ASML", "MU", "MRVL", "TXN", "LRCX", "KLAC", "AMAT", "NXPI", "MPWR",
+    "MCHP", "ON", "TER", "ENTG", "SWKS", "ONTO", "LSCC", "PLTR", "RDDT",
+    # Retail / consumer
+    "WMT", "TGT", "COST", "HD", "LOW", "MCD", "SBUX", "NKE", "LULU", "ETSY",
+    "PINS", "SNAP", "CROX", "DECK", "DPZ",
+    # Financials / fintech
+    "JPM", "BAC", "GS", "MS", "WFC", "C", "BLK", "BX", "COIN", "HOOD",
+    "AFRM", "SOFI", "V", "MA",
+    # Healthcare / biotech
+    "LLY", "NVAX", "MRNA", "REGN", "VRTX", "BIIB", "PFE", "JNJ", "UNH", "ISRG",
+    # Energy / industrials
+    "XOM", "CVX", "COP", "OXY", "SLB", "GE", "RTX", "LMT", "BA", "CAT",
+    # Thematic / high-beta / international
+    "MSTR", "HIMS", "DJT", "APP", "DASH", "SHOP", "BABA", "JD", "PDD", "NIO",
+    "XPEV", "LI",
 ]
 
 INDEX_SYMBOLS = ["SPY", "QQQ", "IWM", "VIX"]
@@ -49,12 +63,12 @@ BATCH_SIZE = 50
 MAX_RETRIES = 3
 RETRY_BACKOFF = [2, 4, 8]
 
-GRADE_THRESHOLDS = {"A": 65, "B": 50, "C": 35}
+GRADE_THRESHOLDS = {"A": 60, "B": 45, "C": 30}
 SOFT_FILTERS = {
     "min_price": 3.0,
-    "min_avg_volume": 100_000,
-    "min_dollar_volume": 1_000_000,
-    "min_rvol": 0.8,
+    "min_avg_volume": 50_000,
+    "min_dollar_volume": 500_000,
+    "min_rvol": 0.6,
 }
 
 SECTOR_MAP: dict[str, str] = {
@@ -214,16 +228,41 @@ def fetch_vix_fallback() -> Quote:
         # Prevent yfinance from raising on missing timezones in minimal containers
         _os.environ.setdefault("TZ", "America/New_York")
         ticker = yf.Ticker("^VIX")
-        hist = ticker.history(period="2d", interval="1d", prepost=False)
+        hist = ticker.history(period="5d", interval="1d", prepost=False)
         if not hist.empty:
             last_close = float(hist["Close"].iloc[-1])
             prev_close = float(hist["Close"].iloc[-2]) if len(hist) > 1 else last_close
             q.last = last_close
             q.change = last_close - prev_close
             q.changepct = ((last_close - prev_close) / prev_close * 100) if prev_close else 0.0
+            print(f"[INFO] VIX via yfinance: {q.last:.2f}")
     except Exception as e:
         print(f"[WARN] VIX fallback failed, using default 20.0: {e}", file=sys.stderr)
     return q
+
+
+def _resolve_vix(client: MarketDataClient, quotes: dict[str, Quote]) -> Quote:
+    """Resolve VIX level from quotes, candles, or yfinance fallback."""
+    vix = quotes.get("VIX")
+    if vix and vix.last > 0:
+        return vix
+    # Try MarketData candles for VIX under common symbols
+    for sym in ("VIX", "^VIX"):
+        try:
+            bars = fetch_candles(client, sym, "D", 2)
+            if bars:
+                last_close = float(bars[-1].get("c", 0))
+                prev_close = float(bars[-2].get("c", last_close)) if len(bars) > 1 else last_close
+                if last_close > 0:
+                    return Quote(
+                        symbol="VIX",
+                        last=last_close,
+                        change=last_close - prev_close,
+                        changepct=((last_close - prev_close) / prev_close * 100) if prev_close else 0.0,
+                    )
+        except Exception as e:
+            print(f"[WARN] VIX candles failed for {sym}: {e}", file=sys.stderr)
+    return fetch_vix_fallback()
 
 
 def fetch_candles(client: MarketDataClient, symbol: str, resolution: str, countback: int = 10) -> list[dict[str, Any]]:
@@ -370,7 +409,7 @@ def _has_real_volume(bars: Bars) -> bool:
 
 def _score_volume_profile(quote: Quote, bars: Bars, direction: str) -> float:
     if not _has_real_volume(bars):
-        return 0.5  # neutral when volume data is unavailable
+        return 0.55  # slightly above neutral; volume data missing is common
     rvol = calc_rvol(bars.daily)
     if rvol >= 2.5:
         return 1.0
@@ -379,9 +418,11 @@ def _score_volume_profile(quote: Quote, bars: Bars, direction: str) -> float:
     if rvol >= 1.5:
         return 0.65
     if rvol >= 1.2:
-        return 0.35
+        return 0.45
     if rvol >= 0.8:
-        return 0.20
+        return 0.30
+    if rvol >= 0.6:
+        return 0.15
     return 0.0
 
 
@@ -915,8 +956,8 @@ def _risk_assessment(vix_level: float, long_setups: list[Candidate], short_setup
     elif vix_level < 15:
         level = "low"
 
-    full_long = sum(1 for c in long_setups if c.fillSource == "gate")
-    full_short = sum(1 for c in short_setups if c.fillSource == "gate")
+    full_long = sum(1 for c in long_setups if not c.missed_criteria)
+    full_short = sum(1 for c in short_setups if not c.missed_criteria)
     details = [
         f"VIX {vix_level:.2f}",
         f"Tam kriterli LONG: {full_long}/5",
@@ -937,6 +978,7 @@ def _risk_assessment(vix_level: float, long_setups: list[Candidate], short_setup
 def run_marketdata_pipeline(
     symbols: list[str],
     output_path: str | None = None,
+    verbose: bool = False,
 ) -> dict[str, Any]:
     print(f"[MarketFlash Pipeline] {len(symbols)} sembol")
     client = _get_client()
@@ -946,14 +988,12 @@ def run_marketdata_pipeline(
     quotes = fetch_quotes_batch(client, all_symbols, use_52_week=True)
     print(f"      -> {len(quotes)} quote alindi")
 
-    vix_quote = quotes.get("VIX", Quote(symbol="VIX", last=20.0))
-    if vix_quote.last == 0:
-        vix_quote = fetch_vix_fallback()
+    vix_quote = _resolve_vix(client, quotes)
     spy_quote = quotes.get("SPY", Quote(symbol="SPY"))
 
     print("[2/5] Market bars (SPY) çekiliyor...")
     market_bars = Bars(
-        daily=fetch_candles(client, "SPY", "D", 30),
+        daily=fetch_candles(client, "SPY", "D", 80),
         weekly=fetch_candles(client, "SPY", "W", 10),
         monthly=fetch_candles(client, "SPY", "M", 6),
     )
@@ -962,7 +1002,7 @@ def run_marketdata_pipeline(
     symbol_bars: dict[str, Bars] = {}
     for sym in symbols:
         symbol_bars[sym] = Bars(
-            daily=fetch_candles(client, sym, "D", 30),
+            daily=fetch_candles(client, sym, "D", 80),
             weekly=fetch_candles(client, sym, "W", 10),
             monthly=fetch_candles(client, sym, "M", 6),
         )
@@ -1003,11 +1043,25 @@ def run_marketdata_pipeline(
     long_selected = apply_fill_ladder(long_candidates, "long")
     short_selected = apply_fill_ladder(short_candidates, "short")
 
-    full_long = sum(1 for c in long_selected if c.fillSource == "gate")
-    full_short = sum(1 for c in short_selected if c.fillSource == "gate")
+    # "Full criteria" = zero soft misses (B1 gate + B2 watchlist fills)
+    full_long = sum(1 for c in long_selected if not c.missed_criteria)
+    full_short = sum(1 for c in short_selected if not c.missed_criteria)
 
     print(f"      -> LONG: {len(long_selected)} aday ({full_long} tam kriterli)")
     print(f"      -> SHORT: {len(short_selected)} aday ({full_short} tam kriterli)")
+
+    if verbose:
+        print("\n[DEBUG] Top 5 LONG candidates:")
+        for c in sorted(long_candidates, key=lambda x: x.mss, reverse=True)[:5]:
+            print(f"  {c.ticker}: MSS={c.mss:.1f} grade={c.grade} vol={c.volume:.0f} avgVol={c.avg_volume:.0f} rvol={c.rvol:.2f} misses={c.missed_criteria} fill={c.fillSource}")
+        print("\n[DEBUG] Top 5 SHORT candidates:")
+        for c in sorted(short_candidates, key=lambda x: x.mss, reverse=True)[:5]:
+            print(f"  {c.ticker}: MSS={c.mss:.1f} grade={c.grade} vol={c.volume:.0f} avgVol={c.avg_volume:.0f} rvol={c.rvol:.2f} misses={c.missed_criteria} fill={c.fillSource}")
+        miss_reasons: dict[str, int] = {}
+        for c in long_candidates + short_candidates:
+            for m in c.missed_criteria:
+                miss_reasons[m] = miss_reasons.get(m, 0) + 1
+        print(f"\n[DEBUG] Soft miss distribution: {miss_reasons}")
 
     print("[5/5] Rapor üretiliyor...")
     call_setups = []
@@ -1082,12 +1136,18 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="MarketFlash Momentum VPS Pipeline")
     parser.add_argument("--output", "-o", type=str, default=None, help="Output JSON path")
     parser.add_argument("--symbols", "-s", type=str, default=None, help="Comma-separated symbols (override default)")
+    parser.add_argument("--verbose", "-v", action="store_true", help="Print debug details")
     args = parser.parse_args()
 
-    symbols = args.symbols.split(",") if args.symbols else DEFAULT_SYMBOLS[:]
+    if args.symbols:
+        symbols = args.symbols.split(",")
+    elif os.environ.get("MARKETFLASH_SYMBOLS"):
+        symbols = os.environ.get("MARKETFLASH_SYMBOLS", "").split(",")
+    else:
+        symbols = DEFAULT_SYMBOLS[:]
     symbols = [s.strip().upper() for s in symbols if s.strip()]
 
-    run_marketdata_pipeline(symbols, output_path=args.output)
+    run_marketdata_pipeline(symbols, output_path=args.output, verbose=args.verbose)
     print("[Done]")
     return 0
 

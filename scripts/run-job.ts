@@ -119,11 +119,14 @@ function buildJobFn(jobName: string): () => Promise<unknown> {
         const outputPath =
           process.env.MARKETFLASH_OUTPUT_FILE ||
           "client/public/marketflash/marketflash_report.json";
-        const result = await runSubprocess("python3", [
+        const verbose = process.env.MARKETFLASH_VERBOSE === "1";
+        const args = [
           "scripts/marketflash_marketdata_pipeline.py",
           "--output",
           outputPath,
-        ]);
+        ];
+        if (verbose) args.push("--verbose");
+        const result = await runSubprocess("python3", args);
         if (result.exitCode !== 0) {
           throw new Error(
             `MarketFlash pipeline failed with exit code ${result.exitCode}`
