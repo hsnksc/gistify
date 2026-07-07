@@ -100,7 +100,7 @@ function signalLabel(signal: ActionSignal, language: AppLanguage) {
     case "SELL":
       return t("common:sell");
     case "STRONG_SELL":
-      return t("flow:htmlReportDetailForDated");
+      return t("common:strongSell");
     default:
       return t("common:hold");
   }
