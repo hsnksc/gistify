@@ -86,7 +86,7 @@ function buildJobFn(jobName: string): () => Promise<unknown> {
           process.env.MIDAS_PIPELINE_SOURCE_FILE ||
           "client/public/midas_signals.json";
         const result = await runSubprocess("python3", [
-          "scripts/midas_alpaca_pipeline.py",
+          "scripts/midas_marketdata_pipeline.py",
           "--output",
           outputPath,
         ]);

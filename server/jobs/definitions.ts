@@ -4,9 +4,9 @@ export const CRON_JOB_DEFINITIONS: CronJobDefinition[] = [
   {
     name: "x-research-pipeline",
     schedule: "0 9,21 * * *",
-    enabled: true,
+    enabled: false,
     description:
-      "End-to-end X research pipeline: scrape → filter → research → synthesize → flow HTML → deploy.",
+      "End-to-end X research pipeline: scrape → filter → research → synthesize → flow HTML → deploy. (Disabled — managed externally.)",
   },
   {
     name: "midas-signals",
