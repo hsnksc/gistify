@@ -9,6 +9,7 @@
  */
 
 import { spawn } from "node:child_process";
+import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createGistifyDb } from "../server/db";
@@ -120,12 +121,15 @@ function buildJobFn(jobName: string): () => Promise<unknown> {
 
     case "marketflash-momentum":
       return async () => {
-        const defaultOutputPath =
-          process.env.NODE_ENV === "production"
-            ? path.resolve(__dirname, "..", "public", "marketflash", "marketflash_report.json")
-            : "client/public/marketflash/marketflash_report.json";
+        const distOutputPath = path.resolve(
+          __dirname,
+          "..",
+          "public",
+          "marketflash",
+          "marketflash_report.json"
+        );
         const outputPath =
-          process.env.MARKETFLASH_OUTPUT_FILE || defaultOutputPath;
+          process.env.MARKETFLASH_OUTPUT_FILE || distOutputPath;
         const verbose = process.env.MARKETFLASH_VERBOSE === "1";
         const args = [
           "scripts/marketflash_marketdata_pipeline.py",
@@ -138,6 +142,24 @@ function buildJobFn(jobName: string): () => Promise<unknown> {
           throw new Error(
             `MarketFlash pipeline failed with exit code ${result.exitCode}`
           );
+        }
+        // Mirror to client/public so local dev/preview also sees the report
+        try {
+          const clientOutputPath = path.resolve(
+            __dirname,
+            "..",
+            "..",
+            "client",
+            "public",
+            "marketflash",
+            "marketflash_report.json"
+          );
+          if (clientOutputPath !== outputPath && fs.existsSync(outputPath)) {
+            fs.mkdirSync(path.dirname(clientOutputPath), { recursive: true });
+            fs.copyFileSync(outputPath, clientOutputPath);
+          }
+        } catch {
+          // Non-fatal mirror; production only needs dist/public
         }
         return { exitCode: result.exitCode };
       };
