@@ -1452,7 +1452,7 @@ export default function MarketFlash() {
 
   usePageMeta({
     description: t("marketFlash:marketFlashCombinesTheIntraday"),
-    title: "Gistify | Market Flash",
+    title: `Gistify | ${t("common:marketFlash")}`,
   });
 
   const pollIntervalMs = useMemo(() => {
@@ -1467,7 +1467,7 @@ export default function MarketFlash() {
       setRefreshing(true);
 
       try {
-        const url = `/marketflash/marketflash_report.json?t=${Date.now()}`;
+        const url = `/api/marketflash?t=${Date.now()}`;
         const response = await fetch(url, {
           cache: "no-store",
           credentials: "same-origin",
@@ -1778,7 +1778,7 @@ export default function MarketFlash() {
                         <p className="flex items-center gap-1 text-foreground/70">
                           <ChevronRight className="size-3" />
                           <code className="rounded bg-black/20 px-1.5 py-0.5 text-[11px]">
-                            /marketflash/marketflash_report.json
+                            /api/marketflash
                           </code>
                         </p>
                         <p>

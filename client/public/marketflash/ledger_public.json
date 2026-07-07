@@ -1,0 +1,166 @@
+[
+  {
+    "symbol": "ANET",
+    "trackType": "pick",
+    "grade": "B",
+    "phase": "ATEŞLEME",
+    "catalystTier": "2",
+    "status": "open",
+    "mss": 64,
+    "entryDate": "2026-07-06",
+    "paramsVersion": "2",
+    "exhaustionFlags": [],
+    "t1": {
+      "retPct": null,
+      "status": "open",
+      "date": "2026-07-06"
+    },
+    "t3": {
+      "retPct": null,
+      "status": "open",
+      "date": "2026-07-06"
+    },
+    "t5": {
+      "retPct": null,
+      "status": "open",
+      "date": "2026-07-06"
+    }
+  },
+  {
+    "symbol": "TSLA",
+    "trackType": "pick",
+    "grade": "B",
+    "phase": "ATEŞLEME",
+    "catalystTier": "3",
+    "status": "open",
+    "mss": 62,
+    "entryDate": "2026-07-06",
+    "paramsVersion": "2",
+    "exhaustionFlags": [],
+    "t1": {
+      "retPct": null,
+      "status": "open",
+      "date": "2026-07-06"
+    },
+    "t3": {
+      "retPct": null,
+      "status": "open",
+      "date": "2026-07-06"
+    },
+    "t5": {
+      "retPct": null,
+      "status": "open",
+      "date": "2026-07-06"
+    }
+  },
+  {
+    "symbol": "META",
+    "trackType": "pick",
+    "grade": "B",
+    "phase": "İVME",
+    "catalystTier": "2",
+    "status": "open",
+    "mss": 59,
+    "entryDate": "2026-07-06",
+    "paramsVersion": "2",
+    "exhaustionFlags": [],
+    "t1": {
+      "retPct": null,
+      "status": "open",
+      "date": "2026-07-06"
+    },
+    "t3": {
+      "retPct": null,
+      "status": "open",
+      "date": "2026-07-06"
+    },
+    "t5": {
+      "retPct": null,
+      "status": "open",
+      "date": "2026-07-06"
+    }
+  },
+  {
+    "symbol": "AMD",
+    "trackType": "pick",
+    "grade": "B",
+    "phase": "ATEŞLEME",
+    "catalystTier": "2",
+    "status": "open",
+    "mss": 58,
+    "entryDate": "2026-07-06",
+    "paramsVersion": "2",
+    "exhaustionFlags": [],
+    "t1": {
+      "retPct": null,
+      "status": "open",
+      "date": "2026-07-06"
+    },
+    "t3": {
+      "retPct": null,
+      "status": "open",
+      "date": "2026-07-06"
+    },
+    "t5": {
+      "retPct": null,
+      "status": "open",
+      "date": "2026-07-06"
+    }
+  },
+  {
+    "symbol": "ORLY",
+    "trackType": "pick",
+    "grade": "B",
+    "phase": "ATEŞLEME",
+    "catalystTier": "3",
+    "status": "open",
+    "mss": 58,
+    "entryDate": "2026-07-06",
+    "paramsVersion": "2",
+    "exhaustionFlags": [],
+    "t1": {
+      "retPct": null,
+      "status": "open",
+      "date": "2026-07-06"
+    },
+    "t3": {
+      "retPct": null,
+      "status": "open",
+      "date": "2026-07-06"
+    },
+    "t5": {
+      "retPct": null,
+      "status": "open",
+      "date": "2026-07-06"
+    }
+  },
+  {
+    "symbol": "MSFT",
+    "trackType": "pick",
+    "grade": "B",
+    "phase": "İVME",
+    "catalystTier": "2",
+    "status": "open",
+    "mss": 52,
+    "entryDate": "2026-07-06",
+    "paramsVersion": "2",
+    "exhaustionFlags": [
+      "GAP_FADE"
+    ],
+    "t1": {
+      "retPct": null,
+      "status": "open",
+      "date": "2026-07-06"
+    },
+    "t3": {
+      "retPct": null,
+      "status": "open",
+      "date": "2026-07-06"
+    },
+    "t5": {
+      "retPct": null,
+      "status": "open",
+      "date": "2026-07-06"
+    }
+  }
+]

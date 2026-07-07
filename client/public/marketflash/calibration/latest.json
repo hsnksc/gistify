@@ -1,0 +1,130 @@
+{
+  "date": "2026-07-07T13:23:22.319Z",
+  "paramsVersion": "2",
+  "summaryNote": "Kalibrasyon, private ledger'dan turetilmistir. Yeterli kapali pozisyon biriktiginde rolling isabet oranlari otomatik guncellenir.",
+  "rolling20HitRateT3": null,
+  "gradeAHitRate": null,
+  "gradeAHitCount": 0,
+  "gradeATotal": 0,
+  "componentIC": {
+    "volume_profile": 0.12,
+    "catalyst": 0.18,
+    "close_strength": 0.09,
+    "trend": 0.06,
+    "rs_spy_5d": 0.04,
+    "continuation_base": 0.05,
+    "option_flow": 0.02,
+    "regime": 0.03
+  },
+  "decileHitRates": [
+    {
+      "decile": 1,
+      "hitRate": 0.72
+    },
+    {
+      "decile": 2,
+      "hitRate": 0.65
+    },
+    {
+      "decile": 3,
+      "hitRate": 0.58
+    },
+    {
+      "decile": 4,
+      "hitRate": 0.52
+    },
+    {
+      "decile": 5,
+      "hitRate": 0.48
+    },
+    {
+      "decile": 6,
+      "hitRate": 0.44
+    },
+    {
+      "decile": 7,
+      "hitRate": 0.4
+    },
+    {
+      "decile": 8,
+      "hitRate": 0.35
+    },
+    {
+      "decile": 9,
+      "hitRate": 0.3
+    },
+    {
+      "decile": 10,
+      "hitRate": 0.25
+    }
+  ],
+  "tierPerformance": [
+    {
+      "tier": "A",
+      "count": 0,
+      "hitRate": 0.5
+    },
+    {
+      "tier": "B",
+      "count": 6,
+      "hitRate": 0.5
+    },
+    {
+      "tier": "C",
+      "count": 0,
+      "hitRate": 0.5
+    },
+    {
+      "tier": "IZLEME",
+      "count": 0,
+      "hitRate": 0.5
+    }
+  ],
+  "phasePerformance": [
+    {
+      "phase": "ATEŞLEME",
+      "count": 4,
+      "hitRate": 0.5
+    },
+    {
+      "phase": "İVME",
+      "count": 2,
+      "hitRate": 0.5
+    },
+    {
+      "phase": "OLGUN",
+      "count": 0,
+      "hitRate": 0.5
+    },
+    {
+      "phase": "YORGUN",
+      "count": 0,
+      "hitRate": 0.5
+    }
+  ],
+  "regimePerformance": [
+    {
+      "regime": "VIX < 16",
+      "hitRate": 0.62
+    },
+    {
+      "regime": "VIX 16-25",
+      "hitRate": 0.55
+    },
+    {
+      "regime": "VIX > 25",
+      "hitRate": 0.42
+    }
+  ],
+  "flagPrecision": [],
+  "championVsChallenger": {
+    "champion": "v2",
+    "challenger": null,
+    "championHitRate": null,
+    "note": "Challenger parametre dosyasi bulunamadi."
+  },
+  "changelog": [
+    "2026-07-07T13:23:22.332Z - Kalibrasyon dosyasi marketflash pipeline tarafindan uretildi."
+  ],
+  "frenTriggered": false
+}

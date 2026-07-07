@@ -143,20 +143,46 @@ function buildJobFn(jobName: string): () => Promise<unknown> {
             `MarketFlash pipeline failed with exit code ${result.exitCode}`
           );
         }
-        // Mirror to client/public so local dev/preview also sees the report
+        // Mirror all marketflash artifacts to client/public so local dev/preview also sees them
         try {
-          const clientOutputPath = path.resolve(
+          const clientOutputDir = path.resolve(
             __dirname,
             "..",
             "..",
             "client",
             "public",
-            "marketflash",
-            "marketflash_report.json"
+            "marketflash"
           );
-          if (clientOutputPath !== outputPath && fs.existsSync(outputPath)) {
-            fs.mkdirSync(path.dirname(clientOutputPath), { recursive: true });
-            fs.copyFileSync(outputPath, clientOutputPath);
+          const files = [
+            "marketflash_report.json",
+            "momentum_params.json",
+            "ledger_public.json",
+          ];
+          const dirs = ["calibration"];
+          const sourceDir = path.dirname(outputPath);
+          if (path.resolve(clientOutputDir) !== path.resolve(sourceDir) && fs.existsSync(outputPath)) {
+            fs.mkdirSync(clientOutputDir, { recursive: true });
+            for (const file of files) {
+              const src = path.resolve(sourceDir, file);
+              const dst = path.resolve(clientOutputDir, file);
+              if (fs.existsSync(src)) {
+                fs.copyFileSync(src, dst);
+              }
+            }
+            for (const dir of dirs) {
+              const srcDir = path.resolve(sourceDir, dir);
+              const dstDir = path.resolve(clientOutputDir, dir);
+              if (fs.existsSync(srcDir)) {
+                fs.mkdirSync(dstDir, { recursive: true });
+                for (const entry of fs.readdirSync(srcDir)) {
+                  const srcEntry = path.resolve(srcDir, entry);
+                  const dstEntry = path.resolve(dstDir, entry);
+                  if (fs.statSync(srcEntry).isFile()) {
+                    fs.copyFileSync(srcEntry, dstEntry);
+                  }
+                }
+              }
+            }
           }
         } catch {
           // Non-fatal mirror; production only needs dist/public

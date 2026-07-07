@@ -1,0 +1,57 @@
+{
+  "version": 2,
+  "name": "momentum_relaxed_v2",
+  "description": "Gevsek MSS skorlama — 5 call + 5 put garantisi icin calibrasyon. Alpaca veri yerine web verileri tercih edilir.",
+  "scoring": {
+    "gradeThresholds": {
+      "A": 65,
+      "B": 50,
+      "C": 35
+    },
+    "weights": {
+      "volumeProfile": 20,
+      "catalystDurability": 20,
+      "priceStructure": 15,
+      "trendPosition": 12,
+      "relativeStrength": 10,
+      "historicalBaseRate": 10,
+      "institutionalFlow": 8,
+      "regimeFit": 5
+    },
+    "tierScores": {
+      "1": 1,
+      "2": 0.7,
+      "3": 0.5,
+      "4": 0.2,
+      "1b": 0.9
+    },
+    "exhaustion": {
+      "penaltyCap": 20,
+      "parabolicThresholdPct": 15,
+      "climaxVolumeThreshold": 100000000,
+      "gapFadeThresholdPct": 0.5,
+      "weakCloseThresholdPct": 1
+    }
+  },
+  "filters": {
+    "minVolume": 5000000,
+    "minDollarVolume": 1000000,
+    "minPrice": 3,
+    "maxPrice": 5000,
+    "minRvol": 0.8,
+    "minRr": 1.5,
+    "directionalBias": "NONE"
+  },
+  "dataSources": {
+    "primary": "web_search_and_yahoo_finance",
+    "fallback": "alpaca_paper",
+    "alpacaNote": "Alpaca free-tier hacim verisi gercek piyasayla uyusmuyor (AMD 590K vs 20M+). Web verileri (Yahoo Finance most active) tercih edilmeli."
+  },
+  "output": {
+    "minCallSetups": 5,
+    "minPutSetups": 5,
+    "maxWatchlist": 10,
+    "reportLanguage": "tr",
+    "financialJargon": "en"
+  }
+}
