@@ -210,8 +210,11 @@ def fetch_vix_fallback() -> Quote:
     if not HAS_YFINANCE:
         return q
     try:
+        import os as _os
+        # Prevent yfinance from raising on missing timezones in minimal containers
+        _os.environ.setdefault("TZ", "America/New_York")
         ticker = yf.Ticker("^VIX")
-        hist = ticker.history(period="2d", interval="1d")
+        hist = ticker.history(period="2d", interval="1d", prepost=False)
         if not hist.empty:
             last_close = float(hist["Close"].iloc[-1])
             prev_close = float(hist["Close"].iloc[-2]) if len(hist) > 1 else last_close
@@ -219,7 +222,7 @@ def fetch_vix_fallback() -> Quote:
             q.change = last_close - prev_close
             q.changepct = ((last_close - prev_close) / prev_close * 100) if prev_close else 0.0
     except Exception as e:
-        print(f"[WARN] VIX fallback failed: {e}", file=sys.stderr)
+        print(f"[WARN] VIX fallback failed, using default 20.0: {e}", file=sys.stderr)
     return q
 
 
@@ -359,33 +362,27 @@ def _normalize(val: float, low: float, high: float) -> float:
     return max(0.0, min(1.0, (val - low) / (high - low)))
 
 
+def _has_real_volume(bars: Bars) -> bool:
+    if not bars.daily:
+        return False
+    return any(float(b.get("v", 0)) > 0 for b in bars.daily[-5:])
+
+
 def _score_volume_profile(quote: Quote, bars: Bars, direction: str) -> float:
-    rvol = calc_rvol(bars.daily) if bars.daily else 1.0
-    if direction == "long":
-        if rvol >= 2.5:
-            return 1.0
-        if rvol >= 1.8:
-            return 0.85
-        if rvol >= 1.5:
-            return 0.65
-        if rvol >= 1.2:
-            return 0.35
-        if rvol >= 0.8:
-            return 0.20
-        return 0.0
-    else:
-        # Same distribution for short — distribution volume is bearish too
-        if rvol >= 2.5:
-            return 1.0
-        if rvol >= 1.8:
-            return 0.85
-        if rvol >= 1.5:
-            return 0.65
-        if rvol >= 1.2:
-            return 0.35
-        if rvol >= 0.8:
-            return 0.20
-        return 0.0
+    if not _has_real_volume(bars):
+        return 0.5  # neutral when volume data is unavailable
+    rvol = calc_rvol(bars.daily)
+    if rvol >= 2.5:
+        return 1.0
+    if rvol >= 1.8:
+        return 0.85
+    if rvol >= 1.5:
+        return 0.65
+    if rvol >= 1.2:
+        return 0.35
+    if rvol >= 0.8:
+        return 0.20
+    return 0.0
 
 
 def _score_catalyst(quote: Quote, direction: str) -> tuple[float, str]:
@@ -690,6 +687,9 @@ def _soft_misses(quote: Quote, bars: Bars, direction: str) -> list[str]:
     misses: list[str] = []
     if quote.last < 3:
         misses.append("LOW_PRICE")
+    if not _has_real_volume(bars):
+        # No real volume data — do not penalize, but note it
+        return misses
     avg_vol = calc_avg_volume(bars.daily) if bars.daily else 0
     dollar_vol = avg_vol * quote.last
     if avg_vol < SOFT_FILTERS["min_avg_volume"]:

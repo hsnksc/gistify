@@ -29,7 +29,7 @@ ENV GISTIFY_DB_PATH=/app/data/gistify.sqlite
 ENV GISTIFY_MIGRATIONS_DIR=/app/server/db/migrations
 
 RUN mkdir -p /app/data
-RUN apk add --no-cache python3 py3-pip curl \
+RUN apk add --no-cache python3 py3-pip curl tzdata \
   && ln -sf /usr/bin/python3 /usr/bin/python \
   && pip install --break-system-packages marketdata-sdk-py yfinance yahooquery pandas numpy scipy requests
 
