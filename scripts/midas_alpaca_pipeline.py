@@ -361,14 +361,17 @@ def run_alpaca_pipeline(
             if db and "c" in db:
                 prices[sym] = float(db["c"])
 
-        # Daily pct from dailyBar / prevDailyBar
-        db = snap.get("dailyBar", {})
+        # Daily pct: pre-market aware → use latestTrade vs prevDailyBar first
         pdb = snap.get("prevDailyBar", {})
-        if db and pdb and "c" in db and "c" in pdb:
+        latest_price_val = snap.get("latestTrade", {}).get("p")
+        db = snap.get("dailyBar", {})
+        if pdb and "c" in pdb:
             prev = float(pdb["c"])
-            curr = float(db["c"])
             if prev != 0:
-                daily_pcts[sym] = ((curr - prev) / prev) * 100
+                if latest_price_val is not None:
+                    daily_pcts[sym] = ((float(latest_price_val) - prev) / prev) * 100
+                elif db and "c" in db:
+                    daily_pcts[sym] = ((float(db["c"]) - prev) / prev) * 100
 
     print(f"      -> {len(prices)} fiyat, {len(daily_pcts)} daily pct alindi")
 
