@@ -28,6 +28,7 @@ import {
   getViewerFlowReportById,
   getViewerFlowReportSummaries,
 } from "../../server/services/flowService";
+import { compareFlowReports } from "../../client/src/features/flow/lib/flowReportHelpers";
 
 function createSourcePackage(
   overrides: Partial<DailyReportSourcePackage> = {}
@@ -273,6 +274,28 @@ describe("flow service timestamps smoke", () => {
     ]);
 
     expect(summaries.map(report => report.id)).toEqual([
+      "flow-report-a",
+      "flow-report-b",
+    ]);
+  });
+
+  it("orders flow cards by posted timestamp before reportDate in the client helper", () => {
+    const olderDateNewerPost = {
+      id: "flow-report-a",
+      title: "Older report date newer post",
+      reportDate: "2026-06-20",
+      publishedAt: "2026-06-29T12:00:00.000Z",
+      updatedAt: "2026-06-29T12:05:00.000Z",
+    } as any;
+    const newerDateOlderPost = {
+      id: "flow-report-b",
+      title: "Newer report date older post",
+      reportDate: "2026-06-29",
+      publishedAt: "2026-06-29T11:00:00.000Z",
+      updatedAt: "2026-06-29T11:05:00.000Z",
+    } as any;
+
+    expect([olderDateNewerPost, newerDateOlderPost].sort(compareFlowReports).map(report => report.id)).toEqual([
       "flow-report-a",
       "flow-report-b",
     ]);
