@@ -27,6 +27,12 @@ from typing import Any
 
 from marketdata import MarketDataClient, OutputFormat
 
+try:
+    import yfinance as yf
+    HAS_YFINANCE = True
+except Exception:
+    HAS_YFINANCE = False
+
 # ─── CONFIGURATION ───────────────────────────────────────────────────────────
 
 DEFAULT_SYMBOLS = [
@@ -166,8 +172,8 @@ def fetch_quotes_batch(client: MarketDataClient, symbols: list[str], use_52_week
                         q.volume = _float(result, "volume", idx)
                         q.bid = _float(result, "bid", idx)
                         q.ask = _float(result, "ask", idx)
-                        q.week52_high = _float(result, "week52High", idx) or None
-                        q.week52_low = _float(result, "week52Low", idx) or None
+                        q.week52_high = _float_any(result, ["week52High", "fiftyTwoWeekHigh", "week_52_high", "high52"], idx) or None
+                        q.week52_low = _float_any(result, ["week52Low", "fiftyTwoWeekLow", "week_52_low", "low52"], idx) or None
                         quotes[sym] = q
                 break
             except Exception as e:
@@ -188,6 +194,33 @@ def _float(result: dict[str, Any], key: str, idx: int) -> float:
         return float(values[idx])
     except (TypeError, ValueError):
         return 0.0
+
+
+def _float_any(result: dict[str, Any], keys: list[str], idx: int) -> float:
+    for key in keys:
+        val = _float(result, key, idx)
+        if val != 0.0:
+            return val
+    return 0.0
+
+
+def fetch_vix_fallback() -> Quote:
+    """Fetch VIX quote via yfinance fallback."""
+    q = Quote(symbol="VIX", last=20.0)
+    if not HAS_YFINANCE:
+        return q
+    try:
+        ticker = yf.Ticker("^VIX")
+        hist = ticker.history(period="2d", interval="1d")
+        if not hist.empty:
+            last_close = float(hist["Close"].iloc[-1])
+            prev_close = float(hist["Close"].iloc[-2]) if len(hist) > 1 else last_close
+            q.last = last_close
+            q.change = last_close - prev_close
+            q.changepct = ((last_close - prev_close) / prev_close * 100) if prev_close else 0.0
+    except Exception as e:
+        print(f"[WARN] VIX fallback failed: {e}", file=sys.stderr)
+    return q
 
 
 def fetch_candles(client: MarketDataClient, symbol: str, resolution: str, countback: int = 10) -> list[dict[str, Any]]:
@@ -914,6 +947,8 @@ def run_marketdata_pipeline(
     print(f"      -> {len(quotes)} quote alindi")
 
     vix_quote = quotes.get("VIX", Quote(symbol="VIX", last=20.0))
+    if vix_quote.last == 0:
+        vix_quote = fetch_vix_fallback()
     spy_quote = quotes.get("SPY", Quote(symbol="SPY"))
 
     print("[2/5] Market bars (SPY) çekiliyor...")
@@ -931,6 +966,11 @@ def run_marketdata_pipeline(
             weekly=fetch_candles(client, sym, "W", 10),
             monthly=fetch_candles(client, sym, "M", 6),
         )
+        # Quotes endpoint does not always return volume; backfill from latest daily bar
+        if sym in quotes and symbol_bars[sym].daily:
+            latest_daily = symbol_bars[sym].daily[-1]
+            if quotes[sym].volume == 0:
+                quotes[sym].volume = float(latest_daily.get("v", 0))
         time.sleep(0.03)
     print(f"      -> {len(symbol_bars)} sembol için barlar alindi")
 
