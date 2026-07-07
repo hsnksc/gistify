@@ -629,16 +629,8 @@ export function buildFlowViewerData(
   }));
   const siteValue = getFlowMetaValue(normalizedMetadataItems, ["Site", "Source"]);
   const tickerValue = getFlowMetaValue(normalizedMetadataItems, ["Ticker"]);
-  const newsDateValue = getFlowMetaValue(normalizedMetadataItems, [
-    "Haber Tarihi",
-    "News Date",
-    "Rapor Tarihi",
-    "Report Date",
-  ]);
   const statMetaKeys = new Set(
-    ["Site", "Source", "Ticker", "Haber Tarihi", "News Date", "Rapor Tarihi", "Report Date"].map(
-      normalizeFlowMetaLabel
-    )
+    ["Site", "Source", "Ticker"].map(normalizeFlowMetaLabel)
   );
   const statCards: ReportPostItem[] = snapshotMetrics.length
     ? snapshotMetrics.map(item => ({
@@ -662,12 +654,6 @@ export function buildFlowViewerData(
             tickerValue ||
             content.tickerUniverse.map(item => `$${item}`).join(" · ") ||
             "$MARKET",
-        },
-        {
-          detail: t("flow:newsDateParsedFromThe"),
-          label: t("flow:newsDate"),
-          tone: "caution",
-          value: newsDateValue || formatFlowReportDate(report.reportDate, locale),
         },
       ]);
 

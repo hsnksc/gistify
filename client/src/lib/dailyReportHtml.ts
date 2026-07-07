@@ -609,7 +609,6 @@ export function buildDailyReportHtmlDocument({
     : [];
 
   const heroBadges = [
-    reportDateLabel ? `${labels.reportDate}: ${reportDateLabel}` : "",
     updatedAtLabel ? `${labels.updated}: ${updatedAtLabel}` : "",
     sourceLabel ? `${labels.source}: ${sourceLabel}` : "",
   ].filter(Boolean);
