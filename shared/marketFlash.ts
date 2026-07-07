@@ -43,6 +43,25 @@ export interface MarketFlashSetup {
   expiry: MarketFlashSetupExpiry;
   catalyst: string;
   sector: string;
+  // VPS momentum extensions
+  direction?: "long" | "short";
+  mss?: number;
+  grade?: string;
+  conviction?: "YÜKSEK" | "ORTA" | "DÜŞÜK" | "ZAYIF" | "YOK";
+  fillSource?: "gate" | "watchlist" | "relative" | "forced";
+  missedCriteria?: string[];
+  phase?: string;
+  scoreBreakdown?: Record<string, number>;
+  optionAngle?: string;
+  planNote?: string;
+  exhaustionFlags?: string[];
+  sources?: string[];
+}
+
+export interface MarketFlashGuaranteeMeta {
+  fullCriteriaLong: number;
+  fullCriteriaShort: number;
+  weakSideNote?: string;
 }
 
 export interface MarketFlashEarningsItem {
@@ -89,4 +108,8 @@ export interface MarketFlashReport {
   vwapNotes: string;
   riskAssessment: MarketFlashRiskAssessment;
   nextDayCarryForward: MarketFlashCarryForward[];
+  // VPS momentum extensions
+  guaranteeMeta?: MarketFlashGuaranteeMeta;
+  systemStats?: Record<string, unknown>;
+  carryForwardHealthCheck?: Record<string, unknown>;
 }

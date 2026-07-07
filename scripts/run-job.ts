@@ -114,6 +114,24 @@ function buildJobFn(jobName: string): () => Promise<unknown> {
         return { exitCode: result.exitCode, refreshed: Boolean(adminSecret) };
       };
 
+    case "marketflash-momentum":
+      return async () => {
+        const outputPath =
+          process.env.MARKETFLASH_OUTPUT_FILE ||
+          "client/public/marketflash/marketflash_report.json";
+        const result = await runSubprocess("python3", [
+          "scripts/marketflash_marketdata_pipeline.py",
+          "--output",
+          outputPath,
+        ]);
+        if (result.exitCode !== 0) {
+          throw new Error(
+            `MarketFlash pipeline failed with exit code ${result.exitCode}`
+          );
+        }
+        return { exitCode: result.exitCode };
+      };
+
     case "sync-flow-source-timestamps":
       return async () => {
         const result = await runSubprocess("node", [

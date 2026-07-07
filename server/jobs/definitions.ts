@@ -12,7 +12,14 @@ export const CRON_JOB_DEFINITIONS: CronJobDefinition[] = [
     name: "midas-signals",
     schedule: "*/10 * * * *",
     enabled: true,
-    description: "Refresh Midas momentum signals from Alpaca market data.",
+    description: "Refresh Midas momentum signals from MarketData.app.",
+  },
+  {
+    name: "marketflash-momentum",
+    schedule: "*/10 * * * *",
+    enabled: true,
+    description:
+      "Generate MarketFlash report: guaranteed 5 LONG + 5 SHORT momentum setups from MarketData.app.",
   },
   {
     name: "sync-flow-source-timestamps",
