@@ -3,7 +3,6 @@ import { Link } from "wouter";
 import { type AppLanguage, t } from "@/lib/i18n";
 import {
   type FlowReportListEntry,
-  formatFlowReportDate,
   getFlowPostedLabel,
   getFlowPreviewText,
   getFlowReportArchiveDetailPath,
@@ -55,11 +54,8 @@ export default function FlowReportCard({
     >
       <div className="flex h-full flex-col gap-2.5">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <span className="rounded-full border border-sky-500/25 bg-sky-500/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-sky-300">
-            {formatFlowReportDate(report.reportDate, locale)}
-          </span>
           <span className="text-[10px] text-muted-foreground">
-            {getFlowPostedLabel(report, locale)}
+            {t("flow:posted")} {getFlowPostedLabel(report, locale)}
           </span>
         </div>
 

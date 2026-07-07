@@ -3,7 +3,6 @@ import { Link } from "wouter";
 import { type AppLanguage, t } from "@/lib/i18n";
 import {
   type FlowReportListEntry,
-  formatFlowReportDate,
   getFlowLanguageBadge,
   getFlowPostedLabel,
   getFlowPreviewText,
@@ -48,11 +47,8 @@ export default function FlowReportRow({
 
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-semibold uppercase tracking-wider text-sky-300">
-            {formatFlowReportDate(report.reportDate, locale)}
-          </span>
           <span className="text-[10px] text-muted-foreground">
-            {getFlowPostedLabel(report, locale)}
+            {t("flow:posted")} {getFlowPostedLabel(report, locale)}
           </span>
         </div>
 

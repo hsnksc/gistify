@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { type AppLanguage, t } from "@/lib/i18n";
 import FlowPostActions from "./FlowPostActions";
 import {
-  formatFlowReportDate,
   type FlowReportListEntry,
   getFlowPostedLabel,
   getFlowReportArchiveDetailPath,
@@ -60,13 +59,8 @@ export default function FlowFeedCard({
           <div className="flex flex-wrap items-center gap-2 text-sm">
             <p className="font-semibold text-foreground">Flow</p>
             <span className="text-muted-foreground">·</span>
-            <p className="text-xs font-medium text-muted-foreground">
-              {formatFlowReportDate(report.reportDate, locale)}
-            </p>
-            <span className="text-muted-foreground">·</span>
             <p className="text-xs text-muted-foreground">
-              {t("flow:posted")}{" "}
-              {getFlowPostedLabel(report, locale)}
+              {t("flow:posted")} {getFlowPostedLabel(report, locale)}
             </p>
           </div>
 

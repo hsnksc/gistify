@@ -2,8 +2,8 @@ import { ArrowRight, CalendarRange, Files, History } from "lucide-react";
 import { Link } from "wouter";
 import { type AppLanguage, t } from "@/lib/i18n";
 import {
-  formatFlowReportDate,
   getFlowLanguageBadge,
+  getFlowPostedLabel,
   getFlowPreviewText,
   getFlowTickerReportPath,
   type FlowTickerGroup,
@@ -70,7 +70,7 @@ export default function FlowTickerCard({
         <div className="flex flex-wrap gap-1.5">
           <span className="inline-flex items-center gap-1 rounded-full border border-border bg-background/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
             <CalendarRange className="size-3" />
-            {formatFlowReportDate(latestReport.reportDate, locale)}
+            {t("flow:posted")} {getFlowPostedLabel(latestReport, locale)}
           </span>
           <span className="inline-flex items-center gap-1 rounded-full border border-border bg-background/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
             <History className="size-3" />
