@@ -160,6 +160,7 @@ function buildJobFn(jobName: string): () => Promise<unknown> {
           );
           const files = [
             "marketflash_report.json",
+            "marketflash_midas.json",
             "momentum_params.json",
             "ledger_public.json",
           ];

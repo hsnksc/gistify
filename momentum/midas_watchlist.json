@@ -1,0 +1,136 @@
+{
+  "note": "Midas watchlist/holdings config. Kullanici tarafindan duzenlenir; piyasa metrikleri (fiyat, MSS, RSI, grade...) marketflash pipeline tarafindan her koşuda taze hesaplanir.",
+  "updatedAt": "2026-07-08",
+  "watchlist": [
+    {
+      "ticker": "TSLA",
+      "status": "holding"
+    },
+    {
+      "ticker": "AMD",
+      "status": "holding"
+    },
+    {
+      "ticker": "TQQQ",
+      "status": "watch"
+    },
+    {
+      "ticker": "NFLX",
+      "status": "watch"
+    },
+    {
+      "ticker": "META",
+      "status": "holding"
+    },
+    {
+      "ticker": "IWM",
+      "status": "watch"
+    },
+    {
+      "ticker": "DDOG",
+      "status": "watch"
+    },
+    {
+      "ticker": "MSFT",
+      "status": "holding"
+    },
+    {
+      "ticker": "PLTR",
+      "status": "watch"
+    },
+    {
+      "ticker": "AAPL",
+      "status": "holding"
+    },
+    {
+      "ticker": "NVDA",
+      "status": "holding"
+    },
+    {
+      "ticker": "UBER",
+      "status": "watch"
+    },
+    {
+      "ticker": "GOOGL",
+      "status": "holding"
+    },
+    {
+      "ticker": "AMZN",
+      "status": "holding"
+    },
+    {
+      "ticker": "SQQQ",
+      "status": "watch"
+    },
+    {
+      "ticker": "COIN",
+      "status": "watch"
+    },
+    {
+      "ticker": "SNOW",
+      "status": "watch"
+    },
+    {
+      "ticker": "MSTR",
+      "status": "watch"
+    },
+    {
+      "ticker": "ROKU",
+      "status": "watch"
+    },
+    {
+      "ticker": "SOXL",
+      "status": "watch"
+    },
+    {
+      "ticker": "CRM",
+      "status": "watch"
+    },
+    {
+      "ticker": "ARKK",
+      "status": "watch"
+    }
+  ],
+  "holdings": [
+    {
+      "ticker": "AAPL",
+      "avgCost": 186.4,
+      "qty": 10
+    },
+    {
+      "ticker": "TSLA",
+      "avgCost": 210.0,
+      "qty": 30
+    },
+    {
+      "ticker": "NVDA",
+      "avgCost": 121.1,
+      "qty": 8
+    },
+    {
+      "ticker": "MSFT",
+      "avgCost": 410.0,
+      "qty": 20
+    },
+    {
+      "ticker": "AMZN",
+      "avgCost": 175.0,
+      "qty": 25
+    },
+    {
+      "ticker": "GOOGL",
+      "avgCost": 155.0,
+      "qty": 35
+    },
+    {
+      "ticker": "META",
+      "avgCost": 480.0,
+      "qty": 15
+    },
+    {
+      "ticker": "AMD",
+      "avgCost": 145.0,
+      "qty": 60
+    }
+  ]
+}

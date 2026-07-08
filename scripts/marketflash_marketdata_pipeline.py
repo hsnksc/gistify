@@ -1316,6 +1316,239 @@ def _enrich_report_for_v3(
 
 # ─── MAIN PIPELINE ───────────────────────────────────────────────────────────
 
+# ─── MIDAS WATCHLIST ARTIFACT ────────────────────────────────────────────────
+# marketflash_midas.json feeds the Midas Watchlist card on /momentum. The
+# ticker list and holding economics (avgCost/qty) are user-maintained config in
+# momentum/midas_watchlist.json; every market metric is recomputed per run.
+
+def calc_rsi(bars: list[dict[str, Any]], period: int = 14) -> float:
+    closes = [float(b.get("c", 0)) for b in bars]
+    if len(closes) < period + 1:
+        return 50.0
+    gains: list[float] = []
+    losses: list[float] = []
+    for i in range(1, len(closes)):
+        diff = closes[i] - closes[i - 1]
+        gains.append(max(diff, 0.0))
+        losses.append(max(-diff, 0.0))
+    avg_gain = sum(gains[:period]) / period
+    avg_loss = sum(losses[:period]) / period
+    for i in range(period, len(gains)):
+        avg_gain = (avg_gain * (period - 1) + gains[i]) / period
+        avg_loss = (avg_loss * (period - 1) + losses[i]) / period
+    if avg_loss == 0:
+        return 100.0
+    rs = avg_gain / avg_loss
+    return 100 - 100 / (1 + rs)
+
+
+def _rolling_vwap_distance_pct(
+    bars: list[dict[str, Any]], last: float, period: int = 20
+) -> float:
+    if not bars or last <= 0:
+        return 0.0
+    window = bars[-period:]
+    pv = 0.0
+    vol = 0.0
+    for b in window:
+        typical = (
+            float(b.get("h", 0)) + float(b.get("l", 0)) + float(b.get("c", 0))
+        ) / 3
+        v = float(b.get("v", 0))
+        pv += typical * v
+        vol += v
+    if vol <= 0:
+        return 0.0
+    vwap = pv / vol
+    if vwap <= 0:
+        return 0.0
+    return (last - vwap) / vwap * 100
+
+
+def _pct_over_days(bars: list[dict[str, Any]], days: int) -> float:
+    if len(bars) < days + 1:
+        return 0.0
+    prev = float(bars[-days - 1].get("c", 0))
+    last = float(bars[-1].get("c", 0))
+    if prev == 0:
+        return 0.0
+    return (last - prev) / prev * 100
+
+
+def _write_midas_watchlist(
+    out_dir: Path,
+    quotes: dict[str, Quote],
+    symbol_bars: dict[str, Bars],
+    market_bars: Bars,
+    vix_quote: Quote,
+) -> None:
+    config_path = Path(__file__).resolve().parent.parent / "momentum" / "midas_watchlist.json"
+    if not config_path.exists():
+        return
+    with open(config_path, encoding="utf-8") as f:
+        config = json.load(f)
+
+    watch_items = [w for w in config.get("watchlist", []) if w.get("ticker")]
+    if not watch_items:
+        return
+    tickers = list(dict.fromkeys(str(w["ticker"]).upper() for w in watch_items))
+    status_by = {
+        str(w["ticker"]).upper(): str(w.get("status", "watch")) for w in watch_items
+    }
+    holdings_cfg = config.get("holdings", [])
+
+    # Fill data gaps via Yahoo (free): watchlist tickers outside the report
+    # universe, plus QQQ/IWM daily bars for the 5d regime stats.
+    merged_quotes = dict(quotes)
+    missing_quotes = [t for t in tickers if t not in merged_quotes]
+    if missing_quotes:
+        for sym, q in fetch_yahoo_quotes(missing_quotes).items():
+            merged_quotes[sym] = Quote(
+                symbol=sym,
+                last=q["last"],
+                change=q["change"],
+                changepct=q["changepct"],
+                volume=q["volume"],
+                bid=q["bid"],
+                ask=q["ask"],
+                week52_high=q["week52_high"],
+                week52_low=q["week52_low"],
+            )
+
+    merged_bars = dict(symbol_bars)
+    merged_bars["SPY"] = market_bars
+    bar_gaps = [t for t in tickers + ["QQQ", "IWM"] if not merged_bars.get(t, Bars()).daily]
+    if bar_gaps:
+        for sym, b in fetch_yahoo_bars(bar_gaps).items():
+            merged_bars[sym] = Bars(
+                daily=b.get("daily", [])[-80:],
+                weekly=b.get("weekly", [])[-10:],
+                monthly=b.get("monthly", [])[-6:],
+            )
+
+    list_ranking: list[dict[str, Any]] = []
+    skipped = 0
+    for t in tickers:
+        quote = merged_quotes.get(t)
+        bars = merged_bars.get(t)
+        if not quote or quote.last <= 0 or not bars or not bars.daily:
+            skipped += 1
+            continue
+        cand = score_candidate(t, quote, bars, market_bars, vix_quote.last, "long")
+        mss = round(cand.mss / 100, 2)
+        list_ranking.append(
+            {
+                "ticker": t,
+                "status": status_by.get(t, "watch"),
+                "mss": mss,
+                "mssAdjusted": mss,
+                "grade": cand.grade,
+                "phase": cand.phase,
+                "changePct": round(quote.changepct, 2),
+                "volumeRatio": round(cand.rvol, 2),
+                "rsi14": round(calc_rsi(bars.daily), 2),
+                "vwapDistancePct": round(
+                    _rolling_vwap_distance_pct(bars.daily, quote.last), 2
+                ),
+                "ivRank": None,
+            }
+        )
+    list_ranking.sort(key=lambda x: x["mss"], reverse=True)
+    by_ticker = {item["ticker"]: item for item in list_ranking}
+
+    holdings_out: list[dict[str, Any]] = []
+    for h in holdings_cfg:
+        t = str(h.get("ticker", "")).upper()
+        quote = merged_quotes.get(t)
+        avg_cost = float(h.get("avgCost", 0) or 0)
+        if not t or not quote or quote.last <= 0 or avg_cost <= 0:
+            continue
+        unrealized = (quote.last - avg_cost) / avg_cost * 100
+        item = by_ticker.get(t, {})
+        grade = item.get("grade", "C")
+        if unrealized >= 15:
+            action, reason = "TRIM", "Target hit (+15%)"
+        elif unrealized <= -8:
+            action, reason = "REVIEW", "Stop-loss bolgesi"
+        elif grade in ("A", "B"):
+            action, reason = "HOLD", "Momentum saglikli"
+        else:
+            action, reason = "HOLD", "Notr momentum"
+        holdings_out.append(
+            {
+                "ticker": t,
+                "avgCost": avg_cost,
+                "qty": h.get("qty", 0),
+                "currentPrice": round(quote.last, 2),
+                "unrealizedPct": round(unrealized, 2),
+                "mss": item.get("mss", 0.0),
+                "mssAdjusted": item.get("mssAdjusted", 0.0),
+                "grade": grade,
+                "phase": item.get("phase", ""),
+                "action": action,
+                "actionReason": reason,
+            }
+        )
+
+    buy_candidates = [
+        item
+        for item in list_ranking
+        if item["status"] == "watch" and item["grade"] in ("A", "B") and item["changePct"] > 0
+    ][:5]
+
+    vix = vix_quote.last
+    spy5d = _pct_over_days(market_bars.daily, 5)
+    qqq5d = _pct_over_days(merged_bars.get("QQQ", Bars()).daily, 5)
+    iwm5d = _pct_over_days(merged_bars.get("IWM", Bars()).daily, 5)
+    if vix < 20 and spy5d >= 0:
+        regime_phase = "Risk-On"
+    elif vix >= 25 or spy5d <= -2:
+        regime_phase = "Risk-Off"
+    else:
+        regime_phase = "Neutral"
+    # Rough VIX-based proxy; the real CNN Fear&Greed index is not fetched.
+    fear_greed = int(max(5, min(95, round(100 - (vix - 10) * 4))))
+
+    payload = {
+        "schemaVersion": "2.1-midas",
+        "generatedAt": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "marketPhase": _report_type_from_et(),
+        "watchlistMeta": {
+            "source": "midas",
+            "totalTickers": len(list_ranking),
+            "holdingCount": sum(1 for i in list_ranking if i["status"] == "holding"),
+            "watchCount": sum(1 for i in list_ranking if i["status"] == "watch"),
+            "skippedCount": skipped,
+            "updatedAt": date.today().isoformat(),
+        },
+        "marketRegime": {
+            "phase": regime_phase,
+            "vix": round(vix, 2),
+            "vixChangePct": round(vix_quote.changepct, 2),
+            "spyChange5dPct": round(spy5d, 2),
+            "qqqChange5dPct": round(qqq5d, 2),
+            "iwmChange5dPct": round(iwm5d, 2),
+            "fearGreed": fear_greed,
+            "narrative": f"VIX {vix:.2f}, SPY {spy5d:+.1f}% 5d. {regime_phase} bias.",
+        },
+        "listRanking": list_ranking,
+        "buyCandidates": buy_candidates,
+        "holdings": holdings_out,
+        "deltaMovers": sorted(
+            list_ranking, key=lambda x: abs(x["changePct"]), reverse=True
+        )[:5],
+        "earningsWatch": [],
+    }
+
+    midas_path = out_dir / "marketflash_midas.json"
+    with open(midas_path, "w", encoding="utf-8") as f:
+        json.dump(payload, f, indent=2, ensure_ascii=False)
+    print(
+        f"[OK] {midas_path} kaydedildi "
+        f"({len(list_ranking)} ticker, {len(holdings_out)} holding)"
+    )
+
+
 def run_marketdata_pipeline(
     symbols: list[str],
     output_path: str | None = None,
@@ -1556,6 +1789,13 @@ def run_marketdata_pipeline(
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(report, f, indent=2, ensure_ascii=False)
     print(f"[OK] {out_path} kaydedildi (L:{len(call_setups)} S:{len(put_setups)})")
+
+    try:
+        _write_midas_watchlist(
+            out_path.parent, quotes, symbol_bars, market_bars, vix_quote
+        )
+    except Exception as e:
+        print(f"[WARN] Midas watchlist uretimi basarisiz: {e}", file=sys.stderr)
 
     return report
 
