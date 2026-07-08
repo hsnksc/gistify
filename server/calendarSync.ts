@@ -17,6 +17,11 @@ import type {
 const DEFAULT_POLL_INTERVAL_MS = 60 * 1000;
 const DEFAULT_LIVE_SYNC_INTERVAL_MS = 30 * 1000;
 const DEFAULT_LIVE_SYNC_TIMEOUT_MS = 25 * 1000;
+const DEFAULT_WEBBRIDGE_EVALUATE_TIMEOUT_MS = 30 * 1000;
+const DEFAULT_WEBBRIDGE_NAVIGATE_WAIT_MS = 4 * 1000;
+const DEFAULT_WEBBRIDGE_URL = "http://127.0.0.1:10086/command";
+const DEFAULT_WEBBRIDGE_SESSION = "calendar-live-sync";
+const DEFAULT_WEBBRIDGE_GROUP = "Calendar Live Sync";
 const MIN_POLL_INTERVAL_MS = 30 * 1000;
 const DEFAULT_LIVE_SYNC_URL =
   "https://sslecal2.forexprostools.com/?columns=exc_flags,exc_currency,exc_importance,exc_actual,exc_forecast,exc_previous&features=datepicker,timezone&countries=25,32,6,37,72,22,17,39,14,10,35,43,56,36,110,11,26,12,4,5&calType=day&timeZone=63&lang=1";
@@ -154,6 +159,10 @@ interface CalendarSyncServiceOptions {
   persistLiveSource?: boolean;
   pollIntervalMs?: number;
   sourceFile?: string;
+  webBridgeEnabled?: boolean;
+  webBridgeGroupTitle?: string;
+  webBridgeSession?: string;
+  webBridgeUrl?: string;
 }
 
 function normalizeString(value: unknown) {
@@ -1045,11 +1054,119 @@ function cloneLiveSyncMetadata(liveSync: LiveSyncRuntimeState): CalendarLiveSync
   };
 }
 
+function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function extractWebBridgeValue(payload: unknown): string | null {
+  const source = extractObjectRecord(payload);
+  if (!source) {
+    return null;
+  }
+
+  const directValue = source.value;
+  if (typeof directValue === "string" && directValue.trim()) {
+    return directValue;
+  }
+
+  const data = extractObjectRecord(source.data);
+  if (data) {
+    const nestedValue = data.value;
+    if (typeof nestedValue === "string" && nestedValue.trim()) {
+      return nestedValue;
+    }
+  }
+
+  const result = extractObjectRecord(source.result);
+  if (result) {
+    const nestedValue = result.value;
+    if (typeof nestedValue === "string" && nestedValue.trim()) {
+      return nestedValue;
+    }
+  }
+
+  return null;
+}
+
+async function postWebBridgeCommand(
+  webBridgeUrl: string,
+  session: string,
+  action: string,
+  args: Record<string, unknown>,
+  timeoutMs: number
+) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const response = await fetch(webBridgeUrl, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        action,
+        args,
+        session,
+      }),
+      signal: controller.signal,
+    });
+
+    if (!response.ok) {
+      throw new Error(`WebBridge ${action} returned HTTP ${response.status}.`);
+    }
+
+    return (await response.json()) as unknown;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function fetchCalendarHtmlViaWebBridge(
+  targetUrl: string,
+  webBridgeUrl: string,
+  session: string,
+  groupTitle: string
+) {
+  await postWebBridgeCommand(
+    webBridgeUrl,
+    session,
+    "navigate",
+    {
+      group_title: groupTitle,
+      newTab: true,
+      url: targetUrl,
+    },
+    DEFAULT_WEBBRIDGE_EVALUATE_TIMEOUT_MS
+  );
+
+  await sleep(DEFAULT_WEBBRIDGE_NAVIGATE_WAIT_MS);
+
+  const payload = await postWebBridgeCommand(
+    webBridgeUrl,
+    session,
+    "evaluate",
+    {
+      script: "document.documentElement.outerHTML",
+    },
+    DEFAULT_WEBBRIDGE_EVALUATE_TIMEOUT_MS
+  );
+
+  return extractWebBridgeValue(payload);
+}
+
 async function fetchLiveCalendarEvents(
   url: string,
   timeoutMs: number,
-  reportDate: string
+  reportDate: string,
+  options: {
+    webBridgeEnabled: boolean;
+    webBridgeGroupTitle: string;
+    webBridgeSession: string;
+    webBridgeUrl: string;
+  }
 ) {
+  let directError: Error | null = null;
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
 
@@ -1069,10 +1186,54 @@ async function fetchLiveCalendarEvents(
       throw new Error("Live calendar upstream returned no parsable events.");
     }
 
-    return events;
+    return {
+      events,
+      provider: "forexprostools",
+    };
+  } catch (error) {
+    directError =
+      error instanceof Error ? error : new Error("Live calendar upstream request failed.");
   } finally {
     clearTimeout(timer);
   }
+
+  if (!options.webBridgeEnabled) {
+    throw directError;
+  }
+
+  let html: string | null = null;
+  try {
+    html = await fetchCalendarHtmlViaWebBridge(
+      url,
+      options.webBridgeUrl,
+      options.webBridgeSession,
+      options.webBridgeGroupTitle
+    );
+  } catch (webBridgeError) {
+    if (directError) {
+      throw directError;
+    }
+
+    throw webBridgeError;
+  }
+
+  if (!html) {
+    throw directError || new Error("WebBridge did not return calendar HTML.");
+  }
+
+  const events = parseLiveCalendarEvents(html, reportDate);
+  if (!events.length) {
+    throw directError || new Error("WebBridge returned no parsable calendar events.");
+  }
+
+  return {
+    events,
+    provider: "webbridge",
+  };
+}
+
+function isLiveSourceBlockedMessage(message: string | null | undefined) {
+  return typeof message === "string" && /HTTP 403/i.test(message);
 }
 
 export function createCalendarSyncService(
@@ -1102,6 +1263,21 @@ export function createCalendarSyncService(
     options.persistLiveSource ?? process.env.CALENDAR_PIPELINE_PERSIST_LIVE_SOURCE,
     true
   );
+  const webBridgeEnabled = resolveBoolean(
+    options.webBridgeEnabled ?? process.env.CALENDAR_PIPELINE_WEBBRIDGE_ENABLED,
+    true
+  );
+  const webBridgeUrl =
+    normalizeString(options.webBridgeUrl || process.env.CALENDAR_PIPELINE_WEBBRIDGE_URL) ||
+    DEFAULT_WEBBRIDGE_URL;
+  const webBridgeSession =
+    normalizeString(
+      options.webBridgeSession || process.env.CALENDAR_PIPELINE_WEBBRIDGE_SESSION
+    ) || DEFAULT_WEBBRIDGE_SESSION;
+  const webBridgeGroupTitle =
+    normalizeString(
+      options.webBridgeGroupTitle || process.env.CALENDAR_PIPELINE_WEBBRIDGE_GROUP_TITLE
+    ) || DEFAULT_WEBBRIDGE_GROUP;
 
   let currentSnapshot: CalendarData | null = null;
   let timer: ReturnType<typeof setInterval> | null = null;
@@ -1198,10 +1374,15 @@ export function createCalendarSyncService(
       liveSync.lastRunAtMs = Date.now();
 
       try {
-        const liveEvents = await fetchLiveCalendarEvents(liveSyncUrl, liveSyncTimeoutMs, today);
+        const liveResult = await fetchLiveCalendarEvents(liveSyncUrl, liveSyncTimeoutMs, today, {
+          webBridgeEnabled,
+          webBridgeGroupTitle,
+          webBridgeSession,
+          webBridgeUrl,
+        });
         const merged = mergeLiveEventsIntoReport(
           sourceReport,
-          liveEvents,
+          liveResult.events,
           today,
           nowIso
         );
@@ -1209,6 +1390,7 @@ export function createCalendarSyncService(
         nextReport = merged.report;
         refreshLiveSyncNextEvents(liveSync, nextReport);
         liveSync.status = "ok";
+        liveSync.provider = liveResult.provider;
         liveSync.lastSuccessAt = nowIso;
         liveSync.error = undefined;
         if (merged.lastCaptureAt) {
@@ -1234,9 +1416,18 @@ export function createCalendarSyncService(
       } catch (error) {
         const message =
           error instanceof Error ? error.message : "Live calendar sync failed.";
-        liveSync.status = "error";
-        liveSync.error = message;
-        nextError = message;
+        const hasUsableSnapshot = Boolean(sourceReport || currentSnapshot?.report);
+        if (hasUsableSnapshot && isLiveSourceBlockedMessage(message)) {
+          liveSync.status = "idle";
+          liveSync.error = undefined;
+          nextError = sourceError;
+        } else {
+          liveSync.status = "error";
+          liveSync.error = hasUsableSnapshot
+            ? "Live sync unavailable. Using saved calendar snapshot."
+            : message;
+          nextError = hasUsableSnapshot ? sourceError : message;
+        }
       }
     } else {
       refreshLiveSyncNextEvents(liveSync, nextReport);
@@ -1266,6 +1457,9 @@ export function createCalendarSyncService(
       } else if (liveSync.status === "error") {
         status = currentSnapshot || sourceReport ? "stale" : "error";
         lastError = nextError || sourceError;
+      } else {
+        status = isReportCurrent(nextReport) ? "ok" : "stale";
+        lastError = sourceError;
       }
     } else {
       status = isReportCurrent(nextReport) ? "ok" : "stale";
