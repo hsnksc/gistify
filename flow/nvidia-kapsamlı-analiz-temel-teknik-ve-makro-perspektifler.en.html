@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NVIDIA Comprehensive Analysis — Fundamental, Technical &amp; Macro Perspectives | $NVDA</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="NVIDIA Comprehensive Analysis — Fundamental, Technical &amp; Macro Perspectives | $NVDA" />
+<meta property="og:description" content="NVIDIA after a 16.8% pullback from its all-time high: valuation, market dominance, hyperscaler capex catalysts, technical levels, and a short/mid/long-term investment strategy." />
+<meta property="og:site_name" content="Gistify" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:760px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:2px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.section-num{font-family:var(--gf-mono);font-size:.72rem;font-weight:700;color:var(--gf-accent);opacity:.8}
+.section-body{padding:18px}
+.subhead{font-size:.92rem;font-weight:600;color:var(--gf-text);margin:18px 0 10px}
+.subhead:first-child{margin-top:0}
+p{color:var(--gf-muted);font-size:.88rem;margin-bottom:12px}
+p:last-child{margin-bottom:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.text-right{text-align:right}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem;color:var(--gf-text)}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+.chart-card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px 18px;margin:14px 0}
+.chart-title{font-size:.82rem;font-weight:700;color:var(--gf-text);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.chart-caption{font-size:.78rem;color:var(--gf-muted);margin-top:10px;padding-top:10px;border-top:1px solid var(--gf-border-subtle)}
+.chart-caption strong{color:var(--gf-text)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:.74rem;color:var(--gf-muted);margin-top:8px}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{width:9px;height:9px;border-radius:2px;display:inline-block}
+.risk-card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px;border-left:3px solid var(--gf-border)}
+.risk-card.high{border-left-color:var(--gf-danger)}
+.risk-card.med{border-left-color:var(--gf-warning)}
+.risk-card.low{border-left-color:var(--gf-success)}
+.risk-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.risk-name{font-weight:600;font-size:.9rem;color:var(--gf-text)}
+.risk-level{font-size:.66rem;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+.risk-card.high .risk-level{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.risk-card.med .risk-level{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.risk-card.low .risk-level{background:var(--gf-success-dim);color:var(--gf-success)}
+.risk-body p{font-size:.82rem;margin-bottom:6px}
+.strat-card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:18px;position:relative;overflow:hidden}
+.strat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gf-accent),#0ea5e9)}
+.strat-horizon{font-family:var(--gf-mono);font-size:.7rem;font-weight:700;color:var(--gf-accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.strat-action{font-size:1.05rem;font-weight:700;color:var(--gf-text);margin-bottom:12px}
+.strat-row{display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:6px;gap:10px}
+.strat-key{color:var(--gf-muted)}
+.strat-v{font-weight:600;color:var(--gf-text);text-align:right}
+.strat-v.green{color:var(--gf-success)}
+.strat-v.red{color:var(--gf-danger)}
+.disclaimer{background:rgba(251,191,36,.04);border:1px solid var(--gf-border);border-left:3px solid var(--gf-warning);border-radius:var(--gf-radius);padding:16px 18px;font-size:.82rem;color:var(--gf-muted);line-height:1.7;margin:18px 0}
+.disclaimer strong{color:var(--gf-text)}
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+ul,ol{margin:10px 0 10px 20px;color:var(--gf-muted);font-size:.86rem}
+li{margin-bottom:5px}
+.tags-line{text-align:center;font-size:.78rem;color:var(--gf-muted);margin-top:8px}
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid,.grid2,.grid3{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-08T15:30:00+03:00">
+  <h1 class="hero-h">NVIDIA Comprehensive Analysis: Fundamental, Technical &amp; Macro Perspectives</h1>
+  <p class="hero-desc">NVIDIA (<strong>$NVDA</strong>) has pulled back roughly <strong>16.8%</strong> from its all-time high of $236.54. This report takes a deep look at valuation, market dominance, hyperscaler capex catalysts, technical levels, and a short/mid/long-term investment strategy.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info hero-date" data-timestamp="2026-07-08T15:30:00+03:00">📅 July 8, 2026</span>
+    <span class="hero-ticker">$NVDA</span>
+    <span class="meta-pill bull">Investment Call: BUY</span>
+    <span class="meta-pill info">Fundamental + Technical + Macro</span>
+  </div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-num">$196.93</div><div class="kpi-label">Current Price</div></div>
+  <div class="kpi"><div class="kpi-num">$236.54</div><div class="kpi-label">All-Time High</div></div>
+  <div class="kpi"><div class="kpi-num" style="color:var(--gf-danger)">−16.8%</div><div class="kpi-label">Drop From Peak</div></div>
+  <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">0.44</div><div class="kpi-label">PEG Ratio</div></div>
+  <div class="kpi"><div class="kpi-num">~20x</div><div class="kpi-label">Forward P/E</div></div>
+  <div class="kpi"><div class="kpi-num">$4.74T</div><div class="kpi-label">Market Cap</div></div>
+</div>
+
+<!-- SECTION 1 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">01</span> Overview &amp; Current Situation</h2>
+  </div>
+  <div class="section-body">
+    <p>NVIDIA has seen a pronounced price decline in recent months, but the pullback does not overshadow the stock's fundamental value and long-term potential. Shares fell from the all-time high of <strong>$236.54</strong> set on <strong>May 14, 2026</strong> to <strong>$196.93</strong> — a correction of roughly <strong>16.8%</strong>. The price is trading within its 52-week range of <strong>$158.39 – $236.54</strong>.</p>
+    <div class="insight-box"><strong>Core thesis:</strong> The decline stems from technical and macro pressure, not from any deterioration in fundamentals. A PEG ratio of 0.44 — well below 1 — signals the stock is trading below its value relative to its growth.</div>
+  </div>
+</section>
+
+<!-- SECTION 2 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">02</span> Valuation &amp; Financial Performance</h2>
+  </div>
+  <div class="section-body">
+    <div class="subhead">Valuation Metrics</div>
+    <table>
+      <thead><tr><th>Metric</th><th>Value</th><th>Read</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Forward P/E</strong></td><td>19.82 – 21.85x</td><td>Roughly in line with the S&amp;P 500</td></tr>
+        <tr><td><strong>PEG Ratio</strong></td><td>0.44</td><td>&lt;1 → cheap relative to growth</td></tr>
+        <tr><td><strong>Revenue Growth (YoY)</strong></td><td>70.68%</td><td>Exceptionally strong</td></tr>
+        <tr><td><strong>Earnings Growth (YoY)</strong></td><td>109.24%</td><td>Profits growing faster than revenue</td></tr>
+        <tr><td><strong>Gross Margin</strong></td><td>74.1%</td><td>Evidence of pricing power</td></tr>
+        <tr><td><strong>Market Cap</strong></td><td>$4.736 Trillion</td><td>—</td></tr>
+      </tbody>
+    </table>
+
+    <div class="subhead">Financial Performance (Fiscal 2026)</div>
+    <div class="grid3">
+      <div class="card">
+        <div class="card-label">FY2026 Revenue</div>
+        <div class="card-value up">$215.9B</div>
+        <div class="card-note"><strong>+65%</strong> year over year</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Data Center Share</div>
+        <div class="card-value">88–90%</div>
+        <div class="card-note">Share of total revenue; segment revenue reported in the $115–193B range</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Shareholder Returns</div>
+        <div class="card-value">$38.5B</div>
+        <div class="card-note">Buyback authorization + growing dividend ($0.25/quarter)</div>
+      </div>
+    </div>
+    <div class="insight-box bull"><strong>Valuation takeaway:</strong> A ~20x forward P/E combined with 70%+ revenue and 109%+ earnings growth pushes PEG down to 0.44 — an index-average multiple for growth that is multiples of the index.</div>
+  </div>
+</section>
+
+<!-- SECTION 3 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">03</span> Market Position &amp; Growth Dynamics</h2>
+  </div>
+  <div class="section-body">
+    <div class="subhead">Market Dominance</div>
+    <div class="grid">
+      <div class="card">
+        <div class="card-label">AI Accelerator Market</div>
+        <div class="card-value up">80–90%</div>
+        <div class="card-note">Market share</div>
+      </div>
+      <div class="card">
+        <div class="card-label">GPU Market</div>
+        <div class="card-value up">92%</div>
+        <div class="card-note">Market share</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Data Center GPU</div>
+        <div class="card-value neu">86% → 75%</div>
+        <div class="card-note">Estimated gradual erosion</div>
+      </div>
+    </div>
+    <p style="margin-top:12px">AMD and custom silicon (Google TPU, Amazon Trainium) are slowly gaining share. NVIDIA's <strong>performance, ecosystem, and software (CUDA) advantages</strong>, however, are expected to keep it in the lead.</p>
+
+    <div class="subhead">AI Chipset Market — Total Addressable Market (TAM)</div>
+    <div class="chart-card">
+      <div class="chart-title">📊 AI Chip Market Growth Projection</div>
+      <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$0</text><line x1="54" y1="171.0" x2="620" y2="171.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="175.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$250B</text><line x1="54" y1="122.0" x2="620" y2="122.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="126.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$500B</text><line x1="54" y1="73.0" x2="620" y2="73.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="77.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$750B</text><line x1="54" y1="24.0" x2="620" y2="24.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="28.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$1T</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="111.2" y="178.8" width="70" height="41.2" rx="4" fill="#38bdf8" opacity="1"/><text x="146.2" y="170.8" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">~$210B</text><text x="146.2" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2025</text><rect x="238.4" y="24.0" width="70" height="196.0" rx="4" fill="#38bdf8" opacity="1"/><text x="273.4" y="16.0" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">~$1T*</text><text x="273.4" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2030*</text><rect x="365.6" y="126.5" width="70" height="93.5" rx="4" fill="#4ade80" opacity="1"/><text x="400.6" y="118.5" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$477B</text><text x="400.6" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2026</text><rect x="492.8" y="54.7" width="70" height="165.3" rx="4" fill="#4ade80" opacity="1"/><text x="527.8" y="46.7" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$843B*</text><text x="527.8" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2030*</text></svg>
+      <div class="legend">
+        <span><i style="background:var(--gf-accent)"></i> AI chipset TAM (~60–70% CAGR)</span>
+        <span><i style="background:var(--gf-success)"></i> Data center chipset market</span>
+      </div>
+      <div class="chart-caption">The AI chipset market is projected to grow from ~$210B (2025) to <strong>$1 trillion</strong> (2030 estimate, *); the data center chipset market expands from $477.1B (2026) to $843.2B (2030, *). (* = forecast)</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">04</span> Growth Catalysts</h2>
+  </div>
+  <div class="section-body">
+    <div class="subhead">Hyperscaler Capex — 2026 Estimates</div>
+    <div class="chart-card">
+      <div class="chart-title">💰 2026 AI Infrastructure Capex Estimates — By Company</div>
+      <svg viewBox="0 0 640 216" width="100%" height="216" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$0B</text><line x1="268.0" y1="16" x2="268.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="268.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$50B</text><line x1="346.0" y1="16" x2="346.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="346.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$100B</text><line x1="424.0" y1="16" x2="424.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="424.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$150B</text><line x1="502.0" y1="16" x2="502.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="502.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$200B</text><line x1="580.0" y1="16" x2="580.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="580.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$250B</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Amazon (AWS)</text><rect x="190" y="22.8" width="312.0" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="510.0" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$200B</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Microsoft</text><rect x="190" y="56.8" width="296.4" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="494.4" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$190B</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Google</text><rect x="190" y="90.8" width="280.8" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="478.8" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$175–185B</text><text x="178" y="138.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Meta</text><rect x="190" y="124.8" width="195.0" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="393.0" y="138.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$115–135B</text><text x="178" y="172.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Oracle</text><rect x="190" y="158.8" width="78.0" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="276.0" y="172.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$50B</text></svg>
+      <div class="chart-caption">Google and Meta bars are drawn at their range midpoints ($175–185B and $115–135B respectively). The five major hyperscalers total <strong>~$725 billion</strong> for 2026 — up <strong>+67–77%</strong> year over year.</div>
+    </div>
+
+    <div class="subhead">2025–2030 Outlook</div>
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-num">$4.7–5.3T</div><div class="kpi-label">Total Capex</div></div>
+      <div class="kpi"><div class="kpi-num">75%</div><div class="kpi-label">AI Infrastructure Share ($3.5–4T)</div></div>
+      <div class="kpi"><div class="kpi-num">40%</div><div class="kpi-label">GPU Spend ($1.4–1.6T)</div></div>
+      <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">$1.05–1.2T</div><div class="kpi-label">NVIDIA's 5-Year Revenue Potential</div></div>
+    </div>
+    <div class="insight-box"><strong>NVIDIA's slice of the pie:</strong> ~40% of AI infrastructure spend goes to GPUs, and NVIDIA is estimated to hold 70–75% of that market — implying <strong>$1.05–1.2 trillion</strong> of revenue over five years.</div>
+
+    <div class="subhead">Product, Ecosystem &amp; Financing Developments</div>
+    <div class="grid3">
+      <div class="card">
+        <div class="card-label">Samsung PM1763 SSD</div>
+        <p style="margin-bottom:0">Mass production has started on <strong>PCIe 6.0</strong> enterprise SSDs for the Vera Rubin AI platform — optimized for AI data centers.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Perplexity → Vera CPU</div>
+        <p style="margin-bottom:0">Perplexity adopted NVIDIA's Vera CPUs for its AI infrastructure; AI agent code generation is reported to run <strong>~1.5x faster</strong>.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Backstop Program</div>
+        <p style="margin-bottom:0">GPU access plus financing guarantees for neoclouds: SharonAI signed a <strong>$4.88B</strong> deal for 40,000 GB300 GPUs in Australia; Firmus struck a <strong>$25–30B</strong> deal for a 360MW AI cluster in Indonesia.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">05</span> Technical Analysis</h2>
+  </div>
+  <div class="section-body">
+    <div class="subhead">Price vs. 200-Day Moving Average</div>
+    <div class="chart-card">
+      <div class="chart-title">📊 200-Day MA — Different Values Across Platforms</div>
+      <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$180</text><line x1="54" y1="171.0" x2="620" y2="171.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="175.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$188</text><line x1="54" y1="122.0" x2="620" y2="122.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="126.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$196</text><line x1="54" y1="73.0" x2="620" y2="73.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="77.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$204</text><line x1="54" y1="24.0" x2="620" y2="24.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="28.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$212</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="111.2" y="116.3" width="70" height="103.7" rx="4" fill="#38bdf8" opacity="1"/><text x="146.2" y="108.3" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$196.93</text><text x="146.2" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Price</text><rect x="238.4" y="156.8" width="70" height="63.2" rx="4" fill="#4ade80" opacity="1"/><text x="273.4" y="148.8" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$190.32</text><text x="273.4" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">TipRanks</text><rect x="365.6" y="155.5" width="70" height="64.5" rx="4" fill="#4ade80" opacity="1"/><text x="400.6" y="147.5" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$190.53</text><text x="400.6" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Financhill</text><rect x="492.8" y="51.3" width="70" height="168.7" rx="4" fill="#f87171" opacity="1"/><text x="527.8" y="43.3" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$207.54</text><text x="527.8" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Investing.com</text></svg>
+      <div class="legend">
+        <span><i style="background:var(--gf-accent)"></i> Current price</span>
+        <span><i style="background:var(--gf-success)"></i> MA200 below price</span>
+        <span><i style="background:var(--gf-danger)"></i> MA200 above price</span>
+      </div>
+      <div class="chart-caption">The 200-day average is reported between <strong>$190.32 – $207.54</strong> depending on the platform; with the price ($196.93) sitting right in the middle of that band, the stock is technically in an <strong>indecisive phase</strong>.</div>
+    </div>
+
+    <div class="subhead">Support &amp; Resistance Levels</div>
+    <div class="chart-card">
+      <div class="chart-title">📐 Price Map — Support / Resistance Levels</div>
+      <svg viewBox="0 0 700 120" width="100%" height="120" role="img" aria-label="chart"><line x1="24" y1="66" x2="676" y2="66" stroke="#64748b" stroke-width="1.4"/><line x1="109.0" y1="66" x2="109.0" y2="58" stroke="#4ade80" stroke-width="2"/><circle cx="109.0" cy="66" r="4" fill="#4ade80"/><text x="109.0" y="48" text-anchor="middle" font-size="10.5" font-weight="700" fill="#4ade80" font-family="inherit">S3</text><text x="109.0" y="36" text-anchor="middle" font-size="11" fill="#e2e8f0" font-family="inherit">$180</text><line x1="250.8" y1="66" x2="250.8" y2="74" stroke="#4ade80" stroke-width="2"/><circle cx="250.8" cy="66" r="4" fill="#4ade80"/><text x="250.8" y="96" text-anchor="middle" font-size="10.5" font-weight="700" fill="#4ade80" font-family="inherit">S2</text><text x="250.8" y="108" text-anchor="middle" font-size="11" fill="#e2e8f0" font-family="inherit">$190</text><line x1="321.7" y1="66" x2="321.7" y2="58" stroke="#4ade80" stroke-width="2"/><circle cx="321.7" cy="66" r="4" fill="#4ade80"/><text x="321.7" y="48" text-anchor="middle" font-size="10.5" font-weight="700" fill="#4ade80" font-family="inherit">S1</text><text x="321.7" y="36" text-anchor="middle" font-size="11" fill="#e2e8f0" font-family="inherit">$195</text><line x1="392.5" y1="66" x2="392.5" y2="74" stroke="#f87171" stroke-width="2"/><circle cx="392.5" cy="66" r="4" fill="#f87171"/><text x="392.5" y="96" text-anchor="middle" font-size="10.5" font-weight="700" fill="#f87171" font-family="inherit">R1</text><text x="392.5" y="108" text-anchor="middle" font-size="11" fill="#e2e8f0" font-family="inherit">$200</text><line x1="499.4" y1="66" x2="499.4" y2="58" stroke="#f87171" stroke-width="2"/><circle cx="499.4" cy="66" r="4" fill="#f87171"/><text x="499.4" y="48" text-anchor="middle" font-size="10.5" font-weight="700" fill="#f87171" font-family="inherit">R2</text><text x="499.4" y="36" text-anchor="middle" font-size="11" fill="#e2e8f0" font-family="inherit">$207.54</text><line x1="605.1" y1="66" x2="605.1" y2="74" stroke="#f87171" stroke-width="2"/><circle cx="605.1" cy="66" r="4" fill="#f87171"/><text x="605.1" y="96" text-anchor="middle" font-size="10.5" font-weight="700" fill="#f87171" font-family="inherit">R3</text><text x="605.1" y="108" text-anchor="middle" font-size="11" fill="#e2e8f0" font-family="inherit">$215</text><line x1="349.0" y1="20" x2="349.0" y2="112" stroke="#38bdf8" stroke-width="1.6" stroke-dasharray="4 3"/><circle cx="349.0" cy="66" r="5.5" fill="#38bdf8"/></svg>
+      <div class="legend">
+        <span><i style="background:var(--gf-success)"></i> Support (S1–S3)</span>
+        <span><i style="background:var(--gf-danger)"></i> Resistance (R1–R3)</span>
+        <span><i style="background:var(--gf-accent)"></i> Current Price ($196.93)</span>
+      </div>
+      <div class="chart-caption">Price is pinned just above the critical $190–195 support zone and just below the psychological $200 resistance.</div>
+    </div>
+    <table>
+      <thead><tr><th>Level</th><th>Price</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tag-red">R3</span></td><td>$215</td><td>Prior price level</td></tr>
+        <tr><td><span class="tag tag-red">R2</span></td><td>$207.54</td><td>200-day MA (Investing.com)</td></tr>
+        <tr><td><span class="tag tag-red">R1</span></td><td>$200</td><td>Psychological resistance</td></tr>
+        <tr><td><span class="tag tag-green">S1–S2</span></td><td>$190–195</td><td>Critical support zone</td></tr>
+        <tr><td><span class="tag tag-green">S3</span></td><td>$180</td><td>Strong support / stop-loss level</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SECTION 6 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">06</span> Investment Strategy</h2>
+  </div>
+  <div class="section-body">
+    <div class="chart-card">
+      <div class="chart-title">🎯 Price Target Ranges — Short &amp; Mid Term</div>
+      <svg viewBox="0 0 700 158" width="100%" height="158" role="img" aria-label="chart"><line x1="96.0" y1="18" x2="96.0" y2="124" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="96.0" y="140" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">$180</text><line x1="242.0" y1="18" x2="242.0" y2="124" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="242.0" y="140" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">$240</text><line x1="388.0" y1="18" x2="388.0" y2="124" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="388.0" y="140" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">$300</text><line x1="534.0" y1="18" x2="534.0" y2="124" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="534.0" y="140" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">$360</text><line x1="680.0" y1="18" x2="680.0" y2="124" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="680.0" y="140" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">$420</text><text x="86" y="48.0" text-anchor="end" font-size="11" font-weight="700" fill="#38bdf8" font-family="inherit">SHORT (1–3 MO)</text><rect x="193.3" y="34" width="73.0" height="20" rx="5" fill="#fbbf24" opacity="0.92"/><text x="229.8" y="48.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#0a1628" font-family="inherit">$220–250</text><text x="86" y="98.0" text-anchor="end" font-size="11" font-weight="700" fill="#38bdf8" font-family="inherit">MID (6–18 MO)</text><rect x="388.0" y="84" width="243.3" height="20" rx="5" fill="#4ade80" opacity="0.92"/><text x="509.7" y="98.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#0a1628" font-family="inherit">$300–400</text><line x1="137.2" y1="14" x2="137.2" y2="128" stroke="#e2e8f0" stroke-width="1.4" stroke-dasharray="3 3"/><text x="137.2" y="10" text-anchor="middle" font-size="10.5" font-weight="700" fill="#e2e8f0" font-family="inherit">$196.93</text></svg>
+      <div class="legend">
+        <span><i style="background:var(--gf-warning)"></i> Short-term target (1–3 months)</span>
+        <span><i style="background:var(--gf-success)"></i> Mid-term base case (6–18 months)</span>
+        <span><i style="background:var(--gf-text)"></i> Current price ($196.93)</span>
+      </div>
+      <div class="chart-caption">Short-term target of <strong>$220–250</strong>; mid-term base case of <strong>$300–400</strong> (50–100% upside). The dashed line marks the current price.</div>
+    </div>
+
+    <div class="grid3">
+      <div class="strat-card">
+        <div class="strat-horizon">Short Term (1–3 Months)</div>
+        <div class="strat-action">Scale-In Buying</div>
+        <div class="strat-row"><span class="strat-key">Buy Zone</span><span class="strat-v green">$190 – $195</span></div>
+        <div class="strat-row"><span class="strat-key">Stop-Loss</span><span class="strat-v red">$180</span></div>
+        <div class="strat-row"><span class="strat-key">Target</span><span class="strat-v green">$220 – $250</span></div>
+        <div class="strat-row"><span class="strat-key">Catalysts</span><span class="strat-v">Hyperscaler earnings, AI capex guidance, TSMC reports, NVDA Q2 (Aug 26)</span></div>
+      </div>
+      <div class="strat-card">
+        <div class="strat-horizon">Mid Term (6–18 Months)</div>
+        <div class="strat-action">DCA + Options Strategies</div>
+        <div class="strat-row"><span class="strat-key">Price Target</span><span class="strat-v green">$300 – $400</span></div>
+        <div class="strat-row"><span class="strat-key">Upside</span><span class="strat-v green">+50 – 100%</span></div>
+        <div class="strat-row"><span class="strat-key">DCA</span><span class="strat-v">Buy on every 5–10% dip</span></div>
+        <div class="strat-row"><span class="strat-key">Options</span><span class="strat-v">Covered Call · Collar (sell $200 Call / buy $185 Put)</span></div>
+        <div class="strat-row"><span class="strat-key">Growth Story</span><span class="strat-v">Data Center $115B → $300–500B; Vera Rubin, Blackwell, B200</span></div>
+      </div>
+      <div class="strat-card">
+        <div class="strat-horizon">Long Term (3–5 Years)</div>
+        <div class="strat-action">Core Holding · Buy &amp; Hold</div>
+        <div class="strat-row"><span class="strat-key">Portfolio Weight</span><span class="strat-v">5 – 10%</span></div>
+        <div class="strat-row"><span class="strat-key">2030 Revenue Target</span><span class="strat-v green">$1.2 – 1.5T</span></div>
+        <div class="strat-row"><span class="strat-key">2030 Market Cap</span><span class="strat-v green">$10 – 20T</span></div>
+        <div class="strat-row"><span class="strat-key">Upside</span><span class="strat-v green">2 – 4x</span></div>
+        <div class="strat-row"><span class="strat-key">Extra Return</span><span class="strat-v">Growing dividends</span></div>
+      </div>
+    </div>
+
+    <div class="subhead">Mega Trends Carrying the Long Term</div>
+    <ol>
+      <li><strong>AI infrastructure boom:</strong> $3–4 trillion of capex between 2025–2030</li>
+      <li><strong>NVIDIA dominance:</strong> 70–75% market share</li>
+      <li><strong>New markets:</strong> CPU (Vera), software and services</li>
+      <li><strong>Ecosystem expansion:</strong> Backstop program, neocloud partnerships</li>
+    </ol>
+  </div>
+</section>
+
+<!-- SECTION 7 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">07</span> Risks</h2>
+  </div>
+  <div class="section-body">
+    <div class="grid2">
+      <div class="risk-card high">
+        <div class="risk-head"><span class="risk-name">Market Share Loss</span><span class="risk-level">High</span></div>
+        <div class="risk-body"><p>AMD, Intel, and hyperscalers' custom chips (Google TPU, Amazon Trainium) are gradually gaining market share.</p></div>
+      </div>
+      <div class="risk-card high">
+        <div class="risk-head"><span class="risk-name">Pricing Pressure</span><span class="risk-level">High</span></div>
+        <div class="risk-body"><p>Rising competition and stronger customer bargaining power could push GPU prices lower.</p></div>
+      </div>
+      <div class="risk-card high">
+        <div class="risk-head"><span class="risk-name">China Market</span><span class="risk-level">High</span></div>
+        <div class="risk-body"><p>Due to US export restrictions, NVIDIA is no longer present in the Chinese market — and that looks unlikely to change.</p></div>
+      </div>
+      <div class="risk-card high">
+        <div class="risk-head"><span class="risk-name">Supply Chain</span><span class="risk-level">High</span></div>
+        <div class="risk-body"><p>TSMC CoWoS capacity and HBM memory supply could constrain growth.</p></div>
+      </div>
+      <div class="risk-card med">
+        <div class="risk-head"><span class="risk-name">Demand Sustainability</span><span class="risk-level">Medium</span></div>
+        <div class="risk-body"><p>The ROI on AI investments and the durability of demand remain uncertain; hyperscalers may hit borrowing limits.</p></div>
+      </div>
+      <div class="risk-card med">
+        <div class="risk-head"><span class="risk-name">Backstop Program</span><span class="risk-level">Medium</span></div>
+        <div class="risk-body"><p>Neocloud bankruptcy risk exists; NVIDIA's AA credit rating minimizes this exposure.</p></div>
+      </div>
+      <div class="risk-card med">
+        <div class="risk-head"><span class="risk-name">Vera CPU Uncertainty</span><span class="risk-level">Medium</span></div>
+        <div class="risk-body"><p>The CPU market is new territory for NVIDIA; success there will only become clear over time.</p></div>
+      </div>
+      <div class="risk-card low">
+        <div class="risk-head"><span class="risk-name">Liquidity &amp; Balance Sheet</span><span class="risk-level">Low</span></div>
+        <div class="risk-body"><p>Daily trading volume exceeds 120 million shares. A $38.5B buyback authorization and a growing dividend ($0.25/quarter) support the balance sheet. Data center concentration (88–90%) remains a diversification item to monitor.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 8 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">08</span> Conclusion &amp; Investment Call</h2>
+  </div>
+  <div class="section-body">
+    <p>NVIDIA is in an exceptionally strong position on fundamentals: the valuation is attractive, growth is rapid, margins are robust, and new revenue streams are being created. Despite short-term technical uncertainty, the mid- and long-term outlook is positive; the backstop program, offsetting the China loss, and the new product cycle keep the stock attractive for investors.</p>
+    <div class="insight-box bull"><strong>Investment Call: BUY</strong> — Scale in from the $190–195 zone in the short term; build the position on the growth story over the mid-to-long term.</div>
+    <div class="subhead">Rationale</div>
+    <ol>
+      <li><strong>Excellent fundamentals:</strong> Revenue growth 65–92%, margins 74%+, market share 75–90%</li>
+      <li><strong>Attractive valuation:</strong> Forward P/E ~20x, PEG 0.44 — cheap relative to growth</li>
+      <li><strong>Durable growth:</strong> Hyperscaler capex $4.7–5.3T (2025–2030), AI market $1T TAM (2030)</li>
+      <li><strong>Near-term catalysts:</strong> July earnings season, TSMC report, NVIDIA Q2 earnings (Aug 26)</li>
+      <li><strong>Long-term potential:</strong> $10–20T market cap, 5–7x revenue growth</li>
+    </ol>
+
+    <div class="disclaimer">
+      <p><strong>⚠️ Disclaimer</strong></p>
+      <p>This analysis was prepared using data available as of July 8, 2026; it is <strong>for informational purposes only</strong> and <strong>not investment advice</strong>. Stock investments carry high risk. Consider your personal risk tolerance and investment goals, do your own research, and consult a financial advisor before making investment decisions.</p>
+      <p><strong>gistify.pro</strong> does not guarantee the accuracy of the information in this report and cannot be held liable for any losses.</p>
+    </div>
+  </div>
+</section>
+
+<div class="tags-line">#NVDA #NVIDIA #Stocks #FundamentalAnalysis #TechnicalAnalysis #AI #DataCenter #HyperscalerCapex #Valuation #InvestmentStrategy</div>
+
+</div>
+</body>
+</html>
