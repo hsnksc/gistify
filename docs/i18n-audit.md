@@ -1,72 +1,25 @@
-# i18n Audit
+# Gistify i18n Audit
 
-## Stack
+| ID       | Dosya:Satir                                                                                                                                                                         | Sorun                                                                                                        | Kok Neden                                                                   | Onem | Onerilen Fix                                                                             |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------- | ---- | ---------------------------------------------------------------------------------------- |
+| I18N-001 | `client/index.html`                                                                                                                                                                 | Statik `title`, `meta`, `og:*`, `twitter:*` etiketleri EN ve route-dan bagimsizdi.                           | Head katmani hydration oncesi locale okumuyordu.                            | P0   | Head bootstrap ile URL/storage dilini erken coz, canonical + hreflang uret.              |
+| I18N-002 | `client/src/lib/i18n.ts`                                                                                                                                                            | URL > storage > cookie > navigator sirasinda storage/cookie fiilen calismiyordu; ilk boya flash riski vardi. | `readStoredLanguage()` default dili donduruyor, init dili acik verilmemis.  | P0   | `lng`, `initImmediate:false`, gercek storage/cookie cozumleme ve tek yonlu URL senkronu. |
+| I18N-003 | `client/src/App.tsx`                                                                                                                                                                | URL ve component state ayni anda dil kaynagi gibi davraniyordu.                                              | Dil degisimi iki farkli kaynaktan yonetiliyordu.                            | P0   | URL'i tek dogruluk kaynagi yap, selector yalnizca localized route'a navigate etsin.      |
+| I18N-004 | `client/src/scanner/useScannerI18n.ts`, `client/src/scanner/components/ScannerPage.tsx`                                                                                             | Scanner'da ham `scanner:*` key sizintisi ve yanlis etiketler olusabiliyordu.                                 | Ayrik scanner sozlugu ana i18n namespace'iyle uyumsuzdu.                    | P0   | Legacy scanner phrase map'ini ana `scanner.json` namespace'ine bridge et.                |
+| I18N-005 | `client/src/lib/translateDynamic.ts`, `client/src/features/flow/hooks/useFlowComments.ts`                                                                                           | Dil degisince stale dinamik ceviri ekrana basilabiliyordu.                                                   | Iptal/abort ve hedef-dil korumasi yoktu.                                    | P0   | `AbortController` gecir, onceki istekleri iptal et.                                      |
+| I18N-006 | `server/openaiTranslation.ts`                                                                                                                                                       | Placeholder, URL, mention, cashtag ve markdown token'lari bozulma riski tasiyordu.                           | Model ciktisi yapisal olarak dogrulanmiyordu; prompt deterministik degildi. | P0   | Token koruma + placeholder validation + prompt version + `temperature:0`.                |
+| I18N-007 | `client/src/components/reports/DailyReportViewer.tsx`                                                                                                                               | App dili degisse bile aktif rapor dili stale kalabiliyordu; bircok gorunur label hardcoded idi.              | Viewer state'i app language ile resync olmuyordu.                           | P1   | Dil degisiminde viewer state'ini guncelle, gorunur metinleri locale copy ile degistir.   |
+| I18N-008 | `client/src/components/PublicShell.tsx`, `client/src/App.tsx`, `client/src/components/LanguageSelector.tsx`                                                                         | Header/nav/auth alanlarinda hardcoded etiketler vardi; selector test hedefi yoktu.                           | Ust seviye shell locale key kullanmiyordu.                                  | P1   | Nav/auth kopyalarini i18n key'lerine tasi, selector'a `data-testid` ekle.                |
+| I18N-009 | `client/src/pages/MomentumLedgerPage.tsx`, `client/src/pages/MomentumCalibrationPage.tsx`, `client/src/components/momentum/*`, `client/src/components/tabs/MomentumFlowSurface.tsx` | Momentum workspace'inde TR/EN karisik sert metinler kalmisti.                                                | Yeni momentum yuzeyi ana i18n refactor'una dahil edilmemisti.               | P1   | Gorunur metinleri locale copy ile merkezilestir ve sayfa metalarini locale'a bagla.      |
+| I18N-010 | `client/src/locales/*/common.json`, `client/src/i18n.generated.ts`                                                                                                                  | Yeni anahtarlar type union'a girmedigi icin `tsc` kiriliyordu.                                               | Locale tip dosyasi yeniden uretilmemisti.                                   | P1   | Locale JSON degisince `i18n.generated.ts` regen et.                                      |
 
-- Client: React 19 + TypeScript + Vite + Wouter SPA under `client/src`.
-- Server: Express app bundled from `server/index.ts`.
-- Storage: SQLite through `server/billingStore.ts`.
-- Meta management: client-side `usePageMeta` in `client/src/hooks/usePageMeta.ts`.
-- Public server routing: `server/index.ts` plus SPA fallback.
+## Komut Ciktilari
 
-## UI Migration
+### `pnpm run check`
 
-- Legacy `copy(language, tr, en)` source lived in `client/src/lib/i18n.ts`.
-- Initial inventory before codemod: 3,147 `copy()` call sites across `client/src`.
-- Migration tooling:
-  - `scripts/i18n-migrate.ts`: converted literal/template `copy()` calls into `t("ns:key")`.
-  - `scripts/remove-copy-imports.ts`: removed stale `copy` imports after migration.
-- Current state:
-  - `copy()` call sites: 0
-  - `copy()` definition: removed
-  - Locale catalog root: `client/src/locales/{tr,en}`
-  - Generated key union: `client/src/i18n.generated.ts`
+- Durum: gecti
 
-## Runtime Translation Inventory
+### `pnpm run i18n:check`
 
-- Removed body-level DOM translation observer from `client/src/App.tsx`.
-- Flow title/summary client translation fallbacks were collapsed to pass-through hooks in `client/src/features/flow/hooks/useFlowTranslation.ts`.
-- Flow translation health probe no longer pings `/api/i18n/translate`.
-- `HtmlReportRenderer.tsx` now renders stored/preferred language content and surfaces a fallback notice instead of dispatching parent-side translation requests.
-- Client-side `/api/i18n/translate` is now called only through `client/src/lib/translateDynamic.ts` for explicit user-content translation (currently flow comments).
-- `client/src/App.tsx` performs a one-time `i18n_cache_version` migration and purges legacy runtime translation cache keys from `localStorage`.
-
-## Language Routing
-
-- Language source precedence is centralized in `client/src/lib/i18n.ts`:
-  - URL prefix
-  - `localStorage["app_language"]`
-  - browser locale
-  - default `tr`
-- Client router now runs under `/${language}` via Wouter base path.
-- Server legacy redirects:
-  - `/` -> `302 /tr` or `302 /en` based on `app_language` cookie or `Accept-Language`
-  - prefixless deep links -> `301 /tr/...`
-- Sitemap is emitted as bilingual `tr`/`en` entries with `xhtml:link` alternates.
-
-## Content Sources
-
-- Flow/daily report bilingual payloads already exist in `server/dailyReportSources.ts` via `translations` and `availableLanguages`.
-- Flow summary/report language projection lives in:
-  - `server/routes/flow/reports.ts`
-  - `server/services/flowService.ts`
-- Coverage markdown sources live in `server/coverageSources.ts` and can load `.en.md` sidecars plus source-language fallback metadata.
-
-## Formatting / Intl
-
-- Locale-safe format helpers live in `client/src/lib/format.ts`:
-  - `formatNumber`
-  - `formatCurrency`
-  - `formatDate`
-  - `formatPercent`
-
-## Translation Assets
-
-- Prompt template: `server/i18n/prompt.ts`
-- Glossary seed: `server/i18n/glossary.json`
-- Do-not-translate seed: `server/i18n/do-not-translate.json`
-
-## Validation
-
-- Typecheck: `corepack pnpm exec tsc --noEmit`
-- Build: `corepack pnpm build`
-- Locale parity check: `corepack pnpm i18n:check`
+- Durum: gecti
+- Not: 121 adet `unused key` warning'i devam ediyor. Bunlar mevcut pass'te davranissal bug degil; locale envanteri temizligi olarak ayri ele alinmali.

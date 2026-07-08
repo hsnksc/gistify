@@ -42,12 +42,29 @@ function buildMissingKeyLabel(key: string) {
 
 export const i18n = i18next.createInstance();
 
+function resolveInitLanguage() {
+  if (typeof window !== "undefined") {
+    return resolvePreferredLanguage(window.location.pathname);
+  }
+
+  if (typeof document !== "undefined") {
+    const fromDocument = normalizeLanguageToken(document.documentElement.lang);
+    if (fromDocument) {
+      return fromDocument;
+    }
+  }
+
+  return DEFAULT_LANGUAGE;
+}
+
 void i18n.init({
   defaultNS: "common",
   fallbackLng: DEFAULT_LANGUAGE,
+  initImmediate: false,
   interpolation: {
     escapeValue: false,
   },
+  lng: resolveInitLanguage(),
   parseMissingKeyHandler: (key: string) => {
     if (import.meta.env.DEV) {
       console.warn(`[i18n] Missing key: ${key}`);
@@ -63,6 +80,23 @@ void i18n.init({
 
 export function isAppLanguage(value: unknown): value is AppLanguage {
   return value === "tr" || value === "en";
+}
+
+function normalizeLanguageToken(value: unknown) {
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  const normalized = value.trim().toLowerCase();
+  if (normalized.startsWith("tr")) {
+    return "tr" satisfies AppLanguage;
+  }
+
+  if (normalized.startsWith("en")) {
+    return "en" satisfies AppLanguage;
+  }
+
+  return null;
 }
 
 export function getIntlLocale(language: AppLanguage = DEFAULT_LANGUAGE) {
@@ -104,15 +138,34 @@ export function localizePath(pathname: string, language: AppLanguage) {
 
 export function readStoredLanguage() {
   if (typeof window === "undefined") {
-    return DEFAULT_LANGUAGE;
+    return null;
   }
 
   try {
-    const stored = window.localStorage.getItem(APP_LANGUAGE_STORAGE_KEY);
-    return isAppLanguage(stored) ? stored : DEFAULT_LANGUAGE;
+    return normalizeLanguageToken(
+      window.localStorage.getItem(APP_LANGUAGE_STORAGE_KEY)
+    );
   } catch {
-    return DEFAULT_LANGUAGE;
+    return null;
   }
+}
+
+export function readLanguageFromCookie() {
+  if (typeof document === "undefined") {
+    return null;
+  }
+
+  const parts = document.cookie.split(";").map(part => part.trim());
+  for (const part of parts) {
+    if (!part.startsWith(`${APP_LANGUAGE_STORAGE_KEY}=`)) {
+      continue;
+    }
+
+    const value = part.slice(APP_LANGUAGE_STORAGE_KEY.length + 1);
+    return normalizeLanguageToken(decodeURIComponent(value));
+  }
+
+  return null;
 }
 
 export function persistLanguagePreference(language: AppLanguage) {
@@ -139,6 +192,7 @@ export function resolvePreferredLanguage(pathname: string) {
   return (
     getLanguageFromPathname(pathname) ||
     readStoredLanguage() ||
+    readLanguageFromCookie() ||
     getLanguageFromNavigator() ||
     DEFAULT_LANGUAGE
   );
@@ -159,6 +213,13 @@ export async function syncI18nLanguage(language: AppLanguage) {
 
 export function t(key: TranslationKey, options?: Record<string, unknown>) {
   return i18n.t(key, options);
+}
+
+export function getNamespaceResource(
+  language: AppLanguage,
+  namespace: string
+): LocaleResources {
+  return resources[language][namespace] || {};
 }
 
 export function useAppLanguage() {

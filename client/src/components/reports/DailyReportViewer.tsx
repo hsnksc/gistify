@@ -1,10 +1,16 @@
-import { useState } from "react";
-import type { DailyReportContent, DailyReportLanguage } from "@shared/dailyReports";
+import { useEffect, useState } from "react";
+import type {
+  DailyReportContent,
+  DailyReportLanguage,
+} from "@shared/dailyReports";
 import HtmlReportRenderer from "@/components/reports/HtmlReportRenderer";
 import ReportPostShell, {
-  type ReportPostItem, } from "@/components/reports/ReportPostShell";
+  type ReportPostItem,
+} from "@/components/reports/ReportPostShell";
 import {
-  buildDailyReportHtmlDocument, extractPremiumReportFeatures, } from "@/lib/dailyReportHtml";
+  buildDailyReportHtmlDocument,
+  extractPremiumReportFeatures,
+} from "@/lib/dailyReportHtml";
 import { getDailyReportAssetUrl } from "@/lib/dailyReports";
 import { type AppLanguage, t } from "@/lib/i18n";
 import {
@@ -209,14 +215,30 @@ export default function DailyReportViewer({
         : "markdown",
   } satisfies DailyReportContent;
 
+  useEffect(() => {
+    const preferredLanguage = normalizedContent.availableLanguages.includes(
+      language
+    )
+      ? language
+      : normalizedContent.language || language || "tr";
+
+    setActiveLanguage(current =>
+      current === preferredLanguage ? current : preferredLanguage
+    );
+  }, [
+    language,
+    normalizedContent.availableLanguages.join("|"),
+    normalizedContent.language,
+  ]);
+
   const assetBasePath = normalizedContent.assetBasePath || sourceFolder;
   const sourceLabel =
     normalizedContent.sourceLabel ||
     sourceFolder ||
-    "Daily report source";
+    t("common:dailyReportSource");
   const categoryLabel = sourceLabel.toLowerCase().startsWith("flow/")
-    ? "Flow Post"
-    : "Daily Post";
+    ? t("common:flowPost")
+    : t("common:dailyPost");
   const isHtmlSource = normalizedContent.contentFormat === "html";
   const reportDateLabel = formatReportDate(reportDate, locale);
   const updatedAtLabel = formatUpdateStamp(updatedAt, locale);
@@ -245,8 +267,9 @@ export default function DailyReportViewer({
     activePremium.metadataItems?.find(m => /coverage|kapsam/i.test(m.label))
       ?.value || normalizedContent.coverage;
   const activeMethodology =
-    activePremium.metadataItems?.find(m => /methodology|metodoloji/i.test(m.label))
-      ?.value || normalizedContent.methodology;
+    activePremium.metadataItems?.find(m =>
+      /methodology|metodoloji/i.test(m.label)
+    )?.value || normalizedContent.methodology;
 
   const spotlight = isHtmlSource ? null : buildReportSpotlight(activeMarkdown);
   const storyItems = spotlight
@@ -269,13 +292,13 @@ export default function DailyReportViewer({
       }))
     : [
         {
-          label: "Ticker",
+          label: t("common:ticker"),
           value: String(normalizedContent.tickerUniverse.length),
           detail: t("flow:tickerUniverseParsedFromThe"),
           tone: "bull",
         },
         {
-          label: "Figure",
+          label: t("flow:figure"),
           value: String(normalizedContent.figureFiles.length),
           detail: t("flow:uploadedFigureCount"),
           tone: "info",
@@ -288,12 +311,12 @@ export default function DailyReportViewer({
       ];
   const metaItems: ReportPostItem[] = [
     {
-      label: "Ticker",
+      label: t("common:ticker"),
       value: String(normalizedContent.tickerUniverse.length),
       tone: "bull",
     },
     {
-      label: "Figure",
+      label: t("flow:figure"),
       value: String(normalizedContent.figureFiles.length),
       tone: "info",
     },
@@ -392,7 +415,7 @@ export default function DailyReportViewer({
           ? t("flow:htmlFile")
           : normalizedContent.sourceKind === "file"
             ? t("common:markdownFile")
-            : t("scanner:rsiRedFilterActiveScore")
+            : t("common:sourceFolder")
       }
       statCards={statCards}
       metaItems={metaItems}
@@ -409,21 +432,21 @@ export default function DailyReportViewer({
           html={resolvedHtml}
           availableLanguages={normalizedContent.availableLanguages}
           onLanguageChange={setActiveLanguage}
-          emptyMessage={(activeLanguage === "en" ? isHtmlSource
-              ? "The source HTML content is empty."
-              : "The markdown source could not be converted into an HTML document." : isHtmlSource
-              ? "Kaynak HTML icerigi bos."
-              : "Kaynak markdown HTML dokumana donusturulemedi.")}
+          emptyMessage={
+            isHtmlSource
+              ? t("common:sourceHtmlEmpty")
+              : t("common:sourceMarkdownDocumentFailed")
+          }
           sourceFolder={sourceFolder}
           sourceLabel={sourceLabel}
           title={title}
         />
       }
-      emptyMessage={(language === "en" ? isHtmlSource
-          ? "The source HTML content is empty."
-          : "The source markdown content is empty." : isHtmlSource
-          ? "Kaynak HTML icerigi bos."
-          : "Kaynak markdown icerigi bos.")}
+      emptyMessage={
+        isHtmlSource
+          ? t("common:sourceHtmlEmpty")
+          : t("common:sourceMarkdownEmpty")
+      }
       resolveImage={(src, alt) => {
         const resolved = resolveAssetSrc(
           assetBasePath,
@@ -455,7 +478,7 @@ export default function DailyReportViewer({
                 </h3>
               </div>
               <span className="rounded-full border border-border bg-background/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                {spotlight.items.length} key
+                {spotlight.items.length} {t("common:keyMetric")}
               </span>
             </div>
 
@@ -517,7 +540,7 @@ export default function DailyReportViewer({
                 </h3>
               </div>
               <span className="rounded-full border border-border bg-background/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                {galleryFigures.length} figure
+                {galleryFigures.length} {t("flow:figure")}
               </span>
             </div>
 
@@ -560,4 +583,3 @@ export default function DailyReportViewer({
     </ReportPostShell>
   );
 }
-

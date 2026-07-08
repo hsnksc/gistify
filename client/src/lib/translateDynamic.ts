@@ -9,6 +9,10 @@ export interface DynamicTranslationItem {
   text: string;
 }
 
+interface DynamicTranslationOptions {
+  signal?: AbortSignal;
+}
+
 interface DynamicTranslationResponse {
   error?: string;
   items?: Array<{
@@ -109,7 +113,9 @@ function readTranslatedText(
   item: DynamicTranslationItem
 ) {
   const translatedFromItems = Array.isArray(payload.items)
-    ? payload.items.find(candidate => normalizeString(candidate?.id) === item.id)
+    ? payload.items.find(
+        candidate => normalizeString(candidate?.id) === item.id
+      )
     : null;
   const translatedItemText = normalizeString(translatedFromItems?.text);
   if (translatedItemText) {
@@ -121,7 +127,8 @@ function readTranslatedText(
 
 export async function translateDynamic(
   items: DynamicTranslationItem[],
-  targetLanguage: AppLanguage
+  targetLanguage: AppLanguage,
+  options: DynamicTranslationOptions = {}
 ) {
   const results = Object.fromEntries(
     items.map(item => [item.id, normalizeString(item.text)])
@@ -166,6 +173,10 @@ export async function translateDynamic(
   for (const [sourceLanguage, sourceItems] of Array.from(
     groupedItems.entries()
   )) {
+    if (options.signal?.aborted) {
+      throw new DOMException("Translation request aborted.", "AbortError");
+    }
+
     if (!sourceItems.length) {
       continue;
     }
@@ -186,6 +197,7 @@ export async function translateDynamic(
           "Content-Type": "application/json",
         },
         method: "POST",
+        signal: options.signal,
       });
       const payload = await readJsonResponse<DynamicTranslationResponse>(
         response,
@@ -208,6 +220,10 @@ export async function translateDynamic(
         );
       }
     } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") {
+        throw error;
+      }
+
       console.warn(
         "[translateDynamic] Falling back to source content.",
         error instanceof Error ? error.message : error

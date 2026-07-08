@@ -12,6 +12,7 @@ const OPENAI_RESPONSES_URL = "https://api.openai.com/v1/responses";
 const DEFAULT_TRANSLATION_MODEL = "gpt-4.1";
 const MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions";
 const DEFAULT_MISTRAL_MODEL = "mistral-medium-latest";
+const TRANSLATION_PROMPT_VERSION = "2026-07-07";
 const MAX_TEXTS_PER_REQUEST = 24;
 const MAX_TEXT_LENGTH = 2_000;
 const MAX_TOTAL_TEXT_LENGTH = 18_000;
@@ -112,6 +113,7 @@ function hashTranslationPayload(parts: {
     .update(
       JSON.stringify({
         context: parts.context || "",
+        promptVersion: TRANSLATION_PROMPT_VERSION,
         source: parts.source,
         target: parts.target,
         text: parts.text,
@@ -126,21 +128,44 @@ function buildTranslationCacheKey(parts: {
   target: string;
   text: string;
 }) {
-  return [parts.source, parts.target, parts.context || "", parts.text].join(
-    "\u0001"
-  );
+  return [
+    TRANSLATION_PROMPT_VERSION,
+    parts.source,
+    parts.target,
+    parts.context || "",
+    parts.text,
+  ].join("\u0001");
 }
 
 function escapeRegex(value: string) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-function protectMarketTerms(text: string, startIndex: number): {
+function protectMarketTerms(
+  text: string,
+  startIndex: number
+): {
   replacements: TermReplacement[];
   text: string;
 } {
   let result = text;
   const replacements: TermReplacement[] = [];
+
+  const protectPattern = (pattern: RegExp, prefix: string) => {
+    result = result.replace(pattern, match => {
+      const placeholder = `__GISTIFY_${prefix}_${startIndex}_${replacements.length}__`;
+      replacements.push({ original: match, placeholder });
+      return placeholder;
+    });
+  };
+
+  // Preserve structured tokens exactly as-is.
+  protectPattern(/\{\{[^}]+\}\}/g, "TPL");
+  protectPattern(/`[^`\n]+`/g, "CODE");
+  protectPattern(/\[[^\]]+\]\([^)]+\)/g, "MDLINK");
+  protectPattern(/https?:\/\/\S+/gi, "URL");
+  protectPattern(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g, "MAIL");
+  protectPattern(/[$@][A-Za-z0-9._-]+/g, "TAG");
 
   for (let i = 0; i < protectedTerms.length; i += 1) {
     const term = protectedTerms[i];
@@ -169,9 +194,19 @@ function restoreMarketTerms(
 ): string {
   let result = text;
   for (const { original, placeholder } of replacements) {
-    result = result.replace(new RegExp(escapeRegex(placeholder), "g"), original);
+    result = result.replace(
+      new RegExp(escapeRegex(placeholder), "g"),
+      original
+    );
   }
   return result;
+}
+
+function hasAllProtectedPlaceholders(
+  text: string,
+  replacements: TermReplacement[]
+) {
+  return replacements.every(({ placeholder }) => text.includes(placeholder));
 }
 
 function extractErrorMessage(payload: unknown, fallback: string) {
@@ -199,7 +234,9 @@ function extractOutputText(payload: unknown) {
   }
 
   const outputs = Array.isArray((payload as { output?: unknown[] }).output)
-    ? ((payload as { output: unknown[] }).output as Array<Record<string, unknown>>)
+    ? ((payload as { output: unknown[] }).output as Array<
+        Record<string, unknown>
+      >)
     : [];
 
   const parts: string[] = [];
@@ -432,7 +469,7 @@ async function translateWithMistral(
     body: JSON.stringify({
       model: getMistralModel(),
       response_format: { type: "json_object" },
-      temperature: 0.2,
+      temperature: 0,
       messages: [
         {
           role: "system",
@@ -473,9 +510,13 @@ async function translateWithMistral(
     typeof parsedBody === "object" &&
     Array.isArray((parsedBody as { choices?: unknown[] }).choices)
       ? normalizeString(
-          ((parsedBody as {
-            choices: Array<{ message?: { content?: unknown } }>;
-          }).choices[0] || {}).message?.content
+          (
+            (
+              parsedBody as {
+                choices: Array<{ message?: { content?: unknown } }>;
+              }
+            ).choices[0] || {}
+          ).message?.content
         )
       : "";
 
@@ -511,7 +552,9 @@ function extractTranslatedItems(payload: unknown) {
     return Object.keys(translations).length ? translations : null;
   }
 
-  const directEntries = Object.entries(payload as Record<string, unknown>).filter(
+  const directEntries = Object.entries(
+    payload as Record<string, unknown>
+  ).filter(
     ([key, value]) =>
       normalizeString(key) && typeof value === "string" && value.trim()
   );
@@ -539,7 +582,11 @@ function ensureTranslationProviderConfigured() {
   return { mistralKey, openAiKey };
 }
 
-function readCachedTranslation(cacheKey: string, sourceHash: string, target: string) {
+function readCachedTranslation(
+  cacheKey: string,
+  sourceHash: string,
+  target: string
+) {
   const memoryValue = translationCache.get(cacheKey);
   if (memoryValue) {
     return memoryValue;
@@ -625,9 +672,7 @@ function prepareStructuredItems(
   return Array.from(grouped.values());
 }
 
-async function requestStructuredTranslations(
-  items: PreparedTranslationItem[]
-) {
+async function requestStructuredTranslations(items: PreparedTranslationItem[]) {
   const { mistralKey, openAiKey } = ensureTranslationProviderConfigured();
   let outputPayload: unknown = null;
   let lastProviderError: unknown = null;
@@ -793,8 +838,12 @@ export async function translateStructuredItems(
       typeof response.translatedItems[item.providerId] === "string"
         ? response.translatedItems[item.providerId]
         : "";
+    const structurallyValid =
+      !candidate || hasAllProtectedPlaceholders(candidate, item.replacements);
     const translatedText = candidate
-      ? restoreMarketTerms(candidate, item.replacements) || item.originalText
+      ? structurallyValid
+        ? restoreMarketTerms(candidate, item.replacements) || item.originalText
+        : item.originalText
       : item.originalText;
 
     for (const originalId of item.originalIds) {
@@ -813,7 +862,11 @@ export async function translateStructuredItems(
   return results;
 }
 
-export async function translateTexts(texts: string[], source: string, target: string) {
+export async function translateTexts(
+  texts: string[],
+  source: string,
+  target: string
+) {
   const uniqueTexts = normalizeTranslationTexts(texts);
   const keyedItems = uniqueTexts.map((text, index) => ({
     id: `text-${index + 1}`,
@@ -899,8 +952,14 @@ export async function translateContentDocument(
     typeof response.translatedItems.doc === "string"
       ? response.translatedItems.doc
       : "";
+  const structurallyValid =
+    !candidate ||
+    hasAllProtectedPlaceholders(candidate, preparedItem.replacements);
   const translatedText = candidate
-    ? restoreMarketTerms(candidate, preparedItem.replacements) || normalizedText
+    ? structurallyValid
+      ? restoreMarketTerms(candidate, preparedItem.replacements) ||
+        normalizedText
+      : normalizedText
     : normalizedText;
 
   writeCachedTranslation(

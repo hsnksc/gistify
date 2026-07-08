@@ -107,6 +107,7 @@ import {
   translateStructuredItems,
   translateTexts,
 } from "./openaiTranslation";
+import { runTranslationCycle } from "./services/translationJobs";
 
 type MembershipPlan = "guest" | "member" | "pro";
 type AppAccessMode = "managed" | "public";
@@ -298,6 +299,15 @@ const gistifyDb = createGistifyDb();
 const flowEngagementStore = createFlowEngagementStore();
 const jobCoordinator = createJobCoordinator();
 jobCoordinator.ensureCronJobs(CRON_JOB_DEFINITIONS);
+
+jobCoordinator.startScheduler(CRON_JOB_DEFINITIONS, {
+  "flow-translation": async () => {
+    return runTranslationCycle(billingStore, {
+      maxReports: 5,
+      delayMs: 500,
+    });
+  },
+});
 
 const LEGACY_WEEKLY_SEED_SIGNATURES = new Map<string, string>([
   ["weekly-report-2026-06-01", "2026-06-02T08:30:00.000Z"],
@@ -3614,6 +3624,14 @@ async function startServer() {
     "/api",
     createAdminJobsRouter({
       jobCoordinator,
+      jobHandlers: {
+        "flow-translation": async () => {
+          return runTranslationCycle(billingStore, {
+            maxReports: 5,
+            delayMs: 500,
+          });
+        },
+      },
       requireWeeklyReportAdmin,
       setPrivateNoStore,
     })

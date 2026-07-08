@@ -1,6 +1,17 @@
 import { Fragment, useCallback, useEffect, useState } from "react";
 import {
-  Activity, BarChart3, ChevronDown, ChevronUp, Clock, FileText, Filter, Loader2, Radar, Shield, TrendingUp, } from "lucide-react";
+  Activity,
+  BarChart3,
+  ChevronDown,
+  ChevronUp,
+  Clock,
+  FileText,
+  Filter,
+  Loader2,
+  Radar,
+  Shield,
+  TrendingUp,
+} from "lucide-react";
 import { runMomentumScan } from "@/scanner";
 import { useScannerI18n } from "@/scanner/useScannerI18n";
 import { scoreColor, signalBg, signalLabel } from "@/scanner/lib/scoreConfig";
@@ -17,19 +28,73 @@ interface ScannerPageProps {
 }
 
 const DEFAULT_TICKERS = [
-  "AAPL", "MSFT", "AMZN", "GOOGL", "NVDA", "META", "TSLA", "NFLX", "AMD", "AVGO",
-  "CRM", "SNOW", "MRVL", "PLTR", "HOOD", "SOFI", "ACHR", "MU", "IREN", "RGTI",
-  "QBTS", "IONQ", "BURL", "DLTR", "COST", "DKS", "INOD", "BKE", "FUTU", "LI",
-  "NOK", "BB", "CCL", "F", "INTC", "PENN", "COIN", "ROKU", "SQ", "SHOP",
-  "CRWD", "OKTA", "DOCU", "DDOG", "MDB", "NET", "FSLY", "DKNG", "ETSY", "PTON",
-  "LCID", "RIVN", "NIO", "XPEV", "FSR", "PLUG", "ENPH", "SEDG", "RUN", "MAXN",
+  "AAPL",
+  "MSFT",
+  "AMZN",
+  "GOOGL",
+  "NVDA",
+  "META",
+  "TSLA",
+  "NFLX",
+  "AMD",
+  "AVGO",
+  "CRM",
+  "SNOW",
+  "MRVL",
+  "PLTR",
+  "HOOD",
+  "SOFI",
+  "ACHR",
+  "MU",
+  "IREN",
+  "RGTI",
+  "QBTS",
+  "IONQ",
+  "BURL",
+  "DLTR",
+  "COST",
+  "DKS",
+  "INOD",
+  "BKE",
+  "FUTU",
+  "LI",
+  "NOK",
+  "BB",
+  "CCL",
+  "F",
+  "INTC",
+  "PENN",
+  "COIN",
+  "ROKU",
+  "SQ",
+  "SHOP",
+  "CRWD",
+  "OKTA",
+  "DOCU",
+  "DDOG",
+  "MDB",
+  "NET",
+  "FSLY",
+  "DKNG",
+  "ETSY",
+  "PTON",
+  "LCID",
+  "RIVN",
+  "NIO",
+  "XPEV",
+  "FSR",
+  "PLUG",
+  "ENPH",
+  "SEDG",
+  "RUN",
+  "MAXN",
 ];
 
 function getFilterLabel(signal: string, lang: AppLanguage) {
   if (signal === "ALL") return t("scanner:all");
   if (signal === "STRONG_BUY") return t("common:strongBuy");
   if (signal === "BUY") return t("common:buy");
-  if (signal === "NEUTRAL") return t("common:refreshFailed");
+  if (signal === "NEUTRAL") return t("common:neutral");
   return signal;
 }
 
@@ -50,13 +115,18 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
   const [sortKey, setSortKey] = useState<keyof StockResult>("score");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
   const [error, setError] = useState<string | null>(null);
-  const [timingWarning, setTimingWarning] = useState<string | null>(getScanTimingWarning(lang));
+  const [timingWarning, setTimingWarning] = useState<string | null>(
+    getScanTimingWarning(lang)
+  );
 
   useEffect(() => {
     setTimingWarning(getScanTimingWarning(lang));
-    const interval = setInterval(() => setTimingWarning(getScanTimingWarning(lang)), 60000);
+    const interval = setInterval(
+      () => setTimingWarning(getScanTimingWarning(lang)),
+      60000
+    );
     return () => clearInterval(interval);
-  }, []);
+  }, [lang]);
 
   const handleScan = useCallback(async () => {
     setIsScanning(true);
@@ -90,8 +160,10 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
   }, [filterSignal, minScore]);
 
   const filtered = results
-    .filter((result) => (filterSignal === "ALL" ? true : result.signal === filterSignal))
-    .filter((result) => result.score >= (parseInt(minScore, 10) || 0))
+    .filter(result =>
+      filterSignal === "ALL" ? true : result.signal === filterSignal
+    )
+    .filter(result => result.score >= (parseInt(minScore, 10) || 0))
     .sort((a, b) => {
       const av = (a[sortKey] as number) ?? 0;
       const bv = (b[sortKey] as number) ?? 0;
@@ -139,7 +211,8 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
             {isScanning ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" />
-                {t("Taranıyor...")} ({scanProgress.scanned}/{scanProgress.total})
+                {t("Taranıyor...")} ({scanProgress.scanned}/{scanProgress.total}
+                )
               </>
             ) : (
               <>
@@ -162,10 +235,12 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
           ) : null}
 
           <div>
-            <label className="mb-1 block text-xs text-muted-foreground">{t("Min Skor")}</label>
+            <label className="mb-1 block text-xs text-muted-foreground">
+              {t("Min Skor")}
+            </label>
             <input
               value={minScore}
-              onChange={(event) => setMinScore(event.target.value)}
+              onChange={event => setMinScore(event.target.value)}
               className="w-20 rounded-lg border border-border bg-background/70 px-3 py-1.5 text-sm text-foreground"
               type="number"
               min="0"
@@ -174,9 +249,11 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
           </div>
 
           <div>
-            <label className="mb-1 block text-xs text-muted-foreground">{t("Sinyal")}</label>
+            <label className="mb-1 block text-xs text-muted-foreground">
+              {t("Sinyal")}
+            </label>
             <div className="flex gap-1">
-              {["ALL", "STRONG_BUY", "BUY", "NEUTRAL"].map((signal) => (
+              {["ALL", "STRONG_BUY", "BUY", "NEUTRAL"].map(signal => (
                 <button
                   key={signal}
                   onClick={() => setFilterSignal(signal)}
@@ -268,18 +345,32 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
                     { key: "ticker" as keyof StockResult, label: t("Hisse") },
                     { key: "score" as keyof StockResult, label: t("Skor") },
                     { key: "signal" as keyof StockResult, label: t("Sinyal") },
-                    { key: "currentPrice" as keyof StockResult, label: t("Fiyat") },
-                    { key: "priceChangePct" as keyof StockResult, label: t("Değişim") },
+                    {
+                      key: "currentPrice" as keyof StockResult,
+                      label: t("Fiyat"),
+                    },
+                    {
+                      key: "priceChangePct" as keyof StockResult,
+                      label: t("Değişim"),
+                    },
                     { key: "rsi" as keyof StockResult, label: "RSI" },
-                    { key: "volumeRatio" as keyof StockResult, label: t("RVOL") },
-                    { key: "confidenceScore" as keyof StockResult, label: t("Güven") },
-                  ].map((column) => (
+                    {
+                      key: "volumeRatio" as keyof StockResult,
+                      label: t("RVOL"),
+                    },
+                    {
+                      key: "confidenceScore" as keyof StockResult,
+                      label: t("Güven"),
+                    },
+                  ].map(column => (
                     <th
                       key={column.key}
                       onClick={() => handleSort(column.key)}
                       className="cursor-pointer px-3 py-2 text-left text-[11px] font-medium uppercase tracking-wider text-muted-foreground hover:text-foreground"
                     >
-                      {column.label} {sortKey === column.key && (sortDir === "asc" ? "↑" : "↓")}
+                      {column.label}{" "}
+                      {sortKey === column.key &&
+                        (sortDir === "asc" ? "↑" : "↓")}
                     </th>
                   ))}
                   <th className="px-3 py-3"></th>
@@ -287,21 +378,35 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
               </thead>
 
               <tbody>
-                {filtered.map((stock) => (
+                {filtered.map(stock => (
                   <Fragment key={stock.ticker}>
                     <tr
                       className="cursor-pointer border-b border-border/60 transition-all hover:bg-[rgba(35,45,66,0.72)]"
-                      onClick={() => setExpandedRow(expandedRow === stock.ticker ? null : stock.ticker)}
+                      onClick={() =>
+                        setExpandedRow(
+                          expandedRow === stock.ticker ? null : stock.ticker
+                        )
+                      }
                     >
                       <td className="px-3 py-3">
-                        <span className="font-semibold text-foreground">{stock.ticker}</span>
-                        <span className="ml-2 text-xs text-muted-foreground">{stock.name}</span>
+                        <span className="font-semibold text-foreground">
+                          {stock.ticker}
+                        </span>
+                        <span className="ml-2 text-xs text-muted-foreground">
+                          {stock.name}
+                        </span>
                       </td>
                       <td className="px-3 py-3">
-                        <span className={`font-bold ${scoreColor(stock.score)}`}>{stock.score}</span>
+                        <span
+                          className={`font-bold ${scoreColor(stock.score)}`}
+                        >
+                          {stock.score}
+                        </span>
                       </td>
                       <td className="px-3 py-3">
-                        <span className={`inline-flex rounded border px-2 py-0.5 text-[10px] font-medium text-white ${signalBg(stock.signal)}`}>
+                        <span
+                          className={`inline-flex rounded border px-2 py-0.5 text-[10px] font-medium text-white ${signalBg(stock.signal)}`}
+                        >
                           {signalLabel(stock.signal, lang)}
                         </span>
                         {stock.rsiWarning ? (
@@ -310,12 +415,21 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
                           </span>
                         ) : null}
                       </td>
-                      <td className="px-3 py-3 text-sm text-foreground">${stock.currentPrice.toFixed(2)}</td>
-                      <td className="px-3 py-3">
-                        <Delta value={stock.priceChangePct} className="text-sm" />
+                      <td className="px-3 py-3 text-sm text-foreground">
+                        ${stock.currentPrice.toFixed(2)}
                       </td>
-                      <td className="px-3 py-3 text-sm text-muted-foreground">{stock.rsi.toFixed(1)}</td>
-                      <td className="px-3 py-3 text-sm text-muted-foreground">{stock.volumeRatio.toFixed(2)}x</td>
+                      <td className="px-3 py-3">
+                        <Delta
+                          value={stock.priceChangePct}
+                          className="text-sm"
+                        />
+                      </td>
+                      <td className="px-3 py-3 text-sm text-muted-foreground">
+                        {stock.rsi.toFixed(1)}
+                      </td>
+                      <td className="px-3 py-3 text-sm text-muted-foreground">
+                        {stock.volumeRatio.toFixed(2)}x
+                      </td>
                       <td className="px-3 py-3">
                         <span
                           className={`text-xs ${
@@ -364,25 +478,45 @@ export default function ScannerPage({ lang }: ScannerPageProps) {
   );
 }
 
-function StockDetail({ stock, t, lang }: { stock: StockResult; t: (key: string) => string; lang: AppLanguage }) {
+function StockDetail({
+  stock,
+  t,
+  lang,
+}: {
+  stock: StockResult;
+  t: (key: string) => string;
+  lang: AppLanguage;
+}) {
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         <div className="rounded-lg border border-border bg-background/55 p-3">
-          <p className="text-[10px] text-muted-foreground">{t("Güncel Fiyat")}</p>
-          <p className="text-sm font-bold text-foreground">${stock.currentPrice.toFixed(2)}</p>
+          <p className="text-[10px] text-muted-foreground">
+            {t("Güncel Fiyat")}
+          </p>
+          <p className="text-sm font-bold text-foreground">
+            ${stock.currentPrice.toFixed(2)}
+          </p>
         </div>
         <div className="rounded-lg border border-border bg-background/55 p-3">
-          <p className="text-[10px] text-muted-foreground">{t("Günlük Değişim")}</p>
+          <p className="text-[10px] text-muted-foreground">
+            {t("Günlük Değişim")}
+          </p>
           <Delta value={stock.priceChangePct} className="text-sm font-bold" />
         </div>
         <div className="rounded-lg border border-border bg-background/55 p-3">
           <p className="text-[10px] text-muted-foreground">{t("ATR (14)")}</p>
-          <p className="text-sm font-bold text-foreground">${stock.atr14d.toFixed(2)}</p>
+          <p className="text-sm font-bold text-foreground">
+            ${stock.atr14d.toFixed(2)}
+          </p>
         </div>
         <div className="rounded-lg border border-border bg-background/55 p-3">
-          <p className="text-[10px] text-muted-foreground">{t("Hedef Fiyat")}</p>
-          <p className="text-sm font-bold text-emerald-400">${(stock.targetPrice || 0).toFixed(2)}</p>
+          <p className="text-[10px] text-muted-foreground">
+            {t("Hedef Fiyat")}
+          </p>
+          <p className="text-sm font-bold text-emerald-400">
+            ${(stock.targetPrice || 0).toFixed(2)}
+          </p>
         </div>
       </div>
 
@@ -398,11 +532,17 @@ function StockDetail({ stock, t, lang }: { stock: StockResult; t: (key: string) 
                 key={index}
                 className="flex items-start gap-3 rounded border border-border bg-background/45 p-2 text-xs"
               >
-                <span className="w-24 flex-shrink-0 text-muted-foreground">{explanation.factor}</span>
-                <span className={`w-10 text-right font-medium ${scoreColor(explanation.score)}`}>
+                <span className="w-24 flex-shrink-0 text-muted-foreground">
+                  {explanation.factor}
+                </span>
+                <span
+                  className={`w-10 text-right font-medium ${scoreColor(explanation.score)}`}
+                >
                   {Math.round(explanation.score * explanation.weight)}
                 </span>
-                <span className="text-muted-foreground">{explanation.reason}</span>
+                <span className="text-muted-foreground">
+                  {explanation.reason}
+                </span>
               </div>
             ))}
           </div>
@@ -419,14 +559,18 @@ function StockDetail({ stock, t, lang }: { stock: StockResult; t: (key: string) 
         >
           <p
             className={`text-xs font-semibold ${
-              stock.signal === "OVERBOUGHT_RED" ? "text-red-400" : "text-orange-400"
+              stock.signal === "OVERBOUGHT_RED"
+                ? "text-red-400"
+                : "text-orange-400"
             }`}
           >
             {stock.signal === "OVERBOUGHT_RED"
               ? t("scanner:overbought60a9")
               : t("scanner:hotZone")}
           </p>
-          <p className="mt-1 text-xs text-muted-foreground">{stock.rsiWarning}</p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            {stock.rsiWarning}
+          </p>
         </div>
       ) : null}
 
@@ -434,5 +578,3 @@ function StockDetail({ stock, t, lang }: { stock: StockResult; t: (key: string) 
     </div>
   );
 }
-
-

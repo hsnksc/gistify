@@ -507,6 +507,86 @@ function mapDailyReportRow(row: DailyReportDbRow): DailyReportRecord {
       contentFormat: content.contentFormat === "html" ? "html" : "markdown",
       sourceLabel: normalizeOptionalString(content.sourceLabel),
       assetBasePath: normalizeOptionalString(content.assetBasePath),
+      language:
+        content.language === "tr" || content.language === "en"
+          ? content.language
+          : undefined,
+      availableLanguages: Array.isArray(content.availableLanguages)
+        ? content.availableLanguages.filter(
+            (item): item is "tr" | "en" => item === "tr" || item === "en"
+          )
+        : undefined,
+      translations:
+        content.translations && typeof content.translations === "object"
+          ? Object.entries(content.translations).reduce<
+              Partial<Record<"tr" | "en", string>>
+            >((acc, [lang, value]) => {
+              if (
+                (lang === "tr" || lang === "en") &&
+                typeof value === "string" &&
+                value.trim()
+              ) {
+                acc[lang] = value;
+              }
+              return acc;
+            }, {})
+          : undefined,
+      sourceHash: normalizeOptionalString(content.sourceHash),
+      translationMeta:
+        content.translationMeta && typeof content.translationMeta === "object"
+          ? Object.entries(content.translationMeta).reduce<
+              Partial<
+                Record<
+                  "tr" | "en",
+                  {
+                    status: "pending" | "done" | "stale" | "failed";
+                    engine: "llm" | "human";
+                    promptVersion?: string;
+                    sourceHash?: string;
+                    translatedAt?: string;
+                    error?: string;
+                  }
+                >
+              >
+            >((acc, [lang, value]) => {
+              if (
+                (lang === "tr" || lang === "en") &&
+                value &&
+                typeof value === "object"
+              ) {
+                const meta = value as {
+                  status?: unknown;
+                  engine?: unknown;
+                  promptVersion?: unknown;
+                  sourceHash?: unknown;
+                  translatedAt?: unknown;
+                  error?: unknown;
+                };
+                const status =
+                  meta.status === "pending" ||
+                  meta.status === "done" ||
+                  meta.status === "stale" ||
+                  meta.status === "failed"
+                    ? meta.status
+                    : undefined;
+                const engine =
+                  meta.engine === "llm" || meta.engine === "human"
+                    ? meta.engine
+                    : undefined;
+                if (status && engine) {
+                  acc[lang as "tr" | "en"] = {
+                    status,
+                    engine,
+                    promptVersion: normalizeOptionalString(meta.promptVersion),
+                    sourceHash: normalizeOptionalString(meta.sourceHash),
+                    translatedAt: normalizeOptionalString(meta.translatedAt),
+                    error: normalizeOptionalString(meta.error),
+                  };
+                }
+              }
+              return acc;
+            }, {})
+          : undefined,
     },
   };
 }

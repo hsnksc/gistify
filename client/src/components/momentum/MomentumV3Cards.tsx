@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import type { ReactNode } from "react";
 import type { MidasSignalRecord, MidasSignalsData } from "@shared/midasSignals";
-import { localizePath, type AppLanguage } from "@/lib/i18n";
+import { localizePath, useAppLanguage, type AppLanguage } from "@/lib/i18n";
 import {
   isRecord,
   numberArrayFromValue,
@@ -31,6 +31,88 @@ import {
 const GRADE_ORDER = ["A", "B", "C", "IZLEME"];
 const PHASE_ORDER = ["ATEŞLEME", "İVME", "OLGUN", "YORGUN"];
 
+function getMomentumCopy(language: AppLanguage) {
+  return language === "en"
+    ? {
+        activeCarry: "Active carry",
+        calibration: "Calibration",
+        carryForwardHealth: "Carry-forward health",
+        carryForwardNote:
+          "If the public ledger is unavailable, this card falls back to live signal counts; private `momentum_ledger.json` is never read.",
+        closed: "Closed",
+        exhaustion: "Exhaustion",
+        exhaustionAlerts: "Exhaustion alerts",
+        exhaustionAlertsDetected: (count: number) =>
+          `${count} unique exhaustion alerts detected.`,
+        fileSources: "File sources",
+        grade: "Grade",
+        learningLayer: "Momentum v3 learning layer",
+        learningLayerDescription:
+          "Track MSS distribution, phase map, and public ledger health from one command surface.",
+        mssDistribution: "MSS distribution",
+        mssTooltip: "Momentum Sentiment Score",
+        noActiveExhaustion:
+          "There are no active exhaustion flags. When new JSON arrives, flag sensitivity will be tracked on the calibration page.",
+        noExhaustedPhaseWarning: "No exhausted-phase warning.",
+        params: "Params",
+        phaseLabels: {
+          ATEŞLEME: "Ignition",
+          İVME: "Acceleration",
+          OLGUN: "Mature",
+          YORGUN: "Exhausted",
+        } as Record<string, string>,
+        phaseMap: "Momentum phase map",
+        phaseWarning: (count: number) =>
+          `${count} names are in the exhausted phase; tighten confirmation filters on new entries.`,
+        publicLedger: "Public ledger",
+        stale: "Stale",
+        systemHealth: "System health",
+        systemHealthFallback:
+          "If no calibration file is present, the system runs on fallback parameters.",
+        trendPending: "Waiting for MSS trend data.",
+        watch: "WATCH",
+      }
+    : {
+        activeCarry: "Aktif carry",
+        calibration: "Kalibrasyon",
+        carryForwardHealth: "Carry-forward sağlığı",
+        carryForwardNote:
+          "Public ledger yoksa kart canlı sinyal sayılarına düşer; private `momentum_ledger.json` hiçbir zaman okunmaz.",
+        closed: "Kapanan",
+        exhaustion: "Exhaustion",
+        exhaustionAlerts: "Exhaustion flag uyarıları",
+        exhaustionAlertsDetected: (count: number) =>
+          `${count} benzersiz exhaustion uyarısı algılandı.`,
+        fileSources: "Dosya kaynakları",
+        grade: "Grade",
+        learningLayer: "Momentum v3 öğrenme katmanı",
+        learningLayerDescription:
+          "MSS dağılımı, faz haritası ve public ledger sağlığı tek komuta katmanında izlenir.",
+        mssDistribution: "MSS dağılımı",
+        mssTooltip: "Momentum Sentiment Score",
+        noActiveExhaustion:
+          "Aktif exhaustion flag yok. Yeni JSON geldiğinde flag hassasiyeti kalibrasyon sayfasında izlenir.",
+        noExhaustedPhaseWarning: "Yorgun faz uyarısı yok.",
+        params: "Parametreler",
+        phaseLabels: {
+          ATEŞLEME: "Ateşleme",
+          İVME: "İvme",
+          OLGUN: "Olgun",
+          YORGUN: "Yorgun",
+        } as Record<string, string>,
+        phaseMap: "Momentum faz haritası",
+        phaseWarning: (count: number) =>
+          `${count} isim yorgun fazda; yeni girişlerde onay filtresi sıkı tutulmalı.`,
+        publicLedger: "Public ledger",
+        stale: "Bayat",
+        systemHealth: "Sistem karnesi",
+        systemHealthFallback:
+          "Kalibrasyon dosyası yoksa sistem fallback parametreleriyle çalışır.",
+        trendPending: "MSS trend verisi bekleniyor.",
+        watch: "İZLEME",
+      };
+}
+
 function clampPct(value: number) {
   return Math.max(0, Math.min(100, value));
 }
@@ -45,7 +127,9 @@ function formatPercent(value: number | undefined) {
 }
 
 function formatNumber(value: number | undefined) {
-  return value === undefined || !Number.isFinite(value) ? "-" : Math.round(value).toString();
+  return value === undefined || !Number.isFinite(value)
+    ? "-"
+    : Math.round(value).toString();
 }
 
 function firstNumber(...values: Array<unknown>) {
@@ -89,13 +173,13 @@ export function normalizeMomentumGrade(value: unknown) {
   return normalized;
 }
 
-function displayGrade(value: unknown) {
+function displayGrade(value: unknown, language: AppLanguage) {
   const grade = normalizeMomentumGrade(value);
   if (!grade) {
     return "-";
   }
 
-  return grade === "IZLEME" ? "İZLEME" : grade;
+  return grade === "IZLEME" ? getMomentumCopy(language).watch : grade;
 }
 
 function normalizePhase(value: unknown) {
@@ -128,8 +212,13 @@ export function getSignalMss(signal: MidasSignalRecord) {
   );
 }
 
-export function getSignalGrade(signal: MidasSignalRecord, params?: MomentumParams) {
-  const explicitGrade = normalizeMomentumGrade(signal.grade ?? signal.conviction_tier);
+export function getSignalGrade(
+  signal: MidasSignalRecord,
+  params?: MomentumParams
+) {
+  const explicitGrade = normalizeMomentumGrade(
+    signal.grade ?? signal.conviction_tier
+  );
   if (explicitGrade) {
     return explicitGrade;
   }
@@ -174,6 +263,8 @@ export function MssGradeBadge({
   params?: MomentumParams;
   compact?: boolean;
 }) {
+  const language = useAppLanguage();
+  const copy = getMomentumCopy(language);
   const mss = getSignalMss(signal);
   const grade = getSignalGrade(signal, params);
 
@@ -184,9 +275,9 @@ export function MssGradeBadge({
   return (
     <span
       className={`rounded-full border px-2 py-0.5 font-bold uppercase tracking-[0.12em] ${compact ? "text-[8px]" : "text-[9px]"} ${badgeToneForGrade(grade)}`}
-      title="Momentum Sentiment Score"
+      title={copy.mssTooltip}
     >
-      MSS {formatNumber(mss)} / Grade {displayGrade(grade)}
+      MSS {formatNumber(mss)} / {copy.grade} {displayGrade(grade, language)}
     </span>
   );
 }
@@ -198,6 +289,7 @@ export function ParamsVersionBadge({
   value?: string;
   compact?: boolean;
 }) {
+  const copy = getMomentumCopy(useAppLanguage());
   if (!value) {
     return null;
   }
@@ -206,7 +298,7 @@ export function ParamsVersionBadge({
     <span
       className={`rounded-full border border-cyan-400/20 bg-cyan-500/10 px-2 py-0.5 font-semibold text-cyan-100 ${compact ? "text-[8px]" : "text-[9px]"}`}
     >
-      Params {value}
+      {copy.params} {value}
     </span>
   );
 }
@@ -218,6 +310,7 @@ export function ExhaustionFlagsBadge({
   flags: string[];
   compact?: boolean;
 }) {
+  const copy = getMomentumCopy(useAppLanguage());
   if (!flags.length) {
     return null;
   }
@@ -228,7 +321,7 @@ export function ExhaustionFlagsBadge({
       title={flags.join(", ")}
     >
       <AlertTriangle className={compact ? "size-2.5" : "size-3"} />
-      Exhaustion {flags.length}
+      {copy.exhaustion} {flags.length}
     </span>
   );
 }
@@ -293,8 +386,8 @@ function derivePhaseCounts(
   explicit?: Record<string, number>
 ) {
   const counts: Record<string, number> = {
-    "ATEŞLEME": 0,
-    "İVME": 0,
+    ATEŞLEME: 0,
+    İVME: 0,
     OLGUN: 0,
     YORGUN: 0,
   };
@@ -331,8 +424,12 @@ function collectTopLevelFlags(
 ) {
   const flags = [
     ...readStringArray(data.exhaustionFlags),
-    ...readStringArray(readValue(report, ["exhaustionFlags", "exhaustion_flags"])),
-    ...readStringArray(readValue(calibration, ["exhaustionFlags", "exhaustion_flags"])),
+    ...readStringArray(
+      readValue(report, ["exhaustionFlags", "exhaustion_flags"])
+    ),
+    ...readStringArray(
+      readValue(calibration, ["exhaustionFlags", "exhaustion_flags"])
+    ),
     ...signals.flatMap(getSignalFlags),
     ...ledger.flatMap(item => item.exhaustionFlags || []),
   ];
@@ -351,7 +448,10 @@ function readCountsFromSources(
   );
 }
 
-function readTrend(data: MidasSignalsData, report: MomentumMarketflashReport | null) {
+function readTrend(
+  data: MidasSignalsData,
+  report: MomentumMarketflashReport | null
+) {
   return (
     numberArrayFromValue(data.mssTrend) ||
     numberArrayFromValue(readValue(report, ["mssTrend", "mss_trend"]))
@@ -379,7 +479,9 @@ function DashboardCard({
           : "border-border bg-background/45";
 
   return (
-    <section className={`rounded-xl border p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] ${toneClass}`}>
+    <section
+      className={`rounded-xl border p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] ${toneClass}`}
+    >
       <div className="mb-3 flex items-center gap-2">
         <Icon className="size-4 text-sky-200" />
         <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
@@ -426,21 +528,42 @@ function SystemHealthCard({
     calibration?.date,
     readStringFromKeys(calibration, ["calibrationDate", "calibration_date"])
   );
+  const copy = getMomentumCopy(useAppLanguage());
   const summaryNote =
-    firstString(data.summaryNote, report?.summaryNote, calibration?.summaryNote) ||
-    "Kalibrasyon dosyası yoksa sistem fallback parametreleriyle çalışır.";
+    firstString(
+      data.summaryNote,
+      report?.summaryNote,
+      calibration?.summaryNote
+    ) || copy.systemHealthFallback;
   const healthTone =
-    t3HitRate !== undefined && (Math.abs(t3HitRate) <= 1 ? t3HitRate * 100 : t3HitRate) >= 55
+    t3HitRate !== undefined &&
+    (Math.abs(t3HitRate) <= 1 ? t3HitRate * 100 : t3HitRate) >= 55
       ? "good"
       : "warn";
 
   return (
-    <DashboardCard icon={Gauge} label="Sistem karnesi" tone={healthTone}>
+    <DashboardCard icon={Gauge} label={copy.systemHealth} tone={healthTone}>
       <div className="grid gap-2 sm:grid-cols-2">
-        <MetricPill label="Rolling-20 T+3" value={formatPercent(t3HitRate)} tone={healthTone} />
-        <MetricPill label="Grade-A hit" value={formatPercent(gradeAHitRate)} tone="neutral" />
-        <MetricPill label="Params" value={paramsVersion || "-"} tone="neutral" />
-        <MetricPill label="Kalibrasyon" value={calibrationDate || "-"} tone="neutral" />
+        <MetricPill
+          label="Rolling-20 T+3"
+          value={formatPercent(t3HitRate)}
+          tone={healthTone}
+        />
+        <MetricPill
+          label="Grade-A hit"
+          value={formatPercent(gradeAHitRate)}
+          tone="neutral"
+        />
+        <MetricPill
+          label={copy.params}
+          value={paramsVersion || "-"}
+          tone="neutral"
+        />
+        <MetricPill
+          label={copy.calibration}
+          value={calibrationDate || "-"}
+          tone="neutral"
+        />
       </div>
       <p className="mt-3 text-xs leading-6 text-foreground/78">{summaryNote}</p>
     </DashboardCard>
@@ -461,13 +584,27 @@ function MssDistributionCard({
   const counts = deriveGradeCounts(
     signals,
     params,
-    readCountsFromSources(data, report, ["gradeCounts", "grade_counts", "mssDistribution"])
+    readCountsFromSources(data, report, [
+      "gradeCounts",
+      "grade_counts",
+      "mssDistribution",
+    ])
   );
-  const total = Math.max(1, Object.values(counts).reduce((sum, value) => sum + value, 0));
-  const trend = readTrend(data, report) || signals.slice(0, 10).map(getSignalMss).filter((item): item is number => item !== undefined);
+  const total = Math.max(
+    1,
+    Object.values(counts).reduce((sum, value) => sum + value, 0)
+  );
+  const trend =
+    readTrend(data, report) ||
+    signals
+      .slice(0, 10)
+      .map(getSignalMss)
+      .filter((item): item is number => item !== undefined);
+  const language = useAppLanguage();
+  const copy = getMomentumCopy(language);
 
   return (
-    <DashboardCard icon={BarChart3} label="MSS dağılımı">
+    <DashboardCard icon={BarChart3} label={copy.mssDistribution}>
       <div className="space-y-2">
         {GRADE_ORDER.map(grade => {
           const count = counts[grade] || 0;
@@ -476,7 +613,9 @@ function MssDistributionCard({
           return (
             <div key={grade}>
               <div className="mb-1 flex items-center justify-between text-[11px] text-muted-foreground">
-                <span>Grade {displayGrade(grade)}</span>
+                <span>
+                  {copy.grade} {displayGrade(grade, language)}
+                </span>
                 <span className="data-mono">{count}</span>
               </div>
               <div className="h-2 overflow-hidden rounded-full bg-background/70">
@@ -499,7 +638,9 @@ function MssDistributionCard({
           />
         ))}
         {!trend.length ? (
-          <p className="self-center text-xs text-muted-foreground">MSS trend dosyası bekleniyor.</p>
+          <p className="self-center text-xs text-muted-foreground">
+            {copy.trendPending}
+          </p>
         ) : null}
       </div>
     </DashboardCard>
@@ -520,25 +661,42 @@ function PhaseMapCard({
   const counts = derivePhaseCounts(
     signals,
     ledger,
-    readCountsFromSources(data, report, ["phaseCounts", "phase_counts", "phaseMap"])
+    readCountsFromSources(data, report, [
+      "phaseCounts",
+      "phase_counts",
+      "phaseMap",
+    ])
   );
-  const total = Math.max(1, Object.values(counts).reduce((sum, value) => sum + value, 0));
+  const total = Math.max(
+    1,
+    Object.values(counts).reduce((sum, value) => sum + value, 0)
+  );
+  const copy = getMomentumCopy(useAppLanguage());
   const warning =
     (counts.YORGUN || 0) > 0
-      ? `${counts.YORGUN} isim yorgun fazda; yeni girişlerde onay filtresi sıkı tutulmalı.`
-      : "Yorgun faz uyarısı yok.";
+      ? copy.phaseWarning(counts.YORGUN || 0)
+      : copy.noExhaustedPhaseWarning;
 
   return (
-    <DashboardCard icon={Layers3} label="Momentum faz haritası" tone={(counts.YORGUN || 0) > 0 ? "warn" : "good"}>
+    <DashboardCard
+      icon={Layers3}
+      label={copy.phaseMap}
+      tone={(counts.YORGUN || 0) > 0 ? "warn" : "good"}
+    >
       <div className="grid grid-cols-2 gap-2">
         {PHASE_ORDER.map(phase => {
           const count = counts[phase] || 0;
           return (
-            <div key={phase} className="rounded-xl border border-border bg-background/50 p-3">
+            <div
+              key={phase}
+              className="rounded-xl border border-border bg-background/50 p-3"
+            >
               <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                {phase}
+                {copy.phaseLabels[phase] || phase}
               </p>
-              <p className="heading-condensed mt-1 text-2xl text-foreground">{count}</p>
+              <p className="heading-condensed mt-1 text-2xl text-foreground">
+                {count}
+              </p>
               <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-background/75">
                 <div
                   className="h-full rounded-full bg-gradient-to-r from-amber-300 to-rose-300"
@@ -563,7 +721,8 @@ function CarryForwardHealthCard({
   report: MomentumMarketflashReport | null;
   ledger: MomentumLedgerRow[];
 }) {
-  const rawHealth = readValue(data, ["carryForwardHealth", "carry_forward_health"]) ||
+  const rawHealth =
+    readValue(data, ["carryForwardHealth", "carry_forward_health"]) ||
     readValue(report, ["carryForwardHealth", "carry_forward_health"]);
   const health = isRecord(rawHealth) ? rawHealth : null;
   const active = ledger.filter(item =>
@@ -574,38 +733,60 @@ function CarryForwardHealthCard({
   ).length;
   const stale = firstNumber(
     readValue(health, ["stale", "staleCount", "stale_count"]),
-    ledger.filter(item => (item.status || "").toLowerCase().includes("stale")).length
+    ledger.filter(item => (item.status || "").toLowerCase().includes("stale"))
+      .length
   );
+  const copy = getMomentumCopy(useAppLanguage());
 
   return (
-    <DashboardCard icon={GitBranch} label="Carry-forward sağlığı">
+    <DashboardCard icon={GitBranch} label={copy.carryForwardHealth}>
       <div className="grid gap-2 sm:grid-cols-3">
-        <MetricPill label="Aktif carry" value={formatNumber(firstNumber(readValue(health, ["active", "open"]), active))} tone="good" />
-        <MetricPill label="Kapanan" value={formatNumber(firstNumber(readValue(health, ["closed", "completed"]), closed))} tone="neutral" />
-        <MetricPill label="Bayat" value={formatNumber(stale)} tone={stale && stale > 0 ? "warn" : "neutral"} />
+        <MetricPill
+          label={copy.activeCarry}
+          value={formatNumber(
+            firstNumber(readValue(health, ["active", "open"]), active)
+          )}
+          tone="good"
+        />
+        <MetricPill
+          label={copy.closed}
+          value={formatNumber(
+            firstNumber(readValue(health, ["closed", "completed"]), closed)
+          )}
+          tone="neutral"
+        />
+        <MetricPill
+          label={copy.stale}
+          value={formatNumber(stale)}
+          tone={stale && stale > 0 ? "warn" : "neutral"}
+        />
       </div>
       <p className="mt-3 text-xs leading-6 text-foreground/78">
-        Public ledger yoksa kart canlı sinyal sayısına düşer; private `momentum_ledger.json` okunmaz.
+        {copy.carryForwardNote}
       </p>
     </DashboardCard>
   );
 }
 
-function ExhaustionAlertCard({
-  flags,
-}: {
-  flags: string[];
-}) {
+function ExhaustionAlertCard({ flags }: { flags: string[] }) {
+  const copy = getMomentumCopy(useAppLanguage());
   return (
-    <DashboardCard icon={ShieldAlert} label="Exhaustion flag uyarıları" tone={flags.length ? "danger" : "good"}>
+    <DashboardCard
+      icon={ShieldAlert}
+      label={copy.exhaustionAlerts}
+      tone={flags.length ? "danger" : "good"}
+    >
       {flags.length ? (
         <div className="space-y-2">
           <p className="text-sm leading-6 text-rose-50/86">
-            {flags.length} benzersiz exhaustion uyarısı algılandı.
+            {copy.exhaustionAlertsDetected(flags.length)}
           </p>
           <div className="flex flex-wrap gap-2">
             {flags.slice(0, 8).map(flag => (
-              <span key={flag} className="rounded-full border border-rose-400/20 bg-rose-500/10 px-2.5 py-1 text-[11px] text-rose-100">
+              <span
+                key={flag}
+                className="rounded-full border border-rose-400/20 bg-rose-500/10 px-2.5 py-1 text-[11px] text-rose-100"
+              >
                 {flag}
               </span>
             ))}
@@ -613,7 +794,7 @@ function ExhaustionAlertCard({
         </div>
       ) : (
         <p className="text-sm leading-6 text-emerald-50/82">
-          Aktif exhaustion flag yok. Yeni JSON geldiğinde flag hassasiyeti kalibrasyon sayfasında izlenir.
+          {copy.noActiveExhaustion}
         </p>
       )}
     </DashboardCard>
@@ -637,7 +818,14 @@ export function MomentumV3Dashboard({
   signals: MidasSignalRecord[];
   language: AppLanguage;
 }) {
-  const flags = collectTopLevelFlags(data, report, calibration, signals, ledger);
+  const copy = getMomentumCopy(language);
+  const flags = collectTopLevelFlags(
+    data,
+    report,
+    calibration,
+    signals,
+    ledger
+  );
   const paramsVersion = firstString(
     data.paramsVersion,
     params.version,
@@ -653,28 +841,49 @@ export function MomentumV3Dashboard({
           <div className="flex items-center gap-2">
             <SlidersHorizontal className="size-4 text-cyan-200" />
             <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-cyan-100">
-              Momentum v3 öğrenme katmanı
+              {copy.learningLayer}
             </p>
           </div>
           <p className="max-w-3xl text-sm leading-7 text-foreground/82">
-            MSS dağılımı, faz haritası ve public ledger sağlığı tek komuta katmanında izlenir.
+            {copy.learningLayerDescription}
           </p>
         </div>
         <div className="flex flex-wrap gap-2 text-xs">
           <ParamsVersionBadge value={paramsVersion} />
-          <a className="rounded-full border border-border bg-background/55 px-3 py-1 text-muted-foreground transition-colors hover:text-foreground" href={localizePath("/momentum/calibration", language)}>
-            Kalibrasyon
+          <a
+            className="rounded-full border border-border bg-background/55 px-3 py-1 text-muted-foreground transition-colors hover:text-foreground"
+            href={localizePath("/momentum/calibration", language)}
+          >
+            {copy.calibration}
           </a>
-          <a className="rounded-full border border-border bg-background/55 px-3 py-1 text-muted-foreground transition-colors hover:text-foreground" href={localizePath("/momentum/ledger", language)}>
-            Public ledger
+          <a
+            className="rounded-full border border-border bg-background/55 px-3 py-1 text-muted-foreground transition-colors hover:text-foreground"
+            href={localizePath("/momentum/ledger", language)}
+          >
+            {copy.publicLedger}
           </a>
         </div>
       </div>
 
       <div className="grid gap-3 xl:grid-cols-2">
-        <SystemHealthCard data={data} report={report} params={params} calibration={calibration} />
-        <MssDistributionCard data={data} report={report} params={params} signals={signals} />
-        <PhaseMapCard data={data} report={report} ledger={ledger} signals={signals} />
+        <SystemHealthCard
+          data={data}
+          report={report}
+          params={params}
+          calibration={calibration}
+        />
+        <MssDistributionCard
+          data={data}
+          report={report}
+          params={params}
+          signals={signals}
+        />
+        <PhaseMapCard
+          data={data}
+          report={report}
+          ledger={ledger}
+          signals={signals}
+        />
         <CarryForwardHealthCard data={data} report={report} ledger={ledger} />
         <div className="xl:col-span-2">
           <ExhaustionAlertCard flags={flags} />
@@ -683,7 +892,7 @@ export function MomentumV3Dashboard({
 
       <div className="mt-4 flex items-center gap-2 rounded-xl border border-border bg-background/45 px-3 py-2 text-xs text-muted-foreground">
         <TrendingUp className="size-3.5 text-cyan-200" />
-        Dosya kaynakları: `marketflash_report.json`, `momentum_params.json`,
+        {copy.fileSources}: `marketflash_report.json`, `momentum_params.json`,
         `calibration/latest.json`, `ledger_public.json`.
       </div>
     </div>

@@ -30,6 +30,27 @@ export interface DailyReportContent {
   assetBasePath?: string;
   language?: DailyReportLanguage;
   availableLanguages?: DailyReportLanguage[];
+  /**
+   * SHA-256 hash of source content (markdown or html).
+   * Used to detect content changes and invalidate stale translations.
+   */
+  sourceHash?: string;
+  /**
+   * Metadata for machine-generated translations, keyed by target language.
+   */
+  translationMeta?: Partial<
+    Record<
+      DailyReportLanguage,
+      {
+        status: "pending" | "done" | "stale" | "failed";
+        engine: "llm" | "human";
+        promptVersion?: string;
+        sourceHash?: string;
+        translatedAt?: string;
+        error?: string;
+      }
+    >
+  >;
 }
 
 export interface DailyReportRecord {

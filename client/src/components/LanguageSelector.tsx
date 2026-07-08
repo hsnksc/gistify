@@ -11,10 +11,12 @@ export default function LanguageSelector({
 }: LanguageSelectorProps) {
   return (
     <div
+      data-testid="language-selector"
       data-no-translate
       className="inline-flex items-center rounded-full border border-border bg-card p-1"
     >
       <button
+        aria-pressed={language === "tr"}
         type="button"
         className={`min-h-11 rounded-full px-4 py-2 text-[clamp(0.875rem,2.8vw,0.95rem)] font-semibold transition-colors md:min-h-8 md:px-3 md:py-1 md:text-xs ${
           language === "tr"
@@ -26,6 +28,7 @@ export default function LanguageSelector({
         TR
       </button>
       <button
+        aria-pressed={language === "en"}
         type="button"
         className={`min-h-11 rounded-full px-4 py-2 text-[clamp(0.875rem,2.8vw,0.95rem)] font-semibold transition-colors md:min-h-8 md:px-3 md:py-1 md:text-xs ${
           language === "en"

@@ -48,6 +48,88 @@ class JobTimeoutError extends Error {
 const DEFAULT_LEASE_MS = 5 * 60 * 1000;
 const DEFAULT_TIMEOUT_MS = 5 * 60 * 1000;
 const MAX_SUMMARY_LENGTH = 8 * 1024;
+const SCHEDULER_TICK_MS = 60 * 1000; // check every 60s
+
+interface ParsedCronSchedule {
+  minute: Set<number>;
+  hour: Set<number>;
+  dayOfMonth: Set<number>;
+  month: Set<number>;
+  dayOfWeek: Set<number>;
+}
+
+function parseCronField(
+  field: string,
+  minValue: number,
+  maxValue: number
+): Set<number> {
+  if (!field || field === "*") {
+    return new Set(
+      Array.from({ length: maxValue - minValue + 1 }, (_, i) => i + minValue)
+    );
+  }
+
+  const result = new Set<number>();
+
+  for (const part of field.split(",")) {
+    const trimmed = part.trim();
+
+    // Step values: */n or low-high/n
+    const stepMatch = trimmed.match(/^(.+?)\/(\d+)$/);
+    const step = stepMatch ? Number(stepMatch[2]) : 1;
+    const rangePart = stepMatch ? stepMatch[1] : trimmed;
+
+    let low = minValue;
+    let high = maxValue;
+
+    if (rangePart !== "*") {
+      const rangeMatch = rangePart.match(/^(\d+)-(\d+)$/);
+      if (rangeMatch) {
+        low = Number(rangeMatch[1]);
+        high = Number(rangeMatch[2]);
+      } else {
+        low = Number(rangePart);
+        high = Number(rangePart);
+      }
+    }
+
+    for (let v = low; v <= high; v += step) {
+      if (v >= minValue && v <= maxValue) {
+        result.add(v);
+      }
+    }
+  }
+
+  return result;
+}
+
+function parseCronSchedule(schedule: string): ParsedCronSchedule | null {
+  const parts = schedule.trim().split(/\s+/);
+  if (parts.length !== 5) {
+    return null;
+  }
+
+  return {
+    minute: parseCronField(parts[0]!, 0, 59),
+    hour: parseCronField(parts[1]!, 0, 23),
+    dayOfMonth: parseCronField(parts[2]!, 1, 31),
+    month: parseCronField(parts[3]!, 1, 12),
+    dayOfWeek: parseCronField(parts[4]!, 0, 6),
+  };
+}
+
+function shouldRunNow(
+  schedule: ParsedCronSchedule,
+  date: Date
+): boolean {
+  return (
+    schedule.minute.has(date.getMinutes()) &&
+    schedule.hour.has(date.getHours()) &&
+    schedule.dayOfMonth.has(date.getDate()) &&
+    schedule.month.has(date.getMonth() + 1) &&
+    schedule.dayOfWeek.has(date.getDay())
+  );
+}
 
 function nowMs() {
   return Date.now();
@@ -178,6 +260,10 @@ export interface JobCoordinator {
     status?: JobStatus;
     limit?: number;
   }) => JobRunRecord[];
+  startScheduler: (
+    definitions: CronJobDefinition[],
+    handlers: Record<string, () => Promise<unknown>>
+  ) => void;
 }
 
 export function createJobCoordinator(): JobCoordinator {
@@ -288,7 +374,7 @@ export function createJobCoordinator(): JobCoordinator {
     statements.updateJobLastRunStmt.run(updatedAt, status, updatedAt, name);
   }
 
-  return {
+  const jobCoordinator: JobCoordinator = {
     async runJob(name, fn, opts = {}) {
       const owner = generateOwner();
       const leaseMs = opts.leaseMs || DEFAULT_LEASE_MS;
@@ -400,5 +486,82 @@ export function createJobCoordinator(): JobCoordinator {
       const stmt = db.prepare(sql);
       return stmt.all(...params) as unknown as JobRunRecord[];
     },
+
+    startScheduler(definitions, handlers) {
+      const parsedSchedules = new Map<
+        string,
+        { schedule: ParsedCronSchedule; handler: () => Promise<unknown> }
+      >();
+
+      for (const def of definitions) {
+        if (!def.enabled || !def.schedule) {
+          continue;
+        }
+
+        const handler = handlers[def.name];
+        if (!handler) {
+          continue;
+        }
+
+        const parsed = parseCronSchedule(def.schedule);
+        if (!parsed) {
+          console.warn(
+            `[jobCoordinator] Invalid cron schedule for ${def.name}: ${def.schedule}`
+          );
+          continue;
+        }
+
+        parsedSchedules.set(def.name, { schedule: parsed, handler });
+      }
+
+      if (parsedSchedules.size === 0) {
+        return;
+      }
+
+      const lastRunMinute = new Map<string, number>();
+
+      setInterval(() => {
+        const now = new Date();
+
+        for (const [name, { schedule, handler }] of parsedSchedules) {
+          const currentMinute = Math.floor(
+            now.getTime() / SCHEDULER_TICK_MS
+          );
+
+          if (lastRunMinute.get(name) === currentMinute) {
+            continue;
+          }
+
+          if (!shouldRunNow(schedule, now)) {
+            continue;
+          }
+
+          lastRunMinute.set(name, currentMinute);
+
+          jobCoordinator
+            .runJob(name, () => handler(), {
+              inputSummary: { triggeredBy: "scheduler" },
+              timeoutMs: 10 * 60 * 1000,
+              leaseMs: 10 * 60 * 1000,
+            })
+            .catch(error => {
+              if (!(error instanceof JobSkippedError)) {
+                console.error(
+                  `[scheduler] Job ${name} failed:`,
+                  error
+                );
+              }
+            });
+        }
+      }, SCHEDULER_TICK_MS);
+
+      console.info(
+        `[jobCoordinator] Scheduler started for ${parsedSchedules.size} job(s): ${Array.from(
+          parsedSchedules.keys()
+        ).join(", ")}`
+      );
+    },
   };
+
+  return jobCoordinator;
 }

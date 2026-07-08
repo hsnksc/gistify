@@ -1,7 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { FlowReportComment } from "@shared/dailyReports";
 import type {
-  FlowCommentsResponse, FlowReportCommentCreateRequestBody, } from "@shared/flow";
+  FlowCommentsResponse,
+  FlowReportCommentCreateRequestBody,
+} from "@shared/flow";
 import { extractApiErrorMessage, readJsonResponse } from "@/lib/api";
 import { type AppLanguage, t } from "@/lib/i18n";
 import { detectLanguageOfText } from "@/lib/languageDetection";
@@ -35,6 +37,7 @@ export function useFlowComments(
   const [loading, setLoading] = useState(Boolean(reportId));
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const translationAbortRef = useRef<AbortController | null>(null);
 
   const localizeComments = useCallback(
     async (inputComments: FlowReportComment[]) => {
@@ -42,13 +45,18 @@ export function useFlowComments(
         return [] as FlowCommentViewModel[];
       }
 
+      translationAbortRef.current?.abort();
+      const controller = new AbortController();
+      translationAbortRef.current = controller;
+
       const translations = await translateDynamic(
         inputComments.map(comment => ({
           context: `Flow community comment for report ${reportId}`,
           id: comment.id,
           text: comment.body,
         })),
-        language
+        language,
+        { signal: controller.signal }
       );
 
       return inputComments.map(comment => {
@@ -93,10 +101,7 @@ export function useFlowComments(
 
       if (!response.ok) {
         throw new Error(
-          extractApiErrorMessage(
-            payload,
-            t("common:refreshFailed")
-          )
+          extractApiErrorMessage(payload, t("common:refreshFailed"))
         );
       }
 
@@ -105,6 +110,13 @@ export function useFlowComments(
         : [];
       setComments(await localizeComments(normalizedComments));
     } catch (caughtError) {
+      if (
+        caughtError instanceof DOMException &&
+        caughtError.name === "AbortError"
+      ) {
+        return;
+      }
+
       setError(
         caughtError instanceof Error
           ? caughtError.message
@@ -148,10 +160,7 @@ export function useFlowComments(
 
         if (!response.ok) {
           throw new Error(
-            extractApiErrorMessage(
-              payload,
-              t("flow:commentCouldNotBePosted")
-            )
+            extractApiErrorMessage(payload, t("flow:commentCouldNotBePosted"))
           );
         }
 
@@ -180,6 +189,10 @@ export function useFlowComments(
 
   useEffect(() => {
     void reload();
+
+    return () => {
+      translationAbortRef.current?.abort();
+    };
   }, [reload]);
 
   return {

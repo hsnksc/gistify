@@ -9,9 +9,11 @@ declare module "i18next" {
   export interface I18nInitOptions {
     defaultNS?: string;
     fallbackLng?: string;
+    initImmediate?: boolean;
     interpolation?: {
       escapeValue?: boolean;
     };
+    lng?: string;
     parseMissingKeyHandler?: (key: string) => string;
     resources?: Record<string, Record<string, Record<string, string>>>;
     returnEmptyString?: boolean;

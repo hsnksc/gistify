@@ -1,72 +1,172 @@
 <!doctype html>
 <html lang="tr">
-
   <head>
     <!-- SecurePrivacy Cookie Consent -->
     <script src="https://app.secureprivacy.ai/script/6a47786a50650fd51e8d89a5.js"></script>
     <meta charset="UTF-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=5" />
+      content="width=device-width, initial-scale=1.0, maximum-scale=5"
+    />
     <meta
       name="description"
-      content="Gistify brings earnings intelligence, momentum scanning, macro event framing and options research into one dark finance workspace." />
+      content="Gistify unifies earnings, momentum, macro and market research in one finance workspace."
+    />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Gistify — Earnings Intelligence & Momentum Workspace" />
+    <meta property="og:title" content="Gistify" />
     <meta
       property="og:description"
-      content="Track earnings strategy, momentum reports, macro calendars and market flash updates inside one finance workspace." />
-    <meta property="og:url" content="https://gistify.pro/" />
-    <meta property="og:image" content="https://gistify.pro/gistifylogo.png?v=20260706" />
+      content="Gistify unifies earnings, momentum, macro and market research in one finance workspace."
+    />
+    <meta property="og:url" content="https://gistify.pro" />
+    <meta
+      property="og:image"
+      content="https://gistify.pro/gistifylogo.png?v=20260706"
+    />
     <meta property="og:site_name" content="Gistify" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Gistify — Earnings Intelligence & Momentum Workspace" />
+    <meta name="twitter:title" content="Gistify" />
     <meta
       name="twitter:description"
-      content="Track earnings strategy, momentum reports, macro calendars and market flash updates inside one finance workspace." />
-    <meta name="twitter:image" content="https://gistify.pro/gistifylogo.png?v=20260706" />
+      content="Gistify unifies earnings, momentum, macro and market research in one finance workspace."
+    />
+    <meta
+      name="twitter:image"
+      content="https://gistify.pro/gistifylogo.png?v=20260706"
+    />
     <meta name="theme-color" content="#050c1b" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
-    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="/favicon-192x192.png"
+    />
     <link rel="shortcut icon" href="/favicon.ico" />
-    <title>Gistify — Earnings Intelligence & Momentum Workspace</title>
+    <title>Gistify</title>
+    <script>
+      (function () {
+        const siteUrl = "https://gistify.pro";
+        const storageKey = "app_language";
+        const pathname = window.location.pathname || "/";
+        const match = pathname.match(/^\/(tr|en)(?=\/|$)/i);
+
+        let storedLanguage = "";
+        try {
+          storedLanguage = window.localStorage.getItem(storageKey) || "";
+        } catch {}
+
+        const language = match
+          ? match[1].toLowerCase()
+          : storedLanguage === "en"
+            ? "en"
+            : "tr";
+        const description =
+          language === "en"
+            ? "Gistify unifies earnings, momentum, macro and market research in one finance workspace."
+            : "Gistify kazanc, momentum, makro ve piyasa arastirmasini tek finance workspace icinde toplar.";
+        const absoluteUrl = `${window.location.origin || siteUrl}${pathname}${window.location.search || ""}`;
+
+        document.documentElement.lang = language;
+
+        const setMeta = (selector, content) => {
+          const node = document.head.querySelector(selector);
+          if (node && content) {
+            node.setAttribute("content", content);
+          }
+        };
+
+        const ensureLink = (rel, hreflang) => {
+          const selector = hreflang
+            ? `link[rel="${rel}"][hreflang="${hreflang}"]`
+            : `link[rel="${rel}"]`;
+          let node = document.head.querySelector(selector);
+          if (!node) {
+            node = document.createElement("link");
+            node.setAttribute("rel", rel);
+            if (hreflang) {
+              node.setAttribute("hreflang", hreflang);
+            }
+            document.head.appendChild(node);
+          }
+          return node;
+        };
+
+        document.title = "Gistify";
+        setMeta('meta[name="description"]', description);
+        setMeta('meta[property="og:title"]', "Gistify");
+        setMeta('meta[property="og:description"]', description);
+        setMeta('meta[property="og:url"]', absoluteUrl);
+        setMeta('meta[name="twitter:title"]', "Gistify");
+        setMeta('meta[name="twitter:description"]', description);
+
+        ensureLink("canonical").setAttribute("href", absoluteUrl);
+        ensureLink("alternate", "tr").setAttribute(
+          "href",
+          `${siteUrl}/tr${pathname.replace(/^\/(?:tr|en)(?=\/|$)/i, "") || ""}`
+        );
+        ensureLink("alternate", "en").setAttribute(
+          "href",
+          `${siteUrl}/en${pathname.replace(/^\/(?:tr|en)(?=\/|$)/i, "") || ""}`
+        );
+        ensureLink("alternate", "x-default").setAttribute(
+          "href",
+          `${siteUrl}/tr${pathname.replace(/^\/(?:tr|en)(?=\/|$)/i, "") || ""}`
+        );
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-D87NYSSNP0"></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-D87NYSSNP0"
+    ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-      gtag('config', 'G-D87NYSSNP0');
+      gtag("config", "G-D87NYSSNP0");
     </script>
 
     <!-- Hotjar Tracking Code -->
     <script>
-      (function() {
-        const hotjarSiteId = '%VITE_HOTJAR_SITE_ID%';
-        if (!hotjarSiteId || hotjarSiteId === 'HOTJAR_SITE_ID') return;
+      (function () {
+        const hotjarSiteId = "%VITE_HOTJAR_SITE_ID%";
+        if (!hotjarSiteId || hotjarSiteId === "HOTJAR_SITE_ID") return;
 
         (function (h, o, t, j, a, r) {
-          h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments); };
+          h.hj =
+            h.hj ||
+            function () {
+              (h.hj.q = h.hj.q || []).push(arguments);
+            };
           h._hjSettings = { hjid: Number(hotjarSiteId), hjsv: 6 };
-          a = o.getElementsByTagName('head')[0];
-          r = o.createElement('script');
+          a = o.getElementsByTagName("head")[0];
+          r = o.createElement("script");
           r.async = 1;
           r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
           a.appendChild(r);
-        })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+        })(window, document, "https://static.hotjar.com/c/hotjar-", ".js?sv=");
       })();
     </script>
 
     <!-- Contentsquare Tracking -->
-    <script src="https://t.contentsquare.net/uxa/19ec528b0e414.js" defer></script>
+    <script
+      src="https://t.contentsquare.net/uxa/19ec528b0e414.js"
+      defer
+    ></script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -85,7 +185,7 @@
     <script
       defer
       src="%VITE_ANALYTICS_ENDPOINT%/umami"
-      data-website-id="%VITE_ANALYTICS_WEBSITE_ID%"></script>
+      data-website-id="%VITE_ANALYTICS_WEBSITE_ID%"
+    ></script>
   </body>
-
 </html>

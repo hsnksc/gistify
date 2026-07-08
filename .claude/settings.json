@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node scripts/flow-verify.mjs *)",
+      "PowerShell(node scripts/flow-verify.mjs *)",
+      "Bash(node scripts/flow-chartgen.mjs *)",
+      "PowerShell(node scripts/flow-chartgen.mjs *)",
+      "Bash(node scripts/coverage-verify.mjs *)",
+      "PowerShell(node scripts/coverage-verify.mjs *)",
+      "Bash(corepack pnpm exec tsc *)",
+      "PowerShell(corepack pnpm exec tsc *)",
+      "Bash(corepack pnpm build)",
+      "PowerShell(corepack pnpm build)",
+      "Bash(git add *)",
+      "PowerShell(git add *)",
+      "Bash(git commit *)",
+      "PowerShell(git commit *)",
+      "Bash(git push)",
+      "PowerShell(git push)"
+    ]
+  }
+}

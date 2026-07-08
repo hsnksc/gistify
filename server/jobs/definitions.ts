@@ -35,4 +35,11 @@ export const CRON_JOB_DEFINITIONS: CronJobDefinition[] = [
     description:
       "Prune old cron run records, run PRAGMA optimize and wal_checkpoint.",
   },
+  {
+    name: "flow-translation",
+    schedule: "*/30 * * * *",
+    enabled: true,
+    description:
+      "Auto-translate published Flow/daily reports missing or stale translations.",
+  },
 ];

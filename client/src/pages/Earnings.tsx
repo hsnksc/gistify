@@ -73,26 +73,52 @@ function readStoredTab(): TabKey {
   return isTabKey(value) ? value : "overview";
 }
 
-const TABS: { key: TabKey; labelTr: string; labelEn: string; icon: React.ReactNode }[] = [
-  { key: "overview", labelTr: "Genel Bakış", labelEn: "Overview", icon: <LayoutDashboard className="size-4" /> },
-  { key: "calendar", labelTr: "Takvim", labelEn: "Calendar", icon: <CalendarDays className="size-4" /> },
-  { key: "strategies", labelTr: "Stratejiler", labelEn: "Strategies", icon: <Target className="size-4" /> },
-  { key: "cpr", labelTr: "CPR & Greeks", labelEn: "CPR & Greeks", icon: <BarChart3 className="size-4" /> },
-  { key: "portfolio", labelTr: "Portföy", labelEn: "Portfolio", icon: <Wallet className="size-4" /> },
+const TABS: {
+  key: TabKey;
+  labelTr: string;
+  labelEn: string;
+  icon: React.ReactNode;
+}[] = [
+  {
+    key: "overview",
+    labelTr: "Genel Bakış",
+    labelEn: "Overview",
+    icon: <LayoutDashboard className="size-4" />,
+  },
+  {
+    key: "calendar",
+    labelTr: "Takvim",
+    labelEn: "Calendar",
+    icon: <CalendarDays className="size-4" />,
+  },
+  {
+    key: "strategies",
+    labelTr: "Stratejiler",
+    labelEn: "Strategies",
+    icon: <Target className="size-4" />,
+  },
+  {
+    key: "cpr",
+    labelTr: "CPR & Greeks",
+    labelEn: "CPR & Greeks",
+    icon: <BarChart3 className="size-4" />,
+  },
+  {
+    key: "portfolio",
+    labelTr: "Portföy",
+    labelEn: "Portfolio",
+    icon: <Wallet className="size-4" />,
+  },
 ];
 
-export default function EarningsPage({
-  language,
-}: {
-  language: AppLanguage;
-}) {
+export default function EarningsPage({ language }: { language: AppLanguage }) {
   const { data, error, isLoading, isRefreshing, pipeline, refresh } =
     useEarningsStrategy();
   const [activeTab, setActiveTab] = useState<TabKey>(() => readStoredTab());
 
   usePageMeta({
     description: t("earnings:theGistifyEarningsWorkspaceCombines"),
-    title: "Gistify | Earnings Workspace",
+    title: `Gistify | ${t("common:earnings")}`,
   });
 
   useEffect(() => {
@@ -116,19 +142,12 @@ export default function EarningsPage({
         onRetry={async () => {
           const result = await refresh();
           if (result.ok) {
-            toast.success(
-              t("earnings:theEarningsWorkspaceRefreshed")
-            );
+            toast.success(t("earnings:theEarningsWorkspaceRefreshed"));
             return;
           }
-          toast.error(
-            t("common:refreshFailed"),
-            {
-              description:
-                result.error ||
-                t("earnings:thePipelineDataCouldNot"),
-            }
-          );
+          toast.error(t("common:refreshFailed"), {
+            description: result.error || t("earnings:thePipelineDataCouldNot"),
+          });
         }}
       />
     );
@@ -137,25 +156,22 @@ export default function EarningsPage({
   const handleRefresh = async () => {
     const result = await refresh();
     if (result.ok) {
-      toast.success(
-        t("earnings:theEarningsWorkspaceRefreshed"),
-        {
-          description: t("earnings:theCalendarStrategyAndPortfolio"),
-        }
-      );
+      toast.success(t("earnings:theEarningsWorkspaceRefreshed"), {
+        description: t("earnings:theCalendarStrategyAndPortfolio"),
+      });
       return;
     }
 
     toast.error(t("common:refreshFailed"), {
-      description:
-        result.error ||
-        t("earnings:thePipelineDataCouldNot"),
+      description: result.error || t("earnings:thePipelineDataCouldNot"),
     });
   };
 
   const bmoCount = data.calendar.filter(e => e.time === "BMO").length;
   const amcCount = data.calendar.filter(e => e.time === "AMC").length;
-  const highImportanceCount = data.calendar.filter(e => e.importance >= 3).length;
+  const highImportanceCount = data.calendar.filter(
+    e => e.importance >= 3
+  ).length;
 
   return (
     <EarningsWorkspaceFrame>
@@ -183,7 +199,7 @@ export default function EarningsPage({
               )}
             >
               {tab.icon}
-              {(language === "en" ? tab.labelEn : tab.labelTr)}
+              {language === "en" ? tab.labelEn : tab.labelTr}
             </button>
           ))}
         </div>
@@ -192,7 +208,11 @@ export default function EarningsPage({
       <EarningsWorkspaceToolbar
         language={language}
         pipeline={pipeline}
-        sectionLabel={(language === "en" ? TABS.find(tab => tab.key === activeTab)?.labelEn || "Overview" : TABS.find(tab => tab.key === activeTab)?.labelTr || "Genel Bakış")}
+        sectionLabel={
+          language === "en"
+            ? TABS.find(tab => tab.key === activeTab)?.labelEn || "Overview"
+            : TABS.find(tab => tab.key === activeTab)?.labelTr || "Genel Bakış"
+        }
       />
 
       {/* Overview Tab */}
@@ -230,10 +250,7 @@ export default function EarningsPage({
       {/* Calendar Tab */}
       {activeTab === "calendar" && (
         <div className="space-y-6">
-          <EarningsCalendar
-            events={data.calendar}
-            language={language}
-          />
+          <EarningsCalendar events={data.calendar} language={language} />
         </div>
       )}
 
@@ -248,7 +265,11 @@ export default function EarningsPage({
           />
           <BudgetMatrix
             language={language}
-            strategies={data.budgetStrategies.length > 0 ? data.budgetStrategies : data.strategies}
+            strategies={
+              data.budgetStrategies.length > 0
+                ? data.budgetStrategies
+                : data.strategies
+            }
           />
         </div>
       )}
@@ -258,10 +279,7 @@ export default function EarningsPage({
         <div className="space-y-6">
           <div className="grid gap-6 xl:grid-cols-[1fr_1fr]">
             <CPRTable language={language} stocks={data.cprStocks} />
-            <GreeksDashboard
-              language={language}
-              strategies={data.strategies}
-            />
+            <GreeksDashboard language={language} strategies={data.strategies} />
           </div>
         </div>
       )}
@@ -269,10 +287,7 @@ export default function EarningsPage({
       {/* Portfolio Tab */}
       {activeTab === "portfolio" && (
         <div className="space-y-6">
-          <PortfolioBuilder
-            language={language}
-            portfolio={data.portfolio}
-          />
+          <PortfolioBuilder language={language} portfolio={data.portfolio} />
           <PortfolioPanel language={language} levels={data.portfolio} />
         </div>
       )}

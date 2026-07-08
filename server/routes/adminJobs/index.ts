@@ -6,8 +6,11 @@ import type {
 } from "../../services/jobCoordinator";
 import { CRON_JOB_DEFINITIONS } from "../../jobs/definitions";
 
+export type JobHandler = (inputSummary?: unknown) => Promise<unknown>;
+
 interface AdminJobsRouterDependencies {
   jobCoordinator: JobCoordinator;
+  jobHandlers?: Record<string, JobHandler>;
   requireWeeklyReportAdmin: (req: Request, res: Response) => boolean;
   setPrivateNoStore: (res: Response) => void;
 }
@@ -25,6 +28,7 @@ function isValidJobStatus(value: unknown): value is JobStatus {
 
 export function createAdminJobsRouter({
   jobCoordinator,
+  jobHandlers = {},
   requireWeeklyReportAdmin,
   setPrivateNoStore,
 }: AdminJobsRouterDependencies): Router {
@@ -63,13 +67,18 @@ export function createAdminJobsRouter({
     }
 
     try {
+      const handler = jobHandlers[name];
+      const inputSummary = { triggeredBy: "admin", body: req.body };
+
       const result = await jobCoordinator.runJob(
         name,
         async () => {
-          // Placeholder: actual job wiring is done in pipeline integration phase.
+          if (handler) {
+            return handler(inputSummary);
+          }
           return { status: "executed", name };
         },
-        { inputSummary: { triggeredBy: "admin", body: req.body } }
+        { inputSummary }
       );
       res.status(200).json({ success: true, result });
     } catch (error) {

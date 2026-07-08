@@ -271,6 +271,12 @@ function buildViewerDailyReportCatalogRaw(
       };
     }
 
+    const updatedAt: string = preferSourceUpdatedAt
+      ? source.updatedAt
+      : existing.updatedAt > source.updatedAt
+        ? existing.updatedAt
+        : source.updatedAt;
+
     return {
       ...sourceRecord,
       id: existing.id,
@@ -284,14 +290,11 @@ function buildViewerDailyReportCatalogRaw(
       createdAt: preferSourceUpdatedAt
         ? existing.createdAt || source.updatedAt
         : existing.createdAt,
-      updatedAt: preferSourceUpdatedAt
-        ? source.updatedAt
-        : existing.updatedAt > source.updatedAt
-          ? existing.updatedAt
-          : source.updatedAt,
-      publishedAt: preferSourceUpdatedAt
-        ? source.updatedAt
-        : existing.publishedAt || source.updatedAt,
+      updatedAt,
+      // Flow UI "posted" badge uses `publishedAt || updatedAt`.
+      // To avoid stale "posted" dates when `publishedAt` isn't updated,
+      // keep `publishedAt` in sync with `updatedAt`.
+      publishedAt: updatedAt,
       content: {
         ...sourceRecord.content,
         headline: normalizeString(existing.content.headline) || sourceRecord.content.headline,
@@ -301,8 +304,17 @@ function buildViewerDailyReportCatalogRaw(
         executiveSummary: existing.content.executiveSummary.length
           ? existing.content.executiveSummary
           : sourceRecord.content.executiveSummary,
+        // Preserve translations: prefer DB-stored (from background jobs), fall back to source files
+        translations:
+          existing.content.translations || sourceRecord.content.translations,
+        availableLanguages:
+          existing.content.availableLanguages ||
+          sourceRecord.content.availableLanguages,
+        language:
+          existing.content.language || sourceRecord.content.language,
       },
     } satisfies DailyReportRecord;
+
   });
 
   const sourcedKeys = new Set(sourcePackages.map(source => source.folderName));

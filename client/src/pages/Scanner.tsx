@@ -1,6 +1,11 @@
 import { useState } from "react";
 import {
-  LineChart, RefreshCw, TrendingDown, TrendingUp, Zap, } from "lucide-react";
+  LineChart,
+  RefreshCw,
+  TrendingDown,
+  TrendingUp,
+  Zap,
+} from "lucide-react";
 import MomentumFlowSurface from "@/components/tabs/MomentumFlowSurface";
 import { Button } from "@/components/ui/button";
 import { usePageMeta } from "@/hooks/usePageMeta";
@@ -14,7 +19,7 @@ interface ScannerRoutePageProps {
 export default function Scanner({ language }: ScannerRoutePageProps) {
   usePageMeta({
     description: t("scanner:theOldMomentumReportTabs"),
-    title: "Momentum | Gistify",
+    title: `${t("common:momentum")} | Gistify`,
   });
   const [refreshSeed, setRefreshSeed] = useState(0);
 
@@ -26,9 +31,7 @@ export default function Scanner({ language }: ScannerRoutePageProps) {
           overlayClassName="bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.18),transparent_32%),radial-gradient(circle_at_bottom_left,rgba(244,63,94,0.14),transparent_28%),radial-gradient(circle_at_center,rgba(59,130,246,0.12),transparent_40%)]"
           badges={
             <>
-              <span className="badge-strong">
-                {t("scanner:liveMidasFeed")}
-              </span>
+              <span className="badge-strong">{t("scanner:liveMidasFeed")}</span>
               <span className="badge-warning">
                 {t("scanner:positiveNeutralAndNegativeFlow")}
               </span>

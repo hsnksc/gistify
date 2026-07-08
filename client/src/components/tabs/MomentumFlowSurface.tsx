@@ -1,8 +1,23 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
-  Activity, ArrowRightLeft, BarChart3, Clock, LineChart, Loader2, RefreshCw, ShieldAlert, TrendingDown, TrendingUp, Zap, } from "lucide-react";
+  Activity,
+  ArrowRightLeft,
+  BarChart3,
+  Clock,
+  LineChart,
+  Loader2,
+  RefreshCw,
+  ShieldAlert,
+  TrendingDown,
+  TrendingUp,
+  Zap,
+} from "lucide-react";
 import type {
-  MidasActionSignal as ActionSignal, MidasRiskLevel, MidasSignalRecord, MidasSignalsData, } from "@shared/midasSignals";
+  MidasActionSignal as ActionSignal,
+  MidasRiskLevel,
+  MidasSignalRecord,
+  MidasSignalsData,
+} from "@shared/midasSignals";
 import {
   ExhaustionFlagsBadge,
   getSignalFlags,
@@ -78,7 +93,10 @@ function riskBadgeClass(riskLevel: MidasRiskLevel | undefined) {
   }
 }
 
-function riskLabel(riskLevel: MidasRiskLevel | undefined, language: AppLanguage) {
+function riskLabel(
+  riskLevel: MidasRiskLevel | undefined,
+  language: AppLanguage
+) {
   switch (riskLevel) {
     case "LOW":
       return t("common:lowRisk");
@@ -192,11 +210,13 @@ function getDirectionalBias(signal: ActionSignal): SignalDirection {
 
 function deriveStats(signals: Array<{ resolvedSignal: ActionSignal }>) {
   return {
-    strongBuy: signals.filter((item) => item.resolvedSignal === "STRONG_BUY").length,
-    buy: signals.filter((item) => item.resolvedSignal === "BUY").length,
-    hold: signals.filter((item) => item.resolvedSignal === "HOLD").length,
-    sell: signals.filter((item) => item.resolvedSignal === "SELL").length,
-    strongSell: signals.filter((item) => item.resolvedSignal === "STRONG_SELL").length,
+    strongBuy: signals.filter(item => item.resolvedSignal === "STRONG_BUY")
+      .length,
+    buy: signals.filter(item => item.resolvedSignal === "BUY").length,
+    hold: signals.filter(item => item.resolvedSignal === "HOLD").length,
+    sell: signals.filter(item => item.resolvedSignal === "SELL").length,
+    strongSell: signals.filter(item => item.resolvedSignal === "STRONG_SELL")
+      .length,
   };
 }
 
@@ -276,26 +296,70 @@ function buildReasonDetails(
   const reasons: string[] = [];
   if (live) {
     if (direction === "positive") {
-      reasons.push(t("common:theLiveEnginePrintsBull", { bullscore: live.bullScore, bearscore: live.bearScore }));
+      reasons.push(
+        t("common:theLiveEnginePrintsBull", {
+          bullscore: live.bullScore,
+          bearscore: live.bearScore,
+        })
+      );
     } else if (direction === "negative") {
-      reasons.push(t("common:theLiveEnginePrintsBear", { bearscore: live.bearScore, bullscore: live.bullScore }));
+      reasons.push(
+        t("common:theLiveEnginePrintsBear", {
+          bearscore: live.bearScore,
+          bullscore: live.bullScore,
+        })
+      );
     }
 
     if (live.volumeRatio >= 1.25) {
-      reasons.push(t("common:volumeSupportIsRunningAt", { tofixed2: live.volumeRatio.toFixed(2) }));
+      reasons.push(
+        t("common:volumeSupportIsRunningAt", {
+          tofixed2: live.volumeRatio.toFixed(2),
+        })
+      );
     }
   }
 
   if (direction === "positive") {
-    if (dayChange > 0) reasons.push(t("common:dailyFlowIsPositiveAt", { formatpctDaychange: formatPct(dayChange) }));
-    if (signal.weekly_pct > 0) reasons.push(t("common:weeklyMomentumIsRunningAt", { weekly_pct: formatPct(signal.weekly_pct) }));
-    if (signal.monthly_pct > 0) reasons.push(t("common:monthlyAccelerationSupportsTheMove", { monthly_pct: formatPct(signal.monthly_pct) }));
+    if (dayChange > 0)
+      reasons.push(
+        t("common:dailyFlowIsPositiveAt", {
+          formatpctDaychange: formatPct(dayChange),
+        })
+      );
+    if (signal.weekly_pct > 0)
+      reasons.push(
+        t("common:weeklyMomentumIsRunningAt", {
+          weekly_pct: formatPct(signal.weekly_pct),
+        })
+      );
+    if (signal.monthly_pct > 0)
+      reasons.push(
+        t("common:monthlyAccelerationSupportsTheMove", {
+          monthly_pct: formatPct(signal.monthly_pct),
+        })
+      );
   }
 
   if (direction === "negative") {
-    if (dayChange < 0) reasons.push(t("common:dailyFlowIsLeaningLower", { formatpctDaychange: formatPct(dayChange) }));
-    if (signal.weekly_pct < 0) reasons.push(t("common:weeklyMomentumIsWeakAt", { weekly_pct: formatPct(signal.weekly_pct) }));
-    if (signal.monthly_pct < 0) reasons.push(t("common:theMonthlyTrendIsDeteriorating", { monthly_pct: formatPct(signal.monthly_pct) }));
+    if (dayChange < 0)
+      reasons.push(
+        t("common:dailyFlowIsLeaningLower", {
+          formatpctDaychange: formatPct(dayChange),
+        })
+      );
+    if (signal.weekly_pct < 0)
+      reasons.push(
+        t("common:weeklyMomentumIsWeakAt", {
+          weekly_pct: formatPct(signal.weekly_pct),
+        })
+      );
+    if (signal.monthly_pct < 0)
+      reasons.push(
+        t("common:theMonthlyTrendIsDeteriorating", {
+          monthly_pct: formatPct(signal.monthly_pct),
+        })
+      );
   }
 
   for (const tag of signal.signals.slice(0, 4)) {
@@ -333,18 +397,50 @@ function pipelineStatusClass(status: string) {
 
 function deriveBearScore(stock: StockResult) {
   const rsiScore =
-    stock.rsi <= 25 ? 100 : stock.rsi <= 35 ? 78 : stock.rsi <= 45 ? 58 : stock.rsi <= 55 ? 28 : 0;
-  const priceChangeScore = stock.priceChangePct < 0 ? Math.min(Math.abs(stock.priceChangePct) * 18, 100) : 0;
-  const vwapScore = stock.currentPrice < stock.vwap ? Math.min((Math.abs(stock.vwapDeviation) / Math.max(stock.atr14d, 0.01)) * 25, 100) : 0;
+    stock.rsi <= 25
+      ? 100
+      : stock.rsi <= 35
+        ? 78
+        : stock.rsi <= 45
+          ? 58
+          : stock.rsi <= 55
+            ? 28
+            : 0;
+  const priceChangeScore =
+    stock.priceChangePct < 0
+      ? Math.min(Math.abs(stock.priceChangePct) * 18, 100)
+      : 0;
+  const vwapScore =
+    stock.currentPrice < stock.vwap
+      ? Math.min(
+          (Math.abs(stock.vwapDeviation) / Math.max(stock.atr14d, 0.01)) * 25,
+          100
+        )
+      : 0;
   const structureScore = Math.max(0, Math.min(100, 100 - stock.structureScore));
   const volumeScore =
     stock.volumeRatio >= 1.25 && stock.priceChangePct < 0
       ? Math.min(stock.volumeRatio * 28, 100)
       : Math.min(stock.volumeRatio * 10, 40);
   const weaknessScore =
-    stock.signal === "WEAK" ? 85 : stock.signal === "NEUTRAL_BEARISH" ? 70 : stock.signal === "OVERBOUGHT_RED" ? 65 : stock.signal === "CAUTION_HOT" ? 35 : 0;
+    stock.signal === "WEAK"
+      ? 85
+      : stock.signal === "NEUTRAL_BEARISH"
+        ? 70
+        : stock.signal === "OVERBOUGHT_RED"
+          ? 65
+          : stock.signal === "CAUTION_HOT"
+            ? 35
+            : 0;
   const intradayScore =
-    stock.currentPrice < stock.openPrice ? Math.min(((stock.openPrice - stock.currentPrice) / Math.max(stock.atr14d, 0.01)) * 20, 100) : 0;
+    stock.currentPrice < stock.openPrice
+      ? Math.min(
+          ((stock.openPrice - stock.currentPrice) /
+            Math.max(stock.atr14d, 0.01)) *
+            20,
+          100
+        )
+      : 0;
   const weightedScore =
     rsiScore * 0.2 +
     priceChangeScore * 0.2 +
@@ -354,8 +450,11 @@ function deriveBearScore(stock: StockResult) {
     weaknessScore * 0.1 +
     intradayScore * 0.05;
   const confidence = stock.confidenceScore ?? 60;
-  const confidenceMultiplier = confidence >= 80 ? 1 : confidence >= 50 ? 0.92 : 0.82;
-  return Math.round(Math.max(0, Math.min(100, weightedScore * confidenceMultiplier)));
+  const confidenceMultiplier =
+    confidence >= 80 ? 1 : confidence >= 50 ? 0.92 : 0.82;
+  return Math.round(
+    Math.max(0, Math.min(100, weightedScore * confidenceMultiplier))
+  );
 }
 
 function deriveLiveSignal(stock: StockResult): LiveSignalSummary {
@@ -364,7 +463,8 @@ function deriveLiveSignal(stock: StockResult): LiveSignalSummary {
   let action: ActionSignal = "HOLD";
 
   if (bullScore >= 75 && bullScore - bearScore >= 8) action = "STRONG_BUY";
-  else if (bearScore >= 75 && bearScore - bullScore >= 8) action = "STRONG_SELL";
+  else if (bearScore >= 75 && bearScore - bullScore >= 8)
+    action = "STRONG_SELL";
   else if (bullScore >= 60 && bullScore - bearScore >= 5) action = "BUY";
   else if (bearScore >= 60 && bearScore - bullScore >= 5) action = "SELL";
 
@@ -402,7 +502,10 @@ function MomentumSignalCard({
   const currentPrice = signal.live?.currentPrice ?? signal.price;
   const currentDayPct = signal.live?.priceChangePct ?? signal.daily_pct;
   const signalChanged = signal.live && signal.live.action !== signal.signal;
-  const convictionWidth = Math.max(8, Math.min(100, Math.round(signal.conviction)));
+  const convictionWidth = Math.max(
+    8,
+    Math.min(100, Math.round(signal.conviction))
+  );
   const displayConfidence = signal.live?.confidenceScore ?? signal.confidence;
   const displayConfidenceLabel = formatConfidence(displayConfidence);
   const snapshotConfidenceLabel = formatConfidence(signal.confidence);
@@ -416,7 +519,9 @@ function MomentumSignalCard({
   const visibleReasonDetails = compact
     ? signal.reasonDetails.slice(0, 2)
     : signal.reasonDetails;
-  const visibleTags = compact ? signal.signals.slice(0, 3) : signal.signals.slice(0, 4);
+  const visibleTags = compact
+    ? signal.signals.slice(0, 3)
+    : signal.signals.slice(0, 4);
   const toneClass =
     signal.directionalBias === "positive"
       ? "border-emerald-500/25 bg-[linear-gradient(180deg,rgba(16,185,129,0.12),rgba(15,23,42,0.74))]"
@@ -438,43 +543,64 @@ function MomentumSignalCard({
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-1.5">
-            <p className={`heading-condensed text-foreground ${compact ? "text-lg" : "text-xl"}`}>
+            <p
+              className={`heading-condensed text-foreground ${compact ? "text-lg" : "text-xl"}`}
+            >
               {signal.symbol}
             </p>
             {signal.directionalBias === "positive" ? (
-              <TrendingUp className={`${compact ? "size-3.5" : "size-4"} text-emerald-300`} />
+              <TrendingUp
+                className={`${compact ? "size-3.5" : "size-4"} text-emerald-300`}
+              />
             ) : signal.directionalBias === "negative" ? (
-              <TrendingDown className={`${compact ? "size-3.5" : "size-4"} text-rose-300`} />
+              <TrendingDown
+                className={`${compact ? "size-3.5" : "size-4"} text-rose-300`}
+              />
             ) : (
-              <LineChart className={`${compact ? "size-3.5" : "size-4"} text-amber-300`} />
+              <LineChart
+                className={`${compact ? "size-3.5" : "size-4"} text-amber-300`}
+              />
             )}
           </div>
-          <p className={`mt-0.5 text-foreground/90 ${compact ? "text-[12px] leading-5" : "text-[13px] leading-5"}`}>
+          <p
+            className={`mt-0.5 text-foreground/90 ${compact ? "text-[12px] leading-5" : "text-[13px] leading-5"}`}
+          >
             {signal.headline}
           </p>
-          <div className={`flex flex-wrap items-center gap-1.5 text-muted-foreground ${compact ? "mt-1 text-[9px]" : "mt-1.5 text-[10px]"}`}>
-            <span className="data-mono rounded-full border border-border bg-background/60 px-2 py-0.5">{formatPrice(currentPrice)}</span>
+          <div
+            className={`flex flex-wrap items-center gap-1.5 text-muted-foreground ${compact ? "mt-1 text-[9px]" : "mt-1.5 text-[10px]"}`}
+          >
+            <span className="data-mono rounded-full border border-border bg-background/60 px-2 py-0.5">
+              {formatPrice(currentPrice)}
+            </span>
             {signal.live ? (
               <span className="rounded-full border border-border bg-background/60 px-2 py-0.5">
-                {"Scanner"}: {scannerSignalLabel(signal.live.scannerSignal, language)}
+                {language === "en" ? "Scanner" : "Tarayıcı"}:{" "}
+                {scannerSignalLabel(signal.live.scannerSignal, language)}
               </span>
             ) : null}
           </div>
         </div>
 
-        <span className={`shrink-0 rounded-md border px-2 py-0.5 font-bold uppercase tracking-[0.14em] ${compact ? "text-[8px]" : "text-[9px]"} ${signalBadgeClass(signal.resolvedSignal)}`}>
+        <span
+          className={`shrink-0 rounded-md border px-2 py-0.5 font-bold uppercase tracking-[0.14em] ${compact ? "text-[8px]" : "text-[9px]"} ${signalBadgeClass(signal.resolvedSignal)}`}
+        >
           {signalLabel(signal.resolvedSignal, language)}
         </span>
       </div>
 
-      <div className={`flex flex-wrap gap-1.5 ${compact ? "mt-2.5 text-[9px]" : "mt-3 text-[10px]"}`}>
+      <div
+        className={`flex flex-wrap gap-1.5 ${compact ? "mt-2.5 text-[9px]" : "mt-3 text-[10px]"}`}
+      >
         {displayConfidenceLabel ? (
           <span className="rounded-full border border-sky-400/20 bg-sky-500/10 px-2 py-0.5 text-sky-100">
             {t("common:confidence")}: {displayConfidenceLabel}
           </span>
         ) : null}
         {signal.riskLevel ? (
-          <span className={`rounded-full border px-2 py-0.5 ${riskBadgeClass(signal.riskLevel)}`}>
+          <span
+            className={`rounded-full border px-2 py-0.5 ${riskBadgeClass(signal.riskLevel)}`}
+          >
             {riskLabel(signal.riskLevel, language)}
           </span>
         ) : null}
@@ -483,9 +609,19 @@ function MomentumSignalCard({
             {t("common:snapshotConfidence")}: {snapshotConfidenceLabel}
           </span>
         ) : null}
-        <MssGradeBadge signal={signal} params={momentumParams} compact={compact} />
-        <ParamsVersionBadge value={signal.paramsVersion || paramsVersion} compact={compact} />
-        <ExhaustionFlagsBadge flags={getSignalFlags(signal)} compact={compact} />
+        <MssGradeBadge
+          signal={signal}
+          params={momentumParams}
+          compact={compact}
+        />
+        <ParamsVersionBadge
+          value={signal.paramsVersion || paramsVersion}
+          compact={compact}
+        />
+        <ExhaustionFlagsBadge
+          flags={getSignalFlags(signal)}
+          compact={compact}
+        />
         {showChallenger && typeof signal.mssChallenger === "number" ? (
           <span className="rounded-full border border-violet-400/20 bg-violet-500/10 px-2 py-0.5 text-violet-100">
             Challenger MSS {Math.round(signal.mssChallenger)}
@@ -494,22 +630,46 @@ function MomentumSignalCard({
       </div>
 
       <div className={compact ? "mt-2.5" : "mt-3"}>
-        <div className={`mb-1.5 flex items-center justify-between gap-3 uppercase tracking-[0.16em] text-muted-foreground ${compact ? "text-[9px]" : "text-[10px]"}`}>
+        <div
+          className={`mb-1.5 flex items-center justify-between gap-3 uppercase tracking-[0.16em] text-muted-foreground ${compact ? "text-[9px]" : "text-[10px]"}`}
+        >
           <span>{t("common:momentumConviction")}</span>
-          <span className="data-mono text-foreground/85">{convictionWidth}/100</span>
+          <span className="data-mono text-foreground/85">
+            {convictionWidth}/100
+          </span>
         </div>
-        <div className={`${compact ? "h-1.5" : "h-1.5"} overflow-hidden rounded-full bg-background/75`}>
-          <div className={`h-full rounded-full transition-all duration-300 ${meterClass}`} style={{ width: `${convictionWidth}%` }} />
+        <div
+          className={`${compact ? "h-1.5" : "h-1.5"} overflow-hidden rounded-full bg-background/75`}
+        >
+          <div
+            className={`h-full rounded-full transition-all duration-300 ${meterClass}`}
+            style={{ width: `${convictionWidth}%` }}
+          />
         </div>
       </div>
 
-      <div className={`flex flex-wrap gap-1.5 ${compact ? "mt-2.5 text-[9px]" : "mt-3 text-[10px]"}`}>
-        <span className={`data-mono rounded-full border border-border bg-background/70 px-2 py-0.5 ${pctClass(currentDayPct)}`}>{t("common:daily")}: {formatPct(currentDayPct)}</span>
-        <span className={`data-mono rounded-full border border-border bg-background/70 px-2 py-0.5 ${pctClass(signal.weekly_pct)}`}>{t("common:weekly")}: {formatPct(signal.weekly_pct)}</span>
-        <span className={`data-mono rounded-full border border-border bg-background/70 px-2 py-0.5 ${pctClass(signal.monthly_pct)}`}>{t("common:monthly")}: {formatPct(signal.monthly_pct)}</span>
+      <div
+        className={`flex flex-wrap gap-1.5 ${compact ? "mt-2.5 text-[9px]" : "mt-3 text-[10px]"}`}
+      >
+        <span
+          className={`data-mono rounded-full border border-border bg-background/70 px-2 py-0.5 ${pctClass(currentDayPct)}`}
+        >
+          {t("common:daily")}: {formatPct(currentDayPct)}
+        </span>
+        <span
+          className={`data-mono rounded-full border border-border bg-background/70 px-2 py-0.5 ${pctClass(signal.weekly_pct)}`}
+        >
+          {t("common:weekly")}: {formatPct(signal.weekly_pct)}
+        </span>
+        <span
+          className={`data-mono rounded-full border border-border bg-background/70 px-2 py-0.5 ${pctClass(signal.monthly_pct)}`}
+        >
+          {t("common:monthly")}: {formatPct(signal.monthly_pct)}
+        </span>
         {signal.live ? (
           <span className="data-mono rounded-full border border-border bg-background/70 px-2 py-0.5 text-muted-foreground">
-            {"Bull"} {signal.live.bullScore} / {"Bear"} {signal.live.bearScore}
+            {language === "en" ? "Bull" : "Boğa"} {signal.live.bullScore} /{" "}
+            {language === "en" ? "Bear" : "Ayı"} {signal.live.bearScore}
           </span>
         ) : null}
       </div>
@@ -518,13 +678,17 @@ function MomentumSignalCard({
         <div className="mt-3 flex items-center gap-2 rounded-lg border border-sky-400/20 bg-sky-500/10 px-2.5 py-1.5 text-[10px] text-sky-100">
           <ArrowRightLeft className="size-3.5" />
           <span>
-            {"Snapshot"} {signalLabel(signal.signal, language)} - {t("common:live")} {signalLabel(signal.resolvedSignal, language)}
+            {language === "en" ? "Snapshot" : "Anlık görüntü"}{" "}
+            {signalLabel(signal.signal, language)} - {t("common:live")}{" "}
+            {signalLabel(signal.resolvedSignal, language)}
           </span>
         </div>
       ) : null}
 
       {signal.notes ? (
-        <div className={`mt-3 rounded-lg border border-sky-400/18 bg-sky-500/[0.08] px-2.5 py-2 text-[11px] leading-5 text-sky-50/88 ${compact ? "hidden" : ""}`}>
+        <div
+          className={`mt-3 rounded-lg border border-sky-400/18 bg-sky-500/[0.08] px-2.5 py-2 text-[11px] leading-5 text-sky-50/88 ${compact ? "hidden" : ""}`}
+        >
           <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-sky-200/78">
             {t("common:analystNote")}
           </p>
@@ -533,8 +697,11 @@ function MomentumSignalCard({
       ) : null}
 
       <div className={`space-y-1.5 ${compact ? "mt-2.5" : "mt-3"}`}>
-        {visibleReasonDetails.map((reason) => (
-          <div key={reason} className={`rounded-lg border border-border/70 bg-background/60 px-2.5 py-1.5 leading-5 text-foreground/88 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)] ${compact ? "text-[10px]" : "text-[11px]"}`}>
+        {visibleReasonDetails.map(reason => (
+          <div
+            key={reason}
+            className={`rounded-lg border border-border/70 bg-background/60 px-2.5 py-1.5 leading-5 text-foreground/88 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)] ${compact ? "text-[10px]" : "text-[11px]"}`}
+          >
             {reason}
           </div>
         ))}
@@ -543,35 +710,62 @@ function MomentumSignalCard({
       {hasLayers && !compact ? (
         <div className="mt-3 grid gap-1.5 sm:grid-cols-2">
           <div className="rounded-lg border border-border/70 bg-background/60 px-2.5 py-1.5 text-[11px] text-muted-foreground">
-            <p className="text-[10px] uppercase tracking-[0.14em]">{"Momentum"}</p>
-            <p className="data-mono mt-1 text-[13px] text-foreground">{signal.layers?.momentumScore ?? "-"}</p>
+            <p className="text-[10px] uppercase tracking-[0.14em]">
+              {"Momentum"}
+            </p>
+            <p className="data-mono mt-1 text-[13px] text-foreground">
+              {signal.layers?.momentumScore ?? "-"}
+            </p>
           </div>
           <div className="rounded-lg border border-border/70 bg-background/60 px-2.5 py-1.5 text-[11px] text-muted-foreground">
-            <p className="text-[10px] uppercase tracking-[0.14em]">{t("common:oscillator")}</p>
-            <p className="data-mono mt-1 text-[13px] text-foreground">{signal.layers?.oscillatorScore ?? "-"}</p>
+            <p className="text-[10px] uppercase tracking-[0.14em]">
+              {t("common:oscillator")}
+            </p>
+            <p className="data-mono mt-1 text-[13px] text-foreground">
+              {signal.layers?.oscillatorScore ?? "-"}
+            </p>
           </div>
           <div className="rounded-lg border border-border/70 bg-background/60 px-2.5 py-1.5 text-[11px] text-muted-foreground">
             <p className="text-[10px] uppercase tracking-[0.14em]">{"Trend"}</p>
-            <p className="data-mono mt-1 text-[13px] text-foreground">{signal.layers?.trendScore ?? "-"}</p>
+            <p className="data-mono mt-1 text-[13px] text-foreground">
+              {signal.layers?.trendScore ?? "-"}
+            </p>
           </div>
           <div className="rounded-lg border border-border/70 bg-background/60 px-2.5 py-1.5 text-[11px] text-muted-foreground">
-            <p className="text-[10px] uppercase tracking-[0.14em]">{t("common:confluence")}</p>
-            <p className="data-mono mt-1 text-[13px] text-foreground">{signal.layers?.confluenceScore ?? "-"}</p>
+            <p className="text-[10px] uppercase tracking-[0.14em]">
+              {t("common:confluence")}
+            </p>
+            <p className="data-mono mt-1 text-[13px] text-foreground">
+              {signal.layers?.confluenceScore ?? "-"}
+            </p>
           </div>
         </div>
       ) : null}
 
       <div className={`flex flex-wrap gap-1.5 ${compact ? "mt-2.5" : "mt-3"}`}>
-        {visibleTags.map((tag) => (
-          <span key={tag} className={`rounded-full border border-border bg-background/70 px-2 py-0.5 font-medium text-muted-foreground ${compact ? "text-[8px]" : "text-[9px]"}`}>
+        {visibleTags.map(tag => (
+          <span
+            key={tag}
+            className={`rounded-full border border-border bg-background/70 px-2 py-0.5 font-medium text-muted-foreground ${compact ? "text-[8px]" : "text-[9px]"}`}
+          >
             {tag}
           </span>
         ))}
       </div>
 
-      <div className={`flex flex-wrap items-center gap-2 text-muted-foreground ${compact ? "mt-2.5 text-[9px]" : "mt-3 text-[10px]"}`}>
-        <span>{"Snapshot"}: {formatTimestamp(signal.timestamp || snapshotTimestamp, language)}</span>
-        {signal.live ? <span>{t("common:live")}: {formatTimestamp(signal.live.updatedAt, language)}</span> : null}
+      <div
+        className={`flex flex-wrap items-center gap-2 text-muted-foreground ${compact ? "mt-2.5 text-[9px]" : "mt-3 text-[10px]"}`}
+      >
+        <span>
+          {language === "en" ? "Snapshot" : "Anlık görüntü"}:{" "}
+          {formatTimestamp(signal.timestamp || snapshotTimestamp, language)}
+        </span>
+        {signal.live ? (
+          <span>
+            {t("common:live")}:{" "}
+            {formatTimestamp(signal.live.updatedAt, language)}
+          </span>
+        ) : null}
       </div>
     </article>
   );
@@ -666,7 +860,9 @@ function FlowMetricCard({
           : "text-amber-300";
 
   return (
-    <div className={`rounded-xl border p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)] ${toneClass}`}>
+    <div
+      className={`rounded-xl border p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)] ${toneClass}`}
+    >
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-[9px] font-semibold uppercase tracking-[0.16em] opacity-80">
@@ -748,8 +944,12 @@ function HeroInsightCard({
       onClick={onClick}
       className={`group relative min-h-[128px] overflow-hidden rounded-xl border p-3.5 text-left transition-all duration-200 hover:-translate-y-0.5 hover:bg-background/20 ${toneClass}`}
     >
-      <div className={`absolute inset-x-0 top-0 h-px bg-gradient-to-r ${accentClass}`} />
-      <div className={`absolute -right-6 -top-8 h-20 w-20 rounded-full blur-2xl ${glowClass}`} />
+      <div
+        className={`absolute inset-x-0 top-0 h-px bg-gradient-to-r ${accentClass}`}
+      />
+      <div
+        className={`absolute -right-6 -top-8 h-20 w-20 rounded-full blur-2xl ${glowClass}`}
+      />
 
       <div className="relative flex h-full flex-col">
         <div className="flex items-center justify-between gap-3">
@@ -757,11 +957,15 @@ function HeroInsightCard({
             <div className="rounded-full border border-white/10 bg-background/25 p-1.5">
               <Icon className={`size-3.5 ${labelClass}`} />
             </div>
-            <p className={`text-[9px] font-semibold uppercase tracking-[0.18em] ${labelClass}`}>
+            <p
+              className={`text-[9px] font-semibold uppercase tracking-[0.18em] ${labelClass}`}
+            >
               {label}
             </p>
           </div>
-          <span className={`data-mono text-[12px] font-semibold ${detailClass}`}>
+          <span
+            className={`data-mono text-[12px] font-semibold ${detailClass}`}
+          >
             {detail}
           </span>
         </div>
@@ -790,11 +994,17 @@ export default function MomentumFlowSurface({
   const [snapshotRefreshing, setSnapshotRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [surfaceMode, setSurfaceMode] = useState<SurfaceMode>("overview");
-  const [liveSignals, setLiveSignals] = useState<Record<string, LiveSignalSummary>>({});
+  const [liveSignals, setLiveSignals] = useState<
+    Record<string, LiveSignalSummary>
+  >({});
   const [liveLoading, setLiveLoading] = useState(false);
   const [liveError, setLiveError] = useState<string | null>(null);
   const [liveScanTime, setLiveScanTime] = useState<string | null>(null);
-  const [scanProgress, setScanProgress] = useState<ScanProgressState>({ scanned: 0, total: 0, current: "" });
+  const [scanProgress, setScanProgress] = useState<ScanProgressState>({
+    scanned: 0,
+    total: 0,
+    current: "",
+  });
   const liveRunRef = useRef(0);
   const lastAutoScanKeyRef = useRef("");
   const momentumV3 = useMomentumV3Data();
@@ -810,32 +1020,42 @@ export default function MomentumFlowSurface({
     return new URLSearchParams(window.location.search).get("dev") === "1";
   }, []);
 
-  const loadSnapshot = useCallback(async (silent = false) => {
-    if (!silent) {
-      if (data) setSnapshotRefreshing(true);
-      else setLoading(true);
-    }
-
-    try {
-      const response = await fetch("/api/midas/signals", {
-        credentials: "include",
-        cache: "no-store",
-      });
-
-      if (!response.ok) {
-        const payload = ((await response.json().catch(() => null)) as { error?: string } | null) || null;
-        throw new Error(payload?.error || `HTTP ${response.status}`);
+  const loadSnapshot = useCallback(
+    async (silent = false) => {
+      if (!silent) {
+        if (data) setSnapshotRefreshing(true);
+        else setLoading(true);
       }
 
-      setData((await response.json()) as MidasSignalsData);
-      setError(null);
-    } catch (loadError) {
-      setError(loadError instanceof Error && loadError.message ? loadError.message : t("common:failedToLoadMidasSignal"));
-    } finally {
-      setLoading(false);
-      setSnapshotRefreshing(false);
-    }
-  }, [data, language]);
+      try {
+        const response = await fetch("/api/midas/signals", {
+          credentials: "include",
+          cache: "no-store",
+        });
+
+        if (!response.ok) {
+          const payload =
+            ((await response.json().catch(() => null)) as {
+              error?: string;
+            } | null) || null;
+          throw new Error(payload?.error || `HTTP ${response.status}`);
+        }
+
+        setData((await response.json()) as MidasSignalsData);
+        setError(null);
+      } catch (loadError) {
+        setError(
+          loadError instanceof Error && loadError.message
+            ? loadError.message
+            : t("common:failedToLoadMidasSignal")
+        );
+      } finally {
+        setLoading(false);
+        setSnapshotRefreshing(false);
+      }
+    },
+    [data, language]
+  );
 
   useEffect(() => {
     void loadSnapshot();
@@ -851,35 +1071,45 @@ export default function MomentumFlowSurface({
     };
   }, [loadSnapshot]);
 
-  const runLiveRefresh = useCallback(async (symbols: string[]) => {
-    if (!symbols.length) return;
+  const runLiveRefresh = useCallback(
+    async (symbols: string[]) => {
+      if (!symbols.length) return;
 
-    const runId = liveRunRef.current + 1;
-    liveRunRef.current = runId;
-    setLiveLoading(true);
-    setLiveError(null);
-    setScanProgress({ scanned: 0, total: symbols.length, current: "" });
-  
-    try {
-      const response = await runMomentumScan(symbols, {
-        minScore: 0,
-        onProgress: (scanned, total, current) => {
-          if (liveRunRef.current !== runId) return;
-          setScanProgress({ scanned, total, current });
-        },
-      });
+      const runId = liveRunRef.current + 1;
+      liveRunRef.current = runId;
+      setLiveLoading(true);
+      setLiveError(null);
+      setScanProgress({ scanned: 0, total: symbols.length, current: "" });
 
-      if (liveRunRef.current !== runId) return;
+      try {
+        const response = await runMomentumScan(symbols, {
+          minScore: 0,
+          onProgress: (scanned, total, current) => {
+            if (liveRunRef.current !== runId) return;
+            setScanProgress({ scanned, total, current });
+          },
+        });
 
-      setLiveSignals(Object.fromEntries(response.stocks.map((stock) => [stock.ticker, deriveLiveSignal(stock)])));
-      setLiveScanTime(response.scanTime);
-    } catch {
-      if (liveRunRef.current !== runId) return;
-      setLiveError(t("common:liveScannerDataCouldNot"));
-    } finally {
-      if (liveRunRef.current === runId) setLiveLoading(false);
-    }
-  }, [language]);
+        if (liveRunRef.current !== runId) return;
+
+        setLiveSignals(
+          Object.fromEntries(
+            response.stocks.map(stock => [
+              stock.ticker,
+              deriveLiveSignal(stock),
+            ])
+          )
+        );
+        setLiveScanTime(response.scanTime);
+      } catch {
+        if (liveRunRef.current !== runId) return;
+        setLiveError(t("common:liveScannerDataCouldNot"));
+      } finally {
+        if (liveRunRef.current === runId) setLiveLoading(false);
+      }
+    },
+    [language]
+  );
 
   // Auto live-scan disabled: client-side CORS proxy 50-symbol fetch locks browser
   // useEffect(() => {
@@ -893,7 +1123,7 @@ export default function MomentumFlowSurface({
   const mergedSignals = useMemo(() => {
     if (!data) return [];
 
-    return data.signals.map((signal) => {
+    return data.signals.map(signal => {
       const live = liveSignals[signal.symbol];
       const resolvedSignal = live?.action ?? signal.signal;
       const dayChange = live?.priceChangePct ?? signal.daily_pct;
@@ -902,59 +1132,118 @@ export default function MomentumFlowSurface({
         ...signal,
         live,
         resolvedSignal,
-        conviction: live ? Math.max(live.bullScore, live.bearScore) : Math.abs(signal.strength) * 14,
+        conviction: live
+          ? Math.max(live.bullScore, live.bearScore)
+          : Math.abs(signal.strength) * 14,
         dayChange,
         directionalBias: getDirectionalBias(resolvedSignal),
         headline: buildHeadline(signal, live, resolvedSignal, language),
-        reasonDetails: buildReasonDetails(signal, live, resolvedSignal, dayChange, language),
+        reasonDetails: buildReasonDetails(
+          signal,
+          live,
+          resolvedSignal,
+          dayChange,
+          language
+        ),
       } satisfies MergedSignalRecord;
     });
   }, [data, language, liveSignals]);
 
   const stats = useMemo(() => deriveStats(mergedSignals), [mergedSignals]);
-  const liveCoverageCount = useMemo(() => Object.keys(liveSignals).length, [liveSignals]);
-  const positiveSignals = useMemo(() => [...mergedSignals].filter((signal) => signal.directionalBias === "positive").sort((left, right) => {
-    const actionGap = actionPriority(right.resolvedSignal) - actionPriority(left.resolvedSignal);
-    if (actionGap !== 0) return actionGap;
-    const convictionGap = right.conviction - left.conviction;
-    if (convictionGap !== 0) return convictionGap;
-    const weeklyGap = right.weekly_pct - left.weekly_pct;
-    if (weeklyGap !== 0) return weeklyGap;
-    return right.monthly_pct - left.monthly_pct;
-  }), [mergedSignals]);
-  const neutralSignals = useMemo(() => [...mergedSignals].filter((signal) => signal.directionalBias === "neutral").sort((left, right) => {
-    const convictionGap = right.conviction - left.conviction;
-    if (convictionGap !== 0) return convictionGap;
-    const dayGap = Math.abs(right.dayChange) - Math.abs(left.dayChange);
-    if (dayGap !== 0) return dayGap;
-    const weeklyGap = Math.abs(right.weekly_pct) - Math.abs(left.weekly_pct);
-    if (weeklyGap !== 0) return weeklyGap;
-    return Math.abs(right.monthly_pct) - Math.abs(left.monthly_pct);
-  }), [mergedSignals]);
-  const negativeSignals = useMemo(() => [...mergedSignals].filter((signal) => signal.directionalBias === "negative").sort((left, right) => {
-    const actionGap = actionPriority(right.resolvedSignal) - actionPriority(left.resolvedSignal);
-    if (actionGap !== 0) return actionGap;
-    const convictionGap = right.conviction - left.conviction;
-    if (convictionGap !== 0) return convictionGap;
-    const weeklyGap = left.weekly_pct - right.weekly_pct;
-    if (weeklyGap !== 0) return weeklyGap;
-    return left.monthly_pct - right.monthly_pct;
-  }), [mergedSignals]);
-  const neutralCount = useMemo(() => mergedSignals.filter((signal) => signal.directionalBias === "neutral").length, [mergedSignals]);
-  const changedSignals = useMemo(() => mergedSignals.filter((signal) => signal.live && signal.live.action !== signal.signal), [mergedSignals]);
-  const orderedChangedSignals = useMemo(() => [...changedSignals].sort((left, right) => {
-    const actionGap = actionPriority(right.resolvedSignal) - actionPriority(left.resolvedSignal);
-    if (actionGap !== 0) return actionGap;
-    return right.conviction - left.conviction;
-  }), [changedSignals]);
-  const biggestMover = useMemo(() => [...mergedSignals].sort((left, right) => Math.abs(right.dayChange) - Math.abs(left.dayChange))[0] ?? null, [mergedSignals]);
+  const liveCoverageCount = useMemo(
+    () => Object.keys(liveSignals).length,
+    [liveSignals]
+  );
+  const positiveSignals = useMemo(
+    () =>
+      [...mergedSignals]
+        .filter(signal => signal.directionalBias === "positive")
+        .sort((left, right) => {
+          const actionGap =
+            actionPriority(right.resolvedSignal) -
+            actionPriority(left.resolvedSignal);
+          if (actionGap !== 0) return actionGap;
+          const convictionGap = right.conviction - left.conviction;
+          if (convictionGap !== 0) return convictionGap;
+          const weeklyGap = right.weekly_pct - left.weekly_pct;
+          if (weeklyGap !== 0) return weeklyGap;
+          return right.monthly_pct - left.monthly_pct;
+        }),
+    [mergedSignals]
+  );
+  const neutralSignals = useMemo(
+    () =>
+      [...mergedSignals]
+        .filter(signal => signal.directionalBias === "neutral")
+        .sort((left, right) => {
+          const convictionGap = right.conviction - left.conviction;
+          if (convictionGap !== 0) return convictionGap;
+          const dayGap = Math.abs(right.dayChange) - Math.abs(left.dayChange);
+          if (dayGap !== 0) return dayGap;
+          const weeklyGap =
+            Math.abs(right.weekly_pct) - Math.abs(left.weekly_pct);
+          if (weeklyGap !== 0) return weeklyGap;
+          return Math.abs(right.monthly_pct) - Math.abs(left.monthly_pct);
+        }),
+    [mergedSignals]
+  );
+  const negativeSignals = useMemo(
+    () =>
+      [...mergedSignals]
+        .filter(signal => signal.directionalBias === "negative")
+        .sort((left, right) => {
+          const actionGap =
+            actionPriority(right.resolvedSignal) -
+            actionPriority(left.resolvedSignal);
+          if (actionGap !== 0) return actionGap;
+          const convictionGap = right.conviction - left.conviction;
+          if (convictionGap !== 0) return convictionGap;
+          const weeklyGap = left.weekly_pct - right.weekly_pct;
+          if (weeklyGap !== 0) return weeklyGap;
+          return left.monthly_pct - right.monthly_pct;
+        }),
+    [mergedSignals]
+  );
+  const neutralCount = useMemo(
+    () =>
+      mergedSignals.filter(signal => signal.directionalBias === "neutral")
+        .length,
+    [mergedSignals]
+  );
+  const changedSignals = useMemo(
+    () =>
+      mergedSignals.filter(
+        signal => signal.live && signal.live.action !== signal.signal
+      ),
+    [mergedSignals]
+  );
+  const orderedChangedSignals = useMemo(
+    () =>
+      [...changedSignals].sort((left, right) => {
+        const actionGap =
+          actionPriority(right.resolvedSignal) -
+          actionPriority(left.resolvedSignal);
+        if (actionGap !== 0) return actionGap;
+        return right.conviction - left.conviction;
+      }),
+    [changedSignals]
+  );
+  const biggestMover = useMemo(
+    () =>
+      [...mergedSignals].sort(
+        (left, right) => Math.abs(right.dayChange) - Math.abs(left.dayChange)
+      )[0] ?? null,
+    [mergedSignals]
+  );
 
   if (loading && !data) {
     return (
       <div className="workspace-card p-6">
         <div className="flex items-center gap-2">
           <LineChart className="size-4 animate-pulse text-sky-300" />
-          <p className="text-sm text-foreground">{t("common:loadingMomentumFlow")}</p>
+          <p className="text-sm text-foreground">
+            {t("common:loadingMomentumFlow")}
+          </p>
         </div>
       </div>
     );
@@ -974,8 +1263,17 @@ export default function MomentumFlowSurface({
   if (!data) return null;
 
   const snapshotTimestampLabel = formatTimestamp(data.timestamp, language);
-  const liveTimestampLabel = formatTimestamp(liveScanTime || data.pipeline?.lastSyncedAt || undefined, language);
-  const progressPct = scanProgress.total > 0 ? Math.min(100, Math.round((scanProgress.scanned / scanProgress.total) * 100)) : 0;
+  const liveTimestampLabel = formatTimestamp(
+    liveScanTime || data.pipeline?.lastSyncedAt || undefined,
+    language
+  );
+  const progressPct =
+    scanProgress.total > 0
+      ? Math.min(
+          100,
+          Math.round((scanProgress.scanned / scanProgress.total) * 100)
+        )
+      : 0;
   const positiveCount = stats.strongBuy + stats.buy;
   const negativeCount = stats.sell + stats.strongSell;
   const totalSignals = Math.max(mergedSignals.length, 1);
@@ -986,14 +1284,30 @@ export default function MomentumFlowSurface({
   const strongestNeutral = neutralSignals[0] ?? null;
   const strongestNegative = negativeSignals[0] ?? null;
   const featuredShift = orderedChangedSignals[0] ?? null;
-  const visiblePositiveSignals = surfaceMode === "overview" ? positiveSignals.slice(0, MAX_OVERVIEW_SIGNALS) : positiveSignals;
-  const visibleNeutralSignals = surfaceMode === "overview" ? neutralSignals.slice(0, MAX_OVERVIEW_NEUTRALS) : neutralSignals;
-  const visibleNegativeSignals = surfaceMode === "overview" ? negativeSignals.slice(0, MAX_OVERVIEW_SIGNALS) : negativeSignals;
-  const visibleChangedSignals = surfaceMode === "overview" ? orderedChangedSignals.slice(0, MAX_OVERVIEW_SHIFTS) : orderedChangedSignals;
-  const showPositiveSection = surfaceMode === "overview" || surfaceMode === "positive";
-  const showNeutralSection = surfaceMode === "overview" || surfaceMode === "neutral";
-  const showNegativeSection = surfaceMode === "overview" || surfaceMode === "negative";
-  const showShiftSection = surfaceMode === "overview" || surfaceMode === "shifts";
+  const visiblePositiveSignals =
+    surfaceMode === "overview"
+      ? positiveSignals.slice(0, MAX_OVERVIEW_SIGNALS)
+      : positiveSignals;
+  const visibleNeutralSignals =
+    surfaceMode === "overview"
+      ? neutralSignals.slice(0, MAX_OVERVIEW_NEUTRALS)
+      : neutralSignals;
+  const visibleNegativeSignals =
+    surfaceMode === "overview"
+      ? negativeSignals.slice(0, MAX_OVERVIEW_SIGNALS)
+      : negativeSignals;
+  const visibleChangedSignals =
+    surfaceMode === "overview"
+      ? orderedChangedSignals.slice(0, MAX_OVERVIEW_SHIFTS)
+      : orderedChangedSignals;
+  const showPositiveSection =
+    surfaceMode === "overview" || surfaceMode === "positive";
+  const showNeutralSection =
+    surfaceMode === "overview" || surfaceMode === "neutral";
+  const showNegativeSection =
+    surfaceMode === "overview" || surfaceMode === "negative";
+  const showShiftSection =
+    surfaceMode === "overview" || surfaceMode === "shifts";
   const positiveCardLayout =
     surfaceMode === "positive"
       ? "grid gap-3 md:grid-cols-2 2xl:grid-cols-3"
@@ -1007,27 +1321,61 @@ export default function MomentumFlowSurface({
       ? "grid gap-3 md:grid-cols-2 2xl:grid-cols-3"
       : "grid gap-3 md:grid-cols-2";
   const balanceHeadline =
-    neutralCount >= positiveCount && neutralCount >= negativeCount && neutralCount > 0
+    neutralCount >= positiveCount &&
+    neutralCount >= negativeCount &&
+    neutralCount > 0
       ? t("common:theMarketIsSittingIn")
       : positiveCount > negativeCount
-      ? t("common:flowIsTiltedToThe")
-      : negativeCount > positiveCount
-        ? t("common:downsidePressureIsInControl")
-        : t("common:momentumIsBalanced");
+        ? t("common:flowIsTiltedToThe")
+        : negativeCount > positiveCount
+          ? t("common:downsidePressureIsInControl")
+          : t("common:momentumIsBalanced");
   const balanceDescription =
-    neutralCount >= positiveCount && neutralCount >= negativeCount && neutralCount > 0
+    neutralCount >= positiveCount &&
+    neutralCount >= negativeCount &&
+    neutralCount > 0
       ? t("common:theNeutralBlockHasExpanded")
       : positiveCount > negativeCount
-      ? t("common:thereAreMoreLeadersOn")
-      : negativeCount > positiveCount
-        ? t("common:moreNamesAreDeterioratingOn")
-        : t("common:theListIsMixedFor");
-  const viewButtons: Array<{ id: SurfaceMode; label: string; count: number; icon: typeof TrendingUp }> = [
-    { id: "overview", label: t("common:commandView"), count: mergedSignals.length, icon: BarChart3 },
-    { id: "positive", label: t("common:leaders"), count: positiveSignals.length, icon: TrendingUp },
-    { id: "neutral", label: t("common:neutralRadar"), count: neutralSignals.length, icon: LineChart },
-    { id: "negative", label: t("common:risks"), count: negativeSignals.length, icon: TrendingDown },
-    { id: "shifts", label: t("common:shifts"), count: orderedChangedSignals.length, icon: ArrowRightLeft },
+        ? t("common:thereAreMoreLeadersOn")
+        : negativeCount > positiveCount
+          ? t("common:moreNamesAreDeterioratingOn")
+          : t("common:theListIsMixedFor");
+  const viewButtons: Array<{
+    id: SurfaceMode;
+    label: string;
+    count: number;
+    icon: typeof TrendingUp;
+  }> = [
+    {
+      id: "overview",
+      label: t("common:commandView"),
+      count: mergedSignals.length,
+      icon: BarChart3,
+    },
+    {
+      id: "positive",
+      label: t("common:leaders"),
+      count: positiveSignals.length,
+      icon: TrendingUp,
+    },
+    {
+      id: "neutral",
+      label: t("common:neutralRadar"),
+      count: neutralSignals.length,
+      icon: LineChart,
+    },
+    {
+      id: "negative",
+      label: t("common:risks"),
+      count: negativeSignals.length,
+      icon: TrendingDown,
+    },
+    {
+      id: "shifts",
+      label: t("common:shifts"),
+      count: orderedChangedSignals.length,
+      icon: ArrowRightLeft,
+    },
   ];
   const paramsVersion =
     data.paramsVersion ||
@@ -1047,64 +1395,132 @@ export default function MomentumFlowSurface({
                 {t("common:momentumCommandLayer")}
               </p>
             </div>
-            <h3 className="heading-condensed text-3xl text-foreground md:text-[2rem]">{balanceHeadline}</h3>
+            <h3 className="heading-condensed text-3xl text-foreground md:text-[2rem]">
+              {balanceHeadline}
+            </h3>
             <p className="max-w-3xl text-sm leading-7 text-foreground/90">
               {t("common:thisSurfaceFirstPullsThe")}
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            <button type="button" onClick={() => void loadSnapshot()} disabled={snapshotRefreshing} className="inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-background/70 px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-background disabled:cursor-not-allowed disabled:opacity-60">
-              {snapshotRefreshing ? <Loader2 className="size-4 animate-spin" /> : <RefreshCw className="size-4" />}
+            <button
+              type="button"
+              onClick={() => void loadSnapshot()}
+              disabled={snapshotRefreshing}
+              className="inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-background/70 px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-background disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {snapshotRefreshing ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <RefreshCw className="size-4" />
+              )}
               {t("common:refreshSource")}
             </button>
-            <button type="button" onClick={() => void runLiveRefresh(data.signals.map((signal) => signal.symbol))} disabled={liveLoading} className="inline-flex items-center justify-center gap-2 rounded-lg border border-sky-400/30 bg-sky-500/12 px-4 py-2 text-sm font-semibold text-sky-100 transition-colors hover:bg-sky-500/18 disabled:cursor-not-allowed disabled:opacity-60">
-              {liveLoading ? <Loader2 className="size-4 animate-spin" /> : <Zap className="size-4" />}
+            <button
+              type="button"
+              onClick={() =>
+                void runLiveRefresh(data.signals.map(signal => signal.symbol))
+              }
+              disabled={liveLoading}
+              className="inline-flex items-center justify-center gap-2 rounded-lg border border-sky-400/30 bg-sky-500/12 px-4 py-2 text-sm font-semibold text-sky-100 transition-colors hover:bg-sky-500/18 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {liveLoading ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <Zap className="size-4" />
+              )}
               {t("common:runLiveRescore")}
             </button>
           </div>
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2 text-[11px] text-muted-foreground">
-          <span className="rounded-full border border-border bg-background/70 px-3 py-1">{"Snapshot: "}{snapshotTimestampLabel}</span>
-          <span className="rounded-full border border-border bg-background/70 px-3 py-1">{t("common:liveUpdate")}: {liveTimestampLabel}</span>
-          <span className={`rounded-full border px-3 py-1 ${pipelineStatusClass(data.pipeline?.status || "idle")}`}>{"Pipeline"}: {pipelineStatusLabel(data.pipeline?.status || "idle", language)}</span>
-          <span className="rounded-full border border-border bg-background/70 px-3 py-1">{liveCoverageCount}/{data.symbol_count} {t("common:symbolsScanned")}</span>
-          <span className="rounded-full border border-border bg-background/70 px-3 py-1">{orderedChangedSignals.length} {t("common:signalsChanged")}</span>
-          {data.pipeline?.pollIntervalMs ? <span className="rounded-full border border-border bg-background/70 px-3 py-1">{t("common:pollInterval")}: {Math.round(data.pipeline.pollIntervalMs / 1000)}s</span> : null}
+          <span className="rounded-full border border-border bg-background/70 px-3 py-1">
+            {language === "en" ? "Snapshot: " : "Anlık görüntü: "}
+            {snapshotTimestampLabel}
+          </span>
+          <span className="rounded-full border border-border bg-background/70 px-3 py-1">
+            {t("common:liveUpdate")}: {liveTimestampLabel}
+          </span>
+          <span
+            className={`rounded-full border px-3 py-1 ${pipelineStatusClass(data.pipeline?.status || "idle")}`}
+          >
+            {"Pipeline"}:{" "}
+            {pipelineStatusLabel(data.pipeline?.status || "idle", language)}
+          </span>
+          <span className="rounded-full border border-border bg-background/70 px-3 py-1">
+            {liveCoverageCount}/{data.symbol_count} {t("common:symbolsScanned")}
+          </span>
+          <span className="rounded-full border border-border bg-background/70 px-3 py-1">
+            {orderedChangedSignals.length} {t("common:signalsChanged")}
+          </span>
+          {data.pipeline?.pollIntervalMs ? (
+            <span className="rounded-full border border-border bg-background/70 px-3 py-1">
+              {t("common:pollInterval")}:{" "}
+              {Math.round(data.pipeline.pollIntervalMs / 1000)}s
+            </span>
+          ) : null}
         </div>
 
         {liveLoading ? (
           <div className="mt-4 space-y-2">
             <div className="h-2 w-full overflow-hidden rounded-full bg-background/80">
-              <div className="h-full rounded-full bg-gradient-to-r from-sky-500 to-sky-500 transition-all duration-300" style={{ width: `${progressPct}%` }} />
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-sky-500 to-sky-500 transition-all duration-300"
+                style={{ width: `${progressPct}%` }}
+              />
             </div>
             <p className="text-xs text-muted-foreground">
-              {scanProgress.current ? `${scanProgress.current} ${t("common:isBeingRescoredLive")}` : t("common:theMomentumUniverseIsBeingcaf6")}
+              {scanProgress.current
+                ? `${scanProgress.current} ${t("common:isBeingRescoredLive")}`
+                : t("common:theMomentumUniverseIsBeingcaf6")}
             </p>
           </div>
         ) : null}
 
-        {error ? <div className="mt-4 rounded-xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">{error}</div> : null}
-        {liveError ? <div className="mt-4 rounded-xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">{liveError}</div> : null}
+        {error ? (
+          <div className="mt-4 rounded-xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+            {error}
+          </div>
+        ) : null}
+        {liveError ? (
+          <div className="mt-4 rounded-xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+            {liveError}
+          </div>
+        ) : null}
 
         <div className="mt-6 grid gap-3 xl:grid-cols-[minmax(0,1.2fr)_minmax(300px,0.8fr)]">
           <div className="rounded-xl border border-border bg-background/38 p-3.5">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">{t("common:flowMap")}</p>
-                <p className="mt-1 text-[13px] leading-6 text-foreground/90">{balanceDescription}</p>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  {t("common:flowMap")}
+                </p>
+                <p className="mt-1 text-[13px] leading-6 text-foreground/90">
+                  {balanceDescription}
+                </p>
               </div>
               <div className="rounded-full border border-border bg-background/60 px-2.5 py-1 text-[10px] text-muted-foreground">
-                {t("common:mode")}: <span className="data-mono">{data.mode}</span>
+                {t("common:mode")}:{" "}
+                <span className="data-mono">{data.mode}</span>
               </div>
             </div>
 
             <div className="mt-3 overflow-hidden rounded-full border border-border bg-background/70">
               <div className="flex h-2.5 w-full">
-                <div className="bg-gradient-to-r from-emerald-500 to-teal-400" style={{ width: `${positiveRatio}%` }} />
-                <div className="bg-gradient-to-r from-amber-400 to-yellow-300" style={{ width: `${neutralRatio}%` }} />
-                <div className="bg-gradient-to-r from-rose-500 to-orange-400" style={{ width: `${negativeRatio}%` }} />
+                <div
+                  className="bg-gradient-to-r from-emerald-500 to-teal-400"
+                  style={{ width: `${positiveRatio}%` }}
+                />
+                <div
+                  className="bg-gradient-to-r from-amber-400 to-yellow-300"
+                  style={{ width: `${neutralRatio}%` }}
+                />
+                <div
+                  className="bg-gradient-to-r from-rose-500 to-orange-400"
+                  style={{ width: `${negativeRatio}%` }}
+                />
               </div>
             </div>
 
@@ -1147,8 +1563,7 @@ export default function MomentumFlowSurface({
                   : t("common:waiting")
               }
               description={
-                strongestPositive?.headline ||
-                t("common:thereIsNoClearLeader")
+                strongestPositive?.headline || t("common:thereIsNoClearLeader")
               }
               tone="positive"
               onClick={() => setSurfaceMode("positive")}
@@ -1191,9 +1606,7 @@ export default function MomentumFlowSurface({
             <HeroInsightCard
               icon={featuredShift ? ArrowRightLeft : Zap}
               label={
-                featuredShift
-                  ? t("common:liveRevision")
-                  : t("common:fastMove")
+                featuredShift ? t("common:liveRevision") : t("common:fastMove")
               }
               symbol={featuredShift?.symbol || biggestMover?.symbol || "--"}
               detail={
@@ -1210,14 +1623,19 @@ export default function MomentumFlowSurface({
                   : t("common:thereIsNoStandoutFast"))
               }
               tone="shift"
-              onClick={() => setSurfaceMode(featuredShift ? "shifts" : "overview")}
+              onClick={() =>
+                setSurfaceMode(featuredShift ? "shifts" : "overview")
+              }
             />
           </div>
         </div>
       </div>
 
       {data.market_overview ? (
-        <MarketOverviewStrip language={language} marketOverview={data.market_overview} />
+        <MarketOverviewStrip
+          language={language}
+          marketOverview={data.market_overview}
+        />
       ) : null}
 
       <MomentumV3Dashboard
@@ -1232,22 +1650,36 @@ export default function MomentumFlowSurface({
 
       <div className="sticky top-4 z-10 rounded-xl border border-border bg-background/75 p-1.5 shadow-[0_18px_48px_rgba(3,7,18,0.24)] backdrop-blur">
         <div className="flex flex-wrap items-center gap-1.5">
-          {viewButtons.map((button) => {
+          {viewButtons.map(button => {
             const active = surfaceMode === button.id;
             const Icon = button.icon;
 
             return (
-              <button key={button.id} type="button" onClick={() => setSurfaceMode(button.id)} className={`inline-flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold transition-colors ${active ? "bg-sky-500/18 text-sky-100 shadow-[0_0_0_1px_rgba(14,165,233,0.18)]" : "text-muted-foreground hover:bg-background/70 hover:text-foreground"}`}>
+              <button
+                key={button.id}
+                type="button"
+                onClick={() => setSurfaceMode(button.id)}
+                className={`inline-flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold transition-colors ${active ? "bg-sky-500/18 text-sky-100 shadow-[0_0_0_1px_rgba(14,165,233,0.18)]" : "text-muted-foreground hover:bg-background/70 hover:text-foreground"}`}
+              >
                 <Icon className="size-3.5" />
                 {button.label}
-                <span className="data-mono rounded-full bg-background/60 px-1.5 py-0.5 text-[10px]">{button.count}</span>
+                <span className="data-mono rounded-full bg-background/60 px-1.5 py-0.5 text-[10px]">
+                  {button.count}
+                </span>
               </button>
             );
           })}
 
           <div className="ml-auto flex items-center gap-2 rounded-xl border border-border bg-background/55 px-3 py-2 text-[11px] text-muted-foreground">
             <Clock className="size-3.5" />
-            {t("common:autoPull")}: <span className="data-mono">{Math.round((data.pipeline?.pollIntervalMs || SNAPSHOT_REFRESH_INTERVAL_MS) / 1000)}s</span>
+            {t("common:autoPull")}:{" "}
+            <span className="data-mono">
+              {Math.round(
+                (data.pipeline?.pollIntervalMs ||
+                  SNAPSHOT_REFRESH_INTERVAL_MS) / 1000
+              )}
+              s
+            </span>
           </div>
         </div>
       </div>
@@ -1258,16 +1690,25 @@ export default function MomentumFlowSurface({
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <ArrowRightLeft className="size-4 text-sky-200" />
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-200">{t("common:signalShifts1180")}</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-200">
+                  {t("common:signalShifts1180")}
+                </p>
               </div>
-              <h3 className="heading-condensed text-2xl text-sky-50">{t("common:namesRevisedByTheLive")}</h3>
+              <h3 className="heading-condensed text-2xl text-sky-50">
+                {t("common:namesRevisedByTheLive")}
+              </h3>
               <p className="max-w-3xl text-sm leading-7 text-sky-50/78">
                 {t("common:ifTheSnapshotAndThe")}
               </p>
             </div>
 
-            {surfaceMode === "overview" && orderedChangedSignals.length > MAX_OVERVIEW_SHIFTS ? (
-              <button type="button" onClick={() => setSurfaceMode("shifts")} className="inline-flex items-center gap-2 rounded-lg border border-sky-400/20 bg-background/35 px-3 py-2 text-xs font-semibold text-sky-100 transition-colors hover:bg-background/50">
+            {surfaceMode === "overview" &&
+            orderedChangedSignals.length > MAX_OVERVIEW_SHIFTS ? (
+              <button
+                type="button"
+                onClick={() => setSurfaceMode("shifts")}
+                className="inline-flex items-center gap-2 rounded-lg border border-sky-400/20 bg-background/35 px-3 py-2 text-xs font-semibold text-sky-100 transition-colors hover:bg-background/50"
+              >
                 {t("common:openAllShifts")}
               </button>
             ) : null}
@@ -1275,24 +1716,48 @@ export default function MomentumFlowSurface({
 
           {visibleChangedSignals.length > 0 ? (
             <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-              {visibleChangedSignals.map((signal) => (
-                <div key={signal.symbol} className="rounded-xl border border-sky-400/18 bg-background/35 p-4">
+              {visibleChangedSignals.map(signal => (
+                <div
+                  key={signal.symbol}
+                  className="rounded-xl border border-sky-400/18 bg-background/35 p-4"
+                >
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <p className="heading-condensed text-xl text-sky-50">{signal.symbol}</p>
-                      <p className="mt-1 text-xs text-sky-50/72">{signal.headline}</p>
+                      <p className="heading-condensed text-xl text-sky-50">
+                        {signal.symbol}
+                      </p>
+                      <p className="mt-1 text-xs text-sky-50/72">
+                        {signal.headline}
+                      </p>
                     </div>
                     <ArrowRightLeft className="size-4 text-sky-200" />
                   </div>
 
                   <div className="mt-4 flex flex-wrap gap-2 text-[11px]">
-                    <span className="rounded-full border border-border bg-background/55 px-2.5 py-1 text-muted-foreground">{"Snapshot"}: {signalLabel(signal.signal, language)}</span>
-                    <span className="rounded-full border border-sky-400/18 bg-sky-500/10 px-2.5 py-1 text-sky-100">{t("common:live")}: {signalLabel(signal.resolvedSignal, language)}</span>
+                    <span className="rounded-full border border-border bg-background/55 px-2.5 py-1 text-muted-foreground">
+                      {language === "en" ? "Snapshot" : "Anlık görüntü"}:{" "}
+                      {signalLabel(signal.signal, language)}
+                    </span>
+                    <span className="rounded-full border border-sky-400/18 bg-sky-500/10 px-2.5 py-1 text-sky-100">
+                      {t("common:live")}:{" "}
+                      {signalLabel(signal.resolvedSignal, language)}
+                    </span>
                   </div>
 
                   <div className="mt-4 flex flex-wrap gap-2 text-[11px]">
-                    <span className={`data-mono rounded-full border border-border bg-background/55 px-2.5 py-1 ${pctClass(signal.dayChange)}`}>{t("common:daily")}: {formatPct(signal.dayChange)}</span>
-                    {signal.live ? <span className="data-mono rounded-full border border-border bg-background/55 px-2.5 py-1 text-muted-foreground">{"Bull"} {signal.live.bullScore} / {"Bear"} {signal.live.bearScore}</span> : null}
+                    <span
+                      className={`data-mono rounded-full border border-border bg-background/55 px-2.5 py-1 ${pctClass(signal.dayChange)}`}
+                    >
+                      {t("common:daily")}: {formatPct(signal.dayChange)}
+                    </span>
+                    {signal.live ? (
+                      <span className="data-mono rounded-full border border-border bg-background/55 px-2.5 py-1 text-muted-foreground">
+                        {language === "en" ? "Bull" : "Boğa"}{" "}
+                        {signal.live.bullScore} /{" "}
+                        {language === "en" ? "Bear" : "Ayı"}{" "}
+                        {signal.live.bearScore}
+                      </span>
+                    ) : null}
                   </div>
                 </div>
               ))}
@@ -1311,19 +1776,25 @@ export default function MomentumFlowSurface({
             <div className="flex items-start gap-3">
               <LineChart className="mt-0.5 size-4 text-amber-300" />
               <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-amber-300/80">{"Neutral radar"}</p>
-                <h3 className="mt-1 heading-condensed text-xl text-amber-100">{t("common:namesInTransitionThatStill")}</h3>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-amber-300/80">
+                  {language === "en" ? "Neutral radar" : "Nötr radar"}
+                </p>
+                <h3 className="mt-1 heading-condensed text-xl text-amber-100">
+                  {t("common:namesInTransitionThatStill")}
+                </h3>
                 <p className="mt-1.5 text-xs leading-6 text-amber-50/85">
                   {t("common:holdSignalsDoNotDisappear")}
                 </p>
               </div>
             </div>
-            <div className="rounded-full border border-amber-500/18 bg-background/35 px-2.5 py-0.5 text-[10px] text-amber-100">{neutralSignals.length} {t("common:names")}</div>
+            <div className="rounded-full border border-amber-500/18 bg-background/35 px-2.5 py-0.5 text-[10px] text-amber-100">
+              {neutralSignals.length} {t("common:names")}
+            </div>
           </div>
 
           {visibleNeutralSignals.length > 0 ? (
             <div className={neutralCardLayout}>
-              {visibleNeutralSignals.map((signal) => (
+              {visibleNeutralSignals.map(signal => (
                 <MomentumSignalCard
                   key={signal.symbol}
                   language={language}
@@ -1337,37 +1808,52 @@ export default function MomentumFlowSurface({
               ))}
             </div>
           ) : (
-            <div className="rounded-xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">{t("common:thereAreNoNamesIn8306")}</div>
+            <div className="rounded-xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">
+              {t("common:thereAreNoNamesIn8306")}
+            </div>
           )}
 
-          {surfaceMode === "overview" && neutralSignals.length > MAX_OVERVIEW_NEUTRALS ? (
-            <button type="button" onClick={() => setSurfaceMode("neutral")} className="inline-flex items-center gap-2 rounded-lg border border-amber-500/18 bg-amber-500/[0.08] px-3 py-2 text-xs font-semibold text-amber-100 transition-colors hover:bg-amber-500/[0.12]">
+          {surfaceMode === "overview" &&
+          neutralSignals.length > MAX_OVERVIEW_NEUTRALS ? (
+            <button
+              type="button"
+              onClick={() => setSurfaceMode("neutral")}
+              className="inline-flex items-center gap-2 rounded-lg border border-amber-500/18 bg-amber-500/[0.08] px-3 py-2 text-xs font-semibold text-amber-100 transition-colors hover:bg-amber-500/[0.12]"
+            >
               {t("common:openTheFullNeutralList")}
             </button>
           ) : null}
         </section>
       ) : null}
 
-      <div className={`grid gap-4 ${showPositiveSection && showNegativeSection ? "xl:grid-cols-2" : ""}`}>
+      <div
+        className={`grid gap-4 ${showPositiveSection && showNegativeSection ? "xl:grid-cols-2" : ""}`}
+      >
         {showPositiveSection ? (
           <section className="space-y-4">
             <div className="flex items-start justify-between gap-3 rounded-xl border border-emerald-500/20 bg-[linear-gradient(180deg,rgba(16,185,129,0.10),rgba(15,23,42,0.86))] p-3.5">
               <div className="flex items-start gap-3">
                 <TrendingUp className="mt-0.5 size-4 text-emerald-300" />
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-emerald-300/80">{t("common:positiveMomentum")}</p>
-                  <h3 className="mt-1 heading-condensed text-xl text-emerald-100">{t("common:upsideLeaders")}</h3>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-emerald-300/80">
+                    {t("common:positiveMomentum")}
+                  </p>
+                  <h3 className="mt-1 heading-condensed text-xl text-emerald-100">
+                    {t("common:upsideLeaders")}
+                  </h3>
                   <p className="mt-1.5 text-xs leading-6 text-emerald-50/85">
                     {t("common:buyAndStrongBuyNames")}
                   </p>
                 </div>
               </div>
-              <div className="rounded-full border border-emerald-500/18 bg-background/35 px-2.5 py-0.5 text-[10px] text-emerald-100">{positiveSignals.length} {t("common:names")}</div>
+              <div className="rounded-full border border-emerald-500/18 bg-background/35 px-2.5 py-0.5 text-[10px] text-emerald-100">
+                {positiveSignals.length} {t("common:names")}
+              </div>
             </div>
 
             {visiblePositiveSignals.length > 0 ? (
               <div className={positiveCardLayout}>
-                {visiblePositiveSignals.map((signal) => (
+                {visiblePositiveSignals.map(signal => (
                   <MomentumSignalCard
                     key={signal.symbol}
                     language={language}
@@ -1381,11 +1867,18 @@ export default function MomentumFlowSurface({
                 ))}
               </div>
             ) : (
-              <div className="rounded-xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">{t("common:thereAreNoNamesIn")}</div>
+              <div className="rounded-xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">
+                {t("common:thereAreNoNamesIn")}
+              </div>
             )}
 
-            {surfaceMode === "overview" && positiveSignals.length > MAX_OVERVIEW_SIGNALS ? (
-              <button type="button" onClick={() => setSurfaceMode("positive")} className="inline-flex items-center gap-2 rounded-lg border border-emerald-500/18 bg-emerald-500/[0.08] px-3 py-2 text-xs font-semibold text-emerald-100 transition-colors hover:bg-emerald-500/[0.12]">
+            {surfaceMode === "overview" &&
+            positiveSignals.length > MAX_OVERVIEW_SIGNALS ? (
+              <button
+                type="button"
+                onClick={() => setSurfaceMode("positive")}
+                className="inline-flex items-center gap-2 rounded-lg border border-emerald-500/18 bg-emerald-500/[0.08] px-3 py-2 text-xs font-semibold text-emerald-100 transition-colors hover:bg-emerald-500/[0.12]"
+              >
                 {t("common:openTheFullPositiveList")}
               </button>
             ) : null}
@@ -1398,19 +1891,25 @@ export default function MomentumFlowSurface({
               <div className="flex items-start gap-3">
                 <ShieldAlert className="mt-0.5 size-4 text-rose-300" />
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-rose-300/80">{t("common:negativeMomentum")}</p>
-                  <h3 className="mt-1 heading-condensed text-xl text-rose-100">{t("common:namesUnderDownsidePressure")}</h3>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-rose-300/80">
+                    {t("common:negativeMomentum")}
+                  </p>
+                  <h3 className="mt-1 heading-condensed text-xl text-rose-100">
+                    {t("common:namesUnderDownsidePressure")}
+                  </h3>
                   <p className="mt-1.5 text-xs leading-6 text-rose-50/85">
                     {t("common:sellAndStrongSellNames")}
                   </p>
                 </div>
               </div>
-              <div className="rounded-full border border-rose-500/18 bg-background/35 px-2.5 py-0.5 text-[10px] text-rose-100">{negativeSignals.length} {t("common:names")}</div>
+              <div className="rounded-full border border-rose-500/18 bg-background/35 px-2.5 py-0.5 text-[10px] text-rose-100">
+                {negativeSignals.length} {t("common:names")}
+              </div>
             </div>
 
             {visibleNegativeSignals.length > 0 ? (
               <div className={negativeCardLayout}>
-                {visibleNegativeSignals.map((signal) => (
+                {visibleNegativeSignals.map(signal => (
                   <MomentumSignalCard
                     key={signal.symbol}
                     language={language}
@@ -1424,11 +1923,18 @@ export default function MomentumFlowSurface({
                 ))}
               </div>
             ) : (
-              <div className="rounded-xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">{t("common:thereAreNoNamesIn5027")}</div>
+              <div className="rounded-xl border border-dashed border-border bg-background/35 p-6 text-sm text-muted-foreground">
+                {t("common:thereAreNoNamesIn5027")}
+              </div>
             )}
 
-            {surfaceMode === "overview" && negativeSignals.length > MAX_OVERVIEW_SIGNALS ? (
-              <button type="button" onClick={() => setSurfaceMode("negative")} className="inline-flex items-center gap-2 rounded-lg border border-rose-500/18 bg-rose-500/[0.08] px-3 py-2 text-xs font-semibold text-rose-100 transition-colors hover:bg-rose-500/[0.12]">
+            {surfaceMode === "overview" &&
+            negativeSignals.length > MAX_OVERVIEW_SIGNALS ? (
+              <button
+                type="button"
+                onClick={() => setSurfaceMode("negative")}
+                className="inline-flex items-center gap-2 rounded-lg border border-rose-500/18 bg-rose-500/[0.08] px-3 py-2 text-xs font-semibold text-rose-100 transition-colors hover:bg-rose-500/[0.12]"
+              >
                 {t("common:openTheFullNegativeList")}
               </button>
             ) : null}
@@ -1438,11 +1944,16 @@ export default function MomentumFlowSurface({
 
       <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
         <Clock className="size-3.5" />
-        <span className="data-mono">{snapshotTimestampLabel} - {data.mode} mode - {data.successful}/{data.symbol_count} {t("common:symbols")}</span>
-        {data.pipeline?.resolvedSourceFile ? <span className="rounded-full border border-border bg-background/60 px-2.5 py-1 text-[11px]">{t("common:source")}: {data.pipeline.resolvedSourceFile}</span> : null}
+        <span className="data-mono">
+          {snapshotTimestampLabel} - {data.mode} mode - {data.successful}/
+          {data.symbol_count} {t("common:symbols")}
+        </span>
+        {data.pipeline?.resolvedSourceFile ? (
+          <span className="rounded-full border border-border bg-background/60 px-2.5 py-1 text-[11px]">
+            {t("common:source")}: {data.pipeline.resolvedSourceFile}
+          </span>
+        ) : null}
       </div>
     </div>
   );
 }
-
-

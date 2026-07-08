@@ -12,18 +12,35 @@ export interface EarningsHistoryChartProps {
   language?: AppLanguage;
 }
 
+// Validated against the dark surface (#0a0e1a).
+const BEAT_COLOR = "#059669";
+const MISS_COLOR = "#f43f5e";
+const INLINE_COLOR = "#0284c7";
+
+// Bar with a 4px rounded data-end and a square baseline; handles negative values.
+const barPath = (x: number, value: number, width: number, scaleY: (v: number) => number) => {
+  const yZero = scaleY(0);
+  const yVal = scaleY(value);
+  const top = Math.min(yZero, yVal);
+  const bottom = Math.max(yZero, yVal);
+  const r = Math.min(4, width / 2, bottom - top);
+  if (r <= 0) return "";
+  if (value >= 0) {
+    return `M ${x} ${bottom} L ${x} ${top + r} Q ${x} ${top} ${x + r} ${top} L ${x + width - r} ${top} Q ${x + width} ${top} ${x + width} ${top + r} L ${x + width} ${bottom} Z`;
+  }
+  return `M ${x} ${top} L ${x} ${bottom - r} Q ${x} ${bottom} ${x + r} ${bottom} L ${x + width - r} ${bottom} Q ${x + width} ${bottom} ${x + width} ${bottom - r} L ${x + width} ${top} Z`;
+};
+
 export default function EarningsHistoryChart({
   data,
   language = "en",
 }: EarningsHistoryChartProps) {
   if (data.length === 0) return null;
 
-  const allValues = data.flatMap((d) => [
-    d.epsTahmin ?? 0,
-    d.epsGercek ?? 0,
-  ]);
-  const minVal = Math.min(...allValues) * 1.1;
-  const maxVal = Math.max(...allValues) * 1.1;
+  const allValues = data.flatMap(d => [d.epsTahmin ?? 0, d.epsGercek ?? 0]);
+  // Bars encode length, so the scale always includes zero.
+  const minVal = Math.min(0, ...allValues) * 1.1;
+  const maxVal = Math.max(0, ...allValues) * 1.1;
   const range = maxVal - minVal || 1;
 
   const padding = { top: 50, right: 20, bottom: 50, left: 50 };
@@ -34,12 +51,16 @@ export default function EarningsHistoryChart({
 
   const scaleY = (val: number) =>
     padding.top + chartH - ((val - minVal) / range) * chartH;
-  const barWidth = (chartW / data.length) * 0.35;
-  const gap = (chartW / data.length) * 0.15;
+
+  const slotW = chartW / data.length;
+  const barWidth = Math.min(24, slotW * 0.32);
+  const innerGap = 3; // ≈2px rendered surface gap between the pair
+  const pairW = barWidth * 2 + innerGap;
 
   const ticks = 4;
-  const yTicks = Array.from({ length: ticks + 1 }, (_, i) =>
-    minVal + (i * range) / ticks
+  const yTicks = Array.from(
+    { length: ticks + 1 },
+    (_, i) => minVal + (i * range) / ticks
   );
 
   return (
@@ -53,95 +74,66 @@ export default function EarningsHistoryChart({
           viewBox={`0 0 ${width} ${height}`}
           className="h-auto w-full max-w-[600px]"
         >
-          {/* Grid lines */}
-          {yTicks.map((t, i) => (
+          {/* Gridlines: recessive solid hairlines */}
+          {yTicks.map((tick, i) => (
             <line
               key={`gy-${i}`}
               x1={padding.left}
-              y1={scaleY(t)}
+              y1={scaleY(tick)}
               x2={padding.left + chartW}
-              y2={scaleY(t)}
+              y2={scaleY(tick)}
               stroke="currentColor"
               strokeWidth="1"
               className="text-border/40"
-              strokeDasharray="2 2"
             />
           ))}
 
-          {/* Zero line if in range */}
-          {minVal <= 0 && maxVal >= 0 && (
-            <line
-              x1={padding.left}
-              y1={scaleY(0)}
-              x2={padding.left + chartW}
-              y2={scaleY(0)}
-              stroke="currentColor"
-              strokeWidth="1.5"
-              className="text-muted-foreground/60"
-            />
-          )}
-
-          {/* Axes */}
+          {/* Zero baseline */}
           <line
             x1={padding.left}
-            y1={padding.top + chartH}
+            y1={scaleY(0)}
             x2={padding.left + chartW}
-            y2={padding.top + chartH}
+            y2={scaleY(0)}
             stroke="currentColor"
             strokeWidth="1.5"
-            className="text-muted-foreground/50"
-          />
-          <line
-            x1={padding.left}
-            y1={padding.top}
-            x2={padding.left}
-            y2={padding.top + chartH}
-            stroke="currentColor"
-            strokeWidth="1.5"
-            className="text-muted-foreground/50"
+            className="text-muted-foreground/60"
           />
 
-          {/* Bars */}
           {data.map((d, i) => {
-            const xBase = padding.left + (i * chartW) / data.length + gap / 2;
+            const xBase = padding.left + i * slotW + (slotW - pairW) / 2;
+            const pairCenter = xBase + pairW / 2;
             const beat = (d.epsGercek ?? 0) > (d.epsTahmin ?? 0);
             const miss = (d.epsGercek ?? 0) < (d.epsTahmin ?? 0);
 
             return (
               <g key={i}>
-                {/* Estimate bar (muted) */}
+                {/* Estimate bar (de-emphasis) */}
                 {d.epsTahmin !== undefined && (
-                  <rect
-                    x={xBase}
-                    y={scaleY(d.epsTahmin)}
-                    width={barWidth}
-                    height={scaleY(minVal) - scaleY(d.epsTahmin)}
-                    rx="3"
+                  <path
+                    d={barPath(xBase, d.epsTahmin, barWidth, scaleY)}
                     className="fill-zinc-500/30"
-                  />
+                  >
+                    <title>{`${d.donem} · ${t("coverage:estimate")}: ${d.epsTahmin.toFixed(2)}`}</title>
+                  </path>
                 )}
-                {/* Actual bar (solid) */}
+                {/* Actual bar */}
                 {d.epsGercek !== undefined && (
-                  <rect
-                    x={xBase + barWidth + gap / 4}
-                    y={scaleY(d.epsGercek)}
-                    width={barWidth}
-                    height={scaleY(minVal) - scaleY(d.epsGercek)}
-                    rx="3"
-                    className={cn(
-                      "fill-current",
-                      beat
-                        ? "text-emerald-400/70"
-                        : miss
-                          ? "text-rose-400/70"
-                          : "text-sky-400/70"
+                  <path
+                    d={barPath(
+                      xBase + barWidth + innerGap,
+                      d.epsGercek,
+                      barWidth,
+                      scaleY
                     )}
-                  />
+                    fill={beat ? BEAT_COLOR : miss ? MISS_COLOR : INLINE_COLOR}
+                  >
+                    <title>{`${d.donem} · ${t("coverage:actual")}: ${d.epsGercek.toFixed(2)}`}</title>
+                  </path>
                 )}
-                {/* Surprise % */}
+                {/* Surprise % above the pair */}
                 {d.surpriz !== undefined && (
                   <text
-                    x={xBase + barWidth + gap / 8}
+                    x={pairCenter}
                     y={padding.top - 10}
                     textAnchor="middle"
                     className={cn(
@@ -155,7 +147,7 @@ export default function EarningsHistoryChart({
                 )}
                 {/* X label */}
                 <text
-                  x={xBase + barWidth + gap / 8}
+                  x={pairCenter}
                   y={padding.top + chartH + 18}
                   textAnchor="middle"
                   className="fill-muted-foreground text-[10px]"
@@ -167,15 +159,16 @@ export default function EarningsHistoryChart({
           })}
 
           {/* Y labels */}
-          {yTicks.map((t, i) => (
+          {yTicks.map((tick, i) => (
             <text
               key={`yt-${i}`}
               x={padding.left - 8}
-              y={scaleY(t) + 4}
+              y={scaleY(tick) + 4}
               textAnchor="end"
               className="fill-muted-foreground text-[10px]"
+              style={{ fontVariantNumeric: "tabular-nums" }}
             >
-              {t.toFixed(2)}
+              {tick.toFixed(2)}
             </text>
           ))}
 
@@ -185,7 +178,7 @@ export default function EarningsHistoryChart({
             <text x="16" y="9" className="fill-muted-foreground text-[9px]">
               {t("coverage:estimate")}
             </text>
-            <rect x="70" y="0" width="10" height="10" rx="2" className="fill-emerald-400/70" />
+            <rect x="70" y="0" width="10" height="10" rx="2" fill={BEAT_COLOR} />
             <text x="86" y="9" className="fill-muted-foreground text-[9px]">
               {t("coverage:actual")}
             </text>

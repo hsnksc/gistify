@@ -1,0 +1,44 @@
+{
+  "paths": {
+    "calendar_primary": "C:/Users/hasan/OneDrive/Desktop/gistify/client/public/calendar/calendar_forecast.json",
+    "calendar_targets": [
+      "C:/Users/hasan/OneDrive/Desktop/gistify/client/public/calendar/calendar_forecast.json",
+      "C:/Users/hasan/OneDrive/Desktop/calendar/calendar_forecast.json"
+    ],
+    "status_file": "C:/Users/hasan/OneDrive/Desktop/calendar/watcher_status.json",
+    "logs_dir": "C:/Users/hasan/OneDrive/Desktop/calendar/logs"
+  },
+  "source": {
+    "embed_url": "https://sslecal2.forexprostools.com/?columns=exc_flags,exc_currency,exc_importance,exc_actual,exc_forecast,exc_previous&features=datepicker,timezone&countries=25,32,6,37,72,22,17,39,14,10,35,43,56,36,110,11,26,12,4,5&calType=day&timeZone=63&lang=1",
+    "http_timeout": 25
+  },
+  "schedule": {
+    "tick_seconds": 30,
+    "plan_refresh_minutes": 15,
+    "first_check_seconds_after": 15,
+    "startup_catchup_minutes": 90,
+    "warmup_minutes_before_high": 2,
+    "retry_ladder_minutes": {
+      "3": [0.25, 0.5, 1, 2, 3, 5, 8, 12, 20, 30, 45],
+      "2": [0.5, 2, 5, 10, 20, 35],
+      "1": [1, 5, 15, 35]
+    }
+  },
+  "matching": { "fuzzy_enabled": true, "fuzzy_ratio": 0.86 },
+  "git": {
+    "enabled": true,
+    "repo_dir": "C:/Users/hasan/OneDrive/Desktop/gistify",
+    "add_paths": ["client/public/calendar/calendar_forecast.json"],
+    "branch": "main",
+    "debounce_minutes": 5,
+    "push_immediately_min_importance": 3,
+    "cmd_timeout_seconds": 120
+  },
+  "posts": {
+    "enabled": true,
+    "templates_path": "C:/Users/hasan/OneDrive/Desktop/gistify/client/public/calendar/TEMPLATES.md",
+    "output_dir": "C:/Users/hasan/Documents/kimi/workspace/xcom_posts",
+    "min_importance": 2
+  },
+  "on_exhausted": "leave"
+}
