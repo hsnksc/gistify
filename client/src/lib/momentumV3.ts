@@ -201,21 +201,35 @@ function normalizeParams(value: unknown): MomentumParams {
     return DEFAULT_PARAMS;
   }
 
+  const thresholdKeys = [
+    "gradeThresholds",
+    "grade_thresholds",
+    "thresholds",
+    "mssThresholds",
+    "mss_thresholds",
+  ];
+  // momentum_params.json nests thresholds under `scoring`
   const thresholds =
-    numberRecordFromValue(
-      readValue(source, [
-        "gradeThresholds",
-        "grade_thresholds",
-        "thresholds",
-        "mssThresholds",
-        "mss_thresholds",
-      ])
-    ) || DEFAULT_PARAMS.gradeThresholds;
+    numberRecordFromValue(readValue(source, thresholdKeys)) ||
+    numberRecordFromValue(readValue(source.scoring, thresholdKeys)) ||
+    DEFAULT_PARAMS.gradeThresholds;
+
+  // `version` is a bare number in momentum_params.json
+  const rawVersion = readValue(source, [
+    "version",
+    "paramsVersion",
+    "params_version",
+  ]);
+  const version =
+    readString(rawVersion) ||
+    (typeof rawVersion === "number" && Number.isFinite(rawVersion)
+      ? String(rawVersion)
+      : undefined) ||
+    readStringFromKeys(source, ["name"]) ||
+    DEFAULT_PARAMS.version;
 
   return {
-    version:
-      readStringFromKeys(source, ["version", "paramsVersion", "params_version"]) ||
-      DEFAULT_PARAMS.version,
+    version,
     generatedAt: readStringFromKeys(source, [
       "generatedAt",
       "generated_at",

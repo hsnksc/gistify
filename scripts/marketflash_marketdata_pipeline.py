@@ -1049,12 +1049,9 @@ def _derive_phase_counts(candidates: list[Candidate]) -> dict[str, int]:
 
 
 def _derive_mss_trend(candidates: list[Candidate], length: int = 18) -> list[float]:
-    """Return the last N MSS values sorted by ticker for a stable trend line."""
-    values = sorted([round(c.mss, 1) for c in candidates if c.mss > 0])
-    if len(values) < length:
-        # Pad with the average so the chart still renders meaningfully.
-        avg = sum(values) / len(values) if values else 50.0
-        values = [round(avg, 1)] * (length - len(values)) + values
+    """Return up to N real MSS values (ascending). No synthetic padding: padded
+    averages rendered as fake flat bars on the dashboard."""
+    values = sorted(round(c.mss, 1) for c in candidates if c.mss > 0)
     return values[-length:]
 
 

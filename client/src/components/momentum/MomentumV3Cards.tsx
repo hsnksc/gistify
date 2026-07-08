@@ -132,6 +132,25 @@ function formatNumber(value: number | undefined) {
     : Math.round(value).toString();
 }
 
+function formatDateTime(value: string | undefined, language: AppLanguage) {
+  if (!value) {
+    return "-";
+  }
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  return new Intl.DateTimeFormat(language === "en" ? "en-US" : "tr-TR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(date);
+}
+
 function firstNumber(...values: Array<unknown>) {
   for (const value of values) {
     const nextValue = readNumber(value);
@@ -204,12 +223,24 @@ function normalizePhase(value: unknown) {
 }
 
 export function getSignalMss(signal: MidasSignalRecord) {
-  return firstNumber(
-    signal.mss,
-    signal.apex_score,
-    signal.confidence,
-    Math.abs(signal.strength) * 14
-  );
+  // Only genuine momentum scores; confidence / |strength| live on a different
+  // scale and produced fake "Grade A" badges on SELL names.
+  return firstNumber(signal.mss, signal.apex_score);
+}
+
+export function gradeFromMss(
+  mss: number | undefined,
+  params?: MomentumParams
+) {
+  if (mss === undefined) {
+    return undefined;
+  }
+
+  const thresholds = params?.gradeThresholds || {};
+  if (mss >= (thresholds.A ?? 75)) return "A";
+  if (mss >= (thresholds.B ?? 60)) return "B";
+  if (mss >= (thresholds.C ?? 45)) return "C";
+  return "IZLEME";
 }
 
 export function getSignalGrade(
@@ -223,16 +254,7 @@ export function getSignalGrade(
     return explicitGrade;
   }
 
-  const mss = getSignalMss(signal);
-  if (mss === undefined) {
-    return undefined;
-  }
-
-  const thresholds = params?.gradeThresholds || {};
-  if (mss >= (thresholds.A ?? 75)) return "A";
-  if (mss >= (thresholds.B ?? 60)) return "B";
-  if (mss >= (thresholds.C ?? 45)) return "C";
-  return "IZLEME";
+  return gradeFromMss(getSignalMss(signal), params);
 }
 
 export function getSignalFlags(signal: MidasSignalRecord) {
@@ -354,6 +376,7 @@ function MetricPill({
 
 function deriveGradeCounts(
   signals: MidasSignalRecord[],
+  ledger: MomentumLedgerRow[],
   params: MomentumParams,
   explicit?: Record<string, number>
 ) {
@@ -372,9 +395,24 @@ function deriveGradeCounts(
     return counts;
   }
 
+  // The public ledger is the graded universe; live scanner signals are only a
+  // last resort so this card stays consistent with the phase/carry cards.
+  if (ledger.length) {
+    for (const item of ledger) {
+      const grade =
+        normalizeMomentumGrade(item.grade) || gradeFromMss(item.mss, params);
+      if (grade) {
+        counts[grade] = (counts[grade] || 0) + 1;
+      }
+    }
+    return counts;
+  }
+
   for (const signal of signals) {
-    const grade = getSignalGrade(signal, params) || "IZLEME";
-    counts[grade] = (counts[grade] || 0) + 1;
+    const grade = getSignalGrade(signal, params);
+    if (grade) {
+      counts[grade] = (counts[grade] || 0) + 1;
+    }
   }
 
   return counts;
@@ -400,10 +438,11 @@ function derivePhaseCounts(
     return counts;
   }
 
-  const phaseSources = [
-    ...signals.map(signal => signal.phase),
-    ...ledger.map(item => item.phase),
-  ];
+  // Prefer the ledger alone — merging it with live signals double-counted
+  // symbols that appear in both sources.
+  const phaseSources = ledger.length
+    ? ledger.map(item => item.phase)
+    : signals.map(signal => signal.phase);
 
   for (const phaseValue of phaseSources) {
     const phase = normalizePhase(phaseValue);
@@ -442,9 +481,12 @@ function readCountsFromSources(
   report: MomentumMarketflashReport | null,
   keys: string[]
 ) {
+  // The marketflash report is the learning-layer source of truth; the live
+  // scanner snapshot describes a different (wider) universe and only serves
+  // as fallback so every card counts the same set of names.
   return (
-    numberRecordFromValue(readValue(data, keys)) ||
-    numberRecordFromValue(readValue(report, keys))
+    numberRecordFromValue(readValue(report, keys)) ||
+    numberRecordFromValue(readValue(data, keys))
   );
 }
 
@@ -453,8 +495,8 @@ function readTrend(
   report: MomentumMarketflashReport | null
 ) {
   return (
-    numberArrayFromValue(data.mssTrend) ||
-    numberArrayFromValue(readValue(report, ["mssTrend", "mss_trend"]))
+    numberArrayFromValue(readValue(report, ["mssTrend", "mss_trend"])) ||
+    numberArrayFromValue(data.mssTrend)
   );
 }
 
@@ -523,12 +565,13 @@ function SystemHealthCard({
     calibration?.paramsVersion,
     data.version
   );
+  const language = useAppLanguage();
   const calibrationDate = firstString(
     data.calibrationDate,
     calibration?.date,
     readStringFromKeys(calibration, ["calibrationDate", "calibration_date"])
   );
-  const copy = getMomentumCopy(useAppLanguage());
+  const copy = getMomentumCopy(language);
   const summaryNote =
     firstString(
       data.summaryNote,
@@ -561,7 +604,7 @@ function SystemHealthCard({
         />
         <MetricPill
           label={copy.calibration}
-          value={calibrationDate || "-"}
+          value={formatDateTime(calibrationDate, language)}
           tone="neutral"
         />
       </div>
@@ -570,19 +613,35 @@ function SystemHealthCard({
   );
 }
 
+function mssBarClass(value: number, params?: MomentumParams) {
+  switch (gradeFromMss(value, params)) {
+    case "A":
+      return "bg-emerald-300/85";
+    case "B":
+      return "bg-sky-300/80";
+    case "C":
+      return "bg-amber-300/75";
+    default:
+      return "bg-slate-400/55";
+  }
+}
+
 function MssDistributionCard({
   data,
   report,
   params,
+  ledger,
   signals,
 }: {
   data: MidasSignalsData;
   report: MomentumMarketflashReport | null;
   params: MomentumParams;
+  ledger: MomentumLedgerRow[];
   signals: MidasSignalRecord[];
 }) {
   const counts = deriveGradeCounts(
     signals,
+    ledger,
     params,
     readCountsFromSources(data, report, [
       "gradeCounts",
@@ -594,12 +653,26 @@ function MssDistributionCard({
     1,
     Object.values(counts).reduce((sum, value) => sum + value, 0)
   );
-  const trend =
-    readTrend(data, report) ||
-    signals
-      .slice(0, 10)
-      .map(getSignalMss)
-      .filter((item): item is number => item !== undefined);
+  const ledgerBars = ledger
+    .filter(item => item.mss !== undefined)
+    .sort((left, right) => (right.mss ?? 0) - (left.mss ?? 0))
+    .slice(0, 18)
+    .map(item => ({ label: item.symbol, value: item.mss as number }));
+  const signalBars = signals
+    .map(signal => ({ label: signal.symbol, value: getSignalMss(signal) }))
+    .filter((item): item is { label: string; value: number } =>
+      item.value !== undefined
+    )
+    .sort((left, right) => right.value - left.value)
+    .slice(0, 18);
+  const trendBars = (readTrend(data, report) || [])
+    .slice(-18)
+    .map(value => ({ label: undefined as string | undefined, value }));
+  const bars = ledgerBars.length
+    ? ledgerBars
+    : signalBars.length
+      ? signalBars
+      : trendBars;
   const language = useAppLanguage();
   const copy = getMomentumCopy(language);
 
@@ -628,20 +701,34 @@ function MssDistributionCard({
           );
         })}
       </div>
-      <div className="mt-4 flex h-14 items-end gap-1 rounded-xl border border-border bg-background/45 p-2">
-        {trend.slice(-18).map((value, index) => (
-          <div
-            key={`${value}-${index}`}
-            className="min-w-1 flex-1 rounded-t bg-sky-300/75"
-            style={{ height: `${clampPct(value)}%` }}
-            title={`MSS ${value.toFixed(1)}`}
-          />
-        ))}
-        {!trend.length ? (
-          <p className="self-center text-xs text-muted-foreground">
+      <div className="mt-4 rounded-xl border border-border bg-background/45 p-2">
+        {bars.length ? (
+          <div className="flex items-end gap-1">
+            {bars.map((entry, index) => (
+              <div
+                key={`${entry.label ?? "mss"}-${index}`}
+                className="flex min-w-0 flex-1 flex-col items-center gap-1"
+              >
+                <div className="flex h-14 w-full items-end">
+                  <div
+                    className={`w-full rounded-t ${mssBarClass(entry.value, params)}`}
+                    style={{ height: `${clampPct(entry.value)}%` }}
+                    title={`${entry.label ? `${entry.label} · ` : ""}MSS ${entry.value.toFixed(1)}`}
+                  />
+                </div>
+                {entry.label ? (
+                  <span className="w-full truncate text-center text-[8px] uppercase tracking-wide text-muted-foreground">
+                    {entry.label}
+                  </span>
+                ) : null}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="py-3 text-center text-xs text-muted-foreground">
             {copy.trendPending}
           </p>
-        ) : null}
+        )}
       </div>
     </DashboardCard>
   );
@@ -722,8 +809,8 @@ function CarryForwardHealthCard({
   ledger: MomentumLedgerRow[];
 }) {
   const rawHealth =
-    readValue(data, ["carryForwardHealth", "carry_forward_health"]) ||
-    readValue(report, ["carryForwardHealth", "carry_forward_health"]);
+    readValue(report, ["carryForwardHealth", "carry_forward_health"]) ||
+    readValue(data, ["carryForwardHealth", "carry_forward_health"]);
   const health = isRecord(rawHealth) ? rawHealth : null;
   const active = ledger.filter(item =>
     (item.status || "").toLowerCase().match(/open|active|carry|tas|taş/)
@@ -876,6 +963,7 @@ export function MomentumV3Dashboard({
           data={data}
           report={report}
           params={params}
+          ledger={ledger}
           signals={signals}
         />
         <PhaseMapCard
