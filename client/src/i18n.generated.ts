@@ -1594,8 +1594,15 @@ export interface I18nResourceShape {
   macro: {
     "2Ready": string;
     activeWorkspaces: string;
+    archiveBackToLive: string;
     archiveBannerBody: string;
     archiveBannerTitle: string;
+    archiveEmpty: string;
+    archiveLive: string;
+    archiveLoadFailed: string;
+    archiveMissingSide: string;
+    archiveViewing: string;
+    archivedSnapshotNote: string;
     asset: string;
     consumerInflation: string;
     coolerThanExpected: string;
@@ -1603,7 +1610,6 @@ export interface I18nResourceShape {
     coreYoy: string;
     cpi: string;
     cpiAndPpiSnapshotsAre: string;
-    cpiJune2026Archive: string;
     cpiOnTheLeftPpi: string;
     cpiPpiForecast: string;
     cpiStatus: string;
@@ -1630,7 +1636,6 @@ export interface I18nResourceShape {
     noThesisYet: string;
     playbook: string;
     ppi: string;
-    ppiJune2026Archive: string;
     ppiStatus: string;
     preferredTarget: string;
     prior: string;

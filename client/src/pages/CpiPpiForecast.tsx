@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import type {
   CpiPpiForecastData, CpiPpiForecastPipelineState, MacroForecastBias, MacroForecastPipelineMetadata, MacroForecastPipelineStatus, MacroForecastRelease, MacroForecastScenario, MacroForecastWorkspaceData, MacroForecastWorkspaceKey, } from "@shared/cpiPpiForecast";
 import {
-  Activity, Archive, CalendarDays, ChevronDown, Database, RefreshCw, ShieldAlert, Sparkles, Target, TrendingUp, } from "lucide-react";
+  Activity, Archive, CalendarDays, Database, RefreshCw, ShieldAlert, Sparkles, Target, TrendingUp, } from "lucide-react";
 import WorkspaceLoadingState from "@/components/workspace/WorkspaceLoadingState";
 import { Button } from "@/components/ui/button";
 import { usePageMeta } from "@/hooks/usePageMeta";
@@ -11,6 +11,138 @@ import { cn } from "@/lib/utils";
 
 const SNAPSHOT_REFRESH_INTERVAL_MS = 60 * 1000;
 const WORKSPACE_ORDER: MacroForecastWorkspaceKey[] = ["cpi", "ppi"];
+const ARCHIVE_FETCH_LIMIT = 24;
+
+interface MacroArchiveApiRecord {
+  id: number;
+  month: string;
+  source: string | null;
+  createdAt: number;
+  payload: MacroForecastWorkspaceData;
+}
+
+interface ArchiveMonthEntry {
+  month: string;
+  cpi: MacroForecastWorkspaceData | null;
+  ppi: MacroForecastWorkspaceData | null;
+}
+
+const MONTH_NAME_TO_NUMBER: Record<string, number> = {
+  jan: 1, january: 1,
+  feb: 2, february: 2,
+  mar: 3, march: 3,
+  apr: 4, april: 4,
+  may: 5,
+  jun: 6, june: 6,
+  jul: 7, july: 7,
+  aug: 8, august: 8,
+  sep: 9, sept: 9, september: 9,
+  oct: 10, october: 10,
+  nov: 11, november: 11,
+  dec: 12, december: 12,
+};
+
+function parsePeriodMonth(period: string) {
+  const trimmed = period.trim();
+  if (!trimmed) {
+    return null;
+  }
+
+  const isoMatch = trimmed.match(/^(\d{4})-(\d{2})/);
+  if (isoMatch) {
+    return `${isoMatch[1]}-${isoMatch[2]}`;
+  }
+
+  const namedMatch = trimmed.match(/^([A-Za-z]+)\.?\s+(\d{4})$/);
+  if (namedMatch) {
+    const monthNumber = MONTH_NAME_TO_NUMBER[namedMatch[1].toLowerCase()];
+    if (monthNumber) {
+      return `${namedMatch[2]}-${String(monthNumber).padStart(2, "0")}`;
+    }
+  }
+
+  return null;
+}
+
+function forecastArchiveMonth(forecast: MacroForecastWorkspaceData) {
+  return (
+    parsePeriodMonth(forecast.release?.period || "") ||
+    (forecast.reportDate?.match(/^\d{4}-\d{2}/)?.[0] ?? null) ||
+    (forecast.generatedAt?.match(/^\d{4}-\d{2}/)?.[0] ?? null)
+  );
+}
+
+function formatMonthLabel(month: string, language: AppLanguage) {
+  const parsed = new Date(`${month}-01T00:00:00Z`);
+  if (Number.isNaN(parsed.getTime())) {
+    return month;
+  }
+
+  return new Intl.DateTimeFormat(language === "en" ? "en-US" : "tr-TR", {
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(parsed);
+}
+
+function sanitizeArchivedRelease(
+  value: MacroForecastRelease | undefined,
+  key: MacroForecastWorkspaceKey
+): MacroForecastRelease {
+  return {
+    name: key === "ppi" ? "PPI" : "CPI",
+    period: value?.period || "",
+    releaseDate: value?.releaseDate || "",
+    releaseTimeEt: value?.releaseTimeEt || "",
+    headlineMoM: value?.headlineMoM || "",
+    headlineYoY: value?.headlineYoY || "",
+    coreMoM: value?.coreMoM || "",
+    coreYoY: value?.coreYoY || "",
+    priorHeadlineMoM: value?.priorHeadlineMoM,
+    priorHeadlineYoY: value?.priorHeadlineYoY,
+    priorCoreMoM: value?.priorCoreMoM,
+    priorCoreYoY: value?.priorCoreYoY,
+    bias: value?.bias === "HOTTER" || value?.bias === "COOLER" ? value.bias : "INLINE",
+    confidence: typeof value?.confidence === "number" ? value.confidence : 0,
+    thesis: value?.thesis || "",
+  };
+}
+
+// Archive payloads can predate the current normalizer (raw JSON imports), so
+// fill every field the workspace section dereferences before rendering.
+function sanitizeArchivedWorkspace(
+  payload: MacroForecastWorkspaceData,
+  key: MacroForecastWorkspaceKey
+): MacroForecastWorkspaceData {
+  return {
+    key,
+    generatedAt: payload.generatedAt || "",
+    reportDate: payload.reportDate || "",
+    title: payload.title || "",
+    summary: payload.summary || "",
+    baseCase: payload.baseCase || "",
+    conviction: typeof payload.conviction === "number" ? payload.conviction : 0,
+    release: sanitizeArchivedRelease(payload.release, key),
+    scenarios: Array.isArray(payload.scenarios)
+      ? payload.scenarios.map((scenario, index) => ({
+          id: scenario?.id || `scenario-${index + 1}`,
+          label: scenario?.label || "-",
+          probability:
+            typeof scenario?.probability === "number" ? scenario.probability : 0,
+          outcome: scenario?.outcome || "",
+          marketReadthrough: scenario?.marketReadthrough || "",
+          favoredAssets: Array.isArray(scenario?.favoredAssets)
+            ? scenario.favoredAssets
+            : [],
+          invalidation: scenario?.invalidation || "",
+        }))
+      : [],
+    setups: Array.isArray(payload.setups) ? payload.setups : [],
+    watchItems: Array.isArray(payload.watchItems) ? payload.watchItems : [],
+    keyDrivers: Array.isArray(payload.keyDrivers) ? payload.keyDrivers : [],
+    risks: Array.isArray(payload.risks) ? payload.risks : [],
+  };
+}
 
 const WORKSPACE_THEME: Record<
   MacroForecastWorkspaceKey,
@@ -286,68 +418,99 @@ function CompactStatCard({
   );
 }
 
-function ForecastArchiveBanner({
-  onToggle,
-  open,
+function ForecastArchiveExplorer({
+  error,
+  language,
+  liveMonth,
+  months,
+  onSelect,
+  selectedMonth,
 }: {
-  onToggle: () => void;
-  open: boolean;
+  error: string | null;
+  language: AppLanguage;
+  liveMonth: string | null;
+  months: string[];
+  onSelect: (month: string | null) => void;
+  selectedMonth: string | null;
 }) {
+  const chipBaseClassName =
+    "h-9 rounded-lg border shadow-none transition-colors";
+  const chipActiveClassName =
+    "border-cyan-200/45 bg-cyan-300/28 text-cyan-50 hover:bg-cyan-300/32";
+  const chipIdleClassName =
+    "border-cyan-200/20 bg-cyan-300/10 text-cyan-100/80 hover:bg-cyan-300/20";
+
   return (
     <section className="mt-3 rounded-xl border border-cyan-300/30 bg-[linear-gradient(180deg,rgba(34,211,238,0.12),rgba(8,47,73,0.24))] px-4 py-3">
-      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex min-w-0 items-start gap-3">
-          <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg border border-cyan-300/30 bg-cyan-300/12">
-            <Archive className="size-4 text-cyan-100" />
-          </span>
-          <div className="min-w-0">
-            <p className="heading-condensed text-xs uppercase tracking-[0.16em] text-cyan-100">
-              {t("macro:archiveBannerTitle")}
-            </p>
-            <p className="mt-1 text-sm leading-6 text-foreground/84">
-              {t("macro:archiveBannerBody")}
-            </p>
-          </div>
+      <div className="flex min-w-0 items-start gap-3">
+        <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg border border-cyan-300/30 bg-cyan-300/12">
+          <Archive className="size-4 text-cyan-100" />
+        </span>
+        <div className="min-w-0">
+          <p className="heading-condensed text-xs uppercase tracking-[0.16em] text-cyan-100">
+            {t("macro:archiveBannerTitle")}
+          </p>
+          <p className="mt-1 text-sm leading-6 text-foreground/84">
+            {t("macro:archiveBannerBody")}
+          </p>
         </div>
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          className="h-9 border-cyan-200/30 bg-cyan-300/18 text-cyan-50 shadow-none hover:bg-cyan-300/28"
-          onClick={onToggle}
-        >
-          <Archive className="size-3.5" />
-          {t("macro:archiveBannerTitle")}
-          <ChevronDown
-            className={cn("size-3.5 transition-transform", open ? "rotate-180" : "")}
-          />
-        </Button>
       </div>
 
-      {open ? (
-        <div className="mt-3 flex flex-wrap gap-2">
-          {[
-            {
-              href: "/cpi_forecast_june_2026.json",
-              label: t("macro:cpiJune2026Archive"),
-            },
-            {
-              href: "/ppi_forecast_june_2026.json",
-              label: t("macro:ppiJune2026Archive"),
-            },
-          ].map(item => (
-            <Button
-              asChild
-              key={item.href}
-              size="sm"
-              className="h-9 rounded-lg border border-cyan-200/30 bg-cyan-300/18 text-cyan-50 shadow-none hover:bg-cyan-300/28"
-            >
-              <a href={item.href} rel="noreferrer" target="_blank">
-                <Archive className="size-3.5" />
-                {item.label}
-              </a>
-            </Button>
-          ))}
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <Button
+          type="button"
+          size="sm"
+          className={cn(
+            chipBaseClassName,
+            selectedMonth === null ? chipActiveClassName : chipIdleClassName
+          )}
+          onClick={() => onSelect(null)}
+        >
+          <Activity className="size-3.5" />
+          {t("macro:archiveLive")}
+          {liveMonth ? ` · ${formatMonthLabel(liveMonth, language)}` : ""}
+        </Button>
+        {months.map(month => (
+          <Button
+            key={month}
+            type="button"
+            size="sm"
+            className={cn(
+              chipBaseClassName,
+              selectedMonth === month ? chipActiveClassName : chipIdleClassName
+            )}
+            onClick={() => onSelect(month)}
+          >
+            <CalendarDays className="size-3.5" />
+            {formatMonthLabel(month, language)}
+          </Button>
+        ))}
+        {!months.length ? (
+          <span className="text-xs leading-5 text-cyan-100/70">
+            {error || t("macro:archiveEmpty")}
+          </span>
+        ) : null}
+      </div>
+
+      {selectedMonth ? (
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-cyan-200/25 bg-black/25 px-3 py-2">
+          <p className="text-xs leading-5 text-cyan-50/90">
+            <span className="font-semibold uppercase tracking-[0.14em]">
+              {t("macro:archiveViewing")}
+            </span>{" "}
+            · {formatMonthLabel(selectedMonth, language)} —{" "}
+            {t("macro:archivedSnapshotNote")}
+          </p>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="h-8 border-cyan-200/30 bg-cyan-300/18 text-cyan-50 shadow-none hover:bg-cyan-300/28"
+            onClick={() => onSelect(null)}
+          >
+            <RefreshCw className="size-3.5" />
+            {t("macro:archiveBackToLive")}
+          </Button>
         </div>
       ) : null}
     </section>
@@ -858,10 +1021,12 @@ function ForecastWorkspaceSection({
   slotKey,
   forecast,
   language,
+  archived = false,
 }: {
   slotKey: MacroForecastWorkspaceKey;
   forecast: MacroForecastWorkspaceData;
   language: AppLanguage;
+  archived?: boolean;
 }) {
   const theme = WORKSPACE_THEME[slotKey];
   const leadScenario = getLeadScenario(forecast);
@@ -906,14 +1071,20 @@ function ForecastWorkspaceSection({
               >
                 {biasLabel(forecast.release.bias, language)}
               </span>
-              <span
-                className={`rounded-full border px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.16em] ${pipelineStatusClass(
-                  forecast.pipeline?.status || "idle"
-                )}`}
-              >
-                {"Pipeline"}:{" "}
-                {pipelineStatusLabel(forecast.pipeline?.status || "idle", language)}
-              </span>
+              {archived ? (
+                <span className="rounded-full border border-cyan-300/30 bg-cyan-300/12 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.16em] text-cyan-100">
+                  {t("macro:archiveViewing")}
+                </span>
+              ) : (
+                <span
+                  className={`rounded-full border px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.16em] ${pipelineStatusClass(
+                    forecast.pipeline?.status || "idle"
+                  )}`}
+                >
+                  {"Pipeline"}:{" "}
+                  {pipelineStatusLabel(forecast.pipeline?.status || "idle", language)}
+                </span>
+              )}
             </div>
           </div>
 
@@ -1044,8 +1215,12 @@ export default function CpiPpiForecastPage({
   const [forecast, setForecast] = useState<CpiPpiForecastData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [showJuneComparison, setShowJuneComparison] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [archiveEntries, setArchiveEntries] = useState<ArchiveMonthEntry[]>([]);
+  const [archiveError, setArchiveError] = useState<string | null>(null);
+  const [selectedArchiveMonth, setSelectedArchiveMonth] = useState<string | null>(
+    null
+  );
 
   usePageMeta({
     description: t("macro:cpiAndPpiSnapshotsAre"),
@@ -1091,9 +1266,61 @@ export default function CpiPpiForecastPage({
     [language]
   );
 
+  const loadArchives = useCallback(async () => {
+    try {
+      const responses = await Promise.all(
+        WORKSPACE_ORDER.map(workspace =>
+          fetch(
+            `/api/cpi-ppi/forecast/archive?workspace=${workspace}&limit=${ARCHIVE_FETCH_LIMIT}`,
+            { cache: "no-store", credentials: "include" }
+          )
+        )
+      );
+
+      const entriesByMonth = new Map<string, ArchiveMonthEntry>();
+      for (const [index, response] of responses.entries()) {
+        if (!response.ok) {
+          throw new Error(t("macro:archiveLoadFailed"));
+        }
+
+        const workspace = WORKSPACE_ORDER[index];
+        const payload = (await response.json()) as {
+          records?: MacroArchiveApiRecord[];
+        };
+        for (const record of payload.records ?? []) {
+          if (!record?.month || !record.payload) {
+            continue;
+          }
+
+          const entry = entriesByMonth.get(record.month) ?? {
+            month: record.month,
+            cpi: null,
+            ppi: null,
+          };
+          entry[workspace] = sanitizeArchivedWorkspace(record.payload, workspace);
+          entriesByMonth.set(record.month, entry);
+        }
+      }
+
+      setArchiveEntries(
+        [...entriesByMonth.values()].sort((left, right) =>
+          right.month.localeCompare(left.month)
+        )
+      );
+      setArchiveError(null);
+    } catch (archiveLoadError) {
+      setArchiveError(
+        archiveLoadError instanceof Error && archiveLoadError.message
+          ? archiveLoadError.message
+          : t("macro:archiveLoadFailed")
+      );
+    }
+  }, []);
+
   useEffect(() => {
     void loadForecast();
-  }, [loadForecast]);
+    void loadArchives();
+  }, [loadForecast, loadArchives]);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -1111,6 +1338,35 @@ export default function CpiPpiForecastPage({
         (item): item is MacroForecastWorkspaceData => Boolean(item)
       ),
     [forecast]
+  );
+
+  const liveMonths = useMemo(() => {
+    const months = new Set<string>();
+    for (const workspace of availableWorkspaces) {
+      const month = forecastArchiveMonth(workspace);
+      if (month) {
+        months.add(month);
+      }
+    }
+    return months;
+  }, [availableWorkspaces]);
+
+  const pastMonths = useMemo(
+    () => archiveEntries.filter(entry => !liveMonths.has(entry.month)),
+    [archiveEntries, liveMonths]
+  );
+
+  const liveMonth = useMemo(() => {
+    const sorted = [...liveMonths].sort();
+    return sorted.length ? sorted[sorted.length - 1] : null;
+  }, [liveMonths]);
+
+  const activeArchive = useMemo(
+    () =>
+      selectedArchiveMonth
+        ? (pastMonths.find(entry => entry.month === selectedArchiveMonth) ?? null)
+        : null,
+    [pastMonths, selectedArchiveMonth]
   );
 
   if (loading && !forecast) {
@@ -1255,29 +1511,55 @@ export default function CpiPpiForecastPage({
           </div>
         ) : null}
 
-        <ForecastArchiveBanner
-          onToggle={() => setShowJuneComparison(current => !current)}
-          open={showJuneComparison}
+        <ForecastArchiveExplorer
+          error={archiveError}
+          language={language}
+          liveMonth={liveMonth}
+          months={pastMonths.map(entry => entry.month)}
+          onSelect={setSelectedArchiveMonth}
+          selectedMonth={activeArchive?.month ?? null}
         />
 
         <main className="mt-3 grid grid-cols-1 gap-3 lg:grid-cols-2 items-start">
-          {workspaceSlots.map(item =>
-            item.forecast ? (
-              <ForecastWorkspaceSection
-                key={item.slotKey}
-                slotKey={item.slotKey}
-                forecast={item.forecast}
-                language={language}
-              />
-            ) : (
-              <MissingWorkspacePanel
-                key={item.slotKey}
-                slotKey={item.slotKey}
-                pipeline={item.pipeline}
-                language={language}
-              />
-            )
-          )}
+          {activeArchive
+            ? WORKSPACE_ORDER.map(slotKey => {
+                const archivedForecast = activeArchive[slotKey];
+                return archivedForecast ? (
+                  <ForecastWorkspaceSection
+                    key={`${activeArchive.month}-${slotKey}`}
+                    slotKey={slotKey}
+                    forecast={archivedForecast}
+                    language={language}
+                    archived
+                  />
+                ) : (
+                  <section
+                    key={`${activeArchive.month}-${slotKey}`}
+                    className="rounded-xl border border-dashed border-white/10 bg-black/15 px-4 py-6 text-sm text-muted-foreground"
+                  >
+                    {t("macro:archiveMissingSide", {
+                      label: WORKSPACE_THEME[slotKey].label,
+                    })}
+                  </section>
+                );
+              })
+            : workspaceSlots.map(item =>
+                item.forecast ? (
+                  <ForecastWorkspaceSection
+                    key={item.slotKey}
+                    slotKey={item.slotKey}
+                    forecast={item.forecast}
+                    language={language}
+                  />
+                ) : (
+                  <MissingWorkspacePanel
+                    key={item.slotKey}
+                    slotKey={item.slotKey}
+                    pipeline={item.pipeline}
+                    language={language}
+                  />
+                )
+              )}
         </main>
       </div>
     </div>

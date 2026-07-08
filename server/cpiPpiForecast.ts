@@ -321,6 +321,113 @@ function normalizeForecastWorkspaceData(
   } satisfies MacroForecastWorkspaceData;
 }
 
+const MONTH_NAME_TO_NUMBER: Record<string, number> = {
+  jan: 1, january: 1,
+  feb: 2, february: 2,
+  mar: 3, march: 3,
+  apr: 4, april: 4,
+  may: 5,
+  jun: 6, june: 6,
+  jul: 7, july: 7,
+  aug: 8, august: 8,
+  sep: 9, sept: 9, september: 9,
+  oct: 10, october: 10,
+  nov: 11, november: 11,
+  dec: 12, december: 12,
+};
+
+function parsePeriodMonth(period: string): string | null {
+  const trimmed = period.trim();
+  if (!trimmed) {
+    return null;
+  }
+
+  const isoMatch = trimmed.match(/^(\d{4})-(\d{2})/);
+  if (isoMatch) {
+    return `${isoMatch[1]}-${isoMatch[2]}`;
+  }
+
+  const namedMatch = trimmed.match(/^([A-Za-z]+)\.?\s+(\d{4})$/);
+  if (namedMatch) {
+    const monthNumber = MONTH_NAME_TO_NUMBER[namedMatch[1].toLowerCase()];
+    if (monthNumber) {
+      return `${namedMatch[2]}-${String(monthNumber).padStart(2, "0")}`;
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Archive records are keyed by the month the release covers (release.period,
+ * e.g. "Jun 2026" -> 2026-06), not by reportDate: a June forecast is written
+ * in early July, so reportDate would collide with the July forecast.
+ */
+export function resolveArchiveMonth(data: MacroForecastWorkspaceData) {
+  return (
+    parsePeriodMonth(data.release.period) ||
+    (data.reportDate.match(/^\d{4}-\d{2}/)?.[0] ?? null) ||
+    (data.generatedAt.match(/^\d{4}-\d{2}/)?.[0] ?? null)
+  );
+}
+
+const MONTHLY_ARCHIVE_FILE_PATTERN = /^(cpi|ppi)_forecast_[a-z]+_\d{4}\.json$/i;
+
+function buildArchiveSeedDirectories() {
+  return Array.from(
+    new Set([
+      path.resolve(process.cwd(), "data"),
+      path.resolve(process.cwd(), "client", "public"),
+      path.resolve(process.cwd(), "dist", "public"),
+      path.resolve("/app", "data"),
+    ])
+  );
+}
+
+function seedArchiveFromMonthlyFiles(macroArchiveStore: MacroArchiveStore) {
+  for (const directory of buildArchiveSeedDirectories()) {
+    let entries: fs.Dirent[];
+    try {
+      entries = fs.readdirSync(directory, { withFileTypes: true });
+    } catch {
+      continue;
+    }
+
+    for (const entry of entries) {
+      if (!entry.isFile() || !MONTHLY_ARCHIVE_FILE_PATTERN.test(entry.name)) {
+        continue;
+      }
+
+      const key = entry.name.toLowerCase().startsWith("cpi") ? "cpi" : "ppi";
+      const filePath = path.join(directory, entry.name);
+
+      try {
+        const raw = fs.readFileSync(filePath, "utf8");
+        const normalized = normalizeForecastWorkspaceData(
+          JSON.parse(raw) as unknown,
+          key
+        );
+        if (!normalized) {
+          continue;
+        }
+
+        const month = resolveArchiveMonth(normalized);
+        if (!month || macroArchiveStore.getArchive(key, month)) {
+          continue;
+        }
+
+        macroArchiveStore.saveArchive(key, month, normalized, filePath);
+        console.log(`[cpiPpiForecast] Seeded ${key}/${month} archive from ${filePath}`);
+      } catch (seedError) {
+        console.error(
+          `[cpiPpiForecast] Failed to seed archive from ${filePath}:`,
+          seedError
+        );
+      }
+    }
+  }
+}
+
 function resolvePollIntervalMs() {
   const configured = Number(process.env.CPI_PPI_PIPELINE_POLL_INTERVAL_MS);
   if (!Number.isFinite(configured) || configured <= 0) {
@@ -549,13 +656,15 @@ export function createCpiPpiForecastSyncService(
       runtime.status = "ok";
 
       try {
-        const archiveMonth = normalized.reportDate.slice(0, 7);
-        macroArchiveStore.saveArchive(
-          key,
-          archiveMonth,
-          normalized,
-          locatedSource.filePath
-        );
+        const archiveMonth = resolveArchiveMonth(normalized);
+        if (archiveMonth) {
+          macroArchiveStore.saveArchive(
+            key,
+            archiveMonth,
+            normalized,
+            locatedSource.filePath
+          );
+        }
       } catch (archiveError) {
         console.error(
           `[cpiPpiForecast] Failed to archive ${key} snapshot:`,
@@ -584,6 +693,12 @@ export function createCpiPpiForecastSyncService(
   }
 
   async function start() {
+    try {
+      seedArchiveFromMonthlyFiles(macroArchiveStore);
+    } catch (seedError) {
+      console.error("[cpiPpiForecast] Archive seed pass failed:", seedError);
+    }
+
     await refresh({ force: true });
 
     if (timer) {

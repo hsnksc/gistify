@@ -10,6 +10,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { resolveArchiveMonth } from "../server/cpiPpiForecast";
 import { createMacroArchiveStore } from "../server/services/macroArchiveStore";
 import type {
   MacroForecastWorkspaceData,
@@ -33,9 +34,15 @@ function detectIndicator(fileName: string): MacroForecastWorkspaceKey | null {
 }
 
 function resolveMonth(payload: MacroForecastWorkspaceData): string | null {
-  const raw = payload.reportDate || payload.generatedAt || "";
-  const match = raw.match(/^\d{4}-\d{2}/);
-  return match ? match[0] : null;
+  // Key by the release period month (Jun 2026 -> 2026-06); a June forecast is
+  // written in July, so reportDate would collide with the July forecast.
+  try {
+    return resolveArchiveMonth(payload);
+  } catch {
+    const raw = payload.reportDate || payload.generatedAt || "";
+    const match = raw.match(/^\d{4}-\d{2}/);
+    return match ? match[0] : null;
+  }
 }
 
 function main() {
