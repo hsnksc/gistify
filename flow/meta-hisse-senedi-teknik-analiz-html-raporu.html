@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>META Hisse Senedi — Teknik Analiz &amp; Fiyat Tahminleri Raporu | $META</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="META Hisse Senedi — Teknik Analiz &amp; Fiyat Tahminleri Raporu | $META" />
+<meta property="og:description" content="Destek/direnç, hareketli ortalamalar, kısa/orta/uzun vade senaryolar ve karşılaştırmalı değerleme ile META teknik analiz raporu." />
+<meta property="og:site_name" content="Gistify" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:760px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:2px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.section-num{font-family:var(--gf-mono);font-size:.72rem;font-weight:700;color:var(--gf-accent);opacity:.8}
+.section-body{padding:18px}
+.subhead{font-size:.92rem;font-weight:600;color:var(--gf-text);margin:18px 0 10px}
+.subhead:first-child{margin-top:0}
+p{color:var(--gf-muted);font-size:.88rem;margin-bottom:12px}
+p:last-child{margin-bottom:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.text-right{text-align:right}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem;color:var(--gf-text)}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+.chart-card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px 18px;margin:14px 0}
+.chart-title{font-size:.82rem;font-weight:700;color:var(--gf-text);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.chart-caption{font-size:.78rem;color:var(--gf-muted);margin-top:10px;padding-top:10px;border-top:1px solid var(--gf-border-subtle)}
+.chart-caption strong{color:var(--gf-text)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:.74rem;color:var(--gf-muted);margin-top:8px}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{width:9px;height:9px;border-radius:2px;display:inline-block}
+.risk-card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px;border-left:3px solid var(--gf-border)}
+.risk-card.high{border-left-color:var(--gf-danger)}
+.risk-card.med{border-left-color:var(--gf-warning)}
+.risk-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.risk-name{font-weight:600;font-size:.9rem;color:var(--gf-text)}
+.risk-level{font-size:.66rem;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+.risk-card.high .risk-level{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.risk-card.med .risk-level{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.risk-body p{font-size:.82rem;margin-bottom:6px}
+.strat-card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:18px;position:relative;overflow:hidden}
+.strat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gf-accent),#0ea5e9)}
+.strat-horizon{font-family:var(--gf-mono);font-size:.7rem;font-weight:700;color:var(--gf-accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.strat-action{font-size:1.05rem;font-weight:700;color:var(--gf-text);margin-bottom:12px}
+.strat-row{display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:6px;gap:10px}
+.strat-key{color:var(--gf-muted)}
+.strat-v{font-weight:600;color:var(--gf-text);text-align:right}
+.strat-v.green{color:var(--gf-success)}
+.strat-v.red{color:var(--gf-danger)}
+.disclaimer{background:rgba(251,191,36,.04);border:1px solid var(--gf-border);border-left:3px solid var(--gf-warning);border-radius:var(--gf-radius);padding:16px 18px;font-size:.82rem;color:var(--gf-muted);line-height:1.7;margin:18px 0}
+.disclaimer strong{color:var(--gf-text)}
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+ul,ol{margin:10px 0 10px 20px;color:var(--gf-muted);font-size:.86rem}
+li{margin-bottom:5px}
+.tags-line{text-align:center;font-size:.78rem;color:var(--gf-muted);margin-top:8px}
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid,.grid2,.grid3{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-08T12:00:00+03:00">
+  <h1 class="hero-h">META: Teknik Analiz &amp; Fiyat Tahminleri Raporu</h1>
+  <p class="hero-desc">Meta Platforms Inc. (<strong>$META</strong>) için destek/direnç seviyeleri, hareketli ortalamalar, kısa/orta/uzun vadeli fiyat senaryoları, "şu olursa ne olur?" analizleri ve karşılaştırmalı değerleme.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info hero-date" data-timestamp="2026-07-08T12:00:00+03:00">📅 8 Temmuz 2026</span>
+    <span class="hero-ticker">$META</span>
+    <span class="meta-pill neu">Nötr → Hafif Boğa</span>
+    <span class="meta-pill info">Kısa Vade: TUT / Hafif Alım</span>
+  </div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-num">$560</div><div class="kpi-label">Mevcut Fiyat</div></div>
+  <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">$796.25</div><div class="kpi-label">52H Zirve</div></div>
+  <div class="kpi"><div class="kpi-num" style="color:var(--gf-danger)">$480.00</div><div class="kpi-label">52H Dip</div></div>
+  <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">+%7.7</div><div class="kpi-label">YTD Getiri</div></div>
+</div>
+
+<!-- SECTION 1 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">01</span> Rapor Amacı</h2>
+  </div>
+  <div class="section-body">
+    <p>Bu rapor, Meta Platforms Inc. (<strong>$META</strong>) hisse senedinin <strong>teknik analizini</strong>, <strong>fiyat tahminlerini</strong> ve <strong>senaryo bazlı değerlendirmelerini</strong> içerir:</p>
+    <ul>
+      <li>Mevcut fiyat seviyeleri ve teknik göstergeler</li>
+      <li>Kısa, orta ve uzun vadeli fiyat tahminleri</li>
+      <li>"Şu olursa ne olur?" senaryoları</li>
+      <li>Risk ve fırsat analizleri</li>
+      <li>Yatırım önerileri</li>
+    </ul>
+  </div>
+</section>
+
+<!-- SECTION 2 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">02</span> Mevcut Durum Analizi</h2>
+  </div>
+  <div class="section-body">
+    <div class="subhead">Temel Veriler (8 Temmuz 2026)</div>
+    <table>
+      <thead><tr><th>Metrik</th><th>Değer</th><th>Kaynak</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Mevcut Fiyat</strong></td><td>~$560</td><td>Yahoo Finance (30 Haziran 2026)</td></tr>
+        <tr><td><strong>52 Haftalık Zirve</strong></td><td>$796.25</td><td>15 Ağustos 2025</td></tr>
+        <tr><td><strong>52 Haftalık Dip</strong></td><td>$480.00</td><td>27 Ekim 2025</td></tr>
+        <tr><td><strong>Piyasa Değeri</strong></td><td>~$1.45 Trilyon</td><td>—</td></tr>
+        <tr><td><strong>Günlük Ortalama Hacim</strong></td><td>~45-50M</td><td>—</td></tr>
+        <tr><td><strong>Beta</strong></td><td>1.28</td><td>—</td></tr>
+        <tr><td><strong>P/E Oranı</strong></td><td>~28.7</td><td>—</td></tr>
+        <tr><td><strong>EPS (TTM)</strong></td><td>~$19.50</td><td>—</td></tr>
+      </tbody>
+    </table>
+
+    <div class="subhead">Fiyat Hareketi Özeti</div>
+    <div class="grid3">
+      <div class="card">
+        <div class="card-label">Son 12 Ay</div>
+        <p style="margin-bottom:4px"><strong>Zirve:</strong> $796.25 (15 Ağu 2025) <span class="tag tag-green">Tüm zamanların rekoru</span></p>
+        <p style="margin-bottom:4px"><strong>Dip:</strong> $480.00 (27 Eki 2025) <span class="tag tag-red">Capex endişesi</span></p>
+        <p style="margin-bottom:0"><strong>Zirveden değişim:</strong> <span style="color:var(--gf-danger)">−%29.6</span> · <strong>Dipten değişim:</strong> <span style="color:var(--gf-success)">+%16.7</span></p>
+      </div>
+      <div class="card">
+        <div class="card-label">2026 Performansı</div>
+        <div class="card-value up">+%7.7</div>
+        <div class="card-note">Yıl başı ~$520 → Şimdi ~$560</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">03</span> Teknik Analiz</h2>
+  </div>
+  <div class="section-body">
+    <div class="subhead">Destek ve Direnç Seviyeleri</div>
+    <div class="chart-card">
+      <div class="chart-title">📐 Fiyat Haritası — Destek / Direnç Seviyeleri</div>
+      <svg viewBox="0 0 700 120" width="100%" height="120" role="img" aria-label="chart"><line x1="24" y1="66" x2="676" y2="66" stroke="#64748b" stroke-width="1.4"/><line x1="57.4" y1="66" x2="57.4" y2="58" stroke="#4ade80" stroke-width="2"/><circle cx="57.4" cy="66" r="4" fill="#4ade80"/><text x="57.4" y="48.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#4ade80" font-family="inherit">S4</text><text x="57.4" y="36.0" text-anchor="middle" font-size="11" fill="#e2e8f0" font-family="inherit">$450</text><line x1="107.6" y1="66" x2="107.6" y2="74" stroke="#4ade80" stroke-width="2"/><circle cx="107.6" cy="66" r="4" fill="#4ade80"/><text x="107.6" y="96.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#4ade80" font-family="inherit">S3</text><text x="107.6" y="108.0" text-anchor="middle" font-size="11" fill="#e2e8f0" font-family="inherit">$480</text><line x1="141.0" y1="66" x2="141.0" y2="58" stroke="#4ade80" stroke-width="2"/><circle cx="141.0" cy="66" r="4" fill="#4ade80"/><text x="141.0" y="48.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#4ade80" font-family="inherit">S2</text><text x="141.0" y="36.0" text-anchor="middle" font-size="11" fill="#e2e8f0" font-family="inherit">$500</text><line x1="174.5" y1="66" x2="174.5" y2="74" stroke="#4ade80" stroke-width="2"/><circle cx="174.5" cy="66" r="4" fill="#4ade80"/><text x="174.5" y="96.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#4ade80" font-family="inherit">S1</text><text x="174.5" y="108.0" text-anchor="middle" font-size="11" fill="#e2e8f0" font-family="inherit">$520</text><line x1="308.2" y1="66" x2="308.2" y2="58" stroke="#f87171" stroke-width="2"/><circle cx="308.2" cy="66" r="4" fill="#f87171"/><text x="308.2" y="48.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#f87171" font-family="inherit">R1</text><text x="308.2" y="36.0" text-anchor="middle" font-size="11" fill="#e2e8f0" font-family="inherit">$600</text><line x1="391.8" y1="66" x2="391.8" y2="74" stroke="#f87171" stroke-width="2"/><circle cx="391.8" cy="66" r="4" fill="#f87171"/><text x="391.8" y="96.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#f87171" font-family="inherit">R2</text><text x="391.8" y="108.0" text-anchor="middle" font-size="11" fill="#e2e8f0" font-family="inherit">$650</text><line x1="475.4" y1="66" x2="475.4" y2="58" stroke="#f87171" stroke-width="2"/><circle cx="475.4" cy="66" r="4" fill="#f87171"/><text x="475.4" y="48.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#f87171" font-family="inherit">R3</text><text x="475.4" y="36.0" text-anchor="middle" font-size="11" fill="#e2e8f0" font-family="inherit">$700</text><line x1="636.3" y1="66" x2="636.3" y2="74" stroke="#f87171" stroke-width="2"/><circle cx="636.3" cy="66" r="4" fill="#f87171"/><text x="636.3" y="96.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#f87171" font-family="inherit">R4</text><text x="636.3" y="108.0" text-anchor="middle" font-size="11" fill="#e2e8f0" font-family="inherit">$796.25</text><line x1="241.3" y1="20" x2="241.3" y2="112" stroke="#38bdf8" stroke-width="1.6" stroke-dasharray="4 3"/><circle cx="241.3" cy="66" r="5.5" fill="#38bdf8"/></svg>
+      <div class="legend">
+        <span><i style="background:var(--gf-success)"></i> Destek (S1–S4)</span>
+        <span><i style="background:var(--gf-danger)"></i> Direnç (R1–R4)</span>
+        <span><i style="background:var(--gf-accent)"></i> Mevcut Fiyat ($560)</span>
+      </div>
+      <div class="chart-caption">R4 = $796.25 tüm zamanların zirvesi; S3 = $480 2025 dip seviyesi. Fiyat, en yakın direnç R1 ($600) ile en yakın destek S1 ($520) arasında sıkışmış durumda.</div>
+    </div>
+
+    <div class="subhead">Hareketli Ortalamalar</div>
+    <div class="chart-card">
+      <div class="chart-title">📊 Fiyat vs. Hareketli Ortalamalar</div>
+      <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">500</text><line x1="54" y1="171.0" x2="620" y2="171.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="175.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">545</text><line x1="54" y1="122.0" x2="620" y2="122.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="126.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">590</text><line x1="54" y1="73.0" x2="620" y2="73.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="77.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">635</text><line x1="54" y1="24.0" x2="620" y2="24.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="28.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">680</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="78.9" y="154.7" width="63.4" height="65.3" rx="4" fill="#38bdf8" opacity="1"/><text x="110.6" y="146.7" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$560</text><text x="110.6" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Fiyat</text><rect x="192.1" y="171.0" width="63.4" height="49.0" rx="4" fill="#4ade80" opacity="1"/><text x="223.8" y="163.0" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$545</text><text x="223.8" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">MA20</text><rect x="305.3" y="181.9" width="63.4" height="38.1" rx="4" fill="#4ade80" opacity="1"/><text x="337.0" y="173.9" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$535</text><text x="337.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">MA50</text><rect x="418.5" y="165.6" width="63.4" height="54.4" rx="4" fill="#fbbf24" opacity="1"/><text x="450.2" y="157.6" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$550</text><text x="450.2" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">MA100</text><rect x="531.7" y="56.7" width="63.4" height="163.3" rx="4" fill="#f87171" opacity="1"/><text x="563.4" y="48.7" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$650</text><text x="563.4" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">MA200</text></svg>
+      <div class="chart-caption">Fiyat, kısa vadeli ortalamaların (MA20, MA50) üzerinde ama uzun vadeli MA200 ($650)'ün altında — <strong>kararsız / geçiş piyasası</strong> durumuna işaret ediyor.</div>
+    </div>
+    <table>
+      <thead><tr><th>Süre</th><th>Değer</th><th>Yorum</th></tr></thead>
+      <tbody>
+        <tr><td><strong>20 günlük</strong></td><td>~$545</td><td>Fiyatın altında (yükselen trend)</td></tr>
+        <tr><td><strong>50 günlük</strong></td><td>~$535</td><td>Fiyatın altında (boğa işareti)</td></tr>
+        <tr><td><strong>100 günlük</strong></td><td>~$550</td><td>Fiyata yakın (nötr)</td></tr>
+        <tr><td><strong>200 günlük</strong></td><td>~$650</td><td>Fiyatın üzerinde (ayı işareti)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="subhead">Teknik Göstergeler</div>
+    <div class="grid">
+      <div class="card">
+        <div class="card-label">RSI</div>
+        <div class="card-value">48</div>
+        <div class="card-note">Nötr bölgede</div>
+        <span class="tag tag-green">Bekleyiş</span>
+      </div>
+      <div class="card">
+        <div class="card-label">MACD</div>
+        <div class="card-value down">-2.5</div>
+        <div class="card-note">Sinyal: -1.8</div>
+        <span class="tag tag-red">Satış Sinyali</span>
+      </div>
+      <div class="card">
+        <div class="card-label">Bollinger</div>
+        <div class="card-value neu">$560</div>
+        <div class="card-note">Üst: $585 · Orta: $545</div>
+        <span class="tag tag-orange">Aşırı Alım Yakın</span>
+      </div>
+      <div class="card">
+        <div class="card-label">Hacim</div>
+        <div class="card-value up">55M</div>
+        <div class="card-note">Ortalama: 45-50M</div>
+        <span class="tag tag-green">Boğa İşareti</span>
+      </div>
+    </div>
+
+    <div class="subhead">Teknik Sinyal Özeti</div>
+    <table>
+      <thead><tr><th>Gösterge</th><th>Sinyal</th><th>Güç</th></tr></thead>
+      <tbody>
+        <tr><td>Hareketli Ortalamalar</td><td>Kararsız</td><td>⭐⭐</td></tr>
+        <tr><td>RSI</td><td>Nötr</td><td>⭐</td></tr>
+        <tr><td>MACD</td><td>Satış</td><td>⭐⭐⭐</td></tr>
+        <tr><td>Bollinger Bantları</td><td>Aşırı Alım Yakın</td><td>⭐⭐</td></tr>
+        <tr><td>Hacim</td><td>Alım</td><td>⭐⭐⭐</td></tr>
+      </tbody>
+    </table>
+    <div class="insight-box warn"><strong>Genel Teknik Durum:</strong> ⭐⭐⭐ NÖTR — HAFİF BOĞA</div>
+  </div>
+</section>
+
+<!-- SECTION 4 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">04</span> Fiyat Tahminleri</h2>
+  </div>
+  <div class="section-body">
+    <div class="chart-card">
+      <div class="chart-title">🎯 Fiyat Hedefi Senaryoları — Kısa / Orta / Uzun Vade</div>
+      <svg viewBox="0 0 700 358" width="100%" height="358" role="img" aria-label="chart"><line x1="96.0" y1="20" x2="96.0" y2="328" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="96.0" y="344" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">$420</text><line x1="179.4" y1="20" x2="179.4" y2="328" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="179.4" y="344" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">$506</text><line x1="262.9" y1="20" x2="262.9" y2="328" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="262.9" y="344" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">$591</text><line x1="346.3" y1="20" x2="346.3" y2="328" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="346.3" y="344" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">$677</text><line x1="429.7" y1="20" x2="429.7" y2="328" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="429.7" y="344" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">$763</text><line x1="513.1" y1="20" x2="513.1" y2="328" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="513.1" y="344" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">$849</text><line x1="596.6" y1="20" x2="596.6" y2="328" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="596.6" y="344" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">$934</text><line x1="680.0" y1="20" x2="680.0" y2="328" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="680.0" y="344" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">$1020</text><rect x="173.9" y="32.0" width="19.5" height="18.0" rx="5" fill="#f87171" opacity="0.88"/><text x="86" y="45.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">Kötümser</text><text x="201.3" y="45.0" font-size="10.5" font-weight="700" fill="#e2e8f0" font-family="inherit">15%</text><rect x="271.2" y="62.0" width="19.5" height="18.0" rx="5" fill="#fbbf24" opacity="0.88"/><text x="86" y="75.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">Temel</text><text x="298.7" y="75.0" font-size="10.5" font-weight="700" fill="#e2e8f0" font-family="inherit">60%</text><rect x="319.9" y="92.0" width="29.2" height="18.0" rx="5" fill="#4ade80" opacity="0.88"/><text x="86" y="105.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">İyimser</text><text x="357.1" y="105.0" font-size="10.5" font-weight="700" fill="#e2e8f0" font-family="inherit">25%</text><rect x="154.4" y="136.0" width="38.9" height="18.0" rx="5" fill="#f87171" opacity="0.88"/><text x="86" y="149.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">Kötümser</text><text x="201.3" y="149.0" font-size="10.5" font-weight="700" fill="#e2e8f0" font-family="inherit">15%</text><rect x="319.9" y="166.0" width="48.7" height="18.0" rx="5" fill="#fbbf24" opacity="0.88"/><text x="86" y="179.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">Temel</text><text x="376.5" y="179.0" font-size="10.5" font-weight="700" fill="#e2e8f0" font-family="inherit">55%</text><rect x="417.2" y="196.0" width="48.7" height="18.0" rx="5" fill="#4ade80" opacity="0.88"/><text x="86" y="209.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">İyimser</text><text x="473.9" y="209.0" font-size="10.5" font-weight="700" fill="#e2e8f0" font-family="inherit">30%</text><rect x="125.2" y="240.0" width="97.3" height="18.0" rx="5" fill="#f87171" opacity="0.88"/><text x="86" y="253.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">Kötümser</text><text x="230.5" y="253.0" font-size="10.5" font-weight="700" fill="#e2e8f0" font-family="inherit">15%</text><rect x="417.2" y="270.0" width="97.3" height="18.0" rx="5" fill="#fbbf24" opacity="0.88"/><text x="86" y="283.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">Temel</text><text x="522.5" y="283.0" font-size="10.5" font-weight="700" fill="#e2e8f0" font-family="inherit">50%</text><rect x="563.2" y="300.0" width="97.3" height="18.0" rx="5" fill="#4ade80" opacity="0.88"/><text x="86" y="313.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">İyimser</text><text x="668.5" y="313.0" font-size="10.5" font-weight="700" fill="#e2e8f0" font-family="inherit">35%</text><text x="86" y="20.0" text-anchor="end" font-size="11" font-weight="700" fill="#38bdf8" font-family="inherit">KISA (1-3 Ay)</text><text x="86" y="124.0" text-anchor="end" font-size="11" font-weight="700" fill="#38bdf8" font-family="inherit">ORTA (3-6 Ay)</text><text x="86" y="228.0" text-anchor="end" font-size="11" font-weight="700" fill="#38bdf8" font-family="inherit">UZUN (6-12 Ay)</text><line x1="232.3" y1="16" x2="232.3" y2="330" stroke="#e2e8f0" stroke-width="1.4" stroke-dasharray="3 3"/><text x="232.3" y="12" text-anchor="middle" font-size="10.5" font-weight="700" fill="#e2e8f0" font-family="inherit">$560</text></svg>
+      <div class="legend">
+        <span><i style="background:var(--gf-danger)"></i> Kötümser</span>
+        <span><i style="background:var(--gf-warning)"></i> Temel</span>
+        <span><i style="background:var(--gf-success)"></i> İyimser</span>
+      </div>
+      <div class="chart-caption">Çubuklar min–max fiyat aralığını, yüzdeler gerçekleşme olasılığını gösterir. Kesikli çizgi mevcut fiyat $560'ı işaret eder.</div>
+    </div>
+
+    <div class="subhead">Kısa Vade (1-3 Ay)</div>
+    <div class="grid3">
+      <div class="strat-card">
+        <div class="strat-horizon">Temel Senaryo</div>
+        <div class="strat-action">$600 – $620</div>
+        <div class="strat-row"><span class="strat-key">Olasılık</span><span class="strat-v">%60</span></div>
+        <div class="strat-row"><span class="strat-key">Zaman</span><span class="strat-v">Ağu–Eyl 2026</span></div>
+        <div class="strat-row"><span class="strat-key">Nedenler</span><span class="strat-v">Meta Compute etkisi, Q2 kazançları</span></div>
+      </div>
+      <div class="strat-card">
+        <div class="strat-horizon">İyimser Senaryo</div>
+        <div class="strat-action" style="color:var(--gf-success)">$650 – $680</div>
+        <div class="strat-row"><span class="strat-key">Olasılık</span><span class="strat-v green">%25</span></div>
+        <div class="strat-row"><span class="strat-key">Zaman</span><span class="strat-v">Eyl–Eki 2026</span></div>
+        <div class="strat-row"><span class="strat-key">Tetikleyiciler</span><span class="strat-v">Müşteri duyuruları, Muse başarısı</span></div>
+      </div>
+      <div class="strat-card">
+        <div class="strat-horizon">Kötümser Senaryo</div>
+        <div class="strat-action" style="color:var(--gf-danger)">$500 – $520</div>
+        <div class="strat-row"><span class="strat-key">Olasılık</span><span class="strat-v red">%15</span></div>
+        <div class="strat-row"><span class="strat-key">Zaman</span><span class="strat-v">Ağustos 2026</span></div>
+        <div class="strat-row"><span class="strat-key">Riskler</span><span class="strat-v">Capex artışı, rekabet</span></div>
+      </div>
+    </div>
+
+    <div class="subhead">Orta Vade (3-6 Ay)</div>
+    <div class="grid3">
+      <div class="strat-card">
+        <div class="strat-horizon">Temel Senaryo</div>
+        <div class="strat-action">$650 – $700</div>
+        <div class="strat-row"><span class="strat-key">Olasılık</span><span class="strat-v">%55</span></div>
+        <div class="strat-row"><span class="strat-key">Zaman</span><span class="strat-v">Eki 2026 – Oca 2027</span></div>
+        <div class="strat-row"><span class="strat-key">Nedenler</span><span class="strat-v">Bulut gelirleri, AI yatırımları</span></div>
+      </div>
+      <div class="strat-card">
+        <div class="strat-horizon">İyimser Senaryo</div>
+        <div class="strat-action" style="color:var(--gf-success)">$750 – $800</div>
+        <div class="strat-row"><span class="strat-key">Olasılık</span><span class="strat-v green">%30</span></div>
+        <div class="strat-row"><span class="strat-key">Tetikleyiciler</span><span class="strat-v">Pazar payı, yeni modeller</span></div>
+      </div>
+      <div class="strat-card">
+        <div class="strat-horizon">Kötümser Senaryo</div>
+        <div class="strat-action" style="color:var(--gf-danger)">$480 – $520</div>
+        <div class="strat-row"><span class="strat-key">Olasılık</span><span class="strat-v red">%15</span></div>
+        <div class="strat-row"><span class="strat-key">Riskler</span><span class="strat-v">AI getiri yok, regülatör</span></div>
+      </div>
+    </div>
+
+    <div class="subhead">Uzun Vade (6-12 Ay)</div>
+    <div class="grid3">
+      <div class="strat-card">
+        <div class="strat-horizon">Temel Senaryo</div>
+        <div class="strat-action">$750 – $850</div>
+        <div class="strat-row"><span class="strat-key">Olasılık</span><span class="strat-v">%50</span></div>
+        <div class="strat-row"><span class="strat-key">Zaman</span><span class="strat-v">2027</span></div>
+        <div class="strat-row"><span class="strat-key">Nedenler</span><span class="strat-v">Bulut olgunlaşması, AI liderliği</span></div>
+      </div>
+      <div class="strat-card">
+        <div class="strat-horizon">İyimser Senaryo</div>
+        <div class="strat-action" style="color:var(--gf-success)">$900 – $1.000</div>
+        <div class="strat-row"><span class="strat-key">Olasılık</span><span class="strat-v green">%35</span></div>
+        <div class="strat-row"><span class="strat-key">Tetikleyiciler</span><span class="strat-v">AI liderliği, yeni gelirler</span></div>
+      </div>
+      <div class="strat-card">
+        <div class="strat-horizon">Kötümser Senaryo</div>
+        <div class="strat-action" style="color:var(--gf-danger)">$450 – $550</div>
+        <div class="strat-row"><span class="strat-key">Olasılık</span><span class="strat-v red">%15</span></div>
+        <div class="strat-row"><span class="strat-key">Riskler</span><span class="strat-v">AI balonu, rekabet</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">05</span> "Şu Olursa Ne Olur?" Senaryoları</h2>
+  </div>
+  <div class="section-body">
+    <div class="grid2">
+      <div class="risk-card high">
+        <div class="risk-head"><span class="risk-name">⚠️ Meta Compute Başarılı Olur</span><span class="risk-level">Yüksek Ödül · %40</span></div>
+        <div class="risk-body">
+          <p><strong>Koşullar:</strong> 2026 sonunda 10.000+ müşteri, $5B+ yıllık gelir, %40+ brüt marj</p>
+          <p><strong>Etki:</strong> $800–$900 fiyat hedefi, 12-18 ay, 35x–40x P/E</p>
+          <p><strong>Gerekçe:</strong> Yeni gelir akışı değerlemesi, AWS/Azure/Google Cloud ile rekabet edebilme</p>
+        </div>
+      </div>
+      <div class="risk-card med">
+        <div class="risk-head"><span class="risk-name">⚠️ Capex Harcamaları Azalır</span><span class="risk-level">Orta · %35</span></div>
+        <div class="risk-body">
+          <p><strong>Koşullar:</strong> 2027 capex tahmini $80-100B aralığına iner, serbest nakit akışı iyileşir</p>
+          <p><strong>Etki:</strong> $700–$750 fiyat hedefi, 6-12 ay, 30x–35x P/E</p>
+          <p><strong>Gerekçe:</strong> Yatırımcı güveninin artması, kârlılık endişelerinin azalması</p>
+        </div>
+      </div>
+      <div class="risk-card high">
+        <div class="risk-head"><span class="risk-name">⚠️ Muse Spark Başarısız Olur</span><span class="risk-level">Yüksek Risk · %20</span></div>
+        <div class="risk-body">
+          <p><strong>Koşullar:</strong> Model performansı beklentilerin altında, düşük kullanıcı benimsemesi</p>
+          <p><strong>Etki:</strong> $450–$500 fiyat hedefi, 3-6 ay, 20x–25x P/E</p>
+          <p><strong>Gerekçe:</strong> AI liderliği konumunda zayıflama, yatırımcı güven kaybı</p>
+        </div>
+      </div>
+      <div class="risk-card med">
+        <div class="risk-head"><span class="risk-name">⚠️ Regülatör Baskısı Artar</span><span class="risk-level">Orta · %25</span></div>
+        <div class="risk-body">
+          <p><strong>Koşullar:</strong> AB'de yeni AI düzenlemeleri, ABD'de antitröst davaları</p>
+          <p><strong>Etki:</strong> $480–$550 fiyat hedefi, 3-9 ay, 22x–28x P/E</p>
+          <p><strong>Gerekçe:</strong> İşletme maliyetlerinin artması, büyüme hızının yavaşlaması</p>
+        </div>
+      </div>
+      <div class="risk-card high">
+        <div class="risk-head"><span class="risk-name">⚠️ Makroekonomik Durgunluk</span><span class="risk-level">Yüksek Risk · %15</span></div>
+        <div class="risk-body">
+          <p><strong>Koşullar:</strong> ABD ekonomisi resesyona girer, faiz oranları %6+ seviyelerine çıkar</p>
+          <p><strong>Etki:</strong> $400–$450 fiyat hedefi, 6-12 ay, 18x–22x P/E</p>
+          <p><strong>Gerekçe:</strong> Reklam gelirlerindeki azalma, tüketici harcamalarındaki düşüş</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">06</span> Risk ve Fırsat Analizi</h2>
+  </div>
+  <div class="section-body">
+    <div class="grid2">
+      <div>
+        <div class="subhead">Ana Riskler — Gerçekleşme Olasılığı</div>
+        <div class="chart-card" style="margin-top:0">
+          <svg viewBox="0 0 640 216" width="100%" height="216" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">0%</text><line x1="287.5" y1="16" x2="287.5" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="287.5" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">12.5%</text><line x1="385.0" y1="16" x2="385.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="385.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">25%</text><line x1="482.5" y1="16" x2="482.5" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="482.5" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">37.5%</text><line x1="580.0" y1="16" x2="580.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="580.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">50%</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">AI yatırımlarından getiri yok</text><rect x="190" y="22.8" width="234.0" height="19.0" rx="4" fill="#f87171" opacity="1"/><text x="432.0" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">30%</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Rekabetin artması</text><rect x="190" y="56.8" width="312.0" height="19.0" rx="4" fill="#f87171" opacity="1"/><text x="510.0" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">40%</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Regülatör baskılar</text><rect x="190" y="90.8" width="195.0" height="19.0" rx="4" fill="#f87171" opacity="1"/><text x="393.0" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">25%</text><text x="178" y="138.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Makro belirsizlik</text><rect x="190" y="124.8" width="156.0" height="19.0" rx="4" fill="#f87171" opacity="1"/><text x="354.0" y="138.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">20%</text><text x="178" y="172.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Meta Compute başarısızlığı</text><rect x="190" y="158.8" width="273.0" height="19.0" rx="4" fill="#f87171" opacity="1"/><text x="471.0" y="172.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">35%</text></svg>
+        </div>
+        <table>
+          <thead><tr><th>Risk</th><th>Etki</th><th>Önlem</th></tr></thead>
+          <tbody>
+            <tr><td>AI yatırımlarından getiri gelmemesi</td><td>Yüksek</td><td>Çeyrek bazda takip</td></tr>
+            <tr><td>Rekabetin artması</td><td>Orta-Yüksek</td><td>Farklılaşma stratejileri</td></tr>
+            <tr><td>Regülatör baskılar</td><td>Orta</td><td>Uyumluluk yatırımları</td></tr>
+            <tr><td>Makroekonomik belirsizlik</td><td>Yüksek</td><td>Çeşitlendirme</td></tr>
+            <tr><td>Meta Compute başarısızlığı</td><td>Yüksek</td><td>Kademeli ölçeklendirme</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="subhead">Ana Fırsatlar — Gerçekleşme Olasılığı</div>
+        <div class="chart-card" style="margin-top:0">
+          <svg viewBox="0 0 640 216" width="100%" height="216" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">0%</text><line x1="287.5" y1="16" x2="287.5" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="287.5" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">17.5%</text><line x1="385.0" y1="16" x2="385.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="385.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">35%</text><line x1="482.5" y1="16" x2="482.5" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="482.5" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">52.5%</text><line x1="580.0" y1="16" x2="580.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="580.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">70%</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">AI pazarında liderlik</text><rect x="190" y="22.8" width="250.7" height="19.0" rx="4" fill="#4ade80" opacity="1"/><text x="448.7" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">45%</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Bulut işinin büyümesi</text><rect x="190" y="56.8" width="278.6" height="19.0" rx="4" fill="#4ade80" opacity="1"/><text x="476.6" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">50%</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Reklam gelir büyümesi</text><rect x="190" y="90.8" width="334.3" height="19.0" rx="4" fill="#4ade80" opacity="1"/><text x="532.3" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">60%</text><text x="178" y="138.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Veri merkezi altyapı geliri</text><rect x="190" y="124.8" width="222.9" height="19.0" rx="4" fill="#4ade80" opacity="1"/><text x="420.9" y="138.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">40%</text><text x="178" y="172.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Yeni AI modelleri</text><rect x="190" y="158.8" width="306.4" height="19.0" rx="4" fill="#4ade80" opacity="1"/><text x="504.4" y="172.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">55%</text></svg>
+        </div>
+        <table>
+          <thead><tr><th>Fırsat</th><th>Potansiyel</th><th>Zaman</th></tr></thead>
+          <tbody>
+            <tr><td>AI pazarındaki liderlik</td><td>Çok Yüksek</td><td>12-24 ay</td></tr>
+            <tr><td>Bulut işinin büyümesi</td><td>Yüksek</td><td>6-18 ay</td></tr>
+            <tr><td>Reklam gelirlerindeki büyüme</td><td>Orta</td><td>Devam eden</td></tr>
+            <tr><td>Veri merkezleri altyapısından gelir</td><td>Yüksek</td><td>12-36 ay</td></tr>
+            <tr><td>Yeni AI modelleri</td><td>Çok Yüksek</td><td>6-12 ay</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">07</span> Yatırım Önerileri</h2>
+  </div>
+  <div class="section-body">
+    <div class="grid3">
+      <div class="strat-card">
+        <div class="strat-horizon">Kısa Vade (1-3 Ay)</div>
+        <div class="strat-action">TUT / Hafif Alım</div>
+        <div class="strat-row"><span class="strat-key">Hedef Fiyat</span><span class="strat-v green">$600 – $620</span></div>
+        <div class="strat-row"><span class="strat-key">Stop-Loss</span><span class="strat-v red">$520</span></div>
+        <div class="strat-row"><span class="strat-key">Take-Profit</span><span class="strat-v green">$650</span></div>
+      </div>
+      <div class="strat-card">
+        <div class="strat-horizon">Orta Vade (3-6 Ay)</div>
+        <div class="strat-action">ALIM</div>
+        <div class="strat-row"><span class="strat-key">Hedef Fiyat</span><span class="strat-v green">$650 – $700</span></div>
+        <div class="strat-row"><span class="strat-key">Stop-Loss</span><span class="strat-v red">$500</span></div>
+        <div class="strat-row"><span class="strat-key">Take-Profit</span><span class="strat-v green">$750</span></div>
+      </div>
+      <div class="strat-card">
+        <div class="strat-horizon">Uzun Vade (6-12 Ay)</div>
+        <div class="strat-action">GÜÇLÜ ALIM</div>
+        <div class="strat-row"><span class="strat-key">Hedef Fiyat</span><span class="strat-v green">$750 – $850</span></div>
+        <div class="strat-row"><span class="strat-key">Stop-Loss</span><span class="strat-v red">$480</span></div>
+        <div class="strat-row"><span class="strat-key">Take-Profit</span><span class="strat-v green">$900</span></div>
+      </div>
+    </div>
+
+    <div class="subhead">Portföy Önerisi</div>
+    <ul>
+      <li><strong>Agresif Portföy:</strong> %10-15 META</li>
+      <li><strong>Dengeli Portföy:</strong> %5-10 META</li>
+      <li><strong>Koruma Odaklı Portföy:</strong> %2-5 META</li>
+    </ul>
+  </div>
+</section>
+
+<!-- SECTION 8 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">08</span> Karşılaştırmalı Değerleme</h2>
+  </div>
+  <div class="section-body">
+    <div class="grid2">
+      <div class="chart-card" style="margin-top:0">
+        <div class="chart-title">📈 P/E Oranı Karşılaştırması</div>
+        <svg viewBox="0 0 640 216" width="100%" height="216" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">0x</text><line x1="287.5" y1="16" x2="287.5" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="287.5" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">11.3x</text><line x1="385.0" y1="16" x2="385.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="385.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">22.5x</text><line x1="482.5" y1="16" x2="482.5" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="482.5" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">33.8x</text><line x1="580.0" y1="16" x2="580.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="580.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">45x</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Meta</text><rect x="190" y="22.8" width="248.7" height="19.0" rx="4" fill="#38bdf8" opacity="1"/><text x="446.7" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">28.7x</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Microsoft</text><rect x="190" y="56.8" width="305.1" height="19.0" rx="4" fill="#94a3b8" opacity="0.75"/><text x="503.1" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">35.2x</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Alphabet</text><rect x="190" y="90.8" width="232.3" height="19.0" rx="4" fill="#94a3b8" opacity="0.75"/><text x="430.3" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">26.8x</text><text x="178" y="138.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Amazon</text><rect x="190" y="124.8" width="368.3" height="19.0" rx="4" fill="#94a3b8" opacity="0.75"/><text x="566.3" y="138.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">42.5x</text><text x="178" y="172.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Apple</text><rect x="190" y="158.8" width="260.9" height="19.0" rx="4" fill="#94a3b8" opacity="0.75"/><text x="458.9" y="172.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">30.1x</text><line x1="463.0" y1="12" x2="463.0" y2="190" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 3"/><text x="463.0" y="8" text-anchor="middle" font-size="10.5" font-weight="600" fill="#38bdf8" font-family="inherit">Sektör Ort. 31.5x</text></svg>
+        <div class="chart-caption">Meta 28.7x ile sektör ortalaması 31.5x'in <strong>altında</strong> işlem görüyor — potansiyel değer fırsatı.</div>
+      </div>
+      <div class="chart-card" style="margin-top:0">
+        <div class="chart-title">📉 Fiyat / Defter Değeri (P/B) Karşılaştırması</div>
+        <svg viewBox="0 0 640 216" width="100%" height="216" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">0x</text><line x1="287.5" y1="16" x2="287.5" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="287.5" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">11.5x</text><line x1="385.0" y1="16" x2="385.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="385.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">23x</text><line x1="482.5" y1="16" x2="482.5" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="482.5" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">34.5x</text><line x1="580.0" y1="16" x2="580.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="580.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">46x</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Meta</text><rect x="190" y="22.8" width="69.5" height="19.0" rx="4" fill="#38bdf8" opacity="1"/><text x="267.5" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">8.2x</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Microsoft</text><rect x="190" y="56.8" width="106.0" height="19.0" rx="4" fill="#94a3b8" opacity="0.75"/><text x="304.0" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">12.5x</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Alphabet</text><rect x="190" y="90.8" width="66.1" height="19.0" rx="4" fill="#94a3b8" opacity="0.75"/><text x="264.1" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">7.8x</text><text x="178" y="138.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Amazon</text><rect x="190" y="124.8" width="75.5" height="19.0" rx="4" fill="#94a3b8" opacity="0.75"/><text x="273.5" y="138.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">8.9x</text><text x="178" y="172.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Apple</text><rect x="190" y="158.8" width="358.6" height="19.0" rx="4" fill="#94a3b8" opacity="0.75"/><text x="556.6" y="172.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">42.3x</text><line x1="270.5" y1="12" x2="270.5" y2="190" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 3"/><text x="270.5" y="8" text-anchor="middle" font-size="10.5" font-weight="600" fill="#38bdf8" font-family="inherit">Sektör Ort. 9.5x</text></svg>
+        <div class="chart-caption">Meta 8.2x ile sektör ortalaması 9.5x'in <strong>altında</strong> — burada da değer fırsatı işareti.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 9 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">09</span> Sonuç ve Öneriler</h2>
+  </div>
+  <div class="section-body">
+    <div class="subhead">Ana Bulgular</div>
+    <ol>
+      <li><strong>Teknik Durum:</strong> Nötrden hafif boğaya dönüşüyor</li>
+      <li><strong>Temel Durum:</strong> Güçlü (AI yatırımları, bulut potansiyeli)</li>
+      <li><strong>Değerleme:</strong> Sektör ortalamasının altında</li>
+      <li><strong>Risk/Ödül:</strong> Yüksek potansiyel getiri, orta risk</li>
+    </ol>
+
+    <div class="subhead">Yatırım Stratejisi</div>
+    <table>
+      <thead><tr><th>Yatırımcı Profili</th><th>Öneri</th><th>Hedef Fiyat</th><th>Stop-Loss</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Kısa Vadeli</strong></td><td>TUT / Hafif Alım</td><td>$600-620</td><td>$520</td></tr>
+        <tr><td><strong>Orta Vadeli</strong></td><td>ALIM</td><td>$650-700</td><td>$500</td></tr>
+        <tr><td><strong>Uzun Vadeli</strong></td><td>GÜÇLÜ ALIM</td><td>$750-850</td><td>$480</td></tr>
+        <tr><td><strong>Koruma Arayan</strong></td><td>TUT</td><td>$600+</td><td>$520</td></tr>
+      </tbody>
+    </table>
+
+    <div class="disclaimer">
+      <p><strong>⚠️ Sorumluluk Reddi</strong></p>
+      <p>Bu rapor <strong>bilgilendirme amaçlıdır</strong> ve <strong>yatırım tavsiyesi değildir</strong>. Hisse senedi yatırımları yüksek risk içerir. Yatırım kararları almadan önce kendi araştırmanızı yapın, finansal danışmanınıza danışın, risk toleransınızı değerlendirin ve çeşitlendirin.</p>
+      <p><strong>gistify.pro</strong>, bu raporda yer alan bilgilerin doğruluğunu garanti etmez ve herhangi bir zarardan sorumlu tutulamaz.</p>
+    </div>
+  </div>
+</section>
+
+<div class="tags-line">#META #MetaPlatforms #HisseSenedi #TeknikAnaliz #FiyatTahmini #AI #BulutHesaplama #MetaCompute #Değerleme #RiskAnalizi</div>
+
+</div>
+</body>
+</html>

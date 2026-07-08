@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>META Stock — Technical Analysis &amp; Price Forecast Report | $META</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="META Stock — Technical Analysis &amp; Price Forecast Report | $META" />
+<meta property="og:description" content="Support/resistance, moving averages, short/mid/long-term scenarios, and comparative valuation for META." />
+<meta property="og:site_name" content="Gistify" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:760px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:2px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.section-num{font-family:var(--gf-mono);font-size:.72rem;font-weight:700;color:var(--gf-accent);opacity:.8}
+.section-body{padding:18px}
+.subhead{font-size:.92rem;font-weight:600;color:var(--gf-text);margin:18px 0 10px}
+.subhead:first-child{margin-top:0}
+p{color:var(--gf-muted);font-size:.88rem;margin-bottom:12px}
+p:last-child{margin-bottom:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.text-right{text-align:right}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem;color:var(--gf-text)}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+.chart-card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px 18px;margin:14px 0}
+.chart-title{font-size:.82rem;font-weight:700;color:var(--gf-text);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.chart-caption{font-size:.78rem;color:var(--gf-muted);margin-top:10px;padding-top:10px;border-top:1px solid var(--gf-border-subtle)}
+.chart-caption strong{color:var(--gf-text)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:.74rem;color:var(--gf-muted);margin-top:8px}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{width:9px;height:9px;border-radius:2px;display:inline-block}
+.risk-card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px;border-left:3px solid var(--gf-border)}
+.risk-card.high{border-left-color:var(--gf-danger)}
+.risk-card.med{border-left-color:var(--gf-warning)}
+.risk-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.risk-name{font-weight:600;font-size:.9rem;color:var(--gf-text)}
+.risk-level{font-size:.66rem;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+.risk-card.high .risk-level{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.risk-card.med .risk-level{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.risk-body p{font-size:.82rem;margin-bottom:6px}
+.strat-card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:18px;position:relative;overflow:hidden}
+.strat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gf-accent),#0ea5e9)}
+.strat-horizon{font-family:var(--gf-mono);font-size:.7rem;font-weight:700;color:var(--gf-accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.strat-action{font-size:1.05rem;font-weight:700;color:var(--gf-text);margin-bottom:12px}
+.strat-row{display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:6px;gap:10px}
+.strat-key{color:var(--gf-muted)}
+.strat-v{font-weight:600;color:var(--gf-text);text-align:right}
+.strat-v.green{color:var(--gf-success)}
+.strat-v.red{color:var(--gf-danger)}
+.disclaimer{background:rgba(251,191,36,.04);border:1px solid var(--gf-border);border-left:3px solid var(--gf-warning);border-radius:var(--gf-radius);padding:16px 18px;font-size:.82rem;color:var(--gf-muted);line-height:1.7;margin:18px 0}
+.disclaimer strong{color:var(--gf-text)}
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+ul,ol{margin:10px 0 10px 20px;color:var(--gf-muted);font-size:.86rem}
+li{margin-bottom:5px}
+.tags-line{text-align:center;font-size:.78rem;color:var(--gf-muted);margin-top:8px}
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid,.grid2,.grid3{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-08T12:00:00+03:00">
+  <h1 class="hero-h">META: Technical Analysis &amp; Price Forecast Report</h1>
+  <p class="hero-desc">For Meta Platforms Inc. (<strong>$META</strong>): support/resistance levels, moving averages, short/mid/long-term price scenarios, "what-if" analyses, and comparative valuation.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info hero-date" data-timestamp="2026-07-08T12:00:00+03:00">📅 July 8, 2026</span>
+    <span class="hero-ticker">$META</span>
+    <span class="meta-pill neu">Neutral → Mildly Bullish</span>
+    <span class="meta-pill info">Short-term: HOLD / Light Buy</span>
+  </div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-num">$560</div><div class="kpi-label">Current Price</div></div>
+  <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">$796.25</div><div class="kpi-label">52W High</div></div>
+  <div class="kpi"><div class="kpi-num" style="color:var(--gf-danger)">$480.00</div><div class="kpi-label">52W Low</div></div>
+  <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">+7.7%</div><div class="kpi-label">YTD Return</div></div>
+</div>
+
+<!-- SECTION 1 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">01</span> Purpose of This Report</h2>
+  </div>
+  <div class="section-body">
+    <p>This report covers the <strong>technical analysis</strong>, <strong>price forecasts</strong>, and <strong>scenario-based assessments</strong> for Meta Platforms Inc. (<strong>$META</strong>):</p>
+    <ul>
+      <li>Current price levels and technical indicators</li>
+      <li>Short, mid, and long-term price forecasts</li>
+      <li>"What-if" scenarios</li>
+      <li>Risk and opportunity analysis</li>
+      <li>Investment recommendations</li>
+    </ul>
+  </div>
+</section>
+
+<!-- SECTION 2 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">02</span> Current Situation Analysis</h2>
+  </div>
+  <div class="section-body">
+    <div class="subhead">Key Data (July 8, 2026)</div>
+    <table>
+      <thead><tr><th>Metric</th><th>Value</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Current Price</strong></td><td>~$560</td><td>Yahoo Finance (June 30, 2026)</td></tr>
+        <tr><td><strong>52-Week High</strong></td><td>$796.25</td><td>August 15, 2025</td></tr>
+        <tr><td><strong>52-Week Low</strong></td><td>$480.00</td><td>October 27, 2025</td></tr>
+        <tr><td><strong>Market Cap</strong></td><td>~$1.45 Trillion</td><td>—</td></tr>
+        <tr><td><strong>Avg Daily Volume</strong></td><td>~45-50M</td><td>—</td></tr>
+        <tr><td><strong>Beta</strong></td><td>1.28</td><td>—</td></tr>
+        <tr><td><strong>P/E Ratio</strong></td><td>~28.7</td><td>—</td></tr>
+        <tr><td><strong>EPS (TTM)</strong></td><td>~$19.50</td><td>—</td></tr>
+      </tbody>
+    </table>
+
+    <div class="subhead">Price Action Summary</div>
+    <div class="grid3">
+      <div class="card">
+        <div class="card-label">Trailing 12 Months</div>
+        <p style="margin-bottom:4px"><strong>High:</strong> $796.25 (Aug 15, 2025) <span class="tag tag-green">All-time high</span></p>
+        <p style="margin-bottom:4px"><strong>Low:</strong> $480.00 (Oct 27, 2025) <span class="tag tag-red">Capex concerns</span></p>
+        <p style="margin-bottom:0"><strong>Change from high:</strong> <span style="color:var(--gf-danger)">−29.6%</span> · <strong>Change from low:</strong> <span style="color:var(--gf-success)">+16.7%</span></p>
+      </div>
+      <div class="card">
+        <div class="card-label">2026 Performance</div>
+        <div class="card-value up">+7.7%</div>
+        <div class="card-note">Start of year ~$520 → Now ~$560</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">03</span> Technical Analysis</h2>
+  </div>
+  <div class="section-body">
+    <div class="subhead">Support and Resistance Levels</div>
+    <div class="chart-card">
+      <div class="chart-title">📐 Price Map — Support / Resistance Levels</div>
+      <svg viewBox="0 0 700 120" width="100%" height="120" role="img" aria-label="chart"><line x1="24" y1="66" x2="676" y2="66" stroke="#64748b" stroke-width="1.4"/><line x1="57.4" y1="66" x2="57.4" y2="58" stroke="#4ade80" stroke-width="2"/><circle cx="57.4" cy="66" r="4" fill="#4ade80"/><text x="57.4" y="48.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#4ade80" font-family="inherit">S4</text><text x="57.4" y="36.0" text-anchor="middle" font-size="11" fill="#e2e8f0" font-family="inherit">$450</text><line x1="107.6" y1="66" x2="107.6" y2="74" stroke="#4ade80" stroke-width="2"/><circle cx="107.6" cy="66" r="4" fill="#4ade80"/><text x="107.6" y="96.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#4ade80" font-family="inherit">S3</text><text x="107.6" y="108.0" text-anchor="middle" font-size="11" fill="#e2e8f0" font-family="inherit">$480</text><line x1="141.0" y1="66" x2="141.0" y2="58" stroke="#4ade80" stroke-width="2"/><circle cx="141.0" cy="66" r="4" fill="#4ade80"/><text x="141.0" y="48.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#4ade80" font-family="inherit">S2</text><text x="141.0" y="36.0" text-anchor="middle" font-size="11" fill="#e2e8f0" font-family="inherit">$500</text><line x1="174.5" y1="66" x2="174.5" y2="74" stroke="#4ade80" stroke-width="2"/><circle cx="174.5" cy="66" r="4" fill="#4ade80"/><text x="174.5" y="96.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#4ade80" font-family="inherit">S1</text><text x="174.5" y="108.0" text-anchor="middle" font-size="11" fill="#e2e8f0" font-family="inherit">$520</text><line x1="308.2" y1="66" x2="308.2" y2="58" stroke="#f87171" stroke-width="2"/><circle cx="308.2" cy="66" r="4" fill="#f87171"/><text x="308.2" y="48.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#f87171" font-family="inherit">R1</text><text x="308.2" y="36.0" text-anchor="middle" font-size="11" fill="#e2e8f0" font-family="inherit">$600</text><line x1="391.8" y1="66" x2="391.8" y2="74" stroke="#f87171" stroke-width="2"/><circle cx="391.8" cy="66" r="4" fill="#f87171"/><text x="391.8" y="96.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#f87171" font-family="inherit">R2</text><text x="391.8" y="108.0" text-anchor="middle" font-size="11" fill="#e2e8f0" font-family="inherit">$650</text><line x1="475.4" y1="66" x2="475.4" y2="58" stroke="#f87171" stroke-width="2"/><circle cx="475.4" cy="66" r="4" fill="#f87171"/><text x="475.4" y="48.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#f87171" font-family="inherit">R3</text><text x="475.4" y="36.0" text-anchor="middle" font-size="11" fill="#e2e8f0" font-family="inherit">$700</text><line x1="636.3" y1="66" x2="636.3" y2="74" stroke="#f87171" stroke-width="2"/><circle cx="636.3" cy="66" r="4" fill="#f87171"/><text x="636.3" y="96.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#f87171" font-family="inherit">R4</text><text x="636.3" y="108.0" text-anchor="middle" font-size="11" fill="#e2e8f0" font-family="inherit">$796.25</text><line x1="241.3" y1="20" x2="241.3" y2="112" stroke="#38bdf8" stroke-width="1.6" stroke-dasharray="4 3"/><circle cx="241.3" cy="66" r="5.5" fill="#38bdf8"/></svg>
+      <div class="legend">
+        <span><i style="background:var(--gf-success)"></i> Support (S1–S4)</span>
+        <span><i style="background:var(--gf-danger)"></i> Resistance (R1–R4)</span>
+        <span><i style="background:var(--gf-accent)"></i> Current Price ($560)</span>
+      </div>
+      <div class="chart-caption">R4 = $796.25 all-time high; S3 = $480 2025 low. Price is squeezed between the nearest resistance R1 ($600) and the nearest support S1 ($520).</div>
+    </div>
+
+    <div class="subhead">Moving Averages</div>
+    <div class="chart-card">
+      <div class="chart-title">📊 Price vs. Moving Averages</div>
+      <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">500</text><line x1="54" y1="171.0" x2="620" y2="171.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="175.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">545</text><line x1="54" y1="122.0" x2="620" y2="122.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="126.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">590</text><line x1="54" y1="73.0" x2="620" y2="73.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="77.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">635</text><line x1="54" y1="24.0" x2="620" y2="24.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="28.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">680</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="78.9" y="154.7" width="63.4" height="65.3" rx="4" fill="#38bdf8" opacity="1"/><text x="110.6" y="146.7" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$560</text><text x="110.6" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Price</text><rect x="192.1" y="171.0" width="63.4" height="49.0" rx="4" fill="#4ade80" opacity="1"/><text x="223.8" y="163.0" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$545</text><text x="223.8" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">MA20</text><rect x="305.3" y="181.9" width="63.4" height="38.1" rx="4" fill="#4ade80" opacity="1"/><text x="337.0" y="173.9" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$535</text><text x="337.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">MA50</text><rect x="418.5" y="165.6" width="63.4" height="54.4" rx="4" fill="#fbbf24" opacity="1"/><text x="450.2" y="157.6" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$550</text><text x="450.2" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">MA100</text><rect x="531.7" y="56.7" width="63.4" height="163.3" rx="4" fill="#f87171" opacity="1"/><text x="563.4" y="48.7" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$650</text><text x="563.4" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">MA200</text></svg>
+      <div class="chart-caption">Price sits above the short-term averages (MA20, MA50) but below the long-term MA200 ($650) — signaling an <strong>indecisive / transitional</strong> market.</div>
+    </div>
+    <table>
+      <thead><tr><th>Period</th><th>Value</th><th>Comment</th></tr></thead>
+      <tbody>
+        <tr><td><strong>20-day</strong></td><td>~$545</td><td>Below price (uptrend)</td></tr>
+        <tr><td><strong>50-day</strong></td><td>~$535</td><td>Below price (bullish sign)</td></tr>
+        <tr><td><strong>100-day</strong></td><td>~$550</td><td>Close to price (neutral)</td></tr>
+        <tr><td><strong>200-day</strong></td><td>~$650</td><td>Above price (bearish sign)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="subhead">Technical Indicators</div>
+    <div class="grid">
+      <div class="card">
+        <div class="card-label">RSI</div>
+        <div class="card-value">48</div>
+        <div class="card-note">Neutral zone</div>
+        <span class="tag tag-green">Wait</span>
+      </div>
+      <div class="card">
+        <div class="card-label">MACD</div>
+        <div class="card-value down">-2.5</div>
+        <div class="card-note">Signal: -1.8</div>
+        <span class="tag tag-red">Sell Signal</span>
+      </div>
+      <div class="card">
+        <div class="card-label">Bollinger</div>
+        <div class="card-value neu">$560</div>
+        <div class="card-note">Upper: $585 · Mid: $545</div>
+        <span class="tag tag-orange">Near Overbought</span>
+      </div>
+      <div class="card">
+        <div class="card-label">Volume</div>
+        <div class="card-value up">55M</div>
+        <div class="card-note">Average: 45-50M</div>
+        <span class="tag tag-green">Bullish Sign</span>
+      </div>
+    </div>
+
+    <div class="subhead">Technical Signal Summary</div>
+    <table>
+      <thead><tr><th>Indicator</th><th>Signal</th><th>Strength</th></tr></thead>
+      <tbody>
+        <tr><td>Moving Averages</td><td>Indecisive</td><td>⭐⭐</td></tr>
+        <tr><td>RSI</td><td>Neutral</td><td>⭐</td></tr>
+        <tr><td>MACD</td><td>Sell</td><td>⭐⭐⭐</td></tr>
+        <tr><td>Bollinger Bands</td><td>Near Overbought</td><td>⭐⭐</td></tr>
+        <tr><td>Volume</td><td>Buy</td><td>⭐⭐⭐</td></tr>
+      </tbody>
+    </table>
+    <div class="insight-box warn"><strong>Overall Technical Read:</strong> ⭐⭐⭐ NEUTRAL — MILDLY BULLISH</div>
+  </div>
+</section>
+
+<!-- SECTION 4 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">04</span> Price Forecasts</h2>
+  </div>
+  <div class="section-body">
+    <div class="chart-card">
+      <div class="chart-title">🎯 Price Target Scenarios — Short / Mid / Long Term</div>
+      <svg viewBox="0 0 700 358" width="100%" height="358" role="img" aria-label="chart"><line x1="96.0" y1="20" x2="96.0" y2="328" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="96.0" y="344" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">$420</text><line x1="179.4" y1="20" x2="179.4" y2="328" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="179.4" y="344" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">$506</text><line x1="262.9" y1="20" x2="262.9" y2="328" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="262.9" y="344" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">$591</text><line x1="346.3" y1="20" x2="346.3" y2="328" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="346.3" y="344" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">$677</text><line x1="429.7" y1="20" x2="429.7" y2="328" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="429.7" y="344" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">$763</text><line x1="513.1" y1="20" x2="513.1" y2="328" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="513.1" y="344" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">$849</text><line x1="596.6" y1="20" x2="596.6" y2="328" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="596.6" y="344" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">$934</text><line x1="680.0" y1="20" x2="680.0" y2="328" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="680.0" y="344" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">$1020</text><rect x="173.9" y="32.0" width="19.5" height="18.0" rx="5" fill="#f87171" opacity="0.88"/><text x="86" y="45.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">Bear</text><text x="201.3" y="45.0" font-size="10.5" font-weight="700" fill="#e2e8f0" font-family="inherit">15%</text><rect x="271.2" y="62.0" width="19.5" height="18.0" rx="5" fill="#fbbf24" opacity="0.88"/><text x="86" y="75.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">Base</text><text x="298.7" y="75.0" font-size="10.5" font-weight="700" fill="#e2e8f0" font-family="inherit">60%</text><rect x="319.9" y="92.0" width="29.2" height="18.0" rx="5" fill="#4ade80" opacity="0.88"/><text x="86" y="105.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">Bull</text><text x="357.1" y="105.0" font-size="10.5" font-weight="700" fill="#e2e8f0" font-family="inherit">25%</text><rect x="154.4" y="136.0" width="38.9" height="18.0" rx="5" fill="#f87171" opacity="0.88"/><text x="86" y="149.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">Bear</text><text x="201.3" y="149.0" font-size="10.5" font-weight="700" fill="#e2e8f0" font-family="inherit">15%</text><rect x="319.9" y="166.0" width="48.7" height="18.0" rx="5" fill="#fbbf24" opacity="0.88"/><text x="86" y="179.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">Base</text><text x="376.5" y="179.0" font-size="10.5" font-weight="700" fill="#e2e8f0" font-family="inherit">55%</text><rect x="417.2" y="196.0" width="48.7" height="18.0" rx="5" fill="#4ade80" opacity="0.88"/><text x="86" y="209.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">Bull</text><text x="473.9" y="209.0" font-size="10.5" font-weight="700" fill="#e2e8f0" font-family="inherit">30%</text><rect x="125.2" y="240.0" width="97.3" height="18.0" rx="5" fill="#f87171" opacity="0.88"/><text x="86" y="253.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">Bear</text><text x="230.5" y="253.0" font-size="10.5" font-weight="700" fill="#e2e8f0" font-family="inherit">15%</text><rect x="417.2" y="270.0" width="97.3" height="18.0" rx="5" fill="#fbbf24" opacity="0.88"/><text x="86" y="283.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">Base</text><text x="522.5" y="283.0" font-size="10.5" font-weight="700" fill="#e2e8f0" font-family="inherit">50%</text><rect x="563.2" y="300.0" width="97.3" height="18.0" rx="5" fill="#4ade80" opacity="0.88"/><text x="86" y="313.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">Bull</text><text x="668.5" y="313.0" font-size="10.5" font-weight="700" fill="#e2e8f0" font-family="inherit">35%</text><text x="86" y="20.0" text-anchor="end" font-size="11" font-weight="700" fill="#38bdf8" font-family="inherit">SHORT (1-3mo)</text><text x="86" y="124.0" text-anchor="end" font-size="11" font-weight="700" fill="#38bdf8" font-family="inherit">MID (3-6mo)</text><text x="86" y="228.0" text-anchor="end" font-size="11" font-weight="700" fill="#38bdf8" font-family="inherit">LONG (6-12mo)</text><line x1="232.3" y1="16" x2="232.3" y2="330" stroke="#e2e8f0" stroke-width="1.4" stroke-dasharray="3 3"/><text x="232.3" y="12" text-anchor="middle" font-size="10.5" font-weight="700" fill="#e2e8f0" font-family="inherit">$560</text></svg>
+      <div class="legend">
+        <span><i style="background:var(--gf-danger)"></i> Bear</span>
+        <span><i style="background:var(--gf-warning)"></i> Base</span>
+        <span><i style="background:var(--gf-success)"></i> Bull</span>
+      </div>
+      <div class="chart-caption">Bars show the min–max price range; percentages show probability of occurrence. The dashed line marks the current price, $560.</div>
+    </div>
+
+    <div class="subhead">Short Term (1-3 Months)</div>
+    <div class="grid3">
+      <div class="strat-card">
+        <div class="strat-horizon">Base Case</div>
+        <div class="strat-action">$600 – $620</div>
+        <div class="strat-row"><span class="strat-key">Probability</span><span class="strat-v">60%</span></div>
+        <div class="strat-row"><span class="strat-key">Timing</span><span class="strat-v">Aug–Sep 2026</span></div>
+        <div class="strat-row"><span class="strat-key">Drivers</span><span class="strat-v">Meta Compute impact, Q2 earnings</span></div>
+      </div>
+      <div class="strat-card">
+        <div class="strat-horizon">Bull Case</div>
+        <div class="strat-action" style="color:var(--gf-success)">$650 – $680</div>
+        <div class="strat-row"><span class="strat-key">Probability</span><span class="strat-v green">25%</span></div>
+        <div class="strat-row"><span class="strat-key">Timing</span><span class="strat-v">Sep–Oct 2026</span></div>
+        <div class="strat-row"><span class="strat-key">Triggers</span><span class="strat-v">Customer announcements, Muse success</span></div>
+      </div>
+      <div class="strat-card">
+        <div class="strat-horizon">Bear Case</div>
+        <div class="strat-action" style="color:var(--gf-danger)">$500 – $520</div>
+        <div class="strat-row"><span class="strat-key">Probability</span><span class="strat-v red">15%</span></div>
+        <div class="strat-row"><span class="strat-key">Timing</span><span class="strat-v">August 2026</span></div>
+        <div class="strat-row"><span class="strat-key">Risks</span><span class="strat-v">Capex increase, competition</span></div>
+      </div>
+    </div>
+
+    <div class="subhead">Mid Term (3-6 Months)</div>
+    <div class="grid3">
+      <div class="strat-card">
+        <div class="strat-horizon">Base Case</div>
+        <div class="strat-action">$650 – $700</div>
+        <div class="strat-row"><span class="strat-key">Probability</span><span class="strat-v">55%</span></div>
+        <div class="strat-row"><span class="strat-key">Timing</span><span class="strat-v">Oct 2026 – Jan 2027</span></div>
+        <div class="strat-row"><span class="strat-key">Drivers</span><span class="strat-v">Cloud revenue, AI investments</span></div>
+      </div>
+      <div class="strat-card">
+        <div class="strat-horizon">Bull Case</div>
+        <div class="strat-action" style="color:var(--gf-success)">$750 – $800</div>
+        <div class="strat-row"><span class="strat-key">Probability</span><span class="strat-v green">30%</span></div>
+        <div class="strat-row"><span class="strat-key">Triggers</span><span class="strat-v">Market share, new models</span></div>
+      </div>
+      <div class="strat-card">
+        <div class="strat-horizon">Bear Case</div>
+        <div class="strat-action" style="color:var(--gf-danger)">$480 – $520</div>
+        <div class="strat-row"><span class="strat-key">Probability</span><span class="strat-v red">15%</span></div>
+        <div class="strat-row"><span class="strat-key">Risks</span><span class="strat-v">No AI returns, regulation</span></div>
+      </div>
+    </div>
+
+    <div class="subhead">Long Term (6-12 Months)</div>
+    <div class="grid3">
+      <div class="strat-card">
+        <div class="strat-horizon">Base Case</div>
+        <div class="strat-action">$750 – $850</div>
+        <div class="strat-row"><span class="strat-key">Probability</span><span class="strat-v">50%</span></div>
+        <div class="strat-row"><span class="strat-key">Timing</span><span class="strat-v">2027</span></div>
+        <div class="strat-row"><span class="strat-key">Drivers</span><span class="strat-v">Cloud maturation, AI leadership</span></div>
+      </div>
+      <div class="strat-card">
+        <div class="strat-horizon">Bull Case</div>
+        <div class="strat-action" style="color:var(--gf-success)">$900 – $1,000</div>
+        <div class="strat-row"><span class="strat-key">Probability</span><span class="strat-v green">35%</span></div>
+        <div class="strat-row"><span class="strat-key">Triggers</span><span class="strat-v">AI leadership, new revenue</span></div>
+      </div>
+      <div class="strat-card">
+        <div class="strat-horizon">Bear Case</div>
+        <div class="strat-action" style="color:var(--gf-danger)">$450 – $550</div>
+        <div class="strat-row"><span class="strat-key">Probability</span><span class="strat-v red">15%</span></div>
+        <div class="strat-row"><span class="strat-key">Risks</span><span class="strat-v">AI bubble, competition</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">05</span> "What-If" Scenarios</h2>
+  </div>
+  <div class="section-body">
+    <div class="grid2">
+      <div class="risk-card high">
+        <div class="risk-head"><span class="risk-name">⚠️ Meta Compute Succeeds</span><span class="risk-level">High Reward · 40%</span></div>
+        <div class="risk-body">
+          <p><strong>Conditions:</strong> 10,000+ customers by end of 2026, $5B+ annual revenue, 40%+ gross margin</p>
+          <p><strong>Impact:</strong> $800–$900 price target, 12-18 months, 35x–40x P/E</p>
+          <p><strong>Rationale:</strong> New revenue stream re-rating, ability to compete with AWS/Azure/Google Cloud</p>
+        </div>
+      </div>
+      <div class="risk-card med">
+        <div class="risk-head"><span class="risk-name">⚠️ Capex Spending Eases</span><span class="risk-level">Medium · 35%</span></div>
+        <div class="risk-body">
+          <p><strong>Conditions:</strong> 2027 capex guidance falls to $80-100B range, free cash flow improves</p>
+          <p><strong>Impact:</strong> $700–$750 price target, 6-12 months, 30x–35x P/E</p>
+          <p><strong>Rationale:</strong> Rising investor confidence, easing profitability concerns</p>
+        </div>
+      </div>
+      <div class="risk-card high">
+        <div class="risk-head"><span class="risk-name">⚠️ Muse Spark Underdelivers</span><span class="risk-level">High Risk · 20%</span></div>
+        <div class="risk-body">
+          <p><strong>Conditions:</strong> Model performance below expectations, weak user adoption</p>
+          <p><strong>Impact:</strong> $450–$500 price target, 3-6 months, 20x–25x P/E</p>
+          <p><strong>Rationale:</strong> Erosion of AI leadership position, loss of investor confidence</p>
+        </div>
+      </div>
+      <div class="risk-card med">
+        <div class="risk-head"><span class="risk-name">⚠️ Regulatory Pressure Rises</span><span class="risk-level">Medium · 25%</span></div>
+        <div class="risk-body">
+          <p><strong>Conditions:</strong> New EU AI regulation, US antitrust litigation</p>
+          <p><strong>Impact:</strong> $480–$550 price target, 3-9 months, 22x–28x P/E</p>
+          <p><strong>Rationale:</strong> Rising operating costs, slower growth</p>
+        </div>
+      </div>
+      <div class="risk-card high">
+        <div class="risk-head"><span class="risk-name">⚠️ Macro Recession</span><span class="risk-level">High Risk · 15%</span></div>
+        <div class="risk-body">
+          <p><strong>Conditions:</strong> US economy enters recession, rates rise above 6%</p>
+          <p><strong>Impact:</strong> $400–$450 price target, 6-12 months, 18x–22x P/E</p>
+          <p><strong>Rationale:</strong> Falling ad revenue, weaker consumer spending</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">06</span> Risk &amp; Opportunity Analysis</h2>
+  </div>
+  <div class="section-body">
+    <div class="grid2">
+      <div>
+        <div class="subhead">Key Risks — Probability</div>
+        <div class="chart-card" style="margin-top:0">
+          <svg viewBox="0 0 640 216" width="100%" height="216" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">0%</text><line x1="287.5" y1="16" x2="287.5" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="287.5" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">12.5%</text><line x1="385.0" y1="16" x2="385.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="385.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">25%</text><line x1="482.5" y1="16" x2="482.5" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="482.5" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">37.5%</text><line x1="580.0" y1="16" x2="580.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="580.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">50%</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">AI capex returns disappoint</text><rect x="190" y="22.8" width="234.0" height="19.0" rx="4" fill="#f87171" opacity="1"/><text x="432.0" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">30%</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Competition intensifies</text><rect x="190" y="56.8" width="312.0" height="19.0" rx="4" fill="#f87171" opacity="1"/><text x="510.0" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">40%</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Regulatory pressure</text><rect x="190" y="90.8" width="195.0" height="19.0" rx="4" fill="#f87171" opacity="1"/><text x="393.0" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">25%</text><text x="178" y="138.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Macro uncertainty</text><rect x="190" y="124.8" width="156.0" height="19.0" rx="4" fill="#f87171" opacity="1"/><text x="354.0" y="138.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">20%</text><text x="178" y="172.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Meta Compute underdelivers</text><rect x="190" y="158.8" width="273.0" height="19.0" rx="4" fill="#f87171" opacity="1"/><text x="471.0" y="172.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">35%</text></svg>
+        </div>
+        <table>
+          <thead><tr><th>Risk</th><th>Impact</th><th>Mitigation</th></tr></thead>
+          <tbody>
+            <tr><td>No returns from AI investment</td><td>High</td><td>Quarterly progress tracking</td></tr>
+            <tr><td>Rising competition</td><td>Medium-High</td><td>Differentiation strategy</td></tr>
+            <tr><td>Regulatory pressure</td><td>Medium</td><td>Compliance investment</td></tr>
+            <tr><td>Macro uncertainty</td><td>High</td><td>Diversification</td></tr>
+            <tr><td>Meta Compute failure</td><td>High</td><td>Gradual scaling</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="subhead">Key Opportunities — Probability</div>
+        <div class="chart-card" style="margin-top:0">
+          <svg viewBox="0 0 640 216" width="100%" height="216" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">0%</text><line x1="287.5" y1="16" x2="287.5" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="287.5" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">17.5%</text><line x1="385.0" y1="16" x2="385.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="385.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">35%</text><line x1="482.5" y1="16" x2="482.5" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="482.5" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">52.5%</text><line x1="580.0" y1="16" x2="580.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="580.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">70%</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">AI market leadership</text><rect x="190" y="22.8" width="250.7" height="19.0" rx="4" fill="#4ade80" opacity="1"/><text x="448.7" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">45%</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Cloud business growth</text><rect x="190" y="56.8" width="278.6" height="19.0" rx="4" fill="#4ade80" opacity="1"/><text x="476.6" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">50%</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Ad revenue growth</text><rect x="190" y="90.8" width="334.3" height="19.0" rx="4" fill="#4ade80" opacity="1"/><text x="532.3" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">60%</text><text x="178" y="138.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Data-center infra revenue</text><rect x="190" y="124.8" width="222.9" height="19.0" rx="4" fill="#4ade80" opacity="1"/><text x="420.9" y="138.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">40%</text><text x="178" y="172.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">New AI models</text><rect x="190" y="158.8" width="306.4" height="19.0" rx="4" fill="#4ade80" opacity="1"/><text x="504.4" y="172.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">55%</text></svg>
+        </div>
+        <table>
+          <thead><tr><th>Opportunity</th><th>Potential</th><th>Timeframe</th></tr></thead>
+          <tbody>
+            <tr><td>AI market leadership</td><td>Very High</td><td>12-24 months</td></tr>
+            <tr><td>Cloud business growth</td><td>High</td><td>6-18 months</td></tr>
+            <tr><td>Ad revenue growth</td><td>Medium</td><td>Ongoing</td></tr>
+            <tr><td>Data-center infra revenue</td><td>High</td><td>12-36 months</td></tr>
+            <tr><td>New AI models</td><td>Very High</td><td>6-12 months</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">07</span> Investment Recommendations</h2>
+  </div>
+  <div class="section-body">
+    <div class="grid3">
+      <div class="strat-card">
+        <div class="strat-horizon">Short Term (1-3 Months)</div>
+        <div class="strat-action">HOLD / Light Buy</div>
+        <div class="strat-row"><span class="strat-key">Price Target</span><span class="strat-v green">$600 – $620</span></div>
+        <div class="strat-row"><span class="strat-key">Stop-Loss</span><span class="strat-v red">$520</span></div>
+        <div class="strat-row"><span class="strat-key">Take-Profit</span><span class="strat-v green">$650</span></div>
+      </div>
+      <div class="strat-card">
+        <div class="strat-horizon">Mid Term (3-6 Months)</div>
+        <div class="strat-action">BUY</div>
+        <div class="strat-row"><span class="strat-key">Price Target</span><span class="strat-v green">$650 – $700</span></div>
+        <div class="strat-row"><span class="strat-key">Stop-Loss</span><span class="strat-v red">$500</span></div>
+        <div class="strat-row"><span class="strat-key">Take-Profit</span><span class="strat-v green">$750</span></div>
+      </div>
+      <div class="strat-card">
+        <div class="strat-horizon">Long Term (6-12 Months)</div>
+        <div class="strat-action">STRONG BUY</div>
+        <div class="strat-row"><span class="strat-key">Price Target</span><span class="strat-v green">$750 – $850</span></div>
+        <div class="strat-row"><span class="strat-key">Stop-Loss</span><span class="strat-v red">$480</span></div>
+        <div class="strat-row"><span class="strat-key">Take-Profit</span><span class="strat-v green">$900</span></div>
+      </div>
+    </div>
+
+    <div class="subhead">Portfolio Allocation Guidance</div>
+    <ul>
+      <li><strong>Aggressive Portfolio:</strong> 10-15% META</li>
+      <li><strong>Balanced Portfolio:</strong> 5-10% META</li>
+      <li><strong>Capital-Preservation Portfolio:</strong> 2-5% META</li>
+    </ul>
+  </div>
+</section>
+
+<!-- SECTION 8 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">08</span> Comparative Valuation</h2>
+  </div>
+  <div class="section-body">
+    <div class="grid2">
+      <div class="chart-card" style="margin-top:0">
+        <div class="chart-title">📈 P/E Ratio Comparison</div>
+        <svg viewBox="0 0 640 216" width="100%" height="216" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">0x</text><line x1="287.5" y1="16" x2="287.5" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="287.5" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">11.3x</text><line x1="385.0" y1="16" x2="385.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="385.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">22.5x</text><line x1="482.5" y1="16" x2="482.5" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="482.5" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">33.8x</text><line x1="580.0" y1="16" x2="580.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="580.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">45x</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Meta</text><rect x="190" y="22.8" width="248.7" height="19.0" rx="4" fill="#38bdf8" opacity="1"/><text x="446.7" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">28.7x</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Microsoft</text><rect x="190" y="56.8" width="305.1" height="19.0" rx="4" fill="#94a3b8" opacity="0.75"/><text x="503.1" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">35.2x</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Alphabet</text><rect x="190" y="90.8" width="232.3" height="19.0" rx="4" fill="#94a3b8" opacity="0.75"/><text x="430.3" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">26.8x</text><text x="178" y="138.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Amazon</text><rect x="190" y="124.8" width="368.3" height="19.0" rx="4" fill="#94a3b8" opacity="0.75"/><text x="566.3" y="138.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">42.5x</text><text x="178" y="172.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Apple</text><rect x="190" y="158.8" width="260.9" height="19.0" rx="4" fill="#94a3b8" opacity="0.75"/><text x="458.9" y="172.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">30.1x</text><line x1="463.0" y1="12" x2="463.0" y2="190" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 3"/><text x="463.0" y="8" text-anchor="middle" font-size="10.5" font-weight="600" fill="#38bdf8" font-family="inherit">Sector avg 31.5x</text></svg>
+        <div class="chart-caption">Meta trades at 28.7x, <strong>below</strong> the sector average of 31.5x — a potential value signal.</div>
+      </div>
+      <div class="chart-card" style="margin-top:0">
+        <div class="chart-title">📉 Price-to-Book (P/B) Comparison</div>
+        <svg viewBox="0 0 640 216" width="100%" height="216" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">0x</text><line x1="287.5" y1="16" x2="287.5" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="287.5" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">11.5x</text><line x1="385.0" y1="16" x2="385.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="385.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">23x</text><line x1="482.5" y1="16" x2="482.5" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="482.5" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">34.5x</text><line x1="580.0" y1="16" x2="580.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="580.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">46x</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Meta</text><rect x="190" y="22.8" width="69.5" height="19.0" rx="4" fill="#38bdf8" opacity="1"/><text x="267.5" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">8.2x</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Microsoft</text><rect x="190" y="56.8" width="106.0" height="19.0" rx="4" fill="#94a3b8" opacity="0.75"/><text x="304.0" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">12.5x</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Alphabet</text><rect x="190" y="90.8" width="66.1" height="19.0" rx="4" fill="#94a3b8" opacity="0.75"/><text x="264.1" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">7.8x</text><text x="178" y="138.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Amazon</text><rect x="190" y="124.8" width="75.5" height="19.0" rx="4" fill="#94a3b8" opacity="0.75"/><text x="273.5" y="138.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">8.9x</text><text x="178" y="172.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Apple</text><rect x="190" y="158.8" width="358.6" height="19.0" rx="4" fill="#94a3b8" opacity="0.75"/><text x="556.6" y="172.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">42.3x</text><line x1="270.5" y1="12" x2="270.5" y2="190" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 3"/><text x="270.5" y="8" text-anchor="middle" font-size="10.5" font-weight="600" fill="#38bdf8" font-family="inherit">Sector avg 9.5x</text></svg>
+        <div class="chart-caption">Meta trades at 8.2x, <strong>below</strong> the sector average of 9.5x — another value signal.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 9 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">09</span> Conclusion &amp; Recommendations</h2>
+  </div>
+  <div class="section-body">
+    <div class="subhead">Key Findings</div>
+    <ol>
+      <li><strong>Technical Read:</strong> Shifting from neutral to mildly bullish</li>
+      <li><strong>Fundamentals:</strong> Strong (AI investment, cloud potential)</li>
+      <li><strong>Valuation:</strong> Below sector average</li>
+      <li><strong>Risk/Reward:</strong> High upside potential, moderate risk</li>
+    </ol>
+
+    <div class="subhead">Investment Strategy</div>
+    <table>
+      <thead><tr><th>Investor Profile</th><th>Recommendation</th><th>Price Target</th><th>Stop-Loss</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Short-term</strong></td><td>HOLD / Light Buy</td><td>$600-620</td><td>$520</td></tr>
+        <tr><td><strong>Mid-term</strong></td><td>BUY</td><td>$650-700</td><td>$500</td></tr>
+        <tr><td><strong>Long-term</strong></td><td>STRONG BUY</td><td>$750-850</td><td>$480</td></tr>
+        <tr><td><strong>Capital preservation</strong></td><td>HOLD</td><td>$600+</td><td>$520</td></tr>
+      </tbody>
+    </table>
+
+    <div class="disclaimer">
+      <p><strong>⚠️ Disclaimer</strong></p>
+      <p>This report is for <strong>informational purposes only</strong> and does <strong>not constitute investment advice</strong>. Stock investments carry high risk. Before making investment decisions, do your own research, consult your financial advisor, assess your risk tolerance, and diversify.</p>
+      <p><strong>gistify.pro</strong> does not guarantee the accuracy of the information in this report and accepts no liability for any losses.</p>
+    </div>
+  </div>
+</section>
+
+<div class="tags-line">#META #MetaPlatforms #StockAnalysis #TechnicalAnalysis #PriceForecast #AI #CloudComputing #MetaCompute #Valuation #RiskAnalysis</div>
+
+</div>
+</body>
+</html>
