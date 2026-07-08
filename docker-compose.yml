@@ -1,6 +1,6 @@
 services:
   gistify:
-    image: hsanksc/gistify:latest
+    image: hsnksc/gistify:latest
     container_name: gistify
     ports:
       - "3000:3000"
