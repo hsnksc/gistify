@@ -45,6 +45,7 @@ COPY --from=build /app/earningreport ./earningreport
 COPY --from=build /app/flow ./flow
 COPY --from=build /app/momentum ./momentum
 COPY --from=build /app/reports/coverage ./reports/coverage
+COPY --from=build /app/coverage/reports ./coverage/reports
 
 EXPOSE 3000
 
