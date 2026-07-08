@@ -1513,6 +1513,17 @@ function extractHtmlFigureFiles(html: string) {
   ).sort((left, right) => left.localeCompare(right));
 }
 
+function extractHtmlTextByClassToken(html: string, className: string) {
+  return stripHtmlTags(
+    html.match(
+      new RegExp(
+        `<[^>]*class=["'](?:[^"']*\\s)?${className}(?:\\s[^"']*)?["'][^>]*>([\\s\\S]*?)<\\/[^>]+>`,
+        "i"
+      )
+    )?.[1] || ""
+  );
+}
+
 function extractHtmlDateCandidates(html: string) {
   const metaDateContent = Array.from(
     html.matchAll(
@@ -1530,7 +1541,7 @@ function extractHtmlDateCandidates(html: string) {
       ...timeDateContent,
       extractHtmlTextByClass(html, "price-date"),
       extractHtmlTextByClass(html, "hero-date"),
-      extractHtmlTextByClass(html, "date"),
+      extractHtmlTextByClassToken(html, "date"),
       extractHtmlTextByClass(html, "meta"),
       extractHtmlTextByClass(html, "subtitle"),
       stripHtmlTags(html.match(/<header[^>]*>([\s\S]*?)<\/header>/i)?.[1] || ""),
