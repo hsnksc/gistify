@@ -95,6 +95,11 @@ function buildJobFn(jobName: string): () => Promise<unknown> {
           "--output",
           outputPath,
         ]);
+        if (result.exitCode !== 0) {
+          throw new Error(
+            `Midas pipeline failed with exit code ${result.exitCode}`
+          );
+        }
 
         // Trigger the server-side refresh so the snapshot is normalized
         // and persisted to gistify.sqlite by the application process.

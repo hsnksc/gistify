@@ -31,7 +31,7 @@ ENV GISTIFY_MIGRATIONS_DIR=/app/server/db/migrations
 RUN mkdir -p /app/data
 RUN apk add --no-cache python3 py3-pip curl tzdata \
   && ln -sf /usr/bin/python3 /usr/bin/python \
-  && pip install --break-system-packages marketdata-sdk-py yfinance yahooquery pandas numpy scipy requests
+  && pip install --break-system-packages marketdata-sdk-py==1.3.0 yfinance yahooquery pandas numpy scipy requests
 
 COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/node_modules ./node_modules

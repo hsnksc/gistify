@@ -27,6 +27,8 @@ from typing import Any
 
 from marketdata import MarketDataClient, OutputFormat
 
+from yahoo_market_data import fetch_yahoo_bars, fetch_yahoo_quotes
+
 DEFAULT_SYMBOLS = [
     "HOOD", "HIMS", "TSM", "META", "MU", "ADBE", "PLTR", "PLTU", "AMD", "AMDL",
     "SMCX", "SMCI", "NVDA", "NVDU", "SOXL", "SOXS", "AMZN", "MSFT", "AAPL", "AAPX",
@@ -49,14 +51,15 @@ def _get_client() -> MarketDataClient:
 
 def _is_error_result(result: Any) -> bool:
     """Detect MarketDataClientErrorResult without importing internal types."""
-    return (
-        result is not None
-        and hasattr(result, "s")
-        and str(getattr(result, "s", "")).lower() == "error"
-    ) or (
-        isinstance(result, dict)
-        and str(result.get("s", "")).lower() == "error"
-    )
+    if result is None:
+        return True
+    if isinstance(result, dict):
+        return str(result.get("s", "")).lower() == "error"
+    if isinstance(result, (list, str)):
+        return False
+    # SDK returns a MarketDataClientErrorResult object (not a dict) on HTTP
+    # errors (401 invalid token, 402 plan/credits, 429 rate limit).
+    return True
 
 
 def fetch_quotes_batch(client: MarketDataClient, symbols: list[str]) -> dict[str, dict[str, Any]]:
@@ -73,8 +76,7 @@ def fetch_quotes_batch(client: MarketDataClient, symbols: list[str]) -> dict[str
                 output_format=OutputFormat.JSON,
             )
             if _is_error_result(result):
-                err = result if isinstance(result, dict) else getattr(result, "__dict__", {})
-                print(f"[WARN] Quotes API error: {err}", file=sys.stderr)
+                print(f"[ERROR] Quotes API error: {str(result)[:400]}", file=sys.stderr)
                 break
 
             if isinstance(result, dict) and "symbol" in result:
@@ -110,8 +112,7 @@ def fetch_candles(
                 output_format=OutputFormat.JSON,
             )
             if _is_error_result(result):
-                err = result if isinstance(result, dict) else getattr(result, "__dict__", {})
-                print(f"[WARN] Candles API error for {symbol}: {err}", file=sys.stderr)
+                print(f"[ERROR] Candles API error for {symbol}: {str(result)[:400]}", file=sys.stderr)
                 return []
 
             if not isinstance(result, dict):
@@ -238,35 +239,77 @@ def run_marketdata_pipeline(
     mode: str = "default",
 ) -> dict[str, Any]:
     print(f"[MarketData Pipeline] {len(symbols)} sembol, mode={mode}")
-    client = _get_client()
+    force_yahoo = os.environ.get("MIDAS_DATA_SOURCE", "").strip().lower() == "yahoo"
+    client = None if force_yahoo else _get_client()
 
     print("[1/4] Extended quote verileri cekiliyor (fiyat + daily pct)...")
+    data_source = "marketdata"
     quotes: dict[str, dict[str, Any]] = {}
-    for i in range(0, len(symbols), BATCH_SIZE):
-        batch = symbols[i:i + BATCH_SIZE]
-        batch_quotes = fetch_quotes_batch(client, batch)
-        quotes.update(batch_quotes)
-        if i + BATCH_SIZE < len(symbols):
-            time.sleep(0.2)
-    print(f"      -> {len(quotes)} quote alindi")
+    if client is not None:
+        for i in range(0, len(symbols), BATCH_SIZE):
+            batch = symbols[i:i + BATCH_SIZE]
+            batch_quotes = fetch_quotes_batch(client, batch)
+            quotes.update(batch_quotes)
+            if i + BATCH_SIZE < len(symbols):
+                time.sleep(0.2)
+    if not quotes:
+        if not force_yahoo:
+            print(
+                "[WARN] MarketData.app quote dondurmedi (token planini/kotasini "
+                "kontrol edin); Yahoo fallback deneniyor...",
+                file=sys.stderr,
+            )
+        data_source = "yahoo"
+        for sym, q in fetch_yahoo_quotes(symbols).items():
+            quotes[sym] = {
+                "last": q["last"],
+                "change": q["change"],
+                # Pipeline expects a decimal fraction (0.0131 = 1.31%)
+                "changepct": q["changepct"] / 100.0,
+                "volume": q["volume"],
+                "bid": q["bid"],
+                "ask": q["ask"],
+            }
+    print(f"      -> {len(quotes)} quote alindi ({data_source})")
 
-    print("[2/4] Haftalik barlar cekiliyor...")
     weekly_bars: dict[str, list[dict[str, Any]]] = {}
-    for sym in symbols:
-        bars = fetch_candles(client, sym, resolution="W", countback=5)
-        if bars:
-            weekly_bars[sym] = bars
-        time.sleep(0.05)
-    print(f"      -> {len(weekly_bars)} sembol haftalik bar alindi")
-
-    print("[3/4] Aylik barlar cekiliyor...")
     monthly_bars: dict[str, list[dict[str, Any]]] = {}
-    for sym in symbols:
-        bars = fetch_candles(client, sym, resolution="M", countback=3)
-        if bars:
-            monthly_bars[sym] = bars
-        time.sleep(0.05)
-    print(f"      -> {len(monthly_bars)} sembol aylik bar alindi")
+
+    def _load_yahoo_bars() -> None:
+        ybars = fetch_yahoo_bars(symbols)
+        for sym, b in ybars.items():
+            if b.get("weekly"):
+                weekly_bars[sym] = b["weekly"][-5:]
+            if b.get("monthly"):
+                monthly_bars[sym] = b["monthly"][-3:]
+
+    if data_source == "yahoo":
+        print("[2-3/4] Haftalik/aylik barlar Yahoo'dan cekiliyor (batch)...")
+        _load_yahoo_bars()
+    else:
+        print("[2/4] Haftalik barlar cekiliyor...")
+        for sym in symbols:
+            bars = fetch_candles(client, sym, resolution="W", countback=5)
+            if bars:
+                weekly_bars[sym] = bars
+            time.sleep(0.05)
+        print(f"      -> {len(weekly_bars)} sembol haftalik bar alindi")
+
+        print("[3/4] Aylik barlar cekiliyor...")
+        for sym in symbols:
+            bars = fetch_candles(client, sym, resolution="M", countback=3)
+            if bars:
+                monthly_bars[sym] = bars
+            time.sleep(0.05)
+
+        if not weekly_bars and not monthly_bars:
+            print(
+                "[WARN] MarketData.app candle dondurmedi; barlar Yahoo'dan cekiliyor...",
+                file=sys.stderr,
+            )
+            data_source = "marketdata+yahoo-bars"
+            _load_yahoo_bars()
+    print(f"      -> {len(weekly_bars)} haftalik / {len(monthly_bars)} aylik bar alindi")
 
     print("[4/4] Sinyaller uretiliyor...")
     signals = []
@@ -308,6 +351,16 @@ def run_marketdata_pipeline(
         }
         signals.append(record)
 
+    if not signals:
+        # API auth/quota failure — keep the last good snapshot on disk and
+        # fail the run so the cron history records the real problem.
+        print(
+            "[FATAL] MarketData.app hicbir sinyal uretmedi (quotes/candles bos). "
+            "Token planini/kotasini kontrol edin. Cikti dosyasi guncellenmedi.",
+            file=sys.stderr,
+        )
+        raise SystemExit(2)
+
     signal_priority = {"STRONG_BUY": 4, "BUY": 3, "HOLD": 2, "SELL": 1, "STRONG_SELL": 0}
     signals.sort(
         key=lambda s: (signal_priority.get(s["signal"], 2), abs(s["strength"])),
@@ -320,6 +373,7 @@ def run_marketdata_pipeline(
         "successful": len(signals),
         "failed": len(errors),
         "mode": mode,
+        "dataSource": data_source,
         "signals": signals,
         "errors": errors,
     }

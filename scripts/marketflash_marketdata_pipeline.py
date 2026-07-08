@@ -28,6 +28,8 @@ from typing import Any
 
 from marketdata import MarketDataClient, OutputFormat
 
+from yahoo_market_data import fetch_yahoo_bars, fetch_yahoo_quotes
+
 try:
     import yfinance as yf
     HAS_YFINANCE = True
@@ -156,7 +158,12 @@ def _is_error_result(result: Any) -> bool:
         return True
     if isinstance(result, dict):
         return str(result.get("s", "")).lower() == "error"
-    return hasattr(result, "s") and str(getattr(result, "s", "")).lower() == "error"
+    if isinstance(result, (list, str)):
+        return False
+    # SDK returns a MarketDataClientErrorResult object (not a dict) on HTTP
+    # errors (401 invalid token, 402 plan/credits, 429 rate limit). It has no
+    # "s" field, so treat any non-collection result as an error and surface it.
+    return True
 
 
 def fetch_quotes_batch(client: MarketDataClient, symbols: list[str], use_52_week: bool = False) -> dict[str, Quote]:
@@ -173,7 +180,7 @@ def fetch_quotes_batch(client: MarketDataClient, symbols: list[str], use_52_week
                     kwargs["use_52_week"] = True
                 result = client.stocks.quotes(batch, **kwargs)
                 if _is_error_result(result):
-                    print(f"[WARN] Quotes API error: {result}", file=sys.stderr)
+                    print(f"[ERROR] Quotes API error: {str(result)[:400]}", file=sys.stderr)
                     break
 
                 if isinstance(result, dict) and "symbol" in result:
@@ -242,11 +249,13 @@ def fetch_vix_fallback() -> Quote:
     return q
 
 
-def _resolve_vix(client: MarketDataClient, quotes: dict[str, Quote]) -> Quote:
+def _resolve_vix(client: MarketDataClient | None, quotes: dict[str, Quote]) -> Quote:
     """Resolve VIX level from quotes, candles, or yfinance fallback."""
     vix = quotes.get("VIX")
     if vix and vix.last > 0:
         return vix
+    if client is None:
+        return fetch_vix_fallback()
     # Try MarketData candles for VIX under common symbols
     for sym in ("VIX", "^VIX"):
         try:
@@ -276,7 +285,7 @@ def fetch_candles(client: MarketDataClient, symbol: str, resolution: str, countb
                 output_format=OutputFormat.JSON,
             )
             if _is_error_result(result):
-                print(f"[WARN] Candles API error for {symbol}: {result}", file=sys.stderr)
+                print(f"[ERROR] Candles API error for {symbol}: {str(result)[:400]}", file=sys.stderr)
                 return []
             if not isinstance(result, dict):
                 return []
@@ -1313,38 +1322,100 @@ def run_marketdata_pipeline(
     verbose: bool = False,
 ) -> dict[str, Any]:
     print(f"[MarketFlash Pipeline] {len(symbols)} sembol")
-    client = _get_client()
+    force_yahoo = (
+        os.environ.get("MARKETFLASH_DATA_SOURCE", "").strip().lower() == "yahoo"
+    )
+    client = None if force_yahoo else _get_client()
 
     print("[1/5] Endeks ve universe quote'ları çekiliyor...")
     all_symbols = list(dict.fromkeys(INDEX_SYMBOLS + symbols))
-    quotes = fetch_quotes_batch(client, all_symbols, use_52_week=True)
-    print(f"      -> {len(quotes)} quote alindi")
+    data_source = "marketdata"
+    quotes: dict[str, Quote] = {}
+    if client is not None:
+        quotes = fetch_quotes_batch(client, all_symbols, use_52_week=True)
+    if not quotes:
+        if not force_yahoo:
+            print(
+                "[WARN] MarketData.app quote dondurmedi (token planini/kotasini "
+                "kontrol edin); Yahoo fallback deneniyor...",
+                file=sys.stderr,
+            )
+        data_source = "yahoo"
+        for sym, q in fetch_yahoo_quotes(all_symbols).items():
+            quotes[sym] = Quote(
+                symbol=sym,
+                last=q["last"],
+                change=q["change"],
+                changepct=q["changepct"],
+                volume=q["volume"],
+                bid=q["bid"],
+                ask=q["ask"],
+                week52_high=q["week52_high"],
+                week52_low=q["week52_low"],
+            )
+    print(f"      -> {len(quotes)} quote alindi ({data_source})")
+
+    if not quotes:
+        # Both sources failed — do not overwrite the last good report with an
+        # empty one. Exit non-zero so the cron run is recorded as failed.
+        print(
+            "[FATAL] Ne MarketData.app ne de Yahoo quote dondurdu. "
+            "Rapor guncellenmedi.",
+            file=sys.stderr,
+        )
+        raise SystemExit(2)
 
     vix_quote = _resolve_vix(client, quotes)
     spy_quote = quotes.get("SPY", Quote(symbol="SPY"))
 
-    print("[2/5] Market bars (SPY) çekiliyor...")
-    market_bars = Bars(
-        daily=fetch_candles(client, "SPY", "D", 80),
-        weekly=fetch_candles(client, "SPY", "W", 10),
-        monthly=fetch_candles(client, "SPY", "M", 6),
-    )
+    def _yahoo_bars_all() -> tuple[Bars, dict[str, Bars]]:
+        bar_symbols = list(dict.fromkeys(["SPY"] + symbols))
+        ybars = fetch_yahoo_bars(bar_symbols)
 
-    print("[3/5] Hisse barları çekiliyor...")
-    symbol_bars: dict[str, Bars] = {}
-    for sym in symbols:
-        symbol_bars[sym] = Bars(
-            daily=fetch_candles(client, sym, "D", 80),
-            weekly=fetch_candles(client, sym, "W", 10),
-            monthly=fetch_candles(client, sym, "M", 6),
+        def bars_for(sym: str) -> Bars:
+            b = ybars.get(sym, {})
+            return Bars(
+                daily=b.get("daily", [])[-80:],
+                weekly=b.get("weekly", [])[-10:],
+                monthly=b.get("monthly", [])[-6:],
+            )
+
+        return bars_for("SPY"), {sym: bars_for(sym) for sym in symbols}
+
+    if data_source == "yahoo":
+        print("[2-3/5] Market ve hisse barları Yahoo'dan çekiliyor (batch)...")
+        market_bars, symbol_bars = _yahoo_bars_all()
+    else:
+        print("[2/5] Market bars (SPY) çekiliyor...")
+        market_bars = Bars(
+            daily=fetch_candles(client, "SPY", "D", 80),
+            weekly=fetch_candles(client, "SPY", "W", 10),
+            monthly=fetch_candles(client, "SPY", "M", 6),
         )
-        # Quotes endpoint does not always return volume; backfill from latest daily bar
-        if sym in quotes and symbol_bars[sym].daily:
-            latest_daily = symbol_bars[sym].daily[-1]
-            if quotes[sym].volume == 0:
-                quotes[sym].volume = float(latest_daily.get("v", 0))
-        time.sleep(0.03)
-    print(f"      -> {len(symbol_bars)} sembol için barlar alindi")
+
+        print("[3/5] Hisse barları çekiliyor...")
+        symbol_bars = {}
+        for sym in symbols:
+            symbol_bars[sym] = Bars(
+                daily=fetch_candles(client, sym, "D", 80),
+                weekly=fetch_candles(client, sym, "W", 10),
+                monthly=fetch_candles(client, sym, "M", 6),
+            )
+            time.sleep(0.03)
+
+        if not any(b.daily for b in symbol_bars.values()):
+            print(
+                "[WARN] MarketData.app candle dondurmedi; barlar Yahoo'dan cekiliyor...",
+                file=sys.stderr,
+            )
+            data_source = "marketdata+yahoo-bars"
+            market_bars, symbol_bars = _yahoo_bars_all()
+
+    # Quotes endpoint does not always return volume; backfill from latest daily bar
+    for sym in symbols:
+        if sym in quotes and symbol_bars[sym].daily and quotes[sym].volume == 0:
+            quotes[sym].volume = float(symbol_bars[sym].daily[-1].get("v", 0))
+    print(f"      -> {sum(1 for b in symbol_bars.values() if b.daily)} sembol için barlar alindi")
 
     print("[4/5] MSS-L ve MSS-S skorlama + Doldurma Merdiveni...")
     long_candidates: list[Candidate] = []
@@ -1371,6 +1442,18 @@ def run_marketdata_pipeline(
 
         long_candidates.append(long_c)
         short_candidates.append(short_c)
+
+    if not long_candidates and not short_candidates:
+        # Every symbol lacked quote or candle data — an API-level failure, not
+        # a market condition. Keep the previous report intact and fail the run.
+        reasons = {e["reason"] for e in excluded}
+        print(
+            f"[FATAL] Hicbir sembol skorlanamadi (excluded: {len(excluded)}, "
+            f"reasons: {sorted(reasons)}, source: {data_source}). "
+            "Rapor guncellenmedi.",
+            file=sys.stderr,
+        )
+        raise SystemExit(2)
 
     long_selected = apply_fill_ladder(long_candidates, "long")
     short_selected = apply_fill_ladder(short_candidates, "short")
@@ -1451,6 +1534,7 @@ def run_marketdata_pipeline(
             "scoredSymbols": len(long_candidates),
             "excludedCount": len(excluded),
             "excluded": excluded[:20],
+            "dataSource": data_source,
         },
     }
 
