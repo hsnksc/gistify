@@ -9,6 +9,9 @@ import {
   importanceLabel,
   importanceRowClass,
   actualHighlightClass,
+  formatRelativeTime,
+  formatSurprise,
+  surpriseClass,
 } from "../calendar.utils";
 import { CountdownTimer } from "./CountdownTimer";
 
@@ -86,12 +89,21 @@ export function EventRow({
             )
           )}
         >
-          {event.actual || "-"}
-          {event.unit && event.actual ? (
-            <span className="text-[10px] text-muted-foreground ml-1">
-              {event.unit}
-            </span>
-          ) : null}
+          <div className="space-y-1">
+            <div>
+              {event.actual || "-"}
+              {event.unit && event.actual ? (
+                <span className="text-[10px] text-muted-foreground ml-1">
+                  {event.unit}
+                </span>
+              ) : null}
+            </div>
+            {event.actualCapturedAt ? (
+              <div className="text-[10px] font-medium text-muted-foreground">
+                {formatRelativeTime(event.actualCapturedAt, language)}
+              </div>
+            ) : null}
+          </div>
         </TableCell>
         <TableCell className="py-2.5">
           <ChevronDown
@@ -129,6 +141,17 @@ export function EventRow({
                       {event.unit ? ` · ${event.unit}` : ""}
                     </div>
                   )}
+                  {event.actualSurprise ? (
+                    <Badge
+                      variant="outline"
+                      className={cn(
+                        "text-[10px] font-semibold",
+                        surpriseClass(event.actualSurprise)
+                      )}
+                    >
+                      {formatSurprise(event.actualSurprise)}
+                    </Badge>
+                  ) : null}
                 </div>
               </div>
             </div>

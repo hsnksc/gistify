@@ -3,6 +3,13 @@ import { Clock } from "lucide-react";
 import { type AppLanguage, t } from "@/lib/i18n";
 
 function getRemainingSeconds(target: string): number {
+  const hhmmMatch = target.match(/^(\d{1,2}):(\d{2})$/);
+  if (hhmmMatch) {
+    const next = new Date();
+    next.setHours(Number(hhmmMatch[1]), Number(hhmmMatch[2]), 0, 0);
+    return Math.floor((next.getTime() - Date.now()) / 1000);
+  }
+
   return Math.floor((new Date(target).getTime() - Date.now()) / 1000);
 }
 

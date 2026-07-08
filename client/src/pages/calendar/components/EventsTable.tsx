@@ -18,6 +18,9 @@ import {
   importanceLabel,
   importanceRowClass,
   actualHighlightClass,
+  formatRelativeTime,
+  formatSurprise,
+  surpriseClass,
 } from "../calendar.utils";
 import { EventRow } from "./EventRow";
 import { useExpandedRow } from "../hooks/useExpandedRow";
@@ -314,6 +317,11 @@ function MobileEventCard({
                 </span>
               ) : null}
             </p>
+            {event.actualCapturedAt ? (
+              <p className="mt-1 text-[9px] text-muted-foreground">
+                {formatRelativeTime(event.actualCapturedAt, language)}
+              </p>
+            ) : null}
           </div>
         </div>
       </div>
@@ -329,6 +337,19 @@ function MobileEventCard({
               </p>
             </div>
           )}
+          {event.actualSurprise ? (
+            <div className="flex items-center">
+              <Badge
+                variant="outline"
+                className={cn(
+                  "text-[10px] font-semibold",
+                  surpriseClass(event.actualSurprise)
+                )}
+              >
+                {formatSurprise(event.actualSurprise)}
+              </Badge>
+            </div>
+          ) : null}
           <CountdownTimer targetTime={event.time} language={language} />
         </div>
       )}

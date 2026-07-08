@@ -1,8 +1,10 @@
 import { AppLanguage, t } from "@/lib/i18n";
 
 import type {
+  CalendarActualSurprise,
   CalendarEvent,
   CalendarImportance,
+  CalendarLiveSyncStatus,
   CalendarOptionSetup,
   CalendarPipelineStatus,
 } from "@shared/calendar";
@@ -87,6 +89,20 @@ export function pipelineStatusClass(status: CalendarPipelineStatus) {
       return "border-rose-500/25 bg-rose-500/12 text-rose-200";
     default:
       return "border-border bg-background/70 text-muted-foreground";
+  }
+}
+
+export function liveSyncStatusLabel(
+  status: CalendarLiveSyncStatus,
+  language: AppLanguage
+) {
+  switch (status) {
+    case "ok":
+      return t("common:synced");
+    case "error":
+      return t("common:error");
+    default:
+      return t("common:idle");
   }
 }
 
@@ -179,6 +195,41 @@ export function actualHighlightClass(
   return isHigher
     ? "text-rose-400 font-semibold"
     : "text-emerald-400 font-semibold";
+}
+
+export function surpriseClass(
+  surprise: CalendarActualSurprise | undefined
+) {
+  if (!surprise) {
+    return "border-white/10 bg-white/5 text-muted-foreground";
+  }
+
+  switch (surprise.direction) {
+    case "above":
+      return "border-emerald-500/25 bg-emerald-500/12 text-emerald-200";
+    case "below":
+      return "border-rose-500/25 bg-rose-500/12 text-rose-200";
+    default:
+      return "border-amber-500/25 bg-amber-500/12 text-amber-200";
+  }
+}
+
+export function formatSurprise(
+  surprise: CalendarActualSurprise | undefined
+) {
+  if (!surprise) {
+    return null;
+  }
+
+  if (surprise.pct !== undefined) {
+    return `${surprise.pct > 0 ? "+" : ""}${surprise.pct}%`;
+  }
+
+  return surprise.direction === "above"
+    ? "↑"
+    : surprise.direction === "below"
+      ? "↓"
+      : "=";
 }
 
 export function getDayTheme(

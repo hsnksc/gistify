@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { type AppLanguage, t } from "@/lib/i18n";
 import type { CalendarData } from "@shared/calendar";
 
-const SNAPSHOT_REFRESH_INTERVAL_MS = 60 * 1000;
+const SNAPSHOT_REFRESH_INTERVAL_MS = 30 * 1000;
 
 export function useCalendarData(language: AppLanguage) {
   const [data, setData] = useState<CalendarData | null>(null);

@@ -7,7 +7,9 @@ import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import {
   formatDateLabel,
+  formatRelativeTime,
   formatTimestamp,
+  liveSyncStatusLabel,
   pipelineStatusClass,
   pipelineStatusLabel,
 } from "./calendar/calendar.utils";
@@ -68,6 +70,7 @@ export default function Calendar({ language }: { language: AppLanguage }) {
 
   const report = data.report;
   const pipeline = data.pipeline;
+  const liveSync = pipeline.liveSync;
 
   return (
     <div className="min-h-screen bg-background">
@@ -233,13 +236,44 @@ export default function Calendar({ language }: { language: AppLanguage }) {
                     {formatTimestamp(pipeline.lastSyncedAt, language)}
                   </span>
                 </div>
-                <div className="mt-3 space-y-2 text-[12px] text-muted-foreground">
+                <div className="mt-3 grid gap-2 md:grid-cols-4 text-[12px] text-muted-foreground">
+                  <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
+                    {t("common:source")}:{" "}
+                    <span className="text-foreground">
+                      {liveSync.provider}
+                    </span>
+                  </div>
+                  <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
+                    {t("common:status")}:{" "}
+                    <span className="text-foreground">
+                      {liveSyncStatusLabel(liveSync.status, language)}
+                    </span>
+                  </div>
                   <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
                     {t("common:lastSync")}:{" "}
                     <span className="text-foreground">
-                      {formatTimestamp(pipeline.lastSyncedAt, language)}
+                      {formatTimestamp(
+                        liveSync.lastSuccessAt || pipeline.lastSyncedAt,
+                        language
+                      )}
                     </span>
                   </div>
+                  <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
+                    {t("marketing:nextEvent")}:{" "}
+                    <span className="text-foreground">
+                      {liveSync.nextEventTime || "-"}
+                    </span>
+                  </div>
+                </div>
+                <div className="mt-2 space-y-2 text-[12px] text-muted-foreground">
+                  {liveSync.lastCaptureAt ? (
+                    <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
+                      {t("common:liveUpdate")}:{" "}
+                      <span className="text-foreground">
+                        {formatRelativeTime(liveSync.lastCaptureAt, language)}
+                      </span>
+                    </div>
+                  ) : null}
                   <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
                     {t("common:source")}:{" "}
                     <span className="break-all text-foreground">
@@ -251,6 +285,11 @@ export default function Calendar({ language }: { language: AppLanguage }) {
                   {pipeline.error ? (
                     <div className="rounded-xl border border-rose-500/20 bg-rose-500/10 px-3 py-2 text-rose-100">
                       {pipeline.error}
+                    </div>
+                  ) : null}
+                  {liveSync.error ? (
+                    <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 px-3 py-2 text-amber-100">
+                      {liveSync.error}
                     </div>
                   ) : null}
                 </div>
