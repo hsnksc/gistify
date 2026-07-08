@@ -3590,6 +3590,7 @@ async function startServer() {
       buildEarningsApiResponse,
       getCalendarPipeline: () => calendarSync.getPipeline(),
       getCalendarSnapshot: () => calendarSync.getSnapshot(),
+      refreshCalendarSnapshot: (options?: { force?: boolean }) => calendarSync.refresh(options),
       getCpiPpiPipeline: () => cpiPpiForecastSync.getPipeline(),
       getCpiPpiSnapshot: () => cpiPpiForecastSync.getSnapshot(),
       getEarningReportSource,

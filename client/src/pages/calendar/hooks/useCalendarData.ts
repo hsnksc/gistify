@@ -17,7 +17,8 @@ export function useCalendarData(language: AppLanguage) {
       setRefreshing(true);
 
       try {
-        const response = await fetch("/api/calendar", {
+        const requestUrl = silent ? "/api/calendar" : "/api/calendar?refresh=1";
+        const response = await fetch(requestUrl, {
           cache: "no-store",
           credentials: "include",
         });

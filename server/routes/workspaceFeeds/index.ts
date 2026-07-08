@@ -16,6 +16,7 @@ type WorkspaceFeedsRouterDependencies = {
   ) => EarningsStrategyApiResponse;
   getCalendarPipeline: () => unknown;
   getCalendarSnapshot: () => unknown;
+  refreshCalendarSnapshot: (options?: { force?: boolean }) => Promise<unknown>;
   getCpiPpiPipeline: () => unknown;
   getCpiPpiSnapshot: () => unknown;
   getEarningReportSource: (sourceId: string) => unknown | null;
@@ -36,6 +37,7 @@ export function createWorkspaceFeedsRouter({
   buildEarningsApiResponse,
   getCalendarPipeline,
   getCalendarSnapshot,
+  refreshCalendarSnapshot,
   getCpiPpiPipeline,
   getCpiPpiSnapshot,
   getEarningReportSource,
@@ -181,8 +183,15 @@ export function createWorkspaceFeedsRouter({
     });
   });
 
-  router.get("/calendar", (_req, res) => {
+  router.get("/calendar", async (req, res) => {
     setPrivateNoStore(res);
+    const shouldForceRefresh = normalizeString(req.query.refresh).toLowerCase() === "1";
+
+    try {
+      await refreshCalendarSnapshot({ force: shouldForceRefresh });
+    } catch {
+      // Fall through to the latest in-memory or persisted snapshot.
+    }
 
     const snapshot = getCalendarSnapshot();
     if (!snapshot) {

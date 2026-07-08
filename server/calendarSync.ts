@@ -972,18 +972,18 @@ function readSourceReport(locatedSource: LocatedSourceFile | null): SourceLoadRe
   }
 }
 
-function resolveWritableSourceFile(
+function resolveWritableSourceFiles(
   configuredSourceFile: string | null,
   resolvedSourceFile: string | null,
   candidates: string[]
 ) {
-  return (
-    resolvedSourceFile ||
-    configuredSourceFile ||
-    candidates.find(candidate => candidate.includes(`${path.sep}calendar${path.sep}`)) ||
-    candidates[0] ||
-    null
-  );
+  const prioritized = [
+    resolvedSourceFile,
+    configuredSourceFile,
+    ...candidates.filter(candidate => candidate.endsWith("calendar_forecast.json")),
+  ].filter((item): item is string => Boolean(item));
+
+  return Array.from(new Set(prioritized));
 }
 
 function writeReportAtomically(filePath: string, report: CalendarDayReport) {
@@ -993,6 +993,15 @@ function writeReportAtomically(filePath: string, report: CalendarDayReport) {
   fs.writeFileSync(tempPath, payload, "utf8");
   fs.renameSync(tempPath, filePath);
   return fs.statSync(filePath);
+}
+
+function writeReportAtomicallyToTargets(filePaths: string[], report: CalendarDayReport) {
+  const statsByPath = new Map<string, fs.Stats>();
+  for (const filePath of filePaths) {
+    statsByPath.set(filePath, writeReportAtomically(filePath, report));
+  }
+
+  return statsByPath;
 }
 
 function buildSnapshot(report: CalendarDayReport, pipeline: CalendarPipelineMetadata): CalendarData {
@@ -1147,6 +1156,8 @@ async function fetchCalendarHtmlViaWebBridge(
     session,
     "evaluate",
     {
+      // Some local WebBridge builds expect `code` instead of `script`.
+      code: "document.documentElement.outerHTML",
       script: "document.documentElement.outerHTML",
     },
     DEFAULT_WEBBRIDGE_EVALUATE_TIMEOUT_MS
@@ -1243,7 +1254,7 @@ export function createCalendarSyncService(
     options.sourceFile || process.env.CALENDAR_PIPELINE_SOURCE_FILE
   );
   const candidates = buildSourceCandidates(configuredSourceFile || null);
-  const pollIntervalMs = resolvePollIntervalMs(
+  const configuredPollIntervalMs = resolvePollIntervalMs(
     options.pollIntervalMs ?? Number(process.env.CALENDAR_PIPELINE_POLL_INTERVAL_MS)
   );
   const liveSyncEnabled = resolveBoolean(
@@ -1278,9 +1289,13 @@ export function createCalendarSyncService(
     normalizeString(
       options.webBridgeGroupTitle || process.env.CALENDAR_PIPELINE_WEBBRIDGE_GROUP_TITLE
     ) || DEFAULT_WEBBRIDGE_GROUP;
+  const pollIntervalMs = liveSyncEnabled
+    ? Math.min(configuredPollIntervalMs, liveSyncIntervalMs)
+    : configuredPollIntervalMs;
 
   let currentSnapshot: CalendarData | null = null;
   let timer: ReturnType<typeof setInterval> | null = null;
+  let refreshInFlight: Promise<CalendarData | null> | null = null;
   let lastAttemptAt: string | null = null;
   let lastSyncedAt: string | null = null;
   let lastSourceModifiedAt: string | null = null;
@@ -1322,7 +1337,7 @@ export function createCalendarSyncService(
     };
   }
 
-  async function refresh(options: RefreshOptions = {}) {
+  async function runRefresh(options: RefreshOptions = {}) {
     const now = new Date();
     const nowIso = now.toISOString();
     const today = getCurrentIstanbulDate(now);
@@ -1398,16 +1413,20 @@ export function createCalendarSyncService(
         }
 
         if (persistLiveSource && (merged.changed || !locatedSource || sourceReport?.reportDate !== today)) {
-          const writableSource = resolveWritableSourceFile(
+          const writableTargets = resolveWritableSourceFiles(
             configuredSourceFile || null,
             resolvedSourceFile,
             candidates
           );
-          if (writableSource) {
-            const stats = writeReportAtomically(writableSource, merged.report);
-            resolvedSourceFile = writableSource;
-            lastSourceModifiedAt = stats.mtime.toISOString();
-            lastKnownMtimeMs = stats.mtimeMs;
+          if (writableTargets.length > 0) {
+            const statsByPath = writeReportAtomicallyToTargets(writableTargets, merged.report);
+            const primaryTarget = writableTargets[0];
+            const primaryStats = statsByPath.get(primaryTarget);
+            resolvedSourceFile = primaryTarget;
+            if (primaryStats) {
+              lastSourceModifiedAt = primaryStats.mtime.toISOString();
+              lastKnownMtimeMs = primaryStats.mtimeMs;
+            }
           }
         }
 
@@ -1468,6 +1487,18 @@ export function createCalendarSyncService(
 
     currentSnapshot = attachPipeline(buildSnapshot(nextReport, getPipeline()));
     return currentSnapshot;
+  }
+
+  async function refresh(options: RefreshOptions = {}) {
+    if (refreshInFlight) {
+      return refreshInFlight;
+    }
+
+    refreshInFlight = runRefresh(options).finally(() => {
+      refreshInFlight = null;
+    });
+
+    return refreshInFlight;
   }
 
   async function start() {
