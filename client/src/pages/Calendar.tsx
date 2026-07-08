@@ -9,6 +9,7 @@ import {
   formatDateLabel,
   formatRelativeTime,
   formatTimestamp,
+  isCurrentCalendarReportDate,
   liveSyncStatusLabel,
   pipelineStatusClass,
   pipelineStatusLabel,
@@ -71,6 +72,17 @@ export default function Calendar({ language }: { language: AppLanguage }) {
   const report = data.report;
   const pipeline = data.pipeline;
   const liveSync = pipeline.liveSync;
+  const isCurrentReport = isCurrentCalendarReportDate(report.reportDate);
+  const pageHeading = isCurrentReport
+    ? t("calendar:todaySMacroEvents236f")
+    : language === "tr"
+      ? "Kayitli Takvim Snapshot'i"
+      : "Saved Calendar Snapshot";
+  const pageSubheading = isCurrentReport
+    ? t("calendar:usAndGlobalDataCalendar")
+    : language === "tr"
+      ? "Son kaydedilen ekonomik takvim snapshot'i"
+      : "Latest saved economic calendar snapshot";
 
   return (
     <div className="min-h-screen bg-background">
@@ -114,11 +126,11 @@ export default function Calendar({ language }: { language: AppLanguage }) {
                     </p>
                   </div>
                   <h1 className="mt-2 heading-condensed text-[1.65rem] leading-none text-foreground md:text-[1.9rem]">
-                    {t("calendar:todaySMacroEvents236f")}
+                    {pageHeading}
                   </h1>
                   <p className="mt-2 text-[13px] leading-6 text-foreground/82">
                     {formatDateLabel(report.reportDate, language)} ·{" "}
-                    {t("calendar:usAndGlobalDataCalendar")}
+                    {pageSubheading}
                   </p>
                 </div>
 
@@ -171,6 +183,15 @@ export default function Calendar({ language }: { language: AppLanguage }) {
                 <div className="flex items-start gap-2 rounded-xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-100">
                   <AlertTriangle className="mt-0.5 size-4 shrink-0" />
                   {error}
+                </div>
+              ) : null}
+
+              {!isCurrentReport ? (
+                <div className="flex items-start gap-2 rounded-xl border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
+                  <AlertTriangle className="mt-0.5 size-4 shrink-0" />
+                  {language === "tr"
+                    ? "Canli kaynak bugunun takvimini uretmedi. Asagida son kaydedilen snapshot gosteriliyor."
+                    : "The live source has not produced today's calendar yet. Showing the latest saved snapshot below."}
                 </div>
               ) : null}
 

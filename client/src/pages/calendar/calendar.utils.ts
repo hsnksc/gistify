@@ -63,6 +63,28 @@ export function formatDateLabel(
   return `${weekday}, ${dayMonth}`;
 }
 
+function getIstanbulDateStamp() {
+  const formatter = new Intl.DateTimeFormat("en-CA", {
+    day: "2-digit",
+    month: "2-digit",
+    timeZone: "Europe/Istanbul",
+    year: "numeric",
+  });
+  const parts = formatter.formatToParts(new Date());
+  const year = parts.find(part => part.type === "year")?.value ?? "0000";
+  const month = parts.find(part => part.type === "month")?.value ?? "01";
+  const day = parts.find(part => part.type === "day")?.value ?? "01";
+  return `${year}-${month}-${day}`;
+}
+
+export function isCurrentCalendarReportDate(value: string | undefined) {
+  if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return false;
+  }
+
+  return value === getIstanbulDateStamp();
+}
+
 export function pipelineStatusLabel(
   status: CalendarPipelineStatus,
   language: AppLanguage
