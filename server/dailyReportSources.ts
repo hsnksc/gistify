@@ -1408,6 +1408,13 @@ function stripFlowHtmlChrome(html: string) {
     .trim();
 }
 
+function encodeAssetPathSegments(relativePath: string) {
+  return relativePath
+    .split("/")
+    .map(segment => encodeURIComponent(segment))
+    .join("/");
+}
+
 function buildDailyReportAssetUrlPath(assetBasePath: string, fileName: string) {
   const normalizedFileName = normalizeRelativeAssetPath(fileName);
   const normalizedBasePath = normalizeRelativeAssetPath(assetBasePath);
@@ -1417,10 +1424,10 @@ function buildDailyReportAssetUrlPath(assetBasePath: string, fileName: string) {
   }
 
   if (!normalizedBasePath) {
-    return `/api/daily-report/assets/${normalizedFileName}`;
+    return `/api/daily-report/assets/${encodeAssetPathSegments(normalizedFileName)}`;
   }
 
-  return `/api/daily-report/assets/${normalizedBasePath}/${normalizedFileName}`;
+  return `/api/daily-report/assets/${encodeAssetPathSegments(normalizedBasePath)}/${encodeAssetPathSegments(normalizedFileName)}`;
 }
 
 function rewriteFlowHtmlAssetSources(html: string, assetBasePath: string) {

@@ -82,7 +82,39 @@ td{font-variant-numeric:tabular-nums}
 .figure{margin:16px 0;border:1px solid var(--gf-border);border-radius:var(--gf-radius);overflow:hidden;background:var(--gf-card)}
 .figure img{display:block;width:100%;height:auto;max-height:420px;object-fit:cover}
 .fig-caption{padding:10px 16px;font-size:.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border-subtle)}
+.toggle-input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.toggle-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.toggle-label{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:8px;font-size:.78rem;font-weight:600;background:var(--gf-elev);border:1px solid var(--gf-border);color:var(--gf-muted);cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.view-pane{display:none}
+.view-pane.default-visible{display:block}
+.temp-track{height:10px;border-radius:5px;background:var(--gf-elev);border:1px solid var(--gf-border);overflow:hidden;margin-top:8px}
+.temp-fill{height:100%;border-radius:5px}
 .footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+#capexDollar:checked ~ .toggle-row label[for="capexDollar"],
+#capexPercent:checked ~ .toggle-row label[for="capexPercent"],
+#hbm4:checked ~ .toggle-row label[for="hbm4"],
+#hbm8:checked ~ .toggle-row label[for="hbm8"],
+#hbm12:checked ~ .toggle-row label[for="hbm12"],
+#hbm16:checked ~ .toggle-row label[for="hbm16"],
+#coolAir:checked ~ .toggle-row label[for="coolAir"],
+#coolLiquid:checked ~ .toggle-row label[for="coolLiquid"],
+#coolMicro:checked ~ .toggle-row label[for="coolMicro"]{background:var(--gf-accent);color:#04121f;border-color:var(--gf-accent)}
+#capexPercent:checked ~ .view-dollar{display:none}
+#capexPercent:checked ~ .view-percent{display:block}
+#hbm4:checked ~ .hbm-result{display:none}
+#hbm4:checked ~ #hbm-result-4{display:block}
+#hbm8:checked ~ .hbm-result{display:none}
+#hbm8:checked ~ #hbm-result-8{display:block}
+#hbm12:checked ~ .hbm-result{display:none}
+#hbm12:checked ~ #hbm-result-12{display:block}
+#hbm16:checked ~ .hbm-result{display:none}
+#hbm16:checked ~ #hbm-result-16{display:block}
+#coolAir:checked ~ .therm-result{display:none}
+#coolAir:checked ~ #therm-result-air{display:block}
+#coolLiquid:checked ~ .therm-result{display:none}
+#coolLiquid:checked ~ #therm-result-liquid{display:block}
+#coolMicro:checked ~ .therm-result{display:none}
+#coolMicro:checked ~ #therm-result-micro{display:block}
 @media(max-width:640px){
 .wrap{padding:16px 10px}
 .hero-h{font-size:1.25rem}
@@ -136,32 +168,69 @@ th,td{padding:6px 7px}
       </div>
 
       <div class="chart-container">
-        <div class="chart-title">💰 2027 AI Altyapı Tahminleri: Futurum vs Konsensüs (Milyar $)</div>
+        <div class="chart-title">💰 2027 AI Altyapı Tahminleri: Futurum vs Konsensüs</div>
 
-        <div class="category-block">
-          <div class="category-label">Hızlandırıcılar (Accelerators)</div>
-          <div class="compare-bar"><span class="compare-legend">Futurum</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:94.6%">$567.5B</div></div></div>
-          <div class="compare-bar"><span class="compare-legend">Konsensüs</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:55.0%">$330B</div></div></div>
+        <input type="radio" class="toggle-input" name="capexMetric" id="capexDollar" checked>
+        <input type="radio" class="toggle-input" name="capexMetric" id="capexPercent">
+        <div class="toggle-row">
+          <label class="toggle-label" for="capexDollar">💲 Milyar $</label>
+          <label class="toggle-label" for="capexPercent">📊 Yüzde %</label>
         </div>
-        <div class="category-block">
-          <div class="category-label">Sistem Belleği (HBM)</div>
-          <div class="compare-bar"><span class="compare-legend">Futurum</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:94.6%">$567.5B</div></div></div>
-          <div class="compare-bar"><span class="compare-legend">Konsensüs</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:41.7%">$250B</div></div></div>
+
+        <div class="view-pane view-dollar default-visible">
+          <div class="category-block">
+            <div class="category-label">Hızlandırıcılar (Accelerators)</div>
+            <div class="compare-bar"><span class="compare-legend">Futurum</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:94.6%">$567.5B</div></div></div>
+            <div class="compare-bar"><span class="compare-legend">Konsensüs</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:55.0%">$330B</div></div></div>
+          </div>
+          <div class="category-block">
+            <div class="category-label">Sistem Belleği (HBM)</div>
+            <div class="compare-bar"><span class="compare-legend">Futurum</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:94.6%">$567.5B</div></div></div>
+            <div class="compare-bar"><span class="compare-legend">Konsensüs</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:41.7%">$250B</div></div></div>
+          </div>
+          <div class="category-block">
+            <div class="category-label">Ağ ve Depolama</div>
+            <div class="compare-bar"><span class="compare-legend">Futurum</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:71.8%">$431B</div></div></div>
+            <div class="compare-bar"><span class="compare-legend">Konsensüs</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:20.0%">$120B</div></div></div>
+          </div>
+          <div class="category-block">
+            <div class="category-label">Fiziksel Altyapı</div>
+            <div class="compare-bar"><span class="compare-legend">Futurum</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:64.3%">$386B</div></div></div>
+            <div class="compare-bar"><span class="compare-legend">Konsensüs</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:33.3%">$200B</div></div></div>
+          </div>
+          <div class="category-block">
+            <div class="category-label">Diğer Genel Altyapı</div>
+            <div class="compare-bar"><span class="compare-legend">Futurum</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:53.0%">$318B</div></div></div>
+            <div class="compare-bar"><span class="compare-legend">Konsensüs</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:16.7%">$100B</div></div></div>
+          </div>
         </div>
-        <div class="category-block">
-          <div class="category-label">Ağ ve Depolama</div>
-          <div class="compare-bar"><span class="compare-legend">Futurum</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:71.8%">$431B</div></div></div>
-          <div class="compare-bar"><span class="compare-legend">Konsensüs</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:20.0%">$120B</div></div></div>
-        </div>
-        <div class="category-block">
-          <div class="category-label">Fiziksel Altyapı</div>
-          <div class="compare-bar"><span class="compare-legend">Futurum</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:64.3%">$386B</div></div></div>
-          <div class="compare-bar"><span class="compare-legend">Konsensüs</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:33.3%">$200B</div></div></div>
-        </div>
-        <div class="category-block">
-          <div class="category-label">Diğer Genel Altyapı</div>
-          <div class="compare-bar"><span class="compare-legend">Futurum</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:53.0%">$318B</div></div></div>
-          <div class="compare-bar"><span class="compare-legend">Konsensüs</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:16.7%">$100B</div></div></div>
+
+        <div class="view-pane view-percent">
+          <div class="category-block">
+            <div class="category-label">Hızlandırıcılar (Accelerators)</div>
+            <div class="compare-bar"><span class="compare-legend">Futurum</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:25.0%">%25.0</div></div></div>
+            <div class="compare-bar"><span class="compare-legend">Konsensüs</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:33.0%">%33.0</div></div></div>
+          </div>
+          <div class="category-block">
+            <div class="category-label">Sistem Belleği (HBM)</div>
+            <div class="compare-bar"><span class="compare-legend">Futurum</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:25.0%">%25.0</div></div></div>
+            <div class="compare-bar"><span class="compare-legend">Konsensüs</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:25.0%">%25.0</div></div></div>
+          </div>
+          <div class="category-block">
+            <div class="category-label">Ağ ve Depolama</div>
+            <div class="compare-bar"><span class="compare-legend">Futurum</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:19.0%">%19.0</div></div></div>
+            <div class="compare-bar"><span class="compare-legend">Konsensüs</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:12.0%">%12.0</div></div></div>
+          </div>
+          <div class="category-block">
+            <div class="category-label">Fiziksel Altyapı</div>
+            <div class="compare-bar"><span class="compare-legend">Futurum</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:17.0%">%17.0</div></div></div>
+            <div class="compare-bar"><span class="compare-legend">Konsensüs</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:20.0%">%20.0</div></div></div>
+          </div>
+          <div class="category-block">
+            <div class="category-label">Diğer Genel Altyapı</div>
+            <div class="compare-bar"><span class="compare-legend">Futurum</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:14.0%">%14.0</div></div></div>
+            <div class="compare-bar"><span class="compare-legend">Konsensüs</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:10.0%">%10.0</div></div></div>
+          </div>
         </div>
 
         <div class="legend">
@@ -207,19 +276,53 @@ th,td{padding:6px 7px}
       </div>
 
       <div class="insight-box warn">
-        <strong>Bileşik Üretim Firesi (Compound Yield):</strong> HBM'in yüksek fiyatının nedeni ham madde değil, üretim matematiği. 12–16 katman üst üste dizilirken tek bir katmanda hata oluşursa tüm yığın çöpe gidiyor. Kaynaktaki simülatör formülüne göre (Tekil Çip Başarı Oranı %95, Çip Başına Ham Maliyet $15, Paketleme/CoWoS Maliyeti $80), katman sayısı arttıkça maliyet üssel olarak katlanıyor:
+        <strong>Bileşik Üretim Firesi (Compound Yield):</strong> HBM'in yüksek fiyatının nedeni ham madde değil, üretim matematiği. Katman sayısını seçin ve maliyetin nasıl üssel olarak katlandığını görün — kaynaktaki simülatör varsayılanlarıyla hesaplanmıştır (Tekil Çip Başarı Oranı %95, Çip Başına Ham Maliyet $15, Paketleme/CoWoS Maliyeti $80).
       </div>
 
-      <table>
-        <thead><tr><th>Katman Sayısı</th><th>Modül Bileşik Başarı Oranı</th><th>Kayıpsız İdeal Maliyet</th><th>Fire Cezalı Gerçek Maliyet</th></tr></thead>
-        <tbody>
-          <tr><td>4</td><td><span class="tag tag-green">%81.5</span></td><td>$140.0</td><td>$171.9</td></tr>
-          <tr><td>8 (standart)</td><td><span class="tag tag-orange">%66.3</span></td><td>$200.0</td><td>$301.4</td></tr>
-          <tr><td>12</td><td><span class="tag tag-orange">%54.0</span></td><td>$260.0</td><td>$481.1</td></tr>
-          <tr><td>16 (HBM4 hedefi)</td><td><span class="tag tag-red">%44.0</span></td><td>$320.0</td><td>$727.1</td></tr>
-        </tbody>
-      </table>
-      <p style="font-size:0.82rem;color:var(--gf-muted)">8 katmandan 16 katmana çıkmak ideal maliyeti sadece 1.6 kat artırırken, fire cezası nedeniyle gerçek maliyeti 2.4 kat artırıyor — HBM üreticilerinin (SK Hynix, Samsung, Micron) fiyatlama gücünün matematiksel kökeni burada.</p>
+      <div class="chart-container">
+        <div class="chart-title">🧮 HBM Bileşik Üretim Maliyeti Hesaplayıcı</div>
+
+        <input type="radio" class="toggle-input" name="hbmLayers" id="hbm4">
+        <input type="radio" class="toggle-input" name="hbmLayers" id="hbm8" checked>
+        <input type="radio" class="toggle-input" name="hbmLayers" id="hbm12">
+        <input type="radio" class="toggle-input" name="hbmLayers" id="hbm16">
+        <div class="toggle-row">
+          <label class="toggle-label" for="hbm4">4 Katman</label>
+          <label class="toggle-label" for="hbm8">8 Katman</label>
+          <label class="toggle-label" for="hbm12">12 Katman</label>
+          <label class="toggle-label" for="hbm16">16 Katman</label>
+        </div>
+
+        <div class="hbm-result" id="hbm-result-4">
+          <div class="kpi-row">
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">%81.5</div><div class="kpi-label">Modül Bileşik Başarı Oranı</div></div>
+            <div class="kpi"><div class="kpi-num">$140.0</div><div class="kpi-label">Kayıpsız İdeal Maliyet</div></div>
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">$171.9</div><div class="kpi-label">Fire Cezalı Gerçek Maliyet</div></div>
+          </div>
+        </div>
+        <div class="hbm-result" id="hbm-result-8">
+          <div class="kpi-row">
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-warning)">%66.3</div><div class="kpi-label">Modül Bileşik Başarı Oranı</div></div>
+            <div class="kpi"><div class="kpi-num">$200.0</div><div class="kpi-label">Kayıpsız İdeal Maliyet</div></div>
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-warning)">$301.4</div><div class="kpi-label">Fire Cezalı Gerçek Maliyet</div></div>
+          </div>
+        </div>
+        <div class="hbm-result" id="hbm-result-12">
+          <div class="kpi-row">
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-warning)">%54.0</div><div class="kpi-label">Modül Bileşik Başarı Oranı</div></div>
+            <div class="kpi"><div class="kpi-num">$260.0</div><div class="kpi-label">Kayıpsız İdeal Maliyet</div></div>
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-warning)">$481.1</div><div class="kpi-label">Fire Cezalı Gerçek Maliyet</div></div>
+          </div>
+        </div>
+        <div class="hbm-result" id="hbm-result-16">
+          <div class="kpi-row">
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-danger)">%44.0</div><div class="kpi-label">Modül Bileşik Başarı Oranı</div></div>
+            <div class="kpi"><div class="kpi-num">$320.0</div><div class="kpi-label">Kayıpsız İdeal Maliyet</div></div>
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-danger)">$727.1</div><div class="kpi-label">Fire Cezalı Gerçek Maliyet</div></div>
+          </div>
+        </div>
+        <div class="chart-caption">8 katmandan 16 katmana çıkmak ideal maliyeti sadece 1.6 kat artırırken, fire cezası nedeniyle gerçek maliyeti 2.4 kat artırıyor — HBM üreticilerinin (SK Hynix, Samsung, Micron) fiyatlama gücünün matematiksel kökeni burada.</div>
+      </div>
     </div>
   </div>
 </section>
@@ -253,18 +356,42 @@ th,td{padding:6px 7px}
         </div>
       </div>
 
-      <p style="margin:12px 0;color:var(--gf-muted);font-size:0.88rem">HBM katmanlarının oluşturduğu termal krizi çözmek için mühendisler yalnızca ısı tahliyesi sağlayan Termal TSV hatları, mikron kalınlığında yüksek iletkenlikli epoksi alt dolgular (NC-GAP), Cold Plate sıvı soğutma blokları ve HBM4 nesliyle gelen 5nm enerji verimli mantık taban çipleri (Logic Base Die) kullanıyor. Kaynaktaki basitleştirilmiş termal modele göre, 300W GPU yükü ve 4 W/mK termal arayüz malzemesinde soğutma teknolojisinin çıktı sıcaklığına etkisi:</p>
+      <p style="margin:12px 0;color:var(--gf-muted);font-size:0.88rem">HBM katmanlarının oluşturduğu termal krizi çözmek için mühendisler yalnızca ısı tahliyesi sağlayan Termal TSV hatları, mikron kalınlığında yüksek iletkenlikli epoksi alt dolgular (NC-GAP), Cold Plate sıvı soğutma blokları ve HBM4 nesliyle gelen 5nm enerji verimli mantık taban çipleri (Logic Base Die) kullanıyor. Soğutma teknolojisini seçin: kaynaktaki basitleştirilmiş termal modele göre (300W GPU yükü, 4 W/mK termal arayüz malzemesi) tahmini çekirdek sıcaklığı:</p>
 
-      <table>
-        <thead><tr><th>Soğutma Teknolojisi</th><th>Tahmini Çekirdek Sıcaklığı</th><th>85°C Eşiği</th></tr></thead>
-        <tbody>
-          <tr><td>Klasik Fanlı Hava Soğutma</td><td><span class="tag tag-red">~222°C</span></td><td>❌ Ciddi kısma</td></tr>
-          <tr><td>Sıvı Soğutma Blokları (Cold Plate)</td><td><span class="tag tag-orange">~133°C</span></td><td>❌ Kısma riski</td></tr>
-          <tr><td>Yeni Nesil Mikroakışkan Soğutma</td><td><span class="tag tag-green">~75°C</span></td><td>✅ Güvenli aralık</td></tr>
-        </tbody>
-      </table>
-      <div class="insight-box danger">
-        <strong>Sonuç:</strong> Kaynağın kendi illüstratif modeline göre bile, standart sıvı soğutma yüksek GPU yüklerinde eşiği aşabiliyor — bu da mikroakışkan soğutmayı "iyi olursa olur" değil, 2027 ölçeğinde zorunlu bir yatırım kalemi haline getiriyor.
+      <div class="chart-container">
+        <div class="chart-title">🌡️ Termal Yönetim Simülatörü</div>
+
+        <input type="radio" class="toggle-input" name="coolingType" id="coolAir">
+        <input type="radio" class="toggle-input" name="coolingType" id="coolLiquid" checked>
+        <input type="radio" class="toggle-input" name="coolingType" id="coolMicro">
+        <div class="toggle-row">
+          <label class="toggle-label" for="coolAir">💨 Hava Soğutma</label>
+          <label class="toggle-label" for="coolLiquid">💧 Cold Plate</label>
+          <label class="toggle-label" for="coolMicro">🧊 Mikroakışkan</label>
+        </div>
+
+        <div class="therm-result" id="therm-result-air">
+          <div class="kpi-row">
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-danger)">~222°C</div><div class="kpi-label">Tahmini Çekirdek Sıcaklığı</div></div>
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-danger)">❌ Ciddi Kısma</div><div class="kpi-label">85°C Eşiği</div></div>
+          </div>
+          <div class="temp-track"><div class="temp-fill" style="width:100%;background:linear-gradient(90deg,#dc2626,#f87171)"></div></div>
+        </div>
+        <div class="therm-result" id="therm-result-liquid">
+          <div class="kpi-row">
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-warning)">~133°C</div><div class="kpi-label">Tahmini Çekirdek Sıcaklığı</div></div>
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-warning)">❌ Kısma Riski</div><div class="kpi-label">85°C Eşiği</div></div>
+          </div>
+          <div class="temp-track"><div class="temp-fill" style="width:60%;background:linear-gradient(90deg,#ca8a04,#fbbf24)"></div></div>
+        </div>
+        <div class="therm-result" id="therm-result-micro">
+          <div class="kpi-row">
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">~75°C</div><div class="kpi-label">Tahmini Çekirdek Sıcaklığı</div></div>
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">✅ Güvenli Aralık</div><div class="kpi-label">85°C Eşiği</div></div>
+          </div>
+          <div class="temp-track"><div class="temp-fill" style="width:34%;background:linear-gradient(90deg,#16a34a,#4ade80)"></div></div>
+        </div>
+        <div class="chart-caption">Kaynağın kendi illüstratif modeline göre bile, standart sıvı soğutma yüksek GPU yüklerinde eşiği aşabiliyor — bu da mikroakışkan soğutmayı "iyi olursa olur" değil, 2027 ölçeğinde zorunlu bir yatırım kalemi haline getiriyor.</div>
       </div>
     </div>
   </div>
