@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NVIDIA Değerleme Analizi: Döngüsellik İllüzyonu ve 72x'ten 16x'e Çöken F/K Çarpanı | $NVDA</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="NVIDIA Değerleme Analizi: Döngüsellik İllüzyonu ve 72x'ten 16x'e Çöken F/K Çarpanı" />
+<meta property="og:description" content="NVIDIA, operasyonel performansının zirvesindeyken tarihsel olarak en cazip çarpanlarına geriledi. 5 yıllık ortalama 72x F/K, 2028 tahminiyle 15.9x'e düştü. Muhafazakar $231 / İyimser $377 hedef fiyat senaryoları mercek altında." />
+<meta property="og:url" content="https://gistify.pro/flow/nvidia_finansal_analiz_ve_ng_r.html" />
+<meta property="og:image" content="https://gistify.pro/gistifylogo.png?v=20260710" />
+<meta property="og:site_name" content="Gistify" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="NVIDIA Değerleme Analizi: Döngüsellik İllüzyonu ve 72x'ten 16x'e Çöken F/K Çarpanı" />
+<meta name="twitter:description" content="NVIDIA, operasyonel performansının zirvesindeyken tarihsel olarak en cazip çarpanlarına geriledi. Muhafazakar $231 / İyimser $377 hedef fiyat senaryoları mercek altında." />
+<meta name="twitter:image" content="https://gistify.pro/gistifylogo.png?v=20260710" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.55rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:780px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent)}
+.section-body{padding:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+td{font-variant-numeric:tabular-nums}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+.chart-container{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:20px;margin:16px 0}
+.chart-title{font-size:.9rem;font-weight:700;color:var(--gf-accent);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.chart-title::before{content:'';display:inline-block;width:4px;height:16px;background:var(--gf-accent);border-radius:2px}
+.chart-caption{font-size:.78rem;color:var(--gf-muted);margin-top:12px;border-top:1px solid var(--gf-border-subtle);padding-top:10px}
+.category-block{margin:14px 0}
+.category-label{font-size:.82rem;font-weight:600;color:var(--gf-text);margin-bottom:6px}
+.compare-bar{display:flex;align-items:center;gap:12px;margin:6px 0;font-size:.78rem}
+.compare-legend{width:120px;flex-shrink:0;color:var(--gf-muted);font-weight:600}
+.compare-track{flex:1;height:22px;background:var(--gf-elev);border-radius:6px;overflow:hidden;position:relative;border:1px solid var(--gf-border)}
+.compare-fill{height:100%;border-radius:6px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:.72rem;font-weight:700;color:#fff}
+.fill-accent{background:linear-gradient(90deg,#0ea5e9,#38bdf8)}
+.fill-muted{background:linear-gradient(90deg,#475569,#94a3b8)}
+.legend{display:flex;gap:16px;font-size:.75rem;color:var(--gf-muted);margin-top:10px;flex-wrap:wrap}
+.legend-dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:middle}
+.donut-chart{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.donut-svg{flex-shrink:0}
+.donut-legend{display:flex;flex-direction:column;gap:8px}
+.donut-legend-item{display:flex;align-items:center;gap:8px;font-size:.85rem}
+.donut-legend-color{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.donut-legend-label{color:var(--gf-text)}
+.donut-legend-value{color:var(--gf-muted);font-size:.8rem}
+.scenario-card{background:var(--gf-card);border:1px solid var(--gf-border);border-top:3px solid var(--gf-muted);border-radius:var(--gf-radius);padding:22px}
+.scenario-card.opt{border-top-color:var(--gf-accent)}
+.scenario-value{font-size:2.4rem;font-weight:800;color:var(--gf-text);margin:6px 0}
+.scenario-card.opt .scenario-value{color:var(--gf-accent)}
+.scenario-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;color:var(--gf-muted);font-weight:700}
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.2rem}
+.grid,.grid2,.grid3{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+.compare-legend{width:92px;font-size:.72rem}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-10T01:00:00+03:00">
+  <h1 class="hero-h">NVIDIA Değerleme Analizi: Döngüsellik İllüzyonu ve 72x'ten 16x'e Çöken F/K Çarpanı</h1>
+  <p class="hero-desc">NVIDIA, tarihin en hızlı altyapı büyümesini gerçekleştirmesine rağmen değerleme çarpanlarında derin bir sıkışma yaşıyor. Piyasa, yarı iletken sektörünün klasik "patlama-çöküş" döngüsünü hatalı biçimde NVIDIA'ya yansıtıyor; oysa bulut sağlayıcılarının kesintisiz capex'i talebi yapısal bir altyapı inşasına dönüştürdü.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info hero-date" data-timestamp="2026-07-10T01:00:00+03:00">📅 10 Temmuz 2026</span>
+    <span class="hero-ticker">$NVDA</span>
+    <span class="meta-pill bull">STRONG BUY</span>
+    <span class="meta-pill neu">Değerleme Anomalisi</span>
+  </div>
+</div>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">📊 Yönetici Özeti: Piyasa Anomalisi</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-accent)">$204.12</div><div class="kpi-label">Hisse Fiyatı</div></div>
+        <div class="kpi"><div class="kpi-num">$4.8T</div><div class="kpi-label">Piyasa Değeri</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">15.9x</div><div class="kpi-label">İleri F/K (2028)</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">%31.7</div><div class="kpi-label">3Y Gelir CAGR</div></div>
+      </div>
+      <p style="margin:12px 0;color:var(--gf-muted);font-size:0.88rem">Temmuz 2026 itibarıyla NVIDIA, tarihin en hızlı altyapı büyümesini gerçekleştirmesine rağmen değerleme çarpanlarında derin bir sıkışma yaşamaktadır. Piyasa, yarı iletken sektörünün tarihsel "boom-bust" döngüsünü NVIDIA'ya hatalı bir şekilde yansıtmaktadır. Oysa bulut sağlayıcılarının kesintisiz sermaye harcamaları ve donanımların 3-5 yıllık hızlı amortisman döngüleri, talebi süreklilik arz eden bir altyapı inşasına dönüştürmüştür.</p>
+      <div class="insight-box bull">
+        <strong>Sonuç — STRONG BUY:</strong> Mevcut 194-204 dolar bandındaki konsolidasyon, uzun vadeli yatırımcılar için nadir bir asimetrik fırsat sunuyor. Döngüsellik korkusu, temelleri sağlam bir altyapı devrimini görmeyi engelliyor.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">📉 Değerleme Anomalisi: Tarihsel F/K Çarpanı Sıkışması</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem">NVIDIA'nın son 5 yıllık ortalama F/K çarpanı olan 72x seviyesinden, mevcut 22.6x (2027) ve 15.9x (2028) seviyelerine kadar nasıl gerilediğini gösteriyor. Bu ~%55'lik iskonto, operasyonel büyümenin fiyat artışının çok önüne geçtiğinin en net kanıtı. Piyasa büyümenin yavaşlayacağını varsayıyor, ancak finansal veriler tam tersini işaret ediyor.</p>
+      <div class="chart-container">
+        <div class="chart-title">📐 F/K Çarpanı: 5 Yıllık Ortalamadan İleri Tahminlere</div>
+        <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">0</text><line x1="54" y1="171.0" x2="620" y2="171.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="175.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">20</text><line x1="54" y1="122.0" x2="620" y2="122.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="126.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">40</text><line x1="54" y1="73.0" x2="620" y2="73.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="77.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">60</text><line x1="54" y1="24.0" x2="620" y2="24.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="28.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">80</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="90.0" y="43.6" width="70" height="176.4" rx="4" fill="#fbbf24" opacity="1"/><text x="125.0" y="35.6" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">72x</text><text x="125.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">5Y Ort.</text><rect x="196.0" y="90.4" width="70" height="129.6" rx="4" fill="#fbbf24" opacity="1"/><text x="231.0" y="82.4" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">52.9x</text><text x="231.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2024</text><rect x="302.0" y="106.8" width="70" height="113.2" rx="4" fill="#fbbf24" opacity="1"/><text x="337.0" y="98.8" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">46.2x</text><text x="337.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2025</text><rect x="408.0" y="164.6" width="70" height="55.4" rx="4" fill="#4ade80" opacity="1"/><text x="443.0" y="156.6" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">22.6x</text><text x="443.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">FY27T</text><rect x="514.0" y="181.0" width="70" height="39.0" rx="4" fill="#4ade80" opacity="1"/><text x="549.0" y="173.0" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">15.9x</text><text x="549.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">FY28T</text></svg>
+        <div class="chart-caption">F/K çarpanı 72x'ten 15.9x'e (2028) geriledi — ~%78'lik bir düşüş, operasyonel büyümenin fiyatlamanın çok önünde kaldığının kanıtı.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">💰 Mali Dönem Öngörüleri (FY 2026 - 2030)</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem">Yıllık %80'in üzerindeki büyüme oranlarının ardından, konsensüs tahminleri NVIDIA'nın gelir tabanının 2030 yılına kadar istikrarlı bir şekilde genişlemeye devam edeceğini gösteriyor. Şirket, donanım satışlarını yazılım monetizasyonu (CUDA/DGX Cloud) ile destekleyerek kâr marjlarını %75 seviyesinde stabilize etmeyi başardı. <em>2028 ve sonrası rakamlar "İyimser Senaryo" projeksiyonlarını içerir.</em></p>
+
+      <div class="grid2">
+        <div class="chart-container" style="margin:0">
+          <div class="chart-title">📈 Toplam Gelir Projeksiyonu ($ Milyar)</div>
+          <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">0</text><line x1="54" y1="176.4" x2="620" y2="176.4" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="180.4" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">200</text><line x1="54" y1="132.9" x2="620" y2="132.9" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="136.9" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">400</text><line x1="54" y1="89.3" x2="620" y2="89.3" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="93.3" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">600</text><line x1="54" y1="45.8" x2="620" y2="45.8" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="49.8" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">800</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="90.0" y="173.0" width="70" height="47.0" rx="4" fill="#38bdf8" opacity="1"/><text x="125.0" y="165.0" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$216B</text><text x="125.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">FY26A</text><rect x="196.0" y="134.5" width="70" height="85.5" rx="4" fill="#38bdf8" opacity="1"/><text x="231.0" y="126.5" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$393B</text><text x="231.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">FY27E</text><rect x="302.0" y="99.3" width="70" height="120.7" rx="4" fill="#38bdf8" opacity="1"/><text x="337.0" y="91.3" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$554B</text><text x="337.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">FY28E</text><rect x="408.0" y="63.0" width="70" height="157.0" rx="4" fill="#38bdf8" opacity="1"/><text x="443.0" y="55.0" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$721B</text><text x="443.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">FY29E</text><rect x="514.0" y="31.7" width="70" height="188.3" rx="4" fill="#38bdf8" opacity="1"/><text x="549.0" y="23.7" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$865B</text><text x="549.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">FY30E</text></svg>
+          <div class="chart-caption">Gelir, FY2026'daki 215.9B$'dan FY2030'da 864.8B$'a — 5 yılda ~4 kat büyüme.</div>
+        </div>
+        <div class="chart-container" style="margin:0">
+          <div class="chart-title">💵 Hisse Başına Kâr (HBK) Projeksiyonu ($)</div>
+          <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">0</text><line x1="54" y1="171.0" x2="620" y2="171.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="175.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">5</text><line x1="54" y1="122.0" x2="620" y2="122.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="126.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">10</text><line x1="54" y1="73.0" x2="620" y2="73.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="77.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">15</text><line x1="54" y1="24.0" x2="620" y2="24.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="28.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">20</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="90.0" y="173.3" width="70" height="46.7" rx="4" fill="#4ade80" opacity="1"/><text x="125.0" y="165.3" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$4.77</text><text x="125.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">FY26A</text><rect x="196.0" y="132.1" width="70" height="87.9" rx="4" fill="#4ade80" opacity="1"/><text x="231.0" y="124.1" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$8.97</text><text x="231.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">FY27E</text><rect x="302.0" y="95.0" width="70" height="125.0" rx="4" fill="#4ade80" opacity="1"/><text x="337.0" y="87.0" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$12.76</text><text x="337.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">FY28E</text><rect x="408.0" y="58.3" width="70" height="161.7" rx="4" fill="#4ade80" opacity="1"/><text x="443.0" y="50.3" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$16.50</text><text x="443.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">FY29E</text><rect x="514.0" y="31.8" width="70" height="188.2" rx="4" fill="#4ade80" opacity="1"/><text x="549.0" y="23.8" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$19.20</text><text x="549.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">FY30E</text></svg>
+          <div class="chart-caption">HBK, FY2026'daki 4.77$'dan FY2030'da 19.20$'a — kârlılık gelirden bile hızlı büyüyor.</div>
+        </div>
+      </div>
+
+      <div class="grid3" style="margin-top:16px">
+        <div class="card">
+          <div class="card-label">Brüt Kâr Marjı</div>
+          <div class="card-value up">%75.0</div>
+        </div>
+        <div class="card">
+          <div class="card-label">SNA Marjı</div>
+          <div class="card-value up">~%60.0</div>
+        </div>
+        <div class="card">
+          <div class="card-label">SNA (FY 2028E)</div>
+          <div class="card-value" style="color:var(--gf-accent)">$265.2B</div>
+        </div>
+      </div>
+      <p style="margin-top:12px;color:var(--gf-muted);font-size:0.85rem">NVIDIA, bir yarı iletken şirketinden ziyade, yazılım şirketi marjlarına sahip bir altyapı tekelidir. Nakit yaratma kapasitesi, temettü ve geri alımlar için muazzam bir alan yaratıyor.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🏗️ Yapısal Dinamikler: Enerji ve Paketleme Darboğazları</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="grid2">
+        <div>
+          <h4 style="margin-bottom:8px">Veri Merkezi Güç Tüketimi (TWh)</h4>
+          <p class="card-note" style="margin-bottom:10px">Enerji kısıtı, talebi yok etmek yerine zamana yayarak döngüselliği engelleyen bir faktör. 2027'de yapay zekâ sunucuları ilk kez geleneksel sunucuların toplam elektrik tüketimini geride bırakacak.</p>
+          <div class="chart-container" style="margin:0">
+            <div class="chart-title">⚡ AI vs Geleneksel Sunucu Elektrik Tüketimi</div>
+            <div class="category-block">
+              <div class="category-label">2025</div>
+              <div class="compare-bar"><span class="compare-legend">AI Sunucuları</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:36.8%">95 TWh</div></div></div>
+              <div class="compare-bar"><span class="compare-legend">Geleneksel</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:74.8%">193 TWh</div></div></div>
+            </div>
+            <div class="category-block">
+              <div class="category-label">2026</div>
+              <div class="compare-bar"><span class="compare-legend">AI Sunucuları</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:67.8%">175 TWh</div></div></div>
+              <div class="compare-bar"><span class="compare-legend">Geleneksel</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:75.6%">195 TWh</div></div></div>
+            </div>
+            <div class="category-block">
+              <div class="category-label">2027</div>
+              <div class="compare-bar"><span class="compare-legend">AI Sunucuları</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:100%">258 TWh</div></div></div>
+              <div class="compare-bar"><span class="compare-legend">Geleneksel</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:77.5%">200 TWh</div></div></div>
+            </div>
+            <div class="legend">
+              <span><span class="legend-dot" style="background:#38bdf8"></span>Yapay Zekâ Sunucuları</span>
+              <span><span class="legend-dot" style="background:#94a3b8"></span>Geleneksel Sunucular</span>
+            </div>
+            <div class="chart-caption">2027'de AI sunucu tüketimi (258 TWh) geleneksel sunucuları (200 TWh) ilk kez geride bırakıyor — enerji, talebi öldürmüyor, zamana yayıyor.</div>
+          </div>
+        </div>
+        <div>
+          <h4 style="margin-bottom:8px">Tedarik Zinciri Kontrolü: CoWoS Kapasitesi</h4>
+          <p class="card-note" style="margin-bottom:10px">NVIDIA, TSMC'nin gelişmiş CoWoS paketleme kapasitesinin %60'ından fazlasını tek başına kapatarak rakiplerine karşı fiziksel bir bariyer oluşturuyor.</p>
+          <div class="chart-container" style="margin:0">
+            <div class="chart-title">📦 CoWoS Paketleme Kapasitesi Payı</div>
+            <div class="donut-chart">
+              <svg class="donut-svg" viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="chart"><circle cx="90" cy="90" r="70" fill="none" stroke="var(--gf-border)" stroke-width="20"/><circle cx="90" cy="90" r="70" fill="none" stroke="#38bdf8" stroke-width="20" stroke-dasharray="263.89 439.82" stroke-dashoffset="0.00" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #38bdf866)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#4ade80" stroke-width="20" stroke-dasharray="52.78 439.82" stroke-dashoffset="-263.89" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #4ade8066)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#fbbf24" stroke-width="20" stroke-dasharray="43.98 439.82" stroke-dashoffset="-316.67" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #fbbf2466)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#f87171" stroke-width="20" stroke-dasharray="43.98 439.82" stroke-dashoffset="-360.65" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #f8717166)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#94a3b8" stroke-width="20" stroke-dasharray="35.19 439.82" stroke-dashoffset="-404.64" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #94a3b866)"/><text x="90" y="85" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="700" font-family="inherit">60%</text><text x="90" y="102" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="inherit">NVIDIA</text></svg>
+              <div class="donut-legend">
+                <div class="donut-legend-item"><div class="donut-legend-color" style="background:#38bdf8"></div><div><div class="donut-legend-label">NVIDIA</div><div class="donut-legend-value">%60</div></div></div>
+                <div class="donut-legend-item"><div class="donut-legend-color" style="background:#4ade80"></div><div><div class="donut-legend-label">AMD</div><div class="donut-legend-value">%12</div></div></div>
+                <div class="donut-legend-item"><div class="donut-legend-color" style="background:#fbbf24"></div><div><div class="donut-legend-label">Apple</div><div class="donut-legend-value">%10</div></div></div>
+                <div class="donut-legend-item"><div class="donut-legend-color" style="background:#f87171"></div><div><div class="donut-legend-label">AWS/Google ASIC</div><div class="donut-legend-value">%10</div></div></div>
+                <div class="donut-legend-item"><div class="donut-legend-color" style="background:#94a3b8"></div><div><div class="donut-legend-label">Diğerleri</div><div class="donut-legend-value">%8</div></div></div>
+              </div>
+            </div>
+            <div class="chart-caption">NVIDIA tek başına CoWoS kapasitesinin çoğunluğunu kontrol ediyor — rakiplerin toplamı bile NVIDIA'nın payının üçte ikisine ancak ulaşıyor.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🎯 Değerleme Senaryoları ve Hedef Fiyat</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="grid2">
+        <div class="scenario-card">
+          <div class="scenario-label">Muhafazakâr Senaryo</div>
+          <div class="scenario-value">$231.24</div>
+          <p class="card-note">Sektörel doygunluk ve artan rekabet varsayımıyla (2028 sonrası %5-10 büyüme). Adil değer / hisse.</p>
+        </div>
+        <div class="scenario-card opt">
+          <div class="scenario-label">İyimser Senaryo</div>
+          <div class="scenario-value">$376.78</div>
+          <p class="card-note">Sürdürülebilir giga döngüsü ve yazılım ekosistemi hakimiyeti (%15-20 büyüme). Adil değer / hisse.</p>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">📊 Sektörel İskonto Analizi (Forward PEG)</div>
+        <svg viewBox="0 0 640 284" width="100%" height="284" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="254" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="272" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">0</text><line x1="276.7" y1="16" x2="276.7" y2="254" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="276.7" y="272" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">1</text><line x1="363.3" y1="16" x2="363.3" y2="254" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="363.3" y="272" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">2</text><line x1="450.0" y1="16" x2="450.0" y2="254" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="450.0" y="272" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">3</text><line x1="536.7" y1="16" x2="536.7" y2="254" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="536.7" y="272" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">4</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Broadcom (AVGO)</text><rect x="190" y="22.8" width="38.1" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="236.1" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">0.44x</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">NVIDIA (NVDA)</text><rect x="190" y="56.8" width="43.3" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="241.3" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">0.50x</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">AMD</text><rect x="190" y="90.8" width="79.7" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="277.7" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">0.92x</text><text x="178" y="138.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">S&P 500 Ort.</text><rect x="190" y="124.8" width="173.3" height="19.0" rx="4" fill="#fbbf24" opacity="0.88"/><text x="371.3" y="138.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">2.00x</text><text x="178" y="172.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Qualcomm</text><rect x="190" y="158.8" width="190.7" height="19.0" rx="4" fill="#fbbf24" opacity="0.88"/><text x="388.7" y="172.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">2.20x</text><text x="178" y="206.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Arm Holdings</text><rect x="190" y="192.8" width="209.7" height="19.0" rx="4" fill="#fbbf24" opacity="0.88"/><text x="407.7" y="206.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">2.42x</text><text x="178" y="240.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Intel</text><rect x="190" y="226.8" width="361.4" height="19.0" rx="4" fill="#f87171" opacity="0.88"/><text x="559.4" y="240.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">4.17x</text><line x1="276.7" y1="12" x2="276.7" y2="258" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 3"/><text x="276.7" y="8" text-anchor="middle" font-size="10.5" font-weight="600" fill="#38bdf8" font-family="inherit">PEG = 1.0 (Adil Değer)</text></svg>
+        <div class="chart-caption">NVIDIA'nın 0.50x PEG rasyosu, S&P 500 ortalamasının (2.00x) dörtte biri seviyesinde — rakiplerine kıyasla "Deep Value" bölgesinde olduğunu kanıtlıyor.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">⚠️ Stratejik Risk Analizi</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="grid3">
+        <div class="insight-box danger" style="margin:0">
+          <strong>Jeopolitik Kısıtlamalar:</strong> Çin pazarındaki ihracat yasakları en büyük belirsizlik. Ancak NVIDIA cari modellerinde Çin gelirlerini şimdiden sıfır olarak fiyatlamış durumda.
+        </div>
+        <div class="insight-box warn" style="margin:0">
+          <strong>Müşteri Konsantrasyonu:</strong> Gelirin %60'ı dört büyük teknoloji devinden geliyor. Kurumsal yapay zekâ (Enterprise AI) yayılımı bu bağımlılığı azaltacak.
+        </div>
+        <div class="insight-box" style="margin:0">
+          <strong>Altyapı Gecikmeleri:</strong> Enerji şebekelerindeki yetersizlik veri merkezi kurulumlarını yavaşlatabilir; bu da talebi 2028-2030 dönemine kaydıran bir faktör.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🔗 Kaynaklar & Metodoloji</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <table>
+        <thead><tr><th>Kaynak</th><th>Rol</th></tr></thead>
+        <tbody>
+          <tr><td>Vibe Research</td><td>Orijinal finansal analiz raporu, bu yazının incelediği kaynak</td></tr>
+          <tr><td>NVIDIA mali sonuçları ve konsensüs tahminleri</td><td>Gelir, HBK, F/K ve marj projeksiyonları (FY2026-2030)</td></tr>
+          <tr><td>TSMC CoWoS kapasite verileri</td><td>Gelişmiş paketleme pazar payı analizi</td></tr>
+        </tbody>
+      </table>
+      <div class="insight-box" style="margin-top:14px">
+        <strong>Uyarı:</strong> Bu rapor eğitim ve bilgilendirme amaçlıdır. Yatırım tavsiyesi değildir. Kendi araştırmanızı yapın ve bağımsız bir finansal danışmana başvurun.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">Gistify Flow | 10 Temmuz 2026 | NVIDIA Değerleme ve Gelecek Öngörü Raporu</div>
+
+</div>
+</body>
+</html>
