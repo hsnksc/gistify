@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Token Explosion: The Limits of Physical Infrastructure | $MSFT $AMZN $GOOGL $META $NVDA</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="The AI Token Explosion: The Limits of Physical Infrastructure" />
+<meta property="og:description" content="Goldman Sachs projects a 24x token surge by 2030, while Anthropic scaled 2.6x in six months. The custom-ASIC race, nuclear power deals, and prompt-caching economics under the microscope." />
+<meta property="og:url" content="https://gistify.pro/flow/ai_token_ekonomisi_analizi.en.html" />
+<meta property="og:image" content="https://gistify.pro/gistifylogo.png?v=20260709" />
+<meta property="og:site_name" content="Gistify" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="The AI Token Explosion: The Limits of Physical Infrastructure" />
+<meta name="twitter:description" content="Goldman Sachs projects a 24x token surge by 2030, while Anthropic scaled 2.6x in six months. The custom-ASIC race, nuclear power deals, and prompt-caching economics under the microscope." />
+<meta name="twitter:image" content="https://gistify.pro/gistifylogo.png?v=20260709" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:760px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent)}
+.section-body{padding:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px}
+.card.highlight{border-color:var(--gf-accent);box-shadow:0 0 0 1px rgba(56,189,248,.35)}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+.card-mult{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;margin:0 auto 10px;background:var(--gf-accent-dim);color:var(--gf-accent)}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+td{font-variant-numeric:tabular-nums}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+.chart-container{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:20px;margin:16px 0}
+.chart-title{font-size:.9rem;font-weight:700;color:var(--gf-accent);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.chart-title::before{content:'';display:inline-block;width:4px;height:16px;background:var(--gf-accent);border-radius:2px}
+.chart-caption{font-size:.78rem;color:var(--gf-muted);margin-top:12px;border-top:1px solid var(--gf-border-subtle);padding-top:10px}
+.legend{display:flex;gap:16px;font-size:.75rem;color:var(--gf-muted);margin-top:10px;flex-wrap:wrap}
+.legend-dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:middle}
+.toggle-input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.toggle-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.toggle-label{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:8px;font-size:.78rem;font-weight:600;background:var(--gf-elev);border:1px solid var(--gf-border);color:var(--gf-muted);cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.donut-chart{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.donut-svg{flex-shrink:0}
+.donut-legend{display:flex;flex-direction:column;gap:8px}
+.donut-legend-item{display:flex;align-items:center;gap:8px;font-size:.85rem}
+.donut-legend-color{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.donut-legend-label{color:var(--gf-text)}
+.donut-legend-value{color:var(--gf-muted);font-size:.8rem}
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+#growTotal:checked ~ .toggle-row label[for="growTotal"],
+#growAnthropic:checked ~ .toggle-row label[for="growAnthropic"],
+#simUsers100:checked ~ .toggle-row label[for="simUsers100"],
+#simUsers1000:checked ~ .toggle-row label[for="simUsers1000"],
+#simUsers5000:checked ~ .toggle-row label[for="simUsers5000"],
+#simUsers10000:checked ~ .toggle-row label[for="simUsers10000"]{background:var(--gf-accent);color:#04121f;border-color:var(--gf-accent)}
+#growTotal:checked ~ .grow-result{display:none}
+#growTotal:checked ~ #grow-result-total{display:block}
+#growAnthropic:checked ~ .grow-result{display:none}
+#growAnthropic:checked ~ #grow-result-anthropic{display:block}
+#simUsers100:checked ~ .sim-result{display:none}
+#simUsers100:checked ~ #sim-result-100{display:block}
+#simUsers1000:checked ~ .sim-result{display:none}
+#simUsers1000:checked ~ #sim-result-1000{display:block}
+#simUsers5000:checked ~ .sim-result{display:none}
+#simUsers5000:checked ~ #sim-result-5000{display:block}
+#simUsers10000:checked ~ .sim-result{display:none}
+#simUsers10000:checked ~ #sim-result-10000{display:block}
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid,.grid3{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-09T09:00:00+03:00">
+  <h1 class="hero-h">The AI Token Explosion: The Limits of Physical Infrastructure</h1>
+  <p class="hero-desc">Goldman Sachs projects a 24x increase in token volume by 2030, and Anthropic scaled 2.6x in just six months — dragging the world toward an "energy wall." Compute is no longer measured in chips, but in gigawatts.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info hero-date" data-timestamp="2026-07-09T09:00:00+03:00">📅 July 9, 2026</span>
+    <span class="hero-ticker">$MSFT</span>
+    <span class="hero-ticker">$AMZN</span>
+    <span class="hero-ticker">$GOOGL</span>
+    <span class="hero-ticker">$META</span>
+    <span class="hero-ticker">$NVDA</span>
+    <span class="meta-pill neu">Infrastructure & Energy Analysis</span>
+    <span class="meta-pill bull">Token Economics</span>
+  </div>
+</div>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">📊 Summary & Key Finding</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-accent)">120Q</div><div class="kpi-label">2030 Target (Tokens/Month)</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">13Q</div><div class="kpi-label">Anthropic Dec. 2026 (Tokens/Month)</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-warning)">30x+</div><div class="kpi-label">Agent / Chatbot Multiplier</div></div>
+        <div class="kpi"><div class="kpi-num">90%</div><div class="kpi-label">Prompt Caching Cost Reduction</div></div>
+      </div>
+      <p style="margin:12px 0;color:var(--gf-muted);font-size:0.88rem">Goldman Sachs's 2030 projection has global token consumption reaching 24x today's level, driven mainly by a growing share of knowledge workers adopting autonomous AI agents. Anthropic's API volume is moving even faster: it jumped from 5 to 13 quadrillion tokens/month in just six months (+160%), a leading indicator of the trend. Token consumption is no longer growing linearly — it's growing geometrically.</p>
+      <div class="insight-box">
+        <strong>Why now?</strong> The shift from simple chat loops to multi-tool, self-correcting autonomous agents multiplies per-task token consumption by dozens of times — the demand surge stems not from model quality, but from how agents actually operate.
+      </div>
+      <div class="insight-box warn">
+        <strong>Critical risk:</strong> Compute supply can scale, but the power grid cannot keep pace — data center demand is approaching Japan's total electricity consumption, and the real bottleneck on compute is no longer chips, but gigawatts.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">📈 Token Growth: Global Volume and Anthropic's Surge</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem">Compare Goldman Sachs's 2030 projection with the growth in Anthropic's API volume. Token consumption is no longer growing linearly with agentic AI adoption — it's growing geometrically.</p>
+
+      <div class="grid">
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-accent)">120Q Tokens/Month</div><div class="kpi-label">2030 target — a full 24x today's level, driven by 12% of knowledge workers adopting autonomous agents.</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-accent)">13Q Tokens/Month</div><div class="kpi-label">Anthropic's December 2026 estimate — 160% growth in just six months, driven by its API-first revenue model.</div></div>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">🌐 Global Monthly Token Consumption (Quadrillion)</div>
+
+        <input type="radio" class="toggle-input" name="growthMetric" id="growTotal" checked>
+        <input type="radio" class="toggle-input" name="growthMetric" id="growAnthropic">
+        <div class="toggle-row">
+          <label class="toggle-label" for="growTotal">🌍 Total (2026–2030)</label>
+          <label class="toggle-label" for="growAnthropic">🤖 Anthropic (Monthly)</label>
+        </div>
+
+        <div class="grow-result" id="grow-result-total">
+          <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">0</text><line x1="54" y1="159.7" x2="620" y2="159.7" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="163.7" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">40</text><line x1="54" y1="99.4" x2="620" y2="99.4" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="103.4" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">80</text><line x1="54" y1="39.1" x2="620" y2="39.1" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="43.1" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">120</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="74.9" y="212.5" width="70" height="7.5" rx="4" fill="#38bdf8" opacity="1"/><text x="109.9" y="204.5" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">5Q</text><text x="109.9" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2026 H1</text><rect x="165.7" y="201.9" width="70" height="18.1" rx="4" fill="#38bdf8" opacity="1"/><text x="200.7" y="193.9" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">12Q</text><text x="200.7" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2026 H2</text><rect x="256.6" y="167.2" width="70" height="52.8" rx="4" fill="#38bdf8" opacity="1"/><text x="291.6" y="159.2" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">35Q</text><text x="291.6" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2027</text><rect x="347.4" y="129.5" width="70" height="90.5" rx="4" fill="#38bdf8" opacity="1"/><text x="382.4" y="121.5" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">60Q</text><text x="382.4" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2028</text><rect x="438.3" y="84.3" width="70" height="135.7" rx="4" fill="#38bdf8" opacity="1"/><text x="473.3" y="76.3" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">90Q</text><text x="473.3" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2029</text><rect x="529.1" y="39.1" width="70" height="180.9" rx="4" fill="#4ade80" opacity="1"/><text x="564.1" y="31.1" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">120Q</text><text x="564.1" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2030</text></svg>
+          <div class="chart-caption">Per Goldman Sachs's 2030 projection, global monthly token volume climbs from today's 5 quadrillion to 120 quadrillion — a full 24x.</div>
+        </div>
+        <div class="grow-result" id="grow-result-anthropic">
+          <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">0</text><line x1="54" y1="164.0" x2="620" y2="164.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="168.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">4</text><line x1="54" y1="108.0" x2="620" y2="108.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="112.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">8</text><line x1="54" y1="52.0" x2="620" y2="52.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="56.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">12</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="63.5" y="150.0" width="70" height="70.0" rx="4" fill="#38bdf8" opacity="1"/><text x="98.5" y="142.0" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">5.0Q</text><text x="98.5" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Jun 26</text><rect x="143.0" y="133.2" width="70" height="86.8" rx="4" fill="#38bdf8" opacity="1"/><text x="178.0" y="125.2" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">6.2Q</text><text x="178.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Jul 26</text><rect x="222.5" y="115.0" width="70" height="105.0" rx="4" fill="#38bdf8" opacity="1"/><text x="257.5" y="107.0" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">7.5Q</text><text x="257.5" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Aug 26</text><rect x="302.0" y="95.4" width="70" height="124.6" rx="4" fill="#38bdf8" opacity="1"/><text x="337.0" y="87.4" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">8.9Q</text><text x="337.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Sep 26</text><rect x="381.5" y="74.4" width="70" height="145.6" rx="4" fill="#38bdf8" opacity="1"/><text x="416.5" y="66.4" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">10.4Q</text><text x="416.5" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Oct 26</text><rect x="461.0" y="54.8" width="70" height="165.2" rx="4" fill="#38bdf8" opacity="1"/><text x="496.0" y="46.8" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">11.8Q</text><text x="496.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Nov 26</text><rect x="540.5" y="38.0" width="70" height="182.0" rx="4" fill="#4ade80" opacity="1"/><text x="575.5" y="30.0" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">13.0Q</text><text x="575.5" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Dec 26</text></svg>
+          <div class="chart-caption">Anthropic's API volume jumped from 5.0 to 13.0 quadrillion tokens/month between June and December 2026 — 160% growth in six months, ~17.3% monthly compound growth.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🤖 The Agent Economy: Why More Tokens?</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem">The shift from standard chatbots to autonomous agents can multiply per-task token cost by up to 30x. See why agents are "token monsters" across three tiers.</p>
+
+      <div class="grid3">
+        <div class="card" style="text-align:center">
+          <div class="card-mult">1x</div>
+          <h4 style="margin-bottom:6px">Simple Chatbot</h4>
+          <p class="card-note" style="margin-bottom:10px">Question-answer loop. Single-shot output generation.</p>
+          <div class="card-value" style="color:var(--gf-accent)">~1,000 Tokens</div>
+        </div>
+        <div class="card highlight" style="text-align:center">
+          <div class="card-mult" style="background:var(--gf-accent);color:#04121f">10x</div>
+          <h4 style="margin-bottom:6px">Advanced Assistant</h4>
+          <p class="card-note" style="margin-bottom:10px">External tool use (Claude Code, etc.) and context scanning.</p>
+          <div class="card-value" style="color:var(--gf-accent)">~10,000 Tokens</div>
+        </div>
+        <div class="card" style="text-align:center">
+          <div class="card-mult" style="background:var(--gf-warning-dim);color:var(--gf-warning)">30x+</div>
+          <h4 style="margin-bottom:6px">Autonomous Agent</h4>
+          <p class="card-note" style="margin-bottom:10px">Multi-agent workflows, continuous loops, self-correction.</p>
+          <div class="card-value" style="color:var(--gf-warning)">~30,000+ Tokens</div>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">🧮 Token Multiplier Simulator</div>
+        <p class="card-note" style="margin-bottom:12px">Using the source's own formula (Chatbot = 1,000 tokens/user/day, Agent = 25,000 tokens/user/day, assuming a 30-day month), pick a monthly user count:</p>
+
+        <input type="radio" class="toggle-input" name="userTier" id="simUsers100">
+        <input type="radio" class="toggle-input" name="userTier" id="simUsers1000" checked>
+        <input type="radio" class="toggle-input" name="userTier" id="simUsers5000">
+        <input type="radio" class="toggle-input" name="userTier" id="simUsers10000">
+        <div class="toggle-row">
+          <label class="toggle-label" for="simUsers100">100 Users</label>
+          <label class="toggle-label" for="simUsers1000">1,000 Users</label>
+          <label class="toggle-label" for="simUsers5000">5,000 Users</label>
+          <label class="toggle-label" for="simUsers10000">10,000 Users</label>
+        </div>
+
+        <div class="sim-result" id="sim-result-100">
+          <div class="kpi-row">
+            <div class="kpi"><div class="kpi-num">3.0M</div><div class="kpi-label">Chatbot Usage/Month</div></div>
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-warning)">25x</div><div class="kpi-label">Agent Multiplier</div></div>
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-accent)">75.0M</div><div class="kpi-label">Agent Usage/Month</div></div>
+          </div>
+        </div>
+        <div class="sim-result" id="sim-result-1000">
+          <div class="kpi-row">
+            <div class="kpi"><div class="kpi-num">30.0M</div><div class="kpi-label">Chatbot Usage/Month</div></div>
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-warning)">25x</div><div class="kpi-label">Agent Multiplier</div></div>
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-accent)">750.0M</div><div class="kpi-label">Agent Usage/Month</div></div>
+          </div>
+        </div>
+        <div class="sim-result" id="sim-result-5000">
+          <div class="kpi-row">
+            <div class="kpi"><div class="kpi-num">150.0M</div><div class="kpi-label">Chatbot Usage/Month</div></div>
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-warning)">25x</div><div class="kpi-label">Agent Multiplier</div></div>
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-accent)">3.75B</div><div class="kpi-label">Agent Usage/Month</div></div>
+          </div>
+        </div>
+        <div class="sim-result" id="sim-result-10000">
+          <div class="kpi-row">
+            <div class="kpi"><div class="kpi-num">300.0M</div><div class="kpi-label">Chatbot Usage/Month</div></div>
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-warning)">25x</div><div class="kpi-label">Agent Multiplier</div></div>
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-accent)">7.5B</div><div class="kpi-label">Agent Usage/Month</div></div>
+          </div>
+        </div>
+        <div class="chart-caption">The agent/chatbot ratio holds constant at 25x regardless of user count — this is the source's own illustrative model output, not measured data.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🔧 The Hardware Race: Custom ASIC vs. NVIDIA</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem">Hyperscalers are spending billions building their own chips to break their dependence on NVIDIA. 2026 will be the inflection point of this "custom silicon" shift.</p>
+
+      <div class="chart-container">
+        <div class="chart-title">💰 2026 Estimated Capex Investment ($ Billion)</div>
+        <svg viewBox="0 0 640 182" width="100%" height="182" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">0</text><line x1="278.6" y1="16" x2="278.6" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="278.6" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">50</text><line x1="367.3" y1="16" x2="367.3" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="367.3" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">100</text><line x1="455.9" y1="16" x2="455.9" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="455.9" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">150</text><line x1="544.5" y1="16" x2="544.5" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="544.5" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">200</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Amazon</text><rect x="190" y="22.8" width="354.5" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="552.5" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$200B</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Alphabet</text><rect x="190" y="56.8" width="319.1" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="517.1" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$180B</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Microsoft</text><rect x="190" y="90.8" width="296.0" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="494.0" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$167B</text><text x="178" y="138.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Meta</text><rect x="190" y="124.8" width="221.6" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="419.6" y="138.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$125B</text><line x1="487.8" y1="12" x2="487.8" y2="156" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 3"/><text x="487.8" y="8" text-anchor="middle" font-size="10.5" font-weight="600" fill="#38bdf8" font-family="inherit">Avg $168B</text></svg>
+        <div class="chart-caption">The four hyperscalers' combined 2026 capex totals $672B; even Meta, the lowest of the four relative to the $168B average, is doubling its capacity year over year.</div>
+      </div>
+
+      <div class="grid3">
+        <div class="card">
+          <h4 style="margin-bottom:4px;color:var(--gf-success)">Google Ironwood (TPU v8)</h4>
+          <p class="card-note">Cost savings: 20–40%. Full capacity in 2026.</p>
+        </div>
+        <div class="card">
+          <h4 style="margin-bottom:4px;color:var(--gf-warning)">AWS Trainium 3</h4>
+          <p class="card-note">Cost savings: 25–35%. Training-focused.</p>
+        </div>
+        <div class="card">
+          <h4 style="margin-bottom:4px;color:var(--gf-accent)">Microsoft Maia 200</h4>
+          <p class="card-note">Cost savings: 30–40%. An inference monster.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">⚡ The Energy Wall: AI Runs on Nuclear</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem">Compute exists, but the grid can't keep up. As data-center electricity demand approaches Japan's total consumption, Big Tech has pivoted toward nuclear power and SMR technology.</p>
+
+      <div class="chart-container">
+        <div class="chart-title">☢️ Nuclear Power Deals (MW)</div>
+        <div class="donut-chart">
+          <svg class="donut-svg" viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="chart"><circle cx="90" cy="90" r="70" fill="none" stroke="var(--gf-border)" stroke-width="20"/><circle cx="90" cy="90" r="70" fill="none" stroke="#38bdf8" stroke-width="20" stroke-dasharray="294.55 439.82" stroke-dashoffset="0.00" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #38bdf866)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#4ade80" stroke-width="20" stroke-dasharray="85.68 439.82" stroke-dashoffset="-294.55" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #4ade8066)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#fbbf24" stroke-width="20" stroke-dasharray="37.25 439.82" stroke-dashoffset="-380.23" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #fbbf2466)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#f87171" stroke-width="20" stroke-dasharray="22.30 439.82" stroke-dashoffset="-417.48" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #f8717166)"/><text x="90" y="85" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="700" font-family="inherit">9,855 MW</text><text x="90" y="102" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="inherit">Total Deals</text></svg>
+          <div class="donut-legend">
+            <div class="donut-legend-item"><div class="donut-legend-color" style="background:#38bdf8"></div><div><div class="donut-legend-label">Meta (Oklo/TerraPower)</div><div class="donut-legend-value">6,600 MW · 67%</div></div></div>
+            <div class="donut-legend-item"><div class="donut-legend-color" style="background:#4ade80"></div><div><div class="donut-legend-label">Amazon (Susquehanna)</div><div class="donut-legend-value">1,920 MW · 19%</div></div></div>
+            <div class="donut-legend-item"><div class="donut-legend-color" style="background:#fbbf24"></div><div><div class="donut-legend-label">Microsoft (Constellation)</div><div class="donut-legend-value">835 MW · 8%</div></div></div>
+            <div class="donut-legend-item"><div class="donut-legend-color" style="background:#f87171"></div><div><div class="donut-legend-label">Google (Kairos)</div><div class="donut-legend-value">500 MW · 5%</div></div></div>
+          </div>
+        </div>
+        <div class="chart-caption">Meta's Oklo/TerraPower deal (6,600 MW) alone accounts for 67% of total deal capacity; Amazon's 1,920 MW Susquehanna deal draws on an existing nuclear plant, not an SMR.</div>
+      </div>
+
+      <div class="insight-box">
+        <strong>The SMR Revolution (Small Modular Reactors):</strong> Unable to wait through traditional plants' 10-year approval cycles, Google, Amazon, and Microsoft are investing in factory-built SMRs with 50–300 MW capacity. By 2030, SMRs are expected to supply 30% of AI's energy needs.
+        <table style="margin-top:10px">
+          <thead><tr><th>Deal</th><th>Capacity</th></tr></thead>
+          <tbody>
+            <tr><td>Kairos Power (Google)</td><td>500 MW</td></tr>
+            <tr><td>Constellation (Microsoft)</td><td>835 MW</td></tr>
+            <tr><td>Meta (Oklo/TerraPower)</td><td>6,600 MW</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">💡 The Invisible Lever: Prompt Caching</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem">While physical limits are being pushed, software optimization becomes critical. Anthropic's prompt caching system caches repeated context, cutting input costs by 90% and improving processing speed by 85%.</p>
+
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Standard Input</div>
+          <div class="card-value">$3.00/M</div>
+        </div>
+        <div class="card highlight">
+          <div class="card-label" style="color:var(--gf-accent)">Cached Input</div>
+          <div class="card-value" style="color:var(--gf-accent)">$0.30/M</div>
+        </div>
+      </div>
+
+      <div class="insight-box">
+        <strong>Why it matters:</strong> Autonomous agents read the same data over and over within seconds. Without caching, enterprise budgets become unsustainable.
+      </div>
+      <div class="insight-box bull">
+        <strong>Bottom line:</strong> Software optimization is the single most strategic lever for closing the gigawatt-scale energy gap.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🔗 Sources & Methodology</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <table>
+        <thead><tr><th>Source</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td>Goldman Sachs Research</td><td>2030 global token volume projection (24x)</td></tr>
+          <tr><td>SemiAnalysis</td><td>Custom ASIC (TPU/Trainium/Maia) cost and capacity analysis</td></tr>
+          <tr><td>JLL</td><td>Data center energy demand and grid capacity</td></tr>
+          <tr><td>Gartner</td><td>Agentic AI adoption rate forecasts</td></tr>
+          <tr><td>SMR Intel</td><td>Small modular reactor deals (July 2026)</td></tr>
+        </tbody>
+      </table>
+      <div class="insight-box" style="margin-top:14px">
+        <strong>Note:</strong> The token multiplier simulator was computed using the source's own stated formula and default parameters (Chatbot 1,000 tokens/user/day, Agent 25,000 tokens/user/day, assuming a 30-day month) — this is the source's own illustrative model output, not measured data.
+      </div>
+      <div class="insight-box" style="margin-top:10px">
+        <strong>Disclaimer:</strong> This report is for educational and informational purposes only. It is not investment advice. Do your own research and consult an independent financial advisor.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">Gistify Flow | July 9, 2026 | AI Token Economics and Infrastructure Analysis</div>
+
+</div>
+</body>
+</html>
