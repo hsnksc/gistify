@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Infrastructure Supercycle: The $2.27 Trillion Data Center Race | $NVDA $AMD $AVGO $MSFT $AMZN $META</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="The AI Infrastructure Supercycle: The $2.27 Trillion Data Center Race" />
+<meta property="og:description" content="Why Futurum Equities' 2027 AI data center capex forecast nearly doubles the Wall Street consensus — the HBM memory wall, the thermal crisis, and the hidden champions." />
+<meta property="og:url" content="https://gistify.pro/flow/AI%20Veri%20Merkezi/gemini-code-1783587874902.en.html" />
+<meta property="og:image" content="https://gistify.pro/gistifylogo.png?v=20260709" />
+<meta property="og:site_name" content="Gistify" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="The AI Infrastructure Supercycle: The $2.27 Trillion Data Center Race" />
+<meta name="twitter:description" content="Why Futurum Equities' 2027 AI data center capex forecast nearly doubles the Wall Street consensus — the HBM memory wall, the thermal crisis, and the hidden champions." />
+<meta name="twitter:image" content="https://gistify.pro/gistifylogo.png?v=20260709" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:760px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent)}
+.section-body{padding:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+td{font-variant-numeric:tabular-nums}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+.chart-container{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:20px;margin:16px 0}
+.chart-title{font-size:.9rem;font-weight:700;color:var(--gf-accent);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.chart-title::before{content:'';display:inline-block;width:4px;height:16px;background:var(--gf-accent);border-radius:2px}
+.chart-caption{font-size:.78rem;color:var(--gf-muted);margin-top:12px;border-top:1px solid var(--gf-border-subtle);padding-top:10px}
+.category-block{margin:14px 0}
+.category-label{font-size:.82rem;font-weight:600;color:var(--gf-text);margin-bottom:6px}
+.compare-bar{display:flex;align-items:center;gap:12px;margin:6px 0;font-size:.78rem}
+.compare-legend{width:78px;flex-shrink:0;color:var(--gf-muted);font-weight:600}
+.compare-track{flex:1;height:24px;background:var(--gf-elev);border-radius:6px;overflow:hidden;position:relative;border:1px solid var(--gf-border)}
+.compare-fill{height:100%;border-radius:6px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:.72rem;font-weight:700;color:#fff}
+.fill-accent{background:linear-gradient(90deg,#0ea5e9,#38bdf8)}
+.fill-muted{background:linear-gradient(90deg,#475569,#94a3b8)}
+.legend{display:flex;gap:16px;font-size:.75rem;color:var(--gf-muted);margin-top:10px;flex-wrap:wrap}
+.legend-dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:middle}
+.figure{margin:16px 0;border:1px solid var(--gf-border);border-radius:var(--gf-radius);overflow:hidden;background:var(--gf-card)}
+.figure img{display:block;width:100%;height:auto;max-height:420px;object-fit:cover}
+.fig-caption{padding:10px 16px;font-size:.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border-subtle)}
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid,.grid3{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+.compare-legend{width:60px;font-size:.72rem}
+.figure img{max-height:280px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-09T12:06:00+03:00">
+  <h1 class="hero-h">The AI Infrastructure Supercycle: The $2.27 Trillion Data Center Race</h1>
+  <p class="hero-desc">Futurum Equities' 2027 capex forecast nearly doubles the Wall Street consensus (Goldman Sachs, Moody's, Dell'Oro ~$1T). The gap traces back to the memory wall, HBM compound manufacturing yield, and a 1MW-per-rack thermal crisis — reviewing analyst Hasan Kuşcu's report.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info">📅 July 9, 2026</span>
+    <span class="hero-ticker">$NVDA</span>
+    <span class="hero-ticker">$AMD</span>
+    <span class="hero-ticker">$AVGO</span>
+    <span class="hero-ticker">$MSFT</span>
+    <span class="hero-ticker">$AMZN</span>
+    <span class="hero-ticker">$META</span>
+    <span class="meta-pill neu">Deep Sector Dive</span>
+    <span class="meta-pill bull">HBM & Thermal</span>
+  </div>
+</div>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">📊 Summary & Key Finding</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-accent)">$2.27T</div><div class="kpi-label">Futurum 2027 Forecast</div></div>
+        <div class="kpi"><div class="kpi-num">$1.00T</div><div class="kpi-label">Wall Street Consensus</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-warning)">130–180%</div><div class="kpi-label">Forecast Gap</div></div>
+        <div class="kpi"><div class="kpi-num">190 GW</div><div class="kpi-label">Modeled Capacity</div></div>
+      </div>
+      <p style="margin:12px 0;color:var(--gf-muted);font-size:0.88rem">Futurum Equities' projected $2.27 trillion in 2027 AI data center capex crushes the consensus view held by traditional analysts such as Goldman Sachs, Moody's, and Dell'Oro, who remain capped near $1 trillion. The gap comes down to timing and scope: traditional models measure growth top-down, while Futurum models 190 GW of capacity bottom-up, from silicon fabs to data center construction.</p>
+      <div class="insight-box">
+        <strong>Three Catalysts:</strong> (1) Agentic AI and multimodality push inference compute needs 10–100x higher. (2) Delayed power grids push 30–50% of 2026's planned capacity into 2027–2028. (3) Sovereign AI — Japan, the EU, South Korea, and US national incentives (CHIPS Act, IRA) stack on top of hyperscaler spending.
+      </div>
+      <div class="insight-box warn">
+        <strong>Key Takeaway:</strong> Consensus assumes the market gradually saturates; Futurum expects growth to peak in 2027 without slowing, driven by deferred projects and the steep premiums paid for HBM memory.
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">💰 2027 AI Infrastructure Forecast: Futurum vs Consensus ($ Billions)</div>
+
+        <div class="category-block">
+          <div class="category-label">Accelerators</div>
+          <div class="compare-bar"><span class="compare-legend">Futurum</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:94.6%">$567.5B</div></div></div>
+          <div class="compare-bar"><span class="compare-legend">Consensus</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:55.0%">$330B</div></div></div>
+        </div>
+        <div class="category-block">
+          <div class="category-label">System Memory (HBM)</div>
+          <div class="compare-bar"><span class="compare-legend">Futurum</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:94.6%">$567.5B</div></div></div>
+          <div class="compare-bar"><span class="compare-legend">Consensus</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:41.7%">$250B</div></div></div>
+        </div>
+        <div class="category-block">
+          <div class="category-label">Networking & Storage</div>
+          <div class="compare-bar"><span class="compare-legend">Futurum</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:71.8%">$431B</div></div></div>
+          <div class="compare-bar"><span class="compare-legend">Consensus</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:20.0%">$120B</div></div></div>
+        </div>
+        <div class="category-block">
+          <div class="category-label">Physical Infrastructure</div>
+          <div class="compare-bar"><span class="compare-legend">Futurum</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:64.3%">$386B</div></div></div>
+          <div class="compare-bar"><span class="compare-legend">Consensus</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:33.3%">$200B</div></div></div>
+        </div>
+        <div class="category-block">
+          <div class="category-label">Other General Infrastructure</div>
+          <div class="compare-bar"><span class="compare-legend">Futurum</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:53.0%">$318B</div></div></div>
+          <div class="compare-bar"><span class="compare-legend">Consensus</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:16.7%">$100B</div></div></div>
+        </div>
+
+        <div class="legend">
+          <span><span class="legend-dot" style="background:#38bdf8"></span>Futurum ($2.27T Total)</span>
+          <span><span class="legend-dot" style="background:#94a3b8"></span>Consensus ($1.00T Total)</span>
+        </div>
+        <div class="chart-caption">HBM and accelerators together make up half the pie; Futurum's HBM estimate is 2.3x consensus — the real source of pricing power sits in memory, not compute.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🧠 The Memory Wall & HBM Technology</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem">The biggest bottleneck in AI hardware is the "Memory Wall": no matter how fast the processor cores are, the system stalls if data moves too slowly from memory. HBM (High Bandwidth Memory) solves this by stacking memory vertically (3D stacking) right next to the processor instead of laying it out flat.</p>
+
+      <figure class="figure">
+        <img src="hbm-accelerator-board.jpg" alt="An accelerator board with a central AI processor surrounded by stacked HBM memory modules" loading="lazy" />
+        <figcaption class="fig-caption">HBM memory modules ringing the central AI accelerator die — the 3D-stacked architecture that physically solves the memory wall.</figcaption>
+      </figure>
+
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Bus Width</div>
+          <div class="card-value up">1024–2048 bit</div>
+          <div class="card-note">HBM's "wide bus" vs standard DDR's 64-bit bus</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Interconnect Technology</div>
+          <div class="card-value">TSV</div>
+          <div class="card-note">Through-Silicon Via — microscopic vertical channels through the die</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Price Premium</div>
+          <div class="card-value neu">5–10x</div>
+          <div class="card-note">HBM module cost vs standard memory</div>
+        </div>
+      </div>
+
+      <div class="insight-box warn">
+        <strong>Compound Yield Penalty:</strong> HBM's high price isn't about raw materials — it's manufacturing math. Stack 12–16 layers, and a single defective layer scraps the entire stack. Using the source's own simulator formula (95% die yield, $15 per-die cost, $80 packaging/CoWoS cost), cost compounds exponentially as layer count rises:
+      </div>
+
+      <table>
+        <thead><tr><th>Layer Count</th><th>Compound Module Yield</th><th>Ideal Loss-Free Cost</th><th>Actual Yield-Penalized Cost</th></tr></thead>
+        <tbody>
+          <tr><td>4</td><td><span class="tag tag-green">81.5%</span></td><td>$140.0</td><td>$171.9</td></tr>
+          <tr><td>8 (standard)</td><td><span class="tag tag-orange">66.3%</span></td><td>$200.0</td><td>$301.4</td></tr>
+          <tr><td>12</td><td><span class="tag tag-orange">54.0%</span></td><td>$260.0</td><td>$481.1</td></tr>
+          <tr><td>16 (HBM4 target)</td><td><span class="tag tag-red">44.0%</span></td><td>$320.0</td><td>$727.1</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.82rem;color:var(--gf-muted)">Going from 8 to 16 layers raises the ideal cost only 1.6x, but the yield penalty pushes actual cost up 2.4x — this is the mathematical root of HBM makers' (SK Hynix, Samsung, Micron) pricing power.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🌡️ Physical Infrastructure & Thermal Management</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem">Physical infrastructure is the third-largest slice of the pie at $386 billion (17%). Power draw per rack sat around 40kW a few years ago; by 2027 it will exceed 1 megawatt — collapsing standard air-conditioned cooling and forcing the sector into liquid cooling systems (Vertiv, Eaton).</p>
+
+      <figure class="figure">
+        <img src="datacenter-liquid-cooling.jpg" alt="A data center aisle with blue-lit liquid cooling units and overhead piping" loading="lazy" />
+        <figcaption class="fig-caption">The shift to 1MW-per-rack power density is forcing data centers toward fully liquid-cooled infrastructure.</figcaption>
+      </figure>
+
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Power per Rack (2023)</div>
+          <div class="card-value">~40 kW</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Power per Rack (2027 Projection)</div>
+          <div class="card-value down">&gt;1 MW</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Thermal Throttling Threshold</div>
+          <div class="card-value neu">85°C</div>
+        </div>
+      </div>
+
+      <p style="margin:12px 0;color:var(--gf-muted);font-size:0.88rem">To solve the thermal crisis created by stacked HBM layers, engineers use dedicated thermal TSV channels (carrying no electrical signal, only heat), micron-thick high-conductivity epoxy underfills (NC-GAP), Cold Plate liquid cooling blocks, and the 5nm energy-efficient logic base dies arriving with the HBM4 generation. Per the source's simplified thermal model, at a 300W GPU load and 4 W/mK thermal interface material, cooling technology's effect on output temperature:</p>
+
+      <table>
+        <thead><tr><th>Cooling Technology</th><th>Estimated Die Temperature</th><th>85°C Threshold</th></tr></thead>
+        <tbody>
+          <tr><td>Classic Fan-Based Air Cooling</td><td><span class="tag tag-red">~222°C</span></td><td>❌ Severe throttling</td></tr>
+          <tr><td>Liquid Cooling Blocks (Cold Plate)</td><td><span class="tag tag-orange">~133°C</span></td><td>❌ Throttling risk</td></tr>
+          <tr><td>Next-Gen Microfluidic Cooling</td><td><span class="tag tag-green">~75°C</span></td><td>✅ Safe range</td></tr>
+        </tbody>
+      </table>
+      <div class="insight-box danger">
+        <strong>Bottom line:</strong> Even by the source's own illustrative model, standard liquid cooling can exceed the throttle threshold under heavy GPU loads — making microfluidic cooling not a nice-to-have but a mandatory line item at 2027 scale.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🌐 Networking & Storage</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="color:var(--gf-muted);font-size:0.88rem">Networking and storage take a $431 billion (19%) share. Training multimodal AI models consumes 10–100x more data than traditional models. Storing that data is driving massive investment in high-speed SSDs and the optical interconnect technology of networking giants like <strong>Broadcom (AVGO)</strong> and <strong>Arista</strong>, which enable zero-latency transfer between servers.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">📈 Hyperscaler Capex Forecasts</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem">Futurum's model may look extreme, but the logic holds: hyperscalers keep revising their capex guidance upward every single quarter.</p>
+      <table>
+        <thead><tr><th>Company</th><th>2025 Spend</th><th>2026 Guidance</th><th>2027 Projection</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Microsoft</strong></td><td>$80B</td><td>$190B</td><td>$250B</td></tr>
+          <tr><td><strong>Amazon</strong></td><td>$150B</td><td>$200B</td><td>$220B</td></tr>
+          <tr><td><strong>Meta</strong></td><td>$40B</td><td>$135B</td><td>$150B</td></tr>
+        </tbody>
+      </table>
+
+      <div class="chart-container">
+        <div class="chart-title">📊 2027 Capex Projection Comparison</div>
+        <div class="compare-bar"><span class="compare-legend">Microsoft</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:100%">$250B</div></div></div>
+        <div class="compare-bar"><span class="compare-legend">Amazon</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:88%">$220B</div></div></div>
+        <div class="compare-bar"><span class="compare-legend">Meta</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:60%">$150B</div></div></div>
+        <div class="chart-caption">These three hyperscalers' combined 2027 projections ($620B) alone account for more than a quarter of Futurum's total forecast.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">⚠️ Risks & Final Assessment</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="insight-box danger">
+        <strong>Power Grids:</strong> The world's energy infrastructure isn't ready for this pace. A new grid interconnection can take 12–24 months to secure — the primary source of deferred demand.
+      </div>
+      <div class="insight-box warn">
+        <strong>Financial Sustainability (ROI):</strong> Investors will soon start asking, "you're spending this much — are you earning proportionally from AI?" Barclays projects meaningful free cash flow (FCF) compression for giants like Meta in 2027–2028.
+      </div>
+      <div class="insight-box bull">
+        <strong>Hidden Champions:</strong> Even if the number falls short of exactly $2.27 trillion, those betting on a slowdown look set to be wrong. Rather than accelerator chips — already priced for perfection — <strong>HBM memory makers</strong> and <strong>physical infrastructure/cooling providers</strong> look like the supercycle's hidden champions, still underpriced relative to their full potential.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🔗 Sources & Methodology</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <table>
+        <thead><tr><th>Source</th><th>Role</th><th>Link</th></tr></thead>
+        <tbody>
+          <tr><td>Hasan Kuşcu — Infrastructure Report Analysis</td><td>Original analysis note this piece reviews</td><td>—</td></tr>
+          <tr><td>Futurum Equities</td><td>2027 AI data center capex forecast ($2.27T)</td><td><a href="https://futurumgroup.com" style="color:var(--gf-accent)">futurumgroup.com</a></td></tr>
+          <tr><td>Goldman Sachs / Moody's / Dell'Oro</td><td>Consensus forecast (~$1.00T), named as cited</td><td>—</td></tr>
+          <tr><td>Barclays</td><td>2027–2028 FCF compression outlook (Meta)</td><td>—</td></tr>
+        </tbody>
+      </table>
+      <div class="insight-box" style="margin-top:14px">
+        <strong>Note:</strong> This piece is compiled from a visual/interactive summary of the "Hasan Kuşcu Infrastructure Report." The HBM compound manufacturing cost and thermal profile tables were computed using the source's own stated formula and default parameter values (95% die yield, $15 per-layer cost, $80 packaging; 300W GPU power, 4 W/mK TIM) — this is the output of the source's own illustrative model, not measured real-world data.
+      </div>
+      <div class="insight-box" style="margin-top:10px">
+        <strong>Disclaimer:</strong> This report is for educational and informational purposes only. It is not investment advice. Do your own research and consult an independent financial advisor.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">Gistify Flow | July 9, 2026 | Hasan Kuşcu Infrastructure Report Data Modeling</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yapay Zeka Altyapı Süper Döngüsü: 2.27 Trilyon Dolarlık Veri Merkezi Yarışı | $NVDA $AMD $AVGO $MSFT $AMZN $META</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Yapay Zeka Altyapı Süper Döngüsü: 2.27 Trilyon Dolarlık Veri Merkezi Yarışı" />
+<meta property="og:description" content="Futurum Equities'in 2027 AI veri merkezi capex tahmini Wall Street konsensüsünü neden ikiye katlıyor — HBM bellek duvarı, termal kriz ve gizli şampiyonlar." />
+<meta property="og:url" content="https://gistify.pro/flow/AI%20Veri%20Merkezi/gemini-code-1783587874902.html" />
+<meta property="og:image" content="https://gistify.pro/gistifylogo.png?v=20260709" />
+<meta property="og:site_name" content="Gistify" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Yapay Zeka Altyapı Süper Döngüsü: 2.27 Trilyon Dolarlık Veri Merkezi Yarışı" />
+<meta name="twitter:description" content="Futurum Equities'in 2027 AI veri merkezi capex tahmini Wall Street konsensüsünü neden ikiye katlıyor — HBM bellek duvarı, termal kriz ve gizli şampiyonlar." />
+<meta name="twitter:image" content="https://gistify.pro/gistifylogo.png?v=20260709" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:760px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent)}
+.section-body{padding:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+td{font-variant-numeric:tabular-nums}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+.chart-container{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:20px;margin:16px 0}
+.chart-title{font-size:.9rem;font-weight:700;color:var(--gf-accent);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.chart-title::before{content:'';display:inline-block;width:4px;height:16px;background:var(--gf-accent);border-radius:2px}
+.chart-caption{font-size:.78rem;color:var(--gf-muted);margin-top:12px;border-top:1px solid var(--gf-border-subtle);padding-top:10px}
+.category-block{margin:14px 0}
+.category-label{font-size:.82rem;font-weight:600;color:var(--gf-text);margin-bottom:6px}
+.compare-bar{display:flex;align-items:center;gap:12px;margin:6px 0;font-size:.78rem}
+.compare-legend{width:78px;flex-shrink:0;color:var(--gf-muted);font-weight:600}
+.compare-track{flex:1;height:24px;background:var(--gf-elev);border-radius:6px;overflow:hidden;position:relative;border:1px solid var(--gf-border)}
+.compare-fill{height:100%;border-radius:6px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:.72rem;font-weight:700;color:#fff}
+.fill-accent{background:linear-gradient(90deg,#0ea5e9,#38bdf8)}
+.fill-muted{background:linear-gradient(90deg,#475569,#94a3b8)}
+.legend{display:flex;gap:16px;font-size:.75rem;color:var(--gf-muted);margin-top:10px;flex-wrap:wrap}
+.legend-dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:middle}
+.figure{margin:16px 0;border:1px solid var(--gf-border);border-radius:var(--gf-radius);overflow:hidden;background:var(--gf-card)}
+.figure img{display:block;width:100%;height:auto;max-height:420px;object-fit:cover}
+.fig-caption{padding:10px 16px;font-size:.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border-subtle)}
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid,.grid3{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+.compare-legend{width:60px;font-size:.72rem}
+.figure img{max-height:280px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-09T12:06:00+03:00">
+  <h1 class="hero-h">Yapay Zeka Altyapı Süper Döngüsü: 2.27 Trilyon Dolarlık Veri Merkezi Yarışı</h1>
+  <p class="hero-desc">Futurum Equities'in 2027 capex tahmini Wall Street konsensüsünü (Goldman Sachs, Moody's, Dell'Oro ~1T USD) neredeyse ikiye katlıyor. Farkın kökeninde bellek duvarı, HBM üretim firesi ve 1MW/kabin termal kriz var — analist Hasan Kuşcu'nun raporu mercek altında.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info">📅 9 Temmuz 2026</span>
+    <span class="hero-ticker">$NVDA</span>
+    <span class="hero-ticker">$AMD</span>
+    <span class="hero-ticker">$AVGO</span>
+    <span class="hero-ticker">$MSFT</span>
+    <span class="hero-ticker">$AMZN</span>
+    <span class="hero-ticker">$META</span>
+    <span class="meta-pill neu">Derinlemesine Sektör Analizi</span>
+    <span class="meta-pill bull">HBM & Termal</span>
+  </div>
+</div>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">📊 Özet & Ana Bulgu</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-accent)">$2.27T</div><div class="kpi-label">Futurum 2027 Tahmini</div></div>
+        <div class="kpi"><div class="kpi-num">$1.00T</div><div class="kpi-label">Wall Street Konsensüsü</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-warning)">%130–180</div><div class="kpi-label">Tahmin Farkı</div></div>
+        <div class="kpi"><div class="kpi-num">190 GW</div><div class="kpi-label">Modellenen Kapasite</div></div>
+      </div>
+      <p style="margin:12px 0;color:var(--gf-muted);font-size:0.88rem">Futurum Equities'in 2027 yılı için öngördüğü 2.27 trilyon dolarlık AI veri merkezi yatırım (capex) tahmini, Goldman Sachs, Moody's ve Dell'Oro gibi geleneksel analistlerin 1 trilyon dolar sınırında kaldığı genel kanıyı ezip geçiyor. Fark, zamanlama ve kapsamdan kaynaklanıyor: geleneksel modeller büyümeyi yukarıdan aşağıya ölçerken, Futurum 190 GW'lık kapasiteyi silikon üretim bantlarından veri merkezi inşaatına kadar aşağıdan yukarıya modelliyor.</p>
+      <div class="insight-box">
+        <strong>Üç Katalizör:</strong> (1) Ajan YZ ve çoklu modalite, çıkarım hesaplama gücünü 10–100 kat artırıyor. (2) Geciken enerji şebekeleri, 2026 kapasitesinin %30–50'sini 2027–2028'e itiyor. (3) Egemen YZ — Japonya, AB, Güney Kore ve ABD'nin (CHIPS Act, IRA) ulusal AI altyapı teşvikleri hyperscaler harcamalarına ekleniyor.
+      </div>
+      <div class="insight-box warn">
+        <strong>Kritik Çıkarım:</strong> Konsensüs pazarın yavaş yavaş doyacağını varsayıyor; Futurum ise ertelenen projeler ve HBM belleklere ödenen devasa primler nedeniyle büyümenin hız kesmeden 2027'de zirve yapacağını öngörüyor.
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">💰 2027 AI Altyapı Tahminleri: Futurum vs Konsensüs (Milyar $)</div>
+
+        <div class="category-block">
+          <div class="category-label">Hızlandırıcılar (Accelerators)</div>
+          <div class="compare-bar"><span class="compare-legend">Futurum</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:94.6%">$567.5B</div></div></div>
+          <div class="compare-bar"><span class="compare-legend">Konsensüs</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:55.0%">$330B</div></div></div>
+        </div>
+        <div class="category-block">
+          <div class="category-label">Sistem Belleği (HBM)</div>
+          <div class="compare-bar"><span class="compare-legend">Futurum</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:94.6%">$567.5B</div></div></div>
+          <div class="compare-bar"><span class="compare-legend">Konsensüs</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:41.7%">$250B</div></div></div>
+        </div>
+        <div class="category-block">
+          <div class="category-label">Ağ ve Depolama</div>
+          <div class="compare-bar"><span class="compare-legend">Futurum</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:71.8%">$431B</div></div></div>
+          <div class="compare-bar"><span class="compare-legend">Konsensüs</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:20.0%">$120B</div></div></div>
+        </div>
+        <div class="category-block">
+          <div class="category-label">Fiziksel Altyapı</div>
+          <div class="compare-bar"><span class="compare-legend">Futurum</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:64.3%">$386B</div></div></div>
+          <div class="compare-bar"><span class="compare-legend">Konsensüs</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:33.3%">$200B</div></div></div>
+        </div>
+        <div class="category-block">
+          <div class="category-label">Diğer Genel Altyapı</div>
+          <div class="compare-bar"><span class="compare-legend">Futurum</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:53.0%">$318B</div></div></div>
+          <div class="compare-bar"><span class="compare-legend">Konsensüs</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:16.7%">$100B</div></div></div>
+        </div>
+
+        <div class="legend">
+          <span><span class="legend-dot" style="background:#38bdf8"></span>Futurum ($2.27T Toplam)</span>
+          <span><span class="legend-dot" style="background:#94a3b8"></span>Konsensüs ($1.00T Toplam)</span>
+        </div>
+        <div class="chart-caption">HBM ve hızlandırıcılar pastanın yarısını (%50) oluşturuyor; Futurum'un HBM tahmini konsensüsün 2.3 katı — fiyatlama gücünün asıl kaynağı bellek tarafında.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🧠 Bellek Duvarı & HBM Teknolojisi</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem">Yapay zeka donanımlarının önündeki en büyük engel "Bellek Duvarı" (Memory Wall): işlemci çekirdekleri ne kadar hızlı olursa olsun, veri bellekten yavaş taşınırsa sistem tıkanır. HBM (Yüksek Bant Genişlikli Bellek), veriyi yan yana değil dikey katmanlar halinde (3D Stacking) işlemcinin hemen yanına kurarak bunu çözer.</p>
+
+      <figure class="figure">
+        <img src="hbm-accelerator-board.jpg" alt="HBM katmanlarıyla çevrili merkezi AI hızlandırıcı çipi olan bir hızlandırıcı kartı" loading="lazy" />
+        <figcaption class="fig-caption">Merkezdeki AI hızlandırıcı çekirdeğinin etrafını saran HBM bellek modülleri — "bellek duvarı"nı fiziksel olarak çözen 3D istifleme mimarisi.</figcaption>
+      </figure>
+
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Veri Yolu Genişliği</div>
+          <div class="card-value up">1024–2048 bit</div>
+          <div class="card-note">Standart DDR'ın 64-bit yoluna karşı HBM'in "Wide Bus"ı</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Bağlantı Teknolojisi</div>
+          <div class="card-value">TSV</div>
+          <div class="card-note">Through-Silicon Via — yongadan dikey geçen mikroskobik delikler</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Fiyat Primi</div>
+          <div class="card-value neu">5–10x</div>
+          <div class="card-note">Standart belleğe kıyasla HBM modül fiyatı</div>
+        </div>
+      </div>
+
+      <div class="insight-box warn">
+        <strong>Bileşik Üretim Firesi (Compound Yield):</strong> HBM'in yüksek fiyatının nedeni ham madde değil, üretim matematiği. 12–16 katman üst üste dizilirken tek bir katmanda hata oluşursa tüm yığın çöpe gidiyor. Kaynaktaki simülatör formülüne göre (Tekil Çip Başarı Oranı %95, Çip Başına Ham Maliyet $15, Paketleme/CoWoS Maliyeti $80), katman sayısı arttıkça maliyet üssel olarak katlanıyor:
+      </div>
+
+      <table>
+        <thead><tr><th>Katman Sayısı</th><th>Modül Bileşik Başarı Oranı</th><th>Kayıpsız İdeal Maliyet</th><th>Fire Cezalı Gerçek Maliyet</th></tr></thead>
+        <tbody>
+          <tr><td>4</td><td><span class="tag tag-green">%81.5</span></td><td>$140.0</td><td>$171.9</td></tr>
+          <tr><td>8 (standart)</td><td><span class="tag tag-orange">%66.3</span></td><td>$200.0</td><td>$301.4</td></tr>
+          <tr><td>12</td><td><span class="tag tag-orange">%54.0</span></td><td>$260.0</td><td>$481.1</td></tr>
+          <tr><td>16 (HBM4 hedefi)</td><td><span class="tag tag-red">%44.0</span></td><td>$320.0</td><td>$727.1</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.82rem;color:var(--gf-muted)">8 katmandan 16 katmana çıkmak ideal maliyeti sadece 1.6 kat artırırken, fire cezası nedeniyle gerçek maliyeti 2.4 kat artırıyor — HBM üreticilerinin (SK Hynix, Samsung, Micron) fiyatlama gücünün matematiksel kökeni burada.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🌡️ Fiziksel Altyapı & Termal Yönetim</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem">Fiziksel altyapı 386 milyar $ (%17) ile pastanın üçüncü büyük dilimi. Kabin başına güç tüketimi birkaç yıl önce 40kW seviyesindeyken, 2027'de 1MW (Megawatt) sınırını aşacak — bu durum standart klimalı soğutmayı çökertip sektörü sıvı soğutma sistemlerine (Vertiv, Eaton) mecbur bırakıyor.</p>
+
+      <figure class="figure">
+        <img src="datacenter-liquid-cooling.jpg" alt="Mavi ışıklı sıvı soğutma üniteleri ve boru hatlarıyla bir AI veri merkezi koridoru" loading="lazy" />
+        <figcaption class="fig-caption">1MW/kabin güç yoğunluğuna geçiş, veri merkezlerini %100 sıvı soğutma altyapısına zorluyor.</figcaption>
+      </figure>
+
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Kabin Başına Güç (2023)</div>
+          <div class="card-value">~40 kW</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Kabin Başına Güç (2027 Projeksiyon)</div>
+          <div class="card-value down">&gt;1 MW</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Termal Frekans Kısma Eşiği</div>
+          <div class="card-value neu">85°C</div>
+        </div>
+      </div>
+
+      <p style="margin:12px 0;color:var(--gf-muted);font-size:0.88rem">HBM katmanlarının oluşturduğu termal krizi çözmek için mühendisler yalnızca ısı tahliyesi sağlayan Termal TSV hatları, mikron kalınlığında yüksek iletkenlikli epoksi alt dolgular (NC-GAP), Cold Plate sıvı soğutma blokları ve HBM4 nesliyle gelen 5nm enerji verimli mantık taban çipleri (Logic Base Die) kullanıyor. Kaynaktaki basitleştirilmiş termal modele göre, 300W GPU yükü ve 4 W/mK termal arayüz malzemesinde soğutma teknolojisinin çıktı sıcaklığına etkisi:</p>
+
+      <table>
+        <thead><tr><th>Soğutma Teknolojisi</th><th>Tahmini Çekirdek Sıcaklığı</th><th>85°C Eşiği</th></tr></thead>
+        <tbody>
+          <tr><td>Klasik Fanlı Hava Soğutma</td><td><span class="tag tag-red">~222°C</span></td><td>❌ Ciddi kısma</td></tr>
+          <tr><td>Sıvı Soğutma Blokları (Cold Plate)</td><td><span class="tag tag-orange">~133°C</span></td><td>❌ Kısma riski</td></tr>
+          <tr><td>Yeni Nesil Mikroakışkan Soğutma</td><td><span class="tag tag-green">~75°C</span></td><td>✅ Güvenli aralık</td></tr>
+        </tbody>
+      </table>
+      <div class="insight-box danger">
+        <strong>Sonuç:</strong> Kaynağın kendi illüstratif modeline göre bile, standart sıvı soğutma yüksek GPU yüklerinde eşiği aşabiliyor — bu da mikroakışkan soğutmayı "iyi olursa olur" değil, 2027 ölçeğinde zorunlu bir yatırım kalemi haline getiriyor.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🌐 Ağ ve Depolama</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="color:var(--gf-muted);font-size:0.88rem">Ağ ve depolama 431 milyar $ (%19) pay alıyor. Multimodal YZ modelleri eğitilirken geleneksel modellere kıyasla 10–100 kat daha fazla veri tüketiyor. Bu veriyi depolamak için yüksek hızlı SSD'ler ve sunucular arasında sıfır gecikmeli veri aktarımı yapacak <strong>Broadcom (AVGO)</strong> ve <strong>Arista</strong> gibi ağ devlerinin optik teknolojilerine devasa yatırımlar yapılıyor.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">📈 Hyperscaler Capex Tahminleri</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem">Futurum'un modeli uç bir senaryo gibi görünse de mantığı sağlam: hyperscaler'ların her çeyrek açıkladığı capex beklentileri sürekli yukarı yönlü güncelleniyor.</p>
+      <table>
+        <thead><tr><th>Şirket</th><th>2025 Harcaması</th><th>2026 Beklentisi</th><th>2027 Projeksiyonu</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Microsoft</strong></td><td>$80B</td><td>$190B</td><td>$250B</td></tr>
+          <tr><td><strong>Amazon</strong></td><td>$150B</td><td>$200B</td><td>$220B</td></tr>
+          <tr><td><strong>Meta</strong></td><td>$40B</td><td>$135B</td><td>$150B</td></tr>
+        </tbody>
+      </table>
+
+      <div class="chart-container">
+        <div class="chart-title">📊 2027 Capex Projeksiyonu Karşılaştırması</div>
+        <div class="compare-bar"><span class="compare-legend">Microsoft</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:100%">$250B</div></div></div>
+        <div class="compare-bar"><span class="compare-legend">Amazon</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:88%">$220B</div></div></div>
+        <div class="compare-bar"><span class="compare-legend">Meta</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:60%">$150B</div></div></div>
+        <div class="chart-caption">Üç hyperscaler'ın 2027 projeksiyon toplamı ($620B) tek başına Futurum'un toplam tahmininin dörtte birinden fazlasını oluşturuyor.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">⚠️ Riskler & Nihai Değerlendirme</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="insight-box danger">
+        <strong>Enerji Şebekeleri:</strong> Dünyanın enerji altyapısı bu hıza hazır değil. Yeni bir şebeke bağlantısı kurmak 12–24 ay sürebiliyor — bu, ertelenen talebin asıl kaynağı.
+      </div>
+      <div class="insight-box warn">
+        <strong>Finansal Sürdürülebilirlik (ROI):</strong> Yatırımcılar "bu kadar harcadınız ama aynı oranda kazanıyor musunuz?" diye sormaya başlayacak. Barclays, 2027–2028'de Meta gibi devlerin serbest nakit akışlarında (FCF) ciddi daralmalar olabileceğini öngörüyor.
+      </div>
+      <div class="insight-box bull">
+        <strong>Gizli Şampiyonlar:</strong> Rakam tam 2.27 trilyon dolara ulaşmasa bile "yavaşlama" bekleyenler yanılacak gibi görünüyor. Fiyatlamaları zaten zirvede olan hızlandırıcı çiplerden ziyade, tam potansiyeli fiyatlanmamış <strong>HBM bellek üreticileri</strong> ve <strong>fiziksel altyapı/soğutma sağlayıcıları</strong> bu döngünün gizli şampiyonları olmaya aday.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🔗 Kaynaklar & Metodoloji</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <table>
+        <thead><tr><th>Kaynak</th><th>Rol</th><th>Bağlantı</th></tr></thead>
+        <tbody>
+          <tr><td>Hasan Kuşcu — Altyapı Raporu Analizi</td><td>Orijinal analiz notu, bu yazının incelediği kaynak</td><td>—</td></tr>
+          <tr><td>Futurum Equities</td><td>2027 AI veri merkezi capex tahmini ($2.27T)</td><td><a href="https://futurumgroup.com" style="color:var(--gf-accent)">futurumgroup.com</a></td></tr>
+          <tr><td>Goldman Sachs / Moody's / Dell'Oro</td><td>Konsensüs tahmini (~$1.00T), isim olarak anıldı</td><td>—</td></tr>
+          <tr><td>Barclays</td><td>2027–2028 FCF daralma öngörüsü (Meta)</td><td>—</td></tr>
+        </tbody>
+      </table>
+      <div class="insight-box" style="margin-top:14px">
+        <strong>Not:</strong> Bu yazı, "Hasan Kuşcu Altyapı Raporu"nun görsel/interaktif bir özetinden derlenmiştir. HBM bileşik üretim maliyeti ve termal profil tabloları, kaynağın kendi beyan ettiği formül ve varsayılan parametre değerleri (die yield %95, katman maliyeti $15, paketleme $80; GPU gücü 300W, TIM 4 W/mK) kullanılarak hesaplanmıştır — gerçek ölçüm verisi değil, kaynağın kendi illüstratif modelinin çıktısıdır.
+      </div>
+      <div class="insight-box" style="margin-top:10px">
+        <strong>Disclaimer:</strong> Bu rapor eğitim ve bilgilendirme amaçlıdır. Yatırım tavsiyesi değildir. Kendi araştırmanızı yapın ve bağımsız bir finansal danışmana başvurun.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">Gistify Flow | 9 Temmuz 2026 | Hasan Kuşcu Altyapı Raporu Analizi Veri Modellemesi</div>
+
+</div>
+</body>
+</html>
