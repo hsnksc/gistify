@@ -7,7 +7,7 @@
 // {
 //   "langs": ["tr", "en"],
 //   "charts": {
-//     "__CHART_X__": { "type": "verticalBar" | "horizontalBar" | "range" | "priceLadder", ...params }
+//     "__CHART_X__": { "type": "verticalBar" | "horizontalBar" | "range" | "priceLadder" | "donut", ...params }
 //   },
 //   "outputs": [ { "lang": "tr", "template": "<abs path>", "out": "<abs path>" } ]
 // }
@@ -138,7 +138,36 @@ function range({ rows, current, currentLabel, min, max, ticks, tickLabels }) {
   return s + `</svg>`;
 }
 
-const RENDERERS = { priceLadder, verticalBar, horizontalBar, range };
+// Concentric-ring donut/composition chart. `slices` sum to ~100 (pct each);
+// renders as sequential arcs via stroke-dasharray/-dashoffset around a shared
+// ring, matching the hand-built donuts already used in some Flow reports.
+// Emits only the <svg> — pair it with a `.donut-chart`/`.donut-legend` HTML
+// block authored directly in the template (legend text needs translation,
+// so it isn't itself chart geometry).
+function donut({ slices, centerLabel, centerSub }) {
+  const r = 70;
+  const cx = 90;
+  const cy = 90;
+  const circumference = 2 * Math.PI * r;
+  let cumulative = 0;
+  let s = `<svg class="donut-svg" viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="chart">`;
+  s += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--gf-border)" stroke-width="20"/>`;
+  slices.forEach(slice => {
+    const len = (slice.pct / 100) * circumference;
+    const dashoffset = -cumulative;
+    s += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${slice.color}" stroke-width="20" stroke-dasharray="${len.toFixed(2)} ${circumference.toFixed(2)}" stroke-dashoffset="${dashoffset.toFixed(2)}" stroke-linecap="round" transform="rotate(-90 ${cx} ${cy})" style="filter:drop-shadow(0 0 6px ${slice.color}66)"/>`;
+    cumulative += len;
+  });
+  if (centerLabel) {
+    s += `<text x="${cx}" y="${cy - 5}" text-anchor="middle" fill="${C.text}" font-size="14" font-weight="700" font-family="inherit">${centerLabel}</text>`;
+  }
+  if (centerSub) {
+    s += `<text x="${cx}" y="${cy + 12}" text-anchor="middle" fill="${C.muted}" font-size="9" font-family="inherit">${centerSub}</text>`;
+  }
+  return s + `</svg>`;
+}
+
+const RENDERERS = { priceLadder, verticalBar, horizontalBar, range, donut };
 
 // ---------------- main ----------------
 const configPath = process.argv[2];

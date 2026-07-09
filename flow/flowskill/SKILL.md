@@ -193,13 +193,14 @@ Each entry lists the **detection signal**, the **transform**, and where the **ti
 
 ### HTML — full document
 - **Detect:** `<html>`/`<head>`/full skeleton.
-- **Transform:** extract the main content region; strip page-global CSS/JS, nav, headers/footers; sanitize; then apply Post structure if the content is rough, or light-touch if it's already a clean themed report.
+- **Transform:** extract the main content region; strip page-global CSS, nav, headers/footers; sanitize; then apply Post structure if the content is rough, or light-touch if it's already a clean themed report.
+- **Interactivity:** if the source has JS-driven widgets (sliders, tabs, calculators), do not just delete the JS and flatten to static text — rebuild each widget as a CSS-only radio-input toggle so it survives the publish pipeline's script-stripping with real click-to-change behavior. See `.claude/skills/gistflow/SKILL.md` §1 for the exact pattern and a worked example (`flow/AI Veri Merkezi/gemini-code-1783587874902.html`).
 - **Ticker from:** `<title>`, headings, `og:`/meta. Publish as `html`.
 - **Gotcha:** if it already uses the correct Flow theme, wire metadata only — don't restyle.
 
 ### HTML — fragment / partial
 - **Detect:** body-level markup, no `<html>`.
-- **Transform:** sanitize, structure, wrap in the Flow theme. Publish as `html`.
+- **Transform:** sanitize, structure, wrap in the Flow theme. Publish as `html`. If it carries JS-driven widgets, rebuild them as CSS-only toggles per the "HTML — full document" entry above rather than dropping the interactivity.
 
 ### JSON — `.json`
 - **Detect:** `.json` / valid JSON.

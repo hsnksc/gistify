@@ -30,7 +30,41 @@ Colors: `--gf-danger` (red) = bearish/resistance/risk, `--gf-success` (green) = 
 
 Structural classes to reuse: `.wrap`, `.hero` (+ `.hero-h`, `.hero-desc`, `.hero-meta`, `.hero-ticker`, `.meta-pill.bull/bear/neu/info`), `.kpi-row`/`.kpi`, `.section-head`/`.section-head-inner`/`.section-title`/`.section-body`, `.grid`/`.grid2`/`.grid3`, `.card`, `.chart-card`/`.chart-title`/`.chart-caption`/`.legend`, `.risk-card.high/.med`, `.strat-card`, `.insight-box.warn/.danger/.bull`, `.disclaimer`, standard `<table>` styling.
 
-**Do not rely on `<script>` for interactivity** (collapsible sections, tabs). The server-side normalizer (`stripFlowHtmlScripts` in `server/dailyReportSources.ts`) strips all `<script>` tags before the file is published, so `onclick`/toggle JS silently breaks. Build every section as always-expanded static HTML.
+**Never rely on `<script>` for interactivity** (collapsible sections, tabs, sliders, calculators). The server-side normalizer (`stripFlowHtmlScripts` in `server/dailyReportSources.ts`) strips every `<script>` tag before the file is published — this is a deliberate security boundary (untrusted uploaded HTML must not execute JS in the site's iframe), not a bug, and it is not something to patch around. Any `onclick`/toggle/slider JS you leave in the source will silently do nothing once live.
+
+**If the HTML source already has interactive widgets, rebuild them — do not flatten them to static text.** Discarding a source's sliders/tabs/calculators into plain tables is *worse* than keeping them, because it throws away the thing that made the original engaging. Instead, re-express each JS-driven control as a pure CSS radio-input toggle, which survives script-stripping completely (no JS involved at all):
+
+```html
+<!-- one native radio per option, visually hidden, placed before the content it controls -->
+<input type="radio" class="toggle-input" name="hbmLayers" id="hbm8" checked>
+<input type="radio" class="toggle-input" name="hbmLayers" id="hbm12">
+<div class="toggle-row">
+  <label class="toggle-label" for="hbm8">8 Layers</label>
+  <label class="toggle-label" for="hbm12">12 Layers</label>
+</div>
+<div class="hbm-result" id="hbm-result-8">...panel for the 8-layer state...</div>
+<div class="hbm-result" id="hbm-result-12">...panel for the 12-layer state...</div>
+```
+```css
+.toggle-input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.toggle-label{display:inline-flex;padding:7px 14px;border-radius:8px;background:var(--gf-elev);border:1px solid var(--gf-border);color:var(--gf-muted);cursor:pointer}
+/* highlight the active label */
+#hbm8:checked ~ .toggle-row label[for="hbm8"],
+#hbm12:checked ~ .toggle-row label[for="hbm12"]{background:var(--gf-accent);color:#04121f;border-color:var(--gf-accent)}
+/* swap the visible panel via specificity: two-ID selector beats the one-ID+class blanket rule */
+#hbm8:checked ~ .hbm-result{display:none}
+#hbm8:checked ~ #hbm-result-8{display:block}
+#hbm12:checked ~ .hbm-result{display:none}
+#hbm12:checked ~ #hbm-result-12{display:block}
+```
+Rules for converting a JS widget:
+- **Toggles/tabs/buttons with a finite set of options** (unit switch, layer-count picker, cooling-mode selector, $ vs % view) → a perfect fit: one radio per option, one pre-rendered result pane per option, real click-to-change behavior with zero JS.
+- **Continuous sliders driving a live calculation** → can't be replicated exactly (no JS to run the formula), so pick 3–5 representative preset values (reuse the source's own defaults/marked steps, e.g. the exact button values it already offered) and pre-compute each result **using the source's own formula** — never invent the numbers. Present them as the same radio-toggle pattern. Say in a short note that these are the source's own illustrative model output, not live-computed or measured data.
+- **Collapsible sections/expand-all** → skip the interaction entirely; render always-expanded (per the size of the content, no real reader value is lost).
+- Keep the radios+labels as *siblings* of the content panes (not nested inside separate wrapping divs) so the `~` general-sibling combinator can reach across from the checked input to the pane it controls.
+- A finished worked example lives at `flow/AI Veri Merkezi/gemini-code-1783587874902.html` (+ its `.en.html`): a Tailwind/JS interactive explainer converted to gf-theme with three CSS-only widgets (unit toggle, layer-count calculator, cooling-mode simulator) — copy its pattern directly rather than re-deriving it.
+
+**This HTML-source interactivity-preservation step applies specifically when the input is already HTML** (it arrives with existing DOM structure/JS to convert). For non-HTML inputs (`.md`, `.txt`, `.json`, `.csv`, images, `.pdf`, pasted text) there is no existing interactivity to preserve — keep designing those the normal way per `flow/flowskill/SKILL.md`'s Format Matrix (restructure into the Post template, add a chart only where the data earns one). The CSS-toggle pattern above is still available to reach for on those too if a genuinely multi-state comparison would benefit from it, but it's optional there, not a preservation obligation.
 
 **No page chrome.** Do not add your own `<header>`/`<footer>` with a logo/date pill — the real Flow layout supplies that. Instead:
 ```html
@@ -56,6 +90,7 @@ Config shape (see the header comment in `scripts/flow-chartgen.mjs` for details)
 - `horizontalBar` — ranked comparison with optional dashed `refLine` (e.g. P/E vs peers + sector average, risk/opportunity probabilities)
 - `range` — floating min–max bars with a dashed "current value" line (e.g. bear/base/bull price-target ranges across time horizons)
 - `priceLadder` — horizontal scale with tick marks above/below a baseline (e.g. support/resistance levels around the current price)
+- `donut` — concentric-ring composition chart for ≤6 slices (e.g. market share, allocation). Emits only the `<svg>`; pair it with a `.donut-chart`/`.donut-legend` HTML block authored in the template (copy `.donut-*` classes from `flow/daily-semiconductor-inflection-01-temmuz-2026.html`) since legend text needs translation.
 
 If a report genuinely needs a chart shape that doesn't exist yet, extend `scripts/flow-chartgen.mjs` with a new generator (keep the same geometry conventions) rather than writing a one-off script.
 
