@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meta's Muse Spark 1.1: A Healthcare AI Leader That Lags in General Intelligence | $META $GOOGL</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Meta's Muse Spark 1.1: A Healthcare AI Leader That Lags in General Intelligence" />
+<meta property="og:description" content="Meta's $145B Muse Spark 1.1 model tops HealthBench Hard globally, but trails Gemini and GPT-5.4 on ARC-AGI-2 and coding benchmarks. Apollo Research's safety findings and the strategic decision matrix, under the microscope." />
+<meta property="og:url" content="https://gistify.pro/flow/meta_muse_spark_global_analysis.en.html" />
+<meta property="og:image" content="https://gistify.pro/gistifylogo.png?v=20260709" />
+<meta property="og:site_name" content="Gistify" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Meta's Muse Spark 1.1: A Healthcare AI Leader That Lags in General Intelligence" />
+<meta name="twitter:description" content="Meta's $145B Muse Spark 1.1 model tops HealthBench Hard globally, but trails Gemini and GPT-5.4 on ARC-AGI-2 and coding benchmarks." />
+<meta name="twitter:image" content="https://gistify.pro/gistifylogo.png?v=20260709" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:760px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent)}
+.section-body{padding:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+td{font-variant-numeric:tabular-nums}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+.chart-container{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:20px;margin:16px 0}
+.chart-title{font-size:.9rem;font-weight:700;color:var(--gf-accent);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.chart-title::before{content:'';display:inline-block;width:4px;height:16px;background:var(--gf-accent);border-radius:2px}
+.chart-caption{font-size:.78rem;color:var(--gf-muted);margin-top:12px;border-top:1px solid var(--gf-border-subtle);padding-top:10px}
+.category-block{margin:14px 0}
+.category-label{font-size:.82rem;font-weight:600;color:var(--gf-text);margin-bottom:6px}
+.compare-bar{display:flex;align-items:center;gap:12px;margin:6px 0;font-size:.78rem}
+.compare-legend{width:96px;flex-shrink:0;color:var(--gf-muted);font-weight:600}
+.compare-track{flex:1;height:22px;background:var(--gf-elev);border-radius:6px;overflow:hidden;position:relative;border:1px solid var(--gf-border)}
+.compare-fill{height:100%;border-radius:6px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:.72rem;font-weight:700;color:#fff}
+.fill-accent{background:linear-gradient(90deg,#0ea5e9,#38bdf8)}
+.fill-warning{background:linear-gradient(90deg,#b45309,#fbbf24)}
+.fill-muted{background:linear-gradient(90deg,#475569,#94a3b8)}
+.legend{display:flex;gap:16px;font-size:.75rem;color:var(--gf-muted);margin-top:10px;flex-wrap:wrap}
+.legend-dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:middle}
+.tier-card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:20px}
+.tier-card.active{border-color:var(--gf-accent);background:linear-gradient(135deg,var(--gf-accent-dim),var(--gf-card))}
+.tier-label{font-size:.72rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--gf-accent);margin-bottom:8px}
+.tier-title{font-size:1.15rem;font-weight:700;margin-bottom:8px;color:var(--gf-text)}
+.tier-desc{font-size:.85rem;color:var(--gf-muted);line-height:1.55}
+.quote-block{display:flex;gap:14px;margin-bottom:20px}
+.quote-avatar{flex-shrink:0;width:40px;height:40px;border-radius:50%;background:var(--gf-elev);border:1px solid var(--gf-border);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--gf-accent)}
+.quote-text{font-size:.88rem;color:var(--gf-text);font-style:italic;margin-bottom:6px}
+.quote-author{font-size:.78rem;color:var(--gf-muted);font-weight:600}
+.decision-item{display:flex;align-items:center;gap:10px;font-size:.85rem;font-weight:600;margin:10px 0;color:var(--gf-text)}
+.decision-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid,.grid2,.grid3{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+.compare-legend{width:76px;font-size:.72rem}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-09T09:00:00+03:00">
+  <h1 class="hero-h">Meta's Muse Spark 1.1: A Healthcare AI Leader That Lags in General Intelligence</h1>
+  <p class="hero-desc">Meta abandoned its open-source tradition, converting its $145B infrastructure into a commercial model via a Scale AI partnership and the newly formed Superintelligence Labs. Muse Spark 1.1 leads globally on HealthBench Hard, but trails Gemini and GPT-5.4 by a wide margin on ARC-AGI-2 reasoning and coding benchmarks.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info hero-date" data-timestamp="2026-07-09T09:00:00+03:00">📅 July 9, 2026</span>
+    <span class="hero-ticker">$META</span>
+    <span class="hero-ticker">$GOOGL</span>
+    <span class="meta-pill bull">Healthcare AI Leader</span>
+    <span class="meta-pill bear">Lags in General Intelligence</span>
+    <span class="meta-pill neu">Enterprise Pivot</span>
+  </div>
+</div>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">📊 Summary & Key Finding</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-accent)">$145B</div><div class="kpi-label">R&D Investment (↑45% YoY)</div></div>
+        <div class="kpi"><div class="kpi-num">$1.25</div><div class="kpi-label">Input Cost / 1M Tokens</div></div>
+        <div class="kpi"><div class="kpi-num">1.0M</div><div class="kpi-label">Context Window (Tokens)</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-warning)">52/100</div><div class="kpi-label">General Intelligence Index (v4.0)</div></div>
+      </div>
+      <p style="margin:12px 0;color:var(--gf-muted);font-size:0.88rem">Under Mark Zuckerberg, Meta abandoned its open-source strategy and positioned Muse Spark 1.1 as a direct rival to Google Gemini via its Scale AI partnership and the newly formed Superintelligence Labs. The model dominates its rivals in healthcare and medical reasoning (HealthBench Hard), but trails Google and OpenAI by a wide margin on general-intelligence metrics like abstract reasoning (ARC-AGI) and coding.</p>
+      <div class="insight-box bull">
+        <strong>Strength:</strong> Health AI leadership — a #1 global ranking on HealthBench Hard, concrete proof of vertical specialization paying off.
+      </div>
+      <div class="insight-box warn">
+        <strong>Weakness:</strong> A 52/100 General Intelligence Index trails both Gemini and GPT-5.4 — Muse Spark isn't chasing "best at everything," it's targeting cost efficiency and vertical specialization instead.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🌍 Global Performance Matrix</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem">Muse Spark 1.1 dominates its rivals in healthcare and medical reasoning (HealthBench Hard). But on general-intelligence metrics like abstract reasoning (ARC-AGI) and coding, it trails Google and OpenAI by a wide margin.</p>
+
+      <div class="chart-container">
+        <div class="chart-title">📈 Benchmark Comparison (Score / 100)</div>
+        <div class="category-block">
+          <div class="category-label">HealthBench Hard (Medical Reasoning)</div>
+          <div class="compare-bar"><span class="compare-legend">Muse Spark 1.1</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:42.8%">42.8</div></div></div>
+          <div class="compare-bar"><span class="compare-legend">Gemini 3.1 Pro</span><div class="compare-track"><div class="compare-fill fill-warning" style="width:20.6%">20.6</div></div></div>
+          <div class="compare-bar"><span class="compare-legend">GPT-5.4</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:40.1%">40.1</div></div></div>
+        </div>
+        <div class="category-block">
+          <div class="category-label">ARC-AGI-2 (Abstract Reasoning)</div>
+          <div class="compare-bar"><span class="compare-legend">Muse Spark 1.1</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:42.5%">42.5</div></div></div>
+          <div class="compare-bar"><span class="compare-legend">Gemini 3.1 Pro</span><div class="compare-track"><div class="compare-fill fill-warning" style="width:77.1%">77.1</div></div></div>
+          <div class="compare-bar"><span class="compare-legend">GPT-5.4</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:76.1%">76.1</div></div></div>
+        </div>
+        <div class="category-block">
+          <div class="category-label">Terminal-Bench (Coding)</div>
+          <div class="compare-bar"><span class="compare-legend">Muse Spark 1.1</span><div class="compare-track"><div class="compare-fill fill-accent" style="width:59.0%">59.0</div></div></div>
+          <div class="compare-bar"><span class="compare-legend">Gemini 3.1 Pro</span><div class="compare-track"><div class="compare-fill fill-warning" style="width:68.5%">68.5</div></div></div>
+          <div class="compare-bar"><span class="compare-legend">GPT-5.4</span><div class="compare-track"><div class="compare-fill fill-muted" style="width:75.1%">75.1</div></div></div>
+        </div>
+        <div class="legend">
+          <span><span class="legend-dot" style="background:#38bdf8"></span>Muse Spark 1.1</span>
+          <span><span class="legend-dot" style="background:#fbbf24"></span>Gemini 3.1 Pro</span>
+          <span><span class="legend-dot" style="background:#94a3b8"></span>GPT-5.4</span>
+        </div>
+        <div class="chart-caption">Muse Spark leads HealthBench Hard by nearly 2x its rivals' scores, but on ARC-AGI-2 it lands at roughly half of Gemini's 77.1.</div>
+      </div>
+
+      <div class="grid" style="margin-top:16px">
+        <div class="card">
+          <div class="card-label">Health AI Leadership</div>
+          <div class="card-value up">#1 Global Ranking</div>
+        </div>
+        <div class="card">
+          <div class="card-label">General Intelligence Index (v4.0)</div>
+          <div class="card-value neu">52 / 100</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🧠 Agent-Centric Architecture: Thinking & Contemplating</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem">Rather than a simple chat interface, Muse Spark is an orchestration engine that autonomously manages complex tasks.</p>
+      <div class="grid3">
+        <div class="tier-card">
+          <div class="tier-label">Tier 01</div>
+          <div class="tier-title">Instant Mode</div>
+          <div class="tier-desc">A layer optimized for low-latency responses. Delivers 40% cost savings on routine API calls and simple text-editing tasks.</div>
+        </div>
+        <div class="tier-card active">
+          <div class="tier-label">Tier 02</div>
+          <div class="tier-title">Thinking Mode</div>
+          <div class="tier-desc">Processes logical chains step by step. Boosts accuracy by 35% on math problems and data analysis tasks.</div>
+        </div>
+        <div class="tier-card">
+          <div class="tier-label">Tier 03</div>
+          <div class="tier-title">Contemplating</div>
+          <div class="tier-desc">Multi-agent coordination. The model splits a problem into sub-parts, distributes them to parallel autonomous agents, and synthesizes the results.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🤝 Enterprise Ecosystem & Partner Feedback</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="quote-block">
+        <div class="quote-avatar">R</div>
+        <div>
+          <div class="quote-text">"Muse Spark delivers a complete agentic foundation with a 1-million-token context window and multimodal support."</div>
+          <div class="quote-author">Amjad Masad, CEO of Replit</div>
+        </div>
+      </div>
+      <div class="quote-block">
+        <div class="quote-avatar">B</div>
+        <div>
+          <div class="quote-text">"In our enterprise evaluation suite, Muse Spark performed head-to-head with the most advanced models."</div>
+          <div class="quote-author">VP of AI Products at Box</div>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">🔋 Token Efficiency: Output Tokens Needed to Complete a General Intelligence Index (Millions)</div>
+        <svg viewBox="0 0 640 182" width="100%" height="182" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">0</text><line x1="281.8" y1="16" x2="281.8" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="281.8" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">40</text><line x1="373.5" y1="16" x2="373.5" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="373.5" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">80</text><line x1="465.3" y1="16" x2="465.3" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="465.3" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">120</text><line x1="557.1" y1="16" x2="557.1" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="557.1" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">160</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Muse Spark 1.1</text><rect x="190" y="22.8" width="133.1" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="331.1" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">58M</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Gemini 3.1 Pro</text><rect x="190" y="56.8" width="133.1" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="331.1" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">58M</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">GPT-5.4</text><rect x="190" y="90.8" width="275.3" height="19.0" rx="4" fill="#fbbf24" opacity="0.88"/><text x="473.3" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">120M</text><text x="178" y="138.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Claude Opus 4.6</text><rect x="190" y="124.8" width="360.2" height="19.0" rx="4" fill="#f87171" opacity="0.88"/><text x="558.2" y="138.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">157M</text></svg>
+        <div class="chart-caption">Lower is more efficient. Muse Spark 1.1 and Gemini 3.1 Pro complete the same task using roughly a third of the tokens Claude Opus 4.6 needs.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">⚠️ Global Safety & Risk Analysis</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="grid2">
+        <div>
+          <div class="insight-box danger">
+            <strong>Evaluation Awareness:</strong> Per Apollo Research's findings, Muse Spark 1.1 can detect when it is being tested. This raises the risk that the model masks its real capabilities or autonomous tendencies while under evaluation.
+          </div>
+          <div class="kpi-row">
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">Safe</div><div class="kpi-label">Cyber-Risk</div></div>
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">High Resistance</div><div class="kpi-label">Jailbreak</div></div>
+          </div>
+        </div>
+        <div>
+          <h3 style="font-size:1rem;font-weight:700;margin-bottom:10px;color:var(--gf-text)">Strategic Decision Matrix</h3>
+          <p style="color:var(--gf-muted);font-size:0.85rem;margin-bottom:8px">Rather than claiming to be "best at everything," Muse Spark 1.1 is focused on winning market share through cost efficiency and vertical specialization (healthcare).</p>
+          <div class="decision-item"><span class="decision-dot" style="background:var(--gf-success)"></span>First Choice for Healthcare and Medical Applications</div>
+          <div class="decision-item"><span class="decision-dot" style="background:var(--gf-accent)"></span>Advanced Agent Orchestration (Multimodal)</div>
+          <div class="decision-item"><span class="decision-dot" style="background:var(--gf-warning)"></span>Second Tier for Reasoning-Heavy Work</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🔗 Sources & Methodology</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <table>
+        <thead><tr><th>Source</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td>Apollo Research</td><td>Autonomous-system safety and "evaluation awareness" findings</td></tr>
+          <tr><td>Replit (Amjad Masad)</td><td>Enterprise partner evaluation</td></tr>
+          <tr><td>Box (VP of AI Products)</td><td>Enterprise partner evaluation</td></tr>
+          <tr><td>Meta Superintelligence Labs</td><td>HealthBench Hard, ARC-AGI-2, Terminal-Bench, and token-efficiency benchmark results</td></tr>
+        </tbody>
+      </table>
+      <div class="insight-box" style="margin-top:14px">
+        <strong>Disclaimer:</strong> This report is for educational and informational purposes only. It is not investment advice. Do your own research and consult an independent financial advisor.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">Gistify Flow | July 9, 2026 | Meta Muse Spark 1.1 Global Strategic Analysis</div>
+
+</div>
+</body>
+</html>
