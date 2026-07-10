@@ -24,7 +24,7 @@ function Card({
       data-surface={surface}
       data-interactive={interactive ? "true" : "false"}
       className={cn(
-        "text-card-foreground flex flex-col gap-6 rounded-xl py-6 transition-[transform,box-shadow,background-color] duration-200 ease-out",
+        "text-card-foreground flex min-w-0 flex-col gap-6 rounded-xl py-6 transition-[transform,box-shadow,background-color] duration-200 ease-out",
         surfaceClass,
         interactive &&
           "hover:-translate-y-0.5 hover:shadow-[0_18px_34px_rgba(3,7,18,0.26)]",

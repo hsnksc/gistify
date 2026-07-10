@@ -337,7 +337,7 @@ export default function Home({ language }: { language: AppLanguage }) {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container py-6 md:py-8">
+      <div className="container py-4 md:py-8">
         <WorkspaceHeroPanel
           overlayClassName="bg-[radial-gradient(circle_at_top_right,rgba(14,165,233,0.22),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(16,185,129,0.14),transparent_28%)]"
           badges={
@@ -445,12 +445,57 @@ export default function Home({ language }: { language: AppLanguage }) {
           }
         />
 
+        {hasReports ? (
+          <section className="mobile-scroll-row mt-6 md:hidden">
+            <div className="min-w-[17rem]">
+              <WorkspaceSummaryCard
+                label={t("common:reportDateae39")}
+                value={selectedReportDateLabel}
+                hint={t("common:primaryDateParsedFromThe")}
+                icon={CalendarDays}
+                tone="info"
+              />
+            </div>
+            <div className="min-w-[17rem]">
+              <WorkspaceSummaryCard
+                label="VIX"
+                value={selectedVixLabel}
+                hint={t("common:volatilityContextForTheSelected")}
+                icon={Zap}
+                tone="caution"
+              />
+            </div>
+            <div className="min-w-[17rem]">
+              <WorkspaceSummaryCard
+                label={t("common:loaded")}
+                value={selectedUploadLabel}
+                hint={t("common:listOrderingUsesThisTimestamp")}
+                icon={Clock3}
+                tone="bull"
+              />
+            </div>
+            <div className="min-w-[17rem]">
+              <WorkspaceSummaryCard
+                label={t("common:nearestEventc30d")}
+                value={nextEvent?.ticker || "-"}
+                hint={
+                  nextEvent
+                    ? `${nextEvent.earningsDate} · ${nextEvent.daysLeft} ${t("common:days")}`
+                    : t("common:fromTheSelectedReport")
+                }
+                icon={Target}
+                tone="info"
+              />
+            </div>
+          </section>
+        ) : null}
+
         <div
           className={`mt-6 grid gap-6 ${
             sidebarOpen ? "xl:grid-cols-[minmax(0,1.55fr)_340px]" : ""
           }`}
         >
-          <main ref={contentRef} className="min-w-0 space-y-6">
+          <main ref={contentRef} className="min-w-0 space-y-6 overflow-x-hidden">
             <section className="panel p-4 md:p-6">
               {hasReports ? (
                 <div className="flex flex-col gap-4 border-b border-border pb-4 md:flex-row md:items-end md:justify-between">
@@ -466,7 +511,7 @@ export default function Home({ language }: { language: AppLanguage }) {
                     </p>
                   </div>
 
-                  <div className="grid gap-3 sm:grid-cols-3 md:min-w-[420px]">
+                  <div className="grid gap-3 sm:grid-cols-3 md:w-full md:max-w-[420px] xl:max-w-none">
                     <WorkspaceSummaryCard
                       label={t("common:reportDateae39")}
                       value={selectedReportDateLabel}
@@ -498,7 +543,7 @@ export default function Home({ language }: { language: AppLanguage }) {
                 </div>
               )}
 
-              <div className="mt-4 flex flex-wrap gap-2 rounded-xl border border-border bg-background/45 p-1">
+              <div className="mobile-scroll-row mt-4 rounded-xl border border-border bg-background/45 p-1 md:flex md:flex-wrap md:gap-2 md:overflow-visible">
                 {getTabs(language).map(tab => {
                   const active = activeTab === tab.id;
                   const hasAlert = tab.id === "risk" && balancedCount < positions.length;
@@ -508,7 +553,7 @@ export default function Home({ language }: { language: AppLanguage }) {
                       key={tab.id}
                       type="button"
                       onClick={() => handleTabChange(tab.id)}
-                      className={`workspace-tab relative inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold ${
+                      className={`workspace-tab relative inline-flex min-h-11 items-center gap-1.5 px-3 py-2 text-sm font-semibold md:min-h-10 md:text-xs ${
                         active ? "active" : ""
                       }`}
                     >

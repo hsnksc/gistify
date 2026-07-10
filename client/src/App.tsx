@@ -295,6 +295,15 @@ function workspaceLabel(language: AppLanguage, key: WorkspaceLabelKey) {
   }
 }
 
+function workspaceShortLabel(key: WorkspaceLabelKey) {
+  switch (key) {
+    case "earningsStrategy":
+      return t("common:strategy");
+    default:
+      return workspaceLabel("tr", key);
+  }
+}
+
 function Router({
   language,
   onLanguageChange,
@@ -487,11 +496,13 @@ function RouteRedirect({ href }: { href: string }) {
 
 function WorkspaceNavigation({
   language,
+  onLanguageChange,
   authState,
   isLimitedAccess,
   isPublicAccessMode,
 }: {
   language: AppLanguage;
+  onLanguageChange: (next: AppLanguage) => void;
   authState: AuthState;
   isLimitedAccess: boolean;
   isPublicAccessMode: boolean;
@@ -520,6 +531,7 @@ function WorkspaceNavigation({
     {
       href: "/app",
       label: workspaceLabel(language, "earningsStrategy"),
+      shortLabel: workspaceShortLabel("earningsStrategy"),
       icon: LayoutDashboard,
       active: location === "/app",
       requiresSubscription: true,
@@ -527,6 +539,7 @@ function WorkspaceNavigation({
     {
       href: "/momentum",
       label: workspaceLabel(language, "momentum"),
+      shortLabel: workspaceShortLabel("momentum"),
       icon: Radar,
       active:
         location.startsWith("/momentum") || location.startsWith("/scanner"),
@@ -535,6 +548,7 @@ function WorkspaceNavigation({
     {
       href: "/cpi-ppi",
       label: workspaceLabel(language, "cpiPpi"),
+      shortLabel: workspaceShortLabel("cpiPpi"),
       icon: Activity,
       active: location.startsWith("/cpi-ppi"),
       requiresSubscription: true,
@@ -542,6 +556,7 @@ function WorkspaceNavigation({
     {
       href: "/calendar",
       label: workspaceLabel(language, "calendar"),
+      shortLabel: workspaceShortLabel("calendar"),
       icon: CalendarDays,
       active: location.startsWith("/calendar"),
       requiresSubscription: true,
@@ -549,6 +564,7 @@ function WorkspaceNavigation({
     {
       href: "/marketflash",
       label: workspaceLabel(language, "marketFlash"),
+      shortLabel: workspaceShortLabel("marketFlash"),
       icon: Zap,
       active: location.startsWith("/marketflash"),
       requiresSubscription: true,
@@ -556,6 +572,7 @@ function WorkspaceNavigation({
     {
       href: "/coverage",
       label: workspaceLabel(language, "coverage"),
+      shortLabel: workspaceShortLabel("coverage"),
       icon: BookOpen,
       active: location.startsWith("/coverage"),
       requiresSubscription: false,
@@ -563,6 +580,7 @@ function WorkspaceNavigation({
     {
       href: "/flow",
       label: workspaceLabel(language, "flow"),
+      shortLabel: workspaceShortLabel("flow"),
       icon: Layers3,
       active: location.startsWith("/flow") || location.startsWith("/reports"),
       requiresSubscription: false,
@@ -573,13 +591,15 @@ function WorkspaceNavigation({
     items.splice(1, 0, {
       href: "/app/admin",
       label: workspaceLabel(language, "admin"),
+      shortLabel: workspaceShortLabel("admin"),
       icon: Shield,
       active: location.startsWith("/app/admin"),
       requiresSubscription: true,
     });
   }
 
-  const mobilePrimaryHrefs = new Set(["/app", "/momentum", "/flow"]);
+  const activeItem = items.find(item => item.active) || items[0];
+  const mobilePrimaryHrefs = new Set(["/app", "/momentum", "/coverage", "/flow"]);
   const mobilePrimaryItems = items.filter(item =>
     mobilePrimaryHrefs.has(item.href)
   );
@@ -599,6 +619,7 @@ function WorkspaceNavigation({
               key={item.href}
               type="button"
               onClick={() => handleNavigate(item.href)}
+              aria-current={item.active ? "page" : undefined}
               className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
                 item.active
                   ? "bg-primary text-primary-foreground"
@@ -620,28 +641,91 @@ function WorkspaceNavigation({
       </nav>
 
       <Sheet open={isMobileNavOpen} onOpenChange={setIsMobileNavOpen}>
-        <div className="md:hidden">
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            className="min-h-11 rounded-full px-4 text-[clamp(0.875rem,2.8vw,0.95rem)]"
-            onClick={() => setIsMobileNavOpen(true)}
-            aria-label={t("common:workspaceMenu")}
-          >
-            <Menu className="size-4" />
-            {"Menu"}
-          </Button>
+        <div className="space-y-2 md:hidden">
+          <div className="flex items-center gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="touch-target rounded-2xl px-4"
+              onClick={() => setIsMobileNavOpen(true)}
+              aria-label={t("common:workspaceMenu")}
+            >
+              <Menu className="size-4" />
+              {"Menu"}
+            </Button>
+
+            <div className="min-w-0 flex-1 rounded-2xl border border-border bg-card/90 px-4 py-3">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-sky-300">
+                {t("common:workspaceMenu")}
+              </p>
+              <p className="mt-1 truncate text-sm font-semibold text-foreground">
+                {activeItem.label}
+              </p>
+            </div>
+
+            <LanguageSelector
+              language={language}
+              onChange={onLanguageChange}
+            />
+          </div>
+
+          <div className="mobile-scroll-row pr-1">
+            {items.map(item => {
+              const Icon = item.icon;
+              const isLocked =
+                item.requiresSubscription && !canAccessPaidRoutes;
+
+              return (
+                <button
+                  key={`${item.href}-quick`}
+                  type="button"
+                  onClick={() => handleNavigate(item.href)}
+                  aria-current={item.active ? "page" : undefined}
+                  className={`touch-target inline-flex items-center gap-2 rounded-full border px-3 py-2 text-sm font-semibold transition-colors ${
+                    item.active
+                      ? "border-primary/35 bg-primary/12 text-foreground"
+                      : "border-border bg-card/70 text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <Icon className="size-4 shrink-0" />
+                  <span>{item.shortLabel}</span>
+                  {isLocked ? (
+                    <span className="rounded-full border border-white/10 bg-black/20 px-2 py-0.5 text-[0.7rem] uppercase tracking-[0.14em] text-slate-300">
+                      Pro
+                    </span>
+                  ) : null}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        <SheetContent side="left" className="w-[min(88vw,24rem)] p-0">
-          <SheetHeader className="border-b border-white/10 pb-4">
+        <SheetContent
+          side="left"
+          className="w-[min(92vw,24rem)] p-0 pt-[var(--safe-area-top)] pb-[var(--safe-area-bottom)]"
+        >
+          <SheetHeader className="border-b border-white/10 px-4 pt-4 pb-4">
             <SheetTitle>{t("common:workspaceMenu")}</SheetTitle>
             <SheetDescription>
               {t("common:switchBetweenAllModulesFrom")}
             </SheetDescription>
           </SheetHeader>
           <div className="flex-1 overflow-y-auto px-4 pb-6">
+            <div className="mb-4 flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-sky-300">
+                  {language === "tr" ? "Dil" : "Language"}
+                </p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {language === "tr" ? "Turkce" : "English"}
+                </p>
+              </div>
+              <LanguageSelector
+                language={language}
+                onChange={onLanguageChange}
+              />
+            </div>
             <div className="grid gap-2">
               {items.map(item => {
                 const Icon = item.icon;
@@ -653,6 +737,7 @@ function WorkspaceNavigation({
                     key={item.href}
                     type="button"
                     onClick={() => handleMobileNavigate(item.href)}
+                    aria-current={item.active ? "page" : undefined}
                     className={`flex min-h-[52px] w-full items-center justify-between gap-3 rounded-2xl border px-4 py-3 text-left transition-colors ${
                       item.active
                         ? "border-primary/35 bg-primary/12 text-foreground"
@@ -679,7 +764,7 @@ function WorkspaceNavigation({
       </Sheet>
 
       {isMobile ? (
-        <div className="fixed inset-x-0 bottom-0 z-[80] border-t border-white/10 bg-[rgba(10,14,26,0.94)] backdrop-blur-xl md:hidden">
+        <div className="fixed inset-x-0 bottom-0 z-[80] border-t border-white/10 bg-[rgba(10,14,26,0.94)] pb-[calc(0.35rem+var(--safe-area-bottom))] backdrop-blur-xl md:hidden">
           <nav className="mx-auto grid max-w-7xl grid-cols-5 gap-1 px-2 py-2">
             {mobilePrimaryItems.map(item => {
               const Icon = item.icon;
@@ -688,7 +773,8 @@ function WorkspaceNavigation({
                   key={item.href}
                   type="button"
                   onClick={() => handleNavigate(item.href)}
-                  className={`flex min-h-14 flex-col items-center justify-center rounded-2xl px-2 py-2 transition-colors ${
+                  aria-current={item.active ? "page" : undefined}
+                  className={`touch-target flex min-h-14 flex-col items-center justify-center rounded-2xl px-2 py-2 transition-colors ${
                     item.active
                       ? "bg-primary/14 text-foreground"
                       : "text-muted-foreground hover:text-foreground"
@@ -696,8 +782,8 @@ function WorkspaceNavigation({
                   aria-label={item.label}
                 >
                   <Icon className="size-4.5" />
-                  <span className="mt-1 text-[clamp(0.875rem,2.4vw,0.95rem)] font-semibold leading-none">
-                    {item.label}
+                  <span className="mt-1 text-xs font-semibold leading-none">
+                    {item.shortLabel}
                   </span>
                 </button>
               );
@@ -705,7 +791,7 @@ function WorkspaceNavigation({
             <button
               type="button"
               onClick={() => setIsMobileNavOpen(true)}
-              className={`flex min-h-14 flex-col items-center justify-center rounded-2xl px-2 py-2 transition-colors ${
+              className={`touch-target flex min-h-14 flex-col items-center justify-center rounded-2xl px-2 py-2 transition-colors ${
                 isMoreActive
                   ? "bg-primary/14 text-foreground"
                   : "text-muted-foreground hover:text-foreground"
@@ -713,7 +799,7 @@ function WorkspaceNavigation({
               aria-label={t("common:more")}
             >
               <Menu className="size-4.5" />
-              <span className="mt-1 text-[clamp(0.875rem,2.4vw,0.95rem)] font-semibold leading-none">
+              <span className="mt-1 text-xs font-semibold leading-none">
                 {t("common:more6dd7")}
               </span>
             </button>
@@ -774,7 +860,7 @@ function SiteFooter({ language }: { language: AppLanguage }) {
 
   return (
     <footer className="border-t border-border bg-background/95">
-      <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-6 md:flex-row md:items-center md:justify-between">
+      <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 pt-6 pb-[calc(1.5rem+var(--safe-area-bottom))] md:flex-row md:items-center md:justify-between md:py-6">
         <div className="space-y-1">
           <p className="text-sm font-semibold text-foreground">Gistify</p>
           <p className="text-xs text-muted-foreground">
@@ -1188,7 +1274,9 @@ function App() {
               <div
                 ref={appRootRef}
                 className={`min-h-screen bg-background text-foreground ${
-                  shouldShowWorkspaceHeader ? "pb-24 md:pb-0" : ""
+                  shouldShowWorkspaceHeader
+                    ? "pb-[calc(var(--mobile-nav-offset)+0.75rem)] md:pb-0"
+                    : ""
                 }`}
               >
                 <Toaster />
@@ -1213,75 +1301,111 @@ function App() {
                         : "sticky top-0 z-[70]"
                     }`}
                   >
-                    <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3">
-                      <div className="flex min-w-0 items-center gap-3 md:gap-4">
-                        <a
-                          href={localizePath("/", language)}
-                          className="inline-flex shrink-0 items-center gap-3 rounded-full border border-border bg-card/90 px-3 py-2 shadow-[0_12px_28px_rgba(0,0,0,0.14)] transition-colors hover:border-primary/30"
-                        >
-                          <img
-                            src="/gistifylogo.png?v=20260706"
-                            alt="Gistify logo"
-                            className="size-10 rounded-full border border-border object-cover md:size-11"
+                    <div className="mx-auto max-w-7xl px-3 pt-[calc(0.75rem+var(--safe-area-top))] pb-3 md:px-4 md:py-3">
+                      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-4">
+                        <div className="flex items-center justify-between gap-3 md:min-w-0 md:justify-start md:gap-4">
+                          <a
+                            href={localizePath("/", language)}
+                            className="inline-flex min-w-0 shrink items-center gap-3 rounded-2xl border border-border bg-card/90 px-3 py-2.5 shadow-[0_12px_28px_rgba(0,0,0,0.14)] transition-colors hover:border-primary/30 md:rounded-full md:py-2"
+                          >
+                            <img
+                              src="/gistifylogo.png?v=20260706"
+                              alt="Gistify logo"
+                              className="size-10 rounded-full border border-border object-cover md:size-11"
+                            />
+                            <div className="min-w-0 leading-tight">
+                              <p className="text-sm font-semibold text-foreground md:text-base">
+                                Gistify
+                              </p>
+                              <p className="hidden text-[11px] text-muted-foreground sm:block md:text-xs">
+                                {t("common:earningsIntelligence")}
+                              </p>
+                            </div>
+                          </a>
+
+                          <div className="flex shrink-0 items-center gap-2 md:hidden">
+                            {authState.status === "authenticated" &&
+                            !isPublicAccessMode ? (
+                              <div className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-1 py-1">
+                                <Avatar className="size-8 border border-border">
+                                  {authState.user.picture ? (
+                                    <AvatarImage
+                                      src={authState.user.picture}
+                                      alt={`${authState.user.name} profile`}
+                                    />
+                                  ) : null}
+                                  <AvatarFallback className="text-[10px] font-semibold">
+                                    {getInitials(authState.user.name) || "U"}
+                                  </AvatarFallback>
+                                </Avatar>
+
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="icon-sm"
+                                  className="rounded-full"
+                                  aria-label={t("common:signOut")}
+                                  title={t("common:signOut")}
+                                  onClick={logout}
+                                >
+                                  <LogOut className="size-4" />
+                                </Button>
+                              </div>
+                            ) : null}
+                          </div>
+                        </div>
+
+                        <div className="min-w-0 md:flex-1">
+                          <WorkspaceNavigation
+                            language={language}
+                            onLanguageChange={handleLanguageChange}
+                            authState={authState}
+                            isLimitedAccess={isLimitedAccess}
+                            isPublicAccessMode={isPublicAccessMode}
                           />
-                          <div className="min-w-0 leading-tight">
-                            <p className="text-sm font-semibold text-foreground md:text-base">
-                              Gistify
-                            </p>
-                            <p className="text-[11px] text-muted-foreground md:text-xs">
-                              {t("common:earningsIntelligence")}
-                            </p>
-                          </div>
-                        </a>
+                        </div>
 
-                        <WorkspaceNavigation
-                          language={language}
-                          authState={authState}
-                          isLimitedAccess={isLimitedAccess}
-                          isPublicAccessMode={isPublicAccessMode}
-                        />
-                      </div>
+                        <div className="hidden items-center gap-2 md:flex">
+                          <LanguageSelector
+                            language={language}
+                            onChange={handleLanguageChange}
+                          />
 
-                      <div className="flex items-center gap-2">
-                        <LanguageSelector
-                          language={language}
-                          onChange={handleLanguageChange}
-                        />
+                          {isPublicAccessMode ? (
+                            <div className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-emerald-300">
+                              {t("common:publicPreview")}
+                            </div>
+                          ) : null}
 
-                        {isPublicAccessMode ? (
-                          <div className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-emerald-300">
-                            {t("common:publicPreview")}
-                          </div>
-                        ) : null}
+                          {authState.status === "authenticated" &&
+                          !isPublicAccessMode ? (
+                            <div className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-1 py-1">
+                              <Avatar className="size-8 border border-border">
+                                {authState.user.picture ? (
+                                  <AvatarImage
+                                    src={authState.user.picture}
+                                    alt={`${authState.user.name} profile`}
+                                  />
+                                ) : null}
+                                <AvatarFallback className="text-[10px] font-semibold">
+                                  {getInitials(authState.user.name) || "U"}
+                                </AvatarFallback>
+                              </Avatar>
 
-                        {authState.status === "authenticated" &&
-                        !isPublicAccessMode ? (
-                          <div className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-1 py-1">
-                            <Avatar className="size-8 border border-border">
-                              {authState.user.picture ? (
-                                <AvatarImage
-                                  src={authState.user.picture}
-                                  alt={`${authState.user.name} profile`}
-                                />
-                              ) : null}
-                              <AvatarFallback className="text-[10px] font-semibold">
-                                {getInitials(authState.user.name) || "U"}
-                              </AvatarFallback>
-                            </Avatar>
-
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="icon-sm"
-                              className="rounded-full"
-                              aria-label={t("common:signOut")}
-                              title={t("common:signOut")}
-                              onClick={logout}
-                            >
-                              <LogOut className="size-4" />
-                            </Button>
-                          </div>
-                        ) : null}
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon-sm"
+                                className="rounded-full"
+                                aria-label={t("common:signOut")}
+                                title={t("common:signOut")}
+                                onClick={logout}
+                              >
+                                <LogOut className="size-4" />
+                              </Button>
+                            </div>
+                          ) : null}
+                        </div>
                       </div>
                     </div>
                   </header>

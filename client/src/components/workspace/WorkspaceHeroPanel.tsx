@@ -24,7 +24,7 @@ export default function WorkspaceHeroPanel({
 }: WorkspaceHeroPanelProps) {
   return (
     <section className="panel overflow-hidden">
-      <div className="relative overflow-hidden px-6 py-6 md:px-6 md:py-6">
+      <div className="relative overflow-hidden px-4 py-5 md:px-6 md:py-6">
         <div
           className={cn(
             "pointer-events-none absolute inset-0",
@@ -41,7 +41,7 @@ export default function WorkspaceHeroPanel({
                 <p className="heading-condensed text-sm uppercase tracking-[0.18em] text-sky-300">
                   {eyebrow}
                 </p>
-                <h1 className="heading-condensed max-w-4xl text-3xl leading-none text-foreground md:text-5xl">
+                <h1 className="heading-condensed max-w-4xl text-2xl leading-[1.02] text-foreground md:text-4xl xl:text-5xl">
                   {title}
                 </h1>
                 <p className="max-w-3xl text-sm leading-7 text-muted-foreground md:text-[15px]">
@@ -51,7 +51,7 @@ export default function WorkspaceHeroPanel({
             </div>
 
             {actions ? (
-              <div className="flex flex-wrap items-center gap-2">{actions}</div>
+              <div className="flex flex-wrap items-stretch gap-2">{actions}</div>
             ) : null}
           </div>
 

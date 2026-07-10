@@ -66,7 +66,7 @@ export default function PublicShell({
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[520px] bg-[radial-gradient(circle_at_top,rgba(16,185,129,0.16),transparent_42%),radial-gradient(circle_at_18%_18%,rgba(59,130,246,0.12),transparent_28%)]" />
       <div className="pointer-events-none absolute right-[-120px] top-40 h-80 w-80 rounded-full bg-emerald-500/10 blur-3xl" />
 
-      <div className="relative mx-auto flex max-w-7xl flex-col gap-6 px-4 pt-8 pb-4 md:px-6 md:pb-6 lg:px-8">
+      <div className="relative mx-auto flex max-w-7xl flex-col gap-6 px-4 pt-[calc(1.25rem+var(--safe-area-top))] pb-[calc(1rem+var(--safe-area-bottom))] md:px-6 md:pt-8 md:pb-6 lg:px-8">
         <motion.header
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}

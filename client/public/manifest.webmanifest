@@ -1,0 +1,76 @@
+{
+  "name": "Gistify",
+  "short_name": "Gistify",
+  "description": "Finance workspace for earnings, momentum, coverage and flow research.",
+  "start_url": "/tr/app?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#050c1b",
+  "theme_color": "#050c1b",
+  "categories": ["finance", "productivity"],
+  "icons": [
+    {
+      "src": "/favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Earnings Strategy",
+      "short_name": "Strategy",
+      "url": "/tr/app",
+      "icons": [
+        {
+          "src": "/favicon-96x96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Momentum",
+      "short_name": "Momentum",
+      "url": "/tr/momentum",
+      "icons": [
+        {
+          "src": "/favicon-96x96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Coverage",
+      "short_name": "Coverage",
+      "url": "/tr/coverage",
+      "icons": [
+        {
+          "src": "/favicon-96x96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Flow",
+      "short_name": "Flow",
+      "url": "/tr/flow",
+      "icons": [
+        {
+          "src": "/favicon-96x96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}

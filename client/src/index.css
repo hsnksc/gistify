@@ -97,6 +97,12 @@
 
 :root {
   color-scheme: dark;
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-right: env(safe-area-inset-right, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-left: env(safe-area-inset-left, 0px);
+  --mobile-nav-height: 5.25rem;
+  --mobile-nav-offset: calc(var(--mobile-nav-height) + var(--safe-area-bottom));
 
   --background: var(--color-bg-base);
   --foreground: var(--color-text-primary);
@@ -130,6 +136,15 @@
   --sidebar-accent-foreground: var(--color-text-primary);
   --sidebar-border: var(--color-border-medium);
   --sidebar-ring: var(--color-accent);
+}
+
+@media (max-width: 767px) {
+  :root {
+    --text-xs: 12px;
+    --text-sm: 14px;
+    --text-base: 15px;
+    --text-lg: 17px;
+  }
 }
 
 @utility tabular-nums {
@@ -200,16 +215,49 @@
 }
 
 @layer base {
+  html {
+    width: 100%;
+    overflow-x: hidden;
+    scroll-padding-top: calc(4.5rem + var(--safe-area-top));
+    -webkit-text-size-adjust: 100%;
+  }
+
   * {
     @apply border-border outline-ring/50;
   }
 
   body {
+    width: 100%;
+    min-width: 320px;
+    min-height: 100vh;
+    min-height: 100dvh;
     background-color: var(--color-bg-base);
     color: var(--color-text-primary);
     font-family: var(--font-sans);
+    font-size: 15px;
+    overflow-x: hidden;
+    overscroll-behavior-x: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  #root {
+    min-height: 100vh;
+    min-height: 100dvh;
+    isolation: isolate;
+  }
+
+  img,
+  svg,
+  canvas,
+  video {
+    max-width: 100%;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: max(16px, 1rem);
   }
 
   button:not(:disabled),
@@ -273,6 +321,7 @@
   }
 
   .data-card {
+    min-width: 0;
     background: var(--surface-raised);
     border: 1px solid var(--color-border-subtle);
     border-left: 3px solid var(--color-bull);
@@ -292,6 +341,7 @@
   }
 
   .panel {
+    min-width: 0;
     background: var(--surface-raised);
     border: 1px solid var(--color-border-subtle);
     border-radius: var(--radius);
@@ -299,9 +349,48 @@
   }
 
   .workspace-card {
+    min-width: 0;
     background: color-mix(in srgb, var(--surface-overlay) 82%, transparent);
     border: 1px solid var(--color-border-subtle);
     border-radius: var(--radius);
+  }
+
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .mobile-scroll-row {
+    display: flex;
+    gap: 0.625rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding-bottom: 0.125rem;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .mobile-scroll-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mobile-scroll-row > * {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+
+  .safe-area-top {
+    padding-top: var(--safe-area-top);
+  }
+
+  .safe-area-bottom {
+    padding-bottom: var(--safe-area-bottom);
+  }
+
+  [data-slot="card"],
+  [data-slot="table-container"] {
+    min-width: 0;
   }
 
   .terminal-scrollbar::-webkit-scrollbar {
