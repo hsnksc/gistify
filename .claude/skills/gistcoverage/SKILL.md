@@ -19,6 +19,21 @@ Goal: given a Flow source (a report in `flow/` or its ticker), produce a `covera
 - Then **read the actual flow source file** — that HTML/markdown is your news input.
 - Multi-ticker daily reports: only produce coverage for tickers the user asked for, or that have substantial dedicated analysis in the source. A ticker appearing in a watchlist table is not coverage material.
 
+## 0.5 Mistral ile Flow'dan anlam çıkar (ZORUNLU — bu skill'in kalbi)
+
+Coverage'ın gövdesini elle Flow'dan okuyup yazma. Önce Mistral API'ye Flow kaynağını gönderip **yapılandırılmış analiz** (tez, sinyal, metrikler, katalizör-timeline, seviyeler, ekosistem, SWOT, kırmızı/yeşil bayrak, kaynaklar) çıkart. Her ticker için bir kez çalıştır (pre-allowlisted, izin sorusu yok):
+
+```powershell
+python scripts/coverage_research.py flow/<kaynak>.html --ticker AVGO
+python scripts/coverage_research.py flow/<kaynak>.md   --ticker NVDA --company "NVIDIA Corporation"
+```
+
+- Çıktı: `data/coverage_research/{TICKER}-{today}.json` (git-ignored, geçici ara katman). stdout kısa özet basar; JSON'u **Read ile aç ve tüm alanları oku**.
+- Mistral yalnızca **anlam çıkarır** — kati render kontratını (coverage-md/1) uygulamaz. Kontrat formatlamasını, tablo imzalarını ve doğrulamayı Claude yapar (step 2A/2B + step 4).
+- JSON alan → coverage bölüm eşlemesi: `signal`/`thesis` → frontmatter `signal` + Özet · `metrics` → frontmatter `metrics` + insan katmanı tablosu · `earnings_history`/`consensus` → imzalı tablolar · `catalysts_timeline` → CatalystTimeline (ISO) · `levels` → LevelLadder (`★` gücü) · `ecosystem` → Ekosistem chip tablosu · `swot` → SWOT · `red_flags`/`green_flags` → `### Kırmızı/Yeşil Bayraklar` checklist'leri · `sources` → `Kaynak | URL` tablosu.
+- **Veri namusu (step 3 ile aynı):** JSON'da `null` veya boş liste olan alanı uydurma — hücreye `—` yaz veya satırı/bölümü atla. Mistral bir sayı üretmişse bile Flow kaynağında yoksa güvenme; şüpheliyse kaynağı kendin doğrula.
+- Mistral JSON döndürmezse (`.raw.txt` yazılır) veya çıktı zayıfsa: Flow kaynağını doğrudan okuyup elle yazma yöntemine düş — akış durmasın.
+
 ## 1. Check what Coverage already has
 
 ```powershell
@@ -33,7 +48,7 @@ node scripts/coverage-verify.mjs NVDA    # lists every version across coverage/r
 - New file: `coverage/reports/{TICKER}-{today YYYY-MM-DD}.md`. Same-day second report: `-b.md`, third: `-c.md`. **Never modify or delete the previous version** — the site builds the version strip and "Ne Değişti?" diff from the chain.
 - The diff engine only works when **section numbers and titles stay byte-identical** across versions. Copy the previous version's skeleton, update only values and prose. A genuinely new section goes at the end.
 - Keep the previous `type` unless the news changes the report's nature (e.g. a plain deep-research becoming an options play).
-- Update from the flow news: frontmatter `metrics` (price, dates, targets…), `signal` if the thesis moved, catalyst timeline rows (new ISO-dated events), flag checklists, and the prose. Frontmatter and body tables must state the same numbers.
+- Update from the **step 0.5 Mistral JSON**: frontmatter `metrics` (price, dates, targets…), `signal` if the thesis moved, catalyst timeline rows (new ISO-dated events), flag checklists, and the prose. Frontmatter and body tables must state the same numbers. Carry forward previous-version values only where the JSON has `null`.
 
 ## 2B. Create path — fresh report per contract
 
@@ -44,7 +59,7 @@ node scripts/coverage-verify.mjs NVDA    # lists every version across coverage/r
 
 ## 3. Data honesty
 
-- Only numbers that exist in the flow source, previous coverage versions, or user-provided data. Unknown cell → `—`; unknown frontmatter field → omit it. Never invent prices, dates, or tickers.
+- Only numbers that exist in the **step 0.5 Mistral JSON**, the flow source, previous coverage versions, or user-provided data. Unknown cell → `—`; unknown frontmatter field → omit it. Never invent prices, dates, or tickers — a `null`/empty field in the Mistral JSON means "not in the source", not "fill it in".
 - If the flow source's market data is older than today, keep its `price_date` honest rather than pretending the price is current.
 
 ## 4. Verify before calling it done

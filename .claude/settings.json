@@ -7,6 +7,8 @@
       "PowerShell(node scripts/flow-chartgen.mjs *)",
       "Bash(node scripts/coverage-verify.mjs *)",
       "PowerShell(node scripts/coverage-verify.mjs *)",
+      "Bash(python scripts/coverage_research.py *)",
+      "PowerShell(python scripts/coverage_research.py *)",
       "Bash(corepack pnpm exec tsc *)",
       "PowerShell(corepack pnpm exec tsc *)",
       "Bash(corepack pnpm build)",

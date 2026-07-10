@@ -46,6 +46,9 @@ pids
 *.seed
 *.pid.lock
 
+# Transient Mistral coverage-research intermediates (see scripts/coverage_research.py)
+data/coverage_research/
+
 # Coverage directory used by tools like istanbul
 coverage/
 !coverage/
