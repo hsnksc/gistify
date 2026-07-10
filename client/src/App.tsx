@@ -12,6 +12,7 @@ import {
   Activity,
   BookOpen,
   CalendarDays,
+  CalendarRange,
   LayoutDashboard,
   Layers3,
   LogOut,
@@ -271,7 +272,8 @@ type WorkspaceLabelKey =
   | "earningsStrategy"
   | "flow"
   | "marketFlash"
-  | "momentum";
+  | "momentum"
+  | "weekly";
 
 function workspaceLabel(language: AppLanguage, key: WorkspaceLabelKey) {
   switch (key) {
@@ -293,6 +295,8 @@ function workspaceLabel(language: AppLanguage, key: WorkspaceLabelKey) {
       return t("common:marketFlash");
     case "momentum":
       return t("common:momentum");
+    case "weekly":
+      return t("common:weekly");
     default:
       return "";
   }
@@ -592,6 +596,14 @@ function WorkspaceNavigation({
       requiresSubscription: false,
     },
     {
+      href: "/weekly",
+      label: workspaceLabel(language, "weekly"),
+      shortLabel: workspaceShortLabel("weekly"),
+      icon: CalendarRange,
+      active: location.startsWith("/weekly"),
+      requiresSubscription: false,
+    },
+    {
       href: "/flow",
       label: workspaceLabel(language, "flow"),
       shortLabel: workspaceShortLabel("flow"),
@@ -849,6 +861,10 @@ function getWorkspaceSectionLabel(path: string, language: AppLanguage) {
     return workspaceLabel(language, "coverage");
   }
 
+  if (path.startsWith("/weekly")) {
+    return workspaceLabel(language, "weekly");
+  }
+
   if (path.startsWith("/flow") || path.startsWith("/reports")) {
     return workspaceLabel(language, "flow");
   }
@@ -863,6 +879,7 @@ function getWorkspaceSectionLabel(path: string, language: AppLanguage) {
 function SiteFooter({ language }: { language: AppLanguage }) {
   const links = [
     { href: "/coverage", label: workspaceLabel(language, "coverage") },
+    { href: "/weekly", label: workspaceLabel(language, "weekly") },
     { href: "/flow", label: workspaceLabel(language, "flow") },
     { href: "/reports", label: t("common:reports") },
     { href: "/pricing", label: t("common:pricing") },
@@ -1028,12 +1045,14 @@ function App() {
   const isPaymentRoute = location === "/pay";
   const isCoverageRoute = location.startsWith("/coverage");
   const isFlowRoute = location.startsWith("/flow");
+  const isWeeklyRoute = location.startsWith("/weekly");
   const isReportsRoute = location.startsWith("/reports");
   const isMarketingRoute =
     ["/", "/pricing", "/terms", "/privacy", "/refund"].includes(location) ||
     location.startsWith("/daily-report") ||
     isCoverageRoute ||
     isFlowRoute ||
+    isWeeklyRoute ||
     isReportsRoute;
   const isLockedWorkspaceRoute =
     location === "/app" ||
@@ -1048,6 +1067,7 @@ function App() {
     !isPaymentRoute &&
     (isCoverageRoute ||
       isFlowRoute ||
+      isWeeklyRoute ||
       isReportsRoute ||
       (authState.status !== "loading" && !isMarketingRoute));
   const hasStandaloneWorkspaceHeader =
