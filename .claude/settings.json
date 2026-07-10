@@ -9,6 +9,8 @@
       "PowerShell(node scripts/coverage-verify.mjs *)",
       "Bash(python scripts/coverage_research.py *)",
       "PowerShell(python scripts/coverage_research.py *)",
+      "Bash(python scripts/weekly_market_data.py *)",
+      "PowerShell(python scripts/weekly_market_data.py *)",
       "Bash(corepack pnpm exec tsc *)",
       "PowerShell(corepack pnpm exec tsc *)",
       "Bash(corepack pnpm build)",

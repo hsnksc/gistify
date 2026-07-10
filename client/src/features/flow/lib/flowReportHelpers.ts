@@ -422,7 +422,7 @@ function compareFlowTimestampValuesDescending(left: string, right: string) {
 }
 
 export function getPrimaryFlowTicker(report: FlowReportListEntry) {
-  if (getFlowReportKind(report) === "daily") {
+  if (getFlowReportKind(report) !== "stock") {
     return "MARKET";
   }
 

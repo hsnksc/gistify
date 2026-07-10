@@ -63,6 +63,9 @@ const MomentumCalibrationPage = lazy(
 const MomentumLedgerPage = lazy(() => import("./pages/MomentumLedgerPage"));
 const FlowPage = lazy(() => import("./features/flow/pages/FlowPage"));
 const FlowDailyPage = lazy(() => import("./features/flow/pages/FlowDailyPage"));
+const FlowWeeklyPage = lazy(
+  () => import("./features/flow/pages/FlowWeeklyPage")
+);
 const FlowTickerPage = lazy(
   () => import("./features/flow/pages/FlowTickerPage")
 );
@@ -437,6 +440,17 @@ function Router({
         <Route path={"/flow/daily"}>
           {() => (
             <FlowDailyPage
+              language={language}
+              onLanguageChange={onLanguageChange}
+            />
+          )}
+        </Route>
+        <Route path={"/flow/weekly"}>
+          {() => <RouteRedirect href="/weekly" />}
+        </Route>
+        <Route path={"/weekly"}>
+          {() => (
+            <FlowWeeklyPage
               language={language}
               onLanguageChange={onLanguageChange}
             />

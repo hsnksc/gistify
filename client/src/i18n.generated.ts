@@ -1581,6 +1581,10 @@ export interface I18nResourceShape {
     weekEnd: string;
     weekShownAtTheTop: string;
     weekStart: string;
+    weeklyFlowGistify: string;
+    weeklyFlowPostsAreListed: string;
+    weeklyReportArchive: string;
+    weeklyReportDescription: string;
     weeklyReportEditor: string;
     weeksToBeGeneratedFrom: string;
     whatSOnThisPage: string;

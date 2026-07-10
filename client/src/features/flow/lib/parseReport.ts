@@ -5,7 +5,7 @@ import {
 } from "@shared/flowLanguage";
 
 export type ReportRecommendation = "BUY" | "HOLD" | "SELL" | null;
-export type ReportKind = "stock" | "daily";
+export type ReportKind = "stock" | "daily" | "weekly";
 
 export interface ReportMeta {
   companyName: string;

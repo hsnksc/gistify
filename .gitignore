@@ -49,6 +49,9 @@ pids
 # Transient Mistral coverage-research intermediates (see scripts/coverage_research.py)
 data/coverage_research/
 
+# Transient weekly technical-data intermediates (see scripts/weekly_market_data.py)
+data/weekly_research/
+
 # Coverage directory used by tools like istanbul
 coverage/
 !coverage/

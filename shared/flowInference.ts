@@ -1,4 +1,7 @@
-export type FlowReportKind = "daily" | "stock";
+export type FlowReportKind = "daily" | "stock" | "weekly";
+
+export const FLOW_WEEKLY_SOURCE_PATTERN =
+  /(?:^|[\\/_-])weekly-\d{4}-\d{2}-\d{2}/i;
 
 export const BLOCKED_FLOW_TICKERS = new Set([
   "ABD",
@@ -167,6 +170,10 @@ export function resolveFlowReportKind(options: {
     options.htmlTitle,
     ...(options.candidates || []),
   ].filter((value): value is string => Boolean(value));
+
+  if (candidates.some(value => FLOW_WEEKLY_SOURCE_PATTERN.test(value))) {
+    return "weekly";
+  }
 
   if (candidates.some(value => isDailyMarketReportText(value))) {
     return "daily";

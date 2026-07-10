@@ -20,7 +20,7 @@ export type FlowReport = DailyReportRecord & {
   engagement?: FlowReportEngagement;
 };
 export type FlowSource = DailyReportSourcePackage;
-export type FlowReportKind = "stock" | "daily";
+export type FlowReportKind = "stock" | "daily" | "weekly";
 
 export interface FlowReportSummary {
   companyName: string;

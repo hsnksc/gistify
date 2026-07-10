@@ -53,6 +53,7 @@ export default function PublicShell({
     { href: localizePath("/", language), label: t("marketing:home") },
     { href: localizePath("/pricing", language), label: t("common:pricing") },
     { href: localizePath("/flow", language), label: t("common:flow") },
+    { href: localizePath("/weekly", language), label: t("common:weekly") },
     { href: localizePath("/coverage", language), label: t("common:coverage") },
     { href: localizePath("/app", language), label: t("marketing:openApp") },
   ];

@@ -34,7 +34,9 @@ function normalizeString(value: unknown) {
 
 function normalizeReportKind(value: unknown) {
   const normalized = normalizeString(value).toLowerCase();
-  return normalized === "daily" || normalized === "stock" ? normalized : undefined;
+  return normalized === "daily" || normalized === "stock" || normalized === "weekly"
+    ? normalized
+    : undefined;
 }
 
 function normalizeLimit(value: unknown) {

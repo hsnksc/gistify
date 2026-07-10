@@ -565,7 +565,7 @@ function buildFlowReportSummary(
         title: report.title,
       });
   const titleInfo =
-    reportKind === "daily"
+    reportKind !== "stock"
       ? {
           companyName: normalizeString(title) || "Market report",
           ticker: "MARKET",
@@ -577,7 +577,7 @@ function buildFlowReportSummary(
         .filter(item => item && !isBlockedFlowTicker(item))
     : [];
   const ticker =
-    (reportKind === "daily" ? "MARKET" : "") ||
+    (reportKind !== "stock" ? "MARKET" : "") ||
     tickerUniverse[0] ||
     titleInfo.ticker ||
     inferFlowTickerFromText(
