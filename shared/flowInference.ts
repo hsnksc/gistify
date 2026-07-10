@@ -3,6 +3,7 @@ export type FlowReportKind = "daily" | "stock";
 export const BLOCKED_FLOW_TICKERS = new Set([
   "ABD",
   "AI",
+  "CPO",
   "DTC",
   "EN",
   "HTML",
