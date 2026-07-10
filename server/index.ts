@@ -2929,6 +2929,8 @@ function buildSitemapXml(): string {
   const staticPaths = [
     { path: "/", priority: "1.0", changefreq: "weekly" },
     { path: "/flow", priority: "0.9", changefreq: "daily" },
+    { path: "/weekly", priority: "0.9", changefreq: "weekly" },
+    { path: "/coverage", priority: "0.9", changefreq: "daily" },
     { path: "/reports", priority: "0.9", changefreq: "daily" },
     { path: "/pricing", priority: "0.8", changefreq: "weekly" },
     { path: "/scanner", priority: "0.7", changefreq: "weekly" },
