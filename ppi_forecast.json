@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-07-06T21:05:56Z",
-  "reportDate": "2026-07-07",
+  "generatedAt": "2026-07-10T15:35:04Z",
+  "reportDate": "2026-07-10",
   "title": "US PPI Forecast Snapshot — Composite Calibrated Bridge Nowcast v2.5 Enhanced",
-  "summary": "June 2026 PPI forecast: Headline 0.0% MoM, Core +0.2% MoM. VIX 15.66 confirms Normal regime. Energy reverses sharply after May's +10.7% spike — Brent fell ~23% in June as Hormuz fears eased and OPEC+ added supply. ISM Prices Paid cooled to 73.0 but remains strongly inflationary for core goods. Services stickiness anchored by ECI +0.30% monthly proxy. Net: energy drag offsets core persistence, headline flat, core sticky.",
+  "summary": "June 2026 PPI forecast refreshed July 10: Headline 0.0% MoM, Core +0.2% MoM. VIX 15.78 confirms Normal regime. Energy reversed sharply in June — Brent fell ~23% from early-June highs to ~$73 as Hormuz fears eased and OPEC+ added supply, before rebounding to $75.6 in early July. ISM Prices Paid cooled to 73.0 but remains strongly inflationary for core goods. Services stickiness anchored by ECI +0.30% monthly proxy. Net: energy drag offsets core persistence, headline flat, core sticky.",
   "baseCase": "Headline PPI 0.0% MoM, Core PPI +0.2% MoM. Energy composite -4.5% as gasoline/diesel/jet fuel all reverse post-Hormuz normalization. Core goods +0.5% supported by ISM Prices Paid at 73.0 and elevated metals. Services +0.22% via ECI labor cost proxy. Intermediate demand uplift +0.2 ppt.",
   "conviction": 60,
   "regime": "normal",
-  "vix": 15.66,
+  "vix": 15.78,
   "regimeParameters": {
     "biasWindow": 3,
     "energyLag": 1,
@@ -104,7 +104,7 @@
     "priorCoreYoY": "4.2%",
     "bias": "COOLER",
     "confidence": 60,
-    "thesis": "Energy reverses sharply after May's +10.7% spike — Brent fell ~23% in June on Hormuz normalization and OPEC+ supply increases. ISM Prices Paid cooled to 73.0 but remains inflationary for core goods. ECI +0.30% monthly proxy keeps services sticky. Net: headline flat on energy mean-reversion, core persistent at +0.2%."
+    "thesis": "Energy reverses sharply after May's +1.1% headline spike — Brent fell ~23% in June on Hormuz normalization and OPEC+ supply increases. ISM Prices Paid cooled to 73.0 but remains inflationary for core goods. ECI +0.30% monthly proxy keeps services sticky. Net: headline flat on energy mean-reversion, core persistent at +0.2%."
   },
   "pointEstimate": {
     "headline": 0.0,
@@ -189,8 +189,8 @@
     },
     {
       "label": "EIA Weekly Petroleum (Jul 9)",
-      "value": "WTI $68.7, Brent $72.1",
-      "note": "Crude inventories building as OPEC+ unwinds cuts. Watch Cushing builds."
+      "value": "WTI $72.0, Brent $75.6",
+      "note": "Crude rebounded early July but June average remains deeply lower. Watch Cushing builds."
     },
     {
       "label": "BLS ECI Q2 2026",
@@ -199,7 +199,7 @@
     },
     {
       "label": "Fed Funds Futures",
-      "value": "~50% chance of hike by Oct 2026; DXY 100.87",
+      "value": "DXY ~100.9; 10Y ~4.28%",
       "note": "Warsh's hawkish dots (Jun 17) on hold after soft jobs. Jul 29 next FOMC."
     }
   ],
@@ -208,7 +208,7 @@
     "ISM Prices Paid sticky at 73.0: Down from 82.1 but still strongly inflationary for core goods; steel/aluminum/copper all elevated.",
     "ECI labor cost anchoring services: Q1 +0.9% SA (+0.30% monthly proxy) keeps Other Services PPI elevated; Q2 release Jul 31 critical.",
     "Freight rates firming into Q3: DAT spot dry van ~$3.02/mi in June; produce season + cross-border demand tightening capacity.",
-    "Dollar strength capping import prices: DXY 100.87 up 3.48% YoY; offsets some core goods pressure via cheaper imports."
+    "Dollar strength capping import prices: DXY ~100.9 up ~3.5% YoY; offsets some core goods pressure via cheaper imports."
   ],
   "risks": [
     "Upside — Iran ceasefire frays: Any Hormuz shipping disruption snaps energy prices higher; distillate stocks at multi-year low amplifies shock.",
@@ -217,17 +217,18 @@
     "Downside — Hurricane season: LNG export disruption could crash natural gas; refinery outages spike RBOB/ULSD temporarily."
   ],
   "sources": [
-    "https://www.cboe.com/en/tradable-products/vix/ (VIX 15.66, July 6 2026)",
+    "https://www.cboe.com/en/tradable-products/vix/ (VIX 15.78, July 10 2026)",
     "https://finance.yahoo.com/economy/articles/manufacturing-pmi-53-3-june-140000395.html (ISM PMI 53.3, Prices 73.0, June 2026)",
-    "https://tradingeconomics.com/commodity/brent-crude-oil (Brent $72.15, July 6 2026)",
-    "https://commodity-board.com/wti-curve-softens-as-opec-eases-cuts-and-demand-signals-cool (WTI $68.7, OPEC+ 188k bpd hike, July 2026)",
+    "https://convextrade.com/metrics/brent (Brent $75.6, July 10 2026)",
+    "https://commodity-board.com/wti-curve-softens-as-opec-eases-cuts-and-demand-signals-cool (WTI ~$72.0, OPEC+ 188k bpd hike, July 2026)",
     "https://www.westmetall.com/en/markdaten.php (LME Copper $13,298.50, Aluminum $3,080, Jul 3 2026)",
     "https://www.bls.gov/news.release/eci.nr0.htm (ECI Q1 2026 +0.9% SA)",
-    "https://tradingeconomics.com/united-states/currency (DXY 100.87, Jul 6 2026)",
+    "https://tradingeconomics.com/united-states/currency (DXY ~100.9, Jul 2026)",
     "https://tradingeconomics.com/commodity/lumber (Lumber $623.50, Jul 2 2026)",
     "https://www.ryerson.com/metal-resources/metal-market-intelligence/are-steel-prices-coming-down (Steel HRC $1,140/ton, Jul 2026)",
     "https://getscalefunding.com/resources/current-freight-rates/ (DAT spot van $3.02/mi, Jun 23 2026)",
     "https://verifiedinvesting.com/blogs/us-economic-metrics/ppi-mom (PPI May 2026 +1.06% MoM, 6.42% YoY; Core +0.85% MoM)",
-    "https://www.bls.gov/schedule/news_release/ppi.htm (BLS PPI release schedule)"
+    "https://www.bls.gov/schedule/news_release/ppi.htm (BLS PPI release schedule)",
+    "https://www.indexbox.io/blog/eia-reports-national-gasoline-average-at-3831-per-gallon-on-june-29-2026 (EIA Gasoline $3.831, Jun 29 2026)"
   ]
 }
