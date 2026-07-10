@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weekly Report — July 4 · July 10, 2026 | Gistify Weekly</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Weekly Report — July 4 · July 10, 2026 | Gistify Weekly" />
+<meta property="og:description" content="34 Flow reports, 12 stocks: SK hynix's $26.5-29.4B Nasdaq IPO, Samsung's 'priced for perfection' shock, NVIDIA's dominance-discount re-rating, and photonics/CPO as the bottleneck after memory. Computed technical levels and next-week scenarios." />
+<meta property="og:url" content="https://gistify.pro/flow/weekly-2026-07-10.en.html" />
+<meta property="og:image" content="https://gistify.pro/gistifylogo.png?v=20260706" />
+<meta property="og:site_name" content="Gistify" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Weekly Report — July 4 · July 10, 2026 | Gistify Weekly" />
+<meta name="twitter:description" content="SK hynix's Nasdaq IPO, Samsung's shock, NVIDIA's dominance-discount re-rating, photonics/CPO bottleneck, and next-week levels." />
+<meta name="twitter:image" content="https://gistify.pro/gistifylogo.png?v=20260706" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:760px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:4px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent)}
+.section-body{padding:18px}
+.subhead{font-size:0.98rem;font-weight:700;margin:18px 0 10px;display:flex;align-items:center;gap:8px;color:var(--gf-text)}
+.subhead:first-child{margin-top:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+.ticker-card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:18px;margin-bottom:14px}
+.ticker-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.ticker-name{margin-left:8px;font-weight:700}
+.chart-card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:18px;margin:14px 0}
+.chart-title{font-size:0.9rem;font-weight:700;color:var(--gf-accent);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.chart-title::before{content:'';display:inline-block;width:4px;height:16px;background:var(--gf-accent);border-radius:2px}
+.chart-caption{font-size:0.8rem;color:var(--gf-muted);margin-top:10px;border-top:1px solid var(--gf-border-subtle);padding-top:10px}
+.legend{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:10px;font-size:0.78rem;color:var(--gf-muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.donut-chart{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.donut-svg{flex-shrink:0}
+.donut-legend{display:flex;flex-direction:column;gap:8px}
+.donut-legend-item{display:flex;align-items:center;gap:8px;font-size:.85rem}
+.donut-legend-color{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.donut-legend-label{color:var(--gf-text)}
+.donut-legend-value{color:var(--gf-muted);font-size:.8rem}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.text-right{text-align:right}
+.text-center{text-align:center}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+ul.bullets{padding-left:20px;font-size:0.88rem;margin:8px 0}
+ul.bullets li{margin-bottom:4px}
+.disclaimer{text-align:center;padding:24px 16px;font-size:0.76rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:28px;line-height:1.6}
+.footer{text-align:center;padding:16px;font-size:0.78rem;color:var(--gf-muted)}
+@media(max-width:640px){.wrap{padding:16px 10px}.hero-h{font-size:1.25rem}.grid,.grid2,.grid3{grid-template-columns:1fr}.kpi-row{grid-template-columns:repeat(2,1fr)}table{font-size:0.78rem}th,td{padding:6px 7px}.donut-chart{justify-content:center}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-10T18:00:00+03:00">
+  <h1 class="hero-h">Weekly Report — July 4 · July 10, 2026</h1>
+  <p class="hero-desc">34 Flow reports published this week: SK hynix's $26.5-29.4B Nasdaq ADS IPO, Samsung's "priced for perfection" sell-off despite record profit, NVIDIA's dominance-discount re-rating, and photonics/CPO emerging as the bottleneck after memory all defined the week. Below: computed technical levels and next-week scenarios across 12 core tickers.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info hero-date" data-timestamp="2026-07-10T18:00:00+03:00">📅 July 4–10, 2026</span>
+    <span class="meta-pill info">📚 34 sources</span>
+    <span class="meta-pill info">📈 12 tickers</span>
+    <span class="meta-pill bull">Risk-On, narrow leadership</span>
+  </div>
+</div>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">📊 Week in Summary</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">BABA +17.3%</div><div class="kpi-label">Strongest Mover</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-danger)">MSFT -1.4%</div><div class="kpi-label">Weakest Mover</div></div>
+        <div class="kpi"><div class="kpi-num">SPX +1.2%</div><div class="kpi-label">S&P 500 (SPY) Week</div></div>
+        <div class="kpi"><div class="kpi-num">65.9%</div><div class="kpi-label">Market Breadth (S5TH)</div></div>
+        <div class="kpi"><div class="kpi-num">$26.5–29.4B</div><div class="kpi-label">SK hynix Nasdaq IPO</div></div>
+        <div class="kpi"><div class="kpi-num">2027</div><div class="kpi-label">AI CapEx / Defense Crossover</div></div>
+      </div>
+      <div class="insight-box">
+        <strong>The week's frame:</strong> The market regime is still "calm risk-on" (VIX in the 16-19 band), but S&P 500 breadth (S5TH) remains at 65.87%, below its 52-week high of 68.58% — the "narrow leadership" warning that a small group of mega-caps is carrying the index persists. In memory, SK hynix's landmark IPO and Samsung's record-profit-yet-sell-off collided in the same week — evidence that positioning, not demand, is now the dominant near-term risk.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🧭 Themes of the Week</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="grid2">
+        <div class="card">
+          <div class="card-label">Theme 1 · Memory</div>
+          <div style="font-weight:700;margin-bottom:8px">Memory Supercycle Meets Its "Priced for Perfection" Test</div>
+          <p style="font-size:0.88rem;color:var(--gf-muted)">SK hynix's $26.5-29.4B secondary ADS offering began trading on Nasdaq on July 10, just a week after Korean regulatory approval landed on July 3. Only three days earlier, Samsung reported the highest quarterly profit in its history — ₩89.4T (~$58.4B), up 1,810% YoY — yet the stock fell 6.4-10% the same day on a slight revenue miss, which the source report frames as a classic "priced for perfection" crowded-trade unwind. Samsung + SK Hynix now make up 55.3% of the KOSPI (up from 36.1% at end-2025); BofA's May survey found 73% of fund managers call "long global semis" the most crowded trade on record. Meanwhile Micron remains the sector's value outlier — PEG 0.04-0.14x despite the smallest HBM share (15-20%) of the big three. Bottom line: HBM supply is sold out through 2026-27 and DRAM/NAND prices are still rising double digits QoQ — the demand side is intact, but Korean margin debt sits at record highs and leveraged ETFs now make up 31-38% of daily volume.</p>
+        </div>
+        <div class="card">
+          <div class="card-label">Theme 2 · Macro</div>
+          <div style="font-weight:700;margin-bottom:8px">AI CapEx Is Now Overtaking the Defense Budget</div>
+          <p style="font-size:0.88rem;color:var(--gf-muted)">Goldman Sachs models $7.6T in cumulative AI infrastructure capital deployment for 2026-2031; a separate deep-research piece finds combined US AI infrastructure capex will hit 3.0-3.3% of GDP in 2027, crossing defense spending's ~2.7% for the first time in history — a finding described as "robust" across CBO/IMF/Fed/even the Trump OMB's own assumptions. Meta/Microsoft/Amazon/Alphabet's combined 2025-2030 capex was just revised up $800B to $5.3T. The most-repeated caution across sources: no independent source — Moody's, JPMorgan, McKinsey, Gartner, MIT — has concrete GPU-cluster utilization data, making the overbuild-vs-capacity-constrained debate "technically unresolvable" with current disclosure. Financing math is tightening too: JPMorgan estimates a $1.4T gap between 2026-2030 financing needs and available sources; Oracle's 5-year CDS has tripled since September 2025. The NVIDIA→CoreWeave/OpenAI circular-financing loop keeps getting compared to the 2000 Lucent/Nortel/Cisco vendor-financing collapse.</p>
+        </div>
+        <div class="card">
+          <div class="card-label">Theme 3 · NVDA</div>
+          <div style="font-weight:700;margin-bottom:8px">NVIDIA's "Dominance Discount" Is Being Re-Rated</div>
+          <p style="font-size:0.88rem;color:var(--gf-muted)">NVDA's forward P/E compressed this week, across sources, from a 5-year average near 72x to roughly 16-22x, with PEG down to 0.44-0.60x — one of the cheapest large-caps in the market alongside Broadcom. The bull case rests on institutional flows: $243.0B in net 12-month inflows, 4,567 buying institutions vs. 3,602 selling — framed explicitly as "retail panic vs. institutional accumulation." The bear case is share erosion, not demand collapse: NVIDIA's CoWoS packaging allocation is projected to fall from ~60% today to 55% by 2027F as AMD and Broadcom-designed ASICs (Google TPU, Meta MTIA, Microsoft Maia) gain share, with JPMorgan projecting NVIDIA's inference share could fall toward ~40% by 2028. Vera Rubin is the swing catalyst: the platform's CPO-driven network content per rack jumps roughly 29x versus the current GB300 generation ($315K → $9.4M) — either NVIDIA's next monetization leg or its next execution risk, depending on ramp timing. Next checkpoint: Q2 FY2027 earnings on August 26, 2026.</p>
+        </div>
+        <div class="card">
+          <div class="card-label">Theme 4 · Photonics</div>
+          <div style="font-weight:700;margin-bottom:8px">Photonics/CPO: The Bottleneck After Memory</div>
+          <p style="font-size:0.88rem;color:var(--gf-muted)">Goldman Sachs models the optical-networking TAM growing from $18.2B (2026E) to $154.3B by 2028 — roughly 9x — as copper interconnects hit their 2-meter physical limit; Co-Packaged Optics' share of that pie rises from ~6% to ~58-59%. Supply is the real constraint: China controls ~70% of global indium production, and February 2025 export-licensing requirements spiked InP wafer prices roughly 250% ($1,400 → $5,000); Lumentum says it is "sold out through end of 2027" on CPO-related lines. NVIDIA has already locked in $4B of direct equity/purchase commitments across Coherent and Lumentum to secure laser supply; Broadcom, Intel and Cisco together hold roughly 50.6% of the silicon-photonics market that earlier, less-rigorous coverage overlooked entirely. A historical caution flagged directly in the source material: the 2021-22 optical correction cost Lumentum 40%+ of revenue and took 43 months to recover; today's optical names trade at multiples explicitly compared to the dot-com era (COHR ~181x, LITE 141-180x trailing P/E). Worth keeping: "Photonics is probably the next bottleneck after memory, but these stocks have run a lot and can't go up in a straight line." — Matthew Tuttle, FOTO ETF Manager.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">📈 Weekly Performance</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="chart-card">
+        <div class="chart-title">Weekly % Change Across 12 Core Tickers</div>
+        <svg viewBox="0 0 640 352" width="100%" height="352" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="322" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="340" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">0%</text><line x1="287.5" y1="16" x2="287.5" y2="322" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="287.5" y="340" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">5%</text><line x1="385.0" y1="16" x2="385.0" y2="322" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="385.0" y="340" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">10%</text><line x1="482.5" y1="16" x2="482.5" y2="322" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="482.5" y="340" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">15%</text><line x1="580.0" y1="16" x2="580.0" y2="322" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="580.0" y="340" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">20%</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">BABA</text><rect x="190" y="22.8" width="336.6" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="534.6" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">+17.3%</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">META</text><rect x="190" y="56.8" width="271.4" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="469.4" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">+13.9%</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">AVGO</text><rect x="190" y="90.8" width="217.6" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="415.6" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">+11.2%</text><text x="178" y="138.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">NVDA</text><rect x="190" y="124.8" width="150.0" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="348.0" y="138.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">+7.7%</text><text x="178" y="172.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">AMD</text><rect x="190" y="158.8" width="133.4" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="331.4" y="172.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">+6.8%</text><text x="178" y="206.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">LITE</text><rect x="190" y="192.8" width="130.3" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="328.3" y="206.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">+6.7%</text><text x="178" y="240.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">JD</text><rect x="190" y="226.8" width="120.5" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="318.5" y="240.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">+6.2%</text><text x="178" y="274.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">ONTO</text><rect x="190" y="260.8" width="92.2" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="290.2" y="274.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">+4.7%</text><text x="178" y="308.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">MU</text><rect x="190" y="294.8" width="17.2" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="215.2" y="308.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">+0.9%</text><line x1="213.0" y1="12" x2="213.0" y2="326" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 3"/><text x="213.0" y="8" text-anchor="middle" font-size="10.5" font-weight="600" fill="#38bdf8" font-family="inherit">SPX +1.2%</text></svg>
+        <div class="chart-caption">BABA (+17.3%) and META (+13.9%) were the week's strongest movers; MU (+0.9%) stayed relatively quiet. Excluded from the chart, MSFT (-1.4%) and DJT (-1.4%) closed the week slightly negative — see the ticker cards below. Dashed line: S&P 500 (SPY) weekly +1.2%.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🏷️ Ticker Cards — Fundamentals + Technicals</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+
+      <div class="ticker-card">
+        <div class="ticker-head">
+          <div><span class="hero-ticker">$NVDA</span><span class="ticker-name">NVIDIA</span></div>
+          <div><span class="meta-pill bull">+7.7% week</span><span class="meta-pill info">RSI 56.1</span></div>
+        </div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-num">$209.81</div><div class="kpi-label">Close (Jul 10)</div></div>
+          <div class="kpi"><div class="kpi-num up">Above ↑↑↑</div><div class="kpi-label">SMA20/50/200</div></div>
+          <div class="kpi"><div class="kpi-num">-11.3%</div><div class="kpi-label">From 52W High ($236.54)</div></div>
+        </div>
+        <ul class="bullets">
+          <li>12-month net institutional inflow +$243.0B (4,567 buying vs. 3,602 selling institutions); $410.6M in insider selling is called "marginal" against a $4.7T market cap.</li>
+          <li>Forward P/E compressed from a 5-year average of ~72x to ~16-22x, PEG 0.44-0.60x — right behind Broadcom (0.44x) as one of the market's cheapest.</li>
+          <li>Q1 FY27 revenue $81.6B (+85% YoY), Q2 guide $91.0B — guidance already assumes zero China data-center revenue.</li>
+          <li>CoWoS packaging allocation is slipping for a second straight year: ~60% today → 55% by 2027F as AMD/Broadcom/Google TPU gain share.</li>
+          <li>Vera Rubin's ramp is the key swing factor: NVL72 rack network content jumps 29x ($315K→$9.4M) — an opportunity or a risk depending on CPO adoption speed. Catalyst: Q2 FY27 earnings August 26.</li>
+        </ul>
+        <div class="insight-box">
+          <strong>Next-week levels:</strong> Pivot $203.84 · Support S1 $197.11 / S2 $184.42 · Resistance R1 $216.53 / R2 $223.26 · 20-day range $189.80–$213.99
+        </div>
+      </div>
+
+      <div class="ticker-card">
+        <div class="ticker-head">
+          <div><span class="hero-ticker">$META</span><span class="ticker-name">Meta Platforms</span></div>
+          <div><span class="meta-pill bull">+13.9% week</span><span class="meta-pill neu">RSI 65.6</span></div>
+        </div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-num">$664.06</div><div class="kpi-label">Close (Jul 10)</div></div>
+          <div class="kpi"><div class="kpi-num up">Above ↑↑↑</div><div class="kpi-label">SMA20/50/200</div></div>
+          <div class="kpi"><div class="kpi-num">-16.6%</div><div class="kpi-label">From 52W High ($796.25)</div></div>
+        </div>
+        <ul class="bullets">
+          <li>Cheapest mega-cap on pure PEG basis (0.86x, 25% growth) — "the clearest PEG-based buy signal in the S&P 500."</li>
+          <li>2026 capex guided up to $125-145B (57-72% of revenue) — CFO Susan Li: "we continuously underestimate our compute needs." BofA rates the memory-order-cut rumor false with high confidence.</li>
+          <li>"Meta Compute" isn't a live product yet — internal planning only; $30-45B/yr potential revenue if launched, but Meta is simultaneously CoreWeave's ($21B) and Nebius's ($27B) largest customer while planning to compete with both.</li>
+          <li>Muse Spark 1.1 leads globally on medical reasoning (HealthBench Hard 42.8, beating Gemini 3.1 Pro's 20.6) but trails on general reasoning (ARC-AGI-2 42.5 vs. Gemini's 77.1) — positioned as a health-vertical specialist.</li>
+        </ul>
+        <div class="insight-box">
+          <strong>Next-week levels:</strong> Pivot $639.66 · Support S1 $601.47 / S2 $538.88 · Resistance R1 $702.25 / R2 $740.44 · RSI is near short-term overbought — watch for a pullback
+        </div>
+      </div>
+
+      <div class="ticker-card">
+        <div class="ticker-head">
+          <div><span class="hero-ticker">$MSFT</span><span class="ticker-name">Microsoft</span></div>
+          <div><span class="meta-pill bear">-1.4% week</span><span class="meta-pill neu">RSI 47.5</span></div>
+        </div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-num">$385.10</div><div class="kpi-label">Close (Jul 10)</div></div>
+          <div class="kpi"><div class="kpi-num neu">Mixed ↑↓↓</div><div class="kpi-label">Above SMA20, below 50/200</div></div>
+          <div class="kpi"><div class="kpi-num">-30.7%</div><div class="kpi-label">From 52W High ($555.45)</div></div>
+        </div>
+        <ul class="bullets">
+          <li>Verified BUY call, analyst target $560-587 — but the original source's "$100B OpenAI+Anthropic ARR" claim was corrected down to ~$72B combined.</li>
+          <li>Q3 FY26: revenue $82.89B (+18%), Azure +40% YoY, AI ARR $37B (+123%) — but ex-OpenAI Commercial RPO growth was only +26% (the headline +99% overstates organic backlog).</li>
+          <li>The "PEG Paradox": PEG 0.76-0.82x assumes 28-30% EPS growth; if growth slows to 15-18%, fair forward P/E is 17-20x, meaning MSFT may not actually be cheap at 23x.</li>
+          <li>OpenAI's April 2026 $38B+ AWS deal broke Azure's AI exclusivity — "Azure's AI moat is broken"; 94% of enterprises now use multi-cloud.</li>
+          <li>Copilot attach rate is still only 4.4% of the 450M M365 base.</li>
+        </ul>
+        <div class="insight-box">
+          <strong>Next-week levels:</strong> Pivot $384.67 · Support S1 $373.78 / S2 $362.45 · Resistance R1 $396.00 / R2 $406.89 · A close above SMA50 ($403.62) is the key trend-confirmation level
+        </div>
+      </div>
+
+      <div class="ticker-card">
+        <div class="ticker-head">
+          <div><span class="hero-ticker">$AVGO</span><span class="ticker-name">Broadcom</span></div>
+          <div><span class="meta-pill bull">+11.2% week</span><span class="meta-pill info">RSI 53.9</span></div>
+        </div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-num">$400.67</div><div class="kpi-label">Close (Jul 10)</div></div>
+          <div class="kpi"><div class="kpi-num neu">Mixed ↑↓↑</div><div class="kpi-label">Above SMA20/200, below SMA50</div></div>
+          <div class="kpi"><div class="kpi-num">-19.1%</div><div class="kpi-label">From 52W High ($495.00)</div></div>
+        </div>
+        <ul class="bullets">
+          <li>Beat Q2 2026: revenue $22.2B (+48%), EPS $1.96 (+85%); Q3 AI semiconductor revenue guided above $16B; 2027 target $100B+.</li>
+          <li>The cheapest forward PEG in the AI chip complex: 0.41-0.44x — below even NVIDIA's (0.50-0.60x).</li>
+          <li>Analyst coverage overwhelmingly bullish: 44 of 45 analysts rate Buy, average target ~$493-525; a 10:1 stock split was executed; the Apple chip-supply deal was extended to 2031.</li>
+          <li>Controls roughly 60% of the custom AI ASIC market (co-designs Google TPU, Meta MTIA, Microsoft Maia) — TrendForce sees ASIC demand matching GPU demand by 2027.</li>
+          <li>The Bailly CPO switch (51.2 Tb/s) began shipping in H2 2026; Broadcom+Intel+Cisco together hold roughly 50.6% of the silicon-photonics market.</li>
+        </ul>
+        <div class="insight-box">
+          <strong>Next-week levels:</strong> Pivot $390.07 · Support S1 $372.61 / S2 $344.56 · Resistance R1 $418.12 / R2 $435.57 · A durable close above SMA50 ($406.46) would confirm the trend
+        </div>
+      </div>
+
+      <div class="ticker-card">
+        <div class="ticker-head">
+          <div><span class="hero-ticker">$AMD</span><span class="ticker-name">Advanced Micro Devices</span></div>
+          <div><span class="meta-pill bull">+6.8% week</span><span class="meta-pill info">RSI 56.8</span></div>
+        </div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-num">$553.24</div><div class="kpi-label">Close (Jul 10)</div></div>
+          <div class="kpi"><div class="kpi-num up">Above ↑↑↑</div><div class="kpi-label">SMA20/50/200</div></div>
+          <div class="kpi"><div class="kpi-num">-5.4%</div><div class="kpi-label">From 52W High ($584.73)</div></div>
+        </div>
+        <ul class="bullets">
+          <li>Central "CPU Bottleneck" thesis: in agentic AI workloads, 90.6% of latency sits in the CPU, not the GPU — pushing CPU:GPU ratios from 1:4-1:8 toward 1:1-1:2.</li>
+          <li>~40x forward P/E vs. NVIDIA's ~16-22x is called a "narrative premium," unexplained by growth (46% vs. 85-120%) or margin (13% vs. 63%).</li>
+          <li>Dual-vendor wins piling up: OpenAI 6GW, Oracle 50,000 MI450 units, Meta 6GW (Feb 2026, after already signing NVIDIA) — but AMD issued ~320M warrant shares (~20% potential dilution) to land these deals.</li>
+          <li>Goldman Sachs raised its price target to $640; MI300X demand from Microsoft/Meta is called "quite strong."</li>
+          <li>IV Rank above 100% (elevated options pricing) and a 2027F CoWoS share slipping to 8.5% are flagged as risks.</li>
+        </ul>
+        <div class="insight-box">
+          <strong>Next-week levels:</strong> Pivot $541.30 · Support S1 $510.09 / S2 $466.95 · Resistance R1 $584.44 / R2 $615.65 · Just 5.4% below its 52-week high — one of the basket's strongest trends
+        </div>
+      </div>
+
+      <div class="ticker-card">
+        <div class="ticker-head">
+          <div><span class="hero-ticker">$MU</span><span class="ticker-name">Micron Technology</span></div>
+          <div><span class="meta-pill neu">+0.9% week</span><span class="meta-pill info">RSI 49.5</span></div>
+        </div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-num">$984.18</div><div class="kpi-label">Close (Jul 10)</div></div>
+          <div class="kpi"><div class="kpi-num neu">Mixed ↓↑↑</div><div class="kpi-label">Below SMA20, above 50/200</div></div>
+          <div class="kpi"><div class="kpi-num">-21.6%</div><div class="kpi-label">From 52W High ($1,255.00)</div></div>
+        </div>
+        <ul class="bullets">
+          <li>The cheapest large-cap growth story in the market by PEG — 0.04-0.14x across sources, forward P/E 6.4-6.8x — still tagged "deep value" despite a 200-300%+ YTD run.</li>
+          <li>FY26 Q3: record $41.5B revenue, 84.9% gross margin, 16 Strategic Customer Agreements locking in ~$100B cumulative revenue — but the price-ceiling structure caps Micron's upside relative to SK Hynix's now-uncapped contracts.</li>
+          <li>HBM share estimates cluster around 15-20% (3rd place behind SK Hynix ~56-62% and Samsung ~22-30%) — the smallest share of the big three, the main knock on the bull case.</li>
+          <li>2026 HBM capacity is fully sold out; CHIPS Act $6.1B; the Idaho fab isn't meaningfully online until mid-2027.</li>
+        </ul>
+        <div class="insight-box">
+          <strong>Next-week levels:</strong> Pivot $970.45 · Support S1 $905.39 / S2 $826.61 · Resistance R1 $1,049.23 / R2 $1,114.29 · A quiet stabilization week after last week's sharp -13.84% drawdown
+        </div>
+      </div>
+
+      <div class="ticker-card">
+        <div class="ticker-head">
+          <div><span class="hero-ticker">$LITE</span><span class="ticker-name">Lumentum</span></div>
+          <div><span class="meta-pill bull">+6.7% week</span><span class="meta-pill neu">RSI 45.0</span></div>
+        </div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-num">$776.96</div><div class="kpi-label">Close (Jul 10)</div></div>
+          <div class="kpi"><div class="kpi-num down">Below ↓↓↑</div><div class="kpi-label">Below SMA20/50, above 200</div></div>
+          <div class="kpi"><div class="kpi-num">-15.7%</div><div class="kpi-label">4-Week Return</div></div>
+        </div>
+        <ul class="bullets">
+          <li>FY26 Q3 record revenue $808.4M (+90% YoY); the world's only volume supplier of 200G EML lasers (~90% share); OCS backlog above $400M.</li>
+          <li>FY2027 revenue target raised to $4.6B, from $1.65B in FY2025 — management says it is "sold out through end of 2027" on CPO lines.</li>
+          <li>$2B NVIDIA equity investment plus a multi-year, non-exclusive purchase commitment; building a 5th InP fab in Greensboro, NC.</li>
+          <li>The sector's steepest bear case: -56% to -76% drawdown risk ($240-433) if the CPO ramp slips or capex pauses — in the 2021-22 optical correction, Lumentum's revenue fell 40%+ and took 43 months to recover.</li>
+          <li>Trailing P/E ~141-180x — explicitly compared to dot-com-era optical valuations.</li>
+        </ul>
+        <div class="insight-box warn">
+          <strong>Next-week levels:</strong> Pivot $754.65 · Support S1 $702.74 / S2 $628.52 · Resistance R1 $828.87 / R2 $880.78 · The fundamental story is intact but price is still in a short/medium-term downtrend — below SMA20/50
+        </div>
+      </div>
+
+      <div class="ticker-card">
+        <div class="ticker-head">
+          <div><span class="hero-ticker">$SKHY</span><span class="ticker-name">SK hynix (US ADS)</span></div>
+          <div><span class="meta-pill info">New IPO — Jul 10</span></div>
+        </div>
+        <ul class="bullets">
+          <li>The $26.5-29.4B secondary ADS offering began trading on Nasdaq July 10, right on the heels of Korean regulatory approval on July 3.</li>
+          <li>HBM market leader with 50-62% share depending on the report/quarter; 2026 capacity is 100% pre-sold; Q1 2026 operating margin was 72%.</li>
+          <li>Fragility already demonstrated: the July 2 "Meta will resell AI capacity" headline alone triggered a 12-14.5% single-day crash and tripped the KOSPI circuit breaker.</li>
+          <li>Forward P/E of just 6-8x is "strikingly low," but flagged as a possible repeat of 2022's setup, when the same stock posted its first operating loss in a decade after an identical low-multiple entry point.</li>
+          <li>BofA is the IPO's lead underwriter — a direct conflict-of-interest flag on its own bullish memory-sector coverage.</li>
+        </ul>
+        <div class="insight-box warn">
+          <strong>Technical note:</strong> SKHY only began trading today (July 10), so there isn't a full week of price history yet — RSI, moving averages, and pivots can't be computed. Treat any near-term price action as IPO-week noise, not a trend signal.
+        </div>
+      </div>
+
+      <div class="ticker-card">
+        <div class="ticker-head">
+          <div><span class="hero-ticker">$BABA</span><span class="ticker-name">Alibaba Group</span></div>
+          <div><span class="meta-pill bull">+17.3% week</span><span class="meta-pill info">RSI 56.1</span></div>
+        </div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-num">$112.73</div><div class="kpi-label">Close (Jul 10)</div></div>
+          <div class="kpi"><div class="kpi-num neu">Mixed ↑↓↓</div><div class="kpi-label">Above SMA20, below 50/200</div></div>
+          <div class="kpi"><div class="kpi-num">-41.5%</div><div class="kpi-label">From 52W High ($192.67)</div></div>
+        </div>
+        <ul class="bullets">
+          <li>The week's strongest mover (+17.3%), on an oversold-reversal setup — RSI(14) had fallen to 25.75 (oversold) before this week's bounce.</li>
+          <li>Q1 2026: revenue CN¥1.02T (+2.7% YoY, in line), but EPS -17.2% and net profit -18% YoY as AI capex pressures margin (profit margin down to 10% from 13%).</li>
+          <li>Analyst consensus strongly bullish: 38 of 39 analysts rate Buy, average 12-month target $190.65 (vs. ~$113 now).</li>
+          <li>Overhangs: the Pentagon's June 2026 "Chinese military company" classification, a $600M US settlement, and pressure on Western sponsorship partners (Ted Leonsis/Wizards, the Olympics).</li>
+        </ul>
+        <div class="insight-box">
+          <strong>Next-week levels:</strong> Pivot $108.23 · Support S1 $100.87 / S2 $89.02 · Resistance R1 $120.08 / R2 $127.44 · The longer-term downtrend (below SMA50/200) is not yet a confirmed reversal
+        </div>
+      </div>
+
+      <div class="ticker-card">
+        <div class="ticker-head">
+          <div><span class="hero-ticker">$JD</span><span class="ticker-name">JD.com</span></div>
+          <div><span class="meta-pill bull">+6.2% week</span><span class="meta-pill info">RSI 56.2</span></div>
+        </div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-num">$28.26</div><div class="kpi-label">Close (Jul 10)</div></div>
+          <div class="kpi"><div class="kpi-num neu">Mixed ↑↓↓</div><div class="kpi-label">Above SMA20, below 50/200</div></div>
+          <div class="kpi"><div class="kpi-num">-23.3%</div><div class="kpi-label">From 52W High ($36.86)</div></div>
+        </div>
+        <ul class="bullets">
+          <li>Beat Q1 2026: revenue CN¥315.7B (+4.9%), non-GAAP EPS $0.75 (beat by $0.22) — JPMorgan called it "seriously undervalued."</li>
+          <li>The cheapest name in the whole 12-ticker basket on 2027E P/E (8x) — "very cheap" by the source's own tag; 35 of 37 analysts rate Buy/Strong Buy, average target ~$38-39.</li>
+          <li>Segment mix improving: JD Retail growing, JD Logistics more efficient, JD Food Delivery investment pulling back (narrower losses).</li>
+          <li>The thesis is a China-consumption-recovery play — smaller and more idiosyncratic than the AI-infrastructure names dominating the rest of the basket.</li>
+        </ul>
+        <div class="insight-box">
+          <strong>Next-week levels:</strong> Pivot $27.76 · Support S1 $26.96 / S2 $25.66 · Resistance R1 $29.06 / R2 $29.86
+        </div>
+      </div>
+
+      <div class="ticker-card">
+        <div class="ticker-head">
+          <div><span class="hero-ticker">$DJT</span><span class="ticker-name">Trump Media & Technology Group</span></div>
+          <div><span class="meta-pill bear">-1.4% week</span><span class="meta-pill info">RSI 52.4</span></div>
+        </div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-num">$8.43</div><div class="kpi-label">Close (Jul 10)</div></div>
+          <div class="kpi"><div class="kpi-num neu">Mixed ↑↓↓</div><div class="kpi-label">Above SMA20, below 50/200</div></div>
+          <div class="kpi"><div class="kpi-num">-59.7%</div><div class="kpi-label">From 52W High ($20.92)</div></div>
+        </div>
+        <ul class="bullets">
+          <li>This week's weakest core name, following last week's +15.1% pop — Q1 2026 revenue was just $871K (+6% YoY) against a $405.9M net loss; "fundamental valuation is difficult, revenue is nearly nonexistent."</li>
+          <li>$2.1B in financial assets gives it a "strong balance sheet" despite the operating losses; a $6B TAE Technologies nuclear-fusion merger is the most substantive announced catalyst.</li>
+          <li>Trump holds 114.75M shares (a 41% stake); the stock trades on political/social-media catalysts more than fundamentals.</li>
+          <li>The lowest-conviction name in its own source report (2/5 stars, "handle with caution"); portfolio guidance caps allocation at 5% with an explicit "you could lose your entire principal" warning.</li>
+        </ul>
+        <div class="insight-box">
+          <strong>Next-week levels:</strong> Pivot $8.46 · Support S1 $7.97 / S2 $7.51 · Resistance R1 $8.92 / R2 $9.41
+        </div>
+      </div>
+
+      <div class="ticker-card">
+        <div class="ticker-head">
+          <div><span class="hero-ticker">$ONTO</span><span class="ticker-name">Onto Innovation</span></div>
+          <div><span class="meta-pill bull">+4.7% week</span><span class="meta-pill info">RSI 52.8</span></div>
+        </div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-num">$322.12</div><div class="kpi-label">Close (Jul 10)</div></div>
+          <div class="kpi"><div class="kpi-num neu">Mixed ↓↑↑</div><div class="kpi-label">Below SMA20, above 50/200</div></div>
+          <div class="kpi"><div class="kpi-num">-16.7%</div><div class="kpi-label">From 52W High ($386.46)</div></div>
+        </div>
+        <ul class="bullets">
+          <li>The Dragonfly G5 metrology platform has become the standard for HBM4 production — "the sole focus now is meeting demand."</li>
+          <li>Acquired a 27% stake in Rigaku Holdings for $710M, pairing AI-diffraction software with X-ray hardware to target a new $1B hybrid market.</li>
+          <li>Q1 2026 revenue hit a record $291.95M (+9.5% YoY, the slowest growth in its semiconductor-strategic peer group), but non-GAAP EPS fell -48% YoY on margin pressure; Q2 guide $320-330M.</li>
+          <li>FY2026 revenue is guided above $1.3B; it holds the 2nd-largest weight (25%) in the source report's "best ideas" allocation, rated 5-star "sector leader."</li>
+        </ul>
+        <div class="insight-box">
+          <strong>Next-week levels:</strong> Pivot $308.07 · Support S1 $282.60 / S2 $243.07 · Resistance R1 $347.59 / R2 $373.06 · The stock saw an unusually wide ~19% intraweek range (high $333.54 / low $268.54)
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🧪 Memory Market Share — HBM</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="chart-card">
+        <div class="chart-title">HBM Market Share (as of July 2026)</div>
+        <div class="donut-chart">
+          <svg class="donut-svg" viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="chart"><circle cx="90" cy="90" r="70" fill="none" stroke="var(--gf-border)" stroke-width="20"/><circle cx="90" cy="90" r="70" fill="none" stroke="#38bdf8" stroke-width="20" stroke-dasharray="248.06 439.82" stroke-dashoffset="0.00" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #38bdf866)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#fbbf24" stroke-width="20" stroke-dasharray="125.35 439.82" stroke-dashoffset="-248.06" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #fbbf2466)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#4ade80" stroke-width="20" stroke-dasharray="66.41 439.82" stroke-dashoffset="-373.41" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #4ade8066)"/><text x="90" y="85" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="700" font-family="inherit">56.4%</text><text x="90" y="102" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="inherit">SK Hynix share</text></svg>
+          <div class="donut-legend">
+            <div class="donut-legend-item"><div class="donut-legend-color" style="background:#38bdf8"></div><div><div class="donut-legend-label">SK Hynix</div><div class="donut-legend-value">56.4% share</div></div></div>
+            <div class="donut-legend-item"><div class="donut-legend-color" style="background:#fbbf24"></div><div><div class="donut-legend-label">Samsung</div><div class="donut-legend-value">28.5% share</div></div></div>
+            <div class="donut-legend-item"><div class="donut-legend-color" style="background:#4ade80"></div><div><div class="donut-legend-label">Micron</div><div class="donut-legend-value">15.1% share</div></div></div>
+          </div>
+        </div>
+        <div class="chart-caption">Source: "AI Ecosystem Analysis: The Maturity Threshold" (July 10, 2026). Other reports give slightly different splits by quarter/segment (SK Hynix ranging 50-62%) — this chart uses the single freshest source's figures.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🎯 NVDA Next-Week Technical Levels</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="chart-card">
+        <div class="chart-title">NVDA Support / Resistance Ladder</div>
+        <svg viewBox="0 0 700 120" width="100%" height="120" role="img" aria-label="chart"><line x1="24" y1="66" x2="676" y2="66" stroke="#64748b" stroke-width="1.4"/><line x1="107.7" y1="66" x2="107.7" y2="74" stroke="#4ade80" stroke-width="2"/><circle cx="107.7" cy="66" r="4" fill="#4ade80"/><text x="107.7" y="96" text-anchor="middle" font-size="10.5" font-weight="700" fill="#4ade80" font-family="inherit">S2</text><text x="107.7" y="108" text-anchor="middle" font-size="11" fill="#e2e8f0" font-family="inherit">$184</text><line x1="273.2" y1="66" x2="273.2" y2="74" stroke="#4ade80" stroke-width="2"/><circle cx="273.2" cy="66" r="4" fill="#4ade80"/><text x="273.2" y="96" text-anchor="middle" font-size="10.5" font-weight="700" fill="#4ade80" font-family="inherit">S1</text><text x="273.2" y="108" text-anchor="middle" font-size="11" fill="#e2e8f0" font-family="inherit">$197</text><line x1="526.4" y1="66" x2="526.4" y2="58" stroke="#f87171" stroke-width="2"/><circle cx="526.4" cy="66" r="4" fill="#f87171"/><text x="526.4" y="48" text-anchor="middle" font-size="10.5" font-weight="700" fill="#f87171" font-family="inherit">R1</text><text x="526.4" y="36" text-anchor="middle" font-size="11" fill="#e2e8f0" font-family="inherit">$217</text><line x1="614.2" y1="66" x2="614.2" y2="58" stroke="#f87171" stroke-width="2"/><circle cx="614.2" cy="66" r="4" fill="#f87171"/><text x="614.2" y="48" text-anchor="middle" font-size="10.5" font-weight="700" fill="#f87171" font-family="inherit">R2</text><text x="614.2" y="36" text-anchor="middle" font-size="11" fill="#e2e8f0" font-family="inherit">$223</text><line x1="438.8" y1="20" x2="438.8" y2="112" stroke="#38bdf8" stroke-width="1.6" stroke-dasharray="4 3"/><circle cx="438.8" cy="66" r="5.5" fill="#38bdf8"/></svg>
+        <div class="chart-caption">Dashed line = current price $209.81 (July 10 close). Pivot $203.84 isn't shown on the chart but sits just below the support band. Levels are computed from this week's OHLC data (classic pivot method) — not the source Flow reports' own price targets.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🧩 Also Watched This Week</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="font-size:0.88rem;color:var(--gf-muted);margin-bottom:10px">Beyond the 12 core tickers, these names got substantial coverage in this week's Flow but not enough dedicated depth for their own card:</p>
+      <ul class="bullets">
+        <li><strong>CRWV / NBIS (neocloud):</strong> Backlogs of $99.4B and $46-50B respectively; both sold off sharply on July 1's Meta Compute news (CRWV -13.9%, NBIS -17%) but remain YTD-positive. Short interest is "extreme" (CRWV short float 33.8%, NBIS 25.7%).</li>
+        <li><strong>TSM:</strong> Nomura raised its price target 21% to NT$3,425; July 16's Q2 earnings are flagged as the sector's "first inflection point."</li>
+        <li><strong>GOOGL / AMZN:</strong> 2026E capex of ~$175-185B and ~$200B respectively; Google's Ironwood (TPU v8) and AWS's Trainium 3 custom-silicon roadmaps are accelerating.</li>
+        <li><strong>ARM:</strong> P/E of 354.73x, RSI(14) 78.53 (overbought) — the source report's call is "Sell/Wait"; there's a 20x gap between AGI CPU demand ($20B) and secured production capacity ($1B).</li>
+        <li><strong>Humanoid robotics chain (QCOM, CGNX, OUST, AMBA, STM, MP):</strong> Morgan Stanley projects a $5T market by 2050; China accounts for 74-80% of global shipments.</li>
+        <li><strong>Strait of Hormuz crisis (July 7):</strong> three commercial tankers were struck, putting roughly a fifth of global oil supply at risk; crude is consolidating around $77/barrel — an added macro headwind for richly-valued tech multiples.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🗺️ Next-Week Opportunities</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <table>
+        <thead><tr><th>Ticker</th><th>Direction</th><th>Entry Zone</th><th>Stop</th><th>Target</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td><strong>NVDA</strong></td><td><span class="tag tag-green">Buy</span></td><td>$205–210</td><td>$197 (S1)</td><td>$216–223 (R1–R2)</td><td>The institutional-accumulation theme is intact; a close above R1 would confirm. Catalyst: August 26 earnings.</td></tr>
+          <tr><td><strong>AVGO</strong></td><td><span class="tag tag-green">Buy</span></td><td>$395–405</td><td>$373 (S1)</td><td>$418–436 (R1–R2)</td><td>A durable close above SMA50 ($406) confirms the trend; the Apple deal + post-split liquidity are supportive.</td></tr>
+          <tr><td><strong>MU</strong></td><td><span class="tag tag-green">Buy (on pullback)</span></td><td>$905–935 (S1 band)</td><td>$880</td><td>$1,049–1,114 (R1–R2)</td><td>The basket's cheapest growth story at PEG 0.04-0.14x; watch for spillover risk from the Samsung shock.</td></tr>
+          <tr><td><strong>META</strong></td><td><span class="tag tag-orange">Watch / Light Buy</span></td><td>$600–640 (pullback)</td><td>$580</td><td>$702–740 (R1–R2)</td><td>RSI 65.6 is near short-term overbought; one of the week's strongest moves has already happened.</td></tr>
+          <tr><td><strong>BABA</strong></td><td><span class="tag tag-orange">Speculative Watch</span></td><td>$108–113</td><td>$101 (S1)</td><td>$120–127 (R1–R2)</td><td>A strong oversold bounce, but still below SMA50/200; the Pentagon classification carries geopolitical risk.</td></tr>
+          <tr><td><strong>SKHY</strong></td><td><span class="tag tag-blue">Watch Only</span></td><td>—</td><td>—</td><td>—</td><td>New IPO, no technical data yet. Wait for 1-2 weeks of price discovery before positioning, until the ADS↔KRX fungibility risk clarifies.</td></tr>
+          <tr><td><strong>LITE</strong></td><td><span class="tag tag-red">Avoid / Wait</span></td><td>—</td><td>—</td><td>—</td><td>-15.7% over 4 weeks, below SMA20/50. The fundamental story ($4.6B CPO revenue by 2028) is intact but momentum hasn't turned; wait for a close above R1 ($829).</td></tr>
+        </tbody>
+      </table>
+      <div class="insight-box warn">
+        <strong>Note:</strong> All levels above are conditional scenarios computed from this week's OHLC data (classic pivot + swing methods), not firm recommendations. The market regime still carries a "narrow leadership" warning — keep position sizing disciplined until S5TH breaks above 68.58%.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🔗 Sources</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="font-size:0.85rem;color:var(--gf-muted);margin-bottom:10px">Of the 34 Flow reports published this week (July 4-10, 2026), those directly cited in this digest:</p>
+      <table>
+        <thead><tr><th>Date</th><th>Title</th><th>Ticker(s)</th></tr></thead>
+        <tbody>
+          <tr><td>Jul 5</td><td>PEG Ratio Deep Analysis: 20 Popular Stocks</td><td>META, NVDA, MU, TSLA, GOOGL</td></tr>
+          <tr><td>Jul 5</td><td>SK hynix US ADS IPO — Deep Research Report</td><td>SKHY</td></tr>
+          <tr><td>Jul 5</td><td>S5TH Market Breadth Indicator — Deep Analysis</td><td>MARKET</td></tr>
+          <tr><td>Jul 5</td><td>BofA Memory Technology Report — 4 Critical Claims</td><td>META, SKHYNIX, SAMSUNG, MICRON</td></tr>
+          <tr><td>Jul 6</td><td>NVDA Deep Analysis: Retail Panic vs. Institutional Accumulation</td><td>NVDA</td></tr>
+          <tr><td>Jul 6</td><td>AMD vs. NVIDIA Valuation Decoupling: CPU Bottleneck Trade</td><td>AMD, NVDA</td></tr>
+          <tr><td>Jul 6</td><td>BofA & TrendForce DRAM/NAND ASP Forecasts</td><td>MU, SKH</td></tr>
+          <tr><td>Jul 6</td><td>Photonics Value Chain: Deep Analysis + Verification & Revision</td><td>COHR, LITE, AAOI, ASML, BESI</td></tr>
+          <tr><td>Jul 6</td><td>Microsoft: Undervalued & Undisruptable? — Deep Verification</td><td>MSFT</td></tr>
+          <tr><td>Jul 6</td><td>Neocloud & AI Compute: Verified Deep Analysis</td><td>CRWV, NBIS, META, SPCX</td></tr>
+          <tr><td>Jul 6</td><td>$7.6T Goldman Sachs AI Infrastructure Map (Tracking Trillions)</td><td>MARKET</td></tr>
+          <tr><td>Jul 6</td><td>AI CapEx vs. Defense Budget — Deep Research</td><td>MARKET</td></tr>
+          <tr><td>Jul 6</td><td>AI Compute Pricing Re-Rating: Deep Research</td><td>CRWV, NBIS</td></tr>
+          <tr><td>Jul 7</td><td>Market Report: Gainers vs Losers</td><td>MARKET</td></tr>
+          <tr><td>Jul 7</td><td>Samsung's Record Earnings vs. Stock Decline: AI Bottleneck Trade</td><td>MARKET</td></tr>
+          <tr><td>Jul 8</td><td>Comprehensive Stock Analysis — BABA/AVGO/DJT/JD/ONTO</td><td>BABA, AVGO, DJT, JD, ONTO</td></tr>
+          <tr><td>Jul 8</td><td>NVIDIA Comprehensive Analysis: Fundamental, Technical & Macro Perspectives</td><td>NVDA</td></tr>
+          <tr><td>Jul 8</td><td>META: Technical Analysis & Price Forecast Report</td><td>META</td></tr>
+          <tr><td>Jul 8</td><td>NVIDIA 2030 Sales & Market Cap Projection</td><td>NVDA</td></tr>
+          <tr><td>Jul 9</td><td>Meta's Muse Spark 1.1: A Healthcare AI Leader That Lags in General Intelligence</td><td>META, GOOGL</td></tr>
+          <tr><td>Jul 9</td><td>The AI Token Explosion: The Limits of Physical Infrastructure</td><td>MSFT, AMZN, GOOGL, META, NVDA</td></tr>
+          <tr><td>Jul 9</td><td>AI Server Market: In-Depth Analysis (Nomura)</td><td>TSM, NVDA, GOOGL, AMD, AVGO</td></tr>
+          <tr><td>Jul 9</td><td>The AI Infrastructure Supercycle: The $2.27 Trillion Data Center Race</td><td>NVDA, AMD, AVGO, MSFT, AMZN, META</td></tr>
+          <tr><td>Jul 10</td><td>Goldman Sachs Optical Networking & CPO Revolution: A $154B AI Infrastructure Shift</td><td>LITE, NVDA, AVGO</td></tr>
+          <tr><td>Jul 10</td><td>Advanced Short-Interest & Squeeze Analysis Dashboard</td><td>NBIS, CRWV, SOXX, IREN, WULF, HIMS</td></tr>
+          <tr><td>Jul 10</td><td>Global Humanoid Robotics Sector Analysis: The 8-Layer Investment Map</td><td>NVDA, MU, QCOM, CGNX, OUST, AMBA, STM, MP</td></tr>
+          <tr><td>Jul 10</td><td>AI Ecosystem Analysis: The Maturity Threshold</td><td>SKHY, MU</td></tr>
+          <tr><td>Jul 10</td><td>NVIDIA Valuation Analysis: The Cyclicality Illusion</td><td>NVDA</td></tr>
+          <tr><td>Jul 10</td><td>Semiconductor Sector Strategic Analysis: Hormuz Crisis, ARM's Bottleneck</td><td>ARM, ONTO, AMD, ENTG, LSCC</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="disclaimer">
+  This report is a digest of source reports published on Gistify Flow during the week of July 4-10, 2026; it is for educational and informational purposes only and is not investment advice. Technical levels are computed from this week's realized OHLC data (classic pivot + moving-average methods); fundamental facts are attributed to the week's Flow sources, and where sources disagreed with each other (notably LITE's 52-week return and AMD's P/E comparisons), that is noted in the relevant section. Do your own research and consult an independent financial advisor.
+</div>
+<div class="footer">Gistify Weekly | July 4–10, 2026 | 34 sources · 12 tickers</div>
+
+</div>
+</body>
+</html>
