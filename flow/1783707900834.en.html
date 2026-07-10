@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Infrastructure & Marvell Analysis Dashboard (2026-2028) | $MRVL</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="AI Infrastructure & Marvell Analysis Dashboard (2026-2028) | $MRVL" />
+<meta property="og:description" content="Hyperscale CapEx hits $632B in 2026, AI network TAM reaches $154B by 2028. Marvell's Celestial AI ($3.25B) and custom-ASIC platform thesis; a memory price simulator, GB300 vs Rubin Ultra network architecture, and a sector valuation matrix — interactive dashboard." />
+<meta property="og:url" content="https://gistify.pro/flow/1783707900834.en.html" />
+<meta property="og:image" content="https://gistify.pro/gistifylogo.png?v=20260706" />
+<meta property="og:site_name" content="Gistify" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="AI Infrastructure & Marvell Analysis Dashboard (2026-2028) | $MRVL" />
+<meta name="twitter:description" content="Hyperscale CapEx, AI network TAM, and Marvell's custom-ASIC/optical platform thesis — interactive dashboard with a memory simulator, network architecture, and valuation matrix." />
+<meta name="twitter:image" content="https://gistify.pro/gistifylogo.png?v=20260706" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-purple:#a78bfa;--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:20px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:760px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:4px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent)}
+.section-body{padding:18px}
+.subhead{font-size:0.98rem;font-weight:700;margin:18px 0 10px;display:flex;align-items:center;gap:8px;color:var(--gf-text)}
+.subhead:first-child{margin-top:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+.chart-card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:18px;margin:14px 0}
+.chart-title{font-size:0.9rem;font-weight:700;color:var(--gf-accent);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.chart-title::before{content:'';display:inline-block;width:4px;height:16px;background:var(--gf-accent);border-radius:2px}
+.chart-caption{font-size:0.8rem;color:var(--gf-muted);margin-top:10px;border-top:1px solid var(--gf-border-subtle);padding-top:10px}
+.legend{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:10px;font-size:0.78rem;color:var(--gf-muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.donut-chart{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.donut-svg{flex-shrink:0}
+.donut-legend{display:flex;flex-direction:column;gap:8px}
+.donut-legend-item{display:flex;align-items:center;gap:8px;font-size:.85rem}
+.donut-legend-color{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.donut-legend-label{color:var(--gf-text)}
+.donut-legend-value{color:var(--gf-muted);font-size:.8rem}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.text-right{text-align:right}
+.text-center{text-align:center}
+.progress-bar{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:6px;height:12px;overflow:hidden;margin:4px 0}
+.progress-fill{height:100%;border-radius:6px;transition:width .4s}
+.fill-accent{background:linear-gradient(90deg,#0ea5e9,#38bdf8)}
+.fill-success{background:linear-gradient(90deg,#16a34a,#4ade80)}
+.fill-purple{background:linear-gradient(90deg,#7c3aed,#a78bfa)}
+.fill-muted{background:linear-gradient(90deg,#475569,#94a3b8)}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:12px;text-align:center}
+.kpi-num{font-size:1.35rem;font-weight:800;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:3px}
+ul.bullets{padding-left:20px;font-size:0.88rem;margin:8px 0}
+ul.bullets li{margin-bottom:6px}
+.row-between{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:0.85rem}
+/* CSS-only toggle system (no JS — survives script-stripping) */
+.toggle-input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.tabbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.tab-label{display:inline-flex;align-items:center;gap:6px;padding:9px 15px;border-radius:10px;font-size:0.82rem;font-weight:600;background:var(--gf-elev);border:1px solid var(--gf-border);color:var(--gf-muted);cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.tab-label:hover{color:var(--gf-text)}
+.toggle-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.toggle-label{display:inline-flex;align-items:center;gap:5px;padding:8px 14px;border-radius:8px;font-size:0.78rem;font-weight:600;background:var(--gf-elev);border:1px solid var(--gf-border);color:var(--gf-muted);cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.toggle-label:hover{color:var(--gf-text)}
+.mpane{display:none}
+.msresult,.nvresult,.slresult{display:none}
+/* main tab switching */
+#mt-dash:checked ~ #pane-dash,
+#mt-capex:checked ~ #pane-capex,
+#mt-mem:checked ~ #pane-mem,
+#mt-net:checked ~ #pane-net,
+#mt-mrvl:checked ~ #pane-mrvl,
+#mt-comp:checked ~ #pane-comp{display:block}
+#mt-dash:checked ~ .tabbar label[for="mt-dash"],
+#mt-capex:checked ~ .tabbar label[for="mt-capex"],
+#mt-mem:checked ~ .tabbar label[for="mt-mem"],
+#mt-net:checked ~ .tabbar label[for="mt-net"],
+#mt-mrvl:checked ~ .tabbar label[for="mt-mrvl"],
+#mt-comp:checked ~ .tabbar label[for="mt-comp"]{background:var(--gf-accent);color:#04121f;border-color:var(--gf-accent)}
+/* memory simulator */
+#ms-pc:checked ~ #msr-pc,
+#ms-consumer:checked ~ #msr-consumer,
+#ms-graphics:checked ~ #msr-graphics,
+#ms-server:checked ~ #msr-server,
+#ms-ssd:checked ~ #msr-ssd{display:block}
+#ms-pc:checked ~ .toggle-row label[for="ms-pc"],
+#ms-consumer:checked ~ .toggle-row label[for="ms-consumer"],
+#ms-graphics:checked ~ .toggle-row label[for="ms-graphics"],
+#ms-server:checked ~ .toggle-row label[for="ms-server"],
+#ms-ssd:checked ~ .toggle-row label[for="ms-ssd"]{background:var(--gf-accent);color:#04121f;border-color:var(--gf-accent)}
+/* networking GB300 vs Rubin */
+#nv-gb300:checked ~ #nvr-gb300,
+#nv-rubin:checked ~ #nvr-rubin{display:block}
+#nv-gb300:checked ~ .toggle-row label[for="nv-gb300"],
+#nv-rubin:checked ~ .toggle-row label[for="nv-rubin"]{background:var(--gf-accent);color:#04121f;border-color:var(--gf-accent)}
+/* Marvell architecture stack */
+#sl-optics:checked ~ #slr-optics,
+#sl-comp:checked ~ #slr-comp,
+#sl-net:checked ~ #slr-net{display:block}
+#sl-optics:checked ~ .toggle-row label[for="sl-optics"],
+#sl-comp:checked ~ .toggle-row label[for="sl-comp"],
+#sl-net:checked ~ .toggle-row label[for="sl-net"]{background:var(--gf-accent);color:#04121f;border-color:var(--gf-accent)}
+.disclaimer{text-align:center;padding:24px 16px;font-size:0.76rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:28px;line-height:1.6}
+.footer{text-align:center;padding:16px;font-size:0.78rem;color:var(--gf-muted)}
+@media(max-width:640px){.wrap{padding:16px 10px}.hero-h{font-size:1.25rem}.grid,.grid2,.grid3,.grid4{grid-template-columns:1fr}.kpi-row{grid-template-columns:repeat(2,1fr)}table{font-size:0.78rem}th,td{padding:6px 7px}.donut-chart{justify-content:center}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-10T21:25:00+03:00">
+  <h1 class="hero-h">AI Infrastructure & Marvell Analysis Dashboard</h1>
+  <p class="hero-desc">Hyperscale CapEx reaches $632B (+37% YoY) in 2026 while the AI network TAM expands to $154B (~10x) by 2028. This interactive dashboard combines Marvell's ($MRVL) Celestial AI acquisition and custom-ASIC platform thesis, Morgan Stanley's memory price revisions, the GB300 vs Rubin Ultra network architecture shift, and a NVDA/AVGO/AMD comparative valuation matrix.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info hero-date" data-timestamp="2026-07-10T21:25:00+03:00">📅 July 10, 2026</span>
+    <span class="hero-ticker">$MRVL</span>
+    <span class="hero-ticker">$NVDA</span>
+    <span class="hero-ticker">$AVGO</span>
+    <span class="hero-ticker">$AMD</span>
+    <span class="meta-pill neu">2026–2028 Projection</span>
+    <span class="meta-pill info">Interactive Dashboard</span>
+  </div>
+</div>
+
+<!-- MAIN TAB RADIOS -->
+<input type="radio" class="toggle-input" name="maintab" id="mt-dash" checked>
+<input type="radio" class="toggle-input" name="maintab" id="mt-capex">
+<input type="radio" class="toggle-input" name="maintab" id="mt-mem">
+<input type="radio" class="toggle-input" name="maintab" id="mt-net">
+<input type="radio" class="toggle-input" name="maintab" id="mt-mrvl">
+<input type="radio" class="toggle-input" name="maintab" id="mt-comp">
+<div class="tabbar">
+  <label class="tab-label" for="mt-dash">📊 Overview</label>
+  <label class="tab-label" for="mt-capex">💰 CapEx Investments</label>
+  <label class="tab-label" for="mt-mem">💾 Memory Simulator</label>
+  <label class="tab-label" for="mt-net">🌐 AI Network Architectures</label>
+  <label class="tab-label" for="mt-mrvl">🏢 Marvell & ASIC</label>
+  <label class="tab-label" for="mt-comp">⚖️ Sector Competition</label>
+</div>
+
+<!-- PANE: DASHBOARD -->
+<div class="mpane" id="pane-dash">
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-num">$632B</div><div class="kpi-label">Hyperscale CapEx (2026) · ↑37% YoY</div></div>
+    <div class="kpi"><div class="kpi-num">$154B</div><div class="kpi-label">AI Network TAM (2028) · ~10x</div></div>
+    <div class="kpi"><div class="kpi-num">~$15B</div><div class="kpi-label">Marvell Revenue Projection · 35% CAGR</div></div>
+    <div class="kpi"><div class="kpi-num" style="color:var(--gf-purple)">$91B</div><div class="kpi-label">CPO Market Opportunity · 59% of Net TAM</div></div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">Hyperscaler Capital Expenditure Evolution (2013–2026)</div>
+    <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$0</text><line x1="54" y1="164.0" x2="620" y2="164.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="168.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$200B</text><line x1="54" y1="108.0" x2="620" y2="108.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="112.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$400B</text><line x1="54" y1="52.0" x2="620" y2="52.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="56.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$600B</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><path d="M 54.0,220 L 54.0,211.0 L 124.8,207.7 L 195.5,202.1 L 266.3,194.2 L 337.0,176.3 L 407.8,171.6 L 478.5,140.2 L 549.3,91.2 L 620.0,43.0 L 620.0,220 Z" fill="#4ade80" opacity="0.12"/><polyline points="54.0,211.0 124.8,207.7 195.5,202.1 266.3,194.2 337.0,176.3 407.8,171.6 478.5,140.2 549.3,91.2 620.0,43.0" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="54.0" cy="211.0" r="4" fill="#4ade80"/><text x="54.0" y="201.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#e2e8f0" font-family="inherit">32</text><text x="54.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">'13</text><circle cx="124.8" cy="207.7" r="4" fill="#4ade80"/><text x="124.8" y="197.7" text-anchor="middle" font-size="11.5" font-weight="700" fill="#e2e8f0" font-family="inherit">44</text><text x="124.8" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">'15</text><circle cx="195.5" cy="202.1" r="4" fill="#4ade80"/><text x="195.5" y="192.1" text-anchor="middle" font-size="11.5" font-weight="700" fill="#e2e8f0" font-family="inherit">64</text><text x="195.5" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">'17</text><circle cx="266.3" cy="194.2" r="4" fill="#4ade80"/><text x="266.3" y="184.2" text-anchor="middle" font-size="11.5" font-weight="700" fill="#e2e8f0" font-family="inherit">92</text><text x="266.3" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">'19</text><circle cx="337.0" cy="176.3" r="4" fill="#4ade80"/><text x="337.0" y="166.3" text-anchor="middle" font-size="11.5" font-weight="700" fill="#e2e8f0" font-family="inherit">156</text><text x="337.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">'21</text><circle cx="407.8" cy="171.6" r="4" fill="#4ade80"/><text x="407.8" y="161.6" text-anchor="middle" font-size="11.5" font-weight="700" fill="#e2e8f0" font-family="inherit">173</text><text x="407.8" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">'23</text><circle cx="478.5" cy="140.2" r="4" fill="#4ade80"/><text x="478.5" y="130.2" text-anchor="middle" font-size="11.5" font-weight="700" fill="#e2e8f0" font-family="inherit">285</text><text x="478.5" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">'24</text><circle cx="549.3" cy="91.2" r="4" fill="#4ade80"/><text x="549.3" y="81.2" text-anchor="middle" font-size="11.5" font-weight="700" fill="#e2e8f0" font-family="inherit">460</text><text x="549.3" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">'25</text><circle cx="620.0" cy="43.0" r="4" fill="#4ade80"/><text x="620.0" y="33.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#e2e8f0" font-family="inherit">632</text><text x="620.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">'26 (MS)</text></svg>
+    <div class="chart-caption">Hyperscale CapEx climbs from $32B in 2013 to $632B in 2026 — ~20x over 13 years. Source: Morgan Stanley / Goldman Sachs global compilation ("MS" = Morgan Stanley estimate).</div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">⚡ Executive Summary — Quick Look</h2><div class="icon">▾</div></div>
+    <div class="section-body">
+      <div class="insight-box bull"><strong>Network Limits Breached:</strong> With the Rubin Ultra NVL576 SuperPOD architecture, network hardware content in vertical scale-up jumps to $9.4B per system (~29x the $315K of GB300).</div>
+      <div class="insight-box"><strong>Modulator Revolution:</strong> Via the Celestial AI acquisition, Marvell brings proprietary Germanium-based EAM technology in-house, pulling ahead on thermal stability and compactness.</div>
+      <div class="insight-box warn"><strong>Chip Inflation in Memory:</strong> Foundry capacity shifting toward HBM and advanced server memory constrains standard DRAM output, sending prices soaring.</div>
+      <p style="font-size:0.78rem;color:var(--gf-muted);margin-top:6px">*Compiled from Morgan Stanley and Goldman Sachs global data.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PANE: CAPEX -->
+<div class="mpane" id="pane-capex">
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">💰 Global Hyperscale CapEx Curve</h2><div class="icon">▾</div></div>
+    <div class="section-body">
+      <p style="font-size:0.88rem;color:var(--gf-muted);margin-bottom:12px">The cumulative cash capex of the 11 largest cloud providers exceeds consensus expectations, reaching $632 billion in 2026.</p>
+      <div class="chart-card">
+        <div class="chart-title">Annual Cumulative CapEx — Accelerating Years (2021–2026)</div>
+        <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$0</text><line x1="54" y1="164.0" x2="620" y2="164.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="168.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$200B</text><line x1="54" y1="108.0" x2="620" y2="108.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="112.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$400B</text><line x1="54" y1="52.0" x2="620" y2="52.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="56.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$600B</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="74.9" y="176.3" width="70" height="43.7" rx="4" fill="#38bdf8" opacity="1"/><text x="109.9" y="168.3" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$156B</text><text x="109.9" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2021</text><rect x="165.7" y="169.0" width="70" height="51.0" rx="4" fill="#38bdf8" opacity="1"/><text x="200.7" y="161.0" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$182B</text><text x="200.7" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2022</text><rect x="256.6" y="171.6" width="70" height="48.4" rx="4" fill="#94a3b8" opacity="1"/><text x="291.6" y="163.6" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$173B</text><text x="291.6" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2023</text><rect x="347.4" y="140.2" width="70" height="79.8" rx="4" fill="#38bdf8" opacity="1"/><text x="382.4" y="132.2" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$285B</text><text x="382.4" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2024</text><rect x="438.3" y="91.2" width="70" height="128.8" rx="4" fill="#38bdf8" opacity="1"/><text x="473.3" y="83.2" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$460B</text><text x="473.3" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2025</text><rect x="529.1" y="43.0" width="70" height="177.0" rx="4" fill="#4ade80" opacity="1"/><text x="564.1" y="35.0" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$632B</text><text x="564.1" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2026 (MS)</text></svg>
+        <div class="chart-caption">The momentum of the last five years: after a brief 2023 pause (-$9B), spending nearly quadrupled across 2024–2026 ($173B → $632B). Values in billions of USD.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="section-head" style="margin-bottom:0">
+      <div class="section-head-inner"><h2 class="section-title">2026 CapEx Budget Allocation</h2></div>
+      <div class="section-body">
+        <div style="margin-bottom:12px">
+          <div class="row-between"><span style="color:var(--gf-muted)">Data Centers & Power Infrastructure</span><strong>60%–65%</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-success" style="width:63%"></div></div>
+        </div>
+        <div style="margin-bottom:12px">
+          <div class="row-between"><span style="color:var(--gf-muted)">AI Network Infrastructure</span><strong>15%–20%</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-accent" style="width:18%"></div></div>
+        </div>
+        <div style="margin-bottom:12px">
+          <div class="row-between"><span style="color:var(--gf-muted)">Compute Units (GPU, ASIC)</span><strong>15%–20%</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-purple" style="width:17%"></div></div>
+        </div>
+        <div>
+          <div class="row-between"><span style="color:var(--gf-muted)">Other Office & R&D</span><strong>5%–10%</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-muted" style="width:7%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-head" style="margin-bottom:0">
+      <div class="section-head-inner"><h2 class="section-title">Quarterly Dynamics (2024–2026)</h2></div>
+      <div class="section-body" style="padding-top:6px">
+        <table>
+          <thead><tr><th>Quarter</th><th>QoQ</th><th>YoY</th><th>Catalyst</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Q4'24</strong></td><td style="color:var(--gf-success)">+14%</td><td style="color:var(--gf-success)">+17%</td><td>AI Wave Onset</td></tr>
+            <tr><td><strong>Q2'25</strong></td><td style="color:var(--gf-success)">+3%</td><td style="color:var(--gf-danger)">-6%</td><td>Temporary Order Pause</td></tr>
+            <tr><td><strong>Q4'25</strong></td><td style="color:var(--gf-success)">+31%</td><td style="color:var(--gf-success)">+20%</td><td>SuperPOD Budget Expansion</td></tr>
+            <tr><td><strong>Q2'26</strong></td><td style="color:var(--gf-success)">+9%</td><td style="color:var(--gf-success)">+14%</td><td>Rubin Ultra Pre-Build</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PANE: MEMORY -->
+<div class="mpane" id="pane-mem">
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">💾 Morgan Stanley Q3'26 Memory Price Revision Simulator</h2><div class="icon">▾</div></div>
+    <div class="section-body">
+      <p style="font-size:0.88rem;color:var(--gf-muted);margin-bottom:14px">As high-speed memory demand from AI servers shifts wafers to HBM lines, foundry constraints on conventional memory push prices up. Pick a memory segment and compare Morgan Stanley's old vs. new quarterly increase estimate.</p>
+
+      <input type="radio" class="toggle-input" name="memseg" id="ms-pc" checked>
+      <input type="radio" class="toggle-input" name="memseg" id="ms-consumer">
+      <input type="radio" class="toggle-input" name="memseg" id="ms-graphics">
+      <input type="radio" class="toggle-input" name="memseg" id="ms-server">
+      <input type="radio" class="toggle-input" name="memseg" id="ms-ssd">
+      <div class="toggle-row">
+        <label class="toggle-label" for="ms-pc">PC DRAM (Blended)</label>
+        <label class="toggle-label" for="ms-consumer">Consumer DRAM</label>
+        <label class="toggle-label" for="ms-graphics">Graphics DRAM (GDDR6/7)</label>
+        <label class="toggle-label" for="ms-server">Server DRAM</label>
+        <label class="toggle-label" for="ms-ssd">Enterprise SSD</label>
+      </div>
+
+      <div class="msresult" id="msr-pc">
+        <div class="card"><span style="font-weight:700;font-size:1.05rem;display:block;margin-bottom:12px">PC DRAM (Blended) Price Increase</span>
+          <div class="row-between"><span style="color:var(--gf-muted)">Old Estimate (Quarterly)</span><strong style="color:var(--gf-muted)">3%–8%</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-muted" style="width:16%"></div></div>
+          <div class="row-between" style="margin-top:10px"><span style="color:var(--gf-success)">✨ New Q3'26 Expectation</span><strong style="color:var(--gf-success)">15%–20%</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-success" style="width:40%"></div></div>
+          <div class="insight-box" style="margin-top:12px"><strong>Net Revision:</strong> +12 percentage points</div>
+        </div>
+      </div>
+      <div class="msresult" id="msr-consumer">
+        <div class="card"><span style="font-weight:700;font-size:1.05rem;display:block;margin-bottom:12px">Consumer DRAM Price Jump</span>
+          <div class="row-between"><span style="color:var(--gf-muted)">Old Estimate (Quarterly)</span><strong style="color:var(--gf-muted)">10%–15%</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-muted" style="width:30%"></div></div>
+          <div class="row-between" style="margin-top:10px"><span style="color:var(--gf-success)">✨ New Q3'26 Expectation</span><strong style="color:var(--gf-success)">35%–40%</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-success" style="width:80%"></div></div>
+          <div class="insight-box" style="margin-top:12px"><strong>Net Revision:</strong> +25 percentage points — the sharpest upside surprise</div>
+        </div>
+      </div>
+      <div class="msresult" id="msr-graphics">
+        <div class="card"><span style="font-weight:700;font-size:1.05rem;display:block;margin-bottom:12px">Graphics DRAM (GDDR6/7) Revision</span>
+          <div class="row-between"><span style="color:var(--gf-muted)">Old Estimate (Quarterly)</span><strong style="color:var(--gf-muted)">3%–8%</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-muted" style="width:16%"></div></div>
+          <div class="row-between" style="margin-top:10px"><span style="color:var(--gf-success)">✨ New Q3'26 Expectation</span><strong style="color:var(--gf-success)">15%–20%</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-success" style="width:40%"></div></div>
+          <div class="insight-box" style="margin-top:12px"><strong>Net Revision:</strong> +12 percentage points</div>
+        </div>
+      </div>
+      <div class="msresult" id="msr-server">
+        <div class="card"><span style="font-weight:700;font-size:1.05rem;display:block;margin-bottom:12px">Server DRAM Price Increase</span>
+          <div class="row-between"><span style="color:var(--gf-muted)">Old Estimate (Quarterly)</span><strong style="color:var(--gf-muted)">10%–15%</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-muted" style="width:30%"></div></div>
+          <div class="row-between" style="margin-top:10px"><span style="color:var(--gf-success)">✨ New Q3'26 Expectation</span><strong style="color:var(--gf-success)">13%–18%</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-success" style="width:36%"></div></div>
+          <div class="insight-box" style="margin-top:12px"><strong>Net Revision:</strong> +3 percentage points — limited upside off an already-high base</div>
+        </div>
+      </div>
+      <div class="msresult" id="msr-ssd">
+        <div class="card"><span style="font-weight:700;font-size:1.05rem;display:block;margin-bottom:12px">Enterprise SSD Increase Curve</span>
+          <div class="row-between"><span style="color:var(--gf-muted)">Old Estimate (Quarterly)</span><strong style="color:var(--gf-muted)">13%–18%</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-muted" style="width:36%"></div></div>
+          <div class="row-between" style="margin-top:10px"><span style="color:var(--gf-success)">✨ New Q3'26 Expectation</span><strong style="color:var(--gf-success)">18%–23%</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-success" style="width:46%"></div></div>
+          <div class="insight-box" style="margin-top:12px"><strong>Net Revision:</strong> +5 percentage points — NAND accelerating with AI storage models</div>
+        </div>
+      </div>
+
+      <div class="insight-box warn" style="margin-top:14px"><strong>Observation:</strong> The rising production share of HBM and advanced DDR5 creates structural contraction on standard lines. The era of "buy blindly" is ending and an era of "structural divergence" is beginning. The figures above are Morgan Stanley's own revision data.</div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">Quarterly Contract Price Increase Trends (2026)</h2></div>
+    <div class="section-body">
+      <div class="grid3">
+        <div class="card"><div class="card-label">Q1'26 DRAM (Blended)</div><div class="card-value up">+110%–115%</div><div class="card-note">The steepest price-jump point of the period.</div></div>
+        <div class="card"><div class="card-label">Q2'26 Server DRAM</div><div class="card-value up">+53%–58%</div><div class="card-note">Phase where enterprise server demand held.</div></div>
+        <div class="card"><div class="card-label">Q3'26 Enterprise SSD</div><div class="card-value up">+18%–23%</div><div class="card-note">NAND accelerating with AI storage models.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PANE: NETWORKING -->
+<div class="mpane" id="pane-net">
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">🌐 AI Network TAM Architecture Leap</h2><div class="icon">▾</div></div>
+    <div class="section-body">
+      <p style="font-size:0.88rem;color:var(--gf-muted);margin-bottom:14px">As models grow, network expansion shifts from horizontal (scale-out) to vertical deepening (scale-up). Switch the system architecture to see the massive effect on network budget coefficients.</p>
+
+      <input type="radio" class="toggle-input" name="netview" id="nv-gb300" checked>
+      <input type="radio" class="toggle-input" name="netview" id="nv-rubin">
+      <div class="toggle-row">
+        <label class="toggle-label" for="nv-gb300">GB300 NVL72 (Current)</label>
+        <label class="toggle-label" for="nv-rubin">Rubin Ultra NVL576 (2028E)</label>
+      </div>
+
+      <div class="nvresult" id="nvr-gb300">
+        <div class="grid2">
+          <div class="card">
+            <div class="subhead" style="margin-top:0">Selected System Infrastructure Specs</div>
+            <div class="row-between" style="margin-bottom:6px"><span style="color:var(--gf-muted)">System Model</span><strong>GB300 NVL72</strong></div>
+            <div class="row-between" style="margin-bottom:6px"><span style="color:var(--gf-muted)">Compute Scale</span><strong>72 Integrated GPUs (Single Rack)</strong></div>
+            <div class="row-between" style="margin-bottom:6px"><span style="color:var(--gf-muted)">Network Budget per System</span><strong style="color:var(--gf-success)">$315,000</strong></div>
+            <div class="row-between"><span style="color:var(--gf-muted)">Total Addressable Market (TAM)</span><strong>$15 Billion</strong></div>
+          </div>
+          <div class="card">
+            <div class="subhead" style="margin-top:0">Architecture & Technology Note</div>
+            <p style="font-size:0.85rem;color:var(--gf-text)">GB300 NVL72 relies mainly on copper backplane and copper SerDes links for short-range intra-rack connections. Since physical signal losses aren't a problem at lower speeds, copper is the cost-effective, stable choice.</p>
+            <div class="insight-box" style="margin-top:10px"><strong>Development Factor:</strong> Network-budget baseline</div>
+          </div>
+        </div>
+      </div>
+      <div class="nvresult" id="nvr-rubin">
+        <div class="grid2">
+          <div class="card">
+            <div class="subhead" style="margin-top:0">Selected System Infrastructure Specs</div>
+            <div class="row-between" style="margin-bottom:6px"><span style="color:var(--gf-muted)">System Model</span><strong>Rubin Ultra NVL576 SuperPOD</strong></div>
+            <div class="row-between" style="margin-bottom:6px"><span style="color:var(--gf-muted)">Compute Scale</span><strong>576 Integrated GPUs (8 Racks)</strong></div>
+            <div class="row-between" style="margin-bottom:6px"><span style="color:var(--gf-muted)">Network Budget per System</span><strong style="color:var(--gf-success)">$9.4 Billion</strong></div>
+            <div class="row-between"><span style="color:var(--gf-muted)">Total Addressable Market (TAM)</span><strong>$154 Billion</strong></div>
+          </div>
+          <div class="card">
+            <div class="subhead" style="margin-top:0">Architecture & Technology Note</div>
+            <p style="font-size:0.85rem;color:var(--gf-text)">Rubin Ultra NVL576 SuperPOD comprises 8 coordinated racks and relies on vertical scale-up links. Because it exceeds the 200G per-lane electrical signal limit, all vertical links run through optical engines (CPO).</p>
+            <div class="insight-box bull" style="margin-top:10px"><strong>Development Factor:</strong> ~29x increase per link (scale-up)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="chart-card" style="margin:0">
+      <div class="chart-title">AI Network TAM Breakdown (2028 — $154B)</div>
+      <div class="donut-chart">
+        <svg class="donut-svg" viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="chart"><circle cx="90" cy="90" r="70" fill="none" stroke="var(--gf-border)" stroke-width="20"/><circle cx="90" cy="90" r="70" fill="none" stroke="#a78bfa" stroke-width="20" stroke-dasharray="259.94 439.82" stroke-dashoffset="0.00" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #a78bfa66)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#38bdf8" stroke-width="20" stroke-dasharray="92.36 439.82" stroke-dashoffset="-259.94" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #38bdf866)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#4ade80" stroke-width="20" stroke-dasharray="87.52 439.82" stroke-dashoffset="-352.30" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #4ade8066)"/><text x="90" y="85" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="700" font-family="inherit">$154B</text><text x="90" y="102" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="inherit">Network TAM 2028</text></svg>
+        <div class="donut-legend">
+          <div class="donut-legend-item"><div class="donut-legend-color" style="background:#a78bfa"></div><div><div class="donut-legend-label">Co-Packaged Optics (CPO)</div><div class="donut-legend-value">$91B · 59%</div></div></div>
+          <div class="donut-legend-item"><div class="donut-legend-color" style="background:#38bdf8"></div><div><div class="donut-legend-label">Pluggable Optics & Other</div><div class="donut-legend-value">$32.3B · 21%</div></div></div>
+          <div class="donut-legend-item"><div class="donut-legend-color" style="background:#4ade80"></div><div><div class="donut-legend-label">Copper Backplane Hardware</div><div class="donut-legend-value">$30.7B · 20%</div></div></div>
+        </div>
+      </div>
+      <div class="chart-caption">The vertical deepening of system architecture accelerates optical integration — CPO alone makes up 59% of the TAM.</div>
+    </div>
+
+    <div class="section-head" style="margin-bottom:0">
+      <div class="section-head-inner"><h2 class="section-title">Modulator Technologies</h2></div>
+      <div class="section-body" style="padding-top:6px">
+        <div class="card" style="margin-bottom:8px"><strong style="display:block;margin-bottom:4px">MZM (Mach-Zehnder) — Standard</strong><span style="font-size:0.82rem;color:var(--gf-muted)">The industry standard with high thermal stability. But its large size and high insertion loss take up space in CPO integration.</span></div>
+        <div class="card" style="margin-bottom:8px"><strong style="display:block;margin-bottom:4px">MRM (Micro-Ring) — Nvidia CPO Engine</strong><span style="font-size:0.82rem;color:var(--gf-muted)">Extremely compact and low-power. But so sensitive to temperature fluctuation that it depends on complex micro-heaters.</span></div>
+        <div class="card"><strong style="display:block;margin-bottom:4px;color:var(--gf-success)">EAM (Germanium) — Marvell & Celestial AI</strong><span style="font-size:0.82rem;color:var(--gf-muted)">Combines MZM's thermal stability with MRM's compactness for the most optimal foundry-level packaging efficiency.</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PANE: MARVELL -->
+<div class="mpane" id="pane-mrvl">
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">🏢 Marvell (NASDAQ: MRVL) — Platform Player</h2><div class="icon">▾</div></div>
+    <div class="section-body">
+      <p style="font-size:0.88rem;color:var(--gf-text)">Marvell is one of the two most critical intermediaries that let cloud providers design their own AI processors (Google TPU, AWS Trainium, Microsoft Maia) at the foundry level. It is advancing toward a unique platform-player position, integrating into both the ultra-short-range copper switching market and the next-generation optical network layer. Sector position: <strong>Custom ASIC and Network Solutions</strong>.</p>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">Marvell Infrastructure Integration Layers</h2></div>
+    <div class="section-body">
+      <input type="radio" class="toggle-input" name="stacklayer" id="sl-optics" checked>
+      <input type="radio" class="toggle-input" name="stacklayer" id="sl-comp">
+      <input type="radio" class="toggle-input" name="stacklayer" id="sl-net">
+      <div class="toggle-row">
+        <label class="toggle-label" for="sl-optics">Layer 3: Optical Network (Celestial AI)</label>
+        <label class="toggle-label" for="sl-comp">Layer 2: Custom ASIC (XPU)</label>
+        <label class="toggle-label" for="sl-net">Layer 1: SerDes & Copper</label>
+      </div>
+
+      <div class="slresult" id="slr-optics">
+        <div class="card">
+          <div class="subhead" style="margin-top:0">Optical Network (Celestial AI Integration)</div>
+          <p style="font-size:0.85rem;color:var(--gf-text);margin-bottom:10px">Marvell's $3.25B (with a $5.5B earnout budget) Celestial AI acquisition, completed in early 2026, brought its proprietary "Photonic Fabric" technology in-house.</p>
+          <div class="row-between" style="margin-bottom:6px"><span style="color:var(--gf-muted)">Bandwidth Capacity</span><strong>16 Tb/s (per chiplet)</strong></div>
+          <div class="row-between" style="margin-bottom:6px"><span style="color:var(--gf-muted)">Memory Pooling</span><strong>100TB+ via CXL 4.0</strong></div>
+          <div class="row-between"><span style="color:var(--gf-muted)">First Revenue Expectation</span><strong style="color:var(--gf-success)">H2 FY2028</strong></div>
+        </div>
+      </div>
+      <div class="slresult" id="slr-comp">
+        <div class="card">
+          <div class="subhead" style="margin-top:0">Custom ASIC (XPU) Design Services</div>
+          <p style="font-size:0.85rem;color:var(--gf-text);margin-bottom:10px">Marvell provides IP support via the TSMC 3nm platform for hyperscalers' vertical processor projects (Google TPU, AWS Trainium, Microsoft Maia).</p>
+          <div class="row-between" style="margin-bottom:6px"><span style="color:var(--gf-muted)">Compute Sockets Won</span><strong>5 XPU + 13 Attach (18 cumulative)</strong></div>
+          <div class="row-between" style="margin-bottom:6px"><span style="color:var(--gf-muted)">Nvidia Collaboration</span><strong style="color:var(--gf-success)">$2B NVLink Fusion Partnership</strong></div>
+          <div class="row-between"><span style="color:var(--gf-muted)">Opportunity Pipeline</span><strong>50+ similar design opportunities</strong></div>
+        </div>
+      </div>
+      <div class="slresult" id="slr-net">
+        <div class="card">
+          <div class="subhead" style="margin-top:0">SerDes and Copper Backplane Technology</div>
+          <p style="font-size:0.85rem;color:var(--gf-text);margin-bottom:10px">Marvell's SerDes blocks, enabling data transmission at 112G and 224G per channel, are the most stable systems governing the internal structure of vertical scale-up racks.</p>
+          <div class="row-between" style="margin-bottom:6px"><span style="color:var(--gf-muted)">Copper Switching Market Share</span><strong>60%+ dominance</strong></div>
+          <div class="row-between" style="margin-bottom:6px"><span style="color:var(--gf-muted)">Application Area</span><strong>In-chassis Flyover & Backplane</strong></div>
+          <div class="row-between"><span style="color:var(--gf-muted)">Systemic Resilience</span><strong style="color:var(--gf-success)">Low power, zero thermal instability</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">Fiscal Year (FY) Revenue & Data Center Share Evolution</h2></div>
+    <div class="section-body">
+      <div class="grid4">
+        <div class="card text-center"><div class="card-label">FY24 (Actual)</div><div class="card-value">$5.77B</div><div class="card-note">70% DC share</div></div>
+        <div class="card text-center"><div class="card-label">FY25 (Actual)</div><div class="card-value">$7.25B</div><div class="card-note" style="color:var(--gf-success)">72% DC share</div></div>
+        <div class="card text-center"><div class="card-label">FY26 (Actual)</div><div class="card-value">$8.195B</div><div class="card-note" style="color:var(--gf-success)">76% DC share</div></div>
+        <div class="card text-center"><div class="card-label">FY27 (Est.)</div><div class="card-value neu">~$11B</div><div class="card-note">80% DC share</div></div>
+        <div class="card text-center"><div class="card-label">FY28 (Est.)</div><div class="card-value neu">~$15B</div><div class="card-note">85% DC share</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PANE: COMPETITION -->
+<div class="mpane" id="pane-comp">
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">⚖️ Semiconductor Sector Comparison Matrix</h2><div class="icon">▾</div></div>
+    <div class="section-body">
+      <p style="font-size:0.85rem;color:var(--gf-muted);margin-bottom:6px">Valuation multiples on FY26 consensus data. Marvell has the highest NTM P/E (54x) and the fastest DC-share growth; NVIDIA holds the highest P/S and DC concentration.</p>
+      <div style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr><th>Company</th><th class="text-right">Market Cap</th><th class="text-right">FY26 Revenue</th><th class="text-right">P/S (FY26)</th><th class="text-right">NTM P/E</th><th class="text-right">DC Share</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>NVIDIA</strong></td><td class="text-right">$2.5T</td><td class="text-right">$110.0B</td><td class="text-right" style="color:var(--gf-success)">22.7x</td><td class="text-right">20.0x</td><td class="text-right">90%</td></tr>
+            <tr><td><strong>Broadcom</strong></td><td class="text-right">$500B</td><td class="text-right">$105.4B</td><td class="text-right" style="color:var(--gf-success)">17.5x</td><td class="text-right">23.0x</td><td class="text-right">40%</td></tr>
+            <tr><td><strong>Marvell (MRVL)</strong></td><td class="text-right">$100B</td><td class="text-right">$8.2B</td><td class="text-right" style="color:var(--gf-success)">12.2x</td><td class="text-right" style="color:var(--gf-warning)">54.0x</td><td class="text-right">76%</td></tr>
+            <tr><td><strong>AMD</strong></td><td class="text-right">$250B</td><td class="text-right">$25.0B</td><td class="text-right" style="color:var(--gf-success)">10.0x</td><td class="text-right">59.0x</td><td class="text-right">30%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="insight-box warn" style="margin-top:6px"><strong>Note:</strong> The original dashboard let you sort by clicking column headers; here it is presented statically, ordered by market cap (the sort interaction wasn't preserved because JS doesn't run in the publish pipeline).</div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="section-head" style="margin-bottom:0">
+      <div class="section-head-inner"><h2 class="section-title">Power Wars in the Custom ASIC Market</h2></div>
+      <div class="section-body">
+        <p style="font-size:0.85rem;color:var(--gf-text)">Broadcom keeps its lead in the global custom-ASIC market with a <strong>70% share</strong>, via its long-term (through 2031) TPU partnership with Google and a $30B+ Baltra partnership with Apple. Marvell is the market's strongest second, dual-source option, with lead foundry partnerships on the AWS Trainium and Microsoft Maia vertical designs.</p>
+      </div>
+    </div>
+    <div class="section-head" style="margin-bottom:0">
+      <div class="section-head-inner"><h2 class="section-title">Macro Infrastructure Risks & Constraints</h2></div>
+      <div class="section-body" style="padding-top:6px">
+        <div class="row-between" style="padding:8px 0;border-bottom:1px solid var(--gf-border)"><span style="color:var(--gf-muted)">Systemic Power Bottleneck</span><strong>Grid / MW Limits</strong></div>
+        <div class="row-between" style="padding:8px 0;border-bottom:1px solid var(--gf-border)"><span style="color:var(--gf-muted)">Geopolitical Focus</span><strong>Taiwan CoWoS (TSMC) Concentration</strong></div>
+        <div class="row-between" style="padding:8px 0"><span style="color:var(--gf-muted)">Customer Concentration</span><strong>Meta, Google, AWS Dependency</strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="disclaimer">
+  This report is a Gistify Flow-themed adaptation of the interactive source titled "AI Infrastructure & Marvell Analysis Dashboard"; the original dashboard's tab navigation, memory simulator, network architecture, and layer-selector widgets have been rebuilt without JavaScript (CSS only). Data is based on Morgan Stanley and Goldman Sachs global compilations, is current as of July 2026, and includes 2026–2028 projections. For educational and informational purposes only; not investment advice. Do your own research.
+</div>
+<div class="footer">Gistify Flow | July 10, 2026 | AI Infrastructure & Marvell — Interactive Dashboard (Report Version 1.4)</div>
+
+</div>
+</body>
+</html>

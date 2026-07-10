@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yapay Zeka Altyapısı & Marvell Analiz Paneli (2026-2028) | $MRVL</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Yapay Zeka Altyapısı & Marvell Analiz Paneli (2026-2028) | $MRVL" />
+<meta property="og:description" content="Hiperskala CapEx 2026'da $632B, AI ağ TAM'i 2028'de $154B. Marvell'in Celestial AI ($3.25B) ve custom ASIC platform tezi; bellek fiyat simülatörü, GB300 vs Rubin Ultra ağ mimarisi ve sektörel değerleme matrisi — etkileşimli panel." />
+<meta property="og:url" content="https://gistify.pro/flow/1783707900834.html" />
+<meta property="og:image" content="https://gistify.pro/gistifylogo.png?v=20260706" />
+<meta property="og:site_name" content="Gistify" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Yapay Zeka Altyapısı & Marvell Analiz Paneli (2026-2028) | $MRVL" />
+<meta name="twitter:description" content="Hiperskala CapEx, AI ağ TAM'i ve Marvell custom ASIC/optik platform tezi — bellek simülatörü, ağ mimarisi ve değerleme matrisiyle etkileşimli panel." />
+<meta name="twitter:image" content="https://gistify.pro/gistifylogo.png?v=20260706" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-purple:#a78bfa;--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:20px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:760px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:4px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent)}
+.section-body{padding:18px}
+.subhead{font-size:0.98rem;font-weight:700;margin:18px 0 10px;display:flex;align-items:center;gap:8px;color:var(--gf-text)}
+.subhead:first-child{margin-top:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+.chart-card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:18px;margin:14px 0}
+.chart-title{font-size:0.9rem;font-weight:700;color:var(--gf-accent);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.chart-title::before{content:'';display:inline-block;width:4px;height:16px;background:var(--gf-accent);border-radius:2px}
+.chart-caption{font-size:0.8rem;color:var(--gf-muted);margin-top:10px;border-top:1px solid var(--gf-border-subtle);padding-top:10px}
+.legend{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:10px;font-size:0.78rem;color:var(--gf-muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.donut-chart{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.donut-svg{flex-shrink:0}
+.donut-legend{display:flex;flex-direction:column;gap:8px}
+.donut-legend-item{display:flex;align-items:center;gap:8px;font-size:.85rem}
+.donut-legend-color{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.donut-legend-label{color:var(--gf-text)}
+.donut-legend-value{color:var(--gf-muted);font-size:.8rem}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.text-right{text-align:right}
+.text-center{text-align:center}
+.progress-bar{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:6px;height:12px;overflow:hidden;margin:4px 0}
+.progress-fill{height:100%;border-radius:6px;transition:width .4s}
+.fill-accent{background:linear-gradient(90deg,#0ea5e9,#38bdf8)}
+.fill-success{background:linear-gradient(90deg,#16a34a,#4ade80)}
+.fill-purple{background:linear-gradient(90deg,#7c3aed,#a78bfa)}
+.fill-muted{background:linear-gradient(90deg,#475569,#94a3b8)}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:12px;text-align:center}
+.kpi-num{font-size:1.35rem;font-weight:800;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:3px}
+ul.bullets{padding-left:20px;font-size:0.88rem;margin:8px 0}
+ul.bullets li{margin-bottom:6px}
+.row-between{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:0.85rem}
+/* CSS-only toggle system (no JS — survives script-stripping) */
+.toggle-input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.tabbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.tab-label{display:inline-flex;align-items:center;gap:6px;padding:9px 15px;border-radius:10px;font-size:0.82rem;font-weight:600;background:var(--gf-elev);border:1px solid var(--gf-border);color:var(--gf-muted);cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.tab-label:hover{color:var(--gf-text)}
+.toggle-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.toggle-label{display:inline-flex;align-items:center;gap:5px;padding:8px 14px;border-radius:8px;font-size:0.78rem;font-weight:600;background:var(--gf-elev);border:1px solid var(--gf-border);color:var(--gf-muted);cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.toggle-label:hover{color:var(--gf-text)}
+.mpane{display:none}
+.msresult,.nvresult,.slresult{display:none}
+/* main tab switching */
+#mt-dash:checked ~ #pane-dash,
+#mt-capex:checked ~ #pane-capex,
+#mt-mem:checked ~ #pane-mem,
+#mt-net:checked ~ #pane-net,
+#mt-mrvl:checked ~ #pane-mrvl,
+#mt-comp:checked ~ #pane-comp{display:block}
+#mt-dash:checked ~ .tabbar label[for="mt-dash"],
+#mt-capex:checked ~ .tabbar label[for="mt-capex"],
+#mt-mem:checked ~ .tabbar label[for="mt-mem"],
+#mt-net:checked ~ .tabbar label[for="mt-net"],
+#mt-mrvl:checked ~ .tabbar label[for="mt-mrvl"],
+#mt-comp:checked ~ .tabbar label[for="mt-comp"]{background:var(--gf-accent);color:#04121f;border-color:var(--gf-accent)}
+/* memory simulator */
+#ms-pc:checked ~ #msr-pc,
+#ms-consumer:checked ~ #msr-consumer,
+#ms-graphics:checked ~ #msr-graphics,
+#ms-server:checked ~ #msr-server,
+#ms-ssd:checked ~ #msr-ssd{display:block}
+#ms-pc:checked ~ .toggle-row label[for="ms-pc"],
+#ms-consumer:checked ~ .toggle-row label[for="ms-consumer"],
+#ms-graphics:checked ~ .toggle-row label[for="ms-graphics"],
+#ms-server:checked ~ .toggle-row label[for="ms-server"],
+#ms-ssd:checked ~ .toggle-row label[for="ms-ssd"]{background:var(--gf-accent);color:#04121f;border-color:var(--gf-accent)}
+/* networking GB300 vs Rubin */
+#nv-gb300:checked ~ #nvr-gb300,
+#nv-rubin:checked ~ #nvr-rubin{display:block}
+#nv-gb300:checked ~ .toggle-row label[for="nv-gb300"],
+#nv-rubin:checked ~ .toggle-row label[for="nv-rubin"]{background:var(--gf-accent);color:#04121f;border-color:var(--gf-accent)}
+/* Marvell architecture stack */
+#sl-optics:checked ~ #slr-optics,
+#sl-comp:checked ~ #slr-comp,
+#sl-net:checked ~ #slr-net{display:block}
+#sl-optics:checked ~ .toggle-row label[for="sl-optics"],
+#sl-comp:checked ~ .toggle-row label[for="sl-comp"],
+#sl-net:checked ~ .toggle-row label[for="sl-net"]{background:var(--gf-accent);color:#04121f;border-color:var(--gf-accent)}
+.disclaimer{text-align:center;padding:24px 16px;font-size:0.76rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:28px;line-height:1.6}
+.footer{text-align:center;padding:16px;font-size:0.78rem;color:var(--gf-muted)}
+@media(max-width:640px){.wrap{padding:16px 10px}.hero-h{font-size:1.25rem}.grid,.grid2,.grid3,.grid4{grid-template-columns:1fr}.kpi-row{grid-template-columns:repeat(2,1fr)}table{font-size:0.78rem}th,td{padding:6px 7px}.donut-chart{justify-content:center}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-10T21:25:00+03:00">
+  <h1 class="hero-h">Yapay Zeka Altyapısı & Marvell Analiz Paneli</h1>
+  <p class="hero-desc">Hiperskala CapEx 2026'da $632B'a (%37 YoY) ulaşırken, AI ağ TAM'i 2028'de $154B'a (~10x) genişliyor. Bu etkileşimli panel; Marvell'in ($MRVL) Celestial AI satın alımı ve custom ASIC platform tezini, Morgan Stanley bellek fiyat revizyonlarını, GB300 vs Rubin Ultra ağ mimarisini ve NVDA/AVGO/AMD karşılaştırmalı değerleme matrisini bir arada sunuyor.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info hero-date" data-timestamp="2026-07-10T21:25:00+03:00">📅 10 Temmuz 2026</span>
+    <span class="hero-ticker">$MRVL</span>
+    <span class="hero-ticker">$NVDA</span>
+    <span class="hero-ticker">$AVGO</span>
+    <span class="hero-ticker">$AMD</span>
+    <span class="meta-pill neu">2026–2028 Projeksiyonu</span>
+    <span class="meta-pill info">Etkileşimli Panel</span>
+  </div>
+</div>
+
+<!-- MAIN TAB RADIOS -->
+<input type="radio" class="toggle-input" name="maintab" id="mt-dash" checked>
+<input type="radio" class="toggle-input" name="maintab" id="mt-capex">
+<input type="radio" class="toggle-input" name="maintab" id="mt-mem">
+<input type="radio" class="toggle-input" name="maintab" id="mt-net">
+<input type="radio" class="toggle-input" name="maintab" id="mt-mrvl">
+<input type="radio" class="toggle-input" name="maintab" id="mt-comp">
+<div class="tabbar">
+  <label class="tab-label" for="mt-dash">📊 Panel Özeti</label>
+  <label class="tab-label" for="mt-capex">💰 CapEx Yatırımları</label>
+  <label class="tab-label" for="mt-mem">💾 Bellek Simülatörü</label>
+  <label class="tab-label" for="mt-net">🌐 AI Ağ Mimarileri</label>
+  <label class="tab-label" for="mt-mrvl">🏢 Marvell & ASIC</label>
+  <label class="tab-label" for="mt-comp">⚖️ Sektörel Rekabet</label>
+</div>
+
+<!-- PANE: DASHBOARD -->
+<div class="mpane" id="pane-dash">
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-num">$632B</div><div class="kpi-label">Hiperskala CapEx (2026) · ↑%37 YoY</div></div>
+    <div class="kpi"><div class="kpi-num">$154B</div><div class="kpi-label">AI Ağ TAM (2028) · ~10x</div></div>
+    <div class="kpi"><div class="kpi-num">~$15B</div><div class="kpi-label">Marvell Gelir Projeksiyonu · %35 CAGR</div></div>
+    <div class="kpi"><div class="kpi-num" style="color:var(--gf-purple)">$91B</div><div class="kpi-label">CPO Pazar Fırsatı · Ağ TAM %59</div></div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">Hiperskalacıların Sermaye Harcaması Gelişimi (2013–2026)</div>
+    <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$0</text><line x1="54" y1="164.0" x2="620" y2="164.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="168.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$200B</text><line x1="54" y1="108.0" x2="620" y2="108.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="112.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$400B</text><line x1="54" y1="52.0" x2="620" y2="52.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="56.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$600B</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><path d="M 54.0,220 L 54.0,211.0 L 124.8,207.7 L 195.5,202.1 L 266.3,194.2 L 337.0,176.3 L 407.8,171.6 L 478.5,140.2 L 549.3,91.2 L 620.0,43.0 L 620.0,220 Z" fill="#4ade80" opacity="0.12"/><polyline points="54.0,211.0 124.8,207.7 195.5,202.1 266.3,194.2 337.0,176.3 407.8,171.6 478.5,140.2 549.3,91.2 620.0,43.0" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="54.0" cy="211.0" r="4" fill="#4ade80"/><text x="54.0" y="201.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#e2e8f0" font-family="inherit">32</text><text x="54.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">'13</text><circle cx="124.8" cy="207.7" r="4" fill="#4ade80"/><text x="124.8" y="197.7" text-anchor="middle" font-size="11.5" font-weight="700" fill="#e2e8f0" font-family="inherit">44</text><text x="124.8" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">'15</text><circle cx="195.5" cy="202.1" r="4" fill="#4ade80"/><text x="195.5" y="192.1" text-anchor="middle" font-size="11.5" font-weight="700" fill="#e2e8f0" font-family="inherit">64</text><text x="195.5" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">'17</text><circle cx="266.3" cy="194.2" r="4" fill="#4ade80"/><text x="266.3" y="184.2" text-anchor="middle" font-size="11.5" font-weight="700" fill="#e2e8f0" font-family="inherit">92</text><text x="266.3" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">'19</text><circle cx="337.0" cy="176.3" r="4" fill="#4ade80"/><text x="337.0" y="166.3" text-anchor="middle" font-size="11.5" font-weight="700" fill="#e2e8f0" font-family="inherit">156</text><text x="337.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">'21</text><circle cx="407.8" cy="171.6" r="4" fill="#4ade80"/><text x="407.8" y="161.6" text-anchor="middle" font-size="11.5" font-weight="700" fill="#e2e8f0" font-family="inherit">173</text><text x="407.8" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">'23</text><circle cx="478.5" cy="140.2" r="4" fill="#4ade80"/><text x="478.5" y="130.2" text-anchor="middle" font-size="11.5" font-weight="700" fill="#e2e8f0" font-family="inherit">285</text><text x="478.5" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">'24</text><circle cx="549.3" cy="91.2" r="4" fill="#4ade80"/><text x="549.3" y="81.2" text-anchor="middle" font-size="11.5" font-weight="700" fill="#e2e8f0" font-family="inherit">460</text><text x="549.3" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">'25</text><circle cx="620.0" cy="43.0" r="4" fill="#4ade80"/><text x="620.0" y="33.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#e2e8f0" font-family="inherit">632</text><text x="620.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">'26 (MS)</text></svg>
+    <div class="chart-caption">Hiperskala CapEx 2013'te $32B iken 2026'da $632B'a çıkıyor — 13 yılda ~20x. Kaynak: Morgan Stanley / Goldman Sachs küresel derlemesi ("MS" = Morgan Stanley tahmini).</div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">⚡ Yönetici Özeti — Hızlı Bakış</h2><div class="icon">▾</div></div>
+    <div class="section-body">
+      <div class="insight-box bull"><strong>Ağ Sınırları Aşıldı:</strong> Rubin Ultra NVL576 SuperPOD mimarisiyle, ağ donanım içeriği dikey derinleşmede sistem başına $9.4B seviyesine fırlıyor (GB300'ün $315K'sına karşı ~29x artış).</div>
+      <div class="insight-box"><strong>Modülatör Devrimi:</strong> Marvell, Celestial AI satın alımıyla tescilli Germanium-tabanlı EAM teknolojisini bünyesine katarak ısıl kararlılık ve kompaktlıkta öne geçiyor.</div>
+      <div class="insight-box warn"><strong>Bellekte Çip Enflasyonu:</strong> HBM ve gelişmiş sunucu belleklerine kayan döküm kapasitesi standart DRAM üretimini kısıtlayarak fiyatları patlatıyor.</div>
+      <p style="font-size:0.78rem;color:var(--gf-muted);margin-top:6px">*Morgan Stanley ve Goldman Sachs küresel verilerinden derlenmiştir.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PANE: CAPEX -->
+<div class="mpane" id="pane-capex">
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">💰 Küresel Hiperskala CapEx Eğrisi</h2><div class="icon">▾</div></div>
+    <div class="section-body">
+      <p style="font-size:0.88rem;color:var(--gf-muted);margin-bottom:12px">En büyük 11 bulut sağlayıcısının kümülatif nakit sermaye harcamaları konsensüs beklentilerini aşarak 2026'da $632 milyar seviyesine ulaşıyor.</p>
+      <div class="chart-card">
+        <div class="chart-title">Yıllık Kümülatif CapEx — Hızlanan Yıllar (2021–2026)</div>
+        <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$0</text><line x1="54" y1="164.0" x2="620" y2="164.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="168.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$200B</text><line x1="54" y1="108.0" x2="620" y2="108.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="112.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$400B</text><line x1="54" y1="52.0" x2="620" y2="52.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="56.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$600B</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="74.9" y="176.3" width="70" height="43.7" rx="4" fill="#38bdf8" opacity="1"/><text x="109.9" y="168.3" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$156B</text><text x="109.9" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2021</text><rect x="165.7" y="169.0" width="70" height="51.0" rx="4" fill="#38bdf8" opacity="1"/><text x="200.7" y="161.0" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$182B</text><text x="200.7" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2022</text><rect x="256.6" y="171.6" width="70" height="48.4" rx="4" fill="#94a3b8" opacity="1"/><text x="291.6" y="163.6" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$173B</text><text x="291.6" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2023</text><rect x="347.4" y="140.2" width="70" height="79.8" rx="4" fill="#38bdf8" opacity="1"/><text x="382.4" y="132.2" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$285B</text><text x="382.4" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2024</text><rect x="438.3" y="91.2" width="70" height="128.8" rx="4" fill="#38bdf8" opacity="1"/><text x="473.3" y="83.2" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$460B</text><text x="473.3" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2025</text><rect x="529.1" y="43.0" width="70" height="177.0" rx="4" fill="#4ade80" opacity="1"/><text x="564.1" y="35.0" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$632B</text><text x="564.1" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2026 (MS)</text></svg>
+        <div class="chart-caption">Son beş yılın ivmesi: 2023'teki geçici duraklamadan (-$9B) sonra 2024–2026'da harcama neredeyse 3.7x'e katlandı ($173B → $632B). Değerler milyar $ cinsindendir.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="section-head" style="margin-bottom:0">
+      <div class="section-head-inner"><h2 class="section-title">2026 CapEx Bütçe Dağılımı</h2></div>
+      <div class="section-body">
+        <div style="margin-bottom:12px">
+          <div class="row-between"><span style="color:var(--gf-muted)">Veri Merkezleri & Güç Altyapısı</span><strong>%60–%65</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-success" style="width:63%"></div></div>
+        </div>
+        <div style="margin-bottom:12px">
+          <div class="row-between"><span style="color:var(--gf-muted)">Yapay Zeka Ağ Altyapısı</span><strong>%15–%20</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-accent" style="width:18%"></div></div>
+        </div>
+        <div style="margin-bottom:12px">
+          <div class="row-between"><span style="color:var(--gf-muted)">Hesaplama Birimleri (GPU, ASIC)</span><strong>%15–%20</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-purple" style="width:17%"></div></div>
+        </div>
+        <div>
+          <div class="row-between"><span style="color:var(--gf-muted)">Diğer Ofis & Ar-Ge</span><strong>%5–%10</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-muted" style="width:7%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-head" style="margin-bottom:0">
+      <div class="section-head-inner"><h2 class="section-title">Çeyreklik Dinamikler (2024–2026)</h2></div>
+      <div class="section-body" style="padding-top:6px">
+        <table>
+          <thead><tr><th>Çeyrek</th><th>QoQ</th><th>YoY</th><th>Katalizör</th></tr></thead>
+          <tbody>
+            <tr><td><strong>4Ç24</strong></td><td style="color:var(--gf-success)">+%14</td><td style="color:var(--gf-success)">+%17</td><td>AI Dalga Başlangıcı</td></tr>
+            <tr><td><strong>2Ç25</strong></td><td style="color:var(--gf-success)">+%3</td><td style="color:var(--gf-danger)">-%6</td><td>Geçici Sipariş Duraklaması</td></tr>
+            <tr><td><strong>4Ç25</strong></td><td style="color:var(--gf-success)">+%31</td><td style="color:var(--gf-success)">+%20</td><td>SuperPOD Bütçe Genişlemesi</td></tr>
+            <tr><td><strong>2Ç26</strong></td><td style="color:var(--gf-success)">+%9</td><td style="color:var(--gf-success)">+%14</td><td>Rubin Ultra Ön Hazırlığı</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PANE: MEMORY -->
+<div class="mpane" id="pane-mem">
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">💾 Morgan Stanley 3Ç26 Bellek Fiyat Revizyon Simülatörü</h2><div class="icon">▾</div></div>
+    <div class="section-body">
+      <p style="font-size:0.88rem;color:var(--gf-muted);margin-bottom:14px">AI sunucularının yüksek hızlı bellek talebi nedeniyle plakaların HBM hatlarına kaydırılması, geleneksel belleklerde döküm kısıtları yaratarak fiyatları yukarı itiyor. Bir bellek segmenti seçin ve Morgan Stanley'in eski vs. yeni çeyreklik artış tahminini karşılaştırın.</p>
+
+      <input type="radio" class="toggle-input" name="memseg" id="ms-pc" checked>
+      <input type="radio" class="toggle-input" name="memseg" id="ms-consumer">
+      <input type="radio" class="toggle-input" name="memseg" id="ms-graphics">
+      <input type="radio" class="toggle-input" name="memseg" id="ms-server">
+      <input type="radio" class="toggle-input" name="memseg" id="ms-ssd">
+      <div class="toggle-row">
+        <label class="toggle-label" for="ms-pc">PC DRAM (Blended)</label>
+        <label class="toggle-label" for="ms-consumer">Tüketici DRAM</label>
+        <label class="toggle-label" for="ms-graphics">Grafik DRAM (GDDR6/7)</label>
+        <label class="toggle-label" for="ms-server">Sunucu DRAM</label>
+        <label class="toggle-label" for="ms-ssd">Kurumsal SSD</label>
+      </div>
+
+      <div class="msresult" id="msr-pc">
+        <div class="card"><span style="font-weight:700;font-size:1.05rem;display:block;margin-bottom:12px">PC DRAM (Blended) Fiyat Artışı</span>
+          <div class="row-between"><span style="color:var(--gf-muted)">Eski Tahmin (Çeyreklik)</span><strong style="color:var(--gf-muted)">%3–%8</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-muted" style="width:16%"></div></div>
+          <div class="row-between" style="margin-top:10px"><span style="color:var(--gf-success)">✨ Yeni 3Ç26 Beklentisi</span><strong style="color:var(--gf-success)">%15–%20</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-success" style="width:40%"></div></div>
+          <div class="insight-box" style="margin-top:12px"><strong>Bölgesel Net Fark:</strong> +12 yüzdelik puan revizyon</div>
+        </div>
+      </div>
+      <div class="msresult" id="msr-consumer">
+        <div class="card"><span style="font-weight:700;font-size:1.05rem;display:block;margin-bottom:12px">Tüketici (Consumer) DRAM Fiyat Sıçraması</span>
+          <div class="row-between"><span style="color:var(--gf-muted)">Eski Tahmin (Çeyreklik)</span><strong style="color:var(--gf-muted)">%10–%15</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-muted" style="width:30%"></div></div>
+          <div class="row-between" style="margin-top:10px"><span style="color:var(--gf-success)">✨ Yeni 3Ç26 Beklentisi</span><strong style="color:var(--gf-success)">%35–%40</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-success" style="width:80%"></div></div>
+          <div class="insight-box" style="margin-top:12px"><strong>Bölgesel Net Fark:</strong> +25 yüzdelik puan revizyon — en sert yukarı yönlü sürpriz</div>
+        </div>
+      </div>
+      <div class="msresult" id="msr-graphics">
+        <div class="card"><span style="font-weight:700;font-size:1.05rem;display:block;margin-bottom:12px">Grafik DRAM (GDDR6/7) Revizyonu</span>
+          <div class="row-between"><span style="color:var(--gf-muted)">Eski Tahmin (Çeyreklik)</span><strong style="color:var(--gf-muted)">%3–%8</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-muted" style="width:16%"></div></div>
+          <div class="row-between" style="margin-top:10px"><span style="color:var(--gf-success)">✨ Yeni 3Ç26 Beklentisi</span><strong style="color:var(--gf-success)">%15–%20</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-success" style="width:40%"></div></div>
+          <div class="insight-box" style="margin-top:12px"><strong>Bölgesel Net Fark:</strong> +12 yüzdelik puan revizyon</div>
+        </div>
+      </div>
+      <div class="msresult" id="msr-server">
+        <div class="card"><span style="font-weight:700;font-size:1.05rem;display:block;margin-bottom:12px">Sunucu (Server) DRAM Fiyat Artışı</span>
+          <div class="row-between"><span style="color:var(--gf-muted)">Eski Tahmin (Çeyreklik)</span><strong style="color:var(--gf-muted)">%10–%15</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-muted" style="width:30%"></div></div>
+          <div class="row-between" style="margin-top:10px"><span style="color:var(--gf-success)">✨ Yeni 3Ç26 Beklentisi</span><strong style="color:var(--gf-success)">%13–%18</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-success" style="width:36%"></div></div>
+          <div class="insight-box" style="margin-top:12px"><strong>Bölgesel Net Fark:</strong> +3 yüzdelik puan revizyon — zaten yüksek bazdan sınırlı artış</div>
+        </div>
+      </div>
+      <div class="msresult" id="msr-ssd">
+        <div class="card"><span style="font-weight:700;font-size:1.05rem;display:block;margin-bottom:12px">Kurumsal SSD (Enterprise SSD) Artış Eğrisi</span>
+          <div class="row-between"><span style="color:var(--gf-muted)">Eski Tahmin (Çeyreklik)</span><strong style="color:var(--gf-muted)">%13–%18</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-muted" style="width:36%"></div></div>
+          <div class="row-between" style="margin-top:10px"><span style="color:var(--gf-success)">✨ Yeni 3Ç26 Beklentisi</span><strong style="color:var(--gf-success)">%18–%23</strong></div>
+          <div class="progress-bar"><div class="progress-fill fill-success" style="width:46%"></div></div>
+          <div class="insight-box" style="margin-top:12px"><strong>Bölgesel Net Fark:</strong> +5 yüzdelik puan revizyon — AI depolama modelleriyle ivmelenen NAND</div>
+        </div>
+      </div>
+
+      <div class="insight-box warn" style="margin-top:14px"><strong>Gözlem Notu:</strong> HBM ve gelişmiş DDR5 üretim payındaki artış, standart üretim hatlarında yapısal daralma yaratıyor. "Körlemesine Alım" devri biterek "Yapısal Ayrışma" devri başlıyor. Yukarıdaki sayılar Morgan Stanley'in kendi revizyon verileridir.</div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">Çeyreklik Sözleşme Fiyat Artış Eğilimleri (2026)</h2></div>
+    <div class="section-body">
+      <div class="grid3">
+        <div class="card"><div class="card-label">1Ç26 DRAM (Blended)</div><div class="card-value up">+%110–%115</div><div class="card-note">Dönemin en dik fiyat sıçrama noktası.</div></div>
+        <div class="card"><div class="card-label">2Ç26 Sunucu DRAM</div><div class="card-value up">+%53–%58</div><div class="card-note">Kurumsal sunucu talebinin korunduğu faz.</div></div>
+        <div class="card"><div class="card-label">3Ç26 Kurumsal SSD</div><div class="card-value up">+%18–%23</div><div class="card-note">AI depolama modelleriyle ivmelenen NAND.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PANE: NETWORKING -->
+<div class="mpane" id="pane-net">
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">🌐 Yapay Zeka Ağ TAM Mimarisi Sıçraması</h2><div class="icon">▾</div></div>
+    <div class="section-body">
+      <p style="font-size:0.88rem;color:var(--gf-muted);margin-bottom:14px">Modeller büyüdükçe ağ genişlemesi yataydan (scale-out) dikey derinleşmeye (scale-up) kayıyor. Sistem mimarisini değiştirerek ağ bütçe katsayılarındaki devasa etkiyi inceleyin.</p>
+
+      <input type="radio" class="toggle-input" name="netview" id="nv-gb300" checked>
+      <input type="radio" class="toggle-input" name="netview" id="nv-rubin">
+      <div class="toggle-row">
+        <label class="toggle-label" for="nv-gb300">GB300 NVL72 (Mevcut)</label>
+        <label class="toggle-label" for="nv-rubin">Rubin Ultra NVL576 (2028T)</label>
+      </div>
+
+      <div class="nvresult" id="nvr-gb300">
+        <div class="grid2">
+          <div class="card">
+            <div class="subhead" style="margin-top:0">Seçili Sistem Altyapı Özellikleri</div>
+            <div class="row-between" style="margin-bottom:6px"><span style="color:var(--gf-muted)">Sistem Modeli</span><strong>GB300 NVL72</strong></div>
+            <div class="row-between" style="margin-bottom:6px"><span style="color:var(--gf-muted)">Hesaplama Ölçeği</span><strong>72 Entegre GPU (Tekil Raf)</strong></div>
+            <div class="row-between" style="margin-bottom:6px"><span style="color:var(--gf-muted)">Sistem Başına Ağ Bütçesi</span><strong style="color:var(--gf-success)">$315,000</strong></div>
+            <div class="row-between"><span style="color:var(--gf-muted)">Toplam Pazar Hacmi (TAM)</span><strong>$15 Milyar</strong></div>
+          </div>
+          <div class="card">
+            <div class="subhead" style="margin-top:0">Mimari & Teknoloji Notu</div>
+            <p style="font-size:0.85rem;color:var(--gf-text)">GB300 NVL72, kısa mesafeli raf içi bağlantılarda ağırlıklı olarak bakır backplane ve bakır SerDes bağlantılarına dayanıyor. Fiziksel sinyal kayıpları düşük hızlarda sorun teşkil etmediğinden bakır, maliyet-etkin ve kararlı seçenek.</p>
+            <div class="insight-box" style="margin-top:10px"><strong>Gelişim Faktörü:</strong> Ağ bütçesi taban noktası</div>
+          </div>
+        </div>
+      </div>
+      <div class="nvresult" id="nvr-rubin">
+        <div class="grid2">
+          <div class="card">
+            <div class="subhead" style="margin-top:0">Seçili Sistem Altyapı Özellikleri</div>
+            <div class="row-between" style="margin-bottom:6px"><span style="color:var(--gf-muted)">Sistem Modeli</span><strong>Rubin Ultra NVL576 SuperPOD</strong></div>
+            <div class="row-between" style="margin-bottom:6px"><span style="color:var(--gf-muted)">Hesaplama Ölçeği</span><strong>576 Entegre GPU (8 Raf)</strong></div>
+            <div class="row-between" style="margin-bottom:6px"><span style="color:var(--gf-muted)">Sistem Başına Ağ Bütçesi</span><strong style="color:var(--gf-success)">$9.4 Milyar</strong></div>
+            <div class="row-between"><span style="color:var(--gf-muted)">Toplam Pazar Hacmi (TAM)</span><strong>$154 Milyar</strong></div>
+          </div>
+          <div class="card">
+            <div class="subhead" style="margin-top:0">Mimari & Teknoloji Notu</div>
+            <p style="font-size:0.85rem;color:var(--gf-text)">Rubin Ultra NVL576 SuperPOD, 8 koordineli raftan oluşuyor ve dikey derinleşme bağlantılarına dayanıyor. 200G per-lane elektrik sinyal sınırlarını aştığı için, dikey bağlantıların tamamı optik motorlar (CPO) üzerinden gerçekleştiriliyor.</p>
+            <div class="insight-box bull" style="margin-top:10px"><strong>Gelişim Faktörü:</strong> Bağlantı başına ~29 kat artış (scale-up)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="chart-card" style="margin:0">
+      <div class="chart-title">AI Ağ TAM Dağılımı (2028 — $154B)</div>
+      <div class="donut-chart">
+        <svg class="donut-svg" viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="chart"><circle cx="90" cy="90" r="70" fill="none" stroke="var(--gf-border)" stroke-width="20"/><circle cx="90" cy="90" r="70" fill="none" stroke="#a78bfa" stroke-width="20" stroke-dasharray="259.94 439.82" stroke-dashoffset="0.00" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #a78bfa66)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#38bdf8" stroke-width="20" stroke-dasharray="92.36 439.82" stroke-dashoffset="-259.94" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #38bdf866)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#4ade80" stroke-width="20" stroke-dasharray="87.52 439.82" stroke-dashoffset="-352.30" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #4ade8066)"/><text x="90" y="85" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="700" font-family="inherit">$154B</text><text x="90" y="102" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="inherit">Ağ TAM 2028</text></svg>
+        <div class="donut-legend">
+          <div class="donut-legend-item"><div class="donut-legend-color" style="background:#a78bfa"></div><div><div class="donut-legend-label">Ortak Paket Optik (CPO)</div><div class="donut-legend-value">$91B · %59</div></div></div>
+          <div class="donut-legend-item"><div class="donut-legend-color" style="background:#38bdf8"></div><div><div class="donut-legend-label">Takılabilir Optik & Diğer</div><div class="donut-legend-value">$32.3B · %21</div></div></div>
+          <div class="donut-legend-item"><div class="donut-legend-color" style="background:#4ade80"></div><div><div class="donut-legend-label">Bakır Backplane Donanımı</div><div class="donut-legend-value">$30.7B · %20</div></div></div>
+        </div>
+      </div>
+      <div class="chart-caption">Sistem mimarisindeki dikey derinleşme, optik entegrasyonu hızlandırıyor — CPO tek başına TAM'in %59'unu oluşturuyor.</div>
+    </div>
+
+    <div class="section-head" style="margin-bottom:0">
+      <div class="section-head-inner"><h2 class="section-title">Modülatör Teknolojileri</h2></div>
+      <div class="section-body" style="padding-top:6px">
+        <div class="card" style="margin-bottom:8px"><strong style="display:block;margin-bottom:4px">MZM (Mach-Zehnder) — Standart</strong><span style="font-size:0.82rem;color:var(--gf-muted)">Sektör standardı, ısıl kararlılığı yüksek. Ancak büyük boyut ve yüksek ekleme kayıpları CPO entegrasyonunda yer kaplıyor.</span></div>
+        <div class="card" style="margin-bottom:8px"><strong style="display:block;margin-bottom:4px">MRM (Mikro Ring) — Nvidia CPO Engine</strong><span style="font-size:0.82rem;color:var(--gf-muted)">Son derece kompakt, düşük güç. Ancak sıcaklık dalgalanmalarına aşırı hassas olduğundan karmaşık mikro-ısıtıcılara bağımlı.</span></div>
+        <div class="card"><strong style="display:block;margin-bottom:4px;color:var(--gf-success)">EAM (Germanium) — Marvell & Celestial AI</strong><span style="font-size:0.82rem;color:var(--gf-muted)">MZM'nin ısıl kararlılığı ile MRM'nin kompaktlığını birleştirerek en optimum döküm düzeyinde paketleme verimliliği sunuyor.</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PANE: MARVELL -->
+<div class="mpane" id="pane-mrvl">
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">🏢 Marvell (NASDAQ: MRVL) — Platform Oyuncusu</h2><div class="icon">▾</div></div>
+    <div class="section-body">
+      <p style="font-size:0.88rem;color:var(--gf-text)">Marvell, bulut sağlayıcılarının özel yapay zeka işlemcilerini (Google TPU, AWS Trainium, Microsoft Maia) döküm düzeyinde tasarlamalarını sağlayan en kritik iki aracı şirketten biri. Hem ultra kısa mesafeli bakır anahtarlama pazarına hem de yeni nesil optik ağ katmanına entegre olarak benzersiz bir platform oyuncusu konumuna ilerliyor. Sektörel konum: <strong>Özelleştirilmiş Çip (Custom ASIC) ve Ağ Çözümleri</strong>.</p>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">Marvell Altyapı Entegrasyon Katmanları</h2></div>
+    <div class="section-body">
+      <input type="radio" class="toggle-input" name="stacklayer" id="sl-optics" checked>
+      <input type="radio" class="toggle-input" name="stacklayer" id="sl-comp">
+      <input type="radio" class="toggle-input" name="stacklayer" id="sl-net">
+      <div class="toggle-row">
+        <label class="toggle-label" for="sl-optics">Katman 3: Optik Ağ (Celestial AI)</label>
+        <label class="toggle-label" for="sl-comp">Katman 2: Özel ASIC (XPU)</label>
+        <label class="toggle-label" for="sl-net">Katman 1: SerDes & Bakır</label>
+      </div>
+
+      <div class="slresult" id="slr-optics">
+        <div class="card">
+          <div class="subhead" style="margin-top:0">Optik Ağ (Celestial AI Entegrasyonu)</div>
+          <p style="font-size:0.85rem;color:var(--gf-text);margin-bottom:10px">Marvell'ın 2026 başında tamamladığı $3.25B ($5.5B earnout bütçeli) Celestial AI satın alımı, tescilli "Photonic Fabric" teknolojisini şirkete kazandırdı.</p>
+          <div class="row-between" style="margin-bottom:6px"><span style="color:var(--gf-muted)">Bant Genişliği Kapasitesi</span><strong>16 Tb/s (chiplet başına)</strong></div>
+          <div class="row-between" style="margin-bottom:6px"><span style="color:var(--gf-muted)">Bellek Havuzlama</span><strong>CXL 4.0 ile 100TB+</strong></div>
+          <div class="row-between"><span style="color:var(--gf-muted)">İlk Ciro Beklentisi</span><strong style="color:var(--gf-success)">FY2028 İkinci Yarısı</strong></div>
+        </div>
+      </div>
+      <div class="slresult" id="slr-comp">
+        <div class="card">
+          <div class="subhead" style="margin-top:0">Özelleştirilmiş ASIC (XPU) Tasarım Hizmetleri</div>
+          <p style="font-size:0.85rem;color:var(--gf-text);margin-bottom:10px">Marvell, hiperskalacıların dikey işlemci (Google TPU, AWS Trainium, Microsoft Maia) geliştirme projelerinde TSMC 3nm platformu üzerinden IP desteği sunuyor.</p>
+          <div class="row-between" style="margin-bottom:6px"><span style="color:var(--gf-muted)">Kazanılan Compute Sockets</span><strong>5 XPU + 13 Attach (18 kümülatif)</strong></div>
+          <div class="row-between" style="margin-bottom:6px"><span style="color:var(--gf-muted)">Nvidia İş Birliği</span><strong style="color:var(--gf-success)">$2B NVLink Fusion Ortaklığı</strong></div>
+          <div class="row-between"><span style="color:var(--gf-muted)">Fırsat Pipeline'ı</span><strong>50+ benzer tasarım fırsatı</strong></div>
+        </div>
+      </div>
+      <div class="slresult" id="slr-net">
+        <div class="card">
+          <div class="subhead" style="margin-top:0">SerDes ve Bakır Backplane Teknolojisi</div>
+          <p style="font-size:0.85rem;color:var(--gf-text);margin-bottom:10px">Kanal başına 112G ve 224G hızlarında veri iletimini sağlayan Marvell SerDes blokları, dikey derinleşme raflarının iç yapısını yöneten en kararlı sistemler.</p>
+          <div class="row-between" style="margin-bottom:6px"><span style="color:var(--gf-muted)">Bakır Anahtarlama Pazar Payı</span><strong>%60+ hakimiyet</strong></div>
+          <div class="row-between" style="margin-bottom:6px"><span style="color:var(--gf-muted)">Uygulama Alanı</span><strong>Chassis-içi Flyover & Backplane</strong></div>
+          <div class="row-between"><span style="color:var(--gf-muted)">Sistemik Dayanıklılık</span><strong style="color:var(--gf-success)">Düşük güç, sıfır ısıl kararsızlık</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">Mali Yıl (FY) Gelir & Veri Merkezi Payı Gelişimi</h2></div>
+    <div class="section-body">
+      <div class="grid4">
+        <div class="card text-center"><div class="card-label">FY24 (Gerçek)</div><div class="card-value">$5.77B</div><div class="card-note">%70 DC payı</div></div>
+        <div class="card text-center"><div class="card-label">FY25 (Gerçek)</div><div class="card-value">$7.25B</div><div class="card-note" style="color:var(--gf-success)">%72 DC payı</div></div>
+        <div class="card text-center"><div class="card-label">FY26 (Gerçek)</div><div class="card-value">$8.195B</div><div class="card-note" style="color:var(--gf-success)">%76 DC payı</div></div>
+        <div class="card text-center"><div class="card-label">FY27 (Tahmin)</div><div class="card-value neu">~$11B</div><div class="card-note">%80 DC payı</div></div>
+        <div class="card text-center"><div class="card-label">FY28 (Tahmin)</div><div class="card-value neu">~$15B</div><div class="card-note">%85 DC payı</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PANE: COMPETITION -->
+<div class="mpane" id="pane-comp">
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">⚖️ Yarı İletken Sektör Karşılaştırma Matrisi</h2><div class="icon">▾</div></div>
+    <div class="section-body">
+      <p style="font-size:0.85rem;color:var(--gf-muted);margin-bottom:6px">FY26 konsensüs verileriyle değerleme çarpanları. Marvell, en yüksek NTM F/K'ya (54x) ve en yüksek DC payı büyümesine sahip; NVIDIA en yüksek F/S ve DC yoğunluğunu koruyor.</p>
+      <div style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr><th>Şirket</th><th class="text-right">Pazar Değeri</th><th class="text-right">FY26 Gelir</th><th class="text-right">F/S (FY26)</th><th class="text-right">NTM F/K</th><th class="text-right">DC Payı</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>NVIDIA</strong></td><td class="text-right">$2.5T</td><td class="text-right">$110.0B</td><td class="text-right" style="color:var(--gf-success)">22.7x</td><td class="text-right">20.0x</td><td class="text-right">%90</td></tr>
+            <tr><td><strong>Broadcom</strong></td><td class="text-right">$500B</td><td class="text-right">$105.4B</td><td class="text-right" style="color:var(--gf-success)">17.5x</td><td class="text-right">23.0x</td><td class="text-right">%40</td></tr>
+            <tr><td><strong>Marvell (MRVL)</strong></td><td class="text-right">$100B</td><td class="text-right">$8.2B</td><td class="text-right" style="color:var(--gf-success)">12.2x</td><td class="text-right" style="color:var(--gf-warning)">54.0x</td><td class="text-right">%76</td></tr>
+            <tr><td><strong>AMD</strong></td><td class="text-right">$250B</td><td class="text-right">$25.0B</td><td class="text-right" style="color:var(--gf-success)">10.0x</td><td class="text-right">59.0x</td><td class="text-right">%30</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="insight-box warn" style="margin-top:6px"><strong>Not:</strong> Orijinal panelde tablo başlıklarına tıklanarak sıralanabiliyordu; burada statik olarak pazar değeri sırasında sunulmuştur (sıralama etkileşimi yayın hattında JS çalışmadığı için korunmadı).</div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="section-head" style="margin-bottom:0">
+      <div class="section-head-inner"><h2 class="section-title">Custom ASIC Pazarında Güç Savaşları</h2></div>
+      <div class="section-body">
+        <p style="font-size:0.85rem;color:var(--gf-text)">Broadcom, Google ile uzun vadeli (2031 vadeli) TPU ortaklığı ve Apple ile $30B+ Baltra ortaklığıyla küresel custom ASIC pazarında <strong>%70 pay</strong> ile liderliğini koruyor. Marvell ise AWS Trainium ve Microsoft Maia dikey tasarımlarındaki lider döküm ortaklığıyla pazarın çift kaynaklı (dual-source) en güçlü ikinci seçeneği.</p>
+      </div>
+    </div>
+    <div class="section-head" style="margin-bottom:0">
+      <div class="section-head-inner"><h2 class="section-title">Makro Altyapı Risk & Kısıtları</h2></div>
+      <div class="section-body" style="padding-top:6px">
+        <div class="row-between" style="padding:8px 0;border-bottom:1px solid var(--gf-border)"><span style="color:var(--gf-muted)">Sistemik Güç Darboğazı</span><strong>Grid / MW Sınırları</strong></div>
+        <div class="row-between" style="padding:8px 0;border-bottom:1px solid var(--gf-border)"><span style="color:var(--gf-muted)">Jeopolitik Odak</span><strong>Tayvan CoWoS (TSMC) Konsantrasyonu</strong></div>
+        <div class="row-between" style="padding:8px 0"><span style="color:var(--gf-muted)">Müşteri Konsantrasyonu</span><strong>Meta, Google, AWS Bağımlılığı</strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="disclaimer">
+  Bu rapor, "Yapay Zeka Altyapısı & Marvell Analiz Paneli" adlı etkileşimli kaynağın Gistify Flow temasına uyarlanmış hâlidir; orijinal panelin sekme navigasyonu, bellek simülatörü, ağ mimarisi ve katman seçici widget'ları JS olmadan (yalnızca CSS ile) yeniden oluşturulmuştur. Veriler Morgan Stanley ve Goldman Sachs küresel derlemelerine dayanır, Temmuz 2026 itibarıyladır ve 2026–2028 projeksiyonları içerir. Eğitim ve bilgilendirme amaçlıdır, yatırım tavsiyesi değildir. Kendi araştırmanızı yapın.
+</div>
+<div class="footer">Gistify Flow | 10 Temmuz 2026 | AI Altyapısı & Marvell — Etkileşimli Panel (Rapor Sürümü 1.4)</div>
+
+</div>
+</body>
+</html>
