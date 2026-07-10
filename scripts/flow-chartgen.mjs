@@ -7,7 +7,7 @@
 // {
 //   "langs": ["tr", "en"],
 //   "charts": {
-//     "__CHART_X__": { "type": "verticalBar" | "horizontalBar" | "range" | "priceLadder" | "donut", ...params }
+//     "__CHART_X__": { "type": "verticalBar" | "horizontalBar" | "range" | "priceLadder" | "donut" | "lineArea", ...params }
 //   },
 //   "outputs": [ { "lang": "tr", "template": "<abs path>", "out": "<abs path>" } ]
 // }
@@ -167,7 +167,38 @@ function donut({ slices, centerLabel, centerSub }) {
   return s + `</svg>`;
 }
 
-const RENDERERS = { priceLadder, verticalBar, horizontalBar, range, donut };
+// Line/area chart over evenly spaced points; shares verticalBar's plot box
+// (x 54..620, baseline y 220, top y 24) so it lines up with column charts.
+function lineArea({ points, yMin, yMax, ticks, tickLabels, color }) {
+  const plotH = 196;
+  const x0 = 54;
+  const x1 = 620;
+  const y = v => 220 - ((v - yMin) / (yMax - yMin)) * plotH;
+  const n = points.length;
+  const px = i => (n === 1 ? (x0 + x1) / 2 : x0 + (i / (n - 1)) * (x1 - x0));
+  const stroke = color || C.accent;
+  let s = `<svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart">`;
+  ticks.forEach((t, i) => {
+    const ty = y(t).toFixed(1);
+    s += `<line x1="54" y1="${ty}" x2="620" y2="${ty}" stroke="${C.grid}" stroke-width="1"/>`;
+    s += `<text x="44" y="${(Number(ty) + 4).toFixed(1)}" text-anchor="end" font-size="10.5" fill="${C.muted}" font-family="inherit">${tickLabels[i]}</text>`;
+  });
+  s += `<line x1="54" y1="220" x2="620" y2="220" stroke="${C.axis}" stroke-width="1.2"/>`;
+  const linePts = points.map((p, i) => `${px(i).toFixed(1)},${y(p.v).toFixed(1)}`);
+  const areaPath = `M ${px(0).toFixed(1)},220 L ${linePts.join(" L ")} L ${px(n - 1).toFixed(1)},220 Z`;
+  s += `<path d="${areaPath}" fill="${stroke}" opacity="0.12"/>`;
+  s += `<polyline points="${linePts.join(" ")}" fill="none" stroke="${stroke}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`;
+  points.forEach((p, i) => {
+    const cx = px(i);
+    const cy = y(p.v);
+    s += `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="4" fill="${stroke}"/>`;
+    s += `<text x="${cx.toFixed(1)}" y="${(cy - 10).toFixed(1)}" text-anchor="middle" font-size="11.5" font-weight="700" fill="${C.text}" font-family="inherit">${p.valueLabel}</text>`;
+    s += `<text x="${cx.toFixed(1)}" y="238" text-anchor="middle" font-size="11" fill="${C.muted}" font-family="inherit">${p.label}</text>`;
+  });
+  return s + `</svg>`;
+}
+
+const RENDERERS = { priceLadder, verticalBar, horizontalBar, range, donut, lineArea };
 
 // ---------------- main ----------------
 const configPath = process.argv[2];
