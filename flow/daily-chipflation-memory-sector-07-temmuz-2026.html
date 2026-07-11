@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chipflation: Bellek Sektörü & AI Deep Dive | $MU $SKHYNIX $SAMSUNG</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Chipflation: Bellek Sektörü & AI Deep Dive | $MU $SKHYNIX $SAMSUNG" />
+<meta property="og:description" content="Morgan Stanley Chipflation analizi: HBM, DRAM, hyperscaler capex, Fed senaryoları ve 5 yapısal senaryo." />
+<meta property="og:url" content="https://gistify.pro/flow/daily-chipflation-memory-sector-07-temmuz-2026.html" />
+<meta property="og:image" content="https://gistify.pro/gistifylogo.png?v=20260706" />
+<meta property="og:site_name" content="Gistify" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Chipflation: Bellek Sektörü & AI Deep Dive" />
+<meta name="twitter:description" content="Morgan Stanley Chipflation analizi: HBM, DRAM, hyperscaler capex, Fed senaryoları." />
+<meta name="twitter:image" content="https://gistify.pro/gistifylogo.png?v=20260706" />
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:'dark',themeVariables:{primaryColor:'#0d1b2a',primaryTextColor:'#e2e8f0',primaryBorderColor:'#1e3a5f',lineColor:'#38bdf8',secondaryColor:'#0a1628',tertiaryColor:'#050c1b',fontFamily:'-apple-system,BlinkMacSystemFont,Segoe UI,system-ui,Roboto,sans-serif'}});</script>
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:720px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.hero-date{display:inline-flex;align-items:center;gap:5px;color:var(--gf-muted)}
+
+/* META PILLS */
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+
+/* SECTIONS */
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s;display:flex;align-items:center;justify-content:space-between}
+.section-head-inner:hover{background:var(--gf-card)}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent);transition:transform .2s}
+.section-head.collapsed .icon{transform:rotate(-90deg)}
+.section-body{padding:18px;display:none}
+.section-head:not(.collapsed) .section-body{display:block}
+
+/* GRID & CARDS */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px;transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-1px);border-color:rgba(56,189,248,.25)}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+
+/* TABS */
+.tabs{display:flex;gap:2px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:14px}
+.tab{flex:1;padding:8px 10px;text-align:center;font-size:0.82rem;font-weight:600;border-radius:6px;cursor:pointer;user-select:none;transition:background .15s,color .15s;border:none;color:var(--gf-muted);background:transparent}
+.tab.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.tab:hover:not(.active){color:var(--gf-text)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.text-right{text-align:right}
+.text-center{text-align:center}
+
+/* PROGRESS */
+.progress-bar{background:var(--gf-card);border-radius:4px;height:18px;overflow:hidden;margin:4px 0}
+.progress-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:0.68rem;font-weight:700;color:#fff}
+.fill-bull{background:linear-gradient(90deg,#16a34a,#4ade80)}
+.fill-base{background:linear-gradient(90deg,#ca8a04,#fbbf24)}
+.fill-bear{background:linear-gradient(90deg,#dc2626,#f87171)}
+
+/* INSIGHT BOX */
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+
+/* TAGS */
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--gf-border)}
+.timeline-item{position:relative;margin-bottom:14px}
+.timeline-item::before{content:'';position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--gf-card);border:2px solid var(--gf-border)}
+.timeline-item.bull::before{border-color:var(--gf-success);background:var(--gf-success)}
+.timeline-item.bear::before{border-color:var(--gf-danger);background:var(--gf-danger)}
+.timeline-item.warn::before{border-color:var(--gf-warning);background:var(--gf-warning)}
+.timeline-date{font-size:0.78rem;color:var(--gf-muted);font-weight:600}
+.timeline-body{font-size:0.85rem;margin-top:3px;color:var(--gf-text)}
+
+/* MERMAID */
+.mermaid{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px;margin:12px 0;overflow:auto}
+.mermaid svg{max-width:100%;height:auto}
+
+/* FOOTER */
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+.tabs{flex-wrap:wrap}
+.tab{flex:none;min-width:80px}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+}
+
+/* LANG SWITCH */
+.lang-switch{display:inline-flex;gap:4px;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:16px}
+.lang-btn{padding:6px 14px;border-radius:8px;font-size:0.8rem;font-weight:600;border:none;cursor:pointer;background:transparent;color:var(--gf-muted);transition:all .15s}
+.lang-btn.active{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.lang-btn:hover:not(.active){color:var(--gf-text)}
+[data-lang]{display:none}
+[data-lang].visible{display:block}
+[data-lang-inline]{display:none}
+[data-lang-inline].visible{display:inline}
+
+/* SCENARIO CARDS */
+.scenario-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:12px 0}
+.scenario-card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:14px;position:relative;overflow:hidden}
+.scenario-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gf-accent)}
+.scenario-card.bull::before{background:var(--gf-success)}
+.scenario-card.bear::before{background:var(--gf-danger)}
+.scenario-card.warn::before{background:var(--gf-warning)}
+.scenario-card.neu::before{background:var(--gf-muted)}
+.scenario-title{font-size:0.9rem;font-weight:700;margin-bottom:6px}
+.scenario-prob{font-size:0.75rem;color:var(--gf-muted);margin-bottom:8px}
+.scenario-desc{font-size:0.82rem;color:var(--gf-text)}
+.scenario-desc strong{color:var(--gf-accent)}
+
+/* HEATMAP */
+.heatmap{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;font-size:0.72rem;margin:10px 0}
+.heatmap-cell{padding:6px 2px;text-align:center;border-radius:4px;min-height:36px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.heatmap-cell .day{font-weight:700;font-size:0.78rem}
+.heatmap-cell .val{font-size:0.68rem;opacity:.85}
+.h-strong{background:rgba(74,222,128,.35);color:#aff5b4}
+.h-weak{background:rgba(248,113,113,.35);color:#ffdcd7}
+.h-neu{background:rgba(251,191,36,.2);color:#ffdfb6}
+.h-flat{background:rgba(148,163,184,.15);color:var(--gf-muted)}
+.h-good{background:rgba(74,222,128,.2);color:#aff5b4}
+</style>
+<script>
+function toggle(id){var el=document.getElementById(id);if(!el)return;el.classList.toggle('collapsed');}
+function setTab(btn,tabId){var parent=btn.closest('.tabs');if(parent){parent.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});parent.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});}btn.classList.add('active');var tc=document.getElementById(tabId);if(tc)tc.classList.add('active');}
+function setLang(lang){document.querySelectorAll('[data-lang]').forEach(function(el){el.classList.toggle('visible',el.getAttribute('data-lang')===lang);});document.querySelectorAll('[data-lang-inline]').forEach(function(el){el.classList.toggle('visible',el.getAttribute('data-lang-inline')===lang);});document.querySelectorAll('.lang-btn').forEach(function(btn){btn.classList.toggle('active',btn.getAttribute('data-lang-btn')===lang);});}
+</script>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HERO -->
+<div class="hero" id="hero" data-timestamp="2026-07-07T14:02:00+03:00">
+  <h1 class="hero-h">🧠 Bellek Sektörü & AI: Chipflation Analizi</h1>
+  <p class="hero-desc">Morgan Stanley "Chipflation" tezi, HBM/DRAM piyasası dinamikleri, hyperscaler $725B capex, Fed senaryoları ve 5 yapısal senaryo</p>
+  <div class="hero-meta">
+    <span class="meta-pill info hero-date">📅 7 Temmuz 2026</span>
+    <span class="meta-pill info hero-date" data-timestamp="2026-07-07T14:02:00+03:00">⏰ 14:02 İstanbul</span>
+    <span class="hero-ticker">$MU</span>
+    <span class="hero-ticker">$SKHYNIX</span>
+    <span class="hero-ticker">$SAMSUNG</span>
+    <span class="meta-pill bull">Bull</span>
+    <span class="meta-pill bear">Bear</span>
+    <span class="meta-pill neu">Deep Research</span>
+  </div>
+</div>
+
+<!-- LANG SWITCH -->
+<div class="lang-switch">
+  <button class="lang-btn active" data-lang-btn="tr" onclick="setLang('tr')">🇹🇷 Türkçe</button>
+  <button class="lang-btn" data-lang-btn="en" onclick="setLang('en')">🇬🇧 English</button>
+</div>
+
+<!-- BÖLÜM 1: ÖZET METRİKLERİ -->
+<section>
+  <div class="section-head" id="sec-ozet">
+    <div class="section-head-inner" onclick="toggle('sec-ozet')">
+      <h2 class="section-title">📊 Özet Metrikleri</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Bellek Fiyat Artışı (12 Ay)</div>
+          <div class="card-value up">6x</div>
+          <div class="card-note">Morgan Stanley, Haziran 2026</div>
+        </div>
+        <div class="card">
+          <div class="card-label">HBM Pazar Payı (SK Hynix)</div>
+          <div class="card-value up">50-62%</div>
+          <div class="card-note">NVIDIA Rubin tahsisi ~50-70%</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Hyperscaler Capex 2026</div>
+          <div class="card-value up">$725B</div>
+          <div class="card-note">+%77 Y/Y | Goldman Sachs</div>
+        </div>
+        <div class="card">
+          <div class="card-label">SK Hynix Op Marjı (Q1)</div>
+          <div class="card-value up">72%</div>
+          <div class="card-note">NVIDIA'dan bile yüksek</div>
+        </div>
+        <div class="card">
+          <div class="card-label">DRAM Kontrat (Q1 2026)</div>
+          <div class="card-value up">+90-95%</div>
+          <div class="card-note">QoQ | TrendForce</div>
+        </div>
+        <div class="card">
+          <div class="card-label">PC Sevkiyatları 2026</div>
+          <div class="card-value down">-10.4%</div>
+          <div class="card-note">Gartner | Talep yıkımı</div>
+        </div>
+      </div>
+
+      <div class="insight-box bull">
+        <strong>Boğa Tezi:</strong> Bu bir süper döngünün sonu değil, Faz 1'den Faz 2'ye geçiş. HBM4 verim stabilizasyonu ve inference patlaması ile fiyatlar %30-50 daha yükselebilir.
+      </div>
+      <div class="insight-box warn">
+        <strong>Uyarı:</strong> Kısa vadede düzeltme riski yüksek — kalabalık pozisyonlar, ince yaz likiditesi, perakende kaldıraç.
+      </div>
+      <div class="insight-box danger">
+        <strong>Ayı Riski:</strong> $600B AI gelir açığı, HBM4 verim sorunları, hyperscaler ROI baskısı.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 2: SENARYO KARTLARI -->
+<section>
+  <div class="section-head" id="sec-senaryo">
+    <div class="section-head-inner" onclick="toggle('sec-senaryo')">
+      <h2 class="section-title">🎯 5 Yapısal Senaryo (2026-2028)</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="scenario-grid">
+        <div class="scenario-card bull">
+          <div class="scenario-title">🚀 Bull</div>
+          <div class="scenario-prob">Olasılık: %25</div>
+          <div class="scenario-desc">Bellek fiyatları <strong>+%30-50</strong> (2026 H2). MU <strong>+%40</strong>, SK Hynix <strong>+%35</strong>. Tetikleyici: HBM4 verim stabilizasyonu + inference patlaması.</div>
+        </div>
+        <div class="scenario-card neu">
+          <div class="scenario-title">📊 Base</div>
+          <div class="scenario-prob">Olasılık: %40</div>
+          <div class="scenario-desc">Bellek fiyatları <strong>+%10-20</strong>. Konsolidasyon. Mevcut talep devamı, yavaşlayan büyüme hızı. HBM4 ramp hızı anahtar değişken.</div>
+        </div>
+        <div class="scenario-card bear">
+          <div class="scenario-title">🐻 Bear</div>
+          <div class="scenario-prob">Olasılık: %25</div>
+          <div class="scenario-desc">Bellek fiyatları <strong>-%15-25</strong>. MU <strong>-%25</strong>. Tetikleyici: Hyperscaler capex kesintisi, HBM4 verim sorunu.</div>
+        </div>
+        <div class="scenario-card" style="border-top-color:var(--gf-danger)">
+          <div class="scenario-title">⚠️ Black Swan</div>
+          <div class="scenario-prob">Olasılık: %5-10</div>
+          <div class="scenario-desc">Bellek fiyatları <strong>-%40+</strong>. Sektör çöküşü. Tetikleyici: Tayvan jeopolitik krizi, küresel resesyon.</div>
+        </div>
+        <div class="scenario-card" style="border-top-color:var(--gf-accent)">
+          <div class="scenario-title">💥 Disruption</div>
+          <div class="scenario-prob">Olasılık: %10-15</div>
+          <div class="scenario-desc">Değişken fiyatlar. Kazananlar/kaybedenler. Tetikleyici: Çin CXMT HBM4 başarısı, optik I/O devrimi.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 3: CHIPFLATION TEZI -->
+<section>
+  <div class="section-head" id="sec-tez">
+    <div class="section-head-inner" onclick="toggle('sec-tez')">
+      <h2 class="section-title">🔬 1. Chipflation Tezi</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="insight-box">
+        <strong>Morgan Stanley:</strong> "Bellek sektörü döngüsel bir endüstri olmaya devam ediyor — ancak bu sefer farklı — ve fiyatlandırma, envanter ve kazanç revizyonları açısından zirve büyüme hızına yaklaşıyor."
+      </div>
+
+      <p style="margin:12px 0;color:var(--gf-text)">Morgan Stanley'in 3 Haziran 2026 tarihli 66 sayfalık <strong>"Chipflation — Navigating A Memory Crisis"</strong> raporu, bellek kıtlığını bir "döngüsel olay"dan "yapısal bir makroekonomik endişe"ye terfi ettirdi.</p>
+
+      <table>
+        <thead>
+          <tr><th>Konu</th><th>Morgan Stanley Görüşü</th><th>Piyasa Yorumu</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Döngü Durumu</strong></td><td>Zirve büyüme hızı ≠ Döngü zirvesi</td><td>Yatırımcılar sık sık ikisini karıştırıyor</td></tr>
+          <tr><td><strong>Uzun Vadeli</strong></td><td>2027'de %35-40 kazanç büyümesi</td><td>AI agentleri yapısal tema</td></tr>
+          <tr><td><strong>Kısa Vadeli</strong></td><td>Kazanç raporlama öncesi zayıflık</td><td>Pozisyonlaşma çok kalabalık</td></tr>
+          <tr><td><strong>Temel Görüş</strong></td><td><span class="tag tag-green">Boğa</span> ancak gerçekçi</td><td>"Satın alınacak bir düzeltme"</td></tr>
+        </tbody>
+      </table>
+
+      <div class="mermaid">
+graph TD
+    A[AI Altyapı Talebi] --> B[Bellek Çipi Arzı Yetersiz]
+    B --> C[Fiyatlar 6x Artış]
+    C --> D[Chipflation]
+    D --> E[Donanım Marjları Sıkışıyor]
+    D --> F[Bulut Hizmetleri Maliyetleri Artıyor]
+    D --> G[Tüketici Elektroniği Fiyatları Yükseliyor]
+    D --> H[Enflasyon Baskısı]
+      </div>
+
+      <div class="insight-box warn">
+        <strong>Peak Rate of Change vs Peak Cycle:</strong> 2026 H2'de fiyat artış hızının yavaşlaması (Q3 DRAM +%13-18 vs Q1 +%90-95), döngünün bittiği anlamına gelmez — sadece <strong>en dik tırmanışın</strong> sona erdiğini gösterir.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 4: HBM DRAM NAND -->
+<section>
+  <div class="section-head" id="sec-hbm">
+    <div class="section-head-inner" onclick="toggle('sec-hbm')">
+      <h2 class="section-title">💾 2. Bellek Piyasası Anatomisi</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="tabs">
+        <button class="tab active" onclick="setTab(this,'tab-hbm')">HBM</button>
+        <button class="tab" onclick="setTab(this,'tab-dram')">DRAM</button>
+        <button class="tab" onclick="setTab(this,'tab-nand')">NAND</button>
+      </div>
+
+      <div class="tab-content active" id="tab-hbm">
+        <h4 style="color:var(--gf-accent);margin-bottom:10px">HBM3E → HBM4 Geçişi</h4>
+        <table>
+          <thead><tr><th>Özellik</th><th>HBM3E</th><th>HBM4</th><th>Değişim</th></tr></thead>
+          <tbody>
+            <tr><td>Bant genişliği/yığın</td><td>896-1,280 GB/s</td><td>1.5-2 TB/s</td><td class="text-right"><span class="tag tag-green">+%50-100</span></td></tr>
+            <tr><td>Kapasite/yığın</td><td>48 GB (12-Hi)</td><td>64 GB (16-Hi)</td><td class="text-right"><span class="tag tag-green">+%33</span></td></tr>
+            <tr><td>Arayüz genişliği</td><td>1,024 bit</td><td>2,048 bit</td><td class="text-right"><span class="tag tag-green">2x</span></td></tr>
+            <tr><td>Wafer yoğunluğu</td><td>3x DDR5</td><td>4x DDR5</td><td class="text-right"><span class="tag tag-red">Artan</span></td></tr>
+          </tbody>
+        </table>
+
+        <h4 style="color:var(--gf-accent);margin:14px 0 10px">HBM Pazar Payı (2026)</h4>
+        <table>
+          <thead><tr><th>Şirket</th><th>HBM Payı</th><th>NVIDIA Rubin Tahsisi</th><th>HBM4 Durumu</th></tr></thead>
+          <tbody>
+            <tr><td><strong>SK Hynix</strong></td><td>~50-62%</td><td>~50-70%</td><td><span class="tag tag-green">Seri üretim, 75-80% verim</span></td></tr>
+            <tr><td><strong>Samsung</strong></td><td>~25-40%</td><td>~20-30%</td><td><span class="tag tag-orange">Şubat 2026'dan üretimde</span></td></tr>
+            <tr><td><strong>Micron</strong></td><td>~5-20%</td><td>~20%</td><td><span class="tag tag-blue">Örnekler 11 Gbps</span></td></tr>
+          </tbody>
+        </table>
+
+        <div class="insight-box danger">
+          <strong>Kritik Bulgu:</strong> HBM, geleneksel DDR5'e göre <strong>wafer başına 3-4 kat daha fazla</strong> DRAM tüketiyor. Bu, fiziksel bir kısıt — politika değil, fizik. Her AI GPU üretildiğinde, 3-4 PC/laptop için gerekli olan bellek kapasitesi "yok ediliyor".
+        </div>
+      </div>
+
+      <div class="tab-content" id="tab-dram">
+        <h4 style="color:var(--gf-accent);margin-bottom:10px">DRAM Kontrat Fiyat Trajektorisi</h4>
+        <table>
+          <thead><tr><th>Dönem</th><th>DRAM QoQ</th><th>NAND QoQ</th><th>Trend</th></tr></thead>
+          <tbody>
+            <tr><td>Q1 2026</td><td class="text-right"><span class="tag tag-green">+%90-95</span></td><td class="text-right"><span class="tag tag-green">+%70-75</span></td><td>Patlama</td></tr>
+            <tr><td>Q2 2026</td><td class="text-right"><span class="tag tag-green">+%58-63</span></td><td class="text-right"><span class="tag tag-green">+%50-55</span></td><td>Yavaşlama</td></tr>
+            <tr><td>Q3 2026 (tahmin)</td><td class="text-right"><span class="tag tag-orange">+%13-18</span></td><td class="text-right"><span class="tag tag-orange">+%10-15</span></td><td>Normalizasyon</td></tr>
+            <tr><td>Q4 2026 (tahmin)</td><td class="text-right"><span class="tag tag-orange">+%5-10</span></td><td class="text-right"><span class="tag tag-orange">+%5-8</span></td><td>Taban</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:10px;color:var(--gf-muted);font-size:0.82rem">Kaynak: TrendForce, WSTS, Counterpoint</p>
+
+        <div class="insight-box warn">
+          <strong>İki Hızlı Pazar:</strong> Hyperscaler'lar 3-5 yıllık LTAs ile %60-70 sunucu DDR5 arzını kilitledi. Tüketici spot piyasası volatil — DDR4 fiyatları bazı spot piyasalarda DDR5'i aştı (nadir bir tersine dönüş).
+        </div>
+      </div>
+
+      <div class="tab-content" id="tab-nand">
+        <p style="color:var(--gf-text);margin-bottom:10px">NAND, DRAM'a göre daha zayıf talep görüyor. AI çıkarımı (inference) enterprise SSD talebini destekliyor, ancak tüketici NAND talebi daralıyor.</p>
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-num">+%10-15</div><div class="kpi-label">Q3 NAND QoQ</div></div>
+          <div class="kpi"><div class="kpi-num">-%8.4%</div><div class="kpi-label">Smartphone 2026</div></div>
+          <div class="kpi"><div class="kpi-num">-%10.4%</div><div class="kpi-label">PC 2026</div></div>
+        </div>
+        <p style="margin-top:10px;color:var(--gf-muted);font-size:0.82rem">TrendForce: Q3 2026 NAND kontrat fiyatları önceki çeyreklere göre belirgin şekilde yavaşlamış</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 5: HYPERSCALER CAPEX -->
+<section>
+  <div class="section-head" id="sec-capex">
+    <div class="section-head-inner" onclick="toggle('sec-capex')">
+      <h2 class="section-title">🏗️ 3. Hyperscaler Capex: $725B</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <table>
+        <thead><tr><th>Şirket</th><th>2025 Capex</th><th>2026 Capex</th><th>Y/Y</th><th>AI Payı</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Amazon</strong></td><td>~$125B</td><td><strong>~$200B</strong></td><td class="text-right"><span class="tag tag-green">+%60</span></td><td>~%75-80</td></tr>
+          <tr><td><strong>Microsoft</strong></td><td>~$95B</td><td><strong>~$190B</strong></td><td class="text-right"><span class="tag tag-green">+%100</span></td><td>~%75-80</td></tr>
+          <tr><td><strong>Alphabet</strong></td><td>~$91B</td><td><strong>$175-185B</strong></td><td class="text-right"><span class="tag tag-green">+%93-103</span></td><td>~%75-80</td></tr>
+          <tr><td><strong>Meta</strong></td><td>~$66-72B</td><td><strong>$125-145B</strong></td><td class="text-right"><span class="tag tag-green">+%90-102</span></td><td>~%80</td></tr>
+          <tr><td><strong>Oracle</strong></td><td>~$15B</td><td><strong>~$50B</strong></td><td class="text-right"><span class="tag tag-green">+%233</span></td><td>~%90</td></tr>
+          <tr style="background:var(--gf-accent-dim)"><td><strong>Toplam (Big 5)</strong></td><td><strong>~$410B</strong></td><td><strong>~$785B</strong></td><td class="text-right"><strong><span class="tag tag-green">+%91</span></strong></td><td>—</td></tr>
+        </tbody>
+      </table>
+
+      <div class="mermaid">
+pie title 2026 AI Capex Dağılımı (Tahmini)
+    "GPU Kümeleri & Sunucular" : 45
+    "Veri Merkezi İnşaatı" : 30
+    "Ağ Altyapısı" : 12
+    "Güç ve Soğutma" : 10
+    "Özel Silikon" : 3
+      </div>
+
+      <div class="insight-box">
+        <strong>$600B Gelir Açığı Tartışması:</strong> Sequoia Capital (David Cahn): "AI altyapısına harcanan ile AI ekosisteminin ürettiği gerçek satışlar arasında <strong>$600 milyar yıllık gelir açığı</strong> var."
+      </div>
+      <div class="insight-box bull">
+        <strong>Karşı Argüman:</strong> Microsoft AI gelir run rate <strong>>$37B</strong> (+%123 Y/Y). AWS yıllık gelir run rate <strong>$142B</strong>. Birleşik RPO/backlog: <strong>>$1.6 trilyon</strong>. Talep gerçekleşmiş ve kontratlı.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 6: FİNANSAL PİYASALAR -->
+<section>
+  <div class="section-head" id="sec-piyasa">
+    <div class="section-head-inner" onclick="toggle('sec-piyasa')">
+      <h2 class="section-title">📈 4. Finansal Piyasalar</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <table>
+        <thead><tr><th>Hisse</th><th>2026 YTD</th><th>12 Ay</th><th>5 Yıl</th><th>P/E (Forward)</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Micron (MU)</strong></td><td class="text-right"><span class="tag tag-green">+%260+</span></td><td class="text-right"><span class="tag tag-green">+%700+</span></td><td class="text-right">+%1,017</td><td>5.5-9.6x</td></tr>
+          <tr><td><strong>SK Hynix (KRX)</strong></td><td class="text-right"><span class="tag tag-green">+%11.5</span></td><td class="text-right"><span class="tag tag-green">+%800+</span></td><td class="text-right">+%1,624</td><td>5.1-6.1x</td></tr>
+          <tr><td><strong>Samsung (KRX)</strong></td><td class="text-right"><span class="tag tag-green">+%16</span></td><td class="text-right"><span class="tag tag-green">+%200+</span></td><td class="text-right">+%300</td><td>6.0-7.6x</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="color:var(--gf-accent);margin:14px 0 10px">KOSPI Konsantrasyon Riski</h4>
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-num">>%50</div><div class="kpi-label">KOSPI'de Samsung+SKH</div></div>
+        <div class="kpi"><div class="kpi-num">-$22B</div><div class="kpi-label">Yabancı çıkış (Mayıs+)</div></div>
+        <div class="kpi"><div class="kpi-num">$23.4B</div><div class="kpi-label">DRAM ETF AUM (3 ay)</div></div>
+        <div class="kpi"><div class="kpi-num">38-60T</div><div class="kpi-label">Kore marj borcu (won)</div></div>
+      </div>
+
+      <div class="insight-box warn">
+        <strong>Temmuz 1, 2026 Satış Dalgası:</strong> SNXX (Samsung 2x ETF) <strong>-%21</strong> (kaldıraçlı ETF mekanik rebalancing), MU <strong>-%8.6</strong>, Samsung <strong>-%5.8</strong>. VIX 17'de, SPY -%0.09 — bu, sektörel bir olay, sistemik bir risk-off değil.
+      </div>
+
+      <div class="insight-box bull">
+        <strong>Yabancı çıkışları temel bir bozulma değil:</strong> SK Hynix ADR (SKHY) listelemesine (Temmuz 10, Nasdaq) rotasyon. Aynı sermaye KRX'den NYSE'ye geçiyor — daha likit, USD cinsinden, ABD opsiyon piyasası erişimi.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 7: FED POLİTİKASI -->
+<section>
+  <div class="section-head" id="sec-fed">
+    <div class="section-head-inner" onclick="toggle('sec-fed')">
+      <h2 class="section-title">🏦 5. Fed Politikası & Faiz Duyarlılığı</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Fed Fon Oranı</div>
+          <div class="card-value neu">3.50-3.75%</div>
+          <div class="card-note">Etkin: ~3.63%</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Core PCE</div>
+          <div class="card-value down">3.4%</div>
+          <div class="card-note">Hedef %2'nin üzerinde</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Temmuz İndirim Olasılığı</div>
+          <div class="card-value down">1.4%</div>
+          <div class="card-note">CME FedWatch</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Goldman Sachs Beklentisi</div>
+          <div class="card-value neu">2027'ye kadar yok</div>
+          <div class="card-note">Hatta artış riski</div>
+        </div>
+      </div>
+
+      <h4 style="color:var(--gf-accent);margin:14px 0 10px">Faiz Duyarlılığı Matrisi</h4>
+      <table>
+        <thead><tr><th>Etki</th><th>+25bp</th><th>+50bp</th><th>+100bp</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Teknoloji Hisseleri</strong></td><td><span class="tag tag-green">+%2-5</span></td><td><span class="tag tag-green">+%5-10</span></td><td><span class="tag tag-green">+%10-20+</span></td></tr>
+          <tr><td><strong>Bellek Hisseleri</strong></td><td><span class="tag tag-green">+%3-7</span></td><td><span class="tag tag-green">+%7-12</span></td><td><span class="tag tag-green">+%15-25</span></td></tr>
+          <tr><td><strong>AI Capex Hacmi</strong></td><td><span class="tag tag-orange">Minimal</span></td><td><span class="tag tag-green">+%2-3</span></td><td><span class="tag tag-green">+%5-8</span></td></tr>
+          <tr><td><strong>Risk Seviyesi</strong></td><td><span class="tag tag-green">🟢 Düşük</span></td><td><span class="tag tag-orange">🟡 Orta</span></td><td><span class="tag tag-red">🔴 Yüksek</span></td></tr>
+        </tbody>
+      </table>
+
+      <div class="insight-box danger">
+        <strong>Kritik Insight:</strong> Fed politikası fiziksel arz üzerinde <strong>hiçbir etkisi yok</strong>. CoWoS kapasitesi 52-78 hafta lead time ile kısıtlı — faiz oranlarından bağımsız. Microsoft'un $80B Azure backlog'i güç kısıtları nedeniyle yerine getirilemiyor. Fed politikası bellek hisse fiyatlarını etkiler, bellek çip miktarını değil.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 8: RİSK ÇERÇEVESİ -->
+<section>
+  <div class="section-head" id="sec-risk">
+    <div class="section-head-inner" onclick="toggle('sec-risk')">
+      <h2 class="section-title">⚠️ 6. Risk Çerçevesi & Erken Uyarı Sinyalleri</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <h4 style="color:var(--gf-accent);margin-bottom:10px">Döngü Tepe İşaretleri (Morgan Stanley)</h4>
+      <table>
+        <thead><tr><th>Sinyal</th><th>Tetiklendi mi?</th><th>Durum</th></tr></thead>
+        <tbody>
+          <tr><td>GPU teslim süreleri 12+ aydan 6 aya düştü</td><td><span class="tag tag-red">❌ Hayır</span></td><td>Hala 12+ ay</td></tr>
+          <tr><td>Herhangi bir hyperscaler capex'i düşürdü</td><td><span class="tag tag-red">❌ Hayır</span></td><td>Tümü teyit etti/artırdı</td></tr>
+          <tr><td>Kurumsal AI benimseme plato</td><td><span class="tag tag-red">❌ Hayır</span></td><td>Hızlanıyor (%78 Global 2000)</td></tr>
+          <tr><td>Nvidia veri merkezi gelir büyümesi <%20</td><td><span class="tag tag-red">❌ Hayır</span></td><td>Hala >%50</td></tr>
+          <tr><td>Güç satın alma anlaşması fiyatları düştü</td><td><span class="tag tag-red">❌ Hayır</span></td><td>Yükseliyor</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="color:var(--gf-accent);margin:14px 0 10px">Ek Riskler</h4>
+      <div class="timeline">
+        <div class="timeline-item bear">
+          <div class="timeline-date">Antitrust Davası</div>
+          <div class="timeline-body"><em>Garciaguirre v. Samsung</em> (Haziran 25, 2026) — %700 fiyat artışını kartelleşme ile suçluyor. Yıllar sürebilir.</div>
+        </div>
+        <div class="timeline-item warn">
+          <div class="timeline-date">Çin CXMT</div>
+          <div class="timeline-body">$7.3B Q1 gelir (+%700 Y/Y). 2028'e kadar commodity DRAM/NAND fiyatlarını bozabilir. HBM'de verim ~%25.</div>
+        </div>
+        <div class="timeline-item bear">
+          <div class="timeline-date">Tayvan/TSMC Jeopolitik</div>
+          <div class="timeline-body">CoWoS tekelleşmesi = sistemik risk. Bir kriz, tüm AI altyapısını durdurabilir.</div>
+        </div>
+        <div class="timeline-item warn">
+          <div class="timeline-date">Güç Kısıtları</div>
+          <div class="timeline-body">Veri merkezleri 2027'ye kadar %40'ı güç kısıtlı. IEA: 2030'a kadar 3x artış.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 9: YATIRIM STRATEJİSİ -->
+<section>
+  <div class="section-head" id="sec-strateji">
+    <div class="section-head-inner" onclick="toggle('sec-strateji')">
+      <h2 class="section-title">🎯 7. Yatırım Stratejisi</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <table>
+        <thead><tr><th>Hisse</th><th>Tez</th><th>Boğa Gerekçesi</th><th>Ayı Riski</th></tr></thead>
+        <tbody>
+          <tr><td><strong>SK Hynix</strong></td><td>HBM lideri</td><td>NVIDIA'nın en büyük bellek ortağı, %72 op marj</td><td>Samsung HBM4 pay kazanması</td></tr>
+          <tr><td><strong>Micron</strong></td><td>ABD üretim hedge'i</td><td>Tek ABD'li bellek üreticisi; NY megafab</td><td>HBM payı sınırlı (%5-10)</td></tr>
+          <tr><td><strong>Samsung</strong></td><td>Dikey entegrasyon</td><td>P5 fab, 4nm/2nm baz-die</td><td>HBM3E gecikmesi telafisi zor</td></tr>
+        </tbody>
+      </table>
+
+      <div class="grid" style="margin-top:14px">
+        <div class="card">
+          <div class="card-label">Kısa Vadeli (2026 H2)</div>
+          <div class="card-value neu">Düzeltme = Fırsat</div>
+          <div class="card-note">Seçici alım, kalabalık pozisyonlar → volatilite</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Orta Vadeli (2027)</div>
+          <div class="card-value neu">HBM4 Verim Takibi</div>
+          <div class="card-note">Q3/Q4 2027 DRAM kontratları kritik</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Uzun Vadeli (2028+)</div>
+          <div class="card-value neu">AI Altyapısı Teması</div>
+          <div class="card-note">Yapısal çöküş değil, düzeltme</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 10: ÇAPRAZ INSIGHT'LAR -->
+<section>
+  <div class="section-head" id="sec-insight">
+    <div class="section-head-inner" onclick="toggle('sec-insight')">
+      <h2 class="section-title">💡 8. Çapraz Analiz Insight'ları</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="insight-box bull">
+        <strong>1. Kalıcı Bellek Vergisi:</strong> HBM'nin wafer başına 3x yoğunluğu geçici değil, kalıcı bir yapısal kısıt. Her AI GPU, kalıcı olarak 3-4 geleneksel bellek cihazını yerinden ediyor. Bellek fiyatları asla 2024 seviyelerine dönmeyebilir.
+      </div>
+      <div class="insight-box">
+        <strong>2. İki Hızlı Pazar:</strong> LTAs (3-5 yıl) bellek piyasasının kalıcı özelliği haline geldi. Hyperscaler'lar %60-70 sunucu DDR5 arzını kilitledi. Bu, LNG piyasasının evrimine benziyor.
+      </div>
+      <div class="insight-box bull">
+        <strong>3. Jevons Paradoks'u:</strong> Her verimlilik iyileştirmesi (quantization, MoE) tarihsel olarak toplam talebi artırdı. Agentic AI iş akışları, chatbot sorgularından 1,000x daha fazla token kullanıyor.
+      </div>
+      <div class="insight-box warn">
+        <strong>4. KOSPI = Bellek Türevi:</strong> Samsung + SK Hynix >%50 KOSPI. Yabancı çıkışları ($22B) temel bozulma değil — SKH ADR (SKHY) rotasyonu.
+      </div>
+      <div class="insight-box danger">
+        <strong>5. 2027-2028 İkili Sonuç:</strong> Yeni fab kapasitesi, HBM4 verim stabilizasyonu ve capex yavaşlamasıyla aynı anda. Ya süper döngü 2030'a uzar ya da 2018 tarzı düşüş. Q3/Q4 2027 DRAM kontratları kritik.
+      </div>
+      <div class="insight-box">
+        <strong>6. Çin Joker Kart:</strong> CXMT ($7.3B Q1, +%700) 2028'e kadar commodity DRAM/NAND bozabilir, ancak HBM'de verim (~%25) ve ABD kontrolleri engel. "İki dünyalı" pazar riski.
+      </div>
+      <div class="insight-box warn">
+        <strong>7. Verimlilik-Talep Yarışı:</strong> Optik I/O ve compute-in-memory, GPU başına HBM gereksinimlerini azaltabilir. Ancak şu ana kadar kanıtlar talep büyümesinden yana.
+      </div>
+      <div class="insight-box bull">
+        <strong>8. Fed İrrelevant:</strong> CoWoS 52-78 hafta lead time — faizden bağımsız. HBM4 verim stabilizasyonu, fed funds rate'ten daha önemli.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BÖLÜM 11: MERMAID DİYAGRAM -->
+<section>
+  <div class="section-head" id="sec-mermaid">
+    <div class="section-head-inner" onclick="toggle('sec-mermaid')">
+      <h2 class="section-title">🕸️ Chipflation Etki Zinciri</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="mermaid">
+flowchart TD
+    subgraph AI_Talep["🤖 AI Talebi"]
+        A1[Training GPU Cluster]
+        A2[Inference Server]
+        A3[Agentic AI Workflows]
+    end
+
+    subgraph Bellek["💾 Bellek Arzı"]
+        B1[HBM3E 12-Hi]
+        B2[HBM4 16-Hi]
+        B3[DDR5 Server]
+        B4[Consumer DRAM]
+    end
+
+    subgraph Kısıtlar["⛔ Kısıtlar"]
+        C1[CoWoS 52-78 hafta]
+        C2[EUV Tool Shortage]
+        C3[30μm Wafer Thinning]
+        C4[Güç Kısıtları]
+    end
+
+    subgraph Etkiler["📊 Etkiler"]
+        D1[DRAM Fiyatları +90% QoQ]
+        D2[PC -%10.4%, Phone -%8.4%]
+        D3[Apple +%20-42% Fiyat Artışı]
+        D4[Microsoft $25B Chip Cost]
+        D5[PPI Elektronik +%26.9]
+    end
+
+    A1 --> B1
+    A1 --> B2
+    A2 --> B3
+    A3 --> B2
+    B1 --> C1
+    B2 --> C2
+    B2 --> C3
+    B3 --> C4
+    C1 --> D1
+    C2 --> D1
+    C3 --> D1
+    D1 --> D2
+    D1 --> D3
+    D1 --> D4
+    D1 --> D5
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>Gistify Flow | 7 Temmuz 2026</p>
+  <p style="margin-top:6px;font-size:0.72rem">⚠️ Bu belge yatırım tavsiyesi değildir. Kaynak: Morgan Stanley, TrendForce, Goldman Sachs, Moody's, WSTS, IDC, Gartner.</p>
+</div>
+
+</div>
+</body>
+</html>
