@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yapay Zeka Donanım Ayrışması & Çip Enflasyonu — Kapsamlı Sektör Analizi | $NVDA $AVGO $INTC</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Yapay Zeka Donanım Ayrışması & Çip Enflasyonu" />
+<meta property="og:description" content="2026 makroekonomik sıfırlama, HBM oligopolü, NVIDIA Vera Rubin mimarisi, özel silikon/jeopolitik ve Türkiye YZ ekosistemi — 6 bölümlük kapsamlı analiz paneli." />
+<meta property="og:url" content="https://gistify.pro/flow/783787466805.html" />
+<meta property="og:image" content="https://gistify.pro/gistifylogo.png?v=20260706" />
+<meta property="og:site_name" content="Gistify" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Yapay Zeka Donanım Ayrışması & Çip Enflasyonu" />
+<meta name="twitter:description" content="2026 makroekonomik sıfırlama, HBM oligopolü, NVIDIA Vera Rubin mimarisi, özel silikon/jeopolitik ve Türkiye YZ ekosistemi." />
+<meta name="twitter:image" content="https://gistify.pro/gistifylogo.png?v=20260706" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:20px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:780px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:20px}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:12px 14px;text-align:center}
+.kpi-num{font-size:1.3rem;font-weight:700;color:var(--gf-accent)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:4px}
+.tab-radio{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.tabs{display:flex;gap:2px;flex-wrap:wrap;background:var(--gf-card);padding:4px;border-radius:var(--gf-radius);margin-bottom:18px}
+.tab-label{flex:1;min-width:140px;padding:9px 10px;text-align:center;font-size:0.78rem;font-weight:600;border-radius:6px;cursor:pointer;user-select:none;transition:background .15s,color .15s;color:var(--gf-muted);background:transparent}
+.tab-label:hover{color:var(--gf-text)}
+.tab-pane{display:none}
+#t-macro:checked ~ .tabs .l-macro,
+#t-hbm:checked ~ .tabs .l-hbm,
+#t-nvidia:checked ~ .tabs .l-nvidia,
+#t-asics:checked ~ .tabs .l-asics,
+#t-turkey:checked ~ .tabs .l-turkey,
+#t-strategy:checked ~ .tabs .l-strategy{background:var(--gf-elev);color:var(--gf-text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+#t-macro:checked ~ #pane-macro,
+#t-hbm:checked ~ #pane-hbm,
+#t-nvidia:checked ~ #pane-nvidia,
+#t-asics:checked ~ #pane-asics,
+#t-turkey:checked ~ #pane-turkey,
+#t-strategy:checked ~ #pane-strategy{display:block}
+.pane-title{font-size:1.15rem;font-weight:700;color:var(--gf-text);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:18px}
+.card h3{font-size:1rem;font-weight:700;color:var(--gf-text);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.card p{color:var(--gf-muted);font-size:0.87rem;margin-bottom:8px}
+.card p:last-child{margin-bottom:0}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.chart-container{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:20px;margin:16px 0}
+.chart-title{font-size:.9rem;font-weight:700;color:var(--gf-accent);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.chart-title::before{content:'';display:inline-block;width:4px;height:16px;background:var(--gf-accent);border-radius:2px}
+.chart-caption{font-size:.78rem;color:var(--gf-muted);margin-top:12px;border-top:1px solid var(--gf-border-subtle);padding-top:10px}
+.donut-chart{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.donut-svg{flex-shrink:0}
+.donut-legend{display:flex;flex-direction:column;gap:8px}
+.donut-legend-item{display:flex;align-items:center;gap:8px;font-size:.85rem}
+.donut-legend-color{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.donut-legend-label{color:var(--gf-text)}
+.donut-legend-value{color:var(--gf-muted);font-size:.8rem}
+.toggle-input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.toggle-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.toggle-label{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:8px;font-size:.78rem;font-weight:600;background:var(--gf-elev);border:1px solid var(--gf-border);color:var(--gf-muted);cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.sim-pane{display:none}
+#capex400:checked ~ .toggle-row label[for="capex400"],
+#capex800:checked ~ .toggle-row label[for="capex800"],
+#capex1200:checked ~ .toggle-row label[for="capex1200"],
+#capex1500:checked ~ .toggle-row label[for="capex1500"]{background:var(--gf-accent);color:#04121f;border-color:var(--gf-accent)}
+#capex400:checked ~ #sim-400{display:block}
+#capex800:checked ~ #sim-800{display:block}
+#capex1200:checked ~ #sim-1200{display:block}
+#capex1500:checked ~ #sim-1500{display:block}
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+.disclaimer{font-style:italic;font-size:0.8rem;color:var(--gf-muted);margin-top:8px;padding-top:12px;border-top:1px solid var(--gf-border-subtle)}
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid,.grid3{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+.tab-label{min-width:100px;font-size:.72rem}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-11T14:00:00+03:00">
+  <h1 class="hero-h">Yapay Zeka Donanım Ayrışması & Çip Enflasyonu</h1>
+  <p class="hero-desc">2026 Makroekonomik Sıfırlama, HBM Oligopolü, NVIDIA Vera Rubin Mimarisi, Özel Silikon/Jeopolitik ve Türkiye YZ Ekosistemi — kapsamlı analiz paneli.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info hero-date" data-timestamp="2026-07-11T14:00:00+03:00">📅 11 Temmuz 2026</span>
+    <span class="hero-ticker">$NVDA</span>
+    <span class="hero-ticker">$AVGO</span>
+    <span class="hero-ticker">$INTC</span>
+    <span class="hero-ticker">$GOOGL</span>
+    <span class="hero-ticker">$AMZN</span>
+    <span class="hero-ticker">$META</span>
+    <span class="hero-ticker">$SKHY</span>
+    <span class="meta-pill neu">Derinlemesine Sektör Analizi</span>
+    <span class="meta-pill bull">Çip Enflasyonu</span>
+  </div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-num">$1.29T</div><div class="kpi-label">2026 Yarı İletken Pazar Hacmi (+%52.8)</div></div>
+  <div class="kpi"><div class="kpi-num">1300x</div><div class="kpi-label">NVIDIA Veri Merkezi Gelir Artışı (12 Yıl)</div></div>
+  <div class="kpi"><div class="kpi-num">$1.2T</div><div class="kpi-label">2027 Big Tech CapEx Öngörüsü</div></div>
+  <div class="kpi"><div class="kpi-num">%85</div><div class="kpi-label">NVIDIA Küresel AI Pazar Payı</div></div>
+</div>
+
+<input type="radio" class="tab-radio" name="mainTabs" id="t-macro" checked>
+<input type="radio" class="tab-radio" name="mainTabs" id="t-hbm">
+<input type="radio" class="tab-radio" name="mainTabs" id="t-nvidia">
+<input type="radio" class="tab-radio" name="mainTabs" id="t-asics">
+<input type="radio" class="tab-radio" name="mainTabs" id="t-turkey">
+<input type="radio" class="tab-radio" name="mainTabs" id="t-strategy">
+
+<div class="tabs">
+  <label class="tab-label l-macro" for="t-macro">1. Makroekonomi</label>
+  <label class="tab-label l-hbm" for="t-hbm">2. HBM Hegemonyası</label>
+  <label class="tab-label l-nvidia" for="t-nvidia">3. NVIDIA Vera Rubin</label>
+  <label class="tab-label l-asics" for="t-asics">4. ASIC & Jeopolitik</label>
+  <label class="tab-label l-turkey" for="t-turkey">5. Türkiye YZ</label>
+  <label class="tab-label l-strategy" for="t-strategy">6. Strateji & Portföy</label>
+</div>
+
+<div class="tab-pane" id="pane-macro">
+  <div class="pane-title">📉 Makroekonomi & Çip Enflasyonu</div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>🔄 Döngü Ortası Sıfırlaması & Sermaye Rotasyonu</h3>
+      <p>YZ altyapı inşasında spekülatif "GPU hücumu" evresi bitti, hiper ölçekleyicilerin devasa CapEx'inden somut Yatırım Getirisi (ROI) talep eden rasyonel bir aşamaya geçildi.</p>
+      <div class="kpi-row" style="margin-bottom:0">
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-accent)">3x</div><div class="kpi-label">SOX Endeksi F/K Sıçraması (2022 Tabanına Göre)</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-warning)">%10</div><div class="kpi-label">Mag-7 Değerleme Primi (Son 10 Yılın Dibi)</div></div>
+      </div>
+      <p style="margin-top:10px"><small>Asimetrik sermaye akışı, donanım hisselerinde 1 hafta içinde $1.3 trilyonluk bir silinmeye yol açtı. Sermaye artık yapay zekayı doğrudan paraya çevirebilen hiper ölçekleyicilere kayıyor.</small></p>
+    </div>
+
+    <div class="card">
+      <h3>🏗️ Hiper Ölçekleyici CapEx Süper Döngüsü</h3>
+      <p>Microsoft, Meta, Alphabet ve Amazon'un altyapı yarışındaki yatırımları küresel bellek/çip pazarını bir kara delik gibi yutarak "Çip Enflasyonu"nu (Chipflation) körüklüyor.</p>
+      <div class="chart-container" style="margin:10px 0 0;padding:14px">
+        <svg viewBox="0 0 640 114" width="100%" height="114" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="84" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="102" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$0</text><line x1="287.5" y1="16" x2="287.5" y2="84" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="287.5" y="102" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$300B</text><line x1="385.0" y1="16" x2="385.0" y2="84" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="385.0" y="102" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$600B</text><line x1="482.5" y1="16" x2="482.5" y2="84" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="482.5" y="102" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$900B</text><line x1="580.0" y1="16" x2="580.0" y2="84" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="580.0" y="102" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$1.2T</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">2026</text><rect x="190" y="22.8" width="260.0" height="19.0" rx="4" fill="#94a3b8" opacity="0.88"/><text x="458.0" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$800B</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">2027</text><rect x="190" y="56.8" width="390.0" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="588.0" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$1.2T</text></svg>
+        <div class="chart-caption">2027 Big Tech CapEx tahmini 2026'ya göre %50 artışla $1.2 trilyona ulaşıyor.</div>
+      </div>
+      <p style="margin-top:10px"><strong>Öne çıkanlar:</strong> Meta tek başına $145B CapEx ayırırken (2026 sonu 7GW, 2027 sonu 14GW enerji hedefi), Microsoft $190B bütçesinin $25B'ını doğrudan "yükselen çip fiyatlarını" karşılamaya tahsis etti.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💥 Çip Enflasyonu: Tüketici Elektroniğinde Talep Yıkımı ve Fed Etkisi</h3>
+    <div class="grid3" style="margin-bottom:0">
+      <div>
+        <span class="tag tag-red">Tüketici Maliyeti</span>
+        <p>HBM ve sunucu belleği önceliği tüketici pazarında <strong>%12-15 yapısal arz açığı</strong> yarattı. PC/akıllı telefon üretim maliyeti %34-%114 arası fırladı. Apple, Sony ve Lenovo ürün fiyatlarında agresif artışlara gitti.</p>
+      </div>
+      <div>
+        <span class="tag tag-purple" style="background:var(--gf-accent-dim);color:var(--gf-accent)">Jevons Paradoksu</span>
+        <p>TurboQuant gibi yazılımsal optimizasyonların (6x iddia edilen, gerçekte 2.6x KV önbellek tasarrufu) talebi bitireceği sanıldı. Oysa Jevons Paradoksu gereği birim maliyet düşüşü kullanımı tetikleyerek toplam bellek talebini patlattı.</p>
+      </div>
+      <div>
+        <span class="tag tag-blue">Fed Şahinleşmesi</span>
+        <p>YZ veri merkezi inşası ve enerji açıkları çekirdek enflasyonu (PCE) besledi. Fed yıl sonu PCE tahminini %2.7'den <strong>%3.6'ya</strong> revize ederek "higher-for-longer" duruşuna geçti.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚡ Etkileşimli Simülatör: Yapay Zeka CapEx & Çip Enflasyonu Etkisi</h3>
+    <p>Hiper ölçekli bulut şirketlerinin yatırım harcamalarını kaydırarak bellek çipi arz açığına ve tüketici cihaz maliyetlerine olan tahmini makroekonomik yansımayı, kaynağın kendi simülatör formülüyle inceleyin.</p>
+
+    <input type="radio" class="toggle-input" name="capexSim" id="capex400">
+    <input type="radio" class="toggle-input" name="capexSim" id="capex800" checked>
+    <input type="radio" class="toggle-input" name="capexSim" id="capex1200">
+    <input type="radio" class="toggle-input" name="capexSim" id="capex1500">
+    <div class="toggle-row">
+      <label class="toggle-label" for="capex400">$400B</label>
+      <label class="toggle-label" for="capex800">$800B (Baz)</label>
+      <label class="toggle-label" for="capex1200">$1.2T</label>
+      <label class="toggle-label" for="capex1500">$1.5T (Maks)</label>
+    </div>
+
+    <div class="sim-pane" id="sim-400">
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-num">%6.8</div><div class="kpi-label">Tüketici Bellek Arz Açığı</div></div>
+        <div class="kpi"><div class="kpi-num">3.6x</div><div class="kpi-label">HBM Fiyat Katlanması (12 Ay)</div></div>
+        <div class="kpi"><div class="kpi-num">+%34</div><div class="kpi-label">PC/Mobil Donanım Maliyet Artışı</div></div>
+        <div class="kpi"><div class="kpi-num">35 GW</div><div class="kpi-label">ABD Veri Merkezi Güç Talebi</div></div>
+      </div>
+    </div>
+    <div class="sim-pane" id="sim-800">
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-num">%13.5</div><div class="kpi-label">Tüketici Bellek Arz Açığı</div></div>
+        <div class="kpi"><div class="kpi-num">6.2x</div><div class="kpi-label">HBM Fiyat Katlanması (12 Ay)</div></div>
+        <div class="kpi"><div class="kpi-num">+%68</div><div class="kpi-label">PC/Mobil Donanım Maliyet Artışı</div></div>
+        <div class="kpi"><div class="kpi-num">66 GW</div><div class="kpi-label">ABD Veri Merkezi Güç Talebi</div></div>
+      </div>
+    </div>
+    <div class="sim-pane" id="sim-1200">
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-num">%20.3</div><div class="kpi-label">Tüketici Bellek Arz Açığı</div></div>
+        <div class="kpi"><div class="kpi-num">8.6x</div><div class="kpi-label">HBM Fiyat Katlanması (12 Ay)</div></div>
+        <div class="kpi"><div class="kpi-num">+%102</div><div class="kpi-label">PC/Mobil Donanım Maliyet Artışı</div></div>
+        <div class="kpi"><div class="kpi-num">95 GW</div><div class="kpi-label">ABD Veri Merkezi Güç Talebi</div></div>
+      </div>
+    </div>
+    <div class="sim-pane" id="sim-1500">
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-num">%25.3</div><div class="kpi-label">Tüketici Bellek Arz Açığı</div></div>
+        <div class="kpi"><div class="kpi-num">10.3x</div><div class="kpi-label">HBM Fiyat Katlanması (12 Ay)</div></div>
+        <div class="kpi"><div class="kpi-num">+%128</div><div class="kpi-label">PC/Mobil Donanım Maliyet Artışı</div></div>
+        <div class="kpi"><div class="kpi-num">116 GW</div><div class="kpi-label">ABD Veri Merkezi Güç Talebi</div></div>
+      </div>
+    </div>
+    <p style="margin-top:6px"><small>Değerler kaynağın kendi illüstratif simülatör formülüne göre hesaplanmıştır ($800B baz senaryo: %13.5 açık, 6.2x HBM fiyatı, +%68 maliyet, 66 GW) — ölçülmüş gerçek veri değil, doğrusal olmayan bir modelin çıktısıdır.</small></p>
+  </div>
+</div>
+
+<div class="tab-pane" id="pane-hbm">
+  <div class="pane-title">🧠 HBM Hegemonyası & SPHBM4</div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>👑 Küresel HBM Oligopolü ve Pazar Payları</h3>
+      <p>Yüksek Bant Genişlikli Bellek (HBM) pazarı yüksek giriş bariyerleri nedeniyle katı bir oligopol konumunda. SK Hynix, NVIDIA entegrasyonu ile mutlak liderliğini koruyor.</p>
+      <div class="chart-container" style="margin:10px 0 0;padding:14px">
+        <div class="donut-chart">
+          <svg class="donut-svg" viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="chart"><circle cx="90" cy="90" r="70" fill="none" stroke="var(--gf-border)" stroke-width="20"/><circle cx="90" cy="90" r="70" fill="none" stroke="#38bdf8" stroke-width="20" stroke-dasharray="255.10 439.82" stroke-dashoffset="0.00" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #38bdf866)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#fbbf24" stroke-width="20" stroke-dasharray="92.36 439.82" stroke-dashoffset="-255.10" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #fbbf2466)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#4ade80" stroke-width="20" stroke-dasharray="92.36 439.82" stroke-dashoffset="-347.46" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #4ade8066)"/><text x="90" y="85" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="700" font-family="inherit">100%</text><text x="90" y="102" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="inherit">HBM Pazarı</text></svg>
+          <div class="donut-legend">
+            <div class="donut-legend-item"><div class="donut-legend-color" style="background:#38bdf8"></div><div><div class="donut-legend-label">SK Hynix</div><div class="donut-legend-value">%58.0 — MR-MUF paketleme, Vera Rubin'in %70+ tekelleşmiş HBM4 tedarikçisi</div></div></div>
+            <div class="donut-legend-item"><div class="donut-legend-color" style="background:#fbbf24"></div><div><div class="donut-legend-label">Samsung</div><div class="donut-legend-value">%21.0 — Dikey entegre (IDM), Meta ile uzun vadeli kapasite sözleşmeleri</div></div></div>
+            <div class="donut-legend-item"><div class="donut-legend-color" style="background:#4ade80"></div><div><div class="donut-legend-label">Micron</div><div class="donut-legend-value">%21.0 — 1-beta/1-gamma EUV, 2030'a kadar $100B geliri kilitleyen 16 sözleşme</div></div></div>
+          </div>
+        </div>
+        <div class="chart-caption">SK Hynix Q1 2026'da gelirini %198 artırarak $34.5 milyara, faaliyet marjını %71.5 seviyesine çıkardı.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🇺🇸 SK Hynix Nasdaq Halka Arzı ($26.5B)</h3>
+      <p>Kronik "Kore İskontosu"nu aşmak ve doğrudan ABD sermayesine erişmek için SK Hynix, 10 Temmuz 2026'da Nasdaq'ta tarihin en büyük yabancı kurumsal halka arzını gerçekleştirdi.</p>
+      <p>📌 <strong>Arz Büyüklüğü:</strong> 177.9 milyon ADR ile $26.5B fon toplandı (Alibaba'yı geçti, SpaceX'ten sonra 2. büyük).</p>
+      <p>📈 <strong>Piyasa Tepkisi:</strong> $149'dan açıldı, %12.8 primle $168.01'den kapandı. Seul fiyatına göre %2.9 primli satıldı.</p>
+      <p>🔥 <strong>Kurumsal Talep:</strong> Sipariş defteri 7 kat aşırı talep ($171.5B) gördü. Baillie Gifford ve Coatue ana yatırımcı oldu.</p>
+      <p>🏗️ <strong>Sermaye Kullanımı:</strong> $20.5B yeni Yongin Y1 fabrikasına, $12.5B Cheongju P&T7 paketleme tesisine, $7.9B ASML EUV tarayıcılarına ayrıldı.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧩 JEDEC SPHBM4: Paketleme Maliyet Devrimi</h3>
+    <p>Geleneksel HBM4 devasa bant genişliği sunsa da, 2048-bit ultra yoğun routing ihtiyacı nedeniyle TSMC'nin pahalı CoWoS silikon aracılarına (interposer) mahkumdu. Yeni onaylanan <strong>SPHBM4 (JESD330-4) standardı</strong> bu tekel zincirini kırıyor.</p>
+    <table>
+      <thead>
+        <tr><th>Teknik Parametre</th><th>Geleneksel HBM4 (JESD270-4)</th><th>Standart Paket HBM4 (SPHBM4)</th><th>Sağlanan Avantaj</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Dış Veri Yolu Genişliği</strong></td><td>2048 Sinyal Hattı</td><td style="color:var(--gf-success);font-weight:700">512 Sinyal Hattı (4:1 SerDes PHY)</td><td>Sinyal pinlerinin %75 azalması, alan tasarrufu</td></tr>
+        <tr><td><strong>Sinyal Aktarım Hızı</strong></td><td>8.0–10.8 GT/s</td><td style="color:var(--gf-accent);font-weight:700">22.4–46.0 GT/s</td><td>Pin hızı 4 katına çıkarken 2.944 TB/s bant genişliği korunur</td></tr>
+        <tr><td><strong>Gerekli Paketleme</strong></td><td>Silikon Interposer / CoWoS (Pahalı)</td><td style="color:var(--gf-success);font-weight:700">Standart Organik Substrat (FC-BGA)</td><td>TSMC CoWoS tekelini baypas eder, maliyeti düşürür</td></tr>
+        <tr><td><strong>Mesafe Sınırları</strong></td><td>&lt; 5 mm (Mikro-tümsek sınırı)</td><td style="color:var(--gf-accent);font-weight:700">20 mm'ye kadar (Organik yönlendirme)</td><td>Bellek GPU'dan uzağa konur, termal çapraz eşleşme engellenir</td></tr>
+      </tbody>
+    </table>
+    <div class="insight-box">
+      <strong>Yazılımsal Çözüm (MEXT):</strong> Donanım maliyetini düşüren algoritmik bellek katmanlandırma algoritmaları, sıcak veriyi DRAM'de, soğuk veriyi NAND Flash'ta tutarak (1:55 maliyet farkı) sunucuların efektif kapasitesini 2-4 kat artırıp %50 maliyet tasarrufu sağlıyor.
+    </div>
+  </div>
+</div>
+
+<div class="tab-pane" id="pane-nvidia">
+  <div class="pane-title">🚀 NVIDIA Vera Rubin & İleri Paketleme</div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>📈 NVIDIA'nın 1300 Katlık Veri Merkezi Roketi</h3>
+      <p>2014 başında gelirinin sadece %5'ini ($57M) veri merkezinden sağlayan NVIDIA, 2026 ortasında bu payı <strong>%89.7'ye ($75.2B/çeyrek)</strong> çıkararak endüstri tarihinde fiili bir tekel statüsüne erişti.</p>
+      <div class="kpi-row" style="margin-bottom:0">
+        <div class="kpi"><div class="kpi-num">$57M</div><div class="kpi-label">FY2015 Q1 Veri Merkezi Geliri</div></div>
+        <div class="kpi"><div class="kpi-num">$2.98B</div><div class="kpi-label">FY2020 Q1 Veri Merkezi Geliri</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">$75.2B</div><div class="kpi-label">FY2027 Q1 Veri Merkezi Geliri (%75 Brüt Marj)</div></div>
+      </div>
+      <p style="margin-top:10px"><small>Şirket FY2026 Q4'te tek çeyrekte $49B serbest nakit akışı üretti; $80 milyarlık yeni hisse geri alım programı başlattı.</small></p>
+    </div>
+
+    <div class="card">
+      <h3>🤖 Vera Rubin Mimarisi: Etmen (Agentic) YZ Devrimi</h3>
+      <p>Haziran 2026'da dağıtımına başlanan Vera Rubin, veri merkezini tek bir bilgi işlem birimine dönüştüren yedi çipli heterojen bir mimari.</p>
+      <p>🔥 <strong>Rubin R100 GPU:</strong> TSMC 3nm, çift kalıplı 336 milyar transistör. 8x 12-Hi HBM4 ile 288GB kapasite ve <strong>22 TB/s bellek bant genişliği</strong>. (Quad-die 16-Hi model verim sorunları yüzünden iptal oldu, çift kalıplı HBM4E 384GB geldi.)</p>
+      <p>🧠 <strong>Vera Host CPU:</strong> 88 adet özel Arm Olympus çekirdeği. LPDDR5X ile 1.2 TB/s bant genişliği vererek x86 işlemcilerin agentic AI'daki bağlam değiştirme darboğazını yıktı.</p>
+      <p>⚡ <strong>Rubin NVL72 Kabini:</strong> 72 GPU + 36 CPU. 20.7 TB HBM4, 3.600 PFLOPS çıkarım gücü ve 600 kW güç tüketimi — 48V doğrudan çip beslemesi ve sıvı soğutma zorunlu.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚙️ Parçalanmış Çıkarım (Disaggregated Inference) & Test Ekipmanı Boom'u</h3>
+    <div class="grid" style="margin-bottom:0">
+      <div>
+        <h3 style="color:var(--gf-accent);font-size:0.95rem">Groq LPU ve Prefill/Decode Ayrımı</h3>
+        <p>Rubin platformu, hesaplama yoğunluklu bilgi istemi işleme (<strong>prefill</strong>) ile bellek bant genişliğine dayanan token üretme (<strong>decode</strong>) aşamasını fiziksel olarak ayırdı.</p>
+        <p>Trilyon parametreli model kod çözme için Groq 3 LPU (CPX mimarisi, 80 TB/s SRAM bant genişliği) kullanılırken, R100 GPU'lar prefill aşamasına odaklandı. Sonuç: sistem veriminde <strong>%40 artış</strong>, Blackwell'e göre 10x ucuz token.</p>
+      </div>
+      <div>
+        <h3 style="color:var(--gf-warning);font-size:0.95rem">Arka Uç Test (Handler/Socket) Patlaması</h3>
+        <p>TSMC CoWoS paketleme fiziksel bir kısıt iken, en yüksek büyüme kesinliği çip test sürelerinin doğrusal olmayarak uzamasından doğdu:</p>
+        <div class="chart-container" style="margin:0;padding:14px">
+          <svg viewBox="0 0 640 114" width="100%" height="114" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="84" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="102" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">0s</text><line x1="287.5" y1="16" x2="287.5" y2="84" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="287.5" y="102" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">400s</text><line x1="385.0" y1="16" x2="385.0" y2="84" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="385.0" y="102" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">800s</text><line x1="482.5" y1="16" x2="482.5" y2="84" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="482.5" y="102" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">1200s</text><line x1="580.0" y1="16" x2="580.0" y2="84" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="580.0" y="102" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">1600s</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">H100</text><rect x="190" y="22.8" width="85.3" height="19.0" rx="4" fill="#94a3b8" opacity="0.88"/><text x="283.3" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">350s · 1.500 pin</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">R100</text><rect x="190" y="56.8" width="341.3" height="19.0" rx="4" fill="#f87171" opacity="0.88"/><text x="539.3" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">1.400s · 10.000+ pin</text></svg>
+          <div class="chart-caption">Rubin R100'ün test süresi Hopper H100'e göre 4 kat, pin sayısı 6.6 kattan fazla arttı.</div>
+        </div>
+        <p style="margin-top:10px">Küresel handler pazarı %35 CAGR ile $6.6B'a koşuyor. Liderler: <strong>Hon Precision</strong> (%42 pay hedefi), <strong>WinWay</strong> (yüksek pimli test soketleri), <strong>MPI Corp</strong> (optik-elektriksel CPO probları).</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tab-pane" id="pane-asics">
+  <div class="pane-title">🔩 Özel Silikon (ASIC) & Jeopolitik</div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>🏭 Hiper Ölçekleyicilerde Özel Silikon (ASIC) Geçişi</h3>
+      <p>Genel amaçlı GPU'ların taşıdığı "Genellik Vergisi"nden kaçan bulut devleri, watt başına 3-5x performans veren kendi ASIC'lerine yöneldi. Pazarın %80'ini <strong>Broadcom</strong> co-dizayn ediyor.</p>
+      <table>
+        <thead><tr><th>Platform</th><th>ASIC Çipi</th><th>Temel Optimizasyon</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Google</strong></td><td>TPU v8t / v8i</td><td>Prefill/decode ayrımı, 12.6 PFLOPS (FP4), optik mesh ağ</td></tr>
+          <tr><td><strong>AWS</strong></td><td>Trainium 3</td><td>%50 iç marj koruma avantajı, EFA ağ bağlantısı optimizasyonu</td></tr>
+          <tr><td><strong>Meta</strong></td><td>MTIA Serisi</td><td>Derin öğrenme öneri ve sıralama (ranking) algoritmaları</td></tr>
+          <tr><td><strong>OpenAI</strong></td><td>"Jalapeño"</td><td>Broadcom ortak tasarımı, 9 ayda tape-out, %50 düşük TCO</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3>🤝 NVIDIA – Intel Tarihi $5 Milyar Anlaşması</h3>
+      <p>Eylül 2025'te NVIDIA, Intel'in %4 hissesini ($5B) satın alarak yarı iletken pazarında ezber bozan bir ittifak kurdu:</p>
+      <p>🖥️ <strong>Veri Merkezi Entegrasyonu:</strong> Intel, NVIDIA HGX/GB200 sistemlerine doğrudan bağlanacak NVLink destekli özel x86 işlemciler tasarlayarak veri besleme hızını maksimize edecek.</p>
+      <p>💻 <strong>PC/Client Dünyası (x86 RTX SoC):</strong> Intel Çipte Sistem mimarisinin içine NVIDIA RTX GPU çipletleri yerleştirilerek AI-PC pazarı domine edilecek.</p>
+      <p>🎯 <strong>Stratejik Darbe:</strong> AMD hem CPU hem GPU pazarında iki dev arasında sıkıştırılarak yalnızlaştırıldı. NVIDIA ayrıca TSMC dışı dökümhane çeşitliliği (foundry diversification) sağladı.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>♟️ Jeopolitik Satranç: ABD İhracat Kontrolleri vs Çin'in Paralel Ekosistemi</h3>
+    <div class="insight-box danger">
+      <strong>1. Biden Dönemi H20 Ambargosu ve $4.5B Bilanço Silinmesi:</strong> ABD Ticaret Bakanlığı (BIS), performansı bilinçli düşürülmüş H20 çiplerini dahi Nisan 2025'te aniden yasakladı. Bu durum, NVIDIA'nın Q1 FY2026 bilançosunda elinde kalan stoklar ve üretim yükümlülükleri nedeniyle tam $4.5 milyarlık zarar yazmasına yol açtı.
+    </div>
+    <div class="insight-box warn">
+      <strong>2. Trump Dönemi: H200 İhracatına %25 Vergi/Harç Modeli:</strong> Trump yönetimi, H200 çiplerinin Çin'e satışına, gelirlerin %25'inin ABD hükümetine vergi olarak ödenmesi şartıyla izin verdi. Hukukçular bunun ECRA yasasını ihlal ettiğini savunurken, stratejistler 141GB HBM3e barındıran H200'ün Çin'in askeri YZ kapasitesini %250 artıracağından endişe etti.
+    </div>
+    <div class="insight-box">
+      <strong>3. Çin'in Boykotu ve Egemen YZ Donanımı:</strong> Pekin yönetimi, ABD'ye güvensizlik nedeniyle Alibaba, ByteDance ve Baidu'ya H200 alımını durdurma talimatı verdi. Çin çip bütçesini %46'ya çıkararak paralel bir ekosistem kurdu: <strong>Huawei Ascend 910C/D</strong> (%62 pay, H100'ün %60'ı gücünde olsa da yazılım optimizasyonuyla Çin standardı oldu, $12B gelir) · <strong>Alibaba T-Head Zhenwu M890</strong> (%5 pay, 144GB HBM, 800GB/s ara bağlantı, FP4 desteği, Panjiu AL128 süper düğümüyle Qwen 3.7-Max modellerini koşturuyor) · <strong>Cambricon</strong> (%14 pay, Siyuan 590/690 ile bulut altyapılarında yerini aldı).
+    </div>
+  </div>
+</div>
+
+<div class="tab-pane" id="pane-turkey">
+  <div class="pane-title">🇹🇷 Türkiye YZ Ekosistemi & GPUaaS</div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>🖥️ TRUBA ve Milli YZ Süper Bilgisayar Altyapısı</h3>
+      <p>TÜBİTAK ULAKBİM çatısı altında faaliyet gösteren <strong>TRUBA (Türk Bilim e-Altyapısı)</strong>, küresel donanım devrimine hızla entegre olarak ARF-ACC süper bilgisayarına <strong>192 adet yeni nesil NVIDIA H200 GPU'su</strong> ekledi.</p>
+      <table>
+        <thead><tr><th>Küme Adı</th><th>Donanım Konfigürasyonu</th><th>Stratejik Görev / Kullanım</th></tr></thead>
+        <tbody>
+          <tr><td><strong>kolyoz-cuda (1-24)</strong></td><td>Sunucu başına 4x H100 (80GB HBM)</td><td rowspan="2">TÜBİTAK BİLGEM tarafından geliştirilen milli Büyük Dil Modeli <strong>"BİLGE"</strong>nin ana eğitim kümesi</td></tr>
+          <tr><td><strong>kolyoz-cuda (25-72)</strong></td><td style="color:var(--gf-accent);font-weight:700">Sunucu başına 4x H200 (141GB HBM)</td></tr>
+          <tr><td><strong>palamut-cuda</strong></td><td>Sunucu başına 8x A100 GPU</td><td>Akademik HPC, biyoinformatik ve ileri fiziki simülasyonlar</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:10px"><small>Akdeniz Üniversitesi BAP projeleri (akciğer kanserinde YZ alt tiplendirmesi) ve Antalya Teknokent bünyesindeki YZ Hızlandırma Programı (35+ yerli girişim) bu altyapılardan güç alıyor.</small></p>
+    </div>
+
+    <div class="card">
+      <h3>☁️ Özel Sektör: Hizmet Olarak GPU (GPUaaS) Modeli</h3>
+      <p>Yüksek donanım ve çip enflasyonu maliyetlerini aşmak isteyen Türk kurumsal sektörü, yerli bulut sağlayıcılarının sunduğu <strong>GPU-as-a-Service (GPUaaS)</strong> çözümlerine yöneldi.</p>
+      <p>☁️ <strong>Yerli Altyapı Aktörleri:</strong> FixCloud, Cloud4U, Teletek, BizimBulut ve Cloudvist. Türkiye sınırlarındaki TIER III+ veri merkezlerinde %100 KVKK uyumlu donanım kiralama.</p>
+      <p>🚀 <strong>Kiralanabilen Donanımlar:</strong> NVIDIA A100 (40/80GB), V100, T4, AMD MI300 ve RTX 6000 Ada Generation kartları; saatlik veya aylık esnek taahhütlerle sunuluyor.</p>
+      <p>⚡ <strong>İleri Ağ Entegrasyonu:</strong> Cloud4U ve Cloudvist gibi sağlayıcılar, model eğitimi ve video render için sunucular arası 10G/40G/100G Broadcom/Mellanox fiber bağlantı sunuyor.</p>
+      <p>🤝 <strong>Kanal Liderleri:</strong> OpenZeka gibi resmi NVIDIA Elite partnerleri, doğrudan DGX AI Compute ve Omniverse platformlarını yerel kurumsal pazara entegre ediyor.</p>
+    </div>
+  </div>
+</div>
+
+<div class="tab-pane" id="pane-strategy">
+  <div class="pane-title">🎯 Stratejik Rehberlik & Portföy</div>
+
+  <div class="card">
+    <h3>Stratejik Varlık Dağılımı ve Yatırım Rehberliği</h3>
+    <p>2026 ortası "Döngü Ortası Sıfırlaması" ışığında; donanım satıcılarındaki esnekliği azaltıp, yapay zekayı doğrudan paraya çeviren hiper ölçekleyicilere ve altyapı darboğazlarını çözen pazar liderlerine rotasyon öneriliyor.</p>
+    <div class="grid" style="margin-top:14px">
+      <div class="insight-box bull">
+        <strong>🚀 Yüksek Ağırlık (Overweight / Buy)</strong><br><br>
+        • <strong>İleri Paketleme (CoWoS/SoIC):</strong> TSMC (2330.TW). 2026 sonuna kadar kapasite tam dolu, YZ gelir payı %30'u aşıyor.<br>
+        • <strong>Arka Uç Test Ekipmanları:</strong> Hon Precision, WinWay, MPI Corp. Uzayan test süreleri (1400s+) ve pin yoğunluğundan doğrusal olmayan gelir kilitliyorlar.<br>
+        • <strong>Seçilmiş Hiper Ölçekleyiciler:</strong> Alphabet (GOOGL), Meta (META), Amazon (AMZN). Kendi ASIC'leri (TPU, MTIA, Trainium) ile satıcı marjından kaçarak ROI üretiyorlar.<br>
+        • <strong>HBM Liderleri:</strong> SK Hynix (SKHY — Nasdaq listelenmesiyle katalizör) ve Micron (MU — $100B kilitli sözleşme).
+      </div>
+      <div class="insight-box danger">
+        <strong>⚠️ Düşük Ağırlık (Underweight / Avoid)</strong><br><br>
+        • <strong>Standart DRAM & NAND:</strong> Tüketici PC ve akıllı telefon pazarındaki stok fazlası ve talep yıkımı nedeniyle baskı altında.<br>
+        • <strong>Eski Nesil OSAT Oyuncuları:</strong> Amkor, ASE, UMC. TSMC'nin yüksek marjlı gelişmiş paketlemeyi bünyesinde toplaması pazar paylarını eritiyor.<br>
+        • <strong>Standart Mantık Dökümhaneleri:</strong> Kapasite kullanım oranları %80'lerde seyrediyor, tüketici talebi zayıf.<br>
+        • <strong>Galyum Nitrür (GaN) Firmaları:</strong> InnoScience. SiC dominansından ve aşırı kapasite amortismanından dolayı olumsuz (SiC tabanlı SICC ise Overweight).
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px;text-align:center">
+    <h3 style="justify-content:center">🔮 Gelecek Projeksiyonu: 10 Yıllık Yeni Normal</h3>
+    <p style="max-width:800px;margin:0 auto">2026 sonrası yapay zeka ekonomisinde kazananlar; en hızlı donanımı üretenlerden ziyade, <strong>SPHBM4</strong> ile organik substratlara geçebilenler, sıvı soğutma ve test süreçlerini optimize edenler ve elektrik şebekesine bağımlılığı minimuma indirerek <strong>"Token başına maliyeti"</strong> sıfıra yaklaştıran ekosistem devleri olacak.</p>
+    <p class="disclaimer" style="max-width:800px;margin:12px auto 0">Bu rapor eğitim ve bilgilendirme amaçlıdır; yatırım tavsiyesi değildir. Yatırım kararları almadan önce kendi araştırmanızı yapın ve bağımsız bir finansal danışmana başvurun.</p>
+  </div>
+</div>
+
+<div class="footer">Gistify Flow | 11 Temmuz 2026 | Yapay Zeka Donanım Ayrışması & Çip Enflasyonu — 6 Bölümlük Analiz</div>
+
+</div>
+</body>
+</html>

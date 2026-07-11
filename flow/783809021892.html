@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NVIDIA, Micron, SK Hynix ve Samsung: Büyüme vs Değerleme Paradoksu | $NVDA $MU $SKHY</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="NVIDIA, Micron, SK Hynix ve Samsung: Büyüme vs Değerleme Paradoksu" />
+<meta property="og:description" content="2026 Bellek Süper Döngüsü: %346 büyüyen Micron 7x P/E ile işlem görürken, %85 büyüyen NVIDIA 24-36x çarpanla fiyatlanıyor. Dört şirketin karşılaştırmalı analizi." />
+<meta property="og:url" content="https://gistify.pro/flow/783809021892.html" />
+<meta property="og:image" content="https://gistify.pro/gistifylogo.png?v=20260706" />
+<meta property="og:site_name" content="Gistify" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="NVIDIA, Micron, SK Hynix ve Samsung: Büyüme vs Değerleme Paradoksu" />
+<meta name="twitter:description" content="2026 Bellek Süper Döngüsü: %346 büyüyen Micron 7x P/E ile işlem görürken, %85 büyüyen NVIDIA 24-36x çarpanla fiyatlanıyor." />
+<meta name="twitter:image" content="https://gistify.pro/gistifylogo.png?v=20260706" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:760px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent)}
+.section-body{padding:18px}
+.section-body p{color:var(--gf-muted);font-size:0.9rem;margin-bottom:12px}
+.section-body p:last-child{margin-bottom:0}
+.section-body strong{color:var(--gf-text)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+.chart-container{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:20px;margin:16px 0}
+.chart-title{font-size:.9rem;font-weight:700;color:var(--gf-accent);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.chart-title::before{content:'';display:inline-block;width:4px;height:16px;background:var(--gf-accent);border-radius:2px}
+.chart-caption{font-size:.78rem;color:var(--gf-muted);margin-top:12px;border-top:1px solid var(--gf-border-subtle);padding-top:10px}
+.disclaimer{font-style:italic;font-size:0.8rem;color:var(--gf-muted);margin-top:8px;padding-top:12px;border-top:1px solid var(--gf-border-subtle)}
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-11T11:00:00+03:00">
+  <h1 class="hero-h">NVIDIA, Micron, SK Hynix ve Samsung: Büyüme ve Değerleme Karşılaştırması</h1>
+  <p class="hero-desc">2026 Yapay Zeka ve Bellek Süper Döngüsü — dört şirketin çeyreklik performansı ile piyasa değerlemesi arasındaki tarihi paradoks. Micron çeyreklik gelirini %346 büyütürken 6.4x-7.0x Forward P/E ile işlem görüyor; NVIDIA %85 büyüyor ama 24x-36x çarpan alıyor.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info hero-date" data-timestamp="2026-07-11T11:00:00+03:00">📅 11 Temmuz 2026</span>
+    <span class="hero-ticker">$NVDA</span>
+    <span class="hero-ticker">$MU</span>
+    <span class="hero-ticker">$SKHY</span>
+    <span class="meta-pill bull">Bellek Süper Döngüsü</span>
+    <span class="meta-pill bear">Değerleme Paradoksu</span>
+  </div>
+</div>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">📊 Özet Metrikleri</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-accent)">$81.6B</div><div class="kpi-label">NVIDIA Q1 FY27 Gelir (+%85)</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">$41.46B</div><div class="kpi-label">Micron Q3 FY26 Gelir (+%346)</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-warning)">~$35.5B</div><div class="kpi-label">SK Hynix Q1 2026 Gelir (+%198)</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-danger)">~$58.4B</div><div class="kpi-label">Samsung Q2 2026E Faaliyet Karı (+%1810)</div></div>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">NVIDIA Forward P/E</div>
+          <div class="card-value neu">24x – 36x</div>
+          <div class="card-note">%85 büyüme, %75.0 brüt marj</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Micron Forward P/E</div>
+          <div class="card-value up">6.4x – 7.0x</div>
+          <div class="card-note">%346 büyüme, %84.9 brüt marj</div>
+        </div>
+        <div class="card">
+          <div class="card-label">SK Hynix Forward P/E</div>
+          <div class="card-value up">5.5x – 6.2x</div>
+          <div class="card-note">%198 büyüme, %72.0 faaliyet marjı</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Samsung Forward P/E</div>
+          <div class="card-value up">2.0x – 5.2x</div>
+          <div class="card-note">%129 büyüme beklentisi (Q2 2026)</div>
+        </div>
+      </div>
+      <div class="insight-box">
+        <strong>Ana Tez:</strong> Dört şirket de yapay zeka bellek talebinden tarihi büyüme ve karlılık kaydediyor, ancak piyasa bu büyümeyi taban tabana zıt biçimde fiyatlıyor. NVIDIA'nın platform tekeli 24-36x ile ödüllendirilirken, HBM üreten bellek oligopolü (Micron, SK Hynix, Samsung) döngüsellik korkusuyla tek haneli-düşük haneli çarpanlara mahkum ediliyor — modern hisse senedi piyasalarının en belirgin değer iskontolarından biri.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🌐 Makroekonomik ve Sektörel Görünüm: 2026 Bellek Süper Döngüsünün Anatomisi</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p>Yarı iletken endüstrisi, 2026 yılı itibarıyla yapay zeka (AI) devriminin tetiklediği ve pazar dinamiklerini kökünden değiştiren tarihsel bir süper döngünün zirvesinde yer alıyor. Omdia ve JPMorgan projeksiyonlarına göre küresel yarı iletken pazarı 2026'da ilk kez 1 trilyon doları aşarken, DRAM pazarı tek başına 2026'da 636 milyar dolara, 2028'de ise 1.23 trilyon dolara ulaşması bekleniyor. Bu büyümenin temelinde Amazon, Google, Meta ve Microsoft'un 2026 için açıkladığı toplam 650 milyar dolarlık yapay zeka altyapı/CapEx planları yatıyor. TrendForce verilerine göre 2026'da üretilen yüksek kaliteli DRAM kapasitesinin yaklaşık %70'i doğrudan veri merkezleri tarafından tüketiliyor.</p>
+      <p>Bu talep patlaması, bellek pazarında <strong>"Wafer Cezası"</strong> (Wafer Penalty) olarak adlandırılan yapısal bir üretim krizini beraberinde getirdi. Yapay zeka hızlandırıcılarının bellek bant genişliği darboğazını aşmak için tasarlanan HBM modülleri, 3D istifleme ve TSV gibi karmaşık paketleme teknolojileri gerektiriyor — tek bir HBM wafer'ı yaklaşık üç-dört geleneksel DDR5 wafer'ının kapasitesini işgal ediyor. 2025'te DRAM wafer kapasitesinin %19'unu tüketen HBM üretimi, 2026'da bu oranı %23'e çıkardı. Üreticilerin kapasitelerini HBM3E/HBM4'e kaydırması, tüketici elektroniği ve PC pazarlarında kullanılan geleneksel DDR4/DDR5 belleklerde dramatik bir arz daralması yarattı.</p>
+      <p>Arz-talep uçurumu, pazar tarihinde eşi görülmemiş bir fiyat enflasyonuna yol açtı. TrendForce'un 2026 Q1 verileri, geleneksel DRAM sözleşme fiyatlarının bir önceki çeyreğe göre %93-%98, NAND Flash fiyatlarının ise %55-%60 arttığını gösteriyor. Q2'de artış ivmesi %58-%63'e yavaşladı, Q3 için %13-%18'lik ek büyüme öngörülüyor. Spot piyasalarda dengesizlik daha da keskin: eski nesil DDR4 modülleri 2025 ortasındaki 7 dolar seviyesinden 2026 başında 78 dolara fırladı.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🟢 NVIDIA (NVDA): Yapay Zeka Ekosisteminin Merkezi</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p>NVIDIA, 2026 itibarıyla yalnızca bir çip tasarımcısı olmaktan çıkıp küresel veri merkezi altyapı standartlarını belirleyen bir platform şirketine dönüştü.</p>
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Q1 FY27 Geliri</div>
+          <div class="card-value up">$81.6B</div>
+          <div class="card-note">Yıllık %85 büyüme, çeyreklik rekor</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Veri Merkezi Segmenti</div>
+          <div class="card-value up">$75.2B</div>
+          <div class="card-note">Yıllık %92 büyüme — compute $60.4B, networking $14.8B (+%199)</div>
+        </div>
+      </div>
+      <p><strong>Finansal performans:</strong> Non-GAAP brüt kar marjı %75.0, faaliyet karı $53.5B, serbest nakit akışı $48.6B. Şirket çeyreklik temettüyü hisse başına $0.01'den $0.25'e (+%2400) çıkardı ve vadesiz $80B'lık yeni bir hisse geri alım programı yetkilendirdi. Q2 FY27 beklentisi: $91.0B (±%2) gelir, %75.0 brüt marj.</p>
+      <p><strong>Vera Rubin, Kyber ve altyapının geleceği:</strong> Haziran 2026'daki GTC Taipei'de "Vera Rubin" platformu tam üretime girdi. TSMC N3 ile üretilen Rubin GPU'lar 336 milyar transistör barındırıyor, 8 adet HBM4 yığınıyla 288GB kapasite ve 22 TB/s bellek bant genişliği sunuyor (H100'ün ~6.6 katı). 2027 H2'de gelecek "Rubin Ultra" + "Kyber" kabin mimarisi (NVL576, 576 GPU, 365TB HBM4E, 4.6 PB/s, 15 ExaFLOPS FP4) her kabinde ~600 kW tüketecek — mevcut veri merkezlerinin çoğu kabin başına 40-100 kW'a göre tasarlandığından, 800 VDC güç odalarına ve tam sıvı soğutmaya zorunlu bir geçişi dikte ediyor.</p>
+      <p><strong>Değerleme:</strong> Temmuz 2026 itibarıyla hisse ~$204 seviyesinde, 12 aylık Forward P/E 24x-36x bandında. SemiAnalysis, NVIDIA'nın Veri Merkezi compute gelirinin FY27 H2'de $203B'a ulaşacağını öngörüyor (konsensüsün %20 üzerinde). Morningstar hisseleri "Adil Değerin Altında" sınıflandırıyor. TS Lombard ise hiperskalaj müşterilerin birbirine satış yaptığı "döngüsel finansman" riskine ve NVIDIA'nın konumunu 2000'lerin başındaki Cisco'ya benzeterek uyarıyor.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🔵 Micron (MU): Kar Marjı Liderliği ve Stratejik Dönüşüm</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p>ABD merkezli tek ileri teknoloji bellek üreticisi Micron, 2026 HBM süper döngüsünü en agresif şekilde kazanca çeviren firma oldu.</p>
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Q3 FY26 Geliri</div>
+          <div class="card-value up">$41.46B</div>
+          <div class="card-note">Yıllık %346 büyüme ($9.3B'dan)</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Brüt Kar Marjı</div>
+          <div class="card-value up">%84.9</div>
+          <div class="card-note">Bir önceki yıl %39.0'dan genişleme</div>
+        </div>
+      </div>
+      <p><strong>Finansal rekorlar:</strong> 28 Mayıs 2026'da sona eren Q3 FY26'da Non-GAAP net kar $2.18B'dan $28.86B'a (hisse başına $25.11, +%1215) yükseldi. Faaliyet marjı %81.2. Bulut Bellek ve Veri Merkezi birimlerinin üç aylık toplam geliri $25B'ı aştı — yıllıklandırılmış bazda yalnızca veri merkezi müşterilerinden $100B'lık bir gelir akışı.</p>
+      <p><strong>HBM4 liderliği ve SCA:</strong> 1-beta DRAM düğümünde inşa edilen HBM4 yongaları NVIDIA'nın Vera Rubin sertifikasyonunu tamamladı, 2026 H1'de yüksek hacimli sevkiyatlar başladı. 1-gamma tabanlı HBM4E 2027'de seri üretime geçecek. Micron'un 2026 HBM kapasitesi tamamen satılmış durumda. Şirket "Stratejik Müşteri Anlaşmaları" (SCA) ile toplam $22B değerinde (18B nakit depozito + 4B akreditif) 16 bağlayıcı uzun vadeli sözleşme imzaladı.</p>
+      <p><strong>Değerleme paradoksu:</strong> Temmuz 2026 başında hisse ~$991 seviyesindeyken Forward P/E 6.4x-7.0x bandında. Q4 FY26 hedefi $50B (±$1B) gelir, %86 brüt marj. Yatırımcılar 2027-2028'de kapasite artırımlarının fiyatları çökerteceği bir "ayı senaryosu"nu şimdiden fiyata dahil ediyor — ancak HBM'in mühendislik bariyerleri ve bağlayıcı SCA'lar göz önüne alındığında bu, piyasadaki en belirgin değer iskontolarından biri.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🔴 SK Hynix: HBM Pazar Liderliği ve "Kore İskontosu"nun Aşılması</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p>Güney Kore merkezli SK Hynix, HBM'e on yıl önceden yaptığı Ar-Ge yatırımlarının karşılığını 2026'da fazlasıyla alıyor — Samsung'un 2000'den beri sürdürdüğü "Güney Kore'nin en değerli şirketi" unvanını devraldı.</p>
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">HBM Pazar Payı</div>
+          <div class="card-value up">%56.4 – %60</div>
+          <div class="card-note">Küresel liderlik konumu</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Nasdaq ADR Arzı</div>
+          <div class="card-value up">$26.5B</div>
+          <div class="card-note">Tarihi "Kore İskontosu" kırılması</div>
+        </div>
+      </div>
+      <p><strong>Pazar hakimiyeti:</strong> TrendForce/Counterpoint verilerine göre SK Hynix küresel HBM pazarında %56.4-%60 pay tutuyor; geleneksel DRAM'de %29.1, NAND'de %18.5 pay ile ikinci sırada. Nisan 2026'da açıklanan Q1 2026 sonuçlarında gelir yıllık %198 artışla 52.58 trilyon won'a (~$35.5B), faaliyet karı %405 sıçrayarak 37.61 trilyon won'a (~$25.4B) ulaştı — %72 faaliyet marjı, %77 net kar marjı. CEO Kwak Noh-jung, kapasite artırımlarına rağmen 2027'nin tarihin en sert arz daralmasına sahne olacağını ve talebin 2030'a kadar kapasitenin üzerinde kalacağını öngörüyor.</p>
+      <p><strong>Nasdaq listelemesi (10 Temmuz 2026):</strong> Şirket "SKHY" koduyla ADR programı üzerinden Nasdaq'ta işlem görmeye başladı. Her ADR Seul'deki adi hissenin 1/10'unu temsil ediyor; $149 fiyattan 177.9 milyon adet satılarak $26.5B toplandı — Alibaba'nın 2014 halka arzını geride bırakan, ABD borsaları tarihindeki en büyük yabancı şirket listelemesi. Talep arzın 7 katına ulaştı (Baillie Gifford, Coatue Management dahil), piyasa değeri $1.22T-$1.35T aralığına yerleşti. Fonlar Yongin mega üretim kümelenmesi, Cheongju (M15X) paketleme tesisi ve Indiana'daki $4B'lık yeni nesil paketleme fabrikasına gidecek.</p>
+      <p>Listeleme öncesi 5.5x-6.2x aralığında fiyatlanan SK Hynix, ABD kurumsal yatırımcı erişimiyle küresel yapay zeka çarpanlarına entegre olmayı (re-rating) hedefliyor.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🟣 Samsung Electronics: Devasa Ölçek ve Değerleme Anomalisi</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p>2025 boyunca NVIDIA sertifikasyonunda termal/verim sorunları nedeniyle HBM rekabetinde yara alan Samsung, 2026 ortasında ölçek ekonomisini kullanarak tarihi bir geri dönüşe imza attı.</p>
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">İşletme Karı Sıçraması</div>
+          <div class="card-value up">%1810</div>
+          <div class="card-note">Q2 2026 beklentisi (YoY)</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Forward P/E Çarpanı</div>
+          <div class="card-value up">~2.0x – 5.2x</div>
+          <div class="card-note">Piyasanın en düşük çarpanı</div>
+        </div>
+      </div>
+      <p><strong>Q2 2026 kar patlaması:</strong> 7 Temmuz 2026'da yayımlanan öncü sonuçlara göre konsolide gelir yıllık %129 artışla 171 trilyon won'a (~$112B), işletme karı %1810 sıçrayarak 89.4 trilyon won'a (~$58.4B) ulaştı — bir önceki yıl aynı dönemde sadece 4.68 trilyon won kâr edilmişti. Kârdaki bu artış hacimsel büyümeden ziyade doğrudan fiyatlandırma gücünden kaynaklanıyor: Citi Research'e göre Q2'de DRAM ortalama satış fiyatları çeyreklik %44, NAND fiyatları %53 arttı. Samsung geleneksel DRAM'de %38 pazar payıyla lider; HBM3E ve HBM4 yongalarının Vera Rubin için toplu sevkiyatı da doğrulandı.</p>
+      <p><strong>Holding yapısının yükü:</strong> Rekor kâra rağmen hisseler açıklama günü Kospi'de %5-%10 değer kaybetti. Mobil (MX) bölümünün Q2'de ~1 trilyon won (~$650M) faaliyet zararı beklenirken, devasa çalışan prim provizyonları net karlılığı ciddi şekilde aşağı çekiyor. Temmuz 2026 verilerine göre 12 aylık Forward P/E sadece 2.07x-5.2x bandında — JPMorgan'ın deyimiyle Samsung "dünyanın en ucuz bellek şirketi." Ancak holding hantallığı, işçi sendikası sorunları ve safkan HBM üreticisi olmaması yatırımcıları bu değer tuzağına girmekte tereddütlü bırakıyor.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">⚖️ Karşılaştırmalı Değerleme ve Büyüme Analizi</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p>Finansal piyasaların yapay zeka temasına verdiği tepki, teknoloji sektöründe keskin bir ikili yapı (bifurcation) yarattı: bir yanda altyapı tasarımcısı NVIDIA, diğer yanda o altyapının fiziki hafızasını üreten SK Hynix, Micron ve Samsung.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Şirket</th>
+            <th>Gelir Büyümesi (YoY)</th>
+            <th>Faaliyet Karı Marjı</th>
+            <th>Forward P/E</th>
+            <th>Stratejik Değerlendirme</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>NVIDIA (NVDA)</strong></td><td>%85 (Q1 FY27)</td><td>%65.6 (GAAP)</td><td>24.0x – 36.0x</td><td>Teknoloji sektörüne göre adil/makul, yapısal büyüme garantisi</td></tr>
+          <tr><td><strong>Micron (MU)</strong></td><td>%346 (Q3 FY26)</td><td>%81.2 (Non-GAAP)</td><td>6.4x – 7.0x</td><td>Şiddetle iskontolu — en güçlü asimetrik fırsat</td></tr>
+          <tr><td><strong>SK Hynix</strong></td><td>%198 (Q1 2026)</td><td>%72.0</td><td>5.5x – 6.2x</td><td>Şiddetle iskontolu — Nasdaq ADR ile re-rating potansiyeli</td></tr>
+          <tr><td><strong>Samsung</strong></td><td>%129 (Q2 2026E)</td><td>%52.3 (Tahmini)</td><td>2.0x – 5.2x</td><td>Pazarın en düşük çarpanı — holding yapısı nedeniyle değer tuzağı riski</td></tr>
+        </tbody>
+      </table>
+
+      <div class="chart-container">
+        <div class="chart-title">📈 Çeyreklik Gelir Büyümesi (YoY, %)</div>
+        <svg viewBox="0 0 640 182" width="100%" height="182" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">0%</text><line x1="287.5" y1="16" x2="287.5" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="287.5" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">100%</text><line x1="385.0" y1="16" x2="385.0" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="385.0" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">200%</text><line x1="482.5" y1="16" x2="482.5" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="482.5" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">300%</text><line x1="580.0" y1="16" x2="580.0" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="580.0" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">400%</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">NVIDIA</text><rect x="190" y="22.8" width="82.9" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="280.9" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">+85%</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Micron</text><rect x="190" y="56.8" width="337.4" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="535.4" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">+346%</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">SK Hynix</text><rect x="190" y="90.8" width="193.1" height="19.0" rx="4" fill="#fbbf24" opacity="0.88"/><text x="391.1" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">+198%</text><text x="178" y="138.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Samsung</text><rect x="190" y="124.8" width="125.8" height="19.0" rx="4" fill="#f87171" opacity="0.88"/><text x="323.8" y="138.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">+129%</text></svg>
+        <div class="chart-caption">Micron çeyreklik gelirini yıllık %346 büyüterek dört şirket arasında en hızlı büyüyen oldu; NVIDIA ise en düşük ama yine de güçlü %85 büyüme kaydetti.</div>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">💰 Forward P/E Çarpanı Aralığı (12 Ay)</div>
+        <svg viewBox="0 0 700 258" width="100%" height="258" role="img" aria-label="chart"><line x1="96.0" y1="18" x2="96.0" y2="224" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="96.0" y="240" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">0x</text><line x1="242.0" y1="18" x2="242.0" y2="224" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="242.0" y="240" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">10x</text><line x1="388.0" y1="18" x2="388.0" y2="224" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="388.0" y="240" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">20x</text><line x1="534.0" y1="18" x2="534.0" y2="224" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="534.0" y="240" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">30x</text><line x1="680.0" y1="18" x2="680.0" y2="224" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="680.0" y="240" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">40x</text><text x="86" y="48.0" text-anchor="end" font-size="11" font-weight="700" fill="#38bdf8" font-family="inherit">NVIDIA</text><rect x="446.4" y="34" width="175.2" height="20" rx="5" fill="#38bdf8" opacity="0.92"/><text x="534.0" y="48.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#0a1628" font-family="inherit">24x-36x</text><text x="86" y="98.0" text-anchor="end" font-size="11" font-weight="700" fill="#38bdf8" font-family="inherit">Micron</text><rect x="189.4" y="84" width="8.8" height="20" rx="5" fill="#4ade80" opacity="0.92"/><text x="193.8" y="98.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#0a1628" font-family="inherit">6.4x-7.0x</text><text x="86" y="148.0" text-anchor="end" font-size="11" font-weight="700" fill="#38bdf8" font-family="inherit">SK Hynix</text><rect x="176.3" y="134" width="10.2" height="20" rx="5" fill="#fbbf24" opacity="0.92"/><text x="181.4" y="148.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#0a1628" font-family="inherit">5.5x-6.2x</text><text x="86" y="198.0" text-anchor="end" font-size="11" font-weight="700" fill="#38bdf8" font-family="inherit">Samsung</text><rect x="125.2" y="184" width="46.7" height="20" rx="5" fill="#f87171" opacity="0.92"/><text x="148.6" y="198.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#0a1628" font-family="inherit">2.0x-5.2x</text></svg>
+        <div class="chart-caption">En hızlı büyüyen şirketler en düşük çarpanlarla fiyatlanıyor: Micron ve SK Hynix tek haneli, Samsung ise piyasanın en düşük Forward P/E'siyle işlem görüyor.</div>
+      </div>
+
+      <p><strong>"Bloomberg Grafiği" dinamikleri:</strong> Geleneksel değerleme pratiğinde, yıllık %100'ün üzerinde büyüyen ve %70+ işletme marjıyla çalışan teknoloji şirketleri genellikle 50x-100x çarpanla ödüllendirilir — 2026'da Tesla, görece düşük büyümeye rağmen 175x F/K bandında işlem görüyor. Buna karşın çeyreklik gelirini %346 artıran Micron ve %198 artıran SK Hynix gibi bellek oligopolü üyeleri tek haneli çarpanlara mahkum edildi.</p>
+      <div class="insight-box warn">
+        <strong>Anomalinin kökeni:</strong> Yatırımcı psikolojisine kazınmış "Döngüsellik" korkusu — piyasa, artan CapEx'in 2027-2028'de bir arz fazlası yaratacağına ve bellek fiyatlarının çökeceğine inanıyor. Ancak SK Hynix CEO'sunun 2030'a kadar süreceğini öngördüğü talep fazlası ve Micron'un $22B'lık bağlayıcı SCA'ları, bu korkunun yersiz olabileceğine işaret ediyor. Yapay zeka ekosistemi bellek pazarını döngüsel bir emtia işinden, uzun vadeli bir altyapı hizmetine dönüştürüyor.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">⚠️ Sektörel Riskler, Jeopolitik Dinamikler ve Kısıtlar</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="insight-box danger">
+        <strong>1. Antitröst iddiaları:</strong> 25 Haziran 2026'da ABD Kaliforniya Kuzey Bölge Mahkemesi'nde, küresel DRAM pazarının %91'ini kontrol eden Samsung, Micron ve SK Hynix aleyhine Sherman Antitröst Yasası ihlali gerekçesiyle toplu dava açıldı — 2022-2026 arası standart DRAM (DDR3/DDR4) üretiminin kasıtlı kısıtlandığı iddiası. Aynı üç şirket 2000'lerin başında benzer bir kartel soruşturmasında suçlu bulunmuş, Samsung $300M, SK Hynix $185M ceza ödemişti (Micron işbirliği yaparak kurtulmuştu).
+      </div>
+      <div class="insight-box warn">
+        <strong>2. Veri merkezi güç darboğazı:</strong> 2027'de devreye girecek Rubin Ultra NVL576 Kyber kabinleri ~600 kW tüketecek; mevcut veri merkezlerinin çoğu 40-100 kW/kabin için tasarlandığından, 800 VDC odalarına ve tam sıvı soğutmaya geçiş zorunlu. Çipler zamanında üretilse dahi enerji şebekesi bu talebi karşılayamazsa tüm tedarik zincirini kilitleyecek bir "fiziksel darboğaz" riski var.
+      </div>
+      <div class="insight-box">
+        <strong>3. Devlet destekli mega kapasite genişlemeleri:</strong> Samsung ve SK Hynix, Güney Kore hükümetinin planı doğrultusunda Pyeongtaek ve Yongin'de ayrı ayrı ~400 trilyon won (~$266B) altyapı yatırımı taahhüt etti. Micron'un ABD (New York, Idaho) ve Asya yatırımlarıyla birlikte 2028-2030'da küresel wafer kapasitesi ikiye katlanabilir — YZ yazılım ROI'si beklenenden erken yavaşlarsa 2028'de tarihin en büyük arz fazlası (supply glut) riski doğar.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🔮 Gelecek Projeksiyonları ve Sonuç</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p>11 Temmuz 2026 itibarıyla toplanan mali veriler, analist beklentileri ve teknolojik yol haritaları sentezlendiğinde: pazar, üretimden mimari tasarıma kadar eşi görülmemiş bir yapısal dönüşümün tam merkezinde. HBM üretimi için gereken ~3 kat fazla wafer alanı kronik bir arz açığı yarattı; Amazon, Google, Microsoft ve Meta'nın 650 milyar dolarlık talep gücü bu yüksek fiyatlamayı sektörel standarda dönüştürdü.</p>
+      <div class="insight-box bull">
+        <strong>Micron (MU)</strong>, %346 büyüme ve %84.9 brüt marjına rağmen bağlayıcı sözleşmelerle korunan gelir akışını 6.4x-7.0x gibi iskontolu çarpanlarla sunuyor.<br><br>
+        <strong>SK Hynix</strong>, HBM'deki %56.4'lük hakimiyeti ve $26.5B'lık Nasdaq ADR listelemesiyle "Kore İskontosu"nu kırarak küresel değerlemelere entegre olmanın eşiğinde.<br><br>
+        <strong>Samsung Electronics</strong>, %1810'luk işletme karı sıçramasına karşın holding yapısının hantallığı nedeniyle ~2.0x F/K ile fiyatlanıyor — yüksek potansiyelli ama hareketi ağır bir dev.<br><br>
+        <strong>NVIDIA</strong>, yıllık ürün lansmanı döngüsüyle (Blackwell, Rubin, Feynman) ekosistemi kontrol etmeye devam edecek, 24x-36x aralığında yüksek büyümesini fiyatlamayı sürdürecek.
+      </div>
+      <p>Wall Street'in donanım döngüselliğine dair travmatik hafızası, pazarın gerçekliği ile hisse senedi değerlemeleri arasında derin bir uçurum yarattı. 2026 Bellek Süper Döngüsü, geçmişin "patla ve çök" hikayelerinden ziyade, yapay zeka altyapısına yönelik çok yıllı, bağlayıcı sözleşmelere dayanan ve teknolojik bariyerleri olan yeni bir oligopol düzenine işaret ediyor.</p>
+      <p class="disclaimer">Bu analiz, 11 Temmuz 2026 tarihi itibarıyla mevcut olan pazar verileri, şirket bilançoları ve teknolojik yol haritaları temel alınarak hazırlanmıştır. Yatırım kararları almadan önce kişisel araştırmanızı yapmanız ve yetkili finansal danışmanlara başvurmanız önemle tavsiye edilir.</p>
+    </div>
+  </div>
+</section>
+
+<div class="footer">Gistify Flow | 11 Temmuz 2026 | 2026 Bellek Süper Döngüsü Karşılaştırmalı Analiz</div>
+
+</div>
+</body>
+</html>
