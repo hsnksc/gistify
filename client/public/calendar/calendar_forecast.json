@@ -1,6 +1,6 @@
 {
   "reportDate": "2026-07-08",
-  "generatedAt": "2026-07-08T09:14:58.870Z",
+  "generatedAt": "2026-07-11T16:28:27.948399",
   "title": "",
   "summary": "",
   "events": [
@@ -201,7 +201,9 @@
       "importance": "low",
       "previous": "6.57%",
       "currency": "USD",
-      "status": "upcoming"
+      "status": "released",
+      "actual": "6.58%",
+      "actualCapturedAt": "2026-07-11T16:28:27.948399"
     },
     {
       "id": "14-00-usd-mba-mortgage-applications-wow",
@@ -212,7 +214,9 @@
       "importance": "low",
       "previous": "0.0%",
       "currency": "USD",
-      "status": "upcoming"
+      "status": "released",
+      "actual": "-2.2%",
+      "actualCapturedAt": "2026-07-11T16:28:27.948399"
     },
     {
       "id": "14-00-usd-mba-purchase-index",
@@ -223,7 +227,9 @@
       "importance": "low",
       "previous": "170.6",
       "currency": "USD",
-      "status": "upcoming"
+      "status": "released",
+      "actual": "169.5",
+      "actualCapturedAt": "2026-07-11T16:28:27.948399"
     },
     {
       "id": "14-00-usd-mortgage-market-index",
@@ -234,7 +240,9 @@
       "importance": "low",
       "previous": "272.2",
       "currency": "USD",
-      "status": "upcoming"
+      "status": "released",
+      "actual": "266.3",
+      "actualCapturedAt": "2026-07-11T16:28:27.948399"
     },
     {
       "id": "14-00-usd-mortgage-refinance-index",
@@ -245,7 +253,9 @@
       "importance": "low",
       "previous": "828.7",
       "currency": "USD",
-      "status": "upcoming"
+      "status": "released",
+      "actual": "794.4",
+      "actualCapturedAt": "2026-07-11T16:28:27.948399"
     },
     {
       "id": "14-30-eur-german-buba-president-nagel-speaks",
@@ -289,7 +299,9 @@
       "previous": "0.6%",
       "forecast": "0.3%",
       "currency": "USD",
-      "status": "upcoming"
+      "status": "released",
+      "actual": "0.1%",
+      "actualCapturedAt": "2026-07-11T16:28:27.948399"
     },
     {
       "id": "17-00-usd-wholesale-trade-sales-mom-may",
@@ -300,7 +312,9 @@
       "importance": "low",
       "previous": "2.0%",
       "currency": "USD",
-      "status": "upcoming"
+      "status": "released",
+      "actual": "3.4%",
+      "actualCapturedAt": "2026-07-11T16:28:27.948399"
     },
     {
       "id": "17-30-usd-crude-oil-inventories",
@@ -312,7 +326,9 @@
       "previous": "-3.775M",
       "forecast": "-1.900M",
       "currency": "USD",
-      "status": "upcoming"
+      "status": "released",
+      "actual": "2.998M",
+      "actualCapturedAt": "2026-07-11T16:28:27.948399"
     },
     {
       "id": "17-30-usd-cushing-crude-oil-inventories",
@@ -323,7 +339,9 @@
       "importance": "medium",
       "previous": "0.709M",
       "currency": "USD",
-      "status": "upcoming"
+      "status": "released",
+      "actual": "-0.052M",
+      "actualCapturedAt": "2026-07-11T16:28:27.948399"
     },
     {
       "id": "17-30-usd-crude-oil-imports",
@@ -334,7 +352,9 @@
       "importance": "low",
       "previous": "0.370M",
       "currency": "USD",
-      "status": "upcoming"
+      "status": "released",
+      "actual": "1.096M",
+      "actualCapturedAt": "2026-07-11T16:28:27.948399"
     },
     {
       "id": "17-30-usd-distillate-fuel-production",
@@ -345,7 +365,9 @@
       "importance": "low",
       "previous": "-0.042M",
       "currency": "USD",
-      "status": "upcoming"
+      "status": "released",
+      "actual": "-0.001M",
+      "actualCapturedAt": "2026-07-11T16:28:27.948399"
     },
     {
       "id": "17-30-usd-eia-refinery-crude-runs-wow",
@@ -356,7 +378,9 @@
       "importance": "low",
       "previous": "0.085M",
       "currency": "USD",
-      "status": "upcoming"
+      "status": "released",
+      "actual": "-0.172M",
+      "actualCapturedAt": "2026-07-11T16:28:27.948399"
     },
     {
       "id": "17-30-usd-eia-weekly-distillates-stocks",
@@ -367,7 +391,10 @@
       "importance": "low",
       "previous": "2.483M",
       "currency": "USD",
-      "status": "upcoming"
+      "status": "released",
+      "actual": "-4.980M",
+      "actualCapturedAt": "2026-07-11T16:28:27.948399",
+      "forecast": "0.600M"
     },
     {
       "id": "17-30-usd-eia-weekly-refinery-utilization-rates-wow",
@@ -378,7 +405,9 @@
       "importance": "low",
       "previous": "0.5%",
       "currency": "USD",
-      "status": "upcoming"
+      "status": "released",
+      "actual": "-0.8%",
+      "actualCapturedAt": "2026-07-11T16:28:27.948399"
     },
     {
       "id": "17-30-usd-gasoline-inventories",
@@ -389,7 +418,10 @@
       "importance": "low",
       "previous": "-2.333M",
       "currency": "USD",
-      "status": "upcoming"
+      "status": "released",
+      "actual": "-1.904M",
+      "actualCapturedAt": "2026-07-11T16:28:27.948399",
+      "forecast": "-1.600M"
     },
     {
       "id": "17-30-usd-gasoline-production",
@@ -400,7 +432,9 @@
       "importance": "low",
       "previous": "0.481M",
       "currency": "USD",
-      "status": "upcoming"
+      "status": "released",
+      "actual": "-0.233M",
+      "actualCapturedAt": "2026-07-11T16:28:27.948399"
     },
     {
       "id": "17-30-usd-heating-oil-stockpiles",
@@ -411,7 +445,9 @@
       "importance": "low",
       "previous": "-0.310M",
       "currency": "USD",
-      "status": "upcoming"
+      "status": "released",
+      "actual": "-0.427M",
+      "actualCapturedAt": "2026-07-11T16:28:27.948399"
     },
     {
       "id": "18-00-brl-brazil-thomson-reuters-ipsos-pcsi-jul",
@@ -422,7 +458,9 @@
       "importance": "low",
       "previous": "53.00",
       "currency": "BRL",
-      "status": "upcoming"
+      "status": "released",
+      "actual": "52.05",
+      "actualCapturedAt": "2026-07-11T16:28:27.948399"
     },
     {
       "id": "18-00-usd-thomson-reuters-ipsos-pcsi-jul",
@@ -433,7 +471,9 @@
       "importance": "low",
       "previous": "49.14",
       "currency": "USD",
-      "status": "upcoming"
+      "status": "released",
+      "actual": "50.99",
+      "actualCapturedAt": "2026-07-11T16:28:27.948399"
     },
     {
       "id": "18-00-cad-thomson-reuters-ipsos-pcsi-jul",
@@ -444,7 +484,9 @@
       "importance": "low",
       "previous": "48.95",
       "currency": "CAD",
-      "status": "upcoming"
+      "status": "released",
+      "actual": "49.42",
+      "actualCapturedAt": "2026-07-11T16:28:27.948399"
     },
     {
       "id": "18-30-usd-atlanta-fed-gdpnow-q2",
@@ -456,7 +498,9 @@
       "previous": "1.4%",
       "forecast": "1.4%",
       "currency": "USD",
-      "status": "upcoming"
+      "status": "released",
+      "actual": "1.3%",
+      "actualCapturedAt": "2026-07-11T16:28:27.948399"
     },
     {
       "id": "19-40-eur-ecb-s-schnabel-speaks",
@@ -477,7 +521,9 @@
       "importance": "high",
       "previous": "4.538%",
       "currency": "USD",
-      "status": "upcoming"
+      "status": "released",
+      "actual": "4.580%",
+      "actualCapturedAt": "2026-07-11T16:28:27.948399"
     },
     {
       "id": "20-30-brl-foreign-exchange-flows",
@@ -488,7 +534,9 @@
       "importance": "low",
       "previous": "-1.027B",
       "currency": "BRL",
-      "status": "upcoming"
+      "status": "released",
+      "actual": "-4.218B",
+      "actualCapturedAt": "2026-07-11T16:28:27.948399"
     },
     {
       "id": "21-00-usd-fomc-meeting-minutes",
@@ -510,7 +558,9 @@
       "previous": "20.73B",
       "forecast": "16.90B",
       "currency": "USD",
-      "status": "upcoming"
+      "status": "released",
+      "actual": "-0.18B",
+      "actualCapturedAt": "2026-07-11T16:28:27.948399"
     }
   ],
   "highImportanceCount": 4,
