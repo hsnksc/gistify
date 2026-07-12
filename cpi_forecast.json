@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-07-12T00:00:35Z",
-  "reportDate": "2026-07-12",
+  "generatedAt": "2026-07-13T00:00:00Z",
+  "reportDate": "2026-07-13",
   "title": "US CPI Forecast Snapshot — June 2026 (v3.1 EIA-Validated Methodology)",
-  "methodology": "Two-stage aggregation using exact BLS 2024-2025 relative importance weights. Stage 1: component-level forecasts. Stage 2: weighted aggregation. Verification: Food+Energy+Core=100.000% and Shelter+CoreGoods+CoreServices=80.557%. Energy components validated with AAA retail gasoline ($3.884/gal Jul 10) and EIA retail ($3.777/gal Jul 6). WTI futures NOT used for gasoline CPI per backtest (R²=0.23, MAE=8.1%). Cross-check: Cleveland Fed CPI Nowcast (updated Jul 10) projects June headline -0.06% m/m and core 0.23% m/m. Backtest: 15 months weight accuracy MAE 0.035% core, 0.146% headline.",
-  "summary": "June CPI headline +0.1% m/m (consensus +0.1–0.2%; Cleveland Fed nowcast -0.06%) on energy deflation from gasoline collapse. Core +0.2% m/m (consensus +0.2–0.3%; Cleveland Fed nowcast 0.23%). AAA retail gasoline $3.884/gal Jul 10 vs May avg ~$4.32 (-10%). ISM Manufacturing Prices cooling but Services Prices sticky. FOMC Jun 16-17 hawkish hold; dot plot 3.8% = one hike in 2026. 10Y yield 4.56% (Jul 10). VIX 15.25 — low complacency risk into CPI. Manheim MUVVI 212.9 (Jun, +2.1% y/y). WTI ~$72 (Jul 10). Warsh hawkishness limits soft-print market reaction. July 14 release coincides with Q2 bank earnings — volatility amplification risk.",
+  "methodology": "Two-stage aggregation using exact BLS 2024-2025 relative importance weights. Stage 1: component-level forecasts. Stage 2: weighted aggregation. Verification: Food+Energy+Core=100.000% and Shelter+CoreGoods+CoreServices=80.557%. Energy components validated with AAA retail gasoline ($3.876/gal Jul 12) and EIA retail ($3.777/gal Jul 6). WTI futures NOT used for gasoline CPI per backtest (R²=0.23, MAE=8.1%). Cross-check: Cleveland Fed CPI Nowcast projects June headline 3.92% y/y and core 2.85% y/y. TradingEconomics consensus: headline below 4%, core holding at 2.9%. Backtest: 15 months weight accuracy MAE 0.035% core, 0.146% headline.",
+  "summary": "June CPI headline +0.1% m/m (consensus +0.1–0.2%; Cleveland Fed nowcast -0.06% m/m) on energy deflation from gasoline collapse. Core +0.2% m/m (consensus +0.2–0.3%; Cleveland Fed nowcast 0.23% m/m). AAA retail gasoline $3.876/gal Jul 12 vs May avg ~$4.32 (-10.3%). ISM Manufacturing Prices cooling but Services Prices sticky. FOMC Jun 16-17 hawkish hold; dot plot 3.8% = one hike in 2026. 10Y yield 4.56% (Jul 10). VIX 15.25 — low complacency risk into CPI. Manheim MUVVI 212.9 (Jun, +2.1% y/y). WTI ~$72 (Jul 10). Warsh hawkishness limits soft-print market reaction. T-1 to July 14 release. CPI + Q2 bank earnings same day = volatility amplification risk.",
   "baseCase": "Below-consensus headline CPI on energy deflation; core stable at +0.2% with shelter deceleration offsetting sticky services. FOMC hawkish hold caps rally. July 14 = CPI + bank earnings convergence.",
   "conviction": 72,
   "weights": {
@@ -28,16 +28,16 @@
     "releaseDate": "2026-07-14",
     "releaseTimeEt": "08:30 ET",
     "headlineMoM": "+0.1%",
-    "headlineYoY": "3.8%",
+    "headlineYoY": "3.9%",
     "coreMoM": "+0.2%",
-    "coreYoY": "2.8%",
+    "coreYoY": "2.9%",
     "priorHeadlineMoM": "+0.5%",
     "priorHeadlineYoY": "4.2%",
     "priorCoreMoM": "+0.2%",
     "priorCoreYoY": "2.9%",
     "bias": "COOLER",
     "confidence": 72,
-    "thesis": "AAA retail gasoline $3.884/gal Jul 10 vs May avg ~$4.32 (-10%). Energy CPI deflation ≈ -1.4% m/m composite. Exact BLS weights: Food 13.25% + Energy 6.19% + Core 80.56%. Core stable (+0.2%) with shelter cooling (0.25%) but services sticky (0.35%). 10Y yield 4.56% = key regime line. FOMC dot plot 3.8% median = one hike in 2026. Warsh hawkish hold limits soft-print market reaction. Cleveland Fed nowcast (Jul 10) = headline -0.06% / core 0.23% — directional confirmation."
+    "thesis": "AAA retail gasoline $3.876/gal Jul 12 vs May avg ~$4.32 (-10.3%). Energy CPI deflation ≈ -1.4% m/m composite. Exact BLS weights: Food 13.25% + Energy 6.19% + Core 80.56%. Core stable (+0.2%) with shelter cooling (0.25%) but services sticky (0.35%). 10Y yield 4.56% = key regime line. FOMC dot plot 3.8% median = one hike in 2026. Warsh hawkish hold limits soft-print market reaction. Cleveland Fed nowcast = headline 3.92% y/y / core 2.85% y/y — directional confirmation. TradingEconomics consensus: headline below 4%, core holding at 2.9%."
   },
   "scenarios": [
     {
@@ -137,8 +137,8 @@
     },
     {
       "label": "AAA Retail Gasoline",
-      "value": "$3.884/gal (Jul 10)",
-      "note": "AAA National Average. Down from $4.191 month ago (-7.3%). Down from ~$4.32 May avg. EIA retail $3.777 Jul 6. WTI futures NOT used for gasoline CPI per backtest (R²=0.23 failed)."
+      "value": "$3.876/gal (Jul 12)",
+      "note": "AAA National Average. Down from $4.108 month ago (-5.6%). Down from ~$4.32 May avg. EIA retail $3.777 Jul 6. Jul 9: prices reversed +5c on ceasefire uncertainty. WTI futures NOT used for gasoline CPI per backtest (R²=0.23 failed)."
     },
     {
       "label": "ISM Prices Paid",
@@ -167,18 +167,18 @@
     },
     {
       "label": "Cleveland Fed CPI Nowcast",
-      "value": "Headline -0.06% / Core 0.23% (Jul 10 update)",
-      "note": "Model-based cross-check. More bearish on headline than our bottom-up (+0.1%). Difference likely due to energy model assumptions."
+      "value": "Headline 3.92% y/y / Core 2.85% y/y (Jul 2026)",
+      "note": "Model-based cross-check. Headline MoM nowcast -0.06% m/m, core 0.23% m/m. More bearish on headline than our bottom-up (+0.1%). Difference likely due to energy model assumptions."
     }
   ],
   "keyDrivers": [
-    "Oil/gasoline collapse: AAA retail gasoline $3.884/gal Jul 10 vs May avg ~$4.32 (-10%). Energy CPI deflation ≈ -1.4% m/m composite. EIA retail/AAA is primary source; WTI futures NOT used for gasoline CPI per backtest (R²=0.23, MAE=8.1%).",
+    "Oil/gasoline collapse: AAA retail gasoline $3.876/gal Jul 12 vs May avg ~$4.32 (-10.3%). Energy CPI deflation ≈ -1.4% m/m composite. EIA retail/AAA is primary source; WTI futures NOT used for gasoline CPI per backtest (R²=0.23, MAE=8.1%).",
     "FOMC hawkish hold: Warsh's first meeting Jun 16-17. Statement stripped easing bias. Dot plot 3.8% median = one hike in 2026. 9/18 participants pencil hike. Core PCE forecast 3.3%. Limits soft-CPI market reaction.",
     "Shelter deceleration: Zillow/Apartment List leading indicators slowing. OER normalizing to ~0.25% m/m. Rent of primary residence ~2.5% y/y. But BLS 6-12 month lag means full deceleration not yet priced.",
     "DXY ~100: Strong dollar = import deflation on core goods. Partially offsets any PPI passthrough. Core goods may see mild deflation (-0.1% m/m).",
     "ISM prices divergence: Manufacturing prices cooling = goods disinflation. Services prices sticky = core services risk. Transportation/warehousing key wildcard.",
     "Core PPI passthrough watch: Prior hot PPI prints feed into core CPI with 1-3 month lag. If passthrough accelerates in Jul/Aug, core undershoot narrative breaks.",
-    "Cleveland Fed nowcast (Jul 10): Model projects June headline -0.06% m/m and core 0.23% m/m. Directional confirmation of soft headline thesis but our bottom-up aggregation (+0.1% headline) is more conservative on energy timing.",
+    "Cleveland Fed nowcast: Model projects June headline 3.92% y/y and core 2.85% y/y. Directional confirmation of soft headline thesis but our bottom-up aggregation (+0.1% headline m/m) is more conservative on energy timing.",
     "July 14 convergence: CPI release + Q2 bank earnings (JPM, GS, C) same day = volatility amplification. Options pricing GS 6.0% implied move, JPM 4.4%."
   ],
   "risks": [
