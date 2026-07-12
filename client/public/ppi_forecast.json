@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-07-12T00:05:36+03:00",
-  "reportDate": "2026-07-12",
+  "generatedAt": "2026-07-13T00:05:36+03:00",
+  "reportDate": "2026-07-13",
   "title": "US PPI Forecast Snapshot — Composite Calibrated Bridge Nowcast v2.5 Enhanced",
-  "summary": "June 2026 PPI forecast: Headline +0.1% MoM, Core +0.3% MoM. VIX 15.03 confirms Normal regime. Energy deflation post-Hormuz reopening drags headline toward flat, with gasoline and diesel spot prices down sharply through mid-June. ISM Prices Paid moderates to 73.0 from 82.1 but remains strongly inflationary for core goods. ECI Q1 +0.9% SA (+0.30% monthly proxy) anchors sticky services inflation. Intermediate demand Stage1=+3.2%, Stage2=+2.4% adds +0.15 ppt uplift, partially offsetting energy drag. Net: headline nearly flat, core sticky.",
-  "baseCase": "Headline PPI +0.1% MoM, Core PPI +0.3% MoM. Energy composite -3.0% as Hormuz reopening crashes refined product prices. Core goods moderates to +0.4% but ISM 73.0 keeps it elevated. Services sticky at +0.2% via ECI labor cost passthrough. Intermediate demand +0.15 ppt uplift.",
-  "conviction": 60,
+  "summary": "June 2026 PPI forecast: Headline +0.1% MoM, Core +0.3% MoM. VIX 15.03 confirms Normal regime. Energy deflation post-Hormuz reopening drags headline toward flat, with gasoline and diesel spot prices down sharply through mid-June. ISM Prices Paid moderates to 73.0 from 82.1 but remains strongly inflationary for core goods. ECI Q1 +0.9% SA (+0.30% monthly proxy) anchors sticky services inflation. EIA July 3 report shows distillate stocks at critically low levels (-5.0M draw) even as crude inventories build (+3.0M), creating divergent energy signals. Intermediate demand Stage1=+3.2%, Stage2=+2.4% adds +0.15 ppt uplift, partially offsetting energy drag. Net: headline nearly flat, core sticky.",
+  "baseCase": "Headline PPI +0.1% MoM, Core PPI +0.3% MoM. Energy composite -3.2% as Hormuz reopening crashes refined product prices. Core goods moderates to +0.4% but ISM 73.0 keeps it elevated. Services sticky at +0.2% via ECI labor cost passthrough. Intermediate demand +0.15 ppt uplift.",
+  "conviction": 62,
   "regime": "normal",
   "vix": 15.03,
   "regimeParameters": {
@@ -34,30 +34,30 @@
   },
   "compositeProxies": {
     "energy": {
-      "gasoline": -6.0,
+      "gasoline": -5.5,
       "diesel": -4.0,
       "jetFuel": -5.0,
       "naturalGas": 0.5,
-      "composite": -3.45
+      "composite": -3.2
     },
     "foods": {
-      "cattle": 0.2,
+      "cattle": 0.3,
       "hogs": -0.1,
-      "grains": 0.0,
-      "dairy": 0.3,
+      "grains": 0.1,
+      "dairy": 0.2,
       "usda": 0.1,
-      "composite": 0.1
+      "composite": 0.12
     },
     "coreGoods": {
-      "copper": 0.5,
-      "steel": 0.3,
+      "copper": 0.3,
+      "steel": 0.2,
       "aluminum": -0.2,
       "lumber": -0.3,
       "chemicals": 0.3,
       "pharma": 0.1,
       "ismPricesPaid": 2.3,
       "importPriceIndex": 0.1,
-      "composite": 0.5
+      "composite": 0.45
     },
     "tradeServices": {
       "inventorySales": -0.1,
@@ -67,11 +67,11 @@
       "composite": 0.05
     },
     "transportation": {
-      "datSpot": 0.2,
+      "datSpot": 0.3,
       "diesel": -0.3,
       "railFreight": 0.1,
       "airFreight": 0.1,
-      "composite": 0.01
+      "composite": 0.03
     },
     "otherServices": {
       "eci": 0.3,
@@ -103,8 +103,8 @@
     "priorCoreMoM": "+0.8%",
     "priorCoreYoY": "5.1%",
     "bias": "COOLER",
-    "confidence": 60,
-    "thesis": "Energy prices crashed in June following the Hormuz reopening, dragging headline PPI toward flat. Core goods inflation moderates with ISM Prices Paid down 9 points but remains elevated at 73.0. Services stickiness anchored by ECI labor costs keeps core PPI above +0.2%."
+    "confidence": 62,
+    "thesis": "Energy prices crashed in June following the Hormuz reopening, dragging headline PPI toward flat. Core goods inflation moderates with ISM Prices Paid down 9 points but remains elevated at 73.0. Services stickiness anchored by ECI labor costs keeps core PPI above +0.2%. EIA distillate draw (-5.0M) signals tight product markets despite crude builds."
   },
   "pointEstimate": {
     "headline": 0.1,
@@ -189,8 +189,8 @@
     },
     {
       "label": "EIA Weekly Petroleum",
-      "value": "WTI $69, Brent $72; inventories building",
-      "note": "OPEC+ unwinding 188 kb/d from July. Watch Cushing builds."
+      "value": "WTI $69.60, Brent $69.56; crude +3.0M, distillate -5.0M",
+      "note": "Distillate stocks 12% below 5-year avg. OPEC+ unwinding from July."
     },
     {
       "label": "BLS ECI Q2 2026",
@@ -219,13 +219,15 @@
   "sources": [
     "https://www.cboe.com/en/tradable-products/vix/ (VIX 15.03, July 10 2026)",
     "https://www.textileworld.com/textile-world/2026/07/manufacturing-pmi-at-53-3-june-2026 (ISM PMI 53.3, Prices 73.0)",
-    "https://commodity-board.com/wti-curve-softens-as-opec-eases-cuts-and-demand-signals-cool (WTI $69, Brent $72, Jul 2026)",
+    "https://commodity-board.com/wti-curve-softens-as-opec-eases-cuts-and-demand-signals-cool (WTI $69.60, Brent $69.56, Jul 2026)",
     "https://www.westmetall.com/en/markdaten.php (LME Copper $13,408.50, Aluminum $3,156, Jul 10 2026)",
     "https://tradingeconomics.com/commodity/hrc-steel (HRC Steel $1,174, Jul 10 2026)",
     "https://tradingeconomics.com/united-states/currency (DXY 100.97, Jul 10 2026)",
     "https://www.bls.gov/news.release/eci.nr0.htm (ECI Q1 2026 +0.9% SA)",
     "https://tradingeconomics.com/commodity/lumber (Lumber ~$525, Jul 2026)",
-    "https://kilowattlogic.com/news/eia-natural-gas-storage-july-9-2026-61-bcf-injection (EIA gas storage 2,983 Bcf, Jul 9 2026)",
-    "https://naturalgasintel.com/news/eia-storage-injection-overshoots-estimates-sinks-natural-gas-futures/ (Henry Hub $3.20/MMBtu, Jul 2026)"
+    "https://www.kingdomexploration.com/?page=news&article=eia-crude-inventory-build-july-03-2026-week-jul-03-2026 (EIA crude +3.0M, distillate -5.0M, Jul 3 2026)",
+    "https://naturalgasintel.com/news/eia-storage-injection-overshoots-estimates-sinks-natural-gas-futures/ (Henry Hub $3.20/MMBtu, Jul 2026)",
+    "https://esmis.nal.usda.gov/sites/default/release-files/795957/agpr0626.pdf (USDA Agricultural Prices June 2026)",
+    "https://tradingeconomics.com/united-states/producer-price-inflation-mom (PPI May 2026 +1.1% MoM, +6.5% YoY)"
   ]
 }
