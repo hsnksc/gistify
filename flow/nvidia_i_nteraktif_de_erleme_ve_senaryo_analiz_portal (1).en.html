@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NVIDIA (NVDA) Interactive Valuation &amp; Scenario Analysis Portal</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="NVIDIA (NVDA) Interactive Valuation & Scenario Analysis Portal" />
+<meta property="og:description" content="NVDA trades at an 18x forward P/E — a 7-year low — despite 71% revenue growth. Multiple compression, Vera Rubin BOM inflation, and scenario-based target-price math." />
+<meta property="og:url" content="https://gistify.pro/flow/nvidia_i_nteraktif_de_erleme_ve_senaryo_analiz_portal%20%281%29.en.html" />
+<meta property="og:image" content="https://gistify.pro/gistifylogo.png?v=20260712" />
+<meta property="og:site_name" content="Gistify" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="NVIDIA (NVDA) Interactive Valuation & Scenario Analysis Portal" />
+<meta name="twitter:description" content="NVDA trades at an 18x forward P/E — a 7-year low — despite 71% revenue growth. Multiple compression, Vera Rubin BOM inflation, and scenario-based target-price math." />
+<meta name="twitter:image" content="https://gistify.pro/gistifylogo.png?v=20260712" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:760px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent)}
+.section-body{padding:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+td{font-variant-numeric:tabular-nums}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+.chart-container{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:20px;margin:16px 0}
+.chart-title{font-size:.9rem;font-weight:700;color:var(--gf-accent);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.chart-title::before{content:'';display:inline-block;width:4px;height:16px;background:var(--gf-accent);border-radius:2px}
+.chart-caption{font-size:.78rem;color:var(--gf-muted);margin-top:12px;border-top:1px solid var(--gf-border-subtle);padding-top:10px}
+.legend{display:flex;gap:16px;font-size:.75rem;color:var(--gf-muted);margin-top:10px;flex-wrap:wrap}
+.legend-dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:middle}
+.donut-chart{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.donut-svg{flex-shrink:0}
+.donut-legend{display:flex;flex-direction:column;gap:8px}
+.donut-legend-item{display:flex;align-items:center;gap:8px;font-size:.85rem}
+.donut-legend-color{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.donut-legend-label{color:var(--gf-text)}
+.donut-legend-value{color:var(--gf-muted);font-size:.8rem}
+.toggle-input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.toggle-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.toggle-label{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:8px;font-size:.78rem;font-weight:600;background:var(--gf-elev);border:1px solid var(--gf-border);color:var(--gf-muted);cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.tab-nav{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:6px;margin-bottom:20px}
+.tab-nav .toggle-label{flex:1;justify-content:center;padding:10px 14px}
+.view-pane{display:none}
+.scenario-result{display:none}
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+#tabDash:checked ~ .toggle-row label[for="tabDash"],
+#tabTech:checked ~ .toggle-row label[for="tabTech"],
+#tabSim:checked ~ .toggle-row label[for="tabSim"],
+#tabRisk:checked ~ .toggle-row label[for="tabRisk"],
+#scBear:checked ~ .toggle-row label[for="scBear"],
+#scBase:checked ~ .toggle-row label[for="scBase"],
+#scBull:checked ~ .toggle-row label[for="scBull"]{background:var(--gf-accent);color:#04121f;border-color:var(--gf-accent)}
+#tabDash:checked ~ .tab-pane{display:none}
+#tabDash:checked ~ #pane-dash{display:block}
+#tabTech:checked ~ .tab-pane{display:none}
+#tabTech:checked ~ #pane-tech{display:block}
+#tabSim:checked ~ .tab-pane{display:none}
+#tabSim:checked ~ #pane-sim{display:block}
+#tabRisk:checked ~ .tab-pane{display:none}
+#tabRisk:checked ~ #pane-risk{display:block}
+#scBear:checked ~ .scenario-result{display:none}
+#scBear:checked ~ #sc-result-bear{display:block}
+#scBase:checked ~ .scenario-result{display:none}
+#scBase:checked ~ #sc-result-base{display:block}
+#scBull:checked ~ .scenario-result{display:none}
+#scBull:checked ~ #sc-result-bull{display:block}
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid,.grid3{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-12T21:38:00+03:00">
+  <h1 class="hero-h">NVIDIA (NVDA) Interactive Valuation &amp; Scenario Analysis Portal</h1>
+  <p class="hero-desc">Despite 71% trailing revenue growth, NVDA's forward P/E has collapsed to 18x — a 7-year low, cheaper than even AMD and Broadcom. We walk through the Vera CPU / Rubin GPU BOM inflation, the custom-silicon threat, and the source's own EPS×P/E scenario simulator.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info">📅 July 12, 2026</span>
+    <span class="hero-ticker">$NVDA</span>
+    <span class="meta-pill neu">Interactive Scenario Simulator</span>
+    <span class="meta-pill bull">Multiple Compression</span>
+  </div>
+</div>
+
+<input type="radio" class="toggle-input" name="nvdaTab" id="tabDash" checked>
+<input type="radio" class="toggle-input" name="nvdaTab" id="tabTech">
+<input type="radio" class="toggle-input" name="nvdaTab" id="tabSim">
+<input type="radio" class="toggle-input" name="nvdaTab" id="tabRisk">
+<div class="toggle-row tab-nav">
+  <label class="toggle-label" for="tabDash">📊 Overview</label>
+  <label class="toggle-label" for="tabTech">🔧 Technology &amp; BOM</label>
+  <label class="toggle-label" for="tabSim">🧮 Scenario Simulator</label>
+  <label class="toggle-label" for="tabRisk">⚠️ Strategic Risks</label>
+</div>
+
+<section class="tab-pane" id="pane-dash">
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-num" style="color:var(--gf-accent)">$253.5B</div><div class="kpi-label">Trailing 12-Month Revenue (+71% YoY)</div></div>
+    <div class="kpi"><div class="kpi-num">18.0x</div><div class="kpi-label">Consensus Forward P/E (7-Year Low)</div></div>
+    <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">$20B</div><div class="kpi-label">Vera CPU 2026 Revenue Target</div></div>
+    <div class="kpi"><div class="kpi-num" style="color:var(--gf-warning)">$119B</div><div class="kpi-label">Advance Supply Commitments</div></div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">📉 Semiconductor Cycle &amp; "Multiple Compression" Analysis</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:10px;color:var(--gf-muted);font-size:0.88rem">The global semiconductor sector faces an intense cyclical-correction risk, triggered by monetary expansion and commodity rotation (M2 money supply reaching $23 trillion). The sharp reversal in liquidity-sensitive assets like silver from their peaks has raised cycle-top fears in chips as well.</p>
+      <p style="margin-bottom:10px;color:var(--gf-muted);font-size:0.88rem">This has produced deep <strong style="color:var(--gf-text)">multiple compression</strong> in NVIDIA shares. Even though the company's trailing-twelve-month revenue grew 71%, its trailing P/E fell from a 5-year historical average of 69.62x to 32.31x. Per Morgan Stanley and BofA, the forward P/E multiple compressing to roughly 18x signals the market is pricing in a sharp slowdown in AI investment appetite.</p>
+      <p style="color:var(--gf-muted);font-size:0.88rem">Meanwhile, Big Tech's AI capital expenditure is on track to exceed $800 billion in 2026 and approach $1.1 trillion in 2027 — nearing the US defense budget. That backdrop explains the polarization between the stock's enormous short interest ($16.7 billion) and retail sentiment (91.8% long).</p>
+
+      <div class="chart-container">
+        <div class="chart-title">⚖️ Market Valuation Comparison (LTM P/E)</div>
+        <svg viewBox="0 0 640 182" width="100%" height="182" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">0x</text><line x1="287.5" y1="16" x2="287.5" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="287.5" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">45x</text><line x1="385.0" y1="16" x2="385.0" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="385.0" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">90x</text><line x1="482.5" y1="16" x2="482.5" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="482.5" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">135x</text><line x1="580.0" y1="16" x2="580.0" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="580.0" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">180x</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">AMD</text><rect x="190" y="22.8" width="369.8" height="19.0" rx="4" fill="#fbbf24" opacity="0.88"/><text x="567.8" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">170.7x</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Broadcom</text><rect x="190" y="56.8" width="130.4" height="19.0" rx="4" fill="#fbbf24" opacity="0.88"/><text x="328.4" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">60.2x</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Cisco</text><rect x="190" y="90.8" width="79.7" height="19.0" rx="4" fill="#fbbf24" opacity="0.88"/><text x="277.7" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">36.8x</text><text x="178" y="138.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">NVIDIA</text><rect x="190" y="124.8" width="70.0" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="268.0" y="138.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">32.3x</text></svg>
+        <div class="chart-caption">Despite its enormous growth rate, NVIDIA trades below even some mature legacy-tech and consumer-staples names (e.g. Hershey) on a current-multiple basis — an asymmetric risk/reward setup.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tab-pane" id="pane-tech">
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🖥️ Grace CPU vs. Vera CPU Architecture Shift</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <table>
+        <thead><tr><th>Spec</th><th>Grace CPU</th><th style="color:var(--gf-accent)">Vera CPU</th><th>Change</th></tr></thead>
+        <tbody>
+          <tr><td>CPU Cores</td><td>72 Neoverse V2</td><td>88 Custom Olympus</td><td style="color:var(--gf-success)">+22.2% Cores</td></tr>
+          <tr><td>Threads</td><td>72</td><td>176 Spatial SMT</td><td style="color:var(--gf-success)">2.4x Capacity</td></tr>
+          <tr><td>L2 / L3 Cache</td><td>1MB (per core) / 114MB</td><td>2MB (per core) / 164MB</td><td style="color:var(--gf-success)">+100% L2 / +44% L3</td></tr>
+          <tr><td>Max Memory Bandwidth</td><td>512 GB/s</td><td>1.2 TB/s</td><td style="color:var(--gf-success)">2.4x Faster</td></tr>
+          <tr><td>Max Memory Capacity</td><td>480GB LPDDR5X</td><td>1.5TB LPDDR5X</td><td style="color:var(--gf-success)">3.1x Capacity</td></tr>
+          <tr><td>NVLink-C2C Bandwidth</td><td>900 GB/s</td><td>1.8 TB/s</td><td style="color:var(--gf-success)">+100%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🎮 Blackwell GPU vs. Rubin GPU Comparison</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <table>
+        <thead><tr><th>Compute Parameter</th><th>Blackwell GPU</th><th style="color:var(--gf-accent)">Rubin GPU</th><th>Increase</th></tr></thead>
+        <tbody>
+          <tr><td>Total Transistors</td><td>208 Billion</td><td>336 Billion</td><td style="color:var(--gf-success)">+61.5%</td></tr>
+          <tr><td>NVFP4 Inference</td><td>10 PFLOPS</td><td>50 PFLOPS</td><td style="color:var(--gf-success)">5.0x</td></tr>
+          <tr><td>NVFP4 Training</td><td>10 PFLOPS</td><td>35 PFLOPS</td><td style="color:var(--gf-success)">3.5x</td></tr>
+          <tr><td>Memory Standard</td><td>HBM3e</td><td>HBM4</td><td style="color:var(--gf-muted)">Next-Gen</td></tr>
+          <tr><td>Memory per GPU</td><td>192 GB</td><td>288 GB</td><td style="color:var(--gf-success)">+50%</td></tr>
+          <tr><td>NVLink Bidirectional</td><td>1,800 GB/s</td><td>3,600 GB/s</td><td style="color:var(--gf-success)">+100%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">💰 Rack-Level BOM Inflation: Blackwell vs. Vera Rubin</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem">As NVIDIA's sales mix shifts to rack-scale systems (NVL72), the supply chain is seeing unprecedented cost inflation. Per Morgan Stanley, the Blackwell NVL72 (GB300) rack cost of roughly $4,000,000 rises 95% to $7,800,000 for the Vera Rubin VR200 (NVL72) rack. The main driver is a 435% jump in HBM4 and LPDDR5X memory costs.</p>
+
+      <div class="chart-container">
+        <div class="chart-title">📦 Total BOM Cost per Rack</div>
+        <svg viewBox="0 0 640 114" width="100%" height="114" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="84" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="102" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$0M</text><line x1="287.5" y1="16" x2="287.5" y2="84" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="287.5" y="102" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$2M</text><line x1="385.0" y1="16" x2="385.0" y2="84" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="385.0" y="102" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$4M</text><line x1="482.5" y1="16" x2="482.5" y2="84" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="482.5" y="102" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$6M</text><line x1="580.0" y1="16" x2="580.0" y2="84" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="580.0" y="102" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$8M</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Blackwell NVL72 (GB300)</text><rect x="190" y="22.8" width="195.0" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="393.0" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$4.00M</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Vera Rubin NVL72 (VR200)</text><rect x="190" y="56.8" width="380.3" height="19.0" rx="4" fill="#f87171" opacity="0.88"/><text x="578.3" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$7.80M</text></svg>
+        <div class="chart-caption">Per-rack cost jumps 95% in a single generation — the main driver is a 435% spike in HBM4 and LPDDR5X memory costs.</div>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">🥧 VR200 (Oberon) Rack Cost Breakdown</div>
+        <div class="donut-chart">
+          <svg class="donut-svg" viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="chart"><circle cx="90" cy="90" r="70" fill="none" stroke="var(--gf-border)" stroke-width="20"/><circle cx="90" cy="90" r="70" fill="none" stroke="#38bdf8" stroke-width="20" stroke-dasharray="223.43 439.82" stroke-dashoffset="0.00" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #38bdf866)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#f87171" stroke-width="20" stroke-dasharray="112.59 439.82" stroke-dashoffset="-223.43" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #f8717166)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#4ade80" stroke-width="20" stroke-dasharray="10.12 439.82" stroke-dashoffset="-336.02" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #4ade8066)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#fbbf24" stroke-width="20" stroke-dasharray="6.60 439.82" stroke-dashoffset="-346.14" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #fbbf2466)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#64748b" stroke-width="20" stroke-dasharray="87.08 439.82" stroke-dashoffset="-352.74" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #64748b66)"/><text x="90" y="85" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="700" font-family="inherit">$7.8M</text><text x="90" y="102" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="inherit">Total BOM</text></svg>
+          <div class="donut-legend">
+            <div class="donut-legend-item"><div class="donut-legend-color" style="background:#38bdf8"></div><div><div class="donut-legend-label">GPUs (72 units)</div><div class="donut-legend-value">~$3.96M · 50.8%</div></div></div>
+            <div class="donut-legend-item"><div class="donut-legend-color" style="background:#f87171"></div><div><div class="donut-legend-label">HBM4 &amp; LPDDR5X Memory</div><div class="donut-legend-value">&gt;$2.00M · 25.6%</div></div></div>
+            <div class="donut-legend-item"><div class="donut-legend-color" style="background:#4ade80"></div><div><div class="donut-legend-label">Vera CPUs (36 units)</div><div class="donut-legend-value">$0.18M · 2.3%</div></div></div>
+            <div class="donut-legend-item"><div class="donut-legend-color" style="background:#fbbf24"></div><div><div class="donut-legend-label">PCB (Midplane)</div><div class="donut-legend-value">$0.117M · 1.5%</div></div></div>
+            <div class="donut-legend-item"><div class="donut-legend-color" style="background:#64748b"></div><div><div class="donut-legend-label">Other Infra (Power, Switch, Cooling)</div><div class="donut-legend-value">~$1.543M · 19.8%</div></div></div>
+          </div>
+        </div>
+        <div class="chart-caption">The GPU die accounts for half the cost, but HBM4/LPDDR5X memory alone has climbed to 25.6% — the fastest-growing line item.</div>
+      </div>
+
+      <div class="insight-box warn">
+        <strong>Gross Margin Compression:</strong> The rising HBM4 memory share (9% to 26%) is modeled to compress NVIDIA's FY2028 gross margin to 72.7%.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tab-pane" id="pane-sim">
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🧮 EPS × P/E Scenario Simulator</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:14px;color:var(--gf-muted);font-size:0.88rem">The source's EPS × P/E calculator has been re-computed here against its own three preset scenarios (Bear / Base / Bull) — giving real click-to-change behavior without any JS. The current share price is held fixed at $202.78 in every scenario, exactly as in the source.</p>
+
+      <input type="radio" class="toggle-input" name="nvdaScenario" id="scBear">
+      <input type="radio" class="toggle-input" name="nvdaScenario" id="scBase" checked>
+      <input type="radio" class="toggle-input" name="nvdaScenario" id="scBull">
+      <div class="toggle-row">
+        <label class="toggle-label" for="scBear">🐻 Bear Case</label>
+        <label class="toggle-label" for="scBase">📐 Base Case</label>
+        <label class="toggle-label" for="scBull">🐂 Bull Case</label>
+      </div>
+
+      <div class="scenario-result" id="sc-result-bear">
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-num">$120.00</div><div class="kpi-label">Target Share Price</div></div>
+          <div class="kpi"><div class="kpi-num" style="color:var(--gf-danger)">-40.8%</div><div class="kpi-label">Return Potential</div></div>
+          <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">0.45x</div><div class="kpi-label">PEG Ratio</div></div>
+        </div>
+        <div class="card-note">Assumptions: EPS $8.00 · P/E 15.0x · Growth 33%</div>
+      </div>
+      <div class="scenario-result" id="sc-result-base">
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-num">$249.50</div><div class="kpi-label">Target Share Price</div></div>
+          <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">+23.0%</div><div class="kpi-label">Return Potential</div></div>
+          <div class="kpi"><div class="kpi-num" style="color:var(--gf-accent)">0.30x</div><div class="kpi-label">PEG Ratio</div></div>
+        </div>
+        <div class="card-note">Assumptions: EPS $9.98 · P/E 25.0x · Growth 83% (source's default state)</div>
+      </div>
+      <div class="scenario-result" id="sc-result-bull">
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-num">$464.00</div><div class="kpi-label">Target Share Price</div></div>
+          <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">+128.8%</div><div class="kpi-label">Return Potential</div></div>
+          <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">0.22x</div><div class="kpi-label">PEG Ratio</div></div>
+        </div>
+        <div class="card-note">Assumptions: EPS $14.50 · P/E 32.0x · Growth 145%</div>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">📈 Base Case (EPS $9.98) — Target Price by P/E Multiple</div>
+        <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$0</text><line x1="54" y1="184.4" x2="620" y2="184.4" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="188.4" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$100</text><line x1="54" y1="148.7" x2="620" y2="148.7" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="152.7" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$200</text><line x1="54" y1="113.1" x2="620" y2="113.1" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="117.1" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$300</text><line x1="54" y1="77.5" x2="620" y2="77.5" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="81.5" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$400</text><line x1="54" y1="41.8" x2="620" y2="41.8" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="45.8" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$500</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="90.0" y="184.4" width="70" height="35.6" rx="4" fill="#38bdf8" opacity="1"/><text x="125.0" y="176.4" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$99.8</text><text x="125.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">10x</text><rect x="196.0" y="148.9" width="70" height="71.1" rx="4" fill="#38bdf8" opacity="1"/><text x="231.0" y="140.9" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$199.6</text><text x="231.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">20x</text><rect x="302.0" y="131.1" width="70" height="88.9" rx="4" fill="#38bdf8" opacity="1"/><text x="337.0" y="123.1" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$249.5</text><text x="337.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">25x</text><rect x="408.0" y="95.5" width="70" height="124.5" rx="4" fill="#38bdf8" opacity="1"/><text x="443.0" y="87.5" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$349.3</text><text x="443.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">35x</text><rect x="514.0" y="42.2" width="70" height="177.8" rx="4" fill="#38bdf8" opacity="1"/><text x="549.0" y="34.2" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$499.0</text><text x="549.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">50x</text></svg>
+        <div class="chart-caption">The consensus 25x multiple implies a $249.5 target (+23% potential); re-rating into the 35x–50x range opens a $349–499 band.</div>
+      </div>
+
+      <p style="font-size:0.78rem;color:var(--gf-muted);margin-top:10px;border-top:1px solid var(--gf-border-subtle);padding-top:10px">*The PEG ratio is computed as P/E ÷ Annual Growth Rate. AI leaders historically trading below a 1.00x PEG have signaled attractive valuation opportunities. This analysis is not investment advice — it presents mathematical scenarios only.</p>
+    </div>
+  </div>
+</section>
+
+<section class="tab-pane" id="pane-risk">
+  <div class="grid">
+    <div class="card">
+      <h3 style="font-size:1rem;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px"><span class="tag tag-red">ASIC Competition</span>Custom AI Silicon Threat</h3>
+      <p style="font-size:0.85rem;color:var(--gf-muted);margin-bottom:10px">To break NVIDIA's market dominance, large language model developers are building custom inference-focused chips (ASICs). The latest example: Chinese AI champion <strong style="color:var(--gf-text)">DeepSeek</strong> has launched an effort to design its own inference chip tailored to its models.</p>
+      <p style="font-size:0.85rem;color:var(--gf-muted);margin-bottom:10px">DeepSeek is targeting vertical integration with $7.4 billion raised from Tencent, CATL, and China's national fund. As AI operating costs shift from training to inference, cheap, low-power ASICs become attractive. Similar trends are visible at OpenAI (the "Jalapeno" chip), Anthropic (Samsung partnership), and Google (the TPU line).</p>
+      <div class="insight-box">
+        <strong>NVIDIA's Defense:</strong> ASIC development requires billions in budget and a minimum 3–5 year design cycle; Chinese firms are cut off from TSMC foundries and HBM memory supply by sanctions; NVIDIA's $119 billion in advance supply commitments corner global production capacity.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="font-size:1rem;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px"><span class="tag tag-blue">Silicon Photonics</span>CPO Bottleneck &amp; Marvell Partnership</h3>
+      <p style="font-size:0.85rem;color:var(--gf-muted);margin-bottom:10px">As AI systems scale out across data centers, the biggest bottleneck is moving electrical signals over data cabling (bandwidth and power loss). Co-Packaged Optics (CPO) offers the one structural fix.</p>
+      <p style="font-size:0.85rem;color:var(--gf-muted);margin-bottom:10px">Morgan Stanley's CPO supply-chain research finds the market's expectation of 100,000 CPO units shipped in 2026 is overly optimistic — real shipments will likely land around ~23,000 units. The core constraint is TSMC's photonic integrated circuit (PIC) capacity, just 500 units/month in 2025.</p>
+      <p style="font-size:0.85rem;color:var(--gf-muted)">To get past this optical bottleneck, NVIDIA made a $2 billion convertible preferred investment in <strong style="color:var(--gf-text)">Marvell Technology</strong> on March 31, 2026, and established the "NVLink Fusion" ecosystem, folding Marvell's Celestial AI (Photonic Fabric) patents into its own architecture; similar investments went to Coherent and Lumentum.</p>
+    </div>
+  </div>
+</section>
+
+<div class="insight-box" style="margin-top:8px">
+  <strong>Note:</strong> This piece is a theme-matched adaptation of the source's "NVIDIA Interactive Valuation Portal" analysis tool. Scenario-simulator and BOM breakdown figures were computed using the source's own stated formulas and default parameter values — this is not live market data.
+</div>
+<div class="insight-box" style="margin-top:10px">
+  <strong>Disclaimer:</strong> This report is for educational and informational purposes only. It is not investment advice. Do your own research and consult an independent financial advisor.
+</div>
+
+<div class="footer">Gistify Flow | July 12, 2026 | Compiled from the NVIDIA Interactive Valuation Portal source analysis</div>
+
+</div>
+</body>
+</html>

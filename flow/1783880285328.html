@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TSMC (TSM) Opsiyon Stratejileri Analiz Portalı</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="TSMC (TSM) Opsiyon Stratejileri Analiz Portalı" />
+<meta property="og:description" content="TSM opsiyon zincirinde %52-55 contango IV, 4 kurumsal strateji ve Black-Scholes senaryo simülatörü — Ayı/Baz/Boğa vaka analizi." />
+<meta property="og:url" content="https://gistify.pro/flow/1783880285328.html" />
+<meta property="og:image" content="https://gistify.pro/gistifylogo.png?v=20260712" />
+<meta property="og:site_name" content="Gistify" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="TSMC (TSM) Opsiyon Stratejileri Analiz Portalı" />
+<meta name="twitter:description" content="TSM opsiyon zincirinde %52-55 contango IV, 4 kurumsal strateji ve Black-Scholes senaryo simülatörü — Ayı/Baz/Boğa vaka analizi." />
+<meta name="twitter:image" content="https://gistify.pro/gistifylogo.png?v=20260712" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:760px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent)}
+.section-body{padding:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+td{font-variant-numeric:tabular-nums}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+.chart-container{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:20px;margin:16px 0}
+.chart-title{font-size:.9rem;font-weight:700;color:var(--gf-accent);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.chart-title::before{content:'';display:inline-block;width:4px;height:16px;background:var(--gf-accent);border-radius:2px}
+.chart-caption{font-size:.78rem;color:var(--gf-muted);margin-top:12px;border-top:1px solid var(--gf-border-subtle);padding-top:10px}
+.legend{display:flex;gap:16px;font-size:.75rem;color:var(--gf-muted);margin-top:10px;flex-wrap:wrap}
+.legend-dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:middle}
+.category-block{margin:14px 0}
+.category-label{font-size:.82rem;font-weight:600;color:var(--gf-text);margin-bottom:6px}
+.compare-bar{display:flex;align-items:center;gap:12px;margin:6px 0;font-size:.78rem}
+.compare-legend{width:150px;flex-shrink:0;color:var(--gf-muted);font-weight:600}
+.compare-track{flex:1;height:24px;background:var(--gf-elev);border-radius:6px;overflow:hidden;position:relative;border:1px solid var(--gf-border)}
+.compare-fill{height:100%;border-radius:6px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:.72rem;font-weight:700;color:#fff}
+.fill-accent{background:linear-gradient(90deg,#0ea5e9,#38bdf8)}
+.fill-muted{background:linear-gradient(90deg,#475569,#94a3b8)}
+.fill-success{background:linear-gradient(90deg,#16a34a,#4ade80)}
+.fill-danger{background:linear-gradient(90deg,#dc2626,#f87171)}
+.toggle-input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.toggle-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.toggle-label{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:8px;font-size:.78rem;font-weight:600;background:var(--gf-elev);border:1px solid var(--gf-border);color:var(--gf-muted);cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.tab-nav{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:6px;margin-bottom:20px}
+.tab-nav .toggle-label{flex:1;justify-content:center;padding:10px 12px;font-size:.75rem}
+.view-pane{display:none}
+.scenario-result{display:none}
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+#tabOzet:checked ~ .toggle-row label[for="tabOzet"],
+#tabDinamik:checked ~ .toggle-row label[for="tabDinamik"],
+#tabStrateji:checked ~ .toggle-row label[for="tabStrateji"],
+#tabRisk:checked ~ .toggle-row label[for="tabRisk"],
+#tabSim:checked ~ .toggle-row label[for="tabSim"],
+#scBear:checked ~ .toggle-row label[for="scBear"],
+#scBase:checked ~ .toggle-row label[for="scBase"],
+#scBull:checked ~ .toggle-row label[for="scBull"]{background:var(--gf-accent);color:#04121f;border-color:var(--gf-accent)}
+#tabOzet:checked ~ .tab-pane{display:none}
+#tabOzet:checked ~ #pane-ozet{display:block}
+#tabDinamik:checked ~ .tab-pane{display:none}
+#tabDinamik:checked ~ #pane-dinamik{display:block}
+#tabStrateji:checked ~ .tab-pane{display:none}
+#tabStrateji:checked ~ #pane-strateji{display:block}
+#tabRisk:checked ~ .tab-pane{display:none}
+#tabRisk:checked ~ #pane-risk{display:block}
+#tabSim:checked ~ .tab-pane{display:none}
+#tabSim:checked ~ #pane-sim{display:block}
+#scBear:checked ~ .scenario-result{display:none}
+#scBear:checked ~ #sc-result-bear{display:block}
+#scBase:checked ~ .scenario-result{display:none}
+#scBase:checked ~ #sc-result-base{display:block}
+#scBull:checked ~ .scenario-result{display:none}
+#scBull:checked ~ #sc-result-bull{display:block}
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid,.grid3{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+.compare-legend{width:96px;font-size:.72rem}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-12T21:49:00+03:00">
+  <h1 class="hero-h">TSMC (TSM) Opsiyon Stratejileri Analiz Portalı</h1>
+  <p class="hero-desc">TSM opsiyon zincirinde 2027–2028 vadeleri %52–55 bandında contango IV yapısı sergiliyor. Dört kurumsal opsiyon stratejisini, likidite riskini ve kaynağın kendi Black-Scholes senaryo simülatörünü (Ayı/Baz/Boğa) inceliyoruz.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info">📅 12 Temmuz 2026</span>
+    <span class="hero-ticker">$TSM</span>
+    <span class="meta-pill neu">Opsiyon Stratejileri</span>
+    <span class="meta-pill info">Black-Scholes Simülatörü</span>
+  </div>
+</div>
+
+<input type="radio" class="toggle-input" name="tsmTab" id="tabOzet" checked>
+<input type="radio" class="toggle-input" name="tsmTab" id="tabDinamik">
+<input type="radio" class="toggle-input" name="tsmTab" id="tabStrateji">
+<input type="radio" class="toggle-input" name="tsmTab" id="tabRisk">
+<input type="radio" class="toggle-input" name="tsmTab" id="tabSim">
+<div class="toggle-row tab-nav">
+  <label class="toggle-label" for="tabOzet">📋 Özet &amp; Makro</label>
+  <label class="toggle-label" for="tabDinamik">📊 Piyasa Dinamikleri</label>
+  <label class="toggle-label" for="tabStrateji">🎯 Stratejiler</label>
+  <label class="toggle-label" for="tabRisk">⚠️ Risk &amp; Senaryolar</label>
+  <label class="toggle-label" for="tabSim">🧮 Simülatör</label>
+</div>
+
+<section class="tab-pane" id="pane-ozet">
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-num" style="color:var(--gf-accent)">$435.80</div><div class="kpi-label">Mevcut Fiyat (ADR) — Güçlü Yükseliş</div></div>
+    <div class="kpi"><div class="kpi-num">$490.34</div><div class="kpi-label">Ort. Hedef (Tavan $700 / Taban $354)</div></div>
+    <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">%30+</div><div class="kpi-label">AI Gelir Büyümesi (CoWoS +%80)</div></div>
+    <div class="kpi"><div class="kpi-num" style="color:var(--gf-warning)">%52–55</div><div class="kpi-label">Zımni Oynaklık (Contango 2027–2028)</div></div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">📋 Yönetici Özeti ve Makroekonomik Zemin</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:10px;color:var(--gf-muted);font-size:0.88rem">TSMC'nin ADR hisse senetleri (NYSE: TSM) yaklaşık <strong style="color:var(--gf-text)">$434.11–$435.80</strong> seviyelerinde fiyatlanıyor. Şirketin yapay zeka gelirlerindeki <strong style="color:var(--gf-success)">%30'un üzerindeki</strong> büyüme oranı ve CoWoS kapasitesindeki <strong style="color:var(--gf-success)">%80'lik</strong> devasa artış projeksiyonları, hissenin temel analiz perspektifinden güçlü şekilde desteklendiğini gösteriyor.</p>
+      <p style="color:var(--gf-muted);font-size:0.88rem">Wall Street analistlerinin TSM için belirlediği 12 aylık ortalama hedef fiyat <strong style="color:var(--gf-accent)">$490.34</strong>, tavan fiyat <strong style="color:var(--gf-success)">$700</strong> ve taban fiyat ise <strong style="color:var(--gf-danger)">$354</strong> seviyesinde. Önceki analizlerde oluşan $3.800–$4.000 arasındaki gerçek dışı fiyat beklentilerinin, aslında Tayvan yerel borsasındaki (2330.TW) NT$ cinsinden hisse hedef fiyatı olduğu anlaşılmış ve tüm stratejiler Amerikan borsasındaki rasyonel hedefler ($490–$700 bandı) doğrultusunda yeniden kalibre edilmiştir.</p>
+
+      <div class="kpi-row" style="margin-top:14px">
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-danger)">1.61</div><div class="kpi-label">Put/Call Hacim Oranı</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-warning)">%52</div><div class="kpi-label">2027 IV Seviyesi</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-warning)">%55</div><div class="kpi-label">2028 IV Seviyesi</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">$677</div><div class="kpi-label">1σ Yukarı Hedef (2028)</div></div>
+      </div>
+      <div class="insight-box warn">
+        <strong>Not:</strong> Yüksek Put/Call oranı kurumsal fonların portföy koruma talebini işaret ediyor. Opsiyon primleri jeopolitik riskler nedeniyle yüksek seyrediyor.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tab-pane" id="pane-dinamik">
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">📊 Opsiyon Piyasası Dinamikleri</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:10px;color:var(--gf-muted);font-size:0.88rem">TSMC opsiyon zincirindeki zımni oynaklık (IV) seviyeleri, 2027 ve 2028 vadeleri için <strong style="color:var(--gf-warning)">%52 ile %55</strong> bandında "Contango" (yukarı eğimli) bir yapı sergiliyor. Piyasalar, 2028 yılına kadar maksimum bir standart sapma dahilinde hissenin en fazla <strong style="color:var(--gf-success)">$677</strong> seviyelerine ulaşabileceğini öngörüyor.</p>
+      <p style="color:var(--gf-muted);font-size:0.88rem">Jeopolitik riskler (Çin–Tayvan gerilimi) ve teknolojik belirsizlikler nedeniyle piyasa yapıcılar opsiyon primlerini yüksek tutuyor. Oynaklığın normalleşerek düşmesi (IV Crush) ihtimaline karşı yatırımcılar, salt (naked) alımlar yerine zaman değeri ve Vega riskini koruyan yayılma (spread) kurgularına odaklanmalı.</p>
+
+      <div class="chart-container">
+        <div class="chart-title">📈 Oynaklık Yapısı ve Vade Analizi</div>
+        <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">%45</text><line x1="54" y1="154.7" x2="620" y2="154.7" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="158.7" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">%50</text><line x1="54" y1="89.3" x2="620" y2="89.3" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="93.3" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">%55</text><line x1="54" y1="24.0" x2="620" y2="24.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="28.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">%60</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><path d="M 54.0,220 L 54.0,128.5 L 167.2,122.0 L 280.4,115.5 L 393.6,108.9 L 506.8,102.4 L 620.0,89.3 L 620.0,220 Z" fill="#fbbf24" opacity="0.12"/><polyline points="54.0,128.5 167.2,122.0 280.4,115.5 393.6,108.9 506.8,102.4 620.0,89.3" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="54.0" cy="128.5" r="4" fill="#fbbf24"/><text x="54.0" y="118.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#e2e8f0" font-family="inherit">%52.0</text><text x="54.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Mar 2027</text><circle cx="167.2" cy="122.0" r="4" fill="#fbbf24"/><text x="167.2" y="112.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#e2e8f0" font-family="inherit">%52.5</text><text x="167.2" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Haz 2027</text><circle cx="280.4" cy="115.5" r="4" fill="#fbbf24"/><text x="280.4" y="105.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#e2e8f0" font-family="inherit">%53.0</text><text x="280.4" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Eyl 2027</text><circle cx="393.6" cy="108.9" r="4" fill="#fbbf24"/><text x="393.6" y="98.9" text-anchor="middle" font-size="11.5" font-weight="700" fill="#e2e8f0" font-family="inherit">%53.5</text><text x="393.6" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Oca 2028</text><circle cx="506.8" cy="102.4" r="4" fill="#fbbf24"/><text x="506.8" y="92.4" text-anchor="middle" font-size="11.5" font-weight="700" fill="#e2e8f0" font-family="inherit">%54.0</text><text x="506.8" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Haz 2028</text><circle cx="620.0" cy="89.3" r="4" fill="#fbbf24"/><text x="620.0" y="79.3" text-anchor="middle" font-size="11.5" font-weight="700" fill="#e2e8f0" font-family="inherit">%55.0</text><text x="620.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Ara 2028</text></svg>
+        <div class="chart-caption">IV, 2027'den 2028'e doğru %52'den %55'e yükselen bir contango eğrisi çiziyor — piyasa, belirsizliğin vade uzadıkça arttığını fiyatlıyor.</div>
+      </div>
+
+      <div class="section-head" style="margin-top:16px">
+        <div class="section-head-inner">
+          <h3 class="section-title" style="font-size:0.95rem">📐 IV Yüzdelik Dilimleri ve Tarihsel Karşılaştırma</h3>
+        </div>
+        <div class="section-body">
+          <div class="kpi-row">
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-warning)">%55.0</div><div class="kpi-label">Mevcut IV (2028) — Yüksek Rejim</div></div>
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-accent)">%38.2</div><div class="kpi-label">Tarihsel 1 Yıllık IV Ort.</div></div>
+            <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">%82</div><div class="kpi-label">IV Yüzdelik Dilimi (Son 2 Yıl)</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tab-pane" id="pane-strateji">
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🎯 Yeniden Kalibre Edilmiş Kurumsal Stratejiler</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <table>
+        <thead><tr><th>Vade / Strateji</th><th>Mekanizma</th><th>Rasyonel ve Hedef</th><th style="text-align:right">Risk/Ödül</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>19 Mart 2027</strong><br><span style="color:var(--gf-accent);font-size:0.78rem">Boğa Alım Yayılması</span></td>
+            <td>430 Call Alımı &amp; 450 Call Satışı</td>
+            <td style="font-size:0.8rem">Yüksek zımni oynaklığı izole ederek hissenin $490 konsensüs hedefine doğru kademeli yükselişten faydalanır. Zaman ve oynaklık kaybı sınırlı.</td>
+            <td style="text-align:right"><span class="tag tag-green">SINIRLI</span></td>
+          </tr>
+          <tr>
+            <td><strong>21 Ocak 2028</strong><br><span style="color:var(--gf-warning);font-size:0.78rem">LEAPS (Uzun Vadeli Alım)</span></td>
+            <td>400 Call Alımı</td>
+            <td style="font-size:0.8rem">Yüksek prim nedeniyle başa baş noktası $522.90'a çıkıyor. Yalnızca hissenin $600–$700 bandına çıkacağı iyimser senaryolarda aktifleştirilmeli.</td>
+            <td style="text-align:right"><span class="tag tag-orange">YÜKSEK</span></td>
+          </tr>
+          <tr>
+            <td><strong>16 Haziran 2028</strong><br><span style="color:var(--gf-accent);font-size:0.78rem">Çapraz Yayılma (Diagonal)</span></td>
+            <td>2028 Vadeli 430 Call Alımı &amp; Kısa Vadeli OTM Call Satışları</td>
+            <td style="font-size:0.8rem">"Poor Man's Covered Call" olarak da bilinir — kısa bacaklardan düzenli prim tahsilatıyla uzun vadeli pozisyonun maliyetini zaman içinde nötralize eder.</td>
+            <td style="text-align:right"><span class="tag tag-blue">ORTA</span></td>
+          </tr>
+          <tr>
+            <td><strong>15 Aralık 2028</strong><br><span style="color:var(--gf-danger);font-size:0.78rem">Satım Orantılı Yayılması</span></td>
+            <td>ATM Put Satışı &amp; 2x OTM Put Alımı</td>
+            <td style="font-size:0.8rem">1.61'lik yüksek Put/Call oranı kurumsal koruma talebini kanıtlıyor. Hissenin $354 taban bandına düşmesi durumunda portföyü sigortalar.</td>
+            <td style="text-align:right"><span class="tag tag-red">KORUMA</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="chart-container">
+        <div class="chart-title">⚖️ Baz Senaryoda ($490.34 Hedef) Strateji Kâr/Zarar Karşılaştırması</div>
+        <div class="category-block">
+          <div class="compare-bar"><span class="compare-legend">Boğa Alım Yayılması</span><div class="compare-track"><div class="compare-fill fill-success" style="width:35.3%">+$11.50</div></div></div>
+          <div class="compare-bar"><span class="compare-legend">LEAPS (400 Call)</span><div class="compare-track"><div class="compare-fill fill-danger" style="width:100%">-$32.56</div></div></div>
+          <div class="compare-bar"><span class="compare-legend">Satım Orantılı Yay.</span><div class="compare-track"><div class="compare-fill fill-danger" style="width:15.4%">-$5.00</div></div></div>
+        </div>
+        <div class="chart-caption">Kaynaktaki payoff formülleriyle $490.34 baz hedefte hesaplanmıştır (çubuk uzunluğu |P&amp;L|'ye orantılıdır). Boğa/Ayı senaryolarındaki performans için aşağıdaki Risk &amp; Senaryolar sekmesine bakın — LEAPS yalnızca hisse $522.90 başa baş seviyesinin üzerine çıkarsa kâra geçer.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tab-pane" id="pane-risk">
+  <div class="grid">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <h3 style="font-size:1rem;font-weight:700">Kurumsal Risk Yönetimi</h3>
+        <span class="tag tag-red">KRİTİK</span>
+      </div>
+      <div class="insight-box danger">
+        <strong>Kritik Uyarı:</strong> Spekülatif veya yönlü opsiyon işlemlerinin portföy içindeki ağırlığı, finansal varyans kontrol mekanizmaları uyarınca toplam sermayenin <strong>%3 ile %5</strong> bandını hiçbir koşulda aşmamalı.
+      </div>
+      <p style="font-size:0.85rem;color:var(--gf-muted)">Aralık 2028 vadeli (~890 gün) kontratlar gibi çok uzun menzilli sözleşmelerde işlem hacimleri kuraklaşabiliyor. Düşük likidite nedeniyle piyasa emri yerine mutlaka orta nokta (mid-point) etrafında <strong style="color:var(--gf-accent)">limit emirleri</strong> kullanılmalı.</p>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <h3 style="font-size:1rem;font-weight:700">Likidite ve Spread Analizi</h3>
+        <span class="tag tag-blue">UZUN VADE</span>
+      </div>
+      <div class="chart-container" style="padding:14px;margin:0">
+        <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">0</text><line x1="54" y1="171.0" x2="620" y2="171.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="175.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">3.5K</text><line x1="54" y1="122.0" x2="620" y2="122.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="126.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">7K</text><line x1="54" y1="73.0" x2="620" y2="73.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="77.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">10.5K</text><line x1="54" y1="24.0" x2="620" y2="24.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="28.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">14K</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="74.9" y="45.0" width="70" height="175.0" rx="4" fill="#38bdf8" opacity="1"/><text x="109.9" y="37.0" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">12,500</text><text x="109.9" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Mar 2027</text><rect x="165.7" y="82.8" width="70" height="137.2" rx="4" fill="#38bdf8" opacity="1"/><text x="200.7" y="74.8" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">9,800</text><text x="200.7" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Haz 2027</text><rect x="256.6" y="119.2" width="70" height="100.8" rx="4" fill="#38bdf8" opacity="1"/><text x="291.6" y="111.2" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">7,200</text><text x="291.6" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Eyl 2027</text><rect x="347.4" y="157.0" width="70" height="63.0" rx="4" fill="#fbbf24" opacity="1"/><text x="382.4" y="149.0" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">4,500</text><text x="382.4" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Oca 2028</text><rect x="438.3" y="180.8" width="70" height="39.2" rx="4" fill="#fbbf24" opacity="1"/><text x="473.3" y="172.8" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">2,800</text><text x="473.3" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Haz 2028</text><rect x="529.1" y="203.2" width="70" height="16.8" rx="4" fill="#f87171" opacity="1"/><text x="564.1" y="195.2" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">1,200</text><text x="564.1" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Ara 2028</text></svg>
+        <div class="chart-caption">Ortalama günlük işlem hacmi Mart 2027'deki 12.500 kontrattan Aralık 2028'de 1.200'e geriliyor — vade uzadıkça likidite hızla kuruyor.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid" style="margin-top:14px">
+    <div class="card" style="border-left:3px solid var(--gf-success)">
+      <h4 style="font-weight:700;margin-bottom:6px">🐂 Boğa Senaryosu</h4>
+      <p style="font-size:0.8rem;color:var(--gf-muted)">Şirket hedefleri aşılır ve hisse <strong style="color:var(--gf-success)">$600–$700</strong> bandına yerleşirse, tüm alım yönlü yayılma stratejileri ve LEAPS kontratları maksimum kâr üretir.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--gf-accent)">
+      <h4 style="font-weight:700;margin-bottom:6px">📐 Yatay Pazar (Baz Senaryo)</h4>
+      <p style="font-size:0.8rem;color:var(--gf-muted)">Hisse uzun süre <strong style="color:var(--gf-accent)">$490</strong> analist konsensüsü civarında konsolide olur. Çıplak LEAPS pozisyonları başa baş noktasına ulaşamayıp zarar ederken, 430/450 Spread ve Diagonal Spread kurguları kârlı çıkar.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--gf-danger)">
+      <h4 style="font-weight:700;margin-bottom:6px">🐻 Ayı Piyasası / Şok</h4>
+      <p style="font-size:0.8rem;color:var(--gf-muted)">Piyasa dinamiklerinde bozulma yaşanır ve hisse fiyatı <strong style="color:var(--gf-danger)">$354</strong> taban bandına düşer. Uzun vadeli alım stratejileri kaybederken, Put Backspread defansif işlemi devreye girerek ana sermayeyi korur.</p>
+    </div>
+  </div>
+</section>
+
+<section class="tab-pane" id="pane-sim">
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🧮 Opsiyon Strateji Simülatörü</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:14px;color:var(--gf-muted);font-size:0.88rem">Kaynaktaki Black-Scholes hesap makinesi (430 Call, r=%4.25) kaynağın kendi üç hazır senaryosuna (Ayı/Baz/Boğa) göre burada yeniden hesaplandı — JS olmadan gerçek tıkla-değiştir davranışı sağlıyor.</p>
+
+      <input type="radio" class="toggle-input" name="tsmScenario" id="scBear">
+      <input type="radio" class="toggle-input" name="tsmScenario" id="scBase" checked>
+      <input type="radio" class="toggle-input" name="tsmScenario" id="scBull">
+      <div class="toggle-row">
+        <label class="toggle-label" for="scBear">🐻 Ayı</label>
+        <label class="toggle-label" for="scBase">📐 Baz</label>
+        <label class="toggle-label" for="scBull">🐂 Boğa</label>
+      </div>
+
+      <div class="scenario-result" id="sc-result-bear">
+        <div class="card-note" style="margin-bottom:8px">Varsayımlar: Hisse $354 · Hedef $354 · IV %70 · Vade 180 gün</div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-num">%0.0</div><div class="kpi-label">Beklenen Getiri</div></div>
+          <div class="kpi"><div class="kpi-num">$46.23</div><div class="kpi-label">Opsiyon Primi (Teorik)</div></div>
+          <div class="kpi"><div class="kpi-num" style="color:var(--gf-accent)">0.46</div><div class="kpi-label">Delta (Δ)</div></div>
+        </div>
+        <div class="grid3" style="margin-top:8px">
+          <div class="kpi"><div class="kpi-num" style="font-size:1rem;color:var(--gf-success)">0.0023</div><div class="kpi-label">Gamma (Γ)</div></div>
+          <div class="kpi"><div class="kpi-num" style="font-size:1rem;color:var(--gf-danger)">-0.21</div><div class="kpi-label">Theta (Θ)</div></div>
+          <div class="kpi"><div class="kpi-num" style="font-size:1rem;color:var(--gf-warning)">2.47</div><div class="kpi-label">Vega (ν)</div></div>
+          <div class="kpi"><div class="kpi-num" style="font-size:1rem;color:var(--gf-accent)">0.57</div><div class="kpi-label">Rho (ρ)</div></div>
+        </div>
+      </div>
+      <div class="scenario-result" id="sc-result-base">
+        <div class="card-note" style="margin-bottom:8px">Varsayımlar: Hisse $435.80 · Hedef $490.34 · IV %55 · Vade 890 gün (kaynağın varsayılan durumu)</div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">+%12.5</div><div class="kpi-label">Beklenen Getiri</div></div>
+          <div class="kpi"><div class="kpi-num">$162.11</div><div class="kpi-label">Opsiyon Primi (Teorik)</div></div>
+          <div class="kpi"><div class="kpi-num" style="color:var(--gf-accent)">0.71</div><div class="kpi-label">Delta (Δ)</div></div>
+        </div>
+        <div class="grid3" style="margin-top:8px">
+          <div class="kpi"><div class="kpi-num" style="font-size:1rem;color:var(--gf-success)">0.0009</div><div class="kpi-label">Gamma (Γ)</div></div>
+          <div class="kpi"><div class="kpi-num" style="font-size:1rem;color:var(--gf-danger)">-0.09</div><div class="kpi-label">Theta (Θ)</div></div>
+          <div class="kpi"><div class="kpi-num" style="font-size:1rem;color:var(--gf-warning)">5.80</div><div class="kpi-label">Vega (ν)</div></div>
+          <div class="kpi"><div class="kpi-num" style="font-size:1rem;color:var(--gf-accent)">3.64</div><div class="kpi-label">Rho (ρ)</div></div>
+        </div>
+      </div>
+      <div class="scenario-result" id="sc-result-bull">
+        <div class="card-note" style="margin-bottom:8px">Varsayımlar: Hisse $435.80 · Hedef $700 · IV %40 · Vade 365 gün</div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">+%60.6</div><div class="kpi-label">Beklenen Getiri</div></div>
+          <div class="kpi"><div class="kpi-num">$79.70</div><div class="kpi-label">Opsiyon Primi (Teorik)</div></div>
+          <div class="kpi"><div class="kpi-num" style="color:var(--gf-accent)">0.63</div><div class="kpi-label">Delta (Δ)</div></div>
+        </div>
+        <div class="grid3" style="margin-top:8px">
+          <div class="kpi"><div class="kpi-num" style="font-size:1rem;color:var(--gf-success)">0.0022</div><div class="kpi-label">Gamma (Γ)</div></div>
+          <div class="kpi"><div class="kpi-num" style="font-size:1rem;color:var(--gf-danger)">-0.11</div><div class="kpi-label">Theta (Θ)</div></div>
+          <div class="kpi"><div class="kpi-num" style="font-size:1rem;color:var(--gf-warning)">4.11</div><div class="kpi-label">Vega (ν)</div></div>
+          <div class="kpi"><div class="kpi-num" style="font-size:1rem;color:var(--gf-accent)">1.96</div><div class="kpi-label">Rho (ρ)</div></div>
+        </div>
+      </div>
+
+      <p style="font-size:0.78rem;color:var(--gf-muted);margin-top:14px;border-top:1px solid var(--gf-border-subtle);padding-top:10px">*Teorik opsiyon fiyatlaması Black-Scholes modeli (430 Call, risksiz oran %4.25) ile hesaplanmıştır. Gerçek piyasa fiyatları farklılık gösterebilir. Bu analiz bir yatırım tavsiyesi içermemektedir.</p>
+    </div>
+  </div>
+</section>
+
+<div class="insight-box" style="margin-top:8px">
+  <strong>Not:</strong> Bu yazı, kaynaktaki "TSMC Opsiyon Portalı" adlı interaktif analiz aracının tema uyumlu bir uyarlamasıdır. Simülatör ve strateji kâr/zarar rakamları kaynağın kendi Black-Scholes formülü ve hazır senaryo parametreleriyle yeniden hesaplanmıştır — gerçek zamanlı piyasa verisi değildir.
+</div>
+<div class="insight-box" style="margin-top:10px">
+  <strong>Uyarı:</strong> Bu rapor eğitim ve bilgilendirme amaçlıdır. Yatırım tavsiyesi değildir. Kendi araştırmanızı yapın ve bağımsız bir finansal danışmana başvurun.
+</div>
+
+<div class="footer">Gistify Flow | 12 Temmuz 2026 | TSMC Opsiyon Stratejileri Portalı kaynak analizinden derlenmiştir</div>
+
+</div>
+</body>
+</html>

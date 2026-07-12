@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Infrastructure Investment Interactive Analysis Portal</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="AI Infrastructure Investment Interactive Analysis Portal" />
+<meta property="og:description" content="The real unit economics of a 1 GW AI data center: the $50.5B capex needs $22B in annual revenue to clear its cost of capital, plus the GPU/token pricing market." />
+<meta property="og:url" content="https://gistify.pro/flow/yapay_zeka_altyap_yat_r_mlar_i_nteraktif_analiz_portal.en.html" />
+<meta property="og:image" content="https://gistify.pro/gistifylogo.png?v=20260712" />
+<meta property="og:site_name" content="Gistify" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="AI Infrastructure Investment Interactive Analysis Portal" />
+<meta name="twitter:description" content="The real unit economics of a 1 GW AI data center: the $50.5B capex needs $22B in annual revenue to clear its cost of capital, plus the GPU/token pricing market." />
+<meta name="twitter:image" content="https://gistify.pro/gistifylogo.png?v=20260712" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:760px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent)}
+.section-body{padding:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+td{font-variant-numeric:tabular-nums}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+.chart-container{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:20px;margin:16px 0}
+.chart-title{font-size:.9rem;font-weight:700;color:var(--gf-accent);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.chart-title::before{content:'';display:inline-block;width:4px;height:16px;background:var(--gf-accent);border-radius:2px}
+.chart-caption{font-size:.78rem;color:var(--gf-muted);margin-top:12px;border-top:1px solid var(--gf-border-subtle);padding-top:10px}
+.legend{display:flex;gap:16px;font-size:.75rem;color:var(--gf-muted);margin-top:10px;flex-wrap:wrap}
+.legend-dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:middle}
+.toggle-input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.toggle-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.toggle-label{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:8px;font-size:.78rem;font-weight:600;background:var(--gf-elev);border:1px solid var(--gf-border);color:var(--gf-muted);cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.tab-nav{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:6px;margin-bottom:20px}
+.tab-nav .toggle-label{flex:1;justify-content:center;padding:10px 12px;font-size:.75rem}
+.view-pane{display:none}
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+#tabOverview:checked ~ .toggle-row label[for="tabOverview"],
+#tabSim:checked ~ .toggle-row label[for="tabSim"],
+#tabContracts:checked ~ .toggle-row label[for="tabContracts"],
+#tabMarket:checked ~ .toggle-row label[for="tabMarket"],
+#tabScenarios:checked ~ .toggle-row label[for="tabScenarios"]{background:var(--gf-accent);color:#04121f;border-color:var(--gf-accent)}
+#tabOverview:checked ~ .tab-pane{display:none}
+#tabOverview:checked ~ #pane-overview{display:block}
+#tabSim:checked ~ .tab-pane{display:none}
+#tabSim:checked ~ #pane-sim{display:block}
+#tabContracts:checked ~ .tab-pane{display:none}
+#tabContracts:checked ~ #pane-contracts{display:block}
+#tabMarket:checked ~ .tab-pane{display:none}
+#tabMarket:checked ~ #pane-market{display:block}
+#tabScenarios:checked ~ .tab-pane{display:none}
+#tabScenarios:checked ~ #pane-scenarios{display:block}
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid,.grid3{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-12T21:39:00+03:00">
+  <h1 class="hero-h">AI Infrastructure Investment Interactive Analysis Portal</h1>
+  <p class="hero-desc">A 1 GW-scale "frontier" AI data center costs roughly $50.5 billion to build — and needs at least $22 billion in revenue every year just to clear a 10% cost of capital. We walk through GW unit economics, the biggest infrastructure contracts, and the GPU/token pricing market.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info">📅 July 12, 2026</span>
+    <span class="meta-pill neu">Sector Analysis</span>
+    <span class="meta-pill info">GW Unit Economics</span>
+    <span class="meta-pill bull">ROI &amp; WACC</span>
+  </div>
+</div>
+
+<input type="radio" class="toggle-input" name="aiTab" id="tabOverview" checked>
+<input type="radio" class="toggle-input" name="aiTab" id="tabSim">
+<input type="radio" class="toggle-input" name="aiTab" id="tabContracts">
+<input type="radio" class="toggle-input" name="aiTab" id="tabMarket">
+<input type="radio" class="toggle-input" name="aiTab" id="tabScenarios">
+<div class="toggle-row tab-nav">
+  <label class="toggle-label" for="tabOverview">📋 Overview</label>
+  <label class="toggle-label" for="tabSim">🧮 GW Unit Economics</label>
+  <label class="toggle-label" for="tabContracts">📄 Contracts</label>
+  <label class="toggle-label" for="tabMarket">💾 GPU &amp; Tokens</label>
+  <label class="toggle-label" for="tabScenarios">⚖️ Bull/Bear</label>
+</div>
+
+<section class="tab-pane" id="pane-overview">
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-num" style="color:var(--gf-accent)">$110B</div><div class="kpi-label">Trailing 12-Month Sector Revenue</div></div>
+    <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">$175B</div><div class="kpi-label">Annual Run Rate</div></div>
+    <div class="kpi"><div class="kpi-num" style="color:var(--gf-warning)">5.5 Years</div><div class="kpi-label">Frontier Chip Economic Life</div></div>
+    <div class="kpi"><div class="kpi-num">$22B</div><div class="kpi-label">Baseline GW Break-Even Revenue (Annual)</div></div>
+  </div>
+
+  <div class="grid" style="grid-template-columns:2fr 1fr">
+    <div>
+      <div class="section-head">
+        <div class="section-head-inner">
+          <h2 class="section-title">💵 The Core Financial Problem in AI Investment</h2>
+          <div class="icon">▾</div>
+        </div>
+        <div class="section-body">
+          <p style="margin-bottom:10px;color:var(--gf-muted);font-size:0.88rem">Big Tech and hyperscaler AI capital expenditure has reached an annualized <strong style="color:var(--gf-text)">$750 billion</strong> run rate as of 2026. The industry's common "$1.5 trillion question" framing tries to justify this spending through linear payback logic, but the real investor question should be whether <strong style="color:var(--gf-accent)">return on capital clears the weighted average cost of capital (WACC)</strong>.</p>
+          <p style="color:var(--gf-muted);font-size:0.88rem">At the micro level, building a top-tier "frontier facility" AI data center at <strong style="color:var(--gf-text)">1 GW</strong> scale costs roughly <strong style="color:var(--gf-text)">$50.5 billion</strong>. Under a financial-equivalence model targeting a 10% WACC and a 50% pre-D&amp;A operating margin, that facility must generate at least <strong style="color:var(--gf-success)">$22 billion</strong> in annual revenue to deliver its investors the return they were promised.</p>
+
+          <div class="chart-container">
+            <div class="chart-title">📦 1-GW Facility Bill of Materials — Named Line Items</div>
+            <svg viewBox="0 0 640 182" width="100%" height="182" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$0B</text><line x1="287.5" y1="16" x2="287.5" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="287.5" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$4B</text><line x1="385.0" y1="16" x2="385.0" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="385.0" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$8B</text><line x1="482.5" y1="16" x2="482.5" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="482.5" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$12B</text><line x1="580.0" y1="16" x2="580.0" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="580.0" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$16B</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Accelerators & Chips</text><rect x="190" y="22.8" width="341.3" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="539.3" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$14.0B</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">HBM Memory & Storage</text><rect x="190" y="56.8" width="182.8" height="19.0" rx="4" fill="#f87171" opacity="0.88"/><text x="380.8" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$7.5B</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Networking</text><rect x="190" y="90.8" width="146.3" height="19.0" rx="4" fill="#fbbf24" opacity="0.88"/><text x="344.3" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$6.0B</text><text x="178" y="138.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Power / Grid</text><rect x="190" y="124.8" width="146.3" height="19.0" rx="4" fill="#fbbf24" opacity="0.88"/><text x="344.3" y="138.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$6.0B</text></svg>
+            <div class="chart-caption">These 4 named categories make up $33.5B of the $50.5B total capex (66%); the remainder isn't itemized in the source — likely covering construction, grid interconnection, and labor.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom:14px">
+        <h4 style="font-weight:700;margin-bottom:10px;font-size:0.9rem">📌 Key Sector Developments</h4>
+        <ul style="list-style:none;font-size:0.8rem;color:var(--gf-muted)">
+          <li style="margin-bottom:10px"><strong style="color:var(--gf-success)">✔ SpaceX – Anthropic:</strong> A $15B/year lease was signed for 300 MW of capacity via Colossus 1.</li>
+          <li style="margin-bottom:10px"><strong style="color:var(--gf-accent)">★ TeraWulf Lease:</strong> A 20-year, $19B contract for 401 MW of critical-load capacity at a former smelter site in Kentucky was completed.</li>
+          <li><strong style="color:var(--gf-warning)">⚠ Depreciation Pressure:</strong> As of Q1 2026, 68% of global AI revenue volume goes purely to hardware depreciation expense.</li>
+        </ul>
+      </div>
+      <div class="insight-box">
+        <strong>Simulator Feature:</strong> The "GW Unit Economics" tab lets you test facility unit economics against WACC, tax rate, hardware life, and build-budget assumptions.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tab-pane" id="pane-sim">
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🧮 GW Unit Economics — Financial Equivalence Model</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:14px;color:var(--gf-muted);font-size:0.88rem">The source's 7-parameter financial-equivalence calculator (capex, WACC, IT/physical life, margin, tax) has been re-computed here against its own default baseline scenario. In the source file these assumptions were adjustable via interactive sliders; shown here is the result computed at the source's own baseline values.</p>
+
+      <div class="grid3" style="margin-bottom:16px">
+        <div class="kpi"><div class="kpi-num" style="font-size:1rem">$50.5B</div><div class="kpi-label">Total GW CapEx</div></div>
+        <div class="kpi"><div class="kpi-num" style="font-size:1rem">10%</div><div class="kpi-label">WACC</div></div>
+        <div class="kpi"><div class="kpi-num" style="font-size:1rem">65%</div><div class="kpi-label">IT Hardware Share</div></div>
+        <div class="kpi"><div class="kpi-num" style="font-size:1rem">5.5 Years</div><div class="kpi-label">IT Hardware Life</div></div>
+        <div class="kpi"><div class="kpi-num" style="font-size:1rem">20 Years</div><div class="kpi-label">Physical Infra Life</div></div>
+        <div class="kpi"><div class="kpi-num" style="font-size:1rem">50%</div><div class="kpi-label">Operating Margin (Pre-D&amp;A)</div></div>
+        <div class="kpi"><div class="kpi-num" style="font-size:1rem">21%</div><div class="kpi-label">Corporate Tax Rate</div></div>
+      </div>
+
+      <div class="grid">
+        <div class="card"><div class="card-label">Computed IT Share Cost</div><div class="card-value">$32.8B</div></div>
+        <div class="card"><div class="card-label">Physical Infrastructure Cost</div><div class="card-value">$17.7B</div></div>
+        <div class="card"><div class="card-label">Annual Depreciation</div><div class="card-value neu">$6.85B/yr</div></div>
+        <div class="card"><div class="card-label">Required After-Tax Cash Flow</div><div class="card-value up">$10.10B/yr</div></div>
+      </div>
+
+      <div class="insight-box bull" style="margin-top:14px">
+        <strong>Annual Minimum GW Revenue Target:</strong> Given these parameters, the annual revenue required to clear a 10% WACC return is <strong>$22.0B / GW</strong>. Scaled to a 15 GW global infrastructure cohort, that implies <strong>$330.0B</strong> in required annual revenue.
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">📊 Cost &amp; Revenue Breakdown (Baseline Scenario)</div>
+        <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$0B</text><line x1="54" y1="171.0" x2="620" y2="171.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="175.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$9B</text><line x1="54" y1="122.0" x2="620" y2="122.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="126.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$18B</text><line x1="54" y1="73.0" x2="620" y2="73.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="77.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$27B</text><line x1="54" y1="24.0" x2="620" y2="24.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="28.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$36B</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="111.2" y="41.4" width="70" height="178.6" rx="4" fill="#38bdf8" opacity="1"/><text x="146.2" y="33.4" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$32.8B</text><text x="146.2" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">IT Hardware</text><rect x="238.4" y="123.6" width="70" height="96.4" rx="4" fill="#38bdf8" opacity="1"/><text x="273.4" y="115.6" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$17.7B</text><text x="273.4" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Physical Infra</text><rect x="365.6" y="182.7" width="70" height="37.3" rx="4" fill="#fbbf24" opacity="1"/><text x="400.6" y="174.7" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$6.85B</text><text x="400.6" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Annual Depr.</text><rect x="492.8" y="100.2" width="70" height="119.8" rx="4" fill="#4ade80" opacity="1"/><text x="527.8" y="92.2" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$22.0B</text><text x="527.8" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Required Rev.</text></svg>
+        <div class="chart-caption">Required annual revenue ($22.0B) is more than 3x annual depreciation (~$6.85B) — the facility must clear not just depreciation but a full 10% WACC return.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tab-pane" id="pane-contracts">
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">📄 AI Compute Pricing Stack (Revenue per MW)</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem">Annualized implied MW revenue generation ($M / MW) by contract type and data-center tier:</p>
+      <div class="chart-container" style="margin:0 0 16px">
+        <svg viewBox="0 0 640 148" width="100%" height="148" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="118" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="136" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$0M</text><line x1="367.3" y1="16" x2="367.3" y2="118" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="367.3" y="136" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$25M</text><line x1="544.5" y1="16" x2="544.5" y2="118" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="544.5" y="136" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$50M</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Turnkey IT Power (Colossus)</text><rect x="190" y="22.8" width="354.5" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="552.5" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$50M/MW</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Land & Power (TeraWulf)</text><rect x="190" y="56.8" width="336.1" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="534.1" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$47.4M/MW</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Standard Leasing</text><rect x="190" y="90.8" width="177.3" height="19.0" rx="4" fill="#fbbf24" opacity="0.88"/><text x="375.3" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$25M/MW</text></svg>
+        <div class="chart-caption">Turnkey IT-power leases (Colossus-type) generate ~6% more revenue per MW than land+power leases, and roughly 2x more than standard leasing.</div>
+      </div>
+
+      <h3 style="font-size:0.95rem;font-weight:700;margin-bottom:10px">Major Infrastructure Contracts</h3>
+      <div class="grid">
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span class="tag tag-blue">Turnkey IT Power</span>
+            <span style="font-size:0.72rem;color:var(--gf-muted)">May 2026</span>
+          </div>
+          <h4 style="font-weight:700;margin-bottom:6px">SpaceX Colossus 1 / Anthropic</h4>
+          <p style="font-size:0.78rem;color:var(--gf-muted);margin-bottom:10px">Anthropic leased the entire capacity of SpaceX's 300 MW Colossus 1 data center.</p>
+          <div class="grid3">
+            <div><div class="card-label" style="margin-bottom:2px">Capacity</div><strong style="font-size:0.85rem">300 MW</strong></div>
+            <div><div class="card-label" style="margin-bottom:2px">Annual Payment</div><strong style="font-size:0.85rem;color:var(--gf-success)">$15B</strong></div>
+            <div><div class="card-label" style="margin-bottom:2px">Termination</div><strong style="font-size:0.85rem;color:var(--gf-warning)">90 Days</strong></div>
+          </div>
+        </div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span class="tag tag-green">Land &amp; Power Lease</span>
+            <span style="font-size:0.72rem;color:var(--gf-muted)">July 2026</span>
+          </div>
+          <h4 style="font-weight:700;margin-bottom:6px">TeraWulf Justified Data / Anthropic</h4>
+          <p style="font-size:0.78rem;color:var(--gf-muted);margin-bottom:10px">A 20-year shell-and-grid lease at a former aluminum smelter site in Kentucky.</p>
+          <div class="grid3">
+            <div><div class="card-label" style="margin-bottom:2px">Capacity</div><strong style="font-size:0.85rem">401 MW (IT)</strong></div>
+            <div><div class="card-label" style="margin-bottom:2px">Total Contract</div><strong style="font-size:0.85rem;color:var(--gf-success)">$19B</strong></div>
+            <div><div class="card-label" style="margin-bottom:2px">Term</div><strong style="font-size:0.85rem;color:var(--gf-accent)">20 Years</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tab-pane" id="pane-market">
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">💾 July 2026 Spot GPU Rental Indices</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <table>
+        <thead><tr><th>GPU Product</th><th>Hourly Index ($/GPU-hr)</th><th>Availability</th></tr></thead>
+        <tbody>
+          <tr><td>Silicon Data B200 SXM6 (On-Demand)</td><td style="color:var(--gf-success);font-weight:700">$5.81</td><td style="color:var(--gf-danger)">Zero Spot Supply (Severely Constrained)</td></tr>
+          <tr><td>Compute Desk Blackwell US Index</td><td style="color:var(--gf-success);font-weight:700">$5.08</td><td style="color:var(--gf-warning)">Limited Reservation</td></tr>
+          <tr><td>Compute Desk Hopper US Index</td><td style="font-weight:700">$2.74</td><td style="color:var(--gf-success)">High-Volume, Liquid</td></tr>
+          <tr><td>Silicon Data H100 Index</td><td style="font-weight:700">$2.67</td><td style="color:var(--gf-success)">Fully Liquid / Stable</td></tr>
+          <tr><td>Silicon Data A100 Index</td><td style="color:var(--gf-muted);font-weight:700">$1.65</td><td style="color:var(--gf-success)">Oversupplied / Cheap</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🔤 Model Token Pricing Power</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Frontier Closed-Source Models</div>
+          <div class="card-value up">$1.62 <span style="font-size:0.7rem;font-weight:500;color:var(--gf-muted)">/ million tokens</span></div>
+          <div class="card-note">Up from $1.07 in January 2026 — driven by reasoning and advanced agentic architectures.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Standard / Open-Source Tier</div>
+          <div class="card-value down">$0.18 <span style="font-size:0.7rem;font-weight:500;color:var(--gf-muted)">/ million tokens</span></div>
+          <div class="card-note">Down from $0.22 in January 2026 — intense commodity competition is compressing prices.</div>
+        </div>
+      </div>
+      <div class="insight-box" style="margin-top:12px">
+        <strong>Sector Pricing Spread:</strong> A roughly 9x frontier-model premium — the price gap between frontier and commodity-class models keeps widening.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tab-pane" id="pane-scenarios">
+  <div class="grid">
+    <div class="card" style="border-left:3px solid var(--gf-success)">
+      <h3 style="font-weight:700;margin-bottom:4px">🐂 The Bull Case</h3>
+      <p style="font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px">The path where trillion-dollar investments clear their financial cost of capital</p>
+      <div class="card" style="margin-bottom:8px"><strong style="font-size:0.85rem">1. Agentic &amp; Reasoning Demand:</strong> <span style="font-size:0.8rem;color:var(--gf-muted)">As reasoning-based models mature, token consumption per transaction rises, multiplying revenue volume even as unit price falls.</span></div>
+      <div class="card" style="margin-bottom:8px"><strong style="font-size:0.85rem">2. Inference Dominance:</strong> <span style="font-size:0.8rem;color:var(--gf-muted)">Off-the-shelf inference-traffic revenue overtakes costly training spend, expanding margins.</span></div>
+      <div class="card"><strong style="font-size:0.85rem">3. Physical Infrastructure Flexibility:</strong> <span style="font-size:0.8rem;color:var(--gf-muted)">20-year power/EPC/shell investments successfully host 2–3 shifting chip generations.</span></div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--gf-danger)">
+      <h3 style="font-weight:700;margin-bottom:4px">🐻 The Bear Case</h3>
+      <p style="font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px">Write-down / "capital burn cycle" risks in infrastructure investment</p>
+      <div class="card" style="margin-bottom:8px"><strong style="font-size:0.85rem">1. Scarcity-Pricing Normalization:</strong> <span style="font-size:0.8rem;color:var(--gf-muted)">Large-scale chip supply hitting the market collapses spot GPU rental prices.</span></div>
+      <div class="card" style="margin-bottom:8px"><strong style="font-size:0.85rem">2. Rapid Chip Obsolescence:</strong> <span style="font-size:0.8rem;color:var(--gf-muted)">The pace of tech generations shortens hardware economic life below 5.5 years, increasing depreciation pressure.</span></div>
+      <div class="card"><strong style="font-size:0.85rem">3. Cohort Stacking:</strong> <span style="font-size:0.8rem;color:var(--gf-muted)">$750B in new infrastructure is added every year while global GenAI revenue growth fails to keep pace with a 74% annual threshold.</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="insight-box" style="margin-top:8px">
+  <strong>Note:</strong> This piece is a theme-matched adaptation of the source's "AI Infrastructure Analysis Portal" interactive ROI/unit-economics simulator. GW unit-economics results were computed using the source's own financial-equivalence formula and default parameters.
+</div>
+<div class="insight-box" style="margin-top:10px">
+  <strong>Disclaimer:</strong> This report is for educational and informational purposes only. It is not investment advice. Do your own research and consult an independent financial advisor.
+</div>
+
+<div class="footer">Gistify Flow | July 12, 2026 | Compiled from the AI Infrastructure Analysis Portal source analysis</div>
+
+</div>
+</body>
+</html>
