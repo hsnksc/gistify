@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMD vs NVIDIA: Financial Performance & Valuation Analysis | $AMD $NVDA</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="AMD vs NVIDIA: Financial Performance & Valuation Analysis | $AMD $NVDA" />
+<meta property="og:description" content="Revenue scale, margin comparison, per-employee efficiency, and a theoretical valuation simulation of NVIDIA priced at AMD's $755 target multiples." />
+<meta property="og:site_name" content="Gistify" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:760px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:2px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.section-num{font-family:var(--gf-mono);font-size:.72rem;font-weight:700;color:var(--gf-accent);opacity:.8}
+.section-body{padding:18px}
+.subhead{font-size:.92rem;font-weight:600;color:var(--gf-text);margin:18px 0 10px}
+.subhead:first-child{margin-top:0}
+p{color:var(--gf-muted);font-size:.88rem;margin-bottom:12px}
+p:last-child{margin-bottom:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.text-right{text-align:right}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem;color:var(--gf-text)}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+.chart-card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px 18px;margin:14px 0}
+.chart-title{font-size:.82rem;font-weight:700;color:var(--gf-text);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.chart-caption{font-size:.78rem;color:var(--gf-muted);margin-top:10px;padding-top:10px;border-top:1px solid var(--gf-border-subtle)}
+.chart-caption strong{color:var(--gf-text)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:.74rem;color:var(--gf-muted);margin-top:8px}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{width:9px;height:9px;border-radius:2px;display:inline-block}
+.disclaimer{background:rgba(251,191,36,.04);border:1px solid var(--gf-border);border-left:3px solid var(--gf-warning);border-radius:var(--gf-radius);padding:16px 18px;font-size:.82rem;color:var(--gf-muted);line-height:1.7;margin:18px 0}
+.disclaimer strong{color:var(--gf-text)}
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+ul,ol{margin:10px 0 10px 20px;color:var(--gf-muted);font-size:.86rem}
+li{margin-bottom:5px}
+.tags-line{text-align:center;font-size:.78rem;color:var(--gf-muted);margin-top:8px}
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid,.grid2,.grid3{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-13T13:00:00+03:00">
+  <h1 class="hero-h">AMD vs NVIDIA: Financial Performance & Valuation Analysis</h1>
+  <p class="hero-desc">The AI revolution has pushed AMD and NVIDIA to the epicenter of the global economy. Phillip Securities' <strong>$755 price target</strong> for AMD reflects a bet not just on GPU power, but on CPU-GPU orchestration in the "Agentic AI" era. This report examines NVIDIA's current financial dominance and AMD's potential to challenge it, through the numbers.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info hero-date" data-timestamp="2026-07-13T13:00:00+03:00">📅 July 13, 2026</span>
+    <span class="hero-ticker">$AMD</span>
+    <span class="hero-ticker">$NVDA</span>
+    <span class="meta-pill info">Financial Comparison</span>
+    <span class="meta-pill neu">Theoretical Valuation</span>
+  </div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-num">$81.6B</div><div class="kpi-label">NVDA Quarterly Revenue (+85% YoY)</div></div>
+  <div class="kpi"><div class="kpi-num">$10.3B</div><div class="kpi-label">AMD Quarterly Revenue (+38% YoY)</div></div>
+  <div class="kpi"><div class="kpi-num">75.0%</div><div class="kpi-label">NVDA Gross Margin</div></div>
+  <div class="kpi"><div class="kpi-num">55.0%</div><div class="kpi-label">AMD Gross Margin</div></div>
+  <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">$755</div><div class="kpi-label">AMD Price Target (Phillip Securities)</div></div>
+  <div class="kpi"><div class="kpi-num">~8x</div><div class="kpi-label">NVDA / AMD Revenue Ratio</div></div>
+</div>
+
+<!-- SECTION 1 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">01</span> A Clash of Giants in Semiconductors</h2>
+  </div>
+  <div class="section-body">
+    <p>AMD and NVIDIA have become the two central players in the AI infrastructure race, moving to the financial core of the sector. NVIDIA is generating record profitability off its de facto monopoly in data center GPUs, while AMD is trying to win share by building an integrated CPU+GPU offering aimed at the "Agentic AI" era.</p>
+    <div class="insight-box"><strong>Thesis:</strong> Phillip Securities' $755 price target for AMD isn't just a bet on GPU competition — it assumes CPU-GPU orchestration will play a central role in future AI workloads. This report walks through the financial gaps behind that thesis — revenue scale, margins, efficiency, and valuation — one by one.</div>
+  </div>
+</section>
+
+<!-- SECTION 2 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">02</span> Revenue Scale & Data Center Dominance</h2>
+  </div>
+  <div class="section-body">
+    <p>The absolute scale gap between NVIDIA and AMD is most pronounced in the data center segment. NVIDIA's total revenue is roughly <strong>8x</strong> AMD's, and in data center specifically that gap widens to <strong>13x</strong>. That's evidence NVIDIA is no longer just a chipmaker — it's a fully integrated AI infrastructure provider.</p>
+    <div class="chart-card">
+      <div class="chart-title">📊 Revenue Comparison — Total vs. Data Center</div>
+      <svg viewBox="0 0 640 182" width="100%" height="182" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$0B</text><line x1="276.7" y1="16" x2="276.7" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="276.7" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$20B</text><line x1="363.3" y1="16" x2="363.3" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="363.3" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$40B</text><line x1="450.0" y1="16" x2="450.0" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="450.0" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$60B</text><line x1="536.7" y1="16" x2="536.7" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="536.7" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$80B</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">NVDA Total Revenue</text><rect x="190" y="22.8" width="353.7" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="551.7" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$81.6B</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">AMD Total Revenue</text><rect x="190" y="56.8" width="44.4" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="242.4" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$10.3B</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">NVDA Data Center Revenue</text><rect x="190" y="90.8" width="325.9" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="523.9" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$75.2B</text><text x="178" y="138.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">AMD Data Center Revenue</text><rect x="190" y="124.8" width="25.1" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="223.1" y="138.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$5.8B</text></svg>
+      <div class="legend">
+        <span><i style="background:var(--gf-accent)"></i> NVIDIA (Q1 FY2027)</span>
+        <span><i style="background:var(--gf-success)"></i> AMD (Q1 2026)</span>
+      </div>
+      <div class="chart-caption">NVIDIA's total revenue is <strong>~8x</strong> AMD's, widening to <strong>~13x</strong> in data center revenue.</div>
+    </div>
+    <div class="grid" style="margin-top:14px">
+      <div class="card">
+        <div class="card-label">✦ NVIDIA's Momentum</div>
+        <p style="margin-bottom:0">Data center revenue grew <strong>92%</strong> YoY to $75.2 billion. <strong>92%</strong> of total revenue now comes from a single segment.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">✦ AMD's Diversification</div>
+        <p style="margin-bottom:0">AMD posted <strong>57%</strong> data center growth while offering a more balanced revenue mix across client, gaming, and embedded systems.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">03</span> Profitability & Margin Comparison</h2>
+  </div>
+  <div class="section-body">
+    <p>Gross margin is a proxy for a company's pricing power. NVIDIA's <strong>75%</strong> margin is a monopolistic level of profitability rarely seen in tech history. AMD's <strong>55%</strong> is above the sector average, but the moat created by NVIDIA's CUDA ecosystem still produces a financial gap AMD hasn't closed.</p>
+    <div class="chart-card">
+      <div class="chart-title">💹 Margin Comparison — Gross / Operating / Net</div>
+      <svg viewBox="0 0 640 250" width="100%" height="250" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="220" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="238" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">0%</text><line x1="287.5" y1="16" x2="287.5" y2="220" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="287.5" y="238" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">20%</text><line x1="385.0" y1="16" x2="385.0" y2="220" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="385.0" y="238" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">40%</text><line x1="482.5" y1="16" x2="482.5" y2="220" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="482.5" y="238" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">60%</text><line x1="580.0" y1="16" x2="580.0" y2="220" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="580.0" y="238" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">80%</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">NVDA Gross Margin</text><rect x="190" y="22.8" width="365.6" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="563.6" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">75.0%</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">AMD Gross Margin</text><rect x="190" y="56.8" width="268.1" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="466.1" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">55.0%</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">NVDA Operating Margin</text><rect x="190" y="90.8" width="320.8" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="518.8" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">65.8%</text><text x="178" y="138.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">AMD Operating Margin</text><rect x="190" y="124.8" width="121.9" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="319.9" y="138.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">25.0%</text><text x="178" y="172.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">NVDA Net Margin</text><rect x="190" y="158.8" width="272.0" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="470.0" y="172.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">55.8%</text><text x="178" y="206.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">AMD Net Margin</text><rect x="190" y="192.8" width="107.7" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="305.7" y="206.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">22.1%</text></svg>
+      <div class="legend">
+        <span><i style="background:var(--gf-accent)"></i> NVIDIA</span>
+        <span><i style="background:var(--gf-success)"></i> AMD</span>
+      </div>
+      <div class="chart-caption">Across all three margin tiers, NVIDIA generates <strong>~2–3x</strong> the profitability of AMD.</div>
+    </div>
+    <table>
+      <thead><tr><th>Metric</th><th>AMD</th><th>NVIDIA</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Gross Margin</strong></td><td>55.0%</td><td>75.0%</td></tr>
+        <tr><td><strong>Operating Margin</strong></td><td>25.0%</td><td>65.8%</td></tr>
+        <tr><td><strong>Net Margin</strong></td><td>22.1%</td><td>55.8%</td></tr>
+      </tbody>
+    </table>
+    <p style="font-style:italic">Note: NVIDIA's GAAP net margin can climb as high as 71.4% when one-time investment gains are included.</p>
+  </div>
+</section>
+
+<!-- SECTION 4 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">04</span> Operational Efficiency: Human Capital</h2>
+  </div>
+  <div class="section-body">
+    <p>Between two giants with fairly close headcounts (NVDA: ~29k, AMD: ~26k), there's a chasm in profit generated per employee. It's the clearest evidence of how scalable a software-driven ecosystem (CUDA) really is.</p>
+    <div class="chart-card">
+      <div class="chart-title">👤 Revenue per Employee</div>
+      <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$0M</text><line x1="54" y1="158.8" x2="620" y2="158.8" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="162.8" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$1M</text><line x1="54" y1="97.5" x2="620" y2="97.5" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="101.5" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$2M</text><line x1="54" y1="36.3" x2="620" y2="36.3" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="40.3" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$3M</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="196.0" y="195.5" width="70" height="24.5" rx="4" fill="#4ade80" opacity="1"/><text x="231.0" y="187.5" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$0.4M</text><text x="231.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">AMD</text><rect x="408.0" y="48.5" width="70" height="171.5" rx="4" fill="#38bdf8" opacity="1"/><text x="443.0" y="40.5" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$2.8M</text><text x="443.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">NVDA</text></svg>
+      <div class="chart-caption">NVIDIA generates <strong>more than 7x</strong> the revenue per employee — a direct result of CUDA's software leverage.</div>
+    </div>
+    <div class="grid" style="margin-top:14px">
+      <div class="card">
+        <div class="card-label">Revenue per Employee (NVDA)</div>
+        <div class="card-value up">$2.8M</div>
+        <div class="card-note">~29,000 employees</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Revenue per Employee (AMD)</div>
+        <div class="card-value neu">$0.4M</div>
+        <div class="card-note">~26,000 employees</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">05</span> Theoretical Modeling: NVIDIA at AMD's Target Multiples</h2>
+  </div>
+  <div class="section-body">
+    <p>What would happen if the market priced NVIDIA's enormous profitability using the aggressive growth multiples behind AMD's $755 target? This simulation stress-tests valuation multiples against the sheer volume of NVIDIA's profitability — read it as a multiple stress test, not a price target.</p>
+    <div class="chart-card">
+      <div class="chart-title">🧮 NVIDIA's Theoretical Share Price — Applying AMD's $755 Multiples</div>
+      <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$0</text><line x1="54" y1="175.5" x2="620" y2="175.5" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="179.5" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$250</text><line x1="54" y1="130.9" x2="620" y2="130.9" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="134.9" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$500</text><line x1="54" y1="86.4" x2="620" y2="86.4" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="90.4" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$750</text><line x1="54" y1="41.8" x2="620" y2="41.8" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="45.8" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$1000</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="111.2" y="182.4" width="70" height="37.6" rx="4" fill="#38bdf8" opacity="1"/><text x="146.2" y="174.4" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$211</text><text x="146.2" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Current Price</text><rect x="238.4" y="147.4" width="70" height="72.6" rx="4" fill="#4ade80" opacity="1"/><text x="273.4" y="139.4" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$407</text><text x="273.4" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">P/S Target</text><rect x="365.6" y="49.6" width="70" height="170.4" rx="4" fill="#fbbf24" opacity="1"/><text x="400.6" y="41.6" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$956</text><text x="400.6" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">P/FCF Target</text><rect x="492.8" y="36.7" width="70" height="183.3" rx="4" fill="#f87171" opacity="1"/><text x="527.8" y="28.7" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$1,029</text><text x="527.8" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">P/E Target</text></svg>
+      <div class="legend">
+        <span><i style="background:var(--gf-accent)"></i> Current Price</span>
+        <span><i style="background:var(--gf-success)"></i> P/S Model</span>
+        <span><i style="background:var(--gf-warning)"></i> P/FCF Model</span>
+        <span><i style="background:var(--gf-danger)"></i> P/E Model</span>
+      </div>
+      <div class="chart-caption">The P/E-based model implies a <strong>~$25 trillion</strong> market cap for NVIDIA — a scale that illustrates the limits of how far current multiples can stretch.</div>
+    </div>
+    <div class="grid3">
+      <div class="card">
+        <div class="card-label">P/E Model (137.7x)</div>
+        <div class="card-value down">$1,028</div>
+        <div class="card-note">Utopian: ~$25T market cap</div>
+      </div>
+      <div class="card">
+        <div class="card-label">P/FCF Model (120x)</div>
+        <div class="card-value neu">$956</div>
+        <div class="card-note">Cash-flow based</div>
+      </div>
+      <div class="card">
+        <div class="card-label">P/S Model (30.4x)</div>
+        <div class="card-value up">$407</div>
+        <div class="card-note">Sales-volume based</div>
+      </div>
+    </div>
+    <div class="insight-box warn" style="margin-top:14px"><strong>Takeaway:</strong> These three scenarios aren't a real analyst target — they're a mathematical answer to "what if NVIDIA's profitability were priced with AMD's speculative multiples?" The $25 trillion market cap implied by the P/E model isn't realistic under current global market dynamics.</div>
+  </div>
+</section>
+
+<!-- SECTION 6 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">06</span> Conclusion: Stability or Opportunity?</h2>
+  </div>
+  <div class="section-body">
+    <p>The data shows NVIDIA as an "infrastructure flagship" that has reached its hyper-profitability ceiling, while AMD is a "challenger" offering asymmetric growth potential through margin expansion and share gains. For investors, NVIDIA represents confidence and absolute strength; AMD represents transformation and acceleration.</p>
+    <div class="insight-box bull"><strong>Summary:</strong> NVIDIA's 75% gross margin and ~8x revenue-scale advantage look unshakeable in the near term. AMD's $755 target isn't supported by its current financials — it depends on margin expansion, market-share gains, and the CPU-GPU orchestration thesis playing out. High risk, high potential reward.</div>
+
+    <div class="disclaimer">
+      <p><strong>⚠️ Disclaimer</strong></p>
+      <p>This analysis was prepared using the financial data presented in the source infographic; it is <strong>for informational purposes only</strong> and is <strong>not investment advice</strong>. The theoretical valuation model in Section 5 is a speculative multiple simulation, not a price target. Do your own research and consult an independent financial advisor before making investment decisions.</p>
+      <p><strong>gistify.pro</strong> does not guarantee the accuracy of the information in this report and is not liable for any losses.</p>
+    </div>
+  </div>
+</section>
+
+<div class="tags-line">#AMD #NVDA #Semiconductors #FinancialAnalysis #Valuation #DataCenter</div>
+
+</div>
+</body>
+</html>

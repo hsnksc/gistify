@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMD vs NVIDIA: Finansal Performans ve Değerleme Analizi | $AMD $NVDA</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="AMD vs NVIDIA: Finansal Performans ve Değerleme Analizi | $AMD $NVDA" />
+<meta property="og:description" content="Gelir ölçeği, marj karşılaştırması, çalışan başına verimlilik ve AMD'nin 755$ hedefiyle NVIDIA'nın teorik değerleme simülasyonu." />
+<meta property="og:site_name" content="Gistify" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:760px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:2px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.section-num{font-family:var(--gf-mono);font-size:.72rem;font-weight:700;color:var(--gf-accent);opacity:.8}
+.section-body{padding:18px}
+.subhead{font-size:.92rem;font-weight:600;color:var(--gf-text);margin:18px 0 10px}
+.subhead:first-child{margin-top:0}
+p{color:var(--gf-muted);font-size:.88rem;margin-bottom:12px}
+p:last-child{margin-bottom:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.text-right{text-align:right}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem;color:var(--gf-text)}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+.chart-card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px 18px;margin:14px 0}
+.chart-title{font-size:.82rem;font-weight:700;color:var(--gf-text);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.chart-caption{font-size:.78rem;color:var(--gf-muted);margin-top:10px;padding-top:10px;border-top:1px solid var(--gf-border-subtle)}
+.chart-caption strong{color:var(--gf-text)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:.74rem;color:var(--gf-muted);margin-top:8px}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{width:9px;height:9px;border-radius:2px;display:inline-block}
+.disclaimer{background:rgba(251,191,36,.04);border:1px solid var(--gf-border);border-left:3px solid var(--gf-warning);border-radius:var(--gf-radius);padding:16px 18px;font-size:.82rem;color:var(--gf-muted);line-height:1.7;margin:18px 0}
+.disclaimer strong{color:var(--gf-text)}
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+ul,ol{margin:10px 0 10px 20px;color:var(--gf-muted);font-size:.86rem}
+li{margin-bottom:5px}
+.tags-line{text-align:center;font-size:.78rem;color:var(--gf-muted);margin-top:8px}
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid,.grid2,.grid3{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-13T13:00:00+03:00">
+  <h1 class="hero-h">AMD vs NVIDIA: Finansal Performans ve Değerleme Analizi</h1>
+  <p class="hero-desc">Yapay zeka devrimi, AMD ve NVIDIA'yı küresel ekonominin en kritik noktasına taşıdı. Phillip Securities'in AMD için belirlediği <strong>755$'lık hedef fiyat</strong>, pazarın sadece GPU gücüne değil, "Ajan Yapay Zeka" çağındaki CPU-GPU orkestrasyonuna olan inancını yansıtıyor. Bu rapor, NVIDIA'nın mevcut finansal hükümdarlığını ve AMD'nin bu hükümdarlığa meydan okuma potansiyelini verilerle inceliyor.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info hero-date" data-timestamp="2026-07-13T13:00:00+03:00">📅 13 Temmuz 2026</span>
+    <span class="hero-ticker">$AMD</span>
+    <span class="hero-ticker">$NVDA</span>
+    <span class="meta-pill info">Finansal Karşılaştırma</span>
+    <span class="meta-pill neu">Teorik Değerleme</span>
+  </div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-num">$81.6B</div><div class="kpi-label">NVDA Çeyreklik Gelir (+%85 YoY)</div></div>
+  <div class="kpi"><div class="kpi-num">$10.3B</div><div class="kpi-label">AMD Çeyreklik Gelir (+%38 YoY)</div></div>
+  <div class="kpi"><div class="kpi-num">%75.0</div><div class="kpi-label">NVDA Brüt Marj</div></div>
+  <div class="kpi"><div class="kpi-num">%55.0</div><div class="kpi-label">AMD Brüt Marj</div></div>
+  <div class="kpi"><div class="kpi-num" style="color:var(--gf-success)">$755</div><div class="kpi-label">AMD Hedef Fiyatı (Phillip Securities)</div></div>
+  <div class="kpi"><div class="kpi-num">~8x</div><div class="kpi-label">NVDA / AMD Gelir Oranı</div></div>
+</div>
+
+<!-- SECTION 1 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">01</span> Yarı İletken Sektöründe Devlerin Savaşı</h2>
+  </div>
+  <div class="section-body">
+    <p>AMD ve NVIDIA, yapay zeka altyapısı yarışının iki ana aktörü olarak sektörün finansal merkezine yerleşti. NVIDIA, veri merkezi GPU pazarındaki fiili tekeliyle rekor kârlılık üretirken; AMD, hem GPU hem de CPU tarafında "Ajan Yapay Zeka" dönemine yönelik entegre bir teklif kurarak pazar payı kazanmaya çalışıyor.</p>
+    <div class="insight-box"><strong>Tez:</strong> Phillip Securities'in AMD için belirlediği 755$'lık hedef fiyat, sadece GPU rekabetine değil, CPU-GPU orkestrasyonunun gelecekteki AI iş yüklerinde merkezi rol oynayacağı varsayımına dayanıyor. Bu rapor bu tezin dayandığı finansal makasları — gelir ölçeği, marj, verimlilik ve değerleme — tek tek inceliyor.</div>
+  </div>
+</section>
+
+<!-- SECTION 2 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">02</span> Gelir Ölçeği ve Veri Merkezi Hakimiyeti</h2>
+  </div>
+  <div class="section-body">
+    <p>NVIDIA ve AMD arasındaki mutlak ölçek farkı, veri merkezi segmentinde en belirgin halini alıyor. NVIDIA'nın geliri AMD'nin yaklaşık <strong>8 katı</strong> iken, veri merkezi özelinde bu fark <strong>13 kata</strong> çıkıyor. Bu durum, NVIDIA'nın sadece bir çip üreticisi değil, tam entegre bir yapay zeka altyapı sağlayıcısı olduğunun kanıtı.</p>
+    <div class="chart-card">
+      <div class="chart-title">📊 Gelir Karşılaştırması — Toplam ve Veri Merkezi</div>
+      <svg viewBox="0 0 640 182" width="100%" height="182" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$0B</text><line x1="276.7" y1="16" x2="276.7" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="276.7" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$20B</text><line x1="363.3" y1="16" x2="363.3" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="363.3" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$40B</text><line x1="450.0" y1="16" x2="450.0" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="450.0" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$60B</text><line x1="536.7" y1="16" x2="536.7" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="536.7" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">$80B</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">NVDA Toplam Gelir</text><rect x="190" y="22.8" width="353.7" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="551.7" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$81.6B</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">AMD Toplam Gelir</text><rect x="190" y="56.8" width="44.4" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="242.4" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$10.3B</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">NVDA Veri Merkezi Geliri</text><rect x="190" y="90.8" width="325.9" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="523.9" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$75.2B</text><text x="178" y="138.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">AMD Veri Merkezi Geliri</text><rect x="190" y="124.8" width="25.1" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="223.1" y="138.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$5.8B</text></svg>
+      <div class="legend">
+        <span><i style="background:var(--gf-accent)"></i> NVIDIA (Q1 FY2027)</span>
+        <span><i style="background:var(--gf-success)"></i> AMD (Q1 2026)</span>
+      </div>
+      <div class="chart-caption">NVIDIA'nın toplam geliri AMD'nin <strong>~8 katı</strong>, veri merkezi gelirinde bu fark <strong>~13 kata</strong> çıkıyor.</div>
+    </div>
+    <div class="grid" style="margin-top:14px">
+      <div class="card">
+        <div class="card-label">✦ NVIDIA'nın İvmesi</div>
+        <p style="margin-bottom:0">Veri merkezi gelirleri yıllık <strong>%92</strong> artışla 75.2 milyar dolara ulaştı. Toplam gelirin <strong>%92'si</strong> artık tek bir segmentten geliyor.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">✦ AMD'nin Çeşitliliği</div>
+        <p style="margin-bottom:0">AMD, veri merkezinde <strong>%57</strong> büyüme gösterirken; istemci, oyun ve gömülü sistemlerle daha dengeli bir gelir portföyü sunuyor.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">03</span> Kârlılık ve Marj Karşılaştırması</h2>
+  </div>
+  <div class="section-body">
+    <p>Brüt kâr marjları, bir şirketin pazar üzerindeki fiyatlama gücünü gösterir. NVIDIA'nın <strong>%75'lik</strong> marjı, teknoloji tarihinde nadir görülen bir monopolistik kârlılık düzeyi. AMD ise <strong>%55</strong> seviyesiyle sektör ortalamasının üzerinde olsa da, NVIDIA'nın yarattığı CUDA ekosistemi hendeği henüz aşılamamış bir mali fark yaratıyor.</p>
+    <div class="chart-card">
+      <div class="chart-title">💹 Marj Karşılaştırması — Brüt / Faaliyet / Net</div>
+      <svg viewBox="0 0 640 250" width="100%" height="250" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="220" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="238" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">0%</text><line x1="287.5" y1="16" x2="287.5" y2="220" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="287.5" y="238" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">20%</text><line x1="385.0" y1="16" x2="385.0" y2="220" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="385.0" y="238" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">40%</text><line x1="482.5" y1="16" x2="482.5" y2="220" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="482.5" y="238" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">60%</text><line x1="580.0" y1="16" x2="580.0" y2="220" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="580.0" y="238" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">80%</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">NVDA Brüt Marj</text><rect x="190" y="22.8" width="365.6" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="563.6" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">75.0%</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">AMD Brüt Marj</text><rect x="190" y="56.8" width="268.1" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="466.1" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">55.0%</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">NVDA Faaliyet Marjı</text><rect x="190" y="90.8" width="320.8" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="518.8" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">65.8%</text><text x="178" y="138.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">AMD Faaliyet Marjı</text><rect x="190" y="124.8" width="121.9" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="319.9" y="138.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">25.0%</text><text x="178" y="172.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">NVDA Net Kâr Marjı</text><rect x="190" y="158.8" width="272.0" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="470.0" y="172.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">55.8%</text><text x="178" y="206.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">AMD Net Kâr Marjı</text><rect x="190" y="192.8" width="107.7" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="305.7" y="206.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">22.1%</text></svg>
+      <div class="legend">
+        <span><i style="background:var(--gf-accent)"></i> NVIDIA</span>
+        <span><i style="background:var(--gf-success)"></i> AMD</span>
+      </div>
+      <div class="chart-caption">Her üç marj kademesinde de NVIDIA, AMD'nin <strong>~2–3 katı</strong> kârlılık üretiyor.</div>
+    </div>
+    <table>
+      <thead><tr><th>Metrik</th><th>AMD</th><th>NVIDIA</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Brüt Marj</strong></td><td>%55.0</td><td>%75.0</td></tr>
+        <tr><td><strong>Faaliyet Marjı</strong></td><td>%25.0</td><td>%65.8</td></tr>
+        <tr><td><strong>Net Kâr Marjı</strong></td><td>%22.1</td><td>%55.8</td></tr>
+      </tbody>
+    </table>
+    <p style="font-style:italic">Not: NVIDIA'nın GAAP bazlı net kâr marjı, tek seferlik yatırım kazançlarıyla %71.4'e kadar yükselebiliyor.</p>
+  </div>
+</section>
+
+<!-- SECTION 4 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">04</span> Operasyonel Verimlilik: İnsan Sermayesi</h2>
+  </div>
+  <div class="section-body">
+    <p>Çalışan sayıları birbirine oldukça yakın olan (NVDA: ~29k, AMD: ~26k) iki dev arasında, üretilen kâr açısından uçurum bulunuyor. Bu, yazılım tabanlı ekosistemlerin (CUDA) ölçeklenebilirliğinin en net kanıtı.</p>
+    <div class="chart-card">
+      <div class="chart-title">👤 Çalışan Başına Gelir</div>
+      <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$0M</text><line x1="54" y1="158.8" x2="620" y2="158.8" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="162.8" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$1M</text><line x1="54" y1="97.5" x2="620" y2="97.5" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="101.5" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$2M</text><line x1="54" y1="36.3" x2="620" y2="36.3" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="40.3" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$3M</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="196.0" y="195.5" width="70" height="24.5" rx="4" fill="#4ade80" opacity="1"/><text x="231.0" y="187.5" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$0.4M</text><text x="231.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">AMD</text><rect x="408.0" y="48.5" width="70" height="171.5" rx="4" fill="#38bdf8" opacity="1"/><text x="443.0" y="40.5" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$2.8M</text><text x="443.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">NVDA</text></svg>
+      <div class="chart-caption">NVIDIA, çalışan başına <strong>7 kattan fazla</strong> gelir üretiyor — CUDA ekosisteminin yazılım kaldıracının doğrudan sonucu.</div>
+    </div>
+    <div class="grid" style="margin-top:14px">
+      <div class="card">
+        <div class="card-label">Çalışan Başına Gelir (NVDA)</div>
+        <div class="card-value up">$2.8M</div>
+        <div class="card-note">~29.000 çalışan</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Çalışan Başına Gelir (AMD)</div>
+        <div class="card-value neu">$0.4M</div>
+        <div class="card-note">~26.000 çalışan</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">05</span> Teorik Modelleme: AMD Hedefiyle NVIDIA</h2>
+  </div>
+  <div class="section-body">
+    <p>Eğer piyasa NVIDIA'nın devasa kârlılığını, AMD'nin 755$'lık hedefi için kullanılan agresif büyüme çarpanlarıyla fiyatlasaydı ne olurdu? Bu simülasyon, değerleme çarpanlarının kârlılık hacmi karşısındaki teorik sınırlarını zorluyor — bir fiyat hedefi değil, bir çarpan-stres testi olarak okunmalı.</p>
+    <div class="chart-card">
+      <div class="chart-title">🧮 NVIDIA Teorik Hisse Fiyatı — AMD 755$ Çarpanları Uygulandığında</div>
+      <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$0</text><line x1="54" y1="175.5" x2="620" y2="175.5" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="179.5" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$250</text><line x1="54" y1="130.9" x2="620" y2="130.9" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="134.9" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$500</text><line x1="54" y1="86.4" x2="620" y2="86.4" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="90.4" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$750</text><line x1="54" y1="41.8" x2="620" y2="41.8" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="45.8" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$1000</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="111.2" y="182.4" width="70" height="37.6" rx="4" fill="#38bdf8" opacity="1"/><text x="146.2" y="174.4" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$211</text><text x="146.2" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Mevcut Fiyat</text><rect x="238.4" y="147.4" width="70" height="72.6" rx="4" fill="#4ade80" opacity="1"/><text x="273.4" y="139.4" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$407</text><text x="273.4" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">P/S Hedefi</text><rect x="365.6" y="49.6" width="70" height="170.4" rx="4" fill="#fbbf24" opacity="1"/><text x="400.6" y="41.6" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$956</text><text x="400.6" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">P/FCF Hedefi</text><rect x="492.8" y="36.7" width="70" height="183.3" rx="4" fill="#f87171" opacity="1"/><text x="527.8" y="28.7" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$1,029</text><text x="527.8" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">P/E Hedefi</text></svg>
+      <div class="legend">
+        <span><i style="background:var(--gf-accent)"></i> Mevcut Fiyat</span>
+        <span><i style="background:var(--gf-success)"></i> P/S Modeli</span>
+        <span><i style="background:var(--gf-warning)"></i> P/FCF Modeli</span>
+        <span><i style="background:var(--gf-danger)"></i> P/E Modeli</span>
+      </div>
+      <div class="chart-caption">P/E bazlı model, NVIDIA'yı <strong>~25 trilyon dolar</strong> piyasa değerine taşıyor — bu ölçek, mevcut çarpanların sürdürülebilirliğinin sınırlarını gösteriyor.</div>
+    </div>
+    <div class="grid3">
+      <div class="card">
+        <div class="card-label">P/E Modeli (137.7x)</div>
+        <div class="card-value down">$1,028</div>
+        <div class="card-note">Ütopik: ~25T$ piyasa değeri</div>
+      </div>
+      <div class="card">
+        <div class="card-label">P/FCF Modeli (120x)</div>
+        <div class="card-value neu">$956</div>
+        <div class="card-note">Nakit akışına dayalı</div>
+      </div>
+      <div class="card">
+        <div class="card-label">P/S Modeli (30.4x)</div>
+        <div class="card-value up">$407</div>
+        <div class="card-note">Satış hacmi odaklı</div>
+      </div>
+    </div>
+    <div class="insight-box warn" style="margin-top:14px"><strong>Yorum:</strong> Bu üç senaryo, gerçek bir analist hedefi değil; "NVIDIA'nın kârlılığı AMD'nin spekülatif çarpanlarıyla fiyatlansa ne olur" sorusuna verilen matematiksel bir yanıt. P/E modelinin ürettiği 25 trilyon dolarlık piyasa değeri, mevcut küresel piyasa dinamikleri içinde gerçekçi değil.</div>
+  </div>
+</section>
+
+<!-- SECTION 6 -->
+<section class="section-head">
+  <div class="section-head-inner">
+    <h2 class="section-title"><span class="section-num">06</span> Sonuç: İstikrar mı, Fırsat mı?</h2>
+  </div>
+  <div class="section-body">
+    <p>Veriler gösteriyor ki NVIDIA, hiper-kârlılık tavanına ulaşmış bir "altyapı amiral gemisi" iken; AMD, marj genişlemesi ve pazar payı kazanımıyla asimetrik bir büyüme potansiyeli sunan bir "challenger" (meydan okuyucu) konumunda. Yatırımcılar için NVIDIA güven ve mutlak gücü, AMD ise dönüşüm ve ivmelenmeyi temsil ediyor.</p>
+    <div class="insight-box bull"><strong>Özet:</strong> NVIDIA'nın %75 brüt marjı ve ~8x gelir ölçeği avantajı kısa vadede sarsılmaz görünüyor. AMD'nin 755$ hedefi ise mevcut finansal tablodan değil, marj genişlemesi + pazar payı + CPU-GPU orkestrasyon tezinin gerçekleşmesinden besleniyor — yüksek risk, yüksek potansiyel getiri dengesi.</div>
+
+    <div class="disclaimer">
+      <p><strong>⚠️ Sorumluluk Reddi</strong></p>
+      <p>Bu analiz, kaynak infografikte yer alan finansal veriler kullanılarak hazırlanmıştır; <strong>bilgilendirme amaçlıdır</strong> ve <strong>yatırım tavsiyesi değildir</strong>. Bölüm 5'teki teorik değerleme modeli spekülatif bir çarpan simülasyonudur, bir fiyat hedefi değildir. Yatırım kararları için kendi araştırmanızı yapın ve gerekirse bağımsız bir finansal danışmana başvurun.</p>
+      <p><strong>gistify.pro</strong>, bu raporda yer alan bilgilerin doğruluğunu garanti etmez ve herhangi bir zarardan sorumlu tutulamaz.</p>
+    </div>
+  </div>
+</section>
+
+<div class="tags-line">#AMD #NVDA #YarıİletkenSektörü #FinansalAnaliz #Değerleme #VeriMerkezi</div>
+
+</div>
+</body>
+</html>
