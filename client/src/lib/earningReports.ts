@@ -2,11 +2,11 @@ import type { EarningReportSourceSummary } from "@shared/earningReports";
 
 export function sortEarningReportsNewestFirst(reports: EarningReportSourceSummary[]) {
   return [...reports].sort((left, right) => {
-    if (left.updatedAt !== right.updatedAt) {
-      return right.updatedAt.localeCompare(left.updatedAt);
+    if (left.reportDate !== right.reportDate) {
+      return right.reportDate.localeCompare(left.reportDate);
     }
 
-    return right.reportDate.localeCompare(left.reportDate);
+    return right.updatedAt.localeCompare(left.updatedAt);
   });
 }
 

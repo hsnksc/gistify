@@ -15,7 +15,7 @@ describe("earnings quant engine", () => {
   it("switches a call-heavy positive-momentum ticker to a defined-risk bullish credit spread", () => {
     const closes = Array.from({ length: 30 }, (_, index) => 80 + index * 0.7);
     const intelligence = buildStrategyIntelligence(
-      baseStrategy,
+      { ...baseStrategy, cpr: "1.30" },
       [{ ticker: "TEST", date: "2099-07-30", time: "AMC", importance: 5 }],
       { vix: "19" },
       {
@@ -31,15 +31,15 @@ describe("earnings quant engine", () => {
     expect(intelligence.decision.bias).toBe("bullish");
     expect(intelligence.decision.strategy).toBe("Bull Put Spread");
     expect(intelligence.decision.changed).toBe(true);
-    expect(intelligence.options.callPutRatio).toBe(0.7);
+    expect(intelligence.options.callPutRatio).toBe(1.3);
     expect(intelligence.options.maxLoss).toBeGreaterThan(0);
     expect(intelligence.decision.legs).toHaveLength(2);
   });
 
-  it("treats call/put ratios above one as put-heavy bearish flow", () => {
+  it("treats call/put ratios below one as put-heavy bearish flow", () => {
     const closes = Array.from({ length: 30 }, (_, index) => 120 - index * 0.8);
     const intelligence = buildStrategyIntelligence(
-      { ...baseStrategy, cpr: "1.35" },
+      { ...baseStrategy, cpr: "0.70" },
       [],
       { vix: "25" },
       {
@@ -58,7 +58,7 @@ describe("earnings quant engine", () => {
   });
 
   it("summarizes strategy changes and market-data coverage", () => {
-    const intelligence = buildStrategyIntelligence(baseStrategy, [], {}, {
+    const intelligence = buildStrategyIntelligence({ ...baseStrategy, cpr: "1.30" }, [], {}, {
       ticker: "TEST",
       asOf: "2026-07-11",
       price: 102,

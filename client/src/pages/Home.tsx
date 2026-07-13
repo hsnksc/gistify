@@ -16,6 +16,8 @@ import EarningReportCalendarTab from "@/components/tabs/EarningReportCalendarTab
 import EarningReportPostTab from "@/components/tabs/EarningReportPostTab";
 import EarningReportPlaybookTab from "@/components/tabs/EarningReportPlaybookTab";
 import EarningReportRiskTab from "@/components/tabs/EarningReportRiskTab";
+import EarningsQuantCommandCenter from "@/components/earnings/EarningsQuantCommandCenter";
+import { useEarningsStrategy } from "@/pages/earnings/useEarningsStrategy";
 import {
   formatEarningReportDate,
   formatEarningReportDateTime,
@@ -53,6 +55,7 @@ export default function Home({ language }: { language: AppLanguage }) {
   const [loadingDetail, setLoadingDetail] = useState(false);
   const [isTabPending, startTabTransition] = useTransition();
   const contentRef = useRef<HTMLDivElement | null>(null);
+  const { data: quantData } = useEarningsStrategy();
 
   usePageMeta({
     description: t("common:theGistifyEarningsWorkspaceOpens"),
@@ -371,7 +374,7 @@ export default function Home({ language }: { language: AppLanguage }) {
                   <div className="space-y-3">
                     <div className="flex items-center gap-2">
                       <span className="inline-flex items-center rounded-full border border-emerald-500/25 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-300">
-                        {t("common:live9031")}
+                        {language === "en" ? "Current report" : "Güncel rapor"}
                       </span>
                       <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-amber-300">
                         {latestReport.vixLabel || t("common:vixPending")}
@@ -444,6 +447,17 @@ export default function Home({ language }: { language: AppLanguage }) {
             )
           }
         />
+
+        {quantData && selectedReportId === latestReport?.id ? (
+          <div className="mt-6">
+            <EarningsQuantCommandCenter
+              data={quantData}
+              language={language}
+              selectedTicker={selectedTicker}
+              onSelectTicker={setSelectedTicker}
+            />
+          </div>
+        ) : null}
 
         {hasReports ? (
           <section className="mobile-scroll-row mt-6 md:hidden">

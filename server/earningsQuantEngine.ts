@@ -431,7 +431,7 @@ export function buildStrategyIntelligence(
   const expectedMoveDollar = round(spot * (modeledIv / 100) * Math.sqrt(tradeDte / 365), 2);
   const expectedMovePercent = spot ? round(expectedMoveDollar / spot * 100, 1) : 0;
 
-  const flowScore = cpr === undefined ? 0 : cpr < 0.8 ? 22 : cpr < 0.95 ? 10 : cpr > 1.25 ? -22 : cpr > 1.05 ? -10 : 0;
+  const flowScore = cpr === undefined ? 0 : cpr > 1.25 ? 22 : cpr > 1.05 ? 10 : cpr < 0.8 ? -22 : cpr < 0.95 ? -10 : 0;
   const priceScore = clamp((change1d || 0) * 5 + (return5d || 0) * 2 + (return20d || 0) * 0.65, -45, 45);
   const rsiScore = rsi14 === undefined ? 0 : clamp((rsi14 - 50) * 0.65, -18, 18);
   const macroVix = numberFrom(macro.vix) || 20;
@@ -494,10 +494,10 @@ export function buildStrategyIntelligence(
   if ((marketData?.delayedMinutes || 0) >= 60) alerts.push({ severity: "critical", title: "Gecikmeli EOD opsiyon verisi", detail: `${marketData?.provider} verisi yaklaşık ${Math.round((marketData?.delayedMinutes || 0) / 60)} saat gecikmeli.`, action: "Araştırma ve backtest için kullan; canlı emir kararı için real-time NBBO planına yükselt." });
 
   const changed = Boolean(strategy.type && strategy.type !== selected);
-  const flowSignal = cpr === undefined ? "CPR yok" : cpr < 0.9 ? "Call ağırlıklı" : cpr > 1.1 ? "Put ağırlıklı" : "Dengeli";
+  const flowSignal = cpr === undefined ? "CPR yok" : cpr > 1.1 ? "Call ağırlıklı" : cpr < 0.9 ? "Put ağırlıklı" : "Dengeli";
   const rationale = [
     `Bileşik skor ${compositeScore}/100: fiyat momentumu ${round(priceScore, 0)}, opsiyon akışı ${flowScore}, RSI katkısı ${round(rsiScore, 0)}.`,
-    `${flowSignal}; Call/Put oranı ${cpr ?? "—"}. 1 altı call, 1 üstü put ağırlığını gösterir.`,
+    `${flowSignal}; Call/Put oranı ${cpr ?? "—"}. 1 üstü call, 1 altı put ağırlığını gösterir.`,
     `IV Rank ${ivRank} ve ${dte} DTE, ${selected} için risk-tanımlı rejim seçimini destekliyor.`,
     `${simulation.paths.toLocaleString("tr-TR")} yollu planlı-sıçrama simülasyonu POP %${probabilityOfProfit}, maliyet sonrası EV $${round(simulation.expectedValueAfterCosts, 0)} üretti.`,
     `Yapısal volatilite %${structuralVolatility}; earnings jump volatilitesi %${eventJumpVolatility}; %95 CVaR $${round(simulation.cvar95, 0)}.`,

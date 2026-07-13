@@ -94,7 +94,14 @@ function readMarkdownField(markdown: string, label: string) {
   const match = markdown.match(
     new RegExp(`(?:^|\\n)(?:>\\s*)?\\*\\*${label}:\\*\\*\\s*([^\\n]+)`, "i")
   );
-  return normalizeString(match?.[1]);
+  if (match?.[1]) {
+    return normalizeString(match[1]);
+  }
+
+  const looseMatch = markdown.match(
+    new RegExp(`${label}:\\s*([^|\\r\\n]+)`, "i")
+  );
+  return cleanMarkdownText(looseMatch?.[1] || "");
 }
 
 function readSummaryTableField(markdown: string, label: string) {
@@ -355,6 +362,7 @@ function extractMetadata(markdown: string, fileName: string, updatedAt: string) 
     formatTurkishDateLabel(parseCompactTurkishDateToken(sourceFileLabel));
   const reportDateLabel = normalizeString(rawReportDateLabel.split("|")[0] || "");
   const reportDate =
+    (/^\d{4}-\d{2}-\d{2}$/.test(reportDateLabel) ? reportDateLabel : "") ||
     parseTurkishDateLabel(reportDateLabel) ||
     parseCompactTurkishDateToken(sourceFileLabel) ||
     toIsoDateFromKey(path.basename(fileName, path.extname(fileName))) ||
@@ -426,13 +434,10 @@ export function listEarningReportSources() {
     .filter(entry => entry.isFile() && /\.md$/i.test(entry.name))
     .map(entry => buildSourceRecord(entry.name))
     .filter((entry): entry is EarningReportSourceRecord => Boolean(entry))
-    .sort((left, right) => {
-      if (left.updatedAt !== right.updatedAt) {
-        return right.updatedAt.localeCompare(left.updatedAt);
-      }
-
-      return right.reportDate.localeCompare(left.reportDate);
-    });
+    .sort((left, right) =>
+      right.reportDate.localeCompare(left.reportDate) ||
+      right.updatedAt.localeCompare(left.updatedAt)
+    );
 }
 
 export function listEarningReportSourceSummaries() {

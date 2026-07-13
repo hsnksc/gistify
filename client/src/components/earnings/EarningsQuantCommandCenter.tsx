@@ -8,21 +8,27 @@ import { cn } from "@/lib/utils";
 export default function EarningsQuantCommandCenter({
   data,
   language,
+  selectedTicker,
+  onSelectTicker,
 }: {
   data: EarningsStrategyData;
   language: AppLanguage;
+  selectedTicker?: string | null;
+  onSelectTicker?: (ticker: string) => void;
 }) {
   const candidates = useMemo(
     () => data.strategies.filter(strategy => strategy.intelligence),
     [data.strategies]
   );
-  const [ticker, setTicker] = useState(candidates[0]?.ticker || "");
+  const [ticker, setTicker] = useState(selectedTicker || candidates[0]?.ticker || "");
 
   useEffect(() => {
-    if (!candidates.some(item => item.ticker === ticker)) {
+    if (selectedTicker && candidates.some(item => item.ticker === selectedTicker)) {
+      setTicker(selectedTicker);
+    } else if (!candidates.some(item => item.ticker === ticker)) {
       setTicker(candidates[0]?.ticker || "");
     }
-  }, [candidates, ticker]);
+  }, [candidates, selectedTicker, ticker]);
 
   const selected = candidates.find(item => item.ticker === ticker);
   const overview = data.quantOverview;
@@ -65,7 +71,10 @@ export default function EarningsQuantCommandCenter({
           <button
             key={strategy.ticker}
             type="button"
-            onClick={() => setTicker(strategy.ticker)}
+            onClick={() => {
+              setTicker(strategy.ticker);
+              onSelectTicker?.(strategy.ticker);
+            }}
             className={cn(
               "shrink-0 rounded-lg border px-3 py-2 text-left transition-colors",
               ticker === strategy.ticker
@@ -120,7 +129,7 @@ export default function EarningsQuantCommandCenter({
 
           <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
             <Metric label="RSI(14)" value={intelligence.market.rsi14?.toFixed(1) || "—"} />
-            <Metric label="CALL/PUT" value={intelligence.options.callPutRatio?.toFixed(2) || "—"} />
+            <Metric label="CALL/PUT VOL" value={intelligence.options.callPutRatio?.toFixed(2) || "—"} />
             <Metric label="IV RANK" value={intelligence.options.ivRank?.toFixed(0) || "—"} />
             <Metric label="DTE" value={intelligence.options.dte} />
             <Metric label="EXP MOVE" value={`±${intelligence.options.expectedMovePercent}%`} />

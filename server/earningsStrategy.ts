@@ -187,15 +187,17 @@ function extractTitleInfo(markdown: string, sourceFile?: string) {
   const reportDateMatch = markdown.match(
     /Rapor Tarihi:\s*(\d{1,2})\s+([A-Za-zÇçĞğİıÖöŞşÜü]+)\s+(\d{4})/i
   );
-  const reportDate = reportDateMatch
+  const isoReportDateMatch = markdown.match(/Rapor Tarihi:\*{0,2}\s*(\d{4}-\d{2}-\d{2})/i);
+  const reportDate = isoReportDateMatch?.[1] || (reportDateMatch
     ? parseTurkishDateToken(
         `${reportDateMatch[1]} ${reportDateMatch[2]} ${reportDateMatch[3]}`
       )
-    : "";
+    : "");
 
   const seasonMatch = markdown.match(/([A-Za-zÇçĞğİıÖöŞşÜü]+)\s*(\d{4})\s+Earnings/i);
-  const currentMonth = seasonMatch ? seasonMatch[1] : "";
-  const currentYear = seasonMatch ? seasonMatch[2] : "";
+  const periodMatch = markdown.match(/Dönem:\*{0,2}\s*([A-Za-zÇçĞğİıÖöŞşÜü]+)\s+(\d{4})/i);
+  const currentMonth = seasonMatch?.[1] || periodMatch?.[1] || "";
+  const currentYear = seasonMatch?.[2] || periodMatch?.[2] || "";
 
   // Infer nextMonth from file name or title
   let nextMonth = "";

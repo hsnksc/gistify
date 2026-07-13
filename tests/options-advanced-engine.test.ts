@@ -124,7 +124,8 @@ describe("advanced options analytics", () => {
     }));
     const result = await new ThetaDataProvider("http://127.0.0.1:25503/v3").load("TEST", "2026-07-20");
     expect(result?.provider).toBe("thetadata-free-eod");
-    expect(result?.delayedMinutes).toBe(1_440);
+    expect(result?.delayedMinutes).toBeGreaterThanOrEqual(1_440);
+    expect(result?.asOf).toBe("2026-07-10T21:15:00Z");
     expect(result?.optionChain).toHaveLength(2);
     expect(result?.optionChain[0].right).toBe("CALL");
   });

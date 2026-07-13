@@ -231,15 +231,20 @@ export class ThetaDataProvider implements EarningsMarketDataProvider {
         volume: row.volume,
         updatedAt: row.created || row.timestamp || `${optionDate}T21:15:00Z`,
       }, ticker)).filter((quote): quote is CanonicalOptionQuote => Boolean(quote));
+      const asOf = `${optionDate}T21:15:00Z`;
+      const parsedAsOf = Date.parse(asOf);
+      const delayedMinutes = Number.isFinite(parsedAsOf)
+        ? Math.max(60, Math.round((Date.now() - parsedAsOf) / 60_000))
+        : 1_440;
       return {
         ticker,
-        asOf: bars.at(-1)?.time || `${optionDate}T21:15:00Z`,
+        asOf,
         spot,
         bars,
         optionChain,
         earningsDate,
         provider: this.name,
-        delayedMinutes: 1_440,
+        delayedMinutes,
       } satisfies CanonicalEarningsMarketData;
     } catch {
       return null;
