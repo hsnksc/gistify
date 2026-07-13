@@ -1,4 +1,4 @@
-import { Target, TrendingUp, TrendingDown, Minus, DollarSign, Shield, Clock, Crosshair, CalendarDays, LogOut, AlertCircle, } from "lucide-react";
+import { Target, TrendingUp, TrendingDown, Minus, DollarSign, Shield, Clock, Crosshair, CalendarDays, LogOut, AlertCircle, BrainCircuit, Activity, RefreshCw, } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { type AppLanguage, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -84,6 +84,87 @@ export default function StrategyCard({ language, strategy }: StrategyCardProps) 
           {strategy.type || "—"}
         </span>
       </div>
+
+      {strategy.intelligence ? (
+        <div className="mt-4 rounded-xl border border-cyan-400/20 bg-cyan-400/[0.04] p-3.5">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <BrainCircuit className="size-4 text-cyan-300" />
+              <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-cyan-300">
+                {language === "tr" ? "Quant karar motoru" : "Quant decision engine"}
+              </span>
+            </div>
+            <span className={cn(
+              "rounded-full border px-2 py-0.5 text-[10px] font-bold",
+              strategy.intelligence.dataQuality === "live"
+                ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300"
+                : "border-amber-400/30 bg-amber-400/10 text-amber-300"
+            )}>
+              {strategy.intelligence.dataQuality === "live" ? "LIVE" : "MODEL"}
+            </span>
+          </div>
+
+          <div className="mt-3 flex items-center justify-between gap-3">
+            <div>
+              <p className="text-xs text-slate-500">
+                {language === "tr" ? "Güncel seçim" : "Current selection"}
+              </p>
+              <p className="mt-0.5 text-sm font-bold text-white">
+                {strategy.intelligence.decision.strategy}
+              </p>
+            </div>
+            {strategy.intelligence.decision.changed ? (
+              <div className="flex items-center gap-1.5 text-right text-[10px] font-semibold text-amber-300">
+                <RefreshCw className="size-3.5" />
+                {language === "tr" ? "STRATEJİ DEĞİŞTİ" : "STRATEGY CHANGED"}
+              </div>
+            ) : null}
+          </div>
+
+          <div className={cn(
+            "mt-2 inline-flex rounded-full border px-2 py-0.5 text-[9px] font-black tracking-wider",
+            strategy.intelligence.decision.tradeStatus === "TRADE"
+              ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300"
+              : strategy.intelligence.decision.tradeStatus === "WATCH"
+                ? "border-amber-400/30 bg-amber-400/10 text-amber-300"
+                : "border-rose-400/30 bg-rose-400/10 text-rose-300"
+          )}>
+            {strategy.intelligence.decision.tradeStatus}
+          </div>
+
+          <div className="mt-3 grid grid-cols-4 gap-1.5 text-center">
+            <QuantMini label="1D" value={strategy.intelligence.market.change1d === undefined ? "—" : `${strategy.intelligence.market.change1d > 0 ? "+" : ""}${strategy.intelligence.market.change1d}%`} />
+            <QuantMini label="RSI" value={strategy.intelligence.market.rsi14?.toFixed(1) || "—"} />
+            <QuantMini label="POP" value={`%${strategy.intelligence.options.probabilityOfProfit}`} />
+            <QuantMini label="NET EV" value={`$${strategy.intelligence.options.expectedValueAfterCosts}`} />
+          </div>
+
+          <div className="mt-3 flex items-center justify-between gap-3 border-t border-white/5 pt-3 text-[11px]">
+            <span className="flex items-center gap-1.5 text-slate-400">
+              <Activity className="size-3.5 text-cyan-400" />
+              {strategy.intelligence.options.flowSignal}
+            </span>
+            <span className="font-semibold text-slate-200">
+              {language === "tr" ? "Güven" : "Confidence"} %{strategy.intelligence.decision.confidence}
+            </span>
+          </div>
+
+          {strategy.intelligence.alerts.some(alert => alert.severity !== "info") ? (
+            <div className="mt-3 space-y-1.5">
+              {strategy.intelligence.alerts.filter(alert => alert.severity !== "info").slice(0, 2).map(alert => (
+                <div key={`${strategy.ticker}-${alert.title}`} className={cn(
+                  "rounded-lg border px-2.5 py-2 text-[10px] leading-4",
+                  alert.severity === "critical"
+                    ? "border-rose-400/25 bg-rose-400/10 text-rose-200"
+                    : "border-amber-400/25 bg-amber-400/10 text-amber-200"
+                )}>
+                  <span className="font-bold">{alert.title}:</span> {alert.action}
+                </div>
+              ))}
+            </div>
+          ) : null}
+        </div>
+      ) : null}
 
       {/* Entry / Exit / Max Hold */}
       <div className="mt-4 grid grid-cols-1 gap-2">
@@ -251,15 +332,15 @@ function CPRBadge({ cpr, language }: { cpr?: string; language: AppLanguage }) {
 
   if (!Number.isNaN(num)) {
     if (num > 1.25) {
-      Icon = TrendingUp;
-      color = "text-emerald-400";
-      bg = "bg-emerald-500/15";
-      border = "border-emerald-500/30";
-    } else if (num < 0.8) {
       Icon = TrendingDown;
       color = "text-rose-400";
       bg = "bg-rose-500/15";
       border = "border-rose-500/30";
+    } else if (num < 0.8) {
+      Icon = TrendingUp;
+      color = "text-emerald-400";
+      bg = "bg-emerald-500/15";
+      border = "border-emerald-500/30";
     }
   }
 
@@ -274,6 +355,15 @@ function CPRBadge({ cpr, language }: { cpr?: string; language: AppLanguage }) {
     >
       <Icon className="size-3.5" />
       <span>{"CPR"} {cpr || "—"}</span>
+    </div>
+  );
+}
+
+function QuantMini({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-lg border border-white/5 bg-slate-950/40 px-1 py-2">
+      <p className="text-[8px] font-semibold tracking-wider text-slate-600">{label}</p>
+      <p className="mt-0.5 font-mono text-[11px] font-bold text-slate-200">{value}</p>
     </div>
   );
 }

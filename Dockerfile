@@ -29,9 +29,13 @@ ENV GISTIFY_DB_PATH=/app/data/gistify.sqlite
 ENV GISTIFY_MIGRATIONS_DIR=/app/server/db/migrations
 
 RUN mkdir -p /app/data
-RUN apk add --no-cache python3 py3-pip curl tzdata \
+RUN apk add --no-cache python3 py3-pip curl tzdata openjdk21-jre-headless \
   && ln -sf /usr/bin/python3 /usr/bin/python \
   && pip install --break-system-packages marketdata-sdk-py==1.3.0 yfinance yahooquery pandas numpy scipy requests
+
+RUN mkdir -p /opt/thetadata \
+  && curl -fsSL "https://download-unstable.thetadata.us/ThetaTerminalv3.jar" \
+    -o /opt/thetadata/ThetaTerminalv3.jar
 
 COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/node_modules ./node_modules
@@ -46,7 +50,10 @@ COPY --from=build /app/flow ./flow
 COPY --from=build /app/momentum ./momentum
 COPY --from=build /app/reports/coverage ./reports/coverage
 COPY --from=build /app/coverage/reports ./coverage/reports
+COPY docker/start-runtime.sh /usr/local/bin/start-gistify
+
+RUN chmod +x /usr/local/bin/start-gistify
 
 EXPOSE 3000
 
-CMD ["node", "dist/index.js"]
+CMD ["/usr/local/bin/start-gistify"]

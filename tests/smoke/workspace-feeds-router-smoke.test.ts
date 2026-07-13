@@ -2,7 +2,12 @@ import express from "express";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+vi.mock("../../server/services/macroArchiveStore", () => ({
+  createMacroArchiveStore: () => ({ listArchives: () => [], compareArchives: () => [] }),
+}));
+
 import { createWorkspaceFeedsRouter } from "../../server/routes/workspaceFeeds";
 
 describe("workspace feeds router smoke", () => {
@@ -45,6 +50,7 @@ describe("workspace feeds router smoke", () => {
         }),
         getCalendarPipeline: () => ({ status: "ok" }),
         getCalendarSnapshot: () => ({ entries: 4 }),
+        refreshCalendarSnapshot: async () => ({ entries: 4 }),
         getCpiPpiPipeline: () => ({ status: "ok" }),
         getCpiPpiSnapshot: () => ({ forecast: "soft" }),
         getEarningReportSource: sourceId =>
@@ -102,6 +108,22 @@ describe("workspace feeds router smoke", () => {
       data?: { macro?: { vix?: number } };
     };
     expect(strategyPayload.data?.macro?.vix).toBe(18);
+
+    const portfolioRiskResponse = await fetch(
+      `http://127.0.0.1:${address.port}/api/earnings/portfolio-risk`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          benchmarkPrice: 100,
+          positions: [{ ticker: "TEST", quantity: 1, underlyingPrice: 100, beta: 1.1, delta: 0.5, gamma: 0.03, vega: 0.1, theta: -0.05, marketValue: 500 }],
+        }),
+      }
+    );
+    expect(portfolioRiskResponse.status).toBe(200);
+    const portfolioRiskPayload = await portfolioRiskResponse.json() as { data?: { scenarios?: unknown[]; betaWeightedDelta?: number } };
+    expect(portfolioRiskPayload.data?.scenarios).toHaveLength(21);
+    expect(portfolioRiskPayload.data?.betaWeightedDelta).toBeGreaterThan(0);
 
     const marketFlashResponse = await fetch(
       `http://127.0.0.1:${address.port}/api/marketflash`

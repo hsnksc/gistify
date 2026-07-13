@@ -1,6 +1,7 @@
 import CPRTable from "@/components/earnings/CPRTable";
 import EarningsHero from "@/components/earnings/EarningsHero";
 import FOMCWarningBanner from "@/components/earnings/FOMCWarningBanner";
+import EarningsQuantCommandCenter from "@/components/earnings/EarningsQuantCommandCenter";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { AppLanguage, t } from "@/lib/i18n";
 
@@ -82,6 +83,7 @@ export default function EarningsStrategiesPage({
         sectionLabel={t("earnings:strategies")}
       />
       <EarningsPipelinePanel language={language} pipeline={pipeline} />
+      <EarningsQuantCommandCenter data={data} language={language} />
       {data.fomc ? (
         <FOMCWarningBanner fomc={data.fomc} language={language} />
       ) : null}

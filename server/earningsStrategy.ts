@@ -26,6 +26,13 @@ import type {
   Strategy,
   StrategyType,
 } from "../shared/earnings";
+import {
+  buildQuantOverview,
+  buildStrategyIntelligence,
+  loadDailyMarketSnapshots,
+} from "./earningsQuantEngine";
+import { loadEarningsMarketData } from "./optionsDataProvider";
+import { dispatchEarningsAlerts } from "./earningsAlertDispatcher";
 
 const DEFAULT_POLL_INTERVAL_MS = 5 * 60 * 1000;
 const MIN_POLL_INTERVAL_MS = 30 * 1000;
@@ -398,46 +405,51 @@ function parseCalendar(tables: MarkdownTable[], markdown: string): EarningsEvent
   const events: EarningsEvent[] = [];
   
   // NEW FORMAT: Try to find Calendar table by Date/Ticker column first
-  const calendarTable =
-    findTableByHeader(tables, "date") ||
-    findTableByHeader(tables, "tarih") ||
-    findTableByHeader(tables, "ticker");
+  const calendarTables = tables.filter(table => {
+    const headers = table.headers.map(header => header.toLocaleLowerCase("tr-TR"));
+    const hasDate = headers.some(header => header.includes("date") || header.includes("tarih"));
+    const hasTicker = headers.some(header => header.includes("ticker") || header.includes("hisse"));
+    return hasDate && hasTicker;
+  });
   
-  if (calendarTable) {
-    const headers = calendarTable.headers.map(h => h.toLowerCase());
-    const dateIdx = headers.findIndex(h => h.includes("date") || h.includes("tarih"));
-    const tickerIdx = headers.findIndex(h => h.includes("ticker") || h.includes("hisse"));
-    const companyIdx = headers.findIndex(h => h.includes("company") || h.includes("şirket"));
-    const sectorIdx = headers.findIndex(h => h.includes("sector") || h.includes("sektör"));
-    const sessionIdx = headers.findIndex(h => h.includes("session") || h.includes("saat"));
-    const importanceIdx = headers.findIndex(h => h.includes("importance") || h.includes("önem"));
-    const noteIdx = headers.findIndex(h => h.includes("note") || h.includes("not") || h.includes("açıklama"));
-    
-    for (const row of calendarTable.rows) {
-      if (row.length < 2) continue;
-      
-      const ticker = tickerIdx >= 0 ? cleanMarkdownText(row[tickerIdx]) : "";
-      if (!ticker || ticker.toLowerCase() === "ticker" || ticker.toLowerCase() === "hisse") continue;
-      
-      const date = dateIdx >= 0 ? normalizeString(row[dateIdx]) : "";
-      const company = companyIdx >= 0 ? normalizeString(row[companyIdx]) : "";
-      const sector = sectorIdx >= 0 ? normalizeString(row[sectorIdx]) : "";
-      const session = sessionIdx >= 0 ? parseTime(row[sessionIdx]) : "TBA";
-      const importance = importanceIdx >= 0 ? parseImportance(row[importanceIdx]) : 1;
-      const note = noteIdx >= 0 ? normalizeString(row[noteIdx]) : "";
-      
-      events.push({
-        date,
-        ticker,
-        company,
-        sector,
-        time: session,
-        importance,
-        notes: note ? [note] : undefined,
-      });
+  if (calendarTables.length) {
+    for (const calendarTable of calendarTables) {
+      const headers = calendarTable.headers.map(h => h.toLocaleLowerCase("tr-TR"));
+      const dateIdx = headers.findIndex(h => h.includes("date") || h.includes("tarih"));
+      const tickerIdx = headers.findIndex(h => h.includes("ticker") || h.includes("hisse"));
+      const companyIdx = headers.findIndex(h => h.includes("company") || h.includes("şirket"));
+      const sectorIdx = headers.findIndex(h => h.includes("sector") || h.includes("sektör"));
+      const sessionIdx = headers.findIndex(h => h.includes("session") || h.includes("saat"));
+      const importanceIdx = headers.findIndex(h => h.includes("importance") || h.includes("önem"));
+      const noteIdx = headers.findIndex(h => h.includes("note") || h.includes("not") || h.includes("açıklama"));
+
+      for (const row of calendarTable.rows) {
+        if (row.length < 2) continue;
+
+        const ticker = tickerIdx >= 0 ? cleanMarkdownText(row[tickerIdx]) : "";
+        if (!ticker || ticker.toLowerCase() === "ticker" || ticker.toLowerCase() === "hisse") continue;
+
+        const date = dateIdx >= 0 ? normalizeString(row[dateIdx]) : "";
+        const company = companyIdx >= 0 ? normalizeString(row[companyIdx]) : "";
+        const sector = sectorIdx >= 0 ? normalizeString(row[sectorIdx]) : "";
+        const session = sessionIdx >= 0 ? parseTime(row[sessionIdx]) : "TBA";
+        const importance = importanceIdx >= 0 ? parseImportance(row[importanceIdx]) : 1;
+        const note = noteIdx >= 0 ? normalizeString(row[noteIdx]) : "";
+
+        events.push({
+          date,
+          ticker,
+          company,
+          sector,
+          time: session,
+          importance,
+          notes: note ? [note] : undefined,
+        });
+      }
     }
-    
-    return events;
+
+    const deduped = new Map(events.map(event => [`${event.date}:${event.ticker}`, event]));
+    return Array.from(deduped.values());
   }
   
   // OLD FORMAT: Fallback to date headings with embedded tables
@@ -592,8 +604,9 @@ function parseStrategies(markdown: string): Strategy[] {
   const lines = markdown.split(/\r?\n/);
   const tables = parseTables(markdown);
 
-  // Find per-ticker sections: "## X.Y TICKER — $price — CPR: ..." or "### X.Y TICKER ..."
-  const sectionRegex = /^(#{2,3})\s+\d+(?:\.\d+)?\s+([A-Z]+)\s+[-—]\s+\$?([\d,.]+)\s+[-—]\s+CPR:\s*([\d.]+)/i;
+  // Find both legacy numbered headings and current headings such as:
+  // "### NFLX — $74.22 | IV Rank: 72/100 | CPR: 0.85 | NEUTRAL"
+  const sectionRegex = /^(#{2,3})\s+(?:\d+(?:\.\d+)?\s+)?([A-Z][A-Z0-9.-]{0,9})\s+[-—]\s+\$?([\d,.]+).*?\bCPR:\s*([\d.]+)/i;
 
   for (let i = 0; i < lines.length; i++) {
     const match = lines[i].match(sectionRegex);
@@ -651,8 +664,11 @@ function extractStrategyFromSection(
       const value = row[1];
       if (label.includes("iv rank")) strategy.ivRank = value;
       else if (label.includes("sektör")) strategy.sector = value;
-      else if (label.includes("earnings")) strategy.entry = value;
-      else if (label.includes("entry penceresi")) strategy.entry = value;
+      else if (label === "entry" || label.includes("entry penceresi")) strategy.entry = value;
+      else if (label === "exit" || label.includes("exit penceresi")) strategy.exit = value;
+      else if (label.includes("max hold")) strategy.maxHold = value;
+      else if (label.includes("kar hedefi")) strategy.profitTarget = value;
+      else if (label.includes("iv crush")) strategy.ivCrush = value;
     }
   }
 
@@ -1419,6 +1435,35 @@ export function createEarningsStrategySyncService(): EarningsStrategySyncService
   };
   let timer: ReturnType<typeof setInterval> | null = null;
 
+  async function refreshQuantLayer(snapshot: EarningsStrategyData) {
+    const requests = snapshot.strategies.map(strategy => ({
+      ticker: strategy.ticker,
+      earningsDate: snapshot.calendar.find(event => event.ticker === strategy.ticker)?.date,
+    }));
+    const [marketSnapshots, advancedMarketData] = await Promise.all([
+      loadDailyMarketSnapshots(requests.map(request => request.ticker)),
+      loadEarningsMarketData(requests),
+    ]);
+    snapshot.strategies = snapshot.strategies.map(strategy => ({
+      ...strategy,
+      intelligence: buildStrategyIntelligence(
+        strategy,
+        snapshot.calendar,
+        snapshot.macro,
+        marketSnapshots.get(strategy.ticker),
+        advancedMarketData.get(strategy.ticker)
+      ),
+    }));
+    const byTicker = new Map(snapshot.strategies.map(strategy => [strategy.ticker, strategy]));
+    snapshot.budgetStrategies = snapshot.budgetStrategies.map(
+      strategy => byTicker.get(strategy.ticker) || strategy
+    );
+    snapshot.quantOverview = buildQuantOverview(snapshot.strategies);
+    snapshot.generatedAt = new Date().toISOString();
+    await dispatchEarningsAlerts(snapshot.strategies);
+    return snapshot;
+  }
+
   function getPipeline(): EarningsStrategyPipelineMetadata {
     const { file: configuredSourceFile } = getConfiguredRootPath();
     return {
@@ -1459,8 +1504,10 @@ export function createEarningsStrategySyncService(): EarningsStrategySyncService
       runtimeState.snapshot &&
       runtimeState.lastKnownMtimeMs === source.mtimeMs
     ) {
+      await refreshQuantLayer(runtimeState.snapshot);
       runtimeState.status = "ok";
       runtimeState.lastError = null;
+      runtimeState.lastSyncedAt = new Date().toISOString();
       return runtimeState.snapshot;
     }
 
@@ -1472,7 +1519,7 @@ export function createEarningsStrategySyncService(): EarningsStrategySyncService
         throw new Error("Earnings strategy markdown could not be normalized.");
       }
 
-      runtimeState.snapshot = normalized;
+      runtimeState.snapshot = await refreshQuantLayer(normalized);
       runtimeState.lastSyncedAt = new Date().toISOString();
       runtimeState.lastKnownMtimeMs = source.mtimeMs;
       runtimeState.lastError = null;

@@ -7,6 +7,8 @@ import type {
   EarningsStrategyData,
   EarningsStrategyPipelineMetadata,
 } from "../../../shared/earnings";
+import type { PortfolioOptionPosition } from "../../../shared/optionsAnalytics";
+import { calculatePortfolioRisk } from "../../optionsAdvancedEngine";
 import { createMacroArchiveStore } from "../../services/macroArchiveStore";
 
 type WorkspaceFeedsRouterDependencies = {
@@ -218,6 +220,38 @@ export function createWorkspaceFeedsRouter({
     }
 
     res.status(200).json(response);
+  });
+
+  router.post("/earnings/portfolio-risk", (req, res) => {
+    setPrivateNoStore(res);
+    const raw = Array.isArray(req.body?.positions) ? req.body.positions : [];
+    if (!raw.length || raw.length > 250) {
+      res.status(400).json({ error: "positions must contain between 1 and 250 option positions." });
+      return;
+    }
+    const positions: PortfolioOptionPosition[] = [];
+    for (const item of raw) {
+      const position = item && typeof item === "object" ? item as Record<string, unknown> : {};
+      const required = ["quantity", "underlyingPrice", "delta", "gamma", "vega", "theta", "marketValue"] as const;
+      if (!required.every(key => Number.isFinite(Number(position[key])))) {
+        res.status(400).json({ error: `Invalid numeric portfolio position for ${normalizeString(position.ticker) || "unknown ticker"}.` });
+        return;
+      }
+      positions.push({
+        ticker: normalizeString(position.ticker).toUpperCase(),
+        quantity: Number(position.quantity),
+        multiplier: Number.isFinite(Number(position.multiplier)) ? Number(position.multiplier) : 100,
+        underlyingPrice: Number(position.underlyingPrice),
+        beta: Number.isFinite(Number(position.beta)) ? Number(position.beta) : 1,
+        delta: Number(position.delta),
+        gamma: Number(position.gamma),
+        vega: Number(position.vega),
+        theta: Number(position.theta),
+        marketValue: Number(position.marketValue),
+      });
+    }
+    const benchmarkPrice = Number.isFinite(Number(req.body?.benchmarkPrice)) ? Number(req.body.benchmarkPrice) : 100;
+    res.status(200).json({ success: true, data: calculatePortfolioRisk(positions, benchmarkPrice) });
   });
 
   router.get("/earnings/download", (req, res) => {

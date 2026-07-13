@@ -1,3 +1,5 @@
+import type { AdvancedOptionsAnalytics } from "./optionsAnalytics";
+
 export type EarningsTime = "BMO" | "AMC" | "TBA";
 
 export type StrategyType =
@@ -106,6 +108,103 @@ export interface Strategy {
   greeks?: Greeks;
   budgetOptions: BudgetOption[];
   notes?: string[];
+  intelligence?: StrategyIntelligence;
+}
+
+export type QuantBias = "bullish" | "neutral" | "bearish";
+export type QuantDataQuality = "live" | "mixed" | "report";
+export type QuantAlertSeverity = "info" | "warning" | "critical";
+export type QuantTradeStatus = "TRADE" | "WATCH" | "BLOCKED";
+
+export interface QuantAlert {
+  severity: QuantAlertSeverity;
+  title: string;
+  detail: string;
+  action: string;
+}
+
+export interface QuantOptionLeg {
+  action: "BUY" | "SELL";
+  optionType: "CALL" | "PUT";
+  quantity: number;
+  strike: number;
+  dte: number;
+  modeledPremium: number;
+}
+
+export interface StrategyIntelligence {
+  asOf: string;
+  dataQuality: QuantDataQuality;
+  sourceNote: string;
+  market: {
+    spot: number;
+    previousClose?: number;
+    change1d?: number;
+    return5d?: number;
+    return20d?: number;
+    rsi14?: number;
+    realizedVol20d?: number;
+    momentumScore: number;
+    momentumLabel: string;
+  };
+  options: {
+    advanced?: AdvancedOptionsAnalytics;
+    callPutRatio?: number;
+    flowSignal: string;
+    ivRank?: number;
+    modeledIv: number;
+    expectedMoveDollar: number;
+    expectedMovePercent: number;
+    pricingModel: "SCHEDULED_JUMP_MC_PROXY" | "CHAIN_CALIBRATED_JUMP_MC";
+    simulationPaths: number;
+    riskFreeRate: number;
+    structuralVolatility: number;
+    eventJumpVolatility: number;
+    dte: number;
+    probabilityOfProfit: number;
+    expectedValue: number;
+    expectedValueAfterCosts: number;
+    estimatedSlippage: number;
+    cvar95: number;
+    stressLoss: number;
+    stressScenarios: Array<{ shockPercent: number; pnl: number }>;
+    maxProfit: number;
+    maxLoss: number;
+    returnOnRisk: number;
+    breakevens: number[];
+    delta: number;
+    gamma: number;
+    theta: number;
+    vega: number;
+    regTMargin: number;
+    kellyFraction: number;
+    kellyMultiplier: number;
+  };
+  decision: {
+    strategy: StrategyType;
+    previousStrategy?: StrategyType;
+    changed: boolean;
+    bias: QuantBias;
+    confidence: number;
+    compositeScore: number;
+    tradeStatus: QuantTradeStatus;
+    entryRule: string;
+    exitRule: string;
+    rationale: string[];
+    legs: QuantOptionLeg[];
+  };
+  alerts: QuantAlert[];
+}
+
+export interface EarningsQuantOverview {
+  asOf: string;
+  liveCoverage: number;
+  bullish: number;
+  neutral: number;
+  bearish: number;
+  strategyChanges: number;
+  criticalAlerts: number;
+  methodology: string;
 }
 
 export interface CPRStock {
@@ -162,6 +261,7 @@ export interface EarningsStrategyData {
   portfolio: PortfolioLevel[];
   actionPlan: ActionPlanItem[];
   executiveSummary: string[];
+  quantOverview?: EarningsQuantOverview;
 }
 
 export interface EarningsStrategyPipelineMetadata {

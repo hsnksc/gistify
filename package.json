@@ -11,6 +11,7 @@
     "check": "tsc --noEmit",
     "i18n:check": "node --experimental-strip-types scripts/i18n-check.ts",
     "translate:content": "tsx scripts/translate-content.ts",
+    "thetadata:start": "powershell -ExecutionPolicy Bypass -File scripts/start-thetadata-terminal.ps1",
     "format": "prettier --write ."
   },
   "dependencies": {
