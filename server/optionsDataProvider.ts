@@ -282,7 +282,18 @@ export async function loadEarningsMarketData(
   if (!provider) return output;
   let unique = [...new Map(requests.filter(item => item.ticker).map(item => [item.ticker, item])).values()];
   const thetaData = provider.name.startsWith("thetadata");
-  if (thetaData) unique = unique.slice(0, Math.max(1, Number(process.env.THETADATA_MAX_TICKERS) || 8));
+  if (thetaData) {
+    const today = new Date().toISOString().slice(0, 10);
+    const upcomingPriority = (item: { earningsDate?: string }) => {
+      const date = item.earningsDate?.slice(0, 10) || "";
+      return /^\d{4}-\d{2}-\d{2}$/.test(date) && date >= today
+        ? Date.parse(`${date}T00:00:00Z`)
+        : Number.MAX_SAFE_INTEGER;
+    };
+    unique = unique
+      .sort((left, right) => upcomingPriority(left) - upcomingPriority(right))
+      .slice(0, Math.max(1, Number(process.env.THETADATA_MAX_TICKERS) || 8));
+  }
   const concurrency = thetaData ? 1 : Math.max(1, Math.min(8, Number(process.env.OPTIONS_DATA_CONCURRENCY) || 4));
   let cursor = 0;
   await Promise.all(Array.from({ length: Math.min(concurrency, unique.length) }, async () => {

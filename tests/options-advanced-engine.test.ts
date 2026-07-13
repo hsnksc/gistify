@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { CanonicalEarningsMarketData, CanonicalOptionQuote } from "../shared/optionsAnalytics";
 import { analyzeAdvancedOptions, calculatePortfolioRisk } from "../server/optionsAdvancedEngine";
-import { normalizeCanonicalMarketData, ThetaDataProvider } from "../server/optionsDataProvider";
+import { loadEarningsMarketData, normalizeCanonicalMarketData, ThetaDataProvider } from "../server/optionsDataProvider";
 import { buildStrategyIntelligence } from "../server/earningsQuantEngine";
 
 function normalCdf(value: number) {
@@ -60,6 +60,9 @@ describe("advanced options analytics", () => {
   afterEach(() => {
     vi.unstubAllGlobals();
     delete process.env.THETADATA_REQUEST_GAP_MS;
+    delete process.env.THETADATA_MAX_TICKERS;
+    delete process.env.OPTIONS_DATA_PROVIDER;
+    delete process.env.THETADATA_BASE_URL;
   });
   it("calibrates volatility slices, RND, flow, momentum and jump inputs from a liquid chain", () => {
     const result = analyzeAdvancedOptions(fixture());
@@ -128,6 +131,29 @@ describe("advanced options analytics", () => {
     expect(result?.asOf).toBe("2026-07-10T21:15:00Z");
     expect(result?.optionChain).toHaveLength(2);
     expect(result?.optionChain[0].right).toBe("CALL");
+  });
+
+  it("spends the ThetaData ticker budget on the nearest upcoming earnings", async () => {
+    process.env.OPTIONS_DATA_PROVIDER = "thetadata";
+    process.env.THETADATA_BASE_URL = "http://127.0.0.1:25503/v3";
+    process.env.THETADATA_REQUEST_GAP_MS = "0";
+    process.env.THETADATA_MAX_TICKERS = "2";
+    const requested: string[] = [];
+    vi.stubGlobal("fetch", vi.fn(async (input: string | URL) => {
+      const url = new URL(String(input));
+      requested.push(url.searchParams.get("symbol") || "");
+      return new Response(JSON.stringify({ response: [] }), { status: 200, headers: { "Content-Type": "application/json" } });
+    }));
+    const day = (offset: number) => new Date(Date.now() + offset * 86_400_000).toISOString().slice(0, 10);
+
+    await loadEarningsMarketData([
+      { ticker: "PAST", earningsDate: day(-2) },
+      { ticker: "FAR", earningsDate: day(20) },
+      { ticker: "NEXT", earningsDate: day(1) },
+      { ticker: "SOON", earningsDate: day(3) },
+    ]);
+
+    expect(requested).toEqual(["NEXT", "SOON"]);
   });
 
   it("blocks delayed ThetaData free EOD analytics from actionable trade status", () => {
