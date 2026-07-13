@@ -471,6 +471,7 @@ export function buildStrategyIntelligence(
   const regTMargin = round(isCredit ? Math.max(payoff.maxLoss, width * 100 - Math.abs(payoff.netDebit) * 100) : payoff.maxLoss, 0);
   const jumpPenalty = clamp(eventJumpVolatility * 0.6, 0, 12);
   const hasLiveUnderlying = Boolean(marketData || snapshot?.source === "fmp");
+  const isDelayedEod = Boolean(marketData && (marketData.delayedMinutes || 0) >= 60);
   const advancedBlocked = Boolean(advanced && (advanced.status === "UNAVAILABLE" || (marketData?.delayedMinutes || 0) >= 60));
   const advancedWatch = Boolean(advanced && advanced.status === "DEGRADED");
   const confidence = round(clamp(52 + Math.abs(compositeScore) * 0.35 + (hasLiveUnderlying ? 12 : 0) + (advanced?.status === "READY" ? 8 : 0) - macroPenalty - jumpPenalty, 35, 95), 0);
@@ -505,7 +506,7 @@ export function buildStrategyIntelligence(
 
   return {
     asOf: marketData?.asOf || snapshot?.asOf || new Date().toISOString(),
-    dataQuality: advanced?.status === "READY" ? "live" : hasLiveUnderlying ? "mixed" : "report",
+    dataQuality: isDelayedEod ? "eod" : advanced?.status === "READY" ? "live" : hasLiveUnderlying ? "mixed" : "report",
     sourceNote: advanced ? `${advanced.provider} zinciri + SVI/RND + kalibre jump Monte Carlo` : snapshot?.source === "fmp" ? "FMP günlük fiyat geçmişi + rapor CPR/IV + planlı-sıçrama Monte Carlo proxy" : "Rapor fiyatı + planlı-sıçrama kantitatif modeli (canlı zincir değildir)",
     market: { spot, previousClose, change1d, return5d, return20d, rsi14, realizedVol20d, momentumScore: round(priceScore + rsiScore, 0), momentumLabel: bias === "bullish" ? "Pozitif" : bias === "bearish" ? "Negatif" : "Dengeli" },
     options: {
@@ -562,7 +563,9 @@ export function buildQuantOverview(strategies: Strategy[]): EarningsQuantOvervie
   const intelligence = strategies.map(item => item.intelligence).filter(Boolean) as StrategyIntelligence[];
   return {
     asOf: new Date().toISOString(),
-    liveCoverage: intelligence.length ? round(intelligence.filter(item => item.dataQuality !== "report").length / intelligence.length * 100, 0) : 0,
+    marketDataCoverage: intelligence.length ? round(intelligence.filter(item => item.dataQuality !== "report").length / intelligence.length * 100, 0) : 0,
+    liveCoverage: intelligence.length ? round(intelligence.filter(item => item.dataQuality === "live").length / intelligence.length * 100, 0) : 0,
+    eodCoverage: intelligence.length ? round(intelligence.filter(item => item.dataQuality === "eod").length / intelligence.length * 100, 0) : 0,
     bullish: intelligence.filter(item => item.decision.bias === "bullish").length,
     neutral: intelligence.filter(item => item.decision.bias === "neutral").length,
     bearish: intelligence.filter(item => item.decision.bias === "bearish").length,

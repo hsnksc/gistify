@@ -9,6 +9,7 @@ import PortfolioBuilder from "@/components/earnings/PortfolioBuilder";
 import GreeksDashboard from "@/components/earnings/GreeksDashboard";
 import ActionPlan from "@/components/earnings/ActionPlan";
 import ReportDownload from "@/components/earnings/ReportDownload";
+import EarningsQuantCommandCenter from "@/components/earnings/EarningsQuantCommandCenter";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { AppLanguage, t } from "@/lib/i18n";
 
@@ -219,6 +220,7 @@ export default function EarningsPage({ language }: { language: AppLanguage }) {
       {activeTab === "overview" && (
         <div className="space-y-6">
           <EarningsPipelinePanel language={language} pipeline={pipeline} />
+          <EarningsQuantCommandCenter data={data} language={language} />
           {data.fomc ? (
             <FOMCWarningBanner fomc={data.fomc} language={language} />
           ) : null}

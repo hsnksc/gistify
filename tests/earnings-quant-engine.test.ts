@@ -57,7 +57,7 @@ describe("earnings quant engine", () => {
     expect(intelligence.decision.strategy).toBe("Bear Call Spread");
   });
 
-  it("summarizes strategy changes and live coverage", () => {
+  it("summarizes strategy changes and market-data coverage", () => {
     const intelligence = buildStrategyIntelligence(baseStrategy, [], {}, {
       ticker: "TEST",
       asOf: "2026-07-11",
@@ -68,7 +68,9 @@ describe("earnings quant engine", () => {
     });
     const overview = buildQuantOverview([{ ...baseStrategy, intelligence }]);
 
-    expect(overview.liveCoverage).toBe(100);
+    expect(overview.marketDataCoverage).toBe(100);
+    expect(overview.liveCoverage).toBe(0);
+    expect(overview.eodCoverage).toBe(0);
     expect(overview.strategyChanges).toBe(1);
     expect(overview.bullish + overview.neutral + overview.bearish).toBe(1);
   });

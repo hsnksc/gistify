@@ -141,6 +141,7 @@ describe("advanced options analytics", () => {
       undefined,
       data
     );
+    expect(result.dataQuality).toBe("eod");
     expect(result.decision.tradeStatus).toBe("BLOCKED");
     expect(result.options.advanced?.qualityGates).toContain("DELAYED_EOD_DATA");
     expect(result.alerts.some(alert => alert.title === "Gecikmeli EOD opsiyon verisi")).toBe(true);

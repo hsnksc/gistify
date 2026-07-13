@@ -49,8 +49,9 @@ export default function EarningsQuantCommandCenter({
               : "Every result includes data-quality labeling, change rationale, and pre-trade validation warnings."}
           </p>
         </div>
-        <div className="grid grid-cols-3 gap-2 sm:grid-cols-6 xl:w-[560px]">
-          <OverviewMetric label={tr ? "Canlı" : "Live"} value={`%${overview.liveCoverage}`} tone="cyan" />
+        <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 xl:w-[650px] xl:grid-cols-7">
+          <OverviewMetric label={tr ? "Veri kapsamı" : "Coverage"} value={`%${overview.marketDataCoverage}`} tone="cyan" />
+          <OverviewMetric label="EOD" value={`%${overview.eodCoverage}`} tone="amber" />
           <OverviewMetric label={tr ? "Boğa" : "Bull"} value={overview.bullish} tone="emerald" />
           <OverviewMetric label={tr ? "Nötr" : "Neutral"} value={overview.neutral} tone="slate" />
           <OverviewMetric label={tr ? "Ayı" : "Bear"} value={overview.bearish} tone="rose" />
@@ -144,7 +145,7 @@ export default function EarningsQuantCommandCenter({
             <span className={cn(
               "rounded-full border px-2 py-0.5 text-[9px] font-bold",
               intelligence.dataQuality === "live" ? "border-emerald-400/30 text-emerald-300" : "border-amber-400/30 text-amber-300"
-            )}>{intelligence.dataQuality === "live" ? "LIVE + MODEL" : "MODEL / VERIFY"}</span>
+            )}>{intelligence.dataQuality === "live" ? "LIVE + MODEL" : intelligence.dataQuality === "eod" ? "EOD + MODEL" : "MODEL / VERIFY"}</span>
           </div>
 
           <div className="mt-4 grid gap-2 sm:grid-cols-2">

@@ -100,7 +100,11 @@ export default function StrategyCard({ language, strategy }: StrategyCardProps) 
                 ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300"
                 : "border-amber-400/30 bg-amber-400/10 text-amber-300"
             )}>
-              {strategy.intelligence.dataQuality === "live" ? "LIVE" : "MODEL"}
+              {strategy.intelligence.dataQuality === "live"
+                ? "LIVE"
+                : strategy.intelligence.dataQuality === "eod"
+                  ? "EOD"
+                  : "MODEL"}
             </span>
           </div>
 

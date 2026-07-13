@@ -112,7 +112,7 @@ export interface Strategy {
 }
 
 export type QuantBias = "bullish" | "neutral" | "bearish";
-export type QuantDataQuality = "live" | "mixed" | "report";
+export type QuantDataQuality = "live" | "eod" | "mixed" | "report";
 export type QuantAlertSeverity = "info" | "warning" | "critical";
 export type QuantTradeStatus = "TRADE" | "WATCH" | "BLOCKED";
 
@@ -198,7 +198,9 @@ export interface StrategyIntelligence {
 
 export interface EarningsQuantOverview {
   asOf: string;
+  marketDataCoverage: number;
   liveCoverage: number;
+  eodCoverage: number;
   bullish: number;
   neutral: number;
   bearish: number;
