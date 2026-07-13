@@ -8,6 +8,7 @@ export const BLOCKED_FLOW_TICKERS = new Set([
   "AI",
   "CPO",
   "DTC",
+  "EB",
   "EN",
   "HTML",
   "PDF",

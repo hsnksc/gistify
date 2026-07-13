@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2030 DRAM Sıkışması: 157.5 EB Talep, 128.8 EB Arz, 28.7 EB Açık | $MU $SKHYNIX $SAMSUNG</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="2030 DRAM Sıkışması: 157.5 EB Talep, 128.8 EB Arz" />
+<meta property="og:description" content="2030'da küresel DRAM talebi 157.5 Ekabayt'a ulaşırken taban senaryo arz 128.8 EB'de kalıyor. 28.7 EB'lık açığın tamamı genel DRAM'da; HBM arz-talep dengesi tam oturuyor." />
+<meta property="og:url" content="https://gistify.pro/flow/daily-dram-squeeze-2030-13-temmuz-2026.html" />
+<meta property="og:image" content="https://gistify.pro/gistifylogo.png?v=20260713" />
+<meta property="og:site_name" content="Gistify" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="2030 DRAM Sıkışması: 157.5 EB Talep, 128.8 EB Arz" />
+<meta name="twitter:description" content="2030'da küresel DRAM talebi 157.5 Ekabayt'a ulaşırken taban senaryo arz 128.8 EB'de kalıyor. 28.7 EB'lık açığın tamamı genel DRAM'da; HBM arz-talep dengesi tam oturuyor." />
+<meta name="twitter:image" content="https://gistify.pro/gistifylogo.png?v=20260713" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:760px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent)}
+.section-body{padding:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+.card-h{font-size:.92rem;font-weight:700;margin:6px 0;color:var(--gf-text)}
+.card-p{font-size:.82rem;color:var(--gf-muted);line-height:1.5}
+.card-foot{margin-top:8px;font-size:.75rem;color:var(--gf-muted)}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+td{font-variant-numeric:tabular-nums}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+.chart-container{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:20px;margin:16px 0}
+.chart-title{font-size:.9rem;font-weight:700;color:var(--gf-accent);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.chart-title::before{content:'';display:inline-block;width:4px;height:16px;background:var(--gf-accent);border-radius:2px}
+.chart-caption{font-size:.78rem;color:var(--gf-muted);margin-top:12px;border-top:1px solid var(--gf-border-subtle);padding-top:10px}
+.donut-chart{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.donut-svg{flex-shrink:0}
+.donut-legend{display:flex;flex-direction:column;gap:8px}
+.donut-legend-item{display:flex;align-items:center;gap:8px;font-size:.85rem}
+.donut-legend-color{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.donut-legend-label{color:var(--gf-text)}
+.donut-legend-value{color:var(--gf-muted);font-size:.8rem}
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--gf-border)}
+.timeline-item{position:relative;margin-bottom:14px}
+.timeline-item::before{content:'';position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--gf-card);border:2px solid var(--gf-border)}
+.timeline-item.bull::before{border-color:var(--gf-success);background:var(--gf-success)}
+.timeline-item.bear::before{border-color:var(--gf-danger);background:var(--gf-danger)}
+.timeline-item.warn::before{border-color:var(--gf-warning);background:var(--gf-warning)}
+.timeline-date{font-size:0.78rem;color:var(--gf-muted);font-weight:600}
+.timeline-body{font-size:0.85rem;margin-top:3px;color:var(--gf-text)}
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid,.grid2,.grid3{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-13T18:47:00+03:00">
+  <h1 class="hero-h">2030 DRAM Sıkışması: 157.5 Ekabayt Talebe Karşı Sadece 128.8 Ekabayt Arz</h1>
+  <p class="hero-desc">2030 yılına kadar küresel DRAM talebi 157.5 Ekabayt düzeyine ulaşırken, taban senaryo arz yalnızca 128.8 EB'de kalıyor. Ortaya çıkan 28.7 EB'lık açığın <strong>tamamı genel DRAM'da</strong> yaşanıyor — HBM tarafında arz-talep dengesi tam otururken (37.5 EB'e karşı 37.5 EB), ajan yapay zeka işlemcilerinin devasa bellek iştahı krizin asıl itici gücü.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info hero-date" data-timestamp="2026-07-13T18:47:00+03:00">📅 13 Temmuz 2026</span>
+    <span class="hero-ticker">$MU</span>
+    <span class="hero-ticker">$SKHYNIX</span>
+    <span class="hero-ticker">$SAMSUNG</span>
+    <span class="meta-pill neu">Sektör Derin Analizi</span>
+    <span class="meta-pill bear">2030 Projeksiyonu</span>
+  </div>
+</div>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">📊 Genel Bakış</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-danger)">157.5 EB</div><div class="kpi-label">2030 Toplam DRAM Talebi</div></div>
+        <div class="kpi"><div class="kpi-num">128.8 EB</div><div class="kpi-label">2030 Taban Senaryo Arz</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-warning)">28.7 EB</div><div class="kpi-label">Açık (Genel DRAM Talebinin %24'ü)</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-accent)">%47.6</div><div class="kpi-label">Ajan İşlemcilerin Talep Payı</div></div>
+      </div>
+      <div class="insight-box">
+        Bu yapısal krizin arkasında, yapay zeka modellerinin yalnızca eğitim aşamasından, otonom kararlar alabilen <strong>"Ajan Yapay Zeka" (Agentic AI)</strong> ve çıkarım (inference) odaklı sistemlere geçişi yatıyor. Bu yeni mimari hem GPU hem de CPU tarafında muazzam bir hafıza bant genişliği ve kapasitesi talep ediyor. Sektör devleri Samsung, SK Hynix ve Micron fabrika genişletme çalışmalarına hız verse de 2028 yılından önce pazarda anlamlı bir rahatlama beklenmiyor.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🧠 2030 Talep Dağılımı: Ajan Yapay Zeka Baskın Güç</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem">2030 yılındaki DRAM tüketim senaryoları incelendiğinde, talebin neredeyse yarısının tek bir dinamik tarafından domine edildiği görülüyor: ajan yapay zekaya sahip işlemciler.</p>
+
+      <div class="chart-container">
+        <div class="chart-title">🥧 2030 DRAM Talep Dağılımı (157.5 EB)</div>
+        <div class="donut-chart">
+          <svg class="donut-svg" viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="chart"><circle cx="90" cy="90" r="70" fill="none" stroke="var(--gf-border)" stroke-width="20"/><circle cx="90" cy="90" r="70" fill="none" stroke="#f87171" stroke-width="20" stroke-dasharray="209.36 439.82" stroke-dashoffset="0.00" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #f8717166)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#38bdf8" stroke-width="20" stroke-dasharray="69.93 439.82" stroke-dashoffset="-209.36" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #38bdf866)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#fbbf24" stroke-width="20" stroke-dasharray="62.89 439.82" stroke-dashoffset="-279.29" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #fbbf2466)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#4ade80" stroke-width="20" stroke-dasharray="55.86 439.82" stroke-dashoffset="-342.18" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #4ade8066)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#94a3b8" stroke-width="20" stroke-dasharray="41.78 439.82" stroke-dashoffset="-398.04" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #94a3b866)"/><text x="90" y="85" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="700" font-family="inherit">157.5 EB</text><text x="90" y="102" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="inherit">2030 Talep</text></svg>
+          <div class="donut-legend">
+            <div class="donut-legend-item"><div class="donut-legend-color" style="background:#f87171"></div><div><div class="donut-legend-label">Ajan İşlemciler (Agentic CPUs)</div><div class="donut-legend-value">75.0 EB · %47.6</div></div></div>
+            <div class="donut-legend-item"><div class="donut-legend-color" style="background:#38bdf8"></div><div><div class="donut-legend-label">Genel Bulut / IaaS İşlemcileri</div><div class="donut-legend-value">25.0 EB · %15.9</div></div></div>
+            <div class="donut-legend-item"><div class="donut-legend-color" style="background:#fbbf24"></div><div><div class="donut-legend-label">HBM5</div><div class="donut-legend-value">22.5 EB · %14.3</div></div></div>
+            <div class="donut-legend-item"><div class="donut-legend-color" style="background:#4ade80"></div><div><div class="donut-legend-label">Tüketici Elektroniği DRAM</div><div class="donut-legend-value">20.0 EB · %12.7</div></div></div>
+            <div class="donut-legend-item"><div class="donut-legend-color" style="background:#94a3b8"></div><div><div class="donut-legend-label">HBM4E</div><div class="donut-legend-value">15.0 EB · %9.5</div></div></div>
+          </div>
+        </div>
+        <div class="chart-caption">Ajan işlemciler tek başına talebin neredeyse yarısını oluşturuyor; HBM5 ve HBM4E birlikte %23.8 ile ikinci en büyük bloğu temsil ediyor.</div>
+      </div>
+
+      <div class="insight-box warn">
+        <strong>Ajan Yapay Zeka Devrimi:</strong> Otonom kod denetimi, tedarik zinciri yönetimi ve finansal analiz gibi karmaşık, sürekli döngüler çalıştıran ajan sistemler, CPU-GPU oranlarını geçmişteki 1:4 seviyelerinden 1:1 ya da 1:2 seviyelerine çekiyor. Sektör raporlarına göre ajan iş yüklerini çalıştıran tek bir CPU'nun hafıza ihtiyacı 400 GB'a (mevcut sistemlerin 4 katı) çıkabiliyor.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🧩 Arz Analizi: Açığın Gerçek Kaynağı</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem">2030 için öngörülen 128.8 EB'lık toplam arz iki ana kategoriye ayrılıyor: Genel DRAM (DDR4, DDR5, LPDDR) 91.3 EB, HBM üretimi 37.5 EB.</p>
+
+      <div class="insight-box danger">
+        <strong>Krizin Esas Kaynağı:</strong> Genel DRAM pazarında talep 120.0 EB seviyesindeyken üretilebilecek miktar 91.3 EB'de kalıyor — 28.7 EB'lık açığın <strong>tamamı</strong> burada. HBM tarafında ise tablo tam tersi: 37.5 EB'lık talep, 37.5 EB'lık arzla birebir karşılanıyor. Yani 2030'un bellek krizi bir HBM sorunu değil, standart DRAM'in HBM üretimi tarafından "yutulmasının" sonucu.
+      </div>
+
+      <div class="grid2">
+        <div class="chart-container">
+          <div class="chart-title">💾 Genel DRAM: Talep vs Arz (2030T)</div>
+          <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">0</text><line x1="54" y1="171.0" x2="620" y2="171.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="175.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">35</text><line x1="54" y1="122.0" x2="620" y2="122.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="126.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">70</text><line x1="54" y1="73.0" x2="620" y2="73.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="77.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">105</text><line x1="54" y1="24.0" x2="620" y2="24.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="28.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">140</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="196.0" y="52.0" width="70" height="168.0" rx="4" fill="#f87171" opacity="1"/><text x="231.0" y="44.0" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">120.0 EB</text><text x="231.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Talep</text><rect x="408.0" y="92.2" width="70" height="127.8" rx="4" fill="#38bdf8" opacity="1"/><text x="443.0" y="84.2" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">91.3 EB</text><text x="443.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Arz</text></svg>
+          <div class="chart-caption">Genel DRAM'da 28.7 EB'lık açık, sunuculardan akıllı telefonlara kadar tüm ekosistemi vuruyor.</div>
+        </div>
+        <div class="chart-container">
+          <div class="chart-title">⚡ HBM: Talep vs Arz (2030T)</div>
+          <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">0</text><line x1="54" y1="154.7" x2="620" y2="154.7" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="158.7" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">15</text><line x1="54" y1="89.3" x2="620" y2="89.3" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="93.3" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">30</text><line x1="54" y1="24.0" x2="620" y2="24.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="28.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">45</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="196.0" y="56.7" width="70" height="163.3" rx="4" fill="#38bdf8" opacity="1"/><text x="231.0" y="48.7" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">37.5 EB</text><text x="231.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Talep</text><rect x="408.0" y="56.7" width="70" height="163.3" rx="4" fill="#4ade80" opacity="1"/><text x="443.0" y="48.7" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">37.5 EB</text><text x="443.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Arz</text></svg>
+          <div class="chart-caption">HBM'de talep ve arz birebir eşleşiyor — açık burada değil, standart DRAM'de.</div>
+        </div>
+      </div>
+
+      <div class="grid" style="margin-top:14px">
+        <div class="card">
+          <div class="card-label">Kapasite Tüketimi</div>
+          <div class="card-value down">4 kat</div>
+          <div class="card-note">1 GB HBM üretmek, standart DRAM'e göre yaklaşık 4 kat daha fazla wafer kapasitesi harcıyor</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Verimlilik (HBM3e, 12 katman)</div>
+          <div class="card-value neu">%50-60</div>
+          <div class="card-note">Standart DRAM'de verimlilik oranları %90'ın üzerinde</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Paketleme İhtiyacı</div>
+          <div class="card-value">TSV</div>
+          <div class="card-note">Silikon içi dikey hatlar üretimi yalnızca belirli özel tesislere hapsediyor</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🏭 Kapasite Genişletme Yarışı: Üç Büyükler</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem">Pazardaki devasa açığı kapatmak adına Samsung, SK Hynix ve Micron milyarlarca dolarlık bir yatırım yarışına girmiş durumda.</p>
+
+      <div class="chart-container">
+        <div class="chart-title">📈 SK Hynix Aylık Gofret (Wafer) Kapasitesi</div>
+        <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">0</text><line x1="54" y1="171.0" x2="620" y2="171.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="175.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">300</text><line x1="54" y1="122.0" x2="620" y2="122.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="126.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">600</text><line x1="54" y1="73.0" x2="620" y2="73.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="77.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">900</text><line x1="54" y1="24.0" x2="620" y2="24.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="28.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">1200</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="196.0" y="130.2" width="70" height="89.8" rx="4" fill="#fbbf24" opacity="1"/><text x="231.0" y="122.2" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">550k/ay</text><text x="231.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Şimdi</text><rect x="408.0" y="56.7" width="70" height="163.3" rx="4" fill="#4ade80" opacity="1"/><text x="443.0" y="48.7" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">1.000k/ay</text><text x="443.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2030 Hedef</text></svg>
+        <div class="chart-caption">SK Hynix, aylık gofret üretim kapasitesini 2030'a kadar neredeyse ikiye katlayarak 1 milyona çıkarmayı hedefliyor.</div>
+      </div>
+
+      <div class="grid3">
+        <div class="card">
+          <div class="card-label">SK Hynix</div>
+          <div class="card-h">Yongin Kümelenmesi &amp; M15X</div>
+          <div class="card-p">İlk fabrikanın kurulumu Şubat 2027'de başlıyor; her temiz oda 60.000 wafer/ay ekliyor, 2030'un ilk yarısında 360.000 tam kapasiteye ulaşılıyor. Cheongju'daki M15X 2026'nın ikinci yarısında devreye giriyor.</div>
+          <div class="card-foot">İlk Yongin fabrikası için ek 15 milyar $ onaylandı (2030 sonuna kadar)</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Samsung</div>
+          <div class="card-h">Yongin Ulusal Endüstriyel Kompleksi</div>
+          <div class="card-p">Altı planlı fabrikanın ilkinin açılışı 2030-2031'den Ekim 2029'a çekildi. Honam bölgesinde iki yeni bellek fabrikası için ~266.9 milyar $ (400 trilyon won) bütçe ayrıldı.</div>
+          <div class="card-foot">SK Hynix ve OpenAI ile Stargate projesi için 900.000 wafer/ay niyet mektubu imzalandı</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Micron</div>
+          <div class="card-h">Coğrafi Çeşitlendirme</div>
+          <div class="card-p">Idaho fabrikasından ilk ürün 2027 ortasında bekleniyor; ikinci Idaho fabrikası 2028 sonu hedefli. New York fabrikası 2030 ve sonrasında devreye giriyor.</div>
+          <div class="card-foot">2035'e kadar ABD tesislerine 250 milyar $ yatırım taahhüdü (DRAM üretiminin %40'ı ABD'de)</div>
+        </div>
+      </div>
+
+      <div class="insight-box" style="margin-top:14px">
+        <strong>Küresel Kapasite Projeksiyonu:</strong> Sektör genelinde DRAM kapasitesinin 2030'a kadar yıllık ortalama %4.8 büyüyerek ~2 milyon 12 inç wafer/aya ulaşması bekleniyor. Ancak bu büyüme oranı, özellikle HBM üretiminin kaynak yoğun doğası göz önüne alındığında talebi karşılamaya yetmeyebilir.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">💹 Fiyat &amp; Pazar Dinamikleri</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem">Arz-talep dengesizliği zaten fiyatlara yansıdı. Üreticiler spot piyasalar yerine uzun vadeli tedarik sözleşmelerine (LTA) ve büyük bulut sağlayıcılarına (CSP) öncelik veriyor — bu durum tüketici elektroniği ve oyun bilgisayarı pazarlarını ciddi bir arz kıskacına sokuyor.</p>
+
+      <div class="grid2">
+        <div class="chart-container">
+          <div class="chart-title">💰 DRAM Fiyat Artışı, Yıllık</div>
+          <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">0</text><line x1="54" y1="171.0" x2="620" y2="171.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="175.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">20</text><line x1="54" y1="122.0" x2="620" y2="122.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="126.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">40</text><line x1="54" y1="73.0" x2="620" y2="73.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="77.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">60</text><line x1="54" y1="24.0" x2="620" y2="24.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="28.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">80</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="196.0" y="73.0" width="70" height="147.0" rx="4" fill="#f87171" opacity="1"/><text x="231.0" y="65.0" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">+%60</text><text x="231.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2025</text><rect x="408.0" y="134.3" width="70" height="85.8" rx="4" fill="#f87171" opacity="1"/><text x="443.0" y="126.3" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">+%30-40</text><text x="443.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2026 T</text></svg>
+          <div class="chart-caption">2025'teki %60'lık artışın ardından 2026'da %30-40 ek zam bekleniyor.</div>
+        </div>
+        <div class="chart-container">
+          <div class="chart-title">🥧 Q1 2026 DRAM Pazar Payı</div>
+          <div class="donut-chart">
+            <svg class="donut-svg" viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="chart"><circle cx="90" cy="90" r="70" fill="none" stroke="var(--gf-border)" stroke-width="20"/><circle cx="90" cy="90" r="70" fill="none" stroke="#38bdf8" stroke-width="20" stroke-dasharray="167.13 439.82" stroke-dashoffset="0.00" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #38bdf866)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#4ade80" stroke-width="20" stroke-dasharray="127.55 439.82" stroke-dashoffset="-167.13" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #4ade8066)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#fbbf24" stroke-width="20" stroke-dasharray="98.96 439.82" stroke-dashoffset="-294.68" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #fbbf2466)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#94a3b8" stroke-width="20" stroke-dasharray="46.18 439.82" stroke-dashoffset="-393.64" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #94a3b866)"/><text x="90" y="85" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="700" font-family="inherit">Q1 2026</text><text x="90" y="102" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="inherit">DRAM Payı</text></svg>
+            <div class="donut-legend">
+              <div class="donut-legend-item"><div class="donut-legend-color" style="background:#38bdf8"></div><div><div class="donut-legend-label">Samsung</div><div class="donut-legend-value">%38</div></div></div>
+              <div class="donut-legend-item"><div class="donut-legend-color" style="background:#4ade80"></div><div><div class="donut-legend-label">SK Hynix</div><div class="donut-legend-value">%29</div></div></div>
+              <div class="donut-legend-item"><div class="donut-legend-color" style="background:#fbbf24"></div><div><div class="donut-legend-label">Micron</div><div class="donut-legend-value">%22.5</div></div></div>
+              <div class="donut-legend-item"><div class="donut-legend-color" style="background:#94a3b8"></div><div><div class="donut-legend-label">Diğer Üreticiler</div><div class="donut-legend-value">~%10.5</div></div></div>
+            </div>
+          </div>
+          <div class="chart-caption">"Diğer Üreticiler" dilimi kaynakta doğrudan verilmemiştir; ilk üç oyuncunun toplamının 100'e tamamlanmasıyla hesaplanan kalan paydır. Micron payı bazı raporlarda %11 olarak da anılıyor.</div>
+        </div>
+      </div>
+
+      <div class="insight-box">
+        <strong>HBM Pazar Konumu:</strong> SK Hynix, HBM pazarının lider oyuncusu; %23 pay ile Samsung'u geride bırakarak güçlü bir konum kazandığı raporlanıyor. Samsung güçlü bir rakip olmayı sürdürürken, Micron ABD CHIPS Act finansmanından faydalanarak HBM payını artırıyor.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🗓️ Zaman Çizelgesi: Kısa, Orta ve Uzun Vade</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="timeline">
+        <div class="timeline-item bear">
+          <div class="timeline-date">Kısa Vade (2026-2027)</div>
+          <div class="timeline-body">Bellek arzındaki sıkışma sürüyor. SK Hynix Yönetim Kurulu Başkanı Chey Tae-won: "2030'a kadar hâlâ bir miktar kıtlık var." Micron CEO'su Sanjay Mehrotra: 2028'den önce anlamlı yeni kapasite beklenmiyor; mevcut kapasite temel müşteri talebinin yalnızca %50-66'sını karşılıyor.</div>
+        </div>
+        <div class="timeline-item warn">
+          <div class="timeline-date">Orta Vade (2028-2029)</div>
+          <div class="timeline-body">Yeni fabrikalar devreye girdikçe kademeli bir rahatlama bekleniyor: ilk Yongin fabrikası 2030'un ilk yarısında tam kapasiteye ulaşıyor, Micron'un Idaho ve Singapur tesisleri katkı sağlamaya başlıyor, Samsung'un hızlandırılmış fabrika inşaatı ek arz getiriyor — DDR5, LPDDR sunucu belleği ve HBM için daha rahat bir arz ortamı.</div>
+        </div>
+        <div class="timeline-item bull">
+          <div class="timeline-date">Uzun Vade (2030 ve Sonrası)</div>
+          <div class="timeline-body">Ajan yapay zeka benimsenmesi kapasite genişlemesinden daha hızlı gerçekleşirse açık şiddetlenebilir; büyük fabrika projeleri ve tedarikçi genişlemeleri ancak 2029-2030'dan itibaren anlamlı hale geliyor. Krizin yapısal doğası, on yılın sonuna kadar tam olarak çözülmeyeceğini gösteriyor.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🎯 Stratejik Çıkarımlar</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="grid3">
+        <div class="card">
+          <div class="card-label">Bellek Üreticileri İçin</div>
+          <ul style="font-size:.82rem;color:var(--gf-muted);line-height:1.7;padding-left:18px">
+            <li>Wafer başlangıçlarını HBM ve gelişmiş DDR5 ürünlerine kaydırmaya devam et</li>
+            <li>Yeni nesil bellek teknolojilerine yatırımı hızlandır</li>
+            <li>Jeopolitik riskleri azaltmak için üretimi coğrafi olarak çeşitlendir</li>
+            <li>Kilit AI müşterileriyle uzun vadeli tedarik ortaklıkları kur</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-label">Yapay Zeka Şirketleri İçin</div>
+          <ul style="font-size:.82rem;color:var(--gf-muted);line-height:1.7;padding-left:18px">
+            <li>Kritik bileşenlere erişimi garantiye almak için tedarik güvenliği sağla</li>
+            <li>Bellek kullanımını optimize edecek sistem mimarileri tasarla</li>
+            <li>Tedarik zinciri riskini azaltmak için alternatif bellek teknolojilerini araştır</li>
+            <li>Altyapı bütçelemesinde sürekli bellek fiyat primlerini hesaba kat</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-label">Son Kullanıcılar İçin</div>
+          <ul style="font-size:.82rem;color:var(--gf-muted);line-height:1.7;padding-left:18px">
+            <li>2030'a kadar sürecek maliyet artışlarına hazırlıklı ol</li>
+            <li>Bellek yoğun sistemlerde daha uzun teslimat sürelerini planla</li>
+            <li>Arz kısıtlarından daha az etkilenen alternatif mimarileri değerlendir</li>
+            <li>Kritik uygulamalar için stratejik envanter yönetimini düşün</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🔗 Kaynaklar &amp; Metodoloji</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <table>
+        <thead><tr><th>Kaynak</th><th>Rol</th></tr></thead>
+        <tbody>
+          <tr><td>IDC Memory Market Outlook (2026)</td><td>2030'a kadar küresel bellek talep ve arz tahminleri</td></tr>
+          <tr><td>SK Hynix Kurumsal Duyuruları (2025-2026)</td><td>Kapasite genişletme planları ve HBM büyüme tahminleri</td></tr>
+          <tr><td>Micron Technology Yatırımcı Sunumları (2025-2026)</td><td>HBM pazar projeksiyonları ve kapasite takvimi</td></tr>
+          <tr><td>Samsung Electronics Kurumsal Raporları (2025-2026)</td><td>Fabrika inşaatı hızlandırma ve yatırım planları</td></tr>
+          <tr><td>TrendForce, SemiWiki, Forbes, The Elec, IntuitionLabs</td><td>DRAM pazar payı, kapasite ve fiyatlama analizleri</td></tr>
+        </tbody>
+      </table>
+      <div class="insight-box" style="margin-top:14px">
+        <strong>Metodoloji notu:</strong> Bu rapor, adı geçen sektör kaynaklarını sentezleyen bir AI deep-research sohbetinin (gemini.google.com) çıktısından derlenmiştir. Kaynağın kendi notuna göre: makaledeki tüm rakamlar 2030 için modellenmiş tahminlerdir; talep kategorileri birbirini dışlar ve toplamda 157.5 EB projeksiyonuna ulaşır. Q1 2026 pazar payı verisinde Micron için bazı raporlarda %11 rakamı da geçmektedir; bu rapor kaynağın ana rakamı olan %22.5'i esas almıştır.
+      </div>
+      <div class="insight-box" style="margin-top:10px">
+        <strong>Uyarı:</strong> Bu içerik sektör araştırması ve modelleme verilerine dayanan bir analiz derlemesidir. Yatırım tavsiyesi niteliği taşımaz.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">Gistify Flow | 13 Temmuz 2026 | DRAM &amp; Bellek Sektörü Derin Analizi</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The 2030 DRAM Squeeze: 157.5 EB Demand vs 128.8 EB Supply | $MU $SKHYNIX $SAMSUNG</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="The 2030 DRAM Squeeze: 157.5 EB Demand vs 128.8 EB Supply" />
+<meta property="og:description" content="Global DRAM demand hits 157.5 exabytes by 2030 while base-case supply tops out at 128.8 EB. The entire 28.7 EB shortfall sits in general DRAM; HBM supply and demand match exactly." />
+<meta property="og:url" content="https://gistify.pro/flow/daily-dram-squeeze-2030-13-temmuz-2026.en.html" />
+<meta property="og:image" content="https://gistify.pro/gistifylogo.png?v=20260713" />
+<meta property="og:site_name" content="Gistify" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="The 2030 DRAM Squeeze: 157.5 EB Demand vs 128.8 EB Supply" />
+<meta name="twitter:description" content="Global DRAM demand hits 157.5 exabytes by 2030 while base-case supply tops out at 128.8 EB. The entire 28.7 EB shortfall sits in general DRAM; HBM supply and demand match exactly." />
+<meta name="twitter:image" content="https://gistify.pro/gistifylogo.png?v=20260713" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:760px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gf-accent)}
+.section-body{padding:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+.card-h{font-size:.92rem;font-weight:700;margin:6px 0;color:var(--gf-text)}
+.card-p{font-size:.82rem;color:var(--gf-muted);line-height:1.5}
+.card-foot{margin-top:8px;font-size:.75rem;color:var(--gf-muted)}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+td{font-variant-numeric:tabular-nums}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+.chart-container{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:20px;margin:16px 0}
+.chart-title{font-size:.9rem;font-weight:700;color:var(--gf-accent);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.chart-title::before{content:'';display:inline-block;width:4px;height:16px;background:var(--gf-accent);border-radius:2px}
+.chart-caption{font-size:.78rem;color:var(--gf-muted);margin-top:12px;border-top:1px solid var(--gf-border-subtle);padding-top:10px}
+.donut-chart{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.donut-svg{flex-shrink:0}
+.donut-legend{display:flex;flex-direction:column;gap:8px}
+.donut-legend-item{display:flex;align-items:center;gap:8px;font-size:.85rem}
+.donut-legend-color{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.donut-legend-label{color:var(--gf-text)}
+.donut-legend-value{color:var(--gf-muted);font-size:.8rem}
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--gf-border)}
+.timeline-item{position:relative;margin-bottom:14px}
+.timeline-item::before{content:'';position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--gf-card);border:2px solid var(--gf-border)}
+.timeline-item.bull::before{border-color:var(--gf-success);background:var(--gf-success)}
+.timeline-item.bear::before{border-color:var(--gf-danger);background:var(--gf-danger)}
+.timeline-item.warn::before{border-color:var(--gf-warning);background:var(--gf-warning)}
+.timeline-date{font-size:0.78rem;color:var(--gf-muted);font-weight:600}
+.timeline-body{font-size:0.85rem;margin-top:3px;color:var(--gf-text)}
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid,.grid2,.grid3{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-13T18:47:00+03:00">
+  <h1 class="hero-h">The 2030 DRAM Squeeze: 157.5 Exabytes of Demand Meets Only 128.8 Exabytes of Supply</h1>
+  <p class="hero-desc">Global DRAM demand is projected to reach 157.5 exabytes by 2030, while base-case supply tops out at just 128.8 EB. The resulting 28.7 EB shortfall lands <strong>entirely in general DRAM</strong> — HBM supply and demand match exactly (37.5 EB vs 37.5 EB) — with agentic-AI CPUs' massive memory appetite driving the crisis.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info hero-date" data-timestamp="2026-07-13T18:47:00+03:00">📅 July 13, 2026</span>
+    <span class="hero-ticker">$MU</span>
+    <span class="hero-ticker">$SKHYNIX</span>
+    <span class="hero-ticker">$SAMSUNG</span>
+    <span class="meta-pill neu">Sector Deep Dive</span>
+    <span class="meta-pill bear">2030 Projection</span>
+  </div>
+</div>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">📊 Overview</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-danger)">157.5 EB</div><div class="kpi-label">2030 Total DRAM Demand</div></div>
+        <div class="kpi"><div class="kpi-num">128.8 EB</div><div class="kpi-label">2030 Base-Case Supply</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-warning)">28.7 EB</div><div class="kpi-label">Shortfall (24% of General DRAM Demand)</div></div>
+        <div class="kpi"><div class="kpi-num" style="color:var(--gf-accent)">47.6%</div><div class="kpi-label">Agentic CPUs' Share of Demand</div></div>
+      </div>
+      <div class="insight-box">
+        Behind this structural crisis is AI models' shift from pure training workloads to autonomous, decision-making <strong>"Agentic AI"</strong> and inference-focused systems. This new architecture demands massive memory bandwidth and capacity on both the GPU and CPU side. Industry leaders Samsung, SK Hynix, and Micron are accelerating fab expansions, yet meaningful relief isn't expected before 2028.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🧠 2030 Demand Breakdown: Agentic AI Is the Dominant Force</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem">Looking across 2030 DRAM consumption scenarios, nearly half of demand is dominated by a single dynamic: processors running agentic AI.</p>
+
+      <div class="chart-container">
+        <div class="chart-title">🥧 2030 DRAM Demand Breakdown (157.5 EB)</div>
+        <div class="donut-chart">
+          <svg class="donut-svg" viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="chart"><circle cx="90" cy="90" r="70" fill="none" stroke="var(--gf-border)" stroke-width="20"/><circle cx="90" cy="90" r="70" fill="none" stroke="#f87171" stroke-width="20" stroke-dasharray="209.36 439.82" stroke-dashoffset="0.00" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #f8717166)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#38bdf8" stroke-width="20" stroke-dasharray="69.93 439.82" stroke-dashoffset="-209.36" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #38bdf866)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#fbbf24" stroke-width="20" stroke-dasharray="62.89 439.82" stroke-dashoffset="-279.29" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #fbbf2466)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#4ade80" stroke-width="20" stroke-dasharray="55.86 439.82" stroke-dashoffset="-342.18" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #4ade8066)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#94a3b8" stroke-width="20" stroke-dasharray="41.78 439.82" stroke-dashoffset="-398.04" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #94a3b866)"/><text x="90" y="85" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="700" font-family="inherit">157.5 EB</text><text x="90" y="102" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="inherit">2030 Demand</text></svg>
+          <div class="donut-legend">
+            <div class="donut-legend-item"><div class="donut-legend-color" style="background:#f87171"></div><div><div class="donut-legend-label">Agentic CPUs</div><div class="donut-legend-value">75.0 EB · 47.6%</div></div></div>
+            <div class="donut-legend-item"><div class="donut-legend-color" style="background:#38bdf8"></div><div><div class="donut-legend-label">General Cloud / IaaS CPUs</div><div class="donut-legend-value">25.0 EB · 15.9%</div></div></div>
+            <div class="donut-legend-item"><div class="donut-legend-color" style="background:#fbbf24"></div><div><div class="donut-legend-label">HBM5</div><div class="donut-legend-value">22.5 EB · 14.3%</div></div></div>
+            <div class="donut-legend-item"><div class="donut-legend-color" style="background:#4ade80"></div><div><div class="donut-legend-label">Consumer DRAM</div><div class="donut-legend-value">20.0 EB · 12.7%</div></div></div>
+            <div class="donut-legend-item"><div class="donut-legend-color" style="background:#94a3b8"></div><div><div class="donut-legend-label">HBM4E</div><div class="donut-legend-value">15.0 EB · 9.5%</div></div></div>
+          </div>
+        </div>
+        <div class="chart-caption">Agentic CPUs alone account for nearly half of demand; HBM5 and HBM4E together form the second-largest block at 23.8%.</div>
+      </div>
+
+      <div class="insight-box warn">
+        <strong>The Agentic AI Revolution:</strong> Agentic systems running complex, continuous loops — autonomous code review, supply-chain coordination, financial analysis — are pulling CPU-to-GPU ratios from historical levels of 1:4 toward 1:1 or even 1:2. Industry reports indicate a single CPU running agentic workloads may require up to 400 GB of memory, four times current levels.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🧩 Supply Analysis: Where the Gap Really Is</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem">Projected 2030 supply of 128.8 EB splits into two categories: General DRAM (DDR4, DDR5, LPDDR) at 91.3 EB, and HBM production at 37.5 EB.</p>
+
+      <div class="insight-box danger">
+        <strong>The Real Source of the Crisis:</strong> General DRAM demand sits at 120.0 EB while producible supply reaches only 91.3 EB — the <strong>entire</strong> 28.7 EB shortfall lives here. HBM tells the opposite story: 37.5 EB of demand is matched one-to-one by 37.5 EB of supply. The 2030 memory crisis isn't an HBM problem — it's the result of standard DRAM being "cannibalized" by HBM production.
+      </div>
+
+      <div class="grid2">
+        <div class="chart-container">
+          <div class="chart-title">💾 General DRAM: Demand vs Supply (2030E)</div>
+          <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">0</text><line x1="54" y1="171.0" x2="620" y2="171.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="175.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">35</text><line x1="54" y1="122.0" x2="620" y2="122.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="126.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">70</text><line x1="54" y1="73.0" x2="620" y2="73.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="77.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">105</text><line x1="54" y1="24.0" x2="620" y2="24.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="28.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">140</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="196.0" y="52.0" width="70" height="168.0" rx="4" fill="#f87171" opacity="1"/><text x="231.0" y="44.0" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">120.0 EB</text><text x="231.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Demand</text><rect x="408.0" y="92.2" width="70" height="127.8" rx="4" fill="#38bdf8" opacity="1"/><text x="443.0" y="84.2" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">91.3 EB</text><text x="443.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Supply</text></svg>
+          <div class="chart-caption">General DRAM's 28.7 EB shortfall hits everything from servers to smartphones.</div>
+        </div>
+        <div class="chart-container">
+          <div class="chart-title">⚡ HBM: Demand vs Supply (2030E)</div>
+          <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">0</text><line x1="54" y1="154.7" x2="620" y2="154.7" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="158.7" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">15</text><line x1="54" y1="89.3" x2="620" y2="89.3" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="93.3" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">30</text><line x1="54" y1="24.0" x2="620" y2="24.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="28.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">45</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="196.0" y="56.7" width="70" height="163.3" rx="4" fill="#38bdf8" opacity="1"/><text x="231.0" y="48.7" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">37.5 EB</text><text x="231.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Demand</text><rect x="408.0" y="56.7" width="70" height="163.3" rx="4" fill="#4ade80" opacity="1"/><text x="443.0" y="48.7" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">37.5 EB</text><text x="443.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Supply</text></svg>
+          <div class="chart-caption">HBM demand and supply match exactly — the gap isn't here, it's in standard DRAM.</div>
+        </div>
+      </div>
+
+      <div class="grid" style="margin-top:14px">
+        <div class="card">
+          <div class="card-label">Capacity Consumption</div>
+          <div class="card-value down">4x</div>
+          <div class="card-note">Producing 1 GB of HBM consumes roughly 4x the wafer capacity of standard DRAM</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Yield (HBM3e, 12-layer)</div>
+          <div class="card-value neu">50-60%</div>
+          <div class="card-note">Standard DRAM yields exceed 90%</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Packaging Requirement</div>
+          <div class="card-value">TSV</div>
+          <div class="card-note">Through-silicon via technology confines production to specialized facilities</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🏭 The Capacity Expansion Race: The Big Three</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem">To close the enormous gap, Samsung, SK Hynix, and Micron are locked in a multi-billion-dollar investment race.</p>
+
+      <div class="chart-container">
+        <div class="chart-title">📈 SK Hynix Monthly Wafer Capacity</div>
+        <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">0</text><line x1="54" y1="171.0" x2="620" y2="171.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="175.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">300</text><line x1="54" y1="122.0" x2="620" y2="122.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="126.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">600</text><line x1="54" y1="73.0" x2="620" y2="73.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="77.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">900</text><line x1="54" y1="24.0" x2="620" y2="24.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="28.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">1200</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="196.0" y="130.2" width="70" height="89.8" rx="4" fill="#fbbf24" opacity="1"/><text x="231.0" y="122.2" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">550k/mo</text><text x="231.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Current</text><rect x="408.0" y="56.7" width="70" height="163.3" rx="4" fill="#4ade80" opacity="1"/><text x="443.0" y="48.7" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">1,000k/mo</text><text x="443.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2030 Target</text></svg>
+        <div class="chart-caption">SK Hynix aims to nearly double its monthly wafer output to 1 million by 2030.</div>
+      </div>
+
+      <div class="grid3">
+        <div class="card">
+          <div class="card-label">SK Hynix</div>
+          <div class="card-h">Yongin Cluster &amp; M15X</div>
+          <div class="card-p">First-fab equipment installation begins February 2027; each cleanroom adds 60,000 monthly wafer starts, reaching full 360,000-wafer capacity by H1 2030. Cheongju's M15X comes online in H2 2026.</div>
+          <div class="card-foot">Additional $15B approved for the first Yongin fab through 2030</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Samsung</div>
+          <div class="card-h">Yongin National Industrial Complex</div>
+          <div class="card-p">The first of six planned fabs was moved up from 2030-2031 to October 2029. ~$266.9B (400 trillion won) allocated for two new memory fabs in the Honam region.</div>
+          <div class="card-foot">Signed LOI with SK Hynix and OpenAI for 900,000 wafers/month for the Stargate project</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Micron</div>
+          <div class="card-h">Geographic Diversification</div>
+          <div class="card-p">First wafer output from the Idaho fab expected mid-2027; a second Idaho fab targeted for end of 2028. The New York fab comes online in 2030 and beyond.</div>
+          <div class="card-foot">$250B committed to US facilities by 2035 (targeting 40% of DRAM production in the US)</div>
+        </div>
+      </div>
+
+      <div class="insight-box" style="margin-top:14px">
+        <strong>Global Capacity Projection:</strong> Industry-wide DRAM capacity is expected to grow at an average annual rate of 4.8% through 2030, reaching roughly 2 million 12-inch wafers per month — a growth rate that may still prove insufficient given HBM's resource-intensive production.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">💹 Price &amp; Market Dynamics</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px;color:var(--gf-muted);font-size:0.88rem">The supply-demand imbalance has already hit prices. Manufacturers are prioritizing long-term supply agreements (LTAs) and large cloud service providers (CSPs) over the spot market — squeezing consumer electronics and gaming PC markets hard.</p>
+
+      <div class="grid2">
+        <div class="chart-container">
+          <div class="chart-title">💰 Annual DRAM Price Increase</div>
+          <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">0</text><line x1="54" y1="171.0" x2="620" y2="171.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="175.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">20</text><line x1="54" y1="122.0" x2="620" y2="122.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="126.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">40</text><line x1="54" y1="73.0" x2="620" y2="73.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="77.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">60</text><line x1="54" y1="24.0" x2="620" y2="24.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="28.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">80</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="196.0" y="73.0" width="70" height="147.0" rx="4" fill="#f87171" opacity="1"/><text x="231.0" y="65.0" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">+60%</text><text x="231.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2025</text><rect x="408.0" y="134.3" width="70" height="85.8" rx="4" fill="#f87171" opacity="1"/><text x="443.0" y="126.3" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">+30-40%</text><text x="443.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2026E</text></svg>
+          <div class="chart-caption">After a 60% jump in 2025, an additional 30-40% increase is projected for 2026.</div>
+        </div>
+        <div class="chart-container">
+          <div class="chart-title">🥧 Q1 2026 DRAM Market Share</div>
+          <div class="donut-chart">
+            <svg class="donut-svg" viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="chart"><circle cx="90" cy="90" r="70" fill="none" stroke="var(--gf-border)" stroke-width="20"/><circle cx="90" cy="90" r="70" fill="none" stroke="#38bdf8" stroke-width="20" stroke-dasharray="167.13 439.82" stroke-dashoffset="0.00" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #38bdf866)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#4ade80" stroke-width="20" stroke-dasharray="127.55 439.82" stroke-dashoffset="-167.13" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #4ade8066)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#fbbf24" stroke-width="20" stroke-dasharray="98.96 439.82" stroke-dashoffset="-294.68" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #fbbf2466)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#94a3b8" stroke-width="20" stroke-dasharray="46.18 439.82" stroke-dashoffset="-393.64" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #94a3b866)"/><text x="90" y="85" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="700" font-family="inherit">Q1 2026</text><text x="90" y="102" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="inherit">DRAM Share</text></svg>
+            <div class="donut-legend">
+              <div class="donut-legend-item"><div class="donut-legend-color" style="background:#38bdf8"></div><div><div class="donut-legend-label">Samsung</div><div class="donut-legend-value">38%</div></div></div>
+              <div class="donut-legend-item"><div class="donut-legend-color" style="background:#4ade80"></div><div><div class="donut-legend-label">SK Hynix</div><div class="donut-legend-value">29%</div></div></div>
+              <div class="donut-legend-item"><div class="donut-legend-color" style="background:#fbbf24"></div><div><div class="donut-legend-label">Micron</div><div class="donut-legend-value">22.5%</div></div></div>
+              <div class="donut-legend-item"><div class="donut-legend-color" style="background:#94a3b8"></div><div><div class="donut-legend-label">Other Manufacturers</div><div class="donut-legend-value">~10.5%</div></div></div>
+            </div>
+          </div>
+          <div class="chart-caption">The "Other Manufacturers" slice isn't stated directly in the source; it's the residual needed for the top three to sum to 100%. Some reports cite Micron's share as 11% instead.</div>
+        </div>
+      </div>
+
+      <div class="insight-box">
+        <strong>HBM Market Position:</strong> SK Hynix is reported as the leading HBM supplier, holding a strong position with a 23% share ahead of Samsung. Samsung remains a strong competitor, while Micron is gaining HBM share as a beneficiary of US CHIPS Act funding.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🗓️ Timeline: Short, Medium, and Long Term</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="timeline">
+        <div class="timeline-item bear">
+          <div class="timeline-date">Short-Term (2026-2027)</div>
+          <div class="timeline-body">Memory supply stays tight. SK Group Chairman Chey Tae-won: "until 2030 there's still some shortage." Micron CEO Sanjay Mehrotra: meaningful large-scale new capacity is unlikely before 2028; current capacity meets only 50-66% of core customer demand.</div>
+        </div>
+        <div class="timeline-item warn">
+          <div class="timeline-date">Medium-Term (2028-2029)</div>
+          <div class="timeline-body">Gradual relief arrives as new fabs come online: the first Yongin fab reaches full capacity by H1 2030, Micron's Idaho and Singapore facilities start contributing, and Samsung's accelerated construction adds supply — a more comfortable environment for DDR5, LPDDR server memory, and HBM.</div>
+        </div>
+        <div class="timeline-item bull">
+          <div class="timeline-date">Long-Term (2030 and Beyond)</div>
+          <div class="timeline-body">If agentic AI adoption accelerates faster than capacity expansion, the shortage could deepen; large fab projects and supplier expansions only become meaningful from 2029-2030 onward. The structural nature of the shortage suggests it won't fully resolve before the end of the decade.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🎯 Strategic Implications</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="grid3">
+        <div class="card">
+          <div class="card-label">For Memory Manufacturers</div>
+          <ul style="font-size:.82rem;color:var(--gf-muted);line-height:1.7;padding-left:18px">
+            <li>Keep shifting wafer starts toward HBM and advanced DDR5 products</li>
+            <li>Accelerate investment in next-generation memory technologies</li>
+            <li>Diversify manufacturing geographically to mitigate geopolitical risk</li>
+            <li>Build long-term supply partnerships with key AI customers</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-label">For AI Companies</div>
+          <ul style="font-size:.82rem;color:var(--gf-muted);line-height:1.7;padding-left:18px">
+            <li>Secure supply to guarantee access to critical components</li>
+            <li>Design system architectures that optimize memory usage</li>
+            <li>Explore alternative memory technologies and suppliers to reduce risk</li>
+            <li>Account for continued memory price premiums in infrastructure budgeting</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-label">For End Users</div>
+          <ul style="font-size:.82rem;color:var(--gf-muted);line-height:1.7;padding-left:18px">
+            <li>Expect continued cost increases through 2030</li>
+            <li>Plan for longer lead times on memory-intensive systems</li>
+            <li>Evaluate alternative architectures less exposed to supply constraints</li>
+            <li>Consider strategic inventory management for critical applications</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner">
+      <h2 class="section-title">🔗 Sources &amp; Methodology</h2>
+      <div class="icon">▾</div>
+    </div>
+    <div class="section-body">
+      <table>
+        <thead><tr><th>Source</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td>IDC Memory Market Outlook (2026)</td><td>Worldwide memory demand and supply forecasts through 2030</td></tr>
+          <tr><td>SK Hynix Corporate Announcements (2025-2026)</td><td>Capacity expansion plans and HBM growth forecasts</td></tr>
+          <tr><td>Micron Technology Investor Presentations (2025-2026)</td><td>HBM market projections and capacity timeline</td></tr>
+          <tr><td>Samsung Electronics Corporate Reports (2025-2026)</td><td>Fab construction acceleration and investment plans</td></tr>
+          <tr><td>TrendForce, SemiWiki, Forbes, The Elec, IntuitionLabs</td><td>DRAM market share, capacity, and pricing analysis</td></tr>
+        </tbody>
+      </table>
+      <div class="insight-box" style="margin-top:14px">
+        <strong>Methodology note:</strong> This report is compiled from an AI deep-research chat (gemini.google.com) that synthesized the named industry sources above. Per the source's own note: all figures are modeled estimates for 2030; demand categories are mutually exclusive and sum to the 157.5 EB total. For Q1 2026 market share, some reports cite Micron's figure as 11% instead of 22.5%; this report uses the source's primary figure of 22.5%.
+      </div>
+      <div class="insight-box" style="margin-top:10px">
+        <strong>Disclaimer:</strong> This content is a compiled analysis based on industry research and modeling data. It does not constitute investment advice.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">Gistify Flow | July 13, 2026 | DRAM &amp; Memory Sector Deep Dive</div>
+
+</div>
+</body>
+</html>
