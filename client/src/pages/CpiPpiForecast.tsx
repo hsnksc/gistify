@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { resolveForecastReportMonth } from "@shared/cpiPpiForecast";
 import type {
   CpiPpiForecastData, CpiPpiForecastPipelineState, MacroForecastBias, MacroForecastPipelineMetadata, MacroForecastPipelineStatus, MacroForecastRelease, MacroForecastScenario, MacroForecastWorkspaceData, MacroForecastWorkspaceKey, } from "@shared/cpiPpiForecast";
 import {
@@ -27,49 +28,8 @@ interface ArchiveMonthEntry {
   ppi: MacroForecastWorkspaceData | null;
 }
 
-const MONTH_NAME_TO_NUMBER: Record<string, number> = {
-  jan: 1, january: 1,
-  feb: 2, february: 2,
-  mar: 3, march: 3,
-  apr: 4, april: 4,
-  may: 5,
-  jun: 6, june: 6,
-  jul: 7, july: 7,
-  aug: 8, august: 8,
-  sep: 9, sept: 9, september: 9,
-  oct: 10, october: 10,
-  nov: 11, november: 11,
-  dec: 12, december: 12,
-};
-
-function parsePeriodMonth(period: string) {
-  const trimmed = period.trim();
-  if (!trimmed) {
-    return null;
-  }
-
-  const isoMatch = trimmed.match(/^(\d{4})-(\d{2})/);
-  if (isoMatch) {
-    return `${isoMatch[1]}-${isoMatch[2]}`;
-  }
-
-  const namedMatch = trimmed.match(/^([A-Za-z]+)\.?\s+(\d{4})$/);
-  if (namedMatch) {
-    const monthNumber = MONTH_NAME_TO_NUMBER[namedMatch[1].toLowerCase()];
-    if (monthNumber) {
-      return `${namedMatch[2]}-${String(monthNumber).padStart(2, "0")}`;
-    }
-  }
-
-  return null;
-}
-
 function forecastArchiveMonth(forecast: MacroForecastWorkspaceData) {
-  return (
-    parsePeriodMonth(forecast.release?.period || "") ||
-    (forecast.reportDate?.match(/^\d{4}-\d{2}/)?.[0] ?? null) ||
-    (forecast.generatedAt?.match(/^\d{4}-\d{2}/)?.[0] ?? null)
-  );
+  return resolveForecastReportMonth(forecast);
 }
 
 function formatMonthLabel(month: string, language: AppLanguage) {
@@ -1292,13 +1252,18 @@ export default function CpiPpiForecastPage({
             continue;
           }
 
-          const entry = entriesByMonth.get(record.month) ?? {
-            month: record.month,
+          // Older records were incorrectly keyed by the inflation period. Use
+          // the snapshot's publication month so those rows cannot make a
+          // finished month appear live or keep updating it in the UI.
+          const reportMonth =
+            forecastArchiveMonth(record.payload) || record.month;
+          const entry = entriesByMonth.get(reportMonth) ?? {
+            month: reportMonth,
             cpi: null,
             ppi: null,
           };
           entry[workspace] = sanitizeArchivedWorkspace(record.payload, workspace);
-          entriesByMonth.set(record.month, entry);
+          entriesByMonth.set(reportMonth, entry);
         }
       }
 

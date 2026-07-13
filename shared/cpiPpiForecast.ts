@@ -85,3 +85,73 @@ export interface CpiPpiForecastData {
   ppi?: MacroForecastWorkspaceData;
   pipeline: CpiPpiForecastPipelineState;
 }
+
+const MONTH_NAME_TO_NUMBER: Record<string, number> = {
+  jan: 1,
+  january: 1,
+  feb: 2,
+  february: 2,
+  mar: 3,
+  march: 3,
+  apr: 4,
+  april: 4,
+  may: 5,
+  jun: 6,
+  june: 6,
+  jul: 7,
+  july: 7,
+  aug: 8,
+  august: 8,
+  sep: 9,
+  sept: 9,
+  september: 9,
+  oct: 10,
+  october: 10,
+  nov: 11,
+  november: 11,
+  dec: 12,
+  december: 12,
+};
+
+function parseForecastMonth(value: string): string | null {
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return null;
+  }
+
+  const isoMatch = trimmed.match(/^(\d{4})-(\d{2})/);
+  if (isoMatch) {
+    const monthNumber = Number(isoMatch[2]);
+    return monthNumber >= 1 && monthNumber <= 12
+      ? `${isoMatch[1]}-${isoMatch[2]}`
+      : null;
+  }
+
+  const namedMatch = trimmed.match(/^([A-Za-z]+)\.?\s+(\d{4})$/);
+  if (!namedMatch) {
+    return null;
+  }
+
+  const monthNumber = MONTH_NAME_TO_NUMBER[namedMatch[1].toLowerCase()];
+  return monthNumber
+    ? `${namedMatch[2]}-${String(monthNumber).padStart(2, "0")}`
+    : null;
+}
+
+/**
+ * Returns the month in which a forecast snapshot is published and updated.
+ * The covered inflation period can be the prior month and remains available
+ * separately as `release.period`.
+ */
+export function resolveForecastReportMonth(
+  data: Pick<
+    MacroForecastWorkspaceData,
+    "reportDate" | "generatedAt" | "release"
+  >
+): string | null {
+  return (
+    parseForecastMonth(data.reportDate) ||
+    parseForecastMonth(data.generatedAt) ||
+    parseForecastMonth(data.release?.period || "")
+  );
+}
