@@ -10,11 +10,15 @@ export default function EarningsQuantCommandCenter({
   language,
   selectedTicker,
   onSelectTicker,
+  showOverview = true,
+  showTickerSelector = true,
 }: {
   data: EarningsStrategyData;
   language: AppLanguage;
   selectedTicker?: string | null;
   onSelectTicker?: (ticker: string) => void;
+  showOverview?: boolean;
+  showTickerSelector?: boolean;
 }) {
   const candidates = useMemo(
     () => data.strategies.filter(strategy => strategy.intelligence),
@@ -37,36 +41,41 @@ export default function EarningsQuantCommandCenter({
   const tr = language === "tr";
 
   return (
-    <section className="panel overflow-hidden border-cyan-400/20 bg-gradient-to-br from-cyan-500/[0.08] via-slate-950/80 to-violet-500/[0.06] p-5 md:p-7">
-      <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
-        <div className="max-w-3xl">
-          <div className="flex items-center gap-2 text-cyan-300">
-            <BrainCircuit className="size-5" />
-            <p className="text-[11px] font-bold uppercase tracking-[0.2em]">
-              {tr ? "Earnings Quant Intelligence" : "Earnings Quant Intelligence"}
+    <section className={cn(
+      "overflow-hidden border-cyan-400/20 bg-gradient-to-br from-cyan-500/[0.08] via-slate-950/80 to-violet-500/[0.06]",
+      showOverview ? "panel p-5 md:p-7" : "rounded-xl border p-3 md:p-4"
+    )}>
+      {showOverview ? (
+        <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-2 text-cyan-300">
+              <BrainCircuit className="size-5" />
+              <p className="text-[11px] font-bold uppercase tracking-[0.2em]">
+                {tr ? "Earnings Quant Intelligence" : "Earnings Quant Intelligence"}
+              </p>
+            </div>
+            <h2 className="mt-3 text-2xl font-bold tracking-tight text-white md:text-3xl">
+              {tr ? "Günlük koşullara uyarlanan opsiyon karar motoru" : "Options decisions that adapt to daily conditions"}
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-slate-400">
+              {overview.methodology} {tr
+                ? "Her sonuç veri kalitesi etiketi, değişim gerekçesi ve işlem öncesi doğrulama uyarılarıyla birlikte sunulur."
+                : "Every result includes data-quality labeling, change rationale, and pre-trade validation warnings."}
             </p>
           </div>
-          <h2 className="mt-3 text-2xl font-bold tracking-tight text-white md:text-3xl">
-            {tr ? "Günlük koşullara uyarlanan opsiyon karar motoru" : "Options decisions that adapt to daily conditions"}
-          </h2>
-          <p className="mt-3 text-sm leading-6 text-slate-400">
-            {overview.methodology} {tr
-              ? "Her sonuç veri kalitesi etiketi, değişim gerekçesi ve işlem öncesi doğrulama uyarılarıyla birlikte sunulur."
-              : "Every result includes data-quality labeling, change rationale, and pre-trade validation warnings."}
-          </p>
+          <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 xl:w-[650px] xl:grid-cols-7">
+            <OverviewMetric label={tr ? "Veri kapsamı" : "Coverage"} value={`%${overview.marketDataCoverage}`} tone="cyan" />
+            <OverviewMetric label="EOD" value={`%${overview.eodCoverage}`} tone="amber" />
+            <OverviewMetric label={tr ? "Boğa" : "Bull"} value={overview.bullish} tone="emerald" />
+            <OverviewMetric label={tr ? "Nötr" : "Neutral"} value={overview.neutral} tone="slate" />
+            <OverviewMetric label={tr ? "Ayı" : "Bear"} value={overview.bearish} tone="rose" />
+            <OverviewMetric label={tr ? "Değişim" : "Changes"} value={overview.strategyChanges} tone="amber" />
+            <OverviewMetric label={tr ? "Kritik" : "Critical"} value={overview.criticalAlerts} tone="rose" />
+          </div>
         </div>
-        <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 xl:w-[650px] xl:grid-cols-7">
-          <OverviewMetric label={tr ? "Veri kapsamı" : "Coverage"} value={`%${overview.marketDataCoverage}`} tone="cyan" />
-          <OverviewMetric label="EOD" value={`%${overview.eodCoverage}`} tone="amber" />
-          <OverviewMetric label={tr ? "Boğa" : "Bull"} value={overview.bullish} tone="emerald" />
-          <OverviewMetric label={tr ? "Nötr" : "Neutral"} value={overview.neutral} tone="slate" />
-          <OverviewMetric label={tr ? "Ayı" : "Bear"} value={overview.bearish} tone="rose" />
-          <OverviewMetric label={tr ? "Değişim" : "Changes"} value={overview.strategyChanges} tone="amber" />
-          <OverviewMetric label={tr ? "Kritik" : "Critical"} value={overview.criticalAlerts} tone="rose" />
-        </div>
-      </div>
+      ) : null}
 
-      <div className="mt-6 flex gap-2 overflow-x-auto pb-2">
+      {showTickerSelector ? <div className="mt-6 flex gap-2 overflow-x-auto pb-2">
         {candidates.map(strategy => (
           <button
             key={strategy.ticker}
@@ -88,9 +97,9 @@ export default function EarningsQuantCommandCenter({
             ) : null}
           </button>
         ))}
-      </div>
+      </div> : null}
 
-      <div className="mt-4 grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
+      <div className={cn("grid gap-4 xl:grid-cols-[0.9fr_1.1fr]", showOverview || showTickerSelector ? "mt-4" : "mt-0")}>
         <article className="rounded-xl border border-white/10 bg-slate-950/45 p-4">
           <div className="flex items-start justify-between gap-4">
             <div>

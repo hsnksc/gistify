@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, useTransition, } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  AlertTriangle, BarChart3, CalendarDays, ClipboardList, Clock3, FileText, Layers3, Radar, RefreshCw, Target, TrendingDown, TrendingUp, Zap, } from "lucide-react";
+  AlertTriangle, BarChart3, CalendarDays, ClipboardList, Clock3, FileText, Layers3, LayoutGrid, Radar, RefreshCw, Target, TrendingDown, TrendingUp, Zap, } from "lucide-react";
 import { useLocation } from "wouter";
 import type {
   EarningReportSourceRecord, EarningReportSourceSummary, } from "@shared/earningReports";
@@ -16,7 +16,7 @@ import EarningReportCalendarTab from "@/components/tabs/EarningReportCalendarTab
 import EarningReportPostTab from "@/components/tabs/EarningReportPostTab";
 import EarningReportPlaybookTab from "@/components/tabs/EarningReportPlaybookTab";
 import EarningReportRiskTab from "@/components/tabs/EarningReportRiskTab";
-import EarningsQuantCommandCenter from "@/components/earnings/EarningsQuantCommandCenter";
+import EarningsQuantCardGrid from "@/components/earnings/EarningsQuantCardGrid";
 import { useEarningsStrategy } from "@/pages/earnings/useEarningsStrategy";
 import {
   formatEarningReportDate,
@@ -25,10 +25,11 @@ import {
 } from "@/lib/earningReports";
 import { parseEarningReportMarkdown } from "@/lib/earningReportSource";
 
-type TabId = "post" | "playbook" | "calendar" | "risk";
+type TabId = "stocks" | "post" | "playbook" | "calendar" | "risk";
 
 function getTabs(language: AppLanguage) {
   return [
+    { id: "stocks" as const, label: language === "en" ? "Stocks" : "Hisseler", icon: LayoutGrid },
     { id: "post" as const, label: "Post", icon: FileText },
     { id: "playbook" as const, label: "Playbook", icon: ClipboardList },
     { id: "calendar" as const, label: t("common:calendar"), icon: CalendarDays },
@@ -46,7 +47,7 @@ interface EarningReportDetailResponse {
 
 export default function Home({ language }: { language: AppLanguage }) {
   const [, setLocation] = useLocation();
-  const [activeTab, setActiveTab] = useState<TabId>("post");
+  const [activeTab, setActiveTab] = useState<TabId>("stocks");
   const [selectedReportId, setSelectedReportId] = useState("");
   const [selectedTicker, setSelectedTicker] = useState<string | null>(null);
   const [reports, setReports] = useState<EarningReportSourceSummary[]>([]);
@@ -297,6 +298,21 @@ export default function Home({ language }: { language: AppLanguage }) {
     }
 
     switch (activeTab) {
+      case "stocks":
+        return quantData && selectedReportId === latestReport?.id ? (
+          <EarningsQuantCardGrid
+            data={quantData}
+            language={language}
+            selectedTicker={selectedTicker}
+            onSelectTicker={setSelectedTicker}
+          />
+        ) : (
+          <div className="rounded-xl border border-dashed border-border bg-background/35 px-4 py-10 text-center text-sm leading-6 text-muted-foreground">
+            {language === "en"
+              ? "Stock cards are available for the current quantitative earnings report."
+              : "Hisse kartları güncel nicel earnings raporu için kullanılabilir."}
+          </div>
+        );
       case "post":
         return (
           <EarningReportPostTab
@@ -448,17 +464,6 @@ export default function Home({ language }: { language: AppLanguage }) {
           }
         />
 
-        {quantData && selectedReportId === latestReport?.id ? (
-          <div className="mt-6">
-            <EarningsQuantCommandCenter
-              data={quantData}
-              language={language}
-              selectedTicker={selectedTicker}
-              onSelectTicker={setSelectedTicker}
-            />
-          </div>
-        ) : null}
-
         {hasReports ? (
           <section className="mobile-scroll-row mt-6 md:hidden">
             <div className="min-w-[17rem]">
@@ -512,42 +517,54 @@ export default function Home({ language }: { language: AppLanguage }) {
           <main ref={contentRef} className="min-w-0 space-y-6 overflow-x-hidden">
             <section className="panel p-4 md:p-6">
               {hasReports ? (
-                <div className="flex flex-col gap-4 border-b border-border pb-4 md:flex-row md:items-end md:justify-between">
+                <div className={`flex flex-col gap-4 border-b border-border pb-4 md:flex-row md:justify-between ${activeTab === "stocks" ? "md:items-center" : "md:items-end"}`}>
                   <div className="space-y-2">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
-                      {t("common:selectedReport")}
+                      {activeTab === "stocks"
+                        ? language === "en" ? "Current quant workspace" : "Güncel quant çalışma alanı"
+                        : t("common:selectedReport")}
                     </p>
-                    <h2 className="heading-condensed text-2xl text-foreground md:text-3xl">
+                    <h2 className={`heading-condensed text-foreground ${activeTab === "stocks" ? "text-lg" : "text-2xl md:text-3xl"}`}>
                       {selectedUploadLabel}
                     </h2>
-                    <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-                      {selectedHeadline}
-                    </p>
+                    {activeTab !== "stocks" ? (
+                      <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
+                        {selectedHeadline}
+                      </p>
+                    ) : null}
                   </div>
 
-                  <div className="grid gap-3 sm:grid-cols-3 md:w-full md:max-w-[420px] xl:max-w-none">
-                    <WorkspaceSummaryCard
-                      label={t("common:reportDateae39")}
-                      value={selectedReportDateLabel}
-                      hint={t("common:primaryDateParsedFromThe")}
-                      icon={CalendarDays}
-                      tone="info"
-                    />
-                    <WorkspaceSummaryCard
-                      label="VIX"
-                      value={selectedVixLabel}
-                      hint={t("common:volatilityContextForTheSelected")}
-                      icon={Zap}
-                      tone="caution"
-                    />
-                    <WorkspaceSummaryCard
-                      label={t("common:loaded")}
-                      value={selectedUploadLabel}
-                      hint={t("common:listOrderingUsesThisTimestamp")}
-                      icon={Clock3}
-                      tone="bull"
-                    />
-                  </div>
+                  {activeTab === "stocks" ? (
+                    <div className="flex flex-wrap items-center gap-2 text-[10px] font-bold uppercase tracking-wider">
+                      <span className="rounded-full border border-sky-400/20 bg-sky-400/8 px-2.5 py-1 text-sky-300">{selectedReportDateLabel}</span>
+                      <span className="rounded-full border border-amber-400/20 bg-amber-400/8 px-2.5 py-1 text-amber-300">VIX · {selectedVixLabel}</span>
+                      <span className="rounded-full border border-emerald-400/20 bg-emerald-400/8 px-2.5 py-1 text-emerald-300">{positions.length} {language === "en" ? "events" : "etkinlik"}</span>
+                    </div>
+                  ) : (
+                    <div className="grid gap-3 sm:grid-cols-3 md:w-full md:max-w-[420px] xl:max-w-none">
+                      <WorkspaceSummaryCard
+                        label={t("common:reportDateae39")}
+                        value={selectedReportDateLabel}
+                        hint={t("common:primaryDateParsedFromThe")}
+                        icon={CalendarDays}
+                        tone="info"
+                      />
+                      <WorkspaceSummaryCard
+                        label="VIX"
+                        value={selectedVixLabel}
+                        hint={t("common:volatilityContextForTheSelected")}
+                        icon={Zap}
+                        tone="caution"
+                      />
+                      <WorkspaceSummaryCard
+                        label={t("common:loaded")}
+                        value={selectedUploadLabel}
+                        hint={t("common:listOrderingUsesThisTimestamp")}
+                        icon={Clock3}
+                        tone="bull"
+                      />
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div className="rounded-xl border border-dashed border-border bg-background/35 p-4 text-sm leading-7 text-muted-foreground">
