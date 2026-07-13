@@ -13,7 +13,6 @@ import {
   CalendarDays,
   ClipboardList,
   Clock3,
-  FileText,
   Layers3,
   LayoutGrid,
   RefreshCw,
@@ -35,7 +34,6 @@ import WorkspaceHeroPanel from "@/components/workspace/WorkspaceHeroPanel";
 import WorkspaceLoadingState from "@/components/workspace/WorkspaceLoadingState";
 import WorkspaceSummaryCard from "@/components/workspace/WorkspaceSummaryCard";
 import EarningReportCalendarTab from "@/components/tabs/EarningReportCalendarTab";
-import EarningReportPostTab from "@/components/tabs/EarningReportPostTab";
 import EarningReportPlaybookTab from "@/components/tabs/EarningReportPlaybookTab";
 import EarningReportRiskTab from "@/components/tabs/EarningReportRiskTab";
 import EarningsQuantCardGrid from "@/components/earnings/EarningsQuantCardGrid";
@@ -47,7 +45,7 @@ import {
 } from "@/lib/earningReports";
 import { parseEarningReportMarkdown } from "@/lib/earningReportSource";
 
-type TabId = "stocks" | "post" | "playbook" | "calendar" | "risk";
+type TabId = "stocks" | "playbook" | "calendar" | "risk";
 
 function getTabs(language: AppLanguage) {
   return [
@@ -55,11 +53,6 @@ function getTabs(language: AppLanguage) {
       id: "stocks" as const,
       label: language === "en" ? "Stock Cards" : "Hisse Kartları",
       icon: LayoutGrid,
-    },
-    {
-      id: "post" as const,
-      label: language === "en" ? "Report Summary" : "Rapor Özeti",
-      icon: FileText,
     },
     {
       id: "playbook" as const,
@@ -330,7 +323,6 @@ export default function Home({ language }: { language: AppLanguage }) {
   const tabAvailability: Record<TabId, boolean> = {
     stocks:
       selectedReportId === latestReport?.id && (loadingQuant || hasQuantCards),
-    post: Boolean(parsedReport),
     playbook: positions.length > 0,
     calendar: Boolean(
       parsedReport &&
@@ -361,7 +353,7 @@ export default function Home({ language }: { language: AppLanguage }) {
       return;
     }
 
-    setActiveTab(availableTabs[0]?.id || "post");
+    setActiveTab(availableTabs[0]?.id || "playbook");
   }, [activeTab, availableTabIds, loadingDetail, loadingReports]);
 
   const handleTickerSelect = (ticker: string) => {
@@ -417,15 +409,6 @@ export default function Home({ language }: { language: AppLanguage }) {
             onSelectTicker={setSelectedTicker}
           />
         ) : null;
-      case "post":
-        return (
-          <EarningReportPostTab
-            report={parsedReport}
-            language={language}
-            reportDateLabel={selectedReportDateLabel}
-            updatedAtLabel={selectedUploadLabel}
-          />
-        );
       case "playbook":
         return (
           <EarningReportPlaybookTab
@@ -449,11 +432,11 @@ export default function Home({ language }: { language: AppLanguage }) {
         );
       default:
         return (
-          <EarningReportPostTab
+          <EarningReportPlaybookTab
             report={parsedReport}
             language={language}
-            reportDateLabel={selectedReportDateLabel}
-            updatedAtLabel={selectedUploadLabel}
+            selectedTicker={selectedTicker}
+            onSelectTicker={handleTickerSelect}
           />
         );
     }

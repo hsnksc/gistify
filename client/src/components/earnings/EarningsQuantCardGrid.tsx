@@ -13,6 +13,13 @@ import {
 import type { EarningsStrategyData, Strategy } from "@shared/earnings";
 import { type AppLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import EarningsQuantCommandCenter from "@/components/earnings/EarningsQuantCommandCenter";
 
 type FilterKey = "all" | "eod" | "changed" | "critical";
@@ -46,33 +53,17 @@ export default function EarningsQuantCardGrid({
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<FilterKey>("all");
   const [page, setPage] = useState(1);
-  const [detailTicker, setDetailTicker] = useState<string | null>(() => {
-    if (
-      selectedTicker &&
-      candidates.some(strategy => strategy.ticker === selectedTicker)
-    ) {
-      return selectedTicker;
-    }
-
-    return candidates[0]?.ticker || null;
-  });
+  const [detailTicker, setDetailTicker] = useState<string | null>(null);
 
   useEffect(() => {
     setDetailTicker(current => {
-      if (
-        selectedTicker &&
-        candidates.some(strategy => strategy.ticker === selectedTicker)
-      ) {
-        return selectedTicker;
-      }
-
       if (current && candidates.some(strategy => strategy.ticker === current)) {
         return current;
       }
 
-      return candidates[0]?.ticker || null;
+      return null;
     });
-  }, [candidates, selectedTicker]);
+  }, [candidates]);
 
   const filtered = useMemo(() => {
     const normalizedQuery = query
@@ -180,8 +171,8 @@ export default function EarningsQuantCardGrid({
             </h2>
             <p className="mt-1 max-w-2xl text-xs leading-5 text-slate-400">
               {tr
-                ? "Bir kart seçin; opsiyon yapısı, risk planı ve uyarılar kartların altında kalıcı olarak gösterilir."
-                : "Select a card; its options structure, risk plan, and alerts stay visible below the cards."}
+                ? "Bir karta tıklayın; opsiyon yapısı, risk planı ve uyarılar ayrıntı penceresinde açılır."
+                : "Click a card to open its options structure, risk plan, and alerts in a detail window."}
             </p>
           </div>
         </div>
@@ -248,7 +239,7 @@ export default function EarningsQuantCardGrid({
               key={strategy.ticker}
               strategy={strategy}
               tr={tr}
-              active={detailTicker === strategy.ticker}
+              active={(detailTicker || selectedTicker) === strategy.ticker}
               onOpen={() => openDetail(strategy.ticker)}
             />
           ))}
@@ -269,9 +260,7 @@ export default function EarningsQuantCardGrid({
           / {filtered.length} {tr ? "hisse" : "stocks"}
           <span className="ml-2 text-slate-600">
             ·{" "}
-            {tr
-              ? "Seçili kartın analizi aşağıdadır"
-              : "The selected card analysis is below"}
+            {tr ? "Kartı seçerek ayrıntıyı açın" : "Select a card for details"}
           </span>
         </p>
         <div className="flex items-center gap-2">
@@ -299,31 +288,33 @@ export default function EarningsQuantCardGrid({
         </div>
       </div>
 
-      {detailTicker ? (
-        <div className="scroll-mt-24 rounded-xl border border-cyan-400/20 bg-slate-950/30 p-2 md:p-4">
-          <div className="mb-3 flex flex-wrap items-center justify-between gap-2 border-b border-white/8 px-2 pb-3">
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-cyan-400">
-                {tr ? "Seçili hisse analizi" : "Selected stock analysis"}
-              </p>
-              <h3 className="mt-1 text-xl font-black text-white">
-                {detailTicker}
-              </h3>
-            </div>
-            <span className="rounded-full border border-emerald-400/20 bg-emerald-400/8 px-2.5 py-1 text-[10px] font-bold text-emerald-300">
-              {tr ? "Kart seçimi korunur" : "Selection stays open"}
-            </span>
-          </div>
-          <EarningsQuantCommandCenter
-            data={data}
-            language={language}
-            selectedTicker={detailTicker}
-            onSelectTicker={openDetail}
-            showOverview={false}
-            showTickerSelector={false}
-          />
-        </div>
-      ) : null}
+      <Dialog
+        open={Boolean(detailTicker)}
+        onOpenChange={open => !open && setDetailTicker(null)}
+      >
+        <DialogContent className="max-h-[92vh] max-w-[min(96vw,1240px)] overflow-y-auto p-2 sm:max-w-[min(96vw,1240px)] md:p-4">
+          <DialogHeader className="sr-only">
+            <DialogTitle>
+              {detailTicker} {tr ? "opsiyon stratejisi" : "options strategy"}
+            </DialogTitle>
+            <DialogDescription>
+              {tr
+                ? "Seçilen hisse için ayrıntılı quant analizi."
+                : "Detailed quant analysis for the selected stock."}
+            </DialogDescription>
+          </DialogHeader>
+          {detailTicker ? (
+            <EarningsQuantCommandCenter
+              data={data}
+              language={language}
+              selectedTicker={detailTicker}
+              onSelectTicker={openDetail}
+              showOverview={false}
+              showTickerSelector={false}
+            />
+          ) : null}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }
