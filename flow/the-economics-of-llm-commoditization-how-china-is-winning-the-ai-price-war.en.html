@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Economics of LLM Commoditization: How China is Winning the AI Price War</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="The Economics of LLM Commoditization: How China is Winning the AI Price War" />
+<meta property="og:description" content="Gistify flow report: Goldman Sachs analysis on China's LLM cost advantage through MoE architecture." />
+<meta property="og:url" content="https://gistify.pro/flow/the-economics-of-llm-commoditization-how-china-is-winning-the-ai-price-war.en.html" />
+<meta property="og:image" content="https://gistify.pro/gistifylogo.png?v=20260706" />
+<meta property="og:site_name" content="Gistify" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="The Economics of LLM Commoditization: How China is Winning the AI Price War" />
+<meta name="twitter:description" content="Gistify flow report: Goldman Sachs analysis on China's LLM cost advantage through MoE architecture." />
+<meta name="twitter:image" content="https://gistify.pro/gistifylogo.png?v=20260706" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:760px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.section-num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:var(--gf-accent-dim);color:var(--gf-accent);font-size:.78rem;font-weight:800;font-family:var(--gf-mono);flex-shrink:0}
+.section-body{padding:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.grid-3{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.text-right{text-align:right}
+.text-center{text-align:center}
+.table-wrap{overflow-x:auto}
+.chart-card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:18px;margin:14px 0}
+.chart-title{font-size:.88rem;font-weight:700;color:var(--gf-accent);margin-bottom:12px}
+.chart-caption{font-size:.8rem;color:var(--gf-muted);margin-top:10px;line-height:1.5}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;font-size:.78rem;color:var(--gf-muted)}
+.legend-item{display:flex;align-items:center;gap:6px}
+.legend-swatch{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:10px 0 20px}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:12px 10px;text-align:center}
+.kpi-num{font-size:1.2rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.7rem;color:var(--gf-muted);margin-top:2px}
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--gf-border)}
+.timeline-item{position:relative;margin-bottom:14px}
+.timeline-item::before{content:'';position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--gf-card);border:2px solid var(--gf-border)}
+.timeline-item.bull::before{border-color:var(--gf-success);background:var(--gf-success)}
+.timeline-item.bear::before{border-color:var(--gf-danger);background:var(--gf-danger)}
+.timeline-item.warn::before{border-color:var(--gf-warning);background:var(--gf-warning)}
+.timeline-date{font-size:0.78rem;color:var(--gf-muted);font-weight:600}
+.timeline-body{font-size:0.85rem;margin-top:3px;color:var(--gf-text)}
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-13T14:20:00+03:00">
+  <h1 class="hero-h">The Economics of LLM Commoditization: How China is Winning the AI Price War</h1>
+  <p class="hero-desc">Per Goldman Sachs' analysis, China's AI models have reached performance parity with US frontier models at a fraction of the cost, driven by architectural innovations like Mixture of Experts. The structural cost advantage mirrors the price-war dynamics seen in China's electric vehicle industry.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info">📅 July 13, 2026</span>
+    <span class="meta-pill neu">Sector: Artificial Intelligence</span>
+    <span class="meta-pill bull">Mixture of Experts</span>
+    <span class="meta-pill info">Goldman Sachs Analysis</span>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-num down">$1.67</div><div class="kpi-label">SDLLMTK Index / 1M tokens</div></div>
+    <div class="kpi"><div class="kpi-num up">51–61%</div><div class="kpi-label">OpenRouter Token Share (China)</div></div>
+    <div class="kpi"><div class="kpi-num up">85–89%</div><div class="kpi-label">Coding / Agentic Task Share</div></div>
+    <div class="kpi"><div class="kpi-num">879B RMB</div><div class="kpi-label">2030 Revenue Projection</div></div>
+  </div>
+</div>
+
+<section>
+  <div class="section-head" id="sec-summary">
+    <div class="section-head-inner">
+      <h2 class="section-title"><span class="section-num">01</span> Executive Summary</h2>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px">The LLM market is shifting from a capability-driven race to a cost-driven commodity market. Per Goldman Sachs, China's top-tier models have achieved performance parity with US models through architectural innovations that reduce activated parameters to just 3–7% of total model size.</p>
+      <div class="grid grid-3">
+        <div class="card">
+          <div class="card-label">Coding Price</div>
+          <div class="card-value up">$1 / 1M tokens</div>
+          <div class="card-note">GLM-5.2, Qwen 3.7 Max — vs $4–8 in the US</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Activation Ratio</div>
+          <div class="card-value up">3.1–7.1%</div>
+          <div class="card-note">DeepSeek V4 (49B/1.6T) — Tencent Hy3 (7.1%)</div>
+        </div>
+        <div class="card">
+          <div class="card-label">EBIT Margin (2026)</div>
+          <div class="card-value down">-30% / -39%</div>
+          <div class="card-note">Projected to turn +14% / +22% by 2030</div>
+        </div>
+      </div>
+      <div class="insight-box">
+        <strong>Key Finding:</strong> The Silicon Data LLM Token Expenditure Index (SDLLMTK) declined from $2.07 to $1.67 between June and July 2026 (-19%). Goldman Sachs forecasts China's AI model revenue growing from 35 billion RMB in 2026 to 879 billion RMB by 2030 — a 25x increase.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-inflection">
+    <div class="section-head-inner">
+      <h2 class="section-title"><span class="section-num">02</span> The Inflection Point: From Cost to Efficiency</h2>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px">Goldman Sachs frames this as a transition from "DeepSeek's cost-efficiency moment" in 2025 to "Zhipu GLM's model intelligence moment" in 2026 — Chinese models now demonstrate that comparable capability can be delivered at dramatically lower cost.</p>
+      <div class="chart-card">
+        <div class="chart-title">📉 SDLLMTK Price Index ($/1M tokens)</div>
+        <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$0</text><line x1="54" y1="180.8" x2="620" y2="180.8" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="184.8" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$0.5</text><line x1="54" y1="141.6" x2="620" y2="141.6" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="145.6" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$1</text><line x1="54" y1="102.4" x2="620" y2="102.4" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="106.4" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$1.5</text><line x1="54" y1="63.2" x2="620" y2="63.2" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="67.2" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$2</text><line x1="54" y1="24.0" x2="620" y2="24.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="28.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$2.5</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="196.0" y="57.7" width="70" height="162.3" rx="4" fill="#fbbf24" opacity="1"/><text x="231.0" y="49.7" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$2.07</text><text x="231.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Peak (Jun 2026)</text><rect x="408.0" y="89.1" width="70" height="130.9" rx="4" fill="#4ade80" opacity="1"/><text x="443.0" y="81.1" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$1.67</text><text x="443.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Current (Jul 2026)</text></svg>
+        <p class="chart-caption">The blended market price fell 19% in six weeks from the June peak — coinciding with aggressive price cuts from DeepSeek, Xiaomi, and others.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Segment</th><th>Models</th><th>Price / 1M tokens</th><th>Gross Margin</th></tr></thead>
+          <tbody>
+            <tr><td>High-End</td><td>Zhipu GLM-5.2, Alibaba Qwen 3.7 Max</td><td>~$1</td><td>10–20%</td></tr>
+            <tr><td>Low-End</td><td>Agent-oriented models</td><td>$0.06–0.2</td><td>MiniMax: 60–70% of revenue overseas</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="insight-box warn">
+        <strong>Two-Tiered Structure:</strong> The high-end segment prices at 10–25% of US SOTA pricing, while the low-end segment targets price-sensitive SMEs and individual developers — allowing Chinese providers to compete on both quality and price.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-architecture">
+    <div class="section-head-inner">
+      <h2 class="section-title"><span class="section-num">03</span> The Architecture Behind China's Cost Advantage</h2>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px">The primary architectural innovation enabling China's cost advantage is Mixture of Experts (MoE), which dramatically reduces computational requirements for both training and inference — maintaining large total parameter counts for capability while activating only a small subset per inference.</p>
+      <div class="chart-card">
+        <div class="chart-title">🧠 Parameter Activation Ratio by Model</div>
+        <svg viewBox="0 0 640 250" width="100%" height="250" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="220" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="238" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">0%</text><line x1="287.5" y1="16" x2="287.5" y2="220" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="287.5" y="238" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">2%</text><line x1="385.0" y1="16" x2="385.0" y2="220" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="385.0" y="238" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">4%</text><line x1="482.5" y1="16" x2="482.5" y2="220" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="482.5" y="238" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">6%</text><line x1="580.0" y1="16" x2="580.0" y2="220" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="580.0" y="238" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">8%</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">DeepSeek V4-Pro</text><rect x="190" y="22.8" width="151.1" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="349.1" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">3.1%</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Kimi K2.7</text><rect x="190" y="56.8" width="156.0" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="354.0" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">3.2%</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Xiaomi MiMo-V2.5-Pro</text><rect x="190" y="90.8" width="199.9" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="397.9" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">4.1%</text><text x="178" y="138.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Z.ai GLM-5.2</text><rect x="190" y="124.8" width="263.3" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="461.3" y="138.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">5.4%</text><text x="178" y="172.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">MiniMax M3</text><rect x="190" y="158.8" width="263.3" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="461.3" y="172.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">5.4%</text><text x="178" y="206.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Tencent Hy3-preview</text><rect x="190" y="192.8" width="346.1" height="19.0" rx="4" fill="#fbbf24" opacity="0.88"/><text x="544.1" y="206.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">7.1%</text></svg>
+        <p class="chart-caption">A lower activation ratio means 3–5x lower compute cost versus dense transformer models. DeepSeek V4-Pro leads with the lowest ratio at 3.1%.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Model</th><th>Total Parameters</th><th>Activated Parameters</th><th>Ratio</th></tr></thead>
+          <tbody>
+            <tr><td>DeepSeek V4-Pro</td><td>1.6T</td><td>49B</td><td><span class="tag tag-green">3.1%</span></td></tr>
+            <tr><td>Xiaomi MiMo-V2.5-Pro</td><td>1.02T</td><td>42B</td><td><span class="tag tag-green">4.1%</span></td></tr>
+            <tr><td>Kimi K2.7</td><td>1T</td><td>32B</td><td><span class="tag tag-green">3.2%</span></td></tr>
+            <tr><td>Z.ai GLM-5.2</td><td>744B</td><td>40B</td><td><span class="tag tag-blue">5.4%</span></td></tr>
+            <tr><td>MiniMax M3</td><td>428B</td><td>23B</td><td><span class="tag tag-blue">5.4%</span></td></tr>
+            <tr><td>Tencent Hy3-preview</td><td>295B</td><td>21B</td><td><span class="tag tag-orange">7.1%</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin:12px 0;color:var(--gf-muted);font-size:0.88rem">Beyond MoE, complementary innovations include sparse attention mechanisms, multi-head latent attention (memory compression), multi-token prediction, and DeepSeek's DSpark speculative decoding framework (60–85% faster generation without quality loss).</p>
+      <div class="insight-box">
+        <strong>Training Cost:</strong> DeepSeek R1 was trained for roughly $6M (671B parameters, 37B activated) versus GPT-4's estimated $100M+ training cost. Per a RAND report, Chinese models generally cost 1/6 to 1/4 of comparable US systems.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-economics">
+    <div class="section-head-inner">
+      <h2 class="section-title"><span class="section-num">04</span> Unit Economics: The Path from Loss to Profitability</h2>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px">Chinese providers currently operate at negative margins to gain market share, with a clear path to profitability — mirroring the early stages of China's EV price war, where BYD and others prioritized market share over short-term profit.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Model Type</th><th>Price / 1M tokens</th><th>EBIT Margin (2026)</th><th>Gross Margin</th></tr></thead>
+          <tbody>
+            <tr><td>Value-for-Money Agentic</td><td>$0.20</td><td><span class="tag tag-red">-30%</span></td><td>10–15%</td></tr>
+            <tr><td>Best Performing Coding</td><td>$1.00</td><td><span class="tag tag-red">-39%</span></td><td>10–20%</td></tr>
+            <tr><td>US SOTA Equivalent</td><td>$4–8</td><td><span class="tag tag-green">Positive</span></td><td>30–40%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">📈 EBIT Margin: 2026 → 2030 Projection</div>
+        <svg viewBox="0 0 700 158" width="100%" height="158" role="img" aria-label="chart"><line x1="169.0" y1="18" x2="169.0" y2="124" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="169.0" y="140" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">-40%</text><line x1="315.0" y1="18" x2="315.0" y2="124" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="315.0" y="140" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">-20%</text><line x1="461.0" y1="18" x2="461.0" y2="124" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="461.0" y="140" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">0%</text><line x1="607.0" y1="18" x2="607.0" y2="124" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="607.0" y="140" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">+20%</text><text x="86" y="48.0" text-anchor="end" font-size="11" font-weight="700" fill="#38bdf8" font-family="inherit">Value-for-Money Agentic</text><rect x="242.0" y="34" width="321.2" height="20" rx="5" fill="#fbbf24" opacity="0.92"/><text x="402.6" y="48.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#0a1628" font-family="inherit">-30% → +14%</text><text x="86" y="98.0" text-anchor="end" font-size="11" font-weight="700" fill="#38bdf8" font-family="inherit">Best Performing Coding</text><rect x="176.3" y="84" width="445.3" height="20" rx="5" fill="#fbbf24" opacity="0.92"/><text x="399.0" y="98.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#0a1628" font-family="inherit">-39% → +22%</text><line x1="461.0" y1="14" x2="461.0" y2="128" stroke="#e2e8f0" stroke-width="1.4" stroke-dasharray="3 3"/><text x="461.0" y="10" text-anchor="middle" font-size="10.5" font-weight="700" fill="#e2e8f0" font-family="inherit">Breakeven</text></svg>
+        <p class="chart-caption">Scale economies (a projected 25x increase in daily token consumption from 2026–2030) and architectural efficiency drive both model tiers to positive EBIT margin by 2030.</p>
+      </div>
+      <p style="margin:12px 0;color:var(--gf-muted);font-size:0.88rem">Drivers of margin expansion: scale economies (35T to 460T daily tokens), continued MoE efficiency gains, a shift from pure open-source to revenue-sharing open-weight licenses, and channel diversification into international and enterprise segments.</p>
+      <div class="insight-box warn">
+        <strong>The Open-Source Monetization Challenge:</strong> Open-source models can be hosted by third parties (e.g. Alibaba Cloud's Bailian MaaS) without direct payment to the model creator. Solution path: shift from MIT license to open-weight + community license with revenue-sharing agreements for commercial use — a model pioneered by MiniMax's M series.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-adoption">
+    <div class="section-head-inner">
+      <h2 class="section-title"><span class="section-num">05</span> Market Dynamics: The OpenRouter Evidence</h2>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px">OpenRouter, the largest platform routing requests across hundreds of AI models, provides the clearest evidence of China's rising share. In the week of Feb 9–15, 2026, Chinese models passed US models for the first time (4.12T vs 2.94T tokens). US models held ~70% share in mid-2025; by June 2026 that fell to ~30%.</p>
+      <div class="chart-card">
+        <div class="chart-title">🇨🇳 China Token Usage Share by Task Type</div>
+        <svg viewBox="0 0 640 182" width="100%" height="182" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">0%</text><line x1="287.5" y1="16" x2="287.5" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="287.5" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">25%</text><line x1="385.0" y1="16" x2="385.0" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="385.0" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">50%</text><line x1="482.5" y1="16" x2="482.5" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="482.5" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">75%</text><line x1="580.0" y1="16" x2="580.0" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="580.0" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">100%</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Code</text><rect x="190" y="22.8" width="347.1" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="545.1" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">89%</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Agent</text><rect x="190" y="56.8" width="331.5" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="529.5" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">85%</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">General</text><rect x="190" y="90.8" width="280.8" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="478.8" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">72%</text><text x="178" y="138.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Data</text><rect x="190" y="124.8" width="218.4" height="19.0" rx="4" fill="#fbbf24" opacity="0.88"/><text x="416.4" y="138.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">56%</text><line x1="385.0" y1="12" x2="385.0" y2="156" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 3"/><text x="385.0" y="8" text-anchor="middle" font-size="10.5" font-weight="600" fill="#38bdf8" font-family="inherit">Parity</text></svg>
+        <p class="chart-caption">Chinese models command 85%+ share in coding and agentic tasks, well above parity — the gap is narrower in general and data tasks.</p>
+      </div>
+      <p style="margin:12px 0;color:var(--gf-muted);font-size:0.88rem">Programming workloads grew from ~11% to over 50% of total OpenRouter token volume through 2025; agentic workflows now account for 50%+ of all output tokens. A single overnight coding run can invoke a model thousands of times, making per-million-token pricing the dominant cost factor.</p>
+      <div class="insight-box">
+        <strong>Why China Wins in Coding/Agents:</strong> (1) Cost Sensitivity — each task can burn hundreds of thousands of tokens, making a 6–8x price gap existential. (2) Performance Parity — GLM-5.2 and Qwen 3.7 Max match coding performance. (3) Open-Weight Availability — enables self-hosting and customization. (4) Community Adoption — developer communities have rapidly embraced Chinese models for price/performance.
+      </div>
+      <div class="insight-box warn">
+        <strong>From Token Maximization to ROI Priority:</strong> In late 2025–early 2026, enterprises equated high token consumption with productivity. From 2026 on, clear task boundaries, measurable outputs, and actual business impact take priority — a shift that favors Chinese models' better economics on high-volume, long-duration tasks.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-ev">
+    <div class="section-head-inner">
+      <h2 class="section-title"><span class="section-num">06</span> The Price War: The EV Playbook Parallel</h2>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px">The LLM price war bears striking similarities to China's EV market strategy — though the digital product's near-zero marginal distribution cost and network effects may accelerate this transition even faster.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Aspect</th><th>EV Market</th><th>LLM Market</th></tr></thead>
+          <tbody>
+            <tr><td>Initial Strategy</td><td>Price undercutting for share</td><td>Aggressive pricing below cost</td></tr>
+            <tr><td>Margin Profile</td><td>Negative initially, improving with scale</td><td>-30%/-39% EBIT → +14%/+22% projected</td></tr>
+            <tr><td>Cost Advantage</td><td>Vertical integration, local supply chain</td><td>MoE architecture, algorithmic efficiency</td></tr>
+            <tr><td>Market Share</td><td>BYD ~50% in mainstream segment</td><td>China: 51–61% OpenRouter token volume</td></tr>
+            <tr><td>Global Expansion</td><td>Export focus</td><td>International API availability</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="grid" style="margin-top:14px">
+        <div class="card">
+          <div class="card-label">Consumers Win</div>
+          <div class="card-value up">Lower Cost</div>
+          <div class="card-note">Dramatically lower prices, SME/developer access, faster iteration</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Shareholders Face Uncertainty</div>
+          <div class="card-value down">Margin Pressure</div>
+          <div class="card-note">Capital-intensive competition, overcapacity risk, potential consolidation</div>
+        </div>
+      </div>
+      <div class="insight-box">
+        <strong>Long-Term Winners:</strong> Goldman Sachs' framework suggests winners will combine pricing power (release speed, benchmark performance), cost advantage (throughput, cache hit rate, activation ratio), and financial strength (cash reserves, access to capital).
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-players">
+    <div class="section-head-inner">
+      <h2 class="section-title"><span class="section-num">07</span> Competitive Landscape: Key Players</h2>
+    </div>
+    <div class="section-body">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Zhipu AI</div>
+          <div class="card-value neu">Neutral — $110B Target</div>
+          <div class="card-note">GLM-5.2 (744B/40B, 5.4%). Evolving toward open-weight + community license.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">DeepSeek</div>
+          <div class="card-value">Unlisted</div>
+          <div class="card-note">V4-Pro (1.6T/49B, 3.1%). Lowest activation ratio, DSpark speculative decoding.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">ByteDance</div>
+          <div class="card-value">Unlisted</div>
+          <div class="card-note">Seedance model. 70% gross margin, $2B+ ARR run-rate. TikTok/Doubao distribution edge.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">MiniMax</div>
+          <div class="card-value up">Buy — HK$860 Target</div>
+          <div class="card-note">M3 (428B/23B, 5.4%). 13x 2026 ARR — a discount to peers.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Kuaishou</div>
+          <div class="card-value up">Buy</div>
+          <div class="card-note">Video generation (Kling model). Functional breakthroughs expected in H2 2026.</div>
+        </div>
+      </div>
+      <p style="margin:14px 0 6px;color:var(--gf-muted);font-size:0.88rem">Why Chinese providers embrace open-source/open-weight: deployment flexibility (hosted anywhere, including outside China), community ecosystem (faster iteration via feedback), global reach, and cost competition (forcing proprietary providers to justify premium pricing).</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-growth">
+    <div class="section-head-inner">
+      <h2 class="section-title"><span class="section-num">08</span> Market Size & Growth Projections</h2>
+    </div>
+    <div class="section-body">
+      <div class="chart-card">
+        <div class="chart-title">💹 China AI Model Revenue Projection</div>
+        <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">0</text><line x1="54" y1="158.1" x2="620" y2="158.1" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="162.1" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">300B</text><line x1="54" y1="96.2" x2="620" y2="96.2" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="100.2" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">600B</text><line x1="54" y1="34.3" x2="620" y2="34.3" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="38.3" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">900B</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="196.0" y="212.8" width="70" height="7.2" rx="4" fill="#38bdf8" opacity="1"/><text x="231.0" y="204.8" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">35B RMB</text><text x="231.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2026</text><rect x="408.0" y="38.6" width="70" height="181.4" rx="4" fill="#4ade80" opacity="1"/><text x="443.0" y="30.6" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">879B RMB</text><text x="443.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2030</text></svg>
+        <p class="chart-caption">Goldman Sachs projects a 25x revenue increase from 2026 to 2030, as daily token consumption grows from 35 trillion to 460 trillion (13x).</p>
+      </div>
+      <div class="grid grid-3">
+        <div class="card">
+          <div class="card-label">Enterprise Agents</div>
+          <div class="card-value up">55x Growth</div>
+          <div class="card-note">2026–2030 segment growth</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Consumer Agents</div>
+          <div class="card-value up">12x Growth</div>
+          <div class="card-note">2026–2030 segment growth</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Global Token Consumption</div>
+          <div class="card-value up">24x Increase</div>
+          <div class="card-note">12 quintillion tokens/month by 2030</div>
+        </div>
+      </div>
+      <p style="margin:14px 0 6px;color:var(--gf-muted);font-size:0.88rem"><strong style="color:var(--gf-text)">International Expansion:</strong> Chinese models are available on AWS Bedrock and Microsoft Copilot; Microsoft is considering hosting DeepSeek in Copilot as a low-cost option. MiniMax derives 60–70% of revenue overseas.</p>
+      <p style="margin:6px 0;color:var(--gf-muted);font-size:0.88rem"><strong style="color:var(--gf-text)">Infrastructure Build-Out:</strong> Meituan's LongCat 2.0 is the first 1.6T-parameter MoE model trained on 50,000 domestic compute cards. Huawei's Ascend 910B, an NVIDIA alternative used for GLM-5 training, will reach 1.6M dies produced in 2026 across all models. SMIC's enhanced 7nm process (versus TSMC's 4nm for NVIDIA) supports this. While individual chip performance lags US alternatives by 5–10 years, China's approach emphasizes scale and system-level architecture to compensate.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-investment">
+    <div class="section-head-inner">
+      <h2 class="section-title"><span class="section-num">09</span> Investment Implications</h2>
+    </div>
+    <div class="section-body">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Near-Term Risks</div>
+          <div class="card-value down">Margin Compression</div>
+          <div class="card-note">Sustained negative margins, capital requirements for R&D, overcapacity if demand slows</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Near-Term Opportunities</div>
+          <div class="card-value up">Market Share</div>
+          <div class="card-note">First-mover advantage in coding/agent segments, open-source ecosystem effects</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Long-Term Catalysts</div>
+          <div class="card-value up">Margin Expansion</div>
+          <div class="card-note">Scale economies, shift to revenue-sharing, international market penetration</div>
+        </div>
+      </div>
+      <div class="table-wrap" style="margin-top:14px">
+        <table>
+          <thead><tr><th>Valuation Reference</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Independent AI model companies (GS implied)</td><td>$200B+</td></tr>
+            <tr><td>MiniMax (2026 ARR multiple)</td><td>13x — a discount to peers</td></tr>
+            <tr><td>Zhipu AI target valuation</td><td>$110B</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="insight-box">
+        <strong>For Enterprises & Developers:</strong> Evaluate total cost of ownership (price + performance), test Chinese models especially for coding/agentic/high-volume tasks, plan multi-model strategies by workload, and monitor margin trends — pricing may stabilize as margins improve.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-conclusion">
+    <div class="section-head-inner">
+      <h2 class="section-title"><span class="section-num">10</span> Conclusion: The New Economics of AI</h2>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px">The LLM market is shifting from a capability race to cost competition, with China as the clear leader in the commodity segment. Through architectural innovations like MoE, Chinese providers achieved a structural cost advantage enabling aggressive pricing while maintaining performance parity with US models.</p>
+      <div class="grid">
+        <div class="card"><div class="card-label">1</div><div class="card-note" style="margin-top:0">The price war is real: SDLLMTK decline and OpenRouter data confirm rapid price deflation</div></div>
+        <div class="card"><div class="card-label">2</div><div class="card-note" style="margin-top:0">Architecture matters: MoE and efficiency innovations create sustainable cost advantages</div></div>
+        <div class="card"><div class="card-label">3</div><div class="card-note" style="margin-top:0">Adoption is accelerating: China dominates coding and agentic workflows</div></div>
+        <div class="card"><div class="card-label">4</div><div class="card-note" style="margin-top:0">Margins will improve: scale and monetization evolution provide a path to profitability</div></div>
+      </div>
+      <div class="insight-box bull" style="margin-top:14px">
+        <strong>Ultimate Winners:</strong> The ultimate beneficiaries of this competition will be consumers (through lower prices) and innovative providers (through market share gains). For shareholders, the path is more nuanced — requiring careful selection of providers with pricing power, cost advantage, and financial strength.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-sources">
+    <div class="section-head-inner">
+      <h2 class="section-title">🔗 Sources & Methodology</h2>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:10px;color:var(--gf-muted);font-size:0.85rem">Primary sources: Goldman Sachs research reports (competitive framework, unit economics, and margin projections), the Silicon Data LLM Token Expenditure Index (SDLLMTK), OpenRouter token volume/usage share data, and company disclosures (DeepSeek, Zhipu AI, MiniMax, ByteDance, Kuaishou).</p>
+      <div class="insight-box">
+        <strong>Disclaimer:</strong> This report is for educational and informational purposes only and does not constitute investment advice. Do your own research and consult an independent financial advisor.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">Gistify Flow | July 13, 2026 | Source: Goldman Sachs Research, Silicon Data, OpenRouter</div>
+
+</div>
+</body>
+</html>

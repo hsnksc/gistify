@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yapay Zeka Modellerinde Emtialaşma: Çin Fiyat Savaşını Nasıl Kazanıyor</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Yapay Zeka Modellerinde Emtialaşma: Çin Fiyat Savaşını Nasıl Kazanıyor" />
+<meta property="og:description" content="Gistify flow raporu: Goldman Sachs analizine göre Çin'in LLM modelleri MoE mimarisiyle maliyet avantajı yaratıyor." />
+<meta property="og:url" content="https://gistify.pro/flow/the-economics-of-llm-commoditization-how-china-is-winning-the-ai-price-war.html" />
+<meta property="og:image" content="https://gistify.pro/gistifylogo.png?v=20260706" />
+<meta property="og:site_name" content="Gistify" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Yapay Zeka Modellerinde Emtialaşma: Çin Fiyat Savaşını Nasıl Kazanıyor" />
+<meta name="twitter:description" content="Gistify flow raporu: Goldman Sachs analizine göre Çin'in LLM modelleri MoE mimarisiyle maliyet avantajı yaratıyor." />
+<meta name="twitter:image" content="https://gistify.pro/gistifylogo.png?v=20260706" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:760px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted);margin-bottom:12px}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.section-num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:var(--gf-accent-dim);color:var(--gf-accent);font-size:.78rem;font-weight:800;font-family:var(--gf-mono);flex-shrink:0}
+.section-body{padding:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.grid-3{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border)}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.text-right{text-align:right}
+.text-center{text-align:center}
+.table-wrap{overflow-x:auto}
+.chart-card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:18px;margin:14px 0}
+.chart-title{font-size:.88rem;font-weight:700;color:var(--gf-accent);margin-bottom:12px}
+.chart-caption{font-size:.8rem;color:var(--gf-muted);margin-top:10px;line-height:1.5}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;font-size:.78rem;color:var(--gf-muted)}
+.legend-item{display:flex;align-items:center;gap:6px}
+.legend-swatch{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:10px 0 20px}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:12px 10px;text-align:center}
+.kpi-num{font-size:1.2rem;font-weight:700;color:var(--gf-text)}
+.kpi-label{font-size:0.7rem;color:var(--gf-muted);margin-top:2px}
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--gf-border)}
+.timeline-item{position:relative;margin-bottom:14px}
+.timeline-item::before{content:'';position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--gf-card);border:2px solid var(--gf-border)}
+.timeline-item.bull::before{border-color:var(--gf-success);background:var(--gf-success)}
+.timeline-item.bear::before{border-color:var(--gf-danger);background:var(--gf-danger)}
+.timeline-item.warn::before{border-color:var(--gf-warning);background:var(--gf-warning)}
+.timeline-date{font-size:0.78rem;color:var(--gf-muted);font-weight:600}
+.timeline-body{font-size:0.85rem;margin-top:3px;color:var(--gf-text)}
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-13T14:20:00+03:00">
+  <h1 class="hero-h">Yapay Zeka Modellerinde Emtialaşma: Çin Fiyat Savaşını Nasıl Kazanıyor</h1>
+  <p class="hero-desc">Goldman Sachs'ın analizine göre Çin'in yapay zeka modelleri, Mixture of Experts mimarisi sayesinde ABD öncü modelleriyle performans paritesine çok daha düşük maliyetle ulaştı. Bu yapısal maliyet avantajı, elektrikli araç sektöründeki fiyat savaşına benzer bir dinamik yaratıyor.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info">📅 13 Temmuz 2026</span>
+    <span class="meta-pill neu">Sektör: Yapay Zeka</span>
+    <span class="meta-pill bull">Mixture of Experts</span>
+    <span class="meta-pill info">Goldman Sachs Analizi</span>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-num down">$1.67</div><div class="kpi-label">SDLLMTK Endeksi / 1M token</div></div>
+    <div class="kpi"><div class="kpi-num up">%51–61</div><div class="kpi-label">OpenRouter Token Payı (Çin)</div></div>
+    <div class="kpi"><div class="kpi-num up">%85–89</div><div class="kpi-label">Kodlama / Ajan Görevi Payı</div></div>
+    <div class="kpi"><div class="kpi-num">879B RMB</div><div class="kpi-label">2030 Gelir Projeksiyonu</div></div>
+  </div>
+</div>
+
+<section>
+  <div class="section-head" id="sec-ozet">
+    <div class="section-head-inner">
+      <h2 class="section-title"><span class="section-num">01</span> Yönetici Özeti</h2>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px">LLM pazarı, yetenek odaklı bir yarıştan maliyet odaklı bir emtia pazarına dönüşüyor. Goldman Sachs'a göre Çin'in üst düzey modelleri, aktive edilen parametre oranını toplam boyutun sadece %3–7'sine indiren mimari yeniliklerle ABD modelleriyle performans paritesi yakaladı.</p>
+      <div class="grid grid-3">
+        <div class="card">
+          <div class="card-label">Kodlama Fiyatı</div>
+          <div class="card-value up">$1 / 1M token</div>
+          <div class="card-note">GLM-5.2, Qwen 3.7 Max — ABD'de $4–8</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Aktivasyon Oranı</div>
+          <div class="card-value up">%3.1–7.1</div>
+          <div class="card-note">DeepSeek V4 (49B/1.6T) — Tencent Hy3 (%7.1)</div>
+        </div>
+        <div class="card">
+          <div class="card-label">EBIT Marjı (2026)</div>
+          <div class="card-value down">-%30 / -%39</div>
+          <div class="card-note">2030'da +%14 / +%22'ye dönmesi bekleniyor</div>
+        </div>
+      </div>
+      <div class="insight-box">
+        <strong>Ana Bulgu:</strong> Silicon Data LLM Token Harcama Endeksi (SDLLMTK), Haziran–Temmuz 2026 arasında $2.07'den $1.67'ye geriledi (-%19). Goldman Sachs, Çin'in yapay zeka model gelirinin 2026'da 35 milyar RMB'den 2030'da 879 milyar RMB'ye (25 kat) çıkacağını öngörüyor.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-donum">
+    <div class="section-head-inner">
+      <h2 class="section-title"><span class="section-num">02</span> Dönüm Noktası: Maliyetten Verimliliğe</h2>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px">Goldman Sachs bu geçişi, 2025'teki "DeepSeek'in maliyet verimliliği anı"ndan 2026'daki "Zhipu GLM'in model zekâsı anı"na evrilen bir süreç olarak tanımlıyor — Çin modelleri karşılaştırılabilir yetenekleri çok daha düşük maliyetle sunabildiğini kanıtlıyor.</p>
+      <div class="chart-card">
+        <div class="chart-title">📉 SDLLMTK Fiyat Endeksi ($/1M token)</div>
+        <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$0</text><line x1="54" y1="180.8" x2="620" y2="180.8" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="184.8" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$0.5</text><line x1="54" y1="141.6" x2="620" y2="141.6" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="145.6" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$1</text><line x1="54" y1="102.4" x2="620" y2="102.4" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="106.4" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$1.5</text><line x1="54" y1="63.2" x2="620" y2="63.2" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="67.2" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$2</text><line x1="54" y1="24.0" x2="620" y2="24.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="28.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">$2.5</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="196.0" y="57.7" width="70" height="162.3" rx="4" fill="#fbbf24" opacity="1"/><text x="231.0" y="49.7" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$2.07</text><text x="231.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Zirve (Haz 2026)</text><rect x="408.0" y="89.1" width="70" height="130.9" rx="4" fill="#4ade80" opacity="1"/><text x="443.0" y="81.1" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">$1.67</text><text x="443.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Güncel (Tem 2026)</text></svg>
+        <p class="chart-caption">Blended piyasa fiyatı Haziran zirvesinden Temmuz'a kadar 6 haftada %19 geriledi — DeepSeek, Xiaomi ve diğerlerinin agresif fiyat kesintileriyle örtüşüyor.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Segment</th><th>Modeller</th><th>Fiyat / 1M token</th><th>Brüt Marj</th></tr></thead>
+          <tbody>
+            <tr><td>Üst Segment</td><td>Zhipu GLM-5.2, Alibaba Qwen 3.7 Max</td><td>~$1</td><td>%10–20</td></tr>
+            <tr><td>Alt Segment</td><td>Ajan odaklı modeller</td><td>$0.06–0.2</td><td>MiniMax gelirinin %60–70'i yurt dışından</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="insight-box warn">
+        <strong>İki Katmanlı Yapı:</strong> Üst segment ABD SOTA fiyatının %10–25'inde konumlanırken, alt segment fiyata duyarlı KOBİ'leri ve bireysel geliştiricileri hedefliyor. Bu ayrım Çinli sağlayıcıların hem kalite hem fiyat üzerinden rekabet etmesini sağlıyor.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-mimari">
+    <div class="section-head-inner">
+      <h2 class="section-title"><span class="section-num">03</span> Mimari Üstünlük: Mixture of Experts</h2>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px">Çin'in maliyet avantajını sağlayan temel mimari yenilik, hem eğitim hem de çıkarım için hesaplama gereksinimlerini büyük ölçüde azaltan Mixture of Experts (MoE) mimarisi. Bu yapı, modellerin büyük toplam parametre sayısını korurken (yetenek için), herhangi bir çıkarımda yalnızca küçük bir alt kümeyi aktive etmesine olanak tanıyor.</p>
+      <div class="chart-card">
+        <div class="chart-title">🧠 Modele Göre Parametre Aktivasyon Oranı</div>
+        <svg viewBox="0 0 640 250" width="100%" height="250" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="220" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="238" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">0%</text><line x1="287.5" y1="16" x2="287.5" y2="220" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="287.5" y="238" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">2%</text><line x1="385.0" y1="16" x2="385.0" y2="220" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="385.0" y="238" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">4%</text><line x1="482.5" y1="16" x2="482.5" y2="220" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="482.5" y="238" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">6%</text><line x1="580.0" y1="16" x2="580.0" y2="220" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="580.0" y="238" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">8%</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">DeepSeek V4-Pro</text><rect x="190" y="22.8" width="151.1" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="349.1" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">3.1%</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Kimi K2.7</text><rect x="190" y="56.8" width="156.0" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="354.0" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">3.2%</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Xiaomi MiMo-V2.5-Pro</text><rect x="190" y="90.8" width="199.9" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="397.9" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">4.1%</text><text x="178" y="138.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Z.ai GLM-5.2</text><rect x="190" y="124.8" width="263.3" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="461.3" y="138.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">5.4%</text><text x="178" y="172.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">MiniMax M3</text><rect x="190" y="158.8" width="263.3" height="19.0" rx="4" fill="#38bdf8" opacity="0.88"/><text x="461.3" y="172.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">5.4%</text><text x="178" y="206.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Tencent Hy3-preview</text><rect x="190" y="192.8" width="346.1" height="19.0" rx="4" fill="#fbbf24" opacity="0.88"/><text x="544.1" y="206.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">7.1%</text></svg>
+        <p class="chart-caption">Düşük aktivasyon oranı, yoğun transformer modellere kıyasla 3–5x daha düşük hesaplama maliyeti anlamına geliyor. DeepSeek V4-Pro en düşük oranla (%3.1) öne çıkıyor.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Model</th><th>Toplam Parametre</th><th>Aktif Parametre</th><th>Oran</th></tr></thead>
+          <tbody>
+            <tr><td>DeepSeek V4-Pro</td><td>1.6T</td><td>49B</td><td><span class="tag tag-green">%3.1</span></td></tr>
+            <tr><td>Xiaomi MiMo-V2.5-Pro</td><td>1.02T</td><td>42B</td><td><span class="tag tag-green">%4.1</span></td></tr>
+            <tr><td>Kimi K2.7</td><td>1T</td><td>32B</td><td><span class="tag tag-green">%3.2</span></td></tr>
+            <tr><td>Z.ai GLM-5.2</td><td>744B</td><td>40B</td><td><span class="tag tag-blue">%5.4</span></td></tr>
+            <tr><td>MiniMax M3</td><td>428B</td><td>23B</td><td><span class="tag tag-blue">%5.4</span></td></tr>
+            <tr><td>Tencent Hy3-preview</td><td>295B</td><td>21B</td><td><span class="tag tag-orange">%7.1</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin:12px 0;color:var(--gf-muted);font-size:0.88rem">MoE dışında tamamlayıcı yenilikler: seyrek dikkat mekanizmaları, çoklu-başlı gizli dikkat (bellek sıkıştırma), çoklu-token tahmini ve DeepSeek'in DSpark spekülatif kod çözme çerçevesi (kaliteden ödün vermeden %60–85 hız artışı).</p>
+      <div class="insight-box">
+        <strong>Eğitim Maliyeti:</strong> DeepSeek R1 yaklaşık $6M'a eğitildi (671B parametre, 37B aktif) — GPT-4'ün tahmini $100M+ maliyetiyle karşılaştırıldığında. RAND raporuna göre Çin modelleri genel olarak ABD sistemlerinin maliyetinin 1/6 ile 1/4'ü arasında.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-ekonomi">
+    <div class="section-head-inner">
+      <h2 class="section-title"><span class="section-num">04</span> Birim Ekonomisi: Zarardan Kâra Giden Yol</h2>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px">Çinli sağlayıcılar pazar payı kazanmak için şu anda negatif marjlarla faaliyet gösteriyor — ancak kârlılığa net bir yol izleniyor. Bu strateji, BYD ve diğerlerinin kısa vadeli kârlılık yerine pazar payını önceliklendirdiği Çin EV fiyat savaşının erken aşamalarını yansıtıyor.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Model Tipi</th><th>Fiyat / 1M token</th><th>EBIT Marjı (2026)</th><th>Brüt Marj</th></tr></thead>
+          <tbody>
+            <tr><td>Fiyat/Performans Ajanı</td><td>$0.20</td><td><span class="tag tag-red">-%30</span></td><td>%10–15</td></tr>
+            <tr><td>En İyi Kodlama Modeli</td><td>$1.00</td><td><span class="tag tag-red">-%39</span></td><td>%10–20</td></tr>
+            <tr><td>ABD SOTA Eşdeğeri</td><td>$4–8</td><td><span class="tag tag-green">Pozitif</span></td><td>%30–40</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">📈 EBIT Marjı: 2026 → 2030 Projeksiyonu</div>
+        <svg viewBox="0 0 700 158" width="100%" height="158" role="img" aria-label="chart"><line x1="169.0" y1="18" x2="169.0" y2="124" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="169.0" y="140" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">-40%</text><line x1="315.0" y1="18" x2="315.0" y2="124" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="315.0" y="140" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">-20%</text><line x1="461.0" y1="18" x2="461.0" y2="124" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="461.0" y="140" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">0%</text><line x1="607.0" y1="18" x2="607.0" y2="124" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="607.0" y="140" text-anchor="middle" font-size="10" fill="#94a3b8" font-family="inherit">+20%</text><text x="86" y="48.0" text-anchor="end" font-size="11" font-weight="700" fill="#38bdf8" font-family="inherit">Fiyat/Performans Ajanı</text><rect x="242.0" y="34" width="321.2" height="20" rx="5" fill="#fbbf24" opacity="0.92"/><text x="402.6" y="48.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#0a1628" font-family="inherit">-30% → +14%</text><text x="86" y="98.0" text-anchor="end" font-size="11" font-weight="700" fill="#38bdf8" font-family="inherit">En İyi Kodlama</text><rect x="176.3" y="84" width="445.3" height="20" rx="5" fill="#fbbf24" opacity="0.92"/><text x="399.0" y="98.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#0a1628" font-family="inherit">-39% → +22%</text><line x1="461.0" y1="14" x2="461.0" y2="128" stroke="#e2e8f0" stroke-width="1.4" stroke-dasharray="3 3"/><text x="461.0" y="10" text-anchor="middle" font-size="10.5" font-weight="700" fill="#e2e8f0" font-family="inherit">Başabaş</text></svg>
+        <p class="chart-caption">Ölçek ekonomileri (2026–2030 arası günlük token tüketiminde 25x artış) ve mimari verimlilik, her iki model tipini de 2030'a kadar pozitif EBIT marjına taşıyor.</p>
+      </div>
+      <p style="margin:12px 0;color:var(--gf-muted);font-size:0.88rem">Marj genişlemesinin itici güçleri: ölçek ekonomileri (günlük 35T'den 460T token'a), MoE'de sürekli mimari iyileştirme, saf açık kaynaktan gelir paylaşımlı açık ağırlık lisansına geçiş ve uluslararası pazarlara/kurumsal segmentlere kanal çeşitlendirmesi.</p>
+      <div class="insight-box warn">
+        <strong>Açık Kaynak Parası Kazanma Zorluğu:</strong> Açık kaynaklı modeller üçüncü taraflarca (ör. Alibaba Cloud'un Bailian MaaS'ı) model sahibine doğrudan ödeme yapılmadan barındırılabiliyor. Çözüm yolu: MIT lisansından açık ağırlık + topluluk lisansına geçiş ve ticari kullanım için gelir paylaşımı anlaşmaları — MiniMax'in M serisi bu modeli öncülük etti.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-pazar">
+    <div class="section-head-inner">
+      <h2 class="section-title"><span class="section-num">05</span> Pazar Dinamikleri: OpenRouter Kanıtı</h2>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px">Yüzlerce yapay zeka modelini yönlendiren en büyük platform olan OpenRouter, Çin'in yükselen pazar payının en net kanıtını sunuyor. 9–15 Şubat 2026 haftasında Çin modelleri ilk kez ABD modellerini geçti (4.12T'ye karşı 2.94T token). 2025 ortasında ABD modelleri ~%70 paya sahipken, Haziran 2026'da bu oran ~%30'a düştü.</p>
+      <div class="chart-card">
+        <div class="chart-title">🇨🇳 Görev Tipine Göre Çin Token Kullanım Payı</div>
+        <svg viewBox="0 0 640 182" width="100%" height="182" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">0%</text><line x1="287.5" y1="16" x2="287.5" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="287.5" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">25%</text><line x1="385.0" y1="16" x2="385.0" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="385.0" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">50%</text><line x1="482.5" y1="16" x2="482.5" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="482.5" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">75%</text><line x1="580.0" y1="16" x2="580.0" y2="152" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="580.0" y="170" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">100%</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Kodlama</text><rect x="190" y="22.8" width="347.1" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="545.1" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">89%</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Ajan</text><rect x="190" y="56.8" width="331.5" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="529.5" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">85%</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Genel</text><rect x="190" y="90.8" width="280.8" height="19.0" rx="4" fill="#4ade80" opacity="0.88"/><text x="478.8" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">72%</text><text x="178" y="138.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">Veri</text><rect x="190" y="124.8" width="218.4" height="19.0" rx="4" fill="#fbbf24" opacity="0.88"/><text x="416.4" y="138.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">56%</text><line x1="385.0" y1="12" x2="385.0" y2="156" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 3"/><text x="385.0" y="8" text-anchor="middle" font-size="10.5" font-weight="600" fill="#38bdf8" font-family="inherit">Eşitlik</text></svg>
+        <p class="chart-caption">Çin modelleri kodlama ve ajan görevlerinde %85+ paya ulaşarak eşitlik çizgisinin çok üzerinde — genel ve veri görevlerinde fark daha dar.</p>
+      </div>
+      <p style="margin:12px 0;color:var(--gf-muted);font-size:0.88rem">Programlama iş yükleri 2025 boyunca toplam OpenRouter token hacminin ~%11'inden %50+'ına yükseldi; ajan iş akışları artık tüm çıktı token'larının %50+'ını oluşturuyor. Tek bir gece boyu süren kodlama görevi bir modeli binlerce kez çağırabiliyor — bu da milyon token başına fiyatlandırmayı baskın maliyet unsuru yapıyor.</p>
+      <div class="insight-box">
+        <strong>Neden Çin Kodlama/Ajanlarda Kazanıyor:</strong> (1) Maliyet Hassasiyeti — her görev yüz binlerce token yakabiliyor, 6–8x fiyat farkı varoluşsal hale geliyor. (2) Performans Paritesi — GLM-5.2, Qwen 3.7 Max karşılaştırılabilir kodlama performansı sunuyor. (3) Açık Ağırlık Erişilebilirliği — kendi kendine barındırma ve özelleştirmeye olanak tanıyor. (4) Topluluk Benimsemesi — geliştirici toplulukları fiyat/performans için hızla Çin modellerini benimsiyor.
+      </div>
+      <div class="insight-box warn">
+        <strong>Token Maksimizasyonundan ROI Önceliğine:</strong> 2025 sonu–2026 başında kurumlar yüksek token tüketimini üretkenlikle eşitliyordu. 2026'dan itibaren net görev sınırları, ölçülebilir çıktılar ve gerçek iş etkisi önceliğe alınıyor — bu geçiş, yüksek hacimli/uzun süreli görevlerde daha iyi ekonomi sunan Çin modellerinin lehine işliyor.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-ev">
+    <div class="section-head-inner">
+      <h2 class="section-title"><span class="section-num">06</span> Fiyat Savaşı: EV Playbook Paraleli</h2>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px">LLM fiyat savaşı, Çin'in elektrikli araç pazarı stratejisiyle çarpıcı benzerlikler taşıyor — ancak dijital ürünün sıfıra yakın marjinal dağıtım maliyeti ve ağ etkileri, bu geçişi daha da hızlandırabilir.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Boyut</th><th>EV Pazarı</th><th>LLM Pazarı</th></tr></thead>
+          <tbody>
+            <tr><td>İlk Strateji</td><td>Pazar payı için fiyat kırma</td><td>Maliyetin altında agresif fiyatlama</td></tr>
+            <tr><td>Marj Profili</td><td>Başlangıçta negatif, ölçekle iyileşiyor</td><td>-%30 / -%39 EBIT → +%14 / +%22 projeksiyon</td></tr>
+            <tr><td>Maliyet Avantajı</td><td>Dikey entegrasyon, yerel tedarik zinciri</td><td>MoE mimarisi, algoritmik verimlilik</td></tr>
+            <tr><td>Pazar Payı</td><td>BYD ana akım segmentte ~%50</td><td>Çin OpenRouter'da %51–61 token hacmi</td></tr>
+            <tr><td>Küresel Genişleme</td><td>İhracat odaklı</td><td>Uluslararası API erişilebilirliği</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="grid" style="margin-top:14px">
+        <div class="card">
+          <div class="card-label">Tüketiciler Kazanıyor</div>
+          <div class="card-value up">Düşük Maliyet</div>
+          <div class="card-note">Dramatik ucuzlama, KOBİ/geliştirici erişimi, hızlı iterasyon</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Hissedarlar Belirsizlikte</div>
+          <div class="card-value down">Marj Baskısı</div>
+          <div class="card-note">Sermaye yoğun rekabet, aşırı kapasite riski, konsolidasyon ihtimali</div>
+        </div>
+      </div>
+      <div class="insight-box">
+        <strong>Uzun Vadeli Kazananlar:</strong> Goldman Sachs çerçevesi, fiyatlandırma gücü (çıkış hızı, benchmark performansı), maliyet avantajı (verim, önbellek isabet oranı, aktivasyon oranı) ve finansal güç (nakit rezervleri, sermayeye erişim) sahibi oyuncuların kazanacağını öngörüyor.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-oyuncular">
+    <div class="section-head-inner">
+      <h2 class="section-title"><span class="section-num">07</span> Rekabet Manzarası: Kilit Oyuncular</h2>
+    </div>
+    <div class="section-body">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Zhipu AI</div>
+          <div class="card-value neu">Nötr — $110B Hedef</div>
+          <div class="card-note">GLM-5.2 (744B/40B, %5.4). Açık ağırlık + topluluk lisansı evrimi.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">DeepSeek</div>
+          <div class="card-value">Halka Açık Değil</div>
+          <div class="card-note">V4-Pro (1.6T/49B, %3.1). En düşük aktivasyon oranı, DSpark spekülatif kod çözme.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">ByteDance</div>
+          <div class="card-value">Halka Açık Değil</div>
+          <div class="card-note">Seedance modeli. %70 brüt marj, $2B+ ARR run-rate. TikTok/Doubao dağıtım avantajı.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">MiniMax</div>
+          <div class="card-value up">Al — HK$860 Hedef</div>
+          <div class="card-note">M3 (428B/23B, %5.4). 2026 ARR'nin 13 katı — emsallere göre iskontolu.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Kuaishou</div>
+          <div class="card-value up">Al</div>
+          <div class="card-note">Video üretimi (Kling modeli). 2026 2. yarıda fonksiyonel atılım bekleniyor.</div>
+        </div>
+      </div>
+      <p style="margin:14px 0 6px;color:var(--gf-muted);font-size:0.88rem">Çinli sağlayıcıların açık kaynak/açık ağırlık stratejisini benimseme nedenleri: dağıtım esnekliği (Çin dışında da barındırılabilir), topluluk ekosistemi (geri bildirimle hızlı iterasyon), küresel erişim ve maliyet rekabeti (mülkiyetli sağlayıcıları premium fiyatı savunmaya zorluyor).</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-buyume">
+    <div class="section-head-inner">
+      <h2 class="section-title"><span class="section-num">08</span> Pazar Büyüklüğü & Büyüme Projeksiyonları</h2>
+    </div>
+    <div class="section-body">
+      <div class="chart-card">
+        <div class="chart-title">💹 Çin Yapay Zeka Model Geliri Projeksiyonu</div>
+        <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="220.0" x2="620" y2="220.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="224.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">0</text><line x1="54" y1="158.1" x2="620" y2="158.1" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="162.1" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">300B</text><line x1="54" y1="96.2" x2="620" y2="96.2" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="100.2" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">600B</text><line x1="54" y1="34.3" x2="620" y2="34.3" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="38.3" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">900B</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="196.0" y="212.8" width="70" height="7.2" rx="4" fill="#38bdf8" opacity="1"/><text x="231.0" y="204.8" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">35B RMB</text><text x="231.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2026</text><rect x="408.0" y="38.6" width="70" height="181.4" rx="4" fill="#4ade80" opacity="1"/><text x="443.0" y="30.6" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">879B RMB</text><text x="443.0" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">2030</text></svg>
+        <p class="chart-caption">Goldman Sachs, 2026–2030 arasında 25 kat gelir artışı öngörüyor — günlük token tüketimi 35 trilyondan 460 trilyona (13x) çıkacak.</p>
+      </div>
+      <div class="grid grid-3">
+        <div class="card">
+          <div class="card-label">Kurumsal Ajanlar</div>
+          <div class="card-value up">55x Büyüme</div>
+          <div class="card-note">2026–2030 segment büyümesi</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Tüketici Ajanları</div>
+          <div class="card-value up">12x Büyüme</div>
+          <div class="card-note">2026–2030 segment büyümesi</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Küresel Token Tüketimi</div>
+          <div class="card-value up">24x Artış</div>
+          <div class="card-note">2030'da aylık 12 kentilyon token</div>
+        </div>
+      </div>
+      <p style="margin:14px 0 6px;color:var(--gf-muted);font-size:0.88rem"><strong style="color:var(--gf-text)">Uluslararası Genişleme:</strong> Çin modelleri AWS Bedrock ve Microsoft Copilot'ta erişilebilir; Microsoft, Copilot'ta düşük maliyetli seçenek olarak DeepSeek barındırmayı değerlendiriyor. MiniMax gelirinin %60–70'i yurt dışından geliyor.</p>
+      <p style="margin:6px 0;color:var(--gf-muted);font-size:0.88rem"><strong style="color:var(--gf-text)">Altyapı Gelişimi:</strong> Meituan'ın LongCat 2.0'ı, 50.000 yerli işlem kartı üzerinde eğitilen ilk 1.6T parametreli MoE modeli. Huawei Ascend 910B, GLM-5 eğitiminde kullanılan NVIDIA alternatifi — 2026'da tüm modeller için 1.6M die üretimi. SMIC gelişmiş 7nm süreci (NVIDIA için TSMC'nin 4nm'sine karşılık) kullanıyor. Tekil çip performansı ABD alternatiflerinin 5–10 yıl gerisinde kalsa da Çin'in yaklaşımı ölçek ve sistem düzeyinde mimariyle bunu telafi ediyor.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-yatirim">
+    <div class="section-head-inner">
+      <h2 class="section-title"><span class="section-num">09</span> Yatırım Çıkarımları</h2>
+    </div>
+    <div class="section-body">
+      <div class="grid">
+        <div class="card">
+          <div class="card-label">Yakın Vade Riskler</div>
+          <div class="card-value down">Marj Sıkışması</div>
+          <div class="card-note">Sürdürülen negatif marjlar, Ar-Ge sermaye ihtiyaçları, talep yavaşlarsa aşırı kapasite</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Yakın Vade Fırsatlar</div>
+          <div class="card-value up">Pazar Payı</div>
+          <div class="card-note">Kodlama/ajan segmentlerinde ilk hamle avantajı, açık kaynak ekosistem etkileri</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Uzun Vade Katalizörler</div>
+          <div class="card-value up">Marj Genişlemesi</div>
+          <div class="card-note">Ölçek ekonomileri, gelir paylaşımına geçiş, uluslararası pazar penetrasyonu</div>
+        </div>
+      </div>
+      <div class="table-wrap" style="margin-top:14px">
+        <table>
+          <thead><tr><th>Değerleme Referansı</th><th>Değer</th></tr></thead>
+          <tbody>
+            <tr><td>Bağımsız yapay zeka model şirketleri (GS ima edilen)</td><td>$200B+</td></tr>
+            <tr><td>MiniMax (2026 ARR çarpanı)</td><td>13x — emsallere iskonto</td></tr>
+            <tr><td>Zhipu AI hedef değerleme</td><td>$110B</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="insight-box">
+        <strong>Kurumlar & Geliştiriciler İçin:</strong> Toplam sahip olma maliyetini değerlendirin (fiyat + performans), özellikle kodlama/ajan/yüksek hacimli görevlerde Çin modellerini test edin, iş yüküne göre çoklu model stratejisi planlayın ve marj trendlerini izleyin — marjlar iyileştikçe fiyatlama istikrar kazanabilir.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-sonuc">
+    <div class="section-head-inner">
+      <h2 class="section-title"><span class="section-num">10</span> Sonuç: Yapay Zekanın Yeni Ekonomisi</h2>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:12px">LLM pazarı, yetenek yarışından maliyet rekabetine geçiş yaşıyor ve Çin, emtia segmentinde açık lider olarak öne çıkıyor. MoE gibi mimari yeniliklerle Çinli sağlayıcılar, ABD modelleriyle performans paritesini korurken agresif fiyatlamayı mümkün kılan yapısal bir maliyet avantajı elde etti.</p>
+      <div class="grid">
+        <div class="card"><div class="card-label">1</div><div class="card-note" style="margin-top:0">Fiyat savaşı gerçek: SDLLMTK düşüşü ve OpenRouter verileri hızlı fiyat deflasyonunu doğruluyor</div></div>
+        <div class="card"><div class="card-label">2</div><div class="card-note" style="margin-top:0">Mimari önemli: MoE ve verimlilik yenilikleri sürdürülebilir maliyet avantajları yaratıyor</div></div>
+        <div class="card"><div class="card-label">3</div><div class="card-note" style="margin-top:0">Benimseme hızlanıyor: Çin modelleri kodlama ve ajan iş akışlarında baskın</div></div>
+        <div class="card"><div class="card-label">4</div><div class="card-note" style="margin-top:0">Marjlar iyileşecek: ölçek ve para kazanma evrimi kârlılığa giden yolu sağlıyor</div></div>
+      </div>
+      <div class="insight-box bull" style="margin-top:14px">
+        <strong>Nihai Kazananlar:</strong> Bu rekabetin nihai faydalanıcıları, düşük fiyatlar aracılığıyla tüketiciler ve pazar payı kazanımları aracılığıyla yenilikçi sağlayıcılar olacak. Hissedarlar için yol daha nüanslı — fiyatlandırma gücü, maliyet avantajı ve finansal güce sahip sağlayıcıların dikkatli seçimi gerekiyor.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head" id="sec-kaynak">
+    <div class="section-head-inner">
+      <h2 class="section-title">🔗 Kaynaklar & Metodoloji</h2>
+    </div>
+    <div class="section-body">
+      <p style="margin-bottom:10px;color:var(--gf-muted);font-size:0.85rem">Birincil kaynaklar: Goldman Sachs araştırma raporları (rekabet çerçevesi, birim ekonomisi ve marj projeksiyonları dahil), Silicon Data LLM Token Harcama Endeksi (SDLLMTK), OpenRouter token hacmi/kullanım payı verileri ve şirket açıklamaları (DeepSeek, Zhipu AI, MiniMax, ByteDance, Kuaishou).</p>
+      <div class="insight-box">
+        <strong>Uyarı:</strong> Bu rapor eğitim ve bilgilendirme amaçlıdır, yatırım tavsiyesi değildir. Kendi araştırmanızı yapın ve bağımsız bir finansal danışmana başvurun.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">Gistify Flow | 13 Temmuz 2026 | Kaynak: Goldman Sachs Araştırma, Silicon Data, OpenRouter</div>
+
+</div>
+</body>
+</html>
