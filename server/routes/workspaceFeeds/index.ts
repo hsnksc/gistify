@@ -56,6 +56,16 @@ export function createWorkspaceFeedsRouter({
   setPrivateNoStore,
 }: WorkspaceFeedsRouterDependencies): Router {
   const router = express.Router();
+  let lastMarketFlashReportRaw: string | null = null;
+
+  function sendCachedMarketFlash(res: Response) {
+    if (!lastMarketFlashReportRaw) {
+      return false;
+    }
+    res.setHeader("X-MarketFlash-Source", "last-good-cache");
+    res.status(200).type("json").send(lastMarketFlashReportRaw);
+    return true;
+  }
 
   router.get("/earning-reports", (_req, res) => {
     setPrivateNoStore(res);
@@ -305,6 +315,9 @@ export function createWorkspaceFeedsRouter({
 
     try {
       if (!fs.existsSync(reportPath)) {
+        if (sendCachedMarketFlash(res)) {
+          return;
+        }
         res.status(503).json({
           error: "Market Flash raporu hazir degil.",
         });
@@ -313,14 +326,23 @@ export function createWorkspaceFeedsRouter({
 
       const raw = fs.readFileSync(reportPath, "utf8");
       if (!raw.trim()) {
+        if (sendCachedMarketFlash(res)) {
+          return;
+        }
         res.status(503).json({
           error: "Market Flash raporu bos.",
         });
         return;
       }
 
+      JSON.parse(raw);
+      lastMarketFlashReportRaw = raw;
+      res.setHeader("X-MarketFlash-Source", "report-file");
       res.status(200).type("json").send(raw);
     } catch {
+      if (sendCachedMarketFlash(res)) {
+        return;
+      }
       res.status(503).json({
         error: "Market Flash raporu okunamadi.",
       });

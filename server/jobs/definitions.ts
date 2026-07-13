@@ -19,7 +19,7 @@ export const CRON_JOB_DEFINITIONS: CronJobDefinition[] = [
     schedule: "*/10 * * * *",
     enabled: true,
     description:
-      "Generate MarketFlash report: guaranteed 5 LONG + 5 SHORT momentum setups from MarketData.app.",
+      "Generate MarketFlash report: guaranteed 5 LONG + 5 SHORT setups via MarketData, ThetaData, and Yahoo fallbacks.",
   },
   {
     name: "sync-flow-source-timestamps",

@@ -20,7 +20,11 @@ import json
 import os
 import re
 import sys
+import tempfile
 import time
+import urllib.error
+import urllib.parse
+import urllib.request
 from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
@@ -224,6 +228,179 @@ def _float_any(result: dict[str, Any], keys: list[str], idx: int) -> float:
         if val != 0.0:
             return val
     return 0.0
+
+
+class ThetaDataUnavailable(RuntimeError):
+    """Raised when the local Theta Terminal cannot serve requests."""
+
+
+def _thetadata_rows(payload: Any) -> list[dict[str, Any]]:
+    if isinstance(payload, list):
+        return [row for row in payload if isinstance(row, dict)]
+    if not isinstance(payload, dict):
+        return []
+    for key in ("response", "data", "results", "body"):
+        rows = payload.get(key)
+        if isinstance(rows, list):
+            return [row for row in rows if isinstance(row, dict)]
+    return []
+
+
+def _thetadata_base_url() -> str:
+    return os.environ.get("THETADATA_BASE_URL", "http://127.0.0.1:25503/v3").strip().rstrip("/")
+
+
+def _thetadata_enabled() -> bool:
+    requested = os.environ.get("MARKETFLASH_DATA_SOURCE", "").strip().lower()
+    if requested == "thetadata":
+        return True
+    if requested in ("marketdata", "yahoo"):
+        return False
+    return bool(
+        os.environ.get("THETADATA_API_KEY", "").strip()
+        or os.environ.get("OPTIONS_DATA_PROVIDER", "").strip().lower() == "thetadata"
+    )
+
+
+def _thetadata_request_eod(symbol: str, start_date: date, end_date: date) -> list[dict[str, Any]]:
+    security = "index" if symbol in {"VIX", "SPX", "NDX", "RUT"} else "stock"
+    query = urllib.parse.urlencode(
+        {
+            "symbol": symbol,
+            "start_date": start_date.strftime("%Y%m%d"),
+            "end_date": end_date.strftime("%Y%m%d"),
+            "format": "json",
+        }
+    )
+    url = f"{_thetadata_base_url()}/{security}/history/eod?{query}"
+    timeout = max(1.0, float(os.environ.get("MARKETFLASH_THETADATA_TIMEOUT_MS", "60000")) / 1000)
+    try:
+        with urllib.request.urlopen(url, timeout=timeout) as response:
+            payload = json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as error:
+        body = error.read().decode("utf-8", errors="replace").strip()
+        raise ThetaDataUnavailable(f"ThetaData HTTP {error.code}: {body[:240]}") from error
+    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as error:
+        raise ThetaDataUnavailable(f"ThetaData request failed: {error}") from error
+    return _thetadata_rows(payload)
+
+
+def _theta_bar(row: dict[str, Any]) -> dict[str, Any] | None:
+    try:
+        close = float(row.get("close", 0) or 0)
+        if close <= 0:
+            return None
+        return {
+            "t": str(row.get("created") or row.get("last_trade") or ""),
+            "o": float(row.get("open", close) or close),
+            "h": float(row.get("high", close) or close),
+            "l": float(row.get("low", close) or close),
+            "c": close,
+            "v": float(row.get("volume", 0) or 0),
+            "bid": float(row.get("bid", 0) or 0),
+            "ask": float(row.get("ask", 0) or 0),
+        }
+    except (TypeError, ValueError):
+        return None
+
+
+def _resample_theta_bars(daily: list[dict[str, Any]], period: str) -> list[dict[str, Any]]:
+    buckets: dict[str, list[dict[str, Any]]] = {}
+    for bar in daily:
+        try:
+            parsed = datetime.fromisoformat(str(bar.get("t", "")).replace("Z", "+00:00"))
+        except ValueError:
+            continue
+        if period == "weekly":
+            year, week, _ = parsed.isocalendar()
+            key = f"{year}-W{week:02d}"
+        else:
+            key = f"{parsed.year}-{parsed.month:02d}"
+        buckets.setdefault(key, []).append(bar)
+
+    output: list[dict[str, Any]] = []
+    for bars in buckets.values():
+        bars.sort(key=lambda item: str(item.get("t", "")))
+        output.append(
+            {
+                "t": bars[-1]["t"],
+                "o": bars[0]["o"],
+                "h": max(float(item["h"]) for item in bars),
+                "l": min(float(item["l"]) for item in bars),
+                "c": bars[-1]["c"],
+                "v": sum(float(item["v"]) for item in bars),
+            }
+        )
+    return output
+
+
+def fetch_thetadata_market_data(
+    symbols: list[str],
+) -> tuple[dict[str, Quote], dict[str, Bars]]:
+    """Load delayed EOD quotes and bars from the local ThetaData v3 Terminal."""
+    limit = max(10, int(os.environ.get("MARKETFLASH_THETADATA_MAX_TICKERS", "40")))
+    requested = list(dict.fromkeys(symbols))[:limit]
+    end_date = date.today() - timedelta(days=1)
+    # ThetaData v3 caps a single EOD request at 365 calendar days.
+    start_date = end_date - timedelta(days=360)
+    gap_seconds = max(0.0, float(os.environ.get("THETADATA_REQUEST_GAP_MS", "2100")) / 1000)
+    quotes: dict[str, Quote] = {}
+    bars_by_symbol: dict[str, Bars] = {}
+
+    for index, symbol in enumerate(requested):
+        try:
+            rows = _thetadata_request_eod(symbol, start_date, end_date)
+        except ThetaDataUnavailable:
+            if index == 0:
+                raise
+            continue
+        daily = [bar for row in rows if (bar := _theta_bar(row)) is not None]
+        daily.sort(key=lambda item: str(item.get("t", "")))
+        if not daily:
+            continue
+
+        latest = daily[-1]
+        previous = daily[-2] if len(daily) > 1 else latest
+        last = float(latest["c"])
+        previous_close = float(previous["c"])
+        change = last - previous_close
+        quotes[symbol] = Quote(
+            symbol=symbol,
+            last=last,
+            change=change,
+            changepct=(change / previous_close * 100) if previous_close else 0.0,
+            volume=float(latest["v"]),
+            bid=float(latest.get("bid", 0) or 0),
+            ask=float(latest.get("ask", 0) or 0),
+            week52_high=max(float(item["h"]) for item in daily[-260:]),
+            week52_low=min(float(item["l"]) for item in daily[-260:]),
+        )
+        bars_by_symbol[symbol] = Bars(
+            daily=daily[-80:],
+            weekly=_resample_theta_bars(daily, "weekly")[-10:],
+            monthly=_resample_theta_bars(daily, "monthly")[-6:],
+        )
+        if index + 1 < len(requested) and gap_seconds:
+            time.sleep(gap_seconds)
+
+    return quotes, bars_by_symbol
+
+
+def _write_json_atomic(path: Path, payload: Any) -> None:
+    """Replace a JSON artifact atomically so readers never observe a blank file."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, temporary_name = tempfile.mkstemp(
+        prefix=f".{path.name}.", suffix=".tmp", dir=path.parent
+    )
+    temporary_path = Path(temporary_name)
+    try:
+        with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
+            json.dump(payload, handle, indent=2, ensure_ascii=False)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary_path, path)
+    finally:
+        temporary_path.unlink(missing_ok=True)
 
 
 def fetch_vix_fallback() -> Quote:
@@ -1257,8 +1434,7 @@ def _calculate_calibration(
 
 def _write_v3_params(base_dir: Path, params: dict[str, Any]) -> None:
     out = base_dir / "momentum_params.json"
-    with open(out, "w", encoding="utf-8") as f:
-        json.dump(params, f, indent=2, ensure_ascii=False)
+    _write_json_atomic(out, params)
     print(f"[OK] {out} kaydedildi")
 
 
@@ -1269,15 +1445,13 @@ def _write_v3_calibration(
     cal_dir = base_dir / "calibration"
     cal_dir.mkdir(parents=True, exist_ok=True)
     out = cal_dir / "latest.json"
-    with open(out, "w", encoding="utf-8") as f:
-        json.dump(calibration, f, indent=2, ensure_ascii=False)
+    _write_json_atomic(out, calibration)
     print(f"[OK] {out} kaydedildi")
 
 
 def _write_v3_ledger_public(base_dir: Path, ledger: list[dict[str, Any]]) -> None:
     out = base_dir / "ledger_public.json"
-    with open(out, "w", encoding="utf-8") as f:
-        json.dump(ledger, f, indent=2, ensure_ascii=False)
+    _write_json_atomic(out, ledger)
     print(f"[OK] {out} kaydedildi ({len(ledger)} rows)")
 
 
@@ -1538,8 +1712,7 @@ def _write_midas_watchlist(
     }
 
     midas_path = out_dir / "marketflash_midas.json"
-    with open(midas_path, "w", encoding="utf-8") as f:
-        json.dump(payload, f, indent=2, ensure_ascii=False)
+    _write_json_atomic(midas_path, payload)
     print(
         f"[OK] {midas_path} kaydedildi "
         f"({len(list_ranking)} ticker, {len(holdings_out)} holding)"
@@ -1552,19 +1725,39 @@ def run_marketdata_pipeline(
     verbose: bool = False,
 ) -> dict[str, Any]:
     print(f"[MarketFlash Pipeline] {len(symbols)} sembol")
-    force_yahoo = (
-        os.environ.get("MARKETFLASH_DATA_SOURCE", "").strip().lower() == "yahoo"
-    )
-    client = None if force_yahoo else _get_client()
+    requested_source = os.environ.get("MARKETFLASH_DATA_SOURCE", "").strip().lower()
+    force_yahoo = requested_source == "yahoo"
+    force_theta = requested_source == "thetadata"
+    client = None
+    if not force_yahoo and not force_theta:
+        try:
+            client = _get_client()
+        except RuntimeError as error:
+            print(f"[WARN] {error}; fallback kaynaklari deneniyor...", file=sys.stderr)
 
     print("[1/5] Endeks ve universe quote'ları çekiliyor...")
     all_symbols = list(dict.fromkeys(INDEX_SYMBOLS + symbols))
     data_source = "marketdata"
     quotes: dict[str, Quote] = {}
+    theta_bars: dict[str, Bars] = {}
     if client is not None:
         quotes = fetch_quotes_batch(client, all_symbols, use_52_week=True)
+
+    if not quotes and _thetadata_enabled():
+        if not force_theta:
+            print(
+                "[WARN] MarketData.app quote dondurmedi; ThetaData EOD fallback deneniyor...",
+                file=sys.stderr,
+            )
+        try:
+            quotes, theta_bars = fetch_thetadata_market_data(all_symbols)
+        except ThetaDataUnavailable as error:
+            print(f"[WARN] {error}; Yahoo fallback deneniyor...", file=sys.stderr)
+        if quotes:
+            data_source = "thetadata-free-eod"
+
     if not quotes:
-        if not force_yahoo:
+        if not force_yahoo and not _thetadata_enabled():
             print(
                 "[WARN] MarketData.app quote dondurmedi (token planini/kotasini "
                 "kontrol edin); Yahoo fallback deneniyor...",
@@ -1615,6 +1808,10 @@ def run_marketdata_pipeline(
     if data_source == "yahoo":
         print("[2-3/5] Market ve hisse barları Yahoo'dan çekiliyor (batch)...")
         market_bars, symbol_bars = _yahoo_bars_all()
+    elif data_source == "thetadata-free-eod":
+        print("[2-3/5] Market ve hisse barları ThetaData EOD cache'inden hazırlanıyor...")
+        market_bars = theta_bars.get("SPY", Bars())
+        symbol_bars = {sym: theta_bars.get(sym, Bars()) for sym in symbols}
     else:
         print("[2/5] Market bars (SPY) çekiliyor...")
         market_bars = Bars(
@@ -1634,12 +1831,31 @@ def run_marketdata_pipeline(
             time.sleep(0.03)
 
         if not any(b.daily for b in symbol_bars.values()):
-            print(
-                "[WARN] MarketData.app candle dondurmedi; barlar Yahoo'dan cekiliyor...",
-                file=sys.stderr,
-            )
-            data_source = "marketdata+yahoo-bars"
-            market_bars, symbol_bars = _yahoo_bars_all()
+            if _thetadata_enabled():
+                print(
+                    "[WARN] MarketData.app candle dondurmedi; ThetaData EOD bar fallback deneniyor...",
+                    file=sys.stderr,
+                )
+                try:
+                    _, theta_bars = fetch_thetadata_market_data(
+                        list(dict.fromkeys(["SPY"] + symbols))
+                    )
+                except ThetaDataUnavailable as error:
+                    print(f"[WARN] {error}", file=sys.stderr)
+                if any(theta_bars.get(sym, Bars()).daily for sym in symbols):
+                    data_source = "marketdata+thetadata-bars"
+                    market_bars = theta_bars.get("SPY", Bars())
+                    symbol_bars = {
+                        sym: theta_bars.get(sym, Bars()) for sym in symbols
+                    }
+
+            if not any(b.daily for b in symbol_bars.values()):
+                print(
+                    "[WARN] Primary candle kaynaklari veri dondurmedi; barlar Yahoo'dan cekiliyor...",
+                    file=sys.stderr,
+                )
+                data_source = "marketdata+yahoo-bars"
+                market_bars, symbol_bars = _yahoo_bars_all()
 
     # Quotes endpoint does not always return volume; backfill from latest daily bar
     for sym in symbols:
@@ -1666,6 +1882,8 @@ def run_marketdata_pipeline(
 
         long_c = score_candidate(sym, quote, bars, market_bars, vix_quote.last, "long")
         short_c = score_candidate(sym, quote, bars, market_bars, vix_quote.last, "short")
+        long_c.sources = [data_source]
+        short_c.sources = [data_source]
 
         long_c.missed_criteria = _soft_misses(quote, bars, "long")
         short_c.missed_criteria = _soft_misses(quote, bars, "short")
@@ -1783,8 +2001,7 @@ def run_marketdata_pipeline(
     _write_v3_calibration(out_path.parent, calibration)
     _write_v3_ledger_public(out_path.parent, public_ledger)
 
-    with open(out_path, "w", encoding="utf-8") as f:
-        json.dump(report, f, indent=2, ensure_ascii=False)
+    _write_json_atomic(out_path, report)
     print(f"[OK] {out_path} kaydedildi (L:{len(call_setups)} S:{len(put_setups)})")
 
     try:

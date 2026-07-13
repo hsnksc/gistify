@@ -134,6 +134,16 @@ describe("workspace feeds router smoke", () => {
     };
     expect(marketFlashPayload.ok).toBe(true);
 
+    fs.writeFileSync(reportPath, "", "utf8");
+    const cachedMarketFlashResponse = await fetch(
+      `http://127.0.0.1:${address.port}/api/marketflash`
+    );
+    expect(cachedMarketFlashResponse.status).toBe(200);
+    expect(cachedMarketFlashResponse.headers.get("x-marketflash-source")).toBe(
+      "last-good-cache"
+    );
+    expect(await cachedMarketFlashResponse.json()).toEqual({ ok: true });
+
     const refreshResponse = await fetch(
       `http://127.0.0.1:${address.port}/api/admin/midas/signals/refresh`,
       {
