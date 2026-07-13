@@ -1,10 +1,32 @@
-import { useCallback, useEffect, useMemo, useRef, useState, useTransition, } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  AlertTriangle, BarChart3, CalendarDays, ClipboardList, Clock3, FileText, Layers3, LayoutGrid, Radar, RefreshCw, Target, TrendingDown, TrendingUp, Zap, } from "lucide-react";
+  AlertTriangle,
+  BarChart3,
+  CalendarDays,
+  ClipboardList,
+  Clock3,
+  FileText,
+  Layers3,
+  LayoutGrid,
+  RefreshCw,
+  Target,
+  TrendingDown,
+  TrendingUp,
+  Zap,
+} from "lucide-react";
 import { useLocation } from "wouter";
 import type {
-  EarningReportSourceRecord, EarningReportSourceSummary, } from "@shared/earningReports";
+  EarningReportSourceRecord,
+  EarningReportSourceSummary,
+} from "@shared/earningReports";
 import { AppLanguage, t } from "@/lib/i18n";
 
 import { Button } from "@/components/ui/button";
@@ -29,11 +51,31 @@ type TabId = "stocks" | "post" | "playbook" | "calendar" | "risk";
 
 function getTabs(language: AppLanguage) {
   return [
-    { id: "stocks" as const, label: language === "en" ? "Stocks" : "Hisseler", icon: LayoutGrid },
-    { id: "post" as const, label: "Post", icon: FileText },
-    { id: "playbook" as const, label: "Playbook", icon: ClipboardList },
-    { id: "calendar" as const, label: t("common:calendar"), icon: CalendarDays },
-    { id: "risk" as const, label: "Risk", icon: AlertTriangle },
+    {
+      id: "stocks" as const,
+      label: language === "en" ? "Stock Cards" : "Hisse Kartları",
+      icon: LayoutGrid,
+    },
+    {
+      id: "post" as const,
+      label: language === "en" ? "Report Summary" : "Rapor Özeti",
+      icon: FileText,
+    },
+    {
+      id: "playbook" as const,
+      label: language === "en" ? "Stock Analysis" : "Hisse Analizi",
+      icon: ClipboardList,
+    },
+    {
+      id: "calendar" as const,
+      label: t("common:calendar"),
+      icon: CalendarDays,
+    },
+    {
+      id: "risk" as const,
+      label: language === "en" ? "Risk Plan" : "Risk Planı",
+      icon: AlertTriangle,
+    },
   ];
 }
 
@@ -51,12 +93,19 @@ export default function Home({ language }: { language: AppLanguage }) {
   const [selectedReportId, setSelectedReportId] = useState("");
   const [selectedTicker, setSelectedTicker] = useState<string | null>(null);
   const [reports, setReports] = useState<EarningReportSourceSummary[]>([]);
-  const [activeReport, setActiveReport] = useState<EarningReportSourceRecord | null>(null);
+  const [activeReport, setActiveReport] =
+    useState<EarningReportSourceRecord | null>(null);
   const [loadingReports, setLoadingReports] = useState(true);
   const [loadingDetail, setLoadingDetail] = useState(false);
+  const [detailRefreshToken, setDetailRefreshToken] = useState(0);
   const [isTabPending, startTabTransition] = useTransition();
   const contentRef = useRef<HTMLDivElement | null>(null);
-  const { data: quantData } = useEarningsStrategy();
+  const {
+    data: quantData,
+    isLoading: loadingQuant,
+    isRefreshing: refreshingQuant,
+    refresh: refreshQuant,
+  } = useEarningsStrategy();
 
   usePageMeta({
     description: t("common:theGistifyEarningsWorkspaceOpens"),
@@ -147,7 +196,7 @@ export default function Home({ language }: { language: AppLanguage }) {
     return () => {
       cancelled = true;
     };
-  }, [selectedReportId]);
+  }, [detailRefreshToken, selectedReportId]);
 
   const visibleReports = useMemo(() => reports, [reports]);
 
@@ -164,7 +213,10 @@ export default function Home({ language }: { language: AppLanguage }) {
       return null;
     }
 
-    return parseEarningReportMarkdown(activeReport.markdown, activeReport.sourceFile);
+    return parseEarningReportMarkdown(
+      activeReport.markdown,
+      activeReport.sourceFile
+    );
   }, [activeReport]);
 
   const positions = useMemo(() => {
@@ -230,8 +282,13 @@ export default function Home({ language }: { language: AppLanguage }) {
       return "-";
     }
 
-    const total = valid.reduce((sum, position) => sum + (position.ivRank || 0), 0);
-    return language === "en" ? `${Math.round(total / valid.length)}%` : `%${Math.round(total / valid.length)}`;
+    const total = valid.reduce(
+      (sum, position) => sum + (position.ivRank || 0),
+      0
+    );
+    return language === "en"
+      ? `${Math.round(total / valid.length)}%`
+      : `%${Math.round(total / valid.length)}`;
   }, [positions]);
 
   const avgCpr = useMemo(() => {
@@ -265,9 +322,47 @@ export default function Home({ language }: { language: AppLanguage }) {
     ? formatEarningReportDate(selectedSummary.reportDate, locale)
     : "-";
   const selectedVixLabel =
-    selectedSummary?.vixLabel ||
-    parsedReport?.vixLabel ||
-    t("common:pending");
+    selectedSummary?.vixLabel || parsedReport?.vixLabel || t("common:pending");
+
+  const hasQuantCards = Boolean(
+    quantData?.strategies.some(strategy => strategy.intelligence)
+  );
+  const tabAvailability: Record<TabId, boolean> = {
+    stocks:
+      selectedReportId === latestReport?.id && (loadingQuant || hasQuantCards),
+    post: Boolean(parsedReport),
+    playbook: positions.length > 0,
+    calendar: Boolean(
+      parsedReport &&
+        (parsedReport.tradeSchedule.length ||
+          parsedReport.timelineSteps.length ||
+          positions.length)
+    ),
+    risk: Boolean(
+      parsedReport &&
+        (parsedReport.risks.length ||
+          parsedReport.positionSizing.length ||
+          parsedReport.allocations.length ||
+          parsedReport.goldenRules.length ||
+          parsedReport.checklist.length)
+    ),
+  };
+  const availableTabs = getTabs(language).filter(
+    tab => tabAvailability[tab.id]
+  );
+  const availableTabIds = availableTabs.map(tab => tab.id).join(":");
+
+  useEffect(() => {
+    if (
+      loadingReports ||
+      loadingDetail ||
+      availableTabs.some(tab => tab.id === activeTab)
+    ) {
+      return;
+    }
+
+    setActiveTab(availableTabs[0]?.id || "post");
+  }, [activeTab, availableTabIds, loadingDetail, loadingReports]);
 
   const handleTickerSelect = (ticker: string) => {
     setSelectedTicker(ticker);
@@ -280,39 +375,48 @@ export default function Home({ language }: { language: AppLanguage }) {
     });
   };
 
+  const handleRefresh = async () => {
+    await Promise.all([loadReports(), refreshQuant()]);
+    setDetailRefreshToken(current => current + 1);
+  };
+
   const renderActiveTab = () => {
     if (loadingReports || loadingDetail) {
       return (
-        <WorkspaceLoadingState
-          label={t("common:loadingEarningsWorkspace")}
-        />
+        <WorkspaceLoadingState label={t("common:loadingEarningsWorkspace")} />
       );
     }
 
     if (!parsedReport) {
       return (
-        <WorkspaceLoadingState
-          label={t("common:thereIsNoViewableEarnings")}
-        />
+        <WorkspaceLoadingState label={t("common:thereIsNoViewableEarnings")} />
       );
     }
 
     switch (activeTab) {
       case "stocks":
-        return quantData && selectedReportId === latestReport?.id ? (
+        if (loadingQuant && !quantData) {
+          return (
+            <WorkspaceLoadingState
+              label={
+                language === "en"
+                  ? "Loading stock analyses…"
+                  : "Hisse analizleri yükleniyor…"
+              }
+            />
+          );
+        }
+
+        return quantData &&
+          hasQuantCards &&
+          selectedReportId === latestReport?.id ? (
           <EarningsQuantCardGrid
             data={quantData}
             language={language}
             selectedTicker={selectedTicker}
             onSelectTicker={setSelectedTicker}
           />
-        ) : (
-          <div className="rounded-xl border border-dashed border-border bg-background/35 px-4 py-10 text-center text-sm leading-6 text-muted-foreground">
-            {language === "en"
-              ? "Stock cards are available for the current quantitative earnings report."
-              : "Hisse kartları güncel nicel earnings raporu için kullanılabilir."}
-          </div>
-        );
+        ) : null;
       case "post":
         return (
           <EarningReportPostTab
@@ -325,7 +429,6 @@ export default function Home({ language }: { language: AppLanguage }) {
       case "playbook":
         return (
           <EarningReportPlaybookTab
-            key={`${selectedReportId}:${selectedTicker || "none"}`}
             report={parsedReport}
             language={language}
             selectedTicker={selectedTicker}
@@ -341,7 +444,9 @@ export default function Home({ language }: { language: AppLanguage }) {
           />
         );
       case "risk":
-        return <EarningReportRiskTab report={parsedReport} language={language} />;
+        return (
+          <EarningReportRiskTab report={parsedReport} language={language} />
+        );
       default:
         return (
           <EarningReportPostTab
@@ -361,10 +466,14 @@ export default function Home({ language }: { language: AppLanguage }) {
           overlayClassName="bg-[radial-gradient(circle_at_top_right,rgba(14,165,233,0.22),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(16,185,129,0.14),transparent_28%)]"
           badges={
             <>
-              <span className="badge-strong">{bullishCount} {t("scanner:30IvSpike")}</span>
-              <span className="badge-danger">{bearishCount} {t("common:bearishBias")}</span>
+              <span className="badge-strong">
+                {bullishCount} {language === "en" ? "bullish" : "yükseliş"}
+              </span>
+              <span className="badge-danger">
+                {bearishCount} {language === "en" ? "bearish" : "düşüş"}
+              </span>
               <span className="badge-warning">
-                {balancedCount} {t("common:balanced08d9")}
+                {balancedCount} {language === "en" ? "balanced" : "dengeli"}
               </span>
             </>
           }
@@ -373,13 +482,16 @@ export default function Home({ language }: { language: AppLanguage }) {
           description={t("common:everyUploadedEarningsMarkdownFile")}
           actions={
             <>
-              <Button type="button" variant="outline" onClick={() => void loadReports()}>
-                <RefreshCw className="size-4" />
+              <Button
+                type="button"
+                variant="outline"
+                disabled={loadingReports || refreshingQuant}
+                onClick={() => void handleRefresh()}
+              >
+                <RefreshCw
+                  className={`size-4 ${loadingReports || refreshingQuant ? "animate-spin" : ""}`}
+                />
                 {t("common:refresh")}
-              </Button>
-              <Button type="button" variant="outline" onClick={() => setLocation("/momentum")}>
-                <Radar className="size-4" />
-                {"Momentum"}
               </Button>
             </>
           }
@@ -397,18 +509,30 @@ export default function Home({ language }: { language: AppLanguage }) {
                       </span>
                     </div>
                     <h3 className="text-2xl font-semibold tracking-tight text-foreground">
-                      {formatEarningReportDateTime(latestReport.updatedAt, locale)}
+                      {formatEarningReportDateTime(
+                        latestReport.updatedAt,
+                        locale
+                      )}
                     </h3>
                     <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
                       {latestReport.headline || t("common:earningsReport")}
                     </p>
                     <div className="flex items-center gap-2 text-xs text-muted-foreground">
                       <CalendarDays className="size-3.5" />
-                      <span>{formatEarningReportDate(latestReport.reportDate, locale)}</span>
+                      <span>
+                        {formatEarningReportDate(
+                          latestReport.reportDate,
+                          locale
+                        )}
+                      </span>
                     </div>
                   </div>
                   <div className="flex flex-wrap items-center gap-3">
-                    <Button type="button" variant="outline" onClick={() => setLocation("/reports")}>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setLocation("/reports")}
+                    >
                       <Layers3 className="size-4" />
                       {t("common:viewFullArchive")}
                     </Button>
@@ -514,17 +638,26 @@ export default function Home({ language }: { language: AppLanguage }) {
             sidebarOpen ? "xl:grid-cols-[minmax(0,1.55fr)_340px]" : ""
           }`}
         >
-          <main ref={contentRef} className="min-w-0 space-y-6 overflow-x-hidden">
+          <main
+            ref={contentRef}
+            className="min-w-0 space-y-6 overflow-x-hidden"
+          >
             <section className="panel p-4 md:p-6">
               {hasReports ? (
-                <div className={`flex flex-col gap-4 border-b border-border pb-4 md:flex-row md:justify-between ${activeTab === "stocks" ? "md:items-center" : "md:items-end"}`}>
+                <div
+                  className={`flex flex-col gap-4 border-b border-border pb-4 md:flex-row md:justify-between ${activeTab === "stocks" ? "md:items-center" : "md:items-end"}`}
+                >
                   <div className="space-y-2">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300">
                       {activeTab === "stocks"
-                        ? language === "en" ? "Current quant workspace" : "Güncel quant çalışma alanı"
+                        ? language === "en"
+                          ? "Current quant workspace"
+                          : "Güncel quant çalışma alanı"
                         : t("common:selectedReport")}
                     </p>
-                    <h2 className={`heading-condensed text-foreground ${activeTab === "stocks" ? "text-lg" : "text-2xl md:text-3xl"}`}>
+                    <h2
+                      className={`heading-condensed text-foreground ${activeTab === "stocks" ? "text-lg" : "text-2xl md:text-3xl"}`}
+                    >
                       {selectedUploadLabel}
                     </h2>
                     {activeTab !== "stocks" ? (
@@ -536,9 +669,16 @@ export default function Home({ language }: { language: AppLanguage }) {
 
                   {activeTab === "stocks" ? (
                     <div className="flex flex-wrap items-center gap-2 text-[10px] font-bold uppercase tracking-wider">
-                      <span className="rounded-full border border-sky-400/20 bg-sky-400/8 px-2.5 py-1 text-sky-300">{selectedReportDateLabel}</span>
-                      <span className="rounded-full border border-amber-400/20 bg-amber-400/8 px-2.5 py-1 text-amber-300">VIX · {selectedVixLabel}</span>
-                      <span className="rounded-full border border-emerald-400/20 bg-emerald-400/8 px-2.5 py-1 text-emerald-300">{positions.length} {language === "en" ? "events" : "etkinlik"}</span>
+                      <span className="rounded-full border border-sky-400/20 bg-sky-400/8 px-2.5 py-1 text-sky-300">
+                        {selectedReportDateLabel}
+                      </span>
+                      <span className="rounded-full border border-amber-400/20 bg-amber-400/8 px-2.5 py-1 text-amber-300">
+                        VIX · {selectedVixLabel}
+                      </span>
+                      <span className="rounded-full border border-emerald-400/20 bg-emerald-400/8 px-2.5 py-1 text-emerald-300">
+                        {positions.length}{" "}
+                        {language === "en" ? "events" : "etkinlik"}
+                      </span>
                     </div>
                   ) : (
                     <div className="grid gap-3 sm:grid-cols-3 md:w-full md:max-w-[420px] xl:max-w-none">
@@ -575,9 +715,10 @@ export default function Home({ language }: { language: AppLanguage }) {
               )}
 
               <div className="mobile-scroll-row mt-4 rounded-xl border border-border bg-background/45 p-1 md:flex md:flex-wrap md:gap-2 md:overflow-visible">
-                {getTabs(language).map(tab => {
+                {availableTabs.map(tab => {
                   const active = activeTab === tab.id;
-                  const hasAlert = tab.id === "risk" && balancedCount < positions.length;
+                  const hasAlert =
+                    tab.id === "risk" && balancedCount < positions.length;
 
                   return (
                     <button
@@ -606,7 +747,7 @@ export default function Home({ language }: { language: AppLanguage }) {
                 ) : null}
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.div
-                    key={`${activeTab}:${selectedReportId}:${selectedTicker || "none"}`}
+                    key={`${activeTab}:${selectedReportId}`}
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -12 }}
@@ -632,7 +773,7 @@ export default function Home({ language }: { language: AppLanguage }) {
                     </h3>
                   </div>
                   <span className="badge-strong">
-                    {t("common:liveIndex")}
+                    {language === "en" ? "Report data" : "Rapor verisi"}
                   </span>
                 </div>
 
@@ -686,6 +827,3 @@ export default function Home({ language }: { language: AppLanguage }) {
     </div>
   );
 }
-
-
-
