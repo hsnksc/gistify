@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import type { MacroForecastWorkspaceData } from "../shared/cpiPpiForecast";
 import {
+  isCompletedForecastMonth,
   normalizeForecastMonth,
   resolveForecastMeasurementMonth,
 } from "../shared/cpiPpiForecast";
@@ -74,5 +75,12 @@ describe("CPI/PPI report month", () => {
     expect(normalizeForecastMonth("Jul 2026")).toBe("2026-07");
     expect(normalizeForecastMonth("2026-07")).toBe("2026-07");
     expect(normalizeForecastMonth("2026-13")).toBeNull();
+  });
+
+  it("lists only months completed before the current measurement month", () => {
+    expect(isCompletedForecastMonth("2026-06", "2026-07")).toBe(true);
+    expect(isCompletedForecastMonth("2026-07", "2026-07")).toBe(false);
+    expect(isCompletedForecastMonth("2026-08", "2026-07")).toBe(false);
+    expect(isCompletedForecastMonth("invalid", "2026-07")).toBe(false);
   });
 });

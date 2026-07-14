@@ -158,3 +158,17 @@ export function resolveForecastMeasurementMonth(
     normalizeForecastMonth(data.generatedAt)
   );
 }
+
+export function isCompletedForecastMonth(
+  month: string,
+  currentMonth: string
+): boolean {
+  const normalizedMonth = normalizeForecastMonth(month);
+  const normalizedCurrentMonth = normalizeForecastMonth(currentMonth);
+
+  return Boolean(
+    normalizedMonth &&
+      normalizedCurrentMonth &&
+      normalizedMonth < normalizedCurrentMonth
+  );
+}

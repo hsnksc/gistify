@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { resolveForecastMeasurementMonth } from "@shared/cpiPpiForecast";
+import {
+  isCompletedForecastMonth,
+  resolveForecastMeasurementMonth,
+} from "@shared/cpiPpiForecast";
 import type {
   CpiPpiForecastData, CpiPpiForecastPipelineState, MacroForecastBias, MacroForecastPipelineMetadata, MacroForecastPipelineStatus, MacroForecastRelease, MacroForecastScenario, MacroForecastWorkspaceData, MacroForecastWorkspaceKey, } from "@shared/cpiPpiForecast";
 import {
@@ -43,6 +46,18 @@ function formatMonthLabel(month: string, language: AppLanguage) {
     year: "numeric",
     timeZone: "UTC",
   }).format(parsed);
+}
+
+function currentIstanbulMonth() {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "2-digit",
+    timeZone: "Europe/Istanbul",
+  }).formatToParts(new Date());
+  const year = parts.find(part => part.type === "year")?.value;
+  const month = parts.find(part => part.type === "month")?.value;
+
+  return year && month ? `${year}-${month}` : "";
 }
 
 function sanitizeArchivedRelease(
@@ -1322,9 +1337,13 @@ export default function CpiPpiForecastPage({
     return months;
   }, [availableWorkspaces]);
 
+  const currentMeasurementMonth = currentIstanbulMonth();
   const pastMonths = useMemo(
-    () => archiveEntries.filter(entry => !liveMonths.has(entry.month)),
-    [archiveEntries, liveMonths]
+    () =>
+      archiveEntries.filter(entry =>
+        isCompletedForecastMonth(entry.month, currentMeasurementMonth)
+      ),
+    [archiveEntries, currentMeasurementMonth]
   );
 
   const liveMonth = useMemo(() => {
