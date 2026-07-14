@@ -58,6 +58,10 @@ If you control the deploy target directly, prefer the path provided by `CPI_FORE
 8. Keep `probability` and `confidence` values in the `0-100` range.
 9. Do not output an explanatory report to stdout instead of the JSON artifact.
 10. Do not omit the file because the release is not imminent. The workspace should still publish the current best CPI setup.
+11. The `aggregation` block is mandatory and additive: `shelterContribution`, `coreGoodsContribution`, `coreServicesContribution`, `energyIndexMoM`, `gasolineIndexMoM`, and `componentSources`. Never remove or rename existing fields — the Gistify frontend depends on them.
+12. Core m/m must satisfy `core m/m = (shelterContribution + coreGoodsContribution + coreServicesContribution) / 0.80557`. A single core plug without the three sub-components is a validation failure.
+13. Headline and core y/y must be derived from NSA index levels (projected NSA index ÷ BLS index 12 months prior); never eyeballed.
+14. For a completed measured month, only in-window data moves point estimates (measured-month firewall).
 
 ## Research requirements
 
@@ -93,6 +97,27 @@ The backtest (15 months, 2025-2026) revealed that WTI crude oil futures (CL=F) a
 - Always note the data source and timestamp for energy components in the `watchItems` or `keyDrivers` fields.
 - If user provides live energy data (e.g., "WTI is $72.85"), use it for sector trades but still verify gasoline CPI with EIA/AAA.
 - Gasoline CPI forecast source MUST be EIA retail or AAA. If WTI is used for gasoline CPI, downgrade `confidence` by 10 points and flag in `keyDrivers`: "WARNING: WTI used for gasoline CPI due to data unavailability. EIA/AAA preferred per backtest."
+
+**Quantitative Energy Bridge (mandatory — direction-only energy calls caused the June 2026 miss):**
+1. Compute the NSA month-over-month change in MONTHLY AVERAGES of retail gasoline — daily AAA national average, or EIA weekly `PET.EMM_EPMR_PTE_NUS_DPG.W` aggregated to a monthly average. If the measured month is incomplete, compute on the available days and flag the value as `provisional` in `watchItems`.
+2. Convert the retail change with pass-through `beta_gas = 0.95`: `gasoline CPI m/m SA = 0.95 × retail gasoline m/m NSA change`.
+3. Build the energy index from sub-components (gasoline, electricity, natural gas, fuel oil) with weights reconciled to the 6.193 energy total. The energy index is never a single plug.
+4. Sanity bound (hard gate): the gasoline contribution must lie within ±20% of `(0.03266 × retail gasoline m/m change)`. A forecast outside this bound is invalid and must be rebuilt before deploy.
+
+**Core Decomposition (mandatory):**
+Core m/m is never a single plug. Decompose into three additive headline-level contributions: shelter, core goods, and core services (ex-shelter). Identity: `core m/m = (shelterContribution + coreGoodsContribution + coreServicesContribution) / 0.80557`. A single core contribution without the three sub-components is a validation failure — do not deploy.
+
+**Anti-Anchoring Rule (mandatory):**
+Compute the bottom-up forecast BEFORE reading consensus or the Cleveland Fed nowcast. Log both the independent bottom-up estimate and the consensus/nowcast in `watchItems`. If the bottom-up diverges from consensus by more than 0.15pp headline or 0.10pp core, a component-level justification is required. The point estimate may move at most 0.05pp toward consensus, and the move must be documented.
+
+**Measured-Month Firewall:**
+For a completed measured month, only data inside the measurement window moves point estimates. Post-month-end events (e.g., a geopolitical re-escalation after month-end) feed the NEXT month's forecast, scenario design, and `risks` only — never the completed month's point estimates.
+
+**y/y Derivation (no eyeballing):**
+Derive both headline and core y/y from NSA index levels: project the measured month's NSA index (prior NSA index × (1 + projected NSA m/m)), then divide by the BLS NSA index 12 months prior. Anchor example: May 2026 CPI-U NSA = 335.123. Never eyeball y/y from m/m momentum.
+
+**Volatility-Regime Scenario & Confidence Rule:**
+If the monthly-average gasoline move exceeds ±5% or an active supply shock is in play: (1) headline hot-vs-cool scenario outcomes must span at least 0.8pp; (2) `confidence` is capped at 60 (50 if both EIA and AAA are unavailable); (3) hot/cool scenarios must extend beyond the consensus range; (4) no scenario may carry probability below 10% in high-volatility regimes.
 
 Use the latest available consensus and macro context at run time.
 
@@ -138,6 +163,22 @@ If the next CPI release is still the same event as yesterday, regenerate the fil
     "bias": "INLINE",
     "confidence": 74,
     "thesis": "One or two sentence CPI thesis."
+  },
+  "aggregation": {
+    "shelterContribution": 0.18,
+    "coreGoodsContribution": -0.02,
+    "coreServicesContribution": 0.08,
+    "energyIndexMoM": "-0.5%",
+    "gasolineIndexMoM": "-1.2%",
+    "componentSources": {
+      "gasoline": "AAA daily national average, monthly avg NSA m/m (provisional)",
+      "electricity": "EIA electricity/retail-sales",
+      "naturalGas": "EIA natural-gas/pri/sum",
+      "fuelOil": "BLS trend + seasonal",
+      "shelter": "BLS OER/rent trend",
+      "coreGoods": "Used-car/goods proxy + BLS trend",
+      "coreServices": "BLS supercore trend"
+    }
   },
   "scenarios": [
     {
@@ -218,6 +259,13 @@ If the next CPI release is still the same event as yesterday, regenerate the fil
 }
 ```
 
+## Release-day duties (publication day)
+
+On the day BLS publishes the measured month's actuals, that day's run must:
+
+1. Update all four `prior*` fields (`priorHeadlineMoM`, `priorHeadlineYoY`, `priorCoreMoM`, `priorCoreYoY`) to the just-published actuals the same day — the JSON must not keep showing the old month's priors until the next midnight run.
+2. Append a post-mortem row (forecast vs actual per component — headline, core, energy, gasoline, shelter — with per-component errors) to the `Forecast Log & Calibration` section of the CPI skill at `C:\Users\hasan\AppData\Roaming\kimi-desktop\daimon-share\daimon\skills\us-cpi-pre-release-forecast\SKILL.md`.
+
 ## Final execution checklist
 
 Before you finish:
@@ -229,3 +277,8 @@ Before you finish:
 5. Confirm every `scenario` has `probability`, `outcome`, `marketReadthrough`, and `invalidation`.
 6. Confirm the file was written atomically to the deploy target.
 7. Do not output a narrative report instead of the JSON file.
+8. Confirm the energy sanity bound passed: gasoline contribution within ±20% of `(0.03266 × retail gasoline m/m change)`.
+9. Confirm the core decomposition is present (shelter + core goods + core services contributions; core identity holds) — no single plug.
+10. Confirm the anti-anchoring log is present in `watchItems` (bottom-up computed before consensus/nowcast; both logged).
+11. Confirm headline and core y/y are index-derived from NSA levels.
+12. Confirm scenario band width (≥ 0.8pp in high-volatility regimes) and the confidence cap (60; 50 if EIA+AAA both unavailable) are respected.

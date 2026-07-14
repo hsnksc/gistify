@@ -32,13 +32,13 @@
     "headlineYoY": "3.7%",
     "coreMoM": "+0.2%",
     "coreYoY": "2.8%",
-    "priorHeadlineMoM": "+0.5%",
-    "priorHeadlineYoY": "4.2%",
-    "priorCoreMoM": "+0.2%",
-    "priorCoreYoY": "2.9%",
+    "priorHeadlineMoM": "-0.4%",
+    "priorHeadlineYoY": "3.5%",
+    "priorCoreMoM": "0.0%",
+    "priorCoreYoY": "2.6%",
     "bias": "HOTTER",
     "confidence": 50,
-    "thesis": "JULY 2026 print (Aug 12). Energy is the driver: the Hormuz escalation is a July event — Jul 7 vessel attacks, Jul 8 US strikes + ceasefire declared over + Treasury sanctions waiver revoked, Jul 13 blockade reinstated (WTI ~$79, gasoline futures +6%). July energy CPI turns back UP after June's deflation, firming headline to ~+0.2% m/m / 3.7% y/y. Core keeps cooling to ~+0.2% / 2.8% y/y (shelter easing, services sticky). Cleveland nowcast: headline 3.71%, core 2.81% y/y. PROVISIONAL — only ~2 weeks of July data; the back-half oil path sets the final number. Prior print = May actual (June actual releases today Jul 14, becomes new prior)."
+    "thesis": "JULY 2026 print (Aug 12). Energy is the driver: the Hormuz escalation is a July event — Jul 7 vessel attacks, Jul 8 US strikes + ceasefire declared over + Treasury sanctions waiver revoked, Jul 13 blockade reinstated (WTI ~$79, gasoline futures +6%). July energy CPI turns back UP after June's deflation, firming headline to ~+0.2% m/m / 3.7% y/y. Core keeps cooling to ~+0.2% / 2.8% y/y (shelter easing, services sticky). Cleveland nowcast: headline 3.71%, core 2.81% y/y. PROVISIONAL — only ~2 weeks of July data; the back-half oil path sets the final number. Prior print = June actual (Jul 14 release): headline -0.4% m/m / +3.5% y/y, core 0.0% m/m / +2.6% y/y — a broad downside surprise that softens the July base."
   },
   "scenarios": [
     {
@@ -129,7 +129,7 @@
     {
       "label": "MEASURED MONTH",
       "value": "JULY 2026 (released Aug 12)",
-      "note": "This snapshot measures JULY 2026 price changes. Publication timing (Aug 12) does not change the measured month. Prior print shown = May actual; June actual releases today Jul 14 08:30 ET and becomes the new prior."
+      "note": "This snapshot measures JULY 2026 price changes. Publication timing (Aug 12) does not change the measured month. Prior print = June actual (Jul 14): headline -0.4% m/m / +3.5% y/y, core 0.0% m/m / +2.6% y/y (energy -5.7%, gasoline -9.7%, shelter +0.1%)."
     },
     {
       "label": "Hormuz / Iran (JULY DRIVER)",
