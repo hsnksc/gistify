@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yapay Zeka Değer Zincirinde Sistemik Risk ve Finansal Dayanıklılık — Temmuz 2026 Röntgeni</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Yapay Zeka Değer Zincirinde Sistemik Risk ve Finansal Dayanıklılık — Temmuz 2026 Röntgeni" />
+<meta property="og:description" content="AI değer zincirinin 6 katmanı, 18+ şirket: sistemik kritiklik × finansal kırılganlık matrisi, senaryo ve stres testleri, olasılık çerçevesi ve yalnızca prim ödenen call/put portföy uygulaması." />
+<meta property="og:site_name" content="Gistify" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:760px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted)}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.section-body{padding:4px 18px 18px}
+.section-body h3{font-size:.95rem;color:var(--gf-accent);margin:18px 0 8px}
+.section-body h4{font-size:.88rem;color:var(--gf-text);margin:14px 0 6px}
+.section-body p{margin:8px 0}
+.section-body ul,.section-body ol{margin:8px 0 8px 22px}
+.section-body li{margin:4px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:12px 0}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;margin:12px 0}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+.tbl{overflow-x:auto;margin:10px 0}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+.tbl table{margin:0;min-width:560px}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border);vertical-align:top}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:0 0 24px}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-num.up{color:var(--gf-success)}
+.kpi-num.down{color:var(--gf-danger)}
+.kpi-num.neu{color:var(--gf-warning)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+.chart-card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:18px;margin:14px 0}
+.chart-title{font-size:.9rem;font-weight:700;color:var(--gf-accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.chart-title::before{content:'';display:inline-block;width:4px;height:16px;background:var(--gf-accent);border-radius:2px}
+.chart-caption{font-size:.8rem;color:var(--gf-muted);margin-top:10px}
+.chart-src{font-size:.72rem;color:var(--gf-muted);opacity:.72;margin-top:4px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:10px;font-size:.8rem;color:var(--gf-muted)}
+.legend i{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:6px;vertical-align:-1px}
+.donut-chart{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.donut-svg{flex-shrink:0}
+.donut-legend{display:flex;flex-direction:column;gap:8px}
+.donut-legend-item{display:flex;align-items:center;gap:8px;font-size:.85rem}
+.donut-legend-color{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.donut-legend-label{color:var(--gf-text)}
+.donut-legend-value{color:var(--gf-muted);font-size:.8rem}
+.heat td{text-align:center;font-weight:700;font-size:.82rem}
+.heat td:first-child{text-align:left;font-weight:600;color:var(--gf-text)}
+.h1{background:rgba(148,163,184,.08);color:var(--gf-muted)}
+.h2{background:rgba(251,191,36,.13);color:#fde68a}
+.h3{background:rgba(251,191,36,.30);color:#fef3c7}
+.h4{background:rgba(248,113,113,.32);color:#fecaca}
+.h5{background:rgba(220,38,38,.52);color:#fee2e2}
+.domino{margin:14px 0}
+.domino-step{display:flex;gap:14px;align-items:flex-start;border:1px solid var(--gf-border);border-radius:10px;padding:12px 14px;background:var(--gf-elev)}
+.domino-step.amber{border-left:4px solid var(--gf-warning)}
+.domino-step.red{border-left:4px solid var(--gf-danger)}
+.domino-step.deepred{border-left:4px solid #dc2626}
+.domino-step.green{border-left:4px solid var(--gf-success)}
+.domino-num{font-size:1.05rem;font-weight:800;color:var(--gf-muted);min-width:22px;text-align:center}
+.domino-body b{display:block;font-size:.88rem;color:var(--gf-text)}
+.domino-body span{font-size:.78rem;color:var(--gf-muted)}
+.domino-arrow{text-align:center;color:var(--gf-muted);font-size:.9rem;line-height:1.6}
+.gate{display:flex;flex-wrap:wrap;gap:10px;align-items:center;border:1px solid var(--gf-border);border-radius:10px;padding:10px 14px;background:var(--gf-elev);margin:8px 0}
+.gate b{color:var(--gf-text);font-size:.86rem;flex:1 1 240px}
+.gate .yes{color:var(--gf-success);font-size:.8rem;font-weight:700}
+.gate .no{color:var(--gf-danger);font-size:.8rem;font-weight:700}
+.formula{font-family:var(--gf-mono);font-size:.8rem;background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:8px;padding:12px 14px;margin:10px 0;overflow-x:auto;white-space:pre;line-height:1.55;color:var(--gf-text)}
+sup.fn{font-size:.68em}
+sup.fn a{color:var(--gf-accent);text-decoration:none}
+.company{border:1px solid var(--gf-border);border-radius:var(--gf-radius);background:var(--gf-card);padding:14px 16px;margin:10px 0}
+.company h4{margin:0 0 6px;font-size:.92rem;color:var(--gf-text)}
+.company p{font-size:.85rem;margin:6px 0}
+.foot-list{font-size:.75rem;color:var(--gf-muted);columns:1;margin:10px 0 0 18px}
+.foot-list li{margin:3px 0}
+.foot-list a{color:var(--gf-accent);text-decoration:none;word-break:break-all}
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid,.grid2{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-14T09:00:00+03:00">
+  <h1 class="hero-h">Yapay Zeka Değer Zincirinde Sistemik Risk ve Finansal Dayanıklılık</h1>
+  <p class="hero-desc">Temmuz 2026 Görünümü — Denetlenebilir Risk Raporu. AI değer zincirinin altı katmanı (litografi → dökümhane → çip tasarımı → veri merkezi/enerji → hyperscaler → neo-cloud/LLM) sistemik kritiklik ve finansal kırılganlık eksenlerinde ayrı ayrı haritalanır; senaryolar sayısal olasılık bantlarına bağlanır ve yalnızca prim ödenen uzun call/put portföylerine çevrilir.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info hero-date" data-timestamp="2026-07-14T09:00:00+03:00">📅 14 Temmuz 2026</span>
+    <span class="meta-pill neu">🗓 Veri tarihi: 13 Temmuz 2026</span>
+    <span class="meta-pill info">Kurumsal risk analizi — denetlenebilir metodoloji</span>
+    <span class="meta-pill bull">6 katman · 18+ şirket</span>
+    <span class="meta-pill bear">Senaryo + stres testi + opsiyon uygulaması</span>
+  </div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-num up">242,5x</div><div class="kpi-label">TSMC faiz karşılama</div></div>
+  <div class="kpi"><div class="kpi-num down">0,31</div><div class="kpi-label">CoreWeave cari oran</div></div>
+  <div class="kpi"><div class="kpi-num neu">238 mr $</div><div class="kpi-label">Meta bağlayıcı taahhüt</div></div>
+  <div class="kpi"><div class="kpi-num down">0,63x</div><div class="kpi-label">Intel faiz karşılama</div></div>
+  <div class="kpi"><div class="kpi-num neu">~%53 / ~%47</div><div class="kpi-label">36 ay: kötü yol / dayanıklılık</div></div>
+</div>
+
+<div class="insight-box warn">
+  <strong>Yasal uyarı ve kapsam notu:</strong> Bu rapor yatırım tavsiyesi değildir. İçerdiği tüm piyasa değerleri, fiyat aralıkları ve finansal metrikler 13 Temmuz 2026 itibarıyla derlenmiş üçüncü taraf ve birincil kaynak verilerine dayanır; tek bir günün kapanış değeri değil, Temmuz 2026 boyunca dalgalanan aralıklar olarak okunmalıdır. Halka açık olmayan şirketlere (OpenAI, Anthropic, Lambda) ilişkin veriler resmi denetimden geçmemiştir ve analist/özel-piyasa tahmini niteliğindedir. Doğrulanamayan her iddia metin içinde &laquo;doğrulanamadı&raquo;, &laquo;analist tahmini&raquo; veya &laquo;senaryo varsayımı&raquo; etiketiyle işaretlenmiştir. Rakam uydurulmamıştır; verinin bulunamadığı yerlerde sonuç açıkça &laquo;bilinmiyor / hesaplanamaz&raquo; olarak bırakılmıştır.
+</div>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">🧭 Metodoloji Özeti ve Terimler</h2></div>
+    <div class="section-body">
+      <p>Bu rapor, &laquo;AI balon mu?&raquo; sorusunu ikili bir evet/hayır sorusu olarak değil, <strong>katmanlı bir sistemik risk sorusu</strong> olarak ele alır. Temel öncül: <strong>finansal kırılganlık ile operasyonel/sistemik önem aynı şey değildir.</strong> Bir şirket hem finansal olarak çok sağlam hem de sistemin en kritik halkası olabilir (TSMC); ya da hem finansal olarak kırılgan hem de sistemik açıdan görece ikame edilebilir olabilir (CoreWeave). Bu iki boyutu tek bir skorda eritmek yanıltıcıdır.</p>
+      <p>Bu nedenle rapor dört risk türünü birbirinden ayırır:</p>
+      <div class="grid">
+        <div class="card"><div class="card-label">1 · Finansal temerrüt riski</div><p style="font-size:.83rem;margin:0">Şirketin borcunu/yükümlülüğünü ödeyememe olasılığı. Ölçüt: kaldıraç, faiz karşılama, likidite, vade yoğunlaşması.</p></div>
+        <div class="card"><div class="card-label">2 · Operasyonel tedarik kesintisi</div><p style="font-size:.83rem;margin:0">Şirketin ürün/hizmet vermeyi durdurma olasılığı. Ölçüt: üretim yoğunlaşması, ikame süresi, coğrafi risk.</p></div>
+        <div class="card"><div class="card-label">3 · Finansal bulaşıcılık riski</div><p style="font-size:.83rem;margin:0">Bir başarısızlığın kredi, teminat ve piyasa kanalıyla yayılma derecesi. Ölçüt: bağlantısallık, teminat yapısı, karşı taraf yoğunlaşması.</p></div>
+        <div class="card"><div class="card-label">4 · Piyasa / değerleme riski</div><p style="font-size:.83rem;margin:0">Hisse fiyatındaki düşüş; temerrütten bağımsız bir kayıp türü. Şirket batmadan da hissedar büyük kayıp yaşayabilir.</p></div>
+      </div>
+      <p>Ölçüm üç ayrı eksende yapılır ve hiçbiri diğerleriyle çarpılarak tek bir sahte-kesin skora dönüştürülmez: <strong>(A) Sistemik Kritiklik</strong> — ikame edilemezlik, bağlantısallık, ikame süresi, hizmetin ekonomik kritikliği, coğrafi yoğunlaşma; <strong>(B) Başarısızlık Olasılığı</strong> — net kaldıraç, faiz/sabit yük karşılama, likidite, borç vade yoğunlaşması, değişken faiz maruziyeti, operasyonel ve jeopolitik risk; <strong>(C) Beklenen Sistemik Kayıp</strong> — ilk ikisinin ve bulaşıcılık katsayısının niteliksel birlikte değerlendirmesi (matematiksel çarpım değil, kalibre edilmiş yargı).</p>
+      <p>Sözel olasılık sınıfları şeffaf bir sayısal banda bağlanır (§2.6); olumsuz senaryoların yanına baz ve pozitif senaryo eklenir (§8.6–8.7); senaryolar arası koşullu olasılık ve kesişim matrisi kurulur (§8.8); sonuç bölümünde iyi yön / kötü yön olasılıkları bir karar ağacıyla verilir (§11.1); senaryoların yalnızca prim ödenen uzun call ve put portföylerine çevrilmesi §13'te model örneklerle gösterilir. Kaynaklar <em>resmi dosyalama → derecelendirme kuruluşu → şirket açıklaması → analist tahmini → medya</em> sırasıyla kalite kademesine ayrılır.</p>
+      <h3>Terimler sözlüğü</h3>
+      <div class="tbl"><table>
+        <tr><th>Terim</th><th>Tanım</th></tr>
+        <tr><td><strong>Capex</strong></td><td>Sermaye harcaması; veri merkezi, çip, makine gibi uzun vadeli varlık yatırımı.</td></tr>
+        <tr><td><strong>FCF</strong> (Serbest Nakit Akışı)</td><td>Operasyonel nakit akışı eksi capex. Capex'ten sonra hesaplanır; bu yüzden capex/FCF oranı finansman açığını doğrudan ölçmez.</td></tr>
+        <tr><td><strong>OCF</strong> (Operasyonel Nakit Akışı)</td><td>Esas faaliyetlerden yaratılan nakit; capex öncesi. Capex/OCF bu raporda tercih edilen finansman metriğidir.</td></tr>
+        <tr><td><strong>ARR</strong></td><td>Yıllıklandırılmış yinelenen gelir koşu hızı. Bir gelir seviyesidir; cash burn (nakit yakımı) ile aynı kavram değildir ve doğrudan karşılaştırılamaz.</td></tr>
+        <tr><td><strong>Cash burn</strong></td><td>Bir dönemdeki net nakit çıkışı. Net zarar ile aynı değildir (nakit dışı kalemler içermez).</td></tr>
+        <tr><td><strong>Backlog</strong> (sipariş birikimi)</td><td>Sözleşmeye bağlanmış veya beklenen gelecek gelir görünürlüğü. Bir yükümlülük değil, gelir taahhüdüdür; riski iptal hükümlerine ve teslim maliyetine bağlıdır.</td></tr>
+        <tr><td><strong>Runway</strong> (pist)</td><td>Mevcut kullanılabilir likiditenin mevcut yakım hızıyla kaç ay dayanacağı. Planlanan/henüz tamamlanmamış finansman runway'e dahil edilmez.</td></tr>
+        <tr><td><strong>Faiz karşılama oranı</strong></td><td>Faiz giderinin kaç katı kazanç/nakit yaratıldığı; borç servis kapasitesinin temel göstergesi.</td></tr>
+        <tr><td><strong>Upstream / Downstream</strong></td><td>Değer zincirinde kaynağa (üretime) yakın / nihai müşteriye yakın. Fiziksel ürün downstream, nakit upstream, talep şoku upstream yönde akar.</td></tr>
+        <tr><td><strong>Sistemik kritiklik</strong></td><td>Bir şirket durduğunda sistemin gördüğü zarar; finansal sağlığından bağımsız.</td></tr>
+        <tr><td><strong>DDTL</strong></td><td>Gecikmeli çekim vadeli kredi (Delayed-Draw Term Loan); CoreWeave'in GPU-teminatlı borç yapısı.</td></tr>
+        <tr><td><strong>EUV</strong></td><td>Aşırı ultraviyole litografi; ileri düğüm çip üretiminin kritik teknolojisi (ASML tekeli).</td></tr>
+        <tr><td><strong>0DTE / CALL / PUT</strong></td><td>Aynı gün vadeli opsiyon / alım opsiyonu / satım opsiyonu.</td></tr>
+      </table></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">🎯 1. Yönetici Özeti</h2></div>
+    <div class="section-body">
+      <p>Yapay zeka değer zinciri, teknoloji tarihinin en büyük sermaye harcaması döngüsünün merkezinde ve giderek zorlaşan bir makroekonomik zeminde işlemektedir. Bu rapor zincirin altı katmanını — litografi (ASML), dökümhane (TSMC, GlobalFoundries, Intel), çip tasarımı (NVIDIA, AMD, Broadcom, Qualcomm), veri merkezi/ağ/enerji (Arista, Super Micro, Constellation), hyperscaler (Amazon, Meta, Alphabet, Microsoft, Apple) ve uç katman (neo-cloud: CoreWeave, Nebius, Lambda; LLM: OpenAI, Anthropic) — finansal dayanıklılık ve sistemik önem açısından haritalandırır.</p>
+      <div class="insight-box"><strong>Ana yargı:</strong> &laquo;AI balon mu?&raquo; sorusunun tek kelimelik bir cevabı yoktur. Zincir, risk profili birbirinden çok farklı katmanların yığılmasıdır. Doğru soru şudur: <strong>zincirin hangi halkası kırılgan, o halka koptuğunda bulaşıcılık ne kadar yayılır ve hangi katman gerçekten ikame edilemez?</strong></div>
+      <h3>Beş temel bulgu</h3>
+      <p><strong>1 — Sistemik kritiklik ile finansal risk ters yönlü ayrışıyor.</strong> Zincirin en ikame edilemez halkaları (TSMC, ASML, NVIDIA) aynı zamanda en sağlam bilançolara sahiptir: TSMC'nin faiz karşılama oranı 242,5x<sup class="fn"><a href="#fn2">2</a></sup>, nakit/borç oranı 3,17<sup class="fn"><a href="#fn12">12</a></sup>; ASML'nin borç/özkaynak oranı %13<sup class="fn"><a href="#fn3">3</a></sup>. Buna karşılık finansal olarak en kırılgan halkalar (CoreWeave, Super Micro, Intel) operasyonel olarak büyük ölçüde ikame edilebilir. Bu gözlem istatistiksel bir korelasyon hesabına değil, incelenen şirket setindeki belirgin bir ayrışmaya dayanır ve &laquo;en çok borçlu = en tehlikeli&raquo; sezgisinin yanlış olduğunu gösterir: <strong>borç krizi sistemi durdurmaz, arz şoku durdurur.</strong></p>
+      <p><strong>2 — En olası yakın vadeli kırılma finansal, en yıkıcı uzak vadeli kırılma fizikseldir.</strong> En olası ilk kırılma, yüksek kaldıraçlı ve dar marjlı neo-cloud katmanındadır (CoreWeave: 25,1 milyar $ borç, cari oran 0,31, S&amp;P 'B' notu<sup class="fn"><a href="#fn4">4</a>,<a href="#fn5">5</a></sup>). Ancak bu katmanın batması sistemi durdurmaz; kredi fonları zarar yazar, varlıklar iskontoyla hyperscaler'lara geçer. En yıkıcı senaryo ise TSMC'nin fiziksel kaybıdır — düşük olasılıklı ama telafi edilemez. Bu ikisi aynı cümlede &laquo;en tehlikeli&raquo; diye sunulamaz; <strong>biri en olası, diğeri en yıkıcıdır</strong> ve rapor bu ayrımı korur.</p>
+      <p><strong>3 — &laquo;Geleceği ipotek etmek&raquo; tek bir şey değil, üç farklı mekanizmadır.</strong> Borçlanma (Amazon'un 2026'da 72 milyar $'a ulaşan tahvil ihracı<sup class="fn"><a href="#fn6">6</a></sup>), iptal edilemez satın alma taahhüdü (Meta'nın 238 milyar $ bağlayıcı sözleşmesi, tek çeyrekte 107 milyar $<sup class="fn"><a href="#fn7">7</a></sup>) ve özkaynak sulandırması (Alphabet'in 84,75 milyar $ hisse arzı<sup class="fn"><a href="#fn8">8</a></sup>) ekonomik olarak aynı kategori değildir. Borç faiz ve yeniden finansman riski taşır; taahhüt geri dönülmez yükümlülük yaratır; hisse arzı ise bilançoyu güçlendirir ve riski borç yerine sermayeye aktarır. Rapor bunları tek bir &laquo;ipotek endeksi&raquo; altında toplamak yerine ayrı metriklerle ölçer (§7.4).</p>
+      <p><strong>4 — LLM gelir yaratımı fiziksel maliyeti henüz karşılamıyor — ama tek belirleyici değişken değil.</strong> Sistemin tepesindeki (LLM) ARR henüz en altındaki fiziksel capex'i finanse etmiyor: OpenAI'ın 2026 cash burn'ü 27 milyar $ olarak tahmin edilirken (analist tahmini<sup class="fn"><a href="#fn44">44</a></sup>), Anthropic'in net nakit pozisyonu kamuya kapalıdır. Ancak &laquo;oyunun devamı tek değişkene — LLM ROI'sine — bağlıdır&raquo; iddiası aşırı merkezileştirmedir: hyperscaler'lar reklam, e-ticaret ve kurumsal yazılımdan gelen çapraz sübvansiyon kapasitesine sahiptir; GPU'lar yalnızca temel model eğitimi için kullanılmaz; güç kapasitesi, özel ASIC'ler ve çip verimliliği bağımsız kritik değişkenlerdir. Doğru soru: <strong>AI'ya atfedilebilen artımlı nakit akışı, artımlı capex ve sabit yükümlülükleri hangi tarihte karşılayabilir?</strong></p>
+      <p><strong>5 — Kırılma kronolojisi: önce finansal, sonra fiziksel.</strong> Olasılık sırasına göre: (i) neo-cloud kredi temerrüdü (en olası, sınırlı etki), (ii) hyperscaler capex disiplini krizi (orta olasılık, geniş piyasa etkisi), (iii) TSMC fiziksel kaybı (en düşük olasılık, katastrofik etki). Yatırımcı ve düzenleyici odağı, kâr marjından çok <strong>gizli kaldıraç mekanizmalarına</strong> — CoreWeave'in DDTL covenant eşikleri, GPU-teminatlı krediler ve kapalı LLM churn oranlarına — kaymalıdır; bunlar §10'da bilinmeyen olarak işaretlenmiştir.</p>
+      <h3>Risk haritasının özeti</h3>
+      <div class="tbl"><table>
+        <tr><th>Kategori</th><th>Şirketler</th><th>Gerekçe</th></tr>
+        <tr><td><span class="tag tag-green">Yüksek etki + düşük finansal risk</span></td><td>TSMC, ASML, NVIDIA</td><td>Tekel/güçlü fiyatlama + çok sağlam bilanço</td></tr>
+        <tr><td><span class="tag tag-blue">Yüksek etki + yönetilebilir risk</span></td><td>Microsoft, Alphabet, Amazon, Broadcom</td><td>Çapraz sübvansiyon kapasitesi, güçlü OCF</td></tr>
+        <tr><td><span class="tag tag-red">Düşük-orta etki + yüksek finansal risk</span></td><td>CoreWeave, Super Micro, Intel</td><td>Yüksek kaldıraç, dar marj, dar likidite — en olası kırılma</td></tr>
+        <tr><td><span class="tag tag-orange">Yüksek belirsizlik (veri yetersiz)</span></td><td>OpenAI, Anthropic, Lambda</td><td>Net nakit/burn kamuya kapalı; runway hesaplanamaz</td></tr>
+        <tr><td><span class="tag tag-blue">Düşük kaldıraç &laquo;tampon&raquo; katmanı</span></td><td>Arista, Apple, Alphabet</td><td>Sıfır/düşük borç, altyapı sarmalı dışında veya sermaye finansmanlı</td></tr>
+      </table></div>
+      <p class="chart-src">Kaynak: §4–§7'deki şirket verileri; tablo niteliksel sınıflandırmadır, skor çarpımı içermez. Tarih: 13 Temmuz 2026.</p>
+      <h3>Bu raporun yaptığı ve yapmadığı</h3>
+      <p>Rapor, hangi taşın devrilmesinin domino etkisi yaratacağını, herkesin oyuna devam edebilmesi için hangi koşulların gerektiğini ve hangi şirketlerin tüm sektör kötüye gitmeden de batabileceğini senaryo ve stres testleriyle yanıtlar. Rapor ayrıca: sözel olasılık sınıflarını şeffaf sayısal banda bağlar (§2.6), olumsuz senaryoların yanına baz ve pozitif senaryo ekler (§8.6–8.7), senaryolar arası koşullu olasılık ve kesişim matrisini kurar (§8.8), iyi yön ile kötü yön olasılıklarını karar ağacıyla verir (§11) ve senaryoları yalnızca prim ödenen uzun call/put portföylerine çevirir (§13). Rapor <strong>yapmadığı</strong> şey: doğrulanamayan veriyi kesinmiş gibi sunmak, sayısal bantları ampirik kalibre edilmiş model gibi göstermek ve planlanan finansmanı mevcut nakit saymak.</p>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">📐 2. Sistem Sınırı ve Metodoloji</h2></div>
+    <div class="section-body">
+      <h3>2.1 Sistem sınırı</h3>
+      <p>Analizin kapsamı, AI değer zincirinin altı operasyonel katmanıdır. Sınır dışında bırakılanlar: uygulama katmanındaki dikey yazılımlar, AI'a maruz kalan ama zincirin parçası olmayan sektörler (örn. otomotiv) ve makro-finansal sistemin geneli (bankacılık krizi senaryoları yalnızca bulaşıcılık kanalı olarak ele alınır).</p>
+      <div class="tbl"><table>
+        <tr><th>Katman</th><th>Rol</th><th>İncelenen şirketler</th></tr>
+        <tr><td>1 — Fiziksel üretim</td><td>Litografi + dökümhane</td><td>ASML, TSMC, GlobalFoundries, Intel</td></tr>
+        <tr><td>2 — Çip tasarımı</td><td>Fabless tasarım</td><td>NVIDIA, AMD, Broadcom, Qualcomm</td></tr>
+        <tr><td>3 — Veri merkezi / ağ / enerji</td><td>Bağlantı, sunucu, güç</td><td>Arista, Super Micro, Constellation</td></tr>
+        <tr><td>4 — Hyperscaler</td><td>Bulut + capex</td><td>Amazon, Meta, Alphabet, Microsoft, Apple</td></tr>
+        <tr><td>5 — Neo-cloud</td><td>GPU kiralama</td><td>CoreWeave, Nebius, Lambda</td></tr>
+        <tr><td>6 — Temel model (LLM)</td><td>Model geliştirme</td><td>OpenAI, Anthropic</td></tr>
+      </table></div>
+      <h3>2.2 Ayrıştırılan dört risk türü</h3>
+      <p>Bu dört risk türü analizde sık sık birbirine karıştırılır; bu rapor her iddiayı ait olduğu risk türüne bağlar (yukarıdaki metodoloji kartları). Ayrımın pratik sonucu: Arista'nın sıfır borcu onu finansal temerrüt açısından düşük riskli yapar, ama <em>&laquo;risksiz&raquo;</em> yapmaz — müşteri yoğunlaşması, gelir düşüşü ve değerleme riski devam eder. Rapor mutlak ifadelerden (&laquo;risksiz&raquo;, &laquo;batamaz&raquo;) kaçınır ve bunun yerine risk türünü ve ölçütünü belirtir.</p>
+      <h3>2.3 Üç ölçüm ekseni (çarpımsız)</h3>
+      <p>Yaygın bir yaklaşım, sistemik riski &laquo;ikame edilemezlik × bağlantısallık × kaldıraç&raquo; gibi tek bir çarpımsal formüle indirger. Bu formül kendi sonucuyla çelişir: TSMC'nin kaldıracı sıfıra yakın olduğundan, gerçek bir çarpımda sistemik skoru da sıfıra yaklaşmalıdır — oysa TSMC en kritik kabul edilmektedir. Çözüm kavramları ayırmaktır: <strong>Eksen A</strong> (şirket durursa sistem ne kaybeder?), <strong>Eksen B</strong> (şirket ne ihtimalle durur?) ve <strong>Eksen C</strong> (beklenen sistemik kayıp — aritmetik çarpım değil, iki eksenli matris §4 ve niteliksel öncelik sıralaması §5 üzerinden ifade edilir; ölçek, normalizasyon ve ağırlık tanımlanmadan sayısal çarpım yapılmaz).</p>
+      <h3>2.4 Şok yönü: upstream / downstream</h3>
+      <p>LLM katmanını &laquo;tepe&raquo;, üretim katmanını &laquo;taban&raquo; sayıp sonra &laquo;talep şoku aşağıdan yukarıya vurur&raquo; demek kendi içinde çelişkilidir. Bu rapor üç akışı ayrı oklarla, tarafsız upstream/downstream terminolojisiyle tanımlar:</p>
+      <ul>
+        <li><strong>Fiziksel ürün ve kapasite:</strong> ASML → TSMC → NVIDIA → veri merkezi → LLM (<em>downstream</em> akar).</li>
+        <li><strong>Nakit:</strong> müşteri/LLM → bulut → donanım → dökümhane → ekipman (<em>upstream</em> akar).</li>
+        <li><strong>Talep şoku:</strong> nihai talep → tedarikçiler (<em>upstream</em> yönde yayılır; LLM geliri düşerse şok ASML'ye doğru gider).</li>
+      </ul>
+      <h3>2.5 Güven kademesi ve etiketleme kuralları</h3>
+      <ul>
+        <li><span class="tag tag-green">Yüksek güven (olgu)</span> resmi finansallar, SEC dosyaları, derecelendirme kuruluşları, şirket açıklamaları → etiketsiz, olgu olarak sunulur.</li>
+        <li><span class="tag tag-orange">Orta güven (tahmin)</span> analist projeksiyonları, özel-piyasa raporları → &laquo;analist tahmini / öngörü&raquo; etiketiyle.</li>
+        <li><span class="tag tag-red">Çakışma / belirsizlik</span> kaynaklar arasında çelişen veriler → dengeli sunulur, tek değer dayatılmaz.</li>
+        <li><span class="tag tag-blue">Kasıtlı boşluk (kör nokta)</span> kamuya kapalı veri → &laquo;bilinmiyor / hesaplanamaz&raquo; olarak bırakılır; rakam uydurulmaz.</li>
+      </ul>
+      <p>Piyasa değerleri ve hisse fiyatları Temmuz 2026 boyunca dalgalanan aralıklar olarak sunulur; tek bir günün kapanışı olarak okunmamalıdır.</p>
+      <h3>2.6 Sözel olasılık sınıflarının sayısal çerçevesi</h3>
+      <p>Yalnızca &laquo;çok düşük / düşük / orta / yüksek&raquo; gibi sözel etiketler, yüzde karşılığı olmadan hesap yapmayı imkânsız kılar. Bu rapor sözel sınıfları şeffaf bir sayısal eşlemeye bağlar. <strong>Bu eşleme ampirik olarak kalibre edilmiş bir model değildir;</strong> raporun kendi sözel sınıflarının sayısal tercümesidir ve duyarlılık aralıkları geniştir (§11).</p>
+      <div class="tbl"><table>
+        <tr><th>Sözel etiket</th><th>Sayısal bant</th><th>Merkez</th><th>Kalibrasyon dayanağı</th></tr>
+        <tr><td>Çok düşük</td><td>%2–10</td><td>%6</td><td>Tarihsel jeopolitik/fiziksel olay baz oranı (nadir olay)</td></tr>
+        <tr><td>Düşük</td><td>%10–20</td><td>%15</td><td>Tarihsel olay / baz oran</td></tr>
+        <tr><td>Düşük-orta</td><td>%20–30</td><td>%25</td><td>Baz oran + analist yargısı</td></tr>
+        <tr><td>Orta</td><td>%30–50</td><td>%40</td><td>Analist yargısı / uzman değerlendirmesi</td></tr>
+        <tr><td>Orta-yüksek</td><td>%50–70</td><td>%60</td><td>Analist yargısı / mevcut piyasa ve Fed söylemiyle uyum</td></tr>
+      </table></div>
+      <p>Her senaryo §8'de bu bantlara ek olarak merkez tahmin, alt sınır ve üst sınır ile verilir. Merkez değerler nokta tahmini gibi okunmamalı; bant genişliği, temel girdilerin (covenant, churn, gerçek AI birim ekonomisi, jeopolitik baz oran) bilinmemesinden kaynaklanan belirsizliği yansıtır.</p>
+      <h3>2.7 &laquo;Sistemik&raquo; kavramının dört kapsamı</h3>
+      <div class="tbl"><table>
+        <tr><th>Kapsam</th><th>Tanım</th><th>Bu rapordaki yeri</th></tr>
+        <tr><td>AI değer zinciri sistemik riski</td><td>Zincirin fiziksel üretim/tedarik kapasitesinin durması</td><td>Ana odak (§4, §8.3)</td></tr>
+        <tr><td>Teknoloji sektörü piyasa riski</td><td>AI hisselerinde değer kaybı (temerrüt olmadan da)</td><td>§2.2 risk türü 4</td></tr>
+        <tr><td>Finansal sistemik risk</td><td>Bankacılık/geniş finans sistemini tehdit eden bulaşıcılık</td><td>Yalnızca bulaşıcılık kanalı olarak (§8.1); toplam maruziyet bilinmediğinden &laquo;bankacılık-sistemik&raquo; iddiası taşınmaz</td></tr>
+        <tr><td>Makroekonomik risk</td><td>Resesyon, stagflasyon, faiz şoku</td><td>§8.4, §8.5</td></tr>
+      </table></div>
+      <p>Örneğin CoreWeave'in kredi fonlarına zarar yazdırması bir finansal bulaşıcılık olayıdır; ancak bunun genel bankacılık sistemi için &laquo;sistemik&raquo; olduğunu kanıtlamak, ilgili kredilerin toplam maruziyet büyüklüğünü gerektirir — bu veri kamuya kapalıdır (§10). Rapor bu yüzden CoreWeave'i &laquo;finansal sistem riski&raquo; olarak değil, <strong>AI değer zinciri içinde finansal bulaşıcılık vektörü</strong> olarak sınıflandırır.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">🔗 3. Değer Zinciri ve Bağımlılık Ağı</h2></div>
+    <div class="section-body">
+      <h3>3.1 Üç akış</h3>
+      <p>AI değer zinciri tek bir zincir değil, üst üste binen üç akışın ağıdır. Bu üçü karıştırmak &laquo;şok hangi yöne gider?&raquo; sorusunu yanlış yanıtlatır.</p>
+      <p><strong>Akış 1 — Fiziksel ürün (downstream):</strong> ASML'nin EUV litografi makineleri TSMC'nin dökümhanelerine; TSMC'nin ürettiği ileri düğüm wafer'lar NVIDIA, AMD ve Broadcom'un tasarımlarına; bu çipler Arista'nın ağ donanımı ve Super Micro'nun sunucularıyla birleşerek veri merkezlerine; oradan hyperscaler ve neo-cloud kapasitesine; sonunda LLM eğitim ve inference iş yüküne ulaşır.</p>
+      <p><strong>Akış 2 — Nakit (upstream):</strong> LLM geliştiricileri (OpenAI, Anthropic) ve kurumsal müşteriler, bulut ve neo-cloud sağlayıcılarına kira/kullanım bedeli öder; bu sağlayıcılar NVIDIA/Arista/Super Micro'ya donanım öder; NVIDIA üretim için TSMC'ye; TSMC makine için ASML'ye öder. Nakit, fiziksel ürünün ters yönünde akar.</p>
+      <p><strong>Akış 3 — Talep şoku (upstream yayılım):</strong> Nihai talepte (LLM geliri, kurumsal AI bütçesi) bir düşüş, önce kiracıyı (neo-cloud/hyperscaler), sonra donanımcıyı (NVIDIA, Arista, SMCI), sonra dökümhaneyi (TSMC) ve en sonda ekipmancıyı (ASML) vurur.</p>
+      <h3>3.2 Bağlantısallık haritası</h3>
+      <ul>
+        <li><span class="tag tag-red">En yüksek</span> <strong>TSMC</strong> (tüm çip tasarımcılarını ve dolaylı olarak tüm zinciri besler), <strong>NVIDIA</strong> (eğitim + inference donanımının fiili standardı), <strong>ASML</strong> (tüm ileri düğüm üretiminin makine kaynağı).</li>
+        <li><span class="tag tag-orange">Yüksek</span> Hyperscaler'lar (hem LLM'lere kapasite satar hem kendi ürünleri için tüketir), Broadcom (yarı iletken + altyapı yazılımı).</li>
+        <li><span class="tag tag-blue">Orta</span> Arista (veri merkezi ağı), Constellation (enerji kapasitesi), AMD.</li>
+        <li><span class="tag tag-green">Düşük / ikame edilebilir</span> Super Micro (sunucu montajı; Dell, HPE vb. ikame edebilir), GlobalFoundries (eski düğümler), neo-cloud'lar (kapasite sağlayıcı; hyperscaler ve diğer neo-cloud'lar ikame edebilir).</li>
+      </ul>
+      <h3>3.3 Dairesel finansman riski</h3>
+      <div class="insight-box danger"><strong>Dairesellik:</strong> NVIDIA çip satar, neo-cloud bu çipleri teminat göstererek borçlanıp daha çok çip alır, LLM'ler bu kapasiteyi kiralar ama henüz maliyetini karşılayacak geliri üretmez.<sup class="fn"><a href="#fn10">10</a></sup> Sistem, zincirin tepesindeki (LLM) gelecek gelir beklentisinin bugün borçla finanse edilmesi üzerine kuruludur. Bu tipik bir yeniden finansman (rollover) kırılganlığıdır: işler yolunda giderken kendi kendini besler, tek bir halkada talep veya kredi koşulu bozulursa tersine döner.</div>
+      <p><strong>Önemli not:</strong> Bu dairesellik, tüm zincirin borçla battığı anlamına gelmez. Temel katmanlar (ASML, TSMC, NVIDIA, Arista) güçlü operasyonel nakit akışıyla kendini finanse eder; borç sarmalı esas olarak hyperscaler capex'i, neo-cloud kredileri ve LLM fonlama turlarında yoğunlaşmıştır.</p>
+      <h3>3.4 Enerji: zincirin yeni fiziksel darboğazı</h3>
+      <p>Değer zincirine giderek daha kritik bir yedinci boyut eklenmiştir: <strong>elektrik kapasitesi.</strong> Veri merkezi inşasının önündeki fiziksel duvar giderek çip arzından çok şebeke bağlantısı ve güç arzı olmaktadır. Constellation gibi nükleer/temiz enerji sağlayıcıları bu yüzden zincirin ayrılmaz parçası haline gelmiştir (Calpine satın alımı sonrası 2026 gelir hedefi 36,5 milyar $<sup class="fn"><a href="#fn11">11</a></sup>). Talep güçlü kalsa bile elektrik ve şebeke kapasitesi büyümeyi sınırlayabilir — §8'de ayrı senaryo olarak ele alınır.</p>
+      <p class="chart-src">Kaynak: §6'daki şirket verileri ve dipnot 10; bağlantısallık sınıflandırması nitelikseldir. Tarih: 13 Temmuz 2026.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">🗺️ 4. Sistemik Kritiklik Matrisi</h2></div>
+    <div class="section-body">
+      <h3>4.1 İki eksenli matris: olasılık ≠ etki</h3>
+      <p>Tek skorlu bir &laquo;sistemik risk&raquo; sıralaması, iki farklı kavramı (bir şirketin batma olasılığı ile battığında sisteme vereceği zarar) tek eksende erittiği için TSMC gibi borcu neredeyse sıfır bir şirketi yüksek kaldıraçlı şirketlerle aynı listeye sokar. Burada ikisi ayrıştırılır: <strong>yatay eksen</strong> başarısızlık olasılığı (finansal + operasyonel + jeopolitik stres, Eksen B), <strong>dikey eksen</strong> başarısızlığın sistemik etkisi (ikame edilemezlik, bağlantısallık, ikame süresi, hizmet kritikliği, coğrafi yoğunlaşma, Eksen A).</p>
+      <div class="chart-card">
+        <div class="chart-title">Şekil 4.1 — Sistemik kritiklik matrisi: başarısızlık olasılığı × sistemik etki</div>
+        <svg viewBox="0 0 700 540" width="100%" role="img" aria-label="chart"><rect x="64.0" y="26.0" width="275.4" height="213.0" fill="#4ade80" opacity="0.05"/><rect x="339.4" y="26.0" width="336.6" height="213.0" fill="#f87171" opacity="0.05"/><rect x="64.0" y="239.0" width="275.4" height="213.0" fill="#94a3b8" opacity="0.04"/><rect x="339.4" y="239.0" width="336.6" height="213.0" fill="#fbbf24" opacity="0.05"/><line x1="64.0" y1="26" x2="64.0" y2="452" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="64.0" y="468" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">0</text><line x1="186.4" y1="26" x2="186.4" y2="452" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="186.4" y="468" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">2</text><line x1="308.8" y1="26" x2="308.8" y2="452" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="308.8" y="468" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">4</text><line x1="431.2" y1="26" x2="431.2" y2="452" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="431.2" y="468" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">6</text><line x1="553.6" y1="26" x2="553.6" y2="452" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="553.6" y="468" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">8</text><line x1="676.0" y1="26" x2="676.0" y2="452" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="676.0" y="468" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">10</text><line x1="64" y1="452.0" x2="676" y2="452.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="56" y="456.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">0</text><line x1="64" y1="366.8" x2="676" y2="366.8" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="56" y="370.8" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">2</text><line x1="64" y1="281.6" x2="676" y2="281.6" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="56" y="285.6" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">4</text><line x1="64" y1="196.4" x2="676" y2="196.4" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="56" y="200.4" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">6</text><line x1="64" y1="111.2" x2="676" y2="111.2" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="56" y="115.2" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">8</text><line x1="64" y1="26.0" x2="676" y2="26.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="56" y="30.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">10</text><line x1="339.4" y1="26" x2="339.4" y2="452" stroke="#64748b" stroke-width="1.3" stroke-dasharray="5 4"/><line x1="64" y1="239.0" x2="676" y2="239.0" stroke="#64748b" stroke-width="1.3" stroke-dasharray="5 4"/><rect x="64" y="26" width="612" height="426" fill="none" stroke="#64748b" stroke-width="1.2"/><text x="74" y="44" text-anchor="start" font-size="11" font-weight="700" fill="#4ade80" opacity="0.85" font-family="inherit">SİSTEMİK KRİTİK + DAYANIKLI</text><text x="666" y="44" text-anchor="end" font-size="11" font-weight="700" fill="#f87171" opacity="0.85" font-family="inherit">TEHLİKE BÖLGESİ (boş)</text><text x="74" y="442" text-anchor="start" font-size="11" font-weight="700" fill="#94a3b8" opacity="0.85" font-family="inherit">DÜŞÜK ÖNCELİK</text><text x="666" y="442" text-anchor="end" font-size="11" font-weight="700" fill="#fbbf24" opacity="0.85" font-family="inherit">EN OLASI FİNANSAL KIRILMALAR</text><circle cx="125.2" cy="38.8" r="7" fill="#4ade80" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="136.2" y="42.8" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">TSMC</text><circle cx="119.1" cy="81.4" r="7" fill="#4ade80" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="130.1" y="85.4" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">ASML</text><circle cx="161.9" cy="98.4" r="7" fill="#4ade80" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="172.9" y="102.4" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">NVIDIA</text><circle cx="186.4" cy="179.4" r="7" fill="#4ade80" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="197.4" y="183.4" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">Broadcom</text><circle cx="223.1" cy="196.4" r="7" fill="#4ade80" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="234.1" y="200.4" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">AMD</text><circle cx="186.4" cy="302.9" r="7" fill="#4ade80" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="197.4" y="296.9" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">Qualcomm</text><circle cx="192.5" cy="309.3" r="7" fill="#4ade80" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="203.5" y="325.3" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">GlobalF.</text><circle cx="467.9" cy="224.1" r="7" fill="#4ade80" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="478.9" y="228.1" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">Intel</text><circle cx="137.4" cy="253.9" r="7" fill="#38bdf8" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="148.4" y="257.9" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">Arista</text><circle cx="223.1" cy="273.1" r="7" fill="#38bdf8" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="234.1" y="277.1" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">Constellation</text><circle cx="510.8" cy="328.5" r="7" fill="#38bdf8" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="521.8" y="332.5" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">SMCI</text><circle cx="131.3" cy="151.7" r="7" fill="#fbbf24" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="142.3" y="155.7" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">Microsoft</text><circle cx="119.1" cy="160.2" r="7" fill="#fbbf24" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="108.1" y="164.2" text-anchor="end" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">Alphabet</text><circle cx="198.6" cy="155.9" r="7" fill="#fbbf24" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="209.6" y="159.9" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">Amazon</text><circle cx="125.2" cy="179.4" r="7" fill="#fbbf24" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="114.2" y="183.4" text-anchor="end" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">Apple</text><circle cx="223.1" cy="213.4" r="7" fill="#fbbf24" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="234.1" y="217.4" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">Meta</text><circle cx="559.7" cy="298.6" r="7" fill="#f87171" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="547.7" y="302.6" text-anchor="end" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">CoreWeave</text><circle cx="461.8" cy="341.2" r="7" fill="#f87171" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="472.8" y="345.2" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">Nebius</text><circle cx="492.4" cy="366.8" r="7" fill="#f87171" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="503.4" y="370.8" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">Lambda</text><circle cx="455.7" cy="183.6" r="7" fill="#c084fc" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="466.7" y="187.6" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">OpenAI</text><circle cx="382.2" cy="196.4" r="7" fill="#c084fc" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="370.2" y="200.4" text-anchor="end" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">Anthropic</text><text x="370" y="486" text-anchor="middle" font-size="11.5" font-weight="600" fill="#94a3b8" font-family="inherit">Başarısızlık Olasılığı → (finansal + operasyonel + jeopolitik stres)</text><text x="16" y="239" text-anchor="middle" font-size="11.5" font-weight="600" fill="#94a3b8" font-family="inherit" transform="rotate(-90 16 239)">Sistemik Etki → (ikame edilemezlik, bağlantısallık, ikame süresi)</text><rect x="64" y="495" width="11" height="11" rx="3" fill="#4ade80"/><text x="81" y="504" font-size="10.5" fill="#e2e8f0" font-family="inherit">Üretim / Çip / Tasarım</text><rect x="269" y="495" width="11" height="11" rx="3" fill="#38bdf8"/><text x="286" y="504" font-size="10.5" fill="#e2e8f0" font-family="inherit">Veri Merkezi / Ağ / Enerji</text><rect x="474" y="495" width="11" height="11" rx="3" fill="#fbbf24"/><text x="491" y="504" font-size="10.5" fill="#e2e8f0" font-family="inherit">Hyperscaler</text><rect x="64" y="515" width="11" height="11" rx="3" fill="#f87171"/><text x="81" y="524" font-size="10.5" fill="#e2e8f0" font-family="inherit">Neo-Cloud</text><rect x="269" y="515" width="11" height="11" rx="3" fill="#c084fc"/><text x="286" y="524" font-size="10.5" fill="#e2e8f0" font-family="inherit">LLM</text></svg>
+        <p class="chart-caption">Kadranlar: sol-üst = düşük olasılık / yüksek etki (TSMC tipi), sağ-alt = yüksek olasılık / düşük-orta etki (neo-cloud tipi), sağ-üst = çift yüksek (incelenen sette boş), sol-alt = çift düşük. Skorlar çarpılmamıştır.</p>
+        <p class="chart-src">Kaynak: §6 şirket verileri ve §2.3 eksen tanımlarına dayanan analist konumlandırması (niteliksel). Tarih: 13 Temmuz 2026. Güven: orta — konumlandırma yargıya dayalıdır, kesin ölçüm değildir.</p>
+      </div>
+      <div class="insight-box"><strong>Matrisin temel dersi:</strong> Sistemin en tehlikeli noktası en büyük ya da en kârlı şirket değildir. &laquo;Batması düşük olasılıklı ama battığında ikamesi olmayan&raquo; şirket ile &laquo;batması yüksek olasılıklı ama batması sistemi durdurmayan&raquo; şirket <strong>ayrı ayrı yönetilmelidir.</strong></div>
+      <h4>İki köşe örneği: TSMC ve CoreWeave</h4>
+      <ul>
+        <li><strong>TSMC (sol-üst, yüksek etki / düşük olasılık).</strong> Faiz karşılama 242,5x, nakit/borç 3,17<sup class="fn"><a href="#fn2">2</a>,<a href="#fn12">12</a></sup> — finansal başarısızlık olasılığı incelenen borç-servis metrikleri açısından çok düşük. Ancak ileri düğüm (7nm ve altı) üretimdeki konumu nedeniyle ikamesi son derece güç; sistemik etki ekseninin en tepesinde. Başarısızlık olasılığını belirleyen ana faktör finansal değil <strong>jeopolitik/fiziksel</strong> (§8.3).</li>
+        <li><strong>CoreWeave (sağ-alt, yüksek olasılık / düşük-orta etki).</strong> Cari oran 0,31, net zarar marjı %36, GPU-teminatlı borç yapısı<sup class="fn"><a href="#fn4">4</a>,<a href="#fn5">5</a></sup> — finansal kırılma olasılığı görece yüksek. Bir kapasite sağlayıcı olarak ikamesi kısmen mümkün (hyperscaler'lar ve diğer neo-cloud'lar devralabilir); sistemik etki ekseninde TSMC'nin çok altında. Çöküşü teminat-değeri sarmalı üzerinden NVIDIA fiyatlama gücünü sorgulatır ve kredi fonlarına bulaşır (§8.1) — sıfır etkili değildir — ama fiziksel üretimi durdurmaz.</li>
+      </ul>
+      <p>Bu ayrışma raporun merkezi bulgusudur: <strong>finansal kırılganlık ile operasyonel/sistemik önem aynı şey değildir</strong> ve aynı yatırım/risk kararına temel yapılmamalıdır.</p>
+      <h3>4.2 Sistemik etki bileşenleri (ısı haritası)</h3>
+      <p>Eksen A'nın tek bir sayıya indirgenmesi yanıltıcıdır; beş bileşen ayrı ayrı, 1–5 arası niteliksel skorla gösterilir. Skorlar çarpılarak birleştirilmez — her bileşen kendi başına okunur; amaç hangi şirketin hangi nedenle kritik olduğunu şeffaflaştırmaktır.</p>
+      <div class="chart-card">
+        <div class="chart-title">Şekil 4.2 — Sistemik etki ısı haritası: 18 şirket × 5 bileşen (1–5 niteliksel skor)</div>
+        <div class="tbl"><table class="heat">
+          <tr><th>Şirket</th><th>İkame Edilemezlik</th><th>Bağlantısallık</th><th>İkame Süresi</th><th>Hizmet Kritikliği</th><th>Coğrafi Yoğunlaşma</th></tr>
+          <tr><td>TSMC</td><td class="h5">5</td><td class="h5">5</td><td class="h5">5</td><td class="h5">5</td><td class="h5">5</td></tr>
+          <tr><td>ASML</td><td class="h5">5</td><td class="h4">4</td><td class="h5">5</td><td class="h5">5</td><td class="h4">4</td></tr>
+          <tr><td>NVIDIA</td><td class="h4">4</td><td class="h5">5</td><td class="h4">4</td><td class="h5">5</td><td class="h2">2</td></tr>
+          <tr><td>Microsoft</td><td class="h3">3</td><td class="h4">4</td><td class="h3">3</td><td class="h4">4</td><td class="h2">2</td></tr>
+          <tr><td>Alphabet</td><td class="h3">3</td><td class="h4">4</td><td class="h3">3</td><td class="h4">4</td><td class="h2">2</td></tr>
+          <tr><td>Amazon</td><td class="h3">3</td><td class="h4">4</td><td class="h3">3</td><td class="h4">4</td><td class="h2">2</td></tr>
+          <tr><td>Broadcom</td><td class="h3">3</td><td class="h4">4</td><td class="h3">3</td><td class="h4">4</td><td class="h2">2</td></tr>
+          <tr><td>OpenAI *</td><td class="h3">3</td><td class="h4">4</td><td class="h3">3</td><td class="h4">4</td><td class="h1">1</td></tr>
+          <tr><td>Anthropic *</td><td class="h3">3</td><td class="h3">3</td><td class="h3">3</td><td class="h4">4</td><td class="h1">1</td></tr>
+          <tr><td>Meta</td><td class="h2">2</td><td class="h4">4</td><td class="h2">2</td><td class="h3">3</td><td class="h2">2</td></tr>
+          <tr><td>AMD</td><td class="h3">3</td><td class="h3">3</td><td class="h3">3</td><td class="h3">3</td><td class="h2">2</td></tr>
+          <tr><td>Intel</td><td class="h2">2</td><td class="h3">3</td><td class="h4">4</td><td class="h3">3</td><td class="h2">2</td></tr>
+          <tr><td>Apple</td><td class="h2">2</td><td class="h3">3</td><td class="h2">2</td><td class="h3">3</td><td class="h3">3</td></tr>
+          <tr><td>Arista</td><td class="h2">2</td><td class="h3">3</td><td class="h2">2</td><td class="h3">3</td><td class="h1">1</td></tr>
+          <tr><td>Constellation</td><td class="h2">2</td><td class="h3">3</td><td class="h4">4</td><td class="h3">3</td><td class="h4">4</td></tr>
+          <tr><td>CoreWeave</td><td class="h2">2</td><td class="h3">3</td><td class="h1">1</td><td class="h2">2</td><td class="h2">2</td></tr>
+          <tr><td>Super Micro</td><td class="h1">1</td><td class="h3">3</td><td class="h1">1</td><td class="h2">2</td><td class="h2">2</td></tr>
+          <tr><td>Nebius</td><td class="h1">1</td><td class="h2">2</td><td class="h1">1</td><td class="h2">2</td><td class="h2">2</td></tr>
+        </table></div>
+        <p class="chart-caption">Koyu kırmızı = daha yüksek niteliksel skor. Toplam/çarpım skoru hesaplanmamıştır. (*) OpenAI ve Anthropic'in &laquo;hizmet kritikliği&raquo; değerleri ölçülmüş veri değil, düşük güvenli varsayımdır — gelir kalitesi (churn, çok yıllık sözleşme payı) kamuya kapalıdır (§10).</p>
+        <p class="chart-src">Kaynak: §6 şirket verilerine dayanan niteliksel değerlendirme. Tarih: 13 Temmuz 2026. Yöntem: her bileşen 1 (düşük) – 5 (yüksek) arası bağımsız puanlanmıştır; çarpma veya ağırlıklı toplam uygulanmamıştır. Güven: orta (yargıya dayalı).</p>
+      </div>
+      <p><strong>Isı haritasının okunması:</strong> İkame edilemezliği en yüksek: ASML (EUV tekeli), TSMC (ileri düğüm dökümhanesi), NVIDIA (donanım standardı) — bu üçü için coğrafi yoğunlaşma da yüksektir. İkame süresi en uzun: ASML ve TSMC (yeni EUV makinesi veya ileri düğüm kapasitesi yıllar alır; neo-cloud kapasitesi aylar içinde devredilebilir). Bağlantısallığı yüksek ama ikamesi kolay: Arista, Super Micro, Constellation.</p>
+      <h3>4.3 Matrisin kullanımı</h3>
+      <ol>
+        <li><strong>Sol-üst kadran (düşük olasılık / yüksek etki):</strong> İzlenmesi gereken risk finansal değil fiziksel ve jeopolitiktir. Erken uyarı göstergeleri borç oranları değil; Tayvan Boğazı gerilimi, deprem/tayfun riski ve enerji arzıdır (§9).</li>
+        <li><strong>Sağ-alt kadran (yüksek olasılık / düşük etki):</strong> İzlenmesi gereken risk likidite ve kredi koşuludur. Erken uyarı göstergeleri cari oran, covenant eşikleri ve SOFR spread'leridir (§9).</li>
+        <li><strong>Sağ-üst kadran (çift yüksek):</strong> İncelenen şirket kümesinde hiçbir şirket bu kadrana yerleşmemiştir. Bu yalnızca incelenen örneklem için geçerli bir gözlemdir; sistemin tamamında &laquo;hem batması kolay hem ikamesiz&raquo; tek nokta arızası olmadığı sonucu çıkarılamaz. Kapsam dışı halkalar — HBM bellek (SK Hynix, Micron, Samsung), EDA yazılımı (Synopsys, Cadence), çip IP'si (Arm), ileri paketleme (CoWoS/ASE/Amkor), diğer yarı iletken ekipmanları (Applied Materials, Lam Research, KLA), optik bağlantı, soğutma-transformatör-şebeke ekipmanı ve veri merkezi gayrimenkul/proje finansmanı — bu matriste puanlanmamıştır. Bu katmanlardan biri hem yüksek kırılganlık hem yüksek ikame zorluğu gösterebilir; &laquo;sağ-üst boş&raquo; gözlemi sınırlı bir bulgudur (§2.1 sistem sınırı).</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">💣 5. Finansal Kırılganlık Matrisi</h2></div>
+    <div class="section-body">
+      <p>Bu bölüm, §4'teki sistemik etki analizinden bağımsız olarak yalnızca <strong>finansal dayanıklılığı</strong> ölçer: faiz karşılama, likidite, kaldıraç, borç vadesi ve değişken faiz maruziyeti. Amaç &laquo;hangi şirket borç yükünü çeviremez?&raquo; sorusunu yanıtlamaktır. Finansal kırılganlığı yüksek bir şirket sistemi durdurmaz (§4); ama alacaklılarına, tedarikçilerine ve finans piyasasına kayıp bulaştırır.</p>
+      <h3>5.1 Faiz karşılama: borç servisinin sürdürülebilirliği</h3>
+      <p>capex/FCF oranı, FCF sıfıra yaklaştığında ekonomik olarak kararsız sonuçlar verdiği için (§7.2) bu bölümde <strong>faiz karşılama oranı (EBIT / faiz gideri)</strong> ana metrik olarak kullanılır. 1,0x'in altı, operasyonel kârın faizi bile karşılamadığı anlamına gelir.</p>
+      <div class="chart-card">
+        <div class="chart-title">Şekil 5.1 — Faiz karşılama oranları (EBIT / faiz gideri), log ölçek</div>
+        <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="196.9" x2="620" y2="196.9" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="200.9" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">1x</text><line x1="54" y1="139.3" x2="620" y2="139.3" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="143.3" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">10x</text><line x1="54" y1="81.6" x2="620" y2="81.6" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="85.6" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">100x</text><line x1="54" y1="24.0" x2="620" y2="24.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="28.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">1000x</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="111.2" y="59.5" width="70" height="160.5" rx="4" fill="#4ade80"/><text x="146.2" y="51.5" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">242,5x</text><text x="146.2" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">TSMC</text><rect x="238.4" y="126.8" width="70" height="93.2" rx="4" fill="#4ade80"/><text x="273.4" y="118.8" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">16,5x</text><text x="273.4" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">GlobalFoundries</text><rect x="365.6" y="126.8" width="70" height="93.2" rx="4" fill="#4ade80"/><text x="400.6" y="118.8" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">16,5x</text><text x="400.6" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Constellation</text><rect x="492.8" y="208.5" width="70" height="11.5" rx="4" fill="#f87171"/><text x="527.8" y="200.5" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">0,63x</text><text x="527.8" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Intel</text><line x1="54" y1="196.9" x2="620" y2="196.9" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 3"/><text x="616" y="190.9" text-anchor="end" font-size="10.5" font-weight="600" fill="#38bdf8" font-family="inherit">Kritik eşik 1,0x</text></svg>
+        <p class="chart-caption">Kesikli çizgi kritik eşik 1,0x. Intel 0,63x ile eşiğin altındadır. Arista borçsuz olduğundan oran uygulanamaz (n/a) ve çizilmemiştir; Broadcom için dolaşımdaki ~30x değeri EBIT/faiz birincil verisiyle doğrulanamadığından grafiğe dahil edilmemiştir.<sup class="fn"><a href="#fn16">16</a></sup></p>
+        <p class="chart-src">Kaynak: TSMC 242,5x<sup class="fn"><a href="#fn2">2</a></sup>; GlobalFoundries 16,5x<sup class="fn"><a href="#fn13">13</a></sup>; Constellation 16,5x<sup class="fn"><a href="#fn11">11</a></sup>; Intel 0,63x<sup class="fn"><a href="#fn14">14</a></sup>. Tarih: 13 Temmuz 2026. Yöntem: yalnızca resmi dosyalama/derecelendirme verisiyle doğrulanan değerler çizilmiştir. Güven: yüksek (TSMC, Intel, CEG, GFS); Broadcom doğrulanmadı.</p>
+      </div>
+      <p><strong>Okuma:</strong> Temel katmanlar (TSMC) ve nakit zengini altyapı (Arista, Alphabet) için borç servisi baskı oluşturmaz. Tek yapısal sorun Intel'dir: 0,63x karşılama, operasyonel kârın faiz yükünü karşılamadığını gösterir; ancak Intel bir foundry rakibi olarak zaten düşük sistemik etkiye sahiptir (§4.1), dolayısıyla sorunu bulaşıcıdan çok şirkete özgüdür.</p>
+      <h3>5.2 Likidite: kısa vadeli ödeme kapasitesi</h3>
+      <p>Finansal kırılmanın en erken sinyali genellikle bilanço kaldıracı değil <strong>likidite sıkışıklığıdır.</strong> Cari oranın 1,0'in altında olması tek başına &laquo;ödeyemez&raquo; anlamına gelmez — nakit üretimi, kullanılabilir kredi limitleri ve yükümlülük kompozisyonu da hesaba katılmalıdır. Cari oran bir uyarı göstergesidir, kesin temerrüt kanıtı değildir; aşağıdaki tablo bu çerçeveyle okunmalıdır.</p>
+      <div class="tbl"><table>
+        <tr><th>Şirket</th><th>Kritik likidite göstergesi</th><th>Değer</th><th>Okuma</th></tr>
+        <tr><td>CoreWeave</td><td>Cari oran</td><td><span class="tag tag-red">0,31</span></td><td>Tehlikeli sıkışıklık; vadesi gelen yükümlülük dönen varlığın ~3 katı</td></tr>
+        <tr><td>Super Micro</td><td>Borç/özkaynak (D/E)</td><td><span class="tag tag-red">%115 (= 1,15x)</span></td><td>Sektör üstü kaldıraç; düşük marjla birleşince şoka duyarlı</td></tr>
+        <tr><td>Intel</td><td>Faiz karşılama</td><td><span class="tag tag-red">0,63x</span></td><td>Operasyonel kâr faizi karşılamıyor</td></tr>
+        <tr><td>Arista</td><td>Borç</td><td><span class="tag tag-green">0 (nakit 12,4 mr $)</span></td><td>İncelenen borç-servis metrikleri açısından düşük risk</td></tr>
+        <tr><td>Alphabet</td><td>Net pozisyon</td><td><span class="tag tag-green">nakit 126,8 &gt; borç 77,5 mr $</span></td><td>Net nakit; faiz riskinden arındırılmış</td></tr>
+        <tr><td>TSMC</td><td>Nakit/borç</td><td><span class="tag tag-green">3,17</span></td><td>Net nakit; likidite kalesi</td></tr>
+      </table></div>
+      <p class="chart-src">Kaynak: CRWV<sup class="fn"><a href="#fn4">4</a></sup>; SMCI<sup class="fn"><a href="#fn17">17</a></sup>; Intel<sup class="fn"><a href="#fn14">14</a></sup>; Arista<sup class="fn"><a href="#fn15">15</a></sup>; Alphabet<sup class="fn"><a href="#fn18">18</a></sup>; TSMC<sup class="fn"><a href="#fn12">12</a></sup>. Tarih: 13 Temmuz 2026. Güven: yüksek (resmi dosyalama).</p>
+      <h3>5.3 Kaldıraç ve vade yoğunlaşması</h3>
+      <ul>
+        <li><strong>Değişken faiz riski (yüksek):</strong> CoreWeave'in 8,5 milyar $ DDTL 4.0 tesisi SOFR + %2,25 ile sabit %5,9 arasında fiyatlanmıştır.<sup class="fn"><a href="#fn4">4</a></sup> Higher-for-longer ortamında (§8.4) faiz gideri piyasa faiziyle birlikte şişebilir — kredi geri çağırma eşikleri kamuya kapalı olduğundan tam risk hesaplanamaz (§10).</li>
+        <li><strong>Vade / yeniden finansman riski (yüksek):</strong> CoreWeave toplam 25,1 milyar $ borç taşırken yıllık geliri ~12,6 milyar $ ve net zarar marjı %36'dır.<sup class="fn"><a href="#fn4">4</a></sup> Borç çevirme kapasitesi, teminatlı GPU'ların ikinci el fiyatına ve kredi fonlarının risk iştahına bağlıdır.</li>
+        <li><strong>Yapısal kaldıraç (orta):</strong> Meta toplam 238 milyar $ bağlayıcı sözleşme (tek çeyrekte 107 milyar $ iptal edilemez taahhüt) bildirmiştir.<sup class="fn"><a href="#fn19">19</a></sup> Bu bir borç değil, gelecek nakit çıkışı taahhüdüdür (§7.4); ancak 2027'de −24 milyar $ FCF projeksiyonu (analist tahmini<sup class="fn"><a href="#fn20">20</a></sup>) ile birleşince ödeme takvimi baskısı yaratır.</li>
+        <li><strong>Yüksek ama yönetilebilir:</strong> Amazon 2026'da 72 milyar $ borçlanmıştır<sup class="fn"><a href="#fn6">6</a></sup>; Fitch notu AA- ile yatırım yapılabilir seviyededir<sup class="fn"><a href="#fn21">21</a></sup>, dolayısıyla yeniden finansman riski düşük.</li>
+      </ul>
+      <h3>5.4 Finansal kırılganlık sıralaması</h3>
+      <p>Finansal kırılganlık (§4'teki sistemik etkiden bağımsız) açısından — en kırılgandan en sağlama:</p>
+      <ol>
+        <li><strong>CoreWeave</strong> — cari oran 0,31, GPU-teminatlı değişken faizli borç, zarar. En olası yakın vadeli finansal kırılma noktası.</li>
+        <li><strong>Super Micro</strong> — D/E %115, net marj %3,70; kaldıraç + düşük marj bileşimi.</li>
+        <li><strong>Intel</strong> — faiz karşılama 0,63x; yapısal kârlılık sorunu (F/K −175,3x<sup class="fn"><a href="#fn14">14</a></sup>).</li>
+        <li><strong>Meta</strong> — borç değil ama devasa nakit taahhüdü + negatif FCF projeksiyonu.</li>
+        <li><strong>Amazon</strong> — büyük borçlanma ama yatırım yapılabilir not ve güçlü operasyonel nakit.</li>
+        <li><strong>Arista, Alphabet, TSMC, ASML</strong> — incelenen borç-servis ve likidite metrikleri açısından düşük risk.</li>
+      </ol>
+      <div class="insight-box warn"><strong>Önemli ayrım:</strong> Bu sıralama &laquo;hangi şirketin finansal kırılganlığı daha yüksek?&raquo; sorusunu yanıtlar; &laquo;hangisi batarsa sistem çöker?&raquo; sorusunu değil. İkinci sorunun yanıtı §4'tedir ve bu iki liste <strong>bilinçli olarak farklıdır.</strong></div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">🏭 6. Şirket ve Katman Bazlı Analiz</h2></div>
+    <div class="section-body">
+      <p>Değer zincirinin altı katmanı tek tek incelenir. Her şirket için kilit finansal veriler ve birincil risk türü etiketi verilir (§2.2'deki dört risk türünden). Veri tarihi 13 Temmuz 2026'dır; &laquo;analist tahmini&raquo; ve &laquo;senaryo varsayımı&raquo; açıkça etiketlenmiştir.</p>
+      <h3>6.1 Katman 1 — Fiziksel Üretim: Litografi ve Dökümhaneler</h3>
+      <div class="company"><h4>ASML Holding <span class="tag tag-red">operasyonel tedarik</span><span class="tag tag-orange">piyasa/değerleme</span></h4>
+        <p>EUV litografi makinelerinin dünyadaki tek tedarikçisi. Q1 2026'da 8,76 milyar € net satış ve 2,75 milyar € net kâr; 2026 tam yıl gelir beklentisi 36–40 milyar €, brüt marj %51–53.<sup class="fn"><a href="#fn22">22</a></sup> Bilançoda 8,3 milyar € nakit ve kısa vadeli yatırıma karşılık toplam borç 2,7 milyar € (borç/özkaynak %13).<sup class="fn"><a href="#fn3">3</a></sup> F/K 60,8x ile yatırımcının tekel primini yansıtıyor.<sup class="fn"><a href="#fn23">23</a></sup> Finansal temerrüt riski incelenen metrikler açısından düşük.</p></div>
+      <div class="company"><h4>TSMC <span class="tag tag-red">operasyonel tedarik (jeopolitik)</span></h4>
+        <p>Dünyanın en büyük bağımsız dökümhanesi. Q1 2026'da 1,134 trilyon NT$ (~35,9 milyar $) hasılat ve 572,48 milyar NT$ net kâr; brüt marj %66,2; gelirin %74'ü 7nm ve altı ileri düğümlerden (gelir kompozisyonu verisidir, pazar payı değildir).<sup class="fn"><a href="#fn1">1</a></sup> Faiz karşılama 242,5x, nakit/borç 3,17; 2026 capex 52–56 milyar $, tamamen kendi serbest nakit akışıyla finanse ediliyor.<sup class="fn"><a href="#fn2">2</a>,<a href="#fn24">24</a></sup> S&amp;P görünümü &laquo;Positive&raquo;a revize etti.<sup class="fn"><a href="#fn25">25</a></sup> Finansal temerrüt riski çok düşük.</p></div>
+      <div class="company"><h4>GlobalFoundries <span class="tag tag-orange">piyasa/değerleme + rekabet</span></h4>
+        <p>Eski nesil düğümlere odaklı; AI patlamasından TSMC ölçeğinde yararlanamıyor. Çeyreklik gelir 1,63 milyar $; net borç/özkaynak %9,8; faiz karşılama 16,5x.<sup class="fn"><a href="#fn13">13</a></sup> İçeriden satış sinyali: bir strateji yöneticisi hisselerinin %78'ini sattı.<sup class="fn"><a href="#fn26">26</a></sup> Finansal temerrüt riski düşük.</p></div>
+      <div class="company"><h4>Intel <span class="tag tag-red">finansal temerrüt baskısı</span><span class="tag tag-orange">stratejik/yönetim</span></h4>
+        <p>Foundry pivotunun finansal bedelini taşıyor. Foundry biriminin çeyreklik dış müşteri geliri yalnızca 174 milyon $ iken operasyonel zarar 2,4 milyar $; faiz karşılama 0,63x; F/K −175,3x.<sup class="fn"><a href="#fn14">14</a></sup> 18A sürecinin geç kârlılığa ulaşacağı haberleri sonrası hisse bir haftada %21 düştü (yorumu kaynaklar arasında tartışmalı).<sup class="fn"><a href="#fn27">27</a></sup> Sistemik etkisi düşük (foundry'de ikame güçlü).</p></div>
+      <h3>6.2 Katman 2 — Çip Tasarımcıları (Fabless)</h3>
+      <div class="company"><h4>NVIDIA <span class="tag tag-red">TSMC bağımlılığı</span><span class="tag tag-orange">piyasa/değerleme</span></h4>
+        <p>Eğitim ve inference donanımının fiili standardı. Çeyreklik gelir artışı %85; analistler Q2 için %96 büyüme öngörüyor (analist tahmini).<sup class="fn"><a href="#fn28">28</a>,<a href="#fn29">29</a></sup> Piyasa değeri ~5,1 trilyon $. Gücü fiyatlama gücü ve CUDA ekosistemi. Finansal temerrüt riski düşük (güçlü operasyonel nakit).</p></div>
+      <div class="company"><h4>AMD <span class="tag tag-orange">yüksek beklenti + rekabet</span></h4>
+        <p>Veri merkezi gelirinde yıllık %57 artış; ileri F/K 51,5, P/S 11,6 (kâr büyüme beklentisi %44 fiyatlanmış).<sup class="fn"><a href="#fn30">30</a>,<a href="#fn31">31</a></sup> Lisa Su'ya göre agentic AI iş yükleriyle sunucu CPU pazarı 2030'a kadar 120 milyar $'a ulaşacak (yönetici projeksiyonu / tahmin). Finansal temerrüt riski düşük.</p></div>
+      <div class="company"><h4>Broadcom <span class="tag tag-orange">piyasa/değerleme + müşteri yoğunlaşması</span></h4>
+        <p>Gelirin %58'i yarı iletken, %42'si altyapı yazılımı; net kâr marjı %41,96; borç/özkaynak 0,74x; F/K 66,5x.<sup class="fn"><a href="#fn16">16</a></sup> Güçlü serbest nakit akışı borç servisini destekliyor. Finansal temerrüt riski düşük.</p></div>
+      <div class="company"><h4>Qualcomm <span class="tag tag-orange">stratejik geçiş</span></h4>
+        <p>Mobilden AI veri merkezine yöneliyor; Meta'nın yeni nesil sunucuları için Dragonfly C1000 tedarik ortaklığı; 20 milyar $ hisse geri alım programı.<sup class="fn"><a href="#fn32">32</a></sup> Piyasa değeri ~196 milyar $. Finansal temerrüt riski düşük.</p></div>
+      <h3>6.3 Katman 3 — Veri Merkezi, Ağ ve Enerji Altyapısı</h3>
+      <div class="company"><h4>Arista Networks <span class="tag tag-orange">müşteri yoğunlaşması</span><span class="tag tag-orange">piyasa/değerleme</span></h4>
+        <p>Veri merkezi Ethernet ağı. Sıfır borç, 12,4 milyar $ nakit; gelir yıllık %35,1 artışla 2,7 milyar $; net marj %38,3; F/K 63,4.<sup class="fn"><a href="#fn15">15</a></sup> Yüksek faiz ortamından tamamen korunaklı. Sıfır borç &laquo;risksiz&raquo; demek değildir — gelir düşüşü ve değerleme riski devam eder.</p></div>
+      <div class="company"><h4>Super Micro Computer <span class="tag tag-red">kaldıraç + marj</span><span class="tag tag-orange">operasyonel geçmiş</span></h4>
+        <p>Sunucu montajı. Borç/özkaynak %115 (= 1,15x); brüt marj %8,39, net marj %3,70'e düştü; F/K 14,9.<sup class="fn"><a href="#fn17">17</a></sup> Yüksek kaldıraç + düşük marj bileşimi makro şoka duyarlı. Sistemik etkisi düşük (Dell/HPE ikame edebilir).</p></div>
+      <div class="company"><h4>Constellation Energy <span class="tag tag-red">enerji arzı kritikliği</span><span class="tag tag-orange">düzenleyici</span></h4>
+        <p>Nükleer/temiz enerji; veri merkezi inşasının fiziksel kapasite duvarı. Calpine satın alımı sonrası 2026 gelir hedefi 36,5 milyar $; borç/özkaynak 0,67x (utility ortalamasının altında); faiz karşılama 16,5x; toplam borç 22,46 milyar $.<sup class="fn"><a href="#fn11">11</a>,<a href="#fn33">33</a></sup> Finansal temerrüt riski düşük (istikrarlı utility nakit akışı).</p></div>
+      <h3>6.4 Katman 4 — Hyperscaler'lar ve Capex Sarmalı</h3>
+      <p>Bu katman, &laquo;dairesel finansman&raquo; riskinin yoğunlaştığı yerdir: devasa capex, borç ve hisse arzıyla finanse ediliyor; getiri ise büyük ölçüde LLM gelirine bağlı (§3.3).</p>
+      <div class="company"><h4>Amazon <span class="tag tag-orange">FCF erozyonu + yatırım disiplini</span></h4>
+        <p>AWS çeyreklik büyüme %28,4 (son 15 çeyreğin en yükseği); toplam gelir 181,5 milyar $.<sup class="fn"><a href="#fn34">34</a></sup> Capex 2025'te 131 milyar $ → 2026'da 200 milyar $; son 12 aylık FCF 25,9 milyar $'dan 1,2 milyar $'a eridi.<sup class="fn"><a href="#fn34">34</a></sup> 2026'da 8 dilimde 25 milyar $ tahvil (62 milyar $ talep), yıllık toplam borçlanma 72 milyar $; Fitch notu AA-.<sup class="fn"><a href="#fn6">6</a>,<a href="#fn21">21</a></sup> Finansal temerrüt riski düşük (yatırım yapılabilir not, güçlü operasyonel nakit).</p></div>
+      <div class="company"><h4>Meta <span class="tag tag-red">nakit taahhüdü baskısı</span><span class="tag tag-orange">piyasa/değerleme</span></h4>
+        <p>Q1 gelir %33 artışla 56,3 milyar $.<sup class="fn"><a href="#fn7">7</a></sup> 2026 capex 125–145 milyar $; tek çeyrekte 107 milyar $ &laquo;iptal edilemez&raquo; taahhüt, toplam bağlayıcı sözleşme 238 milyar $; uzun vadeli borç 58,7 milyar $, nakit 81,2 milyar $.<sup class="fn"><a href="#fn19">19</a></sup> 2027 FCF projeksiyonu −24 milyar $ (analist tahmini).<sup class="fn"><a href="#fn20">20</a></sup> Finansal temerrüt riski düşük ama negatif FCF projeksiyonu izlenmeli.</p></div>
+      <div class="company"><h4>Alphabet <span class="tag tag-orange">yatırım disiplini</span><span class="tag tag-green">en sağlam bilanço</span></h4>
+        <p>Google Cloud geliri %63 büyümeyle 20 milyar $, operasyonel marj %36,1.<sup class="fn"><a href="#fn8">8</a></sup> 2026 capex 180–190 milyar $; borçlanma yerine 84,75 milyar $ hisse arzı (10 milyar $'ı Berkshire'a özel tahsis dâhil); uzun vadeli borç 77,5 milyar $, nakit 126,8 milyar $.<sup class="fn"><a href="#fn18">18</a></sup> Hisse arzı faiz riski almıyor; net nakit pozisyonu.</p></div>
+      <div class="company"><h4>Microsoft <span class="tag tag-orange">ortaklık konsantrasyonu</span></h4>
+        <p>Azure büyüme %39; uzun vadeli borç 46,1 milyar $.<sup class="fn"><a href="#fn35">35</a></sup> OpenAI ortaklığındaki kâr paylaşımı yükümlülüğü 38 milyar $ ile sınırlandırılmış — nakit çıkışı öngörülebilir.<sup class="fn"><a href="#fn36">36</a></sup> Finansal temerrüt riski düşük.</p></div>
+      <div class="company"><h4>Apple <span class="tag tag-green">sarmalın dışında</span></h4>
+        <p>Devasa AI veri merkezi inşasından uzak; edge AI (uç cihaz) odaklı. Piyasa değeri ~4,64 trilyon $.<sup class="fn"><a href="#fn37">37</a></sup> Görece düşük risk; piyasa/değerleme ve tüketici talebi riski.</p></div>
+      <h3>6.5 Katman 5 — Neo-Cloud Sağlayıcıları (En Kırılgan)</h3>
+      <div class="company"><h4>CoreWeave <span class="tag tag-red">finansal temerrüt</span><span class="tag tag-red">finansal bulaşıcılık</span></h4>
+        <p>Mart 2026 itibarıyla backlog 99,4 milyar $ — ancak backlog bir borç değil, beklenen gelir görünürlüğüdür (§7.4). 2026 capex 31–35 milyar $; öngörülen yıllık gelir ~12,6 milyar $; toplam borç 25,1 milyar $; net zarar marjı %36; cari oran 0,31.<sup class="fn"><a href="#fn4">4</a>,<a href="#fn38">38</a></sup> J.P. Morgan DDTL 4.0 tesisi 8,5 milyar $, SOFR + %2,25 ile sabit %5,9 arası.<sup class="fn"><a href="#fn4">4</a></sup> S&amp;P, 3,5 milyar $ tahvillere spekülatif 'B' notu verdi.<sup class="fn"><a href="#fn5">5</a></sup> <strong>Sistemin en olası yakın vadeli finansal kırılma noktası.</strong></p></div>
+      <div class="company"><h4>Nebius Group <span class="tag tag-red">capex/gelir dengesizliği</span><span class="tag tag-orange">gelir yoğunlaşması</span></h4>
+        <p>Q1 2026 gelir yıllık %684 artışla 399 milyon $; düzeltilmiş EBITDA pozitif; nakit rezervi ~9,3 milyar $; 2026 capex hedefi 20–25 milyar $.<sup class="fn"><a href="#fn39">39</a>,<a href="#fn40">40</a></sup> Gelirin %98'i AI bulut kiralama — yoğunlaşma riski.</p></div>
+      <div class="company"><h4>Lambda Labs (özel, IPO hazırlığı) <span class="tag tag-red">yeniden finansman / IPO zamanlaması</span></h4>
+        <p>Kasım 2025 değerlemesi 5,9 milyar $; ARR 760 milyon $ (%79 büyüme); net zarar ~175 milyon $.<sup class="fn"><a href="#fn41">41</a></sup> Büyümeyi finanse etmek için 1 milyar $ sendikasyon + 350 milyon $ IPO-öncesi finansman arıyor; H2 2026 halka arz hedefi.<sup class="fn"><a href="#fn42">42</a></sup> <strong>Not:</strong> planlanan finansman kesinleşmemiştir ve runway hesabına nakit olarak dahil edilemez (§7.5).</p></div>
+      <h3>6.6 Katman 6 — Temel Modeller (LLM Geliştiricileri)</h3>
+      <div class="company"><h4>OpenAI <span class="tag tag-red">fonlama/runway bağımlılığı</span><span class="tag tag-orange">gelir kalitesi kapalı</span></h4>
+        <p>Mart 2026'da 122 milyar $ fonlama turu (SoftBank, Amazon, NVIDIA, Microsoft) ile 852 milyar $ post-money değerleme.<sup class="fn"><a href="#fn43">43</a>,<a href="#fn9">9</a></sup> ARR 25 milyar $; 2026 inference maliyeti 14,1 milyar $, toplam cash burn 27 milyar $ (analist tahmini).<sup class="fn"><a href="#fn44">44</a></sup> IPO 2027'ye ertelendi; %5 hissenin ABD hükümetine 42,6 milyar $ karşılığı satışı müzakere ediliyor (çakışan/tartışmalı bilgi).<sup class="fn"><a href="#fn45">45</a></sup> Churn ve çok yıllık sözleşme payı kamuya kapalı (§10).</p></div>
+      <div class="company"><h4>Anthropic <span class="tag tag-red">fonlama/runway bağımlılığı</span><span class="tag tag-orange">gelir kalitesi belirsiz</span></h4>
+        <p>Sequoia + Altimeter öncülüğünde 65 milyar $ yatırımla 965 milyar $ değerleme; Mayıs 2026 itibarıyla ARR %800 artışla 47 milyar $ (OpenAI'ı geride bıraktı, analist tahmini).<sup class="fn"><a href="#fn46">46</a>,<a href="#fn47">47</a></sup> Haziran 2026'da gizli S-1 başvurusu; AWS üzerinden 100 milyar $ altyapı sözleşmesi.<sup class="fn"><a href="#fn48">48</a></sup> Net nakit pozisyonu ve cash burn kamuya kapalı olduğundan <strong>pist hesaplanamaz — sıralamaya sokulmamalıdır</strong> (§7.5, §10).</p></div>
+      <h3>6.7 Katmanlar arası sentez</h3>
+      <ol>
+        <li><strong>Borç sarmalı tabanda değil tepede.</strong> Temel katmanlar (ASML, TSMC, NVIDIA, Arista) güçlü operasyonel nakitle kendini finanse eder. Borç ve taahhüt yükü hyperscaler capex'i, neo-cloud kredileri ve LLM fonlama turlarında toplanmıştır.</li>
+        <li><strong>En kırılgan halka sistemik açıdan en kritik halka değildir.</strong> CoreWeave/Nebius/Lambda finansal olarak en zayıf; ama batmaları fiziksel üretimi durdurmaz. TSMC finansal olarak en sağlam; ama fiziksel kaybı sistemi durdurur.</li>
+        <li><strong>Enerji yeni darboğaz.</strong> Constellation'ın katman-3'e dahil edilmesi tesadüf değil: talep güçlü kalsa bile elektrik ve şebeke kapasitesi büyümeyi sınırlayabilir (§8).</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">🧮 7. Düzeltilmiş Finansal Metrikler</h2></div>
+    <div class="section-body">
+      <p>Bu bölüm, yanıltıcı kullanılabilecek oranları düzeltir ve her birinin yerine metodolojik olarak sağlam karşılığını koyar. Amaç, şirketleri yanlış birimlerle karşılaştırmaktan kaçınmaktır.</p>
+      <h3>7.1 Neden ARR ≠ cash burn</h3>
+      <p>ARR bir dönemin sonundaki yıllıklandırılmış gelir koşu hızıdır; cash burn ise bir dönemdeki net nakit çıkışıdır. İkisi farklı ekonomik kavramlardır ve doğrudan karşılaştırılamaz. &laquo;ARR büyümesi burn'ü geçmeli&raquo; ifadesi birim olarak hatalıdır (biri gelir seviyesi/hızı, diğeri nakit açığı).</p>
+      <p><strong>OpenAI örneği:</strong> ARR 25 milyar $ iken 2026 cash burn'ü ~27 milyar $ olarak tahmin ediliyor (analist tahmini<sup class="fn"><a href="#fn44">44</a></sup>). Bu, &laquo;ARR burn'den küçük, batacak&raquo; anlamına gelmez — ARR'ye dahil olmayan gelirler, bir kerelik capex'in burn'ü şişirmesi ve fonlama turları resmi değiştirir. Doğru soru: brüt katkı marjı pozitif mi ve operasyonel nakit akışına giden yol var mı? Bu veri kamuya kapalı olduğundan OpenAI için net yargı <strong>&laquo;hesaplanamaz&raquo;</strong>dır (§7.5). Kullanılması gereken metrikler: brüt katkı marjı, OCF, FCF, aylık net cash burn, burn multiple, net revenue retention, churn, GPU-saat başına birim ekonomi.</p>
+      <h3>7.2 Neden capex/FCF temel metrik değildir</h3>
+      <p>FCF, operasyonel nakit akışından (OCF) capex çıkarıldıktan sonra kalandır. Bu yüzden capex'i FCF'ye bölmek, özellikle FCF sıfıra yakınken matematiksel olarak patlayan ama ekonomik olarak kararsız bir oran verir.</p>
+      <p><strong>Amazon örneği:</strong> İleriye dönük 2026 capex tahmini (~200 milyar $) ile son 12 aylık FCF (1,2 milyar $) karıştırılamaz — farklı dönemleri bölmek yanıltıcıdır. Resmî Q1 verisinde son 12 aylık OCF 148,5 milyar $, FCF 1,2 milyar $'dır;<sup class="fn"><a href="#fn34">34</a></sup> dolayısıyla aynı dönem capex ≈ OCF − FCF = 147,3 milyar $. &laquo;200 / 1,2 = 167x&raquo; gibi bir oran dönem uyumsuzluğundan patlar ve gerçek finansman açığını göstermez — Amazon 72 milyar $ borçlanmayı yatırım yapılabilir AA- notuyla<sup class="fn"><a href="#fn21">21</a></sup> ve güçlü OCF ile karşılar; FCF'nin sıfıra yaklaşması büyüme capex'inin kasıtlı tercihidir.</p>
+      <div class="insight-box"><strong>Daha sağlam alternatif — capex/OCF:</strong> Amazon için aynı dönem OCF 148,5 milyar $, capex ≈ 147,3 milyar $ → capex/OCF ≈ <strong>%99</strong>.<sup class="fn"><a href="#fn34">34</a></sup> Bu, &laquo;capex neredeyse tüm operasyonel nakdi yiyor, finansman açığı borçla kapanıyor&raquo; sonucunu oran patlaması olmadan gösterir.</div>
+      <div class="tbl"><table>
+        <tr><th>Metrik</th><th>Sorunlu yaklaşım</th><th>Düzeltilmiş yaklaşım</th><th>Neden</th></tr>
+        <tr><td>Finansman açığı</td><td>capex/FCF</td><td>capex/OCF + net borç/EBITDA</td><td>FCF sıfıra yakınken oran kararsız</td></tr>
+        <tr><td>Borç servisi</td><td>—</td><td>faiz karşılama (EBIT/faiz)</td><td>doğrudan ödeme kapasitesini ölçer</td></tr>
+        <tr><td>Büyüme yükü</td><td>—</td><td>bakım capex / büyüme capex ayrımı</td><td>veri yoksa ayrım yapılamaz, not edilir</td></tr>
+      </table></div>
+      <h3>7.3 Net borç / EBITDA ve sabit yük karşılama</h3>
+      <ul>
+        <li><strong>Net borç / EBITDA:</strong> (toplam borç − nakit) / EBITDA. Pozitif ve yüksek değer borç çevirme baskısını gösterir. CoreWeave (borç 25,1 milyar $, zararda) bu metrikte en kötü; TSMC/Arista/Alphabet net nakit olduğundan negatif.</li>
+        <li><strong>Sabit yük karşılama:</strong> (EBIT + sabit yükler) / (faiz + sabit yükler). İptal edilemez taahhütleri de &laquo;sabit yük&raquo;e dahil eder; Meta'nın 238 milyar $ taahhüdü<sup class="fn"><a href="#fn19">19</a></sup> bu metrikte borç oranından daha görünür olur.</li>
+        <li><strong>Likidite köprüsü:</strong> (nakit + kullanılmamış kesin kredi) / önümüzdeki 12–24 aylık nakit ihtiyacı. CoreWeave'in cari oran 0,31<sup class="fn"><a href="#fn4">4</a></sup> ile köprüsü zayıftır.</li>
+      </ul>
+      <h3>7.4 Yükümlülük türlerini ayırmak: borç ≠ taahhüt ≠ backlog ≠ hisse arzı</h3>
+      <div class="tbl"><table>
+        <tr><th>Tür</th><th>Örnek</th><th>Bilanço yükümlülüğü mü?</th><th>Risk</th></tr>
+        <tr><td>Finansal kaldıraç (borç)</td><td>Amazon 72 mr $ tahvil; CoreWeave 25,1 mr $</td><td>Evet</td><td>Faiz + anapara geri ödeme zorunlu</td></tr>
+        <tr><td>Sabit nakit taahhüdü</td><td>Meta 238 mr $ bağlayıcı sözleşme; Anthropic 100 mr $ AWS</td><td>Evet (gelecek nakit çıkışı)</td><td>İptal edilemez; ödeme takvimi baskısı</td></tr>
+        <tr><td>Backlog (sipariş birikimi)</td><td>CoreWeave 99,4 mr $</td><td>Hayır</td><td>Gelir görünürlüğü; risk iptal hükümleri + müşteri yoğunlaşması + teslimat marjına bağlı</td></tr>
+        <tr><td>Hisse arzı (equity raise)</td><td>Alphabet 84,75 mr $</td><td>Hayır</td><td>Borç değil; mevcut hissedarı sulandırarak riski sermayeye aktarır — &laquo;geleceği ipotek etmek&raquo; değil</td></tr>
+      </table></div>
+      <p>Backlog'un risk olup olmadığı iptal hükümleri, teslim süresi, müşteri yoğunlaşması ve beklenen marj bilinmeden yargılanamaz; CoreWeave için bu detaylar kamuya kapalıdır (§10).</p>
+      <h3>7.5 Runway (pist) hesabının doğru formülü</h3>
+      <p>&laquo;Fonlama turu / yıllık zarar&raquo; gibi kaba bir hesap hem planlanan finansmanı nakit sayar hem net zararı cash burn ile karıştırır. Doğru formül:</p>
+      <div class="formula">Runway (ay) =
+  ( Mevcut sınırsız nakit
+  + kesinleşmiş ve kullanılabilir kredi
+  − minimum işletme likiditesi
+  − vadesi gelecek borç/anapara
+  − zorunlu capex )
+  / aylık senaryo-düzeltilmiş net cash burn</div>
+      <p><strong>Kurallar:</strong> (1) net zarar ≠ cash burn; (2) fonlama turunun tamamı otomatik nakit değildir (primary/secondary, taksit, koşul ayrıştırılmalı); (3) planlanan IPO veya kredi finansmanı kesinleşmeden likiditeye eklenmez; (4) veri yetersizse sonuç &laquo;hesaplanamaz&raquo; olur, sıralama yapılmaz.</p>
+      <ul>
+        <li><strong>OpenAI:</strong> 122 milyar $ tur bildirildi<sup class="fn"><a href="#fn9">9</a></sup>; ama primary/secondary, taksit/koşul ayrımı bilinmiyor; burn'ün capex/işletme ayrımı yok. Sonuç: <span class="tag tag-orange">hesaplanamaz</span> (yalnızca &laquo;çok iyimser üst sınır&raquo; olarak yorumlanabilir).</li>
+        <li><strong>Anthropic:</strong> net nakit + cash burn kamuya kapalı. Sonuç: <span class="tag tag-orange">hesaplanamaz / veri yetersiz</span>. Hesaplanamayan değer pist sıralamasına sokulamaz.</li>
+        <li><strong>Lambda:</strong> 1 milyar $ sendikasyon + 350 milyon $ IPO-öncesi finansman planlanmıştır, kesinleşmemiştir;<sup class="fn"><a href="#fn42">42</a></sup> net zarar ~175 milyon $ burn değildir.<sup class="fn"><a href="#fn41">41</a></sup> Sonuç: <span class="tag tag-orange">hesaplanamaz</span>.</li>
+        <li><strong>CoreWeave:</strong> likidite köprüsü kurulmalı; cari oran 0,31 ile kısa vadeli köprü zayıf, ama kesin runway için covenant eşikleri gerekli (§10).</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">🌪️ 8. Senaryo ve Stres Testleri</h2></div>
+    <div class="section-body">
+      <p>Beş finansal/operasyonel/makro senaryo, bir baz senaryo ve bir pozitif senaryo sunulur. İlkeler: her senaryo §2.6'daki sayısal olasılık bandına bağlanır (merkez + alt/üst sınır); <strong>gerçekleşme ufku</strong> ile <strong>kesinti süresi</strong> ayrı alanlardır; senaryolar bağımsız değildir — olasılıklar doğrudan toplanamaz (§8.8); her senaryoya gerçek bir <strong>yanlışlayıcı kanıt</strong> (falsifier) atanır — &laquo;senaryoyu erteleyen&raquo; olaylar yanlışlayıcı sayılmaz.</p>
+      <div class="insight-box warn"><strong>Sayısal çerçeve uyarısı:</strong> Aşağıdaki yüzdeler, §2.6'daki şeffaf sözel→sayısal eşlemenin uygulanmasıdır; ampirik kalibre model çıktısı değildir. <strong>Olasılık–etki ayrımı:</strong> En yıkıcı sistemik çöküş TSMC kaynaklı fiziksel şoktur (düşük olasılık / çok yüksek etki); en olası yakın vadeli finansal kırılma neo-cloud katmanındadır (yüksek olasılık / düşük-orta etki). Bu ikisi §4.1 matrisinin farklı köşeleridir; çelişki değildir.</div>
+      <h3>8.1 Senaryo 1 — Neo-Cloud kredi temerrüdü (CoreWeave)</h3>
+      <div class="chart-card">
+        <div class="chart-title">Şekil 8.1 — Neo-cloud kredi temerrüdü yayılım zinciri (domino)</div>
+        <div class="domino">
+          <div class="domino-step amber"><div class="domino-num">1</div><div class="domino-body"><b>GPU kira fiyatı düşüşü</b><span>Arz fazlası + talep yavaşlaması birim ekonomiyi bozar</span></div></div>
+          <div class="domino-arrow">↓</div>
+          <div class="domino-step red"><div class="domino-num">2</div><div class="domino-body"><b>CoreWeave faizi ödeyemez</b><span>25,1 mr $ borç · SOFR+%2,25–%5,9 · net zarar marjı %36</span></div></div>
+          <div class="domino-arrow">↓</div>
+          <div class="domino-step red"><div class="domino-num">3</div><div class="domino-body"><b>Alacaklılar GPU'lara el koyar</b><span>DDTL 4.0 (JPM) 8,5 mr $ GPU-teminatlı kredi tetiklenir</span></div></div>
+          <div class="domino-arrow">↓</div>
+          <div class="domino-step deepred"><div class="domino-num">4</div><div class="domino-body"><b>İskontolu 2. el satış / glut</b><span>Nesil + lokasyon + güç + yazılım uyumsuzluğu devri yavaşlatır</span></div></div>
+          <div class="domino-arrow">↓</div>
+          <div class="domino-step amber"><div class="domino-num">5</div><div class="domino-body"><b>NVIDIA fiyatlama gücü baskılanır</b><span>2. el eski nesil, yeni nesil fiyatı SINIRLI/GEÇİCİ etkiler</span></div></div>
+          <div class="domino-arrow">↓</div>
+          <div class="domino-step red"><div class="domino-num">6</div><div class="domino-body"><b>SMCI stresi</b><span>Sunucu/rack tedarikçisi sipariş iptali + stok riski</span></div></div>
+          <div class="domino-arrow">↓</div>
+          <div class="domino-step green"><div class="domino-num">7</div><div class="domino-body"><b>TAMPON — Hyperscaler'lar</b><span>Distressed varlıkları iskontoyla satın alır, yayılmayı durdurur; fiziksel üretim durmaz</span></div></div>
+        </div>
+        <p class="chart-src">Kaynak: §3.3 dairesel finansman analizi ve §6.5 CoreWeave verileri. Tarih: 13 Temmuz 2026. Yöntem: niteliksel yayılım modeli; senaryo varsayımıdır. Güven: orta.</p>
+      </div>
+      <div class="tbl"><table>
+        <tr><th>Alan</th><th>İçerik</th></tr>
+        <tr><td>Gerçekleşme ufku</td><td>Önümüzdeki 12 ay (en yüksek duyarlılık) / 36 ay</td></tr>
+        <tr><td>Tetikleyici</td><td>GPU kiralama talebinde düşüş → saatlik kira ücreti düşüşü</td></tr>
+        <tr><td>Sayısal eşik</td><td>Gelirde çift haneli düşüş covenant baskısı yaratabilir; kesin eşik DDTL covenant'ları kamuya kapalı olduğundan hesaplanamaz (§10)</td></tr>
+        <tr><td>İlk etkilenen</td><td>CoreWeave (cari oran 0,31, SOFR-bazlı faiz)<sup class="fn"><a href="#fn4">4</a></sup></td></tr>
+        <tr><td>Yayılım kanalı</td><td>Alacaklı kredi fonları → GPU teminatına el koyma → ikinci el donanım arzı → NVIDIA fiyatlama gücü → hisse fiyatları</td></tr>
+        <tr><td>Tamponlar</td><td>Nakit zengini hyperscaler'lar (Alphabet, Amazon, Microsoft) distressed GPU/kapasiteyi toplayabilir</td></tr>
+        <tr><td>2. tur etkiler</td><td>Kredi fonları zarar yazar; neo-cloud finansman koşulları sertleşir; Nebius/Lambda borçlanma maliyeti artar</td></tr>
+        <tr><td>Varlık transferi sürtünmeleri</td><td>GPU'lar nesil, lokasyon, güç altyapısı ve yazılım uyumluluğu nedeniyle hemen devredilemez; el koyma → yeniden dağıtım aylar alabilir</td></tr>
+        <tr><td>İyileşme süresi</td><td>6–18 ay (finans piyasası); fiziksel üretim durmaz</td></tr>
+        <tr><td>Olasılık (12 ay)</td><td><span class="tag tag-red">Orta-yüksek: %50–70, merkez %60</span> (şeffaf eşleme, §2.6)</td></tr>
+        <tr><td>Etki aralığı</td><td>Şiddetli ama sınırlı; finans piyasasında kayıp, fiziksel zincirde kesinti yok</td></tr>
+        <tr><td>Güven</td><td>Orta (covenant detayları bilinmiyor)</td></tr>
+        <tr><td>Gerçek yanlışlayıcı kanıt</td><td>CoreWeave'in cari oranının kredi genişlemesi olmadan sürdürülebilir biçimde 1,0 üzerine çıkması ve kira fiyatlarının istikrara kavuşması. Covenant esnetilmesi temerrüdü yanlışlamaz, yalnızca erteler — falsifier sayılmaz.</td></tr>
+      </table></div>
+      <p><strong>Kritik not:</strong> İkinci el eski nesil GPU'ların yeni nesil NVIDIA fiyatlamasına etkisi sınırlıdır — yeni çipler farklı performans sınıfındadır; arz fazlası eski nesil fiyatını vurur, en yeni neslin fiyatlama gücünü doğrudan kırmaz.</p>
+      <h3>8.2 Senaryo 2 — Hyperscaler capex kesintisi (sermaye disiplini)</h3>
+      <div class="tbl"><table>
+        <tr><th>Alan</th><th>İçerik</th></tr>
+        <tr><td>Gerçekleşme ufku</td><td>Önümüzdeki 36 ay / 5 yıl</td></tr>
+        <tr><td>Tetikleyici</td><td>Meta FCF 2027'de −24 milyar $ (analist tahmini<sup class="fn"><a href="#fn20">20</a></sup>) ve Amazon FCF 1,2 milyar $<sup class="fn"><a href="#fn34">34</a></sup> üzerinden Wall Street baskısı; LLM ROI beklentisinin karşılanmaması</td></tr>
+        <tr><td>Sayısal eşik</td><td>Meta 238 milyar $ sözleşmesinin<sup class="fn"><a href="#fn19">19</a></sup> veya Amazon 200 milyar $ capex'inin<sup class="fn"><a href="#fn34">34</a></sup> ~%20'sinin iptali/ertelenmesi</td></tr>
+        <tr><td>İlk etkilenen</td><td>NVIDIA (sipariş), Arista (ağ satışı), Super Micro (sunucu)</td></tr>
+        <tr><td>Yayılım kanalı</td><td>Talep şoku upstream: hyperscaler → donanımcı → dökümhane → ekipman (§3.1, Akış 3)</td></tr>
+        <tr><td>Tamponlar</td><td>Reklam/e-ticaret/kurumsal yazılım gelirleri çapraz sübvansiyon sağlar; kesinti temerrüt değil verimlilik + özel çip (ASIC) geçişi yaratabilir</td></tr>
+        <tr><td>2. tur etkiler</td><td>Teknolojide piyasa değeri silinmesi; tedarikçi marj baskısı; işten çıkarmalar</td></tr>
+        <tr><td>İyileşme süresi</td><td>1–3 yıl (&laquo;AI yatırım durgunluğu&raquo;)</td></tr>
+        <tr><td>Olasılık (36 ay)</td><td><span class="tag tag-orange">Orta: %30–50, merkez %40</span> (şeffaf eşleme, §2.6)</td></tr>
+        <tr><td>Etki aralığı</td><td>Sektörel durgunluk; sistemik çöküş değil</td></tr>
+        <tr><td>Güven</td><td>Orta (ROI beklentisi ölçülemez, §10)</td></tr>
+        <tr><td>Gerçek yanlışlayıcı kanıt</td><td>Capex seviyesi korunurken AI'ya atfedilebilir OCF'nin artması ve capex/OCF oranının gelir büyümesi sayesinde düşmesi. Capex kesildiği için capex/OCF'nin düşmesi senaryoyu yanlışlamaz, doğrular — falsifier sayılmaz.</td></tr>
+      </table></div>
+      <p><strong>Alternatif yol (senaryo lehine olmayan):</strong> Capex kesintisi kaçınılmaz olarak &laquo;AI Winter&raquo; demek değildir. Şirketler capex'i kısarken verimliliği artırabilir, özel ASIC'lere (Broadcom/Qualcomm) geçebilir ve birim maliyeti düşürebilir — toplam çip talebini değil bileşimini değiştirir. Resesyonda bazı şirketler iş gücü maliyetini kısmak için otomasyon/AI yatırımını artırabilir; talep tek yönlü değildir.</p>
+      <h3>8.3 Senaryo 3 — TSMC fiziksel kesintisi (katastrofik etki)</h3>
+      <p>&laquo;Tam ve telafi edilemez kayıp&raquo; ifadesi olasılık-etki dengesini bozduğundan bu senaryo tam kayıp yerine <strong>kısmi kesinti</strong> olarak çerçevelenir. İki soru ayrıştırılır: <strong>(a)</strong> bir ufukta herhangi bir ileri-düğüm kesintisinin gerçekleşme olasılığı ve <strong>(b)</strong> kesinti gerçekleşirse ne kadar süreceğine ilişkin koşullu süre olasılığı.</p>
+      <h4>(a) Gerçekleşme ufku — herhangi bir ileri-düğüm kesintisi</h4>
+      <div class="tbl"><table>
+        <tr><th>Ufuk</th><th>Kesinti olasılığı</th><th>Güven</th></tr>
+        <tr><td>Önümüzdeki 12 ay</td><td>Düşük: %10–20, merkez %15</td><td>Düşük (jeopolitik baz oran kamuya kapalı, §10)</td></tr>
+        <tr><td>Önümüzdeki 36 ay</td><td>Düşük-orta: %20–30, merkez %25</td><td>Düşük</td></tr>
+        <tr><td>Önümüzdeki 60 ay</td><td>Orta alt-ucu: ~%30</td><td>Düşük</td></tr>
+      </table></div>
+      <h4>(b) Koşullu süre — kesinti gerçekleşirse, en az bu süre</h4>
+      <div class="tbl"><table>
+        <tr><th>Süre eşiği</th><th>Koşullu olasılık</th><th>Etki</th><th>İyileşme</th></tr>
+        <tr><td>En az 1 ay</td><td>Yüksek: ~%70</td><td>Stok + fiyat şoku; üretim kaydırması</td><td>Haftalar–aylar</td></tr>
+        <tr><td>En az 6 ay</td><td>Orta: %30–50, merkez %40</td><td>İleri düğüm arzı ciddi kısıtlı; NVIDIA/AMD/Broadcom üretim planı bozulur</td><td>1–2 yıl</td></tr>
+        <tr><td>En az 12 ay</td><td>Düşük-orta: %20–30, merkez %25</td><td>Sistemik; küresel tüketici elektroniği ve AI genişlemesi durur</td><td>Yıllar (yeni kapasite inşası)</td></tr>
+      </table></div>
+      <h4>(c) Bileşik olasılık (36 aylık ufuk × koşullu süre; illüstratif, bağımsızlık varsayımıyla)</h4>
+      <div class="formula">36 ayda en az  1 aylık kesinti ≈ %25 × ~%70 ≈ ~%18
+36 ayda en az  6 aylık kesinti ≈ %25 ×  %40 ≈ ~%10
+36 ayda en az 12 aylık kesinti ≈ %25 ×  %25 ≈  ~%6</div>
+      <p>Bu bileşik tablo, ufuk olasılığı ile koşullu sürenin aynı sayı olmadığını göstermek içindir; bağımsızlık varsayar ve kalibre tahmin değildir. §11'de kullanılan &laquo;36 ayda ≥12 aylık katastrofik kesinti ~%6&raquo; bu çerçeveyle tutarlıdır.</p>
+      <p><strong>Ortak alanlar:</strong> Tetikleyici — Tayvan–Çin gerilimi, deniz ablukası, tayfun/deprem. Gerçek yanlışlayıcı kanıt — Tayvan–Çin geriliminin kalıcı biçimde azalması; TSMC'nin Tayvan dışı (ABD/Japonya) ileri düğüm kapasitesinin anlamlı paya ulaşması.</p>
+      <p><strong>Okuma:</strong> En düşük olasılıklı ama en yüksek etkili senaryodur (§4.1 sol-üst kadran). Finansal değil jeopolitik/fiziksel bir risktir; borç oranlarıyla ölçülemez, erken uyarı göstergeleri Tayvan Boğazı gerilimi ve enerji arzıdır (§9).</p>
+      <h3>8.4 Makro Senaryo A — Higher-for-Longer faiz</h3>
+      <p>Fed %3,75'i inatçı enflasyon (PCE %3,84) nedeniyle 2027 sonuna kadar korur.<sup class="fn"><a href="#fn49">49</a>,<a href="#fn50">50</a></sup></p>
+      <ul>
+        <li><strong>Gerçekleşme ufku:</strong> önümüzdeki 24 ay. Olasılık: <span class="tag tag-red">orta-yüksek, %50–70, merkez %60</span> (mevcut Fed söylemiyle uyumlu). Güven: orta.</li>
+        <li><strong>Asıl darbe:</strong> yüksek kaldıraçlı, düşük marjlı şirketler — Super Micro (D/E %115) ve CoreWeave (25,1 milyar $ borç, SOFR-bazlı). Borç çevirme maliyeti fırlar, temerrüt olasılığı artar (koşullu olasılık §8.8).</li>
+        <li><strong>Korunanlar:</strong> Arista (sıfır borç), Apple (yüksek nakit), hisse arzıyla finanse eden Alphabet.</li>
+        <li><strong>Gerçek yanlışlayıcı kanıt:</strong> Çekirdek TÜFE'nin %2 hedefine yaklaşması ve Fed'in indirim sinyali vermesi.</li>
+      </ul>
+      <h3>8.5 Makro Senaryo B — Jeopolitik şok / enerji odaklı stagflasyon</h3>
+      <p>Orta Doğu çatışması bölgeselleşir; petrol 100 $ üzeri; enflasyon %5'i geçer, büyüme durur.<sup class="fn"><a href="#fn51">51</a></sup></p>
+      <ul>
+        <li><strong>Gerçekleşme ufku:</strong> önümüzdeki 24 ay. Olasılık: <span class="tag tag-orange">düşük-orta, %20–30, merkez %25</span>. Güven: düşük.</li>
+        <li><strong>İki yönlü kıskaç:</strong> (1) elektrik/emtia maliyeti fırlar → dökümhane ve veri merkezi operasyon maliyeti artar; Constellation gibi enerji sağlayıcıları değerlenir. (2) Enflasyon nedeniyle tüketici Apple ürünlerinden, reklam verenler Google/Meta bütçesinden kısar → Meta reklam geliri + 125–145 milyar $ capex birleşince nakit krizi.</li>
+        <li><strong>Alternatif yol:</strong> Talep güçlü kalsa bile elektrik ve şebeke kapasitesi büyümeyi sınırlayabilir — çip arzından bağımsız bir darboğaz; Constellation'ın kritikliğini artırır (§6.3).</li>
+        <li><strong>Gerçek yanlışlayıcı kanıt:</strong> Petrolün 80 $ altına dönmesi ve bölgesel gerilimin yatışması.</li>
+      </ul>
+      <h3>8.6 Baz Senaryo — Kısıtlayıcı ama işleyen sistem (muhtemel patika)</h3>
+      <p>Yalnızca olumsuz senaryolar içeren bir çerçeve, &laquo;iyi yöndeki olasılığı&raquo; hesaplamayı imkânsız kılar. Baz senaryo, en olası tek patikadır: higher-for-longer büyük ölçüde sürer; birkaç neo-cloud oyuncusu (CoreWeave başta) zorlanır ve yeniden finansman/konsolidasyon yaşar; ancak AI talebi ve hyperscaler capex'i genel olarak büyümeyi sürdürür. Fiziksel üretim (TSMC/ASML) kesintisiz çalışır.</p>
+      <div class="tbl"><table>
+        <tr><th>Alan</th><th>İçerik</th></tr>
+        <tr><td>Gerçekleşme ufku</td><td>Önümüzdeki 24–36 ay</td></tr>
+        <tr><td>Karakter</td><td>Büyüme devam eder ama finansman maliyeti yüksek kalır; kâr marjları baskı altında; zayıf bilançolar elenir, güçlüler konsolide olur</td></tr>
+        <tr><td>Görünür sonuç</td><td>Neo-cloud'da 1–2 temerrüt/konsolidasyon; hyperscaler capex'inde hız kesme ama mutlak düşüş yok; NVIDIA talebi yavaşlar ama pozitif kalır</td></tr>
+        <tr><td>Olasılık</td><td>&laquo;Kötü yön olmadan devam&raquo; olasılığıyla yakından ilişkili; §11'de sayısallaştırılır (merkez ~%47, 36 ay)</td></tr>
+        <tr><td>Güven</td><td>Orta (şeffaf eşleme + niteliksel yargı)</td></tr>
+        <tr><td>Yanlışlayacak kanıt</td><td>Geniş, senkronize capex kesintisi + neo-cloud'da zincirleme temerrüt (bu durumda §8.2/§8.1 baskın hale gelir)</td></tr>
+      </table></div>
+      <h3>8.7 Pozitif Senaryo — Yumuşak iniş ve birim ekonomi iyileşmesi</h3>
+      <p>Enflasyon düşer, Fed 2026 sonu–2027'de indirim döngüsüne başlar, finansman maliyeti gevşer; AI birim ekonomisi (inference başına katkı marjı, GPU-saat verimi) iyileşir; capex/OCF oranı gelir büyümesiyle düşerken AI'ya atfedilebilir gelir artışı sürer.</p>
+      <div class="tbl"><table>
+        <tr><th>Alan</th><th>İçerik</th></tr>
+        <tr><td>Gerçekleşme ufku</td><td>Önümüzdeki 24–36 ay</td></tr>
+        <tr><td>Karakter</td><td>Finansman gevşer; neo-cloud yeniden finansmanı kolaylaşır; LLM gelir kalitesi (kurumsal sözleşmeler) güçlenir; değerleme baskısı azalır</td></tr>
+        <tr><td>Görünür sonuç</td><td>CoreWeave cari oranını toparlar; hyperscaler capex'i sürdürülebilir OCF ile finanse edilir; TSMC/ASML tam kapasite; değerleme primi korunur</td></tr>
+        <tr><td>Olasılık</td><td>§11'de sayısallaştırılır (olumlu makro ~%35, 24 ay; &laquo;çok güçlü bull senaryo&raquo; mevcut veriyle hesaplanamaz)</td></tr>
+        <tr><td>Güven</td><td>Düşük-orta (çekirdek enflasyonun ve AI gelir kalitesinin yönü belirsiz)</td></tr>
+        <tr><td>Yanlışlayacak kanıt</td><td>Çekirdek TÜFE'nin %3 üzerinde kalması ve AI'ya atfedilebilir gelirin capex büyümesinin gerisinde kalması</td></tr>
+      </table></div>
+      <p><strong>Önemli:</strong> Mevcut verilerle &laquo;çok güçlü olumlu (bull) senaryo&raquo; olasılığı hesaplanamaz — AI birim ekonomisinin gerçek iyileşme hızı ve LLM gelir kalitesi (churn/NRR) kamuya kapalıdır (§10). Hesaplanabilen şey, geniş kırılma olmadan sistemin dayanıklı kalmasıdır (§11).</p>
+      <h3>8.8 Senaryolar arası bağımlılık ve kesişim matrisi</h3>
+      <p>Senaryolar bağımsız değildir: higher-for-longer, CoreWeave temerrüdünü ve capex kesintisini tetikleyebilir; stagflasyon hem yüksek faiz hem capex kesintisiyle örtüşür. Bu yüzden senaryo olasılıkları doğrudan toplanamaz — kesişimlerin düşülmesi (inclusion-exclusion) gerekir.</p>
+      <div class="tbl"><table>
+        <tr><th>Koşullu olasılık</th><th>Varsayım</th></tr>
+        <tr><td>P(CoreWeave temerrüdü | yüksek faiz)</td><td>Yüksek (borç SOFR-bazlı)</td></tr>
+        <tr><td>P(capex kesintisi | yüksek LLM churn)</td><td>Yüksek</td></tr>
+        <tr><td>P(capex kesintisi | stagflasyon)</td><td>~%60</td></tr>
+        <tr><td>P(neo-cloud bulaşıcılığı | teminat değerinde %X düşüş)</td><td>Teminat haircut'e duyarlı</td></tr>
+        <tr><td>P(yüksek faiz | stagflasyon)</td><td>~%80</td></tr>
+      </table></div>
+      <p>İllüstratif kesişim hesabı (24 ay, olumsuz makro ortam):</p>
+      <div class="formula">P(olumsuz makro) = P(higher-for-longer ∪ stagflasyon)
+= P(H4L) + P(stagflasyon) − P(H4L ∩ stagflasyon)
+= %60 + %25 − (%25 × %80)
+= %60 + %25 − %20
+= ~%65</div>
+      <p>Bu hesap, bağımsızlık varsayan naif toplamın (%85) neden yanlış olduğunu gösterir: kesişim (%20) düşülmeden yapılan toplam olasılığı şişirir. Tüm sayılar §2.6 şeffaf eşlemesine ve yukarıdaki koşullu varsayımlara dayanır; duyarlılık aralıkları geniştir.</p>
+      <h3>8.9 Senaryo özeti</h3>
+      <div class="chart-card">
+        <div class="chart-title">Senaryo olasılıkları — merkez tahminler (şeffaf eşleme, §2.6)</div>
+        <svg viewBox="0 0 640 216" width="100%" height="216" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">%0</text><line x1="287.5" y1="16" x2="287.5" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="287.5" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">%25</text><line x1="385.0" y1="16" x2="385.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="385.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">%50</text><line x1="482.5" y1="16" x2="482.5" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="482.5" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">%75</text><line x1="580.0" y1="16" x2="580.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="580.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">%100</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">S1 · Neo-cloud temerrüdü (12 ay)</text><rect x="190" y="22.8" width="234.0" height="19.0" rx="4" fill="#f87171" opacity="0.88"/><text x="432.0" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">%60 (50–70)</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">A · Higher-for-longer (24 ay)</text><rect x="190" y="56.8" width="234.0" height="19.0" rx="4" fill="#fbbf24" opacity="0.88"/><text x="432.0" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">%60 (50–70)</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">S2 · Capex kesintisi (36 ay)</text><rect x="190" y="90.8" width="156.0" height="19.0" rx="4" fill="#fbbf24" opacity="0.88"/><text x="354.0" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">%40 (30–50)</text><text x="178" y="138.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">B · Stagflasyon (24 ay)</text><rect x="190" y="124.8" width="97.5" height="19.0" rx="4" fill="#fbbf24" opacity="0.88"/><text x="295.5" y="138.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">%25 (20–30)</text><text x="178" y="172.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">S3 · TSMC ≥12 ay (36 ayda)</text><rect x="190" y="158.8" width="23.4" height="19.0" rx="4" fill="#dc2626" opacity="0.88"/><text x="221.4" y="172.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">~%6 (bileşik)</text></svg>
+        <p class="chart-caption">Merkez tahminler; bantlar geniştir (örn. S1: %50–70, S3 bileşik: 36 ayda ≥12 aylık kesinti ~%6). Olasılıklar bağımsız değildir ve doğrudan toplanamaz (§8.8).</p>
+        <p class="chart-src">Kaynak: §6 şirket verileri ve §8.4–8.5 makro verileri. Tarih: 13 Temmuz 2026. Güven: düşük-orta.</p>
+      </div>
+      <div class="tbl"><table>
+        <tr><th>Senaryo</th><th>Ufuk</th><th>Kesinti süresi</th><th>Olasılık (merkez)</th><th>Etki</th><th>Tür</th></tr>
+        <tr><td>1 — Neo-Cloud temerrüdü</td><td>12 ay</td><td>—</td><td>Orta-yüksek (%60)</td><td>şiddetli ama sınırlı</td><td>finansal bulaşıcılık</td></tr>
+        <tr><td>2 — Hyperscaler capex kesintisi</td><td>36 ay</td><td>—</td><td>Orta (%40)</td><td>sektörel durgunluk</td><td>talep şoku</td></tr>
+        <tr><td>3 — TSMC fiziksel kesintisi</td><td>12/36/60 ay</td><td>1/6/12 ay (koşullu)</td><td>ufuk %15/%25/%30; 36 ayda ≥12 ay bileşik ~%6</td><td>katastrofik (≥12 ay)</td><td>operasyonel/jeopolitik</td></tr>
+        <tr><td>A — Higher-for-longer</td><td>24 ay</td><td>—</td><td>Orta-yüksek (%60)</td><td>kaldıraçlı şirketlerde temerrüt</td><td>finansal</td></tr>
+        <tr><td>B — Jeopolitik stagflasyon</td><td>24 ay</td><td>—</td><td>Düşük-orta (%25)</td><td>çift yönlü maliyet+talep</td><td>makro</td></tr>
+        <tr><td>Baz — Kısıtlayıcı ama işleyen</td><td>24–36 ay</td><td>—</td><td>§11 (~%47)</td><td>büyüme sürer, zayıflar elenir</td><td>baz</td></tr>
+        <tr><td>Pozitif — Yumuşak iniş</td><td>24–36 ay</td><td>—</td><td>§11 (~%35 makro)</td><td>birim ekonomi iyileşir</td><td>pozitif</td></tr>
+      </table></div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">🚨 9. Erken Uyarı Gösterge Paneli</h2></div>
+    <div class="section-body">
+      <p>Bu panel, §4.3'teki iki köşeye karşılık gelen iki risk tipini izler: <strong>likidite/kredi riski</strong> (sağ-alt kadran, neo-cloud) ve <strong>fiziksel/jeopolitik risk</strong> (sol-üst kadran, TSMC). Eşikler analist yargısına dayalı referans değerlerdir; kesin tetik noktaları değildir.</p>
+      <h3>9.1 Finansal / likidite göstergeleri (neo-cloud ve kaldıraçlı katman)</h3>
+      <div class="tbl"><table>
+        <tr><th>Gösterge</th><th>İzlenecek eşik</th><th>Anlamı</th><th>İlgili şirket</th></tr>
+        <tr><td>GPU saatlik kira fiyatı</td><td>trendde çift haneli düşüş</td><td>neo-cloud gelir baskısı; temerrüt öncüsü</td><td>CoreWeave, Nebius, Lambda</td></tr>
+        <tr><td>CoreWeave cari oran</td><td>1,0 altı → yükseliş = olumlu; düşüş = olumsuz</td><td>kısa vadeli ödeme kapasitesi (mevcut 0,31)</td><td>CoreWeave</td></tr>
+        <tr><td>DDTL covenant eşikleri</td><td><span class="tag tag-orange">bilinmiyor (§10)</span></td><td>kredi geri çağırma noktası; kamuya kapalı</td><td>CoreWeave</td></tr>
+        <tr><td>SOFR spread / değişken faiz</td><td>spread genişlemesi</td><td>değişken faizli borç servis maliyeti</td><td>CoreWeave, SMCI</td></tr>
+        <tr><td>Hyperscaler capex/OCF</td><td>%100'e yaklaşma ve üzeri</td><td>büyüme capex'i tüm operasyonel nakdi yiyor; borç bağımlılığı</td><td>Amazon, Meta, Alphabet</td></tr>
+        <tr><td>Negatif FCF projeksiyonu</td><td>gerçekleşme teyidi</td><td>yatırım disiplini baskısı</td><td>Meta (2027 tahmin −24 mr $)</td></tr>
+        <tr><td>LLM churn / net revenue retention</td><td><span class="tag tag-orange">bilinmiyor (§10)</span></td><td>ARR'nin kalıcılığı; değerleme dayanağı</td><td>OpenAI, Anthropic</td></tr>
+      </table></div>
+      <h3>9.2 Fiziksel / jeopolitik / enerji göstergeleri (temel katman)</h3>
+      <div class="tbl"><table>
+        <tr><th>Gösterge</th><th>İzlenecek eşik</th><th>Anlamı</th><th>İlgili şirket</th></tr>
+        <tr><td>Tayvan Boğazı gerilimi</td><td>askeri/ekonomik kısıtlama sinyali</td><td>ileri düğüm arz riski (en düşük olasılık / en yüksek etki)</td><td>TSMC, NVIDIA, AMD, Broadcom, Apple</td></tr>
+        <tr><td>TSMC ileri düğüm gelir payı</td><td>%74'ten belirgin sapma</td><td>gelir kompozisyonu (pazar payı değil); kapasite/talep dengesi</td><td>TSMC</td></tr>
+        <tr><td>10 yıllık ABD getirisi</td><td>%4,44'ten yukarı ivme</td><td>borçlanma maliyeti; değerleme baskısı</td><td>tüm kaldıraçlı şirketler</td></tr>
+        <tr><td>Brent petrol</td><td>100 $ üzeri</td><td>enerji maliyeti; veri merkezi operasyon gideri</td><td>Constellation (olumlu), veri merkezleri (olumsuz)</td></tr>
+        <tr><td>Elektrik / şebeke kapasitesi</td><td>bağlantı kuyruğu uzaması</td><td>çip arzından bağımsız büyüme darboğazı</td><td>Constellation, hyperscaler</td></tr>
+        <tr><td>ASML sipariş / backlog</td><td>belirgin düşüş</td><td>talep şokunun upstream'e ulaşması (gecikmeli)</td><td>ASML</td></tr>
+      </table></div>
+      <h3>9.3 Panelin kullanımı</h3>
+      <ul>
+        <li><strong>İki ayrı alarm seti:</strong> Finansal göstergeler (§9.1) neo-cloud/kaldıraç riskini, fiziksel göstergeler (§9.2) TSMC/temel katman riskini izler. İkisi farklı zaman ufkunda ve farklı kanaldan çalışır; tek bir &laquo;AI risk göstergesi&raquo; yoktur.</li>
+        <li><strong>En erken finansal sinyal:</strong> GPU kira fiyatı + CoreWeave cari oranı + covenant durumu — neo-cloud temerrüdünün öncülleri.</li>
+        <li><strong>En kritik ama en geç fark edilen:</strong> Tayvan Boğazı gerilimi. Finansal verilerle görünmez; ayrı izleme gerektirir.</li>
+        <li><strong>Bilgi boşlukları:</strong> Covenant eşikleri, LLM churn ve tahvil alıcı demografisi kamuya kapalıdır; §10'da veri ihtiyacı olarak listelenir.</li>
+      </ul>
+      <p class="chart-src">Kaynak: §6 şirket verileri, §8.4–8.5 makro verileri ve §8 senaryo şablonları. Tarih: 13 Temmuz 2026. Güven: orta.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">🕳️ 10. Kör Noktalar ve Veri İhtiyaçları</h2></div>
+    <div class="section-body">
+      <p>Raporun ulaşamadığı ama sonucu doğrudan etkileyen veriler. Bunlar raporun zayıflığı değil, kamuya kapalı bilgi boşluklarıdır; her biri &laquo;bilinmiyor / hesaplanamaz&raquo; olarak etiketlenmiştir ve ilgili analizde bu belirsizlik korunmuştur.</p>
+      <h3>10.1 Kritik bilgi boşlukları</h3>
+      <div class="tbl"><table>
+        <tr><th>#</th><th>Boşluk</th><th>Neden kritik</th><th>Etkilenen analiz</th></tr>
+        <tr><td>1</td><td>CoreWeave DDTL 4.0 covenant eşikleri</td><td>Kredi geri çağırma noktası bilinmeden temerrüt eşiği hesaplanamaz; &laquo;saatli bombanın pimi&raquo; görünmez</td><td>§8.1 sayısal eşik; §7.5 runway</td></tr>
+        <tr><td>2</td><td>OpenAI / Anthropic churn ve net revenue retention</td><td>ARR'nin ne kadarı tek seferlik pilot, ne kadarı çok yıllık kalıcı sözleşme bilinmiyor; trilyon $ değerlemelerin dayanağı görünmez</td><td>§4.2 hizmet kritikliği; §6.6 değerleme</td></tr>
+        <tr><td>3</td><td>Anthropic net nakit + cash burn</td><td>Pist (runway) hesaplanamaz; sıralamaya sokulamaz</td><td>§7.5 runway</td></tr>
+        <tr><td>4</td><td>OpenAI fonlama turu yapısı</td><td>122 milyar $ turun primary/secondary, taksit ve koşul ayrımı bilinmiyor</td><td>§7.5 runway</td></tr>
+        <tr><td>5</td><td>Amazon tahvil alıcı demografisi</td><td>25 milyar $ ihracın ne kadarı defansif emeklilik fonunda, ne kadarı kaldıraçlı hedge fonda bilinmiyor; kredi notu düşüşünde bulaşıcılık haritası çizilemez</td><td>§8.1 bulaşıcılık; makro senaryolar</td></tr>
+        <tr><td>6</td><td>CoreWeave backlog iptal hükümleri</td><td>99,4 milyar $ backlog'un risk olup olmadığı iptal koşulları, teslim süresi, müşteri yoğunlaşması ve marj bilinmeden yargılanamaz</td><td>§7.4 backlog değerlendirmesi</td></tr>
+        <tr><td>7</td><td>Bakım capex / büyüme capex ayrımı</td><td>Hyperscaler capex'inin ne kadarı zorunlu (bakım), ne kadarı tercihe bağlı (büyüme) bilinmiyor</td><td>§7.2 capex/OCF yorumu</td></tr>
+      </table></div>
+      <h3>10.2 Çakışan / tartışmalı veriler</h3>
+      <ul>
+        <li><strong>Intel piyasa değeri ve %21 düşüş olayı:</strong> piyasa değeri 447–512 milyar $ aralığında dalgalanıyor; 18A haberine bağlı %21 düşüşün tek nedeni ve sürdürülebilirliği kaynaklar arasında tartışmalı.<sup class="fn"><a href="#fn27">27</a>,<a href="#fn52">52</a></sup></li>
+        <li><strong>OpenAI %5 hisse — ABD hükümeti satışı (42,6 milyar $):</strong> müzakere aşamasında; gerçekleşip gerçekleşmeyeceği belirsiz.<sup class="fn"><a href="#fn45">45</a></sup></li>
+        <li><strong>Tüm piyasa değeri aralıkları:</strong> hisse fiyatları gün içinde dalgalandığından, mcap değerleri aralık olarak verilmiştir; tek nokta değeri değildir.</li>
+      </ul>
+      <h3>10.3 Sonuç üzerindeki etkisi</h3>
+      <ul>
+        <li>Neo-cloud temerrüdünün zamanlaması (covenant bilinmediğinden) net öngörülemez; yalnızca yön ve kanal belirtilebilir.</li>
+        <li>LLM katmanının gerçek gelir kalitesi bilinmediğinden değerleme riski ölçülemez; yalnızca &laquo;yüksek belirsizlik&raquo; notu düşülebilir.</li>
+        <li>Rapor bu yüzden &laquo;kesin çöküş&raquo; iddiası taşımaz; olasılık aralıkları ve &laquo;yanlışlayacak kanıt&raquo; ile çerçevelenir (§8).</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">⚖️ 11. Sonuç, Olasılık Çerçevesi ve Çıkarımlar</h2></div>
+    <div class="section-body">
+      <p>Bulgular önce kötü yön ve iyi yön olasılıkları olarak sayısallaştırılır, sonra aksiyon odaklı çıkarımlara çevrilir. Yatırım tavsiyesi değildir; risk çerçevesi ve izleme önceliği sunar.</p>
+      <div class="insight-box warn"><strong>Sayısal çerçeve uyarısı:</strong> Aşağıdaki tüm yüzdeler, §2.6 şeffaf eşlemesinin ve §8.8 koşullu olasılık varsayımlarının uygulamasıdır; ampirik kalibre model çıktısı değildir. Aralıklar geniştir çünkü covenant, churn, gerçek AI birim ekonomisi ve jeopolitik baz oran kamuya kapalıdır (§10).</div>
+      <h3>11.1 Senaryo olasılıkları: kötü yön ve iyi yön (karar ağacı)</h3>
+      <p>&laquo;İyi yön&raquo; ve &laquo;kötü yön&raquo; tek bir olayın tümleyeni değildir. &laquo;Neo-cloud temerrüdü olmazsa iyi senaryo&raquo; ifadesi yanıltıcıdır — bu yalnızca o tek olayın tümleyenidir; makro, AI birim ekonomisi, capex disiplini ve jeopolitik riskleri hesaba katmaz. İyi yön, birbirini dışlayan dört kapıdan oluşan bir karar ağacında tanımlanır.</p>
+      <h4>Önümüzdeki 12 ay — yerel finansal stres</h4>
+      <div class="tbl"><table>
+        <tr><th>Yön</th><th>Senaryo</th><th>Olasılık (şeffaf eşleme)</th></tr>
+        <tr><td><span class="tag tag-red">Kötü yön</span></td><td>Neo-cloud/CoreWeave kaynaklı finansal stres</td><td>%50–70, merkez %60 — çoğunlukla sınırlı kalır; fiziksel üretim durmaz</td></tr>
+        <tr><td><span class="tag tag-red">Kötü yön (uç)</span></td><td>12 aylık katastrofik TSMC kesintisi</td><td>36 aylık ufukta ~%6; 12 aylık ufukta bunun altında (§8.3)</td></tr>
+        <tr><td><span class="tag tag-blue">Tümleyen (iyi yön değil)</span></td><td>Neo-cloud finansal stresi olmaması</td><td>~%40 (= %100 − %60)</td></tr>
+      </table></div>
+      <p><strong>Uyarı:</strong> Yukarıdaki ~%40 bir &laquo;iyi senaryo&raquo; değildir — yalnızca neo-cloud stres olayının gerçekleşmemesidir. Gerçek iyi yön değerlendirmesi 36 aylık karar ağacıyla yapılır.</p>
+      <h4>Önümüzdeki 24 ay — makro yön</h4>
+      <div class="tbl"><table>
+        <tr><th>Yön</th><th>Senaryo</th><th>Olasılık (şeffaf eşleme)</th></tr>
+        <tr><td><span class="tag tag-red">Kötü yön</span></td><td>Finansman açısından olumsuz/kısıtlayıcı makro (higher-for-longer ∪ stagflasyon, §8.8 kesişimi)</td><td>~%65 (duyarlılık: %54–76)</td></tr>
+        <tr><td><span class="tag tag-green">İyi yön (makro kapısı)</span></td><td>Faiz rahatlaması / daha olumlu makro ortam</td><td>~%35 (duyarlılık: %24–46)</td></tr>
+      </table></div>
+      <h4>Önümüzdeki 36 ay — sistemin genel yönü (karar ağacı)</h4>
+      <p>Güçlü iyi yol, dört kapının hepsinden geçmeyi gerektirir; herhangi bir kapıda tökezlemek kötü yöne, son kapıda tökezlemek katastrofik sonuca götürür:</p>
+      <div class="gate"><b>Kapı 1 — Makro olumlu mu?</b><span class="yes">Evet ~%35</span><span class="no">Hayır ~%65 → kötü yön</span></div>
+      <div class="gate"><b>Kapı 2 — AI birim ekonomisi iyileşir mi?</b><span class="yes">Evet ~%50</span><span class="no">Hayır ~%50 → kötü yön</span></div>
+      <div class="gate"><b>Kapı 3 — Hyperscaler capex korunur mu?</b><span class="yes">Evet ~%60</span><span class="no">Hayır ~%40 → kötü yön</span></div>
+      <div class="gate"><b>Kapı 4 — TSMC şoku yok mu?</b><span class="yes">Evet ~%94</span><span class="no">Hayır ~%6 → katastrofik</span></div>
+      <div class="formula">P(güçlü iyi yol) ≈ %35 × %50 × %60 × %94 ≈ %10   (illüstratif, bağımsızlık varsayımıyla)</div>
+      <p>Kapı olasılıkları §8'deki şeffaf varsayımlardan gelir: Kapı 1 = §8.8 olumlu makro; Kapı 2 = AI birim ekonomisi (kamuya kapalı, §10 — merkez ~%50 yargı); Kapı 3 = §8.2 capex korunması (%100 − %40); Kapı 4 = §8.3 TSMC şoku yok (%100 − %6). Bu ~%10, &laquo;her şeyin yolunda gittiği&raquo; güçlü pozitif senaryonun neden zor olduğunu gösterir: dört bağımsız koşulun aynı anda tutması gerekir. Bağımsızlık varsayımı gerçekçi değildir (olumlu makro capex'i ve birim ekonomiyi destekler); bu sayı yön gösterici bir <strong>alt sınır</strong> olarak okunmalıdır, nokta tahmini değil.</p>
+      <div class="chart-card">
+        <div class="chart-title">36 aylık sonuç dağılımı — üç birbirini dışlayan yol (merkez tahminler)</div>
+        <div class="donut-chart">
+          <svg class="donut-svg" viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="chart"><circle cx="90" cy="90" r="70" fill="none" stroke="var(--gf-border)" stroke-width="20"/><circle cx="90" cy="90" r="70" fill="none" stroke="#f87171" stroke-width="20" stroke-dasharray="206.72 439.82" stroke-dashoffset="0.00" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #f8717166)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#dc2626" stroke-width="20" stroke-dasharray="26.39 439.82" stroke-dashoffset="-206.72" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #dc262666)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#fbbf24" stroke-width="20" stroke-dasharray="162.73 439.82" stroke-dashoffset="-233.11" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #fbbf2466)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#4ade80" stroke-width="20" stroke-dasharray="43.98 439.82" stroke-dashoffset="-395.84" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #4ade8066)"/><text x="90" y="85" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="700" font-family="inherit">36 ay</text><text x="90" y="102" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="inherit">merkez tahmin</text></svg>
+          <div class="donut-legend">
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#f87171"></span><span class="donut-legend-label">Geniş kötü yol (katastrofik hariç)</span><span class="donut-legend-value">~%47</span></div>
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#dc2626"></span><span class="donut-legend-label">Katastrofik uç (TSMC ≥12 ay)</span><span class="donut-legend-value">~%6</span></div>
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#fbbf24"></span><span class="donut-legend-label">Kısıtlayıcı ama işleyen baz</span><span class="donut-legend-value">~%37</span></div>
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#4ade80"></span><span class="donut-legend-label">Güçlü pozitif alt-yol</span><span class="donut-legend-value">~%10</span></div>
+          </div>
+        </div>
+        <p class="chart-caption">Geniş kötü yol toplamı ~%53 (duyarlılık %35–71) = geniş capex kesintisi ∪ stagflasyon baskısı ∪ ≥12 aylık TSMC şoku; dayanıklılık/baz yolu toplamı ~%47 (duyarlılık %29–65). Dağılım neredeyse yazı-tura düzeyindedir; hangi tarafın ağır basacağı bilinmeyen girdilere (covenant, churn, AI birim ekonomisi, jeopolitik) bağlıdır.</p>
+        <p class="chart-src">Hesap (§8.8'den): P(capex ∪ stagflasyon) = %40 + %25 − (%25 × %60) = %50; P(en az bir geniş olumsuz olay) = %50 + %6 − (%50 × %6) ≈ %53. Güven: düşük-orta; merkez değerler geniş duyarlılık aralıklı şeffaf varsayımlardır.</p>
+      </div>
+      <p><strong>Önemli sınır:</strong> &laquo;Çok güçlü olumlu (bull) senaryo&raquo; olasılığı mevcut verilerle kesin hesaplanamaz — AI birim ekonomisinin gerçek iyileşme hızı ve LLM gelir kalitesi kamuya kapalıdır (§10). ~%10, dört kapının bağımsız çarpımıyla elde edilen illüstratif alt sınırdır, kalibre tahmin değildir.</p>
+      <h3>11.2 Yatırımcı için</h3>
+      <ol>
+        <li><strong>Kaldıraç tek başına alım/satım sinyali değildir.</strong> Sistemin en borçsuz şirketi (Arista) bile &laquo;risksiz&raquo; değildir — müşteri yoğunlaşması ve değerleme riski taşır. En borçlu şirket (CoreWeave) sistemi durdurmaz ama alacaklılarına kayıp bulaştırır. İki farklı riski (finansal kırılganlık §5 / sistemik etki §4) ayrı ayrı fiyatlayın.</li>
+        <li><strong>&laquo;AI balonu mu?&raquo; sorusu yanlış sorulmuş.</strong> Doğru soru: &laquo;AI'ya atfedilebilir artımlı nakit akışı, artımlı capex ve sabit yükümlülükleri hangi tarihte karşılayabilir?&raquo; Bu, LLM ROI'sini tek değişken yapmadan hyperscaler'ların çapraz sübvansiyon kapasitesini de hesaba katan bir sorudur.</li>
+        <li><strong>İkame edilemezliği fiyatlayın, büyüklüğü değil.</strong> TSMC ve ASML'nin değeri kârından çok ikamesinin olmamasından gelir. Bu şirketlerin riski borç değil, coğrafi yoğunlaşma ve jeopolitiktir — portföyde farklı bir risk kategorisi olarak ele alınmalıdır (§2.7).</li>
+        <li><strong>Çapraz sübvansiyon kapasitesini ayırt edin.</strong> Alphabet'in hisse arzıyla (faiz riski almadan) finansmanı, Amazon'un borçla finansmanı ve CoreWeave'in GPU-teminatlı borçla finansmanı aynı &laquo;borç&raquo; kategorisinde değildir. Finansman yapısı (§7.4), finansman büyüklüğünden daha bilgilendiricidir.</li>
+        <li><strong>Olasılıkları aralık olarak okuyun, nokta olarak değil.</strong> %47/%53 gibi merkez değerler geniş duyarlılık aralıklı şeffaf varsayımlardır. Karar, tek merkez sayıya değil, aralığın hangi ucunun gerçekleştiğini gösteren erken uyarı göstergelerine (§9) bağlanmalıdır.</li>
+      </ol>
+      <h3>11.3 Düzenleyici / politika yapıcı için</h3>
+      <ol>
+        <li><strong>Gizli covenant şeffaflığı.</strong> Neo-cloud GPU-teminatlı krediler (CoreWeave DDTL tipi) banka bilançolarında ve kredi fonlarında birikiyor; covenant eşikleri kamuya kapalı. Bu tür varlık-teminatlı, değişken faizli kredilerin toplam maruziyeti izlenmelidir — bu büyüklük bilinmeden &laquo;finansal sistemik risk&raquo; (§2.7) yargısı verilemez.</li>
+        <li><strong>Dairesel finansman görünürlüğü.</strong> NVIDIA → neo-cloud → LLM → bulut döngüsünde, aynı ekonomik riskin birden fazla bilançoda sayılması (§3.3) sistemik riski olduğundan düşük gösterebilir. Çapraz sahiplik ve karşı taraf konsantrasyonu haritalanmalıdır.</li>
+        <li><strong>Coğrafi tek-nokta arızası.</strong> İleri düğüm üretimin dar bir coğrafyada toplanması (TSMC) piyasa gücü değil, kritik altyapı dayanıklılığı meselesidir. Tayvan dışı kapasite çeşitlendirmesi (ABD/Japonya) stratejik önceliktir.</li>
+        <li><strong>Enerji şebekesi planlaması.</strong> Veri merkezi büyümesinin önündeki fiziksel duvar giderek çip değil elektrik; şebeke yatırımı ve bağlantı kuyruğu yönetimi, AI politikasıyla aynı çerçevede ele alınmalıdır.</li>
+      </ol>
+      <h3>11.4 Raporun sınırları</h3>
+      <p>Bu rapor statik bir anlık görüntüdür (13 Temmuz 2026). Hisse fiyatları, fonlama turları ve jeopolitik durum hızla değişir. Olasılık çerçevesi (§11.1) şeffaf bir eşlemedir, kalibre edilmiş tahmin değildir; §9'daki erken uyarı paneliyle dinamik olarak güncellenmelidir. Kapsam dışı değer zinciri halkaları (HBM, EDA, Arm, ileri paketleme, ekipman, optik, soğutma/şebeke, DC gayrimenkul) puanlanmamıştır (§4.3). Yatırım kararları için kendi durum tespitiniz (due diligence) ve profesyonel danışmanlık şarttır.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">📚 12. Veri Sözlüğü, Hesaplamalar ve Kaynak Eki</h2></div>
+    <div class="section-body">
+      <p>Rapordaki kritik veri noktaları denetlenebilir biçimde listelenir. Güven düzeyleri: <span class="tag tag-green">Yüksek</span> resmi dosyalama/derecelendirme; <span class="tag tag-orange">Orta</span> analist tahmini/ikincil kaynak; <span class="tag tag-red">Çakışma</span> kaynaklar arası çelişki; <span class="tag tag-blue">Boşluk</span> kamuya kapalı.</p>
+      <h3>12.1 Veri kalite tablosu (kritik veri noktaları)</h3>
+      <div class="tbl"><table>
+        <tr><th>İddia</th><th>Değer</th><th>Dönem</th><th>Pay / Payda</th><th>Dipnot</th><th>Tür</th><th>Güven</th></tr>
+        <tr><td>Fed politika faizi</td><td>%3,50–3,75</td><td>Tem 2026</td><td>— / politika faizi</td><td>53</td><td>Resmi</td><td><span class="tag tag-green">Yüksek</span></td></tr>
+        <tr><td>Manşet TÜFE</td><td>%3,71 yıllık</td><td>Tem 2026</td><td>TÜFE sepeti / yıllık</td><td>49</td><td>Resmi/tahmin</td><td><span class="tag tag-green">Yüksek</span></td></tr>
+        <tr><td>PCE enflasyonu</td><td>%3,84 yıllık</td><td>Tem 2026</td><td>PCE / yıllık</td><td>49</td><td>Resmi</td><td><span class="tag tag-green">Yüksek</span></td></tr>
+        <tr><td>10Y getiri</td><td>%4,44</td><td>Tem 2026</td><td>—</td><td>53</td><td>Resmi</td><td><span class="tag tag-green">Yüksek</span></td></tr>
+        <tr><td>ASML Q1 net satış</td><td>8,76 mr €</td><td>Q1 2026</td><td>net satış / çeyrek</td><td>22</td><td>Resmi</td><td><span class="tag tag-green">Yüksek</span></td></tr>
+        <tr><td>ASML borç/özkaynak</td><td>%13</td><td>Q1 2026</td><td>toplam borç / özkaynak</td><td>3</td><td>Resmi</td><td><span class="tag tag-green">Yüksek</span></td></tr>
+        <tr><td>TSMC Q1 hasılat</td><td>1,134 tr NT$</td><td>Q1 2026</td><td>net satış / çeyrek</td><td>1</td><td>Resmi</td><td><span class="tag tag-green">Yüksek</span></td></tr>
+        <tr><td>TSMC Q1 net kâr</td><td>572,48 mr NT$</td><td>Q1 2026</td><td>net kâr / çeyrek</td><td>1</td><td>Resmi</td><td><span class="tag tag-green">Yüksek</span></td></tr>
+        <tr><td>TSMC ileri düğüm gelir payı</td><td>%74</td><td>Q1 2026</td><td>7nm-altı gelir / toplam</td><td>1</td><td>Resmi</td><td><span class="tag tag-green">Yüksek</span></td></tr>
+        <tr><td>TSMC faiz karşılama</td><td>242,5x</td><td>2026</td><td>EBIT / faiz</td><td>2</td><td>Resmi (3. taraf)</td><td><span class="tag tag-green">Yüksek</span></td></tr>
+        <tr><td>TSMC nakit/borç</td><td>3,17</td><td>2026</td><td>nakit+mk / toplam borç</td><td>12</td><td>Resmi (3. taraf)</td><td><span class="tag tag-green">Yüksek</span></td></tr>
+        <tr><td>Intel faiz karşılama</td><td>0,63x</td><td>2026</td><td>EBIT / faiz</td><td>14</td><td>Resmi</td><td><span class="tag tag-green">Yüksek</span></td></tr>
+        <tr><td>Intel foundry dış gelir</td><td>174 mn $</td><td>Q1 2026</td><td>dış müşteri geliri / çeyrek</td><td>14</td><td>Resmi</td><td><span class="tag tag-green">Yüksek</span></td></tr>
+        <tr><td>Arista borç</td><td>0</td><td>2026</td><td>—</td><td>15</td><td>Resmi (3. taraf)</td><td><span class="tag tag-green">Yüksek</span></td></tr>
+        <tr><td>SMCI borç/özkaynak</td><td>%115 (= 1,15x)</td><td>2026</td><td>toplam borç / özkaynak</td><td>17</td><td>3. taraf</td><td><span class="tag tag-green">Yüksek</span></td></tr>
+        <tr><td>Amazon capex 2026</td><td>200 mr $</td><td>2026</td><td>capex / yıl</td><td>34</td><td>Resmi</td><td><span class="tag tag-green">Yüksek</span></td></tr>
+        <tr><td>Amazon son 12 ay FCF</td><td>1,2 mr $</td><td>Tem 2026</td><td>OCF − capex / 12 ay</td><td>34</td><td>Resmi</td><td><span class="tag tag-green">Yüksek</span></td></tr>
+        <tr><td>Amazon 2026 borçlanma</td><td>72 mr $</td><td>2026</td><td>yeni tahvil / yıl</td><td>6</td><td>3. taraf</td><td><span class="tag tag-green">Yüksek</span></td></tr>
+        <tr><td>Meta toplam taahhüt</td><td>238 mr $</td><td>Q1 2026</td><td>bağlayıcı sözleşme / toplam</td><td>19</td><td>Resmi</td><td><span class="tag tag-green">Yüksek</span></td></tr>
+        <tr><td>Meta 2027 FCF projeksiyonu</td><td>−24 mr $</td><td>2027</td><td>projeksiyon / yıl</td><td>20</td><td>Analist tahmini</td><td><span class="tag tag-orange">Orta</span></td></tr>
+        <tr><td>Alphabet hisse arzı</td><td>84,75 mr $</td><td>2026</td><td>equity raise / yıl</td><td>18</td><td>Resmi</td><td><span class="tag tag-green">Yüksek</span></td></tr>
+        <tr><td>CoreWeave backlog</td><td>99,4 mr $</td><td>Mar 2026</td><td>sipariş birikimi / anlık</td><td>4</td><td>Resmi</td><td><span class="tag tag-green">Yüksek</span></td></tr>
+        <tr><td>CoreWeave cari oran</td><td>0,31</td><td>Q1 2026</td><td>dönen varlık / kısa vadeli borç</td><td>4</td><td>Resmi</td><td><span class="tag tag-green">Yüksek</span></td></tr>
+        <tr><td>CoreWeave toplam borç</td><td>25,1 mr $</td><td>Q1 2026</td><td>toplam borç / anlık</td><td>4</td><td>Resmi</td><td><span class="tag tag-green">Yüksek</span></td></tr>
+        <tr><td>CoreWeave S&amp;P notu</td><td>'B'</td><td>2026</td><td>3,5 mr $ tahvil</td><td>5</td><td>Derecelendirme</td><td><span class="tag tag-green">Yüksek</span></td></tr>
+        <tr><td>Nebius Q1 gelir artışı</td><td>%684</td><td>Q1 2026</td><td>gelir / yıllık</td><td>39</td><td>Resmi</td><td><span class="tag tag-green">Yüksek</span></td></tr>
+        <tr><td>Lambda değerleme</td><td>5,9 mr $</td><td>Kas 2025</td><td>post-money / tur</td><td>41</td><td>3. taraf</td><td><span class="tag tag-orange">Orta</span></td></tr>
+        <tr><td>OpenAI değerleme</td><td>852 mr $</td><td>Mar 2026</td><td>post-money / tur</td><td>43</td><td>3. taraf</td><td><span class="tag tag-orange">Orta</span></td></tr>
+        <tr><td>OpenAI ARR</td><td>25 mr $</td><td>2026</td><td>yıllıklandırılmış gelir</td><td>44</td><td>Analist tahmini</td><td><span class="tag tag-orange">Orta</span></td></tr>
+        <tr><td>OpenAI cash burn 2026</td><td>27 mr $</td><td>2026</td><td>net nakit yakımı / yıl</td><td>44</td><td>Analist tahmini</td><td><span class="tag tag-orange">Orta</span></td></tr>
+        <tr><td>OpenAI %5 hükümet hissesi</td><td>42,6 mr $</td><td>2026</td><td>müzakere / —</td><td>45</td><td>Çakışma</td><td><span class="tag tag-red">Çakışma</span></td></tr>
+        <tr><td>Anthropic değerleme</td><td>965 mr $</td><td>2026</td><td>post-money / tur</td><td>47</td><td>3. taraf</td><td><span class="tag tag-orange">Orta</span></td></tr>
+        <tr><td>Anthropic ARR</td><td>47 mr $</td><td>May 2026</td><td>yıllıklandırılmış gelir</td><td>46</td><td>Analist tahmini</td><td><span class="tag tag-orange">Orta</span></td></tr>
+        <tr><td>Anthropic net nakit + burn</td><td>bilinmiyor</td><td>—</td><td>—</td><td>—</td><td>Boşluk</td><td><span class="tag tag-blue">Boşluk</span></td></tr>
+        <tr><td>CoreWeave DDTL covenant</td><td>bilinmiyor</td><td>—</td><td>—</td><td>—</td><td>Boşluk</td><td><span class="tag tag-blue">Boşluk</span></td></tr>
+        <tr><td>Intel %21 düşüş / mcap</td><td>tartışmalı</td><td>Tem 2026</td><td>—</td><td>27</td><td>Çakışma</td><td><span class="tag tag-red">Çakışma</span></td></tr>
+      </table></div>
+      <h3>12.2 Hesaplama notları</h3>
+      <ul>
+        <li><strong>capex/OCF (§7.2):</strong> Aynı dönem kullanılmalıdır. Amazon resmî Q1 verisinde son 12 aylık OCF 148,5 milyar $, FCF 1,2 milyar $ → aynı dönem capex ≈ OCF − FCF = 147,3 milyar $; capex/OCF ≈ %99.<sup class="fn"><a href="#fn34">34</a></sup></li>
+        <li><strong>Faiz karşılama:</strong> EBIT / faiz gideri. Arista sıfır borç nedeniyle tanımsızdır (oran dışı).</li>
+        <li><strong>Net borç / EBITDA:</strong> (toplam borç − nakit) / EBITDA. TSMC/Arista/Alphabet net nakit olduğundan negatif.</li>
+        <li><strong>Runway:</strong> §7.5 formülü; OpenAI/Anthropic/Lambda için veri yetersizliğinden hesaplanamaz.</li>
+      </ul>
+      <h3>12.3 Kaynak kalite sınıflandırması</h3>
+      <div class="tbl"><table>
+        <tr><th>Kategori</th><th>Örnek kaynaklar</th><th>Kullanım</th></tr>
+        <tr><td>Resmi dosyalama</td><td>SEC.gov, şirket IR sayfaları (ASML, TSMC, Amazon, Meta, Alphabet, Microsoft, CoreWeave, Nebius, Intel)</td><td>Birincil doğrulama</td></tr>
+        <tr><td>Derecelendirme</td><td>S&amp;P Global, Fitch</td><td>Kredi notu ve görünüm</td></tr>
+        <tr><td>Üçüncü taraf finansal veri</td><td>GuruFocus, Simply Wall St, Stock Analysis, Trefis, Public.com, Companies Market Cap</td><td>Türetilmiş oranlar (cross-check gerekir)</td></tr>
+        <tr><td>Analist / medya</td><td>Motley Fool, TIKR, MLQ.ai, Morningstar, Sacra, TradingView</td><td>Tahmin ve yorum (etiketli)</td></tr>
+        <tr><td>Tartışmalı / tek kaynak</td><td>Quasa, TradingKey, Donanım Haber</td><td>Çakışma olarak etiketli</td></tr>
+      </table></div>
+      <h3>12.4 Denetim izi standardı ve mevcut sınırlar</h3>
+      <p>&laquo;Denetlenebilir&raquo; düzey için her kaynakta ideal olarak tam belge başlığı, yayın tarihi, dosyalama türü, sayfa/tablo numarası, tam bağlantı, erişim tarihi ve alıntılanan alan bulunmalıdır. Mevcut kaynak eki bu standarda kısmen ulaşır: tüm kaynaklara erişim tarihi 14 Temmuz 2026'dır; birçok bağlantı tam belgeye değil kurumun ana/ilgili sayfasına işaret eder — uydurma sayfa numarası eklenmemiştir. Büyük özel şirket değerlemeleri (OpenAI, Anthropic, Lambda), dev fonlama turları ve alışılmadık sermaye işlemleri kısmen tekil ikincil kaynağa dayanır; bu yüzden &laquo;Orta&raquo; güven veya &laquo;Çakışma&raquo; olarak etiketlenmiştir ve ana sonuca tek başına taşınmamıştır. Bu sınırlar güvenilirliği azaltmaz ama kesinlik derecesini sınırlar.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">🎛️ 13. Opsiyonlarla Senaryo Uygulaması — Yalnızca Call ve Put Alımları</h2></div>
+    <div class="section-body">
+      <p>Rapordaki iyi ve kötü senaryoları <strong>yalnızca opsiyon satın alımıyla</strong> modelleyen iki örnek portföy. Opsiyon satışı, debit spread, covered call, short put, straddle veya strangle kullanılmaz. Her işlem uzun (long) call ya da uzun (long) put alımıdır. Örnekler kişiye özel yatırım tavsiyesi değildir; primler, likidite ve uygun kullanım fiyatları işlem gününde yeniden kontrol edilmelidir.</p>
+      <h3>13.1 Uygulama kuralları ve azami risk</h3>
+      <p>Uzun call ve uzun put pozisyonlarında azami zarar, komisyonlar hariç <strong>ödenen primle sınırlıdır</strong>; opsiyon değersiz sona ererse primin %100'ü kaybedilebilir. Uzun call'ın teorik kâr potansiyeli sınırsızdır; uzun put'ın kârı dayanağın sıfıra yaklaşmasıyla sınırlıdır.<sup class="fn"><a href="#fn54">54</a>,<a href="#fn55">55</a>,<a href="#fn61">61</a></sup> Standart bir ABD hisse opsiyonu genellikle 100 hisseyi temsil eder; tablolardaki tutarlar kesin kontrat adedi değil, <strong>azami prim bütçesidir.</strong><sup class="fn"><a href="#fn55">55</a></sup></p>
+      <div class="formula">Kontrat adedi = aşağı yuvarla [ pozisyona ayrılan azami prim bütçesi / (opsiyon primi × 100) ]</div>
+      <p>Örnek kullanım fiyatları, raporun 13–14 Temmuz 2026 referans fiyatlarına göredir: NVDA 203,53 $, GOOGL 352,51 $, TSM 421,58 $, ANET 181,15 $, CEG 257,57 $, CRWV 83,31 $, SMCI 27,66 $, INTC 103,12 $. Gerçek işlemde en yakın listelenmiş, likit kullanım fiyatı seçilmeli; yalnızca ucuz olduğu için çok uzak OTM kontrata geçilmemelidir.<sup class="fn"><a href="#fn56">56</a>,<a href="#fn57">57</a></sup></p>
+      <h3>13.2 İyi senaryo — 10.000 $ yalnızca CALL alım portföyü</h3>
+      <p>İyi senaryo; AI talebinin ve kurumsal kullanımın büyümeye devam etmesi, hyperscaler capex'inin sert kesilmemesi, finansman baskısının kademeli hafiflemesi ve enerji/ağ/ileri üretim darboğazlarından güçlü şirketlerin yararlanması varsayımına dayanır (§8.7, §11.1). Portföy, bilançosu güçlü ve/veya ikamesi zor şirketlere odaklanır.</p>
+      <div class="chart-card">
+        <div class="chart-title">CALL portföyü dağılımı — 10.000 $ azami prim bütçesi</div>
+        <div class="donut-chart">
+          <svg class="donut-svg" viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="chart"><circle cx="90" cy="90" r="70" fill="none" stroke="var(--gf-border)" stroke-width="20"/><circle cx="90" cy="90" r="70" fill="none" stroke="#4ade80" stroke-width="20" stroke-dasharray="131.95 439.82" stroke-dashoffset="0.00" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #4ade8066)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#38bdf8" stroke-width="20" stroke-dasharray="98.96 439.82" stroke-dashoffset="-131.95" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #38bdf866)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#fbbf24" stroke-width="20" stroke-dasharray="76.97 439.82" stroke-dashoffset="-230.91" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #fbbf2466)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#c084fc" stroke-width="20" stroke-dasharray="76.97 439.82" stroke-dashoffset="-307.88" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #c084fc66)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#94a3b8" stroke-width="20" stroke-dasharray="54.98 439.82" stroke-dashoffset="-384.85" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #94a3b866)"/><text x="90" y="85" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="700" font-family="inherit">CALL</text><text x="90" y="102" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="inherit">10.000 $</text></svg>
+          <div class="donut-legend">
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#4ade80"></span><span class="donut-legend-label">NVDA — 21 Oca 2028, 195–205 call, delta ~0,55–0,70</span><span class="donut-legend-value">3.000 $ (%30)</span></div>
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#38bdf8"></span><span class="donut-legend-label">ANET — Oca 2028, 175–185 call, ATM/hafif ITM</span><span class="donut-legend-value">2.250 $ (%22,5)</span></div>
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#fbbf24"></span><span class="donut-legend-label">CEG — Oca 2028, 250–260 call, ATM/hafif ITM</span><span class="donut-legend-value">1.750 $ (%17,5)</span></div>
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#c084fc"></span><span class="donut-legend-label">GOOGL — 21 Oca 2028, 340–355 call, delta ~0,55–0,70</span><span class="donut-legend-value">1.750 $ (%17,5)</span></div>
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#94a3b8"></span><span class="donut-legend-label">TSM — Oca 2028, 420–440 call, jeopolitik ağırlık sınırlı</span><span class="donut-legend-value">1.250 $ (%12,5)</span></div>
+          </div>
+        </div>
+        <p class="chart-caption">Azami portföy kaybı: ödenen toplam prim 10.000 $ (komisyon hariç). Hisseler yükselse bile hareket yetersiz/geç kalırsa zaman aşınması ve IV düşüşü nedeniyle call'lar zarar edebilir.</p>
+      </div>
+      <p><strong>Dağılım gerekçesi:</strong> NVDA (%30) CUDA ekosistemi ve fiyatlama gücüyle iyi senaryonun en doğrudan yararlanıcısı — yüksek değerleme nedeniyle %30 ile sınırlandırıldı. ANET (%22,5) AI ağ trafiği büyümesini sıfır borçlu, yüksek marjlı bilanço üzerinden temsil eder. CEG (%17,5) elektrik/şebeke darboğazından yararlanabilir. GOOGL (%17,5) bulut büyümesi + güçlü nakit + AI ürün dağıtımıyla dengeli maruziyet. TSM (%12,5) ileri düğümün kritik halkası; jeopolitik kuyruk riski nedeniyle ağırlığı düşük tutuldu.</p>
+      <p><strong>Vade ve seçim mantığı:</strong> Tercih edilen vade ~15–18 ay (equity LEAPS çoğunlukla Ocak'ta sona erer; likidite yoksa en yakın uzun vade). Call seçiminde ~0,55–0,70 delta; ATM veya en fazla ~%5 ITM/OTM. Çok uzak OTM call'lar ucuz görünse de değersiz sona erme olasılığı yüksektir. Tek kontrat bütçeyi aşıyorsa daha uzak OTM'e kaçmak yerine pozisyon pas geçilir.<sup class="fn"><a href="#fn58">58</a>,<a href="#fn59">59</a></sup></p>
+      <h3>13.3 Kötü senaryo — 10.000 $ yalnızca PUT alım portföyü</h3>
+      <p>Kötü senaryo üç kanalı birleştirir: yakın vadede neo-cloud likidite/kredi stresi, orta vadede hyperscaler capex ve değerleme daralması, düşük olasılıklı fakat yüksek etkili TSMC jeopolitik/fiziksel kuyruk riski (§8.1–§8.5, §11.1). Put vadeleri olayların beklenen gerçekleşme hızına göre farklılaştırılır.</p>
+      <div class="chart-card">
+        <div class="chart-title">PUT portföyü dağılımı — 10.000 $ azami prim bütçesi</div>
+        <div class="donut-chart">
+          <svg class="donut-svg" viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="chart"><circle cx="90" cy="90" r="70" fill="none" stroke="var(--gf-border)" stroke-width="20"/><circle cx="90" cy="90" r="70" fill="none" stroke="#f87171" stroke-width="20" stroke-dasharray="131.95 439.82" stroke-dashoffset="0.00" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #f8717166)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#fbbf24" stroke-width="20" stroke-dasharray="98.96 439.82" stroke-dashoffset="-131.95" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #fbbf2466)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#38bdf8" stroke-width="20" stroke-dasharray="76.97 439.82" stroke-dashoffset="-230.91" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #38bdf866)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#c084fc" stroke-width="20" stroke-dasharray="65.97 439.82" stroke-dashoffset="-307.88" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #c084fc66)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#94a3b8" stroke-width="20" stroke-dasharray="43.98 439.82" stroke-dashoffset="-373.85" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #94a3b866)"/><text x="90" y="85" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="700" font-family="inherit">PUT</text><text x="90" y="102" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="inherit">10.000 $</text></svg>
+          <div class="donut-legend">
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#f87171"></span><span class="donut-legend-label">CRWV — 15 Oca / 19 Mar 2027, 80–85 put, delta ~−0,50/−0,65</span><span class="donut-legend-value">3.000 $ (%30)</span></div>
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#fbbf24"></span><span class="donut-legend-label">SMCI — 15 Oca / 19 Mar 2027, 27,5–30 put, ATM/hafif ITM</span><span class="donut-legend-value">2.250 $ (%22,5)</span></div>
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#38bdf8"></span><span class="donut-legend-label">INTC — 18 Haz 2027, 100–105 put, delta ~−0,45/−0,60</span><span class="donut-legend-value">1.750 $ (%17,5)</span></div>
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#c084fc"></span><span class="donut-legend-label">NVDA — 18 Haz 2027, 190–205 put, capex/değerleme hedge'i</span><span class="donut-legend-value">1.500 $ (%15)</span></div>
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#94a3b8"></span><span class="donut-legend-label">TSM — 21 Oca 2028, 350–380 put, delta ~−0,20/−0,35</span><span class="donut-legend-value">1.000 $ (%10)</span></div>
+          </div>
+        </div>
+        <p class="chart-caption">Azami portföy kaybı: ödenen toplam prim 10.000 $ (komisyon hariç). Put alıcısının yön kadar zamanlamayı ve ödenen volatilite primini de doğru tahmin etmesi gerekir.<sup class="fn"><a href="#fn61">61</a></sup></p>
+      </div>
+      <p><strong>Dağılım gerekçesi:</strong> CRWV (%30) rapordaki en olası yakın vadeli finansal kırılma noktası; kaldıraç + değişken faiz + GPU-teminat yapısı en doğrudan put hedefi. SMCI (%22,5) düşük marj + yüksek kaldıraç + ikame edilebilir montaj modeli, capex yavaşlamasında aşağı yönlü operasyonel kaldıraç yaratabilir. INTC (%17,5) foundry zararları ve düşük faiz karşılamayla birkaç bilanço dönemine yayılan şirket-özel düşüş tezi. NVDA (%15) geniş capex kesintisinde sektörün ana yeniden fiyatlama aracı olabilir; güçlü bilanço nedeniyle ağırlığı düşük. TSM (%10) normal resesyon put'ı değil, zamanlaması öngörülemeyen jeopolitik kuyruk sigortası — uzun vade, uzak kullanım.</p>
+      <p><strong>Vade mantığı:</strong> CRWV/SMCI 6–9 ay (likidite, covenant, refinansman riskleri birkaç çeyrekte görünür hale gelebilir); INTC/NVDA 9–12 ay (capex/talep yavaşlamasının siparişlere ve marja yansıması birkaç bilanço dönemi gerektirir); TSM 15–18 ay (jeopolitik zamanlama öngörülemez → küçük ağırlıklı uzun vadeli kuyruk koruması). CRWV ve SMCI put'larında IV zaten yüksek olabilir: hisse düşse bile pahalı alınan put, oynaklık düşüşü veya yetersiz hareket nedeniyle beklenen getiriyi sağlamayabilir.</p>
+      <h3>13.4 Ortak pozisyon yönetimi ve çıkış kuralları</h3>
+      <ul>
+        <li><strong>Kademeli giriş:</strong> 10.000 $'ın tamamı aynı gün değil; iki-üç dilimde, likiditesi yüksek ve alış–satış farkının dar olduğu günlerde.</li>
+        <li><strong>Limit emir:</strong> Piyasa emri yerine alış–satış ortasına yakın limit emir; geniş spread'li kontratlar pas geçilir.</li>
+        <li><strong>Kâr alma:</strong> Prim %75–100 yükseldiğinde pozisyonun en az yarısı realize edilir; haber sonrası volatilite sıçramasında bütün kazancı vade sonuna taşımak zorunlu değildir.</li>
+        <li><strong>Tez bozulması:</strong> Call tarafında hyperscaler capex rehberliği ve AI gelir kalitesi belirgin kötüleşirse; put tarafında başarılı refinansman, likidite güçlenmesi veya capex dayanıklılığı görülürse pozisyon kapatılır.</li>
+        <li><strong>Zaman yönetimi:</strong> Tez gerçekleşmemişse call pozisyonları vadenin son 120–150 gününe, put pozisyonları son 90 güne bırakılmaz; zaman aşınması hızlanmadan kapatma veya ileri vadeye taşıma değerlendirilir.<sup class="fn"><a href="#fn59">59</a></sup></li>
+        <li><strong>Vade sonu:</strong> ITM opsiyonlar otomatik kullanıma konu olabileceğinden, 100 hisselik alım/satım yükümlülüğü istenmiyorsa pozisyonlar vade gününden önce kapatılır.<sup class="fn"><a href="#fn60">60</a></sup></li>
+        <li><strong>0DTE ve haftalık kontratlar:</strong> Bu raporun 12–36 aylık temel senaryolarına uygun değildir; yönün yanında gün ve saat zamanlamasının da doğru olmasını gerektirir.</li>
+        <li><strong>Risk sınırı:</strong> Opsiyon satışı ve margin borcu kullanılmaz. Tek şirket için azami prim payı her iki portföyde de %30'dur; kaybedilen uzun opsiyona otomatik ekleme yapılmaz.</li>
+      </ul>
+      <p class="chart-src">Kaynak: §8 senaryoları ve §11.1 olasılık çerçevesi. Opsiyonların azami risk, kontrat büyüklüğü, vade, zaman aşınması ve kullanım özellikleri için dipnotlardaki OIC/OCC kaynakları kullanılmıştır. Örnek fiyat ve kullanım seviyeleri 13–14 Temmuz 2026 verisine dayalıdır; canlı prim, açık pozisyon ve likidite kontrolü yapılmadan işlem uygulanmamalıdır.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">🔖 Dipnotlar ve Kaynaklar</h2></div>
+    <div class="section-body">
+      <ol class="foot-list">
+        <li id="fn1">TSMC Investor Relations. 1Q26. Q1 2026. <a href="https://investor.tsmc.com/">investor.tsmc.com</a></li>
+        <li id="fn2">GuruFocus. Taiwan Semiconductor Interest Coverage: 242. 2026. <a href="https://www.gurufocus.com/">gurufocus.com</a></li>
+        <li id="fn3">ASML. Financial overview. 2026. <a href="https://www.asml.com/">asml.com</a></li>
+        <li id="fn4">SEC.gov. CoreWeave Reports Strong First Quarter 2026 Results. Q1 2026. <a href="https://www.sec.gov/">sec.gov</a></li>
+        <li id="fn5">S&amp;P Global Ratings. CoreWeave Inc.'s Proposed Senior Unsecured Notes. 2026. <a href="https://www.spglobal.com/">spglobal.com</a></li>
+        <li id="fn6">MLQ.ai. Amazon Raises $25 Billion in Bond Sale, Bringing 2026 Debt Issuance Past $72 Billion. Temmuz 2026. <a href="https://mlq.ai/">mlq.ai</a></li>
+        <li id="fn7">Meta Platforms. Meta Reports First Quarter 2026 Results. Q1 2026. <a href="https://investor.atmeta.com/">investor.atmeta.com</a></li>
+        <li id="fn8">Alphabet Inc. Alphabet Announces First Quarter 2026 Results. Q1 2026. <a href="https://abc.xyz/investor/">abc.xyz/investor</a></li>
+        <li id="fn9">Sacra. OpenAI revenue, valuation &amp; funding. 2026. <a href="https://sacra.com/">sacra.com</a></li>
+        <li id="fn10">IO Fund. Nvidia, CoreWeave, and Nebius: Inside the Circular Financing of the GPU Boom. 2026. <a href="https://io-fund.com/">io-fund.com</a></li>
+        <li id="fn11">GuruFocus. Constellation Energy Debt-to-Equity: 0.67. 2026. <a href="https://www.gurufocus.com/">gurufocus.com</a></li>
+        <li id="fn12">GuruFocus. Taiwan Semiconductor Cash-to-Debt: 3.17. 2026. <a href="https://www.gurufocus.com/">gurufocus.com</a></li>
+        <li id="fn13">Stock Analysis. GLOBALFOUNDRIES Statistics &amp; Valuation. 2026. <a href="https://stockanalysis.com/">stockanalysis.com</a></li>
+        <li id="fn14">Intel Corporation. Investor Relations — Historical Data. 2026. <a href="https://www.intc.com/">intc.com</a></li>
+        <li id="fn15">Trefis. Arista Networks. 2026. <a href="https://www.trefis.com/">trefis.com</a></li>
+        <li id="fn16">Public.com. Buy Broadcom Stock — AVGO Stock Quote Today. 2026. <a href="https://public.com/">public.com</a></li>
+        <li id="fn17">Simply Wall St. Super Micro Computer Stock Analysis. 2026. <a href="https://simplywall.st/">simplywall.st</a></li>
+        <li id="fn18">SEC.gov. Alphabet Inc. 10-Q — Q1 2026. <a href="https://www.sec.gov/">sec.gov</a></li>
+        <li id="fn19">SEC.gov. Meta Reports First Quarter 2026 Results. Q1 2026. <a href="https://www.sec.gov/">sec.gov</a></li>
+        <li id="fn20">Global Data Center Hub. Meta Q1 2026: The $145B Reset and the Repricing of Free Cash Flow. 2026. <a href="https://globaldatacenterhub.com/">globaldatacenterhub.com</a></li>
+        <li id="fn21">Fitch Ratings. Fitch Rates Amazon's Proposed Notes 'AA-'. 2026. <a href="https://www.fitchratings.com/">fitchratings.com</a></li>
+        <li id="fn22">ASML. ASML reports €8.8 billion total net sales and €2.8 billion net income in Q1 2026. <a href="https://www.asml.com/">asml.com</a></li>
+        <li id="fn23">Capital.com. ASML Holding N.V. Market Cap — July 2026 Update. <a href="https://capital.com/">capital.com</a></li>
+        <li id="fn24">TSMC Investor Relations. TSMC 2026 Q2 Quarterly Results. 2026. <a href="https://investor.tsmc.com/">investor.tsmc.com</a></li>
+        <li id="fn25">S&amp;P Global Ratings. Research Update: TSMC Outlook Revised To Positive. 2026. <a href="https://www.spglobal.com/">spglobal.com</a></li>
+        <li id="fn26">The Motley Fool. A GlobalFoundries Insider Sold 78% of His Company Shares. 2026. <a href="https://www.fool.com/">fool.com</a></li>
+        <li id="fn27">TradingKey. Intel Stock Price Prediction July 2026: Down 21% in 7 Days. <a href="https://tradingkey.com/">tradingkey.com</a></li>
+        <li id="fn28">NVIDIA Investor Relations. Stock Quote &amp; Chart. 2026. <a href="https://investor.nvidia.com/">investor.nvidia.com</a></li>
+        <li id="fn29">The Motley Fool. Nvidia Stock Is Losing to the Market in 2026. <a href="https://www.fool.com/">fool.com</a></li>
+        <li id="fn30">Advanced Micro Devices. Price History — Investor Relations. 2026. <a href="https://ir.amd.com/">ir.amd.com</a></li>
+        <li id="fn31">TIKR.com. AMD Stock Forecast 2026: A 57% Data Center Revenue Jump and a $120 Billion CPU Market. <a href="https://www.tikr.com/">tikr.com</a></li>
+        <li id="fn32">Trefis. Qualcomm. 2026. <a href="https://www.trefis.com/">trefis.com</a></li>
+        <li id="fn33">Companies Market Cap. Total debt — Constellation Energy. 2026. <a href="https://companiesmarketcap.com/">companiesmarketcap.com</a></li>
+        <li id="fn34">Amazon.com, Inc. Amazon.com Announces First Quarter Results. Q1 2026. <a href="https://ir.aboutamazon.com/">ir.aboutamazon.com</a></li>
+        <li id="fn35">Microsoft. FY26 Q3 — Press Releases, Investor Relations. 2026. <a href="https://www.microsoft.com/en-us/Investor">microsoft.com/investor</a></li>
+        <li id="fn36">Microsoft (GCS Web). Form 8-K filed 01/28/2026. <a href="https://microsoft.gcs-web.com/">microsoft.gcs-web.com</a></li>
+        <li id="fn37">Capital.com. Apple Inc Market Cap — July 2026 Update. <a href="https://capital.com/">capital.com</a></li>
+        <li id="fn38">TradingView. CoreWeave Guides $31-$35B Capex for 2026: Fuel or Financial Strain? 2026. <a href="https://www.tradingview.com/">tradingview.com</a></li>
+        <li id="fn39">SEC.gov. Nebius reports first quarter 2026 financial results. Q1 2026. <a href="https://www.sec.gov/">sec.gov</a></li>
+        <li id="fn40">TIKR.com. Nebius Grew Revenue 684% in Q1, Sold Out Its Entire Capacity, and Raised Its Capex Target to $25 Billion. <a href="https://www.tikr.com/">tikr.com</a></li>
+        <li id="fn41">Sacra. Lambda Labs revenue, valuation &amp; funding. 2026. <a href="https://sacra.com/">sacra.com</a></li>
+        <li id="fn42">Forge Global. Lambda Upcoming IPO: AI infrastructure company reportedly plans to go public in H2 2026. <a href="https://forgeglobal.com/">forgeglobal.com</a></li>
+        <li id="fn43">ValueAdd VC. OpenAI's $852B Valuation in 2026. <a href="https://valueaddvc.com/">valueaddvc.com</a></li>
+        <li id="fn44">Luminix AI. OpenAI Revenue 2025–2026: $13B Financials &amp; ARR Data. <a href="https://useluminix.com/">useluminix.com</a></li>
+        <li id="fn45">Quasa Media. OpenAI 5% Government Stake: Implications for AI in 2026. <a href="https://quasa.io/">quasa.io</a></li>
+        <li id="fn46">Sacra. Anthropic revenue, valuation &amp; funding. 2026. <a href="https://sacra.com/">sacra.com</a></li>
+        <li id="fn47">Donanım Haber. Anthropic Raises $65 Billion in Private Funding, Valuation Surpasses $960 Billion. <a href="https://www.donanimhaber.com/">donanimhaber.com</a></li>
+        <li id="fn48">AI Business Weekly. Anthropic Statistics 2026: Revenue, Valuation &amp; Growth Data. <a href="https://aibusinessweekly.net/">aibusinessweekly.net</a></li>
+        <li id="fn49">Federal Reserve Bank of Cleveland. Inflation Nowcasting. 2026. <a href="https://www.clevelandfed.org/indicators-and-data/inflation-nowcasting">clevelandfed.org</a></li>
+        <li id="fn50">Federal Reserve Board. Speech by Governor Waller on the economic outlook. 2026. <a href="https://www.federalreserve.gov/">federalreserve.gov</a></li>
+        <li id="fn51">The Guardian. US stock markets fall amid Iran strikes and potential higher interest rates. 2026. <a href="https://www.theguardian.com/">theguardian.com</a></li>
+        <li id="fn52">Capital.com. Intel Corp Market Cap — July 2026 Update. <a href="https://capital.com/">capital.com</a></li>
+        <li id="fn53">Trading Economics. United States Fed Funds Interest Rate. Temmuz 2026. <a href="https://tradingeconomics.com/united-states/interest-rate">tradingeconomics.com</a></li>
+        <li id="fn54">Options Industry Council (OIC). Long Call. <a href="https://www.optionseducation.org/strategies/all-strategies/long-call">optionseducation.org</a></li>
+        <li id="fn55">The Options Clearing Corporation (OCC). Characteristics and Risks of Standardized Options. <a href="https://www.theocc.com/">theocc.com</a></li>
+        <li id="fn56">Stock Options Channel. NVDA — Option Chain &amp; Expirations. <a href="https://www.stockoptionschannel.com/symbol/nvda/">stockoptionschannel.com</a></li>
+        <li id="fn57">Stock Options Channel. SMCI — Option Chain &amp; Expirations. <a href="https://www.stockoptionschannel.com/symbol/smci/">stockoptionschannel.com</a></li>
+        <li id="fn58">Options Industry Council (OIC). Expiration Calendar. <a href="https://www.optionseducation.org/referencelibrary/expiration-calendar">optionseducation.org</a></li>
+        <li id="fn59">Options Industry Council (OIC). LEAPS &amp; Time Erosion versus Delta Effect. <a href="https://www.optionseducation.org/optionsoverview/leaps-time-erosion-versus-delta-effect">optionseducation.org</a></li>
+        <li id="fn60">The Options Clearing Corporation (OCC). Equity Options Product Specifications. <a href="https://www.theocc.com/clearance-and-settlement/clearing/equity-options-product-specifications">theocc.com</a></li>
+        <li id="fn61">Options Industry Council (OIC). Long Put. <a href="https://www.optionseducation.org/strategies/all-strategies/long-put">optionseducation.org</a></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<div class="footer">
+  Bu rapor bilgilendirme amaçlıdır ve yatırım tavsiyesi değildir. Veriler 13 Temmuz 2026 itibarıyla derlenmiştir; halka açık olmayan şirket verileri analist/özel-piyasa tahminidir. Olasılık çerçevesi ampirik kalibre model değil, şeffaf sözel→sayısal eşlemedir. Yatırım kararları için kendi durum tespitinizi yapın ve profesyonel danışmanlık alın. · Gistify Flow · 14 Temmuz 2026
+</div>
+
+</div>
+</body>
+</html>

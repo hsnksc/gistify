@@ -198,7 +198,101 @@ function lineArea({ points, yMin, yMax, ticks, tickLabels, color }) {
   return s + `</svg>`;
 }
 
-const RENDERERS = { priceLadder, verticalBar, horizontalBar, range, donut, lineArea };
+// Quadrant scatter: two qualitative axes split into four tinted quadrants by
+// dashed lines, colored point groups with per-point labels, legend at bottom.
+// quads = { tl|tr|bl|br: { label, color } }; groups = [{ name, color,
+// points: [{ x, y, label, dx?, dy?, anchor? }] }].
+function scatter({ xMin, xMax, yMin, yMax, xSplit, ySplit, xLabel, yLabel, quads, groups }) {
+  const px0 = 64, px1 = 676, py0 = 26, py1 = 452;
+  const x = v => px0 + ((v - xMin) / (xMax - xMin)) * (px1 - px0);
+  const y = v => py1 - ((v - yMin) / (yMax - yMin)) * (py1 - py0);
+  const legendRows = Math.ceil(groups.length / 3);
+  const H = 500 + legendRows * 20;
+  let s = `<svg viewBox="0 0 700 ${H}" width="100%" role="img" aria-label="chart">`;
+  const xs = x(xSplit), ys = y(ySplit);
+  const tint = (qx, qy, qw, qh, color, op) =>
+    `<rect x="${qx.toFixed(1)}" y="${qy.toFixed(1)}" width="${qw.toFixed(1)}" height="${qh.toFixed(1)}" fill="${color}" opacity="${op}"/>`;
+  s += tint(px0, py0, xs - px0, ys - py0, C.success, 0.05);
+  s += tint(xs, py0, px1 - xs, ys - py0, C.danger, 0.05);
+  s += tint(px0, ys, xs - px0, py1 - ys, C.muted, 0.04);
+  s += tint(xs, ys, px1 - xs, py1 - ys, C.warning, 0.05);
+  for (let t = xMin; t <= xMax; t += 2) {
+    const tx = x(t).toFixed(1);
+    s += `<line x1="${tx}" y1="${py0}" x2="${tx}" y2="${py1}" stroke="${C.grid}" stroke-width="1"/>`;
+    s += `<text x="${tx}" y="${py1 + 16}" text-anchor="middle" font-size="10.5" fill="${C.muted}" font-family="inherit">${t}</text>`;
+  }
+  for (let t = yMin; t <= yMax; t += 2) {
+    const ty = y(t).toFixed(1);
+    s += `<line x1="${px0}" y1="${ty}" x2="${px1}" y2="${ty}" stroke="${C.grid}" stroke-width="1"/>`;
+    s += `<text x="${px0 - 8}" y="${(Number(ty) + 4).toFixed(1)}" text-anchor="end" font-size="10.5" fill="${C.muted}" font-family="inherit">${t}</text>`;
+  }
+  s += `<line x1="${xs.toFixed(1)}" y1="${py0}" x2="${xs.toFixed(1)}" y2="${py1}" stroke="${C.axis}" stroke-width="1.3" stroke-dasharray="5 4"/>`;
+  s += `<line x1="${px0}" y1="${ys.toFixed(1)}" x2="${px1}" y2="${ys.toFixed(1)}" stroke="${C.axis}" stroke-width="1.3" stroke-dasharray="5 4"/>`;
+  s += `<rect x="${px0}" y="${py0}" width="${px1 - px0}" height="${py1 - py0}" fill="none" stroke="${C.axis}" stroke-width="1.2"/>`;
+  const quadPos = {
+    tl: { x: px0 + 10, y: py0 + 18, anchor: "start" },
+    tr: { x: px1 - 10, y: py0 + 18, anchor: "end" },
+    bl: { x: px0 + 10, y: py1 - 10, anchor: "start" },
+    br: { x: px1 - 10, y: py1 - 10, anchor: "end" },
+  };
+  for (const [k, q] of Object.entries(quads || {})) {
+    const p = quadPos[k];
+    if (!p) continue;
+    s += `<text x="${p.x}" y="${p.y}" text-anchor="${p.anchor}" font-size="11" font-weight="700" fill="${q.color}" opacity="0.85" font-family="inherit">${q.label}</text>`;
+  }
+  for (const g of groups) {
+    for (const p of g.points) {
+      const cx = x(p.x), cy = y(p.y);
+      s += `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="7" fill="${g.color}" stroke="${C.dark}" stroke-width="1.6" opacity="0.95"/>`;
+      const lx = cx + (p.dx ?? 11), ly = cy + (p.dy ?? 4);
+      s += `<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${p.anchor || "start"}" font-size="10.5" font-weight="600" fill="${C.text}" font-family="inherit">${p.label}</text>`;
+    }
+  }
+  s += `<text x="${(px0 + px1) / 2}" y="${py1 + 34}" text-anchor="middle" font-size="11.5" font-weight="600" fill="${C.muted}" font-family="inherit">${xLabel}</text>`;
+  s += `<text x="16" y="${(py0 + py1) / 2}" text-anchor="middle" font-size="11.5" font-weight="600" fill="${C.muted}" font-family="inherit" transform="rotate(-90 16 ${(py0 + py1) / 2})">${yLabel}</text>`;
+  groups.forEach((g, i) => {
+    const gx = px0 + (i % 3) * 205;
+    const gy = py1 + 52 + Math.floor(i / 3) * 20;
+    s += `<rect x="${gx}" y="${gy - 9}" width="11" height="11" rx="3" fill="${g.color}"/>`;
+    s += `<text x="${gx + 17}" y="${gy}" font-size="10.5" fill="${C.text}" font-family="inherit">${g.name}</text>`;
+  });
+  return s + `</svg>`;
+}
+
+// Base-10 log-scale column chart; shares verticalBar's plot box (x 54..620,
+// baseline y 220). Decade gridlines, optional dashed reference threshold.
+// bars: [{ label, v, valueLabel, color }]; minExp/maxExp are log10 exponents.
+function logBar({ bars, minExp, maxExp, refLine }) {
+  const plotH = 196;
+  const y = v => 220 - ((Math.log10(v) - minExp) / (maxExp - minExp)) * plotH;
+  const n = bars.length;
+  const barW = 70;
+  const gap = (566 - n * barW) / (n + 1);
+  let s = `<svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart">`;
+  for (let e = Math.ceil(minExp); e <= maxExp; e++) {
+    const ty = (220 - ((e - minExp) / (maxExp - minExp)) * plotH).toFixed(1);
+    s += `<line x1="54" y1="${ty}" x2="620" y2="${ty}" stroke="${C.grid}" stroke-width="1"/>`;
+    const lbl = e >= 0 ? `${10 ** e}x` : `${(10 ** e).toFixed(1)}x`;
+    s += `<text x="44" y="${(Number(ty) + 4).toFixed(1)}" text-anchor="end" font-size="10.5" fill="${C.muted}" font-family="inherit">${lbl}</text>`;
+  }
+  s += `<line x1="54" y1="220" x2="620" y2="220" stroke="${C.axis}" stroke-width="1.2"/>`;
+  bars.forEach((b, i) => {
+    const bx = 54 + gap + i * (barW + gap);
+    const by = y(b.v);
+    const cx = bx + barW / 2;
+    s += `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${barW}" height="${(220 - by).toFixed(1)}" rx="4" fill="${b.color}"/>`;
+    s += `<text x="${cx.toFixed(1)}" y="${(by - 8).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="700" fill="${C.text}" font-family="inherit">${b.valueLabel}</text>`;
+    s += `<text x="${cx.toFixed(1)}" y="238" text-anchor="middle" font-size="11" fill="${C.muted}" font-family="inherit">${b.label}</text>`;
+  });
+  if (refLine) {
+    const ry = y(refLine.v).toFixed(1);
+    s += `<line x1="54" y1="${ry}" x2="620" y2="${ry}" stroke="${C.accent}" stroke-width="1.5" stroke-dasharray="4 3"/>`;
+    s += `<text x="616" y="${(Number(ry) - 6).toFixed(1)}" text-anchor="end" font-size="10.5" font-weight="600" fill="${C.accent}" font-family="inherit">${refLine.label}</text>`;
+  }
+  return s + `</svg>`;
+}
+
+const RENDERERS = { priceLadder, verticalBar, horizontalBar, range, donut, lineArea, scatter, logBar };
 
 // ---------------- main ----------------
 const configPath = process.argv[2];

@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Systemic Risk and Financial Resilience Across the AI Value Chain — July 2026 X-Ray</title>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Systemic Risk and Financial Resilience Across the AI Value Chain — July 2026 X-Ray" />
+<meta property="og:description" content="Six layers, 18+ companies: systemic criticality vs. financial fragility matrix, scenario and stress tests, a probability framework, and a premium-only long call/put portfolio application." />
+<meta property="og:site_name" content="Gistify" />
+<style>
+:root{--gf-bg:#050c1b;--gf-elev:#0a1628;--gf-card:#0d1b2a;--gf-border:#1e3a5f;--gf-border-subtle:rgba(30,58,95,.5);--gf-text:#e2e8f0;--gf-muted:#94a3b8;--gf-accent:#38bdf8;--gf-accent-dim:rgba(56,189,248,.12);--gf-success:#4ade80;--gf-success-dim:rgba(74,222,128,.12);--gf-warning:#fbbf24;--gf-warning-dim:rgba(251,191,36,.12);--gf-danger:#f87171;--gf-danger-dim:rgba(248,113,113,.12);--gf-radius:12px;--gf-font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--gf-mono:'SF Mono',Monaco,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050c1b!important;color:var(--gf-text);font-family:var(--gf-font);line-height:1.65;font-size:15px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#050c1b 100%);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:320px;height:100%;background:radial-gradient(circle at 80% 50%,rgba(56,189,248,.08),transparent 70%);pointer-events:none}
+.hero-h{font-size:1.6rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.3px;color:var(--gf-text)}
+.hero-desc{color:var(--gf-muted);font-size:0.92rem;margin-bottom:14px;max-width:760px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:0.78rem;color:var(--gf-muted)}
+.hero-ticker{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev);color:var(--gf-accent)}
+.meta-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;border:1px solid var(--gf-border);background:var(--gf-elev)}
+.meta-pill.bull{color:var(--gf-success);border-color:rgba(74,222,128,.35)}
+.meta-pill.bear{color:var(--gf-danger);border-color:rgba(248,113,113,.35)}
+.meta-pill.neu{color:var(--gf-warning);border-color:rgba(251,191,36,.35)}
+.meta-pill.info{color:var(--gf-accent);border-color:rgba(56,189,248,.35)}
+.section-head{background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:var(--gf-radius);margin-bottom:16px;overflow:hidden}
+.section-head-inner{padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--gf-text);margin:0}
+.section-body{padding:4px 18px 18px}
+.section-body h3{font-size:.95rem;color:var(--gf-accent);margin:18px 0 8px}
+.section-body h4{font-size:.88rem;color:var(--gf-text);margin:14px 0 6px}
+.section-body p{margin:8px 0}
+.section-body ul,.section-body ol{margin:8px 0 8px 22px}
+.section-body li{margin:4px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:12px 0}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;margin:12px 0}
+.card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:16px}
+.card-label{font-size:0.75rem;color:var(--gf-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.card-value{font-size:1.35rem;font-weight:700;color:var(--gf-text)}
+.card-value.up{color:var(--gf-success)}
+.card-value.down{color:var(--gf-danger)}
+.card-value.neu{color:var(--gf-warning)}
+.card-note{font-size:0.8rem;color:var(--gf-muted);margin-top:4px}
+.tbl{overflow-x:auto;margin:10px 0}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:10px 0}
+.tbl table{margin:0;min-width:560px}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--gf-border);vertical-align:top}
+th{background:var(--gf-card);color:var(--gf-muted);font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.4px}
+tr:hover td{background:rgba(56,189,248,.04)}
+td{font-variant-numeric:tabular-nums}
+.insight-box{background:linear-gradient(135deg,var(--gf-accent-dim),rgba(56,189,248,.03));border-left:3px solid var(--gf-accent);padding:14px 16px;border-radius:0 var(--gf-radius) var(--gf-radius) 0;margin:12px 0;font-size:0.88rem}
+.insight-box strong{color:var(--gf-accent)}
+.insight-box.warn{border-left-color:var(--gf-warning);background:linear-gradient(135deg,var(--gf-warning-dim),rgba(251,191,36,.03))}
+.insight-box.warn strong{color:var(--gf-warning)}
+.insight-box.danger{border-left-color:var(--gf-danger);background:linear-gradient(135deg,var(--gf-danger-dim),rgba(248,113,113,.03))}
+.insight-box.danger strong{color:var(--gf-danger)}
+.insight-box.bull{border-left-color:var(--gf-success);background:linear-gradient(135deg,var(--gf-success-dim),rgba(74,222,128,.03))}
+.insight-box.bull strong{color:var(--gf-success)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.72rem;font-weight:600;margin:2px 4px 2px 0}
+.tag-green{background:var(--gf-success-dim);color:var(--gf-success)}
+.tag-orange{background:var(--gf-warning-dim);color:var(--gf-warning)}
+.tag-red{background:var(--gf-danger-dim);color:var(--gf-danger)}
+.tag-blue{background:var(--gf-accent-dim);color:var(--gf-accent)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:0 0 24px}
+.kpi{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:10px 12px;text-align:center}
+.kpi-num{font-size:1.15rem;font-weight:700;color:var(--gf-text)}
+.kpi-num.up{color:var(--gf-success)}
+.kpi-num.down{color:var(--gf-danger)}
+.kpi-num.neu{color:var(--gf-warning)}
+.kpi-label{font-size:0.72rem;color:var(--gf-muted);margin-top:2px}
+.chart-card{background:var(--gf-card);border:1px solid var(--gf-border);border-radius:var(--gf-radius);padding:18px;margin:14px 0}
+.chart-title{font-size:.9rem;font-weight:700;color:var(--gf-accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.chart-title::before{content:'';display:inline-block;width:4px;height:16px;background:var(--gf-accent);border-radius:2px}
+.chart-caption{font-size:.8rem;color:var(--gf-muted);margin-top:10px}
+.chart-src{font-size:.72rem;color:var(--gf-muted);opacity:.72;margin-top:4px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:10px;font-size:.8rem;color:var(--gf-muted)}
+.legend i{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:6px;vertical-align:-1px}
+.donut-chart{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.donut-svg{flex-shrink:0}
+.donut-legend{display:flex;flex-direction:column;gap:8px}
+.donut-legend-item{display:flex;align-items:center;gap:8px;font-size:.85rem}
+.donut-legend-color{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.donut-legend-label{color:var(--gf-text)}
+.donut-legend-value{color:var(--gf-muted);font-size:.8rem}
+.heat td{text-align:center;font-weight:700;font-size:.82rem}
+.heat td:first-child{text-align:left;font-weight:600;color:var(--gf-text)}
+.h1{background:rgba(148,163,184,.08);color:var(--gf-muted)}
+.h2{background:rgba(251,191,36,.13);color:#fde68a}
+.h3{background:rgba(251,191,36,.30);color:#fef3c7}
+.h4{background:rgba(248,113,113,.32);color:#fecaca}
+.h5{background:rgba(220,38,38,.52);color:#fee2e2}
+.domino{margin:14px 0}
+.domino-step{display:flex;gap:14px;align-items:flex-start;border:1px solid var(--gf-border);border-radius:10px;padding:12px 14px;background:var(--gf-elev)}
+.domino-step.amber{border-left:4px solid var(--gf-warning)}
+.domino-step.red{border-left:4px solid var(--gf-danger)}
+.domino-step.deepred{border-left:4px solid #dc2626}
+.domino-step.green{border-left:4px solid var(--gf-success)}
+.domino-num{font-size:1.05rem;font-weight:800;color:var(--gf-muted);min-width:22px;text-align:center}
+.domino-body b{display:block;font-size:.88rem;color:var(--gf-text)}
+.domino-body span{font-size:.78rem;color:var(--gf-muted)}
+.domino-arrow{text-align:center;color:var(--gf-muted);font-size:.9rem;line-height:1.6}
+.gate{display:flex;flex-wrap:wrap;gap:10px;align-items:center;border:1px solid var(--gf-border);border-radius:10px;padding:10px 14px;background:var(--gf-elev);margin:8px 0}
+.gate b{color:var(--gf-text);font-size:.86rem;flex:1 1 240px}
+.gate .yes{color:var(--gf-success);font-size:.8rem;font-weight:700}
+.gate .no{color:var(--gf-danger);font-size:.8rem;font-weight:700}
+.formula{font-family:var(--gf-mono);font-size:.8rem;background:var(--gf-elev);border:1px solid var(--gf-border);border-radius:8px;padding:12px 14px;margin:10px 0;overflow-x:auto;white-space:pre;line-height:1.55;color:var(--gf-text)}
+sup.fn{font-size:.68em}
+sup.fn a{color:var(--gf-accent);text-decoration:none}
+.company{border:1px solid var(--gf-border);border-radius:var(--gf-radius);background:var(--gf-card);padding:14px 16px;margin:10px 0}
+.company h4{margin:0 0 6px;font-size:.92rem;color:var(--gf-text)}
+.company p{font-size:.85rem;margin:6px 0}
+.foot-list{font-size:.75rem;color:var(--gf-muted);columns:1;margin:10px 0 0 18px}
+.foot-list li{margin:3px 0}
+.foot-list a{color:var(--gf-accent);text-decoration:none;word-break:break-all}
+.footer{text-align:center;padding:28px 16px;font-size:0.78rem;color:var(--gf-muted);border-top:1px solid var(--gf-border);margin-top:32px}
+@media(max-width:640px){
+.wrap{padding:16px 10px}
+.hero-h{font-size:1.25rem}
+.grid,.grid2{grid-template-columns:1fr}
+.kpi-row{grid-template-columns:repeat(2,1fr)}
+table{font-size:0.78rem}
+th,td{padding:6px 7px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="hero" data-timestamp="2026-07-14T09:00:00+03:00">
+  <h1 class="hero-h">Systemic Risk and Financial Resilience Across the AI Value Chain</h1>
+  <p class="hero-desc">July 2026 Outlook — an auditable risk report. The six layers of the AI value chain (lithography → foundry → chip design → data center/energy → hyperscaler → neo-cloud/LLM) are mapped separately on systemic-criticality and financial-fragility axes; scenarios are tied to numeric probability bands and translated into premium-only long call/put portfolios.</p>
+  <div class="hero-meta">
+    <span class="meta-pill info hero-date" data-timestamp="2026-07-14T09:00:00+03:00">📅 July 14, 2026</span>
+    <span class="meta-pill neu">🗓 Data as of: July 13, 2026</span>
+    <span class="meta-pill info">Institutional risk analysis — auditable methodology</span>
+    <span class="meta-pill bull">6 layers · 18+ companies</span>
+    <span class="meta-pill bear">Scenarios + stress tests + options application</span>
+  </div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-num up">242.5x</div><div class="kpi-label">TSMC interest coverage</div></div>
+  <div class="kpi"><div class="kpi-num down">0.31</div><div class="kpi-label">CoreWeave current ratio</div></div>
+  <div class="kpi"><div class="kpi-num neu">$238B</div><div class="kpi-label">Meta binding commitments</div></div>
+  <div class="kpi"><div class="kpi-num down">0.63x</div><div class="kpi-label">Intel interest coverage</div></div>
+  <div class="kpi"><div class="kpi-num neu">~53% / ~47%</div><div class="kpi-label">36-mo: bad path / resilience</div></div>
+</div>
+
+<div class="insight-box warn">
+  <strong>Legal notice and scope note:</strong> This report is not investment advice. All market values, price ranges and financial metrics are based on third-party and primary-source data compiled as of July 13, 2026; they should be read as ranges that fluctuated throughout July 2026, not as a single day's close. Data on privately held companies (OpenAI, Anthropic, Lambda) has not passed formal audit and is analyst/private-market estimation. Every unverifiable claim is flagged in the text as &ldquo;unverified&rdquo;, &ldquo;analyst estimate&rdquo; or &ldquo;scenario assumption&rdquo;. No figures were fabricated; where data could not be found, the result is explicitly left as &ldquo;unknown / not computable&rdquo;.
+</div>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">🧭 Methodology Summary and Glossary</h2></div>
+    <div class="section-body">
+      <p>This report treats the question &ldquo;is AI a bubble?&rdquo; not as a binary yes/no question but as a <strong>layered systemic-risk question</strong>. The core premise: <strong>financial fragility and operational/systemic importance are not the same thing.</strong> A company can be both financially rock-solid and the single most critical link in the system (TSMC); or financially fragile yet largely substitutable in operational terms (CoreWeave). Melting these two dimensions into a single score is misleading.</p>
+      <p>The report therefore separates four types of risk:</p>
+      <div class="grid">
+        <div class="card"><div class="card-label">1 · Financial default risk</div><p style="font-size:.83rem;margin:0">The probability a company cannot service its debt/obligations. Metrics: leverage, interest coverage, liquidity, maturity concentration.</p></div>
+        <div class="card"><div class="card-label">2 · Operational supply disruption</div><p style="font-size:.83rem;margin:0">The probability a company stops delivering products/services. Metrics: production concentration, substitution time, geographic risk.</p></div>
+        <div class="card"><div class="card-label">3 · Financial contagion risk</div><p style="font-size:.83rem;margin:0">The degree to which a failure spreads via credit, collateral and market channels. Metrics: connectedness, collateral structure, counterparty concentration.</p></div>
+        <div class="card"><div class="card-label">4 · Market / valuation risk</div><p style="font-size:.83rem;margin:0">A decline in the share price; a type of loss independent of default. Shareholders can suffer large losses without a bankruptcy.</p></div>
+      </div>
+      <p>Measurement runs on three separate axes, and none is multiplied into a single pseudo-precise score: <strong>(A) Systemic Criticality</strong> — irreplaceability, connectedness, substitution time, economic criticality of the service, geographic concentration; <strong>(B) Failure Probability</strong> — net leverage, interest/fixed-charge coverage, liquidity, debt-maturity concentration, floating-rate exposure, operational and geopolitical risk; <strong>(C) Expected Systemic Loss</strong> — a calibrated qualitative joint assessment of the first two plus a contagion coefficient (calibrated judgment, not an arithmetic product).</p>
+      <p>Verbal probability classes are tied to a transparent numeric band (§2.6); a base and a positive scenario are added alongside the adverse ones (§8.6–8.7); a cross-scenario conditional-probability and intersection matrix is built (§8.8); the conclusion presents good-path / bad-path probabilities through a decision tree (§11.1); and §13 shows how the scenarios translate into premium-only long call and put portfolios with model examples. Sources are ranked by quality tier: <em>official filing → rating agency → company statement → analyst estimate → media</em>.</p>
+      <h3>Glossary</h3>
+      <div class="tbl"><table>
+        <tr><th>Term</th><th>Definition</th></tr>
+        <tr><td><strong>Capex</strong></td><td>Capital expenditure; long-lived asset investment such as data centers, chips, machinery.</td></tr>
+        <tr><td><strong>FCF</strong> (Free Cash Flow)</td><td>Operating cash flow minus capex. Computed after capex; hence the capex/FCF ratio does not directly measure the funding gap.</td></tr>
+        <tr><td><strong>OCF</strong> (Operating Cash Flow)</td><td>Cash generated from core operations; before capex. Capex/OCF is this report's preferred funding metric.</td></tr>
+        <tr><td><strong>ARR</strong></td><td>Annualized recurring revenue run-rate. It is a revenue level; it is not the same concept as cash burn and cannot be compared directly.</td></tr>
+        <tr><td><strong>Cash burn</strong></td><td>Net cash outflow over a period. Not the same as net loss (excludes non-cash items).</td></tr>
+        <tr><td><strong>Backlog</strong></td><td>Contracted or expected future revenue visibility. Not a liability but a revenue commitment; its risk depends on cancellation clauses and delivery cost.</td></tr>
+        <tr><td><strong>Runway</strong></td><td>How many months current available liquidity lasts at the current burn rate. Planned/uncompleted financing is not included in runway.</td></tr>
+        <tr><td><strong>Interest coverage ratio</strong></td><td>How many times earnings/cash cover interest expense; the core gauge of debt-service capacity.</td></tr>
+        <tr><td><strong>Upstream / Downstream</strong></td><td>Closer to the source (production) / closer to the end customer in the value chain. Physical product flows downstream; cash flows upstream; demand shocks propagate upstream.</td></tr>
+        <tr><td><strong>Systemic criticality</strong></td><td>The damage the system suffers when a company stops; independent of its financial health.</td></tr>
+        <tr><td><strong>DDTL</strong></td><td>Delayed-Draw Term Loan; CoreWeave's GPU-collateralized debt structure.</td></tr>
+        <tr><td><strong>EUV</strong></td><td>Extreme ultraviolet lithography; the critical technology of leading-edge chip production (ASML monopoly).</td></tr>
+        <tr><td><strong>0DTE / CALL / PUT</strong></td><td>Same-day-expiry option / call option / put option.</td></tr>
+      </table></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">🎯 1. Executive Summary</h2></div>
+    <div class="section-body">
+      <p>The AI value chain sits at the center of the largest capital-expenditure cycle in tech history, operating on increasingly difficult macroeconomic ground. This report maps the chain's six layers — lithography (ASML), foundry (TSMC, GlobalFoundries, Intel), chip design (NVIDIA, AMD, Broadcom, Qualcomm), data center/network/energy (Arista, Super Micro, Constellation), hyperscalers (Amazon, Meta, Alphabet, Microsoft, Apple) and the edge layer (neo-cloud: CoreWeave, Nebius, Lambda; LLM: OpenAI, Anthropic) — in terms of financial resilience and systemic importance.</p>
+      <div class="insight-box"><strong>Core judgment:</strong> &ldquo;Is AI a bubble?&rdquo; has no one-word answer. The chain is a stack of layers with very different risk profiles. The right question is: <strong>which link in the chain is fragile, how far does contagion spread when that link snaps, and which layer is genuinely irreplaceable?</strong></div>
+      <h3>Five key findings</h3>
+      <p><strong>1 — Systemic criticality and financial risk diverge in opposite directions.</strong> The chain's most irreplaceable links (TSMC, ASML, NVIDIA) also carry the strongest balance sheets: TSMC's interest coverage is 242.5x<sup class="fn"><a href="#fn2">2</a></sup>, cash-to-debt 3.17<sup class="fn"><a href="#fn12">12</a></sup>; ASML's debt-to-equity is 13%<sup class="fn"><a href="#fn3">3</a></sup>. By contrast, the financially most fragile links (CoreWeave, Super Micro, Intel) are largely substitutable operationally. This observation rests on a clear divergence within the sample studied — not on a statistical correlation — and it shows the intuition &ldquo;most indebted = most dangerous&rdquo; is wrong: <strong>a debt crisis does not stop the system; a supply shock does.</strong></p>
+      <p><strong>2 — The most likely near-term break is financial; the most destructive long-term break is physical.</strong> The most likely first break sits in the highly leveraged, thin-margin neo-cloud layer (CoreWeave: $25.1B debt, current ratio 0.31, S&amp;P 'B' rating<sup class="fn"><a href="#fn4">4</a>,<a href="#fn5">5</a></sup>). But that layer's failure does not stop the system; credit funds book losses and assets migrate at a discount to the hyperscalers. The most destructive scenario is the physical loss of TSMC — low probability but irreparable. These two cannot be presented as &ldquo;most dangerous&rdquo; in the same sentence; <strong>one is most likely, the other most destructive</strong> — and the report keeps that distinction.</p>
+      <p><strong>3 — &ldquo;Mortgaging the future&rdquo; is not one thing but three different mechanisms.</strong> Borrowing (Amazon's bond issuance reaching $72B in 2026<sup class="fn"><a href="#fn6">6</a></sup>), non-cancellable purchase commitments (Meta's $238B binding contracts, $107B in a single quarter<sup class="fn"><a href="#fn7">7</a></sup>) and equity dilution (Alphabet's $84.75B share issuance<sup class="fn"><a href="#fn8">8</a></sup>) are not the same economic category. Debt carries interest and rollover risk; commitments create irreversible obligations; an equity raise strengthens the balance sheet and shifts risk to equity instead of debt. The report measures these with separate metrics rather than one &ldquo;mortgage index&rdquo; (§7.4).</p>
+      <p><strong>4 — LLM revenue generation does not yet cover the physical cost — but it is not the only decisive variable.</strong> ARR at the top of the system (LLMs) does not yet finance the physical capex at the bottom: OpenAI's 2026 cash burn is estimated at $27B (analyst estimate<sup class="fn"><a href="#fn44">44</a></sup>), while Anthropic's net cash position is not public. Yet the claim that &ldquo;the game's continuation depends on a single variable — LLM ROI&rdquo; is over-centralization: hyperscalers have cross-subsidy capacity from advertising, e-commerce and enterprise software; GPUs are not used solely for foundation-model training; power capacity, custom ASICs and chip efficiency are independent critical variables. The right question: <strong>by what date can AI-attributable incremental cash flow cover incremental capex and fixed obligations?</strong></p>
+      <p><strong>5 — The chronology of breakage: financial first, physical later.</strong> In order of probability: (i) neo-cloud credit default (most likely, limited impact), (ii) hyperscaler capex-discipline crisis (medium probability, broad market impact), (iii) physical loss of TSMC (lowest probability, catastrophic impact). Investor and regulator focus should shift from profit margins to <strong>hidden leverage mechanisms</strong> — CoreWeave's DDTL covenant thresholds, GPU-collateralized loans and undisclosed LLM churn rates — flagged as unknowns in §10.</p>
+      <h3>Risk map summary</h3>
+      <div class="tbl"><table>
+        <tr><th>Category</th><th>Companies</th><th>Rationale</th></tr>
+        <tr><td><span class="tag tag-green">High systemic impact + low financial risk</span></td><td>TSMC, ASML, NVIDIA</td><td>Monopoly/strong pricing + very strong balance sheet</td></tr>
+        <tr><td><span class="tag tag-blue">High impact + manageable risk</span></td><td>Microsoft, Alphabet, Amazon, Broadcom</td><td>Cross-subsidy capacity, strong OCF</td></tr>
+        <tr><td><span class="tag tag-red">Low-to-mid impact + high financial risk</span></td><td>CoreWeave, Super Micro, Intel</td><td>High leverage, thin margins, tight liquidity — most likely break</td></tr>
+        <tr><td><span class="tag tag-orange">High uncertainty (insufficient data)</span></td><td>OpenAI, Anthropic, Lambda</td><td>Net cash/burn not public; runway not computable</td></tr>
+        <tr><td><span class="tag tag-blue">Low-leverage &ldquo;buffer&rdquo; layer</span></td><td>Arista, Apple, Alphabet</td><td>Zero/low debt, outside the infrastructure spiral or equity-financed</td></tr>
+      </table></div>
+      <p class="chart-src">Source: company data in §4–§7; the table is a qualitative classification, no score multiplication. Date: July 13, 2026.</p>
+      <h3>What this report does and does not do</h3>
+      <p>Through scenarios and stress tests, the report answers which domino topples the others, what conditions everyone needs to stay in the game, and which companies can fail even without the whole sector deteriorating. It also: ties verbal probability classes to a transparent numeric band (§2.6), adds a base and a positive scenario alongside the adverse ones (§8.6–8.7), builds the cross-scenario conditional-probability and intersection matrix (§8.8), delivers good-path vs. bad-path probabilities via a decision tree (§11) and converts the scenarios into premium-only long call/put portfolios (§13). What the report does <strong>not</strong> do: present unverifiable data as certain, dress numeric bands up as an empirically calibrated model, or count planned financing as cash on hand.</p>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">📐 2. System Boundary and Methodology</h2></div>
+    <div class="section-body">
+      <h3>2.1 System boundary</h3>
+      <p>The analysis covers the six operational layers of the AI value chain. Excluded: vertical software in the application layer, sectors exposed to AI but not part of the chain (e.g. automotive), and the broader macro-financial system (banking-crisis scenarios are treated only as a contagion channel).</p>
+      <div class="tbl"><table>
+        <tr><th>Layer</th><th>Role</th><th>Companies covered</th></tr>
+        <tr><td>1 — Physical production</td><td>Lithography + foundry</td><td>ASML, TSMC, GlobalFoundries, Intel</td></tr>
+        <tr><td>2 — Chip design</td><td>Fabless design</td><td>NVIDIA, AMD, Broadcom, Qualcomm</td></tr>
+        <tr><td>3 — Data center / network / energy</td><td>Connectivity, servers, power</td><td>Arista, Super Micro, Constellation</td></tr>
+        <tr><td>4 — Hyperscaler</td><td>Cloud + capex</td><td>Amazon, Meta, Alphabet, Microsoft, Apple</td></tr>
+        <tr><td>5 — Neo-cloud</td><td>GPU rental</td><td>CoreWeave, Nebius, Lambda</td></tr>
+        <tr><td>6 — Foundation models (LLM)</td><td>Model development</td><td>OpenAI, Anthropic</td></tr>
+      </table></div>
+      <h3>2.2 Four risk types kept separate</h3>
+      <p>These four risk types are routinely conflated in analysis; this report ties every claim to the risk type it belongs to (see the methodology cards above). The practical consequence of the distinction: Arista's zero debt makes it low-risk in terms of financial default, but not <em>&ldquo;risk-free&rdquo;</em> — customer concentration, revenue decline and valuation (market) risk remain. The report avoids absolute statements (&ldquo;risk-free&rdquo;, &ldquo;cannot fail&rdquo;) and instead names the risk type and the metric.</p>
+      <h3>2.3 Three measurement axes (no multiplication)</h3>
+      <p>A common approach reduces systemic risk to a single multiplicative formula such as &ldquo;irreplaceability × connectedness × leverage&rdquo;. That formula contradicts its own conclusion: since TSMC's leverage is near zero, a true product would push its systemic score toward zero — yet TSMC is considered the most critical. The fix is to separate the concepts: <strong>Axis A</strong> (what does the system lose if the company stops?), <strong>Axis B</strong> (how likely is the company to stop?) and <strong>Axis C</strong> (expected systemic loss — expressed through the two-axis matrix in §4 and the qualitative priority ranking in §5, not an arithmetic product; no numeric multiplication without defined scale, normalization and weights).</p>
+      <h3>2.4 Shock direction: upstream / downstream</h3>
+      <p>Calling the LLM layer the &ldquo;top&rdquo; and the production layer the &ldquo;bottom&rdquo;, then saying &ldquo;demand shocks strike from the bottom up&rdquo;, is self-contradictory. This report defines three flows with separate arrows, in neutral upstream/downstream terminology:</p>
+      <ul>
+        <li><strong>Physical product and capacity:</strong> ASML → TSMC → NVIDIA → data center → LLM (flows <em>downstream</em>).</li>
+        <li><strong>Cash:</strong> customer/LLM → cloud → hardware → foundry → equipment (flows <em>upstream</em>).</li>
+        <li><strong>Demand shock:</strong> end demand → suppliers (propagates <em>upstream</em>; if LLM revenue falls, the shock travels toward ASML).</li>
+      </ul>
+      <h3>2.5 Confidence tiers and labeling rules</h3>
+      <ul>
+        <li><span class="tag tag-green">High confidence (fact)</span> official financials, SEC filings, rating agencies, company statements → presented unlabeled, as fact.</li>
+        <li><span class="tag tag-orange">Medium confidence (estimate)</span> analyst projections, private-market reports → labeled &ldquo;analyst estimate / projection&rdquo;.</li>
+        <li><span class="tag tag-red">Conflict / uncertainty</span> data that conflicts across sources → presented in balance, no single value imposed.</li>
+        <li><span class="tag tag-blue">Deliberate gap (blind spot)</span> non-public data → left as &ldquo;unknown / not computable&rdquo;; no figures invented.</li>
+      </ul>
+      <p>Market caps and share prices are presented as ranges that fluctuated through July 2026; they should not be read as any single day's close.</p>
+      <h3>2.6 Numeric framework for verbal probability classes</h3>
+      <p>Verbal labels alone — &ldquo;very low / low / medium / high&rdquo; — make computation impossible without percentage equivalents. This report ties verbal classes to a transparent numeric mapping. <strong>This mapping is not an empirically calibrated model;</strong> it is a numeric translation of the report's own verbal classes, and the sensitivity ranges are wide (§11).</p>
+      <div class="tbl"><table>
+        <tr><th>Verbal label</th><th>Numeric band</th><th>Center</th><th>Calibration basis</th></tr>
+        <tr><td>Very low</td><td>2–10%</td><td>6%</td><td>Historical geopolitical/physical event base rate (rare event)</td></tr>
+        <tr><td>Low</td><td>10–20%</td><td>15%</td><td>Historical events / base rate</td></tr>
+        <tr><td>Low-medium</td><td>20–30%</td><td>25%</td><td>Base rate + analyst judgment</td></tr>
+        <tr><td>Medium</td><td>30–50%</td><td>40%</td><td>Analyst judgment / expert assessment</td></tr>
+        <tr><td>Medium-high</td><td>50–70%</td><td>60%</td><td>Analyst judgment / consistency with current market and Fed rhetoric</td></tr>
+      </table></div>
+      <p>Each scenario in §8 comes with a center estimate plus lower/upper bounds on top of these bands. Center values must not be read as point estimates; band width reflects uncertainty stemming from unknown core inputs (covenants, churn, true AI unit economics, geopolitical base rate).</p>
+      <h3>2.7 Four scopes of the word &ldquo;systemic&rdquo;</h3>
+      <div class="tbl"><table>
+        <tr><th>Scope</th><th>Definition</th><th>Place in this report</th></tr>
+        <tr><td>AI value-chain systemic risk</td><td>The chain's physical production/supply capacity stops</td><td>Main focus (§4, §8.3)</td></tr>
+        <tr><td>Tech-sector market risk</td><td>Value loss in AI stocks (even without defaults)</td><td>§2.2 risk type 4</td></tr>
+        <tr><td>Financial systemic risk</td><td>Contagion threatening banking/the broader financial system</td><td>Only as a contagion channel (§8.1); no &ldquo;banking-systemic&rdquo; claim is made since total exposure size is unknown</td></tr>
+        <tr><td>Macroeconomic risk</td><td>Recession, stagflation, rate shock</td><td>§8.4, §8.5</td></tr>
+      </table></div>
+      <p>For example, CoreWeave inflicting losses on credit funds is a financial-contagion event; proving it is &ldquo;systemic&rdquo; for the banking/financial system at large would require the total exposure size of the loans involved — data that is not public (§10). The report therefore classifies CoreWeave not as a &ldquo;financial-system risk&rdquo; but as a <strong>financial-contagion vector within the AI value chain</strong>.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">🔗 3. Value Chain and Dependency Network</h2></div>
+    <div class="section-body">
+      <h3>3.1 Three flows</h3>
+      <p>The AI value chain is not one chain but a network of three overlapping flows. Conflating them yields the wrong answer to &ldquo;which way does the shock travel?&rdquo;</p>
+      <p><strong>Flow 1 — Physical product (downstream):</strong> ASML's EUV lithography machines go to TSMC's fabs; TSMC's leading-edge wafers go into NVIDIA, AMD and Broadcom designs; those chips combine with Arista's networking gear and Super Micro's servers into data centers; from there into hyperscaler and neo-cloud capacity; finally reaching LLM training and inference workloads.</p>
+      <p><strong>Flow 2 — Cash (upstream):</strong> LLM developers (OpenAI, Anthropic) and enterprise customers pay rental/usage fees to cloud and neo-cloud providers; those providers pay NVIDIA/Arista/Super Micro for hardware; NVIDIA pays TSMC for production; TSMC pays ASML for machines. Cash flows in the reverse direction of the physical product.</p>
+      <p><strong>Flow 3 — Demand shock (upstream propagation):</strong> A drop in end demand (LLM revenue, enterprise AI budgets) hits the tenant first (neo-cloud/hyperscaler), then the hardware makers (NVIDIA, Arista, SMCI), then the foundry (TSMC), and last the equipment maker (ASML).</p>
+      <h3>3.2 Connectedness map</h3>
+      <ul>
+        <li><span class="tag tag-red">Highest</span> <strong>TSMC</strong> (feeds all chip designers and, indirectly, the whole chain), <strong>NVIDIA</strong> (de-facto standard for training + inference hardware), <strong>ASML</strong> (machine source for all leading-edge production).</li>
+        <li><span class="tag tag-orange">High</span> Hyperscalers (sell capacity to LLMs and consume it for their own products), Broadcom (semiconductors + infrastructure software).</li>
+        <li><span class="tag tag-blue">Medium</span> Arista (data-center networking), Constellation (energy capacity), AMD.</li>
+        <li><span class="tag tag-green">Low / substitutable</span> Super Micro (server assembly; Dell, HPE etc. can substitute), GlobalFoundries (legacy nodes), neo-clouds (capacity providers; hyperscalers and other neo-clouds can substitute).</li>
+      </ul>
+      <h3>3.3 Circular financing risk</h3>
+      <div class="insight-box danger"><strong>Circularity:</strong> NVIDIA sells chips; neo-clouds borrow against those chips as collateral to buy more chips; LLMs rent that capacity but do not yet generate the revenue to cover its cost.<sup class="fn"><a href="#fn10">10</a></sup> The system is built on today's debt financing of the future revenue expected at the top of the chain (LLMs). This is classic rollover fragility: self-reinforcing while things go well, reversing when demand or credit conditions break in a single link.</div>
+      <p><strong>Important note:</strong> This circularity does not mean the whole chain drowns in debt. The foundational layers (ASML, TSMC, NVIDIA, Arista) fund themselves with strong operating cash flow; the debt spiral is concentrated in hyperscaler capex, neo-cloud loans and LLM funding rounds.</p>
+      <h3>3.4 Energy: the chain's new physical bottleneck</h3>
+      <p>A seventh, increasingly critical dimension has joined the value chain: <strong>electric capacity.</strong> The physical wall in front of data-center construction is increasingly grid interconnection and power supply rather than chip supply. Nuclear/clean-energy providers like Constellation have therefore become integral to the chain (2026 revenue target of $36.5B after the Calpine acquisition<sup class="fn"><a href="#fn11">11</a></sup>). Even with strong demand, electricity and grid capacity can cap growth — treated as a separate scenario in §8.</p>
+      <p class="chart-src">Source: company data in §6 and footnote 10; the connectedness classification is qualitative. Date: July 13, 2026.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">🗺️ 4. Systemic Criticality Matrix</h2></div>
+    <div class="section-body">
+      <h3>4.1 Two-axis matrix: probability ≠ impact</h3>
+      <p>A single-score &ldquo;systemic risk&rdquo; ranking melts two different concepts — a company's probability of failing and the damage its failure inflicts on the system — into one axis, putting a near-zero-debt company like TSMC on the same list as highly leveraged ones. Here the two are separated: the <strong>horizontal axis</strong> is failure probability (financial + operational + geopolitical stress, Axis B); the <strong>vertical axis</strong> is systemic impact of failure (irreplaceability, connectedness, substitution time, service criticality, geographic concentration, Axis A).</p>
+      <div class="chart-card">
+        <div class="chart-title">Figure 4.1 — Systemic criticality matrix: failure probability × systemic impact</div>
+        <svg viewBox="0 0 700 540" width="100%" role="img" aria-label="chart"><rect x="64.0" y="26.0" width="275.4" height="213.0" fill="#4ade80" opacity="0.05"/><rect x="339.4" y="26.0" width="336.6" height="213.0" fill="#f87171" opacity="0.05"/><rect x="64.0" y="239.0" width="275.4" height="213.0" fill="#94a3b8" opacity="0.04"/><rect x="339.4" y="239.0" width="336.6" height="213.0" fill="#fbbf24" opacity="0.05"/><line x1="64.0" y1="26" x2="64.0" y2="452" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="64.0" y="468" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">0</text><line x1="186.4" y1="26" x2="186.4" y2="452" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="186.4" y="468" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">2</text><line x1="308.8" y1="26" x2="308.8" y2="452" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="308.8" y="468" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">4</text><line x1="431.2" y1="26" x2="431.2" y2="452" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="431.2" y="468" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">6</text><line x1="553.6" y1="26" x2="553.6" y2="452" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="553.6" y="468" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">8</text><line x1="676.0" y1="26" x2="676.0" y2="452" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="676.0" y="468" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">10</text><line x1="64" y1="452.0" x2="676" y2="452.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="56" y="456.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">0</text><line x1="64" y1="366.8" x2="676" y2="366.8" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="56" y="370.8" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">2</text><line x1="64" y1="281.6" x2="676" y2="281.6" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="56" y="285.6" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">4</text><line x1="64" y1="196.4" x2="676" y2="196.4" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="56" y="200.4" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">6</text><line x1="64" y1="111.2" x2="676" y2="111.2" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="56" y="115.2" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">8</text><line x1="64" y1="26.0" x2="676" y2="26.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="56" y="30.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">10</text><line x1="339.4" y1="26" x2="339.4" y2="452" stroke="#64748b" stroke-width="1.3" stroke-dasharray="5 4"/><line x1="64" y1="239.0" x2="676" y2="239.0" stroke="#64748b" stroke-width="1.3" stroke-dasharray="5 4"/><rect x="64" y="26" width="612" height="426" fill="none" stroke="#64748b" stroke-width="1.2"/><text x="74" y="44" text-anchor="start" font-size="11" font-weight="700" fill="#4ade80" opacity="0.85" font-family="inherit">SYSTEMICALLY CRITICAL + RESILIENT</text><text x="666" y="44" text-anchor="end" font-size="11" font-weight="700" fill="#f87171" opacity="0.85" font-family="inherit">DANGER ZONE (empty)</text><text x="74" y="442" text-anchor="start" font-size="11" font-weight="700" fill="#94a3b8" opacity="0.85" font-family="inherit">LOW PRIORITY</text><text x="666" y="442" text-anchor="end" font-size="11" font-weight="700" fill="#fbbf24" opacity="0.85" font-family="inherit">MOST LIKELY FINANCIAL BREAKS</text><circle cx="125.2" cy="38.8" r="7" fill="#4ade80" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="136.2" y="42.8" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">TSMC</text><circle cx="119.1" cy="81.4" r="7" fill="#4ade80" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="130.1" y="85.4" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">ASML</text><circle cx="161.9" cy="98.4" r="7" fill="#4ade80" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="172.9" y="102.4" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">NVIDIA</text><circle cx="186.4" cy="179.4" r="7" fill="#4ade80" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="197.4" y="183.4" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">Broadcom</text><circle cx="223.1" cy="196.4" r="7" fill="#4ade80" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="234.1" y="200.4" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">AMD</text><circle cx="186.4" cy="302.9" r="7" fill="#4ade80" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="197.4" y="296.9" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">Qualcomm</text><circle cx="192.5" cy="309.3" r="7" fill="#4ade80" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="203.5" y="325.3" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">GlobalF.</text><circle cx="467.9" cy="224.1" r="7" fill="#4ade80" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="478.9" y="228.1" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">Intel</text><circle cx="137.4" cy="253.9" r="7" fill="#38bdf8" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="148.4" y="257.9" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">Arista</text><circle cx="223.1" cy="273.1" r="7" fill="#38bdf8" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="234.1" y="277.1" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">Constellation</text><circle cx="510.8" cy="328.5" r="7" fill="#38bdf8" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="521.8" y="332.5" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">SMCI</text><circle cx="131.3" cy="151.7" r="7" fill="#fbbf24" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="142.3" y="155.7" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">Microsoft</text><circle cx="119.1" cy="160.2" r="7" fill="#fbbf24" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="108.1" y="164.2" text-anchor="end" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">Alphabet</text><circle cx="198.6" cy="155.9" r="7" fill="#fbbf24" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="209.6" y="159.9" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">Amazon</text><circle cx="125.2" cy="179.4" r="7" fill="#fbbf24" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="114.2" y="183.4" text-anchor="end" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">Apple</text><circle cx="223.1" cy="213.4" r="7" fill="#fbbf24" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="234.1" y="217.4" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">Meta</text><circle cx="559.7" cy="298.6" r="7" fill="#f87171" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="547.7" y="302.6" text-anchor="end" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">CoreWeave</text><circle cx="461.8" cy="341.2" r="7" fill="#f87171" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="472.8" y="345.2" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">Nebius</text><circle cx="492.4" cy="366.8" r="7" fill="#f87171" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="503.4" y="370.8" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">Lambda</text><circle cx="455.7" cy="183.6" r="7" fill="#c084fc" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="466.7" y="187.6" text-anchor="start" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">OpenAI</text><circle cx="382.2" cy="196.4" r="7" fill="#c084fc" stroke="#0a1628" stroke-width="1.6" opacity="0.95"/><text x="370.2" y="200.4" text-anchor="end" font-size="10.5" font-weight="600" fill="#e2e8f0" font-family="inherit">Anthropic</text><text x="370" y="486" text-anchor="middle" font-size="11.5" font-weight="600" fill="#94a3b8" font-family="inherit">Failure Probability → (financial + operational + geopolitical stress)</text><text x="16" y="239" text-anchor="middle" font-size="11.5" font-weight="600" fill="#94a3b8" font-family="inherit" transform="rotate(-90 16 239)">Systemic Impact → (irreplaceability, connectedness, substitution time)</text><rect x="64" y="495" width="11" height="11" rx="3" fill="#4ade80"/><text x="81" y="504" font-size="10.5" fill="#e2e8f0" font-family="inherit">Production / Chips / Design</text><rect x="269" y="495" width="11" height="11" rx="3" fill="#38bdf8"/><text x="286" y="504" font-size="10.5" fill="#e2e8f0" font-family="inherit">Data Center / Network / Energy</text><rect x="474" y="495" width="11" height="11" rx="3" fill="#fbbf24"/><text x="491" y="504" font-size="10.5" fill="#e2e8f0" font-family="inherit">Hyperscaler</text><rect x="64" y="515" width="11" height="11" rx="3" fill="#f87171"/><text x="81" y="524" font-size="10.5" fill="#e2e8f0" font-family="inherit">Neo-Cloud</text><rect x="269" y="515" width="11" height="11" rx="3" fill="#c084fc"/><text x="286" y="524" font-size="10.5" fill="#e2e8f0" font-family="inherit">LLM</text></svg>
+        <p class="chart-caption">Quadrants: top-left = low probability / high impact (TSMC type), bottom-right = high probability / low-to-mid impact (neo-cloud type), top-right = doubly high (empty in the sample studied), bottom-left = doubly low. Scores are not multiplied.</p>
+        <p class="chart-src">Source: analyst positioning based on §6 company data and the §2.3 axis definitions (qualitative). Date: July 13, 2026. Confidence: medium — positioning is judgment-based, not precise measurement.</p>
+      </div>
+      <div class="insight-box"><strong>The matrix's core lesson:</strong> the most dangerous point of the system is not the biggest or most profitable company. The company that is &ldquo;unlikely to fail but irreplaceable if it does&rdquo; and the company that is &ldquo;likely to fail but whose failure does not stop the system&rdquo; must be <strong>managed separately.</strong></div>
+      <h4>Two corner cases: TSMC and CoreWeave</h4>
+      <ul>
+        <li><strong>TSMC (top-left, high impact / low probability).</strong> With 242.5x interest coverage and 3.17 cash-to-debt<sup class="fn"><a href="#fn2">2</a>,<a href="#fn12">12</a></sup>, its probability of financial failure is very low on the debt-service metrics examined. But its position in leading-edge (7nm and below) production makes it extremely hard to replace; it sits at the very top of the systemic-impact axis. The main driver of its failure probability is not financial but <strong>geopolitical/physical</strong> (§8.3).</li>
+        <li><strong>CoreWeave (bottom-right, high probability / low-to-mid impact).</strong> Current ratio 0.31, net loss margin 36%, GPU-collateralized debt structure<sup class="fn"><a href="#fn4">4</a>,<a href="#fn5">5</a></sup> — relatively high probability of financial breakage. As a capacity provider it is partly substitutable (hyperscalers and other neo-clouds can absorb the capacity); on the systemic-impact axis it sits far below TSMC. Its collapse would question NVIDIA's pricing power via the collateral-value spiral and spread to credit funds (§8.1) — not zero impact — but it would not stop physical production.</li>
+      </ul>
+      <p>This divergence is the report's central finding: <strong>financial fragility and operational/systemic importance are not the same thing</strong> and must not underpin the same investment/risk decision.</p>
+      <h3>4.2 Components of systemic impact (heat map)</h3>
+      <p>Reducing Axis A to a single number is misleading; its five components are shown separately on a 1–5 qualitative scale. The scores are not combined by multiplication — each component is read on its own; the goal is to make transparent which company is critical for which reason.</p>
+      <div class="chart-card">
+        <div class="chart-title">Figure 4.2 — Systemic impact heat map: 18 companies × 5 components (qualitative 1–5)</div>
+        <div class="tbl"><table class="heat">
+          <tr><th>Company</th><th>Irreplaceability</th><th>Connectedness</th><th>Substitution Time</th><th>Service Criticality</th><th>Geographic Concentration</th></tr>
+          <tr><td>TSMC</td><td class="h5">5</td><td class="h5">5</td><td class="h5">5</td><td class="h5">5</td><td class="h5">5</td></tr>
+          <tr><td>ASML</td><td class="h5">5</td><td class="h4">4</td><td class="h5">5</td><td class="h5">5</td><td class="h4">4</td></tr>
+          <tr><td>NVIDIA</td><td class="h4">4</td><td class="h5">5</td><td class="h4">4</td><td class="h5">5</td><td class="h2">2</td></tr>
+          <tr><td>Microsoft</td><td class="h3">3</td><td class="h4">4</td><td class="h3">3</td><td class="h4">4</td><td class="h2">2</td></tr>
+          <tr><td>Alphabet</td><td class="h3">3</td><td class="h4">4</td><td class="h3">3</td><td class="h4">4</td><td class="h2">2</td></tr>
+          <tr><td>Amazon</td><td class="h3">3</td><td class="h4">4</td><td class="h3">3</td><td class="h4">4</td><td class="h2">2</td></tr>
+          <tr><td>Broadcom</td><td class="h3">3</td><td class="h4">4</td><td class="h3">3</td><td class="h4">4</td><td class="h2">2</td></tr>
+          <tr><td>OpenAI *</td><td class="h3">3</td><td class="h4">4</td><td class="h3">3</td><td class="h4">4</td><td class="h1">1</td></tr>
+          <tr><td>Anthropic *</td><td class="h3">3</td><td class="h3">3</td><td class="h3">3</td><td class="h4">4</td><td class="h1">1</td></tr>
+          <tr><td>Meta</td><td class="h2">2</td><td class="h4">4</td><td class="h2">2</td><td class="h3">3</td><td class="h2">2</td></tr>
+          <tr><td>AMD</td><td class="h3">3</td><td class="h3">3</td><td class="h3">3</td><td class="h3">3</td><td class="h2">2</td></tr>
+          <tr><td>Intel</td><td class="h2">2</td><td class="h3">3</td><td class="h4">4</td><td class="h3">3</td><td class="h2">2</td></tr>
+          <tr><td>Apple</td><td class="h2">2</td><td class="h3">3</td><td class="h2">2</td><td class="h3">3</td><td class="h3">3</td></tr>
+          <tr><td>Arista</td><td class="h2">2</td><td class="h3">3</td><td class="h2">2</td><td class="h3">3</td><td class="h1">1</td></tr>
+          <tr><td>Constellation</td><td class="h2">2</td><td class="h3">3</td><td class="h4">4</td><td class="h3">3</td><td class="h4">4</td></tr>
+          <tr><td>CoreWeave</td><td class="h2">2</td><td class="h3">3</td><td class="h1">1</td><td class="h2">2</td><td class="h2">2</td></tr>
+          <tr><td>Super Micro</td><td class="h1">1</td><td class="h3">3</td><td class="h1">1</td><td class="h2">2</td><td class="h2">2</td></tr>
+          <tr><td>Nebius</td><td class="h1">1</td><td class="h2">2</td><td class="h1">1</td><td class="h2">2</td><td class="h2">2</td></tr>
+        </table></div>
+        <p class="chart-caption">Darker red = higher qualitative score. No total/product score is computed. (*) OpenAI's and Anthropic's &ldquo;service criticality&rdquo; values are low-confidence assumptions, not measured data — revenue quality (churn, share of multi-year contracts) is not public (§10).</p>
+        <p class="chart-src">Source: qualitative assessment based on §6 company data. Date: July 13, 2026. Method: each component scored independently 1 (low) – 5 (high); no multiplication or weighted sum. Confidence: medium (judgment-based).</p>
+      </div>
+      <p><strong>Reading the heat map:</strong> Highest irreplaceability: ASML (EUV monopoly), TSMC (leading-edge foundry), NVIDIA (hardware standard) — geographic concentration is also high for all three. Longest substitution time: ASML and TSMC (a new EUV machine or leading-edge fab capacity takes years; neo-cloud capacity can be transferred within months). High connectedness but easy to substitute: Arista, Super Micro, Constellation.</p>
+      <h3>4.3 Using the matrix</h3>
+      <ol>
+        <li><strong>Top-left quadrant (low probability / high impact):</strong> the risk to monitor is physical and geopolitical, not financial. Early-warning indicators are Taiwan Strait tension, earthquake/typhoon risk and power supply — not debt ratios (§9).</li>
+        <li><strong>Bottom-right quadrant (high probability / low impact):</strong> the risk to monitor is liquidity and credit conditions. Early-warning indicators are the current ratio, covenant thresholds and SOFR spreads (§9).</li>
+        <li><strong>Top-right quadrant (doubly high):</strong> no company in the studied set lands here. This observation holds only for the sample studied; it does not imply the whole system lacks a single point of failure that is both fragile and irreplaceable. Out-of-scope links — HBM memory (SK Hynix, Micron, Samsung), EDA software (Synopsys, Cadence), chip IP (Arm), advanced packaging (CoWoS/ASE/Amkor), other semiconductor equipment (Applied Materials, Lam Research, KLA), optical interconnects, cooling/transformer/grid equipment and data-center real estate/project finance — were not scored in this matrix. One of those layers could show both high fragility and high substitution difficulty; the &ldquo;empty top-right&rdquo; observation is a bounded finding (§2.1 system boundary).</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">💣 5. Financial Fragility Matrix</h2></div>
+    <div class="section-body">
+      <p>Independent of the systemic-impact analysis in §4, this section measures only <strong>financial resilience</strong>: interest coverage, liquidity, leverage, debt maturity and floating-rate exposure. The question: &ldquo;which company cannot roll its debt load?&rdquo; A financially fragile company does not stop the system (§4) — but it spreads losses to its creditors, suppliers and the financial market.</p>
+      <h3>5.1 Interest coverage: sustainability of debt service</h3>
+      <p>Because capex/FCF produces economically unstable results as FCF approaches zero (§7.2), this section uses the <strong>interest coverage ratio (EBIT / interest expense)</strong> as the primary metric. Below 1.0x means operating profit does not even cover interest.</p>
+      <div class="chart-card">
+        <div class="chart-title">Figure 5.1 — Interest coverage ratios (EBIT / interest expense), log scale</div>
+        <svg viewBox="0 0 640 260" width="100%" height="260" role="img" aria-label="chart"><line x1="54" y1="196.9" x2="620" y2="196.9" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="200.9" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">1x</text><line x1="54" y1="139.3" x2="620" y2="139.3" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="143.3" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">10x</text><line x1="54" y1="81.6" x2="620" y2="81.6" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="85.6" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">100x</text><line x1="54" y1="24.0" x2="620" y2="24.0" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="44" y="28.0" text-anchor="end" font-size="10.5" fill="#94a3b8" font-family="inherit">1000x</text><line x1="54" y1="220" x2="620" y2="220" stroke="#64748b" stroke-width="1.2"/><rect x="111.2" y="59.5" width="70" height="160.5" rx="4" fill="#4ade80"/><text x="146.2" y="51.5" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">242.5x</text><text x="146.2" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">TSMC</text><rect x="238.4" y="126.8" width="70" height="93.2" rx="4" fill="#4ade80"/><text x="273.4" y="118.8" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">16.5x</text><text x="273.4" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">GlobalFoundries</text><rect x="365.6" y="126.8" width="70" height="93.2" rx="4" fill="#4ade80"/><text x="400.6" y="118.8" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">16.5x</text><text x="400.6" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Constellation</text><rect x="492.8" y="208.5" width="70" height="11.5" rx="4" fill="#f87171"/><text x="527.8" y="200.5" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">0.63x</text><text x="527.8" y="238" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="inherit">Intel</text><line x1="54" y1="196.9" x2="620" y2="196.9" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 3"/><text x="616" y="190.9" text-anchor="end" font-size="10.5" font-weight="600" fill="#38bdf8" font-family="inherit">Critical threshold 1.0x</text></svg>
+        <p class="chart-caption">The dashed line is the critical 1.0x threshold. Intel sits below it at 0.63x. Arista carries no debt, so the ratio is not applicable (n/a) and is not drawn; Broadcom's circulating ~30x figure could not be verified against primary EBIT/interest data and is excluded.<sup class="fn"><a href="#fn16">16</a></sup></p>
+        <p class="chart-src">Source: TSMC 242.5x<sup class="fn"><a href="#fn2">2</a></sup>; GlobalFoundries 16.5x<sup class="fn"><a href="#fn13">13</a></sup>; Constellation 16.5x<sup class="fn"><a href="#fn11">11</a></sup>; Intel 0.63x<sup class="fn"><a href="#fn14">14</a></sup>. Date: July 13, 2026. Method: only values verified by official filings/rating data are plotted. Confidence: high (TSMC, Intel, CEG, GFS); Broadcom unverified.</p>
+      </div>
+      <p><strong>Reading:</strong> For the foundational layers (TSMC) and cash-rich infrastructure (Arista, Alphabet), debt service creates no pressure. The one structural problem is Intel: 0.63x coverage shows operating profit does not cover the interest load; but Intel, as a foundry competitor, already has low systemic impact (§4.1), so its problem is company-specific rather than contagious.</p>
+      <h3>5.2 Liquidity: short-term payment capacity</h3>
+      <p>The earliest signal of financial breakage is usually a <strong>liquidity squeeze</strong>, not balance-sheet leverage. A current ratio below 1.0 does not by itself mean &ldquo;cannot pay&rdquo; — cash generation, undrawn credit lines and liability composition must also be considered. The current ratio is a warning indicator, not definitive proof of default; read the table below in that frame.</p>
+      <div class="tbl"><table>
+        <tr><th>Company</th><th>Critical liquidity indicator</th><th>Value</th><th>Reading</th></tr>
+        <tr><td>CoreWeave</td><td>Current ratio</td><td><span class="tag tag-red">0.31</span></td><td>Dangerous squeeze; obligations coming due ≈ 3× current assets</td></tr>
+        <tr><td>Super Micro</td><td>Debt/equity (D/E)</td><td><span class="tag tag-red">115% (= 1.15x)</span></td><td>Above-sector leverage; shock-sensitive when combined with thin margins</td></tr>
+        <tr><td>Intel</td><td>Interest coverage</td><td><span class="tag tag-red">0.63x</span></td><td>Operating profit does not cover interest</td></tr>
+        <tr><td>Arista</td><td>Debt</td><td><span class="tag tag-green">0 (cash $12.4B)</span></td><td>Low risk on the debt-service metrics examined</td></tr>
+        <tr><td>Alphabet</td><td>Net position</td><td><span class="tag tag-green">cash $126.8B &gt; debt $77.5B</span></td><td>Net cash; insulated from interest-rate risk</td></tr>
+        <tr><td>TSMC</td><td>Cash/debt</td><td><span class="tag tag-green">3.17</span></td><td>Net cash; a liquidity fortress</td></tr>
+      </table></div>
+      <p class="chart-src">Source: CRWV<sup class="fn"><a href="#fn4">4</a></sup>; SMCI<sup class="fn"><a href="#fn17">17</a></sup>; Intel<sup class="fn"><a href="#fn14">14</a></sup>; Arista<sup class="fn"><a href="#fn15">15</a></sup>; Alphabet<sup class="fn"><a href="#fn18">18</a></sup>; TSMC<sup class="fn"><a href="#fn12">12</a></sup>. Date: July 13, 2026. Confidence: high (official filings).</p>
+      <h3>5.3 Leverage and maturity concentration</h3>
+      <ul>
+        <li><strong>Floating-rate risk (high):</strong> CoreWeave's $8.5B DDTL 4.0 facility is priced between SOFR + 2.25% and a fixed 5.9%.<sup class="fn"><a href="#fn4">4</a></sup> In a higher-for-longer environment (§8.4) interest expense can inflate with market rates — and since margin-call thresholds are not public, the full risk is not computable (§10).</li>
+        <li><strong>Maturity / refinancing risk (high):</strong> CoreWeave carries $25.1B of total debt against ~$12.6B of annual revenue and a 36% net loss margin.<sup class="fn"><a href="#fn4">4</a></sup> Its ability to roll debt depends on the second-hand price of the pledged GPUs and credit funds' risk appetite.</li>
+        <li><strong>Structural leverage (medium):</strong> Meta has reported $238B in binding contracts ($107B of &ldquo;non-cancellable&rdquo; commitments in a single quarter).<sup class="fn"><a href="#fn19">19</a></sup> Not debt, but committed future cash outflow (§7.4); combined with a −$24B FCF projection for 2027 (analyst estimate<sup class="fn"><a href="#fn20">20</a></sup>) it creates payment-schedule pressure.</li>
+        <li><strong>Large but manageable:</strong> Amazon borrowed $72B in 2026<sup class="fn"><a href="#fn6">6</a></sup>; Fitch rates it AA-, investment grade<sup class="fn"><a href="#fn21">21</a></sup>, so refinancing risk is low.</li>
+      </ul>
+      <h3>5.4 Financial fragility ranking</h3>
+      <p>By financial fragility (independent of §4 systemic impact) — from most fragile to most solid:</p>
+      <ol>
+        <li><strong>CoreWeave</strong> — current ratio 0.31, GPU-collateralized floating-rate debt, loss-making. The most likely near-term financial break point.</li>
+        <li><strong>Super Micro</strong> — D/E 115%, net margin 3.70%; the leverage + thin-margin combination.</li>
+        <li><strong>Intel</strong> — interest coverage 0.63x; structural profitability problem (P/E −175.3x<sup class="fn"><a href="#fn14">14</a></sup>).</li>
+        <li><strong>Meta</strong> — not debt, but a massive cash commitment + negative FCF projection.</li>
+        <li><strong>Amazon</strong> — heavy borrowing but investment-grade rating and strong operating cash.</li>
+        <li><strong>Arista, Alphabet, TSMC, ASML</strong> — low risk on the debt-service and liquidity metrics examined.</li>
+      </ol>
+      <div class="insight-box warn"><strong>Key distinction:</strong> This ranking answers &ldquo;which company is more financially fragile?&rdquo; — not &ldquo;whose failure collapses the system?&rdquo; The answer to the second question is in §4, and the two lists are <strong>deliberately different.</strong></div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">🏭 6. Company and Layer Analysis</h2></div>
+    <div class="section-body">
+      <p>The six layers of the value chain are examined one by one. For each company, key financials and a primary risk-type label are given (from the four risk types in §2.2). Data as of July 13, 2026; &ldquo;analyst estimate&rdquo; and &ldquo;scenario assumption&rdquo; are explicitly labeled.</p>
+      <h3>6.1 Layer 1 — Physical Production: Lithography and Foundries</h3>
+      <div class="company"><h4>ASML Holding <span class="tag tag-red">operational supply</span><span class="tag tag-orange">market/valuation</span></h4>
+        <p>The world's only supplier of EUV lithography machines. Q1 2026: €8.76B net sales, €2.75B net income; FY2026 revenue guidance €36–40B, gross margin 51–53%.<sup class="fn"><a href="#fn22">22</a></sup> Balance sheet: €8.3B cash and short-term investments vs. €2.7B total debt (D/E 13%).<sup class="fn"><a href="#fn3">3</a></sup> P/E of 60.8x reflects the monopoly premium.<sup class="fn"><a href="#fn23">23</a></sup> Financial default risk low on the metrics examined.</p></div>
+      <div class="company"><h4>TSMC <span class="tag tag-red">operational supply (geopolitical)</span></h4>
+        <p>The world's largest independent foundry. Q1 2026: NT$1.134T (~$35.9B) revenue, NT$572.48B net income; gross margin 66.2%; 74% of revenue from 7nm-and-below leading-edge nodes (a revenue-composition figure, not market share).<sup class="fn"><a href="#fn1">1</a></sup> Interest coverage 242.5x, cash/debt 3.17; 2026 capex of $52–56B financed entirely from its own free cash flow.<sup class="fn"><a href="#fn2">2</a>,<a href="#fn24">24</a></sup> S&amp;P revised the outlook to Positive.<sup class="fn"><a href="#fn25">25</a></sup> Financial default risk very low.</p></div>
+      <div class="company"><h4>GlobalFoundries <span class="tag tag-orange">market/valuation + competition</span></h4>
+        <p>Focused on legacy nodes; not benefiting from the AI boom at TSMC scale. Quarterly revenue $1.63B; net debt/equity 9.8%; interest coverage 16.5x.<sup class="fn"><a href="#fn13">13</a></sup> Insider-selling signal: a strategy executive sold 78% of his shares.<sup class="fn"><a href="#fn26">26</a></sup> Financial default risk low.</p></div>
+      <div class="company"><h4>Intel <span class="tag tag-red">financial default pressure</span><span class="tag tag-orange">strategic/management</span></h4>
+        <p>Carrying the financial cost of the foundry pivot. The foundry unit's quarterly external-customer revenue is just $174M against a $2.4B operating loss; interest coverage 0.63x; P/E −175.3x.<sup class="fn"><a href="#fn14">14</a></sup> The stock fell 21% in a week after reports the 18A process would reach profitability late (interpretation contested across sources).<sup class="fn"><a href="#fn27">27</a></sup> Systemic impact low (strong substitution in foundry).</p></div>
+      <h3>6.2 Layer 2 — Chip Designers (Fabless)</h3>
+      <div class="company"><h4>NVIDIA <span class="tag tag-red">TSMC dependency</span><span class="tag tag-orange">market/valuation</span></h4>
+        <p>The de-facto standard for training and inference hardware. Quarterly revenue growth 85%; analysts project 96% growth for Q2 (analyst estimate).<sup class="fn"><a href="#fn28">28</a>,<a href="#fn29">29</a></sup> Market cap ~$5.1T. Its strength: pricing power and the CUDA ecosystem. Financial default risk low (strong operating cash).</p></div>
+      <div class="company"><h4>AMD <span class="tag tag-orange">high expectations + competition</span></h4>
+        <p>Data-center revenue up 57% YoY; forward P/E 51.5, P/S 11.6 (a 44% earnings-growth expectation is priced in).<sup class="fn"><a href="#fn30">30</a>,<a href="#fn31">31</a></sup> Per Lisa Su, agentic AI workloads take the server-CPU market to $120B by 2030 (executive projection / estimate). Financial default risk low.</p></div>
+      <div class="company"><h4>Broadcom <span class="tag tag-orange">market/valuation + customer concentration</span></h4>
+        <p>58% of revenue from semiconductors, 42% from infrastructure software; net margin 41.96%; D/E 0.74x; P/E 66.5x.<sup class="fn"><a href="#fn16">16</a></sup> Strong free cash flow supports debt service. Financial default risk low.</p></div>
+      <div class="company"><h4>Qualcomm <span class="tag tag-orange">strategic transition</span></h4>
+        <p>Pivoting from mobile to AI data centers; Dragonfly C1000 supply partnership for Meta's next-gen servers; $20B buyback program.<sup class="fn"><a href="#fn32">32</a></sup> Market cap ~$196B. Financial default risk low.</p></div>
+      <h3>6.3 Layer 3 — Data Center, Network and Energy Infrastructure</h3>
+      <div class="company"><h4>Arista Networks <span class="tag tag-orange">customer concentration</span><span class="tag tag-orange">market/valuation</span></h4>
+        <p>Data-center Ethernet networking. Zero debt, $12.4B cash; revenue up 35.1% YoY to $2.7B; net margin 38.3%; P/E 63.4.<sup class="fn"><a href="#fn15">15</a></sup> Fully sheltered from the high-rate environment. Zero debt does not mean &ldquo;risk-free&rdquo; — revenue-decline and valuation risk remain.</p></div>
+      <div class="company"><h4>Super Micro Computer <span class="tag tag-red">leverage + margins</span><span class="tag tag-orange">operational history</span></h4>
+        <p>Server assembly. D/E 115% (= 1.15x); gross margin down to 8.39%, net margin 3.70%; P/E 14.9.<sup class="fn"><a href="#fn17">17</a></sup> The high-leverage + thin-margin combination is macro-shock-sensitive. Systemic impact low (Dell/HPE can substitute).</p></div>
+      <div class="company"><h4>Constellation Energy <span class="tag tag-red">criticality of power supply</span><span class="tag tag-orange">regulatory</span></h4>
+        <p>Nuclear/clean energy; the physical capacity wall of data-center construction. 2026 revenue target $36.5B after the Calpine acquisition; D/E 0.67x (below the utility average); interest coverage 16.5x; total debt $22.46B.<sup class="fn"><a href="#fn11">11</a>,<a href="#fn33">33</a></sup> Financial default risk low (stable utility cash flow).</p></div>
+      <h3>6.4 Layer 4 — Hyperscalers and the Capex Spiral</h3>
+      <p>This layer is where &ldquo;circular financing&rdquo; risk concentrates: massive capex financed with debt and equity issuance, while the return depends heavily on LLM revenue (§3.3).</p>
+      <div class="company"><h4>Amazon <span class="tag tag-orange">FCF erosion + investment discipline</span></h4>
+        <p>AWS quarterly growth 28.4% (highest in 15 quarters); total revenue $181.5B.<sup class="fn"><a href="#fn34">34</a></sup> Capex $131B in 2025 → $200B in 2026; trailing-12-month FCF eroded from $25.9B to $1.2B.<sup class="fn"><a href="#fn34">34</a></sup> In 2026: $25B of bonds in 8 tranches ($62B of demand), $72B total annual borrowing; Fitch AA-.<sup class="fn"><a href="#fn6">6</a>,<a href="#fn21">21</a></sup> Financial default risk low (investment grade, strong operating cash).</p></div>
+      <div class="company"><h4>Meta <span class="tag tag-red">cash-commitment pressure</span><span class="tag tag-orange">market/valuation</span></h4>
+        <p>Q1 revenue up 33% to $56.3B.<sup class="fn"><a href="#fn7">7</a></sup> 2026 capex $125–145B; $107B of &ldquo;non-cancellable&rdquo; commitments in a single quarter, $238B total binding contracts; long-term debt $58.7B, cash $81.2B.<sup class="fn"><a href="#fn19">19</a></sup> 2027 FCF projection −$24B (analyst estimate).<sup class="fn"><a href="#fn20">20</a></sup> Financial default risk low, but the negative FCF projection must be monitored.</p></div>
+      <div class="company"><h4>Alphabet <span class="tag tag-orange">investment discipline</span><span class="tag tag-green">strongest balance sheet</span></h4>
+        <p>Google Cloud revenue up 63% to $20B, operating margin 36.1%.<sup class="fn"><a href="#fn8">8</a></sup> 2026 capex $180–190B; instead of borrowing, an $84.75B equity raise (including a $10B private placement to Berkshire); long-term debt $77.5B, cash $126.8B.<sup class="fn"><a href="#fn18">18</a></sup> The equity raise takes no interest-rate risk; net cash position.</p></div>
+      <div class="company"><h4>Microsoft <span class="tag tag-orange">partnership concentration</span></h4>
+        <p>Azure growth 39%; long-term debt $46.1B.<sup class="fn"><a href="#fn35">35</a></sup> The profit-share obligation in the OpenAI partnership is capped at $38B — predictable cash outflow.<sup class="fn"><a href="#fn36">36</a></sup> Financial default risk low.</p></div>
+      <div class="company"><h4>Apple <span class="tag tag-green">outside the spiral</span></h4>
+        <p>Away from massive AI data-center construction; focused on edge AI. Market cap ~$4.64T.<sup class="fn"><a href="#fn37">37</a></sup> Relatively low risk; market/valuation and consumer-demand risk.</p></div>
+      <h3>6.5 Layer 5 — Neo-Cloud Providers (Most Fragile)</h3>
+      <div class="company"><h4>CoreWeave <span class="tag tag-red">financial default</span><span class="tag tag-red">financial contagion</span></h4>
+        <p>Backlog of $99.4B as of March 2026 — but backlog is not debt; it is expected revenue visibility (§7.4). 2026 capex $31–35B; projected annual revenue ~$12.6B; total debt $25.1B; net loss margin 36%; current ratio 0.31.<sup class="fn"><a href="#fn4">4</a>,<a href="#fn38">38</a></sup> J.P. Morgan DDTL 4.0 facility of $8.5B, priced between SOFR + 2.25% and a fixed 5.9%.<sup class="fn"><a href="#fn4">4</a></sup> S&amp;P assigned a speculative 'B' rating to $3.5B of notes.<sup class="fn"><a href="#fn5">5</a></sup> <strong>The system's most likely near-term financial break point.</strong></p></div>
+      <div class="company"><h4>Nebius Group <span class="tag tag-red">capex/revenue imbalance</span><span class="tag tag-orange">revenue concentration</span></h4>
+        <p>Q1 2026 revenue up 684% YoY to $399M; adjusted EBITDA positive; cash reserves ~$9.3B; 2026 capex target $20–25B.<sup class="fn"><a href="#fn39">39</a>,<a href="#fn40">40</a></sup> 98% of revenue from AI cloud rental — concentration risk.</p></div>
+      <div class="company"><h4>Lambda Labs (private, IPO track) <span class="tag tag-red">refinancing / IPO timing</span></h4>
+        <p>November 2025 valuation $5.9B; ARR $760M (79% growth); net loss ~$175M.<sup class="fn"><a href="#fn41">41</a></sup> Seeking a $1B syndication + $350M pre-IPO financing to fund growth; H2 2026 listing target.<sup class="fn"><a href="#fn42">42</a></sup> <strong>Note:</strong> this planned financing is not final and cannot be counted as cash in a runway calculation (§7.5).</p></div>
+      <h3>6.6 Layer 6 — Foundation Models (LLM Developers)</h3>
+      <div class="company"><h4>OpenAI <span class="tag tag-red">funding/runway dependency</span><span class="tag tag-orange">revenue quality not public</span></h4>
+        <p>March 2026: $122B funding round (SoftBank, Amazon, NVIDIA, Microsoft) at an $852B post-money valuation.<sup class="fn"><a href="#fn43">43</a>,<a href="#fn9">9</a></sup> ARR $25B; 2026 inference cost $14.1B, total cash burn $27B (analyst estimate).<sup class="fn"><a href="#fn44">44</a></sup> IPO postponed to 2027; sale of a 5% stake to the US government for $42.6B under negotiation (conflicting/contested information).<sup class="fn"><a href="#fn45">45</a></sup> Churn and multi-year contract share not public (§10).</p></div>
+      <div class="company"><h4>Anthropic <span class="tag tag-red">funding/runway dependency</span><span class="tag tag-orange">revenue quality uncertain</span></h4>
+        <p>$65B investment led by Sequoia + Altimeter at a $965B valuation; ARR up 800% to $47B as of May 2026 (surpassing OpenAI, analyst estimate).<sup class="fn"><a href="#fn46">46</a>,<a href="#fn47">47</a></sup> Confidential S-1 filing in June 2026; $100B infrastructure contract via AWS.<sup class="fn"><a href="#fn48">48</a></sup> With net cash and burn not public, <strong>runway is not computable — it must not be ranked</strong> (§7.5, §10).</p></div>
+      <h3>6.7 Cross-layer synthesis</h3>
+      <ol>
+        <li><strong>The debt spiral is at the top, not the base.</strong> The foundational layers (ASML, TSMC, NVIDIA, Arista) self-finance with strong operating cash. Debt and commitment burdens concentrate in hyperscaler capex, neo-cloud loans and LLM funding rounds.</li>
+        <li><strong>The most fragile link is not the most systemically critical one.</strong> CoreWeave/Nebius/Lambda are financially weakest; but their failure does not stop physical production. TSMC is financially strongest; but its physical loss stops the system.</li>
+        <li><strong>Energy is the new bottleneck.</strong> Constellation's inclusion in layer 3 is no accident: even with strong demand, electricity and grid capacity can cap growth (§8).</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">🧮 7. Corrected Financial Metrics</h2></div>
+    <div class="section-body">
+      <p>This section corrects ratios that can be used misleadingly and replaces each with its methodologically sound counterpart. The goal is to avoid comparing companies in the wrong units.</p>
+      <h3>7.1 Why ARR ≠ cash burn</h3>
+      <p>ARR is the annualized revenue run-rate at the end of a period; cash burn is net cash outflow during a period. They are different economic concepts and cannot be compared directly. &ldquo;ARR growth must outpace burn&rdquo; is dimensionally wrong (one is a revenue level/rate, the other a cash deficit).</p>
+      <p><strong>OpenAI example:</strong> ARR of $25B against an estimated 2026 cash burn of ~$27B (analyst estimate<sup class="fn"><a href="#fn44">44</a></sup>). This does not mean &ldquo;ARR &lt; burn, they'll fail&rdquo; — revenue not included in ARR, one-off capex inflating burn, and funding rounds change the picture. The right question: is gross contribution margin positive and is there a path to operating cash flow? Since that data is not public, the verdict for OpenAI is <strong>&ldquo;not computable&rdquo;</strong> (§7.5). Metrics to use instead: gross contribution margin, OCF, FCF, monthly net cash burn, burn multiple, net revenue retention, churn, unit economics per GPU-hour.</p>
+      <h3>7.2 Why capex/FCF is not a core metric</h3>
+      <p>FCF is what remains of operating cash flow (OCF) after capex. Dividing capex by FCF therefore produces a ratio that mathematically explodes as FCF approaches zero — economically unstable.</p>
+      <p><strong>Amazon example:</strong> A forward 2026 capex estimate (~$200B) cannot be mixed with trailing-12-month FCF ($1.2B) — dividing different periods misleads. In the official Q1 data, trailing-12-month OCF is $148.5B and FCF $1.2B;<sup class="fn"><a href="#fn34">34</a></sup> hence same-period capex ≈ OCF − FCF = $147.3B. A ratio like &ldquo;200 / 1.2 = 167x&rdquo; explodes on period mismatch and says nothing about Amazon's real funding gap — Amazon covers $72B of borrowing with an investment-grade AA- rating<sup class="fn"><a href="#fn21">21</a></sup> and strong OCF; FCF nearing zero is a deliberate growth-capex choice.</p>
+      <div class="insight-box"><strong>The sounder alternative — capex/OCF:</strong> For Amazon, same-period OCF $148.5B, capex ≈ $147.3B → capex/OCF ≈ <strong>99%</strong>.<sup class="fn"><a href="#fn34">34</a></sup> This shows &ldquo;capex is consuming nearly all operating cash; the funding gap is closed with debt&rdquo; without the ratio blowing up.</div>
+      <div class="tbl"><table>
+        <tr><th>Metric</th><th>Problematic approach</th><th>Corrected approach</th><th>Why</th></tr>
+        <tr><td>Funding gap</td><td>capex/FCF</td><td>capex/OCF + net debt/EBITDA</td><td>ratio unstable as FCF nears zero</td></tr>
+        <tr><td>Debt service</td><td>—</td><td>interest coverage (EBIT/interest)</td><td>directly measures payment capacity</td></tr>
+        <tr><td>Growth burden</td><td>—</td><td>maintenance vs. growth capex split</td><td>if data is missing, the split is noted as unavailable</td></tr>
+      </table></div>
+      <h3>7.3 Net debt / EBITDA and fixed-charge coverage</h3>
+      <ul>
+        <li><strong>Net debt / EBITDA:</strong> (total debt − cash) / EBITDA. High positive values signal debt-rollover pressure. CoreWeave (debt $25.1B, loss-making) is worst on this metric; TSMC/Arista/Alphabet are negative (net cash).</li>
+        <li><strong>Fixed-charge coverage:</strong> (EBIT + fixed charges) / (interest + fixed charges). Includes non-cancellable commitments as &ldquo;fixed charges&rdquo;; Meta's $238B commitment<sup class="fn"><a href="#fn19">19</a></sup> becomes more visible here than in a debt ratio.</li>
+        <li><strong>Liquidity bridge:</strong> (cash + undrawn committed credit) / next 12–24 months of cash needs. With a 0.31 current ratio<sup class="fn"><a href="#fn4">4</a></sup>, CoreWeave's bridge is weak.</li>
+      </ul>
+      <h3>7.4 Separating liability types: debt ≠ commitment ≠ backlog ≠ equity raise</h3>
+      <div class="tbl"><table>
+        <tr><th>Type</th><th>Example</th><th>Balance-sheet liability?</th><th>Risk</th></tr>
+        <tr><td>Financial leverage (debt)</td><td>Amazon $72B bonds; CoreWeave $25.1B</td><td>Yes</td><td>Interest + principal repayment mandatory</td></tr>
+        <tr><td>Fixed cash commitment</td><td>Meta $238B binding contracts; Anthropic $100B AWS</td><td>Yes (future cash outflow)</td><td>Non-cancellable; payment-schedule pressure</td></tr>
+        <tr><td>Backlog</td><td>CoreWeave $99.4B</td><td>No</td><td>Revenue visibility; risk depends on cancellation clauses + customer concentration + delivery margin</td></tr>
+        <tr><td>Equity raise</td><td>Alphabet $84.75B</td><td>No</td><td>Not debt; dilutes existing holders, shifting risk to equity — not &ldquo;mortgaging the future&rdquo;</td></tr>
+      </table></div>
+      <p>Whether backlog is a risk cannot be judged without cancellation clauses, delivery timelines, customer concentration and expected margin; for CoreWeave those details are not public (§10).</p>
+      <h3>7.5 The correct runway formula</h3>
+      <p>A crude &ldquo;funding round / annual loss&rdquo; both counts planned financing as cash and confuses net loss with cash burn. The correct formula:</p>
+      <div class="formula">Runway (months) =
+  ( Current unrestricted cash
+  + committed and available credit
+  − minimum operating liquidity
+  − debt/principal coming due
+  − mandatory capex )
+  / monthly scenario-adjusted net cash burn</div>
+      <p><strong>Rules:</strong> (1) net loss ≠ cash burn; (2) a funding round is not automatically all cash (primary/secondary, tranches, conditions must be separated); (3) planned IPO or credit financing is not added to liquidity until final; (4) if data is insufficient, the result is &ldquo;not computable&rdquo; — no ranking.</p>
+      <ul>
+        <li><strong>OpenAI:</strong> a $122B round was reported<sup class="fn"><a href="#fn9">9</a></sup>; but the primary/secondary split, tranches and conditions are unknown; no capex/operating split of the burn. Result: <span class="tag tag-orange">not computable</span> (interpretable only as a &ldquo;very optimistic upper bound&rdquo;).</li>
+        <li><strong>Anthropic:</strong> net cash + burn not public. Result: <span class="tag tag-orange">not computable / insufficient data</span>. A non-computable value cannot enter a runway ranking.</li>
+        <li><strong>Lambda:</strong> $1B syndication + $350M pre-IPO financing is planned, not final;<sup class="fn"><a href="#fn42">42</a></sup> the ~$175M net loss is not burn.<sup class="fn"><a href="#fn41">41</a></sup> Result: <span class="tag tag-orange">not computable</span>.</li>
+        <li><strong>CoreWeave:</strong> the liquidity bridge must be built; with a 0.31 current ratio the short-term bridge is weak, but covenant thresholds are needed for a definitive runway (§10).</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">🌪️ 8. Scenarios and Stress Tests</h2></div>
+    <div class="section-body">
+      <p>Five financial/operational/macro scenarios plus a base and a positive scenario. Principles: each scenario is tied to the §2.6 numeric probability band (center + lower/upper bounds); <strong>realization horizon</strong> and <strong>disruption duration</strong> are separate fields; scenarios are not independent — probabilities cannot simply be added (§8.8); each scenario gets a genuine <strong>falsifier</strong> — events that merely postpone a scenario do not count.</p>
+      <div class="insight-box warn"><strong>Numeric framework caveat:</strong> the percentages below apply the transparent verbal→numeric mapping in §2.6; they are not calibrated model output. <strong>Probability–impact distinction:</strong> the most destructive systemic collapse is a TSMC-driven physical shock (low probability / very high impact); the most likely near-term financial break is in the neo-cloud layer (high probability / low-to-mid impact). These occupy different corners of the §4.1 matrix; there is no contradiction.</div>
+      <h3>8.1 Scenario 1 — Neo-cloud credit default (CoreWeave)</h3>
+      <div class="chart-card">
+        <div class="chart-title">Figure 8.1 — Neo-cloud credit default contagion chain (domino)</div>
+        <div class="domino">
+          <div class="domino-step amber"><div class="domino-num">1</div><div class="domino-body"><b>GPU rental prices fall</b><span>Oversupply + slowing demand break the unit economics</span></div></div>
+          <div class="domino-arrow">↓</div>
+          <div class="domino-step red"><div class="domino-num">2</div><div class="domino-body"><b>CoreWeave cannot service interest</b><span>$25.1B debt · SOFR+2.25%–5.9% · 36% net loss margin</span></div></div>
+          <div class="domino-arrow">↓</div>
+          <div class="domino-step red"><div class="domino-num">3</div><div class="domino-body"><b>Creditors seize the GPUs</b><span>The $8.5B GPU-collateralized DDTL 4.0 (JPM) is triggered</span></div></div>
+          <div class="domino-arrow">↓</div>
+          <div class="domino-step deepred"><div class="domino-num">4</div><div class="domino-body"><b>Discounted second-hand sales / glut</b><span>Generation + location + power + software mismatch slow the transfer</span></div></div>
+          <div class="domino-arrow">↓</div>
+          <div class="domino-step amber"><div class="domino-num">5</div><div class="domino-body"><b>NVIDIA pricing power squeezed</b><span>Second-hand older generations affect new-gen pricing only in a LIMITED/TEMPORARY way</span></div></div>
+          <div class="domino-arrow">↓</div>
+          <div class="domino-step red"><div class="domino-num">6</div><div class="domino-body"><b>SMCI stress</b><span>Server/rack supplier order cancellations + inventory risk</span></div></div>
+          <div class="domino-arrow">↓</div>
+          <div class="domino-step green"><div class="domino-num">7</div><div class="domino-body"><b>BUFFER — the hyperscalers</b><span>Buy distressed assets at a discount, halting the spread; physical production never stops</span></div></div>
+        </div>
+        <p class="chart-src">Source: §3.3 circular-financing analysis and §6.5 CoreWeave data. Date: July 13, 2026. Method: qualitative propagation model; scenario assumption. Confidence: medium.</p>
+      </div>
+      <div class="tbl"><table>
+        <tr><th>Field</th><th>Content</th></tr>
+        <tr><td>Realization horizon</td><td>Next 12 months (highest sensitivity) / 36 months</td></tr>
+        <tr><td>Trigger</td><td>Falling GPU rental demand → falling hourly rental rates</td></tr>
+        <tr><td>Numeric threshold</td><td>A double-digit revenue decline could create covenant pressure; the exact threshold is not computable because the DDTL covenants are not public (§10)</td></tr>
+        <tr><td>First affected</td><td>CoreWeave (current ratio 0.31, SOFR-based interest)<sup class="fn"><a href="#fn4">4</a></sup></td></tr>
+        <tr><td>Contagion channel</td><td>Creditor credit funds → GPU collateral seizure → second-hand hardware supply → NVIDIA pricing power → share prices</td></tr>
+        <tr><td>Buffers</td><td>Cash-rich hyperscalers (Alphabet, Amazon, Microsoft) can absorb distressed GPUs/capacity</td></tr>
+        <tr><td>Second-round effects</td><td>Credit funds book losses; neo-cloud financing conditions tighten; Nebius/Lambda borrowing costs rise</td></tr>
+        <tr><td>Asset-transfer frictions</td><td>GPUs cannot be redeployed instantly due to generation, location, power infrastructure and software compatibility; seizure → redeployment can take months</td></tr>
+        <tr><td>Recovery time</td><td>6–18 months (financial markets); physical production does not stop</td></tr>
+        <tr><td>Probability (12 mo)</td><td><span class="tag tag-red">Medium-high: 50–70%, center 60%</span> (transparent mapping, §2.6)</td></tr>
+        <tr><td>Impact range</td><td>Severe but contained; losses in financial markets, no disruption in the physical chain</td></tr>
+        <tr><td>Confidence</td><td>Medium (covenant details unknown)</td></tr>
+        <tr><td>Genuine falsifier</td><td>CoreWeave's current ratio rising sustainably above 1.0 without credit expansion, and rental prices stabilizing. A covenant waiver does not falsify default — it merely postpones it, so it does not count.</td></tr>
+      </table></div>
+      <p><strong>Critical note:</strong> Second-hand older-generation GPUs have limited effect on new-generation NVIDIA pricing — new chips are in a different performance class; a glut hits older-generation prices without directly breaking the newest generation's pricing power.</p>
+      <h3>8.2 Scenario 2 — Hyperscaler capex cut (capital discipline)</h3>
+      <div class="tbl"><table>
+        <tr><th>Field</th><th>Content</th></tr>
+        <tr><td>Realization horizon</td><td>Next 36 months / 5 years</td></tr>
+        <tr><td>Trigger</td><td>Wall Street pressure over Meta's 2027 FCF of −$24B (analyst estimate<sup class="fn"><a href="#fn20">20</a></sup>) and Amazon's $1.2B FCF<sup class="fn"><a href="#fn34">34</a></sup>; LLM ROI expectations unmet</td></tr>
+        <tr><td>Numeric threshold</td><td>Cancellation/deferral of ~20% of Meta's $238B contracts<sup class="fn"><a href="#fn19">19</a></sup> or Amazon's $200B capex<sup class="fn"><a href="#fn34">34</a></sup></td></tr>
+        <tr><td>First affected</td><td>NVIDIA (orders), Arista (network sales), Super Micro (servers)</td></tr>
+        <tr><td>Contagion channel</td><td>Demand shock upstream: hyperscaler → hardware maker → foundry → equipment (§3.1, Flow 3)</td></tr>
+        <tr><td>Buffers</td><td>Advertising/e-commerce/enterprise-software revenues provide cross-subsidy; a cut may produce efficiency + custom-ASIC migration rather than defaults</td></tr>
+        <tr><td>Second-round effects</td><td>Tech market-cap wipeout; supplier margin squeeze; layoffs</td></tr>
+        <tr><td>Recovery time</td><td>1–3 years (an &ldquo;AI investment recession&rdquo;)</td></tr>
+        <tr><td>Probability (36 mo)</td><td><span class="tag tag-orange">Medium: 30–50%, center 40%</span> (transparent mapping, §2.6)</td></tr>
+        <tr><td>Impact range</td><td>Sectoral downturn; not systemic collapse</td></tr>
+        <tr><td>Confidence</td><td>Medium (ROI expectations unmeasurable, §10)</td></tr>
+        <tr><td>Genuine falsifier</td><td>AI-attributable operating cash flow rising while capex levels hold, with capex/OCF falling thanks to revenue growth. Capex/OCF falling because capex was cut does not falsify the scenario — it confirms it, so it does not count.</td></tr>
+      </table></div>
+      <p><strong>Alternative path (not favorable to the scenario):</strong> A capex cut does not inevitably mean an &ldquo;AI Winter&rdquo;. Companies can cut capex while raising efficiency, migrate to custom ASICs (Broadcom/Qualcomm) and lower unit cost — changing the composition, not the total, of chip demand. In a recession some companies increase automation/AI investment to cut labor cost; demand is not one-directional.</p>
+      <h3>8.3 Scenario 3 — TSMC physical disruption (catastrophic impact)</h3>
+      <p>Because &ldquo;total and irreparable loss&rdquo; framing breaks the probability–impact balance, this scenario is framed as a <strong>partial disruption</strong> rather than total loss. Two questions are separated: <strong>(a)</strong> the probability that any leading-edge disruption occurs within a horizon, and <strong>(b)</strong> the conditional probability of how long it lasts if it occurs.</p>
+      <h4>(a) Realization horizon — any leading-edge disruption</h4>
+      <div class="tbl"><table>
+        <tr><th>Horizon</th><th>Disruption probability</th><th>Confidence</th></tr>
+        <tr><td>Next 12 months</td><td>Low: 10–20%, center 15%</td><td>Low (geopolitical base rate not public, §10)</td></tr>
+        <tr><td>Next 36 months</td><td>Low-medium: 20–30%, center 25%</td><td>Low</td></tr>
+        <tr><td>Next 60 months</td><td>Lower end of medium: ~30%</td><td>Low</td></tr>
+      </table></div>
+      <h4>(b) Conditional duration — if a disruption occurs, it lasts at least</h4>
+      <div class="tbl"><table>
+        <tr><th>Duration threshold</th><th>Conditional probability</th><th>Impact</th><th>Recovery</th></tr>
+        <tr><td>At least 1 month</td><td>High: ~70%</td><td>Inventory + price shock; production reshuffling</td><td>Weeks–months</td></tr>
+        <tr><td>At least 6 months</td><td>Medium: 30–50%, center 40%</td><td>Leading-edge supply severely constrained; NVIDIA/AMD/Broadcom production plans break</td><td>1–2 years</td></tr>
+        <tr><td>At least 12 months</td><td>Low-medium: 20–30%, center 25%</td><td>Systemic; global consumer electronics and AI expansion halt</td><td>Years (new capacity build-out)</td></tr>
+      </table></div>
+      <h4>(c) Composite probability (36-month horizon × conditional duration; illustrative, assuming independence)</h4>
+      <div class="formula">≥ 1-month disruption within 36 months ≈ 25% × ~70% ≈ ~18%
+≥ 6-month disruption within 36 months ≈ 25% ×  40% ≈ ~10%
+≥ 12-month disruption within 36 months ≈ 25% ×  25% ≈  ~6%</div>
+      <p>This composite table exists to show that horizon probability and conditional duration are not the same number; it assumes independence and is not a calibrated estimate. The &ldquo;~6% for a ≥12-month catastrophic disruption within 36 months&rdquo; used in §11 is consistent with this framework.</p>
+      <p><strong>Common fields:</strong> Trigger — Taiwan–China tension, naval blockade, typhoon/earthquake. Genuine falsifier — durable de-escalation of Taiwan–China tension; TSMC's non-Taiwan (US/Japan) leading-edge capacity reaching a meaningful share.</p>
+      <p><strong>Reading:</strong> The lowest-probability but highest-impact scenario (§4.1 top-left quadrant). A geopolitical/physical risk, not a financial one; it cannot be measured with debt ratios — the early-warning indicators are Taiwan Strait tension and power supply (§9).</p>
+      <h3>8.4 Macro Scenario A — Higher-for-longer rates</h3>
+      <p>The Fed holds 3.75% through end-2027 on stubborn inflation (PCE 3.84%).<sup class="fn"><a href="#fn49">49</a>,<a href="#fn50">50</a></sup></p>
+      <ul>
+        <li><strong>Realization horizon:</strong> next 24 months. Probability: <span class="tag tag-red">medium-high, 50–70%, center 60%</span> (consistent with current Fed rhetoric). Confidence: medium.</li>
+        <li><strong>Main blow:</strong> highly leveraged, thin-margin companies — Super Micro (D/E 115%) and CoreWeave ($25.1B debt, SOFR-based). Rollover costs jump; default probability rises (conditional probability in §8.8).</li>
+        <li><strong>Sheltered:</strong> Arista (zero debt), Apple (high cash), equity-financed Alphabet.</li>
+        <li><strong>Genuine falsifier:</strong> core CPI approaching the 2% target and the Fed signaling cuts.</li>
+      </ul>
+      <h3>8.5 Macro Scenario B — Geopolitical shock / energy-driven stagflation</h3>
+      <p>A Middle East conflict regionalizes; oil above $100; inflation tops 5%, growth stalls.<sup class="fn"><a href="#fn51">51</a></sup></p>
+      <ul>
+        <li><strong>Realization horizon:</strong> next 24 months. Probability: <span class="tag tag-orange">low-medium, 20–30%, center 25%</span>. Confidence: low.</li>
+        <li><strong>Two-sided pincer:</strong> (1) electricity/commodity costs jump → foundry and data-center operating costs rise; energy providers like Constellation gain value. (2) Inflation makes consumers cut Apple purchases and advertisers cut Google/Meta budgets → Meta's ad revenue + $125–145B capex combine into a cash crunch.</li>
+        <li><strong>Alternative path:</strong> even with strong demand, electricity and grid capacity can cap growth — a bottleneck independent of chip supply that raises Constellation's criticality (§6.3).</li>
+        <li><strong>Genuine falsifier:</strong> oil back below $80 and regional tension subsiding.</li>
+      </ul>
+      <h3>8.6 Base Scenario — Restrictive but functioning system (the likely path)</h3>
+      <p>A framework with only adverse scenarios makes the &ldquo;good-side probability&rdquo; impossible to compute. The base scenario is the single most likely path: higher-for-longer largely persists; a few neo-cloud players (CoreWeave first) struggle and go through refinancing/consolidation; but AI demand and hyperscaler capex broadly keep growing. Physical production (TSMC/ASML) runs uninterrupted.</p>
+      <div class="tbl"><table>
+        <tr><th>Field</th><th>Content</th></tr>
+        <tr><td>Realization horizon</td><td>Next 24–36 months</td></tr>
+        <tr><td>Character</td><td>Growth continues but funding costs stay high; margins under pressure; weak balance sheets get culled, the strong consolidate</td></tr>
+        <tr><td>Visible outcome</td><td>1–2 neo-cloud defaults/consolidations; hyperscaler capex decelerates without an absolute decline; NVIDIA demand slows but stays positive</td></tr>
+        <tr><td>Probability</td><td>Closely tied to &ldquo;continuation without the bad path&rdquo;; quantified in §11 (center ~47%, 36 months)</td></tr>
+        <tr><td>Confidence</td><td>Medium (transparent mapping + qualitative judgment)</td></tr>
+        <tr><td>Falsifying evidence</td><td>A broad, synchronized capex cut + chained neo-cloud defaults (in which case §8.2/§8.1 dominate)</td></tr>
+      </table></div>
+      <h3>8.7 Positive Scenario — Soft landing and improving unit economics</h3>
+      <p>Inflation falls, the Fed starts a cutting cycle in late 2026–2027, funding costs ease; AI unit economics (contribution margin per inference, GPU-hour efficiency) improve; capex/OCF falls on revenue growth while AI-attributable revenue keeps rising.</p>
+      <div class="tbl"><table>
+        <tr><th>Field</th><th>Content</th></tr>
+        <tr><td>Realization horizon</td><td>Next 24–36 months</td></tr>
+        <tr><td>Character</td><td>Financing eases; neo-cloud refinancing gets easier; LLM revenue quality (enterprise contracts) strengthens; valuation pressure recedes</td></tr>
+        <tr><td>Visible outcome</td><td>CoreWeave repairs its current ratio; hyperscaler capex funded by sustainable OCF; TSMC/ASML at full capacity; valuation premium holds</td></tr>
+        <tr><td>Probability</td><td>Quantified in §11 (favorable macro ~35%, 24 months; a &ldquo;very strong bull scenario&rdquo; is not computable with current data)</td></tr>
+        <tr><td>Confidence</td><td>Low-medium (direction of core inflation and AI revenue quality uncertain)</td></tr>
+        <tr><td>Falsifying evidence</td><td>Core CPI staying above 3% and AI-attributable revenue lagging capex growth</td></tr>
+      </table></div>
+      <p><strong>Important:</strong> With current data, the probability of a &ldquo;very strong bull scenario&rdquo; cannot be computed — the true pace of AI unit-economics improvement and LLM revenue quality (churn/NRR) are not public (§10). What can be computed is the system staying resilient without a broad break (§11).</p>
+      <h3>8.8 Cross-scenario dependence and the intersection matrix</h3>
+      <p>Scenarios are not independent: higher-for-longer can trigger both a CoreWeave default and a capex cut; stagflation overlaps with both high rates and capex cuts. Scenario probabilities therefore cannot simply be added — intersections must be netted out (inclusion-exclusion).</p>
+      <div class="tbl"><table>
+        <tr><th>Conditional probability</th><th>Assumption</th></tr>
+        <tr><td>P(CoreWeave default | high rates)</td><td>High (SOFR-based debt)</td></tr>
+        <tr><td>P(capex cut | high LLM churn)</td><td>High</td></tr>
+        <tr><td>P(capex cut | stagflation)</td><td>~60%</td></tr>
+        <tr><td>P(neo-cloud contagion | X% collateral-value drop)</td><td>Sensitive to collateral haircuts</td></tr>
+        <tr><td>P(high rates | stagflation)</td><td>~80%</td></tr>
+      </table></div>
+      <p>Illustrative intersection calculation (24 months, adverse macro environment):</p>
+      <div class="formula">P(adverse macro) = P(higher-for-longer ∪ stagflation)
+= P(H4L) + P(stagflation) − P(H4L ∩ stagflation)
+= 60% + 25% − (25% × 80%)
+= 60% + 25% − 20%
+= ~65%</div>
+      <p>This shows why the naive independent sum (85%) is wrong: without subtracting the intersection (20%), the total probability is inflated. All numbers rest on the §2.6 transparent mapping and the conditional assumptions above; sensitivity ranges are wide.</p>
+      <h3>8.9 Scenario summary</h3>
+      <div class="chart-card">
+        <div class="chart-title">Scenario probabilities — center estimates (transparent mapping, §2.6)</div>
+        <svg viewBox="0 0 640 216" width="100%" height="216" role="img" aria-label="chart"><line x1="190.0" y1="16" x2="190.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="190.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">0%</text><line x1="287.5" y1="16" x2="287.5" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="287.5" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">25%</text><line x1="385.0" y1="16" x2="385.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="385.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">50%</text><line x1="482.5" y1="16" x2="482.5" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="482.5" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">75%</text><line x1="580.0" y1="16" x2="580.0" y2="186" stroke="rgba(148,163,184,.18)" stroke-width="1"/><text x="580.0" y="204" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="inherit">100%</text><text x="178" y="36.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">S1 · Neo-cloud default (12 mo)</text><rect x="190" y="22.8" width="234.0" height="19.0" rx="4" fill="#f87171" opacity="0.88"/><text x="432.0" y="36.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">60% (50–70)</text><text x="178" y="70.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">A · Higher-for-longer (24 mo)</text><rect x="190" y="56.8" width="234.0" height="19.0" rx="4" fill="#fbbf24" opacity="0.88"/><text x="432.0" y="70.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">60% (50–70)</text><text x="178" y="104.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">S2 · Capex cut (36 mo)</text><rect x="190" y="90.8" width="156.0" height="19.0" rx="4" fill="#fbbf24" opacity="0.88"/><text x="354.0" y="104.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">40% (30–50)</text><text x="178" y="138.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">B · Stagflation (24 mo)</text><rect x="190" y="124.8" width="97.5" height="19.0" rx="4" fill="#fbbf24" opacity="0.88"/><text x="295.5" y="138.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">25% (20–30)</text><text x="178" y="172.3" text-anchor="end" font-size="11.5" fill="#e2e8f0" font-family="inherit">S3 · TSMC ≥12 mo (in 36 mo)</text><rect x="190" y="158.8" width="23.4" height="19.0" rx="4" fill="#dc2626" opacity="0.88"/><text x="221.4" y="172.3" font-size="12" font-weight="700" fill="#e2e8f0" font-family="inherit">~6% (composite)</text></svg>
+        <p class="chart-caption">Center estimates; the bands are wide (e.g. S1: 50–70%, S3 composite: ~6% for a ≥12-month disruption within 36 months). Probabilities are not independent and cannot simply be added (§8.8).</p>
+        <p class="chart-src">Source: §6 company data and §8.4–8.5 macro data. Date: July 13, 2026. Confidence: low-medium.</p>
+      </div>
+      <div class="tbl"><table>
+        <tr><th>Scenario</th><th>Horizon</th><th>Disruption duration</th><th>Probability (center)</th><th>Impact</th><th>Type</th></tr>
+        <tr><td>1 — Neo-cloud default</td><td>12 mo</td><td>—</td><td>Medium-high (60%)</td><td>severe but contained</td><td>financial contagion</td></tr>
+        <tr><td>2 — Hyperscaler capex cut</td><td>36 mo</td><td>—</td><td>Medium (40%)</td><td>sectoral downturn</td><td>demand shock</td></tr>
+        <tr><td>3 — TSMC physical disruption</td><td>12/36/60 mo</td><td>1/6/12 mo (conditional)</td><td>horizon 15/25/30%; ≥12 mo within 36 mo composite ~6%</td><td>catastrophic (≥12 mo)</td><td>operational/geopolitical</td></tr>
+        <tr><td>A — Higher-for-longer</td><td>24 mo</td><td>—</td><td>Medium-high (60%)</td><td>defaults among leveraged names</td><td>financial</td></tr>
+        <tr><td>B — Geopolitical stagflation</td><td>24 mo</td><td>—</td><td>Low-medium (25%)</td><td>two-sided cost + demand</td><td>macro</td></tr>
+        <tr><td>Base — Restrictive but functioning</td><td>24–36 mo</td><td>—</td><td>§11 (~47%)</td><td>growth continues, the weak get culled</td><td>base</td></tr>
+        <tr><td>Positive — Soft landing</td><td>24–36 mo</td><td>—</td><td>§11 (~35% macro)</td><td>unit economics improve</td><td>positive</td></tr>
+      </table></div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">🚨 9. Early-Warning Indicator Panel</h2></div>
+    <div class="section-body">
+      <p>This panel tracks the two risk types matching the two corners in §4.3: <strong>liquidity/credit risk</strong> (bottom-right quadrant, neo-cloud) and <strong>physical/geopolitical risk</strong> (top-left quadrant, TSMC). Thresholds are judgment-based reference values, not precise triggers.</p>
+      <h3>9.1 Financial / liquidity indicators (neo-cloud and leveraged layer)</h3>
+      <div class="tbl"><table>
+        <tr><th>Indicator</th><th>Threshold to watch</th><th>Meaning</th><th>Companies</th></tr>
+        <tr><td>Hourly GPU rental price</td><td>double-digit trend decline</td><td>neo-cloud revenue pressure; default precursor</td><td>CoreWeave, Nebius, Lambda</td></tr>
+        <tr><td>CoreWeave current ratio</td><td>below 1.0 → rising = positive; falling = negative</td><td>short-term payment capacity (currently 0.31)</td><td>CoreWeave</td></tr>
+        <tr><td>DDTL covenant thresholds</td><td><span class="tag tag-orange">unknown (§10)</span></td><td>the loan-recall point; not public</td><td>CoreWeave</td></tr>
+        <tr><td>SOFR spread / floating rates</td><td>spread widening</td><td>floating-rate debt-service cost</td><td>CoreWeave, SMCI</td></tr>
+        <tr><td>Hyperscaler capex/OCF</td><td>approaching/exceeding 100%</td><td>growth capex consuming all operating cash; debt dependency</td><td>Amazon, Meta, Alphabet</td></tr>
+        <tr><td>Negative FCF projection</td><td>confirmation of realization</td><td>investment-discipline pressure</td><td>Meta (2027 est. −$24B)</td></tr>
+        <tr><td>LLM churn / net revenue retention</td><td><span class="tag tag-orange">unknown (§10)</span></td><td>durability of ARR; basis of valuations</td><td>OpenAI, Anthropic</td></tr>
+      </table></div>
+      <h3>9.2 Physical / geopolitical / energy indicators (foundational layer)</h3>
+      <div class="tbl"><table>
+        <tr><th>Indicator</th><th>Threshold to watch</th><th>Meaning</th><th>Companies</th></tr>
+        <tr><td>Taiwan Strait tension</td><td>military/economic restriction signals</td><td>leading-edge supply risk (lowest probability / highest impact)</td><td>TSMC, NVIDIA, AMD, Broadcom, Apple</td></tr>
+        <tr><td>TSMC leading-edge revenue share</td><td>marked deviation from 74%</td><td>revenue composition (not market share); capacity/demand balance</td><td>TSMC</td></tr>
+        <tr><td>US 10-year yield</td><td>momentum above 4.44%</td><td>borrowing cost; valuation pressure</td><td>all leveraged names</td></tr>
+        <tr><td>Brent crude</td><td>above $100</td><td>energy cost; data-center operating expense</td><td>Constellation (positive), data centers (negative)</td></tr>
+        <tr><td>Electricity / grid capacity</td><td>lengthening interconnection queues</td><td>growth bottleneck independent of chip supply</td><td>Constellation, hyperscalers</td></tr>
+        <tr><td>ASML orders / backlog</td><td>marked decline</td><td>demand shock reaching upstream (lagged)</td><td>ASML</td></tr>
+      </table></div>
+      <h3>9.3 Using the panel</h3>
+      <ul>
+        <li><strong>Two separate alarm sets:</strong> the financial indicators (§9.1) track neo-cloud/leverage risk; the physical indicators (§9.2) track TSMC/foundational-layer risk. They operate on different horizons through different channels; there is no single &ldquo;AI risk gauge&rdquo;.</li>
+        <li><strong>Earliest financial signal:</strong> GPU rental prices + CoreWeave's current ratio + covenant status — the precursors of a neo-cloud default.</li>
+        <li><strong>Most critical yet detected last:</strong> Taiwan Strait tension. Invisible in financial data; requires separate monitoring.</li>
+        <li><strong>Information gaps:</strong> covenant thresholds, LLM churn and bondholder demographics are not public; listed as data needs in §10.</li>
+      </ul>
+      <p class="chart-src">Source: derived from §6 company data, §8.4–8.5 macro data and the §8 scenario templates. Date: July 13, 2026. Confidence: medium.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">🕳️ 10. Blind Spots and Data Needs</h2></div>
+    <div class="section-body">
+      <p>Data the report could not reach that directly affects the conclusion. These are not weaknesses of the report but non-public information gaps; each is labeled &ldquo;unknown / not computable&rdquo; and the uncertainty is preserved in the affected analysis.</p>
+      <h3>10.1 Critical information gaps</h3>
+      <div class="tbl"><table>
+        <tr><th>#</th><th>Gap</th><th>Why it is critical</th><th>Affected analysis</th></tr>
+        <tr><td>1</td><td>CoreWeave DDTL 4.0 covenant thresholds</td><td>Without the margin-call point, the default threshold cannot be computed; the &ldquo;pin of the time bomb&rdquo; is invisible</td><td>§8.1 numeric threshold; §7.5 runway</td></tr>
+        <tr><td>2</td><td>OpenAI / Anthropic churn and net revenue retention</td><td>Unknown how much ARR is one-off pilots vs. durable multi-year contracts; the basis of trillion-dollar valuations is invisible</td><td>§4.2 service criticality; §6.6 valuation</td></tr>
+        <tr><td>3</td><td>Anthropic net cash + cash burn</td><td>Runway not computable; cannot be ranked</td><td>§7.5 runway</td></tr>
+        <tr><td>4</td><td>OpenAI funding-round structure</td><td>Primary/secondary split, tranches and conditions of the $122B round unknown</td><td>§7.5 runway</td></tr>
+        <tr><td>5</td><td>Amazon bondholder demographics</td><td>Unknown how much of the $25B issuance sits in defensive pension funds vs. leveraged hedge funds; no contagion map on a downgrade</td><td>§8.1 contagion; macro scenarios</td></tr>
+        <tr><td>6</td><td>CoreWeave backlog cancellation clauses</td><td>Whether the $99.4B backlog is a risk cannot be judged without cancellation terms, delivery timelines, customer concentration and margins</td><td>§7.4 backlog assessment</td></tr>
+        <tr><td>7</td><td>Maintenance vs. growth capex split</td><td>Unknown how much hyperscaler capex is mandatory (maintenance) vs. discretionary (growth)</td><td>§7.2 capex/OCF interpretation</td></tr>
+      </table></div>
+      <h3>10.2 Conflicting / contested data</h3>
+      <ul>
+        <li><strong>Intel market cap and the 21% drop:</strong> market cap fluctuating in the $447–512B range; whether the 18A story alone caused the 21% drop, and its persistence, are contested across sources.<sup class="fn"><a href="#fn27">27</a>,<a href="#fn52">52</a></sup></li>
+        <li><strong>OpenAI 5% stake — US government purchase ($42.6B):</strong> under negotiation; whether it happens is uncertain.<sup class="fn"><a href="#fn45">45</a></sup></li>
+        <li><strong>All market-cap ranges:</strong> because share prices fluctuate intraday, market caps are given as ranges, not point values.</li>
+      </ul>
+      <h3>10.3 Effect on the conclusion</h3>
+      <ul>
+        <li>The timing of a neo-cloud default cannot be pinned down (covenants unknown); only direction and channel can be stated.</li>
+        <li>The LLM layer's true revenue quality being unknown, valuation risk cannot be measured; only a &ldquo;high uncertainty&rdquo; note can be attached.</li>
+        <li>The report therefore makes no &ldquo;certain collapse&rdquo; claim; it is framed with probability ranges and falsifiers (§8).</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">⚖️ 11. Conclusion, Probability Framework and Implications</h2></div>
+    <div class="section-body">
+      <p>The findings are first quantified as bad-path and good-path probabilities, then turned into action-oriented implications. Not investment advice; a risk framework and monitoring priorities.</p>
+      <div class="insight-box warn"><strong>Numeric framework caveat:</strong> every percentage below applies the §2.6 transparent mapping and the §8.8 conditional-probability assumptions; none is calibrated model output. Ranges are wide because covenants, churn, true AI unit economics and the geopolitical base rate are not public (§10).</div>
+      <h3>11.1 Scenario probabilities: bad path and good path (decision tree)</h3>
+      <p>&ldquo;Good path&rdquo; and &ldquo;bad path&rdquo; are not complements of a single event. &ldquo;If no neo-cloud default, then the good scenario&rdquo; is misleading — that is merely the complement of one event and ignores macro, AI unit economics, capex discipline and geopolitical risk. The good path is defined through a decision tree of four mutually exclusive gates.</p>
+      <h4>Next 12 months — localized financial stress</h4>
+      <div class="tbl"><table>
+        <tr><th>Direction</th><th>Scenario</th><th>Probability (transparent mapping)</th></tr>
+        <tr><td><span class="tag tag-red">Bad path</span></td><td>Neo-cloud/CoreWeave-driven financial stress</td><td>50–70%, center 60% — mostly contained; physical production does not stop</td></tr>
+        <tr><td><span class="tag tag-red">Bad path (tail)</span></td><td>12-month catastrophic TSMC disruption</td><td>~6% on a 36-month horizon; below that on a 12-month horizon (§8.3)</td></tr>
+        <tr><td><span class="tag tag-blue">Complement (not the good path)</span></td><td>No neo-cloud financial stress</td><td>~40% (= 100% − 60%)</td></tr>
+      </table></div>
+      <p><strong>Caution:</strong> the ~40% above is not a &ldquo;good scenario&rdquo; — merely the non-occurrence of the neo-cloud stress event. The real good-path assessment uses the 36-month decision tree.</p>
+      <h4>Next 24 months — macro direction</h4>
+      <div class="tbl"><table>
+        <tr><th>Direction</th><th>Scenario</th><th>Probability (transparent mapping)</th></tr>
+        <tr><td><span class="tag tag-red">Bad path</span></td><td>Financing-adverse/restrictive macro (higher-for-longer ∪ stagflation, §8.8 intersection)</td><td>~65% (sensitivity: 54–76%)</td></tr>
+        <tr><td><span class="tag tag-green">Good path (macro gate)</span></td><td>Rate relief / more favorable macro</td><td>~35% (sensitivity: 24–46%)</td></tr>
+      </table></div>
+      <h4>Next 36 months — the system's overall direction (decision tree)</h4>
+      <p>The strong good path requires passing all four gates; stumbling at any gate leads to the bad path, and stumbling at the last gate to catastrophe:</p>
+      <div class="gate"><b>Gate 1 — Macro favorable?</b><span class="yes">Yes ~35%</span><span class="no">No ~65% → bad path</span></div>
+      <div class="gate"><b>Gate 2 — AI unit economics improve?</b><span class="yes">Yes ~50%</span><span class="no">No ~50% → bad path</span></div>
+      <div class="gate"><b>Gate 3 — Hyperscaler capex holds?</b><span class="yes">Yes ~60%</span><span class="no">No ~40% → bad path</span></div>
+      <div class="gate"><b>Gate 4 — No TSMC shock?</b><span class="yes">Yes ~94%</span><span class="no">No ~6% → catastrophic</span></div>
+      <div class="formula">P(strong good path) ≈ 35% × 50% × 60% × 94% ≈ 10%   (illustrative, assuming independence)</div>
+      <p>Gate probabilities come from the transparent assumptions in §8: Gate 1 = §8.8 favorable macro; Gate 2 = AI unit economics (not public, §10 — center ~50% judgment); Gate 3 = §8.2 capex holding (100% − 40%); Gate 4 = §8.3 no TSMC shock (100% − 6%). The ~10% shows why the &ldquo;everything goes right&rdquo; strong positive scenario is hard: four independent conditions must hold simultaneously. The independence assumption is unrealistic (favorable macro supports both capex and unit economics), so this number should be read as a directional <strong>lower bound</strong>, not a point estimate.</p>
+      <div class="chart-card">
+        <div class="chart-title">36-month outcome distribution — three mutually exclusive paths (center estimates)</div>
+        <div class="donut-chart">
+          <svg class="donut-svg" viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="chart"><circle cx="90" cy="90" r="70" fill="none" stroke="var(--gf-border)" stroke-width="20"/><circle cx="90" cy="90" r="70" fill="none" stroke="#f87171" stroke-width="20" stroke-dasharray="206.72 439.82" stroke-dashoffset="0.00" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #f8717166)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#dc2626" stroke-width="20" stroke-dasharray="26.39 439.82" stroke-dashoffset="-206.72" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #dc262666)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#fbbf24" stroke-width="20" stroke-dasharray="162.73 439.82" stroke-dashoffset="-233.11" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #fbbf2466)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#4ade80" stroke-width="20" stroke-dasharray="43.98 439.82" stroke-dashoffset="-395.84" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #4ade8066)"/><text x="90" y="85" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="700" font-family="inherit">36 mo</text><text x="90" y="102" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="inherit">center estimate</text></svg>
+          <div class="donut-legend">
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#f87171"></span><span class="donut-legend-label">Broad bad path (excl. catastrophic)</span><span class="donut-legend-value">~47%</span></div>
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#dc2626"></span><span class="donut-legend-label">Catastrophic tail (TSMC ≥12 mo)</span><span class="donut-legend-value">~6%</span></div>
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#fbbf24"></span><span class="donut-legend-label">Restrictive but functioning base</span><span class="donut-legend-value">~37%</span></div>
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#4ade80"></span><span class="donut-legend-label">Strong positive sub-path</span><span class="donut-legend-value">~10%</span></div>
+          </div>
+        </div>
+        <p class="chart-caption">Broad bad path totals ~53% (sensitivity 35–71%) = broad capex cut ∪ stagflation pressure ∪ ≥12-month TSMC shock; resilience/base path totals ~47% (sensitivity 29–65%). The distribution is nearly a coin flip; which side prevails depends on unknown inputs (covenants, churn, AI unit economics, geopolitics).</p>
+        <p class="chart-src">Calculation (from §8.8): P(capex ∪ stagflation) = 40% + 25% − (25% × 60%) = 50%; P(at least one broad adverse event) = 50% + 6% − (50% × 6%) ≈ 53%. Confidence: low-medium; center values are transparent assumptions with wide sensitivity ranges.</p>
+      </div>
+      <p><strong>Important limit:</strong> the probability of a &ldquo;very strong bull scenario&rdquo; cannot be computed precisely with current data — the true pace of AI unit-economics improvement and LLM revenue quality are not public (§10). The ~10% is an illustrative lower bound from independently multiplying the four gates, not a calibrated estimate.</p>
+      <h3>11.2 For investors</h3>
+      <ol>
+        <li><strong>Leverage alone is not a buy/sell signal.</strong> Even the system's least indebted company (Arista) is not &ldquo;risk-free&rdquo; — it carries customer-concentration and valuation risk. The most indebted (CoreWeave) does not stop the system but spreads losses to its creditors. Price the two different risks (financial fragility §5 / systemic impact §4) separately.</li>
+        <li><strong>&ldquo;Is AI a bubble?&rdquo; is the wrong question.</strong> The right one: &ldquo;by what date can AI-attributable incremental cash flow cover incremental capex and fixed obligations?&rdquo; — a question that does not make LLM ROI the single variable and accounts for hyperscalers' cross-subsidy capacity.</li>
+        <li><strong>Price irreplaceability, not size.</strong> TSMC's and ASML's value comes less from profits than from having no substitute. Their risk is not debt but geographic concentration and geopolitics — a different risk category in a portfolio (§2.7).</li>
+        <li><strong>Distinguish cross-subsidy capacity.</strong> Alphabet financing via equity (taking no interest-rate risk), Amazon financing with debt, and CoreWeave financing with GPU-collateralized debt are not the same &ldquo;debt&rdquo; category. Financing structure (§7.4) is more informative than financing size.</li>
+        <li><strong>Read probabilities as ranges, not points.</strong> Center values like 47%/53% are transparent assumptions with wide sensitivity ranges. Decisions should hinge on the early-warning indicators (§9) that reveal which end of the range is materializing — not on a single central number.</li>
+      </ol>
+      <h3>11.3 For regulators / policymakers</h3>
+      <ol>
+        <li><strong>Hidden-covenant transparency.</strong> Neo-cloud GPU-collateralized loans (CoreWeave DDTL type) are accumulating on bank balance sheets and in credit funds; covenant thresholds are not public. Total exposure to such asset-backed, floating-rate loans should be monitored — without that size, no &ldquo;financial systemic risk&rdquo; verdict (§2.7) can be issued.</li>
+        <li><strong>Circular-financing visibility.</strong> In the NVIDIA → neo-cloud → LLM → cloud loop, the same economic risk counted on multiple balance sheets (§3.3) can understate systemic risk. Cross-ownership and counterparty concentration should be mapped.</li>
+        <li><strong>Geographic single point of failure.</strong> The concentration of leading-edge production in a narrow geography (TSMC) is a matter of critical-infrastructure resilience, not market power. Non-Taiwan capacity diversification (US/Japan) is a strategic priority.</li>
+        <li><strong>Power-grid planning.</strong> The physical wall in front of data-center growth is increasingly electricity, not chips; grid investment and interconnection-queue management belong in the same policy frame as AI.</li>
+      </ol>
+      <h3>11.4 Limits of this report</h3>
+      <p>This report is a static snapshot (July 13, 2026). Share prices, funding rounds and the geopolitical situation change fast. The probability framework (§11.1) is a transparent mapping, not a calibrated forecast; it should be updated dynamically with the §9 early-warning panel. Out-of-scope value-chain links (HBM, EDA, Arm, advanced packaging, equipment, optics, cooling/grid, DC real estate) were not scored (§4.3). Investment decisions require your own due diligence and professional advice.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">📚 12. Data Dictionary, Calculations and Source Appendix</h2></div>
+    <div class="section-body">
+      <p>The report's critical data points, listed in auditable form. Confidence levels: <span class="tag tag-green">High</span> official filing/rating; <span class="tag tag-orange">Medium</span> analyst estimate/secondary source; <span class="tag tag-red">Conflict</span> cross-source contradiction; <span class="tag tag-blue">Gap</span> not public.</p>
+      <h3>12.1 Data quality table (critical data points)</h3>
+      <div class="tbl"><table>
+        <tr><th>Claim</th><th>Value</th><th>Period</th><th>Numerator / Denominator</th><th>Note</th><th>Type</th><th>Confidence</th></tr>
+        <tr><td>Fed policy rate</td><td>3.50–3.75%</td><td>Jul 2026</td><td>— / policy rate</td><td>53</td><td>Official</td><td><span class="tag tag-green">High</span></td></tr>
+        <tr><td>Headline CPI</td><td>3.71% YoY</td><td>Jul 2026</td><td>CPI basket / annual</td><td>49</td><td>Official/estimate</td><td><span class="tag tag-green">High</span></td></tr>
+        <tr><td>PCE inflation</td><td>3.84% YoY</td><td>Jul 2026</td><td>PCE / annual</td><td>49</td><td>Official</td><td><span class="tag tag-green">High</span></td></tr>
+        <tr><td>10Y yield</td><td>4.44%</td><td>Jul 2026</td><td>—</td><td>53</td><td>Official</td><td><span class="tag tag-green">High</span></td></tr>
+        <tr><td>ASML Q1 net sales</td><td>€8.76B</td><td>Q1 2026</td><td>net sales / quarter</td><td>22</td><td>Official</td><td><span class="tag tag-green">High</span></td></tr>
+        <tr><td>ASML debt/equity</td><td>13%</td><td>Q1 2026</td><td>total debt / equity</td><td>3</td><td>Official</td><td><span class="tag tag-green">High</span></td></tr>
+        <tr><td>TSMC Q1 revenue</td><td>NT$1.134T</td><td>Q1 2026</td><td>net sales / quarter</td><td>1</td><td>Official</td><td><span class="tag tag-green">High</span></td></tr>
+        <tr><td>TSMC Q1 net income</td><td>NT$572.48B</td><td>Q1 2026</td><td>net income / quarter</td><td>1</td><td>Official</td><td><span class="tag tag-green">High</span></td></tr>
+        <tr><td>TSMC leading-edge revenue share</td><td>74%</td><td>Q1 2026</td><td>sub-7nm revenue / total</td><td>1</td><td>Official</td><td><span class="tag tag-green">High</span></td></tr>
+        <tr><td>TSMC interest coverage</td><td>242.5x</td><td>2026</td><td>EBIT / interest</td><td>2</td><td>Official (3rd party)</td><td><span class="tag tag-green">High</span></td></tr>
+        <tr><td>TSMC cash/debt</td><td>3.17</td><td>2026</td><td>cash+sec. / total debt</td><td>12</td><td>Official (3rd party)</td><td><span class="tag tag-green">High</span></td></tr>
+        <tr><td>Intel interest coverage</td><td>0.63x</td><td>2026</td><td>EBIT / interest</td><td>14</td><td>Official</td><td><span class="tag tag-green">High</span></td></tr>
+        <tr><td>Intel foundry external revenue</td><td>$174M</td><td>Q1 2026</td><td>external revenue / quarter</td><td>14</td><td>Official</td><td><span class="tag tag-green">High</span></td></tr>
+        <tr><td>Arista debt</td><td>0</td><td>2026</td><td>—</td><td>15</td><td>Official (3rd party)</td><td><span class="tag tag-green">High</span></td></tr>
+        <tr><td>SMCI debt/equity</td><td>115% (= 1.15x)</td><td>2026</td><td>total debt / equity</td><td>17</td><td>3rd party</td><td><span class="tag tag-green">High</span></td></tr>
+        <tr><td>Amazon 2026 capex</td><td>$200B</td><td>2026</td><td>capex / year</td><td>34</td><td>Official</td><td><span class="tag tag-green">High</span></td></tr>
+        <tr><td>Amazon TTM FCF</td><td>$1.2B</td><td>Jul 2026</td><td>OCF − capex / 12 mo</td><td>34</td><td>Official</td><td><span class="tag tag-green">High</span></td></tr>
+        <tr><td>Amazon 2026 borrowing</td><td>$72B</td><td>2026</td><td>new bonds / year</td><td>6</td><td>3rd party</td><td><span class="tag tag-green">High</span></td></tr>
+        <tr><td>Meta total commitments</td><td>$238B</td><td>Q1 2026</td><td>binding contracts / total</td><td>19</td><td>Official</td><td><span class="tag tag-green">High</span></td></tr>
+        <tr><td>Meta 2027 FCF projection</td><td>−$24B</td><td>2027</td><td>projection / year</td><td>20</td><td>Analyst estimate</td><td><span class="tag tag-orange">Medium</span></td></tr>
+        <tr><td>Alphabet equity raise</td><td>$84.75B</td><td>2026</td><td>equity raise / year</td><td>18</td><td>Official</td><td><span class="tag tag-green">High</span></td></tr>
+        <tr><td>CoreWeave backlog</td><td>$99.4B</td><td>Mar 2026</td><td>order backlog / snapshot</td><td>4</td><td>Official</td><td><span class="tag tag-green">High</span></td></tr>
+        <tr><td>CoreWeave current ratio</td><td>0.31</td><td>Q1 2026</td><td>current assets / current liabilities</td><td>4</td><td>Official</td><td><span class="tag tag-green">High</span></td></tr>
+        <tr><td>CoreWeave total debt</td><td>$25.1B</td><td>Q1 2026</td><td>total debt / snapshot</td><td>4</td><td>Official</td><td><span class="tag tag-green">High</span></td></tr>
+        <tr><td>CoreWeave S&amp;P rating</td><td>'B'</td><td>2026</td><td>$3.5B notes</td><td>5</td><td>Rating</td><td><span class="tag tag-green">High</span></td></tr>
+        <tr><td>Nebius Q1 revenue growth</td><td>684%</td><td>Q1 2026</td><td>revenue / YoY</td><td>39</td><td>Official</td><td><span class="tag tag-green">High</span></td></tr>
+        <tr><td>Lambda valuation</td><td>$5.9B</td><td>Nov 2025</td><td>post-money / round</td><td>41</td><td>3rd party</td><td><span class="tag tag-orange">Medium</span></td></tr>
+        <tr><td>OpenAI valuation</td><td>$852B</td><td>Mar 2026</td><td>post-money / round</td><td>43</td><td>3rd party</td><td><span class="tag tag-orange">Medium</span></td></tr>
+        <tr><td>OpenAI ARR</td><td>$25B</td><td>2026</td><td>annualized revenue</td><td>44</td><td>Analyst estimate</td><td><span class="tag tag-orange">Medium</span></td></tr>
+        <tr><td>OpenAI 2026 cash burn</td><td>$27B</td><td>2026</td><td>net cash burn / year</td><td>44</td><td>Analyst estimate</td><td><span class="tag tag-orange">Medium</span></td></tr>
+        <tr><td>OpenAI 5% government stake</td><td>$42.6B</td><td>2026</td><td>negotiation / —</td><td>45</td><td>Conflict</td><td><span class="tag tag-red">Conflict</span></td></tr>
+        <tr><td>Anthropic valuation</td><td>$965B</td><td>2026</td><td>post-money / round</td><td>47</td><td>3rd party</td><td><span class="tag tag-orange">Medium</span></td></tr>
+        <tr><td>Anthropic ARR</td><td>$47B</td><td>May 2026</td><td>annualized revenue</td><td>46</td><td>Analyst estimate</td><td><span class="tag tag-orange">Medium</span></td></tr>
+        <tr><td>Anthropic net cash + burn</td><td>unknown</td><td>—</td><td>—</td><td>—</td><td>Gap</td><td><span class="tag tag-blue">Gap</span></td></tr>
+        <tr><td>CoreWeave DDTL covenants</td><td>unknown</td><td>—</td><td>—</td><td>—</td><td>Gap</td><td><span class="tag tag-blue">Gap</span></td></tr>
+        <tr><td>Intel 21% drop / mcap</td><td>contested</td><td>Jul 2026</td><td>—</td><td>27</td><td>Conflict</td><td><span class="tag tag-red">Conflict</span></td></tr>
+      </table></div>
+      <h3>12.2 Calculation notes</h3>
+      <ul>
+        <li><strong>capex/OCF (§7.2):</strong> the same period must be used. In Amazon's official Q1 data, TTM OCF is $148.5B and FCF $1.2B → same-period capex ≈ OCF − FCF = $147.3B; capex/OCF ≈ 99%.<sup class="fn"><a href="#fn34">34</a></sup></li>
+        <li><strong>Interest coverage:</strong> EBIT / interest expense. Undefined for Arista due to zero debt (excluded from the ratio).</li>
+        <li><strong>Net debt / EBITDA:</strong> (total debt − cash) / EBITDA. Negative for TSMC/Arista/Alphabet (net cash).</li>
+        <li><strong>Runway:</strong> the §7.5 formula; not computable for OpenAI/Anthropic/Lambda due to insufficient data.</li>
+      </ul>
+      <h3>12.3 Source quality classification</h3>
+      <div class="tbl"><table>
+        <tr><th>Category</th><th>Example sources</th><th>Use</th></tr>
+        <tr><td>Official filings</td><td>SEC.gov, company IR pages (ASML, TSMC, Amazon, Meta, Alphabet, Microsoft, CoreWeave, Nebius, Intel)</td><td>Primary verification</td></tr>
+        <tr><td>Ratings</td><td>S&amp;P Global, Fitch</td><td>Credit ratings and outlooks</td></tr>
+        <tr><td>Third-party financial data</td><td>GuruFocus, Simply Wall St, Stock Analysis, Trefis, Public.com, Companies Market Cap</td><td>Derived ratios (cross-check required)</td></tr>
+        <tr><td>Analyst / media</td><td>Motley Fool, TIKR, MLQ.ai, Morningstar, Sacra, TradingView</td><td>Estimates and commentary (labeled)</td></tr>
+        <tr><td>Contested / single source</td><td>Quasa, TradingKey, Donanım Haber</td><td>Labeled as conflicts</td></tr>
+      </table></div>
+      <h3>12.4 Audit-trail standard and current limits</h3>
+      <p>For an &ldquo;auditable&rdquo; standard, each source would ideally include the full document title, publication date, filing type, page/table number, full document link, access date and the exact quoted field. The current source appendix partially meets that standard: all sources were accessed on July 14, 2026; many links point to an institution's main/relevant page rather than the exact document — no fabricated page numbers were added. Large private-company valuations (OpenAI, Anthropic, Lambda), mega funding rounds and unusual capital transactions rest partly on single secondary sources; they are labeled &ldquo;Medium&rdquo; confidence or &ldquo;Conflict&rdquo; and are never load-bearing for the main conclusion on their own. These limits do not reduce the report's reliability but do bound its precision.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">🎛️ 13. Scenario Application with Options — Long Calls and Puts Only</h2></div>
+    <div class="section-body">
+      <p>Two model portfolios expressing the report's good and bad scenarios <strong>exclusively through option purchases</strong>. No option selling, debit spreads, covered calls, short puts, straddles or strangles. Every trade is a long call or long put. The examples are not personalized investment advice; premiums, liquidity and suitable strikes must be re-checked on the trading day.</p>
+      <h3>13.1 Application rules and maximum risk</h3>
+      <p>For long calls and long puts, the maximum loss is limited to the <strong>premium paid</strong> (excluding commissions); if the option expires worthless, 100% of the premium can be lost. A long call's theoretical profit is unlimited; a long put's profit is capped as the underlying approaches zero.<sup class="fn"><a href="#fn54">54</a>,<a href="#fn55">55</a>,<a href="#fn61">61</a></sup> A standard US equity option typically represents 100 shares; the amounts in the tables are <strong>maximum premium budgets</strong>, not exact contract counts.<sup class="fn"><a href="#fn55">55</a></sup></p>
+      <div class="formula">Contracts = floor [ maximum premium budget for the position / (option premium × 100) ]</div>
+      <p>Example strikes are set against the report's July 13–14, 2026 reference prices: NVDA $203.53, GOOGL $352.51, TSM $421.58, ANET $181.15, CEG $257.57, CRWV $83.31, SMCI $27.66, INTC $103.12. In live trading choose the nearest listed, liquid strike; do not drift to far-OTM contracts just because they are cheap.<sup class="fn"><a href="#fn56">56</a>,<a href="#fn57">57</a></sup></p>
+      <h3>13.2 Good scenario — $10,000 CALL-only portfolio</h3>
+      <p>The good scenario assumes AI demand and enterprise adoption keep growing, hyperscaler capex is not cut hard, financing pressure eases gradually, and strong companies benefit from the energy/network/leading-edge bottlenecks (§8.7, §11.1). The portfolio focuses on companies with strong balance sheets and/or hard-to-replace positions.</p>
+      <div class="chart-card">
+        <div class="chart-title">CALL portfolio allocation — $10,000 maximum premium budget</div>
+        <div class="donut-chart">
+          <svg class="donut-svg" viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="chart"><circle cx="90" cy="90" r="70" fill="none" stroke="var(--gf-border)" stroke-width="20"/><circle cx="90" cy="90" r="70" fill="none" stroke="#4ade80" stroke-width="20" stroke-dasharray="131.95 439.82" stroke-dashoffset="0.00" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #4ade8066)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#38bdf8" stroke-width="20" stroke-dasharray="98.96 439.82" stroke-dashoffset="-131.95" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #38bdf866)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#fbbf24" stroke-width="20" stroke-dasharray="76.97 439.82" stroke-dashoffset="-230.91" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #fbbf2466)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#c084fc" stroke-width="20" stroke-dasharray="76.97 439.82" stroke-dashoffset="-307.88" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #c084fc66)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#94a3b8" stroke-width="20" stroke-dasharray="54.98 439.82" stroke-dashoffset="-384.85" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #94a3b866)"/><text x="90" y="85" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="700" font-family="inherit">CALL</text><text x="90" y="102" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="inherit">$10,000</text></svg>
+          <div class="donut-legend">
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#4ade80"></span><span class="donut-legend-label">NVDA — Jan 21, 2028, 195–205 call, delta ~0.55–0.70</span><span class="donut-legend-value">$3,000 (30%)</span></div>
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#38bdf8"></span><span class="donut-legend-label">ANET — Jan 2028, 175–185 call, ATM/slightly ITM</span><span class="donut-legend-value">$2,250 (22.5%)</span></div>
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#fbbf24"></span><span class="donut-legend-label">CEG — Jan 2028, 250–260 call, ATM/slightly ITM</span><span class="donut-legend-value">$1,750 (17.5%)</span></div>
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#c084fc"></span><span class="donut-legend-label">GOOGL — Jan 21, 2028, 340–355 call, delta ~0.55–0.70</span><span class="donut-legend-value">$1,750 (17.5%)</span></div>
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#94a3b8"></span><span class="donut-legend-label">TSM — Jan 2028, 420–440 call, geopolitical weight capped</span><span class="donut-legend-value">$1,250 (12.5%)</span></div>
+          </div>
+        </div>
+        <p class="chart-caption">Maximum portfolio loss: the $10,000 total premium paid (excl. commissions). Even if the stocks rise, calls can still lose on time decay and falling implied volatility if the move is too small or too late.</p>
+      </div>
+      <p><strong>Allocation rationale:</strong> NVDA (30%) is the most direct beneficiary of the good scenario via the CUDA ecosystem and pricing power — capped at 30% due to its rich valuation. ANET (22.5%) expresses AI network-traffic growth through a zero-debt, high-margin balance sheet. CEG (17.5%) can benefit from the electricity/grid bottleneck. GOOGL (17.5%) offers balanced exposure via cloud growth + strong cash + AI product distribution. TSM (12.5%) is the critical leading-edge link; weight kept low for geopolitical tail risk.</p>
+      <p><strong>Expiry and selection logic:</strong> preferred tenor ~15–18 months (equity LEAPS mostly expire in January; if liquidity is thin, use the nearest long expiry). For calls, ~0.55–0.70 delta; ATM or at most ~5% ITM/OTM. Far-OTM calls look cheap but expire worthless too often. If a single contract exceeds the budget, skip the position rather than drifting further OTM.<sup class="fn"><a href="#fn58">58</a>,<a href="#fn59">59</a></sup></p>
+      <h3>13.3 Bad scenario — $10,000 PUT-only portfolio</h3>
+      <p>The bad scenario combines three channels: near-term neo-cloud liquidity/credit stress, medium-term hyperscaler capex and valuation compression, and the low-probability/high-impact TSMC geopolitical/physical tail (§8.1–§8.5, §11.1). Put tenors are differentiated by the expected speed of each event.</p>
+      <div class="chart-card">
+        <div class="chart-title">PUT portfolio allocation — $10,000 maximum premium budget</div>
+        <div class="donut-chart">
+          <svg class="donut-svg" viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="chart"><circle cx="90" cy="90" r="70" fill="none" stroke="var(--gf-border)" stroke-width="20"/><circle cx="90" cy="90" r="70" fill="none" stroke="#f87171" stroke-width="20" stroke-dasharray="131.95 439.82" stroke-dashoffset="0.00" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #f8717166)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#fbbf24" stroke-width="20" stroke-dasharray="98.96 439.82" stroke-dashoffset="-131.95" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #fbbf2466)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#38bdf8" stroke-width="20" stroke-dasharray="76.97 439.82" stroke-dashoffset="-230.91" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #38bdf866)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#c084fc" stroke-width="20" stroke-dasharray="65.97 439.82" stroke-dashoffset="-307.88" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #c084fc66)"/><circle cx="90" cy="90" r="70" fill="none" stroke="#94a3b8" stroke-width="20" stroke-dasharray="43.98 439.82" stroke-dashoffset="-373.85" stroke-linecap="round" transform="rotate(-90 90 90)" style="filter:drop-shadow(0 0 6px #94a3b866)"/><text x="90" y="85" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="700" font-family="inherit">PUT</text><text x="90" y="102" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="inherit">$10,000</text></svg>
+          <div class="donut-legend">
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#f87171"></span><span class="donut-legend-label">CRWV — Jan 15 / Mar 19, 2027, 80–85 put, delta ~−0.50/−0.65</span><span class="donut-legend-value">$3,000 (30%)</span></div>
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#fbbf24"></span><span class="donut-legend-label">SMCI — Jan 15 / Mar 19, 2027, 27.5–30 put, ATM/slightly ITM</span><span class="donut-legend-value">$2,250 (22.5%)</span></div>
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#38bdf8"></span><span class="donut-legend-label">INTC — Jun 18, 2027, 100–105 put, delta ~−0.45/−0.60</span><span class="donut-legend-value">$1,750 (17.5%)</span></div>
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#c084fc"></span><span class="donut-legend-label">NVDA — Jun 18, 2027, 190–205 put, capex/valuation hedge</span><span class="donut-legend-value">$1,500 (15%)</span></div>
+            <div class="donut-legend-item"><span class="donut-legend-color" style="background:#94a3b8"></span><span class="donut-legend-label">TSM — Jan 21, 2028, 350–380 put, delta ~−0.20/−0.35</span><span class="donut-legend-value">$1,000 (10%)</span></div>
+          </div>
+        </div>
+        <p class="chart-caption">Maximum portfolio loss: the $10,000 total premium paid (excl. commissions). A put buyer must get timing and the volatility premium right, not just direction.<sup class="fn"><a href="#fn61">61</a></sup></p>
+      </div>
+      <p><strong>Allocation rationale:</strong> CRWV (30%) is the report's most likely near-term financial break point; leverage + floating rates + GPU collateral make it the most direct put target. SMCI (22.5%) — thin margins, high leverage and a substitutable assembly model can create downside operating leverage in a capex slowdown. INTC (17.5%) is a company-specific decline thesis spread over several reporting periods via foundry losses and weak coverage. NVDA (15%) could be the sector's main repricing vehicle in a broad capex cut; weight kept below CRWV/SMCI due to its strong balance sheet. TSM (10%) is not a normal recession put but geopolitical tail insurance with unpredictable timing — hence longer tenor, further strike.</p>
+      <p><strong>Tenor logic:</strong> CRWV/SMCI 6–9 months (liquidity, covenant and refinancing risks can surface within a few quarters); INTC/NVDA 9–12 months (capex/demand slowdown needs several reporting periods to reach orders, margins and estimates); TSM 15–18 months (geopolitical timing unpredictable → small-weight long-dated tail protection). CRWV and SMCI puts may already carry high IV: even if the stock falls, an expensively bought put may underdeliver on IV crush or an insufficient move.</p>
+      <h3>13.4 Shared position management and exit rules</h3>
+      <ul>
+        <li><strong>Staggered entry:</strong> not all $10,000 on the same day; two or three tranches on days with good liquidity and tight bid-ask spreads.</li>
+        <li><strong>Limit orders:</strong> near-mid limit orders instead of market orders; skip wide-spread contracts.</li>
+        <li><strong>Profit taking:</strong> when a premium is up 75–100%, realize at least half; after a news-driven volatility spike, there is no obligation to carry the whole gain to expiry.</li>
+        <li><strong>Thesis break:</strong> close calls if hyperscaler capex guidance and AI revenue quality clearly deteriorate; close puts on successful refinancing, strengthening liquidity or capex resilience.</li>
+        <li><strong>Time management:</strong> if the thesis has not played out, do not let calls run into the final 120–150 days or puts into the final 90 days; close or roll before time decay accelerates.<sup class="fn"><a href="#fn59">59</a></sup></li>
+        <li><strong>Expiry:</strong> ITM options can be auto-exercised; close before expiry if a 100-share obligation is unwanted.<sup class="fn"><a href="#fn60">60</a></sup></li>
+        <li><strong>0DTE and weeklies:</strong> unsuited to this report's 12–36-month core scenarios; they require getting the day and hour right, not just the direction.</li>
+        <li><strong>Risk cap:</strong> no option selling, no margin debt. Maximum single-name premium share is 30% in both portfolios; no automatic averaging down into losing long options.</li>
+      </ul>
+      <p class="chart-src">Source: §8 scenarios and the §11.1 probability framework. OIC/OCC references in the footnotes cover option maximum risk, contract size, expiration, time decay and exercise mechanics. Example prices and strike levels are based on July 13–14, 2026 data; do not execute without checking live premiums, open interest and liquidity.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-head-inner"><h2 class="section-title">🔖 Footnotes and Sources</h2></div>
+    <div class="section-body">
+      <ol class="foot-list">
+        <li id="fn1">TSMC Investor Relations. 1Q26. Q1 2026. <a href="https://investor.tsmc.com/">investor.tsmc.com</a></li>
+        <li id="fn2">GuruFocus. Taiwan Semiconductor Interest Coverage: 242. 2026. <a href="https://www.gurufocus.com/">gurufocus.com</a></li>
+        <li id="fn3">ASML. Financial overview. 2026. <a href="https://www.asml.com/">asml.com</a></li>
+        <li id="fn4">SEC.gov. CoreWeave Reports Strong First Quarter 2026 Results. Q1 2026. <a href="https://www.sec.gov/">sec.gov</a></li>
+        <li id="fn5">S&amp;P Global Ratings. CoreWeave Inc.'s Proposed Senior Unsecured Notes. 2026. <a href="https://www.spglobal.com/">spglobal.com</a></li>
+        <li id="fn6">MLQ.ai. Amazon Raises $25 Billion in Bond Sale, Bringing 2026 Debt Issuance Past $72 Billion. July 2026. <a href="https://mlq.ai/">mlq.ai</a></li>
+        <li id="fn7">Meta Platforms. Meta Reports First Quarter 2026 Results. Q1 2026. <a href="https://investor.atmeta.com/">investor.atmeta.com</a></li>
+        <li id="fn8">Alphabet Inc. Alphabet Announces First Quarter 2026 Results. Q1 2026. <a href="https://abc.xyz/investor/">abc.xyz/investor</a></li>
+        <li id="fn9">Sacra. OpenAI revenue, valuation &amp; funding. 2026. <a href="https://sacra.com/">sacra.com</a></li>
+        <li id="fn10">IO Fund. Nvidia, CoreWeave, and Nebius: Inside the Circular Financing of the GPU Boom. 2026. <a href="https://io-fund.com/">io-fund.com</a></li>
+        <li id="fn11">GuruFocus. Constellation Energy Debt-to-Equity: 0.67. 2026. <a href="https://www.gurufocus.com/">gurufocus.com</a></li>
+        <li id="fn12">GuruFocus. Taiwan Semiconductor Cash-to-Debt: 3.17. 2026. <a href="https://www.gurufocus.com/">gurufocus.com</a></li>
+        <li id="fn13">Stock Analysis. GLOBALFOUNDRIES Statistics &amp; Valuation. 2026. <a href="https://stockanalysis.com/">stockanalysis.com</a></li>
+        <li id="fn14">Intel Corporation. Investor Relations — Historical Data. 2026. <a href="https://www.intc.com/">intc.com</a></li>
+        <li id="fn15">Trefis. Arista Networks. 2026. <a href="https://www.trefis.com/">trefis.com</a></li>
+        <li id="fn16">Public.com. Buy Broadcom Stock — AVGO Stock Quote Today. 2026. <a href="https://public.com/">public.com</a></li>
+        <li id="fn17">Simply Wall St. Super Micro Computer Stock Analysis. 2026. <a href="https://simplywall.st/">simplywall.st</a></li>
+        <li id="fn18">SEC.gov. Alphabet Inc. 10-Q — Q1 2026. <a href="https://www.sec.gov/">sec.gov</a></li>
+        <li id="fn19">SEC.gov. Meta Reports First Quarter 2026 Results. Q1 2026. <a href="https://www.sec.gov/">sec.gov</a></li>
+        <li id="fn20">Global Data Center Hub. Meta Q1 2026: The $145B Reset and the Repricing of Free Cash Flow. 2026. <a href="https://globaldatacenterhub.com/">globaldatacenterhub.com</a></li>
+        <li id="fn21">Fitch Ratings. Fitch Rates Amazon's Proposed Notes 'AA-'. 2026. <a href="https://www.fitchratings.com/">fitchratings.com</a></li>
+        <li id="fn22">ASML. ASML reports €8.8 billion total net sales and €2.8 billion net income in Q1 2026. <a href="https://www.asml.com/">asml.com</a></li>
+        <li id="fn23">Capital.com. ASML Holding N.V. Market Cap — July 2026 Update. <a href="https://capital.com/">capital.com</a></li>
+        <li id="fn24">TSMC Investor Relations. TSMC 2026 Q2 Quarterly Results. 2026. <a href="https://investor.tsmc.com/">investor.tsmc.com</a></li>
+        <li id="fn25">S&amp;P Global Ratings. Research Update: TSMC Outlook Revised To Positive. 2026. <a href="https://www.spglobal.com/">spglobal.com</a></li>
+        <li id="fn26">The Motley Fool. A GlobalFoundries Insider Sold 78% of His Company Shares. 2026. <a href="https://www.fool.com/">fool.com</a></li>
+        <li id="fn27">TradingKey. Intel Stock Price Prediction July 2026: Down 21% in 7 Days. <a href="https://tradingkey.com/">tradingkey.com</a></li>
+        <li id="fn28">NVIDIA Investor Relations. Stock Quote &amp; Chart. 2026. <a href="https://investor.nvidia.com/">investor.nvidia.com</a></li>
+        <li id="fn29">The Motley Fool. Nvidia Stock Is Losing to the Market in 2026. <a href="https://www.fool.com/">fool.com</a></li>
+        <li id="fn30">Advanced Micro Devices. Price History — Investor Relations. 2026. <a href="https://ir.amd.com/">ir.amd.com</a></li>
+        <li id="fn31">TIKR.com. AMD Stock Forecast 2026: A 57% Data Center Revenue Jump and a $120 Billion CPU Market. <a href="https://www.tikr.com/">tikr.com</a></li>
+        <li id="fn32">Trefis. Qualcomm. 2026. <a href="https://www.trefis.com/">trefis.com</a></li>
+        <li id="fn33">Companies Market Cap. Total debt — Constellation Energy. 2026. <a href="https://companiesmarketcap.com/">companiesmarketcap.com</a></li>
+        <li id="fn34">Amazon.com, Inc. Amazon.com Announces First Quarter Results. Q1 2026. <a href="https://ir.aboutamazon.com/">ir.aboutamazon.com</a></li>
+        <li id="fn35">Microsoft. FY26 Q3 — Press Releases, Investor Relations. 2026. <a href="https://www.microsoft.com/en-us/Investor">microsoft.com/investor</a></li>
+        <li id="fn36">Microsoft (GCS Web). Form 8-K filed 01/28/2026. <a href="https://microsoft.gcs-web.com/">microsoft.gcs-web.com</a></li>
+        <li id="fn37">Capital.com. Apple Inc Market Cap — July 2026 Update. <a href="https://capital.com/">capital.com</a></li>
+        <li id="fn38">TradingView. CoreWeave Guides $31-$35B Capex for 2026: Fuel or Financial Strain? 2026. <a href="https://www.tradingview.com/">tradingview.com</a></li>
+        <li id="fn39">SEC.gov. Nebius reports first quarter 2026 financial results. Q1 2026. <a href="https://www.sec.gov/">sec.gov</a></li>
+        <li id="fn40">TIKR.com. Nebius Grew Revenue 684% in Q1, Sold Out Its Entire Capacity, and Raised Its Capex Target to $25 Billion. <a href="https://www.tikr.com/">tikr.com</a></li>
+        <li id="fn41">Sacra. Lambda Labs revenue, valuation &amp; funding. 2026. <a href="https://sacra.com/">sacra.com</a></li>
+        <li id="fn42">Forge Global. Lambda Upcoming IPO: AI infrastructure company reportedly plans to go public in H2 2026. <a href="https://forgeglobal.com/">forgeglobal.com</a></li>
+        <li id="fn43">ValueAdd VC. OpenAI's $852B Valuation in 2026. <a href="https://valueaddvc.com/">valueaddvc.com</a></li>
+        <li id="fn44">Luminix AI. OpenAI Revenue 2025–2026: $13B Financials &amp; ARR Data. <a href="https://useluminix.com/">useluminix.com</a></li>
+        <li id="fn45">Quasa Media. OpenAI 5% Government Stake: Implications for AI in 2026. <a href="https://quasa.io/">quasa.io</a></li>
+        <li id="fn46">Sacra. Anthropic revenue, valuation &amp; funding. 2026. <a href="https://sacra.com/">sacra.com</a></li>
+        <li id="fn47">Donanım Haber. Anthropic Raises $65 Billion in Private Funding, Valuation Surpasses $960 Billion. <a href="https://www.donanimhaber.com/">donanimhaber.com</a></li>
+        <li id="fn48">AI Business Weekly. Anthropic Statistics 2026: Revenue, Valuation &amp; Growth Data. <a href="https://aibusinessweekly.net/">aibusinessweekly.net</a></li>
+        <li id="fn49">Federal Reserve Bank of Cleveland. Inflation Nowcasting. 2026. <a href="https://www.clevelandfed.org/indicators-and-data/inflation-nowcasting">clevelandfed.org</a></li>
+        <li id="fn50">Federal Reserve Board. Speech by Governor Waller on the economic outlook. 2026. <a href="https://www.federalreserve.gov/">federalreserve.gov</a></li>
+        <li id="fn51">The Guardian. US stock markets fall amid Iran strikes and potential higher interest rates. 2026. <a href="https://www.theguardian.com/">theguardian.com</a></li>
+        <li id="fn52">Capital.com. Intel Corp Market Cap — July 2026 Update. <a href="https://capital.com/">capital.com</a></li>
+        <li id="fn53">Trading Economics. United States Fed Funds Interest Rate. July 2026. <a href="https://tradingeconomics.com/united-states/interest-rate">tradingeconomics.com</a></li>
+        <li id="fn54">Options Industry Council (OIC). Long Call. <a href="https://www.optionseducation.org/strategies/all-strategies/long-call">optionseducation.org</a></li>
+        <li id="fn55">The Options Clearing Corporation (OCC). Characteristics and Risks of Standardized Options. <a href="https://www.theocc.com/">theocc.com</a></li>
+        <li id="fn56">Stock Options Channel. NVDA — Option Chain &amp; Expirations. <a href="https://www.stockoptionschannel.com/symbol/nvda/">stockoptionschannel.com</a></li>
+        <li id="fn57">Stock Options Channel. SMCI — Option Chain &amp; Expirations. <a href="https://www.stockoptionschannel.com/symbol/smci/">stockoptionschannel.com</a></li>
+        <li id="fn58">Options Industry Council (OIC). Expiration Calendar. <a href="https://www.optionseducation.org/referencelibrary/expiration-calendar">optionseducation.org</a></li>
+        <li id="fn59">Options Industry Council (OIC). LEAPS &amp; Time Erosion versus Delta Effect. <a href="https://www.optionseducation.org/optionsoverview/leaps-time-erosion-versus-delta-effect">optionseducation.org</a></li>
+        <li id="fn60">The Options Clearing Corporation (OCC). Equity Options Product Specifications. <a href="https://www.theocc.com/clearance-and-settlement/clearing/equity-options-product-specifications">theocc.com</a></li>
+        <li id="fn61">Options Industry Council (OIC). Long Put. <a href="https://www.optionseducation.org/strategies/all-strategies/long-put">optionseducation.org</a></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<div class="footer">
+  This report is for information only and is not investment advice. Data compiled as of July 13, 2026; private-company figures are analyst/private-market estimates. The probability framework is a transparent verbal→numeric mapping, not an empirically calibrated model. Do your own due diligence and seek professional advice before investing. · Gistify Flow · July 14, 2026
+</div>
+
+</div>
+</body>
+</html>
