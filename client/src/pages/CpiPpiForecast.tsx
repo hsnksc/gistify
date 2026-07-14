@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { resolveForecastReportMonth } from "@shared/cpiPpiForecast";
+import { resolveForecastMeasurementMonth } from "@shared/cpiPpiForecast";
 import type {
   CpiPpiForecastData, CpiPpiForecastPipelineState, MacroForecastBias, MacroForecastPipelineMetadata, MacroForecastPipelineStatus, MacroForecastRelease, MacroForecastScenario, MacroForecastWorkspaceData, MacroForecastWorkspaceKey, } from "@shared/cpiPpiForecast";
 import {
@@ -29,7 +29,7 @@ interface ArchiveMonthEntry {
 }
 
 function forecastArchiveMonth(forecast: MacroForecastWorkspaceData) {
-  return resolveForecastReportMonth(forecast);
+  return resolveForecastMeasurementMonth(forecast);
 }
 
 function formatMonthLabel(month: string, language: AppLanguage) {
@@ -76,6 +76,7 @@ function sanitizeArchivedWorkspace(
 ): MacroForecastWorkspaceData {
   return {
     key,
+    measurementMonth: payload.measurementMonth || "",
     generatedAt: payload.generatedAt || "",
     reportDate: payload.reportDate || "",
     title: payload.title || "",
@@ -991,6 +992,7 @@ function ForecastWorkspaceSection({
   const theme = WORKSPACE_THEME[slotKey];
   const leadScenario = getLeadScenario(forecast);
   const descriptor = workspaceDescriptor(slotKey, language);
+  const measurementMonth = forecastArchiveMonth(forecast);
 
   return (
     <section className={cn("rounded-xl border p-[1px]", theme.shellClassName)}>
@@ -1014,6 +1016,11 @@ function ForecastWorkspaceSection({
                 >
                   {workspaceLabel(slotKey, language)} · {descriptor.title}
                 </p>
+                {measurementMonth ? (
+                  <span className="rounded-full border border-white/15 bg-white/[0.07] px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-foreground/90">
+                    {t("macro:measurementMonth")}: {formatMonthLabel(measurementMonth, language)}
+                  </span>
+                ) : null}
               </div>
               <h2 className="mt-0.5 heading-condensed text-base leading-none text-foreground md:text-lg">
                 {forecast.title || `${forecast.release.name} ${t("macro:forecastSnapshot")}`}
@@ -1252,9 +1259,8 @@ export default function CpiPpiForecastPage({
             continue;
           }
 
-          // Older records were incorrectly keyed by the inflation period. Use
-          // the snapshot's publication month so those rows cannot make a
-          // finished month appear live or keep updating it in the UI.
+          // Trust the explicit measured month and infer it from release.period
+          // for legacy snapshots whose database key used the publication month.
           const reportMonth =
             forecastArchiveMonth(record.payload) || record.month;
           const entry = entriesByMonth.get(reportMonth) ?? {

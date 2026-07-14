@@ -1,6 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
-import { resolveForecastReportMonth } from "../shared/cpiPpiForecast";
+import {
+  normalizeForecastMonth,
+  resolveForecastMeasurementMonth,
+} from "../shared/cpiPpiForecast";
 import type {
   CpiPpiForecastData,
   CpiPpiForecastPipelineState,
@@ -282,9 +285,45 @@ function normalizeForecastWorkspaceData(
     fallbackTimestamp
   );
   const releaseSource = source.release ?? source[key] ?? source;
+  const release = normalizeRelease(releaseSource, definition.releaseName);
+  const explicitMeasurementMonth = normalizeString(
+    source.measurementMonth ??
+      source.measurement_month ??
+      source.measuredMonth ??
+      source.measured_month
+  );
+  const normalizedExplicitMeasurementMonth = normalizeForecastMonth(
+    explicitMeasurementMonth
+  );
+  const releaseMeasurementMonth = normalizeForecastMonth(release.period);
+
+  if (explicitMeasurementMonth && !normalizedExplicitMeasurementMonth) {
+    throw new Error(
+      `${definition.releaseName} measurementMonth must use YYYY-MM format.`
+    );
+  }
+
+  if (
+    normalizedExplicitMeasurementMonth &&
+    releaseMeasurementMonth &&
+    normalizedExplicitMeasurementMonth !== releaseMeasurementMonth
+  ) {
+    throw new Error(
+      `${definition.releaseName} measurementMonth (${normalizedExplicitMeasurementMonth}) does not match release.period (${release.period}).`
+    );
+  }
+
+  const measurementMonth =
+    resolveForecastMeasurementMonth({
+      measurementMonth: normalizedExplicitMeasurementMonth || "",
+      generatedAt,
+      reportDate: normalizeString(source.reportDate ?? source.report_date),
+      release,
+    }) || "";
 
   return {
     key,
+    measurementMonth,
     generatedAt,
     reportDate: normalizeString(source.reportDate ?? source.report_date),
     title:
@@ -292,7 +331,7 @@ function normalizeForecastWorkspaceData(
     summary: normalizeString(source.summary),
     baseCase: normalizeString(source.baseCase ?? source.base_case),
     conviction: normalizeProbability(source.conviction),
-    release: normalizeRelease(releaseSource, definition.releaseName),
+    release,
     scenarios: (() => {
       const raw = source.scenarios;
       return Array.isArray(raw)
@@ -323,13 +362,11 @@ function normalizeForecastWorkspaceData(
 }
 
 /**
- * Archive records are keyed by the month in which the report is published and
- * updated. The inflation period covered by the release remains in
- * `release.period`; for example, a June CPI release published in July belongs
- * to the July live/archive bucket.
+ * Archive records are keyed by the month measured by the report. For example,
+ * a June CPI forecast published in July belongs to the June archive bucket.
  */
 export function resolveArchiveMonth(data: MacroForecastWorkspaceData) {
-  return resolveForecastReportMonth(data);
+  return resolveForecastMeasurementMonth(data);
 }
 
 const MONTHLY_ARCHIVE_FILE_PATTERN = /^(cpi|ppi)_forecast_[a-z]+_\d{4}\.json$/i;

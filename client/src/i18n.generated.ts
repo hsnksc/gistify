@@ -1635,6 +1635,7 @@ export interface I18nResourceShape {
     leadForecast: string;
     liveSource: string;
     loadingTheCpiPpiForecast: string;
+    measurementMonth: string;
     noDataYet: string;
     noScenarioLoaded: string;
     noThesisYet: string;

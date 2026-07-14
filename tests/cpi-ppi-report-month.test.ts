@@ -1,6 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 import type { MacroForecastWorkspaceData } from "../shared/cpiPpiForecast";
-import { resolveForecastReportMonth } from "../shared/cpiPpiForecast";
+import {
+  normalizeForecastMonth,
+  resolveForecastMeasurementMonth,
+} from "../shared/cpiPpiForecast";
 
 vi.mock("../server/services/macroArchiveStore", () => ({
   createMacroArchiveStore: () => ({}),
@@ -11,6 +14,7 @@ import { resolveArchiveMonth } from "../server/cpiPpiForecast";
 function forecast(overrides: Partial<MacroForecastWorkspaceData> = {}) {
   return {
     key: "cpi",
+    measurementMonth: "",
     generatedAt: "2026-07-13T00:00:00Z",
     reportDate: "2026-07-13",
     title: "CPI forecast",
@@ -40,16 +44,35 @@ function forecast(overrides: Partial<MacroForecastWorkspaceData> = {}) {
 }
 
 describe("CPI/PPI report month", () => {
-  it("uses the publication month instead of the covered inflation period", () => {
+  it("uses the covered inflation period instead of the publication month", () => {
     const snapshot = forecast();
 
-    expect(resolveForecastReportMonth(snapshot)).toBe("2026-07");
-    expect(resolveArchiveMonth(snapshot)).toBe("2026-07");
+    expect(resolveForecastMeasurementMonth(snapshot)).toBe("2026-06");
+    expect(resolveArchiveMonth(snapshot)).toBe("2026-06");
   });
 
-  it("falls back to the release period for legacy snapshots without dates", () => {
+  it("prefers an explicit measurement month", () => {
     expect(
-      resolveForecastReportMonth(forecast({ reportDate: "", generatedAt: "" }))
-    ).toBe("2026-06");
+      resolveForecastMeasurementMonth(
+        forecast({ measurementMonth: "2026-07" })
+      )
+    ).toBe("2026-07");
+  });
+
+  it("uses publication dates only when no measured period exists", () => {
+    expect(
+      resolveForecastMeasurementMonth(
+        forecast({
+          measurementMonth: "",
+          release: { ...forecast().release, period: "" },
+        })
+      )
+    ).toBe("2026-07");
+  });
+
+  it("normalizes named release periods for legacy JSON", () => {
+    expect(normalizeForecastMonth("Jul 2026")).toBe("2026-07");
+    expect(normalizeForecastMonth("2026-07")).toBe("2026-07");
+    expect(normalizeForecastMonth("2026-13")).toBeNull();
   });
 });

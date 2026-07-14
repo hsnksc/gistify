@@ -58,6 +58,8 @@ export interface MacroForecastPipelineMetadata {
 
 export interface MacroForecastWorkspaceData {
   key: MacroForecastWorkspaceKey;
+  /** Calendar month measured by the forecast, in YYYY-MM format. */
+  measurementMonth: string;
   generatedAt: string;
   reportDate: string;
   title: string;
@@ -113,7 +115,7 @@ const MONTH_NAME_TO_NUMBER: Record<string, number> = {
   december: 12,
 };
 
-function parseForecastMonth(value: string): string | null {
+export function normalizeForecastMonth(value: string): string | null {
   const trimmed = value.trim();
   if (!trimmed) {
     return null;
@@ -139,19 +141,20 @@ function parseForecastMonth(value: string): string | null {
 }
 
 /**
- * Returns the month in which a forecast snapshot is published and updated.
- * The covered inflation period can be the prior month and remains available
- * separately as `release.period`.
+ * Returns the calendar month measured by a forecast. New snapshots must set
+ * `measurementMonth` explicitly. `release.period` keeps old snapshots working;
+ * publication timestamps are only a last-resort fallback.
  */
-export function resolveForecastReportMonth(
+export function resolveForecastMeasurementMonth(
   data: Pick<
     MacroForecastWorkspaceData,
-    "reportDate" | "generatedAt" | "release"
+    "measurementMonth" | "reportDate" | "generatedAt" | "release"
   >
 ): string | null {
   return (
-    parseForecastMonth(data.reportDate) ||
-    parseForecastMonth(data.generatedAt) ||
-    parseForecastMonth(data.release?.period || "")
+    normalizeForecastMonth(data.measurementMonth || "") ||
+    normalizeForecastMonth(data.release?.period || "") ||
+    normalizeForecastMonth(data.reportDate) ||
+    normalizeForecastMonth(data.generatedAt)
   );
 }

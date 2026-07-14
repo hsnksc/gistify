@@ -34,8 +34,8 @@ function detectIndicator(fileName: string): MacroForecastWorkspaceKey | null {
 }
 
 function resolveMonth(payload: MacroForecastWorkspaceData): string | null {
-  // Key by the release period month (Jun 2026 -> 2026-06); a June forecast is
-  // written in July, so reportDate would collide with the July forecast.
+  // Key by the explicitly measured month (or legacy release.period fallback).
+  // A June forecast written in July must remain in the June bucket.
   try {
     return resolveArchiveMonth(payload);
   } catch {

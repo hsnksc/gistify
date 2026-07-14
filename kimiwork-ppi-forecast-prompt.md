@@ -14,6 +14,15 @@ This prompt is meant to be pasted directly into the dedicated `PPI` Kimi workspa
 - It must always leave behind one valid `ppi_forecast.json` artifact after the run.
 - If fresh research fails, do not replace a valid JSON file with broken output.
 
+## Measurement-month contract (CRITICAL)
+
+- The cron job must provide one fixed `TARGET_MEASUREMENT_MONTH` in `YYYY-MM` format.
+- For the July 2026 run, set `TARGET_MEASUREMENT_MONTH=2026-07`.
+- `measurementMonth` means the calendar month whose producer-price changes are being forecast. It is NOT the month when the JSON is generated and NOT the release month.
+- Keep the target fixed until that measured month's PPI release is published. A July 2026 PPI forecast may be generated in July/August and released in August; it must still say `"measurementMonth": "2026-07"` and `"release.period": "Jul 2026"`.
+- Never infer the measured month from `generatedAt`, `reportDate`, the current date, or `releaseDate`.
+- Never carry a June model/report forward under a July label. All inputs, summary text, thesis, scenarios, and release period must describe the target month.
+
 ## Schedule
 
 Run this workflow every day at `00:00 TSI`.
@@ -37,17 +46,18 @@ If you control the deploy target directly, prefer the path provided by `PPI_FORE
 ## Non-negotiable output rules
 
 1. Write a valid UTF-8 JSON object only.
-2. Do not write Markdown into the JSON file.
-3. Do not wrap the JSON in backticks.
-4. Always write atomically:
+2. The first top-level property must be `"measurementMonth": "${TARGET_MEASUREMENT_MONTH}"`.
+3. Do not write Markdown into the JSON file.
+4. Do not wrap the JSON in backticks.
+5. Always write atomically:
    - write to `ppi_forecast.json.tmp`
    - fsync if available
    - rename to `ppi_forecast.json`
-5. Only include the PPI workspace snapshot. Do not create a `cpi` block.
-6. If a field is unknown, use an empty string `""` for text fields and `0` for numeric probability/confidence fields.
-7. Keep `probability` and `confidence` values in the `0-100` range.
-8. Do not output an explanatory report to stdout instead of the JSON artifact.
-9. Do not omit the file because the release is not imminent. The workspace should still publish the current best PPI setup.
+6. Only include the PPI workspace snapshot. Do not create a `cpi` block.
+7. If a field is unknown, use an empty string `""` for text fields and `0` for numeric probability/confidence fields.
+8. Keep `probability` and `confidence` values in the `0-100` range.
+9. Do not output an explanatory report to stdout instead of the JSON artifact.
+10. Do not omit the file because the release is not imminent. The workspace should still publish the current best PPI setup.
 
 ## Research requirements
 
@@ -82,16 +92,17 @@ If the next PPI release is still the same event as yesterday, regenerate the fil
 
 ```json
 {
-  "generatedAt": "2026-06-24T21:00:00Z",
-  "reportDate": "2026-06-24",
+  "measurementMonth": "2026-07",
+  "generatedAt": "2026-07-24T21:00:00Z",
+  "reportDate": "2026-07-25",
   "title": "US PPI Forecast Snapshot",
   "summary": "Short multi-sentence PPI summary.",
   "baseCase": "Flat headline, sticky core; energy mean-reversion masks upstream persistence",
   "conviction": 65,
   "release": {
     "name": "PPI",
-    "period": "Jun 2026",
-    "releaseDate": "2026-07-15",
+    "period": "Jul 2026",
+    "releaseDate": "2026-08-15",
     "releaseTimeEt": "08:30 ET",
     "headlineMoM": "+0.1%",
     "headlineYoY": "6.6%",
@@ -209,8 +220,10 @@ If git push fails, DO NOT silently ignore it. Retry once. If it still fails, kee
 Before you finish:
 
 1. Validate the JSON.
-2. Confirm the `release.name` field is `PPI`.
-3. Confirm every `scenario` has `probability`, `outcome`, `marketReadthrough`, and `invalidation`.
-4. Confirm the file was written to BOTH locations.
-5. Confirm git commit + push succeeded.
-6. Do not output a narrative report instead of the JSON file.
+2. Confirm `measurementMonth` exactly equals `TARGET_MEASUREMENT_MONTH` and is the first top-level property.
+3. Confirm `release.period` names the same month as `measurementMonth`.
+4. Confirm the `release.name` field is `PPI`.
+5. Confirm every `scenario` has `probability`, `outcome`, `marketReadthrough`, and `invalidation`.
+6. Confirm the file was written to BOTH locations.
+7. Confirm git commit + push succeeded.
+8. Do not output a narrative report instead of the JSON file.
