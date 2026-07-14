@@ -1,11 +1,11 @@
 {
-  "measurementMonth": "2026-06",
-  "generatedAt": "2026-07-14T00:05:00+03:00",
+  "measurementMonth": "2026-07",
+  "generatedAt": "2026-07-14T09:26:00+03:00",
   "reportDate": "2026-07-14",
-  "title": "US PPI Forecast Snapshot — Composite Calibrated Bridge Nowcast v2.5 Enhanced",
-  "summary": "June 2026 PPI (release Wed Jul 15, 08:30 ET): Headline +0.1% MoM, Core +0.3% MoM, YoY ~6.2%/5.0%. VIX 17.16 (Jul 13, +14.2% intraday on US-Iran re-escalation) keeps the model in Normal regime but borderline — any push above 18 flips parameters to Elevated. June energy deflation is the story: AAA regular $3.872 vs $4.086 a month ago (-5.2%), diesel $4.875 vs $5.236 (-6.9%), with the June PPI sampling window (week of Jun 9) catching prices after the early-June peak but before the late-June crash — partial passthrough. ISM Prices Paid 73.0 (normalized +2.3 ppt) and ECI Q1 +0.9% SA (+0.30 monthly proxy) keep core sticky. EIA w/e Jul 3: crude +3.0M (411.4M) but distillate -5.0M to 103.6M (12% below 5-yr avg) — fuel-supply crunch persists. CRITICAL release-day risk: US-Iran strikes over the weekend sent WTI +9% to $77.85 and Brent to $79.11; Iran claims Hormuz shut (6 vessels Sunday, fewest in 5 weeks). This hits JULY PPI, not June — but it warps market reaction function: a hot surprise tomorrow now gets amplified, a cool one discounted. CPI lands today 08:30 ET and sets the pre-PPI tape.",
-  "baseCase": "Headline PPI +0.1% MoM, Core PPI +0.3% MoM. Energy composite -3.6% as June refined-product deflation passes through partially (sampling window mid-month). Core goods +0.45% anchored by ISM Prices Paid 73.0. Services sticky at +0.21% via ECI labor cost passthrough. Intermediate demand +0.15 ppt uplift (Stage1 +3.2%, Stage2 +2.4%). YoY cools to ~6.2% from 6.5%.",
-  "conviction": 60,
+  "title": "US PPI Forecast Snapshot — July 2026 (Composite Calibrated Bridge Nowcast v2.5 Enhanced)",
+  "summary": "MEASURED MONTH: JULY 2026 (released Aug 13, 2026 — NOT the June print due Jul 15). July PPI forecast: Headline +0.4% MoM, Core +0.3% MoM, provisional YoY ~6.0%/5.0%. This is a mid-month nowcast: July is ~45% complete, so all component inputs are provisional and confidence is cut to 50. The July story is the mirror image of June: the US-Iran re-escalation over the Jul 11-13 weekend sent WTI +9% to $77.85 and Brent to $79.11, with Iran claiming the Strait of Hormuz shut (6 vessels Sunday, fewest in 5 weeks). AAA regular gasoline reversed from a month of declines: $3.797 -> $3.872 WoW (+2.0%), diesel $4.756 -> $4.875 (+2.5%). EIA w/e Jul 3 shows the fuel-supply crunch deepening — distillate -5.0M to 103.6M (12% below 5-yr avg) even as crude builds +3.0M. Offset: Henry Hub Aug contract $2.89 (-8% MoM) caps the energy composite. ISM Prices Paid 73.0 (June print, July ISM due Aug 3) keeps core goods hot; ECI Q1 +0.9% SA (+0.30 monthly proxy, Q2 due Jul 31) anchors services. Base effect matters: July 2025 PPI was +0.7% MoM, so even a +0.4% July print pulls YoY down toward ~6.0%.",
+  "baseCase": "July 2026 PPI: Headline +0.4% MoM, Core +0.3% MoM. War premium in crude (+12% Brent month-to-date) and the distillate crunch lift July energy composite to +2.7% (provisional, half-month). Core goods +0.3% on ISM 73 passthrough; services +0.23% via ECI. Intermediate-demand uplift +0.15 ppt. YoY drifts to ~6.0% on the +0.7% July-2025 base effect.",
+  "conviction": 50,
   "regime": "normal",
   "vix": 17.16,
   "regimeParameters": {
@@ -35,44 +35,44 @@
   },
   "compositeProxies": {
     "energy": {
-      "gasoline": -6.0,
-      "diesel": -5.0,
-      "jetFuel": -6.0,
-      "naturalGas": 7.0,
-      "composite": -3.6
+      "gasoline": 3.0,
+      "diesel": 3.5,
+      "jetFuel": 4.0,
+      "naturalGas": -8.0,
+      "composite": 2.7
     },
     "foods": {
       "cattle": 0.3,
-      "hogs": -0.1,
-      "grains": 0.1,
+      "hogs": 0.0,
+      "grains": 0.0,
       "dairy": 0.2,
       "usda": 0.1,
-      "composite": 0.12
+      "composite": 0.15
     },
     "coreGoods": {
-      "copper": 0.3,
+      "copper": 0.4,
       "steel": 0.2,
-      "aluminum": -0.2,
-      "lumber": -0.3,
+      "aluminum": 0.0,
+      "lumber": -0.2,
       "chemicals": 0.3,
       "pharma": 0.1,
       "ismPricesPaid": 2.3,
       "importPriceIndex": 0.1,
-      "composite": 0.45
+      "composite": 0.4
     },
     "tradeServices": {
       "inventorySales": -0.1,
       "wholesaleMargin": 0.2,
       "retailSales": 0.2,
-      "fuelMargin": -0.2,
-      "composite": 0.05
+      "fuelMargin": 0.3,
+      "composite": 0.1
     },
     "transportation": {
-      "datSpot": 0.3,
-      "diesel": -0.5,
+      "datSpot": 0.4,
+      "diesel": 0.4,
       "railFreight": 0.1,
       "airFreight": 0.1,
-      "composite": 0.01
+      "composite": 0.1
     },
     "otherServices": {
       "eci": 0.3,
@@ -92,29 +92,29 @@
   },
   "release": {
     "name": "PPI",
-    "period": "Jun 2026",
-    "releaseDate": "2026-07-15",
+    "period": "Jul 2026",
+    "releaseDate": "2026-08-13",
     "releaseTimeEt": "08:30 ET",
-    "headlineMoM": "+0.1%",
-    "headlineYoY": "6.2%",
+    "headlineMoM": "+0.4%",
+    "headlineYoY": "6.0%",
     "coreMoM": "+0.3%",
     "coreYoY": "5.0%",
     "priorHeadlineMoM": "+1.1%",
     "priorHeadlineYoY": "6.5%",
     "priorCoreMoM": "+0.8%",
     "priorCoreYoY": "5.1%",
-    "bias": "COOLER",
-    "confidence": 60,
-    "thesis": "June's energy collapse (Brent -23% in June, retail gasoline -5% MoM, diesel -7% MoM) drags headline toward flat, but the mid-month sampling window limits full passthrough while ISM Prices Paid 73.0 and ECI-anchored services keep core sticky near +0.3%. Prediction markets price June YoY ~6.2-6.4%, in line with our 6.2%. Weekend US-Iran re-escalation (WTI +9% to $77.85, VIX +14% to 17.16) is a July-print problem, but it steepens tomorrow's reaction function: hot surprises get amplified, cool ones faded."
+    "bias": "HOTTER",
+    "confidence": 50,
+    "thesis": "July's measured month flips the energy sign: the US-Iran re-escalation (WTI +9% to $77.85, Brent $79.11, Hormuz transit at 5-week low) plus a deepening distillate crunch (12% below 5-yr avg) push July producer energy costs back up after June's collapse. ISM Prices Paid 73.0 and ECI-anchored services keep core sticky near +0.3%. Base effect (+0.7% in July 2025) pulls YoY toward ~6.0% even with a firm MoM. Mid-month nowcast: half of July unsampled — a ceasefire could erase the energy contribution entirely."
   },
   "pointEstimate": {
-    "headline": 0.1,
+    "headline": 0.4,
     "core": 0.3
   },
   "confidenceInterval": {
     "headline": [
-      -0.3,
-      0.5
+      -0.1,
+      0.9
     ],
     "core": [
       0.1,
@@ -124,133 +124,141 @@
   "scenarios": [
     {
       "id": "base",
-      "label": "Base Case — Energy Drag vs Sticky Core",
-      "probability": 55,
-      "outcome": "Headline PPI +0.1% MoM, Core PPI +0.3% MoM, YoY 6.2%/5.0%. June energy deflation offsets sticky core goods (ISM 73.0) and ECI-anchored services.",
-      "marketReadthrough": "YoY cooling from 6.5% gives the doves oxygen, but war premium in oil and today's CPI print dominate. 10Y whipsaws on geopolitics, not on a +0.1% headline.",
+      "label": "Base Case — War Premium Persists Partially",
+      "probability": 50,
+      "outcome": "July headline PPI +0.4% MoM, core +0.3% MoM, YoY ~6.0%/5.0%. Energy composite +2.7% on war premium + distillate crunch, partially capped by weak Henry Hub ($2.89). Core sticky via ISM 73 / ECI.",
+      "marketReadthrough": "Stagflation bid builds: energy + gold outperform, long duration capped. YoY dipping under 6% on base effects gives doves a talking point, but MoM re-acceleration keeps the Fed hawkish.",
       "favoredAssets": [
+        "XLE",
         "GLD",
-        "TLT",
-        "XLE"
+        "USO"
       ],
-      "invalidation": "Core services print above +0.5% MoM; May revisions push prior core above 5.3% YoY"
+      "invalidation": "Ceasefire re-signed before mid-July sampling; WTI back under $70 for two consecutive weeks"
     },
     {
       "id": "hot",
-      "label": "Hot Case — Sampling Catches the Peak",
-      "probability": 25,
-      "outcome": "Headline PPI +0.4% MoM, Core PPI +0.5% MoM. Mid-June sampling caught elevated pre-crash energy; ISM 73 passthrough to core goods; trade services margins widen.",
-      "marketReadthrough": "Stacks on top of the war bid in crude. Hawkish repricing: 2Y Treasury jumps, USD firms, equities sell off — especially with CPI risk 24h earlier.",
+      "label": "Hot Case — Sustained Hormuz Disruption",
+      "probability": 30,
+      "outcome": "July headline PPI +0.8% MoM, core +0.5% MoM. Strait transit stays throttled through the July sampling window; Brent holds $80+; diesel/jet crack spreads widen on the inventory crunch; energy composite +5-6%.",
+      "marketReadthrough": "Full stagflation repricing: 2Y Treasury jumps, hike odds for 2026 rise above 70%, USD firms, equities de-rate. July CPI (Aug 12) one day earlier amplifies the move.",
       "favoredAssets": [
         "XLE",
         "USD",
-        "USO"
+        "XOM"
       ],
-      "invalidation": "Energy component prints below -4% MoM, confirming full June crash passthrough"
+      "invalidation": "Diplomatic resolution + OPEC+ supply response; EIA shows product inventories normalizing"
     },
     {
       "id": "cool",
-      "label": "Cool Case — Full Energy Passthrough",
+      "label": "Cool Case — Ceasefire + Mean Reversion",
       "probability": 20,
-      "outcome": "Headline PPI -0.2% MoM, Core PPI +0.1% MoM. June crash fully passes through the sampling window; wholesale margin compression; services ex-trade flat.",
-      "marketReadthrough": "YoY slides under 6.0%, rate-hike pricing unwinds at the margin. But the bid in crude from Iran caps the rally in duration — TLT fades after the first pop.",
+      "outcome": "July headline PPI 0.0% MoM, core +0.1% MoM. Ceasefire re-signed, crude mean-reverts to $70, war premium evaporates before mid-month sampling; natgas weakness (-8% MoM) adds drag; core goods cool with DXY ~101.",
+      "marketReadthrough": "Inflation scare unwinds: rate-hike pricing fades, duration rallies, growth equities recover. YoY slides toward 5.7-5.8% on the base effect.",
       "favoredAssets": [
-        "IWM",
+        "TLT",
         "QQQ",
-        "HYG"
+        "IWM"
       ],
-      "invalidation": "Core goods print above +0.6% on tariff/ISM passthrough; ECI-driven services upside"
+      "invalidation": "Any kinetic escalation during the sampling window; distillate crunch triggers diesel spike regardless of crude"
     }
   ],
   "setups": [
     {
-      "asset": "UST 10Y / TLT",
-      "bias": "Tactical long only on cool core + benign CPI; otherwise war premium keeps yields bid",
-      "trigger": "Core PPI <= +0.2% and June CPI core <= +0.2%",
-      "invalidation": "Hot core stack (CPI+PPI both hot) or Hormuz escalation pushing WTI > $85"
-    },
-    {
-      "asset": "XLE (Energy Select Sector SPDR)",
-      "bias": "Long volatility / long on escalation — distillate crunch amplifies any supply scare",
-      "trigger": "Iran ceasefire frays further; EIA distillate stocks stay 12%+ below 5-yr avg; WTI holds > $75",
-      "invalidation": "Formal ceasefire + OPEC+ adds; WTI back under $70"
+      "asset": "XLE / USO (Energy long + volatility)",
+      "bias": "Long into the July sampling window while Hormuz risk is live",
+      "trigger": "Strait transit stays below 10 vessels/day; EIA distillate stocks stay 12%+ below 5-yr avg; WTI > $75",
+      "invalidation": "Signed ceasefire + WTI weekly close below $70"
     },
     {
       "asset": "GLD (SPDR Gold Shares)",
-      "bias": "Long as geopolitical hedge into the CPI/PPI double-header",
-      "trigger": "Hot inflation + war escalation = stagflation bid; DXY stalls at 101",
-      "invalidation": "Cool CPI+PPI stack AND ceasefire signed — real yields pop, gold de-rates"
+      "bias": "Long as stagflation/geopolitical hedge through the CPI+PPI double-header (Aug 12-13)",
+      "trigger": "Hot July CPI/PPI stack with war escalation; real yields capped by growth scare",
+      "invalidation": "Cool prints + ceasefire: real yields pop, gold de-rates below key support"
+    },
+    {
+      "asset": "UST 10Y / TLT",
+      "bias": "Short duration on hot-case confirmation; long only on cool stack",
+      "trigger": "July core PPI > +0.4% with hot CPI — sell duration",
+      "invalidation": "Cool CPI+PPI stack flips to recession-pricing — cover and go long"
     },
     {
       "asset": "USD (DXY)",
-      "bias": "Long on hot PPI surprise with rates follow-through",
-      "trigger": "Headline and core both beat; terminal-rate pricing lifts",
-      "invalidation": "Rates fade despite the beat; risk-off bid goes to gold/CHF instead"
+      "bias": "Long on hot July prints with rates follow-through",
+      "trigger": "Headline + core both firm; terminal-rate repricing lifts; DXY breaks 102",
+      "invalidation": "Cool prints + ceasefire; DXY back under 100"
     }
   ],
   "watchItems": [
     {
-      "label": "US-Iran / Hormuz (dominant risk)",
-      "value": "WTI $77.85 (+9% Jul 13); Brent $79.11; 6 vessels Sunday — fewest in 5 weeks",
-      "note": "July-print risk, but defines tomorrow's reaction function. Iran claims strait shut; Trump says shipping open."
+      "label": "MEASURED MONTH = JULY 2026",
+      "value": "Release Aug 13, 2026 (08:30 ET) — verify vs BLS schedule",
+      "note": "This file forecasts July price changes. The June PPI (Jul 15) is a separate, earlier release and only enters here as the prior-month anchor."
     },
     {
-      "label": "June CPI (today 08:30 ET)",
-      "value": "Consensus ~4.0% YoY, core ~2.9%",
-      "note": "Sets the pre-PPI tape. Cleveland Fed nowcast: CPI 4.05%, core 2.86%."
+      "label": "PROVISIONAL — July sampling incomplete",
+      "value": "Month ~45% complete at run time (Jul 14)",
+      "note": "All composite inputs are July-to-date through Jul 13 close. Second-half July data (esp. energy, post any ceasefire) can swing the energy composite by ±3 ppt."
+    },
+    {
+      "label": "US-Iran / Hormuz",
+      "value": "WTI $77.85 (+9% Jul 13); Brent $79.11; 6 vessels Sunday",
+      "note": "Dominant July input. Trump says shipping open; Iran claims strait shut. Resolution timing decides base vs hot case."
     },
     {
       "label": "EIA fuel-supply crunch",
-      "value": "Crude +3.0M (411.4M), gasoline -1.9M, distillate -5.0M (12% below 5-yr avg)",
-      "note": "Products tight even as crude builds. Russia diesel export ban + China export uncertainty widen the crude-products divide."
+      "value": "Distillate 103.6M (-5.0M, 12% below 5-yr avg); crude +3.0M",
+      "note": "Products tight regardless of crude direction. Russia diesel export ban + China export uncertainty widen the crude-products divide into July."
     },
     {
-      "label": "ISM Prices Paid",
-      "value": "73.0 (June), down from 82.1",
-      "note": "Normalized +2.3 ppt in core goods composite. Still strongly inflationary; July print Aug 1."
+      "label": "June PPI actual (Jul 15, 08:30 ET)",
+      "value": "Our nowcast: +0.1% / +0.3%",
+      "note": "Becomes the prior-month anchor for the July YoY math once published. Revisions to May possible."
     },
     {
-      "label": "BLS ECI Q2 2026",
-      "value": "Scheduled Jul 31; Q1 was +0.9% SA",
-      "note": "Best services proxy. Q2 >1.0% would lift the Other Services composite for Q3 prints."
+      "label": "BLS ECI Q2 2026 (Jul 31)",
+      "value": "Q1 was +0.9% SA (+0.30 monthly proxy)",
+      "note": "Lands inside the July measurement window — Q2 >1.0% lifts the July services composite."
+    },
+    {
+      "label": "ISM Manufacturing (Jul data, ~Aug 1-3)",
+      "value": "June Prices Paid 73.0 (proxy in use)",
+      "note": "July ISM Prices Paid is the last major core-goods input; >70 keeps the hot case alive."
     },
     {
       "label": "VIX regime boundary",
       "value": "17.16 spot (Jul 13), prev close 15.03",
-      "note": "A close above 18 flips the model to Elevated regime (bias window 2mo, wider CI)."
+      "note": "Close above 18 flips model to Elevated regime (2-month bias window, wider CI)."
     }
   ],
   "keyDrivers": [
-    "June energy deflation is real but partially sampled: AAA regular -5.2% MoM, diesel -6.9% MoM; the Jun 9-week sampling window caught mid-crash prices — expect energy drag of ~-0.25 to -0.30 ppt on headline, not the full crash.",
-    "Core stickiness is structural: ISM Prices Paid 73.0 (+2.3 ppt normalized) + ECI Q1 +0.9% SA (+0.30 monthly proxy) keep core PPI near +0.3% MoM regardless of energy.",
-    "War re-escalation changes the asymmetry, not the June print: WTI +9% to $77.85 on US-Iran strikes means a hot PPI tomorrow gets amplified (stagflation), a cool one gets faded as stale.",
-    "Fuel-supply crunch under the surface: distillate stocks 12% below 5-yr average at 103.6M bbl while crude builds — refined products stay bid even if crude softens, supporting July energy PPI.",
-    "Pipeline pressure still live: intermediate demand Stage1 +3.2%, Stage2 +2.4% adds +0.15 ppt uplift — upstream inflation has not cleared."
+    "July energy sign flip: after June's -23% Brent collapse, July-to-date crude is +12% (Brent $71.4 -> $80.1) on the US-Iran re-escalation. Retail gasoline reversed: AAA $3.797 -> $3.872 WoW; diesel $4.756 -> $4.875. Energy composite provisional at +2.7%.",
+    "Distillate crunch is structural, not geopolitical: stocks 12% below the 5-yr average at 103.6M bbl with Russia's diesel export ban and refinery-capacity losses — diesel/jet stay bid even if crude cools, supporting July PPI energy either way.",
+    "Core stickiness unchanged: ISM Prices Paid 73.0 (+2.3 ppt normalized) plus ECI Q1 +0.9% SA keep July core near +0.3% MoM. July ISM (Aug 1-3) and ECI Q2 (Jul 31) are the two remaining core inputs.",
+    "Base effect cuts YoY: July 2025 PPI was +0.7% MoM, so a +0.4% July print mechanically pulls headline YoY from ~6.2-6.5% toward ~6.0% — MoM re-acceleration hidden inside a softer YoY.",
+    "Natural gas is the offset: Henry Hub Aug $2.89 (-8% MoM) despite the heat dome, keeping the energy composite from running hotter."
   ],
   "risks": [
-    "Upside — sampling-window trap: if BLS sampling caught the Jun 3-13 peak (WTI $84-98), energy prints near flat and headline jumps to +0.4%.",
-    "Upside — Hormuz escalation between now and release: market stops caring about backward-looking June data entirely; any non-cool print triggers disorderly stagflation repricing.",
-    "Downside — full June crash passthrough: if the index catches late-June prices (WTI $72), headline prints negative and YoY slides under 6.0%.",
-    "Downside — CPI first-mover: a cool CPI today could pre-commit the market to fading tomorrow's PPI regardless of the print.",
-    "Revision risk: May's +1.1% MoM / 6.5% YoY can be revised; a higher revised base changes the YoY math by ~0.2 ppt."
+    "Mid-month provisional risk: ~55% of the July measurement window is unsampled. A ceasefire in the next two weeks converts the base case into the cool case (headline 0.0%).",
+    "Upside — sustained disruption: if Hormuz transit stays throttled into early August, the hot case (+0.8% headline) becomes the base; diesel cracks amplify it via the inventory crunch.",
+    "Downside — sampling-window timing: July PPI samples the week of Jul 13 (Tue Jul 14) — prices collected this week may already embed the spike, meaning a later-July ceasefire would NOT fully reverse the print.",
+    "Data risk: June PPI (Jul 15) and its May revisions reset the prior-month anchor used in July YoY math; a big June surprise shifts the July YoY estimate by up to ±0.3 ppt.",
+    "Release-date risk: Aug 13, 2026 is inferred from the BLS 1-day-after-CPI pattern (July CPI = Aug 12); verify against the official BLS schedule when published."
   ],
   "sources": [
     "https://www.cboe.com/tradable-products/vix/ (VIX spot 17.16, prev close 15.03, Jul 13 2026)",
     "https://hdfcsky.com/news/brent-crude-oil-price-today-july-13-2026-crude-oil-price-surges-4percent-to-79-11-as-us-iran-conflict-escalates-strait-of-hormuz-fears-rattle-energy-markets (WTI +4% to $74.32, Brent $79.11, US-Iran strikes, Jul 13 2026)",
     "https://www.marketwatch.com/investing/future/cl.1 (WTI Aug 2026 $77.85 +6.44, Jul 13 2026 2:17pm ET)",
-    "https://gasprices.aaa.com/ (AAA regular $3.872, diesel $4.875, Jul 13 2026; month ago $4.086/$5.236)",
-    "https://www.indexbox.io/blog/eia-weekly-fuel-price-update-july-7-2026-national-gasoline-average-at-3777/ (EIA retail $3.777, Jul 6 2026)",
-    "https://crudesignal.io/crude-oil-inventory-report (EIA w/e Jul 3: crude +3.0M to 411.4M, gasoline -1.9M, distillate -5.0M to 103.6M, SPR -6.2M)",
+    "https://gasprices.aaa.com/ (AAA regular $3.872, diesel $4.875, Jul 13 2026; week ago $3.797/$4.756)",
+    "https://crudesignal.io/crude-oil-inventory-report (EIA w/e Jul 3: crude +3.0M to 411.4M, distillate -5.0M to 103.6M, SPR -6.2M)",
     "https://tanktransport.com/2026/07/fuel-supply-crunch/ (EIA WPSR Jul 8: distillate 12% below 5-yr avg, utilization 95.8%)",
-    "https://octagonai.co/markets/economics/inflation/ppi-yoy-in-june/ (June PPI YoY prediction market: 56% >6.2%, 44% >6.4%; May +1.1% MoM/6.5% YoY, energy +10.7%, gasoline +23.4%)",
-    "https://tradingeconomics.com/united-states/producer-prices-change (PPI May 2026 +6.5% YoY, largest since Nov 2022)",
     "https://farmbucks.com/futures/energy/natural-gas (Henry Hub Aug $2.89/MMBtu, Jul 13 2026)",
-    "https://www.sourcebyspec.com/news/henry-hub-natural-gas-holds-3-28-usd-mmbtu-into-july-2026-heat-window.html (Henry Hub $3.28, Jul 8 2026)",
-    "https://www.textileworld.com/textile-world/2026/07/manufacturing-pmi-at-53-3-june-2026 (ISM PMI 53.3, Prices Paid 73.0, Jun 2026)",
+    "https://www.textileworld.com/textile-world/2026/07/manufacturing-pmi-at-53-3-june-2026 (ISM PMI 53.3, Prices Paid 73.0, Jun 2026 — proxy for July)",
     "https://www.bls.gov/news.release/eci.nr0.htm (ECI Q1 2026 +0.9% SA)",
-    "https://www.cmelitegroup.com/knowledge-hub/cpi-report-release-time-schedule-latest-data-and-how-it-moves-markets/ (CPI Jul 14, PPI Jul 15, Retail Jul 16; May CPI +0.5%/4.2%, core +0.2%/2.9%)",
+    "https://www.usinflationcalculator.com/inflation/consumer-price-index-release-schedule/ (BLS 2026 CPI schedule: Jul 2026 CPI = Aug 12, 2026; PPI follows 1 day after CPI pattern)",
+    "https://www.investing.com/economic-calendar/ppi-734 (PPI calendar: Jun 2026 PPI = Jul 15, 2026)",
     "https://www.westmetall.com/en/markdaten.php (LME Copper $13,408.50, Aluminum $3,156, Jul 10 2026)",
     "https://tradingeconomics.com/commodity/hrc-steel (HRC Steel ~$1,174/ton, Jul 2026)",
-    "https://www.goodreturns.in/crude-oil-price.html (Brent June: $94.97 -> $73.15, -23%; Jul 13 $79-80)"
+    "https://www.goodreturns.in/crude-oil-price.html (Brent July-to-date +12.16%, $71.41 -> $80.09, Jul 13 2026)",
+    "https://www.bls.gov/news.release/archives/ppi_09112025.htm (July 2025 PPI +0.7% MoM — base effect reference)"
   ]
 }
