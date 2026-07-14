@@ -1,12 +1,12 @@
 {
-  "measurementMonth": "2026-06",
+  "measurementMonth": "2026-07",
   "generatedAt": "2026-07-13T21:00:00Z",
   "reportDate": "2026-07-14",
-  "title": "US CPI Forecast Snapshot — June 2026 (v3.1 EIA-Validated Methodology)",
-  "methodology": "Two-stage aggregation using exact BLS 2024-2025 relative importance weights. Stage 1: component-level forecasts. Stage 2: weighted aggregation. Verification: Food+Energy+Core=100.000% and Shelter+CoreGoods+CoreServices=80.557%. Energy validated with AAA retail gasoline ($3.872/gal Jul 13, up from $3.797 a week ago on renewed Hormuz tension). WTI futures NOT used for gasoline CPI per backtest (R2=0.23, MAE=8.1%). Cross-check: Cleveland Fed CPI Nowcast projects June headline 3.92% y/y and core 2.85% y/y. Consensus: headline 3.8% y/y, core 2.9% y/y. Backtest: 15 months weight accuracy MAE 0.035% core, 0.146% headline.",
-  "summary": "June CPI (release Jul 14, 08:30 ET) forecast: headline +0.1% m/m (3.9% y/y; consensus 3.8% y/y; Cleveland nowcast 3.92%) on June energy deflation; core +0.2% m/m (2.9% y/y; nowcast 2.85%). The print is backward-looking so the Jul 13 re-escalation does not change June much, but the macro setup has flipped hawkish: Trump reinstated the Hormuz ship blockade, WTI back to ~$79, VIX +14% to ~17, S&P 500 7508 (-0.88%). 10Y 4.57%. FOMC Jul 28-29. July/Aug CPI now carries an upside energy tail. Soft print likely fades into a higher-for-longer Fed; hot core print accelerates the selloff.",
-  "baseCase": "Cool/inline June headline on backward-looking energy deflation; core stable at +0.2%. But Hormuz blockade reinstatement turns the forward path hawkish — sell-the-rally risk on any soft print.",
-  "conviction": 68,
+  "title": "US CPI Forecast Snapshot — July 2026 (v3.1 EIA-Validated Methodology)",
+  "methodology": "Two-stage aggregation using exact BLS 2024-2025 relative importance weights. Stage 1: component-level forecasts. Stage 2: weighted aggregation. Verification: Food+Energy+Core=100.000% and Shelter+CoreGoods+CoreServices=80.557%. MEASURED MONTH = JULY 2026 (released Aug 12, 2026). July is in progress, so inputs are PROVISIONAL through the run timestamp. Energy validated with AAA retail gasoline ($3.872/gal Jul 13, rising in July). WTI futures NOT used for gasoline CPI per backtest (R2=0.23, MAE=8.1%). Cross-check: Cleveland Fed CPI Nowcast projects July headline 3.71% y/y and core 2.81% y/y; Kalshi market-implied July headline ~3.6-3.7% y/y. Backtest: 15 months weight accuracy MAE 0.035% core, 0.146% headline.",
+  "summary": "JULY 2026 CPI (released Aug 12, 08:30 ET). Forecast: headline +0.2% m/m (3.7% y/y; Cleveland nowcast 3.71%; Kalshi ~3.6-3.7%); core +0.2% m/m (2.8% y/y; nowcast 2.81%). The swing factor is energy: the Hormuz escalation is a JULY event (Jul 7 vessel attacks, Jul 8 US strikes + ceasefire declared over + sanctions waiver revoked, Jul 13 blockade reinstated), so July energy CPI turns back UP after June's deflation. Core keeps cooling gradually (shelter easing, services sticky). July is only ~2 weeks in, so this is PROVISIONAL with LOW confidence — the rest of July's oil path decides the print. 10Y 4.57%, VIX ~17, S&P 500 7508. FOMC Jul 28-29 lands before this release.",
+  "baseCase": "July energy re-accelerates on the Hormuz escalation while core keeps cooling gradually. Headline firms to ~+0.2% m/m / 3.7% y/y; core holds ~+0.2% / 2.8%. Upside risk on headline from oil.",
+  "conviction": 50,
   "weights": {
     "food": 13.25,
     "energy": 6.193,
@@ -17,66 +17,66 @@
   },
   "aggregation": {
     "foodContribution": 0.0265,
-    "energyContribution": -0.0805,
-    "coreContribution": 0.1647,
-    "headline": 0.1107,
-    "core": 0.2045,
-    "verification": "Food(13.25) + Energy(6.193) + Core(80.557) = 100.000% | Shelter(34.411) + CoreGoods(18.4) + CoreServices(27.746) = 80.557%"
+    "energyContribution": 0.031,
+    "coreContribution": 0.1693,
+    "headline": 0.2267,
+    "core": 0.2101,
+    "verification": "Food(13.25) + Energy(6.193) + Core(80.557) = 100.000% | Shelter(34.411) + CoreGoods(18.4) + CoreServices(27.746) = 80.557% | July inputs PROVISIONAL"
   },
   "release": {
     "name": "CPI",
-    "period": "Jun 2026",
-    "releaseDate": "2026-07-14",
+    "period": "Jul 2026",
+    "releaseDate": "2026-08-12",
     "releaseTimeEt": "08:30 ET",
-    "headlineMoM": "+0.1%",
-    "headlineYoY": "3.9%",
+    "headlineMoM": "+0.2%",
+    "headlineYoY": "3.7%",
     "coreMoM": "+0.2%",
-    "coreYoY": "2.9%",
+    "coreYoY": "2.8%",
     "priorHeadlineMoM": "+0.5%",
     "priorHeadlineYoY": "4.2%",
     "priorCoreMoM": "+0.2%",
     "priorCoreYoY": "2.9%",
-    "bias": "COOLER",
-    "confidence": 68,
-    "thesis": "June is backward-looking: AAA gasoline fell through June vs May, so energy CPI stays soft and headline lands ~+0.1% m/m / 3.9% y/y. Core holds +0.2% (shelter cooling, services sticky). But the Jul 13 Hormuz blockade reinstatement (WTI ~$79, VIX ~17) shifts the July/August path hawkish and caps the rally on a soft print. Cleveland Fed nowcast: headline 3.92% y/y, core 2.85% y/y."
+    "bias": "HOTTER",
+    "confidence": 50,
+    "thesis": "JULY 2026 print (Aug 12). Energy is the driver: the Hormuz escalation is a July event — Jul 7 vessel attacks, Jul 8 US strikes + ceasefire declared over + Treasury sanctions waiver revoked, Jul 13 blockade reinstated (WTI ~$79, gasoline futures +6%). July energy CPI turns back UP after June's deflation, firming headline to ~+0.2% m/m / 3.7% y/y. Core keeps cooling to ~+0.2% / 2.8% y/y (shelter easing, services sticky). Cleveland nowcast: headline 3.71%, core 2.81% y/y. PROVISIONAL — only ~2 weeks of July data; the back-half oil path sets the final number. Prior print = May actual (June actual releases today Jul 14, becomes new prior)."
   },
   "scenarios": [
     {
       "id": "base",
       "label": "Base case",
-      "probability": 52,
-      "outcome": "Headline +0.1% m/m, Core +0.2% m/m — June energy deflation keeps headline soft; core stable, shelter deceleration offsets sticky services.",
-      "marketReadthrough": "10Y fades to 4.45-4.50%, DXY ~100. Modest QQQ bounce on the soft headline, but Hormuz re-escalation + higher-for-longer Fed caps the rally; likely sell-the-rally into FOMC. Duration/TLT tentative. Airlines fade the oil spike; homebuilders get only a weak bid. Choppy tape with bank earnings same day.",
+      "probability": 45,
+      "outcome": "Headline +0.2% m/m, Core +0.2% m/m — July energy re-accelerates modestly on the Hormuz escalation; core cools gradually, shelter easing offsets sticky services.",
+      "marketReadthrough": "10Y holds 4.55-4.65%, DXY ~100-101. Choppy tape: $XLE and $GLD bid on the energy/geopolitical tail, equities range-bound into FOMC (Jul 28-29). $QQQ capped by higher-for-longer; $TLT tentative. Headline firm but not a shock — market reads it as transitory energy, not core re-acceleration.",
       "favoredAssets": [
-        "$QQQ",
+        "$GLD",
+        "$XLE",
+        "$USD",
         "$TLT",
-        "$AMT",
-        "$DHI",
-        "$GLD"
+        "$SPY"
       ],
-      "invalidation": "Core services re-accelerate above +0.35% m/m, or Hormuz escalation spikes oil and flips the forward inflation path."
+      "invalidation": "Surprise Hormuz de-escalation/reopening collapses oil back below $70, or core services break decisively lower."
     },
     {
       "id": "hot",
       "label": "Hotter inflation surprise",
-      "probability": 30,
-      "outcome": "Headline +0.2% m/m, Core +0.3% m/m — sticky core services + shelter firm; market reprices the Hormuz energy tail into July/Aug.",
-      "marketReadthrough": "10Y spikes 4.65%+, DXY 101+, QQQ/Nasdaq extend the chip-led selloff, SPY PUT / VIX CALL setups. Gold squeezes on inflation + geopolitics. XLE bid on the blockade. Fed hike risk re-prices higher.",
+      "probability": 35,
+      "outcome": "Headline +0.4-0.5% m/m, Core +0.3% m/m — Hormuz escalation sustains the oil spike through July, gasoline rises sharply, services stay sticky; y/y back toward 4%.",
+      "marketReadthrough": "10Y spikes 4.70%+, DXY 101+, equities extend the selloff — $SPY PUT / $VIX CALL setups. $XLE and $GLD squeeze. Fed hike risk re-prices higher into the July FOMC; higher-for-longer hardens.",
       "favoredAssets": [
-        "$USD",
-        "$GLD",
         "$XLE",
-        "$SPY",
-        "$VIX"
+        "$GLD",
+        "$USD",
+        "$VIX",
+        "$SPY"
       ],
-      "invalidation": "Hot print driven by a one-off transportation/fuel-surcharge component while core goods deflate."
+      "invalidation": "Hot print driven by a one-off fuel-surcharge/transportation component while core goods deflate and oil fades."
     },
     {
       "id": "cool",
       "label": "Cooler disinflation impulse",
-      "probability": 18,
-      "outcome": "Headline 0.0% to -0.1% m/m, Core +0.15% m/m — June energy drop fully captured, shelter decelerates faster, services ex-shelter soft.",
-      "marketReadthrough": "10Y drops to 4.40-4.45%, DXY <100. Risk-on relief: QQQ +1-2%, TLT strong, homebuilders (DHI) and REITs rally. But move likely fades as traders re-anchor on the Hormuz blockade and higher-for-longer Fed.",
+      "probability": 20,
+      "outcome": "Headline 0.0% to +0.1% m/m, Core +0.15% m/m — surprise Hormuz de-escalation/reopening drops oil, shelter decelerates faster, services ex-shelter soft; y/y dips toward 3.4%.",
+      "marketReadthrough": "10Y drops to 4.40-4.45%, DXY <100. Risk-on relief: $QQQ +1-2%, $TLT strong, homebuilders ($DHI) and REITs rally, airlines ($UAL) bounce on cheaper jet fuel. Fed-cut odds for late 2026 revive.",
       "favoredAssets": [
         "$QQQ",
         "$TLT",
@@ -84,105 +84,105 @@
         "$AMT",
         "$UAL"
       ],
-      "invalidation": "Market already priced a benign print and the Hormuz escalation dominates the tape regardless of the number."
+      "invalidation": "The Hormuz escalation dominates regardless, or the market already priced a benign print."
     }
   ],
   "setups": [
     {
-      "asset": "UST 10Y / TLT",
-      "bias": "Tentative long duration on cool/inline core",
-      "trigger": "Core CPI <= +0.2% and services ex-shelter stable; 10Y fails 4.60%",
-      "invalidation": "10Y breaks 4.65% on hot core or Hormuz-driven inflation repricing."
-    },
-    {
-      "asset": "NASDAQ / QQQ / NVDA",
-      "bias": "Fade strength — chip capex concerns + higher-for-longer",
-      "trigger": "Soft headline bounce into resistance; VIX below 18",
-      "invalidation": "Hot core with 10Y above 4.65% and DXY above 101.5."
+      "asset": "Energy — XLE / XOM / CVX",
+      "bias": "Tactical long — July Hormuz escalation + blockade reinstatement",
+      "trigger": "WTI holds above $78 and Hormuz traffic stays disrupted into late July",
+      "invalidation": "Surprise de-escalation/reopening sends WTI back below $70."
     },
     {
       "asset": "Gold — GLD",
-      "bias": "Long — inflation tail + Hormuz geopolitics hedge",
-      "trigger": "DXY below 100.5 and real yields compress; escalation persists",
-      "invalidation": "DXY above 101.5 with 10Y above 4.70% kills the haven bid."
+      "bias": "Long — July energy/inflation tail + geopolitics hedge",
+      "trigger": "DXY below 101 and real yields compress; escalation persists",
+      "invalidation": "DXY above 101.5 with 10Y above 4.75% kills the haven bid."
     },
     {
-      "asset": "Energy — XLE / XOM / CVX",
-      "bias": "Tactical long on blockade reinstatement",
-      "trigger": "WTI holds above $78 and Hormuz traffic is disrupted",
-      "invalidation": "Surprise de-escalation / ceasefire reinstated and WTI back below $70."
+      "asset": "UST 10Y / TLT",
+      "bias": "Light short / avoid longs into a firming July print",
+      "trigger": "10Y fails 4.45% and core CPI comes in cool",
+      "invalidation": "10Y breaks 4.70% on hot July CPI or Hormuz-driven inflation repricing."
+    },
+    {
+      "asset": "NASDAQ / QQQ",
+      "bias": "Fade strength — higher-for-longer + chip capex concerns",
+      "trigger": "Bounce into resistance with VIX below 18 and firm July CPI",
+      "invalidation": "Cool July CPI + de-escalation revives rate-cut pricing."
     },
     {
       "asset": "Airlines — UAL / DAL",
-      "bias": "Avoid / light short — jet fuel spike risk on blockade",
-      "trigger": "WTI above $80 with demand softening",
-      "invalidation": "De-escalation drops jet fuel and summer bookings hold."
+      "bias": "Avoid / light short — jet fuel spike risk on the July blockade",
+      "trigger": "WTI above $80 with summer demand softening",
+      "invalidation": "De-escalation drops jet fuel and bookings hold."
     },
     {
       "asset": "SPY / VIX",
-      "bias": "Protective — hot CPI + geopolitics = vol expansion",
+      "bias": "Protective — hot July CPI + FOMC + geopolitics = vol expansion",
       "trigger": "Core >= +0.3% or Hormuz escalation; VIX breakout above 20",
       "invalidation": "Cool CPI + de-escalation crushes vol back below 15."
     }
   ],
   "watchItems": [
     {
-      "label": "Hormuz / Iran (KEY SHIFT)",
-      "value": "Blockade REINSTATED Jul 13",
-      "note": "Trump said US would reinstate the blockade of Iranian ships. Reverses the prior ceasefire-holding thesis. WTI back to ~$79, gasoline futures +6% Jul 13. Raises July/Aug CPI energy tail and hot-scenario odds."
+      "label": "MEASURED MONTH",
+      "value": "JULY 2026 (released Aug 12)",
+      "note": "This snapshot measures JULY 2026 price changes. Publication timing (Aug 12) does not change the measured month. Prior print shown = May actual; June actual releases today Jul 14 08:30 ET and becomes the new prior."
     },
     {
-      "label": "10Y UST",
-      "value": "4.569% (Jul 13)",
-      "note": "Key regime line. Below 4.45% = growth relief. Above 4.65% = risk-off / higher-for-longer."
+      "label": "Hormuz / Iran (JULY DRIVER)",
+      "value": "Escalation IN July",
+      "note": "PROVISIONAL. Jul 7: Iran attacked 3 commercial vessels. Jul 8: US strikes, Trump declared ceasefire over, Treasury revoked Iran oil sanctions waiver (supply-side hit). Jul 13: blockade reinstated. This is a JULY measurement-window event that pushes July energy CPI up."
     },
     {
       "label": "AAA Retail Gasoline",
       "value": "$3.872/gal (Jul 13)",
-      "note": "AAA National Average. Up from $3.797 a week ago on renewed Hormuz tension (month ago $4.086). June still averaged below May -> backward-looking energy deflation intact for this print. EIA API unavailable; AAA is primary source. WTI NOT used for gasoline CPI per backtest (R2=0.23)."
-    },
-    {
-      "label": "VIX",
-      "value": "~17.1 (Jul 13, +14%)",
-      "note": "Pre-CPI vol expansion. CPI + bank earnings (JPM, BAC, C) same day Jul 14 = vol amplification; surprise could spike 20-24."
-    },
-    {
-      "label": "S&P 500 / Nasdaq",
-      "value": "SPX 7508 (-0.88%)",
-      "note": "Nasdaq 100 -2% Jul 13 on AI capex / chip concerns (NVDA/AMD/INTC -3%+, Micron -12%). Stretched positioning into CPI raises gap risk."
+      "note": "PROVISIONAL (July ~half done). Up from $3.797 a week ago; rising in the back half of July on the blockade. EIA API unavailable; AAA is primary source. WTI NOT used for gasoline CPI per backtest (R2=0.23). EIA STEO: H2-2026 avg ~$3.60/gal."
     },
     {
       "label": "WTI Crude",
       "value": "~$79 (Jul 13)",
-      "note": "Spiked from ~$76 on blockade reinstatement. Directional only for energy trades — NOT used for gasoline CPI forecast."
-    },
-    {
-      "label": "Fed path / Warsh",
-      "value": "Hawkish; FOMC Jul 28-29",
-      "note": "June FOMC hawkish hold, easing bias removed, dot plot 3.8% median = one 2026 hike. June CPI + PCE (Jul 25) feed the July meeting."
+      "note": "PROVISIONAL. Spiked from ~$66 early-July to ~$79 on the escalation. Directional only for energy trades — NOT used for gasoline CPI forecast. Rest of July's path sets the energy print."
     },
     {
       "label": "Cleveland Fed CPI Nowcast",
-      "value": "Headline 3.92% / Core 2.85% y/y",
-      "note": "Model cross-check for June. Broadly consistent with our bottom-up (headline 3.9%, core 2.9%)."
+      "value": "July: Headline 3.71% / Core 2.81% y/y",
+      "note": "Model cross-check for JULY 2026. Broadly consistent with our bottom-up (headline 3.7%, core 2.8%)."
+    },
+    {
+      "label": "Market-implied July CPI",
+      "value": "~3.6-3.7% y/y (Kalshi)",
+      "note": "Kalshi/Robinhood July CPI y/y: >3.5% 84¢, >3.6% 45¢, >3.7% 35¢, >3.8% 19¢. Median ~3.6-3.7%. No formal economist consensus yet this early."
+    },
+    {
+      "label": "10Y UST / VIX / SPX",
+      "value": "4.569% / ~17 / 7508",
+      "note": "Jul 13. 10Y regime line: <4.45% growth relief, >4.70% risk-off. VIX +14% pre-data. Nasdaq -2% on chip capex concerns — stretched positioning."
+    },
+    {
+      "label": "Fed path / FOMC",
+      "value": "FOMC Jul 28-29 (before this print)",
+      "note": "July FOMC lands BEFORE the July CPI (Aug 12). June FOMC was a hawkish hold, easing bias removed, dot plot 3.8% median = one 2026 hike. This print shapes September."
     }
   ],
   "keyDrivers": [
-    "Backward-looking June print stays soft on energy: AAA gasoline fell through June vs May (June energy CPI still deflationary). EIA API unavailable; AAA is primary source. WTI futures NOT used for gasoline CPI per backtest (R2=0.23, MAE=8.1%).",
-    "Hormuz regime flip: Jul 13 blockade reinstatement (WTI ~$79, VIX +14%) turns the July/August inflation path hawkish and caps any soft-print rally — sell-the-rally risk into FOMC.",
-    "Core is the swing factor: shelter decelerating (~0.25% m/m, Zillow/Apartment List leading) but services ex-shelter sticky. Core lands ~+0.2% / 2.9% y/y.",
-    "Positioning risk: Nasdaq -2% Jul 13 on AI capex/chip concerns; stretched tech longs into CPI raise gap-down risk on any hot core print.",
-    "Strong USD (~100) = core-goods import deflation, partially offsetting sticky services and any PPI passthrough.",
-    "Cleveland Fed nowcast (headline 3.92%, core 2.85% y/y) confirms a soft-headline June; forward energy tail is the real repricing driver.",
-    "CPI + Q2 bank earnings convergence (Jul 14, JPM/BAC/C) = cross-asset volatility amplification on the number."
+    "MEASURED MONTH = JULY 2026. The Hormuz escalation is a JULY-window event (Jul 7-8-13), so July energy CPI turns back UP after June's deflation — this is the dominant July driver.",
+    "Energy re-acceleration: AAA gasoline rising in the back half of July on the blockade reinstatement (WTI ~$79). EIA API unavailable; AAA is primary source. WTI futures NOT used for gasoline CPI per backtest (R2=0.23, MAE=8.1%).",
+    "Core keeps cooling: shelter decelerating (~0.25% m/m, Zillow/Apartment List leading) but services ex-shelter sticky. July core lands ~+0.2% / 2.8% y/y.",
+    "PROVISIONAL / LOW confidence: July is only ~2 weeks in. The back-half oil path (escalation vs de-escalation) decides whether July prints firm (base) or hot. Confidence held at 50.",
+    "Supply-side oil risk: Treasury revoked Iran's oil export sanctions waiver (Jul 8) — a structural July supply hit, not just shipping risk.",
+    "Strong USD (~100) = core-goods import deflation, partially offsetting sticky services and energy.",
+    "FOMC timing: July FOMC (Jul 28-29) lands BEFORE this print (Aug 12), so July CPI mainly shapes the September decision."
   ],
   "risks": [
-    "Hormuz escalation: blockade reinstatement or a wider US-Iran flare-up spikes oil into July/Aug CPI and flips the forward path hawkish even if June prints soft.",
-    "Sticky core services: a +0.3%+ core print on services/shelter accelerates the higher-for-longer repricing and extends the equity selloff.",
-    "Sell-the-rally: a soft headline may fade fast as traders anchor on the Hormuz energy tail and the hawkish FOMC (one 2026 hike priced).",
-    "Tech positioning: AI capex / chip concerns (Nasdaq -2% Jul 13) raise gap-down risk on a hot core surprise.",
-    "Demand weakness: if oil spikes on supply fear while risk assets fall, soft CPI could read as stagflationary rather than bullish.",
-    "Shelter lag: BLS shelter lags market rents 6-12 months; faster or slower deceleration than expected can surprise core in either direction.",
-    "PPI passthrough: hot prior PPI feeds core CPI with a 1-3 month lag; watch Jul 15 PPI for confirmation."
+    "Hormuz escalation (top July risk): a wider US-Iran flare-up or sustained blockade spikes oil through July and pushes the print HOT (y/y back toward 4%).",
+    "PROVISIONAL data risk: only ~2 weeks of July inputs; the back-half oil path can swing the energy component materially in either direction.",
+    "Supply-side persistence: sanctions-waiver revocation (Jul 8) could keep oil elevated beyond a shipping headline, making the energy rise structural.",
+    "Sticky core services: a +0.3%+ core print accelerates higher-for-longer repricing and extends the equity selloff.",
+    "De-escalation whipsaw: a surprise reopening collapses oil and flips the print cool — the scenario cuts both ways.",
+    "Demand weakness: oil spike on supply fear + falling risk assets could read as stagflationary, not bullish.",
+    "PPI passthrough: watch the July PPI (Aug ~13) for pipeline confirmation into the July CPI core-goods read."
   ]
 }
