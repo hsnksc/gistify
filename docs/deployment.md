@@ -60,6 +60,8 @@ cd /srv/gistify
 | `GIT_BRANCH` | — | Branch recorded in `deploy_history` |
 | `REPORT_ADMIN_SECRET` | — | Shared secret for `x-gistify-admin-secret` header (required for job-triggered server refresh) |
 | `REPORT_ADMIN_EMAIL` | `hsnksc@gmail.com` | Admin session email |
+| `WATCHLIST_ALERT_WEBHOOK_URL` | — | Email automation endpoint for queued account watchlist alerts; queue remains pending when omitted |
+| `WATCHLIST_ALERT_WEBHOOK_SECRET` | — | Optional `X-Gistify-Signature` header sent to the watchlist delivery endpoint |
 
 ---
 

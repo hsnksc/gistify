@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
-  ArrowLeft, BookOpen, ChartCandlestick, FileText, FileSpreadsheet, Radar, RefreshCw, Shield, Sparkles, } from "lucide-react";
+  ArrowLeft, BookOpen, ChartCandlestick, FileText, FileSpreadsheet, Newspaper, Radar, RefreshCw, Shield, Sparkles, } from "lucide-react";
 import type {
   DailyReportRecord, DailyReportSourcePackage, } from "@shared/dailyReports";
 import type { DailyReportOpenAiChartGenerateResponse } from "@shared/dailyReportOpenAiCharts";
@@ -11,6 +11,7 @@ import CoverageAdminPanel from "@/components/reports/CoverageAdminPanel";
 import MomentumReportAdminPanel from "@/components/reports/MomentumReportAdminPanel";
 import OpenAiImageAdminPanel from "@/components/reports/OpenAiImageAdminPanel";
 import WeeklyReportAdminPanel from "@/components/reports/WeeklyReportAdminPanel";
+import WatchtowerAdminPanel from "@/components/reports/WatchtowerAdminPanel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -23,7 +24,7 @@ import { useLocation } from "wouter";
 import { type AppLanguage, t } from "@/lib/i18n";
 import { toast } from "sonner";
 
-type WorkspaceKey = "earnings" | "momentum" | "daily" | "coverage" | "images";
+type WorkspaceKey = "earnings" | "momentum" | "watchtower" | "daily" | "coverage" | "images";
 
 interface WeeklyReportsApiResponse {
   reports?: WeeklyReportRecord[];
@@ -1249,7 +1250,7 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              {(["earnings", "momentum", "coverage", "daily", "images"] as WorkspaceKey[]).map(
+              {(["earnings", "momentum", "watchtower", "coverage", "daily", "images"] as WorkspaceKey[]).map(
                 workspace => (
                   <Button
                     key={workspace}
@@ -1261,6 +1262,8 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                       <FileSpreadsheet className="size-4" />
                     ) : workspace === "momentum" ? (
                       <Radar className="size-4" />
+                    ) : workspace === "watchtower" ? (
+                      <Newspaper className="size-4" />
                     ) : workspace === "coverage" ? (
                       <BookOpen className="size-4" />
                     ) : workspace === "daily" ? (
@@ -1272,6 +1275,8 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                       ? "Earnings Workspace"
                       : workspace === "momentum"
                         ? "Momentum Workspace"
+                        : workspace === "watchtower"
+                          ? "Watchtower"
                         : workspace === "coverage"
                           ? "Coverage Workspace"
                         : workspace === "daily"
@@ -1330,6 +1335,13 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
                 value={momentumStats.latestDate}
                 description={t("flow:latestPublishedMomentumSnapshot")}
               />
+            </>
+          ) : selectedWorkspace === "watchtower" ? (
+            <>
+              <SectionCard title="Üretim" value="Midas" description="Güncel snapshot'tan deterministik taslak" />
+              <SectionCard title="Yayın kapısı" value="Editör onayı" description="Otomatik taslak doğrudan yayınlanmaz" />
+              <SectionCard title="Diller" value="TR / EN" description="Her dil bağımsız incelenir ve yayınlanır" />
+              <SectionCard title="Arşiv" value="SQLite" description="Taslak, kaynak ve onay izi kalıcıdır" />
             </>
           ) : selectedWorkspace === "coverage" ? (
             <>
@@ -1831,6 +1843,10 @@ export default function ReportsAdmin({ language }: { language: AppLanguage }) {
 
         {adminAuthorized && selectedWorkspace === "coverage" ? (
           <CoverageAdminPanel language={language} adminSecret={adminSecret} />
+        ) : null}
+
+        {adminAuthorized && selectedWorkspace === "watchtower" ? (
+          <WatchtowerAdminPanel language={language} adminSecret={adminSecret} />
         ) : null}
 
         {adminAuthorized && selectedWorkspace === "daily" ? (

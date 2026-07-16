@@ -31,8 +31,9 @@ import {
   EarningsHistoryChart,
   OptionsChainHeatmap,
 } from "@/features/coverage/components/charts";
+import CoverageSignalIntelligence from "@/features/coverage/components/CoverageSignalIntelligence";
+import { useAccountWatchlists } from "@/hooks/useAccountWatchlists";
 
-const WATCH_STORAGE_KEY = "gistify:coverage:watch:v1";
 const CHECKLIST_STORAGE_KEY = "gistify:coverage:checklist:v1";
 
 type CoverageMode = "calendar" | "detail" | "index";
@@ -40,31 +41,6 @@ type ChecklistState = Record<string, boolean>;
 
 const INLINE_PATTERN =
   /(\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)|\*\*([^*]+)\*\*|`([^`]+)`)/g;
-
-function readWatchlist() {
-  if (typeof window === "undefined") {
-    return new Set<string>();
-  }
-
-  try {
-    const raw = window.localStorage.getItem(WATCH_STORAGE_KEY);
-    const parsed = raw ? (JSON.parse(raw) as string[]) : [];
-    return new Set(parsed.filter(item => typeof item === "string"));
-  } catch {
-    return new Set<string>();
-  }
-}
-
-function persistWatchlist(watchlist: Set<string>) {
-  if (typeof window === "undefined") {
-    return;
-  }
-
-  window.localStorage.setItem(
-    WATCH_STORAGE_KEY,
-    JSON.stringify(Array.from(watchlist.values()))
-  );
-}
 
 function readChecklistState() {
   if (typeof window === "undefined") {
@@ -757,7 +733,15 @@ export default function Coverage({
   const [records, setRecords] = useState<CoverageStoredRecord[]>([]);
   const [recordsLoading, setRecordsLoading] = useState(true);
   const [recordsError, setRecordsError] = useState<string | null>(null);
-  const [watchlist, setWatchlist] = useState<Set<string>>(() => readWatchlist());
+  const {
+    defaultList,
+    pendingTicker: watchlistPendingTicker,
+    toggleTicker: toggleWatchlistTicker,
+  } = useAccountWatchlists();
+  const watchlist = useMemo(
+    () => new Set(defaultList?.items.map(item => item.ticker) || []),
+    [defaultList]
+  );
   const [checklistState, setChecklistState] = useState<ChecklistState>(() =>
     readChecklistState()
   );
@@ -794,10 +778,6 @@ export default function Coverage({
       cancelled = true;
     };
   }, [language]);
-
-  useEffect(() => {
-    persistWatchlist(watchlist);
-  }, [watchlist]);
 
   useEffect(() => {
     persistChecklistState(checklistState);
@@ -910,6 +890,8 @@ export default function Coverage({
   const pageTitle =
     mode === "detail" && currentReport
       ? `${currentReport.ticker} Coverage | Gistify`
+      : mode === "detail" && ticker
+        ? `${ticker.toUpperCase()} Signal Intelligence | Gistify`
       : mode === "calendar"
         ? "Coverage Calendar | Gistify"
         : "Coverage | Gistify";
@@ -1046,15 +1028,7 @@ export default function Coverage({
   };
 
   const toggleWatch = (targetTicker: string) => {
-    setWatchlist(previous => {
-      const next = new Set(previous);
-      if (next.has(targetTicker)) {
-        next.delete(targetTicker);
-      } else {
-        next.add(targetTicker);
-      }
-      return next;
-    });
+    void toggleWatchlistTicker(targetTicker, "default").catch(() => undefined);
   };
 
   const handleChecklistChange = (key: string, checked: boolean) => {
@@ -1189,6 +1163,7 @@ export default function Coverage({
                         variant="ghost"
                         size="icon-sm"
                         onClick={() => toggleWatch(group.ticker)}
+                        disabled={watchlistPendingTicker === group.ticker}
                         aria-label={t("coverage:toggleWatchlist")}
                       >
                         <Star
@@ -1532,6 +1507,12 @@ export default function Coverage({
               </CardContent>
             </Card>
 
+            <CoverageSignalIntelligence
+              ticker={currentReport.ticker}
+              language={language}
+              earningsDate={currentReport.metrics.earningsDate}
+            />
+
             {currentReport.strategy ? (
               <Card className="gap-4" interactive={false}>
                 <CardContent className="pt-6">
@@ -1659,21 +1640,29 @@ export default function Coverage({
             ))}
           </div>
         ) : (
-          <Card className="gap-4" interactive={false}>
-            <CardHeader className="gap-2">
-              <CardTitle>
-                {t("coverage:coverageNotFound")}
-              </CardTitle>
-              <CardDescription>
-                {t("coverage:noReportExistsForThis")}
-              </CardDescription>
-            </CardHeader>
-            <CardFooter>
-              <Button onClick={() => setLocation("/coverage")}>
-                {t("coverage:openLibrary")}
-              </Button>
-            </CardFooter>
-          </Card>
+          <div className="space-y-4">
+            {ticker ? (
+              <CoverageSignalIntelligence
+                ticker={ticker}
+                language={language}
+              />
+            ) : null}
+            <Card className="gap-4" interactive={false}>
+              <CardHeader className="gap-2">
+                <CardTitle>
+                  {t("coverage:coverageNotFound")}
+                </CardTitle>
+                <CardDescription>
+                  {t("coverage:noReportExistsForThis")}
+                </CardDescription>
+              </CardHeader>
+              <CardFooter>
+                <Button onClick={() => setLocation("/coverage")}>
+                  {t("coverage:openLibrary")}
+                </Button>
+              </CardFooter>
+            </Card>
+          </div>
         )
       ) : null}
     </FlowLayout>

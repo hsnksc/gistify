@@ -58,6 +58,7 @@ function fixture(): CanonicalEarningsMarketData {
 
 describe("advanced options analytics", () => {
   afterEach(() => {
+    vi.useRealTimers();
     vi.unstubAllGlobals();
     delete process.env.THETADATA_REQUEST_GAP_MS;
     delete process.env.THETADATA_MAX_TICKERS;
@@ -114,6 +115,8 @@ describe("advanced options analytics", () => {
   });
 
   it("normalizes ThetaData v3 nested EOD rows and labels free data as delayed", async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-07-11T21:15:00.000Z"));
     process.env.THETADATA_REQUEST_GAP_MS = "0";
     vi.stubGlobal("fetch", vi.fn(async (input: string | URL) => {
       const url = String(input);

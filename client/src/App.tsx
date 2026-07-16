@@ -53,6 +53,7 @@ import {
 } from "@/lib/i18n";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import AccountNotificationsBell from "@/components/notifications/AccountNotificationsBell";
 
 const Landing = lazy(() => import("./pages/Landing"));
 const Home = lazy(() => import("./pages/Home"));
@@ -1360,30 +1361,33 @@ function App() {
                           <div className="flex shrink-0 items-center gap-2 md:hidden">
                             {authState.status === "authenticated" &&
                             !isPublicAccessMode ? (
-                              <div className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-1 py-1">
-                                <Avatar className="size-8 border border-border">
-                                  {authState.user.picture ? (
-                                    <AvatarImage
-                                      src={authState.user.picture}
-                                      alt={`${authState.user.name} profile`}
-                                    />
-                                  ) : null}
-                                  <AvatarFallback className="text-[10px] font-semibold">
-                                    {getInitials(authState.user.name) || "U"}
-                                  </AvatarFallback>
-                                </Avatar>
+                              <div className="flex items-center gap-1.5">
+                                <AccountNotificationsBell language={language} />
+                                <div className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-1 py-1">
+                                  <Avatar className="size-8 border border-border">
+                                    {authState.user.picture ? (
+                                      <AvatarImage
+                                        src={authState.user.picture}
+                                        alt={`${authState.user.name} profile`}
+                                      />
+                                    ) : null}
+                                    <AvatarFallback className="text-[10px] font-semibold">
+                                      {getInitials(authState.user.name) || "U"}
+                                    </AvatarFallback>
+                                  </Avatar>
 
-                                <Button
-                                  type="button"
-                                  variant="ghost"
-                                  size="icon-sm"
-                                  className="rounded-full"
-                                  aria-label={t("common:signOut")}
-                                  title={t("common:signOut")}
-                                  onClick={logout}
-                                >
-                                  <LogOut className="size-4" />
-                                </Button>
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="icon-sm"
+                                    className="rounded-full"
+                                    aria-label={t("common:signOut")}
+                                    title={t("common:signOut")}
+                                    onClick={logout}
+                                  >
+                                    <LogOut className="size-4" />
+                                  </Button>
+                                </div>
                               </div>
                             ) : null}
                           </div>
@@ -1413,30 +1417,33 @@ function App() {
 
                           {authState.status === "authenticated" &&
                           !isPublicAccessMode ? (
-                            <div className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-1 py-1">
-                              <Avatar className="size-8 border border-border">
-                                {authState.user.picture ? (
-                                  <AvatarImage
-                                    src={authState.user.picture}
-                                    alt={`${authState.user.name} profile`}
-                                  />
-                                ) : null}
-                                <AvatarFallback className="text-[10px] font-semibold">
-                                  {getInitials(authState.user.name) || "U"}
-                                </AvatarFallback>
-                              </Avatar>
+                            <div className="flex items-center gap-1.5">
+                              <AccountNotificationsBell language={language} />
+                              <div className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-1 py-1">
+                                <Avatar className="size-8 border border-border">
+                                  {authState.user.picture ? (
+                                    <AvatarImage
+                                      src={authState.user.picture}
+                                      alt={`${authState.user.name} profile`}
+                                    />
+                                  ) : null}
+                                  <AvatarFallback className="text-[10px] font-semibold">
+                                    {getInitials(authState.user.name) || "U"}
+                                  </AvatarFallback>
+                                </Avatar>
 
-                              <Button
-                                type="button"
-                                variant="ghost"
-                                size="icon-sm"
-                                className="rounded-full"
-                                aria-label={t("common:signOut")}
-                                title={t("common:signOut")}
-                                onClick={logout}
-                              >
-                                <LogOut className="size-4" />
-                              </Button>
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="icon-sm"
+                                  className="rounded-full"
+                                  aria-label={t("common:signOut")}
+                                  title={t("common:signOut")}
+                                  onClick={logout}
+                                >
+                                  <LogOut className="size-4" />
+                                </Button>
+                              </div>
                             </div>
                           ) : null}
                         </div>

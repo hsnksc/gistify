@@ -72,6 +72,7 @@ import { createFlowSourcesRouter } from "./routes/flow/sources";
 import { createMomentumRouter } from "./routes/momentum";
 import { createOpportunitiesRouter } from "./routes/opportunities";
 import { createWeeklyReportsRouter } from "./routes/weeklyReports";
+import { createWatchtowerRouter } from "./routes/watchtower";
 import { createWorkspaceFeedsRouter } from "./routes/workspaceFeeds";
 import {
   generateDailyReportOpenAiCharts,
@@ -86,6 +87,9 @@ import {
   listMomentumReportSourceSummaries,
 } from "./momentumReportSources";
 import { createMidasSignalsSyncService } from "./midasSignals";
+import { evaluateWatchlistAlerts } from "./watchlistAlertEngine";
+import { processWatchlistEmailQueue } from "./watchlistDeliveryProcessor";
+import { ensureWatchtowerDrafts } from "./watchtowerGenerator";
 import { createCpiPpiForecastSyncService } from "./cpiPpiForecast";
 import {
   createGistifyDb,
@@ -307,6 +311,8 @@ jobCoordinator.startScheduler(CRON_JOB_DEFINITIONS, {
       delayMs: 500,
     });
   },
+  "watchlist-alert-delivery": async () =>
+    processWatchlistEmailQueue(billingStore),
 });
 
 const LEGACY_WEEKLY_SEED_SIGNATURES = new Map<string, string>([
@@ -3362,7 +3368,25 @@ async function startServer() {
   }
 
   const server = createServer(app);
-  const midasSignalsSync = createMidasSignalsSyncService();
+  const midasSignalsSync = createMidasSignalsSyncService(undefined, {
+    onSnapshot: (snapshot, previousSnapshot) => {
+      ensureWatchtowerDrafts(
+        billingStore,
+        snapshot,
+        getWeeklyReportAdminEmail()
+      );
+      const result = evaluateWatchlistAlerts({
+        billingStore,
+        snapshot,
+        previousSnapshot,
+      });
+      if (result.createdNotifications > 0) {
+        console.log(
+          `[watchlist-alerts] Created ${result.createdNotifications} notifications for ${result.evaluatedItems} items.`
+        );
+      }
+    },
+  });
   const cpiPpiForecastSync = createCpiPpiForecastSyncService();
   const earningsStrategySync = createEarningsStrategySyncService();
   const calendarSync = createCalendarSyncService({
@@ -3539,6 +3563,18 @@ async function startServer() {
   );
 
   app.use(
+    "/api",
+    createWatchtowerRouter({
+      billingStore,
+      getMidasSnapshot: midasSignalsSync.getSnapshot,
+      getWeeklyReportAdminEmail,
+      normalizeString,
+      requireWeeklyReportAdmin,
+      setPrivateNoStore,
+    })
+  );
+
+  app.use(
     "/api/flow-sources",
     createFlowSourcesRouter({
       setPrivateNoStore,
@@ -3633,6 +3669,8 @@ async function startServer() {
             delayMs: 500,
           });
         },
+        "watchlist-alert-delivery": async () =>
+          processWatchlistEmailQueue(billingStore),
       },
       requireWeeklyReportAdmin,
       setPrivateNoStore,

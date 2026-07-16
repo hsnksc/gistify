@@ -63,8 +63,111 @@ export interface WatchlistRecord {
   email: string;
   ticker: string;
   notes?: string;
+  tags?: string[];
   alertOnOpportunity: boolean;
+  alertRules?: WatchlistAlertRules;
   addedAt: string;
+  updatedAt: string;
+}
+
+export interface WatchlistAlertRules {
+  opportunity: boolean;
+  signalChange: boolean;
+  convictionAbove?: number;
+  priceAbove?: number;
+  priceBelow?: number;
+  earningsWithinDays?: number;
+}
+
+export interface WatchlistCollectionRecord {
+  id: string;
+  userId: string;
+  name: string;
+  color: string;
+  isDefault: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface WatchlistItemRecord {
+  id: string;
+  listId: string;
+  userId: string;
+  email: string;
+  ticker: string;
+  notes?: string;
+  tags: string[];
+  alertRules: WatchlistAlertRules;
+  addedAt: string;
+  updatedAt: string;
+}
+
+export interface WatchlistCollectionWithItems
+  extends WatchlistCollectionRecord {
+  items: WatchlistItemRecord[];
+}
+
+export type WatchlistNotificationKind =
+  | "opportunity"
+  | "signal_change"
+  | "conviction"
+  | "price_above"
+  | "price_below"
+  | "earnings";
+
+export interface WatchlistNotificationRecord {
+  id: string;
+  userId: string;
+  email: string;
+  listId: string;
+  ticker: string;
+  kind: WatchlistNotificationKind;
+  title: string;
+  body: string;
+  fingerprint: string;
+  metadata: Record<string, unknown>;
+  createdAt: string;
+  readAt?: string;
+}
+
+export interface WatchlistAlertStateRecord {
+  itemId: string;
+  ruleKind: WatchlistNotificationKind;
+  lastCondition: boolean;
+  lastValue?: string;
+  lastSnapshotAt: string;
+  updatedAt: string;
+}
+
+export type WatchlistDeliveryStatus =
+  | "pending"
+  | "sent"
+  | "failed";
+
+export interface WatchlistDeliveryRecord {
+  id: string;
+  notificationId: string;
+  userId: string;
+  email: string;
+  channel: "email";
+  status: WatchlistDeliveryStatus;
+  attempts: number;
+  nextAttemptAt: string;
+  createdAt: string;
+  updatedAt: string;
+  sentAt?: string;
+  lastError?: string;
+}
+
+export interface SavedPortfolioScenarioRecord {
+  id: string;
+  userId: string;
+  name: string;
+  listId: string;
+  weighting: "equal" | "risk_parity";
+  transactionCostBps: number;
+  tickers: string[];
+  createdAt: string;
   updatedAt: string;
 }
 

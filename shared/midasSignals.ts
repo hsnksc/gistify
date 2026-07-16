@@ -77,6 +77,12 @@ export interface MidasSignalRecord {
   notes?: string;
   layers?: MidasSignalLayers;
   timestamp?: string;
+  companyName?: string;
+  sector?: string;
+  industry?: string;
+  country?: string;
+  exchange?: string;
+  indexMembership?: string[];
   // v4.0 new fields
   apex_score?: number;
   raw_apex?: number;

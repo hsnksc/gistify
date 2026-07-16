@@ -26,6 +26,8 @@ import {
   ParamsVersionBadge,
 } from "@/components/momentum/MomentumV3Cards";
 import { MidasWatchlistCard } from "@/components/momentum/MidasWatchlistCard";
+import MomentumMarketRadar from "@/components/momentum/MomentumMarketRadar";
+import MomentumWatchtowerPanel from "@/components/momentum/MomentumWatchtowerPanel";
 import { runMomentumScan, type StockResult } from "@/scanner";
 import { type AppLanguage, t } from "@/lib/i18n";
 import { useMomentumV3Data, type MomentumParams } from "@/lib/momentumV3";
@@ -1235,6 +1237,37 @@ export default function MomentumFlowSurface({
       )[0] ?? null,
     [mergedSignals]
   );
+  const radarSignals = useMemo(
+    () =>
+      mergedSignals.map(signal => ({
+        symbol: signal.symbol,
+        signal: signal.resolvedSignal,
+        price: signal.live?.currentPrice ?? signal.price,
+        dailyPct: signal.dayChange,
+        weeklyPct: signal.weekly_pct,
+        monthlyPct: signal.monthly_pct,
+        conviction: Math.min(100, Math.max(0, signal.conviction)),
+        riskLevel: signal.riskLevel,
+        updatedAt: signal.live?.updatedAt ?? signal.timestamp,
+        factorBreakdown: signal.factor_breakdown,
+        catalystTier: signal.catalystTier,
+        setupType: signal.setup_type,
+        technical: signal.technical,
+        priceHistory: Array.isArray(signal.technical?.closes_21)
+          ? signal.technical.closes_21.filter(
+              (value): value is number =>
+                typeof value === "number" && Number.isFinite(value) && value > 0
+            )
+          : undefined,
+        companyName: signal.companyName,
+        sector: signal.sector,
+        industry: signal.industry,
+        country: signal.country,
+        exchange: signal.exchange,
+        indexMembership: signal.indexMembership,
+      })),
+    [mergedSignals]
+  );
 
   if (loading && !data) {
     return (
@@ -1683,6 +1716,15 @@ export default function MomentumFlowSurface({
           </div>
         </div>
       </div>
+
+      <MomentumMarketRadar
+        signals={radarSignals}
+        language={language}
+        calibrationDate={data.calibrationDate}
+        paramsVersion={data.paramsVersion || data.version}
+      />
+
+      <MomentumWatchtowerPanel language={language} />
 
       {showShiftSection ? (
         <section className="rounded-xl border border-sky-400/18 bg-[linear-gradient(180deg,rgba(14,165,233,0.10),rgba(15,23,42,0.86))] p-4">

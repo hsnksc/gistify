@@ -5,6 +5,10 @@ import type { BillingStore } from "../../server/billingStore";
 import type {
   OpportunityRecord,
   OpportunityTier,
+  SavedPortfolioScenarioRecord,
+  WatchlistCollectionRecord,
+  WatchlistItemRecord,
+  WatchlistNotificationRecord,
   WatchlistRecord,
 } from "../../shared/opportunities";
 
@@ -85,8 +89,52 @@ describe("opportunities router smoke", () => {
       }),
     ];
     const watchlist: WatchlistRecord[] = [];
+    const watchlistCollections: WatchlistCollectionRecord[] = [];
+    const watchlistItems: WatchlistItemRecord[] = [];
+    const notifications: WatchlistNotificationRecord[] = [
+      {
+        id: "notification-1",
+        userId: "user-1",
+        email: "user@example.com",
+        listId: "default",
+        ticker: "AAPL",
+        kind: "signal_change",
+        title: "AAPL sinyali degisti",
+        body: "HOLD -> BUY",
+        fingerprint: "signal-change-1",
+        metadata: { signal: "BUY" },
+        createdAt: "2026-07-16T10:00:00.000Z",
+      },
+    ];
+    const portfolios: SavedPortfolioScenarioRecord[] = [];
 
     const billingStore = {
+      deleteWatchlistCollection: (userId: string, listId: string) => {
+        const index = watchlistCollections.findIndex(
+          item => item.userId === userId && item.id === listId
+        );
+        if (index >= 0) watchlistCollections.splice(index, 1);
+        for (let itemIndex = watchlistItems.length - 1; itemIndex >= 0; itemIndex -= 1) {
+          if (watchlistItems[itemIndex].listId === listId) {
+            watchlistItems.splice(itemIndex, 1);
+          }
+        }
+      },
+      deleteWatchlistItem: (userId: string, listId: string, ticker: string) => {
+        const index = watchlistItems.findIndex(
+          item =>
+            item.userId === userId &&
+            item.listId === listId &&
+            item.ticker === ticker
+        );
+        if (index >= 0) watchlistItems.splice(index, 1);
+      },
+      deleteSavedPortfolioScenario: (userId: string, scenarioId: string) => {
+        const index = portfolios.findIndex(
+          item => item.userId === userId && item.id === scenarioId
+        );
+        if (index >= 0) portfolios.splice(index, 1);
+      },
       deleteWatchlist: (userId: string, ticker: string) => {
         const index = watchlist.findIndex(
           item => item.userId === userId && item.ticker === ticker
@@ -95,9 +143,53 @@ describe("opportunities router smoke", () => {
           watchlist.splice(index, 1);
         }
       },
+      getWatchlistCollectionById: (userId: string, listId: string) =>
+        watchlistCollections.find(
+          item => item.userId === userId && item.id === listId
+        ) || null,
+      insertWatchlistCollection: (record: WatchlistCollectionRecord) => {
+        watchlistCollections.push(record);
+      },
+      countUnreadWatchlistNotifications: (userId: string) =>
+        notifications.filter(item => item.userId === userId && !item.readAt)
+          .length,
       listOpportunities: () => opportunities,
+      listSavedPortfolioScenarios: (userId: string) =>
+        portfolios.filter(item => item.userId === userId),
+      listWatchlistCollectionsByUserId: (userId: string) =>
+        watchlistCollections.filter(item => item.userId === userId),
+      listWatchlistItems: (userId: string, listId: string) =>
+        watchlistItems.filter(
+          item => item.userId === userId && item.listId === listId
+        ),
+      listWatchlistNotifications: (userId: string, limit: number) =>
+        notifications.filter(item => item.userId === userId).slice(0, limit),
       listWatchlistByUserId: (userId: string) =>
         watchlist.filter(item => item.userId === userId),
+      markAllWatchlistNotificationsRead: (userId: string, readAt: string) => {
+        notifications.forEach(item => {
+          if (item.userId === userId) item.readAt ||= readAt;
+        });
+      },
+      markWatchlistNotificationRead: (
+        userId: string,
+        notificationId: string,
+        readAt: string
+      ) => {
+        const notification = notifications.find(
+          item => item.userId === userId && item.id === notificationId
+        );
+        if (notification) notification.readAt ||= readAt;
+      },
+      updateWatchlistCollection: (record: WatchlistCollectionRecord) => {
+        const index = watchlistCollections.findIndex(
+          item => item.userId === record.userId && item.id === record.id
+        );
+        if (index >= 0) watchlistCollections[index] = record;
+      },
+      upsertSavedPortfolioScenario: (record: SavedPortfolioScenarioRecord) => {
+        portfolios.push(record);
+      },
       upsertWatchlist: (record: WatchlistRecord) => {
         const existingIndex = watchlist.findIndex(
           item => item.userId === record.userId && item.ticker === record.ticker
@@ -108,6 +200,19 @@ describe("opportunities router smoke", () => {
         }
 
         watchlist.push(record);
+      },
+      upsertWatchlistItem: (record: WatchlistItemRecord) => {
+        const index = watchlistItems.findIndex(
+          item =>
+            item.userId === record.userId &&
+            item.listId === record.listId &&
+            item.ticker === record.ticker
+        );
+        if (index >= 0) {
+          watchlistItems[index] = record;
+          return;
+        }
+        watchlistItems.push(record);
       },
     } as unknown as BillingStore;
 
@@ -214,6 +319,154 @@ describe("opportunities router smoke", () => {
     };
     expect(patchWatchlistPayload.item?.notes).toBe("updated note");
     expect(patchWatchlistPayload.item?.alertOnOpportunity).toBe(false);
+
+    const createListResponse = await fetch(
+      `http://127.0.0.1:${address.port}/api/watchlists`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-id": "user-1",
+        },
+        body: JSON.stringify({ name: "Earnings", color: "#38bdf8" }),
+      }
+    );
+    expect(createListResponse.status).toBe(201);
+    const createListPayload = (await createListResponse.json()) as {
+      list?: { id: string };
+    };
+    const customListId = createListPayload.list?.id;
+    expect(customListId).toBeTruthy();
+
+    const createItemResponse = await fetch(
+      `http://127.0.0.1:${address.port}/api/watchlists/${customListId}/items`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-id": "user-1",
+        },
+        body: JSON.stringify({
+          ticker: "msft",
+          tags: ["mega-cap", "earnings"],
+          alertRules: {
+            opportunity: true,
+            signalChange: true,
+            convictionAbove: 72,
+            priceBelow: 410,
+            earningsWithinDays: 5,
+          },
+        }),
+      }
+    );
+    expect(createItemResponse.status).toBe(201);
+    const createItemPayload = (await createItemResponse.json()) as {
+      lists?: Array<{
+        id: string;
+        items: WatchlistItemRecord[];
+      }>;
+    };
+    const customList = createItemPayload.lists?.find(
+      item => item.id === customListId
+    );
+    expect(customList?.items[0]?.ticker).toBe("MSFT");
+    expect(customList?.items[0]?.tags).toEqual(["mega-cap", "earnings"]);
+    expect(customList?.items[0]?.alertRules.convictionAbove).toBe(72);
+
+    const patchItemResponse = await fetch(
+      `http://127.0.0.1:${address.port}/api/watchlists/${customListId}/items/MSFT`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-id": "user-1",
+        },
+        body: JSON.stringify({
+          alertRules: { signalChange: false, priceAbove: 500 },
+        }),
+      }
+    );
+    expect(patchItemResponse.status).toBe(200);
+    const patchItemPayload = (await patchItemResponse.json()) as {
+      lists?: Array<{ id: string; items: WatchlistItemRecord[] }>;
+    };
+    const patchedItem = patchItemPayload.lists
+      ?.find(item => item.id === customListId)
+      ?.items.find(item => item.ticker === "MSFT");
+    expect(patchedItem?.alertRules.signalChange).toBe(false);
+    expect(patchedItem?.alertRules.priceAbove).toBe(500);
+    expect(patchedItem?.alertRules.convictionAbove).toBe(72);
+
+    const clearThresholdResponse = await fetch(
+      `http://127.0.0.1:${address.port}/api/watchlists/${customListId}/items/MSFT`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-id": "user-1",
+        },
+        body: JSON.stringify({
+          alertRules: { convictionAbove: null },
+        }),
+      }
+    );
+    const clearThresholdPayload = (await clearThresholdResponse.json()) as {
+      lists?: Array<{ id: string; items: WatchlistItemRecord[] }>;
+    };
+    expect(
+      clearThresholdPayload.lists
+        ?.find(item => item.id === customListId)
+        ?.items.find(item => item.ticker === "MSFT")?.alertRules.convictionAbove
+    ).toBeUndefined();
+
+    const notificationsResponse = await fetch(
+      `http://127.0.0.1:${address.port}/api/notifications`,
+      { headers: { "x-user-id": "user-1" } }
+    );
+    expect(notificationsResponse.status).toBe(200);
+    const notificationsPayload = (await notificationsResponse.json()) as {
+      items?: WatchlistNotificationRecord[];
+      unreadCount?: number;
+    };
+    expect(notificationsPayload.items).toHaveLength(1);
+    expect(notificationsPayload.unreadCount).toBe(1);
+
+    const readNotificationResponse = await fetch(
+      `http://127.0.0.1:${address.port}/api/notifications/notification-1/read`,
+      {
+        method: "PATCH",
+        headers: { "x-user-id": "user-1" },
+      }
+    );
+    expect(readNotificationResponse.status).toBe(200);
+    const readNotificationPayload = (await readNotificationResponse.json()) as {
+      unreadCount?: number;
+    };
+    expect(readNotificationPayload.unreadCount).toBe(0);
+
+    const savePortfolioResponse = await fetch(
+      `http://127.0.0.1:${address.port}/api/portfolios`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-id": "user-1",
+        },
+        body: JSON.stringify({
+          name: "Momentum basket",
+          listId: customListId,
+          weighting: "risk_parity",
+          transactionCostBps: 12,
+          tickers: ["AAPL", "MSFT"],
+        }),
+      }
+    );
+    expect(savePortfolioResponse.status).toBe(201);
+    const savePortfolioPayload = (await savePortfolioResponse.json()) as {
+      item?: SavedPortfolioScenarioRecord;
+    };
+    expect(savePortfolioPayload.item?.weighting).toBe("risk_parity");
+    expect(savePortfolioPayload.item?.tickers).toEqual(["AAPL", "MSFT"]);
 
     const deleteWatchlistResponse = await fetch(
       `http://127.0.0.1:${address.port}/api/watchlist/AAPL`,

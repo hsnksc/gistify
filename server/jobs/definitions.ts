@@ -42,4 +42,11 @@ export const CRON_JOB_DEFINITIONS: CronJobDefinition[] = [
     description:
       "Auto-translate published Flow/daily reports missing or stale translations.",
   },
+  {
+    name: "watchlist-alert-delivery",
+    schedule: "*/1 * * * *",
+    enabled: true,
+    description:
+      "Deliver queued account watchlist alerts through the configured email webhook.",
+  },
 ];

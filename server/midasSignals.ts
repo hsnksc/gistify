@@ -13,6 +13,7 @@ import {
   createSignalSnapshotStore,
   type SignalSnapshotStore,
 } from "./services/signalSnapshotStore";
+import { locateMidasSourceFile } from "./midasSourceSelection";
 
 const DEFAULT_POLL_INTERVAL_MS = 5 * 60 * 1000;
 const MIN_POLL_INTERVAL_MS = 30 * 1000;
@@ -21,10 +22,11 @@ interface RefreshOptions {
   force?: boolean;
 }
 
-interface LocatedSourceFile {
-  filePath: string;
-  modifiedAtIso: string;
-  mtimeMs: number;
+interface MidasSignalsSyncOptions {
+  onSnapshot?: (
+    snapshot: MidasSignalsData,
+    previousSnapshot: MidasSignalsData | null
+  ) => void | Promise<void>;
 }
 
 export interface MidasSignalsSyncService {
@@ -310,6 +312,23 @@ function normalizeSignalRecord(
     timestamp: normalizeTimestamp(source.timestamp, fallbackTimestamp),
   };
 
+  const companyName = normalizeOptionalString(
+    source.companyName ?? source.company_name ?? source.name
+  );
+  const sector = normalizeOptionalString(source.sector);
+  const industry = normalizeOptionalString(source.industry);
+  const country = normalizeOptionalString(source.country);
+  const exchange = normalizeOptionalString(source.exchange);
+  const indexMembership = normalizeStringArray(
+    source.indexMembership ?? source.index_membership ?? source.indices ?? source.indexes
+  );
+  if (companyName) normalized.companyName = companyName;
+  if (sector) normalized.sector = sector;
+  if (industry) normalized.industry = industry;
+  if (country) normalized.country = country;
+  if (exchange) normalized.exchange = exchange;
+  if (indexMembership.length) normalized.indexMembership = indexMembership;
+
   const apexScore = normalizeOptionalNumber(source.apex_score ?? source.apexScore);
   const rawApex = normalizeOptionalNumber(source.raw_apex ?? source.rawApex);
   const direction = normalizeDirection(source.direction);
@@ -332,6 +351,12 @@ function normalizeSignalRecord(
   const exhaustionFlags = normalizeStringArray(
     source.exhaustionFlags ?? source.exhaustion_flags
   );
+  const technical = extractObjectRecord(source.technical);
+  const tradePlan = extractObjectRecord(source.trade_plan ?? source.tradePlan);
+  const positionSizing = extractObjectRecord(
+    source.position_sizing ?? source.positionSizing
+  );
+  const liquidity = extractObjectRecord(source.liquidity);
 
   if (apexScore !== undefined) normalized.apex_score = apexScore;
   if (rawApex !== undefined) normalized.raw_apex = rawApex;
@@ -346,6 +371,19 @@ function normalizeSignalRecord(
   if (mss !== undefined) normalized.mss = mss;
   if (mssChallenger !== undefined) normalized.mssChallenger = mssChallenger;
   if (exhaustionFlags.length) normalized.exhaustionFlags = exhaustionFlags;
+  if (technical) normalized.technical = technical;
+  if (tradePlan) {
+    normalized.trade_plan =
+      tradePlan as unknown as MidasSignalRecord["trade_plan"];
+  }
+  if (positionSizing) {
+    normalized.position_sizing =
+      positionSizing as unknown as MidasSignalRecord["position_sizing"];
+  }
+  if (liquidity) {
+    normalized.liquidity =
+      liquidity as unknown as MidasSignalRecord["liquidity"];
+  }
 
   const catalystTier = normalizeOptionalString(
     source.catalystTier ?? source.catalyst_tier
@@ -792,29 +830,9 @@ function buildSourceCandidates() {
   };
 }
 
-function locateSourceFile(candidates: string[]): LocatedSourceFile | null {
-  for (const filePath of candidates) {
-    try {
-      const stats = fs.statSync(filePath);
-      if (!stats.isFile()) {
-        continue;
-      }
-
-      return {
-        filePath,
-        modifiedAtIso: stats.mtime.toISOString(),
-        mtimeMs: stats.mtimeMs,
-      };
-    } catch {
-      continue;
-    }
-  }
-
-  return null;
-}
-
 export function createMidasSignalsSyncService(
-  signalSnapshotStore: SignalSnapshotStore = createSignalSnapshotStore()
+  signalSnapshotStore: SignalSnapshotStore = createSignalSnapshotStore(),
+  options: MidasSignalsSyncOptions = {}
 ): MidasSignalsSyncService {
   const pollIntervalMs = resolvePollIntervalMs();
   let currentSnapshot: MidasSignalsData | null = null;
@@ -876,9 +894,24 @@ export function createMidasSignalsSyncService(
     } satisfies MidasSignalsData;
   }
 
+  async function publishSnapshot(
+    snapshot: MidasSignalsData,
+    previousSnapshot: MidasSignalsData | null
+  ) {
+    currentSnapshot = attachPipeline(snapshot);
+    if (options.onSnapshot) {
+      try {
+        await options.onSnapshot(currentSnapshot, previousSnapshot);
+      } catch (error) {
+        console.error("[Midas] Watchlist alert evaluation failed:", error);
+      }
+    }
+    return currentSnapshot;
+  }
+
   async function refresh(options: RefreshOptions = {}) {
     const { configuredSourceFile, candidates } = getCurrentSourceConfig();
-    let locatedSource = locateSourceFile(candidates);
+    let locatedSource = locateMidasSourceFile(candidates, configuredSourceFile);
     lastAttemptAt = new Date().toISOString();
 
     // Alpaca fallback: if source file is missing or signals are empty, trigger Alpaca pipeline
@@ -886,7 +919,7 @@ export function createMidasSignalsSyncService(
     if (!locatedSource) {
       const fallbackPath = path.resolve(process.cwd(), "midas_signals.json");
       if (runAlpacaFallback(fallbackPath)) {
-        locatedSource = locateSourceFile(candidates);
+        locatedSource = locateMidasSourceFile(candidates, configuredSourceFile);
         alpacaGenerated = true;
       }
     }
@@ -910,8 +943,8 @@ export function createMidasSignalsSyncService(
             lastSyncedAt = new Date().toISOString();
             lastError = null;
             status = "ok";
-            currentSnapshot = attachPipeline(normalized);
-            return currentSnapshot;
+            const previousSnapshot = currentSnapshot;
+            return publishSnapshot(normalized, previousSnapshot);
           }
         }
       } catch (dbError) {
@@ -973,8 +1006,8 @@ export function createMidasSignalsSyncService(
             lastSyncedAt = new Date().toISOString();
             lastError = null;
             status = "ok";
-            currentSnapshot = attachPipeline(reNormalized);
-            return currentSnapshot;
+            const previousSnapshot = currentSnapshot;
+            return publishSnapshot(reNormalized, previousSnapshot);
           }
         }
       }
@@ -983,7 +1016,7 @@ export function createMidasSignalsSyncService(
       lastSyncedAt = new Date().toISOString();
       lastError = null;
       status = "ok";
-      currentSnapshot = attachPipeline(normalized);
+      const previousSnapshot = currentSnapshot;
 
       try {
         signalSnapshotStore.saveSnapshot("midas", normalized, locatedSource.filePath);
@@ -991,7 +1024,7 @@ export function createMidasSignalsSyncService(
         console.error("[Midas] Failed to persist snapshot to DB:", dbError);
       }
 
-      return currentSnapshot;
+      return publishSnapshot(normalized, previousSnapshot);
     } catch (error) {
       lastError =
         error instanceof Error
